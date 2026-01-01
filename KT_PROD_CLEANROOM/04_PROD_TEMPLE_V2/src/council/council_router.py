@@ -1,167 +1,74 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Any, Dict, List
+import os
+from typing import Any, Dict
 
-from council.council_schemas import (
-    MODE_DRY_RUN,
-    MODE_LIVE_REQUESTED,
-    PLAN_STATUS_OK,
-    PLAN_STATUS_REFUSED,
-    RESULT_STATUS_DRY_RUN,
-    RESULT_STATUS_REFUSED,
-    CouncilPlanSchema,
-    CouncilProviderCallSchema,
-    CouncilRequestSchema,
-    CouncilResultSchema,
-)
+from council.providers.provider_registry import ProviderRegistry
+from council.providers.provider_schemas import ProviderCallReceipt
 
 
-@dataclass(frozen=True)
-class ConstitutionalViolationError(RuntimeError):
-    message: str
-
-    def __str__(self) -> str:
-        return self.message
+class CouncilError(RuntimeError):
+    pass
 
 
-ALLOWED_PROVIDER_IDS = {"dry_run"}
+_ALLOWED_LIVE_HASHED_PROVIDERS = {"openai"}
+_ALLOWED_LIVE_HASHED_REQUEST_TYPES = {"healthcheck", "analysis"}
 
 
-class _FrozenDict(dict):
-    def __setitem__(self, key: object, value: object) -> None:  # noqa: ANN401
-        raise ConstitutionalViolationError("RuntimeContext mutation attempted (fail-closed)")
-
-    def update(self, *args: object, **kwargs: object) -> None:  # noqa: ANN401
-        raise ConstitutionalViolationError("RuntimeContext mutation attempted (fail-closed)")
-
-
-class _FrozenList(list):
-    def __setitem__(self, key: object, value: object) -> None:  # noqa: ANN401
-        raise ConstitutionalViolationError("RuntimeContext mutation attempted (fail-closed)")
-
-    def append(self, value: object) -> None:  # noqa: ANN401
-        raise ConstitutionalViolationError("RuntimeContext mutation attempted (fail-closed)")
-
-    def extend(self, values: object) -> None:  # noqa: ANN401
-        raise ConstitutionalViolationError("RuntimeContext mutation attempted (fail-closed)")
+def _require_live_hashed_env() -> None:
+    if os.getenv("KT_PROVIDERS_ENABLED") != "1":
+        raise CouncilError("KT_PROVIDERS_ENABLED=1 required (fail-closed).")
+    if os.getenv("KT_EXECUTION_LANE") != "LIVE_HASHED":
+        raise CouncilError("KT_EXECUTION_LANE=LIVE_HASHED required (fail-closed).")
 
 
-def _freeze(obj: Any) -> Any:  # noqa: ANN401
-    if isinstance(obj, dict):
-        return _FrozenDict({k: _freeze(v) for k, v in obj.items()})
-    if isinstance(obj, list):
-        return _FrozenList([_freeze(v) for v in obj])
-    return obj
+def execute_council_request(req: Dict[str, Any]) -> Dict[str, Any]:
+    mode = str(req.get("mode", "DRY_RUN"))
+    request_type = str(req.get("request_type", "")).strip()
 
+    if mode != "LIVE_HASHED":
+        raise CouncilError("Only LIVE_HASHED mode is supported in this path (fail-closed).")
 
-class CouncilRouter:
-    @staticmethod
-    def _freeze_context_for_tests(context: Dict[str, Any]) -> Dict[str, Any]:
-        return _freeze(context)
+    _require_live_hashed_env()
 
-    @staticmethod
-    def plan(*, context: Dict[str, Any], request: CouncilRequestSchema) -> CouncilPlanSchema:
-        ctx = _freeze(context)
-        _ = ctx.get("schema_id")
-        _ = ctx.get("constitution_version_hash")
+    if request_type not in _ALLOWED_LIVE_HASHED_REQUEST_TYPES:
+        raise CouncilError(f"request_type not allowlisted for LIVE_HASHED (fail-closed): {request_type!r}")
 
-        req = request.to_dict()
-        CouncilRequestSchema.validate(req)
-        request_hash = CouncilRequestSchema.compute_request_hash(req)
+    provider_id = str(req.get("provider_id", "")).strip()
+    if provider_id not in _ALLOWED_LIVE_HASHED_PROVIDERS:
+        raise CouncilError(f"provider_id not allowlisted for LIVE_HASHED (fail-closed): {provider_id!r}")
 
-        plan_id = f"council.plan::{req['request_id']}"
-        refusal_code: str | None = None
+    model = str(req.get("model", "")).strip()
+    if not model:
+        raise CouncilError("Missing model (fail-closed).")
 
-        mode = req["mode"]
-        if mode == MODE_LIVE_REQUESTED:
-            refusal_code = "LIVE_MODE_NOT_SUPPORTED"
+    prompt = str(req.get("prompt", "")).strip()
+    if not prompt:
+        raise CouncilError("Missing prompt (fail-closed).")
 
-        provider_ids = sorted([str(x) for x in req["provider_ids"]])
-        if any(p not in ALLOWED_PROVIDER_IDS for p in provider_ids):
-            refusal_code = refusal_code or "PROVIDER_NOT_ALLOWLISTED"
+    timeout_ms = int(req.get("timeout_ms", 20_000))
+    temperature = float(req.get("temperature", 0.0))
+    kt_node_id = str(req.get("kt_node_id", os.getenv("KT_NODE_ID", "")))
 
-        status = PLAN_STATUS_REFUSED if refusal_code else PLAN_STATUS_OK
+    registry = ProviderRegistry.build_default()
 
-        calls: List[Dict[str, Any]] = []
-        if status == PLAN_STATUS_OK:
-            for p in provider_ids:
-                call = {
-                    "schema_id": CouncilProviderCallSchema.SCHEMA_ID,
-                    "schema_version_hash": CouncilProviderCallSchema.SCHEMA_VERSION_HASH,
-                    "provider_id": p,
-                    "max_tokens": int(req["per_call_token_cap"]),
-                    "performed": False,
-                    "success": False,
-                    "duration_ms": 0,
-                    "output_hash": "0" * 64,
-                }
-                CouncilProviderCallSchema.validate(call)
-                calls.append(call)
+    receipt: ProviderCallReceipt = registry.invoke_live_hashed(
+        provider_id=provider_id,
+        model=model,
+        prompt=prompt,
+        timeout_ms=timeout_ms,
+        temperature=temperature,
+        kt_node_id=kt_node_id,
+        trace_id=str(req.get("trace_id", "")).strip() or None,
+    )
 
-        payload: Dict[str, Any] = {
-            "schema_id": CouncilPlanSchema.SCHEMA_ID,
-            "schema_version_hash": CouncilPlanSchema.SCHEMA_VERSION_HASH,
-            "plan_id": plan_id,
-            "runtime_registry_hash": req["runtime_registry_hash"],
-            "request_hash": request_hash,
-            "status": status,
-            "mode": mode,
-            "provider_calls": calls,
-            "plan_hash": "",
-        }
-        if refusal_code:
-            payload["refusal_code"] = refusal_code
-
-        payload["plan_hash"] = CouncilPlanSchema.compute_plan_hash(payload)
-        CouncilPlanSchema.validate(payload)
-        return CouncilPlanSchema.from_dict(payload)
-
-    @staticmethod
-    def execute(*, context: Dict[str, Any], plan: CouncilPlanSchema) -> CouncilResultSchema:
-        _ = _freeze(context)
-
-        plan_dict = plan.to_dict()
-        CouncilPlanSchema.validate(plan_dict)
-
-        if plan_dict["status"] != PLAN_STATUS_OK:
-            result = {
-                "schema_id": CouncilResultSchema.SCHEMA_ID,
-                "schema_version_hash": CouncilResultSchema.SCHEMA_VERSION_HASH,
-                "status": RESULT_STATUS_REFUSED,
-                "plan_hash": plan_dict["plan_hash"],
-                "calls": [],
-                "refusal_code": plan_dict.get("refusal_code") or "PLAN_REFUSED",
-                "result_hash": "",
-            }
-            result["result_hash"] = CouncilResultSchema.compute_result_hash(result)
-            CouncilResultSchema.validate(result)
-            return CouncilResultSchema.from_dict(result)
-
-        if plan_dict["mode"] != MODE_DRY_RUN:
-            result = {
-                "schema_id": CouncilResultSchema.SCHEMA_ID,
-                "schema_version_hash": CouncilResultSchema.SCHEMA_VERSION_HASH,
-                "status": RESULT_STATUS_REFUSED,
-                "plan_hash": plan_dict["plan_hash"],
-                "calls": [],
-                "refusal_code": "LIVE_MODE_NOT_SUPPORTED",
-                "result_hash": "",
-            }
-            result["result_hash"] = CouncilResultSchema.compute_result_hash(result)
-            CouncilResultSchema.validate(result)
-            return CouncilResultSchema.from_dict(result)
-
-        result = {
-            "schema_id": CouncilResultSchema.SCHEMA_ID,
-            "schema_version_hash": CouncilResultSchema.SCHEMA_VERSION_HASH,
-            "status": RESULT_STATUS_DRY_RUN,
-            "plan_hash": plan_dict["plan_hash"],
-            "calls": [],
-            "output_hashes": [],
-            "result_hash": "",
-        }
-        result["result_hash"] = CouncilResultSchema.compute_result_hash(result)
-        CouncilResultSchema.validate(result)
-        return CouncilResultSchema.from_dict(result)
+    out = {
+        "status": "OK",
+        "mode": "LIVE_HASHED",
+        "provider_id": provider_id,
+        "model": receipt.to_dict().get("model"),
+        "receipt": receipt.to_dict(),
+        "receipt_hash": receipt.to_dict().get("receipt_hash"),
+    }
+    return out
 

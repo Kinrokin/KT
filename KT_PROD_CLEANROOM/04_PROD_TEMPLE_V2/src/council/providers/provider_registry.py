@@ -8,6 +8,8 @@ from council.providers.dry_run_provider import DryRunProvider
 from council.providers.live_provider_openai import OpenAIProvider
 from council.providers.provider_interface import ProviderClient
 from council.providers.provider_schemas import ProviderRequestSchema, ProviderResponseSchema, make_disabled_response, make_fail_closed_response
+from council.providers.live_provider_openai_hashed import LiveHashedOpenAIProvider
+from council.providers.provider_schemas import ProviderCallReceipt
 
 
 @dataclass(frozen=True)
@@ -20,7 +22,19 @@ class ProviderRegistry:
         # Note: live providers are registered but remain disabled by default.
         providers: Dict[str, ProviderClient] = {
             "dry_run": DryRunProvider(),
+            # Live-enabled provider implementations (registered but disabled by default).
             "openai": OpenAIProvider(),
+            # Inventory-only providers: declared here but default to dry-run behavior until implemented.
+            "gemini": DryRunProvider(),
+            "cerebras": DryRunProvider(),
+            "groq": DryRunProvider(),
+            "deepseek": DryRunProvider(),
+            "openrouter": DryRunProvider(),
+            "huggingface": DryRunProvider(),
+            "together": DryRunProvider(),
+            "sambacloud": DryRunProvider(),
+            "cloudflare": DryRunProvider(),
+            "tavily": DryRunProvider(),
         }
         return ProviderRegistry(providers=providers)
 
@@ -49,4 +63,27 @@ class ProviderRegistry:
             return provider.invoke(request=request)
         except Exception:
             return make_fail_closed_response(request=request, error_code="PROVIDER_ERROR")
+
+    def invoke_live_hashed(
+        self,
+        *,
+        provider_id: str,
+        model: str,
+        prompt: str,
+        timeout_ms: int,
+        temperature: float,
+        kt_node_id: str,
+        trace_id: str | None = None,
+    ) -> ProviderCallReceipt:
+        # Minimal, fail-closed routing for LIVE_HASHED lane.
+        if provider_id == "openai":
+            prov = LiveHashedOpenAIProvider()
+            return prov.invoke_hashed(
+                model=model,
+                prompt=prompt,
+                timeout_ms=timeout_ms,
+                temperature=temperature,
+                kt_node_id=kt_node_id,
+            )
+        raise RuntimeError(f"LIVE_HASHED provider not implemented (fail-closed): {provider_id!r}")
 

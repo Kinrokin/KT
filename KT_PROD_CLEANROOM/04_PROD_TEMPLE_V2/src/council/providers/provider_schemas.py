@@ -192,3 +192,101 @@ def make_fail_closed_response(*, request: ProviderRequestSchema, error_code: str
         "error_code": error_code,
     }
     return ProviderResponseSchema.from_dict(payload)
+
+
+@dataclass(frozen=True)
+class ProviderCallReceipt:
+    SCHEMA_ID = "provider.call_receipt"
+    SCHEMA_VERSION = "1.0"
+    SCHEMA_VERSION_HASH = sha256_json({"schema_id": SCHEMA_ID, "schema_version": SCHEMA_VERSION})
+
+    data: Dict[str, Any]
+
+    @classmethod
+    def validate(cls, payload: Dict[str, Any]) -> None:
+        # Minimal, strict validation for LIVE_HASHED receipts (fail-closed on missing attestations).
+        allowed = {
+            "schema_id",
+            "schema_version_hash",
+            "trace_id",
+            "provider_id",
+            "lane",
+            "model",
+            "endpoint",
+            "key_index",
+            "key_count",
+            "timing",
+            "transport",
+            "provider_attestation",
+            "usage",
+            "payload",
+            "verdict",
+            # Chain fields for append-only receipts
+            "receipt_id",
+            "prev_receipt_hash",
+            "receipt_hash",
+        }
+        extra = set(payload.keys()) - allowed
+        if extra:
+            raise SchemaValidationError(f"ProviderCallReceipt has unknown keys (fail-closed): {sorted(extra)}")
+
+        validate_short_string(payload, "schema_id", max_len=64)
+        if payload["schema_id"] != cls.SCHEMA_ID:
+            raise SchemaValidationError("schema_id mismatch (fail-closed)")
+        validate_hex_64(payload, "schema_version_hash")
+        if payload["schema_version_hash"] != cls.SCHEMA_VERSION_HASH:
+            raise SchemaValidationError("schema_version_hash mismatch (fail-closed)")
+
+        validate_short_string(payload, "provider_id", max_len=32)
+        validate_short_string(payload, "lane", max_len=32)
+        validate_short_string(payload, "model", max_len=64)
+        validate_short_string(payload, "endpoint", max_len=64)
+
+        # keys
+        _require_int_range(payload, "key_index", lo=0, hi=1_000_000)
+        _require_int_range(payload, "key_count", lo=1, hi=1_000_000)
+
+        # timing
+        timing = payload.get("timing")
+        if not isinstance(timing, dict):
+            raise SchemaValidationError("timing required and must be dict (fail-closed)")
+        _require_int_range(timing, "t_start_ms", lo=0, hi=10**18)
+        _require_int_range(timing, "t_end_ms", lo=0, hi=10**18)
+        _require_int_range(timing, "latency_ms", lo=0, hi=60_000)
+
+        # transport
+        transport = payload.get("transport")
+        if not isinstance(transport, dict):
+            raise SchemaValidationError("transport required and must be dict (fail-closed)")
+        validate_short_string(transport, "host", max_len=128)
+        _require_int_range(transport, "http_status", lo=0, hi=999)
+        # tls_cert_sha256 must be present (fail-closed)
+        tls = transport.get("tls_cert_sha256")
+        if not isinstance(tls, str) or len(tls) != 64:
+            raise SchemaValidationError("transport.tls_cert_sha256 required (fail-closed)")
+
+        # payload
+        payload_obj = payload.get("payload")
+        if not isinstance(payload_obj, dict):
+            raise SchemaValidationError("payload required and must be dict (fail-closed)")
+        # response hash required
+        resp_hash = payload_obj.get("response_bytes_sha256")
+        if not isinstance(resp_hash, str) or not resp_hash:
+            raise SchemaValidationError("payload.response_bytes_sha256 required (fail-closed)")
+
+        # receipt chaining fields
+        # receipt_id and receipt_hash must be 64-hex
+        validate_hex_64(payload, "receipt_id")
+        # prev_receipt_hash can be 'GENESIS' or a 64-hex
+        prev = payload.get("prev_receipt_hash")
+        if not isinstance(prev, str) or (prev != "GENESIS" and len(prev) != 64):
+            raise SchemaValidationError("prev_receipt_hash must be 'GENESIS' or 64-hex (fail-closed)")
+        validate_hex_64(payload, "receipt_hash")
+
+    @classmethod
+    def from_dict(cls, payload: Dict[str, Any]) -> "ProviderCallReceipt":
+        cls.validate(payload)
+        return ProviderCallReceipt(data=dict(payload))
+
+    def to_dict(self) -> Dict[str, Any]:
+        return dict(self.data)
