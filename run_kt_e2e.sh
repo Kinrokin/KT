@@ -81,7 +81,12 @@ from teacher_schemas import CurriculumPackageSchema, CurriculumSignatureSchema  
 compiled = compile_bundle(bundle_path)
 pkg = compiled.package
 
-pkg_path = out_dir / f"{pkg.package_id}.json"
+pkg_obj = pkg.to_dict()
+package_id = pkg_obj.get("package_id")
+if not isinstance(package_id, str) or not package_id:
+    raise SystemExit("package_id_missing (fail-closed)")
+
+pkg_path = out_dir / f"{package_id}.json"
 if pkg_path.exists():
     existing = json.loads(pkg_path.read_text(encoding="utf-8"))
     CurriculumPackageSchema.validate(existing)
@@ -93,7 +98,7 @@ else:
     )
 
 signed = sign_package(package=pkg)
-sig_path = out_dir / f"{pkg.package_id}.signature.json"
+sig_path = out_dir / f"{package_id}.signature.json"
 if sig_path.exists():
     existing = json.loads(sig_path.read_text(encoding="utf-8"))
     CurriculumSignatureSchema.validate(existing)
@@ -214,4 +219,3 @@ python KT_PROD_CLEANROOM/tools/growth/distillation/distill_runner.py \
 echo "========================================"
 echo "KT E2E RUN COMPLETE — ALL PHASES PASS"
 echo "========================================"
-
