@@ -199,7 +199,7 @@ exemplar, exemplar_path = create_exemplar_from_c019_run(
     run_id=run_id,
     crucible_spec_path=crucible_spec_path,
     c019_run_dir=c019_run_dir,
-    license="RESEARCH_ONLY",
+    license="UNKNOWN",
 )
 append_exemplar_to_warehouse(artifacts_root=warehouse, exemplar_path=exemplar_path)
 print((warehouse / "warehouse_manifest.jsonl").as_posix())
