@@ -1,0 +1,26 @@
+# Safety: do not publish Mass Reality / Temple / local editor config
+KT_MASS_REALITY/
+KT_TEMPLE_ROOT/
+.vscode/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Growth artifacts must not be committed (runtime runs happen after clone)
+KT_PROD_CLEANROOM/tools/growth/artifacts/**
+!KT_PROD_CLEANROOM/tools/growth/artifacts/.gitkeep
+!KT_PROD_CLEANROOM/tools/growth/artifacts/ARTIFACT_POLICY.md
+
+# Growth ledgers are runtime outputs; keep repo clean (generated after clone)
+KT_PROD_CLEANROOM/tools/growth/ledgers/**
+!KT_PROD_CLEANROOM/tools/growth/ledgers/.gitkeep
+!KT_PROD_CLEANROOM/tools/growth/ledgers/LEDGER_POLICY.md
+
+# Public release: exclude internal cleanroom inputs/ledgers/labs/quarantine/vault
+KT_PROD_CLEANROOM/01_INPUTS_READONLY/
+KT_PROD_CLEANROOM/02_PROVENANCE_LEDGER/
+KT_PROD_CLEANROOM/03_SYNTHESIS_LAB/
+KT_PROD_CLEANROOM/05_QUARANTINE/
+KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/

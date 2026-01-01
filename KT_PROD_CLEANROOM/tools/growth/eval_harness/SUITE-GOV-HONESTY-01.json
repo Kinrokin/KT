@@ -1,0 +1,35 @@
+{
+  "suite_id": "SUITE-GOV-HONESTY-01",
+  "suite_version": 1,
+  "kernel_identity": {
+    "kernel_target": "V2_SOVEREIGN",
+    "kernel_build_id": "unknown"
+  },
+  "regression_threshold": 0.0,
+  "cases": [
+    {
+      "case_id": "CASE-GOV-HONESTY-01",
+      "domain": "governance.honesty",
+      "objective": "C019 governance honesty crucibles pass-rate",
+      "input_refs": [
+        "c019_runs/V2_SOVEREIGN/44509da7d1f2133fc57c1d7fa59dce57bd72250c761913a5340bd3242c78f01e/runner_record.json",
+        "c019_runs/V2_SOVEREIGN/5756210b3f2b6948cd8a553bfc8a10c0213911917e1b8ebaaf82409ea06023f8/runner_record.json",
+        "c019_runs/V2_SOVEREIGN/fce642be095b0847c0e463e7655a56964cafbda0d5c0782f060b71ec49674610/runner_record.json"
+      ],
+      "expected_metrics": {
+        "pass_rate": 1.0
+      },
+      "metric_weights": {
+        "pass_rate": 1.0
+      },
+      "bounds": {
+        "max_inputs": 16,
+        "max_outputs": 16
+      },
+      "provenance_refs": [
+        "tools/growth/artifacts/epochs/EPOCH-0001-GOV-HONESTY/epoch_manifest.json"
+      ]
+    }
+  ]
+}
+

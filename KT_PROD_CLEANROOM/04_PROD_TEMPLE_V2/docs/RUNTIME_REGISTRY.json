@@ -1,0 +1,114 @@
+{
+  "registry_version": "1",
+  "canonical_entry": {
+    "module": "kt.entrypoint",
+    "callable": "invoke"
+  },
+  "canonical_spine": {
+    "module": "core.spine",
+    "callable": "run"
+  },
+  "state_vault": {
+    "jsonl_path": "_runtime_artifacts/state_vault.jsonl"
+  },
+  "runtime_import_roots": [
+    "cognition",
+    "core",
+    "council",
+    "curriculum",
+    "governance",
+    "kt",
+    "memory",
+    "multiverse",
+    "paradox",
+    "schemas",
+    "temporal",
+    "thermodynamics",
+    "versioning"
+  ],
+  "organs_by_root": {
+    "cognition": "Crucible Engine",
+    "council": "Council Router Engine",
+    "core": "Spine",
+    "curriculum": "Curriculum Boundary",
+    "governance": "Governance Kernel",
+    "kt": "Entry Point",
+    "memory": "Receipts / Ledger",
+    "multiverse": "Multiverse Engine",
+    "paradox": "Paradox Engine",
+    "schemas": "Schemas / Contracts",
+    "temporal": "Temporal Engine",
+    "thermodynamics": "Thermodynamics / Budget",
+    "versioning": "Schemas / Contracts"
+  },
+  "import_truth_matrix": {
+    "Entry Point": [
+      "Entry Point",
+      "Spine"
+    ],
+    "Spine": [
+      "Curriculum Boundary",
+      "Crucible Engine",
+      "Council Router Engine",
+      "Governance Kernel",
+      "Multiverse Engine",
+      "Paradox Engine",
+      "Receipts / Ledger",
+      "Router",
+      "Schemas / Contracts",
+      "Spine",
+      "Temporal Engine",
+      "Thermodynamics / Budget"
+    ],
+    "Curriculum Boundary": [
+      "Curriculum Boundary",
+      "Schemas / Contracts"
+    ],
+    "Council Router Engine": [
+      "Council Router Engine",
+      "Schemas / Contracts"
+    ],
+    "Multiverse Engine": [
+      "Multiverse Engine",
+      "Schemas / Contracts"
+    ],
+    "Paradox Engine": [
+      "Paradox Engine",
+      "Schemas / Contracts"
+    ],
+    "Temporal Engine": [
+      "Schemas / Contracts",
+      "Temporal Engine"
+    ],
+    "Governance Kernel": [
+      "Governance Kernel",
+      "Receipts / Ledger",
+      "Schemas / Contracts"
+    ],
+    "Receipts / Ledger": [
+      "Receipts / Ledger",
+      "Schemas / Contracts"
+    ],
+    "Schemas / Contracts": [
+      "Schemas / Contracts"
+    ],
+    "Crucible Engine": [
+      "Crucible Engine",
+      "Schemas / Contracts",
+      "Thermodynamics / Budget"
+    ],
+    "Router": [
+      "Router",
+      "Schemas / Contracts",
+      "Thermodynamics / Budget"
+    ],
+    "Thermodynamics / Budget": [
+      "Schemas / Contracts",
+      "Thermodynamics / Budget"
+    ]
+  },
+  "dry_run": {
+    "no_network": true,
+    "providers_enabled": false
+  }
+}
