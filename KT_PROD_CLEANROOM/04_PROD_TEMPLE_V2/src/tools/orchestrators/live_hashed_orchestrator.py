@@ -50,6 +50,12 @@ def run_orchestrator(argv: Optional[list[str]] = None) -> int:
         print(json.dumps({"receipt_hash": receipt_hash, "tokens": receipt.get("usage", {}).get("total_tokens"), "ledger_path": str(Path.cwd() / "tools" / "growth" / "ledgers" / "thermo" / "ledger.jsonl")}), file=sys.stderr)
         return 0
 
+    # Fail-closed: refuse to debit if provider verdict indicates failure
+    verdict = receipt.get("verdict") or {}
+    if verdict.get("pass") is False:
+        print("Provider verdict indicates failure; refusing to commit ledger (fail-closed).", file=sys.stderr)
+        return 2
+
     # Commit explicit debit (fail-closed on errors)
     total_tokens = None
     try:
