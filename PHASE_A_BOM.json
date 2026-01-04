@@ -1,0 +1,18 @@
+{
+  "phase": "PHASE_A",
+  "repo_commit": "7477d1b266ef365540667f3b2b735d31aee507af",
+  "dataset_path": "KT_PROD_CLEANROOM/tools/growth/bench/kt_phaseA_dataset.jsonl",
+  "dataset_sha256": "9814ead24ee82079b916fdd820864a5a7b77f8573919eba545d87a0742bf4029",
+  "epochs_dir": "KT_PROD_CLEANROOM/tools/growth/artifacts/epochs",
+  "salvage_dir": "KT_PROD_CLEANROOM/tools/growth/artifacts/salvage",
+  "analysis_files": [
+    "KT_PROD_CLEANROOM/tools/growth/state/autonomous_escalation_log.json",
+    "KT_PROD_CLEANROOM/tools/growth/state/autonomous_analysis.json"
+  ],
+  "invariants": [
+    "micro_steps observational only",
+    "no router coupling",
+    "inference adds friction never removes it",
+    "inference never changes execution path"
+  ]
+}
