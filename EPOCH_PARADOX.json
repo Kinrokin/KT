@@ -1,0 +1,26 @@
+{
+  "epoch_id": "EPOCH_PARADOX",
+  "kernel_identity": {
+    "kernel_build_id": "unknown",
+    "kernel_target": "V2_SOVEREIGN"
+  },
+  "runner_config": {
+    "args": [],
+    "template_id": "C019_RUNNER_V1"
+  },
+  "budgets": {
+    "epoch_wall_clock_ms": 300000,
+    "max_concurrency": 1,
+    "per_crucible_rss_mb": 1024,
+    "per_crucible_timeout_ms": 30000
+  },
+  "crucible_order": [
+    "CRU-GOV-HONESTY-03"
+  ],
+  "crucible_specs": {
+    "CRU-GOV-HONESTY-03": "tools/growth/crucibles/CRU-GOV-HONESTY-03.yaml"
+  },
+  "stop_conditions": {
+    "max_failures": 1
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "epoch_id": "EPOCH_CROSS",
+  "kernel_identity": {
+    "kernel_build_id": "unknown",
+    "kernel_target": "V2_SOVEREIGN"
+  },
+  "runner_config": {
+    "args": [],
+    "template_id": "C019_RUNNER_V1"
+  },
+  "budgets": {
+    "epoch_wall_clock_ms": 300000,
+    "max_concurrency": 1,
+    "per_crucible_rss_mb": 1024,
+    "per_crucible_timeout_ms": 30000
+  },
+  "crucible_order": [
+    "CRU_GOV_HONESTY_01", "CRU-GOV-REFUSAL-01"
+  ],
+  "crucible_specs": {
+    "CRU_GOV_HONESTY_01": "tools/growth/crucibles/CRU-GOV-HONESTY-01.yaml",
+    "CRU-GOV-REFUSAL-01": "tools/growth/crucibles/CRU-GOV-REFUSAL-01.yaml"
+  },
+  "stop_conditions": {
+    "max_failures": 1
+  }
+}
