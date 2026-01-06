@@ -14,6 +14,12 @@ def _parse_args() -> argparse.Namespace:
         default=Path(__file__).resolve().parent / "lane_policy_comparison.jsonl",
         help="Path to lane policy comparison JSONL.",
     )
+    p.add_argument(
+        "--out",
+        type=Path,
+        default=None,
+        help="Optional JSON output path (in addition to stdout).",
+    )
     return p.parse_args()
 
 
@@ -167,9 +173,11 @@ def main() -> int:
     }
 
     print(json.dumps(report, indent=2, sort_keys=True))
+    if args.out is not None:
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        args.out.write_text(json.dumps(report, indent=2, sort_keys=True), encoding="utf-8")
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

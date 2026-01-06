@@ -1,0 +1,30 @@
+{
+  "phase": "PHASE_A2",
+  "purpose": "Label semantics repair (restraint lane) + head-only retrain + shadow eval",
+  "repo": {
+    "remote": "https://github.com/Kinrokin/KT.git",
+    "commit": "FILL_ME"
+  },
+  "inputs": {
+    "epochs_dir_readonly": "KT_PROD_CLEANROOM/tools/growth/artifacts/epochs",
+    "phaseA_dataset_readonly": "KT_PROD_CLEANROOM/tools/growth/bench/kt_phaseA_dataset.jsonl"
+  },
+  "outputs": {
+    "phaseA2_dataset": "KT_PROD_CLEANROOM/tools/growth/bench/kt_phaseA2_dataset.jsonl",
+    "phaseA2_dataset_sha256": "FILL_ME",
+    "phaseA2_label_map": "KT_PROD_CLEANROOM/tools/growth/state/kt_phaseA2_label_map.json",
+    "phaseA2_build_report": "KT_PROD_CLEANROOM/tools/growth/state/kt_phaseA2_build_report.json",
+    "head_only_trainer": "KT_PROD_CLEANROOM/tools/growth/state/train_head_only_phaseA2.py",
+    "shadow_eval_analyzer": "KT_PROD_CLEANROOM/tools/growth/state/analyze_policy_shadow.py"
+  },
+  "label_semantics_doc": "KT_PROD_CLEANROOM/tools/growth/state/PHASE_A2_LABEL_SEMANTICS.md",
+  "invariants": [
+    "FAIL_CLOSED",
+    "no governance changes",
+    "no router changes",
+    "no crucible changes",
+    "no density increase",
+    "no policy authority grant"
+  ]
+}
+
