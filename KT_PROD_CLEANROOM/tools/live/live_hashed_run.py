@@ -69,7 +69,8 @@ def main() -> int:
         raise SystemExit("Unsupported provider (fail-closed).")
 
     provider = LiveHashedOpenAIProvider()
-    receipt = provider.invoke_hashed(
+
+    receipt_dict = provider.invoke_hashed(
         model=str(args.model),
         prompt=prompt,
         timeout_ms=int(args.timeout_ms),
@@ -81,7 +82,6 @@ def main() -> int:
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
     # Receipt dict (provider returns validated receipt body without chain fields)
-    receipt_dict = receipt.to_dict()
 
     # Finalize chain fields and validate (shared helper)
     try:

@@ -1,0 +1,167 @@
+{
+  "schema_version": "ROTATION_RULESET_BOOTSTRAP_V1",
+  "ruleset_id": "ROT_BOOTSTRAP_V1",
+  "description": "Bootstrap rotation + coverage gates for early autonomy bring-up (seed/governance/paradox). Integrity is strict; breadth thresholds are minimal.",
+  "fail_closed": true,
+  "canonical_ids": {
+    "domain_prefix": "D:",
+    "subdomain_prefix": "S:",
+    "microdomain_prefix": "M:",
+    "venture_prefix": "V:",
+    "reasoning_prefix": "R:",
+    "modality_prefix": "X:",
+    "paradox_prefix": "P:",
+    "tool_prefix": "T:",
+    "id_format": {
+      "domain": "^D:[A-Z0-9_]+$",
+      "subdomain": "^S:[A-Z0-9_]+(\\.[A-Z0-9_]+)+$",
+      "microdomain": "^M:[A-Z0-9_]+(\\.[A-Z0-9_]+)+$",
+      "venture": "^V:[A-Z0-9_]+(\\.[A-Z0-9_]+)+$",
+      "reasoning": "^R:[A-Z0-9_]+$",
+      "modality": "^X:[A-Z0-9_]+$",
+      "paradox": "^P:[A-Z0-9_]+(\\.[A-Z0-9_]+)*$",
+      "tool": "^T:[A-Z0-9_]+(\\.[A-Z0-9_]+)*$"
+    }
+  },
+  "required_coverage_fields": {
+    "crucible_coverage_required": [
+      "schema_version",
+      "run_id",
+      "epoch_id",
+      "crucible_id",
+      "kernel_target",
+      "planned",
+      "observed",
+      "proof",
+      "verdict"
+    ],
+    "observed_required": [
+      "domains",
+      "subdomains",
+      "microdomains",
+      "reasoning_modes",
+      "modalities",
+      "tools",
+      "counts",
+      "dominance"
+    ],
+    "counts_required": [
+      "unique_domains",
+      "unique_subdomains",
+      "unique_microdomains",
+      "cross_domain_edges",
+      "mean_graph_distance",
+      "max_graph_distance",
+      "paradox_events"
+    ],
+    "dominance_required": [
+      "top_domain_share",
+      "top_5_domain_share",
+      "entropy_domains"
+    ],
+    "proof_required": [
+      "receipts",
+      "fail_closed"
+    ]
+  },
+  "verdict_codes": {
+    "PASS": "PASS",
+    "FAIL": "FAIL",
+    "FAIL_MISSING_FIELD": "FAIL_MISSING_FIELD",
+    "FAIL_INVALID_ID": "FAIL_INVALID_ID",
+    "FAIL_THRESHOLD": "FAIL_THRESHOLD",
+    "FAIL_SEQUENCE_ROTATION": "FAIL_SEQUENCE_ROTATION",
+    "FAIL_BUNDLE": "FAIL_BUNDLE",
+    "FAIL_FORBIDDEN_TAG": "FAIL_FORBIDDEN_TAG",
+    "FAIL_REQUIRED_TAG": "FAIL_REQUIRED_TAG",
+    "FAIL_RECEIPT_MISSING": "FAIL_RECEIPT_MISSING"
+  },
+  "receipts_policy": {
+    "required_receipt_types": [
+      "TRACE_HEAD_HASH",
+      "LEDGER_ENTRY_HASH"
+    ],
+    "require_sha256": true,
+    "sha256_format": "^[a-f0-9]{64}$",
+    "fail_if_missing": true
+  },
+  "crucible_constraints": {
+    "thresholds": {
+      "min_unique_domains": 1,
+      "min_unique_subdomains": 0,
+      "min_unique_microdomains": 0,
+      "min_cross_domain_edges": 0,
+      "min_mean_graph_distance": 0,
+      "max_top_domain_share": 1.0,
+      "max_top_5_domain_share": 1.0,
+      "min_entropy_domains": 0.0,
+      "min_paradox_events": 0
+    },
+    "required_tags": {
+      "domains": [],
+      "subdomains": [],
+      "microdomains": [],
+      "ventures": [],
+      "reasoning_modes": [],
+      "modalities": [],
+      "tools": [],
+      "paradox_classes": []
+    },
+    "forbidden_tags": {
+      "domains": [],
+      "subdomains": [],
+      "microdomains": [],
+      "ventures": [],
+      "reasoning_modes": [],
+      "modalities": [],
+      "tools": [],
+      "paradox_classes": []
+    },
+    "sequence_rotation": {
+      "enabled": true,
+      "max_consecutive_same_domain": 5,
+      "max_consecutive_same_subdomain": 10,
+      "max_consecutive_same_microdomain": 10
+    }
+  },
+  "epoch_constraints": {
+    "thresholds": {
+      "min_unique_domains": 1,
+      "min_unique_subdomains": 0,
+      "min_unique_microdomains": 0,
+      "min_cross_domain_edges": 0,
+      "min_mean_graph_distance": 0,
+      "max_top_domain_share": 1.0,
+      "max_top_5_domain_share": 1.0,
+      "min_entropy_domains": 0.0
+    },
+    "sequence_rotation": {
+      "enabled": true,
+      "max_consecutive_same_domain": 10,
+      "max_consecutive_same_subdomain": 10,
+      "min_graph_distance_between_adjacent": 0
+    },
+    "required_bundles": [],
+    "forbidden_bundles": []
+  },
+  "cycle_constraints": {
+    "thresholds": {
+      "min_unique_domains": 1,
+      "min_unique_subdomains": 0,
+      "min_unique_microdomains": 0,
+      "min_ventures": 0,
+      "min_cross_venture_edges": 0,
+      "max_top_domain_share": 1.0,
+      "max_top_5_domain_share": 1.0,
+      "min_entropy_domains": 0.0
+    },
+    "required_ventures": [],
+    "required_bundles": [],
+    "forbidden_bundles": []
+  },
+  "bundle_library": [],
+  "enforcement_notes": [
+    "Bootstrap ruleset: integrity checks are strict (fields, IDs, receipts). Breadth/entropy thresholds are minimal to allow early autonomy bring-up without faking metrics.",
+    "Validation order is fail-closed: required fields, canonical ID regex, forbidden/required tags, thresholds, sequence rotation, bundles, receipts."
+  ]
+}

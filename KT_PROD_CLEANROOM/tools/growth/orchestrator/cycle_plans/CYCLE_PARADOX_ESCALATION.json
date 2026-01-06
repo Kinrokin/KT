@@ -1,0 +1,52 @@
+{
+  "schema_version": "CYCLE_PLAN_V1",
+  "cycle_id": "CYCLE_PARADOX_ESCALATION",
+  "description": "Escalating paradox pressure (Belnap BOTH/NEITHER). Fail if paradox handling or coverage collapses.",
+  "seed": 0,
+  "resume_allowed": false,
+  "epochs": [
+    {
+      "epoch_id": "EPOCH-PARADOX-01",
+      "plan_path": "KT_PROD_CLEANROOM/tools/growth/orchestrator/examples/EPOCH-GOV-HONESTY.json"
+    },
+    {
+      "epoch_id": "EPOCH-PARADOX-02",
+      "plan_path": "KT_PROD_CLEANROOM/tools/growth/orchestrator/examples/EPOCH-GOV-HONESTY.json"
+    },
+    {
+      "epoch_id": "EPOCH-PARADOX-03",
+      "plan_path": "KT_PROD_CLEANROOM/tools/growth/orchestrator/examples/EPOCH-GOV-HONESTY.json"
+    }
+  ],
+  "coverage_overrides": {
+    "cycle_constraints": {
+      "thresholds": {
+        "min_entropy_domains": 5.0,
+        "min_unique_domains": 1200,
+        "min_cross_venture_edges": 9500
+      }
+    },
+    "paradox": {
+      "required_paradox_classes": ["P:BELNAP.BOTH", "P:BELNAP.NEITHER"],
+      "min_paradox_events": 8
+    }
+  },
+  "abort_conditions": {
+    "stop_on_first_fail": true,
+    "max_epoch_failures": 1,
+    "max_cycle_duration_ms": 900000
+  },
+  "pass_criteria": [
+    "All epochs coverage PASS",
+    "Paradox events >= 8 across cycle",
+    "Entropy_domains >= 5.0",
+    "Unique_domains >= 1200",
+    "Cross_venture_edges >= 9500"
+  ],
+  "fail_reasons": {
+    "paradox_shortfall": "FAIL: paradox events below threshold",
+    "entropy_drop": "FAIL: entropy below threshold",
+    "coverage_insufficient": "FAIL: domain/edge thresholds unmet",
+    "epoch_fail": "FAIL: one or more epochs failed coverage"
+  }
+}

@@ -137,8 +137,10 @@ class LiveHashedOpenAIProvider:
             "verdict": {"pass": status == 200, "fail_reason": None if status == 200 else f"http_status={status}"},
         }
 
-        # Validate and return ProviderCallReceipt
-        return ProviderCallReceipt.from_dict(receipt)
+        # Validate BASE receipt only (no chain fields)
+        ProviderCallReceipt.validate_base(receipt)
+        # IMPORTANT: return raw dict, not a ProviderCallReceipt object
+        return receipt
 
     def _discover_keys(self) -> list[str]:
         keys = []

@@ -497,6 +497,31 @@ def run(context: Dict[str, Any]) -> Dict[str, Any]:
         log_governance_event(vault=vault, event_type="GOV_POLICY_APPLY", inputs_envelope=inputs, outputs_envelope=outputs)
 
     replay = validate_state_vault_chain(vault_path)
+
+    # --- Emit governance_verdict.json artifact (canonical, always, one per run) ---
+
+
+    from governance.verdict import emit_governance_verdict  # noqa: E402
+    from pathlib import Path
+    artifact_root = Path(context["artifact_root"]).resolve()
+
+    # Unconditional, fail-closed governance verdict emission
+    verdict = context.get("governance_verdict", "FAIL")
+    rationale = context.get("governance_rationale", "NO_VERDICT_EMITTED")
+    emit_governance_verdict(
+        artifact_dir=artifact_root,
+        verdict=verdict,
+        rationale=rationale,
+    )
+    artifact_dir = artifact_root
+    verdict = "FAIL"  # Kernel phase 1: always FAIL, runner will still mark governance_pass = false
+    rationale = "Governance verdict emission: phase 1 kernel test (always FAIL)."
+    emit_governance_verdict(
+        artifact_dir=artifact_dir,
+        verdict=verdict,
+        rationale=rationale,
+    )
+
     return {
         "status": "OK",
         "record_count": replay.record_count,

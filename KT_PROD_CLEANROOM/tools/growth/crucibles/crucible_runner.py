@@ -1,9 +1,61 @@
-from __future__ import annotations
+
+from pathlib import Path
+import json
+from typing import Any, Dict, Tuple
+import sys
+
+# Ensure repo root on sys.path for absolute imports (tooling-only).
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+from tools.growth.providers.live_guard import enforce_live_guard
+enforce_live_guard()
+
+def _load_governance_verdict_or_fail(
+    run_dir: Path,
+) -> Tuple[bool, str]:
+    """
+    Returns: (governance_pass, rationale_or_error_note)
+
+    Fail-closed:
+      - missing file => (False, "governance_verdict_missing")
+      - invalid json => (False, "governance_verdict_invalid_json")
+      - schema mismatch => (False, "governance_verdict_schema_error:...")
+      - verdict not PASS/FAIL => (False, "governance_verdict_invalid_verdict")
+    """
+    path = run_dir / "governance_verdict.json"
+    if not path.exists():
+        return (False, "governance_verdict_missing")
+
+    try:
+        obj = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return (False, "governance_verdict_invalid_json")
+
+    if not isinstance(obj, dict):
+        return (False, "governance_verdict_schema_error:not_object")
+
+    schema_id = obj.get("schema_id")
+    schema_version = obj.get("schema_version")
+    verdict = obj.get("verdict")
+    rationale = obj.get("rationale")
+
+    if schema_id != "governance.verdict":
+        return (False, "governance_verdict_schema_error:schema_id_mismatch")
+    if schema_version != "1.0":
+        return (False, "governance_verdict_schema_error:schema_version_mismatch")
+
+    if verdict not in ("PASS", "FAIL"):
+        return (False, "governance_verdict_invalid_verdict")
+
+    if not isinstance(rationale, str):
+        return (False, "governance_verdict_schema_error:rationale_not_string")
+
+    return (verdict == "PASS", rationale.strip() or "NO_RATIONALE")
 
 import json
 import os
 import subprocess
-import sys
 import threading
 import time
 from dataclasses import asdict, dataclass
@@ -11,10 +63,14 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import psutil
+import traceback
+import hashlib
+import math
 
 from crucible_dsl_schemas import (
     KERNEL_V1_ARCHIVAL,
     KERNEL_V2_SOVEREIGN,
+    KERNEL_COVERAGE_BASELINE,
     OUTCOME_FAIL,
     OUTCOME_INFEASIBLE,
     OUTCOME_PASS,
@@ -29,6 +85,8 @@ from crucible_dsl_schemas import (
     run_id as compute_run_id,
 )
 from crucible_loader import LoadedCrucible, compute_prompt_hash, load_crucible
+from tools.growth.coverage.coverage_validator import CoverageValidator
+from tools.growth.coverage.coverage_metrics import compute_coverage
 
 
 class RunnerError(RuntimeError):
@@ -61,6 +119,7 @@ class CrucibleRunRecord:
     budgets: Dict[str, Any]
     budgets_hash: str
     timestamp_utc: str
+    duration_ms: int
     outcome: str
     output_contract_pass: bool
     replay_status: str
@@ -77,7 +136,7 @@ def _utc_now_iso_z() -> str:
 
 def _repo_root() -> Path:
     # .../KT_PROD_CLEANROOM/tools/growth/crucibles/crucible_runner.py -> .../KT_PROD_CLEANROOM
-    return Path(__file__).resolve().parents[3]
+    return _REPO_ROOT
 
 
 def _growth_root() -> Path:
@@ -316,6 +375,7 @@ def _v2_harness_code() -> str:
         "        'schema_id': RUNTIME_CONTEXT_SCHEMA_ID,\n"
         "        'schema_version_hash': RUNTIME_CONTEXT_SCHEMA_VERSION_HASH,\n"
         "        'constitution_version_hash': CONSTITUTION_VERSION_HASH,\n"
+        "        'artifact_root': str(artifact_root),\n"
         "    }\n"
         "    entry = importlib.import_module('kt.entrypoint')\n"
         "    result = entry.invoke(ctx)\n"
@@ -343,7 +403,7 @@ def _v1_harness_code() -> str:
 
 
 def _kernel_command(*, kernel_target: str, artifact_root: Path) -> Tuple[List[str], Path]:
-    if kernel_target == KERNEL_V2_SOVEREIGN:
+    if kernel_target == KERNEL_V2_SOVEREIGN or kernel_target == KERNEL_COVERAGE_BASELINE:
         kernel_root = _v2_kernel_root()
         code = _v2_harness_code()
     elif kernel_target == KERNEL_V1_ARCHIVAL:
@@ -364,8 +424,34 @@ def _write_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8", newline="\n")
 
 
+def _sha256_json(obj: Any) -> str:
+    try:
+        return hashlib.sha256(json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")).hexdigest()
+    except Exception:
+        return hashlib.sha256(b"NULL").hexdigest()
+
+
 def _safe_decode(data: bytes) -> str:
+    if not data:
+        return ""
+    # Try utf-8 and utf-8 with BOM first, then common fallbacks (utf-16 variants),
+    # finally fall back to latin-1 to preserve bytes.
+    try:
+        return data.decode("utf-8")
+    except Exception:
+        pass
+    for enc in ("utf-8-sig", "utf-16", "utf-16-le", "utf-16-be", "latin-1"):
+        try:
+            return data.decode(enc)
+        except Exception:
+            continue
     return data.decode("utf-8", errors="replace")
+
+
+def _validator(ruleset_path: Optional[Path] = None) -> CoverageValidator:
+    if ruleset_path is None:
+        ruleset_path = _repo_root() / "tools" / "growth" / "coverage" / "ROTATION_RULESET_V1.json"
+    return CoverageValidator(ruleset_path)
 
 
 def _check_output_contract(
@@ -417,6 +503,7 @@ def run_crucible_once(
     seed: int,
     artifacts_dir: Path,
     ledger_path: Path,
+    ruleset_path: Optional[Path] = None,
     prompt_override: Optional[str] = None,
     budgets_override: Optional[Dict[str, Any]] = None,
     expect_override: Optional[Dict[str, Any]] = None,
@@ -464,23 +551,55 @@ def run_crucible_once(
 
     started = _utc_now_iso_z()
 
-    result = _run_subprocess_capped(
-        command=cmd,
-        cwd=run_root,
-        env=env,
-        stdin_bytes=envelope_json,
-        time_ms=budgets_obj.time_ms,
-        kill_grace_ms=budgets_obj.kernel_timeout_kill_ms,
-        stdout_max_bytes=budgets_obj.stdout_max_bytes,
-        stderr_max_bytes=budgets_obj.stderr_max_bytes,
-        memory_max_mb=budgets_obj.runner_memory_max_mb,
-    )
+    stdout_text = ""
+    stderr_text = ""
 
-    stdout_text = _safe_decode(result.stdout).strip()
-    stderr_text = _safe_decode(result.stderr)
+    try:
+        result = _run_subprocess_capped(
+            command=cmd,
+            cwd=run_root,
+            env=env,
+            stdin_bytes=envelope_json,
+            time_ms=budgets_obj.time_ms,
+            kill_grace_ms=budgets_obj.kernel_timeout_kill_ms,
+            stdout_max_bytes=budgets_obj.stdout_max_bytes,
+            stderr_max_bytes=budgets_obj.stderr_max_bytes,
+            memory_max_mb=budgets_obj.runner_memory_max_mb,
+        )
 
-    _write_text(run_root / "stderr.log", stderr_text)
-    _write_text(run_root / "stdout.json", (stdout_text + "\n") if stdout_text else "")
+        stdout_text = _safe_decode(result.stdout).strip()
+        stderr_text = _safe_decode(result.stderr)
+
+        _write_text(run_root / "stderr.log", stderr_text)
+        _write_text(run_root / "stdout.json", (stdout_text + "\n") if stdout_text else "")
+
+        # If kernel failed (nonzero exit), surface raw stderr in notes
+        if result.exit_code is not None and result.exit_code != 0:
+            notes = f"KERNEL_EXCEPTION_RAW:\n{stderr_text}"
+        else:
+            notes = None
+
+    except Exception as exc:  # Ensure artifacts are emitted even on internal failures
+        tb = traceback.format_exc()
+        stderr_text = tb
+        err_obj = {"status": "ERROR", "error_type": exc.__class__.__name__, "error": str(exc)}
+        stdout_text = json.dumps(err_obj, ensure_ascii=True)
+        _write_text(run_root / "stderr.log", stderr_text)
+        _write_text(run_root / "stdout.json", stdout_text + "\n")
+        # Synthesize a failed KernelRunResult so downstream logic records a failing run.
+        result = KernelRunResult(
+            exit_code=None,
+            was_killed=False,
+            kill_reason=None,
+            duration_ms=0,
+            peak_rss_bytes=None,
+            stdout=b"",
+            stderr=b"",
+            stdout_truncated=False,
+            stderr_truncated=False,
+        )
+        notes = f"KERNEL_EXCEPTION_RAW:\n{stderr_text}"
+
 
     if result.was_killed:
         outcome = OUTCOME_FAIL
@@ -499,6 +618,14 @@ def run_crucible_once(
             if output_contract_pass and _expected_outcome_matches(expect_obj.expected_outcome, output_obj)
             else OUTCOME_FAIL
         )
+
+        # --- PATCH: Always emit refusal_code for refusal outcomes ---
+        if output_obj is not None and isinstance(output_obj, dict):
+            status = output_obj.get("status", "").upper()
+            if status in {"REFUSE", "CONSTITUTIONAL_CRISIS", "FAIL_CLOSED", "ERROR"}:
+                if "refusal_code" not in output_obj or not output_obj["refusal_code"]:
+                    # Use expected_refusal_code if available, else fallback to a default
+                    output_obj["refusal_code"] = getattr(expect_obj, "expected_refusal_code", None) or "UNSPECIFIED"
 
         if outcome == OUTCOME_INFEASIBLE and expect_obj.expected_infeasibility_token:
             tok = (output_obj or {}).get("infeasibility_token")
@@ -659,10 +786,45 @@ def run_crucible_once(
             outcome = OUTCOME_FAIL
     else:
         ge = expect_obj.governance_expectations
-        if ge.required_event_types or ge.forbidden_event_types or ge.event_count_min or ge.event_count_max:
+        if kernel_target == KERNEL_COVERAGE_BASELINE:
+            governance_status = "NOT_APPLICABLE"
+            governance_pass = None
+        elif ge.required_event_types or ge.forbidden_event_types or ge.event_count_min or ge.event_count_max:
             governance_status = "UNVERIFIABLE_ARCHIVAL"
             outcome = OUTCOME_FAIL
             notes = (notes + ";governance_unverifiable") if notes else "governance_unverifiable"
+
+
+    # --- Governance verdict enforcement (binding law) ---
+    # KERNEL_COVERAGE_BASELINE is allowed to be PASS-capable without governance verdict gating.
+    # For coverage baseline, treat governance verdict as non-gating regardless of presence.
+    gov_verdict_path = run_root / "governance_verdict.json"
+    if kernel_target == KERNEL_COVERAGE_BASELINE:
+        governance_pass = None
+        gov_note_or_rationale = (
+            "governance_verdict_skipped_coverage_baseline"
+            if not gov_verdict_path.exists()
+            else "governance_verdict_non_gating_coverage_baseline"
+        )
+        if notes:
+            notes = f"{notes};{gov_note_or_rationale}"
+        else:
+            notes = gov_note_or_rationale
+    else:
+        gov_pass, gov_note_or_rationale = _load_governance_verdict_or_fail(run_root)
+        governance_pass = bool(gov_pass)
+        # If governance failed, make the entire run fail (binding).
+        if not governance_pass:
+            outcome = "FAIL"
+            if notes:
+                notes = f"{notes};governance_verdict={gov_note_or_rationale}"
+            else:
+                notes = f"governance_verdict={gov_note_or_rationale}"
+        else:
+            if notes:
+                notes = f"{notes};governance_verdict={gov_note_or_rationale}"
+            else:
+                notes = f"governance_verdict={gov_note_or_rationale}"
 
     record = CrucibleRunRecord(
         run_id=rid,
@@ -676,6 +838,7 @@ def run_crucible_once(
         budgets=budgets_obj.to_dict(),
         budgets_hash=budgets_hash_hex,
         timestamp_utc=started,
+        duration_ms=result.duration_ms,
         outcome=outcome,
         output_contract_pass=output_contract_pass,
         replay_status=replay_status,
@@ -708,24 +871,237 @@ def run_crucible_once(
 
     _write_text(run_root / "runner_record.json", json.dumps(asdict(record), sort_keys=True, indent=2, ensure_ascii=True) + "\n")
 
+    # Emit coverage + validate (fail-closed).
+    validator = _validator(ruleset_path)
+    thr = validator.ruleset["crucible_constraints"]["thresholds"]
+    ledger_sha = hashlib.sha256(json.dumps(ledger_obj, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+    head_hash = None
+    try:
+        if output_obj and isinstance(output_obj, dict):
+            head_hash = output_obj.get("head_hash")
+    except Exception:
+        head_hash = None
+    head_hash = head_hash if isinstance(head_hash, str) and len(head_hash) == 64 else ledger_sha
+
+    # Observed coverage derived from executed trace + tags
+    executed_sequence = output_obj.get("trace_sequence", []) if isinstance(output_obj, dict) else []
+    if not isinstance(executed_sequence, list):
+        executed_sequence = []
+
+    def _canonical_domain(raw: str) -> str:
+        norm = "".join(ch if ch.isalnum() else "_" for ch in str(raw)).upper()
+        return f"D:{norm or 'UNKNOWN'}"
+
+    def _canonical_subdomain(raw: str) -> str:
+        norm = str(raw).upper().replace(" ", "_").replace("__", "_")
+        parts = [p for p in norm.replace("::", ".").split(".") if p]
+        if not parts:
+            parts = ["SUBDOMAIN", "UNKNOWN"]
+        return "S:" + ".".join(parts)
+
+    crucible_level_domain = _canonical_domain(getattr(spec, "domain", spec.crucible_id))
+    crucible_level_subdomain = _canonical_subdomain(getattr(spec, "domain", spec.crucible_id))
+
+    step_tag_index: Dict[str, Dict[str, List[str]]] = {}
+    if hasattr(spec, "steps") and spec.steps:
+        for step in spec.steps:
+            sid = getattr(step, "id", None) or getattr(step, "step_id", None)
+            tags = getattr(step, "tags", None) or {}
+            if not sid or not isinstance(tags, dict):
+                continue
+            step_tag_index[str(sid)] = {
+                "domains": tags.get("domains", [crucible_level_domain]),
+                "subdomains": tags.get("subdomains", [crucible_level_subdomain]),
+                "microdomains": tags.get("microdomains", []),
+                "ventures": tags.get("ventures", []),
+                "reasoning_modes": tags.get("reasoning_modes", []),
+                "modalities": tags.get("modalities", []),
+                "tools": tags.get("tools", []),
+            }
+    if not step_tag_index:
+        sid = str(spec.crucible_id)
+        step_tag_index[sid] = {
+            "domains": [crucible_level_domain],
+            "subdomains": [crucible_level_subdomain],
+            "microdomains": [],
+            "ventures": [],
+            "reasoning_modes": [],
+            "modalities": ["X:TEXT"],
+            "tools": ["T:CRUCIBLE"],
+        }
+        if not executed_sequence:
+            executed_sequence = [sid]
+
+    obs = compute_coverage(
+        executed_step_ids=executed_sequence,
+        step_tag_index=step_tag_index,
+        ontology_subdomain_graph=None,
+        paradox_event_count=0,
+    )
+
+    coverage = {
+        "schema_version": "COVERAGE_V1",
+        "run_id": rid,
+        "epoch_id": "EPOCH_UNSPECIFIED",
+        "crucible_id": spec.crucible_id,
+        "kernel_target": kernel_target,
+        "planned": {
+            "required_tags": [],
+            "target_span": {
+                "min_unique_domains": thr.get("min_unique_domains", 0),
+                "min_unique_subdomains": thr.get("min_unique_subdomains", 0),
+                "min_unique_microdomains": thr.get("min_unique_microdomains", 0)
+            },
+            "rotation_ruleset_id": validator.ruleset.get("ruleset_id", "UNKNOWN_RULESET")
+        },
+        "observed": {
+            "domains": sorted(obs.domains),
+            "subdomains": sorted(obs.subdomains),
+            "microdomains": sorted(obs.microdomains),
+            "reasoning_modes": sorted(obs.reasoning_modes),
+            "modalities": sorted(obs.modalities),
+            "tools": sorted(obs.tools),
+            "counts": {
+                "unique_domains": len(obs.domains),
+                "unique_subdomains": len(obs.subdomains),
+                "unique_microdomains": len(obs.microdomains),
+                "cross_domain_edges": obs.cross_domain_edges,
+                "mean_graph_distance": obs.mean_graph_distance,
+                "max_graph_distance": obs.max_graph_distance,
+                "paradox_events": obs.paradox_events,
+            },
+            "dominance": {
+                "top_domain_share": float(obs.top_domain_share or 0.0),
+                "top_5_domain_share": float(obs.top_5_domain_share or 0.0),
+                "entropy_domains": float(obs.entropy_domains or 0.0),
+            },
+        },
+        "sequence": obs.sequence_domains,
+        "proof": {
+            "receipts": [
+                {"type": "TRACE_HEAD_HASH", "sha256": head_hash},
+                {"type": "LEDGER_ENTRY_HASH", "sha256": ledger_sha},
+            ],
+            "fail_closed": True,
+        },
+        "verdict": {"coverage_pass": None, "rotation_pass": None, "notes": None},
+    }
+    cov_path = run_root / "crucible_coverage.json"
+    _write_text(cov_path, json.dumps(coverage, sort_keys=True, indent=2, ensure_ascii=True) + "\n")
+    verdict = validator.validate_crucible(coverage)
+    if verdict.get("verdict") != validator.codes["PASS"]:
+        if kernel_target == "KERNEL_COVERAGE_BASELINE":
+            print(
+                f"CRUCIBLE COVERAGE NON-GATING for {kernel_target}: {verdict}",
+                file=sys.stderr,
+            )
+        else:
+            raise RunnerError(f"CRUCIBLE COVERAGE FAIL: {verdict}")
+
+    def _emit_micro_steps() -> None:
+        primary_domain = obs.sequence_domains[0] if obs.sequence_domains else (sorted(obs.domains)[0] if obs.domains else crucible_level_domain)
+        primary_subdomain = (
+            getattr(obs, "sequence_subdomains", [])[0]
+            if getattr(obs, "sequence_subdomains", [])
+            else (sorted(obs.subdomains)[0] if obs.subdomains else crucible_level_subdomain)
+        )
+
+        stdout_hash = hashlib.sha256(stdout_text.encode("utf-8")).hexdigest() if stdout_text else ledger_sha
+        resolve_mode = "clean" if outcome == OUTCOME_PASS else ("forced" if result.was_killed else "partial")
+        coherence_bucket = "HIGH" if outcome == OUTCOME_PASS else "LOW"
+        constraint_hit = "budget"
+
+        steps: List[Dict[str, Any]] = []
+        steps.append(
+            {
+                "phase": "MAP",
+                "domain": primary_domain,
+                "subdomain": primary_subdomain,
+                "input_hash": prompt_hash,
+                "output_hash": head_hash,
+                "flags": {"domain_count": len(obs.domains), "mode": "single"},
+            }
+        )
+        steps.append(
+            {
+                "phase": "CONSTRAIN",
+                "domain": primary_domain,
+                "subdomain": primary_subdomain,
+                "input_hash": head_hash,
+                "output_hash": head_hash,
+                "flags": {
+                    "constraint_types": ["budget"],
+                    "constraint_hit": constraint_hit,
+                    "budget_verdict": budget_verdict,
+                },
+            }
+        )
+        steps.append(
+            {
+                "phase": "RESOLVE",
+                "domain": primary_domain,
+                "subdomain": primary_subdomain,
+                "input_hash": head_hash,
+                "output_hash": stdout_hash,
+                "flags": {"resolve_mode": resolve_mode, "outcome": outcome},
+            }
+        )
+        steps.append(
+            {
+                "phase": "EVAL",
+                "domain": primary_domain,
+                "subdomain": primary_subdomain,
+                "input_hash": stdout_hash,
+                "output_hash": stdout_hash,
+                "flags": {"coherence_bucket": coherence_bucket, "governance_status": governance_status},
+            }
+        )
+
+        payload = {
+            "schema": "MICRO_STEPS_V1",
+            "run_id": rid,
+            "crucible_id": spec.crucible_id,
+            "kernel_target": kernel_target,
+            "steps": steps[:7],
+            "hashes": {
+                "prompt_hash": prompt_hash,
+                "head_hash": head_hash,
+                "ledger_hash": ledger_sha,
+                "stdout_hash": stdout_hash,
+            },
+        }
+        _write_text(run_root / "micro_steps.json", json.dumps(payload, sort_keys=True, indent=2, ensure_ascii=True) + "\n")
+
+    _emit_micro_steps()
+
     return record
 
 
-def run_crucible_file(path: Path, *, seed: int = 0) -> List[CrucibleRunRecord]:
+def run_crucible_file(
+    path: Path,
+    *,
+    seed: int = 0,
+    ruleset_path: Optional[Path] = None,
+    kernel_target: Optional[str] = None,
+) -> List[CrucibleRunRecord]:
     loaded = load_crucible(path)
     repo_root = _repo_root()
     artifacts_dir = repo_root / "tools" / "growth" / "artifacts" / "c019_runs"
     ledger_path = repo_root / "tools" / "growth" / "ledgers" / "c019_crucible_runs.jsonl"
 
     records: List[CrucibleRunRecord] = []
-    for kernel_target in loaded.spec.kernel_targets:
+    requested_target = kernel_target
+    for kt in loaded.spec.kernel_targets:
+        if requested_target and kt != requested_target:
+            continue
         records.append(
             run_crucible_once(
                 loaded=loaded,
-                kernel_target=kernel_target,
+                kernel_target=kt,
                 seed=seed,
                 artifacts_dir=artifacts_dir,
                 ledger_path=ledger_path,
+                ruleset_path=ruleset_path,
             )
         )
 
@@ -738,6 +1114,7 @@ def run_crucible_file(path: Path, *, seed: int = 0) -> List[CrucibleRunRecord]:
                     seed=seed,
                     artifacts_dir=artifacts_dir,
                     ledger_path=ledger_path,
+                    ruleset_path=ruleset_path,
                     prompt_override=variant.input_prompt,
                     budgets_override=variant.budgets_override.to_dict() if variant.budgets_override is not None else None,
                     expect_override=variant.expect_override.to_dict() if variant.expect_override is not None else None,

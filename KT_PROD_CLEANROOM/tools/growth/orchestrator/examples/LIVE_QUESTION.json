@@ -1,0 +1,31 @@
+{
+  "epoch_id": "LIVE_QUESTION",
+  "epoch_profile": "COVERAGE_SEED",
+  "seed": 0,
+
+  "kernel_identity": {
+    "kernel_target": "KERNEL_COVERAGE_BASELINE"
+  },
+
+  "runner_config": {
+    "template_id": "C019_RUNNER_V1",
+    "args": []
+  },
+
+  "budgets": {
+    "epoch_wall_clock_ms": 120000,
+    "per_crucible_timeout_ms": 30000,
+    "per_crucible_rss_mb": 1536
+  },
+
+  "stop_conditions": {
+    "max_failures": 1
+  },
+
+  "crucible_order": ["CRU_LIVE_QA_01"],
+
+  "crucible_specs": {
+    "CRU_LIVE_QA_01": "tools/growth/crucibles/CRU-LIVE-QA-01.yaml"
+  }
+}
+

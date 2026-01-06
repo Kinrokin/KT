@@ -1,26 +1,21 @@
-from __future__ import annotations
 
+from __future__ import annotations
 import os
 from typing import Any, Dict
-
 from council.providers.provider_registry import ProviderRegistry
 from council.providers.provider_schemas import ProviderCallReceipt
-
 
 class CouncilError(RuntimeError):
     pass
 
-
 _ALLOWED_LIVE_HASHED_PROVIDERS = {"openai"}
 _ALLOWED_LIVE_HASHED_REQUEST_TYPES = {"healthcheck", "analysis"}
-
 
 def _require_live_hashed_env() -> None:
     if os.getenv("KT_PROVIDERS_ENABLED") != "1":
         raise CouncilError("KT_PROVIDERS_ENABLED=1 required (fail-closed).")
     if os.getenv("KT_EXECUTION_LANE") != "LIVE_HASHED":
         raise CouncilError("KT_EXECUTION_LANE=LIVE_HASHED required (fail-closed).")
-
 
 def execute_council_request(req: Dict[str, Any]) -> Dict[str, Any]:
     mode = str(req.get("mode", "DRY_RUN"))
@@ -71,4 +66,7 @@ def execute_council_request(req: Dict[str, Any]) -> Dict[str, Any]:
         "receipt_hash": receipt.to_dict().get("receipt_hash"),
     }
     return out
+
+class CouncilRouter:
+    execute = staticmethod(execute_council_request)
 

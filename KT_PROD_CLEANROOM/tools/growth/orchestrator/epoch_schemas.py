@@ -11,7 +11,8 @@ class EpochSchemaError(ValueError):
 
 KERNEL_V2_SOVEREIGN = "V2_SOVEREIGN"
 KERNEL_V1_ARCHIVAL = "V1_ARCHIVAL"
-KERNEL_TARGETS = {KERNEL_V2_SOVEREIGN, KERNEL_V1_ARCHIVAL}
+KERNEL_COVERAGE_BASELINE = "KERNEL_COVERAGE_BASELINE"
+KERNEL_TARGETS = {KERNEL_V2_SOVEREIGN, KERNEL_V1_ARCHIVAL, KERNEL_COVERAGE_BASELINE}
 
 RUNNER_TEMPLATE_C019 = "C019_RUNNER_V1"
 RUNNER_TEMPLATES = {RUNNER_TEMPLATE_C019}
@@ -157,6 +158,7 @@ class StopConditions:
 @dataclass(frozen=True)
 class EpochPlan:
     epoch_id: str
+    epoch_profile: str
     kernel_identity: KernelIdentity
     crucible_order: Tuple[str, ...]
     crucible_specs: Dict[str, str]
@@ -172,6 +174,7 @@ class EpochPlan:
             payload,
             allowed={
                 "epoch_id",
+                "epoch_profile",
                 "kernel_identity",
                 "crucible_order",
                 "crucible_specs",
@@ -183,6 +186,7 @@ class EpochPlan:
             name="epoch_plan",
         )
         epoch_id = _require_str(payload.get("epoch_id"), name="epoch_id", min_len=1, max_len=80)
+        epoch_profile = _require_str(payload.get("epoch_profile", "COVERAGE"), name="epoch_profile", min_len=1, max_len=64)
         kernel_identity = KernelIdentity.from_dict(_require_dict(payload.get("kernel_identity"), name="kernel_identity"))
         crucible_order_list = _require_list(payload.get("crucible_order"), name="crucible_order")
         crucible_order: List[str] = []
@@ -209,6 +213,7 @@ class EpochPlan:
 
         return EpochPlan(
             epoch_id=epoch_id,
+            epoch_profile=epoch_profile,
             kernel_identity=kernel_identity,
             crucible_order=tuple(crucible_order),
             crucible_specs=crucible_specs,
@@ -221,6 +226,7 @@ class EpochPlan:
     def to_dict(self) -> Dict[str, Any]:
         return {
             "epoch_id": self.epoch_id,
+            "epoch_profile": self.epoch_profile,
             "kernel_identity": self.kernel_identity.to_dict(),
             "crucible_order": list(self.crucible_order),
             "crucible_specs": dict(self.crucible_specs),

@@ -27,6 +27,7 @@ RUNTIME_CONTEXT_REQUIRED_FIELDS_ORDER = (
 
 RUNTIME_CONTEXT_REQUIRED_FIELDS: Set[str] = set(RUNTIME_CONTEXT_REQUIRED_FIELDS_ORDER)
 RUNTIME_CONTEXT_ALLOWED_FIELDS: Set[str] = set(RUNTIME_CONTEXT_REQUIRED_FIELDS_ORDER)
+RUNTIME_CONTEXT_ALLOWED_FIELDS.add("artifact_root")
 
 RUNTIME_ENVELOPE_REQUIRED_FIELDS_ORDER = ("input",)
 RUNTIME_ENVELOPE_REQUIRED_FIELDS: Set[str] = set(RUNTIME_ENVELOPE_REQUIRED_FIELDS_ORDER)
@@ -64,8 +65,22 @@ RUNTIME_CONTEXT_SCHEMA_VERSION_HASH = compute_runtime_context_schema_version_has
 def validate_runtime_context(context: Dict[str, Any]) -> None:
     require_dict(context, name="Runtime context")
     enforce_max_fields(context, max_fields=RUNTIME_CONTEXT_MAX_FIELDS)
+
     require_keys(context, required=RUNTIME_CONTEXT_REQUIRED_FIELDS)
     reject_unknown_keys(context, allowed=RUNTIME_CONTEXT_ALLOWED_FIELDS)
+
+    # artifact_root: optional, string, absolute path, max length 4096
+    if "artifact_root" in context:
+        value = context["artifact_root"]
+        if not isinstance(value, str):
+            raise SchemaValidationError("artifact_root must be a string (fail-closed)")
+        if not value:
+            raise SchemaValidationError("artifact_root must be non-empty (fail-closed)")
+        if len(value) > 4096:
+            raise SchemaValidationError("artifact_root too long (fail-closed)")
+        from pathlib import Path
+        if not Path(value).is_absolute():
+            raise SchemaValidationError("artifact_root must be absolute path (fail-closed)")
 
     validate_short_string(context, "schema_id", max_len=64)
     validate_hex_64(context, "schema_version_hash")

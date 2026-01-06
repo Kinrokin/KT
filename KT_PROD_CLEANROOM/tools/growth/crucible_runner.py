@@ -4,16 +4,30 @@ import argparse
 import json
 from pathlib import Path
 
+import sys
+
+# Ensure cleanroom root on sys.path for absolute imports (tooling-only).
+_CLEANROOM_ROOT = Path(__file__).resolve().parents[2]
+if str(_CLEANROOM_ROOT) not in sys.path:
+    sys.path.insert(0, str(_CLEANROOM_ROOT))
+from tools.growth.providers.live_guard import enforce_live_guard
+
 
 def _parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="C019 Crucible Runner (tooling-only; subprocess kernel invocation)")
     p.add_argument("--crucible", required=True, help="Path to a crucible YAML/JSON spec")
     p.add_argument("--kernel", default="", help="Optional: run only this kernel target (e.g., V2_SOVEREIGN)")
     p.add_argument("--seed", type=int, default=0, help="Deterministic seed (default: 0)")
+    p.add_argument(
+        "--ruleset",
+        default="",
+        help="Optional: path to a rotation ruleset JSON used for coverage validation (defaults to tools/growth/coverage/ROTATION_RULESET_V1.json).",
+    )
     return p.parse_args()
 
 
 def main() -> int:
+    enforce_live_guard()
     args = _parse_args()
     crucible_path = Path(args.crucible).resolve()
     if not crucible_path.exists():
@@ -26,9 +40,13 @@ def main() -> int:
     sys.path.insert(0, str(crucibles_root))
     from crucible_runner import run_crucible_file  # noqa: E402
 
-    records = run_crucible_file(crucible_path, seed=args.seed)
-    if args.kernel:
-        records = [r for r in records if r.kernel_target == args.kernel]
+    ruleset_path = Path(args.ruleset).resolve() if args.ruleset else None
+    records = run_crucible_file(
+        crucible_path,
+        seed=args.seed,
+        ruleset_path=ruleset_path,
+        kernel_target=args.kernel or None,
+    )
 
     # Print a minimal, hash-only summary. Do not print kernel stdout/stderr here.
     out = [
@@ -53,4 +71,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

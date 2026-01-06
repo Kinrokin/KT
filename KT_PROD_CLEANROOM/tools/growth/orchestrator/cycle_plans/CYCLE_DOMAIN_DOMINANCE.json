@@ -1,0 +1,47 @@
+{
+  "schema_version": "CYCLE_PLAN_V1",
+  "cycle_id": "CYCLE_DOMAIN_DOMINANCE",
+  "description": "Adversarial dominance test: one domain is over-represented; KT must counter-rotate to keep dominance bounded.",
+  "seed": 0,
+  "resume_allowed": false,
+  "epochs": [
+    {
+      "epoch_id": "EPOCH-DOM-01",
+      "plan_path": "KT_PROD_CLEANROOM/tools/growth/orchestrator/examples/EPOCH-GOV-HONESTY.json"
+    },
+    {
+      "epoch_id": "EPOCH-DOM-02",
+      "plan_path": "KT_PROD_CLEANROOM/tools/growth/orchestrator/examples/EPOCH-GOV-HONESTY.json"
+    },
+    {
+      "epoch_id": "EPOCH-DOM-03",
+      "plan_path": "KT_PROD_CLEANROOM/tools/growth/orchestrator/examples/EPOCH-GOV-HONESTY.json"
+    }
+  ],
+  "coverage_overrides": {
+    "cycle_constraints": {
+      "thresholds": {
+        "max_top_domain_share": 0.22,
+        "max_top_5_domain_share": 0.66,
+        "min_entropy_domains": 5.0,
+        "min_unique_domains": 1200
+      }
+    }
+  },
+  "abort_conditions": {
+    "stop_on_first_fail": true,
+    "max_epoch_failures": 1,
+    "max_cycle_duration_ms": 900000
+  },
+  "pass_criteria": [
+    "All epochs coverage PASS",
+    "Cycle top_domain_share <= 0.22",
+    "Cycle entropy_domains >= 5.0",
+    "Cycle unique_domains >= 1200"
+  ],
+  "fail_reasons": {
+    "dominance_exceeded": "FAIL: top_domain_share exceeded threshold",
+    "entropy_drop": "FAIL: entropy below threshold",
+    "epoch_fail": "FAIL: one or more epochs failed coverage"
+  }
+}

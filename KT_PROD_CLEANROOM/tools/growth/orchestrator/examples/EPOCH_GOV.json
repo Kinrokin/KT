@@ -1,0 +1,28 @@
+{
+  "epoch_id": "EPOCH_GOV_RUN6",
+  "epoch_profile": "GOVERNANCE",
+  "seed": 0,
+  "kernel_identity": {
+    "kernel_target": "V2_SOVEREIGN"
+  },
+  "runner_config": {
+    "template_id": "C019_RUNNER_V1",
+    "args": []
+  },
+  "budgets": {
+    "epoch_wall_clock_ms": 300000,
+    "per_crucible_timeout_ms": 30000,
+    "per_crucible_rss_mb": 1536
+  },
+  "stop_conditions": {
+    "max_failures": 1
+  },
+  "crucible_order": [
+    "CRU_GOV_HONESTY_01",
+    "CRU_GOV_HONESTY_02"
+  ],
+  "crucible_specs": {
+    "CRU_GOV_HONESTY_01": "tools/growth/crucibles/CRU-GOV-HONESTY-01.yaml",
+    "CRU_GOV_HONESTY_02": "tools/growth/crucibles/CRU-GOV-HONESTY-02.yaml"
+  }
+}

@@ -34,3 +34,24 @@ KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/
 .env
 .env.*
 *.secret
+
+# Model artifacts (never committed)
+KT_LANE_LORA_PHASE_A/
+KT_MODELS/
+
+# Shadow-policy / evaluation logs (runtime outputs)
+lane_policy_comparison.jsonl
+autonomous_escalation_log.json
+autonomous_analysis.json
+epoch_escalation_log.json
+
+# Training bundles / datasets should live outside repo
+KT_PROD_CLEANROOM/tools/growth/bench/*.jsonl
+KT_PROD_CLEANROOM/tools/growth/state/*.jsonl
+
+# Benchmark outputs are runtime products
+KT_PROD_CLEANROOM/tools/growth/bench/*summary*.json
+KT_PROD_CLEANROOM/tools/growth/bench/benchmark_summary.json
+
+# Local scratch
+tmp/

@@ -8,7 +8,6 @@ from council.providers.dry_run_provider import DryRunProvider
 from council.providers.live_provider_openai import OpenAIProvider
 from council.providers.provider_interface import ProviderClient
 from council.providers.provider_schemas import ProviderRequestSchema, ProviderResponseSchema, make_disabled_response, make_fail_closed_response
-from council.providers.live_provider_openai_hashed import LiveHashedOpenAIProvider
 from council.providers.provider_schemas import ProviderCallReceipt
 
 
@@ -77,6 +76,9 @@ class ProviderRegistry:
     ) -> ProviderCallReceipt:
         # Minimal, fail-closed routing for LIVE_HASHED lane.
         if provider_id == "openai":
+            # Lazy import to avoid loading live-only network modules during dry-run/crucible runs
+            from council.providers.live_provider_openai_hashed import LiveHashedOpenAIProvider
+
             prov = LiveHashedOpenAIProvider()
             return prov.invoke_hashed(
                 model=model,

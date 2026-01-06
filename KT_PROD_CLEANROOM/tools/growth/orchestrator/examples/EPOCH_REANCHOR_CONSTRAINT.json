@@ -1,0 +1,26 @@
+{
+  "epoch_id": "EPOCH_REANCHOR_CONSTRAINT_RUN1",
+  "epoch_profile": "COVERAGE_SEED",
+  "kernel_identity": {
+    "kernel_target": "KERNEL_COVERAGE_BASELINE"
+  },
+  "seed": 0,
+  "budgets": {
+    "epoch_wall_clock_ms": 600000,
+    "per_crucible_rss_mb": 1536,
+    "per_crucible_timeout_ms": 30000
+  },
+  "stop_conditions": {
+    "max_failures": 1
+  },
+  "runner_config": {
+    "args": [],
+    "template_id": "C019_RUNNER_V1"
+  },
+  "crucible_order": [
+    "CRU_REANCHOR_CONSTRAINT_01"
+  ],
+  "crucible_specs": {
+    "CRU_REANCHOR_CONSTRAINT_01": "tools/growth/crucibles/CRU-REANCHOR-CONSTRAINT-01.yaml"
+  }
+}

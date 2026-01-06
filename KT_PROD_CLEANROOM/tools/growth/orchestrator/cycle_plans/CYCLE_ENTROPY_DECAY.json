@@ -1,0 +1,44 @@
+{
+  "schema_version": "CYCLE_PLAN_V1",
+  "cycle_id": "CYCLE_ENTROPY_DECAY",
+  "description": "Stress entropy decay across repeated ventures; fail if domain entropy collapses or dominance rises.",
+  "seed": 0,
+  "resume_allowed": false,
+  "epochs": [
+    {
+      "epoch_id": "EPOCH-ENTROPY-01",
+      "plan_path": "KT_PROD_CLEANROOM/tools/growth/orchestrator/examples/EPOCH-GOV-HONESTY.json"
+    },
+    {
+      "epoch_id": "EPOCH-ENTROPY-02",
+      "plan_path": "KT_PROD_CLEANROOM/tools/growth/orchestrator/examples/EPOCH-GOV-HONESTY.json"
+    },
+    {
+      "epoch_id": "EPOCH-ENTROPY-03",
+      "plan_path": "KT_PROD_CLEANROOM/tools/growth/orchestrator/examples/EPOCH-GOV-HONESTY.json"
+    }
+  ],
+  "coverage_overrides": {
+    "cycle_constraints": {
+      "thresholds": {
+        "min_entropy_domains": 5.0,
+        "max_top_domain_share": 0.20
+      }
+    }
+  },
+  "abort_conditions": {
+    "stop_on_first_fail": true,
+    "max_epoch_failures": 1,
+    "max_cycle_duration_ms": 900000
+  },
+  "pass_criteria": [
+    "All epochs coverage PASS",
+    "Cycle entropy_domains >= 5.0",
+    "Cycle top_domain_share <= 0.20"
+  ],
+  "fail_reasons": {
+    "entropy_collapse": "FAIL: cycle entropy below threshold",
+    "dominance_rise": "FAIL: top domain share exceeded threshold",
+    "epoch_fail": "FAIL: one or more epochs failed coverage"
+  }
+}
