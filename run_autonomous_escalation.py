@@ -142,6 +142,11 @@ def main() -> None:
             state_text = _state_text_from_suggestion(suggestion)
             try:
                 policy_result = policy.predict(state_text)
+                # ---- MERGE POLICY INTO RECORD (CRITICAL) ----
+                record["policy_lane"] = policy_result.get("recommendation")
+                record["policy_confidence"] = policy_result.get("confidence")
+                record["policy_distribution"] = policy_result.get("probs")
+                record["policy_used"] = policy_result.get("policy_used")
                 _append_jsonl(
                     args.policy_log,
                     {
@@ -159,18 +164,7 @@ def main() -> None:
                     },
                 )
             except Exception as exc:
-                _append_jsonl(
-                    args.policy_log,
-                    {
-                        "timestamp": datetime.utcnow().isoformat() + "Z",
-                        "iteration": idx,
-                        "epoch_id": suggestion.get("epoch_id"),
-                        "heuristic_lane": suggestion.get("recommended_lane"),
-                        "heuristic_lane_internal": suggestion.get("recommended_lane_internal"),
-                        "plan_run": plan_key,
-                        "policy_error": str(exc),
-                    },
-                )
+                record["policy_error"] = str(exc)
 
         run_plan(plan_path, env)
         records.append(record)
