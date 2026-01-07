@@ -212,7 +212,8 @@ def _extract_row(epoch_root: Path) -> EpochRow:
 
 
 def _entropy_high(row: EpochRow) -> bool:
-    return (row.entropy_domains >= 0.80) and (row.unique_domains >= 2) and (row.top_domain_share <= 0.65)
+    # High structural dispersion only when domains are genuinely mixed and no single domain dominates.
+    return (row.entropy_domains >= 0.75) and (row.unique_domains >= 2) and (row.top_domain_share <= 0.65)
 
 
 def _clean(row: EpochRow) -> bool:
@@ -349,9 +350,25 @@ def main() -> int:
 
             phaseA2_label = phaseA_label
             relabel_reason = None
+            churn_curr = (
+                curr.forced_resolve_count
+                + curr.low_coherence_count
+                + curr.unknown_resolve_count
+                + curr.unknown_coherence_count
+            )
+            churn_nxt = (
+                nxt.forced_resolve_count
+                + nxt.low_coherence_count
+                + nxt.unknown_resolve_count
+                + nxt.unknown_coherence_count
+            )
+            churn_present = churn_curr >= 1
+            churn_next_present = churn_nxt >= 1
 
             if phaseA_label == LANE_COVERAGE:
-                if _entropy_high(curr) and _clean(curr) and _clean(nxt):
+                # Hold coverage only when dispersion is genuinely high, current and next epochs are clean,
+                # and there is no operational strain (churn) in either epoch.
+                if _entropy_high(curr) and _clean(curr) and _clean(nxt) and (not churn_present) and (not churn_next_present):
                     phaseA2_label = LANE_HOLD_COVERAGE
                     relabel_reason = "entropy_high_clean_and_next_coverage_clean"
 
@@ -378,6 +395,8 @@ def main() -> int:
                     "low_coherence_count": curr.low_coherence_count,
                     "unknown_resolve_count": curr.unknown_resolve_count,
                     "unknown_coherence_count": curr.unknown_coherence_count,
+                    "churn_count": churn_curr,
+                    "churn_present": churn_present,
                 },
                 "next_signals": {
                     "entropy_domains": nxt.entropy_domains,
@@ -388,6 +407,8 @@ def main() -> int:
                     "low_coherence_count": nxt.low_coherence_count,
                     "unknown_resolve_count": nxt.unknown_resolve_count,
                     "unknown_coherence_count": nxt.unknown_coherence_count,
+                    "churn_count": churn_nxt,
+                    "churn_present": churn_next_present,
                 },
                 "state_text": _state_text(curr),
             }
