@@ -220,6 +220,40 @@ def _count_micro_steps(micro_steps: Optional[Dict[str, Any]]) -> Dict[str, int]:
     return {"forced_resolve": forced, "low_coherence": low, "constraint_hits": constraint_hits}
 
 
+def _compute_delayed_violation(
+    triggers_history: List[Dict[str, Any]],
+    *,
+    micro_history: List[bool],
+    window: int = 5,
+) -> Tuple[int, Optional[str]]:
+    """
+    Delayed violation accumulator (fail-closed):
+    - Uses the last `window` epochs excluding the current one.
+    - Counts epochs that had operational strain (forced/low/constraint).
+    - If evidence is missing in the window, returns 0 with a skip reason.
+    """
+    if len(triggers_history) < 2:
+        return (0, "insufficient_history")
+
+    lookback = min(window, len(triggers_history) - 1)
+    prior = triggers_history[-(lookback + 1) : -1]
+    prior_micro = micro_history[-(lookback + 1) : -1]
+
+    if any(not m for m in prior_micro):
+        return (0, "missing_micro_steps")
+
+    count = 0
+    for row in prior:
+        forced = int(row.get("forced_resolve_count", 0) or 0)
+        low = int(row.get("low_coherence_count", 0) or 0)
+        constraints = int(row.get("constraint_hits", 0) or 0)
+        resolve_nc = row.get("resolve_not_clean") is True
+        eval_low = row.get("eval_coherence_low") is True
+        if forced > 0 or low > 0 or constraints > 0 or resolve_nc or eval_low:
+            count += 1
+    return (count, None)
+
+
 def _build_state_description(
     signals: EpochSignals,
     triggers: Dict[str, Any],
@@ -227,6 +261,8 @@ def _build_state_description(
     stable_streak: bool,
     dense_motion_window: bool,
     consecutive_bad: int,
+    delayed_violation_count: int,
+    regret_pressure: float,
 ) -> str:
     def _tri_bool(value: TriBool) -> int:
         if value is True:
@@ -254,6 +290,8 @@ def _build_state_description(
         f"dense_motion_window={int(bool(dense_motion_window))}",
         f"stable_streak={int(bool(stable_streak))}",
         f"consecutive_bad_epochs={int(consecutive_bad)}",
+        f"delayed_violation_count={int(delayed_violation_count)}",
+        f"regret_pressure={regret_pressure}",
     ]
     return "\n".join(parts)
 
@@ -470,6 +508,7 @@ def main() -> int:
     signals = [_extract_signals(root) for root in chronological]
 
     triggers_by_epoch: List[Dict[str, Any]] = []
+    micro_present_history: List[bool] = []
     prev: Optional[EpochSignals] = None
     for s in signals:
         resolve_not_clean = _trigger_resolve_not_clean(s)
@@ -491,10 +530,16 @@ def main() -> int:
                 "constraint_hits": micro_counts["constraint_hits"],
             }
         )
+        micro_present_history.append(bool(s.micro_steps_present))
         prev = s
 
     target = signals[-1]
     target_triggers = triggers_by_epoch[-1]
+
+    delayed_count, delayed_skip = _compute_delayed_violation(
+        triggers_by_epoch, micro_history=micro_present_history, window=5
+    )
+    regret_pressure = round(min(delayed_count / 5.0, 1.0), 3) if delayed_skip is None else 0.0
 
     # Stable streak: last N epochs must have full observability and no triggers.
     window = max(int(args.stable_window), 1)
@@ -568,9 +613,12 @@ def main() -> int:
             "forced_resolve_count": target_triggers.get("forced_resolve_count", 0),
             "low_coherence_count": target_triggers.get("low_coherence_count", 0),
             "stable_streak": stable_streak,
-            "dense_motion_window": dense_motion_window,
-        },
-        "trigger_evidence": target_triggers,
+        "dense_motion_window": dense_motion_window,
+        "delayed_violation_count": delayed_count,
+        "regret_pressure": regret_pressure,
+        "delayed_violation_skip_reason": delayed_skip,
+    },
+    "trigger_evidence": target_triggers,
         "history": {
             "epochs_considered": [s.epoch_id for s in signals],
             "triggers_by_epoch": triggers_by_epoch,
@@ -622,6 +670,8 @@ def main() -> int:
             stable_streak=stable_streak,
             dense_motion_window=dense_motion_window,
             consecutive_bad=consecutive_bad,
+            delayed_violation_count=delayed_count,
+            regret_pressure=regret_pressure,
         )
         _log_lane_policy(
             policy,
