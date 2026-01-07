@@ -999,16 +999,28 @@ def run_crucible_once(
             raise RunnerError(f"CRUCIBLE COVERAGE FAIL: {verdict}")
 
     def _emit_micro_steps() -> None:
-        primary_domain = obs.sequence_domains[0] if obs.sequence_domains else (sorted(obs.domains)[0] if obs.domains else crucible_level_domain)
+        # Micro-steps are emitted even on FAIL_CLOSED to preserve observability.
+        primary_domain = (
+            obs.sequence_domains[0]
+            if obs.sequence_domains
+            else (sorted(obs.domains)[0] if obs.domains else (crucible_level_domain or "unknown"))
+        )
         primary_subdomain = (
             getattr(obs, "sequence_subdomains", [])[0]
             if getattr(obs, "sequence_subdomains", [])
-            else (sorted(obs.subdomains)[0] if obs.subdomains else crucible_level_subdomain)
+            else (sorted(obs.subdomains)[0] if obs.subdomains else (crucible_level_subdomain or "unknown"))
         )
 
         stdout_hash = hashlib.sha256(stdout_text.encode("utf-8")).hexdigest() if stdout_text else ledger_sha
-        resolve_mode = "clean" if outcome == OUTCOME_PASS else ("forced" if result.was_killed else "partial")
-        coherence_bucket = "HIGH" if outcome == OUTCOME_PASS else "LOW"
+        if outcome == OUTCOME_PASS:
+            resolve_mode = "clean"
+            coherence_bucket = "HIGH"
+        elif outcome == OUTCOME_FAIL_CLOSED:
+            resolve_mode = "forced" if result.was_killed else "partial"
+            coherence_bucket = "LOW"
+        else:
+            resolve_mode = "unknown"
+            coherence_bucket = "UNKNOWN"
         constraint_hit = "budget"
 
         steps: List[Dict[str, Any]] = []

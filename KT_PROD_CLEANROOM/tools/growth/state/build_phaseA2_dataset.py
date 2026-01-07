@@ -20,6 +20,10 @@ class EpochRow:
     top_domain_share: float
     forced_resolve_count: int
     low_coherence_count: int
+    unknown_resolve_count: int
+    unknown_coherence_count: int
+    micro_present: bool
+    entropy_present: bool
 
 
 LANE_COVERAGE = "coverage_lane"
@@ -104,24 +108,32 @@ def _collect_micro_steps(epoch_root: Path) -> Optional[List[Dict[str, Any]]]:
     return None
 
 
-def _count_micro_flags(steps: Optional[List[Dict[str, Any]]]) -> Tuple[int, int]:
+def _count_micro_flags(steps: Optional[List[Dict[str, Any]]]) -> Tuple[int, int, int, int]:
     if not steps:
-        return (0, 0)
+        return (0, 0, 0, 0)
     forced = 0
     low = 0
+    unknown_resolve = 0
+    unknown_coh = 0
     for s in steps:
         flags = s.get("flags") or {}
         mode = flags.get("resolve_mode")
         if mode in {"forced", "partial", "unresolved", "refuse"}:
             forced += 1
+        elif mode in {"unknown", "UNKNOWN", "missing", "MISSING"}:
+            unknown_resolve += 1
         if flags.get("coherence_bucket") == "LOW":
             low += 1
-    return (forced, low)
+        elif flags.get("coherence_bucket") in {"UNKNOWN", "unknown", "MISSING", "missing"}:
+            unknown_coh += 1
+    return (forced, low, unknown_resolve, unknown_coh)
 
 
 def _extract_row(epoch_root: Path) -> EpochRow:
-    summary = _load_json(epoch_root / "epoch_summary.json")
-    coverage = _load_json(epoch_root / "epoch_coverage.json")
+    summary_path = epoch_root / "epoch_summary.json"
+    coverage_path = epoch_root / "epoch_coverage.json"
+    summary = _load_json(summary_path)
+    coverage = _load_json(coverage_path)
     micro_steps = _collect_micro_steps(epoch_root)
 
     epoch_id = str(summary.get("epoch_id") or epoch_root.name)
@@ -131,12 +143,13 @@ def _extract_row(epoch_root: Path) -> EpochRow:
     counts = observed.get("counts") or {}
     dominance = observed.get("dominance") or {}
 
+    entropy_present = ("entropy_domains" in dominance) and ("top_domain_share" in dominance)
     unique_domains = _coerce_int(counts.get("unique_domains"))
     unique_subdomains = _coerce_int(counts.get("unique_subdomains"))
     entropy_domains = _coerce_float(dominance.get("entropy_domains"))
     top_domain_share = _coerce_float(dominance.get("top_domain_share"))
 
-    forced, low = _count_micro_flags(micro_steps)
+    forced, low, unk_res, unk_coh = _count_micro_flags(micro_steps)
 
     return EpochRow(
         root=epoch_root,
@@ -148,6 +161,10 @@ def _extract_row(epoch_root: Path) -> EpochRow:
         top_domain_share=top_domain_share,
         forced_resolve_count=forced,
         low_coherence_count=low,
+        unknown_resolve_count=unk_res,
+        unknown_coherence_count=unk_coh,
+        micro_present=micro_steps is not None,
+        entropy_present=entropy_present,
     )
 
 
@@ -156,7 +173,12 @@ def _entropy_high(row: EpochRow) -> bool:
 
 
 def _clean(row: EpochRow) -> bool:
-    return (row.forced_resolve_count == 0) and (row.low_coherence_count == 0)
+    return (
+        (row.forced_resolve_count == 0)
+        and (row.low_coherence_count == 0)
+        and (row.unknown_resolve_count == 0)
+        and (row.unknown_coherence_count == 0)
+    )
 
 
 def _state_text(row: EpochRow) -> str:
@@ -165,6 +187,8 @@ def _state_text(row: EpochRow) -> str:
             "KT_STATE_V1",
             f"forced_resolve_count={row.forced_resolve_count}",
             f"low_coherence_count={row.low_coherence_count}",
+            f"unknown_resolve_count={row.unknown_resolve_count}",
+            f"unknown_coherence_count={row.unknown_coherence_count}",
             f"unique_domains={row.unique_domains}",
             f"unique_subdomains={row.unique_subdomains}",
             f"entropy_domains={row.entropy_domains}",
@@ -221,11 +245,28 @@ def main() -> int:
 
     rows: List[EpochRow] = []
     skipped: List[Dict[str, Any]] = []
+    skip_counts: Dict[str, int] = {}
+
+    def skip(reason: str, extra: Optional[Dict[str, Any]] = None) -> None:
+        skip_counts[reason] = skip_counts.get(reason, 0) + 1
+        entry = {"reason": reason}
+        if extra:
+            entry.update(extra)
+        skipped.append(entry)
     for r in roots:
         try:
-            rows.append(_extract_row(r))
+            row = _extract_row(r)
         except Exception as exc:
-            skipped.append({"epoch_root": r.as_posix(), "reason": str(exc)})
+            skip("extract_failed", {"epoch_root": r.as_posix(), "detail": str(exc)})
+            continue
+
+        if not row.micro_present:
+            skip("missing_micro_steps_epoch_i", {"epoch_id": row.epoch_id})
+            continue
+        if not row.entropy_present:
+            skip("ambiguous_entropy_epoch_i", {"epoch_id": row.epoch_id})
+            continue
+        rows.append(row)
 
     if len(rows) < 3:
         raise PhaseA2BuildError("Insufficient readable epochs after extraction (fail-closed)")
@@ -248,14 +289,18 @@ def main() -> int:
             curr = rows[i]
             nxt = rows[i + 1]
 
+            if not nxt.micro_present:
+                skip("missing_micro_steps_epoch_i_plus_1", {"epoch_id": curr.epoch_id, "next_epoch_id": nxt.epoch_id})
+                continue
+            if not nxt.entropy_present:
+                skip("ambiguous_entropy_epoch_i_plus_1", {"epoch_id": curr.epoch_id, "next_epoch_id": nxt.epoch_id})
+                continue
+
             phaseA_label = nxt.lane_actual
             if phaseA_label not in label_set:
-                skipped.append(
-                    {
-                        "epoch_id": curr.epoch_id,
-                        "next_epoch_id": nxt.epoch_id,
-                        "reason": f"Unknown next lane: {phaseA_label}",
-                    }
+                skip(
+                    "unknown_next_lane",
+                    {"epoch_id": curr.epoch_id, "next_epoch_id": nxt.epoch_id, "lane": phaseA_label},
                 )
                 continue
 
@@ -288,6 +333,8 @@ def main() -> int:
                     "unique_subdomains": curr.unique_subdomains,
                     "forced_resolve_count": curr.forced_resolve_count,
                     "low_coherence_count": curr.low_coherence_count,
+                    "unknown_resolve_count": curr.unknown_resolve_count,
+                    "unknown_coherence_count": curr.unknown_coherence_count,
                 },
                 "next_signals": {
                     "entropy_domains": nxt.entropy_domains,
@@ -296,6 +343,8 @@ def main() -> int:
                     "unique_subdomains": nxt.unique_subdomains,
                     "forced_resolve_count": nxt.forced_resolve_count,
                     "low_coherence_count": nxt.low_coherence_count,
+                    "unknown_resolve_count": nxt.unknown_resolve_count,
+                    "unknown_coherence_count": nxt.unknown_coherence_count,
                 },
                 "state_text": _state_text(curr),
             }
@@ -318,6 +367,8 @@ def main() -> int:
     )
 
     args.report_out.parent.mkdir(parents=True, exist_ok=True)
+    if args.report_out.parent:
+        args.report_out.parent.mkdir(parents=True, exist_ok=True)
     args.report_out.write_text(
         json.dumps(
             {
@@ -329,6 +380,7 @@ def main() -> int:
                 "rows_relabeled_to_hold_coverage": relabeled,
                 "label_counts": counts,
                 "skipped": skipped[:200],
+                "skip_counts": skip_counts,
                 "skipped_count": len(skipped),
             },
             indent=2,
@@ -347,4 +399,3 @@ if __name__ == "__main__":
     except PhaseA2BuildError as exc:
         print(str(exc))
         raise SystemExit(2)
-
