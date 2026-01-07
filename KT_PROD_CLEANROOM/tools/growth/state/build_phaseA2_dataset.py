@@ -1,5 +1,6 @@
 import argparse
 import json
+import math
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -129,6 +130,31 @@ def _count_micro_flags(steps: Optional[List[Dict[str, Any]]]) -> Tuple[int, int,
     return (forced, low, unknown_resolve, unknown_coh)
 
 
+def _entropy_from_domains(domains: List[str]) -> Tuple[float, float, int]:
+    """
+    Compute normalized entropy (0..1) and top-domain share from domain sequence.
+    Normalization uses log(N) where N is the number of unique domains so that
+    entropy=1.0 only when domains are evenly represented.
+    """
+    if not domains:
+        return (0.0, 0.0, 0)
+    counts: Dict[str, int] = {}
+    for d in domains:
+        if not isinstance(d, str):
+            continue
+        counts[d] = counts.get(d, 0) + 1
+    total = sum(counts.values())
+    if total == 0:
+        return (0.0, 0.0, 0)
+    probs = [c / total for c in counts.values()]
+    top_share = max(probs)
+    if len(counts) == 1:
+        return (0.0, top_share, 1)
+    h = -sum(p * math.log(p) for p in probs)
+    h_norm = h / math.log(len(counts))
+    return (float(h_norm), float(top_share), len(counts))
+
+
 def _extract_row(epoch_root: Path) -> EpochRow:
     summary_path = epoch_root / "epoch_summary.json"
     coverage_path = epoch_root / "epoch_coverage.json"
@@ -142,14 +168,31 @@ def _extract_row(epoch_root: Path) -> EpochRow:
     observed = coverage.get("observed") or {}
     counts = observed.get("counts") or {}
     dominance = observed.get("dominance") or {}
+    seq = observed.get("sequence") or []
 
-    entropy_present = ("entropy_domains" in dominance) and ("top_domain_share" in dominance)
+    entropy_present = False
     unique_domains = _coerce_int(counts.get("unique_domains"))
     unique_subdomains = _coerce_int(counts.get("unique_subdomains"))
     entropy_domains = _coerce_float(dominance.get("entropy_domains"))
     top_domain_share = _coerce_float(dominance.get("top_domain_share"))
 
     forced, low, unk_res, unk_coh = _count_micro_flags(micro_steps)
+
+    # Prefer entropy derived from micro-steps; fall back to coverage sequence if available.
+    domain_seq: List[str] = []
+    if micro_steps:
+        for s in micro_steps:
+            dom = s.get("domain")
+            if isinstance(dom, str) and dom:
+                domain_seq.append(dom)
+    if not domain_seq and seq and isinstance(seq, list):
+        domain_seq = [str(d) for d in seq if isinstance(d, str)]
+
+    if domain_seq:
+        entropy_domains, top_domain_share, unique_domains = _entropy_from_domains(domain_seq)
+        entropy_present = True
+    elif ("entropy_domains" in dominance) and ("top_domain_share" in dominance):
+        entropy_present = True
 
     return EpochRow(
         root=epoch_root,
@@ -169,7 +212,7 @@ def _extract_row(epoch_root: Path) -> EpochRow:
 
 
 def _entropy_high(row: EpochRow) -> bool:
-    return (row.entropy_domains >= 0.80) and (row.unique_domains >= 2)
+    return (row.entropy_domains >= 0.80) and (row.unique_domains >= 2) and (row.top_domain_share <= 0.65)
 
 
 def _clean(row: EpochRow) -> bool:
@@ -349,6 +392,14 @@ def main() -> int:
                 "state_text": _state_text(curr),
             }
             handle.write(json.dumps(record, separators=(",", ":"), ensure_ascii=False) + "\n")
+
+    total_labels = sum(counts.values())
+    if total_labels > 0:
+        max_share = max(counts.values()) / total_labels
+        if max_share > 0.8:
+            raise PhaseA2BuildError(
+                f"Label collapse detected (fail-closed): max_share={max_share:.3f}, counts={counts}"
+            )
 
     args.label_map_out.parent.mkdir(parents=True, exist_ok=True)
     args.label_map_out.write_text(
