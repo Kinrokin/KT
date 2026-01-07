@@ -510,30 +510,48 @@ def run_crucible_once(
 ) -> CrucibleRunRecord:
     spec = loaded.spec
 
-    prompt = prompt_override if prompt_override is not None else spec.input.prompt
-    prompt_hash = compute_prompt_hash(prompt)
+    # --- FAIL-CLOSED IDENTITY INVARIANT ---
+    # run_id (and run_root) must exist before any outcome is recorded or any early-exit occurs.
+    started = _utc_now_iso_z()
+    t0 = time.perf_counter()
 
-    budgets_payload = spec.budgets.to_dict()
+    prompt = prompt_override if prompt_override is not None else getattr(getattr(spec, "input", None), "prompt", "")
+    if not isinstance(prompt, str):
+        prompt = str(prompt)
+    try:
+        prompt_hash = compute_prompt_hash(prompt)
+    except Exception:
+        prompt_hash = hashlib.sha256(prompt.encode("utf-8", errors="replace")).hexdigest()
+
+    budgets_payload: Dict[str, Any] = {}
+    try:
+        budgets_payload = spec.budgets.to_dict()
+    except Exception:
+        budgets_payload = {}
     if budgets_override:
         budgets_payload.update(budgets_override)
-    budgets_obj = CrucibleBudgets.from_dict(budgets_payload)
-    budgets_hash_hex = budgets_hash(budgets_obj)
+    budgets_hash_hex = _sha256_json(budgets_payload)
 
-    expect_payload = spec.expect.to_dict()
+    expect_payload: Dict[str, Any] = {}
+    try:
+        expect_payload = spec.expect.to_dict()
+    except Exception:
+        expect_payload = {}
     if expect_override:
         expect_payload = expect_override
-    expect_obj = CrucibleExpect.from_dict(expect_payload)
 
-    rid = compute_run_id(
-        kernel_target=kernel_target,
-        crucible_spec_hash_hex=loaded.crucible_spec_hash,
-        prompt_hash_hex=prompt_hash,
-        seed=seed,
-        budgets_hash_hex=budgets_hash_hex,
-    )
-
-    if spec.input.redaction_policy != "ALLOW_RAW_IN_CRUCIBLE":
-        raise RunnerError("HASH_ONLY_CRUCIBLE requires an external prompt store; not implemented (fail-closed)")
+    try:
+        rid = compute_run_id(
+            kernel_target=kernel_target,
+            crucible_spec_hash_hex=loaded.crucible_spec_hash,
+            prompt_hash_hex=prompt_hash,
+            seed=seed,
+            budgets_hash_hex=budgets_hash_hex,
+        )
+    except Exception:
+        rid = hashlib.sha256(
+            f"FALLBACK|{kernel_target}|{loaded.crucible_spec_hash}|{prompt_hash}|{seed}|{budgets_hash_hex}".encode("utf-8")
+        ).hexdigest()
 
     run_root = artifacts_dir / kernel_target / rid
     run_root.mkdir(parents=True, exist_ok=True)
@@ -541,15 +559,149 @@ def run_crucible_once(
     # Snapshot the exact spec file used (byte-preserving text snapshot).
     _write_text(run_root / "crucible_spec.snapshot.yaml", loaded.raw_text)
 
+    def _emit_preexec_failure(*, error_type: str, error: str) -> CrucibleRunRecord:
+        duration_ms = max(0, int((time.perf_counter() - t0) * 1000))
+        tb = traceback.format_exc()
+        stderr_text = tb if tb.strip() else f"{error_type}: {error}"
+        stdout_obj = {"status": "FAIL_CLOSED", "error_type": error_type, "error": error, "refusal_code": "UNSPECIFIED"}
+        stdout_text = json.dumps(stdout_obj, ensure_ascii=True)
+
+        _write_text(run_root / "stderr.log", stderr_text)
+        _write_text(run_root / "stdout.json", stdout_text + "\n")
+
+        record = CrucibleRunRecord(
+            run_id=rid,
+            crucible_id=spec.crucible_id,
+            kernel_target=kernel_target,
+            kernel_command=[],
+            kernel_workdir=str(run_root),
+            crucible_spec_hash=loaded.crucible_spec_hash,
+            prompt_hash=prompt_hash,
+            seed=seed,
+            budgets=budgets_payload,
+            budgets_hash=budgets_hash_hex,
+            timestamp_utc=started,
+            duration_ms=duration_ms,
+            outcome=OUTCOME_FAIL,
+            output_contract_pass=False,
+            replay_status=REPLAY_NOT_APPLICABLE,
+            replay_pass=None,
+            governance_status="NOT_APPLICABLE",
+            governance_pass=None,
+            artifacts_dir=str(run_root.relative_to(_repo_root())),
+            notes=f"pre_execution_fail:{error_type}",
+        )
+
+        ledger_path.parent.mkdir(parents=True, exist_ok=True)
+        ledger_obj = {
+            "run_id": record.run_id,
+            "crucible_id": record.crucible_id,
+            "kernel_target": record.kernel_target,
+            "crucible_spec_hash": record.crucible_spec_hash,
+            "prompt_hash": record.prompt_hash,
+            "seed": record.seed,
+            "budgets_hash": record.budgets_hash,
+            "outcome": record.outcome,
+            "output_contract_pass": record.output_contract_pass,
+            "replay_status": record.replay_status,
+            "replay_pass": record.replay_pass,
+            "governance_status": record.governance_status,
+            "governance_pass": record.governance_pass,
+            "artifacts_dir": record.artifacts_dir,
+        }
+        with ledger_path.open("a", encoding="utf-8", newline="\n") as handle:
+            handle.write(json.dumps(ledger_obj, sort_keys=True, separators=(",", ":"), ensure_ascii=True) + "\n")
+
+        _write_text(run_root / "runner_record.json", json.dumps(asdict(record), sort_keys=True, indent=2, ensure_ascii=True) + "\n")
+
+        ledger_sha = hashlib.sha256(json.dumps(ledger_obj, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+        head_hash = ledger_sha
+        stdout_hash = hashlib.sha256(stdout_text.encode("utf-8")).hexdigest()
+        steps: List[Dict[str, Any]] = [
+            {
+                "phase": "MAP",
+                "domain": "D:UNKNOWN",
+                "subdomain": "S:SUBDOMAIN.UNKNOWN",
+                "input_hash": prompt_hash,
+                "output_hash": head_hash,
+                "flags": {"domain_count": 0, "mode": "single"},
+            },
+            {
+                "phase": "CONSTRAIN",
+                "domain": "D:UNKNOWN",
+                "subdomain": "S:SUBDOMAIN.UNKNOWN",
+                "input_hash": head_hash,
+                "output_hash": head_hash,
+                "flags": {"constraint_types": [], "constraint_hit": "none", "budget_verdict": "BUDGET_NOT_ASSERTED"},
+            },
+            {
+                "phase": "RESOLVE",
+                "domain": "D:UNKNOWN",
+                "subdomain": "S:SUBDOMAIN.UNKNOWN",
+                "input_hash": head_hash,
+                "output_hash": stdout_hash,
+                "flags": {"resolve_mode": "unknown", "outcome": record.outcome},
+            },
+            {
+                "phase": "EVAL",
+                "domain": "D:UNKNOWN",
+                "subdomain": "S:SUBDOMAIN.UNKNOWN",
+                "input_hash": stdout_hash,
+                "output_hash": stdout_hash,
+                "flags": {"coherence_bucket": "UNKNOWN", "governance_status": record.governance_status},
+            },
+        ]
+        payload = {
+            "schema": "MICRO_STEPS_V1",
+            "run_id": rid,
+            "crucible_id": spec.crucible_id,
+            "kernel_target": kernel_target,
+            "steps": steps[:7],
+            "hashes": {
+                "prompt_hash": prompt_hash,
+                "head_hash": head_hash,
+                "ledger_hash": ledger_sha,
+                "stdout_hash": stdout_hash,
+            },
+        }
+        _write_text(run_root / "micro_steps.json", json.dumps(payload, sort_keys=True, indent=2, ensure_ascii=True) + "\n")
+        return record
+
+    if spec.input.redaction_policy != "ALLOW_RAW_IN_CRUCIBLE":
+        return _emit_preexec_failure(
+            error_type="HASH_ONLY_CRUCIBLE_UNSUPPORTED",
+            error="HASH_ONLY_CRUCIBLE requires an external prompt store; not implemented (fail-closed)",
+        )
+
+    try:
+        budgets_obj = CrucibleBudgets.from_dict(budgets_payload)
+    except Exception as exc:
+        return _emit_preexec_failure(error_type=exc.__class__.__name__, error=str(exc))
+    try:
+        budgets_hash_from_obj = budgets_hash(budgets_obj)
+    except Exception as exc:
+        return _emit_preexec_failure(error_type=exc.__class__.__name__, error=str(exc))
+    if budgets_hash_from_obj != budgets_hash_hex:
+        return _emit_preexec_failure(
+            error_type="BUDGETS_HASH_MISMATCH",
+            error=f"budgets_hash(payload) != budgets_hash(parsed) (fail-closed): {budgets_hash_hex} != {budgets_hash_from_obj}",
+        )
+
+    try:
+        expect_obj = CrucibleExpect.from_dict(expect_payload)
+    except Exception as exc:
+        return _emit_preexec_failure(error_type=exc.__class__.__name__, error=str(exc))
+
     envelope = {"input": prompt}
     envelope_json = json.dumps(envelope, ensure_ascii=True).encode("utf-8")
 
-    cmd, kernel_root = _kernel_command(kernel_target=kernel_target, artifact_root=run_root)
+    try:
+        cmd, kernel_root = _kernel_command(kernel_target=kernel_target, artifact_root=run_root)
+    except Exception as exc:
+        return _emit_preexec_failure(error_type=exc.__class__.__name__, error=str(exc))
 
     env = dict(os.environ)
     env["PYTHONDONTWRITEBYTECODE"] = "1"
-
-    started = _utc_now_iso_z()
 
     stdout_text = ""
     stderr_text = ""
