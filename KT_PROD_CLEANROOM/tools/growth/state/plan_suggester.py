@@ -220,17 +220,40 @@ def _count_micro_steps(micro_steps: Optional[Dict[str, Any]]) -> Dict[str, int]:
     return {"forced_resolve": forced, "low_coherence": low, "constraint_hits": constraint_hits}
 
 
-def _build_state_description(signals: EpochSignals, triggers: Dict[str, Any]) -> str:
+def _build_state_description(
+    signals: EpochSignals,
+    triggers: Dict[str, Any],
+    *,
+    stable_streak: bool,
+    dense_motion_window: bool,
+    consecutive_bad: int,
+) -> str:
+    def _tri_bool(value: TriBool) -> int:
+        if value is True:
+            return 1
+        if value is False:
+            return 0
+        return -1  # unknown / missing evidence
+
     parts = [
         "KT_STATE_V1",
         f"forced_resolve_count={triggers.get('forced_resolve_count', 0)}",
         f"low_coherence_count={triggers.get('low_coherence_count', 0)}",
+        f"constraint_hits={triggers.get('constraint_hits', 0)}",
+        f"resolve_not_clean={_tri_bool(triggers.get('resolve_not_clean'))}",
+        f"eval_coherence_low={_tri_bool(triggers.get('eval_coherence_low'))}",
+        f"coverage_stagnation={_tri_bool(triggers.get('coverage_stagnation'))}",
+        f"map_entropy_low={int(bool(triggers.get('map_entropy_low')))}",
         f"unique_domains={signals.unique_domains}",
         f"unique_subdomains={signals.unique_subdomains}",
         f"entropy_domains={signals.entropy_domains}",
+        f"top_domain_share={signals.top_domain_share}",
         f"hop_entropy_domain={signals.hop_entropy_domain or 0}",
         f"domain_hop_rate={signals.domain_hop_rate or 0}",
         f"map_domain_count={signals.map_domain_count}",
+        f"dense_motion_window={int(bool(dense_motion_window))}",
+        f"stable_streak={int(bool(stable_streak))}",
+        f"consecutive_bad_epochs={int(consecutive_bad)}",
     ]
     return "\n".join(parts)
 
@@ -593,7 +616,13 @@ def main() -> int:
     }
 
     if policy is not None and args.policy_log:
-        state_text = _build_state_description(target, target_triggers)
+        state_text = _build_state_description(
+            target,
+            target_triggers,
+            stable_streak=stable_streak,
+            dense_motion_window=dense_motion_window,
+            consecutive_bad=consecutive_bad,
+        )
         _log_lane_policy(
             policy,
             state_text,
