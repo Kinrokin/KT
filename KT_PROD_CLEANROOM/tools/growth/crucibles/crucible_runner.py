@@ -510,9 +510,6 @@ def run_crucible_once(
 ) -> CrucibleRunRecord:
     spec = loaded.spec
 
-    if spec.input.redaction_policy != "ALLOW_RAW_IN_CRUCIBLE":
-        raise RunnerError("HASH_ONLY_CRUCIBLE requires an external prompt store; not implemented (fail-closed)")
-
     prompt = prompt_override if prompt_override is not None else spec.input.prompt
     prompt_hash = compute_prompt_hash(prompt)
 
@@ -534,6 +531,9 @@ def run_crucible_once(
         seed=seed,
         budgets_hash_hex=budgets_hash_hex,
     )
+
+    if spec.input.redaction_policy != "ALLOW_RAW_IN_CRUCIBLE":
+        raise RunnerError("HASH_ONLY_CRUCIBLE requires an external prompt store; not implemented (fail-closed)")
 
     run_root = artifacts_dir / kernel_target / rid
     run_root.mkdir(parents=True, exist_ok=True)
