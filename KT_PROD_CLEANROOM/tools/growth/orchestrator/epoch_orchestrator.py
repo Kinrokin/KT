@@ -77,6 +77,28 @@ def _read_crucible(path: Path) -> Dict[str, object]:
     }
 
 
+def _precompute_run_id(*, crucible_spec: object, crucible_spec_hash_hex: str, budgets: object, kernel_target: str, seed: int) -> str:
+    """
+    Fail-closed identity: compute the deterministic run_id before the runner starts so we still have a run_id even if
+    the runner is killed, crashes, or produces invalid output.
+    """
+    from crucible_loader import compute_prompt_hash
+    from crucible_dsl_schemas import budgets_hash, run_id as compute_run_id
+
+    prompt = getattr(getattr(crucible_spec, "input", None), "prompt", "")
+    if not isinstance(prompt, str):
+        prompt = str(prompt)
+    prompt_hash_hex = compute_prompt_hash(prompt)
+    budgets_hash_hex = budgets_hash(budgets)
+    return compute_run_id(
+        kernel_target=kernel_target,
+        crucible_spec_hash_hex=crucible_spec_hash_hex,
+        prompt_hash_hex=prompt_hash_hex,
+        seed=seed,
+        budgets_hash_hex=budgets_hash_hex,
+    )
+
+
 def _runner_command(
     *, crucible_path: Path, kernel_target: str, seed: int, ruleset_path: Optional[Path]
 ) -> Tuple[List[str], Path]:
@@ -635,6 +657,14 @@ def run_epoch(
         time_cap_ms = min(plan.budgets.per_crucible_timeout_ms, budgets.time_ms)
         mem_cap_mb = min(plan.budgets.per_crucible_rss_mb, budgets.runner_memory_max_mb)
 
+        expected_run_id = _precompute_run_id(
+            crucible_spec=crucible_specs[cid]["spec"],
+            crucible_spec_hash_hex=str(crucible_specs[cid]["hash"]),
+            budgets=budgets,
+            kernel_target=plan.kernel_identity.kernel_target,
+            seed=plan.seed,
+        )
+
         result = _run_subprocess_capped(
             command=cmd,
             cwd=cwd,
@@ -654,7 +684,7 @@ def run_epoch(
 
         outcome = "PASS"
         notes: Optional[str] = None
-        run_id: Optional[str] = None
+        run_id: Optional[str] = expected_run_id
 
         try:
             runner_obj = json.loads(stdout_text) if stdout_text.strip() else None
@@ -669,7 +699,12 @@ def run_epoch(
             notes = "runner_output_invalid"
         else:
             rec = runner_obj[0]
-            run_id = rec.get("run_id") if isinstance(rec, dict) else None
+            parsed_run_id = rec.get("run_id") if isinstance(rec, dict) else None
+            if parsed_run_id and parsed_run_id != expected_run_id:
+                raise EpochSchemaError(
+                    f"run_id mismatch for {cid} (fail-closed): runner={parsed_run_id} expected={expected_run_id}"
+                )
+            run_id = parsed_run_id or expected_run_id
             if rec.get("outcome") != "PASS":
                 outcome = "FAIL_CLOSED"
                 notes = f"runner_outcome:{rec.get('outcome')}"
