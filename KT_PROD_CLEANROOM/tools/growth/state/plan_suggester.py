@@ -99,6 +99,17 @@ def _coerce_float(value: Any) -> float:
         return 0.0
 
 
+def _lane_from_epoch_id(epoch_id: str) -> Optional[str]:
+    e = (epoch_id or "").upper()
+    if e.startswith("EPOCH_REANCHOR_CONSTRAINT"):
+        return "REANCHOR"
+    if e.startswith("EPOCH_STABILIZE"):
+        return "STABILIZER"
+    if e.startswith("EPOCH_NEXT_AUTO") or e.startswith("EPOCH_COVERAGE") or e.startswith("EPOCH_ACCEPTANCE") or e.startswith("EPOCH_PASS"):
+        return "COVERAGE_HOP_RECOVERY"
+    return None
+
+
 def _count_transition_dict(payload: Any) -> Tuple[int, int]:
     if not isinstance(payload, dict):
         return (0, 0)
@@ -320,6 +331,7 @@ def _build_state_description(
         f"consecutive_bad_epochs={int(consecutive_bad)}",
         f"delayed_violation_count={int(delayed_violation_count)}",
         f"regret_pressure={regret_pressure}",
+        f"coverage_fatigue={coverage_fatigue}",
     ]
     return "\n".join(parts)
 
@@ -538,6 +550,7 @@ def main() -> int:
     triggers_by_epoch: List[Dict[str, Any]] = []
     micro_present_history: List[bool] = []
     prev: Optional[EpochSignals] = None
+    lane_history: List[Optional[str]] = []
     for s in signals:
         resolve_not_clean = _trigger_resolve_not_clean(s)
         eval_coherence_low = _trigger_eval_coherence_low(s)
@@ -559,6 +572,7 @@ def main() -> int:
             }
         )
         micro_present_history.append(bool(s.micro_steps_present))
+        lane_history.append(_lane_from_epoch_id(s.epoch_id))
         prev = s
 
     target = signals[-1]
@@ -596,6 +610,15 @@ def main() -> int:
         else:
             break
 
+    # Coverage fatigue: count consecutive coverage lanes in immediate history.
+    coverage_streak = 0
+    for lane in reversed(lane_history[:-1]):  # exclude current epoch
+        if lane == "COVERAGE_HOP_RECOVERY":
+            coverage_streak += 1
+        else:
+            break
+    coverage_fatigue = min(coverage_streak, 3) / 3.0 if coverage_streak > 0 else 0.0
+
     recommended_lane = _pick_lane(
         resolve_not_clean=target_triggers["resolve_not_clean"],
         eval_coherence_low=target_triggers["eval_coherence_low"],
@@ -615,6 +638,10 @@ def main() -> int:
             recommended_lane = "REANCHOR"
             regret_bias_applied = True
             regret_bias_reason = f"prev_regret_high:{prev_regret_global}"
+        elif coverage_fatigue >= 0.66:
+            recommended_lane = "REANCHOR"
+            regret_bias_applied = True
+            regret_bias_reason = f"coverage_fatigue:{coverage_fatigue}"
 
     confidence = _confidence(target=target, trigger_evidence=target_triggers)
 
@@ -668,6 +695,7 @@ def main() -> int:
             "regret_skip_reason": target.regret_skip_reason,
             "regret_prev_global": prev_regret_global,
             "regret_prev_skip_reason": prev_regret_skip,
+            "coverage_fatigue": coverage_fatigue,
         },
         "trigger_evidence": target_triggers,
         "history": {
