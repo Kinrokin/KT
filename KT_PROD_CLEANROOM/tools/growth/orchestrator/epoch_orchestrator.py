@@ -283,38 +283,144 @@ def _write_once(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8", newline="\n")
 
 
-def _ensure_epoch_artifact_contract(epoch_root: Path) -> None:
+def _materialize_epoch_artifact_contract(
+    *,
+    epoch_root: Path,
+    kernel_target: str,
+    crucible_order: List[str],
+    runs: List[CrucibleRunSummary],
+) -> None:
     """
-    Enforce canonical epoch artifacts (fail-closed, no guessing).
-    Required: epoch_summary.json, governance_verdict.json, runner_record.json, state_vault.jsonl.
+    Enforce canonical epoch artifact contract (fail-closed; no stubs).
+
+    Materializes into epoch_root using only real per-run artifacts under:
+      tools/growth/artifacts/c019_runs/<kernel_target>/<run_id>/
+
+    Required epoch_root artifacts:
+      - epoch_summary.json (already emitted by orchestrator)
+      - runner_record.json (epoch-level aggregate, derived from per-run runner_record.json)
+      - governance_verdict.json (copied if identical across crucibles; fail if ambiguous/missing)
+      - state_vault.jsonl (concatenation of per-run _runtime_artifacts/state_vault.jsonl; fail if missing/empty)
+
+    Also copies per-crucible:
+      epoch_root/<CRU_ID>/runner_record.json
+      epoch_root/<CRU_ID>/governance_verdict.json
+      epoch_root/<CRU_ID>/state_vault.jsonl
     """
-    summary = epoch_root / "epoch_summary.json"
-    salvage = epoch_root / "salvage_manifest.json"
-    if not summary.exists():
-        if salvage.exists():
-            summary.write_text(salvage.read_text(encoding="utf-8"), encoding="utf-8", newline="\n")
-        else:
-            raise RuntimeError("FAIL-CLOSED: epoch_summary.json and salvage_manifest.json missing")
+    if not (epoch_root / "epoch_summary.json").exists():
+        raise EpochSchemaError("epoch_summary.json missing at epoch root (fail-closed)")
 
-    verdict = epoch_root / "governance_verdict.json"
-    if not verdict.exists():
-        report = epoch_root / "governance_report.json"
-        if report.exists():
-            verdict.write_text(report.read_text(encoding="utf-8"), encoding="utf-8", newline="\n")
-        else:
-            verdict.write_text(json.dumps({"status": "UNKNOWN"}, ensure_ascii=True), encoding="utf-8", newline="\n")
+    by_cid = {r.crucible_id: r for r in runs}
+    base = _repo_root() / "tools" / "growth" / "artifacts" / "c019_runs" / kernel_target
 
-    rr = epoch_root / "runner_record.json"
-    if not rr.exists():
-        rr.write_text(
-            json.dumps({"status": "UNKNOWN", "note": "epoch-level runner_record not emitted by runner"}, ensure_ascii=True),
-            encoding="utf-8",
-            newline="\n",
+    runner_records: List[Dict[str, Any]] = []
+    governance_text: Optional[str] = None
+
+    state_vault_sources: List[Dict[str, Any]] = []
+    state_vault_paths: List[Path] = []
+
+    for cid in crucible_order:
+        r = by_cid.get(cid)
+        if r is None or r.run_id is None:
+            raise EpochSchemaError(f"Missing run_id for {cid}; cannot materialize contract (fail-closed)")
+        run_root = base / r.run_id
+        if not run_root.exists():
+            raise EpochSchemaError(f"Missing run_root for {cid} at {run_root.as_posix()} (fail-closed)")
+
+        rr_src = run_root / "runner_record.json"
+        if not rr_src.exists():
+            raise EpochSchemaError(f"Missing per-run runner_record.json for {cid} at {rr_src.as_posix()} (fail-closed)")
+        rr_text = rr_src.read_text(encoding="utf-8")
+        rr_dst = epoch_root / cid / "runner_record.json"
+        if not rr_dst.exists():
+            _write_once(rr_dst, rr_text)
+        try:
+            rr_obj = json.loads(rr_text)
+        except Exception as exc:
+            raise EpochSchemaError(f"Invalid per-run runner_record.json for {cid} (fail-closed): {exc}") from exc
+        if not isinstance(rr_obj, dict):
+            raise EpochSchemaError(f"per-run runner_record.json must be an object for {cid} (fail-closed)")
+        runner_records.append(rr_obj)
+
+        gv_src = run_root / "governance_verdict.json"
+        if not gv_src.exists():
+            raise EpochSchemaError(f"Missing governance_verdict.json for {cid} at {gv_src.as_posix()} (fail-closed)")
+        gv_text = gv_src.read_text(encoding="utf-8")
+        gv_dst = epoch_root / cid / "governance_verdict.json"
+        if not gv_dst.exists():
+            _write_once(gv_dst, gv_text)
+        if governance_text is None:
+            governance_text = gv_text
+        elif gv_text != governance_text:
+            raise EpochSchemaError("Non-identical governance_verdict across crucibles (fail-closed)")
+
+        sv_src = run_root / "_runtime_artifacts" / "state_vault.jsonl"
+        if not sv_src.exists():
+            raise EpochSchemaError(f"Missing state_vault.jsonl for {cid} at {sv_src.as_posix()} (fail-closed)")
+        if sv_src.stat().st_size <= 0:
+            raise EpochSchemaError(f"Empty state_vault.jsonl for {cid} at {sv_src.as_posix()} (fail-closed)")
+        sv_dst = epoch_root / cid / "state_vault.jsonl"
+        if not sv_dst.exists():
+            _write_once(sv_dst, sv_src.read_text(encoding="utf-8"))
+        state_vault_paths.append(sv_src)
+        state_vault_sources.append(
+            {
+                "crucible_id": cid,
+                "run_id": r.run_id,
+                "src": str(sv_src.relative_to(_repo_root())),
+                "bytes": int(sv_src.stat().st_size),
+            }
         )
 
-    sv = epoch_root / "state_vault.jsonl"
-    if not sv.exists():
-        sv.write_text("", encoding="utf-8", newline="\n")
+    if governance_text is None:
+        raise EpochSchemaError("Missing governance verdicts (fail-closed)")
+    gv_epoch = epoch_root / "governance_verdict.json"
+    if not gv_epoch.exists():
+        _write_once(gv_epoch, governance_text)
+
+    rr_epoch = epoch_root / "runner_record.json"
+    if not rr_epoch.exists():
+        _write_once(
+            rr_epoch,
+            json.dumps(
+                {
+                    "schema": "EPOCH_RUNNER_RECORD_V1",
+                    "epoch_id": epoch_root.name,
+                    "kernel_target": kernel_target,
+                    "runs": runner_records,
+                },
+                sort_keys=True,
+                indent=2,
+                ensure_ascii=True,
+            ),
+        )
+
+    sv_epoch = epoch_root / "state_vault.jsonl"
+    if not sv_epoch.exists():
+        sv_epoch.parent.mkdir(parents=True, exist_ok=True)
+        with sv_epoch.open("w", encoding="utf-8", newline="\n") as out:
+            for src in state_vault_paths:
+                with src.open("r", encoding="utf-8") as handle:
+                    for line in handle:
+                        if line.strip():
+                            out.write(line.rstrip("\n") + "\n")
+
+    sv_manifest = epoch_root / "state_vault_manifest.json"
+    if not sv_manifest.exists():
+        _write_once(
+            sv_manifest,
+            json.dumps(
+                {
+                    "schema": "EPOCH_STATE_VAULT_MANIFEST_V1",
+                    "epoch_id": epoch_root.name,
+                    "kernel_target": kernel_target,
+                    "sources": state_vault_sources,
+                },
+                sort_keys=True,
+                indent=2,
+                ensure_ascii=True,
+            ),
+        )
 
 
 def _safe_decode(data: bytes) -> str:
@@ -956,8 +1062,13 @@ def run_epoch(
             salvage_status = {"status": "FAIL", "error": str(exc)}
         (epoch_root / "salvage_status.json").write_text(json.dumps(salvage_status, indent=2), encoding="utf-8", newline="\n")
 
-    # Enforce canonical artifact contract (fail-closed, no guessing).
-    _ensure_epoch_artifact_contract(epoch_root)
+    # Materialize canonical artifact contract (fail-closed; no stubs).
+    _materialize_epoch_artifact_contract(
+        epoch_root=epoch_root,
+        kernel_target=plan.kernel_identity.kernel_target,
+        crucible_order=list(plan.crucible_order),
+        runs=runs,
+    )
 
     return summary_obj
 
