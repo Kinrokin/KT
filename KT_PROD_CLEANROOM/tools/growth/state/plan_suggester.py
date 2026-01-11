@@ -563,6 +563,12 @@ def main() -> int:
 
     target = signals[-1]
     target_triggers = triggers_by_epoch[-1]
+    prev_regret_global: Optional[float] = None
+    prev_regret_skip: Optional[str] = None
+    if len(signals) >= 2:
+        prev_sig = signals[-2]
+        prev_regret_global = prev_sig.regret_global
+        prev_regret_skip = prev_sig.regret_skip_reason
 
     delayed_count, delayed_skip = _compute_delayed_violation(
         triggers_by_epoch, micro_history=micro_present_history, window=5
@@ -603,13 +609,12 @@ def main() -> int:
     )
     regret_bias_applied = False
     regret_bias_reason: Optional[str] = None
-    # Soft, deterministic bias: if recent regret is high for coverage, downweight coverage by preferring reanchor.
+    # Soft, deterministic bias: if prior regret was high for coverage, nudge to REANCHOR.
     if recommended_lane == "COVERAGE_HOP_RECOVERY":
-        rg = target.regret_global
-        if rg is not None and (target.regret_skip_reason is None) and rg >= 0.4:
+        if prev_regret_global is not None and prev_regret_skip is None and prev_regret_global >= 0.4:
             recommended_lane = "REANCHOR"
             regret_bias_applied = True
-            regret_bias_reason = f"regret_global_high:{rg}"
+            regret_bias_reason = f"prev_regret_high:{prev_regret_global}"
 
     confidence = _confidence(target=target, trigger_evidence=target_triggers)
 
@@ -661,6 +666,8 @@ def main() -> int:
             "coherence_budget": target.coherence_budget,
             "regret_global": target.regret_global,
             "regret_skip_reason": target.regret_skip_reason,
+            "regret_prev_global": prev_regret_global,
+            "regret_prev_skip_reason": prev_regret_skip,
         },
         "trigger_evidence": target_triggers,
         "history": {
