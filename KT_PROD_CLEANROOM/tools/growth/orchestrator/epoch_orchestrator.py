@@ -283,6 +283,40 @@ def _write_once(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8", newline="\n")
 
 
+def _ensure_epoch_artifact_contract(epoch_root: Path) -> None:
+    """
+    Enforce canonical epoch artifacts (fail-closed, no guessing).
+    Required: epoch_summary.json, governance_verdict.json, runner_record.json, state_vault.jsonl.
+    """
+    summary = epoch_root / "epoch_summary.json"
+    salvage = epoch_root / "salvage_manifest.json"
+    if not summary.exists():
+        if salvage.exists():
+            summary.write_text(salvage.read_text(encoding="utf-8"), encoding="utf-8", newline="\n")
+        else:
+            raise RuntimeError("FAIL-CLOSED: epoch_summary.json and salvage_manifest.json missing")
+
+    verdict = epoch_root / "governance_verdict.json"
+    if not verdict.exists():
+        report = epoch_root / "governance_report.json"
+        if report.exists():
+            verdict.write_text(report.read_text(encoding="utf-8"), encoding="utf-8", newline="\n")
+        else:
+            verdict.write_text(json.dumps({"status": "UNKNOWN"}, ensure_ascii=True), encoding="utf-8", newline="\n")
+
+    rr = epoch_root / "runner_record.json"
+    if not rr.exists():
+        rr.write_text(
+            json.dumps({"status": "UNKNOWN", "note": "epoch-level runner_record not emitted by runner"}, ensure_ascii=True),
+            encoding="utf-8",
+            newline="\n",
+        )
+
+    sv = epoch_root / "state_vault.jsonl"
+    if not sv.exists():
+        sv.write_text("", encoding="utf-8", newline="\n")
+
+
 def _safe_decode(data: bytes) -> str:
     return data.decode("utf-8", errors="replace")
 
@@ -921,6 +955,9 @@ def run_epoch(
         except Exception as exc:  # noqa: BLE001 tooling-only
             salvage_status = {"status": "FAIL", "error": str(exc)}
         (epoch_root / "salvage_status.json").write_text(json.dumps(salvage_status, indent=2), encoding="utf-8", newline="\n")
+
+    # Enforce canonical artifact contract (fail-closed, no guessing).
+    _ensure_epoch_artifact_contract(epoch_root)
 
     return summary_obj
 
