@@ -18,6 +18,8 @@ class EpochRow:
     coherence_debt: int
     coherence_budget: float
     coherence_debt_present: bool
+    regret_global: Optional[float]
+    regret_skip_reason: Optional[str]
     unique_domains: int
     unique_subdomains: int
     entropy_domains: float
@@ -164,6 +166,7 @@ def _extract_row(epoch_root: Path) -> EpochRow:
     summary = _load_json(summary_path)
     coverage = _load_json(coverage_path)
     micro_steps = _collect_micro_steps(epoch_root)
+    regret = _read_optional_json(epoch_root / "epoch_regret.json") or {}
 
     epoch_id = str(summary.get("epoch_id") or epoch_root.name)
     lane_actual = _lane_from_epoch_id(epoch_id)
@@ -172,6 +175,12 @@ def _extract_row(epoch_root: Path) -> EpochRow:
     coherence_debt_present = (coherence_debt_raw is not None) and (coherence_budget_raw is not None)
     coherence_debt = _coerce_int(coherence_debt_raw) if coherence_debt_raw is not None else -1
     coherence_budget = _coerce_float(coherence_budget_raw) if coherence_budget_raw is not None else -1.0
+    regret_global = regret.get("regret_global")
+    regret_skip_reason = regret.get("regret_skip_reason")
+    try:
+        regret_global = float(regret_global) if regret_global is not None else None
+    except Exception:
+        regret_global = None
 
     observed = coverage.get("observed") or {}
     counts = observed.get("counts") or {}
@@ -209,6 +218,8 @@ def _extract_row(epoch_root: Path) -> EpochRow:
         coherence_debt=coherence_debt,
         coherence_budget=coherence_budget,
         coherence_debt_present=coherence_debt_present,
+        regret_global=regret_global,
+        regret_skip_reason=regret_skip_reason if isinstance(regret_skip_reason, str) else None,
         unique_domains=unique_domains,
         unique_subdomains=unique_subdomains,
         entropy_domains=entropy_domains,
@@ -242,6 +253,7 @@ def _state_text(row: EpochRow) -> str:
             "KT_STATE_V1",
             f"coherence_debt={row.coherence_debt}",
             f"coherence_budget={row.coherence_budget}",
+            f"regret_global={-1 if row.regret_global is None else row.regret_global}",
             f"forced_resolve_count={row.forced_resolve_count}",
             f"low_coherence_count={row.low_coherence_count}",
             f"unknown_resolve_count={row.unknown_resolve_count}",
@@ -403,6 +415,8 @@ def main() -> int:
                     "coherence_debt": curr.coherence_debt,
                     "coherence_budget": curr.coherence_budget,
                     "coherence_debt_present": curr.coherence_debt_present,
+                    "regret_global": curr.regret_global,
+                    "regret_skip_reason": curr.regret_skip_reason,
                     "entropy_domains": curr.entropy_domains,
                     "top_domain_share": curr.top_domain_share,
                     "unique_domains": curr.unique_domains,
@@ -418,6 +432,8 @@ def main() -> int:
                     "coherence_debt": nxt.coherence_debt,
                     "coherence_budget": nxt.coherence_budget,
                     "coherence_debt_present": nxt.coherence_debt_present,
+                    "regret_global": nxt.regret_global,
+                    "regret_skip_reason": nxt.regret_skip_reason,
                     "entropy_domains": nxt.entropy_domains,
                     "top_domain_share": nxt.top_domain_share,
                     "unique_domains": nxt.unique_domains,

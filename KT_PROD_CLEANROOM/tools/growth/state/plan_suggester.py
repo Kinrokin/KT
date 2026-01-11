@@ -39,6 +39,8 @@ class EpochSignals:
     kernel_target: Optional[str]
     coherence_debt: Optional[int]
     coherence_budget: Optional[float]
+    regret_global: Optional[float]
+    regret_skip_reason: Optional[str]
     unique_domains: int
     unique_subdomains: int
     entropy_domains: float
@@ -133,6 +135,7 @@ def _extract_signals(root: Path) -> EpochSignals:
     motion = _read_optional_json(root / "motion_metrics.json")
     transitions = _read_optional_json(root / "transitions.json") or {}
     micro_steps = _collect_micro_steps(root)
+    regret = _read_optional_json(root / "epoch_regret.json") or {}
 
     observed = coverage.get("observed") or {}
     counts = observed.get("counts") or {}
@@ -168,6 +171,13 @@ def _extract_signals(root: Path) -> EpochSignals:
         coherence_debt = _coerce_int(coherence_debt)
     if coherence_budget is not None:
         coherence_budget = _coerce_float(coherence_budget)
+    regret_global = regret.get("regret_global")
+    regret_skip_reason = regret.get("regret_skip_reason")
+    if regret_global is not None:
+        try:
+            regret_global = float(regret_global)
+        except Exception:
+            regret_global = None
 
     return EpochSignals(
         root=root,
@@ -178,6 +188,8 @@ def _extract_signals(root: Path) -> EpochSignals:
         kernel_target=kernel_target,
         coherence_debt=coherence_debt if isinstance(coherence_debt, int) else None,
         coherence_budget=coherence_budget if isinstance(coherence_budget, float) else None,
+        regret_global=regret_global if isinstance(regret_global, float) else None,
+        regret_skip_reason=regret_skip_reason if isinstance(regret_skip_reason, str) else None,
         unique_domains=unique_domains,
         unique_subdomains=unique_subdomains,
         entropy_domains=entropy_domains,
@@ -295,6 +307,7 @@ def _build_state_description(
         f"map_entropy_low={int(bool(triggers.get('map_entropy_low')))}",
         f"coherence_debt={(signals.coherence_debt if signals.coherence_debt is not None else -1)}",
         f"coherence_budget={(signals.coherence_budget if signals.coherence_budget is not None else -1)}",
+        f"regret_global={(signals.regret_global if signals.regret_global is not None else -1)}",
         f"unique_domains={signals.unique_domains}",
         f"unique_subdomains={signals.unique_subdomains}",
         f"entropy_domains={signals.entropy_domains}",
@@ -634,6 +647,8 @@ def main() -> int:
             "delayed_violation_skip_reason": delayed_skip,
             "coherence_debt": target.coherence_debt,
             "coherence_budget": target.coherence_budget,
+            "regret_global": target.regret_global,
+            "regret_skip_reason": target.regret_skip_reason,
         },
         "trigger_evidence": target_triggers,
         "history": {
