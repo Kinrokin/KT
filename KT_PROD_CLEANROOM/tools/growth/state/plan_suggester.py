@@ -601,6 +601,16 @@ def main() -> int:
         low_coherence_count=target_triggers.get("low_coherence_count", 0),
         consecutive_bad=consecutive_bad,
     )
+    regret_bias_applied = False
+    regret_bias_reason: Optional[str] = None
+    # Soft, deterministic bias: if recent regret is high for coverage, downweight coverage by preferring reanchor.
+    if recommended_lane == "COVERAGE_HOP_RECOVERY":
+        rg = target.regret_global
+        if rg is not None and (target.regret_skip_reason is None) and rg >= 0.4:
+            recommended_lane = "REANCHOR"
+            regret_bias_applied = True
+            regret_bias_reason = f"regret_global_high:{rg}"
+
     confidence = _confidence(target=target, trigger_evidence=target_triggers)
 
     triggered: List[str] = []
@@ -622,6 +632,8 @@ def main() -> int:
         "kernel_target": target.kernel_target,
         "recommended_lane": _lane_public_name(recommended_lane),
         "recommended_lane_internal": recommended_lane,
+        "regret_bias_applied": regret_bias_applied,
+        "regret_bias_reason": regret_bias_reason,
         "triggered_rules": triggered,
         "triggered": triggered,  # backward compatible alias
         "confidence": confidence,
