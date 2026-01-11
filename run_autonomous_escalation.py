@@ -46,7 +46,7 @@ def run_plan_suggester(env: dict) -> Dict[str, any]:
     return json.loads(plan.read_text(encoding="utf-8"))
 
 
-def select_plan(recommendation: str) -> str:
+def select_plan(recommendation: Dict[str, any]) -> str:
     internal = recommendation.get("recommended_lane_internal", "")
     if internal == "REANCHOR":
         return "reanchor"
@@ -123,14 +123,17 @@ def main() -> None:
     lane_counter = Counter()
     for idx in range(1, args.iterations + 1):
         suggestion = run_plan_suggester(env)
+        suggested_lane = suggestion.get("recommended_lane")
+        suggested_internal = suggestion.get("recommended_lane_internal")
         plan_key = select_plan(suggestion)
         plan_path = PLAN_FILES[plan_key]
         signals = suggestion.get("signals", {})
         record = {
             "iteration": idx,
             "epoch": suggestion.get("epoch_id"),
-            "recommended_lane": suggestion.get("recommended_lane"),
-            "recommended_lane_internal": suggestion.get("recommended_lane_internal"),
+            "suggestion_consumed": True,
+            "suggested_lane": suggested_lane,
+            "suggested_lane_internal": suggested_internal,
             "forced": signals.get("forced_resolve_count", 0),
             "low_coherence": signals.get("low_coherence_count", 0),
             "entropy": signals.get("entropy_domains", 0.0),
@@ -153,8 +156,8 @@ def main() -> None:
                         "timestamp": datetime.utcnow().isoformat() + "Z",
                         "iteration": idx,
                         "epoch_id": suggestion.get("epoch_id"),
-                        "heuristic_lane": suggestion.get("recommended_lane"),
-                        "heuristic_lane_internal": suggestion.get("recommended_lane_internal"),
+                        "heuristic_lane": suggested_lane,
+                        "heuristic_lane_internal": suggested_internal,
                         "plan_run": plan_key,
                         "policy_lane": policy_result.get("recommendation"),
                         "policy_confidence": policy_result.get("confidence"),
