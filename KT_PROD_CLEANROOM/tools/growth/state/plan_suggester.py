@@ -37,6 +37,8 @@ class EpochSignals:
     epoch_profile: Optional[str]
     epoch_verdict: Optional[str]
     kernel_target: Optional[str]
+    coherence_debt: Optional[int]
+    coherence_budget: Optional[float]
     unique_domains: int
     unique_subdomains: int
     entropy_domains: float
@@ -160,6 +162,12 @@ def _extract_signals(root: Path) -> EpochSignals:
     epoch_hash = summary.get("epoch_hash")
     epoch_profile = summary.get("epoch_profile")
     epoch_verdict = summary.get("epoch_verdict")
+    coherence_debt = summary.get("coherence_debt")
+    coherence_budget = summary.get("coherence_budget")
+    if coherence_debt is not None:
+        coherence_debt = _coerce_int(coherence_debt)
+    if coherence_budget is not None:
+        coherence_budget = _coerce_float(coherence_budget)
 
     return EpochSignals(
         root=root,
@@ -168,6 +176,8 @@ def _extract_signals(root: Path) -> EpochSignals:
         epoch_profile=epoch_profile,
         epoch_verdict=epoch_verdict,
         kernel_target=kernel_target,
+        coherence_debt=coherence_debt if isinstance(coherence_debt, int) else None,
+        coherence_budget=coherence_budget if isinstance(coherence_budget, float) else None,
         unique_domains=unique_domains,
         unique_subdomains=unique_subdomains,
         entropy_domains=entropy_domains,
@@ -196,6 +206,9 @@ def _micro_step_value(micro_steps: Dict[str, Any], step_name: str, key: str) -> 
             continue
         if key in entry:
             return entry.get(key)
+        flags = entry.get("flags")
+        if isinstance(flags, dict) and key in flags:
+            return flags.get(key)
     return None
 
 
@@ -210,7 +223,7 @@ def _count_micro_steps(micro_steps: Optional[Dict[str, Any]]) -> Dict[str, int]:
         if not isinstance(s, dict):
             continue
         flags = s.get("flags") or {}
-        if flags.get("resolve_mode") in {"forced", "partial", "unresolved"}:
+        if flags.get("resolve_mode") in {"forced", "partial", "unresolved", "refuse"}:
             forced += 1
         if flags.get("coherence_bucket") == "LOW":
             low += 1
@@ -280,6 +293,8 @@ def _build_state_description(
         f"eval_coherence_low={_tri_bool(triggers.get('eval_coherence_low'))}",
         f"coverage_stagnation={_tri_bool(triggers.get('coverage_stagnation'))}",
         f"map_entropy_low={int(bool(triggers.get('map_entropy_low')))}",
+        f"coherence_debt={(signals.coherence_debt if signals.coherence_debt is not None else -1)}",
+        f"coherence_budget={(signals.coherence_budget if signals.coherence_budget is not None else -1)}",
         f"unique_domains={signals.unique_domains}",
         f"unique_subdomains={signals.unique_subdomains}",
         f"entropy_domains={signals.entropy_domains}",
@@ -613,12 +628,14 @@ def main() -> int:
             "forced_resolve_count": target_triggers.get("forced_resolve_count", 0),
             "low_coherence_count": target_triggers.get("low_coherence_count", 0),
             "stable_streak": stable_streak,
-        "dense_motion_window": dense_motion_window,
-        "delayed_violation_count": delayed_count,
-        "regret_pressure": regret_pressure,
-        "delayed_violation_skip_reason": delayed_skip,
-    },
-    "trigger_evidence": target_triggers,
+            "dense_motion_window": dense_motion_window,
+            "delayed_violation_count": delayed_count,
+            "regret_pressure": regret_pressure,
+            "delayed_violation_skip_reason": delayed_skip,
+            "coherence_debt": target.coherence_debt,
+            "coherence_budget": target.coherence_budget,
+        },
+        "trigger_evidence": target_triggers,
         "history": {
             "epochs_considered": [s.epoch_id for s in signals],
             "triggers_by_epoch": triggers_by_epoch,

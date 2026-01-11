@@ -50,6 +50,8 @@ class CrucibleRunSummary:
     outcome: str
     notes: Optional[str]
 
+COHERENCE_DEBT_MAX = 5
+
 
 def _repo_root() -> Path:
     return _REPO_ROOT
@@ -281,6 +283,171 @@ def _write_once(path: Path, text: str) -> None:
         raise EpochSchemaError(f"Refusing to overwrite existing file: {path.as_posix()} (fail-closed)")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8", newline="\n")
+
+
+def _parse_epoch_run_number(epoch_id: str) -> Optional[int]:
+    m = re.search(r"_RUN(\d+)$", epoch_id or "")
+    if not m:
+        return None
+    try:
+        return int(m.group(1))
+    except Exception:
+        return None
+
+
+def _read_previous_coherence_debt(*, epochs_root: Path, epoch_id: str) -> int:
+    """
+    Best-effort previous debt read (fail-closed on malformed JSON only).
+    - If epoch_id has _RUN<N> suffix, prefer _RUN<N-1>.
+    - Otherwise, default to 0.
+    """
+    run_n = _parse_epoch_run_number(epoch_id)
+    if run_n is None or run_n <= 1:
+        return 0
+    base = _parse_epoch_base(epoch_id)
+    prev_id = f"{base}_RUN{run_n - 1}"
+    prev_root = epochs_root / prev_id
+    prev_summary = prev_root / "epoch_summary.json"
+    if not prev_summary.exists():
+        return 0
+    try:
+        obj = json.loads(prev_summary.read_text(encoding="utf-8"))
+    except Exception as exc:
+        raise EpochSchemaError(f"Invalid prior epoch_summary.json at {prev_summary.as_posix()} (fail-closed): {exc}") from exc
+    debt = obj.get("coherence_debt")
+    try:
+        return int(debt)
+    except Exception:
+        return 0
+
+
+def _load_micro_steps(path: Path) -> Optional[List[Dict[str, object]]]:
+    if not path.exists():
+        return None
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    chunk = payload.get("steps") if isinstance(payload, dict) else payload
+    if not isinstance(chunk, list):
+        return None
+    steps: List[Dict[str, object]] = []
+    for entry in chunk:
+        if isinstance(entry, dict):
+            steps.append(entry)
+    return steps or None
+
+
+def _compute_coherence_debt(
+    *,
+    epoch_root: Path,
+    crucible_order: List[str],
+    prev_debt: int,
+    debt_max: int = COHERENCE_DEBT_MAX,
+) -> Tuple[int, float, int, Optional[str]]:
+    """
+    Conserved cross-epoch scalar (fail-closed on missing evidence):
+    - Uses micro-steps only (structural, non-semantic).
+    - If required evidence is missing/unknown, skips update and returns prev_debt.
+    """
+    all_steps: List[Dict[str, object]] = []
+    for cid in crucible_order:
+        ms = _load_micro_steps(epoch_root / cid / "micro_steps.json")
+        if ms:
+            all_steps.extend(ms)
+
+    if not all_steps:
+        budget = 1.0 - (prev_debt / float(debt_max)) if debt_max > 0 else 0.0
+        return (prev_debt, float(budget), 0, "missing_micro_steps")
+
+    saw_resolve = False
+    saw_eval = False
+    unknown_evidence = False
+
+    forced_any = False
+    low_any = False
+    resolve_not_clean_any = False
+    eval_low_any = False
+    constraint_any = False
+
+    for s in all_steps:
+        phase = s.get("phase")
+        flags = s.get("flags")
+        if not isinstance(flags, dict):
+            continue
+
+        mode = flags.get("resolve_mode")
+        if phase == "RESOLVE":
+            saw_resolve = True
+            if mode in {"unknown", "UNKNOWN", "missing", "MISSING"}:
+                unknown_evidence = True
+            elif isinstance(mode, str):
+                mode_l = mode.strip().lower()
+                if mode_l != "clean":
+                    resolve_not_clean_any = True
+                if mode_l in {"forced", "partial", "unresolved", "refuse"}:
+                    forced_any = True
+
+        coh = flags.get("coherence_bucket")
+        if phase == "EVAL":
+            saw_eval = True
+            if coh in {"unknown", "UNKNOWN", "missing", "MISSING"}:
+                unknown_evidence = True
+            elif isinstance(coh, str) and coh.strip().upper() == "LOW":
+                low_any = True
+                eval_low_any = True
+
+        if phase == "CONSTRAIN":
+            ch = flags.get("constraint_hit")
+            # Only treat non-budget constraints (or budget overruns) as "hits" for debt purposes;
+            # budget checks are always present and would otherwise saturate the signal.
+            if ch in {"policy", "contract"}:
+                constraint_any = True
+            elif ch == "budget":
+                verdict = flags.get("budget_verdict")
+                if isinstance(verdict, str) and verdict.strip().upper() != "WITHIN_BUDGET":
+                    constraint_any = True
+
+    if (not saw_resolve) or (not saw_eval) or unknown_evidence:
+        budget = 1.0 - (prev_debt / float(debt_max)) if debt_max > 0 else 0.0
+        reason = "missing_resolve_or_eval" if (not saw_resolve or not saw_eval) else "unknown_micro_evidence"
+        return (prev_debt, float(budget), 0, reason)
+
+    bad = forced_any or low_any or constraint_any or resolve_not_clean_any or eval_low_any
+    delta = 1 if bad else -1
+    new_debt = max(0, min(int(prev_debt) + delta, int(debt_max)))
+    budget = 1.0 - (new_debt / float(debt_max)) if debt_max > 0 else 0.0
+    return (new_debt, float(budget), int(delta), None)
+
+
+def _debug_run_root(*, crucible_id: str, run_id: str, run_root: Path) -> None:
+    try:
+        rel = run_root.relative_to(_repo_root())
+        root_disp = str(rel)
+    except Exception:
+        root_disp = run_root.as_posix()
+
+    print(f"[DEBUG_RUN_ROOT] crucible_id={crucible_id} run_id={run_id} run_root={root_disp}", file=sys.stderr)
+    print(f"[DEBUG_RUN_ROOT] exists={run_root.exists()}", file=sys.stderr)
+    if not run_root.exists():
+        return
+
+    try:
+        names = sorted([p.name for p in run_root.iterdir()])
+    except Exception as exc:
+        print(f"[DEBUG_RUN_ROOT] list_error={exc}", file=sys.stderr)
+        return
+
+    print(f"[DEBUG_RUN_ROOT] top_files={names}", file=sys.stderr)
+    expected = {
+        "runner_record.json": run_root / "runner_record.json",
+        "governance_verdict.json": run_root / "governance_verdict.json",
+        "crucible_coverage.json": run_root / "crucible_coverage.json",
+        "micro_steps.json": run_root / "micro_steps.json",
+        "_runtime_artifacts/state_vault.jsonl": run_root / "_runtime_artifacts" / "state_vault.jsonl",
+    }
+    for k, p in expected.items():
+        print(f"[DEBUG_RUN_ROOT] expect {k} exists={p.exists()} path={p.as_posix()}", file=sys.stderr)
 
 
 def _materialize_epoch_artifact_contract(
@@ -650,6 +817,7 @@ def run_epoch(
     ruleset_path: Optional[Path] = None,
     auto_bump: bool = True,
     quiet: bool = False,
+    debug_run_roots: bool = False,
 ) -> Dict[str, object]:
     plan = _load_plan(plan_path)
     if plan.runner_config.template_id != RUNNER_TEMPLATE_C019:
@@ -864,6 +1032,17 @@ def run_epoch(
             micro_dst = run_dir / "micro_steps.json"
             if micro_src.exists():
                 _write_once(micro_dst, micro_src.read_text(encoding="utf-8"))
+            if debug_run_roots:
+                run_root = (
+                    _repo_root()
+                    / "tools"
+                    / "growth"
+                    / "artifacts"
+                    / "c019_runs"
+                    / plan.kernel_identity.kernel_target
+                    / run_id
+                )
+                _debug_run_root(crucible_id=cid, run_id=run_id, run_root=run_root)
 
         _write_once(
             run_record_path,
@@ -905,11 +1084,24 @@ def run_epoch(
         # Non-gating profiles (e.g., GOVERNANCE/PARADOX): completion is still meaningful even if all crucibles fail-closed.
         epoch_verdict = "COMPLETE"
 
+    prev_debt = _read_previous_coherence_debt(epochs_root=base_root, epoch_id=plan.epoch_id)
+    coherence_debt, coherence_budget, coherence_debt_delta, coherence_debt_skip_reason = _compute_coherence_debt(
+        epoch_root=epoch_root,
+        crucible_order=list(plan.crucible_order),
+        prev_debt=prev_debt,
+        debt_max=COHERENCE_DEBT_MAX,
+    )
+
     summary_path = epoch_root / "epoch_summary.json"
     summary_obj = {
         "epoch_id": plan.epoch_id,
         "epoch_profile": profile,
         "epoch_verdict": epoch_verdict,
+        "coherence_debt": coherence_debt,
+        "coherence_budget": round(coherence_budget, 6),
+        "coherence_debt_max": COHERENCE_DEBT_MAX,
+        "coherence_debt_delta": coherence_debt_delta,
+        "coherence_debt_skip_reason": coherence_debt_skip_reason,
         "crucibles_total": crucibles_total,
         "crucibles_passed": crucibles_passed,
         "crucibles_failed_closed": crucibles_failed_closed,
@@ -1098,6 +1290,11 @@ def _parse_args() -> argparse.Namespace:
         action="store_true",
         help="Disable automatic epoch_id bumping on write-once collisions",
     )
+    p.add_argument(
+        "--debug-run-roots",
+        action="store_true",
+        help="Print per-run root paths + expected files for diagnostics (stderr; non-mutating).",
+    )
     return p.parse_args()
 
 
@@ -1112,6 +1309,7 @@ def main() -> int:
         salvage_out_root=Path(args.salvage_out_root),
         auto_bump=not args.no_auto_bump,
         quiet=args.summary_only,
+        debug_run_roots=args.debug_run_roots,
     )
     epoch_id = summary.get("epoch_id", "UNKNOWN")
     profile = summary.get("epoch_profile", "UNKNOWN")

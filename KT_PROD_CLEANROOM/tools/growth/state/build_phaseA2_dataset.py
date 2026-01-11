@@ -15,6 +15,9 @@ class EpochRow:
     root: Path
     epoch_id: str
     lane_actual: str
+    coherence_debt: int
+    coherence_budget: float
+    coherence_debt_present: bool
     unique_domains: int
     unique_subdomains: int
     entropy_domains: float
@@ -164,6 +167,11 @@ def _extract_row(epoch_root: Path) -> EpochRow:
 
     epoch_id = str(summary.get("epoch_id") or epoch_root.name)
     lane_actual = _lane_from_epoch_id(epoch_id)
+    coherence_debt_raw = summary.get("coherence_debt")
+    coherence_budget_raw = summary.get("coherence_budget")
+    coherence_debt_present = (coherence_debt_raw is not None) and (coherence_budget_raw is not None)
+    coherence_debt = _coerce_int(coherence_debt_raw) if coherence_debt_raw is not None else -1
+    coherence_budget = _coerce_float(coherence_budget_raw) if coherence_budget_raw is not None else -1.0
 
     observed = coverage.get("observed") or {}
     counts = observed.get("counts") or {}
@@ -198,6 +206,9 @@ def _extract_row(epoch_root: Path) -> EpochRow:
         root=epoch_root,
         epoch_id=epoch_id,
         lane_actual=lane_actual,
+        coherence_debt=coherence_debt,
+        coherence_budget=coherence_budget,
+        coherence_debt_present=coherence_debt_present,
         unique_domains=unique_domains,
         unique_subdomains=unique_subdomains,
         entropy_domains=entropy_domains,
@@ -229,6 +240,8 @@ def _state_text(row: EpochRow) -> str:
     return "\n".join(
         [
             "KT_STATE_V1",
+            f"coherence_debt={row.coherence_debt}",
+            f"coherence_budget={row.coherence_budget}",
             f"forced_resolve_count={row.forced_resolve_count}",
             f"low_coherence_count={row.low_coherence_count}",
             f"unknown_resolve_count={row.unknown_resolve_count}",
@@ -387,6 +400,9 @@ def main() -> int:
                 "phaseA2_label": phaseA2_label,
                 "relabel_reason": relabel_reason,
                 "signals": {
+                    "coherence_debt": curr.coherence_debt,
+                    "coherence_budget": curr.coherence_budget,
+                    "coherence_debt_present": curr.coherence_debt_present,
                     "entropy_domains": curr.entropy_domains,
                     "top_domain_share": curr.top_domain_share,
                     "unique_domains": curr.unique_domains,
@@ -399,6 +415,9 @@ def main() -> int:
                     "churn_present": churn_present,
                 },
                 "next_signals": {
+                    "coherence_debt": nxt.coherence_debt,
+                    "coherence_budget": nxt.coherence_budget,
+                    "coherence_debt_present": nxt.coherence_debt_present,
                     "entropy_domains": nxt.entropy_domains,
                     "top_domain_share": nxt.top_domain_share,
                     "unique_domains": nxt.unique_domains,
