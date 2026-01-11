@@ -86,7 +86,7 @@ def _lane_from_epoch_id(epoch_id: str) -> str:
         return LANE_REANCHOR
     if e.startswith("EPOCH_STABILIZE"):
         return LANE_STABILIZE
-    if e.startswith("EPOCH_NEXT_AUTO") or e.startswith("EPOCH_COVERAGE"):
+    if e.startswith("EPOCH_NEXT_AUTO") or e.startswith("EPOCH_COVERAGE") or e.startswith("EPOCH_ACCEPTANCE") or e.startswith("EPOCH_PASS"):
         return LANE_COVERAGE
     # Fail-closed: unknown lane types should not be silently coerced.
     raise PhaseA2BuildError(f"Unknown epoch_id lane prefix: {epoch_id} (fail-closed)")
