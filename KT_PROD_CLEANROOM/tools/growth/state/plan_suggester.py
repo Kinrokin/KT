@@ -13,37 +13,19 @@ class PlanSuggestError(RuntimeError):
     pass
 
 try:
-    from .kt_lane_policy import build_default_policy, KTLanePolicy
-    from .cce_state import load_state as load_cce_state, cce_constants
-    from .oce_state import load_state as load_oce_state, oce_constants
-    from .rwrp_state import load_state as load_rwrp_state, rwrp_constants
+    from KT_PROD_CLEANROOM.tools.growth.state.kt_lane_policy import build_default_policy, KTLanePolicy
+    from KT_PROD_CLEANROOM.tools.growth.state.cce_state import load_state as load_cce_state, cce_constants
+    from KT_PROD_CLEANROOM.tools.growth.state.oce_state import load_state as load_oce_state, oce_constants
+    from KT_PROD_CLEANROOM.tools.growth.state.rwrp_state import load_state as load_rwrp_state, rwrp_constants
 except ImportError:  # pragma: no cover
-    try:  # When executed as a script (not a module), relative imports may fail.
-        from KT_PROD_CLEANROOM.tools.growth.state.kt_lane_policy import (  # type: ignore[import-not-found]
-            build_default_policy,
-            KTLanePolicy,
-        )
-        from KT_PROD_CLEANROOM.tools.growth.state.cce_state import (  # type: ignore[import-not-found]
-            load_state as load_cce_state,
-            cce_constants,
-        )
-        from KT_PROD_CLEANROOM.tools.growth.state.oce_state import (  # type: ignore[import-not-found]
-            load_state as load_oce_state,
-            oce_constants,
-        )
-        from KT_PROD_CLEANROOM.tools.growth.state.rwrp_state import (  # type: ignore[import-not-found]
-            load_state as load_rwrp_state,
-            rwrp_constants,
-        )
-    except ImportError:
-        build_default_policy = None  # type: ignore[assignment]
-        KTLanePolicy = Any  # type: ignore[assignment]
-        load_cce_state = None  # type: ignore[assignment]
-        cce_constants = lambda: {"cce_step": None, "cce_max": None, "cce_decay": None}  # type: ignore[assignment]
-        load_oce_state = None  # type: ignore[assignment]
-        oce_constants = lambda: {"oce_step": None, "oce_max": None, "oce_decay": None}  # type: ignore[assignment]
-        load_rwrp_state = None  # type: ignore[assignment]
-        rwrp_constants = lambda: {"rwrp_alpha": None, "rwrp_beta": None, "rwrp_max": None}  # type: ignore[assignment]
+    build_default_policy = None  # type: ignore[assignment]
+    KTLanePolicy = Any  # type: ignore[assignment]
+    load_cce_state = None  # type: ignore[assignment]
+    cce_constants = lambda: {"cce_step": None, "cce_max": None, "cce_decay": None}  # type: ignore[assignment]
+    load_oce_state = None  # type: ignore[assignment]
+    oce_constants = lambda: {"oce_step": None, "oce_max": None, "oce_decay": None}  # type: ignore[assignment]
+    load_rwrp_state = None  # type: ignore[assignment]
+    rwrp_constants = lambda: {"rwrp_alpha": None, "rwrp_beta": None, "rwrp_max": None}  # type: ignore[assignment]
 
 
 TriBool = Optional[bool]

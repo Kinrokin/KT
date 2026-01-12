@@ -47,7 +47,8 @@ def run_plan_suggester() -> Dict[str, any]:
     env["PYTHONPATH"] = str(_REPO_ROOT)
     cmd = [
         "python",
-        str(ROOT / "tools" / "growth" / "state" / "plan_suggester.py"),
+        "-m",
+        "KT_PROD_CLEANROOM.tools.growth.state.plan_suggester",
         "--epochs-dir",
         str(ARTIFACT_EPOCHS),
         "--write-epoch",
