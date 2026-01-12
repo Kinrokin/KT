@@ -8,6 +8,13 @@ from pathlib import Path
 from typing import Dict
 from datetime import datetime
 
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+_ORCH_DIR = _REPO_ROOT / "KT_PROD_CLEANROOM" / "tools" / "growth" / "orchestrator"
+if str(_ORCH_DIR) not in sys.path:
+    sys.path.insert(0, str(_ORCH_DIR))
+
 ROOT = Path("KT_PROD_CLEANROOM")
 ARTIFACT_EPOCHS = ROOT / "tools" / "growth" / "artifacts" / "epochs"
 from KT_PROD_CLEANROOM.tools.growth.state.lane_to_epoch import resolve_epoch_spec, lane_for_plan
@@ -21,7 +28,7 @@ def run_plan(plan_path: Path, *, quiet: bool = False) -> Dict[str, any]:
     """Execute a single epoch plan via orchestrator (no shell)."""
     summary = run_epoch(
         plan_path,
-        resume=True,
+        resume=False,
         salvage=True,
         salvage_out_root=ROOT / "tools" / "growth" / "artifacts" / "salvage",
         auto_bump=True,
@@ -37,6 +44,7 @@ def latest_epoch_root() -> Path:
 
 def run_plan_suggester() -> Dict[str, any]:
     env = os.environ.copy()
+    env["PYTHONPATH"] = str(_REPO_ROOT)
     cmd = [
         "python",
         str(ROOT / "tools" / "growth" / "state" / "plan_suggester.py"),
