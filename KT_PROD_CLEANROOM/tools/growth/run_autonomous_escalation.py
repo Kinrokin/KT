@@ -3,6 +3,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 from collections import Counter
 from pathlib import Path
 from typing import Dict
@@ -23,6 +24,8 @@ from KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_orchestrator import run_e
 from KT_PROD_CLEANROOM.tools.growth.state.cce_state import update_state as update_cce_state
 from KT_PROD_CLEANROOM.tools.growth.state.oce_state import update_state as update_oce_state
 from KT_PROD_CLEANROOM.tools.growth.state.rwrp_state import update_state as update_rwrp_state
+
+SESSION_TAG = int(time.time() * 1000)
 
 
 def run_plan(plan_path: Path, *, quiet: bool = False) -> Dict[str, any]:
@@ -132,6 +135,13 @@ def _write_baseline_suggestion(epoch_root: Path) -> None:
     (epoch_root / "plan_suggestion.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
 
+def _session_suffix(label: str, idx: int | None = None) -> str:
+    parts = [label, str(SESSION_TAG)]
+    if idx is not None:
+        parts.append(f"RUN{idx:03d}")
+    return "_".join(parts)
+
+
 def _prepare_runtime_plan(base_plan: Path, suffix: str) -> Path:
     data = json.loads(base_plan.read_text(encoding="utf-8"))
     base_id = data.get("epoch_id") or base_plan.stem
@@ -161,9 +171,7 @@ def main() -> None:
 
     print("=== STEP A: baseline coverage ===")
     baseline_plan = resolve_epoch_spec("COVERAGE_HOP_RECOVERY")
-    runtime_baseline = _prepare_runtime_plan(
-        baseline_plan, f"BASE_{int(datetime.utcnow().timestamp() * 1000)}"
-    )
+    runtime_baseline = _prepare_runtime_plan(baseline_plan, _session_suffix("BASE"))
     try:
         baseline_summary = run_plan(runtime_baseline)
     finally:
@@ -182,9 +190,7 @@ def main() -> None:
     if len(epoch_roots) < 2:
         print("=== Seeding second baseline coverage for history ===")
         second_plan = resolve_epoch_spec("COVERAGE_HOP_RECOVERY")
-        runtime_second = _prepare_runtime_plan(
-            second_plan, f"BASELINE_{int(datetime.utcnow().timestamp() * 1000)}"
-        )
+        runtime_second = _prepare_runtime_plan(second_plan, _session_suffix("BASELINE"))
         try:
             run_plan(runtime_second)
         finally:
@@ -244,7 +250,7 @@ def main() -> None:
             except Exception as exc:
                 record["policy_error"] = str(exc)
 
-        runtime_plan = _prepare_runtime_plan(plan_path, f"RUN{idx:03d}")
+        runtime_plan = _prepare_runtime_plan(plan_path, _session_suffix("RUN", idx))
         try:
             summary = run_plan(runtime_plan)
         finally:
