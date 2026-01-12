@@ -3,7 +3,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
-from epoch_schemas import EpochBudgets, EpochSchemaError
+from KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_schemas import (
+    EpochBudgets,
+    EpochSchemaError,
+)
 
 
 @dataclass(frozen=True)
