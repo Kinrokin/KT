@@ -5,7 +5,7 @@ from dataclasses import asdict, dataclass
 from hashlib import sha256
 from typing import Dict
 
-from epoch_schemas import EpochPlan
+from KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_schemas import EpochPlan
 
 
 @dataclass(frozen=True)
