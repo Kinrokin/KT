@@ -7,6 +7,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Dict
 from datetime import datetime
+import tempfile
 
 _REPO_ROOT = Path(__file__).resolve().parents[3]
 if str(_REPO_ROOT) not in sys.path:
@@ -131,6 +132,17 @@ def _write_baseline_suggestion(epoch_root: Path) -> None:
     (epoch_root / "plan_suggestion.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
 
+def _prepare_runtime_plan(base_plan: Path, suffix: str) -> Path:
+    data = json.loads(base_plan.read_text(encoding="utf-8"))
+    base_id = data.get("epoch_id") or base_plan.stem
+    data["epoch_id"] = f"{base_id}_{suffix}"
+    tmp = tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False, encoding="utf-8")
+    json.dump(data, tmp, sort_keys=True, indent=2, ensure_ascii=True)
+    tmp.flush()
+    tmp.close()
+    return Path(tmp.name)
+
+
 def main() -> None:
     args = parse_args()
     os.environ["KT_LIVE"] = "0"
@@ -149,7 +161,13 @@ def main() -> None:
 
     print("=== STEP A: baseline coverage ===")
     baseline_plan = resolve_epoch_spec("COVERAGE_HOP_RECOVERY")
-    baseline_summary = run_plan(baseline_plan)
+    runtime_baseline = _prepare_runtime_plan(
+        baseline_plan, f"BASE_{int(datetime.utcnow().timestamp() * 1000)}"
+    )
+    try:
+        baseline_summary = run_plan(runtime_baseline)
+    finally:
+        runtime_baseline.unlink(missing_ok=True)
     try:
         update_cce_state(executed_lane=lane_for_plan(baseline_plan), epoch_id=baseline_summary.get("epoch_id", "BOOTSTRAP"))
         update_oce_state(executed_lane=lane_for_plan(baseline_plan), epoch_id=baseline_summary.get("epoch_id", "BOOTSTRAP"))
@@ -219,7 +237,11 @@ def main() -> None:
             except Exception as exc:
                 record["policy_error"] = str(exc)
 
-        summary = run_plan(plan_path)
+        runtime_plan = _prepare_runtime_plan(plan_path, f"RUN{idx:03d}")
+        try:
+            summary = run_plan(runtime_plan)
+        finally:
+            runtime_plan.unlink(missing_ok=True)
         try:
             executed_lane = lane_for_plan(plan_path)
             updated = update_cce_state(executed_lane=executed_lane, epoch_id=summary.get("epoch_id", "UNKNOWN"))
