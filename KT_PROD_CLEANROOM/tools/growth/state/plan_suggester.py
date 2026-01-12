@@ -14,15 +14,36 @@ class PlanSuggestError(RuntimeError):
 
 try:
     from .kt_lane_policy import build_default_policy, KTLanePolicy
+    from .cce_state import load_state as load_cce_state, cce_constants
+    from .oce_state import load_state as load_oce_state, oce_constants
+    from .rwrp_state import load_state as load_rwrp_state, rwrp_constants
 except ImportError:  # pragma: no cover
     try:  # When executed as a script (not a module), relative imports may fail.
         from KT_PROD_CLEANROOM.tools.growth.state.kt_lane_policy import (  # type: ignore[import-not-found]
             build_default_policy,
             KTLanePolicy,
         )
+        from KT_PROD_CLEANROOM.tools.growth.state.cce_state import (  # type: ignore[import-not-found]
+            load_state as load_cce_state,
+            cce_constants,
+        )
+        from KT_PROD_CLEANROOM.tools.growth.state.oce_state import (  # type: ignore[import-not-found]
+            load_state as load_oce_state,
+            oce_constants,
+        )
+        from KT_PROD_CLEANROOM.tools.growth.state.rwrp_state import (  # type: ignore[import-not-found]
+            load_state as load_rwrp_state,
+            rwrp_constants,
+        )
     except ImportError:
         build_default_policy = None  # type: ignore[assignment]
         KTLanePolicy = Any  # type: ignore[assignment]
+        load_cce_state = None  # type: ignore[assignment]
+        cce_constants = lambda: {"cce_step": None, "cce_max": None, "cce_decay": None}  # type: ignore[assignment]
+        load_oce_state = None  # type: ignore[assignment]
+        oce_constants = lambda: {"oce_step": None, "oce_max": None, "oce_decay": None}  # type: ignore[assignment]
+        load_rwrp_state = None  # type: ignore[assignment]
+        rwrp_constants = lambda: {"rwrp_alpha": None, "rwrp_beta": None, "rwrp_max": None}  # type: ignore[assignment]
 
 
 TriBool = Optional[bool]
@@ -41,6 +62,14 @@ class EpochSignals:
     coherence_budget: Optional[float]
     regret_global: Optional[float]
     regret_skip_reason: Optional[str]
+    coverage_cost: Optional[float]
+    coverage_streak: Optional[int]
+    cce_constants: Dict[str, Optional[float]]
+    opportunity_cost: Optional[float]
+    missed_exploration_streak: Optional[int]
+    oce_constants: Dict[str, Optional[float]]
+    rwrp_penalty: Dict[str, float]
+    rwrp_constants: Dict[str, Optional[float]]
     unique_domains: int
     unique_subdomains: int
     entropy_domains: float
@@ -190,6 +219,37 @@ def _extract_signals(root: Path) -> EpochSignals:
         except Exception:
             regret_global = None
 
+    cce_state = None
+    coverage_cost = None
+    coverage_streak = None
+    cce_const = {"cce_step": None, "cce_max": None, "cce_decay": None}
+    oce_state = None
+    opportunity_cost = None
+    missed_exploration_streak = None
+    oce_const = {"oce_step": None, "oce_max": None, "oce_decay": None}
+    rwrp_state = None
+    rwrp_penalties: Dict[str, float] = {}
+    rwrp_const = {"rwrp_alpha": None, "rwrp_beta": None, "rwrp_max": None}
+    try:
+        if load_cce_state is not None:
+            cce_state = load_cce_state()
+            coverage_cost = float(cce_state.coverage_cost)
+            coverage_streak = int(cce_state.coverage_streak)
+            cce_const = cce_constants()
+        if load_oce_state is not None:
+            oce_state = load_oce_state()
+            opportunity_cost = float(oce_state.opportunity_cost)
+            missed_exploration_streak = int(oce_state.missed_exploration_streak)
+            oce_const = oce_constants()
+        if load_rwrp_state is not None:
+            rwrp_state = load_rwrp_state()
+            rwrp_const = rwrp_constants()
+            for lane, data in (rwrp_state.lane_regret_memory or {}).items():
+                rwrp_penalties[lane] = float(data.penalty)
+    except Exception:
+        # fail-closed later when used
+        cce_state = None
+
     return EpochSignals(
         root=root,
         epoch_id=epoch_id,
@@ -201,6 +261,14 @@ def _extract_signals(root: Path) -> EpochSignals:
         coherence_budget=coherence_budget if isinstance(coherence_budget, float) else None,
         regret_global=regret_global if isinstance(regret_global, float) else None,
         regret_skip_reason=regret_skip_reason if isinstance(regret_skip_reason, str) else None,
+        coverage_cost=coverage_cost if isinstance(coverage_cost, float) else None,
+        coverage_streak=coverage_streak if isinstance(coverage_streak, int) else None,
+        cce_constants=cce_const,
+        opportunity_cost=opportunity_cost if isinstance(opportunity_cost, float) else None,
+        missed_exploration_streak=missed_exploration_streak if isinstance(missed_exploration_streak, int) else None,
+        oce_constants=oce_const,
+        rwrp_penalty=rwrp_penalties,
+        rwrp_constants=rwrp_const,
         unique_domains=unique_domains,
         unique_subdomains=unique_subdomains,
         entropy_domains=entropy_domains,
@@ -299,6 +367,7 @@ def _build_state_description(
     consecutive_bad: int,
     delayed_violation_count: int,
     regret_pressure: float,
+    coverage_fatigue: float,
 ) -> str:
     def _tri_bool(value: TriBool) -> int:
         if value is True:
@@ -319,6 +388,10 @@ def _build_state_description(
         f"coherence_debt={(signals.coherence_debt if signals.coherence_debt is not None else -1)}",
         f"coherence_budget={(signals.coherence_budget if signals.coherence_budget is not None else -1)}",
         f"regret_global={(signals.regret_global if signals.regret_global is not None else -1)}",
+        f"coverage_cost={(signals.coverage_cost if signals.coverage_cost is not None else -1)}",
+        f"coverage_streak={(signals.coverage_streak if signals.coverage_streak is not None else -1)}",
+        f"opportunity_cost={(signals.opportunity_cost if signals.opportunity_cost is not None else -1)}",
+        f"missed_exploration_streak={(signals.missed_exploration_streak if signals.missed_exploration_streak is not None else -1)}",
         f"unique_domains={signals.unique_domains}",
         f"unique_subdomains={signals.unique_subdomains}",
         f"entropy_domains={signals.entropy_domains}",
@@ -630,6 +703,27 @@ def main() -> int:
         low_coherence_count=target_triggers.get("low_coherence_count", 0),
         consecutive_bad=consecutive_bad,
     )
+    cce_applied = False
+    cce_reason: Optional[str] = None
+    coverage_cost = target.coverage_cost if target.coverage_cost is not None else 0.0
+    # Simple deterministic scoring with CCE penalty on coverage.
+    opportunity_cost = target.opportunity_cost if target.opportunity_cost is not None else 0.0
+    lane_scores = {
+        "COVERAGE_HOP_RECOVERY": max(0.0, 1.0 - coverage_cost - opportunity_cost),
+        "REANCHOR": 1.0,
+        "STABILIZER": 1.0,
+        "DEPTH_CONSOLIDATION": 1.0,
+        "NONE": 0.5,
+    }
+    # Regret-weighted replay penalty by lane.
+    rwrp_penalty = target.rwrp_penalty or {}
+    for lane, pen in rwrp_penalty.items():
+        lane_scores[lane] = max(0.0, lane_scores.get(lane, 0.0) - pen)
+    best_lane = max(lane_scores.items(), key=lambda kv: kv[1])[0]
+    if recommended_lane == "COVERAGE_HOP_RECOVERY" and lane_scores["COVERAGE_HOP_RECOVERY"] < lane_scores[best_lane]:
+        recommended_lane = best_lane
+        cce_applied = True
+        cce_reason = f"coverage_cost_penalty:{coverage_cost}"
     regret_bias_applied = False
     regret_bias_reason: Optional[str] = None
     # Soft, deterministic bias: if prior regret was high for coverage, nudge to REANCHOR.
@@ -666,6 +760,11 @@ def main() -> int:
         "recommended_lane_internal": recommended_lane,
         "regret_bias_applied": regret_bias_applied,
         "regret_bias_reason": regret_bias_reason,
+        "cce_applied": cce_applied,
+        "cce_reason": cce_reason,
+        "oce_applied": opportunity_cost > 0.0,
+        "oce_reason": "missed_exploration_streak>=1" if opportunity_cost > 0.0 else None,
+        "rwrp_penalties": rwrp_penalty,
         "triggered_rules": triggered,
         "triggered": triggered,  # backward compatible alias
         "confidence": confidence,
@@ -696,6 +795,14 @@ def main() -> int:
             "regret_prev_global": prev_regret_global,
             "regret_prev_skip_reason": prev_regret_skip,
             "coverage_fatigue": coverage_fatigue,
+            "coverage_cost": target.coverage_cost,
+            "coverage_streak": target.coverage_streak,
+            "cce_constants": target.cce_constants,
+            "opportunity_cost": target.opportunity_cost,
+            "missed_exploration_streak": target.missed_exploration_streak,
+            "oce_constants": target.oce_constants,
+            "rwrp_penalty": rwrp_penalty,
+            "rwrp_constants": target.rwrp_constants,
         },
         "trigger_evidence": target_triggers,
         "history": {
@@ -751,6 +858,7 @@ def main() -> int:
             consecutive_bad=consecutive_bad,
             delayed_violation_count=delayed_count,
             regret_pressure=regret_pressure,
+            coverage_fatigue=coverage_fatigue,
         )
         _log_lane_policy(
             policy,

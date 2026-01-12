@@ -1299,32 +1299,10 @@ def _parse_args() -> argparse.Namespace:
 
 
 def main() -> int:
-    args = _parse_args()
-    if args.preflight:
-        return preflight_epoch(Path(args.epoch), resume=args.resume, artifacts_root=None, auto_bump=not args.no_auto_bump)
-    summary = run_epoch(
-        Path(args.epoch),
-        resume=args.resume,
-        salvage=args.salvage,
-        salvage_out_root=Path(args.salvage_out_root),
-        auto_bump=not args.no_auto_bump,
-        quiet=args.summary_only,
-        debug_run_roots=args.debug_run_roots,
+    raise RuntimeError(
+        "epoch_orchestrator.py is not an entrypoint. "
+        "Use run_autonomous_escalation.py or another orchestration wrapper."
     )
-    epoch_id = summary.get("epoch_id", "UNKNOWN")
-    profile = summary.get("epoch_profile", "UNKNOWN")
-    verdict = summary.get("epoch_verdict", "UNKNOWN")
-    passed = summary.get("crucibles_passed", "?")
-    total = summary.get("crucibles_total", "?")
-
-    verdict_line = f"EPOCH VERDICT: {verdict} ({profile}) — crucibles_passed={passed}/{total} — epoch_id={epoch_id}"
-    if args.summary_only:
-        print(verdict_line)
-    else:
-        # Preserve JSON-only stdout for existing tooling; print verdict to stderr for humans.
-        print(verdict_line, file=sys.stderr)
-        print(json.dumps(summary, ensure_ascii=True))
-    return 0
 
 
 if __name__ == "__main__":
