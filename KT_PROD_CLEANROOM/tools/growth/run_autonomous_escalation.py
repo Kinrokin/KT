@@ -5,9 +5,9 @@ import subprocess
 import sys
 import time
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict
-from datetime import datetime
 import tempfile
 
 _REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -234,7 +234,7 @@ def main() -> None:
                 _append_jsonl(
                     args.policy_log,
                     {
-                        "timestamp": datetime.utcnow().isoformat() + "Z",
+                        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
                         "iteration": idx,
                         "epoch_id": suggestion.get("epoch_id"),
                         "heuristic_lane": suggested_lane,

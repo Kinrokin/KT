@@ -11,6 +11,7 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 MODEL_NAME = "mistralai/Mistral-7B-v0.1"
 LORA_PATH = "KT_LANE_LORA_PHASE_A/kt_lane_lora/kt_lane_lora_adapter"
+MAX_TOKENS = 512
 
 
 class KTLanePolicy:
@@ -26,6 +27,7 @@ class KTLanePolicy:
             return_tensors="pt",
             truncation=True,
             padding=True,
+            max_length=MAX_TOKENS,
         ).to(self.model.device)
 
         with torch.no_grad():
