@@ -14,7 +14,7 @@ Proof notes:
 - Kernel writes receipts into a per-run artifacts directory (no repo pollution).
 
 Commands executed (example epoch):
-- `python KT_PROD_CLEANROOM/tools/growth/orchestrator/epoch_orchestrator.py --epoch KT_PROD_CLEANROOM/tools/growth/epochs/EPOCH-0001-GOV-HONESTY.json`
+- `python -m KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_orchestrator --epoch KT_PROD_CLEANROOM/tools/growth/epochs/EPOCH-0001-GOV-HONESTY.json --mode normal`
 
 Result:
 - Epoch summary written to `KT_PROD_CLEANROOM/tools/growth/artifacts/epochs/EPOCH-0001-GOV-HONESTY/epoch_summary.json`

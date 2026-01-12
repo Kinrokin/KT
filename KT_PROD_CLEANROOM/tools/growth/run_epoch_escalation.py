@@ -1,10 +1,16 @@
 import json
 import os
-import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path("KT_PROD_CLEANROOM")
 ARTIFACT_EPOCHS = ROOT / "tools" / "growth" / "artifacts" / "epochs"
+
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+
+from KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_orchestrator import run_epoch_from_plan
 
 PLAN_FILES = {
     "next": ROOT / "tools" / "growth" / "orchestrator" / "examples" / "EPOCH_NEXT_AUTO.json",
@@ -43,14 +49,8 @@ def inspect_micro_steps(epoch_root: Path):
 def run_epoch(plan_key: str, env: dict):
     plan_path = PLAN_FILES[plan_key]
     print(f"\n=== RUNNING PLAN {plan_key.upper()} ({plan_path.name}) ===")
-    cmd = [
-        "python",
-        str(ROOT / "tools" / "growth" / "orchestrator" / "epoch_orchestrator.py"),
-        "--epoch",
-        str(plan_path),
-        "--salvage",
-    ]
-    subprocess.run(cmd, env=env, check=True)
+    os.environ.update(env)
+    run_epoch_from_plan(plan_path=plan_path, resume=False, mode="salvage")
 
 
 def main():

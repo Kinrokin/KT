@@ -18,23 +18,22 @@ if str(_ORCH_DIR) not in sys.path:
 ROOT = Path("KT_PROD_CLEANROOM")
 ARTIFACT_EPOCHS = ROOT / "tools" / "growth" / "artifacts" / "epochs"
 from KT_PROD_CLEANROOM.tools.growth.state.lane_to_epoch import resolve_epoch_spec, lane_for_plan
-from KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_orchestrator import run_epoch
+from KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_orchestrator import run_epoch_from_plan
 from KT_PROD_CLEANROOM.tools.growth.state.cce_state import update_state as update_cce_state
 from KT_PROD_CLEANROOM.tools.growth.state.oce_state import update_state as update_oce_state
 from KT_PROD_CLEANROOM.tools.growth.state.rwrp_state import update_state as update_rwrp_state
 
 
 def run_plan(plan_path: Path, *, quiet: bool = False) -> Dict[str, any]:
-    """Execute a single epoch plan via orchestrator (no shell)."""
-    summary = run_epoch(
-        plan_path,
+    """Execute a single epoch plan via orchestrator (canonical API)."""
+    return run_epoch_from_plan(
+        plan_path=plan_path,
         resume=False,
-        salvage=True,
+        mode="salvage",
         salvage_out_root=ROOT / "tools" / "growth" / "artifacts" / "salvage",
         auto_bump=True,
         quiet=quiet,
     )
-    return summary
 
 
 def latest_epoch_root() -> Path:

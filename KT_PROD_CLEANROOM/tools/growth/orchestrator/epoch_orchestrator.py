@@ -1280,9 +1280,10 @@ def _parse_args() -> argparse.Namespace:
         help="Print only a single EPOCH VERDICT line (suppresses JSON output).",
     )
     p.add_argument(
-        "--salvage",
-        action="store_true",
-        help="Run non-gating salvage extraction after epoch completion",
+        "--mode",
+        choices=["normal", "shadow", "salvage"],
+        default="normal",
+        help="Execution mode (normal/shadow/salvage).",
     )
     p.add_argument(
         "--salvage-out-root",
@@ -1302,11 +1303,81 @@ def _parse_args() -> argparse.Namespace:
     return p.parse_args()
 
 
-def main() -> int:
-    raise RuntimeError(
-        "epoch_orchestrator.py is not an entrypoint. "
-        "Use run_autonomous_escalation.py or another orchestration wrapper."
+def _assert_cli_schema(argv: List[str]) -> None:
+    allowed = {
+        "--epoch",
+        "--resume",
+        "--preflight",
+        "--summary-only",
+        "--mode",
+        "--salvage-out-root",
+        "--no-auto-bump",
+        "--debug-run-roots",
+        "-h",
+        "--help",
+    }
+    for arg in argv:
+        if not arg.startswith("-"):
+            continue
+        key = arg.split("=", 1)[0]
+        if key not in allowed:
+            raise EpochSchemaError(f"Unknown CLI argument: {arg} (fail-closed)")
+
+
+def run_epoch_from_plan(
+    *,
+    plan_path: Path,
+    resume: bool = False,
+    mode: str = "normal",
+    env: Optional[Dict[str, str]] = None,
+    salvage_out_root: Optional[Path] = None,
+    auto_bump: bool = True,
+    quiet: bool = False,
+) -> Dict[str, object]:
+    """
+    Canonical epoch invocation. Tooling-only; advisory.
+    mode: normal | shadow | salvage
+    """
+    if mode not in {"normal", "shadow", "salvage"}:
+        raise EpochSchemaError(f"Invalid mode '{mode}' (fail-closed)")
+    salvage = mode == "salvage"
+    return run_epoch(
+        plan_path,
+        resume=resume,
+        salvage=salvage,
+        salvage_out_root=salvage_out_root,
+        auto_bump=auto_bump,
+        quiet=quiet,
     )
+
+
+def main() -> int:
+    _assert_cli_schema(sys.argv[1:])
+    args = _parse_args()
+    if args.preflight:
+        return preflight_epoch(Path(args.epoch), resume=args.resume, artifacts_root=None, auto_bump=not args.no_auto_bump)
+    summary = run_epoch_from_plan(
+        plan_path=Path(args.epoch),
+        resume=args.resume,
+        mode=args.mode,
+        env=None,
+        salvage_out_root=Path(args.salvage_out_root),
+        auto_bump=not args.no_auto_bump,
+        quiet=args.summary_only,
+    )
+    epoch_id = summary.get("epoch_id", "UNKNOWN")
+    profile = summary.get("epoch_profile", "UNKNOWN")
+    verdict = summary.get("epoch_verdict", "UNKNOWN")
+    passed = summary.get("crucibles_passed", "?")
+    total = summary.get("crucibles_total", "?")
+
+    verdict_line = f"EPOCH VERDICT: {verdict} ({profile}) — crucibles_passed={passed}/{total} — epoch_id={epoch_id}"
+    if args.summary_only:
+        print(verdict_line)
+    else:
+        print(verdict_line, file=sys.stderr)
+        print(json.dumps(summary, ensure_ascii=True))
+    return 0
 
 
 if __name__ == "__main__":

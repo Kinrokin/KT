@@ -14,6 +14,14 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 SCHEMA_ID = "kt.e2e_gate"
 SCHEMA_VERSION = "1.0"
 
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+
+from KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_orchestrator import (
+    preflight_epoch,
+    run_epoch_from_plan,
+)
 
 @dataclass(frozen=True)
 class StepResult:
@@ -24,7 +32,7 @@ class StepResult:
 
 def _repo_root() -> Path:
     # .../KT_PROD_CLEANROOM/tools/growth/e2e_gate.py -> repo root
-    return Path(__file__).resolve().parents[3]
+    return _REPO_ROOT
 
 
 def _cleanroom_root() -> Path:
@@ -160,7 +168,6 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     cleanroom_root = _cleanroom_root()
 
     provider_audit = cleanroom_root / "tools" / "growth" / "providers" / "provider_audit.py"
-    orchestrator = cleanroom_root / "tools" / "growth" / "orchestrator" / "epoch_orchestrator.py"
 
     steps: List[StepResult] = []
 
@@ -198,27 +205,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     milestone_plan = Path(args.milestone_plan)
     pressure_plan = Path(args.pressure_plan)
+    os.environ.update(env_overrides)
 
     # Step 2: Milestone preflight (hard gate)
-    rc, out, err = _run(
-        args=[
-            str(Path(sys.executable).resolve()),
-            str(orchestrator),
-            "--epoch",
-            str(milestone_plan),
-            "--preflight",
-        ],
-        cwd=repo_root,
-        env_overrides=env_overrides,
-        timeout_s=args.timeout_s,
-        verbose=args.verbose,
-    )
+    rc = preflight_epoch(milestone_plan, resume=False, artifacts_root=None, auto_bump=True)
     if rc != 0:
         steps.append(
             StepResult(
                 "milestone_preflight",
                 "FAIL",
-                {"exit_code": rc, "stdout": out[:2000], "stderr": err[:2000]},
+                {"exit_code": rc},
             )
         )
         _emit_report(args, repo_root, cleanroom_root, steps, start)
@@ -227,26 +223,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     # Step 3: Milestone run (hard gate)
     before = _snapshot_epoch_dirs()
-    rc, out, err = _run(
-        args=[
-            str(Path(sys.executable).resolve()),
-            str(orchestrator),
-            "--epoch",
-            str(milestone_plan),
-            "--salvage",
-            "--summary-only",
-        ],
-        cwd=repo_root,
-        env_overrides=env_overrides,
-        timeout_s=args.timeout_s,
-        verbose=args.verbose,
-    )
-    if rc != 0:
+    try:
+        run_epoch_from_plan(plan_path=milestone_plan, resume=False, mode="salvage")
+    except Exception as exc:
         steps.append(
             StepResult(
                 "milestone_run",
                 "FAIL",
-                {"exit_code": rc, "stdout": out[:2000], "stderr": err[:2000]},
+                {"error": str(exc)},
             )
         )
         _emit_report(args, repo_root, cleanroom_root, steps, start)
@@ -276,26 +260,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     pressure_results: List[Dict[str, Any]] = []
     for i in range(args.pressure_runs):
         before = _snapshot_epoch_dirs()
-        rc, out, err = _run(
-            args=[
-                str(Path(sys.executable).resolve()),
-                str(orchestrator),
-                "--epoch",
-                str(pressure_plan),
-                "--salvage",
-                "--summary-only",
-            ],
-            cwd=repo_root,
-            env_overrides=env_overrides,
-            timeout_s=args.timeout_s,
-            verbose=args.verbose,
-        )
-        if rc != 0:
+        try:
+            run_epoch_from_plan(plan_path=pressure_plan, resume=False, mode="salvage")
+        except Exception as exc:
             steps.append(
                 StepResult(
                     "pressure_run",
                     "FAIL",
-                    {"index": i + 1, "exit_code": rc, "stdout": out[:2000], "stderr": err[:2000]},
+                    {"index": i + 1, "error": str(exc)},
                 )
             )
             _emit_report(args, repo_root, cleanroom_root, steps, start)
@@ -347,4 +319,3 @@ def _emit_report(args: argparse.Namespace, repo_root: Path, cleanroom_root: Path
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
