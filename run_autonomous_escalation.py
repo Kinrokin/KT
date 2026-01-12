@@ -3,6 +3,7 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 from collections import Counter
 from pathlib import Path
 from typing import Dict
@@ -11,23 +12,22 @@ from datetime import datetime
 ROOT = Path("KT_PROD_CLEANROOM")
 ARTIFACT_EPOCHS = ROOT / "tools" / "growth" / "artifacts" / "epochs"
 from KT_PROD_CLEANROOM.tools.growth.state.lane_to_epoch import resolve_epoch_spec, lane_for_plan
-from KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_orchestrator import run_epoch
+from KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_orchestrator import run_epoch_from_plan
 from KT_PROD_CLEANROOM.tools.growth.state.cce_state import update_state as update_cce_state
 from KT_PROD_CLEANROOM.tools.growth.state.oce_state import update_state as update_oce_state
 from KT_PROD_CLEANROOM.tools.growth.state.rwrp_state import update_state as update_rwrp_state
 
 
 def run_plan(plan_path: Path, *, quiet: bool = False) -> Dict[str, any]:
-    """Execute a single epoch plan via orchestrator (no shell)."""
-    summary = run_epoch(
-        plan_path,
+    """Execute a single epoch plan via orchestrator (canonical API)."""
+    return run_epoch_from_plan(
+        plan_path=plan_path,
         resume=True,
-        salvage=True,
+        mode="salvage",
         salvage_out_root=ROOT / "tools" / "growth" / "artifacts" / "salvage",
         auto_bump=True,
         quiet=quiet,
     )
-    return summary
 
 
 def latest_epoch_root() -> Path:
@@ -37,9 +37,11 @@ def latest_epoch_root() -> Path:
 
 def run_plan_suggester() -> Dict[str, any]:
     env = os.environ.copy()
+    env["PYTHONPATH"] = str(Path.cwd())
     cmd = [
         "python",
-        str(ROOT / "tools" / "growth" / "state" / "plan_suggester.py"),
+        "-m",
+        "KT_PROD_CLEANROOM.tools.growth.state.plan_suggester",
         "--epochs-dir",
         str(ARTIFACT_EPOCHS),
         "--write-epoch",
@@ -123,6 +125,23 @@ def _write_baseline_suggestion(epoch_root: Path) -> None:
     (epoch_root / "plan_suggestion.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
 
+def _prepare_runtime_plan(base_plan: Path, suffix: str) -> Path:
+    data = json.loads(base_plan.read_text(encoding="utf-8"))
+    base_id = data.get("epoch_id") or base_plan.stem
+    data["epoch_id"] = f"{base_id}_{suffix}"
+    for key in ("epoch_root", "epoch_dir", "artifact_dir", "output_dir", "summary_path"):
+        if key in data:
+            data.pop(key, None)
+    if isinstance(data.get("paths"), dict):
+        for key in ("epoch_root", "epoch_dir", "artifact_dir", "output_dir", "summary_path"):
+            data["paths"].pop(key, None)
+    tmp = tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False, encoding="utf-8")
+    json.dump(data, tmp, sort_keys=True, indent=2, ensure_ascii=True)
+    tmp.flush()
+    tmp.close()
+    return Path(tmp.name)
+
+
 def main() -> None:
     args = parse_args()
     os.environ["KT_LIVE"] = "0"
@@ -141,7 +160,13 @@ def main() -> None:
 
     print("=== STEP A: baseline coverage ===")
     baseline_plan = resolve_epoch_spec("COVERAGE_HOP_RECOVERY")
-    baseline_summary = run_plan(baseline_plan)
+    runtime_baseline = _prepare_runtime_plan(
+        baseline_plan, f"BASELINE_{int(datetime.utcnow().timestamp() * 1000)}"
+    )
+    try:
+        baseline_summary = run_plan(runtime_baseline)
+    finally:
+        runtime_baseline.unlink(missing_ok=True)
     try:
         update_cce_state(executed_lane=lane_for_plan(baseline_plan), epoch_id=baseline_summary.get("epoch_id", "BOOTSTRAP"))
         update_oce_state(executed_lane=lane_for_plan(baseline_plan), epoch_id=baseline_summary.get("epoch_id", "BOOTSTRAP"))
@@ -155,7 +180,14 @@ def main() -> None:
     epoch_roots = [p for p in ARTIFACT_EPOCHS.iterdir() if p.is_dir()]
     if len(epoch_roots) < 2:
         print("=== Seeding second baseline coverage for history ===")
-        run_plan(resolve_epoch_spec("COVERAGE_HOP_RECOVERY"))
+        second_plan = resolve_epoch_spec("COVERAGE_HOP_RECOVERY")
+        runtime_second = _prepare_runtime_plan(
+            second_plan, f"BASELINE_{int(datetime.utcnow().timestamp() * 1000)}"
+        )
+        try:
+            run_plan(runtime_second)
+        finally:
+            runtime_second.unlink(missing_ok=True)
         try:
             _write_baseline_suggestion(latest_epoch_root())
         except Exception as exc:
@@ -211,7 +243,11 @@ def main() -> None:
             except Exception as exc:
                 record["policy_error"] = str(exc)
 
-        summary = run_plan(plan_path)
+        runtime_plan = _prepare_runtime_plan(plan_path, f"RUN{idx:03d}")
+        try:
+            summary = run_plan(runtime_plan)
+        finally:
+            runtime_plan.unlink(missing_ok=True)
         try:
             executed_lane = lane_for_plan(plan_path)
             updated = update_cce_state(executed_lane=executed_lane, epoch_id=summary.get("epoch_id", "UNKNOWN"))
