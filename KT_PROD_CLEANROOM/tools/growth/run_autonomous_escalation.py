@@ -181,7 +181,14 @@ def main() -> None:
     epoch_roots = [p for p in ARTIFACT_EPOCHS.iterdir() if p.is_dir()]
     if len(epoch_roots) < 2:
         print("=== Seeding second baseline coverage for history ===")
-        run_plan(resolve_epoch_spec("COVERAGE_HOP_RECOVERY"))
+        second_plan = resolve_epoch_spec("COVERAGE_HOP_RECOVERY")
+        runtime_second = _prepare_runtime_plan(
+            second_plan, f"BASELINE_{int(datetime.utcnow().timestamp() * 1000)}"
+        )
+        try:
+            run_plan(runtime_second)
+        finally:
+            runtime_second.unlink(missing_ok=True)
         try:
             _write_baseline_suggestion(latest_epoch_root())
         except Exception as exc:
