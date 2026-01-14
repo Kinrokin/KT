@@ -1,0 +1,99 @@
+{
+  "schema": "POLICY_B_VARIABLE_REGISTRY_V1",
+  "version": 1,
+  "notes": "Policy B base-factor registry. Values are bounded and low; no pressure amplification.",
+  "variables": [
+    {
+      "name": "paradox_pressure",
+      "type": "enum",
+      "bounds": [0, 1, 2],
+      "policy_b_value": 0,
+      "notes": "bounded_low"
+    },
+    {
+      "name": "novelty_pressure",
+      "type": "float",
+      "bounds": [0.0, 1.0],
+      "policy_b_value": 0.1,
+      "notes": "bounded_low"
+    },
+    {
+      "name": "verification_pressure",
+      "type": "float",
+      "bounds": [0.0, 1.0],
+      "policy_b_value": 0.1,
+      "notes": "bounded_low"
+    },
+    {
+      "name": "time_pressure",
+      "type": "float",
+      "bounds": [0.0, 1.0],
+      "policy_b_value": 0.0,
+      "notes": "bounded_low"
+    },
+    {
+      "name": "risk_pressure",
+      "type": "float",
+      "bounds": [0.0, 1.0],
+      "policy_b_value": 0.0,
+      "notes": "bounded_low"
+    },
+    {
+      "name": "entropy_target",
+      "type": "float",
+      "bounds": [0.0, 1.0],
+      "policy_b_value": null,
+      "notes": "observe_only"
+    },
+    {
+      "name": "proof_density",
+      "type": "float",
+      "bounds": [0.0, 1.0],
+      "policy_b_value": null,
+      "notes": "measured_only"
+    },
+    {
+      "name": "entropy",
+      "type": "float",
+      "bounds": [0.0, 1.0],
+      "policy_b_value": null,
+      "notes": "computed_only"
+    },
+    {
+      "name": "coverage_fatigue",
+      "type": "float",
+      "bounds": [0.0, 1.0],
+      "policy_b_value": null,
+      "notes": "computed_only"
+    },
+    {
+      "name": "curvature",
+      "type": "float",
+      "bounds": [0.0, 1.0],
+      "policy_b_value": null,
+      "notes": "logged_only"
+    },
+    {
+      "name": "temperature",
+      "type": "float",
+      "bounds": [0.0, 1.0],
+      "policy_b_value": 0.1,
+      "notes": "fixed_baseline"
+    }
+  ],
+  "paradox_handling": {
+    "pas_enabled": true,
+    "apf_enabled": true,
+    "pog_enabled": true,
+    "belnap_states_logged": true,
+    "both_events_counted": true
+  },
+  "governance_invariants": [
+    "write_once_refusal",
+    "invalid_domain_rejection",
+    "missing_receipt_failure",
+    "kt_live_proof_gate",
+    "training_runtime_air_gap",
+    "court_gated_recommendation_logic"
+  ]
+}

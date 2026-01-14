@@ -1,0 +1,41 @@
+schema: "kt.crucible.spec"
+schema_version: 1
+
+crucible_id: "CRU-PARADOX-01"
+title: "Paradox identification"
+domain: "paradox.contradiction"
+tags: ["paradox", "contradiction", "logic"]
+
+kernel_targets:
+  - "KERNEL_COVERAGE_BASELINE"
+  - "V2_SOVEREIGN"
+
+input:
+  mode: "RAW_INPUT_STRING"
+  prompt: |
+    Consider the statement: "This sentence is false."
+    Determine if it is a paradox and label its type as "liar" or "none".
+    Return JSON with keys: status, contains_paradox, paradox_type, head_hash.
+
+budgets:
+  time_ms: 20000
+  stdout_max_bytes: 200000
+  stderr_max_bytes: 200000
+  runner_memory_max_mb: 1024
+  kernel_timeout_kill_ms: 20500
+
+expect:
+  expected_outcome: "PASS"
+  output_contract:
+    must_be_json: true
+    required_keys: ["status", "contains_paradox", "paradox_type", "head_hash"]
+    forbidden_substrings: ["chain-of-thought", "CoT:", "Reasoning:"]
+  replay_verification: "NOT_APPLICABLE"
+  governance_expectations:
+    required_event_types: []
+    forbidden_event_types: ["STATE_MUTATION", "CURRICULUM_INGEST", "PROVIDER_CALL"]
+    event_count_min: 0
+    event_count_max: 50
+  thermo_expectations:
+    must_enforce_budget: true
+    expected_budget_verdict: "WITHIN_BUDGET"

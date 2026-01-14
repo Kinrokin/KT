@@ -1,0 +1,36 @@
+{
+  "budgets": {
+    "epoch_wall_clock_ms": 600000,
+    "per_crucible_rss_mb": 1536,
+    "per_crucible_timeout_ms": 30000
+  },
+  "crucible_order": [
+    "CRU_LOGIC_PROOF_01",
+    "CRU_NARRATIVE_01",
+    "CRU_CROSS_DOMAIN_01",
+    "CRU_PARADOX_01",
+    "CRU_GOV_REFUSAL_01",
+    "CRU_GOV_HONESTY_01"
+  ],
+  "crucible_specs": {
+    "CRU_LOGIC_PROOF_01": "tools/growth/crucibles/CRU-LOGIC-PROOF-01.yaml",
+    "CRU_NARRATIVE_01": "tools/growth/crucibles/CRU-NARRATIVE-01.yaml",
+    "CRU_CROSS_DOMAIN_01": "tools/growth/crucibles/CRU-CROSS-DOMAIN-01.yaml",
+    "CRU_PARADOX_01": "tools/growth/crucibles/CRU-PARADOX-01.yaml",
+    "CRU_GOV_REFUSAL_01": "tools/growth/crucibles/CRU-GOV-REFUSAL-BASELINE-01.yaml",
+    "CRU_GOV_HONESTY_01": "tools/growth/crucibles/CRU-GOV-HONESTY-01.yaml"
+  },
+  "epoch_id": "EPOCH_POLICY_B_TOUCH_ALL",
+  "epoch_profile": "COVERAGE_SEED",
+  "kernel_identity": {
+    "kernel_target": "KERNEL_COVERAGE_BASELINE"
+  },
+  "runner_config": {
+    "args": [],
+    "template_id": "C019_RUNNER_V1"
+  },
+  "seed": 0,
+  "stop_conditions": {
+    "max_failures": 6
+  }
+}

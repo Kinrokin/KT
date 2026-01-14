@@ -31,6 +31,7 @@ except ImportError:  # pragma: no cover
 TriBool = Optional[bool]
 
 DEFAULT_HISTORY = 50
+POLICY_B_REGISTRY_PATH = Path(__file__).resolve().parent / "policy_b_variable_registry.json"
 
 @dataclass(frozen=True)
 class EpochSignals:
@@ -80,6 +81,30 @@ def _read_optional_json(path: Path) -> Optional[Dict[str, Any]]:
     if not path.exists():
         return None
     return _load_json(path)
+
+
+def _load_policy_b_registry() -> Dict[str, Any]:
+    registry = _load_json(POLICY_B_REGISTRY_PATH)
+    if registry.get("schema") != "POLICY_B_VARIABLE_REGISTRY_V1":
+        raise PlanSuggestError("policy_b_variable_registry.json schema mismatch (fail-closed)")
+    if registry.get("version") != 1:
+        raise PlanSuggestError("policy_b_variable_registry.json version mismatch (fail-closed)")
+    return registry
+
+
+def _policy_b_values(registry: Dict[str, Any]) -> Dict[str, Any]:
+    values: Dict[str, Any] = {}
+    for entry in registry.get("variables", []):
+        if not isinstance(entry, dict):
+            continue
+        name = entry.get("name")
+        if not isinstance(name, str):
+            continue
+        values[name] = entry.get("policy_b_value")
+    for key in ("paradox_handling", "governance_invariants"):
+        if key in registry:
+            values[key] = registry.get(key)
+    return values
 
 
 def _discover_epochs(epochs_dir: Path) -> List[Path]:
@@ -350,6 +375,7 @@ def _build_state_description(
     delayed_violation_count: int,
     regret_pressure: float,
     coverage_fatigue: float,
+    policy_b_values: Dict[str, Any],
 ) -> str:
     def _tri_bool(value: TriBool) -> int:
         if value is True:
@@ -357,6 +383,11 @@ def _build_state_description(
         if value is False:
             return 0
         return -1  # unknown / missing evidence
+
+    def _fmt_value(value: Any) -> str:
+        if isinstance(value, (dict, list)):
+            return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+        return str(value)
 
     parts = [
         "KT_STATE_V1",
@@ -388,6 +419,8 @@ def _build_state_description(
         f"regret_pressure={regret_pressure}",
         f"coverage_fatigue={coverage_fatigue}",
     ]
+    for key in sorted(policy_b_values.keys()):
+        parts.append(f"policy_b_{key}={_fmt_value(policy_b_values[key])}")
     return "\n".join(parts)
 
 
@@ -673,6 +706,8 @@ def main() -> int:
         else:
             break
     coverage_fatigue = min(coverage_streak, 3) / 3.0 if coverage_streak > 0 else 0.0
+    policy_b_registry = _load_policy_b_registry()
+    policy_b_values = _policy_b_values(policy_b_registry)
 
     recommended_lane = _pick_lane(
         resolve_not_clean=target_triggers["resolve_not_clean"],
@@ -785,6 +820,8 @@ def main() -> int:
             "oce_constants": target.oce_constants,
             "rwrp_penalty": rwrp_penalty,
             "rwrp_constants": target.rwrp_constants,
+            "policy_b_values": policy_b_values,
+            "policy_b_registry_path": str(POLICY_B_REGISTRY_PATH),
         },
         "trigger_evidence": target_triggers,
         "history": {
@@ -841,6 +878,7 @@ def main() -> int:
             delayed_violation_count=delayed_count,
             regret_pressure=regret_pressure,
             coverage_fatigue=coverage_fatigue,
+            policy_b_values=policy_b_values,
         )
         _log_lane_policy(
             policy,

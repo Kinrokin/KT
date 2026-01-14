@@ -1,0 +1,40 @@
+schema: "kt.crucible.spec"
+schema_version: 1
+
+crucible_id: "CRU-LOGIC-PROOF-01"
+title: "Logic proof check (deterministic)"
+domain: "logic.proof"
+tags: ["logic", "proof", "math"]
+
+kernel_targets:
+  - "KERNEL_COVERAGE_BASELINE"
+  - "V2_SOVEREIGN"
+
+input:
+  mode: "RAW_INPUT_STRING"
+  prompt: |
+    Compute 17 * 23 and verify the statement "17 * 23 = 391".
+    Return JSON with keys: status, result, statement_true, head_hash.
+
+budgets:
+  time_ms: 20000
+  stdout_max_bytes: 200000
+  stderr_max_bytes: 200000
+  runner_memory_max_mb: 1024
+  kernel_timeout_kill_ms: 20500
+
+expect:
+  expected_outcome: "PASS"
+  output_contract:
+    must_be_json: true
+    required_keys: ["status", "result", "statement_true", "head_hash"]
+    forbidden_substrings: ["chain-of-thought", "CoT:", "Reasoning:"]
+  replay_verification: "NOT_APPLICABLE"
+  governance_expectations:
+    required_event_types: []
+    forbidden_event_types: ["STATE_MUTATION", "CURRICULUM_INGEST", "PROVIDER_CALL"]
+    event_count_min: 0
+    event_count_max: 50
+  thermo_expectations:
+    must_enforce_budget: true
+    expected_budget_verdict: "WITHIN_BUDGET"
