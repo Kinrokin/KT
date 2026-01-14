@@ -1,0 +1,84 @@
+dataset_build_id: KT_OBSERVER_B_PHASE_2_5
+
+# Source artifacts used purely for observer-only interpretation.
+source_artifacts:
+  - path: KT_PROD_CLEANROOM/tools/growth/bench/kt_phaseA2_dataset.jsonl
+    type: phaseA2
+  - path: KT_PROD_CLEANROOM/tools/growth/state/plan_suggestions.jsonl
+    type: plan_suggestion
+
+# Enforcement layer: explicit bans + transforms.
+enforcement_layer:
+  forbidden_patterns:
+    # Prescriptive / imperative / optimization verbs (case-insensitive).
+    prescriptive_verbs: "(?i)\\b(should|must|try|attempt|increase|decrease|switch|move|enable|disable|activate|escalate|recommend|optimize|advise|execute)\\b"
+    # Agency / action-selection / future-prediction language.
+    causal_agency: "(?i)\\b(next step|next_step|action|decision|plan\\b|response\\b|execute|run\\b|command\\b|shutdown\\b|sequence\\b|apply\\b|select\\b|predict\\b|will\\b)\\b"
+    # Floating-point literals (blocks scalar thresholds/control law leakage).
+    scalar_literals: "\\b\\d+\\.\\d+\\b"
+
+  # Keys that imply control, execution, or targets are dropped/rejected.
+  forbidden_keys:
+    - action
+    - actions
+    - next_step
+    - decision
+    - command
+    - shutdown
+    - runbook
+    - threshold
+    - temperature
+    - entropy_target
+    - policy_distribution
+    - policy_confidence
+    - plan_run
+    - suggested_lane
+    - suggested_lane_internal
+    - recommended_lane
+    - recommended_lane_internal
+    - executor_trace
+    - tool_calls
+    - retries
+    - remediation
+    - fix
+    - patch
+    - targets
+    - labels_generated_by_model
+
+  transformations:
+    # Scalars -> enums (only if scalars are present; result contains no floats).
+    scalars_to_enums:
+      entropy:
+        bins:
+          - { lt: 0.3, value: "CRITICAL" }
+          - { gte: 0.3, lt: 0.5, value: "LOW" }
+          - { gte: 0.5, lt: 0.8, value: "STABLE" }
+          - { gte: 0.8, value: "HIGH" }
+        out_key: "ENTROPY_STATUS"
+      coherence:
+        bins:
+          - { lt: 0.4, value: "DECOHERENT" }
+          - { gte: 0.4, lt: 0.7, value: "VOLATILE" }
+          - { gte: 0.7, value: "COHERENT" }
+        out_key: "COHERENCE_STATUS"
+
+    # Drop raw scalars after conversion to enums.
+    drop_keys_after_transform:
+      - entropy
+      - coherence
+      - coverage_fatigue
+      - temperature
+      - paradox_pressure
+      - risk_pressure
+      - novelty_pressure
+      - verification_pressure
+
+validation_gate:
+  lane_blindness_check: true
+  honey_pot_injection: true
+
+training_rules:
+  # Observer outputs are never training targets.
+  no_model_outputs_as_targets: true
+  output_format: jsonl
+  role: observer_only
