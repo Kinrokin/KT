@@ -558,7 +558,8 @@ def _confidence(
 
 def _write_json(path: Path, payload: Dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, sort_keys=True, indent=2, ensure_ascii=True), encoding="utf-8", newline="\n")
+    # CONTRACT: This file is JSONL-safe (one compact JSON object, newline terminated).
+    path.write_text(json.dumps(payload, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 def _append_jsonl(path: Path, payload: Dict[str, Any]) -> None:

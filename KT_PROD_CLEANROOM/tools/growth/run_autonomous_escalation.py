@@ -132,7 +132,8 @@ def _write_baseline_suggestion(epoch_root: Path) -> None:
         "signals": {"coverage_fatigue": 0.0},
         "constraints": {"advisory_only": True, "does_not_gate": True, "does_not_mutate_plans": True},
     }
-    (epoch_root / "plan_suggestion.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    # Write as compact JSON (single line) to avoid multi-line parsing issues downstream.
+    (epoch_root / "plan_suggestion.json").write_text(json.dumps(payload, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 def _session_suffix(label: str, idx: int | None = None) -> str:

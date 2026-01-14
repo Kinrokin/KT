@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Tuple
 
 import yaml
+from KT_PROD_CLEANROOM.tools.growth.utils.normalize_jsonl import normalize_jsonl
 
 
 @dataclass
@@ -115,6 +116,10 @@ def sanitize_numeric_strings(obj: Any) -> Any:
 def main(manifest_path: str, out_path: str, report_path: str) -> None:
     manifest = yaml.safe_load(Path(manifest_path).read_text(encoding="utf-8"))
 
+    contract = manifest.get("serialization_contract", {})
+    if contract.get("format") != "JSONL" or not contract.get("one_object_per_line", False):
+        raise RuntimeError("Dataset manifest missing JSONL serialization contract (fail-closed)")
+
     sources = manifest["source_artifacts"]
     forbidden_patterns = manifest["enforcement_layer"]["forbidden_patterns"]
     forbidden_keys = set(manifest["enforcement_layer"]["forbidden_keys"])
@@ -134,6 +139,8 @@ def main(manifest_path: str, out_path: str, report_path: str) -> None:
         src_path = Path(src["path"])
         if not src_path.exists():
             raise FileNotFoundError(f"Missing source artifact: {src_path}")
+        # Guardrail: normalize inputs to strict JSONL before reading.
+        normalize_jsonl(src_path, src_path)
 
         for line_no, record in iter_jsonl(src_path):
             # Drop numeric-looking strings up front (prevents scalar literals encoded as strings).
