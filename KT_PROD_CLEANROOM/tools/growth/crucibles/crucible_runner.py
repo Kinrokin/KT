@@ -93,6 +93,57 @@ class RunnerError(RuntimeError):
     pass
 
 
+_PARADOX_MOVE_BOUNDS = {"PAS", "APF", "POG"}
+_BELNAP_BOUNDS = {"T", "F", "B", "N"}
+
+
+def _policy_b_registry_path() -> Path:
+    return _growth_root() / "state" / "policy_b_variable_registry.json"
+
+
+def _load_policy_b_registry() -> Dict[str, Any]:
+    path = _policy_b_registry_path()
+    try:
+        obj = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        raise RunnerError(f"Policy B registry unreadable (fail-closed): {exc.__class__.__name__}") from exc
+    if not isinstance(obj, dict):
+        raise RunnerError("Policy B registry must be an object (fail-closed)")
+    if obj.get("schema") != "POLICY_B_VARIABLE_REGISTRY_V1":
+        raise RunnerError("Policy B registry schema mismatch (fail-closed)")
+    if obj.get("version") != 1:
+        raise RunnerError("Policy B registry version mismatch (fail-closed)")
+    return obj
+
+
+def _policy_b_paradox_selector() -> str:
+    registry = _load_policy_b_registry()
+    for entry in registry.get("variables", []):
+        if not isinstance(entry, dict):
+            continue
+        if entry.get("name") != "paradox_move_selector":
+            continue
+        value = entry.get("policy_b_value")
+        if not isinstance(value, str):
+            raise RunnerError("Policy B paradox_move_selector invalid (fail-closed)")
+        value = value.strip().upper()
+        if value not in _PARADOX_MOVE_BOUNDS:
+            raise RunnerError("Policy B paradox_move_selector out of bounds (fail-closed)")
+        return value
+    raise RunnerError("Policy B paradox_move_selector missing (fail-closed)")
+
+
+def _is_paradox_crucible(spec: Any) -> bool:
+    cid = str(getattr(spec, "crucible_id", "") or "").upper()
+    domain = str(getattr(spec, "domain", "") or "").upper()
+    tags = getattr(spec, "tags", None) or []
+    tag_hits = False
+    for t in tags:
+        if isinstance(t, str) and "PARADOX" in t.upper():
+            tag_hits = True
+            break
+    return ("PARADOX" in cid) or ("PARADOX" in domain) or tag_hits
+
 @dataclass(frozen=True)
 class KernelRunResult:
     exit_code: Optional[int]
@@ -1034,6 +1085,90 @@ def run_crucible_once(
     except Exception:
         head_hash = None
     head_hash = head_hash if isinstance(head_hash, str) and len(head_hash) == 64 else ledger_sha
+    stdout_hash = hashlib.sha256(stdout_text.encode("utf-8")).hexdigest() if stdout_text else ledger_sha
+
+    paradox_event: Optional[Dict[str, Any]] = None
+    paradox_event_count = 0
+    is_paradox_crucible = _is_paradox_crucible(spec)
+    contains_paradox: Optional[bool] = None
+    paradox_type: Optional[str] = None
+    if isinstance(output_obj, dict):
+        if "contains_paradox" in output_obj:
+            contains_paradox = bool(output_obj.get("contains_paradox"))
+        if isinstance(output_obj.get("paradox_type"), str):
+            paradox_type = output_obj.get("paradox_type")
+    is_paradox = bool(contains_paradox is True) or (
+        isinstance(paradox_type, str) and paradox_type.strip().lower() not in {"none", ""}
+    )
+
+    if is_paradox_crucible or is_paradox:
+        move_used = _policy_b_paradox_selector()
+        evidence_status = "COMPLETE" if (contains_paradox is not None or paradox_type is not None) else "MISSING_OUTPUT"
+        if contains_paradox is True:
+            trigger = "contains_paradox"
+        elif paradox_type:
+            trigger = f"paradox_type:{paradox_type}"
+        elif is_paradox_crucible:
+            trigger = "paradox_crucible"
+        else:
+            trigger = "output_missing"
+        belnap_state = "B" if is_paradox else "N"
+        if belnap_state not in _BELNAP_BOUNDS:
+            raise RunnerError(f"Belnap state invalid: {belnap_state} (fail-closed)")
+        event_seed = f"{rid}|{spec.crucible_id}|{stdout_hash}|{trigger}|{move_used}|{belnap_state}"
+        paradox_event_id = hashlib.sha256(event_seed.encode("utf-8")).hexdigest()
+        fork_root = run_root / "_paradox_forks" / paradox_event_id
+        fork_root.mkdir(parents=True, exist_ok=True)
+        repair_action = None
+        if isinstance(output_obj, dict) and isinstance(output_obj.get("repair_action"), str):
+            repair_action = output_obj.get("repair_action")
+        paradox_event = {
+            "schema": "PARADOX_EVENT_V1",
+            "schema_version": 1,
+            "paradox_event_id": paradox_event_id,
+            "run_id": rid,
+            "crucible_id": spec.crucible_id,
+            "kernel_target": kernel_target,
+            "epoch_id": "EPOCH_UNSPECIFIED",
+            "timestamp_utc": _utc_now_iso_z(),
+            "belnap_state": belnap_state,
+            "contains_paradox": contains_paradox,
+            "paradox_type": paradox_type,
+            "trigger": trigger,
+            "move_used": move_used,
+            "repair_action": repair_action or "none",
+            "delta_entropy": 0.0,
+            "delta_density": 0.0,
+            "evidence_status": evidence_status,
+            "fork": {
+                "fork_root": str(fork_root.relative_to(_repo_root())),
+                "status": "NOT_EXECUTED",
+            },
+            "receipts": {
+                "prompt_hash": prompt_hash,
+                "head_hash": head_hash,
+                "ledger_hash": ledger_sha,
+                "stdout_hash": stdout_hash,
+            },
+        }
+        _write_text(run_root / "paradox_event.json", json.dumps(paradox_event, sort_keys=True, indent=2, ensure_ascii=True) + "\n")
+        _write_text(
+            run_root / "paradox_fork_manifest.json",
+            json.dumps(
+                {
+                    "schema": "PARADOX_FORK_MANIFEST_V1",
+                    "schema_version": 1,
+                    "paradox_event_id": paradox_event_id,
+                    "fork_root": str(fork_root.relative_to(_repo_root())),
+                    "status": "NOT_EXECUTED",
+                },
+                sort_keys=True,
+                indent=2,
+                ensure_ascii=True,
+            )
+            + "\n",
+        )
+        paradox_event_count = 1
 
     # Observed coverage derived from executed trace + tags
     executed_sequence = output_obj.get("trace_sequence", []) if isinstance(output_obj, dict) else []
@@ -1088,7 +1223,7 @@ def run_crucible_once(
         executed_step_ids=executed_sequence,
         step_tag_index=step_tag_index,
         ontology_subdomain_graph=None,
-        paradox_event_count=0,
+        paradox_event_count=paradox_event_count,
     )
 
     coverage = {
@@ -1163,7 +1298,6 @@ def run_crucible_once(
             else (sorted(obs.subdomains)[0] if obs.subdomains else (crucible_level_subdomain or "unknown"))
         )
 
-        stdout_hash = hashlib.sha256(stdout_text.encode("utf-8")).hexdigest() if stdout_text else ledger_sha
         if outcome == OUTCOME_PASS:
             resolve_mode = "clean"
             coherence_bucket = "HIGH"

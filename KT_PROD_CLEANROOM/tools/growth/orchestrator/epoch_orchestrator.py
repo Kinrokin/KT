@@ -472,11 +472,15 @@ def _materialize_epoch_artifact_contract(
       - runner_record.json (epoch-level aggregate, derived from per-run runner_record.json)
       - governance_verdict.json (copied if identical across crucibles; fail if ambiguous/missing)
       - state_vault.jsonl (concatenation of per-run _runtime_artifacts/state_vault.jsonl; fail if missing/empty)
+      - paradox_event.json (per-crucible, if present; fail-closed for paradox crucibles)
+      - paradox_fork_manifest.json (per-crucible, if present)
 
     Also copies per-crucible:
       epoch_root/<CRU_ID>/runner_record.json
       epoch_root/<CRU_ID>/governance_verdict.json
       epoch_root/<CRU_ID>/state_vault.jsonl
+      epoch_root/<CRU_ID>/paradox_event.json
+      epoch_root/<CRU_ID>/paradox_fork_manifest.json
     """
     if not (epoch_root / "epoch_summary.json").exists():
         raise EpochSchemaError("epoch_summary.json missing at epoch root (fail-closed)")
@@ -489,6 +493,7 @@ def _materialize_epoch_artifact_contract(
 
     state_vault_sources: List[Dict[str, Any]] = []
     state_vault_paths: List[Path] = []
+    paradox_events: List[Dict[str, Any]] = []
 
     for cid in crucible_order:
         r = by_cid.get(cid)
@@ -543,6 +548,29 @@ def _materialize_epoch_artifact_contract(
             }
         )
 
+        pe_src = run_root / "paradox_event.json"
+        if pe_src.exists():
+            pe_text = pe_src.read_text(encoding="utf-8")
+            pe_dst = epoch_root / cid / "paradox_event.json"
+            if not pe_dst.exists():
+                _write_once(pe_dst, pe_text)
+            try:
+                pe_obj = json.loads(pe_text)
+            except Exception as exc:
+                raise EpochSchemaError(f"Invalid paradox_event.json for {cid} (fail-closed): {exc}") from exc
+            if not isinstance(pe_obj, dict):
+                raise EpochSchemaError(f"paradox_event.json must be an object for {cid} (fail-closed)")
+            paradox_events.append(pe_obj)
+        elif "PARADOX" in cid.upper():
+            raise EpochSchemaError(f"Missing paradox_event.json for paradox crucible {cid} (fail-closed)")
+
+        pf_src = run_root / "paradox_fork_manifest.json"
+        if pf_src.exists():
+            pf_text = pf_src.read_text(encoding="utf-8")
+            pf_dst = epoch_root / cid / "paradox_fork_manifest.json"
+            if not pf_dst.exists():
+                _write_once(pf_dst, pf_text)
+
     if governance_text is None:
         raise EpochSchemaError("Missing governance verdicts (fail-closed)")
     gv_epoch = epoch_root / "governance_verdict.json"
@@ -575,6 +603,15 @@ def _materialize_epoch_artifact_contract(
                     for line in handle:
                         if line.strip():
                             out.write(line.rstrip("\n") + "\n")
+            for event in paradox_events:
+                out.write(json.dumps(event, sort_keys=True, separators=(",", ":"), ensure_ascii=True) + "\n")
+
+    pe_epoch = epoch_root / "paradox_events.jsonl"
+    if paradox_events and not pe_epoch.exists():
+        pe_epoch.parent.mkdir(parents=True, exist_ok=True)
+        with pe_epoch.open("w", encoding="utf-8", newline="\n") as out:
+            for event in paradox_events:
+                out.write(json.dumps(event, sort_keys=True, separators=(",", ":"), ensure_ascii=True) + "\n")
 
     sv_manifest = epoch_root / "state_vault_manifest.json"
     if not sv_manifest.exists():
@@ -586,6 +623,7 @@ def _materialize_epoch_artifact_contract(
                     "epoch_id": epoch_root.name,
                     "kernel_target": kernel_target,
                     "sources": state_vault_sources,
+                    "paradox_event_count": len(paradox_events),
                 },
                 sort_keys=True,
                 indent=2,
@@ -1096,6 +1134,31 @@ def run_epoch(
         debt_max=COHERENCE_DEBT_MAX,
     )
 
+    paradox_event_ids: List[str] = []
+    run_base = (
+        _repo_root()
+        / "tools"
+        / "growth"
+        / "artifacts"
+        / "c019_runs"
+        / plan.kernel_identity.kernel_target
+    )
+    for run in runs:
+        if run.run_id is None:
+            continue
+        pe_path = run_base / run.run_id / "paradox_event.json"
+        if not pe_path.exists():
+            continue
+        try:
+            pe_obj = json.loads(pe_path.read_text(encoding="utf-8"))
+        except Exception as exc:
+            raise EpochSchemaError(f"Invalid paradox_event.json for {run.crucible_id} (fail-closed): {exc}") from exc
+        if not isinstance(pe_obj, dict):
+            raise EpochSchemaError(f"paradox_event.json must be an object for {run.crucible_id} (fail-closed)")
+        pe_id = pe_obj.get("paradox_event_id")
+        if isinstance(pe_id, str) and pe_id and pe_id not in paradox_event_ids:
+            paradox_event_ids.append(pe_id)
+
     summary_path = epoch_root / "epoch_summary.json"
     summary_obj = {
         "epoch_id": plan.epoch_id,
@@ -1106,6 +1169,8 @@ def run_epoch(
         "coherence_debt_max": COHERENCE_DEBT_MAX,
         "coherence_debt_delta": coherence_debt_delta,
         "coherence_debt_skip_reason": coherence_debt_skip_reason,
+        "paradox_event_count": len(paradox_event_ids),
+        "paradox_event_ids": paradox_event_ids,
         "crucibles_total": crucibles_total,
         "crucibles_passed": crucibles_passed,
         "crucibles_failed_closed": crucibles_failed_closed,

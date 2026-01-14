@@ -24,6 +24,7 @@ class EpochRow:
     unique_subdomains: int
     entropy_domains: float
     top_domain_share: float
+    paradox_event_count: int
     forced_resolve_count: int
     low_coherence_count: int
     unknown_resolve_count: int
@@ -217,6 +218,7 @@ def _extract_row(epoch_root: Path) -> EpochRow:
     unique_subdomains = _coerce_int(counts.get("unique_subdomains"))
     entropy_domains = _coerce_float(dominance.get("entropy_domains"))
     top_domain_share = _coerce_float(dominance.get("top_domain_share"))
+    paradox_event_count = _coerce_int(counts.get("paradox_events"))
 
     forced, low, unk_res, unk_coh = _count_micro_flags(micro_steps)
 
@@ -249,6 +251,7 @@ def _extract_row(epoch_root: Path) -> EpochRow:
         unique_subdomains=unique_subdomains,
         entropy_domains=entropy_domains,
         top_domain_share=top_domain_share,
+        paradox_event_count=paradox_event_count,
         forced_resolve_count=forced,
         low_coherence_count=low,
         unknown_resolve_count=unk_res,
@@ -291,6 +294,7 @@ def _state_text(row: EpochRow, policy_b_values: Dict[str, Any]) -> str:
         f"unique_subdomains={row.unique_subdomains}",
         f"entropy_domains={row.entropy_domains}",
         f"top_domain_share={row.top_domain_share}",
+        f"paradox_event_count={row.paradox_event_count}",
     ]
     for key in sorted(policy_b_values.keys()):
         parts.append(f"policy_b_{key}={_fmt_value(policy_b_values[key])}")
@@ -454,6 +458,7 @@ def main() -> int:
                     "regret_skip_reason": curr.regret_skip_reason,
                     "entropy_domains": curr.entropy_domains,
                     "top_domain_share": curr.top_domain_share,
+                    "paradox_event_count": curr.paradox_event_count,
                     "unique_domains": curr.unique_domains,
                     "unique_subdomains": curr.unique_subdomains,
                     "forced_resolve_count": curr.forced_resolve_count,
@@ -471,6 +476,7 @@ def main() -> int:
                     "regret_skip_reason": nxt.regret_skip_reason,
                     "entropy_domains": nxt.entropy_domains,
                     "top_domain_share": nxt.top_domain_share,
+                    "paradox_event_count": nxt.paradox_event_count,
                     "unique_domains": nxt.unique_domains,
                     "unique_subdomains": nxt.unique_subdomains,
                     "forced_resolve_count": nxt.forced_resolve_count,

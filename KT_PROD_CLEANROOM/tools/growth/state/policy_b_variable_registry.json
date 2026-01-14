@@ -11,6 +11,13 @@
       "notes": "bounded_low"
     },
     {
+      "name": "paradox_move_selector",
+      "type": "enum",
+      "bounds": ["PAS", "APF", "POG"],
+      "policy_b_value": "PAS",
+      "notes": "bounded_default"
+    },
+    {
       "name": "novelty_pressure",
       "type": "float",
       "bounds": [0.0, 1.0],

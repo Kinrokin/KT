@@ -45,6 +45,7 @@ class EpochSignals:
     coherence_budget: Optional[float]
     regret_global: Optional[float]
     regret_skip_reason: Optional[str]
+    paradox_event_count: int
     coverage_cost: Optional[float]
     coverage_streak: Optional[int]
     cce_constants: Dict[str, Optional[float]]
@@ -193,6 +194,7 @@ def _extract_signals(root: Path) -> EpochSignals:
     unique_subdomains = _coerce_int(counts.get("unique_subdomains"))
     entropy_domains = _coerce_float(dominance.get("entropy_domains"))
     top_domain_share = _coerce_float(dominance.get("top_domain_share"))
+    paradox_event_count = _coerce_int(counts.get("paradox_events"))
     map_domain_count = len(domains) if isinstance(domains, list) else 0
 
     hop_entropy_domain: Optional[float] = None
@@ -268,6 +270,7 @@ def _extract_signals(root: Path) -> EpochSignals:
         coherence_budget=coherence_budget if isinstance(coherence_budget, float) else None,
         regret_global=regret_global if isinstance(regret_global, float) else None,
         regret_skip_reason=regret_skip_reason if isinstance(regret_skip_reason, str) else None,
+        paradox_event_count=paradox_event_count,
         coverage_cost=coverage_cost if isinstance(coverage_cost, float) else None,
         coverage_streak=coverage_streak if isinstance(coverage_streak, int) else None,
         cce_constants=cce_const,
@@ -401,6 +404,7 @@ def _build_state_description(
         f"coherence_debt={(signals.coherence_debt if signals.coherence_debt is not None else -1)}",
         f"coherence_budget={(signals.coherence_budget if signals.coherence_budget is not None else -1)}",
         f"regret_global={(signals.regret_global if signals.regret_global is not None else -1)}",
+        f"paradox_event_count={signals.paradox_event_count}",
         f"coverage_cost={(signals.coverage_cost if signals.coverage_cost is not None else -1)}",
         f"coverage_streak={(signals.coverage_streak if signals.coverage_streak is not None else -1)}",
         f"opportunity_cost={(signals.opportunity_cost if signals.opportunity_cost is not None else -1)}",
@@ -791,6 +795,7 @@ def main() -> int:
             "unique_subdomains": target.unique_subdomains,
             "entropy_domains": target.entropy_domains,
             "top_domain_share": target.top_domain_share,
+            "paradox_event_count": target.paradox_event_count,
             "hop_entropy_domain": target.hop_entropy_domain,
             "domain_hop_rate": target.domain_hop_rate,
             "domain_transition_edges": target.domain_transition_edges,
