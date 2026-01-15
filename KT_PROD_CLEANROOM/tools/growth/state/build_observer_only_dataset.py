@@ -30,6 +30,15 @@ from KT_PROD_CLEANROOM.tools.growth.utils.normalize_jsonl import normalize_jsonl
 KT_ROOT = Path(__file__).resolve().parents[3]
 
 
+def resolve_source_path(src_path: str, kt_root: Path) -> Path:
+    p = Path(src_path)
+    if p.is_absolute():
+        return p
+    if p.parts and p.parts[0] == "KT_PROD_CLEANROOM":
+        return (kt_root / p).resolve()
+    return (kt_root / "KT_PROD_CLEANROOM" / p).resolve()
+
+
 @dataclass
 class Reject:
     source: str
@@ -228,11 +237,7 @@ def main(manifest_path: str, out_path: str, report_path: str) -> None:
     kept: List[Dict[str, Any]] = []
 
     for src in sources:
-        raw = Path(src["path"])
-        if raw.is_absolute():
-            src_path = raw
-        else:
-            src_path = (KT_ROOT / raw).resolve()
+        src_path = resolve_source_path(src["path"], KT_ROOT)
         if not src_path.exists():
             raise FileNotFoundError(f"Missing source artifact: {src_path}")
         # Guardrail: normalize inputs to strict JSONL before reading.
