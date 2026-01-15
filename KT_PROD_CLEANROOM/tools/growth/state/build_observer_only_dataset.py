@@ -116,6 +116,8 @@ def scrub_numerics(obj: Any) -> Any:
 
 
 def assert_no_numerics(obj: Any) -> None:
+    if isinstance(obj, bool):
+        return
     if isinstance(obj, (int, float)):
         raise ValueError("numeric literal survived scrub")
     if isinstance(obj, str) and _is_numeric_string(obj):
