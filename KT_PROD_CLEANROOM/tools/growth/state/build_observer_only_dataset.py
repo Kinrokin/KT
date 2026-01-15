@@ -44,16 +44,6 @@ def iter_jsonl(path: Path) -> Iterable[Tuple[int, Dict[str, Any]]]:
             yield idx, json.loads(line)
 
 
-def has_float_literal(obj: Any) -> bool:
-    if isinstance(obj, float):
-        return True
-    if isinstance(obj, dict):
-        return any(has_float_literal(v) for v in obj.values())
-    if isinstance(obj, list):
-        return any(has_float_literal(v) for v in obj)
-    return False
-
-
 def drop_keys_recursive(d: Any, forbidden_keys: set) -> Any:
     if isinstance(d, dict):
         return {k: drop_keys_recursive(v, forbidden_keys) for k, v in d.items() if k not in forbidden_keys}
@@ -85,32 +75,82 @@ def apply_scalar_to_enum(record: Dict[str, Any], cfg: Dict[str, Any]) -> Dict[st
     return record
 
 
-def replace_floats(obj: Any, replacement: str = "FLOAT_REDACTED") -> Any:
-    if isinstance(obj, float):
-        return replacement
-    if isinstance(obj, dict):
-        return {k: replace_floats(v, replacement) for k, v in obj.items()}
+NUMERIC_STRING_RX = re.compile(r"^\s*-?\d+(\.\d+)?\s*$")
+
+
+def _is_numeric_string(value: str) -> bool:
+    return bool(NUMERIC_STRING_RX.match(value))
+
+
+def scrub_numerics(obj: Any) -> Any:
+    """
+    Fail-closed safety scrub:
+      - Drops all int/float values.
+      - Drops any string that looks numeric.
+      - Preserves booleans, enums, and non-numeric text.
+    """
+    if obj is None:
+        return None
+    if isinstance(obj, bool):
+        return obj
+    if isinstance(obj, (int, float)):
+        return None
+    if isinstance(obj, str):
+        return None if _is_numeric_string(obj) else obj
     if isinstance(obj, list):
-        return [replace_floats(x, replacement) for x in obj]
-    return obj
-
-
-NUMERIC_STRING_RX = re.compile(r"^[+-]?\d+(\.\d+)?$")
-
-
-def sanitize_numeric_strings(obj: Any) -> Any:
-    """Remove numeric-looking strings to prevent scalar leakage."""
+        out_list = []
+        for entry in obj:
+            cleaned = scrub_numerics(entry)
+            if cleaned is not None:
+                out_list.append(cleaned)
+        return out_list
     if isinstance(obj, dict):
-        out = {}
-        for k, v in obj.items():
-            if isinstance(v, str) and NUMERIC_STRING_RX.match(v):
-                # Drop numeric strings entirely (observer-only regime).
+        out_dict = {}
+        for key, value in obj.items():
+            cleaned = scrub_numerics(value)
+            if cleaned is None:
                 continue
-            out[k] = sanitize_numeric_strings(v)
-        return out
+            out_dict[key] = cleaned
+        return out_dict
+    return str(obj)
+
+
+def assert_no_numerics(obj: Any) -> None:
+    if isinstance(obj, (int, float)):
+        raise ValueError("numeric literal survived scrub")
+    if isinstance(obj, str) and _is_numeric_string(obj):
+        raise ValueError("numeric string survived scrub")
     if isinstance(obj, list):
-        return [sanitize_numeric_strings(x) for x in obj]
-    return obj
+        for entry in obj:
+            assert_no_numerics(entry)
+    if isinstance(obj, dict):
+        for value in obj.values():
+            assert_no_numerics(value)
+
+
+CONTROL_LEAK_KEYS = {
+    "confidence",
+    "policy_confidence",
+    "policy_distribution",
+    "entropy",
+    "temperature",
+    "curvature",
+    "novelty_pressure",
+    "risk_pressure",
+    "time_pressure",
+    "verification_pressure",
+    "proof_density",
+    "paradox_pressure",
+    "forced_resolve_count",
+    "low_coherence_count",
+    "delayed_violation_count",
+    "regret_pressure",
+    "regret_global",
+    "regret_prev_global",
+    "coverage_fatigue",
+    "coverage_cost",
+    "coverage_streak",
+}
 
 
 def main(manifest_path: str, out_path: str, report_path: str) -> None:
@@ -123,6 +163,7 @@ def main(manifest_path: str, out_path: str, report_path: str) -> None:
     sources = manifest["source_artifacts"]
     forbidden_patterns = manifest["enforcement_layer"]["forbidden_patterns"]
     forbidden_keys = set(manifest["enforcement_layer"]["forbidden_keys"])
+    forbidden_keys |= CONTROL_LEAK_KEYS
 
     rx_prescriptive = re.compile(forbidden_patterns["prescriptive_verbs"])
     rx_agency = re.compile(forbidden_patterns["causal_agency"])
@@ -143,37 +184,15 @@ def main(manifest_path: str, out_path: str, report_path: str) -> None:
         normalize_jsonl(src_path, src_path)
 
         for line_no, record in iter_jsonl(src_path):
-            # Drop numeric-looking strings up front (prevents scalar literals encoded as strings).
-            record = sanitize_numeric_strings(record)
-            raw_text = json.dumps(record, ensure_ascii=False)
-
-            # Hard regex stops on raw text
-            if rx_prescriptive.search(raw_text):
-                rejects.append(Reject(str(src_path), line_no, "forbidden_pattern:prescriptive_verbs"))
-                continue
-            if rx_agency.search(raw_text):
-                rejects.append(Reject(str(src_path), line_no, "forbidden_pattern:causal_agency"))
-                continue
-            # Transform scalars -> enums (only if scalars exist)
-            record = apply_scalar_to_enum(record, scalar_to_enum_cfg)
-
-            # Drop forbidden keys recursively
+            # Canonical order: drop mechanics -> project enums -> scrub numerics -> then regex checks.
             record = drop_keys_recursive(record, forbidden_keys)
-
-            # Drop scalar keys after transform
+            record = apply_scalar_to_enum(record, scalar_to_enum_cfg)
             for k in drop_after:
                 record.pop(k, None)
+            record = scrub_numerics(record)
+            assert_no_numerics(record)
 
-            # Replace any remaining floats to keep observer-only output non-numeric.
-            record = replace_floats(record)
-
-            # Reject if any float values remain (even if not literal text)
-            if has_float_literal(record):
-                rejects.append(Reject(str(src_path), line_no, "float_value_survived"))
-                continue
-
-            # Second pass regex check post-transform and key-drop
-            scrubbed_text = json.dumps(record, ensure_ascii=False)
+            scrubbed_text = json.dumps(record, ensure_ascii=False, separators=(",", ":"))
             if rx_prescriptive.search(scrubbed_text):
                 rejects.append(Reject(str(src_path), line_no, "forbidden_pattern_post:prescriptive_verbs"))
                 continue
@@ -205,6 +224,7 @@ def main(manifest_path: str, out_path: str, report_path: str) -> None:
             ),
             "lane_blindness_check": bool(manifest.get("validation_gate", {}).get("lane_blindness_check", True)),
             "honey_pot_injection": bool(manifest.get("validation_gate", {}).get("honey_pot_injection", True)),
+            "transform_order": "drop_keys -> enum_projection -> scrub_numerics -> forbidden_patterns",
         },
     }
     Path(report_path).write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
