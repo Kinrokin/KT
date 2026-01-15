@@ -130,6 +130,20 @@ def assert_no_numerics(obj: Any) -> None:
             assert_no_numerics(value)
 
 
+def contains_scalar_literal(obj: Any) -> bool:
+    if isinstance(obj, bool):
+        return False
+    if isinstance(obj, (int, float)):
+        return True
+    if isinstance(obj, str):
+        return _is_numeric_string(obj)
+    if isinstance(obj, list):
+        return any(contains_scalar_literal(entry) for entry in obj)
+    if isinstance(obj, dict):
+        return any(contains_scalar_literal(value) for value in obj.values())
+    return False
+
+
 CONTROL_LEAK_KEYS = {
     "confidence",
     "policy_confidence",
@@ -169,7 +183,6 @@ def main(manifest_path: str, out_path: str, report_path: str) -> None:
 
     rx_prescriptive = re.compile(forbidden_patterns["prescriptive_verbs"])
     rx_agency = re.compile(forbidden_patterns["causal_agency"])
-    rx_floatlit = re.compile(forbidden_patterns["scalar_literals"])
 
     transforms = manifest["enforcement_layer"]["transformations"]
     scalar_to_enum_cfg = transforms.get("scalars_to_enums", {})
@@ -201,7 +214,7 @@ def main(manifest_path: str, out_path: str, report_path: str) -> None:
             if rx_agency.search(scrubbed_text):
                 rejects.append(Reject(str(src_path), line_no, "forbidden_pattern_post:causal_agency"))
                 continue
-            if rx_floatlit.search(scrubbed_text):
+            if contains_scalar_literal(record):
                 rejects.append(Reject(str(src_path), line_no, "forbidden_pattern_post:scalar_literals"))
                 continue
 
