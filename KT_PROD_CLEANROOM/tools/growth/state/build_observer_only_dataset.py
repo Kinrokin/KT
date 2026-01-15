@@ -27,6 +27,8 @@ from typing import Any, Dict, Iterable, List, Tuple
 import yaml
 from KT_PROD_CLEANROOM.tools.growth.utils.normalize_jsonl import normalize_jsonl
 
+KT_ROOT = Path(__file__).resolve().parents[3]
+
 
 @dataclass
 class Reject:
@@ -226,7 +228,11 @@ def main(manifest_path: str, out_path: str, report_path: str) -> None:
     kept: List[Dict[str, Any]] = []
 
     for src in sources:
-        src_path = Path(src["path"])
+        raw = Path(src["path"])
+        if raw.is_absolute():
+            src_path = raw
+        else:
+            src_path = (KT_ROOT / raw).resolve()
         if not src_path.exists():
             raise FileNotFoundError(f"Missing source artifact: {src_path}")
         # Guardrail: normalize inputs to strict JSONL before reading.
