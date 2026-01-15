@@ -168,6 +168,40 @@ CONTROL_LEAK_KEYS = {
     "coverage_streak",
 }
 
+FORBIDDEN_SCHEMAS = {
+    "KT_PHASE_A2_DATASET_V1",
+    "KT_PHASE_A2_DATASET",
+}
+
+
+def is_observer_eligible(record: Dict[str, Any]) -> bool:
+    schema = record.get("schema")
+    if schema in FORBIDDEN_SCHEMAS:
+        return False
+    return True
+
+
+def build_observer_record(record: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Re-materialize a minimal observer-only record.
+    Never forward execution/control fields from source artifacts.
+    """
+    epoch_ref = record.get("epoch_id") or record.get("epoch_ref") or record.get("row_id")
+    return {
+        "schema": "KT_OBSERVER_B_RECORD_V1",
+        "record_type": "observer",
+        "source_schema": record.get("schema"),
+        "epoch_ref": epoch_ref,
+        "epoch_hash": record.get("epoch_hash"),
+        "epoch_profile": record.get("epoch_profile"),
+        "epoch_verdict": record.get("epoch_verdict"),
+        "lane_intent": record.get("lane_intent_enum") or record.get("lane_intent"),
+        "triggered_rules": record.get("triggered_rules") or record.get("triggered") or [],
+        "constraints": record.get("constraints") or {},
+        "signals_enum": record.get("signals_enum") or {},
+        "stability": record.get("stability_enum") or record.get("stability"),
+    }
+
 
 def main(manifest_path: str, out_path: str, report_path: str) -> None:
     manifest = yaml.safe_load(Path(manifest_path).read_text(encoding="utf-8"))
@@ -199,6 +233,10 @@ def main(manifest_path: str, out_path: str, report_path: str) -> None:
         normalize_jsonl(src_path, src_path)
 
         for line_no, record in iter_jsonl(src_path):
+            if not is_observer_eligible(record):
+                rejects.append(Reject(str(src_path), line_no, "non_observer_schema"))
+                continue
+            record = build_observer_record(record)
             # Canonical order: drop mechanics -> project enums -> scrub numerics -> then regex checks.
             record = drop_keys_recursive(record, forbidden_keys)
             record = apply_scalar_to_enum(record, scalar_to_enum_cfg)
