@@ -562,6 +562,13 @@ def _write_json(path: Path, payload: Dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+def _write_output(path: Path, payload: Dict[str, Any]) -> None:
+    if path.suffix.lower() == ".jsonl":
+        _append_jsonl(path, payload)
+        return
+    _write_json(path, payload)
+
+
 def _append_jsonl(path: Path, payload: Dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8", newline="\n") as handle:
@@ -895,7 +902,7 @@ def main() -> int:
         )
 
     if args.out:
-        _write_json(Path(args.out), payload)
+        _write_output(Path(args.out), payload)
 
     if args.write_epoch:
         _write_json(target.root / "plan_suggestion.json", payload)
