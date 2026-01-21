@@ -55,5 +55,8 @@ KT_PROD_CLEANROOM/tools/growth/state/kt_phaseA2_build_report.json
 KT_PROD_CLEANROOM/tools/growth/bench/*summary*.json
 KT_PROD_CLEANROOM/tools/growth/bench/benchmark_summary.json
 
+# Preserve corrupted repo metadata (for audit) but keep it out of tracking.
+.git_corrupt/
+
 # Local scratch
 tmp/

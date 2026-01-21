@@ -44,8 +44,11 @@
     "static_safety": {
       "enabled": true,
       "forbidden_imports": [
+        "asyncio",
+        "http",
         "requests",
         "socket",
+        "subprocess",
         "urllib"
       ],
       "allowed_export_roots": [

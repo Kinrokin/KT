@@ -16,8 +16,14 @@
   "properties": {
     "schema_id": { "type": "string", "const": "kt.policy_c.sweep_result.v1" },
     "sweep_id": { "type": "string" },
-    "started_at": { "type": "string" },
-    "finished_at": { "type": "string" },
+    "started_at": {
+      "type": "string",
+      "description": "Non-hash field; timestamps are excluded from hash determinism."
+    },
+    "finished_at": {
+      "type": "string",
+      "description": "Non-hash field; timestamps are excluded from hash determinism."
+    },
     "runs_total": { "type": "integer", "minimum": 0 },
     "runs_pass": { "type": "integer", "minimum": 0 },
     "runs_warn": { "type": "integer", "minimum": 0 },

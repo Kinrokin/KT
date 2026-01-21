@@ -12,7 +12,7 @@ from core.runtime_registry import load_runtime_registry
 from memory.state_vault import StateVault
 from policy_c.gates import run_drift_gate
 from policy_c.pressure_tensor import PressureTensor, single_axis_sweep
-from policy_c.static_safety_check import assert_export_root_allowed, run_static_safety_check
+from policy_c.static_safety_check import assert_export_root_allowed, policy_c_module_paths, run_static_safety_check
 
 
 SWEEP_PLAN_SCHEMA_ID = "kt.policy_c.sweep_plan.v1"
@@ -148,10 +148,7 @@ def run_sweep(*, plan_path: Path, out_root: Path) -> Dict[str, Any]:
         raise RuntimeError("SweepPlan export_root mismatch with --out-root (fail-closed)")
     safety = run_static_safety_check(
         registry=registry,
-        module_paths=[
-            Path(__file__).resolve(),
-            Path(__file__).resolve().parent / "dataset_export.py",
-        ],
+        module_paths=policy_c_module_paths(),
         schema_paths=[
             Path(__file__).resolve().parent / "policy_c_sweep_plan_schema_v1.json",
             Path(__file__).resolve().parent / "policy_c_sweep_result_schema_v1.json",
@@ -176,6 +173,7 @@ def run_sweep(*, plan_path: Path, out_root: Path) -> Dict[str, Any]:
     baseline_plan = _resolve_epoch_plan(baseline_run)
     baseline_tensor = _extract_pressure_tensor(baseline_plan)
 
+    # Timestamps are non-hash fields; hashes exclude them by construction.
     started_at = _timestamp()
     run_results: List[Dict[str, Any]] = []
     continue_on_fail = plan.get("continue_on_fail") is True

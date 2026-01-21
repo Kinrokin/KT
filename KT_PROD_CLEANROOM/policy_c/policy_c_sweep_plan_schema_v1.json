@@ -22,7 +22,10 @@
       "additionalProperties": false,
       "required": ["export_root"],
       "properties": {
-        "export_root": { "type": "string" }
+        "export_root": {
+          "type": "string",
+          "description": "Must resolve under allowlisted cleanroom export roots; enforced at runtime."
+        }
       }
     },
     "runs": {

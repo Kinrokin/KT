@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 from core.runtime_registry import load_runtime_registry
-from policy_c.static_safety_check import assert_export_root_allowed, run_static_safety_check
+from policy_c.static_safety_check import assert_export_root_allowed, policy_c_module_paths, run_static_safety_check
 
 
 DATASET_RECORD_SCHEMA_ID = "kt.policy_c.dataset_record.v1"
@@ -36,7 +36,7 @@ def export_dataset(*, sweep_result_path: Path, out_root: Path) -> Dict[str, Any]
     assert_export_root_allowed(out_root, registry.policy_c.sweep.allowed_export_roots)
     safety = run_static_safety_check(
         registry=registry,
-        module_paths=[Path(__file__).resolve()],
+        module_paths=policy_c_module_paths(),
         schema_paths=[
             Path(__file__).resolve().parent / "policy_c_dataset_record_schema_v1.json",
             Path(__file__).resolve().parent / "policy_c_dataset_manifest_schema_v1.json",
@@ -87,6 +87,7 @@ def export_dataset(*, sweep_result_path: Path, out_root: Path) -> Dict[str, Any]
 
     records_hash = _sha256_text(records_path.read_text(encoding="utf-8"))
 
+    # Use sweep finished_at for deterministic manifests; timestamps are non-hash fields.
     created_at = sweep.get("finished_at") or _timestamp()
     manifest = {
         "schema_id": DATASET_MANIFEST_SCHEMA_ID,

@@ -22,6 +22,11 @@ def cleanroom_root() -> Path:
     return Path(__file__).resolve().parents[1]
 
 
+def policy_c_module_paths() -> List[Path]:
+    policy_c_dir = Path(__file__).resolve().parent
+    return sorted(policy_c_dir.glob("*.py"))
+
+
 def resolve_allowed_roots(roots: Sequence[str]) -> List[Path]:
     base = cleanroom_root()
     resolved: List[Path] = []
