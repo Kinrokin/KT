@@ -39,6 +39,13 @@ def _runtime_registry_hash(registry: Any) -> str:
             "organs_by_root": dict(registry.organs_by_root),
             "import_truth_matrix": {k: list(v) for k, v in registry.import_truth_matrix.items()},
             "dry_run": {"no_network": registry.dry_run.no_network, "providers_enabled": registry.dry_run.providers_enabled},
+            "policy_c": {
+                "drift": {
+                    "l2_warn": registry.policy_c.drift.l2_warn,
+                    "l2_fail": registry.policy_c.drift.l2_fail,
+                    "max_fail": registry.policy_c.drift.max_fail,
+                }
+            },
         }
     except Exception as exc:  # noqa: BLE001
         raise SpineError(f"Unable to fingerprint runtime registry (fail-closed): {exc.__class__.__name__}")

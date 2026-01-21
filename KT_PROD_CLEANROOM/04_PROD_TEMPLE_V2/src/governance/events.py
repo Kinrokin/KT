@@ -24,6 +24,8 @@ GOV_EVENT_TYPES: Set[str] = {
     "GOV_POLICY_APPLY",
     "GOV_CRISIS_ENTER",
     "GOV_CRISIS_EXIT",
+    "POLICY_C_DRIFT_WARN",
+    "POLICY_C_DRIFT_FAIL",
 }
 
 DECISIONS: Set[str] = {"ALLOW", "DENY", "VETO"}
@@ -113,4 +115,3 @@ def compute_envelope_hash(envelope: Dict[str, Any]) -> str:
     if len(encoded) > 2048:
         raise GovernanceEventError("Envelope exceeds max bytes (fail-closed)")
     return _sha256_text(encoded.decode("utf-8"))
-

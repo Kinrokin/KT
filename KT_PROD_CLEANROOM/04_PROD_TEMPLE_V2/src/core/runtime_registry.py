@@ -33,6 +33,18 @@ class DryRunSpec:
 
 
 @dataclass(frozen=True)
+class PolicyCDriftSpec:
+    l2_warn: float
+    l2_fail: float
+    max_fail: float
+
+
+@dataclass(frozen=True)
+class PolicyCSpec:
+    drift: PolicyCDriftSpec
+
+
+@dataclass(frozen=True)
 class RuntimeRegistry:
     registry_version: str
     canonical_entry: CallableSpec
@@ -42,6 +54,7 @@ class RuntimeRegistry:
     organs_by_root: Mapping[str, str]
     import_truth_matrix: Mapping[str, Tuple[str, ...]]
     dry_run: DryRunSpec
+    policy_c: PolicyCSpec
 
     def resolve_state_vault_jsonl_path(self) -> Path:
         repo_root = _v2_repo_root()
@@ -99,6 +112,7 @@ def load_runtime_registry() -> RuntimeRegistry:
         "organs_by_root",
         "import_truth_matrix",
         "dry_run",
+        "policy_c",
     }
     extra = set(data.keys()) - allowed_top
     if extra:
@@ -115,6 +129,7 @@ def load_runtime_registry() -> RuntimeRegistry:
     organs_by_root = _parse_organs_by_root(data.get("organs_by_root"), runtime_import_roots)
     import_truth_matrix = _parse_import_truth_matrix(data.get("import_truth_matrix"))
     dry_run = _parse_dry_run_spec(data.get("dry_run"))
+    policy_c = _parse_policy_c_spec(data.get("policy_c"))
 
     # Root allowlist must cover canonical Entry + Spine module roots (no silent discovery).
     for spec, label in ((canonical_entry, "canonical_entry"), (canonical_spine, "canonical_spine")):
@@ -141,6 +156,7 @@ def load_runtime_registry() -> RuntimeRegistry:
         organs_by_root=organs_by_root,
         import_truth_matrix=import_truth_matrix,
         dry_run=dry_run,
+        policy_c=policy_c,
     )
 
 
@@ -177,6 +193,7 @@ def _parse_state_vault_spec(value: Any) -> StateVaultSpec:
         organs_by_root={},
         import_truth_matrix={},
         dry_run=DryRunSpec(no_network=True, providers_enabled=False),
+        policy_c=PolicyCSpec(drift=PolicyCDriftSpec(l2_warn=0.0, l2_fail=0.0, max_fail=0.0)),
     ).resolve_state_vault_jsonl_path()
     return StateVaultSpec(jsonl_path=jsonl_path)
 
@@ -234,3 +251,26 @@ def _parse_dry_run_spec(value: Any) -> DryRunSpec:
     if not isinstance(no_network, bool) or not isinstance(providers_enabled, bool):
         raise RuntimeRegistryError("dry_run.no_network and dry_run.providers_enabled must be booleans (fail-closed)")
     return DryRunSpec(no_network=no_network, providers_enabled=providers_enabled)
+
+
+def _parse_policy_c_spec(value: Any) -> PolicyCSpec:
+    if not isinstance(value, dict):
+        raise RuntimeRegistryError("policy_c must be an object (fail-closed)")
+    if set(value.keys()) != {"drift"}:
+        raise RuntimeRegistryError("policy_c must contain exactly key ['drift'] (fail-closed)")
+    drift = value.get("drift")
+    if not isinstance(drift, dict):
+        raise RuntimeRegistryError("policy_c.drift must be an object (fail-closed)")
+    if set(drift.keys()) != {"l2_warn", "l2_fail", "max_fail"}:
+        raise RuntimeRegistryError("policy_c.drift must contain l2_warn, l2_fail, max_fail (fail-closed)")
+    l2_warn = drift.get("l2_warn")
+    l2_fail = drift.get("l2_fail")
+    max_fail = drift.get("max_fail")
+    for name, value in (("l2_warn", l2_warn), ("l2_fail", l2_fail), ("max_fail", max_fail)):
+        if not isinstance(value, (int, float)):
+            raise RuntimeRegistryError(f"policy_c.drift.{name} must be numeric (fail-closed)")
+        if value < 0.0 or value > 1.0:
+            raise RuntimeRegistryError(f"policy_c.drift.{name} out of bounds [0,1] (fail-closed)")
+    if l2_warn > l2_fail:
+        raise RuntimeRegistryError("policy_c.drift.l2_warn must be <= l2_fail (fail-closed)")
+    return PolicyCSpec(drift=PolicyCDriftSpec(l2_warn=float(l2_warn), l2_fail=float(l2_fail), max_fail=float(max_fail)))
