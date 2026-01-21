@@ -11,7 +11,9 @@
     "runs_pass",
     "runs_warn",
     "runs_fail",
-    "run_results"
+    "run_results",
+    "content_hash",
+    "provenance_hash"
   ],
   "properties": {
     "schema_id": { "type": "string", "const": "kt.policy_c.sweep_result.v1" },
@@ -28,6 +30,8 @@
     "runs_pass": { "type": "integer", "minimum": 0 },
     "runs_warn": { "type": "integer", "minimum": 0 },
     "runs_fail": { "type": "integer", "minimum": 0 },
+    "content_hash": { "type": "string" },
+    "provenance_hash": { "type": "string" },
     "run_results": {
       "type": "array",
       "items": { "$ref": "#/definitions/run_result" }
@@ -66,11 +70,19 @@
         "hashes": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["pressure_tensor_hash", "summary_hash", "drift_report_hash"],
+          "required": [
+            "pressure_tensor_hash",
+            "summary_hash",
+            "summary_provenance_hash",
+            "drift_report_hash",
+            "drift_report_provenance_hash"
+          ],
           "properties": {
             "pressure_tensor_hash": { "type": "string" },
             "summary_hash": { "type": "string" },
-            "drift_report_hash": { "type": "string" }
+            "summary_provenance_hash": { "type": "string" },
+            "drift_report_hash": { "type": "string" },
+            "drift_report_provenance_hash": { "type": "string" }
           }
         }
       }

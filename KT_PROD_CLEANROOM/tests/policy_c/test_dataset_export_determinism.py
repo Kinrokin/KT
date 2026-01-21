@@ -58,7 +58,9 @@ class TestDatasetExportDeterminism(unittest.TestCase):
                         "hashes": {
                             "pressure_tensor_hash": "a" * 64,
                             "summary_hash": "b" * 64,
+                            "summary_provenance_hash": "d" * 64,
                             "drift_report_hash": "c" * 64,
+                            "drift_report_provenance_hash": "e" * 64,
                         },
                     }
                 ],

@@ -134,17 +134,16 @@ def _write_json(path: Path, payload: Dict[str, Any]) -> None:
 def _hash_payload(payload: Dict[str, Any]) -> str:
     return _sha256_text(_canonical_json(payload))
 
+def _drop_keys_recursive(obj: Any, drop_keys: set[str]) -> Any:
+    if isinstance(obj, dict):
+        return {k: _drop_keys_recursive(v, drop_keys) for k, v in obj.items() if k not in drop_keys}
+    if isinstance(obj, list):
+        return [_drop_keys_recursive(v, drop_keys) for v in obj]
+    return obj
 
-def _hashable_summary(summary: Dict[str, Any]) -> Dict[str, Any]:
-    data = dict(summary)
-    data.pop("timestamp_utc", None)
-    return data
 
-
-def _hashable_drift_report(report: Dict[str, Any]) -> Dict[str, Any]:
-    data = dict(report)
-    data.pop("timestamp", None)
-    return data
+def _content_hash(payload: Dict[str, Any], drop_keys: set[str]) -> str:
+    return _hash_payload(_drop_keys_recursive(payload, drop_keys))
 
 
 def run_sweep(*, plan_path: Path, out_root: Path) -> Dict[str, Any]:
@@ -262,8 +261,10 @@ def run_sweep(*, plan_path: Path, out_root: Path) -> Dict[str, Any]:
         _write_json(summary_path, epoch_summary)
         _write_json(drift_path, drift.to_dict())
 
-        summary_hash = _hash_payload(_hashable_summary(epoch_summary))
-        drift_report_hash = _hash_payload(_hashable_drift_report(drift.to_dict()))
+        summary_content_hash = _content_hash(epoch_summary, {"timestamp_utc", "path"})
+        summary_provenance_hash = _hash_payload(epoch_summary)
+        drift_report_content_hash = _content_hash(drift.to_dict(), {"timestamp"})
+        drift_report_provenance_hash = _hash_payload(drift.to_dict())
 
         run_results.append(
             {
@@ -278,8 +279,10 @@ def run_sweep(*, plan_path: Path, out_root: Path) -> Dict[str, Any]:
                 },
                 "hashes": {
                     "pressure_tensor_hash": _hash_payload(pressure_payload),
-                    "summary_hash": summary_hash,
-                    "drift_report_hash": drift_report_hash,
+                    "summary_hash": summary_content_hash,
+                    "summary_provenance_hash": summary_provenance_hash,
+                    "drift_report_hash": drift_report_content_hash,
+                    "drift_report_provenance_hash": drift_report_provenance_hash,
                 },
             }
         )
@@ -304,6 +307,19 @@ def run_sweep(*, plan_path: Path, out_root: Path) -> Dict[str, Any]:
         "runs_fail": runs_fail,
         "run_results": run_results,
     }
+    sweep_result["content_hash"] = _content_hash(
+        sweep_result,
+        {
+            "started_at",
+            "finished_at",
+            "summary_provenance_hash",
+            "drift_report_provenance_hash",
+            "provenance_hash",
+            "paths",
+            "path",
+        },
+    )
+    sweep_result["provenance_hash"] = _hash_payload(sweep_result)
     result_path = out_root / "policy_c_sweep_result.json"
     _write_json(result_path, sweep_result)
     return sweep_result

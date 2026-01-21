@@ -12,6 +12,7 @@ STATE_VAULT_SCHEMA_ID = "kt.state_vault.v1"
 
 # Required immutable fields for every JSONL record.
 STATE_VAULT_REQUIRED_FIELDS_ORDER = (
+    "seq",
     "receipt_id",
     "created_at",
     "event_type",
@@ -104,6 +105,9 @@ def validate_state_vault_record(entry: Dict[str, Any]) -> None:
     if extra:
         raise StateVaultValidationError(f"Forbidden record fields present: {sorted(extra)}")
 
+    if not isinstance(entry.get("seq"), int) or entry["seq"] <= 0:
+        raise StateVaultValidationError("seq must be a positive integer")
+
     if entry.get("schema_id") != STATE_VAULT_SCHEMA_ID:
         raise StateVaultValidationError(f"schema_id must be {STATE_VAULT_SCHEMA_ID!r}")
     if entry.get("schema_version_hash") != STATE_VAULT_SCHEMA_VERSION_HASH:
@@ -187,6 +191,7 @@ def compute_event_hash(
 
 def build_state_vault_record(
     *,
+    seq: int,
     receipt_id: str,
     created_at: str,
     event_type: str,
@@ -226,6 +231,7 @@ def build_state_vault_record(
     )
 
     entry: Dict[str, Any] = {
+        "seq": int(seq),
         "receipt_id": receipt_id,
         "created_at": created_at,
         "event_type": event_type,
@@ -241,4 +247,3 @@ def build_state_vault_record(
 
     validate_state_vault_record(entry)
     return entry
-

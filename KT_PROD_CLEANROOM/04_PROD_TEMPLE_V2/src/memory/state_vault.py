@@ -175,6 +175,8 @@ class StateVault:
         except ConstitutionVersionError as exc:
             raise StateVaultWriteError(str(exc))
 
+        seq = self._record_count + 1
+
         # Deterministic receipt_id material (hash-only; no raw payload content).
         receipt_id = _sha256_text(
             _canonical_json(
@@ -189,6 +191,7 @@ class StateVault:
         )
 
         record = build_state_vault_record(
+            seq=seq,
             receipt_id=receipt_id,
             created_at=created_at,
             event_type=event_type,
@@ -231,4 +234,3 @@ class StateVault:
         self._head_hash = record["event_hash"]
         self._record_count += 1
         return AppendResult(record=record, head_hash=self._head_hash, record_count=self._record_count)
-

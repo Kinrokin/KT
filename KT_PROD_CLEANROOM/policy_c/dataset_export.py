@@ -32,14 +32,21 @@ def _load_json(path: Path) -> Dict[str, Any]:
 
 
 def _hashable_record(record: Dict[str, Any]) -> Dict[str, Any]:
-    data = dict(record)
-    data.pop("timestamp", None)
-    return data
+    def _drop(obj: Any) -> Any:
+        if isinstance(obj, dict):
+            return {k: _drop(v) for k, v in obj.items() if k not in {"timestamp", "path"}}
+        if isinstance(obj, list):
+            return [_drop(v) for v in obj]
+        return obj
+
+    return _drop(record)
 
 
 def _hashable_manifest(manifest: Dict[str, Any]) -> Dict[str, Any]:
     data = dict(manifest)
     data.pop("created_at", None)
+    data.pop("records_path", None)
+    data.pop("export_root", None)
     data.pop("manifest_hash", None)
     return data
 
