@@ -1,0 +1,42 @@
+{
+  "schema_id": "kt.policy_c.manifest.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "tensor_schema_ref",
+    "epoch_summary_schema_ref",
+    "projection_code_hash",
+    "gate_thresholds_hash",
+    "test_suite_hash",
+    "dataset_export_hash"
+  ],
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "kt.policy_c.manifest.v1"
+    },
+    "tensor_schema_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "hash"],
+      "properties": {
+        "path": { "type": "string" },
+        "hash": { "type": "string" }
+      }
+    },
+    "epoch_summary_schema_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "hash"],
+      "properties": {
+        "path": { "type": "string" },
+        "hash": { "type": "string" }
+      }
+    },
+    "projection_code_hash": { "type": "string" },
+    "gate_thresholds_hash": { "type": "string" },
+    "test_suite_hash": { "type": "string" },
+    "dataset_export_hash": { "type": "string" }
+  }
+}

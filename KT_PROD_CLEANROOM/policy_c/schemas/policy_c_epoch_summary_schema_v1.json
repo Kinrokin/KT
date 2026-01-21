@@ -1,0 +1,104 @@
+{
+  "schema_id": "kt.policy_c.epoch_summary.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "epoch_id",
+    "run_id",
+    "timestamp_utc",
+    "pressure_tensor_ref",
+    "projection_hash",
+    "pressure_scalar",
+    "pressure_contributions",
+    "drift_metrics",
+    "gate_results"
+  ],
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "kt.policy_c.epoch_summary.v1"
+    },
+    "epoch_id": { "type": "string" },
+    "run_id": { "type": "string" },
+    "timestamp_utc": { "type": "string" },
+    "pressure_tensor_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "hash"
+      ],
+      "properties": {
+        "path": { "type": "string" },
+        "hash": { "type": "string" }
+      }
+    },
+    "projection_hash": { "type": "string" },
+    "pressure_scalar": { "type": "number", "minimum": 0, "maximum": 1 },
+    "pressure_contributions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "time": { "type": "number", "minimum": 0, "maximum": 1 },
+        "universe": { "type": "number", "minimum": 0, "maximum": 1 },
+        "language": { "type": "number", "minimum": 0, "maximum": 1 },
+        "hop": { "type": "number", "minimum": 0, "maximum": 1 },
+        "step": { "type": "number", "minimum": 0, "maximum": 1 },
+        "paradox": { "type": "number", "minimum": 0, "maximum": 1 },
+        "puzzle": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "drift_metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entropy_delta",
+        "refusal_delta",
+        "lane_divergence_delta"
+      ],
+      "properties": {
+        "entropy_delta": { "type": "number" },
+        "refusal_delta": { "type": "number" },
+        "lane_divergence_delta": { "type": "number" }
+      }
+    },
+    "gate_results": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "C0",
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5"
+      ],
+      "properties": {
+        "C0": { "$ref": "#/definitions/gate" },
+        "C1": { "$ref": "#/definitions/gate" },
+        "C2": { "$ref": "#/definitions/gate" },
+        "C3": { "$ref": "#/definitions/gate" },
+        "C4": { "$ref": "#/definitions/gate" },
+        "C5": { "$ref": "#/definitions/gate" }
+      }
+    }
+  },
+  "definitions": {
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "receipts"
+      ],
+      "properties": {
+        "status": { "type": "string", "enum": ["PASS", "FAIL"] },
+        "receipts": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}
