@@ -37,8 +37,13 @@ class DriftReport:
             "timestamp": self.timestamp,
         }
 
+    def _hashable_dict(self) -> Dict[str, Any]:
+        data = self.to_dict()
+        data.pop("timestamp", None)
+        return data
+
     def report_hash(self) -> str:
-        return _sha256_text(_canonical_json(self.to_dict()))
+        return _sha256_text(_canonical_json(self._hashable_dict()))
 
 
 def compute_pressure_deltas(

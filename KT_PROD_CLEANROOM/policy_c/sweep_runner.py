@@ -135,6 +135,18 @@ def _hash_payload(payload: Dict[str, Any]) -> str:
     return _sha256_text(_canonical_json(payload))
 
 
+def _hashable_summary(summary: Dict[str, Any]) -> Dict[str, Any]:
+    data = dict(summary)
+    data.pop("timestamp_utc", None)
+    return data
+
+
+def _hashable_drift_report(report: Dict[str, Any]) -> Dict[str, Any]:
+    data = dict(report)
+    data.pop("timestamp", None)
+    return data
+
+
 def run_sweep(*, plan_path: Path, out_root: Path) -> Dict[str, Any]:
     registry = load_runtime_registry()
     plan = _load_json(plan_path)
@@ -250,6 +262,9 @@ def run_sweep(*, plan_path: Path, out_root: Path) -> Dict[str, Any]:
         _write_json(summary_path, epoch_summary)
         _write_json(drift_path, drift.to_dict())
 
+        summary_hash = _hash_payload(_hashable_summary(epoch_summary))
+        drift_report_hash = _hash_payload(_hashable_drift_report(drift.to_dict()))
+
         run_results.append(
             {
                 "run_id": run_id,
@@ -263,8 +278,8 @@ def run_sweep(*, plan_path: Path, out_root: Path) -> Dict[str, Any]:
                 },
                 "hashes": {
                     "pressure_tensor_hash": _hash_payload(pressure_payload),
-                    "summary_hash": _hash_payload(epoch_summary),
-                    "drift_report_hash": drift.report_hash(),
+                    "summary_hash": summary_hash,
+                    "drift_report_hash": drift_report_hash,
                 },
             }
         )

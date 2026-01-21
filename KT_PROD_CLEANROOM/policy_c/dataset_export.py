@@ -31,6 +31,19 @@ def _load_json(path: Path) -> Dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _hashable_record(record: Dict[str, Any]) -> Dict[str, Any]:
+    data = dict(record)
+    data.pop("timestamp", None)
+    return data
+
+
+def _hashable_manifest(manifest: Dict[str, Any]) -> Dict[str, Any]:
+    data = dict(manifest)
+    data.pop("created_at", None)
+    data.pop("manifest_hash", None)
+    return data
+
+
 def export_dataset(*, sweep_result_path: Path, out_root: Path) -> Dict[str, Any]:
     registry = load_runtime_registry()
     assert_export_root_allowed(out_root, registry.policy_c.sweep.allowed_export_roots)
@@ -85,7 +98,7 @@ def export_dataset(*, sweep_result_path: Path, out_root: Path) -> Dict[str, Any]
         for record in records:
             handle.write(json.dumps(record, ensure_ascii=False) + "\n")
 
-    records_hash = _sha256_text(records_path.read_text(encoding="utf-8"))
+    records_hash = _sha256_text(_canonical_json([_hashable_record(r) for r in records]))
 
     # Use sweep finished_at for deterministic manifests; timestamps are non-hash fields.
     created_at = sweep.get("finished_at") or _timestamp()
@@ -103,7 +116,7 @@ def export_dataset(*, sweep_result_path: Path, out_root: Path) -> Dict[str, Any]
         "records_hash": records_hash,
         "export_root": out_root.as_posix(),
     }
-    manifest_hash = _sha256_text(_canonical_json(manifest))
+    manifest_hash = _sha256_text(_canonical_json(_hashable_manifest(manifest)))
     manifest["manifest_hash"] = manifest_hash
 
     manifest_path = out_root / "kt_policy_c_dataset_manifest_v1.json"
