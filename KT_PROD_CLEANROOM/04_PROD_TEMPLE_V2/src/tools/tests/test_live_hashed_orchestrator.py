@@ -1,9 +1,25 @@
 import json
+import importlib.util
+import sys
 from pathlib import Path
 
 import pytest
 
-from tools.orchestrators.live_hashed_orchestrator import run_orchestrator
+
+def _add_src_to_syspath() -> None:
+    src_root = Path(__file__).resolve().parents[2]
+    sys.path.insert(0, str(src_root))
+
+
+_add_src_to_syspath()
+
+module_path = Path(__file__).resolve().parents[1] / "orchestrators" / "live_hashed_orchestrator.py"
+spec = importlib.util.spec_from_file_location("live_hashed_orchestrator", module_path)
+if spec is None or spec.loader is None:
+    raise RuntimeError("Unable to load live_hashed_orchestrator module (fail-closed)")
+_mod = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(_mod)
+run_orchestrator = _mod.run_orchestrator
 
 
 def test_orchestrator_commits_ledger(monkeypatch, tmp_path):
@@ -18,7 +34,7 @@ def test_orchestrator_commits_ledger(monkeypatch, tmp_path):
         return {"receipt": fake_receipt, "receipt_hash": fake_receipt_hash}
 
     # Patch the orchestrator's local reference to the Council router
-    monkeypatch.setattr("tools.orchestrators.live_hashed_orchestrator.execute_council_request", fake_execute)
+    monkeypatch.setattr(_mod, "execute_council_request", fake_execute)
 
     # Redirect ledger path to tmp
     ledger_dir = tmp_path / "ledgers" / "thermo"

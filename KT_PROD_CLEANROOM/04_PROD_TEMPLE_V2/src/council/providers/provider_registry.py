@@ -57,7 +57,10 @@ class ProviderRegistry:
         if provider_id != "dry_run" and not self.live_enabled():
             return make_disabled_response(request=request, error_code="PROVIDERS_DISABLED")
 
-        provider = self.resolve(provider_id=provider_id)
+        try:
+            provider = self.resolve(provider_id=provider_id)
+        except ValueError:
+            return make_fail_closed_response(request=request, error_code="UNKNOWN_PROVIDER")
         try:
             return provider.invoke(request=request)
         except Exception:
@@ -88,4 +91,3 @@ class ProviderRegistry:
                 kt_node_id=kt_node_id,
             )
         raise RuntimeError(f"LIVE_HASHED provider not implemented (fail-closed): {provider_id!r}")
-

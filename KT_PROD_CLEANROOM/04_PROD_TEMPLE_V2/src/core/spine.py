@@ -503,7 +503,11 @@ def run(context: Dict[str, Any]) -> Dict[str, Any]:
 
     from governance.verdict import emit_governance_verdict  # noqa: E402
     from pathlib import Path
-    artifact_root = Path(context["artifact_root"]).resolve()
+    artifact_root_value = context.get("artifact_root")
+    if artifact_root_value is None:
+        artifact_root = vault_path.parent
+    else:
+        artifact_root = Path(artifact_root_value).resolve()
 
     # Unconditional, fail-closed governance verdict emission
     verdict = context.get("governance_verdict", "FAIL")
