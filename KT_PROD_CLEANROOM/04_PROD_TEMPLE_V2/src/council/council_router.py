@@ -1,9 +1,12 @@
 
 from __future__ import annotations
 
+import json
 import os
 from copy import deepcopy
-from typing import Any, Dict, Mapping
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, Mapping, Sequence
 
 from council.council_schemas import (
     CouncilPlanSchema,
@@ -16,8 +19,10 @@ from council.council_schemas import (
     RESULT_STATUS_DRY_RUN,
     RESULT_STATUS_REFUSED,
 )
+from council.providers.provider_schemas import MODE_DRY_RUN, ProviderRequestSchema, ProviderResponseSchema
 from council.providers.provider_registry import ProviderRegistry
 from council.providers.provider_schemas import ProviderCallReceipt
+from schemas.schema_hash import sha256_text, sha256_json
 
 
 class CouncilError(RuntimeError):
@@ -85,6 +90,84 @@ def execute_council_request(req: Dict[str, Any]) -> Dict[str, Any]:
         "receipt_hash": receipt.to_dict().get("receipt_hash"),
     }
     return out
+
+
+def _trace_export_root() -> Path:
+    return Path(__file__).resolve().parents[2] / "exports" / "router_traces"
+
+
+def _write_trace_record(*, trace_id: str, record: Dict[str, Any], export_root: Path | None) -> None:
+    root = export_root or _trace_export_root()
+    root.mkdir(parents=True, exist_ok=True)
+    path = root / f"{trace_id}.jsonl"
+    payload = json.dumps(record, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+    with path.open("a", encoding="utf-8", newline="\n") as handle:
+        handle.write(payload + "\n")
+
+
+def execute_fanout_request(
+    *,
+    prompt: str,
+    provider_ids: Sequence[str],
+    model_id: str,
+    max_output_tokens: int = 256,
+    timeout_ms: int = 2000,
+    mode: str = MODE_DRY_RUN,
+    trace_id: str,
+    export_root: Path | None = None,
+) -> list[Dict[str, Any]]:
+    if not provider_ids or len(provider_ids) < 2:
+        raise CouncilError("fanout requires at least two providers (fail-closed)")
+    if not prompt:
+        raise CouncilError("prompt required (fail-closed)")
+    if not model_id:
+        raise CouncilError("model_id required (fail-closed)")
+    if not trace_id:
+        raise CouncilError("trace_id required (fail-closed)")
+
+    registry = ProviderRegistry.build_default()
+    input_hash = sha256_text(prompt)
+    results: list[Dict[str, Any]] = []
+
+    for provider_id in provider_ids:
+        req_payload = {
+            "schema_id": ProviderRequestSchema.SCHEMA_ID,
+            "schema_version_hash": ProviderRequestSchema.SCHEMA_VERSION_HASH,
+            "request_id": "",
+            "provider_id": provider_id,
+            "model_id": model_id,
+            "input_hash": input_hash,
+            "max_output_tokens": int(max_output_tokens),
+            "timeout_ms": int(timeout_ms),
+            "mode": mode,
+        }
+        req_payload["request_id"] = ProviderRequestSchema.compute_request_id(req_payload)
+        request = ProviderRequestSchema.from_dict(req_payload)
+        response = registry.invoke(request=request)
+        resp_dict = response.to_dict()
+        ProviderResponseSchema.validate(resp_dict)
+
+        record = {
+            "trace_id": trace_id,
+            "provider": provider_id,
+            "model": model_id,
+            "request_hash": req_payload["request_id"],
+            "response_hash": resp_dict.get("output_hash") or sha256_json(resp_dict),
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "latency_ms": int(resp_dict.get("latency_ms", 0)),
+        }
+        _write_trace_record(trace_id=trace_id, record=record, export_root=export_root)
+
+        results.append(
+            {
+                "provider": provider_id,
+                "request": req_payload,
+                "response": resp_dict,
+                "trace_record": record,
+            }
+        )
+
+    return results
 
 
 class _FrozenContext(dict):
@@ -176,4 +259,5 @@ __all__ = [
     "CouncilRouter",
     "ProviderRegistry",
     "execute_council_request",
+    "execute_fanout_request",
 ]
