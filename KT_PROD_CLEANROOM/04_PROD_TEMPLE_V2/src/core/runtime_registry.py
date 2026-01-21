@@ -40,8 +40,25 @@ class PolicyCDriftSpec:
 
 
 @dataclass(frozen=True)
+class PolicyCSweepSpec:
+    max_runs_default: int
+    fail_fast_default: bool
+    export_enabled: bool
+    allowed_export_roots: Tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class PolicyCStaticSafetySpec:
+    enabled: bool
+    forbidden_imports: Tuple[str, ...]
+    allowed_export_roots: Tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class PolicyCSpec:
     drift: PolicyCDriftSpec
+    sweep: PolicyCSweepSpec
+    static_safety: PolicyCStaticSafetySpec
 
 
 @dataclass(frozen=True)
@@ -193,7 +210,20 @@ def _parse_state_vault_spec(value: Any) -> StateVaultSpec:
         organs_by_root={},
         import_truth_matrix={},
         dry_run=DryRunSpec(no_network=True, providers_enabled=False),
-        policy_c=PolicyCSpec(drift=PolicyCDriftSpec(l2_warn=0.0, l2_fail=0.0, max_fail=0.0)),
+        policy_c=PolicyCSpec(
+            drift=PolicyCDriftSpec(l2_warn=0.0, l2_fail=0.0, max_fail=0.0),
+            sweep=PolicyCSweepSpec(
+                max_runs_default=0,
+                fail_fast_default=True,
+                export_enabled=False,
+                allowed_export_roots=(),
+            ),
+            static_safety=PolicyCStaticSafetySpec(
+                enabled=True,
+                forbidden_imports=(),
+                allowed_export_roots=(),
+            ),
+        ),
     ).resolve_state_vault_jsonl_path()
     return StateVaultSpec(jsonl_path=jsonl_path)
 
@@ -256,21 +286,95 @@ def _parse_dry_run_spec(value: Any) -> DryRunSpec:
 def _parse_policy_c_spec(value: Any) -> PolicyCSpec:
     if not isinstance(value, dict):
         raise RuntimeRegistryError("policy_c must be an object (fail-closed)")
-    if set(value.keys()) != {"drift"}:
-        raise RuntimeRegistryError("policy_c must contain exactly key ['drift'] (fail-closed)")
-    drift = value.get("drift")
-    if not isinstance(drift, dict):
+    if set(value.keys()) != {"drift", "sweep", "static_safety"}:
+        raise RuntimeRegistryError("policy_c must contain exactly keys ['drift','sweep','static_safety'] (fail-closed)")
+    drift = _parse_policy_c_drift(value.get("drift"))
+    sweep = _parse_policy_c_sweep(value.get("sweep"))
+    static_safety = _parse_policy_c_static_safety(value.get("static_safety"))
+    return PolicyCSpec(drift=drift, sweep=sweep, static_safety=static_safety)
+
+
+def _parse_policy_c_drift(value: Any) -> PolicyCDriftSpec:
+    if not isinstance(value, dict):
         raise RuntimeRegistryError("policy_c.drift must be an object (fail-closed)")
-    if set(drift.keys()) != {"l2_warn", "l2_fail", "max_fail"}:
+    if set(value.keys()) != {"l2_warn", "l2_fail", "max_fail"}:
         raise RuntimeRegistryError("policy_c.drift must contain l2_warn, l2_fail, max_fail (fail-closed)")
-    l2_warn = drift.get("l2_warn")
-    l2_fail = drift.get("l2_fail")
-    max_fail = drift.get("max_fail")
-    for name, value in (("l2_warn", l2_warn), ("l2_fail", l2_fail), ("max_fail", max_fail)):
-        if not isinstance(value, (int, float)):
+    l2_warn = value.get("l2_warn")
+    l2_fail = value.get("l2_fail")
+    max_fail = value.get("max_fail")
+    for name, val in (("l2_warn", l2_warn), ("l2_fail", l2_fail), ("max_fail", max_fail)):
+        if not isinstance(val, (int, float)):
             raise RuntimeRegistryError(f"policy_c.drift.{name} must be numeric (fail-closed)")
-        if value < 0.0 or value > 1.0:
+        if val < 0.0 or val > 1.0:
             raise RuntimeRegistryError(f"policy_c.drift.{name} out of bounds [0,1] (fail-closed)")
     if l2_warn > l2_fail:
         raise RuntimeRegistryError("policy_c.drift.l2_warn must be <= l2_fail (fail-closed)")
-    return PolicyCSpec(drift=PolicyCDriftSpec(l2_warn=float(l2_warn), l2_fail=float(l2_fail), max_fail=float(max_fail)))
+    return PolicyCDriftSpec(l2_warn=float(l2_warn), l2_fail=float(l2_fail), max_fail=float(max_fail))
+
+
+def _parse_policy_c_sweep(value: Any) -> PolicyCSweepSpec:
+    if not isinstance(value, dict):
+        raise RuntimeRegistryError("policy_c.sweep must be an object (fail-closed)")
+    if set(value.keys()) != {"max_runs_default", "fail_fast_default", "export_enabled", "allowed_export_roots"}:
+        raise RuntimeRegistryError(
+            "policy_c.sweep must contain max_runs_default, fail_fast_default, export_enabled, allowed_export_roots (fail-closed)"
+        )
+    max_runs_default = value.get("max_runs_default")
+    fail_fast_default = value.get("fail_fast_default")
+    export_enabled = value.get("export_enabled")
+    allowed_export_roots = value.get("allowed_export_roots")
+    if not isinstance(max_runs_default, int) or max_runs_default <= 0:
+        raise RuntimeRegistryError("policy_c.sweep.max_runs_default must be positive int (fail-closed)")
+    if not isinstance(fail_fast_default, bool) or not isinstance(export_enabled, bool):
+        raise RuntimeRegistryError("policy_c.sweep flags must be booleans (fail-closed)")
+    roots = _parse_export_root_list(allowed_export_roots, name="policy_c.sweep.allowed_export_roots")
+    return PolicyCSweepSpec(
+        max_runs_default=int(max_runs_default),
+        fail_fast_default=bool(fail_fast_default),
+        export_enabled=bool(export_enabled),
+        allowed_export_roots=roots,
+    )
+
+
+def _parse_policy_c_static_safety(value: Any) -> PolicyCStaticSafetySpec:
+    if not isinstance(value, dict):
+        raise RuntimeRegistryError("policy_c.static_safety must be an object (fail-closed)")
+    if set(value.keys()) != {"enabled", "forbidden_imports", "allowed_export_roots"}:
+        raise RuntimeRegistryError(
+            "policy_c.static_safety must contain enabled, forbidden_imports, allowed_export_roots (fail-closed)"
+        )
+    enabled = value.get("enabled")
+    forbidden_imports = value.get("forbidden_imports")
+    allowed_export_roots = value.get("allowed_export_roots")
+    if not isinstance(enabled, bool):
+        raise RuntimeRegistryError("policy_c.static_safety.enabled must be boolean (fail-closed)")
+    if not isinstance(forbidden_imports, list) or not forbidden_imports or not all(
+        isinstance(x, str) and x.strip() for x in forbidden_imports
+    ):
+        raise RuntimeRegistryError("policy_c.static_safety.forbidden_imports must be non-empty list of strings (fail-closed)")
+    roots = _parse_export_root_list(allowed_export_roots, name="policy_c.static_safety.allowed_export_roots")
+    forbidden_sorted = tuple(sorted(x.strip() for x in forbidden_imports))
+    return PolicyCStaticSafetySpec(
+        enabled=enabled,
+        forbidden_imports=forbidden_sorted,
+        allowed_export_roots=roots,
+    )
+
+
+def _parse_export_root_list(value: Any, *, name: str) -> Tuple[str, ...]:
+    if not isinstance(value, list) or not value or not all(isinstance(x, str) for x in value):
+        raise RuntimeRegistryError(f"{name} must be a non-empty list of strings (fail-closed)")
+    normalized = [x.strip() for x in value]
+    if any(not x for x in normalized):
+        raise RuntimeRegistryError(f"{name} contains empty strings (fail-closed)")
+    if normalized != sorted(normalized):
+        raise RuntimeRegistryError(f"{name} must be sorted lexicographically (fail-closed)")
+    if len(set(normalized)) != len(normalized):
+        raise RuntimeRegistryError(f"{name} must not contain duplicates (fail-closed)")
+    for entry in normalized:
+        p = Path(entry)
+        if p.is_absolute():
+            raise RuntimeRegistryError(f"{name} must be relative (fail-closed)")
+        if any(part in {"..", "."} for part in p.parts):
+            raise RuntimeRegistryError(f"{name} must not contain '.' or '..' segments (fail-closed)")
+    return tuple(normalized)

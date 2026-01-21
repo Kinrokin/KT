@@ -1,0 +1,62 @@
+{
+  "schema_id": "kt.policy_c.dataset_record.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "sweep_id",
+    "run_id",
+    "epoch_id",
+    "timestamp",
+    "pressure_tensor_ref",
+    "epoch_summary_ref",
+    "drift_report_ref",
+    "labels"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "kt.policy_c.dataset_record.v1" },
+    "sweep_id": { "type": "string" },
+    "run_id": { "type": "string" },
+    "epoch_id": { "type": "string" },
+    "timestamp": { "type": "string" },
+    "pressure_tensor_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "hash"],
+      "properties": {
+        "path": { "type": "string" },
+        "hash": { "type": "string" }
+      }
+    },
+    "epoch_summary_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "hash"],
+      "properties": {
+        "path": { "type": "string" },
+        "hash": { "type": "string" }
+      }
+    },
+    "drift_report_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "hash"],
+      "properties": {
+        "path": { "type": "string" },
+        "hash": { "type": "string" }
+      }
+    },
+    "labels": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reason_codes"],
+      "properties": {
+        "status": { "type": "string", "enum": ["PASS", "WARN", "FAIL", "ERROR"] },
+        "reason_codes": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

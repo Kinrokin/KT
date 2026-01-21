@@ -1,0 +1,73 @@
+{
+  "schema_id": "kt.policy_c.sweep_result.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "sweep_id",
+    "started_at",
+    "finished_at",
+    "runs_total",
+    "runs_pass",
+    "runs_warn",
+    "runs_fail",
+    "run_results"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "kt.policy_c.sweep_result.v1" },
+    "sweep_id": { "type": "string" },
+    "started_at": { "type": "string" },
+    "finished_at": { "type": "string" },
+    "runs_total": { "type": "integer", "minimum": 0 },
+    "runs_pass": { "type": "integer", "minimum": 0 },
+    "runs_warn": { "type": "integer", "minimum": 0 },
+    "runs_fail": { "type": "integer", "minimum": 0 },
+    "run_results": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/run_result" }
+    }
+  },
+  "definitions": {
+    "run_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "epoch_id",
+        "status",
+        "reason_codes",
+        "paths",
+        "hashes"
+      ],
+      "properties": {
+        "run_id": { "type": "string" },
+        "epoch_id": { "type": "string" },
+        "status": { "type": "string", "enum": ["PASS", "WARN", "FAIL", "ERROR"] },
+        "reason_codes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "paths": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pressure_tensor", "epoch_summary", "drift_report"],
+          "properties": {
+            "pressure_tensor": { "type": "string" },
+            "epoch_summary": { "type": "string" },
+            "drift_report": { "type": "string" }
+          }
+        },
+        "hashes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pressure_tensor_hash", "summary_hash", "drift_report_hash"],
+          "properties": {
+            "pressure_tensor_hash": { "type": "string" },
+            "summary_hash": { "type": "string" },
+            "drift_report_hash": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

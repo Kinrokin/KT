@@ -1,0 +1,38 @@
+{
+  "schema_id": "kt.policy_c.dataset_manifest.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "dataset_id",
+    "created_at",
+    "sweep_id",
+    "record_schema_id",
+    "manifest_schema_id",
+    "counts",
+    "records_path",
+    "records_hash",
+    "export_root",
+    "manifest_hash"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "kt.policy_c.dataset_manifest.v1" },
+    "dataset_id": { "type": "string" },
+    "created_at": { "type": "string" },
+    "sweep_id": { "type": "string" },
+    "record_schema_id": { "type": "string" },
+    "manifest_schema_id": { "type": "string" },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["records"],
+      "properties": {
+        "records": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "records_path": { "type": "string" },
+    "records_hash": { "type": "string" },
+    "export_root": { "type": "string" },
+    "manifest_hash": { "type": "string" }
+  }
+}

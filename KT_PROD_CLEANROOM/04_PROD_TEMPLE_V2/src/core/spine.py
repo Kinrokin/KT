@@ -44,7 +44,18 @@ def _runtime_registry_hash(registry: Any) -> str:
                     "l2_warn": registry.policy_c.drift.l2_warn,
                     "l2_fail": registry.policy_c.drift.l2_fail,
                     "max_fail": registry.policy_c.drift.max_fail,
-                }
+                },
+                "sweep": {
+                    "max_runs_default": registry.policy_c.sweep.max_runs_default,
+                    "fail_fast_default": registry.policy_c.sweep.fail_fast_default,
+                    "export_enabled": registry.policy_c.sweep.export_enabled,
+                    "allowed_export_roots": list(registry.policy_c.sweep.allowed_export_roots),
+                },
+                "static_safety": {
+                    "enabled": registry.policy_c.static_safety.enabled,
+                    "forbidden_imports": list(registry.policy_c.static_safety.forbidden_imports),
+                    "allowed_export_roots": list(registry.policy_c.static_safety.allowed_export_roots),
+                },
             },
         }
     except Exception as exc:  # noqa: BLE001

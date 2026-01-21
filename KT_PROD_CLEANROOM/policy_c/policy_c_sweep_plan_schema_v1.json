@@ -1,0 +1,70 @@
+{
+  "schema_id": "kt.policy_c.sweep_plan.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "sweep_id",
+    "baseline_epoch_id",
+    "max_runs",
+    "seed",
+    "export"
+  ],
+  "properties": {
+    "schema_id": { "type": "string", "const": "kt.policy_c.sweep_plan.v1" },
+    "sweep_id": { "type": "string" },
+    "baseline_epoch_id": { "type": ["string", "null"] },
+    "max_runs": { "type": "integer", "minimum": 1 },
+    "seed": { "type": "integer" },
+    "continue_on_fail": { "type": "boolean" },
+    "export": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["export_root"],
+      "properties": {
+        "export_root": { "type": "string" }
+      }
+    },
+    "runs": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/run_item" }
+    },
+    "grid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["parameters"],
+      "properties": {
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "number" }
+          }
+        },
+        "epoch_plan": { "type": "object" },
+        "epoch_plan_path": { "type": "string" },
+        "tags": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "run_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run_id"],
+      "properties": {
+        "run_id": { "type": "string" },
+        "epoch_plan_path": { "type": "string" },
+        "epoch_plan": { "type": "object" },
+        "tags": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "invariant_violations": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}
