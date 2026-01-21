@@ -4,7 +4,15 @@ schema_version: 1
 crucible_id: "CRU-LOGIC-PROOF-01"
 title: "Logic proof check (deterministic)"
 domain: "logic.proof"
-tags: ["logic", "proof", "math"]
+tags:
+  domains: ["logic"]
+  subdomains: ["proof"]
+  microdomains: ["arithmetic"]
+  ventures: []
+  reasoning_modes: ["formal_proof"]
+  modalities: ["text"]
+  tools: []
+  paradox_classes: []
 
 kernel_targets:
   - "KERNEL_COVERAGE_BASELINE"

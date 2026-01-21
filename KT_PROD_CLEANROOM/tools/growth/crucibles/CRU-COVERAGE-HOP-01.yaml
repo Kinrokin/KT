@@ -4,9 +4,19 @@ crucible_id: CRU-COVERAGE-HOP-01
 title: Coverage hop crucible (governance + policy)
 domain: governance.policy
 tags:
-- coverage
-- hop
-- governance
+  domains:
+  - coverage
+  subdomains:
+  - governance
+  microdomains:
+  - policy
+  ventures: []
+  reasoning_modes:
+  - coverage_hop
+  modalities:
+  - text
+  tools: []
+  paradox_classes: []
 kernel_targets:
 - V2_SOVEREIGN
 - KERNEL_COVERAGE_BASELINE

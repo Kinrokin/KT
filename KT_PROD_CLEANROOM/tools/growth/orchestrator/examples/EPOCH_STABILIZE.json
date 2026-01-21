@@ -1,28 +1,30 @@
 {
-  "epoch_id": "EPOCH_STABILIZE_RUN1",
-  "epoch_profile": "COVERAGE_MILESTONE",
-  "kernel_identity": {
-    "kernel_target": "KERNEL_COVERAGE_BASELINE"
-  },
-  "seed": 0,
   "budgets": {
     "epoch_wall_clock_ms": 180000,
     "per_crucible_rss_mb": 1536,
     "per_crucible_timeout_ms": 30000
   },
-  "stop_conditions": {
-    "max_failures": 0
+  "crucible_order": [
+    "CRU-COVERAGE-HOP-01",
+    "CRU-COVERAGE-HOP-PASS-01",
+    "CRU-GOV-HONESTY-01"
+  ],
+  "crucible_specs": {
+    "CRU-COVERAGE-HOP-01": "tools/growth/crucibles/CRU-COVERAGE-HOP-01.yaml",
+    "CRU-COVERAGE-HOP-PASS-01": "tools/growth/crucibles/CRU-COVERAGE-HOP-PASS-01.yaml",
+    "CRU-GOV-HONESTY-01": "tools/growth/crucibles/CRU-GOV-HONESTY-01.yaml"
+  },
+  "epoch_id": "EPOCH_STABILIZE_RUN1",
+  "epoch_profile": "COVERAGE_MILESTONE",
+  "kernel_identity": {
+    "kernel_target": "KERNEL_COVERAGE_BASELINE"
   },
   "runner_config": {
     "args": [],
     "template_id": "C019_RUNNER_V1"
   },
-  "crucible_order": [
-    "CRU_COVERAGE_CORE_01",
-    "CRU_COVERAGE_CORE_02"
-  ],
-  "crucible_specs": {
-    "CRU_COVERAGE_CORE_01": "tools/growth/crucibles/CRU-COVERAGE-HOP-PASS-01.yaml",
-    "CRU_COVERAGE_CORE_02": "tools/growth/crucibles/CRU-COVERAGE-HOP-PASS-02.yaml"
+  "seed": 0,
+  "stop_conditions": {
+    "max_failures": 0
   }
 }

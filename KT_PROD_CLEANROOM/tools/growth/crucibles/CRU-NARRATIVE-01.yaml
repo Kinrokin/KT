@@ -4,7 +4,15 @@ schema_version: 1
 crucible_id: "CRU-NARRATIVE-01"
 title: "Narrative summary (short story)"
 domain: "narrative.literature"
-tags: ["narrative", "summary", "text"]
+tags:
+  domains: ["narrative"]
+  subdomains: ["literature"]
+  microdomains: ["summary"]
+  ventures: []
+  reasoning_modes: ["narrative_summary"]
+  modalities: ["text"]
+  tools: []
+  paradox_classes: []
 
 kernel_targets:
   - "KERNEL_COVERAGE_BASELINE"

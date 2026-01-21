@@ -5,11 +5,14 @@ crucible_id: "CRU-REANCHOR-CONSTRAINT-01"
 title: "Constraint Re-anchor (Coverage)"
 domain: "governance.coverage_reanchor"
 tags:
-  - governance
-  - coverage_seed
-  - constraint
-  - reanchor
-  - stable_path
+  domains: ["reanchor"]
+  subdomains: ["governance"]
+  microdomains: ["constraint"]
+  ventures: []
+  reasoning_modes: ["constraint_reanchor"]
+  modalities: ["text"]
+  tools: []
+  paradox_classes: []
 
 kernel_targets:
   - V2_SOVEREIGN

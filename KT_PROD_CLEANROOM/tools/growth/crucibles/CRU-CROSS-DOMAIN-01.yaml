@@ -4,7 +4,15 @@ schema_version: 1
 crucible_id: "CRU-CROSS-DOMAIN-01"
 title: "Cross-domain analogy"
 domain: "cross.domain"
-tags: ["cross_domain", "analogy", "coverage"]
+tags:
+  domains: ["cross_domain"]
+  subdomains: ["analogy"]
+  microdomains: ["bridge"]
+  ventures: []
+  reasoning_modes: ["domain_hop"]
+  modalities: ["text"]
+  tools: []
+  paradox_classes: []
 
 kernel_targets:
   - "KERNEL_COVERAGE_BASELINE"

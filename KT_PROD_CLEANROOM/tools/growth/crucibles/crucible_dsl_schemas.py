@@ -496,6 +496,66 @@ class CrucibleProvenance:
 
 
 @dataclass(frozen=True)
+class CrucibleTags:
+    domains: Tuple[str, ...]
+    subdomains: Tuple[str, ...]
+    microdomains: Tuple[str, ...]
+    ventures: Tuple[str, ...]
+    reasoning_modes: Tuple[str, ...]
+    modalities: Tuple[str, ...]
+    tools: Tuple[str, ...]
+    paradox_classes: Tuple[str, ...]
+
+    @staticmethod
+    def from_dict(data: Mapping[str, Any]) -> "CrucibleTags":
+        payload = _require_dict(data, name="tags")
+        allowed = {
+            "domains",
+            "subdomains",
+            "microdomains",
+            "ventures",
+            "reasoning_modes",
+            "modalities",
+            "tools",
+            "paradox_classes",
+        }
+        _reject_unknown_keys(payload, allowed=set(allowed), name="tags")
+        _require_keys(payload, required=set(allowed), name="tags")
+
+        domains = _validate_str_list(payload.get("domains", []), name="tags.domains", min_items=0, max_items=32, item_min_len=1, item_max_len=64)
+        subdomains = _validate_str_list(payload.get("subdomains", []), name="tags.subdomains", min_items=0, max_items=64, item_min_len=1, item_max_len=64)
+        microdomains = _validate_str_list(payload.get("microdomains", []), name="tags.microdomains", min_items=0, max_items=128, item_min_len=1, item_max_len=64)
+        ventures = _validate_str_list(payload.get("ventures", []), name="tags.ventures", min_items=0, max_items=32, item_min_len=1, item_max_len=64)
+        reasoning_modes = _validate_str_list(payload.get("reasoning_modes", []), name="tags.reasoning_modes", min_items=0, max_items=32, item_min_len=1, item_max_len=64)
+        modalities = _validate_str_list(payload.get("modalities", []), name="tags.modalities", min_items=0, max_items=32, item_min_len=1, item_max_len=64)
+        tools = _validate_str_list(payload.get("tools", []), name="tags.tools", min_items=0, max_items=32, item_min_len=1, item_max_len=64)
+        paradox_classes = _validate_str_list(payload.get("paradox_classes", []), name="tags.paradox_classes", min_items=0, max_items=32, item_min_len=1, item_max_len=64)
+
+        return CrucibleTags(
+            domains=tuple(domains),
+            subdomains=tuple(subdomains),
+            microdomains=tuple(microdomains),
+            ventures=tuple(ventures),
+            reasoning_modes=tuple(reasoning_modes),
+            modalities=tuple(modalities),
+            tools=tuple(tools),
+            paradox_classes=tuple(paradox_classes),
+        )
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "domains": list(self.domains),
+            "subdomains": list(self.subdomains),
+            "microdomains": list(self.microdomains),
+            "ventures": list(self.ventures),
+            "reasoning_modes": list(self.reasoning_modes),
+            "modalities": list(self.modalities),
+            "tools": list(self.tools),
+            "paradox_classes": list(self.paradox_classes),
+        }
+
+
+@dataclass(frozen=True)
 class CrucibleSpec:
     schema: str
     schema_version: int
@@ -506,7 +566,7 @@ class CrucibleSpec:
     input: CrucibleInput
     budgets: CrucibleBudgets
     expect: CrucibleExpect
-    tags: Tuple[str, ...] = ()
+    tags: CrucibleTags
     description: str = ""
     notes: str = ""
     provenance: Optional[CrucibleProvenance] = None
@@ -531,7 +591,7 @@ class CrucibleSpec:
             "provenance",
             "variants",
         }
-        required = {"schema", "schema_version", "crucible_id", "title", "domain", "kernel_targets", "input", "budgets", "expect"}
+        required = {"schema", "schema_version", "crucible_id", "title", "domain", "kernel_targets", "input", "budgets", "expect", "tags"}
         _reject_unknown_keys(payload, allowed=set(allowed), name="CrucibleSpec")
         _require_keys(payload, required=set(required), name="CrucibleSpec")
 
@@ -557,7 +617,7 @@ class CrucibleSpec:
         if KERNEL_V2_SOVEREIGN not in kernel_targets:
             raise CrucibleSchemaError("kernel_targets must include V2_SOVEREIGN (fail-closed)")
 
-        tags_list = _validate_str_list(payload.get("tags", []), name="tags", min_items=0, max_items=32, item_min_len=1, item_max_len=32)
+        tags = CrucibleTags.from_dict(payload.get("tags"))
         description = _require_str(payload.get("description", ""), name="description", min_len=0, max_len=2000)
         notes = _require_str(payload.get("notes", ""), name="notes", min_len=0, max_len=4000)
 
@@ -599,7 +659,7 @@ class CrucibleSpec:
             input=inp,
             budgets=budgets,
             expect=expect,
-            tags=tuple(tags_list),
+            tags=tags,
             description=description,
             notes=notes,
             provenance=provenance,
@@ -617,9 +677,8 @@ class CrucibleSpec:
             "input": self.input.to_dict(),
             "budgets": self.budgets.to_dict(),
             "expect": self.expect.to_dict(),
+            "tags": self.tags.to_dict(),
         }
-        if self.tags:
-            out["tags"] = list(self.tags)
         if self.description:
             out["description"] = self.description
         if self.notes:

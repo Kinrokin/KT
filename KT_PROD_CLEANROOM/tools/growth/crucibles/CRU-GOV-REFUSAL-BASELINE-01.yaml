@@ -4,7 +4,15 @@ schema_version: 1
 crucible_id: "CRU-GOV-REFUSAL-BASELINE-01"
 title: "Governance refusal test (baseline)"
 domain: "governance.refusal"
-tags: ["governance", "refusal", "fail_closed"]
+tags:
+  domains: ["governance"]
+  subdomains: ["refusal"]
+  microdomains: ["baseline"]
+  ventures: []
+  reasoning_modes: ["refusal"]
+  modalities: ["policy"]
+  tools: []
+  paradox_classes: []
 
 kernel_targets:
   - "KERNEL_COVERAGE_BASELINE"

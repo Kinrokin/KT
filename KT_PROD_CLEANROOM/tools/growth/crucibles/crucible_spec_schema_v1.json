@@ -1,0 +1,60 @@
+{
+  "schema_id": "kt.crucible.spec.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "crucible_id",
+    "title",
+    "domain",
+    "kernel_targets",
+    "input",
+    "budgets",
+    "expect",
+    "tags"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "kt.crucible.spec" },
+    "schema_version": { "type": "integer", "const": 1 },
+    "crucible_id": { "type": "string" },
+    "title": { "type": "string" },
+    "domain": { "type": "string" },
+    "kernel_targets": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "input": { "type": "object" },
+    "budgets": { "type": "object" },
+    "expect": { "type": "object" },
+    "description": { "type": "string" },
+    "notes": { "type": "string" },
+    "provenance": { "type": "object" },
+    "variants": { "type": "array" },
+    "tags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "domains",
+        "subdomains",
+        "microdomains",
+        "ventures",
+        "reasoning_modes",
+        "modalities",
+        "tools",
+        "paradox_classes"
+      ],
+      "properties": {
+        "domains": { "type": "array", "items": { "type": "string" } },
+        "subdomains": { "type": "array", "items": { "type": "string" } },
+        "microdomains": { "type": "array", "items": { "type": "string" } },
+        "ventures": { "type": "array", "items": { "type": "string" } },
+        "reasoning_modes": { "type": "array", "items": { "type": "string" } },
+        "modalities": { "type": "array", "items": { "type": "string" } },
+        "tools": { "type": "array", "items": { "type": "string" } },
+        "paradox_classes": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

@@ -4,7 +4,15 @@ schema_version: 1
 crucible_id: "CRU-PARADOX-01"
 title: "Paradox identification"
 domain: "paradox.contradiction"
-tags: ["paradox", "contradiction", "logic"]
+tags:
+  domains: ["paradox"]
+  subdomains: ["contradiction"]
+  microdomains: ["liar"]
+  ventures: []
+  reasoning_modes: ["paradox_detection"]
+  modalities: ["text"]
+  tools: []
+  paradox_classes: ["liar"]
 
 kernel_targets:
   - "KERNEL_COVERAGE_BASELINE"
