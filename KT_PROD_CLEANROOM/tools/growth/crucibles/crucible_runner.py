@@ -136,12 +136,27 @@ def _policy_b_paradox_selector() -> str:
 def _is_paradox_crucible(spec: Any) -> bool:
     cid = str(getattr(spec, "crucible_id", "") or "").upper()
     domain = str(getattr(spec, "domain", "") or "").upper()
-    tags = getattr(spec, "tags", None) or []
-    tag_hits = False
-    for t in tags:
-        if isinstance(t, str) and "PARADOX" in t.upper():
-            tag_hits = True
-            break
+    tags_obj = getattr(spec, "tags", None)
+    tag_values: list[str] = []
+    if isinstance(tags_obj, dict):
+        for k in ("domains", "subdomains", "microdomains", "ventures", "reasoning_modes", "modalities", "tools", "paradox_classes"):
+            raw = tags_obj.get(k) if isinstance(tags_obj, dict) else None
+            if isinstance(raw, (list, tuple, set)):
+                tag_values.extend([str(x) for x in raw])
+    elif tags_obj is not None and hasattr(tags_obj, "to_dict"):
+        try:
+            data = tags_obj.to_dict()
+        except Exception:
+            data = {}
+        if isinstance(data, dict):
+            for k in ("domains", "subdomains", "microdomains", "ventures", "reasoning_modes", "modalities", "tools", "paradox_classes"):
+                raw = data.get(k)
+                if isinstance(raw, (list, tuple, set)):
+                    tag_values.extend([str(x) for x in raw])
+    elif isinstance(tags_obj, (list, tuple, set)):
+        tag_values.extend([str(x) for x in tags_obj])
+
+    tag_hits = any("PARADOX" in v.upper() for v in tag_values)
     return ("PARADOX" in cid) or ("PARADOX" in domain) or tag_hits
 
 @dataclass(frozen=True)
@@ -1301,7 +1316,7 @@ def run_crucible_once(
         if outcome == OUTCOME_PASS:
             resolve_mode = "clean"
             coherence_bucket = "HIGH"
-        elif outcome == OUTCOME_FAIL_CLOSED:
+        elif outcome == OUTCOME_FAIL:
             resolve_mode = "forced" if result.was_killed else "partial"
             coherence_bucket = "LOW"
         else:
