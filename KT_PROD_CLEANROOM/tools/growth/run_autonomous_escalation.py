@@ -47,9 +47,16 @@ def latest_epoch_root() -> Path:
 
 def run_plan_suggester() -> Dict[str, any]:
     env = os.environ.copy()
-    env["PYTHONPATH"] = str(_REPO_ROOT)
+    temple_src = _REPO_ROOT / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src"
+    cleanroom_root = _REPO_ROOT / "KT_PROD_CLEANROOM"
+    pythonpath_entries = [str(temple_src), str(cleanroom_root), str(_REPO_ROOT)]
+    existing = [p for p in env.get("PYTHONPATH", "").split(os.pathsep) if p]
+    for p in existing:
+        if p not in pythonpath_entries:
+            pythonpath_entries.append(p)
+    env["PYTHONPATH"] = os.pathsep.join(pythonpath_entries)
     cmd = [
-        "python",
+        sys.executable,
         "-m",
         "tools.growth.state.plan_suggester",
         "--epochs-dir",
