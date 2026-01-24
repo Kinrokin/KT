@@ -25,7 +25,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Tuple
 
 import yaml
-from KT_PROD_CLEANROOM.tools.growth.utils.normalize_jsonl import normalize_jsonl
+from tools.growth.utils.normalize_jsonl import normalize_jsonl
 
 KT_ROOT = Path(__file__).resolve().parents[4]
 

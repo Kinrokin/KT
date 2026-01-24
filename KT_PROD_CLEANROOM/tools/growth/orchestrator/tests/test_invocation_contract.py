@@ -16,8 +16,8 @@ def _add_repo_root_to_syspath() -> Path:
 
 REPO_ROOT = _add_repo_root_to_syspath()
 
-from KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_orchestrator import _assert_cli_schema  # noqa: E402
-from KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_schemas import EpochSchemaError  # noqa: E402
+from tools.growth.orchestrator.epoch_orchestrator import _assert_cli_schema  # noqa: E402
+from tools.growth.orchestrator.epoch_schemas import EpochSchemaError  # noqa: E402
 
 
 class TestCliSchemaLock(unittest.TestCase):

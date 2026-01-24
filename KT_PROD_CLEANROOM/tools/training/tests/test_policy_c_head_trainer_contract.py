@@ -36,7 +36,7 @@ def test_policy_c_head_trainer_creates_artifacts(tmp_path: Path) -> None:
     cmd = [
         sys.executable,
         "-m",
-        "KT_PROD_CLEANROOM.tools.training.train_policy_c_head",
+        "tools.training.train_policy_c_head",
         "--dataset",
         str(ds),
         "--output-dir",

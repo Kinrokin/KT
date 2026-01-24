@@ -8,7 +8,7 @@ Use the importable function below for all tooling and automation:
 
 ```python
 from pathlib import Path
-from KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_orchestrator import run_epoch_from_plan
+from tools.growth.orchestrator.epoch_orchestrator import run_epoch_from_plan
 
 summary = run_epoch_from_plan(
     plan_path=Path("KT_PROD_CLEANROOM/tools/growth/orchestrator/examples/EPOCH_NEXT_AUTO.json"),

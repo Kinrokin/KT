@@ -32,7 +32,7 @@ Epoch plan:
 - `KT_PROD_CLEANROOM/tools/growth/epochs/EPOCH-0001-GOV-HONESTY.json`
 
 Command executed:
-- `python -m KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_orchestrator --epoch KT_PROD_CLEANROOM/tools/growth/epochs/EPOCH-0001-GOV-HONESTY.json --mode normal`
+- `python KT_PROD_CLEANROOM/tools/growth/orchestrator/epoch_orchestrator.py --epoch KT_PROD_CLEANROOM/tools/growth/epochs/EPOCH-0001-GOV-HONESTY.json --mode normal`
 
 Artifacts written:
 - `KT_PROD_CLEANROOM/tools/growth/artifacts/epochs/EPOCH-0001-GOV-HONESTY/epoch_manifest.json`

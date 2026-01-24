@@ -19,11 +19,11 @@ if str(_ORCH_DIR) not in sys.path:
 
 ROOT = Path("KT_PROD_CLEANROOM")
 ARTIFACT_EPOCHS = ROOT / "tools" / "growth" / "artifacts" / "epochs"
-from KT_PROD_CLEANROOM.tools.growth.state.lane_to_epoch import resolve_epoch_spec, lane_for_plan
-from KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_orchestrator import run_epoch_from_plan
-from KT_PROD_CLEANROOM.tools.growth.state.cce_state import update_state as update_cce_state
-from KT_PROD_CLEANROOM.tools.growth.state.oce_state import update_state as update_oce_state
-from KT_PROD_CLEANROOM.tools.growth.state.rwrp_state import update_state as update_rwrp_state
+from tools.growth.state.lane_to_epoch import resolve_epoch_spec, lane_for_plan
+from tools.growth.orchestrator.epoch_orchestrator import run_epoch_from_plan
+from tools.growth.state.cce_state import update_state as update_cce_state
+from tools.growth.state.oce_state import update_state as update_oce_state
+from tools.growth.state.rwrp_state import update_state as update_rwrp_state
 
 SESSION_TAG = int(time.time() * 1000)
 
@@ -51,7 +51,7 @@ def run_plan_suggester() -> Dict[str, any]:
     cmd = [
         "python",
         "-m",
-        "KT_PROD_CLEANROOM.tools.growth.state.plan_suggester",
+        "tools.growth.state.plan_suggester",
         "--epochs-dir",
         str(ARTIFACT_EPOCHS),
         "--write-epoch",
@@ -163,7 +163,7 @@ def main() -> None:
     policy = None
     if shadow_enabled:
         try:
-            from KT_PROD_CLEANROOM.tools.growth.state.kt_lane_policy import build_default_policy
+            from tools.growth.state.kt_lane_policy import build_default_policy
 
             policy = build_default_policy()
         except Exception as exc:

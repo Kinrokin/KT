@@ -13,10 +13,10 @@ class PlanSuggestError(RuntimeError):
     pass
 
 try:
-    from KT_PROD_CLEANROOM.tools.growth.state.kt_lane_policy import build_default_policy, KTLanePolicy
-    from KT_PROD_CLEANROOM.tools.growth.state.cce_state import load_state as load_cce_state, cce_constants
-    from KT_PROD_CLEANROOM.tools.growth.state.oce_state import load_state as load_oce_state, oce_constants
-    from KT_PROD_CLEANROOM.tools.growth.state.rwrp_state import load_state as load_rwrp_state, rwrp_constants
+    from tools.growth.state.kt_lane_policy import build_default_policy, KTLanePolicy
+    from tools.growth.state.cce_state import load_state as load_cce_state, cce_constants
+    from tools.growth.state.oce_state import load_state as load_oce_state, oce_constants
+    from tools.growth.state.rwrp_state import load_state as load_rwrp_state, rwrp_constants
 except ImportError:  # pragma: no cover
     build_default_policy = None  # type: ignore[assignment]
     KTLanePolicy = Any  # type: ignore[assignment]

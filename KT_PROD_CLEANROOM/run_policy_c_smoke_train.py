@@ -22,7 +22,7 @@ def main() -> None:
     cmd = [
         sys.executable,
         "-m",
-        "KT_PROD_CLEANROOM.tools.training.train_policy_c_head",
+        "tools.training.train_policy_c_head",
         "--dataset",
         str(ds),
         "--output-dir",

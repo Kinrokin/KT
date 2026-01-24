@@ -22,14 +22,14 @@ if str(_REPO_ROOT) not in sys.path:
 from tools.growth.providers.live_guard import enforce_live_guard
 enforce_live_guard()
 
-from KT_PROD_CLEANROOM.tools.growth.orchestrator.checkpoint_store import (
+from tools.growth.orchestrator.checkpoint_store import (
     CheckpointRecord,
     append_checkpoint,
     completed_crucible_ids,
 )
-from KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_budget import assert_budget_ok, validate_crucible_budgets
-from KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_manifest import build_manifest
-from KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_schemas import EpochPlan, EpochSchemaError, RUNNER_TEMPLATE_C019
+from tools.growth.orchestrator.epoch_budget import assert_budget_ok, validate_crucible_budgets
+from tools.growth.orchestrator.epoch_manifest import build_manifest
+from tools.growth.orchestrator.epoch_schemas import EpochPlan, EpochSchemaError, RUNNER_TEMPLATE_C019
 from tools.growth.coverage.coverage_validator import CoverageValidator
 
 
