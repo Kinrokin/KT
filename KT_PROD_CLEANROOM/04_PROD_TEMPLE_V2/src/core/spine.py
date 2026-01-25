@@ -31,6 +31,8 @@ def _runtime_registry_hash(registry: Any) -> str:
     # The RuntimeRegistry dataclass is JSON-shaped; we re-encode it canonically.
     try:
         obj = {
+            "schema_id": registry.schema_id,
+            "schema_version_hash": registry.schema_version_hash,
             "registry_version": registry.registry_version,
             "canonical_entry": {"module": registry.canonical_entry.module, "callable": registry.canonical_entry.callable},
             "canonical_spine": {"module": registry.canonical_spine.module, "callable": registry.canonical_spine.callable},
@@ -57,6 +59,27 @@ def _runtime_registry_hash(registry: Any) -> str:
                     "allowed_export_roots": list(registry.policy_c.static_safety.allowed_export_roots),
                 },
             },
+            "adapters": {
+                "registry_schema_id": registry.adapters.registry_schema_id,
+                "allowed_export_roots": list(registry.adapters.allowed_export_roots),
+                "entries": [
+                    {
+                        "schema_id": entry.schema_id,
+                        "schema_version_hash": entry.schema_version_hash,
+                        "adapter_id": entry.adapter_id,
+                        "version": entry.version,
+                        "base_model": entry.base_model,
+                        "artifact_path": entry.artifact_path,
+                        "artifact_hash": entry.artifact_hash,
+                        "capabilities": list(entry.capabilities),
+                        "constraints": list(entry.constraints),
+                        "training_receipt_ref": entry.training_receipt_ref,
+                        "evaluation_receipt_ref": entry.evaluation_receipt_ref,
+                        "status": entry.status,
+                    }
+                    for entry in registry.adapters.entries
+                ],
+            },
         }
     except Exception as exc:  # noqa: BLE001
         raise SpineError(f"Unable to fingerprint runtime registry (fail-closed): {exc.__class__.__name__}")
@@ -81,13 +104,24 @@ def run(context: Dict[str, Any]) -> Dict[str, Any]:
     from cognition.cognitive_engine import CognitiveEngine  # noqa: E402
     from cognition.cognitive_schemas import CognitivePlanSchema, CognitiveRequestSchema  # noqa: E402
     from council.council_router import CouncilRouter  # noqa: E402
-    from council.council_schemas import CouncilPlanSchema, CouncilRequestSchema  # noqa: E402
+    from council.council_schemas import (  # noqa: E402
+        CouncilPlanSchema,
+        CouncilRequestSchema,
+        RESULT_STATUS_DRY_RUN,
+        RESULT_STATUS_REFUSED,
+    )
     from curriculum.curriculum_ingest import CurriculumIngest  # noqa: E402
     from curriculum.curriculum_schemas import CurriculumPackageSchema  # noqa: E402
     from governance.event_logger import log_governance_event  # noqa: E402
     from governance.events import build_inputs_envelope, build_outputs_envelope  # noqa: E402
     from memory.replay import validate_state_vault_chain  # noqa: E402
     from memory.state_vault import StateVault  # noqa: E402
+    from core.routing_receipts import (  # noqa: E402
+        build_adapter_invocation,
+        build_routing_record,
+        write_adapter_invocation,
+        write_routing_record,
+    )
     from multiverse.multiverse_engine import MultiverseEngine  # noqa: E402
     from multiverse.multiverse_schemas import MAX_TOTAL_TOKENS, MultiverseEvaluationRequestSchema  # noqa: E402
     from paradox.paradox_engine import ParadoxEngine  # noqa: E402
@@ -104,6 +138,8 @@ def run(context: Dict[str, Any]) -> Dict[str, Any]:
 
     # Hash-only governance pulse (no policy internals; no raw content persisted).
     ctx_hash = _sha256_text(_canonical_json(context))
+    task_context_hash = ctx_hash
+    task_context_ref = f"vault://context/{ctx_hash}"
     inputs = build_inputs_envelope(
         policy_id="p.v2.pulse",
         policy_version_hash=ctx_hash,
@@ -357,6 +393,23 @@ def run(context: Dict[str, Any]) -> Dict[str, Any]:
         )
         plan = CouncilRouter.plan(context=context, request=req)
         p = plan.to_dict()
+        routing_record = build_routing_record(
+            runtime_registry_hash=registry_hash,
+            spine_run_hash=ctx_hash,
+            task_context_hash=task_context_hash,
+            task_context_ref=task_context_ref,
+            request_hash=p["request_hash"],
+            plan_hash=p["plan_hash"],
+            status=p["status"],
+            mode=p["mode"],
+            vault_path=vault.path,
+            router_reason="council.plan",
+        )
+        routing_record_hash = write_routing_record(
+            vault=vault,
+            routing=routing_record,
+            outputs_hash=p["plan_hash"],
+        )
         council_summary = {
             "status": p["status"],
             "mode": p["mode"],
@@ -364,6 +417,7 @@ def run(context: Dict[str, Any]) -> Dict[str, Any]:
             "request_hash": p["request_hash"],
             "refusal_code": p.get("refusal_code"),
             "providers": [c["provider_id"] for c in p["provider_calls"]],
+            "routing_record_hash": routing_record_hash,
         }
 
         decision = "ALLOW" if p["status"] == "OK" else "DENY"
@@ -397,7 +451,80 @@ def run(context: Dict[str, Any]) -> Dict[str, Any]:
             add_branches=len(plan.data["provider_calls"]),
             policy_label="council.execute",
         )
-        result = CouncilRouter.execute(context=context, plan=plan)
+        plan_obj = plan.to_dict()
+        routing_record = build_routing_record(
+            runtime_registry_hash=registry_hash,
+            spine_run_hash=ctx_hash,
+            task_context_hash=task_context_hash,
+            task_context_ref=task_context_ref,
+            request_hash=plan_obj["request_hash"],
+            plan_hash=plan_obj["plan_hash"],
+            status=plan_obj["status"],
+            mode=plan_obj["mode"],
+            vault_path=vault.path,
+            router_reason="council.execute",
+        )
+        routing_record_hash = write_routing_record(
+            vault=vault,
+            routing=routing_record,
+            outputs_hash=plan_obj["plan_hash"],
+        )
+        try:
+            result = CouncilRouter.execute(context=context, plan=plan)
+            r = result.to_dict()
+            air_status = (
+                "DRY_RUN"
+                if r["status"] == RESULT_STATUS_DRY_RUN
+                else "VETOED"
+                if r["status"] == RESULT_STATUS_REFUSED
+                else "OK"
+            )
+            air_input_hash = _sha256_text(
+                _canonical_json(
+                    {
+                        "plan_hash": r["plan_hash"],
+                        "runtime_registry_hash": registry_hash,
+                        "mode": plan_obj["mode"],
+                    }
+                )
+            )
+            invocation = build_adapter_invocation(
+                routing_record_hash=routing_record_hash,
+                task_context_hash=task_context_hash,
+                input_hash=air_input_hash,
+                output_hash=r["result_hash"],
+                status=air_status,
+                vault_path=vault.path,
+            )
+            invocation_id = write_adapter_invocation(
+                vault=vault,
+                invocation=invocation,
+                outputs_hash=r["result_hash"],
+            )
+        except Exception as exc:
+            air_input_hash = _sha256_text(
+                _canonical_json(
+                    {
+                        "plan_hash": plan_obj["plan_hash"],
+                        "runtime_registry_hash": registry_hash,
+                        "mode": plan_obj["mode"],
+                    }
+                )
+            )
+            invocation = build_adapter_invocation(
+                routing_record_hash=routing_record_hash,
+                task_context_hash=task_context_hash,
+                input_hash=air_input_hash,
+                output_hash=None,
+                status="FAILED",
+                vault_path=vault.path,
+            )
+            write_adapter_invocation(
+                vault=vault,
+                invocation=invocation,
+                outputs_hash=plan_obj["plan_hash"],
+            )
+            raise SpineError(f"Council execute failed (fail-closed): {exc.__class__.__name__}")
         r = result.to_dict()
         council_summary = {
             "status": r["status"],
@@ -405,6 +532,8 @@ def run(context: Dict[str, Any]) -> Dict[str, Any]:
             "result_hash": r["result_hash"],
             "refusal_code": r.get("refusal_code"),
             "error_code": r.get("error_code"),
+            "routing_record_hash": routing_record_hash,
+            "invocation_ids": [invocation_id],
         }
 
         decision = "ALLOW" if r["status"] in {"OK", "DRY_RUN"} else "DENY"

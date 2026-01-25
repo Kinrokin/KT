@@ -1,4 +1,6 @@
 {
+  "schema_id": "kt.runtime_registry.v1",
+  "schema_version_hash": "4a878a12fb0e1c17cadd7f29b1f536b44d5eb038098c924722f3d069b6549965",
   "registry_version": "1",
   "canonical_entry": {
     "module": "kt.entrypoint",
@@ -137,6 +139,13 @@
       "Schemas / Contracts",
       "Thermodynamics / Budget"
     ]
+  },
+  "adapters": {
+    "registry_schema_id": "kt.adapters.registry.v1",
+    "allowed_export_roots": [
+      "exports/adapters"
+    ],
+    "entries": []
   },
   "dry_run": {
     "no_network": true,

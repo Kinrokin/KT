@@ -1,0 +1,294 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Runtime Registry v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "registry_version",
+    "canonical_entry",
+    "canonical_spine",
+    "state_vault",
+    "runtime_import_roots",
+    "organs_by_root",
+    "import_truth_matrix",
+    "dry_run",
+    "policy_c",
+    "adapters"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.runtime_registry.v1"
+    },
+    "schema_version_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "registry_version": {
+      "const": "1"
+    },
+    "canonical_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "module",
+        "callable"
+      ],
+      "properties": {
+        "module": {
+          "type": "string"
+        },
+        "callable": {
+          "type": "string"
+        }
+      }
+    },
+    "canonical_spine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "module",
+        "callable"
+      ],
+      "properties": {
+        "module": {
+          "type": "string"
+        },
+        "callable": {
+          "type": "string"
+        }
+      }
+    },
+    "state_vault": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "jsonl_path"
+      ],
+      "properties": {
+        "jsonl_path": {
+          "type": "string"
+        }
+      }
+    },
+    "runtime_import_roots": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "organs_by_root": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "import_truth_matrix": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "dry_run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "no_network",
+        "providers_enabled"
+      ],
+      "properties": {
+        "no_network": {
+          "type": "boolean"
+        },
+        "providers_enabled": {
+          "type": "boolean"
+        }
+      }
+    },
+    "policy_c": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "drift",
+        "sweep",
+        "static_safety"
+      ],
+      "properties": {
+        "drift": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "l2_warn",
+            "l2_fail",
+            "max_fail"
+          ],
+          "properties": {
+            "l2_warn": {
+              "type": "number"
+            },
+            "l2_fail": {
+              "type": "number"
+            },
+            "max_fail": {
+              "type": "number"
+            }
+          }
+        },
+        "sweep": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "max_runs_default",
+            "fail_fast_default",
+            "export_enabled",
+            "allowed_export_roots"
+          ],
+          "properties": {
+            "max_runs_default": {
+              "type": "integer"
+            },
+            "fail_fast_default": {
+              "type": "boolean"
+            },
+            "export_enabled": {
+              "type": "boolean"
+            },
+            "allowed_export_roots": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "static_safety": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "enabled",
+            "forbidden_imports",
+            "allowed_export_roots"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "forbidden_imports": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "allowed_export_roots": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "adapters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "registry_schema_id",
+        "allowed_export_roots",
+        "entries"
+      ],
+      "properties": {
+        "registry_schema_id": {
+          "const": "kt.adapters.registry.v1"
+        },
+        "allowed_export_roots": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/adapter_entry"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "adapter_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_id",
+        "schema_version_hash",
+        "adapter_id",
+        "version",
+        "base_model",
+        "artifact_path",
+        "artifact_hash",
+        "capabilities",
+        "constraints",
+        "training_receipt_ref",
+        "evaluation_receipt_ref",
+        "status"
+      ],
+      "properties": {
+        "schema_id": {
+          "const": "kt.runtime.adapter_entry.v1"
+        },
+        "schema_version_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "adapter_id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "base_model": {
+          "type": "string"
+        },
+        "artifact_path": {
+          "type": "string"
+        },
+        "artifact_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "training_receipt_ref": {
+          "type": "string"
+        },
+        "evaluation_receipt_ref": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "DEPRECATED",
+            "REVOKED"
+          ]
+        }
+      }
+    }
+  }
+}

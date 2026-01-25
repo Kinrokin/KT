@@ -13,6 +13,36 @@ from schemas.state_vault_schema import (
     STATE_VAULT_SCHEMA_VERSION_HASH,
     validate_state_vault_record,
 )
+from schemas.routing_record_schema import (
+    ROUTING_RECORD_SCHEMA_ID,
+    ROUTING_RECORD_SCHEMA_VERSION_HASH,
+    validate_routing_record,
+)
+from schemas.adapter_invocation_schema import (
+    ADAPTER_INVOCATION_SCHEMA_ID,
+    ADAPTER_INVOCATION_SCHEMA_VERSION_HASH,
+    validate_adapter_invocation,
+)
+from schemas.runtime_registry_schema import (
+    RUNTIME_REGISTRY_SCHEMA_ID,
+    RUNTIME_REGISTRY_SCHEMA_VERSION_HASH,
+    validate_runtime_registry,
+)
+from schemas.task_context_schema import (
+    TASK_CONTEXT_SCHEMA_ID,
+    TASK_CONTEXT_SCHEMA_VERSION_HASH,
+    validate_task_context,
+)
+from schemas.evaluator_battery_manifest_schema import (
+    EVALUATOR_BATTERY_MANIFEST_SCHEMA_ID,
+    EVALUATOR_BATTERY_MANIFEST_SCHEMA_VERSION_HASH,
+    validate_evaluator_battery_manifest,
+)
+from schemas.evaluator_result_schema import (
+    EVALUATOR_RESULT_SCHEMA_ID,
+    EVALUATOR_RESULT_SCHEMA_VERSION_HASH,
+    validate_evaluator_result,
+)
 
 
 _Validator = Callable[[Dict[str, Any]], None]
@@ -22,6 +52,15 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     # NOTE: append-only. New schemas are added explicitly with new IDs/hashes.
     RUNTIME_CONTEXT_SCHEMA_ID: (RUNTIME_CONTEXT_SCHEMA_VERSION_HASH, validate_runtime_context),
     STATE_VAULT_SCHEMA_ID: (STATE_VAULT_SCHEMA_VERSION_HASH, validate_state_vault_record),
+    ROUTING_RECORD_SCHEMA_ID: (ROUTING_RECORD_SCHEMA_VERSION_HASH, validate_routing_record),
+    ADAPTER_INVOCATION_SCHEMA_ID: (ADAPTER_INVOCATION_SCHEMA_VERSION_HASH, validate_adapter_invocation),
+    RUNTIME_REGISTRY_SCHEMA_ID: (RUNTIME_REGISTRY_SCHEMA_VERSION_HASH, validate_runtime_registry),
+    TASK_CONTEXT_SCHEMA_ID: (TASK_CONTEXT_SCHEMA_VERSION_HASH, validate_task_context),
+    EVALUATOR_BATTERY_MANIFEST_SCHEMA_ID: (
+        EVALUATOR_BATTERY_MANIFEST_SCHEMA_VERSION_HASH,
+        validate_evaluator_battery_manifest,
+    ),
+    EVALUATOR_RESULT_SCHEMA_ID: (EVALUATOR_RESULT_SCHEMA_VERSION_HASH, validate_evaluator_result),
 }
 
 
@@ -50,4 +89,3 @@ def validate_object_with_binding(payload: Any) -> None:
         raise SchemaValidationError("schema_version_hash must be a string")
     validate_schema_binding(schema_id, schema_version_hash)
     validate(schema_id, obj)
-
