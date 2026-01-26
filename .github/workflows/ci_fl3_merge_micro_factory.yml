@@ -1,0 +1,27 @@
+name: FL3 Merge Micro Factory
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  fl3-merge-micro:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pytest
+        run: python -m pip install --upgrade pip pytest
+      - name: Run FL3 tests
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+          PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
+        run: python -m pytest -q KT_PROD_CLEANROOM/tests/fl3
+      - name: Run FL3 red assault
+        env:
+          PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
+        run: python -m tools.verification.fl3_red_assault
+
