@@ -1,4 +1,4 @@
-FL3 COMPLETION ADDENDUM — MECHANICALLY SOVEREIGN EDITION
+FL3 COMPLETION ADDENDUM - MECHANICALLY SOVEREIGN EDITION
 
 Status: BINDING WHEN ACTIVATED
 Activation Mechanism: CI-enforced `LAW_BUNDLE_FL3` hash pin + meta-evaluator receipt
@@ -6,7 +6,7 @@ Scope: Finish Line 3 only
 Change Class: Add-Only (no FL1/FL2 spine/router edits)
 Supersession Rule: Latest `LAW_BUNDLE_FL3.sha256` is canonical
 
-SECTION 0 — HOW THIS DOCUMENT IS MADE IMMUTABLE
+SECTION 0 - HOW THIS DOCUMENT IS MADE IMMUTABLE
 
 0.1 Canonical Binding
 
@@ -29,9 +29,21 @@ Meta-evaluator asserts:
 
 - `len(laws) == 1`
 
-If multiple exist → `FL3_T1_HARD_CORRUPTION`.
+If multiple exist -> `FL3_T1_HARD_CORRUPTION`.
 
-SECTION 1 — DEFINING PARADOX
+0.3 SRR/AIR EXCLUSIVITY (NO AMBIGUITY)
+
+SRR/AIR are FL2 runtime receipts.
+They are minted only by the canonical spine call site(s) (the spine wrapping `CouncilRouter.plan(...)` / `CouncilRouter.execute(...)`).
+
+FL3 factory artifacts (including SHADOW mode artifacts) MUST NOT:
+- emit SRR/AIR
+- claim SRR/AIR lineage
+- write SRR/AIR sidecars
+
+If any FL3 factory output claims SRR/AIR lineage, classify as `FL3_T1_HARD_CORRUPTION` (fail-closed).
+
+SECTION 1 - DEFINING PARADOX
 
 1.1 Operational Definition
 
@@ -47,9 +59,9 @@ Meaning: "The system followed the law perfectly and still failed."
 
 Schema: `kt.paradox_event.v1`
 
-SECTION 2 — FITNESS REGIONS WITHOUT PARALLEL GOVERNANCE
+SECTION 2 - FITNESS REGIONS WITHOUT PARALLEL GOVERNANCE
 
-2.1 Fitness Region Is DERIVED — Never Authored
+2.1 Fitness Region Is DERIVED - Never Authored
 
 No job, adapter, or human process may write `fitness_region` directly.
 It is computed only by the meta-evaluator from existing artifacts and a pinned policy file:
@@ -72,7 +84,7 @@ Region C: Immediate quarantine + salvage
 Promotion guard:
 Factory promotion must refuse unless fitness_region == A.
 
-SECTION 3 — SHADOW BIOS WITHOUT A BACKDOOR
+SECTION 3 - SHADOW BIOS WITHOUT A BACKDOOR
 
 3.1 Shadow Storage Is Cold, Signed, and Non-Executable
 
@@ -108,7 +120,7 @@ Meta-evaluator asserts:
 - No runtime registry adapter entry points to `exports/adapters_shadow/`
 - Shadow artifacts do not create SRR/AIR lineage
 
-SECTION 4 — VIRAL INJECTION WITHOUT HAND-WAVING
+SECTION 4 - VIRAL INJECTION WITHOUT HAND-WAVING
 
 4.1 Definition (Concrete)
 
@@ -117,9 +129,9 @@ Viral injection = 1% of training batches include Shadow-derived gradients.
 Schema: `kt.breeding_manifest.v1`
 
 Meta-evaluator recomputes batch stats from training logs.
-Mismatch → `FL3_T2_HARD_GOVERNANCE`.
+Mismatch -> `FL3_T2_HARD_GOVERNANCE`.
 
-SECTION 5 — IMMUNE SURVEILLANCE WITHOUT FAIL-OPEN
+SECTION 5 - IMMUNE SURVEILLANCE WITHOUT FAIL-OPEN
 
 5.1 Heartbeat Is Informational Only
 
@@ -136,7 +148,7 @@ Only these events count:
 
 These are blocking, hash-bound, and append-only in the FL3 factory vault.
 
-SECTION 6 — EPIGENETIC PROOFS WITHOUT ID LEAKAGE
+SECTION 6 - EPIGENETIC PROOFS WITHOUT ID LEAKAGE
 
 6.1 Epigenetic Summary Is ONE-WAY AGGREGATE
 
@@ -148,7 +160,7 @@ Rules:
 - No raw timestamps beyond coarse created_at
 - No order information
 
-SECTION 7 — BLINDNESS WITHOUT SEMANTIC DAMAGE
+SECTION 7 - BLINDNESS WITHOUT SEMANTIC DAMAGE
 
 7.1 No Text Normalization
 
@@ -163,7 +175,7 @@ Judge sees:
 
 Nothing else.
 
-SECTION 8 — MEMORY WITHOUT SPINE MUTATION
+SECTION 8 - MEMORY WITHOUT SPINE MUTATION
 
 8.1 Lineage Graph Is OBSERVATIONAL ONLY
 
@@ -172,7 +184,7 @@ Schema: `kt.temporal_lineage_graph.v1`
 It never feeds back into routing and has no runtime effect.
 Used only by meta-evaluator and human audit.
 
-SECTION 9 — TRAINING MODES WITHOUT BYPASS
+SECTION 9 - TRAINING MODES WITHOUT BYPASS
 
 9.1 SHADOW Mode Definition
 
@@ -182,13 +194,13 @@ SHADOW mode:
 - emits no registry writes
 - emits no promotion receipts
 
-SECTION 10 — EVENTS, HASHES, AND CHAINING
+SECTION 10 - EVENTS, HASHES, AND CHAINING
 
 10.1 Every New Addendum Artifact Is Hash-Chained
 
 All addendum-era derived artifacts include `parent_hash` and are appended to the FL3 factory vault.
 
-SECTION 11 — UPDATED DEFINITION OF DONE (CHECKABLE)
+SECTION 11 - UPDATED DEFINITION OF DONE (CHECKABLE)
 
 FL3 is complete iff:
 
@@ -199,4 +211,3 @@ FL3 is complete iff:
 - all promotions have fitness_region == A and trace_coverage == 1.0
 - no new artifacts exist outside allowlisted paths
 - rollback drill passes
-
