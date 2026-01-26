@@ -58,6 +58,14 @@ def main(argv: List[str] | None = None) -> int:
             "kt.factory.train_manifest.v1",
             "kt.factory.eval_report.v1",
         ]
+        if run_kind == "TOURNAMENT":
+            required_outputs.extend(
+                [
+                    "kt.blind_judgement_pack.v1",
+                    "kt.reveal_mapping.v1",
+                    "kt.tournament_manifest.v1",
+                ]
+            )
         # VRR is a repair lane: it must never produce promotion artifacts.
         if run_kind != "VRR":
             required_outputs.append("kt.factory.promotion.v1")
@@ -80,11 +88,53 @@ def main(argv: List[str] | None = None) -> int:
         dataset_path = job_dir / "dataset.json"
         dataset_hash = write_schema_object(path=dataset_path, obj=dataset)
 
+        if run_kind == "TOURNAMENT":
+            from tools.training.fl3_factory.tournament import (
+                build_blind_pack,
+                build_reveal_mapping,
+                build_tournament_manifest,
+                blind_items_from_dataset,
+                validate_tournament_artifacts,
+            )
+
+            blind_items = blind_items_from_dataset(dataset)
+            blind_pack = build_blind_pack(job_id=job["job_id"], items=blind_items)
+            blind_pack_path = job_dir / "blind_pack.json"
+            _ = write_schema_object(path=blind_pack_path, obj=blind_pack)
+
+            # Sealed mapping exists before judgement but is not used by the judge.
+            mappings = {it["candidate_hash"]: {"adapter_id": "UNKNOWN", "adapter_version": "0"} for it in blind_items}
+            sealed_mapping = build_reveal_mapping(job_id=job["job_id"], mappings=mappings, sealed=True, verdict_ref=None)
+            sealed_path = job_dir / "reveal_mapping.sealed.json"
+            _ = write_schema_object(path=sealed_path, obj=sealed_mapping)
+
+            manifest = build_tournament_manifest(
+                job_id=job["job_id"],
+                blind_pack_ref=str(blind_pack_path.relative_to(repo_root)),
+                reveal_mapping_ref=str(sealed_path.relative_to(repo_root)),
+            )
+            manifest_path = job_dir / "tournament_manifest.json"
+            _ = write_schema_object(path=manifest_path, obj=manifest)
+
+            validate_tournament_artifacts(blind_pack=blind_pack, sealed_mapping=sealed_mapping, manifest=manifest)
+
         # Phase: judge -> judgement
         from tools.training.fl3_factory.judge_stub import build_judgement
         judgement = build_judgement(job=job, dataset=dataset)
         judgement_path = job_dir / "judgement.json"
         judgement_hash = write_schema_object(path=judgement_path, obj=judgement)
+
+        if run_kind == "TOURNAMENT":
+            # Unseal mapping only after judgement exists.
+            from tools.training.fl3_factory.tournament import unseal_reveal_mapping
+
+            unsealed = unseal_reveal_mapping(
+                job_dir=job_dir,
+                sealed_mapping=read_json_object(job_dir / "reveal_mapping.sealed.json"),
+                verdict_ref=str(judgement_path.relative_to(job_dir)),
+            )
+            unsealed_path = job_dir / "reveal_mapping.json"
+            _ = write_schema_object(path=unsealed_path, obj=unsealed)
 
         # Phase: train -> train_manifest
         from tools.training.fl3_factory.train_stub import build_train_manifest
