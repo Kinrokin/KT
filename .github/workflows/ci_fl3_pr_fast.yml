@@ -18,9 +18,12 @@ jobs:
           PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
           PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
         run: python -m pytest -q KT_PROD_CLEANROOM/tests/fl3
+      - name: FL3 meta-evaluator (law)
+        env:
+          PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
+        run: python -m tools.verification.fl3_meta_evaluator
       - name: Run Temple V2 tests (smoke)
         env:
           PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
           PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
         run: python -m pytest -q KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests
-

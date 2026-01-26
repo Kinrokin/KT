@@ -53,6 +53,11 @@ from schemas.fl3_factory_jobspec_schema import (
     FL3_FACTORY_JOBSPEC_SCHEMA_VERSION_HASH,
     validate_fl3_factory_jobspec,
 )
+from schemas.fl3_factory_jobspec_v2_schema import (
+    FL3_FACTORY_JOBSPEC_V2_SCHEMA_ID,
+    FL3_FACTORY_JOBSPEC_V2_SCHEMA_VERSION_HASH,
+    validate_fl3_factory_jobspec_v2,
+)
 from schemas.fl3_factory_dataset_schema import (
     FL3_FACTORY_DATASET_SCHEMA_ID,
     FL3_FACTORY_DATASET_SCHEMA_VERSION_HASH,
@@ -133,6 +138,61 @@ from schemas.fl3_tournament_manifest_schema import (
     FL3_TOURNAMENT_MANIFEST_SCHEMA_VERSION_HASH,
     validate_fl3_tournament_manifest,
 )
+from schemas.fl3_breeding_manifest_schema import (
+    FL3_BREEDING_MANIFEST_SCHEMA_ID,
+    FL3_BREEDING_MANIFEST_SCHEMA_VERSION_HASH,
+    validate_fl3_breeding_manifest,
+)
+from schemas.fl3_epigenetic_summary_schema import (
+    FL3_EPIGENETIC_SUMMARY_SCHEMA_ID,
+    FL3_EPIGENETIC_SUMMARY_SCHEMA_VERSION_HASH,
+    validate_fl3_epigenetic_summary,
+)
+from schemas.fl3_fitness_policy_schema import (
+    FL3_FITNESS_POLICY_SCHEMA_ID,
+    FL3_FITNESS_POLICY_SCHEMA_VERSION_HASH,
+    validate_fl3_fitness_policy,
+)
+from schemas.fl3_fitness_region_schema import (
+    FL3_FITNESS_REGION_SCHEMA_ID,
+    FL3_FITNESS_REGION_SCHEMA_VERSION_HASH,
+    validate_fl3_fitness_region,
+)
+from schemas.fl3_immune_snapshot_schema import (
+    FL3_IMMUNE_SNAPSHOT_SCHEMA_ID,
+    FL3_IMMUNE_SNAPSHOT_SCHEMA_VERSION_HASH,
+    validate_fl3_immune_snapshot,
+)
+from schemas.fl3_meta_evaluator_receipt_schema import (
+    FL3_META_EVALUATOR_RECEIPT_SCHEMA_ID,
+    FL3_META_EVALUATOR_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_fl3_meta_evaluator_receipt,
+)
+from schemas.fl3_paradox_event_schema import (
+    FL3_PARADOX_EVENT_SCHEMA_ID,
+    FL3_PARADOX_EVENT_SCHEMA_VERSION_HASH,
+    validate_fl3_paradox_event,
+)
+from schemas.fl3_schema_violation_schema import (
+    FL3_SCHEMA_VIOLATION_SCHEMA_ID,
+    FL3_SCHEMA_VIOLATION_SCHEMA_VERSION_HASH,
+    validate_fl3_schema_violation,
+)
+from schemas.fl3_shadow_adapter_manifest_schema import (
+    FL3_SHADOW_ADAPTER_MANIFEST_SCHEMA_ID,
+    FL3_SHADOW_ADAPTER_MANIFEST_SCHEMA_VERSION_HASH,
+    validate_fl3_shadow_adapter_manifest,
+)
+from schemas.fl3_temporal_lineage_graph_schema import (
+    FL3_TEMPORAL_LINEAGE_GRAPH_SCHEMA_ID,
+    FL3_TEMPORAL_LINEAGE_GRAPH_SCHEMA_VERSION_HASH,
+    validate_fl3_temporal_lineage_graph,
+)
+from schemas.fl3_trace_violation_schema import (
+    FL3_TRACE_VIOLATION_SCHEMA_ID,
+    FL3_TRACE_VIOLATION_SCHEMA_VERSION_HASH,
+    validate_fl3_trace_violation,
+)
 
 
 _Validator = Callable[[Dict[str, Any]], None]
@@ -160,6 +220,7 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     FL3_HUMAN_SIGNOFF_SCHEMA_ID: (FL3_HUMAN_SIGNOFF_SCHEMA_VERSION_HASH, validate_fl3_human_signoff),
     FL3_GLOBAL_UNLOCK_SCHEMA_ID: (FL3_GLOBAL_UNLOCK_SCHEMA_VERSION_HASH, validate_fl3_global_unlock),
     FL3_FACTORY_JOBSPEC_SCHEMA_ID: (FL3_FACTORY_JOBSPEC_SCHEMA_VERSION_HASH, validate_fl3_factory_jobspec),
+    FL3_FACTORY_JOBSPEC_V2_SCHEMA_ID: (FL3_FACTORY_JOBSPEC_V2_SCHEMA_VERSION_HASH, validate_fl3_factory_jobspec_v2),
     FL3_FACTORY_DATASET_SCHEMA_ID: (FL3_FACTORY_DATASET_SCHEMA_VERSION_HASH, validate_fl3_factory_dataset),
     FL3_FACTORY_JUDGEMENT_SCHEMA_ID: (FL3_FACTORY_JUDGEMENT_SCHEMA_VERSION_HASH, validate_fl3_factory_judgement),
     FL3_FACTORY_TRAIN_MANIFEST_SCHEMA_ID: (
@@ -182,6 +243,27 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     FL3_SIGNAL_QUALITY_SCHEMA_ID: (FL3_SIGNAL_QUALITY_SCHEMA_VERSION_HASH, validate_fl3_signal_quality),
     FL3_FAILURE_CONTRACT_SCHEMA_ID: (FL3_FAILURE_CONTRACT_SCHEMA_VERSION_HASH, validate_fl3_failure_contract),
     FL3_LAW_AMENDMENT_SCHEMA_ID: (FL3_LAW_AMENDMENT_SCHEMA_VERSION_HASH, validate_fl3_law_amendment),
+    # FL3 addendum-derived artifacts (append-only).
+    FL3_FITNESS_POLICY_SCHEMA_ID: (FL3_FITNESS_POLICY_SCHEMA_VERSION_HASH, validate_fl3_fitness_policy),
+    FL3_IMMUNE_SNAPSHOT_SCHEMA_ID: (FL3_IMMUNE_SNAPSHOT_SCHEMA_VERSION_HASH, validate_fl3_immune_snapshot),
+    FL3_EPIGENETIC_SUMMARY_SCHEMA_ID: (FL3_EPIGENETIC_SUMMARY_SCHEMA_VERSION_HASH, validate_fl3_epigenetic_summary),
+    FL3_FITNESS_REGION_SCHEMA_ID: (FL3_FITNESS_REGION_SCHEMA_VERSION_HASH, validate_fl3_fitness_region),
+    FL3_SHADOW_ADAPTER_MANIFEST_SCHEMA_ID: (
+        FL3_SHADOW_ADAPTER_MANIFEST_SCHEMA_VERSION_HASH,
+        validate_fl3_shadow_adapter_manifest,
+    ),
+    FL3_BREEDING_MANIFEST_SCHEMA_ID: (FL3_BREEDING_MANIFEST_SCHEMA_VERSION_HASH, validate_fl3_breeding_manifest),
+    FL3_TRACE_VIOLATION_SCHEMA_ID: (FL3_TRACE_VIOLATION_SCHEMA_VERSION_HASH, validate_fl3_trace_violation),
+    FL3_SCHEMA_VIOLATION_SCHEMA_ID: (FL3_SCHEMA_VIOLATION_SCHEMA_VERSION_HASH, validate_fl3_schema_violation),
+    FL3_PARADOX_EVENT_SCHEMA_ID: (FL3_PARADOX_EVENT_SCHEMA_VERSION_HASH, validate_fl3_paradox_event),
+    FL3_TEMPORAL_LINEAGE_GRAPH_SCHEMA_ID: (
+        FL3_TEMPORAL_LINEAGE_GRAPH_SCHEMA_VERSION_HASH,
+        validate_fl3_temporal_lineage_graph,
+    ),
+    FL3_META_EVALUATOR_RECEIPT_SCHEMA_ID: (
+        FL3_META_EVALUATOR_RECEIPT_SCHEMA_VERSION_HASH,
+        validate_fl3_meta_evaluator_receipt,
+    ),
 }
 
 

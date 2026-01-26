@@ -23,6 +23,9 @@ def _bundle_hash(repo_root: Path, bundle_obj: dict) -> str:
         return hashlib.sha256(data).hexdigest()
 
     lines = [f"{rel}:{hash_file(rel)}\n" for rel in paths]
+    laws = bundle_obj.get("laws", [])
+    laws_canon = json.dumps(laws, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+    lines.append(f"__LAWS__:{hashlib.sha256(laws_canon).hexdigest()}\n")
     return hashlib.sha256("".join(lines).encode("utf-8")).hexdigest()
 
 
@@ -38,4 +41,3 @@ def test_fl3_law_bundle_integrity() -> None:
     expected = expected_path.read_text(encoding="utf-8").strip()
     computed = _bundle_hash(repo_root, bundle)
     assert computed == expected
-

@@ -8,6 +8,7 @@ from tools.training.fl3_factory.io import read_json_object
 from tools.verification.fl3_canonical import sha256_json
 from tools.verification.fl3_validators import FL3ValidationError
 from tools.training.fl3_factory.trace import verify_reasoning_trace
+from tools.verification.fl3_validators import validate_schema_bound_object
 
 
 def decide_promotion(
@@ -15,6 +16,7 @@ def decide_promotion(
     job: Dict[str, Any],
     eval_report: Dict[str, Any],
     trace_path: Optional[Path],
+    fitness_region_path: Optional[Path],
 ) -> str:
     """
     FL3 reasoning-trace law (minimal): promotion is only possible when a valid trace exists.
@@ -34,6 +36,16 @@ def decide_promotion(
 
     trace = read_json_object(trace_path)
     verify_reasoning_trace(trace)  # raises on tamper/mismatch
+
+    # Addendum: promotion is forbidden unless derived fitness region == A.
+    if fitness_region_path is None or not fitness_region_path.exists():
+        return "REJECT"
+    fitness = read_json_object(fitness_region_path)
+    validate_schema_bound_object(fitness)
+    if fitness.get("schema_id") != "kt.fitness_region.v1":
+        raise FL3ValidationError("fitness_region schema mismatch (fail-closed)")
+    if fitness.get("fitness_region") != "A":
+        return "REJECT"
 
     results = eval_report.get("results") or {}
     if isinstance(results, dict):

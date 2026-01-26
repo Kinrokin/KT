@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Temporal Lineage Graph v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "graph_id",
+    "nodes",
+    "edges",
+    "parent_hash",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.temporal_lineage_graph.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "graph_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "nodes": { "type": "array", "items": { "type": "string" } },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [ "from", "to" ],
+        "properties": {
+          "from": { "type": "string" },
+          "to": { "type": "string" }
+        }
+      }
+    },
+    "parent_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" }
+  }
+}
+

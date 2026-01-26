@@ -57,6 +57,9 @@ def _mk_contract(*, repo_root: Path) -> dict:
                 "kt.factory.train_manifest.v1",
                 "kt.reasoning_trace.v1",
                 "kt.signal_quality.v1",
+                "kt.immune_snapshot.v1",
+                "kt.epigenetic_summary.v1",
+                "kt.fitness_region.v1",
                 # Promotion is allowlisted in general, but VRR lane must not emit it.
                 "kt.factory.promotion.v1",
             ]

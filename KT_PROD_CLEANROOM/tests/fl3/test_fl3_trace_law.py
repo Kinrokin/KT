@@ -44,7 +44,12 @@ def test_fl3_no_trace_no_promotion(tmp_path: Path) -> None:
         "created_at": "2026-01-01T00:00:00Z",
     }
 
-    decision = decide_promotion(job=job, eval_report=eval_report, trace_path=tmp_path / "missing_trace.json")
+    decision = decide_promotion(
+        job=job,
+        eval_report=eval_report,
+        trace_path=tmp_path / "missing_trace.json",
+        fitness_region_path=tmp_path / "missing_fitness.json",
+    )
     assert decision == "REJECT"
 
 
@@ -68,5 +73,9 @@ def test_fl3_trace_hash_mismatch_fails_closed(tmp_path: Path) -> None:
         "results": {"trace_required": True, "trace_coverage": 1.0, "trace_id": trace["trace_id"]},
     }
     with pytest.raises(FL3ValidationError):
-        _ = decide_promotion(job=job, eval_report=eval_report, trace_path=p)
-
+        _ = decide_promotion(
+            job=job,
+            eval_report=eval_report,
+            trace_path=p,
+            fitness_region_path=tmp_path / "missing_fitness.json",
+        )

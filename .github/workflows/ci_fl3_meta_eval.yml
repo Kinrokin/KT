@@ -23,6 +23,10 @@ jobs:
         run: |
           python -m pytest -q KT_PROD_CLEANROOM/tests/fl3
           python -m pytest -q KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests
+      - name: FL3 meta-evaluator (A)
+        env:
+          PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
+        run: python -m tools.verification.fl3_meta_evaluator
       - name: Rollback drill (A)
         env:
           PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
@@ -45,8 +49,11 @@ jobs:
         run: |
           python -m pytest -q KT_PROD_CLEANROOM/tests/fl3
           python -m pytest -q KT_PROD_CLEANROOM/tests
+      - name: FL3 meta-evaluator (B)
+        env:
+          PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
+        run: python -m tools.verification.fl3_meta_evaluator
       - name: Red assault (B)
         env:
           PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
         run: python -m tools.verification.fl3_red_assault
-

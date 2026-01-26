@@ -1,27 +1,121 @@
 {
   "bundle_id": "LAW_BUNDLE_FL3",
   "repo_root_anchor": "REPO_ROOT",
+  "laws": [
+    {
+      "law_id": "FL3_SOVEREIGN_PROTOCOL",
+      "law_doc_path": "KT_PROD_CLEANROOM/AUDITS/FL3_SOVEREIGN_PROTOCOL.md",
+      "law_hash": "7bcbf009fd1197c5d72ca805d1ca3b88f053fe466296d5535c150bcf244d05ec"
+    }
+  ],
   "files": [
-    { "path": "KT_PROD_CLEANROOM/AUDITS/FL3_CANONICAL_RUNTIME_PATHS.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.blind_judgement_pack.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.dataset.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.eval_report.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.freeze_receipt.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.jobspec.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.judgement.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.organ_contract.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.promotion.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.train_manifest.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.failure_contract.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.global_budget_state.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.global_unlock.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.human_signoff.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.law_amendment.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.reasoning_trace.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.reveal_mapping.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.signal_quality.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.tournament_manifest.v1.json" },
-    { "path": "KT_PROD_CLEANROOM/tools/verification/fl3_canonical.py" },
-    { "path": "KT_PROD_CLEANROOM/tools/verification/fl3_validators.py" }
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/FL3_CANONICAL_RUNTIME_PATHS.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/FL3_FITNESS_POLICY.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/FL3_SOVEREIGN_PROTOCOL.md"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.blind_judgement_pack.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.breeding_manifest.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.epigenetic_summary.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.dataset.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.eval_report.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.freeze_receipt.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.jobspec.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.jobspec.v2.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.judgement.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.organ_contract.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.promotion.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.train_manifest.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.failure_contract.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.fitness_region.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.fl3_fitness_policy.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.global_budget_state.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.global_unlock.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.human_signoff.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.immune_snapshot.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.law_amendment.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.meta_evaluator_receipt.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.paradox_event.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.reasoning_trace.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.schema_violation.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.shadow_adapter_manifest.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.reveal_mapping.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.signal_quality.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.temporal_lineage_graph.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.tournament_manifest.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.trace_violation.v1.json"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tools/verification/fl3_canonical.py"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tools/verification/fl3_meta_evaluator.py"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tools/verification/fl3_validators.py"
+    }
   ]
 }

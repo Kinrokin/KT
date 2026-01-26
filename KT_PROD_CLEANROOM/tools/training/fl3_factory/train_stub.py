@@ -14,7 +14,7 @@ def build_train_manifest(*, job: Dict[str, Any], dataset: Dict[str, Any], out_di
     # Deterministic fake "weights bundle" for smoke: content is stable per job_id.
     bundle_dir = out_dir / "bundle"
     bundle_dir.mkdir(parents=True, exist_ok=True)
-    weights_path = bundle_dir / "weights.stub"
+    weights_path = bundle_dir / "weights.safetensors"
     weights_path.write_text(f"stub-weights:{job['job_id']}\n", encoding="utf-8")
     artifact_hash = sha256_text(weights_path.read_text(encoding="utf-8"))
 
@@ -31,4 +31,3 @@ def build_train_manifest(*, job: Dict[str, Any], dataset: Dict[str, Any], out_di
     }
     record["train_id"] = sha256_json({k: v for k, v in record.items() if k not in {"created_at", "train_id"}})
     return record
-

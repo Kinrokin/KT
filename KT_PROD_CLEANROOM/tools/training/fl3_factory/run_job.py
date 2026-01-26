@@ -80,7 +80,18 @@ def main(argv: List[str] | None = None) -> int:
             "kt.factory.train_manifest.v1",
             "kt.factory.eval_report.v1",
             "kt.signal_quality.v1",
+            # Addendum-derived artifacts (computed, never authored).
+            "kt.immune_snapshot.v1",
+            "kt.epigenetic_summary.v1",
+            "kt.fitness_region.v1",
         ]
+        if str(job.get("mode")) == "SHADOW":
+            required_outputs.append("kt.shadow_adapter_manifest.v1")
+        if run_kind == "BREEDING":
+            # Breeding jobspec requires v2 and must emit breeding manifest.
+            if job.get("schema_id") != "kt.factory.jobspec.v2":
+                raise FL3ValidationError("BREEDING run_kind requires kt.factory.jobspec.v2 (fail-closed)")
+            required_outputs.append("kt.breeding_manifest.v1")
         if run_kind == "TOURNAMENT":
             required_outputs.extend(
                 [
@@ -172,6 +183,21 @@ def main(argv: List[str] | None = None) -> int:
         train_path = job_dir / "train_manifest.json"
         train_hash = write_schema_object(path=train_path, obj=train_manifest)
 
+        if run_kind == "BREEDING":
+            from tools.training.fl3_factory.breeding import build_breeding_manifest, write_training_log_with_injection
+
+            # Deterministic stub log proving viral injection invariant.
+            _ = write_training_log_with_injection(out_dir=job_dir, job_id=str(job["job_id"]))
+            breeding = job.get("breeding") if isinstance(job.get("breeding"), dict) else {}
+            shadow_sources = breeding.get("shadow_sources") if isinstance(breeding.get("shadow_sources"), list) else ["shadow://unknown"]
+            bman = build_breeding_manifest(
+                child_adapter_version=str(job["adapter_version"]),
+                parent_adapters=[str(job["adapter_id"])],
+                shadow_sources=[str(x) for x in shadow_sources],
+                parent_hash=train_hash,
+            )
+            _ = write_schema_object(path=job_dir / "breeding_manifest.json", obj=bman)
+
         # Phase: eval -> eval_report
         from tools.training.fl3_factory.eval_stub import build_eval_report
         eval_report = build_eval_report(job=job, trace=trace)
@@ -192,13 +218,39 @@ def main(argv: List[str] | None = None) -> int:
         signal_path = job_dir / "signal_quality.json"
         signal_hash = write_schema_object(path=signal_path, obj=signal)
 
+        # Addendum: derive immune snapshot, epigenetic summary, and fitness region (never authored).
+        from tools.training.fl3_factory.derived import build_shadow_adapter_manifest, derive_and_write
+
+        derived, _meta = derive_and_write(
+            repo_root=repo_root,
+            job_dir=job_dir,
+            job=job,
+            signal_quality_path=signal_path,
+            parent_hash=signal_hash,
+        )
+        if str(job.get("mode")) == "SHADOW":
+            weights_path = Path(train_manifest["output_bundle"]["artifact_path"])
+            if not weights_path.is_absolute():
+                weights_path = (repo_root / weights_path).resolve()
+            shadow_manifest = build_shadow_adapter_manifest(
+                adapter_version=str(job["adapter_version"]),
+                weights_path=weights_path,
+                parent_hash=derived.fitness_region["fitness_id"],
+            )
+            _ = write_schema_object(path=job_dir / "shadow_adapter_manifest.json", obj=shadow_manifest)
+
         if run_kind != "VRR":
             # Phase: promote (stub: always REJECT until FL3 blockers implemented)
             from tools.training.fl3_factory.promote import build_promotion
 
             from tools.training.fl3_factory.promote import decide_promotion
 
-            decision = decide_promotion(job=job, eval_report=eval_report, trace_path=trace_path)
+            decision = decide_promotion(
+                job=job,
+                eval_report=eval_report,
+                trace_path=trace_path,
+                fitness_region_path=job_dir / "fitness_region.json",
+            )
             promotion = build_promotion(
                 job=job,
                 decision=decision,

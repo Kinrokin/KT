@@ -64,6 +64,9 @@ def _mk_min_contract(repo_root: Path) -> Dict[str, Any]:
                 "kt.factory.train_manifest.v1",
                 "kt.factory.eval_report.v1",
                 "kt.signal_quality.v1",
+                "kt.immune_snapshot.v1",
+                "kt.epigenetic_summary.v1",
+                "kt.fitness_region.v1",
                 "kt.factory.promotion.v1",
             ]
         ),
@@ -181,4 +184,3 @@ def main(argv: List[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

@@ -17,6 +17,7 @@ SCHEMA_FILES = [
     "fl3/kt.global_budget_state.v1.json",
     "fl3/kt.global_unlock.v1.json",
     "fl3/kt.factory.jobspec.v1.json",
+    "fl3/kt.factory.jobspec.v2.json",
     "fl3/kt.factory.dataset.v1.json",
     "fl3/kt.factory.judgement.v1.json",
     "fl3/kt.factory.train_manifest.v1.json",
@@ -31,6 +32,17 @@ SCHEMA_FILES = [
     "fl3/kt.failure_contract.v1.json",
     "fl3/kt.human_signoff.v1.json",
     "fl3/kt.law_amendment.v1.json",
+    "fl3/kt.breeding_manifest.v1.json",
+    "fl3/kt.epigenetic_summary.v1.json",
+    "fl3/kt.fitness_region.v1.json",
+    "fl3/kt.fl3_fitness_policy.v1.json",
+    "fl3/kt.immune_snapshot.v1.json",
+    "fl3/kt.meta_evaluator_receipt.v1.json",
+    "fl3/kt.paradox_event.v1.json",
+    "fl3/kt.schema_violation.v1.json",
+    "fl3/kt.shadow_adapter_manifest.v1.json",
+    "fl3/kt.temporal_lineage_graph.v1.json",
+    "fl3/kt.trace_violation.v1.json",
 ]
 
 
@@ -130,6 +142,15 @@ def test_fl3_schema_validates_examples() -> None:
     }
     jobspec["job_id"] = _sha_id(jobspec, {"job_id"})
     validate_object_with_binding(jobspec)
+
+    # jobspec v2 (breeding)
+    jobspec2 = dict(jobspec)
+    jobspec2["schema_id"] = "kt.factory.jobspec.v2"
+    jobspec2["schema_version_hash"] = schema_version_hash("fl3/kt.factory.jobspec.v2.json")
+    jobspec2["run_kind"] = "BREEDING"
+    jobspec2["breeding"] = {"batch_fraction": 0.01, "shadow_sources": ["shadow://a"]}
+    jobspec2["job_id"] = _sha_id(jobspec2, {"job_id"})
+    validate_object_with_binding(jobspec2)
 
     # dataset
     dataset = {
@@ -309,3 +330,154 @@ def test_fl3_schema_validates_examples() -> None:
     }
     amendment["amendment_id"] = _sha_id(amendment, {"created_at", "amendment_id"})
     validate_object_with_binding(amendment)
+
+    # fitness policy (used by meta-evaluator)
+    policy = {
+        "schema_id": "kt.fl3_fitness_policy.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.fl3_fitness_policy.v1.json"),
+        "policy_id": "",
+        "risk_max": 0.25,
+        "governance_strikes_max": 0,
+        "min_immune_events": 0,
+        "ece_max": 1.0,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    policy["policy_id"] = _sha_id(policy, {"created_at", "policy_id"})
+    validate_object_with_binding(policy)
+
+    immune = {
+        "schema_id": "kt.immune_snapshot.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.immune_snapshot.v1.json"),
+        "snapshot_id": "",
+        "immune_events_total": 0,
+        "counts": {"paradox_event": 0, "trace_violation": 0, "schema_violation": 0},
+        "parent_hash": "0" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    immune["snapshot_id"] = _sha_id(immune, {"created_at", "snapshot_id"})
+    validate_object_with_binding(immune)
+
+    epi = {
+        "schema_id": "kt.epigenetic_summary.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.epigenetic_summary.v1.json"),
+        "summary_id": "",
+        "paradox_survival_count": 0,
+        "recovery_efficiency": 0.0,
+        "lineage_weight": 0.0,
+        "signed_by": "meta_evaluator_key",
+        "parent_hash": "0" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    epi["summary_id"] = _sha_id(epi, {"created_at", "summary_id"})
+    validate_object_with_binding(epi)
+
+    fitness = {
+        "schema_id": "kt.fitness_region.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.fitness_region.v1.json"),
+        "fitness_id": "",
+        "adapter_version": "1",
+        "derived_from": {
+            "signal_quality_hash": "1" * 64,
+            "immune_snapshot_hash": immune["snapshot_id"],
+            "epigenetic_summary_hash": epi["summary_id"],
+        },
+        "fitness_region": "A",
+        "derivation_policy_hash": policy["policy_id"],
+        "parent_hash": "0" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    fitness["fitness_id"] = _sha_id(fitness, {"created_at", "fitness_id"})
+    validate_object_with_binding(fitness)
+
+    shadow_manifest = {
+        "schema_id": "kt.shadow_adapter_manifest.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.shadow_adapter_manifest.v1.json"),
+        "shadow_id": "",
+        "adapter_version": "1",
+        "storage_format": "safetensors",
+        "checksum": "2" * 64,
+        "fitness_region": "B",
+        "signed_by": "meta_evaluator_key",
+        "parent_hash": "0" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    shadow_manifest["shadow_id"] = _sha_id(shadow_manifest, {"created_at", "shadow_id"})
+    validate_object_with_binding(shadow_manifest)
+
+    breeding = {
+        "schema_id": "kt.breeding_manifest.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.breeding_manifest.v1.json"),
+        "breeding_id": "",
+        "child_adapter_version": "1",
+        "parent_adapters": ["a"],
+        "shadow_injection": {"batch_fraction": 0.01, "shadow_sources": ["shadow://a"]},
+        "parent_hash": "0" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    breeding["breeding_id"] = _sha_id(breeding, {"created_at", "breeding_id"})
+    validate_object_with_binding(breeding)
+
+    trace_violation = {
+        "schema_id": "kt.trace_violation.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.trace_violation.v1.json"),
+        "violation_id": "",
+        "trace_hash": "3" * 64,
+        "context_hash": "4" * 64,
+        "parent_hash": "0" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    trace_violation["violation_id"] = _sha_id(trace_violation, {"created_at", "violation_id"})
+    validate_object_with_binding(trace_violation)
+
+    schema_violation = {
+        "schema_id": "kt.schema_violation.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.schema_violation.v1.json"),
+        "violation_id": "",
+        "violated_schema_id": "kt.factory.jobspec.v1",
+        "context_hash": "5" * 64,
+        "parent_hash": "0" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    schema_violation["violation_id"] = _sha_id(schema_violation, {"created_at", "violation_id"})
+    validate_object_with_binding(schema_violation)
+
+    paradox = {
+        "schema_id": "kt.paradox_event.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.paradox_event.v1.json"),
+        "event_id": "",
+        "air_hash": "6" * 64,
+        "srr_hash": "7" * 64,
+        "adapter_version": "1",
+        "verdict": "VETO",
+        "trace_hash": "8" * 64,
+        "parent_hash": "0" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    paradox["event_id"] = _sha_id(paradox, {"created_at", "event_id"})
+    validate_object_with_binding(paradox)
+
+    lineage = {
+        "schema_id": "kt.temporal_lineage_graph.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.temporal_lineage_graph.v1.json"),
+        "graph_id": "",
+        "nodes": ["a", "b"],
+        "edges": [{"from": "a", "to": "b"}],
+        "parent_hash": "0" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    lineage["graph_id"] = _sha_id(lineage, {"created_at", "graph_id"})
+    validate_object_with_binding(lineage)
+
+    meta = {
+        "schema_id": "kt.meta_evaluator_receipt.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.meta_evaluator_receipt.v1.json"),
+        "receipt_id": "",
+        "law_bundle_hash": "9" * 64,
+        "active_law_id": "FL3_SOVEREIGN_PROTOCOL",
+        "active_law_hash": "a" * 64,
+        "status": "PASS",
+        "parent_hash": "0" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    meta["receipt_id"] = _sha_id(meta, {"created_at", "receipt_id"})
+    validate_object_with_binding(meta)
