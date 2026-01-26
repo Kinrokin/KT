@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Factory Judgement v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "judgement_id",
+    "job_id",
+    "dataset_id",
+    "accepted_row_ids",
+    "rejected_row_ids",
+    "judge_ref",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.factory.judgement.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "judgement_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "job_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "dataset_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "accepted_row_ids": { "type": "array", "items": { "type": "string" } },
+    "rejected_row_ids": { "type": "array", "items": { "type": "string" } },
+    "judge_ref": { "type": "string" },
+    "created_at": { "type": "string" }
+  }
+}
+

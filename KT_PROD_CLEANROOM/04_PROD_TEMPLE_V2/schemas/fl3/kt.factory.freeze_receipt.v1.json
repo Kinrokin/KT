@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Factory Freeze Receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "freeze_id",
+    "job_id",
+    "adapter_id",
+    "adapter_version",
+    "bundle_hash",
+    "eval_hash",
+    "promotion_hash",
+    "registry_write",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.factory.freeze_receipt.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "freeze_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "job_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "adapter_id": { "type": "string" },
+    "adapter_version": { "type": "string" },
+    "bundle_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "eval_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "promotion_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "registry_write": { "type": [ "object", "null" ] },
+    "created_at": { "type": "string" }
+  }
+}
+

@@ -53,6 +53,36 @@ from schemas.fl3_factory_jobspec_schema import (
     FL3_FACTORY_JOBSPEC_SCHEMA_VERSION_HASH,
     validate_fl3_factory_jobspec,
 )
+from schemas.fl3_factory_dataset_schema import (
+    FL3_FACTORY_DATASET_SCHEMA_ID,
+    FL3_FACTORY_DATASET_SCHEMA_VERSION_HASH,
+    validate_fl3_factory_dataset,
+)
+from schemas.fl3_factory_eval_report_schema import (
+    FL3_FACTORY_EVAL_REPORT_SCHEMA_ID,
+    FL3_FACTORY_EVAL_REPORT_SCHEMA_VERSION_HASH,
+    validate_fl3_factory_eval_report,
+)
+from schemas.fl3_factory_freeze_receipt_schema import (
+    FL3_FACTORY_FREEZE_RECEIPT_SCHEMA_ID,
+    FL3_FACTORY_FREEZE_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_fl3_factory_freeze_receipt,
+)
+from schemas.fl3_factory_judgement_schema import (
+    FL3_FACTORY_JUDGEMENT_SCHEMA_ID,
+    FL3_FACTORY_JUDGEMENT_SCHEMA_VERSION_HASH,
+    validate_fl3_factory_judgement,
+)
+from schemas.fl3_factory_promotion_schema import (
+    FL3_FACTORY_PROMOTION_SCHEMA_ID,
+    FL3_FACTORY_PROMOTION_SCHEMA_VERSION_HASH,
+    validate_fl3_factory_promotion,
+)
+from schemas.fl3_factory_train_manifest_schema import (
+    FL3_FACTORY_TRAIN_MANIFEST_SCHEMA_ID,
+    FL3_FACTORY_TRAIN_MANIFEST_SCHEMA_VERSION_HASH,
+    validate_fl3_factory_train_manifest,
+)
 from schemas.fl3_factory_organ_contract_schema import (
     FL3_FACTORY_ORGAN_CONTRACT_SCHEMA_ID,
     FL3_FACTORY_ORGAN_CONTRACT_SCHEMA_VERSION_HASH,
@@ -130,6 +160,18 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     FL3_HUMAN_SIGNOFF_SCHEMA_ID: (FL3_HUMAN_SIGNOFF_SCHEMA_VERSION_HASH, validate_fl3_human_signoff),
     FL3_GLOBAL_UNLOCK_SCHEMA_ID: (FL3_GLOBAL_UNLOCK_SCHEMA_VERSION_HASH, validate_fl3_global_unlock),
     FL3_FACTORY_JOBSPEC_SCHEMA_ID: (FL3_FACTORY_JOBSPEC_SCHEMA_VERSION_HASH, validate_fl3_factory_jobspec),
+    FL3_FACTORY_DATASET_SCHEMA_ID: (FL3_FACTORY_DATASET_SCHEMA_VERSION_HASH, validate_fl3_factory_dataset),
+    FL3_FACTORY_JUDGEMENT_SCHEMA_ID: (FL3_FACTORY_JUDGEMENT_SCHEMA_VERSION_HASH, validate_fl3_factory_judgement),
+    FL3_FACTORY_TRAIN_MANIFEST_SCHEMA_ID: (
+        FL3_FACTORY_TRAIN_MANIFEST_SCHEMA_VERSION_HASH,
+        validate_fl3_factory_train_manifest,
+    ),
+    FL3_FACTORY_EVAL_REPORT_SCHEMA_ID: (FL3_FACTORY_EVAL_REPORT_SCHEMA_VERSION_HASH, validate_fl3_factory_eval_report),
+    FL3_FACTORY_PROMOTION_SCHEMA_ID: (FL3_FACTORY_PROMOTION_SCHEMA_VERSION_HASH, validate_fl3_factory_promotion),
+    FL3_FACTORY_FREEZE_RECEIPT_SCHEMA_ID: (
+        FL3_FACTORY_FREEZE_RECEIPT_SCHEMA_VERSION_HASH,
+        validate_fl3_factory_freeze_receipt,
+    ),
     FL3_REASONING_TRACE_SCHEMA_ID: (FL3_REASONING_TRACE_SCHEMA_VERSION_HASH, validate_fl3_reasoning_trace),
     FL3_TOURNAMENT_MANIFEST_SCHEMA_ID: (
         FL3_TOURNAMENT_MANIFEST_SCHEMA_VERSION_HASH,

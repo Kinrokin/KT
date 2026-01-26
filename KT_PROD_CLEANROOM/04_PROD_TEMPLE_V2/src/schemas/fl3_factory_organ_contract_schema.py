@@ -15,6 +15,7 @@ _REQUIRED_ORDER = (
     "schema_id",
     "schema_version_hash",
     "contract_id",
+    "entrypoints",
     "allowed_base_models",
     "allowed_training_modes",
     "allowed_output_schemas",
@@ -42,6 +43,8 @@ def validate_fl3_factory_organ_contract(obj: Dict[str, Any]) -> None:
     validate_hex_64(entry, "contract_id")
     validate_created_at_utc_z(entry.get("created_at"))
 
+    _validate_entrypoints(entry.get("entrypoints"))
+
     _ = ensure_sorted_str_list(entry.get("allowed_base_models"), field="allowed_base_models")
     _ = ensure_sorted_str_list(entry.get("allowed_training_modes"), field="allowed_training_modes")
     _ = ensure_sorted_str_list(entry.get("allowed_output_schemas"), field="allowed_output_schemas")
@@ -51,3 +54,19 @@ def validate_fl3_factory_organ_contract(obj: Dict[str, Any]) -> None:
     if entry.get("contract_id") != expected:
         raise SchemaValidationError("contract_id does not match canonical hash surface (fail-closed)")
 
+
+def _validate_entrypoints(value: Any) -> None:
+    entry = require_dict(value, name="entrypoints")
+    # Must at least define run_job. Other phases may be added later without schema change by extending
+    # the contract instance - schema enforces only known keys.
+    if "run_job" not in entry:
+        raise SchemaValidationError("entrypoints.run_job required (fail-closed)")
+    for k, v in entry.items():
+        if k not in {"run_job", "harvest", "judge", "train", "evaluate", "promote", "register", "freeze"}:
+            raise SchemaValidationError("entrypoints contains unknown key (fail-closed)")
+        item = require_dict(v, name=f"entrypoints.{k}")
+        if set(item.keys()) != {"path", "sha256"}:
+            raise SchemaValidationError(f"entrypoints.{k} must have keys path,sha256 (fail-closed)")
+        if not isinstance(item.get("path"), str) or not item["path"].strip():
+            raise SchemaValidationError(f"entrypoints.{k}.path must be non-empty string (fail-closed)")
+        validate_hex_64(item, "sha256")

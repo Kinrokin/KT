@@ -64,7 +64,10 @@ def validate_schema_bound_object(payload: Any) -> None:
     # Defer to the existing schema registry/binding mechanism (global enforcement).
     from schemas.schema_registry import validate_object_with_binding  # type: ignore
 
-    validate_object_with_binding(payload)
+    try:
+        validate_object_with_binding(payload)
+    except Exception as exc:  # noqa: BLE001
+        raise FL3ValidationError(str(exc)) from exc
 
 
 def validate_many_schema_bound_objects(objs: Iterable[Any]) -> None:

@@ -17,6 +17,12 @@ SCHEMA_FILES = [
     "fl3/kt.global_budget_state.v1.json",
     "fl3/kt.global_unlock.v1.json",
     "fl3/kt.factory.jobspec.v1.json",
+    "fl3/kt.factory.dataset.v1.json",
+    "fl3/kt.factory.judgement.v1.json",
+    "fl3/kt.factory.train_manifest.v1.json",
+    "fl3/kt.factory.eval_report.v1.json",
+    "fl3/kt.factory.promotion.v1.json",
+    "fl3/kt.factory.freeze_receipt.v1.json",
     "fl3/kt.reasoning_trace.v1.json",
     "fl3/kt.tournament_manifest.v1.json",
     "fl3/kt.blind_judgement_pack.v1.json",
@@ -48,6 +54,12 @@ def test_fl3_schema_validates_examples() -> None:
         "schema_id": "kt.factory.organ_contract.v1",
         "schema_version_hash": schema_version_hash("fl3/kt.factory.organ_contract.v1.json"),
         "contract_id": "",
+        "entrypoints": {
+            "run_job": {
+                "path": "KT_PROD_CLEANROOM/tools/training/fl3_factory/run_job.py",
+                "sha256": "0" * 64,
+            }
+        },
         "allowed_base_models": ["mistral-7b"],
         "allowed_training_modes": ["head_only", "lora"],
         "allowed_output_schemas": ["kt.factory.jobspec.v1"],
@@ -118,6 +130,95 @@ def test_fl3_schema_validates_examples() -> None:
     }
     jobspec["job_id"] = _sha_id(jobspec, {"job_id"})
     validate_object_with_binding(jobspec)
+
+    # dataset
+    dataset = {
+        "schema_id": "kt.factory.dataset.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.factory.dataset.v1.json"),
+        "dataset_id": "",
+        "job_id": jobspec["job_id"],
+        "rows": [{"prompt": "x", "response": "y"}],
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    dataset["dataset_id"] = _sha_id(dataset, {"created_at", "dataset_id"})
+    validate_object_with_binding(dataset)
+
+    # judgement
+    judgement = {
+        "schema_id": "kt.factory.judgement.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.factory.judgement.v1.json"),
+        "judgement_id": "",
+        "job_id": jobspec["job_id"],
+        "dataset_id": dataset["dataset_id"],
+        "accepted_row_ids": ["0"],
+        "rejected_row_ids": [],
+        "judge_ref": "policy_c",
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    judgement["judgement_id"] = _sha_id(judgement, {"created_at", "judgement_id"})
+    validate_object_with_binding(judgement)
+
+    # train_manifest
+    train_manifest = {
+        "schema_id": "kt.factory.train_manifest.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.factory.train_manifest.v1.json"),
+        "train_id": "",
+        "job_id": jobspec["job_id"],
+        "dataset_id": dataset["dataset_id"],
+        "base_model_id": jobspec["base_model_id"],
+        "training_mode": jobspec["training_mode"],
+        "output_bundle": {"artifact_path": "KT_PROD_CLEANROOM/exports/adapters_shadow/x", "artifact_hash": "3" * 64},
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    train_manifest["train_id"] = _sha_id(train_manifest, {"created_at", "train_id"})
+    validate_object_with_binding(train_manifest)
+
+    # eval_report
+    eval_report = {
+        "schema_id": "kt.factory.eval_report.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.factory.eval_report.v1.json"),
+        "eval_id": "",
+        "job_id": jobspec["job_id"],
+        "adapter_id": jobspec["adapter_id"],
+        "adapter_version": jobspec["adapter_version"],
+        "battery_id": "kt.eval.battery.fl3.smoke.v1",
+        "results": {"schema_valid": True},
+        "final_verdict": "PASS",
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    eval_report["eval_id"] = _sha_id(eval_report, {"created_at", "eval_id"})
+    validate_object_with_binding(eval_report)
+
+    # promotion
+    promotion = {
+        "schema_id": "kt.factory.promotion.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.factory.promotion.v1.json"),
+        "promotion_id": "",
+        "job_id": jobspec["job_id"],
+        "decision": "REJECT",
+        "reasons": ["4" * 64],
+        "links": {"dataset_id": dataset["dataset_id"], "eval_id": eval_report["eval_id"]},
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    promotion["promotion_id"] = _sha_id(promotion, {"created_at", "promotion_id"})
+    validate_object_with_binding(promotion)
+
+    # freeze_receipt (even if registry_write null)
+    freeze = {
+        "schema_id": "kt.factory.freeze_receipt.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.factory.freeze_receipt.v1.json"),
+        "freeze_id": "",
+        "job_id": jobspec["job_id"],
+        "adapter_id": jobspec["adapter_id"],
+        "adapter_version": jobspec["adapter_version"],
+        "bundle_hash": "5" * 64,
+        "eval_hash": eval_report["eval_id"],
+        "promotion_hash": promotion["promotion_id"],
+        "registry_write": None,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    freeze["freeze_id"] = _sha_id(freeze, {"created_at", "freeze_id"})
+    validate_object_with_binding(freeze)
 
     # reasoning_trace
     trace = {
