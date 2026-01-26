@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Reveal Mapping v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "mapping_id",
+    "job_id",
+    "sealed",
+    "verdict_ref",
+    "mappings",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.reveal_mapping.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "mapping_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "job_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "sealed": { "type": "boolean" },
+    "verdict_ref": { "type": [ "string", "null" ] },
+    "mappings": { "type": "object", "additionalProperties": { "type": "object" } },
+    "created_at": { "type": "string" }
+  }
+}
+

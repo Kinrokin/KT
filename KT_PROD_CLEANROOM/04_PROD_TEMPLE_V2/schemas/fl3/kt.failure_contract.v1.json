@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Failure Contract v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "tiers",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.failure_contract.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "tiers": { "type": "object" },
+    "created_at": { "type": "string" }
+  }
+}
+

@@ -43,6 +43,66 @@ from schemas.evaluator_result_schema import (
     EVALUATOR_RESULT_SCHEMA_VERSION_HASH,
     validate_evaluator_result,
 )
+from schemas.fl3_blind_judgement_pack_schema import (
+    FL3_BLIND_JUDGEMENT_PACK_SCHEMA_ID,
+    FL3_BLIND_JUDGEMENT_PACK_SCHEMA_VERSION_HASH,
+    validate_fl3_blind_judgement_pack,
+)
+from schemas.fl3_factory_jobspec_schema import (
+    FL3_FACTORY_JOBSPEC_SCHEMA_ID,
+    FL3_FACTORY_JOBSPEC_SCHEMA_VERSION_HASH,
+    validate_fl3_factory_jobspec,
+)
+from schemas.fl3_factory_organ_contract_schema import (
+    FL3_FACTORY_ORGAN_CONTRACT_SCHEMA_ID,
+    FL3_FACTORY_ORGAN_CONTRACT_SCHEMA_VERSION_HASH,
+    validate_fl3_factory_organ_contract,
+)
+from schemas.fl3_failure_contract_schema import (
+    FL3_FAILURE_CONTRACT_SCHEMA_ID,
+    FL3_FAILURE_CONTRACT_SCHEMA_VERSION_HASH,
+    validate_fl3_failure_contract,
+)
+from schemas.fl3_global_budget_state_schema import (
+    FL3_GLOBAL_BUDGET_STATE_SCHEMA_ID,
+    FL3_GLOBAL_BUDGET_STATE_SCHEMA_VERSION_HASH,
+    validate_fl3_global_budget_state,
+)
+from schemas.fl3_global_unlock_schema import (
+    FL3_GLOBAL_UNLOCK_SCHEMA_ID,
+    FL3_GLOBAL_UNLOCK_SCHEMA_VERSION_HASH,
+    validate_fl3_global_unlock,
+)
+from schemas.fl3_human_signoff_schema import (
+    FL3_HUMAN_SIGNOFF_SCHEMA_ID,
+    FL3_HUMAN_SIGNOFF_SCHEMA_VERSION_HASH,
+    validate_fl3_human_signoff,
+)
+from schemas.fl3_law_amendment_schema import (
+    FL3_LAW_AMENDMENT_SCHEMA_ID,
+    FL3_LAW_AMENDMENT_SCHEMA_VERSION_HASH,
+    validate_fl3_law_amendment,
+)
+from schemas.fl3_reasoning_trace_schema import (
+    FL3_REASONING_TRACE_SCHEMA_ID,
+    FL3_REASONING_TRACE_SCHEMA_VERSION_HASH,
+    validate_fl3_reasoning_trace,
+)
+from schemas.fl3_reveal_mapping_schema import (
+    FL3_REVEAL_MAPPING_SCHEMA_ID,
+    FL3_REVEAL_MAPPING_SCHEMA_VERSION_HASH,
+    validate_fl3_reveal_mapping,
+)
+from schemas.fl3_signal_quality_schema import (
+    FL3_SIGNAL_QUALITY_SCHEMA_ID,
+    FL3_SIGNAL_QUALITY_SCHEMA_VERSION_HASH,
+    validate_fl3_signal_quality,
+)
+from schemas.fl3_tournament_manifest_schema import (
+    FL3_TOURNAMENT_MANIFEST_SCHEMA_ID,
+    FL3_TOURNAMENT_MANIFEST_SCHEMA_VERSION_HASH,
+    validate_fl3_tournament_manifest,
+)
 
 
 _Validator = Callable[[Dict[str, Any]], None]
@@ -61,6 +121,25 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
         validate_evaluator_battery_manifest,
     ),
     EVALUATOR_RESULT_SCHEMA_ID: (EVALUATOR_RESULT_SCHEMA_VERSION_HASH, validate_evaluator_result),
+    # FL3: factory/law schemas (append-only).
+    FL3_FACTORY_ORGAN_CONTRACT_SCHEMA_ID: (
+        FL3_FACTORY_ORGAN_CONTRACT_SCHEMA_VERSION_HASH,
+        validate_fl3_factory_organ_contract,
+    ),
+    FL3_GLOBAL_BUDGET_STATE_SCHEMA_ID: (FL3_GLOBAL_BUDGET_STATE_SCHEMA_VERSION_HASH, validate_fl3_global_budget_state),
+    FL3_HUMAN_SIGNOFF_SCHEMA_ID: (FL3_HUMAN_SIGNOFF_SCHEMA_VERSION_HASH, validate_fl3_human_signoff),
+    FL3_GLOBAL_UNLOCK_SCHEMA_ID: (FL3_GLOBAL_UNLOCK_SCHEMA_VERSION_HASH, validate_fl3_global_unlock),
+    FL3_FACTORY_JOBSPEC_SCHEMA_ID: (FL3_FACTORY_JOBSPEC_SCHEMA_VERSION_HASH, validate_fl3_factory_jobspec),
+    FL3_REASONING_TRACE_SCHEMA_ID: (FL3_REASONING_TRACE_SCHEMA_VERSION_HASH, validate_fl3_reasoning_trace),
+    FL3_TOURNAMENT_MANIFEST_SCHEMA_ID: (
+        FL3_TOURNAMENT_MANIFEST_SCHEMA_VERSION_HASH,
+        validate_fl3_tournament_manifest,
+    ),
+    FL3_BLIND_JUDGEMENT_PACK_SCHEMA_ID: (FL3_BLIND_JUDGEMENT_PACK_SCHEMA_VERSION_HASH, validate_fl3_blind_judgement_pack),
+    FL3_REVEAL_MAPPING_SCHEMA_ID: (FL3_REVEAL_MAPPING_SCHEMA_VERSION_HASH, validate_fl3_reveal_mapping),
+    FL3_SIGNAL_QUALITY_SCHEMA_ID: (FL3_SIGNAL_QUALITY_SCHEMA_VERSION_HASH, validate_fl3_signal_quality),
+    FL3_FAILURE_CONTRACT_SCHEMA_ID: (FL3_FAILURE_CONTRACT_SCHEMA_VERSION_HASH, validate_fl3_failure_contract),
+    FL3_LAW_AMENDMENT_SCHEMA_ID: (FL3_LAW_AMENDMENT_SCHEMA_VERSION_HASH, validate_fl3_law_amendment),
 }
 
 

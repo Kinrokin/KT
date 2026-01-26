@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Human Signoff v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "signoff_id",
+    "key_id",
+    "payload_hash",
+    "hmac_signature",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.human_signoff.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "signoff_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "key_id": { "type": "string" },
+    "payload_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "hmac_signature": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" }
+  }
+}
+

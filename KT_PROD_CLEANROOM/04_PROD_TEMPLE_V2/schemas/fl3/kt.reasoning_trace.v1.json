@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Reasoning Trace v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "trace_id",
+    "steps",
+    "final_output_hash",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.reasoning_trace.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "trace_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "steps": { "type": "array", "items": { "type": "object" } },
+    "final_output_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" }
+  }
+}
+

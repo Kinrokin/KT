@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Factory Organ Contract v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "contract_id",
+    "allowed_base_models",
+    "allowed_training_modes",
+    "allowed_output_schemas",
+    "allowed_export_roots",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.factory.organ_contract.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "contract_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "allowed_base_models": { "type": "array", "items": { "type": "string" } },
+    "allowed_training_modes": { "type": "array", "items": { "type": "string" } },
+    "allowed_output_schemas": { "type": "array", "items": { "type": "string" } },
+    "allowed_export_roots": { "type": "array", "items": { "type": "string" } },
+    "created_at": { "type": "string" }
+  }
+}
+

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Global Budget State v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "day_utc",
+    "gpu_hours_used",
+    "jobs_run",
+    "lock_state",
+    "last_t1_failure"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.global_budget_state.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "day_utc": { "type": "string" },
+    "gpu_hours_used": { "type": "number", "minimum": 0.0 },
+    "jobs_run": { "type": "integer", "minimum": 0 },
+    "lock_state": { "type": "string", "enum": [ "OPEN", "LOCKED" ] },
+    "last_t1_failure": { "type": [ "string", "null" ] }
+  }
+}
+

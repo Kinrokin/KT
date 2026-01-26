@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Factory JobSpec v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "job_id",
+    "adapter_id",
+    "adapter_version",
+    "role",
+    "mode",
+    "run_kind",
+    "base_model_id",
+    "training_mode",
+    "seed",
+    "export_shadow_root",
+    "export_promoted_root"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.factory.jobspec.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "job_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "adapter_id": { "type": "string" },
+    "adapter_version": { "type": "string" },
+    "role": { "type": "string" },
+    "mode": { "type": "string", "enum": [ "SMOKE", "STANDARD", "SOVEREIGN", "SHADOW" ] },
+    "run_kind": { "type": "string", "enum": [ "STANDARD", "VRR", "TOURNAMENT" ] },
+    "base_model_id": { "type": "string" },
+    "training_mode": { "type": "string", "enum": [ "lora", "head_only" ] },
+    "seed": { "type": "integer" },
+    "export_shadow_root": { "type": "string" },
+    "export_promoted_root": { "type": "string" }
+  }
+}
+
