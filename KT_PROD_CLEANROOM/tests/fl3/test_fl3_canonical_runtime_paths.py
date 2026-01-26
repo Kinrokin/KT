@@ -3,6 +3,10 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from KT_PROD_CLEANROOM.tests.fl3._bootstrap import bootstrap_syspath
+
+_REPO_ROOT = bootstrap_syspath()
+
 
 def _repo_root() -> Path:
     p = Path(__file__).resolve()
@@ -42,4 +46,3 @@ def test_fl3_canonical_runtime_paths_file_present_and_valid() -> None:
     for k in ["exports_adapters_root", "exports_shadow_root"]:
         p = repo_root / obj[k]
         assert p.parent.exists(), f"{k} parent missing: {p.parent}"
-
