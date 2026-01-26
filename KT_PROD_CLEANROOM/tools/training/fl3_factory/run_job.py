@@ -51,13 +51,16 @@ def main(argv: List[str] | None = None) -> int:
         enforce_entrypoints(contract, repo_root=repo_root)
 
         # Enforce allowlists declared in the organ contract.
+        run_kind = str(job["run_kind"])
         required_outputs = [
             "kt.factory.dataset.v1",
             "kt.factory.judgement.v1",
             "kt.factory.train_manifest.v1",
             "kt.factory.eval_report.v1",
-            "kt.factory.promotion.v1",
         ]
+        # VRR is a repair lane: it must never produce promotion artifacts.
+        if run_kind != "VRR":
+            required_outputs.append("kt.factory.promotion.v1")
         enforce_allowlists(
             contract,
             base_model_id=str(job["base_model_id"]),
@@ -95,21 +98,23 @@ def main(argv: List[str] | None = None) -> int:
         eval_path = job_dir / "eval_report.json"
         eval_hash = write_schema_object(path=eval_path, obj=eval_report)
 
-        # Phase: promote (stub: always REJECT until FL3 blockers implemented)
-        from tools.training.fl3_factory.promote import build_promotion
-        promotion = build_promotion(
-            job=job,
-            decision="REJECT",
-            reasons=[dataset_hash, judgement_hash, train_hash, eval_hash],
-            links={
-                "dataset_id": dataset["dataset_id"],
-                "judgement_id": judgement["judgement_id"],
-                "train_id": train_manifest["train_id"],
-                "eval_id": eval_report["eval_id"],
-            },
-        )
-        promotion_path = job_dir / "promotion.json"
-        _ = write_schema_object(path=promotion_path, obj=promotion)
+        if run_kind != "VRR":
+            # Phase: promote (stub: always REJECT until FL3 blockers implemented)
+            from tools.training.fl3_factory.promote import build_promotion
+
+            promotion = build_promotion(
+                job=job,
+                decision="REJECT",
+                reasons=[dataset_hash, judgement_hash, train_hash, eval_hash],
+                links={
+                    "dataset_id": dataset["dataset_id"],
+                    "judgement_id": judgement["judgement_id"],
+                    "train_id": train_manifest["train_id"],
+                    "eval_id": eval_report["eval_id"],
+                },
+            )
+            promotion_path = job_dir / "promotion.json"
+            _ = write_schema_object(path=promotion_path, obj=promotion)
 
         return EXIT_OK
 
