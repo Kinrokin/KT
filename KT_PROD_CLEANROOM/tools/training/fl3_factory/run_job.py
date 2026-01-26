@@ -6,6 +6,12 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
+from tools.training.fl3_factory.budget import (
+    FL3BudgetError,
+    default_budget_state_path,
+    record_job_started,
+    unlock_if_needed,
+)
 from tools.training.fl3_factory.contracts import enforce_allowlists, enforce_entrypoints, load_organ_contract
 from tools.training.fl3_factory.io import read_json_object, write_schema_object
 from tools.verification.fl3_canonical import repo_root_from
@@ -22,6 +28,8 @@ def main(argv: List[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--job", required=True)
     ap.add_argument("--organ-contract", required=True)
+    ap.add_argument("--budget-state", default=None)
+    ap.add_argument("--unlock-artifact", default=None)
     args = ap.parse_args(argv)
 
     repo_root = repo_root_from(Path(__file__))
@@ -33,6 +41,11 @@ def main(argv: List[str] | None = None) -> int:
         job = read_json_object(job_path)
         validate_schema_bound_object(job)
         contract = load_organ_contract(contract_path)
+
+        budget_state_path = Path(args.budget_state) if args.budget_state else default_budget_state_path(repo_root)
+        unlock_path = Path(args.unlock_artifact) if args.unlock_artifact else None
+        _ = unlock_if_needed(repo_root=repo_root, budget_state_path=budget_state_path, unlock_artifact_path=unlock_path)
+        _ = record_job_started(repo_root=repo_root, budget_state_path=budget_state_path)
 
         # Enforce entrypoint self-hash and phase entrypoint hashes.
         enforce_entrypoints(contract, repo_root=repo_root)
@@ -100,6 +113,10 @@ def main(argv: List[str] | None = None) -> int:
 
         return EXIT_OK
 
+    except FL3BudgetError as exc:
+        if os.environ.get("KT_FL3_DEBUG") == "1":
+            print(f"FL3_BUDGET_FAIL: {exc}", file=sys.stderr)
+        return EXIT_BUDGET
     except FL3ValidationError as exc:
         if os.environ.get("KT_FL3_DEBUG") == "1":
             print(f"FL3_CONTRACT_FAIL: {exc}", file=sys.stderr)

@@ -80,6 +80,7 @@ def test_fl3_factory_smoke_dryrun(tmp_path: Path) -> None:
 
     job_path = tmp_path / "job.json"
     contract_path = tmp_path / "contract.json"
+    budget_path = tmp_path / "budget.json"
 
     # Contract entrypoint hashes must match on disk.
     run_job_rel = "KT_PROD_CLEANROOM/tools/training/fl3_factory/run_job.py"
@@ -93,18 +94,31 @@ def test_fl3_factory_smoke_dryrun(tmp_path: Path) -> None:
 
     _write_json(job_path, job)
     _write_json(contract_path, _mk_contract(entrypoints=ep))
+    _write_json(
+        budget_path,
+        {
+            "schema_id": "kt.global_budget_state.v1",
+            "schema_version_hash": schema_version_hash("fl3/kt.global_budget_state.v1.json"),
+            "day_utc": "2026-01-01",
+            "gpu_hours_used": 0.0,
+            "jobs_run": 0,
+            "lock_state": "OPEN",
+            "last_t1_failure": None,
+        },
+    )
 
-    rc = main(["--job", str(job_path), "--organ-contract", str(contract_path)])
-    assert rc == EXIT_OK
+    try:
+        rc = main(["--job", str(job_path), "--organ-contract", str(contract_path), "--budget-state", str(budget_path)])
+        assert rc == EXIT_OK
 
-    assert (out_dir / "dataset.json").exists()
-    assert (out_dir / "judgement.json").exists()
-    assert (out_dir / "train_manifest.json").exists()
-    assert (out_dir / "eval_report.json").exists()
-    assert (out_dir / "promotion.json").exists()
-
-    # Cleanup: keep the worktree clean (exports are ignored, but don't leak state in local runs).
-    shutil.rmtree(out_dir)
+        assert (out_dir / "dataset.json").exists()
+        assert (out_dir / "judgement.json").exists()
+        assert (out_dir / "train_manifest.json").exists()
+        assert (out_dir / "eval_report.json").exists()
+        assert (out_dir / "promotion.json").exists()
+    finally:
+        if out_dir.exists():
+            shutil.rmtree(out_dir)
 
 
 def test_fl3_factory_entrypoint_hash_enforced(tmp_path: Path) -> None:
@@ -115,12 +129,25 @@ def test_fl3_factory_entrypoint_hash_enforced(tmp_path: Path) -> None:
     )
     job_path = tmp_path / "job.json"
     contract_path = tmp_path / "contract.json"
+    budget_path = tmp_path / "budget.json"
     _write_json(job_path, job)
 
     ep = {"run_job": {"path": "KT_PROD_CLEANROOM/tools/training/fl3_factory/run_job.py", "sha256": "0" * 64}}
     _write_json(contract_path, _mk_contract(entrypoints=ep))
+    _write_json(
+        budget_path,
+        {
+            "schema_id": "kt.global_budget_state.v1",
+            "schema_version_hash": schema_version_hash("fl3/kt.global_budget_state.v1.json"),
+            "day_utc": "2026-01-01",
+            "gpu_hours_used": 0.0,
+            "jobs_run": 0,
+            "lock_state": "OPEN",
+            "last_t1_failure": None,
+        },
+    )
 
-    rc = main(["--job", str(job_path), "--organ-contract", str(contract_path)])
+    rc = main(["--job", str(job_path), "--organ-contract", str(contract_path), "--budget-state", str(budget_path)])
     assert rc == EXIT_CONTRACT
 
 
@@ -132,6 +159,7 @@ def test_fl3_factory_output_schema_blocked(tmp_path: Path) -> None:
     )
     job_path = tmp_path / "job.json"
     contract_path = tmp_path / "contract.json"
+    budget_path = tmp_path / "budget.json"
     _write_json(job_path, job)
 
     run_job_rel = "KT_PROD_CLEANROOM/tools/training/fl3_factory/run_job.py"
@@ -143,5 +171,18 @@ def test_fl3_factory_output_schema_blocked(tmp_path: Path) -> None:
     c["contract_id"] = sha256_json({k: v for k, v in c.items() if k not in {"created_at", "contract_id"}})
     _write_json(contract_path, c)
 
-    rc = main(["--job", str(job_path), "--organ-contract", str(contract_path)])
+    _write_json(
+        budget_path,
+        {
+            "schema_id": "kt.global_budget_state.v1",
+            "schema_version_hash": schema_version_hash("fl3/kt.global_budget_state.v1.json"),
+            "day_utc": "2026-01-01",
+            "gpu_hours_used": 0.0,
+            "jobs_run": 0,
+            "lock_state": "OPEN",
+            "last_t1_failure": None,
+        },
+    )
+
+    rc = main(["--job", str(job_path), "--organ-contract", str(contract_path), "--budget-state", str(budget_path)])
     assert rc == EXIT_CONTRACT
