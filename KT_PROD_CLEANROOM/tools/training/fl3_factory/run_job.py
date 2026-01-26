@@ -74,6 +74,8 @@ def main(argv: List[str] | None = None) -> int:
                 if float(sq.get("risk_estimate", 0.0)) >= max_risk:
                     raise FL3ValidationError("tournament entrant risk too high (fail-closed)")
         required_outputs = [
+            # Persist the jobspec used to produce this job_dir (auditable, schema-bound).
+            str(job["schema_id"]),
             "kt.factory.dataset.v1",
             "kt.reasoning_trace.v1",
             "kt.factory.judgement.v1",
@@ -115,6 +117,9 @@ def main(argv: List[str] | None = None) -> int:
         job_dir = (out_root / str(job["job_id"])).resolve()
         assert_relpath_under_exports(repo_root=repo_root, relpath=str(job_dir.relative_to(repo_root)), allow_promoted=True)
         job_dir.mkdir(parents=True, exist_ok=True)
+
+        # Persist the exact jobspec into the job directory for meta-evaluation and replay.
+        _ = write_schema_object(path=job_dir / "job.json", obj=job)
 
         # Phase: harvest -> dataset
         from tools.training.fl3_factory.harvest_stub import build_dataset

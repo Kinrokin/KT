@@ -58,6 +58,7 @@ def _mk_min_contract(repo_root: Path) -> Dict[str, Any]:
         "allowed_training_modes": ["head_only", "lora"],
         "allowed_output_schemas": sorted(
             [
+                "kt.factory.jobspec.v1",
                 "kt.factory.dataset.v1",
                 "kt.reasoning_trace.v1",
                 "kt.factory.judgement.v1",

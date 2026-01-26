@@ -103,6 +103,20 @@ def _compute_expected_fitness_region(*, policy: Dict[str, Any], signal: Dict[str
 
 
 def verify_job_dir(*, repo_root: Path, job_dir: Path) -> None:
+    # SRR/AIR exclusivity: factory artifacts must not emit or claim runtime receipts.
+    # Runtime SRR/AIR are spine-only (see FL3_SOVEREIGN_PROTOCOL.md §0.3).
+    forbidden_runtime_schema_ids = {"kt.routing_record.v1", "kt.adapter_invocation.v1"}
+    for p in sorted(job_dir.glob("*.json")):
+        try:
+            obj = read_json(p)
+        except Exception as exc:
+            raise FL3ValidationError(f"job_dir contains unreadable JSON: {p.name} (fail-closed)") from exc
+        if isinstance(obj, dict) and obj.get("schema_id") in forbidden_runtime_schema_ids:
+            raise FL3ValidationError(f"job_dir contains forbidden runtime receipt schema_id: {obj.get('schema_id')} (fail-closed)")
+    for forbidden_dir in ("routing_records", "adapter_invocations"):
+        if (job_dir / forbidden_dir).exists():
+            raise FL3ValidationError(f"job_dir contains forbidden runtime receipts directory: {forbidden_dir} (fail-closed)")
+
     # Verify derived artifacts and fitness region determinism.
     signal = read_json(job_dir / "signal_quality.json")
     immune = read_json(job_dir / "immune_snapshot.json")
