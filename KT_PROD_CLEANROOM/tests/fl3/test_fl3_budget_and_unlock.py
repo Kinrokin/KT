@@ -88,6 +88,8 @@ def _mk_contract(repo_root: Path) -> dict:
                 "kt.factory.jobspec.v1",
                 "kt.factory.promotion.v1",
                 "kt.factory.train_manifest.v1",
+                "kt.reasoning_trace.v1",
+                "kt.signal_quality.v1",
             ]
         ),
         "allowed_export_roots": [

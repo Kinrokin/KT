@@ -36,6 +36,8 @@ def _mk_contract(*, repo_root: Path) -> dict:
                 "kt.factory.jobspec.v1",
                 "kt.factory.promotion.v1",
                 "kt.factory.train_manifest.v1",
+                "kt.reasoning_trace.v1",
+                "kt.signal_quality.v1",
                 "kt.blind_judgement_pack.v1",
                 "kt.reveal_mapping.v1",
                 "kt.tournament_manifest.v1",
@@ -119,4 +121,3 @@ def test_fl3_tournament_rejects_low_signal_quality(tmp_path: Path) -> None:
     finally:
         if out_dir.exists():
             shutil.rmtree(out_dir)
-

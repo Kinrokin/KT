@@ -55,6 +55,8 @@ def _mk_contract(*, repo_root: Path) -> dict:
                 "kt.factory.judgement.v1",
                 "kt.factory.jobspec.v1",
                 "kt.factory.train_manifest.v1",
+                "kt.reasoning_trace.v1",
+                "kt.signal_quality.v1",
                 # Promotion is allowlisted in general, but VRR lane must not emit it.
                 "kt.factory.promotion.v1",
             ]
@@ -108,9 +110,11 @@ def test_fl3_vrr_lane_emits_no_promotion_artifacts(tmp_path: Path) -> None:
         assert rc == EXIT_OK
 
         assert (out_dir / "dataset.json").exists()
+        assert (out_dir / "reasoning_trace.json").exists()
         assert (out_dir / "judgement.json").exists()
         assert (out_dir / "train_manifest.json").exists()
         assert (out_dir / "eval_report.json").exists()
+        assert (out_dir / "signal_quality.json").exists()
         assert not (out_dir / "promotion.json").exists()
         assert not promoted_dir.exists()
     finally:
@@ -118,4 +122,3 @@ def test_fl3_vrr_lane_emits_no_promotion_artifacts(tmp_path: Path) -> None:
             shutil.rmtree(out_dir)
         if promoted_dir.exists():
             shutil.rmtree(promoted_dir)
-

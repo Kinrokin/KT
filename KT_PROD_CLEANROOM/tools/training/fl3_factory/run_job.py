@@ -75,9 +75,11 @@ def main(argv: List[str] | None = None) -> int:
                     raise FL3ValidationError("tournament entrant risk too high (fail-closed)")
         required_outputs = [
             "kt.factory.dataset.v1",
+            "kt.reasoning_trace.v1",
             "kt.factory.judgement.v1",
             "kt.factory.train_manifest.v1",
             "kt.factory.eval_report.v1",
+            "kt.signal_quality.v1",
         ]
         if run_kind == "TOURNAMENT":
             required_outputs.extend(
@@ -108,6 +110,13 @@ def main(argv: List[str] | None = None) -> int:
         dataset = build_dataset(job=job)
         dataset_path = job_dir / "dataset.json"
         dataset_hash = write_schema_object(path=dataset_path, obj=dataset)
+
+        # Reasoning trace is mandatory for any promotable lane (and always emitted for auditability).
+        from tools.training.fl3_factory.trace import build_reasoning_trace
+
+        trace = build_reasoning_trace(job_id=str(job["job_id"]), final_output_hash=dataset_hash)
+        trace_path = job_dir / "reasoning_trace.json"
+        trace_hash = write_schema_object(path=trace_path, obj=trace)
 
         if run_kind == "TOURNAMENT":
             from tools.training.fl3_factory.tournament import (
@@ -165,20 +174,38 @@ def main(argv: List[str] | None = None) -> int:
 
         # Phase: eval -> eval_report
         from tools.training.fl3_factory.eval_stub import build_eval_report
-        eval_report = build_eval_report(job=job)
+        eval_report = build_eval_report(job=job, trace=trace)
         eval_path = job_dir / "eval_report.json"
         eval_hash = write_schema_object(path=eval_path, obj=eval_report)
+
+        # Signal quality is computed from evaluation outputs (stubbed for now).
+        from tools.training.fl3_factory.signal import build_signal_quality
+
+        signal_status = "PROMOTED" if job.get("mode") == "SOVEREIGN" and eval_report.get("final_verdict") == "PASS" else "CANDIDATE"
+        signal = build_signal_quality(
+            adapter_id=str(job["adapter_id"]),
+            adapter_version=str(job["adapter_version"]),
+            risk_estimate=0.1,
+            governance_strikes=0,
+            status=signal_status,
+        )
+        signal_path = job_dir / "signal_quality.json"
+        signal_hash = write_schema_object(path=signal_path, obj=signal)
 
         if run_kind != "VRR":
             # Phase: promote (stub: always REJECT until FL3 blockers implemented)
             from tools.training.fl3_factory.promote import build_promotion
 
+            from tools.training.fl3_factory.promote import decide_promotion
+
+            decision = decide_promotion(job=job, eval_report=eval_report, trace_path=trace_path)
             promotion = build_promotion(
                 job=job,
-                decision="REJECT",
-                reasons=[dataset_hash, judgement_hash, train_hash, eval_hash],
+                decision=decision,
+                reasons=[dataset_hash, trace_hash, judgement_hash, train_hash, eval_hash, signal_hash],
                 links={
                     "dataset_id": dataset["dataset_id"],
+                    "trace_id": trace["trace_id"],
                     "judgement_id": judgement["judgement_id"],
                     "train_id": train_manifest["train_id"],
                     "eval_id": eval_report["eval_id"],

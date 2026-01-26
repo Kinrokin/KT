@@ -54,6 +54,8 @@ def _mk_contract(*, entrypoints: dict) -> dict:
                 "kt.factory.jobspec.v1",
                 "kt.factory.promotion.v1",
                 "kt.factory.train_manifest.v1",
+                "kt.reasoning_trace.v1",
+                "kt.signal_quality.v1",
             ]
         ),
         "allowed_export_roots": [
@@ -112,9 +114,11 @@ def test_fl3_factory_smoke_dryrun(tmp_path: Path) -> None:
         assert rc == EXIT_OK
 
         assert (out_dir / "dataset.json").exists()
+        assert (out_dir / "reasoning_trace.json").exists()
         assert (out_dir / "judgement.json").exists()
         assert (out_dir / "train_manifest.json").exists()
         assert (out_dir / "eval_report.json").exists()
+        assert (out_dir / "signal_quality.json").exists()
         assert (out_dir / "promotion.json").exists()
     finally:
         if out_dir.exists():
