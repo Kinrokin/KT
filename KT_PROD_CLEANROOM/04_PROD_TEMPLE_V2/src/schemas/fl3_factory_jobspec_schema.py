@@ -27,7 +27,7 @@ _REQUIRED_ORDER = (
     "export_promoted_root",
 )
 _REQUIRED: Set[str] = set(_REQUIRED_ORDER)
-_ALLOWED: Set[str] = set(_REQUIRED_ORDER)
+_ALLOWED: Set[str] = set(_REQUIRED_ORDER) | {"tournament"}
 _HASH_DROP_KEYS = {"job_id"}
 
 
@@ -75,3 +75,28 @@ def validate_fl3_factory_jobspec(obj: Dict[str, Any]) -> None:
     if entry.get("job_id") != expected:
         raise SchemaValidationError("job_id does not match canonical hash surface (fail-closed)")
 
+    tournament = entry.get("tournament")
+    if run_kind == "TOURNAMENT":
+        if tournament is None:
+            raise SchemaValidationError("TOURNAMENT run_kind requires tournament object (fail-closed)")
+    if tournament is not None:
+        if not isinstance(tournament, dict):
+            raise SchemaValidationError("tournament must be object (fail-closed)")
+        reject_unknown_keys(tournament, allowed={"entrants", "max_risk", "max_strikes"})
+        entrants = tournament.get("entrants")
+        if not isinstance(entrants, list) or len(entrants) < 1:
+            raise SchemaValidationError("tournament.entrants must be non-empty list (fail-closed)")
+        if "max_risk" in tournament and not isinstance(tournament.get("max_risk"), (int, float)):
+            raise SchemaValidationError("tournament.max_risk must be number (fail-closed)")
+        if "max_strikes" in tournament and not isinstance(tournament.get("max_strikes"), int):
+            raise SchemaValidationError("tournament.max_strikes must be integer (fail-closed)")
+        for ent in entrants:
+            if not isinstance(ent, dict):
+                raise SchemaValidationError("tournament entrant must be object (fail-closed)")
+            reject_unknown_keys(ent, allowed={"adapter_id", "adapter_version", "signal_quality"})
+            require_keys(ent, required={"adapter_id", "adapter_version", "signal_quality"})
+            validate_short_string(ent, "adapter_id", max_len=128)
+            validate_short_string(ent, "adapter_version", max_len=64)
+            # signal_quality is validated separately by FL3 factory gating and schema binding.
+            if not isinstance(ent.get("signal_quality"), dict):
+                raise SchemaValidationError("tournament entrant signal_quality must be object (fail-closed)")

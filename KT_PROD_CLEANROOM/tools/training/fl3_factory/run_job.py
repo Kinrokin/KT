@@ -52,6 +52,27 @@ def main(argv: List[str] | None = None) -> int:
 
         # Enforce allowlists declared in the organ contract.
         run_kind = str(job["run_kind"])
+        if run_kind == "TOURNAMENT":
+            tournament = job.get("tournament")
+            if not isinstance(tournament, dict):
+                raise FL3ValidationError("tournament jobspec requires tournament object (fail-closed)")
+            entrants = tournament.get("entrants")
+            if not isinstance(entrants, list) or len(entrants) < 1:
+                raise FL3ValidationError("tournament.entrants must be non-empty (fail-closed)")
+            max_risk = float(tournament.get("max_risk", 0.5))
+            max_strikes = int(tournament.get("max_strikes", 0))
+            for ent in entrants:
+                if not isinstance(ent, dict):
+                    raise FL3ValidationError("tournament entrant must be object (fail-closed)")
+                sq = ent.get("signal_quality")
+                validate_schema_bound_object(sq)
+                if sq.get("schema_id") != "kt.signal_quality.v1":
+                    raise FL3ValidationError("tournament entrant signal_quality schema_id mismatch (fail-closed)")
+                # Gate: any strikes or high risk blocks tournament entry.
+                if int(sq.get("governance_strikes", 0)) > max_strikes:
+                    raise FL3ValidationError("tournament entrant has governance strikes (fail-closed)")
+                if float(sq.get("risk_estimate", 0.0)) >= max_risk:
+                    raise FL3ValidationError("tournament entrant risk too high (fail-closed)")
         required_outputs = [
             "kt.factory.dataset.v1",
             "kt.factory.judgement.v1",

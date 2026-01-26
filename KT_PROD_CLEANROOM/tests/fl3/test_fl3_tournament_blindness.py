@@ -69,6 +69,16 @@ def test_fl3_reveal_mapping_sealed_until_verdict(tmp_path: Path) -> None:
 
 
 def _mk_jobspec(*, export_shadow_root: str, export_promoted_root: str) -> dict:
+    signal = {
+        "schema_id": "kt.signal_quality.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.signal_quality.v1.json"),
+        "adapter_id": "lobe.ancestor_stub.v1",
+        "adapter_version": "0",
+        "risk_estimate": 0.1,
+        "governance_strikes": 0,
+        "status": "PROMOTED",
+        "created_at": "2026-01-01T00:00:00Z",
+    }
     job = {
         "schema_id": "kt.factory.jobspec.v1",
         "schema_version_hash": schema_version_hash("fl3/kt.factory.jobspec.v1.json"),
@@ -83,7 +93,13 @@ def _mk_jobspec(*, export_shadow_root: str, export_promoted_root: str) -> dict:
         "seed": 42,
         "export_shadow_root": export_shadow_root,
         "export_promoted_root": export_promoted_root,
-        # Tournament entrants are added in a later commit; keep this job minimal for now.
+        "tournament": {
+            "entrants": [
+                {"adapter_id": signal["adapter_id"], "adapter_version": signal["adapter_version"], "signal_quality": signal}
+            ],
+            "max_risk": 0.5,
+            "max_strikes": 0,
+        },
     }
     job["job_id"] = sha256_json({k: v for k, v in job.items() if k != "job_id"})
     return job

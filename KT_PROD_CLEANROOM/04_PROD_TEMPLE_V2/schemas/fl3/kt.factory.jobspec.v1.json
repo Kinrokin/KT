@@ -31,7 +31,29 @@
     "training_mode": { "type": "string", "enum": [ "lora", "head_only" ] },
     "seed": { "type": "integer" },
     "export_shadow_root": { "type": "string" },
-    "export_promoted_root": { "type": "string" }
+    "export_promoted_root": { "type": "string" },
+    "tournament": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [ "entrants" ],
+      "properties": {
+        "entrants": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [ "adapter_id", "adapter_version", "signal_quality" ],
+            "properties": {
+              "adapter_id": { "type": "string" },
+              "adapter_version": { "type": "string" },
+              "signal_quality": { "type": "object" }
+            }
+          }
+        },
+        "max_risk": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "max_strikes": { "type": "integer", "minimum": 0 }
+      }
+    }
   }
 }
-
