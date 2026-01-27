@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Cognitive Fitness Policy v1 (Thresholds + Rules)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "policy_id",
+    "role_weighting",
+    "promotion_thresholds",
+    "canary_rule",
+    "role_drift_rule",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.cognitive_fitness_policy.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "policy_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "role_weighting": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+      }
+    },
+    "promotion_thresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["promote_min", "shadow_min"],
+      "properties": {
+        "promote_min": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "shadow_min": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+      }
+    },
+    "canary_rule": { "type": "string", "enum": ["FAIL_IF_FALSE"] },
+    "role_drift_rule": { "type": "string", "enum": ["FAIL_IF_TRUE"] },
+    "created_at": { "type": "string" }
+  }
+}

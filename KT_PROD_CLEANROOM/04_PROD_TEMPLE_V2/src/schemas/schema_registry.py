@@ -168,6 +168,41 @@ from schemas.fl3_meta_evaluator_receipt_schema import (
     FL3_META_EVALUATOR_RECEIPT_SCHEMA_VERSION_HASH,
     validate_fl3_meta_evaluator_receipt,
 )
+from schemas.fl3_anchor_reference_set_schema import (
+    FL3_ANCHOR_REFERENCE_SET_SCHEMA_ID,
+    FL3_ANCHOR_REFERENCE_SET_SCHEMA_VERSION_HASH,
+    validate_fl3_anchor_reference_set,
+)
+from schemas.fl3_adapter_role_spec_v2_schema import (
+    FL3_ADAPTER_ROLE_SPEC_V2_SCHEMA_ID,
+    FL3_ADAPTER_ROLE_SPEC_V2_SCHEMA_VERSION_HASH,
+    validate_fl3_adapter_role_spec_v2,
+)
+from schemas.fl3_discovery_battery_schema import (
+    FL3_DISCOVERY_BATTERY_SCHEMA_ID,
+    FL3_DISCOVERY_BATTERY_SCHEMA_VERSION_HASH,
+    validate_fl3_discovery_battery,
+)
+from schemas.fl3_discovery_battery_result_schema import (
+    FL3_DISCOVERY_BATTERY_RESULT_SCHEMA_ID,
+    FL3_DISCOVERY_BATTERY_RESULT_SCHEMA_VERSION_HASH,
+    validate_fl3_discovery_battery_result,
+)
+from schemas.fl3_cognitive_fitness_v2_schema import (
+    FL3_COGNITIVE_FITNESS_V2_SCHEMA_ID,
+    FL3_COGNITIVE_FITNESS_V2_SCHEMA_VERSION_HASH,
+    validate_fl3_cognitive_fitness_v2,
+)
+from schemas.fl3_cognitive_fitness_policy_schema import (
+    FL3_COGNITIVE_FITNESS_POLICY_SCHEMA_ID,
+    FL3_COGNITIVE_FITNESS_POLICY_SCHEMA_VERSION_HASH,
+    validate_fl3_cognitive_fitness_policy,
+)
+from schemas.fl3_discovery_case_schema import (
+    FL3_DISCOVERY_CASE_SCHEMA_ID,
+    FL3_DISCOVERY_CASE_SCHEMA_VERSION_HASH,
+    validate_fl3_discovery_case,
+)
 from schemas.fl3_paradox_event_schema import (
     FL3_PARADOX_EVENT_SCHEMA_ID,
     FL3_PARADOX_EVENT_SCHEMA_VERSION_HASH,
@@ -263,6 +298,35 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     FL3_META_EVALUATOR_RECEIPT_SCHEMA_ID: (
         FL3_META_EVALUATOR_RECEIPT_SCHEMA_VERSION_HASH,
         validate_fl3_meta_evaluator_receipt,
+    ),
+    # FL3.2: cognitive fitness + discovery battery (append-only).
+    FL3_ANCHOR_REFERENCE_SET_SCHEMA_ID: (
+        FL3_ANCHOR_REFERENCE_SET_SCHEMA_VERSION_HASH,
+        validate_fl3_anchor_reference_set,
+    ),
+    FL3_ADAPTER_ROLE_SPEC_V2_SCHEMA_ID: (
+        FL3_ADAPTER_ROLE_SPEC_V2_SCHEMA_VERSION_HASH,
+        validate_fl3_adapter_role_spec_v2,
+    ),
+    FL3_DISCOVERY_CASE_SCHEMA_ID: (
+        FL3_DISCOVERY_CASE_SCHEMA_VERSION_HASH,
+        validate_fl3_discovery_case,
+    ),
+    FL3_DISCOVERY_BATTERY_SCHEMA_ID: (
+        FL3_DISCOVERY_BATTERY_SCHEMA_VERSION_HASH,
+        validate_fl3_discovery_battery,
+    ),
+    FL3_DISCOVERY_BATTERY_RESULT_SCHEMA_ID: (
+        FL3_DISCOVERY_BATTERY_RESULT_SCHEMA_VERSION_HASH,
+        validate_fl3_discovery_battery_result,
+    ),
+    FL3_COGNITIVE_FITNESS_POLICY_SCHEMA_ID: (
+        FL3_COGNITIVE_FITNESS_POLICY_SCHEMA_VERSION_HASH,
+        validate_fl3_cognitive_fitness_policy,
+    ),
+    FL3_COGNITIVE_FITNESS_V2_SCHEMA_ID: (
+        FL3_COGNITIVE_FITNESS_V2_SCHEMA_VERSION_HASH,
+        validate_fl3_cognitive_fitness_v2,
     ),
 }
 
