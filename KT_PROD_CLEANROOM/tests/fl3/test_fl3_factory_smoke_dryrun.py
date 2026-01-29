@@ -92,8 +92,8 @@ def test_fl3_factory_smoke_dryrun(tmp_path: Path) -> None:
     ep = {
         "run_job": {"path": run_job_rel, "sha256": sha256_file_normalized(repo_root / run_job_rel)},
         "harvest": {
-            "path": "KT_PROD_CLEANROOM/tools/training/fl3_factory/harvest_stub.py",
-            "sha256": sha256_file_normalized(repo_root / "KT_PROD_CLEANROOM/tools/training/fl3_factory/harvest_stub.py"),
+            "path": "KT_PROD_CLEANROOM/tools/training/fl3_factory/harvest.py",
+            "sha256": sha256_file_normalized(repo_root / "KT_PROD_CLEANROOM/tools/training/fl3_factory/harvest.py"),
         },
     }
 

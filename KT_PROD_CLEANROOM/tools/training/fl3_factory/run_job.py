@@ -122,7 +122,7 @@ def main(argv: List[str] | None = None) -> int:
         _ = write_schema_object(path=job_dir / "job.json", obj=job)
 
         # Phase: harvest -> dataset
-        from tools.training.fl3_factory.harvest_stub import build_dataset
+        from tools.training.fl3_factory.harvest import build_dataset
         dataset = build_dataset(job=job)
         dataset_path = job_dir / "dataset.json"
         dataset_hash = write_schema_object(path=dataset_path, obj=dataset)
@@ -130,7 +130,13 @@ def main(argv: List[str] | None = None) -> int:
         # Reasoning trace is mandatory for any promotable lane (and always emitted for auditability).
         from tools.training.fl3_factory.trace import build_reasoning_trace
 
-        trace = build_reasoning_trace(job_id=str(job["job_id"]), final_output_hash=dataset_hash)
+        trace = build_reasoning_trace(
+            job_id=str(job["job_id"]),
+            final_output_hash=dataset_hash,
+            steps=[
+                {"type": "HARVEST", "dataset_id": dataset.get("dataset_id")},
+            ],
+        )
         trace_path = job_dir / "reasoning_trace.json"
         trace_hash = write_schema_object(path=trace_path, obj=trace)
 
@@ -165,7 +171,7 @@ def main(argv: List[str] | None = None) -> int:
             validate_tournament_artifacts(blind_pack=blind_pack, sealed_mapping=sealed_mapping, manifest=manifest)
 
         # Phase: judge -> judgement
-        from tools.training.fl3_factory.judge_stub import build_judgement
+        from tools.training.fl3_factory.judge import build_judgement
         judgement = build_judgement(job=job, dataset=dataset)
         judgement_path = job_dir / "judgement.json"
         judgement_hash = write_schema_object(path=judgement_path, obj=judgement)
@@ -183,7 +189,7 @@ def main(argv: List[str] | None = None) -> int:
             _ = write_schema_object(path=unsealed_path, obj=unsealed)
 
         # Phase: train -> train_manifest
-        from tools.training.fl3_factory.train_stub import build_train_manifest
+        from tools.training.fl3_factory.train import build_train_manifest
         train_manifest = build_train_manifest(job=job, dataset=dataset, out_dir=job_dir)
         train_path = job_dir / "train_manifest.json"
         train_hash = write_schema_object(path=train_path, obj=train_manifest)
@@ -204,19 +210,26 @@ def main(argv: List[str] | None = None) -> int:
             _ = write_schema_object(path=job_dir / "breeding_manifest.json", obj=bman)
 
         # Phase: eval -> eval_report
-        from tools.training.fl3_factory.eval_stub import build_eval_report
-        eval_report = build_eval_report(job=job, trace=trace)
+        from tools.training.fl3_factory.eval import build_eval_report
+        eval_report = build_eval_report(job=job, trace=trace, dataset=dataset, train_manifest=train_manifest)
         eval_path = job_dir / "eval_report.json"
         eval_hash = write_schema_object(path=eval_path, obj=eval_report)
 
-        # Signal quality is computed from evaluation outputs (stubbed for now).
+        # Signal quality is computed from evaluation outputs.
         from tools.training.fl3_factory.signal import build_signal_quality
 
         signal_status = "PROMOTED" if job.get("mode") == "SOVEREIGN" and eval_report.get("final_verdict") == "PASS" else "CANDIDATE"
+        acc = 0.0
+        results = eval_report.get("results")
+        if isinstance(results, dict):
+            try:
+                acc = float(results.get("accuracy", 0.0))
+            except Exception:
+                acc = 0.0
         signal = build_signal_quality(
             adapter_id=str(job["adapter_id"]),
             adapter_version=str(job["adapter_version"]),
-            risk_estimate=0.1,
+            risk_estimate=max(0.0, min(1.0, 1.0 - acc)),
             governance_strikes=0,
             status=signal_status,
         )
@@ -282,6 +295,10 @@ def main(argv: List[str] | None = None) -> int:
             print(f"FL3_CONTRACT_FAIL: {exc}", file=sys.stderr)
         return EXIT_CONTRACT
     except Exception:
+        if os.environ.get("KT_FL3_DEBUG") == "1":
+            import traceback
+
+            traceback.print_exc()
         return EXIT_INTERNAL
 
 

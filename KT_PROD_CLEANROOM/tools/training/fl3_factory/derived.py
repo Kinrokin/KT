@@ -6,7 +6,7 @@ from typing import Any, Dict, Tuple
 
 from tools.training.fl3_factory.io import read_json_object, write_schema_object
 from tools.training.fl3_factory.timeutil import utc_now_z
-from tools.verification.fl3_canonical import sha256_json, sha256_text
+from tools.verification.fl3_canonical import sha256_bytes, sha256_json, sha256_text
 from tools.verification.fl3_validators import FL3ValidationError, validate_schema_bound_object
 
 
@@ -122,13 +122,14 @@ def build_shadow_adapter_manifest(
 ) -> Dict[str, Any]:
     if weights_path.suffix.lower() != ".safetensors":
         raise FL3ValidationError("Shadow weights must be stored as .safetensors (fail-closed)")
+    checksum = sha256_bytes(weights_path.read_bytes())
     record = {
         "schema_id": "kt.shadow_adapter_manifest.v1",
         "schema_version_hash": _schema_hash("fl3/kt.shadow_adapter_manifest.v1.json"),
         "shadow_id": "",
         "adapter_version": adapter_version,
         "storage_format": "safetensors",
-        "checksum": sha256_text(weights_path.read_text(encoding="utf-8")),
+        "checksum": checksum,
         "fitness_region": "B",
         "signed_by": "meta_evaluator_key",
         "parent_hash": parent_hash,
@@ -176,4 +177,3 @@ def derive_and_write(
     _ = write_schema_object(path=fitness_path, obj=fitness)
 
     return DerivedArtifacts(immune_snapshot=immune, epigenetic_summary=epi, fitness_region=fitness), {"policy_hash": policy_hash}
-
