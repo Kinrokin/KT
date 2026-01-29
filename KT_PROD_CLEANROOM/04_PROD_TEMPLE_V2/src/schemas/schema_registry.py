@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib
 from typing import Any, Callable, Dict, Mapping, Tuple
 
 from schemas.base_schema import SchemaRegistryError, SchemaValidationError, require_dict
@@ -57,11 +58,6 @@ from schemas.fl3_factory_jobspec_v2_schema import (
     FL3_FACTORY_JOBSPEC_V2_SCHEMA_ID,
     FL3_FACTORY_JOBSPEC_V2_SCHEMA_VERSION_HASH,
     validate_fl3_factory_jobspec_v2,
-)
-from schemas.fl3_factory_dataset_schema import (
-    FL3_FACTORY_DATASET_SCHEMA_ID,
-    FL3_FACTORY_DATASET_SCHEMA_VERSION_HASH,
-    validate_fl3_factory_dataset,
 )
 from schemas.fl3_factory_eval_report_schema import (
     FL3_FACTORY_EVAL_REPORT_SCHEMA_ID,
@@ -228,9 +224,21 @@ from schemas.fl3_trace_violation_schema import (
     FL3_TRACE_VIOLATION_SCHEMA_VERSION_HASH,
     validate_fl3_trace_violation,
 )
+from schemas.schema_files import schema_version_hash
 
 
 _Validator = Callable[[Dict[str, Any]], None]
+
+
+def _lazy_validator(module_name: str, validator_attr: str) -> _Validator:
+    # Runtime purity: schema_registry is imported in the canonical runtime entrypoint.
+    # Avoid importing training-signature schema modules unless their schema_id is actually validated.
+    def _v(obj: Dict[str, Any]) -> None:
+        mod = importlib.import_module(module_name)
+        fn = getattr(mod, validator_attr)
+        fn(obj)
+
+    return _v
 
 
 SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
@@ -256,7 +264,11 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     FL3_GLOBAL_UNLOCK_SCHEMA_ID: (FL3_GLOBAL_UNLOCK_SCHEMA_VERSION_HASH, validate_fl3_global_unlock),
     FL3_FACTORY_JOBSPEC_SCHEMA_ID: (FL3_FACTORY_JOBSPEC_SCHEMA_VERSION_HASH, validate_fl3_factory_jobspec),
     FL3_FACTORY_JOBSPEC_V2_SCHEMA_ID: (FL3_FACTORY_JOBSPEC_V2_SCHEMA_VERSION_HASH, validate_fl3_factory_jobspec_v2),
-    FL3_FACTORY_DATASET_SCHEMA_ID: (FL3_FACTORY_DATASET_SCHEMA_VERSION_HASH, validate_fl3_factory_dataset),
+    # Lazy import: module name contains "dataset" and will trip runtime purity checks if loaded eagerly.
+    "kt.factory.dataset.v1": (
+        schema_version_hash("fl3/kt.factory.dataset.v1.json"),
+        _lazy_validator("schemas.fl3_factory_dataset_schema", "validate_fl3_factory_dataset"),
+    ),
     FL3_FACTORY_JUDGEMENT_SCHEMA_ID: (FL3_FACTORY_JUDGEMENT_SCHEMA_VERSION_HASH, validate_fl3_factory_judgement),
     FL3_FACTORY_TRAIN_MANIFEST_SCHEMA_ID: (
         FL3_FACTORY_TRAIN_MANIFEST_SCHEMA_VERSION_HASH,
