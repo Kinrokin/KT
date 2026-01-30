@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Discovery Battery v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_id", "schema_version_hash", "battery_id", "cases", "created_at"],
+  "properties": {
+    "schema_id": { "const": "kt.discovery_battery.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "battery_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["case_id", "category", "prompt", "is_canary"],
+        "properties": {
+          "case_id": { "type": "string" },
+          "category": {
+            "type": "string",
+            "enum": [
+              "paradox_pressure",
+              "cross_domain_transfer",
+              "multi_step_reasoning",
+              "self_repair",
+              "novel_composition",
+              "governance_canary"
+            ]
+          },
+          "prompt": { "type": "string" },
+          "is_canary": { "type": "boolean" }
+        }
+      }
+    },
+    "created_at": { "type": "string" }
+  }
+}

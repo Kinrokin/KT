@@ -1,0 +1,38 @@
+﻿{
+  "all_passed": true,
+  "results": [
+    {
+      "attack_id": "BASELINE_SMOKE",
+      "expected_exit_codes": [
+        0
+      ],
+      "observed_exit_code": 0,
+      "passed": true
+    },
+    {
+      "attack_id": "RA1_EXPORT_ROOT_ESCAPE",
+      "expected_exit_codes": [
+        2
+      ],
+      "observed_exit_code": 2,
+      "passed": true
+    },
+    {
+      "attack_id": "RA2_SCHEMA_HASH_TAMPER",
+      "expected_exit_codes": [
+        2
+      ],
+      "observed_exit_code": 2,
+      "passed": true
+    },
+    {
+      "attack_id": "RA3_ENTRYPOINT_HASH_TAMPER",
+      "expected_exit_codes": [
+        2
+      ],
+      "observed_exit_code": 2,
+      "passed": true
+    }
+  ],
+  "schema_id": "kt.fl3.red_assault.v1"
+}

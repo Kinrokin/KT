@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Cognitive Fitness v2 (Anchor-normalized + Role Drift)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "fitness_id",
+    "adapter_id",
+    "adapter_version",
+    "job_id",
+    "axes",
+    "promotion_verdict",
+    "canary_pass",
+    "role_id",
+    "role_drift_flag",
+    "evidence",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.cognitive_fitness.v2" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "fitness_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "adapter_id": { "type": "string" },
+    "adapter_version": { "type": "string" },
+    "job_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "axes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reasoning_depth",
+        "transfer_capacity",
+        "coherence_under_pressure",
+        "self_correction",
+        "epistemic_behavior",
+        "novel_structure"
+      ],
+      "properties": {
+        "reasoning_depth": { "$ref": "#/$defs/axis" },
+        "transfer_capacity": { "$ref": "#/$defs/axis" },
+        "coherence_under_pressure": { "$ref": "#/$defs/axis" },
+        "self_correction": { "$ref": "#/$defs/axis" },
+        "epistemic_behavior": { "$ref": "#/$defs/axis" },
+        "novel_structure": { "$ref": "#/$defs/axis" }
+      }
+    },
+    "promotion_verdict": { "type": "string", "enum": ["PROMOTE", "SHADOW", "QUARANTINE", "HALT"] },
+    "canary_pass": { "type": "boolean" },
+    "role_id": { "type": "string" },
+    "role_drift_flag": { "type": "boolean" },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["anchor_set_id", "battery_id", "battery_result_id", "role_spec_id", "evidence_hashes"],
+      "properties": {
+        "anchor_set_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "battery_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "battery_result_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "role_spec_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "evidence_hashes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["battery_bundle_hash", "anchor_eval_hash", "trace_replay_hash"],
+          "properties": {
+            "battery_bundle_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+            "anchor_eval_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+            "trace_replay_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+          }
+        }
+      }
+    },
+    "created_at": { "type": "string" }
+  },
+  "$defs": {
+    "axis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["raw_score", "anchor_delta", "normalized_score"],
+      "properties": {
+        "raw_score": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "anchor_delta": { "type": "number", "minimum": -1.0, "maximum": 1.0 },
+        "normalized_score": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Signal Quality v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "adapter_id",
+    "adapter_version",
+    "risk_estimate",
+    "governance_strikes",
+    "status",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.signal_quality.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "adapter_id": { "type": "string" },
+    "adapter_version": { "type": "string" },
+    "risk_estimate": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+    "governance_strikes": { "type": "integer", "minimum": 0 },
+    "status": { "type": "string", "enum": [ "CANDIDATE", "QUARANTINED", "PROMOTED" ] },
+    "created_at": { "type": "string" }
+  }
+}
+

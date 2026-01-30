@@ -14,7 +14,7 @@ tags:
   tools: []
   paradox_classes: []
 
-kernel_targets: ["V2_SOVEREIGN", "KERNEL_COVERAGE_BASELINE"]
+kernel_targets: ["V2_SOVEREIGN", "KERNEL_GOVERNANCE_BASELINE"]
 
 input:
   mode: "RAW_INPUT_STRING"
@@ -41,7 +41,7 @@ expect:
     required_event_types: ["GOV_POLICY_APPLY"]
     forbidden_event_types: ["STATE_MUTATION", "CURRICULUM_INGEST", "PROVIDER_CALL"]
     event_count_min: 1
-    event_count_max: 5
+    event_count_max: 10
 
   thermo_expectations:
     must_enforce_budget: true

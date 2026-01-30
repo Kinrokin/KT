@@ -52,10 +52,22 @@ def _read_json(path: Path) -> Dict[str, Any]:
 
 
 def _epoch_artifacts_root() -> Path:
+    override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+    if override:
+        base = Path(override)
+        if not base.is_absolute():
+            base = _repo_root() / base
+        return base.resolve() / "epochs"
     return _cleanroom_root() / "tools" / "growth" / "artifacts" / "epochs"
 
 
 def _salvage_root() -> Path:
+    override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+    if override:
+        base = Path(override)
+        if not base.is_absolute():
+            base = _repo_root() / base
+        return base.resolve() / "salvage"
     return _cleanroom_root() / "tools" / "growth" / "artifacts" / "salvage"
 
 
@@ -178,6 +190,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "KT_LIVE_PROOF": "",
         "KT_EXECUTION_LANE": os.environ.get("KT_EXECUTION_LANE", ""),
     }
+    # If we're writing a report, co-locate growth artifacts with that report to keep the repo tree
+    # clean and to ensure fresh-room (Kaggle/CI) runs can always find the artifacts they just wrote.
+    if args.out and not os.environ.get("KT_GROWTH_ARTIFACTS_ROOT"):
+        env_overrides["KT_GROWTH_ARTIFACTS_ROOT"] = str(Path(args.out).resolve().parent / "growth_artifacts")
 
     # Step 1: Provider audit (hard gate)
     rc, out, err = _run(
@@ -208,7 +224,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     os.environ.update(env_overrides)
 
     # Step 2: Milestone preflight (hard gate)
-    rc = preflight_epoch(milestone_plan, resume=False, artifacts_root=None, auto_bump=True)
+    rc = preflight_epoch(milestone_plan, resume=False, artifacts_root=_epoch_artifacts_root(), auto_bump=True)
     if rc != 0:
         steps.append(
             StepResult(
@@ -224,7 +240,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     # Step 3: Milestone run (hard gate)
     before = _snapshot_epoch_dirs()
     try:
-        run_epoch_from_plan(plan_path=milestone_plan, resume=False, mode="salvage")
+        run_epoch_from_plan(plan_path=milestone_plan, resume=False, mode="salvage", artifacts_root=_epoch_artifacts_root())
     except Exception as exc:
         steps.append(
             StepResult(
@@ -261,7 +277,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     for i in range(args.pressure_runs):
         before = _snapshot_epoch_dirs()
         try:
-            run_epoch_from_plan(plan_path=pressure_plan, resume=False, mode="salvage")
+            run_epoch_from_plan(plan_path=pressure_plan, resume=False, mode="salvage", artifacts_root=_epoch_artifacts_root())
         except Exception as exc:
             steps.append(
                 StepResult(

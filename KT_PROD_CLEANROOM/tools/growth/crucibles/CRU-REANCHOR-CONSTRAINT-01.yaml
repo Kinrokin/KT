@@ -16,7 +16,7 @@ tags:
 
 kernel_targets:
   - V2_SOVEREIGN
-  - KERNEL_COVERAGE_BASELINE
+  - KERNEL_GOVERNANCE_BASELINE
 
 input:
   mode: "RAW_INPUT_STRING"
@@ -51,6 +51,8 @@ expect:
   replay_verification: "NOT_APPLICABLE"
 
   governance_expectations:
+    event_count_min: 0
+    event_count_max: 10
     forbidden_event_types:
     - STATE_MUTATION
     - CURRICULUM_INGEST

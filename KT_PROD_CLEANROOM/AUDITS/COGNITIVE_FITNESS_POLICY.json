@@ -1,0 +1,83 @@
+{
+  "canary_rule": "FAIL_IF_FALSE",
+  "created_at": "2026-01-01T00:00:00Z",
+  "policy_id": "adf9b3d4431544ecda90e25663f42182b6e131445c18c72e9ac3c2348647a834",
+  "promotion_thresholds": {
+    "promote_min": 0.75,
+    "shadow_min": 0.55
+  },
+  "role_drift_rule": "FAIL_IF_TRUE",
+  "role_weighting": {
+    "ALCHEMIST": {
+      "novel_structure": 0.3,
+      "reasoning_depth": 0.3,
+      "transfer_capacity": 0.4
+    },
+    "ARBITER": {
+      "coherence_under_pressure": 0.4,
+      "epistemic_behavior": 0.4,
+      "self_correction": 0.2
+    },
+    "ARCHITECT": {
+      "coherence_under_pressure": 0.1,
+      "reasoning_depth": 0.5,
+      "self_correction": 0.2,
+      "transfer_capacity": 0.2
+    },
+    "AUDITOR": {
+      "epistemic_behavior": 0.5,
+      "self_correction": 0.5
+    },
+    "CENSOR": {
+      "coherence_under_pressure": 0.3,
+      "epistemic_behavior": 0.5,
+      "self_correction": 0.2
+    },
+    "CRITIC": {
+      "epistemic_behavior": 0.2,
+      "reasoning_depth": 0.3,
+      "self_correction": 0.5
+    },
+    "DIPLOMAT": {
+      "coherence_under_pressure": 0.5,
+      "epistemic_behavior": 0.3,
+      "transfer_capacity": 0.2
+    },
+    "EMPATH": {
+      "coherence_under_pressure": 0.2,
+      "epistemic_behavior": 0.6,
+      "self_correction": 0.2
+    },
+    "HISTORIAN": {
+      "coherence_under_pressure": 0.3,
+      "self_correction": 0.2,
+      "transfer_capacity": 0.5
+    },
+    "MIRROR": {
+      "epistemic_behavior": 0.6,
+      "self_correction": 0.4
+    },
+    "MUSE": {
+      "coherence_under_pressure": 0.2,
+      "novel_structure": 0.6,
+      "transfer_capacity": 0.2
+    },
+    "QUANT": {
+      "coherence_under_pressure": 0.1,
+      "reasoning_depth": 0.6,
+      "self_correction": 0.3
+    },
+    "SCOUT": {
+      "coherence_under_pressure": 0.2,
+      "epistemic_behavior": 0.2,
+      "transfer_capacity": 0.6
+    },
+    "STRATEGIST": {
+      "coherence_under_pressure": 0.4,
+      "reasoning_depth": 0.3,
+      "transfer_capacity": 0.3
+    }
+  },
+  "schema_id": "kt.cognitive_fitness_policy.v1",
+  "schema_version_hash": "a6bb0613206ab9e64c308f3b858f658f7770ec416acc5fe817d108aea3a2d964"
+}

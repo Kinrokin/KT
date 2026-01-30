@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Determinism Canary Artifact v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "canary_id",
+    "git_sha",
+    "platform_fingerprint",
+    "law_bundle_hash",
+    "determinism_contract_hash",
+    "supported_platforms_hash",
+    "utility_pack_hash",
+    "job_dir_manifest_schema_hash",
+    "hash_manifest_root_hash",
+    "canary_job_id",
+    "canary_result",
+    "payload_hash",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.canary_artifact.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "canary_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "git_sha": { "type": "string" },
+    "platform_fingerprint": { "type": "object" },
+    "law_bundle_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "determinism_contract_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "supported_platforms_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "utility_pack_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "job_dir_manifest_schema_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "hash_manifest_root_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "canary_job_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "canary_result": { "type": "string", "enum": [ "PASS", "FAIL" ] },
+    "payload_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" }
+  }
+}

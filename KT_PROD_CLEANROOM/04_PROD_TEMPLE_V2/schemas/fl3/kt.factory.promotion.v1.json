@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Factory Promotion Decision v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "promotion_id",
+    "job_id",
+    "decision",
+    "reasons",
+    "links",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.factory.promotion.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "promotion_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "job_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "decision": { "type": "string", "enum": [ "PROMOTE", "QUARANTINE", "REJECT" ] },
+    "reasons": { "type": "array", "items": { "type": "string", "pattern": "^[0-9a-f]{64}$" } },
+    "links": { "type": "object" },
+    "created_at": { "type": "string" }
+  }
+}
+

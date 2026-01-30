@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Meta Evaluator Receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "receipt_id",
+    "law_bundle_hash",
+    "active_law_id",
+    "active_law_hash",
+    "status",
+    "parent_hash",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.meta_evaluator_receipt.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "receipt_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "law_bundle_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "active_law_id": { "type": "string" },
+    "active_law_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "status": { "type": "string", "enum": [ "PASS", "FAIL" ] },
+    "parent_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" }
+  }
+}
+

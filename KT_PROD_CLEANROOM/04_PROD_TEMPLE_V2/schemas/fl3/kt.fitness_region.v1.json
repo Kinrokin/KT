@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Fitness Region v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "fitness_id",
+    "adapter_version",
+    "derived_from",
+    "fitness_region",
+    "derivation_policy_hash",
+    "parent_hash",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.fitness_region.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "fitness_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "adapter_version": { "type": "string" },
+    "derived_from": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [ "signal_quality_hash", "immune_snapshot_hash", "epigenetic_summary_hash" ],
+      "properties": {
+        "signal_quality_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "immune_snapshot_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "epigenetic_summary_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "fitness_region": { "type": "string", "enum": [ "A", "B", "C" ] },
+    "derivation_policy_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "parent_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" }
+  }
+}
+
