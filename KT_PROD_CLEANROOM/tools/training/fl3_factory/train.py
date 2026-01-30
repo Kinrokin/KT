@@ -4,8 +4,9 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 from tools.training.fl3_factory.hypotheses import build_policy_bundles
+from tools.training.fl3_factory.hashing import sha256_file_normalized
 from tools.training.fl3_factory.timeutil import utc_now_z
-from tools.verification.fl3_canonical import canonical_json, repo_root_from, sha256_bytes, sha256_json
+from tools.verification.fl3_canonical import canonical_json, repo_root_from, sha256_json
 from tools.verification.fl3_validators import FL3ValidationError
 
 
@@ -45,7 +46,8 @@ def build_train_manifest(*, job: Dict[str, Any], dataset: Dict[str, Any], out_di
     lines: List[str] = [canonical_json(b) for b in bundles]
     jsonl_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-    artifact_hash = sha256_bytes(jsonl_path.read_bytes())
+    # Hash the artifact in a platform-stable way (CRLF/CR -> LF for UTF-8 text).
+    artifact_hash = sha256_file_normalized(jsonl_path)
     repo_root = repo_root_from(Path(__file__))
     artifact_rel = jsonl_path.resolve().relative_to(repo_root.resolve()).as_posix()
 
@@ -62,4 +64,3 @@ def build_train_manifest(*, job: Dict[str, Any], dataset: Dict[str, Any], out_di
     }
     record["train_id"] = sha256_json({k: v for k, v in record.items() if k not in {"created_at", "train_id"}})
     return record
-

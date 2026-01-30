@@ -5,8 +5,9 @@ from pathlib import Path
 from typing import Any, Dict, Tuple
 
 from tools.training.fl3_factory.io import read_json_object, write_schema_object
+from tools.training.fl3_factory.hashing import sha256_file_normalized
 from tools.training.fl3_factory.timeutil import utc_now_z
-from tools.verification.fl3_canonical import sha256_bytes, sha256_json, sha256_text
+from tools.verification.fl3_canonical import sha256_json, sha256_text
 from tools.verification.fl3_validators import FL3ValidationError, validate_schema_bound_object
 
 
@@ -123,7 +124,8 @@ def build_shadow_adapter_manifest(
     ext = weights_path.suffix.lower()
     if ext not in {".safetensors", ".jsonl", ".npz"}:
         raise FL3ValidationError("Shadow artifacts must be stored as .safetensors/.jsonl/.npz (fail-closed)")
-    checksum = sha256_bytes(weights_path.read_bytes())
+    # Platform-stable hashing for UTF-8 text artifacts; raw bytes for binaries.
+    checksum = sha256_file_normalized(weights_path)
     storage_format = "safetensors" if ext == ".safetensors" else ("jsonl" if ext == ".jsonl" else "npz")
     record = {
         "schema_id": "kt.shadow_adapter_manifest.v1",
