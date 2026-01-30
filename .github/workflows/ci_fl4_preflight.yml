@@ -16,6 +16,12 @@ jobs:
         with:
           python-version: "3.10"
 
+      - name: Install test dependencies (minimal)
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install pytest
+
       - name: Run FL4 preflight (canonical, Linux)
         env:
           PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
@@ -25,4 +31,3 @@ jobs:
           set -euo pipefail
           export PYTHONPATH="$PWD/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:$PWD/KT_PROD_CLEANROOM"
           python -m tools.verification.preflight_fl4 --registry-path KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json
-
