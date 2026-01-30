@@ -18,11 +18,23 @@ def _sha256_bytes(data: bytes) -> str:
 
 def _hash_file_for_bundle(path: Path) -> str:
     data = path.read_bytes()
+
+    # JSON schemas/audits are hashed over their canonical JSON form.
     if path.suffix.lower() == ".json":
         obj = json.loads(data.decode("utf-8"))
         canon = json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
         return _sha256_bytes(canon)
-    return _sha256_bytes(data)
+
+    # For all other law-bound artifacts, we must not let OS newline conventions influence the law hash.
+    # Normalize UTF-8 text files to LF before hashing; fall back to raw bytes for non-text/binary files.
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError:
+        return _sha256_bytes(data)
+
+    # Normalize CRLF/CR to LF.
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    return _sha256_bytes(text.encode("utf-8"))
 
 
 def compute_law_bundle_hash(*, repo_root: Path, bundle: Dict[str, Any]) -> str:

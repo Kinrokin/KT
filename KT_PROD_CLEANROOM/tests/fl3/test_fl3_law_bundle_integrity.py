@@ -20,7 +20,14 @@ def _bundle_hash(repo_root: Path, bundle_obj: dict) -> str:
             obj = json.loads(data.decode("utf-8"))
             canon = json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
             return hashlib.sha256(canon).hexdigest()
-        return hashlib.sha256(data).hexdigest()
+        # For non-JSON law-bound artifacts, newline conventions must not influence the law hash.
+        # Normalize UTF-8 text files to LF before hashing; fall back to raw bytes for non-text/binary files.
+        try:
+            text = data.decode("utf-8")
+        except UnicodeDecodeError:
+            return hashlib.sha256(data).hexdigest()
+        text = text.replace("\r\n", "\n").replace("\r", "\n")
+        return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
     lines = [f"{rel}:{hash_file(rel)}\n" for rel in paths]
     laws = bundle_obj.get("laws", [])
