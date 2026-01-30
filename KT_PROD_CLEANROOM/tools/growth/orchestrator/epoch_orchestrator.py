@@ -62,6 +62,31 @@ def _repo_root() -> Path:
     return _REPO_ROOT
 
 
+def _rel_to_repo_root_or_abs(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(_repo_root().resolve()).as_posix()
+    except Exception:
+        return path.resolve().as_posix()
+
+
+def _growth_artifacts_root() -> Path:
+    """
+    Single source of truth for growth artifacts root.
+
+    Default: KT_PROD_CLEANROOM/tools/growth/artifacts
+
+    Seal / gate override: set KT_GROWTH_ARTIFACTS_ROOT to an absolute path or a
+    cleanroom-relative path (resolved relative to _repo_root()).
+    """
+    override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+    if not override:
+        return _repo_root() / "tools" / "growth" / "artifacts"
+    p = Path(override)
+    if not p.is_absolute():
+        p = _repo_root() / p
+    return p.resolve()
+
+
 def _load_plan(path: Path) -> EpochPlan:
     raw = path.read_text(encoding="utf-8")
     if path.suffix.lower() in {".yaml", ".yml"}:
@@ -487,7 +512,7 @@ def _materialize_epoch_artifact_contract(
         raise EpochSchemaError("epoch_summary.json missing at epoch root (fail-closed)")
 
     by_cid = {r.crucible_id: r for r in runs}
-    base = _repo_root() / "tools" / "growth" / "artifacts" / "c019_runs" / kernel_target
+    base = _growth_artifacts_root() / "c019_runs" / kernel_target
 
     runner_records: List[Dict[str, Any]] = []
     governance_text: Optional[str] = None
@@ -544,7 +569,7 @@ def _materialize_epoch_artifact_contract(
             {
                 "crucible_id": cid,
                 "run_id": r.run_id,
-                "src": str(sv_src.relative_to(_repo_root())),
+                "src": _rel_to_repo_root_or_abs(sv_src),
                 "bytes": int(sv_src.stat().st_size),
             }
         )
@@ -897,7 +922,7 @@ def run_epoch(
 
     # Build manifest and epoch hash (auto-bump on collision if enabled).
     spec_hashes = {cid: crucible_specs[cid]["hash"] for cid in plan.crucible_order}
-    base_root = artifacts_root if artifacts_root is not None else (repo_root / "tools" / "growth" / "artifacts" / "epochs")
+    base_root = artifacts_root if artifacts_root is not None else (_growth_artifacts_root() / "epochs")
 
     manifest = build_manifest(plan, crucible_spec_hashes=spec_hashes)
     bump_count = 0
@@ -1066,31 +1091,16 @@ def run_epoch(
                 notes = f"runner_outcome:{rec.get('outcome')}"
 
         # Copy micro_steps.json from the crucible run directory if present (tooling-only, non-gating).
-        if run_id:
-            micro_src = (
-                _repo_root()
-                / "tools"
-                / "growth"
-                / "artifacts"
-                / "c019_runs"
-                / kernel_target
-                / run_id
-                / "micro_steps.json"
-            )
+            if run_id:
+                micro_src = (
+                    _growth_artifacts_root() / "c019_runs" / kernel_target / run_id / "micro_steps.json"
+                )
             micro_dst = run_dir / "micro_steps.json"
             if micro_src.exists():
                 _write_once(micro_dst, micro_src.read_text(encoding="utf-8"))
-            if debug_run_roots:
-                run_root = (
-                    _repo_root()
-                    / "tools"
-                    / "growth"
-                    / "artifacts"
-                    / "c019_runs"
-                    / kernel_target
-                    / run_id
-                )
-                _debug_run_root(crucible_id=cid, run_id=run_id, run_root=run_root)
+                if debug_run_roots:
+                    run_root = _growth_artifacts_root() / "c019_runs" / kernel_target / run_id
+                    _debug_run_root(crucible_id=cid, run_id=run_id, run_root=run_root)
 
         _write_once(
             run_record_path,
@@ -1141,14 +1151,7 @@ def run_epoch(
     )
 
     paradox_event_ids: List[str] = []
-    run_base = (
-        _repo_root()
-        / "tools"
-        / "growth"
-        / "artifacts"
-        / "c019_runs"
-        / kernel_target
-    )
+    run_base = _growth_artifacts_root() / "c019_runs" / kernel_target
     for run in runs:
         if run.run_id is None:
             continue
@@ -1195,10 +1198,10 @@ def run_epoch(
         run = next((r for r in runs if r.crucible_id == cid and r.run_id), None)
         if run is None or run.run_id is None:
             raise EpochSchemaError(f"Missing run_id for {cid}; cannot aggregate coverage (fail-closed)")
-        cov_path = _repo_root() / "tools" / "growth" / "artifacts" / "c019_runs" / kernel_target / run.run_id / "crucible_coverage.json"
-        if not cov_path.exists():
-            raise EpochSchemaError(f"Missing crucible coverage for {cid} at {cov_path.as_posix()} (fail-closed)")
-        cov_list.append(json.loads(cov_path.read_text(encoding="utf-8")))
+            cov_path = _growth_artifacts_root() / "c019_runs" / kernel_target / run.run_id / "crucible_coverage.json"
+            if not cov_path.exists():
+                raise EpochSchemaError(f"Missing crucible coverage for {cid} at {cov_path.as_posix()} (fail-closed)")
+            cov_list.append(json.loads(cov_path.read_text(encoding="utf-8")))
 
     domains, subs, micros, ventures, modes, modalities, tools = set(), set(), set(), set(), set(), set(), set()
     cross_edges = 0
@@ -1402,6 +1405,7 @@ def run_epoch_from_plan(
     mode: str = "normal",
     env: Optional[Dict[str, str]] = None,
     salvage_out_root: Optional[Path] = None,
+    artifacts_root: Optional[Path] = None,
     auto_bump: bool = True,
     quiet: bool = False,
 ) -> Dict[str, object]:
@@ -1415,6 +1419,7 @@ def run_epoch_from_plan(
     return run_epoch(
         plan_path,
         resume=resume,
+        artifacts_root=artifacts_root,
         salvage=salvage,
         salvage_out_root=salvage_out_root,
         auto_bump=auto_bump,

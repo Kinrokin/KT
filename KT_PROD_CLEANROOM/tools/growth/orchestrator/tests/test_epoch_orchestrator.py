@@ -328,5 +328,110 @@ class TestKernelTargetRouting(unittest.TestCase):
                     run_root.parent.rmdir()
 
 
+class TestArtifactsRootOverride(unittest.TestCase):
+    def test_env_override_routes_c019_runs_under_override_root(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            td_path = Path(td)
+            crucible_path = td_path / "c.json"
+            _minimal_crucible(crucible_path, kernel_targets=["KERNEL_GOVERNANCE_BASELINE"])
+            plan_path = td_path / "epoch.json"
+            plan_path.write_text(
+                json.dumps(
+                    _minimal_plan(
+                        crucible_path,
+                        kernel_target="KERNEL_GOVERNANCE_BASELINE",
+                        epoch_profile="GOVERNANCE",
+                    ),
+                    ensure_ascii=True,
+                ),
+                encoding="utf-8",
+            )
+
+            override_root = td_path / "growth_artifacts"
+            os.environ["KT_GROWTH_ARTIFACTS_ROOT"] = override_root.as_posix()
+            try:
+                loaded = load_crucible(crucible_path)
+                expected_run_id = _precompute_run_id(
+                    crucible_spec=loaded.spec,
+                    crucible_spec_hash_hex=loaded.crucible_spec_hash,
+                    budgets=loaded.spec.budgets,
+                    kernel_target="KERNEL_GOVERNANCE_BASELINE",
+                    seed=0,
+                )
+
+                def runner_override(_crucible_path: Path, kernel_target: str, _seed: int):
+                    run_root = override_root / "c019_runs" / kernel_target / expected_run_id
+                    run_root.mkdir(parents=True, exist_ok=True)
+                    (run_root / "runner_record.json").write_text(
+                        json.dumps({"run_id": expected_run_id}, ensure_ascii=True),
+                        encoding="utf-8",
+                    )
+                    (run_root / "governance_verdict.json").write_text(
+                        json.dumps(
+                            {"schema_id": "governance.verdict", "schema_version": "1.0", "verdict": "PASS", "rationale": "test"},
+                            ensure_ascii=True,
+                        ),
+                        encoding="utf-8",
+                    )
+                    (run_root / "crucible_coverage.json").write_text(
+                        json.dumps(
+                            {
+                                "schema_version": "COVERAGE_V1",
+                                "run_id": expected_run_id,
+                                "epoch_id": "EPOCH-TEST-01",
+                                "crucible_id": "CRU-TEST-01",
+                                "kernel_target": kernel_target,
+                                "planned": {
+                                    "required_tags": [],
+                                    "target_span": {"min_unique_domains": 0, "min_unique_subdomains": 0, "min_unique_microdomains": 0},
+                                    "rotation_ruleset_id": "ROTATION_RULESET_BOOTSTRAP_V1",
+                                },
+                                "observed": {
+                                    "domains": ["D:TEST"],
+                                    "subdomains": ["S:TEST.SUB"],
+                                    "microdomains": ["M:TEST.SUB"],
+                                    "reasoning_modes": ["R:TEST"],
+                                    "modalities": ["X:TEXT"],
+                                    "tools": ["T:CRUCIBLE"],
+                                    "counts": {
+                                        "unique_domains": 1,
+                                        "unique_subdomains": 1,
+                                        "unique_microdomains": 1,
+                                        "cross_domain_edges": 0,
+                                        "mean_graph_distance": 0,
+                                        "max_graph_distance": 0,
+                                        "paradox_events": 0,
+                                    },
+                                    "dominance": {"top_domain_share": 1.0, "top_5_domain_share": 1.0, "entropy_domains": 0.0},
+                                },
+                                "sequence": ["D:TEST"],
+                                "proof": {
+                                    "receipts": [
+                                        {"type": "TRACE_HEAD_HASH", "sha256": "0" * 64},
+                                        {"type": "LEDGER_ENTRY_HASH", "sha256": "0" * 64},
+                                    ],
+                                    "fail_closed": True,
+                                },
+                                "verdict": {"coverage_pass": None, "rotation_pass": None, "notes": None},
+                            },
+                            ensure_ascii=True,
+                        ),
+                        encoding="utf-8",
+                    )
+                    runtime = run_root / "_runtime_artifacts"
+                    runtime.mkdir(parents=True, exist_ok=True)
+                    (runtime / "state_vault.jsonl").write_text("{\"organ_id\":\"TEST\"}\n", encoding="utf-8")
+                    script = f"import json; print(json.dumps([{{'run_id':'{expected_run_id}','outcome':'PASS'}}]))"
+                    return [sys.executable, "-c", script], td_path
+
+                summary = run_epoch(plan_path, resume=False, runner_cmd_override=runner_override, artifacts_root=td_path / "epochs")
+                self.assertEqual(summary["epoch_id"], "EPOCH-TEST-01")
+                self.assertTrue(
+                    (override_root / "c019_runs" / "KERNEL_GOVERNANCE_BASELINE" / expected_run_id / "crucible_coverage.json").exists()
+                )
+            finally:
+                os.environ.pop("KT_GROWTH_ARTIFACTS_ROOT", None)
+
+
 if __name__ == "__main__":
     raise SystemExit(unittest.main())

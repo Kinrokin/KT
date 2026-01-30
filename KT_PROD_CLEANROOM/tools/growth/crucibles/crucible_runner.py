@@ -1400,7 +1400,14 @@ def run_crucible_file(
 ) -> List[CrucibleRunRecord]:
     loaded = load_crucible(path)
     repo_root = _repo_root()
-    artifacts_dir = repo_root / "tools" / "growth" / "artifacts" / "c019_runs"
+    override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+    if override:
+        base = Path(override)
+        if not base.is_absolute():
+            base = repo_root / base
+        artifacts_dir = base.resolve() / "c019_runs"
+    else:
+        artifacts_dir = repo_root / "tools" / "growth" / "artifacts" / "c019_runs"
     ledger_path = repo_root / "tools" / "growth" / "ledgers" / "c019_crucible_runs.jsonl"
 
     records: List[CrucibleRunRecord] = []
