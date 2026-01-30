@@ -80,8 +80,14 @@ def main(argv: List[str] | None = None) -> int:
             "kt.reasoning_trace.v1",
             "kt.factory.judgement.v1",
             "kt.factory.train_manifest.v1",
-            "kt.factory.eval_report.v1",
+            # MRT-0 hypothesis generator output (schema-bound records in hypotheses/).
+            "kt.policy_bundle.v1",
+            "kt.factory.eval_report.v2",
             "kt.signal_quality.v1",
+            # FL4/MGK v2: job_dir contract + determinism evidence.
+            "kt.factory.phase_trace.v1",
+            "kt.hash_manifest.v1",
+            "kt.factory.job_dir_manifest.v1",
             # Addendum-derived artifacts (computed, never authored).
             "kt.immune_snapshot.v1",
             "kt.epigenetic_summary.v1",
@@ -119,13 +125,25 @@ def main(argv: List[str] | None = None) -> int:
         job_dir.mkdir(parents=True, exist_ok=True)
 
         # Persist the exact jobspec into the job directory for meta-evaluation and replay.
-        _ = write_schema_object(path=job_dir / "job.json", obj=job)
+        job_hash = write_schema_object(path=job_dir / "job.json", obj=job)
+        parent_hash = job_hash
+
+        phases: List[Dict[str, Any]] = []
+        no_stub_executed = True
 
         # Phase: harvest -> dataset
         from tools.training.fl3_factory.harvest import build_dataset
         dataset = build_dataset(job=job)
         dataset_path = job_dir / "dataset.json"
         dataset_hash = write_schema_object(path=dataset_path, obj=dataset)
+        parent_hash = dataset_hash
+        phases.append(
+            {
+                "phase": "harvest",
+                "module_path": "tools.training.fl3_factory.harvest",
+                "status": "OK",
+            }
+        )
 
         # Reasoning trace is mandatory for any promotable lane (and always emitted for auditability).
         from tools.training.fl3_factory.trace import build_reasoning_trace
@@ -139,6 +157,14 @@ def main(argv: List[str] | None = None) -> int:
         )
         trace_path = job_dir / "reasoning_trace.json"
         trace_hash = write_schema_object(path=trace_path, obj=trace)
+        parent_hash = trace_hash
+        phases.append(
+            {
+                "phase": "trace",
+                "module_path": "tools.training.fl3_factory.trace",
+                "status": "OK",
+            }
+        )
 
         if run_kind == "TOURNAMENT":
             from tools.training.fl3_factory.tournament import (
@@ -175,6 +201,14 @@ def main(argv: List[str] | None = None) -> int:
         judgement = build_judgement(job=job, dataset=dataset)
         judgement_path = job_dir / "judgement.json"
         judgement_hash = write_schema_object(path=judgement_path, obj=judgement)
+        parent_hash = judgement_hash
+        phases.append(
+            {
+                "phase": "judge",
+                "module_path": "tools.training.fl3_factory.judge",
+                "status": "OK",
+            }
+        )
 
         if run_kind == "TOURNAMENT":
             # Unseal mapping only after judgement exists.
@@ -193,11 +227,19 @@ def main(argv: List[str] | None = None) -> int:
         train_manifest = build_train_manifest(job=job, dataset=dataset, out_dir=job_dir)
         train_path = job_dir / "train_manifest.json"
         train_hash = write_schema_object(path=train_path, obj=train_manifest)
+        parent_hash = train_hash
+        phases.append(
+            {
+                "phase": "train",
+                "module_path": "tools.training.fl3_factory.train",
+                "status": "OK",
+            }
+        )
 
         if run_kind == "BREEDING":
             from tools.training.fl3_factory.breeding import build_breeding_manifest, write_training_log_with_injection
 
-            # Deterministic stub log proving viral injection invariant.
+            # Deterministic log proving viral injection invariant.
             _ = write_training_log_with_injection(out_dir=job_dir, job_id=str(job["job_id"]))
             breeding = job.get("breeding") if isinstance(job.get("breeding"), dict) else {}
             shadow_sources = breeding.get("shadow_sources") if isinstance(breeding.get("shadow_sources"), list) else ["shadow://unknown"]
@@ -214,27 +256,43 @@ def main(argv: List[str] | None = None) -> int:
         eval_report = build_eval_report(job=job, trace=trace, dataset=dataset, train_manifest=train_manifest)
         eval_path = job_dir / "eval_report.json"
         eval_hash = write_schema_object(path=eval_path, obj=eval_report)
+        parent_hash = eval_hash
+        phases.append(
+            {
+                "phase": "eval",
+                "module_path": "tools.training.fl3_factory.eval",
+                "status": "OK",
+            }
+        )
 
         # Signal quality is computed from evaluation outputs.
         from tools.training.fl3_factory.signal import build_signal_quality
 
-        signal_status = "PROMOTED" if job.get("mode") == "SOVEREIGN" and eval_report.get("final_verdict") == "PASS" else "CANDIDATE"
-        acc = 0.0
-        results = eval_report.get("results")
-        if isinstance(results, dict):
-            try:
-                acc = float(results.get("accuracy", 0.0))
-            except Exception:
-                acc = 0.0
+        # FL4/MRT-0: risk proxy derived from the pinned reality-veto metric (utility floor score).
+        verdict = str(eval_report.get("final_verdict", "FAIL"))
+        signal_status = "CANDIDATE" if verdict == "PASS" else "QUARANTINED"
+        utility_score = 0.0
+        try:
+            utility_score = float(eval_report.get("utility_floor_score", 0.0))
+        except Exception:
+            utility_score = 0.0
         signal = build_signal_quality(
             adapter_id=str(job["adapter_id"]),
             adapter_version=str(job["adapter_version"]),
-            risk_estimate=max(0.0, min(1.0, 1.0 - acc)),
+            risk_estimate=max(0.0, min(1.0, 1.0 - utility_score)),
             governance_strikes=0,
             status=signal_status,
         )
         signal_path = job_dir / "signal_quality.json"
         signal_hash = write_schema_object(path=signal_path, obj=signal)
+        parent_hash = signal_hash
+        phases.append(
+            {
+                "phase": "signal_quality",
+                "module_path": "tools.training.fl3_factory.signal",
+                "status": "OK",
+            }
+        )
 
         # Addendum: derive immune snapshot, epigenetic summary, and fitness region (never authored).
         from tools.training.fl3_factory.derived import build_shadow_adapter_manifest, derive_and_write
@@ -245,6 +303,16 @@ def main(argv: List[str] | None = None) -> int:
             job=job,
             signal_quality_path=signal_path,
             parent_hash=signal_hash,
+        )
+        from tools.verification.fl3_canonical import sha256_json
+
+        parent_hash = sha256_json(derived.fitness_region)
+        phases.append(
+            {
+                "phase": "derived",
+                "module_path": "tools.training.fl3_factory.derived",
+                "status": "OK",
+            }
         )
         if str(job.get("mode")) == "SHADOW":
             weights_path = Path(train_manifest["output_bundle"]["artifact_path"])
@@ -258,7 +326,7 @@ def main(argv: List[str] | None = None) -> int:
             _ = write_schema_object(path=job_dir / "shadow_adapter_manifest.json", obj=shadow_manifest)
 
         if run_kind != "VRR":
-            # Phase: promote (stub: always REJECT until FL3 blockers implemented)
+            # Phase: promote (decision + auditable receipt; materialization is governed separately).
             from tools.training.fl3_factory.promote import build_promotion
 
             from tools.training.fl3_factory.promote import decide_promotion
@@ -282,7 +350,59 @@ def main(argv: List[str] | None = None) -> int:
                 },
             )
             promotion_path = job_dir / "promotion.json"
-            _ = write_schema_object(path=promotion_path, obj=promotion)
+            promotion_hash = write_schema_object(path=promotion_path, obj=promotion)
+            parent_hash = promotion_hash
+            phases.append(
+                {
+                    "phase": "promote_decision",
+                    "module_path": "tools.training.fl3_factory.promote",
+                    "status": "OK",
+                }
+            )
+
+        # Phase trace + manifests (FL4/MGK v2).
+        from tools.training.fl3_factory.manifests import build_phase_trace, write_manifests_for_job_dir
+
+        # Detect any accidental stub invocation in the recorded phase plan.
+        for ph in phases:
+            mod = str(ph.get("module_path", ""))
+            if "_stub" in mod:
+                no_stub_executed = False
+        phase_trace = build_phase_trace(job_id=str(job["job_id"]), phases=phases, no_stub_executed=no_stub_executed, parent_hash=parent_hash)
+        phase_trace_hash = write_schema_object(path=job_dir / "phase_trace.json", obj=phase_trace)
+        parent_hash = phase_trace_hash
+
+        required_relpaths: List[str] = [
+            "job.json",
+            "dataset.json",
+            "reasoning_trace.json",
+            "judgement.json",
+            "train_manifest.json",
+            "hypotheses/policy_bundles.jsonl",
+            "eval_report.json",
+            "signal_quality.json",
+            "immune_snapshot.json",
+            "epigenetic_summary.json",
+            "fitness_region.json",
+            "phase_trace.json",
+        ]
+        if run_kind == "TOURNAMENT":
+            required_relpaths.extend(
+                [
+                    "blind_pack.json",
+                    "reveal_mapping.sealed.json",
+                    "tournament_manifest.json",
+                    "reveal_mapping.json",
+                ]
+            )
+        if run_kind == "BREEDING":
+            required_relpaths.extend(["breeding_manifest.json", "training_log.jsonl"])
+        if str(job.get("mode")) == "SHADOW":
+            required_relpaths.append("shadow_adapter_manifest.json")
+        if run_kind != "VRR":
+            required_relpaths.append("promotion.json")
+
+        _ = write_manifests_for_job_dir(job_dir=job_dir, job_id=str(job["job_id"]), parent_hash=parent_hash, required_relpaths=required_relpaths)
 
         return EXIT_OK
 

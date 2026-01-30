@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Supported Platforms v1 (Determinism Scope)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "supported_platforms_id",
+    "seal_claim_scope",
+    "os",
+    "python",
+    "hashing",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.supported_platforms.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "supported_platforms_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "seal_claim_scope": { "type": "string" },
+    "os": { "type": "string" },
+    "python": { "type": "string" },
+    "numpy": { "type": "string" },
+    "torch_cpu": { "type": "string" },
+    "container_image_sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "env": { "type": "object" },
+    "io_normalization": { "type": "object" },
+    "filesystem": { "type": "object" },
+    "hashing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [ "sha" ],
+      "properties": {
+        "sha": { "type": "string", "enum": [ "sha256" ] }
+      }
+    },
+    "created_at": { "type": "string" }
+  }
+}

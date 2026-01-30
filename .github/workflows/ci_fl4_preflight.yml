@@ -1,0 +1,28 @@
+name: ci_fl4_preflight
+
+on:
+  workflow_dispatch: {}
+  pull_request:
+    paths:
+      - "KT_PROD_CLEANROOM/**"
+      - ".github/workflows/ci_fl4_preflight.yml"
+
+jobs:
+  fl4-preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Run FL4 preflight (canonical, Linux)
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+          TOKENIZERS_PARALLELISM: "false"
+          PYTHONHASHSEED: "0"
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$PWD/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:$PWD/KT_PROD_CLEANROOM"
+          python -m tools.verification.preflight_fl4 --registry-path KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json
+

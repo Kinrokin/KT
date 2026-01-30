@@ -84,15 +84,21 @@ def _mk_contract(repo_root: Path) -> dict:
             [
                 "kt.factory.dataset.v1",
                 "kt.factory.eval_report.v1",
+                "kt.factory.eval_report.v2",
                 "kt.factory.judgement.v1",
                 "kt.factory.jobspec.v1",
                 "kt.factory.promotion.v1",
                 "kt.factory.train_manifest.v1",
+                "kt.policy_bundle.v1",
                 "kt.reasoning_trace.v1",
                 "kt.signal_quality.v1",
+                "kt.factory.phase_trace.v1",
+                "kt.hash_manifest.v1",
+                "kt.factory.job_dir_manifest.v1",
                 "kt.immune_snapshot.v1",
                 "kt.epigenetic_summary.v1",
                 "kt.fitness_region.v1",
+                "kt.shadow_adapter_manifest.v1",
             ]
         ),
         "allowed_export_roots": [

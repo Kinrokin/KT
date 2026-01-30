@@ -258,6 +258,107 @@ If any negative axis exceeds its `max_value`, set:
 
 Promotion must refuse if role_drift_flag is true, regardless of raw score.
 
+SECTION 14 - FL4 MEANING GOVERNANCE KERNEL v2 (MRT-0 CPU, ADAPTERTYPE.A-ONLY)
+
+14.1 Alias and Scope
+
+FL4 is an alias milestone for FL3 completion:
+"Factory Metabolism Non-Stub + Proof Sealed (MRT-0) on CPU."
+
+FL4 changes are add-only and must not edit frozen organs:
+- spine/router/StateVault core
+- SRR/AIR schemas or emission points
+- runtime registry schema
+- Policy C head
+
+14.2 MRT-0 Definition (Metabolic Loop Proof)
+
+MRT-0 is lawful hypothesis generation + evaluation + constitutional selection + bounded persistence.
+
+MRT-0 is not neural weight training.
+
+Canonical Factory Lane permits AdapterType.A only (policy bundles), and must reject any weight artifacts.
+
+14.3 Determinism Truthfulness & Container Binding
+
+Determinism claims are valid only within the declared supported_platforms matrix (schema: `kt.supported_platforms.v1`).
+
+The supported_platforms matrix may optionally bind to a `container_image_sha256` digest.
+
+If container binding is declared, verification MUST fail closed if the runtime cannot prove it.
+
+14.4 Canonical vs Lab Lane
+
+Canonical runs ("Factory Lane") are runs executed via the governed preflight runner and must pass:
+- full-system evaluation
+- determinism canary
+- meta-evaluator
+- red assault
+- rollback drill
+- growth E2E gate
+
+All other runs are "Lab Lane" and must not:
+- produce a Seal
+- promote artifacts into the promoted export root
+
+14.5 Metric Ontology Binding + Independent Probes
+
+All evaluation metrics used for judgement/promotion must include metric bindings:
+- metric_id
+- metric_version_hash
+- metric_schema_hash
+- metric_impl_hash
+
+Independent probes must be computed via a separate computation path and must agree within tolerance.
+
+If probes disagree beyond tolerance, verification MUST fail closed.
+
+14.6 Reality Veto v0 (Utility Floor)
+
+Evaluation must use a pinned utility pack (schema: `kt.utility_pack_manifest.v1`).
+
+If the utility floor fails, the run must be treated as FAIL regardless of other structural metrics.
+
+14.7 Job Directory Contract (Manifest + Hash Manifest)
+
+All canonical factory jobs must emit:
+- `hash_manifest.json` (schema: `kt.hash_manifest.v1`)
+- `job_dir_manifest.json` (schema: `kt.factory.job_dir_manifest.v1`)
+
+Meta-evaluator must recompute and verify:
+- each entry sha256
+- hash_manifest.root_hash
+- job_dir_manifest.hash_manifest_root_hash
+
+Any mismatch MUST fail closed.
+
+14.8 No Stub Execution
+
+All canonical factory jobs must emit `phase_trace.json` (schema: `kt.factory.phase_trace.v1`).
+
+The phase trace must prove no stub modules were executed:
+- phase_trace.no_stub_executed == true
+- no phase module_path may contain "_stub"
+
+Any stub execution indicates governance theater and MUST be rejected.
+
+14.9 Promotion is Constitutional and Atomic
+
+PROMOTE requires:
+- a content-addressed promoted export package
+- re-verification of the promoted copy under the same verifier
+- atomic rename into final promoted path
+- atomic promoted_index update
+- determinism canary artifact inclusion
+
+VRR cannot promote.
+
+14.10 Anti-Theater (Execution Integrity)
+
+Meta-evaluator must recompute the pinned "reality veto" metric and its independent probe from first principles.
+
+Any discrepancy between reported metrics and recomputed metrics MUST fail closed.
+
 SECTION 14 - GOVERNANCE CANARY (EMERGENCY BRAKE)
 
 14.1 Canary Case Must Exist In Discovery Battery

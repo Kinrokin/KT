@@ -52,15 +52,21 @@ def _mk_contract(*, entrypoints: dict) -> dict:
             [
                 "kt.factory.dataset.v1",
                 "kt.factory.eval_report.v1",
+                "kt.factory.eval_report.v2",
                 "kt.factory.judgement.v1",
                 "kt.factory.jobspec.v1",
                 "kt.factory.promotion.v1",
                 "kt.factory.train_manifest.v1",
+                "kt.policy_bundle.v1",
                 "kt.reasoning_trace.v1",
                 "kt.signal_quality.v1",
+                "kt.factory.phase_trace.v1",
+                "kt.hash_manifest.v1",
+                "kt.factory.job_dir_manifest.v1",
                 "kt.immune_snapshot.v1",
                 "kt.epigenetic_summary.v1",
                 "kt.fitness_region.v1",
+                "kt.shadow_adapter_manifest.v1",
             ]
         ),
         "allowed_export_roots": [
@@ -136,4 +142,3 @@ def test_meta_evaluator_rejects_forged_runtime_receipt_in_job_dir(tmp_path: Path
         raise AssertionError("Expected verify_job_dir to fail-closed on forged SRR schema_id")
     except FL3ValidationError as exc:
         assert "forbidden runtime receipt schema_id" in str(exc)
-

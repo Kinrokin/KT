@@ -51,6 +51,19 @@ SCHEMA_FILES = [
     "fl3/kt.discovery_battery_result.v1.json",
     "fl3/kt.cognitive_fitness_policy.v1.json",
     "fl3/kt.cognitive_fitness.v2.json",
+    # FL4: meaning governance kernel v2 (append-only).
+    "fl3/kt.policy_bundle.v1.json",
+    "fl3/kt.hash_manifest.v1.json",
+    "fl3/kt.factory.job_dir_manifest.v1.json",
+    "fl3/kt.factory.phase_trace.v1.json",
+    "fl3/kt.scoring_spec.v1.json",
+    "fl3/kt.utility_pack_manifest.v1.json",
+    "fl3/kt.supported_platforms.v1.json",
+    "fl3/kt.determinism_contract.v1.json",
+    "fl3/kt.canary_artifact.v1.json",
+    "fl3/kt.factory.eval_report.v2.json",
+    "fl3/kt.promoted_manifest.v1.json",
+    "fl3/kt.promoted_index.v1.json",
 ]
 
 
@@ -627,3 +640,221 @@ def test_fl3_schema_validates_examples() -> None:
     }
     fit["fitness_id"] = _sha_id(fit, {"created_at", "fitness_id"})
     validate_object_with_binding(fit)
+
+    # policy_bundle (AdapterType.A)
+    bundle = {
+        "schema_id": "kt.policy_bundle.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.policy_bundle.v1.json"),
+        "bundle_id": "",
+        "adapter_type": "A",
+        "genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "steps_tagged",
+            "uncertainty_policy": "explicit_calibration",
+            "guardrail_strength": "strict",
+            "scoring_bias": "precision",
+        },
+        "parent_hash": "a" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    bundle["bundle_id"] = _sha_id(bundle, {"created_at", "bundle_id"})
+    validate_object_with_binding(bundle)
+
+    # hash_manifest
+    hman = {
+        "schema_id": "kt.hash_manifest.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.hash_manifest.v1.json"),
+        "manifest_id": "",
+        "entries": [
+            {"path": "a.json", "sha256": "b" * 64},
+            {"path": "b.json", "sha256": "c" * 64},
+        ],
+        "root_hash": "d" * 64,
+        "parent_hash": "e" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    hman["manifest_id"] = _sha_id(hman, {"created_at", "manifest_id"})
+    validate_object_with_binding(hman)
+
+    # job_dir_manifest
+    jdm = {
+        "schema_id": "kt.factory.job_dir_manifest.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.factory.job_dir_manifest.v1.json"),
+        "job_dir_manifest_id": "",
+        "job_id": jobspec["job_id"],
+        "files": [
+            {"path": "dataset.json", "required": True, "sha256": "a" * 64},
+            {"path": "job.json", "required": True, "sha256": "b" * 64},
+        ],
+        "hash_manifest_root_hash": "c" * 64,
+        "parent_hash": "d" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    jdm["job_dir_manifest_id"] = _sha_id(jdm, {"created_at", "job_dir_manifest_id"})
+    validate_object_with_binding(jdm)
+
+    # phase_trace
+    pht = {
+        "schema_id": "kt.factory.phase_trace.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.factory.phase_trace.v1.json"),
+        "phase_trace_id": "",
+        "job_id": jobspec["job_id"],
+        "phases": [
+            {"phase": "HARVEST", "module_path": "KT_PROD_CLEANROOM/tools/training/fl3_factory/harvest.py", "status": "OK"},
+        ],
+        "no_stub_executed": True,
+        "parent_hash": "a" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    pht["phase_trace_id"] = _sha_id(pht, {"created_at", "phase_trace_id"})
+    validate_object_with_binding(pht)
+
+    # scoring_spec
+    spec = {
+        "schema_id": "kt.scoring_spec.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.scoring_spec.v1.json"),
+        "spec_id": "",
+        "metrics": [{"metric_id": "utility_floor_score"}],
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    spec["spec_id"] = _sha_id(spec, {"created_at", "spec_id"})
+    validate_object_with_binding(spec)
+
+    # utility_pack_manifest
+    up = {
+        "schema_id": "kt.utility_pack_manifest.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.utility_pack_manifest.v1.json"),
+        "manifest_id": "",
+        "utility_pack_id": "utility_pack_v1",
+        "files": [
+            {"path": "bench_prompts.jsonl", "sha256": "a" * 64},
+            {"path": "scoring_spec.json", "sha256": "b" * 64},
+            {"path": "thresholds.json", "sha256": "c" * 64},
+        ],
+        "utility_pack_hash": "d" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    up["manifest_id"] = _sha_id(up, {"created_at", "manifest_id"})
+    validate_object_with_binding(up)
+
+    # supported_platforms
+    sp = {
+        "schema_id": "kt.supported_platforms.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.supported_platforms.v1.json"),
+        "supported_platforms_id": "",
+        "seal_claim_scope": "Determinism is claimed only within this matrix.",
+        "os": "linux_x86_64",
+        "python": ">=3.10,<3.12",
+        "hashing": {"sha": "sha256"},
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    sp["supported_platforms_id"] = _sha_id(sp, {"created_at", "supported_platforms_id"})
+    validate_object_with_binding(sp)
+
+    # determinism_contract
+    dc = {
+        "schema_id": "kt.determinism_contract.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.determinism_contract.v1.json"),
+        "determinism_contract_id": "",
+        "banned_entropy_sources": ["time.time"],
+        "required_seeding": {"python_random": True, "numpy": True, "torch": True},
+        "ordering_rules": {"sort_filesystem_enumerations": True},
+        "determinism_proof": {"rerun_same_job_must_match_hash_manifest_root": True},
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    dc["determinism_contract_id"] = _sha_id(dc, {"created_at", "determinism_contract_id"})
+    validate_object_with_binding(dc)
+
+    # canary_artifact
+    canary = {
+        "schema_id": "kt.canary_artifact.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.canary_artifact.v1.json"),
+        "canary_id": "",
+        "git_sha": "7b5664ecebb61ac7f2753c74ab31be2179c2ebac",
+        "platform_fingerprint": {"os": "linux", "python": "3.10.11", "deps_hash": "a" * 64},
+        "law_bundle_hash": "b" * 64,
+        "determinism_contract_hash": "c" * 64,
+        "supported_platforms_hash": "d" * 64,
+        "utility_pack_hash": "e" * 64,
+        "job_dir_manifest_schema_hash": schema_version_hash("fl3/kt.factory.job_dir_manifest.v1.json"),
+        "hash_manifest_root_hash": "f" * 64,
+        "canary_job_id": jobspec["job_id"],
+        "canary_result": "PASS",
+        "payload_hash": "1" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    canary["canary_id"] = _sha_id(canary, {"created_at", "canary_id"})
+    validate_object_with_binding(canary)
+
+    # eval_report v2
+    ev2 = {
+        "schema_id": "kt.factory.eval_report.v2",
+        "schema_version_hash": schema_version_hash("fl3/kt.factory.eval_report.v2.json"),
+        "eval_id": "",
+        "job_id": jobspec["job_id"],
+        "adapter_id": "lobe.architect.v1",
+        "adapter_version": "1",
+        "battery_id": "kt.eval.battery.fl4.utility_v1",
+        "utility_pack_id": "utility_pack_v1",
+        "utility_pack_hash": "a" * 64,
+        "utility_floor_score": 1.0,
+        "utility_floor_pass": True,
+        "metric_bindings": [
+            {
+                "metric_id": "utility_floor_score",
+                "metric_version_hash": "b" * 64,
+                "metric_schema_hash": schema_version_hash("fl3/kt.scoring_spec.v1.json"),
+                "metric_impl_hash": "c" * 64,
+            }
+        ],
+        "metric_probes": [
+            {
+                "metric_id": "utility_floor_score_probe",
+                "metric_impl_hash": "d" * 64,
+                "delta": 0.0,
+                "agreement": True,
+            }
+        ],
+        "probe_policy": {"tolerance": 1e-9, "fail_on_disagreement": True},
+        "results": {"trace_required": True, "trace_present": True, "trace_coverage": 1.0, "trace_id": "a" * 64, "trace_hash": "a" * 64},
+        "final_verdict": "PASS",
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    ev2["eval_id"] = _sha_id(ev2, {"created_at", "eval_id"})
+    validate_object_with_binding(ev2)
+
+    # promoted_manifest
+    pm = {
+        "schema_id": "kt.promoted_manifest.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.promoted_manifest.v1.json"),
+        "promoted_manifest_id": "",
+        "adapter_id": "lobe.architect.v1",
+        "adapter_version": "1",
+        "content_hash": "a" * 64,
+        "job_id": jobspec["job_id"],
+        "canary_hash_manifest_root_hash": "b" * 64,
+        "canary_artifact_hash": "c" * 64,
+        "hash_manifest_root_hash": "d" * 64,
+        "parent_hash": "e" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    pm["promoted_manifest_id"] = _sha_id(pm, {"created_at", "promoted_manifest_id"})
+    validate_object_with_binding(pm)
+
+    # promoted_index
+    pi = {
+        "schema_id": "kt.promoted_index.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.promoted_index.v1.json"),
+        "index_id": "",
+        "entries": [
+            {
+                "adapter_id": "lobe.architect.v1",
+                "adapter_version": "1",
+                "content_hash": "a" * 64,
+                "promoted_manifest_ref": "KT_PROD_CLEANROOM/exports/adapters/lobe.architect.v1/1/a/promoted_manifest.json",
+            }
+        ],
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    pi["index_id"] = _sha_id(pi, {"created_at", "index_id"})
+    validate_object_with_binding(pi)

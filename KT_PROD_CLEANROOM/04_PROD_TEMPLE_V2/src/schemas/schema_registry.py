@@ -64,6 +64,11 @@ from schemas.fl3_factory_eval_report_schema import (
     FL3_FACTORY_EVAL_REPORT_SCHEMA_VERSION_HASH,
     validate_fl3_factory_eval_report,
 )
+from schemas.fl3_factory_eval_report_v2_schema import (
+    FL3_FACTORY_EVAL_REPORT_V2_SCHEMA_ID,
+    FL3_FACTORY_EVAL_REPORT_V2_SCHEMA_VERSION_HASH,
+    validate_fl3_factory_eval_report_v2,
+)
 from schemas.fl3_factory_freeze_receipt_schema import (
     FL3_FACTORY_FREEZE_RECEIPT_SCHEMA_ID,
     FL3_FACTORY_FREEZE_RECEIPT_SCHEMA_VERSION_HASH,
@@ -83,6 +88,16 @@ from schemas.fl3_factory_train_manifest_schema import (
     FL3_FACTORY_TRAIN_MANIFEST_SCHEMA_ID,
     FL3_FACTORY_TRAIN_MANIFEST_SCHEMA_VERSION_HASH,
     validate_fl3_factory_train_manifest,
+)
+from schemas.fl3_factory_job_dir_manifest_schema import (
+    FL3_FACTORY_JOB_DIR_MANIFEST_SCHEMA_ID,
+    FL3_FACTORY_JOB_DIR_MANIFEST_SCHEMA_VERSION_HASH,
+    validate_fl3_factory_job_dir_manifest,
+)
+from schemas.fl3_factory_phase_trace_schema import (
+    FL3_FACTORY_PHASE_TRACE_SCHEMA_ID,
+    FL3_FACTORY_PHASE_TRACE_SCHEMA_VERSION_HASH,
+    validate_fl3_factory_phase_trace,
 )
 from schemas.fl3_factory_organ_contract_schema import (
     FL3_FACTORY_ORGAN_CONTRACT_SCHEMA_ID,
@@ -173,6 +188,51 @@ from schemas.fl3_adapter_role_spec_v2_schema import (
     FL3_ADAPTER_ROLE_SPEC_V2_SCHEMA_ID,
     FL3_ADAPTER_ROLE_SPEC_V2_SCHEMA_VERSION_HASH,
     validate_fl3_adapter_role_spec_v2,
+)
+from schemas.fl3_policy_bundle_schema import (
+    FL3_POLICY_BUNDLE_SCHEMA_ID,
+    FL3_POLICY_BUNDLE_SCHEMA_VERSION_HASH,
+    validate_fl3_policy_bundle,
+)
+from schemas.fl3_hash_manifest_schema import (
+    FL3_HASH_MANIFEST_SCHEMA_ID,
+    FL3_HASH_MANIFEST_SCHEMA_VERSION_HASH,
+    validate_fl3_hash_manifest,
+)
+from schemas.fl3_supported_platforms_schema import (
+    FL3_SUPPORTED_PLATFORMS_SCHEMA_ID,
+    FL3_SUPPORTED_PLATFORMS_SCHEMA_VERSION_HASH,
+    validate_fl3_supported_platforms,
+)
+from schemas.fl3_determinism_contract_schema import (
+    FL3_DETERMINISM_CONTRACT_SCHEMA_ID,
+    FL3_DETERMINISM_CONTRACT_SCHEMA_VERSION_HASH,
+    validate_fl3_determinism_contract,
+)
+from schemas.fl3_canary_artifact_schema import (
+    FL3_CANARY_ARTIFACT_SCHEMA_ID,
+    FL3_CANARY_ARTIFACT_SCHEMA_VERSION_HASH,
+    validate_fl3_canary_artifact,
+)
+from schemas.fl3_utility_pack_manifest_schema import (
+    FL3_UTILITY_PACK_MANIFEST_SCHEMA_ID,
+    FL3_UTILITY_PACK_MANIFEST_SCHEMA_VERSION_HASH,
+    validate_fl3_utility_pack_manifest,
+)
+from schemas.fl3_scoring_spec_schema import (
+    FL3_SCORING_SPEC_SCHEMA_ID,
+    FL3_SCORING_SPEC_SCHEMA_VERSION_HASH,
+    validate_fl3_scoring_spec,
+)
+from schemas.fl3_promoted_manifest_schema import (
+    FL3_PROMOTED_MANIFEST_SCHEMA_ID,
+    FL3_PROMOTED_MANIFEST_SCHEMA_VERSION_HASH,
+    validate_fl3_promoted_manifest,
+)
+from schemas.fl3_promoted_index_schema import (
+    FL3_PROMOTED_INDEX_SCHEMA_ID,
+    FL3_PROMOTED_INDEX_SCHEMA_VERSION_HASH,
+    validate_fl3_promoted_index,
 )
 from schemas.fl3_discovery_battery_schema import (
     FL3_DISCOVERY_BATTERY_SCHEMA_ID,
@@ -275,6 +335,18 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
         validate_fl3_factory_train_manifest,
     ),
     FL3_FACTORY_EVAL_REPORT_SCHEMA_ID: (FL3_FACTORY_EVAL_REPORT_SCHEMA_VERSION_HASH, validate_fl3_factory_eval_report),
+    FL3_FACTORY_EVAL_REPORT_V2_SCHEMA_ID: (
+        FL3_FACTORY_EVAL_REPORT_V2_SCHEMA_VERSION_HASH,
+        validate_fl3_factory_eval_report_v2,
+    ),
+    FL3_FACTORY_JOB_DIR_MANIFEST_SCHEMA_ID: (
+        FL3_FACTORY_JOB_DIR_MANIFEST_SCHEMA_VERSION_HASH,
+        validate_fl3_factory_job_dir_manifest,
+    ),
+    FL3_FACTORY_PHASE_TRACE_SCHEMA_ID: (
+        FL3_FACTORY_PHASE_TRACE_SCHEMA_VERSION_HASH,
+        validate_fl3_factory_phase_trace,
+    ),
     FL3_FACTORY_PROMOTION_SCHEMA_ID: (FL3_FACTORY_PROMOTION_SCHEMA_VERSION_HASH, validate_fl3_factory_promotion),
     FL3_FACTORY_FREEZE_RECEIPT_SCHEMA_ID: (
         FL3_FACTORY_FREEZE_RECEIPT_SCHEMA_VERSION_HASH,
@@ -311,6 +383,22 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
         FL3_META_EVALUATOR_RECEIPT_SCHEMA_VERSION_HASH,
         validate_fl3_meta_evaluator_receipt,
     ),
+    # FL4: meaning governance kernel (append-only).
+    FL3_POLICY_BUNDLE_SCHEMA_ID: (FL3_POLICY_BUNDLE_SCHEMA_VERSION_HASH, validate_fl3_policy_bundle),
+    FL3_HASH_MANIFEST_SCHEMA_ID: (FL3_HASH_MANIFEST_SCHEMA_VERSION_HASH, validate_fl3_hash_manifest),
+    FL3_SUPPORTED_PLATFORMS_SCHEMA_ID: (FL3_SUPPORTED_PLATFORMS_SCHEMA_VERSION_HASH, validate_fl3_supported_platforms),
+    FL3_DETERMINISM_CONTRACT_SCHEMA_ID: (
+        FL3_DETERMINISM_CONTRACT_SCHEMA_VERSION_HASH,
+        validate_fl3_determinism_contract,
+    ),
+    FL3_CANARY_ARTIFACT_SCHEMA_ID: (FL3_CANARY_ARTIFACT_SCHEMA_VERSION_HASH, validate_fl3_canary_artifact),
+    FL3_UTILITY_PACK_MANIFEST_SCHEMA_ID: (
+        FL3_UTILITY_PACK_MANIFEST_SCHEMA_VERSION_HASH,
+        validate_fl3_utility_pack_manifest,
+    ),
+    FL3_SCORING_SPEC_SCHEMA_ID: (FL3_SCORING_SPEC_SCHEMA_VERSION_HASH, validate_fl3_scoring_spec),
+    FL3_PROMOTED_MANIFEST_SCHEMA_ID: (FL3_PROMOTED_MANIFEST_SCHEMA_VERSION_HASH, validate_fl3_promoted_manifest),
+    FL3_PROMOTED_INDEX_SCHEMA_ID: (FL3_PROMOTED_INDEX_SCHEMA_VERSION_HASH, validate_fl3_promoted_index),
     # FL3.2: cognitive fitness + discovery battery (append-only).
     FL3_ANCHOR_REFERENCE_SET_SCHEMA_ID: (
         FL3_ANCHOR_REFERENCE_SET_SCHEMA_VERSION_HASH,

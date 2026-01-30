@@ -52,16 +52,22 @@ def _mk_contract(*, repo_root: Path) -> dict:
             [
                 "kt.factory.dataset.v1",
                 "kt.factory.eval_report.v1",
+                "kt.factory.eval_report.v2",
                 "kt.factory.judgement.v1",
                 "kt.factory.jobspec.v1",
                 "kt.factory.train_manifest.v1",
+                "kt.policy_bundle.v1",
                 "kt.reasoning_trace.v1",
                 "kt.signal_quality.v1",
+                "kt.factory.phase_trace.v1",
+                "kt.hash_manifest.v1",
+                "kt.factory.job_dir_manifest.v1",
                 "kt.immune_snapshot.v1",
                 "kt.epigenetic_summary.v1",
                 "kt.fitness_region.v1",
                 # Promotion is allowlisted in general, but VRR lane must not emit it.
                 "kt.factory.promotion.v1",
+                "kt.shadow_adapter_manifest.v1",
             ]
         ),
         "allowed_export_roots": [
@@ -116,9 +122,13 @@ def test_fl3_vrr_lane_emits_no_promotion_artifacts(tmp_path: Path) -> None:
         assert (out_dir / "reasoning_trace.json").exists()
         assert (out_dir / "judgement.json").exists()
         assert (out_dir / "train_manifest.json").exists()
+        assert (out_dir / "hypotheses" / "policy_bundles.jsonl").exists()
         assert (out_dir / "eval_report.json").exists()
         assert (out_dir / "signal_quality.json").exists()
         assert not (out_dir / "promotion.json").exists()
+        assert (out_dir / "phase_trace.json").exists()
+        assert (out_dir / "hash_manifest.json").exists()
+        assert (out_dir / "job_dir_manifest.json").exists()
         assert not promoted_dir.exists()
     finally:
         if out_dir.exists():

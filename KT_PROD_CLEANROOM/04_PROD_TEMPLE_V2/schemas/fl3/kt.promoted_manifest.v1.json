@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL4 Promoted Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "promoted_manifest_id",
+    "adapter_id",
+    "adapter_version",
+    "content_hash",
+    "job_id",
+    "canary_hash_manifest_root_hash",
+    "canary_artifact_hash",
+    "hash_manifest_root_hash",
+    "parent_hash",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.promoted_manifest.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "promoted_manifest_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "adapter_id": { "type": "string" },
+    "adapter_version": { "type": "string" },
+    "content_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "job_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "canary_hash_manifest_root_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "canary_artifact_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "hash_manifest_root_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "parent_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" }
+  }
+}
+

@@ -63,12 +63,21 @@ def _mk_min_contract(repo_root: Path) -> Dict[str, Any]:
                 "kt.reasoning_trace.v1",
                 "kt.factory.judgement.v1",
                 "kt.factory.train_manifest.v1",
-                "kt.factory.eval_report.v1",
+                # FL4 canonical lane emits eval_report.v2 (metric bindings + probes).
+                "kt.policy_bundle.v1",
+                "kt.factory.eval_report.v2",
                 "kt.signal_quality.v1",
                 "kt.immune_snapshot.v1",
                 "kt.epigenetic_summary.v1",
                 "kt.fitness_region.v1",
                 "kt.factory.promotion.v1",
+                # FL4/MGK v2: job_dir contract artifacts.
+                "kt.factory.phase_trace.v1",
+                "kt.hash_manifest.v1",
+                "kt.factory.job_dir_manifest.v1",
+                # Optional (mode-dependent) artifacts.
+                "kt.shadow_adapter_manifest.v1",
+                "kt.breeding_manifest.v1",
             ]
         ),
         "allowed_export_roots": [

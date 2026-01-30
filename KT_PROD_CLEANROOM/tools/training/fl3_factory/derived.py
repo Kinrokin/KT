@@ -120,15 +120,17 @@ def build_shadow_adapter_manifest(
     weights_path: Path,
     parent_hash: str,
 ) -> Dict[str, Any]:
-    if weights_path.suffix.lower() != ".safetensors":
-        raise FL3ValidationError("Shadow weights must be stored as .safetensors (fail-closed)")
+    ext = weights_path.suffix.lower()
+    if ext not in {".safetensors", ".jsonl", ".npz"}:
+        raise FL3ValidationError("Shadow artifacts must be stored as .safetensors/.jsonl/.npz (fail-closed)")
     checksum = sha256_bytes(weights_path.read_bytes())
+    storage_format = "safetensors" if ext == ".safetensors" else ("jsonl" if ext == ".jsonl" else "npz")
     record = {
         "schema_id": "kt.shadow_adapter_manifest.v1",
         "schema_version_hash": _schema_hash("fl3/kt.shadow_adapter_manifest.v1.json"),
         "shadow_id": "",
         "adapter_version": adapter_version,
-        "storage_format": "safetensors",
+        "storage_format": storage_format,
         "checksum": checksum,
         "fitness_region": "B",
         "signed_by": "meta_evaluator_key",

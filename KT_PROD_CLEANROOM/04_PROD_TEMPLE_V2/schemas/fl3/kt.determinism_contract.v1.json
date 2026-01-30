@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Determinism Contract v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "determinism_contract_id",
+    "banned_entropy_sources",
+    "required_seeding",
+    "ordering_rules",
+    "determinism_proof",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.determinism_contract.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "determinism_contract_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "banned_entropy_sources": { "type": "array", "items": { "type": "string" } },
+    "required_seeding": { "type": "object" },
+    "serialization": { "type": "object" },
+    "ordering_rules": { "type": "object" },
+    "platform_enforcement": { "type": "object" },
+    "determinism_proof": { "type": "object" },
+    "canary_expected_hash_manifest_root_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "banned_entropy_sources": [
+    "time.time",
+    "datetime.now",
+    "uuid.uuid4",
+    "os.urandom",
+    "random.seed(None)"
+  ],
+  "canary_expected_hash_manifest_root_hash": "224332ed64c8a5f17c5642329a7063aa5703e64c6871bf1fb6fd7618223d7cc8",
+  "created_at": "1970-01-01T00:00:00Z",
+  "determinism_contract_id": "cc33606cbebfb019b2a76006e1684dc8f270a24b246910a78f797cbc7e5f4803",
+  "determinism_proof": {
+    "rerun_same_job_must_match_hash_manifest_root": true
+  },
+  "ordering_rules": {
+    "sort_dict_keys_before_serialization": true,
+    "sort_filesystem_enumerations": true,
+    "stable_list_ordering_required_for": [
+      "job_dir_manifest.files",
+      "hash_manifest.entries"
+    ]
+  },
+  "platform_enforcement": {
+    "must_match_supported_platforms_yaml": true
+  },
+  "required_seeding": {
+    "numpy": true,
+    "python_random": true,
+    "torch": true
+  },
+  "schema_id": "kt.determinism_contract.v1",
+  "schema_version_hash": "a6ea57d955ddb33deca2125633c6d8ee373eba9170afcddedad09016ede536ee",
+  "serialization": {
+    "json_canonical": {
+      "float_format": "%.6f",
+      "forbid_nan": true,
+      "newline": "LF",
+      "sort_keys": true
+    }
+  }
+}

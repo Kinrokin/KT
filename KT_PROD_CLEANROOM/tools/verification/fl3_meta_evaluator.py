@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
+from schemas.schema_files import schema_version_hash
 from tools.verification.fl3_canonical import read_json, repo_root_from, sha256_json, sha256_text
 from tools.verification.fl3_validators import FL3ValidationError, validate_schema_bound_object
 
@@ -125,6 +126,30 @@ def assert_anti_drift_primitives_present(*, repo_root: Path) -> None:
         raise FL3ValidationError("DISCOVERY_BATTERY canary prompt mismatch (fail-closed)")
 
 
+def assert_fl4_mgk_v2_contracts_present(*, repo_root: Path) -> None:
+    """
+    FL4/MGK v2 adds determinism truthfulness and platform-scope contracts.
+
+    These are global (AUDITS/*) artifacts that must be present and schema-valid for any
+    canonical factory lane verification, even though platform enforcement itself is handled
+    by preflight (supported platforms matrix).
+    """
+    audits = repo_root / "KT_PROD_CLEANROOM" / "AUDITS"
+    supported = read_json(audits / "FL4_SUPPORTED_PLATFORMS.json")
+    det = read_json(audits / "FL4_DETERMINISM_CONTRACT.json")
+    for obj in (supported, det):
+        validate_schema_bound_object(obj)
+
+    if supported.get("schema_id") != "kt.supported_platforms.v1":
+        raise FL3ValidationError("FL4_SUPPORTED_PLATFORMS schema_id mismatch (fail-closed)")
+    if det.get("schema_id") != "kt.determinism_contract.v1":
+        raise FL3ValidationError("FL4_DETERMINISM_CONTRACT schema_id mismatch (fail-closed)")
+
+    expected_root = str(det.get("canary_expected_hash_manifest_root_hash") or "")
+    if not expected_root or len(expected_root) != 64:
+        raise FL3ValidationError("determinism contract missing canary_expected_hash_manifest_root_hash (fail-closed)")
+
+
 def _load_fitness_policy(*, repo_root: Path) -> Dict[str, Any]:
     p = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL3_FITNESS_POLICY.json"
     policy = read_json(p)
@@ -160,6 +185,276 @@ def verify_job_dir(*, repo_root: Path, job_dir: Path) -> None:
         if (job_dir / forbidden_dir).exists():
             raise FL3ValidationError(f"job_dir contains forbidden runtime receipts directory: {forbidden_dir} (fail-closed)")
 
+    # Global FL4 contracts must be present and schema-valid.
+    assert_fl4_mgk_v2_contracts_present(repo_root=repo_root)
+
+    # FL4/MGK v2: canonical factory lane is MRT-0 AdapterType.A-only (no weight artifacts).
+    job = read_json(job_dir / "job.json")
+    validate_schema_bound_object(job)
+    if job.get("training_mode") != "head_only":
+        raise FL3ValidationError("Canonical factory lane requires training_mode=head_only (MRT-0, fail-closed)")
+    for p in job_dir.rglob("*"):
+        if not p.is_file():
+            continue
+        suf = p.suffix.lower()
+        if suf in {".safetensors", ".pt", ".pth", ".bin"}:
+            raise FL3ValidationError(f"Weight artifact found in canonical job_dir (fail-closed): {p.name}")
+
+    # FL4/MGK v2: phase trace is required and must prove no stub execution.
+    phase_trace = read_json(job_dir / "phase_trace.json")
+    validate_schema_bound_object(phase_trace)
+    if phase_trace.get("schema_id") != "kt.factory.phase_trace.v1":
+        raise FL3ValidationError("phase_trace schema_id mismatch (fail-closed)")
+    if phase_trace.get("no_stub_executed") is not True:
+        raise FL3ValidationError("phase_trace.no_stub_executed must be true (fail-closed)")
+    phases = phase_trace.get("phases")
+    if not isinstance(phases, list) or len(phases) < 1:
+        raise FL3ValidationError("phase_trace.phases missing (fail-closed)")
+    for ph in phases:
+        if not isinstance(ph, dict):
+            raise FL3ValidationError("phase_trace entry must be object (fail-closed)")
+        mp = str(ph.get("module_path", ""))
+        if "_stub" in mp:
+            raise FL3ValidationError("phase_trace indicates stub module execution (fail-closed)")
+        if ph.get("status") != "OK":
+            raise FL3ValidationError("phase_trace indicates non-OK status (fail-closed)")
+
+    # Policy bundles are required and must be schema-bound (AdapterType.A-only).
+    bundles_path = job_dir / "hypotheses" / "policy_bundles.jsonl"
+    if not bundles_path.exists():
+        raise FL3ValidationError("Missing policy_bundles.jsonl (fail-closed)")
+    bundles_by_id: Dict[str, Dict[str, Any]] = {}
+    for line in bundles_path.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        try:
+            obj = json.loads(line)
+        except Exception as exc:
+            raise FL3ValidationError("policy_bundles.jsonl contains invalid JSON (fail-closed)") from exc
+        validate_schema_bound_object(obj)
+        if obj.get("schema_id") != "kt.policy_bundle.v1":
+            raise FL3ValidationError("policy bundle schema_id mismatch (fail-closed)")
+        if obj.get("adapter_type") != "A":
+            raise FL3ValidationError("policy bundle adapter_type must be A (fail-closed)")
+        bid = str(obj.get("bundle_id", ""))
+        if not bid:
+            raise FL3ValidationError("policy bundle missing bundle_id (fail-closed)")
+        if bid in bundles_by_id:
+            raise FL3ValidationError("duplicate policy bundle_id (fail-closed)")
+        bundles_by_id[bid] = obj
+    if not bundles_by_id:
+        raise FL3ValidationError("no policy bundles present (fail-closed)")
+
+    # Eval report must be v2 (metric ontology binding + probes + utility floor).
+    eval_report = read_json(job_dir / "eval_report.json")
+    validate_schema_bound_object(eval_report)
+    if eval_report.get("schema_id") != "kt.factory.eval_report.v2":
+        raise FL3ValidationError("eval_report schema_id mismatch (fail-closed)")
+    probes = eval_report.get("metric_probes")
+    if not isinstance(probes, list) or len(probes) < 1:
+        raise FL3ValidationError("eval_report.metric_probes missing (fail-closed)")
+    probe_policy = eval_report.get("probe_policy")
+    if not isinstance(probe_policy, dict):
+        raise FL3ValidationError("eval_report.probe_policy missing (fail-closed)")
+    if probe_policy.get("fail_on_disagreement") is True:
+        for pr in probes:
+            if isinstance(pr, dict) and pr.get("agreement") is not True:
+                raise FL3ValidationError("metric probe disagreement (fail-closed)")
+
+    # Utility pack must be pinned and consistent with the pack manifest and eval_report binding.
+    up_dir = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "UTILITY_PACK_V1"
+    up_manifest = read_json(up_dir / "UTILITY_PACK_MANIFEST.json")
+    validate_schema_bound_object(up_manifest)
+    if up_manifest.get("schema_id") != "kt.utility_pack_manifest.v1":
+        raise FL3ValidationError("UTILITY_PACK_MANIFEST schema mismatch (fail-closed)")
+    if eval_report.get("utility_pack_id") != up_manifest.get("utility_pack_id"):
+        raise FL3ValidationError("eval_report.utility_pack_id mismatch (fail-closed)")
+    if eval_report.get("utility_pack_hash") != up_manifest.get("utility_pack_hash"):
+        raise FL3ValidationError("eval_report.utility_pack_hash mismatch (fail-closed)")
+    # Verify utility pack file hashes.
+    files = up_manifest.get("files")
+    if not isinstance(files, list) or len(files) < 1:
+        raise FL3ValidationError("UTILITY_PACK_MANIFEST.files invalid (fail-closed)")
+    pack_files = []
+    for item in files:
+        if not isinstance(item, dict):
+            raise FL3ValidationError("UTILITY_PACK_MANIFEST file entry invalid (fail-closed)")
+        rel = str(item.get("path", ""))
+        expected = str(item.get("sha256", ""))
+        actual = _sha256_bytes((up_dir / rel).read_bytes())
+        if actual != expected:
+            raise FL3ValidationError("UTILITY_PACK file hash mismatch (fail-closed)")
+        pack_files.append({"path": rel, "sha256": actual})
+    pack_files = sorted(pack_files, key=lambda x: x["path"])
+    expected_pack_hash = sha256_json({"files": pack_files})
+    if up_manifest.get("utility_pack_hash") != expected_pack_hash:
+        raise FL3ValidationError("UTILITY_PACK_MANIFEST.utility_pack_hash mismatch (fail-closed)")
+
+    # Metric ontology binding + independent probe verification (anti-theater).
+    def _sha256_file_normalized(path: Path) -> str:
+        data = path.read_text(encoding="utf-8").replace("\r\n", "\n").encode("utf-8")
+        return _sha256_bytes(data)
+
+    def _apply_policy_bundle(*, prompt: str, bundle: Dict[str, Any]) -> str:
+        geno = bundle.get("genotype") if isinstance(bundle.get("genotype"), dict) else {}
+        style = str(geno.get("prompt_transform_style", "clarify_first"))
+        directive = str(geno.get("reasoning_directive", "steps_tagged"))
+        upol = str(geno.get("uncertainty_policy", "neutral"))
+        guard = str(geno.get("guardrail_strength", "balanced"))
+        bias = str(geno.get("scoring_bias", "precision"))
+
+        if guard == "strict":
+            return f"REFUSE|DIR:{directive}|UNC:{upol}|GUARD:{guard}|BIAS:{bias}"
+
+        if style == "clarify_first":
+            base = f"CLARIFY:{prompt}"
+        elif style == "expand_context":
+            base = f"{prompt}|CONTEXT"
+        elif style == "compress":
+            base = prompt[: max(1, len(prompt) // 2)]
+        elif style == "reframe":
+            base = f"REFRAME:{prompt}"
+        else:
+            chars = "".join(sorted(set(prompt)))
+            base = f"OUTLINE:{chars}"
+
+        return f"OUT:{base}|DIR:{directive}|UNC:{upol}|GUARD:{guard}|BIAS:{bias}"
+
+    def _utility_floor_score_main(*, prompts: List[str], bundle: Dict[str, Any]) -> float:
+        ok = 0
+        for p in prompts:
+            out = _apply_policy_bundle(prompt=p, bundle=bundle)
+            if p and any(ch in out for ch in p[: min(8, len(p))]):
+                ok += 1
+        return ok / max(1, len(prompts))
+
+    def _utility_floor_score_probe(*, prompts: List[str], bundle: Dict[str, Any]) -> float:
+        ok = 0
+        for p in prompts:
+            out = _apply_policy_bundle(prompt=p, bundle=bundle)
+            snippet = p[: min(8, len(p))]
+            if snippet and snippet in out:
+                ok += 1
+        return ok / max(1, len(prompts))
+
+    prompts_path = up_dir / "bench_prompts.jsonl"
+    prompts = [ln for ln in prompts_path.read_text(encoding="utf-8").splitlines() if ln.strip()]
+    thresholds = json.loads((up_dir / "thresholds.json").read_text(encoding="utf-8"))
+    if not isinstance(thresholds, dict):
+        raise FL3ValidationError("UTILITY_PACK thresholds.json invalid (fail-closed)")
+    floor_min = float(thresholds.get("utility_floor_min", 1.0))
+
+    results = eval_report.get("results")
+    if not isinstance(results, dict):
+        raise FL3ValidationError("eval_report.results missing (fail-closed)")
+    best_bundle_id = str(results.get("best_bundle_id", ""))
+    if not best_bundle_id:
+        raise FL3ValidationError("eval_report.results.best_bundle_id missing (fail-closed)")
+    if best_bundle_id not in bundles_by_id:
+        raise FL3ValidationError("eval_report.best_bundle_id not present in policy bundles (fail-closed)")
+    best_bundle = bundles_by_id[best_bundle_id]
+
+    expected_main = _utility_floor_score_main(prompts=prompts, bundle=best_bundle)
+    expected_probe = _utility_floor_score_probe(prompts=prompts, bundle=best_bundle)
+    tol = float((eval_report.get("probe_policy") or {}).get("tolerance", 0.0))
+    expected_delta = abs(expected_main - expected_probe)
+    expected_agreement = expected_delta <= tol
+    expected_pass = expected_main >= floor_min
+    expected_final = "PASS" if (expected_pass and expected_agreement) else "FAIL"
+
+    if abs(float(eval_report.get("utility_floor_score", -1.0)) - float(expected_main)) > 1e-12:
+        raise FL3ValidationError("eval_report.utility_floor_score does not match recomputed value (fail-closed)")
+    if bool(eval_report.get("utility_floor_pass")) is not bool(expected_pass):
+        raise FL3ValidationError("eval_report.utility_floor_pass mismatch (fail-closed)")
+    if eval_report.get("final_verdict") != expected_final:
+        raise FL3ValidationError("eval_report.final_verdict mismatch (fail-closed)")
+
+    # Validate metric_bindings against pinned artifacts.
+    bindings = eval_report.get("metric_bindings")
+    if not isinstance(bindings, list) or len(bindings) < 1:
+        raise FL3ValidationError("eval_report.metric_bindings missing (fail-closed)")
+    binding = next((b for b in bindings if isinstance(b, dict) and b.get("metric_id") == "utility_floor_score"), None)
+    if not isinstance(binding, dict):
+        raise FL3ValidationError("metric binding for utility_floor_score missing (fail-closed)")
+
+    # metric_version_hash binds the scoring_spec contents.
+    scoring_spec = json.loads((up_dir / "scoring_spec.json").read_text(encoding="utf-8"))
+    if not isinstance(scoring_spec, dict):
+        raise FL3ValidationError("scoring_spec.json invalid (fail-closed)")
+    expected_metric_version_hash = sha256_json(scoring_spec)
+    if binding.get("metric_version_hash") != expected_metric_version_hash:
+        raise FL3ValidationError("metric_version_hash mismatch (fail-closed)")
+
+    expected_metric_schema_hash = schema_version_hash("fl3/kt.scoring_spec.v1.json")
+    if binding.get("metric_schema_hash") != expected_metric_schema_hash:
+        raise FL3ValidationError("metric_schema_hash mismatch (fail-closed)")
+
+    expected_metric_impl_hash = _sha256_file_normalized(
+        repo_root / "KT_PROD_CLEANROOM" / "tools" / "training" / "fl3_factory" / "eval.py"
+    )
+    if binding.get("metric_impl_hash") != expected_metric_impl_hash:
+        raise FL3ValidationError("metric_impl_hash mismatch (fail-closed)")
+
+    # Validate probe delta and agreement.
+    probe = next((p for p in probes if isinstance(p, dict) and p.get("metric_id") == "utility_floor_score_probe"), None)
+    if not isinstance(probe, dict):
+        raise FL3ValidationError("metric probe for utility_floor_score_probe missing (fail-closed)")
+    if abs(float(probe.get("delta", -1.0)) - float(expected_delta)) > 1e-12:
+        raise FL3ValidationError("metric probe delta mismatch (fail-closed)")
+    if bool(probe.get("agreement")) is not bool(expected_agreement):
+        raise FL3ValidationError("metric probe agreement mismatch (fail-closed)")
+
+    # FL4/MGK v2: job_dir manifests are required and must be internally consistent.
+    hash_manifest = read_json(job_dir / "hash_manifest.json")
+    validate_schema_bound_object(hash_manifest)
+    if hash_manifest.get("schema_id") != "kt.hash_manifest.v1":
+        raise FL3ValidationError("hash_manifest schema_id mismatch (fail-closed)")
+    entries = hash_manifest.get("entries")
+    if not isinstance(entries, list) or len(entries) < 1:
+        raise FL3ValidationError("hash_manifest.entries missing (fail-closed)")
+    # Recompute file hashes and root hash.
+    recomputed_entries = []
+    for e in entries:
+        if not isinstance(e, dict):
+            raise FL3ValidationError("hash_manifest entry invalid (fail-closed)")
+        rel = str(e.get("path", ""))
+        expected = str(e.get("sha256", ""))
+        p = (job_dir / rel).resolve()
+        if not p.exists():
+            raise FL3ValidationError(f"hash_manifest entry missing on disk (fail-closed): {rel}")
+        actual = _sha256_bytes(p.read_bytes())
+        if actual != expected:
+            raise FL3ValidationError("hash_manifest entry sha mismatch (fail-closed)")
+        recomputed_entries.append({"path": rel, "sha256": actual})
+    recomputed_entries = sorted(recomputed_entries, key=lambda x: x["path"])
+    expected_root = sha256_json({"entries": recomputed_entries})
+    if hash_manifest.get("root_hash") != expected_root:
+        raise FL3ValidationError("hash_manifest.root_hash mismatch (fail-closed)")
+
+    job_dir_manifest = read_json(job_dir / "job_dir_manifest.json")
+    validate_schema_bound_object(job_dir_manifest)
+    if job_dir_manifest.get("schema_id") != "kt.factory.job_dir_manifest.v1":
+        raise FL3ValidationError("job_dir_manifest schema_id mismatch (fail-closed)")
+    if job_dir_manifest.get("hash_manifest_root_hash") != hash_manifest.get("root_hash"):
+        raise FL3ValidationError("job_dir_manifest.hash_manifest_root_hash mismatch (fail-closed)")
+    # Verify each file entry hash.
+    files = job_dir_manifest.get("files")
+    if not isinstance(files, list) or len(files) < 1:
+        raise FL3ValidationError("job_dir_manifest.files missing (fail-closed)")
+    for f in files:
+        if not isinstance(f, dict):
+            raise FL3ValidationError("job_dir_manifest file entry invalid (fail-closed)")
+        rel = str(f.get("path", ""))
+        expected = str(f.get("sha256", ""))
+        p = (job_dir / rel).resolve()
+        if not p.exists():
+            if f.get("required") is True:
+                raise FL3ValidationError(f"Required job_dir file missing (fail-closed): {rel}")
+            continue
+        actual = _sha256_bytes(p.read_bytes())
+        if actual != expected:
+            raise FL3ValidationError("job_dir_manifest file sha mismatch (fail-closed)")
+
     # Verify derived artifacts and fitness region determinism.
     signal = read_json(job_dir / "signal_quality.json")
     immune = read_json(job_dir / "immune_snapshot.json")
@@ -179,7 +474,6 @@ def verify_job_dir(*, repo_root: Path, job_dir: Path) -> None:
         validate_schema_bound_object(sm)
 
     # BREEDING: verify injection fraction from log matches manifest.
-    job = read_json(job_dir / "job.json")
     if job.get("run_kind") == "BREEDING":
         bman = read_json(job_dir / "breeding_manifest.json")
         validate_schema_bound_object(bman)

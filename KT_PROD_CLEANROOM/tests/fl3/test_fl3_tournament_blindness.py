@@ -119,18 +119,24 @@ def _mk_contract(*, repo_root: Path) -> dict:
             [
                 "kt.factory.dataset.v1",
                 "kt.factory.eval_report.v1",
+                "kt.factory.eval_report.v2",
                 "kt.factory.judgement.v1",
                 "kt.factory.jobspec.v1",
                 "kt.factory.promotion.v1",
                 "kt.factory.train_manifest.v1",
+                "kt.policy_bundle.v1",
                 "kt.reasoning_trace.v1",
                 "kt.signal_quality.v1",
+                "kt.factory.phase_trace.v1",
+                "kt.hash_manifest.v1",
+                "kt.factory.job_dir_manifest.v1",
                 "kt.immune_snapshot.v1",
                 "kt.epigenetic_summary.v1",
                 "kt.fitness_region.v1",
                 "kt.blind_judgement_pack.v1",
                 "kt.reveal_mapping.v1",
                 "kt.tournament_manifest.v1",
+                "kt.shadow_adapter_manifest.v1",
             ]
         ),
         "allowed_export_roots": [
@@ -182,6 +188,9 @@ def test_fl3_factory_tournament_emits_blind_pack_and_mapping(tmp_path: Path) -> 
         assert (out_dir / "tournament_manifest.json").exists()
         assert (out_dir / "reasoning_trace.json").exists()
         assert (out_dir / "signal_quality.json").exists()
+        assert (out_dir / "phase_trace.json").exists()
+        assert (out_dir / "hash_manifest.json").exists()
+        assert (out_dir / "job_dir_manifest.json").exists()
 
         blind_pack = json.loads((out_dir / "blind_pack.json").read_text(encoding="utf-8"))
         validate_schema_bound_object(blind_pack)
