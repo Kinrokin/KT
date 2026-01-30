@@ -136,8 +136,12 @@ def _runner_command(
 ) -> Tuple[List[str], Path]:
     repo_root = _repo_root()
     runner = repo_root / "tools" / "growth" / "crucible_runner.py"
+    # IMPORTANT: do not `.resolve()` sys.executable.
+    # In venvs (e.g. Kaggle), the venv python can be a symlink to the system python.
+    # Resolving it would bypass the venv and drop site-packages, causing missing deps
+    # (e.g. psutil) in the crucible subprocess.
     cmd = [
-        str(Path(sys.executable).resolve()),
+        sys.executable,
         str(runner),
         "--crucible",
         str(crucible_path.resolve()),
