@@ -1294,9 +1294,83 @@ def run_epoch(
         run = next((r for r in runs if r.crucible_id == cid and r.run_id), None)
         if run is None or run.run_id is None:
             raise EpochSchemaError(f"Missing run_id for {cid}; cannot aggregate coverage (fail-closed)")
-        cov_path = _growth_artifacts_root() / "c019_runs" / kernel_target / run.run_id / "crucible_coverage.json"
+        run_root = _growth_artifacts_root() / "c019_runs" / kernel_target / run.run_id
+        cov_path = run_root / "crucible_coverage.json"
         if not cov_path.exists():
-            raise EpochSchemaError(f"Missing crucible coverage for {cid} at {cov_path.as_posix()} (fail-closed)")
+            # Fail-closed with maximum local evidence surfaced (epoch-local + per-run if present).
+            run_dir = epoch_root / cid
+            stderr_path = run_dir / "stderr.log"
+            stdout_path = run_dir / "stdout.json"
+            run_record_path = run_dir / "run_record.json"
+
+            def _tail(path: Path, *, max_lines: int) -> str:
+                if not path.exists():
+                    return "<missing>"
+                try:
+                    text = path.read_text(encoding="utf-8", errors="ignore")
+                except Exception as exc:
+                    return f"<unreadable:{exc}>"
+                lines = text.splitlines()
+                if not lines:
+                    return "<empty>"
+                return "\n".join(lines[-max_lines:])
+
+            def _list_top(p: Path) -> str:
+                if not p.exists():
+                    return "<missing>"
+                try:
+                    names = sorted([x.name for x in p.iterdir()])
+                except Exception as exc:
+                    return f"<list_error:{exc}>"
+                if not names:
+                    return "<empty>"
+                return ", ".join(names[:60]) + (" ..." if len(names) > 60 else "")
+
+            run_record_text = "<missing>"
+            if run_record_path.exists():
+                try:
+                    run_record_text = run_record_path.read_text(encoding="utf-8", errors="ignore")
+                except Exception as exc:
+                    run_record_text = f"<unreadable:{exc}>"
+
+            raise EpochSchemaError(
+                "Missing crucible coverage for {cid} at {cov_path} (fail-closed)\n"
+                "---- RUNNER DIAGNOSTICS (epoch-local + per-run) ----\n"
+                "epoch_root: {epoch_root}\n"
+                "epoch_run_dir: {run_dir}\n"
+                "growth_artifacts_root: {gar}\n"
+                "KT_GROWTH_ARTIFACTS_ROOT: {override}\n"
+                "kernel_target: {kernel}\n"
+                "run_id: {run_id}\n"
+                "run_root_exists: {run_root_exists}\n"
+                "run_root_top_files: {run_root_top}\n"
+                "\n"
+                "epoch_run_record.json:\n{run_record}\n"
+                "\n"
+                "epoch stderr.log (tail):\n{stderr_tail}\n"
+                "\n"
+                "epoch stdout.json (tail):\n{stdout_tail}\n"
+                "\n"
+                "run_root stderr.log (tail):\n{run_stderr_tail}\n"
+                "\n"
+                "run_root stdout.json (tail):\n{run_stdout_tail}\n".format(
+                    cid=cid,
+                    cov_path=cov_path.as_posix(),
+                    epoch_root=epoch_root.as_posix(),
+                    run_dir=run_dir.as_posix(),
+                    gar=_growth_artifacts_root().as_posix(),
+                    override=(os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip() or "<unset>",
+                    kernel=kernel_target,
+                    run_id=run.run_id,
+                    run_root_exists=bool(run_root.exists()),
+                    run_root_top=_list_top(run_root),
+                    run_record=run_record_text.strip() or "<empty>",
+                    stderr_tail=_tail(stderr_path, max_lines=80),
+                    stdout_tail=_tail(stdout_path, max_lines=40),
+                    run_stderr_tail=_tail(run_root / "stderr.log", max_lines=80),
+                    run_stdout_tail=_tail(run_root / "stdout.json", max_lines=40),
+                )
+            )
         cov_list.append(json.loads(cov_path.read_text(encoding="utf-8")))
 
     domains, subs, micros, ventures, modes, modalities, tools = set(), set(), set(), set(), set(), set(), set()

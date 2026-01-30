@@ -206,6 +206,23 @@ def _repo_root() -> Path:
     return _REPO_ROOT
 
 
+def _artifacts_dir_for_record(*, run_root: Path, artifacts_dir: Path) -> str:
+    """
+    Return a stable, human-meaningful artifacts directory string for receipts/logging.
+
+    Important: KT seal lane may set KT_GROWTH_ARTIFACTS_ROOT to a location *outside* the repo.
+    In that case, `run_root.relative_to(_repo_root())` is not valid and must not fail-closed.
+    We prefer a path relative to the artifacts root (the parent of `c019_runs/`), and fall back
+    to an absolute posix path if needed.
+    """
+
+    base = artifacts_dir.parent
+    try:
+        return run_root.relative_to(base).as_posix()
+    except Exception:
+        return run_root.resolve().as_posix()
+
+
 def _growth_root() -> Path:
     return _repo_root() / "tools" / "growth"
 
@@ -655,7 +672,7 @@ def run_crucible_once(
             replay_pass=None,
             governance_status="NOT_APPLICABLE",
             governance_pass=None,
-            artifacts_dir=str(run_root.relative_to(_repo_root())),
+            artifacts_dir=_artifacts_dir_for_record(run_root=run_root, artifacts_dir=artifacts_dir),
             notes=f"pre_execution_fail:{error_type}",
         )
 
@@ -1064,7 +1081,7 @@ def run_crucible_once(
         replay_pass=replay_pass,
         governance_status=governance_status,
         governance_pass=governance_pass,
-        artifacts_dir=str(run_root.relative_to(_repo_root())),
+        artifacts_dir=_artifacts_dir_for_record(run_root=run_root, artifacts_dir=artifacts_dir),
         notes=notes,
     )
 
