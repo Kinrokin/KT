@@ -30,4 +30,32 @@ jobs:
         run: |
           set -euo pipefail
           export PYTHONPATH="$PWD/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:$PWD/KT_PROD_CLEANROOM"
-          python -m tools.verification.preflight_fl4 --registry-path KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json
+          OUT_DIR="KT_PROD_CLEANROOM/exports/adapters_shadow/_runs/FL4_SEAL/CI"
+          rm -rf "$OUT_DIR"
+          if ! python -m tools.verification.preflight_fl4 --out-dir "$OUT_DIR" --registry-path KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json; then
+            echo "=== PRE-FLIGHT FAILED: dumping logs (best-effort) ==="
+            if [ -d "$OUT_DIR" ]; then
+              ls -la "$OUT_DIR"
+            else
+              echo "OUT_DIR missing: $OUT_DIR"
+            fi
+            echo "--- pytest_temple.log ---"
+            if [ -f "$OUT_DIR/pytest_temple.log" ]; then
+              sed -n '1,200p' "$OUT_DIR/pytest_temple.log"
+            else
+              echo "missing: $OUT_DIR/pytest_temple.log"
+            fi
+            echo "--- pytest_cleanroom.log ---"
+            if [ -f "$OUT_DIR/pytest_cleanroom.log" ]; then
+              sed -n '1,200p' "$OUT_DIR/pytest_cleanroom.log"
+            else
+              echo "missing: $OUT_DIR/pytest_cleanroom.log"
+            fi
+            echo "--- meta_evaluator.log ---"
+            if [ -f "$OUT_DIR/meta_evaluator.log" ]; then
+              sed -n '1,200p' "$OUT_DIR/meta_evaluator.log"
+            else
+              echo "missing: $OUT_DIR/meta_evaluator.log"
+            fi
+            exit 1
+          fi
