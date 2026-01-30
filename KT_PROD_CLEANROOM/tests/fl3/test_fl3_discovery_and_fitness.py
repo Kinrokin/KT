@@ -68,7 +68,12 @@ def test_discovery_battery_and_fitness_smoke(tmp_path: Path) -> None:
         workers=4,
     )
     validate_schema_bound_object(rec_sharded)
-    assert rec_sharded == rec_serial
+    # created_at is explicitly non-deterministic; compare stable surfaces only.
+    a = dict(rec_serial)
+    b = dict(rec_sharded)
+    a.pop("created_at", None)
+    b.pop("created_at", None)
+    assert a == b
 
     fitness, trace_replay = compute_cognitive_fitness(
         battery_result=rec_serial,

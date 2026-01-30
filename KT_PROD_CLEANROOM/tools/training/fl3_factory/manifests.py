@@ -17,11 +17,20 @@ def _schema_hash(schema_file: str) -> str:
 
 
 def sha256_file(path: Path) -> str:
-    h = hashlib.sha256()
-    with path.open("rb") as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b""):
-            h.update(chunk)
-    return h.hexdigest()
+    """
+    Canonical file hashing for determinism-critical manifests.
+
+    - If the file is UTF-8 decodable, normalize CRLF/CR -> LF before hashing.
+      This prevents platform newline conventions from changing manifest digests.
+    - If the file is not UTF-8 (binary), hash raw bytes.
+    """
+    data = path.read_bytes()
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError:
+        return hashlib.sha256(data).hexdigest()
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 def compute_hash_manifest_root_hash(entries: List[Dict[str, str]]) -> str:

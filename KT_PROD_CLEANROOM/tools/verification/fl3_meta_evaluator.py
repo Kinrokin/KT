@@ -37,6 +37,23 @@ def _hash_file_for_bundle(path: Path) -> str:
     return _sha256_bytes(text.encode("utf-8"))
 
 
+def _sha256_file_for_job_manifests(path: Path) -> str:
+    """
+    Canonical file hashing for determinism-critical job_dir manifests.
+
+    Must match `tools.training.fl3_factory.manifests.sha256_file`:
+    - UTF-8 text: normalize CRLF/CR -> LF before hashing.
+    - Binary: hash raw bytes.
+    """
+    data = path.read_bytes()
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError:
+        return _sha256_bytes(data)
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    return _sha256_bytes(text.encode("utf-8"))
+
+
 def compute_law_bundle_hash(*, repo_root: Path, bundle: Dict[str, Any]) -> str:
     paths = [x["path"] for x in bundle.get("files", [])]
     paths = sorted(paths)
@@ -434,7 +451,7 @@ def verify_job_dir(*, repo_root: Path, job_dir: Path) -> None:
         p = (job_dir / rel).resolve()
         if not p.exists():
             raise FL3ValidationError(f"hash_manifest entry missing on disk (fail-closed): {rel}")
-        actual = _sha256_bytes(p.read_bytes())
+        actual = _sha256_file_for_job_manifests(p)
         if actual != expected:
             raise FL3ValidationError("hash_manifest entry sha mismatch (fail-closed)")
         recomputed_entries.append({"path": rel, "sha256": actual})
@@ -463,7 +480,7 @@ def verify_job_dir(*, repo_root: Path, job_dir: Path) -> None:
             if f.get("required") is True:
                 raise FL3ValidationError(f"Required job_dir file missing (fail-closed): {rel}")
             continue
-        actual = _sha256_bytes(p.read_bytes())
+        actual = _sha256_file_for_job_manifests(p)
         if actual != expected:
             raise FL3ValidationError("job_dir_manifest file sha mismatch (fail-closed)")
 
