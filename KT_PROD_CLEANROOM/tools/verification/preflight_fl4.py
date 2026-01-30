@@ -298,10 +298,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     (out_dir / "law_bundle.json").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "LAW_BUNDLE_FL3.json").read_text(encoding="utf-8"), encoding="utf-8")
 
     # Persist a compact summary for proof packaging.
+    try:
+        out_dir_rel = out_dir.relative_to(repo_root).as_posix()
+    except ValueError:
+        # Seal/evidence output directories are allowed to live outside the repo root (e.g. Kaggle /kaggle/working).
+        # This is an audit packaging detail and must not fail the preflight lane.
+        out_dir_rel = out_dir.as_posix()
     summary = {
         "schema_id": "kt.fl4.preflight_summary.v1",
         "git_sha": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=str(repo_root), text=True).strip(),
-        "out_dir": str(out_dir.relative_to(repo_root).as_posix()),
+        "out_dir": out_dir_rel,
         "registry_path": reg_path,
         "job_id": job["job_id"],
     }
