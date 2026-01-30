@@ -20,7 +20,8 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install --upgrade pip
-          python -m pip install pytest pyyaml
+          # Keep CI lightweight but sufficient for canonical growth gate (crucible runner uses psutil).
+          python -m pip install pytest pyyaml psutil
 
       - name: Run FL4 preflight (canonical, Linux)
         env:
