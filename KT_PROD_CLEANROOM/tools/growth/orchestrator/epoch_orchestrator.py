@@ -26,6 +26,7 @@ from tools.growth.orchestrator.checkpoint_store import (
     CheckpointRecord,
     append_checkpoint,
     completed_crucible_ids,
+    completed_crucible_run_ids,
 )
 from tools.growth.orchestrator.epoch_budget import assert_budget_ok, validate_crucible_budgets
 from tools.growth.orchestrator.epoch_manifest import build_manifest
@@ -772,9 +773,10 @@ def preflight_epoch(
         blocks.append(f"IMMUTABILITY_BLOCK: epoch_id {plan.epoch_id} has prior payload and --no-auto-bump set")
 
     caps = _load_kernel_capabilities()
-    if plan.kernel_identity.kernel_target not in caps:
+    kernel_target = plan.kernel_identity.kernel_target
+    if kernel_target not in caps:
         warns.append(
-            f"KERNEL_CAPABILITY_WARN: kernel_target={plan.kernel_identity.kernel_target} missing from kernel_capabilities.yaml"
+            f"KERNEL_CAPABILITY_WARN: kernel_target={kernel_target} missing from kernel_capabilities.yaml"
         )
 
     for cid, data in crucible_specs.items():
@@ -783,7 +785,7 @@ def preflight_epoch(
         cap_blocks, cap_warns = _preflight_kernel_capability_mismatches(
             crucible_id=cid,
             epoch_profile=plan.epoch_profile,
-            kernel_target=plan.kernel_identity.kernel_target,
+            kernel_target=kernel_target,
             expect=expect,
             caps=caps,
         )
@@ -862,6 +864,9 @@ def run_epoch(
     debug_run_roots: bool = False,
 ) -> Dict[str, object]:
     plan = _load_plan(plan_path)
+    kernel_target = plan.kernel_identity.kernel_target
+    if kernel_target != plan.kernel_identity.kernel_target:
+        raise EpochSchemaError("kernel_target drift (plan identity mismatch; fail-closed)")
     if plan.runner_config.template_id != RUNNER_TEMPLATE_C019:
         raise EpochSchemaError("runner_config.template_id not allowed (fail-closed)")
     if plan.runner_config.args:
@@ -931,6 +936,7 @@ def run_epoch(
 
     checkpoint_path = epoch_root / "checkpoint.json"
     completed = completed_crucible_ids(checkpoint_path) if resume else set()
+    completed_run_ids = completed_crucible_run_ids(checkpoint_path) if resume else {}
 
     start_epoch = time.monotonic()
     failures = 0
@@ -956,7 +962,7 @@ def run_epoch(
                 CrucibleRunSummary(
                     crucible_id=cid,
                     crucible_path=str(crucible_path),
-                    run_id=None,
+                    run_id=completed_run_ids.get(cid),
                     outcome="SKIPPED_RESUME",
                     notes="resume_skip",
                 )
@@ -993,11 +999,11 @@ def run_epoch(
             break
 
         if runner_cmd_override is not None:
-            cmd, cwd = runner_cmd_override(crucible_path, plan.kernel_identity.kernel_target, plan.seed)
+            cmd, cwd = runner_cmd_override(crucible_path, kernel_target, plan.seed)
         else:
             cmd, cwd = _runner_command(
                 crucible_path=crucible_path,
-                kernel_target=plan.kernel_identity.kernel_target,
+                kernel_target=kernel_target,
                 seed=plan.seed,
                 ruleset_path=selected_ruleset_path,
             )
@@ -1011,7 +1017,7 @@ def run_epoch(
             crucible_spec=crucible_specs[cid]["spec"],
             crucible_spec_hash_hex=str(crucible_specs[cid]["hash"]),
             budgets=budgets,
-            kernel_target=plan.kernel_identity.kernel_target,
+            kernel_target=kernel_target,
             seed=plan.seed,
         )
 
@@ -1067,7 +1073,7 @@ def run_epoch(
                 / "growth"
                 / "artifacts"
                 / "c019_runs"
-                / plan.kernel_identity.kernel_target
+                / kernel_target
                 / run_id
                 / "micro_steps.json"
             )
@@ -1081,7 +1087,7 @@ def run_epoch(
                     / "growth"
                     / "artifacts"
                     / "c019_runs"
-                    / plan.kernel_identity.kernel_target
+                    / kernel_target
                     / run_id
                 )
                 _debug_run_root(crucible_id=cid, run_id=run_id, run_root=run_root)
@@ -1141,7 +1147,7 @@ def run_epoch(
         / "growth"
         / "artifacts"
         / "c019_runs"
-        / plan.kernel_identity.kernel_target
+        / kernel_target
     )
     for run in runs:
         if run.run_id is None:
@@ -1189,7 +1195,7 @@ def run_epoch(
         run = next((r for r in runs if r.crucible_id == cid and r.run_id), None)
         if run is None or run.run_id is None:
             raise EpochSchemaError(f"Missing run_id for {cid}; cannot aggregate coverage (fail-closed)")
-        cov_path = _repo_root() / "tools" / "growth" / "artifacts" / "c019_runs" / plan.kernel_identity.kernel_target / run.run_id / "crucible_coverage.json"
+        cov_path = _repo_root() / "tools" / "growth" / "artifacts" / "c019_runs" / kernel_target / run.run_id / "crucible_coverage.json"
         if not cov_path.exists():
             raise EpochSchemaError(f"Missing crucible coverage for {cid} at {cov_path.as_posix()} (fail-closed)")
         cov_list.append(json.loads(cov_path.read_text(encoding="utf-8")))
@@ -1232,7 +1238,7 @@ def run_epoch(
         "schema_version": "EPOCH_COVERAGE_V1",
         "epoch_id": plan.epoch_id,
         "epoch_hash": manifest.epoch_hash,
-        "kernel_target": plan.kernel_identity.kernel_target,
+        "kernel_target": kernel_target,
         "observed": {
             "domains": sorted(domains),
             "subdomains": sorted(subs),
@@ -1326,7 +1332,7 @@ def run_epoch(
     # Materialize canonical artifact contract (fail-closed; no stubs).
     _materialize_epoch_artifact_contract(
         epoch_root=epoch_root,
-        kernel_target=plan.kernel_identity.kernel_target,
+        kernel_target=kernel_target,
         crucible_order=list(plan.crucible_order),
         runs=runs,
     )

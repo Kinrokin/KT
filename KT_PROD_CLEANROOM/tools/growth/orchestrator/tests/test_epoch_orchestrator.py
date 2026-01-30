@@ -21,19 +21,34 @@ def _add_growth_to_syspath() -> None:
 _add_growth_to_syspath()
 
 from epoch_manifest import compute_epoch_hash  # noqa: E402
-from epoch_orchestrator import _run_subprocess_capped, _write_once, run_epoch  # noqa: E402
-from epoch_schemas import EpochPlan, EpochSchemaError  # noqa: E402
+from epoch_orchestrator import _precompute_run_id, _repo_root, _run_subprocess_capped, _write_once, run_epoch  # noqa: E402
+from tools.growth.orchestrator.epoch_schemas import EpochPlan, EpochSchemaError  # noqa: E402
 from checkpoint_store import append_checkpoint, completed_crucible_ids, CheckpointRecord  # noqa: E402
+from crucible_loader import load_crucible  # noqa: E402
 
 
-def _minimal_crucible(path: Path) -> None:
+def _minimal_crucible(path: Path, *, kernel_targets: list[str] | None = None) -> None:
+    if kernel_targets is None:
+        kernel_targets = ["V2_SOVEREIGN"]
+    if "V2_SOVEREIGN" not in kernel_targets:
+        kernel_targets = ["V2_SOVEREIGN"] + list(kernel_targets)
     payload = {
         "schema": "kt.crucible.spec",
         "schema_version": 1,
         "crucible_id": "CRU-TEST-01",
         "title": "t",
         "domain": "d",
-        "kernel_targets": ["V2_SOVEREIGN"],
+        "tags": {
+            "domains": ["d"],
+            "subdomains": [],
+            "microdomains": [],
+            "ventures": [],
+            "reasoning_modes": [],
+            "modalities": [],
+            "tools": [],
+            "paradox_classes": [],
+        },
+        "kernel_targets": kernel_targets,
         "input": {"mode": "RAW_INPUT_STRING", "prompt": "x", "redaction_policy": "ALLOW_RAW_IN_CRUCIBLE"},
         "budgets": {"time_ms": 1000},
         "expect": {
@@ -47,10 +62,11 @@ def _minimal_crucible(path: Path) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=True), encoding="utf-8")
 
 
-def _minimal_plan(crucible_path: Path) -> dict:
+def _minimal_plan(crucible_path: Path, *, kernel_target: str = "V2_SOVEREIGN", epoch_profile: str = "COVERAGE") -> dict:
     return {
         "epoch_id": "EPOCH-TEST-01",
-        "kernel_identity": {"kernel_target": "V2_SOVEREIGN", "kernel_build_id": "unknown"},
+        "epoch_profile": epoch_profile,
+        "kernel_identity": {"kernel_target": kernel_target, "kernel_build_id": "unknown"},
         "crucible_order": ["CRU-TEST-01"],
         "crucible_specs": {"CRU-TEST-01": str(crucible_path)},
         "budgets": {"per_crucible_timeout_ms": 1000, "per_crucible_rss_mb": 1024, "epoch_wall_clock_ms": 10000, "max_concurrency": 1},
@@ -89,7 +105,10 @@ class TestResumeBehavior(unittest.TestCase):
             crucible_path = td_path / "c.json"
             _minimal_crucible(crucible_path)
             plan_path = td_path / "epoch.json"
-            plan_path.write_text(json.dumps(_minimal_plan(crucible_path), ensure_ascii=True), encoding="utf-8")
+            plan_path.write_text(
+                json.dumps(_minimal_plan(crucible_path, epoch_profile="GOVERNANCE"), ensure_ascii=True),
+                encoding="utf-8",
+            )
 
             artifacts_root = td_path / "artifacts"
             epoch_root = artifacts_root / "EPOCH-TEST-01"
@@ -100,9 +119,64 @@ class TestResumeBehavior(unittest.TestCase):
             checkpoint = epoch_root / "checkpoint.json"
             append_checkpoint(checkpoint, CheckpointRecord(crucible_id="CRU-TEST-01", run_id="X", outcome="PASS", status="DONE"))
 
-            summary = run_epoch(plan_path, resume=True, artifacts_root=artifacts_root)
-            self.assertEqual(summary["epoch_id"], "EPOCH-TEST-01")
-            self.assertTrue((epoch_root / "epoch_summary.json").exists())
+            # materialize minimal per-run artifacts so coverage aggregation can succeed
+            repo_root = _repo_root()
+            run_root = repo_root / "tools" / "growth" / "artifacts" / "c019_runs" / "V2_SOVEREIGN" / "X"
+            try:
+                run_root.mkdir(parents=True, exist_ok=True)
+                (run_root / "runner_record.json").write_text(json.dumps({"run_id": "X"}, ensure_ascii=True), encoding="utf-8")
+                (run_root / "governance_verdict.json").write_text(
+                    json.dumps({"schema_id": "governance.verdict", "schema_version": "1.0", "verdict": "PASS", "rationale": "test"}, ensure_ascii=True),
+                    encoding="utf-8",
+                )
+                (run_root / "crucible_coverage.json").write_text(
+                    json.dumps(
+                        {
+                            "schema_version": "COVERAGE_V1",
+                            "run_id": "X",
+                            "epoch_id": "EPOCH-TEST-01",
+                            "crucible_id": "CRU-TEST-01",
+                            "kernel_target": "V2_SOVEREIGN",
+                            "planned": {"required_tags": [], "target_span": {"min_unique_domains": 0, "min_unique_subdomains": 0, "min_unique_microdomains": 0}, "rotation_ruleset_id": "ROTATION_RULESET_BOOTSTRAP_V1"},
+                            "observed": {
+                                "domains": ["D:TEST"],
+                                "subdomains": ["S:TEST.SUB"],
+                                "microdomains": ["M:TEST.SUB"],
+                                "reasoning_modes": ["R:TEST"],
+                                "modalities": ["X:TEXT"],
+                                "tools": ["T:CRUCIBLE"],
+                                "counts": {"unique_domains": 1, "unique_subdomains": 1, "unique_microdomains": 1, "cross_domain_edges": 0, "mean_graph_distance": 0, "max_graph_distance": 0, "paradox_events": 0},
+                                "dominance": {"top_domain_share": 1.0, "top_5_domain_share": 1.0, "entropy_domains": 0.0},
+                            },
+                            "sequence": ["D:TEST"],
+                            "proof": {
+                                "receipts": [
+                                    {"type": "TRACE_HEAD_HASH", "sha256": "0" * 64},
+                                    {"type": "LEDGER_ENTRY_HASH", "sha256": "0" * 64},
+                                ],
+                                "fail_closed": True,
+                            },
+                            "verdict": {"coverage_pass": None, "rotation_pass": None, "notes": None},
+                        },
+                        ensure_ascii=True,
+                    ),
+                    encoding="utf-8",
+                )
+                (run_root / "_runtime_artifacts").mkdir(parents=True, exist_ok=True)
+                (run_root / "_runtime_artifacts" / "state_vault.jsonl").write_text("{\"organ_id\":\"TEST\"}\n", encoding="utf-8")
+
+                summary = run_epoch(plan_path, resume=True, artifacts_root=artifacts_root)
+                self.assertEqual(summary["epoch_id"], "EPOCH-TEST-01")
+                self.assertTrue((epoch_root / "epoch_summary.json").exists())
+            finally:
+                if run_root.exists():
+                    for p in sorted(run_root.rglob("*"), reverse=True):
+                        if p.is_file():
+                            p.unlink()
+                        else:
+                            p.rmdir()
+                if run_root.parent.exists() and not any(run_root.parent.iterdir()):
+                    run_root.parent.rmdir()
 
 
 class TestRunnerCaps(unittest.TestCase):
@@ -124,6 +198,8 @@ class TestRunnerCaps(unittest.TestCase):
             self.assertEqual(res.kill_reason, "TIMEOUT")
 
     def test_memory_limit_kills_process_fail_closed(self) -> None:
+        if os.name == "nt":
+            self.skipTest("Memory cap enforcement not reliable on Windows")
         with tempfile.TemporaryDirectory() as td:
             cwd = Path(td)
             cmd = [sys.executable, "-c", "x = bytearray(128 * 1024 * 1024)\nprint('x')\n"]
@@ -165,8 +241,91 @@ class TestNonJsonOutput(unittest.TestCase):
                 cmd = [sys.executable, "-c", "print('not json')"]
                 return cmd, td_path
 
-            summary = run_epoch(plan_path, resume=False, artifacts_root=artifacts_root, runner_cmd_override=runner_override)
-            self.assertEqual(summary["runs"][0]["outcome"], "FAIL_CLOSED")
+            with self.assertRaises(EpochSchemaError):
+                run_epoch(plan_path, resume=False, artifacts_root=artifacts_root, runner_cmd_override=runner_override)
+
+
+class TestKernelTargetRouting(unittest.TestCase):
+    def test_kernel_target_from_plan_used_for_artifacts(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            td_path = Path(td)
+            crucible_path = td_path / "c.json"
+            _minimal_crucible(
+                crucible_path,
+                kernel_targets=["KERNEL_GOVERNANCE_BASELINE"],
+            )
+            plan_path = td_path / "epoch.json"
+            plan_path.write_text(
+                json.dumps(_minimal_plan(crucible_path, kernel_target="KERNEL_GOVERNANCE_BASELINE", epoch_profile="GOVERNANCE"), ensure_ascii=True),
+                encoding="utf-8",
+            )
+
+            artifacts_root = td_path / "artifacts"
+
+            loaded = load_crucible(crucible_path)
+            expected_run_id = _precompute_run_id(
+                crucible_spec=loaded.spec,
+                crucible_spec_hash_hex=loaded.crucible_spec_hash,
+                budgets=loaded.spec.budgets,
+                kernel_target="KERNEL_GOVERNANCE_BASELINE",
+                seed=0,
+            )
+
+            repo_root = _repo_root()
+            run_root = repo_root / "tools" / "growth" / "artifacts" / "c019_runs" / "KERNEL_GOVERNANCE_BASELINE" / expected_run_id
+            other_root = repo_root / "tools" / "growth" / "artifacts" / "c019_runs" / "KERNEL_COVERAGE_BASELINE" / expected_run_id
+
+            def runner_override(_crucible_path: Path, kernel_target: str, _seed: int):
+                script_lines = [
+                    "import json",
+                    "from pathlib import Path",
+                    f"run_root = Path(r\"{run_root}\")",
+                    "run_root.mkdir(parents=True, exist_ok=True)",
+                    "run_root.joinpath('runner_record.json').write_text(" +
+                    "json.dumps({" +
+                    f"'run_id':'{expected_run_id}','crucible_id':'CRU-TEST-01','kernel_target':'{kernel_target}','outcome':'PASS'" +
+                    "}, ensure_ascii=True), encoding='utf-8')",
+                    "run_root.joinpath('governance_verdict.json').write_text(" +
+                    "json.dumps({" +
+                    "'schema_id':'governance.verdict','schema_version':'1.0','verdict':'PASS','rationale':'test'" +
+                    "}, ensure_ascii=True), encoding='utf-8')",
+                    "run_root.joinpath('crucible_coverage.json').write_text(" +
+                    "json.dumps({" +
+                    f"'schema_version':'COVERAGE_V1','run_id':'{expected_run_id}','epoch_id':'EPOCH-TEST-01','crucible_id':'CRU-TEST-01','kernel_target':'{kernel_target}'," +
+                    "'planned':{'required_tags':[],'target_span':{'min_unique_domains':0,'min_unique_subdomains':0,'min_unique_microdomains':0},'rotation_ruleset_id':'ROTATION_RULESET_BOOTSTRAP_V1'}," +
+                    "'observed':{'domains':['D:TEST'],'subdomains':['S:TEST.SUB'],'microdomains':['M:TEST.SUB'],'reasoning_modes':['R:TEST'],'modalities':['X:TEXT'],'tools':['T:CRUCIBLE']," +
+                    "'counts':{'unique_domains':1,'unique_subdomains':1,'unique_microdomains':1,'cross_domain_edges':0,'mean_graph_distance':0,'max_graph_distance':0,'paradox_events':0}," +
+                    "'dominance':{'top_domain_share':1.0,'top_5_domain_share':1.0,'entropy_domains':0.0}}," +
+                    "'sequence':['D:TEST']," +
+                    "'proof':{'receipts':[{'type':'TRACE_HEAD_HASH','sha256':'" + ("0"*64) + "'},{'type':'LEDGER_ENTRY_HASH','sha256':'" + ("0"*64) + "'}],'fail_closed':True}," +
+                    "'verdict':{'coverage_pass':None,'rotation_pass':None,'notes':None}" +
+                    "}, ensure_ascii=True), encoding='utf-8')",
+                    "run_root.joinpath('micro_steps.json').write_text(" +
+                    "json.dumps({" +
+                    f"'schema':'MICRO_STEPS_V1','run_id':'{expected_run_id}','crucible_id':'CRU-TEST-01','kernel_target':'{kernel_target}','steps':[]" +
+                    "}, ensure_ascii=True), encoding='utf-8')",
+                    "runtime_artifacts = run_root / '_runtime_artifacts'",
+                    "runtime_artifacts.mkdir(parents=True, exist_ok=True)",
+                    "runtime_artifacts.joinpath('state_vault.jsonl').write_text('{\"organ_id\":\"TEST\"}\\n', encoding='utf-8')",
+                    f"print(json.dumps([{{'run_id':'{expected_run_id}','outcome':'PASS'}}], ensure_ascii=True))",
+                ]
+                script = "\n".join(script_lines)
+                return [sys.executable, '-c', script], repo_root
+
+            try:
+                summary = run_epoch(plan_path, resume=False, artifacts_root=artifacts_root, runner_cmd_override=runner_override)
+                self.assertEqual(summary["runs"][0]["outcome"], "PASS")
+                self.assertTrue(run_root.exists())
+                self.assertFalse(other_root.exists())
+            finally:
+                if run_root.exists():
+                    for p in sorted(run_root.rglob("*"), reverse=True):
+                        if p.is_file():
+                            p.unlink()
+                        else:
+                            p.rmdir()
+                if run_root.parent.exists() and not any(run_root.parent.iterdir()):
+                    run_root.parent.rmdir()
 
 
 if __name__ == "__main__":
