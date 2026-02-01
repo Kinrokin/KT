@@ -132,18 +132,35 @@ def _enforce_env_lock(*, repo_root: Path, env_for_subprocess: Dict[str, str], ou
 
     host_env = os.environ
 
+    def _write_env_mismatch_receipt(*, reason: str, details: Dict[str, Any]) -> None:
+        payload = {
+            "schema_id": "kt.env_mismatch_receipt.v1",
+            "reason": reason,
+            "details": details,
+        }
+        (out_dir / "env_mismatch_receipt.json").write_text(
+            json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=True) + "\n",
+            encoding="utf-8",
+        )
+
     # Forbidden keys/prefixes apply to the host environment (fail-closed).
     for k in forbidden.keys():
         if k in host_env:
+            _write_env_mismatch_receipt(reason="forbidden_key_present", details={"key": k, "value": str(host_env.get(k))})
             raise SystemExit(f"FAIL: forbidden env var present (fail-closed): {k}")
     for prefix in forbidden_prefixes:
         for k in host_env.keys():
             if k.startswith(prefix):
+                _write_env_mismatch_receipt(reason="forbidden_prefix_present", details={"key": k, "prefix": prefix})
                 raise SystemExit(f"FAIL: forbidden env var prefix present (fail-closed): {k}")
 
-    # Required keys must not be conflicting in the host environment; enforce for subprocesses.
+    # Required keys must exist on the host env and match exactly (strict host contract).
     for k, v in required.items():
-        if k in host_env and str(host_env.get(k)) != v:
+        if k not in host_env:
+            _write_env_mismatch_receipt(reason="required_key_missing", details={"key": k, "expected": v})
+            raise SystemExit(f"FAIL: required env var missing (fail-closed): {k} expected {v!r}")
+        if str(host_env.get(k)) != v:
+            _write_env_mismatch_receipt(reason="required_key_mismatch", details={"key": k, "got": str(host_env.get(k)), "expected": v})
             raise SystemExit(f"FAIL: required env var mismatch (fail-closed): {k}={host_env.get(k)!r} expected {v!r}")
         env_for_subprocess[k] = v
 
@@ -153,6 +170,7 @@ def _enforce_env_lock(*, repo_root: Path, env_for_subprocess: Dict[str, str], ou
     allow_set = set(allow_extra)
     for k in host_env.keys():
         if k.startswith(tracked_prefixes) and k not in required_set and k not in allow_set:
+            _write_env_mismatch_receipt(reason="undeclared_tracked_env", details={"key": k})
             raise SystemExit(f"FAIL: undeclared env var in tracked namespace (fail-closed): {k}")
 
     # Evidence copy (schema-bound) for offline audit.
