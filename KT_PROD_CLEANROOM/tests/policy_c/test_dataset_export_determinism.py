@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -18,7 +19,14 @@ from policy_c.dataset_export import export_dataset  # noqa: E402
 class TestDatasetExportDeterminism(unittest.TestCase):
     def test_deterministic_export(self) -> None:
         registry = load_runtime_registry()
-        allowed_root = ROOT / registry.policy_c.sweep.allowed_export_roots[0]
+
+        if os.environ.get("KT_SEAL_MODE", "0") == "1":
+            tmp = os.environ.get("TMPDIR") or os.environ.get("TMP") or os.environ.get("TEMP") or ""
+            if not tmp:
+                raise RuntimeError("KT_SEAL_MODE=1 requires TMPDIR/TMP/TEMP (fail-closed)")
+            allowed_root = (Path(tmp).resolve() / "policy_c").resolve()
+        else:
+            allowed_root = ROOT / registry.policy_c.sweep.allowed_export_roots[0]
         allowed_root.mkdir(parents=True, exist_ok=True)
 
         with tempfile.TemporaryDirectory(dir=str(allowed_root)) as td:
