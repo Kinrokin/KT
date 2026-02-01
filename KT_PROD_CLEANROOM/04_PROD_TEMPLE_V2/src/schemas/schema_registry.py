@@ -204,6 +204,16 @@ from schemas.fl3_supported_platforms_schema import (
     FL3_SUPPORTED_PLATFORMS_SCHEMA_VERSION_HASH,
     validate_fl3_supported_platforms,
 )
+from schemas.fl3_env_lock_schema import (
+    FL3_ENV_LOCK_SCHEMA_ID,
+    FL3_ENV_LOCK_SCHEMA_VERSION_HASH,
+    validate_fl3_env_lock,
+)
+from schemas.fl3_metabolism_proof_schema import (
+    FL3_METABOLISM_PROOF_SCHEMA_ID,
+    FL3_METABOLISM_PROOF_SCHEMA_VERSION_HASH,
+    validate_fl3_metabolism_proof,
+)
 from schemas.fl3_determinism_contract_schema import (
     FL3_DETERMINISM_CONTRACT_SCHEMA_ID,
     FL3_DETERMINISM_CONTRACT_SCHEMA_VERSION_HASH,
@@ -387,6 +397,8 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     FL3_POLICY_BUNDLE_SCHEMA_ID: (FL3_POLICY_BUNDLE_SCHEMA_VERSION_HASH, validate_fl3_policy_bundle),
     FL3_HASH_MANIFEST_SCHEMA_ID: (FL3_HASH_MANIFEST_SCHEMA_VERSION_HASH, validate_fl3_hash_manifest),
     FL3_SUPPORTED_PLATFORMS_SCHEMA_ID: (FL3_SUPPORTED_PLATFORMS_SCHEMA_VERSION_HASH, validate_fl3_supported_platforms),
+    FL3_ENV_LOCK_SCHEMA_ID: (FL3_ENV_LOCK_SCHEMA_VERSION_HASH, validate_fl3_env_lock),
+    FL3_METABOLISM_PROOF_SCHEMA_ID: (FL3_METABOLISM_PROOF_SCHEMA_VERSION_HASH, validate_fl3_metabolism_proof),
     FL3_DETERMINISM_CONTRACT_SCHEMA_ID: (
         FL3_DETERMINISM_CONTRACT_SCHEMA_VERSION_HASH,
         validate_fl3_determinism_contract,

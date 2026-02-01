@@ -64,6 +64,8 @@ SCHEMA_FILES = [
     "fl3/kt.factory.eval_report.v2.json",
     "fl3/kt.promoted_manifest.v1.json",
     "fl3/kt.promoted_index.v1.json",
+    "fl3/kt.env_lock.v1.json",
+    "fl3/kt.metabolism_proof.v1.json",
 ]
 
 

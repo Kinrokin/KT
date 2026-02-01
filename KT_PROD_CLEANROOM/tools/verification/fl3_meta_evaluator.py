@@ -226,7 +226,9 @@ def verify_job_dir(*, repo_root: Path, job_dir: Path) -> None:
         if not p.is_file():
             continue
         suf = p.suffix.lower()
-        if suf in {".safetensors", ".pt", ".pth", ".bin"}:
+        # FL4 MRT-0 / AdapterType.A-only: any weight-like artifact is forbidden in canonical job dirs.
+        # Keep this list conservative and extension-based (fail-closed).
+        if suf in {".safetensors", ".pt", ".pth", ".bin", ".ckpt", ".onnx", ".gguf", ".pb", ".h5"}:
             raise FL3ValidationError(f"Weight artifact found in canonical job_dir (fail-closed): {p.name}")
 
     # FL4/MGK v2: phase trace is required and must prove no stub execution.

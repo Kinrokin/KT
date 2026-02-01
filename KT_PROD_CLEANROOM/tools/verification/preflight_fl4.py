@@ -6,6 +6,8 @@ import os
 import subprocess
 import sys
 import platform
+import hashlib
+import tempfile
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
@@ -13,6 +15,7 @@ from schemas.schema_files import schema_version_hash
 from tools.training.fl3_factory.hashing import sha256_file_normalized
 from tools.verification.fl3_canonical import repo_root_from, sha256_json
 from tools.verification.fl3_validators import FL3ValidationError, load_fl3_canonical_runtime_paths, validate_schema_bound_object
+from tools.verification.io_guard import IOGuard, IOGuardConfig
 
 
 def _run(cmd: List[str], *, cwd: Path, env: Dict[str, str], out_path: Optional[Path] = None) -> Tuple[int, str]:
@@ -42,6 +45,122 @@ def _git_status_clean(repo_root: Path) -> None:
     out = subprocess.check_output(["git", "status", "--porcelain"], cwd=str(repo_root), text=True)
     if out.strip():
         raise SystemExit(f"FAIL: repo is not clean (git status --porcelain non-empty):\n{out}")
+
+
+def _sha256_file(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        for chunk in iter(lambda: f.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def _assert_evidence_pack_complete(*, out_dir: Path) -> None:
+    required_top = (
+        "command_transcript.txt",
+        "pip_freeze.txt",
+        "seal_doctrine.md",
+        "env_lock.json",
+        "io_guard_receipt.json",
+        "supported_platforms.json",
+        "determinism_contract.json",
+        "law_bundle_hash.txt",
+        "law_bundle.json",
+        "growth_e2e_gate_report.json",
+        "meta_evaluator_receipt.json",
+        "red_assault_report.json",
+        "rollback_drill_report.json",
+        "canary_artifact_pre.json",
+        "canary_artifact_rerun.json",
+        "canary_artifact_post_promotion.json",
+        "metabolism_proof.json",
+        "preflight_summary.json",
+    )
+    required_job_dir = (
+        "job.json",
+        "phase_trace.json",
+        "dataset.json",
+        "eval_report.json",
+        "signal_quality.json",
+        "judgement.json",
+        "promotion.json",
+        "hash_manifest.json",
+        "job_dir_manifest.json",
+    )
+
+    missing: List[str] = []
+    for name in required_top:
+        p = out_dir / name
+        if not p.exists():
+            missing.append(name)
+        elif p.is_file() and p.stat().st_size == 0:
+            missing.append(name + " (empty)")
+
+    evidence_job_dir = out_dir / "job_dir"
+    if not evidence_job_dir.exists():
+        missing.append("job_dir/ (missing)")
+    else:
+        for name in required_job_dir:
+            p = evidence_job_dir / name
+            if not p.exists():
+                missing.append(f"job_dir/{name}")
+            elif p.is_file() and p.stat().st_size == 0:
+                missing.append(f"job_dir/{name} (empty)")
+
+    # Promotion is conditional; if promotion was attempted, its report must exist.
+    promotion_report = out_dir / "promotion_report.json"
+    if promotion_report.exists() and promotion_report.stat().st_size == 0:
+        missing.append("promotion_report.json (empty)")
+
+    if missing:
+        raise SystemExit("FAIL: evidence pack incomplete (fail-closed):\n" + "\n".join("- " + m for m in sorted(missing)))
+
+
+def _enforce_env_lock(*, repo_root: Path, env_for_subprocess: Dict[str, str], out_dir: Path) -> Dict[str, Any]:
+    lock_path = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_ENV_LOCK.json"
+    if not lock_path.exists():
+        raise SystemExit(f"FAIL: missing env lock contract (fail-closed): {lock_path.as_posix()}")
+    lock = json.loads(lock_path.read_text(encoding="utf-8"))
+    if not isinstance(lock, dict):
+        raise SystemExit("FAIL: env lock contract must be JSON object (fail-closed)")
+    validate_schema_bound_object(lock)
+
+    required: Dict[str, str] = dict(lock.get("required") or {})
+    forbidden: Dict[str, str] = dict(lock.get("forbidden") or {})
+    forbidden_prefixes: List[str] = list(lock.get("forbidden_prefixes") or [])
+    allow_extra: List[str] = list(lock.get("allow_extra") or [])
+
+    host_env = os.environ
+
+    # Forbidden keys/prefixes apply to the host environment (fail-closed).
+    for k in forbidden.keys():
+        if k in host_env:
+            raise SystemExit(f"FAIL: forbidden env var present (fail-closed): {k}")
+    for prefix in forbidden_prefixes:
+        for k in host_env.keys():
+            if k.startswith(prefix):
+                raise SystemExit(f"FAIL: forbidden env var prefix present (fail-closed): {k}")
+
+    # Required keys must not be conflicting in the host environment; enforce for subprocesses.
+    for k, v in required.items():
+        if k in host_env and str(host_env.get(k)) != v:
+            raise SystemExit(f"FAIL: required env var mismatch (fail-closed): {k}={host_env.get(k)!r} expected {v!r}")
+        env_for_subprocess[k] = v
+
+    # Seal lane: prevent drift in key namespaces (KT/PYTHON/TRANSFORMERS/TOKENIZERS).
+    tracked_prefixes = ("KT_", "PYTHON", "TRANSFORMERS_", "TOKENIZERS_")
+    required_set = set(required.keys())
+    allow_set = set(allow_extra)
+    for k in host_env.keys():
+        if k.startswith(tracked_prefixes) and k not in required_set and k not in allow_set:
+            raise SystemExit(f"FAIL: undeclared env var in tracked namespace (fail-closed): {k}")
+
+    # Evidence copy (schema-bound) for offline audit.
+    (out_dir / "env_lock.json").write_text(
+        json.dumps(lock, indent=2, sort_keys=True, ensure_ascii=True) + "\n",
+        encoding="utf-8",
+    )
+    return lock
 
 
 def _mk_min_contract(repo_root: Path) -> Dict[str, Any]:
@@ -110,6 +229,35 @@ def _mk_jobspec(*, export_shadow_root: str, export_promoted_root: str, mode: str
     return job
 
 
+def _load_hash_manifest_root_hash(job_dir: Path) -> str:
+    hm = json.loads((job_dir / "hash_manifest.json").read_text(encoding="utf-8"))
+    if not isinstance(hm, dict):
+        raise SystemExit("FAIL: hash_manifest.json not a JSON object (fail-closed)")
+    validate_schema_bound_object(hm)
+    root = str(hm.get("root_hash") or "")
+    if len(root) != 64:
+        raise SystemExit("FAIL: hash_manifest.root_hash missing/invalid (fail-closed)")
+    return root
+
+
+def _mk_metabolism_proof(*, base_job_id: str, perturbations: List[Dict[str, str]]) -> Dict[str, Any]:
+    record: Dict[str, Any] = {
+        "schema_id": "kt.metabolism_proof.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.metabolism_proof.v1.json"),
+        "proof_id": "",
+        "base_job_id": base_job_id,
+        "perturbations": perturbations,
+        "assertions": {
+            "all_schema_valid": True,
+            "roots_distinct": True,
+        },
+        "created_at": "1970-01-01T00:00:00Z",
+    }
+    record["proof_id"] = sha256_json({k: v for k, v in record.items() if k not in {"proof_id", "created_at"}})
+    validate_schema_bound_object(record)
+    return record
+
+
 def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="FL4 preflight runner (canonical factory lane, MRT-0).")
     ap.add_argument("--out-dir", default="", help="Write evidence under this directory (default: exports/_runs/FL4_SEAL/<ts>/).")
@@ -122,6 +270,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     repo_root = repo_root_from(Path(__file__))
 
     _git_status_clean(repo_root)
+    py_exe = sys.executable
 
     # Canonical Python surface for cleanroom.
     env = os.environ.copy()
@@ -160,158 +309,310 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     transcript_path = out_dir / "command_transcript.txt"
 
-    # 1) Whole-KT test battery
-    rc, out = _run(
-        ["python", "-m", "pytest", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests", "-q"],
-        cwd=repo_root,
-        env=env,
-        out_path=out_dir / "pytest_temple.log",
-    )
-    _append_transcript(transcript_path, cmd=["python", "-m", "pytest", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests", "-q"], rc=rc, output=out)
-    rc, out = _run(["python", "-m", "pytest", "KT_PROD_CLEANROOM/tests", "-q"], cwd=repo_root, env=env, out_path=out_dir / "pytest_cleanroom.log")
-    _append_transcript(transcript_path, cmd=["python", "-m", "pytest", "KT_PROD_CLEANROOM/tests", "-q"], rc=rc, output=out)
+    # Phase 0: doctrine + execution surface contract (evidence, then enforce).
+    doctrine_path = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_SEAL_DOCTRINE.md"
+    if not doctrine_path.exists():
+        raise SystemExit(f"FAIL: missing FL4 seal doctrine (fail-closed): {doctrine_path.as_posix()}")
+    (out_dir / "seal_doctrine.md").write_text(doctrine_path.read_text(encoding="utf-8"), encoding="utf-8")
+    doctrine_hash = _sha256_file(doctrine_path)
 
-    # 2) Governance verifiers
-    rc, out = _run(
-        ["python", "-m", "tools.verification.fl3_meta_evaluator", "--write-receipt", str(out_dir / "meta_evaluator_receipt.json")],
-        cwd=repo_root,
-        env=env,
-        out_path=out_dir / "meta_evaluator.log",
-    )
-    _append_transcript(transcript_path, cmd=["python", "-m", "tools.verification.fl3_meta_evaluator", "--write-receipt", str(out_dir / "meta_evaluator_receipt.json")], rc=rc, output=out)
-    rc, out = _run(["python", "-m", "tools.verification.fl3_red_assault", "--out", str(out_dir / "red_assault_report.json")], cwd=repo_root, env=env)
-    _append_transcript(transcript_path, cmd=["python", "-m", "tools.verification.fl3_red_assault", "--out", str(out_dir / "red_assault_report.json")], rc=rc, output=out)
-    rc, out = _run(
-        [
-            "python",
-            "-m",
-            "tools.verification.fl3_rollback_drill",
-            "--registry-path",
-            reg_path,
-            "--out",
-            str(out_dir / "rollback_drill_report.json"),
-        ],
-        cwd=repo_root,
-        env=env,
-    )
-    _append_transcript(transcript_path, cmd=["python", "-m", "tools.verification.fl3_rollback_drill", "--registry-path", reg_path, "--out", str(out_dir / "rollback_drill_report.json")], rc=rc, output=out)
+    env_lock = _enforce_env_lock(repo_root=repo_root, env_for_subprocess=env, out_dir=out_dir)
 
-    # 3) Growth lane E2E gate (canonical wrapper)
-    rc, out = _run(
-        ["python", "-m", "tools.verification.growth_e2e_gate", "--pressure-runs", "1", "--out", str(out_dir / "growth_e2e_gate_report.json")],
-        cwd=repo_root,
-        env=env,
-    )
-    _append_transcript(transcript_path, cmd=["python", "-m", "tools.verification.growth_e2e_gate", "--pressure-runs", "1", "--out", str(out_dir / "growth_e2e_gate_report.json")], rc=rc, output=out)
+    # Evidence: record the exact python environment used for the seal run.
+    rc, out = _run([py_exe, "-m", "pip", "freeze"], cwd=repo_root, env=env)
+    (out_dir / "pip_freeze.txt").write_text(out if out.endswith("\n") else out + "\n", encoding="utf-8")
+    _append_transcript(transcript_path, cmd=[py_exe, "-m", "pip", "freeze"], rc=rc, output=out)
 
-    # 4) Build ephemeral organ contract and run determinism canary + one sovereign job.
-    contract = _mk_min_contract(repo_root)
-    contract_path = out_dir / "organ_contract.json"
-    contract_path.write_text(json.dumps(contract, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+    # Seal lane I/O guard: fail-closed on network attempts and on writes outside allowlisted roots.
+    exports_shadow = (repo_root / str(paths["exports_shadow_root"])).resolve()
+    exports_adapters = (repo_root / str(paths["exports_adapters_root"])).resolve()
+    tmp_root = Path(tempfile.gettempdir()).resolve()
+    allowed_write_roots = [
+        out_dir.resolve(),
+        exports_shadow,
+        exports_adapters,
+        tmp_root,
+    ]
+    # Propagate to subprocesses via sitecustomize (KT_PROD_CLEANROOM/sitecustomize.py).
+    env["KT_IO_GUARD"] = "1"
+    env["KT_IO_GUARD_DENY_NETWORK"] = "1"
+    env["KT_IO_GUARD_ALLOWED_WRITE_ROOTS"] = json.dumps([p.as_posix() for p in allowed_write_roots], sort_keys=True)
+    env["KT_IO_GUARD_RECEIPT_PATH"] = (out_dir / "io_guard_receipt.json").as_posix()
 
-    # Determinism canary (must PASS; blocks promotion otherwise).
-    rc, out = _run(
-        [
-            "python",
-            "-m",
-            "tools.verification.fl4_determinism_canary",
-            "--organ-contract",
-            str(contract_path),
-            "--out",
-            str(out_dir / "canary_artifact.json"),
-        ],
-        cwd=repo_root,
-        env=env,
-    )
-    _append_transcript(transcript_path, cmd=["python", "-m", "tools.verification.fl4_determinism_canary", "--organ-contract", str(contract_path), "--out", str(out_dir / "canary_artifact.json")], rc=rc, output=out)
+    # Full seal lane (tests + verifiers + growth + canary + factory + promotion) under fail-closed I/O guard.
+    with IOGuard(
+        IOGuardConfig(
+            allowed_write_roots=tuple(allowed_write_roots),
+            deny_network=True,
+            receipt_path=out_dir / "io_guard_receipt.json",
+        )
+    ):
+        # 1) Whole-KT test battery
+        rc, out = _run(
+            [py_exe, "-m", "pytest", "-p", "no:cacheprovider", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests", "-q"],
+            cwd=repo_root,
+            env=env,
+            out_path=out_dir / "pytest_temple.log",
+        )
+        _append_transcript(
+            transcript_path,
+            cmd=[py_exe, "-m", "pytest", "-p", "no:cacheprovider", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests", "-q"],
+            rc=rc,
+            output=out,
+        )
+        rc, out = _run(
+            [py_exe, "-m", "pytest", "-p", "no:cacheprovider", "KT_PROD_CLEANROOM/tests", "-q"],
+            cwd=repo_root,
+            env=env,
+            out_path=out_dir / "pytest_cleanroom.log",
+        )
+        _append_transcript(transcript_path, cmd=[py_exe, "-m", "pytest", "-p", "no:cacheprovider", "KT_PROD_CLEANROOM/tests", "-q"], rc=rc, output=out)
 
-    # Run one sovereign factory job (expected to produce PROMOTE decision, then promote atomically).
-    export_shadow_root = str(paths["exports_shadow_root"]).replace("\\", "/").rstrip("/") + "/_runs/FL4_SEAL"
-    export_promoted_root = str(paths["exports_adapters_root"]).replace("\\", "/").rstrip("/") + "/_runs/FL4_SEAL"
-    job = _mk_jobspec(export_shadow_root=export_shadow_root, export_promoted_root=export_promoted_root, mode="SOVEREIGN")
-    job_path = out_dir / "job.json"
-    job_path.write_text(json.dumps(job, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
-
-    rc, out = _run(
-        ["python", "-m", "tools.training.fl3_factory.run_job", "--job", str(job_path), "--organ-contract", str(contract_path)],
-        cwd=repo_root,
-        env=env,
-        out_path=out_dir / "factory_job.log",
-    )
-    _append_transcript(transcript_path, cmd=["python", "-m", "tools.training.fl3_factory.run_job", "--job", str(job_path), "--organ-contract", str(contract_path)], rc=rc, output=out)
-
-    job_dir = (repo_root / export_shadow_root / job["job_id"]).resolve()
-    if not job_dir.exists():
-        raise SystemExit(f"FAIL: expected job_dir missing (fail-closed): {job_dir.as_posix()}")
-
-    # Verify the job_dir explicitly.
-    rc, out = _run(["python", "-m", "tools.verification.fl3_meta_evaluator", "--verify-job-dir", str(job_dir)], cwd=repo_root, env=env)
-    _append_transcript(transcript_path, cmd=["python", "-m", "tools.verification.fl3_meta_evaluator", "--verify-job-dir", str(job_dir)], rc=rc, output=out)
-
-    # Promote if decision is PROMOTE.
-    promotion = json.loads((job_dir / "promotion.json").read_text(encoding="utf-8"))
-    if isinstance(promotion, dict) and promotion.get("decision") == "PROMOTE":
-        _run(
+        # 2) Governance verifiers
+        rc, out = _run(
+            [py_exe, "-m", "tools.verification.fl3_meta_evaluator", "--write-receipt", str(out_dir / "meta_evaluator_receipt.json")],
+            cwd=repo_root,
+            env=env,
+            out_path=out_dir / "meta_evaluator.log",
+        )
+        _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.verification.fl3_meta_evaluator", "--write-receipt", str(out_dir / "meta_evaluator_receipt.json")], rc=rc, output=out)
+        rc, out = _run([py_exe, "-m", "tools.verification.fl3_red_assault", "--out", str(out_dir / "red_assault_report.json")], cwd=repo_root, env=env)
+        _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.verification.fl3_red_assault", "--out", str(out_dir / "red_assault_report.json")], rc=rc, output=out)
+        rc, out = _run(
             [
-                "python",
+                py_exe,
                 "-m",
-                "tools.verification.fl4_promote",
-                "--job-dir",
-                str(job_dir),
-                "--canary-artifact",
-                str(out_dir / "canary_artifact.json"),
+                "tools.verification.fl3_rollback_drill",
+                "--registry-path",
+                reg_path,
                 "--out",
-                str(out_dir / "promotion_report.json"),
+                str(out_dir / "rollback_drill_report.json"),
             ],
             cwd=repo_root,
             env=env,
         )
+        _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.verification.fl3_rollback_drill", "--registry-path", reg_path, "--out", str(out_dir / "rollback_drill_report.json")], rc=rc, output=out)
 
-    # Copy canonical artifacts into the evidence root for simple offline review.
-    # This does not affect determinism; it is audit packaging.
-    evidence_dir = out_dir / "job_dir"
-    evidence_dir.mkdir(parents=True, exist_ok=True)
-    for name in (
-        "job.json",
-        "phase_trace.json",
-        "dataset.json",
-        "reasoning_trace.json",
-        "train_manifest.json",
-        "eval_report.json",
-        "signal_quality.json",
-        "judgement.json",
-        "promotion.json",
-        "hash_manifest.json",
-        "job_dir_manifest.json",
-        "immune_snapshot.json",
-        "epigenetic_summary.json",
-        "fitness_region.json",
-    ):
-        src = job_dir / name
-        if src.exists():
-            (evidence_dir / name).write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+        # 3) Growth lane E2E gate (canonical wrapper)
+        rc, out = _run(
+            [py_exe, "-m", "tools.verification.growth_e2e_gate", "--pressure-runs", "1", "--out", str(out_dir / "growth_e2e_gate_report.json")],
+            cwd=repo_root,
+            env=env,
+        )
+        _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.verification.growth_e2e_gate", "--pressure-runs", "1", "--out", str(out_dir / "growth_e2e_gate_report.json")], rc=rc, output=out)
 
-    # Copy global contracts/law pins into evidence.
-    (out_dir / "determinism_contract.json").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_DETERMINISM_CONTRACT.json").read_text(encoding="utf-8"), encoding="utf-8")
-    (out_dir / "supported_platforms.json").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_SUPPORTED_PLATFORMS.json").read_text(encoding="utf-8"), encoding="utf-8")
-    (out_dir / "law_bundle_hash.txt").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "LAW_BUNDLE_FL3.sha256").read_text(encoding="utf-8"), encoding="utf-8")
-    (out_dir / "law_bundle.json").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "LAW_BUNDLE_FL3.json").read_text(encoding="utf-8"), encoding="utf-8")
+        # 4) Build ephemeral organ contract and run determinism canary + one sovereign job.
+        contract = _mk_min_contract(repo_root)
+        contract_path = out_dir / "organ_contract.json"
+        contract_path.write_text(json.dumps(contract, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
 
-    # Persist a compact summary for proof packaging.
-    try:
-        out_dir_rel = out_dir.relative_to(repo_root).as_posix()
-    except ValueError:
-        # Seal/evidence output directories are allowed to live outside the repo root (e.g. Kaggle /kaggle/working).
-        # This is an audit packaging detail and must not fail the preflight lane.
-        out_dir_rel = out_dir.as_posix()
-    summary = {
-        "schema_id": "kt.fl4.preflight_summary.v1",
-        "git_sha": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=str(repo_root), text=True).strip(),
-        "out_dir": out_dir_rel,
-        "registry_path": reg_path,
-        "job_id": job["job_id"],
-    }
-    (out_dir / "preflight_summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+        # Determinism canary: run twice (rerun determinism proof) before promotion.
+        canary_pre = out_dir / "canary_artifact_pre.json"
+        canary_rerun = out_dir / "canary_artifact_rerun.json"
+
+        rc, out = _run(
+            [
+                py_exe,
+                "-m",
+                "tools.verification.fl4_determinism_canary",
+                "--organ-contract",
+                str(contract_path),
+                "--out",
+                str(canary_pre),
+            ],
+            cwd=repo_root,
+            env=env,
+        )
+        _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.verification.fl4_determinism_canary", "--organ-contract", str(contract_path), "--out", str(canary_pre)], rc=rc, output=out)
+
+        rc, out = _run(
+            [
+                py_exe,
+                "-m",
+                "tools.verification.fl4_determinism_canary",
+                "--organ-contract",
+                str(contract_path),
+                "--out",
+                str(canary_rerun),
+            ],
+            cwd=repo_root,
+            env=env,
+        )
+        _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.verification.fl4_determinism_canary", "--organ-contract", str(contract_path), "--out", str(canary_rerun)], rc=rc, output=out)
+
+        pre_obj = json.loads(canary_pre.read_text(encoding="utf-8"))
+        rerun_obj = json.loads(canary_rerun.read_text(encoding="utf-8"))
+        validate_schema_bound_object(pre_obj)
+        validate_schema_bound_object(rerun_obj)
+        if pre_obj.get("hash_manifest_root_hash") != rerun_obj.get("hash_manifest_root_hash"):
+            raise SystemExit("FAIL: determinism rerun mismatch (canary root hash differs, fail-closed)")
+
+        # Run one sovereign factory job (expected to produce PROMOTE decision, then promote atomically).
+        export_shadow_root = str(paths["exports_shadow_root"]).replace("\\", "/").rstrip("/") + "/_runs/FL4_SEAL"
+        export_promoted_root = str(paths["exports_adapters_root"]).replace("\\", "/").rstrip("/") + "/_runs/FL4_SEAL"
+        job = _mk_jobspec(export_shadow_root=export_shadow_root, export_promoted_root=export_promoted_root, mode="SOVEREIGN")
+        job_path = out_dir / "job.json"
+        job_path.write_text(json.dumps(job, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+
+        rc, out = _run(
+            [py_exe, "-m", "tools.training.fl3_factory.run_job", "--job", str(job_path), "--organ-contract", str(contract_path)],
+            cwd=repo_root,
+            env=env,
+            out_path=out_dir / "factory_job.log",
+        )
+        _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.training.fl3_factory.run_job", "--job", str(job_path), "--organ-contract", str(contract_path)], rc=rc, output=out)
+
+        job_dir = (repo_root / export_shadow_root / job["job_id"]).resolve()
+        if not job_dir.exists():
+            raise SystemExit(f"FAIL: expected job_dir missing (fail-closed): {job_dir.as_posix()}")
+
+        # Verify the job_dir explicitly.
+        rc, out = _run([py_exe, "-m", "tools.verification.fl3_meta_evaluator", "--verify-job-dir", str(job_dir)], cwd=repo_root, env=env)
+        _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.verification.fl3_meta_evaluator", "--verify-job-dir", str(job_dir)], rc=rc, output=out)
+
+        # Metabolism proof (MRT-0): controlled perturbations must produce different hash-manifest roots.
+        base_root = _load_hash_manifest_root_hash(job_dir)
+        pert_runs: List[Dict[str, str]] = []
+
+        # Perturbation A: dataset/hypothesis seed + 1.
+        job_a = dict(job)
+        job_a["seed"] = int(job_a["seed"]) + 1
+        job_a["job_id"] = sha256_json({k: v for k, v in job_a.items() if k != "job_id"})
+        job_a_path = out_dir / "job_perturb_seed_plus_1.json"
+        job_a_path.write_text(json.dumps(job_a, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+        rc, out = _run([py_exe, "-m", "tools.training.fl3_factory.run_job", "--job", str(job_a_path), "--organ-contract", str(contract_path)], cwd=repo_root, env=env)
+        _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.training.fl3_factory.run_job", "--job", str(job_a_path), "--organ-contract", str(contract_path)], rc=rc, output=out)
+        job_a_dir = (repo_root / export_shadow_root / job_a["job_id"]).resolve()
+        rc, out = _run([py_exe, "-m", "tools.verification.fl3_meta_evaluator", "--verify-job-dir", str(job_a_dir)], cwd=repo_root, env=env)
+        _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.verification.fl3_meta_evaluator", "--verify-job-dir", str(job_a_dir)], rc=rc, output=out)
+        pert_runs.append({"name": "seed_plus_1", "job_id": str(job_a["job_id"]), "hash_manifest_root_hash": _load_hash_manifest_root_hash(job_a_dir)})
+
+        # Perturbation B: role variant (semantic axis) while keeping seed constant.
+        job_b = dict(job)
+        job_b["role"] = "CRITIC"
+        job_b["job_id"] = sha256_json({k: v for k, v in job_b.items() if k != "job_id"})
+        job_b_path = out_dir / "job_perturb_role_critic.json"
+        job_b_path.write_text(json.dumps(job_b, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+        rc, out = _run([py_exe, "-m", "tools.training.fl3_factory.run_job", "--job", str(job_b_path), "--organ-contract", str(contract_path)], cwd=repo_root, env=env)
+        _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.training.fl3_factory.run_job", "--job", str(job_b_path), "--organ-contract", str(contract_path)], rc=rc, output=out)
+        job_b_dir = (repo_root / export_shadow_root / job_b["job_id"]).resolve()
+        rc, out = _run([py_exe, "-m", "tools.verification.fl3_meta_evaluator", "--verify-job-dir", str(job_b_dir)], cwd=repo_root, env=env)
+        _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.verification.fl3_meta_evaluator", "--verify-job-dir", str(job_b_dir)], rc=rc, output=out)
+        pert_runs.append({"name": "role_critic", "job_id": str(job_b["job_id"]), "hash_manifest_root_hash": _load_hash_manifest_root_hash(job_b_dir)})
+
+        roots = [base_root] + [r["hash_manifest_root_hash"] for r in pert_runs]
+        if len(set(roots)) != len(roots):
+            raise SystemExit("FAIL: metabolism proof failed; perturbations did not change hash_manifest root (fail-closed)")
+
+        metabolism_proof = _mk_metabolism_proof(base_job_id=str(job["job_id"]), perturbations=pert_runs)
+        (out_dir / "metabolism_proof.json").write_text(json.dumps(metabolism_proof, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+
+        # Promote if decision is PROMOTE.
+        promotion = json.loads((job_dir / "promotion.json").read_text(encoding="utf-8"))
+        if isinstance(promotion, dict) and promotion.get("decision") == "PROMOTE":
+            _run(
+                [
+                    py_exe,
+                    "-m",
+                    "tools.verification.fl4_promote",
+                    "--job-dir",
+                    str(job_dir),
+                    "--canary-artifact",
+                    str(canary_pre),
+                    "--out",
+                    str(out_dir / "promotion_report.json"),
+                ],
+                cwd=repo_root,
+                env=env,
+            )
+
+        # Post-promotion determinism canary (fresh process) must still match.
+        canary_post = out_dir / "canary_artifact_post_promotion.json"
+        rc, out = _run(
+            [
+                py_exe,
+                "-m",
+                "tools.verification.fl4_determinism_canary",
+                "--organ-contract",
+                str(contract_path),
+                "--out",
+                str(canary_post),
+            ],
+            cwd=repo_root,
+            env=env,
+        )
+        _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.verification.fl4_determinism_canary", "--organ-contract", str(contract_path), "--out", str(canary_post)], rc=rc, output=out)
+        post_obj = json.loads(canary_post.read_text(encoding="utf-8"))
+        validate_schema_bound_object(post_obj)
+        if pre_obj.get("hash_manifest_root_hash") != post_obj.get("hash_manifest_root_hash"):
+            raise SystemExit("FAIL: post-promotion canary mismatch (fail-closed)")
+
+        # Copy canonical artifacts into the evidence root for simple offline review.
+        # This does not affect determinism; it is audit packaging.
+        evidence_dir = out_dir / "job_dir"
+        evidence_dir.mkdir(parents=True, exist_ok=True)
+        for name in (
+            "job.json",
+            "phase_trace.json",
+            "dataset.json",
+            "reasoning_trace.json",
+            "train_manifest.json",
+            "eval_report.json",
+            "signal_quality.json",
+            "judgement.json",
+            "promotion.json",
+            "hash_manifest.json",
+            "job_dir_manifest.json",
+            "immune_snapshot.json",
+            "epigenetic_summary.json",
+            "fitness_region.json",
+        ):
+            src = job_dir / name
+            if src.exists():
+                (evidence_dir / name).write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+
+        # Copy global contracts/law pins into evidence.
+        (out_dir / "determinism_contract.json").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_DETERMINISM_CONTRACT.json").read_text(encoding="utf-8"), encoding="utf-8")
+        (out_dir / "supported_platforms.json").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_SUPPORTED_PLATFORMS.json").read_text(encoding="utf-8"), encoding="utf-8")
+        (out_dir / "law_bundle_hash.txt").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "LAW_BUNDLE_FL3.sha256").read_text(encoding="utf-8"), encoding="utf-8")
+        (out_dir / "law_bundle.json").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "LAW_BUNDLE_FL3.json").read_text(encoding="utf-8"), encoding="utf-8")
+
+        # Persist a compact summary for proof packaging.
+        try:
+            out_dir_rel = out_dir.relative_to(repo_root).as_posix()
+        except ValueError:
+            # Seal/evidence output directories are allowed to live outside the repo root (e.g. Kaggle /kaggle/working).
+            # This is an audit packaging detail and must not fail the preflight lane.
+            out_dir_rel = out_dir.as_posix()
+        summary = {
+            "schema_id": "kt.fl4.preflight_summary.v1",
+            "git_sha": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=str(repo_root), text=True).strip(),
+            "out_dir": out_dir_rel,
+            "registry_path": reg_path,
+            "job_id": job["job_id"],
+            "job_dir": job_dir.as_posix(),
+            "evidence_job_dir": (out_dir / "job_dir").as_posix(),
+            "seal_doctrine_sha256": doctrine_hash,
+            "env_lock_id": str(env_lock.get("env_lock_id")),
+        }
+        promotion_report = out_dir / "promotion_report.json"
+        if promotion_report.exists():
+            try:
+                pr = json.loads(promotion_report.read_text(encoding="utf-8"))
+                if isinstance(pr, dict):
+                    if "promoted_dir" in pr:
+                        summary["promoted_dir"] = str(pr.get("promoted_dir"))
+                    if "promoted_index_path" in pr:
+                        summary["promoted_index_path"] = str(pr.get("promoted_index_path"))
+            except Exception:
+                pass
+        (out_dir / "preflight_summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+
+        # Evidence pack completeness contract (fail-closed).
+        _assert_evidence_pack_complete(out_dir=out_dir)
+
+        # Seal lane must leave repo clean (fail-closed).
+        _git_status_clean(repo_root)
 
     return 0
 

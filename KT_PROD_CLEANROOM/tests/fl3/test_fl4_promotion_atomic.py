@@ -176,6 +176,13 @@ def test_fl4_atomic_promotion_creates_promoted_package_and_updates_index(tmp_pat
         assert promoted_manifest.get("schema_id") == "kt.promoted_manifest.v1"
         assert promoted_manifest.get("content_hash") == report.get("content_hash")
 
+        # Promotion isolation: promoted package must verify even if the source job_dir is deleted.
+        shutil.rmtree(job_dir)
+        assert not job_dir.exists()
+        from tools.verification.fl3_meta_evaluator import verify_job_dir  # noqa: E402
+
+        verify_job_dir(repo_root=repo_root, job_dir=promoted_dir)
+
         assert promoted_index_path.exists()
         idx = json.loads(promoted_index_path.read_text(encoding="utf-8"))
         validate_schema_bound_object(idx)

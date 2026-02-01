@@ -126,3 +126,44 @@ def test_fl4_determinism_canary_passes_and_emits_schema_bound_artifact(tmp_path:
         if runs_dir.exists():
             shutil.rmtree(runs_dir)
 
+
+def test_fl4_determinism_canary_rerun_is_stable(tmp_path: Path) -> None:
+    repo_root = _REPO_ROOT
+
+    contract_path = tmp_path / "organ_contract.json"
+    budget_path = tmp_path / "budget.json"
+    out1 = tmp_path / "canary1.json"
+    out2 = tmp_path / "canary2.json"
+
+    _write_json(contract_path, _mk_contract(repo_root=repo_root))
+    _write_json(budget_path, _mk_budget())
+
+    paths = load_fl3_canonical_runtime_paths(repo_root=repo_root)
+    export_shadow_root = str(paths["exports_shadow_root"]).replace("\\", "/").rstrip("/") + "/_canary"
+
+    try:
+        assert int(canary_main(["--organ-contract", str(contract_path), "--budget-state", str(budget_path), "--out", str(out1)])) == 0
+        assert int(canary_main(["--organ-contract", str(contract_path), "--budget-state", str(budget_path), "--out", str(out2)])) == 0
+
+        obj1 = json.loads(out1.read_text(encoding="utf-8"))
+        obj2 = json.loads(out2.read_text(encoding="utf-8"))
+        validate_schema_bound_object(obj1)
+        validate_schema_bound_object(obj2)
+
+        assert obj1["hash_manifest_root_hash"] == obj2["hash_manifest_root_hash"]
+    finally:
+        # Clean up canary directories.
+        for p in (out1, out2):
+            if p.exists():
+                try:
+                    canary = json.loads(p.read_text(encoding="utf-8"))
+                    job_id = str(canary.get("canary_job_id", ""))
+                except Exception:
+                    job_id = ""
+                if job_id:
+                    out_dir = (repo_root / export_shadow_root / job_id).resolve()
+                    if out_dir.exists():
+                        shutil.rmtree(out_dir)
+        runs_dir = (repo_root / "KT_PROD_CLEANROOM" / "exports" / "adapters_shadow" / "_runs" / "FL4_CANARY").resolve()
+        if runs_dir.exists():
+            shutil.rmtree(runs_dir)
