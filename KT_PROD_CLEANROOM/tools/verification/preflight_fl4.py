@@ -67,6 +67,7 @@ def _assert_evidence_pack_complete(*, out_dir: Path) -> None:
         "law_bundle_hash.txt",
         "law_bundle.json",
         "growth_e2e_gate_report.json",
+        "behavioral_growth_summary.json",
         "meta_evaluator_receipt.json",
         "red_assault_report.json",
         "rollback_drill_report.json",
@@ -106,6 +107,35 @@ def _assert_evidence_pack_complete(*, out_dir: Path) -> None:
                 missing.append(f"job_dir/{name}")
             elif p.is_file() and p.stat().st_size == 0:
                 missing.append(f"job_dir/{name} (empty)")
+
+    # Behavioral growth certificate (fail-closed).
+    growth_dir = out_dir / "behavioral_growth"
+    if not growth_dir.exists():
+        missing.append("behavioral_growth/ (missing)")
+    else:
+        required_growth = (
+            "H0.json",
+            "E.json",
+            "H1.json",
+            "growth_protocol.json",
+            "scores_H0.json",
+            "scores_H1.json",
+            "state_event.json",
+            "growth_claim.json",
+            "_tmp/state_payloads/ (missing)",
+            "_tmp/state_ledger.jsonl",
+        )
+        for name in required_growth:
+            if name.endswith("/ (missing)"):
+                d = growth_dir / name.replace("/ (missing)", "")
+                if not d.exists():
+                    missing.append(f"behavioral_growth/{name}")
+                continue
+            p = growth_dir / name
+            if not p.exists():
+                missing.append(f"behavioral_growth/{name}")
+            elif p.is_file() and p.stat().st_size == 0:
+                missing.append(f"behavioral_growth/{name} (empty)")
 
     # Promotion is conditional; if promotion was attempted, its report must exist.
     promotion_report = out_dir / "promotion_report.json"
@@ -427,6 +457,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         )
         _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.verification.growth_e2e_gate", "--pressure-runs", "1", "--out", str(out_dir / "growth_e2e_gate_report.json")], rc=rc, output=out)
 
+        # 3b) Behavioral growth certificate (FL4 seal requirement; deterministic; fail-closed).
+        bg_dir = (out_dir / "behavioral_growth").resolve()
+        bg_cmd = [
+            py_exe,
+            "-m",
+            "tools.verification.fl4_behavioral_growth",
+            "--out-dir",
+            str(bg_dir),
+            "--seed",
+            "0",
+            "--min-delta",
+            "0.4",
+            "--max-p-value",
+            "0.01",
+        ]
+        rc, out = _run(bg_cmd, cwd=repo_root, env=env, out_path=out_dir / "behavioral_growth.log")
+        _append_transcript(transcript_path, cmd=bg_cmd, rc=rc, output=out)
+        (out_dir / "behavioral_growth_summary.json").write_text(out if out.endswith("\n") else out + "\n", encoding="utf-8", newline="\n")
+
         # 4) Build ephemeral organ contract and run determinism canary + one sovereign job.
         contract = _mk_min_contract(repo_root)
         contract_path = out_dir / "organ_contract.json"
@@ -621,6 +670,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             "seal_doctrine_sha256": doctrine_hash,
             "env_lock_id": str(env_lock.get("env_lock_id")),
         }
+        try:
+            bg_obj = json.loads((out_dir / "behavioral_growth_summary.json").read_text(encoding="utf-8"))
+            if isinstance(bg_obj, dict):
+                summary["behavioral_growth"] = bg_obj
+        except Exception:
+            pass
         promotion_report = out_dir / "promotion_report.json"
         if promotion_report.exists():
             try:

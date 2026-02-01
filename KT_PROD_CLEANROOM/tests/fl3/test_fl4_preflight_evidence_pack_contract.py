@@ -31,6 +31,7 @@ def test_evidence_pack_completeness_contract_passes_minimal(tmp_path: Path) -> N
         "law_bundle_hash.txt",
         "law_bundle.json",
         "growth_e2e_gate_report.json",
+        "behavioral_growth_summary.json",
         "meta_evaluator_receipt.json",
         "red_assault_report.json",
         "rollback_drill_report.json",
@@ -55,6 +56,22 @@ def test_evidence_pack_completeness_contract_passes_minimal(tmp_path: Path) -> N
         "job_dir_manifest.json",
     ):
         _touch(out_dir / "job_dir" / name)
+
+    # Minimal behavioral growth certificate folder (required by seal).
+    for name in (
+        "H0.json",
+        "E.json",
+        "H1.json",
+        "growth_protocol.json",
+        "scores_H0.json",
+        "scores_H1.json",
+        "state_event.json",
+        "growth_claim.json",
+        "_tmp/state_ledger.jsonl",
+    ):
+        _touch(out_dir / "behavioral_growth" / name)
+    (out_dir / "behavioral_growth" / "_tmp" / "state_payloads").mkdir(parents=True, exist_ok=True)
+    _touch(out_dir / "behavioral_growth" / "_tmp" / "state_payloads" / "payload.json")
 
     _assert_evidence_pack_complete(out_dir=out_dir)
 
