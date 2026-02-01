@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import socket
+import os
 from pathlib import Path
 
 import pytest
@@ -27,3 +28,9 @@ def test_io_guard_blocks_writes_outside_allowed_roots(tmp_path: Path) -> None:
         with pytest.raises(IOGuardViolation):
             forbidden.write_text("nope\n", encoding="utf-8")
 
+
+def test_io_guard_allows_devnull_sink(tmp_path: Path) -> None:
+    # pytest/logging frequently opens os.devnull for write as a sink; this must not be treated as stateful I/O.
+    with IOGuard(IOGuardConfig(allowed_write_roots=(tmp_path,), deny_network=False, receipt_path=None)):
+        with open(os.devnull, "w", encoding="utf-8") as f:
+            f.write("x")

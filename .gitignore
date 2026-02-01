@@ -13,6 +13,9 @@ __pycache__/
 *.pyc
 *.pyo
 
+# Local virtual environments (never committed)
+.venv*/
+
 # Growth artifacts must not be committed (runtime runs happen after clone)
 KT_PROD_CLEANROOM/tools/growth/artifacts/**
 !KT_PROD_CLEANROOM/tools/growth/artifacts/.gitkeep

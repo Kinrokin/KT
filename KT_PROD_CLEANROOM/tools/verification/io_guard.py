@@ -18,6 +18,34 @@ class IOGuardViolation(RuntimeError):
 def _as_path(p: Union[str, os.PathLike[str]]) -> Path:
     return Path(os.fspath(p))
 
+def _is_devnull_path(p: Path) -> bool:
+    """
+    Allow writes to the platform null device (e.g. /dev/null or NUL).
+
+    This is not stateful I/O and is commonly used by libraries (pytest/logging) as a sink.
+    """
+    devnull = os.devnull
+    if devnull:
+        try:
+            dn = Path(devnull)
+            pp = p
+            if not dn.is_absolute():
+                dn = (Path.cwd() / dn)
+            if not pp.is_absolute():
+                pp = (Path.cwd() / pp)
+            if pp.resolve().as_posix().lower() == dn.resolve().as_posix().lower():
+                return True
+        except Exception:
+            pass
+
+    # Windows: device paths sometimes appear as \\.\nul or with trailing slashes.
+    s = str(p).replace("/", "\\").lower().rstrip("\\")
+    if s in {"nul", "\\\\.\\nul", "\\\\.\\nul:"}:
+        return True
+    if s.startswith("\\\\.\\nul"):
+        return True
+    return False
+
 
 def _is_write_mode(mode: str) -> bool:
     # Anything that can create or mutate bytes on disk.
@@ -91,6 +119,8 @@ class IOGuard:
                 return delegate(file, mode, *args, **kwargs)
             if isinstance(file, (str, os.PathLike)) and isinstance(mode, str) and _is_write_mode(mode):
                 target = _as_path(file)
+                if _is_devnull_path(target):
+                    return delegate(file, mode, *args, **kwargs)
                 if not target.is_absolute():
                     target = (Path.cwd() / target)
                 if not _under_any_root(target=target, roots=self._cfg.allowed_write_roots):
@@ -115,6 +145,8 @@ class IOGuard:
         def _path_open(self_path: Path, mode: str = "r", *args: Any, **kwargs: Any) -> Any:  # type: ignore[override]
             if isinstance(mode, str) and _is_write_mode(mode):
                 target = self_path
+                if _is_devnull_path(target):
+                    return self._orig_path_open(self_path, mode, *args, **kwargs)  # type: ignore[misc]
                 if not target.is_absolute():
                     target = (Path.cwd() / target)
                 if not _under_any_root(target=target, roots=self._cfg.allowed_write_roots):

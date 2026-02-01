@@ -326,6 +326,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         out_dir = (repo_root / "KT_PROD_CLEANROOM" / "exports" / "adapters_shadow" / "_runs" / "FL4_SEAL" / ts).resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
     transcript_path = out_dir / "command_transcript.txt"
+    # Seal lane: force all temp usage under the evidence root to avoid undeclared filesystem I/O.
+    tmp_dir = (out_dir / "_tmp").resolve()
+    tmp_dir.mkdir(parents=True, exist_ok=True)
+    # Do not mutate the host env; only constrain subprocess env and this process' tempfile root.
+    env["TMPDIR"] = tmp_dir.as_posix()
+    env["TMP"] = tmp_dir.as_posix()
+    env["TEMP"] = tmp_dir.as_posix()
+    tempfile.tempdir = str(tmp_dir)
 
     # Phase 0: doctrine + execution surface contract (evidence, then enforce).
     doctrine_path = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_SEAL_DOCTRINE.md"
@@ -344,12 +352,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     # Seal lane I/O guard: fail-closed on network attempts and on writes outside allowlisted roots.
     exports_shadow = (repo_root / str(paths["exports_shadow_root"])).resolve()
     exports_adapters = (repo_root / str(paths["exports_adapters_root"])).resolve()
-    tmp_root = Path(tempfile.gettempdir()).resolve()
     allowed_write_roots = [
         out_dir.resolve(),
         exports_shadow,
         exports_adapters,
-        tmp_root,
     ]
     # Propagate to subprocesses via sitecustomize (KT_PROD_CLEANROOM/sitecustomize.py).
     env["KT_IO_GUARD"] = "1"
