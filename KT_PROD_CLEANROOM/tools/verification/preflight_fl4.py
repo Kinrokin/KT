@@ -66,7 +66,7 @@ def _assert_evidence_pack_complete(*, out_dir: Path) -> None:
         "determinism_contract.json",
         "law_bundle_hash.txt",
         "law_bundle.json",
-        "growth_e2e_gate_report.json",
+        "fl3_growth_e2e_gate_deferred.json",
         "behavioral_growth_summary.json",
         "meta_evaluator_receipt.json",
         "red_assault_report.json",
@@ -449,13 +449,24 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         )
         _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.verification.fl3_rollback_drill", "--registry-path", reg_path, "--out", str(out_dir / "rollback_drill_report.json")], rc=rc, output=out)
 
-        # 3) Growth lane E2E gate (canonical wrapper)
-        rc, out = _run(
-            [py_exe, "-m", "tools.verification.growth_e2e_gate", "--pressure-runs", "1", "--out", str(out_dir / "growth_e2e_gate_report.json")],
-            cwd=repo_root,
-            env=env,
+        # 3) FL3 pressure growth gate is explicitly deferred in FL4 seal mode (phase-correct).
+        deferred = {
+            "schema_id": "kt.fl3_pressure_growth_deferred.v1",
+            "seal_mode": True,
+            "reason": "FL3 growth_e2e_gate SHALL NOT execute in FL4 seal mode; run post-seal in pressure-capable phase.",
+            "skipped_command": [py_exe, "-m", "tools.verification.growth_e2e_gate", "--pressure-runs", "1", "--out", "<OUT_DIR>/growth_e2e_gate_report.json"],
+        }
+        (out_dir / "fl3_growth_e2e_gate_deferred.json").write_text(
+            json.dumps(deferred, indent=2, sort_keys=True, ensure_ascii=True) + "\n",
+            encoding="utf-8",
+            newline="\n",
         )
-        _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.verification.growth_e2e_gate", "--pressure-runs", "1", "--out", str(out_dir / "growth_e2e_gate_report.json")], rc=rc, output=out)
+        _append_transcript(
+            transcript_path,
+            cmd=[py_exe, "-m", "tools.verification.growth_e2e_gate", "--pressure-runs", "1", "--out", str(out_dir / "growth_e2e_gate_report.json")],
+            rc=0,
+            output="SKIP: FL3 pressure growth gate deferred in FL4 seal mode (see fl3_growth_e2e_gate_deferred.json).",
+        )
 
         # 3b) Behavioral growth certificate (FL4 seal requirement; deterministic; fail-closed).
         bg_dir = (out_dir / "behavioral_growth").resolve()
@@ -669,6 +680,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             "evidence_job_dir": (out_dir / "job_dir").as_posix(),
             "seal_doctrine_sha256": doctrine_hash,
             "env_lock_id": str(env_lock.get("env_lock_id")),
+            "fl3_pressure_growth_gate": {"executed": False, "receipt": "fl3_growth_e2e_gate_deferred.json"},
         }
         try:
             bg_obj = json.loads((out_dir / "behavioral_growth_summary.json").read_text(encoding="utf-8"))

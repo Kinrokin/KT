@@ -30,7 +30,7 @@ def test_evidence_pack_completeness_contract_passes_minimal(tmp_path: Path) -> N
         "determinism_contract.json",
         "law_bundle_hash.txt",
         "law_bundle.json",
-        "growth_e2e_gate_report.json",
+        "fl3_growth_e2e_gate_deferred.json",
         "behavioral_growth_summary.json",
         "meta_evaluator_receipt.json",
         "red_assault_report.json",
