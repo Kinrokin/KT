@@ -343,6 +343,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     doctrine_hash = _sha256_file(doctrine_path)
 
     env_lock = _enforce_env_lock(repo_root=repo_root, env_for_subprocess=env, out_dir=out_dir)
+    # Seal mode applies to all subprocesses launched by this preflight lane.
+    env["KT_SEAL_MODE"] = "1"
 
     # Evidence: record the exact python environment used for the seal run.
     rc, out = _run([py_exe, "-m", "pip", "freeze"], cwd=repo_root, env=env)

@@ -35,10 +35,12 @@ def test_fl3_budget_lock_contention(tmp_path: Path) -> None:
     p.start()
     try:
         # Wait until the child has created the lock file (fail-closed if it never appears).
-        deadline = time.time() + 1.0
+        # Windows CI / constrained environments can be slow to spawn; keep this deterministic but non-flaky.
+        deadline = time.time() + 3.0
         while not lock_path.exists() and time.time() < deadline:
             time.sleep(0.01)
         assert lock_path.exists()
+
         with pytest.raises(Exception):
             with exclusive_lock(lock_path, timeout_s=0.1):
                 pass
