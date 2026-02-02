@@ -50,7 +50,7 @@ jobs:
           export TRANSFORMERS_NO_FLAX="1"
 
           # Fail-closed on duplicate keys in env lock JSON (law must be unambiguous).
-          python -c "from pathlib import Path; from KT_PROD_CLEANROOM.tools.verification.strict_json import load_no_dupes; load_no_dupes(Path('KT_PROD_CLEANROOM/AUDITS/FL4_ENV_LOCK.json')); print('OK: env lock parses with no duplicate keys')"
+          python -c "from pathlib import Path; from tools.verification.strict_json import load_no_dupes; load_no_dupes(Path('KT_PROD_CLEANROOM/AUDITS/FL4_ENV_LOCK.json')); print('OK: env lock parses with no duplicate keys')"
 
           OUT_DIR="KT_PROD_CLEANROOM/exports/adapters_shadow/_runs/FL4_SEAL/CI"
           rm -rf "$OUT_DIR"
