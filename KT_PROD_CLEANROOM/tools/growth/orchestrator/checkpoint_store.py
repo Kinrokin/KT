@@ -47,3 +47,13 @@ def completed_crucible_ids(path: Path) -> Set[str]:
         if rec.get("status") == "DONE" and isinstance(rec.get("crucible_id"), str):
             completed.add(rec["crucible_id"])
     return completed
+
+
+def completed_crucible_run_ids(path: Path) -> Dict[str, str]:
+    completed: Dict[str, str] = {}
+    for rec in _iter_records(path):
+        cid = rec.get("crucible_id")
+        rid = rec.get("run_id")
+        if rec.get("status") == "DONE" and isinstance(cid, str) and isinstance(rid, str):
+            completed[cid] = rid
+    return completed

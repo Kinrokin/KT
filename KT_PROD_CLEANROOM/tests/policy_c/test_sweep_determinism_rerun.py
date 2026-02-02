@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import unittest
 from pathlib import Path
@@ -88,7 +89,14 @@ def _collect_hashes(out_root: Path) -> dict:
 class TestSweepDeterminismRerun(unittest.TestCase):
     def test_rerun_content_hashes(self) -> None:
         registry = load_runtime_registry()
-        allowed_root = ROOT / registry.policy_c.sweep.allowed_export_roots[0]
+
+        if os.environ.get("KT_SEAL_MODE", "0") == "1":
+            tmp = os.environ.get("TMPDIR") or os.environ.get("TMP") or os.environ.get("TEMP") or ""
+            if not tmp:
+                raise RuntimeError("KT_SEAL_MODE=1 requires TMPDIR/TMP/TEMP (fail-closed)")
+            allowed_root = (Path(tmp).resolve() / "policy_c").resolve()
+        else:
+            allowed_root = ROOT / registry.policy_c.sweep.allowed_export_roots[0]
         allowed_root.mkdir(parents=True, exist_ok=True)
 
         out_root_a = allowed_root / "_determinism_a"
@@ -96,14 +104,20 @@ class TestSweepDeterminismRerun(unittest.TestCase):
         plan_path = allowed_root / "_determinism_plan.json"
 
         try:
-            export_root_rel = out_root_a.relative_to(ROOT).as_posix()
-            _write_plan(plan_path, export_root_rel)
+            export_root_a = out_root_a.resolve()
+            export_root_raw = (
+                export_root_a.relative_to(ROOT).as_posix() if os.environ.get("KT_SEAL_MODE", "0") != "1" else export_root_a.as_posix()
+            )
+            _write_plan(plan_path, export_root_raw)
             run_sweep(plan_path=plan_path, out_root=out_root_a)
             export_dataset(sweep_result_path=out_root_a / "policy_c_sweep_result.json", out_root=out_root_a)
             hashes_a = _collect_hashes(out_root_a)
 
-            export_root_rel = out_root_b.relative_to(ROOT).as_posix()
-            _write_plan(plan_path, export_root_rel)
+            export_root_b = out_root_b.resolve()
+            export_root_raw = (
+                export_root_b.relative_to(ROOT).as_posix() if os.environ.get("KT_SEAL_MODE", "0") != "1" else export_root_b.as_posix()
+            )
+            _write_plan(plan_path, export_root_raw)
             run_sweep(plan_path=plan_path, out_root=out_root_b)
             export_dataset(sweep_result_path=out_root_b / "policy_c_sweep_result.json", out_root=out_root_b)
             hashes_b = _collect_hashes(out_root_b)

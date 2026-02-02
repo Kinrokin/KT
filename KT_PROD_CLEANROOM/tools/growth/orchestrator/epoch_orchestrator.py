@@ -26,6 +26,7 @@ from tools.growth.orchestrator.checkpoint_store import (
     CheckpointRecord,
     append_checkpoint,
     completed_crucible_ids,
+    completed_crucible_run_ids,
 )
 from tools.growth.orchestrator.epoch_budget import assert_budget_ok, validate_crucible_budgets
 from tools.growth.orchestrator.epoch_manifest import build_manifest
@@ -59,6 +60,31 @@ COHERENCE_DEBT_MAX = 5
 
 def _repo_root() -> Path:
     return _REPO_ROOT
+
+
+def _rel_to_repo_root_or_abs(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(_repo_root().resolve()).as_posix()
+    except Exception:
+        return path.resolve().as_posix()
+
+
+def _growth_artifacts_root() -> Path:
+    """
+    Single source of truth for growth artifacts root.
+
+    Default: KT_PROD_CLEANROOM/tools/growth/artifacts
+
+    Seal / gate override: set KT_GROWTH_ARTIFACTS_ROOT to an absolute path or a
+    cleanroom-relative path (resolved relative to _repo_root()).
+    """
+    override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+    if not override:
+        return _repo_root() / "tools" / "growth" / "artifacts"
+    p = Path(override)
+    if not p.is_absolute():
+        p = _repo_root() / p
+    return p.resolve()
 
 
 def _load_plan(path: Path) -> EpochPlan:
@@ -110,8 +136,12 @@ def _runner_command(
 ) -> Tuple[List[str], Path]:
     repo_root = _repo_root()
     runner = repo_root / "tools" / "growth" / "crucible_runner.py"
+    # IMPORTANT: do not `.resolve()` sys.executable.
+    # In venvs (e.g. Kaggle), the venv python can be a symlink to the system python.
+    # Resolving it would bypass the venv and drop site-packages, causing missing deps
+    # (e.g. psutil) in the crucible subprocess.
     cmd = [
-        str(Path(sys.executable).resolve()),
+        sys.executable,
         str(runner),
         "--crucible",
         str(crucible_path.resolve()),
@@ -123,6 +153,29 @@ def _runner_command(
     if ruleset_path is not None:
         cmd.extend(["--ruleset", str(ruleset_path.resolve())])
     return cmd, repo_root
+
+
+def _normalize_command_for_record(command: List[str], repo_root: Path) -> List[str]:
+    """
+    Best-effort normalization for audit/debug logs.
+
+    - Replaces the interpreter path with literal "python".
+    - Converts the script path (2nd arg) to a repo-relative path when possible.
+
+    This avoids leaking machine-specific absolute paths while preserving enough
+    detail to reproduce the invocation shape.
+    """
+    if not command:
+        return []
+    out = list(command)
+    out[0] = "python"
+    if len(out) >= 2:
+        try:
+            script_path = Path(out[1]).resolve()
+            out[1] = script_path.relative_to(repo_root.resolve()).as_posix()
+        except Exception:
+            pass
+    return out
 
 
 def _run_subprocess_capped(
@@ -486,7 +539,7 @@ def _materialize_epoch_artifact_contract(
         raise EpochSchemaError("epoch_summary.json missing at epoch root (fail-closed)")
 
     by_cid = {r.crucible_id: r for r in runs}
-    base = _repo_root() / "tools" / "growth" / "artifacts" / "c019_runs" / kernel_target
+    base = _growth_artifacts_root() / "c019_runs" / kernel_target
 
     runner_records: List[Dict[str, Any]] = []
     governance_text: Optional[str] = None
@@ -501,7 +554,62 @@ def _materialize_epoch_artifact_contract(
             raise EpochSchemaError(f"Missing run_id for {cid}; cannot materialize contract (fail-closed)")
         run_root = base / r.run_id
         if not run_root.exists():
-            raise EpochSchemaError(f"Missing run_root for {cid} at {run_root.as_posix()} (fail-closed)")
+            # Fail-closed, but surface cause: epoch-local runner logs and record are the only
+            # available evidence when per-run artifacts fail to materialize.
+            run_dir = epoch_root / cid
+            stderr_path = run_dir / "stderr.log"
+            stdout_path = run_dir / "stdout.json"
+            run_record_path = run_dir / "run_record.json"
+
+            def _tail(path: Path, *, max_lines: int) -> str:
+                if not path.exists():
+                    return "<missing>"
+                try:
+                    text = path.read_text(encoding="utf-8", errors="ignore")
+                except Exception as exc:
+                    return f"<unreadable:{exc}>"
+                lines = text.splitlines()
+                if not lines:
+                    return "<empty>"
+                tail = lines[-max_lines:]
+                return "\n".join(tail)
+
+            run_record_text = "<missing>"
+            if run_record_path.exists():
+                try:
+                    run_record_text = run_record_path.read_text(encoding="utf-8", errors="ignore")
+                except Exception as exc:
+                    run_record_text = f"<unreadable:{exc}>"
+
+            override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+            raise EpochSchemaError(
+                "Missing run_root for {cid} at {run_root} (fail-closed)\n"
+                "---- RUNNER DIAGNOSTICS (epoch-local) ----\n"
+                "epoch_root: {epoch_root}\n"
+                "epoch_run_dir: {run_dir}\n"
+                "growth_artifacts_root: {gar}\n"
+                "KT_GROWTH_ARTIFACTS_ROOT: {override}\n"
+                "kernel_target: {kernel}\n"
+                "expected_run_root: {expected}\n"
+                "\n"
+                "run_record.json:\n{run_record}\n"
+                "\n"
+                "stderr.log (tail):\n{stderr_tail}\n"
+                "\n"
+                "stdout.json (tail):\n{stdout_tail}\n".format(
+                    cid=cid,
+                    run_root=run_root.as_posix(),
+                    epoch_root=epoch_root.as_posix(),
+                    run_dir=run_dir.as_posix(),
+                    gar=_growth_artifacts_root().as_posix(),
+                    override=override or "<unset>",
+                    kernel=kernel_target,
+                    expected=run_root.as_posix(),
+                    run_record=run_record_text.strip() or "<empty>",
+                    stderr_tail=_tail(stderr_path, max_lines=80),
+                    stdout_tail=_tail(stdout_path, max_lines=40),
+                )
+            )
 
         rr_src = run_root / "runner_record.json"
         if not rr_src.exists():
@@ -543,7 +651,7 @@ def _materialize_epoch_artifact_contract(
             {
                 "crucible_id": cid,
                 "run_id": r.run_id,
-                "src": str(sv_src.relative_to(_repo_root())),
+                "src": _rel_to_repo_root_or_abs(sv_src),
                 "bytes": int(sv_src.stat().st_size),
             }
         )
@@ -772,9 +880,10 @@ def preflight_epoch(
         blocks.append(f"IMMUTABILITY_BLOCK: epoch_id {plan.epoch_id} has prior payload and --no-auto-bump set")
 
     caps = _load_kernel_capabilities()
-    if plan.kernel_identity.kernel_target not in caps:
+    kernel_target = plan.kernel_identity.kernel_target
+    if kernel_target not in caps:
         warns.append(
-            f"KERNEL_CAPABILITY_WARN: kernel_target={plan.kernel_identity.kernel_target} missing from kernel_capabilities.yaml"
+            f"KERNEL_CAPABILITY_WARN: kernel_target={kernel_target} missing from kernel_capabilities.yaml"
         )
 
     for cid, data in crucible_specs.items():
@@ -783,7 +892,7 @@ def preflight_epoch(
         cap_blocks, cap_warns = _preflight_kernel_capability_mismatches(
             crucible_id=cid,
             epoch_profile=plan.epoch_profile,
-            kernel_target=plan.kernel_identity.kernel_target,
+            kernel_target=kernel_target,
             expect=expect,
             caps=caps,
         )
@@ -862,6 +971,9 @@ def run_epoch(
     debug_run_roots: bool = False,
 ) -> Dict[str, object]:
     plan = _load_plan(plan_path)
+    kernel_target = plan.kernel_identity.kernel_target
+    if kernel_target != plan.kernel_identity.kernel_target:
+        raise EpochSchemaError("kernel_target drift (plan identity mismatch; fail-closed)")
     if plan.runner_config.template_id != RUNNER_TEMPLATE_C019:
         raise EpochSchemaError("runner_config.template_id not allowed (fail-closed)")
     if plan.runner_config.args:
@@ -892,7 +1004,7 @@ def run_epoch(
 
     # Build manifest and epoch hash (auto-bump on collision if enabled).
     spec_hashes = {cid: crucible_specs[cid]["hash"] for cid in plan.crucible_order}
-    base_root = artifacts_root if artifacts_root is not None else (repo_root / "tools" / "growth" / "artifacts" / "epochs")
+    base_root = artifacts_root if artifacts_root is not None else (_growth_artifacts_root() / "epochs")
 
     manifest = build_manifest(plan, crucible_spec_hashes=spec_hashes)
     bump_count = 0
@@ -931,6 +1043,7 @@ def run_epoch(
 
     checkpoint_path = epoch_root / "checkpoint.json"
     completed = completed_crucible_ids(checkpoint_path) if resume else set()
+    completed_run_ids = completed_crucible_run_ids(checkpoint_path) if resume else {}
 
     start_epoch = time.monotonic()
     failures = 0
@@ -956,7 +1069,7 @@ def run_epoch(
                 CrucibleRunSummary(
                     crucible_id=cid,
                     crucible_path=str(crucible_path),
-                    run_id=None,
+                    run_id=completed_run_ids.get(cid),
                     outcome="SKIPPED_RESUME",
                     notes="resume_skip",
                 )
@@ -993,14 +1106,15 @@ def run_epoch(
             break
 
         if runner_cmd_override is not None:
-            cmd, cwd = runner_cmd_override(crucible_path, plan.kernel_identity.kernel_target, plan.seed)
+            cmd, cwd = runner_cmd_override(crucible_path, kernel_target, plan.seed)
         else:
             cmd, cwd = _runner_command(
                 crucible_path=crucible_path,
-                kernel_target=plan.kernel_identity.kernel_target,
+                kernel_target=kernel_target,
                 seed=plan.seed,
                 ruleset_path=selected_ruleset_path,
             )
+        cmd_norm = _normalize_command_for_record(cmd, repo_root=_repo_root())
         env = dict(os.environ)
         env["PYTHONIOENCODING"] = "utf-8"
         budgets = crucible_specs[cid]["budgets"]
@@ -1011,7 +1125,7 @@ def run_epoch(
             crucible_spec=crucible_specs[cid]["spec"],
             crucible_spec_hash_hex=str(crucible_specs[cid]["hash"]),
             budgets=budgets,
-            kernel_target=plan.kernel_identity.kernel_target,
+            kernel_target=kernel_target,
             seed=plan.seed,
         )
 
@@ -1061,29 +1175,12 @@ def run_epoch(
 
         # Copy micro_steps.json from the crucible run directory if present (tooling-only, non-gating).
         if run_id:
-            micro_src = (
-                _repo_root()
-                / "tools"
-                / "growth"
-                / "artifacts"
-                / "c019_runs"
-                / plan.kernel_identity.kernel_target
-                / run_id
-                / "micro_steps.json"
-            )
+            micro_src = _growth_artifacts_root() / "c019_runs" / kernel_target / run_id / "micro_steps.json"
             micro_dst = run_dir / "micro_steps.json"
             if micro_src.exists():
                 _write_once(micro_dst, micro_src.read_text(encoding="utf-8"))
             if debug_run_roots:
-                run_root = (
-                    _repo_root()
-                    / "tools"
-                    / "growth"
-                    / "artifacts"
-                    / "c019_runs"
-                    / plan.kernel_identity.kernel_target
-                    / run_id
-                )
+                run_root = _growth_artifacts_root() / "c019_runs" / kernel_target / run_id
                 _debug_run_root(crucible_id=cid, run_id=run_id, run_root=run_root)
 
         _write_once(
@@ -1095,6 +1192,25 @@ def run_epoch(
                     "run_id": run_id,
                     "outcome": outcome,
                     "notes": notes,
+                    "runner": {
+                        "exit_code": result.exit_code,
+                        "was_killed": bool(result.was_killed),
+                        "kill_reason": result.kill_reason,
+                        "stdout_truncated": bool(result.stdout_truncated),
+                        "stderr_truncated": bool(result.stderr_truncated),
+                        "duration_ms": int(result.duration_ms),
+                        "peak_rss_bytes": result.peak_rss_bytes,
+                        "command": cmd_norm,
+                        "cwd": str(cwd),
+                    },
+                    "expected": {
+                        "growth_artifacts_root": _growth_artifacts_root().as_posix(),
+                        "run_root": (
+                            (_growth_artifacts_root() / "c019_runs" / kernel_target / run_id).as_posix()
+                            if run_id
+                            else None
+                        ),
+                    },
                 },
                 sort_keys=True,
                 indent=2,
@@ -1135,14 +1251,7 @@ def run_epoch(
     )
 
     paradox_event_ids: List[str] = []
-    run_base = (
-        _repo_root()
-        / "tools"
-        / "growth"
-        / "artifacts"
-        / "c019_runs"
-        / plan.kernel_identity.kernel_target
-    )
+    run_base = _growth_artifacts_root() / "c019_runs" / kernel_target
     for run in runs:
         if run.run_id is None:
             continue
@@ -1189,9 +1298,83 @@ def run_epoch(
         run = next((r for r in runs if r.crucible_id == cid and r.run_id), None)
         if run is None or run.run_id is None:
             raise EpochSchemaError(f"Missing run_id for {cid}; cannot aggregate coverage (fail-closed)")
-        cov_path = _repo_root() / "tools" / "growth" / "artifacts" / "c019_runs" / plan.kernel_identity.kernel_target / run.run_id / "crucible_coverage.json"
+        run_root = _growth_artifacts_root() / "c019_runs" / kernel_target / run.run_id
+        cov_path = run_root / "crucible_coverage.json"
         if not cov_path.exists():
-            raise EpochSchemaError(f"Missing crucible coverage for {cid} at {cov_path.as_posix()} (fail-closed)")
+            # Fail-closed with maximum local evidence surfaced (epoch-local + per-run if present).
+            run_dir = epoch_root / cid
+            stderr_path = run_dir / "stderr.log"
+            stdout_path = run_dir / "stdout.json"
+            run_record_path = run_dir / "run_record.json"
+
+            def _tail(path: Path, *, max_lines: int) -> str:
+                if not path.exists():
+                    return "<missing>"
+                try:
+                    text = path.read_text(encoding="utf-8", errors="ignore")
+                except Exception as exc:
+                    return f"<unreadable:{exc}>"
+                lines = text.splitlines()
+                if not lines:
+                    return "<empty>"
+                return "\n".join(lines[-max_lines:])
+
+            def _list_top(p: Path) -> str:
+                if not p.exists():
+                    return "<missing>"
+                try:
+                    names = sorted([x.name for x in p.iterdir()])
+                except Exception as exc:
+                    return f"<list_error:{exc}>"
+                if not names:
+                    return "<empty>"
+                return ", ".join(names[:60]) + (" ..." if len(names) > 60 else "")
+
+            run_record_text = "<missing>"
+            if run_record_path.exists():
+                try:
+                    run_record_text = run_record_path.read_text(encoding="utf-8", errors="ignore")
+                except Exception as exc:
+                    run_record_text = f"<unreadable:{exc}>"
+
+            raise EpochSchemaError(
+                "Missing crucible coverage for {cid} at {cov_path} (fail-closed)\n"
+                "---- RUNNER DIAGNOSTICS (epoch-local + per-run) ----\n"
+                "epoch_root: {epoch_root}\n"
+                "epoch_run_dir: {run_dir}\n"
+                "growth_artifacts_root: {gar}\n"
+                "KT_GROWTH_ARTIFACTS_ROOT: {override}\n"
+                "kernel_target: {kernel}\n"
+                "run_id: {run_id}\n"
+                "run_root_exists: {run_root_exists}\n"
+                "run_root_top_files: {run_root_top}\n"
+                "\n"
+                "epoch_run_record.json:\n{run_record}\n"
+                "\n"
+                "epoch stderr.log (tail):\n{stderr_tail}\n"
+                "\n"
+                "epoch stdout.json (tail):\n{stdout_tail}\n"
+                "\n"
+                "run_root stderr.log (tail):\n{run_stderr_tail}\n"
+                "\n"
+                "run_root stdout.json (tail):\n{run_stdout_tail}\n".format(
+                    cid=cid,
+                    cov_path=cov_path.as_posix(),
+                    epoch_root=epoch_root.as_posix(),
+                    run_dir=run_dir.as_posix(),
+                    gar=_growth_artifacts_root().as_posix(),
+                    override=(os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip() or "<unset>",
+                    kernel=kernel_target,
+                    run_id=run.run_id,
+                    run_root_exists=bool(run_root.exists()),
+                    run_root_top=_list_top(run_root),
+                    run_record=run_record_text.strip() or "<empty>",
+                    stderr_tail=_tail(stderr_path, max_lines=80),
+                    stdout_tail=_tail(stdout_path, max_lines=40),
+                    run_stderr_tail=_tail(run_root / "stderr.log", max_lines=80),
+                    run_stdout_tail=_tail(run_root / "stdout.json", max_lines=40),
+                )
+            )
         cov_list.append(json.loads(cov_path.read_text(encoding="utf-8")))
 
     domains, subs, micros, ventures, modes, modalities, tools = set(), set(), set(), set(), set(), set(), set()
@@ -1232,7 +1415,7 @@ def run_epoch(
         "schema_version": "EPOCH_COVERAGE_V1",
         "epoch_id": plan.epoch_id,
         "epoch_hash": manifest.epoch_hash,
-        "kernel_target": plan.kernel_identity.kernel_target,
+        "kernel_target": kernel_target,
         "observed": {
             "domains": sorted(domains),
             "subdomains": sorted(subs),
@@ -1326,7 +1509,7 @@ def run_epoch(
     # Materialize canonical artifact contract (fail-closed; no stubs).
     _materialize_epoch_artifact_contract(
         epoch_root=epoch_root,
-        kernel_target=plan.kernel_identity.kernel_target,
+        kernel_target=kernel_target,
         crucible_order=list(plan.crucible_order),
         runs=runs,
     )
@@ -1396,6 +1579,7 @@ def run_epoch_from_plan(
     mode: str = "normal",
     env: Optional[Dict[str, str]] = None,
     salvage_out_root: Optional[Path] = None,
+    artifacts_root: Optional[Path] = None,
     auto_bump: bool = True,
     quiet: bool = False,
 ) -> Dict[str, object]:
@@ -1409,6 +1593,7 @@ def run_epoch_from_plan(
     return run_epoch(
         plan_path,
         resume=resume,
+        artifacts_root=artifacts_root,
         salvage=salvage,
         salvage_out_root=salvage_out_root,
         auto_bump=auto_bump,

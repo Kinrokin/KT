@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Law Amendment v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "amendment_id",
+    "bundle_hash",
+    "signoffs",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.law_amendment.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "amendment_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "bundle_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "signoffs": { "type": "array", "items": { "type": "object" } },
+    "created_at": { "type": "string" }
+  }
+}
+

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL4 Factory Phase Trace v1 (No-Stub Proof)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "phase_trace_id",
+    "job_id",
+    "phases",
+    "no_stub_executed",
+    "parent_hash",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.factory.phase_trace.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "phase_trace_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "job_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "phases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [ "phase", "module_path", "status" ],
+        "properties": {
+          "phase": { "type": "string" },
+          "module_path": { "type": "string" },
+          "status": { "type": "string", "enum": [ "OK", "SKIPPED", "FAIL" ] }
+        }
+      }
+    },
+    "no_stub_executed": { "type": "boolean" },
+    "parent_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" }
+  }
+}

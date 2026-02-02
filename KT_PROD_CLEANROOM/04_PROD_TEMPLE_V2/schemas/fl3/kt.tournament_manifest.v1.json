@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Tournament Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "tournament_id",
+    "job_id",
+    "blind_pack_ref",
+    "reveal_mapping_ref",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.tournament_manifest.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "tournament_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "job_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "blind_pack_ref": { "type": "string" },
+    "reveal_mapping_ref": { "type": "string" },
+    "created_at": { "type": "string" }
+  }
+}
+

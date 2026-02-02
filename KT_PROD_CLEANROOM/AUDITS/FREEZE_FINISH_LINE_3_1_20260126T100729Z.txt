@@ -1,0 +1,14 @@
+﻿FREEZE_FINISH_LINE_3_1
+utc=20260126T100729Z
+git_rev=19ac01d7ee0ba9d2f424d196617aa9f50a18d451
+law_bundle_hash=dd96c6ab717bcee66aaf4d2482414f8c4e607bad34016e6f5ecf350a383c40fa
+meta_evaluator_receipt=KT_PROD_CLEANROOM/AUDITS/META_EVALUATOR_RECEIPT_FL3_20260126T100729Z.json
+sha256_meta_evaluator_receipt=a86a995b0d0994e1422b1787c244e7dfb6acc4547541beff7eb83e009aa71b24
+red_assault_report=KT_PROD_CLEANROOM/AUDITS/FL3_RED_ASSAULT_20260126T100729Z.json
+sha256_red_assault_report=53c29b3ea5348730a277283fadccde57a75ae05293b2480f037eebd01a07c955
+rollback_drill_report=KT_PROD_CLEANROOM/AUDITS/FL3_ROLLBACK_DRILL_20260126T100729Z.json
+sha256_rollback_drill_report=a499bc20591446a0f28825c14f634528bd815fd1f72f0132ad49194c41895cdd
+pytest_temple_v2=PASS (python -m pytest KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests -q)
+pytest_cleanroom=PASS (python -m pytest KT_PROD_CLEANROOM/tests -q)
+pytest_fl3=PASS (python -m pytest KT_PROD_CLEANROOM/tests/fl3 -q)
+statement=FL3.1 SRR/AIR exclusivity is now mechanically enforced (meta-evaluator + tests); LAW_BUNDLE pinned + amended; full KT tests green; red-assault fail-closed; rollback drill restores registry.

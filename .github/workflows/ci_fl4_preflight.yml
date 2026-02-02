@@ -1,0 +1,95 @@
+name: ci_fl4_preflight
+
+on:
+  workflow_dispatch: {}
+  pull_request:
+    paths:
+      - "KT_PROD_CLEANROOM/**"
+      - ".github/workflows/ci_fl4_preflight.yml"
+
+jobs:
+  fl4-preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install test dependencies (minimal)
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          # Keep CI lightweight but sufficient for canonical growth gate (crucible runner uses psutil).
+          python -m pip install pytest pyyaml psutil
+
+      - name: Run FL4 preflight (canonical, Linux)
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+          TOKENIZERS_PARALLELISM: "false"
+          PYTHONHASHSEED: "0"
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$PWD/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:$PWD/KT_PROD_CLEANROOM"
+          OUT_DIR="KT_PROD_CLEANROOM/exports/adapters_shadow/_runs/FL4_SEAL/CI"
+          rm -rf "$OUT_DIR"
+          if ! python -m tools.verification.preflight_fl4 --out-dir "$OUT_DIR" --registry-path KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json; then
+            echo "=== PRE-FLIGHT FAILED: dumping logs (best-effort) ==="
+            if [ -d "$OUT_DIR" ]; then
+              ls -la "$OUT_DIR"
+            else
+              echo "OUT_DIR missing: $OUT_DIR"
+            fi
+            echo "--- pytest_temple.log ---"
+            if [ -f "$OUT_DIR/pytest_temple.log" ]; then
+              sed -n '1,200p' "$OUT_DIR/pytest_temple.log"
+            else
+              echo "missing: $OUT_DIR/pytest_temple.log"
+            fi
+            echo "--- pytest_cleanroom.log ---"
+            if [ -f "$OUT_DIR/pytest_cleanroom.log" ]; then
+              sed -n '1,200p' "$OUT_DIR/pytest_cleanroom.log"
+            else
+              echo "missing: $OUT_DIR/pytest_cleanroom.log"
+            fi
+            echo "--- meta_evaluator.log ---"
+            if [ -f "$OUT_DIR/meta_evaluator.log" ]; then
+              sed -n '1,200p' "$OUT_DIR/meta_evaluator.log"
+            else
+              echo "missing: $OUT_DIR/meta_evaluator.log"
+            fi
+            exit 1
+          fi
+
+      - name: Package FL4 seal evidence (tar + sha256)
+        run: |
+          set -euo pipefail
+          OUT_DIR="KT_PROD_CLEANROOM/exports/adapters_shadow/_runs/FL4_SEAL/CI"
+          test -d "$OUT_DIR"
+          # Factory job_dir is written under exports_shadow_root/_runs/FL4_SEAL/<job_id>.
+          JOB_ID="$(python -c 'import json; print(json.load(open("'"$OUT_DIR"'/job.json","r",encoding="utf-8"))["job_id"])')"
+          JOB_DIR="KT_PROD_CLEANROOM/exports/adapters_shadow/_runs/FL4_SEAL/$JOB_ID"
+          test -d "$JOB_DIR"
+          # Promotion (if happened) materializes under exports/adapters/<adapter_id>/<adapter_version>/ and updates promoted_index.json.
+          ADAPTER_ID="$(python -c 'import json; print(json.load(open("'"$OUT_DIR"'/job.json","r",encoding="utf-8"))["adapter_id"])')"
+          ADAPTER_VERSION="$(python -c 'import json; print(json.load(open("'"$OUT_DIR"'/job.json","r",encoding="utf-8"))["adapter_version"])')"
+          PROMOTED_DIR="KT_PROD_CLEANROOM/exports/adapters/$ADAPTER_ID/$ADAPTER_VERSION"
+          PROMOTED_INDEX="KT_PROD_CLEANROOM/exports/adapters/promoted_index.json"
+
+          mkdir -p _runs/ci_fl4_seal
+          TAR="_runs/ci_fl4_seal/fl4_seal_evidence.tgz"
+          # Create a minimal, audit-friendly bundle: preflight OUT_DIR + job_dir + promoted artifacts if present.
+          if [ -d "$PROMOTED_DIR" ] || [ -f "$PROMOTED_INDEX" ]; then
+            tar -czf "$TAR" "$OUT_DIR" "$JOB_DIR" $(test -d "$PROMOTED_DIR" && echo "$PROMOTED_DIR") $(test -f "$PROMOTED_INDEX" && echo "$PROMOTED_INDEX")
+          else
+            tar -czf "$TAR" "$OUT_DIR" "$JOB_DIR"
+          fi
+          sha256sum "$TAR" | tee _runs/ci_fl4_seal/fl4_seal_evidence.sha256
+
+      - name: Upload FL4 seal evidence artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fl4-seal-evidence
+          path: |
+            _runs/ci_fl4_seal/fl4_seal_evidence.tgz
+            _runs/ci_fl4_seal/fl4_seal_evidence.sha256

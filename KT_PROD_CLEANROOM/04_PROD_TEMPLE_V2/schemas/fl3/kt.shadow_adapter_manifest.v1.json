@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Shadow Adapter Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "shadow_id",
+    "adapter_version",
+    "storage_format",
+    "checksum",
+    "fitness_region",
+    "signed_by",
+    "parent_hash",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.shadow_adapter_manifest.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "shadow_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "adapter_version": { "type": "string" },
+    "storage_format": { "type": "string", "enum": [ "safetensors", "jsonl", "npz" ] },
+    "checksum": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "fitness_region": { "const": "B" },
+    "signed_by": { "type": "string" },
+    "parent_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" }
+  }
+}
+

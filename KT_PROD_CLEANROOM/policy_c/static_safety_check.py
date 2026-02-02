@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -39,8 +40,32 @@ def resolve_allowed_roots(roots: Sequence[str]) -> List[Path]:
     return resolved
 
 
+def _seal_mode_enabled() -> bool:
+    return os.environ.get("KT_SEAL_MODE", "0") == "1"
+
+
+def _seal_policy_c_root() -> Path:
+    """
+    In seal mode, policy_c must be sandboxed and replayable: all writes go under the
+    seal out_dir temp root, never under KT_PROD_CLEANROOM/exports.
+    """
+    tmp = os.environ.get("TMPDIR") or os.environ.get("TMP") or os.environ.get("TEMP") or ""
+    if not tmp:
+        raise RuntimeError("Seal mode requires TMPDIR/TMP/TEMP to be set (fail-closed)")
+    return (Path(tmp).resolve() / "policy_c").resolve()
+
+
 def assert_export_root_allowed(path: Path, allowed_roots: Sequence[str]) -> None:
     resolved = path.resolve()
+    if _seal_mode_enabled():
+        seal_root = _seal_policy_c_root()
+        try:
+            resolved.relative_to(seal_root)
+            return
+        except Exception:
+            raise RuntimeError(
+                f"Seal mode: policy_c export root must be under {seal_root.as_posix()} (fail-closed): {resolved.as_posix()}"
+            )
     for root in resolve_allowed_roots(allowed_roots):
         try:
             resolved.relative_to(root)

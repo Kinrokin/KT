@@ -1,0 +1,14 @@
+﻿FREEZE_FINISH_LINE_3_1
+utc=20260126T085714Z
+git_rev=a27b630efdc926f88f16a7bb9f760631632bac2d
+law_bundle_hash=7a288c9596522ef4e65b3be8e661589ae22ccd8f2bec677c23a44d32552a0e5b
+meta_evaluator_receipt=KT_PROD_CLEANROOM/AUDITS/META_EVALUATOR_RECEIPT_FL3_20260126T085714Z.json
+sha256_meta_evaluator_receipt=a34fefbc1fcc997bc90da9aabb4f4f69096fa5c6d08f8a1a0e95aa898029cbb7
+red_assault_report=KT_PROD_CLEANROOM/AUDITS/FL3_RED_ASSAULT_20260126T085714Z.json
+sha256_red_assault_report=53c29b3ea5348730a277283fadccde57a75ae05293b2480f037eebd01a07c955
+rollback_drill_report=KT_PROD_CLEANROOM/AUDITS/FL3_ROLLBACK_DRILL_20260126T085714Z.json
+sha256_rollback_drill_report=a499bc20591446a0f28825c14f634528bd815fd1f72f0132ad49194c41895cdd
+pytest_temple_v2=PASS (python -m pytest KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests -q)
+pytest_cleanroom=PASS (python -m pytest KT_PROD_CLEANROOM/tests -q)
+pytest_fl3=PASS (python -m pytest KT_PROD_CLEANROOM/tests/fl3 -q)
+statement=FL3.1 Sovereign Protocol addendum mechanized; law bundle pinned; meta-evaluator pass; red-assault fail-closed; rollback drill restores registry; full KT tests green.

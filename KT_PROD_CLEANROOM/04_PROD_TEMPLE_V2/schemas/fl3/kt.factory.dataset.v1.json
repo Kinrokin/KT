@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Factory Dataset v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "dataset_id",
+    "job_id",
+    "rows",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.factory.dataset.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "dataset_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "job_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "rows": { "type": "array", "items": { "type": "object" } },
+    "created_at": { "type": "string" }
+  }
+}
+

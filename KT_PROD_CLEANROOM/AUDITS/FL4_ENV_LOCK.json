@@ -1,0 +1,39 @@
+{
+  "allow_extra": [
+    "KT_GROWTH_ARTIFACTS_ROOT",
+    "PYTHONIOENCODING",
+    "PYTHONPATH",
+    "PYTHONUSERBASE"
+  ],
+  "created_at": "1970-01-01T00:00:00Z",
+  "env_lock_id": "0805df6a50111c756ae60accbd60f639010fb81b41617519cc64fa6024195064",
+  "forbidden": {
+    "AZURE_CLIENT_ID": "*",
+    "AZURE_CLIENT_SECRET": "*",
+    "AZURE_STORAGE_CONNECTION_STRING": "*",
+    "AZURE_SUBSCRIPTION_ID": "*",
+    "AZURE_TENANT_ID": "*",
+    "MKL_NUM_THREADS": "*",
+    "OMP_NUM_THREADS": "*"
+  },
+  "forbidden_prefixes": [
+    "AWS_",
+    "GCP_",
+    "OPENAI_"
+  ],
+  "required": {
+    "KT_LIVE": "0",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONHASHSEED": "0",
+    "PYTHONUTF8": "1",
+    "TOKENIZERS_PARALLELISM": "false",
+    "TRANSFORMERS_NO_FLAX": "1",
+    "TRANSFORMERS_NO_TF": "1",
+    "TZ": "UTC"
+  },
+  "schema_id": "kt.env_lock.v1",
+  "schema_version_hash": "2624d790fbb125934cf6a3fd28827710706e37ac79ee8a89d00af3ed6a9b011e"
+}

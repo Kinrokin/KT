@@ -71,6 +71,7 @@ from crucible_dsl_schemas import (
     KERNEL_V1_ARCHIVAL,
     KERNEL_V2_SOVEREIGN,
     KERNEL_COVERAGE_BASELINE,
+    KERNEL_GOVERNANCE_BASELINE,
     OUTCOME_FAIL,
     OUTCOME_INFEASIBLE,
     OUTCOME_PASS,
@@ -203,6 +204,23 @@ def _utc_now_iso_z() -> str:
 def _repo_root() -> Path:
     # .../KT_PROD_CLEANROOM/tools/growth/crucibles/crucible_runner.py -> .../KT_PROD_CLEANROOM
     return _REPO_ROOT
+
+
+def _artifacts_dir_for_record(*, run_root: Path, artifacts_dir: Path) -> str:
+    """
+    Return a stable, human-meaningful artifacts directory string for receipts/logging.
+
+    Important: KT seal lane may set KT_GROWTH_ARTIFACTS_ROOT to a location *outside* the repo.
+    In that case, `run_root.relative_to(_repo_root())` is not valid and must not fail-closed.
+    We prefer a path relative to the artifacts root (the parent of `c019_runs/`), and fall back
+    to an absolute posix path if needed.
+    """
+
+    base = artifacts_dir.parent
+    try:
+        return run_root.relative_to(base).as_posix()
+    except Exception:
+        return run_root.resolve().as_posix()
 
 
 def _growth_root() -> Path:
@@ -469,7 +487,7 @@ def _v1_harness_code() -> str:
 
 
 def _kernel_command(*, kernel_target: str, artifact_root: Path) -> Tuple[List[str], Path]:
-    if kernel_target == KERNEL_V2_SOVEREIGN or kernel_target == KERNEL_COVERAGE_BASELINE:
+    if kernel_target in {KERNEL_V2_SOVEREIGN, KERNEL_COVERAGE_BASELINE, KERNEL_GOVERNANCE_BASELINE}:
         kernel_root = _v2_kernel_root()
         code = _v2_harness_code()
     elif kernel_target == KERNEL_V1_ARCHIVAL:
@@ -654,7 +672,7 @@ def run_crucible_once(
             replay_pass=None,
             governance_status="NOT_APPLICABLE",
             governance_pass=None,
-            artifacts_dir=str(run_root.relative_to(_repo_root())),
+            artifacts_dir=_artifacts_dir_for_record(run_root=run_root, artifacts_dir=artifacts_dir),
             notes=f"pre_execution_fail:{error_type}",
         )
 
@@ -942,7 +960,7 @@ def run_crucible_once(
     # Governance expectations: verifiable for V2 via state vault; archival runs are marked UNVERIFIABLE.
     governance_status = "UNVERIFIABLE"
     governance_pass: Optional[bool] = None
-    if kernel_target == KERNEL_V2_SOVEREIGN:
+    if kernel_target in {KERNEL_V2_SOVEREIGN, KERNEL_GOVERNANCE_BASELINE}:
         vault_rel = _load_v2_registry_state_vault_relpath()
         vault_path = (run_root / Path(vault_rel)).resolve()
         gov_cmd = [
@@ -1014,8 +1032,12 @@ def run_crucible_once(
 
 
     # --- Governance verdict enforcement (binding law) ---
-    # KERNEL_COVERAGE_BASELINE is allowed to be PASS-capable without governance verdict gating.
-    # For coverage baseline, treat governance verdict as non-gating regardless of presence.
+    #
+    # Baselines:
+    # - KERNEL_COVERAGE_BASELINE: coverage-only; governance verdict is non-gating and governance_pass is NOT asserted.
+    # - KERNEL_GOVERNANCE_BASELINE: governance-capable; governance expectations are verified via state vault events.
+    #   governance_verdict.json is treated as informational only (non-gating) to avoid coupling baseline capability to
+    #   any specific kernel-side verdict implementation.
     gov_verdict_path = run_root / "governance_verdict.json"
     if kernel_target == KERNEL_COVERAGE_BASELINE:
         governance_pass = None
@@ -1024,25 +1046,21 @@ def run_crucible_once(
             if not gov_verdict_path.exists()
             else "governance_verdict_non_gating_coverage_baseline"
         )
-        if notes:
-            notes = f"{notes};{gov_note_or_rationale}"
-        else:
-            notes = gov_note_or_rationale
+        notes = f"{notes};{gov_note_or_rationale}" if notes else gov_note_or_rationale
+    elif kernel_target == KERNEL_GOVERNANCE_BASELINE:
+        gov_note_or_rationale = (
+            "governance_verdict_missing_governance_baseline"
+            if not gov_verdict_path.exists()
+            else "governance_verdict_non_gating_governance_baseline"
+        )
+        notes = f"{notes};{gov_note_or_rationale}" if notes else gov_note_or_rationale
     else:
         gov_pass, gov_note_or_rationale = _load_governance_verdict_or_fail(run_root)
         governance_pass = bool(gov_pass)
         # If governance failed, make the entire run fail (binding).
         if not governance_pass:
             outcome = "FAIL"
-            if notes:
-                notes = f"{notes};governance_verdict={gov_note_or_rationale}"
-            else:
-                notes = f"governance_verdict={gov_note_or_rationale}"
-        else:
-            if notes:
-                notes = f"{notes};governance_verdict={gov_note_or_rationale}"
-            else:
-                notes = f"governance_verdict={gov_note_or_rationale}"
+        notes = f"{notes};governance_verdict={gov_note_or_rationale}" if notes else f"governance_verdict={gov_note_or_rationale}"
 
     record = CrucibleRunRecord(
         run_id=rid,
@@ -1063,7 +1081,7 @@ def run_crucible_once(
         replay_pass=replay_pass,
         governance_status=governance_status,
         governance_pass=governance_pass,
-        artifacts_dir=str(run_root.relative_to(_repo_root())),
+        artifacts_dir=_artifacts_dir_for_record(run_root=run_root, artifacts_dir=artifacts_dir),
         notes=notes,
     )
 
@@ -1399,7 +1417,14 @@ def run_crucible_file(
 ) -> List[CrucibleRunRecord]:
     loaded = load_crucible(path)
     repo_root = _repo_root()
-    artifacts_dir = repo_root / "tools" / "growth" / "artifacts" / "c019_runs"
+    override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+    if override:
+        base = Path(override)
+        if not base.is_absolute():
+            base = repo_root / base
+        artifacts_dir = base.resolve() / "c019_runs"
+    else:
+        artifacts_dir = repo_root / "tools" / "growth" / "artifacts" / "c019_runs"
     ledger_path = repo_root / "tools" / "growth" / "ledgers" / "c019_crucible_runs.jsonl"
 
     records: List[CrucibleRunRecord] = []

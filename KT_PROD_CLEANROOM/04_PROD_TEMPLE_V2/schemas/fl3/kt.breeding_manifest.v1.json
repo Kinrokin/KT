@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Breeding Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "breeding_id",
+    "child_adapter_version",
+    "parent_adapters",
+    "shadow_injection",
+    "parent_hash",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.breeding_manifest.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "breeding_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "child_adapter_version": { "type": "string" },
+    "parent_adapters": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "shadow_injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [ "batch_fraction", "shadow_sources" ],
+      "properties": {
+        "batch_fraction": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "shadow_sources": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "parent_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" }
+  }
+}
+
