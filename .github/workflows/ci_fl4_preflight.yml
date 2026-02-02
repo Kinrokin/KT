@@ -31,6 +31,27 @@ jobs:
         run: |
           set -euo pipefail
           export PYTHONPATH="$PWD/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:$PWD/KT_PROD_CLEANROOM"
+
+          # CI is untrusted: make the runner conform to the env lock (do not weaken the lock).
+          # Remove runner-injected cloud/provider prefixes before invoking preflight.
+          for k in $(env | cut -d= -f1 | grep -E '^(AZURE_|AWS_|GCP_|OPENAI_)' || true); do
+            unset "$k"
+          done
+          unset MKL_NUM_THREADS OMP_NUM_THREADS || true
+
+          # Required canonical env (must match KT_PROD_CLEANROOM/AUDITS/FL4_ENV_LOCK.json exactly).
+          export KT_LIVE="0"
+          export PYTHONUTF8="1"
+          export PYTHONDONTWRITEBYTECODE="1"
+          export LANG="C.UTF-8"
+          export LC_ALL="C.UTF-8"
+          export TZ="UTC"
+          export TRANSFORMERS_NO_TF="1"
+          export TRANSFORMERS_NO_FLAX="1"
+
+          # Fail-closed on duplicate keys in env lock JSON (law must be unambiguous).
+          python -c "from pathlib import Path; from KT_PROD_CLEANROOM.tools.verification.strict_json import load_no_dupes; load_no_dupes(Path('KT_PROD_CLEANROOM/AUDITS/FL4_ENV_LOCK.json')); print('OK: env lock parses with no duplicate keys')"
+
           OUT_DIR="KT_PROD_CLEANROOM/exports/adapters_shadow/_runs/FL4_SEAL/CI"
           rm -rf "$OUT_DIR"
           if ! python -m tools.verification.preflight_fl4 --out-dir "$OUT_DIR" --registry-path KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json; then
