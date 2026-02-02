@@ -30,7 +30,7 @@ def test_evidence_pack_completeness_contract_passes_minimal(tmp_path: Path) -> N
         "determinism_contract.json",
         "law_bundle_hash.txt",
         "law_bundle.json",
-        "fl3_growth_e2e_gate_deferred.json",
+        "growth_e2e_gate_report.json",
         "behavioral_growth_summary.json",
         "meta_evaluator_receipt.json",
         "red_assault_report.json",
@@ -39,6 +39,7 @@ def test_evidence_pack_completeness_contract_passes_minimal(tmp_path: Path) -> N
         "canary_artifact_rerun.json",
         "canary_artifact_post_promotion.json",
         "metabolism_proof.json",
+        "replay_from_receipts_report.json",
         "preflight_summary.json",
     ):
         _touch(out_dir / name)

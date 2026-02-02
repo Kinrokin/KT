@@ -126,10 +126,15 @@ def promote_job_dir(
     if not job_dir.exists():
         raise FL3ValidationError(f"job_dir missing (fail-closed): {job_dir.as_posix()}")
 
+    job = _read_json(job_dir / "job.json")
+    # Lab → canonical segregation: promotion must fail-closed unless the source is MRT-0 canonical.
+    # Canonical is defined operationally here as training_mode=head_only (AdapterType.A-only).
+    if job.get("training_mode") != "head_only":
+        raise FL3ValidationError("Non-canonical training_mode cannot promote into canonical index (fail-closed)")
+
     # Pre-verify the job directory under canonical meta-evaluator rules.
     verify_job_dir(repo_root=repo_root, job_dir=job_dir)
 
-    job = _read_json(job_dir / "job.json")
     promotion = _read_json(job_dir / "promotion.json")
     if promotion.get("schema_id") != "kt.factory.promotion.v1":
         raise FL3ValidationError("promotion schema_id mismatch (fail-closed)")
@@ -216,6 +221,7 @@ def promote_job_dir(
 
     report = {
         "schema_id": "kt.fl4.promotion_report.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.fl4.promotion_report.v1.json"),
         "job_dir": str(job_dir.relative_to(repo_root).as_posix()),
         "promoted_dir": str(final_dir.relative_to(repo_root).as_posix()),
         "promoted_index_path": str(idx_path.relative_to(repo_root).as_posix()),
@@ -224,6 +230,7 @@ def promote_job_dir(
         "promoted_manifest_sha256": _sha256_file(final_dir / "promoted_manifest.json"),
         "canary_artifact_hash": canary_hash,
     }
+    validate_schema_bound_object(report)
     if out_report:
         out_report.parent.mkdir(parents=True, exist_ok=True)
         out_report.write_text(json.dumps(report, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
@@ -257,4 +264,3 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

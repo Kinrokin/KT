@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL4 Promotion Report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "job_dir",
+    "promoted_dir",
+    "promoted_index_path",
+    "content_hash",
+    "promoted_manifest_id",
+    "promoted_manifest_sha256",
+    "canary_artifact_hash"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.fl4.promotion_report.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "job_dir": { "type": "string" },
+    "promoted_dir": { "type": "string" },
+    "promoted_index_path": { "type": "string" },
+    "content_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "promoted_manifest_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "promoted_manifest_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "canary_artifact_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

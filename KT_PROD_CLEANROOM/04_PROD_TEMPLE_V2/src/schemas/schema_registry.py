@@ -294,6 +294,16 @@ from schemas.fl3_trace_violation_schema import (
     FL3_TRACE_VIOLATION_SCHEMA_VERSION_HASH,
     validate_fl3_trace_violation,
 )
+from schemas.fl4_preflight_summary_schema import (
+    FL4_PREFLIGHT_SUMMARY_SCHEMA_ID,
+    FL4_PREFLIGHT_SUMMARY_SCHEMA_VERSION_HASH,
+    validate_fl4_preflight_summary,
+)
+from schemas.fl4_promotion_report_schema import (
+    FL4_PROMOTION_REPORT_SCHEMA_ID,
+    FL4_PROMOTION_REPORT_SCHEMA_VERSION_HASH,
+    validate_fl4_promotion_report,
+)
 from schemas.schema_files import schema_version_hash
 
 
@@ -411,6 +421,9 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     FL3_SCORING_SPEC_SCHEMA_ID: (FL3_SCORING_SPEC_SCHEMA_VERSION_HASH, validate_fl3_scoring_spec),
     FL3_PROMOTED_MANIFEST_SCHEMA_ID: (FL3_PROMOTED_MANIFEST_SCHEMA_VERSION_HASH, validate_fl3_promoted_manifest),
     FL3_PROMOTED_INDEX_SCHEMA_ID: (FL3_PROMOTED_INDEX_SCHEMA_VERSION_HASH, validate_fl3_promoted_index),
+    # FL4: preflight/promotion reports (append-only).
+    FL4_PREFLIGHT_SUMMARY_SCHEMA_ID: (FL4_PREFLIGHT_SUMMARY_SCHEMA_VERSION_HASH, validate_fl4_preflight_summary),
+    FL4_PROMOTION_REPORT_SCHEMA_ID: (FL4_PROMOTION_REPORT_SCHEMA_VERSION_HASH, validate_fl4_promotion_report),
     # FL3.2: cognitive fitness + discovery battery (append-only).
     FL3_ANCHOR_REFERENCE_SET_SCHEMA_ID: (
         FL3_ANCHOR_REFERENCE_SET_SCHEMA_VERSION_HASH,
