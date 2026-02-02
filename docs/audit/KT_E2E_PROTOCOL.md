@@ -26,6 +26,23 @@ It is grounded in concrete repo surfaces:
 4) Preflight must run full battery and must fail on dirty repo.
 - The canonical seal runner enforces clean tree via `git status --porcelain` inside `KT_PROD_CLEANROOM/tools/verification/preflight_fl4.py`.
 
+5) Watcher/SPC are constitutionally powerless (NCON).
+- Watcher Node is **observational only**: deterministic, non-learning, non-gating, and not invokable by canonical runtime routing.
+- SPC (Social Pressure Crucible) outputs are **non-canonical diagnostics**: they may propose probes, but may never directly affect verdicts or promotion.
+
+6) Judge cross-corroboration rule (binding).
+- Watcher/SPC signals must never alter a verdict unless corroborated by at least one **non-social** artifact (e.g., schema/hash/determinism violation, probe disagreement, utility floor failure, lineage/promotion integrity failure).
+- Watcher/SPC may be recorded as non-gating advisories in the evidence pack.
+
+7) Evidence provenance requirement for any Watcher/SPC score (binding).
+- No drift/consensus/coordination score is admissible unless it includes evidence pointers: transcript offsets + per-line hashes + interaction-graph edge IDs/hashes.
+- Evidence pointers must be replay-resolvable from the evidence pack; otherwise FAIL_CLOSED (diagnostic artifact is malformed).
+
+8) Three bolt-tighteners (binding).
+- Monotonic drift scoring: removing evidence cannot increase any score (anti-cherrypick).
+- Watcher silence is allowed: absence of alerts is not evidence of health and must not be treated as PASS.
+- Probe influence radius: SPC-generated probes start quarantined/low-weight/non-blocking until promoted under law.
+
 ---
 
 ## 1) Ground truth (where we are right now)
@@ -268,6 +285,13 @@ Contracts/law pins:
 - `kt.determinism_contract.v1` — `.../kt.determinism_contract.v1.json`
 - `kt.utility_pack_manifest.v1` — `.../kt.utility_pack_manifest.v1.json`
 
+Watcher/SPC (NCON; observational lane):
+- Watcher/SPC artifacts are permitted only as **diagnostic attachments** to the evidence pack in canonical lanes.
+- Cross-corroboration is mandatory: Watcher/SPC signals are never gating evidence on their own.
+- Provenance is mandatory: any score must include transcript offsets + line hashes + interaction-graph edge pointers/hashes.
+- Monotonicity is mandatory: removing evidence cannot increase drift scores.
+- Quarantine is mandatory: SPC-synthesized probes must not be gating until promoted under law.
+
 ---
 
 ## 5) Node list (canonical order) with intents + “semantic axes”
@@ -340,6 +364,17 @@ This is a pragmatic “node” ordering that matches real execution surfaces.
   - `tools.verification.fl3_rollback_drill`
   - `tools.verification.fl4_determinism_canary`
 
+### Node 12 — Watcher/SPC (NCON; observational only)
+- Intent: deterministic forensic diagnostics for multi-agent/social pressure surfaces; generate *non-gating* signals and probe candidates.
+- Classification: NCON (non-canonical). Non-learning, non-gating, non-promotable, and not synchronously invokable by canonical runtime routing.
+- Evidence provenance: any score must be anchored to transcript offsets + line hashes + interaction-graph edges (replay-resolvable from the evidence pack).
+- Bolt-tighteners:
+  - monotonic drift scoring (evidence removal cannot increase score)
+  - silence allowed (no alerts ≠ health)
+  - SPC probe influence radius (quarantine/low-weight/non-blocking until promoted under law)
+- Judge rule: Watcher/SPC signals never affect verdicts absent a non-social corroborator.
+- Semantic axes: diagnostic-only drift/coordination measures (not a trait vector unless explicitly ratified by law).
+
 ---
 
 ## 6) Coding-agent handoff prompt template (mandatory safety clause)
@@ -353,6 +388,12 @@ Fail-closed is law: add diagnostics to surface cause, but never bypass gates.
 Canonical lane is FL4 MRT-0 AdapterType.A-only: no neural weights. Any weight artifacts (e.g., *.safetensors) must hard-fail canonical runs.
 Do not change frozen organs: spine/router/StateVault core/SRR-AIR schema heads/runtime registry schema/Policy-C head.
 No manual edits to law bundle pins or determinism contracts. Use only the official derivation tooling where present.
+
+WATCHER/SPC (NCON) SAFETY (MANDATORY)
+Watcher/SPC artifacts are diagnostic-only: non-learning, non-gating, and not invokable by canonical runtime routing.
+Judge cross-corroboration is binding: Watcher/SPC signals must never alter verdicts without at least one non-social corroborator.
+Evidence provenance is binding: no score without transcript offsets + per-line hashes + interaction-graph edge pointers/hashes.
+Bolt-tighteners are binding: monotonic drift scoring; watcher silence allowed; SPC probes quarantined/low-weight/non-blocking until promoted under law.
 
 COMPREHENSIVE AUDIT (REQUIRED BEFORE CLAIMING PASS/SEALED)
 Run the canonical battery (or `tools.verification.preflight_fl4`) and produce an evidence pack that includes:
@@ -370,4 +411,3 @@ TASK DISCIPLINE
 2) Prefer add-only tests that reproduce the failure.
 3) Any change must identify: invariants affected, why unavoidable, and which tests prove safety.
 ```
-
