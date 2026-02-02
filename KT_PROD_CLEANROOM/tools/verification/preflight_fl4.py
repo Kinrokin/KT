@@ -147,10 +147,15 @@ def _assert_evidence_pack_complete(*, out_dir: Path) -> None:
 
 
 def _enforce_env_lock(*, repo_root: Path, env_for_subprocess: Dict[str, str], out_dir: Path) -> Dict[str, Any]:
+    from tools.verification.strict_json import DuplicateKeyError, load_no_dupes
+
     lock_path = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_ENV_LOCK.json"
     if not lock_path.exists():
         raise SystemExit(f"FAIL: missing env lock contract (fail-closed): {lock_path.as_posix()}")
-    lock = json.loads(lock_path.read_text(encoding="utf-8"))
+    try:
+        lock = load_no_dupes(lock_path)
+    except DuplicateKeyError as e:
+        raise SystemExit(f"FAIL: env lock JSON has duplicate keys (fail-closed): {e}")
     if not isinstance(lock, dict):
         raise SystemExit("FAIL: env lock contract must be JSON object (fail-closed)")
     validate_schema_bound_object(lock)
