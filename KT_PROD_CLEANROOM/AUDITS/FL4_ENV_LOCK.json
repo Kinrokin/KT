@@ -6,14 +6,18 @@
     "PYTHONUSERBASE"
   ],
   "created_at": "1970-01-01T00:00:00Z",
-  "env_lock_id": "3980d12830f07ab1fe5cac742c7a1e11fdd74ef8d3a323ff6ffde58faf178780",
+  "env_lock_id": "0805df6a50111c756ae60accbd60f639010fb81b41617519cc64fa6024195064",
   "forbidden": {
+    "AZURE_CLIENT_ID": "*",
+    "AZURE_CLIENT_SECRET": "*",
+    "AZURE_STORAGE_CONNECTION_STRING": "*",
+    "AZURE_SUBSCRIPTION_ID": "*",
+    "AZURE_TENANT_ID": "*",
     "MKL_NUM_THREADS": "*",
     "OMP_NUM_THREADS": "*"
   },
   "forbidden_prefixes": [
     "AWS_",
-    "AZURE_",
     "GCP_",
     "OPENAI_"
   ],
