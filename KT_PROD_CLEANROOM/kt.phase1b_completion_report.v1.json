@@ -1,0 +1,64 @@
+{
+  "changes": {
+    "files_changed_vs_main": [
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.fl4.preflight_summary.v1.hash",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.fl4.preflight_summary.v1.json",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.fl4.promotion_report.v1.hash",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.fl4.promotion_report.v1.json",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/schemas/fl4_preflight_summary_schema.py",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/schemas/fl4_promotion_report_schema.py",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/schemas/schema_registry.py",
+      "KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260202T234923Z.json",
+      "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256",
+      "KT_PROD_CLEANROOM/tests/fl3/test_canonicalization_surfaces.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_fl3_schema_freeze.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_fl4_preflight_evidence_pack_contract.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_fl4_replay_from_receipts.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_fl4_report_schema_bindings.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_lab_no_promote_barrier.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_no_hidden_state_offline_safe.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_no_watcher_imports.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_watcher_signals_require_corroboration.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_watcher_spc_validators.py",
+      "KT_PROD_CLEANROOM/tools/verification/fl4_promote.py",
+      "KT_PROD_CLEANROOM/tools/verification/fl4_replay_from_receipts.py",
+      "KT_PROD_CLEANROOM/tools/verification/preflight_fl4.py",
+      "KT_PROD_CLEANROOM/tools/verification/watcher_spc_validators.py"
+    ]
+  },
+  "gap_report_after": {
+    "blocking_missing": 0,
+    "path": "KT_PROD_CLEANROOM/kt.protocol_gap_report.v1.json",
+    "sha256": "1894ecb70b532d137689ec755e2c89b987302d82d8e988a50b5d12b497a15135"
+  },
+  "gap_report_before": {
+    "blocking_missing": 12,
+    "path": "KT_PROD_CLEANROOM/kt.protocol_gap_report.v1.json",
+    "sha256": "f30329208a08ab2a828e8f4200df3deb757309bf64d0ed9bddf77a7b9feab798"
+  },
+  "phase_constraints": {
+    "no_adapter_promotion_executed": true,
+    "no_mrt1_opened": true,
+    "no_seal_run_executed": true
+  },
+  "protocol_doc": {
+    "git_sha": "c75f1b6c161382047b65507a683437d7da464c38",
+    "path": "docs/audit/KT_E2E_PROTOCOL.md",
+    "sha256": "31754279f7b2b6ef90a54d1d375f2312cc9bcc1785cf11ebc158c3c988236458"
+  },
+  "repo": {
+    "git_base_main": "1bb5bb24c5f8a3ccf344367979c52fc6ba50336c",
+    "git_branch": "phase1b-system-completion",
+    "git_head": "4a2b2c3bf1b27f0763f62d71567b3e5ae445fffa",
+    "repo_root": "D:\\KingsTheorem_Archive"
+  },
+  "schema_id": "kt.phase1b_completion_report.v1",
+  "verification": {
+    "pytest_fl3": {
+      "command": "python -m pytest -q KT_PROD_CLEANROOM/tests/fl3",
+      "executed": true,
+      "result": "PASS"
+    }
+  },
+  "version": "1.0"
+}
