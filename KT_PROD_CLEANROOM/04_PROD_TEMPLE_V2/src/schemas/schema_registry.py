@@ -309,6 +309,11 @@ from schemas.phase1c_work_order_schema import (
     PHASE1C_WORK_ORDER_SCHEMA_VERSION_HASH,
     validate_phase1c_work_order,
 )
+from schemas.phase2_work_order_schema import (
+    PHASE2_WORK_ORDER_SCHEMA_ID,
+    PHASE2_WORK_ORDER_SCHEMA_VERSION_HASH,
+    validate_phase2_work_order,
+)
 from schemas.runtime_dag_schema import (
     RUNTIME_DAG_SCHEMA_ID,
     RUNTIME_DAG_SCHEMA_VERSION_HASH,
@@ -441,6 +446,8 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     FL4_PROMOTION_REPORT_SCHEMA_ID: (FL4_PROMOTION_REPORT_SCHEMA_VERSION_HASH, validate_fl4_promotion_report),
     # Phase 1C: work order (append-only).
     PHASE1C_WORK_ORDER_SCHEMA_ID: (PHASE1C_WORK_ORDER_SCHEMA_VERSION_HASH, validate_phase1c_work_order),
+    # Phase 2: governed learning unlock work order (append-only; policy artifact).
+    PHASE2_WORK_ORDER_SCHEMA_ID: (PHASE2_WORK_ORDER_SCHEMA_VERSION_HASH, validate_phase2_work_order),
     # Phase 1C: runtime instantiation artifacts (append-only).
     RUNTIME_DAG_SCHEMA_ID: (RUNTIME_DAG_SCHEMA_VERSION_HASH, validate_runtime_dag),
     JUDGE_RECEIPT_SCHEMA_ID: (JUDGE_RECEIPT_SCHEMA_VERSION_HASH, validate_judge_receipt),

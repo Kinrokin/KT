@@ -1,0 +1,367 @@
+{
+  "schema_id": "kt.phase2_work_order.v1",
+  "schema_version": 1,
+  "schema_version_hash": "b55495ee102b78dc70a365aa781351bc662c0f08fa8ecbc39258f56a443e16cf",
+  "work_order_id": "PHASE2_OP_A_GOVERNED_LEARNING_UNLOCK",
+  "title": "Phase 2 Option A — Governed Learning Unlock (Training + Promotion + Seal under Law)",
+  "status": "DRAFT_EXECUTABLE",
+  "authority": {
+    "treat_as_law": true,
+    "fail_closed": true,
+    "no_implicit_fallbacks": true,
+    "behavior_cannot_precede_artifact": true,
+    "append_only_policy": [
+      "schemas",
+      "validators",
+      "tests",
+      "ci_rules",
+      "tools_that_emit_receipts"
+    ],
+    "explicit_non_changes": [
+      "no edits to FL1/FL2 spine invariants",
+      "no edits to canonical router semantics unless explicitly authorized by this work order",
+      "no silent state mutation",
+      "no uncontrolled network access"
+    ]
+  },
+  "objective": {
+    "primary": "Enable governed training, promotion, and seal with receipt-backed replay, while preserving determinism, fail-closed doctrine, and auditability.",
+    "success_definition": [
+      "Training is work-order bound and fully receipted",
+      "Adapter-scoped learning is enforced (no cross-adapter bleed)",
+      "Promotion is atomic and receipt-backed (with replayable manifests)",
+      "Seal produces an evidence pack and is replay-verifiable",
+      "System-wide audit proves no other KT components are broken or weakened"
+    ]
+  },
+  "prime_constraints": {
+    "forbidden": [
+      "unreceipted_training",
+      "silent_mutation",
+      "implicit_promotion",
+      "promotion_that_writes_without_precheck",
+      "seal_without_evidence_pack",
+      "non-deterministic_ids_in_hashed_objects",
+      "wall_clock_dependence_in_signed_or_hashed_artifacts",
+      "network_access_when_offline_mode_enabled",
+      "schema_or_validator_changes_without_freeze_update"
+    ],
+    "required": [
+      "fail_closed_everywhere",
+      "deterministic_artifacts",
+      "offline_guard_enforced",
+      "schema_bound_artifacts",
+      "receipt_hash_binding",
+      "replay_from_receipts",
+      "canonical_path_integrity",
+      "system_wide_regression_audit"
+    ]
+  },
+  "inputs": {
+    "required_refs": {
+      "phase1c_tag": "phase1c-complete-final",
+      "law_bundle_file": "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256",
+      "phase1c_executor": "KT_PROD_CLEANROOM/tools/verification/phase1c_execute.py"
+    },
+    "runtime_environment": {
+      "platforms_supported": [
+        "linux",
+        "windows"
+      ],
+      "offline_mode_required": true,
+      "environment_vars_required": {
+        "KT_LIVE": "0",
+        "PYTHONHASHSEED": "0"
+      }
+    }
+  },
+  "deliverables": {
+    "required_artifacts": [
+      "kt.phase2_work_order.v1.json",
+      "schemas/fl3/kt.phase2_train_request.v1.json",
+      "schemas/fl3/kt.phase2_train_receipt.v1.json",
+      "schemas/fl3/kt.phase2_promotion_request.v1.json",
+      "schemas/fl3/kt.phase2_promotion_receipt.v1.json",
+      "schemas/fl3/kt.phase2_seal_request.v1.json",
+      "schemas/fl3/kt.phase2_seal_receipt.v1.json",
+      "schemas/fl3/kt.phase2_evidence_pack_manifest.v1.json",
+      "src/schemas/phase2_*_schema.py validators",
+      "tests/fl3/test_phase2_*",
+      "CI: phase2 required checks wired",
+      "AUDITS: updated LAW_BUNDLE + amendment for any new schemas/validators"
+    ],
+    "required_runtime_outputs": [
+      "phase2_train_receipt.json",
+      "phase2_promotion_receipt.json",
+      "phase2_seal_receipt.json",
+      "phase2_evidence_pack/",
+      "replay_from_receipts_report.json",
+      "system_audit_report.json"
+    ]
+  },
+  "work_packages": [
+    {
+      "wp_id": "WP0_SYSTEM_WIDE_BASELINE_AUDIT",
+      "intent": "Evaluate the entire KT system and establish a frozen, replayable baseline before enabling learning.",
+      "actions": [
+        {
+          "action_id": "WP0_A1_baseline_tests",
+          "action": "run_test_suites",
+          "params": {
+            "commands": [
+              "python -m pytest -q KT_PROD_CLEANROOM/tests/fl3",
+              "python -m pytest -q KT_PROD_CLEANROOM/tests/fl4"
+            ]
+          },
+          "must_produce": [
+            "system_audit_report.json"
+          ],
+          "fail_closed_if": [
+            "any_test_failure",
+            "any_missing_report",
+            "any_non_deterministic_artifact_in_audited_set"
+          ]
+        },
+        {
+          "action_id": "WP0_A2_law_bundle_integrity",
+          "action": "verify_law_bundle_integrity",
+          "params": {
+            "law_bundle_file": "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256"
+          },
+          "fail_closed_if": [
+            "hash_mismatch",
+            "missing_amendment_for_current_hash"
+          ]
+        }
+      ]
+    },
+    {
+      "wp_id": "WP1_SCHEMA_AND_VALIDATOR_HARDENING",
+      "intent": "Define and freeze Phase 2 request/receipt schemas for training, promotion, and seal; wire validators and registry entries.",
+      "actions": [
+        {
+          "action_id": "WP1_A1_add_schemas",
+          "action": "create_or_update_schema_files",
+          "params": {
+            "schema_files": [
+              "fl3/kt.phase2_train_request.v1.json",
+              "fl3/kt.phase2_train_receipt.v1.json",
+              "fl3/kt.phase2_promotion_request.v1.json",
+              "fl3/kt.phase2_promotion_receipt.v1.json",
+              "fl3/kt.phase2_seal_request.v1.json",
+              "fl3/kt.phase2_seal_receipt.v1.json",
+              "fl3/kt.phase2_evidence_pack_manifest.v1.json"
+            ],
+            "rules": [
+              "additionalProperties:false",
+              "all ids and hashes are hex64",
+              "no wall-clock fields included in hash-bound fields",
+              "deterministic canonical json bytes"
+            ]
+          },
+          "fail_closed_if": [
+            "schema_missing",
+            "schema_not_frozen",
+            "schema_hash_missing"
+          ]
+        },
+        {
+          "action_id": "WP1_A2_add_validators_registry_freeze",
+          "action": "wire_validators_and_freeze",
+          "params": {
+            "registry_file": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/schemas/schema_registry.py",
+            "freeze_test_file": "KT_PROD_CLEANROOM/tests/fl3/test_fl3_schema_freeze.py"
+          },
+          "fail_closed_if": [
+            "validator_missing",
+            "registry_unwired",
+            "freeze_test_not_updated"
+          ]
+        },
+        {
+          "action_id": "WP1_A3_law_bundle_update",
+          "action": "update_law_bundle_and_amendment",
+          "params": {
+            "law_bundle_file": "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256",
+            "amendment_required": true,
+            "signoff_quorum": 2
+          },
+          "fail_closed_if": [
+            "law_bundle_unpinned",
+            "missing_amendment",
+            "insufficient_signoffs"
+          ]
+        }
+      ]
+    },
+    {
+      "wp_id": "WP2_GOVERNED_TRAINING_RUNNER",
+      "intent": "Implement training runner that is work-order bound, adapter-scoped, offline-guarded, and emits replayable receipts only under artifacts root.",
+      "actions": [
+        {
+          "action_id": "WP2_A1_training_runner",
+          "action": "implement_training_runner",
+          "params": {
+            "runner_entrypoint": "tools/training/phase2_train.py",
+            "must_enforce": [
+              "work_order_binding",
+              "adapter_scope_lock",
+              "artifacts_root_only_writes",
+              "offline_guard",
+              "fail_closed_on_missing_inputs"
+            ],
+            "must_emit": [
+              "phase2_train_receipt.json"
+            ]
+          },
+          "fail_closed_if": [
+            "writes_outside_artifacts_root",
+            "missing_receipt",
+            "receipt_not_schema_bound",
+            "uncontrolled_randomness"
+          ]
+        },
+        {
+          "action_id": "WP2_A2_adapter_bleed_tests",
+          "action": "add_tests",
+          "params": {
+            "tests": [
+              "cross_adapter_bleed_denied",
+              "missing_work_order_fails_closed",
+              "offline_guard_blocks_network",
+              "deterministic_receipt_hashes"
+            ]
+          },
+          "fail_closed_if": [
+            "test_missing",
+            "test_failure"
+          ]
+        }
+      ]
+    },
+    {
+      "wp_id": "WP3_ATOMIC_PROMOTION",
+      "intent": "Enable atomic promotion from shadow to canonical with receipts, and ensure promotion cannot occur without explicit request + passing checks.",
+      "actions": [
+        {
+          "action_id": "WP3_A1_promotion_request_receipt",
+          "action": "implement_promotion_gate_and_receipts",
+          "params": {
+            "promotion_entrypoint": "tools/verification/fl4_promote.py",
+            "must_enforce": [
+              "explicit_promotion_request_schema_bound",
+              "atomic_write",
+              "precheck_no_mutation",
+              "fail_closed_on_any_inconsistency"
+            ],
+            "must_emit": [
+              "phase2_promotion_receipt.json"
+            ]
+          },
+          "fail_closed_if": [
+            "canonical_index_mutated_without_receipt",
+            "promotion_without_request",
+            "promotion_not_replayable"
+          ]
+        }
+      ]
+    },
+    {
+      "wp_id": "WP4_SEAL_WITH_EVIDENCE_PACK",
+      "intent": "Enable seal execution that produces an evidence pack and a seal receipt; ensure seal is replay-verifiable and cannot run without complete inputs.",
+      "actions": [
+        {
+          "action_id": "WP4_A1_seal_runner",
+          "action": "enable_or_harden_seal_execution",
+          "params": {
+            "seal_entrypoint": "tools/verification/derive_fl4_seal_artifacts.py",
+            "must_emit": [
+              "phase2_seal_receipt.json",
+              "phase2_evidence_pack_manifest.json"
+            ],
+            "evidence_pack_dir": "phase2_evidence_pack/"
+          },
+          "fail_closed_if": [
+            "seal_runs_without_full_evidence",
+            "evidence_pack_missing",
+            "seal_not_replayable"
+          ]
+        },
+        {
+          "action_id": "WP4_A2_replay_verification",
+          "action": "run_replay_from_receipts",
+          "params": {
+            "entrypoint": "tools/verification/fl4_replay_from_receipts.py"
+          },
+          "must_produce": [
+            "replay_from_receipts_report.json"
+          ],
+          "fail_closed_if": [
+            "replay_failure",
+            "missing_report"
+          ]
+        }
+      ]
+    },
+    {
+      "wp_id": "WP5_RED_ASSAULT_SYSTEM_AUDIT",
+      "intent": "Attack the entire KT system and prove fail-closed behavior; confirm no regression in unrelated components.",
+      "actions": [
+        {
+          "action_id": "WP5_A1_red_assault",
+          "action": "run_red_assault_battery",
+          "params": {
+            "tests": [
+              "corrupt_training_artifact",
+              "unauthorized_promotion_attempt",
+              "partial_evidence_pack",
+              "receipt_hash_tamper",
+              "watcher_veto_attempt_non_authoritative",
+              "path_escape_attempt_writes_outside_artifacts_root"
+            ]
+          },
+          "fail_closed_if": [
+            "any_attack_not_detected",
+            "any_attack_not_fail_closed"
+          ]
+        },
+        {
+          "action_id": "WP5_A2_system_wide_regression_audit",
+          "action": "run_system_audit",
+          "params": {
+            "commands": [
+              "python -m pytest -q KT_PROD_CLEANROOM/tests/fl1",
+              "python -m pytest -q KT_PROD_CLEANROOM/tests/fl2",
+              "python -m pytest -q KT_PROD_CLEANROOM/tests/fl3",
+              "python -m pytest -q KT_PROD_CLEANROOM/tests/fl4"
+            ]
+          },
+          "must_produce": [
+            "system_audit_report.json"
+          ],
+          "fail_closed_if": [
+            "any_test_failure",
+            "missing_report"
+          ]
+        }
+      ]
+    }
+  ],
+  "exit_criteria": {
+    "all_wps_complete": true,
+    "all_required_runtime_outputs_present": true,
+    "training_receipted": true,
+    "promotion_receipted_atomic": true,
+    "seal_receipted_with_evidence_pack": true,
+    "replay_passes": true,
+    "offline_guard_enforced": true,
+    "no_cross_adapter_bleed": true,
+    "fail_closed_verified": true,
+    "system_wide_audit_passed": true,
+    "law_bundle_integrity_holds": true
+  },
+  "completion": {
+    "completion_tag": "phase2-opA-complete",
+    "freeze_statement": "Phase 2 Option A is complete: governed learning, atomic promotion, and seal are enabled under law with replayable evidence and system-wide audit pass."
+  }
+}
