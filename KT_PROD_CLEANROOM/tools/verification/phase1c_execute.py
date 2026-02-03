@@ -294,6 +294,39 @@ def _build_runtime_dag(
     return record
 
 
+def _assert_required_runtime_artifacts_present(*, root_dir: Path, work_order: Dict[str, Any]) -> None:
+    """
+    Enforces the work order's required_runtime_artifacts list.
+
+    This is used for:
+    - Phase 1C exit criteria (main out_dir)
+    - adversarial tests (temp copy), without re-emitting artifacts.
+    """
+    for rel in work_order.get("required_runtime_artifacts") or []:
+        p = root_dir / str(rel)
+        if not p.exists():
+            raise Phase1CError(f"FAIL_CLOSED: missing required runtime artifact: {rel}")
+
+
+def _emit_runtime_dag_once(
+    *,
+    out_dir: Path,
+    work_order: Dict[str, Any],
+    receipts: List[Dict[str, Any]],
+    artifacts: List[Path],
+) -> Path:
+    """
+    Emits kt.runtime_dag.v1.json exactly once (fail-closed if already present).
+    """
+    dag_path = out_dir / "kt.runtime_dag.v1.json"
+    if dag_path.exists():
+        raise Phase1CError("FAIL_CLOSED: kt.runtime_dag.v1.json already exists (refuse to re-emit)")
+    dag = _build_runtime_dag(work_order=work_order, receipts=receipts, artifacts=artifacts)
+    _write_json(dag_path, dag)
+    artifacts.append(dag_path)
+    return dag_path
+
+
 def _build_judge_receipt(
     *,
     work_order: Dict[str, Any],
@@ -459,29 +492,25 @@ def run_phase1c(*, work_order_path: Path, out_dir: Path) -> int:
     except Exception:
         pass
 
-    # partial_dag_execution: missing judge receipt must fail closed.
+    # Emit runtime DAG once at the end (deterministic ordering, replay-sufficient).
+    _emit_runtime_dag_once(out_dir=out_dir, work_order=work_order, receipts=receipts, artifacts=artifacts)
+
+    # partial_dag_execution: missing judge receipt must fail closed (tested in temp copy, no re-emission).
     tmp_dag = out_dir / "_adv_dag"
     if tmp_dag.exists():
         shutil.rmtree(tmp_dag)
-    tmp_dag.mkdir(parents=True, exist_ok=True)
-    # Emit runtime DAG once at the end (deterministic ordering, replay-sufficient).
-    dag = _build_runtime_dag(work_order=work_order, receipts=receipts, artifacts=artifacts)
-    dag_path = out_dir / "kt.runtime_dag.v1.json"
-    _write_json(dag_path, dag)
-    artifacts.append(dag_path)
-
-    _write_json(tmp_dag / "kt.runtime_dag.v1.json", dag)
+    shutil.copytree(out_dir, tmp_dag)
+    missing_judge = tmp_dag / "kt.judge_receipt.v1.json"
+    if missing_judge.exists():
+        missing_judge.unlink()
     try:
-        # Simulate missing required artifact.
-        _ = load_no_dupes(tmp_dag / "kt.runtime_dag.v1.json")
-    except Exception as exc:  # noqa: BLE001
-        raise Phase1CError(f"FAIL_CLOSED: runtime DAG unreadable: {exc}") from exc
+        _assert_required_runtime_artifacts_present(root_dir=tmp_dag, work_order=work_order)
+        raise Phase1CError("FAIL_CLOSED: adversarial partial_dag_execution did not fail (expected fail-closed)")
+    except Exception:
+        pass
 
     # Completion criteria: required runtime artifacts must exist.
-    for rel in work_order.get("required_runtime_artifacts") or []:
-        p = out_dir / str(rel)
-        if not p.exists():
-            raise Phase1CError(f"FAIL_CLOSED: missing required runtime artifact: {rel}")
+    _assert_required_runtime_artifacts_present(root_dir=out_dir, work_order=work_order)
 
     # Optional completion report for handoff; not part of required_runtime_artifacts.
     _write_json(
