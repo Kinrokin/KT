@@ -1,0 +1,78 @@
+{
+  "schema_id": "kt.cohort2_phase3_scale_work_order.v1",
+  "schema_version": 1,
+  "phase": "PHASE_3",
+  "cohort": 2,
+  "title": "Phase 3 Scaling, Swarm Routing, and Sovereign Intelligence",
+  "law_binding": {
+    "source": "PHASE_1_DOCUMENT",
+    "treat_as_law": true,
+    "requires_prior_completion": "PHASE_2"
+  },
+  "objective": "Scale KT into a multi-adapter, swarm-routed, sovereign intelligence without sacrificing auditability or control.",
+  "prime_constraints": {
+    "forbidden": [
+      "opaque_routing",
+      "unreceipted_reasoning",
+      "implicit_authority"
+    ],
+    "required": [
+      "route_receipts",
+      "adapter_lineage",
+      "cross_adapter_corroboration",
+      "global_replay"
+    ]
+  },
+  "work_packages": [
+    {
+      "wp_id": "WP1_MULTI_ADAPTER_ROUTING",
+      "intent": "Enable swarm routing.",
+      "actions": [
+        {
+          "action": "implement_route_selector",
+          "constraints": [
+            "signed_decisions",
+            "replayable"
+          ]
+        }
+      ]
+    },
+    {
+      "wp_id": "WP2_CROSS_ADAPTER_REASONING",
+      "intent": "Enable adapter collaboration.",
+      "actions": [
+        {
+          "action": "enable_adapter_corroboration"
+        }
+      ]
+    },
+    {
+      "wp_id": "WP3_SOVEREIGN_LLM",
+      "intent": "Introduce sovereign foundation model.",
+      "actions": [
+        {
+          "action": "bind_sovereign_llm",
+          "constraints": [
+            "no_override_of_law",
+            "audited_prompts"
+          ]
+        }
+      ]
+    },
+    {
+      "wp_id": "WP4_GLOBAL_ASSAULT",
+      "intent": "Prove scale safety.",
+      "tests": [
+        "routing_corruption",
+        "adapter_cascade_failure",
+        "sovereign_override_attempt"
+      ]
+    }
+  ],
+  "exit_criteria": {
+    "swarm_routing_receipted": true,
+    "adapter_lineage_intact": true,
+    "global_replay_passes": true
+  },
+  "completion_statement": "KT is fully sovereign, scalable, and governed."
+}

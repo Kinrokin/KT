@@ -1422,10 +1422,14 @@ def run_crucible_file(
         base = Path(override)
         if not base.is_absolute():
             base = repo_root / base
-        artifacts_dir = base.resolve() / "c019_runs"
+        growth_root = base.resolve()
+        artifacts_dir = growth_root / "c019_runs"
+        ledger_path = growth_root / "ledgers" / "c019_crucible_runs.jsonl"
     else:
         artifacts_dir = repo_root / "tools" / "growth" / "artifacts" / "c019_runs"
-    ledger_path = repo_root / "tools" / "growth" / "ledgers" / "c019_crucible_runs.jsonl"
+        ledger_path = repo_root / "tools" / "growth" / "ledgers" / "c019_crucible_runs.jsonl"
+
+    ledger_path.parent.mkdir(parents=True, exist_ok=True)
 
     records: List[CrucibleRunRecord] = []
     requested_target = kernel_target

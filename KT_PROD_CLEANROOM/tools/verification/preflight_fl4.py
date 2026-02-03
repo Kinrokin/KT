@@ -16,6 +16,10 @@ from tools.training.fl3_factory.hashing import sha256_file_normalized
 from tools.verification.fl3_canonical import repo_root_from, sha256_json
 from tools.verification.fl3_validators import FL3ValidationError, load_fl3_canonical_runtime_paths, validate_schema_bound_object
 from tools.verification.io_guard import IOGuard, IOGuardConfig
+from tools.verification.watcher_spc_validators import (
+    assert_runtime_registry_has_no_watcher_spc,
+    validate_watcher_spc_artifacts_if_present,
+)
 
 
 def _run(cmd: List[str], *, cwd: Path, env: Dict[str, str], out_path: Optional[Path] = None) -> Tuple[int, str]:
@@ -66,7 +70,7 @@ def _assert_evidence_pack_complete(*, out_dir: Path) -> None:
         "determinism_contract.json",
         "law_bundle_hash.txt",
         "law_bundle.json",
-        "fl3_growth_e2e_gate_deferred.json",
+        "growth_e2e_gate_report.json",
         "behavioral_growth_summary.json",
         "meta_evaluator_receipt.json",
         "red_assault_report.json",
@@ -75,6 +79,7 @@ def _assert_evidence_pack_complete(*, out_dir: Path) -> None:
         "canary_artifact_rerun.json",
         "canary_artifact_post_promotion.json",
         "metabolism_proof.json",
+        "replay_from_receipts_report.json",
         "preflight_summary.json",
     )
     required_job_dir = (
@@ -334,6 +339,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     paths = load_fl3_canonical_runtime_paths(repo_root=repo_root)
     reg_path = str(args.registry_path or paths["runtime_registry_path"])
+    reg_file = Path(reg_path)
+    if not reg_file.is_absolute():
+        reg_file = repo_root / reg_file
+    assert_runtime_registry_has_no_watcher_spc(registry_path=reg_file.resolve())
 
     # Supported platforms / determinism scope: fail closed if current platform is out of scope.
     supported = json.loads((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_SUPPORTED_PLATFORMS.json").read_text("utf-8"))
@@ -454,26 +463,18 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         )
         _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.verification.fl3_rollback_drill", "--registry-path", reg_path, "--out", str(out_dir / "rollback_drill_report.json")], rc=rc, output=out)
 
-        # 3) FL3 pressure growth gate is explicitly deferred in FL4 seal mode (phase-correct).
-        deferred = {
-            "schema_id": "kt.fl3_pressure_growth_deferred.v1",
-            "seal_mode": True,
-            "reason": "FL3 growth_e2e_gate SHALL NOT execute in FL4 seal mode; run post-seal in pressure-capable phase.",
-            "skipped_command": [py_exe, "-m", "tools.verification.growth_e2e_gate", "--pressure-runs", "1", "--out", "<OUT_DIR>/growth_e2e_gate_report.json"],
-        }
-        (out_dir / "fl3_growth_e2e_gate_deferred.json").write_text(
-            json.dumps(deferred, indent=2, sort_keys=True, ensure_ascii=True) + "\n",
-            encoding="utf-8",
-            newline="\n",
-        )
-        _append_transcript(
-            transcript_path,
-            cmd=[py_exe, "-m", "tools.verification.growth_e2e_gate", "--pressure-runs", "1", "--out", str(out_dir / "growth_e2e_gate_report.json")],
-            rc=0,
-            output="SKIP: FL3 pressure growth gate deferred in FL4 seal mode (see fl3_growth_e2e_gate_deferred.json).",
-        )
+        # 3) FL3 pressure growth gate (required by protocol; fail-closed on any failure).
+        growth_report = out_dir / "growth_e2e_gate_report.json"
+        growth_cmd = [py_exe, "-m", "tools.verification.growth_e2e_gate", "--pressure-runs", "1", "--out", str(growth_report)]
+        p = subprocess.run(growth_cmd, cwd=str(repo_root), env=env, text=True, capture_output=True)
+        (out_dir / "growth_e2e_gate.log").write_text(p.stdout + p.stderr, encoding="utf-8")
+        _append_transcript(transcript_path, cmd=growth_cmd, rc=p.returncode, output=p.stdout + p.stderr)
+        if not growth_report.exists():
+            raise SystemExit("FAIL_CLOSED: growth_e2e_gate did not create growth_e2e_gate_report.json (fail-closed)")
+        if p.returncode != 0:
+            raise SystemExit(f"FAIL_CLOSED: growth_e2e_gate rc={p.returncode} (fail-closed)")
 
-        # 3b) Behavioral growth certificate (FL4 seal requirement; deterministic; fail-closed).
+        # 3b) Behavioral growth certificate (deterministic; fail-closed).
         bg_dir = (out_dir / "behavioral_growth").resolve()
         bg_cmd = [
             py_exe,
@@ -677,6 +678,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             out_dir_rel = out_dir.as_posix()
         summary = {
             "schema_id": "kt.fl4.preflight_summary.v1",
+            "schema_version_hash": schema_version_hash("fl3/kt.fl4.preflight_summary.v1.json"),
             "git_sha": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=str(repo_root), text=True).strip(),
             "out_dir": out_dir_rel,
             "registry_path": reg_path,
@@ -685,7 +687,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             "evidence_job_dir": (out_dir / "job_dir").as_posix(),
             "seal_doctrine_sha256": doctrine_hash,
             "env_lock_id": str(env_lock.get("env_lock_id")),
-            "fl3_pressure_growth_gate": {"executed": False, "receipt": "fl3_growth_e2e_gate_deferred.json"},
+            "fl3_pressure_growth_gate": {"executed": True, "receipt": "growth_e2e_gate_report.json"},
         }
         try:
             bg_obj = json.loads((out_dir / "behavioral_growth_summary.json").read_text(encoding="utf-8"))
@@ -704,7 +706,26 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                         summary["promoted_index_path"] = str(pr.get("promoted_index_path"))
             except Exception:
                 pass
+        validate_schema_bound_object(summary)
         (out_dir / "preflight_summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+
+        # 5) Replay from receipts (deterministic; fail-closed). This is a verifier, not a seal run.
+        replay_report = out_dir / "replay_from_receipts_report.json"
+        rc, out = _run(
+            [py_exe, "-m", "tools.verification.fl4_replay_from_receipts", "--evidence-dir", str(out_dir), "--out", str(replay_report)],
+            cwd=repo_root,
+            env=env,
+            out_path=out_dir / "replay_from_receipts.log",
+        )
+        _append_transcript(
+            transcript_path,
+            cmd=[py_exe, "-m", "tools.verification.fl4_replay_from_receipts", "--evidence-dir", str(out_dir), "--out", str(replay_report)],
+            rc=rc,
+            output=out,
+        )
+
+        # 6) Watcher/SPC NCON enforcement (conditional; fail-closed if malformed artifacts are present).
+        validate_watcher_spc_artifacts_if_present(evidence_dir=out_dir)
 
         # Evidence pack completeness contract (fail-closed).
         _assert_evidence_pack_complete(out_dir=out_dir)

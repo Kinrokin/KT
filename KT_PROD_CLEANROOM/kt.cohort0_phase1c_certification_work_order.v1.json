@@ -1,0 +1,130 @@
+{
+  "schema_id": "kt.cohort0_phase1c_certification_work_order.v1",
+  "schema_version": 1,
+  "phase": "PHASE_1C",
+  "cohort": 0,
+  "title": "Phase 1C Final Merge and Runtime Certification",
+  "law_binding": {
+    "source": "PHASE_1_DOCUMENT",
+    "treat_as_law": true,
+    "retroactive_change_forbidden": true,
+    "prior_phase_preserved": [
+      "PHASE_1A",
+      "PHASE_1B"
+    ]
+  },
+  "objective": "Certify that Phase 1C runtime instantiation is complete, deterministic, fail-closed, non-evolving, and replayable, and freeze it permanently.",
+  "prime_constraints": {
+    "forbidden": [
+      "training",
+      "adapter_mutation",
+      "lora_updates",
+      "weight_merge",
+      "ties",
+      "seal_execution",
+      "canonical_index_mutation"
+    ],
+    "required": [
+      "deterministic_execution",
+      "offline_execution",
+      "fail_closed_everywhere",
+      "single_runtime_dag",
+      "single_judge_receipt",
+      "schema_bound_artifacts",
+      "replay_from_receipts"
+    ]
+  },
+  "inputs": {
+    "required_branch": "phase1c-runtime-instantiation",
+    "required_ci_checks": [
+      "fl3-pr-fast",
+      "fl4-preflight"
+    ],
+    "required_tag_prefix": "phase1c-complete"
+  },
+  "work_packages": [
+    {
+      "wp_id": "WP0_MERGE",
+      "intent": "Merge Phase 1C runtime branch once CI is green.",
+      "actions": [
+        {
+          "action": "merge_pull_request",
+          "conditions": [
+            "ci_all_green",
+            "working_tree_clean"
+          ]
+        }
+      ],
+      "fail_conditions": [
+        "merge_without_green_ci",
+        "merge_with_dirty_tree"
+      ]
+    },
+    {
+      "wp_id": "WP1_RUNTIME_CERTIFICATION",
+      "intent": "Execute Phase 1C runtime instantiation exactly once.",
+      "actions": [
+        {
+          "action": "run_phase1c_executor",
+          "requirements": [
+            "emit_single_runtime_dag",
+            "emit_single_judge_receipt",
+            "emit_shadow_promotion_artifacts",
+            "emit_growth_gate_artifacts"
+          ]
+        }
+      ],
+      "fail_conditions": [
+        "multiple_runtime_dag_emissions",
+        "missing_receipt",
+        "watcher_affects_verdict",
+        "canonical_index_mutated",
+        "seal_detected"
+      ]
+    },
+    {
+      "wp_id": "WP2_REPLAY_AND_INTEGRITY",
+      "intent": "Prove deterministic replay and law integrity.",
+      "actions": [
+        {
+          "action": "run_replay_from_receipts"
+        },
+        {
+          "action": "verify_law_bundle_integrity"
+        }
+      ],
+      "fail_conditions": [
+        "replay_failure",
+        "law_bundle_hash_mismatch"
+      ]
+    },
+    {
+      "wp_id": "WP3_FINALIZATION",
+      "intent": "Freeze Phase 1C permanently.",
+      "actions": [
+        {
+          "action": "emit_phase1c_certification_report",
+          "output": "phase1c_certification_report.json"
+        },
+        {
+          "action": "tag_commit",
+          "tag": "phase1c-complete-final"
+        }
+      ],
+      "fail_conditions": [
+        "certification_without_all_artifacts",
+        "tag_without_certification"
+      ]
+    }
+  ],
+  "exit_criteria": {
+    "runtime_dag_present": true,
+    "judge_receipt_present": true,
+    "promotion_shadow_only": true,
+    "watcher_proven_non_authoritative": true,
+    "replay_passes": true,
+    "no_mutation": true,
+    "no_seal": true
+  },
+  "completion_statement": "Phase 1C complete and frozen."
+}

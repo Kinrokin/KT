@@ -294,6 +294,31 @@ from schemas.fl3_trace_violation_schema import (
     FL3_TRACE_VIOLATION_SCHEMA_VERSION_HASH,
     validate_fl3_trace_violation,
 )
+from schemas.fl4_preflight_summary_schema import (
+    FL4_PREFLIGHT_SUMMARY_SCHEMA_ID,
+    FL4_PREFLIGHT_SUMMARY_SCHEMA_VERSION_HASH,
+    validate_fl4_preflight_summary,
+)
+from schemas.fl4_promotion_report_schema import (
+    FL4_PROMOTION_REPORT_SCHEMA_ID,
+    FL4_PROMOTION_REPORT_SCHEMA_VERSION_HASH,
+    validate_fl4_promotion_report,
+)
+from schemas.phase1c_work_order_schema import (
+    PHASE1C_WORK_ORDER_SCHEMA_ID,
+    PHASE1C_WORK_ORDER_SCHEMA_VERSION_HASH,
+    validate_phase1c_work_order,
+)
+from schemas.runtime_dag_schema import (
+    RUNTIME_DAG_SCHEMA_ID,
+    RUNTIME_DAG_SCHEMA_VERSION_HASH,
+    validate_runtime_dag,
+)
+from schemas.judge_receipt_schema import (
+    JUDGE_RECEIPT_SCHEMA_ID,
+    JUDGE_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_judge_receipt,
+)
 from schemas.schema_files import schema_version_hash
 
 
@@ -411,6 +436,14 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     FL3_SCORING_SPEC_SCHEMA_ID: (FL3_SCORING_SPEC_SCHEMA_VERSION_HASH, validate_fl3_scoring_spec),
     FL3_PROMOTED_MANIFEST_SCHEMA_ID: (FL3_PROMOTED_MANIFEST_SCHEMA_VERSION_HASH, validate_fl3_promoted_manifest),
     FL3_PROMOTED_INDEX_SCHEMA_ID: (FL3_PROMOTED_INDEX_SCHEMA_VERSION_HASH, validate_fl3_promoted_index),
+    # FL4: preflight/promotion reports (append-only).
+    FL4_PREFLIGHT_SUMMARY_SCHEMA_ID: (FL4_PREFLIGHT_SUMMARY_SCHEMA_VERSION_HASH, validate_fl4_preflight_summary),
+    FL4_PROMOTION_REPORT_SCHEMA_ID: (FL4_PROMOTION_REPORT_SCHEMA_VERSION_HASH, validate_fl4_promotion_report),
+    # Phase 1C: work order (append-only).
+    PHASE1C_WORK_ORDER_SCHEMA_ID: (PHASE1C_WORK_ORDER_SCHEMA_VERSION_HASH, validate_phase1c_work_order),
+    # Phase 1C: runtime instantiation artifacts (append-only).
+    RUNTIME_DAG_SCHEMA_ID: (RUNTIME_DAG_SCHEMA_VERSION_HASH, validate_runtime_dag),
+    JUDGE_RECEIPT_SCHEMA_ID: (JUDGE_RECEIPT_SCHEMA_VERSION_HASH, validate_judge_receipt),
     # FL3.2: cognitive fitness + discovery battery (append-only).
     FL3_ANCHOR_REFERENCE_SET_SCHEMA_ID: (
         FL3_ANCHOR_REFERENCE_SET_SCHEMA_VERSION_HASH,
