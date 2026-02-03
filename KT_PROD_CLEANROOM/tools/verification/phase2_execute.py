@@ -55,15 +55,47 @@ def _validate_schema_bound_object(payload: Any) -> None:
     validate_object_with_binding(payload)
 
 
-def _assert_out_dir_is_outside_repo(*, repo_root: Path, out_dir: Path) -> None:
+def _assert_out_dir_is_safe(*, repo_root: Path, out_dir: Path) -> None:
     """
-    CPU Cohort A invariant: runtime outputs must not mutate the repo. Enforce that out_dir is outside the repo tree.
+    CPU Cohort A invariant: runtime outputs must not mutate tracked repo state.
+
+    Allow either:
+    - an out_dir outside repo_root, or
+    - a repo-local out_dir under `KT_PROD_CLEANROOM/exports/**` (CI and preflight run outputs live here).
+
+    Fail closed for out_dir targets under code / law / tests surfaces.
     """
+    rr = repo_root.resolve()
+    od = out_dir.resolve()
+
+    # Always forbid out_dir within code/law/test trees.
+    forbidden_roots = [
+        rr / ".git",
+        rr / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2",
+        rr / "KT_PROD_CLEANROOM" / "tools",
+        rr / "KT_PROD_CLEANROOM" / "tests",
+        rr / "KT_PROD_CLEANROOM" / "AUDITS",
+        rr / "KT_PROD_CLEANROOM" / "exports" / "law",
+        rr / "KT_PROD_CLEANROOM" / "exports" / "node_registry",
+    ]
+    for fr in forbidden_roots:
+        try:
+            od.relative_to(fr.resolve())
+        except Exception:
+            continue
+        raise Phase2Error(f"FAIL_CLOSED: --out-dir points into forbidden repo surface: {fr.as_posix()}")
+
+    # If out_dir is inside repo_root, require it to be under KT_PROD_CLEANROOM/exports/**.
     try:
-        out_dir.resolve().relative_to(repo_root.resolve())
+        od.relative_to(rr)
     except Exception:
         return
-    raise Phase2Error("FAIL_CLOSED: --out-dir must be outside repo_root to prevent repo mutation")
+
+    exports_root = (rr / "KT_PROD_CLEANROOM" / "exports").resolve()
+    try:
+        od.relative_to(exports_root)
+    except Exception:
+        raise Phase2Error("FAIL_CLOSED: --out-dir inside repo must be under KT_PROD_CLEANROOM/exports/**")
 
 
 def _install_io_guard(*, out_dir: Path) -> Any:
@@ -204,7 +236,7 @@ def _build_dry_run_receipts(*, plan: Dict[str, Any], validations: Dict[str, Any]
 
 
 def run_dry_run(*, repo_root: Path, work_order_path: Path, out_dir: Path) -> int:
-    _assert_out_dir_is_outside_repo(repo_root=repo_root, out_dir=out_dir)
+    _assert_out_dir_is_safe(repo_root=repo_root, out_dir=out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
     work_order = _load_work_order(work_order_path=work_order_path)
@@ -266,4 +298,3 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
