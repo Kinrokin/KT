@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "kt.phase2_work_order.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "schema_version",
+    "work_order_id",
+    "title",
+    "status",
+    "authority",
+    "objective",
+    "prime_constraints",
+    "inputs",
+    "deliverables",
+    "work_packages",
+    "exit_criteria",
+    "completion"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.phase2_work_order.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "schema_version": { "type": "integer", "const": 1 },
+    "work_order_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "title": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "status": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "treat_as_law",
+        "fail_closed",
+        "no_implicit_fallbacks",
+        "behavior_cannot_precede_artifact",
+        "append_only_policy",
+        "explicit_non_changes"
+      ],
+      "properties": {
+        "treat_as_law": { "type": "boolean" },
+        "fail_closed": { "type": "boolean" },
+        "no_implicit_fallbacks": { "type": "boolean" },
+        "behavior_cannot_precede_artifact": { "type": "boolean" },
+        "append_only_policy": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 128 } },
+        "explicit_non_changes": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 256 } }
+      }
+    },
+    "objective": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary", "success_definition"],
+      "properties": {
+        "primary": { "type": "string", "minLength": 1, "maxLength": 4096 },
+        "success_definition": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 512 } }
+      }
+    },
+    "prime_constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["forbidden", "required"],
+      "properties": {
+        "forbidden": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 128 } },
+        "required": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 128 } }
+      }
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_refs", "runtime_environment"],
+      "properties": {
+        "required_refs": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["phase1c_tag", "law_bundle_file", "phase1c_executor"],
+          "properties": {
+            "phase1c_tag": { "type": "string", "minLength": 1, "maxLength": 128 },
+            "law_bundle_file": { "type": "string", "minLength": 1, "maxLength": 256 },
+            "phase1c_executor": { "type": "string", "minLength": 1, "maxLength": 256 }
+          }
+        },
+        "runtime_environment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["platforms_supported", "offline_mode_required", "environment_vars_required"],
+          "properties": {
+            "platforms_supported": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 32 } },
+            "offline_mode_required": { "type": "boolean" },
+            "environment_vars_required": {
+              "type": "object",
+              "additionalProperties": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "deliverables": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_artifacts", "required_runtime_outputs"],
+      "properties": {
+        "required_artifacts": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 512 } },
+        "required_runtime_outputs": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 512 } }
+      }
+    },
+    "work_packages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["wp_id", "intent", "actions"],
+        "properties": {
+          "wp_id": { "type": "string", "minLength": 1, "maxLength": 64 },
+          "intent": { "type": "string", "minLength": 1, "maxLength": 4096 },
+          "actions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "required": ["action_id", "action"],
+              "properties": {
+                "action_id": { "type": "string", "minLength": 1, "maxLength": 64 },
+                "action": { "type": "string", "minLength": 1, "maxLength": 128 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "exit_criteria": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "all_wps_complete",
+        "all_required_runtime_outputs_present",
+        "training_receipted",
+        "promotion_receipted_atomic",
+        "seal_receipted_with_evidence_pack",
+        "replay_passes",
+        "offline_guard_enforced",
+        "no_cross_adapter_bleed",
+        "fail_closed_verified",
+        "system_wide_audit_passed",
+        "law_bundle_integrity_holds"
+      ],
+      "properties": {
+        "all_wps_complete": { "type": "boolean" },
+        "all_required_runtime_outputs_present": { "type": "boolean" },
+        "training_receipted": { "type": "boolean" },
+        "promotion_receipted_atomic": { "type": "boolean" },
+        "seal_receipted_with_evidence_pack": { "type": "boolean" },
+        "replay_passes": { "type": "boolean" },
+        "offline_guard_enforced": { "type": "boolean" },
+        "no_cross_adapter_bleed": { "type": "boolean" },
+        "fail_closed_verified": { "type": "boolean" },
+        "system_wide_audit_passed": { "type": "boolean" },
+        "law_bundle_integrity_holds": { "type": "boolean" }
+      }
+    },
+    "completion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["completion_tag", "freeze_statement"],
+      "properties": {
+        "completion_tag": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "freeze_statement": { "type": "string", "minLength": 1, "maxLength": 4096 }
+      }
+    }
+  }
+}
