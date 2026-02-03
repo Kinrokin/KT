@@ -68,6 +68,7 @@ SCHEMA_FILES = [
     "fl3/kt.metabolism_proof.v1.json",
     "fl3/kt.fl4.preflight_summary.v1.json",
     "fl3/kt.fl4.promotion_report.v1.json",
+    "fl3/kt.phase1c_work_order.v1.json",
 ]
 
 

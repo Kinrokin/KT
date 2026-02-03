@@ -1,0 +1,198 @@
+{
+  "completion_statement": "Phase 1C complete only if all exit criteria hold.",
+  "exit_criteria": {
+    "all_receipts_present": true,
+    "all_replay_tests_pass": true,
+    "all_runtime_paths_execute": true,
+    "no_governance_drift": true,
+    "no_mutation": true,
+    "no_seal_executed": true
+  },
+  "law_binding": {
+    "phase_1b_status_preserved": true,
+    "retroactive_change_forbidden": true,
+    "source": "PHASE_1_DOCUMENT",
+    "treat_as_law": true
+  },
+  "objective": "Instantiate wired semantics into live runtime execution and prove exact behavioral fidelity under real execution conditions.",
+  "phase": "PHASE_1C",
+  "prime_constraints": {
+    "forbidden": [
+      "training",
+      "lora_updates",
+      "adapter_evolution",
+      "self_modification",
+      "weight_merge",
+      "ties",
+      "sovereign_llm_injection",
+      "seal_execution"
+    ],
+    "required": [
+      "deterministic_execution",
+      "fail_closed_everywhere",
+      "runtime_wiring_only",
+      "receipts_for_every_decision",
+      "offline_execution"
+    ]
+  },
+  "required_runtime_artifacts": [
+    "kt.runtime_dag.v1.json",
+    "kt.judge_receipt.v1.json",
+    "kt.promotion_report.v1.json"
+  ],
+  "runtime_authority_model": {
+    "judge": {
+      "authoritative": true,
+      "may_gate": true,
+      "may_return_verdict": true
+    },
+    "promotion": {
+      "may_mutate_canonical_index": false,
+      "may_write_candidate": true,
+      "mode": "shadow_only"
+    },
+    "watcher_spc": {
+      "authoritative": false,
+      "may_emit": "advisory_only",
+      "may_execute": true,
+      "may_gate": false,
+      "may_promote": false,
+      "may_route": false,
+      "may_veto": false
+    }
+  },
+  "schema_id": "kt.phase1c_work_order.v1",
+  "schema_version": 1,
+  "schema_version_hash": "83dd94b5b0ef48b6f6b0bd3d7c4f13a71bace533bd1dd8cffc66099de049524a",
+  "scope": {
+    "no_new_nodes": true,
+    "nodes_activated": [
+      "evaluator",
+      "meta_evaluator",
+      "judge",
+      "growth_gate",
+      "promotion_gate",
+      "watcher_spc"
+    ],
+    "nodes_inert": [
+      "learning",
+      "adapter_mutation",
+      "weight_merge",
+      "ties",
+      "sovereign_llm"
+    ]
+  },
+  "title": "Runtime Instantiation (Controlled, Non-Evolving)",
+  "work_packages": [
+    {
+      "actions": [
+        {
+          "action": "activate_live_router",
+          "id": "A1.1",
+          "must_invoke": [
+            "evaluator",
+            "judge",
+            "promotion"
+          ],
+          "rules": [
+            "signed_invocation",
+            "receipt_required",
+            "replayable_from_receipts"
+          ]
+        },
+        {
+          "action": "emit_runtime_dag",
+          "constraints": [
+            "deterministic_order",
+            "hash_bound",
+            "replayable_from_receipts_only"
+          ],
+          "id": "A1.2",
+          "output": "kt.runtime_dag.v1.json"
+        }
+      ],
+      "fail_conditions": [
+        "node_executes_without_receipt",
+        "non_deterministic_dag"
+      ],
+      "intent": "Make Phase 1B semantics callable at runtime with receipts.",
+      "wp_id": "WP1_RUNTIME_WIRING"
+    },
+    {
+      "actions": [
+        {
+          "action": "enable_judge_runtime",
+          "id": "A2.1",
+          "rules": [
+            "fail_closed_on_missing_inputs",
+            "ignore_watcher_without_corroboration",
+            "single_final_verdict"
+          ]
+        },
+        {
+          "action": "emit_judge_receipt",
+          "id": "A2.2",
+          "output": "kt.judge_receipt.v1.json"
+        }
+      ],
+      "intent": "Activate Judge as final arbiter.",
+      "wp_id": "WP2_JUDGE_ACTIVATION"
+    },
+    {
+      "actions": [
+        {
+          "action": "execute_watcher_advisory",
+          "id": "A3.1"
+        },
+        {
+          "action": "inject_watcher_fail_signal",
+          "expected_behavior": "system_ignores_without_corroboration",
+          "id": "A3.2"
+        }
+      ],
+      "fail_conditions": [
+        "watcher_blocks_execution",
+        "watcher_affects_verdict"
+      ],
+      "intent": "Prove Watcher/SPC executes but cannot gate.",
+      "wp_id": "WP3_WATCHER_RUNTIME_PROOF"
+    },
+    {
+      "actions": [
+        {
+          "action": "run_promotion_shadow",
+          "id": "A4.1",
+          "outputs": [
+            "promotion_report",
+            "promoted_index_candidate"
+          ]
+        }
+      ],
+      "fail_conditions": [
+        "canonical_index_mutated",
+        "promotion_from_lab_lane"
+      ],
+      "intent": "Execute promotion logic without mutating canonical state.",
+      "wp_id": "WP4_PROMOTION_SHADOW_MODE"
+    },
+    {
+      "intent": "Adversarial proof of runtime correctness.",
+      "tests": {
+        "adversarial": [
+          "missing_receipt",
+          "corrupted_receipt",
+          "watcher_veto_attempt",
+          "lab_lane_promotion_attempt",
+          "partial_dag_execution"
+        ],
+        "runtime": [
+          "deterministic_replay_from_receipts",
+          "offline_execution",
+          "no_wall_clock_dependence",
+          "no_hidden_state"
+        ]
+      },
+      "wp_id": "WP5_RUNTIME_TEST_BATTERY"
+    }
+  ]
+}

@@ -304,6 +304,11 @@ from schemas.fl4_promotion_report_schema import (
     FL4_PROMOTION_REPORT_SCHEMA_VERSION_HASH,
     validate_fl4_promotion_report,
 )
+from schemas.phase1c_work_order_schema import (
+    PHASE1C_WORK_ORDER_SCHEMA_ID,
+    PHASE1C_WORK_ORDER_SCHEMA_VERSION_HASH,
+    validate_phase1c_work_order,
+)
 from schemas.schema_files import schema_version_hash
 
 
@@ -424,6 +429,8 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     # FL4: preflight/promotion reports (append-only).
     FL4_PREFLIGHT_SUMMARY_SCHEMA_ID: (FL4_PREFLIGHT_SUMMARY_SCHEMA_VERSION_HASH, validate_fl4_preflight_summary),
     FL4_PROMOTION_REPORT_SCHEMA_ID: (FL4_PROMOTION_REPORT_SCHEMA_VERSION_HASH, validate_fl4_promotion_report),
+    # Phase 1C: work order (append-only).
+    PHASE1C_WORK_ORDER_SCHEMA_ID: (PHASE1C_WORK_ORDER_SCHEMA_VERSION_HASH, validate_phase1c_work_order),
     # FL3.2: cognitive fitness + discovery battery (append-only).
     FL3_ANCHOR_REFERENCE_SET_SCHEMA_ID: (
         FL3_ANCHOR_REFERENCE_SET_SCHEMA_VERSION_HASH,
