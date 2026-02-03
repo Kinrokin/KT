@@ -61,6 +61,18 @@ jobs:
             else
               echo "OUT_DIR missing: $OUT_DIR"
             fi
+            echo "--- growth_e2e_gate_report.json ---"
+            if [ -f "$OUT_DIR/growth_e2e_gate_report.json" ]; then
+              sed -n '1,200p' "$OUT_DIR/growth_e2e_gate_report.json"
+            else
+              echo "missing: $OUT_DIR/growth_e2e_gate_report.json"
+            fi
+            echo "--- growth_e2e_gate.log ---"
+            if [ -f "$OUT_DIR/growth_e2e_gate.log" ]; then
+              sed -n '1,200p' "$OUT_DIR/growth_e2e_gate.log"
+            else
+              echo "missing: $OUT_DIR/growth_e2e_gate.log"
+            fi
             echo "--- pytest_temple.log ---"
             if [ -f "$OUT_DIR/pytest_temple.log" ]; then
               sed -n '1,200p' "$OUT_DIR/pytest_temple.log"
