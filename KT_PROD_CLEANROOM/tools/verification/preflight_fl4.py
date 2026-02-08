@@ -266,6 +266,16 @@ def _mk_min_contract(repo_root: Path) -> Dict[str, Any]:
     return c
 
 
+def mk_min_contract(repo_root: Path) -> Dict[str, Any]:
+    """
+    Public, stable wrapper for the minimal FL4 organ contract builder.
+
+    External automation tools should call this function rather than importing the
+    private underscore helper directly.
+    """
+    return _mk_min_contract(repo_root)
+
+
 def _mk_jobspec(*, export_shadow_root: str, export_promoted_root: str, mode: str) -> Dict[str, Any]:
     job: Dict[str, Any] = {
         "schema_id": "kt.factory.jobspec.v1",

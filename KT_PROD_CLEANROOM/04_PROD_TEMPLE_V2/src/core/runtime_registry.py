@@ -438,6 +438,16 @@ def _parse_export_root_list(value: Any, *, name: str) -> Tuple[str, ...]:
     return tuple(normalized)
 
 
+def parse_adapters_spec(value: Any) -> AdapterRegistrySpec:
+    """
+    Public, stable wrapper for parsing adapters registry spec.
+
+    Tools that need adapters parsing semantics should call this instead of the
+    private underscore helper.
+    """
+    return _parse_adapters_spec(value)
+
+
 def _parse_adapters_spec(value: Any) -> AdapterRegistrySpec:
     if not isinstance(value, dict):
         raise RuntimeRegistryError("adapters must be an object (fail-closed)")

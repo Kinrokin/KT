@@ -11,6 +11,10 @@ from tools.verification.strict_json import load_no_dupes  # noqa: E402
 def test_cohort0_canonical_13_lobes_derived_from_doctrine() -> None:
     role_weights = load_no_dupes(_REPO_ROOT / "KT_PROD_CLEANROOM" / "AUDITS" / "ROLE_FITNESS_WEIGHTS.json")
     assert isinstance(role_weights, dict)
+    roles = role_weights.get("roles")
+    assert isinstance(roles, list)
+    # Tight drift alarm: doctrine currently defines 14 roles total (13 lobes + ARBITER).
+    assert len(roles) == 14
     lobes = derive_canonical_13_lobes(role_weights=role_weights)
 
     assert len(lobes) == 13
@@ -25,4 +29,3 @@ def test_cohort0_canonical_13_lobes_derived_from_doctrine() -> None:
 
     # Stable ordering requirement for runtime registry (sorted by adapter_id).
     assert adapter_ids == sorted(adapter_ids)
-

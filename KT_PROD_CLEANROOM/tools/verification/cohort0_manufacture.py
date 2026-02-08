@@ -6,7 +6,7 @@ import os
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Mapping, Tuple
+from typing import Any, Dict, List, Mapping, Tuple
 
 from tools.verification.strict_json import load_no_dupes
 
@@ -142,7 +142,7 @@ def _mk_min_contract(*, repo_root: Path) -> Dict[str, Any]:
     Mirror the minimal FL4 organ contract created by preflight_fl4, but as a callable
     helper so Cohort-0 manufacturing uses the same allowlists.
     """
-    from tools.verification.preflight_fl4 import _mk_min_contract as _mk  # type: ignore
+    from tools.verification.preflight_fl4 import mk_min_contract as _mk  # type: ignore
 
     return _mk(repo_root)
 
@@ -169,7 +169,8 @@ def _build_runtime_registry_snapshot(
         validate_adapter_entry,
     )
     from schemas.runtime_registry_schema import validate_runtime_registry  # type: ignore
-    from core.runtime_registry import _parse_adapters_spec  # type: ignore
+    from core.runtime_registry import parse_adapters_spec  # type: ignore
+    from tools.verification.fl3_validators import load_fl3_canonical_runtime_paths  # type: ignore
 
     template_path = _runtime_registry_template_path(repo_root=repo_root)
     template = load_no_dupes(template_path)
@@ -180,16 +181,38 @@ def _build_runtime_registry_snapshot(
     if not isinstance(adapters, dict):
         raise Cohort0ManufactureError("FAIL_CLOSED: runtime registry template.adapters must be an object")
 
-    # IMPORTANT: actual repo export root lives under KT_PROD_CLEANROOM/exports/** (gitignored runtime outputs).
-    allowed_export_roots = ["KT_PROD_CLEANROOM/exports/adapters"]
+    # IMPORTANT: adapters artifact paths emitted by promotion are repo-relative under exports.
+    paths = load_fl3_canonical_runtime_paths(repo_root=repo_root)
+    exports_adapters_root = str(paths.get("exports_adapters_root", "")).strip()
+    if not exports_adapters_root:
+        raise Cohort0ManufactureError("FAIL_CLOSED: missing exports_adapters_root in FL3 canonical runtime paths")
+    allowed_export_roots = [exports_adapters_root]
 
     entries: List[Dict[str, Any]] = []
     for pr in promoted_reports:
         adapter_id = str(pr.get("adapter_id", "")).strip()
+        role_id = str(pr.get("role_id", "")).strip()
         promoted_dir = str(pr.get("promoted_dir", "")).strip()
         content_hash = str(pr.get("content_hash", "")).strip()
-        if not adapter_id or not promoted_dir or len(content_hash) != 64:
-            raise Cohort0ManufactureError("FAIL_CLOSED: malformed promotion report surface (adapter_id/promoted_dir/content_hash)")
+        if not adapter_id or not role_id or not promoted_dir or len(content_hash) != 64:
+            raise Cohort0ManufactureError(
+                "FAIL_CLOSED: malformed promotion report surface (adapter_id/role_id/promoted_dir/content_hash)"
+            )
+
+        # Promoted dir must be a clean repo-relative path under exports/adapters.
+        promoted_dir_norm = promoted_dir.replace("\\", "/")
+        if Path(promoted_dir_norm).is_absolute() or any(part in {".", ".."} for part in Path(promoted_dir_norm).parts):
+            raise Cohort0ManufactureError("FAIL_CLOSED: promoted_dir must be a clean relative path")
+        if not promoted_dir_norm.startswith(exports_adapters_root.replace("\\", "/")):
+            raise Cohort0ManufactureError("FAIL_CLOSED: promoted_dir not under exports_adapters_root")
+
+        promoted_abs = (repo_root / promoted_dir_norm).resolve()
+        train_ref = f"{promoted_dir_norm}/train_manifest.json"
+        eval_ref = f"{promoted_dir_norm}/eval_report.json"
+        if not (promoted_abs / "train_manifest.json").exists():
+            raise Cohort0ManufactureError("FAIL_CLOSED: promoted package missing train_manifest.json")
+        if not (promoted_abs / "eval_report.json").exists():
+            raise Cohort0ManufactureError("FAIL_CLOSED: promoted package missing eval_report.json")
 
         entry = {
             "schema_id": ADAPTER_ENTRY_SCHEMA_ID,
@@ -197,12 +220,12 @@ def _build_runtime_registry_snapshot(
             "adapter_id": adapter_id,
             "version": adapter_version,
             "base_model": base_model_id,
-            "artifact_path": promoted_dir,
+            "artifact_path": promoted_dir_norm,
             "artifact_hash": content_hash,
-            "capabilities": ["COHORT0", f"ROLE:{adapter_id}"],
+            "capabilities": ["COHORT0", f"ROLE:{role_id}"],
             "constraints": ["MRT0_HEAD_ONLY", "OFFLINE_ONLY", "NO_NETWORK"],
-            "training_receipt_ref": f"{promoted_dir}/train_manifest.json",
-            "evaluation_receipt_ref": f"{promoted_dir}/eval_report.json",
+            "training_receipt_ref": train_ref,
+            "evaluation_receipt_ref": eval_ref,
             "status": "ACTIVE",
         }
         validate_adapter_entry(entry)
@@ -217,11 +240,50 @@ def _build_runtime_registry_snapshot(
         "entries": entries,
     }
     # Parse adapter spec using the canonical runtime parser (fail-closed if any invariant violated).
-    _parse_adapters_spec(adapters_snapshot)
+    parse_adapters_spec(adapters_snapshot)
 
     template["adapters"] = adapters_snapshot
     validate_runtime_registry(template)
     return template
+
+
+def _validate_clean_relative_path(value: str, *, name: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise Cohort0ManufactureError(f"FAIL_CLOSED: {name} must be a non-empty string")
+    norm = value.replace("\\", "/").strip()
+    p = Path(norm)
+    if p.is_absolute():
+        raise Cohort0ManufactureError(f"FAIL_CLOSED: {name} must be a relative path")
+    if any(part in {".", ".."} for part in p.parts):
+        raise Cohort0ManufactureError(f"FAIL_CLOSED: {name} must not contain '.' or '..' segments")
+    return norm
+
+
+def _validate_export_roots(*, repo_root: Path, export_shadow_root: str, export_promoted_root: str) -> Tuple[str, str]:
+    """
+    Fail-closed: export roots must be clean relative paths under KT_PROD_CLEANROOM/exports/**,
+    and shadow/promoted roots must map to their canonical base roots.
+    """
+    from tools.verification.fl3_validators import assert_relpath_under_exports, load_fl3_canonical_runtime_paths  # type: ignore
+
+    shadow_norm = _validate_clean_relative_path(export_shadow_root, name="export_shadow_root")
+    promoted_norm = _validate_clean_relative_path(export_promoted_root, name="export_promoted_root")
+
+    paths = load_fl3_canonical_runtime_paths(repo_root=repo_root)
+    exports_shadow_root = str(paths.get("exports_shadow_root", "")).replace("\\", "/").strip()
+    exports_adapters_root = str(paths.get("exports_adapters_root", "")).replace("\\", "/").strip()
+    if not exports_shadow_root or not exports_adapters_root:
+        raise Cohort0ManufactureError("FAIL_CLOSED: canonical exports roots missing from FL3 runtime paths")
+
+    if not shadow_norm.startswith(exports_shadow_root):
+        raise Cohort0ManufactureError("FAIL_CLOSED: export_shadow_root must be under exports_shadow_root")
+    if not promoted_norm.startswith(exports_adapters_root):
+        raise Cohort0ManufactureError("FAIL_CLOSED: export_promoted_root must be under exports_adapters_root")
+
+    # Also enforce that both resolve under canonical exports roots (no path escape).
+    _ = assert_relpath_under_exports(repo_root=repo_root, relpath=shadow_norm, allow_promoted=True)
+    _ = assert_relpath_under_exports(repo_root=repo_root, relpath=promoted_norm, allow_promoted=True)
+    return shadow_norm, promoted_norm
 
 
 def _parse_args(argv: List[str] | None) -> argparse.Namespace:
@@ -266,6 +328,12 @@ def main(argv: List[str] | None = None) -> int:
         raise SystemExit("FAIL_CLOSED: ROLE_FITNESS_WEIGHTS.json must be object")
     lobes = derive_canonical_13_lobes(role_weights=role_weights)
 
+    export_shadow_root, export_promoted_root = _validate_export_roots(
+        repo_root=repo_root,
+        export_shadow_root=str(args.export_shadow_root),
+        export_promoted_root=str(args.export_promoted_root),
+    )
+
     # Write cohort adapter list evidence.
     pinned_sha = _git_sha(repo_root)
     cohort_list = {
@@ -304,8 +372,8 @@ def main(argv: List[str] | None = None) -> int:
             role_id=s.role_id,
             base_model_id=str(args.base_model_id),
             seed=int(args.seed),
-            export_shadow_root=str(args.export_shadow_root),
-            export_promoted_root=str(args.export_promoted_root),
+            export_shadow_root=export_shadow_root,
+            export_promoted_root=export_promoted_root,
         )
         job_path = out_dir / "jobs" / f"{s.adapter_id}.job.json"
         _write_json(job_path, job)
@@ -314,9 +382,17 @@ def main(argv: List[str] | None = None) -> int:
         if rc_job != EXIT_OK:
             raise SystemExit(f"FAIL_CLOSED: factory run failed rc={rc_job} for {s.adapter_id}")
 
-        job_dir = (repo_root / str(args.export_shadow_root) / str(job["job_id"])).resolve()
+        # Authoritative job_dir path derivation: use canonical exports root resolver + job_id.
+        from tools.verification.fl3_validators import assert_relpath_under_exports  # type: ignore
+
+        shadow_root_abs = assert_relpath_under_exports(repo_root=repo_root, relpath=export_shadow_root, allow_promoted=True)
+        job_dir = (shadow_root_abs / str(job["job_id"])).resolve()
         if not job_dir.exists():
             raise SystemExit(f"FAIL_CLOSED: expected job_dir missing: {job_dir.as_posix()}")
+        # Fail-closed consistency: job_dir must contain job.json matching the job_id we ran.
+        job_json = load_no_dupes(job_dir / "job.json")
+        if not isinstance(job_json, dict) or str(job_json.get("job_id", "")) != str(job["job_id"]):
+            raise SystemExit("FAIL_CLOSED: job_dir job.json does not match expected job_id")
 
         # Full meta-evaluator verification (law bundle, amendment, anti-drift primitives).
         rc_meta = int(meta_main(["--verify-job-dir", str(job_dir)]))
@@ -335,6 +411,7 @@ def main(argv: List[str] | None = None) -> int:
         promoted_reports.append(
             {
                 "adapter_id": s.adapter_id,
+                "role_id": s.role_id,
                 "content_hash": str(pr.get("content_hash", "")),
                 "promoted_dir": str(pr.get("promoted_dir", "")),
                 "promotion_report_path": str(report_path.relative_to(out_dir).as_posix()),
@@ -381,4 +458,3 @@ def main(argv: List[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
