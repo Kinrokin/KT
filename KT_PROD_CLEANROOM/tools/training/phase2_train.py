@@ -399,16 +399,67 @@ def _run_lora_training(*, req: Dict[str, Any], run_dir_abs: Path, trainer_cfg: D
         tokenizer.pad_token = tokenizer.eos_token
 
     # Memory-safety: on GPU, load weights in fp16 to avoid fp32 OOM on 7B-class models.
-    model_kwargs: Dict[str, Any] = {"local_files_only": True}
+    # Optional QLoRA path is supported via bitsandbytes 4-bit quantization.
+    model_kwargs: Dict[str, Any] = {"local_files_only": True, "low_cpu_mem_usage": True}
     if device.type == "cuda":
         model_kwargs["torch_dtype"] = torch.float16
 
+    load_in_4bit = bool(trainer_cfg.get("load_in_4bit", False))
+    if load_in_4bit:
+        try:
+            from transformers import BitsAndBytesConfig  # type: ignore
+        except Exception as exc:  # noqa: BLE001
+            raise Phase2TrainError(
+                f"FAIL_CLOSED: --load-in-4bit requested but BitsAndBytesConfig unavailable: {exc.__class__.__name__}"
+            )
+        try:
+            import bitsandbytes  # noqa: F401  # type: ignore
+        except Exception as exc:  # noqa: BLE001
+            raise Phase2TrainError(
+                f"FAIL_CLOSED: --load-in-4bit requested but bitsandbytes not installed: {exc.__class__.__name__}"
+            )
+
+        dtype_s = str(trainer_cfg.get("bnb_4bit_compute_dtype", "float16"))
+        if dtype_s == "bfloat16":
+            compute_dtype = torch.bfloat16
+        elif dtype_s == "float32":
+            compute_dtype = torch.float32
+        else:
+            compute_dtype = torch.float16
+
+        model_kwargs["quantization_config"] = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type=str(trainer_cfg.get("bnb_4bit_quant_type", "nf4")),
+            bnb_4bit_use_double_quant=bool(trainer_cfg.get("bnb_4bit_use_double_quant", True)),
+            bnb_4bit_compute_dtype=compute_dtype,
+        )
+
     model = AutoModelForCausalLM.from_pretrained(str(base_model_path), **model_kwargs)
     model.config.use_cache = False
+    if bool(trainer_cfg.get("gradient_checkpointing", True)) and hasattr(model, "gradient_checkpointing_enable"):
+        try:
+            model.gradient_checkpointing_enable()  # type: ignore[attr-defined]
+        except Exception:
+            pass
     model.to(device)
     model.train()
     for p in model.parameters():
         p.requires_grad_(False)
+
+    if load_in_4bit:
+        try:
+            from peft import prepare_model_for_kbit_training  # type: ignore
+        except Exception as exc:  # noqa: BLE001
+            try:
+                from peft.utils.other import prepare_model_for_kbit_training  # type: ignore
+            except Exception:  # noqa: BLE001
+                raise Phase2TrainError(
+                    "FAIL_CLOSED: --load-in-4bit requested but prepare_model_for_kbit_training unavailable: "
+                    f"{exc.__class__.__name__}"
+                )
+        model = prepare_model_for_kbit_training(
+            model, use_gradient_checkpointing=bool(trainer_cfg.get("gradient_checkpointing", True))
+        )
 
     # Mistral-style defaults; safe for many decoder-only models.
     target_modules = trainer_cfg.get("target_modules") or [
@@ -525,6 +576,35 @@ def _parse_args(argv: Optional[Sequence[str]]) -> argparse.Namespace:
     ap.add_argument("--lr", type=float, default=1e-4)
     ap.add_argument("--max-seq-len", type=int, default=256)
     ap.add_argument("--max-samples", type=int, default=0, help="0 = no limit")
+    ap.add_argument(
+        "--gradient-checkpointing",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Enable gradient checkpointing for reduced VRAM (recommended for 7B-class models).",
+    )
+    ap.add_argument(
+        "--load-in-4bit",
+        action="store_true",
+        help="Enable QLoRA-style 4-bit base model load (requires bitsandbytes).",
+    )
+    ap.add_argument(
+        "--bnb-4bit-quant-type",
+        default="nf4",
+        choices=["nf4", "fp4"],
+        help="bitsandbytes 4-bit quant type (only used with --load-in-4bit).",
+    )
+    ap.add_argument(
+        "--bnb-4bit-compute-dtype",
+        default="float16",
+        choices=["float16", "bfloat16", "float32"],
+        help="bitsandbytes 4-bit compute dtype (only used with --load-in-4bit).",
+    )
+    ap.add_argument(
+        "--bnb-4bit-use-double-quant",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="bitsandbytes double quantization (only used with --load-in-4bit).",
+    )
     return ap.parse_args(list(argv) if argv is not None else None)
 
 
@@ -613,6 +693,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "lr": float(args.lr),
         "max_seq_len": int(args.max_seq_len),
         "max_samples": int(args.max_samples),
+        "gradient_checkpointing": bool(args.gradient_checkpointing),
+        "load_in_4bit": bool(args.load_in_4bit),
+        "bnb_4bit_quant_type": str(args.bnb_4bit_quant_type),
+        "bnb_4bit_compute_dtype": str(args.bnb_4bit_compute_dtype),
+        "bnb_4bit_use_double_quant": bool(args.bnb_4bit_use_double_quant),
         # Stable default: Mistral-family targets; callers may override by editing this file + re-running with a new request.
         "target_modules": ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
         "lora_r": 8,
