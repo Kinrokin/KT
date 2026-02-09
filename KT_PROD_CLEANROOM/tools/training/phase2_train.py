@@ -367,9 +367,12 @@ def _run_lora_training(*, req: Dict[str, Any], run_dir_abs: Path, trainer_cfg: D
 
         import torch  # type: ignore
         from peft import LoraConfig, get_peft_model  # type: ignore
+        import safetensors  # noqa: F401  # type: ignore
         from transformers import AutoModelForCausalLM, AutoTokenizer  # type: ignore
     except Exception as exc:  # noqa: BLE001
-        raise Phase2TrainError(f"FAIL_CLOSED: missing training dependencies (torch/transformers/peft): {exc.__class__.__name__}")
+        raise Phase2TrainError(
+            f"FAIL_CLOSED: missing training dependencies (torch/transformers/peft/safetensors): {exc.__class__.__name__}"
+        )
 
     seed = int(req["seed"])
     random.seed(seed)
@@ -395,7 +398,13 @@ def _run_lora_training(*, req: Dict[str, Any], run_dir_abs: Path, trainer_cfg: D
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
-    model = AutoModelForCausalLM.from_pretrained(str(base_model_path), local_files_only=True)
+    # Memory-safety: on GPU, load weights in fp16 to avoid fp32 OOM on 7B-class models.
+    model_kwargs: Dict[str, Any] = {"local_files_only": True}
+    if device.type == "cuda":
+        model_kwargs["torch_dtype"] = torch.float16
+
+    model = AutoModelForCausalLM.from_pretrained(str(base_model_path), **model_kwargs)
+    model.config.use_cache = False
     model.to(device)
     model.train()
     for p in model.parameters():
@@ -420,6 +429,7 @@ def _run_lora_training(*, req: Dict[str, Any], run_dir_abs: Path, trainer_cfg: D
         task_type="CAUSAL_LM",
     )
     model = get_peft_model(model, lora_cfg)
+    model.to(device)
 
     # Minimal dataset: JSONL -> text samples -> token IDs.
     ds_path = Path(req["dataset_manifest_ref"]["path"]).expanduser()
@@ -447,7 +457,10 @@ def _run_lora_training(*, req: Dict[str, Any], run_dir_abs: Path, trainer_cfg: D
     lr = float(trainer_cfg.get("lr", 1e-4))
     max_steps = max(1, int(trainer_cfg.get("max_steps", 10)))
 
-    opt = torch.optim.AdamW(model.parameters(), lr=lr)
+    trainable = [p for p in model.parameters() if getattr(p, "requires_grad", False)]
+    if not trainable:
+        raise Phase2TrainError("FAIL_CLOSED: no trainable parameters (expected LoRA params)")
+    opt = torch.optim.AdamW(trainable, lr=lr)
     losses: List[float] = []
     n = input_ids.size(0)
     for step in range(max_steps):
@@ -469,6 +482,10 @@ def _run_lora_training(*, req: Dict[str, Any], run_dir_abs: Path, trainer_cfg: D
     # Save adapter weights/config.
     # peft will write adapter_model.safetensors when safetensors is installed and safe_serialization=True.
     model.save_pretrained(run_dir_abs, safe_serialization=True)
+    if not (run_dir_abs / "adapter_model.safetensors").exists():
+        raise Phase2TrainError("FAIL_CLOSED: expected adapter_model.safetensors not produced (safetensors required)")
+    if not (run_dir_abs / "adapter_config.json").exists():
+        raise Phase2TrainError("FAIL_CLOSED: expected adapter_config.json not produced")
 
     mean_loss = sum(losses) / max(1, len(losses))
     report = {
