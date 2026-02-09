@@ -314,6 +314,26 @@ from schemas.phase2_work_order_schema import (
     PHASE2_WORK_ORDER_SCHEMA_VERSION_HASH,
     validate_phase2_work_order,
 )
+from schemas.phase2_train_request_schema import (
+    PHASE2_TRAIN_REQUEST_SCHEMA_ID,
+    PHASE2_TRAIN_REQUEST_SCHEMA_VERSION_HASH,
+    validate_phase2_train_request,
+)
+from schemas.phase2_train_receipt_schema import (
+    PHASE2_TRAIN_RECEIPT_SCHEMA_ID,
+    PHASE2_TRAIN_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_phase2_train_receipt,
+)
+from schemas.phase2_promotion_receipt_schema import (
+    PHASE2_PROMOTION_RECEIPT_SCHEMA_ID,
+    PHASE2_PROMOTION_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_phase2_promotion_receipt,
+)
+from schemas.adapter_weight_artifact_manifest_schema import (
+    ADAPTER_WEIGHT_ARTIFACT_MANIFEST_SCHEMA_ID,
+    ADAPTER_WEIGHT_ARTIFACT_MANIFEST_SCHEMA_VERSION_HASH,
+    validate_adapter_weight_artifact_manifest,
+)
 from schemas.runtime_dag_schema import (
     RUNTIME_DAG_SCHEMA_ID,
     RUNTIME_DAG_SCHEMA_VERSION_HASH,
@@ -448,6 +468,14 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     PHASE1C_WORK_ORDER_SCHEMA_ID: (PHASE1C_WORK_ORDER_SCHEMA_VERSION_HASH, validate_phase1c_work_order),
     # Phase 2: governed learning unlock work order (append-only; policy artifact).
     PHASE2_WORK_ORDER_SCHEMA_ID: (PHASE2_WORK_ORDER_SCHEMA_VERSION_HASH, validate_phase2_work_order),
+    # Phase 2: governed training request/receipt (append-only; MRT-1 weight-bearing lane).
+    PHASE2_TRAIN_REQUEST_SCHEMA_ID: (PHASE2_TRAIN_REQUEST_SCHEMA_VERSION_HASH, validate_phase2_train_request),
+    PHASE2_TRAIN_RECEIPT_SCHEMA_ID: (PHASE2_TRAIN_RECEIPT_SCHEMA_VERSION_HASH, validate_phase2_train_receipt),
+    PHASE2_PROMOTION_RECEIPT_SCHEMA_ID: (PHASE2_PROMOTION_RECEIPT_SCHEMA_VERSION_HASH, validate_phase2_promotion_receipt),
+    ADAPTER_WEIGHT_ARTIFACT_MANIFEST_SCHEMA_ID: (
+        ADAPTER_WEIGHT_ARTIFACT_MANIFEST_SCHEMA_VERSION_HASH,
+        validate_adapter_weight_artifact_manifest,
+    ),
     # Phase 1C: runtime instantiation artifacts (append-only).
     RUNTIME_DAG_SCHEMA_ID: (RUNTIME_DAG_SCHEMA_VERSION_HASH, validate_runtime_dag),
     JUDGE_RECEIPT_SCHEMA_ID: (JUDGE_RECEIPT_SCHEMA_VERSION_HASH, validate_judge_receipt),

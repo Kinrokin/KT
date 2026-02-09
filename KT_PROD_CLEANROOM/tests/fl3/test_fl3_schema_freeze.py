@@ -70,6 +70,11 @@ SCHEMA_FILES = [
     "fl3/kt.fl4.promotion_report.v1.json",
     "fl3/kt.phase1c_work_order.v1.json",
     "fl3/kt.phase2_work_order.v1.json",
+    # Phase 2: MRT-1 weight-bearing lane (append-only; hard-gated by Phase2 execute).
+    "fl3/kt.phase2_train_request.v1.json",
+    "fl3/kt.phase2_train_receipt.v1.json",
+    "fl3/kt.phase2_promotion_receipt.v1.json",
+    "fl3/kt.adapter_weight_artifact_manifest.v1.json",
     "fl3/kt.runtime_dag.v1.json",
     "fl3/kt.judge_receipt.v1.json",
 ]
@@ -866,3 +871,113 @@ def test_fl3_schema_validates_examples() -> None:
     }
     pi["index_id"] = _sha_id(pi, {"created_at", "index_id"})
     validate_object_with_binding(pi)
+
+    # Phase2 train request (MRT-1)
+    p2_req = {
+        "schema_id": "kt.phase2_train_request.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.phase2_train_request.v1.json"),
+        "schema_version": 1,
+        "train_request_id": "",
+        "work_order_id": "PHASE2_OP_A_GOVERNED_LEARNING_UNLOCK",
+        "pinned_sha": "a" * 40,
+        "adapter_id": "lobe.architect.v1",
+        "adapter_version": "1",
+        "role_id": "ARCHITECT",
+        "training_mode": "lora_mrt1",
+        "base_model": {"model_id": "mistral-7b", "local_path": "/models/mistral-7b"},
+        "dataset_manifest_ref": {"path": "/datasets/policy_c/kt_policy_c_dataset_manifest_v1.json", "sha256": "b" * 64},
+        "seed": 0,
+        "device": "cpu",
+        "output": {
+            "export_root_shadow": "KT_PROD_CLEANROOM/exports/adapters_mrt1_shadow/_runs",
+            "export_root_promoted": "KT_PROD_CLEANROOM/exports/adapters_mrt1",
+        },
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    p2_req["train_request_id"] = _sha_id(p2_req, {"created_at", "train_request_id"})
+    validate_object_with_binding(p2_req)
+
+    # Adapter weight artifact manifest (MRT-1)
+    import hashlib  # local import to keep module import surface stable
+
+    files = [{"path": "adapter_model.safetensors", "sha256": "c" * 64, "bytes": 123}]
+    root_hash = hashlib.sha256(
+        json.dumps(files, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+    ).hexdigest()
+    wt_manifest = {
+        "schema_id": "kt.adapter_weight_artifact_manifest.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.adapter_weight_artifact_manifest.v1.json"),
+        "schema_version": 1,
+        "manifest_id": "",
+        "adapter_id": "lobe.architect.v1",
+        "adapter_version": "1",
+        "training_mode": "lora_mrt1",
+        "base_model_id": "mistral-7b",
+        "root_hash": root_hash,
+        "files": files,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    wt_manifest["manifest_id"] = _sha_id(wt_manifest, {"created_at", "manifest_id"})
+    validate_object_with_binding(wt_manifest)
+
+    # Phase2 train receipt (MRT-1)
+    p2_rcpt = {
+        "schema_id": "kt.phase2_train_receipt.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.phase2_train_receipt.v1.json"),
+        "schema_version": 1,
+        "train_receipt_id": "",
+        "train_request_id": p2_req["train_request_id"],
+        "pinned_sha": "a" * 40,
+        "adapter_id": "lobe.architect.v1",
+        "adapter_version": "1",
+        "training_mode": "lora_mrt1",
+        "status": "PASS",
+        "failure_reason": None,
+        "base_model": {"model_id": "mistral-7b", "local_path": "/models/mistral-7b"},
+        "dataset_manifest_ref": {"path": "/datasets/policy_c/kt_policy_c_dataset_manifest_v1.json", "sha256": "b" * 64},
+        "output_package": {
+            "shadow_dir": "KT_PROD_CLEANROOM/exports/adapters_mrt1_shadow/_runs/lobe.architect.v1/1/run0",
+            "promoted_dir": None,
+            "content_hash": "d" * 64,
+        },
+        "artifact_manifest_ref": {
+            "path": "KT_PROD_CLEANROOM/exports/adapters_mrt1_shadow/_runs/lobe.architect.v1/1/run0/adapter_weight_manifest.json",
+            "sha256": "e" * 64,
+        },
+        "io_guard_receipt_glob": "io_guard_receipt*.json",
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    p2_rcpt["train_receipt_id"] = _sha_id(p2_rcpt, {"created_at", "train_receipt_id"})
+    validate_object_with_binding(p2_rcpt)
+
+    # Phase2 promotion receipt (MRT-1)
+    p2_pr = {
+        "schema_id": "kt.phase2_promotion_receipt.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.phase2_promotion_receipt.v1.json"),
+        "schema_version": 1,
+        "promotion_receipt_id": "",
+        "train_request_id": p2_req["train_request_id"],
+        "pinned_sha": "a" * 40,
+        "adapter_id": "lobe.architect.v1",
+        "adapter_version": "1",
+        "training_mode": "lora_mrt1",
+        "status": "PASS",
+        "failure_reason": None,
+        "train_receipt_ref": {
+            "path": "KT_PROD_CLEANROOM/exports/adapters_mrt1_shadow/_runs/lobe.architect.v1/1/run0/train_receipt.json",
+            "sha256": "f" * 64,
+        },
+        "artifact_manifest_ref": {
+            "path": "KT_PROD_CLEANROOM/exports/adapters_mrt1_shadow/_runs/lobe.architect.v1/1/run0/adapter_weight_manifest.json",
+            "sha256": "0" * 64,
+        },
+        "output_package": {
+            "shadow_dir": "KT_PROD_CLEANROOM/exports/adapters_mrt1_shadow/_runs/lobe.architect.v1/1/run0",
+            "promoted_dir": "KT_PROD_CLEANROOM/exports/adapters_mrt1/lobe.architect.v1/1/" + ("d" * 64),
+            "content_hash": "d" * 64,
+        },
+        "io_guard_receipt_glob": "io_guard_receipt*.json",
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    p2_pr["promotion_receipt_id"] = _sha_id(p2_pr, {"created_at", "promotion_receipt_id"})
+    validate_object_with_binding(p2_pr)

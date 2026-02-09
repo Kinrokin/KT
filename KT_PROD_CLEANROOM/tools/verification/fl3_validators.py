@@ -17,6 +17,12 @@ class ExportRoots:
     exports_shadow: Path
 
 
+@dataclass(frozen=True)
+class ExportRootsMRT1:
+    exports_adapters_mrt1: Path
+    exports_shadow_mrt1: Path
+
+
 def load_fl3_canonical_runtime_paths(*, repo_root: Path) -> Dict[str, Any]:
     p = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL3_CANONICAL_RUNTIME_PATHS.json"
     if not p.exists():
@@ -32,6 +38,23 @@ def fl3_export_roots(*, repo_root: Path) -> ExportRoots:
     exports_adapters = (repo_root / paths["exports_adapters_root"]).resolve()
     exports_shadow = (repo_root / paths["exports_shadow_root"]).resolve()
     return ExportRoots(exports_adapters=exports_adapters, exports_shadow=exports_shadow)
+
+
+def fl3_export_roots_mrt1(*, repo_root: Path) -> ExportRootsMRT1:
+    """
+    MRT-1 export roots are separate from MRT-0 and must never be implicitly mixed.
+
+    These are declared in AUDITS/FL3_CANONICAL_RUNTIME_PATHS.json (append-only).
+    """
+    paths = load_fl3_canonical_runtime_paths(repo_root=repo_root)
+    exports_adapters = str(paths.get("exports_adapters_mrt1_root", "")).strip()
+    exports_shadow = str(paths.get("exports_shadow_mrt1_root", "")).strip()
+    if not exports_adapters or not exports_shadow:
+        raise FL3ValidationError("Missing MRT-1 exports roots in FL3 canonical runtime paths (fail-closed)")
+    return ExportRootsMRT1(
+        exports_adapters_mrt1=(repo_root / exports_adapters).resolve(),
+        exports_shadow_mrt1=(repo_root / exports_shadow).resolve(),
+    )
 
 
 def assert_path_under_exports(*, repo_root: Path, path: Path, allow_promoted: bool = True) -> None:
@@ -57,6 +80,32 @@ def assert_relpath_under_exports(*, repo_root: Path, relpath: str, allow_promote
         raise FL3ValidationError("relpath must be a clean relative path (fail-closed)")
     resolved = (repo_root / p).resolve()
     assert_path_under_exports(repo_root=repo_root, path=resolved, allow_promoted=allow_promoted)
+    return resolved
+
+
+def assert_path_under_exports_mrt1(*, repo_root: Path, path: Path, allow_promoted: bool = True) -> None:
+    roots = fl3_export_roots_mrt1(repo_root=repo_root)
+    target = path.resolve()
+    allowed: List[Path] = [roots.exports_shadow_mrt1]
+    if allow_promoted:
+        allowed.append(roots.exports_adapters_mrt1)
+    for root in allowed:
+        try:
+            target.relative_to(root)
+            return
+        except Exception:
+            continue
+    raise FL3ValidationError(f"Path escapes allowed MRT-1 exports roots (fail-closed): {target.as_posix()}")
+
+
+def assert_relpath_under_exports_mrt1(*, repo_root: Path, relpath: str, allow_promoted: bool = True) -> Path:
+    if not isinstance(relpath, str) or not relpath.strip():
+        raise FL3ValidationError("relpath must be a non-empty string (fail-closed)")
+    p = Path(relpath)
+    if p.is_absolute() or any(part in {"..", "."} for part in p.parts):
+        raise FL3ValidationError("relpath must be a clean relative path (fail-closed)")
+    resolved = (repo_root / p).resolve()
+    assert_path_under_exports_mrt1(repo_root=repo_root, path=resolved, allow_promoted=allow_promoted)
     return resolved
 
 

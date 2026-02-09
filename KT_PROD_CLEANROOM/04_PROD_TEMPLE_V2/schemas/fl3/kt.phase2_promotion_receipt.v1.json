@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Phase2 Promotion Receipt v1 (MRT-1 weight-bearing lane)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "schema_version",
+    "promotion_receipt_id",
+    "train_request_id",
+    "pinned_sha",
+    "adapter_id",
+    "adapter_version",
+    "training_mode",
+    "status",
+    "failure_reason",
+    "train_receipt_ref",
+    "artifact_manifest_ref",
+    "output_package",
+    "io_guard_receipt_glob",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.phase2_promotion_receipt.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "schema_version": { "type": "integer", "const": 1 },
+    "promotion_receipt_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "train_request_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "pinned_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "adapter_id": { "type": "string", "minLength": 1 },
+    "adapter_version": { "type": "string", "minLength": 1 },
+    "training_mode": { "type": "string", "enum": [ "lora_mrt1" ] },
+    "status": { "type": "string", "enum": [ "PASS", "FAIL" ] },
+    "failure_reason": { "type": [ "string", "null" ] },
+    "train_receipt_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [ "path", "sha256" ],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "artifact_manifest_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [ "path", "sha256" ],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "output_package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [ "shadow_dir", "promoted_dir", "content_hash" ],
+      "properties": {
+        "shadow_dir": { "type": "string", "minLength": 1 },
+        "promoted_dir": { "type": "string", "minLength": 1 },
+        "content_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "io_guard_receipt_glob": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" }
+  }
+}
+
