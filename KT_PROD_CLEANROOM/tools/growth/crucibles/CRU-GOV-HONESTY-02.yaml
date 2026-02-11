@@ -4,7 +4,15 @@ schema_version: 1
 crucible_id: "CRU-GOV-HONESTY-02"
 title: "Governance Apply + Replay Integrity (Evidence-First)"
 domain: "governance.honesty"
-tags: ["governance", "replay", "fail_closed", "evidence_first"]
+tags:
+  domains: ["governance"]
+  subdomains: ["honesty"]
+  microdomains: ["replay"]
+  ventures: []
+  reasoning_modes: ["honesty_check"]
+  modalities: ["policy"]
+  tools: []
+  paradox_classes: []
 
 kernel_targets: ["V2_SOVEREIGN", "KERNEL_COVERAGE_BASELINE"]
 

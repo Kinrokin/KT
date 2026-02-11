@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Schema Violation v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "violation_id",
+    "violated_schema_id",
+    "context_hash",
+    "parent_hash",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.schema_violation.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "violation_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "violated_schema_id": { "type": "string" },
+    "context_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "parent_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" }
+  }
+}
+

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Discovery Battery Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "result_id",
+    "battery_id",
+    "anchor_set_id",
+    "adapter_id",
+    "adapter_version",
+    "job_id",
+    "axis_scores",
+    "canary_pass",
+    "role_drift_flag",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.discovery_battery_result.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "result_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "battery_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "anchor_set_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "adapter_id": { "type": "string" },
+    "adapter_version": { "type": "string" },
+    "job_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "axis_scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reasoning_depth",
+        "transfer_capacity",
+        "coherence_under_pressure",
+        "self_correction",
+        "epistemic_behavior",
+        "novel_structure"
+      ],
+      "properties": {
+        "reasoning_depth": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "transfer_capacity": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "coherence_under_pressure": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "self_correction": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "epistemic_behavior": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "novel_structure": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+      }
+    },
+    "canary_pass": { "type": "boolean" },
+    "role_drift_flag": { "type": "boolean" },
+    "created_at": { "type": "string" }
+  }
+}

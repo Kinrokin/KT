@@ -15,10 +15,16 @@ class EpochRow:
     root: Path
     epoch_id: str
     lane_actual: str
+    coherence_debt: int
+    coherence_budget: float
+    coherence_debt_present: bool
+    regret_global: Optional[float]
+    regret_skip_reason: Optional[str]
     unique_domains: int
     unique_subdomains: int
     entropy_domains: float
     top_domain_share: float
+    paradox_event_count: int
     forced_resolve_count: int
     low_coherence_count: int
     unknown_resolve_count: int
@@ -31,6 +37,7 @@ LANE_COVERAGE = "coverage_lane"
 LANE_REANCHOR = "reanchor_lane"
 LANE_STABILIZE = "stabilize_lane"
 LANE_HOLD_COVERAGE = "hold_coverage_lane"  # NEW in Phase A.2
+POLICY_B_REGISTRY_PATH = Path("KT_PROD_CLEANROOM/tools/growth/state/policy_b_variable_registry.json")
 
 
 def _load_json(path: Path) -> Dict[str, Any]:
@@ -46,6 +53,30 @@ def _read_optional_json(path: Path) -> Optional[Dict[str, Any]]:
     if not path.exists():
         return None
     return _load_json(path)
+
+
+def _load_policy_b_registry() -> Dict[str, Any]:
+    registry = _load_json(POLICY_B_REGISTRY_PATH)
+    if registry.get("schema") != "POLICY_B_VARIABLE_REGISTRY_V1":
+        raise PhaseA2BuildError("policy_b_variable_registry.json schema mismatch (fail-closed)")
+    if registry.get("version") != 1:
+        raise PhaseA2BuildError("policy_b_variable_registry.json version mismatch (fail-closed)")
+    return registry
+
+
+def _policy_b_values(registry: Dict[str, Any]) -> Dict[str, Any]:
+    values: Dict[str, Any] = {}
+    for entry in registry.get("variables", []):
+        if not isinstance(entry, dict):
+            continue
+        name = entry.get("name")
+        if not isinstance(name, str):
+            continue
+        values[name] = entry.get("policy_b_value")
+    for key in ("paradox_handling", "governance_invariants"):
+        if key in registry:
+            values[key] = registry.get(key)
+    return values
 
 
 def _coerce_int(value: Any) -> int:
@@ -81,7 +112,7 @@ def _lane_from_epoch_id(epoch_id: str) -> str:
         return LANE_REANCHOR
     if e.startswith("EPOCH_STABILIZE"):
         return LANE_STABILIZE
-    if e.startswith("EPOCH_NEXT_AUTO") or e.startswith("EPOCH_COVERAGE"):
+    if e.startswith("EPOCH_NEXT_AUTO") or e.startswith("EPOCH_COVERAGE") or e.startswith("EPOCH_ACCEPTANCE") or e.startswith("EPOCH_PASS"):
         return LANE_COVERAGE
     # Fail-closed: unknown lane types should not be silently coerced.
     raise PhaseA2BuildError(f"Unknown epoch_id lane prefix: {epoch_id} (fail-closed)")
@@ -161,9 +192,21 @@ def _extract_row(epoch_root: Path) -> EpochRow:
     summary = _load_json(summary_path)
     coverage = _load_json(coverage_path)
     micro_steps = _collect_micro_steps(epoch_root)
+    regret = _read_optional_json(epoch_root / "epoch_regret.json") or {}
 
     epoch_id = str(summary.get("epoch_id") or epoch_root.name)
     lane_actual = _lane_from_epoch_id(epoch_id)
+    coherence_debt_raw = summary.get("coherence_debt")
+    coherence_budget_raw = summary.get("coherence_budget")
+    coherence_debt_present = (coherence_debt_raw is not None) and (coherence_budget_raw is not None)
+    coherence_debt = _coerce_int(coherence_debt_raw) if coherence_debt_raw is not None else -1
+    coherence_budget = _coerce_float(coherence_budget_raw) if coherence_budget_raw is not None else -1.0
+    regret_global = regret.get("regret_global")
+    regret_skip_reason = regret.get("regret_skip_reason")
+    try:
+        regret_global = float(regret_global) if regret_global is not None else None
+    except Exception:
+        regret_global = None
 
     observed = coverage.get("observed") or {}
     counts = observed.get("counts") or {}
@@ -175,6 +218,7 @@ def _extract_row(epoch_root: Path) -> EpochRow:
     unique_subdomains = _coerce_int(counts.get("unique_subdomains"))
     entropy_domains = _coerce_float(dominance.get("entropy_domains"))
     top_domain_share = _coerce_float(dominance.get("top_domain_share"))
+    paradox_event_count = _coerce_int(counts.get("paradox_events"))
 
     forced, low, unk_res, unk_coh = _count_micro_flags(micro_steps)
 
@@ -198,10 +242,16 @@ def _extract_row(epoch_root: Path) -> EpochRow:
         root=epoch_root,
         epoch_id=epoch_id,
         lane_actual=lane_actual,
+        coherence_debt=coherence_debt,
+        coherence_budget=coherence_budget,
+        coherence_debt_present=coherence_debt_present,
+        regret_global=regret_global,
+        regret_skip_reason=regret_skip_reason if isinstance(regret_skip_reason, str) else None,
         unique_domains=unique_domains,
         unique_subdomains=unique_subdomains,
         entropy_domains=entropy_domains,
         top_domain_share=top_domain_share,
+        paradox_event_count=paradox_event_count,
         forced_resolve_count=forced,
         low_coherence_count=low,
         unknown_resolve_count=unk_res,
@@ -225,20 +275,30 @@ def _clean(row: EpochRow) -> bool:
     )
 
 
-def _state_text(row: EpochRow) -> str:
-    return "\n".join(
-        [
-            "KT_STATE_V1",
-            f"forced_resolve_count={row.forced_resolve_count}",
-            f"low_coherence_count={row.low_coherence_count}",
-            f"unknown_resolve_count={row.unknown_resolve_count}",
-            f"unknown_coherence_count={row.unknown_coherence_count}",
-            f"unique_domains={row.unique_domains}",
-            f"unique_subdomains={row.unique_subdomains}",
-            f"entropy_domains={row.entropy_domains}",
-            f"top_domain_share={row.top_domain_share}",
-        ]
-    )
+def _state_text(row: EpochRow, policy_b_values: Dict[str, Any]) -> str:
+    def _fmt_value(value: Any) -> str:
+        if isinstance(value, (dict, list)):
+            return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+        return str(value)
+
+    parts = [
+        "KT_STATE_V1",
+        f"coherence_debt={row.coherence_debt}",
+        f"coherence_budget={row.coherence_budget}",
+        f"regret_global={-1 if row.regret_global is None else row.regret_global}",
+        f"forced_resolve_count={row.forced_resolve_count}",
+        f"low_coherence_count={row.low_coherence_count}",
+        f"unknown_resolve_count={row.unknown_resolve_count}",
+        f"unknown_coherence_count={row.unknown_coherence_count}",
+        f"unique_domains={row.unique_domains}",
+        f"unique_subdomains={row.unique_subdomains}",
+        f"entropy_domains={row.entropy_domains}",
+        f"top_domain_share={row.top_domain_share}",
+        f"paradox_event_count={row.paradox_event_count}",
+    ]
+    for key in sorted(policy_b_values.keys()):
+        parts.append(f"policy_b_{key}={_fmt_value(policy_b_values[key])}")
+    return "\n".join(parts)
 
 
 def _parse_args() -> argparse.Namespace:
@@ -279,6 +339,8 @@ def _parse_args() -> argparse.Namespace:
 def main() -> int:
     args = _parse_args()
     epochs_dir = args.epochs_dir.resolve()
+    policy_b_registry = _load_policy_b_registry()
+    policy_b_values = _policy_b_values(policy_b_registry)
     roots = _discover_epochs(epochs_dir)
     roots = sorted(roots, key=_mtime_key)
     if args.limit and args.limit > 0:
@@ -383,12 +445,20 @@ def main() -> int:
                 "epoch_root": curr.root.as_posix(),
                 "next_epoch_id": nxt.epoch_id,
                 "next_epoch_root": nxt.root.as_posix(),
+                "policy_b_values": policy_b_values,
+                "policy_b_registry_path": POLICY_B_REGISTRY_PATH.as_posix(),
                 "phaseA_label": phaseA_label,
                 "phaseA2_label": phaseA2_label,
                 "relabel_reason": relabel_reason,
                 "signals": {
+                    "coherence_debt": curr.coherence_debt,
+                    "coherence_budget": curr.coherence_budget,
+                    "coherence_debt_present": curr.coherence_debt_present,
+                    "regret_global": curr.regret_global,
+                    "regret_skip_reason": curr.regret_skip_reason,
                     "entropy_domains": curr.entropy_domains,
                     "top_domain_share": curr.top_domain_share,
+                    "paradox_event_count": curr.paradox_event_count,
                     "unique_domains": curr.unique_domains,
                     "unique_subdomains": curr.unique_subdomains,
                     "forced_resolve_count": curr.forced_resolve_count,
@@ -399,8 +469,14 @@ def main() -> int:
                     "churn_present": churn_present,
                 },
                 "next_signals": {
+                    "coherence_debt": nxt.coherence_debt,
+                    "coherence_budget": nxt.coherence_budget,
+                    "coherence_debt_present": nxt.coherence_debt_present,
+                    "regret_global": nxt.regret_global,
+                    "regret_skip_reason": nxt.regret_skip_reason,
                     "entropy_domains": nxt.entropy_domains,
                     "top_domain_share": nxt.top_domain_share,
+                    "paradox_event_count": nxt.paradox_event_count,
                     "unique_domains": nxt.unique_domains,
                     "unique_subdomains": nxt.unique_subdomains,
                     "forced_resolve_count": nxt.forced_resolve_count,
@@ -410,7 +486,7 @@ def main() -> int:
                     "churn_count": churn_nxt,
                     "churn_present": churn_next_present,
                 },
-                "state_text": _state_text(curr),
+                "state_text": _state_text(curr, policy_b_values),
             }
             handle.write(json.dumps(record, separators=(",", ":"), ensure_ascii=False) + "\n")
 

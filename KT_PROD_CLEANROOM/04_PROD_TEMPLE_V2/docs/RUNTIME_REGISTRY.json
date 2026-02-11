@@ -1,4 +1,6 @@
 {
+  "schema_id": "kt.runtime_registry.v1",
+  "schema_version_hash": "4a878a12fb0e1c17cadd7f29b1f536b44d5eb038098c924722f3d069b6549965",
   "registry_version": "1",
   "canonical_entry": {
     "module": "kt.entrypoint",
@@ -24,8 +26,38 @@
     "schemas",
     "temporal",
     "thermodynamics",
+    "tools",
     "versioning"
   ],
+  "policy_c": {
+    "drift": {
+      "l2_warn": 0.05,
+      "l2_fail": 0.1,
+      "max_fail": 0.1
+    },
+    "sweep": {
+      "max_runs_default": 128,
+      "fail_fast_default": true,
+      "export_enabled": true,
+      "allowed_export_roots": [
+        "exports/policy_c"
+      ]
+    },
+    "static_safety": {
+      "enabled": true,
+      "forbidden_imports": [
+        "asyncio",
+        "http",
+        "requests",
+        "socket",
+        "subprocess",
+        "urllib"
+      ],
+      "allowed_export_roots": [
+        "exports/policy_c"
+      ]
+    }
+  },
   "organs_by_root": {
     "cognition": "Crucible Engine",
     "council": "Council Router Engine",
@@ -39,6 +71,7 @@
     "schemas": "Schemas / Contracts",
     "temporal": "Temporal Engine",
     "thermodynamics": "Thermodynamics / Budget",
+    "tools": "Router",
     "versioning": "Schemas / Contracts"
   },
   "import_truth_matrix": {
@@ -106,6 +139,13 @@
       "Schemas / Contracts",
       "Thermodynamics / Budget"
     ]
+  },
+  "adapters": {
+    "registry_schema_id": "kt.adapters.registry.v1",
+    "allowed_export_roots": [
+      "exports/adapters"
+    ],
+    "entries": []
   },
   "dry_run": {
     "no_network": true,

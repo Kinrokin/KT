@@ -2,6 +2,8 @@ import argparse
 import json
 import os
 import subprocess
+import sys
+import tempfile
 from collections import Counter
 from pathlib import Path
 from typing import Dict
@@ -9,22 +11,23 @@ from datetime import datetime
 
 ROOT = Path("KT_PROD_CLEANROOM")
 ARTIFACT_EPOCHS = ROOT / "tools" / "growth" / "artifacts" / "epochs"
-PLAN_FILES = {
-    "coverage": ROOT / "tools" / "growth" / "orchestrator" / "examples" / "EPOCH_NEXT_AUTO.json",
-    "reanchor": ROOT / "tools" / "growth" / "orchestrator" / "examples" / "EPOCH_REANCHOR_CONSTRAINT.json",
-    "stabilize": ROOT / "tools" / "growth" / "orchestrator" / "examples" / "EPOCH_STABILIZE.json",
-}
+from KT_PROD_CLEANROOM.tools.growth.state.lane_to_epoch import resolve_epoch_spec, lane_for_plan
+from KT_PROD_CLEANROOM.tools.growth.orchestrator.epoch_orchestrator import run_epoch_from_plan
+from KT_PROD_CLEANROOM.tools.growth.state.cce_state import update_state as update_cce_state
+from KT_PROD_CLEANROOM.tools.growth.state.oce_state import update_state as update_oce_state
+from KT_PROD_CLEANROOM.tools.growth.state.rwrp_state import update_state as update_rwrp_state
 
 
-def run_plan(plan_path: Path, env: dict) -> None:
-    cmd = [
-        "python",
-        str(ROOT / "tools" / "growth" / "orchestrator" / "epoch_orchestrator.py"),
-        "--epoch",
-        str(plan_path),
-        "--salvage",
-    ]
-    subprocess.run(cmd, env=env, check=True)
+def run_plan(plan_path: Path, *, quiet: bool = False) -> Dict[str, any]:
+    """Execute a single epoch plan via orchestrator (canonical API)."""
+    return run_epoch_from_plan(
+        plan_path=plan_path,
+        resume=True,
+        mode="salvage",
+        salvage_out_root=ROOT / "tools" / "growth" / "artifacts" / "salvage",
+        auto_bump=True,
+        quiet=quiet,
+    )
 
 
 def latest_epoch_root() -> Path:
@@ -32,10 +35,13 @@ def latest_epoch_root() -> Path:
     return max(roots, key=lambda p: p.stat().st_mtime)
 
 
-def run_plan_suggester(env: dict) -> Dict[str, any]:
+def run_plan_suggester() -> Dict[str, any]:
+    env = os.environ.copy()
+    env["PYTHONPATH"] = str(Path.cwd())
     cmd = [
         "python",
-        str(ROOT / "tools" / "growth" / "state" / "plan_suggester.py"),
+        "-m",
+        "KT_PROD_CLEANROOM.tools.growth.state.plan_suggester",
         "--epochs-dir",
         str(ARTIFACT_EPOCHS),
         "--write-epoch",
@@ -43,16 +49,16 @@ def run_plan_suggester(env: dict) -> Dict[str, any]:
     ]
     subprocess.run(cmd, env=env, check=True)
     plan = latest_epoch_root() / "plan_suggestion.json"
+    if not plan.exists():
+        raise RuntimeError("plan_suggestion.json missing after suggester run (fail-closed)")
     return json.loads(plan.read_text(encoding="utf-8"))
 
 
-def select_plan(recommendation: str) -> str:
+def select_plan(recommendation: Dict[str, any]) -> Path:
     internal = recommendation.get("recommended_lane_internal", "")
-    if internal == "REANCHOR":
-        return "reanchor"
-    if internal == "STABILIZER":
-        return "stabilize"
-    return "coverage"
+    if not internal:
+        raise RuntimeError("recommended_lane_internal missing (fail-closed)")
+    return resolve_epoch_spec(internal)
 
 
 def parse_args():
@@ -99,13 +105,49 @@ def _state_text_from_suggestion(suggestion: Dict[str, any]) -> str:
     return "\n".join(parts)
 
 
+def _write_baseline_suggestion(epoch_root: Path) -> None:
+    """Emit a bootstrap plan_suggestion.json for the baseline run so history is well-formed."""
+    payload = {
+        "schema": "PLAN_SUGGESTION_V1",
+        "epoch_id": epoch_root.name,
+        "epoch_hash": None,
+        "epoch_profile": None,
+        "epoch_verdict": None,
+        "kernel_target": None,
+        "recommended_lane": "coverage_lane",
+        "recommended_lane_internal": "COVERAGE_HOP_RECOVERY",
+        "bootstrap": True,
+        "triggered_rules": [],
+        "confidence": 0.0,
+        "signals": {"coverage_fatigue": 0.0},
+        "constraints": {"advisory_only": True, "does_not_gate": True, "does_not_mutate_plans": True},
+    }
+    (epoch_root / "plan_suggestion.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+
+def _prepare_runtime_plan(base_plan: Path, suffix: str) -> Path:
+    data = json.loads(base_plan.read_text(encoding="utf-8"))
+    base_id = data.get("epoch_id") or base_plan.stem
+    data["epoch_id"] = f"{base_id}_{suffix}"
+    for key in ("epoch_root", "epoch_dir", "artifact_dir", "output_dir", "summary_path"):
+        if key in data:
+            data.pop(key, None)
+    if isinstance(data.get("paths"), dict):
+        for key in ("epoch_root", "epoch_dir", "artifact_dir", "output_dir", "summary_path"):
+            data["paths"].pop(key, None)
+    tmp = tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False, encoding="utf-8")
+    json.dump(data, tmp, sort_keys=True, indent=2, ensure_ascii=True)
+    tmp.flush()
+    tmp.close()
+    return Path(tmp.name)
+
+
 def main() -> None:
     args = parse_args()
-    env = os.environ.copy()
-    env["KT_LIVE"] = "0"
-    env["KT_LIVE_PROOF"] = ""
+    os.environ["KT_LIVE"] = "0"
+    os.environ["KT_LIVE_PROOF"] = ""
 
-    shadow_enabled = args.shadow_policy or (env.get("KT_POLICY_SHADOW", "").strip() == "1")
+    shadow_enabled = args.shadow_policy or (os.environ.get("KT_POLICY_SHADOW", "").strip() == "1")
     policy = None
     if shadow_enabled:
         try:
@@ -117,26 +159,61 @@ def main() -> None:
             policy = None
 
     print("=== STEP A: baseline coverage ===")
-    run_plan(PLAN_FILES["coverage"], env)
+    baseline_plan = resolve_epoch_spec("COVERAGE_HOP_RECOVERY")
+    runtime_baseline = _prepare_runtime_plan(
+        baseline_plan, f"BASELINE_{int(datetime.utcnow().timestamp() * 1000)}"
+    )
+    try:
+        baseline_summary = run_plan(runtime_baseline)
+    finally:
+        runtime_baseline.unlink(missing_ok=True)
+    try:
+        update_cce_state(executed_lane=lane_for_plan(baseline_plan), epoch_id=baseline_summary.get("epoch_id", "BOOTSTRAP"))
+        update_oce_state(executed_lane=lane_for_plan(baseline_plan), epoch_id=baseline_summary.get("epoch_id", "BOOTSTRAP"))
+    except Exception as exc:
+        print(f"[baseline] CCE update failed: {exc}", file=sys.stderr)
+    try:
+        _write_baseline_suggestion(latest_epoch_root())
+    except Exception as exc:
+        print(f"[baseline] could not write bootstrap plan_suggestion.json: {exc}", file=sys.stderr)
+    # Ensure at least two epochs exist so plan_suggester can run.
+    epoch_roots = [p for p in ARTIFACT_EPOCHS.iterdir() if p.is_dir()]
+    if len(epoch_roots) < 2:
+        print("=== Seeding second baseline coverage for history ===")
+        second_plan = resolve_epoch_spec("COVERAGE_HOP_RECOVERY")
+        runtime_second = _prepare_runtime_plan(
+            second_plan, f"BASELINE_{int(datetime.utcnow().timestamp() * 1000)}"
+        )
+        try:
+            run_plan(runtime_second)
+        finally:
+            runtime_second.unlink(missing_ok=True)
+        try:
+            _write_baseline_suggestion(latest_epoch_root())
+        except Exception as exc:
+            print(f"[baseline-2] could not write bootstrap plan_suggestion.json: {exc}", file=sys.stderr)
 
     records = []
     lane_counter = Counter()
     for idx in range(1, args.iterations + 1):
-        suggestion = run_plan_suggester(env)
-        plan_key = select_plan(suggestion)
-        plan_path = PLAN_FILES[plan_key]
+        suggestion = run_plan_suggester()
+        suggested_lane = suggestion.get("recommended_lane")
+        suggested_internal = suggestion.get("recommended_lane_internal")
+        plan_path = select_plan(suggestion)
+        plan_key = plan_path.name
         signals = suggestion.get("signals", {})
         record = {
             "iteration": idx,
             "epoch": suggestion.get("epoch_id"),
-            "recommended_lane": suggestion.get("recommended_lane"),
-            "recommended_lane_internal": suggestion.get("recommended_lane_internal"),
+            "suggestion_consumed": True,
+            "suggested_lane": suggested_lane,
+            "suggested_lane_internal": suggested_internal,
             "forced": signals.get("forced_resolve_count", 0),
             "low_coherence": signals.get("low_coherence_count", 0),
             "entropy": signals.get("entropy_domains", 0.0),
             "plan_run": plan_key,
         }
-        print(f"\n=== ITERATION {idx}: suggested {record['recommended_lane']} -> running {plan_key} ===")
+        print(f"\n=== ITERATION {idx}: suggested {record['suggested_lane_internal']} -> running {plan_key} ===")
 
         if policy is not None:
             state_text = _state_text_from_suggestion(suggestion)
@@ -153,8 +230,8 @@ def main() -> None:
                         "timestamp": datetime.utcnow().isoformat() + "Z",
                         "iteration": idx,
                         "epoch_id": suggestion.get("epoch_id"),
-                        "heuristic_lane": suggestion.get("recommended_lane"),
-                        "heuristic_lane_internal": suggestion.get("recommended_lane_internal"),
+                        "heuristic_lane": suggested_lane,
+                        "heuristic_lane_internal": suggested_internal,
                         "plan_run": plan_key,
                         "policy_lane": policy_result.get("recommendation"),
                         "policy_confidence": policy_result.get("confidence"),
@@ -166,7 +243,43 @@ def main() -> None:
             except Exception as exc:
                 record["policy_error"] = str(exc)
 
-        run_plan(plan_path, env)
+        runtime_plan = _prepare_runtime_plan(plan_path, f"RUN{idx:03d}")
+        try:
+            summary = run_plan(runtime_plan)
+        finally:
+            runtime_plan.unlink(missing_ok=True)
+        try:
+            executed_lane = lane_for_plan(plan_path)
+            updated = update_cce_state(executed_lane=executed_lane, epoch_id=summary.get("epoch_id", "UNKNOWN"))
+            try:
+                update_oce_state(executed_lane=executed_lane, epoch_id=summary.get("epoch_id", "UNKNOWN"))
+            except Exception as exc:  # noqa: BLE001
+                record["oce_update_error"] = str(exc)
+                print(f"[OCE] update failed: {exc}", file=sys.stderr)
+            record["cce_state"] = {
+                "coverage_cost": updated.coverage_cost,
+                "coverage_streak": updated.coverage_streak,
+                "decay_events": updated.decay_events,
+            }
+        except Exception as exc:
+            record["cce_update_error"] = str(exc)
+            print(f"[CCE] update failed: {exc}", file=sys.stderr)
+        # Regret-weighted replay penalty update requires regret; attempt best-effort
+        try:
+            rg = summary.get("regret_global") if isinstance(summary, dict) else None
+            # If epoch_regret.json exists in epoch root, prefer that.
+            epoch_root = latest_epoch_root()
+            regret_path = epoch_root / "epoch_regret.json"
+            if regret_path.exists():
+                try:
+                    rg = json.loads(regret_path.read_text(encoding="utf-8")).get("regret_global")
+                except Exception:
+                    pass
+            if rg is not None:
+                update_rwrp_state(executed_lane=executed_lane, epoch_id=summary.get("epoch_id", "UNKNOWN"), regret_global=rg)
+        except Exception as exc:
+            record["rwrp_update_error"] = str(exc)
+            print(f"[RWRP] update failed: {exc}", file=sys.stderr)
         records.append(record)
         lane_counter[plan_key] += 1
 

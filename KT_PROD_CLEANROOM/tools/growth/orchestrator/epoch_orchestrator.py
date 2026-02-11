@@ -22,10 +22,15 @@ if str(_REPO_ROOT) not in sys.path:
 from tools.growth.providers.live_guard import enforce_live_guard
 enforce_live_guard()
 
-from checkpoint_store import CheckpointRecord, append_checkpoint, completed_crucible_ids
-from epoch_budget import assert_budget_ok, validate_crucible_budgets
-from epoch_manifest import build_manifest
-from epoch_schemas import EpochPlan, EpochSchemaError, RUNNER_TEMPLATE_C019
+from tools.growth.orchestrator.checkpoint_store import (
+    CheckpointRecord,
+    append_checkpoint,
+    completed_crucible_ids,
+    completed_crucible_run_ids,
+)
+from tools.growth.orchestrator.epoch_budget import assert_budget_ok, validate_crucible_budgets
+from tools.growth.orchestrator.epoch_manifest import build_manifest
+from tools.growth.orchestrator.epoch_schemas import EpochPlan, EpochSchemaError, RUNNER_TEMPLATE_C019
 from tools.growth.coverage.coverage_validator import CoverageValidator
 
 
@@ -50,9 +55,36 @@ class CrucibleRunSummary:
     outcome: str
     notes: Optional[str]
 
+COHERENCE_DEBT_MAX = 5
+
 
 def _repo_root() -> Path:
     return _REPO_ROOT
+
+
+def _rel_to_repo_root_or_abs(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(_repo_root().resolve()).as_posix()
+    except Exception:
+        return path.resolve().as_posix()
+
+
+def _growth_artifacts_root() -> Path:
+    """
+    Single source of truth for growth artifacts root.
+
+    Default: KT_PROD_CLEANROOM/tools/growth/artifacts
+
+    Seal / gate override: set KT_GROWTH_ARTIFACTS_ROOT to an absolute path or a
+    cleanroom-relative path (resolved relative to _repo_root()).
+    """
+    override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+    if not override:
+        return _repo_root() / "tools" / "growth" / "artifacts"
+    p = Path(override)
+    if not p.is_absolute():
+        p = _repo_root() / p
+    return p.resolve()
 
 
 def _load_plan(path: Path) -> EpochPlan:
@@ -104,8 +136,12 @@ def _runner_command(
 ) -> Tuple[List[str], Path]:
     repo_root = _repo_root()
     runner = repo_root / "tools" / "growth" / "crucible_runner.py"
+    # IMPORTANT: do not `.resolve()` sys.executable.
+    # In venvs (e.g. Kaggle), the venv python can be a symlink to the system python.
+    # Resolving it would bypass the venv and drop site-packages, causing missing deps
+    # (e.g. psutil) in the crucible subprocess.
     cmd = [
-        str(Path(sys.executable).resolve()),
+        sys.executable,
         str(runner),
         "--crucible",
         str(crucible_path.resolve()),
@@ -117,6 +153,29 @@ def _runner_command(
     if ruleset_path is not None:
         cmd.extend(["--ruleset", str(ruleset_path.resolve())])
     return cmd, repo_root
+
+
+def _normalize_command_for_record(command: List[str], repo_root: Path) -> List[str]:
+    """
+    Best-effort normalization for audit/debug logs.
+
+    - Replaces the interpreter path with literal "python".
+    - Converts the script path (2nd arg) to a repo-relative path when possible.
+
+    This avoids leaking machine-specific absolute paths while preserving enough
+    detail to reproduce the invocation shape.
+    """
+    if not command:
+        return []
+    out = list(command)
+    out[0] = "python"
+    if len(out) >= 2:
+        try:
+            script_path = Path(out[1]).resolve()
+            out[1] = script_path.relative_to(repo_root.resolve()).as_posix()
+        except Exception:
+            pass
+    return out
 
 
 def _run_subprocess_capped(
@@ -283,6 +342,404 @@ def _write_once(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8", newline="\n")
 
 
+def _parse_epoch_run_number(epoch_id: str) -> Optional[int]:
+    m = re.search(r"_RUN(\d+)$", epoch_id or "")
+    if not m:
+        return None
+    try:
+        return int(m.group(1))
+    except Exception:
+        return None
+
+
+def _read_previous_coherence_debt(*, epochs_root: Path, epoch_id: str) -> int:
+    """
+    Best-effort previous debt read (fail-closed on malformed JSON only).
+    - If epoch_id has _RUN<N> suffix, prefer _RUN<N-1>.
+    - Otherwise, default to 0.
+    """
+    run_n = _parse_epoch_run_number(epoch_id)
+    if run_n is None or run_n <= 1:
+        return 0
+    base = _parse_epoch_base(epoch_id)
+    prev_id = f"{base}_RUN{run_n - 1}"
+    prev_root = epochs_root / prev_id
+    prev_summary = prev_root / "epoch_summary.json"
+    if not prev_summary.exists():
+        return 0
+    try:
+        obj = json.loads(prev_summary.read_text(encoding="utf-8"))
+    except Exception as exc:
+        raise EpochSchemaError(f"Invalid prior epoch_summary.json at {prev_summary.as_posix()} (fail-closed): {exc}") from exc
+    debt = obj.get("coherence_debt")
+    try:
+        return int(debt)
+    except Exception:
+        return 0
+
+
+def _load_micro_steps(path: Path) -> Optional[List[Dict[str, object]]]:
+    if not path.exists():
+        return None
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    chunk = payload.get("steps") if isinstance(payload, dict) else payload
+    if not isinstance(chunk, list):
+        return None
+    steps: List[Dict[str, object]] = []
+    for entry in chunk:
+        if isinstance(entry, dict):
+            steps.append(entry)
+    return steps or None
+
+
+def _compute_coherence_debt(
+    *,
+    epoch_root: Path,
+    crucible_order: List[str],
+    prev_debt: int,
+    debt_max: int = COHERENCE_DEBT_MAX,
+) -> Tuple[int, float, int, Optional[str]]:
+    """
+    Conserved cross-epoch scalar (fail-closed on missing evidence):
+    - Uses micro-steps only (structural, non-semantic).
+    - If required evidence is missing/unknown, skips update and returns prev_debt.
+    """
+    all_steps: List[Dict[str, object]] = []
+    for cid in crucible_order:
+        ms = _load_micro_steps(epoch_root / cid / "micro_steps.json")
+        if ms:
+            all_steps.extend(ms)
+
+    if not all_steps:
+        budget = 1.0 - (prev_debt / float(debt_max)) if debt_max > 0 else 0.0
+        return (prev_debt, float(budget), 0, "missing_micro_steps")
+
+    saw_resolve = False
+    saw_eval = False
+    unknown_evidence = False
+
+    forced_any = False
+    low_any = False
+    resolve_not_clean_any = False
+    eval_low_any = False
+    constraint_any = False
+
+    for s in all_steps:
+        phase = s.get("phase")
+        flags = s.get("flags")
+        if not isinstance(flags, dict):
+            continue
+
+        mode = flags.get("resolve_mode")
+        if phase == "RESOLVE":
+            saw_resolve = True
+            if mode in {"unknown", "UNKNOWN", "missing", "MISSING"}:
+                unknown_evidence = True
+            elif isinstance(mode, str):
+                mode_l = mode.strip().lower()
+                if mode_l != "clean":
+                    resolve_not_clean_any = True
+                if mode_l in {"forced", "partial", "unresolved", "refuse"}:
+                    forced_any = True
+
+        coh = flags.get("coherence_bucket")
+        if phase == "EVAL":
+            saw_eval = True
+            if coh in {"unknown", "UNKNOWN", "missing", "MISSING"}:
+                unknown_evidence = True
+            elif isinstance(coh, str) and coh.strip().upper() == "LOW":
+                low_any = True
+                eval_low_any = True
+
+        if phase == "CONSTRAIN":
+            ch = flags.get("constraint_hit")
+            # Only treat non-budget constraints (or budget overruns) as "hits" for debt purposes;
+            # budget checks are always present and would otherwise saturate the signal.
+            if ch in {"policy", "contract"}:
+                constraint_any = True
+            elif ch == "budget":
+                verdict = flags.get("budget_verdict")
+                if isinstance(verdict, str) and verdict.strip().upper() != "WITHIN_BUDGET":
+                    constraint_any = True
+
+    if (not saw_resolve) or (not saw_eval) or unknown_evidence:
+        budget = 1.0 - (prev_debt / float(debt_max)) if debt_max > 0 else 0.0
+        reason = "missing_resolve_or_eval" if (not saw_resolve or not saw_eval) else "unknown_micro_evidence"
+        return (prev_debt, float(budget), 0, reason)
+
+    bad = forced_any or low_any or constraint_any or resolve_not_clean_any or eval_low_any
+    delta = 1 if bad else -1
+    new_debt = max(0, min(int(prev_debt) + delta, int(debt_max)))
+    budget = 1.0 - (new_debt / float(debt_max)) if debt_max > 0 else 0.0
+    return (new_debt, float(budget), int(delta), None)
+
+
+def _debug_run_root(*, crucible_id: str, run_id: str, run_root: Path) -> None:
+    try:
+        rel = run_root.relative_to(_repo_root())
+        root_disp = str(rel)
+    except Exception:
+        root_disp = run_root.as_posix()
+
+    print(f"[DEBUG_RUN_ROOT] crucible_id={crucible_id} run_id={run_id} run_root={root_disp}", file=sys.stderr)
+    print(f"[DEBUG_RUN_ROOT] exists={run_root.exists()}", file=sys.stderr)
+    if not run_root.exists():
+        return
+
+    try:
+        names = sorted([p.name for p in run_root.iterdir()])
+    except Exception as exc:
+        print(f"[DEBUG_RUN_ROOT] list_error={exc}", file=sys.stderr)
+        return
+
+    print(f"[DEBUG_RUN_ROOT] top_files={names}", file=sys.stderr)
+    expected = {
+        "runner_record.json": run_root / "runner_record.json",
+        "governance_verdict.json": run_root / "governance_verdict.json",
+        "crucible_coverage.json": run_root / "crucible_coverage.json",
+        "micro_steps.json": run_root / "micro_steps.json",
+        "_runtime_artifacts/state_vault.jsonl": run_root / "_runtime_artifacts" / "state_vault.jsonl",
+    }
+    for k, p in expected.items():
+        print(f"[DEBUG_RUN_ROOT] expect {k} exists={p.exists()} path={p.as_posix()}", file=sys.stderr)
+
+
+def _materialize_epoch_artifact_contract(
+    *,
+    epoch_root: Path,
+    kernel_target: str,
+    crucible_order: List[str],
+    runs: List[CrucibleRunSummary],
+) -> None:
+    """
+    Enforce canonical epoch artifact contract (fail-closed; no stubs).
+
+    Materializes into epoch_root using only real per-run artifacts under:
+      tools/growth/artifacts/c019_runs/<kernel_target>/<run_id>/
+
+    Required epoch_root artifacts:
+      - epoch_summary.json (already emitted by orchestrator)
+      - runner_record.json (epoch-level aggregate, derived from per-run runner_record.json)
+      - governance_verdict.json (copied if identical across crucibles; fail if ambiguous/missing)
+      - state_vault.jsonl (concatenation of per-run _runtime_artifacts/state_vault.jsonl; fail if missing/empty)
+      - paradox_event.json (per-crucible, if present; fail-closed for paradox crucibles)
+      - paradox_fork_manifest.json (per-crucible, if present)
+
+    Also copies per-crucible:
+      epoch_root/<CRU_ID>/runner_record.json
+      epoch_root/<CRU_ID>/governance_verdict.json
+      epoch_root/<CRU_ID>/state_vault.jsonl
+      epoch_root/<CRU_ID>/paradox_event.json
+      epoch_root/<CRU_ID>/paradox_fork_manifest.json
+    """
+    if not (epoch_root / "epoch_summary.json").exists():
+        raise EpochSchemaError("epoch_summary.json missing at epoch root (fail-closed)")
+
+    by_cid = {r.crucible_id: r for r in runs}
+    base = _growth_artifacts_root() / "c019_runs" / kernel_target
+
+    runner_records: List[Dict[str, Any]] = []
+    governance_text: Optional[str] = None
+
+    state_vault_sources: List[Dict[str, Any]] = []
+    state_vault_paths: List[Path] = []
+    paradox_events: List[Dict[str, Any]] = []
+
+    for cid in crucible_order:
+        r = by_cid.get(cid)
+        if r is None or r.run_id is None:
+            raise EpochSchemaError(f"Missing run_id for {cid}; cannot materialize contract (fail-closed)")
+        run_root = base / r.run_id
+        if not run_root.exists():
+            # Fail-closed, but surface cause: epoch-local runner logs and record are the only
+            # available evidence when per-run artifacts fail to materialize.
+            run_dir = epoch_root / cid
+            stderr_path = run_dir / "stderr.log"
+            stdout_path = run_dir / "stdout.json"
+            run_record_path = run_dir / "run_record.json"
+
+            def _tail(path: Path, *, max_lines: int) -> str:
+                if not path.exists():
+                    return "<missing>"
+                try:
+                    text = path.read_text(encoding="utf-8", errors="ignore")
+                except Exception as exc:
+                    return f"<unreadable:{exc}>"
+                lines = text.splitlines()
+                if not lines:
+                    return "<empty>"
+                tail = lines[-max_lines:]
+                return "\n".join(tail)
+
+            run_record_text = "<missing>"
+            if run_record_path.exists():
+                try:
+                    run_record_text = run_record_path.read_text(encoding="utf-8", errors="ignore")
+                except Exception as exc:
+                    run_record_text = f"<unreadable:{exc}>"
+
+            override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+            raise EpochSchemaError(
+                "Missing run_root for {cid} at {run_root} (fail-closed)\n"
+                "---- RUNNER DIAGNOSTICS (epoch-local) ----\n"
+                "epoch_root: {epoch_root}\n"
+                "epoch_run_dir: {run_dir}\n"
+                "growth_artifacts_root: {gar}\n"
+                "KT_GROWTH_ARTIFACTS_ROOT: {override}\n"
+                "kernel_target: {kernel}\n"
+                "expected_run_root: {expected}\n"
+                "\n"
+                "run_record.json:\n{run_record}\n"
+                "\n"
+                "stderr.log (tail):\n{stderr_tail}\n"
+                "\n"
+                "stdout.json (tail):\n{stdout_tail}\n".format(
+                    cid=cid,
+                    run_root=run_root.as_posix(),
+                    epoch_root=epoch_root.as_posix(),
+                    run_dir=run_dir.as_posix(),
+                    gar=_growth_artifacts_root().as_posix(),
+                    override=override or "<unset>",
+                    kernel=kernel_target,
+                    expected=run_root.as_posix(),
+                    run_record=run_record_text.strip() or "<empty>",
+                    stderr_tail=_tail(stderr_path, max_lines=80),
+                    stdout_tail=_tail(stdout_path, max_lines=40),
+                )
+            )
+
+        rr_src = run_root / "runner_record.json"
+        if not rr_src.exists():
+            raise EpochSchemaError(f"Missing per-run runner_record.json for {cid} at {rr_src.as_posix()} (fail-closed)")
+        rr_text = rr_src.read_text(encoding="utf-8")
+        rr_dst = epoch_root / cid / "runner_record.json"
+        if not rr_dst.exists():
+            _write_once(rr_dst, rr_text)
+        try:
+            rr_obj = json.loads(rr_text)
+        except Exception as exc:
+            raise EpochSchemaError(f"Invalid per-run runner_record.json for {cid} (fail-closed): {exc}") from exc
+        if not isinstance(rr_obj, dict):
+            raise EpochSchemaError(f"per-run runner_record.json must be an object for {cid} (fail-closed)")
+        runner_records.append(rr_obj)
+
+        gv_src = run_root / "governance_verdict.json"
+        if not gv_src.exists():
+            raise EpochSchemaError(f"Missing governance_verdict.json for {cid} at {gv_src.as_posix()} (fail-closed)")
+        gv_text = gv_src.read_text(encoding="utf-8")
+        gv_dst = epoch_root / cid / "governance_verdict.json"
+        if not gv_dst.exists():
+            _write_once(gv_dst, gv_text)
+        if governance_text is None:
+            governance_text = gv_text
+        elif gv_text != governance_text:
+            raise EpochSchemaError("Non-identical governance_verdict across crucibles (fail-closed)")
+
+        sv_src = run_root / "_runtime_artifacts" / "state_vault.jsonl"
+        if not sv_src.exists():
+            raise EpochSchemaError(f"Missing state_vault.jsonl for {cid} at {sv_src.as_posix()} (fail-closed)")
+        if sv_src.stat().st_size <= 0:
+            raise EpochSchemaError(f"Empty state_vault.jsonl for {cid} at {sv_src.as_posix()} (fail-closed)")
+        sv_dst = epoch_root / cid / "state_vault.jsonl"
+        if not sv_dst.exists():
+            _write_once(sv_dst, sv_src.read_text(encoding="utf-8"))
+        state_vault_paths.append(sv_src)
+        state_vault_sources.append(
+            {
+                "crucible_id": cid,
+                "run_id": r.run_id,
+                "src": _rel_to_repo_root_or_abs(sv_src),
+                "bytes": int(sv_src.stat().st_size),
+            }
+        )
+
+        pe_src = run_root / "paradox_event.json"
+        if pe_src.exists():
+            pe_text = pe_src.read_text(encoding="utf-8")
+            pe_dst = epoch_root / cid / "paradox_event.json"
+            if not pe_dst.exists():
+                _write_once(pe_dst, pe_text)
+            try:
+                pe_obj = json.loads(pe_text)
+            except Exception as exc:
+                raise EpochSchemaError(f"Invalid paradox_event.json for {cid} (fail-closed): {exc}") from exc
+            if not isinstance(pe_obj, dict):
+                raise EpochSchemaError(f"paradox_event.json must be an object for {cid} (fail-closed)")
+            paradox_events.append(pe_obj)
+        elif "PARADOX" in cid.upper():
+            raise EpochSchemaError(f"Missing paradox_event.json for paradox crucible {cid} (fail-closed)")
+
+        pf_src = run_root / "paradox_fork_manifest.json"
+        if pf_src.exists():
+            pf_text = pf_src.read_text(encoding="utf-8")
+            pf_dst = epoch_root / cid / "paradox_fork_manifest.json"
+            if not pf_dst.exists():
+                _write_once(pf_dst, pf_text)
+
+    if governance_text is None:
+        raise EpochSchemaError("Missing governance verdicts (fail-closed)")
+    gv_epoch = epoch_root / "governance_verdict.json"
+    if not gv_epoch.exists():
+        _write_once(gv_epoch, governance_text)
+
+    rr_epoch = epoch_root / "runner_record.json"
+    if not rr_epoch.exists():
+        _write_once(
+            rr_epoch,
+            json.dumps(
+                {
+                    "schema": "EPOCH_RUNNER_RECORD_V1",
+                    "epoch_id": epoch_root.name,
+                    "kernel_target": kernel_target,
+                    "runs": runner_records,
+                },
+                sort_keys=True,
+                indent=2,
+                ensure_ascii=True,
+            ),
+        )
+
+    sv_epoch = epoch_root / "state_vault.jsonl"
+    if not sv_epoch.exists():
+        sv_epoch.parent.mkdir(parents=True, exist_ok=True)
+        with sv_epoch.open("w", encoding="utf-8", newline="\n") as out:
+            for src in state_vault_paths:
+                with src.open("r", encoding="utf-8") as handle:
+                    for line in handle:
+                        if line.strip():
+                            out.write(line.rstrip("\n") + "\n")
+            for event in paradox_events:
+                out.write(json.dumps(event, sort_keys=True, separators=(",", ":"), ensure_ascii=True) + "\n")
+
+    pe_epoch = epoch_root / "paradox_events.jsonl"
+    if paradox_events and not pe_epoch.exists():
+        pe_epoch.parent.mkdir(parents=True, exist_ok=True)
+        with pe_epoch.open("w", encoding="utf-8", newline="\n") as out:
+            for event in paradox_events:
+                out.write(json.dumps(event, sort_keys=True, separators=(",", ":"), ensure_ascii=True) + "\n")
+
+    sv_manifest = epoch_root / "state_vault_manifest.json"
+    if not sv_manifest.exists():
+        _write_once(
+            sv_manifest,
+            json.dumps(
+                {
+                    "schema": "EPOCH_STATE_VAULT_MANIFEST_V1",
+                    "epoch_id": epoch_root.name,
+                    "kernel_target": kernel_target,
+                    "sources": state_vault_sources,
+                    "paradox_event_count": len(paradox_events),
+                },
+                sort_keys=True,
+                indent=2,
+                ensure_ascii=True,
+            ),
+        )
+
+
 def _safe_decode(data: bytes) -> str:
     return data.decode("utf-8", errors="replace")
 
@@ -423,9 +880,10 @@ def preflight_epoch(
         blocks.append(f"IMMUTABILITY_BLOCK: epoch_id {plan.epoch_id} has prior payload and --no-auto-bump set")
 
     caps = _load_kernel_capabilities()
-    if plan.kernel_identity.kernel_target not in caps:
+    kernel_target = plan.kernel_identity.kernel_target
+    if kernel_target not in caps:
         warns.append(
-            f"KERNEL_CAPABILITY_WARN: kernel_target={plan.kernel_identity.kernel_target} missing from kernel_capabilities.yaml"
+            f"KERNEL_CAPABILITY_WARN: kernel_target={kernel_target} missing from kernel_capabilities.yaml"
         )
 
     for cid, data in crucible_specs.items():
@@ -434,7 +892,7 @@ def preflight_epoch(
         cap_blocks, cap_warns = _preflight_kernel_capability_mismatches(
             crucible_id=cid,
             epoch_profile=plan.epoch_profile,
-            kernel_target=plan.kernel_identity.kernel_target,
+            kernel_target=kernel_target,
             expect=expect,
             caps=caps,
         )
@@ -510,8 +968,12 @@ def run_epoch(
     ruleset_path: Optional[Path] = None,
     auto_bump: bool = True,
     quiet: bool = False,
+    debug_run_roots: bool = False,
 ) -> Dict[str, object]:
     plan = _load_plan(plan_path)
+    kernel_target = plan.kernel_identity.kernel_target
+    if kernel_target != plan.kernel_identity.kernel_target:
+        raise EpochSchemaError("kernel_target drift (plan identity mismatch; fail-closed)")
     if plan.runner_config.template_id != RUNNER_TEMPLATE_C019:
         raise EpochSchemaError("runner_config.template_id not allowed (fail-closed)")
     if plan.runner_config.args:
@@ -542,7 +1004,7 @@ def run_epoch(
 
     # Build manifest and epoch hash (auto-bump on collision if enabled).
     spec_hashes = {cid: crucible_specs[cid]["hash"] for cid in plan.crucible_order}
-    base_root = artifacts_root if artifacts_root is not None else (repo_root / "tools" / "growth" / "artifacts" / "epochs")
+    base_root = artifacts_root if artifacts_root is not None else (_growth_artifacts_root() / "epochs")
 
     manifest = build_manifest(plan, crucible_spec_hashes=spec_hashes)
     bump_count = 0
@@ -581,6 +1043,7 @@ def run_epoch(
 
     checkpoint_path = epoch_root / "checkpoint.json"
     completed = completed_crucible_ids(checkpoint_path) if resume else set()
+    completed_run_ids = completed_crucible_run_ids(checkpoint_path) if resume else {}
 
     start_epoch = time.monotonic()
     failures = 0
@@ -606,7 +1069,7 @@ def run_epoch(
                 CrucibleRunSummary(
                     crucible_id=cid,
                     crucible_path=str(crucible_path),
-                    run_id=None,
+                    run_id=completed_run_ids.get(cid),
                     outcome="SKIPPED_RESUME",
                     notes="resume_skip",
                 )
@@ -643,14 +1106,15 @@ def run_epoch(
             break
 
         if runner_cmd_override is not None:
-            cmd, cwd = runner_cmd_override(crucible_path, plan.kernel_identity.kernel_target, plan.seed)
+            cmd, cwd = runner_cmd_override(crucible_path, kernel_target, plan.seed)
         else:
             cmd, cwd = _runner_command(
                 crucible_path=crucible_path,
-                kernel_target=plan.kernel_identity.kernel_target,
+                kernel_target=kernel_target,
                 seed=plan.seed,
                 ruleset_path=selected_ruleset_path,
             )
+        cmd_norm = _normalize_command_for_record(cmd, repo_root=_repo_root())
         env = dict(os.environ)
         env["PYTHONIOENCODING"] = "utf-8"
         budgets = crucible_specs[cid]["budgets"]
@@ -661,7 +1125,7 @@ def run_epoch(
             crucible_spec=crucible_specs[cid]["spec"],
             crucible_spec_hash_hex=str(crucible_specs[cid]["hash"]),
             budgets=budgets,
-            kernel_target=plan.kernel_identity.kernel_target,
+            kernel_target=kernel_target,
             seed=plan.seed,
         )
 
@@ -711,19 +1175,13 @@ def run_epoch(
 
         # Copy micro_steps.json from the crucible run directory if present (tooling-only, non-gating).
         if run_id:
-            micro_src = (
-                _repo_root()
-                / "tools"
-                / "growth"
-                / "artifacts"
-                / "c019_runs"
-                / plan.kernel_identity.kernel_target
-                / run_id
-                / "micro_steps.json"
-            )
+            micro_src = _growth_artifacts_root() / "c019_runs" / kernel_target / run_id / "micro_steps.json"
             micro_dst = run_dir / "micro_steps.json"
             if micro_src.exists():
                 _write_once(micro_dst, micro_src.read_text(encoding="utf-8"))
+            if debug_run_roots:
+                run_root = _growth_artifacts_root() / "c019_runs" / kernel_target / run_id
+                _debug_run_root(crucible_id=cid, run_id=run_id, run_root=run_root)
 
         _write_once(
             run_record_path,
@@ -734,6 +1192,25 @@ def run_epoch(
                     "run_id": run_id,
                     "outcome": outcome,
                     "notes": notes,
+                    "runner": {
+                        "exit_code": result.exit_code,
+                        "was_killed": bool(result.was_killed),
+                        "kill_reason": result.kill_reason,
+                        "stdout_truncated": bool(result.stdout_truncated),
+                        "stderr_truncated": bool(result.stderr_truncated),
+                        "duration_ms": int(result.duration_ms),
+                        "peak_rss_bytes": result.peak_rss_bytes,
+                        "command": cmd_norm,
+                        "cwd": str(cwd),
+                    },
+                    "expected": {
+                        "growth_artifacts_root": _growth_artifacts_root().as_posix(),
+                        "run_root": (
+                            (_growth_artifacts_root() / "c019_runs" / kernel_target / run_id).as_posix()
+                            if run_id
+                            else None
+                        ),
+                    },
                 },
                 sort_keys=True,
                 indent=2,
@@ -765,11 +1242,44 @@ def run_epoch(
         # Non-gating profiles (e.g., GOVERNANCE/PARADOX): completion is still meaningful even if all crucibles fail-closed.
         epoch_verdict = "COMPLETE"
 
+    prev_debt = _read_previous_coherence_debt(epochs_root=base_root, epoch_id=plan.epoch_id)
+    coherence_debt, coherence_budget, coherence_debt_delta, coherence_debt_skip_reason = _compute_coherence_debt(
+        epoch_root=epoch_root,
+        crucible_order=list(plan.crucible_order),
+        prev_debt=prev_debt,
+        debt_max=COHERENCE_DEBT_MAX,
+    )
+
+    paradox_event_ids: List[str] = []
+    run_base = _growth_artifacts_root() / "c019_runs" / kernel_target
+    for run in runs:
+        if run.run_id is None:
+            continue
+        pe_path = run_base / run.run_id / "paradox_event.json"
+        if not pe_path.exists():
+            continue
+        try:
+            pe_obj = json.loads(pe_path.read_text(encoding="utf-8"))
+        except Exception as exc:
+            raise EpochSchemaError(f"Invalid paradox_event.json for {run.crucible_id} (fail-closed): {exc}") from exc
+        if not isinstance(pe_obj, dict):
+            raise EpochSchemaError(f"paradox_event.json must be an object for {run.crucible_id} (fail-closed)")
+        pe_id = pe_obj.get("paradox_event_id")
+        if isinstance(pe_id, str) and pe_id and pe_id not in paradox_event_ids:
+            paradox_event_ids.append(pe_id)
+
     summary_path = epoch_root / "epoch_summary.json"
     summary_obj = {
         "epoch_id": plan.epoch_id,
         "epoch_profile": profile,
         "epoch_verdict": epoch_verdict,
+        "coherence_debt": coherence_debt,
+        "coherence_budget": round(coherence_budget, 6),
+        "coherence_debt_max": COHERENCE_DEBT_MAX,
+        "coherence_debt_delta": coherence_debt_delta,
+        "coherence_debt_skip_reason": coherence_debt_skip_reason,
+        "paradox_event_count": len(paradox_event_ids),
+        "paradox_event_ids": paradox_event_ids,
         "crucibles_total": crucibles_total,
         "crucibles_passed": crucibles_passed,
         "crucibles_failed_closed": crucibles_failed_closed,
@@ -788,9 +1298,83 @@ def run_epoch(
         run = next((r for r in runs if r.crucible_id == cid and r.run_id), None)
         if run is None or run.run_id is None:
             raise EpochSchemaError(f"Missing run_id for {cid}; cannot aggregate coverage (fail-closed)")
-        cov_path = _repo_root() / "tools" / "growth" / "artifacts" / "c019_runs" / plan.kernel_identity.kernel_target / run.run_id / "crucible_coverage.json"
+        run_root = _growth_artifacts_root() / "c019_runs" / kernel_target / run.run_id
+        cov_path = run_root / "crucible_coverage.json"
         if not cov_path.exists():
-            raise EpochSchemaError(f"Missing crucible coverage for {cid} at {cov_path.as_posix()} (fail-closed)")
+            # Fail-closed with maximum local evidence surfaced (epoch-local + per-run if present).
+            run_dir = epoch_root / cid
+            stderr_path = run_dir / "stderr.log"
+            stdout_path = run_dir / "stdout.json"
+            run_record_path = run_dir / "run_record.json"
+
+            def _tail(path: Path, *, max_lines: int) -> str:
+                if not path.exists():
+                    return "<missing>"
+                try:
+                    text = path.read_text(encoding="utf-8", errors="ignore")
+                except Exception as exc:
+                    return f"<unreadable:{exc}>"
+                lines = text.splitlines()
+                if not lines:
+                    return "<empty>"
+                return "\n".join(lines[-max_lines:])
+
+            def _list_top(p: Path) -> str:
+                if not p.exists():
+                    return "<missing>"
+                try:
+                    names = sorted([x.name for x in p.iterdir()])
+                except Exception as exc:
+                    return f"<list_error:{exc}>"
+                if not names:
+                    return "<empty>"
+                return ", ".join(names[:60]) + (" ..." if len(names) > 60 else "")
+
+            run_record_text = "<missing>"
+            if run_record_path.exists():
+                try:
+                    run_record_text = run_record_path.read_text(encoding="utf-8", errors="ignore")
+                except Exception as exc:
+                    run_record_text = f"<unreadable:{exc}>"
+
+            raise EpochSchemaError(
+                "Missing crucible coverage for {cid} at {cov_path} (fail-closed)\n"
+                "---- RUNNER DIAGNOSTICS (epoch-local + per-run) ----\n"
+                "epoch_root: {epoch_root}\n"
+                "epoch_run_dir: {run_dir}\n"
+                "growth_artifacts_root: {gar}\n"
+                "KT_GROWTH_ARTIFACTS_ROOT: {override}\n"
+                "kernel_target: {kernel}\n"
+                "run_id: {run_id}\n"
+                "run_root_exists: {run_root_exists}\n"
+                "run_root_top_files: {run_root_top}\n"
+                "\n"
+                "epoch_run_record.json:\n{run_record}\n"
+                "\n"
+                "epoch stderr.log (tail):\n{stderr_tail}\n"
+                "\n"
+                "epoch stdout.json (tail):\n{stdout_tail}\n"
+                "\n"
+                "run_root stderr.log (tail):\n{run_stderr_tail}\n"
+                "\n"
+                "run_root stdout.json (tail):\n{run_stdout_tail}\n".format(
+                    cid=cid,
+                    cov_path=cov_path.as_posix(),
+                    epoch_root=epoch_root.as_posix(),
+                    run_dir=run_dir.as_posix(),
+                    gar=_growth_artifacts_root().as_posix(),
+                    override=(os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip() or "<unset>",
+                    kernel=kernel_target,
+                    run_id=run.run_id,
+                    run_root_exists=bool(run_root.exists()),
+                    run_root_top=_list_top(run_root),
+                    run_record=run_record_text.strip() or "<empty>",
+                    stderr_tail=_tail(stderr_path, max_lines=80),
+                    stdout_tail=_tail(stdout_path, max_lines=40),
+                    run_stderr_tail=_tail(run_root / "stderr.log", max_lines=80),
+                    run_stdout_tail=_tail(run_root / "stdout.json", max_lines=40),
+                )
+            )
         cov_list.append(json.loads(cov_path.read_text(encoding="utf-8")))
 
     domains, subs, micros, ventures, modes, modalities, tools = set(), set(), set(), set(), set(), set(), set()
@@ -831,7 +1415,7 @@ def run_epoch(
         "schema_version": "EPOCH_COVERAGE_V1",
         "epoch_id": plan.epoch_id,
         "epoch_hash": manifest.epoch_hash,
-        "kernel_target": plan.kernel_identity.kernel_target,
+        "kernel_target": kernel_target,
         "observed": {
             "domains": sorted(domains),
             "subdomains": sorted(subs),
@@ -922,6 +1506,14 @@ def run_epoch(
             salvage_status = {"status": "FAIL", "error": str(exc)}
         (epoch_root / "salvage_status.json").write_text(json.dumps(salvage_status, indent=2), encoding="utf-8", newline="\n")
 
+    # Materialize canonical artifact contract (fail-closed; no stubs).
+    _materialize_epoch_artifact_contract(
+        epoch_root=epoch_root,
+        kernel_target=kernel_target,
+        crucible_order=list(plan.crucible_order),
+        runs=runs,
+    )
+
     return summary_obj
 
 
@@ -936,9 +1528,10 @@ def _parse_args() -> argparse.Namespace:
         help="Print only a single EPOCH VERDICT line (suppresses JSON output).",
     )
     p.add_argument(
-        "--salvage",
-        action="store_true",
-        help="Run non-gating salvage extraction after epoch completion",
+        "--mode",
+        choices=["normal", "shadow", "salvage"],
+        default="normal",
+        help="Execution mode (normal/shadow/salvage).",
     )
     p.add_argument(
         "--salvage-out-root",
@@ -950,17 +1543,74 @@ def _parse_args() -> argparse.Namespace:
         action="store_true",
         help="Disable automatic epoch_id bumping on write-once collisions",
     )
+    p.add_argument(
+        "--debug-run-roots",
+        action="store_true",
+        help="Print per-run root paths + expected files for diagnostics (stderr; non-mutating).",
+    )
     return p.parse_args()
 
 
+def _assert_cli_schema(argv: List[str]) -> None:
+    allowed = {
+        "--epoch",
+        "--resume",
+        "--preflight",
+        "--summary-only",
+        "--mode",
+        "--salvage-out-root",
+        "--no-auto-bump",
+        "--debug-run-roots",
+        "-h",
+        "--help",
+    }
+    for arg in argv:
+        if not arg.startswith("-"):
+            continue
+        key = arg.split("=", 1)[0]
+        if key not in allowed:
+            raise EpochSchemaError(f"Unknown CLI argument: {arg} (fail-closed)")
+
+
+def run_epoch_from_plan(
+    *,
+    plan_path: Path,
+    resume: bool = False,
+    mode: str = "normal",
+    env: Optional[Dict[str, str]] = None,
+    salvage_out_root: Optional[Path] = None,
+    artifacts_root: Optional[Path] = None,
+    auto_bump: bool = True,
+    quiet: bool = False,
+) -> Dict[str, object]:
+    """
+    Canonical epoch invocation. Tooling-only; advisory.
+    mode: normal | shadow | salvage
+    """
+    if mode not in {"normal", "shadow", "salvage"}:
+        raise EpochSchemaError(f"Invalid mode '{mode}' (fail-closed)")
+    salvage = mode == "salvage"
+    return run_epoch(
+        plan_path,
+        resume=resume,
+        artifacts_root=artifacts_root,
+        salvage=salvage,
+        salvage_out_root=salvage_out_root,
+        auto_bump=auto_bump,
+        quiet=quiet,
+    )
+
+
 def main() -> int:
+    _assert_cli_schema(sys.argv[1:])
     args = _parse_args()
     if args.preflight:
         return preflight_epoch(Path(args.epoch), resume=args.resume, artifacts_root=None, auto_bump=not args.no_auto_bump)
-    summary = run_epoch(
-        Path(args.epoch),
+    summary = run_epoch_from_plan(
+        plan_path=Path(args.epoch),
         resume=args.resume,
-        salvage=args.salvage,
+        mode=args.mode,
+        env=None,
         salvage_out_root=Path(args.salvage_out_root),
         auto_bump=not args.no_auto_bump,
         quiet=args.summary_only,
@@ -975,7 +1625,6 @@ def main() -> int:
     if args.summary_only:
         print(verdict_line)
     else:
-        # Preserve JSON-only stdout for existing tooling; print verdict to stderr for humans.
         print(verdict_line, file=sys.stderr)
         print(json.dumps(summary, ensure_ascii=True))
     return 0

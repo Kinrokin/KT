@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL4 Policy Bundle v1 (AdapterType.A, MRT-0)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "bundle_id",
+    "adapter_type",
+    "genotype",
+    "parent_hash",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.policy_bundle.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "bundle_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "adapter_type": { "type": "string", "const": "A" },
+    "genotype": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "prompt_transform_style",
+        "reasoning_directive",
+        "uncertainty_policy",
+        "guardrail_strength",
+        "scoring_bias"
+      ],
+      "properties": {
+        "prompt_transform_style": {
+          "type": "string",
+          "enum": [
+            "clarify_first",
+            "expand_context",
+            "compress",
+            "reframe",
+            "structured_outline"
+          ]
+        },
+        "reasoning_directive": {
+          "type": "string",
+          "enum": [
+            "steps_tagged",
+            "bullet_proof",
+            "decision_tree",
+            "minimal_chain",
+            "evidence_first"
+          ]
+        },
+        "uncertainty_policy": {
+          "type": "string",
+          "enum": [
+            "explicit_calibration",
+            "conservative",
+            "neutral"
+          ]
+        },
+        "guardrail_strength": {
+          "type": "string",
+          "enum": [
+            "strict",
+            "balanced",
+            "permissive"
+          ]
+        },
+        "scoring_bias": {
+          "type": "string",
+          "enum": [
+            "precision",
+            "recall",
+            "calibration"
+          ]
+        }
+      }
+    },
+    "parent_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" }
+  }
+}

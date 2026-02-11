@@ -1,0 +1,14 @@
+﻿FREEZE_FINISH_LINE_3_1
+utc=20260126T093404Z
+git_rev=f7803d73356b13c15906e2464811f8661d262155
+law_bundle_hash=5f2237976757ab21cfd4745ff7e16112780cf616ec6116f5cad02ab20478b994
+meta_evaluator_receipt=KT_PROD_CLEANROOM/AUDITS/META_EVALUATOR_RECEIPT_FL3_20260126T093404Z.json
+sha256_meta_evaluator_receipt=c6b333bc61fa7e2de44ca0a318d2b5976675637f397d8a20f280ca000e779b3e
+red_assault_report=KT_PROD_CLEANROOM/AUDITS/FL3_RED_ASSAULT_20260126T093404Z.json
+sha256_red_assault_report=53c29b3ea5348730a277283fadccde57a75ae05293b2480f037eebd01a07c955
+rollback_drill_report=KT_PROD_CLEANROOM/AUDITS/FL3_ROLLBACK_DRILL_20260126T093404Z.json
+sha256_rollback_drill_report=a499bc20591446a0f28825c14f634528bd815fd1f72f0132ad49194c41895cdd
+pytest_temple_v2=PASS (python -m pytest KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests -q)
+pytest_cleanroom=PASS (python -m pytest KT_PROD_CLEANROOM/tests -q)
+pytest_fl3=PASS (python -m pytest KT_PROD_CLEANROOM/tests/fl3 -q)
+statement=FL3.1 law clarification applied (SRR/AIR spine-exclusive); LAW_BUNDLE pinned + amended; meta-evaluator pass; red-assault fail-closed; rollback drill restores registry; full KT tests green.

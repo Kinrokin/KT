@@ -1,0 +1,22 @@
+﻿FREEZE_FINISH_LINE_1
+utc=20260125T075258Z
+git_rev=d616f12410ab35e0208e05803e3a5e2457305cd6
+
+policy_c_head_pt=KT_PROD_CLEANROOM/exports/policy_c/sweeps/sweep_golden/run1/train/policy_c_head.pt
+sha256_policy_c_head_pt=92dedb03f18508366f3cdd5d170f250e818c56dbdb46f0b8bdb6fb6e6e230008
+
+determinism_rerun=PASS
+determinism_fields:
+- policy_c_sweep_result.content_hash (run1==run2)
+- dataset_manifest.records_hash (run1==run2)
+- dataset_manifest.manifest_hash (run1==run2)
+
+red_assaults=PASS_FAIL_CLOSED
+- RA1 forged epoch/coverage rejected
+- RA2 export_root traversal rejected
+- RA3 tampered sweep refs rejected (fail-closed on invalid/missing refs)
+
+runtime_mutation=NONE_OBSERVED
+- no sed -i
+- no inline edits to repo-tracked files
+- no '|| true' suppression

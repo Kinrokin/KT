@@ -13,21 +13,25 @@ class PlanSuggestError(RuntimeError):
     pass
 
 try:
-    from .kt_lane_policy import build_default_policy, KTLanePolicy
+    from tools.growth.state.kt_lane_policy import build_default_policy, KTLanePolicy
+    from tools.growth.state.cce_state import load_state as load_cce_state, cce_constants
+    from tools.growth.state.oce_state import load_state as load_oce_state, oce_constants
+    from tools.growth.state.rwrp_state import load_state as load_rwrp_state, rwrp_constants
 except ImportError:  # pragma: no cover
-    try:  # When executed as a script (not a module), relative imports may fail.
-        from KT_PROD_CLEANROOM.tools.growth.state.kt_lane_policy import (  # type: ignore[import-not-found]
-            build_default_policy,
-            KTLanePolicy,
-        )
-    except ImportError:
-        build_default_policy = None  # type: ignore[assignment]
-        KTLanePolicy = Any  # type: ignore[assignment]
+    build_default_policy = None  # type: ignore[assignment]
+    KTLanePolicy = Any  # type: ignore[assignment]
+    load_cce_state = None  # type: ignore[assignment]
+    cce_constants = lambda: {"cce_step": None, "cce_max": None, "cce_decay": None}  # type: ignore[assignment]
+    load_oce_state = None  # type: ignore[assignment]
+    oce_constants = lambda: {"oce_step": None, "oce_max": None, "oce_decay": None}  # type: ignore[assignment]
+    load_rwrp_state = None  # type: ignore[assignment]
+    rwrp_constants = lambda: {"rwrp_alpha": None, "rwrp_beta": None, "rwrp_max": None}  # type: ignore[assignment]
 
 
 TriBool = Optional[bool]
 
 DEFAULT_HISTORY = 50
+POLICY_B_REGISTRY_PATH = Path(__file__).resolve().parent / "policy_b_variable_registry.json"
 
 @dataclass(frozen=True)
 class EpochSignals:
@@ -37,6 +41,19 @@ class EpochSignals:
     epoch_profile: Optional[str]
     epoch_verdict: Optional[str]
     kernel_target: Optional[str]
+    coherence_debt: Optional[int]
+    coherence_budget: Optional[float]
+    regret_global: Optional[float]
+    regret_skip_reason: Optional[str]
+    paradox_event_count: int
+    coverage_cost: Optional[float]
+    coverage_streak: Optional[int]
+    cce_constants: Dict[str, Optional[float]]
+    opportunity_cost: Optional[float]
+    missed_exploration_streak: Optional[int]
+    oce_constants: Dict[str, Optional[float]]
+    rwrp_penalty: Dict[str, float]
+    rwrp_constants: Dict[str, Optional[float]]
     unique_domains: int
     unique_subdomains: int
     entropy_domains: float
@@ -67,6 +84,30 @@ def _read_optional_json(path: Path) -> Optional[Dict[str, Any]]:
     return _load_json(path)
 
 
+def _load_policy_b_registry() -> Dict[str, Any]:
+    registry = _load_json(POLICY_B_REGISTRY_PATH)
+    if registry.get("schema") != "POLICY_B_VARIABLE_REGISTRY_V1":
+        raise PlanSuggestError("policy_b_variable_registry.json schema mismatch (fail-closed)")
+    if registry.get("version") != 1:
+        raise PlanSuggestError("policy_b_variable_registry.json version mismatch (fail-closed)")
+    return registry
+
+
+def _policy_b_values(registry: Dict[str, Any]) -> Dict[str, Any]:
+    values: Dict[str, Any] = {}
+    for entry in registry.get("variables", []):
+        if not isinstance(entry, dict):
+            continue
+        name = entry.get("name")
+        if not isinstance(name, str):
+            continue
+        values[name] = entry.get("policy_b_value")
+    for key in ("paradox_handling", "governance_invariants"):
+        if key in registry:
+            values[key] = registry.get(key)
+    return values
+
+
 def _discover_epochs(epochs_dir: Path) -> List[Path]:
     if not epochs_dir.exists():
         raise PlanSuggestError(f"epochs dir missing: {epochs_dir.as_posix()} (fail-closed)")
@@ -93,6 +134,17 @@ def _coerce_float(value: Any) -> float:
         return float(value)
     except Exception:
         return 0.0
+
+
+def _lane_from_epoch_id(epoch_id: str) -> Optional[str]:
+    e = (epoch_id or "").upper()
+    if e.startswith("EPOCH_REANCHOR_CONSTRAINT"):
+        return "REANCHOR"
+    if e.startswith("EPOCH_STABILIZE"):
+        return "STABILIZER"
+    if e.startswith("EPOCH_NEXT_AUTO") or e.startswith("EPOCH_COVERAGE") or e.startswith("EPOCH_ACCEPTANCE") or e.startswith("EPOCH_PASS"):
+        return "COVERAGE_HOP_RECOVERY"
+    return None
 
 
 def _count_transition_dict(payload: Any) -> Tuple[int, int]:
@@ -131,6 +183,7 @@ def _extract_signals(root: Path) -> EpochSignals:
     motion = _read_optional_json(root / "motion_metrics.json")
     transitions = _read_optional_json(root / "transitions.json") or {}
     micro_steps = _collect_micro_steps(root)
+    regret = _read_optional_json(root / "epoch_regret.json") or {}
 
     observed = coverage.get("observed") or {}
     counts = observed.get("counts") or {}
@@ -141,6 +194,7 @@ def _extract_signals(root: Path) -> EpochSignals:
     unique_subdomains = _coerce_int(counts.get("unique_subdomains"))
     entropy_domains = _coerce_float(dominance.get("entropy_domains"))
     top_domain_share = _coerce_float(dominance.get("top_domain_share"))
+    paradox_event_count = _coerce_int(counts.get("paradox_events"))
     map_domain_count = len(domains) if isinstance(domains, list) else 0
 
     hop_entropy_domain: Optional[float] = None
@@ -160,6 +214,50 @@ def _extract_signals(root: Path) -> EpochSignals:
     epoch_hash = summary.get("epoch_hash")
     epoch_profile = summary.get("epoch_profile")
     epoch_verdict = summary.get("epoch_verdict")
+    coherence_debt = summary.get("coherence_debt")
+    coherence_budget = summary.get("coherence_budget")
+    if coherence_debt is not None:
+        coherence_debt = _coerce_int(coherence_debt)
+    if coherence_budget is not None:
+        coherence_budget = _coerce_float(coherence_budget)
+    regret_global = regret.get("regret_global")
+    regret_skip_reason = regret.get("regret_skip_reason")
+    if regret_global is not None:
+        try:
+            regret_global = float(regret_global)
+        except Exception:
+            regret_global = None
+
+    cce_state = None
+    coverage_cost = None
+    coverage_streak = None
+    cce_const = {"cce_step": None, "cce_max": None, "cce_decay": None}
+    oce_state = None
+    opportunity_cost = None
+    missed_exploration_streak = None
+    oce_const = {"oce_step": None, "oce_max": None, "oce_decay": None}
+    rwrp_state = None
+    rwrp_penalties: Dict[str, float] = {}
+    rwrp_const = {"rwrp_alpha": None, "rwrp_beta": None, "rwrp_max": None}
+    try:
+        if load_cce_state is not None:
+            cce_state = load_cce_state()
+            coverage_cost = float(cce_state.coverage_cost)
+            coverage_streak = int(cce_state.coverage_streak)
+            cce_const = cce_constants()
+        if load_oce_state is not None:
+            oce_state = load_oce_state()
+            opportunity_cost = float(oce_state.opportunity_cost)
+            missed_exploration_streak = int(oce_state.missed_exploration_streak)
+            oce_const = oce_constants()
+        if load_rwrp_state is not None:
+            rwrp_state = load_rwrp_state()
+            rwrp_const = rwrp_constants()
+            for lane, data in (rwrp_state.lane_regret_memory or {}).items():
+                rwrp_penalties[lane] = float(data.penalty)
+    except Exception:
+        # fail-closed later when used
+        cce_state = None
 
     return EpochSignals(
         root=root,
@@ -168,6 +266,19 @@ def _extract_signals(root: Path) -> EpochSignals:
         epoch_profile=epoch_profile,
         epoch_verdict=epoch_verdict,
         kernel_target=kernel_target,
+        coherence_debt=coherence_debt if isinstance(coherence_debt, int) else None,
+        coherence_budget=coherence_budget if isinstance(coherence_budget, float) else None,
+        regret_global=regret_global if isinstance(regret_global, float) else None,
+        regret_skip_reason=regret_skip_reason if isinstance(regret_skip_reason, str) else None,
+        paradox_event_count=paradox_event_count,
+        coverage_cost=coverage_cost if isinstance(coverage_cost, float) else None,
+        coverage_streak=coverage_streak if isinstance(coverage_streak, int) else None,
+        cce_constants=cce_const,
+        opportunity_cost=opportunity_cost if isinstance(opportunity_cost, float) else None,
+        missed_exploration_streak=missed_exploration_streak if isinstance(missed_exploration_streak, int) else None,
+        oce_constants=oce_const,
+        rwrp_penalty=rwrp_penalties,
+        rwrp_constants=rwrp_const,
         unique_domains=unique_domains,
         unique_subdomains=unique_subdomains,
         entropy_domains=entropy_domains,
@@ -196,6 +307,9 @@ def _micro_step_value(micro_steps: Dict[str, Any], step_name: str, key: str) -> 
             continue
         if key in entry:
             return entry.get(key)
+        flags = entry.get("flags")
+        if isinstance(flags, dict) and key in flags:
+            return flags.get(key)
     return None
 
 
@@ -210,7 +324,7 @@ def _count_micro_steps(micro_steps: Optional[Dict[str, Any]]) -> Dict[str, int]:
         if not isinstance(s, dict):
             continue
         flags = s.get("flags") or {}
-        if flags.get("resolve_mode") in {"forced", "partial", "unresolved"}:
+        if flags.get("resolve_mode") in {"forced", "partial", "unresolved", "refuse"}:
             forced += 1
         if flags.get("coherence_bucket") == "LOW":
             low += 1
@@ -263,6 +377,8 @@ def _build_state_description(
     consecutive_bad: int,
     delayed_violation_count: int,
     regret_pressure: float,
+    coverage_fatigue: float,
+    policy_b_values: Dict[str, Any],
 ) -> str:
     def _tri_bool(value: TriBool) -> int:
         if value is True:
@@ -270,6 +386,11 @@ def _build_state_description(
         if value is False:
             return 0
         return -1  # unknown / missing evidence
+
+    def _fmt_value(value: Any) -> str:
+        if isinstance(value, (dict, list)):
+            return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+        return str(value)
 
     parts = [
         "KT_STATE_V1",
@@ -280,6 +401,14 @@ def _build_state_description(
         f"eval_coherence_low={_tri_bool(triggers.get('eval_coherence_low'))}",
         f"coverage_stagnation={_tri_bool(triggers.get('coverage_stagnation'))}",
         f"map_entropy_low={int(bool(triggers.get('map_entropy_low')))}",
+        f"coherence_debt={(signals.coherence_debt if signals.coherence_debt is not None else -1)}",
+        f"coherence_budget={(signals.coherence_budget if signals.coherence_budget is not None else -1)}",
+        f"regret_global={(signals.regret_global if signals.regret_global is not None else -1)}",
+        f"paradox_event_count={signals.paradox_event_count}",
+        f"coverage_cost={(signals.coverage_cost if signals.coverage_cost is not None else -1)}",
+        f"coverage_streak={(signals.coverage_streak if signals.coverage_streak is not None else -1)}",
+        f"opportunity_cost={(signals.opportunity_cost if signals.opportunity_cost is not None else -1)}",
+        f"missed_exploration_streak={(signals.missed_exploration_streak if signals.missed_exploration_streak is not None else -1)}",
         f"unique_domains={signals.unique_domains}",
         f"unique_subdomains={signals.unique_subdomains}",
         f"entropy_domains={signals.entropy_domains}",
@@ -292,7 +421,10 @@ def _build_state_description(
         f"consecutive_bad_epochs={int(consecutive_bad)}",
         f"delayed_violation_count={int(delayed_violation_count)}",
         f"regret_pressure={regret_pressure}",
+        f"coverage_fatigue={coverage_fatigue}",
     ]
+    for key in sorted(policy_b_values.keys()):
+        parts.append(f"policy_b_{key}={_fmt_value(policy_b_values[key])}")
     return "\n".join(parts)
 
 
@@ -426,7 +558,15 @@ def _confidence(
 
 def _write_json(path: Path, payload: Dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, sort_keys=True, indent=2, ensure_ascii=True), encoding="utf-8", newline="\n")
+    # CONTRACT: This file is JSONL-safe (one compact JSON object, newline terminated).
+    path.write_text(json.dumps(payload, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def _write_output(path: Path, payload: Dict[str, Any]) -> None:
+    if path.suffix.lower() == ".jsonl":
+        _append_jsonl(path, payload)
+        return
+    _write_json(path, payload)
 
 
 def _append_jsonl(path: Path, payload: Dict[str, Any]) -> None:
@@ -510,6 +650,7 @@ def main() -> int:
     triggers_by_epoch: List[Dict[str, Any]] = []
     micro_present_history: List[bool] = []
     prev: Optional[EpochSignals] = None
+    lane_history: List[Optional[str]] = []
     for s in signals:
         resolve_not_clean = _trigger_resolve_not_clean(s)
         eval_coherence_low = _trigger_eval_coherence_low(s)
@@ -531,10 +672,17 @@ def main() -> int:
             }
         )
         micro_present_history.append(bool(s.micro_steps_present))
+        lane_history.append(_lane_from_epoch_id(s.epoch_id))
         prev = s
 
     target = signals[-1]
     target_triggers = triggers_by_epoch[-1]
+    prev_regret_global: Optional[float] = None
+    prev_regret_skip: Optional[str] = None
+    if len(signals) >= 2:
+        prev_sig = signals[-2]
+        prev_regret_global = prev_sig.regret_global
+        prev_regret_skip = prev_sig.regret_skip_reason
 
     delayed_count, delayed_skip = _compute_delayed_violation(
         triggers_by_epoch, micro_history=micro_present_history, window=5
@@ -562,6 +710,17 @@ def main() -> int:
         else:
             break
 
+    # Coverage fatigue: count consecutive coverage lanes in immediate history.
+    coverage_streak = 0
+    for lane in reversed(lane_history[:-1]):  # exclude current epoch
+        if lane == "COVERAGE_HOP_RECOVERY":
+            coverage_streak += 1
+        else:
+            break
+    coverage_fatigue = min(coverage_streak, 3) / 3.0 if coverage_streak > 0 else 0.0
+    policy_b_registry = _load_policy_b_registry()
+    policy_b_values = _policy_b_values(policy_b_registry)
+
     recommended_lane = _pick_lane(
         resolve_not_clean=target_triggers["resolve_not_clean"],
         eval_coherence_low=target_triggers["eval_coherence_low"],
@@ -573,6 +732,40 @@ def main() -> int:
         low_coherence_count=target_triggers.get("low_coherence_count", 0),
         consecutive_bad=consecutive_bad,
     )
+    cce_applied = False
+    cce_reason: Optional[str] = None
+    coverage_cost = target.coverage_cost if target.coverage_cost is not None else 0.0
+    # Simple deterministic scoring with CCE penalty on coverage.
+    opportunity_cost = target.opportunity_cost if target.opportunity_cost is not None else 0.0
+    lane_scores = {
+        "COVERAGE_HOP_RECOVERY": max(0.0, 1.0 - coverage_cost - opportunity_cost),
+        "REANCHOR": 1.0,
+        "STABILIZER": 1.0,
+        "DEPTH_CONSOLIDATION": 1.0,
+        "NONE": 0.5,
+    }
+    # Regret-weighted replay penalty by lane.
+    rwrp_penalty = target.rwrp_penalty or {}
+    for lane, pen in rwrp_penalty.items():
+        lane_scores[lane] = max(0.0, lane_scores.get(lane, 0.0) - pen)
+    best_lane = max(lane_scores.items(), key=lambda kv: kv[1])[0]
+    if recommended_lane == "COVERAGE_HOP_RECOVERY" and lane_scores["COVERAGE_HOP_RECOVERY"] < lane_scores[best_lane]:
+        recommended_lane = best_lane
+        cce_applied = True
+        cce_reason = f"coverage_cost_penalty:{coverage_cost}"
+    regret_bias_applied = False
+    regret_bias_reason: Optional[str] = None
+    # Soft, deterministic bias: if prior regret was high for coverage, nudge to REANCHOR.
+    if recommended_lane == "COVERAGE_HOP_RECOVERY":
+        if prev_regret_global is not None and prev_regret_skip is None and prev_regret_global >= 0.4:
+            recommended_lane = "REANCHOR"
+            regret_bias_applied = True
+            regret_bias_reason = f"prev_regret_high:{prev_regret_global}"
+        elif coverage_fatigue >= 0.66:
+            recommended_lane = "REANCHOR"
+            regret_bias_applied = True
+            regret_bias_reason = f"coverage_fatigue:{coverage_fatigue}"
+
     confidence = _confidence(target=target, trigger_evidence=target_triggers)
 
     triggered: List[str] = []
@@ -594,6 +787,13 @@ def main() -> int:
         "kernel_target": target.kernel_target,
         "recommended_lane": _lane_public_name(recommended_lane),
         "recommended_lane_internal": recommended_lane,
+        "regret_bias_applied": regret_bias_applied,
+        "regret_bias_reason": regret_bias_reason,
+        "cce_applied": cce_applied,
+        "cce_reason": cce_reason,
+        "oce_applied": opportunity_cost > 0.0,
+        "oce_reason": "missed_exploration_streak>=1" if opportunity_cost > 0.0 else None,
+        "rwrp_penalties": rwrp_penalty,
         "triggered_rules": triggered,
         "triggered": triggered,  # backward compatible alias
         "confidence": confidence,
@@ -603,6 +803,7 @@ def main() -> int:
             "unique_subdomains": target.unique_subdomains,
             "entropy_domains": target.entropy_domains,
             "top_domain_share": target.top_domain_share,
+            "paradox_event_count": target.paradox_event_count,
             "hop_entropy_domain": target.hop_entropy_domain,
             "domain_hop_rate": target.domain_hop_rate,
             "domain_transition_edges": target.domain_transition_edges,
@@ -613,12 +814,29 @@ def main() -> int:
             "forced_resolve_count": target_triggers.get("forced_resolve_count", 0),
             "low_coherence_count": target_triggers.get("low_coherence_count", 0),
             "stable_streak": stable_streak,
-        "dense_motion_window": dense_motion_window,
-        "delayed_violation_count": delayed_count,
-        "regret_pressure": regret_pressure,
-        "delayed_violation_skip_reason": delayed_skip,
-    },
-    "trigger_evidence": target_triggers,
+            "dense_motion_window": dense_motion_window,
+            "delayed_violation_count": delayed_count,
+            "regret_pressure": regret_pressure,
+            "delayed_violation_skip_reason": delayed_skip,
+            "coherence_debt": target.coherence_debt,
+            "coherence_budget": target.coherence_budget,
+            "regret_global": target.regret_global,
+            "regret_skip_reason": target.regret_skip_reason,
+            "regret_prev_global": prev_regret_global,
+            "regret_prev_skip_reason": prev_regret_skip,
+            "coverage_fatigue": coverage_fatigue,
+            "coverage_cost": target.coverage_cost,
+            "coverage_streak": target.coverage_streak,
+            "cce_constants": target.cce_constants,
+            "opportunity_cost": target.opportunity_cost,
+            "missed_exploration_streak": target.missed_exploration_streak,
+            "oce_constants": target.oce_constants,
+            "rwrp_penalty": rwrp_penalty,
+            "rwrp_constants": target.rwrp_constants,
+            "policy_b_values": policy_b_values,
+            "policy_b_registry_path": str(POLICY_B_REGISTRY_PATH),
+        },
+        "trigger_evidence": target_triggers,
         "history": {
             "epochs_considered": [s.epoch_id for s in signals],
             "triggers_by_epoch": triggers_by_epoch,
@@ -672,6 +890,8 @@ def main() -> int:
             consecutive_bad=consecutive_bad,
             delayed_violation_count=delayed_count,
             regret_pressure=regret_pressure,
+            coverage_fatigue=coverage_fatigue,
+            policy_b_values=policy_b_values,
         )
         _log_lane_policy(
             policy,
@@ -682,7 +902,7 @@ def main() -> int:
         )
 
     if args.out:
-        _write_json(Path(args.out), payload)
+        _write_output(Path(args.out), payload)
 
     if args.write_epoch:
         _write_json(target.root / "plan_suggestion.json", payload)

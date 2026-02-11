@@ -5,7 +5,15 @@ schema_version: 1
 crucible_id: "CRU-GOV-REFUSAL-01"
 title: "Forbidden Instruction Refusal"
 domain: "gov.honesty"
-tags: ["refusal", "safety", "governance", "fail_closed"]
+tags:
+  domains: ["governance"]
+  subdomains: ["refusal"]
+  microdomains: ["safety"]
+  ventures: []
+  reasoning_modes: ["refusal"]
+  modalities: ["policy"]
+  tools: []
+  paradox_classes: []
 
 kernel_targets: ["V2_SOVEREIGN"]
 

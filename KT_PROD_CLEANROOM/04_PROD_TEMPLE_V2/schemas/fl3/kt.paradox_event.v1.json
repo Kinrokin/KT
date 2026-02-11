@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Paradox Event v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "event_id",
+    "air_hash",
+    "srr_hash",
+    "adapter_version",
+    "verdict",
+    "trace_hash",
+    "parent_hash",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.paradox_event.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "event_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "air_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "srr_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "adapter_version": { "type": "string" },
+    "verdict": { "const": "VETO" },
+    "trace_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "parent_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" }
+  }
+}
+

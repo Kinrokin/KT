@@ -1,0 +1,28 @@
+{
+  "schema_id": "kt.policy_c.drift_report.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "epoch_id",
+    "baseline_epoch_id",
+    "pressure_delta_l2",
+    "pressure_delta_max",
+    "invariant_violations",
+    "drift_class",
+    "reason_codes",
+    "timestamp"
+  ],
+  "properties": {
+    "epoch_id": { "type": "string" },
+    "baseline_epoch_id": { "type": "string" },
+    "pressure_delta_l2": { "type": "number" },
+    "pressure_delta_max": { "type": "number" },
+    "invariant_violations": { "type": "integer", "minimum": 0 },
+    "drift_class": { "type": "string", "enum": ["PASS", "WARN", "FAIL"] },
+    "reason_codes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "timestamp": { "type": "string" }
+  }
+}

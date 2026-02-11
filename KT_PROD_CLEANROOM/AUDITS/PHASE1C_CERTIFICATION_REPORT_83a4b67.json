@@ -1,0 +1,35 @@
+{
+  "checks": {
+    "judge_receipt_present": true,
+    "no_mutation": true,
+    "no_seal": true,
+    "promotion_shadow_only": true,
+    "replay_passes": true,
+    "runtime_dag_present": true,
+    "watcher_proven_non_authoritative": true
+  },
+  "git": {
+    "commit": "83a4b67ff0c1dd38384fef65a3d98767cd061ed1"
+  },
+  "law_bundle_integrity": {
+    "computed": "7d16b22ad4a5b6896dd28b93263c725f1281305b8970467bae164f20cf90b6b3",
+    "expected": "7d16b22ad4a5b6896dd28b93263c725f1281305b8970467bae164f20cf90b6b3",
+    "match": true
+  },
+  "out_dir": "C:\\Users\\rober\\AppData\\Local\\Temp\\kt_phase1c_cert_20260203T130638Z_83a4b67",
+  "required_runtime_artifacts": [
+    {
+      "relpath": "kt.runtime_dag.v1.json",
+      "sha256": "200933eb511b695b75d7aa1bd469e3f81eeeaaf88b77ac672ec13c6f23664c2d"
+    },
+    {
+      "relpath": "kt.judge_receipt.v1.json",
+      "sha256": "dd802e47d283cbfca9d02094ddea3e032e89ce187566f01e447b0c6a135bb4f4"
+    },
+    {
+      "relpath": "kt.promotion_report.v1.json",
+      "sha256": "27ee7832fd02f0f9ce4e5f9614dd319eb6715418553d164d85d297b71788575e"
+    }
+  ],
+  "schema_id": "kt.phase1c_certification_report.v1"
+}

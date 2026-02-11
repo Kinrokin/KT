@@ -36,7 +36,20 @@ def _valid_context(*, input_text: str = "") -> Dict[str, Any]:
     }
 
 
+def _purge_training_modules() -> None:
+    markers = ("curriculum", "epoch", "dataset", "benchmarks", "trainer", "finetune")
+    for name in list(sys.modules.keys()):
+        if not name:
+            continue
+        lowered = name.lower()
+        if any(marker in lowered for marker in markers):
+            sys.modules.pop(name, None)
+
+
 class TestInvariantsGate(unittest.TestCase):
+    def setUp(self) -> None:
+        _purge_training_modules()
+
     def test_missing_required_fields_fails(self) -> None:
         ctx = _valid_context()
         ctx.pop("schema_id")

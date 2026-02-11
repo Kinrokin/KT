@@ -1,0 +1,86 @@
+{
+  "schema_id": "kt.cohort1_phase2_unlock_work_order.v1",
+  "schema_version": 1,
+  "phase": "PHASE_2",
+  "cohort": 1,
+  "title": "Phase 2 Governed Learning Unlock",
+  "law_binding": {
+    "source": "PHASE_1_DOCUMENT",
+    "treat_as_law": true,
+    "requires_prior_completion": "phase1c-complete-final"
+  },
+  "objective": "Introduce learning, mutation, and promotion under explicit, audited, fail-closed governance.",
+  "prime_constraints": {
+    "forbidden": [
+      "unreceipted_training",
+      "silent_mutation",
+      "implicit_promotion",
+      "unguarded_seal"
+    ],
+    "required": [
+      "work_order_bound_training",
+      "adapter_scoped_learning",
+      "promotion_with_receipts",
+      "seal_with_evidence_pack",
+      "rollback_via_replay"
+    ]
+  },
+  "work_packages": [
+    {
+      "wp_id": "WP1_PHASE2_WORK_ORDER",
+      "intent": "Define what learning is allowed.",
+      "actions": [
+        {
+          "action": "create_phase2_work_order_schema"
+        }
+      ]
+    },
+    {
+      "wp_id": "WP2_TRAINING_LANE",
+      "intent": "Instantiate governed training execution.",
+      "actions": [
+        {
+          "action": "implement_training_runner",
+          "constraints": [
+            "adapter_scoped",
+            "no_cross_adapter_bleed",
+            "artifact_rooted"
+          ]
+        }
+      ]
+    },
+    {
+      "wp_id": "WP3_PROMOTION_AND_SEAL",
+      "intent": "Enable canonical promotion and seal.",
+      "actions": [
+        {
+          "action": "enable_atomic_promotion"
+        },
+        {
+          "action": "enable_seal_execution"
+        }
+      ],
+      "fail_conditions": [
+        "promotion_without_receipt",
+        "seal_without_evidence_pack"
+      ]
+    },
+    {
+      "wp_id": "WP4_RED_ASSAULT",
+      "intent": "Adversarially attack Phase 2.",
+      "tests": [
+        "corrupt_training_artifact",
+        "unauthorized_promotion",
+        "partial_evidence_pack",
+        "watcher_veto_attempt"
+      ]
+    }
+  ],
+  "exit_criteria": {
+    "training_receipted": true,
+    "promotion_audited": true,
+    "seal_replayable": true,
+    "red_assault_passed": true
+  },
+  "completion_statement": "Phase 2 unlocked under governance."
+}

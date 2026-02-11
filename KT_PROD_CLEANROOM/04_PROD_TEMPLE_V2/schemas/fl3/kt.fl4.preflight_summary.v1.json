@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL4 Preflight Summary v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "git_sha",
+    "out_dir",
+    "registry_path",
+    "job_id",
+    "job_dir",
+    "evidence_job_dir",
+    "seal_doctrine_sha256",
+    "env_lock_id",
+    "fl3_pressure_growth_gate"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.fl4.preflight_summary.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "git_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "out_dir": { "type": "string" },
+    "registry_path": { "type": "string" },
+    "job_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "job_dir": { "type": "string" },
+    "evidence_job_dir": { "type": "string" },
+    "seal_doctrine_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "env_lock_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "fl3_pressure_growth_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [ "executed", "receipt" ],
+      "properties": {
+        "executed": { "type": "boolean" },
+        "receipt": { "type": "string" }
+      }
+    },
+    "behavioral_growth": { "type": "object" },
+    "promoted_dir": { "type": "string" },
+    "promoted_index_path": { "type": "string" }
+  }
+}

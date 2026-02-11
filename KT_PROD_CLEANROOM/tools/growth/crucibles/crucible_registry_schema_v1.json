@@ -1,0 +1,22 @@
+{
+  "schema_id": "kt.crucible.registry.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_id", "version", "crucibles"],
+  "properties": {
+    "schema_id": { "type": "string", "const": "kt.crucible.registry.v1" },
+    "version": { "type": "integer", "const": 1 },
+    "crucibles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "path"],
+        "properties": {
+          "id": { "type": "string" },
+          "path": { "type": "string" }
+        }
+      }
+    }
+  }
+}

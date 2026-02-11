@@ -1,0 +1,116 @@
+{
+  "schema_id": "kt.policy_c.pressure_tensor.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "axes",
+    "projection",
+    "invariants"
+  ],
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "kt.policy_c.pressure_tensor.v1"
+    },
+    "axes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "time",
+        "universe",
+        "language",
+        "hop",
+        "step",
+        "paradox",
+        "puzzle"
+      ],
+      "properties": {
+        "time": { "$ref": "#/definitions/axis" },
+        "universe": { "$ref": "#/definitions/axis" },
+        "language": { "$ref": "#/definitions/axis" },
+        "hop": { "$ref": "#/definitions/axis" },
+        "step": { "$ref": "#/definitions/axis" },
+        "paradox": { "$ref": "#/definitions/axis" },
+        "puzzle": { "$ref": "#/definitions/axis" }
+      }
+    },
+    "projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rule",
+        "weights",
+        "clamp_min",
+        "clamp_max"
+      ],
+      "properties": {
+        "rule": {
+          "type": "string",
+          "enum": [
+            "weighted_sum",
+            "max",
+            "sum"
+          ]
+        },
+        "weights": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "time": { "type": "number", "minimum": 0, "maximum": 1 },
+            "universe": { "type": "number", "minimum": 0, "maximum": 1 },
+            "language": { "type": "number", "minimum": 0, "maximum": 1 },
+            "hop": { "type": "number", "minimum": 0, "maximum": 1 },
+            "step": { "type": "number", "minimum": 0, "maximum": 1 },
+            "paradox": { "type": "number", "minimum": 0, "maximum": 1 },
+            "puzzle": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "clamp_min": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "clamp_max": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "invariants": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reversible",
+        "isolated",
+        "no_cross_axis_bleed"
+      ],
+      "properties": {
+        "reversible": { "type": "boolean" },
+        "isolated": { "type": "boolean" },
+        "no_cross_axis_bleed": { "type": "boolean" }
+      }
+    }
+  },
+  "definitions": {
+    "axis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "intensity",
+        "enabled"
+      ],
+      "properties": {
+        "intensity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "enabled": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

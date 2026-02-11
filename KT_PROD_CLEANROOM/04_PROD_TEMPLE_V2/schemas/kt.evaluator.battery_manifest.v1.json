@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Evaluator Battery Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "battery_id",
+    "tests",
+    "ordering",
+    "pass_rule"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.evaluator.battery_manifest.v1"
+    },
+    "schema_version_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "battery_id": {
+      "type": "string"
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ordering": {
+      "type": "string",
+      "enum": [
+        "stable"
+      ]
+    },
+    "pass_rule": {
+      "type": "string",
+      "enum": [
+        "ALL_PASS"
+      ]
+    }
+  }
+}

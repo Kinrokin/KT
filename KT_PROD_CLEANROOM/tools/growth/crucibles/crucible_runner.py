@@ -71,6 +71,7 @@ from crucible_dsl_schemas import (
     KERNEL_V1_ARCHIVAL,
     KERNEL_V2_SOVEREIGN,
     KERNEL_COVERAGE_BASELINE,
+    KERNEL_GOVERNANCE_BASELINE,
     OUTCOME_FAIL,
     OUTCOME_INFEASIBLE,
     OUTCOME_PASS,
@@ -92,6 +93,72 @@ from tools.growth.coverage.coverage_metrics import compute_coverage
 class RunnerError(RuntimeError):
     pass
 
+
+_PARADOX_MOVE_BOUNDS = {"PAS", "APF", "POG"}
+_BELNAP_BOUNDS = {"T", "F", "B", "N"}
+
+
+def _policy_b_registry_path() -> Path:
+    return _growth_root() / "state" / "policy_b_variable_registry.json"
+
+
+def _load_policy_b_registry() -> Dict[str, Any]:
+    path = _policy_b_registry_path()
+    try:
+        obj = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        raise RunnerError(f"Policy B registry unreadable (fail-closed): {exc.__class__.__name__}") from exc
+    if not isinstance(obj, dict):
+        raise RunnerError("Policy B registry must be an object (fail-closed)")
+    if obj.get("schema") != "POLICY_B_VARIABLE_REGISTRY_V1":
+        raise RunnerError("Policy B registry schema mismatch (fail-closed)")
+    if obj.get("version") != 1:
+        raise RunnerError("Policy B registry version mismatch (fail-closed)")
+    return obj
+
+
+def _policy_b_paradox_selector() -> str:
+    registry = _load_policy_b_registry()
+    for entry in registry.get("variables", []):
+        if not isinstance(entry, dict):
+            continue
+        if entry.get("name") != "paradox_move_selector":
+            continue
+        value = entry.get("policy_b_value")
+        if not isinstance(value, str):
+            raise RunnerError("Policy B paradox_move_selector invalid (fail-closed)")
+        value = value.strip().upper()
+        if value not in _PARADOX_MOVE_BOUNDS:
+            raise RunnerError("Policy B paradox_move_selector out of bounds (fail-closed)")
+        return value
+    raise RunnerError("Policy B paradox_move_selector missing (fail-closed)")
+
+
+def _is_paradox_crucible(spec: Any) -> bool:
+    cid = str(getattr(spec, "crucible_id", "") or "").upper()
+    domain = str(getattr(spec, "domain", "") or "").upper()
+    tags_obj = getattr(spec, "tags", None)
+    tag_values: list[str] = []
+    if isinstance(tags_obj, dict):
+        for k in ("domains", "subdomains", "microdomains", "ventures", "reasoning_modes", "modalities", "tools", "paradox_classes"):
+            raw = tags_obj.get(k) if isinstance(tags_obj, dict) else None
+            if isinstance(raw, (list, tuple, set)):
+                tag_values.extend([str(x) for x in raw])
+    elif tags_obj is not None and hasattr(tags_obj, "to_dict"):
+        try:
+            data = tags_obj.to_dict()
+        except Exception:
+            data = {}
+        if isinstance(data, dict):
+            for k in ("domains", "subdomains", "microdomains", "ventures", "reasoning_modes", "modalities", "tools", "paradox_classes"):
+                raw = data.get(k)
+                if isinstance(raw, (list, tuple, set)):
+                    tag_values.extend([str(x) for x in raw])
+    elif isinstance(tags_obj, (list, tuple, set)):
+        tag_values.extend([str(x) for x in tags_obj])
+
+    tag_hits = any("PARADOX" in v.upper() for v in tag_values)
+    return ("PARADOX" in cid) or ("PARADOX" in domain) or tag_hits
 
 @dataclass(frozen=True)
 class KernelRunResult:
@@ -137,6 +204,23 @@ def _utc_now_iso_z() -> str:
 def _repo_root() -> Path:
     # .../KT_PROD_CLEANROOM/tools/growth/crucibles/crucible_runner.py -> .../KT_PROD_CLEANROOM
     return _REPO_ROOT
+
+
+def _artifacts_dir_for_record(*, run_root: Path, artifacts_dir: Path) -> str:
+    """
+    Return a stable, human-meaningful artifacts directory string for receipts/logging.
+
+    Important: KT seal lane may set KT_GROWTH_ARTIFACTS_ROOT to a location *outside* the repo.
+    In that case, `run_root.relative_to(_repo_root())` is not valid and must not fail-closed.
+    We prefer a path relative to the artifacts root (the parent of `c019_runs/`), and fall back
+    to an absolute posix path if needed.
+    """
+
+    base = artifacts_dir.parent
+    try:
+        return run_root.relative_to(base).as_posix()
+    except Exception:
+        return run_root.resolve().as_posix()
 
 
 def _growth_root() -> Path:
@@ -403,7 +487,7 @@ def _v1_harness_code() -> str:
 
 
 def _kernel_command(*, kernel_target: str, artifact_root: Path) -> Tuple[List[str], Path]:
-    if kernel_target == KERNEL_V2_SOVEREIGN or kernel_target == KERNEL_COVERAGE_BASELINE:
+    if kernel_target in {KERNEL_V2_SOVEREIGN, KERNEL_COVERAGE_BASELINE, KERNEL_GOVERNANCE_BASELINE}:
         kernel_root = _v2_kernel_root()
         code = _v2_harness_code()
     elif kernel_target == KERNEL_V1_ARCHIVAL:
@@ -588,7 +672,7 @@ def run_crucible_once(
             replay_pass=None,
             governance_status="NOT_APPLICABLE",
             governance_pass=None,
-            artifacts_dir=str(run_root.relative_to(_repo_root())),
+            artifacts_dir=_artifacts_dir_for_record(run_root=run_root, artifacts_dir=artifacts_dir),
             notes=f"pre_execution_fail:{error_type}",
         )
 
@@ -876,7 +960,7 @@ def run_crucible_once(
     # Governance expectations: verifiable for V2 via state vault; archival runs are marked UNVERIFIABLE.
     governance_status = "UNVERIFIABLE"
     governance_pass: Optional[bool] = None
-    if kernel_target == KERNEL_V2_SOVEREIGN:
+    if kernel_target in {KERNEL_V2_SOVEREIGN, KERNEL_GOVERNANCE_BASELINE}:
         vault_rel = _load_v2_registry_state_vault_relpath()
         vault_path = (run_root / Path(vault_rel)).resolve()
         gov_cmd = [
@@ -948,8 +1032,12 @@ def run_crucible_once(
 
 
     # --- Governance verdict enforcement (binding law) ---
-    # KERNEL_COVERAGE_BASELINE is allowed to be PASS-capable without governance verdict gating.
-    # For coverage baseline, treat governance verdict as non-gating regardless of presence.
+    #
+    # Baselines:
+    # - KERNEL_COVERAGE_BASELINE: coverage-only; governance verdict is non-gating and governance_pass is NOT asserted.
+    # - KERNEL_GOVERNANCE_BASELINE: governance-capable; governance expectations are verified via state vault events.
+    #   governance_verdict.json is treated as informational only (non-gating) to avoid coupling baseline capability to
+    #   any specific kernel-side verdict implementation.
     gov_verdict_path = run_root / "governance_verdict.json"
     if kernel_target == KERNEL_COVERAGE_BASELINE:
         governance_pass = None
@@ -958,25 +1046,21 @@ def run_crucible_once(
             if not gov_verdict_path.exists()
             else "governance_verdict_non_gating_coverage_baseline"
         )
-        if notes:
-            notes = f"{notes};{gov_note_or_rationale}"
-        else:
-            notes = gov_note_or_rationale
+        notes = f"{notes};{gov_note_or_rationale}" if notes else gov_note_or_rationale
+    elif kernel_target == KERNEL_GOVERNANCE_BASELINE:
+        gov_note_or_rationale = (
+            "governance_verdict_missing_governance_baseline"
+            if not gov_verdict_path.exists()
+            else "governance_verdict_non_gating_governance_baseline"
+        )
+        notes = f"{notes};{gov_note_or_rationale}" if notes else gov_note_or_rationale
     else:
         gov_pass, gov_note_or_rationale = _load_governance_verdict_or_fail(run_root)
         governance_pass = bool(gov_pass)
         # If governance failed, make the entire run fail (binding).
         if not governance_pass:
             outcome = "FAIL"
-            if notes:
-                notes = f"{notes};governance_verdict={gov_note_or_rationale}"
-            else:
-                notes = f"governance_verdict={gov_note_or_rationale}"
-        else:
-            if notes:
-                notes = f"{notes};governance_verdict={gov_note_or_rationale}"
-            else:
-                notes = f"governance_verdict={gov_note_or_rationale}"
+        notes = f"{notes};governance_verdict={gov_note_or_rationale}" if notes else f"governance_verdict={gov_note_or_rationale}"
 
     record = CrucibleRunRecord(
         run_id=rid,
@@ -997,7 +1081,7 @@ def run_crucible_once(
         replay_pass=replay_pass,
         governance_status=governance_status,
         governance_pass=governance_pass,
-        artifacts_dir=str(run_root.relative_to(_repo_root())),
+        artifacts_dir=_artifacts_dir_for_record(run_root=run_root, artifacts_dir=artifacts_dir),
         notes=notes,
     )
 
@@ -1034,6 +1118,90 @@ def run_crucible_once(
     except Exception:
         head_hash = None
     head_hash = head_hash if isinstance(head_hash, str) and len(head_hash) == 64 else ledger_sha
+    stdout_hash = hashlib.sha256(stdout_text.encode("utf-8")).hexdigest() if stdout_text else ledger_sha
+
+    paradox_event: Optional[Dict[str, Any]] = None
+    paradox_event_count = 0
+    is_paradox_crucible = _is_paradox_crucible(spec)
+    contains_paradox: Optional[bool] = None
+    paradox_type: Optional[str] = None
+    if isinstance(output_obj, dict):
+        if "contains_paradox" in output_obj:
+            contains_paradox = bool(output_obj.get("contains_paradox"))
+        if isinstance(output_obj.get("paradox_type"), str):
+            paradox_type = output_obj.get("paradox_type")
+    is_paradox = bool(contains_paradox is True) or (
+        isinstance(paradox_type, str) and paradox_type.strip().lower() not in {"none", ""}
+    )
+
+    if is_paradox_crucible or is_paradox:
+        move_used = _policy_b_paradox_selector()
+        evidence_status = "COMPLETE" if (contains_paradox is not None or paradox_type is not None) else "MISSING_OUTPUT"
+        if contains_paradox is True:
+            trigger = "contains_paradox"
+        elif paradox_type:
+            trigger = f"paradox_type:{paradox_type}"
+        elif is_paradox_crucible:
+            trigger = "paradox_crucible"
+        else:
+            trigger = "output_missing"
+        belnap_state = "B" if is_paradox else "N"
+        if belnap_state not in _BELNAP_BOUNDS:
+            raise RunnerError(f"Belnap state invalid: {belnap_state} (fail-closed)")
+        event_seed = f"{rid}|{spec.crucible_id}|{stdout_hash}|{trigger}|{move_used}|{belnap_state}"
+        paradox_event_id = hashlib.sha256(event_seed.encode("utf-8")).hexdigest()
+        fork_root = run_root / "_paradox_forks" / paradox_event_id
+        fork_root.mkdir(parents=True, exist_ok=True)
+        repair_action = None
+        if isinstance(output_obj, dict) and isinstance(output_obj.get("repair_action"), str):
+            repair_action = output_obj.get("repair_action")
+        paradox_event = {
+            "schema": "PARADOX_EVENT_V1",
+            "schema_version": 1,
+            "paradox_event_id": paradox_event_id,
+            "run_id": rid,
+            "crucible_id": spec.crucible_id,
+            "kernel_target": kernel_target,
+            "epoch_id": "EPOCH_UNSPECIFIED",
+            "timestamp_utc": _utc_now_iso_z(),
+            "belnap_state": belnap_state,
+            "contains_paradox": contains_paradox,
+            "paradox_type": paradox_type,
+            "trigger": trigger,
+            "move_used": move_used,
+            "repair_action": repair_action or "none",
+            "delta_entropy": 0.0,
+            "delta_density": 0.0,
+            "evidence_status": evidence_status,
+            "fork": {
+                "fork_root": str(fork_root.relative_to(_repo_root())),
+                "status": "NOT_EXECUTED",
+            },
+            "receipts": {
+                "prompt_hash": prompt_hash,
+                "head_hash": head_hash,
+                "ledger_hash": ledger_sha,
+                "stdout_hash": stdout_hash,
+            },
+        }
+        _write_text(run_root / "paradox_event.json", json.dumps(paradox_event, sort_keys=True, indent=2, ensure_ascii=True) + "\n")
+        _write_text(
+            run_root / "paradox_fork_manifest.json",
+            json.dumps(
+                {
+                    "schema": "PARADOX_FORK_MANIFEST_V1",
+                    "schema_version": 1,
+                    "paradox_event_id": paradox_event_id,
+                    "fork_root": str(fork_root.relative_to(_repo_root())),
+                    "status": "NOT_EXECUTED",
+                },
+                sort_keys=True,
+                indent=2,
+                ensure_ascii=True,
+            )
+            + "\n",
+        )
+        paradox_event_count = 1
 
     # Observed coverage derived from executed trace + tags
     executed_sequence = output_obj.get("trace_sequence", []) if isinstance(output_obj, dict) else []
@@ -1088,7 +1256,7 @@ def run_crucible_once(
         executed_step_ids=executed_sequence,
         step_tag_index=step_tag_index,
         ontology_subdomain_graph=None,
-        paradox_event_count=0,
+        paradox_event_count=paradox_event_count,
     )
 
     coverage = {
@@ -1163,11 +1331,10 @@ def run_crucible_once(
             else (sorted(obs.subdomains)[0] if obs.subdomains else (crucible_level_subdomain or "unknown"))
         )
 
-        stdout_hash = hashlib.sha256(stdout_text.encode("utf-8")).hexdigest() if stdout_text else ledger_sha
         if outcome == OUTCOME_PASS:
             resolve_mode = "clean"
             coherence_bucket = "HIGH"
-        elif outcome == OUTCOME_FAIL_CLOSED:
+        elif outcome == OUTCOME_FAIL:
             resolve_mode = "forced" if result.was_killed else "partial"
             coherence_bucket = "LOW"
         else:
@@ -1250,8 +1417,19 @@ def run_crucible_file(
 ) -> List[CrucibleRunRecord]:
     loaded = load_crucible(path)
     repo_root = _repo_root()
-    artifacts_dir = repo_root / "tools" / "growth" / "artifacts" / "c019_runs"
-    ledger_path = repo_root / "tools" / "growth" / "ledgers" / "c019_crucible_runs.jsonl"
+    override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+    if override:
+        base = Path(override)
+        if not base.is_absolute():
+            base = repo_root / base
+        growth_root = base.resolve()
+        artifacts_dir = growth_root / "c019_runs"
+        ledger_path = growth_root / "ledgers" / "c019_crucible_runs.jsonl"
+    else:
+        artifacts_dir = repo_root / "tools" / "growth" / "artifacts" / "c019_runs"
+        ledger_path = repo_root / "tools" / "growth" / "ledgers" / "c019_crucible_runs.jsonl"
+
+    ledger_path.parent.mkdir(parents=True, exist_ok=True)
 
     records: List[CrucibleRunRecord] = []
     requested_target = kernel_target

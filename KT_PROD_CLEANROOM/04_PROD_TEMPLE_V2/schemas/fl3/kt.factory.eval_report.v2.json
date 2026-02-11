@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL4 Factory Eval Report v2 (Metric Ontology Binding + Probes)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "eval_id",
+    "job_id",
+    "adapter_id",
+    "adapter_version",
+    "battery_id",
+    "utility_pack_id",
+    "utility_pack_hash",
+    "utility_floor_score",
+    "utility_floor_pass",
+    "metric_bindings",
+    "metric_probes",
+    "probe_policy",
+    "results",
+    "final_verdict",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.factory.eval_report.v2" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "eval_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "job_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "adapter_id": { "type": "string" },
+    "adapter_version": { "type": "string" },
+    "battery_id": { "type": "string" },
+    "utility_pack_id": { "type": "string" },
+    "utility_pack_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "utility_floor_score": { "type": "number" },
+    "utility_floor_pass": { "type": "boolean" },
+    "metric_bindings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [ "metric_id", "metric_version_hash", "metric_schema_hash", "metric_impl_hash" ],
+        "properties": {
+          "metric_id": { "type": "string" },
+          "metric_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "metric_schema_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "metric_impl_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      }
+    },
+    "metric_probes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [ "metric_id", "metric_impl_hash", "delta", "agreement" ],
+        "properties": {
+          "metric_id": { "type": "string" },
+          "metric_impl_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "delta": { "type": "number" },
+          "agreement": { "type": "boolean" }
+        }
+      }
+    },
+    "probe_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [ "tolerance", "fail_on_disagreement" ],
+      "properties": {
+        "tolerance": { "type": "number" },
+        "fail_on_disagreement": { "type": "boolean" }
+      }
+    },
+    "results": { "type": "object" },
+    "final_verdict": { "type": "string", "enum": [ "PASS", "FAIL" ] },
+    "created_at": { "type": "string" }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Runtime Adapter Entry v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "adapter_id",
+    "version",
+    "base_model",
+    "artifact_path",
+    "artifact_hash",
+    "capabilities",
+    "constraints",
+    "training_receipt_ref",
+    "evaluation_receipt_ref",
+    "status"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.runtime.adapter_entry.v1"
+    },
+    "schema_version_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "adapter_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "base_model": {
+      "type": "string"
+    },
+    "artifact_path": {
+      "type": "string"
+    },
+    "artifact_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "training_receipt_ref": {
+      "type": "string"
+    },
+    "evaluation_receipt_ref": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "DEPRECATED",
+        "REVOKED"
+      ]
+    }
+  }
+}

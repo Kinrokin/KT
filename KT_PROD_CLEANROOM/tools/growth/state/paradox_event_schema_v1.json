@@ -1,0 +1,21 @@
+{
+  "schema": "PARADOX_EVENT_SCHEMA_V1",
+  "schema_version": 1,
+  "event_schema": "PARADOX_EVENT_V1",
+  "required_fields": [
+    "schema",
+    "schema_version",
+    "paradox_event_id",
+    "run_id",
+    "crucible_id",
+    "kernel_target",
+    "timestamp_utc",
+    "belnap_state",
+    "move_used",
+    "trigger",
+    "receipts"
+  ],
+  "belnap_states": ["T", "F", "B", "N"],
+  "move_used": ["PAS", "APF", "POG"],
+  "notes": "Policy B paradox event schema (audit-grade, write-once)."
+}

@@ -5,17 +5,18 @@ crucible_id: "CRU-COVERAGE-HOP-PASS-01"
 title: "Coverage Seed PASS — Governance Honesty → Policy (Benign)"
 domain: "governance.coverage_seed"
 tags:
-  - governance
-  - honesty
-  - policy
-  - coverage_seed
-  - rotation
-  - fail_closed
-  - evidence_first
+  domains: ["coverage"]
+  subdomains: ["governance"]
+  microdomains: ["coverage_seed"]
+  ventures: []
+  reasoning_modes: ["coverage_pass"]
+  modalities: ["text"]
+  tools: []
+  paradox_classes: []
 
 kernel_targets:
   - V2_SOVEREIGN
-  - KERNEL_COVERAGE_BASELINE
+  - KERNEL_GOVERNANCE_BASELINE
 
 input:
   mode: "RAW_INPUT_STRING"
@@ -50,6 +51,8 @@ expect:
   replay_verification: "NOT_APPLICABLE"
 
   governance_expectations:
+    event_count_min: 0
+    event_count_max: 5
     forbidden_event_types:
     - STATE_MUTATION
     - CURRICULUM_INGEST

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Discovery Case v1 (Optional First-Class Case)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_id", "schema_version_hash", "case_id", "category", "prompt", "is_canary"],
+  "properties": {
+    "schema_id": { "const": "kt.discovery_case.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "case_id": { "type": "string" },
+    "category": {
+      "type": "string",
+      "enum": [
+        "paradox_pressure",
+        "cross_domain_transfer",
+        "multi_step_reasoning",
+        "self_repair",
+        "novel_composition",
+        "governance_canary"
+      ]
+    },
+    "prompt": { "type": "string" },
+    "is_canary": { "type": "boolean" }
+  }
+}
+

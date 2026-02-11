@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Epigenetic Summary v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "summary_id",
+    "paradox_survival_count",
+    "recovery_efficiency",
+    "lineage_weight",
+    "signed_by",
+    "parent_hash",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.epigenetic_summary.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "summary_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "paradox_survival_count": { "type": "integer", "minimum": 0 },
+    "recovery_efficiency": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+    "lineage_weight": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+    "signed_by": { "type": "string" },
+    "parent_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" }
+  }
+}
+
