@@ -14,6 +14,11 @@ compatibility across CPU/GPU environments and multiple dataset formats:
 Schema compatibility:
   - Input: kt.policy_c.dataset_record.v1 (JSONL with metadata refs, no inline text)
   - Output: LoRA adapter weights (safetensors) + training metadata
+
+Environment flags:
+  - DATASET_COERCE_TO_TEXT (default: 1): Convert structured records to JSON text when
+    no inline text/prompt/input fields found. Set to 0 for fail-closed strict mode.
+    Required for policy_c datasets which contain metadata refs, not plain text.
 """
 
 from __future__ import annotations
@@ -75,7 +80,13 @@ class PolicyCDataset(torch.utils.data.Dataset):
         Policy_c dataset records contain metadata refs (pressure_tensor, epoch_summary, etc.)
         but NOT inline text fields. This function tries common text fields first, then
         falls back to JSON serialization of the entire record for tokenization.
+        
+        Compatibility mode: Set DATASET_COERCE_TO_TEXT=1 to always serialize structured
+        records as JSON when no inline text is found. This enables training on policy_c
+        and other metadata-heavy datasets without modification.
         """
+        coerce_to_text = os.environ.get("DATASET_COERCE_TO_TEXT", "1").lower() in ("true", "1", "yes")
+        
         for line in dataset_jsonl.read_text(encoding="utf-8").splitlines():
             if not line.strip():
                 continue
@@ -95,7 +106,14 @@ class PolicyCDataset(torch.utils.data.Dataset):
             else:
                 # PATCH #4: Fallback for records without inline text fields
                 # Serialize the dict to JSON for tokenization (stable, deterministic)
-                yield json.dumps(obj, sort_keys=True)
+                # This is the canonical compatibility mode for structured datasets
+                if coerce_to_text:
+                    yield json.dumps(obj, sort_keys=True)
+                else:
+                    # Strict mode: raise when no text field found (fail-closed)
+                    raise Phase2TrainError(
+                        f"No text/prompt/input field in record and DATASET_COERCE_TO_TEXT=0 (fail-closed): {json.dumps(obj, sort_keys=True)[:200]}"
+                    )
     
     def __len__(self) -> int:
         return len(self.samples)
