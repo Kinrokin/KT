@@ -28,6 +28,7 @@ import json
 import os
 import sys
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
@@ -432,6 +433,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         }
         with open(args.output_dir / "training_report.json", "w") as f:
             json.dump(report, f, indent=2)
+        
+        # OPERATION A: Governance Receipt (Gate T1 compliance)
+        # Outputs exact format required for Stage 5 → Stage 6 promotion pipeline
+        adapter_id = args.output_dir.name if args.output_dir.name.startswith("adapter_") else "unknown"
+        receipt = {
+            "adapter_id": adapter_id,
+            "status": "PASS",
+            "weights_dir": str(args.output_dir / "adapter_weights"),
+            "log_file": str(args.output_dir / "training.log"),
+            "report_file": str(args.output_dir / "training_report.json"),
+            "base_model": req.base_model,
+            "dataset": str(req.dataset_jsonl),
+            "metrics": report.get("metrics", {}),
+            "trained_at": datetime.utcnow().isoformat(),
+        }
+        receipt_path = args.output_dir / "train_receipt.json"
+        with open(receipt_path, "w") as f:
+            json.dump(receipt, f, indent=2)
+        
         print(json.dumps(report, indent=2))
     except Exception as exc:
         print(f"WARNING: Failed to write report: {exc}", file=sys.stderr)
