@@ -97,6 +97,23 @@ def _mk_min_evidence_dir(tmp_path: Path) -> tuple[Path, str]:
     ):
         _write_json(job_dir / name, obj)
 
+    # Training admission receipt is a required job_dir artifact in FL4 seal packs.
+    adm = {
+        "schema_id": "kt.training_admission_receipt.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.training_admission_receipt.v1.json"),
+        "admission_receipt_id": "",
+        "lane_id": "FL3_FACTORY",
+        "decision": "PASS",
+        "reason_codes": [],
+        "job_ref": "job_dir/job.json",
+        "job_sha256": "0" * 64,
+        "law_bundle_hash": "0" * 64,
+        "failure_taxonomy_id": "0" * 64,
+        "created_at": "1970-01-01T00:00:00Z",
+    }
+    adm["admission_receipt_id"] = _sha_id(adm, {"created_at", "admission_receipt_id"})
+    _write_json(job_dir / "training_admission_receipt.json", adm)
+
     # Minimal behavioral growth certificate folder (required by seal).
     for name in (
         "H0.json",
@@ -120,6 +137,7 @@ def _mk_min_evidence_dir(tmp_path: Path) -> tuple[Path, str]:
         parent_hash="0" * 64,
         required_relpaths=[
             "job.json",
+            "training_admission_receipt.json",
             "dataset.json",
             "phase_trace.json",
             "eval_report.json",
