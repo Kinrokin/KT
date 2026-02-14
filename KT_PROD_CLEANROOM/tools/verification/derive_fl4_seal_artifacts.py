@@ -58,9 +58,9 @@ def _derive_canary_hash_manifest_root_hash(*, repo_root: Path, organ_contract_pa
     if job_dir.exists():
         shutil.rmtree(job_dir)
 
-    staging_dir = (repo_root / "KT_PROD_CLEANROOM" / "exports" / "adapters_shadow" / "_runs" / "FL4_CANARY_DERIVE").resolve()
-    if staging_dir.exists():
-        shutil.rmtree(staging_dir)
+    # IMPORTANT: must match tools.verification.fl4_determinism_canary staging path,
+    # otherwise training admission receipts (job_ref) will drift and canary root hashes will not match.
+    staging_dir = (repo_root / "KT_PROD_CLEANROOM" / "exports" / "adapters_shadow" / "_runs" / "FL4_CANARY").resolve()
     staging_dir.mkdir(parents=True, exist_ok=True)
     job_path = staging_dir / "canary_job.json"
     _write_json(job_path, canary_job)
@@ -78,8 +78,7 @@ def _derive_canary_hash_manifest_root_hash(*, repo_root: Path, organ_contract_pa
     # Clean derived run state (derive should not accumulate).
     if job_dir.exists():
         shutil.rmtree(job_dir)
-    if staging_dir.exists():
-        shutil.rmtree(staging_dir)
+    # Keep staging directory consistent with the canonical canary tool; do not attempt to clean it here.
 
     return str(canary_job["job_id"]), root_hash
 
