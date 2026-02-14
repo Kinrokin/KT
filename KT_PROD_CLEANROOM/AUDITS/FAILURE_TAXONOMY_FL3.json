@@ -7,32 +7,57 @@
     },
     {
       "category_id": "GOVERNANCE_LAW",
-      "description": "Law bundles, amendments, schema bindings, and constitutional gating",
-      "title": "Law and Governance"
+      "description": "Law bundle hashes, amendments, and law-bound integrity",
+      "title": "Law Bundle and Amendments"
     },
     {
       "category_id": "GOVERNANCE_OVERRIDE",
-      "description": "Manual overrides and their receipts",
+      "description": "Human override receipts and override governance",
       "title": "Human Override"
     },
     {
       "category_id": "GOVERNANCE_TWIN",
-      "description": "Twin/mirror mismatches and parallel policy checks",
+      "description": "Runtime mirror checks and governance twin reports",
       "title": "Governance Twin"
     },
     {
+      "category_id": "MERGE",
+      "description": "Admissibility, safety regression, utility gate, and rollback planning",
+      "title": "Merge Governance"
+    },
+    {
       "category_id": "PROMOTION",
-      "description": "Promotion and merge admissibility, rationale, and atomicity",
+      "description": "Promotion gates and required rationale artifacts",
       "title": "Promotion"
     },
     {
       "category_id": "SECURITY_SECRETS",
-      "description": "Secret scanning, leakage detection, and related failures",
-      "title": "Secrets and Confidentiality"
+      "description": "Secret leakage prevention and scan failures",
+      "title": "Secret Scanning"
+    },
+    {
+      "category_id": "TOURNAMENT",
+      "description": "Deterministic tournament evaluation and dominance computation",
+      "title": "Tournament Law"
+    },
+    {
+      "category_id": "TRAINING_ADMISSION",
+      "description": "Master training valve and when-not-to-train doctrine enforcement",
+      "title": "Training Admission"
     }
   ],
   "created_at": "1970-01-01T00:00:00Z",
   "mappings": [
+    {
+      "category_id": "TOURNAMENT",
+      "reason_code": "CHAMPION_SET_INVALID",
+      "severity": "HIGH"
+    },
+    {
+      "category_id": "TOURNAMENT",
+      "reason_code": "DOMINANCE_RULE_VIOLATION",
+      "severity": "HIGH"
+    },
     {
       "category_id": "GOVERNANCE_TWIN",
       "reason_code": "GOVERNANCE_TWIN_MISMATCH",
@@ -42,6 +67,26 @@
       "category_id": "GOVERNANCE_LAW",
       "reason_code": "LAW_BUNDLE_HASH_MISMATCH",
       "severity": "CRITICAL"
+    },
+    {
+      "category_id": "MERGE",
+      "reason_code": "MERGE_PRECONDITION_FAILED",
+      "severity": "HIGH"
+    },
+    {
+      "category_id": "MERGE",
+      "reason_code": "MERGE_ROLLBACK_PLAN_MISSING",
+      "severity": "HIGH"
+    },
+    {
+      "category_id": "MERGE",
+      "reason_code": "MERGE_SAFETY_REGRESSION",
+      "severity": "CRITICAL"
+    },
+    {
+      "category_id": "MERGE",
+      "reason_code": "MERGE_UTILITY_GATE_FAILED",
+      "severity": "MEDIUM"
     },
     {
       "category_id": "PROMOTION",
@@ -62,11 +107,41 @@
       "category_id": "DETERMINISM_TIME",
       "reason_code": "TIME_CONTRACT_VIOLATION",
       "severity": "HIGH"
+    },
+    {
+      "category_id": "TOURNAMENT",
+      "reason_code": "TOURNAMENT_DETERMINISM_MISMATCH",
+      "severity": "CRITICAL"
+    },
+    {
+      "category_id": "TOURNAMENT",
+      "reason_code": "TOURNAMENT_IMMUTABLE_INPUT_MISSING",
+      "severity": "CRITICAL"
+    },
+    {
+      "category_id": "TOURNAMENT",
+      "reason_code": "TOURNAMENT_SCHEMA_INVALID",
+      "severity": "HIGH"
+    },
+    {
+      "category_id": "TRAINING_ADMISSION",
+      "reason_code": "TRAINING_ADMISSION_CONFIG_INVALID",
+      "severity": "HIGH"
+    },
+    {
+      "category_id": "TRAINING_ADMISSION",
+      "reason_code": "TRAINING_ADMISSION_DENIED",
+      "severity": "HIGH"
+    },
+    {
+      "category_id": "TRAINING_ADMISSION",
+      "reason_code": "TRAINING_ADMISSION_NONREPRODUCIBLE",
+      "severity": "CRITICAL"
     }
   ],
   "notes": "Base failure taxonomy. Append-only updates required for new reason codes.",
   "schema_id": "kt.failure_taxonomy.v1",
   "schema_version_hash": "ebaad50cc98eaafce67c51fd4ba13a6d2b724a75430e48e8cc079af0ca006d30",
-  "taxonomy_id": "4dfed8519c7a73e312c26ee58242dbabeb6870bdc6561804e0d2ea9be8adad2c",
-  "taxonomy_version": "FL3_BASELINE_V1"
+  "taxonomy_id": "299792d60001632a5a14ae20295a9fa060e6c241264b38e286d668fef3828321",
+  "taxonomy_version": "FL3_EPIC15_PROPOSED_V1"
 }
