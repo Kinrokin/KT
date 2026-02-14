@@ -25,6 +25,13 @@ def _hash_file_for_bundle(*, relpath: str, data: bytes) -> str:
     # Must match tools.verification.fl3_meta_evaluator._hash_file_for_bundle
     if relpath.lower().endswith(".json"):
         obj = json.loads(data.decode("utf-8"))
+        # EPIC_15 determinism: keep bundle hashing free of canary fixed-point drift.
+        # Must match tools.verification.fl3_meta_evaluator._hash_file_for_bundle.
+        rel_norm = relpath.replace("\\", "/")
+        if rel_norm.endswith("FL4_DETERMINISM_CONTRACT.json") and isinstance(obj, dict):
+            obj = dict(obj)
+            obj.pop("canary_expected_hash_manifest_root_hash", None)
+            obj.pop("determinism_contract_id", None)
         canon = json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
         return _sha256_bytes(canon)
 
