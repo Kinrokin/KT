@@ -184,23 +184,34 @@ def main(argv: Optional[List[str]] = None) -> int:
     repo_root = repo_root_from(Path(__file__))
     organ_contract_path = Path(args.organ_contract)
 
-    # 1) Derive canary root hash from a fresh run.
+    # 1) Compute law bundle hash and sync sha file *before* deriving the canary.
+    #    The canary job includes a training admission receipt that records the pinned LAW_BUNDLE hash.
+    #    If the sha pin is stale, a derived canary hash would be immediately invalidated by syncing it.
+    sha_path = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "LAW_BUNDLE_FL3.sha256"
+    sha_before = sha_path.read_text(encoding="utf-8").strip() if sha_path.exists() else ""
+    bundle_hash = _sync_law_bundle_sha(repo_root=repo_root, write=args.write)
+    changed_bundle = sha_before != bundle_hash
+
+    # 2) Derive canary root hash from a fresh run (after bundle hash pin is consistent).
     _job_id, root_hash = _derive_canary_hash_manifest_root_hash(repo_root=repo_root, organ_contract_path=organ_contract_path)
 
-    # 2) Update determinism contract (derived from the canary).
+    # 3) Update determinism contract (derived from the canary).
     det_path = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_DETERMINISM_CONTRACT.json"
     current_det = _read_json(det_path)
     expected_before = str(current_det.get("canary_expected_hash_manifest_root_hash", "")).strip()
     det = _update_determinism_contract(repo_root=repo_root, expected_root_hash=root_hash, write=args.write)
     changed_det = expected_before != root_hash
 
-    # 3) Compute law bundle hash and sync sha file.
-    sha_path = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "LAW_BUNDLE_FL3.sha256"
-    sha_before = sha_path.read_text(encoding="utf-8").strip() if sha_path.exists() else ""
-    bundle_hash = _sync_law_bundle_sha(repo_root=repo_root, write=args.write)
-    changed_bundle = sha_before != bundle_hash
+    # 4) Re-sync the law bundle sha pin (expected to be stable if determinism canary fields are not in the bundle hash surface).
+    bundle_hash2 = _sync_law_bundle_sha(repo_root=repo_root, write=args.write)
+    if bundle_hash2 != bundle_hash:
+        bundle_hash = bundle_hash2
+        changed_bundle = True
+    else:
+        bundle_hash = bundle_hash2
+        changed_bundle = changed_bundle or (sha_before != bundle_hash)
 
-    # 4) Ensure a law amendment exists for this bundle hash.
+    # 5) Ensure a law amendment exists for this bundle hash.
     amend_path = _ensure_law_amendment_present(
         repo_root=repo_root, bundle_hash=bundle_hash, write=args.write, attestation_mode=str(args.attestation_mode)
     )
