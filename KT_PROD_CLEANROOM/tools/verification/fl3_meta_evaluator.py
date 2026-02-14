@@ -24,6 +24,14 @@ def _hash_file_for_bundle(path: Path) -> str:
     # JSON schemas/audits are hashed over their canonical JSON form.
     if path.suffix.lower() == ".json":
         obj = json.loads(data.decode("utf-8"))
+        # EPIC_15 determinism: avoid circularity between FL4 determinism canary expectations and LAW_BUNDLE hashing.
+        # The determinism contract's expected canary hash is *derived* from the canary and must not influence
+        # the LAW_BUNDLE hash (or any receipts that embed the LAW_BUNDLE hash), otherwise fixed-point drift is
+        # effectively impossible to satisfy with cryptographic hashes.
+        if path.name == "FL4_DETERMINISM_CONTRACT.json" and isinstance(obj, dict):
+            obj = dict(obj)
+            obj.pop("canary_expected_hash_manifest_root_hash", None)
+            obj.pop("determinism_contract_id", None)
         canon = json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
         return _sha256_bytes(canon)
 
