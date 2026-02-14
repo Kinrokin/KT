@@ -141,6 +141,17 @@ def promote_job_dir(
     if promotion.get("decision") != "PROMOTE":
         raise FL3ValidationError("promotion decision is not PROMOTE (fail-closed)")
 
+    rationale_path = job_dir / "promotion_rationale.json"
+    if not rationale_path.exists():
+        raise FL3ValidationError("Missing promotion_rationale.json (fail-closed)")
+    rationale = _read_json(rationale_path)
+    if rationale.get("schema_id") != "kt.promotion_rationale.v1":
+        raise FL3ValidationError("promotion_rationale schema_id mismatch (fail-closed)")
+    if str(rationale.get("job_id")) != str(job.get("job_id")):
+        raise FL3ValidationError("promotion_rationale.job_id mismatch vs job.json (fail-closed)")
+    if str(rationale.get("decision")) != "PROMOTE":
+        raise FL3ValidationError("promotion_rationale.decision must be PROMOTE for promotion (fail-closed)")
+
     canary = _read_json(canary_artifact_path)
     if canary.get("schema_id") != "kt.canary_artifact.v1":
         raise FL3ValidationError("canary_artifact schema_id mismatch (fail-closed)")

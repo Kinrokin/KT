@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -10,6 +11,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from schemas.schema_files import schema_version_hash
 from tools.verification.fl3_canonical import read_json, repo_root_from, sha256_json, sha256_text
 from tools.verification.fl3_validators import FL3ValidationError, validate_schema_bound_object
+from tools.verification.attestation_hmac import env_key_name_for_key_id, verify_hmac_signoff
 
 
 def _sha256_bytes(data: bytes) -> str:
@@ -98,7 +100,7 @@ def assert_single_active_law(*, repo_root: Path, bundle: Dict[str, Any]) -> Tupl
     return str(law["law_id"]), str(law["law_hash"])
 
 
-def assert_law_amendment_present(*, repo_root: Path, bundle_hash: str) -> None:
+def assert_law_amendment_present(*, repo_root: Path, bundle_hash: str) -> Dict[str, Any]:
     audits = repo_root / "KT_PROD_CLEANROOM" / "AUDITS"
     candidates: List[Path] = sorted(audits.glob("LAW_AMENDMENT_FL3_*.json"))
     for p in candidates:
@@ -107,9 +109,63 @@ def assert_law_amendment_present(*, repo_root: Path, bundle_hash: str) -> None:
             validate_schema_bound_object(obj)
         except Exception:
             continue
-        if obj.get("schema_id") == "kt.law_amendment.v1" and obj.get("bundle_hash") == bundle_hash:
+        if obj.get("schema_id") == "kt.law_amendment.v2" and obj.get("bundle_hash") == bundle_hash:
+            return obj
+    raise FL3ValidationError("Missing kt.law_amendment.v2 for current LAW_BUNDLE hash (fail-closed)")
+
+
+def _is_truthy_env(name: str) -> bool:
+    return str(os.environ.get(name, "")).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def assert_law_amendment_attestation_sufficient(*, amendment: Dict[str, Any]) -> None:
+    """
+    Canonical lane enforcement (conditional):
+      - If KT_CANONICAL_LANE is set, SIMULATED amendments are forbidden.
+      - HMAC amendments must be verifiable with keys provided via env.
+    """
+    if not _is_truthy_env("KT_CANONICAL_LANE"):
+        return
+
+    mode = str(amendment.get("attestation_mode", "")).strip().upper()
+    if mode == "SIMULATED":
+        raise FL3ValidationError("SIMULATED law amendment attestation is forbidden in canonical lane (fail-closed)")
+    if mode != "HMAC":
+        raise FL3ValidationError("Unsupported attestation_mode in canonical lane (fail-closed)")
+
+    signoffs = amendment.get("signoffs")
+    if not isinstance(signoffs, list) or len(signoffs) < 2:
+        raise FL3ValidationError("law amendment signoffs missing/invalid (fail-closed)")
+    for s in signoffs:
+        if not isinstance(s, dict):
+            raise FL3ValidationError("law amendment signoffs must be objects (fail-closed)")
+        key_id = str(s.get("key_id", "")).strip()
+        env_key = env_key_name_for_key_id(key_id)
+        key_val = os.environ.get(env_key)
+        if not key_val:
+            raise FL3ValidationError(f"Missing {env_key} for HMAC signoff verification (fail-closed)")
+        ok, err = verify_hmac_signoff(signoff=s, key_bytes=key_val.encode("utf-8"))
+        if not ok:
+            raise FL3ValidationError(f"HMAC signoff verification failed: key_id={key_id} err={err} (fail-closed)")
+
+
+def assert_law_bundle_change_receipt_present(*, repo_root: Path, bundle_hash: str) -> None:
+    """
+    If the LAW_BUNDLE hash changes, the change must be documented by an append-only receipt.
+
+    The receipt is NOT included in the law bundle hash surface (to avoid recursion).
+    """
+    audits = repo_root / "KT_PROD_CLEANROOM" / "AUDITS"
+    candidates: List[Path] = sorted(audits.glob("LAW_BUNDLE_CHANGE_RECEIPT_FL3_*.json"))
+    for p in candidates:
+        obj = read_json(p)
+        try:
+            validate_schema_bound_object(obj)
+        except Exception:
+            continue
+        if obj.get("schema_id") == "kt.law_bundle_change_receipt.v1" and obj.get("new_bundle_hash") == bundle_hash:
             return
-    raise FL3ValidationError("Missing kt.law_amendment.v1 for current LAW_BUNDLE hash (fail-closed)")
+    raise FL3ValidationError("Missing kt.law_bundle_change_receipt.v1 for current LAW_BUNDLE hash (fail-closed)")
 
 
 def assert_anti_drift_primitives_present(*, repo_root: Path) -> None:
@@ -571,7 +627,9 @@ def main(argv: Optional[List[str]] = None) -> int:
     bundle_hash = compute_law_bundle_hash(repo_root=repo_root, bundle=bundle)
 
     law_id, law_hash = assert_single_active_law(repo_root=repo_root, bundle=bundle)
-    assert_law_amendment_present(repo_root=repo_root, bundle_hash=bundle_hash)
+    amendment = assert_law_amendment_present(repo_root=repo_root, bundle_hash=bundle_hash)
+    assert_law_amendment_attestation_sufficient(amendment=amendment)
+    assert_law_bundle_change_receipt_present(repo_root=repo_root, bundle_hash=bundle_hash)
     assert_shadow_unroutable(repo_root=repo_root)
     assert_anti_drift_primitives_present(repo_root=repo_root)
 

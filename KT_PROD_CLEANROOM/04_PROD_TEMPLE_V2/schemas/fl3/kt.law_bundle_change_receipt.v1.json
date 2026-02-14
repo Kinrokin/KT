@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Law Bundle Change Receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "receipt_id",
+    "bundle_id",
+    "old_ref",
+    "old_bundle_hash",
+    "new_bundle_hash",
+    "diff",
+    "counts",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.law_bundle_change_receipt.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "receipt_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "bundle_id": { "type": "string" },
+    "old_ref": { "type": "string" },
+    "old_bundle_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "new_bundle_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "diff": { "type": "object" },
+    "counts": { "type": "object" },
+    "created_at": { "type": "string" },
+    "notes": { "type": "string" }
+  }
+}
+

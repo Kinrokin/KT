@@ -94,6 +94,13 @@ jobs:
             exit 1
           fi
 
+      - name: Verify FL4 seal evidence (fail-closed)
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$PWD/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:$PWD/KT_PROD_CLEANROOM"
+          OUT_DIR="KT_PROD_CLEANROOM/exports/adapters_shadow/_runs/FL4_SEAL/CI"
+          python -m tools.verification.fl4_seal_verify --evidence-dir "$OUT_DIR"
+
       - name: Package FL4 seal evidence (tar + sha256)
         run: |
           set -euo pipefail

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Failure Taxonomy v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "taxonomy_id",
+    "taxonomy_version",
+    "categories",
+    "mappings",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.failure_taxonomy.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "taxonomy_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "taxonomy_version": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "categories": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "category_id",
+          "title",
+          "description"
+        ],
+        "properties": {
+          "category_id": { "type": "string", "minLength": 1, "maxLength": 64 },
+          "title": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "description": { "type": ["string", "null"], "maxLength": 1024 }
+        }
+      }
+    },
+    "mappings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "reason_code",
+          "category_id",
+          "severity"
+        ],
+        "properties": {
+          "reason_code": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "category_id": { "type": "string", "minLength": 1, "maxLength": 64 },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "INFO",
+              "LOW",
+              "MEDIUM",
+              "HIGH",
+              "CRITICAL"
+            ]
+          }
+        }
+      }
+    },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"], "maxLength": 8192 }
+  }
+}

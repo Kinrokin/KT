@@ -1,0 +1,72 @@
+{
+  "categories": [
+    {
+      "category_id": "DETERMINISM_TIME",
+      "description": "Time anchors, monotonicity, and replay stability",
+      "title": "Determinism and Time"
+    },
+    {
+      "category_id": "GOVERNANCE_LAW",
+      "description": "Law bundles, amendments, schema bindings, and constitutional gating",
+      "title": "Law and Governance"
+    },
+    {
+      "category_id": "GOVERNANCE_OVERRIDE",
+      "description": "Manual overrides and their receipts",
+      "title": "Human Override"
+    },
+    {
+      "category_id": "GOVERNANCE_TWIN",
+      "description": "Twin/mirror mismatches and parallel policy checks",
+      "title": "Governance Twin"
+    },
+    {
+      "category_id": "PROMOTION",
+      "description": "Promotion and merge admissibility, rationale, and atomicity",
+      "title": "Promotion"
+    },
+    {
+      "category_id": "SECURITY_SECRETS",
+      "description": "Secret scanning, leakage detection, and related failures",
+      "title": "Secrets and Confidentiality"
+    }
+  ],
+  "created_at": "1970-01-01T00:00:00Z",
+  "mappings": [
+    {
+      "category_id": "GOVERNANCE_TWIN",
+      "reason_code": "GOVERNANCE_TWIN_MISMATCH",
+      "severity": "HIGH"
+    },
+    {
+      "category_id": "GOVERNANCE_LAW",
+      "reason_code": "LAW_BUNDLE_HASH_MISMATCH",
+      "severity": "CRITICAL"
+    },
+    {
+      "category_id": "PROMOTION",
+      "reason_code": "PROMOTION_WITHOUT_RATIONALE",
+      "severity": "HIGH"
+    },
+    {
+      "category_id": "SECURITY_SECRETS",
+      "reason_code": "SECRET_LEAK_DETECTED",
+      "severity": "CRITICAL"
+    },
+    {
+      "category_id": "SECURITY_SECRETS",
+      "reason_code": "SECRET_SCAN_ERROR",
+      "severity": "HIGH"
+    },
+    {
+      "category_id": "DETERMINISM_TIME",
+      "reason_code": "TIME_CONTRACT_VIOLATION",
+      "severity": "HIGH"
+    }
+  ],
+  "notes": "Base failure taxonomy. Append-only updates required for new reason codes.",
+  "schema_id": "kt.failure_taxonomy.v1",
+  "schema_version_hash": "ebaad50cc98eaafce67c51fd4ba13a6d2b724a75430e48e8cc079af0ca006d30",
+  "taxonomy_id": "4dfed8519c7a73e312c26ee58242dbabeb6870bdc6561804e0d2ea9be8adad2c",
+  "taxonomy_version": "FL3_BASELINE_V1"
+}

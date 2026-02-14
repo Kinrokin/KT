@@ -1,0 +1,53 @@
+name: No Conflict Markers
+
+on:
+  workflow_dispatch: {}
+  pull_request: {}
+  push:
+    branches:
+      - main
+
+jobs:
+  no-conflict-markers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fail if conflict markers present
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+
+          from pathlib import Path
+
+          repo_root = Path(".").resolve()
+          markers = (b"<<<<<<<", b">>>>>>>", b"=======")
+          bad: list[str] = []
+
+          for p in repo_root.rglob("*"):
+              if not p.is_file():
+                  continue
+              if ".git" in p.parts:
+                  continue
+              if "__pycache__" in p.parts:
+                  continue
+              try:
+                  with p.open("rb") as h:
+                      for raw in h:
+                          line = raw.rstrip(b"\r\n")
+                          if any(line.startswith(m) for m in markers):
+                              bad.append(p.as_posix())
+                              break
+              except Exception:
+                  bad.append(p.as_posix())
+
+          if bad:
+              bad_sorted = sorted(set(bad))
+              print("FAIL: conflict markers or unreadable files detected:")
+              for b in bad_sorted:
+                  print(" -", b)
+              raise SystemExit(2)
+          print("OK: no conflict markers detected")
+          PY

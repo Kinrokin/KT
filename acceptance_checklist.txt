@@ -1,0 +1,19 @@
+- [ ] `OUT_DIR/policy_c_sweep_plan_resolution_receipt.json` exists and `method` is one of `override|discovered|autogen`.
+- [ ] `RESOLVED_SWEEP_PLAN_SHA256` appears in transcript and matches receipt `plan_sha256`.
+- [ ] `OUT_DIR/dataset_raw.jsonl` exists and is non-empty.
+- [ ] `OUT_DIR/dataset_coerced.jsonl` exists and `OUT_DIR/dataset_coercion_report.json` has `"gate_D2": "PASS"` and valid `sha256`.
+- [ ] `OUT_DIR/mrt1_adapter_ids.txt` contains exactly 13 adapter IDs.
+- [ ] For each trained adapter, `OUT_DIR/mrt1_promotion_receipts/<adapter>_train_receipt.json` exists.
+- [ ] `OUT_DIR/runtime_registry.mrt1.snapshot.json` exists.
+- [ ] `OUT_DIR/run_manifest.json` validates against `OUT_DIR/run_manifest.schema.json`.
+- [ ] `OUT_DIR.tar.gz` and `OUT_DIR.tar.gz.sha256` exist and hash matches tarball.
+- [ ] Last 50 lines of `OUT_DIR/cell_transcript.log` include:
+      `SWEEP_PLAN_RESOLUTION_OK`
+      `COERCION_DONE`
+      `COHORT_MANUFACTURE_OK`
+      `TRAIN_PASS`
+      `RUNTIME_SNAPSHOT_WRITTEN`
+      `RUN_MANIFEST_WRITTEN`
+      `BUNDLE_DONE`
+      `ALL_STAGES_COMPLETE`
+

@@ -15,6 +15,7 @@ from tools.verification.fl3_canonical import sha256_json  # noqa: E402
 from tools.verification.fl3_validators import load_fl3_canonical_runtime_paths, validate_schema_bound_object  # noqa: E402
 from tools.verification.fl4_determinism_canary import main as canary_main  # noqa: E402
 from tools.verification.fl4_promote import main as promote_main  # noqa: E402
+from tools.governance.promotion_rationale_collector import ensure_promotion_rationale_for_job_dir  # noqa: E402
 
 
 def _write_json(path: Path, obj: dict) -> None:
@@ -132,6 +133,9 @@ def test_fl4_atomic_promotion_creates_promoted_package_and_updates_index(tmp_pat
         assert promotion.get("schema_id") == "kt.factory.promotion.v1"
         # In canonical FL4 lane, SOVEREIGN + PASS should be eligible to promote.
         assert promotion.get("decision") == "PROMOTE"
+
+        # Promotion rationale is required for atomic promotion.
+        _ = ensure_promotion_rationale_for_job_dir(job_dir=job_dir, lane_id="FL4_SEAL")
 
         # Determinism canary must PASS to allow promotion.
         rc_canary = int(

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Probe Synthesis Report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "report_id",
+    "manifest_id",
+    "synthesizer_version",
+    "synthesized_probes",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.probe_synthesis_report.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "report_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "manifest_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "synthesizer_version": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "synthesized_probes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "probe_id",
+          "reason_code",
+          "title",
+          "prompt",
+          "expected_behavior",
+          "requires_human_review",
+          "earliest_review_timestamp"
+        ],
+        "properties": {
+          "probe_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "reason_code": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "title": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "prompt": { "type": "string", "minLength": 1, "maxLength": 8192 },
+          "expected_behavior": { "type": "string", "minLength": 1, "maxLength": 8192 },
+          "requires_human_review": { "type": "boolean" },
+          "earliest_review_timestamp": { "type": "string", "minLength": 1, "maxLength": 64 }
+        }
+      }
+    },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"], "maxLength": 8192 }
+  }
+}

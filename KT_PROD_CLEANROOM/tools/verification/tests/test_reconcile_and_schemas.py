@@ -2,6 +2,10 @@ import json
 import tempfile
 from pathlib import Path
 
+from KT_PROD_CLEANROOM.tests.fl3._bootstrap import bootstrap_syspath
+bootstrap_syspath()
+
+
 from council.providers.provider_schemas import ProviderCallReceipt
 
 

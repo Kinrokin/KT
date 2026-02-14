@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Audit Proposal Adoption v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "adoption_id",
+    "proposal_id",
+    "decision",
+    "reviewers",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.audit_proposal_adoption.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "adoption_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "proposal_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "decision": { "enum": ["ACCEPT", "REJECT", "DEFER"] },
+    "reviewers": { "type": "array", "minItems": 2, "items": { "type": "string", "minLength": 1, "maxLength": 128 } },
+    "notes": { "type": ["string", "null"], "maxLength": 8192 },
+    "created_at": { "type": "string" }
+  }
+}
+

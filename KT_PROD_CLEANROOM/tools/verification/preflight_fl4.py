@@ -8,18 +8,26 @@ import sys
 import platform
 import hashlib
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from schemas.schema_files import schema_version_hash
+from tools.security.pack_guard_scan import scan_pack_and_write
 from tools.training.fl3_factory.hashing import sha256_file_normalized
-from tools.verification.fl3_canonical import repo_root_from, sha256_json
+from tools.verification.fl3_canonical import repo_root_from, sha256_json, sha256_text
 from tools.verification.fl3_validators import FL3ValidationError, load_fl3_canonical_runtime_paths, validate_schema_bound_object
 from tools.verification.io_guard import IOGuard, IOGuardConfig
+from tools.verification.run_protocol_generator import build_run_protocol, write_run_protocol_pair
+from tools.verification.replay_script_generator import write_replay_artifacts
 from tools.verification.watcher_spc_validators import (
     assert_runtime_registry_has_no_watcher_spc,
     validate_watcher_spc_artifacts_if_present,
 )
+
+
+def _utc_now_iso_z() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def _run(cmd: List[str], *, cwd: Path, env: Dict[str, str], out_path: Optional[Path] = None) -> Tuple[int, str]:
@@ -68,6 +76,7 @@ def _assert_evidence_pack_complete(*, out_dir: Path) -> None:
         "io_guard_receipt.json",
         "supported_platforms.json",
         "determinism_contract.json",
+        "time_contract.json",
         "law_bundle_hash.txt",
         "law_bundle.json",
         "growth_e2e_gate_report.json",
@@ -80,6 +89,15 @@ def _assert_evidence_pack_complete(*, out_dir: Path) -> None:
         "canary_artifact_post_promotion.json",
         "metabolism_proof.json",
         "replay_from_receipts_report.json",
+        "replay.sh",
+        "replay.ps1",
+        "replay_receipt.json",
+        "secret_scan_report.json",
+        "secret_scan_summary.json",
+        "run_protocol.json",
+        "RUN_PROTOCOL.md",
+        "governance_twin_manifest.json",
+        "governance_twin_report.json",
         "preflight_summary.json",
     )
     required_job_dir = (
@@ -90,6 +108,7 @@ def _assert_evidence_pack_complete(*, out_dir: Path) -> None:
         "signal_quality.json",
         "judgement.json",
         "promotion.json",
+        "promotion_rationale.json",
         "hash_manifest.json",
         "job_dir_manifest.json",
     )
@@ -336,6 +355,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         repo_root / "KT_PROD_CLEANROOM"
     )
     env.setdefault("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
+    # Canonical lanes enforce strong governance attestation gates.
+    env.setdefault("KT_CANONICAL_LANE", "1")
 
     paths = load_fl3_canonical_runtime_paths(repo_root=repo_root)
     reg_path = str(args.registry_path or paths["runtime_registry_path"])
@@ -562,6 +583,20 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         rc, out = _run([py_exe, "-m", "tools.verification.fl3_meta_evaluator", "--verify-job-dir", str(job_dir)], cwd=repo_root, env=env)
         _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.verification.fl3_meta_evaluator", "--verify-job-dir", str(job_dir)], rc=rc, output=out)
 
+        # Promotion rationale is a required governance artifact (WORM).
+        from tools.governance.promotion_rationale_collector import ensure_promotion_rationale_for_job_dir  # local import
+
+        try:
+            rationale = ensure_promotion_rationale_for_job_dir(job_dir=job_dir, lane_id="FL4_SEAL")
+        except FL3ValidationError as exc:
+            raise SystemExit(f"FAIL_CLOSED: promotion rationale generation failed: {exc}") from exc
+        _append_transcript(
+            transcript_path,
+            cmd=[py_exe, "-m", "tools.governance.promotion_rationale_collector", "--job-dir", str(job_dir), "--lane-id", "FL4_SEAL"],
+            rc=0,
+            output=json.dumps({"status": "PASS", "rationale_id": rationale.get("rationale_id")}, sort_keys=True, ensure_ascii=True),
+        )
+
         # Metabolism proof (MRT-0): controlled perturbations must produce different hash-manifest roots.
         base_root = _load_hash_manifest_root_hash(job_dir)
         pert_runs: List[Dict[str, str]] = []
@@ -653,6 +688,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             "signal_quality.json",
             "judgement.json",
             "promotion.json",
+            "promotion_rationale.json",
             "hash_manifest.json",
             "job_dir_manifest.json",
             "immune_snapshot.json",
@@ -666,6 +702,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         # Copy global contracts/law pins into evidence.
         (out_dir / "determinism_contract.json").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_DETERMINISM_CONTRACT.json").read_text(encoding="utf-8"), encoding="utf-8")
         (out_dir / "supported_platforms.json").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_SUPPORTED_PLATFORMS.json").read_text(encoding="utf-8"), encoding="utf-8")
+        (out_dir / "time_contract.json").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_TIME_CONTRACT.json").read_text(encoding="utf-8"), encoding="utf-8")
         (out_dir / "law_bundle_hash.txt").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "LAW_BUNDLE_FL3.sha256").read_text(encoding="utf-8"), encoding="utf-8")
         (out_dir / "law_bundle.json").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "LAW_BUNDLE_FL3.json").read_text(encoding="utf-8"), encoding="utf-8")
 
@@ -727,11 +764,104 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         # 6) Watcher/SPC NCON enforcement (conditional; fail-closed if malformed artifacts are present).
         validate_watcher_spc_artifacts_if_present(evidence_dir=out_dir)
 
+        # 7) Secret scan (fail-closed only after evidence is fully materialized).
+        # We always emit secret scan artifacts; canonical lanes halt if status != PASS.
+        report, summary_obj = scan_pack_and_write(pack_root=out_dir, out_dir=out_dir, run_id=str(job["job_id"]), lane_id="FL4_SEAL")
+        secret_scan_status = str(report.get("status", "ERROR"))
+        _append_transcript(
+            transcript_path,
+            cmd=[py_exe, "-m", "tools.security.pack_guard_scan", "--pack-root", str(out_dir), "--out-dir", str(out_dir), "--run-id", str(job["job_id"]), "--lane-id", "FL4_SEAL", "--no-exit-nonzero"],
+            rc=0,
+            output=json.dumps(
+                {
+                    "status": secret_scan_status,
+                    "total_findings": summary_obj.get("total_findings"),
+                    "high_confidence_findings": summary_obj.get("high_confidence_findings"),
+                },
+                sort_keys=True,
+            ),
+        )
+
+        # 8) Emit the canonical run protocol pair (JSON source + derived markdown view).
+        law_bundle = json.loads((out_dir / "law_bundle.json").read_text(encoding="utf-8"))
+        hash_manifest = json.loads((evidence_dir / "hash_manifest.json").read_text(encoding="utf-8"))
+        dataset_path = evidence_dir / "dataset.json"
+        datasets: List[Dict[str, str]] = []
+        if dataset_path.exists():
+            datasets.append(
+                {
+                    "relpath": "job_dir/dataset.json",
+                    "sha256": _sha256_file(dataset_path),
+                }
+            )
+        replay_command = (
+            f"{py_exe} -m tools.verification.fl4_replay_from_receipts "
+            f"--evidence-dir {out_dir.as_posix()} "
+            f"--out {(out_dir / 'replay_from_receipts_report.json').as_posix()}"
+        )
+        _sh_path, _ps1_path, _receipt_path, replay_hashes = write_replay_artifacts(
+            out_dir=out_dir,
+            replay_command=replay_command,
+            run_id=str(job["job_id"]),
+            lane_id="FL4_SEAL",
+            notes="FL4 preflight replay artifacts",
+        )
+        governed_phase_start_hash = sha256_json(
+            {
+                "env_lock_id": str(env_lock.get("env_lock_id", "")),
+                "io_guard_receipt": "io_guard_receipt.json",
+                "kt_live": str(env.get("KT_LIVE", "")),
+            }
+        )
+        protocol = build_run_protocol(
+            {
+                "run_id": str(job["job_id"]),
+                "lane_id": "FL4_SEAL",
+                "timestamp_utc": _utc_now_iso_z(),
+                "determinism_mode": "STRICT",
+                "execution_environment_hash": str(env_lock.get("env_lock_id", "")),
+                "governed_phase_start_hash": governed_phase_start_hash,
+                "io_guard_status": "GUARDED",
+                "base_model_id": str(job.get("base_model_id", "unknown")),
+                "active_adapters": [
+                    {
+                        "adapter_id": str(job.get("adapter_id", "unknown")),
+                        "adapter_hash": str(hash_manifest.get("root_hash", "")),
+                    }
+                ],
+                "active_laws": [str(l.get("law_id")) for l in law_bundle.get("laws", []) if isinstance(l, dict) and l.get("law_id")],
+                "datasets": datasets,
+                "replay_command": replay_command,
+                "replay_script_hash": str(replay_hashes.get("replay_script_hash", "")),
+                "secret_scan_result": secret_scan_status,
+                "bundle_root_hash": str(hash_manifest.get("root_hash", "")),
+                "notes": "FL4 preflight seal lane run protocol",
+            }
+        )
+        write_run_protocol_pair(out_dir=out_dir, protocol=protocol)
+
+        # 9) Governance twin (runtime mirror; cross-artifact consistency check).
+        from tools.governance.governance_twin_runner import run_governance_twin_and_write  # local import
+
+        _twin_manifest, twin_report = run_governance_twin_and_write(evidence_dir=out_dir, out_dir=out_dir)
+        twin_status = str(twin_report.get("status", "FAIL_CLOSED"))
+        _append_transcript(
+            transcript_path,
+            cmd=[py_exe, "-m", "tools.governance.governance_twin_runner", "--evidence-dir", str(out_dir), "--out-dir", str(out_dir)],
+            rc=0 if twin_status == "PASS" else 2,
+            output=json.dumps({"status": twin_status, "twin_report_id": twin_report.get("twin_report_id")}, sort_keys=True),
+        )
+        if twin_status != "PASS":
+            raise SystemExit(f"FAIL_CLOSED: governance twin status={twin_status}")
+
         # Evidence pack completeness contract (fail-closed).
         _assert_evidence_pack_complete(out_dir=out_dir)
 
         # Seal lane must leave repo clean (fail-closed).
         _git_status_clean(repo_root)
+
+        if secret_scan_status != "PASS":
+            raise SystemExit(f"FAIL_CLOSED: secret scan status={secret_scan_status}")
 
     return 0
 

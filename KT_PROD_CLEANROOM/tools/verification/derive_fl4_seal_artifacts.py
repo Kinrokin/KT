@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 import tempfile
 from datetime import datetime, timezone
@@ -19,6 +20,7 @@ from tools.verification.fl3_validators import (
     validate_schema_bound_object,
 )
 from tools.verification.fl4_determinism_canary import _mk_canary_jobspec  # type: ignore
+from tools.verification.attestation_hmac import env_key_name_for_key_id, sign_hmac
 
 
 def _read_json(path: Path) -> Dict[str, Any]:
@@ -108,40 +110,55 @@ def _sync_law_bundle_sha(*, repo_root: Path, write: bool) -> str:
     return law_hash
 
 
-def _ensure_law_amendment_present(*, repo_root: Path, bundle_hash: str, write: bool) -> Optional[Path]:
+def _ensure_law_amendment_present(*, repo_root: Path, bundle_hash: str, write: bool, attestation_mode: str) -> Optional[Path]:
     audits_dir = repo_root / "KT_PROD_CLEANROOM" / "AUDITS"
     for p in sorted(audits_dir.glob("LAW_AMENDMENT_FL3_*.json")):
         try:
             obj = _read_json(p)
         except Exception:
             continue
-        if obj.get("schema_id") == "kt.law_amendment.v1" and str(obj.get("bundle_hash")) == bundle_hash:
+        if obj.get("schema_id") == "kt.law_amendment.v2" and str(obj.get("bundle_hash")) == bundle_hash:
             return p
 
     if not write:
         return None
 
     created_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    attestation_mode = str(attestation_mode).strip().upper()
+    if attestation_mode not in {"SIMULATED", "HMAC"}:
+        raise FL3ValidationError("Unsupported attestation_mode for law amendment (fail-closed)")
 
     def mk_signoff(key_id: str, payload_hash: str) -> Dict[str, Any]:
         entry: Dict[str, Any] = {
-            "schema_id": "kt.human_signoff.v1",
-            "schema_version_hash": schema_version_hash("fl3/kt.human_signoff.v1.json"),
+            "schema_id": "kt.human_signoff.v2",
+            "schema_version_hash": schema_version_hash("fl3/kt.human_signoff.v2.json"),
             "signoff_id": "",
+            "attestation_mode": attestation_mode,
             "key_id": key_id,
             "payload_hash": payload_hash,
-            # Schema requires a hex-64. Signature verification is not enforced at FL3.1 layer.
-            "hmac_signature": sha256_hex_of_obj({"key_id": key_id, "payload_hash": payload_hash}, drop_keys=set()),
             "created_at": created_at,
         }
+        if attestation_mode == "SIMULATED":
+            entry["simulated_signature"] = sha256_hex_of_obj(
+                {"key_id": key_id, "payload_hash": payload_hash}, drop_keys=set()
+            )
+        elif attestation_mode == "HMAC":
+            env_key = env_key_name_for_key_id(key_id)
+            key_val = os.environ.get(env_key)
+            if not key_val:
+                raise FL3ValidationError(f"Missing {env_key} for HMAC law amendment signing (fail-closed)")
+            sig, fp = sign_hmac(key_bytes=key_val.encode("utf-8"), key_id=key_id, payload_hash=payload_hash)
+            entry["hmac_signature"] = sig
+            entry["hmac_key_fingerprint"] = fp
         entry["signoff_id"] = sha256_hex_of_obj(entry, drop_keys={"created_at", "signoff_id"})
         return entry
 
     amendment: Dict[str, Any] = {
-        "schema_id": "kt.law_amendment.v1",
-        "schema_version_hash": schema_version_hash("fl3/kt.law_amendment.v1.json"),
+        "schema_id": "kt.law_amendment.v2",
+        "schema_version_hash": schema_version_hash("fl3/kt.law_amendment.v2.json"),
         "amendment_id": "",
         "bundle_hash": bundle_hash,
+        "attestation_mode": attestation_mode,
         "signoffs": [
             mk_signoff("SIGNER_A", bundle_hash),
             mk_signoff("SIGNER_B", bundle_hash),
@@ -161,6 +178,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(description="Derive FL4 seal artifacts (determinism contract + law bundle hash + law amendment) without manual edits.")
     ap.add_argument("--organ-contract", required=True, help="Path to factory organ contract JSON for canary derivation.")
     ap.add_argument("--write", action="store_true", help="Write updated artifacts to AUDITS/ (fail-closed if not set and mismatch exists).")
+    ap.add_argument("--attestation-mode", default="SIMULATED", choices=["SIMULATED", "HMAC"], help="Attestation mode for LAW_AMENDMENT_FL3 signing.")
     args = ap.parse_args(argv)
 
     repo_root = repo_root_from(Path(__file__))
@@ -183,7 +201,9 @@ def main(argv: Optional[List[str]] = None) -> int:
     changed_bundle = sha_before != bundle_hash
 
     # 4) Ensure a law amendment exists for this bundle hash.
-    amend_path = _ensure_law_amendment_present(repo_root=repo_root, bundle_hash=bundle_hash, write=args.write)
+    amend_path = _ensure_law_amendment_present(
+        repo_root=repo_root, bundle_hash=bundle_hash, write=args.write, attestation_mode=str(args.attestation_mode)
+    )
 
     report = {
         "schema_id": "kt.fl4.derive_artifacts_report.v1",

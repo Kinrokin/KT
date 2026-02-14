@@ -1,0 +1,66 @@
+name: AUDITS JSON Validity
+
+on:
+  workflow_dispatch: {}
+  pull_request: {}
+  push:
+    branches:
+      - main
+
+jobs:
+  audits-json-validity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fail if AUDITS JSON is invalid (or has UTF-8 BOM)
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          from pathlib import Path
+
+          audits_dir = Path("KT_PROD_CLEANROOM/AUDITS").resolve()
+          if not audits_dir.is_dir():
+              print("FAIL: missing AUDITS directory:", audits_dir.as_posix())
+              raise SystemExit(2)
+
+          bad_bom: list[str] = []
+          bad_parse: list[str] = []
+          bad_type: list[str] = []
+
+          for p in sorted(audits_dir.rglob("*.json"), key=lambda x: x.as_posix()):
+              raw = p.read_bytes()
+              if raw.startswith(b"\xef\xbb\xbf"):
+                  bad_bom.append(p.as_posix())
+                  continue
+              try:
+                  obj = json.loads(raw.decode("utf-8"))
+              except Exception as exc:  # noqa: BLE001
+                  bad_parse.append(f"{p.as_posix()} :: {exc}")
+                  continue
+              if not isinstance(obj, dict):
+                  bad_type.append(f"{p.as_posix()} :: {type(obj).__name__}")
+
+          if bad_bom:
+              print("FAIL: UTF-8 BOM detected in AUDITS JSON files:")
+              for b in bad_bom:
+                  print(" -", b)
+              raise SystemExit(2)
+          if bad_parse:
+              print("FAIL: invalid JSON detected in AUDITS JSON files:")
+              for b in bad_parse:
+                  print(" -", b)
+              raise SystemExit(2)
+          if bad_type:
+              print("FAIL: non-object JSON detected in AUDITS JSON files:")
+              for b in bad_type:
+                  print(" -", b)
+              raise SystemExit(2)
+
+          print("OK: AUDITS JSON files are valid UTF-8 (no BOM) and parse as objects")
+          PY
+

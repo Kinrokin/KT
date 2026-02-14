@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Replay Receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "replay_receipt_id",
+    "run_id",
+    "lane_id",
+    "replay_command",
+    "replay_sh_sha256",
+    "replay_ps1_sha256",
+    "replay_script_hash",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.replay_receipt.v1"
+    },
+    "schema_version_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "replay_receipt_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "lane_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "replay_command": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "replay_sh_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "replay_ps1_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "replay_script_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 8192
+    },
+    "created_at": {
+      "type": "string"
+    }
+  }
+}
+

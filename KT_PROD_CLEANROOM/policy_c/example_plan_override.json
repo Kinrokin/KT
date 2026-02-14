@@ -1,0 +1,129 @@
+{
+  "schema_id": "kt.policy_c.sweep_plan.v1",
+  "sweep_id": "example_override_sweep",
+  "baseline_epoch_id": "run_base",
+  "max_runs": 2,
+  "seed": 0,
+  "export": {
+    "export_root": "exports/policy_c/EXAMPLE_RUN/sweep_a"
+  },
+  "runs": [
+    {
+      "run_id": "run_base",
+      "epoch_plan": {
+        "epoch_id": "epoch_base",
+        "pressure_tensor": {
+          "schema_id": "kt.policy_c.pressure_tensor.v1",
+          "axes": {
+            "time": {
+              "intensity": 0.0,
+              "enabled": true
+            },
+            "universe": {
+              "intensity": 0.0,
+              "enabled": true
+            },
+            "language": {
+              "intensity": 0.0,
+              "enabled": true
+            },
+            "hop": {
+              "intensity": 0.0,
+              "enabled": true
+            },
+            "step": {
+              "intensity": 0.0,
+              "enabled": true
+            },
+            "paradox": {
+              "intensity": 0.0,
+              "enabled": true
+            },
+            "puzzle": {
+              "intensity": 0.0,
+              "enabled": true
+            }
+          },
+          "projection": {
+            "rule": "sum",
+            "weights": {
+              "time": 0.0,
+              "universe": 0.0,
+              "language": 0.0,
+              "hop": 0.0,
+              "step": 0.0,
+              "paradox": 0.0,
+              "puzzle": 0.0
+            },
+            "clamp_min": 0.0,
+            "clamp_max": 1.0
+          },
+          "invariants": {
+            "reversible": true,
+            "isolated": true,
+            "no_cross_axis_bleed": true
+          }
+        }
+      }
+    },
+    {
+      "run_id": "run_variant",
+      "epoch_plan": {
+        "epoch_id": "epoch_variant",
+        "pressure_tensor": {
+          "schema_id": "kt.policy_c.pressure_tensor.v1",
+          "axes": {
+            "time": {
+              "intensity": 0.04,
+              "enabled": true
+            },
+            "universe": {
+              "intensity": 0.0,
+              "enabled": true
+            },
+            "language": {
+              "intensity": 0.0,
+              "enabled": true
+            },
+            "hop": {
+              "intensity": 0.0,
+              "enabled": true
+            },
+            "step": {
+              "intensity": 0.0,
+              "enabled": true
+            },
+            "paradox": {
+              "intensity": 0.0,
+              "enabled": true
+            },
+            "puzzle": {
+              "intensity": 0.0,
+              "enabled": true
+            }
+          },
+          "projection": {
+            "rule": "sum",
+            "weights": {
+              "time": 0.0,
+              "universe": 0.0,
+              "language": 0.0,
+              "hop": 0.0,
+              "step": 0.0,
+              "paradox": 0.0,
+              "puzzle": 0.0
+            },
+            "clamp_min": 0.0,
+            "clamp_max": 1.0
+          },
+          "invariants": {
+            "reversible": true,
+            "isolated": true,
+            "no_cross_axis_bleed": true
+          }
+        }
+      }
+    }
+  ]
+}
+

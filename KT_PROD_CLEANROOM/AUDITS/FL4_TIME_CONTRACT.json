@@ -1,0 +1,18 @@
+{
+  "schema_id": "kt.time_contract.v1",
+  "schema_version_hash": "9e945160a911ea76569c5ad586b34622ec56b0dcf89e28bb789cd47bfae4c750",
+  "time_contract_id": "bcf65018ab33dc07224509d3e41ca755d15c1d8eff866331523fd0b2812ceee4",
+  "timestamp_policy": {
+    "run_evidence_clock": "WALL_CLOCK_UTC_Z_SECONDS",
+    "derived_artifacts_clock": "EVIDENCE_ANCHORED_MAX_CREATED_AT",
+    "fallback_clock": "FIXED_EPOCH_0"
+  },
+  "hash_surface_policy": {
+    "must_drop_keys": [
+      "created_at"
+    ],
+    "must_not_include_wall_clock_in_hashes": true
+  },
+  "notes": "Canonical time contract. created_at fields are non-hash; deterministic IDs must be derived from canonical payloads that drop created_at.",
+  "created_at": "1970-01-01T00:00:00Z"
+}
