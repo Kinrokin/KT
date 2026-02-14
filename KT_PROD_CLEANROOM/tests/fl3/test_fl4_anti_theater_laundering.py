@@ -36,6 +36,7 @@ def _mk_contract(*, repo_root: Path) -> dict:
         "allowed_output_schemas": sorted(
             [
                 "kt.factory.jobspec.v1",
+                "kt.training_admission_receipt.v1",
                 "kt.factory.dataset.v1",
                 "kt.reasoning_trace.v1",
                 "kt.factory.judgement.v1",
@@ -154,4 +155,3 @@ def test_fl4_anti_theater_detects_metric_laundering_even_if_manifests_match(tmp_
     finally:
         if job_dir.exists():
             shutil.rmtree(job_dir)
-

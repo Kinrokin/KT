@@ -35,6 +35,7 @@ def _mk_contract(*, repo_root: Path) -> dict:
         "allowed_output_schemas": sorted(
             [
                 "kt.factory.jobspec.v1",
+                "kt.training_admission_receipt.v1",
                 "kt.factory.dataset.v1",
                 "kt.reasoning_trace.v1",
                 "kt.factory.judgement.v1",

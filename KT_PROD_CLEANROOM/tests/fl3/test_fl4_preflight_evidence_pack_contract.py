@@ -57,6 +57,7 @@ def test_evidence_pack_completeness_contract_passes_minimal(tmp_path: Path) -> N
     # required evidence job dir files
     for name in (
         "job.json",
+        "training_admission_receipt.json",
         "phase_trace.json",
         "dataset.json",
         "eval_report.json",

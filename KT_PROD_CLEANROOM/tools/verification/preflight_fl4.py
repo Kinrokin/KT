@@ -102,6 +102,7 @@ def _assert_evidence_pack_complete(*, out_dir: Path) -> None:
     )
     required_job_dir = (
         "job.json",
+        "training_admission_receipt.json",
         "phase_trace.json",
         "dataset.json",
         "eval_report.json",
@@ -248,6 +249,8 @@ def _mk_min_contract(repo_root: Path) -> Dict[str, Any]:
     allowed_out = sorted(
         [
             "kt.factory.jobspec.v1",
+            # EPIC_15: master training admission valve.
+            "kt.training_admission_receipt.v1",
             "kt.factory.dataset.v1",
             "kt.reasoning_trace.v1",
             "kt.factory.judgement.v1",
@@ -680,6 +683,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         evidence_dir.mkdir(parents=True, exist_ok=True)
         for name in (
             "job.json",
+            "training_admission_receipt.json",
             "phase_trace.json",
             "dataset.json",
             "reasoning_trace.json",

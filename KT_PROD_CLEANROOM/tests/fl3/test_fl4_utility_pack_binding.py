@@ -52,6 +52,7 @@ def _mk_contract(*, repo_root: Path, entrypoints: dict) -> dict:
         "allowed_output_schemas": sorted(
             [
                 "kt.factory.jobspec.v1",
+                "kt.training_admission_receipt.v1",
                 "kt.factory.dataset.v1",
                 "kt.reasoning_trace.v1",
                 "kt.factory.judgement.v1",
@@ -129,4 +130,3 @@ def test_eval_report_utility_pack_hash_mismatch_fails_closed(tmp_path: Path) -> 
     finally:
         if job_dir.exists():
             shutil.rmtree(job_dir)
-
