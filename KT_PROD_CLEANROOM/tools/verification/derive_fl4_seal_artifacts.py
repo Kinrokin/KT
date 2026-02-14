@@ -106,7 +106,16 @@ def _sync_law_bundle_sha(*, repo_root: Path, write: bool) -> str:
     bundle = _read_json(bundle_path)
     law_hash = compute_law_bundle_hash(repo_root=repo_root, bundle=bundle)
     if write:
-        sha_path.write_text(law_hash + "\n", encoding="utf-8")
+        desired = law_hash + "\n"
+        try:
+            existing = sha_path.read_text(encoding="utf-8")
+        except Exception:  # noqa: BLE001
+            existing = ""
+        # Keep the repo clean for any downstream factory/canary run: avoid rewriting identical content.
+        if existing.strip() != law_hash:
+            sha_path.parent.mkdir(parents=True, exist_ok=True)
+            with sha_path.open("w", encoding="utf-8", newline="\n") as handle:
+                handle.write(desired)
     return law_hash
 
 
