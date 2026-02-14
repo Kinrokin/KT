@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Merge Eval Receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "merge_eval_receipt_id",
+    "merge_manifest_id",
+    "status",
+    "safety_regression",
+    "utility_gate_pass",
+    "tournament_result_ref",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.merge_eval_receipt.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "merge_eval_receipt_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "merge_manifest_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "status": { "enum": ["PASS", "FAIL_CLOSED"] },
+    "reason_codes": { "type": "array", "items": { "type": "string" } },
+    "safety_regression": { "type": "boolean" },
+    "utility_gate_pass": { "type": "boolean" },
+    "tournament_result_ref": { "type": "string" },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"] }
+  }
+}
+

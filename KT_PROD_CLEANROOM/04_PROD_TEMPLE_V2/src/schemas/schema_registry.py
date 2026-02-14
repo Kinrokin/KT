@@ -189,10 +189,40 @@ from schemas.fl3_signal_quality_schema import (
     FL3_SIGNAL_QUALITY_SCHEMA_VERSION_HASH,
     validate_fl3_signal_quality,
 )
+from schemas.fl3_training_admission_receipt_schema import (
+    FL3_TRAINING_ADMISSION_RECEIPT_SCHEMA_ID,
+    FL3_TRAINING_ADMISSION_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_fl3_training_admission_receipt,
+)
 from schemas.fl3_tournament_manifest_schema import (
     FL3_TOURNAMENT_MANIFEST_SCHEMA_ID,
     FL3_TOURNAMENT_MANIFEST_SCHEMA_VERSION_HASH,
     validate_fl3_tournament_manifest,
+)
+from schemas.fl3_tournament_plan_schema import (
+    FL3_TOURNAMENT_PLAN_SCHEMA_ID,
+    FL3_TOURNAMENT_PLAN_SCHEMA_VERSION_HASH,
+    validate_fl3_tournament_plan,
+)
+from schemas.fl3_tournament_result_schema import (
+    FL3_TOURNAMENT_RESULT_SCHEMA_ID,
+    FL3_TOURNAMENT_RESULT_SCHEMA_VERSION_HASH,
+    validate_fl3_tournament_result,
+)
+from schemas.fl3_merge_manifest_schema import (
+    FL3_MERGE_MANIFEST_SCHEMA_ID,
+    FL3_MERGE_MANIFEST_SCHEMA_VERSION_HASH,
+    validate_fl3_merge_manifest,
+)
+from schemas.fl3_merge_eval_receipt_schema import (
+    FL3_MERGE_EVAL_RECEIPT_SCHEMA_ID,
+    FL3_MERGE_EVAL_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_fl3_merge_eval_receipt,
+)
+from schemas.fl3_merge_rollback_plan_schema import (
+    FL3_MERGE_ROLLBACK_PLAN_SCHEMA_ID,
+    FL3_MERGE_ROLLBACK_PLAN_SCHEMA_VERSION_HASH,
+    validate_fl3_merge_rollback_plan,
 )
 from schemas.fl3_breeding_manifest_schema import (
     FL3_BREEDING_MANIFEST_SCHEMA_ID,
@@ -527,9 +557,30 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
         FL3_TOURNAMENT_MANIFEST_SCHEMA_VERSION_HASH,
         validate_fl3_tournament_manifest,
     ),
+    FL3_TOURNAMENT_PLAN_SCHEMA_ID: (
+        FL3_TOURNAMENT_PLAN_SCHEMA_VERSION_HASH,
+        validate_fl3_tournament_plan,
+    ),
+    FL3_TOURNAMENT_RESULT_SCHEMA_ID: (
+        FL3_TOURNAMENT_RESULT_SCHEMA_VERSION_HASH,
+        validate_fl3_tournament_result,
+    ),
     FL3_BLIND_JUDGEMENT_PACK_SCHEMA_ID: (FL3_BLIND_JUDGEMENT_PACK_SCHEMA_VERSION_HASH, validate_fl3_blind_judgement_pack),
     FL3_REVEAL_MAPPING_SCHEMA_ID: (FL3_REVEAL_MAPPING_SCHEMA_VERSION_HASH, validate_fl3_reveal_mapping),
     FL3_SIGNAL_QUALITY_SCHEMA_ID: (FL3_SIGNAL_QUALITY_SCHEMA_VERSION_HASH, validate_fl3_signal_quality),
+    FL3_TRAINING_ADMISSION_RECEIPT_SCHEMA_ID: (
+        FL3_TRAINING_ADMISSION_RECEIPT_SCHEMA_VERSION_HASH,
+        validate_fl3_training_admission_receipt,
+    ),
+    FL3_MERGE_MANIFEST_SCHEMA_ID: (FL3_MERGE_MANIFEST_SCHEMA_VERSION_HASH, validate_fl3_merge_manifest),
+    FL3_MERGE_EVAL_RECEIPT_SCHEMA_ID: (
+        FL3_MERGE_EVAL_RECEIPT_SCHEMA_VERSION_HASH,
+        validate_fl3_merge_eval_receipt,
+    ),
+    FL3_MERGE_ROLLBACK_PLAN_SCHEMA_ID: (
+        FL3_MERGE_ROLLBACK_PLAN_SCHEMA_VERSION_HASH,
+        validate_fl3_merge_rollback_plan,
+    ),
     FL3_FAILURE_CONTRACT_SCHEMA_ID: (FL3_FAILURE_CONTRACT_SCHEMA_VERSION_HASH, validate_fl3_failure_contract),
     FL3_FAILURE_TAXONOMY_SCHEMA_ID: (FL3_FAILURE_TAXONOMY_SCHEMA_VERSION_HASH, validate_fl3_failure_taxonomy),
     FL3_LAW_AMENDMENT_SCHEMA_ID: (FL3_LAW_AMENDMENT_SCHEMA_VERSION_HASH, validate_fl3_law_amendment),
