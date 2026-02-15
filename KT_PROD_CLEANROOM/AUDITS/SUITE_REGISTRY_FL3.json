@@ -1,34 +1,36 @@
 {
-  "attestation_mode": "SIMULATED",
+  "attestation_mode": "HMAC",
   "created_at": "1970-01-01T00:00:00Z",
-  "notes": "EPIC_16 suite registry. SIMULATED until canonical lane HMAC apply.",
+  "notes": "EPIC_16 suite registry. HMAC-authorized for canonical lane.",
   "schema_id": "kt.suite_registry.v1",
   "schema_version_hash": "50d1b50f055476d73d3a0de7f8a87f0c7b5ab6ae6a9cb676fbe17f7e3d772bcc",
-  "suite_registry_id": "870bbac89b0beaa10089d3bd4c32eba97e90b9388cd1b47a573722583b09dfaf",
+  "suite_registry_id": "7ce4c2cf8d5bb237dd44d5ebb3213345fa4e76cf951a9f85c0ca7fff4e0e07f8",
   "suites": [
     {
       "authorization_payload_hash": "75c064505c2ae9e1132eb9db2a1344a1034f352db45ba4b18e321bbed5a8e45e",
       "notes": null,
       "signoffs": [
         {
-          "attestation_mode": "SIMULATED",
+          "attestation_mode": "HMAC",
           "created_at": "1970-01-01T00:00:00Z",
+          "hmac_key_fingerprint": "bd5555734c182b836cfe0a1ec964b507b357fc76283d8cb2e6e5b79dba4da53f",
+          "hmac_signature": "83b689f1465877ea9f86db8e9e4a7905572ac93bf65d9d3f177d8b6cf5c87931",
           "key_id": "SIGNER_A",
           "payload_hash": "75c064505c2ae9e1132eb9db2a1344a1034f352db45ba4b18e321bbed5a8e45e",
           "schema_id": "kt.human_signoff.v2",
           "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
-          "signoff_id": "179db10f7598e70afcd52553b755e1781e202a41ec1a10e8e4c964ac9e0dfedf",
-          "simulated_signature": "350f425fcbe77f6b2aac242252c060c7d78ac73a6a38de1cce67c4f89f1d45c7"
+          "signoff_id": "8df1944d73b96bcdd700ef01309c3fa6e4f7a276924e430ca127cfd14a64c60e"
         },
         {
-          "attestation_mode": "SIMULATED",
+          "attestation_mode": "HMAC",
           "created_at": "1970-01-01T00:00:00Z",
+          "hmac_key_fingerprint": "6ca97c569e35532576edce775e08eb5d4a17d2202d7cbd38d1cf5736c274c51e",
+          "hmac_signature": "5e3dc8e10cf69128efdc2378bed0fae1b5f63bd9cbce44af5de412c0c950a0c4",
           "key_id": "SIGNER_B",
           "payload_hash": "75c064505c2ae9e1132eb9db2a1344a1034f352db45ba4b18e321bbed5a8e45e",
           "schema_id": "kt.human_signoff.v2",
           "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
-          "signoff_id": "e6a960738dfa4e04a550d8982da393bfb50caa237744152198c929a092dab029",
-          "simulated_signature": "d5b182a507f56aa668ba469d4d822a123cfe46f5f5272661447e75eee7cc4bb8"
+          "signoff_id": "82663cd3565717708b9777b3f36c64e9a7b66ad6d45750b1288e1717b95192ed"
         }
       ],
       "suite_definition_ref": "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_X.v1.json",
@@ -40,24 +42,26 @@
       "notes": null,
       "signoffs": [
         {
-          "attestation_mode": "SIMULATED",
+          "attestation_mode": "HMAC",
           "created_at": "1970-01-01T00:00:00Z",
+          "hmac_key_fingerprint": "bd5555734c182b836cfe0a1ec964b507b357fc76283d8cb2e6e5b79dba4da53f",
+          "hmac_signature": "0f74f0b8f8fb93642f5dec633c5c27dbac9ef69305befbf99ee4def2e16ef564",
           "key_id": "SIGNER_A",
           "payload_hash": "ae152b3c11a2ce1812d7d537999a4cfda3f501b7e10802079a142b752685f13b",
           "schema_id": "kt.human_signoff.v2",
           "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
-          "signoff_id": "3456589ae1c8a6bd0a3844e25a7f911b47f1b37b7ac44120852f6fccd16a39ba",
-          "simulated_signature": "07bd4ae126569477379f08561db9f64c4a90ebee9a6755c1d4e2796353b0efbd"
+          "signoff_id": "988a56d111115d7e488acaa8555f3b39070207d932fb47dfb31ac81cdae613e6"
         },
         {
-          "attestation_mode": "SIMULATED",
+          "attestation_mode": "HMAC",
           "created_at": "1970-01-01T00:00:00Z",
+          "hmac_key_fingerprint": "6ca97c569e35532576edce775e08eb5d4a17d2202d7cbd38d1cf5736c274c51e",
+          "hmac_signature": "15aa09ca84acc9722e7c21f2bfb50df710ea45145b0ef560779af312fb245bd9",
           "key_id": "SIGNER_B",
           "payload_hash": "ae152b3c11a2ce1812d7d537999a4cfda3f501b7e10802079a142b752685f13b",
           "schema_id": "kt.human_signoff.v2",
           "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
-          "signoff_id": "3ecb92a0615628909c447e4b302fcefa60366c96c9b744c0cbd0be942ee19b3e",
-          "simulated_signature": "a54b551c6cfe811a909b28ed2b2d810e01886acce9afe74d5e2e3ec070562a94"
+          "signoff_id": "e0d29b56b6ef333896b0799f355d6a60b27234b7243397676a9363765359808b"
         }
       ],
       "suite_definition_ref": "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_X_ADV.v1.json",
