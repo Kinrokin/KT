@@ -604,6 +604,198 @@ def assert_shadow_unroutable(*, repo_root: Path) -> None:
                     raise FL3ValidationError("Shadow adapter registered for routing (forbidden, fail-closed)")
 
 
+def assert_epic15_governance_tools_smoke(*, repo_root: Path) -> None:
+    """
+    EPIC_15 smoke: tournament + merge tools must be deterministic and schema-valid.
+
+    This is a meta-evaluator gate (CI-visible) that ensures EPIC_15 enforcement exists as
+    executable, replayable tooling — not just schemas/doctrine.
+
+    The fixture is tiny and fully deterministic (fixed timestamps, fixed hashes).
+    """
+    import hashlib
+    import tempfile
+
+    from schemas.fl3_schema_common import sha256_hex_of_obj  # type: ignore
+    from schemas.schema_files import schema_version_hash  # type: ignore
+    from tools.merge.merge_evaluator import run_merge_evaluator  # type: ignore
+    from tools.tournament.run_tournament import run_tournament  # type: ignore
+    from tools.training.fl3_factory.manifests import sha256_file as sha256_file_canonical  # type: ignore
+
+    def sha_seed(base_model_id: str, suite_id: str, entrant_hashes: List[str]) -> str:
+        payload = base_model_id + "|" + suite_id + "|" + "|".join(entrant_hashes)
+        return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+    def write_json(path: Path, obj: Dict[str, Any]) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(obj, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8", newline="\n")
+
+    created_at = "1970-01-01T00:00:00Z"
+    base_model_id = "mistral-7b"
+    suite_id = "SUITE_X"
+
+    p1_hash = "1" * 64
+    p2_hash = "2" * 64
+    child_hash = "3" * 64
+
+    def mk_eval_report(*, job_id: str, adapter_id: str, adapter_version: str, utility_floor_score: float, verdict: str) -> Dict[str, Any]:
+        rep: Dict[str, Any] = {
+            "schema_id": "kt.factory.eval_report.v2",
+            "schema_version_hash": schema_version_hash("fl3/kt.factory.eval_report.v2.json"),
+            "eval_id": "",
+            "job_id": job_id,
+            "adapter_id": adapter_id,
+            "adapter_version": adapter_version,
+            "battery_id": "kt.eval.battery.fl4.utility_v1",
+            "utility_pack_id": "UTILITY_PACK_V1",
+            "utility_pack_hash": "a" * 64,
+            "utility_floor_score": float(utility_floor_score),
+            "utility_floor_pass": True,
+            "metric_bindings": [
+                {
+                    "metric_id": "utility_floor_score",
+                    "metric_version_hash": "b" * 64,
+                    "metric_schema_hash": "c" * 64,
+                    "metric_impl_hash": "d" * 64,
+                }
+            ],
+            "metric_probes": [
+                {
+                    "metric_id": "utility_floor_score_probe",
+                    "metric_impl_hash": "d" * 64,
+                    "delta": 0.0,
+                    "agreement": True,
+                }
+            ],
+            "probe_policy": {"tolerance": 0.0, "fail_on_disagreement": True},
+            "results": {
+                "best_bundle_id": "B0",
+                "utility_floor_score": float(utility_floor_score),
+                "utility_floor_pass": True,
+                "trace_required": True,
+                "trace_present": True,
+                "trace_coverage": 1.0,
+                "trace_id": "t" * 64,
+                "trace_hash": "t" * 64,
+                "metric_probe_agreement": True,
+            },
+            "final_verdict": str(verdict),
+            "created_at": created_at,
+        }
+        rep["eval_id"] = sha256_hex_of_obj(rep, drop_keys={"created_at", "eval_id"})
+        validate_schema_bound_object(rep)
+        return rep
+
+    def mk_job_dir_manifest(*, job_id: str, adapter_root_hash: str, eval_path: Path) -> Dict[str, Any]:
+        eval_sha = sha256_file_canonical(eval_path)
+        man: Dict[str, Any] = {
+            "schema_id": "kt.factory.job_dir_manifest.v1",
+            "schema_version_hash": schema_version_hash("fl3/kt.factory.job_dir_manifest.v1.json"),
+            "job_dir_manifest_id": "",
+            "job_id": job_id,
+            "files": [{"path": "eval_report.json", "required": True, "sha256": eval_sha}],
+            "hash_manifest_root_hash": adapter_root_hash,
+            "parent_hash": "0" * 64,
+            "created_at": created_at,
+        }
+        man["job_dir_manifest_id"] = sha256_hex_of_obj(man, drop_keys={"created_at", "job_dir_manifest_id"})
+        validate_schema_bound_object(man)
+        return man
+
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td).resolve()
+        entrants_root = root / "entrants"
+        out_tourn = root / "tourn_out"
+        out_merge = root / "merge_out"
+
+        # Entrant evidence.
+        ev_p1 = mk_eval_report(job_id="a" * 64, adapter_id="lobe.p1.v1", adapter_version="1", utility_floor_score=0.6, verdict="PASS")
+        ev_p2 = mk_eval_report(job_id="b" * 64, adapter_id="lobe.p2.v1", adapter_version="1", utility_floor_score=0.6, verdict="PASS")
+        ev_child = mk_eval_report(job_id="c" * 64, adapter_id="lobe.child.v1", adapter_version="1", utility_floor_score=0.9, verdict="PASS")
+
+        for h, ev, jid in ((p1_hash, ev_p1, "a" * 64), (p2_hash, ev_p2, "b" * 64), (child_hash, ev_child, "c" * 64)):
+            job_dir = entrants_root / h
+            eval_path = job_dir / "eval_report.json"
+            write_json(eval_path, ev)
+            write_json(job_dir / "job_dir_manifest.json", mk_job_dir_manifest(job_id=jid, adapter_root_hash=h, eval_path=eval_path))
+
+        entrants = [
+            {"adapter_root_hash": p1_hash, "adapter_id": "lobe.p1.v1", "adapter_version": "1"},
+            {"adapter_root_hash": p2_hash, "adapter_id": "lobe.p2.v1", "adapter_version": "1"},
+            {"adapter_root_hash": child_hash, "adapter_id": "lobe.child.v1", "adapter_version": "1"},
+        ]
+        entrant_hashes = [e["adapter_root_hash"] for e in entrants]
+
+        plan: Dict[str, Any] = {
+            "schema_id": "kt.tournament_plan.v1",
+            "schema_version_hash": schema_version_hash("fl3/kt.tournament_plan.v1.json"),
+            "tournament_plan_id": "",
+            "base_model_id": base_model_id,
+            "suite_id": suite_id,
+            "suite_root_hash": "c" * 64,
+            "decode_policy_id": "greedy_v1",
+            "decode_cfg_hash": "d" * 64,
+            "tournament_mode": "round_robin_v1",
+            "epsilon": 0.01,
+            "entrants": entrants,
+            "seed": sha_seed(base_model_id, suite_id, entrant_hashes),
+            "created_at": created_at,
+            "notes": None,
+        }
+        plan["tournament_plan_id"] = sha256_hex_of_obj(plan, drop_keys={"created_at", "tournament_plan_id"})
+        validate_schema_bound_object(plan)
+
+        plan_path = root / "tournament_plan.json"
+        write_json(plan_path, plan)
+
+        _ = run_tournament(repo_root=repo_root, plan_path=plan_path, entrants_root=entrants_root, out_dir=out_tourn)
+        b1 = (out_tourn / "tournament_result.json").read_bytes()
+        _ = run_tournament(repo_root=repo_root, plan_path=plan_path, entrants_root=entrants_root, out_dir=out_tourn)
+        b2 = (out_tourn / "tournament_result.json").read_bytes()
+        if b1 != b2:
+            raise FL3ValidationError("EPIC_15 tournament tool produced non-identical rerun bytes (fail-closed)")
+
+        parents = [
+            {"adapter_root_hash": p1_hash, "adapter_id": "lobe.p1.v1", "adapter_version": "1"},
+            {"adapter_root_hash": p2_hash, "adapter_id": "lobe.p2.v1", "adapter_version": "1"},
+        ]
+        merge_manifest: Dict[str, Any] = {
+            "schema_id": "kt.merge_manifest.v1",
+            "schema_version_hash": schema_version_hash("fl3/kt.merge_manifest.v1.json"),
+            "merge_manifest_id": "",
+            "base_model_id": base_model_id,
+            "role_tag": "ROLE_X",
+            "merge_method": "ties_v1",
+            "parents": parents,
+            "created_at": created_at,
+            "notes": None,
+        }
+        merge_manifest["merge_manifest_id"] = sha256_hex_of_obj(merge_manifest, drop_keys={"created_at", "merge_manifest_id"})
+        validate_schema_bound_object(merge_manifest)
+
+        merge_manifest_path = root / "merge_manifest.json"
+        write_json(merge_manifest_path, merge_manifest)
+
+        _ = run_merge_evaluator(
+            repo_root=repo_root,
+            merge_manifest_path=merge_manifest_path,
+            tournament_result_path=out_tourn / "tournament_result.json",
+            entrants_root=entrants_root,
+            out_dir=out_merge,
+        )
+        m1 = (out_merge / "merge_eval_receipt.json").read_bytes() + (out_merge / "merge_rollback_plan.json").read_bytes()
+        _ = run_merge_evaluator(
+            repo_root=repo_root,
+            merge_manifest_path=merge_manifest_path,
+            tournament_result_path=out_tourn / "tournament_result.json",
+            entrants_root=entrants_root,
+            out_dir=out_merge,
+        )
+        m2 = (out_merge / "merge_eval_receipt.json").read_bytes() + (out_merge / "merge_rollback_plan.json").read_bytes()
+        if m1 != m2:
+            raise FL3ValidationError("EPIC_15 merge evaluator produced non-identical rerun bytes (fail-closed)")
+
+
 def build_meta_evaluator_receipt(*, law_bundle_hash: str, law_id: str, law_hash: str, parent_hash: str, status: str) -> Dict[str, Any]:
     schema_file = "fl3/kt.meta_evaluator_receipt.v1.json"
     from schemas.schema_files import schema_version_hash  # type: ignore
@@ -640,6 +832,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     assert_law_bundle_change_receipt_present(repo_root=repo_root, bundle_hash=bundle_hash)
     assert_shadow_unroutable(repo_root=repo_root)
     assert_anti_drift_primitives_present(repo_root=repo_root)
+    assert_epic15_governance_tools_smoke(repo_root=repo_root)
 
     if args.verify_job_dir:
         verify_job_dir(repo_root=repo_root, job_dir=Path(args.verify_job_dir))
