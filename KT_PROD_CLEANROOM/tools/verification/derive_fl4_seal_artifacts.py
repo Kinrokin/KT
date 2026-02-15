@@ -38,6 +38,21 @@ def _write_json(path: Path, obj: Dict[str, Any]) -> None:
     path.write_text(json.dumps(obj, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
 
 
+def _is_truthy_env(name: str) -> bool:
+    return str(os.environ.get(name, "")).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _is_ci_env() -> bool:
+    """
+    Signing/apply tooling must never run in CI.
+    Use conservative detection: if any common CI flag is set truthy, treat as CI.
+    """
+    for name in ("CI", "GITHUB_ACTIONS", "GITLAB_CI", "BUILD_BUILDID", "JENKINS_URL", "TF_BUILD"):
+        if _is_truthy_env(name):
+            return True
+    return False
+
+
 def _derive_canary_hash_manifest_root_hash(*, repo_root: Path, organ_contract_path: Path) -> Tuple[str, str]:
     """
     Runs the canonical canary job once (without enforcing expected hash) and returns:
@@ -120,21 +135,36 @@ def _sync_law_bundle_sha(*, repo_root: Path, write: bool) -> str:
 
 def _ensure_law_amendment_present(*, repo_root: Path, bundle_hash: str, write: bool, attestation_mode: str) -> Optional[Path]:
     audits_dir = repo_root / "KT_PROD_CLEANROOM" / "AUDITS"
+    attestation_mode = str(attestation_mode).strip().upper()
+    if attestation_mode not in {"SIMULATED", "HMAC"}:
+        raise FL3ValidationError("Unsupported attestation_mode for law amendment (fail-closed)")
+
+    best_same_mode: Optional[Path] = None
+    best_any: Optional[Path] = None
     for p in sorted(audits_dir.glob("LAW_AMENDMENT_FL3_*.json")):
         try:
             obj = _read_json(p)
         except Exception:
             continue
-        if obj.get("schema_id") == "kt.law_amendment.v2" and str(obj.get("bundle_hash")) == bundle_hash:
-            return p
+        if obj.get("schema_id") != "kt.law_amendment.v2" or str(obj.get("bundle_hash")) != bundle_hash:
+            continue
 
+        # Prefer an existing amendment that matches the requested attestation_mode.
+        mode = str(obj.get("attestation_mode", "")).strip().upper()
+        if mode == attestation_mode and best_same_mode is None:
+            best_same_mode = p
+        if best_any is None:
+            best_any = p
+
+    if best_same_mode is not None:
+        return best_same_mode
+    # If caller requested SIMULATED, any existing amendment is sufficient for non-canonical operation.
+    if attestation_mode == "SIMULATED" and best_any is not None:
+        return best_any
     if not write:
         return None
 
     created_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    attestation_mode = str(attestation_mode).strip().upper()
-    if attestation_mode not in {"SIMULATED", "HMAC"}:
-        raise FL3ValidationError("Unsupported attestation_mode for law amendment (fail-closed)")
 
     def mk_signoff(key_id: str, payload_hash: str) -> Dict[str, Any]:
         entry: Dict[str, Any] = {
@@ -191,6 +221,12 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     repo_root = repo_root_from(Path(__file__))
     organ_contract_path = Path(args.organ_contract)
+
+    if args.write and _is_ci_env():
+        raise FL3ValidationError("Refusing to derive/apply seal artifacts in CI (fail-closed)")
+
+    if _is_truthy_env("KT_CANONICAL_LANE") and str(args.attestation_mode).strip().upper() != "HMAC":
+        raise FL3ValidationError("Canonical lane requires HMAC attestation_mode for law amendment signing (fail-closed)")
 
     # 1) Compute law bundle hash and sync sha file *before* deriving the canary.
     #    The canary job includes a training admission receipt that records the pinned LAW_BUNDLE hash.
@@ -251,4 +287,7 @@ def main(argv: Optional[List[str]] = None) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except FL3ValidationError as exc:
+        raise SystemExit(f"FAIL_CLOSED: {exc}") from exc

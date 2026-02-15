@@ -111,6 +111,7 @@ def assert_single_active_law(*, repo_root: Path, bundle: Dict[str, Any]) -> Tupl
 def assert_law_amendment_present(*, repo_root: Path, bundle_hash: str) -> Dict[str, Any]:
     audits = repo_root / "KT_PROD_CLEANROOM" / "AUDITS"
     candidates: List[Path] = sorted(audits.glob("LAW_AMENDMENT_FL3_*.json"))
+    matches: List[Tuple[Path, Dict[str, Any]]] = []
     for p in candidates:
         obj = read_json(p)
         try:
@@ -118,8 +119,49 @@ def assert_law_amendment_present(*, repo_root: Path, bundle_hash: str) -> Dict[s
         except Exception:
             continue
         if obj.get("schema_id") == "kt.law_amendment.v2" and obj.get("bundle_hash") == bundle_hash:
-            return obj
-    raise FL3ValidationError("Missing kt.law_amendment.v2 for current LAW_BUNDLE hash (fail-closed)")
+            matches.append((p, obj))
+    if not matches:
+        raise FL3ValidationError("Missing kt.law_amendment.v2 for current LAW_BUNDLE hash (fail-closed)")
+    return _select_strongest_law_amendment(matches=matches, canonical_lane=_is_truthy_env("KT_CANONICAL_LANE"))
+
+
+def _attestation_strength(mode: str) -> int:
+    """
+    Deterministic tie-breaker for law amendment selection.
+    Higher is stronger.
+    """
+    m = str(mode).strip().upper()
+    if m == "HMAC":
+        return 3
+    if m == "PKI":
+        return 2
+    if m == "SIMULATED":
+        return 1
+    return 0
+
+
+def _select_strongest_law_amendment(*, matches: List[Tuple[Path, Dict[str, Any]]], canonical_lane: bool) -> Dict[str, Any]:
+    """
+    Select the strongest available amendment for a bundle hash.
+
+    Ordering:
+      HMAC > PKI > SIMULATED
+
+    Canonical lane rule:
+      - If any stronger-than-SIMULATED amendment exists, SIMULATED amendments are ignored.
+    """
+    ranked: List[Tuple[int, str, Dict[str, Any]]] = []
+    for p, obj in matches:
+        strength = _attestation_strength(str(obj.get("attestation_mode", "")))
+        ranked.append((strength, p.as_posix(), obj))
+
+    max_strength = max(s for s, _, _ in ranked)
+    if canonical_lane and max_strength > _attestation_strength("SIMULATED"):
+        ranked = [r for r in ranked if r[0] == max_strength]
+
+    # Deterministic selection among ties: pick lexicographically smallest path.
+    ranked = sorted(ranked, key=lambda x: (-x[0], x[1]))
+    return ranked[0][2]
 
 
 def _is_truthy_env(name: str) -> bool:
