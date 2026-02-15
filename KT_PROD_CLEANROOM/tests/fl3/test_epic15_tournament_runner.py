@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
+from typing import Optional
 
 from KT_PROD_CLEANROOM.tests.fl3._bootstrap import bootstrap_syspath
 
@@ -48,27 +49,38 @@ def _mk_simulated_signoff(*, key_id: str, payload_hash: str) -> dict:
     return signoff
 
 
-def _mk_suite_registry(*, suite_id: str, suite_root_hash: str, suite_definition_ref: str) -> dict:
+def _mk_suite_registry(
+    *,
+    suite_id: str,
+    suite_root_hash: str,
+    suite_definition_ref: str,
+    extra_suites: Optional[list[dict]] = None,
+) -> dict:
     created_at = "1970-01-01T00:00:00Z"
     authorization_payload_hash = sha256_hex_of_obj({"suite_id": suite_id, "suite_root_hash": suite_root_hash}, drop_keys=set())
+    suites: list[dict] = [
+        {
+            "suite_id": suite_id,
+            "suite_root_hash": suite_root_hash,
+            "suite_definition_ref": suite_definition_ref,
+            "authorization_payload_hash": authorization_payload_hash,
+            "signoffs": [
+                _mk_simulated_signoff(key_id="SIGNER_A", payload_hash=authorization_payload_hash),
+                _mk_simulated_signoff(key_id="SIGNER_B", payload_hash=authorization_payload_hash),
+            ],
+            "notes": None,
+        }
+    ]
+    if extra_suites:
+        suites.extend(list(extra_suites))
+    suites = sorted(suites, key=lambda d: (str(d.get("suite_id", "")), str(d.get("suite_root_hash", ""))))
+
     obj = {
         "schema_id": "kt.suite_registry.v1",
         "schema_version_hash": schema_version_hash("fl3/kt.suite_registry.v1.json"),
         "suite_registry_id": "",
         "attestation_mode": "SIMULATED",
-        "suites": [
-            {
-                "suite_id": suite_id,
-                "suite_root_hash": suite_root_hash,
-                "suite_definition_ref": suite_definition_ref,
-                "authorization_payload_hash": authorization_payload_hash,
-                "signoffs": [
-                    _mk_simulated_signoff(key_id="SIGNER_A", payload_hash=authorization_payload_hash),
-                    _mk_simulated_signoff(key_id="SIGNER_B", payload_hash=authorization_payload_hash),
-                ],
-                "notes": None,
-            }
-        ],
+        "suites": suites,
         "created_at": created_at,
         "notes": None,
     }
@@ -102,6 +114,7 @@ def _mk_counterpressure_plan(
     base_model_id: str,
     optimization_suite_id: str,
     optimization_suite_root_hash: str,
+    adversarial_suite_root_hash: str,
     decode_policy_id: str,
     decode_cfg_hash: str,
     break_hypothesis_id: str,
@@ -115,7 +128,7 @@ def _mk_counterpressure_plan(
         "optimization_suite_id": optimization_suite_id,
         "optimization_suite_root_hash": optimization_suite_root_hash,
         "adversarial_suite_id": f"{optimization_suite_id}_ADV",
-        "adversarial_suite_root_hash": "b" * 64,
+        "adversarial_suite_root_hash": adversarial_suite_root_hash,
         "decode_policy_id": decode_policy_id,
         "decode_cfg_hash": decode_cfg_hash,
         "break_hypothesis_id": break_hypothesis_id,
@@ -178,6 +191,29 @@ def _mk_eval_report_v2(*, job_id: str, adapter_id: str, adapter_version: str, ut
     return rep
 
 
+def _mk_fragility_probe_result(*, counterpressure_plan_id: str, evaluated_hashes: list[str], probe_families: list[str]) -> dict:
+    created_at = "1970-01-01T00:00:00Z"
+    probes = [
+        {"probe_id": f"{fam}.0", "family": fam, "status": "PASS", "notes": None}
+        for fam in sorted({f.strip() for f in probe_families if isinstance(f, str) and f.strip()})
+    ]
+    obj = {
+        "schema_id": "kt.fragility_probe_result.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.fragility_probe_result.v1.json"),
+        "fragility_probe_result_id": "",
+        "counterpressure_plan_id": counterpressure_plan_id,
+        "status": "PASS",
+        "reason_codes": [],
+        "evaluated_adapter_root_hashes": sorted(evaluated_hashes),
+        "probes": probes,
+        "created_at": created_at,
+        "notes": None,
+    }
+    obj["fragility_probe_result_id"] = sha256_hex_of_obj(obj, drop_keys={"created_at", "fragility_probe_result_id"})
+    validate_schema_bound_object(obj)
+    return obj
+
+
 def _mk_job_dir_manifest(*, job_id: str, adapter_root_hash: str, eval_report_bytes: bytes) -> dict:
     created_at = "1970-01-01T00:00:00Z"
     entry = {
@@ -227,12 +263,43 @@ def test_epic15_tournament_runner_bit_identical_rerun(tmp_path: Path) -> None:
     suite_id = "SUITE_X"
     suite_definition_ref = "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_X.v1.json"
     suite_root_hash = sha256_file_canonical((_REPO_ROOT / suite_definition_ref).resolve())
+    adv_suite_definition_ref = "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_X_ADV.v1.json"
+    adv_suite_root_hash = sha256_file_canonical((_REPO_ROOT / adv_suite_definition_ref).resolve())
     decode_cfg_hash = "d" * 64
 
     registry_path = tmp_path / "suite_registry.json"
     _ = _write_json(
         registry_path,
-        _mk_suite_registry(suite_id=suite_id, suite_root_hash=suite_root_hash, suite_definition_ref=suite_definition_ref),
+        _mk_suite_registry(
+            suite_id=suite_id,
+            suite_root_hash=suite_root_hash,
+            suite_definition_ref=suite_definition_ref,
+            extra_suites=[
+                {
+                    "suite_id": f"{suite_id}_ADV",
+                    "suite_root_hash": adv_suite_root_hash,
+                    "suite_definition_ref": adv_suite_definition_ref,
+                    "authorization_payload_hash": sha256_hex_of_obj(
+                        {"suite_id": f"{suite_id}_ADV", "suite_root_hash": adv_suite_root_hash}, drop_keys=set()
+                    ),
+                    "signoffs": [
+                        _mk_simulated_signoff(
+                            key_id="SIGNER_A",
+                            payload_hash=sha256_hex_of_obj(
+                                {"suite_id": f"{suite_id}_ADV", "suite_root_hash": adv_suite_root_hash}, drop_keys=set()
+                            ),
+                        ),
+                        _mk_simulated_signoff(
+                            key_id="SIGNER_B",
+                            payload_hash=sha256_hex_of_obj(
+                                {"suite_id": f"{suite_id}_ADV", "suite_root_hash": adv_suite_root_hash}, drop_keys=set()
+                            ),
+                        ),
+                    ],
+                    "notes": None,
+                }
+            ],
+        ),
     )
 
     bh_path = tmp_path / "break_hypothesis.json"
@@ -245,6 +312,7 @@ def test_epic15_tournament_runner_bit_identical_rerun(tmp_path: Path) -> None:
             base_model_id=base_model_id,
             optimization_suite_id=suite_id,
             optimization_suite_root_hash=suite_root_hash,
+            adversarial_suite_root_hash=adv_suite_root_hash,
             decode_policy_id="greedy_v1",
             decode_cfg_hash=decode_cfg_hash,
             break_hypothesis_id=bh["break_hypothesis_id"],
@@ -280,6 +348,12 @@ def test_epic15_tournament_runner_bit_identical_rerun(tmp_path: Path) -> None:
         counterpressure_plan_path=cp_path,
         break_hypothesis_path=bh_path,
         out_path=tmp_path / "evaluation_admission_receipt.json",
+    )
+
+    cp_obj = json.loads(cp_path.read_text(encoding="utf-8"))
+    _ = _write_json(
+        tmp_path / "fragility_probe_result.json",
+        _mk_fragility_probe_result(counterpressure_plan_id=cp_obj["counterpressure_plan_id"], evaluated_hashes=[a_hash, b_hash], probe_families=["perturbation", "schema_trap"]),
     )
 
     res1 = run_tournament(repo_root=_REPO_ROOT, plan_path=plan_path, entrants_root=entrants_root, out_dir=out_dir)
@@ -316,12 +390,43 @@ def test_epic15_tournament_runner_fail_closed_on_missing_entrants(tmp_path: Path
     suite_id = "SUITE_X"
     suite_definition_ref = "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_X.v1.json"
     suite_root_hash = sha256_file_canonical((_REPO_ROOT / suite_definition_ref).resolve())
+    adv_suite_definition_ref = "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_X_ADV.v1.json"
+    adv_suite_root_hash = sha256_file_canonical((_REPO_ROOT / adv_suite_definition_ref).resolve())
     decode_cfg_hash = "d" * 64
 
     registry_path = tmp_path / "suite_registry.json"
     _ = _write_json(
         registry_path,
-        _mk_suite_registry(suite_id=suite_id, suite_root_hash=suite_root_hash, suite_definition_ref=suite_definition_ref),
+        _mk_suite_registry(
+            suite_id=suite_id,
+            suite_root_hash=suite_root_hash,
+            suite_definition_ref=suite_definition_ref,
+            extra_suites=[
+                {
+                    "suite_id": f"{suite_id}_ADV",
+                    "suite_root_hash": adv_suite_root_hash,
+                    "suite_definition_ref": adv_suite_definition_ref,
+                    "authorization_payload_hash": sha256_hex_of_obj(
+                        {"suite_id": f"{suite_id}_ADV", "suite_root_hash": adv_suite_root_hash}, drop_keys=set()
+                    ),
+                    "signoffs": [
+                        _mk_simulated_signoff(
+                            key_id="SIGNER_A",
+                            payload_hash=sha256_hex_of_obj(
+                                {"suite_id": f"{suite_id}_ADV", "suite_root_hash": adv_suite_root_hash}, drop_keys=set()
+                            ),
+                        ),
+                        _mk_simulated_signoff(
+                            key_id="SIGNER_B",
+                            payload_hash=sha256_hex_of_obj(
+                                {"suite_id": f"{suite_id}_ADV", "suite_root_hash": adv_suite_root_hash}, drop_keys=set()
+                            ),
+                        ),
+                    ],
+                    "notes": None,
+                }
+            ],
+        ),
     )
 
     bh_path = tmp_path / "break_hypothesis.json"
@@ -334,6 +439,7 @@ def test_epic15_tournament_runner_fail_closed_on_missing_entrants(tmp_path: Path
             base_model_id=base_model_id,
             optimization_suite_id=suite_id,
             optimization_suite_root_hash=suite_root_hash,
+            adversarial_suite_root_hash=adv_suite_root_hash,
             decode_policy_id="greedy_v1",
             decode_cfg_hash=decode_cfg_hash,
             break_hypothesis_id=bh["break_hypothesis_id"],
@@ -369,6 +475,16 @@ def test_epic15_tournament_runner_fail_closed_on_missing_entrants(tmp_path: Path
         counterpressure_plan_path=cp_path,
         break_hypothesis_path=bh_path,
         out_path=tmp_path / "evaluation_admission_receipt.json",
+    )
+
+    cp_obj = json.loads(cp_path.read_text(encoding="utf-8"))
+    _ = _write_json(
+        tmp_path / "fragility_probe_result.json",
+        _mk_fragility_probe_result(
+            counterpressure_plan_id=cp_obj["counterpressure_plan_id"],
+            evaluated_hashes=[a_hash, b_hash],
+            probe_families=["perturbation", "schema_trap"],
+        ),
     )
 
     try:

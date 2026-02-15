@@ -4,7 +4,7 @@
   "notes": "EPIC_16 suite registry. SIMULATED until canonical lane HMAC apply.",
   "schema_id": "kt.suite_registry.v1",
   "schema_version_hash": "50d1b50f055476d73d3a0de7f8a87f0c7b5ab6ae6a9cb676fbe17f7e3d772bcc",
-  "suite_registry_id": "75776a29645c7660fbc12f5e922aa7176d66592ad69ca2df45066a6a9c8aca7b",
+  "suite_registry_id": "870bbac89b0beaa10089d3bd4c32eba97e90b9388cd1b47a573722583b09dfaf",
   "suites": [
     {
       "authorization_payload_hash": "75c064505c2ae9e1132eb9db2a1344a1034f352db45ba4b18e321bbed5a8e45e",
@@ -34,6 +34,35 @@
       "suite_definition_ref": "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_X.v1.json",
       "suite_id": "SUITE_X",
       "suite_root_hash": "4fecea4be80b6c8290f9d7294a52bd27a6367bdac1f1cca11b5dcadec7750f89"
+    },
+    {
+      "authorization_payload_hash": "ae152b3c11a2ce1812d7d537999a4cfda3f501b7e10802079a142b752685f13b",
+      "notes": null,
+      "signoffs": [
+        {
+          "attestation_mode": "SIMULATED",
+          "created_at": "1970-01-01T00:00:00Z",
+          "key_id": "SIGNER_A",
+          "payload_hash": "ae152b3c11a2ce1812d7d537999a4cfda3f501b7e10802079a142b752685f13b",
+          "schema_id": "kt.human_signoff.v2",
+          "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
+          "signoff_id": "3456589ae1c8a6bd0a3844e25a7f911b47f1b37b7ac44120852f6fccd16a39ba",
+          "simulated_signature": "07bd4ae126569477379f08561db9f64c4a90ebee9a6755c1d4e2796353b0efbd"
+        },
+        {
+          "attestation_mode": "SIMULATED",
+          "created_at": "1970-01-01T00:00:00Z",
+          "key_id": "SIGNER_B",
+          "payload_hash": "ae152b3c11a2ce1812d7d537999a4cfda3f501b7e10802079a142b752685f13b",
+          "schema_id": "kt.human_signoff.v2",
+          "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
+          "signoff_id": "3ecb92a0615628909c447e4b302fcefa60366c96c9b744c0cbd0be942ee19b3e",
+          "simulated_signature": "a54b551c6cfe811a909b28ed2b2d810e01886acce9afe74d5e2e3ec070562a94"
+        }
+      ],
+      "suite_definition_ref": "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_X_ADV.v1.json",
+      "suite_id": "SUITE_X_ADV",
+      "suite_root_hash": "c2090cd5a0544fd52261809996ca5416a926880ce03d2b02b9acd2062f76a333"
     }
   ]
 }

@@ -818,7 +818,7 @@ def assert_epic15_governance_tools_smoke(*, repo_root: Path) -> None:
             "optimization_suite_id": suite_id,
             "optimization_suite_root_hash": suite_root_hash,
             "adversarial_suite_id": f"{suite_id}_ADV",
-            "adversarial_suite_root_hash": "b" * 64,
+            "adversarial_suite_root_hash": sha256_file_canonical((repo_root / "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_X_ADV.v1.json").resolve()),
             "decode_policy_id": "greedy_v1",
             "decode_cfg_hash": decode_cfg_hash,
             "break_hypothesis_id": bh["break_hypothesis_id"],
@@ -833,6 +833,26 @@ def assert_epic15_governance_tools_smoke(*, repo_root: Path) -> None:
         cp_path = root / "counterpressure_plan.json"
         write_json(bh_path, bh)
         write_json(cp_path, cp)
+
+        fp: Dict[str, Any] = {
+            "schema_id": "kt.fragility_probe_result.v1",
+            "schema_version_hash": schema_version_hash("fl3/kt.fragility_probe_result.v1.json"),
+            "fragility_probe_result_id": "",
+            "counterpressure_plan_id": cp["counterpressure_plan_id"],
+            "status": "PASS",
+            "reason_codes": [],
+            "evaluated_adapter_root_hashes": sorted(entrant_hashes),
+            "probes": [
+                {"probe_id": "perturbation.0", "family": "perturbation", "status": "PASS", "notes": None},
+                {"probe_id": "schema_trap.0", "family": "schema_trap", "status": "PASS", "notes": None},
+            ],
+            "created_at": created_at,
+            "notes": None,
+        }
+        fp["fragility_probe_result_id"] = sha256_hex_of_obj(fp, drop_keys={"created_at", "fragility_probe_result_id"})
+        validate_schema_bound_object(fp)
+        fp_path = root / "fragility_probe_result.json"
+        write_json(fp_path, fp)
 
         _ = ensure_evaluation_admission_receipt(
             repo_root=repo_root,

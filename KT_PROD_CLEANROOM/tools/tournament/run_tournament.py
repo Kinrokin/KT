@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 from schemas.fl3_schema_common import sha256_hex_of_obj
 from schemas.schema_files import schema_version_hash
+from tools.governance.counterpressure_gate import check_counterpressure_evidence
 from tools.governance.failure_taxonomy_reporter import load_failure_taxonomy
 from tools.training.fl3_factory.manifests import sha256_file as sha256_file_canonical
 from tools.training.fl3_factory.timeutil import utc_now_z
@@ -175,6 +176,9 @@ def build_tournament_result(
     plan_path: Path,
     entrants_root: Path,
     admission_receipt_path: Optional[Path] = None,
+    break_hypothesis_path: Optional[Path] = None,
+    counterpressure_plan_path: Optional[Path] = None,
+    fragility_probe_result_path: Optional[Path] = None,
 ) -> Dict[str, Any]:
     reasons: List[str] = []
     notes: Optional[str] = None
@@ -202,7 +206,7 @@ def build_tournament_result(
     # EPIC_16: evaluation admission is mandatory for tournaments and must bind to this plan.
     if admission_receipt_path is None:
         admission_receipt_path = plan_path.resolve().parent / "evaluation_admission_receipt.json"
-    _rec, rec_err = _load_eval_admission_receipt(plan_path=plan_path, receipt_path=admission_receipt_path)
+    rec, rec_err = _load_eval_admission_receipt(plan_path=plan_path, receipt_path=admission_receipt_path)
     if rec_err:
         reasons.append(_RC_INPUT_MISSING)
         notes = (notes + ";" if notes else "") + f"eval_admission:{rec_err}"
@@ -210,6 +214,42 @@ def build_tournament_result(
     entrants = plan.get("entrants") if isinstance(plan.get("entrants"), list) else []
     if not entrants:
         reasons.append(_RC_SCHEMA_INVALID)
+
+    # EPIC_16 hard gate: counter-pressure evidence is mandatory and must PASS.
+    if break_hypothesis_path is None:
+        break_hypothesis_path = plan_path.resolve().parent / "break_hypothesis.json"
+    if counterpressure_plan_path is None:
+        counterpressure_plan_path = plan_path.resolve().parent / "counterpressure_plan.json"
+    if fragility_probe_result_path is None:
+        fragility_probe_result_path = plan_path.resolve().parent / "fragility_probe_result.json"
+
+    suite_registry_path: Optional[Path] = None
+    if isinstance(rec, dict):
+        ref = str(rec.get("suite_registry_ref", "")).strip()
+        if ref:
+            p = Path(ref)
+            suite_registry_path = (repo_root / ref).resolve() if not p.is_absolute() else p.resolve()
+
+    entrant_hashes = [str(e.get("adapter_root_hash", "")).strip() for e in entrants if isinstance(e, dict)]
+    ok_cp, cp_reasons, cp_notes = check_counterpressure_evidence(
+        repo_root=repo_root,
+        expected_base_model_id=str(plan.get("base_model_id", "")).strip(),
+        expected_suite_id=str(plan.get("suite_id", "")).strip(),
+        expected_suite_root_hash=str(plan.get("suite_root_hash", "")).strip(),
+        expected_decode_policy_id=str(plan.get("decode_policy_id", "")).strip(),
+        expected_decode_cfg_hash=str(plan.get("decode_cfg_hash", "")).strip(),
+        entrant_adapter_root_hashes=entrant_hashes,
+        suite_registry_path=suite_registry_path,
+        break_hypothesis_path=break_hypothesis_path,
+        counterpressure_plan_path=counterpressure_plan_path,
+        fragility_probe_result_path=fragility_probe_result_path,
+        expected_break_hypothesis_sha256=str(rec.get("break_hypothesis_sha256")).strip() if isinstance(rec, dict) else None,
+        expected_counterpressure_plan_sha256=str(rec.get("counterpressure_plan_sha256")).strip() if isinstance(rec, dict) else None,
+    )
+    if not ok_cp:
+        reasons.extend(cp_reasons)
+    if cp_notes:
+        notes = (notes + ";" if notes else "") + f"counterpressure:{cp_notes}"
 
     # Load failure taxonomy to close reason codes.
     taxonomy = load_failure_taxonomy(repo_root=repo_root)
@@ -379,12 +419,18 @@ def run_tournament(
     entrants_root: Path,
     out_dir: Path,
     admission_receipt_path: Optional[Path] = None,
+    break_hypothesis_path: Optional[Path] = None,
+    counterpressure_plan_path: Optional[Path] = None,
+    fragility_probe_result_path: Optional[Path] = None,
 ) -> Dict[str, Any]:
     result = build_tournament_result(
         repo_root=repo_root,
         plan_path=plan_path,
         entrants_root=entrants_root,
         admission_receipt_path=admission_receipt_path,
+        break_hypothesis_path=break_hypothesis_path,
+        counterpressure_plan_path=counterpressure_plan_path,
+        fragility_probe_result_path=fragility_probe_result_path,
     )
     out_dir = out_dir.resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -405,6 +451,28 @@ def run_tournament(
         except Exception as exc:  # noqa: BLE001
             raise FL3ValidationError(f"FAIL_CLOSED: {_RC_DETERMINISM_MISMATCH}: {exc}") from exc
 
+    # Copy counter-pressure evidence into the tournament out_dir (WORM, byte-identical no-op).
+    if break_hypothesis_path is None:
+        break_hypothesis_path = plan_path.resolve().parent / "break_hypothesis.json"
+    if counterpressure_plan_path is None:
+        counterpressure_plan_path = plan_path.resolve().parent / "counterpressure_plan.json"
+    if fragility_probe_result_path is None:
+        fragility_probe_result_path = plan_path.resolve().parent / "fragility_probe_result.json"
+    for src, dst_name in (
+        (break_hypothesis_path, "break_hypothesis.json"),
+        (counterpressure_plan_path, "counterpressure_plan.json"),
+        (fragility_probe_result_path, "fragility_probe_result.json"),
+    ):
+        if src is None:
+            continue
+        sp = src.resolve()
+        if sp.exists():
+            try:
+                data = sp.read_bytes()
+                write_bytes_worm(path=out_dir / dst_name, data=data, label=dst_name)
+            except Exception as exc:  # noqa: BLE001
+                raise FL3ValidationError(f"FAIL_CLOSED: {_RC_DETERMINISM_MISMATCH}: {exc}") from exc
+
     if str(result.get("status")) != "PASS":
         raise FL3ValidationError("FAIL_CLOSED: tournament runner refused to certify champion set")
     return result
@@ -424,6 +492,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         default=None,
         help="Path to kt.evaluation_admission_receipt.v1 JSON. Default: <plan_dir>/evaluation_admission_receipt.json",
     )
+    ap.add_argument("--break-hypothesis", default=None, help="Path to kt.break_hypothesis.v1 JSON. Default: <plan_dir>/break_hypothesis.json")
+    ap.add_argument(
+        "--counterpressure-plan",
+        default=None,
+        help="Path to kt.counterpressure_plan.v1 JSON. Default: <plan_dir>/counterpressure_plan.json",
+    )
+    ap.add_argument(
+        "--fragility-probe-result",
+        default=None,
+        help="Path to kt.fragility_probe_result.v1 JSON. Default: <plan_dir>/fragility_probe_result.json",
+    )
     args = ap.parse_args(list(argv) if argv is not None else None)
 
     repo_root = repo_root_from(Path(__file__))
@@ -433,6 +512,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         entrants_root=Path(args.entrants_root),
         out_dir=Path(args.out_dir),
         admission_receipt_path=Path(args.admission_receipt).resolve() if args.admission_receipt else None,
+        break_hypothesis_path=Path(args.break_hypothesis).resolve() if args.break_hypothesis else None,
+        counterpressure_plan_path=Path(args.counterpressure_plan).resolve() if args.counterpressure_plan else None,
+        fragility_probe_result_path=Path(args.fragility_probe_result).resolve() if args.fragility_probe_result else None,
     )
     return 0
 

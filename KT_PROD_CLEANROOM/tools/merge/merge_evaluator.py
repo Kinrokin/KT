@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 from schemas.fl3_schema_common import sha256_hex_of_obj
 from schemas.schema_files import schema_version_hash
+from tools.governance.counterpressure_gate import check_counterpressure_evidence
 from tools.governance.failure_taxonomy_reporter import load_failure_taxonomy
 from tools.training.fl3_factory.manifests import sha256_file as sha256_file_canonical
 from tools.training.fl3_factory.timeutil import utc_now_z
@@ -231,8 +232,13 @@ def build_merge_artifacts(
     if base_model_id and str(tresult.get("base_model_id", "")).strip() and str(tresult.get("base_model_id", "")).strip() != base_model_id:
         reasons.append(_RC_PRECONDITION)
 
+    entrants = tresult.get("entrants") if isinstance(tresult.get("entrants"), list) else []
+    entrant_hashes = [str(e.get("adapter_root_hash", "")).strip() for e in entrants if isinstance(e, dict)]
+    entrant_hashes = sorted([h for h in entrant_hashes if h])
+
     # EPIC_16: tournament evidence must include a PASS evaluation admission receipt (suite authorization).
     admission_path = tournament_result_path.resolve().parent / "evaluation_admission_receipt.json"
+    adm: Dict[str, Any] = {}
     if not admission_path.exists():
         reasons.append(_RC_PRECONDITION)
     else:
@@ -248,15 +254,44 @@ def build_merge_artifacts(
         except Exception:  # noqa: BLE001
             reasons.append(_RC_PRECONDITION)
 
+    # EPIC_16: counter-pressure evidence must exist and PASS (fragility probes) for merge admissibility.
+    if not reasons and adm:
+        suite_registry_path: Optional[Path] = None
+        ref = str(adm.get("suite_registry_ref", "")).strip()
+        if ref:
+            p = Path(ref)
+            suite_registry_path = (repo_root / ref).resolve() if not p.is_absolute() else p.resolve()
+
+        bh_path = tournament_result_path.resolve().parent / "break_hypothesis.json"
+        cp_path = tournament_result_path.resolve().parent / "counterpressure_plan.json"
+        fp_path = tournament_result_path.resolve().parent / "fragility_probe_result.json"
+
+        ok_cp, cp_reasons, cp_notes = check_counterpressure_evidence(
+            repo_root=repo_root,
+            expected_base_model_id=str(adm.get("base_model_id", "")).strip() or base_model_id,
+            expected_suite_id=str(adm.get("suite_id", "")).strip(),
+            expected_suite_root_hash=str(adm.get("suite_root_hash", "")).strip(),
+            expected_decode_policy_id=str(adm.get("decode_policy_id", "")).strip(),
+            expected_decode_cfg_hash=str(adm.get("decode_cfg_hash", "")).strip(),
+            entrant_adapter_root_hashes=entrant_hashes,
+            suite_registry_path=suite_registry_path,
+            break_hypothesis_path=bh_path,
+            counterpressure_plan_path=cp_path,
+            fragility_probe_result_path=fp_path,
+            expected_break_hypothesis_sha256=str(adm.get("break_hypothesis_sha256")).strip() if adm else None,
+            expected_counterpressure_plan_sha256=str(adm.get("counterpressure_plan_sha256")).strip() if adm else None,
+        )
+        if not ok_cp:
+            reasons.extend(cp_reasons)
+        if cp_notes:
+            notes = (notes + ";" if notes else "") + f"counterpressure:{cp_notes}"
+
     parents = manifest.get("parents") if isinstance(manifest.get("parents"), list) else []
     parent_hashes = [str(p.get("adapter_root_hash", "")).strip() for p in parents if isinstance(p, dict)]
     parent_hashes = sorted([h for h in parent_hashes if h])
     if len(parent_hashes) < 2:
         reasons.append(_RC_PRECONDITION)
 
-    entrants = tresult.get("entrants") if isinstance(tresult.get("entrants"), list) else []
-    entrant_hashes = [str(e.get("adapter_root_hash", "")).strip() for e in entrants if isinstance(e, dict)]
-    entrant_hashes = sorted([h for h in entrant_hashes if h])
     if any(h not in set(entrant_hashes) for h in parent_hashes):
         reasons.append(_RC_PRECONDITION)
 
