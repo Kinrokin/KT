@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Suite Registry v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "suite_registry_id",
+    "attestation_mode",
+    "suites",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.suite_registry.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "suite_registry_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "attestation_mode": { "type": "string", "enum": ["SIMULATED", "HMAC", "PKI"] },
+    "suites": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "suite_id",
+          "suite_root_hash",
+          "suite_definition_ref",
+          "authorization_payload_hash",
+          "signoffs"
+        ],
+        "properties": {
+          "suite_id": { "type": "string" },
+          "suite_root_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "suite_definition_ref": { "type": "string" },
+          "authorization_payload_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "signoffs": { "type": "array", "items": { "type": "object" } },
+          "notes": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"] }
+  }
+}
+

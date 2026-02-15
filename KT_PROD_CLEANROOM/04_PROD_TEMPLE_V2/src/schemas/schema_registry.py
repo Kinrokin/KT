@@ -194,6 +194,36 @@ from schemas.fl3_training_admission_receipt_schema import (
     FL3_TRAINING_ADMISSION_RECEIPT_SCHEMA_VERSION_HASH,
     validate_fl3_training_admission_receipt,
 )
+from schemas.fl3_suite_registry_schema import (
+    FL3_SUITE_REGISTRY_SCHEMA_ID,
+    FL3_SUITE_REGISTRY_SCHEMA_VERSION_HASH,
+    validate_fl3_suite_registry,
+)
+from schemas.fl3_break_hypothesis_schema import (
+    FL3_BREAK_HYPOTHESIS_SCHEMA_ID,
+    FL3_BREAK_HYPOTHESIS_SCHEMA_VERSION_HASH,
+    validate_fl3_break_hypothesis,
+)
+from schemas.fl3_counterpressure_plan_schema import (
+    FL3_COUNTERPRESSURE_PLAN_SCHEMA_ID,
+    FL3_COUNTERPRESSURE_PLAN_SCHEMA_VERSION_HASH,
+    validate_fl3_counterpressure_plan,
+)
+from schemas.fl3_fragility_probe_result_schema import (
+    FL3_FRAGILITY_PROBE_RESULT_SCHEMA_ID,
+    FL3_FRAGILITY_PROBE_RESULT_SCHEMA_VERSION_HASH,
+    validate_fl3_fragility_probe_result,
+)
+from schemas.fl3_evaluation_admission_receipt_schema import (
+    FL3_EVALUATION_ADMISSION_RECEIPT_SCHEMA_ID,
+    FL3_EVALUATION_ADMISSION_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_fl3_evaluation_admission_receipt,
+)
+from schemas.fl3_law_change_admission_receipt_schema import (
+    FL3_LAW_CHANGE_ADMISSION_RECEIPT_SCHEMA_ID,
+    FL3_LAW_CHANGE_ADMISSION_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_fl3_law_change_admission_receipt,
+)
 from schemas.fl3_tournament_manifest_schema import (
     FL3_TOURNAMENT_MANIFEST_SCHEMA_ID,
     FL3_TOURNAMENT_MANIFEST_SCHEMA_VERSION_HASH,
@@ -571,6 +601,24 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     FL3_TRAINING_ADMISSION_RECEIPT_SCHEMA_ID: (
         FL3_TRAINING_ADMISSION_RECEIPT_SCHEMA_VERSION_HASH,
         validate_fl3_training_admission_receipt,
+    ),
+    FL3_SUITE_REGISTRY_SCHEMA_ID: (FL3_SUITE_REGISTRY_SCHEMA_VERSION_HASH, validate_fl3_suite_registry),
+    FL3_BREAK_HYPOTHESIS_SCHEMA_ID: (FL3_BREAK_HYPOTHESIS_SCHEMA_VERSION_HASH, validate_fl3_break_hypothesis),
+    FL3_COUNTERPRESSURE_PLAN_SCHEMA_ID: (
+        FL3_COUNTERPRESSURE_PLAN_SCHEMA_VERSION_HASH,
+        validate_fl3_counterpressure_plan,
+    ),
+    FL3_FRAGILITY_PROBE_RESULT_SCHEMA_ID: (
+        FL3_FRAGILITY_PROBE_RESULT_SCHEMA_VERSION_HASH,
+        validate_fl3_fragility_probe_result,
+    ),
+    FL3_EVALUATION_ADMISSION_RECEIPT_SCHEMA_ID: (
+        FL3_EVALUATION_ADMISSION_RECEIPT_SCHEMA_VERSION_HASH,
+        validate_fl3_evaluation_admission_receipt,
+    ),
+    FL3_LAW_CHANGE_ADMISSION_RECEIPT_SCHEMA_ID: (
+        FL3_LAW_CHANGE_ADMISSION_RECEIPT_SCHEMA_VERSION_HASH,
+        validate_fl3_law_change_admission_receipt,
     ),
     FL3_MERGE_MANIFEST_SCHEMA_ID: (FL3_MERGE_MANIFEST_SCHEMA_VERSION_HASH, validate_fl3_merge_manifest),
     FL3_MERGE_EVAL_RECEIPT_SCHEMA_ID: (

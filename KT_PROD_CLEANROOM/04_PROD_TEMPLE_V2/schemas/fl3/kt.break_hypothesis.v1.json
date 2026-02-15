@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Break Hypothesis v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "break_hypothesis_id",
+    "base_model_id",
+    "suite_id",
+    "hypothesis",
+    "predicted_failure_modes",
+    "required_probe_families",
+    "regression_budgets",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.break_hypothesis.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "break_hypothesis_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "base_model_id": { "type": "string" },
+    "suite_id": { "type": "string" },
+    "hypothesis": { "type": "string" },
+    "predicted_failure_modes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["mode_id", "description"],
+        "properties": {
+          "mode_id": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "required_probe_families": { "type": "array", "items": { "type": "string" } },
+    "regression_budgets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["safety_regression_epsilon", "new_hard_failures_allowed"],
+      "properties": {
+        "safety_regression_epsilon": { "type": "number" },
+        "new_hard_failures_allowed": { "type": "integer" }
+      }
+    },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"] }
+  }
+}
+
