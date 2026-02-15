@@ -11,7 +11,7 @@ from schemas.schema_files import schema_version_hash
 from tools.governance.failure_taxonomy_reporter import load_failure_taxonomy
 from tools.training.fl3_factory.manifests import sha256_file as sha256_file_canonical
 from tools.training.fl3_factory.timeutil import utc_now_z
-from tools.verification.fl3_canonical import repo_root_from
+from tools.verification.fl3_canonical import canonical_json, repo_root_from, sha256_text
 from tools.verification.fl3_validators import FL3ValidationError, validate_schema_bound_object
 from tools.verification.worm_write import write_bytes_worm, write_text_worm
 
@@ -98,19 +98,15 @@ def _load_eval_admission_receipt(*, plan_path: Path, receipt_path: Path) -> Tupl
     if str(rec.get("decision", "")).strip() != "PASS":
         return rec, "evaluation admission denied"
 
-    # Bind receipt to the exact immutable plan bytes.
-    try:
-        plan_sha = sha256_file_canonical(plan_path.resolve())
-    except Exception:  # noqa: BLE001
-        plan_sha = ""
-    if str(rec.get("evaluation_plan_sha256", "")).strip() != plan_sha:
-        return rec, "evaluation_plan_sha256 mismatch"
-
-    # Ensure receipt binds to the same plan semantics.
+    # Ensure receipt binds to the same plan semantics and canonical plan hash surface.
     try:
         plan = _read_json_dict(plan_path, name="tournament_plan")
     except Exception as exc:  # noqa: BLE001
         return rec, f"unable to read plan for receipt binding: {exc}"
+
+    plan_sha = sha256_text(canonical_json(plan))
+    if str(rec.get("evaluation_plan_sha256", "")).strip() != plan_sha:
+        return rec, "evaluation_plan_sha256 mismatch"
 
     for field in ("base_model_id", "suite_id", "suite_root_hash", "decode_policy_id", "decode_cfg_hash"):
         if str(rec.get(field, "")).strip() != str(plan.get(field, "")).strip():
