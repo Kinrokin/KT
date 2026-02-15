@@ -23,7 +23,23 @@ def _write_json(path: Path, obj: dict) -> None:
     path.write_text(json.dumps(obj, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8", newline="\n")
 
 
+def _build_simulated_signoff(*, key_id: str, payload_hash: str, created_at: str) -> dict:
+    signoff = {
+        "schema_id": "kt.human_signoff.v2",
+        "schema_version_hash": schema_version_hash("fl3/kt.human_signoff.v2.json"),
+        "signoff_id": "",
+        "attestation_mode": "SIMULATED",
+        "key_id": key_id,
+        "payload_hash": payload_hash,
+        "simulated_signature": sha256_hex_of_obj({"key_id": key_id, "payload_hash": payload_hash}, drop_keys=set()),
+        "created_at": created_at,
+    }
+    signoff["signoff_id"] = sha256_hex_of_obj(signoff, drop_keys={"created_at", "signoff_id"})
+    return signoff
+
+
 def _mk_suite_registry(*, suite_id: str, suite_root_hash: str, suite_definition_ref: str) -> dict:
+    created_at = "1970-01-01T00:00:00Z"
     authorization_payload_hash = sha256_hex_of_obj({"suite_id": suite_id, "suite_root_hash": suite_root_hash}, drop_keys=set())
     obj = {
         "schema_id": "kt.suite_registry.v1",
@@ -37,13 +53,13 @@ def _mk_suite_registry(*, suite_id: str, suite_root_hash: str, suite_definition_
                 "suite_definition_ref": suite_definition_ref,
                 "authorization_payload_hash": authorization_payload_hash,
                 "signoffs": [
-                    {"key_id": "SIGNER_A", "payload_hash": authorization_payload_hash},
-                    {"key_id": "SIGNER_B", "payload_hash": authorization_payload_hash},
+                    _build_simulated_signoff(key_id="SIGNER_A", payload_hash=authorization_payload_hash, created_at=created_at),
+                    _build_simulated_signoff(key_id="SIGNER_B", payload_hash=authorization_payload_hash, created_at=created_at),
                 ],
                 "notes": None,
             }
         ],
-        "created_at": "1970-01-01T00:00:00Z",
+        "created_at": created_at,
         "notes": None,
     }
     obj["suite_registry_id"] = sha256_hex_of_obj(obj, drop_keys={"created_at", "suite_registry_id"})
