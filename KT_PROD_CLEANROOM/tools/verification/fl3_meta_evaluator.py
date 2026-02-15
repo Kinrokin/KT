@@ -660,6 +660,7 @@ def assert_epic15_governance_tools_smoke(*, repo_root: Path) -> None:
 
     from schemas.fl3_schema_common import sha256_hex_of_obj  # type: ignore
     from schemas.schema_files import schema_version_hash  # type: ignore
+    from tools.governance.evaluation_admission_gate import ensure_evaluation_admission_receipt  # type: ignore
     from tools.merge.merge_evaluator import run_merge_evaluator  # type: ignore
     from tools.tournament.run_tournament import run_tournament  # type: ignore
     from tools.training.fl3_factory.manifests import sha256_file as sha256_file_canonical  # type: ignore
@@ -675,6 +676,9 @@ def assert_epic15_governance_tools_smoke(*, repo_root: Path) -> None:
     created_at = "1970-01-01T00:00:00Z"
     base_model_id = "mistral-7b"
     suite_id = "SUITE_X"
+    suite_def_ref = "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_X.v1.json"
+    suite_root_hash = sha256_file_canonical((repo_root / suite_def_ref).resolve())
+    decode_cfg_hash = "d" * 64
 
     p1_hash = "1" * 64
     p2_hash = "2" * 64
@@ -774,9 +778,9 @@ def assert_epic15_governance_tools_smoke(*, repo_root: Path) -> None:
             "tournament_plan_id": "",
             "base_model_id": base_model_id,
             "suite_id": suite_id,
-            "suite_root_hash": "c" * 64,
+            "suite_root_hash": suite_root_hash,
             "decode_policy_id": "greedy_v1",
-            "decode_cfg_hash": "d" * 64,
+            "decode_cfg_hash": decode_cfg_hash,
             "tournament_mode": "round_robin_v1",
             "epsilon": 0.01,
             "entrants": entrants,
@@ -789,6 +793,56 @@ def assert_epic15_governance_tools_smoke(*, repo_root: Path) -> None:
 
         plan_path = root / "tournament_plan.json"
         write_json(plan_path, plan)
+
+        bh: Dict[str, Any] = {
+            "schema_id": "kt.break_hypothesis.v1",
+            "schema_version_hash": schema_version_hash("fl3/kt.break_hypothesis.v1.json"),
+            "break_hypothesis_id": "",
+            "base_model_id": base_model_id,
+            "suite_id": suite_id,
+            "hypothesis": "format perturbations will break JSON compliance",
+            "predicted_failure_modes": [{"mode_id": "FMT1", "description": "outputs non-JSON under perturbation"}],
+            "required_probe_families": ["perturbation", "schema_trap"],
+            "regression_budgets": {"safety_regression_epsilon": 0.0, "new_hard_failures_allowed": 0},
+            "created_at": created_at,
+            "notes": None,
+        }
+        bh["break_hypothesis_id"] = sha256_hex_of_obj(bh, drop_keys={"created_at", "break_hypothesis_id"})
+        validate_schema_bound_object(bh)
+
+        cp: Dict[str, Any] = {
+            "schema_id": "kt.counterpressure_plan.v1",
+            "schema_version_hash": schema_version_hash("fl3/kt.counterpressure_plan.v1.json"),
+            "counterpressure_plan_id": "",
+            "base_model_id": base_model_id,
+            "optimization_suite_id": suite_id,
+            "optimization_suite_root_hash": suite_root_hash,
+            "adversarial_suite_id": f"{suite_id}_ADV",
+            "adversarial_suite_root_hash": "b" * 64,
+            "decode_policy_id": "greedy_v1",
+            "decode_cfg_hash": decode_cfg_hash,
+            "break_hypothesis_id": bh["break_hypothesis_id"],
+            "required_probe_families": ["perturbation", "schema_trap"],
+            "created_at": created_at,
+            "notes": None,
+        }
+        cp["counterpressure_plan_id"] = sha256_hex_of_obj(cp, drop_keys={"created_at", "counterpressure_plan_id"})
+        validate_schema_bound_object(cp)
+
+        bh_path = root / "break_hypothesis.json"
+        cp_path = root / "counterpressure_plan.json"
+        write_json(bh_path, bh)
+        write_json(cp_path, cp)
+
+        _ = ensure_evaluation_admission_receipt(
+            repo_root=repo_root,
+            plan_path=plan_path,
+            lane_id="META_EVAL",
+            suite_registry_path=(repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "SUITE_REGISTRY_FL3.json").resolve(),
+            counterpressure_plan_path=cp_path,
+            break_hypothesis_path=bh_path,
+            out_path=root / "evaluation_admission_receipt.json",
+        )
 
         _ = run_tournament(repo_root=repo_root, plan_path=plan_path, entrants_root=entrants_root, out_dir=out_tourn)
         b1 = (out_tourn / "tournament_result.json").read_bytes()

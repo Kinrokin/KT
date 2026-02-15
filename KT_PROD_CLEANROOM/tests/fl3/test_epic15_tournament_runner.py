@@ -10,7 +10,9 @@ _REPO_ROOT = bootstrap_syspath()
 
 from schemas.fl3_schema_common import sha256_hex_of_obj  # noqa: E402
 from schemas.schema_files import schema_version_hash  # noqa: E402
+from tools.governance.evaluation_admission_gate import ensure_evaluation_admission_receipt  # noqa: E402
 from tools.tournament.run_tournament import run_tournament  # noqa: E402
+from tools.training.fl3_factory.manifests import sha256_file as sha256_file_canonical  # noqa: E402
 from tools.verification.fl3_validators import validate_schema_bound_object  # noqa: E402
 
 
@@ -28,6 +30,102 @@ def _write_json(path: Path, obj: dict) -> bytes:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(data)
     return data
+
+
+def _mk_simulated_signoff(*, key_id: str, payload_hash: str) -> dict:
+    created_at = "1970-01-01T00:00:00Z"
+    signoff = {
+        "schema_id": "kt.human_signoff.v2",
+        "schema_version_hash": schema_version_hash("fl3/kt.human_signoff.v2.json"),
+        "signoff_id": "",
+        "attestation_mode": "SIMULATED",
+        "key_id": key_id,
+        "payload_hash": payload_hash,
+        "simulated_signature": sha256_hex_of_obj({"key_id": key_id, "payload_hash": payload_hash}, drop_keys=set()),
+        "created_at": created_at,
+    }
+    signoff["signoff_id"] = sha256_hex_of_obj(signoff, drop_keys={"created_at", "signoff_id"})
+    return signoff
+
+
+def _mk_suite_registry(*, suite_id: str, suite_root_hash: str, suite_definition_ref: str) -> dict:
+    created_at = "1970-01-01T00:00:00Z"
+    authorization_payload_hash = sha256_hex_of_obj({"suite_id": suite_id, "suite_root_hash": suite_root_hash}, drop_keys=set())
+    obj = {
+        "schema_id": "kt.suite_registry.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.suite_registry.v1.json"),
+        "suite_registry_id": "",
+        "attestation_mode": "SIMULATED",
+        "suites": [
+            {
+                "suite_id": suite_id,
+                "suite_root_hash": suite_root_hash,
+                "suite_definition_ref": suite_definition_ref,
+                "authorization_payload_hash": authorization_payload_hash,
+                "signoffs": [
+                    _mk_simulated_signoff(key_id="SIGNER_A", payload_hash=authorization_payload_hash),
+                    _mk_simulated_signoff(key_id="SIGNER_B", payload_hash=authorization_payload_hash),
+                ],
+                "notes": None,
+            }
+        ],
+        "created_at": created_at,
+        "notes": None,
+    }
+    obj["suite_registry_id"] = sha256_hex_of_obj(obj, drop_keys={"created_at", "suite_registry_id"})
+    validate_schema_bound_object(obj)
+    return obj
+
+
+def _mk_break_hypothesis(*, base_model_id: str, suite_id: str) -> dict:
+    created_at = "1970-01-01T00:00:00Z"
+    obj = {
+        "schema_id": "kt.break_hypothesis.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.break_hypothesis.v1.json"),
+        "break_hypothesis_id": "",
+        "base_model_id": base_model_id,
+        "suite_id": suite_id,
+        "hypothesis": "format-perturbations will break JSON compliance",
+        "predicted_failure_modes": [{"mode_id": "FMT1", "description": "outputs non-JSON under perturbation"}],
+        "required_probe_families": ["perturbation", "schema_trap"],
+        "regression_budgets": {"safety_regression_epsilon": 0.0, "new_hard_failures_allowed": 0},
+        "created_at": created_at,
+        "notes": None,
+    }
+    obj["break_hypothesis_id"] = sha256_hex_of_obj(obj, drop_keys={"created_at", "break_hypothesis_id"})
+    validate_schema_bound_object(obj)
+    return obj
+
+
+def _mk_counterpressure_plan(
+    *,
+    base_model_id: str,
+    optimization_suite_id: str,
+    optimization_suite_root_hash: str,
+    decode_policy_id: str,
+    decode_cfg_hash: str,
+    break_hypothesis_id: str,
+) -> dict:
+    created_at = "1970-01-01T00:00:00Z"
+    obj = {
+        "schema_id": "kt.counterpressure_plan.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.counterpressure_plan.v1.json"),
+        "counterpressure_plan_id": "",
+        "base_model_id": base_model_id,
+        "optimization_suite_id": optimization_suite_id,
+        "optimization_suite_root_hash": optimization_suite_root_hash,
+        "adversarial_suite_id": f"{optimization_suite_id}_ADV",
+        "adversarial_suite_root_hash": "b" * 64,
+        "decode_policy_id": decode_policy_id,
+        "decode_cfg_hash": decode_cfg_hash,
+        "break_hypothesis_id": break_hypothesis_id,
+        "required_probe_families": ["perturbation", "schema_trap"],
+        "created_at": created_at,
+        "notes": None,
+    }
+    obj["counterpressure_plan_id"] = sha256_hex_of_obj(obj, drop_keys={"created_at", "counterpressure_plan_id"})
+    validate_schema_bound_object(obj)
+    return obj
 
 
 def _mk_eval_report_v2(*, job_id: str, adapter_id: str, adapter_version: str, utility_floor_score: float, verdict: str) -> dict:
@@ -124,19 +222,47 @@ def test_epic15_tournament_runner_bit_identical_rerun(tmp_path: Path) -> None:
         {"adapter_root_hash": a_hash, "adapter_id": "lobe.alpha.v1", "adapter_version": "1"},
         {"adapter_root_hash": b_hash, "adapter_id": "lobe.beta.v1", "adapter_version": "1"},
     ]
+
+    base_model_id = "mistral-7b"
+    suite_id = "SUITE_X"
+    suite_definition_ref = "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_X.v1.json"
+    suite_root_hash = sha256_file_canonical((_REPO_ROOT / suite_definition_ref).resolve())
+    decode_cfg_hash = "d" * 64
+
+    registry_path = tmp_path / "suite_registry.json"
+    _ = _write_json(
+        registry_path,
+        _mk_suite_registry(suite_id=suite_id, suite_root_hash=suite_root_hash, suite_definition_ref=suite_definition_ref),
+    )
+
+    bh_path = tmp_path / "break_hypothesis.json"
+    cp_path = tmp_path / "counterpressure_plan.json"
+    bh = _mk_break_hypothesis(base_model_id=base_model_id, suite_id=suite_id)
+    _ = _write_json(bh_path, bh)
+    _ = _write_json(
+        cp_path,
+        _mk_counterpressure_plan(
+            base_model_id=base_model_id,
+            optimization_suite_id=suite_id,
+            optimization_suite_root_hash=suite_root_hash,
+            decode_policy_id="greedy_v1",
+            decode_cfg_hash=decode_cfg_hash,
+            break_hypothesis_id=bh["break_hypothesis_id"],
+        ),
+    )
     plan = {
         "schema_id": "kt.tournament_plan.v1",
         "schema_version_hash": schema_version_hash("fl3/kt.tournament_plan.v1.json"),
         "tournament_plan_id": "",
-        "base_model_id": "mistral-7b",
-        "suite_id": "SUITE_X",
-        "suite_root_hash": "c" * 64,
+        "base_model_id": base_model_id,
+        "suite_id": suite_id,
+        "suite_root_hash": suite_root_hash,
         "decode_policy_id": "greedy_v1",
-        "decode_cfg_hash": "d" * 64,
+        "decode_cfg_hash": decode_cfg_hash,
         "tournament_mode": "round_robin_v1",
         "epsilon": 0.01,
         "entrants": entrants,
-        "seed": _sha_seed("mistral-7b", "SUITE_X", [a_hash, b_hash]),
+        "seed": _sha_seed(base_model_id, suite_id, [a_hash, b_hash]),
         "created_at": "1970-01-01T00:00:00Z",
         "notes": None,
     }
@@ -145,6 +271,16 @@ def test_epic15_tournament_runner_bit_identical_rerun(tmp_path: Path) -> None:
 
     plan_path = tmp_path / "tournament_plan.json"
     _ = _write_json(plan_path, plan)
+
+    _ = ensure_evaluation_admission_receipt(
+        repo_root=_REPO_ROOT,
+        plan_path=plan_path,
+        lane_id="TEST_LANE",
+        suite_registry_path=registry_path,
+        counterpressure_plan_path=cp_path,
+        break_hypothesis_path=bh_path,
+        out_path=tmp_path / "evaluation_admission_receipt.json",
+    )
 
     res1 = run_tournament(repo_root=_REPO_ROOT, plan_path=plan_path, entrants_root=entrants_root, out_dir=out_dir)
     res_path = out_dir / "tournament_result.json"
@@ -175,19 +311,47 @@ def test_epic15_tournament_runner_fail_closed_on_missing_entrants(tmp_path: Path
         {"adapter_root_hash": a_hash, "adapter_id": "lobe.alpha.v1", "adapter_version": "1"},
         {"adapter_root_hash": b_hash, "adapter_id": "lobe.beta.v1", "adapter_version": "1"},
     ]
+
+    base_model_id = "mistral-7b"
+    suite_id = "SUITE_X"
+    suite_definition_ref = "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_X.v1.json"
+    suite_root_hash = sha256_file_canonical((_REPO_ROOT / suite_definition_ref).resolve())
+    decode_cfg_hash = "d" * 64
+
+    registry_path = tmp_path / "suite_registry.json"
+    _ = _write_json(
+        registry_path,
+        _mk_suite_registry(suite_id=suite_id, suite_root_hash=suite_root_hash, suite_definition_ref=suite_definition_ref),
+    )
+
+    bh_path = tmp_path / "break_hypothesis.json"
+    cp_path = tmp_path / "counterpressure_plan.json"
+    bh = _mk_break_hypothesis(base_model_id=base_model_id, suite_id=suite_id)
+    _ = _write_json(bh_path, bh)
+    _ = _write_json(
+        cp_path,
+        _mk_counterpressure_plan(
+            base_model_id=base_model_id,
+            optimization_suite_id=suite_id,
+            optimization_suite_root_hash=suite_root_hash,
+            decode_policy_id="greedy_v1",
+            decode_cfg_hash=decode_cfg_hash,
+            break_hypothesis_id=bh["break_hypothesis_id"],
+        ),
+    )
     plan = {
         "schema_id": "kt.tournament_plan.v1",
         "schema_version_hash": schema_version_hash("fl3/kt.tournament_plan.v1.json"),
         "tournament_plan_id": "",
-        "base_model_id": "mistral-7b",
-        "suite_id": "SUITE_X",
-        "suite_root_hash": "c" * 64,
+        "base_model_id": base_model_id,
+        "suite_id": suite_id,
+        "suite_root_hash": suite_root_hash,
         "decode_policy_id": "greedy_v1",
-        "decode_cfg_hash": "d" * 64,
+        "decode_cfg_hash": decode_cfg_hash,
         "tournament_mode": "round_robin_v1",
         "epsilon": 0.01,
         "entrants": entrants,
-        "seed": _sha_seed("mistral-7b", "SUITE_X", [a_hash, b_hash]),
+        "seed": _sha_seed(base_model_id, suite_id, [a_hash, b_hash]),
         "created_at": "1970-01-01T00:00:00Z",
         "notes": None,
     }
@@ -196,6 +360,16 @@ def test_epic15_tournament_runner_fail_closed_on_missing_entrants(tmp_path: Path
 
     plan_path = tmp_path / "tournament_plan.json"
     _ = _write_json(plan_path, plan)
+
+    _ = ensure_evaluation_admission_receipt(
+        repo_root=_REPO_ROOT,
+        plan_path=plan_path,
+        lane_id="TEST_LANE",
+        suite_registry_path=registry_path,
+        counterpressure_plan_path=cp_path,
+        break_hypothesis_path=bh_path,
+        out_path=tmp_path / "evaluation_admission_receipt.json",
+    )
 
     try:
         _ = run_tournament(repo_root=_REPO_ROOT, plan_path=plan_path, entrants_root=entrants_root, out_dir=out_dir)
@@ -209,4 +383,3 @@ def test_epic15_tournament_runner_fail_closed_on_missing_entrants(tmp_path: Path
     validate_schema_bound_object(obj)
     assert obj["status"] == "FAIL_CLOSED"
     assert "TOURNAMENT_IMMUTABLE_INPUT_MISSING" in obj.get("reason_codes", [])
-

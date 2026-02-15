@@ -1,13 +1,39 @@
 {
-  "registry_id": "SUITE_REGISTRY_FL3",
-  "status": "PROPOSED",
-  "authorization": {
-    "required": true,
-    "attestation_mode_required": "HMAC",
-    "notes": "Dev bots may propose suites; humans authorize suites. CI must never possess suite-authorization keys."
-  },
-  "suites": [],
+  "attestation_mode": "SIMULATED",
   "created_at": "1970-01-01T00:00:00Z",
-  "notes": "EPIC_16 proposal only. Not enforced until EPIC_16 schemas + tools are implemented and HMAC-applied."
+  "notes": "EPIC_16 suite registry. SIMULATED until canonical lane HMAC apply.",
+  "schema_id": "kt.suite_registry.v1",
+  "schema_version_hash": "50d1b50f055476d73d3a0de7f8a87f0c7b5ab6ae6a9cb676fbe17f7e3d772bcc",
+  "suite_registry_id": "75776a29645c7660fbc12f5e922aa7176d66592ad69ca2df45066a6a9c8aca7b",
+  "suites": [
+    {
+      "authorization_payload_hash": "75c064505c2ae9e1132eb9db2a1344a1034f352db45ba4b18e321bbed5a8e45e",
+      "notes": null,
+      "signoffs": [
+        {
+          "attestation_mode": "SIMULATED",
+          "created_at": "1970-01-01T00:00:00Z",
+          "key_id": "SIGNER_A",
+          "payload_hash": "75c064505c2ae9e1132eb9db2a1344a1034f352db45ba4b18e321bbed5a8e45e",
+          "schema_id": "kt.human_signoff.v2",
+          "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
+          "signoff_id": "179db10f7598e70afcd52553b755e1781e202a41ec1a10e8e4c964ac9e0dfedf",
+          "simulated_signature": "350f425fcbe77f6b2aac242252c060c7d78ac73a6a38de1cce67c4f89f1d45c7"
+        },
+        {
+          "attestation_mode": "SIMULATED",
+          "created_at": "1970-01-01T00:00:00Z",
+          "key_id": "SIGNER_B",
+          "payload_hash": "75c064505c2ae9e1132eb9db2a1344a1034f352db45ba4b18e321bbed5a8e45e",
+          "schema_id": "kt.human_signoff.v2",
+          "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
+          "signoff_id": "e6a960738dfa4e04a550d8982da393bfb50caa237744152198c929a092dab029",
+          "simulated_signature": "d5b182a507f56aa668ba469d4d822a123cfe46f5f5272661447e75eee7cc4bb8"
+        }
+      ],
+      "suite_definition_ref": "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_X.v1.json",
+      "suite_id": "SUITE_X",
+      "suite_root_hash": "4fecea4be80b6c8290f9d7294a52bd27a6367bdac1f1cca11b5dcadec7750f89"
+    }
+  ]
 }
-

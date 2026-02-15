@@ -13,7 +13,7 @@ from tools.training.fl3_factory.manifests import sha256_file as sha256_file_cano
 from tools.training.fl3_factory.timeutil import utc_now_z
 from tools.verification.fl3_canonical import repo_root_from
 from tools.verification.fl3_validators import FL3ValidationError, validate_schema_bound_object
-from tools.verification.worm_write import write_text_worm
+from tools.verification.worm_write import write_bytes_worm, write_text_worm
 
 
 _PLAN_SCHEMA_ID = "kt.tournament_plan.v1"
@@ -23,6 +23,10 @@ _PLAN_SCHEMA_VERSION_HASH = schema_version_hash(_PLAN_SCHEMA_FILE)
 _RESULT_SCHEMA_ID = "kt.tournament_result.v1"
 _RESULT_SCHEMA_FILE = "fl3/kt.tournament_result.v1.json"
 _RESULT_SCHEMA_VERSION_HASH = schema_version_hash(_RESULT_SCHEMA_FILE)
+
+_ADMISSION_SCHEMA_ID = "kt.evaluation_admission_receipt.v1"
+_ADMISSION_SCHEMA_FILE = "fl3/kt.evaluation_admission_receipt.v1.json"
+_ADMISSION_SCHEMA_VERSION_HASH = schema_version_hash(_ADMISSION_SCHEMA_FILE)
 
 _RC_SCHEMA_INVALID = "TOURNAMENT_SCHEMA_INVALID"
 _RC_INPUT_MISSING = "TOURNAMENT_IMMUTABLE_INPUT_MISSING"
@@ -70,6 +74,49 @@ def _load_time_contract(*, repo_root: Path, relpath: str = "KT_PROD_CLEANROOM/AU
     p = (repo_root / relpath).resolve()
     obj = _read_json_dict(p, name="time_contract")
     validate_schema_bound_object(obj)
+
+
+def _load_eval_admission_receipt(*, plan_path: Path, receipt_path: Path) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+    """
+    EPIC_16 enforcement: tournament evaluation is inadmissible unless explicitly admitted.
+
+    Returns (receipt_obj_or_none, error_message_or_none).
+    Never raises: caller translates into tournament fail-closed reason codes.
+    """
+    if not receipt_path.exists():
+        return None, "missing evaluation_admission_receipt.json"
+
+    try:
+        rec = _read_json_dict(receipt_path, name="evaluation_admission_receipt")
+        validate_schema_bound_object(rec)
+    except Exception as exc:  # noqa: BLE001
+        return None, f"invalid evaluation_admission_receipt.json: {exc}"
+
+    if rec.get("schema_id") != _ADMISSION_SCHEMA_ID or rec.get("schema_version_hash") != _ADMISSION_SCHEMA_VERSION_HASH:
+        return None, "evaluation admission receipt schema mismatch"
+
+    if str(rec.get("decision", "")).strip() != "PASS":
+        return rec, "evaluation admission denied"
+
+    # Bind receipt to the exact immutable plan bytes.
+    try:
+        plan_sha = sha256_file_canonical(plan_path.resolve())
+    except Exception:  # noqa: BLE001
+        plan_sha = ""
+    if str(rec.get("evaluation_plan_sha256", "")).strip() != plan_sha:
+        return rec, "evaluation_plan_sha256 mismatch"
+
+    # Ensure receipt binds to the same plan semantics.
+    try:
+        plan = _read_json_dict(plan_path, name="tournament_plan")
+    except Exception as exc:  # noqa: BLE001
+        return rec, f"unable to read plan for receipt binding: {exc}"
+
+    for field in ("base_model_id", "suite_id", "suite_root_hash", "decode_policy_id", "decode_cfg_hash"):
+        if str(rec.get(field, "")).strip() != str(plan.get(field, "")).strip():
+            return rec, f"{field} mismatch"
+
+    return rec, None
 
 
 def _extract_eval_signals(eval_report: Dict[str, Any]) -> Tuple[Dict[str, float], bool]:
@@ -131,6 +178,7 @@ def build_tournament_result(
     repo_root: Path,
     plan_path: Path,
     entrants_root: Path,
+    admission_receipt_path: Optional[Path] = None,
 ) -> Dict[str, Any]:
     reasons: List[str] = []
     notes: Optional[str] = None
@@ -154,6 +202,14 @@ def build_tournament_result(
     ok, _err = _git_status_is_clean(repo_root)
     if not ok:
         reasons.append(_RC_INPUT_MISSING)
+
+    # EPIC_16: evaluation admission is mandatory for tournaments and must bind to this plan.
+    if admission_receipt_path is None:
+        admission_receipt_path = plan_path.resolve().parent / "evaluation_admission_receipt.json"
+    _rec, rec_err = _load_eval_admission_receipt(plan_path=plan_path, receipt_path=admission_receipt_path)
+    if rec_err:
+        reasons.append(_RC_INPUT_MISSING)
+        notes = (notes + ";" if notes else "") + f"eval_admission:{rec_err}"
 
     entrants = plan.get("entrants") if isinstance(plan.get("entrants"), list) else []
     if not entrants:
@@ -326,8 +382,14 @@ def run_tournament(
     plan_path: Path,
     entrants_root: Path,
     out_dir: Path,
+    admission_receipt_path: Optional[Path] = None,
 ) -> Dict[str, Any]:
-    result = build_tournament_result(repo_root=repo_root, plan_path=plan_path, entrants_root=entrants_root)
+    result = build_tournament_result(
+        repo_root=repo_root,
+        plan_path=plan_path,
+        entrants_root=entrants_root,
+        admission_receipt_path=admission_receipt_path,
+    )
     out_dir = out_dir.resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "tournament_result.json"
@@ -337,13 +399,23 @@ def run_tournament(
     except Exception as exc:  # noqa: BLE001
         raise FL3ValidationError(f"FAIL_CLOSED: {_RC_DETERMINISM_MISMATCH}: {exc}") from exc
 
+    # Copy evaluation admission receipt into the tournament out_dir (WORM, byte-identical no-op).
+    if admission_receipt_path is None:
+        admission_receipt_path = plan_path.resolve().parent / "evaluation_admission_receipt.json"
+    if admission_receipt_path.exists():
+        try:
+            data = admission_receipt_path.read_bytes()
+            write_bytes_worm(path=out_dir / "evaluation_admission_receipt.json", data=data, label="evaluation_admission_receipt.json")
+        except Exception as exc:  # noqa: BLE001
+            raise FL3ValidationError(f"FAIL_CLOSED: {_RC_DETERMINISM_MISMATCH}: {exc}") from exc
+
     if str(result.get("status")) != "PASS":
         raise FL3ValidationError("FAIL_CLOSED: tournament runner refused to certify champion set")
     return result
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
-    ap = argparse.ArgumentParser(description="EPIC_15 deterministic tournament runner (dominance + champion set).")
+    ap = argparse.ArgumentParser(description="EPIC_15/16 deterministic tournament runner (dominance + champion set; requires evaluation admission).")
     ap.add_argument("--plan", required=True, help="Path to kt.tournament_plan.v1 JSON (schema-bound).")
     ap.add_argument(
         "--entrants-root",
@@ -351,13 +423,23 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Directory containing entrant job dirs named by adapter_root_hash; each must include job_dir_manifest.json + eval_report.json.",
     )
     ap.add_argument("--out-dir", required=True, help="Output directory (writes tournament_result.json WORM).")
+    ap.add_argument(
+        "--admission-receipt",
+        default=None,
+        help="Path to kt.evaluation_admission_receipt.v1 JSON. Default: <plan_dir>/evaluation_admission_receipt.json",
+    )
     args = ap.parse_args(list(argv) if argv is not None else None)
 
     repo_root = repo_root_from(Path(__file__))
-    _ = run_tournament(repo_root=repo_root, plan_path=Path(args.plan), entrants_root=Path(args.entrants_root), out_dir=Path(args.out_dir))
+    _ = run_tournament(
+        repo_root=repo_root,
+        plan_path=Path(args.plan),
+        entrants_root=Path(args.entrants_root),
+        out_dir=Path(args.out_dir),
+        admission_receipt_path=Path(args.admission_receipt).resolve() if args.admission_receipt else None,
+    )
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

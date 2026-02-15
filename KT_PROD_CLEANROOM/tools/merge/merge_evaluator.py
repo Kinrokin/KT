@@ -231,6 +231,23 @@ def build_merge_artifacts(
     if base_model_id and str(tresult.get("base_model_id", "")).strip() and str(tresult.get("base_model_id", "")).strip() != base_model_id:
         reasons.append(_RC_PRECONDITION)
 
+    # EPIC_16: tournament evidence must include a PASS evaluation admission receipt (suite authorization).
+    admission_path = tournament_result_path.resolve().parent / "evaluation_admission_receipt.json"
+    if not admission_path.exists():
+        reasons.append(_RC_PRECONDITION)
+    else:
+        try:
+            adm = _read_json_dict(admission_path, name="evaluation_admission_receipt")
+            validate_schema_bound_object(adm)
+            if str(adm.get("schema_id", "")).strip() != "kt.evaluation_admission_receipt.v1":
+                reasons.append(_RC_PRECONDITION)
+            if str(adm.get("decision", "")).strip() != "PASS":
+                reasons.append(_RC_PRECONDITION)
+            if base_model_id and str(adm.get("base_model_id", "")).strip() != base_model_id:
+                reasons.append(_RC_PRECONDITION)
+        except Exception:  # noqa: BLE001
+            reasons.append(_RC_PRECONDITION)
+
     parents = manifest.get("parents") if isinstance(manifest.get("parents"), list) else []
     parent_hashes = [str(p.get("adapter_root_hash", "")).strip() for p in parents if isinstance(p, dict)]
     parent_hashes = sorted([h for h in parent_hashes if h])
@@ -419,4 +436,3 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
