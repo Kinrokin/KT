@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Audit Eval Report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "audit_eval_report_id",
+    "run_id",
+    "law_bundle_hash",
+    "suite_registry_id",
+    "canonical_lane",
+    "attestation_mode",
+    "decision",
+    "axis_scores",
+    "artifacts",
+    "one_line_verdict",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.audit_eval_report.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "audit_eval_report_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "run_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "law_bundle_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "suite_registry_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "canonical_lane": { "type": "boolean" },
+    "attestation_mode": { "type": "string", "enum": ["SIMULATED", "HMAC", "PKI"] },
+    "decision": { "type": "string", "enum": ["PROMOTE", "HOLD", "QUARANTINE"] },
+    "axis_scores": { "type": "object" },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1, "maxLength": 512 },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      }
+    },
+    "one_line_verdict": { "type": "string", "minLength": 1, "maxLength": 4096 },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"] }
+  }
+}
+

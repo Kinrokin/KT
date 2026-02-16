@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Axis Fitness Report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "axis_fitness_report_id",
+    "suite_eval_report_id",
+    "axis_scoring_policy_id",
+    "decision",
+    "axis_scores",
+    "hard_gate_pass",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.axis_fitness_report.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "axis_fitness_report_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "suite_eval_report_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "axis_scoring_policy_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "decision": { "type": "string", "enum": ["PROMOTE", "HOLD", "QUARANTINE"] },
+    "axis_scores": { "type": "object" },
+    "hard_gate_pass": { "type": "boolean" },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"] }
+  }
+}
+

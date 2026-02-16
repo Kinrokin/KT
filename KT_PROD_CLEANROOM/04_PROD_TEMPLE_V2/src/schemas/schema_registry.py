@@ -199,6 +199,61 @@ from schemas.fl3_suite_registry_schema import (
     FL3_SUITE_REGISTRY_SCHEMA_VERSION_HASH,
     validate_fl3_suite_registry,
 )
+from schemas.fl3_validator_catalog_schema import (
+    FL3_VALIDATOR_CATALOG_SCHEMA_ID,
+    FL3_VALIDATOR_CATALOG_SCHEMA_VERSION_HASH,
+    validate_fl3_validator_catalog,
+)
+from schemas.fl3_axis_scoring_policy_schema import (
+    FL3_AXIS_SCORING_POLICY_SCHEMA_ID,
+    FL3_AXIS_SCORING_POLICY_SCHEMA_VERSION_HASH,
+    validate_fl3_axis_scoring_policy,
+)
+from schemas.fl3_suite_definition_schema import (
+    FL3_SUITE_DEFINITION_SCHEMA_ID,
+    FL3_SUITE_DEFINITION_SCHEMA_VERSION_HASH,
+    validate_fl3_suite_definition,
+)
+from schemas.fl3_suite_outputs_schema import (
+    FL3_SUITE_OUTPUTS_SCHEMA_ID,
+    FL3_SUITE_OUTPUTS_SCHEMA_VERSION_HASH,
+    validate_fl3_suite_outputs,
+)
+from schemas.fl3_suite_eval_report_schema import (
+    FL3_SUITE_EVAL_REPORT_SCHEMA_ID,
+    FL3_SUITE_EVAL_REPORT_SCHEMA_VERSION_HASH,
+    validate_fl3_suite_eval_report,
+)
+from schemas.fl3_axis_fitness_report_schema import (
+    FL3_AXIS_FITNESS_REPORT_SCHEMA_ID,
+    FL3_AXIS_FITNESS_REPORT_SCHEMA_VERSION_HASH,
+    validate_fl3_axis_fitness_report,
+)
+from schemas.fl3_audit_eval_report_schema import (
+    FL3_AUDIT_EVAL_REPORT_SCHEMA_ID,
+    FL3_AUDIT_EVAL_REPORT_SCHEMA_VERSION_HASH,
+    validate_fl3_audit_eval_report,
+)
+from schemas.fl3_router_policy_schema import (
+    FL3_ROUTER_POLICY_SCHEMA_ID,
+    FL3_ROUTER_POLICY_SCHEMA_VERSION_HASH,
+    validate_fl3_router_policy,
+)
+from schemas.fl3_router_demo_suite_schema import (
+    FL3_ROUTER_DEMO_SUITE_SCHEMA_ID,
+    FL3_ROUTER_DEMO_SUITE_SCHEMA_VERSION_HASH,
+    validate_fl3_router_demo_suite,
+)
+from schemas.fl3_routing_receipt_schema import (
+    FL3_ROUTING_RECEIPT_SCHEMA_ID,
+    FL3_ROUTING_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_fl3_routing_receipt,
+)
+from schemas.fl3_router_run_report_schema import (
+    FL3_ROUTER_RUN_REPORT_SCHEMA_ID,
+    FL3_ROUTER_RUN_REPORT_SCHEMA_VERSION_HASH,
+    validate_fl3_router_run_report,
+)
 from schemas.fl3_break_hypothesis_schema import (
     FL3_BREAK_HYPOTHESIS_SCHEMA_ID,
     FL3_BREAK_HYPOTHESIS_SCHEMA_VERSION_HASH,
@@ -603,6 +658,17 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
         validate_fl3_training_admission_receipt,
     ),
     FL3_SUITE_REGISTRY_SCHEMA_ID: (FL3_SUITE_REGISTRY_SCHEMA_VERSION_HASH, validate_fl3_suite_registry),
+    FL3_VALIDATOR_CATALOG_SCHEMA_ID: (FL3_VALIDATOR_CATALOG_SCHEMA_VERSION_HASH, validate_fl3_validator_catalog),
+    FL3_AXIS_SCORING_POLICY_SCHEMA_ID: (FL3_AXIS_SCORING_POLICY_SCHEMA_VERSION_HASH, validate_fl3_axis_scoring_policy),
+    FL3_SUITE_DEFINITION_SCHEMA_ID: (FL3_SUITE_DEFINITION_SCHEMA_VERSION_HASH, validate_fl3_suite_definition),
+    FL3_SUITE_OUTPUTS_SCHEMA_ID: (FL3_SUITE_OUTPUTS_SCHEMA_VERSION_HASH, validate_fl3_suite_outputs),
+    FL3_SUITE_EVAL_REPORT_SCHEMA_ID: (FL3_SUITE_EVAL_REPORT_SCHEMA_VERSION_HASH, validate_fl3_suite_eval_report),
+    FL3_AXIS_FITNESS_REPORT_SCHEMA_ID: (FL3_AXIS_FITNESS_REPORT_SCHEMA_VERSION_HASH, validate_fl3_axis_fitness_report),
+    FL3_AUDIT_EVAL_REPORT_SCHEMA_ID: (FL3_AUDIT_EVAL_REPORT_SCHEMA_VERSION_HASH, validate_fl3_audit_eval_report),
+    FL3_ROUTER_POLICY_SCHEMA_ID: (FL3_ROUTER_POLICY_SCHEMA_VERSION_HASH, validate_fl3_router_policy),
+    FL3_ROUTER_DEMO_SUITE_SCHEMA_ID: (FL3_ROUTER_DEMO_SUITE_SCHEMA_VERSION_HASH, validate_fl3_router_demo_suite),
+    FL3_ROUTING_RECEIPT_SCHEMA_ID: (FL3_ROUTING_RECEIPT_SCHEMA_VERSION_HASH, validate_fl3_routing_receipt),
+    FL3_ROUTER_RUN_REPORT_SCHEMA_ID: (FL3_ROUTER_RUN_REPORT_SCHEMA_VERSION_HASH, validate_fl3_router_run_report),
     FL3_BREAK_HYPOTHESIS_SCHEMA_ID: (FL3_BREAK_HYPOTHESIS_SCHEMA_VERSION_HASH, validate_fl3_break_hypothesis),
     FL3_COUNTERPRESSURE_PLAN_SCHEMA_ID: (
         FL3_COUNTERPRESSURE_PLAN_SCHEMA_VERSION_HASH,

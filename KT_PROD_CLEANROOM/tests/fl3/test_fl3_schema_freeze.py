@@ -43,6 +43,20 @@ SCHEMA_FILES = [
     "fl3/kt.evaluation_admission_receipt.v1.json",
     "fl3/kt.law_change_admission_receipt.v1.json",
     "fl3/kt.suite_registry.v1.json",
+    # EPIC_17: suite pack + validators (append-only).
+    "fl3/kt.validator_catalog.v1.json",
+    "fl3/kt.axis_scoring_policy.v1.json",
+    "fl3/kt.suite_definition.v1.json",
+    "fl3/kt.suite_outputs.v1.json",
+    "fl3/kt.suite_eval_report.v1.json",
+    "fl3/kt.axis_fitness_report.v1.json",
+    # EPIC_18: auditor-grade consolidated report (append-only).
+    "fl3/kt.audit_eval_report.v1.json",
+    # EPIC_19: router hat demo artifacts (append-only).
+    "fl3/kt.router_policy.v1.json",
+    "fl3/kt.router_demo_suite.v1.json",
+    "fl3/kt.routing_receipt.v1.json",
+    "fl3/kt.router_run_report.v1.json",
     "fl3/kt.break_hypothesis.v1.json",
     "fl3/kt.counterpressure_plan.v1.json",
     "fl3/kt.fragility_probe_result.v1.json",

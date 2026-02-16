@@ -4,8 +4,101 @@
   "notes": "EPIC_16 suite registry. HMAC-authorized for canonical lane.",
   "schema_id": "kt.suite_registry.v1",
   "schema_version_hash": "50d1b50f055476d73d3a0de7f8a87f0c7b5ab6ae6a9cb676fbe17f7e3d772bcc",
-  "suite_registry_id": "7ce4c2cf8d5bb237dd44d5ebb3213345fa4e76cf951a9f85c0ca7fff4e0e07f8",
+  "suite_registry_id": "88a7a1bbf2e8ff4c6aa65c2f8d2c7083b80fcba05218a8ab5ce46f86f36a05ad",
   "suites": [
+    {
+      "authorization_payload_hash": "f960ec4640b10a616679d6b4892a22b8e1df5f0246e0990b195722da22631995",
+      "notes": null,
+      "signoffs": [
+        {
+          "attestation_mode": "HMAC",
+          "created_at": "1970-01-01T00:00:00Z",
+          "hmac_key_fingerprint": "bd5555734c182b836cfe0a1ec964b507b357fc76283d8cb2e6e5b79dba4da53f",
+          "hmac_signature": "8676e1ceefff49e44135b5af8b1b88dfeee23c8dc4c6e33daf0ac2416aa1a1d1",
+          "key_id": "SIGNER_A",
+          "payload_hash": "f960ec4640b10a616679d6b4892a22b8e1df5f0246e0990b195722da22631995",
+          "schema_id": "kt.human_signoff.v2",
+          "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
+          "signoff_id": "aa64f67d0b48ae54f9b20d75b249bac0e9d00341c3299c1cf97e6560eeb4c5c5"
+        },
+        {
+          "attestation_mode": "HMAC",
+          "created_at": "1970-01-01T00:00:00Z",
+          "hmac_key_fingerprint": "6ca97c569e35532576edce775e08eb5d4a17d2202d7cbd38d1cf5736c274c51e",
+          "hmac_signature": "54b6d851eb3142ee520036c08afe762c2c3118af46a5b775f55eee1e7bae737b",
+          "key_id": "SIGNER_B",
+          "payload_hash": "f960ec4640b10a616679d6b4892a22b8e1df5f0246e0990b195722da22631995",
+          "schema_id": "kt.human_signoff.v2",
+          "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
+          "signoff_id": "eba2cc24ca56b65ba5e07699125680e437343816189fe8f12cb3596f7c364e36"
+        }
+      ],
+      "suite_definition_ref": "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_FORMAT_CONTROL.v1.json",
+      "suite_id": "SUITE_FORMAT_CONTROL",
+      "suite_root_hash": "3288ae59512738b8917f8bdf9cf033c454626f5bed31a5d712e872cdb2f6de3e"
+    },
+    {
+      "authorization_payload_hash": "7b27f9e560cc170ff1ef66c23cec840b8792cc24ab92235c45b0719fa12705f0",
+      "notes": null,
+      "signoffs": [
+        {
+          "attestation_mode": "HMAC",
+          "created_at": "1970-01-01T00:00:00Z",
+          "hmac_key_fingerprint": "bd5555734c182b836cfe0a1ec964b507b357fc76283d8cb2e6e5b79dba4da53f",
+          "hmac_signature": "d71f65d0ccfe883a3152d558103a5774f6cca4eea333ff305aa2de8770630433",
+          "key_id": "SIGNER_A",
+          "payload_hash": "7b27f9e560cc170ff1ef66c23cec840b8792cc24ab92235c45b0719fa12705f0",
+          "schema_id": "kt.human_signoff.v2",
+          "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
+          "signoff_id": "ff011976c69e7fadb72c1961d15abbbd09c52f8b750c809bcedc402275cd2fb5"
+        },
+        {
+          "attestation_mode": "HMAC",
+          "created_at": "1970-01-01T00:00:00Z",
+          "hmac_key_fingerprint": "6ca97c569e35532576edce775e08eb5d4a17d2202d7cbd38d1cf5736c274c51e",
+          "hmac_signature": "ed133e572a4c916777d1ff7426ff7262e1a403a4847242cf8d4e4e3e073b17e7",
+          "key_id": "SIGNER_B",
+          "payload_hash": "7b27f9e560cc170ff1ef66c23cec840b8792cc24ab92235c45b0719fa12705f0",
+          "schema_id": "kt.human_signoff.v2",
+          "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
+          "signoff_id": "6d988f98daafdd52fab3461f6730590664ce3d070f1d7c0256262bf910bc42d0"
+        }
+      ],
+      "suite_definition_ref": "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_GOV_TOP150_REFUSAL.v1.json",
+      "suite_id": "SUITE_GOV_TOP150_REFUSAL",
+      "suite_root_hash": "7a5e330fb1ac56b7997009fc54f559529c74600676356954b9730a30b464e61a"
+    },
+    {
+      "authorization_payload_hash": "eef431454124818fde4178e34e4af95dea6c64fa1aa38fe2681e76dfea112a1e",
+      "notes": null,
+      "signoffs": [
+        {
+          "attestation_mode": "HMAC",
+          "created_at": "1970-01-01T00:00:00Z",
+          "hmac_key_fingerprint": "bd5555734c182b836cfe0a1ec964b507b357fc76283d8cb2e6e5b79dba4da53f",
+          "hmac_signature": "5c9112114e9df089412af78807ca24a1982a9506b334a74432a7ae09ef3f843f",
+          "key_id": "SIGNER_A",
+          "payload_hash": "eef431454124818fde4178e34e4af95dea6c64fa1aa38fe2681e76dfea112a1e",
+          "schema_id": "kt.human_signoff.v2",
+          "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
+          "signoff_id": "78b88f58d4e1cb39dea096c958a8c1de2564507ab96d18cfca8bdb1e638cbba5"
+        },
+        {
+          "attestation_mode": "HMAC",
+          "created_at": "1970-01-01T00:00:00Z",
+          "hmac_key_fingerprint": "6ca97c569e35532576edce775e08eb5d4a17d2202d7cbd38d1cf5736c274c51e",
+          "hmac_signature": "54ee159ff632d5a9ebb4873a31ac94a3567b0287286b2706ff56b2d36830d20c",
+          "key_id": "SIGNER_B",
+          "payload_hash": "eef431454124818fde4178e34e4af95dea6c64fa1aa38fe2681e76dfea112a1e",
+          "schema_id": "kt.human_signoff.v2",
+          "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
+          "signoff_id": "918712273c373521b2a6d9283d105ad418a66929cf418710df98459aa38d8cce"
+        }
+      ],
+      "suite_definition_ref": "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_GOV_TOP150_REFUSAL_ADV.v1.json",
+      "suite_id": "SUITE_GOV_TOP150_REFUSAL_ADV",
+      "suite_root_hash": "36d9a38400d311cda0e77f5b58ff7d90a808c5657abb3b3a766ab309fef001a2"
+    },
     {
       "authorization_payload_hash": "75c064505c2ae9e1132eb9db2a1344a1034f352db45ba4b18e321bbed5a8e45e",
       "notes": null,
