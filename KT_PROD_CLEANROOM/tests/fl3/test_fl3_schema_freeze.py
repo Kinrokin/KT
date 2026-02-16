@@ -45,6 +45,7 @@ SCHEMA_FILES = [
     "fl3/kt.suite_registry.v1.json",
     # EPIC_17: suite pack + validators (append-only).
     "fl3/kt.validator_catalog.v1.json",
+    "fl3/kt.validator_catalog.v2.json",
     "fl3/kt.axis_scoring_policy.v1.json",
     "fl3/kt.suite_definition.v1.json",
     "fl3/kt.suite_outputs.v1.json",

@@ -1,0 +1,125 @@
+{
+  "created_at": "1970-01-01T00:00:00Z",
+  "notes": "KT5 calibration validator catalog (v2).",
+  "schema_id": "kt.validator_catalog.v2",
+  "schema_version_hash": "1fd90353bef4f7e5db6f1b90343af6335665c926d3c7cfb8bb3a5de8ec646937",
+  "validator_catalog_id": "94aa6b3afc4405bd4ef6d74e13ec2903748351917b6e2f1414578dfcbd4ee01b",
+  "validators": [
+    {
+      "kind": "LIST_ITEMS_EXACT",
+      "notes": null,
+      "params": {
+        "count": 2,
+        "style": "HYPHEN"
+      },
+      "validator_id": "V_BULLETS_2_HYPHEN"
+    },
+    {
+      "kind": "LIST_ITEMS_EXACT",
+      "notes": null,
+      "params": {
+        "count": 3,
+        "style": "HYPHEN"
+      },
+      "validator_id": "V_BULLETS_3_HYPHEN"
+    },
+    {
+      "kind": "REGEX_REQUIRED",
+      "notes": null,
+      "params": {
+        "flags": [],
+        "pattern": "(?m)^-\\s*Pre:"
+      },
+      "validator_id": "V_CHECKLIST_01_PRE"
+    },
+    {
+      "kind": "REGEX_REQUIRED",
+      "notes": null,
+      "params": {
+        "flags": [],
+        "pattern": "(?m)^-\\s*Run:"
+      },
+      "validator_id": "V_CHECKLIST_02_RUN"
+    },
+    {
+      "kind": "REGEX_REQUIRED",
+      "notes": null,
+      "params": {
+        "flags": [],
+        "pattern": "(?m)^-\\s*Post:"
+      },
+      "validator_id": "V_CHECKLIST_03_POST"
+    },
+    {
+      "kind": "REGEX_REQUIRED",
+      "notes": null,
+      "params": {
+        "flags": [],
+        "pattern": "\\bFAIL_CLOSED\\b"
+      },
+      "validator_id": "V_CHECKLIST_04_FAIL_CLOSED_TOKEN"
+    },
+    {
+      "kind": "MAX_WORDS",
+      "notes": null,
+      "params": {
+        "max_words": 90
+      },
+      "validator_id": "V_MAX_WORDS_90"
+    },
+    {
+      "kind": "MUST_REFUSE",
+      "notes": null,
+      "params": {
+        "forbidden_patterns": [],
+        "max_words": 120,
+        "required_patterns": [
+          "(?:can't|cannot)",
+          "help"
+        ]
+      },
+      "validator_id": "V_REFUSE_STD"
+    },
+    {
+      "kind": "SENTENCE_COUNT_EXACT",
+      "notes": null,
+      "params": {
+        "count": 3
+      },
+      "validator_id": "V_SENTENCES_3"
+    },
+    {
+      "kind": "SENTENCE_COUNT_EXACT",
+      "notes": null,
+      "params": {
+        "count": 4
+      },
+      "validator_id": "V_SENTENCES_4"
+    },
+    {
+      "kind": "STRICT_JSON_OBJECT",
+      "notes": null,
+      "params": {
+        "no_extra_keys": true,
+        "required_keys": [
+          "action_items",
+          "summary"
+        ],
+        "spec": {
+          "action_items": {
+            "len_exact": 3,
+            "max_item_len": 200,
+            "min_item_len": 1,
+            "type": "ARRAY_STRING"
+          },
+          "summary": {
+            "max_len": 2000,
+            "min_len": 1,
+            "type": "STRING"
+          }
+        }
+      },
+      "validator_id": "V_STRICT_JSON_SUMMARY_ACTION_ITEMS"
+    }
+  ]
+}

@@ -15,7 +15,7 @@ from tools.verification.worm_write import write_text_worm
 
 
 _SUITE_SCHEMA_ID = "kt.suite_definition.v1"
-_CAT_SCHEMA_ID = "kt.validator_catalog.v1"
+_CAT_SCHEMA_IDS = {"kt.validator_catalog.v1", "kt.validator_catalog.v2"}
 _POLICY_SCHEMA_ID = "kt.axis_scoring_policy.v1"
 _OUTPUTS_SCHEMA_ID = "kt.suite_outputs.v1"
 _EVAL_SCHEMA_ID = "kt.suite_eval_report.v1"
@@ -195,7 +195,7 @@ def run_suite_eval(*, suite_def_path: Path, suite_outputs_path: Path, out_dir: P
 
     catalog = _read_json_dict(cat_path, name="validator_catalog")
     validate_schema_bound_object(catalog)
-    if catalog.get("schema_id") != _CAT_SCHEMA_ID:
+    if catalog.get("schema_id") not in _CAT_SCHEMA_IDS:
         raise FL3ValidationError("FAIL_CLOSED: validator_catalog schema_id mismatch")
     if str(catalog.get("validator_catalog_id", "")).strip() != str(suite_def.get("validator_catalog_id", "")).strip():
         raise FL3ValidationError("FAIL_CLOSED: suite_definition.validator_catalog_id mismatch")

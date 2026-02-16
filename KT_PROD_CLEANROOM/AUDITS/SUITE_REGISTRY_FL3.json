@@ -4,7 +4,7 @@
   "notes": "EPIC_16 suite registry. HMAC-authorized for canonical lane.",
   "schema_id": "kt.suite_registry.v1",
   "schema_version_hash": "50d1b50f055476d73d3a0de7f8a87f0c7b5ab6ae6a9cb676fbe17f7e3d772bcc",
-  "suite_registry_id": "88a7a1bbf2e8ff4c6aa65c2f8d2c7083b80fcba05218a8ab5ce46f86f36a05ad",
+  "suite_registry_id": "ea3325e492ccc8346c26a1f51f9f78b16c827c4f2f819a564f2935aba71d47bc",
   "suites": [
     {
       "authorization_payload_hash": "f960ec4640b10a616679d6b4892a22b8e1df5f0246e0990b195722da22631995",
@@ -98,6 +98,37 @@
       "suite_definition_ref": "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_GOV_TOP150_REFUSAL_ADV.v1.json",
       "suite_id": "SUITE_GOV_TOP150_REFUSAL_ADV",
       "suite_root_hash": "36d9a38400d311cda0e77f5b58ff7d90a808c5657abb3b3a766ab309fef001a2"
+    },
+    {
+      "authorization_payload_hash": "dfa73072c5fbf9b3d4a418f4fac40532b61c3b4421e7add4ae4bb503877f3d63",
+      "notes": null,
+      "signoffs": [
+        {
+          "attestation_mode": "HMAC",
+          "created_at": "1970-01-01T00:00:00Z",
+          "hmac_key_fingerprint": "bd5555734c182b836cfe0a1ec964b507b357fc76283d8cb2e6e5b79dba4da53f",
+          "hmac_signature": "0debafade5c9841ca085e6099afcb8ec4cc02d6be2696f97426ceaa8716eddd8",
+          "key_id": "SIGNER_A",
+          "payload_hash": "dfa73072c5fbf9b3d4a418f4fac40532b61c3b4421e7add4ae4bb503877f3d63",
+          "schema_id": "kt.human_signoff.v2",
+          "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
+          "signoff_id": "eefd5bb685cf4333e7d7896ac55a4bae06693ef04352487fcf925299a7653a3e"
+        },
+        {
+          "attestation_mode": "HMAC",
+          "created_at": "1970-01-01T00:00:00Z",
+          "hmac_key_fingerprint": "6ca97c569e35532576edce775e08eb5d4a17d2202d7cbd38d1cf5736c274c51e",
+          "hmac_signature": "a0dd4e784c54c296079be060b8eca22a8df4dbe62203c3652ddfa542fde22d53",
+          "key_id": "SIGNER_B",
+          "payload_hash": "dfa73072c5fbf9b3d4a418f4fac40532b61c3b4421e7add4ae4bb503877f3d63",
+          "schema_id": "kt.human_signoff.v2",
+          "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
+          "signoff_id": "e84a771d2839be619ee426ab61114a3a9c9cff8c5330567a53c947e5681c975a"
+        }
+      ],
+      "suite_definition_ref": "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_KT5_CORE.v1.json",
+      "suite_id": "SUITE_KT5_CORE",
+      "suite_root_hash": "50f17c60fb33cfa69764d514937ec9b19f4783dff9f3a58d6eb8ea20ad6cf86f"
     },
     {
       "authorization_payload_hash": "75c064505c2ae9e1132eb9db2a1344a1034f352db45ba4b18e321bbed5a8e45e",

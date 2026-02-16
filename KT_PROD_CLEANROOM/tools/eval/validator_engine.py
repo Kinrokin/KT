@@ -146,6 +146,89 @@ def evaluate_validator(*, validator: Dict[str, Any], output_text: str) -> Valida
         same = obj == expected
         return ValidatorResult(validator_id=validator_id, passed=same, score=1.0 if same else 0.0, notes=None if same else "json_mismatch")
 
+    if kind == "STRICT_JSON_OBJECT":
+        required_keys = params.get("required_keys")
+        spec = params.get("spec")
+        no_extra_keys = params.get("no_extra_keys")
+        if (
+            not isinstance(required_keys, list)
+            or not all(isinstance(x, str) and x.strip() for x in required_keys)
+            or not isinstance(spec, dict)
+            or not isinstance(no_extra_keys, bool)
+        ):
+            raise ValidatorError("STRICT_JSON_OBJECT params invalid (fail-closed)")
+
+        ok, obj, err = _json_parseable(output_text)
+        if not ok:
+            return ValidatorResult(validator_id=validator_id, passed=False, score=0.0, notes=err)
+        if not isinstance(obj, dict):
+            return ValidatorResult(validator_id=validator_id, passed=False, score=0.0, notes="json_not_object")
+
+        missing = [k for k in required_keys if k not in obj]
+        if missing:
+            return ValidatorResult(validator_id=validator_id, passed=False, score=0.0, notes=f"missing_keys:{','.join(sorted(missing))}")
+
+        if no_extra_keys:
+            extra = set(obj.keys()) - set(str(k).strip() for k in spec.keys())
+            if extra:
+                return ValidatorResult(validator_id=validator_id, passed=False, score=0.0, notes=f"extra_keys:{','.join(sorted(str(x) for x in extra))}")
+
+        def _fail(note: str) -> ValidatorResult:
+            return ValidatorResult(validator_id=validator_id, passed=False, score=0.0, notes=note)
+
+        for key, raw_spec in spec.items():
+            if key not in obj:
+                continue
+            if not isinstance(raw_spec, dict):
+                raise ValidatorError("STRICT_JSON_OBJECT spec entries must be objects (fail-closed)")
+            t = str(raw_spec.get("type", "")).strip().upper()
+            val = obj.get(key)
+            if t == "STRING":
+                if not isinstance(val, str):
+                    return _fail(f"type_mismatch:{key}:STRING")
+                mn = raw_spec.get("min_len", 0)
+                mx = raw_spec.get("max_len", 4096)
+                if not isinstance(mn, int) or not isinstance(mx, int) or mn < 0 or mx < mn:
+                    raise ValidatorError("STRICT_JSON_OBJECT STRING bounds invalid (fail-closed)")
+                if len(val) < int(mn) or len(val) > int(mx):
+                    return _fail(f"string_len:{key}:{len(val)}")
+
+            elif t == "NUMBER":
+                if isinstance(val, bool) or not isinstance(val, (int, float)):
+                    return _fail(f"type_mismatch:{key}:NUMBER")
+
+            elif t == "BOOL":
+                if not isinstance(val, bool):
+                    return _fail(f"type_mismatch:{key}:BOOL")
+
+            elif t == "ARRAY_STRING":
+                if not isinstance(val, list):
+                    return _fail(f"type_mismatch:{key}:ARRAY_STRING")
+                ln = raw_spec.get("len_exact")
+                if not isinstance(ln, int) or ln < 0:
+                    raise ValidatorError("STRICT_JSON_OBJECT ARRAY_STRING len_exact invalid (fail-closed)")
+                if len(val) != int(ln):
+                    return _fail(f"array_len:{key}:{len(val)}")
+                min_item_len = raw_spec.get("min_item_len", 0)
+                max_item_len = raw_spec.get("max_item_len", 4096)
+                if (
+                    not isinstance(min_item_len, int)
+                    or not isinstance(max_item_len, int)
+                    or min_item_len < 0
+                    or max_item_len < min_item_len
+                ):
+                    raise ValidatorError("STRICT_JSON_OBJECT ARRAY_STRING item bounds invalid (fail-closed)")
+                for i, item in enumerate(val):
+                    if not isinstance(item, str):
+                        return _fail(f"item_type:{key}[{i}]")
+                    if len(item) < int(min_item_len) or len(item) > int(max_item_len):
+                        return _fail(f"item_len:{key}[{i}]:{len(item)}")
+
+            else:
+                raise ValidatorError("STRICT_JSON_OBJECT unknown type (fail-closed)")
+
+        return ValidatorResult(validator_id=validator_id, passed=True, score=1.0, notes=None)
+
     if kind == "MUST_REFUSE":
         required = params.get("required_patterns", [])
         forbidden = params.get("forbidden_patterns", [])
@@ -189,4 +272,3 @@ def evaluate_validators(
         out.append(evaluate_validator(validator=v, output_text=output_text))
     # Determinism: return sorted by validator_id.
     return sorted(out, key=lambda r: r.validator_id)
-

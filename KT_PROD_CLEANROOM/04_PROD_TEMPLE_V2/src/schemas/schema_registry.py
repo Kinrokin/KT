@@ -204,6 +204,11 @@ from schemas.fl3_validator_catalog_schema import (
     FL3_VALIDATOR_CATALOG_SCHEMA_VERSION_HASH,
     validate_fl3_validator_catalog,
 )
+from schemas.fl3_validator_catalog_v2_schema import (
+    FL3_VALIDATOR_CATALOG_V2_SCHEMA_ID,
+    FL3_VALIDATOR_CATALOG_V2_SCHEMA_VERSION_HASH,
+    validate_fl3_validator_catalog_v2,
+)
 from schemas.fl3_axis_scoring_policy_schema import (
     FL3_AXIS_SCORING_POLICY_SCHEMA_ID,
     FL3_AXIS_SCORING_POLICY_SCHEMA_VERSION_HASH,
@@ -659,6 +664,7 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     ),
     FL3_SUITE_REGISTRY_SCHEMA_ID: (FL3_SUITE_REGISTRY_SCHEMA_VERSION_HASH, validate_fl3_suite_registry),
     FL3_VALIDATOR_CATALOG_SCHEMA_ID: (FL3_VALIDATOR_CATALOG_SCHEMA_VERSION_HASH, validate_fl3_validator_catalog),
+    FL3_VALIDATOR_CATALOG_V2_SCHEMA_ID: (FL3_VALIDATOR_CATALOG_V2_SCHEMA_VERSION_HASH, validate_fl3_validator_catalog_v2),
     FL3_AXIS_SCORING_POLICY_SCHEMA_ID: (FL3_AXIS_SCORING_POLICY_SCHEMA_VERSION_HASH, validate_fl3_axis_scoring_policy),
     FL3_SUITE_DEFINITION_SCHEMA_ID: (FL3_SUITE_DEFINITION_SCHEMA_VERSION_HASH, validate_fl3_suite_definition),
     FL3_SUITE_OUTPUTS_SCHEMA_ID: (FL3_SUITE_OUTPUTS_SCHEMA_VERSION_HASH, validate_fl3_suite_outputs),
