@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import multiprocessing as mp
 import os
+import shutil
 import time
 from pathlib import Path
 
@@ -162,6 +163,10 @@ def test_fl3_global_unlock_requires_artifact(tmp_path: Path, monkeypatch: pytest
     job = _mk_jobspec()
     contract = _mk_contract(repo_root)
     budget_locked = _mk_budget_state(locked=True)
+
+    job_dir = (repo_root / str(job["export_shadow_root"]) / str(job["job_id"])).resolve()
+    if job_dir.exists():
+        shutil.rmtree(job_dir)
 
     job_path = tmp_path / "job.json"
     contract_path = tmp_path / "contract.json"
