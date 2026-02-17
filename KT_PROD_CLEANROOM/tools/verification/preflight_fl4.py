@@ -428,9 +428,15 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         raise SystemExit(f"FAIL_CLOSED: refusing to write seal evidence into existing out_dir (WORM): {out_dir.as_posix()}")
     out_dir.mkdir(parents=True, exist_ok=False)
     transcript_path = out_dir / "command_transcript.txt"
-    # Seal lane: force all temp usage under the evidence root to avoid undeclared filesystem I/O.
-    tmp_dir = (out_dir / "_tmp").resolve()
-    tmp_dir.mkdir(parents=True, exist_ok=True)
+    # Seal lane: force all temp usage under a declared export root to avoid undeclared filesystem I/O,
+    # but keep temp out of the evidence pack itself (e.g., pytest uses fixtures that intentionally
+    # contain secret-like strings to test scanners; those must not poison the pack scan).
+    exports_shadow = (repo_root / str(paths["exports_shadow_root"])).resolve()
+    exports_adapters = (repo_root / str(paths["exports_adapters_root"])).resolve()
+    tmp_dir = (exports_shadow / "_tmp" / "FL4_SEAL" / out_dir.name).resolve()
+    if tmp_dir.exists():
+        raise SystemExit(f"FAIL_CLOSED: refusing to reuse existing tmp_dir (WORM): {tmp_dir.as_posix()}")
+    tmp_dir.mkdir(parents=True, exist_ok=False)
     # Do not mutate the host env; only constrain subprocess env and this process' tempfile root.
     env["TMPDIR"] = tmp_dir.as_posix()
     env["TMP"] = tmp_dir.as_posix()
@@ -454,8 +460,6 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     _append_transcript(transcript_path, cmd=[py_exe, "-m", "pip", "freeze"], rc=rc, output=out)
 
     # Seal lane I/O guard: fail-closed on network attempts and on writes outside allowlisted roots.
-    exports_shadow = (repo_root / str(paths["exports_shadow_root"])).resolve()
-    exports_adapters = (repo_root / str(paths["exports_adapters_root"])).resolve()
     allowed_write_roots = [
         out_dir.resolve(),
         exports_shadow,
