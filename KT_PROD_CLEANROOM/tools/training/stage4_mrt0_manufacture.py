@@ -86,6 +86,7 @@ def main():
         description="Stage 4: MRT-0 Manufacture",
         epilog="Output: cohort0_adapter_set.json with 13 manufactured adapters",
     )
+    parser.add_argument("--allow-legacy", action="store_true", help="Acknowledge this is a legacy training entrypoint.")
     parser.add_argument(
         "--output-dir",
         type=Path,
@@ -111,6 +112,10 @@ def main():
     )
 
     args = parser.parse_args()
+
+    from tools.training.legacy_guard import require_legacy_allow
+
+    require_legacy_allow(allow_legacy=bool(args.allow_legacy), tool_name="tools.training.stage4_mrt0_manufacture")
 
     print(f"\n{'='*70}", file=sys.stderr)
     print(f"  Stage 4: MRT-0 Manufacture", file=sys.stderr)

@@ -31,6 +31,7 @@ Produces:
 """
 
 import json
+import os
 import sys
 import subprocess
 from pathlib import Path
@@ -366,6 +367,7 @@ def main():
         description="Operation A: MRT-1 Training Lane Refactor (Master Orchestrator)",
         epilog="Sequences 7 stages with fail-closed governance. Outputs mrt1_runtime_snapshot.json",
     )
+    parser.add_argument("--allow-legacy", action="store_true", help="Acknowledge this is a legacy training entrypoint.")
     parser.add_argument(
         "--sweep-result",
         type=Path,
@@ -413,6 +415,12 @@ def main():
     )
 
     args = parser.parse_args()
+
+    from tools.training.legacy_guard import require_legacy_allow
+
+    require_legacy_allow(allow_legacy=bool(args.allow_legacy), tool_name="tools.training.operation_a_runner")
+    # Propagate explicit legacy acknowledgement to child processes (stage scripts / phase2_train).
+    os.environ["KT_ALLOW_LEGACY_TRAINING"] = "1"
 
     # Run Operation A
     result = operation_a_main(

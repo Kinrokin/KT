@@ -135,6 +135,7 @@ def main():
         description="Stage 6: Promotion",
         epilog="Output: promotion_registry.jsonl + promotion_manifest.json",
     )
+    parser.add_argument("--allow-legacy", action="store_true", help="Acknowledge this is a legacy training entrypoint.")
     parser.add_argument(
         "--receipts",
         type=Path,
@@ -161,6 +162,10 @@ def main():
     )
 
     args = parser.parse_args()
+
+    from tools.training.legacy_guard import require_legacy_allow
+
+    require_legacy_allow(allow_legacy=bool(args.allow_legacy), tool_name="tools.training.stage6_promotion")
 
     print(f"\n{'='*70}", file=sys.stderr)
     print(f"  Stage 6: Promotion", file=sys.stderr)

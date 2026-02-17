@@ -283,6 +283,7 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(
         description="KT Phase 2 LoRA Training Harness (MRT-1; fail-closed)"
     )
+    p.add_argument("--allow-legacy", action="store_true", help="Acknowledge this is a legacy training entrypoint.")
     p.add_argument(
         "--base-model",
         type=str,
@@ -363,6 +364,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         0 on success, 1 on failure
     """
     args = _parse_args(argv)
+
+    from tools.training.legacy_guard import require_legacy_allow
+
+    require_legacy_allow(allow_legacy=bool(args.allow_legacy), tool_name="tools.training.phase2_train")
     
     # Validate inputs
     if not args.dataset.exists():

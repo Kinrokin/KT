@@ -23,6 +23,7 @@ def main() -> None:
         sys.executable,
         "-m",
         "tools.training.train_policy_c_head",
+        "--allow-legacy",
         "--dataset",
         str(ds),
         "--output-dir",

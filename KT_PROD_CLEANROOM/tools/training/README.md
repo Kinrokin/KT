@@ -2,9 +2,28 @@
 
 This package contains multiple training utilities for King's Theorem.
 
+## Canonical Factory Lane (KT V1)
+
+KT V1 treats the **FL3 factory** as the single canonical execution surface for governed
+training/evaluation/promotion. Primary entrypoint:
+
+```bash
+python -m tools.training.fl3_factory.run_job --help
+```
+
+### Legacy training entrypoints (disabled by default)
+
+All non-factory harnesses in this directory are **legacy** and refuse to execute unless you
+explicitly acknowledge legacy mode via either:
+
+- CLI: `--allow-legacy`
+- Env: `KT_ALLOW_LEGACY_TRAINING=1`
+
+This prevents accidental execution of non-canonical training surfaces during governed runs.
+
 ## Phase 2 LoRA Training Harness (MRT-1)
 
-**Primary harness: Multi-Round Training orchestrator for policy_c dataset fine-tuning with QLoRA (4-bit quantization + LoRA).**
+**Legacy harness: Multi-Round Training orchestrator for policy_c dataset fine-tuning with QLoRA (4-bit quantization + LoRA).**
 
 ### Overview
 

@@ -37,6 +37,7 @@ def test_policy_c_head_trainer_creates_artifacts(tmp_path: Path) -> None:
         sys.executable,
         "-m",
         "tools.training.train_policy_c_head",
+        "--allow-legacy",
         "--dataset",
         str(ds),
         "--output-dir",

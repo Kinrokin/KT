@@ -167,6 +167,7 @@ def main():
         description="Stage 3: Dataset Coercion",
         epilog="Output: dataset_coerced.jsonl with 100%% compliance to {\"text\": str} schema",
     )
+    parser.add_argument("--allow-legacy", action="store_true", help="Acknowledge this is a legacy training entrypoint.")
     parser.add_argument(
         "--input",
         type=Path,
@@ -191,6 +192,10 @@ def main():
     )
 
     args = parser.parse_args()
+
+    from tools.training.legacy_guard import require_legacy_allow
+
+    require_legacy_allow(allow_legacy=bool(args.allow_legacy), tool_name="tools.training.stage3_coerce_dataset")
 
     print(f"\n{'='*70}", file=sys.stderr)
     print(f"  Stage 3: Dataset Coercion", file=sys.stderr)
