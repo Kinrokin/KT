@@ -111,12 +111,15 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             raise FL3ValidationError(f"FAIL_CLOSED: step failed: {name} rc={rc}")
 
     # Pytest batteries must run outside canonical-lane constraints (CI-safe).
-    run_step("pytest_cleanroom", ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/tests"], env=dict(base_env))
-    run_step("pytest_temple", ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests"], env=dict(base_env))
+    pytest_env = dict(base_env)
+    pytest_env.pop("KT_CANONICAL_LANE", None)
+    pytest_env.pop("KT_ATTESTATION_MODE", None)
+    run_step("pytest_cleanroom", ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/tests"], env=pytest_env)
+    run_step("pytest_temple", ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests"], env=pytest_env)
     run_step(
         "pytest_verification",
         ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/tools/verification/tests"],
-        env=dict(base_env),
+        env=pytest_env,
     )
 
     # Meta-evaluator CI simulation: canonical lane flagged but no keys must be available.
