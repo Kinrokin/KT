@@ -14,6 +14,7 @@ from tools.training.fl3_factory.manifests import compute_hash_manifest_root_hash
 from tools.verification.fl3_canonical import repo_root_from, sha256_json
 from tools.verification.fl3_meta_evaluator import compute_law_bundle_hash, load_law_bundle
 from tools.verification.fl3_validators import FL3ValidationError, load_fl3_canonical_runtime_paths, validate_schema_bound_object
+from tools.verification.worm_write import write_text_worm
 
 
 def _deps_fingerprint_hash() -> str:
@@ -156,16 +157,15 @@ def main(argv: Optional[List[str]] = None) -> int:
     canary_job = _mk_canary_jobspec(export_shadow_root=export_shadow_root, export_promoted_root=export_promoted_root)
     # Factory job_dir layout is export_shadow_root/<job_id>/ (canonical, immutable).
     out_root = (repo_root / export_shadow_root / canary_job["job_id"]).resolve()
-    if out_root.exists():
-        # Determinism canary must not depend on prior state.
-        import shutil
-
-        shutil.rmtree(out_root)
 
     tmp_dir = repo_root / "KT_PROD_CLEANROOM" / "exports" / "adapters_shadow" / "_runs" / "FL4_CANARY"
     tmp_dir.mkdir(parents=True, exist_ok=True)
     job_path = tmp_dir / "canary_job.json"
-    job_path.write_text(json.dumps(canary_job, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+    write_text_worm(
+        path=job_path,
+        text=json.dumps(canary_job, indent=2, sort_keys=True, ensure_ascii=True) + "\n",
+        label="canary_job.json",
+    )
 
     argv_run = ["--job", str(job_path), "--organ-contract", str(args.organ_contract)]
     if args.budget_state:
@@ -191,8 +191,11 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
 
     out_path = Path(args.out)
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(artifact, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+    write_text_worm(
+        path=out_path,
+        text=json.dumps(artifact, indent=2, sort_keys=True, ensure_ascii=True) + "\n",
+        label="canary_artifact.json",
+    )
 
     return 0 if result == "PASS" else 2
 
