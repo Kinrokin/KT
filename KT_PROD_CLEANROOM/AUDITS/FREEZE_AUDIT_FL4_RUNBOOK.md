@@ -1,4 +1,4 @@
-# FL4 Freeze Audit Runbook (Linux Canonical)
+# FL4 Freeze Audit Runbook (Platform-Matrix Canonical)
 
 Status: **OPERATIONS / READ-ONLY**
 
@@ -25,9 +25,9 @@ Before running this audit, these are frozen:
 
 ---
 
-## 1) Canonical Environment (Linux)
+## 1) Canonical Environment (Platform Matrix)
 
-This freeze audit is valid only on the canonical platform class (Linux x86_64) as declared by `FL4_SUPPORTED_PLATFORMS.json`.
+This freeze audit is valid only within the platform scope declared by `FL4_SUPPORTED_PLATFORMS.json` (fail-closed if out of scope).
 
 Required environment variables:
 
@@ -36,6 +36,15 @@ export PYTHONPATH="$PWD/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:$PWD/KT_PROD_CLE
 export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
 export TOKENIZERS_PARALLELISM=false
 export PYTHONHASHSEED=0
+```
+
+Windows PowerShell equivalent (same semantics; note `;` path separator):
+
+```powershell
+$env:PYTHONPATH = "$PWD\\KT_PROD_CLEANROOM\\04_PROD_TEMPLE_V2\\src;$PWD\\KT_PROD_CLEANROOM"
+$env:PYTEST_DISABLE_PLUGIN_AUTOLOAD = "1"
+$env:TOKENIZERS_PARALLELISM = "false"
+$env:PYTHONHASHSEED = "0"
 ```
 
 ---
@@ -105,6 +114,7 @@ python - <<'PY'
 from pathlib import Path
 import subprocess
 import hashlib
+import platform
 
 repo_root = Path(".").resolve()
 root = repo_root / "KT_PROD_CLEANROOM" / "exports" / "adapters_shadow" / "_runs" / "FL4_SEAL"
@@ -127,7 +137,7 @@ lines = []
 lines.append("")
 lines.append("=== PLATFORM_FINGERPRINT ===")
 lines.append(f"git_sha: {sh(['git','rev-parse','HEAD'])}")
-lines.append(f"uname: {sh(['uname','-a'])}")
+lines.append(f"platform: {platform.platform()} ({platform.machine()})")
 lines.append(f"python: {sh(['python','--version'])}")
 lines.append(f"runbook_path: {runbook.relative_to(repo_root).as_posix()}")
 lines.append(f"runbook_sha256: {runbook_sha}")

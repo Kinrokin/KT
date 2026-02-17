@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 import platform
@@ -20,6 +21,7 @@ from tools.verification.fl3_validators import FL3ValidationError, load_fl3_canon
 from tools.verification.io_guard import IOGuard, IOGuardConfig
 from tools.verification.run_protocol_generator import build_run_protocol, write_run_protocol_pair
 from tools.verification.replay_script_generator import write_replay_artifacts
+from tools.verification.worm_write import write_bytes_worm, write_text_worm
 from tools.verification.watcher_spc_validators import (
     assert_runtime_registry_has_no_watcher_spc,
     validate_watcher_spc_artifacts_if_present,
@@ -32,12 +34,12 @@ def _utc_now_iso_z() -> str:
 
 def _run(cmd: List[str], *, cwd: Path, env: Dict[str, str], out_path: Optional[Path] = None) -> Tuple[int, str]:
     p = subprocess.run(cmd, cwd=str(cwd), env=env, text=True, capture_output=True)
+    out = (p.stdout or "") + (p.stderr or "")
     if out_path:
-        out_path.parent.mkdir(parents=True, exist_ok=True)
-        out_path.write_text(p.stdout + p.stderr, encoding="utf-8")
+        write_text_worm(path=out_path, text=out, label=out_path.name)
     if p.returncode != 0:
         raise SystemExit(f"FAIL: {' '.join(cmd)} rc={p.returncode}")
-    return p.returncode, (p.stdout + p.stderr)
+    return p.returncode, out
 
 
 def _append_transcript(path: Path, *, cmd: List[str], rc: int, output: str) -> None:
@@ -50,7 +52,25 @@ def _append_transcript(path: Path, *, cmd: List[str], rc: int, output: str) -> N
         lines.append("OUTPUT:")
         lines.append(output.rstrip())
     lines.append("")
-    path.write_text(path.read_text(encoding="utf-8") + "\n".join(lines) + "\n" if path.exists() else "\n".join(lines) + "\n", encoding="utf-8")
+    mode = "a" if path.exists() else "x"
+    with path.open(mode, encoding="utf-8", newline="\n") as handle:
+        handle.write("\n".join(lines) + "\n")
+
+
+def _env_value_summary(val: object) -> str:
+    if val is None:
+        return "MISSING"
+    s = str(val)
+    return f"SET len={len(s)}"
+
+
+def _supported_os_allows_host(*, os_claim: str, host_os: str) -> bool:
+    claim = str(os_claim or "").strip().lower()
+    host = str(host_os or "").strip().lower()
+    if not claim or not host:
+        return False
+    tokens = [t for t in re.split(r"[\\s,|]+", claim) if t.strip()]
+    return any(host in t for t in tokens)
 
 
 def _git_status_clean(repo_root: Path) -> None:
@@ -193,20 +213,28 @@ def _enforce_env_lock(*, repo_root: Path, env_for_subprocess: Dict[str, str], ou
     host_env = os.environ
 
     def _write_env_mismatch_receipt(*, reason: str, details: Dict[str, Any]) -> None:
+        safe_details: Dict[str, Any] = {}
+        for k, v in details.items():
+            # Never write raw env var values into evidence/logs; lengths only.
+            if str(k).lower() in {"value", "got", "expected"}:
+                safe_details[str(k)] = _env_value_summary(v)
+            else:
+                safe_details[str(k)] = v
         payload = {
             "schema_id": "kt.env_mismatch_receipt.v1",
             "reason": reason,
-            "details": details,
+            "details": safe_details,
         }
-        (out_dir / "env_mismatch_receipt.json").write_text(
-            json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=True) + "\n",
-            encoding="utf-8",
+        write_text_worm(
+            path=(out_dir / "env_mismatch_receipt.json"),
+            text=json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=True) + "\n",
+            label="env_mismatch_receipt.json",
         )
 
     # Forbidden keys/prefixes apply to the host environment (fail-closed).
     for k in forbidden.keys():
         if k in host_env:
-            _write_env_mismatch_receipt(reason="forbidden_key_present", details={"key": k, "value": str(host_env.get(k))})
+            _write_env_mismatch_receipt(reason="forbidden_key_present", details={"key": k, "value": host_env.get(k)})
             raise SystemExit(f"FAIL: forbidden env var present (fail-closed): {k}")
     for prefix in forbidden_prefixes:
         for k in host_env.keys():
@@ -218,10 +246,10 @@ def _enforce_env_lock(*, repo_root: Path, env_for_subprocess: Dict[str, str], ou
     for k, v in required.items():
         if k not in host_env:
             _write_env_mismatch_receipt(reason="required_key_missing", details={"key": k, "expected": v})
-            raise SystemExit(f"FAIL: required env var missing (fail-closed): {k} expected {v!r}")
+            raise SystemExit(f"FAIL: required env var missing (fail-closed): {k}")
         if str(host_env.get(k)) != v:
-            _write_env_mismatch_receipt(reason="required_key_mismatch", details={"key": k, "got": str(host_env.get(k)), "expected": v})
-            raise SystemExit(f"FAIL: required env var mismatch (fail-closed): {k}={host_env.get(k)!r} expected {v!r}")
+            _write_env_mismatch_receipt(reason="required_key_mismatch", details={"key": k, "got": host_env.get(k), "expected": v})
+            raise SystemExit(f"FAIL: required env var mismatch (fail-closed): {k}")
         env_for_subprocess[k] = v
 
     # Seal lane: prevent drift in key namespaces (KT/PYTHON/TRANSFORMERS/TOKENIZERS).
@@ -234,9 +262,10 @@ def _enforce_env_lock(*, repo_root: Path, env_for_subprocess: Dict[str, str], ou
             raise SystemExit(f"FAIL: undeclared env var in tracked namespace (fail-closed): {k}")
 
     # Evidence copy (schema-bound) for offline audit.
-    (out_dir / "env_lock.json").write_text(
-        json.dumps(lock, indent=2, sort_keys=True, ensure_ascii=True) + "\n",
-        encoding="utf-8",
+    write_text_worm(
+        path=(out_dir / "env_lock.json"),
+        text=json.dumps(lock, indent=2, sort_keys=True, ensure_ascii=True) + "\n",
+        label="env_lock.json",
     )
     return lock
 
@@ -358,8 +387,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         repo_root / "KT_PROD_CLEANROOM"
     )
     env.setdefault("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
-    # Canonical lanes enforce strong governance attestation gates.
-    env.setdefault("KT_CANONICAL_LANE", "1")
+    # Seal lane is canonical by definition; refuse to inherit a non-canonical override.
+    env["KT_CANONICAL_LANE"] = "1"
 
     paths = load_fl3_canonical_runtime_paths(repo_root=repo_root)
     reg_path = str(args.registry_path or paths["runtime_registry_path"])
@@ -374,8 +403,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     os_claim = str(supported.get("os", ""))
     py_claim = str(supported.get("python", ""))
     host_os = platform.system().lower()
-    if "linux" not in os_claim.lower() or host_os != "linux":
-        raise SystemExit(f"FAIL: preflight must run on linux to match supported_platforms.os (got {platform.system()})")
+    if not _supported_os_allows_host(os_claim=os_claim, host_os=host_os):
+        raise SystemExit(
+            "FAIL: preflight host OS out of supported_platforms.os scope "
+            f"(claim={os_claim!r} host={platform.system()!r})"
+        )
     if not (sys.version_info.major == 3 and 10 <= sys.version_info.minor < 12):
         raise SystemExit(f"FAIL: preflight python version out of supported_platforms.python scope (got {sys.version.split()[0]})")
     container_digest = supported.get("container_image_sha256")
@@ -392,7 +424,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
         ts = datetime.datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
         out_dir = (repo_root / "KT_PROD_CLEANROOM" / "exports" / "adapters_shadow" / "_runs" / "FL4_SEAL" / ts).resolve()
-    out_dir.mkdir(parents=True, exist_ok=True)
+    if out_dir.exists():
+        raise SystemExit(f"FAIL_CLOSED: refusing to write seal evidence into existing out_dir (WORM): {out_dir.as_posix()}")
+    out_dir.mkdir(parents=True, exist_ok=False)
     transcript_path = out_dir / "command_transcript.txt"
     # Seal lane: force all temp usage under the evidence root to avoid undeclared filesystem I/O.
     tmp_dir = (out_dir / "_tmp").resolve()
@@ -407,7 +441,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     doctrine_path = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_SEAL_DOCTRINE.md"
     if not doctrine_path.exists():
         raise SystemExit(f"FAIL: missing FL4 seal doctrine (fail-closed): {doctrine_path.as_posix()}")
-    (out_dir / "seal_doctrine.md").write_text(doctrine_path.read_text(encoding="utf-8"), encoding="utf-8")
+    write_bytes_worm(path=(out_dir / "seal_doctrine.md"), data=doctrine_path.read_bytes(), label="seal_doctrine.md")
     doctrine_hash = _sha256_file(doctrine_path)
 
     env_lock = _enforce_env_lock(repo_root=repo_root, env_for_subprocess=env, out_dir=out_dir)
@@ -416,7 +450,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     # Evidence: record the exact python environment used for the seal run.
     rc, out = _run([py_exe, "-m", "pip", "freeze"], cwd=repo_root, env=env)
-    (out_dir / "pip_freeze.txt").write_text(out if out.endswith("\n") else out + "\n", encoding="utf-8")
+    write_text_worm(path=(out_dir / "pip_freeze.txt"), text=out if out.endswith("\n") else out + "\n", label="pip_freeze.txt")
     _append_transcript(transcript_path, cmd=[py_exe, "-m", "pip", "freeze"], rc=rc, output=out)
 
     # Seal lane I/O guard: fail-closed on network attempts and on writes outside allowlisted roots.
@@ -442,10 +476,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         )
     ):
         # 1) Whole-KT test battery
+        env_pytest = dict(env)
+        env_pytest.pop("KT_CANONICAL_LANE", None)
         rc, out = _run(
             [py_exe, "-m", "pytest", "-p", "no:cacheprovider", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests", "-q"],
             cwd=repo_root,
-            env=env,
+            env=env_pytest,
             out_path=out_dir / "pytest_temple.log",
         )
         _append_transcript(
@@ -457,7 +493,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         rc, out = _run(
             [py_exe, "-m", "pytest", "-p", "no:cacheprovider", "KT_PROD_CLEANROOM/tests", "-q"],
             cwd=repo_root,
-            env=env,
+            env=env_pytest,
             out_path=out_dir / "pytest_cleanroom.log",
         )
         _append_transcript(transcript_path, cmd=[py_exe, "-m", "pytest", "-p", "no:cacheprovider", "KT_PROD_CLEANROOM/tests", "-q"], rc=rc, output=out)
@@ -491,7 +527,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         growth_report = out_dir / "growth_e2e_gate_report.json"
         growth_cmd = [py_exe, "-m", "tools.verification.growth_e2e_gate", "--pressure-runs", "1", "--out", str(growth_report)]
         p = subprocess.run(growth_cmd, cwd=str(repo_root), env=env, text=True, capture_output=True)
-        (out_dir / "growth_e2e_gate.log").write_text(p.stdout + p.stderr, encoding="utf-8")
+        write_text_worm(path=(out_dir / "growth_e2e_gate.log"), text=(p.stdout + p.stderr), label="growth_e2e_gate.log")
         _append_transcript(transcript_path, cmd=growth_cmd, rc=p.returncode, output=p.stdout + p.stderr)
         if not growth_report.exists():
             raise SystemExit("FAIL_CLOSED: growth_e2e_gate did not create growth_e2e_gate_report.json (fail-closed)")
@@ -515,12 +551,20 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         ]
         rc, out = _run(bg_cmd, cwd=repo_root, env=env, out_path=out_dir / "behavioral_growth.log")
         _append_transcript(transcript_path, cmd=bg_cmd, rc=rc, output=out)
-        (out_dir / "behavioral_growth_summary.json").write_text(out if out.endswith("\n") else out + "\n", encoding="utf-8", newline="\n")
+        write_text_worm(
+            path=(out_dir / "behavioral_growth_summary.json"),
+            text=out if out.endswith("\n") else out + "\n",
+            label="behavioral_growth_summary.json",
+        )
 
         # 4) Build ephemeral organ contract and run determinism canary + one sovereign job.
         contract = _mk_min_contract(repo_root)
         contract_path = out_dir / "organ_contract.json"
-        contract_path.write_text(json.dumps(contract, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+        write_text_worm(
+            path=contract_path,
+            text=json.dumps(contract, indent=2, sort_keys=True, ensure_ascii=True) + "\n",
+            label="organ_contract.json",
+        )
 
         # Determinism canary: run twice (rerun determinism proof) before promotion.
         canary_pre = out_dir / "canary_artifact_pre.json"
@@ -568,7 +612,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         export_promoted_root = str(paths["exports_adapters_root"]).replace("\\", "/").rstrip("/") + "/_runs/FL4_SEAL"
         job = _mk_jobspec(export_shadow_root=export_shadow_root, export_promoted_root=export_promoted_root, mode="SOVEREIGN")
         job_path = out_dir / "job.json"
-        job_path.write_text(json.dumps(job, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+        write_text_worm(path=job_path, text=json.dumps(job, indent=2, sort_keys=True, ensure_ascii=True) + "\n", label="job.json")
 
         rc, out = _run(
             [py_exe, "-m", "tools.training.fl3_factory.run_job", "--job", str(job_path), "--organ-contract", str(contract_path)],
@@ -609,7 +653,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         job_a["seed"] = int(job_a["seed"]) + 1
         job_a["job_id"] = sha256_json({k: v for k, v in job_a.items() if k != "job_id"})
         job_a_path = out_dir / "job_perturb_seed_plus_1.json"
-        job_a_path.write_text(json.dumps(job_a, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+        write_text_worm(path=job_a_path, text=json.dumps(job_a, indent=2, sort_keys=True, ensure_ascii=True) + "\n", label="job_a.json")
         rc, out = _run([py_exe, "-m", "tools.training.fl3_factory.run_job", "--job", str(job_a_path), "--organ-contract", str(contract_path)], cwd=repo_root, env=env)
         _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.training.fl3_factory.run_job", "--job", str(job_a_path), "--organ-contract", str(contract_path)], rc=rc, output=out)
         job_a_dir = (repo_root / export_shadow_root / job_a["job_id"]).resolve()
@@ -622,7 +666,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         job_b["role"] = "CRITIC"
         job_b["job_id"] = sha256_json({k: v for k, v in job_b.items() if k != "job_id"})
         job_b_path = out_dir / "job_perturb_role_critic.json"
-        job_b_path.write_text(json.dumps(job_b, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+        write_text_worm(path=job_b_path, text=json.dumps(job_b, indent=2, sort_keys=True, ensure_ascii=True) + "\n", label="job_b.json")
         rc, out = _run([py_exe, "-m", "tools.training.fl3_factory.run_job", "--job", str(job_b_path), "--organ-contract", str(contract_path)], cwd=repo_root, env=env)
         _append_transcript(transcript_path, cmd=[py_exe, "-m", "tools.training.fl3_factory.run_job", "--job", str(job_b_path), "--organ-contract", str(contract_path)], rc=rc, output=out)
         job_b_dir = (repo_root / export_shadow_root / job_b["job_id"]).resolve()
@@ -635,7 +679,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             raise SystemExit("FAIL: metabolism proof failed; perturbations did not change hash_manifest root (fail-closed)")
 
         metabolism_proof = _mk_metabolism_proof(base_job_id=str(job["job_id"]), perturbations=pert_runs)
-        (out_dir / "metabolism_proof.json").write_text(json.dumps(metabolism_proof, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+        write_text_worm(
+            path=(out_dir / "metabolism_proof.json"),
+            text=json.dumps(metabolism_proof, indent=2, sort_keys=True, ensure_ascii=True) + "\n",
+            label="metabolism_proof.json",
+        )
 
         # Promote if decision is PROMOTE.
         promotion = json.loads((job_dir / "promotion.json").read_text(encoding="utf-8"))
@@ -701,14 +749,34 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         ):
             src = job_dir / name
             if src.exists():
-                (evidence_dir / name).write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+                write_bytes_worm(path=(evidence_dir / name), data=src.read_bytes(), label=f"job_dir/{name}")
 
         # Copy global contracts/law pins into evidence.
-        (out_dir / "determinism_contract.json").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_DETERMINISM_CONTRACT.json").read_text(encoding="utf-8"), encoding="utf-8")
-        (out_dir / "supported_platforms.json").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_SUPPORTED_PLATFORMS.json").read_text(encoding="utf-8"), encoding="utf-8")
-        (out_dir / "time_contract.json").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_TIME_CONTRACT.json").read_text(encoding="utf-8"), encoding="utf-8")
-        (out_dir / "law_bundle_hash.txt").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "LAW_BUNDLE_FL3.sha256").read_text(encoding="utf-8"), encoding="utf-8")
-        (out_dir / "law_bundle.json").write_text((repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "LAW_BUNDLE_FL3.json").read_text(encoding="utf-8"), encoding="utf-8")
+        write_bytes_worm(
+            path=(out_dir / "determinism_contract.json"),
+            data=(repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_DETERMINISM_CONTRACT.json").read_bytes(),
+            label="determinism_contract.json",
+        )
+        write_bytes_worm(
+            path=(out_dir / "supported_platforms.json"),
+            data=(repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_SUPPORTED_PLATFORMS.json").read_bytes(),
+            label="supported_platforms.json",
+        )
+        write_bytes_worm(
+            path=(out_dir / "time_contract.json"),
+            data=(repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_TIME_CONTRACT.json").read_bytes(),
+            label="time_contract.json",
+        )
+        write_bytes_worm(
+            path=(out_dir / "law_bundle_hash.txt"),
+            data=(repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "LAW_BUNDLE_FL3.sha256").read_bytes(),
+            label="law_bundle_hash.txt",
+        )
+        write_bytes_worm(
+            path=(out_dir / "law_bundle.json"),
+            data=(repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "LAW_BUNDLE_FL3.json").read_bytes(),
+            label="law_bundle.json",
+        )
 
         # Persist a compact summary for proof packaging.
         try:
@@ -748,7 +816,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             except Exception:
                 pass
         validate_schema_bound_object(summary)
-        (out_dir / "preflight_summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+        write_text_worm(
+            path=(out_dir / "preflight_summary.json"),
+            text=json.dumps(summary, indent=2, sort_keys=True, ensure_ascii=True) + "\n",
+            label="preflight_summary.json",
+        )
 
         # 5) Replay from receipts (deterministic; fail-closed). This is a verifier, not a seal run.
         replay_report = out_dir / "replay_from_receipts_report.json"
