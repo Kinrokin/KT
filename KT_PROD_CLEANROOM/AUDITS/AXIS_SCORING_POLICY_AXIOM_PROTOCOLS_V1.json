@@ -1,0 +1,82 @@
+{
+  "axes": [
+    {
+      "aggregator": "MEAN",
+      "axis_id": "fatigue",
+      "gate_validator_ids": [
+        "V_PFM_REJECT_QUORUM"
+      ],
+      "soft_validator_weights": [
+        {
+          "validator_id": "V_PFM_REJECT_QUORUM",
+          "weight": 1.0
+        }
+      ]
+    },
+    {
+      "aggregator": "MEAN",
+      "axis_id": "paradox",
+      "gate_validator_ids": [
+        "V_APF_FUSE_TRUE_FALSE_BOTH",
+        "V_POG_TRIGGER_TEACHER"
+      ],
+      "soft_validator_weights": [
+        {
+          "validator_id": "V_APF_FUSE_TRUE_FALSE_BOTH",
+          "weight": 0.5
+        },
+        {
+          "validator_id": "V_POG_TRIGGER_TEACHER",
+          "weight": 0.5
+        }
+      ]
+    },
+    {
+      "aggregator": "MEAN",
+      "axis_id": "risk_math",
+      "gate_validator_ids": [
+        "V_RISK_CVAR_SIMPLE"
+      ],
+      "soft_validator_weights": [
+        {
+          "validator_id": "V_RISK_CVAR_SIMPLE",
+          "weight": 1.0
+        }
+      ]
+    },
+    {
+      "aggregator": "MEAN",
+      "axis_id": "truth",
+      "gate_validator_ids": [
+        "V_IADS_PROTECT_MINORITY"
+      ],
+      "soft_validator_weights": [
+        {
+          "validator_id": "V_IADS_PROTECT_MINORITY",
+          "weight": 1.0
+        }
+      ]
+    }
+  ],
+  "axis_scoring_policy_id": "184de70b727af0d73686bf516a51de22603bba8ad8622d3841cf8c2254bc2e12",
+  "created_at": "1970-01-01T00:00:00Z",
+  "notes": "EPIC_22 axiom protocol axis scoring policy (strict; all axes must pass).",
+  "schema_id": "kt.axis_scoring_policy.v1",
+  "schema_version_hash": "371286c056c13a267f3093815c90d2090f33ae567b9449f46b9224bd83c06597",
+  "verdict_thresholds": {
+    "hold_min": {
+      "fatigue": 1.0,
+      "paradox": 1.0,
+      "risk_math": 1.0,
+      "truth": 1.0
+    },
+    "promote_min": {
+      "fatigue": 1.0,
+      "paradox": 1.0,
+      "risk_math": 1.0,
+      "truth": 1.0
+    },
+    "quarantine_on_gate_fail": true
+  }
+}
+

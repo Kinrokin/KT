@@ -4,8 +4,39 @@
   "notes": "EPIC_16 suite registry. HMAC-authorized for canonical lane.",
   "schema_id": "kt.suite_registry.v1",
   "schema_version_hash": "50d1b50f055476d73d3a0de7f8a87f0c7b5ab6ae6a9cb676fbe17f7e3d772bcc",
-  "suite_registry_id": "ea3325e492ccc8346c26a1f51f9f78b16c827c4f2f819a564f2935aba71d47bc",
+  "suite_registry_id": "28677afc9aed55e6aeb8bcbdd7ee8ed458a361f7edfcfd3aab3117f3dc360ffa",
   "suites": [
+    {
+      "authorization_payload_hash": "b284b5eee01cd696edee9f1b32daecff0bc42a15ac9dab68fc4647965d27850e",
+      "notes": null,
+      "signoffs": [
+        {
+          "attestation_mode": "HMAC",
+          "created_at": "1970-01-01T00:00:00Z",
+          "hmac_key_fingerprint": "bd5555734c182b836cfe0a1ec964b507b357fc76283d8cb2e6e5b79dba4da53f",
+          "hmac_signature": "303841bddb972a0ecaacf45eda76b0c0609fb434af3d131d8f42f46676c234b7",
+          "key_id": "SIGNER_A",
+          "payload_hash": "b284b5eee01cd696edee9f1b32daecff0bc42a15ac9dab68fc4647965d27850e",
+          "schema_id": "kt.human_signoff.v2",
+          "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
+          "signoff_id": "37bfd2def5cfe6970c75d43480abe6987c6bd16d9d7c486ae9f9fc565fa88ded"
+        },
+        {
+          "attestation_mode": "HMAC",
+          "created_at": "1970-01-01T00:00:00Z",
+          "hmac_key_fingerprint": "6ca97c569e35532576edce775e08eb5d4a17d2202d7cbd38d1cf5736c274c51e",
+          "hmac_signature": "741962ec19334591934b20c393d47aed1ab78c491d6e39d64851195fe4cb131e",
+          "key_id": "SIGNER_B",
+          "payload_hash": "b284b5eee01cd696edee9f1b32daecff0bc42a15ac9dab68fc4647965d27850e",
+          "schema_id": "kt.human_signoff.v2",
+          "schema_version_hash": "44cc54188371a14d57bfbfd668fe35be5c81c0ebad93e01b6529e00ef0b06405",
+          "signoff_id": "1ba50a7b0a16bf472e0147279b866b33315539da3ef1748af8fa84e068d43d9e"
+        }
+      ],
+      "suite_definition_ref": "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_AXIOM_PROTOCOLS.v1.json",
+      "suite_id": "SUITE_AXIOM_PROTOCOLS",
+      "suite_root_hash": "daa9e19eeadeaed723972fa122910f8734c53c1f183f89e505877f8158e3e179"
+    },
     {
       "authorization_payload_hash": "f960ec4640b10a616679d6b4892a22b8e1df5f0246e0990b195722da22631995",
       "notes": null,

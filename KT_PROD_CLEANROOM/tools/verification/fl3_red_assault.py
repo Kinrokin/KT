@@ -130,6 +130,12 @@ def _run_job(job: Dict[str, Any], contract: Dict[str, Any], *, tmp_dir: Path) ->
 
 
 def run_red_assault(*, tmp_dir: Path) -> Dict[str, Any]:
+    from schemas.fl3_schema_common import sha256_hex_of_obj  # type: ignore
+    from schemas.schema_files import schema_version_hash  # type: ignore
+
+    from tools.training.fl3_factory.timeutil import utc_now_z
+    from tools.verification.fl3_validators import validate_schema_bound_object
+
     repo_root = repo_root_from(Path(__file__))
     base_job = _mk_base_jobspec()
     contract = _mk_min_contract(repo_root)
@@ -160,24 +166,36 @@ def run_red_assault(*, tmp_dir: Path) -> Dict[str, Any]:
     rc = _run_job(base_job, contract_bad, tmp_dir=tmp_dir)
     results.append(AttackResult("RA3_ENTRYPOINT_HASH_TAMPER", (2,), rc))
 
-    return {
+    rows = [
+        {
+            "attack_id": r.attack_id,
+            "expected_exit_codes": list(r.expected_exit_codes),
+            "observed_exit_code": r.observed_exit_code,
+            "passed": r.passed,
+        }
+        for r in results
+    ]
+    rows = sorted(rows, key=lambda r: str(r.get("attack_id", "")).strip())
+
+    report = {
         "schema_id": "kt.fl3.red_assault.v1",
-        "results": [
-            {
-                "attack_id": r.attack_id,
-                "expected_exit_codes": list(r.expected_exit_codes),
-                "observed_exit_code": r.observed_exit_code,
-                "passed": r.passed,
-            }
-            for r in results
-        ],
+        "schema_version_hash": schema_version_hash("fl3/kt.fl3.red_assault.v1.json"),
+        "red_assault_id": "",
+        "results": rows,
         "all_passed": all(r.passed for r in results),
+        "created_at": utc_now_z(),
+        "notes": None,
     }
+    report["red_assault_id"] = sha256_hex_of_obj(report, drop_keys={"created_at", "red_assault_id"})
+    validate_schema_bound_object(report)
+    return report
 
 
 def main(argv: List[str] | None = None) -> int:
     import argparse
     import tempfile
+
+    from tools.verification.worm_write import write_text_worm
 
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=None, help="Optional output JSON report path")
@@ -187,7 +205,7 @@ def main(argv: List[str] | None = None) -> int:
         report = run_red_assault(tmp_dir=Path(td))
     out = json.dumps(report, indent=2, sort_keys=True, ensure_ascii=True)
     if args.out:
-        Path(args.out).write_text(out + "\n", encoding="utf-8")
+        write_text_worm(path=Path(args.out), text=out + "\n", label="red_assault_report.json")
     else:
         print(out)
     return 0 if report.get("all_passed") else 2

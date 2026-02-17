@@ -109,6 +109,7 @@ SCHEMA_FILES = [
     "fl3/kt.secret_scan_report.v1.json",
     "fl3/kt.secret_scan_summary.v1.json",
     "fl3/kt.delivery_pack_manifest.v1.json",
+    "fl3/kt.fl3.red_assault.v1.json",
     "fl3/kt.probe_synthesis_manifest.v1.json",
     "fl3/kt.probe_synthesis_report.v1.json",
     # EPIC_13: audit intelligence (advisory-only; append-only).

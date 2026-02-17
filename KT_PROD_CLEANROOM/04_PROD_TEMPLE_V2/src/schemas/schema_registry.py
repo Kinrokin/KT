@@ -194,6 +194,11 @@ from schemas.fl3_training_admission_receipt_schema import (
     FL3_TRAINING_ADMISSION_RECEIPT_SCHEMA_VERSION_HASH,
     validate_fl3_training_admission_receipt,
 )
+from schemas.fl3_red_assault_schema import (
+    FL3_RED_ASSAULT_SCHEMA_ID,
+    FL3_RED_ASSAULT_SCHEMA_VERSION_HASH,
+    validate_fl3_red_assault,
+)
 from schemas.fl3_suite_registry_schema import (
     FL3_SUITE_REGISTRY_SCHEMA_ID,
     FL3_SUITE_REGISTRY_SCHEMA_VERSION_HASH,
@@ -662,6 +667,7 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
         FL3_TRAINING_ADMISSION_RECEIPT_SCHEMA_VERSION_HASH,
         validate_fl3_training_admission_receipt,
     ),
+    FL3_RED_ASSAULT_SCHEMA_ID: (FL3_RED_ASSAULT_SCHEMA_VERSION_HASH, validate_fl3_red_assault),
     FL3_SUITE_REGISTRY_SCHEMA_ID: (FL3_SUITE_REGISTRY_SCHEMA_VERSION_HASH, validate_fl3_suite_registry),
     FL3_VALIDATOR_CATALOG_SCHEMA_ID: (FL3_VALIDATOR_CATALOG_SCHEMA_VERSION_HASH, validate_fl3_validator_catalog),
     FL3_VALIDATOR_CATALOG_V2_SCHEMA_ID: (FL3_VALIDATOR_CATALOG_V2_SCHEMA_VERSION_HASH, validate_fl3_validator_catalog_v2),
