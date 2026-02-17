@@ -472,40 +472,58 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     env["KT_IO_GUARD_RECEIPT_PATH"] = (out_dir / "io_guard_receipt.json").as_posix()
 
     # Full seal lane (tests + verifiers + growth + canary + factory + promotion) under fail-closed I/O guard.
-    with IOGuard(
-        IOGuardConfig(
-            allowed_write_roots=tuple(allowed_write_roots),
-            deny_network=True,
-            receipt_path=out_dir / "io_guard_receipt.json",
-        )
-    ):
-        # 1) Whole-KT test battery
-        env_pytest = dict(env)
-        env_pytest.pop("KT_CANONICAL_LANE", None)
-        rc, out = _run(
-            [py_exe, "-m", "pytest", "-p", "no:cacheprovider", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests", "-q"],
-            cwd=repo_root,
-            env=env_pytest,
-            out_path=out_dir / "pytest_temple.log",
-        )
-        _append_transcript(
-            transcript_path,
-            cmd=[py_exe, "-m", "pytest", "-p", "no:cacheprovider", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests", "-q"],
-            rc=rc,
-            output=out,
-        )
-        rc, out = _run(
-            [py_exe, "-m", "pytest", "-p", "no:cacheprovider", "KT_PROD_CLEANROOM/tests", "-q"],
-            cwd=repo_root,
-            env=env_pytest,
-            out_path=out_dir / "pytest_cleanroom.log",
-        )
-        _append_transcript(transcript_path, cmd=[py_exe, "-m", "pytest", "-p", "no:cacheprovider", "KT_PROD_CLEANROOM/tests", "-q"], rc=rc, output=out)
+        with IOGuard(
+            IOGuardConfig(
+                allowed_write_roots=tuple(allowed_write_roots),
+                deny_network=True,
+                receipt_path=out_dir / "io_guard_receipt.json",
+            )
+        ):
+            # 1) Whole-KT test battery
+            env_pytest = dict(env)
+            env_pytest.pop("KT_CANONICAL_LANE", None)
+            # Pytest's tmp_path fixture can write arbitrary test payloads into TEMP/TMPDIR.
+            # To prevent test temp files from contaminating the seal evidence pack (and triggering secret-scan
+            # failures on known synthetic secret fixtures), we force pytest base-temp outside the evidence_dir
+            # while staying within IOGuard allowlisted roots.
+            pytest_tmp_root = (exports_shadow / "_pytest_tmp" / out_dir.name).resolve()
+            pytest_tmp_root.mkdir(parents=True, exist_ok=True)
+            env_pytest["TMPDIR"] = pytest_tmp_root.as_posix()
+            env_pytest["TMP"] = pytest_tmp_root.as_posix()
+            env_pytest["TEMP"] = pytest_tmp_root.as_posix()
+            pytest_common = [
+                py_exe,
+                "-m",
+                "pytest",
+                "-p",
+                "no:cacheprovider",
+                "--basetemp",
+                pytest_tmp_root.as_posix(),
+            ]
+            rc, out = _run(
+                pytest_common + ["KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests", "-q"],
+                cwd=repo_root,
+                env=env_pytest,
+                out_path=out_dir / "pytest_temple.log",
+            )
+            _append_transcript(
+                transcript_path,
+                cmd=pytest_common + ["KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests", "-q"],
+                rc=rc,
+                output=out,
+            )
+            rc, out = _run(
+                pytest_common + ["KT_PROD_CLEANROOM/tests", "-q"],
+                cwd=repo_root,
+                env=env_pytest,
+                out_path=out_dir / "pytest_cleanroom.log",
+            )
+            _append_transcript(transcript_path, cmd=pytest_common + ["KT_PROD_CLEANROOM/tests", "-q"], rc=rc, output=out)
 
-        # 2) Governance verifiers
-        rc, out = _run(
-            [py_exe, "-m", "tools.verification.fl3_meta_evaluator", "--write-receipt", str(out_dir / "meta_evaluator_receipt.json")],
-            cwd=repo_root,
+            # 2) Governance verifiers
+            rc, out = _run(
+                [py_exe, "-m", "tools.verification.fl3_meta_evaluator", "--write-receipt", str(out_dir / "meta_evaluator_receipt.json")],
+                cwd=repo_root,
             env=env,
             out_path=out_dir / "meta_evaluator.log",
         )
@@ -612,8 +630,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             raise SystemExit("FAIL: determinism rerun mismatch (canary root hash differs, fail-closed)")
 
         # Run one sovereign factory job (expected to produce PROMOTE decision, then promote atomically).
-        export_shadow_root = str(paths["exports_shadow_root"]).replace("\\", "/").rstrip("/") + "/_runs/FL4_SEAL"
-        export_promoted_root = str(paths["exports_adapters_root"]).replace("\\", "/").rstrip("/") + "/_runs/FL4_SEAL"
+        # WORM / replay safety: preflight must be rerunnable without deleting prior evidence.
+        # Bind factory job outputs to the preflight out_dir so repeated preflights never collide on job_id/job_dir.
+        export_shadow_root = str(paths["exports_shadow_root"]).replace("\\", "/").rstrip("/") + f"/_runs/FL4_SEAL/{out_dir.name}"
+        export_promoted_root = str(paths["exports_adapters_root"]).replace("\\", "/").rstrip("/") + f"/_runs/FL4_SEAL/{out_dir.name}"
         job = _mk_jobspec(export_shadow_root=export_shadow_root, export_promoted_root=export_promoted_root, mode="SOVEREIGN")
         job_path = out_dir / "job.json"
         write_text_worm(path=job_path, text=json.dumps(job, indent=2, sort_keys=True, ensure_ascii=True) + "\n", label="job.json")
