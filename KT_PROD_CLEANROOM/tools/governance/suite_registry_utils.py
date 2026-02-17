@@ -76,6 +76,15 @@ def suite_definition_hash_ok(*, repo_root: Path, suite_definition_ref: str, suit
     got = sha256_file_canonical(suite_path)
     if got != str(suite_root_hash).strip():
         return False, f"suite_root_hash mismatch expected={suite_root_hash} got={got}"
+
+    # EPIC_30: suite definitions must be schema-bound measurement artifacts (no fixture escape hatch).
+    try:
+        obj = _read_json_dict(suite_path, name="suite_definition")
+        validate_schema_bound_object(obj)
+    except Exception as exc:  # noqa: BLE001
+        return False, f"suite definition schema invalid (fail-closed): {exc}"
+    if str(obj.get("schema_id", "")).strip() != "kt.suite_definition.v1":
+        return False, "suite definition schema_id mismatch (fail-closed)"
     return True, ""
 
 
