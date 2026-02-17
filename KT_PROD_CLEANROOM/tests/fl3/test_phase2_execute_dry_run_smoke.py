@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pytest
@@ -73,3 +74,17 @@ def test_phase2_execute_rejects_execute_mode(tmp_path: Path, monkeypatch: pytest
     with pytest.raises(Phase2Error):
         phase2_main(["--work-order", str(work_order), "--out-dir", str(out_dir), "--mode", "execute"])
 
+
+def test_phase2_execute_rejects_unresolvable_phase1c_tag(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("KT_LIVE", "0")
+    monkeypatch.setenv("PYTHONHASHSEED", "0")
+
+    work_order_src = _REPO_ROOT / "KT_PROD_CLEANROOM" / "kt.phase2_work_order.v1.json"
+    work_order = loads_no_dupes(work_order_src.read_text(encoding="utf-8"))
+    work_order["inputs"]["required_refs"]["phase1c_tag"] = "not-a-real-tag"
+    work_order_path = tmp_path / "bad_work_order.json"
+    work_order_path.write_text(json.dumps(work_order, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8", newline="\n")
+
+    out_dir = tmp_path / "phase2_out"
+    with pytest.raises(Phase2Error):
+        phase2_main(["--work-order", str(work_order_path), "--out-dir", str(out_dir), "--mode", "dry-run"])
