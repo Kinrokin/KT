@@ -6,6 +6,7 @@ from typing import Any, Dict, List
 from tools.training.fl3_factory.timeutil import utc_now_z
 from tools.verification.fl3_canonical import sha256_json
 from tools.verification.fl3_validators import validate_schema_bound_object
+from tools.verification.worm_write import write_text_worm
 
 
 def build_breeding_manifest(*, child_adapter_version: str, parent_adapters: List[str], shadow_sources: List[str], parent_hash: str) -> Dict[str, Any]:
@@ -48,7 +49,7 @@ def write_training_log_with_injection(*, out_dir: Path, job_id: str, total_batch
             + ("true" if is_injected else "false")
             + "}\n"
         )
-    log_path.write_text("".join(lines), encoding="utf-8")
+    write_text_worm(path=log_path, text="".join(lines), label="breeding.training_log.jsonl")
     if injected != 1:
         raise RuntimeError("training log injection invariant failed (fail-closed)")
     return log_path

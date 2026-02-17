@@ -6,6 +6,7 @@ from typing import Any, Dict
 
 from tools.verification.fl3_canonical import canonical_json, sha256_text
 from tools.verification.fl3_validators import FL3ValidationError, validate_schema_bound_object
+from tools.verification.worm_write import write_text_worm
 
 
 def read_json_object(path: Path) -> Dict[str, Any]:
@@ -20,9 +21,7 @@ def read_json_object(path: Path) -> Dict[str, Any]:
 
 def write_schema_object(*, path: Path, obj: Dict[str, Any]) -> str:
     validate_schema_bound_object(obj)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    text = json.dumps(obj, indent=2, sort_keys=True, ensure_ascii=True)
-    path.write_text(text + "\n", encoding="utf-8")
+    text = json.dumps(obj, indent=2, sort_keys=True, ensure_ascii=True) + "\n"
+    write_text_worm(path=path, text=text, label=f"schema_object:{path.name}")
     # Return canonical content hash to bind into higher-level receipts.
     return sha256_text(canonical_json(obj))
-
