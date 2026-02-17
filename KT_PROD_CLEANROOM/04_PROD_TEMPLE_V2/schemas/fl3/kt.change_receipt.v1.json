@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Change Receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "change_id",
+    "actor",
+    "phase",
+    "phase_id",
+    "timestamp_utc",
+    "files_checked",
+    "outcome",
+    "notes"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.change_receipt.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "change_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "actor": { "type": "string" },
+    "phase": { "type": "string", "enum": ["pre", "post"] },
+    "phase_id": { "type": "string" },
+    "timestamp_utc": { "type": "string" },
+    "files_checked": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": { "type": "string" },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      }
+    },
+    "outcome": { "type": "string", "enum": ["PASS", "FAIL"] },
+    "notes": { "type": "string" }
+  }
+}

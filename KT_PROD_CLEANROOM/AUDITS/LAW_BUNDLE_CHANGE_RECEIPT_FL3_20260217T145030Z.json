@@ -1,0 +1,52 @@
+{
+  "bundle_id": "LAW_BUNDLE_FL3",
+  "counts": {
+    "added": 5,
+    "modified": 2,
+    "removed": 0
+  },
+  "created_at": "2026-02-17T14:50:30Z",
+  "diff": {
+    "added": [
+      {
+        "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.change_receipt.v1.hash",
+        "sha256": "964493586f2ab7d0c0de129ddd3943796f458fc19946d73b9ea5b1df560823c3"
+      },
+      {
+        "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.change_receipt.v1.json",
+        "sha256": "69cfd11a2b5de82efb566512a8adb014bbf5ab9f1eb7b4fc6b448e0cf269b34d"
+      },
+      {
+        "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/schemas/fl3_change_receipt_schema.py",
+        "sha256": "18de160c139b62bfc0c461b2e1c232bfa94f079c0afd852e94defa15e2693b59"
+      },
+      {
+        "path": "KT_PROD_CLEANROOM/tools/verification/run_sweep_audit.py",
+        "sha256": "6c43a25b161cecffc0a1243eef3f93f27b17b32d7d9adcefa0c1deb767fbdbd8"
+      },
+      {
+        "path": "KT_PROD_CLEANROOM/tools/verification/validate_receipts.py",
+        "sha256": "d702d4cd2bfa946d2b0bdeac5e626c8a86f502b493141e3e2e841090826f022b"
+      }
+    ],
+    "modified": [
+      {
+        "new_sha256": "f37458865a62a8fd2eaee4a02f9ed78abe16996a34acf3281dce8d0070edaf7c",
+        "old_sha256": "3b3bdf779226496de45708482ef5a5f297328ae971ca27b7cd6dc92095727036",
+        "path": ".github/workflows/ci_fl3_pr_fast.yml"
+      },
+      {
+        "new_sha256": "253516cbdeec9c9533e78387db3922e5836830ce1c7e31f88f9c8913a88a2361",
+        "old_sha256": "5952fe10933d51c953e18ce8ae7d9201565b1d3164e6572fa27af76d134a7b4f",
+        "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/schemas/schema_registry.py"
+      }
+    ],
+    "removed": []
+  },
+  "new_bundle_hash": "d53899a8fdb64b0cbdbd3e5f6184d91c504ba8999141ca39aa805224435afe17",
+  "old_bundle_hash": "3de2ba4129d380fe707364ab8e1506009d5747c0b38df00e19c5fc734c86b704",
+  "old_ref": "HEAD",
+  "receipt_id": "f6a137c55a223697445dfa83758c01386ef5d4484891713a10f533674d2ad84c",
+  "schema_id": "kt.law_bundle_change_receipt.v1",
+  "schema_version_hash": "6515bbb46c59586cb949daaf2a4a41f942d3fcd93a8d588d86c5f415f5da425f"
+}

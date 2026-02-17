@@ -399,6 +399,11 @@ from schemas.fl3_canary_artifact_schema import (
     FL3_CANARY_ARTIFACT_SCHEMA_VERSION_HASH,
     validate_fl3_canary_artifact,
 )
+from schemas.fl3_change_receipt_schema import (
+    FL3_CHANGE_RECEIPT_SCHEMA_ID,
+    FL3_CHANGE_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_fl3_change_receipt,
+)
 from schemas.fl3_utility_pack_manifest_schema import (
     FL3_UTILITY_PACK_MANIFEST_SCHEMA_ID,
     FL3_UTILITY_PACK_MANIFEST_SCHEMA_VERSION_HASH,
@@ -748,6 +753,7 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     ),
     FL3_TIME_CONTRACT_SCHEMA_ID: (FL3_TIME_CONTRACT_SCHEMA_VERSION_HASH, validate_fl3_time_contract),
     FL3_CANARY_ARTIFACT_SCHEMA_ID: (FL3_CANARY_ARTIFACT_SCHEMA_VERSION_HASH, validate_fl3_canary_artifact),
+    FL3_CHANGE_RECEIPT_SCHEMA_ID: (FL3_CHANGE_RECEIPT_SCHEMA_VERSION_HASH, validate_fl3_change_receipt),
     FL3_UTILITY_PACK_MANIFEST_SCHEMA_ID: (
         FL3_UTILITY_PACK_MANIFEST_SCHEMA_VERSION_HASH,
         validate_fl3_utility_pack_manifest,
@@ -878,6 +884,15 @@ def validate_object_with_binding(payload: Any) -> None:
     if not isinstance(schema_id, str):
         raise SchemaValidationError("schema_id must be a string")
     if not isinstance(schema_version_hash, str):
-        raise SchemaValidationError("schema_version_hash must be a string")
+        # EPIC_23 legacy compatibility: historic kt.change_receipt.v1 receipts predate schema_version_hash binding.
+        # For this schema_id only, inject the registry expected hash in-memory for validation.
+        if schema_version_hash is None and schema_id == "kt.change_receipt.v1":
+            if schema_id not in SCHEMA_REGISTRY:
+                raise SchemaRegistryError(f"Unknown schema_id (fail-closed): {schema_id!r}")
+            expected_hash, _validator = SCHEMA_REGISTRY[schema_id]
+            obj["schema_version_hash"] = expected_hash
+            schema_version_hash = expected_hash
+        else:
+            raise SchemaValidationError("schema_version_hash must be a string")
     validate_schema_binding(schema_id, schema_version_hash)
     validate(schema_id, obj)
