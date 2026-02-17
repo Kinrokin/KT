@@ -472,58 +472,58 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     env["KT_IO_GUARD_RECEIPT_PATH"] = (out_dir / "io_guard_receipt.json").as_posix()
 
     # Full seal lane (tests + verifiers + growth + canary + factory + promotion) under fail-closed I/O guard.
-        with IOGuard(
-            IOGuardConfig(
-                allowed_write_roots=tuple(allowed_write_roots),
-                deny_network=True,
-                receipt_path=out_dir / "io_guard_receipt.json",
-            )
-        ):
-            # 1) Whole-KT test battery
-            env_pytest = dict(env)
-            env_pytest.pop("KT_CANONICAL_LANE", None)
-            # Pytest's tmp_path fixture can write arbitrary test payloads into TEMP/TMPDIR.
-            # To prevent test temp files from contaminating the seal evidence pack (and triggering secret-scan
-            # failures on known synthetic secret fixtures), we force pytest base-temp outside the evidence_dir
-            # while staying within IOGuard allowlisted roots.
-            pytest_tmp_root = (exports_shadow / "_pytest_tmp" / out_dir.name).resolve()
-            pytest_tmp_root.mkdir(parents=True, exist_ok=True)
-            env_pytest["TMPDIR"] = pytest_tmp_root.as_posix()
-            env_pytest["TMP"] = pytest_tmp_root.as_posix()
-            env_pytest["TEMP"] = pytest_tmp_root.as_posix()
-            pytest_common = [
-                py_exe,
-                "-m",
-                "pytest",
-                "-p",
-                "no:cacheprovider",
-                "--basetemp",
-                pytest_tmp_root.as_posix(),
-            ]
-            rc, out = _run(
-                pytest_common + ["KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests", "-q"],
-                cwd=repo_root,
-                env=env_pytest,
-                out_path=out_dir / "pytest_temple.log",
-            )
-            _append_transcript(
-                transcript_path,
-                cmd=pytest_common + ["KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests", "-q"],
-                rc=rc,
-                output=out,
-            )
-            rc, out = _run(
-                pytest_common + ["KT_PROD_CLEANROOM/tests", "-q"],
-                cwd=repo_root,
-                env=env_pytest,
-                out_path=out_dir / "pytest_cleanroom.log",
-            )
-            _append_transcript(transcript_path, cmd=pytest_common + ["KT_PROD_CLEANROOM/tests", "-q"], rc=rc, output=out)
+    with IOGuard(
+        IOGuardConfig(
+            allowed_write_roots=tuple(allowed_write_roots),
+            deny_network=True,
+            receipt_path=out_dir / "io_guard_receipt.json",
+        )
+    ):
+        # 1) Whole-KT test battery
+        env_pytest = dict(env)
+        env_pytest.pop("KT_CANONICAL_LANE", None)
+        # Pytest's tmp_path fixture can write arbitrary test payloads into TEMP/TMPDIR.
+        # To prevent test temp files from contaminating the seal evidence pack (and triggering secret-scan
+        # failures on known synthetic secret fixtures), we force pytest base-temp outside the evidence_dir
+        # while staying within IOGuard allowlisted roots.
+        pytest_tmp_root = (exports_shadow / "_pytest_tmp" / out_dir.name).resolve()
+        pytest_tmp_root.mkdir(parents=True, exist_ok=True)
+        env_pytest["TMPDIR"] = pytest_tmp_root.as_posix()
+        env_pytest["TMP"] = pytest_tmp_root.as_posix()
+        env_pytest["TEMP"] = pytest_tmp_root.as_posix()
+        pytest_common = [
+            py_exe,
+            "-m",
+            "pytest",
+            "-p",
+            "no:cacheprovider",
+            "--basetemp",
+            pytest_tmp_root.as_posix(),
+        ]
+        rc, out = _run(
+            pytest_common + ["KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests", "-q"],
+            cwd=repo_root,
+            env=env_pytest,
+            out_path=out_dir / "pytest_temple.log",
+        )
+        _append_transcript(
+            transcript_path,
+            cmd=pytest_common + ["KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests", "-q"],
+            rc=rc,
+            output=out,
+        )
+        rc, out = _run(
+            pytest_common + ["KT_PROD_CLEANROOM/tests", "-q"],
+            cwd=repo_root,
+            env=env_pytest,
+            out_path=out_dir / "pytest_cleanroom.log",
+        )
+        _append_transcript(transcript_path, cmd=pytest_common + ["KT_PROD_CLEANROOM/tests", "-q"], rc=rc, output=out)
 
-            # 2) Governance verifiers
-            rc, out = _run(
-                [py_exe, "-m", "tools.verification.fl3_meta_evaluator", "--write-receipt", str(out_dir / "meta_evaluator_receipt.json")],
-                cwd=repo_root,
+        # 2) Governance verifiers
+        rc, out = _run(
+            [py_exe, "-m", "tools.verification.fl3_meta_evaluator", "--write-receipt", str(out_dir / "meta_evaluator_receipt.json")],
+            cwd=repo_root,
             env=env,
             out_path=out_dir / "meta_evaluator.log",
         )
