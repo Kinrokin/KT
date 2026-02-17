@@ -134,13 +134,13 @@ def build_training_admission_receipt(
         reasons = sorted(set([_RC_CONFIG_INVALID]))
         notes = "closed_reason_codes_violation"
 
+    job_sha256 = _sha256_job_obj(job) if isinstance(job, dict) else sha256_text("null")
+
     job_ref: str
     try:
         job_ref = str(job_path.relative_to(repo_root).as_posix())
     except Exception:
-        job_ref = job_path.as_posix()
-
-    job_sha256 = _sha256_job_obj(job) if isinstance(job, dict) else sha256_text("null")
+        job_ref = f"external_job_sha256:{job_sha256}"
     failure_taxonomy_id = str(failure_taxonomy.get("taxonomy_id", ""))
 
     obj: Dict[str, Any] = {
@@ -214,4 +214,3 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
