@@ -1,0 +1,1338 @@
+{
+  "generated_at": "2026-02-17T03:57:11Z",
+  "manifest_sha256": "UNAVAILABLE_NO_DRIVE_MANIFEST",
+  "teams": [
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "Lean/Coq proofs type-check on canonical CI runner.",
+          "Telemetry schema validated by schema registry gate.",
+          "Synthetic trace suite includes boundary conditions (S(t)=\u03b4, catastrophic_fail_flag=true, determinism_score=0)."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/proofs/core_invariant/wisdom_invariant.lean"
+        ],
+        "integration_tests": [
+          "test_proof_ci_runner_executes_and_typechecks"
+        ],
+        "unit_tests": [
+          "test_wisdom_definitions_schema"
+        ]
+      },
+      "direct_objective": "Formally verify the Wisdom Invariant and prove that KT update rules preserve W(t) \u2265 I(t) + \u03b4 under explicit threat models.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.telemetry.schemas.v1",
+          "direction": "consumes",
+          "team": "Data Lineage & Provenance Lead"
+        },
+        {
+          "api_contract": "kt.telemetry.stream.v1",
+          "direction": "consumes",
+          "team": "Telemetry & Observability Lead"
+        },
+        {
+          "api_contract": "kt.proof_runner.sandbox.v1",
+          "direction": "consumes",
+          "team": "Sovereign OS Kernel & Sandbox Engineer"
+        }
+      ],
+      "seal_artifact": "seal_core_invariant_mathematician_v1.json",
+      "team": "Core Invariant Mathematician",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "Proofs must be constructive and mechanized (Lean4 preferred; Coq acceptable).",
+        "Maximum proof-check time per theorem: 2 hours on a 32-core CI runner.",
+        "All definitions of W, I, and \u03b4 must be measurable functions of telemetry vectors (no opaque human-only definitions)."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "GET /telemetry/schema/wisdom",
+          "POST /proofs/submit"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/proofs/core_invariant/wisdom_invariant.lean",
+          "KT_PROD_CLEANROOM/specs/telemetry/kt.telemetry.wisdom_definitions.v1.json",
+          "KT_PROD_CLEANROOM/tests/vectors/wisdom_invariant_traces.v1.jsonl",
+          "KT_PROD_CLEANROOM/ci/jobs/ci_proofs_core_invariant.yml"
+        ],
+        "formal_requirements": [
+          "\\[\\forall t.\\; W(t)-I(t)\\ge \\delta \\;\\wedge\\; \\delta\\ge 0\\]",
+          "\\[W(t)=I(t)+S(t)\\;\\wedge\\;S(t)=\\min(\\text{Safety}(t),\\text{Gov}(t),\\text{Det}(t))\\]",
+          "\\[\\text{PromotionAllowed}(t)\\Rightarrow S(t)\\ge \\delta_{\\text{promote}}\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/wisdom_invariant_traces.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "law_seal schema validates and rejects missing/invalid signatures.",
+          "law_bundle hash identical on Linux/macOS/Windows runners.",
+          "CI gate fails on any unsealed law-affecting diff."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/AUDITS/law/LawBeforeCognition.v1.md"
+        ],
+        "integration_tests": [
+          "test_ci_law_integrity_gate"
+        ],
+        "unit_tests": [
+          "test_law_seal_schema",
+          "test_law_bundle_hash_determinism"
+        ]
+      },
+      "direct_objective": "Maintain the binding law layer: define amendment process, enforce add-only constraints, and produce signed law_seal artifacts for any constitutional change.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.schema_registry.v1",
+          "direction": "consumes",
+          "team": "Schema Registry & Canonicalization Engineer"
+        },
+        {
+          "api_contract": "kt.law_seal.verify.v1",
+          "direction": "provides",
+          "team": "Meta-Evaluator & Seal Verifier Engineer"
+        },
+        {
+          "api_contract": "kt.ci.law_integrity_gate.v1",
+          "direction": "provides",
+          "team": "CI/Preflight & Platform Matrix Engineer"
+        }
+      ],
+      "seal_artifact": "seal_law_constitution_steward_v1.json",
+      "team": "Law & Constitution Steward",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "All law mutations must be add-only unless explicitly authorized by an existing 'immutable change class' process.",
+        "Law bundle hash must be stable across platforms and computed only from canonicalized sources.",
+        "No 'soft' policy interpretation in code; enforcement must be mechanized via validators and CI gates."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "POST /law/submit_amendment",
+          "GET /law/bundle/hash",
+          "POST /law/seal/verify"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/AUDITS/law/LAW_BUNDLE_FL3_CANONICAL.vN.json",
+          "KT_PROD_CLEANROOM/AUDITS/law/law_seal.schema.v1.json",
+          "KT_PROD_CLEANROOM/AUDITS/law/law_seal.template.v1.json",
+          "KT_PROD_CLEANROOM/tools/verification/law_bundle_hash.py",
+          "KT_PROD_CLEANROOM/tests/test_law_bundle_hash_stability.py",
+          "KT_PROD_CLEANROOM/ci/jobs/ci_law_bundle_integrity.yml"
+        ],
+        "formal_requirements": [
+          "\\[\\text{LawBeforeCognition}: \\neg \\text{AdmissionPass} \\Rightarrow \\neg \\text{TrainEvalJudgeHarvest}\\]",
+          "\\[\\text{NoEpigeneticMutation}: \\text{ChangeAffectsLaw}\\Rightarrow \\exists \\text{law\\_seal}\\wedge \\text{Verify(law\\_seal)}\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/law_seal_positive_negative.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "Canon idempotence tests pass.",
+          "Schema registry blocks deletion/renaming of existing schema_ids.",
+          "Hash stability proven across platform matrix."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/schemas/canonicalization/CANON_RULES.v1.md"
+        ],
+        "integration_tests": [
+          "test_schema_validate_cli_on_all_artifacts"
+        ],
+        "unit_tests": [
+          "test_schema_registry_add_only",
+          "test_canonicalization_idempotent"
+        ]
+      },
+      "direct_objective": "Guarantee that every KT artifact is schema-bound, canonicalized, and hash-stable; provide the single source of truth registry for schemas and canonicalization rules.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.schema.add_only_policy.v1",
+          "direction": "consumes",
+          "team": "Law & Constitution Steward"
+        },
+        {
+          "api_contract": "kt.ci.schema_registry_gate.v1",
+          "direction": "provides",
+          "team": "CI/Preflight & Platform Matrix Engineer"
+        }
+      ],
+      "seal_artifact": "seal_schema_registry_canonicalization_v1.json",
+      "team": "Schema Registry & Canonicalization Engineer",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "Canonicalization must be pure and deterministic; it may not consult environment state.",
+        "Schema registry must support add-only evolution and strict version pinning.",
+        "Canonical JSON must be byte-identical for identical semantic content."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "GET /schemas/registry",
+          "POST /schemas/validate",
+          "GET /canonicalize/json"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/schemas/registry/SCHEMA_REGISTRY.v1.json",
+          "KT_PROD_CLEANROOM/schemas/canonicalization/CANON_RULES.v1.json",
+          "KT_PROD_CLEANROOM/tools/canonical/canonicalize_json.py",
+          "KT_PROD_CLEANROOM/tools/verification/schema_validate.py",
+          "KT_PROD_CLEANROOM/tests/test_canonicalization_stability.py",
+          "KT_PROD_CLEANROOM/tests/test_schema_registry_add_only.py"
+        ],
+        "formal_requirements": [
+          "\\[\\forall x.\\; \\text{sha256}(\\text{canon}(x))=\\text{sha256}(\\text{canon}(\\text{canon}(x)))\\]",
+          "\\[\\text{AddOnly}(\\text{SCHEMA\\_REGISTRY})\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/canonicalization_cases.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "Two independent runs on supported matrix yield identical run receipts.",
+          "Replay tool outputs FAIL_CLOSED with actionable mismatch diffs."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/specs/replay/Replayable.v1.md"
+        ],
+        "integration_tests": [
+          "test_replay_matrix_ci_smoke"
+        ],
+        "unit_tests": [
+          "test_no_time_uuid_in_hashed_objects",
+          "test_canonical_ordering"
+        ]
+      },
+      "direct_objective": "Prove and continuously test that canonical lane executions replay byte-identically, producing identical receipts and hashes under the supported platform matrix.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.platform_matrix.v1",
+          "direction": "consumes",
+          "team": "CI/Preflight & Platform Matrix Engineer"
+        },
+        {
+          "api_contract": "kt.replay.verdict.v1",
+          "direction": "provides",
+          "team": "Meta-Evaluator & Seal Verifier Engineer"
+        }
+      ],
+      "seal_artifact": "seal_determinism_replay_v1.json",
+      "team": "Determinism & Replay Engineer",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "No non-deterministic sources (time, uuid, random, filesystem ordering) in hashed objects.",
+        "Replay checks must compare canonicalized artifacts and enforce deterministic ordering.",
+        "Support matrix must be explicit (OS, Python, deps, CUDA/CPU)."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "POST /replay/submit",
+          "GET /replay/verdict"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/tools/verification/replay_check.py",
+          "KT_PROD_CLEANROOM/specs/replay/replay_manifest.v1.json",
+          "KT_PROD_CLEANROOM/tests/test_replay_hash_identical.py",
+          "KT_PROD_CLEANROOM/ci/jobs/ci_replay_matrix.yml"
+        ],
+        "formal_requirements": [
+          "\\[\\text{Replayable}(run)\\Rightarrow \\forall a\\in Artifacts(run).\\; sha256(a)=sha256(a')\\]",
+          "\\[\\text{DeterministicOrder}: \\text{SortBy}(case\\_id, match\\_id, file\\_path)\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/replay_runs_small.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "Admission receipt emitted for all attempts, including failures.",
+          "Denied admissions cannot progress into any lane."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/specs/admission/AdmissionSoundness.v1.md"
+        ],
+        "integration_tests": [
+          "test_phase2_execute_refuses_without_admission"
+        ],
+        "unit_tests": [
+          "test_admission_receipt_schema",
+          "test_admission_reason_codes_total"
+        ]
+      },
+      "direct_objective": "Implement the single master valve that decides whether training/evolution may proceed, based on law, determinism, environment, and artifact integrity.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.failure_taxonomy.v1",
+          "direction": "consumes",
+          "team": "Law & Constitution Steward"
+        },
+        {
+          "api_contract": "kt.schema_registry.v1",
+          "direction": "consumes",
+          "team": "Schema Registry & Canonicalization Engineer"
+        },
+        {
+          "api_contract": "kt.determinism.replay.v1",
+          "direction": "consumes",
+          "team": "Determinism & Replay Engineer"
+        },
+        {
+          "api_contract": "kt.admission.receipt.v1",
+          "direction": "provides",
+          "team": "Meta-Evaluator & Seal Verifier Engineer"
+        }
+      ],
+      "seal_artifact": "seal_admission_gate_v1.json",
+      "team": "Admission Gate Engineer",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "Admission must be computed prior to any training/eval step.",
+        "Admission output is a signed receipt with explicit deny reason codes.",
+        "Admission failure must halt; no partial progress allowed."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "POST /admission/check"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/tools/verification/training_admission.py",
+          "KT_PROD_CLEANROOM/specs/admission/admission_receipt.v1.json",
+          "KT_PROD_CLEANROOM/tests/test_training_admission_fail_closed.py"
+        ],
+        "formal_requirements": [
+          "\\[\\neg AdmissionPass \\Rightarrow \\neg Execute(Train \\cup Eval \\cup Harvest)\\]",
+          "\\[\\text{AdmissionReceipt} := \\langle run\\_id, verdict, reason\\_codes, inputs\\_sha256\\rangle\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/admission_negative_cases.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "Suite manifest compiles deterministically and produces identical hashes on rerun.",
+          "Suite verifier fails closed on missing/incorrect payload hashes."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/specs/suites/SuiteSoundness.v1.md"
+        ],
+        "integration_tests": [
+          "test_suite_compile_and_verify_pipeline"
+        ],
+        "unit_tests": [
+          "test_suite_manifest_schema",
+          "test_no_raw_payload_fields"
+        ]
+      },
+      "direct_objective": "Produce the 1250-case evaluation surface as sealed, deterministic inputs: a suite manifest plus a separately sealed payload redpack.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.eval_suite_manifest.schema.v1",
+          "direction": "consumes",
+          "team": "Schema Registry & Canonicalization Engineer"
+        },
+        {
+          "api_contract": "kt.redpack.payloads.v1",
+          "direction": "consumes",
+          "team": "Red Team & Adversarial Research Lead"
+        },
+        {
+          "api_contract": "kt.suite.seal.verify.v1",
+          "direction": "provides",
+          "team": "Meta-Evaluator & Seal Verifier Engineer"
+        }
+      ],
+      "seal_artifact": "seal_suite_compiler_redpack_v1.json",
+      "team": "Suite Compiler & Redpack Engineer",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "Canonical repo must not contain sensitive bypass/harm prompt payload text; store only hashes/labels in manifest.",
+        "Suite compilation must be deterministic and reproducible from declared expansion algebra.",
+        "Redpack must be sealed with hash and optional encryption; access controlled."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "POST /suite/compile",
+          "POST /suite/verify",
+          "GET /suite/manifest/sha256"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/AUDITS/FRAC/kt.fractal_expansion.v1.json",
+          "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_GOV_FRACTAL_1250.v1.json",
+          "KT_PROD_CLEANROOM/AUDITS/REDPACKS/REDPACK_GOV_FRACTAL_1250.v1.jsonl.enc",
+          "KT_PROD_CLEANROOM/tools/suites/compile_suite.py",
+          "KT_PROD_CLEANROOM/tools/suites/verify_suite_manifest.py",
+          "KT_PROD_CLEANROOM/tests/test_suite_compilation_deterministic.py"
+        ],
+        "formal_requirements": [
+          "\\[\\text{SuiteManifest}[i].payload\\_sha256 = sha256(\\text{RedpackPayload}[i])\\]",
+          "\\[\\text{NoRawPayloadInRepo}: \\neg \\exists \\text{field} \\in \\text{SuiteManifest}:\\text{field}=\\text{payload\\_text}\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/suite_manifest_smoke.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "Reducer rejects any shard set that does not cover suite exactly once.",
+          "Reducer output is byte-identical across runs given identical shard inputs."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/specs/shards/ShardCorrectness.v1.md"
+        ],
+        "integration_tests": [
+          "test_end_to_end_shard_eval_reduce_smoke"
+        ],
+        "unit_tests": [
+          "test_shard_plan_schema",
+          "test_reducer_overlap_detection"
+        ]
+      },
+      "direct_objective": "Implement sharding below evaluation and a deterministic reducer that validates completeness, overlap, and canonical ordering.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.suite.manifest.v1",
+          "direction": "consumes",
+          "team": "Suite Compiler & Redpack Engineer"
+        },
+        {
+          "api_contract": "kt.reducer.determinism.v1",
+          "direction": "consumes",
+          "team": "Determinism & Replay Engineer"
+        },
+        {
+          "api_contract": "kt.shard_plan.schema.v1",
+          "direction": "consumes",
+          "team": "Schema Registry & Canonicalization Engineer"
+        }
+      ],
+      "seal_artifact": "seal_shard_map_reduce_v1.json",
+      "team": "Shard Plan & Map-Reduce Engineer",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "Sharding must partition by case_id only; no shard-local mutation of suite definitions.",
+        "Reducer must FAIL_CLOSED on overlap, missing cases, or nondeterministic ordering.",
+        "Reducer output must be canonicalized before hashing and sealing."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "POST /suite_eval/shard/run",
+          "POST /suite_eval/shards/reduce"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/AUDITS/SHARDS/SHARD_PLAN_1250x10.v1.json",
+          "KT_PROD_CLEANROOM/tools/eval/run_suite_eval_shard.py",
+          "KT_PROD_CLEANROOM/tools/eval/reduce_suite_eval_shards.py",
+          "KT_PROD_CLEANROOM/specs/shards/shard_plan.v1.json",
+          "KT_PROD_CLEANROOM/tests/test_shard_reducer_completeness.py"
+        ],
+        "formal_requirements": [
+          "\\[\\bigsqcup_{k=1}^n Shard_k.case\\_ids = Suite.case\\_ids \\;\\wedge\\; \\forall i\\ne j.\\; Shard_i\\cap Shard_j = \\emptyset\\]",
+          "\\[\\text{Reduce}(shards)\\Rightarrow \\text{SortBy}(case\\_id)\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/shard_overlap_missing_cases.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "Tournament rerun yields byte-identical result files.",
+          "Dominance report includes supporting match receipts for every claim."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/specs/tournament/Dominance.v1.md"
+        ],
+        "integration_tests": [
+          "test_tournament_end_to_end_smoke"
+        ],
+        "unit_tests": [
+          "test_match_receipt_schema",
+          "test_dominance_definition_total"
+        ]
+      },
+      "direct_objective": "Run deterministic tournaments over adapters and produce dominance reports and champion sets with full receipts and replay proofs.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.suite_eval.merged_result.v1",
+          "direction": "consumes",
+          "team": "Shard Plan & Map-Reduce Engineer"
+        },
+        {
+          "api_contract": "kt.tournament.schemas.v1",
+          "direction": "consumes",
+          "team": "Schema Registry & Canonicalization Engineer"
+        },
+        {
+          "api_contract": "kt.tournament.seal.verify.v1",
+          "direction": "provides",
+          "team": "Meta-Evaluator & Seal Verifier Engineer"
+        }
+      ],
+      "seal_artifact": "seal_tournament_dominance_v1.json",
+      "team": "Tournament & Dominance Engineer",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "Tournament bracket and ordering must be deterministic and derived solely from sealed inputs.",
+        "Every match produces a receipt including both contestants' hashes and suite evidence hashes.",
+        "Dominance criteria must be explicitly defined (e.g., Pareto across axes, utility floor)."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "POST /tournament/run",
+          "GET /tournament/result",
+          "GET /tournament/dominance"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/tools/tournament/run_tournament.py",
+          "KT_PROD_CLEANROOM/specs/tournament/match_receipt.v1.json",
+          "KT_PROD_CLEANROOM/specs/tournament/tournament_result.v1.json",
+          "KT_PROD_CLEANROOM/specs/tournament/dominance_report.v1.json",
+          "KT_PROD_CLEANROOM/tests/test_tournament_determinism.py"
+        ],
+        "formal_requirements": [
+          "\\[\\text{MatchReceipt} := \\langle match\\_id, left\\_hash, right\\_hash, suite\\_hash, verdict, axis\\_scores\\rangle\\]",
+          "\\[\\text{Dominates}(A,B)\\Rightarrow \\forall axis.\\; score_A(axis)\\ge score_B(axis)\\;\\wedge\\;\\exists axis.\\;>\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/tournament_small_bracket.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "Merge evaluator refuses any merge without full-suite evidence and invariant checks.",
+          "Rollback plan verified and tested in CI on a synthetic merge."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/specs/merge/MergeSoundness.v1.md"
+        ],
+        "integration_tests": [
+          "test_merge_eval_then_full_suite_proof"
+        ],
+        "unit_tests": [
+          "test_merge_manifest_schema",
+          "test_rollback_plan_schema"
+        ]
+      },
+      "direct_objective": "Define and enforce merge admissibility (including TIES merges) with post-merge full evaluation proofs and deterministic rollback plans.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.champion_set.v1",
+          "direction": "consumes",
+          "team": "Tournament & Dominance Engineer"
+        },
+        {
+          "api_contract": "kt.wisdom_invariant.proof.v1",
+          "direction": "consumes",
+          "team": "Core Invariant Mathematician"
+        },
+        {
+          "api_contract": "kt.promotion_policy.v1",
+          "direction": "consumes",
+          "team": "Law & Constitution Steward"
+        }
+      ],
+      "seal_artifact": "seal_merge_admissibility_rollback_v1.json",
+      "team": "Merge Admissibility & Rollback Engineer",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "No merge without a champion set and explicit admissibility proof.",
+        "All merges must be reversible: rollback plan is mandatory artifact.",
+        "Merged artifact must be evaluated on full suite and pass promotion margin \u03b4."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "POST /merge/evaluate",
+          "POST /merge/rollback_plan/verify"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/tools/merge/merge_evaluator.py",
+          "KT_PROD_CLEANROOM/specs/merge/merge_manifest.v1.json",
+          "KT_PROD_CLEANROOM/specs/merge/rollback_plan.v1.json",
+          "KT_PROD_CLEANROOM/tests/test_merge_requires_full_eval.py"
+        ],
+        "formal_requirements": [
+          "\\[\\text{MergeAllowed}\\Rightarrow \\text{FullSuitePass}\\wedge S(t)\\ge \\delta_{\\text{merge}}\\]",
+          "\\[\\text{RollbackPlan} := \\langle from\\_hash, to\\_hash, steps, verify\\_hashes\\rangle\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/merge_negative_cases.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "Catalog hash pinned and verified in meta-evaluator.",
+          "Detection axis computed for every case and included in suite eval output."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/specs/validators/AttackDetectionAxis.v1.md"
+        ],
+        "integration_tests": [
+          "test_validators_run_on_suite_smoke"
+        ],
+        "unit_tests": [
+          "test_validator_catalog_schema",
+          "test_attack_detection_scoring_bounds"
+        ]
+      },
+      "direct_objective": "Implement the attack detection axis and validators catalog so KT can measure detection sensitivity independently from refusal.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.validator_catalog.schema.v1",
+          "direction": "consumes",
+          "team": "Schema Registry & Canonicalization Engineer"
+        },
+        {
+          "api_contract": "kt.redpack.payload_hashes.v1",
+          "direction": "consumes",
+          "team": "Suite Compiler & Redpack Engineer"
+        },
+        {
+          "api_contract": "kt.axis_scores.v1",
+          "direction": "provides",
+          "team": "Telemetry & Observability Lead"
+        }
+      ],
+      "seal_artifact": "seal_detection_axis_validator_v1.json",
+      "team": "Detection Axis & Validator Engineer",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "Validators must be pure functions over canonical artifacts (no network, no side effects).",
+        "Validator catalog is versioned and hash-stable; selection uses catalog version pin.",
+        "Detection axis must not store disallowed payloads in repo; operate on labels/hashes."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "GET /validators/catalog",
+          "POST /validators/run"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/validators/VALIDATOR_CATALOG_FL3_V4.json",
+          "KT_PROD_CLEANROOM/validators/axis_scoring_policy_attack_detection.v1.json",
+          "KT_PROD_CLEANROOM/tools/validators/run_validators.py",
+          "KT_PROD_CLEANROOM/tests/test_validator_catalog_hash_stable.py"
+        ],
+        "formal_requirements": [
+          "\\[\\text{AttackDetectionScore} := f(\\text{model\\_outputs}, \\text{case\\_labels})\\in[0,1]\\]",
+          "\\[\\text{CatalogPinned}: sha256(VALIDATOR\\_CATALOG)=\\text{pinned\\_hash}\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/detection_axis_smoke.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "Meta-evaluator fails closed on any missing/invalid hash or schema.",
+          "Meta-evaluator provides deterministic error codes + diff pointers."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/specs/meta/MetaEvaluatorSoundness.v1.md"
+        ],
+        "integration_tests": [
+          "test_full_pipeline_meta_eval_smoke"
+        ],
+        "unit_tests": [
+          "test_meta_eval_report_schema",
+          "test_forbidden_mutations_detected"
+        ]
+      },
+      "direct_objective": "Own the meta-evaluator that verifies receipts, hashes, seals, and invariants across the full KT pipeline and produces final audit verdicts.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.law_bundle.hash.v1",
+          "direction": "consumes",
+          "team": "Law & Constitution Steward"
+        },
+        {
+          "api_contract": "kt.schema_registry.v1",
+          "direction": "consumes",
+          "team": "Schema Registry & Canonicalization Engineer"
+        },
+        {
+          "api_contract": "kt.replay.verdict.v1",
+          "direction": "consumes",
+          "team": "Determinism & Replay Engineer"
+        },
+        {
+          "api_contract": "kt.ci.meta_evaluator_gate.v1",
+          "direction": "provides",
+          "team": "CI/Preflight & Platform Matrix Engineer"
+        }
+      ],
+      "seal_artifact": "seal_meta_evaluator_seal_verifier_v1.json",
+      "team": "Meta-Evaluator & Seal Verifier Engineer",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "Meta-evaluator must be fail-closed and provide minimal diffs on failure.",
+        "Meta-evaluator must verify law bundle hash, schema registry hash, suite hash, and run receipts.",
+        "Meta-evaluator output is the single source of truth for 'PASS/FAIL' in canonical claims."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "POST /meta_evaluator/run",
+          "GET /meta_evaluator/report"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/tools/verification/fl3_meta_evaluator.py",
+          "KT_PROD_CLEANROOM/specs/meta/meta_eval_report.v1.json",
+          "KT_PROD_CLEANROOM/tests/test_meta_evaluator_fail_closed.py"
+        ],
+        "formal_requirements": [
+          "\\[\\text{MetaEvalPass}\\Rightarrow (\\text{AllHashesVerified}\\wedge \\text{AllSchemasValid}\\wedge \\text{NoForbiddenMutations})\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/meta_eval_negative_cases.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "CI pipeline reproduces PASS results on supported matrix; blocks outside-matrix claims."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/ci/CIInvariants.v1.md"
+        ],
+        "integration_tests": [
+          "test_ci_pipeline_full_smoke"
+        ],
+        "unit_tests": [
+          "test_preflight_schema_checks",
+          "test_platform_matrix_versioned"
+        ]
+      },
+      "direct_objective": "Lock the supported platform matrix and ensure all canonical entrypoints run preflight and pass CI gates before any sealing or promotion.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.canonical_runner.image.v1",
+          "direction": "consumes",
+          "team": "Sovereign OS Kernel & Sandbox Engineer"
+        },
+        {
+          "api_contract": "kt.schema_registry.status.v1",
+          "direction": "consumes",
+          "team": "Schema Registry & Canonicalization Engineer"
+        },
+        {
+          "api_contract": "kt.meta_eval_gate.v1",
+          "direction": "consumes",
+          "team": "Meta-Evaluator & Seal Verifier Engineer"
+        }
+      ],
+      "seal_artifact": "seal_ci_preflight_platform_matrix_v1.json",
+      "team": "CI/Preflight & Platform Matrix Engineer",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "All canonical runs must execute preflight and growth_e2e_gate and produce seal tarball + sha256.",
+        "Platform matrix must be explicit and versioned (OS, Python, deps, CUDA).",
+        "CI must block merges that reduce coverage, determinism, or seal integrity."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "CI:ci_preflight",
+          "CI:ci_replay_matrix",
+          "CI:ci_seal_export"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/tools/verification/preflight_fl4.py",
+          "KT_PROD_CLEANROOM/tools/verification/growth_e2e_gate.py",
+          "KT_PROD_CLEANROOM/ci/platform_matrix.v1.json",
+          "KT_PROD_CLEANROOM/ci/jobs/ci_preflight.yml",
+          "KT_PROD_CLEANROOM/tests/test_preflight_requires_out_dir_rules.py"
+        ],
+        "formal_requirements": [
+          "\\[\\text{CI\\_Pass}\\Rightarrow \\text{PreflightPass}\\wedge \\text{GrowthGatePass}\\wedge \\text{SealExportPass}\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/preflight_negative_cases.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "All canonical entrypoints execute with IO guard active and cannot write outside allowlist."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/specs/runtime/IOGuard.v1.md"
+        ],
+        "integration_tests": [
+          "test_canonical_runner_smoke_with_io_guard"
+        ],
+        "unit_tests": [
+          "test_io_guard_blocks_network",
+          "test_write_allowlist_enforced"
+        ]
+      },
+      "direct_objective": "Provide the canonical execution sandbox: IO guard, allowlisted writes, no network, pinned runtime, and proof-check runners.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.io_policy.v1",
+          "direction": "consumes",
+          "team": "Law & Constitution Steward"
+        },
+        {
+          "api_contract": "kt.canonical_runner.image.v1",
+          "direction": "provides",
+          "team": "CI/Preflight & Platform Matrix Engineer"
+        },
+        {
+          "api_contract": "kt.runner.replay_env.v1",
+          "direction": "provides",
+          "team": "Determinism & Replay Engineer"
+        }
+      ],
+      "seal_artifact": "seal_sovereign_os_kernel_sandbox_v1.json",
+      "team": "Sovereign OS Kernel & Sandbox Engineer",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "Network egress denied by default; exceptions require law_seal.",
+        "Filesystem writes restricted to allowlisted output roots (exports/_runs/*).",
+        "Runner images are versioned and addressed by content hash."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "RUNTIME:io_guard_enable",
+          "RUNTIME:runner_image_resolve"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/tools/io_guard/io_guard.py",
+          "KT_PROD_CLEANROOM/specs/runtime/runner_image_manifest.v1.json",
+          "KT_PROD_CLEANROOM/tests/test_io_guard_no_network.py"
+        ],
+        "formal_requirements": [
+          "\\[\\text{IOGuardEnabled}\\Rightarrow \\neg \\text{NetworkEgress}\\wedge \\text{Writes}\\subseteq \\text{Allowlist}\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/io_guard_negative_cases.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "Every run emits telemetry vector per epoch/match with stable schema_id.",
+          "Telemetry can be recomputed from artifacts (replay check)."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/specs/telemetry/TelemetryCompleteness.v1.md"
+        ],
+        "integration_tests": [
+          "test_telemetry_emitted_for_full_pipeline"
+        ],
+        "unit_tests": [
+          "test_telemetry_vector_schema",
+          "test_axis_scores_in_range"
+        ]
+      },
+      "direct_objective": "Define and ship telemetry capture for KT runs, including axis scores, gate outcomes, and provenance integrity signals used to compute W/I/\u03b4.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.telemetry.schemas.v1",
+          "direction": "consumes",
+          "team": "Schema Registry & Canonicalization Engineer"
+        },
+        {
+          "api_contract": "kt.telemetry.lineage.v1",
+          "direction": "consumes",
+          "team": "Data Lineage & Provenance Lead"
+        },
+        {
+          "api_contract": "kt.telemetry.query.v1",
+          "direction": "provides",
+          "team": "Reporting & God Report Engineer"
+        }
+      ],
+      "seal_artifact": "seal_telemetry_observability_v1.json",
+      "team": "Telemetry & Observability Lead",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "Telemetry must be schema-bound and written as append-only artifacts under exports/_runs/<run_id>/telemetry/.",
+        "No PII; no raw redpack payload text in telemetry.",
+        "Metrics must be reproducible from stored artifacts."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "GET /telemetry/run/<run_id>",
+          "GET /telemetry/schema"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/specs/telemetry/kt.telemetry.vector.v1.json",
+          "KT_PROD_CLEANROOM/tools/telemetry/emit_telemetry.py",
+          "KT_PROD_CLEANROOM/tests/test_telemetry_schema_and_bounds.py"
+        ],
+        "formal_requirements": [
+          "\\[\\text{TelemetryVector}(t)\\in \\mathbb{R}^n \\text{ with declared ranges and nullability}\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/telemetry_smoke.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "Meta-evaluator can verify lineage for every sealed run.",
+          "Missing parent links fail closed."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/specs/provenance/LineageSoundness.v1.md"
+        ],
+        "integration_tests": [
+          "test_lineage_graph_build_for_run"
+        ],
+        "unit_tests": [
+          "test_provenance_manifest_schema",
+          "test_parent_hash_chain_no_gaps"
+        ]
+      },
+      "direct_objective": "Ensure end-to-end provenance: every artifact is traceable to inputs, parent_hash chains, and sealed manifests; no output without lineage.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.provenance.schemas.v1",
+          "direction": "consumes",
+          "team": "Schema Registry & Canonicalization Engineer"
+        },
+        {
+          "api_contract": "kt.provenance.verify.v1",
+          "direction": "provides",
+          "team": "Meta-Evaluator & Seal Verifier Engineer"
+        }
+      ],
+      "seal_artifact": "seal_data_lineage_provenance_v1.json",
+      "team": "Data Lineage & Provenance Lead",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "All artifacts must include parent_hash and input_hash fields where applicable.",
+        "Provenance manifests are WORM and cannot be overwritten.",
+        "Lineage graph must be reconstructable offline from receipts."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "GET /provenance/lineage/<artifact_hash>"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/specs/provenance/provenance_manifest.v1.json",
+          "KT_PROD_CLEANROOM/tools/provenance/build_lineage_graph.py",
+          "KT_PROD_CLEANROOM/tests/test_parent_hash_chain_integrity.py"
+        ],
+        "formal_requirements": [
+          "\\[\\text{ProvenanceBeforeOutput}: \\text{Valid}(artifact)\\Rightarrow \\exists \\text{lineage}(artifact)\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/lineage_graph_smoke.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "Threat model catalog covers poisoning, byzantine nodes, prompt injection, compute starvation.",
+          "Redpack pipeline produces sealed payload pack with sha256 and audit log."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/AUDITS/threat_models/ThreatModelCompleteness.v1.md"
+        ],
+        "integration_tests": [
+          "test_redpack_submission_audit_logged"
+        ],
+        "unit_tests": [
+          "test_threat_model_catalog_schema",
+          "test_redpack_no_repo_payload_text"
+        ]
+      },
+      "direct_objective": "Define threat models and produce safely-handled adversarial case payloads for the redpack, with governance controls and leakage prevention.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.red_team.scope_policy.v1",
+          "direction": "consumes",
+          "team": "Law & Constitution Steward"
+        },
+        {
+          "api_contract": "kt.redpack.payloads.v1",
+          "direction": "provides",
+          "team": "Suite Compiler & Redpack Engineer"
+        },
+        {
+          "api_contract": "kt.attack_detection_axis.v1",
+          "direction": "consumes",
+          "team": "Detection Axis & Validator Engineer"
+        }
+      ],
+      "seal_artifact": "seal_red_team_adversarial_research_v1.json",
+      "team": "Red Team & Adversarial Research Lead",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "No disallowed payloads stored in canonical repo; payloads live only in sealed redpacks with access control.",
+        "Threat models must be explicit and mapped to mitigations and measurable validators.",
+        "All payload creation must obey law scope policy and audit logging."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "POST /red_team/redpack/submit",
+          "POST /red_team/threat_model/submit"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/AUDITS/threat_models/THREAT_MODEL_CATALOG.v1.json",
+          "KT_PROD_CLEANROOM/AUDITS/red_team/REDPACK_PAYLOAD_POLICY.v1.md",
+          "KT_PROD_CLEANROOM/tests/test_redpack_policy_no_repo_leakage.py"
+        ],
+        "formal_requirements": [
+          "\\[\\text{ThreatModel} := \\langle id, actor, capability, goal, mitigations, measurable\\_signals\\rangle\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/threat_model_smoke.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "Audit report JSON validates and links to every receipt/hmac.",
+          "God report marked NON-CANONICAL and references machine report."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/specs/reporting/ReportSoundness.v1.md"
+        ],
+        "integration_tests": [
+          "test_generate_reports_on_sample_run"
+        ],
+        "unit_tests": [
+          "test_audit_report_schema",
+          "test_god_report_watermark_present"
+        ]
+      },
+      "direct_objective": "Generate the machine-first audit report and the non-canonical God Report for human inspection, both derived from sealed artifacts.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.audit_eval_report.v1",
+          "direction": "consumes",
+          "team": "Meta-Evaluator & Seal Verifier Engineer"
+        },
+        {
+          "api_contract": "kt.telemetry.query.v1",
+          "direction": "consumes",
+          "team": "Telemetry & Observability Lead"
+        },
+        {
+          "api_contract": "kt.reporting.api.v1",
+          "direction": "provides",
+          "team": "Integrations & API Contract Lead"
+        }
+      ],
+      "seal_artifact": "seal_reporting_god_report_v1.json",
+      "team": "Reporting & God Report Engineer",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "God Report must be explicitly watermarked NON-CANONICAL and may not be used for acceptance without the machine report.",
+        "Reports must be reproducible from run artifacts (no manual edits).",
+        "Reports must include pointers to receipts/hashes for every claim."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "POST /reporting/audit_report",
+          "GET /reporting/god_report"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/tools/reporting/generate_audit_report.py",
+          "KT_PROD_CLEANROOM/specs/reporting/audit_eval_report.v1.json",
+          "KT_PROD_CLEANROOM/specs/reporting/god_report_template.v1.md",
+          "KT_PROD_CLEANROOM/tests/test_report_reproducible_from_artifacts.py"
+        ],
+        "formal_requirements": [
+          "\\[\\text{ReportClaim}\\Rightarrow \\exists \\text{receipt\\_pointer}\\wedge \\exists \\text{sha256}\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/report_claim_pointer_smoke.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "Notebook produces seal tarball and prints sha256.",
+          "Notebook fails closed if PINNED_SHA missing."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/specs/notebooks/NotebookNonMutation.v1.md"
+        ],
+        "integration_tests": [
+          "test_kaggle_notebook_smoke_cpu"
+        ],
+        "unit_tests": [
+          "test_notebook_no_forbidden_commands"
+        ]
+      },
+      "direct_objective": "Produce a golden, read-only Kaggle notebook that runs the canonical acceptance test: preflight \u2192 growth gate \u2192 (optional) phase2 \u2192 seal export, without mutating the repo.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.canonical_lane.entrypoints.v1",
+          "direction": "consumes",
+          "team": "CI/Preflight & Platform Matrix Engineer"
+        },
+        {
+          "api_contract": "kt.io_guard_enable.v1",
+          "direction": "consumes",
+          "team": "Sovereign OS Kernel & Sandbox Engineer"
+        },
+        {
+          "api_contract": "kt.delivery_pack.inputs.v1",
+          "direction": "provides",
+          "team": "Delivery Pack & Client Handoff Engineer"
+        }
+      ],
+      "seal_artifact": "seal_kaggle_certification_notebook_v1.json",
+      "team": "Kaggle Certification Notebook Engineer",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "Notebook must not modify repo code (no sed -i, rm -rf, git reset/clean in repo).",
+        "All artifacts must be written outside repo into out_dir, with tarball+sha256.",
+        "Notebook must set pinned SHA and pinned Python environment explicitly."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "NOTEBOOK:KT_KAGGLE_GOLDEN_CELL_v1"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/notebooks/KT_KAGGLE_GOLDEN_CELL_v1.ipynb",
+          "KT_PROD_CLEANROOM/tests/test_notebook_forbidden_mutations.py",
+          "KT_PROD_CLEANROOM/specs/notebooks/kaggle_run_contract.v1.md"
+        ],
+        "formal_requirements": [
+          "\\[\\text{NotebookRun}\\Rightarrow \\text{PreflightPass}\\wedge \\text{SealExportProduced}\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/notebook_smoke_inputs.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "Pack verifies offline; manifest complete; hashes match."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/specs/delivery/DeliverySoundness.v1.md"
+        ],
+        "integration_tests": [
+          "test_build_delivery_pack_and_verify"
+        ],
+        "unit_tests": [
+          "test_delivery_manifest_schema",
+          "test_manifest_lists_all_files"
+        ]
+      },
+      "direct_objective": "Create the sealed delivery pack (tarball + manifest + sha256) and a client-facing handoff guide that explains verification and replay.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.delivery_pack.hash_manifest.v1",
+          "direction": "consumes",
+          "team": "Meta-Evaluator & Seal Verifier Engineer"
+        },
+        {
+          "api_contract": "kt.reporting.outputs.v1",
+          "direction": "consumes",
+          "team": "Reporting & God Report Engineer"
+        },
+        {
+          "api_contract": "kt.delivery_pack.api.v1",
+          "direction": "provides",
+          "team": "Integrations & API Contract Lead"
+        }
+      ],
+      "seal_artifact": "seal_delivery_pack_client_handoff_v1.json",
+      "team": "Delivery Pack & Client Handoff Engineer",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "Delivery pack must include manifest listing every artifact and sha256.",
+        "Pack must be verifiable offline using validator and meta-evaluator.",
+        "No secrets or disallowed payload text in pack unless explicitly allowed and sealed."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "POST /delivery/pack/build",
+          "GET /delivery/pack/manifest"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/tools/delivery/build_delivery_pack.py",
+          "KT_PROD_CLEANROOM/specs/delivery/delivery_manifest.v1.json",
+          "KT_PROD_CLEANROOM/README_DELIVERY_VERIFY.md",
+          "KT_PROD_CLEANROOM/tests/test_delivery_pack_manifest_complete.py"
+        ],
+        "formal_requirements": [
+          "\\[\\text{DeliveryPack}\\Rightarrow \\forall f\\in Files.\\; sha256(f)=Manifest.sha256[f]\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/delivery_pack_smoke.v1.jsonl"
+        ]
+      }
+    },
+    {
+      "definition_of_done": {
+        "acceptance_criteria": [
+          "All tools reference the same contract versions; CI blocks mismatches."
+        ],
+        "formal_proofs": [
+          "KT_PROD_CLEANROOM/specs/api/ContractStability.v1.md"
+        ],
+        "integration_tests": [
+          "test_contracts_used_by_all_tools_smoke"
+        ],
+        "unit_tests": [
+          "test_error_codes_total",
+          "test_contract_yaml_valid"
+        ]
+      },
+      "direct_objective": "Define stable API contracts (CLI + optional HTTP) for admission, suite eval, tournament, meta-evaluation, telemetry, and reporting so teams integrate without ambiguity.",
+      "inter_dependencies": [
+        {
+          "api_contract": "kt.admission.api.v1",
+          "direction": "consumes",
+          "team": "Admission Gate Engineer"
+        },
+        {
+          "api_contract": "kt.telemetry.api.v1",
+          "direction": "consumes",
+          "team": "Telemetry & Observability Lead"
+        },
+        {
+          "api_contract": "kt.reporting.api.v1",
+          "direction": "consumes",
+          "team": "Reporting & God Report Engineer"
+        },
+        {
+          "api_contract": "kt.contract_schemas.v1",
+          "direction": "consumes",
+          "team": "Schema Registry & Canonicalization Engineer"
+        }
+      ],
+      "seal_artifact": "seal_integrations_api_contracts_v1.json",
+      "team": "Integrations & API Contract Lead",
+      "technical_constraints": [
+        "Fail-closed only; diagnostics may be added but gates may not be weakened. (Operating constraints)",
+        "Repo treated as frozen unless a comprehensive system audit passes; all changes must include system-wide audit impact analysis. (Operating constraints)",
+        "No autonomous production mutation; any constitutional/law change requires a human-signed law_seal with >=3 approvers and post-apply receipts.",
+        "Canonical lane must be deterministic: no wall-clock, uuid, non-seeded randomness, unpinned deps, or environment-dependent paths.",
+        "Canonical lane must be IO-guarded: deny network egress and restrict writes to allowlisted roots (exports/_runs/*).",
+        "Contracts must be versioned and schema-bound; breaking changes require new version and law approval.",
+        "No external network calls from canonical lane; integration endpoints are local or controlled.",
+        "All endpoints must return explicit FAIL_CLOSED error codes."
+      ],
+      "work_order": {
+        "api_endpoints": [
+          "GET /contracts/v1",
+          "POST /contracts/validate"
+        ],
+        "artifacts": [
+          "KT_PROD_CLEANROOM/specs/api/kt_api_contracts.v1.yaml",
+          "KT_PROD_CLEANROOM/specs/api/error_codes.v1.json",
+          "KT_PROD_CLEANROOM/tests/test_api_contract_examples_validate.py"
+        ],
+        "formal_requirements": [
+          "\\[\\text{EndpointResponse} := \\langle status, code, message, receipt\\_pointer\\rangle\\]"
+        ],
+        "test_vectors": [
+          "KT_PROD_CLEANROOM/tests/vectors/api_examples.v1.jsonl"
+        ]
+      }
+    }
+  ],
+  "version": "v1"
+}

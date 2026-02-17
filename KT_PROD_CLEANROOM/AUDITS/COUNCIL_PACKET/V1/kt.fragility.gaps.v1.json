@@ -1,0 +1,79 @@
+{
+  "gaps": [
+    {
+      "component": "notebook operators / runbooks",
+      "evidence": [
+        {
+          "file": "lora2-5-attpt (4).ipynb",
+          "signal": "contains rm -rf / sed -i patterns; risk of non-auditable mutation"
+        }
+      ],
+      "exploitability": 9,
+      "id": "GAP_001_RUNTIME_REPO_MUTATION_NOTEBOOKS",
+      "impact": 9,
+      "minimal_counterexample": "A notebook that performs only read-only verification steps and writes outputs exclusively into exports/_runs/<run_id>/",
+      "repro_test_vector": {
+        "description": "Scan all notebooks/scripts for forbidden mutation commands (rm -rf, sed -i, git reset/clean) and fail CI if found in canonical lane.",
+        "expected": "FAIL if forbidden commands exist under canonical paths; PASS otherwise.",
+        "name": "TV_GAP_001_MUTATION_DENYLIST"
+      }
+    },
+    {
+      "component": "suite assets / prompts",
+      "evidence": [
+        {
+          "file": "convo_history_on_revision.txt",
+          "signal": "constraints require anti-theater fuzz tests; storing jailbreak/harm prompts in repo creates leakage and governance risk"
+        }
+      ],
+      "exploitability": 8,
+      "id": "GAP_002_DYNAMIC_SUITE_TEXT_IN_REPO",
+      "impact": 10,
+      "minimal_counterexample": "Suite manifest containing case_id/vector_id/mutation_id + payload_sha256, with payloads stored in encrypted jsonl redpack.",
+      "repro_test_vector": {
+        "description": "Enforce that canonical registry stores only case metadata + hashes; prompt payloads must live in a sealed redpack referenced by sha256.",
+        "expected": "FAIL if suite JSON contains forbidden prompt classes; PASS if only labels/hashes present.",
+        "name": "TV_GAP_002_REDPACK_SPLIT"
+      }
+    },
+    {
+      "component": "sharded tournament runner",
+      "evidence": [
+        {
+          "file": "phase2_execute.txt",
+          "signal": "canonical proofs require stable evidence chains; ad-hoc shard merges can break determinism and provenance"
+        }
+      ],
+      "exploitability": 7,
+      "id": "GAP_003_SHARDING_ABOVE_EVAL_PROVENANCE_BREAK",
+      "impact": 8,
+      "minimal_counterexample": "Static SHARD_PLAN_*.json sealed in registry; shard outputs validated + merged by case_id with canonical ordering.",
+      "repro_test_vector": {
+        "description": "Given a SHARD_PLAN with partitions of case_id, verify reducer detects overlap, missing cases, and nondeterministic ordering.",
+        "expected": "Reducer FAIL_CLOSED on any mismatch; PASS only on perfect coverage and deterministic merge order.",
+        "name": "TV_GAP_003_SHARD_PLAN_COMPLETENESS"
+      }
+    },
+    {
+      "component": "Router/Arbiter policies (SPARTAN/APEX/SOVEREIGN)",
+      "evidence": [
+        {
+          "file": "copilot-activity-history.csv",
+          "signal": "policy tiers referenced but no formal state machine extracted in this scan scope"
+        }
+      ],
+      "exploitability": 6,
+      "id": "GAP_004_POLICY_SURFACES_UNVERIFIED",
+      "impact": 9,
+      "minimal_counterexample": "Finite-state model where all unsafe transitions are unreachable without signed law_seal.",
+      "repro_test_vector": {
+        "description": "Parse router policy definitions and model-check invariants (no external IO, no unsealed tool calls, fail-closed).",
+        "expected": "FAIL if any transition violates invariants; PASS with proof artifact.",
+        "name": "TV_GAP_004_POLICY_MODEL_CHECK"
+      }
+    }
+  ],
+  "generated_at": "2026-02-17T03:53:00Z",
+  "schema_id": "kt.fragility.gaps.v1",
+  "scope_note": "Gaps derived from sandbox scan + user-provided constraints; Drive crawl not performed (no manifest)."
+}

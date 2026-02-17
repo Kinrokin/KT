@@ -193,6 +193,27 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         if rc_wo != 0:
             raise FL3ValidationError("FAIL_CLOSED: work order validation failed")
 
+    # Council packet validation (EPIC_34).
+    cp_cmd = ["python", "-m", "tools.verification.validate_council_packet_v1", "--out-dir", str(sweep_dir)]
+    cp_tool_path = repo_root / "KT_PROD_CLEANROOM" / "tools" / "verification" / "validate_council_packet_v1.py"
+    if not cp_tool_path.exists():
+        write_text_worm(
+            path=sweep_dir / "validate_council_packet.NOT_PRESENT",
+            text="NOT_PRESENT\n",
+            label="sweep:validate_council_packet.NOT_PRESENT",
+        )
+        steps.append({"name": "validate_council_packet", "cmd": cp_cmd, "rc": None})
+    else:
+        rc_cp, out_cp = _run(repo_root=repo_root, cmd=cp_cmd, env=dict(base_env))
+        write_text_worm(
+            path=sweep_dir / "validate_council_packet.log",
+            text=out_cp if out_cp.endswith("\n") else out_cp + "\n",
+            label="sweep:validate_council_packet.log",
+        )
+        steps.append({"name": "validate_council_packet", "cmd": cp_cmd, "rc": rc_cp})
+        if rc_cp != 0:
+            raise FL3ValidationError("FAIL_CLOSED: council packet validation failed")
+
     summary = {"status": "PASS", "run_root": run_root.as_posix(), "sweep_id": sweep_id, "steps": steps}
     write_text_worm(
         path=sweep_dir / "sweep_summary.json",
