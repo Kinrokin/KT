@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import subprocess
 from importlib import metadata
@@ -9,6 +10,7 @@ from typing import Any, Dict, List, Optional
 
 from schemas.schema_files import schema_version_hash
 from tools.training.fl3_factory.run_job import EXIT_OK, main as run_job_main
+from tools.training.fl3_factory.manifests import compute_hash_manifest_root_hash
 from tools.verification.fl3_canonical import repo_root_from, sha256_json
 from tools.verification.fl3_meta_evaluator import compute_law_bundle_hash, load_law_bundle
 from tools.verification.fl3_validators import FL3ValidationError, load_fl3_canonical_runtime_paths, validate_schema_bound_object
@@ -36,6 +38,22 @@ def _load_schema_bound_json(path: Path) -> Dict[str, Any]:
         raise FL3ValidationError(f"Expected JSON object (fail-closed): {path.as_posix()}")
     validate_schema_bound_object(obj)
     return obj
+
+
+def _determinism_contract_law_hash(det: Dict[str, Any]) -> str:
+    """
+    Compute the determinism contract digest as hashed by LAW_BUNDLE_FL3.
+
+    Must match tools.verification.fl3_meta_evaluator._hash_file_for_bundle's
+    special-case for FL4_DETERMINISM_CONTRACT.json to avoid fixed-point drift.
+    """
+    if not isinstance(det, dict):
+        raise FL3ValidationError("determinism contract must be object (fail-closed)")
+    obj = dict(det)
+    obj.pop("canary_expected_hash_manifest_root_hash", None)
+    obj.pop("determinism_contract_id", None)
+    canon = json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+    return hashlib.sha256(canon).hexdigest()
 
 
 def _mk_canary_jobspec(*, export_shadow_root: str, export_promoted_root: str) -> Dict[str, Any]:
@@ -108,9 +126,25 @@ def main(argv: Optional[List[str]] = None) -> int:
     # Load determinism contract; expected root hash is mandatory for canary enforcement.
     det_path = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_DETERMINISM_CONTRACT.json"
     det = _load_schema_bound_json(det_path)
-    expected_root = str(det.get("canary_expected_hash_manifest_root_hash") or "")
-    if not expected_root or expected_root == "0" * 64:
+    expected_full = str(det.get("canary_expected_hash_manifest_root_hash") or "")
+    if not expected_full or len(expected_full) != 64:
         raise SystemExit("FAIL: determinism contract missing canary_expected_hash_manifest_root_hash (fail-closed)")
+
+    # Determinism anchor binds the canary fixed point into law hashing surface without circularity.
+    anchor_path = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_DETERMINISM_ANCHOR.v1.json"
+    anchor = _load_schema_bound_json(anchor_path)
+    if anchor.get("schema_id") != "kt.determinism_anchor.v1":
+        raise SystemExit("FAIL: determinism anchor schema_id mismatch (fail-closed)")
+    expected_det = str(anchor.get("expected_determinism_root_hash") or "")
+    if not expected_det or len(expected_det) != 64 or expected_det == "0" * 64:
+        raise SystemExit("FAIL: determinism anchor missing expected_determinism_root_hash (fail-closed)")
+
+    expected_det_contract_hash = str(anchor.get("determinism_contract_law_hash") or "")
+    if not expected_det_contract_hash or len(expected_det_contract_hash) != 64:
+        raise SystemExit("FAIL: determinism anchor missing determinism_contract_law_hash (fail-closed)")
+    actual_det_contract_hash = _determinism_contract_law_hash(det)
+    if actual_det_contract_hash != expected_det_contract_hash:
+        raise SystemExit("FAIL: determinism anchor does not match determinism contract law hash (fail-closed)")
 
     # Derive export roots from canonical runtime paths.
     # This audit artifact is intentionally not schema-bound (it is a path map),
@@ -141,12 +175,20 @@ def main(argv: Optional[List[str]] = None) -> int:
         raise SystemExit(f"FAIL: canary factory run failed with rc={rc}")
 
     hm = _load_schema_bound_json(out_root / "hash_manifest.json")
-    root_hash = str(hm.get("root_hash", ""))
-    if not root_hash or len(root_hash) != 64:
+    full_root_hash = str(hm.get("root_hash", ""))
+    if not full_root_hash or len(full_root_hash) != 64:
         raise SystemExit("FAIL: missing hash_manifest.root_hash (fail-closed)")
 
-    result = "PASS" if root_hash == expected_root else "FAIL"
-    artifact = build_canary_artifact(repo_root=repo_root, canary_job=canary_job, hash_manifest_root_hash=root_hash, canary_result=result)
+    entries = hm.get("entries")
+    if not isinstance(entries, list) or len(entries) < 1:
+        raise SystemExit("FAIL: missing hash_manifest.entries (fail-closed)")
+    filtered = [e for e in entries if isinstance(e, dict) and str(e.get("path", "")) != "training_admission_receipt.json"]
+    det_root_hash = compute_hash_manifest_root_hash(filtered)
+
+    result = "PASS" if det_root_hash == expected_det else "FAIL"
+    artifact = build_canary_artifact(
+        repo_root=repo_root, canary_job=canary_job, hash_manifest_root_hash=full_root_hash, canary_result=result
+    )
 
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)

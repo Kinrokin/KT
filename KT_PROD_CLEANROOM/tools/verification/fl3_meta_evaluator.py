@@ -272,17 +272,32 @@ def assert_fl4_mgk_v2_contracts_present(*, repo_root: Path) -> None:
     audits = repo_root / "KT_PROD_CLEANROOM" / "AUDITS"
     supported = read_json(audits / "FL4_SUPPORTED_PLATFORMS.json")
     det = read_json(audits / "FL4_DETERMINISM_CONTRACT.json")
-    for obj in (supported, det):
+    anchor = read_json(audits / "FL4_DETERMINISM_ANCHOR.v1.json")
+    for obj in (supported, det, anchor):
         validate_schema_bound_object(obj)
 
     if supported.get("schema_id") != "kt.supported_platforms.v1":
         raise FL3ValidationError("FL4_SUPPORTED_PLATFORMS schema_id mismatch (fail-closed)")
     if det.get("schema_id") != "kt.determinism_contract.v1":
         raise FL3ValidationError("FL4_DETERMINISM_CONTRACT schema_id mismatch (fail-closed)")
+    if anchor.get("schema_id") != "kt.determinism_anchor.v1":
+        raise FL3ValidationError("FL4_DETERMINISM_ANCHOR schema_id mismatch (fail-closed)")
 
     expected_root = str(det.get("canary_expected_hash_manifest_root_hash") or "")
     if not expected_root or len(expected_root) != 64:
         raise FL3ValidationError("determinism contract missing canary_expected_hash_manifest_root_hash (fail-closed)")
+
+    expected_det = str(anchor.get("expected_determinism_root_hash") or "")
+    if not expected_det or len(expected_det) != 64 or expected_det == "0" * 64:
+        raise FL3ValidationError("determinism anchor missing expected_determinism_root_hash (fail-closed)")
+
+    expected_det_contract_hash = str(anchor.get("determinism_contract_law_hash") or "")
+    if not expected_det_contract_hash or len(expected_det_contract_hash) != 64:
+        raise FL3ValidationError("determinism anchor missing determinism_contract_law_hash (fail-closed)")
+    det_path = (audits / "FL4_DETERMINISM_CONTRACT.json").resolve()
+    actual_det_contract_hash = _hash_file_for_bundle(det_path)
+    if actual_det_contract_hash != expected_det_contract_hash:
+        raise FL3ValidationError("determinism anchor does not match determinism contract law hash (fail-closed)")
 
 
 def _load_fitness_policy(*, repo_root: Path) -> Dict[str, Any]:

@@ -389,6 +389,11 @@ from schemas.fl3_determinism_contract_schema import (
     FL3_DETERMINISM_CONTRACT_SCHEMA_VERSION_HASH,
     validate_fl3_determinism_contract,
 )
+from schemas.fl3_determinism_anchor_schema import (
+    FL3_DETERMINISM_ANCHOR_SCHEMA_ID,
+    FL3_DETERMINISM_ANCHOR_SCHEMA_VERSION_HASH,
+    validate_fl3_determinism_anchor,
+)
 from schemas.fl3_time_contract_schema import (
     FL3_TIME_CONTRACT_SCHEMA_ID,
     FL3_TIME_CONTRACT_SCHEMA_VERSION_HASH,
@@ -750,6 +755,10 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     FL3_DETERMINISM_CONTRACT_SCHEMA_ID: (
         FL3_DETERMINISM_CONTRACT_SCHEMA_VERSION_HASH,
         validate_fl3_determinism_contract,
+    ),
+    FL3_DETERMINISM_ANCHOR_SCHEMA_ID: (
+        FL3_DETERMINISM_ANCHOR_SCHEMA_VERSION_HASH,
+        validate_fl3_determinism_anchor,
     ),
     FL3_TIME_CONTRACT_SCHEMA_ID: (FL3_TIME_CONTRACT_SCHEMA_VERSION_HASH, validate_fl3_time_contract),
     FL3_CANARY_ARTIFACT_SCHEMA_ID: (FL3_CANARY_ARTIFACT_SCHEMA_VERSION_HASH, validate_fl3_canary_artifact),

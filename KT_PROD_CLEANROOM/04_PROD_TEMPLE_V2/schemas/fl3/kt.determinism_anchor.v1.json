@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Determinism Anchor v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "anchor_id",
+    "determinism_contract_law_hash",
+    "expected_determinism_root_hash",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.determinism_anchor.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "anchor_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "determinism_contract_law_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "expected_determinism_root_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" },
+    "notes": { "type": "string" }
+  }
+}
