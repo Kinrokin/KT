@@ -25,3 +25,20 @@ def write_schema_object(*, path: Path, obj: Dict[str, Any]) -> str:
     write_text_worm(path=path, text=text, label=f"schema_object:{path.name}")
     # Return canonical content hash to bind into higher-level receipts.
     return sha256_text(canonical_json(obj))
+
+
+def write_schema_object_mutable(*, path: Path, obj: Dict[str, Any]) -> str:
+    """
+    Overwrite writer for schema-bound *runtime state* (not evidence).
+
+    IMPORTANT:
+      - Use WORM (`write_schema_object`) for job_dir artifacts and audit evidence.
+      - Use this mutable writer only for files that are explicitly designed to change
+        over time (e.g., global budget state under exports/_factory_state).
+    """
+    validate_schema_bound_object(obj)
+    path = path.resolve()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    text = json.dumps(obj, indent=2, sort_keys=True, ensure_ascii=True) + "\n"
+    path.write_text(text, encoding="utf-8", newline="\n")
+    return sha256_text(canonical_json(obj))
