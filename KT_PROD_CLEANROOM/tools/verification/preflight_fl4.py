@@ -758,6 +758,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             "training_admission_receipt.json",
             "phase_trace.json",
             "dataset.json",
+            "hypotheses/policy_bundles.jsonl",
             "reasoning_trace.json",
             "train_manifest.json",
             "eval_report.json",
