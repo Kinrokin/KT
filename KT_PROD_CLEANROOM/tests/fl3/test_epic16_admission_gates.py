@@ -148,7 +148,7 @@ def test_epic16_evaluation_admission_gate_pass_and_rerun_noop(tmp_path: Path, mo
 
     base_model_id = "mistral-7b"
     suite_id = "SUITE_X"
-    suite_definition_ref = "KT_PROD_CLEANROOM/AUDITS/EPIC_16_DOCTRINE.md"
+    suite_definition_ref = "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_X.v1.json"
     suite_root_hash = sha256_file_canonical((_REPO_ROOT / suite_definition_ref).resolve())
     decode_cfg_hash = "d" * 64
 
@@ -212,7 +212,7 @@ def test_epic16_evaluation_admission_gate_fail_closed_on_unauthorized_suite(tmp_
 
     base_model_id = "mistral-7b"
     suite_id = "SUITE_X"
-    suite_definition_ref = "KT_PROD_CLEANROOM/AUDITS/EPIC_16_DOCTRINE.md"
+    suite_definition_ref = "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_X.v1.json"
     suite_root_hash = sha256_file_canonical((_REPO_ROOT / suite_definition_ref).resolve())
     decode_cfg_hash = "d" * 64
 
