@@ -22,7 +22,15 @@ def test_fl3_factory_red_assault_fail_closed() -> None:
             shutil.rmtree(root)
 
     with tempfile.TemporaryDirectory() as td:
-        report = run_red_assault(tmp_dir=Path(td))
-    validate_object_with_binding(report)
-    assert report["schema_id"] == "kt.fl3.red_assault.v1"
-    assert report["all_passed"] is True
+        report_1 = run_red_assault(tmp_dir=Path(td))
+    validate_object_with_binding(report_1)
+    assert report_1["schema_id"] == "kt.fl3.red_assault.v1"
+    assert report_1["all_passed"] is True
+
+    # Must be independent of prior local state (exports/ may persist between runs).
+    with tempfile.TemporaryDirectory() as td2:
+        report_2 = run_red_assault(tmp_dir=Path(td2))
+    validate_object_with_binding(report_2)
+    assert report_2["schema_id"] == "kt.fl3.red_assault.v1"
+    assert report_2["all_passed"] is True
+    assert report_2["red_assault_id"] == report_1["red_assault_id"]
