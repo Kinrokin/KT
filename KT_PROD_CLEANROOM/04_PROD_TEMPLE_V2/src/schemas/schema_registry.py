@@ -564,6 +564,21 @@ from schemas.fl3_secret_scan_summary_schema import (
     FL3_SECRET_SCAN_SUMMARY_SCHEMA_VERSION_HASH,
     validate_fl3_secret_scan_summary,
 )
+from schemas.fl3_work_order_schema import (
+    FL3_WORK_ORDER_SCHEMA_ID,
+    FL3_WORK_ORDER_SCHEMA_VERSION_HASH,
+    validate_fl3_work_order,
+)
+from schemas.fl3_work_order_mrt1_e2e_schema import (
+    FL3_WORK_ORDER_MRT1_E2E_SCHEMA_ID,
+    FL3_WORK_ORDER_MRT1_E2E_SCHEMA_VERSION_HASH,
+    validate_fl3_work_order_mrt1_e2e,
+)
+from schemas.fl3_work_order_mrt1_e2e_resolved_schema import (
+    FL3_WORK_ORDER_MRT1_E2E_RESOLVED_SCHEMA_ID,
+    FL3_WORK_ORDER_MRT1_E2E_RESOLVED_SCHEMA_VERSION_HASH,
+    validate_fl3_work_order_mrt1_e2e_resolved,
+)
 from schemas.phase1c_work_order_schema import (
     PHASE1C_WORK_ORDER_SCHEMA_ID,
     PHASE1C_WORK_ORDER_SCHEMA_VERSION_HASH,
@@ -832,6 +847,16 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     ),
     FL3_SECRET_SCAN_REPORT_SCHEMA_ID: (FL3_SECRET_SCAN_REPORT_SCHEMA_VERSION_HASH, validate_fl3_secret_scan_report),
     FL3_SECRET_SCAN_SUMMARY_SCHEMA_ID: (FL3_SECRET_SCAN_SUMMARY_SCHEMA_VERSION_HASH, validate_fl3_secret_scan_summary),
+    # Work orders: schema-bound execution intent artifacts (append-only).
+    FL3_WORK_ORDER_SCHEMA_ID: (FL3_WORK_ORDER_SCHEMA_VERSION_HASH, validate_fl3_work_order),
+    FL3_WORK_ORDER_MRT1_E2E_SCHEMA_ID: (
+        FL3_WORK_ORDER_MRT1_E2E_SCHEMA_VERSION_HASH,
+        validate_fl3_work_order_mrt1_e2e,
+    ),
+    FL3_WORK_ORDER_MRT1_E2E_RESOLVED_SCHEMA_ID: (
+        FL3_WORK_ORDER_MRT1_E2E_RESOLVED_SCHEMA_VERSION_HASH,
+        validate_fl3_work_order_mrt1_e2e_resolved,
+    ),
     # Phase 1C: work order (append-only).
     PHASE1C_WORK_ORDER_SCHEMA_ID: (PHASE1C_WORK_ORDER_SCHEMA_VERSION_HASH, validate_phase1c_work_order),
     # Phase 2: governed learning unlock work order (append-only; policy artifact).
@@ -893,9 +918,16 @@ def validate_object_with_binding(payload: Any) -> None:
     if not isinstance(schema_id, str):
         raise SchemaValidationError("schema_id must be a string")
     if not isinstance(schema_version_hash, str):
-        # EPIC_23 legacy compatibility: historic kt.change_receipt.v1 receipts predate schema_version_hash binding.
-        # For this schema_id only, inject the registry expected hash in-memory for validation.
-        if schema_version_hash is None and schema_id == "kt.change_receipt.v1":
+        # EPIC_23/32 legacy compatibility:
+        # Some historic artifacts predate schema_version_hash binding. For allowlisted schema_ids only,
+        # inject the registry expected hash in-memory for validation.
+        legacy_allow_missing = {
+            "kt.change_receipt.v1",
+            "kt.work_order.v1",
+            "kt.work_order.mrt1_e2e.v1",
+            "kt.work_order.mrt1_e2e.resolved.v1",
+        }
+        if schema_version_hash is None and schema_id in legacy_allow_missing:
             if schema_id not in SCHEMA_REGISTRY:
                 raise SchemaRegistryError(f"Unknown schema_id (fail-closed): {schema_id!r}")
             expected_hash, _validator = SCHEMA_REGISTRY[schema_id]

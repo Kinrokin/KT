@@ -172,6 +172,27 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         if rc_val != 0:
             raise FL3ValidationError("FAIL_CLOSED: receipt validation failed")
 
+    # Work order validation (EPIC_32).
+    wo_cmd = ["python", "-m", "tools.verification.validate_work_orders", "--run-root", str(sweep_dir)]
+    wo_tool_path = repo_root / "KT_PROD_CLEANROOM" / "tools" / "verification" / "validate_work_orders.py"
+    if not wo_tool_path.exists():
+        write_text_worm(
+            path=sweep_dir / "validate_work_orders.NOT_PRESENT",
+            text="NOT_PRESENT\n",
+            label="sweep:validate_work_orders.NOT_PRESENT",
+        )
+        steps.append({"name": "validate_work_orders", "cmd": wo_cmd, "rc": None})
+    else:
+        rc_wo, out_wo = _run(repo_root=repo_root, cmd=wo_cmd, env=dict(base_env))
+        write_text_worm(
+            path=sweep_dir / "validate_work_orders.log",
+            text=out_wo if out_wo.endswith("\n") else out_wo + "\n",
+            label="sweep:validate_work_orders.log",
+        )
+        steps.append({"name": "validate_work_orders", "cmd": wo_cmd, "rc": rc_wo})
+        if rc_wo != 0:
+            raise FL3ValidationError("FAIL_CLOSED: work order validation failed")
+
     summary = {"status": "PASS", "run_root": run_root.as_posix(), "sweep_id": sweep_id, "steps": steps}
     write_text_worm(
         path=sweep_dir / "sweep_summary.json",
