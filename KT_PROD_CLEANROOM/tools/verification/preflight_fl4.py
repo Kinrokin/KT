@@ -69,7 +69,7 @@ def _supported_os_allows_host(*, os_claim: str, host_os: str) -> bool:
     host = str(host_os or "").strip().lower()
     if not claim or not host:
         return False
-    tokens = [t for t in re.split(r"[\\s,|]+", claim) if t.strip()]
+    tokens = [t for t in re.split(r"[\s,|]+", claim) if t.strip()]
     return any(host in t for t in tokens)
 
 
