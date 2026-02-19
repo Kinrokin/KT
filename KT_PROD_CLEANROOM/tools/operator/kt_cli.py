@@ -172,10 +172,6 @@ def cmd_status(*, repo_root: Path, profile: V1Profile, run_dir: Path) -> int:
 
     head = _git(repo_root=repo_root, args=["rev-parse", "HEAD"])
     tag_sha = _git(repo_root=repo_root, args=["rev-list", "-n", "1", profile.sealed_tag])
-    if head != profile.sealed_commit:
-        raise FL3ValidationError(
-            f"FAIL_CLOSED: HEAD mismatch vs sealed_commit. head={head} sealed_commit={profile.sealed_commit}"
-        )
     if tag_sha != profile.sealed_commit:
         raise FL3ValidationError(
             f"FAIL_CLOSED: sealed tag does not resolve to sealed_commit. tag={profile.sealed_tag} got={tag_sha}"
@@ -229,8 +225,8 @@ def cmd_status(*, repo_root: Path, profile: V1Profile, run_dir: Path) -> int:
     _write_json_worm(path=run_dir / "status_report.json", obj=status_report, label="status_report.json")
 
     verdict = (
-        f"KT_STATUS_PASS profile={profile.name} head={head} tag={profile.sealed_tag} "
-        f"law={computed_law} suite={suite_id} determinism={got_det}"
+        f"KT_STATUS_PASS profile={profile.name} head={head} sealed_commit={profile.sealed_commit} "
+        f"tag={profile.sealed_tag} law={computed_law} suite={suite_id} determinism={got_det}"
     )
     write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
     print(verdict)
@@ -244,6 +240,7 @@ def _is_expected_ci_meta_fail(output: str) -> bool:
 
 def cmd_certify_ci_sim(*, repo_root: Path, profile: V1Profile, run_dir: Path) -> int:
     _assert_clean_worktree(repo_root=repo_root)
+    head = _git(repo_root=repo_root, args=["rev-parse", "HEAD"])
     env = _base_env(repo_root=repo_root)
 
     steps: List[Dict[str, Any]] = []
@@ -308,6 +305,7 @@ def cmd_certify_ci_sim(*, repo_root: Path, profile: V1Profile, run_dir: Path) ->
         "schema_id": "kt.operator.certify_report.unbound.v1",
         "profile": profile.name,
         "lane": "ci_sim",
+        "head": head,
         "law_bundle_hash": computed_law,
         "suite_registry_id": profile.suite_registry_id,
         "steps": steps,
@@ -317,7 +315,7 @@ def cmd_certify_ci_sim(*, repo_root: Path, profile: V1Profile, run_dir: Path) ->
     _write_json_worm(path=run_dir / "certify_report.json", obj=report, label="certify_report.json")
 
     verdict = (
-        f"KT_CERTIFY_PASS profile={profile.name} lane=ci_sim head={profile.sealed_commit} "
+        f"KT_CERTIFY_PASS profile={profile.name} lane=ci_sim head={head} "
         f"law={computed_law} suite={profile.suite_registry_id} meta_ci_sim=EXPECTED_FAIL"
     )
     write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
@@ -327,6 +325,7 @@ def cmd_certify_ci_sim(*, repo_root: Path, profile: V1Profile, run_dir: Path) ->
 
 def cmd_certify_canonical_hmac(*, repo_root: Path, profile: V1Profile, run_dir: Path) -> int:
     _assert_clean_worktree(repo_root=repo_root)
+    head = _git(repo_root=repo_root, args=["rev-parse", "HEAD"])
     keys = _keys_presence_len()
     if not keys["KT_HMAC_KEY_SIGNER_A"]["present"] or not keys["KT_HMAC_KEY_SIGNER_B"]["present"]:
         raise FL3ValidationError(
@@ -356,7 +355,7 @@ def cmd_certify_canonical_hmac(*, repo_root: Path, profile: V1Profile, run_dir: 
     )
 
     verdict = (
-        f"KT_CERTIFY_PASS profile={profile.name} lane=canonical_hmac head={profile.sealed_commit} "
+        f"KT_CERTIFY_PASS profile={profile.name} lane=canonical_hmac head={head} "
         f"law={profile.law_bundle_hash} suite={profile.suite_registry_id} sweep_sha256={sweep_sha}"
     )
     write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
@@ -513,4 +512,3 @@ if __name__ == "__main__":
     except FL3ValidationError as exc:
         print(str(exc))
         raise SystemExit(2) from exc
-
