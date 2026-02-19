@@ -461,26 +461,30 @@ def cmd_report(*, repo_root: Path, profile: V1Profile, run_dir: Path, target_run
 
 
 def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
-    common = argparse.ArgumentParser(add_help=False)
-    # Support both: `kt_cli --profile v1 status` and `kt_cli status --profile v1`.
-    common.add_argument("--profile", default="v1", choices=["v1"], help="Operator profile (default: v1).")
-    common.add_argument("--run-root", default="", help="Optional explicit run root under KT_PROD_CLEANROOM/exports/_runs.")
-
-    ap = argparse.ArgumentParser(
-        description="KT operator CLI (client-of-tools; WORM evidence under exports/_runs).",
-        parents=[common],
-    )
+    ap = argparse.ArgumentParser(description="KT operator CLI (client-of-tools; WORM evidence under exports/_runs).")
+    ap.add_argument("--profile", default="v1", choices=["v1"], help="Operator profile (default: v1).")
+    ap.add_argument("--run-root", default="", help="Optional explicit run root under KT_PROD_CLEANROOM/exports/_runs.")
 
     sub = ap.add_subparsers(dest="cmd", required=True)
 
-    sub.add_parser("status", parents=[common], help="Verify immutable V1 anchors and emit status report (WORM).")
+    def _add_post_global_options(sp: argparse.ArgumentParser) -> None:
+        # Support both: `kt_cli --profile v1 status` and `kt_cli status --profile v1`.
+        # Avoid overriding the pre-subcommand values when the post-subcommand flags are omitted.
+        sp.add_argument("--profile", default=None, choices=["v1"], dest="profile_post")
+        sp.add_argument("--run-root", default=None, dest="run_root_post")
 
-    ap_cert = sub.add_parser("certify", parents=[common], help="Run certification harness as a client-of-tools (WORM).")
+    ap_status = sub.add_parser("status", help="Verify immutable V1 anchors and emit status report (WORM).")
+    _add_post_global_options(ap_status)
+
+    ap_cert = sub.add_parser("certify", help="Run certification harness as a client-of-tools (WORM).")
+    _add_post_global_options(ap_cert)
     ap_cert.add_argument("--lane", required=True, choices=["ci_sim", "canonical_hmac"])
 
-    sub.add_parser("hat-demo", parents=[common], help="Run router hat demo (EPIC_19) and emit run report (WORM).")
+    ap_hat = sub.add_parser("hat-demo", help="Run router hat demo (EPIC_19) and emit run report (WORM).")
+    _add_post_global_options(ap_hat)
 
-    ap_rep = sub.add_parser("report", parents=[common], help="Render a human-readable summary from an existing run directory.")
+    ap_rep = sub.add_parser("report", help="Render a human-readable summary from an existing run directory.")
+    _add_post_global_options(ap_rep)
     ap_rep.add_argument("--run", required=True, help="Target run directory to summarize.")
 
     return ap.parse_args(list(argv) if argv is not None else None)
@@ -492,7 +496,18 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     profile = V1
 
     cmd_name = str(args.cmd).replace("_", "-")
-    run_dir = _mk_run_dir(repo_root=repo_root, cmd_name=cmd_name, requested_run_root=str(args.run_root).strip() or None)
+
+    requested_profile = str(getattr(args, "profile_post", None) or getattr(args, "profile", "v1")).strip() or "v1"
+    if requested_profile != "v1":
+        raise FL3ValidationError("FAIL_CLOSED: unsupported profile")
+
+    requested_run_root = getattr(args, "run_root_post", None)
+    if requested_run_root is None:
+        requested_run_root = str(args.run_root).strip() or None
+    else:
+        requested_run_root = str(requested_run_root).strip() or None
+
+    run_dir = _mk_run_dir(repo_root=repo_root, cmd_name=cmd_name, requested_run_root=requested_run_root)
 
     # Minimal provenance.
     write_text_worm(path=run_dir / "git_head.txt", text=_git(repo_root=repo_root, args=["rev-parse", "HEAD"]) + "\n", label="git_head.txt")
