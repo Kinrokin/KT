@@ -461,20 +461,26 @@ def cmd_report(*, repo_root: Path, profile: V1Profile, run_dir: Path, target_run
 
 
 def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
-    ap = argparse.ArgumentParser(description="KT operator CLI (client-of-tools; WORM evidence under exports/_runs).")
-    ap.add_argument("--profile", default="v1", choices=["v1"], help="Operator profile (default: v1).")
-    ap.add_argument("--run-root", default="", help="Optional explicit run root under KT_PROD_CLEANROOM/exports/_runs.")
+    common = argparse.ArgumentParser(add_help=False)
+    # Support both: `kt_cli --profile v1 status` and `kt_cli status --profile v1`.
+    common.add_argument("--profile", default="v1", choices=["v1"], help="Operator profile (default: v1).")
+    common.add_argument("--run-root", default="", help="Optional explicit run root under KT_PROD_CLEANROOM/exports/_runs.")
+
+    ap = argparse.ArgumentParser(
+        description="KT operator CLI (client-of-tools; WORM evidence under exports/_runs).",
+        parents=[common],
+    )
 
     sub = ap.add_subparsers(dest="cmd", required=True)
 
-    sub.add_parser("status", help="Verify immutable V1 anchors and emit status report (WORM).")
+    sub.add_parser("status", parents=[common], help="Verify immutable V1 anchors and emit status report (WORM).")
 
-    ap_cert = sub.add_parser("certify", help="Run certification harness as a client-of-tools (WORM).")
+    ap_cert = sub.add_parser("certify", parents=[common], help="Run certification harness as a client-of-tools (WORM).")
     ap_cert.add_argument("--lane", required=True, choices=["ci_sim", "canonical_hmac"])
 
-    sub.add_parser("hat-demo", help="Run router hat demo (EPIC_19) and emit run report (WORM).")
+    sub.add_parser("hat-demo", parents=[common], help="Run router hat demo (EPIC_19) and emit run report (WORM).")
 
-    ap_rep = sub.add_parser("report", help="Render a human-readable summary from an existing run directory.")
+    ap_rep = sub.add_parser("report", parents=[common], help="Render a human-readable summary from an existing run directory.")
     ap_rep.add_argument("--run", required=True, help="Target run directory to summarize.")
 
     return ap.parse_args(list(argv) if argv is not None else None)
