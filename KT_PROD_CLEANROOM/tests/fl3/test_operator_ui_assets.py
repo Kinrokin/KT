@@ -19,4 +19,5 @@ def test_operator_ui_assets_exist() -> None:
     html = (ui_dir / "index.html").read_text(encoding="utf-8", errors="replace")
     assert "KT Run Viewer" in html
     assert "fileInput" in html
-
+    assert "requiredBlock" in html
+    assert "determinismBlock" in html
