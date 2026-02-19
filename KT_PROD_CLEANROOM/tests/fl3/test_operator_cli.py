@@ -61,3 +61,73 @@ def test_kt_cli_status_smoke_and_worm_collision() -> None:
     st = subprocess.check_output(["git", "status", "--porcelain=v1"], cwd=str(repo_root), text=True)
     assert st.strip() == ""
 
+
+def test_kt_cli_allow_dirty_gate() -> None:
+    repo_root = _repo_root()
+    marker = repo_root / "__kt_dirty_marker.tmp"
+    if marker.exists():
+        marker.unlink()
+
+    out_root = _operator_test_root(repo_root)
+    out_root.mkdir(parents=True, exist_ok=True)
+    run_root_fail = out_root / "dirty_gate_fail"
+    run_root_pass = out_root / "dirty_gate_pass"
+    if run_root_fail.exists():
+        for p in sorted(run_root_fail.rglob("*"), reverse=True):
+            if p.is_file():
+                p.unlink()
+            elif p.is_dir():
+                try:
+                    p.rmdir()
+                except OSError:
+                    pass
+        try:
+            run_root_fail.rmdir()
+        except OSError:
+            pass
+    if run_root_pass.exists():
+        for p in sorted(run_root_pass.rglob("*"), reverse=True):
+            if p.is_file():
+                p.unlink()
+            elif p.is_dir():
+                try:
+                    p.rmdir()
+                except OSError:
+                    pass
+        try:
+            run_root_pass.rmdir()
+        except OSError:
+            pass
+
+    env = _base_env(repo_root)
+    try:
+        marker.write_text("dirty\n", encoding="utf-8")
+
+        # Default must FAIL_CLOSED on dirty worktree.
+        cmd_fail = ["python", "-m", "tools.operator.kt_cli", "--run-root", str(run_root_fail), "status"]
+        p1 = subprocess.run(cmd_fail, cwd=str(repo_root), env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        assert p1.returncode != 0
+        assert "FAIL_CLOSED" in (p1.stdout or "")
+        assert (run_root_fail / "verdict.txt").exists()
+
+        # Explicit allow should PASS even with dirty worktree.
+        cmd_pass = ["python", "-m", "tools.operator.kt_cli", "--run-root", str(run_root_pass), "status", "--allow-dirty"]
+        p2 = subprocess.run(cmd_pass, cwd=str(repo_root), env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        assert p2.returncode == 0, p2.stdout
+        assert (run_root_pass / "verdict.txt").exists()
+
+    finally:
+        if marker.exists():
+            marker.unlink()
+
+    # Repo must be clean after cleanup.
+    st = subprocess.check_output(["git", "status", "--porcelain=v1"], cwd=str(repo_root), text=True)
+    assert st.strip() == ""
+
+
+def test_operator_wrapper_script_exists() -> None:
+    repo_root = _repo_root()
+    p = repo_root / "KT_PROD_CLEANROOM" / "tools" / "operator" / "kt.ps1"
+    assert p.is_file()
+    txt = p.read_text(encoding="utf-8", errors="replace")
+    assert "python -m tools.operator.kt_cli" in txt

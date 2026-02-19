@@ -107,6 +107,11 @@ def _assert_clean_worktree(*, repo_root: Path) -> None:
     if out.strip():
         raise FL3ValidationError("FAIL_CLOSED: repo is not clean (git status --porcelain=v1 non-empty)")
 
+def _maybe_assert_clean_worktree(*, repo_root: Path, allow_dirty: bool) -> None:
+    if allow_dirty:
+        return
+    _assert_clean_worktree(repo_root=repo_root)
+
 
 def _base_env(*, repo_root: Path) -> Dict[str, str]:
     env = dict(os.environ)
@@ -167,9 +172,7 @@ def _load_json(path: Path) -> Dict[str, Any]:
     return obj
 
 
-def cmd_status(*, repo_root: Path, profile: V1Profile, run_dir: Path) -> int:
-    _assert_clean_worktree(repo_root=repo_root)
-
+def cmd_status(*, repo_root: Path, profile: V1Profile, run_dir: Path, allow_dirty: bool) -> int:
     head = _git(repo_root=repo_root, args=["rev-parse", "HEAD"])
     tag_sha = _git(repo_root=repo_root, args=["rev-list", "-n", "1", profile.sealed_tag])
     if tag_sha != profile.sealed_commit:
@@ -212,12 +215,15 @@ def cmd_status(*, repo_root: Path, profile: V1Profile, run_dir: Path) -> int:
         "sealed_commit": profile.sealed_commit,
         "sealed_tag": profile.sealed_tag,
         "head": head,
+        "head_matches_sealed_commit": head == profile.sealed_commit,
         "tag_resolves_to": tag_sha,
+        "sealed_tag_resolves_ok": tag_sha == profile.sealed_commit,
         "law_bundle_hash": computed_law,
         "suite_registry_id": suite_id,
         "suite_registry_attestation_mode": mode,
         "determinism_expected_root_hash": got_det,
         "authoritative_reseal_receipt": profile.authoritative_reseal_receipt,
+        "allow_dirty": bool(allow_dirty),
         "hmac_keys": _keys_presence_len(),
         "status": "PASS",
     }
@@ -225,8 +231,9 @@ def cmd_status(*, repo_root: Path, profile: V1Profile, run_dir: Path) -> int:
     _write_json_worm(path=run_dir / "status_report.json", obj=status_report, label="status_report.json")
 
     verdict = (
-        f"KT_STATUS_PASS profile={profile.name} head={head} sealed_commit={profile.sealed_commit} "
-        f"tag={profile.sealed_tag} law={computed_law} suite={suite_id} determinism={got_det}"
+        f"KT_STATUS_PASS cmd=status profile={profile.name} allow_dirty={int(bool(allow_dirty))} "
+        f"head={head} sealed_commit={profile.sealed_commit} tag={profile.sealed_tag} "
+        f"law={computed_law} suite={suite_id} determinism={got_det}"
     )
     write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
     print(verdict)
@@ -238,8 +245,7 @@ def _is_expected_ci_meta_fail(output: str) -> bool:
     return "kt_hmac_key_signer" in o or "missing kt_hmac_key_signer" in o or "missing kt_hmac" in o
 
 
-def cmd_certify_ci_sim(*, repo_root: Path, profile: V1Profile, run_dir: Path) -> int:
-    _assert_clean_worktree(repo_root=repo_root)
+def cmd_certify_ci_sim(*, repo_root: Path, profile: V1Profile, run_dir: Path, allow_dirty: bool) -> int:
     head = _git(repo_root=repo_root, args=["rev-parse", "HEAD"])
     env = _base_env(repo_root=repo_root)
 
@@ -306,6 +312,7 @@ def cmd_certify_ci_sim(*, repo_root: Path, profile: V1Profile, run_dir: Path) ->
         "profile": profile.name,
         "lane": "ci_sim",
         "head": head,
+        "allow_dirty": bool(allow_dirty),
         "law_bundle_hash": computed_law,
         "suite_registry_id": profile.suite_registry_id,
         "steps": steps,
@@ -315,16 +322,15 @@ def cmd_certify_ci_sim(*, repo_root: Path, profile: V1Profile, run_dir: Path) ->
     _write_json_worm(path=run_dir / "certify_report.json", obj=report, label="certify_report.json")
 
     verdict = (
-        f"KT_CERTIFY_PASS profile={profile.name} lane=ci_sim head={head} "
-        f"law={computed_law} suite={profile.suite_registry_id} meta_ci_sim=EXPECTED_FAIL"
+        f"KT_CERTIFY_PASS cmd=certify lane=ci_sim profile={profile.name} allow_dirty={int(bool(allow_dirty))} "
+        f"head={head} law={computed_law} suite={profile.suite_registry_id} meta_ci_sim=EXPECTED_FAIL"
     )
     write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
     print(verdict)
     return 0
 
 
-def cmd_certify_canonical_hmac(*, repo_root: Path, profile: V1Profile, run_dir: Path) -> int:
-    _assert_clean_worktree(repo_root=repo_root)
+def cmd_certify_canonical_hmac(*, repo_root: Path, profile: V1Profile, run_dir: Path, allow_dirty: bool) -> int:
     head = _git(repo_root=repo_root, args=["rev-parse", "HEAD"])
     keys = _keys_presence_len()
     if not keys["KT_HMAC_KEY_SIGNER_A"]["present"] or not keys["KT_HMAC_KEY_SIGNER_B"]["present"]:
@@ -355,16 +361,15 @@ def cmd_certify_canonical_hmac(*, repo_root: Path, profile: V1Profile, run_dir: 
     )
 
     verdict = (
-        f"KT_CERTIFY_PASS profile={profile.name} lane=canonical_hmac head={head} "
-        f"law={profile.law_bundle_hash} suite={profile.suite_registry_id} sweep_sha256={sweep_sha}"
+        f"KT_CERTIFY_PASS cmd=certify lane=canonical_hmac profile={profile.name} allow_dirty={int(bool(allow_dirty))} "
+        f"head={head} law={profile.law_bundle_hash} suite={profile.suite_registry_id} sweep_sha256={sweep_sha}"
     )
     write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
     print(verdict)
     return 0
 
 
-def cmd_hat_demo(*, repo_root: Path, profile: V1Profile, run_dir: Path) -> int:
-    _assert_clean_worktree(repo_root=repo_root)
+def cmd_hat_demo(*, repo_root: Path, profile: V1Profile, run_dir: Path, allow_dirty: bool) -> int:
     env = _base_env(repo_root=repo_root)
 
     policy = (repo_root / profile.router_policy_ref).resolve()
@@ -404,7 +409,7 @@ def cmd_hat_demo(*, repo_root: Path, profile: V1Profile, run_dir: Path) -> int:
 
     report = _load_json(report_path)
     verdict = (
-        f"KT_HAT_DEMO_PASS profile={profile.name} run_id={run_id} "
+        f"KT_HAT_DEMO_PASS cmd=hat-demo profile={profile.name} allow_dirty={int(bool(allow_dirty))} run_id={run_id} "
         f"router_run_report_id={str(report.get('router_run_report_id','')).strip()}"
     )
     write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
@@ -412,8 +417,7 @@ def cmd_hat_demo(*, repo_root: Path, profile: V1Profile, run_dir: Path) -> int:
     return 0
 
 
-def cmd_report(*, repo_root: Path, profile: V1Profile, run_dir: Path, target_run: str) -> int:
-    _assert_clean_worktree(repo_root=repo_root)
+def cmd_report(*, repo_root: Path, profile: V1Profile, run_dir: Path, target_run: str, allow_dirty: bool) -> int:
     env = _base_env(repo_root=repo_root)
 
     target = Path(str(target_run)).expanduser()
@@ -454,7 +458,10 @@ def cmd_report(*, repo_root: Path, profile: V1Profile, run_dir: Path, target_run
         lines.append("notes=" + "; ".join(str(x) for x in found["notes"]))
     write_text_worm(path=out_txt, text="\n".join(lines) + "\n", label="report_render.txt")
 
-    verdict = f"KT_REPORT_PASS profile={profile.name} target_run={target.as_posix()}"
+    verdict = (
+        f"KT_REPORT_PASS cmd=report profile={profile.name} allow_dirty={int(bool(allow_dirty))} "
+        f"target_run={target.as_posix()}"
+    )
     write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
     print(verdict)
     return 0
@@ -464,6 +471,7 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="KT operator CLI (client-of-tools; WORM evidence under exports/_runs).")
     ap.add_argument("--profile", default="v1", choices=["v1"], help="Operator profile (default: v1).")
     ap.add_argument("--run-root", default="", help="Optional explicit run root under KT_PROD_CLEANROOM/exports/_runs.")
+    ap.add_argument("--allow-dirty", action="store_true", help="Allow dirty worktree (default: fail-closed).")
 
     sub = ap.add_subparsers(dest="cmd", required=True)
 
@@ -472,6 +480,7 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
         # Avoid overriding the pre-subcommand values when the post-subcommand flags are omitted.
         sp.add_argument("--profile", default=None, choices=["v1"], dest="profile_post")
         sp.add_argument("--run-root", default=None, dest="run_root_post")
+        sp.add_argument("--allow-dirty", action="store_true", default=None, dest="allow_dirty_post")
 
     ap_status = sub.add_parser("status", help="Verify immutable V1 anchors and emit status report (WORM).")
     _add_post_global_options(ap_status)
@@ -503,28 +512,47 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     requested_run_root = getattr(args, "run_root_post", None)
     if requested_run_root is None:
-        requested_run_root = str(args.run_root).strip() or None
+      requested_run_root = str(args.run_root).strip() or None
     else:
         requested_run_root = str(requested_run_root).strip() or None
+
+    allow_dirty_post = getattr(args, "allow_dirty_post", None)
+    allow_dirty = bool(allow_dirty_post) if allow_dirty_post is not None else bool(getattr(args, "allow_dirty", False))
 
     run_dir = _mk_run_dir(repo_root=repo_root, cmd_name=cmd_name, requested_run_root=requested_run_root)
 
     # Minimal provenance.
+    (run_dir / "transcripts").mkdir(parents=True, exist_ok=True)
     write_text_worm(path=run_dir / "git_head.txt", text=_git(repo_root=repo_root, args=["rev-parse", "HEAD"]) + "\n", label="git_head.txt")
     write_text_worm(path=run_dir / "git_status.txt", text=_git(repo_root=repo_root, args=["status", "--porcelain=v1"]) + "\n", label="git_status.txt")
-    _write_json_worm(path=run_dir / "env_keys.json", obj={"hmac_keys": _keys_presence_len()}, label="env_keys.json")
+    _write_json_worm(
+        path=run_dir / "env_keys.json",
+        obj={"hmac_keys": _keys_presence_len(), "allow_dirty": bool(allow_dirty)},
+        label="env_keys.json",
+    )
 
-    if args.cmd == "status":
-        return cmd_status(repo_root=repo_root, profile=profile, run_dir=run_dir)
-    if args.cmd == "certify":
-        if str(args.lane) == "ci_sim":
-            return cmd_certify_ci_sim(repo_root=repo_root, profile=profile, run_dir=run_dir)
-        return cmd_certify_canonical_hmac(repo_root=repo_root, profile=profile, run_dir=run_dir)
-    if args.cmd == "hat-demo":
-        return cmd_hat_demo(repo_root=repo_root, profile=profile, run_dir=run_dir)
-    if args.cmd == "report":
-        return cmd_report(repo_root=repo_root, profile=profile, run_dir=run_dir, target_run=str(args.run))
-    raise SystemExit("FAIL_CLOSED: unknown command")
+    try:
+        _maybe_assert_clean_worktree(repo_root=repo_root, allow_dirty=allow_dirty)
+        if args.cmd == "status":
+            return cmd_status(repo_root=repo_root, profile=profile, run_dir=run_dir, allow_dirty=allow_dirty)
+        if args.cmd == "certify":
+            if str(args.lane) == "ci_sim":
+                return cmd_certify_ci_sim(repo_root=repo_root, profile=profile, run_dir=run_dir, allow_dirty=allow_dirty)
+            return cmd_certify_canonical_hmac(repo_root=repo_root, profile=profile, run_dir=run_dir, allow_dirty=allow_dirty)
+        if args.cmd == "hat-demo":
+            return cmd_hat_demo(repo_root=repo_root, profile=profile, run_dir=run_dir, allow_dirty=allow_dirty)
+        if args.cmd == "report":
+            return cmd_report(repo_root=repo_root, profile=profile, run_dir=run_dir, target_run=str(args.run), allow_dirty=allow_dirty)
+        raise FL3ValidationError("FAIL_CLOSED: unknown command")
+    except FL3ValidationError as exc:
+        msg = str(exc)
+        cmd = str(args.cmd)
+        verdict = f"KT_{cmd.upper().replace('-', '_')}_FAIL_CLOSED cmd={cmd} profile={profile.name} allow_dirty={int(bool(allow_dirty))}"
+        write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
+        write_text_worm(path=run_dir / "error.txt", text=msg + "\n", label="error.txt")
+        print(msg)
+        print(verdict)
+        return 2
 
 
 if __name__ == "__main__":
