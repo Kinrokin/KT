@@ -69,12 +69,9 @@ def _case_id_variant(base_case_id: str, *, variant_index: int) -> str:
 
 
 def _apply_whitespace(prompt: str, *, rng: random.Random) -> str:
-    options = [
-        lambda s: s + "\n",
-        lambda s: "\n" + s,
-        lambda s: s.replace("\n", "\n\n"),
-        lambda s: s.replace(" ", "  "),
-    ]
+    # Suite-definition prompt validator normalizes (strip). Avoid transforms that rely on
+    # leading/trailing whitespace because they will be dropped in canonicalization.
+    options = [lambda s: s.replace("\n", "\n\n"), lambda s: s.replace(" ", "  ")]
     fn = options[int(rng.random() * len(options))]
     out = fn(prompt)
     return out
@@ -85,7 +82,7 @@ def _apply_punctuation(prompt: str, *, rng: random.Random) -> str:
     if not s:
         return prompt
     if s[-1] in ".?!":
-        return s + ("\n" if rng.random() < 0.5 else "")
+        return s
     return s + ("?" if rng.random() < 0.5 else ".")
 
 
@@ -191,6 +188,9 @@ def generate_metamorphic_suite(
             if "order" in transforms:
                 p = _apply_order_shuffle(p, rng=rng)
 
+            # Canonical suite-definition schema strips prompts. Mirror that to keep
+            # suite_definition_id stable.
+            p = p.strip()
             if len(p) > 4000:
                 raise FailClosedError("FAIL_CLOSED: generated prompt exceeds max length")
 
@@ -277,17 +277,21 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     )
 
     ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    if args.out_dir:
-        out_dir = _assert_out_dir_under_exports_runs(repo_root=repo_root, out_dir=Path(args.out_dir))
-    else:
-        out_dir = _assert_out_dir_under_exports_runs(
-            repo_root=repo_root,
-            out_dir=repo_root / "KT_PROD_CLEANROOM" / "exports" / "_runs" / "KT_SUITE_PACK" / f"{ts}_META",
-        )
+    try:
+        if args.out_dir:
+            out_dir = _assert_out_dir_under_exports_runs(repo_root=repo_root, out_dir=Path(args.out_dir))
+        else:
+            out_dir = _assert_out_dir_under_exports_runs(
+                repo_root=repo_root,
+                out_dir=repo_root / "KT_PROD_CLEANROOM" / "exports" / "_runs" / "KT_SUITE_PACK" / f"{ts}_META",
+            )
 
-    if out_dir.exists():
-        raise FailClosedError("FAIL_CLOSED: out_dir already exists (WORM collision)")
-    out_dir.mkdir(parents=True, exist_ok=False)
+        if out_dir.exists():
+            raise FailClosedError("FAIL_CLOSED: out_dir already exists (WORM collision)")
+        out_dir.mkdir(parents=True, exist_ok=False)
+    except FailClosedError as exc:
+        print(str(exc))
+        return 2
 
     report: Dict[str, Any] = {
         "schema_id": "kt.suite_pack_generation_report.unbound.v1",
@@ -327,15 +331,68 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     report["status"] = "PASS"
     _canonical_write_json_worm(path=out_dir / "generation_report.PASS.json", obj=report, label="generation_report.PASS.json")
 
+    manifest: Dict[str, Any] = {
+        "schema_id": "kt.suite_pack_manifest.unbound.v1",
+        "created_at": str(base_suite.get("created_at", "")).strip() or "1970-01-01T00:00:00Z",
+        "pack_id": hashlib.sha256(
+            canonical_json(
+                {
+                    "in_suite_sha256": report["in_suite_sha256"],
+                    "seed": spec.seed,
+                    "variants_per_case": spec.variants_per_case,
+                    "transforms": report["transforms"],
+                    "counterpressure_level": spec.counterpressure_level,
+                }
+            ).encode("utf-8")
+        ).hexdigest(),
+        "source_suite": {
+            "path": str(in_path.as_posix()),
+            "sha256": report["in_suite_sha256"],
+            "suite_definition_id": str(base_suite.get("suite_definition_id", "")).strip(),
+            "suite_id": str(base_suite.get("suite_id", "")).strip(),
+            "suite_version": str(base_suite.get("suite_version", "")).strip(),
+        },
+        "spec": {
+            "seed": spec.seed,
+            "variants_per_case": spec.variants_per_case,
+            "transforms": report["transforms"],
+            "counterpressure_level": spec.counterpressure_level,
+        },
+        "safety": {
+            "allow_sensitive_prompts": bool(args.allow_sensitive_prompts),
+            "policy": "default FAIL_CLOSED on heuristic-sensitive prompts; hash-only in error message",
+        },
+        "outputs": [
+            {
+                "path": out_path.name,
+                "sha256": report["out_suite_sha256"],
+                "suite_definition_id": report["out_suite_definition_id"],
+                "case_count": len(out_suite.get("cases") or []),
+            }
+        ],
+    }
+    _canonical_write_json_worm(path=out_dir / "manifest.json", obj=manifest, label="manifest.json")
+
     verdict = (
         f"KT_SUITE_PACK_PASS suite_definition_id={out_suite.get('suite_definition_id')} "
         f"out_sha256={report['out_suite_sha256']} out_dir={out_dir}"
     )
     write_text_worm(path=out_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
+
+    # Hash list (WORM): stable pointers for operators.
+    hashes = [
+        ("sha256", report["in_suite_sha256"], str(in_path.as_posix())),
+        ("sha256", report["out_suite_sha256"], out_path.name),
+        ("sha256", _sha256_file(out_dir / "manifest.json"), "manifest.json"),
+        ("sha256", _sha256_file(out_dir / "generation_report.json"), "generation_report.json"),
+        ("sha256", _sha256_file(out_dir / "generation_report.PASS.json"), "generation_report.PASS.json"),
+        ("sha256", _sha256_file(out_dir / "verdict.txt"), "verdict.txt"),
+    ]
+    hashes_txt = "\n".join([f"{algo} {h}  {name}" for (algo, h, name) in hashes]) + "\n"
+    write_text_worm(path=out_dir / "hashes.txt", text=hashes_txt, label="hashes.txt")
     print(verdict)
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
