@@ -34,6 +34,16 @@ def _sha256_text(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
+def _assert_out_dir_under_exports_runs(*, repo_root: Path, out_dir: Path) -> Path:
+    out_dir = out_dir.resolve()
+    allowed_root = (repo_root / "KT_PROD_CLEANROOM" / "exports" / "_runs").resolve()
+    try:
+        out_dir.relative_to(allowed_root)
+    except ValueError as exc:
+        raise FL3ValidationError(f"FAIL_CLOSED: out_dir must be under {allowed_root.as_posix()}") from exc
+    return out_dir
+
+
 def _choose_route(*, policy: Dict[str, Any], input_text: str) -> Tuple[str, List[str], List[str], List[str]]:
     """
     Deterministic keyword-substring routing.
@@ -146,7 +156,7 @@ def run_router_hat_demo(
         validate_schema_bound_object(receipt)
         receipts.append(receipt)
 
-    out_dir = out_dir.resolve()
+    out_dir = _assert_out_dir_under_exports_runs(repo_root=repo_root, out_dir=out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
     expected_paths = [out_dir / f"routing_receipt_{r['case_id']}.json" for r in receipts]

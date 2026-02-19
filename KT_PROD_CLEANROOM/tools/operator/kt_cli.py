@@ -445,6 +445,15 @@ def cmd_report(*, repo_root: Path, profile: V1Profile, run_dir: Path, target_run
     else:
         found["notes"].append("no sweep_summary.json found under sweeps/")
 
+    hat_report = target / "hat_demo" / "router_run_report.json"
+    if hat_report.exists():
+        found["files"]["hat_demo/router_run_report.json"] = hat_report.as_posix()
+        try:
+            rr = _load_json(hat_report)
+            found["files"]["hat_demo/router_run_report_id"] = str(rr.get("router_run_report_id", "")).strip()
+        except Exception:  # noqa: BLE001
+            found["notes"].append("hat_demo/router_run_report.json unreadable")
+
     out_json = run_dir / "report_render.json"
     _write_json_worm(path=out_json, obj=found, label="report_render.json")
 
@@ -454,6 +463,10 @@ def cmd_report(*, repo_root: Path, profile: V1Profile, run_dir: Path, target_run
         lines.append("verdict=" + verdict_path.read_text(encoding="utf-8", errors="replace").strip())
     if sweep_summaries:
         lines.append("sweep_summaries=" + ",".join(sweep_summaries))
+    if hat_report.exists():
+        lines.append("hat_demo_router_run_report=" + hat_report.as_posix())
+        if isinstance(found["files"].get("hat_demo/router_run_report_id"), str) and found["files"]["hat_demo/router_run_report_id"]:
+            lines.append("hat_demo_router_run_report_id=" + str(found["files"]["hat_demo/router_run_report_id"]))
     if found["notes"]:
         lines.append("notes=" + "; ".join(str(x) for x in found["notes"]))
     write_text_worm(path=out_txt, text="\n".join(lines) + "\n", label="report_render.txt")
