@@ -19,30 +19,19 @@ def _base_env(repo_root: Path) -> dict[str, str]:
     return env
 
 
-def test_router_hat_demo_refuses_outside_exports_runs(tmp_path: Path) -> None:
+def test_kt_cli_refuses_run_root_outside_exports_runs(tmp_path: Path) -> None:
     repo_root = _repo_root()
     env = _base_env(repo_root)
 
-    policy = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "ROUTER" / "ROUTER_POLICY_HAT_V1.json"
-    suite = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "ROUTER" / "ROUTER_DEMO_SUITE_V1.json"
-    assert policy.is_file()
-    assert suite.is_file()
-
-    out_dir = tmp_path / "hat_outside_exports"
-    cmd = [
-        "python",
-        "-m",
-        "tools.router.run_router_hat_demo",
-        "--policy",
-        str(policy),
-        "--suite",
-        str(suite),
-        "--run-id",
-        "test_run",
-        "--out-dir",
-        str(out_dir),
-    ]
-    p = subprocess.run(cmd, cwd=str(repo_root), env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    bad_root = tmp_path / "bad_run_root_outside_exports"
+    p = subprocess.run(
+        ["python", "-m", "tools.operator.kt_cli", "--run-root", str(bad_root), "hat-demo"],
+        cwd=str(repo_root),
+        env=env,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
     assert p.returncode != 0
     assert "FAIL_CLOSED" in (p.stdout or "")
 
@@ -98,4 +87,3 @@ def test_kt_cli_hat_demo_smoke_and_report_render(tmp_path: Path) -> None:
 
     st = subprocess.check_output(["git", "status", "--porcelain=v1"], cwd=str(repo_root), text=True)
     assert st.strip() == ""
-
