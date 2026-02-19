@@ -14,4 +14,4 @@ status: "draft"
 ## 2026-02-19
 - Initialized `KT-Codex/` tree and created the initial release set (TOC + Volume I-III Chapter 1). [SRC:NEEDS_VERIFICATION]
 - Recorded pre-generation system sweep evidence under a KT_CODEX run root. [SRC:NEEDS_VERIFICATION]
-
+- Added SME review plan and checklists, and defined internal source stubs for the attached client-ready research pack. [SRC:NEEDS_VERIFICATION]

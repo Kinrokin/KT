@@ -17,6 +17,9 @@ status: "draft"
 #### Chapter intent (plain-English)
 KT is a governance engine: it turns AI work into deterministic, auditable evidence. This chapter defines the doctrine behind that claim and how it becomes a repeatable customer outcome. [SRC:REG:NIST-AI-RMF-1.0]
 
+#### Non-negotiable premise (plain-English)
+KT sells proof, not promises. The doctrine is explicitly anti-handwaving: if a claim cannot be reproduced from artifacts, it is not a KT claim. **Audit Trail** — see Glossary. [SRC:INTERNAL:KT_CLIENT_READY_PACK:PLAYBOOK_MD]
+
 #### KT Seed Axioms (verbatim)
 1. Node 0 (The Judge) — a deterministic decision valve that fails-closed on ambiguity and enforces policy decisions before outputs are released.
 2. Immutable Receipts — every AI output produces a WORM idempotent cryptographic receipt (HMAC attestation) that binds input, model version, prompt, and output.
@@ -32,6 +35,16 @@ Plain-English: this table tells each reader where to start and what “good” l
 | Executive Author | Executive Summary | Approve scope, constraints, and acceptance language. |
 | Program Manager | Manager Playbook | Deliver repeatably with artifacts and checkpoints. |
 | Systems Architect | Engineer Manual | Implement and verify without violating invariants. |
+
+#### Sealed V1 anchors (reference, read-only)
+Plain-English: these anchors are treated as immutable facts for KT V1; the Codex must not instruct operators to modify them. [SRC:NEEDS_VERIFICATION]
+
+- Sealed tag: `KT_V1_SEALED_20260217` [SRC:NEEDS_VERIFICATION]
+- Sealed commit: `7b7f6e71d43c0aa60d4bc91be47e679491883871` [SRC:NEEDS_VERIFICATION]
+- Law bundle hash (V1): `cd593dee1cc0b4c30273c90331124c3686f510ff990005609b3653268e66d906` [SRC:NEEDS_VERIFICATION]
+- Suite registry id (V1): `e7a37cdc2a84b042dc1f594d1f84b4ba0a843c49de4925a06e6117fbac1eff17` [SRC:NEEDS_VERIFICATION]
+- Determinism expected root hash (V1): `c574cd28deba7020b1ff41f249c02f403cbe8e045cb961222183880977bdb10e` [SRC:NEEDS_VERIFICATION]
+- Authoritative V1 reseal receipt (do not edit): `KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/receipts/KT_CHANGE_RECEIPT_EPIC24_V1_RESEAL_UNDER_CURRENT_LAW_FIX_POST_CANONICAL_HMAC_20260217T225856Z.json` [SRC:NEEDS_VERIFICATION]
 
 ```text
 [Diagram Spec]

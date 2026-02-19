@@ -1,13 +1,4 @@
 {
-  "schema_id": "kt.codex.manifest.v1",
-  "generated_utc": "2026-02-19T21:03:15Z",
-  "model_version": "GPT-5.2",
-  "status": "draft",
-  "run_root": {
-    "path": "KT_PROD_CLEANROOM/exports/_runs/KT_CODEX/20260219T203802Z",
-    "pre_sweep_summary": "KT_PROD_CLEANROOM/exports/_runs/KT_CODEX/20260219T203802Z/sweeps/PRE_CODEX/sweep_summary.json",
-    "qa_summary": "KT_PROD_CLEANROOM/exports/_runs/KT_CODEX/20260219T203802Z/reports/qa_summary.json"
-  },
   "artifacts": [
     {
       "bytes": 481,
@@ -34,10 +25,33 @@
       "word_count": 4144
     },
     {
-      "bytes": 549,
+      "bytes": 692,
       "path": "KT-Codex/metadata/changelog.md",
-      "sha256": "2a4db9241a68fda6d826a35b31fc86ab9cfd4e4e4c3cb2030cc0e4c5710ec7df",
-      "word_count": 34
+      "sha256": "d0157d913d4bee5e94242661d89312eec7e3b590dd6aeda3b3a8e34223e386a9",
+      "word_count": 54
+    },
+    {
+      "bytes": 1764,
+      "path": "KT-Codex/metadata/internal_sources.md",
+      "sha256": "4c913c4758fa2ad0939f03ea8533ab933f2177d2faa98c3dd515cefce6570c86",
+      "word_count": 150
+    },
+    {
+      "bytes": 4584,
+      "path": "KT-Codex/metadata/manifest.json",
+      "sha256": "0ad8863d0c483ba880df876985bbc833677f49ecf825ca4ca6e97f05a3dcda11"
+    },
+    {
+      "bytes": 2441,
+      "path": "KT-Codex/metadata/sme_review_checklist.v1.md",
+      "sha256": "7b2d14aedd14f29f725bb5488fd34fea1cc9cda9a2227432c312980b77f2b21c",
+      "word_count": 261
+    },
+    {
+      "bytes": 2992,
+      "path": "KT-Codex/metadata/sme_review_plan.v1.md",
+      "sha256": "516be25a96f46a06426c586b6b4f4a08bfa2f846909a8465a4be363dabb0f2ce",
+      "word_count": 340
     },
     {
       "bytes": 918,
@@ -88,22 +102,22 @@
       "word_count": 174
     },
     {
-      "bytes": 8981,
+      "bytes": 10182,
       "path": "KT-Codex/Volume-I-Doctrine/01-KT-Doctrine-and-Philosophy.md",
-      "sha256": "0efdab5314d47dc51d849f3e89c5676f33f78e2aca14e9b1f1af5538a7176ae8",
-      "word_count": 1174
+      "sha256": "faa3df4d344f61d1762bffacbd8b1dd1390beba0fdc537fb10d9173322c43b81",
+      "word_count": 1287
     },
     {
-      "bytes": 9340,
+      "bytes": 11332,
       "path": "KT-Codex/Volume-II-Business/01-Business-Model-and-Pricing.md",
-      "sha256": "100604fefa8c8ed6eb94d5e2a72fd3b7eb0ce603fb41dfc7007363a7a14b7362",
-      "word_count": 1141
+      "sha256": "d9fb8fe5e2e20071d1851c6523f8dd9ef633a89c821b2ff11493f4ac3bc5a125",
+      "word_count": 1352
     },
     {
-      "bytes": 8926,
+      "bytes": 11579,
       "path": "KT-Codex/Volume-III-Technical/01-KT-Pipeline-Blueprint.md",
-      "sha256": "b9c1fe21a4664eeb63246bdd013c99ccae77f4822a8eae38789f193656c44c82",
-      "word_count": 1062
+      "sha256": "7f0376bd9f0ab34b6919e93e143d430d2e958ccae3585742db3f186199fe814f",
+      "word_count": 1348
     },
     {
       "bytes": 523,
@@ -124,18 +138,35 @@
       "word_count": 29
     }
   ],
-  "placeholders": [
-    {
-      "path_prefix": "KT-Codex/Volume-IV-Services/",
-      "status": "planned"
-    },
-    {
-      "path_prefix": "KT-Codex/Volume-V-Operations/",
-      "status": "planned"
-    },
-    {
-      "path_prefix": "KT-Codex/Volume-VI-Appendices/",
-      "status": "planned"
-    }
-  ]
+  "generated_utc": "2026-02-19T23:25:41Z",
+  "inputs": {
+    "client_ready_pack_zip_sha256": "21c926cbeb368ffb252afe69d1cae78765af9ac4ddbd5ff133a0aca8a786351e",
+    "internal_sources_file": "KT-Codex/metadata/internal_sources.md"
+  },
+  "model_version": "GPT-5.2",
+  "primary_outputs_initial_release": [
+    "KT-Codex/KT-Codex-Master-Prompt-v1.md",
+    "KT-Codex/KT-TOC-Persona-Glossary-CitationSeed.md",
+    "KT-Codex/Volume-I-Doctrine/01-KT-Doctrine-and-Philosophy.md",
+    "KT-Codex/Volume-II-Business/01-Business-Model-and-Pricing.md",
+    "KT-Codex/Volume-III-Technical/01-KT-Pipeline-Blueprint.md",
+    "KT-Codex/metadata/manifest.json",
+    "KT-Codex/metadata/changelog.md",
+    "KT-Codex/deliverable_manifest.md"
+  ],
+  "program_notes": [
+    "Codex content lives under KT-Codex/ and is intentionally outside KT_PROD_CLEANROOM law surfaces.",
+    "This manifest is regenerated as chapters evolve; hashes/word counts support audit and packaging."
+  ],
+  "schema_id": "kt.codex.manifest.v1",
+  "sme_review": {
+    "checklist": "KT-Codex/metadata/sme_review_checklist.v1.md",
+    "plan": "KT-Codex/metadata/sme_review_plan.v1.md",
+    "prioritized_chapters": [
+      "KT-Codex/Volume-III-Technical/01-KT-Pipeline-Blueprint.md",
+      "KT-Codex/Volume-I-Doctrine/01-KT-Doctrine-and-Philosophy.md",
+      "KT-Codex/Volume-II-Business/01-Business-Model-and-Pricing.md"
+    ]
+  },
+  "status": "draft"
 }

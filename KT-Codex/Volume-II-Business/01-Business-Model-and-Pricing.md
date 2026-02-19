@@ -24,6 +24,16 @@ KT’s business model is selling measurable governance outcomes: deterministic e
 | Program Manager | Manager Playbook | Deliver engagements with predictable artifacts and timelines. |
 | Systems Architect | Engineer Manual | Automate packaging and verification without weakening constraints. |
 
+#### Sealed V1 anchors (reference, read-only)
+Plain-English: these anchors are treated as immutable facts for KT V1; business promises must not imply changing them as part of a commercial engagement. [SRC:NEEDS_VERIFICATION]
+
+- Sealed tag: `KT_V1_SEALED_20260217` [SRC:NEEDS_VERIFICATION]
+- Sealed commit: `7b7f6e71d43c0aa60d4bc91be47e679491883871` [SRC:NEEDS_VERIFICATION]
+- Law bundle hash (V1): `cd593dee1cc0b4c30273c90331124c3686f510ff990005609b3653268e66d906` [SRC:NEEDS_VERIFICATION]
+- Suite registry id (V1): `e7a37cdc2a84b042dc1f594d1f84b4ba0a843c49de4925a06e6117fbac1eff17` [SRC:NEEDS_VERIFICATION]
+- Determinism expected root hash (V1): `c574cd28deba7020b1ff41f249c02f403cbe8e045cb961222183880977bdb10e` [SRC:NEEDS_VERIFICATION]
+- Authoritative V1 reseal receipt (do not edit): `KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/receipts/KT_CHANGE_RECEIPT_EPIC24_V1_RESEAL_UNDER_CURRENT_LAW_FIX_POST_CANONICAL_HMAC_20260217T225856Z.json` [SRC:NEEDS_VERIFICATION]
+
 ```text
 [Diagram Spec]
 type: sales_to_delivery_funnel
@@ -53,6 +63,19 @@ The market buys KT when they need to prove AI governance under scrutiny. KT wins
   - Choose one wedge: sell a certification pack first, then expand to continuous governance. **Client Delivery Bundle** — see Glossary. [SRC:REG:ISO-9001]
   - Require that each offer specifies acceptance artifacts and a stable verdict line format. **Verdict Line** — see Glossary. [SRC:REG:ISO-9001]
   - Refuse commitments that violate KT constraints (offline, no installs, fail-closed) unless explicitly negotiated. **Fail-Closed** — see Glossary. [SRC:NEEDS_VERIFICATION]
+
+##### Claims hygiene: what KT certifies vs what KT evaluates
+Plain-English: commercial language must not overreach. KT certifies evidence and replayability; it evaluates behavior under suites and documents risks. [SRC:INTERNAL:KT_CLIENT_READY_PACK:PLAYBOOK_MD]
+
+- What KT certifies (evidence-level):
+  - The system state under a pinned commit/tag and pinned governance surfaces produced the recorded artifacts. **Sealed Commit** — see Glossary. [SRC:NEEDS_VERIFICATION]
+  - The delivery bundle hashes match the included artifacts and verification steps. **Hash Manifest** — see Glossary. [SRC:NEEDS_VERIFICATION]
+  - The sweep harness outcome (PASS/FAIL) is reproducible under the defined constraints. **Sweep Audit** — see Glossary. [SRC:NEEDS_VERIFICATION]
+
+- What KT does not certify (unless separately evidenced and explicitly scoped):
+  - Legal compliance in any jurisdiction.
+  - The absence of all future failures.
+  - That a model is “safe” in a general sense outside the measured suites. [SRC:NEEDS_VERIFICATION]
 
 ##### Offer 1: Certification Pack (point-in-time proof)
 Plain-English: a fixed-scope engagement that yields a deterministic evidence bundle and a verdict line.

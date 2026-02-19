@@ -24,6 +24,23 @@ This chapter describes the KT pipeline as an auditable system: Intake -> Evaluat
 | Systems Architect | Engineer Manual | Implement SOPs and verification checks deterministically. |
 | Security Lead | Engineer Manual | Validate constraints, data boundaries, and safe handling rules. |
 
+#### Sealed V1 anchors (reference, read-only)
+Plain-English: these anchors are treated as immutable facts for KT V1. The Codex must not instruct operators to modify them; verification is read-only. [SRC:NEEDS_VERIFICATION]
+
+- Sealed tag: `KT_V1_SEALED_20260217` [SRC:NEEDS_VERIFICATION]
+- Sealed commit: `7b7f6e71d43c0aa60d4bc91be47e679491883871` [SRC:NEEDS_VERIFICATION]
+- Law bundle hash (V1): `cd593dee1cc0b4c30273c90331124c3686f510ff990005609b3653268e66d906` [SRC:NEEDS_VERIFICATION]
+- Suite registry id (V1): `e7a37cdc2a84b042dc1f594d1f84b4ba0a843c49de4925a06e6117fbac1eff17` [SRC:NEEDS_VERIFICATION]
+- Determinism expected root hash (V1): `c574cd28deba7020b1ff41f249c02f403cbe8e045cb961222183880977bdb10e` [SRC:NEEDS_VERIFICATION]
+- Authoritative V1 reseal receipt (do not edit): `KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/receipts/KT_CHANGE_RECEIPT_EPIC24_V1_RESEAL_UNDER_CURRENT_LAW_FIX_POST_CANONICAL_HMAC_20260217T225856Z.json` [SRC:NEEDS_VERIFICATION]
+
+Verification commands (examples, offline):
+```text
+git rev-list -n 1 KT_V1_SEALED_20260217
+cat KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256
+python -m tools.verification.run_sweep_audit --sweep-id OPERATOR_VERIFY
+```
+
 ```text
 [Diagram Spec]
 type: kt_pipeline_blueprint_v1
@@ -50,6 +67,21 @@ stage_contracts:
     outputs: [delivery_bundle.zip, hash_manifest.json, verdict.txt]
     gates: [bundle_verify, replay_instructions_complete]
 ```
+
+#### Architecture context: two planes and one true execution surface (plain-English)
+KT stays auditable by separating two planes and by requiring a single canonical execution surface for each plane. This prevents “helpful demos” or side scripts from silently changing what is being certified. **Canonical Lane** — see Glossary. [SRC:INTERNAL:KT_CLIENT_READY_PACK:PLAYBOOK_MD]
+
+- Factory lane (certification plane):
+  - Scope: evaluation, promotion/quarantine decisions, seal packs, receipts, determinism proofs.
+  - Rule: outputs are evidence-bearing; they must be replayable and WORM-written. **Evidence WORM** — see Glossary. [SRC:INTERNAL:KT_CLIENT_READY_PACK:PLAYBOOK_MD]
+- Hat plane (runtime demo plane):
+  - Scope: routing/orchestration demonstrations and runtime policy behavior.
+  - Rule: the hat plane is read+run only; it must not mutate factory lane surfaces or sealed artifacts. **Hat plane** — see Glossary. [SRC:INTERNAL:KT_CLIENT_READY_PACK:PLAYBOOK_MD]
+
+One true execution surface (minimum set):
+- System integrity: `python -m tools.verification.run_sweep_audit` (authoritative audit harness). **Sweep Audit** — see Glossary. [SRC:NEEDS_VERIFICATION]
+- Measurement: suite evaluation entrypoints defined by the suite registry (do not invent new paths). **Suite Registry** — see Glossary. [SRC:NEEDS_VERIFICATION]
+- Runtime demo: the hat demo entrypoint guarded at the operator boundary. **Operator CLI** — see Glossary. [SRC:NEEDS_VERIFICATION]
 
 #### Executive Summary (plain-English)
 KT’s technical blueprint treats evidence as the product. Every stage emits artifacts that are hashed and written under WORM rules. The pipeline fails closed if pins drift or required validators are missing, because silent ambiguity is the enemy of auditability. [SRC:REG:NIST-AI-RMF-1.0]
