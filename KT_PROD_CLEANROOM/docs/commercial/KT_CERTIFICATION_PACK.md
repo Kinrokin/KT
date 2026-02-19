@@ -16,8 +16,11 @@ This offering produces an auditor-grade evidence pack proving a specific KT stat
   - `KT_HMAC_KEY_SIGNER_A` and `KT_HMAC_KEY_SIGNER_B` present in environment (do not share; length checks only).
 
 ## Operator Command (Preferred)
-- `python -m tools.operator.kt_cli certify --profile v1 --lane ci_sim`
-- `python -m tools.operator.kt_cli certify --profile v1 --lane canonical_hmac`
+- `python -m tools.operator.kt_cli --profile v1 certify --lane ci_sim`
+- `python -m tools.operator.kt_cli --profile v1 certify --lane canonical_hmac`
+
+Windows wrapper (no installs):
+- `powershell -ExecutionPolicy Bypass -File KT_PROD_CLEANROOM/tools/operator/kt.ps1 --profile v1 certify --lane ci_sim`
 
 ## Outputs (Delivered)
 Each command creates a new WORM run directory under `KT_PROD_CLEANROOM/exports/_runs/...` containing:
@@ -33,4 +36,3 @@ Each command creates a new WORM run directory under `KT_PROD_CLEANROOM/exports/_
 - Sweep harness final status `PASS`.
 - In canonical lane: meta-evaluator canonical pass (`PASS`) with HMAC.
 - Evidence pack is WORM-correct (no overwrite; no delete).
-

@@ -17,6 +17,7 @@ Command (example):
 Outputs (under a new `exports/_runs/...` directory):
 - `suite_metamorphic.v1.json` (schema-valid `kt.suite_definition.v1`)
 - `generation_report.*.json` + `verdict.txt`
+- `manifest.json` (`kt.suite_pack_manifest.unbound.v1`) + `hashes.txt`
 
 ## Evaluate a Pack
 Use existing suite evaluation tooling (canonical entrypoints). Pack generation must not add new execution surfaces.
@@ -25,4 +26,3 @@ Use existing suite evaluation tooling (canonical entrypoints). Pack generation m
 If and only if you decide to make a suite pack part of the canonical law-bound set:
 - Propose a new EPIC with a law amendment + receipts.
 - Only then copy the suite definition into `AUDITS/` and update the suite registry under governed process.
-

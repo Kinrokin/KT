@@ -1,9 +1,9 @@
-# Statement of Work (Template) — KT Governed Evidence Delivery
+# Statement of Work (Template) - KT Governed Evidence Delivery
 
 This template is intentionally artifact-driven: deliverables are accepted only when the referenced hashes and verdict lines exist.
 
 ## 1. Scope
-- Provide governed verification runs using KT’s canonical sweep harness and operator tooling.
+- Provide governed verification runs using KT's canonical sweep harness and operator tooling.
 - Produce WORM evidence packs and one-line verdict strings.
 
 ## 2. Customer Responsibilities (Inputs)
@@ -30,3 +30,5 @@ This template is intentionally artifact-driven: deliverables are accepted only w
 - No network access; no dependency installs during runs.
 - No secrets printed or stored in artifacts.
 
+## Appendix: Delivery Bundle Spec
+- See `docs/commercial/KT_DELIVERY_BUNDLE_SPEC.md` for the standard artifact-driven delivery layout.
