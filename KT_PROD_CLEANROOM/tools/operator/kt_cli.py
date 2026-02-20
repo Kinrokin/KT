@@ -60,19 +60,27 @@ def _runs_root(repo_root: Path) -> Path:
     return (repo_root / "KT_PROD_CLEANROOM" / "exports" / "_runs").resolve()
 
 
+def _seal_mode_tests_root(repo_root: Path) -> Path:
+    return (repo_root / "KT_PROD_CLEANROOM" / "exports" / "adapters_shadow" / "_tmp" / "tests").resolve()
+
+
 def _default_run_dir(*, repo_root: Path, cmd_name: str) -> Path:
     return (_runs_root(repo_root) / "KT_OPERATOR" / f"{_utc_now_compact_z()}_{cmd_name}").resolve()
 
 
 def _assert_under_runs_root(*, repo_root: Path, path: Path) -> None:
-    rr = _runs_root(repo_root)
     target = path.resolve()
-    try:
-        target.relative_to(rr)
-    except Exception as exc:  # noqa: BLE001
-        raise FL3ValidationError(
-            f"FAIL_CLOSED: run_root must be under {rr.as_posix()} (got {target.as_posix()})"
-        ) from exc
+    allowed = [_runs_root(repo_root)]
+    if os.environ.get("KT_SEAL_MODE") == "1":
+        allowed.append(_seal_mode_tests_root(repo_root))
+    for rr in allowed:
+        try:
+            target.relative_to(rr)
+            return
+        except Exception:
+            continue
+    allowed_s = ", ".join(r.as_posix() for r in allowed)
+    raise FL3ValidationError(f"FAIL_CLOSED: run_root must be under one of: {allowed_s} (got {target.as_posix()})")
 
 
 def _mk_run_dir(*, repo_root: Path, cmd_name: str, requested_run_root: Optional[str]) -> Path:

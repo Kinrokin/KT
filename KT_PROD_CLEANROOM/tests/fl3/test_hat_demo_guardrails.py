@@ -4,6 +4,8 @@ import os
 import subprocess
 from pathlib import Path
 
+from tools.verification.seal_mode_test_roots import group_root, unique_run_dir
+
 
 def _repo_root() -> Path:
     here = Path(__file__).resolve()
@@ -40,25 +42,11 @@ def test_kt_cli_hat_demo_smoke_and_report_render(tmp_path: Path) -> None:
     repo_root = _repo_root()
     env = _base_env(repo_root)
 
-    out_root = repo_root / "KT_PROD_CLEANROOM" / "exports" / "_runs" / "_TEST_OPERATOR"
+    out_root = group_root(repo_root=repo_root, group="OPERATOR")
     out_root.mkdir(parents=True, exist_ok=True)
 
-    hat_run = out_root / "hat_demo_smoke"
-    report_run = out_root / "hat_demo_report_smoke"
-    for d in (hat_run, report_run):
-        if d.exists():
-            for p in sorted(d.rglob("*"), reverse=True):
-                if p.is_file():
-                    p.unlink()
-                elif p.is_dir():
-                    try:
-                        p.rmdir()
-                    except OSError:
-                        pass
-            try:
-                d.rmdir()
-            except OSError:
-                pass
+    hat_run = unique_run_dir(parent=out_root, label="hat_demo_smoke")
+    report_run = unique_run_dir(parent=out_root, label="hat_demo_report_smoke")
 
     p1 = subprocess.run(
         ["python", "-m", "tools.operator.kt_cli", "--run-root", str(hat_run), "hat-demo"],

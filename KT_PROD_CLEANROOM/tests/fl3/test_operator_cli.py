@@ -4,6 +4,10 @@ import os
 import subprocess
 from pathlib import Path
 
+import pytest
+
+from tools.verification.seal_mode_test_roots import group_root, unique_run_dir
+
 
 def _repo_root() -> Path:
     here = Path(__file__).resolve()
@@ -12,7 +16,7 @@ def _repo_root() -> Path:
 
 
 def _operator_test_root(repo_root: Path) -> Path:
-    return (repo_root / "KT_PROD_CLEANROOM" / "exports" / "_runs" / "_TEST_OPERATOR").resolve()
+    return group_root(repo_root=repo_root, group="OPERATOR")
 
 
 def _base_env(repo_root: Path) -> dict[str, str]:
@@ -28,21 +32,7 @@ def test_kt_cli_status_smoke_and_worm_collision() -> None:
     repo_root = _repo_root()
     out_root = _operator_test_root(repo_root)
     out_root.mkdir(parents=True, exist_ok=True)
-    run_root = out_root / "status_smoke"
-    if run_root.exists():
-        # Best-effort cleanup of prior test run (untracked under exports/_runs).
-        for p in sorted(run_root.rglob("*"), reverse=True):
-            if p.is_file():
-                p.unlink()
-            elif p.is_dir():
-                try:
-                    p.rmdir()
-                except OSError:
-                    pass
-        try:
-            run_root.rmdir()
-        except OSError:
-            pass
+    run_root = unique_run_dir(parent=out_root, label="status_smoke")
 
     env = _base_env(repo_root)
     cmd = ["python", "-m", "tools.operator.kt_cli", "--run-root", str(run_root), "status"]
@@ -62,6 +52,10 @@ def test_kt_cli_status_smoke_and_worm_collision() -> None:
     assert st.strip() == ""
 
 
+@pytest.mark.skipif(
+    os.environ.get("KT_SEAL_MODE") == "1",
+    reason="Writes to repo root to force git-dirty state; incompatible with seal-mode IO guard and preflight clean repo rule.",
+)
 def test_kt_cli_allow_dirty_gate() -> None:
     repo_root = _repo_root()
     marker = repo_root / "__kt_dirty_marker.tmp"
@@ -70,34 +64,8 @@ def test_kt_cli_allow_dirty_gate() -> None:
 
     out_root = _operator_test_root(repo_root)
     out_root.mkdir(parents=True, exist_ok=True)
-    run_root_fail = out_root / "dirty_gate_fail"
-    run_root_pass = out_root / "dirty_gate_pass"
-    if run_root_fail.exists():
-        for p in sorted(run_root_fail.rglob("*"), reverse=True):
-            if p.is_file():
-                p.unlink()
-            elif p.is_dir():
-                try:
-                    p.rmdir()
-                except OSError:
-                    pass
-        try:
-            run_root_fail.rmdir()
-        except OSError:
-            pass
-    if run_root_pass.exists():
-        for p in sorted(run_root_pass.rglob("*"), reverse=True):
-            if p.is_file():
-                p.unlink()
-            elif p.is_dir():
-                try:
-                    p.rmdir()
-                except OSError:
-                    pass
-        try:
-            run_root_pass.rmdir()
-        except OSError:
-            pass
+    run_root_fail = unique_run_dir(parent=out_root, label="dirty_gate_fail")
+    run_root_pass = unique_run_dir(parent=out_root, label="dirty_gate_pass")
 
     env = _base_env(repo_root)
     try:

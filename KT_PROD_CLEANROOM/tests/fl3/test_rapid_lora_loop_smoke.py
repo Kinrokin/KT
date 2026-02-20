@@ -6,6 +6,8 @@ import subprocess
 import hashlib
 from pathlib import Path
 
+from tools.verification.seal_mode_test_roots import group_root, unique_run_dir
+
 
 def _repo_root() -> Path:
     here = Path(__file__).resolve()
@@ -46,23 +48,9 @@ def test_rapid_lora_loop_stub_engine_smoke(tmp_path: Path) -> None:
     cfg_path = tmp_path / "cfg.json"
     cfg_path.write_text(json.dumps({"job_id": "job_test_001", "seed": 1}), encoding="utf-8")
 
-    out_root = repo_root / "KT_PROD_CLEANROOM" / "exports" / "_runs" / "_TEST_RAPID_LORA"
+    out_root = group_root(repo_root=repo_root, group="RAPID_LORA")
     out_root.mkdir(parents=True, exist_ok=True)
-    out_dir = out_root / f"stub_{os.getpid()}"
-    if out_dir.exists():
-        # Best-effort cleanup (test-only under exports/_runs/_TEST_*).
-        for p in sorted(out_dir.rglob("*"), reverse=True):
-            if p.is_file():
-                p.unlink()
-            elif p.is_dir():
-                try:
-                    p.rmdir()
-                except OSError:
-                    pass
-        try:
-            out_dir.rmdir()
-        except OSError:
-            pass
+    out_dir = unique_run_dir(parent=out_root, label=f"stub_{os.getpid()}")
 
     cmd = [
         "python",
@@ -92,22 +80,9 @@ def test_rapid_lora_loop_stub_engine_rerun_is_noop_verify(tmp_path: Path) -> Non
     cfg_path = tmp_path / "cfg.json"
     cfg_path.write_text(json.dumps({"job_id": "job_test_002", "seed": 2}), encoding="utf-8")
 
-    out_root = repo_root / "KT_PROD_CLEANROOM" / "exports" / "_runs" / "_TEST_RAPID_LORA"
+    out_root = group_root(repo_root=repo_root, group="RAPID_LORA")
     out_root.mkdir(parents=True, exist_ok=True)
-    out_dir = out_root / f"stub_verify_{os.getpid()}"
-    if out_dir.exists():
-        for p in sorted(out_dir.rglob("*"), reverse=True):
-            if p.is_file():
-                p.unlink()
-            elif p.is_dir():
-                try:
-                    p.rmdir()
-                except OSError:
-                    pass
-        try:
-            out_dir.rmdir()
-        except OSError:
-            pass
+    out_dir = unique_run_dir(parent=out_root, label=f"stub_verify_{os.getpid()}")
 
     cmd = [
         "python",

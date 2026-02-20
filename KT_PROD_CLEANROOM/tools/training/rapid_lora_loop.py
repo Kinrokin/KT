@@ -41,12 +41,17 @@ def _write_json_worm(*, path: Path, obj: Dict[str, Any], label: str) -> None:
 
 def _assert_out_dir_under_exports_runs(*, repo_root: Path, out_dir: Path) -> Path:
     out_dir = out_dir.resolve()
-    allowed_root = (repo_root / "KT_PROD_CLEANROOM" / "exports" / "_runs").resolve()
-    try:
-        out_dir.relative_to(allowed_root)
-    except ValueError as exc:
-        raise FailClosedError(f"FAIL_CLOSED: out_dir must be under {allowed_root}") from exc
-    return out_dir
+    allowed_roots = [(repo_root / "KT_PROD_CLEANROOM" / "exports" / "_runs").resolve()]
+    if os.environ.get("KT_SEAL_MODE") == "1":
+        allowed_roots.append((repo_root / "KT_PROD_CLEANROOM" / "exports" / "adapters_shadow" / "_tmp" / "tests").resolve())
+    for r in allowed_roots:
+        try:
+            out_dir.relative_to(r)
+            return out_dir
+        except ValueError:
+            continue
+    allowed_s = ", ".join(r.as_posix() for r in allowed_roots)
+    raise FailClosedError(f"FAIL_CLOSED: out_dir must be under one of: {allowed_s}")
 
 
 def _dep_versions() -> Dict[str, Dict[str, Any]]:

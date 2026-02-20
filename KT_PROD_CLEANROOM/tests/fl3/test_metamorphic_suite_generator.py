@@ -7,6 +7,7 @@ from pathlib import Path
 
 from schemas.fl3_suite_definition_schema import validate_fl3_suite_definition
 from tools.suites.generate_metamorphic_variants import MetamorphicSpec, generate_metamorphic_suite
+from tools.verification.seal_mode_test_roots import group_root, unique_run_dir
 
 
 def _repo_root() -> Path:
@@ -36,22 +37,9 @@ def test_generate_metamorphic_suite_is_deterministic_and_schema_valid() -> None:
 def test_generate_metamorphic_variants_cli_emits_manifest_and_hashes() -> None:
     repo_root = _repo_root()
     base_path = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "SUITES" / "SUITE_FORMAT_CONTROL.v1.json"
-    out_root = repo_root / "KT_PROD_CLEANROOM" / "exports" / "_runs" / "_TEST_SUITE_PACK"
+    out_root = group_root(repo_root=repo_root, group="SUITE_PACK")
     out_root.mkdir(parents=True, exist_ok=True)
-    out_dir = out_root / f"meta_{os.getpid()}"
-    if out_dir.exists():
-        for p in sorted(out_dir.rglob("*"), reverse=True):
-            if p.is_file():
-                p.unlink()
-            elif p.is_dir():
-                try:
-                    p.rmdir()
-                except OSError:
-                    pass
-        try:
-            out_dir.rmdir()
-        except OSError:
-            pass
+    out_dir = unique_run_dir(parent=out_root, label=f"meta_{os.getpid()}")
 
     env = dict(os.environ)
     env["PYTHONPATH"] = str(repo_root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src") + os.pathsep + str(
