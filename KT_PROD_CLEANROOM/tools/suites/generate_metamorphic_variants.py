@@ -247,7 +247,7 @@ def generate_metamorphic_suite_and_lineage(
                 "transforms": list(transforms),
                 "counterpressure_level": str(spec.counterpressure_level),
                 "prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest(),
-                "determinism_fingerprint": hashlib.sha256(f\"{spec.seed}:{case.get('case_id')}:0\".encode(\"utf-8\")).hexdigest(),
+                "determinism_fingerprint": hashlib.sha256(f"{spec.seed}:{case.get('case_id')}:0".encode("utf-8")).hexdigest(),
             }
         )
         for i in range(1, spec.variants_per_case + 1):
@@ -301,7 +301,7 @@ def generate_metamorphic_suite_and_lineage(
                     "transforms": list(transforms),
                     "counterpressure_level": str(spec.counterpressure_level),
                     "prompt_sha256": hashlib.sha256(p.encode("utf-8")).hexdigest(),
-                    "determinism_fingerprint": hashlib.sha256(f\"{spec.seed}:{case.get('case_id')}:{i}\".encode(\"utf-8\")).hexdigest(),
+                    "determinism_fingerprint": hashlib.sha256(f"{spec.seed}:{case.get('case_id')}:{i}".encode("utf-8")).hexdigest(),
                 }
             )
 
