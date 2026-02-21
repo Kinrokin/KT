@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kt.validator_contract.schema.v2",
+  "title": "KT Validator Contract (v2)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "contract_id",
+    "version",
+    "canonicalization_profile_id",
+    "inputs",
+    "outputs",
+    "deterministic_rules",
+    "reason_codes_emitted"
+  ],
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "kt.validator_contract.v2"
+    },
+    "contract_id": {
+      "type": "string",
+      "pattern": "^KT_[A-Z0-9_]+_VC_[0-9]{4}$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    },
+    "canonicalization_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 4096
+    },
+    "inputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "schema_ref", "required"],
+        "properties": {
+          "name": { "type": "string", "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$" },
+          "schema_ref": { "type": "string", "minLength": 1 },
+          "required": { "type": "boolean" },
+          "notes": { "type": "string", "maxLength": 2048 }
+        }
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["output_schema_ref", "verdict_enum"],
+      "properties": {
+        "output_schema_ref": { "type": "string", "minLength": 1 },
+        "verdict_enum": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "type": "string", "enum": ["PASS", "FAIL", "TERMINAL"] },
+          "uniqueItems": true
+        }
+      }
+    },
+    "deterministic_rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["rule_id", "rule_ref"],
+        "properties": {
+          "rule_id": { "type": "string", "pattern": "^RULE_[A-Z0-9_]+$" },
+          "rule_ref": { "type": "string", "minLength": 1 },
+          "params": {
+            "type": "object",
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "reason_codes_emitted": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "pattern": "^RC_[A-Z0-9_]+_[0-9]{4}$" },
+      "uniqueItems": true
+    },
+    "hash_basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["includes"],
+      "properties": {
+        "includes": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}
+
