@@ -46,6 +46,39 @@ Purpose: freeze scope and pins.
   - `intake_manifest.json`
   - `hashes.sha256.txt`
 
+#### Notebook 01A - MVE World Set Build (from KT_CORE_PRESSURE_PACK_v1)
+Purpose: load the ordered World Set for Multiversal Evaluation (MVE) without network access.
+
+- Cells:
+  - [COPY/PASTE] Read `KT-Codex/packs/KT_CORE_PRESSURE_PACK_v1/pack_manifest.json` and `world_set.json` (read-only).
+  - [COPY/PASTE] Copy `world_set.json` into `OUT_DIR/mve/world_set.json` using WORM semantics.
+  - [COPY/PASTE] Hash `OUT_DIR/mve/world_set.json` into `OUT_DIR/mve/world_set.sha256.txt`.
+- Inputs:
+  - `KT-Codex/packs/KT_CORE_PRESSURE_PACK_v1/pack_manifest.json`
+  - `KT-Codex/packs/KT_CORE_PRESSURE_PACK_v1/world_set.json`
+- Outputs (under OUT_DIR):
+  - `mve/world_set.json`
+  - `mve/world_set.sha256.txt`
+- Fail-closed:
+  - Missing pack files, invalid JSON, or unexpected schema_id => STOP.
+
+#### Notebook 01B - MVE Runner (MVE-0)
+Purpose: execute world-local evaluation deterministically and emit multiversal artifacts.
+
+- Cells:
+  - [COPY/PASTE] Run `python -m tools.eval.mve_runner` with the pack manifest, adapter_id, seed, pinned law bundle hash, and `--out-dir OUT_DIR`.
+  - [COPY/PASTE] Run determinism rerun step (same inputs) 3 times; compare sha256 sets from `OUT_DIR/mve/mve_sha256_manifest.json` across reruns.
+- Inputs:
+  - `adapter_id` (string)
+  - `seed` (int)
+  - `law_bundle_hash_in_force` (pinned hex64)
+- Outputs (under OUT_DIR):
+  - `mve/multiversal_results.jsonl`
+  - `mve/multiversal_conflicts.jsonl`
+  - `mve/multiversal_fitness.json`
+  - `mve/mve_summary.json`
+  - `mve/mve_sha256_manifest.json`
+
 #### Notebook 02 - Base Snapshot Discovery (Offline)
 Purpose: fail-closed if base snapshot is missing.
 

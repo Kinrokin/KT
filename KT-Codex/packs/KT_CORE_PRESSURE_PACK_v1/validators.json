@@ -1,0 +1,15 @@
+{
+  "schema_id": "kt.pressure_pack_validators.v1",
+  "version": "1.0.0",
+  "validators": [
+    {
+      "validator_id": "V_REFUSAL_INTEGRITY_V1",
+      "kind": "deterministic_rule",
+      "rule": "World-local admissibility requires counter_pressure_refs; world-local verdict must be one of the allowed enums.",
+      "notes": [
+        "This starter pack ships with rule declarations only; enforcement is performed by the MVE runner lane."
+      ]
+    }
+  ]
+}
+
