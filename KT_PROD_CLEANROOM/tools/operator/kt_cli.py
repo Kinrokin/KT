@@ -425,6 +425,65 @@ def cmd_hat_demo(*, repo_root: Path, profile: V1Profile, run_dir: Path, allow_di
     return 0
 
 
+def cmd_mve_run(
+    *,
+    repo_root: Path,
+    profile: V1Profile,
+    run_dir: Path,
+    pack_manifest: str,
+    adapter_id: str,
+    seed: int,
+    allow_dirty: bool,
+) -> int:
+    _ = allow_dirty
+    env = _py_env(repo_root=repo_root)
+    out_dir = run_dir / "mve_run"
+    out_dir.mkdir(parents=True, exist_ok=False)
+
+    args = [
+        "-m",
+        "tools.eval.mve_runner",
+        "--pack-manifest",
+        pack_manifest,
+        "--adapter-id",
+        adapter_id,
+        "--seed",
+        str(int(seed)),
+        "--law-bundle-hash-in-force",
+        profile.law_bundle_hash,
+        "--out-dir",
+        str(out_dir),
+    ]
+    out = _run_py(repo_root=repo_root, args=args, env=env, name="mve_runner")
+
+    _write_json_worm(
+        path=run_dir / "mve_run_report.json",
+        obj={
+            "schema_id": "kt.operator_mve_run_report.v1",
+            "profile": profile.name,
+            "pack_manifest": pack_manifest,
+            "adapter_id": adapter_id,
+            "seed": int(seed),
+            "out_dir": str(out_dir),
+            "runner_rc": int(out.get("rc", 0)),
+        },
+        label="mve_run_report.json",
+    )
+    write_text_worm(path=run_dir / "mve_runner_stdout.txt", text=str(out.get("stdout", "")) + "\n", label="mve_runner_stdout.txt")
+    write_text_worm(path=run_dir / "mve_runner_stderr.txt", text=str(out.get("stderr", "")) + "\n", label="mve_runner_stderr.txt")
+
+    if int(out.get("rc", 0)) != 0:
+        raise FL3ValidationError("FAIL_CLOSED: mve_runner failed")
+
+    verdict = (
+        f"KT_MVE_RUN_PASS cmd=mve-run profile={profile.name} allow_dirty={int(bool(allow_dirty))} run_id={run_dir.name} "
+        f"pack_manifest={pack_manifest} adapter_id={adapter_id} seed={int(seed)} out_dir={out_dir}"
+    )
+    write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
+    print(verdict)
+    return 0
+
+
 def cmd_report(*, repo_root: Path, profile: V1Profile, run_dir: Path, target_run: str, allow_dirty: bool) -> int:
     env = _base_env(repo_root=repo_root)
 
@@ -513,6 +572,12 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     ap_hat = sub.add_parser("hat-demo", help="Run router hat demo (EPIC_19) and emit run report (WORM).")
     _add_post_global_options(ap_hat)
 
+    ap_mve = sub.add_parser("mve-run", help="Run MVE-0 pressure pack and emit multiversal artifacts (WORM).")
+    _add_post_global_options(ap_mve)
+    ap_mve.add_argument("--pack-manifest", required=True, help="Path to pressure pack manifest JSON.")
+    ap_mve.add_argument("--adapter-id", required=True, help="Adapter/artifact id to evaluate.")
+    ap_mve.add_argument("--seed", type=int, default=0, help="Deterministic seed (default: 0).")
+
     ap_rep = sub.add_parser("report", help="Render a human-readable summary from an existing run directory.")
     _add_post_global_options(ap_rep)
     ap_rep.add_argument("--run", required=True, help="Target run directory to summarize.")
@@ -562,6 +627,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             return cmd_certify_canonical_hmac(repo_root=repo_root, profile=profile, run_dir=run_dir, allow_dirty=allow_dirty)
         if args.cmd == "hat-demo":
             return cmd_hat_demo(repo_root=repo_root, profile=profile, run_dir=run_dir, allow_dirty=allow_dirty)
+        if args.cmd == "mve-run":
+            return cmd_mve_run(
+                repo_root=repo_root,
+                profile=profile,
+                run_dir=run_dir,
+                pack_manifest=str(args.pack_manifest),
+                adapter_id=str(args.adapter_id),
+                seed=int(args.seed),
+                allow_dirty=allow_dirty,
+            )
         if args.cmd == "report":
             return cmd_report(repo_root=repo_root, profile=profile, run_dir=run_dir, target_run=str(args.run), allow_dirty=allow_dirty)
         raise FL3ValidationError("FAIL_CLOSED: unknown command")
