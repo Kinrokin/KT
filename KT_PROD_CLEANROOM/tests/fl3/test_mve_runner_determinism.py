@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 import subprocess
 from pathlib import Path
+import os
+import time
 
 from tools.verification.seal_mode_test_roots import write_root
 
@@ -19,7 +21,8 @@ def _py_env(repo_root: Path) -> dict[str, str]:
 
 def test_mve_runner_determinism_same_seed(tmp_path: Path) -> None:
     repo_root = Path(__file__).resolve().parents[3]
-    base = write_root(repo_root=repo_root) / "mve_runner_determinism" / "same_seed" / tmp_path.name
+    unique = f"{tmp_path.name}_{os.getpid()}_{time.time_ns()}"
+    base = write_root(repo_root=repo_root) / "mve_runner_determinism" / "same_seed" / unique
     out1 = base / "run1"
     out2 = base / "run2"
     out1.mkdir(parents=True, exist_ok=False)
@@ -76,7 +79,8 @@ def test_mve_runner_determinism_same_seed(tmp_path: Path) -> None:
 
 def test_mve_runner_determinism_diff_seed_changes_manifest(tmp_path: Path) -> None:
     repo_root = Path(__file__).resolve().parents[3]
-    base = write_root(repo_root=repo_root) / "mve_runner_determinism" / "diff_seed" / tmp_path.name
+    unique = f"{tmp_path.name}_{os.getpid()}_{time.time_ns()}"
+    base = write_root(repo_root=repo_root) / "mve_runner_determinism" / "diff_seed" / unique
     out1 = base / "seed1"
     out2 = base / "seed2"
     out1.mkdir(parents=True, exist_ok=False)
