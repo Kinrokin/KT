@@ -64,11 +64,11 @@ def _extract_imports_from_python(code: str) -> List[str]:
         s = ln.strip()
         if not s or s.startswith("#"):
             continue
-        m1 = re.match(r"^import\\s+([A-Za-z0-9_\\.]+)", s)
+        m1 = re.match(r"^import\s+([A-Za-z0-9_\.]+)", s)
         if m1:
             imports.append(m1.group(1).split(".")[0])
             continue
-        m2 = re.match(r"^from\\s+([A-Za-z0-9_\\.]+)\\s+import\\s+", s)
+        m2 = re.match(r"^from\s+([A-Za-z0-9_\.]+)\s+import\s+", s)
         if m2:
             imports.append(m2.group(1).split(".")[0])
             continue
