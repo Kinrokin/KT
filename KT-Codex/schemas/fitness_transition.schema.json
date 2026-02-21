@@ -15,6 +15,7 @@
     "evidence_refs",
     "law_citations",
     "conflict_refs",
+    "temporal_lineage",
     "determinism_fingerprint",
     "decided_by",
     "decision_reason_code"
@@ -80,6 +81,9 @@
       "items": {
         "$ref": "#/$defs/artifact_ref"
       }
+    },
+    "temporal_lineage": {
+      "$ref": "#/$defs/temporal_lineage"
     },
     "determinism_fingerprint": {
       "type": "string",
@@ -188,7 +192,37 @@
           "pattern": "^[0-9a-f]{64}$"
         }
       }
+    },
+    "temporal_lineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lineage_id",
+        "b_to_c_count",
+        "quarantine_epoch",
+        "cooldown_by_time_allowed",
+        "recovery_requires_new_evidence"
+      ],
+      "properties": {
+        "lineage_id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9][A-Z0-9_\\-]{7,79}$"
+        },
+        "b_to_c_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "quarantine_epoch": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cooldown_by_time_allowed": {
+          "const": false
+        },
+        "recovery_requires_new_evidence": {
+          "const": true
+        }
+      }
     }
   }
 }
-

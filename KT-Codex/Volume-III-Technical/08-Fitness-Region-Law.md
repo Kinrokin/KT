@@ -57,11 +57,25 @@ Region Lock is mandatory:
 
 ## Region Transitions (Governed Acts)
 All region transitions must be represented by a Fitness Transition artifact:
-- Required fields include `from_region`, `to_region`, `evidence_refs`, `law_citations`, and `conflict_refs`.
+- Required fields include `from_region`, `to_region`, `evidence_refs`, `law_citations`, `conflict_refs`, and `temporal_lineage`.
 - Silent transitions are rejected: a region change without an admissible transition artifact is invalid.
+- Region transitions must update temporal lineage (see Temporal Lineage and Memory).
 
 Canonical schema reference:
 - `KT-Codex/schemas/fitness_transition.schema.json`
+
+## Temporal Lineage and Memory (Binding)
+Fitness regions are not stateless labels. Region transitions must update temporal lineage in an append-only manner.
+
+Binding rules:
+- Region transitions must carry a stable `lineage_id` for the adapter lineage.
+- Repeated `B -> C` transitions increase quarantine duration and restriction level.
+- Recovery requires new evidence. Time-based “cool-down” without new evidence is invalid.
+
+Anti-gaming posture:
+- “Wait it out” is not a valid remediation.
+- “Try again with the same evidence” is not a valid remediation.
+- Release from Region C requires explicit new evidence refs supporting a region change.
 
 ## Interaction With Cross-Axis Conflict Outcomes
 Fitness regions and conflict metabolism are coupled:
@@ -80,4 +94,3 @@ This chapter defines binding policy and schema. Activation requires a separate g
 - emit Fitness Transition artifacts from the promotion pipeline,
 - enforce Region Lock at evaluation and promotion surfaces,
 - couple conflict outcomes to region eligibility.
-
