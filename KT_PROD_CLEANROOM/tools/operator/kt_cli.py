@@ -462,6 +462,10 @@ def cmd_mve_run(
         env=env,
     )
 
+    mve_summary_path = (out_dir / "mve" / "mve_summary.json").resolve()
+    if not mve_summary_path.exists():
+        raise FL3ValidationError("FAIL_CLOSED: missing mve/mve_summary.json (unexpected)")
+
     _write_json_worm(
         path=run_dir / "mve_run_report.json",
         obj={
@@ -471,14 +475,14 @@ def cmd_mve_run(
             "adapter_id": adapter_id,
             "seed": int(seed),
             "out_dir": str(out_dir),
-            "runner_rc": int(out.get("rc", 0)),
+            "runner_rc": int(_rc),
+            "mve_summary_path": mve_summary_path.as_posix(),
         },
         label="mve_run_report.json",
     )
-    write_text_worm(path=run_dir / "mve_runner_stdout.txt", text=str(out.get("stdout", "")) + "\n", label="mve_runner_stdout.txt")
-    write_text_worm(path=run_dir / "mve_runner_stderr.txt", text=str(out.get("stderr", "")) + "\n", label="mve_runner_stderr.txt")
+    write_text_worm(path=run_dir / "mve_runner_output.txt", text=out if out.endswith("\n") else out + "\n", label="mve_runner_output.txt")
 
-    if int(out.get("rc", 0)) != 0:
+    if int(_rc) != 0:
         raise FL3ValidationError("FAIL_CLOSED: mve_runner failed")
 
     verdict = (
