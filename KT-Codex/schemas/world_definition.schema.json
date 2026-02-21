@@ -1,0 +1,260 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kt-codex://schemas/world_definition.schema.json",
+  "title": "World Definition (Multiversal Evaluation)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "world_id",
+    "created_at",
+    "law_bundle_id",
+    "suite_authority_id",
+    "normative_assumptions",
+    "interpretive_frame",
+    "jurisdictional_scope",
+    "counter_pressure_profile",
+    "admissibility_rules"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.world_definition.v1"
+    },
+    "world_id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9][A-Z0-9_\\-]{3,79}$"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "law_bundle_id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9][A-Z0-9_\\-]{3,127}$"
+    },
+    "law_bundle_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "suite_authority_id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9][A-Z0-9_\\-]{3,127}$"
+    },
+    "suite_registry_id_in_force": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "normative_assumptions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/normative_assumption"
+      }
+    },
+    "interpretive_frame": {
+      "$ref": "#/$defs/interpretive_frame"
+    },
+    "jurisdictional_scope": {
+      "$ref": "#/$defs/jurisdictional_scope"
+    },
+    "counter_pressure_profile": {
+      "type": "string",
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "EXTREME"
+      ]
+    },
+    "admissibility_rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requires_counter_pressure",
+        "reject_on_ambiguity",
+        "reject_on_schema_mismatch",
+        "reject_if_axes_unregistered"
+      ],
+      "properties": {
+        "requires_counter_pressure": {
+          "type": "boolean"
+        },
+        "reject_on_ambiguity": {
+          "type": "boolean"
+        },
+        "reject_on_schema_mismatch": {
+          "type": "boolean"
+        },
+        "reject_if_axes_unregistered": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "artifact_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sha256",
+        "path",
+        "kind"
+      ],
+      "properties": {
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_./\\\\\\-]{0,240}$"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "json",
+            "txt",
+            "zip",
+            "report",
+            "receipt",
+            "manifest",
+            "other"
+          ]
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "normative_assumption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assumption_code"
+      ],
+      "properties": {
+        "assumption_code": {
+          "type": "string",
+          "enum": [
+            "NO_MEDICAL_ADVICE",
+            "NO_LEGAL_ADVICE",
+            "MAXIMAL_PRECAUTION",
+            "MINIMIZE_SENSITIVE_DATA",
+            "ALLOW_RISK_STRATIFIED_GUIDANCE",
+            "COMMERCIAL_PERMISSIVE",
+            "ACADEMIC_OPEN",
+            "CUSTOM_HASHED_REF"
+          ]
+        },
+        "assumption_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "assumption_code": {
+                "const": "CUSTOM_HASHED_REF"
+              }
+            },
+            "required": [
+              "assumption_code"
+            ]
+          },
+          "then": {
+            "required": [
+              "assumption_ref"
+            ]
+          }
+        }
+      ]
+    },
+    "interpretive_frame": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "frame_code"
+      ],
+      "properties": {
+        "frame_code": {
+          "type": "string",
+          "enum": [
+            "RISK_AVERSE",
+            "RISK_BALANCED",
+            "RISK_TOLERANT",
+            "STRICT_TEXT",
+            "PRAGMATIC",
+            "CUSTOM_HASHED_REF"
+          ]
+        },
+        "frame_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "frame_code": {
+                "const": "CUSTOM_HASHED_REF"
+              }
+            },
+            "required": [
+              "frame_code"
+            ]
+          },
+          "then": {
+            "required": [
+              "frame_ref"
+            ]
+          }
+        }
+      ]
+    },
+    "jurisdictional_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "jurisdiction_code"
+      ],
+      "properties": {
+        "jurisdiction_code": {
+          "type": "string",
+          "enum": [
+            "EU",
+            "US",
+            "UK",
+            "CA",
+            "GLOBAL",
+            "CUSTOM_HASHED_REF"
+          ]
+        },
+        "jurisdiction_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "jurisdiction_code": {
+                "const": "CUSTOM_HASHED_REF"
+              }
+            },
+            "required": [
+              "jurisdiction_code"
+            ]
+          },
+          "then": {
+            "required": [
+              "jurisdiction_ref"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+

@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kt-codex://schemas/multiversal_conflict_event.schema.json",
+  "title": "Multiversal Conflict Event (Cross-World Conflict Preservation)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "conflict_id",
+    "timestamp",
+    "artifact_id",
+    "worlds",
+    "axis",
+    "conflict_class",
+    "terminal",
+    "resolution_status",
+    "determinism_fingerprint"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.multiversal_conflict_event.v1"
+    },
+    "conflict_id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9][A-Z0-9_\\-]{7,79}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "artifact_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_\\-.]{1,127}$"
+    },
+    "worlds": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z0-9][A-Z0-9_\\-]{3,79}$"
+      }
+    },
+    "axis": {
+      "type": "string",
+      "enum": [
+        "GOVERNANCE",
+        "SAFETY",
+        "COMPLIANCE",
+        "DETERMINISM",
+        "PERFORMANCE",
+        "COST",
+        "UX",
+        "OTHER"
+      ]
+    },
+    "conflict_class": {
+      "type": "string",
+      "enum": [
+        "NORMATIVE",
+        "AUTHORITY",
+        "MEASUREMENT",
+        "ADMISSIBILITY",
+        "INTERPRETATION"
+      ]
+    },
+    "terminal": {
+      "type": "boolean"
+    },
+    "resolution_status": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "PRESERVED_UNRESOLVED",
+        "ESCALATED_STALEMATE",
+        "LAW_PRIORITIZED_OVERRIDE",
+        "QUARANTINE"
+      ]
+    },
+    "disputed_claim_code": {
+      "type": "string",
+      "enum": [
+        "RISK_STRATIFIED_GUIDANCE_ALLOWED",
+        "MEDICAL_ADVICE_ALLOWED",
+        "LEGAL_ADVICE_ALLOWED",
+        "DATA_USE_ALLOWED",
+        "OTHER"
+      ]
+    },
+    "law_citations": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "$ref": "#/$defs/law_citation"
+      }
+    },
+    "determinism_fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "$defs": {
+    "law_citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "law_bundle_hash",
+        "citation_kind",
+        "citation_ref"
+      ],
+      "properties": {
+        "law_bundle_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "citation_kind": {
+          "type": "string",
+          "enum": [
+            "LAW_BUNDLE_CLAUSE",
+            "POLICY_DOC",
+            "SCHEMA_CONTRACT",
+            "WORK_ORDER",
+            "OTHER"
+          ]
+        },
+        "citation_ref": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_./\\\\\\-]{0,240}$"
+        },
+        "citation_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}
+

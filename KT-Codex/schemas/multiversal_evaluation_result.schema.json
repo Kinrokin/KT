@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kt-codex://schemas/multiversal_evaluation_result.schema.json",
+  "title": "Multiversal Evaluation Result (World-Local)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "artifact_id",
+    "world_id",
+    "world_definition_ref",
+    "evaluation_id",
+    "law_bundle_hash_in_force",
+    "suite_authority_id",
+    "verdict",
+    "admission_status",
+    "admissible",
+    "conflicts_detected",
+    "counter_pressure_refs",
+    "determinism_fingerprint"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.multiversal_evaluation_result.v1"
+    },
+    "artifact_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_\\-.]{1,127}$"
+    },
+    "world_id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9][A-Z0-9_\\-]{3,79}$"
+    },
+    "world_definition_ref": {
+      "$ref": "#/$defs/artifact_ref"
+    },
+    "evaluation_id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9][A-Z0-9_\\-]{3,127}$"
+    },
+    "law_bundle_hash_in_force": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "suite_authority_id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9][A-Z0-9_\\-]{3,127}$"
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "WORLD_LOCAL_PASS",
+        "PASS_WITH_RESTRICTIONS",
+        "WORLD_LOCAL_REJECT",
+        "REJECTED_AT_ADMISSION"
+      ]
+    },
+    "admission_status": {
+      "type": "string",
+      "enum": [
+        "ADMITTED",
+        "REJECTED"
+      ]
+    },
+    "admissible": {
+      "type": "boolean"
+    },
+    "inadmissibility_reason_codes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "WORLD_UNAUTHORIZED",
+          "WORLD_DEFINITION_MISSING",
+          "LAW_HASH_MISSING",
+          "SUITE_AUTHORITY_UNAUTHORIZED",
+          "COUNTER_PRESSURE_MISSING",
+          "SCHEMA_INVALID",
+          "DETERMINISM_MISSING"
+        ]
+      }
+    },
+    "conflicts_detected": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z0-9][A-Z0-9_\\-]{3,127}$"
+      }
+    },
+    "counter_pressure_refs": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "$ref": "#/$defs/artifact_ref"
+      }
+    },
+    "determinism_fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "admission_status": {
+            "const": "ADMITTED"
+          }
+        },
+        "required": [
+          "admission_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "counter_pressure_refs": {
+            "minItems": 1
+          },
+          "admissible": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "admission_status": {
+            "const": "REJECTED"
+          }
+        },
+        "required": [
+          "admission_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "verdict": {
+            "const": "REJECTED_AT_ADMISSION"
+          },
+          "admissible": {
+            "const": false
+          }
+        },
+        "required": [
+          "inadmissibility_reason_codes"
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "artifact_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sha256",
+        "path",
+        "kind"
+      ],
+      "properties": {
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_./\\\\\\-]{0,240}$"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "json",
+            "txt",
+            "zip",
+            "report",
+            "receipt",
+            "manifest",
+            "other"
+          ]
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}
+
