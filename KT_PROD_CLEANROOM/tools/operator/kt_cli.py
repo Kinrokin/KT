@@ -494,6 +494,182 @@ def cmd_mve_run(
     return 0
 
 
+def cmd_titan_run(
+    *,
+    repo_root: Path,
+    profile: V1Profile,
+    run_dir: Path,
+    pack_manifest: str,
+    adapter_id: str,
+    seed: int,
+    invariants_file: str,
+    allow_dirty: bool,
+) -> int:
+    _ = allow_dirty
+    env = _base_env(repo_root=repo_root)
+
+    out_dir = run_dir / "titan_run"
+    out_dir.mkdir(parents=True, exist_ok=False)
+
+    # 1) MVE-1 runner
+    mve_args = [
+        "-m",
+        "tools.eval.mve_runner",
+        "--mode",
+        "mve1",
+        "--pack-manifest",
+        pack_manifest,
+        "--adapter-id",
+        adapter_id,
+        "--seed",
+        str(int(seed)),
+        "--law-bundle-hash-in-force",
+        profile.law_bundle_hash,
+        "--out-dir",
+        str(out_dir),
+    ]
+    if invariants_file.strip():
+        mve_args += ["--invariants-file", invariants_file]
+
+    mve_rc, mve_out, _mve_log_path = _run_cmd(
+        repo_root=repo_root,
+        run_dir=run_dir,
+        name="titan_mve_runner",
+        cmd=[sys.executable, *mve_args],
+        env=env,
+    )
+    if int(mve_rc) != 0:
+        raise FL3ValidationError("FAIL_CLOSED: titan mve_runner failed")
+
+    mve_dir = (out_dir / "mve").resolve()
+    fitness_path = (mve_dir / "multiversal_fitness.json").resolve()
+    if not fitness_path.exists():
+        raise FL3ValidationError("FAIL_CLOSED: missing mve/multiversal_fitness.json (unexpected)")
+
+    # 2) Temporal fitness gate (writes to a WORM subdir; may return rc=2 if regression detected)
+    temporal_out_dir = (out_dir / "titan" / "temporal").resolve()
+    temporal_rc, _temporal_out, _temporal_log_path = _run_cmd(
+        repo_root=repo_root,
+        run_dir=run_dir,
+        name="temporal_fitness_ledger",
+        cmd=[
+            sys.executable,
+            "-m",
+            "tools.eval.temporal_fitness_ledger",
+            "--fitness-record",
+            str(fitness_path),
+            "--run-id",
+            str(run_dir.name),
+            "--out-dir",
+            str(temporal_out_dir),
+        ],
+        env=env,
+        allow_nonzero=True,
+    )
+
+    temporal_gate_path = (temporal_out_dir / "temporal_fitness_gate.json").resolve()
+    if not temporal_gate_path.exists():
+        raise FL3ValidationError("FAIL_CLOSED: missing temporal_fitness_gate.json (unexpected)")
+
+    # 3) Titan promotion dependency graph (always rc=0; fail-closed on missing artifacts)
+    gate_out_dir = (out_dir / "titan" / "promotion_gate").resolve()
+    gate_rc, _gate_out, _gate_log_path = _run_cmd(
+        repo_root=repo_root,
+        run_dir=run_dir,
+        name="titan_promotion_gate",
+        cmd=[
+            sys.executable,
+            "-m",
+            "tools.eval.titan_promotion_gate",
+            "--mve-dir",
+            str(mve_dir),
+            "--temporal-gate",
+            str(temporal_gate_path),
+            "--run-id",
+            str(run_dir.name),
+            "--out-dir",
+            str(gate_out_dir),
+        ],
+        env=env,
+    )
+    if int(gate_rc) != 0:
+        raise FL3ValidationError("FAIL_CLOSED: titan_promotion_gate failed")
+
+    titan_gate_path = (gate_out_dir / "titan_promotion_gate.json").resolve()
+    if not titan_gate_path.exists():
+        raise FL3ValidationError("FAIL_CLOSED: missing titan_promotion_gate.json (unexpected)")
+
+    # 4) Admission record (rc=2 if blocked; still produces record)
+    admission_out_dir = (out_dir / "admission").resolve()
+    admission_rc, _admission_out, _admission_log_path = _run_cmd(
+        repo_root=repo_root,
+        run_dir=run_dir,
+        name="mve_admission_gate",
+        cmd=[
+            sys.executable,
+            "-m",
+            "tools.eval.mve_admission_gate",
+            "--mode",
+            "mve1",
+            "--mve-dir",
+            str(mve_dir),
+            "--titan-gate",
+            str(titan_gate_path),
+            "--out-dir",
+            str(admission_out_dir),
+        ],
+        env=env,
+        allow_nonzero=True,
+    )
+
+    admission_record_path = (admission_out_dir / "mve_admission_record.json").resolve()
+    if not admission_record_path.exists():
+        raise FL3ValidationError("FAIL_CLOSED: missing mve_admission_record.json (unexpected)")
+
+    rec = _load_json(admission_record_path)
+    status = str(rec.get("status", "")).strip() or "UNKNOWN"
+    promotion_blocked = bool(_load_json(titan_gate_path).get("promotion_blocked", True))
+
+    _write_json_worm(
+        path=run_dir / "titan_run_report.json",
+        obj={
+            "schema_id": "kt.operator_titan_run_report.v1",
+            "profile": profile.name,
+            "pack_manifest": pack_manifest,
+            "adapter_id": adapter_id,
+            "seed": int(seed),
+            "out_dir": str(out_dir),
+            "mve_rc": int(mve_rc),
+            "temporal_rc": int(temporal_rc),
+            "gate_rc": int(gate_rc),
+            "admission_rc": int(admission_rc),
+            "admission_status": status,
+            "promotion_blocked": bool(promotion_blocked),
+            "paths": {
+                "mve_dir": mve_dir.as_posix(),
+                "temporal_gate_path": temporal_gate_path.as_posix(),
+                "titan_gate_path": titan_gate_path.as_posix(),
+                "admission_record_path": admission_record_path.as_posix(),
+            },
+        },
+        label="titan_run_report.json",
+    )
+    write_text_worm(
+        path=run_dir / "titan_run_output.txt",
+        text=mve_out if mve_out.endswith("\n") else mve_out + "\n",
+        label="titan_run_output.txt",
+    )
+
+    verdict_kind = "PASS" if (status == "PASS" and (not promotion_blocked)) else "BLOCKED"
+    verdict = (
+        f"KT_TITAN_RUN_{verdict_kind} cmd=titan-run profile={profile.name} allow_dirty={int(bool(allow_dirty))} run_id={run_dir.name} "
+        f"pack_manifest={pack_manifest} adapter_id={adapter_id} seed={int(seed)} admission_status={status} promotion_blocked={int(bool(promotion_blocked))}"
+    )
+    write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
+    print(verdict)
+    return 0
+
+
 def cmd_report(*, repo_root: Path, profile: V1Profile, run_dir: Path, target_run: str, allow_dirty: bool) -> int:
     env = _base_env(repo_root=repo_root)
 
@@ -588,6 +764,15 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     ap_mve.add_argument("--adapter-id", required=True, help="Adapter/artifact id to evaluate.")
     ap_mve.add_argument("--seed", type=int, default=0, help="Deterministic seed (default: 0).")
 
+    ap_titan = sub.add_parser(
+        "titan-run", help="Run MVE-1 + Titan gates (temporal fitness, drift, capture-resistance, dependency graph)."
+    )
+    _add_post_global_options(ap_titan)
+    ap_titan.add_argument("--pack-manifest", required=True, help="Path to pressure pack manifest JSON.")
+    ap_titan.add_argument("--adapter-id", required=True, help="Adapter/artifact id to evaluate.")
+    ap_titan.add_argument("--seed", type=int, default=0, help="Deterministic seed (default: 0).")
+    ap_titan.add_argument("--invariants-file", default="", help="Override invariants file (relative to pack root).")
+
     ap_rep = sub.add_parser("report", help="Render a human-readable summary from an existing run directory.")
     _add_post_global_options(ap_rep)
     ap_rep.add_argument("--run", required=True, help="Target run directory to summarize.")
@@ -645,6 +830,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                 pack_manifest=str(args.pack_manifest),
                 adapter_id=str(args.adapter_id),
                 seed=int(args.seed),
+                allow_dirty=allow_dirty,
+            )
+        if args.cmd == "titan-run":
+            return cmd_titan_run(
+                repo_root=repo_root,
+                profile=profile,
+                run_dir=run_dir,
+                pack_manifest=str(args.pack_manifest),
+                adapter_id=str(args.adapter_id),
+                seed=int(args.seed),
+                invariants_file=str(args.invariants_file),
                 allow_dirty=allow_dirty,
             )
         if args.cmd == "report":

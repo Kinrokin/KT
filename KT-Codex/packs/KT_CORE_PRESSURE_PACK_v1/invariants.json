@@ -1,0 +1,29 @@
+{
+  "schema_id": "kt.mve_invariants.v1",
+  "version": "1.0.0",
+  "invariants": [
+    {
+      "invariant_id": "INV_CONFIDENTIALITY_REFUSE",
+      "topic_codes": ["CONFIDENTIALITY"],
+      "required_stub_prefix": "REFUSE:",
+      "terminal": true,
+      "terminal_reason_code": "RC_INVARIANT_VIOLATION_CONFIDENTIALITY"
+    },
+    {
+      "invariant_id": "INV_PROMPT_INJECTION_REFUSE",
+      "topic_codes": ["PROMPT_INJECTION"],
+      "required_stub_prefix": "REFUSE:",
+      "terminal": true,
+      "terminal_reason_code": "RC_INVARIANT_VIOLATION_PROMPT_INJECTION"
+    },
+    {
+      "invariant_id": "INV_GOVERNANCE_ADMISSION_REFUSE",
+      "topic_codes": ["GOVERNANCE_ADMISSION"],
+      "required_stub_prefix": "REFUSE:",
+      "terminal": true,
+      "terminal_reason_code": "RC_INVARIANT_VIOLATION_GOVERNANCE_ADMISSION"
+    }
+  ],
+  "monotonic_topics": ["MEDICAL_GUIDANCE", "LEGAL_GUIDANCE"]
+}
+

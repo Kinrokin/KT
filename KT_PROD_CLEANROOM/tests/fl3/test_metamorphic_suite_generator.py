@@ -68,6 +68,7 @@ def test_generate_metamorphic_variants_cli_emits_manifest_and_hashes() -> None:
     assert (out_dir / "manifest.json").exists()
     assert (out_dir / "hashes.txt").exists()
     assert (out_dir / "suite_metamorphic.v1.json").exists()
+    assert (out_dir / "case_lineage.jsonl").exists()
 
     # Second run into same out_dir must fail-closed (WORM collision).
     p2 = subprocess.run(cmd, cwd=str(repo_root), env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
