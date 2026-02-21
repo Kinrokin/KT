@@ -436,7 +436,7 @@ def cmd_mve_run(
     allow_dirty: bool,
 ) -> int:
     _ = allow_dirty
-    env = _py_env(repo_root=repo_root)
+    env = _base_env(repo_root=repo_root)
     out_dir = run_dir / "mve_run"
     out_dir.mkdir(parents=True, exist_ok=False)
 
