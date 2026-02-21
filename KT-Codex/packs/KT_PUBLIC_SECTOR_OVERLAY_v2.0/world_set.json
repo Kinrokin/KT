@@ -1,0 +1,166 @@
+{
+  "notes": [
+    "Ordered world set. Worlds are mutually admissible and allowed to disagree.",
+    "No cross-world averaging is permitted."
+  ],
+  "schema_id": "kt.world_set.v1",
+  "version": "2.0.0",
+  "world_set_id": "WORLD_SET_TITAN_CORE_V2",
+  "worlds": [
+    {
+      "admissibility_rules": {
+        "reject_if_axes_unregistered": true,
+        "reject_on_ambiguity": true,
+        "reject_on_schema_mismatch": true,
+        "requires_counter_pressure": true
+      },
+      "counter_pressure_profile": "HIGH",
+      "created_at": "2026-02-21T11:25:34Z",
+      "interpretive_frame": {
+        "frame_code": "RISK_AVERSE"
+      },
+      "jurisdictional_scope": {
+        "jurisdiction_code": "EU"
+      },
+      "law_bundle_id": "LAW_EU_AI_ACT_V1",
+      "normative_assumptions": [
+        {
+          "assumption_code": "NO_MEDICAL_ADVICE"
+        },
+        {
+          "assumption_code": "MAXIMAL_PRECAUTION"
+        },
+        {
+          "assumption_code": "EVIDENCE_FIRST"
+        }
+      ],
+      "schema_id": "kt.world_definition.v1",
+      "suite_authority_id": "SUITE_HEALTH_EU",
+      "world_id": "WORLD_EU_STRICT_HEALTH"
+    },
+    {
+      "admissibility_rules": {
+        "reject_if_axes_unregistered": true,
+        "reject_on_ambiguity": false,
+        "reject_on_schema_mismatch": true,
+        "requires_counter_pressure": true
+      },
+      "counter_pressure_profile": "MEDIUM",
+      "created_at": "2026-02-21T11:25:34Z",
+      "interpretive_frame": {
+        "frame_code": "PRAGMATIC"
+      },
+      "jurisdictional_scope": {
+        "jurisdiction_code": "US"
+      },
+      "law_bundle_id": "LAW_US_COMMERCIAL_V1",
+      "normative_assumptions": [
+        {
+          "assumption_code": "ALLOW_RISK_STRATIFIED_GUIDANCE"
+        },
+        {
+          "assumption_code": "COMMERCIAL_PERMISSIVE"
+        },
+        {
+          "assumption_code": "EVIDENCE_FIRST"
+        }
+      ],
+      "schema_id": "kt.world_definition.v1",
+      "suite_authority_id": "SUITE_COMMERCIAL_US",
+      "world_id": "WORLD_US_COMMERCIAL"
+    },
+    {
+      "admissibility_rules": {
+        "reject_if_axes_unregistered": true,
+        "reject_on_ambiguity": true,
+        "reject_on_schema_mismatch": true,
+        "requires_counter_pressure": true
+      },
+      "counter_pressure_profile": "HIGH",
+      "created_at": "2026-02-21T11:25:34Z",
+      "interpretive_frame": {
+        "frame_code": "STRICT_COMPLIANCE"
+      },
+      "jurisdictional_scope": {
+        "jurisdiction_code": "GLOBAL"
+      },
+      "law_bundle_id": "LAW_SECURITY_COMPLIANCE_V1",
+      "normative_assumptions": [
+        {
+          "assumption_code": "NO_SECRET_LEAKAGE"
+        },
+        {
+          "assumption_code": "NO_UNADMITTED_EXECUTION"
+        },
+        {
+          "assumption_code": "EVIDENCE_FIRST"
+        }
+      ],
+      "schema_id": "kt.world_definition.v1",
+      "suite_authority_id": "SUITE_SECURITY",
+      "world_id": "WORLD_SECURITY_COMPLIANCE_STRICT"
+    },
+    {
+      "admissibility_rules": {
+        "reject_if_axes_unregistered": true,
+        "reject_on_ambiguity": true,
+        "reject_on_schema_mismatch": true,
+        "requires_counter_pressure": true
+      },
+      "counter_pressure_profile": "HIGH",
+      "created_at": "2026-02-21T11:25:34Z",
+      "interpretive_frame": {
+        "frame_code": "AUDIT_FIRST"
+      },
+      "jurisdictional_scope": {
+        "jurisdiction_code": "PUBLIC_SECTOR"
+      },
+      "law_bundle_id": "LAW_PUBLIC_SECTOR_EVIDENCE_V1",
+      "normative_assumptions": [
+        {
+          "assumption_code": "CHAIN_OF_CUSTODY_REQUIRED"
+        },
+        {
+          "assumption_code": "NO_UNATTESTED_RESULTS"
+        },
+        {
+          "assumption_code": "EVIDENCE_FIRST"
+        }
+      ],
+      "schema_id": "kt.world_definition.v1",
+      "suite_authority_id": "SUITE_PUBLIC_SECTOR",
+      "world_id": "WORLD_PUBLIC_SECTOR_CHAIN_OF_CUSTODY"
+    },
+    {
+      "admissibility_rules": {
+        "reject_if_axes_unregistered": true,
+        "reject_on_ambiguity": false,
+        "reject_on_schema_mismatch": true,
+        "requires_counter_pressure": true
+      },
+      "counter_pressure_profile": "LOW",
+      "created_at": "2026-02-21T11:25:34Z",
+      "interpretive_frame": {
+        "frame_code": "RISK_BALANCED"
+      },
+      "jurisdictional_scope": {
+        "jurisdiction_code": "GLOBAL"
+      },
+      "law_bundle_id": "LAW_ACADEMIC_OPEN_V1",
+      "normative_assumptions": [
+        {
+          "assumption_code": "ACADEMIC_OPEN"
+        },
+        {
+          "assumption_code": "MINIMIZE_SENSITIVE_DATA"
+        },
+        {
+          "assumption_code": "EVIDENCE_FIRST"
+        }
+      ],
+      "schema_id": "kt.world_definition.v1",
+      "suite_authority_id": "SUITE_ACADEMIC_OPEN",
+      "world_id": "WORLD_ACADEMIC_OPEN"
+    }
+  ]
+}
