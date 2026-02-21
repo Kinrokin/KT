@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kt-codex://schemas/fitness_transition.schema.json",
+  "title": "Fitness Region Transition (A/B/C Binding)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "transition_id",
+    "timestamp",
+    "adapter_id",
+    "from_region",
+    "to_region",
+    "transition_type",
+    "evidence_refs",
+    "law_citations",
+    "conflict_refs",
+    "determinism_fingerprint",
+    "decided_by",
+    "decision_reason_code"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.fitness_transition.v1"
+    },
+    "transition_id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9][A-Z0-9_\\-]{7,79}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "adapter_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_\\-.]{1,127}$"
+    },
+    "from_region": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    "to_region": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    "transition_type": {
+      "type": "string",
+      "enum": [
+        "PROMOTION",
+        "DEMOTION",
+        "QUARANTINE",
+        "REINSTATE",
+        "REVIEW_ONLY"
+      ]
+    },
+    "evidence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/artifact_ref"
+      }
+    },
+    "law_citations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/law_citation"
+      }
+    },
+    "conflict_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/artifact_ref"
+      }
+    },
+    "determinism_fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "decided_by": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actor_kind",
+        "actor_id"
+      ],
+      "properties": {
+        "actor_kind": {
+          "type": "string",
+          "enum": [
+            "JUDGE_NODE0",
+            "COUNCIL",
+            "OPERATOR"
+          ]
+        },
+        "actor_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_\\-\\.]{0,127}$"
+        }
+      }
+    },
+    "decision_reason_code": {
+      "type": "string",
+      "enum": [
+        "MEETS_REGION_A",
+        "FAILS_REGION_A",
+        "OPEN_CONFLICT",
+        "CRITICAL_FAILURE",
+        "EVIDENCE_INSUFFICIENT",
+        "DETERMINISM_FAILED",
+        "MANUAL_REVIEW_REQUIRED"
+      ]
+    }
+  },
+  "$defs": {
+    "artifact_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sha256",
+        "path",
+        "kind"
+      ],
+      "properties": {
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_./\\\\\\-]{0,240}$"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "json",
+            "txt",
+            "zip",
+            "report",
+            "receipt",
+            "manifest",
+            "other"
+          ]
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "law_citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "law_bundle_hash",
+        "citation_kind",
+        "citation_ref"
+      ],
+      "properties": {
+        "law_bundle_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "citation_kind": {
+          "type": "string",
+          "enum": [
+            "LAW_BUNDLE_CLAUSE",
+            "POLICY_DOC",
+            "SCHEMA_CONTRACT",
+            "WORK_ORDER",
+            "OTHER"
+          ]
+        },
+        "citation_ref": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_./\\\\\\-]{0,240}$"
+        },
+        "citation_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}
+
