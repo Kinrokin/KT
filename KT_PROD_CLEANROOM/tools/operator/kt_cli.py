@@ -454,7 +454,13 @@ def cmd_mve_run(
         "--out-dir",
         str(out_dir),
     ]
-    out = _run_py(repo_root=repo_root, args=args, env=env, name="mve_runner")
+    _rc, out, _log_path = _run_cmd(
+        repo_root=repo_root,
+        run_dir=run_dir,
+        name="mve_runner",
+        cmd=[sys.executable, *args],
+        env=env,
+    )
 
     _write_json_worm(
         path=run_dir / "mve_run_report.json",
