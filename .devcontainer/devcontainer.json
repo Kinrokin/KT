@@ -1,0 +1,23 @@
+{
+  "name": "KT Canonical Linux Sandbox",
+  "image": "mcr.microsoft.com/devcontainers/python:3.10-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/workspaces/kt,type=bind,consistency=cached,readonly",
+    "source=${localWorkspaceFolder}/kt_canonical,target=/workspaces/kt/kt_canonical,type=bind,consistency=cached"
+  ],
+  "workspaceFolder": "/workspaces/kt",
+  "remoteEnv": {
+    "PYTHONNOUSERSITE": "1",
+    "GIT_OPTIONAL_LOCKS": "0"
+  },
+  "runArgs": [
+    "--network=none"
+  ],
+  "postCreateCommand": "python --version && git --version"
+}
