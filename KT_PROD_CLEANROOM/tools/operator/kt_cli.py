@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import os
+import platform
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -12,10 +13,17 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from schemas.fl3_suite_registry_schema import validate_fl3_suite_registry
-from tools.verification.fl3_canonical import repo_root_from
+from tools.delivery.delivery_linter import lint_delivery_dir
+from tools.delivery.generate_delivery_pack import generate_delivery_pack
+from tools.security.pack_guard_scan import scan_pack_and_write
+from tools.training.fl3_factory.io import write_schema_object
+from tools.training.fl3_factory.manifests import build_hash_manifest, sha256_file
+from tools.verification.fl3_canonical import repo_root_from, sha256_json
 from tools.verification.fl3_meta_evaluator import compute_law_bundle_hash, load_law_bundle
+from tools.verification.replay_script_generator import write_replay_artifacts
+from tools.verification.run_protocol_generator import build_run_protocol, write_run_protocol_pair
 from tools.verification.fl3_validators import FL3ValidationError
-from tools.verification.worm_write import write_text_worm
+from tools.verification.worm_write import write_bytes_worm, write_text_worm
 
 
 @dataclass(frozen=True)
@@ -50,6 +58,9 @@ V1 = V1Profile(
 def _utc_now_compact_z() -> str:
     # Microseconds included to avoid collisions in operator workflows.
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+
+def _utc_now_iso_z() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def _sha256_file(path: Path) -> str:
@@ -171,6 +182,231 @@ def _keys_presence_len() -> Dict[str, Dict[str, int | bool]]:
 
 def _write_json_worm(*, path: Path, obj: Dict[str, Any], label: str) -> None:
     write_text_worm(path=path, text=json.dumps(obj, indent=2, sort_keys=True, ensure_ascii=True) + "\n", label=label)
+
+def _copy_tree_worm(*, src_root: Path, dst_root: Path, label: str) -> None:
+    src_root = src_root.resolve()
+    dst_root = dst_root.resolve()
+    if not src_root.exists() or not src_root.is_dir():
+        raise FL3ValidationError(f"FAIL_CLOSED: missing source dir for evidence copy: {src_root.as_posix()}")
+    dst_root.mkdir(parents=True, exist_ok=True)
+
+    paths: List[Path] = []
+    for p in src_root.rglob("*"):
+        if not p.is_file():
+            continue
+        if p.is_symlink():
+            raise FL3ValidationError(f"FAIL_CLOSED: refusing to copy symlink into evidence: {p.as_posix()}")
+        paths.append(p)
+    paths.sort(key=lambda p: p.relative_to(src_root).as_posix())
+
+    for p in paths:
+        rel = p.relative_to(src_root).as_posix()
+        out_path = (dst_root / rel).resolve()
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        write_bytes_worm(path=out_path, data=p.read_bytes(), label=f"{label}:{rel}")
+
+
+def _emit_delivery_bundle_canonical_hmac(
+    *,
+    repo_root: Path,
+    profile: V1Profile,
+    run_dir: Path,
+    head: str,
+    sweep_id: str,
+    sweep_sha256: str,
+    verdict_line: str,
+) -> Dict[str, Any]:
+    """
+    Build an evidence pack + client-safe delivery zip inside the certify run root.
+
+    This is intentionally "boring":
+      - evidence/ carries run_protocol + secret scan + replay wrappers + a small core set of artifacts.
+      - delivery/ uses the existing delivery pack generator (redaction + manifest + zip + sha256).
+      - hashes/ records sha256 receipts for critical artifacts.
+    """
+    run_id = run_dir.name
+    lane_id = "KT_OPERATOR_CANONICAL_HMAC"
+
+    reports_dir = (run_dir / "reports").resolve()
+    hashes_dir = (run_dir / "hashes").resolve()
+    delivery_out_dir = (run_dir / "delivery").resolve()
+    evidence_dir = (run_dir / "evidence").resolve()
+    core_dir = (evidence_dir / "core").resolve()
+
+    reports_dir.mkdir(parents=True, exist_ok=True)
+    hashes_dir.mkdir(parents=True, exist_ok=True)
+    delivery_out_dir.mkdir(parents=True, exist_ok=True)
+    evidence_dir.mkdir(parents=True, exist_ok=True)
+    core_dir.mkdir(parents=True, exist_ok=True)
+
+    # Client replay notes (safe to emit before final verdict is written).
+    client_readme = "\n".join(
+        [
+            "# KT Client Replay Instructions",
+            "",
+            "This bundle is WORM evidence produced by the KT operator factory lane.",
+            "",
+            "## What this proves",
+            "- Pinned V1 anchors verified (sealed tag/commit, law bundle hash, suite registry id, determinism anchor).",
+            f"- Canonical certification sweep `{sweep_id}` completed with PASS.",
+            "",
+            "## How to replay (mechanical)",
+            "1) Obtain this repository at the pinned sealed tag/commit referenced in the delivery pack reports.",
+            "2) Unzip the delivery zip to a folder.",
+            "3) From the delivery pack root, run one of:",
+            "   - `bash evidence/replay.sh`",
+            "   - `powershell -File evidence/replay.ps1`",
+            "",
+            "Replay is fail-closed and validates the delivery manifest against the filesystem.",
+            "",
+            "## What is excluded",
+            "- No client proprietary data is embedded in canonical repo surfaces.",
+            "- No gated/dual-use payloads are embedded; only hash references are permitted on canonical surfaces.",
+            "",
+        ]
+    )
+    write_text_worm(path=run_dir / "client_README.md", text=client_readme, label="client_README.md")
+
+    # Evidence core: minimal provenance + sweep artifacts + transcripts.
+    for name in ("git_head.txt", "git_status.txt", "env_keys.json"):
+        src = (run_dir / name).resolve()
+        if not src.exists():
+            raise FL3ValidationError(f"FAIL_CLOSED: missing required provenance artifact: {src.as_posix()}")
+        write_bytes_worm(path=core_dir / name, data=src.read_bytes(), label=f"evidence:{name}")
+
+    sweep_src = (run_dir / "sweeps" / sweep_id).resolve()
+    sweep_dst = (core_dir / "sweeps" / sweep_id).resolve()
+    _copy_tree_worm(src_root=sweep_src, dst_root=sweep_dst, label="evidence:sweep")
+
+    transcripts_src = (run_dir / "transcripts").resolve()
+    transcripts_dst = (core_dir / "transcripts").resolve()
+    _copy_tree_worm(src_root=transcripts_src, dst_root=transcripts_dst, label="evidence:transcripts")
+
+    # Write an evidence hash manifest over the core/ subtree (excludes run_protocol/secret_scan/replay to avoid recursion).
+    entries: List[Dict[str, str]] = []
+    core_files: List[Path] = []
+    for p in core_dir.rglob("*"):
+        if p.is_file():
+            core_files.append(p)
+    core_files.sort(key=lambda p: p.relative_to(evidence_dir).as_posix())
+    for p in core_files:
+        rel = p.relative_to(evidence_dir).as_posix()
+        entries.append({"path": rel, "sha256": sha256_file(p)})
+    if not entries:
+        raise FL3ValidationError("FAIL_CLOSED: evidence core is empty (unexpected)")
+    parent_hash = sha256_json({"run_id": run_id, "lane_id": lane_id})
+    hash_manifest = build_hash_manifest(entries=entries, parent_hash=parent_hash)
+    _ = write_schema_object(path=evidence_dir / "hash_manifest.json", obj=hash_manifest)
+    bundle_root_hash = str(hash_manifest.get("root_hash", "")).strip()
+
+    # Replay artifacts inside evidence/ (both bash + ps1 wrappers + receipt).
+    replay_command = "python -m tools.delivery.delivery_linter --delivery-dir ."
+    _sh_path, _ps1_path, _receipt_path, replay_hashes = write_replay_artifacts(
+        out_dir=evidence_dir,
+        replay_command=replay_command,
+        run_id=run_id,
+        lane_id=lane_id,
+        notes="Replay verifies delivery_pack_manifest.json vs filesystem (fail-closed).",
+    )
+    # Also copy replay scripts to run root for operator convenience.
+    for name in ("replay.sh", "replay.ps1", "replay_receipt.json"):
+        src = (evidence_dir / name).resolve()
+        write_bytes_worm(path=run_dir / name, data=src.read_bytes(), label=f"operator_replay:{name}")
+
+    # Secret scan evidence pack (must PASS).
+    secret_report, secret_summary = scan_pack_and_write(pack_root=evidence_dir, out_dir=evidence_dir, run_id=run_id, lane_id="EVIDENCE")
+    secret_status = str(secret_report.get("status", "ERROR"))
+    if secret_status != "PASS":
+        raise FL3ValidationError(f"FAIL_CLOSED: evidence secret scan status={secret_status}")
+
+    # Run protocol (JSON + derived markdown), binding the evidence bundle root hash and replay wrapper hash.
+    env_hash = sha256_json(
+        {
+            "python": sys.version,
+            "platform": platform.platform(),
+            "executable": Path(sys.executable).name,
+        }
+    )
+    governed_phase_start_hash = sha256_json(
+        {
+            "head": head,
+            "sealed_commit": profile.sealed_commit,
+            "law_bundle_hash": profile.law_bundle_hash,
+            "suite_registry_id": profile.suite_registry_id,
+            "determinism_expected_root_hash": profile.determinism_expected_root_hash,
+        }
+    )
+    law_bundle = load_law_bundle(repo_root=repo_root)
+    law_ids = [str(l.get("law_id")) for l in law_bundle.get("laws", []) if isinstance(l, dict) and l.get("law_id")]
+    protocol = build_run_protocol(
+        {
+            "run_id": run_id,
+            "lane_id": lane_id,
+            "timestamp_utc": _utc_now_iso_z(),
+            "determinism_mode": "PRACTICAL",
+            "execution_environment_hash": env_hash,
+            "governed_phase_start_hash": governed_phase_start_hash,
+            "io_guard_status": "BYPASS",
+            "base_model_id": str(os.environ.get("KT_BASE_MODEL_ID") or "KT_V1_BASELINE_UNSPECIFIED"),
+            "active_adapters": [
+                {
+                    "adapter_id": str(os.environ.get("KT_ADAPTER_ID") or "BASELINE"),
+                    "adapter_hash": str(os.environ.get("KT_ADAPTER_HASH") or profile.determinism_expected_root_hash),
+                }
+            ],
+            "active_laws": sorted([x for x in law_ids if x]),
+            "replay_command": replay_command,
+            "replay_script_hash": str(replay_hashes.get("replay_script_hash", "")),
+            "secret_scan_result": secret_status,
+            "bundle_root_hash": bundle_root_hash,
+            "notes": f"Operator certify canonical_hmac evidence bundle; sweep_id={sweep_id} sweep_summary_sha256={sweep_sha256}",
+        }
+    )
+    write_run_protocol_pair(out_dir=evidence_dir, protocol=protocol)
+
+    # Generate the client delivery pack zip (fail-closed) and lint it.
+    delivery_result = generate_delivery_pack(evidence_dir=evidence_dir, out_dir=delivery_out_dir)
+    if str(delivery_result.get("status")) != "PASS":
+        raise FL3ValidationError("FAIL_CLOSED: delivery pack generator did not PASS (unexpected)")
+    delivery_dir = Path(str(delivery_result["delivery_dir"])).resolve()
+    lint_report = lint_delivery_dir(delivery_dir=delivery_dir)
+    _write_json_worm(path=delivery_out_dir / "delivery_lint_report.json", obj=lint_report, label="delivery_lint_report.json")
+    if str(lint_report.get("status")) != "PASS":
+        raise FL3ValidationError(f"FAIL_CLOSED: delivery linter status={lint_report.get('status')}")
+
+    # Write a run-root delivery manifest (operator-side index) + zip sha receipt under hashes/.
+    zip_path = Path(str(delivery_result["zip_path"])).resolve()
+    zip_sha = str(delivery_result.get("zip_sha256", "")).strip()
+    if len(zip_sha) != 64:
+        raise FL3ValidationError("FAIL_CLOSED: delivery zip sha missing/invalid (unexpected)")
+    write_text_worm(path=hashes_dir / (zip_path.name + ".sha256"), text=zip_sha + "\n", label="delivery_zip.sha256")
+
+    delivery_manifest = {
+        "schema_id": "kt.operator.delivery_manifest.unbound.v1",
+        "profile": profile.name,
+        "lane": "canonical_hmac",
+        "run_id": run_id,
+        "head": head,
+        "pins": {
+            "sealed_tag": profile.sealed_tag,
+            "sealed_commit": profile.sealed_commit,
+            "law_bundle_hash": profile.law_bundle_hash,
+            "suite_registry_id": profile.suite_registry_id,
+            "determinism_expected_root_hash": profile.determinism_expected_root_hash,
+        },
+        "sweep": {
+            "sweep_id": sweep_id,
+            "sweep_summary_sha256": sweep_sha256,
+        },
+        "verdict": verdict_line,
+        "evidence_dir": evidence_dir.as_posix(),
+        "delivery_dir": delivery_dir.as_posix(),
+        "delivery_zip": {"path": zip_path.as_posix(), "sha256": zip_sha},
+        "replay_command": replay_command,
+    }
+    _write_json_worm(path=delivery_out_dir / "delivery_manifest.json", obj=delivery_manifest, label="delivery_manifest.json")
+
+    return {"evidence_dir": evidence_dir.as_posix(), "delivery": delivery_result, "delivery_manifest": delivery_manifest}
 
 
 def _load_json(path: Path) -> Dict[str, Any]:
@@ -372,6 +608,19 @@ def cmd_certify_canonical_hmac(*, repo_root: Path, profile: V1Profile, run_dir: 
         f"KT_CERTIFY_PASS cmd=certify lane=canonical_hmac profile={profile.name} allow_dirty={int(bool(allow_dirty))} "
         f"head={head} law={profile.law_bundle_hash} suite={profile.suite_registry_id} sweep_sha256={sweep_sha}"
     )
+
+    _ = _emit_delivery_bundle_canonical_hmac(
+        repo_root=repo_root,
+        profile=profile,
+        run_dir=run_dir,
+        head=head,
+        sweep_id="CANONICAL_HMAC",
+        sweep_sha256=sweep_sha,
+        verdict_line=verdict,
+    )
+
+    (run_dir / "reports").mkdir(parents=True, exist_ok=True)
+    write_text_worm(path=run_dir / "reports" / "one_line_verdict.txt", text=verdict + "\n", label="one_line_verdict.txt")
     write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
     print(verdict)
     return 0
