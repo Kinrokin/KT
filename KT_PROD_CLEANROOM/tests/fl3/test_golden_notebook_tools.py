@@ -12,7 +12,12 @@ from tools.verification.seal_mode_test_roots import write_root
 
 def _py_env(repo_root: Path) -> dict[str, str]:
     env = dict(os.environ)
-    env["PYTHONPATH"] = f"{repo_root/'KT_PROD_CLEANROOM'/'04_PROD_TEMPLE_V2'/'src'};{repo_root/'KT_PROD_CLEANROOM'}"
+    env["PYTHONPATH"] = os.pathsep.join(
+        [
+            str(repo_root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src"),
+            str(repo_root / "KT_PROD_CLEANROOM"),
+        ]
+    )
     env.setdefault("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
     return env
 
@@ -84,4 +89,3 @@ def test_replay_manifest_verify_reports_divergence(tmp_path: Path) -> None:
     rep2 = json.loads(out2.read_text(encoding="utf-8"))
     assert rep2.get("status") == "FAIL"
     assert rep2.get("hash_mismatches")
-

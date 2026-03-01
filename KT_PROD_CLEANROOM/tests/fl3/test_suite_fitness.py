@@ -11,7 +11,12 @@ from tools.verification.seal_mode_test_roots import write_root
 
 def _py_env(repo_root: Path) -> dict[str, str]:
     env = dict(os.environ)
-    env["PYTHONPATH"] = f"{repo_root/'KT_PROD_CLEANROOM'/'04_PROD_TEMPLE_V2'/'src'};{repo_root/'KT_PROD_CLEANROOM'}"
+    env["PYTHONPATH"] = os.pathsep.join(
+        [
+            str(repo_root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src"),
+            str(repo_root / "KT_PROD_CLEANROOM"),
+        ]
+    )
     env.setdefault("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
     return env
 
@@ -64,4 +69,3 @@ def test_suite_fitness_regions(tmp_path: Path) -> None:
     assert p2.returncode == 0, p2.stdout
     rec2 = json.loads((out_ok / "suite_fitness_record.json").read_text(encoding="utf-8"))
     assert rec2.get("region") == "A"
-
