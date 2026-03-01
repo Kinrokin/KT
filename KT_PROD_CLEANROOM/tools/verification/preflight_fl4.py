@@ -32,6 +32,10 @@ def _utc_now_iso_z() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+def _is_truthy_env(name: str) -> bool:
+    return str(os.environ.get(name, "")).strip().lower() in {"1", "true", "yes", "on"}
+
+
 def _run(cmd: List[str], *, cwd: Path, env: Dict[str, str], out_path: Optional[Path] = None) -> Tuple[int, str]:
     p = subprocess.run(cmd, cwd=str(cwd), env=env, text=True, capture_output=True)
     out = (p.stdout or "") + (p.stderr or "")
@@ -387,8 +391,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         repo_root / "KT_PROD_CLEANROOM"
     )
     env.setdefault("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
-    # Seal lane is canonical by definition; refuse to inherit a non-canonical override.
-    env["KT_CANONICAL_LANE"] = "1"
+    # Seal lane is canonical by default, but CI is untrusted and must not require HMAC secrets.
+    # Outside CI: force canonical.
+    # In CI: do not force canonical (meta-evaluator runs in CI-sim mode unless explicitly opted in).
+    if not (_is_truthy_env("CI") or _is_truthy_env("GITHUB_ACTIONS")):
+        env["KT_CANONICAL_LANE"] = "1"
+    else:
+        env.pop("KT_CANONICAL_LANE", None)
 
     paths = load_fl3_canonical_runtime_paths(repo_root=repo_root)
     reg_path = str(args.registry_path or paths["runtime_registry_path"])
