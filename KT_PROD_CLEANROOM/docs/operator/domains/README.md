@@ -1,8 +1,8 @@
 # Domain Suite Playbooks (Operator)
 
 These playbooks describe **high-pressure, enterprise-grade** suite expansion for regulated domains. They are written to be:
-- deterministic (same inputs + seed → same suite pack)
-- fail-closed (missing artifacts/validators → stop)
+- deterministic (same inputs + seed -> same suite pack)
+- fail-closed (missing artifacts/validators -> stop)
 - safe for canonical surfaces (no sensitive / dual-use payloads embedded; use hash refs where required)
 
 ## Playbooks
