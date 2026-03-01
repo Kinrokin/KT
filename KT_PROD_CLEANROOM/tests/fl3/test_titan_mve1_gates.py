@@ -11,13 +11,22 @@ from tools.verification.seal_mode_test_roots import write_root
 
 def _py_env(repo_root: Path) -> dict[str, str]:
     env = dict(os.environ)
-    env["PYTHONPATH"] = f"{repo_root/'KT_PROD_CLEANROOM'/'04_PROD_TEMPLE_V2'/'src'};{repo_root/'KT_PROD_CLEANROOM'}"
+    env["PYTHONPATH"] = os.pathsep.join(
+        [
+            str(repo_root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src"),
+            str(repo_root / "KT_PROD_CLEANROOM"),
+        ]
+    )
     env.setdefault("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
     return env
 
 
 def _run(cmd: list[str], *, cwd: Path, env: dict[str, str]) -> subprocess.CompletedProcess[str]:
     return subprocess.run(cmd, cwd=str(cwd), env=env, text=True, capture_output=True)
+
+
+def _law_hash(repo_root: Path) -> str:
+    return (repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "LAW_BUNDLE_FL3.sha256").read_text(encoding="utf-8").strip()
 
 
 def test_mve1_runner_determinism_same_seed(tmp_path: Path) -> None:
@@ -30,7 +39,7 @@ def test_mve1_runner_determinism_same_seed(tmp_path: Path) -> None:
     out2.mkdir(parents=True, exist_ok=False)
 
     pack = repo_root / "KT-Codex" / "packs" / "KT_CORE_PRESSURE_PACK_v1" / "pack_manifest.json"
-    law = "cd593dee1cc0b4c30273c90331124c3686f510ff990005609b3653268e66d906"
+    law = _law_hash(repo_root)
     env = _py_env(repo_root)
 
     r1 = _run(
@@ -175,7 +184,7 @@ def test_titan_promotion_gate_smoke(tmp_path: Path) -> None:
     out_dir.mkdir(parents=True, exist_ok=False)
 
     pack = repo_root / "KT-Codex" / "packs" / "KT_CORE_PRESSURE_PACK_v1" / "pack_manifest.json"
-    law = "cd593dee1cc0b4c30273c90331124c3686f510ff990005609b3653268e66d906"
+    law = _law_hash(repo_root)
     env = _py_env(repo_root)
 
     r = _run(
@@ -243,4 +252,3 @@ def test_titan_promotion_gate_smoke(tmp_path: Path) -> None:
     assert p_gate.returncode == 0, p_gate.stderr
     assert (gate_out / "titan_promotion_gate.json").is_file()
     assert (gate_out / "promotion_dependency_graph.json").is_file()
-

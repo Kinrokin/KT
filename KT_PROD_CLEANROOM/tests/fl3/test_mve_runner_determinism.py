@@ -15,8 +15,17 @@ def _run(cmd: list[str], *, env: dict[str, str]) -> subprocess.CompletedProcess[
 
 def _py_env(repo_root: Path) -> dict[str, str]:
     env = dict(**__import__("os").environ)
-    env["PYTHONPATH"] = f"{repo_root/'KT_PROD_CLEANROOM'/'04_PROD_TEMPLE_V2'/'src'};{repo_root/'KT_PROD_CLEANROOM'}"
+    env["PYTHONPATH"] = os.pathsep.join(
+        [
+            str(repo_root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src"),
+            str(repo_root / "KT_PROD_CLEANROOM"),
+        ]
+    )
     return env
+
+
+def _law_hash(repo_root: Path) -> str:
+    return (repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "LAW_BUNDLE_FL3.sha256").read_text(encoding="utf-8").strip()
 
 
 def test_mve_runner_determinism_same_seed(tmp_path: Path) -> None:
@@ -30,7 +39,7 @@ def test_mve_runner_determinism_same_seed(tmp_path: Path) -> None:
 
     pack = repo_root / "KT-Codex" / "packs" / "KT_CORE_PRESSURE_PACK_v1" / "pack_manifest.json"
     env = _py_env(repo_root)
-    law = "cd593dee1cc0b4c30273c90331124c3686f510ff990005609b3653268e66d906"
+    law = _law_hash(repo_root)
 
     r1 = _run(
         [
@@ -88,7 +97,7 @@ def test_mve_runner_determinism_diff_seed_changes_manifest(tmp_path: Path) -> No
 
     pack = repo_root / "KT-Codex" / "packs" / "KT_CORE_PRESSURE_PACK_v1" / "pack_manifest.json"
     env = _py_env(repo_root)
-    law = "cd593dee1cc0b4c30273c90331124c3686f510ff990005609b3653268e66d906"
+    law = _law_hash(repo_root)
 
     r1 = _run(
         [
