@@ -122,6 +122,7 @@ def _mk_contract(*, repo_root: Path) -> dict:
                 "kt.factory.eval_report.v2",
                 "kt.factory.judgement.v1",
                 "kt.factory.jobspec.v1",
+                "kt.training_admission_receipt.v1",
                 "kt.factory.promotion.v1",
                 "kt.factory.train_manifest.v1",
                 "kt.policy_bundle.v1",

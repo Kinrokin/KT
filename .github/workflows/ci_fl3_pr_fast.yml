@@ -8,6 +8,11 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Fail-closed governance tests require pinned tags/commits to be resolvable.
+          # Shallow clones can omit tags and pinned historical commits.
+          fetch-depth: 0
+          fetch-tags: true
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -22,6 +27,10 @@ jobs:
         env:
           PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
         run: python -m tools.verification.fl3_meta_evaluator
+      - name: Validate archive receipts
+        env:
+          PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
+        run: python -m tools.verification.validate_receipts --out-dir tmp/receipt_validation
       - name: Run Temple V2 tests (smoke)
         env:
           PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"

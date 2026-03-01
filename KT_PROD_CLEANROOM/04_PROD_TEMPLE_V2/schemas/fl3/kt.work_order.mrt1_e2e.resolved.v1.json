@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "kt.work_order.mrt1_e2e.resolved.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "run_name",
+    "run_root",
+    "law_bundle_hash_required",
+    "env",
+    "commands_executed",
+    "artifacts"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.work_order.mrt1_e2e.resolved.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+
+    "run_name": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "run_root": { "type": "string", "minLength": 1, "maxLength": 1024 },
+    "law_bundle_hash_required": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+
+    "env": { "type": "object", "additionalProperties": { "type": "string" } },
+    "commands_executed": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "items": { "type": "string", "minLength": 1, "maxLength": 4096 }
+      }
+    },
+    "artifacts": { "type": "object", "additionalProperties": { "type": "string" } }
+  }
+}

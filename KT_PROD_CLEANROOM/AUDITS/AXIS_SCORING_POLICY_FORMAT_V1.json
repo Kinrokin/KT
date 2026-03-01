@@ -1,0 +1,38 @@
+{
+  "axes": [
+    {
+      "aggregator": "MEAN",
+      "axis_id": "format",
+      "gate_validator_ids": [],
+      "soft_validator_weights": [
+        {
+          "validator_id": "V_BULLETS_2_HYPHEN",
+          "weight": 0.3
+        },
+        {
+          "validator_id": "V_JSON_EXACT_ABC",
+          "weight": 0.4
+        },
+        {
+          "validator_id": "V_SENTENCES_4",
+          "weight": 0.3
+        }
+      ]
+    }
+  ],
+  "axis_scoring_policy_id": "b7ddeddfec93cbbc0e658d529704bf4d25e459085110181ce448f9ab32baf7be",
+  "created_at": "1970-01-01T00:00:00Z",
+  "notes": "EPIC_17 format axis scoring policy (v1).",
+  "schema_id": "kt.axis_scoring_policy.v1",
+  "schema_version_hash": "371286c056c13a267f3093815c90d2090f33ae567b9449f46b9224bd83c06597",
+  "verdict_thresholds": {
+    "hold_min": {
+      "format": 0.7
+    },
+    "promote_min": {
+      "format": 0.9
+    },
+    "quarantine_on_gate_fail": true
+  }
+}
+

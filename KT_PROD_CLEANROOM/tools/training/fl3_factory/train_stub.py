@@ -5,6 +5,7 @@ from typing import Any, Dict
 
 from tools.training.fl3_factory.timeutil import utc_now_z
 from tools.verification.fl3_canonical import sha256_json, sha256_text
+from tools.verification.worm_write import write_text_worm
 
 
 def build_train_manifest(*, job: Dict[str, Any], dataset: Dict[str, Any], out_dir: Path) -> Dict[str, Any]:
@@ -15,8 +16,9 @@ def build_train_manifest(*, job: Dict[str, Any], dataset: Dict[str, Any], out_di
     bundle_dir = out_dir / "bundle"
     bundle_dir.mkdir(parents=True, exist_ok=True)
     weights_path = bundle_dir / "weights.safetensors"
-    weights_path.write_text(f"stub-weights:{job['job_id']}\n", encoding="utf-8")
-    artifact_hash = sha256_text(weights_path.read_text(encoding="utf-8"))
+    txt = f"stub-weights:{job['job_id']}\n"
+    write_text_worm(path=weights_path, text=txt, label="train_stub.weights.safetensors")
+    artifact_hash = sha256_text(txt)
 
     record = {
         "schema_id": "kt.factory.train_manifest.v1",

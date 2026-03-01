@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Audit Intelligence Report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "report_id",
+    "vault_root_rel",
+    "config_id",
+    "ingested_events",
+    "clusters",
+    "probe_proposals",
+    "doctrine_proposals",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.audit_intelligence_report.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "report_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "vault_root_rel": { "type": "string", "minLength": 1, "maxLength": 1024 },
+    "config_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "ingested_events": { "type": "integer", "minimum": 0, "maximum": 1000000000 },
+    "clusters": { "type": "array", "items": { "type": "string", "pattern": "^[0-9a-f]{64}$" } },
+    "probe_proposals": { "type": "array", "items": { "type": "string", "pattern": "^[0-9a-f]{64}$" } },
+    "doctrine_proposals": { "type": "array", "items": { "type": "string", "pattern": "^[0-9a-f]{64}$" } },
+    "created_at": { "type": "string" }
+  }
+}
+

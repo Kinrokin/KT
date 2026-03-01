@@ -1,0 +1,143 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "generated_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "manifest_sha256": {
+      "type": "string"
+    },
+    "teams": {
+      "items": {
+        "properties": {
+          "definition_of_done": {
+            "properties": {
+              "acceptance_criteria": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "formal_proofs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "integration_tests": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "unit_tests": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "type": "object"
+          },
+          "direct_objective": {
+            "type": "string"
+          },
+          "inter_dependencies": {
+            "items": {
+              "properties": {
+                "api_contract": {
+                  "type": "string"
+                },
+                "direction": {
+                  "enum": [
+                    "provides",
+                    "consumes"
+                  ],
+                  "type": "string"
+                },
+                "team": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "team",
+                "api_contract",
+                "direction"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "seal_artifact": {
+            "type": "string"
+          },
+          "team": {
+            "type": "string"
+          },
+          "technical_constraints": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "work_order": {
+            "properties": {
+              "api_endpoints": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "artifacts": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "formal_requirements": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "test_vectors": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "artifacts",
+              "formal_requirements"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "team",
+          "direct_objective",
+          "technical_constraints",
+          "inter_dependencies",
+          "work_order",
+          "definition_of_done",
+          "seal_artifact"
+        ],
+        "type": "object"
+      },
+      "minItems": 20,
+      "type": "array"
+    },
+    "version": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "version",
+    "generated_at",
+    "teams"
+  ],
+  "title": "KT Phase 2 Work Order v1",
+  "type": "object"
+}

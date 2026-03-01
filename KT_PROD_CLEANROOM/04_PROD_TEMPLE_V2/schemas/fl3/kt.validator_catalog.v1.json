@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Validator Catalog v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "validator_catalog_id",
+    "validators",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.validator_catalog.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "validator_catalog_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "validators": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["validator_id", "kind", "params"],
+        "properties": {
+          "validator_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "REGEX_REQUIRED",
+              "REGEX_FORBIDDEN",
+              "MAX_WORDS",
+              "SENTENCE_COUNT_EXACT",
+              "LIST_ITEMS_EXACT",
+              "JSON_PARSEABLE",
+              "JSON_EXACT_OBJECT",
+              "MUST_REFUSE"
+            ]
+          },
+          "params": { "type": "object" },
+          "notes": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"] }
+  }
+}
+

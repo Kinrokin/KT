@@ -1,0 +1,35 @@
+{
+  "schema_id": "kt.operator.overlay_pack.unbound.v1",
+  "overlay_id": "domain.security_compliance.v1",
+  "version": "1.0.0",
+  "applies_to": [
+    "certify",
+    "red_assault",
+    "continuous_gov",
+    "forge"
+  ],
+  "suite_scope_additions": [
+    "kt.suite.domain.security_compliance.v1",
+    "kt.suite.compliance.audit_templates.v1",
+    "kt.suite.security.anti_theater.v1",
+    "kt.suite.security.audit_chain_of_custody.v1",
+    "kt.suite.security.defensive_hardening.v1",
+    "kt.suite.security.incident_response.v1",
+    "kt.suite.security.offensive_enablement_refusal.v1",
+    "kt.suite.security.secure_coding.v1",
+    "kt.suite.security.secrets_hygiene.v1",
+    "kt.suite.security.social_engineering_resistance.v1"
+  ],
+  "policy_additions": [
+    "kt.policy.domain.security_compliance.reporting.v1"
+  ],
+  "scorer_overrides": [],
+  "reporting_fields": [
+    "customer_slug",
+    "base_model_id",
+    "adapter_id",
+    "seed"
+  ],
+  "created_utc": "2026-02-28T00:00:00Z",
+  "notes": "Metadata-only overlay pack. No sensitive or dual-use payloads are embedded."
+}

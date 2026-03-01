@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 import tempfile
 from datetime import datetime, timezone
@@ -19,6 +20,7 @@ from tools.verification.fl3_validators import (
     validate_schema_bound_object,
 )
 from tools.verification.fl4_determinism_canary import _mk_canary_jobspec  # type: ignore
+from tools.verification.attestation_hmac import env_key_name_for_key_id, sign_hmac
 
 
 def _read_json(path: Path) -> Dict[str, Any]:
@@ -34,6 +36,21 @@ def _read_json(path: Path) -> Dict[str, Any]:
 def _write_json(path: Path, obj: Dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(obj, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+
+
+def _is_truthy_env(name: str) -> bool:
+    return str(os.environ.get(name, "")).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _is_ci_env() -> bool:
+    """
+    Signing/apply tooling must never run in CI.
+    Use conservative detection: if any common CI flag is set truthy, treat as CI.
+    """
+    for name in ("CI", "GITHUB_ACTIONS", "GITLAB_CI", "BUILD_BUILDID", "JENKINS_URL", "TF_BUILD"):
+        if _is_truthy_env(name):
+            return True
+    return False
 
 
 def _derive_canary_hash_manifest_root_hash(*, repo_root: Path, organ_contract_path: Path) -> Tuple[str, str]:
@@ -56,9 +73,9 @@ def _derive_canary_hash_manifest_root_hash(*, repo_root: Path, organ_contract_pa
     if job_dir.exists():
         shutil.rmtree(job_dir)
 
-    staging_dir = (repo_root / "KT_PROD_CLEANROOM" / "exports" / "adapters_shadow" / "_runs" / "FL4_CANARY_DERIVE").resolve()
-    if staging_dir.exists():
-        shutil.rmtree(staging_dir)
+    # IMPORTANT: must match tools.verification.fl4_determinism_canary staging path,
+    # otherwise training admission receipts (job_ref) will drift and canary root hashes will not match.
+    staging_dir = (repo_root / "KT_PROD_CLEANROOM" / "exports" / "adapters_shadow" / "_runs" / "FL4_CANARY").resolve()
     staging_dir.mkdir(parents=True, exist_ok=True)
     job_path = staging_dir / "canary_job.json"
     _write_json(job_path, canary_job)
@@ -76,8 +93,7 @@ def _derive_canary_hash_manifest_root_hash(*, repo_root: Path, organ_contract_pa
     # Clean derived run state (derive should not accumulate).
     if job_dir.exists():
         shutil.rmtree(job_dir)
-    if staging_dir.exists():
-        shutil.rmtree(staging_dir)
+    # Keep staging directory consistent with the canonical canary tool; do not attempt to clean it here.
 
     return str(canary_job["job_id"]), root_hash
 
@@ -104,20 +120,47 @@ def _sync_law_bundle_sha(*, repo_root: Path, write: bool) -> str:
     bundle = _read_json(bundle_path)
     law_hash = compute_law_bundle_hash(repo_root=repo_root, bundle=bundle)
     if write:
-        sha_path.write_text(law_hash + "\n", encoding="utf-8")
+        desired = law_hash + "\n"
+        try:
+            existing = sha_path.read_text(encoding="utf-8")
+        except Exception:  # noqa: BLE001
+            existing = ""
+        # Keep the repo clean for any downstream factory/canary run: avoid rewriting identical content.
+        if existing.strip() != law_hash:
+            sha_path.parent.mkdir(parents=True, exist_ok=True)
+            with sha_path.open("w", encoding="utf-8", newline="\n") as handle:
+                handle.write(desired)
     return law_hash
 
 
-def _ensure_law_amendment_present(*, repo_root: Path, bundle_hash: str, write: bool) -> Optional[Path]:
+def _ensure_law_amendment_present(*, repo_root: Path, bundle_hash: str, write: bool, attestation_mode: str) -> Optional[Path]:
     audits_dir = repo_root / "KT_PROD_CLEANROOM" / "AUDITS"
+    attestation_mode = str(attestation_mode).strip().upper()
+    if attestation_mode not in {"SIMULATED", "HMAC"}:
+        raise FL3ValidationError("Unsupported attestation_mode for law amendment (fail-closed)")
+
+    best_same_mode: Optional[Path] = None
+    best_any: Optional[Path] = None
     for p in sorted(audits_dir.glob("LAW_AMENDMENT_FL3_*.json")):
         try:
             obj = _read_json(p)
         except Exception:
             continue
-        if obj.get("schema_id") == "kt.law_amendment.v1" and str(obj.get("bundle_hash")) == bundle_hash:
-            return p
+        if obj.get("schema_id") != "kt.law_amendment.v2" or str(obj.get("bundle_hash")) != bundle_hash:
+            continue
 
+        # Prefer an existing amendment that matches the requested attestation_mode.
+        mode = str(obj.get("attestation_mode", "")).strip().upper()
+        if mode == attestation_mode and best_same_mode is None:
+            best_same_mode = p
+        if best_any is None:
+            best_any = p
+
+    if best_same_mode is not None:
+        return best_same_mode
+    # If caller requested SIMULATED, any existing amendment is sufficient for non-canonical operation.
+    if attestation_mode == "SIMULATED" and best_any is not None:
+        return best_any
     if not write:
         return None
 
@@ -125,23 +168,35 @@ def _ensure_law_amendment_present(*, repo_root: Path, bundle_hash: str, write: b
 
     def mk_signoff(key_id: str, payload_hash: str) -> Dict[str, Any]:
         entry: Dict[str, Any] = {
-            "schema_id": "kt.human_signoff.v1",
-            "schema_version_hash": schema_version_hash("fl3/kt.human_signoff.v1.json"),
+            "schema_id": "kt.human_signoff.v2",
+            "schema_version_hash": schema_version_hash("fl3/kt.human_signoff.v2.json"),
             "signoff_id": "",
+            "attestation_mode": attestation_mode,
             "key_id": key_id,
             "payload_hash": payload_hash,
-            # Schema requires a hex-64. Signature verification is not enforced at FL3.1 layer.
-            "hmac_signature": sha256_hex_of_obj({"key_id": key_id, "payload_hash": payload_hash}, drop_keys=set()),
             "created_at": created_at,
         }
+        if attestation_mode == "SIMULATED":
+            entry["simulated_signature"] = sha256_hex_of_obj(
+                {"key_id": key_id, "payload_hash": payload_hash}, drop_keys=set()
+            )
+        elif attestation_mode == "HMAC":
+            env_key = env_key_name_for_key_id(key_id)
+            key_val = os.environ.get(env_key)
+            if not key_val:
+                raise FL3ValidationError(f"Missing {env_key} for HMAC law amendment signing (fail-closed)")
+            sig, fp = sign_hmac(key_bytes=key_val.encode("utf-8"), key_id=key_id, payload_hash=payload_hash)
+            entry["hmac_signature"] = sig
+            entry["hmac_key_fingerprint"] = fp
         entry["signoff_id"] = sha256_hex_of_obj(entry, drop_keys={"created_at", "signoff_id"})
         return entry
 
     amendment: Dict[str, Any] = {
-        "schema_id": "kt.law_amendment.v1",
-        "schema_version_hash": schema_version_hash("fl3/kt.law_amendment.v1.json"),
+        "schema_id": "kt.law_amendment.v2",
+        "schema_version_hash": schema_version_hash("fl3/kt.law_amendment.v2.json"),
         "amendment_id": "",
         "bundle_hash": bundle_hash,
+        "attestation_mode": attestation_mode,
         "signoffs": [
             mk_signoff("SIGNER_A", bundle_hash),
             mk_signoff("SIGNER_B", bundle_hash),
@@ -161,29 +216,49 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(description="Derive FL4 seal artifacts (determinism contract + law bundle hash + law amendment) without manual edits.")
     ap.add_argument("--organ-contract", required=True, help="Path to factory organ contract JSON for canary derivation.")
     ap.add_argument("--write", action="store_true", help="Write updated artifacts to AUDITS/ (fail-closed if not set and mismatch exists).")
+    ap.add_argument("--attestation-mode", default="SIMULATED", choices=["SIMULATED", "HMAC"], help="Attestation mode for LAW_AMENDMENT_FL3 signing.")
     args = ap.parse_args(argv)
 
     repo_root = repo_root_from(Path(__file__))
     organ_contract_path = Path(args.organ_contract)
 
-    # 1) Derive canary root hash from a fresh run.
+    if args.write and _is_ci_env():
+        raise FL3ValidationError("Refusing to derive/apply seal artifacts in CI (fail-closed)")
+
+    if _is_truthy_env("KT_CANONICAL_LANE") and str(args.attestation_mode).strip().upper() != "HMAC":
+        raise FL3ValidationError("Canonical lane requires HMAC attestation_mode for law amendment signing (fail-closed)")
+
+    # 1) Compute law bundle hash and sync sha file *before* deriving the canary.
+    #    The canary job includes a training admission receipt that records the pinned LAW_BUNDLE hash.
+    #    If the sha pin is stale, a derived canary hash would be immediately invalidated by syncing it.
+    sha_path = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "LAW_BUNDLE_FL3.sha256"
+    sha_before = sha_path.read_text(encoding="utf-8").strip() if sha_path.exists() else ""
+    bundle_hash = _sync_law_bundle_sha(repo_root=repo_root, write=args.write)
+    changed_bundle = sha_before != bundle_hash
+
+    # 2) Derive canary root hash from a fresh run (after bundle hash pin is consistent).
     _job_id, root_hash = _derive_canary_hash_manifest_root_hash(repo_root=repo_root, organ_contract_path=organ_contract_path)
 
-    # 2) Update determinism contract (derived from the canary).
+    # 3) Update determinism contract (derived from the canary).
     det_path = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL4_DETERMINISM_CONTRACT.json"
     current_det = _read_json(det_path)
     expected_before = str(current_det.get("canary_expected_hash_manifest_root_hash", "")).strip()
     det = _update_determinism_contract(repo_root=repo_root, expected_root_hash=root_hash, write=args.write)
     changed_det = expected_before != root_hash
 
-    # 3) Compute law bundle hash and sync sha file.
-    sha_path = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "LAW_BUNDLE_FL3.sha256"
-    sha_before = sha_path.read_text(encoding="utf-8").strip() if sha_path.exists() else ""
-    bundle_hash = _sync_law_bundle_sha(repo_root=repo_root, write=args.write)
-    changed_bundle = sha_before != bundle_hash
+    # 4) Re-sync the law bundle sha pin (expected to be stable if determinism canary fields are not in the bundle hash surface).
+    bundle_hash2 = _sync_law_bundle_sha(repo_root=repo_root, write=args.write)
+    if bundle_hash2 != bundle_hash:
+        bundle_hash = bundle_hash2
+        changed_bundle = True
+    else:
+        bundle_hash = bundle_hash2
+        changed_bundle = changed_bundle or (sha_before != bundle_hash)
 
-    # 4) Ensure a law amendment exists for this bundle hash.
-    amend_path = _ensure_law_amendment_present(repo_root=repo_root, bundle_hash=bundle_hash, write=args.write)
+    # 5) Ensure a law amendment exists for this bundle hash.
+    amend_path = _ensure_law_amendment_present(
+        repo_root=repo_root, bundle_hash=bundle_hash, write=args.write, attestation_mode=str(args.attestation_mode)
+    )
 
     report = {
         "schema_id": "kt.fl4.derive_artifacts_report.v1",
@@ -212,4 +287,7 @@ def main(argv: Optional[List[str]] = None) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except FL3ValidationError as exc:
+        raise SystemExit(f"FAIL_CLOSED: {exc}") from exc

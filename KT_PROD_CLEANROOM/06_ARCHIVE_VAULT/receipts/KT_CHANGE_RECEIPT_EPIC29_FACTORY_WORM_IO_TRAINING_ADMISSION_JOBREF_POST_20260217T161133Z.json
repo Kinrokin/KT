@@ -1,0 +1,37 @@
+{
+  "actor": "dev-bot",
+  "change_id": "bf00ca8779cb6e1830ab3332ede0a174ce2d1cd9669a27bc1dcfec6a16cd65df",
+  "files_checked": [
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.json",
+      "sha256": "df23d9ac6a1011808de8c5f686840c4e6b1f4d248254e1fb9f45bf596692cde2"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256",
+      "sha256": "77a155126aedea7c9cca644ef2d970f53efb998b2e366434c425ada36284c9bd"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260217T161032Z.json",
+      "sha256": "6cb538b70472a7cfa9a5da42946eb30fa06c7e0e3cf2e89781b51aaa1123f396"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260217T161055Z.json",
+      "sha256": "fd9d13a2f77890ae66e17959480724b00599c6a24e6a8a7c1f87469cb9e70ab4"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tools/training/training_admission_gate.py",
+      "sha256": "1a2121aedf1c07755afbbeb1e54026511c85203b9a2485469445a028f8b0f512"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tests/fl3/test_fl4_anti_theater_laundering.py",
+      "sha256": "b32ad0975e306c4b4e4c6dd6db2ea3f65bd0e4f83989e187d6d9b797ba65d19c"
+    }
+  ],
+  "notes": "EPIC_29 follow-up: make training_admission_receipt.job_ref deterministic for external job paths (bind to job_sha256, avoid leaking absolute paths) so WORM reruns are stable; update anti-theater laundering test to clone into fresh dir before manifest regen; update LAW_BUNDLE sha + HMAC amendment + law bundle change receipt.",
+  "outcome": "PASS",
+  "phase": "post",
+  "phase_id": "EPIC_29_FACTORY_WORM_IO",
+  "schema_id": "kt.change_receipt.v1",
+  "schema_version_hash": "69cfd11a2b5de82efb566512a8adb014bbf5ab9f1eb7b4fc6b448e0cf269b34d",
+  "timestamp_utc": "2026-02-17T16:11:33Z"
+}

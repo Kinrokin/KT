@@ -109,6 +109,31 @@ from schemas.fl3_failure_contract_schema import (
     FL3_FAILURE_CONTRACT_SCHEMA_VERSION_HASH,
     validate_fl3_failure_contract,
 )
+from schemas.fl3_failure_taxonomy_schema import (
+    FL3_FAILURE_TAXONOMY_SCHEMA_ID,
+    FL3_FAILURE_TAXONOMY_SCHEMA_VERSION_HASH,
+    validate_fl3_failure_taxonomy,
+)
+from schemas.fl3_governance_twin_manifest_schema import (
+    FL3_GOVERNANCE_TWIN_MANIFEST_SCHEMA_ID,
+    FL3_GOVERNANCE_TWIN_MANIFEST_SCHEMA_VERSION_HASH,
+    validate_fl3_governance_twin_manifest,
+)
+from schemas.fl3_governance_twin_report_schema import (
+    FL3_GOVERNANCE_TWIN_REPORT_SCHEMA_ID,
+    FL3_GOVERNANCE_TWIN_REPORT_SCHEMA_VERSION_HASH,
+    validate_fl3_governance_twin_report,
+)
+from schemas.fl3_probe_synthesis_manifest_schema import (
+    FL3_PROBE_SYNTHESIS_MANIFEST_SCHEMA_ID,
+    FL3_PROBE_SYNTHESIS_MANIFEST_SCHEMA_VERSION_HASH,
+    validate_fl3_probe_synthesis_manifest,
+)
+from schemas.fl3_probe_synthesis_report_schema import (
+    FL3_PROBE_SYNTHESIS_REPORT_SCHEMA_ID,
+    FL3_PROBE_SYNTHESIS_REPORT_SCHEMA_VERSION_HASH,
+    validate_fl3_probe_synthesis_report,
+)
 from schemas.fl3_global_budget_state_schema import (
     FL3_GLOBAL_BUDGET_STATE_SCHEMA_ID,
     FL3_GLOBAL_BUDGET_STATE_SCHEMA_VERSION_HASH,
@@ -124,10 +149,30 @@ from schemas.fl3_human_signoff_schema import (
     FL3_HUMAN_SIGNOFF_SCHEMA_VERSION_HASH,
     validate_fl3_human_signoff,
 )
+from schemas.fl3_human_signoff_v2_schema import (
+    FL3_HUMAN_SIGNOFF_V2_SCHEMA_ID,
+    FL3_HUMAN_SIGNOFF_V2_SCHEMA_VERSION_HASH,
+    validate_fl3_human_signoff_v2,
+)
+from schemas.fl3_human_override_receipt_schema import (
+    FL3_HUMAN_OVERRIDE_RECEIPT_SCHEMA_ID,
+    FL3_HUMAN_OVERRIDE_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_fl3_human_override_receipt,
+)
 from schemas.fl3_law_amendment_schema import (
     FL3_LAW_AMENDMENT_SCHEMA_ID,
     FL3_LAW_AMENDMENT_SCHEMA_VERSION_HASH,
     validate_fl3_law_amendment,
+)
+from schemas.fl3_law_amendment_v2_schema import (
+    FL3_LAW_AMENDMENT_V2_SCHEMA_ID,
+    FL3_LAW_AMENDMENT_V2_SCHEMA_VERSION_HASH,
+    validate_fl3_law_amendment_v2,
+)
+from schemas.fl3_law_bundle_change_receipt_schema import (
+    FL3_LAW_BUNDLE_CHANGE_RECEIPT_SCHEMA_ID,
+    FL3_LAW_BUNDLE_CHANGE_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_fl3_law_bundle_change_receipt,
 )
 from schemas.fl3_reasoning_trace_schema import (
     FL3_REASONING_TRACE_SCHEMA_ID,
@@ -144,10 +189,135 @@ from schemas.fl3_signal_quality_schema import (
     FL3_SIGNAL_QUALITY_SCHEMA_VERSION_HASH,
     validate_fl3_signal_quality,
 )
+from schemas.fl3_training_admission_receipt_schema import (
+    FL3_TRAINING_ADMISSION_RECEIPT_SCHEMA_ID,
+    FL3_TRAINING_ADMISSION_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_fl3_training_admission_receipt,
+)
+from schemas.fl3_red_assault_schema import (
+    FL3_RED_ASSAULT_SCHEMA_ID,
+    FL3_RED_ASSAULT_SCHEMA_VERSION_HASH,
+    validate_fl3_red_assault,
+)
+from schemas.fl3_suite_registry_schema import (
+    FL3_SUITE_REGISTRY_SCHEMA_ID,
+    FL3_SUITE_REGISTRY_SCHEMA_VERSION_HASH,
+    validate_fl3_suite_registry,
+)
+from schemas.fl3_validator_catalog_schema import (
+    FL3_VALIDATOR_CATALOG_SCHEMA_ID,
+    FL3_VALIDATOR_CATALOG_SCHEMA_VERSION_HASH,
+    validate_fl3_validator_catalog,
+)
+from schemas.fl3_validator_catalog_v2_schema import (
+    FL3_VALIDATOR_CATALOG_V2_SCHEMA_ID,
+    FL3_VALIDATOR_CATALOG_V2_SCHEMA_VERSION_HASH,
+    validate_fl3_validator_catalog_v2,
+)
+from schemas.fl3_axis_scoring_policy_schema import (
+    FL3_AXIS_SCORING_POLICY_SCHEMA_ID,
+    FL3_AXIS_SCORING_POLICY_SCHEMA_VERSION_HASH,
+    validate_fl3_axis_scoring_policy,
+)
+from schemas.fl3_suite_definition_schema import (
+    FL3_SUITE_DEFINITION_SCHEMA_ID,
+    FL3_SUITE_DEFINITION_SCHEMA_VERSION_HASH,
+    validate_fl3_suite_definition,
+)
+from schemas.fl3_suite_outputs_schema import (
+    FL3_SUITE_OUTPUTS_SCHEMA_ID,
+    FL3_SUITE_OUTPUTS_SCHEMA_VERSION_HASH,
+    validate_fl3_suite_outputs,
+)
+from schemas.fl3_suite_eval_report_schema import (
+    FL3_SUITE_EVAL_REPORT_SCHEMA_ID,
+    FL3_SUITE_EVAL_REPORT_SCHEMA_VERSION_HASH,
+    validate_fl3_suite_eval_report,
+)
+from schemas.fl3_axis_fitness_report_schema import (
+    FL3_AXIS_FITNESS_REPORT_SCHEMA_ID,
+    FL3_AXIS_FITNESS_REPORT_SCHEMA_VERSION_HASH,
+    validate_fl3_axis_fitness_report,
+)
+from schemas.fl3_audit_eval_report_schema import (
+    FL3_AUDIT_EVAL_REPORT_SCHEMA_ID,
+    FL3_AUDIT_EVAL_REPORT_SCHEMA_VERSION_HASH,
+    validate_fl3_audit_eval_report,
+)
+from schemas.fl3_router_policy_schema import (
+    FL3_ROUTER_POLICY_SCHEMA_ID,
+    FL3_ROUTER_POLICY_SCHEMA_VERSION_HASH,
+    validate_fl3_router_policy,
+)
+from schemas.fl3_router_demo_suite_schema import (
+    FL3_ROUTER_DEMO_SUITE_SCHEMA_ID,
+    FL3_ROUTER_DEMO_SUITE_SCHEMA_VERSION_HASH,
+    validate_fl3_router_demo_suite,
+)
+from schemas.fl3_routing_receipt_schema import (
+    FL3_ROUTING_RECEIPT_SCHEMA_ID,
+    FL3_ROUTING_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_fl3_routing_receipt,
+)
+from schemas.fl3_router_run_report_schema import (
+    FL3_ROUTER_RUN_REPORT_SCHEMA_ID,
+    FL3_ROUTER_RUN_REPORT_SCHEMA_VERSION_HASH,
+    validate_fl3_router_run_report,
+)
+from schemas.fl3_break_hypothesis_schema import (
+    FL3_BREAK_HYPOTHESIS_SCHEMA_ID,
+    FL3_BREAK_HYPOTHESIS_SCHEMA_VERSION_HASH,
+    validate_fl3_break_hypothesis,
+)
+from schemas.fl3_counterpressure_plan_schema import (
+    FL3_COUNTERPRESSURE_PLAN_SCHEMA_ID,
+    FL3_COUNTERPRESSURE_PLAN_SCHEMA_VERSION_HASH,
+    validate_fl3_counterpressure_plan,
+)
+from schemas.fl3_fragility_probe_result_schema import (
+    FL3_FRAGILITY_PROBE_RESULT_SCHEMA_ID,
+    FL3_FRAGILITY_PROBE_RESULT_SCHEMA_VERSION_HASH,
+    validate_fl3_fragility_probe_result,
+)
+from schemas.fl3_evaluation_admission_receipt_schema import (
+    FL3_EVALUATION_ADMISSION_RECEIPT_SCHEMA_ID,
+    FL3_EVALUATION_ADMISSION_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_fl3_evaluation_admission_receipt,
+)
+from schemas.fl3_law_change_admission_receipt_schema import (
+    FL3_LAW_CHANGE_ADMISSION_RECEIPT_SCHEMA_ID,
+    FL3_LAW_CHANGE_ADMISSION_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_fl3_law_change_admission_receipt,
+)
 from schemas.fl3_tournament_manifest_schema import (
     FL3_TOURNAMENT_MANIFEST_SCHEMA_ID,
     FL3_TOURNAMENT_MANIFEST_SCHEMA_VERSION_HASH,
     validate_fl3_tournament_manifest,
+)
+from schemas.fl3_tournament_plan_schema import (
+    FL3_TOURNAMENT_PLAN_SCHEMA_ID,
+    FL3_TOURNAMENT_PLAN_SCHEMA_VERSION_HASH,
+    validate_fl3_tournament_plan,
+)
+from schemas.fl3_tournament_result_schema import (
+    FL3_TOURNAMENT_RESULT_SCHEMA_ID,
+    FL3_TOURNAMENT_RESULT_SCHEMA_VERSION_HASH,
+    validate_fl3_tournament_result,
+)
+from schemas.fl3_merge_manifest_schema import (
+    FL3_MERGE_MANIFEST_SCHEMA_ID,
+    FL3_MERGE_MANIFEST_SCHEMA_VERSION_HASH,
+    validate_fl3_merge_manifest,
+)
+from schemas.fl3_merge_eval_receipt_schema import (
+    FL3_MERGE_EVAL_RECEIPT_SCHEMA_ID,
+    FL3_MERGE_EVAL_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_fl3_merge_eval_receipt,
+)
+from schemas.fl3_merge_rollback_plan_schema import (
+    FL3_MERGE_ROLLBACK_PLAN_SCHEMA_ID,
+    FL3_MERGE_ROLLBACK_PLAN_SCHEMA_VERSION_HASH,
+    validate_fl3_merge_rollback_plan,
 )
 from schemas.fl3_breeding_manifest_schema import (
     FL3_BREEDING_MANIFEST_SCHEMA_ID,
@@ -219,10 +389,25 @@ from schemas.fl3_determinism_contract_schema import (
     FL3_DETERMINISM_CONTRACT_SCHEMA_VERSION_HASH,
     validate_fl3_determinism_contract,
 )
+from schemas.fl3_determinism_anchor_schema import (
+    FL3_DETERMINISM_ANCHOR_SCHEMA_ID,
+    FL3_DETERMINISM_ANCHOR_SCHEMA_VERSION_HASH,
+    validate_fl3_determinism_anchor,
+)
+from schemas.fl3_time_contract_schema import (
+    FL3_TIME_CONTRACT_SCHEMA_ID,
+    FL3_TIME_CONTRACT_SCHEMA_VERSION_HASH,
+    validate_fl3_time_contract,
+)
 from schemas.fl3_canary_artifact_schema import (
     FL3_CANARY_ARTIFACT_SCHEMA_ID,
     FL3_CANARY_ARTIFACT_SCHEMA_VERSION_HASH,
     validate_fl3_canary_artifact,
+)
+from schemas.fl3_change_receipt_schema import (
+    FL3_CHANGE_RECEIPT_SCHEMA_ID,
+    FL3_CHANGE_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_fl3_change_receipt,
 )
 from schemas.fl3_utility_pack_manifest_schema import (
     FL3_UTILITY_PACK_MANIFEST_SCHEMA_ID,
@@ -304,6 +489,96 @@ from schemas.fl4_promotion_report_schema import (
     FL4_PROMOTION_REPORT_SCHEMA_VERSION_HASH,
     validate_fl4_promotion_report,
 )
+from schemas.fl3_promotion_rationale_schema import (
+    FL3_PROMOTION_RATIONALE_SCHEMA_ID,
+    FL3_PROMOTION_RATIONALE_SCHEMA_VERSION_HASH,
+    validate_fl3_promotion_rationale,
+)
+from schemas.fl3_run_protocol_schema import (
+    FL3_RUN_PROTOCOL_SCHEMA_ID,
+    FL3_RUN_PROTOCOL_SCHEMA_VERSION_HASH,
+    validate_fl3_run_protocol,
+)
+from schemas.fl3_replay_receipt_schema import (
+    FL3_REPLAY_RECEIPT_SCHEMA_ID,
+    FL3_REPLAY_RECEIPT_SCHEMA_VERSION_HASH,
+    validate_fl3_replay_receipt,
+)
+from schemas.fl3_delivery_pack_manifest_schema import (
+    FL3_DELIVERY_PACK_MANIFEST_SCHEMA_ID,
+    FL3_DELIVERY_PACK_MANIFEST_SCHEMA_VERSION_HASH,
+    validate_fl3_delivery_pack_manifest,
+)
+from schemas.fl3_audit_event_schema import (
+    FL3_AUDIT_EVENT_SCHEMA_ID,
+    FL3_AUDIT_EVENT_SCHEMA_VERSION_HASH,
+    validate_fl3_audit_event,
+)
+from schemas.fl3_audit_event_index_schema import (
+    FL3_AUDIT_EVENT_INDEX_SCHEMA_ID,
+    FL3_AUDIT_EVENT_INDEX_SCHEMA_VERSION_HASH,
+    validate_fl3_audit_event_index,
+)
+from schemas.fl3_audit_intelligence_config_schema import (
+    FL3_AUDIT_INTELLIGENCE_CONFIG_SCHEMA_ID,
+    FL3_AUDIT_INTELLIGENCE_CONFIG_SCHEMA_VERSION_HASH,
+    validate_fl3_audit_intelligence_config,
+)
+from schemas.fl3_audit_pattern_cluster_schema import (
+    FL3_AUDIT_PATTERN_CLUSTER_SCHEMA_ID,
+    FL3_AUDIT_PATTERN_CLUSTER_SCHEMA_VERSION_HASH,
+    validate_fl3_audit_pattern_cluster,
+)
+from schemas.fl3_audit_probe_proposal_schema import (
+    FL3_AUDIT_PROBE_PROPOSAL_SCHEMA_ID,
+    FL3_AUDIT_PROBE_PROPOSAL_SCHEMA_VERSION_HASH,
+    validate_fl3_audit_probe_proposal,
+)
+from schemas.fl3_audit_doctrine_proposal_schema import (
+    FL3_AUDIT_DOCTRINE_PROPOSAL_SCHEMA_ID,
+    FL3_AUDIT_DOCTRINE_PROPOSAL_SCHEMA_VERSION_HASH,
+    validate_fl3_audit_doctrine_proposal,
+)
+from schemas.fl3_audit_proposal_adoption_schema import (
+    FL3_AUDIT_PROPOSAL_ADOPTION_SCHEMA_ID,
+    FL3_AUDIT_PROPOSAL_ADOPTION_SCHEMA_VERSION_HASH,
+    validate_fl3_audit_proposal_adoption,
+)
+from schemas.fl3_audit_intelligence_report_schema import (
+    FL3_AUDIT_INTELLIGENCE_REPORT_SCHEMA_ID,
+    FL3_AUDIT_INTELLIGENCE_REPORT_SCHEMA_VERSION_HASH,
+    validate_fl3_audit_intelligence_report,
+)
+from schemas.fl3_audit_intelligence_metrics_schema import (
+    FL3_AUDIT_INTELLIGENCE_METRICS_SCHEMA_ID,
+    FL3_AUDIT_INTELLIGENCE_METRICS_SCHEMA_VERSION_HASH,
+    validate_fl3_audit_intelligence_metrics,
+)
+from schemas.fl3_secret_scan_report_schema import (
+    FL3_SECRET_SCAN_REPORT_SCHEMA_ID,
+    FL3_SECRET_SCAN_REPORT_SCHEMA_VERSION_HASH,
+    validate_fl3_secret_scan_report,
+)
+from schemas.fl3_secret_scan_summary_schema import (
+    FL3_SECRET_SCAN_SUMMARY_SCHEMA_ID,
+    FL3_SECRET_SCAN_SUMMARY_SCHEMA_VERSION_HASH,
+    validate_fl3_secret_scan_summary,
+)
+from schemas.fl3_work_order_schema import (
+    FL3_WORK_ORDER_SCHEMA_ID,
+    FL3_WORK_ORDER_SCHEMA_VERSION_HASH,
+    validate_fl3_work_order,
+)
+from schemas.fl3_work_order_mrt1_e2e_schema import (
+    FL3_WORK_ORDER_MRT1_E2E_SCHEMA_ID,
+    FL3_WORK_ORDER_MRT1_E2E_SCHEMA_VERSION_HASH,
+    validate_fl3_work_order_mrt1_e2e,
+)
+from schemas.fl3_work_order_mrt1_e2e_resolved_schema import (
+    FL3_WORK_ORDER_MRT1_E2E_RESOLVED_SCHEMA_ID,
+    FL3_WORK_ORDER_MRT1_E2E_RESOLVED_SCHEMA_VERSION_HASH,
+    validate_fl3_work_order_mrt1_e2e_resolved,
+)
 from schemas.phase1c_work_order_schema import (
     PHASE1C_WORK_ORDER_SCHEMA_ID,
     PHASE1C_WORK_ORDER_SCHEMA_VERSION_HASH,
@@ -361,6 +636,11 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     ),
     FL3_GLOBAL_BUDGET_STATE_SCHEMA_ID: (FL3_GLOBAL_BUDGET_STATE_SCHEMA_VERSION_HASH, validate_fl3_global_budget_state),
     FL3_HUMAN_SIGNOFF_SCHEMA_ID: (FL3_HUMAN_SIGNOFF_SCHEMA_VERSION_HASH, validate_fl3_human_signoff),
+    FL3_HUMAN_SIGNOFF_V2_SCHEMA_ID: (FL3_HUMAN_SIGNOFF_V2_SCHEMA_VERSION_HASH, validate_fl3_human_signoff_v2),
+    FL3_HUMAN_OVERRIDE_RECEIPT_SCHEMA_ID: (
+        FL3_HUMAN_OVERRIDE_RECEIPT_SCHEMA_VERSION_HASH,
+        validate_fl3_human_override_receipt,
+    ),
     FL3_GLOBAL_UNLOCK_SCHEMA_ID: (FL3_GLOBAL_UNLOCK_SCHEMA_VERSION_HASH, validate_fl3_global_unlock),
     FL3_FACTORY_JOBSPEC_SCHEMA_ID: (FL3_FACTORY_JOBSPEC_SCHEMA_VERSION_HASH, validate_fl3_factory_jobspec),
     FL3_FACTORY_JOBSPEC_V2_SCHEMA_ID: (FL3_FACTORY_JOBSPEC_V2_SCHEMA_VERSION_HASH, validate_fl3_factory_jobspec_v2),
@@ -397,11 +677,69 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
         FL3_TOURNAMENT_MANIFEST_SCHEMA_VERSION_HASH,
         validate_fl3_tournament_manifest,
     ),
+    FL3_TOURNAMENT_PLAN_SCHEMA_ID: (
+        FL3_TOURNAMENT_PLAN_SCHEMA_VERSION_HASH,
+        validate_fl3_tournament_plan,
+    ),
+    FL3_TOURNAMENT_RESULT_SCHEMA_ID: (
+        FL3_TOURNAMENT_RESULT_SCHEMA_VERSION_HASH,
+        validate_fl3_tournament_result,
+    ),
     FL3_BLIND_JUDGEMENT_PACK_SCHEMA_ID: (FL3_BLIND_JUDGEMENT_PACK_SCHEMA_VERSION_HASH, validate_fl3_blind_judgement_pack),
     FL3_REVEAL_MAPPING_SCHEMA_ID: (FL3_REVEAL_MAPPING_SCHEMA_VERSION_HASH, validate_fl3_reveal_mapping),
     FL3_SIGNAL_QUALITY_SCHEMA_ID: (FL3_SIGNAL_QUALITY_SCHEMA_VERSION_HASH, validate_fl3_signal_quality),
+    FL3_TRAINING_ADMISSION_RECEIPT_SCHEMA_ID: (
+        FL3_TRAINING_ADMISSION_RECEIPT_SCHEMA_VERSION_HASH,
+        validate_fl3_training_admission_receipt,
+    ),
+    FL3_RED_ASSAULT_SCHEMA_ID: (FL3_RED_ASSAULT_SCHEMA_VERSION_HASH, validate_fl3_red_assault),
+    FL3_SUITE_REGISTRY_SCHEMA_ID: (FL3_SUITE_REGISTRY_SCHEMA_VERSION_HASH, validate_fl3_suite_registry),
+    FL3_VALIDATOR_CATALOG_SCHEMA_ID: (FL3_VALIDATOR_CATALOG_SCHEMA_VERSION_HASH, validate_fl3_validator_catalog),
+    FL3_VALIDATOR_CATALOG_V2_SCHEMA_ID: (FL3_VALIDATOR_CATALOG_V2_SCHEMA_VERSION_HASH, validate_fl3_validator_catalog_v2),
+    FL3_AXIS_SCORING_POLICY_SCHEMA_ID: (FL3_AXIS_SCORING_POLICY_SCHEMA_VERSION_HASH, validate_fl3_axis_scoring_policy),
+    FL3_SUITE_DEFINITION_SCHEMA_ID: (FL3_SUITE_DEFINITION_SCHEMA_VERSION_HASH, validate_fl3_suite_definition),
+    FL3_SUITE_OUTPUTS_SCHEMA_ID: (FL3_SUITE_OUTPUTS_SCHEMA_VERSION_HASH, validate_fl3_suite_outputs),
+    FL3_SUITE_EVAL_REPORT_SCHEMA_ID: (FL3_SUITE_EVAL_REPORT_SCHEMA_VERSION_HASH, validate_fl3_suite_eval_report),
+    FL3_AXIS_FITNESS_REPORT_SCHEMA_ID: (FL3_AXIS_FITNESS_REPORT_SCHEMA_VERSION_HASH, validate_fl3_axis_fitness_report),
+    FL3_AUDIT_EVAL_REPORT_SCHEMA_ID: (FL3_AUDIT_EVAL_REPORT_SCHEMA_VERSION_HASH, validate_fl3_audit_eval_report),
+    FL3_ROUTER_POLICY_SCHEMA_ID: (FL3_ROUTER_POLICY_SCHEMA_VERSION_HASH, validate_fl3_router_policy),
+    FL3_ROUTER_DEMO_SUITE_SCHEMA_ID: (FL3_ROUTER_DEMO_SUITE_SCHEMA_VERSION_HASH, validate_fl3_router_demo_suite),
+    FL3_ROUTING_RECEIPT_SCHEMA_ID: (FL3_ROUTING_RECEIPT_SCHEMA_VERSION_HASH, validate_fl3_routing_receipt),
+    FL3_ROUTER_RUN_REPORT_SCHEMA_ID: (FL3_ROUTER_RUN_REPORT_SCHEMA_VERSION_HASH, validate_fl3_router_run_report),
+    FL3_BREAK_HYPOTHESIS_SCHEMA_ID: (FL3_BREAK_HYPOTHESIS_SCHEMA_VERSION_HASH, validate_fl3_break_hypothesis),
+    FL3_COUNTERPRESSURE_PLAN_SCHEMA_ID: (
+        FL3_COUNTERPRESSURE_PLAN_SCHEMA_VERSION_HASH,
+        validate_fl3_counterpressure_plan,
+    ),
+    FL3_FRAGILITY_PROBE_RESULT_SCHEMA_ID: (
+        FL3_FRAGILITY_PROBE_RESULT_SCHEMA_VERSION_HASH,
+        validate_fl3_fragility_probe_result,
+    ),
+    FL3_EVALUATION_ADMISSION_RECEIPT_SCHEMA_ID: (
+        FL3_EVALUATION_ADMISSION_RECEIPT_SCHEMA_VERSION_HASH,
+        validate_fl3_evaluation_admission_receipt,
+    ),
+    FL3_LAW_CHANGE_ADMISSION_RECEIPT_SCHEMA_ID: (
+        FL3_LAW_CHANGE_ADMISSION_RECEIPT_SCHEMA_VERSION_HASH,
+        validate_fl3_law_change_admission_receipt,
+    ),
+    FL3_MERGE_MANIFEST_SCHEMA_ID: (FL3_MERGE_MANIFEST_SCHEMA_VERSION_HASH, validate_fl3_merge_manifest),
+    FL3_MERGE_EVAL_RECEIPT_SCHEMA_ID: (
+        FL3_MERGE_EVAL_RECEIPT_SCHEMA_VERSION_HASH,
+        validate_fl3_merge_eval_receipt,
+    ),
+    FL3_MERGE_ROLLBACK_PLAN_SCHEMA_ID: (
+        FL3_MERGE_ROLLBACK_PLAN_SCHEMA_VERSION_HASH,
+        validate_fl3_merge_rollback_plan,
+    ),
     FL3_FAILURE_CONTRACT_SCHEMA_ID: (FL3_FAILURE_CONTRACT_SCHEMA_VERSION_HASH, validate_fl3_failure_contract),
+    FL3_FAILURE_TAXONOMY_SCHEMA_ID: (FL3_FAILURE_TAXONOMY_SCHEMA_VERSION_HASH, validate_fl3_failure_taxonomy),
     FL3_LAW_AMENDMENT_SCHEMA_ID: (FL3_LAW_AMENDMENT_SCHEMA_VERSION_HASH, validate_fl3_law_amendment),
+    FL3_LAW_AMENDMENT_V2_SCHEMA_ID: (FL3_LAW_AMENDMENT_V2_SCHEMA_VERSION_HASH, validate_fl3_law_amendment_v2),
+    FL3_LAW_BUNDLE_CHANGE_RECEIPT_SCHEMA_ID: (
+        FL3_LAW_BUNDLE_CHANGE_RECEIPT_SCHEMA_VERSION_HASH,
+        validate_fl3_law_bundle_change_receipt,
+    ),
     # FL3 addendum-derived artifacts (append-only).
     FL3_FITNESS_POLICY_SCHEMA_ID: (FL3_FITNESS_POLICY_SCHEMA_VERSION_HASH, validate_fl3_fitness_policy),
     FL3_IMMUNE_SNAPSHOT_SCHEMA_ID: (FL3_IMMUNE_SNAPSHOT_SCHEMA_VERSION_HASH, validate_fl3_immune_snapshot),
@@ -433,7 +771,13 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
         FL3_DETERMINISM_CONTRACT_SCHEMA_VERSION_HASH,
         validate_fl3_determinism_contract,
     ),
+    FL3_DETERMINISM_ANCHOR_SCHEMA_ID: (
+        FL3_DETERMINISM_ANCHOR_SCHEMA_VERSION_HASH,
+        validate_fl3_determinism_anchor,
+    ),
+    FL3_TIME_CONTRACT_SCHEMA_ID: (FL3_TIME_CONTRACT_SCHEMA_VERSION_HASH, validate_fl3_time_contract),
     FL3_CANARY_ARTIFACT_SCHEMA_ID: (FL3_CANARY_ARTIFACT_SCHEMA_VERSION_HASH, validate_fl3_canary_artifact),
+    FL3_CHANGE_RECEIPT_SCHEMA_ID: (FL3_CHANGE_RECEIPT_SCHEMA_VERSION_HASH, validate_fl3_change_receipt),
     FL3_UTILITY_PACK_MANIFEST_SCHEMA_ID: (
         FL3_UTILITY_PACK_MANIFEST_SCHEMA_VERSION_HASH,
         validate_fl3_utility_pack_manifest,
@@ -444,6 +788,75 @@ SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     # FL4: preflight/promotion reports (append-only).
     FL4_PREFLIGHT_SUMMARY_SCHEMA_ID: (FL4_PREFLIGHT_SUMMARY_SCHEMA_VERSION_HASH, validate_fl4_preflight_summary),
     FL4_PROMOTION_REPORT_SCHEMA_ID: (FL4_PROMOTION_REPORT_SCHEMA_VERSION_HASH, validate_fl4_promotion_report),
+    FL3_PROMOTION_RATIONALE_SCHEMA_ID: (
+        FL3_PROMOTION_RATIONALE_SCHEMA_VERSION_HASH,
+        validate_fl3_promotion_rationale,
+    ),
+    FL3_RUN_PROTOCOL_SCHEMA_ID: (FL3_RUN_PROTOCOL_SCHEMA_VERSION_HASH, validate_fl3_run_protocol),
+    FL3_REPLAY_RECEIPT_SCHEMA_ID: (FL3_REPLAY_RECEIPT_SCHEMA_VERSION_HASH, validate_fl3_replay_receipt),
+    FL3_GOVERNANCE_TWIN_MANIFEST_SCHEMA_ID: (
+        FL3_GOVERNANCE_TWIN_MANIFEST_SCHEMA_VERSION_HASH,
+        validate_fl3_governance_twin_manifest,
+    ),
+    FL3_GOVERNANCE_TWIN_REPORT_SCHEMA_ID: (
+        FL3_GOVERNANCE_TWIN_REPORT_SCHEMA_VERSION_HASH,
+        validate_fl3_governance_twin_report,
+    ),
+    FL3_PROBE_SYNTHESIS_MANIFEST_SCHEMA_ID: (
+        FL3_PROBE_SYNTHESIS_MANIFEST_SCHEMA_VERSION_HASH,
+        validate_fl3_probe_synthesis_manifest,
+    ),
+    FL3_PROBE_SYNTHESIS_REPORT_SCHEMA_ID: (
+        FL3_PROBE_SYNTHESIS_REPORT_SCHEMA_VERSION_HASH,
+        validate_fl3_probe_synthesis_report,
+    ),
+    FL3_DELIVERY_PACK_MANIFEST_SCHEMA_ID: (
+        FL3_DELIVERY_PACK_MANIFEST_SCHEMA_VERSION_HASH,
+        validate_fl3_delivery_pack_manifest,
+    ),
+    # EPIC_13: audit intelligence artifacts (advisory-only; append-only).
+    FL3_AUDIT_EVENT_SCHEMA_ID: (FL3_AUDIT_EVENT_SCHEMA_VERSION_HASH, validate_fl3_audit_event),
+    FL3_AUDIT_EVENT_INDEX_SCHEMA_ID: (FL3_AUDIT_EVENT_INDEX_SCHEMA_VERSION_HASH, validate_fl3_audit_event_index),
+    FL3_AUDIT_INTELLIGENCE_CONFIG_SCHEMA_ID: (
+        FL3_AUDIT_INTELLIGENCE_CONFIG_SCHEMA_VERSION_HASH,
+        validate_fl3_audit_intelligence_config,
+    ),
+    FL3_AUDIT_PATTERN_CLUSTER_SCHEMA_ID: (
+        FL3_AUDIT_PATTERN_CLUSTER_SCHEMA_VERSION_HASH,
+        validate_fl3_audit_pattern_cluster,
+    ),
+    FL3_AUDIT_PROBE_PROPOSAL_SCHEMA_ID: (
+        FL3_AUDIT_PROBE_PROPOSAL_SCHEMA_VERSION_HASH,
+        validate_fl3_audit_probe_proposal,
+    ),
+    FL3_AUDIT_DOCTRINE_PROPOSAL_SCHEMA_ID: (
+        FL3_AUDIT_DOCTRINE_PROPOSAL_SCHEMA_VERSION_HASH,
+        validate_fl3_audit_doctrine_proposal,
+    ),
+    FL3_AUDIT_PROPOSAL_ADOPTION_SCHEMA_ID: (
+        FL3_AUDIT_PROPOSAL_ADOPTION_SCHEMA_VERSION_HASH,
+        validate_fl3_audit_proposal_adoption,
+    ),
+    FL3_AUDIT_INTELLIGENCE_REPORT_SCHEMA_ID: (
+        FL3_AUDIT_INTELLIGENCE_REPORT_SCHEMA_VERSION_HASH,
+        validate_fl3_audit_intelligence_report,
+    ),
+    FL3_AUDIT_INTELLIGENCE_METRICS_SCHEMA_ID: (
+        FL3_AUDIT_INTELLIGENCE_METRICS_SCHEMA_VERSION_HASH,
+        validate_fl3_audit_intelligence_metrics,
+    ),
+    FL3_SECRET_SCAN_REPORT_SCHEMA_ID: (FL3_SECRET_SCAN_REPORT_SCHEMA_VERSION_HASH, validate_fl3_secret_scan_report),
+    FL3_SECRET_SCAN_SUMMARY_SCHEMA_ID: (FL3_SECRET_SCAN_SUMMARY_SCHEMA_VERSION_HASH, validate_fl3_secret_scan_summary),
+    # Work orders: schema-bound execution intent artifacts (append-only).
+    FL3_WORK_ORDER_SCHEMA_ID: (FL3_WORK_ORDER_SCHEMA_VERSION_HASH, validate_fl3_work_order),
+    FL3_WORK_ORDER_MRT1_E2E_SCHEMA_ID: (
+        FL3_WORK_ORDER_MRT1_E2E_SCHEMA_VERSION_HASH,
+        validate_fl3_work_order_mrt1_e2e,
+    ),
+    FL3_WORK_ORDER_MRT1_E2E_RESOLVED_SCHEMA_ID: (
+        FL3_WORK_ORDER_MRT1_E2E_RESOLVED_SCHEMA_VERSION_HASH,
+        validate_fl3_work_order_mrt1_e2e_resolved,
+    ),
     # Phase 1C: work order (append-only).
     PHASE1C_WORK_ORDER_SCHEMA_ID: (PHASE1C_WORK_ORDER_SCHEMA_VERSION_HASH, validate_phase1c_work_order),
     # Phase 2: governed learning unlock work order (append-only; policy artifact).
@@ -505,6 +918,22 @@ def validate_object_with_binding(payload: Any) -> None:
     if not isinstance(schema_id, str):
         raise SchemaValidationError("schema_id must be a string")
     if not isinstance(schema_version_hash, str):
-        raise SchemaValidationError("schema_version_hash must be a string")
+        # EPIC_23/32 legacy compatibility:
+        # Some historic artifacts predate schema_version_hash binding. For allowlisted schema_ids only,
+        # inject the registry expected hash in-memory for validation.
+        legacy_allow_missing = {
+            "kt.change_receipt.v1",
+            "kt.work_order.v1",
+            "kt.work_order.mrt1_e2e.v1",
+            "kt.work_order.mrt1_e2e.resolved.v1",
+        }
+        if schema_version_hash is None and schema_id in legacy_allow_missing:
+            if schema_id not in SCHEMA_REGISTRY:
+                raise SchemaRegistryError(f"Unknown schema_id (fail-closed): {schema_id!r}")
+            expected_hash, _validator = SCHEMA_REGISTRY[schema_id]
+            obj["schema_version_hash"] = expected_hash
+            schema_version_hash = expected_hash
+        else:
+            raise SchemaValidationError("schema_version_hash must be a string")
     validate_schema_binding(schema_id, schema_version_hash)
     validate(schema_id, obj)

@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
 from tools.verification.fl3_canonical import repo_root_from, sha256_json
+from tools.verification.fl3_validators import FL3ValidationError
 
 
 @dataclass(frozen=True)
@@ -59,6 +60,7 @@ def _mk_min_contract(repo_root: Path) -> Dict[str, Any]:
         "allowed_output_schemas": sorted(
             [
                 "kt.factory.jobspec.v1",
+                "kt.training_admission_receipt.v1",
                 "kt.factory.dataset.v1",
                 "kt.reasoning_trace.v1",
                 "kt.factory.judgement.v1",
@@ -90,7 +92,39 @@ def _mk_min_contract(repo_root: Path) -> Dict[str, Any]:
     return c
 
 
-def _run_job(job: Dict[str, Any], contract: Dict[str, Any], *, tmp_dir: Path) -> int:
+def _clean_job_state(*, repo_root: Path, job: Dict[str, Any]) -> None:
+    """
+    Red assault must not depend on prior local state under exports/.
+
+    This is an allowlisted cleanup: we delete only paths that resolve under
+    `KT_PROD_CLEANROOM/exports/` for the provided jobspec. Any path traversal
+    is intentionally ignored (fail-closed is asserted by the attack itself).
+    """
+    import shutil
+
+    exports_root = (repo_root / "KT_PROD_CLEANROOM" / "exports").resolve()
+    job_id = str(job.get("job_id", "")).strip()
+    shadow_root = (repo_root / str(job.get("export_shadow_root", ""))).resolve()
+    promoted_root = (repo_root / str(job.get("export_promoted_root", ""))).resolve()
+
+    try:
+        if job_id and shadow_root.is_relative_to(exports_root):
+            job_dir = (shadow_root / job_id).resolve()
+            if job_dir.is_relative_to(exports_root) and job_dir.exists():
+                shutil.rmtree(job_dir)
+    except Exception as exc:  # noqa: BLE001
+        raise FL3ValidationError(f"FAIL_CLOSED: unable to clean red assault job_dir: {exc}") from exc
+
+    # Promotions and side artifacts may be written under export_promoted_root; clean it
+    # if and only if it resolves under exports/ (never attempt to clean on traversal).
+    try:
+        if promoted_root.is_relative_to(exports_root) and promoted_root.exists():
+            shutil.rmtree(promoted_root)
+    except Exception as exc:  # noqa: BLE001
+        raise FL3ValidationError(f"FAIL_CLOSED: unable to clean red assault promoted_root: {exc}") from exc
+
+
+def _run_job(job: Dict[str, Any], contract: Dict[str, Any], *, tmp_dir: Path, repo_root: Path) -> int:
     from tools.training.fl3_factory.run_job import main
 
     job_path = tmp_dir / "job.json"
@@ -125,10 +159,17 @@ def _run_job(job: Dict[str, Any], contract: Dict[str, Any], *, tmp_dir: Path) ->
     budget_obj["schema_version_hash"] = schema_version_hash("fl3/kt.global_budget_state.v1.json")
     budget_path.write_text(json.dumps(budget_obj, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
 
+    _clean_job_state(repo_root=repo_root, job=job)
     return int(main(["--job", str(job_path), "--organ-contract", str(contract_path), "--budget-state", str(budget_path)]))
 
 
 def run_red_assault(*, tmp_dir: Path) -> Dict[str, Any]:
+    from schemas.fl3_schema_common import sha256_hex_of_obj  # type: ignore
+    from schemas.schema_files import schema_version_hash  # type: ignore
+
+    from tools.training.fl3_factory.timeutil import utc_now_z
+    from tools.verification.fl3_validators import validate_schema_bound_object
+
     repo_root = repo_root_from(Path(__file__))
     base_job = _mk_base_jobspec()
     contract = _mk_min_contract(repo_root)
@@ -136,47 +177,59 @@ def run_red_assault(*, tmp_dir: Path) -> Dict[str, Any]:
     results: List[AttackResult] = []
 
     # Baseline must pass (sanity check).
-    rc_ok = _run_job(base_job, contract, tmp_dir=tmp_dir)
+    rc_ok = _run_job(base_job, contract, tmp_dir=tmp_dir, repo_root=repo_root)
     results.append(AttackResult("BASELINE_SMOKE", (0,), rc_ok))
 
     # RA1: export root traversal / escape attempt in jobspec.
     job_bad_path = dict(base_job)
     job_bad_path["export_shadow_root"] = "KT_PROD_CLEANROOM/exports/../../escape"
     job_bad_path["job_id"] = sha256_json({k: v for k, v in job_bad_path.items() if k != "job_id"})
-    rc = _run_job(job_bad_path, contract, tmp_dir=tmp_dir)
+    rc = _run_job(job_bad_path, contract, tmp_dir=tmp_dir, repo_root=repo_root)
     results.append(AttackResult("RA1_EXPORT_ROOT_ESCAPE", (2,), rc))
 
     # RA2: schema_version_hash tamper.
     job_bad_schema = dict(base_job)
     job_bad_schema["schema_version_hash"] = "0" * 64
     job_bad_schema["job_id"] = sha256_json({k: v for k, v in job_bad_schema.items() if k != "job_id"})
-    rc = _run_job(job_bad_schema, contract, tmp_dir=tmp_dir)
+    rc = _run_job(job_bad_schema, contract, tmp_dir=tmp_dir, repo_root=repo_root)
     results.append(AttackResult("RA2_SCHEMA_HASH_TAMPER", (2,), rc))
 
     # RA3: organ contract entrypoint hash tamper.
     contract_bad = json.loads(json.dumps(contract))
     contract_bad["entrypoints"]["run_job"]["sha256"] = "0" * 64
-    rc = _run_job(base_job, contract_bad, tmp_dir=tmp_dir)
+    rc = _run_job(base_job, contract_bad, tmp_dir=tmp_dir, repo_root=repo_root)
     results.append(AttackResult("RA3_ENTRYPOINT_HASH_TAMPER", (2,), rc))
 
-    return {
+    rows = [
+        {
+            "attack_id": r.attack_id,
+            "expected_exit_codes": list(r.expected_exit_codes),
+            "observed_exit_code": r.observed_exit_code,
+            "passed": r.passed,
+        }
+        for r in results
+    ]
+    rows = sorted(rows, key=lambda r: str(r.get("attack_id", "")).strip())
+
+    report = {
         "schema_id": "kt.fl3.red_assault.v1",
-        "results": [
-            {
-                "attack_id": r.attack_id,
-                "expected_exit_codes": list(r.expected_exit_codes),
-                "observed_exit_code": r.observed_exit_code,
-                "passed": r.passed,
-            }
-            for r in results
-        ],
+        "schema_version_hash": schema_version_hash("fl3/kt.fl3.red_assault.v1.json"),
+        "red_assault_id": "",
+        "results": rows,
         "all_passed": all(r.passed for r in results),
+        "created_at": utc_now_z(),
+        "notes": None,
     }
+    report["red_assault_id"] = sha256_hex_of_obj(report, drop_keys={"created_at", "red_assault_id"})
+    validate_schema_bound_object(report)
+    return report
 
 
 def main(argv: List[str] | None = None) -> int:
     import argparse
     import tempfile
+
+    from tools.verification.worm_write import write_text_worm
 
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=None, help="Optional output JSON report path")
@@ -186,7 +239,7 @@ def main(argv: List[str] | None = None) -> int:
         report = run_red_assault(tmp_dir=Path(td))
     out = json.dumps(report, indent=2, sort_keys=True, ensure_ascii=True)
     if args.out:
-        Path(args.out).write_text(out + "\n", encoding="utf-8")
+        write_text_worm(path=Path(args.out), text=out + "\n", label="red_assault_report.json")
     else:
         print(out)
     return 0 if report.get("all_passed") else 2

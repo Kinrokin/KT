@@ -38,6 +38,7 @@ def _mk_contract(*, repo_root: Path) -> dict:
         "allowed_output_schemas": sorted(
             [
                 "kt.factory.jobspec.v1",
+                "kt.training_admission_receipt.v1",
                 "kt.factory.dataset.v1",
                 "kt.reasoning_trace.v1",
                 "kt.factory.judgement.v1",
@@ -88,6 +89,12 @@ def test_fl4_determinism_canary_passes_and_emits_schema_bound_artifact(tmp_path:
 
     paths = load_fl3_canonical_runtime_paths(repo_root=repo_root)
     export_shadow_root = str(paths["exports_shadow_root"]).replace("\\", "/").rstrip("/") + "/_canary"
+    canary_exports = (repo_root / export_shadow_root).resolve()
+    if canary_exports.exists():
+        shutil.rmtree(canary_exports)
+    runs_dir = (repo_root / "KT_PROD_CLEANROOM" / "exports" / "adapters_shadow" / "_runs" / "FL4_CANARY").resolve()
+    if runs_dir.exists():
+        shutil.rmtree(runs_dir)
 
     try:
         rc = int(
@@ -140,6 +147,12 @@ def test_fl4_determinism_canary_rerun_is_stable(tmp_path: Path) -> None:
 
     paths = load_fl3_canonical_runtime_paths(repo_root=repo_root)
     export_shadow_root = str(paths["exports_shadow_root"]).replace("\\", "/").rstrip("/") + "/_canary"
+    canary_exports = (repo_root / export_shadow_root).resolve()
+    if canary_exports.exists():
+        shutil.rmtree(canary_exports)
+    runs_dir = (repo_root / "KT_PROD_CLEANROOM" / "exports" / "adapters_shadow" / "_runs" / "FL4_CANARY").resolve()
+    if runs_dir.exists():
+        shutil.rmtree(runs_dir)
 
     try:
         assert int(canary_main(["--organ-contract", str(contract_path), "--budget-state", str(budget_path), "--out", str(out1)])) == 0

@@ -1,0 +1,29 @@
+{
+  "version": "v1",
+  "rules": [
+    {
+      "rule_id": "WIN_USER_HOME",
+      "description": "Redact Windows user home paths (e.g., C:\\\\Users\\\\Alice\\\\...).",
+      "regex": "\\b[a-zA-Z]:\\\\+Users\\\\+[^\\\\\\r\\n\\t\\\"']+",
+      "replacement": "<redacted_win_user_home>"
+    },
+    {
+      "rule_id": "POSIX_USER_HOME",
+      "description": "Redact POSIX user home paths (e.g., /home/alice/... or /Users/alice/...).",
+      "regex": "\\b/(home|Users)/[^/\\r\\n\\t\\\"']+",
+      "replacement": "/<redacted_user_home>"
+    },
+    {
+      "rule_id": "EMAIL",
+      "description": "Redact email addresses.",
+      "regex": "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\\b",
+      "replacement": "<redacted_email>"
+    },
+    {
+      "rule_id": "IPV4",
+      "description": "Redact IPv4 addresses.",
+      "regex": "\\b(?:\\d{1,3}\\.){3}\\d{1,3}\\b",
+      "replacement": "<redacted_ipv4>"
+    }
+  ]
+}

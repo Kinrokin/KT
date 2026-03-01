@@ -26,12 +26,44 @@ SCHEMA_FILES = [
     "fl3/kt.factory.freeze_receipt.v1.json",
     "fl3/kt.reasoning_trace.v1.json",
     "fl3/kt.tournament_manifest.v1.json",
+    "fl3/kt.tournament_plan.v1.json",
+    "fl3/kt.tournament_result.v1.json",
     "fl3/kt.blind_judgement_pack.v1.json",
     "fl3/kt.reveal_mapping.v1.json",
     "fl3/kt.signal_quality.v1.json",
     "fl3/kt.failure_contract.v1.json",
+    "fl3/kt.failure_taxonomy.v1.json",
     "fl3/kt.human_signoff.v1.json",
+    "fl3/kt.human_signoff.v2.json",
+    "fl3/kt.human_override_receipt.v1.json",
     "fl3/kt.law_amendment.v1.json",
+    "fl3/kt.law_amendment.v2.json",
+    "fl3/kt.law_bundle_change_receipt.v1.json",
+    "fl3/kt.training_admission_receipt.v1.json",
+    "fl3/kt.evaluation_admission_receipt.v1.json",
+    "fl3/kt.law_change_admission_receipt.v1.json",
+    "fl3/kt.suite_registry.v1.json",
+    # EPIC_17: suite pack + validators (append-only).
+    "fl3/kt.validator_catalog.v1.json",
+    "fl3/kt.validator_catalog.v2.json",
+    "fl3/kt.axis_scoring_policy.v1.json",
+    "fl3/kt.suite_definition.v1.json",
+    "fl3/kt.suite_outputs.v1.json",
+    "fl3/kt.suite_eval_report.v1.json",
+    "fl3/kt.axis_fitness_report.v1.json",
+    # EPIC_18: auditor-grade consolidated report (append-only).
+    "fl3/kt.audit_eval_report.v1.json",
+    # EPIC_19: router hat demo artifacts (append-only).
+    "fl3/kt.router_policy.v1.json",
+    "fl3/kt.router_demo_suite.v1.json",
+    "fl3/kt.routing_receipt.v1.json",
+    "fl3/kt.router_run_report.v1.json",
+    "fl3/kt.break_hypothesis.v1.json",
+    "fl3/kt.counterpressure_plan.v1.json",
+    "fl3/kt.fragility_probe_result.v1.json",
+    "fl3/kt.merge_manifest.v1.json",
+    "fl3/kt.merge_eval_receipt.v1.json",
+    "fl3/kt.merge_rollback_plan.v1.json",
     "fl3/kt.breeding_manifest.v1.json",
     "fl3/kt.epigenetic_summary.v1.json",
     "fl3/kt.fitness_region.v1.json",
@@ -60,6 +92,9 @@ SCHEMA_FILES = [
     "fl3/kt.utility_pack_manifest.v1.json",
     "fl3/kt.supported_platforms.v1.json",
     "fl3/kt.determinism_contract.v1.json",
+    "fl3/kt.time_contract.v1.json",
+    "fl3/kt.governance_twin_manifest.v1.json",
+    "fl3/kt.governance_twin_report.v1.json",
     "fl3/kt.canary_artifact.v1.json",
     "fl3/kt.factory.eval_report.v2.json",
     "fl3/kt.promoted_manifest.v1.json",
@@ -68,6 +103,28 @@ SCHEMA_FILES = [
     "fl3/kt.metabolism_proof.v1.json",
     "fl3/kt.fl4.preflight_summary.v1.json",
     "fl3/kt.fl4.promotion_report.v1.json",
+    "fl3/kt.promotion_rationale.v1.json",
+    "fl3/kt.run_protocol.v1.json",
+    "fl3/kt.replay_receipt.v1.json",
+    "fl3/kt.secret_scan_report.v1.json",
+    "fl3/kt.secret_scan_summary.v1.json",
+    "fl3/kt.delivery_pack_manifest.v1.json",
+    "fl3/kt.fl3.red_assault.v1.json",
+    "fl3/kt.probe_synthesis_manifest.v1.json",
+    "fl3/kt.probe_synthesis_report.v1.json",
+    # EPIC_13: audit intelligence (advisory-only; append-only).
+    "fl3/kt.audit_event.v1.json",
+    "fl3/kt.audit_event_index.v1.json",
+    "fl3/kt.audit_intelligence_config.v1.json",
+    "fl3/kt.audit_pattern_cluster.v1.json",
+    "fl3/kt.audit_probe_proposal.v1.json",
+    "fl3/kt.audit_doctrine_proposal.v1.json",
+    "fl3/kt.audit_proposal_adoption.v1.json",
+    "fl3/kt.audit_intelligence_report.v1.json",
+    "fl3/kt.audit_intelligence_metrics.v1.json",
+    "fl3/kt.work_order.v1.json",
+    "fl3/kt.work_order.mrt1_e2e.v1.json",
+    "fl3/kt.work_order.mrt1_e2e.resolved.v1.json",
     "fl3/kt.phase1c_work_order.v1.json",
     "fl3/kt.phase2_work_order.v1.json",
     "fl3/kt.runtime_dag.v1.json",
@@ -127,6 +184,65 @@ def test_fl3_schema_validates_examples() -> None:
     signoff2["key_id"] = "bob"
     signoff2["signoff_id"] = _sha_id(signoff2, {"created_at", "signoff_id"})
     validate_object_with_binding(signoff2)
+
+    # human_signoff v2 (explicit attestation mode)
+    sim_payload_a = {"key_id": "alice", "payload_hash": signoff1["payload_hash"]}
+    sim_payload_b = {"key_id": "bob", "payload_hash": signoff2["payload_hash"]}
+    signoff2a = {
+        "schema_id": "kt.human_signoff.v2",
+        "schema_version_hash": schema_version_hash("fl3/kt.human_signoff.v2.json"),
+        "signoff_id": "",
+        "attestation_mode": "SIMULATED",
+        "key_id": "alice",
+        "payload_hash": signoff1["payload_hash"],
+        "simulated_signature": _sha_id(sim_payload_a, set()),
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    signoff2a["signoff_id"] = _sha_id(signoff2a, {"created_at", "signoff_id"})
+    validate_object_with_binding(signoff2a)
+
+    signoff2b = dict(signoff2a)
+    signoff2b["key_id"] = "bob"
+    signoff2b["simulated_signature"] = _sha_id(sim_payload_b, set())
+    signoff2b["signoff_id"] = _sha_id(signoff2b, {"created_at", "signoff_id"})
+    validate_object_with_binding(signoff2b)
+
+    # human override receipt (two-person, schema-bound).
+    override_payload_hash = "c" * 64
+    override_signoff_a = {
+        "schema_id": "kt.human_signoff.v2",
+        "schema_version_hash": schema_version_hash("fl3/kt.human_signoff.v2.json"),
+        "signoff_id": "",
+        "attestation_mode": "SIMULATED",
+        "key_id": "alice",
+        "payload_hash": override_payload_hash,
+        "simulated_signature": _sha_id({"key_id": "alice", "payload_hash": override_payload_hash}, set()),
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    override_signoff_a["signoff_id"] = _sha_id(override_signoff_a, {"created_at", "signoff_id"})
+    validate_object_with_binding(override_signoff_a)
+    override_signoff_b = dict(override_signoff_a)
+    override_signoff_b["key_id"] = "bob"
+    override_signoff_b["simulated_signature"] = _sha_id({"key_id": "bob", "payload_hash": override_payload_hash}, set())
+    override_signoff_b["signoff_id"] = _sha_id(override_signoff_b, {"created_at", "signoff_id"})
+    validate_object_with_binding(override_signoff_b)
+
+    override_receipt = {
+        "schema_id": "kt.human_override_receipt.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.human_override_receipt.v1.json"),
+        "override_receipt_id": "",
+        "run_id": "RUN_X",
+        "lane_id": "FL4_SEAL",
+        "override_kind": "ALLOW_NONCANONICAL_VAULT",
+        "override_reason": "unit test override",
+        "evidence_paths": ["audit_events/event_0.json", "audit_events/event_1.json"],
+        "attestation_mode": "SIMULATED",
+        "signoffs": [override_signoff_a, override_signoff_b],
+        "created_at": "2026-01-01T00:00:00Z",
+        "notes": None,
+    }
+    override_receipt["override_receipt_id"] = _sha_id(override_receipt, {"created_at", "override_receipt_id"})
+    validate_object_with_binding(override_receipt)
 
     # global_unlock
     unlock = {
@@ -207,6 +323,113 @@ def test_fl3_schema_validates_examples() -> None:
     }
     judgement["judgement_id"] = _sha_id(judgement, {"created_at", "judgement_id"})
     validate_object_with_binding(judgement)
+
+    # failure taxonomy (reason-code -> category mapping; append-only).
+    taxonomy = {
+        "schema_id": "kt.failure_taxonomy.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.failure_taxonomy.v1.json"),
+        "taxonomy_id": "",
+        "taxonomy_version": "FIXTURE_V1",
+        "categories": [
+            {"category_id": "GOVERNANCE", "title": "Governance", "description": "Governance-related failures"},
+            {"category_id": "SECURITY", "title": "Security", "description": "Security-related failures"},
+        ],
+        "mappings": [
+            {"reason_code": "LAW_BUNDLE_HASH_MISMATCH", "category_id": "GOVERNANCE", "severity": "CRITICAL"},
+            {"reason_code": "SECRET_LEAK_DETECTED", "category_id": "SECURITY", "severity": "CRITICAL"},
+        ],
+        "created_at": "1970-01-01T00:00:00Z",
+        "notes": None,
+    }
+    taxonomy["taxonomy_id"] = _sha_id(taxonomy, {"created_at", "taxonomy_id"})
+    validate_object_with_binding(taxonomy)
+
+    # governance twin manifest/report (runtime mirror; consistency check).
+    twin_manifest = {
+        "schema_id": "kt.governance_twin_manifest.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.governance_twin_manifest.v1.json"),
+        "twin_manifest_id": "",
+        "run_id": "RUN_X",
+        "lane_id": "FL4_SEAL",
+        "law_bundle_hash": "a" * 64,
+        "time_contract_id": "b" * 64,
+        "run_protocol_id": "c" * 64,
+        "run_protocol_json_hash": "d" * 64,
+        "bundle_root_hash": "e" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+        "notes": None,
+    }
+    twin_manifest["twin_manifest_id"] = _sha_id(twin_manifest, {"created_at", "twin_manifest_id"})
+    validate_object_with_binding(twin_manifest)
+
+    twin_report = {
+        "schema_id": "kt.governance_twin_report.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.governance_twin_report.v1.json"),
+        "twin_report_id": "",
+        "twin_manifest_id": twin_manifest["twin_manifest_id"],
+        "run_id": twin_manifest["run_id"],
+        "lane_id": twin_manifest["lane_id"],
+        "status": "PASS",
+        "reason_codes": [],
+        "mismatches": [],
+        "created_at": "2026-01-01T00:00:00Z",
+        "notes": None,
+    }
+    twin_report["twin_report_id"] = _sha_id(twin_report, {"created_at", "twin_report_id"})
+    validate_object_with_binding(twin_report)
+
+    # promotion rationale (structured explanation; always present).
+    pr = {
+        "schema_id": "kt.promotion_rationale.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.promotion_rationale.v1.json"),
+        "rationale_id": "",
+        "job_id": "a" * 64,
+        "lane_id": "FL4_SEAL",
+        "decision": "NO_PROMOTE",
+        "summary": "unit test promotion rationale",
+        "evidence_paths": ["job.json", "promotion.json"],
+        "created_at": "2026-01-01T00:00:00Z",
+        "notes": None,
+    }
+    pr["rationale_id"] = _sha_id(pr, {"created_at", "rationale_id"})
+    validate_object_with_binding(pr)
+
+    # probe synthesis manifest/report (advisory-only; lab-lane).
+    ps_manifest = {
+        "schema_id": "kt.probe_synthesis_manifest.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.probe_synthesis_manifest.v1.json"),
+        "manifest_id": "",
+        "vault_root_rel": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT",
+        "event_count": 3,
+        "min_support": 3,
+        "created_at": "1970-01-01T00:00:00Z",
+        "notes": None,
+    }
+    ps_manifest["manifest_id"] = _sha_id(ps_manifest, {"created_at", "manifest_id"})
+    validate_object_with_binding(ps_manifest)
+
+    ps_report = {
+        "schema_id": "kt.probe_synthesis_report.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.probe_synthesis_report.v1.json"),
+        "report_id": "",
+        "manifest_id": ps_manifest["manifest_id"],
+        "synthesizer_version": "probe_synthesizer.v1",
+        "synthesized_probes": [
+            {
+                "probe_id": "0" * 64,
+                "reason_code": "SECRET_LEAK_DETECTED",
+                "title": "Drill for SECRET_LEAK_DETECTED",
+                "prompt": "x",
+                "expected_behavior": "y",
+                "requires_human_review": True,
+                "earliest_review_timestamp": "1970-01-01T00:00:00Z",
+            }
+        ],
+        "created_at": "1970-01-01T00:00:00Z",
+        "notes": None,
+    }
+    ps_report["report_id"] = _sha_id(ps_report, {"created_at", "report_id"})
+    validate_object_with_binding(ps_report)
 
     # train_manifest
     train_manifest = {
@@ -359,6 +582,41 @@ def test_fl3_schema_validates_examples() -> None:
     }
     amendment["amendment_id"] = _sha_id(amendment, {"created_at", "amendment_id"})
     validate_object_with_binding(amendment)
+
+    # law_amendment v2 (explicit attestation mode)
+    amendment2 = {
+        "schema_id": "kt.law_amendment.v2",
+        "schema_version_hash": schema_version_hash("fl3/kt.law_amendment.v2.json"),
+        "amendment_id": "",
+        "bundle_hash": amendment["bundle_hash"],
+        "attestation_mode": "SIMULATED",
+        "signoffs": [signoff2a, signoff2b],
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    amendment2["amendment_id"] = _sha_id(amendment2, {"created_at", "amendment_id"})
+    validate_object_with_binding(amendment2)
+
+    # law_bundle_change_receipt
+    lbcr = {
+        "schema_id": "kt.law_bundle_change_receipt.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.law_bundle_change_receipt.v1.json"),
+        "receipt_id": "",
+        "bundle_id": "LAW_BUNDLE_FL3",
+        "old_ref": "HEAD",
+        "old_bundle_hash": "a" * 64,
+        "new_bundle_hash": "b" * 64,
+        "diff": {
+            "added": [{"path": "KT_PROD_CLEANROOM/AUDITS/FL4_TIME_CONTRACT.json", "sha256": "c" * 64}],
+            "removed": [],
+            "modified": [
+                {"path": "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.json", "old_sha256": "d" * 64, "new_sha256": "e" * 64}
+            ],
+        },
+        "counts": {"added": 1, "removed": 0, "modified": 1},
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    lbcr["receipt_id"] = _sha_id(lbcr, {"created_at", "receipt_id"})
+    validate_object_with_binding(lbcr)
 
     # fitness policy (used by meta-evaluator)
     policy = {
@@ -773,6 +1031,22 @@ def test_fl3_schema_validates_examples() -> None:
     dc["determinism_contract_id"] = _sha_id(dc, {"created_at", "determinism_contract_id"})
     validate_object_with_binding(dc)
 
+    # time_contract
+    tc = {
+        "schema_id": "kt.time_contract.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.time_contract.v1.json"),
+        "time_contract_id": "",
+        "timestamp_policy": {
+            "run_evidence_clock": "WALL_CLOCK_UTC_Z_SECONDS",
+            "derived_artifacts_clock": "EVIDENCE_ANCHORED_MAX_CREATED_AT",
+            "fallback_clock": "FIXED_EPOCH_0",
+        },
+        "hash_surface_policy": {"must_drop_keys": ["created_at"], "must_not_include_wall_clock_in_hashes": True},
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    tc["time_contract_id"] = _sha_id(tc, {"created_at", "time_contract_id"})
+    validate_object_with_binding(tc)
+
     # canary_artifact
     canary = {
         "schema_id": "kt.canary_artifact.v1",
@@ -866,3 +1140,238 @@ def test_fl3_schema_validates_examples() -> None:
     }
     pi["index_id"] = _sha_id(pi, {"created_at", "index_id"})
     validate_object_with_binding(pi)
+
+    # run_protocol
+    rp = {
+        "schema_id": "kt.run_protocol.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.run_protocol.v1.json"),
+        "run_protocol_id": "",
+        "run_id": jobspec["job_id"],
+        "lane_id": "FL4_SEAL",
+        "timestamp_utc": "2026-01-01T00:00:00Z",
+        "determinism_mode": "STRICT",
+        "execution_environment_hash": "c" * 64,
+        "governed_phase_start_hash": "d" * 64,
+        "io_guard_status": "GUARDED",
+        "base_model_id": "mistral-7b",
+        "active_adapters": [{"adapter_id": "lobe.architect.v1", "adapter_hash": "e" * 64}],
+        "active_laws": ["LAW_A", "LAW_B"],
+        "datasets": [{"relpath": "job_dir/dataset.json", "sha256": "f" * 64}],
+        "replay_command": "python -m tools.verification.fl4_replay_from_receipts --evidence-dir out --out out/replay.json",
+        "replay_script_hash": "1" * 64,
+        "run_protocol_json_hash": "",
+        "run_protocol_md_hash": "2" * 64,
+        "secret_scan_result": "PASS",
+        "bundle_root_hash": "3" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    rp["run_protocol_id"] = _sha_id(
+        rp,
+        {"created_at", "run_protocol_id", "run_protocol_json_hash", "run_protocol_md_hash"},
+    )
+    rp["run_protocol_json_hash"] = _sha_id(rp, {"run_protocol_json_hash"})
+    validate_object_with_binding(rp)
+
+    # replay_receipt
+    rr = {
+        "schema_id": "kt.replay_receipt.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.replay_receipt.v1.json"),
+        "replay_receipt_id": "",
+        "run_id": jobspec["job_id"],
+        "lane_id": "FL4_SEAL",
+        "replay_command": rp["replay_command"],
+        "replay_sh_sha256": "a" * 64,
+        "replay_ps1_sha256": "b" * 64,
+        "replay_script_hash": "c" * 64,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    rr["replay_receipt_id"] = _sha_id(rr, {"created_at", "replay_receipt_id"})
+    validate_object_with_binding(rr)
+
+    # secret_scan_report
+    sr = {
+        "schema_id": "kt.secret_scan_report.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.secret_scan_report.v1.json"),
+        "report_id": "",
+        "status": "PASS",
+        "scanner_version": "pack_guard_scan.v1",
+        "patterns_version": "v1",
+        "findings": [],
+        "report_hash": "",
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    sr["report_id"] = _sha_id(sr, {"created_at", "report_id", "report_hash"})
+    sr["report_hash"] = _sha_id(sr, {"report_hash"})
+    validate_object_with_binding(sr)
+
+    # secret_scan_summary
+    ss = {
+        "schema_id": "kt.secret_scan_summary.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.secret_scan_summary.v1.json"),
+        "summary_id": "",
+        "report_hash": sr["report_hash"],
+        "status": "PASS",
+        "total_findings": 0,
+        "high_confidence_findings": 0,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    ss["summary_id"] = _sha_id(ss, {"created_at", "summary_id"})
+    validate_object_with_binding(ss)
+
+    # delivery_pack_manifest
+    dp = {
+        "schema_id": "kt.delivery_pack_manifest.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.delivery_pack_manifest.v1.json"),
+        "delivery_pack_id": "",
+        "run_id": jobspec["job_id"],
+        "bundle_root_hash": "a" * 64,
+        "run_protocol_json_hash": "b" * 64,
+        "redaction_rules_version": "v1",
+        "files": [
+            {
+                "path": "reports/KT_EXEC_SUMMARY.md",
+                "sha256": "c" * 64,
+                "bytes": 1,
+                "redacted": True,
+            }
+        ],
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    dp["delivery_pack_id"] = _sha_id(dp, {"created_at", "delivery_pack_id"})
+    validate_object_with_binding(dp)
+
+    # audit_event
+    ae = {
+        "schema_id": "kt.audit_event.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.audit_event.v1.json"),
+        "event_id": "",
+        "run_id": jobspec["job_id"],
+        "lane_id": "FL4_SEAL",
+        "event_kind": "GATE_FAIL",
+        "severity": "FAIL_CLOSED",
+        "reason_codes": ["LAW_BUNDLE_HASH_MISMATCH"],
+        "component": "preflight_fl4",
+        "summary": "law bundle hash mismatch detected (example)",
+        "evidence_paths": ["KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.json"],
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    ae["event_id"] = _sha_id(ae, {"created_at", "event_id"})
+    validate_object_with_binding(ae)
+
+    # audit_event_index
+    aei = {
+        "schema_id": "kt.audit_event_index.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.audit_event_index.v1.json"),
+        "index_id": "",
+        "vault_root_rel": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT",
+        "entries": [
+            {
+                "path": "audit_events/event_1.json",
+                "sha256": "a" * 64,
+                "event_id": ae["event_id"],
+            }
+        ],
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    aei["index_id"] = _sha_id(aei, {"created_at", "index_id"})
+    validate_object_with_binding(aei)
+
+    # audit_intelligence_config
+    aic = {
+        "schema_id": "kt.audit_intelligence_config.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.audit_intelligence_config.v1.json"),
+        "config_id": "",
+        "min_cluster_size": 2,
+        "proposal_cooldown_hours": 24,
+        "reason_code_allowlist": ["LAW_BUNDLE_HASH_MISMATCH"],
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    aic["config_id"] = _sha_id(aic, {"created_at", "config_id"})
+    validate_object_with_binding(aic)
+
+    # audit_pattern_cluster
+    apc = {
+        "schema_id": "kt.audit_pattern_cluster.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.audit_pattern_cluster.v1.json"),
+        "cluster_id": "",
+        "reason_code": "LAW_BUNDLE_HASH_MISMATCH",
+        "event_ids": [ae["event_id"]],
+        "count": 1,
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    apc["cluster_id"] = _sha_id(apc, {"created_at", "cluster_id"})
+    validate_object_with_binding(apc)
+
+    # audit_probe_proposal
+    app = {
+        "schema_id": "kt.audit_probe_proposal.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.audit_probe_proposal.v1.json"),
+        "proposal_id": "",
+        "proposal_type": "NEW_TEST",
+        "title": "Add law bundle parse gate",
+        "description": "Add a deterministic gate that parses all AUDITS/*.json and fails on invalid JSON.",
+        "reason_code": "LAW_BUNDLE_HASH_MISMATCH",
+        "evidence_event_ids": [ae["event_id"]],
+        "requires_human_approval": True,
+        "earliest_review_timestamp": "2026-01-02T00:00:00Z",
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    app["proposal_id"] = _sha_id(app, {"created_at", "proposal_id"})
+    validate_object_with_binding(app)
+
+    # audit_doctrine_proposal
+    adp = {
+        "schema_id": "kt.audit_doctrine_proposal.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.audit_doctrine_proposal.v1.json"),
+        "proposal_id": "",
+        "title": "Require law bundle JSON validity gate",
+        "description": "Make JSON parse validation for AUDITS artifacts mandatory in canonical lanes.",
+        "reason_code": "LAW_BUNDLE_HASH_MISMATCH",
+        "evidence_event_ids": [ae["event_id"]],
+        "requires_human_approval": True,
+        "earliest_review_timestamp": "2026-01-02T00:00:00Z",
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    adp["proposal_id"] = _sha_id(adp, {"created_at", "proposal_id"})
+    validate_object_with_binding(adp)
+
+    # audit_proposal_adoption
+    apa = {
+        "schema_id": "kt.audit_proposal_adoption.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.audit_proposal_adoption.v1.json"),
+        "adoption_id": "",
+        "proposal_id": app["proposal_id"],
+        "decision": "DEFER",
+        "reviewers": ["alice", "bob"],
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    apa["adoption_id"] = _sha_id(apa, {"created_at", "adoption_id"})
+    validate_object_with_binding(apa)
+
+    # audit_intelligence_report
+    air = {
+        "schema_id": "kt.audit_intelligence_report.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.audit_intelligence_report.v1.json"),
+        "report_id": "",
+        "vault_root_rel": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT",
+        "config_id": aic["config_id"],
+        "ingested_events": 1,
+        "clusters": [apc["cluster_id"]],
+        "probe_proposals": [app["proposal_id"]],
+        "doctrine_proposals": [adp["proposal_id"]],
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    air["report_id"] = _sha_id(air, {"created_at", "report_id"})
+    validate_object_with_binding(air)
+
+    # audit_intelligence_metrics
+    aim = {
+        "schema_id": "kt.audit_intelligence_metrics.v1",
+        "schema_version_hash": schema_version_hash("fl3/kt.audit_intelligence_metrics.v1.json"),
+        "metrics_id": "",
+        "report_id": air["report_id"],
+        "counts": {"events_ingested": 1, "clusters": 1, "probe_proposals": 1, "doctrine_proposals": 1},
+        "created_at": "2026-01-01T00:00:00Z",
+    }
+    aim["metrics_id"] = _sha_id(aim, {"created_at", "metrics_id"})
+    validate_object_with_binding(aim)

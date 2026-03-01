@@ -8,6 +8,7 @@ from tools.training.fl3_factory.hashing import sha256_file_normalized
 from tools.training.fl3_factory.timeutil import utc_now_z
 from tools.verification.fl3_canonical import canonical_json, repo_root_from, sha256_json
 from tools.verification.fl3_validators import FL3ValidationError
+from tools.verification.worm_write import write_text_worm
 
 
 def _schema_hash(schema_file: str) -> str:
@@ -44,7 +45,7 @@ def build_train_manifest(*, job: Dict[str, Any], dataset: Dict[str, Any], out_di
 
     # Deterministic ordering: build_policy_bundles sorts by bundle_id.
     lines: List[str] = [canonical_json(b) for b in bundles]
-    jsonl_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    write_text_worm(path=jsonl_path, text="\n".join(lines) + "\n", label="train.policy_bundles.jsonl")
 
     # Hash the artifact in a platform-stable way (CRLF/CR -> LF for UTF-8 text).
     artifact_hash = sha256_file_normalized(jsonl_path)

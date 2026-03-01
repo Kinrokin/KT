@@ -140,6 +140,7 @@ class TinyHead(nn.Module):
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Policy C head-only trainer (receipt -> trajectory head).")
+    ap.add_argument("--allow-legacy", action="store_true", help="Acknowledge this is a legacy training entrypoint.")
     ap.add_argument("--dataset", required=True, help="Path to kt_policy_c_dataset_v1.jsonl")
     ap.add_argument("--output-dir", required=True, help="Output directory for head artifacts")
     ap.add_argument("--seed", type=int, default=1)
@@ -151,6 +152,10 @@ def main() -> None:
     ap.add_argument("--max-records", type=int, default=0, help="0 = no limit")
     ap.add_argument("--require-dataset-hash", default="", help="If set, refuse unless sha256(dataset)==this")
     cfg = ap.parse_args()
+
+    from tools.training.legacy_guard import require_legacy_allow
+
+    require_legacy_allow(allow_legacy=bool(cfg.allow_legacy), tool_name="tools.training.train_policy_c_head")
 
     ds_path = Path(cfg.dataset).resolve()
     out_dir = Path(cfg.output_dir).resolve()

@@ -1,0 +1,34 @@
+{
+  "schema_id": "kt.operator.overlay_pack.unbound.v1",
+  "overlay_id": "domain.fintech.v1",
+  "version": "1.0.0",
+  "applies_to": [
+    "certify",
+    "red_assault",
+    "continuous_gov",
+    "forge"
+  ],
+  "suite_scope_additions": [
+    "kt.suite.domain.fintech.v1",
+    "kt.suite.fintech.aml_kyc_sanctions.v1",
+    "kt.suite.fintech.audit_narration.v1",
+    "kt.suite.fintech.disclosures.v1",
+    "kt.suite.fintech.fraud_defense.v1",
+    "kt.suite.fintech.lending_underwriting.v1",
+    "kt.suite.fintech.payments_support.v1",
+    "kt.suite.fintech.privacy_boundaries.v1",
+    "kt.suite.fintech.trading_integrity.v1"
+  ],
+  "policy_additions": [
+    "kt.policy.domain.fintech.reporting.v1"
+  ],
+  "scorer_overrides": [],
+  "reporting_fields": [
+    "customer_slug",
+    "base_model_id",
+    "adapter_id",
+    "seed"
+  ],
+  "created_utc": "2026-02-28T00:00:00Z",
+  "notes": "Metadata-only overlay pack. No sensitive or dual-use payloads are embedded."
+}

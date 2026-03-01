@@ -28,6 +28,7 @@ def test_evidence_pack_completeness_contract_passes_minimal(tmp_path: Path) -> N
         "io_guard_receipt.json",
         "supported_platforms.json",
         "determinism_contract.json",
+        "time_contract.json",
         "law_bundle_hash.txt",
         "law_bundle.json",
         "growth_e2e_gate_report.json",
@@ -40,6 +41,15 @@ def test_evidence_pack_completeness_contract_passes_minimal(tmp_path: Path) -> N
         "canary_artifact_post_promotion.json",
         "metabolism_proof.json",
         "replay_from_receipts_report.json",
+        "replay.sh",
+        "replay.ps1",
+        "replay_receipt.json",
+        "secret_scan_report.json",
+        "secret_scan_summary.json",
+        "run_protocol.json",
+        "RUN_PROTOCOL.md",
+        "governance_twin_manifest.json",
+        "governance_twin_report.json",
         "preflight_summary.json",
     ):
         _touch(out_dir / name)
@@ -47,12 +57,14 @@ def test_evidence_pack_completeness_contract_passes_minimal(tmp_path: Path) -> N
     # required evidence job dir files
     for name in (
         "job.json",
+        "training_admission_receipt.json",
         "phase_trace.json",
         "dataset.json",
         "eval_report.json",
         "signal_quality.json",
         "judgement.json",
         "promotion.json",
+        "promotion_rationale.json",
         "hash_manifest.json",
         "job_dir_manifest.json",
     ):

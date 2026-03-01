@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Tournament Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "tournament_result_id",
+    "tournament_plan_id",
+    "status",
+    "base_model_id",
+    "suite_id",
+    "decode_policy_id",
+    "tournament_mode",
+    "epsilon",
+    "entrants",
+    "champion_set",
+    "dominance_pairs",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.tournament_result.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "tournament_result_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "tournament_plan_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "status": { "enum": ["PASS", "FAIL_CLOSED"] },
+    "reason_codes": { "type": "array", "items": { "type": "string" } },
+    "base_model_id": { "type": "string" },
+    "suite_id": { "type": "string" },
+    "decode_policy_id": { "type": "string" },
+    "tournament_mode": { "type": "string" },
+    "epsilon": { "type": "number" },
+    "entrants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["adapter_root_hash", "adapter_id", "adapter_version"],
+        "properties": {
+          "adapter_root_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "adapter_id": { "type": "string" },
+          "adapter_version": { "type": "string" }
+        }
+      }
+    },
+    "champion_set": { "type": "array", "items": { "type": "string", "pattern": "^[0-9a-f]{64}$" } },
+    "dominance_pairs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["dominant_adapter_root_hash", "dominated_adapter_root_hash"],
+        "properties": {
+          "dominant_adapter_root_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "dominated_adapter_root_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      }
+    },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"] }
+  }
+}
+

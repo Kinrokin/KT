@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
@@ -141,12 +142,39 @@ def _enforce_offline_mode(*, offline_required: bool) -> None:
 
 def _validate_required_refs(*, repo_root: Path, required_refs: Dict[str, Any]) -> None:
     # Fail-closed: these are part of the governed execution surface.
+    phase1c_tag = required_refs.get("phase1c_tag")
     phase1c_executor = required_refs.get("phase1c_executor")
     law_bundle_file = required_refs.get("law_bundle_file")
+    if not isinstance(phase1c_tag, str) or not phase1c_tag.strip():
+        raise Phase2Error("FAIL_CLOSED: inputs.required_refs.phase1c_tag missing/invalid")
     if not isinstance(phase1c_executor, str) or not phase1c_executor.strip():
         raise Phase2Error("FAIL_CLOSED: inputs.required_refs.phase1c_executor missing/invalid")
     if not isinstance(law_bundle_file, str) or not law_bundle_file.strip():
         raise Phase2Error("FAIL_CLOSED: inputs.required_refs.law_bundle_file missing/invalid")
+
+    tag = str(phase1c_tag).strip()
+    # Phase ref integrity: allow pinned commit sha or an existing tag. Forbid branch names.
+    is_hex = all(c in "0123456789abcdef" for c in tag.lower())
+    is_sha = is_hex and len(tag) in (40, 64)
+    if not is_sha:
+        # Tag must exist.
+        p = subprocess.run(
+            ["git", "show-ref", "--verify", "--quiet", f"refs/tags/{tag}"],
+            cwd=str(repo_root),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        if p.returncode != 0:
+            raise Phase2Error(f"FAIL_CLOSED: phase1c_tag does not resolve to existing tag: {tag}")
+    p2 = subprocess.run(
+        ["git", "rev-parse", "--verify", f"{tag}^{{commit}}"],
+        cwd=str(repo_root),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    if p2.returncode != 0:
+        raise Phase2Error(f"FAIL_CLOSED: phase1c_tag does not resolve to a commit: {tag}")
 
     p1 = (repo_root / phase1c_executor).resolve()
     if not p1.exists():

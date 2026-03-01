@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Time Contract v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "time_contract_id",
+    "timestamp_policy",
+    "hash_surface_policy",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.time_contract.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "time_contract_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "timestamp_policy": { "type": "object" },
+    "hash_surface_policy": { "type": "object" },
+    "created_at": { "type": "string" },
+    "notes": { "type": "string" }
+  }
+}
+

@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Run Protocol v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "run_protocol_id",
+    "run_id",
+    "lane_id",
+    "timestamp_utc",
+    "determinism_mode",
+    "execution_environment_hash",
+    "governed_phase_start_hash",
+    "io_guard_status",
+    "base_model_id",
+    "active_adapters",
+    "replay_command",
+    "replay_script_hash",
+    "run_protocol_json_hash",
+    "run_protocol_md_hash",
+    "secret_scan_result",
+    "bundle_root_hash",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.run_protocol.v1"
+    },
+    "schema_version_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "run_protocol_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "lane_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "timestamp_utc": {
+      "type": "string"
+    },
+    "determinism_mode": {
+      "enum": [
+        "STRICT",
+        "PRACTICAL"
+      ]
+    },
+    "execution_environment_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "bootstrap_receipt_hash": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "governed_phase_start_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "io_guard_status": {
+      "enum": [
+        "OFFLINE",
+        "GUARDED",
+        "BYPASS"
+      ]
+    },
+    "base_model_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "base_model_commit": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 256
+    },
+    "active_adapters": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "adapter_id",
+          "adapter_hash"
+        ],
+        "properties": {
+          "adapter_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "adapter_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "adapter_profile_hash": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "active_laws": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "datasets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "relpath",
+          "sha256"
+        ],
+        "properties": {
+          "relpath": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "replay_command": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "replay_script_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "run_protocol_json_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "run_protocol_md_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "secret_scan_result": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "ERROR"
+      ]
+    },
+    "bundle_root_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 8192
+    },
+    "created_at": {
+      "type": "string"
+    }
+  }
+}

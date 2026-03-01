@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "kt.work_order.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "work_order_id",
+    "title",
+    "mission"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.work_order.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "work_order_id": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "title": { "type": "string", "minLength": 1, "maxLength": 512 },
+    "mission": { "type": "string", "minLength": 1, "maxLength": 16384 },
+
+    "role_contract": { "type": "object" },
+    "truth_pins": { "type": "object" },
+    "absolute_constraints": { "type": "object" },
+    "definition_of_done": { "type": "object" },
+    "run_root_protocol": { "type": "object" },
+    "single_source_of_truth_harness": { "type": "object" },
+    "epic_execution_protocol": { "type": "object" },
+    "closure_queue": { "type": "array" },
+    "commands_playbook": { "type": "object" },
+    "deliverable_packaging": { "type": "object" },
+    "final_output_contract": { "type": "object" }
+  }
+}
+

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Audit Intelligence Metrics v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "metrics_id",
+    "report_id",
+    "counts",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.audit_intelligence_metrics.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "metrics_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "report_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["events_ingested", "clusters", "probe_proposals", "doctrine_proposals"],
+      "properties": {
+        "events_ingested": { "type": "integer", "minimum": 0, "maximum": 1000000000 },
+        "clusters": { "type": "integer", "minimum": 0, "maximum": 1000000000 },
+        "probe_proposals": { "type": "integer", "minimum": 0, "maximum": 1000000000 },
+        "doctrine_proposals": { "type": "integer", "minimum": 0, "maximum": 1000000000 }
+      }
+    },
+    "created_at": { "type": "string" }
+  }
+}
+

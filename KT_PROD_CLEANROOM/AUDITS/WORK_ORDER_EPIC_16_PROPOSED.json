@@ -1,0 +1,106 @@
+{
+  "work_order_id": "KT_EPIC_16_EXECUTION_PROPOSED",
+  "epic": "EPIC_16",
+  "status": "PROPOSED",
+  "mode": "FAIL_CLOSED",
+  "law_bundle": "LAW_BUNDLE_FL3",
+  "spine_frozen": true,
+  "notes": "LAW_PROPOSAL only. No signing/apply in this proposal. EPIC_16 becomes binding only after HMAC application in canonical lane.",
+  "phases": [
+    {
+      "id": "PHASE_0_CLEAN",
+      "goal": "Establish clean baseline",
+      "actions": [
+        "assert_git_clean",
+        "run_full_test_battery",
+        "run_fl3_meta_evaluator"
+      ],
+      "pass_condition": "ALL_TESTS_PASS && REPO_CLEAN"
+    },
+    {
+      "id": "PHASE_1_DOCTRINE",
+      "goal": "Define epistemic counter-pressure law (no enforcement)",
+      "actions": [
+        "write_EPIC_16_DOCTRINE_md",
+        "propose_SUITE_REGISTRY_FL3_structure_only",
+        "list_required_reason_codes_for_taxonomy"
+      ],
+      "forbidden": [
+        "sign_law",
+        "apply_law",
+        "add_tools",
+        "add_ci",
+        "modify_runtime_spine"
+      ],
+      "pass_condition": "DOCTRINE_PRESENT"
+    },
+    {
+      "id": "PHASE_2_SCHEMAS",
+      "goal": "Make EPIC_16 doctrine machine-enforceable",
+      "actions": [
+        "add_kt.suite_registry.v1",
+        "add_kt.counterpressure_plan.v1",
+        "add_kt.fragility_probe_result.v1",
+        "add_kt.break_hypothesis.v1",
+        "add_kt.evaluation_admission_receipt.v1",
+        "add_kt.law_change_admission_receipt.v1",
+        "compute_hashes",
+        "register_schemas"
+      ],
+      "pass_condition": "SCHEMA_REGISTRY_VALID"
+    },
+    {
+      "id": "PHASE_3_ADMISSION_GATES",
+      "goal": "Add admission valves for evaluation and law changes",
+      "actions": [
+        "implement_evaluation_admission_gate",
+        "implement_law_change_admission_gate",
+        "closed_reason_codes_enforced",
+        "prove_determinism"
+      ],
+      "pass_condition": "ADMISSION_DETERMINISTIC"
+    },
+    {
+      "id": "PHASE_4_SUITE_REGISTRY",
+      "goal": "Enforce suite authorization in tournaments/merges",
+      "actions": [
+        "validate_suite_registry",
+        "reject_unauthorized_suite_ids",
+        "bind_suite_root_hash"
+      ],
+      "pass_condition": "UNAUTHORIZED_SUITES_FAIL_CLOSED"
+    },
+    {
+      "id": "PHASE_5_COUNTERPRESSURE",
+      "goal": "Require counter-pressure evidence for dominance/merge admissibility",
+      "actions": [
+        "require_break_hypothesis",
+        "require_counterpressure_result_PASS",
+        "enforce_regression_budgets",
+        "emit_receipts"
+      ],
+      "pass_condition": "MISSING_COUNTERPRESSURE_FAILS_CLOSED"
+    },
+    {
+      "id": "PHASE_6_CI_META",
+      "goal": "Wire EPIC_16 enforcement into CI",
+      "actions": [
+        "add_ci_gates_after_tests",
+        "extend_meta_evaluator"
+      ],
+      "pass_condition": "CI_GREEN"
+    },
+    {
+      "id": "PHASE_7_AUDIT_AND_APPLY",
+      "goal": "Safely bind EPIC_16 into canonical lane",
+      "actions": [
+        "run_full_audit_sweep",
+        "require_human_hmac_signing",
+        "apply_law_bundle"
+      ],
+      "requires_human": true,
+      "pass_condition": "HMAC_VERIFIED && AUDIT_PASS"
+    }
+  ]
+}
+

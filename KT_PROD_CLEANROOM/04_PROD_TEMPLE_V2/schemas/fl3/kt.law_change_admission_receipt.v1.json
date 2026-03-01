@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Law Change Admission Receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "law_change_admission_receipt_id",
+    "decision",
+    "reason_codes",
+    "current_bundle_hash",
+    "requested_bundle_hash",
+    "law_bundle_change_receipt_ref",
+    "law_bundle_change_receipt_sha256",
+    "cooldown_seconds",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.law_change_admission_receipt.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "law_change_admission_receipt_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "decision": { "enum": ["PASS", "FAIL_CLOSED"] },
+    "reason_codes": { "type": "array", "items": { "type": "string" } },
+    "current_bundle_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "requested_bundle_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "law_bundle_change_receipt_ref": { "type": "string" },
+    "law_bundle_change_receipt_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "cooldown_seconds": { "type": "integer" },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"] }
+  }
+}
+

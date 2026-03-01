@@ -76,6 +76,8 @@ def main(argv: List[str] | None = None) -> int:
         required_outputs = [
             # Persist the jobspec used to produce this job_dir (auditable, schema-bound).
             str(job["schema_id"]),
+            # EPIC_15: master training valve (admission gate receipt).
+            "kt.training_admission_receipt.v1",
             "kt.factory.dataset.v1",
             "kt.reasoning_trace.v1",
             "kt.factory.judgement.v1",
@@ -130,6 +132,23 @@ def main(argv: List[str] | None = None) -> int:
 
         phases: List[Dict[str, Any]] = []
         no_stub_executed = True
+
+        # EPIC_15 master valve: deterministic training admission gate (fail-closed).
+        from tools.training.training_admission_gate import ensure_training_admission_receipt
+
+        _ = ensure_training_admission_receipt(
+            repo_root=repo_root,
+            job_path=job_path,
+            job_dir=job_dir,
+            lane_id="FL3_FACTORY",
+        )
+        phases.append(
+            {
+                "phase": "training_admission",
+                "module_path": "tools.training.training_admission_gate",
+                "status": "OK",
+            }
+        )
 
         # Phase: harvest -> dataset
         from tools.training.fl3_factory.harvest import build_dataset
@@ -374,6 +393,7 @@ def main(argv: List[str] | None = None) -> int:
 
         required_relpaths: List[str] = [
             "job.json",
+            "training_admission_receipt.json",
             "dataset.json",
             "reasoning_trace.json",
             "judgement.json",

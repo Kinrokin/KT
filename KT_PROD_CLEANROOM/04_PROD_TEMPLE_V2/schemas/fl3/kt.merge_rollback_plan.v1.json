@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Merge Rollback Plan v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "rollback_plan_id",
+    "merge_manifest_id",
+    "steps",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.merge_rollback_plan.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "rollback_plan_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "merge_manifest_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["step_id", "action", "target"],
+        "properties": {
+          "step_id": { "type": "string" },
+          "action": { "type": "string" },
+          "target": { "type": "string" }
+        }
+      }
+    },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"] }
+  }
+}
+

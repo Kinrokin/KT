@@ -27,6 +27,11 @@ KT is a **governed, auditable intelligence system** built around a sealed runtim
   - Evaluation harness + delta ledger (measurement-only)
   - Teacher factory (lossy, deterministic curriculum compilation)
   - Dream loop (counterfactual generation; draft-only)
+- **Phase 2 Training Harness (MRT-1):** `KT_PROD_CLEANROOM/tools/training/`
+  - QLoRA fine-tuning orchestrator for policy_c datasets
+  - 4-bit quantization with LoRA adapters
+  - Universal compatibility patches (tokenizer, device movement, variable scoping, dataset fallback)
+  - See `KT_PROD_CLEANROOM/tools/training/README.md` for full documentation
 
 ## What KT Is Not
 

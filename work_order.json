@@ -1,0 +1,87 @@
+{
+  "work_order_id": "KT_MRT1_WORKORDER_v1",
+  "created_by": "operator",
+  "created_at_utc": "2026-02-12T03:15:00Z",
+  "purpose": "Run KT MRT-1 governed E2E pipeline from pinned repo SHA to bundle",
+  "environment": {
+    "platform": "Kaggle",
+    "required_python": "3.11",
+    "gpu_required": true,
+    "default_pinned_sha": "497f9988db125fc2243d066e24734d76d10cc6f3",
+    "repo_url": "https://github.com/Kinrokin/KT.git"
+  },
+  "inputs": {
+    "PINNED_SHA": "${PINNED_SHA}",
+    "KT_REPO_URL": "${KT_REPO_URL}",
+    "HF_MODEL_REPO": "${HF_MODEL_REPO}",
+    "HF_MODEL_REVISION": "${HF_MODEL_REVISION}",
+    "HF_TOKEN_SECRET_NAME": "${HF_TOKEN_SECRET_NAME}",
+    "POLICY_C_PLAN_REL": "${POLICY_C_PLAN_REL:-}",
+    "POLICY_C_PLAN_PATH": "${POLICY_C_PLAN_PATH:-}",
+    "KT_AUDIT_LEVEL": "${KT_AUDIT_LEVEL:-full}",
+    "MRT1_MAX_ADAPTERS": "${MRT1_MAX_ADAPTERS:-13}"
+  },
+  "outputs_expected": {
+    "receipts": [
+      "OUT_DIR/policy_c_sweep_plan_resolution_receipt.json",
+      "OUT_DIR/dataset_coercion_report.json",
+      "OUT_DIR/cohort_receipt.json",
+      "OUT_DIR/training_receipt_summary.json",
+      "OUT_DIR/runtime_registry.mrt1.snapshot.json",
+      "OUT_DIR/run_manifest.json",
+      "OUT_DIR/final_receipt.json"
+    ],
+    "artifacts": [
+      "OUT_DIR/dataset_raw.jsonl",
+      "OUT_DIR/dataset_coerced.jsonl",
+      "OUT_DIR/mrt1_adapter_ids.txt",
+      "OUT_DIR/mrt1_promotion_receipts/*.json",
+      "OUT_DIR.tar.gz",
+      "OUT_DIR.tar.gz.sha256"
+    ]
+  },
+  "invariants": {
+    "no_tracked_source_writes": true,
+    "autogen_plan_location": "POLICY_C_EXPORT_REL (exports/policy_c/<RUN_ID>/sweep_a)",
+    "autogen_plan_format": "json",
+    "fail_closed_prefix": "FAIL_CLOSED:",
+    "receipt_fields_required": [
+      "kind",
+      "method",
+      "resolved_plan_path",
+      "plan_sha256",
+      "validator",
+      "export_root_rel"
+    ]
+  },
+  "steps": [
+    "clone_and_pin_repo",
+    "bootstrap_venv",
+    "install_pinned_deps",
+    "audit_gate",
+    "hf_snapshot",
+    "allowlist_check",
+    "plan_resolution_and_sweep",
+    "raw_dataset_resolution",
+    "dataset_coercion",
+    "cohort_manufacture",
+    "mrt1_training_loop",
+    "runtime_snapshot",
+    "run_manifest",
+    "bundle"
+  ],
+  "acceptance_criteria": {
+    "SWEEP_PLAN_RESOLUTION_OK": true,
+    "COERCION_DONE": true,
+    "COHORT_MANUFACTURE_OK": true,
+    "TRAIN_PASS_all": true,
+    "RUN_MANIFEST_WRITTEN": true,
+    "BUNDLE_DONE": true
+  },
+  "operator_instructions": {
+    "freeze_rule": "Only edit Step [5.1] until a full PASS run is achieved.",
+    "triage_rule": "Map failure to stage by header [N] and fix only that stage.",
+    "proof_rule": "Before proceeding, point to the receipt proving stage success."
+  }
+}
+

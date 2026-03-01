@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KT Run Viewer (Offline)</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="header__title">KT Run Viewer</div>
+      <div class="header__subtitle">Offline • No installs • Load artifacts via file picker</div>
+    </header>
+
+    <main class="main">
+      <section class="card">
+        <div class="card__title">Load Run Artifacts</div>
+        <p class="muted">
+          Select one or more files from a single run directory (examples: <code>verdict.txt</code>,
+          <code>sweep_summary.json</code>, <code>status_report.json</code>, <code>certify_report.json</code>,
+          <code>seal_verify_report.json</code>, <code>red_assault_report.json</code>).
+        </p>
+        <div class="row">
+          <input id="fileInput" type="file" multiple />
+          <button id="clearBtn" type="button">Clear</button>
+        </div>
+        <div class="row">
+          <div class="pill" id="loadedCount">0 loaded</div>
+          <div class="pill pill--mono" id="runRootHint">run_root: (unknown)</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card__title">Required Artifacts</div>
+        <div id="requiredBlock" class="kv muted">No files loaded.</div>
+      </section>
+
+      <section class="card">
+        <div class="card__title">Verdict</div>
+        <div id="verdictBlock" class="verdict verdict--unknown">No verdict loaded.</div>
+      </section>
+
+      <section class="grid">
+        <section class="card">
+          <div class="card__title">Sweep Summary</div>
+          <div id="sweepSummaryBlock" class="kv muted">No sweep summary loaded.</div>
+        </section>
+        <section class="card">
+          <div class="card__title">Status Report</div>
+          <div id="statusReportBlock" class="kv muted">No status report loaded.</div>
+        </section>
+      </section>
+
+      <section class="grid">
+        <section class="card">
+          <div class="card__title">Determinism</div>
+          <div id="determinismBlock" class="kv muted">No determinism artifacts loaded.</div>
+        </section>
+        <section class="card">
+          <div class="card__title">Seal Verify</div>
+          <div id="sealVerifyBlock" class="kv muted">No seal verify report loaded.</div>
+        </section>
+      </section>
+
+      <section class="grid">
+        <section class="card">
+          <div class="card__title">Red Assault</div>
+          <div id="redAssaultBlock" class="kv muted">No red assault report loaded.</div>
+        </section>
+        <section class="card">
+          <div class="card__title">Receipts</div>
+          <div id="receiptsBlock" class="kv muted">No receipt pointers loaded.</div>
+        </section>
+      </section>
+
+      <section class="card">
+        <div class="card__title">Suites</div>
+        <div id="suitesBlock" class="kv muted">No suite artifacts loaded.</div>
+      </section>
+
+      <section class="card">
+        <div class="card__title">Loaded Files</div>
+        <div id="fileList" class="fileList muted">No files loaded.</div>
+      </section>
+
+      <section class="card">
+        <div class="card__title">Raw JSON Viewer</div>
+        <p class="muted">
+          Click a loaded <code>.json</code> filename above to render it here. This is a diagnostic view (no external
+          assets).
+        </p>
+        <pre id="rawJson" class="rawJson muted">No JSON selected.</pre>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="muted">
+        Tip: you can open this file directly, or run <code>python -m http.server</code> in this folder for stricter
+        browser file access behavior.
+      </div>
+    </footer>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

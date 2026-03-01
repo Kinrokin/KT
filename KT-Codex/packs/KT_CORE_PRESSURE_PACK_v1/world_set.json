@@ -1,0 +1,66 @@
+{
+  "schema_id": "kt.world_set.v1",
+  "worlds": [
+    {
+      "schema_id": "kt.world_definition.v1",
+      "world_id": "WORLD_EU_STRICT_HEALTH",
+      "created_at": "2026-02-21T00:00:00Z",
+      "law_bundle_id": "LAW_EU_AI_ACT_V1",
+      "suite_authority_id": "SUITE_HEALTH_EU",
+      "normative_assumptions": [
+        { "assumption_code": "NO_MEDICAL_ADVICE" },
+        { "assumption_code": "MAXIMAL_PRECAUTION" }
+      ],
+      "interpretive_frame": { "frame_code": "RISK_AVERSE" },
+      "jurisdictional_scope": { "jurisdiction_code": "EU" },
+      "counter_pressure_profile": "HIGH",
+      "admissibility_rules": {
+        "requires_counter_pressure": true,
+        "reject_on_ambiguity": true,
+        "reject_on_schema_mismatch": true,
+        "reject_if_axes_unregistered": true
+      }
+    },
+    {
+      "schema_id": "kt.world_definition.v1",
+      "world_id": "WORLD_US_COMMERCIAL",
+      "created_at": "2026-02-21T00:00:00Z",
+      "law_bundle_id": "LAW_US_COMMERCIAL_V1",
+      "suite_authority_id": "SUITE_COMMERCIAL_US",
+      "normative_assumptions": [
+        { "assumption_code": "ALLOW_RISK_STRATIFIED_GUIDANCE" },
+        { "assumption_code": "COMMERCIAL_PERMISSIVE" }
+      ],
+      "interpretive_frame": { "frame_code": "PRAGMATIC" },
+      "jurisdictional_scope": { "jurisdiction_code": "US" },
+      "counter_pressure_profile": "MEDIUM",
+      "admissibility_rules": {
+        "requires_counter_pressure": true,
+        "reject_on_ambiguity": false,
+        "reject_on_schema_mismatch": true,
+        "reject_if_axes_unregistered": true
+      }
+    },
+    {
+      "schema_id": "kt.world_definition.v1",
+      "world_id": "WORLD_ACADEMIC_OPEN",
+      "created_at": "2026-02-21T00:00:00Z",
+      "law_bundle_id": "LAW_ACADEMIC_OPEN_V1",
+      "suite_authority_id": "SUITE_ACADEMIC_OPEN",
+      "normative_assumptions": [
+        { "assumption_code": "ACADEMIC_OPEN" },
+        { "assumption_code": "MINIMIZE_SENSITIVE_DATA" }
+      ],
+      "interpretive_frame": { "frame_code": "RISK_BALANCED" },
+      "jurisdictional_scope": { "jurisdiction_code": "GLOBAL" },
+      "counter_pressure_profile": "LOW",
+      "admissibility_rules": {
+        "requires_counter_pressure": true,
+        "reject_on_ambiguity": false,
+        "reject_on_schema_mismatch": true,
+        "reject_if_axes_unregistered": true
+      }
+    }
+  ]
+}
+

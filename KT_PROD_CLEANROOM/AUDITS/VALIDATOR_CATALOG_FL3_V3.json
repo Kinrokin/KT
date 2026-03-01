@@ -1,0 +1,60 @@
+{
+  "created_at": "1970-01-01T00:00:00Z",
+  "notes": "EPIC_22 axiom protocol validator catalog (v3; JSON-exact decisions).",
+  "schema_id": "kt.validator_catalog.v2",
+  "schema_version_hash": "1fd90353bef4f7e5db6f1b90343af6335665c926d3c7cfb8bb3a5de8ec646937",
+  "validator_catalog_id": "93aac2b62e37256e75b9f165f1845478b7382346e948ff6b0493cb2e7ac81d0e",
+  "validators": [
+    {
+      "kind": "JSON_EXACT_OBJECT",
+      "notes": null,
+      "params": {
+        "expected": {
+          "truth_value": "BOTH"
+        }
+      },
+      "validator_id": "V_APF_FUSE_TRUE_FALSE_BOTH"
+    },
+    {
+      "kind": "JSON_EXACT_OBJECT",
+      "notes": null,
+      "params": {
+        "expected": {
+          "decision": "PROTECT_MINORITY"
+        }
+      },
+      "validator_id": "V_IADS_PROTECT_MINORITY"
+    },
+    {
+      "kind": "JSON_EXACT_OBJECT",
+      "notes": null,
+      "params": {
+        "expected": {
+          "decision": "REJECT_QUORUM"
+        }
+      },
+      "validator_id": "V_PFM_REJECT_QUORUM"
+    },
+    {
+      "kind": "JSON_EXACT_OBJECT",
+      "notes": null,
+      "params": {
+        "expected": {
+          "action": "TRIGGER_TEACHER"
+        }
+      },
+      "validator_id": "V_POG_TRIGGER_TEACHER"
+    },
+    {
+      "kind": "JSON_EXACT_OBJECT",
+      "notes": null,
+      "params": {
+        "expected": {
+          "cvar": 3
+        }
+      },
+      "validator_id": "V_RISK_CVAR_SIMPLE"
+    }
+  ]
+}
+

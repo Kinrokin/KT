@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from tools.training.fl3_factory.io import read_json_object, write_schema_object
+from tools.training.fl3_factory.io import read_json_object, write_schema_object_mutable
 from tools.training.fl3_factory.lockfile import exclusive_lock
 from tools.verification.fl3_canonical import canonical_json, sha256_text
 from tools.verification.fl3_validators import FL3ValidationError, validate_schema_bound_object
@@ -94,7 +94,7 @@ def ensure_budget_state_initialized(*, repo_root: Path, budget_state_path: Path)
     if seed_obj.get("schema_id") != "kt.global_budget_state.v1":
         raise FL3BudgetError("Budget seed schema_id mismatch (fail-closed)")
     budget_state_path.parent.mkdir(parents=True, exist_ok=True)
-    _ = write_schema_object(path=budget_state_path, obj=seed_obj)
+    _ = write_schema_object_mutable(path=budget_state_path, obj=seed_obj)
 
 
 def unlock_if_needed(
@@ -118,7 +118,7 @@ def unlock_if_needed(
         # Apply unlock.
         state["lock_state"] = "OPEN"
         state["last_t1_failure"] = None
-        _ = write_schema_object(path=budget_state_path, obj=state)
+        _ = write_schema_object_mutable(path=budget_state_path, obj=state)
         return state
 
 
@@ -133,7 +133,7 @@ def record_job_started(*, repo_root: Path, budget_state_path: Path, lock_timeout
         if not isinstance(jobs_run, int) or jobs_run < 0:
             raise FL3BudgetError("budget state jobs_run invalid (fail-closed)")
         state["jobs_run"] = jobs_run + 1
-        _ = write_schema_object(path=budget_state_path, obj=state)
+        _ = write_schema_object_mutable(path=budget_state_path, obj=state)
         return state
 
 
@@ -152,6 +152,5 @@ def record_t1_failure(
         state = load_budget_state(budget_state_path)
         state["lock_state"] = "LOCKED"
         state["last_t1_failure"] = failure_id
-        _ = write_schema_object(path=budget_state_path, obj=state)
+        _ = write_schema_object_mutable(path=budget_state_path, obj=state)
         return state
-

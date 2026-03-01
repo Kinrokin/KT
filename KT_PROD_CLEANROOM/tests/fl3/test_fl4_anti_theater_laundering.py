@@ -36,6 +36,7 @@ def _mk_contract(*, repo_root: Path) -> dict:
         "allowed_output_schemas": sorted(
             [
                 "kt.factory.jobspec.v1",
+                "kt.training_admission_receipt.v1",
                 "kt.factory.dataset.v1",
                 "kt.reasoning_trace.v1",
                 "kt.factory.judgement.v1",
@@ -145,13 +146,22 @@ def test_fl4_anti_theater_detects_metric_laundering_even_if_manifests_match(tmp_
             "phase_trace.json",
             "promotion.json",
         ]
-        # Regenerate manifests to match the tampered file (laundering file-hash checks).
-        write_manifests_for_job_dir(job_dir=job_dir, job_id=str(job["job_id"]), parent_hash="0" * 64, required_relpaths=required_relpaths)
+        # Laundering file-hash checks must not rely on overwriting WORM-governed manifests.
+        # Simulate an attacker cloning the tampered job_dir into a fresh directory, then generating
+        # matching manifests there (create-once) to attempt "metric laundering".
+        laundered = (tmp_path / "laundered_job_dir").resolve()
+        if laundered.exists():
+            shutil.rmtree(laundered)
+        shutil.copytree(
+            job_dir,
+            laundered,
+            ignore=shutil.ignore_patterns("hash_manifest.json", "job_dir_manifest.json"),
+        )
+        write_manifests_for_job_dir(job_dir=laundered, job_id=str(job["job_id"]), parent_hash="0" * 64, required_relpaths=required_relpaths)
 
         # Verifier must still fail closed because it recomputes the metric from the policy bundles + utility pack.
         with pytest.raises(FL3ValidationError, match=r"utility_floor_score"):
-            verify_job_dir(repo_root=repo_root, job_dir=job_dir)
+            verify_job_dir(repo_root=repo_root, job_dir=laundered)
     finally:
         if job_dir.exists():
             shutil.rmtree(job_dir)
-

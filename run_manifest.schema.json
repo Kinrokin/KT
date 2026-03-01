@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "KT MRT1 Run Manifest",
+  "type": "object",
+  "required": [
+    "run_id",
+    "pinned_sha_requested",
+    "pinned_sha_actual",
+    "python_version",
+    "pip_freeze",
+    "dataset_coerced_sha",
+    "policy_c_plan_resolution_receipt",
+    "timestamp"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string"
+    },
+    "pinned_sha_requested": {
+      "type": "string"
+    },
+    "pinned_sha_actual": {
+      "type": "string"
+    },
+    "python_version": {
+      "type": "string"
+    },
+    "pip_freeze": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dataset_coerced_sha": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "policy_c_plan_resolution_receipt": {
+      "type": "object",
+      "required": [
+        "kind",
+        "method",
+        "resolved_plan_path",
+        "plan_sha256",
+        "validator",
+        "export_root_rel"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "resolved_plan_path": {
+          "type": "string"
+        },
+        "resolved_plan_path_rel_cleanroom": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "plan_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "validator": {
+          "type": "string"
+        },
+        "override_env": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "export_root_rel": {
+          "type": "string"
+        },
+        "export_root_abs": {
+          "type": "string"
+        }
+      }
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
+

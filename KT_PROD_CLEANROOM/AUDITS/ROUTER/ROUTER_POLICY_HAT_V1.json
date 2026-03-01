@@ -1,0 +1,61 @@
+{
+  "created_at": "1970-01-01T00:00:00Z",
+  "default_adapter_ids": [
+    "lobe.strategist.v1"
+  ],
+  "match_strategy": "KEYWORD_SUBSTRING_LEXICOGRAPHIC_MIN",
+  "notes": "EPIC_19 deterministic hat routing policy (demo-only).",
+  "policy_name": "ROUTER_HAT_V1",
+  "policy_version": "v1",
+  "router_policy_id": "4f473eda05cb5bdaa6b1d403e15a44d36c3657b804926b8a1d443c4583c2ea53",
+  "routes": [
+    {
+      "adapter_ids": [
+        "lobe.auditor.v1"
+      ],
+      "domain_tag": "governance",
+      "keywords": [
+        "audit",
+        "fail-closed",
+        "law",
+        "receipt"
+      ],
+      "notes": "Governance / audit / law discussions always include safety lobe.",
+      "required_adapter_ids": [
+        "lobe.censor.v1"
+      ]
+    },
+    {
+      "adapter_ids": [
+        "lobe.quant.v1"
+      ],
+      "domain_tag": "math",
+      "keywords": [
+        "calculate",
+        "derivative",
+        "equation",
+        "integral"
+      ],
+      "notes": "Math routing includes safety lobe by default.",
+      "required_adapter_ids": [
+        "lobe.censor.v1"
+      ]
+    },
+    {
+      "adapter_ids": [
+        "lobe.muse.v1"
+      ],
+      "domain_tag": "poetry",
+      "keywords": [
+        "haiku",
+        "lyric",
+        "poem",
+        "sonnet"
+      ],
+      "notes": "Creative writing lobe.",
+      "required_adapter_ids": []
+    }
+  ],
+  "schema_id": "kt.router_policy.v1",
+  "schema_version_hash": "6fe4d18be11c68135cbfba875fffbd6fc518b56ff70d641c37df5526d97632f7"
+}

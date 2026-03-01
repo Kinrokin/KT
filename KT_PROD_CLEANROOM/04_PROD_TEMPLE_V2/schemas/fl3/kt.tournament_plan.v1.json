@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Tournament Plan v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "tournament_plan_id",
+    "base_model_id",
+    "suite_id",
+    "suite_root_hash",
+    "decode_policy_id",
+    "decode_cfg_hash",
+    "tournament_mode",
+    "epsilon",
+    "entrants",
+    "seed",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.tournament_plan.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "tournament_plan_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "base_model_id": { "type": "string" },
+    "suite_id": { "type": "string" },
+    "suite_root_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "decode_policy_id": { "type": "string" },
+    "decode_cfg_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "tournament_mode": { "enum": ["round_robin_v1", "single_elim_v1", "double_elim_v1"] },
+    "epsilon": { "type": "number" },
+    "entrants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["adapter_root_hash", "adapter_id", "adapter_version"],
+        "properties": {
+          "adapter_root_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "adapter_id": { "type": "string" },
+          "adapter_version": { "type": "string" }
+        }
+      }
+    },
+    "seed": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"] }
+  }
+}
+

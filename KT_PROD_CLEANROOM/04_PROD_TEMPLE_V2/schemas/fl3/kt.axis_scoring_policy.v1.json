@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Axis Scoring Policy v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "axis_scoring_policy_id",
+    "axes",
+    "verdict_thresholds",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.axis_scoring_policy.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "axis_scoring_policy_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "axes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "axis_id",
+          "gate_validator_ids",
+          "soft_validator_weights",
+          "aggregator"
+        ],
+        "properties": {
+          "axis_id": { "type": "string", "minLength": 1, "maxLength": 64 },
+          "gate_validator_ids": { "type": "array", "items": { "type": "string" } },
+          "soft_validator_weights": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["validator_id", "weight"],
+              "properties": {
+                "validator_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+                "weight": { "type": "number" }
+              }
+            }
+          },
+          "aggregator": { "type": "string", "enum": ["MEAN", "TRIMMED_MEAN_5"] }
+        }
+      }
+    },
+    "verdict_thresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["promote_min", "hold_min", "quarantine_on_gate_fail"],
+      "properties": {
+        "promote_min": { "type": "object" },
+        "hold_min": { "type": "object" },
+        "quarantine_on_gate_fail": { "type": "boolean" }
+      }
+    },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"] }
+  }
+}
+

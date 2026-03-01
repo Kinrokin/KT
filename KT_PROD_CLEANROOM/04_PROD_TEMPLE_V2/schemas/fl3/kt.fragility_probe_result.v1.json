@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Fragility Probe Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "fragility_probe_result_id",
+    "counterpressure_plan_id",
+    "status",
+    "reason_codes",
+    "evaluated_adapter_root_hashes",
+    "probes",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.fragility_probe_result.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "fragility_probe_result_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "counterpressure_plan_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "status": { "enum": ["PASS", "FAIL_CLOSED"] },
+    "reason_codes": { "type": "array", "items": { "type": "string" } },
+    "evaluated_adapter_root_hashes": { "type": "array", "items": { "type": "string", "pattern": "^[0-9a-f]{64}$" } },
+    "probes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["probe_id", "family", "status"],
+        "properties": {
+          "probe_id": { "type": "string" },
+          "family": { "type": "string" },
+          "status": { "enum": ["PASS", "FAIL_CLOSED"] },
+          "notes": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"] }
+  }
+}
+

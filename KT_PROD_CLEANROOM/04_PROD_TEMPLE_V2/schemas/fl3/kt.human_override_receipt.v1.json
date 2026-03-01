@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Human Override Receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "override_receipt_id",
+    "run_id",
+    "lane_id",
+    "override_kind",
+    "override_reason",
+    "evidence_paths",
+    "attestation_mode",
+    "signoffs",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.human_override_receipt.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "override_receipt_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "run_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "lane_id": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "override_kind": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "override_reason": { "type": "string", "minLength": 1, "maxLength": 8192 },
+    "evidence_paths": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 1024 } },
+    "attestation_mode": { "type": "string", "enum": ["SIMULATED", "HMAC", "PKI"] },
+    "signoffs": { "type": "array", "minItems": 2, "items": { "type": "object" } },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"], "maxLength": 8192 }
+  }
+}

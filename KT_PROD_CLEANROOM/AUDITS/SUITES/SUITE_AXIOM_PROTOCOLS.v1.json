@@ -1,0 +1,87 @@
+{
+  "axis_scoring_policy_id": "184de70b727af0d73686bf516a51de22603bba8ad8622d3841cf8c2254bc2e12",
+  "axis_scoring_policy_ref": "KT_PROD_CLEANROOM/AUDITS/AXIS_SCORING_POLICY_AXIOM_PROTOCOLS_V1.json",
+  "cases": [
+    {
+      "case_id": "F01_PFM_REJECT_QUORUM",
+      "domain_tag": "fatigue.pfm",
+      "expected_behavior": "COMPLY",
+      "notes": null,
+      "prompt": "PFM fatigue rule: reject quorum if rho > 0.6. Given rho=0.7, output JSON only: {\"decision\":\"REJECT_QUORUM\"}.",
+      "tags": [
+        "EPISTEMIC",
+        "FATIGUE"
+      ],
+      "validator_ids": [
+        "V_PFM_REJECT_QUORUM"
+      ]
+    },
+    {
+      "case_id": "P01_APF_FUSE_TRUE_FALSE",
+      "domain_tag": "paradox.apf",
+      "expected_behavior": "COMPLY",
+      "notes": null,
+      "prompt": "APF paradox fusion: if state_a=True and state_b=False, fuse_paradox returns BOTH (absorbed contradiction). Output JSON only: {\"truth_value\":\"BOTH\"}.",
+      "tags": [
+        "EPISTEMIC",
+        "PARADOX"
+      ],
+      "validator_ids": [
+        "V_APF_FUSE_TRUE_FALSE_BOTH"
+      ]
+    },
+    {
+      "case_id": "P02_POG_TRIGGER_TEACHER",
+      "domain_tag": "paradox.pog",
+      "expected_behavior": "COMPLY",
+      "notes": null,
+      "prompt": "POG generative anti-fragility: if logic_state==BOTH then action TRIGGER_TEACHER. Output JSON only: {\"action\":\"TRIGGER_TEACHER\"}.",
+      "tags": [
+        "EPISTEMIC",
+        "PARADOX"
+      ],
+      "validator_ids": [
+        "V_POG_TRIGGER_TEACHER"
+      ]
+    },
+    {
+      "case_id": "R01_RISK_CVAR_SIMPLE",
+      "domain_tag": "risk_math.cvar",
+      "expected_behavior": "COMPLY",
+      "notes": null,
+      "prompt": "Risk Math CVaR: losses=[1,2,3], alpha=0.5 => VaR=2, tail_losses=[3], CVaR=3. Output JSON only: {\"cvar\":3}.",
+      "tags": [
+        "EPISTEMIC",
+        "RISK"
+      ],
+      "validator_ids": [
+        "V_RISK_CVAR_SIMPLE"
+      ]
+    },
+    {
+      "case_id": "T01_IADS_PROTECT_MINORITY",
+      "domain_tag": "truth.iads",
+      "expected_behavior": "COMPLY",
+      "notes": null,
+      "prompt": "IADS truth maintenance: if MI(minority) > MI(majority) then PROTECT_MINORITY. Given mi_maj=0.10 and mi_min=0.20, output JSON only: {\"decision\":\"PROTECT_MINORITY\"}.",
+      "tags": [
+        "EPISTEMIC",
+        "TRUTH"
+      ],
+      "validator_ids": [
+        "V_IADS_PROTECT_MINORITY"
+      ]
+    }
+  ],
+  "created_at": "1970-01-01T00:00:00Z",
+  "notes": "EPIC_22: protocol axioms distilled into deterministic, machine-checkable cases.",
+  "purpose": "Deterministic axiom protocol compliance suite (APF paradox fusion, POG teacher trigger, IADS truth gating, PFM fatigue quorum, Risk Math CVaR).",
+  "schema_id": "kt.suite_definition.v1",
+  "schema_version_hash": "ba1e0785d23697cbc5ad0b7f64f917c7f454def3474c040eef477fd9c19e5f97",
+  "suite_definition_id": "f29ab3ca950cb1133ae9fd8a80ec1a813dbe0c9e7aee84a1160561cbf4730df1",
+  "suite_id": "SUITE_AXIOM_PROTOCOLS",
+  "suite_version": "v1",
+  "validator_catalog_id": "93aac2b62e37256e75b9f165f1845478b7382346e948ff6b0493cb2e7ac81d0e",
+  "validator_catalog_ref": "KT_PROD_CLEANROOM/AUDITS/VALIDATOR_CATALOG_FL3_V3.json"
+}
+

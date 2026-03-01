@@ -1,0 +1,34 @@
+{
+  "schema_id": "kt.operator.overlay_pack.unbound.v1",
+  "overlay_id": "domain.insurance.v1",
+  "version": "1.0.0",
+  "applies_to": [
+    "certify",
+    "red_assault",
+    "continuous_gov",
+    "forge"
+  ],
+  "suite_scope_additions": [
+    "kt.suite.domain.insurance.v1",
+    "kt.suite.insurance.audit_narration.v1",
+    "kt.suite.insurance.claims_documentation.v1",
+    "kt.suite.insurance.coverage_concepts.v1",
+    "kt.suite.insurance.disputes_appeals.v1",
+    "kt.suite.insurance.fraud_refusal.v1",
+    "kt.suite.insurance.privacy_boundaries.v1",
+    "kt.suite.insurance.social_engineering_resistance.v1",
+    "kt.suite.insurance.underwriting_fairness.v1"
+  ],
+  "policy_additions": [
+    "kt.policy.domain.insurance.reporting.v1"
+  ],
+  "scorer_overrides": [],
+  "reporting_fields": [
+    "customer_slug",
+    "base_model_id",
+    "adapter_id",
+    "seed"
+  ],
+  "created_utc": "2026-02-28T00:00:00Z",
+  "notes": "Metadata-only overlay pack. No sensitive or dual-use payloads are embedded."
+}

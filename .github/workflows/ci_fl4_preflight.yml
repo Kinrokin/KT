@@ -12,6 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Fail-closed preflight verifies pinned tags/commits; shallow clones can omit them.
+          fetch-depth: 0
+          fetch-tags: true
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
@@ -94,14 +98,21 @@ jobs:
             exit 1
           fi
 
+      - name: Verify FL4 seal evidence (fail-closed)
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="$PWD/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:$PWD/KT_PROD_CLEANROOM"
+          OUT_DIR="KT_PROD_CLEANROOM/exports/adapters_shadow/_runs/FL4_SEAL/CI"
+          python -m tools.verification.fl4_seal_verify --evidence-dir "$OUT_DIR"
+
       - name: Package FL4 seal evidence (tar + sha256)
         run: |
           set -euo pipefail
           OUT_DIR="KT_PROD_CLEANROOM/exports/adapters_shadow/_runs/FL4_SEAL/CI"
           test -d "$OUT_DIR"
-          # Factory job_dir is written under exports_shadow_root/_runs/FL4_SEAL/<job_id>.
+          # Factory job_dir is written under the provided OUT_DIR (<out_dir>/<job_id>).
           JOB_ID="$(python -c 'import json; print(json.load(open("'"$OUT_DIR"'/job.json","r",encoding="utf-8"))["job_id"])')"
-          JOB_DIR="KT_PROD_CLEANROOM/exports/adapters_shadow/_runs/FL4_SEAL/$JOB_ID"
+          JOB_DIR="$OUT_DIR/$JOB_ID"
           test -d "$JOB_DIR"
           # Promotion (if happened) materializes under exports/adapters/<adapter_id>/<adapter_version>/ and updates promoted_index.json.
           ADAPTER_ID="$(python -c 'import json; print(json.load(open("'"$OUT_DIR"'/job.json","r",encoding="utf-8"))["adapter_id"])')"

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Counterpressure Plan v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "counterpressure_plan_id",
+    "base_model_id",
+    "optimization_suite_id",
+    "optimization_suite_root_hash",
+    "adversarial_suite_id",
+    "adversarial_suite_root_hash",
+    "decode_policy_id",
+    "decode_cfg_hash",
+    "break_hypothesis_id",
+    "required_probe_families",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.counterpressure_plan.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "counterpressure_plan_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "base_model_id": { "type": "string" },
+    "optimization_suite_id": { "type": "string" },
+    "optimization_suite_root_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "adversarial_suite_id": { "type": "string" },
+    "adversarial_suite_root_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "decode_policy_id": { "type": "string" },
+    "decode_cfg_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "break_hypothesis_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "required_probe_families": { "type": "array", "items": { "type": "string" } },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"] }
+  }
+}
+

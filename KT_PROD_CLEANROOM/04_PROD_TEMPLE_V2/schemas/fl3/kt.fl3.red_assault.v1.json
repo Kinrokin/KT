@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT FL3 Red Assault Report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "red_assault_id",
+    "results",
+    "all_passed",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.fl3.red_assault.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "red_assault_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "results": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "attack_id",
+          "expected_exit_codes",
+          "observed_exit_code",
+          "passed"
+        ],
+        "properties": {
+          "attack_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "expected_exit_codes": { "type": "array", "minItems": 1, "items": { "type": "integer" } },
+          "observed_exit_code": { "type": "integer" },
+          "passed": { "type": "boolean" }
+        }
+      }
+    },
+    "all_passed": { "type": "boolean" },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"] }
+  }
+}
+

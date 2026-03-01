@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Governance Twin Report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "twin_report_id",
+    "twin_manifest_id",
+    "run_id",
+    "lane_id",
+    "status",
+    "reason_codes",
+    "mismatches",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.governance_twin_report.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "twin_report_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "twin_manifest_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "run_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "lane_id": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "status": { "type": "string", "enum": ["PASS", "FAIL_CLOSED"] },
+    "reason_codes": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 128 } },
+    "mismatches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "field",
+          "expected",
+          "actual"
+        ],
+        "properties": {
+          "field": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "expected": { "type": "string", "minLength": 0, "maxLength": 4096 },
+          "actual": { "type": "string", "minLength": 0, "maxLength": 4096 }
+        }
+      }
+    },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"], "maxLength": 8192 }
+  }
+}

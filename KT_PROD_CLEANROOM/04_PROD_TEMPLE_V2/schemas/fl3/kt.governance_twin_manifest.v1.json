@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT Governance Twin Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "twin_manifest_id",
+    "run_id",
+    "lane_id",
+    "law_bundle_hash",
+    "time_contract_id",
+    "run_protocol_id",
+    "run_protocol_json_hash",
+    "bundle_root_hash",
+    "created_at"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.governance_twin_manifest.v1" },
+    "schema_version_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "twin_manifest_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "run_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "lane_id": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "law_bundle_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "time_contract_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "run_protocol_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "run_protocol_json_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "bundle_root_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "created_at": { "type": "string" },
+    "notes": { "type": ["string", "null"], "maxLength": 8192 }
+  }
+}

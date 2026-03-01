@@ -18,6 +18,12 @@ def _bundle_hash(repo_root: Path, bundle_obj: dict) -> str:
         data = p.read_bytes()
         if p.suffix.lower() == ".json":
             obj = json.loads(data.decode("utf-8"))
+            # Must match tools.verification.fl3_meta_evaluator._hash_file_for_bundle
+            rel_norm = rel.replace("\\", "/")
+            if rel_norm.endswith("FL4_DETERMINISM_CONTRACT.json") and isinstance(obj, dict):
+                obj = dict(obj)
+                obj.pop("canary_expected_hash_manifest_root_hash", None)
+                obj.pop("determinism_contract_id", None)
             canon = json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
             return hashlib.sha256(canon).hexdigest()
         # For non-JSON law-bound artifacts, newline conventions must not influence the law hash.

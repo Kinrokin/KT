@@ -1,0 +1,21 @@
+{
+  "schema_id": "kt.core_pressure_pack_manifest.v1",
+  "pack_id": "KT_CORE_PRESSURE_PACK_v1",
+  "pack_version": "1.0.0",
+  "created_utc": "2026-02-21T00:00:00Z",
+  "world_set_file": "world_set.json",
+  "invariants_file": "invariants.json",
+  "cases_file": "cases.jsonl",
+  "validators_file": "validators.json",
+  "counter_pressure_refs": [
+    {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "path": "REDPACK_REF:KT_CORE_PRESSURE_COUNTER_PRESSURE_V1",
+      "kind": "manifest"
+    }
+  ],
+  "notes": [
+    "Offline-safe starter pack for MVE-0. Cases are safe summaries only.",
+    "High-risk payloads are out-of-band redpacks referenced by hash/label only."
+  ]
+}

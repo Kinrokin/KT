@@ -1,0 +1,68 @@
+{
+  "actor": "dev-bot",
+  "change_id": "622298dc52aef487866f499c3134a57679046cc542be64b0045cf7b5a0e06309",
+  "files_checked": [
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/SUITE_REGISTRY_FL3.json",
+      "sha256": "29f45bc5e827604bf5464e5743b3688f8bb787bb9cc08732d63ec7e890700969"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_X.v1.json",
+      "sha256": "4fecea4be80b6c8290f9d7294a52bd27a6367bdac1f1cca11b5dcadec7750f89"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/SUITES/SUITE_X_ADV.v1.json",
+      "sha256": "c2090cd5a0544fd52261809996ca5416a926880ce03d2b02b9acd2062f76a333"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.json",
+      "sha256": "697524611091466674784c676a6a2981b91262730ad174cb9e21e1f8239db885"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256",
+      "sha256": "9d3b0c8604298261a00474b1c0682856880d8c6cc38bd0b695e9242701b33fda"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260215T195354Z.json",
+      "sha256": "95de26934650924429ef79e3146ee31ed2d6d47e22f5bb3153d21e34162a1c61"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/FL4_DETERMINISM_CONTRACT.json",
+      "sha256": "9fbfbfd365639643023819727b6b117773e6745380be2940a9d8d4b551f65442"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260215T195519Z.json",
+      "sha256": "0a53e40d6a006a3fbfcffeed8bad96176d72281a6c865d08e873dae379216ad6"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tools/governance/counterpressure_gate.py",
+      "sha256": "cf465d3dfaf99711cbf186a1e1bac2ddb5c50ed90f19c2a044f6c2c753281bce"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tools/tournament/run_tournament.py",
+      "sha256": "a86bfd616f723e6db36b7ec29e178a39e68b95014b360aa1eda8f30927f7bf59"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tools/merge/merge_evaluator.py",
+      "sha256": "185ff712cd3db40e96e86a060ffd8884a96e4ce7dc00eee7a1015404a0a916f3"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tools/verification/fl3_meta_evaluator.py",
+      "sha256": "e5e43a54f366224e2091e5a3636c81d3f03a74c28f8413a859657e355a15ed9a"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tests/fl3/test_epic15_tournament_runner.py",
+      "sha256": "1b18324d757abe2e177d7ce2c8948bc8f606d8a1263d5747febf79aab921747b"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tests/fl3/test_epic15_merge_evaluator.py",
+      "sha256": "68caf645fb2b7b566909d5054271f003f35cb1f6c7a363539300871c6779da8f"
+    }
+  ],
+  "notes": "mode=TOOL_IMPLEMENTATION; PHASE_5 complete; counterpressure_gate enforced for tournament+merge; suite_registry includes adversarial SUITE_X_ADV; bundle_hash=c20afd909d922ab0b32136eb344875d66eb8bd2500e1f51655838644c1130104; tests: cleanroom=157 temple=39 verification=6 PASS; meta_evaluator PASS",
+  "outcome": "PASS",
+  "phase": "post",
+  "phase_id": "PHASE_5_COUNTERPRESSURE",
+  "schema_id": "kt.change_receipt.v1",
+  "timestamp_utc": "2026-02-15T19:57:16Z"
+}

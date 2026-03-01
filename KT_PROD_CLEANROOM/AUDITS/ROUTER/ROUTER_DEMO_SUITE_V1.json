@@ -1,0 +1,50 @@
+{
+  "cases": [
+    {
+      "case_id": "R01",
+      "expected_adapter_ids": [
+        "lobe.censor.v1",
+        "lobe.quant.v1"
+      ],
+      "expected_domain_tag": "math",
+      "input_text": "Solve this equation: 2x + 3 = 11. Show the steps.",
+      "notes": null
+    },
+    {
+      "case_id": "R02",
+      "expected_adapter_ids": [
+        "lobe.muse.v1"
+      ],
+      "expected_domain_tag": "poetry",
+      "input_text": "Write a haiku about deterministic evidence packs.",
+      "notes": null
+    },
+    {
+      "case_id": "R03",
+      "expected_adapter_ids": [
+        "lobe.auditor.v1",
+        "lobe.censor.v1"
+      ],
+      "expected_domain_tag": "governance",
+      "input_text": "Explain fail-closed governance and why receipts matter.",
+      "notes": null
+    },
+    {
+      "case_id": "R04",
+      "expected_adapter_ids": [
+        "lobe.strategist.v1"
+      ],
+      "expected_domain_tag": "default",
+      "input_text": "Hello. What is KT?",
+      "notes": null
+    }
+  ],
+  "created_at": "1970-01-01T00:00:00Z",
+  "notes": null,
+  "purpose": "EPIC_19 hat-plane routing demo (keyword routing; deterministic receipts).",
+  "router_demo_suite_id": "6f2d5e38bec9ec9e1fc774521154bcfcd9b3017a1b09da9fcba766d493c32fff",
+  "schema_id": "kt.router_demo_suite.v1",
+  "schema_version_hash": "0a0b8bba1e2a7eae4f05b5be32d1fe4dd030b721cb232d6f362ae0ce2c551caa",
+  "suite_id": "ROUTER_HAT_DEMO",
+  "suite_version": "v1"
+}

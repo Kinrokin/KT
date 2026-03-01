@@ -1,0 +1,40 @@
+{
+  "actor": "dev-bot",
+  "change_id": "f110e462901b10eec8f9744839b0cc2536c04f36014703a2eec97865825110aa",
+  "files_checked": [
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/EPIC_16_DOCTRINE.md",
+      "sha256": "c14896840b314dcfb930a7d31411955cad071e3147f0018fb87b032526f70da7"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/SUITE_REGISTRY_FL3.json",
+      "sha256": "9aab0a75a629859fefc8b4df1593e33f7cfce620f0a30b3eef850e4ad1b203ed"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.json",
+      "sha256": "fd4cee461aea145c45ee0927922d0ecd43d2011c7b10bae682052226450ced5f"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256",
+      "sha256": "6ff14eec5c5583953de58c62768699fda83ec1f9f2bd4f2f80b6506e8b2c3bca"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tools/tournament/run_tournament.py",
+      "sha256": "59367dc380b8e6b79e63dd0109c55634cc6e275cae89aba9f97ae61facfe3009"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tools/merge/merge_evaluator.py",
+      "sha256": "7b1d71353eb7d646a473604c2ff8c70d2996219084f53098c0985d677ea2625b"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tools/governance/evaluation_admission_gate.py",
+      "sha256": "f23fa347e92a6e75149724eac0ec7bde913655f0315abb017fa6de03701eec3f"
+    }
+  ],
+  "notes": "mode=TOOL_IMPLEMENTATION; PHASE_4 start: enforce suite authorization by requiring evaluation_admission_receipt in tournament+merge; convert SUITE_REGISTRY_FL3 to schema-bound; add suite definition artifacts under AUDITS",
+  "outcome": "PASS",
+  "phase": "pre",
+  "phase_id": "PHASE_4_SUITE_REGISTRY",
+  "schema_id": "kt.change_receipt.v1",
+  "timestamp_utc": "2026-02-15T18:30:22Z"
+}

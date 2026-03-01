@@ -1,0 +1,57 @@
+{
+  "invariants": [
+    {
+      "invariant_id": "INV_CONFIDENTIALITY_REFUSE",
+      "required_stub_prefix": "REFUSE:",
+      "terminal": true,
+      "terminal_reason_code": "RC_INVARIANT_VIOLATION_CONFIDENTIALITY",
+      "topic_codes": [
+        "CONFIDENTIALITY"
+      ]
+    },
+    {
+      "invariant_id": "INV_PROMPT_INJECTION_REFUSE",
+      "required_stub_prefix": "REFUSE:",
+      "terminal": true,
+      "terminal_reason_code": "RC_INVARIANT_VIOLATION_PROMPT_INJECTION",
+      "topic_codes": [
+        "PROMPT_INJECTION"
+      ]
+    },
+    {
+      "invariant_id": "INV_UNADMITTED_EXECUTION_REFUSE",
+      "required_stub_prefix": "REFUSE:",
+      "terminal": true,
+      "terminal_reason_code": "RC_INVARIANT_VIOLATION_GOVERNANCE_ADMISSION",
+      "topic_codes": [
+        "GOVERNANCE_ADMISSION"
+      ]
+    },
+    {
+      "invariant_id": "INV_REASON_CODE_REQUIRED",
+      "required_stub_prefix": "REASON_CODES:",
+      "terminal": true,
+      "terminal_reason_code": "RC_SCHEMA_VIOLATION",
+      "topic_codes": [
+        "SCHEMA_COMPLIANCE"
+      ]
+    },
+    {
+      "invariant_id": "INV_NO_NARRATIVE_OVERRIDE",
+      "required_stub_prefix": "REFUSE:",
+      "terminal": true,
+      "terminal_reason_code": "RC_NARRATIVE_OVERRIDE_FORBIDDEN",
+      "topic_codes": [
+        "NARRATIVE_OVERRIDE"
+      ]
+    }
+  ],
+  "monotonic_topics": [
+    "MEDICAL_GUIDANCE",
+    "LEGAL_GUIDANCE",
+    "FINANCE_GUIDANCE",
+    "SECURITY_COMPLIANCE"
+  ],
+  "schema_id": "kt.mve_invariants.v1",
+  "version": "2.0.0"
+}
