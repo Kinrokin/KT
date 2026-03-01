@@ -110,9 +110,9 @@ jobs:
           set -euo pipefail
           OUT_DIR="KT_PROD_CLEANROOM/exports/adapters_shadow/_runs/FL4_SEAL/CI"
           test -d "$OUT_DIR"
-          # Factory job_dir is written under exports_shadow_root/_runs/FL4_SEAL/<job_id>.
+          # Factory job_dir is written under the provided OUT_DIR (<out_dir>/<job_id>).
           JOB_ID="$(python -c 'import json; print(json.load(open("'"$OUT_DIR"'/job.json","r",encoding="utf-8"))["job_id"])')"
-          JOB_DIR="KT_PROD_CLEANROOM/exports/adapters_shadow/_runs/FL4_SEAL/$JOB_ID"
+          JOB_DIR="$OUT_DIR/$JOB_ID"
           test -d "$JOB_DIR"
           # Promotion (if happened) materializes under exports/adapters/<adapter_id>/<adapter_version>/ and updates promoted_index.json.
           ADAPTER_ID="$(python -c 'import json; print(json.load(open("'"$OUT_DIR"'/job.json","r",encoding="utf-8"))["adapter_id"])')"
