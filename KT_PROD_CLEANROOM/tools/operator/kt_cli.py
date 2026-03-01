@@ -43,13 +43,10 @@ V1 = V1Profile(
     name="v1",
     sealed_commit="7b7f6e71d43c0aa60d4bc91be47e679491883871",
     sealed_tag="KT_V1_SEALED_20260217",
-    law_bundle_hash="cd593dee1cc0b4c30273c90331124c3686f510ff990005609b3653268e66d906",
-    suite_registry_id="e7a37cdc2a84b042dc1f594d1f84b4ba0a843c49de4925a06e6117fbac1eff17",
+    law_bundle_hash="caf4148f7a36d9dbaede04fe0f4aeabbe0f2227810db148ba4854cf0acf934d3",
+    suite_registry_id="a1d21d415568931778b718827c278918529af8490a1b456ba97f27a9a18be8fc",
     determinism_expected_root_hash="c574cd28deba7020b1ff41f249c02f403cbe8e045cb961222183880977bdb10e",
-    authoritative_reseal_receipt=(
-        "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/receipts/"
-        "KT_CHANGE_RECEIPT_EPIC24_V1_RESEAL_UNDER_CURRENT_LAW_FIX_POST_CANONICAL_HMAC_20260217T225856Z.json"
-    ),
+    authoritative_reseal_receipt=("KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/receipts/KT_CHANGE_RECEIPT_EPIC_HMAC_RESEAL_V1_POST_20260301T145027Z.json"),
     router_policy_ref="KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
     router_demo_suite_ref="KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
 )
