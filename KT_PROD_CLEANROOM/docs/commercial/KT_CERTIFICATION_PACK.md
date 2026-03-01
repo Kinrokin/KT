@@ -2,6 +2,12 @@
 
 This offering produces an auditor-grade evidence pack proving a specific KT state passes the governed sweep harness.
 
+SKU: `SKU_CERT`  
+Lane: `certify.canonical_hmac`
+
+## Business outcome (what you can say without hand-waving)
+- “This pinned system state was evaluated under a governed harness and produced a replayable evidence bundle with a mechanical PASS/FAIL verdict.”
+
 ## Canonical Anchors (KT V1)
 - Sealed tag: `KT_V1_SEALED_20260217`
 - Sealed commit: `7b7f6e71d43c0aa60d4bc91be47e679491883871`
@@ -28,6 +34,15 @@ Each command creates a new WORM run directory under `KT_PROD_CLEANROOM/exports/_
 - `certify_report.json` (machine summary)
 - `sweep_summary.json` + test logs (from the sweep harness)
 - validation reports (receipts/work orders/council packet), if enabled by sweep harness
+
+For client delivery, the operator factory also emits the standard delivery bundle artifacts (ZIP + sha256 + replay wrappers + manifest):
+- See `KT_PROD_CLEANROOM/docs/commercial/KT_DELIVERY_BUNDLE_SPEC.md`
+
+## Typical Timeline (planning estimate)
+- 1–3 business days once the pinned scope and execution environment (offline, WORM outputs) are ready.
+
+## Pricing Logic (framework; no numbers)
+- Fixed fee for a defined pinned scope + optional per-additional-run fee if multiple releases/states are certified.
 
 ## Acceptance Criteria
 - Repo worktree clean at start of run.

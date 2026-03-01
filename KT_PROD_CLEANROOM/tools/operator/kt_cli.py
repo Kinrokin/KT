@@ -1992,6 +1992,7 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     _add_post_global_options(ap_ov)
     ap_ov.add_argument("--overlay-id", action="append", required=True, help="Overlay id (repeatable).")
     ap_ov.add_argument("--target-lane", required=True, choices=["certify", "red_assault", "continuous_gov", "forge"])
+    ap_ov.add_argument("--strict", action="store_true", help="Explicit strict mode (default).")
     ap_ov.add_argument("--no-strict", action="store_true", help="Disable strict mode (default: strict).")
 
     ap_forge = sub.add_parser("forge", help="Adapter forge lane (train -> validate -> promote/block -> deliver).")
@@ -2093,6 +2094,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                 allow_dirty=allow_dirty,
             )
         if args.cmd == "overlay-apply":
+            if bool(getattr(args, "strict", False)) and bool(getattr(args, "no_strict", False)):
+                raise FL3ValidationError("FAIL_CLOSED: --strict and --no-strict are mutually exclusive")
             return cmd_overlay_apply(
                 repo_root=repo_root,
                 profile=profile,

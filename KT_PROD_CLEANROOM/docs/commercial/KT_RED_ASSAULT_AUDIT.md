@@ -1,24 +1,34 @@
-# KT Red Assault Audit (Verification)
+# KT Red Assault Audit (Adversarial Evaluation + Failure Library)
 
-This offering verifies that the red-assault mechanism and its reports are present, schema-valid, and consistent with the sealed state.
+This offering runs a bounded, governed red-assault lane and produces a client-deliverable failure library with replayable evidence.
+
+SKU: `SKU_RA`  
+Lane: `red_assault.v1`
 
 ## Inputs
 - A pinned KT checkout (e.g. `KT_V1_SEALED_20260217`).
-- Access to existing seal-pack evidence directories (read-only).
+- An agreed red-assault pack id (hash-referenced / governed).
+- Agreed run parameters: pressure level, sample count, seed.
 
-## Verification (Preferred)
-Run the full sweep harness (it performs perimeter validation and canonical meta-evaluation):
-- `python -m tools.verification.run_sweep_audit --sweep-id OPERATOR_VERIFY`
-
-Then verify seal-pack red-assault artifacts by reading the existing reports:
-- `.../FL4_SEAL/<pack_id>/red_assault_report.json`
-- `.../FL4_SEAL/<pack_id>/seal_verify_report.json`
+## Operator Command (Preferred)
+- `python -m tools.operator.kt_cli --profile v1 red-assault --pack-id <id> --pressure-level <low|med|high> --sample-count <n> --seed <int>`
 
 ## Outputs
-- WORM sweep artifacts under `KT_PROD_CLEANROOM/exports/_runs/.../sweeps/<id>/`
-- A one-line operator verdict (from operator CLI or local handoff pack)
+Each run produces the standard delivery bundle plus red-assault reports:
+- `reports/red_assault_summary.json`
+- `reports/failure_taxonomy.json`
+- `reports/top_failures.jsonl`
+
+Reference spec:
+- `KT_PROD_CLEANROOM/docs/commercial/KT_DELIVERY_BUNDLE_SPEC.md`
+
+## Typical Timeline (planning estimate)
+- +2–5 business days depending on pack size, sampling, and review cadence.
+
+## Pricing Logic (framework; no numbers)
+- Base fee + scale factor for sample count and pressure level (compute + analysis).
 
 ## Acceptance Criteria
-- `red_assault_report.json` indicates pass (e.g., `all_passed=true`) and has a stable `red_assault_id`.
-- Seal verify report indicates `PASS` and references the red-assault output by hash.
-
+- secret scan `PASS` and delivery linter `PASS`.
+- Reports listed above exist and are schema-valid for the lane.
+- No sensitive payloads embedded in canonical repo surfaces; dual-use content is hash-referenced only.

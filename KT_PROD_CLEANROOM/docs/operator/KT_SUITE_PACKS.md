@@ -26,3 +26,6 @@ Use existing suite evaluation tooling (canonical entrypoints). Pack generation m
 If and only if you decide to make a suite pack part of the canonical law-bound set:
 - Propose a new EPIC with a law amendment + receipts.
 - Only then copy the suite definition into `AUDITS/` and update the suite registry under governed process.
+
+## Domain playbooks
+- `KT_PROD_CLEANROOM/docs/operator/domains/README.md`

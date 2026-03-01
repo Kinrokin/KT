@@ -12,32 +12,37 @@ This document defines the **standard delivery bundle** for KT engagements. It is
 
 ## Bundle Layout (Minimum)
 For each engagement, deliver at least one **run directory** under:
-- `KT_PROD_CLEANROOM/exports/_runs/.../<UTC_TS>_<purpose>/`
+- `KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/<UTC_TS>_<purpose>/`
 
-Minimum contents (names may vary by tool; verify with `verdict.txt` + `sweep_summary.json`):
+Minimum contents (names may vary slightly by lane; acceptance is based on the lane manifest + linter PASS):
 - `verdict.txt` (one line; paste-safe)
-- `status_report.json` and/or `certify_report.json` (machine summary)
+- `reports/one_line_verdict.txt`
+- `status_report.json` and/or `certify_report.json` (machine summary; lane-dependent)
+- `evidence/run_protocol.json` (+ optional `.md`)
+- `evidence/secret_scan_report.json` (must be `PASS` for client delivery)
 - `sweeps/<sweep_id>/sweep_summary.json` (authoritative PASS/FAIL)
 - `sweeps/<sweep_id>/*.log` (test + validator transcripts)
-- `hashes.txt` or equivalent hash ledger (if produced by the tool)
+- `delivery/KT_DELIVERY_<run_id>.zip`
+- `delivery/delivery_manifest.json`
+- `hashes/KT_DELIVERY_<run_id>.zip.sha256`
+- `evidence/replay.sh` and `evidence/replay.ps1`
 
 If seal-pack verification is in scope, include pointers to:
 - `KT_PROD_CLEANROOM/exports/adapters_shadow/_runs/FL4_SEAL/<pack_id>/seal_verify_report.json`
 - `KT_PROD_CLEANROOM/exports/adapters_shadow/_runs/FL4_SEAL/<pack_id>/red_assault_report.json`
 
 ## Standard ZIP Packaging (Recommended)
-Deliver a ZIP created from the run directory (no additional computation required):
-- `KT_<ENGAGEMENT_ID>_<UTC_TS>_DELIVERY.zip`
+The operator factory generates a standard ZIP from the run evidence directory:
+- `delivery/KT_DELIVERY_<run_id>.zip`
 
-Include a short, plaintext manifest adjacent to the ZIP:
-- `delivery_manifest.txt`:
-  - `git_head=<sha>`
-  - `sealed_tag=<tag>` (if applicable)
-  - `law_bundle_hash=<hex64>`
-  - `suite_registry_id=<hex64>`
-  - `sweep_summary=<path>`
-  - `verdict=<verbatim one-line verdict>`
-  - `zip_sha256=<hex64>`
+Include the lane’s delivery manifest:
+- `delivery/delivery_manifest.json`:
+  - pins (sealed tag/commit, law bundle hash, suite registry id, determinism anchor)
+  - verdict line
+  - zip path + sha256
+  - replay command reference
+
+Note: older/legacy bundles may include a plaintext `delivery_manifest.txt`. Prefer the JSON manifest for all new deliveries.
 
 ## Acceptance Criteria (Measurable)
 - Sweep harness `status=PASS` for the agreed sweep id(s).
@@ -47,4 +52,3 @@ Include a short, plaintext manifest adjacent to the ZIP:
   - suite registry validates and matches pinned `suite_registry_id`
 - Worktree remains clean before and after each run (unless explicitly allowed).
 - No network access and no installs performed during runs.
-
