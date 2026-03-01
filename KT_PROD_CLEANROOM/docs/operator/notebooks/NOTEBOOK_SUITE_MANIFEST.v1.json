@@ -1,0 +1,90 @@
+{
+  "schema_id": "kt.operator.golden_notebook_suite_manifest.v1",
+  "suite_id": "KT_GOLDEN_NOTEBOOK_SUITE_V1",
+  "version": "1.0.0",
+  "books": [
+    {
+      "book_id": "00",
+      "name": "Core Bootstrap (Proof of Life)",
+      "notebook_plan_path": "KT_PROD_CLEANROOM/docs/operator/notebooks/books/KT_BOOK_00_CORE_BOOTSTRAP.md",
+      "exec": [
+        {"kind": "kt_cli", "args": ["status"]}
+      ]
+    },
+    {
+      "book_id": "01",
+      "name": "Core E2E Smoke (CI Sim)",
+      "notebook_plan_path": "KT_PROD_CLEANROOM/docs/operator/notebooks/books/KT_BOOK_01_CORE_E2E_SMOKE.md",
+      "exec": [
+        {"kind": "kt_cli", "args": ["certify", "--lane", "ci_sim"]}
+      ]
+    },
+    {
+      "book_id": "02",
+      "name": "Red Assault Gate (Serious Layer v1)",
+      "notebook_plan_path": "KT_PROD_CLEANROOM/docs/operator/notebooks/books/KT_BOOK_02_RED_ASSAULT_GATE.md",
+      "exec": [
+        {
+          "kind": "kt_cli",
+          "args": ["red-assault", "--pack-id", "serious_v1", "--pressure-level", "l4", "--sample-count", "256", "--seed", "1337"]
+        }
+      ]
+    },
+    {
+      "book_id": "03",
+      "name": "Select Suites Runner (Titan MVE-1)",
+      "notebook_plan_path": "KT_PROD_CLEANROOM/docs/operator/notebooks/books/KT_BOOK_03_SELECT_SUITES_RUNNER.md",
+      "exec": [
+        {
+          "kind": "kt_cli",
+          "args": [
+            "titan-run",
+            "--pack-manifest",
+            "KT-Codex/packs/KT_CORE_PRESSURE_PACK_v1/pack_manifest.json",
+            "--adapter-id",
+            "BASELINE",
+            "--seed",
+            "1337"
+          ]
+        }
+      ]
+    },
+    {
+      "book_id": "04",
+      "name": "Policy C Sweep Runner (Minimal)",
+      "notebook_plan_path": "KT_PROD_CLEANROOM/docs/operator/notebooks/books/KT_BOOK_04_POLICY_C_SWEEP_RUNNER.md",
+      "exec": [
+        {"kind": "policy_c_sweep_smoke", "plan_id": "POLICY_C_SWEEP_SMOKE_V1"}
+      ]
+    },
+    {
+      "book_id": "05",
+      "name": "Adapter Forge (Stub Train + Admission)",
+      "notebook_plan_path": "KT_PROD_CLEANROOM/docs/operator/notebooks/books/KT_BOOK_05_ADAPTER_FORGE_SMOKE.md",
+      "exec": [
+        {"kind": "forge_smoke", "engine": "stub"}
+      ]
+    },
+    {
+      "book_id": "06",
+      "name": "Router HAT Demo",
+      "notebook_plan_path": "KT_PROD_CLEANROOM/docs/operator/notebooks/books/KT_BOOK_06_ROUTER_HAT_DEMO.md",
+      "exec": [
+        {"kind": "kt_cli", "args": ["hat-demo"]}
+      ]
+    },
+    {
+      "book_id": "07",
+      "name": "Evidence Bundle + Replay Verify",
+      "notebook_plan_path": "KT_PROD_CLEANROOM/docs/operator/notebooks/books/KT_BOOK_07_EVIDENCE_BUNDLE_AND_REPLAY_VERIFY.md",
+      "exec": [
+        {"kind": "suite_finalize"}
+      ]
+    }
+  ],
+  "notes": [
+    "Notebook plans are Markdown with fenced ```python blocks and must remain offline-safe.",
+    "Execution is performed by tools.operator.books_runner and emits per-book FINAL_REPORT artifacts."
+  ]
+}
+
