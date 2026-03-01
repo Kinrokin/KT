@@ -688,6 +688,7 @@ def cmd_red_assault(
     attack_mix: Sequence[str],
     sample_count: int,
     seed: int,
+    overlay_ids: Sequence[str],
     allow_dirty: bool,
 ) -> int:
     _ = allow_dirty
@@ -697,91 +698,180 @@ def cmd_red_assault(
     pack = str(pack_id).strip()
     if not pack:
         raise FL3ValidationError("FAIL_CLOSED: --pack-id missing/empty")
-    if pack not in {"fl3_factory_v1"}:
-        raise FL3ValidationError(f"FAIL_CLOSED: unsupported --pack-id {pack!r} (supported: fl3_factory_v1)")
+    if pack not in {"fl3_factory_v1", "serious_v1"}:
+        raise FL3ValidationError(f"FAIL_CLOSED: unsupported --pack-id {pack!r} (supported: fl3_factory_v1, serious_v1)")
 
     level = str(pressure_level).strip().lower()
-    if level not in {"low", "med", "high"}:
-        raise FL3ValidationError("FAIL_CLOSED: --pressure-level must be one of: low, med, high")
+    if level not in {"low", "med", "high", "l0", "l1", "l2", "l3", "l4"}:
+        raise FL3ValidationError("FAIL_CLOSED: --pressure-level must be one of: low, med, high, l0, l1, l2, l3, l4")
     if int(sample_count) <= 0:
         raise FL3ValidationError("FAIL_CLOSED: --sample-count must be > 0")
 
     reports_dir = (run_dir / "reports").resolve()
     reports_dir.mkdir(parents=True, exist_ok=True)
 
-    out_summary = (reports_dir / "red_assault_summary.json").resolve()
-    ra_rc, _ra_out, _ra_log = _run_cmd(
-        repo_root=repo_root,
-        run_dir=run_dir,
-        name="red_assault",
-        cmd=[sys.executable, "-m", "tools.verification.fl3_red_assault", "--out", str(out_summary)],
-        env=env,
-        allow_nonzero=True,
-    )
-    if not out_summary.exists():
-        raise FL3ValidationError("FAIL_CLOSED: missing reports/red_assault_summary.json (unexpected)")
+    all_passed = False
+    failures: List[Dict[str, Any]] = []
+    failure_count = 0
+    observed_tool_rc = 0
+    attack_mix_norm = sorted([str(x).strip() for x in attack_mix if str(x).strip()])
+    overlay_ids_norm = sorted([str(x).strip() for x in overlay_ids if str(x).strip()])
 
-    summary = _load_json(out_summary)
-    all_passed = bool(summary.get("all_passed", False))
-    results = summary.get("results", [])
-    if not isinstance(results, list):
-        raise FL3ValidationError("FAIL_CLOSED: red_assault_summary.results must be a list")
+    if pack == "fl3_factory_v1":
+        out_summary = (reports_dir / "red_assault_summary.json").resolve()
+        ra_rc, _ra_out, _ra_log = _run_cmd(
+            repo_root=repo_root,
+            run_dir=run_dir,
+            name="red_assault",
+            cmd=[sys.executable, "-m", "tools.verification.fl3_red_assault", "--out", str(out_summary)],
+            env=env,
+            allow_nonzero=True,
+        )
+        observed_tool_rc = int(ra_rc)
+        if not out_summary.exists():
+            raise FL3ValidationError("FAIL_CLOSED: missing reports/red_assault_summary.json (unexpected)")
 
-    failures = [r for r in results if isinstance(r, dict) and bool(r.get("passed")) is False]
-    taxonomy = {
-        "schema_id": "kt.operator.red_assault.failure_taxonomy.unbound.v1",
-        "pack_id": pack,
-        "pressure_level": level,
-        "attack_mix": sorted([str(x).strip() for x in attack_mix if str(x).strip()]),
-        "sample_count": int(sample_count),
-        "seed": int(seed),
-        "all_passed": bool(all_passed),
-        "failure_count": int(len(failures)),
-        "failures": [
+        summary = _load_json(out_summary)
+        all_passed = bool(summary.get("all_passed", False))
+        results = summary.get("results", [])
+        if not isinstance(results, list):
+            raise FL3ValidationError("FAIL_CLOSED: red_assault_summary.results must be a list")
+
+        failures = [r for r in results if isinstance(r, dict) and bool(r.get("passed")) is False]
+        failure_count = int(len(failures))
+        taxonomy = {
+            "schema_id": "kt.operator.red_assault.failure_taxonomy.unbound.v1",
+            "pack_id": pack,
+            "pressure_level": level,
+            "attack_mix": attack_mix_norm,
+            "sample_count": int(sample_count),
+            "seed": int(seed),
+            "all_passed": bool(all_passed),
+            "failure_count": int(failure_count),
+            "failures": [
+                {
+                    "attack_id": str(r.get("attack_id", "")).strip(),
+                    "observed_exit_code": int(r.get("observed_exit_code", -1)),
+                    "expected_exit_codes": list(r.get("expected_exit_codes", [])),
+                }
+                for r in sorted(failures, key=lambda rr: str(rr.get("attack_id", "")).strip())
+            ],
+            "notes": "Factory red assault pack: verifies export traversal + schema hash tamper + entrypoint hash tamper are blocked.",
+            "observed_tool_rc": int(ra_rc),
+        }
+        _write_json_worm(path=reports_dir / "failure_taxonomy.json", obj=taxonomy, label="failure_taxonomy.json")
+
+        top_failures_path = (reports_dir / "top_failures.jsonl").resolve()
+        lines: List[str] = []
+        for r in sorted(failures, key=lambda rr: str(rr.get("attack_id", "")).strip()):
+            lines.append(json.dumps(r, sort_keys=True, ensure_ascii=True))
+        write_text_worm(path=top_failures_path, text="\n".join(lines) + ("\n" if lines else ""), label="top_failures.jsonl")
+    else:
+        pins_json = json.dumps(
             {
-                "attack_id": str(r.get("attack_id", "")).strip(),
-                "observed_exit_code": int(r.get("observed_exit_code", -1)),
-                "expected_exit_codes": list(r.get("expected_exit_codes", [])),
-            }
-            for r in sorted(failures, key=lambda rr: str(rr.get("attack_id", "")).strip())
-        ],
-        "notes": "Factory red assault pack: verifies export traversal + schema hash tamper + entrypoint hash tamper are blocked.",
-        "observed_tool_rc": int(ra_rc),
-    }
-    _write_json_worm(path=reports_dir / "failure_taxonomy.json", obj=taxonomy, label="failure_taxonomy.json")
+                "sealed_tag": profile.sealed_tag,
+                "sealed_commit": profile.sealed_commit,
+                "law_bundle_hash": profile.law_bundle_hash,
+                "suite_registry_id": profile.suite_registry_id,
+                "determinism_expected_root_hash": profile.determinism_expected_root_hash,
+                "head_git_sha": head,
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+        )
+        cmd = [
+            sys.executable,
+            "-m",
+            "tools.operator.serious_layer.red_assault_serious_v1",
+            "--out-dir",
+            str(reports_dir),
+            "--pins-json",
+            pins_json,
+            "--pressure",
+            str(level),
+            "--seed",
+            str(int(seed)),
+            "--case-budget",
+            str(int(sample_count)),
+        ]
+        if attack_mix_norm:
+            cmd += ["--attack-mix", *attack_mix_norm]
+        for ov in overlay_ids_norm:
+            cmd += ["--overlay-id", ov]
 
-    top_failures_path = (reports_dir / "top_failures.jsonl").resolve()
-    lines: List[str] = []
-    for r in sorted(failures, key=lambda rr: str(rr.get("attack_id", "")).strip()):
-        lines.append(json.dumps(r, sort_keys=True, ensure_ascii=True))
-    write_text_worm(path=top_failures_path, text="\n".join(lines) + ("\n" if lines else ""), label="top_failures.jsonl")
+        ra_rc, ra_out, _ra_log = _run_cmd(
+            repo_root=repo_root,
+            run_dir=run_dir,
+            name="red_assault_serious_v1",
+            cmd=cmd,
+            env=env,
+            allow_nonzero=True,
+        )
+        observed_tool_rc = int(ra_rc)
+        # Script writes failure_taxonomy.json/top_failures.jsonl and prints a JSON summary.
+        try:
+            last = (ra_out.strip().splitlines()[-1] if ra_out.strip() else "{}")
+            summary = json.loads(last)
+        except Exception:  # noqa: BLE001
+            summary = {}
+        all_passed = bool(summary.get("status") == "PASS")
+        try:
+            failure_count = int(summary.get("failure_count", 0))
+        except Exception:  # noqa: BLE001
+            failure_count = 0
+
+        # Emit a lane-level summary under the contract name.
+        out_summary = (reports_dir / "red_assault_summary.json").resolve()
+        _write_json_worm(
+            path=out_summary,
+            obj={
+                "schema_id": "kt.operator.serious_layer.red_assault_summary.unbound.v1",
+                "pack_id": pack,
+                "pressure_level": level,
+                "attack_mix": attack_mix_norm,
+                "overlay_ids": overlay_ids_norm,
+                "case_budget": int(sample_count),
+                "seed": int(seed),
+                "status": "PASS" if all_passed else "HOLD",
+                "observed_tool_rc": int(observed_tool_rc),
+                "summary": summary,
+                "notes": "Serious Layer v1: generator-first red assault (governance-plane executed; proof/model-plane declared and gated).",
+            },
+            label="red_assault_summary.json",
+        )
 
     verdict_kind = "PASS" if all_passed else "HOLD"
     verdict = (
         f"KT_RED_ASSAULT_{verdict_kind} cmd=red-assault profile={profile.name} allow_dirty={int(bool(allow_dirty))} "
         f"head={head} pack_id={pack} pressure_level={level} sample_count={int(sample_count)} seed={int(seed)} "
-        f"all_passed={int(bool(all_passed))} failures={int(len(failures))}"
+        f"all_passed={int(bool(all_passed))} failures={int(failure_count)} tool_rc={int(observed_tool_rc)}"
     )
+
+    lane_id = "KT_OPERATOR_RED_ASSAULT_SERIOUS_V1" if pack == "serious_v1" else "KT_OPERATOR_RED_ASSAULT_V1"
+    lane_label = "red_assault.serious_v1" if pack == "serious_v1" else "red_assault.v1"
 
     _ = _emit_delivery_bundle(
         repo_root=repo_root,
         profile=profile,
         run_dir=run_dir,
         head=head,
-        lane_id="KT_OPERATOR_RED_ASSAULT_V1",
-        lane_label="red_assault.v1",
+        lane_id=lane_id,
+        lane_label=lane_label,
         verdict_line=verdict,
         core_copy_dirs=[("reports", "reports"), ("transcripts", "transcripts")],
         run_protocol_notes=f"Operator red-assault lane; pack_id={pack} pressure_level={level} sample_count={int(sample_count)} seed={int(seed)}",
         delivery_manifest_extras={
             "red_assault": {
+                "program": "serious_v1" if pack == "serious_v1" else "v1",
                 "pack_id": pack,
                 "pressure_level": level,
-                "attack_mix": taxonomy["attack_mix"],
+                "attack_mix": attack_mix_norm,
+                "overlay_ids": overlay_ids_norm,
                 "sample_count": int(sample_count),
                 "seed": int(seed),
                 "all_passed": bool(all_passed),
-                "failure_count": int(len(failures)),
+                "failure_count": int(failure_count),
             }
         },
     )
@@ -834,13 +924,100 @@ def cmd_continuous_gov(
     repo_root: Path,
     profile: V1Profile,
     run_dir: Path,
+    program: str,
     baseline_run: str,
     window: str,
     thresholds_json: str,
     allow_dirty: bool,
 ) -> int:
     _ = allow_dirty
+    program = str(program).strip().lower()
+    if program not in {"v1", "serious_v1"}:
+        raise FL3ValidationError("FAIL_CLOSED: --program must be one of: v1, serious_v1")
     head = _git(repo_root=repo_root, args=["rev-parse", "HEAD"])
+
+    if program == "serious_v1":
+        env = _base_env(repo_root=repo_root)
+        reports_dir = (run_dir / "reports").resolve()
+        reports_dir.mkdir(parents=True, exist_ok=True)
+        pins_json = json.dumps(
+            {
+                "sealed_tag": profile.sealed_tag,
+                "sealed_commit": profile.sealed_commit,
+                "law_bundle_hash": profile.law_bundle_hash,
+                "suite_registry_id": profile.suite_registry_id,
+                "determinism_expected_root_hash": profile.determinism_expected_root_hash,
+                "head_git_sha": head,
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+        )
+        cg_rc, cg_out, _cg_log = _run_cmd(
+            repo_root=repo_root,
+            run_dir=run_dir,
+            name="continuous_gov_serious_v1",
+            cmd=[
+                sys.executable,
+                "-m",
+                "tools.operator.serious_layer.continuous_gov_serious_v1",
+                "--out-dir",
+                str(reports_dir),
+                "--pins-json",
+                pins_json,
+                "--baseline-run",
+                str(baseline_run),
+                "--window",
+                str(window),
+                "--thresholds",
+                str(thresholds_json),
+            ],
+            env=env,
+            allow_nonzero=True,
+        )
+        try:
+            last = (cg_out.strip().splitlines()[-1] if cg_out.strip() else "{}")
+            res = json.loads(last)
+        except Exception:  # noqa: BLE001
+            res = {}
+        ok = bool(res.get("status") == "PASS") and int(cg_rc) == 0
+
+        verdict_kind = "PASS" if ok else "HOLD"
+        verdict = (
+            f"KT_CONTINUOUS_GOV_{verdict_kind} cmd=continuous-gov profile={profile.name} allow_dirty={int(bool(allow_dirty))} "
+            f"head={head} program={program} baseline_run={baseline_run} window={str(window).strip() or '<baseline_only>'}"
+        )
+
+        baseline_dir = _resolve_existing_run_dir(repo_root=repo_root, value=baseline_run)
+        _ = _emit_delivery_bundle(
+            repo_root=repo_root,
+            profile=profile,
+            run_dir=run_dir,
+            head=head,
+            lane_id="KT_OPERATOR_CONTINUOUS_GOV_SERIOUS_V1",
+            lane_label="continuous_gov.serious_v1",
+            verdict_line=verdict,
+            core_copy_dirs=[("reports", "reports"), ("transcripts", "transcripts")],
+            datasets=[
+                {"relpath": "baseline_run/delivery_manifest.json", "sha256": sha256_file((baseline_dir / "delivery" / "delivery_manifest.json").resolve())},
+                {"relpath": "baseline_run/run_protocol.json", "sha256": sha256_file((baseline_dir / "evidence" / "run_protocol.json").resolve())},
+            ],
+            run_protocol_notes=f"Continuous governance (Serious Layer v1) diff against baseline_run={baseline_run} window={window}",
+            delivery_manifest_extras={
+                "continuous_gov": {
+                    "program": program,
+                    "baseline_run": str(baseline_run),
+                    "window": str(window),
+                    "thresholds": (json.loads(thresholds_json) if str(thresholds_json).strip() else {}),
+                    "result": res,
+                }
+            },
+        )
+
+        write_text_worm(path=run_dir / "reports" / "one_line_verdict.txt", text=verdict + "\n", label="one_line_verdict.txt")
+        write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
+        print(verdict)
+        return 0 if ok else 2
 
     baseline = _resolve_existing_run_dir(repo_root=repo_root, value=baseline_run)
     base_manifest = _load_optional_json((baseline / "delivery" / "delivery_manifest.json").resolve())
@@ -988,7 +1165,7 @@ def cmd_continuous_gov(
     verdict_kind = "PASS" if not regressions else "HOLD"
     verdict = (
         f"KT_CONTINUOUS_GOV_{verdict_kind} cmd=continuous-gov profile={profile.name} allow_dirty={int(bool(allow_dirty))} "
-        f"head={head} baseline_run={baseline.as_posix()} window={w or '<baseline_only>'} regressions={len(regressions)}"
+        f"head={head} program={program} baseline_run={baseline.as_posix()} window={w or '<baseline_only>'} regressions={len(regressions)}"
     )
 
     _ = _emit_delivery_bundle(
@@ -1965,8 +2142,10 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
 
     ap_ra = sub.add_parser("red-assault", help="Run red assault lane and emit failure taxonomy + delivery bundle (WORM).")
     _add_post_global_options(ap_ra)
-    ap_ra.add_argument("--pack-id", required=True, choices=["fl3_factory_v1"], help="Adversarial pack id.")
-    ap_ra.add_argument("--pressure-level", required=True, choices=["low", "med", "high"], help="Pressure intensity.")
+    ap_ra.add_argument("--pack-id", required=True, choices=["fl3_factory_v1", "serious_v1"], help="Adversarial pack id.")
+    ap_ra.add_argument(
+        "--pressure-level", required=True, choices=["low", "med", "high", "l0", "l1", "l2", "l3", "l4"], help="Pressure intensity."
+    )
     ap_ra.add_argument("--sample-count", required=True, type=int, help="Sample count (int).")
     ap_ra.add_argument("--seed", type=int, default=0, help="Deterministic seed (default: 0).")
     ap_ra.add_argument(
@@ -1976,11 +2155,13 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
         choices=["prompt_injection", "policy_jailbreak", "format_break", "hallucination_traps", "context_overload"],
         help="Attack mix tags (recorded in reports; repeatable).",
     )
+    ap_ra.add_argument("--overlay-id", action="append", default=[], help="Optional overlay id(s) (recorded; serious_v1 uses them for scope labeling).")
 
     ap_cg = sub.add_parser(
         "continuous-gov", help="Run continuous governance diff against a baseline and emit drift/regression artifacts (WORM)."
     )
     _add_post_global_options(ap_cg)
+    ap_cg.add_argument("--program", default="v1", choices=["v1", "serious_v1"], help="Continuous governance program (default: v1).")
     ap_cg.add_argument("--baseline-run", required=True, help="Baseline run directory under exports/_runs.")
     ap_cg.add_argument("--window", default="", help="N recent runs or comma-separated run dirs (optional).")
     ap_cg.add_argument("--thresholds", default="", help="Optional JSON thresholds object (string).")
@@ -2078,6 +2259,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                 attack_mix=list(getattr(args, "attack_mix", []) or []),
                 sample_count=int(args.sample_count),
                 seed=int(args.seed),
+                overlay_ids=list(getattr(args, "overlay_id", []) or []),
                 allow_dirty=allow_dirty,
             )
         if args.cmd == "continuous-gov":
@@ -2085,6 +2267,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                 repo_root=repo_root,
                 profile=profile,
                 run_dir=run_dir,
+                program=str(getattr(args, "program", "v1")),
                 baseline_run=str(args.baseline_run),
                 window=str(args.window),
                 thresholds_json=str(args.thresholds),
