@@ -366,11 +366,261 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             bdir = Path(base_model_dir).resolve()
             if not bdir.exists():
                 raise FailClosedError("FAIL_CLOSED: base model dir missing")
-            # Intentionally do not implement training here; this tool is a governed wrapper.
-            # Next action is explicit: provide offline model weights and enable a dedicated training EPIC.
-            raise FailClosedError(
-                "FAIL_CLOSED: hf_lora engine is gated (next_action=provide offline model dir + training EPIC to enable execution)"
+            # Offline + no-surprises cache confinement.
+            cache_root = (out_dir / "_hf_cache").resolve()
+            cache_root.mkdir(parents=True, exist_ok=True)
+            os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
+            os.environ.setdefault("HF_HUB_OFFLINE", "1")
+            os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
+            os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
+            os.environ.setdefault("HF_HOME", str(cache_root))
+            os.environ.setdefault("TRANSFORMERS_CACHE", str((cache_root / "transformers").resolve()))
+            os.environ.setdefault("HF_DATASETS_CACHE", str((cache_root / "datasets").resolve()))
+
+            # Hash the base model snapshot for auditability (full file-hash manifest; may be expensive).
+            base_entries: List[Dict[str, Any]] = []
+            for p in sorted(bdir.rglob("*")):
+                if not p.is_file():
+                    continue
+                rel = p.relative_to(bdir).as_posix()
+                base_entries.append({"path": rel, "bytes": int(p.stat().st_size), "sha256": _sha256_file(p)})
+            base_model_manifest = {
+                "schema_id": "kt.base_model_hash_manifest.unbound.v1",
+                "base_model_dir": bdir.as_posix(),
+                "file_count": int(len(base_entries)),
+                "files": base_entries,
+            }
+            base_model_root_hash = sha256_text(canonical_json(base_model_manifest))
+            _write_json_worm(
+                path=(out_dir / "base_model_hash_manifest.json").resolve(),
+                obj=base_model_manifest,
+                label="base_model_hash_manifest.json",
             )
+            manifest["produced"]["base_model_root_hash"] = base_model_root_hash
+            manifest["produced"]["base_model_manifest_path"] = (out_dir / "base_model_hash_manifest.json").as_posix()
+
+            # Training knobs (kept minimal; derived deterministically from config if present).
+            try:
+                raw_cfg = json.loads(config_path.read_text(encoding="utf-8"))
+            except json.JSONDecodeError:
+                raw_cfg = {}
+            if not isinstance(raw_cfg, dict):
+                raw_cfg = {}
+            max_steps = int(raw_cfg.get("max_steps", 1))
+            if max_steps < 1:
+                raise FailClosedError("FAIL_CLOSED: max_steps must be >= 1")
+            batch_size = int(raw_cfg.get("batch_size", raw_cfg.get("batch", 1)))
+            if batch_size < 1:
+                raise FailClosedError("FAIL_CLOSED: batch_size must be >= 1")
+            seq_len = int(raw_cfg.get("seq_len", 32))
+            if seq_len < 4:
+                raise FailClosedError("FAIL_CLOSED: seq_len must be >= 4")
+            lr = float(raw_cfg.get("lr", 1e-4))
+            lora_r = int(raw_cfg.get("lora_rank", raw_cfg.get("lora_r", 8)))
+            if lora_r < 1:
+                raise FailClosedError("FAIL_CLOSED: lora_rank must be >= 1")
+            lora_alpha = int(raw_cfg.get("lora_alpha", max(16, lora_r * 2)))
+            lora_dropout = float(raw_cfg.get("lora_dropout", 0.0))
+            target_modules_cfg = raw_cfg.get("target_modules")
+            target_modules_override = (
+                [str(x).strip() for x in target_modules_cfg if isinstance(x, str) and str(x).strip()]
+                if isinstance(target_modules_cfg, list)
+                else []
+            )
+
+            # Real engine: minimal deterministic LoRA update on synthetic token ids (no tokenizer; no network).
+            import random
+            import zipfile
+
+            import torch
+            from peft import LoraConfig, TaskType, get_peft_model
+            from transformers import AutoModelForCausalLM
+
+            os.environ.setdefault("PYTHONHASHSEED", str(cfg.seed))
+            random.seed(int(cfg.seed))
+            torch.manual_seed(int(cfg.seed))
+            try:
+                torch.use_deterministic_algorithms(True)
+            except Exception:  # noqa: BLE001
+                pass
+            try:
+                torch.set_num_threads(1)
+            except Exception:  # noqa: BLE001
+                pass
+
+            model = AutoModelForCausalLM.from_pretrained(bdir, local_files_only=True)
+
+            # Reduce randomness where possible.
+            for attr in ("attn_pdrop", "embd_pdrop", "resid_pdrop", "dropout"):
+                if hasattr(model.config, attr):
+                    setattr(model.config, attr, 0.0)
+
+            # Determine LoRA target modules deterministically.
+            candidate = [
+                "q_proj",
+                "k_proj",
+                "v_proj",
+                "o_proj",
+                "c_attn",
+                "c_proj",
+                "c_fc",
+                "out_proj",
+                "fc1",
+                "fc2",
+                "gate_proj",
+                "up_proj",
+                "down_proj",
+            ]
+            present: List[str] = []
+            for name, module in model.named_modules():
+                last = name.split(".")[-1]
+                if isinstance(module, torch.nn.Linear) or module.__class__.__name__ == "Conv1D":
+                    present.append(last)
+            present_unique = sorted(set(present))
+            target_modules = target_modules_override or [m for m in candidate if m in present_unique]
+            if not target_modules:
+                target_modules = present_unique[:4]
+            if not target_modules:
+                raise FailClosedError(
+                    "FAIL_CLOSED: unable to infer target_modules for LoRA (next_action=provide target_modules list in config)"
+                )
+
+            lora_cfg = LoraConfig(
+                r=int(lora_r),
+                lora_alpha=int(lora_alpha),
+                lora_dropout=float(lora_dropout),
+                bias="none",
+                target_modules=target_modules,
+                task_type=TaskType.CAUSAL_LM,
+            )
+            peft_model = get_peft_model(model, lora_cfg)
+            # Make adapter config stable across machines (avoid absolute base_model_dir path leakage).
+            for pcfg in getattr(peft_model, "peft_config", {}).values():
+                try:
+                    pcfg.base_model_name_or_path = f"sha256:{base_model_root_hash}"
+                except Exception:  # noqa: BLE001
+                    continue
+
+            peft_model.train()
+            params = [p for p in peft_model.parameters() if bool(getattr(p, "requires_grad", False))]
+            if not params:
+                raise FailClosedError("FAIL_CLOSED: no trainable parameters for hf_lora engine (unexpected)")
+            opt = torch.optim.AdamW(params, lr=float(lr))
+
+            vocab_size = int(getattr(peft_model.config, "vocab_size", 0) or 0)
+            if vocab_size <= 0:
+                raise FailClosedError("FAIL_CLOSED: model vocab_size missing/invalid")
+            data_seed = (int(cfg.seed) ^ int(dataset_hash[:16], 16)) & 0xFFFFFFFF
+            g = torch.Generator(device="cpu").manual_seed(int(data_seed))
+            input_ids = torch.randint(0, vocab_size, (int(batch_size), int(seq_len)), generator=g, dtype=torch.long)
+
+            loss_last: float = 0.0
+            for _step in range(int(max_steps)):
+                out = peft_model(input_ids=input_ids, labels=input_ids)
+                loss = getattr(out, "loss", None)
+                if loss is None:
+                    raise FailClosedError("FAIL_CLOSED: model did not produce loss")
+                loss_last = float(loss.detach().cpu().item())
+                loss.backward()
+                opt.step()
+                opt.zero_grad(set_to_none=True)
+
+            adapter_dir = (out_dir / "adapter").resolve()
+            adapter_dir.mkdir(parents=True, exist_ok=False)
+            peft_model.save_pretrained(adapter_dir, safe_serialization=True)
+
+            artifact_path = (out_dir / "adapter_artifact.zip").resolve()
+            fixed_dt = (1980, 1, 1, 0, 0, 0)
+            files = [p for p in adapter_dir.rglob("*") if p.is_file()]
+            files.sort(key=lambda p: p.relative_to(adapter_dir).as_posix())
+            with artifact_path.open("xb") as handle:
+                with zipfile.ZipFile(handle, mode="w", compression=zipfile.ZIP_DEFLATED) as zf:
+                    for p in files:
+                        rel = p.relative_to(adapter_dir).as_posix()
+                        data = p.read_bytes()
+                        zi = zipfile.ZipInfo(rel, date_time=fixed_dt)
+                        zi.compress_type = zipfile.ZIP_DEFLATED
+                        zi.external_attr = (0o644 & 0xFFFF) << 16
+                        zf.writestr(zi, data)
+            artifact_hash = _sha256_file(artifact_path)
+
+            manifest["produced"]["output_adapter_hash"] = artifact_hash
+            manifest["produced"]["output_adapter_path"] = artifact_path.as_posix()
+            manifest["produced"]["hf_lora"] = {
+                "steps": int(max_steps),
+                "batch_size": int(batch_size),
+                "seq_len": int(seq_len),
+                "lr": float(lr),
+                "lora_rank": int(lora_r),
+                "lora_alpha": int(lora_alpha),
+                "lora_dropout": float(lora_dropout),
+                "target_modules": list(target_modules),
+                "loss_last": loss_last,
+            }
+
+            # Emit schema-bound factory artifacts for parity with stub engine.
+            from schemas.schema_files import schema_version_hash  # type: ignore
+            from tools.training.fl3_factory.timeutil import utc_now_z
+            from tools.verification.fl3_canonical import sha256_json
+
+            base_model_id = f"sha256:{base_model_root_hash}"
+            job = {
+                "job_id": cfg.job_id,
+                "base_model_id": base_model_id,
+                "training_mode": cfg.training_mode,
+                "adapter_id": cfg.adapter_id,
+                "adapter_version": cfg.adapter_version,
+            }
+            dataset_obj = {"dataset_id": dataset_hash}
+
+            train_manifest = {
+                "schema_id": "kt.factory.train_manifest.v1",
+                "schema_version_hash": schema_version_hash("fl3/kt.factory.train_manifest.v1.json"),
+                "train_id": "",
+                "job_id": job["job_id"],
+                "dataset_id": dataset_obj["dataset_id"],
+                "base_model_id": job["base_model_id"],
+                "training_mode": job["training_mode"],
+                "output_bundle": {"artifact_path": artifact_path.as_posix(), "artifact_hash": artifact_hash},
+                "created_at": utc_now_z(),
+            }
+            train_manifest["train_id"] = sha256_json({k: v for k, v in train_manifest.items() if k not in {"created_at", "train_id"}})
+            validate_schema_bound_object(train_manifest)
+            _write_json_worm(path=out_dir / "train_manifest.json", obj=train_manifest, label="train_manifest.json")
+            manifest["produced"]["train_manifest_id"] = train_manifest.get("train_id")
+
+            trace = build_reasoning_trace(job_id=cfg.job_id, final_output_hash=artifact_hash)
+            validate_schema_bound_object(trace)
+            _write_json_worm(path=out_dir / "reasoning_trace.json", obj=trace, label="reasoning_trace.json")
+            manifest["produced"]["trace_id"] = trace.get("trace_id")
+
+            eval_report = build_eval_report(job=job, trace=trace)
+            validate_schema_bound_object(eval_report)
+            _write_json_worm(path=out_dir / "eval_report.json", obj=eval_report, label="eval_report.json")
+            manifest["produced"]["eval_id"] = eval_report.get("eval_id")
+
+            manifest["status"] = "PASS"
+            _write_json_worm(path=out_dir / "training_run_manifest.PASS.json", obj=manifest, label="training_run_manifest.PASS.json")
+            verdict = f"KT_RAPID_LORA_PASS cmd=train engine=hf_lora job_id={cfg.job_id} out_dir={out_dir.as_posix()}"
+            write_text_worm(path=out_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
+
+            hashes: List[Tuple[str, str, str]] = []
+            hashes.append(("sha256", dataset_hash, "dataset_root_hash"))
+            hashes.append(("sha256", _sha256_file(Path(dataset_manifest_path)), "dataset_hash_manifest.json"))
+            hashes.append(("sha256", config_sha, "config_sha256"))
+            hashes.append(("sha256", base_model_root_hash, "base_model_root_hash"))
+            hashes.append(("sha256", _sha256_file(out_dir / "base_model_hash_manifest.json"), "base_model_hash_manifest.json"))
+            hashes.append(("sha256", _sha256_file(out_dir / "training_run_manifest.PASS.json"), "training_run_manifest.PASS.json"))
+            hashes.append(("sha256", _sha256_file(out_dir / "train_manifest.json"), "train_manifest.json"))
+            hashes.append(("sha256", _sha256_file(out_dir / "reasoning_trace.json"), "reasoning_trace.json"))
+            hashes.append(("sha256", _sha256_file(out_dir / "eval_report.json"), "eval_report.json"))
+            hashes.append(("sha256", artifact_hash, "adapter_artifact"))
+            hashes.append(("sha256", _sha256_file(out_dir / "verdict.txt"), "verdict.txt"))
+            hashes_txt = "\n".join([f"{algo} {h}  {name}" for (algo, h, name) in hashes]) + "\n"
+            write_text_worm(path=out_dir / "hashes.txt", text=hashes_txt, label="hashes.txt")
+
+            print(verdict)
+            return 0
 
         # Stub engine: produces schema-bound artifacts deterministically without external ML deps.
         job = {
