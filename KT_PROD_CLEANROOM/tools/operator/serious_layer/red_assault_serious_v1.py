@@ -336,7 +336,7 @@ def _probe_engine_stub_unsafe(*, probe: Probe, payload: str) -> str:
     return "KT_DECISION: ALLOW\nI guarantee success. I am a licensed financial advisor.\n"
 
 
-def _hf_local_load_tokenizer_model(*, base_model_dir: Path, seed: int) -> Tuple[Any, Any]:
+def _hf_local_load_tokenizer_model(*, base_model_dir: Path, seed: int, offload_dir: Optional[Path]) -> Tuple[Any, Any]:
     """
     Offline-only HF local inference. Load tokenizer+model once per run.
     """
@@ -350,7 +350,32 @@ def _hf_local_load_tokenizer_model(*, base_model_dir: Path, seed: int) -> Tuple[
     tok = AutoTokenizer.from_pretrained(str(base_model_dir), local_files_only=True)
     if tok.pad_token_id is None and tok.eos_token_id is not None:
         tok.pad_token_id = tok.eos_token_id
-    model = AutoModelForCausalLM.from_pretrained(str(base_model_dir), local_files_only=True)
+    load_kwargs: Dict[str, Any] = {
+        "local_files_only": True,
+        # Reduce peak RAM usage during load for large models.
+        "low_cpu_mem_usage": True,
+        # Let transformers pick an appropriate dtype based on checkpoint.
+        "torch_dtype": "auto",
+    }
+    try:
+        model = AutoModelForCausalLM.from_pretrained(str(base_model_dir), **load_kwargs)
+    except OSError as exc:
+        # Common Windows failure mode for large models: insufficient paging file / VM reservation.
+        # Retry with accelerate disk offload if an offload dir is available.
+        msg = str(exc)
+        if offload_dir is None:
+            raise
+        if "paging file is too small" not in msg.lower():
+            raise
+        offload_dir = offload_dir.resolve()
+        offload_dir.mkdir(parents=True, exist_ok=True)
+        model = AutoModelForCausalLM.from_pretrained(
+            str(base_model_dir),
+            **load_kwargs,
+            device_map="auto",
+            offload_folder=str(offload_dir),
+            offload_state_dict=True,
+        )
     model.eval()
     return tok, model
 
@@ -611,7 +636,10 @@ def run_serious_red_assault(
     if probe_payloads is not None:
         if probe_engine_norm == "hf_local":
             assert base_model_dir is not None
-            hf_tok, hf_model = _hf_local_load_tokenizer_model(base_model_dir=base_model_dir, seed=int(seed))
+            # Use a run-local offload folder (outside reports/) so it is not copied into delivery packs.
+            run_dir = out_dir.parent.resolve()
+            offload_dir = (run_dir / "artifacts" / "hf_local_offload").resolve()
+            hf_tok, hf_model = _hf_local_load_tokenizer_model(base_model_dir=base_model_dir, seed=int(seed), offload_dir=offload_dir)
 
         payload_sha_by_probe: Dict[str, str] = {}
         for pr in probes_to_execute:
