@@ -336,15 +336,33 @@ def _probe_engine_stub_unsafe(*, probe: Probe, payload: str) -> str:
     return "KT_DECISION: ALLOW\nI guarantee success. I am a licensed financial advisor.\n"
 
 
-def _probe_engine_hf_local(*, probe: Probe, payload: str, base_model_dir: Path, seed: int) -> str:
+def _hf_local_load_tokenizer_model(*, base_model_dir: Path, seed: int) -> Tuple[Any, Any]:
     """
-    Offline-only HF local inference. Never writes payloads/outputs to disk; caller must sanitize outputs.
+    Offline-only HF local inference. Load tokenizer+model once per run.
     """
     try:
         import torch  # type: ignore[import-not-found]
         from transformers import AutoModelForCausalLM, AutoTokenizer  # type: ignore[import-not-found]
     except Exception as exc:  # noqa: BLE001
         raise FL3ValidationError("FAIL_CLOSED: hf_local engine requires torch+transformers installed") from exc
+
+    torch.manual_seed(int(seed))
+    tok = AutoTokenizer.from_pretrained(str(base_model_dir), local_files_only=True)
+    if tok.pad_token_id is None and tok.eos_token_id is not None:
+        tok.pad_token_id = tok.eos_token_id
+    model = AutoModelForCausalLM.from_pretrained(str(base_model_dir), local_files_only=True)
+    model.eval()
+    return tok, model
+
+
+def _probe_engine_hf_local(*, probe: Probe, payload: str, tok: Any, model: Any, seed: int) -> str:
+    """
+    Offline-only HF local inference. Never writes payloads/outputs to disk; caller must sanitize outputs.
+    """
+    try:
+        import torch  # type: ignore[import-not-found]
+    except Exception as exc:  # noqa: BLE001
+        raise FL3ValidationError("FAIL_CLOSED: hf_local engine requires torch installed") from exc
 
     torch.manual_seed(int(seed))
     prompt = (
@@ -356,12 +374,6 @@ def _probe_engine_hf_local(*, probe: Probe, payload: str, base_model_dir: Path, 
         "User payload:\n"
         f"{payload}\n"
     )
-
-    tok = AutoTokenizer.from_pretrained(str(base_model_dir), local_files_only=True)
-    if tok.pad_token_id is None and tok.eos_token_id is not None:
-        tok.pad_token_id = tok.eos_token_id
-    model = AutoModelForCausalLM.from_pretrained(str(base_model_dir), local_files_only=True)
-    model.eval()
 
     inputs = tok(prompt, return_tensors="pt")
     with torch.no_grad():
@@ -592,9 +604,15 @@ def run_serious_red_assault(
         )
 
     probe_results: List[Dict[str, Any]] = []
+    hf_tok: Optional[Any] = None
+    hf_model: Optional[Any] = None
     executed_probe_count = 0
     probe_failure_count = 0
     if probe_payloads is not None:
+        if probe_engine_norm == "hf_local":
+            assert base_model_dir is not None
+            hf_tok, hf_model = _hf_local_load_tokenizer_model(base_model_dir=base_model_dir, seed=int(seed))
+
         payload_sha_by_probe: Dict[str, str] = {}
         for pr in probes_to_execute:
             executed_probe_count += 1
@@ -608,8 +626,8 @@ def run_serious_red_assault(
                 out_txt = _probe_engine_stub_unsafe(probe=pr, payload=payload)
             else:
                 assert probe_engine_norm == "hf_local"
-                assert base_model_dir is not None
-                out_txt = _probe_engine_hf_local(probe=pr, payload=payload, base_model_dir=base_model_dir, seed=int(seed))
+                assert hf_tok is not None and hf_model is not None
+                out_txt = _probe_engine_hf_local(probe=pr, payload=payload, tok=hf_tok, model=hf_model, seed=int(seed))
 
             out_fp = {"bytes_len": len((out_txt or "").encode("utf-8")), "sha256": sha256_text(out_txt or "")}
             decision, signals, failures = _fintech_validate_probe_output(probe=pr, output=out_txt)
