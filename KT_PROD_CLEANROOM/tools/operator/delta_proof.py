@@ -170,6 +170,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             "pack_id": str(obj.get("pack_id", "")).strip(),
             "pressure_level": str(obj.get("pressure_level", "")).strip(),
             "seed": obj.get("seed"),
+            "probe_pack_id": str(obj.get("probe_pack_id", "")).strip(),
+            "probe_payload_bundle_sha256": str(obj.get("probe_payload_bundle_sha256", "")).strip(),
+            "probe_engine": str(obj.get("probe_engine", "")).strip(),
         }
 
     bfacts = ra_facts(baseline)
@@ -178,6 +181,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     for k in ("pack_id", "pressure_level", "seed"):
         if bfacts.get(k) and pfacts.get(k) and bfacts.get(k) != pfacts.get(k):
             mismatches.append(f"{k}:{bfacts.get(k)}!={pfacts.get(k)}")
+    for k in ("probe_pack_id", "probe_payload_bundle_sha256", "probe_engine"):
+        b = bfacts.get(k)
+        p = pfacts.get(k)
+        if (b or p) and b != p:
+            mismatches.append(f"{k}:{b}!={p}")
 
     if mismatches and not bool(args.allow_mismatch):
         raise RuntimeError("FAIL_CLOSED: baseline/post mismatch (use --allow-mismatch to override): " + ",".join(mismatches))
@@ -260,4 +268,3 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

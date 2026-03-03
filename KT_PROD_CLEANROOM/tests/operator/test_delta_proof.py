@@ -87,3 +87,77 @@ def test_delta_proof_computes_deltas_and_emits_delivery(tmp_path: Path) -> None:
     assert p.returncode == 0, p.stdout + "\n" + p.stderr
     assert (out_run / "reports" / "delta_proof.json").exists()
     assert (out_run / "delivery" / "delivery_manifest.json").exists()
+
+
+def test_delta_proof_fails_closed_on_probe_bundle_mismatch(tmp_path: Path) -> None:
+    repo_root = Path(__file__).resolve().parents[3]
+    root = write_root(repo_root=repo_root) / "delta_proof" / f"mismatch_{tmp_path.name}_{os.getpid()}_{time.time_ns()}"
+    root.mkdir(parents=True, exist_ok=False)
+
+    baseline = root / "baseline"
+    post = root / "post"
+    for r in (baseline, post):
+        (r / "reports").mkdir(parents=True, exist_ok=True)
+        (r / "evidence").mkdir(parents=True, exist_ok=True)
+        (r / "delivery").mkdir(parents=True, exist_ok=True)
+        _write_json(r / "evidence" / "secret_scan_report.json", {"status": "PASS"})
+        _write_json(r / "delivery" / "delivery_lint_report.json", {"status": "PASS"})
+        (r / "verdict.txt").write_text("OK\n", encoding="utf-8")
+
+    _write_json(
+        baseline / "reports" / "failure_taxonomy.json",
+        {"schema_id": "kt.operator.serious_layer.red_assault.failure_taxonomy.unbound.v1", "counts_by_severity": {"HIGH": 1}, "counts_by_class": {"x": 1}},
+    )
+    _write_json(
+        post / "reports" / "failure_taxonomy.json",
+        {"schema_id": "kt.operator.serious_layer.red_assault.failure_taxonomy.unbound.v1", "counts_by_severity": {"HIGH": 0}, "counts_by_class": {"x": 0}},
+    )
+    _write_json(
+        baseline / "reports" / "red_assault_summary.json",
+        {
+            "pack_id": "serious_v1",
+            "pressure_level": "l4",
+            "seed": 1337,
+            "probe_pack_id": "probe_pack.fintech.hashref.v1",
+            "probe_payload_bundle_sha256": "aaa",
+            "probe_engine": "stub",
+        },
+    )
+    _write_json(
+        post / "reports" / "red_assault_summary.json",
+        {
+            "pack_id": "serious_v1",
+            "pressure_level": "l4",
+            "seed": 1337,
+            "probe_pack_id": "probe_pack.fintech.hashref.v1",
+            "probe_payload_bundle_sha256": "bbb",
+            "probe_engine": "stub",
+        },
+    )
+
+    out_run = root / "out"
+    out_run.mkdir(parents=True, exist_ok=False)
+
+    env = _py_env(repo_root)
+    p = subprocess.run(
+        [
+            "python",
+            "-m",
+            "tools.operator.delta_proof",
+            "--profile",
+            "v1",
+            "--allow-dirty",
+            "--run-root",
+            str(out_run),
+            "--baseline-run",
+            str(baseline),
+            "--post-run",
+            str(post),
+        ],
+        cwd=str(repo_root),
+        env=env,
+        text=True,
+        capture_output=True,
+    )
+    assert p.returncode != 0
+    assert "baseline/post mismatch" in (p.stdout + p.stderr)

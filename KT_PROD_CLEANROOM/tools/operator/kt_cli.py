@@ -689,6 +689,10 @@ def cmd_red_assault(
     sample_count: int,
     seed: int,
     overlay_ids: Sequence[str],
+    probe_pack_ref: str = "",
+    probe_payloads: str = "",
+    probe_engine: str = "stub",
+    base_model_dir: str = "",
     allow_dirty: bool,
 ) -> int:
     _ = allow_dirty
@@ -700,6 +704,14 @@ def cmd_red_assault(
         raise FL3ValidationError("FAIL_CLOSED: --pack-id missing/empty")
     if pack not in {"fl3_factory_v1", "serious_v1"}:
         raise FL3ValidationError(f"FAIL_CLOSED: unsupported --pack-id {pack!r} (supported: fl3_factory_v1, serious_v1)")
+
+    probe_pack_ref_norm = str(probe_pack_ref).strip()
+    probe_payloads_norm = str(probe_payloads).strip()
+    probe_engine_norm = (str(probe_engine).strip() or "stub").strip()
+    base_model_dir_norm = str(base_model_dir).strip()
+    if pack != "serious_v1":
+        if probe_pack_ref_norm or probe_payloads_norm or base_model_dir_norm or probe_engine_norm != "stub":
+            raise FL3ValidationError("FAIL_CLOSED: probe flags are supported only for --pack-id serious_v1")
 
     level = str(pressure_level).strip().lower()
     if level not in {"low", "med", "high", "l0", "l1", "l2", "l3", "l4"}:
@@ -716,6 +728,11 @@ def cmd_red_assault(
     observed_tool_rc = 0
     attack_mix_norm = sorted([str(x).strip() for x in attack_mix if str(x).strip()])
     overlay_ids_norm = sorted([str(x).strip() for x in overlay_ids if str(x).strip()])
+    probe_pack_id = ""
+    probe_payload_bundle_sha256 = ""
+    probe_engine_used = ""
+    executed_probe_count = 0
+    probe_failure_count = 0
 
     if pack == "fl3_factory_v1":
         out_summary = (reports_dir / "red_assault_summary.json").resolve()
@@ -799,6 +816,12 @@ def cmd_red_assault(
             cmd += ["--attack-mix", *attack_mix_norm]
         for ov in overlay_ids_norm:
             cmd += ["--overlay-id", ov]
+        if probe_payloads_norm:
+            cmd += ["--probe-payloads", probe_payloads_norm, "--probe-engine", probe_engine_norm]
+            if probe_pack_ref_norm:
+                cmd += ["--probe-pack-ref", probe_pack_ref_norm]
+            if base_model_dir_norm:
+                cmd += ["--base-model-dir", base_model_dir_norm]
 
         ra_rc, ra_out, _ra_log = _run_cmd(
             repo_root=repo_root,
@@ -821,6 +844,18 @@ def cmd_red_assault(
         except Exception:  # noqa: BLE001
             failure_count = 0
 
+        probe_pack_id = str(summary.get("probe_pack_id", "")).strip()
+        probe_payload_bundle_sha256 = str(summary.get("probe_payload_bundle_sha256", "")).strip()
+        probe_engine_used = str(summary.get("probe_engine", "")).strip()
+        try:
+            executed_probe_count = int(summary.get("executed_probe_count", 0))
+        except Exception:  # noqa: BLE001
+            executed_probe_count = 0
+        try:
+            probe_failure_count = int(summary.get("probe_failure_count", 0))
+        except Exception:  # noqa: BLE001
+            probe_failure_count = 0
+
         # Emit a lane-level summary under the contract name.
         out_summary = (reports_dir / "red_assault_summary.json").resolve()
         _write_json_worm(
@@ -833,10 +868,15 @@ def cmd_red_assault(
                 "overlay_ids": overlay_ids_norm,
                 "case_budget": int(sample_count),
                 "seed": int(seed),
+                "probe_pack_id": probe_pack_id,
+                "probe_payload_bundle_sha256": probe_payload_bundle_sha256,
+                "probe_engine": (probe_engine_used or probe_engine_norm),
+                "executed_probe_count": int(executed_probe_count),
+                "probe_failure_count": int(probe_failure_count),
                 "status": "PASS" if all_passed else "HOLD",
                 "observed_tool_rc": int(observed_tool_rc),
                 "summary": summary,
-                "notes": "Serious Layer v1: generator-first red assault (governance-plane executed; proof/model-plane declared and gated).",
+                "notes": "Serious Layer v1: generator-first red assault (governance-plane executed; optional probe packs executed with out-of-repo payloads; hash-ref-only artifacts).",
             },
             label="red_assault_summary.json",
         )
@@ -872,6 +912,11 @@ def cmd_red_assault(
                 "seed": int(seed),
                 "all_passed": bool(all_passed),
                 "failure_count": int(failure_count),
+                "probe_pack_id": probe_pack_id,
+                "probe_payload_bundle_sha256": probe_payload_bundle_sha256,
+                "probe_engine": (probe_engine_used or probe_engine_norm),
+                "executed_probe_count": int(executed_probe_count),
+                "probe_failure_count": int(probe_failure_count),
             }
         },
     )
@@ -2156,6 +2201,10 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
         help="Attack mix tags (recorded in reports; repeatable).",
     )
     ap_ra.add_argument("--overlay-id", action="append", default=[], help="Optional overlay id(s) (recorded; serious_v1 uses them for scope labeling).")
+    ap_ra.add_argument("--probe-pack-ref", default="", help="(serious_v1) Probe pack descriptor path (hash-ref-only).")
+    ap_ra.add_argument("--probe-payloads", default="", help="(serious_v1) Out-of-repo JSONL payloads file to execute probes (hash-ref-only).")
+    ap_ra.add_argument("--probe-engine", default="stub", choices=["stub", "stub_unsafe", "hf_local"], help="(serious_v1) Probe engine.")
+    ap_ra.add_argument("--base-model-dir", default="", help="(serious_v1) Offline base model dir (required for hf_local).")
 
     ap_cg = sub.add_parser(
         "continuous-gov", help="Run continuous governance diff against a baseline and emit drift/regression artifacts (WORM)."
@@ -2260,6 +2309,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                 sample_count=int(args.sample_count),
                 seed=int(args.seed),
                 overlay_ids=list(getattr(args, "overlay_id", []) or []),
+                probe_pack_ref=str(getattr(args, "probe_pack_ref", "") or ""),
+                probe_payloads=str(getattr(args, "probe_payloads", "") or ""),
+                probe_engine=str(getattr(args, "probe_engine", "stub") or "stub"),
+                base_model_dir=str(getattr(args, "base_model_dir", "") or ""),
                 allow_dirty=allow_dirty,
             )
         if args.cmd == "continuous-gov":
