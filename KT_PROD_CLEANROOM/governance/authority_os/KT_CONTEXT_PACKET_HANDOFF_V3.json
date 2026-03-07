@@ -1,0 +1,88 @@
+{
+  "canonicalization_requirements": {
+    "library_id": "kt_canonicalize.v1",
+    "required_location": "KT_PROD_CLEANROOM/tools/canonicalize/kt_canonicalize.py"
+  },
+  "ci_jobs_required_now": [
+    {
+      "job_id": "ci.ws0.delivery_parity",
+      "yaml_path": "ci/jobs/verify_ws0_delivery_parity.yml"
+    },
+    {
+      "job_id": "ci.ws2.hermetic_replay_and_bindingloop",
+      "yaml_path": "ci/jobs/verify_ws2_replay_bindingloop.yml"
+    },
+    {
+      "job_id": "ci.p0.program_catalog_verify",
+      "yaml_path": "ci/jobs/verify_program_catalog.yml"
+    }
+  ],
+  "created_utc": "2026-03-05T00:00:00Z",
+  "failure_handling_context": {
+    "minimum_failure_classes_to_cover_now": [
+      "PIN_MISSING",
+      "SOURCE_INTEGRITY_FAIL",
+      "CATALOG_INCOMPLETE",
+      "GOV_MANIFEST_INVALID",
+      "REPLAY_NONDETERMINISTIC"
+    ],
+    "required_artifacts": [
+      "reports/errortaxonomy.json",
+      "reports/failure_fingerprint.json",
+      "reports/nextaction.sh"
+    ]
+  },
+  "legal_force": {
+    "classification": "contextual_subordinate"
+  },
+  "minimal_checklist_for_dev_bot_handoff": [
+    "All required pins resolved and committed.",
+    "Canonical source integrity receipt present.",
+    "Governance manifest signed and verified.",
+    "Required P0 program IDs implemented at declared paths.",
+    "Required CI YAMLs exist and emit CI bundles.",
+    "Two-clean-clone proof exists for the minimal substrate set.",
+    "Error taxonomy + NEXT_ACTION templates exist for the minimum failure classes."
+  ],
+  "required_program_catalog_subset": [
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/hashpin.py",
+      "program_id": "program.hashpin.compute"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/source_integrity.py",
+      "program_id": "program.source.integrity.verify"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/program_catalog_verify.py",
+      "program_id": "program.catalog.verify"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/governance_manifest_verify.py",
+      "program_id": "program.governance.verify_manifest"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/delivery/delivery_contract_validator.py",
+      "program_id": "program.delivery.contract.validate"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/bindingloop_verify.py",
+      "program_id": "program.bindingloop.verify"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/hermetic_replay_linter.py",
+      "program_id": "program.replay.lint.hermetic"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/two_clean_clone_proof.py",
+      "program_id": "program.proof.twocleanclone"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
+      "program_id": "program.safe_run"
+    }
+  ],
+  "schema_id": "kt.context_packet_handoff.v3",
+  "title": "KT Context Packet Handoff v3",
+  "version": "3.0.0"
+}

@@ -1,0 +1,90 @@
+{
+  "canonicalization": {
+    "library_id": "kt_canonicalize.v1",
+    "standard": "JCS_RFC_8785"
+  },
+  "created_utc": "2026-03-06T00:00:00Z",
+  "required_pins": [
+    {
+      "current_sha256": "",
+      "manifest_field": "packet_bundle_sha256",
+      "pin_id": "PIN_PACKET_BUNDLE_SHA256",
+      "status": "UNPINNED",
+      "target": "packet_bundle"
+    },
+    {
+      "current_sha256": "",
+      "manifest_field": "authority_os_sha256",
+      "pin_id": "PIN_AUTHORITY_OS_SHA256",
+      "status": "UNPINNED",
+      "target": "authority_os"
+    },
+    {
+      "current_sha256": "",
+      "manifest_field": "titanium_work_order_sha256",
+      "pin_id": "PIN_TITANIUM_WORK_ORDER_SHA256",
+      "status": "UNPINNED",
+      "target": "titanium_work_order"
+    },
+    {
+      "current_sha256": "",
+      "manifest_field": "sku_registry_sha256",
+      "pin_id": "PIN_SKU_REGISTRY_SHA256",
+      "status": "UNPINNED",
+      "target": "sku_registry"
+    },
+    {
+      "current_sha256": "",
+      "manifest_field": "ci_gate_definitions_sha256",
+      "pin_id": "PIN_CI_GATE_DEFS_SHA256",
+      "status": "UNPINNED",
+      "target": "ci_gate_definitions"
+    },
+    {
+      "current_sha256": "",
+      "manifest_field": "tier0_bundle_sha256",
+      "pin_id": "PIN_TIER0_LOCATOR_BUNDLE_SHA256",
+      "status": "UNPINNED",
+      "target": "tier0_locator_bundle"
+    },
+    {
+      "current_sha256": "",
+      "manifest_field": "tier1_bundle_sha256",
+      "pin_id": "PIN_TIER1_LOCATOR_BUNDLE_SHA256",
+      "status": "UNPINNED",
+      "target": "tier1_locator_bundle"
+    }
+  ],
+  "schema_id": "kt.operator.pin_registry.v1",
+  "targets": {
+    "authority_os": {
+      "mode": "canonical_json",
+      "path": "KT_PROD_CLEANROOM/governance/authority_os/KT_TITANIUM_ENFORCEMENT_BUNDLE_V3.json"
+    },
+    "ci_gate_definitions": {
+      "mode": "canonical_json",
+      "path": "ci/gates/p0_gate_definitions.json"
+    },
+    "packet_bundle": {
+      "mode": "canonical_json",
+      "path": "KT_PROD_CLEANROOM/governance/authority_os/KT_CONTEXT_PACKET_HANDOFF_V3.json"
+    },
+    "sku_registry": {
+      "mode": "canonical_json",
+      "path": "KT_PROD_CLEANROOM/governance/sku_registry.json"
+    },
+    "tier0_locator_bundle": {
+      "locator_path": "KT_PROD_CLEANROOM/governance/tier_locators/tier0_files.json",
+      "mode": "locator_bundle"
+    },
+    "tier1_locator_bundle": {
+      "locator_path": "KT_PROD_CLEANROOM/governance/tier_locators/tier1_files.json",
+      "mode": "locator_bundle"
+    },
+    "titanium_work_order": {
+      "mode": "canonical_json",
+      "path": "KT_PROD_CLEANROOM/governance/authority_os/KT_TITANIUM_ENFORCEMENT_BUNDLE_V3.json"
+    }
+  },
+  "version": "1.0.0"
+}

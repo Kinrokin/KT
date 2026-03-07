@@ -1,0 +1,11 @@
+name: verify_ws2_replay_bindingloop
+on:
+  workflow_call:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate job declaration
+        run: python -m tools.operator.program_catalog_verify --check-job ci.ws2.hermetic_replay_and_bindingloop

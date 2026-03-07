@@ -1,0 +1,169 @@
+{
+  "bundle_id": "KT_TITANIUM_P0_GREEN_AUTHORITY_OS_V3",
+  "created_utc": "2026-03-05T00:00:00Z",
+  "definition_of_done": {
+    "P0_GREEN_FULL": [
+      "WS0-WS3 implemented and CI fail-closed on main.",
+      "Two-clean-clone proofs fresh for all required P0 programs.",
+      "Governance manifest is pinned, multi-signed, and CI-verified.",
+      "Tier0-Tier2 red-team suite fresh and critical findings closed with patch_card + delta_proof + reattack_manifest.",
+      "God-Status verdict PASS or PASS_WITH_WARNINGS and not in cooldown."
+    ],
+    "P0_GREEN_MIN": [
+      "All STOP gates cleared.",
+      "safe-run enforced as only PRODUCTION entrypoint.",
+      "Delivery contract validator, binding loop validator, hermetic replay linter, and secret/probe scans fail-closed.",
+      "CI jobs for WS0 and WS2 are fail-closed on main."
+    ],
+    "PRESS_BUTTON_PRODUCTION_GO": [
+      "P0_GREEN_FULL achieved.",
+      "Key programs replay with identical receipts from clean clones.",
+      "No unresolved STOP gate or critical red-team finding."
+    ]
+  },
+  "error_taxonomy_and_exit_codes": {
+    "exit_codes": [
+      {
+        "code": 10,
+        "name": "STOP_GATE_BLOCKED"
+      },
+      {
+        "code": 11,
+        "name": "PIN_MISSING"
+      },
+      {
+        "code": 12,
+        "name": "SOURCE_INTEGRITY_FAIL"
+      },
+      {
+        "code": 13,
+        "name": "CATALOG_INCOMPLETE"
+      },
+      {
+        "code": 14,
+        "name": "GOV_MANIFEST_INVALID"
+      },
+      {
+        "code": 20,
+        "name": "DELIVERY_CONTRACT_FAIL"
+      },
+      {
+        "code": 21,
+        "name": "BINDING_LOOP_FAIL"
+      },
+      {
+        "code": 22,
+        "name": "WORM_VIOLATION"
+      },
+      {
+        "code": 23,
+        "name": "SECRET_OR_PROBE_LEAK_DETECTED"
+      },
+      {
+        "code": 30,
+        "name": "REPLAY_NONDETERMINISTIC"
+      },
+      {
+        "code": 40,
+        "name": "MAI_CONFORMANCE_FAIL"
+      },
+      {
+        "code": 50,
+        "name": "CONSTITUTION_EPOCH_MISMATCH"
+      },
+      {
+        "code": 60,
+        "name": "LEDGER_CHAIN_INVALID"
+      },
+      {
+        "code": 70,
+        "name": "GOD_STATUS_HOLD"
+      }
+    ],
+    "next_action_contract": {
+      "artifact": "reports/nextaction.sh"
+    },
+    "taxonomy_schema": "schemas/errortaxonomy.schema.json"
+  },
+  "execution_order_mandate": {
+    "scope_freeze": {
+      "rule": "Until P0_GREEN_MIN, only P0-enabling work is allowed."
+    },
+    "workstream_order": [
+      "WS0_DELIVERY_PARITY",
+      "WS1_MAI_CONFORMANCE_AND_PROVENANCE",
+      "WS2_HERMETIC_REPLAY_AND_BINDINGLOOP",
+      "WS3_CONSTITUTION_EPOCH_DRIFT_AMENDMENT_SECURITY"
+    ]
+  },
+  "non_negotiables": [
+    "Fail-closed doctrine everywhere.",
+    "WORM evidence is create-once or byte-identical.",
+    "No secrets logged or printed.",
+    "No sensitive probes on canonical surfaces.",
+    "Every SKU emits the standardized delivery bundle contract.",
+    "Model-agnostic plug-and-play preserved via MAI.",
+    "No finish-line movement outside the Authority OS."
+  ],
+  "p0_state_machine": {
+    "states": [
+      {
+        "state": "P0_RED"
+      },
+      {
+        "state": "P0_YELLOW"
+      },
+      {
+        "state": "P0_GREEN_MIN"
+      },
+      {
+        "state": "P0_GREEN_FULL"
+      }
+    ]
+  },
+  "program_catalog_path": "governance/program_catalog.json",
+  "release_decision": {
+    "status": "NO_GO_FOR_PRESS_BUTTON_PRODUCTION_UNTIL_P0_GREEN"
+  },
+  "schema_id": "kt.titanium_enforcement_bundle.v3",
+  "stop_gates": [
+    {
+      "required_programs": [
+        "program.hashpin.compute",
+        "program.hashpin.verify_required_pins"
+      ],
+      "stop_gate_id": "STOP_00_HASH_PINS_UNRESOLVED"
+    },
+    {
+      "required_programs": [
+        "program.source.integrity.verify"
+      ],
+      "stop_gate_id": "STOP_01_CANONICAL_SOURCE_INTEGRITY_UNKNOWN"
+    },
+    {
+      "required_programs": [
+        "program.catalog.verify"
+      ],
+      "stop_gate_id": "STOP_02_PROGRAM_CATALOG_INCOMPLETE"
+    },
+    {
+      "required_programs": [
+        "program.governance.verify_manifest"
+      ],
+      "stop_gate_id": "STOP_03_GOVERNANCE_MANIFEST_UNSIGNED_OR_UNVERIFIED"
+    }
+  ],
+  "two_clean_clone_proof": {
+    "program_id": "program.proof.twocleanclone",
+    "required_comparisons": [
+      "delivery_root_hash",
+      "bindingloop_check_hash",
+      "evidence_core_merkle_root_sha256",
+      "replay_receipt_hash",
+      "governance_manifest_sha256",
+      "constitution_epoch",
+      "mve_environment_fingerprint"
+    ]
+  },
+  "version": "3.0.0"
+}

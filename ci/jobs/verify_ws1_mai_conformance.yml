@@ -1,0 +1,11 @@
+name: verify_ws1_mai_conformance
+on:
+  workflow_call:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate job declaration
+        run: python -m tools.operator.program_catalog_verify --check-job ci.ws1.mai_conformance_and_provenance

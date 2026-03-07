@@ -1,0 +1,36 @@
+{
+  "created_utc": "2026-03-06T00:00:00Z",
+  "jobs": [
+    {
+      "job_id": "ci.ws0.delivery_parity",
+      "must_emit_ci_bundle": true,
+      "must_fail_closed_on_main": true,
+      "yaml_path": "ci/jobs/verify_ws0_delivery_parity.yml"
+    },
+    {
+      "job_id": "ci.ws1.mai_conformance_and_provenance",
+      "must_emit_ci_bundle": true,
+      "must_fail_closed_on_main": true,
+      "yaml_path": "ci/jobs/verify_ws1_mai_conformance.yml"
+    },
+    {
+      "job_id": "ci.ws2.hermetic_replay_and_bindingloop",
+      "must_emit_ci_bundle": true,
+      "must_fail_closed_on_main": true,
+      "yaml_path": "ci/jobs/verify_ws2_replay_bindingloop.yml"
+    },
+    {
+      "job_id": "ci.ws3.constitution_epoch_drift_amendment",
+      "must_emit_ci_bundle": true,
+      "must_fail_closed_on_main": true,
+      "yaml_path": "ci/jobs/verify_ws3_constitution.yml"
+    },
+    {
+      "job_id": "ci.p0.program_catalog_verify",
+      "must_emit_ci_bundle": true,
+      "must_fail_closed_on_main": true,
+      "yaml_path": "ci/jobs/verify_program_catalog.yml"
+    }
+  ],
+  "schema_id": "kt.operator.p0_gate_definitions.v1"
+}
