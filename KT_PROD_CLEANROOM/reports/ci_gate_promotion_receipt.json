@@ -1,0 +1,63 @@
+{
+  "branch": "ops/titanium-realpath-attachment-20260307",
+  "fail_closed_main_workflow": {
+    "blocker": "Workflow is defined but cannot become live truth until PR #12 merges to main and branch protection is configured against it.",
+    "declared": true,
+    "live_on_main": false,
+    "name": "P0 Fail-Closed Main Ladder",
+    "promotion_status": "READY_NOT_PROMOTED"
+  },
+  "generated_utc": "2026-03-08T15:15:51Z",
+  "head_sha": "42e599269487c7b3fa77e7345664fe55b2bdc147",
+  "next_actions": [
+    "Merge PR #12 into main.",
+    "Observe the first mainline run of P0 Fail-Closed Main Ladder.",
+    "Attach branch protection to the promoted fail-closed checks once the first mainline run is green."
+  ],
+  "pr": {
+    "base": "main",
+    "number": 12,
+    "state": "OPEN",
+    "url": "https://github.com/Kinrokin/KT/pull/12"
+  },
+  "schema_id": "kt.sovereign.ci_gate_promotion_receipt.v1",
+  "status": "WARN_ONLY_LIVE",
+  "warn_only_workflow": {
+    "conclusion": "success",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "job_id": 66200723601,
+        "name": "p0-program-catalog",
+        "url": "https://github.com/Kinrokin/KT/actions/runs/22823816023/job/66200723601"
+      },
+      {
+        "conclusion": "success",
+        "job_id": 66200723603,
+        "name": "ws3-constitution",
+        "url": "https://github.com/Kinrokin/KT/actions/runs/22823816023/job/66200723603"
+      },
+      {
+        "conclusion": "success",
+        "job_id": 66200723607,
+        "name": "ws0-delivery-parity",
+        "url": "https://github.com/Kinrokin/KT/actions/runs/22823816023/job/66200723607"
+      },
+      {
+        "conclusion": "success",
+        "job_id": 66200723609,
+        "name": "ws1-mai-conformance",
+        "url": "https://github.com/Kinrokin/KT/actions/runs/22823816023/job/66200723609"
+      },
+      {
+        "conclusion": "success",
+        "job_id": 66200723613,
+        "name": "ws2-replay-bindingloop",
+        "url": "https://github.com/Kinrokin/KT/actions/runs/22823816023/job/66200723613"
+      }
+    ],
+    "name": "P0 Warn-Only Closure Ladder",
+    "run_id": 22823816023,
+    "url": "https://github.com/Kinrokin/KT/actions/runs/22823816023"
+  }
+}
