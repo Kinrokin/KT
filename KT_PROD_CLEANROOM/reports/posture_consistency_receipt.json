@@ -1,0 +1,60 @@
+{
+  "alias_truth": {
+    "alias_type": "RATIFIED_ALIAS",
+    "authority_os_equals_titanium_work_order": true,
+    "status": "PASS"
+  },
+  "branch_ref": "ops/titanium-realpath-attachment-20260307",
+  "posture_state": "P0_GREEN_FULL_BRANCH_CONFIRMED_PENDING_MAIN_PROMOTION",
+  "preserved_branch_closure": {
+    "checks": [
+      {
+        "artifact": "real_path_attachment_matrix.json",
+        "program_ids": [
+          "program.certify.canonical_hmac",
+          "program.hat_demo",
+          "program.red_assault.serious_v1"
+        ],
+        "safe_run_enforced_present": true,
+        "status": "PASS"
+      },
+      {
+        "artifact": "source_integrity_receipt.json",
+        "status": "PASS"
+      },
+      {
+        "artifact": "hashpin_receipt.json",
+        "status": "PASS",
+        "target_count": 7
+      },
+      {
+        "artifact": "governance_manifest_verification.json",
+        "status": "PASS"
+      },
+      {
+        "artifact": "program_catalog_report.json",
+        "status": "PASS"
+      },
+      {
+        "artifact": "practice_mode_chain_summary.json",
+        "status": "PASS"
+      },
+      {
+        "artifact": "twocleanclone_proof.json",
+        "status": "PASS"
+      },
+      {
+        "artifact": "godstatus_verdict.json",
+        "status": "PASS"
+      },
+      {
+        "artifact": "ci_gate_promotion_receipt.json",
+        "status": "WARN_ONLY_LIVE"
+      }
+    ],
+    "status": "PASS"
+  },
+  "schema_id": "kt.operator.posture_consistency_receipt.v1",
+  "status": "PASS",
+  "validated_head_sha": "fc0bdc8fee86d46c679bde887602030d0ef6941a"
+}

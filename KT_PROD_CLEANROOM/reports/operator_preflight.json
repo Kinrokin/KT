@@ -1,0 +1,38 @@
+{
+  "assurance_mode": "production",
+  "checks": [
+    {
+      "check": "clean_worktree_required_in_production",
+      "detail": "FAIL_CLOSED: repo is not clean (git status --porcelain=v1 non-empty)",
+      "status": "FAIL"
+    },
+    {
+      "check": "source_integrity_verified",
+      "detail": null,
+      "status": "PASS"
+    },
+    {
+      "check": "program_catalog_verified",
+      "detail": null,
+      "status": "PASS"
+    },
+    {
+      "check": "constitution_epoch_matches",
+      "detail": null,
+      "status": "PASS"
+    },
+    {
+      "check": "governance_manifest_verified_and_signed",
+      "detail": null,
+      "status": "PASS"
+    },
+    {
+      "check": "pin_registry_all_required_pinned",
+      "detail": null,
+      "status": "PASS"
+    }
+  ],
+  "profile": "v1",
+  "program_id": "program.hat_demo",
+  "status": "FAIL"
+}

@@ -10,14 +10,17 @@ SRC_ROOT = ROOT / "04_PROD_TEMPLE_V2" / "src"
 sys.path.insert(0, str(SRC_ROOT))
 sys.path.insert(0, str(ROOT))
 
+import tools.operator.serious_layer.red_assault_serious_v1 as red_assault_mod
 from tools.operator.serious_layer.common import Pins
 from tools.operator.serious_layer.probe_pack import load_probe_pack_descriptor, probe_pack_descriptor_default_fintech
 from tools.operator.serious_layer.red_assault_serious_v1 import run_serious_red_assault
 
 
-def test_fintech_probe_pack_exec_does_not_leak_payload_text(tmp_path: Path) -> None:
+def test_fintech_probe_pack_exec_does_not_leak_payload_text(tmp_path: Path, monkeypatch) -> None:
     repo_root = Path(__file__).resolve().parents[3]
     pack = load_probe_pack_descriptor(probe_pack_descriptor_default_fintech(repo_root))
+    policy_root = (repo_root / "KT_PROD_CLEANROOM" / "tools").resolve()
+    monkeypatch.setattr(red_assault_mod, "repo_root_from", lambda _path: policy_root)
 
     sentinel = "SENTINEL_PAYLOAD_DO_NOT_LEAK_9b3f5f44"
     payloads_path = (tmp_path / "probe_payloads.jsonl").resolve()
@@ -47,6 +50,7 @@ def test_fintech_probe_pack_exec_does_not_leak_payload_text(tmp_path: Path) -> N
         seed=1337,
         case_budget=999,
         overlay_ids=["domain.fintech.v1"],
+        probe_pack_ref=probe_pack_descriptor_default_fintech(repo_root),
         probe_payloads=payloads_path,
         probe_engine="stub_unsafe",
     )
@@ -59,4 +63,3 @@ def test_fintech_probe_pack_exec_does_not_leak_payload_text(tmp_path: Path) -> N
     for p in out_dir.rglob("*"):
         if p.is_file():
             assert needle not in p.read_bytes()
-

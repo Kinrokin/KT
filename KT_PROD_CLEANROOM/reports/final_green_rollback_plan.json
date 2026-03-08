@@ -1,0 +1,40 @@
+{
+  "branch": "ops/titanium-realpath-attachment-20260307",
+  "generated_utc": "2026-03-08T21:16:39Z",
+  "rollback_units": [
+    {
+      "blast_radius": "metadata and validation only",
+      "revert_paths": [
+        "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+        "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+        "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
+        "KT_PROD_CLEANROOM/reports/alias_truth_receipt.json",
+        "KT_PROD_CLEANROOM/governance/governance_aliases.json",
+        "KT_PROD_CLEANROOM/tools/operator/posture_consistency.py"
+      ],
+      "unit": "W0 posture and alias truth"
+    },
+    {
+      "blast_radius": "mainline governance posture only",
+      "revert_paths": [
+        "KT_PROD_CLEANROOM/reports/main_merge_receipt.json",
+        "KT_PROD_CLEANROOM/reports/main_fail_closed_run_receipt.json",
+        "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
+        "KT_PROD_CLEANROOM/reports/p0_green_full_receipt.json"
+      ],
+      "unit": "W1 mainline promotion"
+    },
+    {
+      "blast_radius": "production protocol metadata only",
+      "revert_paths": [
+        "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
+        "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
+        "KT_PROD_CLEANROOM/reports/customer_delivery_receipt.json"
+      ],
+      "unit": "W2 one-button production proof"
+    }
+  ],
+  "schema_id": "kt.final_green.rollback_plan.v1",
+  "status": "PASS",
+  "validated_head_sha": "ffa028b933a0ea4083beb39b586e3d8cbb78d178"
+}

@@ -1,0 +1,110 @@
+{
+  "created_utc": "2026-03-08T15:13:10Z",
+  "rows": [
+    {
+      "bundle_emitter_used": "_emit_delivery_bundle",
+      "entrypoint": "python -m tools.operator.kt_cli",
+      "evidence_plane_complete": true,
+      "lane": "canonical_hmac",
+      "ledger_append_observed": false,
+      "production_intended_blocked_if_missing": false,
+      "program_id": "program.certify.canonical_hmac",
+      "safe_run_enforced": false,
+      "titanium_checkpoints_exercised": [
+        "reports/operator_fingerprint.json",
+        "reports/operator_intent.json",
+        "evidence/constitutional_snapshot.json",
+        "evidence/worm_manifest.json",
+        "evidence/evidence_core_merkle.json",
+        "delivery/delivery_manifest.json",
+        "delivery/delivery_lint_report.json",
+        "evidence/replay_receipt.json",
+        "evidence/secret_scan_report.json",
+        "reports/bindingloop_check.json"
+      ],
+      "validator_set_exercised": [
+        "program.bindingloop.verify",
+        "program.delivery.contract.validate"
+      ]
+    },
+    {
+      "bundle_emitter_used": "_emit_delivery_bundle",
+      "entrypoint": "python -m tools.operator.kt_cli",
+      "evidence_plane_complete": true,
+      "lane": "hat_demo.v1",
+      "ledger_append_observed": true,
+      "production_intended_blocked_if_missing": false,
+      "program_id": "program.hat_demo",
+      "safe_run_enforced": false,
+      "titanium_checkpoints_exercised": [
+        "reports/operator_fingerprint.json",
+        "reports/operator_intent.json",
+        "evidence/constitutional_snapshot.json",
+        "evidence/worm_manifest.json",
+        "evidence/evidence_core_merkle.json",
+        "delivery/delivery_manifest.json",
+        "delivery/delivery_lint_report.json",
+        "evidence/replay_receipt.json",
+        "evidence/secret_scan_report.json",
+        "reports/bindingloop_check.json"
+      ],
+      "validator_set_exercised": [
+        "program.bindingloop.verify",
+        "program.delivery.contract.validate"
+      ]
+    },
+    {
+      "bundle_emitter_used": "_emit_delivery_bundle",
+      "entrypoint": "python -m tools.operator.kt_cli",
+      "evidence_plane_complete": true,
+      "lane": "red_assault.serious_v1",
+      "ledger_append_observed": true,
+      "production_intended_blocked_if_missing": false,
+      "program_id": "program.red_assault.serious_v1",
+      "safe_run_enforced": false,
+      "titanium_checkpoints_exercised": [
+        "reports/operator_fingerprint.json",
+        "reports/operator_intent.json",
+        "evidence/constitutional_snapshot.json",
+        "evidence/worm_manifest.json",
+        "evidence/evidence_core_merkle.json",
+        "delivery/delivery_manifest.json",
+        "delivery/delivery_lint_report.json",
+        "evidence/replay_receipt.json",
+        "evidence/secret_scan_report.json",
+        "reports/bindingloop_check.json"
+      ],
+      "validator_set_exercised": [
+        "program.bindingloop.verify",
+        "program.delivery.contract.validate"
+      ]
+    },
+    {
+      "bundle_emitter_used": "_emit_delivery_bundle",
+      "entrypoint": "safe-run:program.hat_demo",
+      "evidence_plane_complete": true,
+      "lane": "hat_demo.v1",
+      "ledger_append_observed": true,
+      "production_intended_blocked_if_missing": true,
+      "program_id": "program.hat_demo",
+      "safe_run_enforced": true,
+      "titanium_checkpoints_exercised": [
+        "reports/operator_fingerprint.json",
+        "reports/operator_intent.json",
+        "evidence/constitutional_snapshot.json",
+        "evidence/worm_manifest.json",
+        "evidence/evidence_core_merkle.json",
+        "delivery/delivery_manifest.json",
+        "delivery/delivery_lint_report.json",
+        "evidence/replay_receipt.json",
+        "evidence/secret_scan_report.json",
+        "reports/bindingloop_check.json"
+      ],
+      "validator_set_exercised": [
+        "program.bindingloop.verify",
+        "program.delivery.contract.validate"
+      ]
+    }
+  ],
+  "schema_id": "kt.operator.real_path_attachment_matrix.v1"
+}

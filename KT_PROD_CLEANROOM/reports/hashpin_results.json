@@ -1,0 +1,75 @@
+{
+  "schema_id": "kt.operator.hashpin_results.v1",
+  "targets": {
+    "authority_os": {
+      "mode": "canonical_json",
+      "path": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/governance/authority_os/KT_TITANIUM_ENFORCEMENT_BUNDLE_V3.json",
+      "sha256": "0644a3dd17762190edcbf9caa5b917e8550478b5258a09b769d0fc3870958475",
+      "target": "authority_os"
+    },
+    "ci_gate_definitions": {
+      "mode": "canonical_json",
+      "path": "D:/user/rober/OneDrive/KingsTheorem_Archive/ci/gates/p0_gate_definitions.json",
+      "sha256": "92f57520316221212c1671f4115c9bddf333974035ef9976dfbbcb0f133f09e2",
+      "target": "ci_gate_definitions"
+    },
+    "packet_bundle": {
+      "mode": "canonical_json",
+      "path": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/governance/authority_os/KT_CONTEXT_PACKET_HANDOFF_V3.json",
+      "sha256": "13f4e33abcad4f108726245126701056d0d1b125aa909c2e17e228da6fcbc0dc",
+      "target": "packet_bundle"
+    },
+    "sku_registry": {
+      "mode": "canonical_json",
+      "path": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/governance/sku_registry.json",
+      "sha256": "fc952075e41a9e231b6013b5f0d14644602989e3650305be17b1e4455e1354c5",
+      "target": "sku_registry"
+    },
+    "tier0_locator_bundle": {
+      "entries": [
+        {
+          "path": "KT_PROD_CLEANROOM/governance/authority_os/KT_CONTEXT_PACKET_HANDOFF_V3.json",
+          "sha256": "13f4e33abcad4f108726245126701056d0d1b125aa909c2e17e228da6fcbc0dc"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/governance/authority_os/KT_TITANIUM_ENFORCEMENT_BUNDLE_V3.json",
+          "sha256": "0644a3dd17762190edcbf9caa5b917e8550478b5258a09b769d0fc3870958475"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/tools/delivery/redaction_rules.v1.json",
+          "sha256": "1719c0d49a842e031f4d97077704bc01d81f2ab12c7fd886eafe849cfb60124a"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/tools/verification/worm_write.py",
+          "sha256": "ffa8638807f7a14ebbb85e1fbbb0ae1b50a833da201640969853fe8ddcf52d81"
+        }
+      ],
+      "mode": "locator_bundle",
+      "path": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/governance/tier_locators/tier0_files.json",
+      "sha256": "681ce139c01dfacda4b28c7d377a18227f41d9338863a70f19253d2bb7933519",
+      "target": "tier0_locator_bundle"
+    },
+    "tier1_locator_bundle": {
+      "entries": [
+        {
+          "path": "KT_PROD_CLEANROOM/governance/program_catalog.json",
+          "sha256": "75c2321cce3fbd83e9e94b57d5cedc9005a2f87e3b9e21f67cb00e0e78fbfe63"
+        },
+        {
+          "path": "ci/gates/p0_gate_definitions.json",
+          "sha256": "92f57520316221212c1671f4115c9bddf333974035ef9976dfbbcb0f133f09e2"
+        }
+      ],
+      "mode": "locator_bundle",
+      "path": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/governance/tier_locators/tier1_files.json",
+      "sha256": "cb58ecc5c0187a681eb5b75855dcba276db2d1834b0e4cc3dc78cbfd48ccfb4b",
+      "target": "tier1_locator_bundle"
+    },
+    "titanium_work_order": {
+      "mode": "canonical_json",
+      "path": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/governance/authority_os/KT_TITANIUM_ENFORCEMENT_BUNDLE_V3.json",
+      "sha256": "0644a3dd17762190edcbf9caa5b917e8550478b5258a09b769d0fc3870958475",
+      "target": "titanium_work_order"
+    }
+  }
+}

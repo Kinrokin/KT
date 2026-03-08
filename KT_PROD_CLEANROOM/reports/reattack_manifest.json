@@ -1,0 +1,37 @@
+{
+  "generated_utc": "2026-03-08T15:13:10Z",
+  "reattacks": [
+    {
+      "attack_id": "RT3_REPLAY_MISMATCH",
+      "evidence_run": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05d_replay_mismatch_check",
+      "expected_direction": "still_blocked",
+      "seed": 0
+    },
+    {
+      "attack_id": "RT1_BINDINGLOOP_MUTATION",
+      "evidence_run": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05b_bindingloop_mutation_check",
+      "expected_direction": "still_blocked",
+      "seed": 0
+    },
+    {
+      "attack_id": "RT2_DELIVERY_MISSING_ARTIFACT",
+      "evidence_run": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05b_delivery_missing_check",
+      "expected_direction": "still_blocked",
+      "seed": 0
+    },
+    {
+      "attack_id": "RT4_GOVERNANCE_MANIFEST_FORGED",
+      "evidence_run": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05b_governance_manifest_negative",
+      "expected_direction": "still_blocked",
+      "seed": 0
+    },
+    {
+      "attack_id": "RT2_SAFE_RUN_PRODUCTION_BYPASS",
+      "evidence_run": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A09_safe_run_production_block",
+      "expected_direction": "still_blocked",
+      "seed": 0
+    }
+  ],
+  "schema_id": "kt.redteam.reattack_manifest.v1",
+  "status": "PASS"
+}

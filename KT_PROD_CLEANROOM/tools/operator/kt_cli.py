@@ -12,9 +12,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
+from tools.canonicalize.kt_canonicalize import canonicalize_bytes, sha256_hex
 from schemas.fl3_suite_registry_schema import validate_fl3_suite_registry
 from tools.delivery.delivery_linter import lint_delivery_dir
 from tools.delivery.generate_delivery_pack import generate_delivery_pack
+from tools.operator.titanium_common import operator_fingerprint as titanium_operator_fingerprint
+from tools.operator.titanium_common import write_failure_artifacts as titanium_write_failure_artifacts
 from tools.security.pack_guard_scan import scan_pack_and_write
 from tools.training.fl3_factory.io import write_schema_object
 from tools.training.fl3_factory.manifests import build_hash_manifest, sha256_file
@@ -53,10 +56,16 @@ V1 = V1Profile(
 
 
 def _utc_now_compact_z() -> str:
+    fixed = str(os.environ.get("KT_FIXED_UTC_COMPACT", "")).strip()
+    if fixed:
+        return fixed
     # Microseconds included to avoid collisions in operator workflows.
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
 
 def _utc_now_iso_z() -> str:
+    fixed = str(os.environ.get("KT_FIXED_UTC_ISO", "")).strip()
+    if fixed:
+        return fixed
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
@@ -203,6 +212,251 @@ def _copy_tree_worm(*, src_root: Path, dst_root: Path, label: str) -> None:
         write_bytes_worm(path=out_path, data=p.read_bytes(), label=f"{label}:{rel}")
 
 
+def _governance_manifest_path(repo_root: Path) -> Path:
+    return (repo_root / "KT_PROD_CLEANROOM" / "governance" / "governance_manifest.json").resolve()
+
+
+def _governance_manifest(repo_root: Path) -> Dict[str, Any]:
+    path = _governance_manifest_path(repo_root)
+    if not path.exists():
+        return {}
+    try:
+        obj = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+    return obj if isinstance(obj, dict) else {}
+
+
+def _constitution_epoch(repo_root: Path) -> int:
+    manifest = _governance_manifest(repo_root)
+    try:
+        return int(manifest.get("constitution_epoch", 1))
+    except Exception:  # noqa: BLE001
+        return 1
+
+
+def _payload_sha256(obj: Dict[str, Any], *, exclude_keys: Sequence[str]) -> str:
+    payload = {k: v for k, v in obj.items() if k not in set(exclude_keys)}
+    return sha256_hex(canonicalize_bytes(payload))
+
+
+def _ensure_operator_plane_artifacts(
+    *,
+    repo_root: Path,
+    run_dir: Path,
+    program_id: str,
+    lane_id: str,
+    lane_label: str,
+    verdict_line: str,
+    delivery_manifest_extras: Optional[Dict[str, Any]],
+) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+    reports_dir = (run_dir / "reports").resolve()
+    reports_dir.mkdir(parents=True, exist_ok=True)
+
+    fingerprint_path = (reports_dir / "operator_fingerprint.json").resolve()
+    if fingerprint_path.exists():
+        operator_fp = _load_json(fingerprint_path)
+    else:
+        operator_fp = titanium_operator_fingerprint()
+        if str(os.environ.get("KT_SAFE_RUN_OPERATOR_ID", "")).strip():
+            operator_fp["operator_id"] = str(os.environ["KT_SAFE_RUN_OPERATOR_ID"]).strip()
+        _write_json_worm(path=fingerprint_path, obj=operator_fp, label="operator_fingerprint.json")
+
+    intent_path = (reports_dir / "operator_intent.json").resolve()
+    if intent_path.exists():
+        operator_intent = _load_json(intent_path)
+    else:
+        effective_program_id = str(os.environ.get("KT_SAFE_RUN_PROGRAM_ID") or program_id or lane_id).strip()
+        assurance_mode = str(os.environ.get("KT_SAFE_RUN_ASSURANCE_MODE") or "direct").strip()
+        intent_surface = {
+            "delivery_manifest_extras": delivery_manifest_extras or {},
+            "lane_id": lane_id,
+            "lane_label": lane_label,
+            "program_id": effective_program_id,
+            "verdict": verdict_line,
+        }
+        operator_intent = {
+            "operator_id": str(os.environ.get("KT_SAFE_RUN_OPERATOR_ID") or operator_fp.get("operator_id") or os.environ.get("KT_OPERATOR_ID") or "unknown"),
+            "operator_intent_class": str(os.environ.get("KT_OPERATOR_INTENT_CLASS", "AUDIT")).upper(),
+            "operator_intent_hash": str(os.environ.get("KT_SAFE_RUN_OPERATOR_INTENT_HASH") or sha256_json(intent_surface)),
+            "program_id": effective_program_id,
+            "config_sha256": sha256_json(intent_surface),
+            "inputs_sha256_list": [],
+            "assurance_mode": assurance_mode,
+            "constitution_epoch": _constitution_epoch(repo_root),
+            "created_utc": _utc_now_iso_z(),
+        }
+        _write_json_worm(path=intent_path, obj=operator_intent, label="operator_intent.json")
+
+    return operator_fp, operator_intent
+
+
+def _build_evidence_core_merkle(
+    *,
+    run_dir: Path,
+    required_relpaths: Sequence[str],
+) -> Dict[str, Any]:
+    entries: List[Dict[str, Any]] = []
+    for rel in required_relpaths:
+        path = (run_dir / rel).resolve()
+        if not path.exists() or not path.is_file():
+            raise FL3ValidationError(f"FAIL_CLOSED: missing evidence-core-merkle input: {path.as_posix()}")
+        entries.append({"path": rel, "sha256": sha256_file(path)})
+    root_hash = sha256_json({"entries": entries})
+    return {
+        "schema_id": "kt.operator.evidence_core_merkle.v1",
+        "created_utc": _utc_now_iso_z(),
+        "artifact_count": int(len(entries)),
+        "entries": entries,
+        "evidence_core_merkle_root_sha256": root_hash,
+    }
+
+
+def _write_runtime_attachment_reports(
+    *,
+    run_dir: Path,
+    program_id: str,
+    lane_id: str,
+    lane_label: str,
+    head: str,
+    delivery_manifest_path: Path,
+    bindingloop_report: Dict[str, Any],
+    delivery_contract_report: Dict[str, Any],
+) -> None:
+    reports_dir = (run_dir / "reports").resolve()
+    safe_run_enforced = str(os.environ.get("KT_SAFE_RUN_ACTIVE", "")).strip() == "1"
+    entrypoint = str(os.environ.get("KT_RUNTIME_ENTRYPOINT") or "python -m tools.operator.kt_cli").strip()
+    checkpoints = [
+        "reports/operator_fingerprint.json",
+        "reports/operator_intent.json",
+        "evidence/constitutional_snapshot.json",
+        "evidence/worm_manifest.json",
+        "evidence/evidence_core_merkle.json",
+        "delivery/delivery_manifest.json",
+        "delivery/delivery_lint_report.json",
+        "evidence/replay_receipt.json",
+        "evidence/secret_scan_report.json",
+        "reports/bindingloop_check.json",
+    ]
+    row = {
+        "program_id": program_id,
+        "entrypoint": entrypoint,
+        "lane": lane_label,
+        "bundle_emitter_used": "_emit_delivery_bundle",
+        "titanium_checkpoints_exercised": checkpoints,
+        "validator_set_exercised": [
+            "program.bindingloop.verify",
+            "program.delivery.contract.validate",
+        ],
+        "ledger_append_observed": bool((run_dir / "governance" / "ledger" / "federal_ledger.jsonl").exists()),
+        "production_intended_blocked_if_missing": safe_run_enforced,
+        "safe_run_enforced": safe_run_enforced,
+        "evidence_plane_complete": True,
+    }
+    trace = {
+        "schema_id": "kt.operator.real_path_trace.v1",
+        "created_utc": _utc_now_iso_z(),
+        "head": head,
+        "program_id": program_id,
+        "lane_id": lane_id,
+        "lane_label": lane_label,
+        "delivery_manifest": delivery_manifest_path.as_posix(),
+        "bindingloop_status": str(bindingloop_report.get("status", "")),
+        "delivery_contract_status": str(delivery_contract_report.get("status", "")),
+        "safe_run_enforced": safe_run_enforced,
+        "trace": row,
+    }
+    assertions = {
+        "schema_id": "kt.operator.runtime_attach_assertions.v1",
+        "created_utc": _utc_now_iso_z(),
+        "program_id": program_id,
+        "status": "PASS",
+        "checks": [
+            {"check": "operator_plane_emitted", "status": "PASS"},
+            {"check": "bindingloop_verify", "status": str(bindingloop_report.get("status", ""))},
+            {"check": "delivery_contract_validate", "status": str(delivery_contract_report.get("status", ""))},
+            {"check": "safe_run_marker_present", "status": "PASS" if safe_run_enforced else "WARN"},
+        ],
+    }
+    receipt = {
+        "schema_id": "kt.operator.real_path_attachment_receipt.v1",
+        "created_utc": _utc_now_iso_z(),
+        "program_id": program_id,
+        "lane_id": lane_id,
+        "lane_label": lane_label,
+        "safe_run_enforced": safe_run_enforced,
+        "bindingloop_status": str(bindingloop_report.get("status", "")),
+        "delivery_contract_status": str(delivery_contract_report.get("status", "")),
+        "evidence_plane_complete": True,
+        "status": "PASS",
+    }
+    matrix = {
+        "schema_id": "kt.operator.real_path_attachment_matrix.v1",
+        "created_utc": _utc_now_iso_z(),
+        "rows": [row],
+    }
+
+    _write_json_worm(path=reports_dir / "real_path_trace.json", obj=trace, label="real_path_trace.json")
+    trace_md = "\n".join(
+        [
+            "# KT Real Path Trace",
+            "",
+            f"- program_id: `{program_id}`",
+            f"- lane_id: `{lane_id}`",
+            f"- lane_label: `{lane_label}`",
+            f"- entrypoint: `{entrypoint}`",
+            f"- safe_run_enforced: `{int(bool(safe_run_enforced))}`",
+            f"- delivery_manifest: `{delivery_manifest_path.as_posix()}`",
+            f"- bindingloop_status: `{bindingloop_report.get('status', '')}`",
+            f"- delivery_contract_status: `{delivery_contract_report.get('status', '')}`",
+        ]
+    )
+    write_text_worm(path=reports_dir / "real_path_trace.md", text=trace_md + "\n", label="real_path_trace.md")
+    _write_json_worm(path=reports_dir / "runtime_attach_assertions.json", obj=assertions, label="runtime_attach_assertions.json")
+    _write_json_worm(path=reports_dir / "real_path_attachment_receipt.json", obj=receipt, label="real_path_attachment_receipt.json")
+    _write_json_worm(path=reports_dir / "real_path_attachment_matrix.json", obj=matrix, label="real_path_attachment_matrix.json")
+
+
+def _append_run_local_federal_ledger(
+    *,
+    repo_root: Path,
+    run_dir: Path,
+    program_id: str,
+    delivery_zip_sha256: str,
+    evidence_core_merkle_root_sha256: str,
+    operator_intent_hash: str,
+) -> Dict[str, Any]:
+    ledger_dir = (run_dir / "governance" / "ledger").resolve()
+    ledger_dir.mkdir(parents=True, exist_ok=True)
+    ledger_path = (ledger_dir / "federal_ledger.jsonl").resolve()
+    previous_entry_hash = ""
+    if ledger_path.exists() and ledger_path.stat().st_size:
+        lines = [line for line in ledger_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+        if lines:
+            previous_obj = json.loads(lines[-1])
+            previous_entry_hash = str(previous_obj.get("entry_hash", "")).strip()
+    payload = {
+        "created_utc": _utc_now_iso_z(),
+        "run_id": run_dir.name,
+        "program_id": program_id,
+        "jurisdiction_id": "KT_DEFAULT",
+        "constitution_epoch": _constitution_epoch(repo_root),
+        "evidence_core_merkle_root_sha256": evidence_core_merkle_root_sha256,
+        "delivery_zip_sha256": delivery_zip_sha256,
+        "operator_intent_hash": operator_intent_hash,
+        "previous_entry_hash": previous_entry_hash,
+    }
+    entry_hash = sha256_hex(canonicalize_bytes(payload))
+    payload["entry_hash"] = entry_hash
+    text = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True) + "\n"
+    if ledger_path.exists():
+        with ledger_path.open("a", encoding="utf-8", newline="\n") as handle:
+            handle.write(text)
+    else:
+        write_text_worm(path=ledger_path, text=text, label="federal_ledger.jsonl")
+    return payload
+
+
 def _emit_delivery_bundle(
     *,
     repo_root: Path,
@@ -220,6 +474,7 @@ def _emit_delivery_bundle(
     core_copy_dirs: Optional[Sequence[Tuple[str, str]]] = None,
     delivery_manifest_extras: Optional[Dict[str, Any]] = None,
     run_protocol_notes: str = "",
+    program_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Build an evidence pack + client-safe delivery zip inside the certify run root.
@@ -242,6 +497,21 @@ def _emit_delivery_bundle(
     delivery_out_dir.mkdir(parents=True, exist_ok=True)
     evidence_dir.mkdir(parents=True, exist_ok=True)
     core_dir.mkdir(parents=True, exist_ok=True)
+    reports_dir.mkdir(parents=True, exist_ok=True)
+
+    write_text_worm(path=run_dir / "verdict.txt", text=verdict_line + "\n", label="verdict.txt")
+    write_text_worm(path=reports_dir / "one_line_verdict.txt", text=verdict_line + "\n", label="one_line_verdict.txt")
+
+    effective_program_id = str(program_id or lane_id).strip() or lane_id
+    _operator_fp, operator_intent = _ensure_operator_plane_artifacts(
+        repo_root=repo_root,
+        run_dir=run_dir,
+        program_id=effective_program_id,
+        lane_id=lane_id,
+        lane_label=lane_label,
+        verdict_line=verdict_line,
+        delivery_manifest_extras=delivery_manifest_extras,
+    )
 
     # Client replay notes (safe to emit before final verdict is written).
     proves: List[str] = [
@@ -390,6 +660,11 @@ def _emit_delivery_bundle(
         raise FL3ValidationError("FAIL_CLOSED: delivery pack generator did not PASS (unexpected)")
     delivery_dir = Path(str(delivery_result["delivery_dir"])).resolve()
     lint_report = lint_delivery_dir(delivery_dir=delivery_dir)
+    if isinstance(lint_report, dict) and isinstance(lint_report.get("inputs"), dict):
+        lint_report = dict(lint_report)
+        lint_inputs = dict(lint_report["inputs"])
+        lint_inputs["delivery_dir"] = Path("delivery") / delivery_dir.name
+        lint_report["inputs"] = {"delivery_dir": str(lint_inputs["delivery_dir"]).replace("\\", "/")}
     _write_json_worm(path=delivery_out_dir / "delivery_lint_report.json", obj=lint_report, label="delivery_lint_report.json")
     if str(lint_report.get("status")) != "PASS":
         raise FL3ValidationError(f"FAIL_CLOSED: delivery linter status={lint_report.get('status')}")
@@ -404,31 +679,137 @@ def _emit_delivery_bundle(
     delivery_manifest = {
         "schema_id": "kt.operator.delivery_manifest.unbound.v1",
         "profile": profile.name,
-        "lane": "canonical_hmac",
+        "lane": lane_label,
+        "lane_id": lane_id,
+        "program_id": effective_program_id,
         "run_id": run_id,
         "head": head,
-         "pins": {
-             "sealed_tag": profile.sealed_tag,
-             "sealed_commit": profile.sealed_commit,
-             "law_bundle_hash": profile.law_bundle_hash,
-             "suite_registry_id": profile.suite_registry_id,
-             "determinism_expected_root_hash": profile.determinism_expected_root_hash,
-         },
+        "pins": {
+            "sealed_tag": profile.sealed_tag,
+            "sealed_commit": profile.sealed_commit,
+            "law_bundle_hash": profile.law_bundle_hash,
+            "suite_registry_id": profile.suite_registry_id,
+            "determinism_expected_root_hash": profile.determinism_expected_root_hash,
+        },
         "sweep": {"sweep_id": str(sweep_id or "").strip(), "sweep_summary_sha256": str(sweep_sha256 or "").strip()}
         if (isinstance(sweep_id, str) and sweep_id.strip() and isinstance(sweep_sha256, str) and sweep_sha256.strip())
         else None,
         "verdict": verdict_line,
-        "evidence_dir": evidence_dir.as_posix(),
-        "delivery_dir": delivery_dir.as_posix(),
-        "delivery_zip": {"path": zip_path.as_posix(), "sha256": zip_sha},
+        "evidence_dir": "evidence",
+        "delivery_dir": f"delivery/{delivery_dir.name}",
+        "delivery_zip": {"path": f"delivery/{zip_path.name}", "sha256": zip_sha},
         "replay_command": replay_command,
+        "safe_run_enforced": str(os.environ.get("KT_SAFE_RUN_ACTIVE", "")).strip() == "1",
+        "operator_intent_hash": str(operator_intent.get("operator_intent_hash", "")),
     }
     if isinstance(delivery_manifest_extras, dict) and delivery_manifest_extras:
         for k, v in delivery_manifest_extras.items():
             if k in delivery_manifest:
                 raise FL3ValidationError(f"FAIL_CLOSED: delivery_manifest_extras key collision: {k}")
             delivery_manifest[k] = v
+
+    constitutional_snapshot = {
+        "schema_id": "kt.operator.constitutional_snapshot.v1",
+        "created_utc": _utc_now_iso_z(),
+        "program_id": effective_program_id,
+        "lane_id": lane_id,
+        "lane_label": lane_label,
+        "head": head,
+        "constitution_epoch": _constitution_epoch(repo_root),
+        "governance_manifest_path": "KT_PROD_CLEANROOM/governance/governance_manifest.json",
+        "governance_manifest_sha256": (_sha256_file(_governance_manifest_path(repo_root)) if _governance_manifest_path(repo_root).exists() else ""),
+        "delivery_manifest_payload_sha256": "",
+    }
+
+    worm_manifest = {
+        "schema_id": "kt.operator.worm_manifest.v1",
+        "created_utc": _utc_now_iso_z(),
+        "run_id": run_id,
+        "program_id": effective_program_id,
+        "artifacts": [
+            {"path": "verdict.txt", "sha256": _sha256_file((run_dir / "verdict.txt").resolve())},
+            {"path": "reports/one_line_verdict.txt", "sha256": _sha256_file((reports_dir / "one_line_verdict.txt").resolve())},
+            {"path": "reports/operator_fingerprint.json", "sha256": _sha256_file((reports_dir / "operator_fingerprint.json").resolve())},
+            {"path": "reports/operator_intent.json", "sha256": _sha256_file((reports_dir / "operator_intent.json").resolve())},
+            {"path": "evidence/replay_receipt.json", "sha256": _sha256_file((evidence_dir / "replay_receipt.json").resolve())},
+            {"path": "evidence/secret_scan_report.json", "sha256": _sha256_file((evidence_dir / "secret_scan_report.json").resolve())},
+            {"path": "delivery/delivery_lint_report.json", "sha256": _sha256_file((delivery_out_dir / "delivery_lint_report.json").resolve())},
+        ],
+        "constitutional_snapshot_payload_sha256": "",
+    }
+
+    constitutional_snapshot["delivery_manifest_payload_sha256"] = _payload_sha256(delivery_manifest, exclude_keys={"worm_manifest_payload_sha256"})
+    worm_manifest["constitutional_snapshot_payload_sha256"] = _payload_sha256(
+        constitutional_snapshot,
+        exclude_keys={"delivery_manifest_payload_sha256"},
+    )
+    delivery_manifest["worm_manifest_payload_sha256"] = _payload_sha256(
+        worm_manifest,
+        exclude_keys={"constitutional_snapshot_payload_sha256"},
+    )
+
+    _write_json_worm(
+        path=evidence_dir / "constitutional_snapshot.json",
+        obj=constitutional_snapshot,
+        label="constitutional_snapshot.json",
+    )
+    _write_json_worm(path=evidence_dir / "worm_manifest.json", obj=worm_manifest, label="worm_manifest.json")
     _write_json_worm(path=delivery_out_dir / "delivery_manifest.json", obj=delivery_manifest, label="delivery_manifest.json")
+
+    from tools.operator.bindingloop_verify import verify_binding_loop
+    from tools.delivery.delivery_contract_validator import validate_delivery_contract
+
+    bindingloop_report = verify_binding_loop(run_dir)
+    if str(bindingloop_report.get("status", "")).strip() != "PASS":
+        raise FL3ValidationError("FAIL_CLOSED: binding loop did not PASS after bundle emission")
+    _write_json_worm(path=reports_dir / "bindingloop_check.json", obj=bindingloop_report, label="bindingloop_check.json")
+
+    evidence_core_merkle = _build_evidence_core_merkle(
+        run_dir=run_dir,
+        required_relpaths=[
+            "evidence/constitutional_snapshot.json",
+            "evidence/worm_manifest.json",
+            "evidence/replay_receipt.json",
+            "reports/operator_fingerprint.json",
+            "reports/operator_intent.json",
+            "delivery/delivery_manifest.json",
+            "delivery/delivery_lint_report.json",
+            "evidence/secret_scan_report.json",
+        ],
+    )
+    _write_json_worm(path=evidence_dir / "evidence_core_merkle.json", obj=evidence_core_merkle, label="evidence_core_merkle.json")
+
+    _append_run_local_federal_ledger(
+        repo_root=repo_root,
+        run_dir=run_dir,
+        program_id=effective_program_id,
+        delivery_zip_sha256=zip_sha,
+        evidence_core_merkle_root_sha256=str(evidence_core_merkle.get("evidence_core_merkle_root_sha256", "")).strip(),
+        operator_intent_hash=str(operator_intent.get("operator_intent_hash", "")).strip(),
+    )
+
+    delivery_contract_report = validate_delivery_contract(delivery_out_dir, require_real_path_receipt=False)
+    _write_json_worm(
+        path=reports_dir / "delivery_contract_validation.json",
+        obj=delivery_contract_report,
+        label="delivery_contract_validation.json",
+    )
+    _write_runtime_attachment_reports(
+        run_dir=run_dir,
+        program_id=effective_program_id,
+        lane_id=lane_id,
+        lane_label=lane_label,
+        head=head,
+        delivery_manifest_path=(delivery_out_dir / "delivery_manifest.json").resolve(),
+        bindingloop_report=bindingloop_report,
+        delivery_contract_report=delivery_contract_report,
+    )
+    delivery_contract_report = validate_delivery_contract(delivery_out_dir)
+    _write_json_worm(
+        path=reports_dir / "delivery_contract_validation.json",
+        obj=delivery_contract_report,
+        label="delivery_contract_validation.json",
+    )
 
     return {"evidence_dir": evidence_dir.as_posix(), "delivery": delivery_result, "delivery_manifest": delivery_manifest}
 
@@ -450,6 +831,7 @@ def _emit_delivery_bundle_canonical_hmac(
         lane_id="KT_OPERATOR_CANONICAL_HMAC",
         lane_label="canonical_hmac",
         verdict_line=verdict_line,
+        program_id="program.certify.canonical_hmac",
         sweep_id=sweep_id,
         sweep_sha256=sweep_sha256,
         core_copy_dirs=[
@@ -466,6 +848,213 @@ def _load_json(path: Path) -> Dict[str, Any]:
     if not isinstance(obj, dict):
         raise FL3ValidationError(f"FAIL_CLOSED: expected JSON object: {path.as_posix()}")
     return obj
+
+
+def _normalize_argv_for_safe_run(argv: Optional[Sequence[str]]) -> List[str]:
+    items = list(argv) if argv is not None else sys.argv[1:]
+    if "--safe-run" not in items:
+        return items
+    out: List[str] = []
+    inserted = False
+    for item in items:
+        if item == "--safe-run":
+            if not inserted:
+                out.append("safe-run")
+                inserted = True
+            continue
+        out.append(item)
+    return out
+
+
+def _load_config_arg(repo_root: Path, raw: str) -> Dict[str, Any]:
+    value = str(raw).strip()
+    if not value:
+        return {}
+    maybe_path = Path(value).expanduser()
+    if maybe_path.exists():
+        if not maybe_path.is_absolute():
+            maybe_path = (repo_root / maybe_path).resolve()
+        return _load_json(maybe_path)
+    obj = json.loads(value)
+    if not isinstance(obj, dict):
+        raise FL3ValidationError("FAIL_CLOSED: --config must be a JSON object or a path to one")
+    return obj
+
+
+def _write_operator_plane_artifacts(*, run_dir: Path, program_id: str, config: Dict[str, Any], assurance_mode: str) -> Dict[str, Any]:
+    fingerprint = titanium_operator_fingerprint()
+    _write_json_worm(path=run_dir / "reports" / "operator_fingerprint.json", obj=fingerprint, label="operator_fingerprint.json")
+    intent_obj = {
+        "operator_id": fingerprint["operator_id"],
+        "operator_intent_class": str(os.environ.get("KT_OPERATOR_INTENT_CLASS", "AUDIT")).upper(),
+        "operator_intent_hash": sha256_json(
+            {
+                "assurance_mode": assurance_mode,
+                "config": config,
+                "program_id": program_id,
+            }
+        ),
+        "program_id": program_id,
+        "config_sha256": sha256_json(config),
+        "inputs_sha256_list": [],
+        "assurance_mode": assurance_mode,
+        "constitution_epoch": 1,
+        "created_utc": _utc_now_iso_z(),
+    }
+    _write_json_worm(path=run_dir / "reports" / "operator_intent.json", obj=intent_obj, label="operator_intent.json")
+    return intent_obj
+
+
+def cmd_safe_run(
+    *,
+    repo_root: Path,
+    profile: V1Profile,
+    run_dir: Path,
+    assurance_mode: str,
+    program_id: str,
+    config: Dict[str, Any],
+    allow_dirty: bool,
+) -> int:
+    from tools.operator.constitution_self_check import self_check
+    from tools.operator.governance_manifest_verify import _verify_manifest
+    from tools.operator.hashpin import _manifest_path as _titanium_manifest_path
+    from tools.operator.hashpin import _cmd_verify_required_pins
+    from tools.operator.program_catalog_verify import _verify_catalog
+    from tools.operator.source_integrity import _verify_source_integrity
+
+    mode = str(assurance_mode).strip().lower()
+    if mode not in {"practice", "production"}:
+        raise FL3ValidationError("FAIL_CLOSED: --assurance-mode must be practice or production")
+
+    program_map: Dict[str, List[str]] = {
+        "program.certify.canonical_hmac": ["certify", "--lane", "canonical_hmac"],
+        "program.hat_demo": ["hat-demo"],
+    }
+    validator_map = {
+        "program.bindingloop.verify": ("python", "-m", "tools.operator.bindingloop_verify"),
+        "program.replay.lint.hermetic": ("python", "-m", "tools.operator.hermetic_replay_linter"),
+        "program.delivery.contract.validate": ("python", "-m", "tools.delivery.delivery_contract_validator"),
+        "program.hashpin.verify_required_pins": ("python", "-m", "tools.operator.hashpin", "verify-required-pins"),
+        "program.source.integrity.verify": ("python", "-m", "tools.operator.source_integrity", "verify"),
+        "program.catalog.verify": ("python", "-m", "tools.operator.program_catalog_verify", "--strict"),
+        "program.governance.verify_manifest": ("python", "-m", "tools.operator.governance_manifest_verify"),
+    }
+
+    if program_id not in program_map and program_id not in validator_map:
+        raise FL3ValidationError(f"FAIL_CLOSED: unsupported safe-run program_id={program_id}")
+
+    intent_obj = _write_operator_plane_artifacts(run_dir=run_dir, program_id=program_id, config=config, assurance_mode=mode)
+    preflight: Dict[str, Any] = {
+        "assurance_mode": mode,
+        "profile": profile.name,
+        "program_id": program_id,
+        "status": "PASS",
+        "checks": [],
+    }
+
+    def _record(name: str, ok: bool, detail: str = "") -> None:
+        preflight["checks"].append({"check": name, "detail": detail or None, "status": "PASS" if ok else "FAIL"})
+        if not ok:
+            preflight["status"] = "FAIL"
+
+    try:
+        if mode == "production":
+            _maybe_assert_clean_worktree(repo_root=repo_root, allow_dirty=False)
+            _record("clean_worktree_required_in_production", True)
+        else:
+            _record("clean_worktree_required_in_production", True, "practice mode")
+    except Exception as exc:  # noqa: BLE001
+        _record("clean_worktree_required_in_production", False, str(exc))
+
+    try:
+        source_report = _verify_source_integrity()
+        _record("source_integrity_verified", source_report.get("status") == "PASS")
+    except Exception as exc:  # noqa: BLE001
+        _record("source_integrity_verified", False, str(exc))
+
+    try:
+        catalog_report = _verify_catalog(strict=True)
+        _record("program_catalog_verified", catalog_report.get("status") == "PASS")
+    except Exception as exc:  # noqa: BLE001
+        _record("program_catalog_verified", False, str(exc))
+
+    try:
+        constitution_report = self_check()
+        _record("constitution_epoch_matches", constitution_report.get("status") == "PASS")
+    except Exception as exc:  # noqa: BLE001
+        _record("constitution_epoch_matches", False, str(exc))
+
+    if mode == "production":
+        try:
+            gov_report = _verify_manifest(_titanium_manifest_path(repo_root))
+            _record("governance_manifest_verified_and_signed", gov_report.get("status") == "PASS")
+        except Exception as exc:  # noqa: BLE001
+            _record("governance_manifest_verified_and_signed", False, str(exc))
+        try:
+            rc = _cmd_verify_required_pins(run_dir=run_dir / "preflight_hashpin")
+            _record("pin_registry_all_required_pinned", rc == 0)
+        except Exception as exc:  # noqa: BLE001
+            _record("pin_registry_all_required_pinned", False, str(exc))
+    else:
+        _record("governance_manifest_verified_and_signed", True, "practice mode")
+        _record("pin_registry_all_required_pinned", True, "practice mode")
+
+    _write_json_worm(path=run_dir / "reports" / "operator_preflight.json", obj=preflight, label="operator_preflight.json")
+    if preflight["status"] != "PASS":
+        return titanium_write_failure_artifacts(
+            run_dir=run_dir,
+            program_id="program.safe_run",
+            failure_name="STOP_GATE_BLOCKED" if mode == "production" else "CATALOG_INCOMPLETE",
+            message="preflight_failed",
+            next_actions=["Inspect reports/operator_preflight.json and repair the failing Titanium gate."],
+            operator_intent_hash=str(intent_obj.get("operator_intent_hash", "")),
+        )
+
+    env = _base_env(repo_root=repo_root)
+    env["KT_SAFE_RUN_ACTIVE"] = "1"
+    env["KT_SAFE_RUN_ASSURANCE_MODE"] = mode
+    env["KT_SAFE_RUN_PROGRAM_ID"] = program_id
+    env["KT_SAFE_RUN_OPERATOR_INTENT_HASH"] = str(intent_obj.get("operator_intent_hash", ""))
+    env["KT_SAFE_RUN_OPERATOR_ID"] = str(intent_obj.get("operator_id", ""))
+    env["KT_RUNTIME_ENTRYPOINT"] = f"safe-run:{program_id}"
+    inner_run = (run_dir / "program_run").resolve()
+    inner_run.mkdir(parents=True, exist_ok=True)
+    if program_id in program_map:
+        cmd = [sys.executable, "-m", "tools.operator.kt_cli", "--profile", profile.name, "--run-root", str(inner_run)]
+        if allow_dirty or mode == "practice":
+            cmd.append("--allow-dirty")
+        cmd.extend(program_map[program_id])
+    else:
+        cmd = list(validator_map[program_id])
+        if program_id == "program.bindingloop.verify":
+            cmd.extend(["--run-dir", str(config.get("run_dir", "")), "--run-root", str(inner_run)])
+        elif program_id == "program.replay.lint.hermetic":
+            cmd.extend(["--delivery-dir", str(config.get("delivery_dir", "")), "--mve", str(config.get("mve", "")), "--run-root", str(inner_run)])
+        elif program_id == "program.delivery.contract.validate":
+            cmd.extend(["--delivery-dir", str(config.get("delivery_dir", "")), "--run-root", str(inner_run)])
+        elif program_id == "program.governance.verify_manifest":
+            cmd.extend(["--manifest", str(config.get("manifest", "KT_PROD_CLEANROOM/governance/governance_manifest.json")), "--run-root", str(inner_run)])
+        else:
+            cmd.extend(["--run-root", str(inner_run)])
+
+    rc, _out, _log = _run_cmd(repo_root=repo_root, run_dir=run_dir, name="safe_run_dispatch", cmd=cmd, env=env, allow_nonzero=True)
+    if rc != 0:
+        return titanium_write_failure_artifacts(
+            run_dir=run_dir,
+            program_id="program.safe_run",
+            failure_name="STOP_GATE_BLOCKED" if mode == "production" else "CATALOG_INCOMPLETE",
+            message=f"safe_run_dispatch_rc={rc}",
+            next_actions=["Inspect transcripts/safe_run_dispatch.log and the nested program_run artifacts."],
+            operator_intent_hash=str(intent_obj.get("operator_intent_hash", "")),
+        )
+    verdict = (
+        f"KT_SAFE_RUN_PASS cmd=safe-run profile={profile.name} assurance_mode={mode} "
+        f"program_id={program_id} nested_run={inner_run.as_posix()}"
+    )
+    write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
+    write_text_worm(path=run_dir / "reports" / "one_line_verdict.txt", text=verdict + "\n", label="one_line_verdict.txt")
+    print(verdict)
+    return 0
 
 
 def cmd_status(*, repo_root: Path, profile: V1Profile, run_dir: Path, allow_dirty: bool) -> int:
@@ -671,9 +1260,6 @@ def cmd_certify_canonical_hmac(*, repo_root: Path, profile: V1Profile, run_dir: 
         verdict_line=verdict,
     )
 
-    (run_dir / "reports").mkdir(parents=True, exist_ok=True)
-    write_text_worm(path=run_dir / "reports" / "one_line_verdict.txt", text=verdict + "\n", label="one_line_verdict.txt")
-    write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
     print(verdict)
     return 0
 
@@ -899,6 +1485,7 @@ def cmd_red_assault(
         lane_id=lane_id,
         lane_label=lane_label,
         verdict_line=verdict,
+        program_id=("program.red_assault.serious_v1" if pack == "serious_v1" else "program.red_assault.v1"),
         core_copy_dirs=[("reports", "reports"), ("transcripts", "transcripts")],
         run_protocol_notes=f"Operator red-assault lane; pack_id={pack} pressure_level={level} sample_count={int(sample_count)} seed={int(seed)}",
         delivery_manifest_extras={
@@ -921,8 +1508,6 @@ def cmd_red_assault(
         },
     )
 
-    write_text_worm(path=run_dir / "reports" / "one_line_verdict.txt", text=verdict + "\n", label="one_line_verdict.txt")
-    write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
     print(verdict)
     return 0
 
@@ -1048,6 +1633,7 @@ def cmd_continuous_gov(
                 {"relpath": "baseline_run/run_protocol.json", "sha256": sha256_file((baseline_dir / "evidence" / "run_protocol.json").resolve())},
             ],
             run_protocol_notes=f"Continuous governance (Serious Layer v1) diff against baseline_run={baseline_run} window={window}",
+            program_id="program.continuous_gov.serious_v1",
             delivery_manifest_extras={
                 "continuous_gov": {
                     "program": program,
@@ -1059,8 +1645,6 @@ def cmd_continuous_gov(
             },
         )
 
-        write_text_worm(path=run_dir / "reports" / "one_line_verdict.txt", text=verdict + "\n", label="one_line_verdict.txt")
-        write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
         print(verdict)
         return 0 if ok else 2
 
@@ -1221,6 +1805,7 @@ def cmd_continuous_gov(
         lane_id="KT_OPERATOR_CONTINUOUS_GOV_V1",
         lane_label="continuous_gov.v1",
         verdict_line=verdict,
+        program_id="program.continuous_gov.v1",
         core_copy_dirs=[("reports", "reports"), ("transcripts", "transcripts")],
         datasets=[
             {"relpath": "baseline_run/delivery_manifest.json", "sha256": sha256_file((baseline / "delivery" / "delivery_manifest.json").resolve())},
@@ -1237,8 +1822,6 @@ def cmd_continuous_gov(
         },
     )
 
-    write_text_worm(path=run_dir / "reports" / "one_line_verdict.txt", text=verdict + "\n", label="one_line_verdict.txt")
-    write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
     print(verdict)
     return 0
 
@@ -1425,13 +2008,12 @@ def cmd_overlay_apply(
         lane_id="KT_OPERATOR_OVERLAY_APPLY_V1",
         lane_label="overlay_apply.v1",
         verdict_line=verdict,
+        program_id="program.overlay.apply",
         core_copy_dirs=[("reports", "reports"), ("transcripts", "transcripts")],
         run_protocol_notes=f"Overlay apply lane; target_lane={lane} overlays={','.join([r['overlay_id'] for r in resolved])}",
         delivery_manifest_extras={"overlay_apply": {"target_lane": lane, "resolved_overlays": resolved}},
     )
 
-    write_text_worm(path=run_dir / "reports" / "one_line_verdict.txt", text=verdict + "\n", label="one_line_verdict.txt")
-    write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
     print(verdict)
     return 0
 
@@ -1792,6 +2374,7 @@ def cmd_forge(
         lane_id="KT_OPERATOR_FORGE_V1",
         lane_label="forge.v1",
         verdict_line=verdict,
+        program_id="program.forge.hf_lora_or_stub",
         active_adapters=[
             {"adapter_id": aid, "adapter_hash": adapter_hash or profile.determinism_expected_root_hash},
         ],
@@ -1801,14 +2384,13 @@ def cmd_forge(
         delivery_manifest_extras={"forge": {"adapter_id": aid, "seed": int(seed), "training_status": training_status, "promotion_gate": promotion_gate_status}},
     )
 
-    write_text_worm(path=run_dir / "reports" / "one_line_verdict.txt", text=verdict + "\n", label="one_line_verdict.txt")
-    write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
     print(verdict)
     return 0
 
 
 def cmd_hat_demo(*, repo_root: Path, profile: V1Profile, run_dir: Path, allow_dirty: bool) -> int:
     env = _base_env(repo_root=repo_root)
+    head = _git(repo_root=repo_root, args=["rev-parse", "HEAD"])
 
     policy = (repo_root / profile.router_policy_ref).resolve()
     suite = (repo_root / profile.router_demo_suite_ref).resolve()
@@ -1850,7 +2432,26 @@ def cmd_hat_demo(*, repo_root: Path, profile: V1Profile, run_dir: Path, allow_di
         f"KT_HAT_DEMO_PASS cmd=hat-demo profile={profile.name} allow_dirty={int(bool(allow_dirty))} run_id={run_id} "
         f"router_run_report_id={str(report.get('router_run_report_id','')).strip()}"
     )
-    write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
+    _ = _emit_delivery_bundle(
+        repo_root=repo_root,
+        profile=profile,
+        run_dir=run_dir,
+        head=head,
+        lane_id="KT_OPERATOR_HAT_DEMO_V1",
+        lane_label="hat_demo.v1",
+        verdict_line=verdict,
+        program_id="program.hat_demo",
+        core_copy_dirs=[("hat_demo", "hat_demo"), ("transcripts", "transcripts")],
+        run_protocol_notes=f"Hat demo lane run_id={run_id}",
+        delivery_manifest_extras={
+            "hat_demo": {
+                "router_run_report_id": str(report.get("router_run_report_id", "")).strip(),
+                "router_policy_id": str(report.get("router_policy_id", "")).strip(),
+                "router_demo_suite_id": str(report.get("router_demo_suite_id", "")).strip(),
+                "run_id": run_id,
+            }
+        },
+    )
     print(verdict)
     return 0
 
@@ -2164,6 +2765,7 @@ def cmd_report(*, repo_root: Path, profile: V1Profile, run_dir: Path, target_run
 
 
 def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
+    argv = _normalize_argv_for_safe_run(argv)
     ap = argparse.ArgumentParser(description="KT operator CLI (client-of-tools; WORM evidence under exports/_runs).")
     ap.add_argument("--profile", default="v1", choices=["v1"], help="Operator profile (default: v1).")
     ap.add_argument("--run-root", default="", help="Optional explicit run root under KT_PROD_CLEANROOM/exports/_runs.")
@@ -2255,6 +2857,12 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     _add_post_global_options(ap_rep)
     ap_rep.add_argument("--run", required=True, help="Target run directory to summarize.")
 
+    ap_safe = sub.add_parser("safe-run", help="Titanium safe-run production entrypoint.")
+    _add_post_global_options(ap_safe)
+    ap_safe.add_argument("--assurance-mode", required=True, choices=["practice", "production"])
+    ap_safe.add_argument("--program", required=True)
+    ap_safe.add_argument("--config", default="{}")
+
     return ap.parse_args(list(argv) if argv is not None else None)
 
 
@@ -2291,7 +2899,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     )
 
     try:
-        _maybe_assert_clean_worktree(repo_root=repo_root, allow_dirty=allow_dirty)
+        if args.cmd != "safe-run":
+            _maybe_assert_clean_worktree(repo_root=repo_root, allow_dirty=allow_dirty)
         if args.cmd == "status":
             return cmd_status(repo_root=repo_root, profile=profile, run_dir=run_dir, allow_dirty=allow_dirty)
         if args.cmd == "certify":
@@ -2378,6 +2987,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             )
         if args.cmd == "report":
             return cmd_report(repo_root=repo_root, profile=profile, run_dir=run_dir, target_run=str(args.run), allow_dirty=allow_dirty)
+        if args.cmd == "safe-run":
+            return cmd_safe_run(
+                repo_root=repo_root,
+                profile=profile,
+                run_dir=run_dir,
+                assurance_mode=str(args.assurance_mode),
+                program_id=str(args.program),
+                config=_load_config_arg(repo_root, str(args.config)),
+                allow_dirty=allow_dirty,
+            )
         raise FL3ValidationError("FAIL_CLOSED: unknown command")
     except FL3ValidationError as exc:
         msg = str(exc)

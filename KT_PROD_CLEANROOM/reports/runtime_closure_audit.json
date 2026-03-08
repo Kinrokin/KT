@@ -1,0 +1,39 @@
+{
+  "audit_scope": [
+    "posture truth reconciliation",
+    "alias truth reconciliation",
+    "preserved branch closure receipt verification",
+    "mainline promotion preparation"
+  ],
+  "blocking_groups": [],
+  "branch_ref": "ops/titanium-realpath-attachment-20260307",
+  "current_state": "P0_GREEN_FULL_BRANCH_CONFIRMED_PENDING_MAIN_PROMOTION",
+  "evidence_plane_targets_checked": [
+    "delivery/delivery_manifest.json",
+    "evidence/constitutional_snapshot.json",
+    "evidence/worm_manifest.json",
+    "evidence/evidence_core_merkle.json",
+    "evidence/replay_receipt.json",
+    "evidence/secret_scan_report.json",
+    "reports/bindingloop_check.json"
+  ],
+  "generated_utc": "2026-03-08T21:20:07Z",
+  "notes": [
+    "This audit ratifies existing branch closure receipts at the preserved branch closure head and the final posture/alias patch head.",
+    "W0 changes are limited to posture/alias/validator surfaces and do not alter runtime semantics."
+  ],
+  "overall_verdict": "PASS",
+  "posture_state": "P0_GREEN_FULL_BRANCH_CONFIRMED_PENDING_MAIN_PROMOTION",
+  "real_path_targets_checked": [
+    "program.certify.canonical_hmac",
+    "program.hat_demo",
+    "program.red_assault.serious_v1",
+    "safe-run:program.hat_demo"
+  ],
+  "release_decision": "NO_GO_FOR_PRESS_BUTTON_PRODUCTION_PENDING_MAIN_PROMOTION",
+  "repo_hygiene_status": "PASS",
+  "schema_id": "kt.operator.runtime_closure_audit.v2",
+  "status": "PASS",
+  "validated_head_sha": "fc0bdc8fee86d46c679bde887602030d0ef6941a",
+  "validator_substance_checked": true
+}

@@ -1,0 +1,84 @@
+{
+  "ci_jobs": [
+    {
+      "job_id": "ci.ws0.delivery_parity",
+      "yaml_path": "ci/jobs/verify_ws0_delivery_parity.yml"
+    },
+    {
+      "job_id": "ci.ws1.mai_conformance_and_provenance",
+      "yaml_path": "ci/jobs/verify_ws1_mai_conformance.yml"
+    },
+    {
+      "job_id": "ci.ws2.hermetic_replay_and_bindingloop",
+      "yaml_path": "ci/jobs/verify_ws2_replay_bindingloop.yml"
+    },
+    {
+      "job_id": "ci.ws3.constitution_epoch_drift_amendment",
+      "yaml_path": "ci/jobs/verify_ws3_constitution.yml"
+    },
+    {
+      "job_id": "ci.p0.program_catalog_verify",
+      "yaml_path": "ci/jobs/verify_program_catalog.yml"
+    }
+  ],
+  "created_utc": "2026-03-06T00:00:00Z",
+  "programs": [
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/hashpin.py",
+      "program_id": "program.hashpin.compute"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/hashpin.py",
+      "program_id": "program.hashpin.verify_required_pins"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/source_integrity.py",
+      "program_id": "program.source.integrity.verify"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/program_catalog_verify.py",
+      "program_id": "program.catalog.verify"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/governance_manifest_verify.py",
+      "program_id": "program.governance.verify_manifest"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/delivery/delivery_contract_validator.py",
+      "program_id": "program.delivery.contract.validate"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/bindingloop_verify.py",
+      "program_id": "program.bindingloop.verify"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/hermetic_replay_linter.py",
+      "program_id": "program.replay.lint.hermetic"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/mai_conformance.py",
+      "program_id": "program.mai.conformance"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/constitution_self_check.py",
+      "program_id": "program.constitution.self_check"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/ledger_verify_chain.py",
+      "program_id": "program.ledger.verify_chain"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/two_clean_clone_proof.py",
+      "program_id": "program.proof.twocleanclone"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/god_status.py",
+      "program_id": "program.authority.god_status"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
+      "program_id": "program.safe_run"
+    }
+  ],
+  "schema_id": "kt.operator.program_catalog.v1"
+}
