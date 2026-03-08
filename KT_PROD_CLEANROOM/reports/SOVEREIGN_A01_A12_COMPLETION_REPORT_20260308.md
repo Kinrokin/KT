@@ -2,7 +2,7 @@
 
 - Generated UTC: 2026-03-08T15:15:51Z
 - Branch: `ops/titanium-realpath-attachment-20260307`
-- Head: `42e599269487c7b3fa77e7345664fe55b2bdc147`
+- Head: `fbbf037d57e30f900174dd71c2b067cb2735a12c`
 - PR: `#12` `https://github.com/Kinrokin/KT/pull/12`
 - Runtime horizon: `H0_RUNTIME_CLOSURE`
 
@@ -150,6 +150,7 @@ Pinned values now recorded in governance:
 - Warn-only workflow added: `.github/workflows/ci_p0_warn_only_closure.yml`
 - Fail-closed main workflow prepared: `.github/workflows/ci_p0_fail_closed_main.yml`
 - Live warn-only run: `https://github.com/Kinrokin/KT/actions/runs/22823816023`
+- Warn-only workflow validated commit: `42e599269487c7b3fa77e7345664fe55b2bdc147`
 - Red-team closure outputs:
   - `KT_PROD_CLEANROOM/reports/redteam_tier0_to_tier2_summary.json`
   - `KT_PROD_CLEANROOM/reports/patch_card.json`
