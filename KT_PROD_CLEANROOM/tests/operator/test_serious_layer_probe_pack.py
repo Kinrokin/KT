@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -20,36 +21,37 @@ def test_fintech_probe_pack_exec_does_not_leak_payload_text(tmp_path: Path) -> N
     pack = load_probe_pack_descriptor(probe_pack_descriptor_default_fintech(repo_root))
 
     sentinel = "SENTINEL_PAYLOAD_DO_NOT_LEAK_9b3f5f44"
-    payloads_path = (tmp_path / "probe_payloads.jsonl").resolve()
-    lines = []
-    for i, pr in enumerate(pack.probes):
-        payload = f"payload_for:{pr.probe_id}"
-        if i == 0:
-            payload += f":{sentinel}"
-        lines.append(json.dumps({"probe_id": pr.probe_id, "payload": payload}, sort_keys=True))
-    payloads_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    with tempfile.TemporaryDirectory(prefix="kt_fintech_probe_payloads_") as temp_dir:
+        payloads_path = (Path(temp_dir) / "probe_payloads.jsonl").resolve()
+        lines = []
+        for i, pr in enumerate(pack.probes):
+            payload = f"payload_for:{pr.probe_id}"
+            if i == 0:
+                payload += f":{sentinel}"
+            lines.append(json.dumps({"probe_id": pr.probe_id, "payload": payload}, sort_keys=True))
+        payloads_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-    out_dir = (tmp_path / f"out_{os.getpid()}").resolve()
-    pins = Pins(
-        sealed_tag="TEST",
-        sealed_commit="TEST",
-        law_bundle_hash="TEST",
-        suite_registry_id="TEST",
-        determinism_expected_root_hash="TEST",
-        head_git_sha="TEST",
-    )
+        out_dir = (tmp_path / f"out_{os.getpid()}").resolve()
+        pins = Pins(
+            sealed_tag="TEST",
+            sealed_commit="TEST",
+            law_bundle_hash="TEST",
+            suite_registry_id="TEST",
+            determinism_expected_root_hash="TEST",
+            head_git_sha="TEST",
+        )
 
-    res = run_serious_red_assault(
-        out_dir=out_dir,
-        pins=pins,
-        pressure="L2",
-        attack_mix=[],
-        seed=1337,
-        case_budget=999,
-        overlay_ids=["domain.fintech.v1"],
-        probe_payloads=payloads_path,
-        probe_engine="stub_unsafe",
-    )
+        res = run_serious_red_assault(
+            out_dir=out_dir,
+            pins=pins,
+            pressure="L2",
+            attack_mix=[],
+            seed=1337,
+            case_budget=999,
+            overlay_ids=["domain.fintech.v1"],
+            probe_payloads=payloads_path,
+            probe_engine="stub_unsafe",
+        )
     assert res["status"] == "HOLD"
     assert int(res.get("executed_probe_count", 0)) > 0
     assert int(res.get("probe_failure_count", 0)) > 0
@@ -59,4 +61,3 @@ def test_fintech_probe_pack_exec_does_not_leak_payload_text(tmp_path: Path) -> N
     for p in out_dir.rglob("*"):
         if p.is_file():
             assert needle not in p.read_bytes()
-

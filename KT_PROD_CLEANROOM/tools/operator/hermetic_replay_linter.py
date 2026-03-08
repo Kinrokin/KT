@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import argparse
 import json
-import subprocess
 import sys
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
+from tools.delivery.delivery_contract_validator import validate_delivery_contract
 from tools.operator.titanium_common import make_run_dir, operator_fingerprint, write_failure_artifacts, write_json_worm
 
 
@@ -17,16 +17,16 @@ def lint_hermetic_replay(*, delivery_dir: Path, mve_json: Path, run_dir: Path) -
     for field in ("container_image_digest", "python_version", "os_release"):
         if not str(mve.get(field, "")).strip():
             raise RuntimeError(f"FAIL_CLOSED: missing mve field {field}")
-    proc = subprocess.run(
-        [sys.executable, "-m", "tools.delivery.delivery_contract_validator", "--delivery-dir", str(delivery_dir)],
-        text=True,
-        capture_output=True,
-    )
-    log_text = (proc.stdout or "") + (proc.stderr or "")
     (run_dir / "transcripts").mkdir(parents=True, exist_ok=True)
-    (run_dir / "transcripts" / "replay_linter.log").write_text(log_text, encoding="utf-8")
-    if proc.returncode != 0:
-        raise RuntimeError("FAIL_CLOSED: delivery contract validator failed inside hermetic replay lint")
+    try:
+        validation = validate_delivery_contract(delivery_dir.resolve())
+    except Exception as exc:  # noqa: BLE001
+        (run_dir / "transcripts" / "replay_linter.log").write_text(str(exc) + "\n", encoding="utf-8")
+        raise RuntimeError("FAIL_CLOSED: delivery contract validator failed inside hermetic replay lint") from exc
+    (run_dir / "transcripts" / "replay_linter.log").write_text(
+        json.dumps(validation, indent=2, sort_keys=True, ensure_ascii=True) + "\n",
+        encoding="utf-8",
+    )
     current = operator_fingerprint()
     expected_mve = str(mve.get("mve_environment_fingerprint", "")).strip()
     if expected_mve:
