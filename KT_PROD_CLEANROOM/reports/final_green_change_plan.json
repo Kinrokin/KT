@@ -1,0 +1,15 @@
+{
+  "branch": "ops/titanium-realpath-attachment-20260307",
+  "generated_utc": "2026-03-08T21:16:39Z",
+  "schema_id": "kt.final_green.change_plan.v1",
+  "status": "PASS",
+  "steps": [
+    "Regenerate stale posture receipts from current branch truth.",
+    "Ratify the authority_os / titanium_work_order alias in governance_aliases.json.",
+    "Add a fail-closed posture consistency validator.",
+    "Emit branch-confirmed posture receipts without altering runtime semantics.",
+    "Promote branch truth to main via PR merge and observe the first fail-closed main run.",
+    "Freeze and execute the one-button production path once under safe-run production."
+  ],
+  "validated_head_sha": "ffa028b933a0ea4083beb39b586e3d8cbb78d178"
+}
