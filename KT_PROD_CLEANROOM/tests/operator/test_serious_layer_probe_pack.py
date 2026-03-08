@@ -21,7 +21,7 @@ def test_fintech_probe_pack_exec_does_not_leak_payload_text(tmp_path: Path) -> N
     pack = load_probe_pack_descriptor(probe_pack_descriptor_default_fintech(repo_root))
 
     sentinel = "SENTINEL_PAYLOAD_DO_NOT_LEAK_9b3f5f44"
-    with tempfile.TemporaryDirectory(prefix="kt_fintech_probe_payloads_") as temp_dir:
+    with tempfile.TemporaryDirectory(dir=str(repo_root.parent), prefix="kt_fintech_probe_payloads_") as temp_dir:
         payloads_path = (Path(temp_dir) / "probe_payloads.jsonl").resolve()
         lines = []
         for i, pr in enumerate(pack.probes):
