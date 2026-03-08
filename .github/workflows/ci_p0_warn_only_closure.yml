@@ -1,0 +1,153 @@
+name: P0 Warn-Only Closure Ladder
+
+on:
+  workflow_dispatch: {}
+  pull_request:
+    paths:
+      - ".github/workflows/ci_p0_warn_only_closure.yml"
+      - ".github/workflows/ci_p0_fail_closed_main.yml"
+      - "KT_PROD_CLEANROOM/**"
+      - "ci/**"
+
+jobs:
+  p0-warn-only:
+    name: ${{ matrix.gate_name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - gate_name: ws0-delivery-parity
+            artifact_name: ci-ws0-delivery-parity
+            command: python -m pytest -q KT_PROD_CLEANROOM/tests/operator/test_titanium_substrate.py -k "hat_demo_emits_titanium_contract_and_attachment_artifacts or safe_run_hat_demo_marks_safe_run_enforced"
+          - gate_name: ws1-mai-conformance
+            artifact_name: ci-ws1-mai-conformance
+            command: python -m tools.operator.program_catalog_verify --check-job ci.ws1.mai_conformance_and_provenance
+          - gate_name: ws2-replay-bindingloop
+            artifact_name: ci-ws2-replay-bindingloop
+            command: python -m pytest -q KT_PROD_CLEANROOM/tests/operator/test_titanium_substrate.py -k "bindingloop_verify or hermetic_replay"
+          - gate_name: ws3-constitution
+            artifact_name: ci-ws3-constitution
+            command: python -m tools.operator.constitution_self_check --mode preflight
+          - gate_name: p0-program-catalog
+            artifact_name: ci-p0-program-catalog
+            command: python -m tools.operator.program_catalog_verify --strict
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python test dependencies
+        run: python -m pip install --upgrade pip pytest
+
+      - name: Run warn-only gate
+        id: gate
+        shell: bash
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+          PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
+          P0_COMMAND: ${{ matrix.command }}
+        run: |
+          set +e
+          bash -lc "$P0_COMMAND"
+          status=$?
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+          if [ "$status" -eq 0 ]; then
+            echo "outcome=PASS" >> "$GITHUB_OUTPUT"
+          else
+            echo "outcome=WARN" >> "$GITHUB_OUTPUT"
+          fi
+          exit 0
+
+      - name: Build CI artifact bundle
+        shell: bash
+        env:
+          GATE_NAME: ${{ matrix.gate_name }}
+          GATE_COMMAND: ${{ matrix.command }}
+          GATE_EXIT_CODE: ${{ steps.gate.outputs.exit_code }}
+          GATE_OUTCOME: ${{ steps.gate.outputs.outcome }}
+          GITHUB_SHA_VALUE: ${{ github.sha }}
+          GITHUB_REF_VALUE: ${{ github.ref }}
+          GITHUB_RUN_ID_VALUE: ${{ github.run_id }}
+        run: |
+          mkdir -p ci_artifacts
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          out_dir = Path("ci_artifacts")
+          gate = {
+              "gate_name": os.environ["GATE_NAME"],
+              "command": os.environ["GATE_COMMAND"],
+              "exit_code": int(os.environ["GATE_EXIT_CODE"]),
+              "outcome": os.environ["GATE_OUTCOME"],
+              "sha": os.environ["GITHUB_SHA_VALUE"],
+              "ref": os.environ["GITHUB_REF_VALUE"],
+              "run_id": os.environ["GITHUB_RUN_ID_VALUE"],
+          }
+
+          operator_fingerprint = {
+              "schema_id": "kt.ci.operator_fingerprint.v1",
+              "gate_name": gate["gate_name"],
+              "sha": gate["sha"],
+              "ref": gate["ref"],
+              "runner": "github-actions",
+          }
+          delivery_manifest = {
+              "schema_id": "kt.ci.delivery_manifest.v1",
+              "gate_name": gate["gate_name"],
+              "status": gate["outcome"],
+              "command": gate["command"],
+              "run_id": gate["run_id"],
+          }
+          worm_manifest = {
+              "schema_id": "kt.ci.worm_manifest.v1",
+              "artifacts": [
+                  "ci_artifacts/ci_delivery_manifest.json",
+                  "ci_artifacts/ci_worm_manifest.json",
+                  "ci_artifacts/ci_replay_receipt.json",
+                  "ci_artifacts/ci_evidence_core_merkle.json",
+                  "ci_artifacts/ci_operator_fingerprint.json",
+              ],
+              "status": gate["outcome"],
+          }
+          replay_receipt = {
+              "schema_id": "kt.ci.replay_receipt.v1",
+              "status": gate["outcome"],
+              "exit_code": gate["exit_code"],
+          }
+
+          def write_json(name: str, payload: dict) -> str:
+              path = out_dir / name
+              text = json.dumps(payload, indent=2, sort_keys=True) + "\n"
+              path.write_text(text, encoding="utf-8")
+              return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+          delivery_sha = write_json("ci_delivery_manifest.json", delivery_manifest)
+          worm_sha = write_json("ci_worm_manifest.json", worm_manifest)
+          replay_sha = write_json("ci_replay_receipt.json", replay_receipt)
+          operator_sha = write_json("ci_operator_fingerprint.json", operator_fingerprint)
+          merkle = {
+              "schema_id": "kt.ci.evidence_core_merkle.v1",
+              "delivery_manifest_sha256": delivery_sha,
+              "worm_manifest_sha256": worm_sha,
+              "replay_receipt_sha256": replay_sha,
+              "operator_fingerprint_sha256": operator_sha,
+              "gate_name": gate["gate_name"],
+          }
+          write_json("ci_evidence_core_merkle.json", merkle)
+          PY
+
+      - name: Upload CI bundle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ci_artifacts/

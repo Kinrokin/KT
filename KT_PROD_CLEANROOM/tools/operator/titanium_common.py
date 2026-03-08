@@ -140,4 +140,9 @@ def write_failure_artifacts(
         text="\n".join(str(x) for x in next_actions) + "\n",
         label="nextaction.sh",
     )
+    write_text_worm(
+        path=run_dir / "reports" / "next_action.sh",
+        text="\n".join(str(x) for x in next_actions) + "\n",
+        label="next_action.sh",
+    )
     return EXIT_CODES.get(failure_name, 2)

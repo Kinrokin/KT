@@ -17,7 +17,15 @@ def _age_days(path: Path) -> float:
 def compute_god_status() -> Dict[str, object]:
     root = repo_root()
     manifest = (root / "KT_PROD_CLEANROOM" / "governance" / "governance_manifest.json").resolve()
-    twocc = sorted((root / "KT_PROD_CLEANROOM" / "exports" / "_runs" / "KT_OPERATOR").glob("*_twocleanclone-proof"))
+    runs_root = (root / "KT_PROD_CLEANROOM" / "exports" / "_runs" / "KT_OPERATOR").resolve()
+    twocc = []
+    for report_path in sorted(runs_root.glob("*/reports/twocleanclone_proof.json")):
+        try:
+            report = load_json(report_path)
+        except Exception:  # noqa: BLE001
+            continue
+        if str(report.get("status", "")).strip() == "PASS":
+            twocc.append(report_path.parent.parent)
     warnings = []
     if not manifest.exists():
         warnings.append("governance_manifest_missing")

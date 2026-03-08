@@ -1,0 +1,98 @@
+{
+  "generated_utc": "2026-03-08T15:13:10Z",
+  "happy_path_proofs": [
+    {
+      "name": "delivery_contract_happy",
+      "reports": [
+        "reports/delivery_contract_validation.json"
+      ],
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05b_delivery_validator_happy",
+      "status": "PASS"
+    },
+    {
+      "name": "bindingloop_happy",
+      "reports": [],
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05_bindingloop_happy",
+      "status": "PASS"
+    },
+    {
+      "name": "replay_happy",
+      "reports": [
+        "reports/replay_receipt.json"
+      ],
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05d_replay_happy",
+      "status": "PASS"
+    }
+  ],
+  "negative_path_proofs": [
+    {
+      "expected_behavior": "FAIL_CLOSED",
+      "name": "bindingloop_mutation",
+      "reports": [
+        "reports/bindingloop_violation_receipt.json",
+        "reports/errortaxonomy.json",
+        "reports/failure_fingerprint.json"
+      ],
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05b_bindingloop_mutation_check",
+      "status": "PASS",
+      "verdict": ""
+    },
+    {
+      "expected_behavior": "FAIL_CLOSED",
+      "name": "delivery_missing_artifact",
+      "reports": [
+        "reports/errortaxonomy.json",
+        "reports/failure_fingerprint.json"
+      ],
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05b_delivery_missing_check",
+      "status": "PASS",
+      "verdict": ""
+    },
+    {
+      "expected_behavior": "FAIL_CLOSED",
+      "name": "replay_mismatch",
+      "reports": [
+        "reports/errortaxonomy.json",
+        "reports/failure_fingerprint.json"
+      ],
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05d_replay_mismatch_check",
+      "status": "PASS",
+      "verdict": ""
+    },
+    {
+      "expected_behavior": "FAIL_CLOSED",
+      "name": "governance_missing_signature",
+      "reports": [
+        "reports/errortaxonomy.json",
+        "reports/failure_fingerprint.json",
+        "reports/governance_manifest_verification.json"
+      ],
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05b_governance_manifest_negative",
+      "status": "PASS",
+      "verdict": ""
+    },
+    {
+      "expected_behavior": "FAIL_CLOSED",
+      "name": "safe_run_production_bypass",
+      "reports": [
+        "preflight_hashpin/reports/hashpin_verification.json",
+        "reports/errortaxonomy.json",
+        "reports/failure_fingerprint.json",
+        "reports/operator_fingerprint.json",
+        "reports/operator_intent.json",
+        "reports/operator_preflight.json"
+      ],
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A09_safe_run_production_block",
+      "status": "PASS",
+      "verdict": ""
+    }
+  ],
+  "real_path_targets": [
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A04_certify_canonical_hmac_clean",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A04_hat_demo_attached",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A04_red_assault_attached",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_safe_run_hat_demo_practice/program_run"
+  ],
+  "schema_id": "kt.sovereign.validator_substance_summary.v1",
+  "status": "PASS"
+}

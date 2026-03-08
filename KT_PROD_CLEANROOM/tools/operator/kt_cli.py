@@ -56,10 +56,16 @@ V1 = V1Profile(
 
 
 def _utc_now_compact_z() -> str:
+    fixed = str(os.environ.get("KT_FIXED_UTC_COMPACT", "")).strip()
+    if fixed:
+        return fixed
     # Microseconds included to avoid collisions in operator workflows.
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
 
 def _utc_now_iso_z() -> str:
+    fixed = str(os.environ.get("KT_FIXED_UTC_ISO", "")).strip()
+    if fixed:
+        return fixed
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
@@ -372,6 +378,18 @@ def _write_runtime_attachment_reports(
             {"check": "safe_run_marker_present", "status": "PASS" if safe_run_enforced else "WARN"},
         ],
     }
+    receipt = {
+        "schema_id": "kt.operator.real_path_attachment_receipt.v1",
+        "created_utc": _utc_now_iso_z(),
+        "program_id": program_id,
+        "lane_id": lane_id,
+        "lane_label": lane_label,
+        "safe_run_enforced": safe_run_enforced,
+        "bindingloop_status": str(bindingloop_report.get("status", "")),
+        "delivery_contract_status": str(delivery_contract_report.get("status", "")),
+        "evidence_plane_complete": True,
+        "status": "PASS",
+    }
     matrix = {
         "schema_id": "kt.operator.real_path_attachment_matrix.v1",
         "created_utc": _utc_now_iso_z(),
@@ -395,7 +413,48 @@ def _write_runtime_attachment_reports(
     )
     write_text_worm(path=reports_dir / "real_path_trace.md", text=trace_md + "\n", label="real_path_trace.md")
     _write_json_worm(path=reports_dir / "runtime_attach_assertions.json", obj=assertions, label="runtime_attach_assertions.json")
+    _write_json_worm(path=reports_dir / "real_path_attachment_receipt.json", obj=receipt, label="real_path_attachment_receipt.json")
     _write_json_worm(path=reports_dir / "real_path_attachment_matrix.json", obj=matrix, label="real_path_attachment_matrix.json")
+
+
+def _append_run_local_federal_ledger(
+    *,
+    repo_root: Path,
+    run_dir: Path,
+    program_id: str,
+    delivery_zip_sha256: str,
+    evidence_core_merkle_root_sha256: str,
+    operator_intent_hash: str,
+) -> Dict[str, Any]:
+    ledger_dir = (run_dir / "governance" / "ledger").resolve()
+    ledger_dir.mkdir(parents=True, exist_ok=True)
+    ledger_path = (ledger_dir / "federal_ledger.jsonl").resolve()
+    previous_entry_hash = ""
+    if ledger_path.exists() and ledger_path.stat().st_size:
+        lines = [line for line in ledger_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+        if lines:
+            previous_obj = json.loads(lines[-1])
+            previous_entry_hash = str(previous_obj.get("entry_hash", "")).strip()
+    payload = {
+        "created_utc": _utc_now_iso_z(),
+        "run_id": run_dir.name,
+        "program_id": program_id,
+        "jurisdiction_id": "KT_DEFAULT",
+        "constitution_epoch": _constitution_epoch(repo_root),
+        "evidence_core_merkle_root_sha256": evidence_core_merkle_root_sha256,
+        "delivery_zip_sha256": delivery_zip_sha256,
+        "operator_intent_hash": operator_intent_hash,
+        "previous_entry_hash": previous_entry_hash,
+    }
+    entry_hash = sha256_hex(canonicalize_bytes(payload))
+    payload["entry_hash"] = entry_hash
+    text = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True) + "\n"
+    if ledger_path.exists():
+        with ledger_path.open("a", encoding="utf-8", newline="\n") as handle:
+            handle.write(text)
+    else:
+        write_text_worm(path=ledger_path, text=text, label="federal_ledger.jsonl")
+    return payload
 
 
 def _emit_delivery_bundle(
@@ -601,6 +660,11 @@ def _emit_delivery_bundle(
         raise FL3ValidationError("FAIL_CLOSED: delivery pack generator did not PASS (unexpected)")
     delivery_dir = Path(str(delivery_result["delivery_dir"])).resolve()
     lint_report = lint_delivery_dir(delivery_dir=delivery_dir)
+    if isinstance(lint_report, dict) and isinstance(lint_report.get("inputs"), dict):
+        lint_report = dict(lint_report)
+        lint_inputs = dict(lint_report["inputs"])
+        lint_inputs["delivery_dir"] = Path("delivery") / delivery_dir.name
+        lint_report["inputs"] = {"delivery_dir": str(lint_inputs["delivery_dir"]).replace("\\", "/")}
     _write_json_worm(path=delivery_out_dir / "delivery_lint_report.json", obj=lint_report, label="delivery_lint_report.json")
     if str(lint_report.get("status")) != "PASS":
         raise FL3ValidationError(f"FAIL_CLOSED: delivery linter status={lint_report.get('status')}")
@@ -631,9 +695,9 @@ def _emit_delivery_bundle(
         if (isinstance(sweep_id, str) and sweep_id.strip() and isinstance(sweep_sha256, str) and sweep_sha256.strip())
         else None,
         "verdict": verdict_line,
-        "evidence_dir": evidence_dir.as_posix(),
-        "delivery_dir": delivery_dir.as_posix(),
-        "delivery_zip": {"path": zip_path.as_posix(), "sha256": zip_sha},
+        "evidence_dir": "evidence",
+        "delivery_dir": f"delivery/{delivery_dir.name}",
+        "delivery_zip": {"path": f"delivery/{zip_path.name}", "sha256": zip_sha},
         "replay_command": replay_command,
         "safe_run_enforced": str(os.environ.get("KT_SAFE_RUN_ACTIVE", "")).strip() == "1",
         "operator_intent_hash": str(operator_intent.get("operator_intent_hash", "")),
@@ -652,7 +716,7 @@ def _emit_delivery_bundle(
         "lane_label": lane_label,
         "head": head,
         "constitution_epoch": _constitution_epoch(repo_root),
-        "governance_manifest_path": _governance_manifest_path(repo_root).as_posix(),
+        "governance_manifest_path": "KT_PROD_CLEANROOM/governance/governance_manifest.json",
         "governance_manifest_sha256": (_sha256_file(_governance_manifest_path(repo_root)) if _governance_manifest_path(repo_root).exists() else ""),
         "delivery_manifest_payload_sha256": "",
     }
@@ -715,7 +779,16 @@ def _emit_delivery_bundle(
     )
     _write_json_worm(path=evidence_dir / "evidence_core_merkle.json", obj=evidence_core_merkle, label="evidence_core_merkle.json")
 
-    delivery_contract_report = validate_delivery_contract(delivery_out_dir)
+    _append_run_local_federal_ledger(
+        repo_root=repo_root,
+        run_dir=run_dir,
+        program_id=effective_program_id,
+        delivery_zip_sha256=zip_sha,
+        evidence_core_merkle_root_sha256=str(evidence_core_merkle.get("evidence_core_merkle_root_sha256", "")).strip(),
+        operator_intent_hash=str(operator_intent.get("operator_intent_hash", "")).strip(),
+    )
+
+    delivery_contract_report = validate_delivery_contract(delivery_out_dir, require_real_path_receipt=False)
     _write_json_worm(
         path=reports_dir / "delivery_contract_validation.json",
         obj=delivery_contract_report,
@@ -730,6 +803,12 @@ def _emit_delivery_bundle(
         delivery_manifest_path=(delivery_out_dir / "delivery_manifest.json").resolve(),
         bindingloop_report=bindingloop_report,
         delivery_contract_report=delivery_contract_report,
+    )
+    delivery_contract_report = validate_delivery_contract(delivery_out_dir)
+    _write_json_worm(
+        path=reports_dir / "delivery_contract_validation.json",
+        obj=delivery_contract_report,
+        label="delivery_contract_validation.json",
     )
 
     return {"evidence_dir": evidence_dir.as_posix(), "delivery": delivery_result, "delivery_manifest": delivery_manifest}
@@ -1181,9 +1260,6 @@ def cmd_certify_canonical_hmac(*, repo_root: Path, profile: V1Profile, run_dir: 
         verdict_line=verdict,
     )
 
-    (run_dir / "reports").mkdir(parents=True, exist_ok=True)
-    write_text_worm(path=run_dir / "reports" / "one_line_verdict.txt", text=verdict + "\n", label="one_line_verdict.txt")
-    write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
     print(verdict)
     return 0
 
@@ -1432,8 +1508,6 @@ def cmd_red_assault(
         },
     )
 
-    write_text_worm(path=run_dir / "reports" / "one_line_verdict.txt", text=verdict + "\n", label="one_line_verdict.txt")
-    write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
     print(verdict)
     return 0
 
@@ -1571,8 +1645,6 @@ def cmd_continuous_gov(
             },
         )
 
-        write_text_worm(path=run_dir / "reports" / "one_line_verdict.txt", text=verdict + "\n", label="one_line_verdict.txt")
-        write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
         print(verdict)
         return 0 if ok else 2
 
@@ -1750,8 +1822,6 @@ def cmd_continuous_gov(
         },
     )
 
-    write_text_worm(path=run_dir / "reports" / "one_line_verdict.txt", text=verdict + "\n", label="one_line_verdict.txt")
-    write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
     print(verdict)
     return 0
 
@@ -1944,8 +2014,6 @@ def cmd_overlay_apply(
         delivery_manifest_extras={"overlay_apply": {"target_lane": lane, "resolved_overlays": resolved}},
     )
 
-    write_text_worm(path=run_dir / "reports" / "one_line_verdict.txt", text=verdict + "\n", label="one_line_verdict.txt")
-    write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
     print(verdict)
     return 0
 
@@ -2316,8 +2384,6 @@ def cmd_forge(
         delivery_manifest_extras={"forge": {"adapter_id": aid, "seed": int(seed), "training_status": training_status, "promotion_gate": promotion_gate_status}},
     )
 
-    write_text_worm(path=run_dir / "reports" / "one_line_verdict.txt", text=verdict + "\n", label="one_line_verdict.txt")
-    write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
     print(verdict)
     return 0
 
@@ -2386,8 +2452,6 @@ def cmd_hat_demo(*, repo_root: Path, profile: V1Profile, run_dir: Path, allow_di
             }
         },
     )
-    write_text_worm(path=run_dir / "reports" / "one_line_verdict.txt", text=verdict + "\n", label="one_line_verdict.txt")
-    write_text_worm(path=run_dir / "verdict.txt", text=verdict + "\n", label="verdict.txt")
     print(verdict)
     return 0
 

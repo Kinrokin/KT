@@ -1,0 +1,55 @@
+{
+  "generated_utc": "2026-03-08T15:13:10Z",
+  "schema_id": "kt.sovereign.practice_mode_chain_summary.v1",
+  "stages": [
+    {
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_source_integrity",
+      "stage": "source_integrity",
+      "status": "PASS",
+      "verdict": "PASS"
+    },
+    {
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_hashpin_verify",
+      "stage": "hashpin_verify",
+      "status": "PASS",
+      "verdict": "PASS"
+    },
+    {
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_program_catalog",
+      "stage": "program_catalog_verify",
+      "status": "PASS",
+      "verdict": "PASS"
+    },
+    {
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_governance_verify",
+      "stage": "governance_manifest_verify",
+      "status": "PASS",
+      "verdict": "PASS"
+    },
+    {
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_safe_run_hat_demo_practice",
+      "stage": "safe_run_hat_demo_practice",
+      "status": "PASS",
+      "verdict": "KT_SAFE_RUN_PASS cmd=safe-run profile=v1 assurance_mode=practice program_id=program.hat_demo nested_run=D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_safe_run_hat_demo_practice/program_run"
+    },
+    {
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_delivery_validate",
+      "stage": "delivery_contract_validate",
+      "status": "PASS",
+      "verdict": "PASS"
+    },
+    {
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_bindingloop_verify",
+      "stage": "bindingloop_verify",
+      "status": "PASS",
+      "verdict": "PASS"
+    },
+    {
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_replay_lint",
+      "stage": "hermetic_replay_lint",
+      "status": "PASS",
+      "verdict": "PASS"
+    }
+  ],
+  "status": "PASS"
+}

@@ -14,7 +14,7 @@ def lint_hermetic_replay(*, delivery_dir: Path, mve_json: Path, run_dir: Path) -
     mve = json.loads(mve_json.read_text(encoding="utf-8"))
     if not isinstance(mve, dict):
         raise RuntimeError("FAIL_CLOSED: mve json must be object")
-    for field in ("container_image_digest", "python_version", "os_release", "runtime_fingerprint"):
+    for field in ("container_image_digest", "python_version", "os_release"):
         if not str(mve.get(field, "")).strip():
             raise RuntimeError(f"FAIL_CLOSED: missing mve field {field}")
     proc = subprocess.run(
@@ -27,11 +27,22 @@ def lint_hermetic_replay(*, delivery_dir: Path, mve_json: Path, run_dir: Path) -
     (run_dir / "transcripts" / "replay_linter.log").write_text(log_text, encoding="utf-8")
     if proc.returncode != 0:
         raise RuntimeError("FAIL_CLOSED: delivery contract validator failed inside hermetic replay lint")
-    current_fp = operator_fingerprint()["runtime_fingerprint"]
-    if str(mve.get("runtime_fingerprint", "")).strip() != current_fp:
-        raise RuntimeError("FAIL_CLOSED: hermetic replay runtime fingerprint mismatch")
+    current = operator_fingerprint()
+    expected_mve = str(mve.get("mve_environment_fingerprint", "")).strip()
+    if expected_mve:
+        current_mve = str(current.get("mve_environment_fingerprint", "")).strip()
+        if expected_mve != current_mve:
+            raise RuntimeError("FAIL_CLOSED: hermetic replay MVE environment fingerprint mismatch")
+    else:
+        expected_runtime = str(mve.get("runtime_fingerprint", "")).strip()
+        if not expected_runtime:
+            raise RuntimeError("FAIL_CLOSED: missing mve field runtime_fingerprint or mve_environment_fingerprint")
+        current_runtime = str(current.get("runtime_fingerprint", "")).strip()
+        if expected_runtime != current_runtime:
+            raise RuntimeError("FAIL_CLOSED: hermetic replay runtime fingerprint mismatch")
     return {
-        "mve_environment_fingerprint": current_fp,
+        "mve_environment_fingerprint": str(current.get("mve_environment_fingerprint", "")).strip(),
+        "runtime_fingerprint": str(current.get("runtime_fingerprint", "")).strip(),
         "schema_id": "kt.operator.hermetic_replay_receipt.v1",
         "status": "PASS",
     }

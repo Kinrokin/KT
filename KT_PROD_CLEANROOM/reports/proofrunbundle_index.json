@@ -1,0 +1,23 @@
+{
+  "bundles": [
+    {
+      "proof_id": "certify",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A11e_twocleanclone_certify",
+      "source_runs": [
+        "KT_PROD_CLEANROOM\\exports\\_runs\\KT_OPERATOR\\A04_certify_canonical_hmac_clean",
+        "KT_PROD_CLEANROOM\\exports\\_runs\\KT_OPERATOR\\A11_certify_canonical_hmac_clean_b"
+      ]
+    },
+    {
+      "proof_id": "hat_demo",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A11f_twocleanclone_hatdemo",
+      "source_runs": [
+        "KT_PROD_CLEANROOM\\exports\\_runs\\KT_OPERATOR\\A11_safe_run_hat_demo_practice_a\\program_run",
+        "KT_PROD_CLEANROOM\\exports\\_runs\\KT_OPERATOR\\A11_safe_run_hat_demo_practice_b\\program_run"
+      ]
+    }
+  ],
+  "generated_utc": "2026-03-08T15:13:10Z",
+  "schema_id": "kt.sovereign.proofrunbundle_index.v1",
+  "status": "PASS"
+}

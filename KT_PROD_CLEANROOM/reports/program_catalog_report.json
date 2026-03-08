@@ -1,0 +1,106 @@
+{
+  "checked_job": null,
+  "failures": [],
+  "programs": [
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/hashpin.py",
+      "program_id": "program.hashpin.compute",
+      "status": "PASS"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/hashpin.py",
+      "program_id": "program.hashpin.verify_required_pins",
+      "status": "PASS"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/source_integrity.py",
+      "program_id": "program.source.integrity.verify",
+      "status": "PASS"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/program_catalog_verify.py",
+      "program_id": "program.catalog.verify",
+      "status": "PASS"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/governance_manifest_verify.py",
+      "program_id": "program.governance.verify_manifest",
+      "status": "PASS"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/delivery/delivery_contract_validator.py",
+      "program_id": "program.delivery.contract.validate",
+      "status": "PASS"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/bindingloop_verify.py",
+      "program_id": "program.bindingloop.verify",
+      "status": "PASS"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/hermetic_replay_linter.py",
+      "program_id": "program.replay.lint.hermetic",
+      "status": "PASS"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/mai_conformance.py",
+      "program_id": "program.mai.conformance",
+      "status": "PASS"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/constitution_self_check.py",
+      "program_id": "program.constitution.self_check",
+      "status": "PASS"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/ledger_verify_chain.py",
+      "program_id": "program.ledger.verify_chain",
+      "status": "PASS"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/two_clean_clone_proof.py",
+      "program_id": "program.proof.twocleanclone",
+      "status": "PASS"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/god_status.py",
+      "program_id": "program.authority.god_status",
+      "status": "PASS"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
+      "program_id": "program.safe_run",
+      "status": "PASS"
+    }
+  ],
+  "schema_id": "kt.operator.program_catalog_report.v1",
+  "status": "PASS",
+  "strict": true,
+  "yaml_jobs": [
+    {
+      "job_id": "ci.ws0.delivery_parity",
+      "status": "PASS",
+      "yaml_path": "ci/jobs/verify_ws0_delivery_parity.yml"
+    },
+    {
+      "job_id": "ci.ws1.mai_conformance_and_provenance",
+      "status": "PASS",
+      "yaml_path": "ci/jobs/verify_ws1_mai_conformance.yml"
+    },
+    {
+      "job_id": "ci.ws2.hermetic_replay_and_bindingloop",
+      "status": "PASS",
+      "yaml_path": "ci/jobs/verify_ws2_replay_bindingloop.yml"
+    },
+    {
+      "job_id": "ci.ws3.constitution_epoch_drift_amendment",
+      "status": "PASS",
+      "yaml_path": "ci/jobs/verify_ws3_constitution.yml"
+    },
+    {
+      "job_id": "ci.p0.program_catalog_verify",
+      "status": "PASS",
+      "yaml_path": "ci/jobs/verify_program_catalog.yml"
+    }
+  ]
+}

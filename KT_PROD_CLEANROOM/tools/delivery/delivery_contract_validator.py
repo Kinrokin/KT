@@ -16,7 +16,7 @@ def _resolve_inputs(delivery_dir: Path) -> tuple[Path, Path, Path]:
         pack_manifest = json.loads((delivery_dir / "delivery_manifest.json").read_text(encoding="utf-8"))
         pack_dir = Path(str(pack_manifest.get("delivery_dir", ""))).expanduser()
         if not pack_dir.is_absolute():
-            pack_dir = (delivery_dir.parent.parent / pack_dir).resolve()
+            pack_dir = (run_dir / pack_dir).resolve()
         return run_dir, delivery_dir, pack_dir.resolve()
     if (delivery_dir / "delivery_pack_manifest.json").exists():
         pack_dir = delivery_dir
@@ -24,7 +24,7 @@ def _resolve_inputs(delivery_dir: Path) -> tuple[Path, Path, Path]:
     raise RuntimeError(f"FAIL_CLOSED: unsupported delivery-dir layout: {delivery_dir.as_posix()}")
 
 
-def validate_delivery_contract(delivery_dir: Path) -> Dict[str, Any]:
+def validate_delivery_contract(delivery_dir: Path, *, require_real_path_receipt: bool = True) -> Dict[str, Any]:
     run_dir, operator_delivery_dir, pack_dir = _resolve_inputs(delivery_dir)
     evidence_dir = (run_dir / "evidence").resolve()
     reports_dir = (run_dir / "reports").resolve()
@@ -44,6 +44,8 @@ def validate_delivery_contract(delivery_dir: Path) -> Dict[str, Any]:
         reports_dir / "operator_fingerprint.json",
         reports_dir / "operator_intent.json",
     ]
+    if require_real_path_receipt:
+        required.append(reports_dir / "real_path_attachment_receipt.json")
     missing = [p.as_posix() for p in required if not p.exists()]
     if missing:
         raise RuntimeError("FAIL_CLOSED: delivery contract missing required artifacts: " + ",".join(missing))
