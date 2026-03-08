@@ -149,8 +149,8 @@ Pinned values now recorded in governance:
 ### A12 CI / Red-Team / God-Status / Hygiene
 - Warn-only workflow added: `.github/workflows/ci_p0_warn_only_closure.yml`
 - Fail-closed main workflow prepared: `.github/workflows/ci_p0_fail_closed_main.yml`
-- Live warn-only run: `https://github.com/Kinrokin/KT/actions/runs/22823816023`
-- Warn-only workflow validated commit: `42e599269487c7b3fa77e7345664fe55b2bdc147`
+- Live warn-only run: `https://github.com/Kinrokin/KT/actions/runs/22823853190`
+- Warn-only workflow validated commit: `4558b87ab10b90a6a13e9d4f997d792fe3687ba8`
 - Red-team closure outputs:
   - `KT_PROD_CLEANROOM/reports/redteam_tier0_to_tier2_summary.json`
   - `KT_PROD_CLEANROOM/reports/patch_card.json`
