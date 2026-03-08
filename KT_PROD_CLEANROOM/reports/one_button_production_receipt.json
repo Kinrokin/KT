@@ -1,0 +1,29 @@
+{
+  "blocking_reasons": [
+    "one_button_preflight_receipt.json is BLOCKED",
+    "branch protection is not attached on main",
+    "program.certify.canonical_hmac safe-run production currently fails on main in run_sweep_audit"
+  ],
+  "claim_admissible": false,
+  "created_utc": "2026-03-08T21:37:23Z",
+  "lawful_one_button_command_frozen": false,
+  "schema_id": "kt.one_button_production_receipt.v1",
+  "status": "BLOCKED",
+  "technical_probe_runs": [
+    {
+      "program_id": "program.certify.canonical_hmac",
+      "reason": "run_sweep_audit cleanroom failures",
+      "run_root": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T213137457173Z_safe-run",
+      "status": "BLOCKED"
+    },
+    {
+      "delivery_manifest": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T213356516189Z_safe-run/program_run/delivery/delivery_manifest.json",
+      "delivery_zip_sha256": "5d29d62c2cf350ba3c84ecaae8a8d5c3bfb71d95f26187a7751ce6ee4e2deb3e",
+      "eligible_as_lawful_one_button": false,
+      "program_id": "program.hat_demo",
+      "reason": "technical proof only; not frozen as the lawful payment path under this order",
+      "run_root": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T213356516189Z_safe-run",
+      "status": "PASS"
+    }
+  ]
+}
