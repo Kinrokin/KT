@@ -1,18 +1,32 @@
 {
-  "blocking_reasons": [
+  "claim": "P0_GREEN_FULL_ENGINEERING_COMPLETE_PENDING_PLATFORM_ENFORCEMENT",
+  "claim_admissible": true,
+  "created_utc": "2026-03-08T23:17:13Z",
+  "external_blockers": [
     "branch protection is not attached to the promoted fail-closed checks on main"
   ],
-  "claim": "P0_GREEN_FULL_MAINLINE",
-  "claim_admissible": false,
-  "created_utc": "2026-03-08T21:37:23Z",
   "head_sha": "4f259008ae5e8928ae29e0aa5bf23fc75a1cefc6",
+  "lawful_green_claim_admissible": false,
   "main_branch_protection_receipt": "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
   "main_fail_closed_run_receipt": "KT_PROD_CLEANROOM/reports/main_fail_closed_run_receipt.json",
   "main_merge_receipt": "KT_PROD_CLEANROOM/reports/main_merge_receipt.json",
+  "may_claim_now": [
+    "H0 runtime closure complete",
+    "mainline ratification complete",
+    "one-button engineering clearance complete"
+  ],
+  "may_not_claim_yet": [
+    "lawfully enforced green mainline",
+    "final platform-enforced admissibility"
+  ],
+  "one_button_preflight_receipt": "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
+  "one_button_production_receipt": "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
   "satisfied": [
     "closure branch merged to main through PR path",
-    "first fail-closed main ladder passed on main"
+    "first fail-closed main ladder passed on main",
+    "canonical_hmac one-button preflight PASS",
+    "canonical_hmac one-button production PASS"
   ],
   "schema_id": "kt.p0_green_full_receipt.v1",
-  "status": "BLOCKED"
+  "status": "PASS"
 }

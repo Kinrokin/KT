@@ -1,0 +1,38 @@
+{
+  "checks": [
+    {
+      "check": "origin_main_semantics_preserved",
+      "detail": "git diff origin/main...HEAD contains platform-tooling, posture, and report surfaces only; no canonical_hmac runtime-path, validator, SKU, router, or adapter semantics changed.",
+      "status": "PASS"
+    },
+    {
+      "check": "origin_main_diff_runtime_neutral",
+      "detail": "KT_PROD_CLEANROOM/governance/platform/github_main_ruleset.json; KT_PROD_CLEANROOM/governance/program_catalog.json; KT_PROD_CLEANROOM/reports/KT_FINAL_GREEN_MAINLINE_REVIEW_20260308.md; KT_PROD_CLEANROOM/reports/KT_FINAL_SEAL_AND_COMMIT_REPORT_20260308.md; KT_PROD_CLEANROOM/reports/canonical_hmac_one_button_delta_proof.json; KT_PROD_CLEANROOM/reports/canonical_hmac_one_button_fix_plan.json; KT_PROD_CLEANROOM/reports/core_semantics_diff.md; KT_PROD_CLEANROOM/reports/current_state_receipt.json; KT_PROD_CLEANROOM/reports/customer_delivery_receipt.json; KT_PROD_CLEANROOM/reports/h0_done_receipt.json; KT_PROD_CLEANROOM/reports/h0_freeze_receipt.json; KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json; KT_PROD_CLEANROOM/reports/main_fail_closed_run_receipt.json; KT_PROD_CLEANROOM/reports/main_merge_receipt.json; KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json; KT_PROD_CLEANROOM/reports/non_regression_summary.json; KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json; KT_PROD_CLEANROOM/reports/one_button_production_receipt.json; KT_PROD_CLEANROOM/reports/p0_green_full_receipt.json; KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json; KT_PROD_CLEANROOM/reports/program_catalog_report.json; KT_PROD_CLEANROOM/reports/run_sweep_audit_failure_matrix.json; KT_PROD_CLEANROOM/reports/runtime_closure_audit.json; KT_PROD_CLEANROOM/tests/operator/test_github_ruleset.py; KT_PROD_CLEANROOM/tests/operator/test_posture_consistency.py; KT_PROD_CLEANROOM/tools/operator/github_ruleset.py; KT_PROD_CLEANROOM/tools/operator/posture_consistency.py",
+      "status": "PASS"
+    },
+    {
+      "check": "targeted_failure_subset_rerun",
+      "detail": "The 12 previously failing tests pass when rerun as a focused subset.",
+      "status": "PASS"
+    },
+    {
+      "check": "lawful_safe_run_production_command",
+      "detail": "KT_SAFE_RUN_PASS cmd=safe-run profile=v1 assurance_mode=production program_id=program.certify.canonical_hmac nested_run=D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run/program_run",
+      "status": "PASS"
+    },
+    {
+      "check": "nested_canonical_hmac_verdict",
+      "detail": "KT_CERTIFY_PASS cmd=certify lane=canonical_hmac profile=v1 allow_dirty=0 head=abf00e56afc781cef862442d154a2eb1537c4ece law=d59e7ee82b96c67c0c91f81cfd02eab0139034f4cd5ee6f762ef284824b3444b suite=a1d21d415568931778b718827c278918529af8490a1b456ba97f27a9a18be8fc sweep_sha256=d269ef220443cba28ca10bd2dd7abe0e576a27bdde5e4fd9d46e53595b9172ca",
+      "status": "PASS"
+    },
+    {
+      "check": "run_sweep_audit",
+      "detail": "pytest_cleanroom, pytest_temple, pytest_verification, meta_evaluator_canonical, validate_receipts, validate_work_orders, and validate_council_packet all passed for the clearance run.",
+      "status": "PASS"
+    }
+  ],
+  "created_utc": "2026-03-08T23:19:16Z",
+  "head": "4f1b12cd6283f7f5f53355cfab322103e4358b8a",
+  "schema_id": "kt.non_regression_summary.v1",
+  "status": "PASS"
+}

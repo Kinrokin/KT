@@ -1,13 +1,13 @@
 {
   "audit_scope": [
-    "posture truth reconciliation",
-    "alias truth reconciliation",
-    "preserved branch closure receipt verification",
-    "mainline promotion preparation"
+    "mainline ratification preservation",
+    "one-button canonical_hmac clearance verification",
+    "platform ruleset desired-state tooling",
+    "truthful posture sealing"
   ],
   "blocking_groups": [],
-  "branch_ref": "ops/titanium-realpath-attachment-20260307",
-  "current_state": "P0_GREEN_FULL_BRANCH_CONFIRMED_PENDING_MAIN_PROMOTION",
+  "branch_ref": "ops/final-green-mainline-receipts-20260308",
+  "current_state": "P0_GREEN_FULL_ENGINEERING_COMPLETE_PENDING_PLATFORM_ENFORCEMENT",
   "evidence_plane_targets_checked": [
     "delivery/delivery_manifest.json",
     "evidence/constitutional_snapshot.json",
@@ -17,23 +17,24 @@
     "evidence/secret_scan_report.json",
     "reports/bindingloop_check.json"
   ],
-  "generated_utc": "2026-03-08T21:20:07Z",
+  "generated_utc": "2026-03-08T23:19:16Z",
   "notes": [
-    "This audit ratifies existing branch closure receipts at the preserved branch closure head and the final posture/alias patch head.",
-    "W0 changes are limited to posture/alias/validator surfaces and do not alter runtime semantics."
+    "Mainline ratification remains anchored by PR #12 merge and the first fail-closed main ladder run.",
+    "One-button canonical_hmac clearance now passes on unchanged main semantics; remaining blocker is external platform enforcement when branch protection is inactive.",
+    "GitHub ruleset desired state is now committed in-repo and can be applied or verified without reopening substrate work."
   ],
   "overall_verdict": "PASS",
-  "posture_state": "P0_GREEN_FULL_BRANCH_CONFIRMED_PENDING_MAIN_PROMOTION",
+  "posture_state": "P0_GREEN_FULL_ENGINEERING_COMPLETE_PENDING_PLATFORM_ENFORCEMENT",
   "real_path_targets_checked": [
     "program.certify.canonical_hmac",
     "program.hat_demo",
     "program.red_assault.serious_v1",
-    "safe-run:program.hat_demo"
+    "safe-run:program.certify.canonical_hmac"
   ],
-  "release_decision": "NO_GO_FOR_PRESS_BUTTON_PRODUCTION_PENDING_MAIN_PROMOTION",
+  "release_decision": "NO_GO_FOR_LAWFULLY_ENFORCED_GREEN_PENDING_PLATFORM_ENFORCEMENT",
   "repo_hygiene_status": "PASS",
   "schema_id": "kt.operator.runtime_closure_audit.v2",
   "status": "PASS",
-  "validated_head_sha": "fc0bdc8fee86d46c679bde887602030d0ef6941a",
+  "validated_head_sha": "4f1b12cd6283f7f5f53355cfab322103e4358b8a",
   "validator_substance_checked": true
 }

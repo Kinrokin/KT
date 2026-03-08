@@ -4,8 +4,25 @@
     "authority_os_equals_titanium_work_order": true,
     "status": "PASS"
   },
-  "branch_ref": "ops/titanium-realpath-attachment-20260307",
-  "posture_state": "P0_GREEN_FULL_BRANCH_CONFIRMED_PENDING_MAIN_PROMOTION",
+  "branch_ref": "ops/final-green-mainline-receipts-20260308",
+  "one_button_state": {
+    "checks": [
+      {
+        "artifact": "one_button_preflight_receipt.json",
+        "status": "PASS"
+      },
+      {
+        "artifact": "one_button_production_receipt.json",
+        "status": "PASS"
+      },
+      {
+        "artifact": "main_branch_protection_receipt.json",
+        "status": "BLOCKED"
+      }
+    ],
+    "status": "PASS"
+  },
+  "posture_state": "P0_GREEN_FULL_ENGINEERING_COMPLETE_PENDING_PLATFORM_ENFORCEMENT",
   "preserved_branch_closure": {
     "checks": [
       {
@@ -56,5 +73,5 @@
   },
   "schema_id": "kt.operator.posture_consistency_receipt.v1",
   "status": "PASS",
-  "validated_head_sha": "fc0bdc8fee86d46c679bde887602030d0ef6941a"
+  "validated_head_sha": "abf00e56afc781cef862442d154a2eb1537c4ece"
 }

@@ -1,51 +1,48 @@
 {
-  "canonical_candidate_failure_count": 12,
-  "canonical_candidate_failures": [
-    "KT_PROD_CLEANROOM/tests/fl3/test_fl3_budget_and_unlock.py::test_fl3_global_unlock_requires_artifact",
-    "KT_PROD_CLEANROOM/tests/fl3/test_fl3_factory_smoke_dryrun.py::test_fl3_factory_smoke_dryrun",
-    "KT_PROD_CLEANROOM/tests/fl3/test_fl3_srr_air_exclusivity.py::test_factory_outputs_do_not_emit_runtime_srr_air",
-    "KT_PROD_CLEANROOM/tests/fl3/test_fl3_tournament_blindness.py::test_fl3_factory_tournament_emits_blind_pack_and_mapping",
-    "KT_PROD_CLEANROOM/tests/fl3/test_fl3_vrr_lane.py::test_fl3_vrr_lane_emits_no_promotion_artifacts",
-    "KT_PROD_CLEANROOM/tests/fl3/test_fl4_metabolism_perturbation.py::test_fl4_metabolism_perturbations_change_hash_root",
-    "KT_PROD_CLEANROOM/tests/fl3/test_fl4_promotion_atomic.py::test_fl4_atomic_promotion_creates_promoted_package_and_updates_index",
-    "KT_PROD_CLEANROOM/tests/fl3/test_fl4_utility_pack_binding.py::test_eval_report_utility_pack_hash_mismatch_fails_closed",
-    "KT_PROD_CLEANROOM/tests/fl3/test_fl4_weight_artifacts_rejected.py::test_canonical_lane_rejects_weight_artifact_extensions[.ckpt]",
-    "KT_PROD_CLEANROOM/tests/fl3/test_fl4_weight_artifacts_rejected.py::test_canonical_lane_rejects_weight_artifact_extensions[.onnx]",
-    "KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py::test_kt_cli_status_smoke_and_worm_collision",
-    "KT_PROD_CLEANROOM/tests/policy_c/test_sweep_determinism_rerun.py::TestSweepDeterminismRerun::test_rerun_content_hashes"
-  ],
-  "canonical_candidate_run_root": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T213137457173Z_safe-run",
+  "canonical_candidate_failure_count": 0,
+  "canonical_candidate_failures": [],
+  "canonical_candidate_run_root": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run",
   "checks": [
     {
-      "check": "p0_green_full_receipt_admissible",
-      "detail": "p0_green_full_receipt.json is BLOCKED because branch protection is unavailable",
-      "status": "FAIL"
-    },
-    {
-      "check": "branch_protection_attached",
-      "detail": "GitHub API returned 403: Upgrade to GitHub Pro or make this repository public to enable branch protection/rulesets on this private repository.",
-      "status": "FAIL"
-    },
-    {
       "check": "safe_run_command_surface_available",
-      "detail": "program.certify.canonical_hmac is supported by safe-run",
+      "detail": "program.certify.canonical_hmac is supported by safe-run.",
       "status": "PASS"
     },
     {
-      "check": "canonical_hmac_candidate_passes_on_main",
-      "detail": "safe-run production canonical_hmac blocked by run_sweep_audit cleanroom failures",
-      "status": "FAIL"
+      "check": "canonical_hmac_candidate_passes_on_current_main_semantics",
+      "detail": "KT_SAFE_RUN_PASS cmd=safe-run profile=v1 assurance_mode=production program_id=program.certify.canonical_hmac nested_run=D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run/program_run",
+      "status": "PASS"
     },
     {
-      "check": "technical_safe_run_hat_demo_probe",
-      "detail": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T213356516189Z_safe-run",
+      "check": "nested_canonical_hmac_delivery_bundle_present",
+      "detail": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run/program_run/delivery/delivery_manifest.json",
       "status": "PASS"
+    },
+    {
+      "check": "run_sweep_audit_pytest_cleanroom",
+      "detail": "219 passed in 90.61s (0:01:30)",
+      "status": "PASS"
+    },
+    {
+      "check": "semantic_drift_detected",
+      "detail": "No semantic drift; diff to origin/main is limited to platform-tooling, posture, tests, governance desired state, and report surfaces.",
+      "status": "PASS"
+    },
+    {
+      "check": "external_platform_enforcement",
+      "detail": "Still external to Micro-order 2; branch protection remains unavailable on the private repo.",
+      "status": "WARN"
     }
   ],
   "claim_admissible": false,
-  "created_utc": "2026-03-08T21:37:23Z",
+  "created_utc": "2026-03-08T23:19:16Z",
+  "external_blockers": [
+    "Branch protection / ruleset attachment on the private repo is still blocked by GitHub capability (Micro-order 1 external)."
+  ],
   "frozen_candidate_command": "python -m tools.operator.kt_cli --profile v1 --safe-run --assurance-mode production --program program.certify.canonical_hmac --config {}",
-  "next_action": "Attach branch protection and repair the canonical_hmac sweep failures before freezing a lawful one-button production command.",
+  "global_claim_blocked_by_external": true,
+  "next_action": "Resolve Micro-order 1 externally to attach branch protection / rulesets; internal canonical_hmac one-button clearance is complete.",
   "schema_id": "kt.one_button_preflight_receipt.v1",
-  "status": "BLOCKED"
+  "scope": "MICRO_ORDER_2_CANONICAL_HMAC_INTERNAL_CLEARANCE",
+  "status": "PASS"
 }

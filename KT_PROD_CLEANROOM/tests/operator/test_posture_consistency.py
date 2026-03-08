@@ -49,6 +49,9 @@ def _seed_repo(tmp_path: Path, *, posture_state: str = "P0_GREEN_FULL_BRANCH_CON
     _write_json(tmp_path / "KT_PROD_CLEANROOM" / "reports" / "twocleanclone_proof.json", {"status": "PASS"})
     _write_json(tmp_path / "KT_PROD_CLEANROOM" / "reports" / "godstatus_verdict.json", {"status": "PASS"})
     _write_json(tmp_path / "KT_PROD_CLEANROOM" / "reports" / "ci_gate_promotion_receipt.json", {"status": "WARN_ONLY_LIVE"})
+    _write_json(tmp_path / "KT_PROD_CLEANROOM" / "reports" / "one_button_preflight_receipt.json", {"status": "PASS"})
+    _write_json(tmp_path / "KT_PROD_CLEANROOM" / "reports" / "one_button_production_receipt.json", {"status": "PASS"})
+    _write_json(tmp_path / "KT_PROD_CLEANROOM" / "reports" / "main_branch_protection_receipt.json", {"status": "BLOCKED"})
 
     authority_sha = "a" * 64
     titanium_sha = authority_sha if equal_alias else "b" * 64
@@ -89,3 +92,10 @@ def test_verify_posture_fails_on_posture_mismatch(tmp_path: Path) -> None:
         assert "current_state_receipt posture_state" in str(exc)
     else:
         raise AssertionError("expected posture mismatch to fail closed")
+
+
+def test_verify_posture_passes_for_engineering_complete_pending_platform(tmp_path: Path) -> None:
+    root = _seed_repo(tmp_path, posture_state="P0_GREEN_FULL_ENGINEERING_COMPLETE_PENDING_PLATFORM_ENFORCEMENT", equal_alias=True)
+    report = verify_posture(root=root, expected_posture="P0_GREEN_FULL_ENGINEERING_COMPLETE_PENDING_PLATFORM_ENFORCEMENT")
+    assert report["status"] == "PASS"
+    assert report["one_button_state"]["status"] == "PASS"
