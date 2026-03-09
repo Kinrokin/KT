@@ -1,0 +1,17 @@
+{
+  "activation_state": "PENDING_TRUTHFUL_GREEN",
+  "current_posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+  "freeze_allowed_when": [
+    "derived posture == TRUTHFUL_GREEN",
+    "live_validation_index current_worktree_cleanroom_suite status == PASS",
+    "posture_conflict_receipt status == PASS"
+  ],
+  "freeze_blockers": [
+    "dirty worktree",
+    "receipt overclaim",
+    "unreconciled live validation conflicts"
+  ],
+  "policy_id": "H0_FREEZE_POLICY_V1_20260309",
+  "schema_id": "kt.governance.h0_freeze_policy.v1",
+  "status": "DEFINED_NOT_ACTIVATED"
+}

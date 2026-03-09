@@ -2,13 +2,13 @@ from __future__ import annotations
 
 import argparse
 import json
-import subprocess
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Set
 
 from schemas.fl3_schema_common import sha256_hex_of_obj
 from schemas.schema_files import schema_version_hash
 from tools.governance.failure_taxonomy_reporter import load_failure_taxonomy
+from tools.governance.lane_policy import repo_clean_gate_for_current_lane
 from tools.governance.suite_registry_utils import (
     find_suite_entry,
     load_suite_registry,
@@ -61,16 +61,6 @@ def _allowed_reason_codes(*, taxonomy: Dict[str, Any]) -> Set[str]:
             if isinstance(rc, str) and rc.strip():
                 out.add(rc.strip())
     return out
-
-
-def _git_status_is_clean(repo_root: Path) -> Tuple[bool, str]:
-    try:
-        out = subprocess.check_output(["git", "status", "--porcelain"], cwd=str(repo_root), text=True)
-    except Exception as exc:  # noqa: BLE001
-        return False, f"FAIL_CLOSED: unable to run git status: {exc}"
-    if out.strip():
-        return False, "FAIL_CLOSED: repo is not clean"
-    return True, ""
 
 
 def _read_json_dict(path: Path, *, name: str) -> Dict[str, Any]:
@@ -128,8 +118,8 @@ def build_evaluation_admission_receipt(
     taxonomy = load_failure_taxonomy(repo_root=repo_root, relpath=failure_taxonomy_rel)
     allowed_rc = _allowed_reason_codes(taxonomy=taxonomy)
 
-    # Structural invariant: clean repo.
-    ok, _err = _git_status_is_clean(repo_root)
+    # Structural invariant: canonical lane must prove a clean repo; local test lanes do not.
+    ok, _err = repo_clean_gate_for_current_lane(repo_root)
     if not ok:
         reasons.append(_RC_DENIED)
 

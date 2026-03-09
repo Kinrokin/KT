@@ -1,30 +1,17 @@
 {
-  "claim": "P0_GREEN_FULL_MAINLINE",
-  "claim_admissible": true,
-  "created_utc": "2026-03-09T00:25:10Z",
-  "external_blockers": [],
-  "head_sha": "e21a4c9493faa8ffc04de293d910fee2d509e364",
-  "lawful_green_claim_admissible": true,
-  "main_branch_protection_receipt": "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
-  "main_fail_closed_run_receipt": "KT_PROD_CLEANROOM/reports/main_fail_closed_run_receipt.json",
-  "main_merge_receipt": "KT_PROD_CLEANROOM/reports/main_merge_receipt.json",
-  "may_claim_now": [
-    "H0 runtime closure complete",
-    "mainline ratification complete",
-    "one-button engineering clearance complete",
-    "lawfully enforced green mainline",
-    "GO_PRESS_BUTTON_PRODUCTION_ELIGIBLE"
+  "blockers": [
+    "DIRTY_WORKTREE"
   ],
-  "may_not_claim_yet": [],
-  "one_button_preflight_receipt": "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
-  "one_button_production_receipt": "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
-  "satisfied": [
-    "closure branch merged to main through PR path",
-    "first fail-closed main ladder passed on main",
-    "canonical_hmac one-button preflight PASS",
-    "canonical_hmac one-button production PASS",
-    "main branch protection / ruleset enforcement active on main"
+  "claim": "TRUTHFUL_GREEN",
+  "claim_admissible": false,
+  "created_utc": "2026-03-09T19:24:32Z",
+  "current_truthful_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+  "schema_id": "kt.p0_green_full_receipt.v2",
+  "status": "SUPERSEDED",
+  "superseded_by": [
+    "KT_PROD_CLEANROOM/reports/live_validation_index.json",
+    "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
+    "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json"
   ],
-  "schema_id": "kt.p0_green_full_receipt.v1",
-  "status": "PASS"
+  "validated_head_sha": "4cf1b9d100f8699fa192d6a5409c69bc6e94761d"
 }

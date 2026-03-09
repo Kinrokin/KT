@@ -6,13 +6,19 @@ from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
 from tools.operator.titanium_common import load_json, repo_root
+from tools.operator.truth_engine import (
+    CANONICAL_READY_FOR_REEARNED_GREEN,
+    TRUTHFUL_GREEN,
+    derive_live_validation_state,
+    normalize_claim_state,
+)
 
 
-ALLOWED_BRANCH_POSTURES = {
-    "P0_GREEN_FULL_CANDIDATE_ON_BRANCH",
-    "P0_GREEN_FULL_BRANCH_CONFIRMED_PENDING_MAIN_PROMOTION",
-    "P0_GREEN_FULL_ENGINEERING_COMPLETE_PENDING_PLATFORM_ENFORCEMENT",
-    "P0_GREEN_FULL_MAINLINE",
+ALLOWED_POSTURES = {
+    "TRUTH_DEFECTS_PRESENT",
+    "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+    CANONICAL_READY_FOR_REEARNED_GREEN,
+    TRUTHFUL_GREEN,
 }
 
 
@@ -139,7 +145,15 @@ def _verify_preserved_receipts(root: Path) -> Dict[str, Any]:
     return {"status": "PASS", "checks": checks}
 
 
-def _verify_one_button_state(*, root: Path, expected_posture: str) -> Dict[str, Any]:
+def _head_field(obj: Dict[str, Any]) -> str:
+    for key in ("validated_head_sha", "head_sha", "head"):
+        value = str(obj.get(key, "")).strip()
+        if value:
+            return value
+    return ""
+
+
+def _verify_one_button_state(*, root: Path, posture_state: str, live_head: str, branch_ref: str) -> Dict[str, Any]:
     preflight = _load_required(root, "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json")
     production = _load_required(root, "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json")
     branch_protection = _load_required(root, "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json")
@@ -149,67 +163,111 @@ def _verify_one_button_state(*, root: Path, expected_posture: str) -> Dict[str, 
     production_status = str(production.get("status", "")).strip()
     branch_status = str(branch_protection.get("status", "")).strip()
 
-    if expected_posture in {"P0_GREEN_FULL_ENGINEERING_COMPLETE_PENDING_PLATFORM_ENFORCEMENT", "P0_GREEN_FULL_MAINLINE"}:
+    if posture_state == TRUTHFUL_GREEN:
         if preflight_status != "PASS":
-            raise RuntimeError("FAIL_CLOSED: one_button_preflight_receipt must be PASS for engineering-complete posture")
+            raise RuntimeError("FAIL_CLOSED: one_button_preflight_receipt must be PASS for truthful green posture")
         if production_status != "PASS":
-            raise RuntimeError("FAIL_CLOSED: one_button_production_receipt must be PASS for engineering-complete posture")
+            raise RuntimeError("FAIL_CLOSED: one_button_production_receipt must be PASS for truthful green posture")
+        preflight_head = _head_field(preflight)
+        production_head = _head_field(production)
+        if preflight_head != live_head:
+            raise RuntimeError("FAIL_CLOSED: one_button_preflight_receipt head does not match live head")
+        if production_head != live_head:
+            raise RuntimeError("FAIL_CLOSED: one_button_production_receipt head does not match live head")
         checks.append({"artifact": "one_button_preflight_receipt.json", "status": "PASS"})
         checks.append({"artifact": "one_button_production_receipt.json", "status": "PASS"})
-
-    if expected_posture == "P0_GREEN_FULL_ENGINEERING_COMPLETE_PENDING_PLATFORM_ENFORCEMENT":
-        if branch_status == "PASS":
-            raise RuntimeError("FAIL_CLOSED: engineering-complete pending platform posture cannot coexist with active branch protection")
+        if branch_ref == "main":
+            if branch_status != "PASS":
+                raise RuntimeError("FAIL_CLOSED: truthful green on main requires main_branch_protection_receipt PASS")
+            checks.append({"artifact": "main_branch_protection_receipt.json", "status": "PASS"})
+    else:
         checks.append({"artifact": "main_branch_protection_receipt.json", "status": branch_status})
-
-    if expected_posture == "P0_GREEN_FULL_MAINLINE":
-        if branch_status != "PASS":
-            raise RuntimeError("FAIL_CLOSED: mainline green posture requires main_branch_protection_receipt PASS")
-        checks.append({"artifact": "main_branch_protection_receipt.json", "status": "PASS"})
 
     return {"status": "PASS", "checks": checks}
 
 
-def verify_posture(*, root: Path, expected_posture: str) -> Dict[str, Any]:
+def verify_posture(*, root: Path, expected_posture: str, live_validation_index_rel: str = "KT_PROD_CLEANROOM/reports/live_validation_index.json") -> Dict[str, Any]:
     current_state = _load_required(root, "KT_PROD_CLEANROOM/reports/current_state_receipt.json")
     runtime_audit = _load_required(root, "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json")
+    live_validation_index = _load_required(root, str(live_validation_index_rel))
     manifest = _load_required(root, "KT_PROD_CLEANROOM/governance/governance_manifest.json")
     aliases = _load_required(root, "KT_PROD_CLEANROOM/governance/governance_aliases.json")
 
-    current_posture = str(current_state.get("posture_state") or current_state.get("current_p0_state") or "").strip()
-    audit_posture = str(runtime_audit.get("posture_state") or runtime_audit.get("current_state") or "").strip()
+    current_posture_raw = str(current_state.get("posture_state") or current_state.get("current_p0_state") or "").strip()
+    audit_posture_raw = str(runtime_audit.get("posture_state") or runtime_audit.get("current_state") or "").strip()
+    current_posture = normalize_claim_state(current_posture_raw)
+    audit_posture = normalize_claim_state(audit_posture_raw)
     current_branch = str(current_state.get("branch_ref") or current_state.get("branch") or "").strip()
     audit_branch = str(runtime_audit.get("branch_ref") or runtime_audit.get("branch") or "").strip()
     current_head = str(current_state.get("validated_head_sha") or current_state.get("head") or "").strip()
     audit_head = str(runtime_audit.get("validated_head_sha") or runtime_audit.get("head") or "").strip()
+    live_branch = str(live_validation_index.get("branch_ref", "")).strip()
+    live_head = str((live_validation_index.get("worktree") or {}).get("head_sha", "")).strip()
+    live_state = derive_live_validation_state(live_validation_index)
 
-    if current_posture != expected_posture:
-        raise RuntimeError(f"FAIL_CLOSED: current_state_receipt posture_state={current_posture!r} expected={expected_posture!r}")
-    if audit_posture != expected_posture:
-        raise RuntimeError(f"FAIL_CLOSED: runtime_closure_audit posture_state={audit_posture!r} expected={expected_posture!r}")
-    if current_posture not in ALLOWED_BRANCH_POSTURES:
-        raise RuntimeError(f"FAIL_CLOSED: posture_state not allowed on branch: {current_posture}")
+    if current_posture != audit_posture:
+        raise RuntimeError("FAIL_CLOSED: current_state_receipt and runtime_closure_audit posture_state disagree")
+    if current_posture not in ALLOWED_POSTURES:
+        raise RuntimeError(f"FAIL_CLOSED: posture_state not allowed: {current_posture}")
     if current_branch != audit_branch:
         raise RuntimeError("FAIL_CLOSED: posture receipts disagree on branch_ref")
     if current_head != audit_head:
         raise RuntimeError("FAIL_CLOSED: posture receipts disagree on validated_head_sha")
+    if current_branch != live_branch:
+        raise RuntimeError("FAIL_CLOSED: posture receipts disagree with live branch_ref")
+    if current_head != live_head:
+        raise RuntimeError("FAIL_CLOSED: posture receipts disagree with live validated_head_sha")
+
+    if str(expected_posture).strip() and current_posture != str(expected_posture).strip():
+        raise RuntimeError(f"FAIL_CLOSED: current_state_receipt posture_state={current_posture!r} expected={expected_posture!r}")
+
+    allowed_states = {live_state}
+    if live_state == CANONICAL_READY_FOR_REEARNED_GREEN:
+        allowed_states.add(TRUTHFUL_GREEN)
+    if current_posture not in allowed_states:
+        raise RuntimeError(
+            f"FAIL_CLOSED: posture_state={current_posture!r} not admissible for live_validation_state={live_state!r}"
+        )
 
     preserved = _verify_preserved_receipts(root)
     alias_truth = _verify_alias_truth(manifest=manifest, aliases=aliases)
-    one_button = _verify_one_button_state(root=root, expected_posture=expected_posture)
+    one_button = _verify_one_button_state(root=root, posture_state=current_posture, live_head=current_head, branch_ref=current_branch)
+
+    expected_release = {
+        "TRUTH_DEFECTS_PRESENT": "NO_GO_TRUTH_DEFECTS_PRESENT",
+        "CANONICAL_VALIDATED_DIRTY_WORKTREE": "HOLD_DIRTY_WORKTREE",
+        CANONICAL_READY_FOR_REEARNED_GREEN: "HOLD_CANONICAL_READY_FOR_REEARNED_GREEN",
+        TRUTHFUL_GREEN: "GO_PRESS_BUTTON_PRODUCTION_ELIGIBLE",
+    }[current_posture]
+    release_decision = str(current_state.get("current_release_decision", "")).strip()
+    audit_release = str(runtime_audit.get("release_decision", "")).strip()
+    if release_decision != expected_release:
+        raise RuntimeError(
+            f"FAIL_CLOSED: current_state_receipt current_release_decision={release_decision!r} expected={expected_release!r}"
+        )
+    if audit_release != expected_release:
+        raise RuntimeError(f"FAIL_CLOSED: runtime_closure_audit release_decision={audit_release!r} expected={expected_release!r}")
 
     active_stop_gates = current_state.get("active_stop_gates", [])
-    if isinstance(active_stop_gates, list) and active_stop_gates:
-        raise RuntimeError("FAIL_CLOSED: current_state_receipt still reports active stop gates")
-
     blocking_groups = runtime_audit.get("blocking_groups", [])
-    if isinstance(blocking_groups, list) and blocking_groups:
-        raise RuntimeError("FAIL_CLOSED: runtime_closure_audit still reports blocking groups")
+    current_has_gates = isinstance(active_stop_gates, list) and bool(active_stop_gates)
+    audit_has_gates = isinstance(blocking_groups, list) and bool(blocking_groups)
+    if current_posture == TRUTHFUL_GREEN:
+        if current_has_gates:
+            raise RuntimeError("FAIL_CLOSED: truthful green current_state_receipt cannot report active stop gates")
+        if audit_has_gates:
+            raise RuntimeError("FAIL_CLOSED: truthful green runtime_closure_audit cannot report blocking groups")
+    else:
+        if not current_has_gates:
+            raise RuntimeError("FAIL_CLOSED: non-green current_state_receipt must report active stop gates")
+        if not audit_has_gates:
+            raise RuntimeError("FAIL_CLOSED: non-green runtime_closure_audit must report blocking groups")
 
     return {
         "schema_id": "kt.operator.posture_consistency_receipt.v1",
         "status": "PASS",
-        "posture_state": expected_posture,
+        "posture_state": current_posture,
+        "live_validation_state": live_state,
         "branch_ref": current_branch,
         "validated_head_sha": current_head,
         "preserved_branch_closure": preserved,
@@ -220,7 +278,8 @@ def verify_posture(*, root: Path, expected_posture: str) -> Dict[str, Any]:
 
 def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Verify final green posture consistency.")
-    ap.add_argument("--expected-posture", default="P0_GREEN_FULL_BRANCH_CONFIRMED_PENDING_MAIN_PROMOTION")
+    ap.add_argument("--expected-posture", default="")
+    ap.add_argument("--live-validation-index", default="KT_PROD_CLEANROOM/reports/live_validation_index.json")
     ap.add_argument("--out", default="KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json")
     return ap.parse_args(argv)
 
@@ -233,7 +292,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         out_path = (root / out_path).resolve()
     out_path.parent.mkdir(parents=True, exist_ok=True)
     try:
-        report = verify_posture(root=root, expected_posture=str(args.expected_posture))
+        report = verify_posture(
+            root=root,
+            expected_posture=str(args.expected_posture),
+            live_validation_index_rel=str(args.live_validation_index),
+        )
         out_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         print(json.dumps(report, sort_keys=True, ensure_ascii=True))
         return 0

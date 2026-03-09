@@ -1,0 +1,28 @@
+{
+  "schema_id": "kt.governance.truth_engine_contract.v1",
+  "contract_id": "TRUTH_ENGINE_CONTRACT_V1_20260309",
+  "required_inputs": [
+    "KT_PROD_CLEANROOM/reports/live_validation_index.json",
+    "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+    "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
+    "KT_PROD_CLEANROOM/governance/posture_contract.json"
+  ],
+  "critical_checks": [
+    "constitutional_guard",
+    "runtime_suite",
+    "critical_governance_regression_suite",
+    "law_bundle_integrity",
+    "trust_zone_validator",
+    "meta_evaluator",
+    "operator_clean_clone_smoke",
+    "current_worktree_cleanroom_suite"
+  ],
+  "conflict_rules": [
+    "green claims are invalid unless derived_state == TRUTHFUL_GREEN",
+    "validated_head_sha must match live_validation_index.worktree.head_sha",
+    "posture_consistency_receipt must not be stronger than live validation evidence",
+    "dirty-sensitive failures block current-worktree green but do not erase clean-clone evidence"
+  ],
+  "status": "ACTIVE"
+}

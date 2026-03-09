@@ -19,6 +19,10 @@
     {
       "job_id": "ci.p0.program_catalog_verify",
       "yaml_path": "ci/jobs/verify_program_catalog.yml"
+    },
+    {
+      "job_id": "ci.truth_barrier",
+      "yaml_path": "ci/jobs/verify_truth_barrier.yml"
     }
   ],
   "created_utc": "2026-03-06T00:00:00Z",
@@ -86,6 +90,26 @@
     {
       "implementation_path": "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
       "program_id": "program.safe_run"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/truth_engine.py",
+      "program_id": "program.truth.engine"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/trust_zone_validate.py",
+      "program_id": "program.truth.zone_validate"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/run_truth_matrix.py",
+      "program_id": "program.truth.matrix"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/one_button_receipts.py",
+      "program_id": "program.truth.one_button_receipts"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/truth_surface_sync.py",
+      "program_id": "program.truth.surface_sync"
     }
   ],
   "schema_id": "kt.operator.program_catalog.v1"

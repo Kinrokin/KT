@@ -3,20 +3,25 @@
 Status: PASS
 
 ## Summary
-- Generated at (UTC): 2025-12-27T12:28:46.170037Z
-- Runtime src root: `KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src`
+- Generated at (UTC): 2026-03-09T19:21:05.656849Z
+- Runtime src root: `D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src`
 
 ## Canonical Entry Allowlist
-- `entrypoint.py`
+- `kt/entrypoint.py`
 
 ## Import Truth Matrix (Conservative)
+- Council Router Engine -> Council Router Engine, Schemas / Contracts
 - Crucible Engine -> Crucible Engine, Schemas / Contracts, Thermodynamics / Budget
+- Curriculum Boundary -> Curriculum Boundary, Schemas / Contracts
 - Entry Point -> Entry Point, Spine
 - Governance Kernel -> Governance Kernel, Receipts / Ledger, Schemas / Contracts
+- Multiverse Engine -> Multiverse Engine, Schemas / Contracts
+- Paradox Engine -> Paradox Engine, Schemas / Contracts
 - Receipts / Ledger -> Receipts / Ledger, Schemas / Contracts
 - Router -> Router, Schemas / Contracts, Thermodynamics / Budget
 - Schemas / Contracts -> Schemas / Contracts
-- Spine -> Crucible Engine, Governance Kernel, Receipts / Ledger, Router, Schemas / Contracts, Spine, Thermodynamics / Budget
+- Spine -> Council Router Engine, Crucible Engine, Curriculum Boundary, Governance Kernel, Multiverse Engine, Paradox Engine, Receipts / Ledger, Router, Schemas / Contracts, Spine, Temporal Engine, Thermodynamics / Budget
+- Temporal Engine -> Schemas / Contracts, Temporal Engine
 - Thermodynamics / Budget -> Schemas / Contracts, Thermodynamics / Budget
 
 ## Violations

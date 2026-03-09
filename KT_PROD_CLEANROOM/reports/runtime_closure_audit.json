@@ -1,13 +1,15 @@
 {
   "audit_scope": [
-    "mainline ratification preservation",
-    "one-button canonical_hmac clearance verification",
-    "platform ruleset desired-state tooling",
+    "live truth reconciliation",
+    "canonical readiness synchronization",
+    "one-button current-head admissibility",
     "truthful posture sealing"
   ],
-  "blocking_groups": [],
-  "branch_ref": "ops/final-green-mainline-receipts-20260308",
-  "current_state": "P0_GREEN_FULL_MAINLINE",
+  "blocking_groups": [
+    "DIRTY_WORKTREE"
+  ],
+  "branch_ref": "main",
+  "current_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
   "evidence_plane_targets_checked": [
     "delivery/delivery_manifest.json",
     "evidence/constitutional_snapshot.json",
@@ -17,24 +19,23 @@
     "evidence/secret_scan_report.json",
     "reports/bindingloop_check.json"
   ],
-  "generated_utc": "2026-03-09T00:25:10Z",
+  "generated_utc": "2026-03-09T19:24:32Z",
   "notes": [
-    "Mainline ratification remains anchored by PR #12 merge and the first fail-closed main ladder run.",
-    "Canonical_hmac one-button production remains PASS on unchanged main semantics.",
-    "GitHub branch protection / ruleset enforcement is now active on main for Kinrokin/KT via the committed desired-state ruleset."
+    "Posture synchronized from live validation state CANONICAL_VALIDATED_DIRTY_WORKTREE.",
+    "Only truth-engine-aligned receipts remain active truth surfaces."
   ],
   "overall_verdict": "PASS",
-  "posture_state": "P0_GREEN_FULL_MAINLINE",
+  "posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
   "real_path_targets_checked": [
     "program.certify.canonical_hmac",
     "program.hat_demo",
     "program.red_assault.serious_v1",
     "safe-run:program.certify.canonical_hmac"
   ],
-  "release_decision": "GO_PRESS_BUTTON_PRODUCTION_ELIGIBLE",
-  "repo_hygiene_status": "PASS",
-  "schema_id": "kt.operator.runtime_closure_audit.v2",
+  "release_decision": "HOLD_DIRTY_WORKTREE",
+  "repo_hygiene_status": "HOLD",
+  "schema_id": "kt.operator.runtime_closure_audit.v3",
   "status": "PASS",
-  "validated_head_sha": "e21a4c9493faa8ffc04de293d910fee2d509e364",
+  "validated_head_sha": "4cf1b9d100f8699fa192d6a5409c69bc6e94761d",
   "validator_substance_checked": true
 }

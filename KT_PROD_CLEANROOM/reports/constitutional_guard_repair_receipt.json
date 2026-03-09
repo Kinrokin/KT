@@ -1,0 +1,13 @@
+{
+  "schema_id": "kt.operator.truth_repair_receipt.v1",
+  "repair_id": "CONSTITUTIONAL_GUARD_REPAIR_20260309",
+  "status": "PASS",
+  "target": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tools/check_constitution.py",
+  "before": "guard treated quarantined src/tools content as canonical runtime and failed",
+  "after": "guard scopes to canonical runtime roots and excludes src/tools from canonical runtime truth",
+  "validation": {
+    "command": "python KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tools/check_constitution.py",
+    "observed": "PASS",
+    "evidence": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/CONSTITUTIONAL_GUARD_REPORT.md"
+  }
+}

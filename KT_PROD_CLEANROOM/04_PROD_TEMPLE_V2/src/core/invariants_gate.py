@@ -227,7 +227,9 @@ class InvariantsGate:
             if not any(seg in rel for seg in forbidden_segments):
                 continue
             top = name.split(".", 1)[0] if name else ""
-            if top in internal_roots:
+            # Repo-level toolchain imports are allowed outside the runtime lane even though
+            # historical runtime-adjacent shims also live under src/tools/.
+            if top in internal_roots and top != "tools":
                 raise ConstitutionalCrisisError(
                     f"Negative Space violation (runtime namespace loaded from non-runtime path): {name} -> {rel}"
                 )

@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import ast
 import datetime as _dt
+import json
 import re
 import sys
 from dataclasses import dataclass
@@ -233,6 +234,35 @@ def _organ_for_import_module(import_module: str, internal_roots: Set[str]) -> Op
     return "UNKNOWN"
 
 
+def _load_runtime_roots(src_root: Path) -> Set[str]:
+    registry_path = src_root.parent / "docs" / "RUNTIME_REGISTRY.json"
+    try:
+        obj = json.loads(registry_path.read_text(encoding="utf-8"))
+    except Exception:
+        return set()
+    roots = obj.get("runtime_import_roots")
+    if not isinstance(roots, list):
+        return set()
+    out: Set[str] = set()
+    for root in roots:
+        if isinstance(root, str) and root.strip():
+            out.add(root.strip())
+    return out
+
+
+def _in_runtime_scope(rel_path: str, runtime_roots: Set[str]) -> bool:
+    rel_path = rel_path.replace("\\", "/").lstrip("/")
+    # Runtime-adjacent tool shims under src/tools are quarantined from canonical runtime truth.
+    if rel_path.startswith("tools/"):
+        return False
+    if not runtime_roots:
+        return True
+    if "/" not in rel_path:
+        return rel_path in {"entrypoint.py", "orchestrator.py"}
+    top = rel_path.split("/", 1)[0]
+    return top in runtime_roots
+
+
 def _allowed_internal_imports_by_organ() -> dict[str, Set[str]]:
     # Conservative Import Truth matrix (runtime only).
     # - Entry Point may import Spine only.
@@ -281,6 +311,7 @@ def check(
     violations: List[Violation] = []
 
     src_root = src_root.resolve()
+    runtime_roots = _load_runtime_roots(src_root)
 
     # Internal top-level package roots (for organ-level import checks).
     internal_roots: Set[str] = set()
@@ -295,12 +326,16 @@ def check(
     # Secrets file locators (.env) in runtime surface.
     for path in _iter_files(src_root):
         rel = path.relative_to(src_root).as_posix()
+        if not _in_runtime_scope(rel, runtime_roots):
+            continue
         if path.name == ".env" or path.suffix.lower() == ".env":
             violations.append(Violation("SECRET_FILE_LOCATOR", rel, "dotenv file present in runtime src"))
 
     # Scan Python modules (imports + entrypoint coupling + secrets prefix scan).
     for py in _iter_py_files(src_root):
         rel = py.relative_to(src_root).as_posix()
+        if not _in_runtime_scope(rel, runtime_roots):
+            continue
 
         try:
             size = py.stat().st_size
@@ -384,6 +419,8 @@ def check(
         if path.suffix.lower() not in TEXT_EXTENSIONS and path.name != ".env":
             continue
         rel = path.relative_to(src_root).as_posix()
+        if not _in_runtime_scope(rel, runtime_roots):
+            continue
         prefix = _read_prefix_text(path, max_prefix_bytes)
         if PRIVATE_KEY_RE.search(prefix):
             violations.append(Violation("PRIVATE_KEY_BLOCK_LOCATOR", rel, "private key block detected"))

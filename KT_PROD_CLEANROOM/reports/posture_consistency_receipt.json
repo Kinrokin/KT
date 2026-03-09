@@ -4,17 +4,10 @@
     "authority_os_equals_titanium_work_order": true,
     "status": "PASS"
   },
-  "branch_ref": "ops/final-green-mainline-receipts-20260308",
+  "branch_ref": "main",
+  "live_validation_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
   "one_button_state": {
     "checks": [
-      {
-        "artifact": "one_button_preflight_receipt.json",
-        "status": "PASS"
-      },
-      {
-        "artifact": "one_button_production_receipt.json",
-        "status": "PASS"
-      },
       {
         "artifact": "main_branch_protection_receipt.json",
         "status": "PASS"
@@ -22,7 +15,7 @@
     ],
     "status": "PASS"
   },
-  "posture_state": "P0_GREEN_FULL_MAINLINE",
+  "posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
   "preserved_branch_closure": {
     "checks": [
       {
@@ -73,5 +66,5 @@
   },
   "schema_id": "kt.operator.posture_consistency_receipt.v1",
   "status": "PASS",
-  "validated_head_sha": "e21a4c9493faa8ffc04de293d910fee2d509e364"
+  "validated_head_sha": "4cf1b9d100f8699fa192d6a5409c69bc6e94761d"
 }

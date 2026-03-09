@@ -1,0 +1,13 @@
+{
+  "schema_id": "kt.operator.truth_repair_receipt.v1",
+  "repair_id": "SPINE_VERDICT_REPAIR_20260309",
+  "status": "PASS",
+  "target": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+  "before": "governance_verdict.json was emitted twice and the second write forced FAIL",
+  "after": "governance_verdict.json is emitted once; successful spine execution defaults to PASS and invalid values fail closed",
+  "validation": {
+    "command": "python -m pytest -q KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_no_network_dry_run.py",
+    "observed": "1 passed",
+    "evidence": "governance_verdict.json rationale=SPINE_RUN_OK"
+  }
+}

@@ -2,13 +2,13 @@ from __future__ import annotations
 
 import argparse
 import json
-import subprocess
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Set
 
 from schemas.fl3_schema_common import sha256_hex_of_obj
 from schemas.schema_files import schema_version_hash
 from tools.governance.failure_taxonomy_reporter import load_failure_taxonomy
+from tools.governance.lane_policy import repo_clean_gate_for_current_lane
 from tools.training.fl3_factory.timeutil import utc_now_z
 from tools.verification.fl3_canonical import canonical_json, repo_root_from, sha256_text
 from tools.verification.fl3_validators import FL3ValidationError, validate_schema_bound_object
@@ -24,16 +24,6 @@ _RC_CONFIG_INVALID = "TRAINING_ADMISSION_CONFIG_INVALID"
 _RC_NONREPRODUCIBLE = "TRAINING_ADMISSION_NONREPRODUCIBLE"
 _RC_LAW_BUNDLE_HASH_MISMATCH = "LAW_BUNDLE_HASH_MISMATCH"
 _RC_TIME_CONTRACT_VIOLATION = "TIME_CONTRACT_VIOLATION"
-
-
-def _git_status_is_clean(repo_root: Path) -> Tuple[bool, str]:
-    try:
-        out = subprocess.check_output(["git", "status", "--porcelain"], cwd=str(repo_root), text=True)
-    except Exception as exc:  # noqa: BLE001
-        return False, f"FAIL_CLOSED: unable to run git status: {exc}"
-    if out.strip():
-        return False, "FAIL_CLOSED: repo is not clean"
-    return True, ""
 
 
 def _read_json_dict(path: Path, *, name: str) -> Dict[str, Any]:
@@ -105,8 +95,8 @@ def build_training_admission_receipt(
         reasons.append(_RC_CONFIG_INVALID)
         job = {}
 
-    # 3) Clean repo invariant (structural).
-    ok, _err = _git_status_is_clean(repo_root)
+    # 3) Canonical lane requires a clean repo; local/test lanes do not.
+    ok, _err = repo_clean_gate_for_current_lane(repo_root)
     if not ok:
         reasons.append(_RC_DENIED)
 

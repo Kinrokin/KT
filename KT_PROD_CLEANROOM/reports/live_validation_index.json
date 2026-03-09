@@ -1,0 +1,109 @@
+{
+  "schema_id": "kt.operator.live_validation_index.v1",
+  "generated_utc": "2026-03-09T18:37:46Z",
+  "branch_ref": "main",
+  "worktree": {
+    "git_dirty": true,
+    "head_sha": "4cf1b9d100f8699fa192d6a5409c69bc6e94761d",
+    "dirty_files": [
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/CONSTITUTIONAL_GUARD_REPORT.md",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/invariants_gate.py",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_no_network_dry_run.py",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tools/check_constitution.py",
+      "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256",
+      "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
+      "KT_PROD_CLEANROOM/tools/governance/evaluation_admission_gate.py",
+      "KT_PROD_CLEANROOM/tools/governance/law_change_admission_gate.py",
+      "KT_PROD_CLEANROOM/tools/governance/lane_policy.py",
+      "KT_PROD_CLEANROOM/tools/merge/merge_evaluator.py",
+      "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
+      "KT_PROD_CLEANROOM/tools/tournament/run_tournament.py",
+      "KT_PROD_CLEANROOM/tools/training/training_admission_gate.py",
+      "KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260309T182714Z.json",
+      "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260309T182708Z.json"
+    ]
+  },
+  "checks": [
+    {
+      "check_id": "constitutional_guard",
+      "scope": "canonical_runtime",
+      "critical": true,
+      "dirty_sensitive": false,
+      "status": "PASS",
+      "summary": "constitutional guard passes with canonical runtime scope enforced",
+      "command": "python KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tools/check_constitution.py",
+      "evidence": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/CONSTITUTIONAL_GUARD_REPORT.md"
+      ]
+    },
+    {
+      "check_id": "runtime_suite",
+      "scope": "canonical_runtime",
+      "critical": true,
+      "dirty_sensitive": false,
+      "status": "PASS",
+      "summary": "runtime suite passed",
+      "command": "python -m pytest -q KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests",
+      "observed": "39 passed"
+    },
+    {
+      "check_id": "critical_governance_regression_suite",
+      "scope": "core_truth_repair",
+      "critical": true,
+      "dirty_sensitive": false,
+      "status": "PASS",
+      "summary": "critical regression suite for invariants, no-network dry run, meta evaluator, and reconcile logic passed",
+      "command": "python -m pytest -q KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_invariants_gate.py KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_no_network_dry_run.py KT_PROD_CLEANROOM/tests/fl3/test_fl3_meta_evaluator.py KT_PROD_CLEANROOM/tools/verification/tests/test_reconcile_and_schemas.py",
+      "observed": "12 passed"
+    },
+    {
+      "check_id": "lane_policy_repair_suite",
+      "scope": "governance_lanes",
+      "critical": true,
+      "dirty_sensitive": false,
+      "status": "PASS",
+      "summary": "non-canonical repo-clean gate regressions repaired",
+      "command": "python -m pytest -q KT_PROD_CLEANROOM/tests/fl3/test_epic16_admission_gates.py KT_PROD_CLEANROOM/tests/fl3/test_epic15_tournament_runner.py KT_PROD_CLEANROOM/tests/fl3/test_epic15_merge_evaluator.py",
+      "observed": "8 passed"
+    },
+    {
+      "check_id": "law_bundle_integrity",
+      "scope": "law_surface",
+      "critical": true,
+      "dirty_sensitive": false,
+      "status": "PASS",
+      "summary": "law bundle hash pin and amendment presence are synchronized",
+      "command": "python -m pytest -q KT_PROD_CLEANROOM/tests/fl3/test_fl3_law_bundle_integrity.py KT_PROD_CLEANROOM/tests/fl3/test_fl3_meta_evaluator.py",
+      "observed": "2 passed"
+    },
+    {
+      "check_id": "current_worktree_cleanroom_suite",
+      "scope": "active_repo_validation",
+      "critical": true,
+      "dirty_sensitive": true,
+      "status": "FAIL",
+      "summary": "active-repo cleanroom suite is blocked only by operator tests that require a clean git worktree",
+      "command": "python -m pytest -q KT_PROD_CLEANROOM/tests -q -ra --maxfail=100",
+      "observed": "223 passed, 3 failed",
+      "failed_checks": [
+        "test_kt_cli_hat_demo_smoke_and_report_render",
+        "test_kt_cli_status_smoke_and_worm_collision",
+        "test_kt_cli_allow_dirty_gate"
+      ]
+    },
+    {
+      "check_id": "operator_clean_clone_smoke",
+      "scope": "clean_clone_validation",
+      "critical": true,
+      "dirty_sensitive": false,
+      "status": "PASS",
+      "summary": "operator CLI smoke and dirty-gate tests pass in a clean committed clone carrying the same patchset",
+      "command": "PYTHONPATH=<clean-clone>/KT_PROD_CLEANROOM;<clean-clone>/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src python -m pytest -q KT_PROD_CLEANROOM/tests/fl3/test_hat_demo_guardrails.py KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py",
+      "observed": "5 passed",
+      "context": {
+        "clean_clone_head_sha": "adbdf370d3bf25667ebc11baf1cf4637adfcde16"
+      }
+    }
+  ]
+}

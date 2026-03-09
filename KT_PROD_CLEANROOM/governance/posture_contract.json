@@ -1,0 +1,32 @@
+{
+  "schema_id": "kt.governance.posture_contract.v1",
+  "contract_id": "POSTURE_CONTRACT_V1_20260309",
+  "states": [
+    {
+      "state_id": "TRUTH_DEFECTS_PRESENT",
+      "rank": 0,
+      "description": "Critical live validations fail for reasons not attributable only to an active dirty worktree."
+    },
+    {
+      "state_id": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+      "rank": 1,
+      "description": "Canonical validations pass, but the active repository is dirty, so current-repo green claims are blocked."
+    },
+    {
+      "state_id": "CANONICAL_READY_FOR_REEARNED_GREEN",
+      "rank": 2,
+      "description": "Canonical validations are satisfied and clean-clone operator proof exists, but posture receipts have not yet been re-earned from a clean active worktree."
+    },
+    {
+      "state_id": "TRUTHFUL_GREEN",
+      "rank": 3,
+      "description": "Live validations pass in the active clean worktree and posture receipts agree with that state."
+    }
+  ],
+  "green_claim_receipts": [
+    "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+    "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json"
+  ],
+  "status": "ACTIVE"
+}

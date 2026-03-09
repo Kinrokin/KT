@@ -1,0 +1,29 @@
+{
+  "schema_id": "kt.governance.runtime_boundary_contract.v1",
+  "contract_id": "RUNTIME_BOUNDARY_CONTRACT_V1_20260309",
+  "canonical_runtime_roots": [
+    "cognition",
+    "core",
+    "council",
+    "curriculum",
+    "governance",
+    "kt",
+    "memory",
+    "multiverse",
+    "paradox",
+    "schemas",
+    "temporal",
+    "thermodynamics",
+    "versioning"
+  ],
+  "compatibility_allowlist_roots": [
+    "tools"
+  ],
+  "canonical_runtime_excludes": [
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/tools/**"
+  ],
+  "negative_space_exceptions": [
+    "repo-level KT_PROD_CLEANROOM/tools/** package imports are not runtime namespace violations"
+  ],
+  "status": "ACTIVE"
+}

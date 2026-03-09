@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib
+import json
 import socket
 import tempfile
 import unittest
@@ -83,6 +84,9 @@ class TestNoNetworkDryRunC010(unittest.TestCase):
                 self.assertTrue(p.exists())
                 validate_state_vault_chain(p)
                 self.assertEqual(audit_governance_events(p), 1)
+                governance_verdict = json.loads((p.parent / "governance_verdict.json").read_text(encoding="utf-8"))
+                self.assertEqual(governance_verdict.get("verdict"), "PASS")
+                self.assertEqual(governance_verdict.get("rationale"), "SPINE_RUN_OK")
 
                 # Proof: runtime surface allowlist enforced at import-time.
                 with self.assertRaises(ImportError):

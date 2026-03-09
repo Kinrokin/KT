@@ -1,0 +1,48 @@
+{
+  "schema_id": "kt.operator.core_truth_defect_matrix.v1",
+  "generated_utc": "2026-03-09T18:37:46Z",
+  "defects": [
+    {
+      "defect_id": "SPINE_VERDICT_CORRUPTION",
+      "severity": 10,
+      "status": "RESOLVED",
+      "target": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+      "resolution": "single governance verdict emission restored; successful spine run now defaults to PASS"
+    },
+    {
+      "defect_id": "CONSTITUTIONAL_GUARD_SCOPE_DRIFT",
+      "severity": 8,
+      "status": "RESOLVED",
+      "target": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tools/check_constitution.py",
+      "resolution": "guard now scopes to canonical runtime and quarantines src/tools from canonical truth"
+    },
+    {
+      "defect_id": "NONCANONICAL_REPO_CLEAN_GATE_MISAPPLICATION",
+      "severity": 8,
+      "status": "RESOLVED",
+      "target": "KT_PROD_CLEANROOM/tools/governance/*.py and KT_PROD_CLEANROOM/tools/{merge,tournament,training}/*",
+      "resolution": "repo-clean gate is now canonical-lane-only for admission, tournament, merge, and training flows"
+    },
+    {
+      "defect_id": "LAW_BUNDLE_CHAIN_STALENESS",
+      "severity": 8,
+      "status": "RESOLVED",
+      "target": "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256 and law amendment/change receipts",
+      "resolution": "bundle hash pin and amendment chain regenerated for the current patchset"
+    },
+    {
+      "defect_id": "GREEN_POSTURE_OVERCLAIM",
+      "severity": 9,
+      "status": "OPEN",
+      "target": "KT_PROD_CLEANROOM/reports/current_state_receipt.json and KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+      "resolution": "pending truthful re-earn from a clean active worktree"
+    },
+    {
+      "defect_id": "ACTIVE_WORKTREE_DIRTY",
+      "severity": 7,
+      "status": "OPEN",
+      "target": "repository worktree state",
+      "resolution": "commit or clean the active patchset before current-repo operator green can be re-earned"
+    }
+  ]
+}

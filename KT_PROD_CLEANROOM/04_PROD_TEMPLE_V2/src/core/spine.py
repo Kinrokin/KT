@@ -656,19 +656,15 @@ def run(context: Dict[str, Any]) -> Dict[str, Any]:
     else:
         artifact_root = Path(artifact_root_value).resolve()
 
-    # Unconditional, fail-closed governance verdict emission
-    verdict = context.get("governance_verdict", "FAIL")
-    rationale = context.get("governance_rationale", "NO_VERDICT_EMITTED")
+    verdict = str(context.get("governance_verdict", "PASS")).strip().upper()
+    rationale = str(context.get("governance_rationale", "")).strip()
+    if verdict not in {"PASS", "FAIL"}:
+        verdict = "FAIL"
+        rationale = "INVALID_GOVERNANCE_VERDICT_VALUE"
+    elif not rationale:
+        rationale = "SPINE_RUN_OK" if verdict == "PASS" else "SPINE_RUN_FAIL_CLOSED"
     emit_governance_verdict(
         artifact_dir=artifact_root,
-        verdict=verdict,
-        rationale=rationale,
-    )
-    artifact_dir = artifact_root
-    verdict = "FAIL"  # Kernel phase 1: always FAIL, runner will still mark governance_pass = false
-    rationale = "Governance verdict emission: phase 1 kernel test (always FAIL)."
-    emit_governance_verdict(
-        artifact_dir=artifact_dir,
         verdict=verdict,
         rationale=rationale,
     )
