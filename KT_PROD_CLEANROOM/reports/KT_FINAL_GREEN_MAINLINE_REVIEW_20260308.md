@@ -1,4 +1,4 @@
-# KT Final Green Mainline Review ? 2026-03-08
+# KT Final Green Mainline Review 2026-03-08
 
 ## Current Truth
 - Posture: `P0_GREEN_FULL_ENGINEERING_COMPLETE_PENDING_PLATFORM_ENFORCEMENT`
