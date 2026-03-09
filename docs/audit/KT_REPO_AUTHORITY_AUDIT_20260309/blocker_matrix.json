@@ -1,0 +1,126 @@
+{
+  "artifact_id": "KT_BLOCKER_MATRIX_20260309",
+  "schema_id": "kt.audit.blocker_matrix.v1",
+  "branch": "main",
+  "pinned_head_sha": "46173df31a9242c2e8f4bd7a1494b3466d1a89b9",
+  "overall_status": "OPEN",
+  "blockers": [
+    {
+      "order": 1,
+      "blocker_id": "TARGET_NOT_REMOTE_EQUAL",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "description": "Pinned target is deterministic but local main is ahead of origin/main by 6 commits.",
+      "evidence_paths": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/repo_target.json"
+      ],
+      "exit_criteria": [
+        "explicitly ratify local main as the truth target or advance origin/main to the same head"
+      ]
+    },
+    {
+      "order": 2,
+      "blocker_id": "NO_CLEAN_CLONE_PROOF_AT_CURRENT_HEAD",
+      "severity": "CRITICAL",
+      "status": "OPEN",
+      "description": "Fresh current-head validation skipped clean-clone smoke, so the target is not clean-clone equivalent.",
+      "evidence_paths": [
+        "tmp/kt_truth_matrix_20260309_head.json",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/repo_target.json"
+      ],
+      "exit_criteria": [
+        "run full truth matrix from a clean clone at 46173df31a9242c2e8f4bd7a1494b3466d1a89b9",
+        "capture clean-clone evidence for the same head"
+      ]
+    },
+    {
+      "order": 3,
+      "blocker_id": "TRUTH_ENGINE_EXTERNAL_PATH_ASSUMPTION",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "description": "truth_engine.py now accepts external live-validation indexes and preserves an absolute validation_index_ref when the source is outside the repo root.",
+      "evidence_paths": [
+        "KT_PROD_CLEANROOM/tools/operator/truth_engine.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_truth_engine_and_authority.py",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/IMPLEMENTATION_COMPLETION_REPORT_20260309.md"
+      ],
+      "exit_criteria": [
+        "accept external truth inputs without forcing repo-relative paths",
+        "cover the fix with a regression test"
+      ]
+    },
+    {
+      "order": 4,
+      "blocker_id": "TRUST_ZONE_MODEL_INCOMPLETE",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "description": "Tracked governance now models canonical, lab, archive, commercial, generated/runtime truth, and quarantined as distinct zones.",
+      "evidence_paths": [
+        "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+        "KT_PROD_CLEANROOM/tools/operator/trust_zone_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_trust_zone_validate.py"
+      ],
+      "exit_criteria": [
+        "track canonical, lab, archive, commercial, generated/runtime truth, and quarantined as distinct zones"
+      ]
+    },
+    {
+      "order": 5,
+      "blocker_id": "READINESS_SCOPE_INCOMPLETE",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "description": "Tracked readiness law now excludes generated/runtime truth and quarantined surfaces from readiness claims.",
+      "evidence_paths": [
+        "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
+        "KT_PROD_CLEANROOM/tools/operator/trust_zone_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_trust_zone_validate.py"
+      ],
+      "exit_criteria": [
+        "exclude generated/runtime truth and quarantined surfaces from readiness claims"
+      ]
+    },
+    {
+      "order": 6,
+      "blocker_id": "TRACKED_TRUTH_SURFACES_STALE",
+      "severity": "CRITICAL",
+      "status": "OPEN",
+      "description": "Tracked truth receipts still point at older heads than the pinned target.",
+      "evidence_paths": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/repo_census_summary.json",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/current_head_truth_source.json"
+      ],
+      "exit_criteria": [
+        "resync tracked truth surfaces from fresh evidence for the pinned head",
+        "update execution board to the same pinned head"
+      ]
+    },
+    {
+      "order": 7,
+      "blocker_id": "LOCAL_RESIDUE_PRESENT",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "description": "Ignored runtime residue and a local secret-like file exist in the checkout target.",
+      "evidence_paths": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/local_residue_summary.json"
+      ],
+      "exit_criteria": [
+        "remove or relocate ignored runtime residue from the audited target",
+        "remove .env.secret from the working-tree target"
+      ]
+    },
+    {
+      "order": 8,
+      "blocker_id": "ROOT_ARCHIVE_CONTAMINATION",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "description": "Historical root artifacts are now cordoned by six-zone law, but they still physically sit beside active repo-control surfaces.",
+      "evidence_paths": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/repo_census.csv",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "exit_criteria": [
+        "move or cordon historical root artifacts into explicit archive or quarantine surfaces"
+      ]
+    }
+  ]
+}

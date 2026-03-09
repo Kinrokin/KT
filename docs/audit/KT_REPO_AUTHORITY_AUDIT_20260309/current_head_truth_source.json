@@ -1,0 +1,40 @@
+{
+  "artifact_id": "KT_CURRENT_HEAD_TRUTH_SOURCE_20260309",
+  "schema_id": "kt.audit.current_head_truth_source.v1",
+  "status": "TRANSITIONAL_AUTHORITATIVE",
+  "branch": "main",
+  "pinned_head_sha": "46173df31a9242c2e8f4bd7a1494b3466d1a89b9",
+  "authoritative_source_of_record": {
+    "kind": "live_validation_index",
+    "path": "tmp/kt_truth_matrix_20260309_head.json",
+    "head_sha": "46173df31a9242c2e8f4bd7a1494b3466d1a89b9",
+    "git_dirty": false,
+    "critical_failure_count": 0,
+    "generated_utc": "2026-03-09T20:48:48Z"
+  },
+  "authoritative_posture_derivation": {
+    "kind": "posture_consistency_enforcement_receipt",
+    "path": "tmp/kt_truth_engine_20260309/posture_consistency_enforcement_receipt.json",
+    "derived_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+    "conflict_count": 2,
+    "status": "FAIL",
+    "failure_meaning": "tracked truth surfaces are stale against the current head"
+  },
+  "supersedes_for_current_head": [
+    "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+    "KT_PROD_CLEANROOM/reports/live_validation_index.json",
+    "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json"
+  ],
+  "must_not_be_treated_as_current_head_truth": [
+    "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+    "KT_PROD_CLEANROOM/reports/live_validation_index.json",
+    "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+    "docs/**",
+    "KT-Codex/**",
+    "KT_TEMPLE_ROOT/**",
+    "KT_PROD_CLEANROOM/05_QUARANTINE/**"
+  ],
+  "promotion_condition": "replace this transitional source with re-ratified tracked truth surfaces only after a clean-clone run at the same pinned head"
+}

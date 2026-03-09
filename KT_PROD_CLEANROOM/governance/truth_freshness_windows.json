@@ -1,0 +1,15 @@
+{
+  "schema_id": "kt.governance.truth_freshness_windows.v1",
+  "windows_id": "TRUTH_FRESHNESS_WINDOWS_V1_20260309",
+  "freshness_windows_hours": {
+    "live_validation_index": 24,
+    "current_state_receipt": 24,
+    "runtime_closure_audit": 24,
+    "posture_consistency_receipt": 24,
+    "posture_consistency_enforcement_receipt": 24,
+    "posture_conflict_receipt": 24,
+    "settled_truth_source_receipt": 24
+  },
+  "staleness_is_fail_closed": true,
+  "status": "ACTIVE"
+}

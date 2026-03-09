@@ -1,0 +1,20 @@
+{
+  "schema_id": "kt.governance.execution_board_authority_contract.v1",
+  "contract_id": "EXECUTION_BOARD_AUTHORITY_CONTRACT_V1_20260309",
+  "authority_modes": [
+    "TRANSITIONAL_AUTHORITATIVE",
+    "SETTLED_AUTHORITATIVE"
+  ],
+  "authoritative_when": [
+    "authoritative_current_head_truth_source is under KT_PROD_CLEANROOM/reports/**",
+    "authority_mode matches settled_truth_source_receipt status",
+    "last_synced_head_sha matches settled_truth_source_receipt pinned_head_sha when authority is settled"
+  ],
+  "must_never_source_posture_from": [
+    "docs/**",
+    "KT-Codex/**",
+    "KT_TEMPLE_ROOT/**",
+    "KT_PROD_CLEANROOM/05_QUARANTINE/**"
+  ],
+  "status": "ACTIVE"
+}

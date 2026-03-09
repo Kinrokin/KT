@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional, Sequence
 
 from tools.operator.posture_consistency import verify_posture
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z
+from tools.operator.truth_authority import build_settled_truth_source_receipt, build_truth_supersession_receipt, path_ref
 from tools.operator.truth_engine import (
     CANONICAL_READY_FOR_REEARNED_GREEN,
     TRUTHFUL_GREEN,
@@ -36,6 +37,7 @@ def _report_ref(report_root_rel: str, name: str) -> str:
 def _truth_sources(report_root_rel: str) -> List[str]:
     return [
         _report_ref(report_root_rel, "live_validation_index.json"),
+        _report_ref(report_root_rel, "settled_truth_source_receipt.json"),
         _report_ref(report_root_rel, "posture_consistency_enforcement_receipt.json"),
         _report_ref(report_root_rel, "posture_conflict_receipt.json"),
     ]
@@ -267,7 +269,15 @@ def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, l
     }
 
 
-def _sync_secondary_surfaces(*, root: Path, posture_state: str, live_head: str) -> None:
+def _sync_secondary_surfaces(
+    *,
+    root: Path,
+    posture_state: str,
+    live_head: str,
+    truth_source_ref: str,
+    authority_mode: str,
+    open_blockers: List[str],
+) -> None:
     readiness_scope = _load_required(root / "KT_PROD_CLEANROOM" / "governance" / "readiness_scope_manifest.json")
     blockers: List[str] = []
     if posture_state == "TRUTH_DEFECTS_PRESENT":
@@ -276,10 +286,21 @@ def _sync_secondary_surfaces(*, root: Path, posture_state: str, live_head: str) 
         blockers.append("active worktree is dirty")
     if posture_state == CANONICAL_READY_FOR_REEARNED_GREEN:
         blockers.append("green has not been re-earned from current-head one-button receipts")
-    readiness_scope["current_blockers"] = blockers
+    blockers.extend(str(item).strip() for item in open_blockers if str(item).strip())
+    deduped_blockers: List[str] = []
+    seen = set()
+    for blocker in blockers:
+        if blocker in seen:
+            continue
+        seen.add(blocker)
+        deduped_blockers.append(blocker)
+    readiness_scope["current_authority_mode"] = authority_mode
+    readiness_scope["authoritative_truth_source"] = truth_source_ref
+    readiness_scope["current_blockers"] = deduped_blockers
     _write_json(root / "KT_PROD_CLEANROOM" / "governance" / "readiness_scope_manifest.json", readiness_scope)
 
     execution_board = _load_required(root / "KT_PROD_CLEANROOM" / "governance" / "execution_board.json")
+    previous_authority_mode = str(execution_board.get("authority_mode", "")).strip()
     workstreams = execution_board.get("workstreams") if isinstance(execution_board.get("workstreams"), list) else []
     for row in workstreams:
         if not isinstance(row, dict):
@@ -296,12 +317,31 @@ def _sync_secondary_surfaces(*, root: Path, posture_state: str, live_head: str) 
     execution_board["status"] = "ACTIVE"
     execution_board["last_synced_head_sha"] = live_head
     execution_board["current_posture_state"] = posture_state
+    execution_board["authority_mode"] = authority_mode
+    execution_board["authoritative_current_head_truth_source"] = truth_source_ref
+    execution_board["open_blockers"] = deduped_blockers
+    execution_board["program_gates"] = {
+        "FOUNDATIONAL_LAW_TRANCHE_COMPLETE": True,
+        "H1_ACTIVATION_ALLOWED": authority_mode == "SETTLED_AUTHORITATIVE" and posture_state == TRUTHFUL_GREEN,
+    }
     _write_json(root / "KT_PROD_CLEANROOM" / "governance" / "execution_board.json", execution_board)
 
     freeze_policy = _load_required(root / "KT_PROD_CLEANROOM" / "governance" / "h0_freeze_policy.json")
     freeze_policy["activation_state"] = "ELIGIBLE_FOR_FREEZE" if posture_state == TRUTHFUL_GREEN else "PENDING_TRUTHFUL_GREEN"
     freeze_policy["current_posture_state"] = posture_state
+    freeze_policy["freeze_scope_manifest"] = "KT_PROD_CLEANROOM/governance/canonical_freeze_manifest.json"
+    freeze_policy["amendment_scope_manifest"] = "KT_PROD_CLEANROOM/governance/amendment_scope_manifest.json"
     _write_json(root / "KT_PROD_CLEANROOM" / "governance" / "h0_freeze_policy.json", freeze_policy)
+    _write_json(
+        root / "KT_PROD_CLEANROOM" / "reports" / "settled_authority_promotion_receipt.json",
+        _authority_promotion_receipt(
+            previous_authority_mode=previous_authority_mode,
+            new_authority_mode=authority_mode,
+            live_head=live_head,
+            report_root_rel=DEFAULT_REPORT_ROOT_REL,
+            open_blockers=deduped_blockers,
+        ),
+    )
 
 
 def _reconciliation_report(*, report_root: Path, report_root_rel: str, derived_state: str, live_head: str) -> Dict[str, Any]:
@@ -337,6 +377,29 @@ def _reconciliation_report(*, report_root: Path, report_root_rel: str, derived_s
     }
 
 
+def _authority_promotion_receipt(
+    *,
+    previous_authority_mode: str,
+    new_authority_mode: str,
+    live_head: str,
+    report_root_rel: str,
+    open_blockers: List[str],
+) -> Dict[str, Any]:
+    return {
+        "schema_id": "kt.operator.settled_authority_promotion_receipt.v1",
+        "generated_utc": utc_now_iso_z(),
+        "prior_authority_state": previous_authority_mode,
+        "new_authority_state": new_authority_mode,
+        "validated_head_sha": live_head,
+        "clean_clone_proof_ref": _report_ref(report_root_rel, "live_validation_index.json"),
+        "posture_sync_ref": _report_ref(report_root_rel, "posture_consistency_enforcement_receipt.json"),
+        "truth_supersession_ref": _report_ref(report_root_rel, "truth_supersession_receipt.json"),
+        "execution_board_ref": "KT_PROD_CLEANROOM/governance/execution_board.json",
+        "promotion_verdict": "PASS" if new_authority_mode == "SETTLED_AUTHORITATIVE" else "HOLD",
+        "open_blockers": open_blockers,
+    }
+
+
 def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Sync active truth receipts from live validation evidence.")
     ap.add_argument("--live-validation-index", default=f"{DEFAULT_REPORT_ROOT_REL}/live_validation_index.json")
@@ -355,8 +418,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     report_root = Path(str(args.report_root)).expanduser()
     if not report_root.is_absolute():
         report_root = (root / report_root).resolve()
-    report_root_rel = report_root.relative_to(root).as_posix() if report_root.is_relative_to(root) else report_root.as_posix()
-    live_validation_index_ref = index_path.relative_to(root).as_posix() if index_path.is_relative_to(root) else index_path.as_posix()
+    report_root_rel = path_ref(root=root, path=report_root)
+    live_validation_index_ref = path_ref(root=root, path=index_path)
     receipts = build_receipts(
         root=root,
         index=index,
@@ -395,16 +458,52 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         reports_root / "truth_surface_reconciliation_report.json",
         _reconciliation_report(report_root=reports_root, report_root_rel=report_root_rel, derived_state=derived_state, live_head=live_head),
     )
-    if bool(args.sync_secondary_surfaces) or report_root_rel == DEFAULT_REPORT_ROOT_REL:
-        _sync_secondary_surfaces(root=root, posture_state=derived_state, live_head=live_head)
-
     truth_receipts = build_truth_receipts(root=root, live_validation_index_path=index_path, report_root_rel=report_root_rel)
     _write_json(reports_root / "posture_consistency_enforcement_receipt.json", truth_receipts["enforcement"])
     _write_json(reports_root / "posture_conflict_receipt.json", truth_receipts["conflicts"])
+    settled_truth = build_settled_truth_source_receipt(
+        root=root,
+        live_validation_index_path=index_path,
+        report_root_rel=report_root_rel,
+        index=index,
+        current_state=receipts["current_state"],
+        runtime_audit=receipts["runtime_audit"],
+        posture_consistency=posture,
+        enforcement=truth_receipts["enforcement"],
+        conflicts=truth_receipts["conflicts"],
+    )
+    supersession = build_truth_supersession_receipt(
+        root=root,
+        live_validation_index_path=index_path,
+        report_root_rel=report_root_rel,
+        index=index,
+        current_state=receipts["current_state"],
+        runtime_audit=receipts["runtime_audit"],
+        posture_consistency=posture,
+        enforcement=truth_receipts["enforcement"],
+        conflicts=truth_receipts["conflicts"],
+    )
+    _write_json(reports_root / "settled_truth_source_receipt.json", settled_truth)
+    _write_json(reports_root / "truth_supersession_receipt.json", supersession)
+    if bool(args.sync_secondary_surfaces) or report_root_rel == DEFAULT_REPORT_ROOT_REL:
+        _sync_secondary_surfaces(
+            root=root,
+            posture_state=derived_state,
+            live_head=live_head,
+            truth_source_ref=_report_ref(report_root_rel, "settled_truth_source_receipt.json"),
+            authority_mode=str(settled_truth.get("status", "")).strip(),
+            open_blockers=[str(item).strip() for item in settled_truth.get("open_blockers", []) if str(item).strip()],
+        )
 
     print(
         json.dumps(
-            {"posture_state": derived_state, "report_root": report_root_rel, "status": "PASS", "validated_head_sha": live_head},
+            {
+                "authority_mode": str(settled_truth.get("status", "")).strip(),
+                "posture_state": derived_state,
+                "report_root": report_root_rel,
+                "status": "PASS",
+                "validated_head_sha": live_head,
+            },
             sort_keys=True,
             ensure_ascii=True,
         )

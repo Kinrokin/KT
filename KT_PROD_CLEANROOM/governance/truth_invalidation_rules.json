@@ -1,0 +1,13 @@
+{
+  "schema_id": "kt.governance.truth_invalidation_rules.v1",
+  "rules_id": "TRUTH_INVALIDATION_RULES_V1_20260309",
+  "invalidate_when": [
+    "worktree is dirty and tracked posture exceeds CANONICAL_VALIDATED_DIRTY_WORKTREE",
+    "current_state_receipt or runtime_closure_audit validated_head_sha differs from live head",
+    "operator_clean_clone_smoke is not PASS and authority status is claimed as settled",
+    "posture_consistency_enforcement_receipt status != PASS",
+    "posture_conflict_receipt status != PASS"
+  ],
+  "invalidated_surface_receipt": "KT_PROD_CLEANROOM/reports/truth_supersession_receipt.json",
+  "status": "ACTIVE"
+}

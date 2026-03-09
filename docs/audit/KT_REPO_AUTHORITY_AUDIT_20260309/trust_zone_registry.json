@@ -1,6 +1,6 @@
 {
-  "schema_id": "kt.governance.trust_zone_registry.v2",
-  "registry_id": "TRUST_ZONE_REGISTRY_V2_20260309",
+  "registry_id": "KT_REPO_AUDIT_TRUST_ZONE_REGISTRY_V2_20260309",
+  "schema_id": "kt.audit.trust_zone_registry.v2",
   "zones": [
     {
       "zone_id": "CANONICAL",
@@ -18,32 +18,13 @@
         "ci/**",
         ".devcontainer/**",
         "REPO_CANON.md",
-        ".gitattributes",
-        ".gitignore"
+        ".gitignore",
+        ".gitattributes"
       ],
       "exclude": [
-        "KT_PROD_CLEANROOM/reports/**",
-        "KT_PROD_CLEANROOM/AUDIT_LIVE_HASHED_V1.md",
-        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/tools/**",
-        "KT_PROD_CLEANROOM/03_SYNTHESIS_LAB/**",
-        "KT_PROD_CLEANROOM/05_QUARANTINE/**",
-        "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/**",
-        "KT_TEMPLE_ROOT/**",
-        "KT_LANE_LORA_PHASE_B/**",
-        "KT-Codex/**",
-        "docs/**",
-        "KT_PROD_CLEANROOM/docs/commercial/**",
-        "EPOCH_*",
-        "KAGGLE_*",
-        "OPERATION_A_*",
-        "PHASE_A_*",
-        "RUN_REPORT.md",
-        "runbook.txt",
-        "run*.py",
-        "run*.sh",
-        "work_order.json"
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/tools/**"
       ],
-      "meaning": "authoritative runtime, governance, verification, delivery, security, and release controls"
+      "meaning": "authoritative runtime, governance, verification, and release surfaces"
     },
     {
       "zone_id": "LAB",
@@ -64,12 +45,12 @@
         "KT_PROD_CLEANROOM/tools/tournament/**",
         "KT_PROD_CLEANROOM/tools/training/**",
         "KT_PROD_CLEANROOM/policy_c/**",
-        "KT_PROD_CLEANROOM/tests/growth/**",
         "KT_PROD_CLEANROOM/tests/policy_c/**",
+        "KT_PROD_CLEANROOM/tests/growth/**",
         "KT_PROD_CLEANROOM/tests/fl4/**"
       ],
       "exclude": [],
-      "meaning": "experimental and adaptive surfaces that must promote through law"
+      "meaning": "experimental, adaptive, or operator-adjacent surfaces that must not define canonical truth"
     },
     {
       "zone_id": "ARCHIVE",
@@ -82,13 +63,13 @@
         "OPERATION_A_*",
         "PHASE_A_*",
         "RUN_REPORT.md",
-        "runbook.txt",
         "run*.py",
         "run*.sh",
+        "runbook.txt",
         "work_order.json"
       ],
       "exclude": [],
-      "meaning": "historical lineage only"
+      "meaning": "historical lineage and earlier operational surfaces kept for reference only"
     },
     {
       "zone_id": "COMMERCIAL",
@@ -100,7 +81,7 @@
         "LICENSE"
       ],
       "exclude": [],
-      "meaning": "documentary and outward-facing narrative surfaces"
+      "meaning": "explanatory and outward-facing documentation"
     },
     {
       "zone_id": "GENERATED_RUNTIME_TRUTH",
@@ -108,7 +89,7 @@
         "KT_PROD_CLEANROOM/reports/**"
       ],
       "exclude": [],
-      "meaning": "derived runtime truth and evidence tied to a pinned head"
+      "meaning": "derived runtime, audit, and posture receipts that must be tied to a specific head"
     },
     {
       "zone_id": "QUARANTINED",
@@ -118,8 +99,12 @@
         "KT_PROD_CLEANROOM/AUDIT_LIVE_HASHED_V1.md"
       ],
       "exclude": [],
-      "meaning": "dangerous or misleading surfaces that must never define current truth"
+      "meaning": "dangerous or misleading surfaces that must not be promoted back into canonical truth"
     }
   ],
-  "status": "ACTIVE"
+  "observations": [
+    "current tracked trust_zone_registry.json does not model GENERATED_RUNTIME_TRUTH",
+    "current tracked trust_zone_registry.json folds 05_QUARANTINE into ARCHIVE",
+    "current tracked readiness_scope_manifest.json excludes only LAB, ARCHIVE, and COMMERCIAL"
+  ]
 }

@@ -1,0 +1,31 @@
+{
+  "schema_id": "kt.governance.settled_truth_source_contract.v1",
+  "contract_id": "SETTLED_TRUTH_SOURCE_CONTRACT_V1_20260309",
+  "current_head_truth_root": "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+  "required_evidence_inputs": [
+    "KT_PROD_CLEANROOM/reports/live_validation_index.json",
+    "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+    "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
+    "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
+    "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json"
+  ],
+  "authority_status_values": [
+    "TRANSITIONAL_AUTHORITATIVE",
+    "SETTLED_AUTHORITATIVE"
+  ],
+  "settlement_requirements": [
+    "live_validation_index.worktree.git_dirty == false",
+    "operator_clean_clone_smoke status == PASS",
+    "posture_consistency_enforcement_receipt status == PASS",
+    "posture_conflict_receipt status == PASS",
+    "execution_board.authoritative_current_head_truth_source == current_head_truth_root"
+  ],
+  "must_not_define_current_truth": [
+    "docs/**",
+    "KT-Codex/**",
+    "KT_TEMPLE_ROOT/**",
+    "KT_PROD_CLEANROOM/05_QUARANTINE/**"
+  ],
+  "status": "ACTIVE"
+}

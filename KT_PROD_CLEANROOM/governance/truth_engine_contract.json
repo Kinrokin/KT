@@ -1,12 +1,20 @@
 {
-  "schema_id": "kt.governance.truth_engine_contract.v1",
-  "contract_id": "TRUTH_ENGINE_CONTRACT_V1_20260309",
+  "schema_id": "kt.governance.truth_engine_contract.v2",
+  "contract_id": "TRUTH_ENGINE_CONTRACT_V2_20260309",
   "required_inputs": [
     "KT_PROD_CLEANROOM/reports/live_validation_index.json",
     "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
     "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
     "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
-    "KT_PROD_CLEANROOM/governance/posture_contract.json"
+    "KT_PROD_CLEANROOM/governance/posture_contract.json",
+    "KT_PROD_CLEANROOM/governance/settled_truth_source_contract.json",
+    "KT_PROD_CLEANROOM/governance/truth_supersession_rules.json"
+  ],
+  "required_outputs": [
+    "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
+    "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json",
+    "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+    "KT_PROD_CLEANROOM/reports/truth_supersession_receipt.json"
   ],
   "critical_checks": [
     "constitutional_guard",
@@ -22,7 +30,8 @@
     "green claims are invalid unless derived_state == TRUTHFUL_GREEN",
     "validated_head_sha must match live_validation_index.worktree.head_sha",
     "posture_consistency_receipt must not be stronger than live validation evidence",
-    "dirty-sensitive failures block current-worktree green but do not erase clean-clone evidence"
+    "dirty-sensitive failures block current-worktree green but do not erase clean-clone evidence",
+    "settled authority requires operator_clean_clone_smoke status == PASS"
   ],
   "status": "ACTIVE"
 }

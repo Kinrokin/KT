@@ -1,0 +1,19 @@
+{
+  "schema_id": "kt.governance.truth_supersession_rules.v1",
+  "rules_id": "TRUTH_SUPERSESSION_RULES_V1_20260309",
+  "supersede_when": [
+    "tracked truth surface validated_head_sha != current head",
+    "tracked truth surface branch_ref != live branch",
+    "posture_consistency_receipt status != PASS",
+    "tracked truth claims stronger posture than settled truth source"
+  ],
+  "superseded_outputs": [
+    "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+    "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
+    "KT_PROD_CLEANROOM/reports/p0_green_full_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_green_final_receipt.json"
+  ],
+  "receipt_output": "KT_PROD_CLEANROOM/reports/truth_supersession_receipt.json",
+  "status": "ACTIVE"
+}

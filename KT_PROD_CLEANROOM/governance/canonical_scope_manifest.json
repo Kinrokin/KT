@@ -1,7 +1,7 @@
 {
-  "schema_id": "kt.governance.canonical_scope_manifest.v1",
-  "manifest_id": "CANONICAL_SCOPE_V1_20260309",
-  "authoritative_surfaces": [
+  "schema_id": "kt.governance.canonical_scope_manifest.v2",
+  "manifest_id": "CANONICAL_SCOPE_V2_20260309",
+  "canonical_primary_surfaces": [
     "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/**",
     "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/**",
     "KT_PROD_CLEANROOM/governance/**",
@@ -9,23 +9,78 @@
     "KT_PROD_CLEANROOM/tools/operator/**",
     "KT_PROD_CLEANROOM/tools/verification/**",
     "KT_PROD_CLEANROOM/tools/delivery/**",
-    "KT_PROD_CLEANROOM/tools/security/**",
+    "KT_PROD_CLEANROOM/tools/security/**"
+  ],
+  "generated_truth_surfaces": [
     "KT_PROD_CLEANROOM/reports/live_validation_index.json",
     "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
     "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
     "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
     "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
-    "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json"
+    "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json",
+    "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+    "KT_PROD_CLEANROOM/reports/truth_supersession_receipt.json"
   ],
-  "quarantined_from_canonical_truth": [
-    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/tools/**",
+  "documentary_only_surfaces": [
+    "KT-Codex/**",
+    "docs/**",
+    "KT_PROD_CLEANROOM/docs/commercial/**",
+    "README.md",
+    "LICENSE"
+  ],
+  "archive_only_surfaces": [
+    "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/**",
+    "KT_TEMPLE_ROOT/**",
+    "KT_LANE_LORA_PHASE_B/**",
+    "EPOCH_*",
+    "KAGGLE_*",
+    "OPERATION_A_*",
+    "PHASE_A_*",
+    "RUN_REPORT.md",
+    "runbook.txt",
+    "run*.py",
+    "run*.sh",
+    "work_order.json"
+  ],
+  "lab_only_surfaces": [
+    "KT_PROD_CLEANROOM/03_SYNTHESIS_LAB/**",
+    "KT_PROD_CLEANROOM/tools/audit_intelligence/**",
+    "KT_PROD_CLEANROOM/tools/canonicalize/**",
+    "KT_PROD_CLEANROOM/tools/eval/**",
+    "KT_PROD_CLEANROOM/tools/feedback/**",
+    "KT_PROD_CLEANROOM/tools/governance/**",
+    "KT_PROD_CLEANROOM/tools/growth/**",
+    "KT_PROD_CLEANROOM/tools/live/**",
+    "KT_PROD_CLEANROOM/tools/merge/**",
+    "KT_PROD_CLEANROOM/tools/notebooks/**",
+    "KT_PROD_CLEANROOM/tools/probes/**",
+    "KT_PROD_CLEANROOM/tools/router/**",
+    "KT_PROD_CLEANROOM/tools/suites/**",
+    "KT_PROD_CLEANROOM/tools/tournament/**",
+    "KT_PROD_CLEANROOM/tools/training/**",
+    "KT_PROD_CLEANROOM/policy_c/**"
+  ],
+  "excluded_from_canonical_truth": [
+    "KT_PROD_CLEANROOM/reports/**",
     "KT_PROD_CLEANROOM/03_SYNTHESIS_LAB/**",
     "KT_PROD_CLEANROOM/05_QUARANTINE/**",
     "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/**",
     "KT_TEMPLE_ROOT/**",
     "KT_LANE_LORA_PHASE_B/**",
     "KT-Codex/**",
-    "docs/**"
+    "docs/**",
+    "KT_PROD_CLEANROOM/docs/commercial/**"
+  ],
+  "quarantined_from_canonical_truth": [
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/tools/**",
+    "KT_PROD_CLEANROOM/05_QUARANTINE/**",
+    "KT_PROD_CLEANROOM/AUDIT_LIVE_HASHED_V1.md"
+  ],
+  "active_truth_contracts": [
+    "KT_PROD_CLEANROOM/governance/settled_truth_source_contract.json",
+    "KT_PROD_CLEANROOM/governance/truth_supersession_rules.json",
+    "KT_PROD_CLEANROOM/governance/truth_freshness_windows.json",
+    "KT_PROD_CLEANROOM/governance/truth_invalidation_rules.json"
   ],
   "status": "ACTIVE"
 }

@@ -1,34 +1,51 @@
 {
+  "schema_id": "kt.governance.execution_board.v2",
+  "board_id": "EXECUTION_BOARD_V2_20260309",
+  "board_authority_contract": "KT_PROD_CLEANROOM/governance/execution_board_authority_contract.json",
   "authoritative_truth_sources": [
-    "KT_PROD_CLEANROOM/reports/live_validation_index.json",
+    "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
     "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
     "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json"
   ],
-  "board_id": "EXECUTION_BOARD_V1_20260309",
+  "authoritative_current_head_truth_source": "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+  "authority_mode": "TRANSITIONAL_AUTHORITATIVE",
   "current_posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
   "last_synced_head_sha": "4cf1b9d100f8699fa192d6a5409c69bc6e94761d",
-  "schema_id": "kt.governance.execution_board.v1",
+  "program_gates": {
+    "FOUNDATIONAL_LAW_TRANCHE_COMPLETE": true,
+    "H1_ACTIVATION_ALLOWED": false
+  },
+  "open_blockers": [
+    "CURRENT_STATE_HEAD_STALE",
+    "RUNTIME_AUDIT_HEAD_STALE",
+    "CLEAN_CLONE_NOT_RUN"
+  ],
   "status": "ACTIVE",
   "workstreams": [
     {
-      "exit_condition": "spine verdict, constitutional guard, non-canonical repo-clean gates, and law bundle integrity are repaired",
+      "workstream_id": "PHASE_0_CORE_TRUTH_REPAIR",
       "status": "COMPLETED",
-      "workstream_id": "PHASE_0_CORE_TRUTH_REPAIR"
+      "exit_condition": "spine verdict, constitutional guard, non-canonical repo-clean gates, and law bundle integrity are repaired"
     },
     {
-      "exit_condition": "truthful green from active clean worktree",
+      "workstream_id": "PHASE_1_H0_FREEZE",
       "status": "BLOCKED",
-      "workstream_id": "PHASE_1_H0_FREEZE"
+      "exit_condition": "truthful green from active clean worktree with settled authority"
     },
     {
-      "exit_condition": "live validation index and conflict receipts drive posture",
+      "workstream_id": "PHASE_2_TRUTH_ENGINE",
       "status": "AUTHORITATIVE",
-      "workstream_id": "PHASE_2_TRUTH_ENGINE"
+      "exit_condition": "settled truth source receipt and supersession receipt drive current posture"
     },
     {
-      "exit_condition": "trust zones and readiness scope are enforced across release tooling",
+      "workstream_id": "PHASE_3_BOUNDARY_PURIFICATION",
       "status": "IMPLEMENTED",
-      "workstream_id": "PHASE_3_BOUNDARY_PURIFICATION"
+      "exit_condition": "six-zone law and readiness exclusions are enforced across release tooling"
+    },
+    {
+      "workstream_id": "PHASE_4_SETTLED_AUTHORITY",
+      "status": "BLOCKED",
+      "exit_condition": "current-head truth source is settled authoritative on a clean clone"
     }
   ]
 }

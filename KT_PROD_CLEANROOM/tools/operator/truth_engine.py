@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
+from tools.operator.truth_authority import path_ref
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z
 
 
@@ -259,7 +260,7 @@ def build_truth_receipts(*, root: Path, live_validation_index_path: Path, report
         "claimed_state_runtime_audit": audit_claim,
         "worktree_dirty": bool(worktree.get("git_dirty")),
         "live_head_sha": str(worktree.get("head_sha", "")).strip(),
-        "validation_index_ref": str(live_validation_index_path.relative_to(root).as_posix()),
+        "validation_index_ref": path_ref(root=root, path=live_validation_index_path),
         "posture_contract_id": str(posture_contract.get("contract_id", "")).strip(),
         "truth_engine_contract_id": str(truth_contract.get("contract_id", "")).strip(),
         "critical_failure_count": len(_critical_failures(index)),

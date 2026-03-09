@@ -1,0 +1,27 @@
+{
+  "schema_id": "kt.governance.governance_surface_expiration_rules.v1",
+  "rules_id": "GOVERNANCE_SURFACE_EXPIRATION_RULES_V1_20260309",
+  "surfaces": [
+    {
+      "path": "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+      "max_age_hours": 168
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
+      "max_age_hours": 168
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/governance/execution_board.json",
+      "max_age_hours": 24
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/governance/canonical_freeze_manifest.json",
+      "max_age_hours": 168
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/governance/amendment_scope_manifest.json",
+      "max_age_hours": 168
+    }
+  ],
+  "status": "ACTIVE"
+}
