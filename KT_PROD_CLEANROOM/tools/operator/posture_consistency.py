@@ -14,6 +14,8 @@ from tools.operator.truth_engine import (
 )
 
 
+DEFAULT_REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
+
 ALLOWED_POSTURES = {
     "TRUTH_DEFECTS_PRESENT",
     "CANONICAL_VALIDATED_DIRTY_WORKTREE",
@@ -35,6 +37,10 @@ def _load_required(root: Path, rel: str) -> Dict[str, Any]:
     if not path.exists():
         raise RuntimeError(f"FAIL_CLOSED: missing required artifact: {path.as_posix()}")
     return load_json(path)
+
+
+def _load_required_report(root: Path, report_root_rel: str, rel: str) -> Dict[str, Any]:
+    return _load_required(root, str((Path(report_root_rel) / rel).as_posix()))
 
 
 def _verify_real_path_matrix(matrix: Dict[str, Any]) -> Dict[str, Any]:
@@ -153,10 +159,10 @@ def _head_field(obj: Dict[str, Any]) -> str:
     return ""
 
 
-def _verify_one_button_state(*, root: Path, posture_state: str, live_head: str, branch_ref: str) -> Dict[str, Any]:
-    preflight = _load_required(root, "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json")
-    production = _load_required(root, "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json")
-    branch_protection = _load_required(root, "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json")
+def _verify_one_button_state(*, root: Path, report_root_rel: str, posture_state: str, live_head: str, branch_ref: str) -> Dict[str, Any]:
+    preflight = _load_required_report(root, report_root_rel, "one_button_preflight_receipt.json")
+    production = _load_required_report(root, report_root_rel, "one_button_production_receipt.json")
+    branch_protection = _load_required(root, f"{DEFAULT_REPORT_ROOT_REL}/main_branch_protection_receipt.json")
 
     checks: List[Dict[str, Any]] = []
     preflight_status = str(preflight.get("status", "")).strip()
@@ -186,9 +192,15 @@ def _verify_one_button_state(*, root: Path, posture_state: str, live_head: str, 
     return {"status": "PASS", "checks": checks}
 
 
-def verify_posture(*, root: Path, expected_posture: str, live_validation_index_rel: str = "KT_PROD_CLEANROOM/reports/live_validation_index.json") -> Dict[str, Any]:
-    current_state = _load_required(root, "KT_PROD_CLEANROOM/reports/current_state_receipt.json")
-    runtime_audit = _load_required(root, "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json")
+def verify_posture(
+    *,
+    root: Path,
+    expected_posture: str,
+    live_validation_index_rel: str = f"{DEFAULT_REPORT_ROOT_REL}/live_validation_index.json",
+    report_root_rel: str = DEFAULT_REPORT_ROOT_REL,
+) -> Dict[str, Any]:
+    current_state = _load_required_report(root, report_root_rel, "current_state_receipt.json")
+    runtime_audit = _load_required_report(root, report_root_rel, "runtime_closure_audit.json")
     live_validation_index = _load_required(root, str(live_validation_index_rel))
     manifest = _load_required(root, "KT_PROD_CLEANROOM/governance/governance_manifest.json")
     aliases = _load_required(root, "KT_PROD_CLEANROOM/governance/governance_aliases.json")
@@ -231,7 +243,13 @@ def verify_posture(*, root: Path, expected_posture: str, live_validation_index_r
 
     preserved = _verify_preserved_receipts(root)
     alias_truth = _verify_alias_truth(manifest=manifest, aliases=aliases)
-    one_button = _verify_one_button_state(root=root, posture_state=current_posture, live_head=current_head, branch_ref=current_branch)
+    one_button = _verify_one_button_state(
+        root=root,
+        report_root_rel=report_root_rel,
+        posture_state=current_posture,
+        live_head=current_head,
+        branch_ref=current_branch,
+    )
 
     expected_release = {
         "TRUTH_DEFECTS_PRESENT": "NO_GO_TRUTH_DEFECTS_PRESENT",
@@ -279,8 +297,9 @@ def verify_posture(*, root: Path, expected_posture: str, live_validation_index_r
 def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Verify final green posture consistency.")
     ap.add_argument("--expected-posture", default="")
-    ap.add_argument("--live-validation-index", default="KT_PROD_CLEANROOM/reports/live_validation_index.json")
-    ap.add_argument("--out", default="KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json")
+    ap.add_argument("--live-validation-index", default=f"{DEFAULT_REPORT_ROOT_REL}/live_validation_index.json")
+    ap.add_argument("--report-root", default=DEFAULT_REPORT_ROOT_REL)
+    ap.add_argument("--out", default=f"{DEFAULT_REPORT_ROOT_REL}/posture_consistency_receipt.json")
     return ap.parse_args(argv)
 
 
@@ -296,6 +315,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             root=root,
             expected_posture=str(args.expected_posture),
             live_validation_index_rel=str(args.live_validation_index),
+            report_root_rel=str(args.report_root),
         )
         out_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         print(json.dumps(report, sort_keys=True, ensure_ascii=True))

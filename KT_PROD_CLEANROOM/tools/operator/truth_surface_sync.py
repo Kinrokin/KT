@@ -15,6 +15,9 @@ from tools.operator.truth_engine import (
 )
 
 
+DEFAULT_REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
+
+
 def _load_required(path: Path) -> Dict[str, Any]:
     if not path.exists():
         raise RuntimeError(f"FAIL_CLOSED: missing required artifact: {path.as_posix()}")
@@ -26,11 +29,15 @@ def _write_json(path: Path, payload: Dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8", newline="\n")
 
 
-def _truth_sources() -> List[str]:
+def _report_ref(report_root_rel: str, name: str) -> str:
+    return str((Path(report_root_rel) / name).as_posix())
+
+
+def _truth_sources(report_root_rel: str) -> List[str]:
     return [
-        "KT_PROD_CLEANROOM/reports/live_validation_index.json",
-        "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
-        "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json",
+        _report_ref(report_root_rel, "live_validation_index.json"),
+        _report_ref(report_root_rel, "posture_consistency_enforcement_receipt.json"),
+        _report_ref(report_root_rel, "posture_conflict_receipt.json"),
     ]
 
 
@@ -84,10 +91,10 @@ def _stop_gates(posture_state: str, live_checks: List[Dict[str, Any]]) -> List[s
     return gates
 
 
-def _truthful_green_supported(*, root: Path, live_head: str, branch_ref: str) -> bool:
-    preflight = _load_required(root / "KT_PROD_CLEANROOM" / "reports" / "one_button_preflight_receipt.json")
-    production = _load_required(root / "KT_PROD_CLEANROOM" / "reports" / "one_button_production_receipt.json")
-    branch = _load_required(root / "KT_PROD_CLEANROOM" / "reports" / "main_branch_protection_receipt.json")
+def _truthful_green_supported(*, root: Path, report_root: Path, live_head: str, branch_ref: str) -> bool:
+    preflight = _load_required(report_root / "one_button_preflight_receipt.json")
+    production = _load_required(report_root / "one_button_production_receipt.json")
+    branch = _load_required(root / DEFAULT_REPORT_ROOT_REL / "main_branch_protection_receipt.json")
 
     if str(preflight.get("status", "")).strip() != "PASS":
         return False
@@ -106,14 +113,20 @@ def _truthful_green_supported(*, root: Path, live_head: str, branch_ref: str) ->
     return True
 
 
-def build_receipts(*, root: Path, index: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
+def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, live_validation_index_ref: str) -> Dict[str, Dict[str, Any]]:
     live_head = str((index.get("worktree") or {}).get("head_sha", "")).strip()
     branch_ref = str(index.get("branch_ref", "")).strip()
     worktree_dirty = bool((index.get("worktree") or {}).get("git_dirty"))
     checks = index.get("checks") if isinstance(index.get("checks"), list) else []
     live_state = derive_live_validation_state(index)
     posture_state = live_state
-    if live_state == CANONICAL_READY_FOR_REEARNED_GREEN and _truthful_green_supported(root=root, live_head=live_head, branch_ref=branch_ref):
+    report_root = (root / report_root_rel).resolve()
+    if live_state == CANONICAL_READY_FOR_REEARNED_GREEN and _truthful_green_supported(
+        root=root,
+        report_root=report_root,
+        live_head=live_head,
+        branch_ref=branch_ref,
+    ):
         posture_state = TRUTHFUL_GREEN
 
     stop_gates = _stop_gates(posture_state, checks if isinstance(checks, list) else [])
@@ -132,20 +145,20 @@ def build_receipts(*, root: Path, index: Dict[str, Any]) -> Dict[str, Dict[str, 
         "current_p0_state": posture_state,
         "branch_ref": branch_ref,
         "validated_head_sha": live_head,
-        "truth_sources": _truth_sources(),
-        "validation_index_ref": "KT_PROD_CLEANROOM/reports/live_validation_index.json",
+        "truth_sources": _truth_sources(report_root_rel),
+        "validation_index_ref": live_validation_index_ref,
         "active_stop_gates": stop_gates,
         "current_release_decision": release_decision,
         "finish_line_predicates": finish_line,
         "next_allowed_transition": _next_transition(posture_state),
         "closure_receipts": [
-            "KT_PROD_CLEANROOM/reports/live_validation_index.json",
-            "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
-            "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json",
-            "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
-            "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
-            "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
-            "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
+            live_validation_index_ref,
+            _report_ref(report_root_rel, "posture_consistency_enforcement_receipt.json"),
+            _report_ref(report_root_rel, "posture_conflict_receipt.json"),
+            _report_ref(report_root_rel, "posture_consistency_receipt.json"),
+            _report_ref(report_root_rel, "one_button_preflight_receipt.json"),
+            _report_ref(report_root_rel, "one_button_production_receipt.json"),
+            f"{DEFAULT_REPORT_ROOT_REL}/main_branch_protection_receipt.json",
         ],
     }
 
@@ -206,9 +219,9 @@ def build_receipts(*, root: Path, index: Dict[str, Any]) -> Dict[str, Dict[str, 
                 "current truth surfaces synchronized",
             ],
             "may_not_claim_yet": [],
-            "one_button_preflight_receipt": "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
-            "one_button_production_receipt": "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
-            "main_branch_protection_receipt": "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
+            "one_button_preflight_receipt": _report_ref(report_root_rel, "one_button_preflight_receipt.json"),
+            "one_button_production_receipt": _report_ref(report_root_rel, "one_button_production_receipt.json"),
+            "main_branch_protection_receipt": f"{DEFAULT_REPORT_ROOT_REL}/main_branch_protection_receipt.json",
         }
         final_green = {
             "schema_id": "kt.green_final_receipt.v2",
@@ -218,10 +231,10 @@ def build_receipts(*, root: Path, index: Dict[str, Any]) -> Dict[str, Dict[str, 
             "posture_state": TRUTHFUL_GREEN,
             "release_state": "GO_PRESS_BUTTON_PRODUCTION_ELIGIBLE",
             "statement": "KT current-head truth surfaces are synchronized and canonical_hmac one-button production is eligible.",
-            "p0_green_full_receipt": "KT_PROD_CLEANROOM/reports/p0_green_full_receipt.json",
-            "one_button_preflight_receipt": "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
-            "one_button_production_receipt": "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
-            "branch_protection_receipt": "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
+            "p0_green_full_receipt": _report_ref(report_root_rel, "p0_green_full_receipt.json"),
+            "one_button_preflight_receipt": _report_ref(report_root_rel, "one_button_preflight_receipt.json"),
+            "one_button_production_receipt": _report_ref(report_root_rel, "one_button_production_receipt.json"),
+            "branch_protection_receipt": f"{DEFAULT_REPORT_ROOT_REL}/main_branch_protection_receipt.json",
         }
     else:
         p0_green = {
@@ -233,7 +246,7 @@ def build_receipts(*, root: Path, index: Dict[str, Any]) -> Dict[str, Dict[str, 
             "current_truthful_state": posture_state,
             "validated_head_sha": live_head,
             "blockers": stop_gates,
-            "superseded_by": _truth_sources(),
+            "superseded_by": _truth_sources(report_root_rel),
         }
         final_green = {
             "schema_id": "kt.green_final_receipt.v2",
@@ -243,7 +256,7 @@ def build_receipts(*, root: Path, index: Dict[str, Any]) -> Dict[str, Dict[str, 
             "posture_state": posture_state,
             "release_state": release_decision,
             "statement": f"KT is not currently truthful green; active truthful posture is {posture_state}.",
-            "superseded_by": _truth_sources(),
+            "superseded_by": _truth_sources(report_root_rel),
         }
 
     return {
@@ -291,10 +304,10 @@ def _sync_secondary_surfaces(*, root: Path, posture_state: str, live_head: str) 
     _write_json(root / "KT_PROD_CLEANROOM" / "governance" / "h0_freeze_policy.json", freeze_policy)
 
 
-def _reconciliation_report(*, root: Path, derived_state: str, live_head: str) -> Dict[str, Any]:
-    current_state = _load_required(root / "KT_PROD_CLEANROOM" / "reports" / "current_state_receipt.json")
-    runtime_audit = _load_required(root / "KT_PROD_CLEANROOM" / "reports" / "runtime_closure_audit.json")
-    posture = _load_required(root / "KT_PROD_CLEANROOM" / "reports" / "posture_consistency_receipt.json")
+def _reconciliation_report(*, report_root: Path, report_root_rel: str, derived_state: str, live_head: str) -> Dict[str, Any]:
+    current_state = _load_required(report_root / "current_state_receipt.json")
+    runtime_audit = _load_required(report_root / "runtime_closure_audit.json")
+    posture = _load_required(report_root / "posture_consistency_receipt.json")
     return {
         "schema_id": "kt.operator.truth_surface_reconciliation_report.v2",
         "generated_utc": utc_now_iso_z(),
@@ -320,12 +333,15 @@ def _reconciliation_report(*, root: Path, derived_state: str, live_head: str) ->
         },
         "reconciliation_result": "TRUTH_SURFACES_SYNCHRONIZED",
         "required_next_actions": [] if derived_state == TRUTHFUL_GREEN else ["re-earn green from current-head one-button receipts"],
+        "active_report_root": report_root_rel,
     }
 
 
 def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Sync active truth receipts from live validation evidence.")
-    ap.add_argument("--live-validation-index", default="KT_PROD_CLEANROOM/reports/live_validation_index.json")
+    ap.add_argument("--live-validation-index", default=f"{DEFAULT_REPORT_ROOT_REL}/live_validation_index.json")
+    ap.add_argument("--report-root", default=DEFAULT_REPORT_ROOT_REL)
+    ap.add_argument("--sync-secondary-surfaces", action="store_true")
     return ap.parse_args(argv)
 
 
@@ -336,16 +352,31 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if not index_path.is_absolute():
         index_path = (root / index_path).resolve()
     index = _load_required(index_path)
-    receipts = build_receipts(root=root, index=index)
+    report_root = Path(str(args.report_root)).expanduser()
+    if not report_root.is_absolute():
+        report_root = (root / report_root).resolve()
+    report_root_rel = report_root.relative_to(root).as_posix() if report_root.is_relative_to(root) else report_root.as_posix()
+    live_validation_index_ref = index_path.relative_to(root).as_posix() if index_path.is_relative_to(root) else index_path.as_posix()
+    receipts = build_receipts(
+        root=root,
+        index=index,
+        report_root_rel=report_root_rel,
+        live_validation_index_ref=live_validation_index_ref,
+    )
 
-    reports_root = root / "KT_PROD_CLEANROOM" / "reports"
+    reports_root = report_root
     _write_json(reports_root / "current_state_receipt.json", receipts["current_state"])
     _write_json(reports_root / "runtime_closure_audit.json", receipts["runtime_audit"])
     _write_json(reports_root / "p0_green_full_receipt.json", receipts["p0_green"])
     _write_json(reports_root / "kt_green_final_receipt.json", receipts["final_green"])
 
     try:
-        posture = verify_posture(root=root, expected_posture="", live_validation_index_rel=str(args.live_validation_index))
+        posture = verify_posture(
+            root=root,
+            expected_posture="",
+            live_validation_index_rel=str(args.live_validation_index),
+            report_root_rel=report_root_rel,
+        )
         _write_json(reports_root / "posture_consistency_receipt.json", posture)
     except Exception as exc:  # noqa: BLE001
         posture = {
@@ -360,14 +391,24 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     derived_state = str(receipts["current_state"].get("posture_state", "")).strip()
     live_head = str((index.get("worktree") or {}).get("head_sha", "")).strip()
-    _write_json(reports_root / "truth_surface_reconciliation_report.json", _reconciliation_report(root=root, derived_state=derived_state, live_head=live_head))
-    _sync_secondary_surfaces(root=root, posture_state=derived_state, live_head=live_head)
+    _write_json(
+        reports_root / "truth_surface_reconciliation_report.json",
+        _reconciliation_report(report_root=reports_root, report_root_rel=report_root_rel, derived_state=derived_state, live_head=live_head),
+    )
+    if bool(args.sync_secondary_surfaces) or report_root_rel == DEFAULT_REPORT_ROOT_REL:
+        _sync_secondary_surfaces(root=root, posture_state=derived_state, live_head=live_head)
 
-    truth_receipts = build_truth_receipts(root=root, live_validation_index_path=index_path)
+    truth_receipts = build_truth_receipts(root=root, live_validation_index_path=index_path, report_root_rel=report_root_rel)
     _write_json(reports_root / "posture_consistency_enforcement_receipt.json", truth_receipts["enforcement"])
     _write_json(reports_root / "posture_conflict_receipt.json", truth_receipts["conflicts"])
 
-    print(json.dumps({"posture_state": derived_state, "status": "PASS", "validated_head_sha": live_head}, sort_keys=True, ensure_ascii=True))
+    print(
+        json.dumps(
+            {"posture_state": derived_state, "report_root": report_root_rel, "status": "PASS", "validated_head_sha": live_head},
+            sort_keys=True,
+            ensure_ascii=True,
+        )
+    )
     return 0
 
 

@@ -12,6 +12,7 @@ TRUTH_DEFECTS_PRESENT = "TRUTH_DEFECTS_PRESENT"
 CANONICAL_VALIDATED_DIRTY_WORKTREE = "CANONICAL_VALIDATED_DIRTY_WORKTREE"
 CANONICAL_READY_FOR_REEARNED_GREEN = "CANONICAL_READY_FOR_REEARNED_GREEN"
 TRUTHFUL_GREEN = "TRUTHFUL_GREEN"
+DEFAULT_REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
 
 GREEN_CLAIMS = {
     "P0_GREEN_FULL_CANDIDATE_ON_BRANCH",
@@ -33,6 +34,10 @@ def _load_required(path: Path) -> Dict[str, Any]:
     if not path.exists():
         raise RuntimeError(f"FAIL_CLOSED: missing required artifact: {path.as_posix()}")
     return load_json(path)
+
+
+def _report_path(root: Path, report_root_rel: str, rel: str) -> Path:
+    return (root / report_root_rel / rel).resolve()
 
 
 def _critical_failures(index: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -216,11 +221,11 @@ def _build_conflicts(
     return conflicts
 
 
-def build_truth_receipts(*, root: Path, live_validation_index_path: Path) -> Dict[str, Dict[str, Any]]:
+def build_truth_receipts(*, root: Path, live_validation_index_path: Path, report_root_rel: str = DEFAULT_REPORT_ROOT_REL) -> Dict[str, Dict[str, Any]]:
     index = _load_required(live_validation_index_path)
-    current_state = _load_required(root / "KT_PROD_CLEANROOM" / "reports" / "current_state_receipt.json")
-    runtime_audit = _load_required(root / "KT_PROD_CLEANROOM" / "reports" / "runtime_closure_audit.json")
-    posture_consistency = _load_required(root / "KT_PROD_CLEANROOM" / "reports" / "posture_consistency_receipt.json")
+    current_state = _load_required(_report_path(root, report_root_rel, "current_state_receipt.json"))
+    runtime_audit = _load_required(_report_path(root, report_root_rel, "runtime_closure_audit.json"))
+    posture_consistency = _load_required(_report_path(root, report_root_rel, "posture_consistency_receipt.json"))
     posture_contract = _load_required(root / "KT_PROD_CLEANROOM" / "governance" / "posture_contract.json")
     truth_contract = _load_required(root / "KT_PROD_CLEANROOM" / "governance" / "truth_engine_contract.json")
 
@@ -277,8 +282,9 @@ def build_truth_receipts(*, root: Path, live_validation_index_path: Path) -> Dic
 
 def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Derive truthful posture from live validation evidence.")
-    ap.add_argument("--live-validation-index", default="KT_PROD_CLEANROOM/reports/live_validation_index.json")
-    ap.add_argument("--out-dir", default="KT_PROD_CLEANROOM/reports")
+    ap.add_argument("--live-validation-index", default=f"{DEFAULT_REPORT_ROOT_REL}/live_validation_index.json")
+    ap.add_argument("--report-root", default=DEFAULT_REPORT_ROOT_REL)
+    ap.add_argument("--out-dir", default="")
     return ap.parse_args(argv)
 
 
@@ -288,12 +294,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     index_path = Path(str(args.live_validation_index)).expanduser()
     if not index_path.is_absolute():
         index_path = (root / index_path).resolve()
-    out_dir = Path(str(args.out_dir)).expanduser()
+    out_dir_arg = str(args.out_dir).strip() or str(args.report_root).strip()
+    out_dir = Path(out_dir_arg).expanduser()
     if not out_dir.is_absolute():
         out_dir = (root / out_dir).resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    receipts = build_truth_receipts(root=root, live_validation_index_path=index_path)
+    receipts = build_truth_receipts(root=root, live_validation_index_path=index_path, report_root_rel=str(args.report_root))
     (out_dir / "posture_consistency_enforcement_receipt.json").write_text(
         json.dumps(receipts["enforcement"], indent=2, sort_keys=True, ensure_ascii=True) + "\n",
         encoding="utf-8",
