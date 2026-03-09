@@ -144,9 +144,25 @@ def _matching_ref_targets(ruleset: Dict[str, Any]) -> List[str]:
 
 
 def _ruleset_summary(ruleset: Dict[str, Any]) -> Dict[str, Any]:
+    pull_request_rule: Dict[str, Any] = {}
+    for rule in ruleset.get("rules", []):
+        if not isinstance(rule, dict) or str(rule.get("type", "")).strip() != "pull_request":
+            continue
+        params = rule.get("parameters")
+        if not isinstance(params, dict):
+            continue
+        pull_request_rule = {
+            "dismiss_stale_reviews_on_push": bool(params.get("dismiss_stale_reviews_on_push")),
+            "require_code_owner_review": bool(params.get("require_code_owner_review")),
+            "require_last_push_approval": bool(params.get("require_last_push_approval")),
+            "required_approving_review_count": int(params.get("required_approving_review_count", 0)),
+            "required_review_thread_resolution": bool(params.get("required_review_thread_resolution")),
+        }
+        break
     return {
         "enforcement": str(ruleset.get("enforcement", "")).strip(),
         "name": str(ruleset.get("name", "")).strip(),
+        "pull_request_rule": pull_request_rule,
         "required_checks": _required_status_checks(ruleset),
         "rule_types": _required_rule_types(ruleset),
         "target": str(ruleset.get("target", "")).strip(),
@@ -163,6 +179,8 @@ def _candidate_matches(*, desired: Dict[str, Any], live: Dict[str, Any]) -> Tupl
             failures.append(f"{field}:expected={desired_summary[field]} actual={live_summary[field]}")
     if sorted(desired_summary["targets"]) != sorted(live_summary["targets"]):
         failures.append("ref_targets:mismatch")
+    if desired_summary["pull_request_rule"] != live_summary["pull_request_rule"]:
+        failures.append("pull_request_rule:mismatch")
     desired_rule_types = set(desired_summary["rule_types"])
     live_rule_types = set(live_summary["rule_types"])
     missing_rule_types = sorted(desired_rule_types - live_rule_types)

@@ -37,6 +37,16 @@ def test_candidate_matches_fails_on_missing_status_check() -> None:
     assert any("missing_checks:" in failure for failure in failures)
 
 
+def test_candidate_matches_fails_on_pull_request_rule_mismatch() -> None:
+    repo_root = Path(__file__).resolve().parents[3]
+    desired = load_json(repo_root / "KT_PROD_CLEANROOM" / "governance" / "platform" / "github_main_ruleset.json")
+    live = load_json(repo_root / "KT_PROD_CLEANROOM" / "governance" / "platform" / "github_main_ruleset.json")
+    live["rules"][2]["parameters"]["required_approving_review_count"] = 1
+    matched, failures = _candidate_matches(desired=desired, live=live)
+    assert matched is False
+    assert "pull_request_rule:mismatch" in failures
+
+
 def test_ruleset_summary_reports_branch_target() -> None:
     repo_root = Path(__file__).resolve().parents[3]
     desired = load_json(repo_root / "KT_PROD_CLEANROOM" / "governance" / "platform" / "github_main_ruleset.json")
