@@ -1,6 +1,6 @@
 {
   "active_stop_gates": [],
-  "branch_ref": "ops/titanium-realpath-attachment-20260307",
+  "branch_ref": "ops/final-green-mainline-receipts-20260308",
   "closure_receipts": [
     "KT_PROD_CLEANROOM/reports/real_path_attachment_matrix.json",
     "KT_PROD_CLEANROOM/reports/source_integrity_receipt.json",
@@ -10,35 +10,43 @@
     "KT_PROD_CLEANROOM/reports/practice_mode_chain_summary.json",
     "KT_PROD_CLEANROOM/reports/twocleanclone_proof.json",
     "KT_PROD_CLEANROOM/reports/godstatus_verdict.json",
-    "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json"
+    "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
+    "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
+    "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json"
   ],
-  "current_p0_state": "P0_GREEN_FULL_BRANCH_CONFIRMED_PENDING_MAIN_PROMOTION",
-  "current_release_decision": "NO_GO_FOR_PRESS_BUTTON_PRODUCTION_PENDING_MAIN_PROMOTION",
+  "current_p0_state": "P0_GREEN_FULL_MAINLINE",
+  "current_release_decision": "GO_PRESS_BUTTON_PRODUCTION_ELIGIBLE",
   "finish_line_predicates": {
     "alias_truth_machine_legible": true,
     "branch_level_closure_receipts_present": true,
-    "mainline_promotion_complete": false,
-    "one_button_production_complete": false,
+    "mainline_promotion_complete": true,
+    "one_button_preflight_complete": true,
+    "one_button_production_complete": true,
+    "platform_enforcement_complete": true,
     "posture_receipts_synchronized": true
   },
-  "generated_utc": "2026-03-08T21:20:07Z",
-  "next_allowed_transition": "P0_GREEN_FULL_MAINLINE",
-  "posture_state": "P0_GREEN_FULL_BRANCH_CONFIRMED_PENDING_MAIN_PROMOTION",
+  "generated_utc": "2026-03-09T00:25:10Z",
+  "next_allowed_transition": "NONE_REQUIRED_RUNTIME_LAWFUL_GREEN_ACTIVE",
+  "posture_state": "P0_GREEN_FULL_MAINLINE",
   "preserved_branch_closure_head_sha": "ffa028b933a0ea4083beb39b586e3d8cbb78d178",
   "receipt_update_only_surfaces": [
     "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
     "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
     "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
-    "KT_PROD_CLEANROOM/reports/alias_truth_receipt.json",
-    "KT_PROD_CLEANROOM/governance/governance_aliases.json",
+    "KT_PROD_CLEANROOM/reports/p0_green_full_receipt.json",
+    "KT_PROD_CLEANROOM/reports/h0_done_receipt.json",
+    "KT_PROD_CLEANROOM/reports/customer_delivery_receipt.json",
+    "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+    "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
+    "KT_PROD_CLEANROOM/governance/platform/github_main_ruleset.json",
+    "KT_PROD_CLEANROOM/tools/operator/github_ruleset.py",
     "KT_PROD_CLEANROOM/tools/operator/posture_consistency.py",
     "KT_PROD_CLEANROOM/tests/operator/test_posture_consistency.py",
-    "KT_PROD_CLEANROOM/reports/final_green_audit_scope.json",
-    "KT_PROD_CLEANROOM/reports/final_green_change_plan.json",
-    "KT_PROD_CLEANROOM/reports/final_green_rollback_plan.json",
-    "KT_PROD_CLEANROOM/reports/final_green_artifact_map.json"
+    "KT_PROD_CLEANROOM/tests/operator/test_github_ruleset.py",
+    "KT_PROD_CLEANROOM/governance/program_catalog.json"
   ],
   "schema_id": "kt.operator.current_state_receipt.v2",
   "status": "PASS",
-  "validated_head_sha": "fc0bdc8fee86d46c679bde887602030d0ef6941a"
+  "validated_head_sha": "e21a4c9493faa8ffc04de293d910fee2d509e364"
 }

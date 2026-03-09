@@ -11,6 +11,8 @@ from tools.operator.titanium_common import load_json, repo_root
 ALLOWED_BRANCH_POSTURES = {
     "P0_GREEN_FULL_CANDIDATE_ON_BRANCH",
     "P0_GREEN_FULL_BRANCH_CONFIRMED_PENDING_MAIN_PROMOTION",
+    "P0_GREEN_FULL_ENGINEERING_COMPLETE_PENDING_PLATFORM_ENFORCEMENT",
+    "P0_GREEN_FULL_MAINLINE",
 }
 
 
@@ -137,6 +139,37 @@ def _verify_preserved_receipts(root: Path) -> Dict[str, Any]:
     return {"status": "PASS", "checks": checks}
 
 
+def _verify_one_button_state(*, root: Path, expected_posture: str) -> Dict[str, Any]:
+    preflight = _load_required(root, "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json")
+    production = _load_required(root, "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json")
+    branch_protection = _load_required(root, "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json")
+
+    checks: List[Dict[str, Any]] = []
+    preflight_status = str(preflight.get("status", "")).strip()
+    production_status = str(production.get("status", "")).strip()
+    branch_status = str(branch_protection.get("status", "")).strip()
+
+    if expected_posture in {"P0_GREEN_FULL_ENGINEERING_COMPLETE_PENDING_PLATFORM_ENFORCEMENT", "P0_GREEN_FULL_MAINLINE"}:
+        if preflight_status != "PASS":
+            raise RuntimeError("FAIL_CLOSED: one_button_preflight_receipt must be PASS for engineering-complete posture")
+        if production_status != "PASS":
+            raise RuntimeError("FAIL_CLOSED: one_button_production_receipt must be PASS for engineering-complete posture")
+        checks.append({"artifact": "one_button_preflight_receipt.json", "status": "PASS"})
+        checks.append({"artifact": "one_button_production_receipt.json", "status": "PASS"})
+
+    if expected_posture == "P0_GREEN_FULL_ENGINEERING_COMPLETE_PENDING_PLATFORM_ENFORCEMENT":
+        if branch_status == "PASS":
+            raise RuntimeError("FAIL_CLOSED: engineering-complete pending platform posture cannot coexist with active branch protection")
+        checks.append({"artifact": "main_branch_protection_receipt.json", "status": branch_status})
+
+    if expected_posture == "P0_GREEN_FULL_MAINLINE":
+        if branch_status != "PASS":
+            raise RuntimeError("FAIL_CLOSED: mainline green posture requires main_branch_protection_receipt PASS")
+        checks.append({"artifact": "main_branch_protection_receipt.json", "status": "PASS"})
+
+    return {"status": "PASS", "checks": checks}
+
+
 def verify_posture(*, root: Path, expected_posture: str) -> Dict[str, Any]:
     current_state = _load_required(root, "KT_PROD_CLEANROOM/reports/current_state_receipt.json")
     runtime_audit = _load_required(root, "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json")
@@ -163,6 +196,7 @@ def verify_posture(*, root: Path, expected_posture: str) -> Dict[str, Any]:
 
     preserved = _verify_preserved_receipts(root)
     alias_truth = _verify_alias_truth(manifest=manifest, aliases=aliases)
+    one_button = _verify_one_button_state(root=root, expected_posture=expected_posture)
 
     active_stop_gates = current_state.get("active_stop_gates", [])
     if isinstance(active_stop_gates, list) and active_stop_gates:
@@ -180,6 +214,7 @@ def verify_posture(*, root: Path, expected_posture: str) -> Dict[str, Any]:
         "validated_head_sha": current_head,
         "preserved_branch_closure": preserved,
         "alias_truth": alias_truth,
+        "one_button_state": one_button,
     }
 
 

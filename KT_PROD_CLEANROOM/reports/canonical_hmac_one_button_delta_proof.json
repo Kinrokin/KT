@@ -1,0 +1,69 @@
+{
+  "baseline_failure_count": 12,
+  "baseline_run_root": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T213137457173Z_safe-run",
+  "code_delta_files": [
+    "KT_PROD_CLEANROOM/governance/platform/github_main_ruleset.json",
+    "KT_PROD_CLEANROOM/governance/program_catalog.json",
+    "KT_PROD_CLEANROOM/tests/operator/test_github_ruleset.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_posture_consistency.py",
+    "KT_PROD_CLEANROOM/tools/operator/github_ruleset.py",
+    "KT_PROD_CLEANROOM/tools/operator/posture_consistency.py"
+  ],
+  "code_delta_required": false,
+  "created_utc": "2026-03-08T23:19:16Z",
+  "failure_count_delta": -12,
+  "head_after": "4f1b12cd6283f7f5f53355cfab322103e4358b8a",
+  "head_before": "4f1b12cd6283f7f5f53355cfab322103e4358b8a",
+  "post_failure_count": 0,
+  "post_run_root": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run",
+  "schema_id": "kt.canonical_hmac_one_button_delta_proof.v1",
+  "semantic_drift": "NONE",
+  "semantic_equivalence_evidence": {
+    "diff_vs_origin_main": [
+      "KT_PROD_CLEANROOM/governance/platform/github_main_ruleset.json",
+      "KT_PROD_CLEANROOM/governance/program_catalog.json",
+      "KT_PROD_CLEANROOM/reports/KT_FINAL_GREEN_MAINLINE_REVIEW_20260308.md",
+      "KT_PROD_CLEANROOM/reports/KT_FINAL_SEAL_AND_COMMIT_REPORT_20260308.md",
+      "KT_PROD_CLEANROOM/reports/canonical_hmac_one_button_delta_proof.json",
+      "KT_PROD_CLEANROOM/reports/canonical_hmac_one_button_fix_plan.json",
+      "KT_PROD_CLEANROOM/reports/core_semantics_diff.md",
+      "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+      "KT_PROD_CLEANROOM/reports/customer_delivery_receipt.json",
+      "KT_PROD_CLEANROOM/reports/h0_done_receipt.json",
+      "KT_PROD_CLEANROOM/reports/h0_freeze_receipt.json",
+      "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
+      "KT_PROD_CLEANROOM/reports/main_fail_closed_run_receipt.json",
+      "KT_PROD_CLEANROOM/reports/main_merge_receipt.json",
+      "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+      "KT_PROD_CLEANROOM/reports/non_regression_summary.json",
+      "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
+      "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
+      "KT_PROD_CLEANROOM/reports/p0_green_full_receipt.json",
+      "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
+      "KT_PROD_CLEANROOM/reports/program_catalog_report.json",
+      "KT_PROD_CLEANROOM/reports/run_sweep_audit_failure_matrix.json",
+      "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_github_ruleset.py",
+      "KT_PROD_CLEANROOM/tests/operator/test_posture_consistency.py",
+      "KT_PROD_CLEANROOM/tools/operator/github_ruleset.py",
+      "KT_PROD_CLEANROOM/tools/operator/posture_consistency.py"
+    ],
+    "diff_vs_origin_main_is_report_only": false,
+    "diff_vs_origin_main_is_runtime_neutral_only": true,
+    "frozen_command_unchanged": "python -m tools.operator.kt_cli --profile v1 --safe-run --assurance-mode production --program program.certify.canonical_hmac --config {}"
+  },
+  "status_after": "PASS",
+  "status_before": "BLOCKED",
+  "sweep_cleanroom_after": {
+    "pytest_cleanroom_result": "219 passed in 90.61s (0:01:30)",
+    "status": "PASS",
+    "summary_path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run/program_run/sweeps/CANONICAL_HMAC/sweep_summary.json"
+  },
+  "sweep_cleanroom_before": {
+    "created_utc": "2026-03-08T21:33:00Z",
+    "exit_code": 10,
+    "failure_class": "STOP_GATE_BLOCKED",
+    "message": "safe_run_dispatch_rc=2",
+    "program_id": "program.safe_run"
+  }
+}

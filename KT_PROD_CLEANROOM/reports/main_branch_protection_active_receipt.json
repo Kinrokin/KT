@@ -1,0 +1,120 @@
+{
+  "active_ruleset": {
+    "enforcement": "active",
+    "html_url": "https://github.com/Kinrokin/KT/rules/13647241",
+    "id": 13647241,
+    "match_failures": [],
+    "matched": true,
+    "name": "KT Main Fail-Closed Ruleset",
+    "pull_request_rule": {
+      "dismiss_stale_reviews_on_push": false,
+      "require_code_owner_review": false,
+      "require_last_push_approval": false,
+      "required_approving_review_count": 0,
+      "required_review_thread_resolution": true
+    },
+    "required_checks": [
+      "p0-program-catalog",
+      "ws0-delivery-parity",
+      "ws1-mai-conformance",
+      "ws2-replay-bindingloop",
+      "ws3-constitution"
+    ],
+    "rule_types": [
+      "deletion",
+      "non_fast_forward",
+      "pull_request",
+      "required_status_checks"
+    ],
+    "target": "branch",
+    "targets": [
+      "refs/heads/main"
+    ]
+  },
+  "apply_program_id": "program.github.ruleset.apply",
+  "attempted_api_calls": [
+    "GET /repos/Kinrokin/KT",
+    "GET /repos/Kinrokin/KT/rulesets",
+    "GET /repos/Kinrokin/KT/rulesets/13647241"
+  ],
+  "claim_admissible": true,
+  "command": "verify",
+  "created_utc": "2026-03-09T00:35:08Z",
+  "default_branch": "main",
+  "desired_ruleset": {
+    "enforcement": "active",
+    "name": "KT Main Fail-Closed Ruleset",
+    "pull_request_rule": {
+      "dismiss_stale_reviews_on_push": false,
+      "require_code_owner_review": false,
+      "require_last_push_approval": false,
+      "required_approving_review_count": 0,
+      "required_review_thread_resolution": true
+    },
+    "required_checks": [
+      "p0-program-catalog",
+      "ws0-delivery-parity",
+      "ws1-mai-conformance",
+      "ws2-replay-bindingloop",
+      "ws3-constitution"
+    ],
+    "rule_types": [
+      "deletion",
+      "non_fast_forward",
+      "pull_request",
+      "required_status_checks"
+    ],
+    "target": "branch",
+    "targets": [
+      "refs/heads/main"
+    ]
+  },
+  "desired_state_artifact": "KT_PROD_CLEANROOM/governance/platform/github_main_ruleset.json",
+  "live_rulesets": [
+    {
+      "enforcement": "active",
+      "html_url": "https://github.com/Kinrokin/KT/rules/13647241",
+      "id": 13647241,
+      "match_failures": [],
+      "matched": true,
+      "name": "KT Main Fail-Closed Ruleset",
+      "pull_request_rule": {
+        "dismiss_stale_reviews_on_push": false,
+        "require_code_owner_review": false,
+        "require_last_push_approval": false,
+        "required_approving_review_count": 0,
+        "required_review_thread_resolution": true
+      },
+      "required_checks": [
+        "p0-program-catalog",
+        "ws0-delivery-parity",
+        "ws1-mai-conformance",
+        "ws2-replay-bindingloop",
+        "ws3-constitution"
+      ],
+      "rule_types": [
+        "deletion",
+        "non_fast_forward",
+        "pull_request",
+        "required_status_checks"
+      ],
+      "target": "branch",
+      "targets": [
+        "refs/heads/main"
+      ]
+    }
+  ],
+  "next_action": "Branch protection / ruleset enforcement is active on main.",
+  "repo": "Kinrokin/KT",
+  "required_checks": [
+    "p0-program-catalog",
+    "ws0-delivery-parity",
+    "ws1-mai-conformance",
+    "ws2-replay-bindingloop",
+    "ws3-constitution"
+  ],
+  "schema_id": "kt.main_branch_protection_receipt.v2",
+  "status": "PASS",
+  "verify_program_id": "program.github.ruleset.verify",
+  "visibility": "PUBLIC"
+}
