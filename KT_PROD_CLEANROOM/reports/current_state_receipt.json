@@ -15,20 +15,20 @@
     "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
     "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json"
   ],
-  "current_p0_state": "P0_GREEN_FULL_ENGINEERING_COMPLETE_PENDING_PLATFORM_ENFORCEMENT",
-  "current_release_decision": "NO_GO_FOR_LAWFULLY_ENFORCED_GREEN_PENDING_PLATFORM_ENFORCEMENT",
+  "current_p0_state": "P0_GREEN_FULL_MAINLINE",
+  "current_release_decision": "GO_PRESS_BUTTON_PRODUCTION_ELIGIBLE",
   "finish_line_predicates": {
     "alias_truth_machine_legible": true,
     "branch_level_closure_receipts_present": true,
     "mainline_promotion_complete": true,
     "one_button_preflight_complete": true,
     "one_button_production_complete": true,
-    "platform_enforcement_complete": false,
+    "platform_enforcement_complete": true,
     "posture_receipts_synchronized": true
   },
-  "generated_utc": "2026-03-08T23:19:16Z",
-  "next_allowed_transition": "P0_GREEN_FULL_MAINLINE",
-  "posture_state": "P0_GREEN_FULL_ENGINEERING_COMPLETE_PENDING_PLATFORM_ENFORCEMENT",
+  "generated_utc": "2026-03-09T00:25:10Z",
+  "next_allowed_transition": "NONE_REQUIRED_RUNTIME_LAWFUL_GREEN_ACTIVE",
+  "posture_state": "P0_GREEN_FULL_MAINLINE",
   "preserved_branch_closure_head_sha": "ffa028b933a0ea4083beb39b586e3d8cbb78d178",
   "receipt_update_only_surfaces": [
     "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
@@ -48,5 +48,5 @@
   ],
   "schema_id": "kt.operator.current_state_receipt.v2",
   "status": "PASS",
-  "validated_head_sha": "4f1b12cd6283f7f5f53355cfab322103e4358b8a"
+  "validated_head_sha": "e21a4c9493faa8ffc04de293d910fee2d509e364"
 }

@@ -30,18 +30,16 @@
     },
     {
       "check": "external_platform_enforcement",
-      "detail": "Still external to Micro-order 2; branch protection remains unavailable on the private repo.",
-      "status": "WARN"
+      "detail": "Main branch protection / ruleset enforcement is active on Kinrokin/KT.",
+      "status": "PASS"
     }
   ],
-  "claim_admissible": false,
-  "created_utc": "2026-03-08T23:19:16Z",
-  "external_blockers": [
-    "Branch protection / ruleset attachment on the private repo is still blocked by GitHub capability (Micro-order 1 external)."
-  ],
+  "claim_admissible": true,
+  "created_utc": "2026-03-09T00:25:10Z",
+  "external_blockers": [],
   "frozen_candidate_command": "python -m tools.operator.kt_cli --profile v1 --safe-run --assurance-mode production --program program.certify.canonical_hmac --config {}",
-  "global_claim_blocked_by_external": true,
-  "next_action": "Resolve Micro-order 1 externally to attach branch protection / rulesets; internal canonical_hmac one-button clearance is complete.",
+  "global_claim_blocked_by_external": false,
+  "next_action": "Lawful canonical_hmac one-button production is eligible under active main branch protection.",
   "schema_id": "kt.one_button_preflight_receipt.v1",
   "scope": "MICRO_ORDER_2_CANONICAL_HMAC_INTERNAL_CLEARANCE",
   "status": "PASS"

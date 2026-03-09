@@ -1,17 +1,15 @@
 {
-  "blocking_reasons": [
-    "Platform branch protection is not active; customer handoff remains pending platform enforcement even though canonical_hmac one-button production passed."
-  ],
+  "blocking_reasons": [],
   "canonical_delivery_candidate": {
-    "customer_handoff_authorized": false,
+    "customer_handoff_authorized": true,
     "delivery_zip_path": "delivery/KT_DELIVERY_program_run.zip",
     "delivery_zip_sha256": "c9ff59796cb80cb8293f9ba85a1c7a764c3de25a4b5bddee463abbbf53d5d2ba",
     "program_id": "program.certify.canonical_hmac",
     "run_root": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run"
   },
-  "claim_admissible": false,
-  "created_utc": "2026-03-08T23:17:13Z",
-  "delivery_emitted_for_customer": false,
+  "claim_admissible": true,
+  "created_utc": "2026-03-09T00:25:10Z",
+  "delivery_emitted_for_customer": true,
   "schema_id": "kt.customer_delivery_receipt.v1",
-  "status": "HOLD"
+  "status": "PASS"
 }

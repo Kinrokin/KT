@@ -7,7 +7,7 @@
   ],
   "blocking_groups": [],
   "branch_ref": "ops/final-green-mainline-receipts-20260308",
-  "current_state": "P0_GREEN_FULL_ENGINEERING_COMPLETE_PENDING_PLATFORM_ENFORCEMENT",
+  "current_state": "P0_GREEN_FULL_MAINLINE",
   "evidence_plane_targets_checked": [
     "delivery/delivery_manifest.json",
     "evidence/constitutional_snapshot.json",
@@ -17,24 +17,24 @@
     "evidence/secret_scan_report.json",
     "reports/bindingloop_check.json"
   ],
-  "generated_utc": "2026-03-08T23:19:16Z",
+  "generated_utc": "2026-03-09T00:25:10Z",
   "notes": [
     "Mainline ratification remains anchored by PR #12 merge and the first fail-closed main ladder run.",
-    "One-button canonical_hmac clearance now passes on unchanged main semantics; remaining blocker is external platform enforcement when branch protection is inactive.",
-    "GitHub ruleset desired state is now committed in-repo and can be applied or verified without reopening substrate work."
+    "Canonical_hmac one-button production remains PASS on unchanged main semantics.",
+    "GitHub branch protection / ruleset enforcement is now active on main for Kinrokin/KT via the committed desired-state ruleset."
   ],
   "overall_verdict": "PASS",
-  "posture_state": "P0_GREEN_FULL_ENGINEERING_COMPLETE_PENDING_PLATFORM_ENFORCEMENT",
+  "posture_state": "P0_GREEN_FULL_MAINLINE",
   "real_path_targets_checked": [
     "program.certify.canonical_hmac",
     "program.hat_demo",
     "program.red_assault.serious_v1",
     "safe-run:program.certify.canonical_hmac"
   ],
-  "release_decision": "NO_GO_FOR_LAWFULLY_ENFORCED_GREEN_PENDING_PLATFORM_ENFORCEMENT",
+  "release_decision": "GO_PRESS_BUTTON_PRODUCTION_ELIGIBLE",
   "repo_hygiene_status": "PASS",
   "schema_id": "kt.operator.runtime_closure_audit.v2",
   "status": "PASS",
-  "validated_head_sha": "4f1b12cd6283f7f5f53355cfab322103e4358b8a",
+  "validated_head_sha": "e21a4c9493faa8ffc04de293d910fee2d509e364",
   "validator_substance_checked": true
 }

@@ -85,6 +85,24 @@ def _api_request(*, method: str, path: str, token: str, body: Optional[Dict[str,
         return json.loads(raw)
 
 
+def _load_live_ruleset_details(*, owner: str, repo: str, token: str) -> Tuple[List[Dict[str, Any]], List[str]]:
+    attempted_api_calls = [f"GET /repos/{owner}/{repo}/rulesets"]
+    live_rulesets = _api_request(method="GET", path=f"/repos/{owner}/{repo}/rulesets", token=token)
+    rows = live_rulesets if isinstance(live_rulesets, list) else []
+    details: List[Dict[str, Any]] = []
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        ruleset_id = row.get("id")
+        if ruleset_id in (None, ""):
+            continue
+        attempted_api_calls.append(f"GET /repos/{owner}/{repo}/rulesets/{ruleset_id}")
+        detail = _api_request(method="GET", path=f"/repos/{owner}/{repo}/rulesets/{ruleset_id}", token=token)
+        if isinstance(detail, dict):
+            details.append(detail)
+    return details, attempted_api_calls
+
+
 def _required_status_checks(ruleset: Dict[str, Any]) -> List[str]:
     contexts: List[str] = []
     for rule in ruleset.get("rules", []):
@@ -183,14 +201,10 @@ def verify_ruleset(*, repo_slug: str, ruleset_path: str) -> Dict[str, Any]:
     receipt["desired_ruleset"] = _ruleset_summary(desired)
     try:
         repo_info = _api_request(method="GET", path=f"/repos/{owner}/{repo}", token=token)
-        live_rulesets = _api_request(method="GET", path=f"/repos/{owner}/{repo}/rulesets", token=token)
+        rulesets, attempted_api_calls = _load_live_ruleset_details(owner=owner, repo=repo, token=token)
         receipt["visibility"] = "PRIVATE" if bool(repo_info.get("private")) else "PUBLIC"
         receipt["default_branch"] = str(repo_info.get("default_branch", "")).strip()
-        receipt["attempted_api_calls"] = [
-            f"GET /repos/{owner}/{repo}",
-            f"GET /repos/{owner}/{repo}/rulesets",
-        ]
-        rulesets = live_rulesets if isinstance(live_rulesets, list) else []
+        receipt["attempted_api_calls"] = [f"GET /repos/{owner}/{repo}", *attempted_api_calls]
         matches: List[Dict[str, Any]] = []
         for row in rulesets:
             if not isinstance(row, dict):
@@ -222,10 +236,7 @@ def verify_ruleset(*, repo_slug: str, ruleset_path: str) -> Dict[str, Any]:
             message = str(parsed.get("message", body))
         except Exception:  # noqa: BLE001
             pass
-        receipt["attempted_api_calls"] = [
-            f"GET /repos/{owner}/{repo}",
-            f"GET /repos/{owner}/{repo}/rulesets",
-        ]
+        receipt["attempted_api_calls"] = [f"GET /repos/{owner}/{repo}", f"GET /repos/{owner}/{repo}/rulesets"]
         receipt["status"] = "BLOCKED"
         receipt["claim_admissible"] = False
         receipt["platform_block"] = {"http_status": int(exc.code), "message": message}
@@ -242,14 +253,10 @@ def apply_ruleset(*, repo_slug: str, ruleset_path: str) -> Dict[str, Any]:
     receipt["desired_ruleset"] = _ruleset_summary(desired)
     try:
         repo_info = _api_request(method="GET", path=f"/repos/{owner}/{repo}", token=token)
-        live_rulesets = _api_request(method="GET", path=f"/repos/{owner}/{repo}/rulesets", token=token)
+        rulesets, attempted_api_calls = _load_live_ruleset_details(owner=owner, repo=repo, token=token)
         receipt["visibility"] = "PRIVATE" if bool(repo_info.get("private")) else "PUBLIC"
         receipt["default_branch"] = str(repo_info.get("default_branch", "")).strip()
-        receipt["attempted_api_calls"] = [
-            f"GET /repos/{owner}/{repo}",
-            f"GET /repos/{owner}/{repo}/rulesets",
-        ]
-        rulesets = live_rulesets if isinstance(live_rulesets, list) else []
+        receipt["attempted_api_calls"] = [f"GET /repos/{owner}/{repo}", *attempted_api_calls]
         matching_row = None
         matching_id = None
         for row in rulesets:

@@ -1,13 +1,11 @@
 {
-  "claim_admissible": false,
-  "created_utc": "2026-03-08T23:19:16Z",
-  "external_blockers": [
-    "Branch protection / ruleset attachment on the private repo is still blocked by GitHub capability (Micro-order 1 external)."
-  ],
+  "claim_admissible": true,
+  "created_utc": "2026-03-09T00:25:10Z",
+  "external_blockers": [],
   "frozen_command": "python -m tools.operator.kt_cli --profile v1 --safe-run --assurance-mode production --program program.certify.canonical_hmac --config {}",
-  "global_claim_blocked_by_external": true,
+  "global_claim_blocked_by_external": false,
   "lawful_one_button_command_frozen": true,
-  "next_action": "Activate main-branch protection externally, then mint the final global GO receipt without changing the frozen canonical_hmac command.",
+  "next_action": "Lawful canonical_hmac one-button production is active and admissible under main branch protection.",
   "production_run": {
     "delivery_manifest": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run/program_run/delivery/delivery_manifest.json",
     "delivery_zip_path": "delivery/KT_DELIVERY_program_run.zip",
