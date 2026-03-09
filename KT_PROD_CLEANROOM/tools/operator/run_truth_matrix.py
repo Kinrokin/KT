@@ -82,6 +82,7 @@ def _clean_clone_operator_smoke(*, root: Path) -> Dict[str, Any]:
 def build_live_validation_index(*, root: Path, skip_clean_clone: bool) -> Dict[str, Any]:
     env = _env(root=root)
     checks: List[Dict[str, Any]] = []
+    constitution_report = str((Path(tempfile.gettempdir()) / "kt_constitution_guard_report.md").resolve())
 
     commands = [
         (
@@ -89,7 +90,7 @@ def build_live_validation_index(*, root: Path, skip_clean_clone: bool) -> Dict[s
             "canonical_runtime",
             True,
             False,
-            ["python", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tools/check_constitution.py"],
+            ["python", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tools/check_constitution.py", "--report", constitution_report],
             "constitutional guard passes with canonical runtime scope enforced",
         ),
         (
