@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
@@ -25,12 +26,25 @@ def _resolve_run_root(root: Path, value: str) -> Path:
     return path
 
 
+def _read_required_text(path: Path) -> str:
+    if not path.exists():
+        raise RuntimeError(f"FAIL_CLOSED: missing required text artifact: {path.as_posix()}")
+    return path.read_text(encoding="utf-8", errors="replace").strip()
+
+
+def _extract_head_from_verdict(verdict: str) -> str:
+    match = re.search(r"\bhead=([0-9a-f]{7,64})\b", verdict)
+    return str(match.group(1)).strip() if match else ""
+
+
 def mint_one_button_receipts(*, safe_run_root: Path, live_validation_index: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
-    safe_run_verdict = (safe_run_root / "verdict.txt").read_text(encoding="utf-8", errors="replace").strip()
+    safe_run_verdict = _read_required_text(safe_run_root / "verdict.txt")
     safe_run_preflight = _load_required(safe_run_root / "reports" / "operator_preflight.json")
+    safe_run_head = _read_required_text(safe_run_root / "git_head.txt")
     program_run = (safe_run_root / "program_run").resolve()
     nested_manifest = _load_required(program_run / "delivery" / "delivery_manifest.json")
-    nested_verdict = (program_run / "verdict.txt").read_text(encoding="utf-8", errors="replace").strip()
+    nested_verdict = _read_required_text(program_run / "verdict.txt")
+    nested_run_head = _read_required_text(program_run / "git_head.txt")
 
     live_head = str((live_validation_index.get("worktree") or {}).get("head_sha", "")).strip()
     branch_ref = str(live_validation_index.get("branch_ref", "")).strip()
@@ -44,43 +58,71 @@ def mint_one_button_receipts(*, safe_run_root: Path, live_validation_index: Dict
             suite_status = str(row.get("status", "")).strip() or "UNKNOWN"
             break
 
-    safe_run_ok = safe_run_preflight.get("status") == "PASS" and safe_run_verdict.startswith("KT_SAFE_RUN_PASS")
-    nested_ok = nested_verdict.startswith("KT_CERTIFY_PASS")
+    nested_verdict_head = _extract_head_from_verdict(nested_verdict)
+    head_lineage_match = bool(
+        live_head
+        and safe_run_head == live_head
+        and nested_run_head == live_head
+        and nested_verdict_head == live_head
+    )
+
+    safe_run_ok = (
+        safe_run_preflight.get("status") == "PASS"
+        and safe_run_verdict.startswith("KT_SAFE_RUN_PASS")
+        and safe_run_head == live_head
+    )
+    nested_ok = nested_verdict.startswith("KT_CERTIFY_PASS") and nested_run_head == live_head and nested_verdict_head == live_head
 
     preflight = {
         "schema_id": "kt.one_button_preflight_receipt.v2",
         "created_utc": generated_utc,
-        "status": "PASS" if safe_run_ok and suite_status == "PASS" else "FAIL",
+        "status": "PASS" if safe_run_ok and suite_status == "PASS" and head_lineage_match else "FAIL",
         "validated_head_sha": live_head,
         "branch_ref": branch_ref,
         "canonical_candidate_run_root": safe_run_root.as_posix(),
         "canonical_candidate_program_run_root": program_run.as_posix(),
         "safe_run_verdict": safe_run_verdict,
+        "safe_run_head_sha": safe_run_head,
+        "nested_run_head_sha": nested_run_head,
+        "nested_verdict_head_sha": nested_verdict_head,
+        "head_lineage_match": head_lineage_match,
         "operator_preflight_status": str(safe_run_preflight.get("status", "")).strip(),
         "current_worktree_cleanroom_suite_status": suite_status,
         "delivery_manifest": (program_run / "delivery" / "delivery_manifest.json").as_posix(),
-        "next_action": "canonical_hmac safe-run is current-head admissible" if safe_run_ok else "repair safe-run preflight or current-worktree cleanroom suite",
+        "next_action": (
+            "canonical_hmac safe-run is current-head admissible"
+            if safe_run_ok and suite_status == "PASS" and head_lineage_match
+            else "repair safe-run preflight, current-worktree cleanroom suite, or safe-run head lineage"
+        ),
     }
 
     production = {
         "schema_id": "kt.one_button_production_receipt.v2",
         "created_utc": generated_utc,
-        "status": "PASS" if safe_run_ok and nested_ok else "FAIL",
+        "status": "PASS" if safe_run_ok and nested_ok and head_lineage_match else "FAIL",
         "validated_head_sha": live_head,
         "branch_ref": branch_ref,
         "frozen_command": "python -m tools.operator.kt_cli --profile v1 safe-run --assurance-mode production --program program.certify.canonical_hmac --config {}",
         "production_run": {
             "safe_run_root": safe_run_root.as_posix(),
             "safe_run_verdict": safe_run_verdict,
+            "safe_run_head_sha": safe_run_head,
             "nested_run_root": program_run.as_posix(),
+            "nested_run_head_sha": nested_run_head,
             "nested_verdict": nested_verdict,
+            "nested_verdict_head_sha": nested_verdict_head,
             "delivery_manifest": (program_run / "delivery" / "delivery_manifest.json").as_posix(),
             "delivery_zip_path": str(nested_manifest.get("zip_path", "")).strip(),
             "delivery_zip_sha256": str(nested_manifest.get("zip_sha256", "")).strip(),
             "program_id": "program.certify.canonical_hmac",
             "safe_run_enforced": True,
+            "head_lineage_match": head_lineage_match,
         },
-        "next_action": "truth surfaces may claim production eligible on this head" if safe_run_ok and nested_ok else "repair nested canonical_hmac production path",
+        "next_action": (
+            "truth surfaces may claim production eligible on this head"
+            if safe_run_ok and nested_ok and head_lineage_match
+            else "repair nested canonical_hmac production path or safe-run head lineage"
+        ),
     }
     return {"preflight": preflight, "production": production}
 
