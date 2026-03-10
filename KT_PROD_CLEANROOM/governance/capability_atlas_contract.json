@@ -1,0 +1,24 @@
+{
+  "authority_refs": [
+    "KT_PROD_CLEANROOM/tools/router/run_router_hat_demo.py",
+    "KT_PROD_CLEANROOM/tools/tournament/run_tournament.py",
+    "KT_PROD_CLEANROOM/tools/merge/merge_evaluator.py",
+    "KT_PROD_CLEANROOM/policy_c/pressure_tensor.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_run_protocol_generator.py"
+  ],
+  "domain_id": "DOMAIN_3_CAPABILITY_ATLAS",
+  "effective_utc": "2026-03-10T00:00:00Z",
+  "expires_utc": "2026-09-10T00:00:00Z",
+  "law_id": "CAPABILITY_ATLAS_CONTRACT_V1_20260310",
+  "required_validators": [
+    "python -m tools.operator.constitutional_completion_emit"
+  ],
+  "rules": [
+    "Atlas claims must bind to canonical code, tests, or receipted policy surfaces.",
+    "Capability descriptions may not outrun available evidence refs."
+  ],
+  "schema_id": "kt.governance.capability_atlas_contract.v1",
+  "status": "ACTIVE",
+  "summary": "Capability atlas surfaces must remain evidence-bound, zone-aware, and pressure-oriented.",
+  "supersedes": []
+}

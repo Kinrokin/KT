@@ -15,6 +15,10 @@ This is a minimal spine that ties together operator workflow, governance anchors
 - Wrapper (Windows): `KT_PROD_CLEANROOM/tools/operator/kt.ps1`
 - Static viewer: `KT_PROD_CLEANROOM/tools/operator/ui/index.html`
 - HMAC key rotation runbook: `KT_PROD_CLEANROOM/docs/operator/HMAC_KEY_ROTATION.md`
+- Constitutional charter: `KT_PROD_CLEANROOM/docs/operator/KT_CONSTITUTIONAL_PROGRAM_CHARTER.md`
+- Constitutional completion program: `KT_PROD_CLEANROOM/docs/operator/KT_CONSTITUTIONAL_COMPLETION_PROGRAM.md`
+- Final constitutional completion blueprint: `KT_PROD_CLEANROOM/docs/operator/KT_FINAL_CONSTITUTIONAL_COMPLETION_BLUEPRINT.md`
+- Full-agent completion mandate: `KT_PROD_CLEANROOM/docs/operator/KT_FULL_AGENT_COMPLETION_MANDATE.md`
 
 ## Evidence Discipline
 - Run roots: `KT_PROD_CLEANROOM/exports/_runs/...` (WORM)

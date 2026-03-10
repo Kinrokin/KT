@@ -121,3 +121,4 @@ def test_settled_truth_receipt_becomes_settled_when_clean_clone_and_receipts_pas
 
     assert receipt["status"] == "SETTLED_AUTHORITATIVE"
     assert receipt["current_head_truth_source"] == "tmp/live_validation_index.json"
+    assert receipt["authoritative_current_pointer_ref"] == "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"

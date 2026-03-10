@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "evidence_refs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "schema_id": {
+      "const": "kt.capability_atlas.v1"
+    },
+    "status": {
+      "type": "string"
+    },
+    "topology": {
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "topology",
+    "evidence_refs"
+  ],
+  "schema_id": "kt.capability_atlas.schema.v1",
+  "title": "KT Capability Atlas",
+  "type": "object"
+}

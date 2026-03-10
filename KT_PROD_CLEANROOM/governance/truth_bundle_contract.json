@@ -1,0 +1,23 @@
+{
+  "schema_id": "kt.governance.truth_bundle_contract.v1",
+  "contract_id": "TRUTH_BUNDLE_CONTRACT_V1_20260310",
+  "effective_utc": "2026-03-10T00:00:00Z",
+  "expires_utc": "2026-09-10T00:00:00Z",
+  "supersedes": [],
+  "status": "ACTIVE",
+  "bundle_schema_ref": "KT_PROD_CLEANROOM/reports/truth_bundle.schema.json",
+  "required_fields": [
+    "truth_bundle_id",
+    "truth_bundle_hash",
+    "truth_subject_commit",
+    "truth_produced_at_commit",
+    "authority_level",
+    "posture_enum",
+    "zone_scope",
+    "freshness_contract_ref",
+    "validator_set",
+    "generated_utc",
+    "files"
+  ],
+  "immutability_rule": "A truth bundle hash may never be rewritten once published."
+}

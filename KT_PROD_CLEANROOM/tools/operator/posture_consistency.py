@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
-from tools.operator.titanium_common import load_json, repo_root
+from tools.operator.titanium_common import load_json, repo_root, write_json_stable
 from tools.operator.truth_engine import (
     CANONICAL_READY_FOR_REEARNED_GREEN,
     TRUTHFUL_GREEN,
@@ -317,7 +317,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             live_validation_index_rel=str(args.live_validation_index),
             report_root_rel=str(args.report_root),
         )
-        out_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        write_json_stable(out_path, report)
         print(json.dumps(report, sort_keys=True, ensure_ascii=True))
         return 0
     except Exception as exc:  # noqa: BLE001
@@ -327,7 +327,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             "message": str(exc),
             "expected_posture": str(args.expected_posture),
         }
-        out_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        write_json_stable(out_path, report)
         print(str(exc))
         return 2
 

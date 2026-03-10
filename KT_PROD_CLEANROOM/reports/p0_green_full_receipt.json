@@ -1,17 +1,20 @@
 {
-  "blockers": [
-    "DIRTY_WORKTREE"
-  ],
+  "branch_ref": "main",
   "claim": "TRUTHFUL_GREEN",
-  "claim_admissible": false,
-  "created_utc": "2026-03-09T19:24:32Z",
-  "current_truthful_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
-  "schema_id": "kt.p0_green_full_receipt.v2",
-  "status": "SUPERSEDED",
-  "superseded_by": [
-    "KT_PROD_CLEANROOM/reports/live_validation_index.json",
-    "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
-    "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json"
+  "claim_admissible": true,
+  "created_utc": "2026-03-09T22:23:39Z",
+  "head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97",
+  "lawful_green_claim_admissible": true,
+  "main_branch_protection_receipt": "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
+  "may_claim_now": [
+    "truthful green active on current head",
+    "canonical_hmac one-button production eligible",
+    "current truth surfaces synchronized"
   ],
-  "validated_head_sha": "4cf1b9d100f8699fa192d6a5409c69bc6e94761d"
+  "may_not_claim_yet": [],
+  "one_button_preflight_receipt": "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
+  "one_button_production_receipt": "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
+  "schema_id": "kt.p0_green_full_receipt.v2",
+  "status": "PASS",
+  "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
 }

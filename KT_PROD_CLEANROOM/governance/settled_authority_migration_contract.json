@@ -1,0 +1,20 @@
+{
+  "schema_id": "kt.governance.settled_authority_migration_contract.v1",
+  "contract_id": "SETTLED_AUTHORITY_MIGRATION_CONTRACT_V1_20260310",
+  "effective_utc": "2026-03-10T00:00:00Z",
+  "expires_utc": "2026-09-10T00:00:00Z",
+  "supersedes": [],
+  "status": "ACTIVE",
+  "migration_rule": "TRANSITIONAL authority becomes SETTLED only when the same truth subject commit has clean-clone proof, publication receipts, a generated current pointer, and a board-authorized current truth source.",
+  "required_inputs": [
+    "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+    "KT_PROD_CLEANROOM/reports/truth_publication_receipt.json",
+    "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json",
+    "KT_PROD_CLEANROOM/governance/execution_board.json"
+  ],
+  "required_outputs": [
+    "KT_PROD_CLEANROOM/reports/settled_authority_promotion_receipt.json",
+    "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
+  ],
+  "board_gate": "TRUTH_PUBLICATION_STABILIZED"
+}

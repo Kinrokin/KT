@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
 from tools.operator.truth_authority import path_ref
-from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z
+from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
 
 
 TRUTH_DEFECTS_PRESENT = "TRUTH_DEFECTS_PRESENT"
@@ -249,10 +249,11 @@ def build_truth_receipts(*, root: Path, live_validation_index_path: Path, report
     current_claim = str(current_state.get("posture_state") or current_state.get("current_p0_state") or "").strip()
     audit_claim = str(runtime_audit.get("posture_state") or runtime_audit.get("current_state") or "").strip()
     live_state = derive_live_validation_state(index)
+    generated_utc = str(index.get("generated_utc", "")).strip() or utc_now_iso_z()
 
     enforcement = {
         "schema_id": "kt.operator.posture_consistency_enforcement_receipt.v1",
-        "generated_utc": utc_now_iso_z(),
+        "generated_utc": generated_utc,
         "status": conflict_status,
         "derived_state": derived_state,
         "live_validation_state": live_state,
@@ -270,7 +271,7 @@ def build_truth_receipts(*, root: Path, live_validation_index_path: Path, report
 
     conflict_receipt = {
         "schema_id": "kt.operator.posture_conflict_receipt.v1",
-        "generated_utc": utc_now_iso_z(),
+        "generated_utc": generated_utc,
         "status": conflict_status,
         "derived_state": derived_state,
         "live_validation_state": live_state,
@@ -302,16 +303,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     receipts = build_truth_receipts(root=root, live_validation_index_path=index_path, report_root_rel=str(args.report_root))
-    (out_dir / "posture_consistency_enforcement_receipt.json").write_text(
-        json.dumps(receipts["enforcement"], indent=2, sort_keys=True, ensure_ascii=True) + "\n",
-        encoding="utf-8",
-        newline="\n",
-    )
-    (out_dir / "posture_conflict_receipt.json").write_text(
-        json.dumps(receipts["conflicts"], indent=2, sort_keys=True, ensure_ascii=True) + "\n",
-        encoding="utf-8",
-        newline="\n",
-    )
+    write_json_stable(out_dir / "posture_consistency_enforcement_receipt.json", receipts["enforcement"])
+    write_json_stable(out_dir / "posture_conflict_receipt.json", receipts["conflicts"])
     print(json.dumps(receipts["enforcement"], sort_keys=True, ensure_ascii=True))
     return 0 if receipts["enforcement"]["status"] == "PASS" else 2
 

@@ -1,7 +1,11 @@
 {
   "schema_id": "kt.governance.settled_truth_source_contract.v1",
   "contract_id": "SETTLED_TRUTH_SOURCE_CONTRACT_V1_20260309",
-  "current_head_truth_root": "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+  "effective_utc": "2026-03-09T00:00:00Z",
+  "expires_utc": "2026-09-10T00:00:00Z",
+  "supersedes": [],
+  "current_head_truth_root": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+  "supporting_tracked_truth_index": "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
   "required_evidence_inputs": [
     "KT_PROD_CLEANROOM/reports/live_validation_index.json",
     "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
@@ -25,7 +29,12 @@
     "docs/**",
     "KT-Codex/**",
     "KT_TEMPLE_ROOT/**",
-    "KT_PROD_CLEANROOM/05_QUARANTINE/**"
+    "KT_PROD_CLEANROOM/05_QUARANTINE/**",
+    "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+    "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
+    "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
+    "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json"
   ],
   "status": "ACTIVE"
 }

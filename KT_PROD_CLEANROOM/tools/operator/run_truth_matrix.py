@@ -9,7 +9,7 @@ import tempfile
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
-from tools.operator.titanium_common import repo_root, utc_now_iso_z
+from tools.operator.titanium_common import repo_root, utc_now_iso_z, write_json_stable
 
 
 def _git(*, root: Path, args: Sequence[str]) -> str:
@@ -40,6 +40,9 @@ def _record(
     output: str,
     summary: str,
 ) -> None:
+    observed = output.strip().splitlines()[-1] if output.strip() else ""
+    if rc == 0:
+        observed = summary
     row: Dict[str, Any] = {
         "check_id": check_id,
         "scope": scope,
@@ -48,7 +51,7 @@ def _record(
         "status": "PASS" if rc == 0 else "FAIL",
         "summary": summary,
         "command": command,
-        "observed": output.strip().splitlines()[-1] if output.strip() else "",
+        "observed": observed,
     }
     if rc != 0:
         row["output_tail"] = output.strip().splitlines()[-20:]
@@ -237,8 +240,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if not out_path.is_absolute():
         out_path = (root / out_path).resolve()
     index = build_live_validation_index(root=root, skip_clean_clone=bool(args.skip_clean_clone))
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(index, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8", newline="\n")
+    write_json_stable(out_path, index)
     critical_fails = [
         row
         for row in index.get("checks", [])

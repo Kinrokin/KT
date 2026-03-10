@@ -1,0 +1,42 @@
+{
+  "generated_utc": "2026-03-10T13:29:07Z",
+  "rows": [
+    {
+      "authority_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
+      "case_id": "R01",
+      "expected_adapter_ids": [
+        "lobe.censor.v1",
+        "lobe.quant.v1"
+      ],
+      "expected_domain_tag": "math"
+    },
+    {
+      "authority_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
+      "case_id": "R02",
+      "expected_adapter_ids": [
+        "lobe.muse.v1"
+      ],
+      "expected_domain_tag": "poetry"
+    },
+    {
+      "authority_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
+      "case_id": "R03",
+      "expected_adapter_ids": [
+        "lobe.auditor.v1",
+        "lobe.censor.v1"
+      ],
+      "expected_domain_tag": "governance"
+    },
+    {
+      "authority_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
+      "case_id": "R04",
+      "expected_adapter_ids": [
+        "lobe.strategist.v1"
+      ],
+      "expected_domain_tag": "default"
+    }
+  ],
+  "schema_id": "kt.routing_delta_matrix.v1",
+  "status": "ACTIVE",
+  "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
+}

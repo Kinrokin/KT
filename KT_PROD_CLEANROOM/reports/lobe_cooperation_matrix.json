@@ -1,0 +1,42 @@
+{
+  "generated_utc": "2026-03-10T13:29:07Z",
+  "rows": [
+    {
+      "authority_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
+      "paired_with": [
+        "lobe.censor.v1"
+      ],
+      "primary_lobe": "lobe.auditor.v1",
+      "relationship": "required_guard"
+    },
+    {
+      "authority_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
+      "paired_with": [],
+      "primary_lobe": "lobe.censor.v1",
+      "relationship": "solo_or_default"
+    },
+    {
+      "authority_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
+      "paired_with": [],
+      "primary_lobe": "lobe.muse.v1",
+      "relationship": "solo_or_default"
+    },
+    {
+      "authority_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
+      "paired_with": [
+        "lobe.censor.v1"
+      ],
+      "primary_lobe": "lobe.quant.v1",
+      "relationship": "required_guard"
+    },
+    {
+      "authority_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
+      "paired_with": [],
+      "primary_lobe": "lobe.strategist.v1",
+      "relationship": "solo_or_default"
+    }
+  ],
+  "schema_id": "kt.lobe_cooperation_matrix.v1",
+  "status": "ACTIVE",
+  "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
+}

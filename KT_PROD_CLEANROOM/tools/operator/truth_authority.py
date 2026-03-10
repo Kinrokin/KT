@@ -8,6 +8,7 @@ from tools.operator.titanium_common import utc_now_iso_z
 
 SETTLED_AUTHORITATIVE = "SETTLED_AUTHORITATIVE"
 TRANSITIONAL_AUTHORITATIVE = "TRANSITIONAL_AUTHORITATIVE"
+CURRENT_POINTER_REL = "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
 
 
 def path_ref(*, root: Path, path: Path) -> str:
@@ -109,6 +110,7 @@ def build_settled_truth_source_receipt(
     branch_ref = str(index.get("branch_ref", "")).strip()
     status = authority_status(index=index, enforcement=enforcement, conflicts=conflicts)
     blockers = open_blockers(index=index, enforcement=enforcement, conflicts=conflicts)
+    generated_utc = str(index.get("generated_utc", "")).strip() or utc_now_iso_z()
     active_surfaces = [
         f"{report_root_rel}/current_state_receipt.json",
         f"{report_root_rel}/runtime_closure_audit.json",
@@ -118,10 +120,11 @@ def build_settled_truth_source_receipt(
     ]
     return {
         "schema_id": "kt.operator.settled_truth_source_receipt.v1",
-        "generated_utc": utc_now_iso_z(),
+        "generated_utc": generated_utc,
         "status": status,
         "branch_ref": branch_ref,
         "pinned_head_sha": live_head,
+        "authoritative_current_pointer_ref": CURRENT_POINTER_REL,
         "current_head_truth_source": path_ref(root=root, path=live_validation_index_path),
         "derived_posture_state": str(enforcement.get("derived_state", "")).strip(),
         "worktree_dirty": bool(worktree.get("git_dirty")),
@@ -136,6 +139,8 @@ def build_settled_truth_source_receipt(
             "KT_PROD_CLEANROOM/governance/truth_supersession_rules.json",
             "KT_PROD_CLEANROOM/governance/truth_freshness_windows.json",
             "KT_PROD_CLEANROOM/governance/truth_invalidation_rules.json",
+            "KT_PROD_CLEANROOM/governance/truth_publication_contract.json",
+            "KT_PROD_CLEANROOM/governance/tracked_vs_generated_truth_boundary.json",
         ],
         "tracked_truth_heads": {
             "live_validation_index": _head_from(index),
@@ -159,7 +164,8 @@ def build_truth_supersession_receipt(
     conflicts: Dict[str, Any],
 ) -> Dict[str, Any]:
     live_head = _head_from(index)
-    active_truth_root = f"{report_root_rel}/settled_truth_source_receipt.json"
+    active_truth_root = CURRENT_POINTER_REL
+    generated_utc = str(index.get("generated_utc", "")).strip() or utc_now_iso_z()
     superseded: List[Dict[str, Any]] = []
     candidates = {
         f"{report_root_rel}/live_validation_index.json": index,
@@ -185,10 +191,11 @@ def build_truth_supersession_receipt(
 
     return {
         "schema_id": "kt.operator.truth_supersession_receipt.v1",
-        "generated_utc": utc_now_iso_z(),
+        "generated_utc": generated_utc,
         "status": "PASS",
         "current_head_truth_source": path_ref(root=root, path=live_validation_index_path),
         "active_truth_root": active_truth_root,
+        "supporting_tracked_truth_index": f"{report_root_rel}/settled_truth_source_receipt.json",
         "authority_status": authority_status(index=index, enforcement=enforcement, conflicts=conflicts),
         "derived_posture_state": str(enforcement.get("derived_state", "")).strip(),
         "superseded_surfaces": superseded,

@@ -1,0 +1,23 @@
+{
+  "generated_utc": "2026-03-10T13:29:07Z",
+  "required_test_refs": [
+    "KT_PROD_CLEANROOM/tools/growth/crucibles/tests/test_crucible_registry.py",
+    "KT_PROD_CLEANROOM/tools/growth/crucibles/tests/test_crucible_runner.py",
+    "KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_sweep_runner_integration.py",
+    "KT_PROD_CLEANROOM/tests/policy_c/test_drift_guard.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_epic15_tournament_runner.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_epic15_merge_evaluator.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_epic19_router_hat_demo.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_fl3_rollback_drill.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_fl4_promotion_atomic.py"
+  ],
+  "required_validator_commands": [
+    "python -m pytest -q KT_PROD_CLEANROOM/tools/growth/crucibles/tests/test_crucible_registry.py KT_PROD_CLEANROOM/tools/growth/crucibles/tests/test_crucible_runner.py",
+    "python -m pytest -q KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_sweep_runner_integration.py KT_PROD_CLEANROOM/tests/policy_c/test_drift_guard.py",
+    "python -m pytest -q KT_PROD_CLEANROOM/tests/fl3/test_epic15_tournament_runner.py KT_PROD_CLEANROOM/tests/fl3/test_epic15_merge_evaluator.py KT_PROD_CLEANROOM/tests/fl3/test_epic19_router_hat_demo.py KT_PROD_CLEANROOM/tests/fl3/test_fl3_rollback_drill.py KT_PROD_CLEANROOM/tests/fl3/test_fl4_promotion_atomic.py"
+  ],
+  "schema_id": "kt.governance.revalidation_receipt.v1",
+  "statement": "Promotion civilization remains ratified only while its canonical validation set stays green.",
+  "status": "PASS",
+  "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
+}

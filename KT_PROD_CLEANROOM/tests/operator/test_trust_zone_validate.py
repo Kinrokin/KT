@@ -22,7 +22,7 @@ def _seed_governance(root: Path, *, readiness_excludes: list[str]) -> None:
                 {"zone_id": "LAB", "include": ["KT_PROD_CLEANROOM/03_SYNTHESIS_LAB/**"], "exclude": []},
                 {"zone_id": "ARCHIVE", "include": ["KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/**"], "exclude": []},
                 {"zone_id": "COMMERCIAL", "include": ["docs/**"], "exclude": []},
-                {"zone_id": "GENERATED_RUNTIME_TRUTH", "include": ["KT_PROD_CLEANROOM/reports/**"], "exclude": []},
+                {"zone_id": "GENERATED_RUNTIME_TRUTH", "include": ["KT_PROD_CLEANROOM/reports/**", "KT_PROD_CLEANROOM/exports/_truth/**"], "exclude": []},
                 {"zone_id": "QUARANTINED", "include": ["KT_PROD_CLEANROOM/05_QUARANTINE/**", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/tools/**"], "exclude": []},
             ],
         },
@@ -32,7 +32,7 @@ def _seed_governance(root: Path, *, readiness_excludes: list[str]) -> None:
         {
             "schema_id": "kt.governance.canonical_scope_manifest.v2",
             "canonical_primary_surfaces": ["KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/**", "KT_PROD_CLEANROOM/governance/**"],
-            "generated_truth_surfaces": ["KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json"],
+            "generated_truth_surfaces": ["KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json", "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json"],
             "documentary_only_surfaces": ["docs/**"],
             "quarantined_from_canonical_truth": ["KT_PROD_CLEANROOM/05_QUARANTINE/**", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/tools/**"],
         },
@@ -70,14 +70,14 @@ def _seed_governance(root: Path, *, readiness_excludes: list[str]) -> None:
         gov / "settled_truth_source_contract.json",
         {
             "schema_id": "kt.governance.settled_truth_source_contract.v1",
-            "current_head_truth_root": "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+            "current_head_truth_root": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
         },
     )
     _write_json(
         gov / "execution_board.json",
         {
             "schema_id": "kt.governance.execution_board.v2",
-            "authoritative_current_head_truth_source": "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+            "authoritative_current_head_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
         },
     )
 

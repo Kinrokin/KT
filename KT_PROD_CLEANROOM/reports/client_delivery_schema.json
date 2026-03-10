@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "customer_delivery_receipt_ref": {
+      "type": "string"
+    },
+    "delivery_profile": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.client_delivery_contract.v1"
+    },
+    "truth_pointer_ref": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "delivery_profile",
+    "truth_pointer_ref",
+    "customer_delivery_receipt_ref"
+  ],
+  "schema_id": "kt.client_delivery_schema.v1",
+  "title": "KT Client Delivery Contract",
+  "type": "object"
+}

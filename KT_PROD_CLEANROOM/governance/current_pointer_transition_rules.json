@@ -1,0 +1,17 @@
+{
+  "schema_id": "kt.governance.current_pointer_transition_rules.v1",
+  "rules_id": "CURRENT_POINTER_TRANSITION_RULES_V1_20260310",
+  "effective_utc": "2026-03-10T00:00:00Z",
+  "expires_utc": "2026-09-10T00:00:00Z",
+  "supersedes": [],
+  "status": "ACTIVE",
+  "current_pointer_ref": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+  "transition_requirements": [
+    "new bundle exists and validates",
+    "truth_publication_receipt exists",
+    "truth_publication_supersession_receipt exists",
+    "truth_publication_stabilization_receipt exists",
+    "execution_board.authoritative_current_head_truth_source equals current_pointer_ref"
+  ],
+  "forbidden_transition": "No operator may change the current pointer through ad hoc file writes outside publication tooling."
+}

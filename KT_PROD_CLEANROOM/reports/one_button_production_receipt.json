@@ -1,24 +1,20 @@
 {
-  "claim_admissible": true,
-  "created_utc": "2026-03-09T00:25:10Z",
-  "external_blockers": [],
-  "frozen_command": "python -m tools.operator.kt_cli --profile v1 --safe-run --assurance-mode production --program program.certify.canonical_hmac --config {}",
-  "global_claim_blocked_by_external": false,
-  "lawful_one_button_command_frozen": true,
-  "next_action": "Lawful canonical_hmac one-button production is active and admissible under main branch protection.",
+  "branch_ref": "main",
+  "created_utc": "2026-03-09T22:23:39Z",
+  "frozen_command": "python -m tools.operator.kt_cli --profile v1 safe-run --assurance-mode production --program program.certify.canonical_hmac --config {}",
+  "next_action": "truth surfaces may claim production eligible on this head",
   "production_run": {
-    "delivery_manifest": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run/program_run/delivery/delivery_manifest.json",
-    "delivery_zip_path": "delivery/KT_DELIVERY_program_run.zip",
-    "delivery_zip_sha256": "c9ff59796cb80cb8293f9ba85a1c7a764c3de25a4b5bddee463abbbf53d5d2ba",
-    "nested_run_root": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run/program_run",
+    "delivery_manifest": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run/program_run/delivery/delivery_manifest.json",
+    "delivery_zip_path": "",
+    "delivery_zip_sha256": "",
+    "nested_run_root": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run/program_run",
     "nested_verdict": "KT_CERTIFY_PASS cmd=certify lane=canonical_hmac profile=v1 allow_dirty=0 head=abf00e56afc781cef862442d154a2eb1537c4ece law=d59e7ee82b96c67c0c91f81cfd02eab0139034f4cd5ee6f762ef284824b3444b suite=a1d21d415568931778b718827c278918529af8490a1b456ba97f27a9a18be8fc sweep_sha256=d269ef220443cba28ca10bd2dd7abe0e576a27bdde5e4fd9d46e53595b9172ca",
     "program_id": "program.certify.canonical_hmac",
     "safe_run_enforced": true,
-    "safe_run_root": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run",
-    "safe_run_verdict": "KT_SAFE_RUN_PASS cmd=safe-run profile=v1 assurance_mode=production program_id=program.certify.canonical_hmac nested_run=D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run/program_run",
-    "sweep_summary": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run/program_run/sweeps/CANONICAL_HMAC/sweep_summary.json"
+    "safe_run_root": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run",
+    "safe_run_verdict": "KT_SAFE_RUN_PASS cmd=safe-run profile=v1 assurance_mode=production program_id=program.certify.canonical_hmac nested_run=D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run/program_run"
   },
-  "schema_id": "kt.one_button_production_receipt.v1",
-  "scope": "MICRO_ORDER_2_CANONICAL_HMAC_INTERNAL_CLEARANCE",
-  "status": "PASS"
+  "schema_id": "kt.one_button_production_receipt.v2",
+  "status": "PASS",
+  "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
 }

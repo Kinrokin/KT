@@ -1,0 +1,33 @@
+{
+  "schema_id": "kt.governance.tracked_vs_generated_truth_boundary.v1",
+  "boundary_id": "TRACKED_VS_GENERATED_TRUTH_BOUNDARY_V1_20260310",
+  "effective_utc": "2026-03-10T00:00:00Z",
+  "expires_utc": "2026-09-10T00:00:00Z",
+  "supersedes": [],
+  "status": "ACTIVE",
+  "generated_authoritative_surfaces": [
+    "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+    "KT_PROD_CLEANROOM/exports/_truth/current/current_bundle_manifest.json",
+    "KT_PROD_CLEANROOM/exports/_truth/bundles/**"
+  ],
+  "tracked_documentary_surfaces": [
+    "KT_PROD_CLEANROOM/reports/live_validation_index.json",
+    "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+    "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
+    "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
+    "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json",
+    "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+    "KT_PROD_CLEANROOM/reports/truth_supersession_receipt.json"
+  ],
+  "tracked_allowed_indexes": [
+    "KT_PROD_CLEANROOM/reports/truth_bundle.schema.json",
+    "KT_PROD_CLEANROOM/reports/truth_bundle_catalog.json",
+    "KT_PROD_CLEANROOM/reports/truth_pointer_index.json",
+    "KT_PROD_CLEANROOM/reports/truth_publication_receipt.json",
+    "KT_PROD_CLEANROOM/reports/truth_snapshot_manifest.json",
+    "KT_PROD_CLEANROOM/reports/truth_clean_state_receipt.json",
+    "KT_PROD_CLEANROOM/reports/truth_publication_supersession_receipt.json",
+    "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json"
+  ]
+}

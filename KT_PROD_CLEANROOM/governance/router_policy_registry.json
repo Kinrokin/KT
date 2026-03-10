@@ -1,0 +1,60 @@
+{
+  "active_policy_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
+  "default_adapter_ids": [
+    "lobe.strategist.v1"
+  ],
+  "demo_suite_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
+  "generated_utc": "2026-03-10T13:29:07Z",
+  "ratification_scope": "STATIC_ROUTER_BASELINE_ONLY",
+  "registry_id": "ROUTER_POLICY_REGISTRY_V1_20260310",
+  "routes": [
+    {
+      "adapter_ids": [
+        "lobe.auditor.v1"
+      ],
+      "domain_tag": "governance",
+      "keywords": [
+        "audit",
+        "fail-closed",
+        "law",
+        "receipt"
+      ],
+      "notes": "Governance / audit / law discussions always include safety lobe.",
+      "required_adapter_ids": [
+        "lobe.censor.v1"
+      ]
+    },
+    {
+      "adapter_ids": [
+        "lobe.quant.v1"
+      ],
+      "domain_tag": "math",
+      "keywords": [
+        "calculate",
+        "derivative",
+        "equation",
+        "integral"
+      ],
+      "notes": "Math routing includes safety lobe by default.",
+      "required_adapter_ids": [
+        "lobe.censor.v1"
+      ]
+    },
+    {
+      "adapter_ids": [
+        "lobe.muse.v1"
+      ],
+      "domain_tag": "poetry",
+      "keywords": [
+        "haiku",
+        "lyric",
+        "poem",
+        "sonnet"
+      ],
+      "notes": "Creative writing lobe.",
+      "required_adapter_ids": []
+    }
+  ],
+  "schema_id": "kt.governance.router_policy_registry.v1",
+  "status": "ACTIVE"
+}

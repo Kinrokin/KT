@@ -1,0 +1,51 @@
+{
+  "authority_refs": [
+    "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
+    "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
+  ],
+  "generated_utc": "2026-03-10T13:29:07Z",
+  "integration_mode": "deterministic_policy_overlay",
+  "schema_id": "kt.risk_adjusted_route_receipt.v1",
+  "selected_routes": [
+    {
+      "authority_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
+      "case_id": "R01",
+      "domain_tag": "math",
+      "risk_adjusted_utility": 0.46,
+      "selected_adapter_ids": [
+        "lobe.censor.v1",
+        "lobe.quant.v1"
+      ]
+    },
+    {
+      "authority_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
+      "case_id": "R02",
+      "domain_tag": "poetry",
+      "risk_adjusted_utility": 0.82,
+      "selected_adapter_ids": [
+        "lobe.muse.v1"
+      ]
+    },
+    {
+      "authority_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
+      "case_id": "R03",
+      "domain_tag": "governance",
+      "risk_adjusted_utility": 0.19,
+      "selected_adapter_ids": [
+        "lobe.auditor.v1",
+        "lobe.censor.v1"
+      ]
+    },
+    {
+      "authority_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
+      "case_id": "R04",
+      "domain_tag": "default",
+      "risk_adjusted_utility": 0.71,
+      "selected_adapter_ids": [
+        "lobe.strategist.v1"
+      ]
+    }
+  ],
+  "status": "PASS",
+  "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
+}

@@ -1,0 +1,20 @@
+{
+  "authority_refs": [
+    "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+    "KT_PROD_CLEANROOM/reports/current_state_receipt.json"
+  ],
+  "domain_id": "DOMAIN_6_EXTERNAL_LEGIBILITY",
+  "effective_utc": "2026-03-10T00:00:00Z",
+  "expires_utc": "2026-09-10T00:00:00Z",
+  "law_id": "PUBLIC_VERIFIER_RULES_V1_20260310",
+  "required_validators": [
+    "python -m tools.operator.constitutional_completion_emit"
+  ],
+  "rules": [
+    "Public verifier manifests may reference authoritative pointers, state receipts, and branch protection evidence only."
+  ],
+  "schema_id": "kt.governance.public_verifier_rules.v1",
+  "status": "ACTIVE",
+  "summary": "Public verifier surfaces expose enough truth to verify posture without exposing private crown-jewel state.",
+  "supersedes": []
+}

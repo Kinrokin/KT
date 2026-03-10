@@ -1,27 +1,199 @@
 {
-  "schema_id": "kt.governance.governance_surface_expiration_rules.v1",
   "rules_id": "GOVERNANCE_SURFACE_EXPIRATION_RULES_V1_20260309",
+  "schema_id": "kt.governance.governance_surface_expiration_rules.v1",
+  "status": "ACTIVE",
   "surfaces": [
     {
-      "path": "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
-      "max_age_hours": 168
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/trust_zone_registry.json"
     },
     {
-      "path": "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
-      "max_age_hours": 168
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json"
     },
     {
-      "path": "KT_PROD_CLEANROOM/governance/execution_board.json",
-      "max_age_hours": 24
+      "max_age_hours": 24,
+      "path": "KT_PROD_CLEANROOM/governance/execution_board.json"
     },
     {
-      "path": "KT_PROD_CLEANROOM/governance/canonical_freeze_manifest.json",
-      "max_age_hours": 168
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/canonical_freeze_manifest.json"
     },
     {
-      "path": "KT_PROD_CLEANROOM/governance/amendment_scope_manifest.json",
-      "max_age_hours": 168
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/amendment_scope_manifest.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/truth_publication_contract.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/settled_authority_migration_contract.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/truth_snapshot_retention_rules.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/truth_publication_cleanliness_rules.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/tracked_vs_generated_truth_boundary.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/truth_bundle_contract.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/truth_pointer_rules.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/current_pointer_transition_rules.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/promotion_engine_law.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/crucible_lifecycle_law.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/adapter_lifecycle_law.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/tournament_law.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/merge_law.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/router_promotion_law.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/lobe_promotion_law.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/rollback_law.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/revalidation_law.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/retirement_law.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/crucible_registry.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/router_policy_registry.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/lobe_role_registry.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/capability_atlas_contract.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/capability_dimension_registry.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/pressure_response_taxonomy.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/failure_mode_taxonomy.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/capability_evidence_binding_rules.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/constitutional_court_contract.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/amendment_law.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/appeal_law.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/dissent_law.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/precedent_registry_rules.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/constitutional_review_triggers.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/economic_truth_plane_contract.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/routing_economic_integration_rules.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/escalation_cost_rules.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/compute_allocation_rules.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/risk_adjusted_utility_rules.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/external_legibility_contract.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/public_verifier_rules.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/deployment_profile_rules.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/documentary_authority_label_rules.json"
+    },
+    {
+      "max_age_hours": 168,
+      "path": "KT_PROD_CLEANROOM/governance/external_packet_sanitization_rules.json"
     }
-  ],
-  "status": "ACTIVE"
+  ]
 }

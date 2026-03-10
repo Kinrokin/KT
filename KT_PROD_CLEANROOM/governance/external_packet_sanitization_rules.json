@@ -1,0 +1,20 @@
+{
+  "authority_refs": [
+    "KT_PROD_CLEANROOM/tools/delivery/generate_delivery_pack.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_delivery_pack_generator.py"
+  ],
+  "domain_id": "DOMAIN_6_EXTERNAL_LEGIBILITY",
+  "effective_utc": "2026-03-10T00:00:00Z",
+  "expires_utc": "2026-09-10T00:00:00Z",
+  "law_id": "EXTERNAL_PACKET_SANITIZATION_RULES_V1_20260310",
+  "required_validators": [
+    "python -m tools.operator.constitutional_completion_emit"
+  ],
+  "rules": [
+    "Delivery packets must pass secret scanning and redact unsafe surfaces."
+  ],
+  "schema_id": "kt.governance.external_packet_sanitization_rules.v1",
+  "status": "ACTIVE",
+  "summary": "External packets must be sanitized and delivery-safe.",
+  "supersedes": []
+}

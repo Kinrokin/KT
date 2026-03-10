@@ -1,0 +1,22 @@
+{
+  "generated_utc": "2026-03-10T13:29:07Z",
+  "profiles": [
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
+      "profile_id": "canonical_operator_safe_run",
+      "program_id": "program.safe_run"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/operator/truth_surface_sync.py",
+      "profile_id": "truth_publication_operator",
+      "program_id": "program.truth.surface_sync"
+    },
+    {
+      "implementation_path": "KT_PROD_CLEANROOM/tools/delivery/delivery_contract_validator.py",
+      "profile_id": "delivery_pack_generation",
+      "program_id": "program.delivery.contract.validate"
+    }
+  ],
+  "schema_id": "kt.deployment_profiles.v1",
+  "status": "ACTIVE"
+}

@@ -1,0 +1,53 @@
+{
+  "properties": {
+    "authority_level": {
+      "type": "string"
+    },
+    "files": {
+      "type": "array"
+    },
+    "generated_utc": {
+      "type": "string"
+    },
+    "posture_enum": {
+      "type": "string"
+    },
+    "supersedes": {
+      "type": "string"
+    },
+    "truth_bundle_hash": {
+      "type": "string"
+    },
+    "truth_bundle_id": {
+      "type": "string"
+    },
+    "truth_produced_at_commit": {
+      "type": "string"
+    },
+    "truth_subject_commit": {
+      "type": "string"
+    },
+    "validator_set": {
+      "type": "array"
+    },
+    "zone_scope": {
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_id",
+    "truth_bundle_id",
+    "truth_bundle_hash",
+    "truth_subject_commit",
+    "truth_produced_at_commit",
+    "authority_level",
+    "posture_enum",
+    "zone_scope",
+    "freshness_contract_ref",
+    "validator_set",
+    "generated_utc",
+    "files"
+  ],
+  "schema_id": "kt.operator.truth_bundle.schema.v1",
+  "status": "ACTIVE"
+}

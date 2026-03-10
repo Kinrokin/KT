@@ -34,3 +34,8 @@ KT exists to execute under law, evolve under law, prove its own improvement unde
 - `KT_PROD_CLEANROOM/governance/amendment_scope_manifest.json`
 - `KT_PROD_CLEANROOM/governance/execution_board.json`
 - `KT_PROD_CLEANROOM/governance/governance_surface_expiration_rules.json`
+
+## Completion Order
+
+- `KT_PROD_CLEANROOM/docs/operator/KT_CONSTITUTIONAL_COMPLETION_PROGRAM.md`
+- `KT_PROD_CLEANROOM/docs/operator/KT_FINAL_CONSTITUTIONAL_COMPLETION_BLUEPRINT.md`

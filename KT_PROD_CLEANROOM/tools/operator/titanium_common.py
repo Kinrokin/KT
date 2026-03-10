@@ -8,7 +8,7 @@ import platform
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Sequence
 
 from tools.canonicalize.kt_canonicalize import canonicalize_bytes, sha256_hex
 from tools.verification.fl3_canonical import repo_root_from
@@ -32,6 +32,8 @@ EXIT_CODES: Dict[str, int] = {
     "LEDGER_CHAIN_INVALID": 60,
     "GOD_STATUS_HOLD": 70,
 }
+
+VOLATILE_JSON_KEYS = frozenset({"created_utc", "generated_utc"})
 
 
 def utc_now_iso_z() -> str:
@@ -70,6 +72,35 @@ def load_json(path: Path) -> Dict[str, Any]:
     if not isinstance(obj, dict):
         raise RuntimeError(f"FAIL_CLOSED: expected JSON object: {path.as_posix()}")
     return obj
+
+
+def _normalize_json_for_compare(value: Any, *, volatile_keys: Sequence[str]) -> Any:
+    volatile = {str(item) for item in volatile_keys}
+    if isinstance(value, dict):
+        return {k: _normalize_json_for_compare(v, volatile_keys=volatile_keys) for k, v in value.items() if k not in volatile}
+    if isinstance(value, list):
+        return [_normalize_json_for_compare(item, volatile_keys=volatile_keys) for item in value]
+    return value
+
+
+def semantically_equal_json(existing: Any, candidate: Any, *, volatile_keys: Sequence[str] = VOLATILE_JSON_KEYS) -> bool:
+    return canonicalize_bytes(_normalize_json_for_compare(existing, volatile_keys=volatile_keys)) == canonicalize_bytes(
+        _normalize_json_for_compare(candidate, volatile_keys=volatile_keys)
+    )
+
+
+def write_json_stable(path: Path, obj: Any, *, volatile_keys: Sequence[str] = VOLATILE_JSON_KEYS) -> bool:
+    rendered = json.dumps(obj, indent=2, sort_keys=True, ensure_ascii=True) + "\n"
+    if path.exists():
+        try:
+            existing = load_no_dupes(path)
+        except Exception:  # noqa: BLE001
+            existing = None
+        if existing is not None and semantically_equal_json(existing, obj, volatile_keys=volatile_keys):
+            return False
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(rendered, encoding="utf-8", newline="\n")
+    return True
 
 
 def write_json_worm(path: Path, obj: Dict[str, Any], *, label: str) -> None:

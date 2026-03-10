@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
-from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z
+from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
 
 
 def _load_required(path: Path) -> Dict[str, Any]:
@@ -15,8 +15,7 @@ def _load_required(path: Path) -> Dict[str, Any]:
 
 
 def _write_json(path: Path, payload: Dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8", newline="\n")
+    write_json_stable(path, payload)
 
 
 def _resolve_run_root(root: Path, value: str) -> Path:
@@ -35,6 +34,7 @@ def mint_one_button_receipts(*, safe_run_root: Path, live_validation_index: Dict
 
     live_head = str((live_validation_index.get("worktree") or {}).get("head_sha", "")).strip()
     branch_ref = str(live_validation_index.get("branch_ref", "")).strip()
+    generated_utc = str(live_validation_index.get("generated_utc", "")).strip() or utc_now_iso_z()
     suite_rows = live_validation_index.get("checks") if isinstance(live_validation_index.get("checks"), list) else []
     suite_status = "UNKNOWN"
     for row in suite_rows:
@@ -49,7 +49,7 @@ def mint_one_button_receipts(*, safe_run_root: Path, live_validation_index: Dict
 
     preflight = {
         "schema_id": "kt.one_button_preflight_receipt.v2",
-        "created_utc": utc_now_iso_z(),
+        "created_utc": generated_utc,
         "status": "PASS" if safe_run_ok and suite_status == "PASS" else "FAIL",
         "validated_head_sha": live_head,
         "branch_ref": branch_ref,
@@ -64,7 +64,7 @@ def mint_one_button_receipts(*, safe_run_root: Path, live_validation_index: Dict
 
     production = {
         "schema_id": "kt.one_button_production_receipt.v2",
-        "created_utc": utc_now_iso_z(),
+        "created_utc": generated_utc,
         "status": "PASS" if safe_run_ok and nested_ok else "FAIL",
         "validated_head_sha": live_head,
         "branch_ref": branch_ref,

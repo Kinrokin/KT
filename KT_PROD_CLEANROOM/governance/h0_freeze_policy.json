@@ -1,10 +1,7 @@
 {
-  "schema_id": "kt.governance.h0_freeze_policy.v2",
-  "policy_id": "H0_FREEZE_POLICY_V2_20260309",
-  "activation_state": "PENDING_TRUTHFUL_GREEN",
-  "current_posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
-  "freeze_scope_manifest": "KT_PROD_CLEANROOM/governance/canonical_freeze_manifest.json",
+  "activation_state": "ELIGIBLE_FOR_FREEZE",
   "amendment_scope_manifest": "KT_PROD_CLEANROOM/governance/amendment_scope_manifest.json",
+  "current_posture_state": "TRUTHFUL_GREEN",
   "freeze_allowed_when": [
     "settled_truth_source_receipt status == SETTLED_AUTHORITATIVE",
     "derived posture == TRUTHFUL_GREEN",
@@ -17,5 +14,8 @@
     "unreconciled live validation conflicts",
     "clean-clone proof missing for current head"
   ],
+  "freeze_scope_manifest": "KT_PROD_CLEANROOM/governance/canonical_freeze_manifest.json",
+  "policy_id": "H0_FREEZE_POLICY_V2_20260309",
+  "schema_id": "kt.governance.h0_freeze_policy.v2",
   "status": "ACTIVE"
 }

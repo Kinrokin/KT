@@ -1,51 +1,426 @@
 {
-  "schema_id": "kt.governance.execution_board.v2",
-  "board_id": "EXECUTION_BOARD_V2_20260309",
-  "board_authority_contract": "KT_PROD_CLEANROOM/governance/execution_board_authority_contract.json",
+  "authoritative_current_head_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
   "authoritative_truth_sources": [
     "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
     "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
     "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json"
   ],
-  "authoritative_current_head_truth_source": "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
-  "authority_mode": "TRANSITIONAL_AUTHORITATIVE",
-  "current_posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
-  "last_synced_head_sha": "4cf1b9d100f8699fa192d6a5409c69bc6e94761d",
-  "program_gates": {
-    "FOUNDATIONAL_LAW_TRANCHE_COMPLETE": true,
-    "H1_ACTIVATION_ALLOWED": false
-  },
-  "open_blockers": [
-    "CURRENT_STATE_HEAD_STALE",
-    "RUNTIME_AUDIT_HEAD_STALE",
-    "CLEAN_CLONE_NOT_RUN"
+  "authority_mode": "SETTLED_AUTHORITATIVE",
+  "board_authority_contract": "KT_PROD_CLEANROOM/governance/execution_board_authority_contract.json",
+  "board_id": "EXECUTION_BOARD_V3_20260309",
+  "completion_program_ref": "KT_PROD_CLEANROOM/docs/operator/KT_CONSTITUTIONAL_COMPLETION_PROGRAM.md",
+  "constitutional_domains": [
+    {
+      "activation_rules": [
+        {
+          "gate_id": "FOUNDATIONAL_LAW_TRANCHE_COMPLETE",
+          "rule": "entry_gate_open",
+          "status": "PASS"
+        },
+        {
+          "missing": [],
+          "rule": "required_law_surfaces_present",
+          "status": "PASS"
+        },
+        {
+          "failures": [],
+          "rule": "required_law_surfaces_healthy",
+          "status": "PASS"
+        },
+        {
+          "missing": [],
+          "rule": "required_artifacts_present",
+          "status": "PASS"
+        },
+        {
+          "failures": [],
+          "rule": "required_artifacts_healthy",
+          "status": "PASS"
+        }
+      ],
+      "active_blockers": [],
+      "domain_id": "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE",
+      "entry_gate": "FOUNDATIONAL_LAW_TRANCHE_COMPLETE",
+      "exit_gate": "TRUTH_PUBLICATION_STABILIZED",
+      "required_artifacts": [
+        "KT_PROD_CLEANROOM/reports/settled_authority_promotion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/truth_bundle.schema.json",
+        "KT_PROD_CLEANROOM/reports/truth_bundle_catalog.json",
+        "KT_PROD_CLEANROOM/reports/truth_pointer_index.json",
+        "KT_PROD_CLEANROOM/reports/truth_publication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/truth_snapshot_manifest.json",
+        "KT_PROD_CLEANROOM/reports/truth_clean_state_receipt.json",
+        "KT_PROD_CLEANROOM/reports/truth_publication_supersession_receipt.json",
+        "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json"
+      ],
+      "required_law_surfaces": [
+        "KT_PROD_CLEANROOM/governance/truth_publication_contract.json",
+        "KT_PROD_CLEANROOM/governance/settled_authority_migration_contract.json",
+        "KT_PROD_CLEANROOM/governance/truth_snapshot_retention_rules.json",
+        "KT_PROD_CLEANROOM/governance/truth_publication_cleanliness_rules.json",
+        "KT_PROD_CLEANROOM/governance/tracked_vs_generated_truth_boundary.json",
+        "KT_PROD_CLEANROOM/governance/truth_bundle_contract.json",
+        "KT_PROD_CLEANROOM/governance/truth_pointer_rules.json",
+        "KT_PROD_CLEANROOM/governance/current_pointer_transition_rules.json"
+      ],
+      "status": "COMPLETED",
+      "title": "Truth publication architecture"
+    },
+    {
+      "activation_rules": [
+        {
+          "gate_id": "H1_ACTIVATION_ALLOWED",
+          "rule": "entry_gate_open",
+          "status": "PASS"
+        },
+        {
+          "missing": [],
+          "rule": "required_law_surfaces_present",
+          "status": "PASS"
+        },
+        {
+          "failures": [],
+          "rule": "required_law_surfaces_healthy",
+          "status": "PASS"
+        },
+        {
+          "missing": [],
+          "rule": "required_artifacts_present",
+          "status": "PASS"
+        },
+        {
+          "failures": [],
+          "rule": "required_artifacts_healthy",
+          "status": "PASS"
+        }
+      ],
+      "active_blockers": [],
+      "domain_id": "DOMAIN_2_PROMOTION_CIVILIZATION",
+      "entry_gate": "H1_ACTIVATION_ALLOWED",
+      "exit_gate": "PROMOTION_CIVILIZATION_RATIFIED",
+      "required_artifacts": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/reports/promotion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/rollback_plan_receipt.json",
+        "KT_PROD_CLEANROOM/reports/risk_ledger_receipt.json",
+        "KT_PROD_CLEANROOM/reports/revalidation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/zone_crossing_receipt.json"
+      ],
+      "required_law_surfaces": [
+        "KT_PROD_CLEANROOM/governance/promotion_engine_law.json",
+        "KT_PROD_CLEANROOM/governance/crucible_lifecycle_law.json",
+        "KT_PROD_CLEANROOM/governance/adapter_lifecycle_law.json",
+        "KT_PROD_CLEANROOM/governance/tournament_law.json",
+        "KT_PROD_CLEANROOM/governance/merge_law.json",
+        "KT_PROD_CLEANROOM/governance/router_promotion_law.json",
+        "KT_PROD_CLEANROOM/governance/lobe_promotion_law.json",
+        "KT_PROD_CLEANROOM/governance/rollback_law.json",
+        "KT_PROD_CLEANROOM/governance/revalidation_law.json",
+        "KT_PROD_CLEANROOM/governance/retirement_law.json"
+      ],
+      "status": "COMPLETED",
+      "title": "Promotion civilization"
+    },
+    {
+      "activation_rules": [
+        {
+          "gate_id": "PROMOTION_CIVILIZATION_RATIFIED",
+          "rule": "entry_gate_open",
+          "status": "PASS"
+        },
+        {
+          "missing": [],
+          "rule": "required_law_surfaces_present",
+          "status": "PASS"
+        },
+        {
+          "failures": [],
+          "rule": "required_law_surfaces_healthy",
+          "status": "PASS"
+        },
+        {
+          "missing": [],
+          "rule": "required_artifacts_present",
+          "status": "PASS"
+        },
+        {
+          "failures": [],
+          "rule": "required_artifacts_healthy",
+          "status": "PASS"
+        }
+      ],
+      "active_blockers": [],
+      "domain_id": "DOMAIN_3_CAPABILITY_ATLAS",
+      "entry_gate": "PROMOTION_CIVILIZATION_RATIFIED",
+      "exit_gate": "CAPABILITY_ATLAS_RATIFIED",
+      "required_artifacts": [
+        "KT_PROD_CLEANROOM/reports/capability_atlas.schema.json",
+        "KT_PROD_CLEANROOM/reports/capability_topology.json",
+        "KT_PROD_CLEANROOM/reports/pressure_behavior_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json",
+        "KT_PROD_CLEANROOM/reports/merge_interference_index.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/behavior_delta_receipt.json"
+      ],
+      "required_law_surfaces": [
+        "KT_PROD_CLEANROOM/governance/capability_atlas_contract.json",
+        "KT_PROD_CLEANROOM/governance/capability_dimension_registry.json",
+        "KT_PROD_CLEANROOM/governance/pressure_response_taxonomy.json",
+        "KT_PROD_CLEANROOM/governance/failure_mode_taxonomy.json",
+        "KT_PROD_CLEANROOM/governance/capability_evidence_binding_rules.json"
+      ],
+      "status": "COMPLETED",
+      "title": "Capability atlas"
+    },
+    {
+      "activation_rules": [
+        {
+          "gate_id": "CAPABILITY_ATLAS_RATIFIED",
+          "rule": "entry_gate_open",
+          "status": "PASS"
+        },
+        {
+          "missing": [],
+          "rule": "required_law_surfaces_present",
+          "status": "PASS"
+        },
+        {
+          "failures": [],
+          "rule": "required_law_surfaces_healthy",
+          "status": "PASS"
+        },
+        {
+          "missing": [],
+          "rule": "required_artifacts_present",
+          "status": "PASS"
+        },
+        {
+          "failures": [],
+          "rule": "required_artifacts_healthy",
+          "status": "PASS"
+        }
+      ],
+      "active_blockers": [],
+      "domain_id": "DOMAIN_4_CONSTITUTIONAL_COURT",
+      "entry_gate": "CAPABILITY_ATLAS_RATIFIED",
+      "exit_gate": "CONSTITUTIONAL_COURT_RATIFIED",
+      "required_artifacts": [
+        "KT_PROD_CLEANROOM/reports/constitutional_court.schema.json",
+        "KT_PROD_CLEANROOM/reports/amendment_receipt.json",
+        "KT_PROD_CLEANROOM/reports/appeal_receipt.json",
+        "KT_PROD_CLEANROOM/reports/dissent_receipt.json",
+        "KT_PROD_CLEANROOM/reports/precedent_registry.json",
+        "KT_PROD_CLEANROOM/reports/constitutional_review_receipt.json"
+      ],
+      "required_law_surfaces": [
+        "KT_PROD_CLEANROOM/governance/constitutional_court_contract.json",
+        "KT_PROD_CLEANROOM/governance/amendment_law.json",
+        "KT_PROD_CLEANROOM/governance/appeal_law.json",
+        "KT_PROD_CLEANROOM/governance/dissent_law.json",
+        "KT_PROD_CLEANROOM/governance/precedent_registry_rules.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_review_triggers.json"
+      ],
+      "status": "COMPLETED",
+      "title": "Constitutional court"
+    },
+    {
+      "activation_rules": [
+        {
+          "gate_id": "CONSTITUTIONAL_COURT_RATIFIED",
+          "rule": "entry_gate_open",
+          "status": "PASS"
+        },
+        {
+          "missing": [],
+          "rule": "required_law_surfaces_present",
+          "status": "PASS"
+        },
+        {
+          "failures": [],
+          "rule": "required_law_surfaces_healthy",
+          "status": "PASS"
+        },
+        {
+          "missing": [],
+          "rule": "required_artifacts_present",
+          "status": "PASS"
+        },
+        {
+          "failures": [],
+          "rule": "required_artifacts_healthy",
+          "status": "PASS"
+        }
+      ],
+      "active_blockers": [],
+      "domain_id": "DOMAIN_5_ECONOMIC_TRUTH_PLANE",
+      "entry_gate": "CONSTITUTIONAL_COURT_RATIFIED",
+      "exit_gate": "ECONOMIC_TRUTH_PLANE_RATIFIED",
+      "required_artifacts": [
+        "KT_PROD_CLEANROOM/reports/economic_truth_plane.schema.json",
+        "KT_PROD_CLEANROOM/reports/uncertainty_cost_index.json",
+        "KT_PROD_CLEANROOM/reports/compute_cost_profile.json",
+        "KT_PROD_CLEANROOM/reports/escalation_cost_profile.json",
+        "KT_PROD_CLEANROOM/reports/remediation_cost_profile.json",
+        "KT_PROD_CLEANROOM/reports/risk_adjusted_route_receipt.json"
+      ],
+      "required_law_surfaces": [
+        "KT_PROD_CLEANROOM/governance/economic_truth_plane_contract.json",
+        "KT_PROD_CLEANROOM/governance/routing_economic_integration_rules.json",
+        "KT_PROD_CLEANROOM/governance/escalation_cost_rules.json",
+        "KT_PROD_CLEANROOM/governance/compute_allocation_rules.json",
+        "KT_PROD_CLEANROOM/governance/risk_adjusted_utility_rules.json"
+      ],
+      "status": "COMPLETED",
+      "title": "Economic truth plane"
+    },
+    {
+      "activation_rules": [
+        {
+          "gate_id": "ECONOMIC_TRUTH_PLANE_RATIFIED",
+          "rule": "entry_gate_open",
+          "status": "PASS"
+        },
+        {
+          "missing": [],
+          "rule": "required_law_surfaces_present",
+          "status": "PASS"
+        },
+        {
+          "failures": [],
+          "rule": "required_law_surfaces_healthy",
+          "status": "PASS"
+        },
+        {
+          "missing": [],
+          "rule": "required_artifacts_present",
+          "status": "PASS"
+        },
+        {
+          "failures": [],
+          "rule": "required_artifacts_healthy",
+          "status": "PASS"
+        }
+      ],
+      "active_blockers": [],
+      "domain_id": "DOMAIN_6_EXTERNAL_LEGIBILITY",
+      "entry_gate": "ECONOMIC_TRUTH_PLANE_RATIFIED",
+      "exit_gate": "EXTERNAL_LEGIBILITY_RATIFIED",
+      "required_artifacts": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+        "KT_PROD_CLEANROOM/reports/deployment_profiles.json",
+        "KT_PROD_CLEANROOM/reports/client_delivery_schema.json",
+        "KT_PROD_CLEANROOM/reports/documentary_authority_labels.json",
+        "KT_PROD_CLEANROOM/reports/commercial_program_catalog.json"
+      ],
+      "required_law_surfaces": [
+        "KT_PROD_CLEANROOM/governance/external_legibility_contract.json",
+        "KT_PROD_CLEANROOM/governance/public_verifier_rules.json",
+        "KT_PROD_CLEANROOM/governance/deployment_profile_rules.json",
+        "KT_PROD_CLEANROOM/governance/documentary_authority_label_rules.json",
+        "KT_PROD_CLEANROOM/governance/external_packet_sanitization_rules.json"
+      ],
+      "status": "COMPLETED",
+      "title": "External legibility"
+    }
   ],
+  "current_constitutional_domain": {
+    "domain_id": "DOMAIN_6_EXTERNAL_LEGIBILITY",
+    "title": "External legibility"
+  },
+  "current_posture_state": "TRUTHFUL_GREEN",
+  "domain_gate_statuses": [
+    {
+      "blockers": [],
+      "domain_id": "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE",
+      "gate_id": "FOUNDATIONAL_LAW_TRANCHE_COMPLETE",
+      "open": true
+    },
+    {
+      "blockers": [],
+      "domain_id": "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE",
+      "gate_id": "TRUTH_PUBLICATION_STABILIZED",
+      "open": true
+    },
+    {
+      "blockers": [],
+      "domain_id": "DOMAIN_2_PROMOTION_CIVILIZATION",
+      "gate_id": "H1_ACTIVATION_ALLOWED",
+      "open": true
+    },
+    {
+      "blockers": [],
+      "domain_id": "DOMAIN_2_PROMOTION_CIVILIZATION",
+      "gate_id": "PROMOTION_CIVILIZATION_RATIFIED",
+      "open": true
+    },
+    {
+      "blockers": [],
+      "domain_id": "DOMAIN_3_CAPABILITY_ATLAS",
+      "gate_id": "CAPABILITY_ATLAS_RATIFIED",
+      "open": true
+    },
+    {
+      "blockers": [],
+      "domain_id": "DOMAIN_4_CONSTITUTIONAL_COURT",
+      "gate_id": "CONSTITUTIONAL_COURT_RATIFIED",
+      "open": true
+    },
+    {
+      "blockers": [],
+      "domain_id": "DOMAIN_5_ECONOMIC_TRUTH_PLANE",
+      "gate_id": "ECONOMIC_TRUTH_PLANE_RATIFIED",
+      "open": true
+    },
+    {
+      "blockers": [],
+      "domain_id": "DOMAIN_6_EXTERNAL_LEGIBILITY",
+      "gate_id": "EXTERNAL_LEGIBILITY_RATIFIED",
+      "open": true
+    }
+  ],
+  "last_synced_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97",
+  "open_blockers": [],
+  "program_gates": {
+    "CAPABILITY_ATLAS_RATIFIED": true,
+    "CONSTITUTIONAL_COURT_RATIFIED": true,
+    "ECONOMIC_TRUTH_PLANE_RATIFIED": true,
+    "EXTERNAL_LEGIBILITY_RATIFIED": true,
+    "FOUNDATIONAL_LAW_TRANCHE_COMPLETE": true,
+    "H1_ACTIVATION_ALLOWED": true,
+    "PROMOTION_CIVILIZATION_RATIFIED": true,
+    "TRUTH_PUBLICATION_STABILIZED": true
+  },
+  "schema_id": "kt.governance.execution_board.v3",
   "status": "ACTIVE",
   "workstreams": [
     {
-      "workstream_id": "PHASE_0_CORE_TRUTH_REPAIR",
+      "exit_condition": "spine verdict, constitutional guard, non-canonical repo-clean gates, and law bundle integrity are repaired",
       "status": "COMPLETED",
-      "exit_condition": "spine verdict, constitutional guard, non-canonical repo-clean gates, and law bundle integrity are repaired"
+      "workstream_id": "PHASE_0_CORE_TRUTH_REPAIR"
     },
     {
-      "workstream_id": "PHASE_1_H0_FREEZE",
-      "status": "BLOCKED",
-      "exit_condition": "truthful green from active clean worktree with settled authority"
+      "exit_condition": "truthful green from active clean worktree with settled authority",
+      "status": "READY",
+      "workstream_id": "PHASE_1_H0_FREEZE"
     },
     {
-      "workstream_id": "PHASE_2_TRUTH_ENGINE",
+      "exit_condition": "settled truth source receipt and supersession receipt drive current posture",
       "status": "AUTHORITATIVE",
-      "exit_condition": "settled truth source receipt and supersession receipt drive current posture"
+      "workstream_id": "PHASE_2_TRUTH_ENGINE"
     },
     {
-      "workstream_id": "PHASE_3_BOUNDARY_PURIFICATION",
+      "exit_condition": "six-zone law and readiness exclusions are enforced across release tooling",
       "status": "IMPLEMENTED",
-      "exit_condition": "six-zone law and readiness exclusions are enforced across release tooling"
+      "workstream_id": "PHASE_3_BOUNDARY_PURIFICATION"
     },
     {
-      "workstream_id": "PHASE_4_SETTLED_AUTHORITY",
-      "status": "BLOCKED",
-      "exit_condition": "current-head truth source is settled authoritative on a clean clone"
+      "exit_condition": "current-head truth source is settled authoritative on a clean clone",
+      "status": "COMPLETED",
+      "workstream_id": "PHASE_4_SETTLED_AUTHORITY"
     }
   ]
 }

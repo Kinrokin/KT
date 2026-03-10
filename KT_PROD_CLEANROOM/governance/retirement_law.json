@@ -1,0 +1,23 @@
+{
+  "authority_refs": [
+    "KT_PROD_CLEANROOM/tools/training/stage6_promotion.py",
+    "KT_PROD_CLEANROOM/tools/verification/fl4_promote.py"
+  ],
+  "domain_id": "DOMAIN_2_PROMOTION_CIVILIZATION",
+  "effective_utc": "2026-03-10T00:00:00Z",
+  "expires_utc": "2026-09-10T00:00:00Z",
+  "law_id": "RETIREMENT_LAW_V1_20260310",
+  "required_validators": [
+    "python -m pytest -q KT_PROD_CLEANROOM/tools/growth/crucibles/tests/test_crucible_registry.py KT_PROD_CLEANROOM/tools/growth/crucibles/tests/test_crucible_runner.py",
+    "python -m pytest -q KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_sweep_runner_integration.py KT_PROD_CLEANROOM/tests/policy_c/test_drift_guard.py",
+    "python -m pytest -q KT_PROD_CLEANROOM/tests/fl3/test_epic15_tournament_runner.py KT_PROD_CLEANROOM/tests/fl3/test_epic15_merge_evaluator.py KT_PROD_CLEANROOM/tests/fl3/test_epic19_router_hat_demo.py KT_PROD_CLEANROOM/tests/fl3/test_fl3_rollback_drill.py KT_PROD_CLEANROOM/tests/fl3/test_fl4_promotion_atomic.py"
+  ],
+  "rules": [
+    "Retired or revoked adapters remain historical evidence and may not silently influence Canonical.",
+    "Retirement requires a receipt trail and superseded registry state."
+  ],
+  "schema_id": "kt.governance.retirement_law.v1",
+  "status": "ACTIVE",
+  "summary": "Retirement is explicit, receipted, and never silent.",
+  "supersedes": []
+}

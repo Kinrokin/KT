@@ -1,0 +1,21 @@
+{
+  "authority_refs": [
+    "KT_PROD_CLEANROOM/reports/settled_authority_promotion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json",
+    "KT_PROD_CLEANROOM/docs/operator/KT_FINAL_CONSTITUTIONAL_COMPLETION_BLUEPRINT.md"
+  ],
+  "domain_id": "DOMAIN_4_CONSTITUTIONAL_COURT",
+  "effective_utc": "2026-03-10T00:00:00Z",
+  "expires_utc": "2026-09-10T00:00:00Z",
+  "law_id": "PRECEDENT_REGISTRY_RULES_V1_20260310",
+  "required_validators": [
+    "python -m tools.operator.constitutional_completion_emit"
+  ],
+  "rules": [
+    "Each court-relevant act must become a precedent row with evidence refs."
+  ],
+  "schema_id": "kt.governance.precedent_registry_rules.v1",
+  "status": "ACTIVE",
+  "summary": "Precedent registry entries are immutable citations to prior constitutional acts.",
+  "supersedes": []
+}

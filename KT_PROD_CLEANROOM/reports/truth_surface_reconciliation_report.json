@@ -1,28 +1,27 @@
 {
+  "active_report_root": "KT_PROD_CLEANROOM/reports",
   "claimed_state": {
     "current_state_receipt": {
-      "posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+      "posture_state": "TRUTHFUL_GREEN",
       "status": "PASS",
-      "validated_head_sha": "4cf1b9d100f8699fa192d6a5409c69bc6e94761d"
+      "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
     },
     "posture_consistency_receipt": {
-      "posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+      "posture_state": "TRUTHFUL_GREEN",
       "status": "PASS"
     },
     "runtime_closure_audit": {
-      "posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+      "posture_state": "TRUTHFUL_GREEN",
       "status": "PASS",
-      "validated_head_sha": "4cf1b9d100f8699fa192d6a5409c69bc6e94761d"
+      "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
     }
   },
-  "generated_utc": "2026-03-09T19:24:32Z",
+  "generated_utc": "2026-03-09T22:23:39Z",
   "live_state": {
-    "derived_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
-    "live_head_sha": "4cf1b9d100f8699fa192d6a5409c69bc6e94761d"
+    "derived_state": "TRUTHFUL_GREEN",
+    "live_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
   },
   "reconciliation_result": "TRUTH_SURFACES_SYNCHRONIZED",
-  "required_next_actions": [
-    "re-earn green from current-head one-button receipts"
-  ],
+  "required_next_actions": [],
   "schema_id": "kt.operator.truth_surface_reconciliation_report.v2"
 }

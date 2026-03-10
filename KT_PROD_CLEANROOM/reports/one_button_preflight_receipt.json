@@ -1,46 +1,14 @@
 {
-  "canonical_candidate_failure_count": 0,
-  "canonical_candidate_failures": [],
-  "canonical_candidate_run_root": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run",
-  "checks": [
-    {
-      "check": "safe_run_command_surface_available",
-      "detail": "program.certify.canonical_hmac is supported by safe-run.",
-      "status": "PASS"
-    },
-    {
-      "check": "canonical_hmac_candidate_passes_on_current_main_semantics",
-      "detail": "KT_SAFE_RUN_PASS cmd=safe-run profile=v1 assurance_mode=production program_id=program.certify.canonical_hmac nested_run=D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run/program_run",
-      "status": "PASS"
-    },
-    {
-      "check": "nested_canonical_hmac_delivery_bundle_present",
-      "detail": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run/program_run/delivery/delivery_manifest.json",
-      "status": "PASS"
-    },
-    {
-      "check": "run_sweep_audit_pytest_cleanroom",
-      "detail": "219 passed in 90.61s (0:01:30)",
-      "status": "PASS"
-    },
-    {
-      "check": "semantic_drift_detected",
-      "detail": "No semantic drift; diff to origin/main is limited to platform-tooling, posture, tests, governance desired state, and report surfaces.",
-      "status": "PASS"
-    },
-    {
-      "check": "external_platform_enforcement",
-      "detail": "Main branch protection / ruleset enforcement is active on Kinrokin/KT.",
-      "status": "PASS"
-    }
-  ],
-  "claim_admissible": true,
-  "created_utc": "2026-03-09T00:25:10Z",
-  "external_blockers": [],
-  "frozen_candidate_command": "python -m tools.operator.kt_cli --profile v1 --safe-run --assurance-mode production --program program.certify.canonical_hmac --config {}",
-  "global_claim_blocked_by_external": false,
-  "next_action": "Lawful canonical_hmac one-button production is eligible under active main branch protection.",
-  "schema_id": "kt.one_button_preflight_receipt.v1",
-  "scope": "MICRO_ORDER_2_CANONICAL_HMAC_INTERNAL_CLEARANCE",
-  "status": "PASS"
+  "branch_ref": "main",
+  "canonical_candidate_program_run_root": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run/program_run",
+  "canonical_candidate_run_root": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run",
+  "created_utc": "2026-03-09T22:23:39Z",
+  "current_worktree_cleanroom_suite_status": "PASS",
+  "delivery_manifest": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run/program_run/delivery/delivery_manifest.json",
+  "next_action": "canonical_hmac safe-run is current-head admissible",
+  "operator_preflight_status": "PASS",
+  "safe_run_verdict": "KT_SAFE_RUN_PASS cmd=safe-run profile=v1 assurance_mode=production program_id=program.certify.canonical_hmac nested_run=D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260308T215621993372Z_safe-run/program_run",
+  "schema_id": "kt.one_button_preflight_receipt.v2",
+  "status": "PASS",
+  "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
 }

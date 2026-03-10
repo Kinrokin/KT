@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "profiles": {
+      "type": "array"
+    },
+    "schema_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "profiles"
+  ],
+  "schema_id": "kt.economic_truth_plane.schema.v1",
+  "title": "KT Economic Truth Plane",
+  "type": "object"
+}

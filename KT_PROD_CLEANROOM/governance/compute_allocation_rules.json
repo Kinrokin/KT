@@ -1,0 +1,19 @@
+{
+  "authority_refs": [
+    "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
+  ],
+  "domain_id": "DOMAIN_5_ECONOMIC_TRUTH_PLANE",
+  "effective_utc": "2026-03-10T00:00:00Z",
+  "expires_utc": "2026-09-10T00:00:00Z",
+  "law_id": "COMPUTE_ALLOCATION_RULES_V1_20260310",
+  "required_validators": [
+    "python -m tools.operator.constitutional_completion_emit"
+  ],
+  "rules": [
+    "Higher-risk routes may consume additional compute or review budget."
+  ],
+  "schema_id": "kt.governance.compute_allocation_rules.v1",
+  "status": "ACTIVE",
+  "summary": "Compute budgets are allocated by domain-sensitive risk posture.",
+  "supersedes": []
+}

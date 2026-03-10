@@ -1,14 +1,13 @@
 {
-  "created_utc": "2026-03-09T19:24:32Z",
-  "posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
-  "release_state": "HOLD_DIRTY_WORKTREE",
+  "branch_protection_receipt": "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
+  "created_utc": "2026-03-09T22:23:39Z",
+  "one_button_preflight_receipt": "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
+  "one_button_production_receipt": "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
+  "p0_green_full_receipt": "KT_PROD_CLEANROOM/reports/p0_green_full_receipt.json",
+  "posture_state": "TRUTHFUL_GREEN",
+  "release_state": "GO_PRESS_BUTTON_PRODUCTION_ELIGIBLE",
   "repo": "Kinrokin/KT",
   "schema_id": "kt.green_final_receipt.v2",
-  "statement": "KT is not currently truthful green; active truthful posture is CANONICAL_VALIDATED_DIRTY_WORKTREE.",
-  "status": "SUPERSEDED",
-  "superseded_by": [
-    "KT_PROD_CLEANROOM/reports/live_validation_index.json",
-    "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
-    "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json"
-  ]
+  "statement": "KT current-head truth surfaces are synchronized and canonical_hmac one-button production is eligible.",
+  "status": "PASS"
 }

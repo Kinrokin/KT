@@ -1,9 +1,8 @@
 {
-  "schema_id": "kt.governance.readiness_scope_manifest.v2",
+  "authoritative_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+  "current_authority_mode": "SETTLED_AUTHORITATIVE",
+  "current_blockers": [],
   "manifest_id": "READINESS_SCOPE_V2_20260309",
-  "readiness_includes_zones": [
-    "CANONICAL"
-  ],
   "readiness_excludes_zones": [
     "LAB",
     "ARCHIVE",
@@ -11,11 +10,9 @@
     "GENERATED_RUNTIME_TRUTH",
     "QUARANTINED"
   ],
-  "current_authority_mode": "TRANSITIONAL_AUTHORITATIVE",
-  "authoritative_truth_source": "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
-  "current_blockers": [
-    "tracked truth surfaces stale against current head",
-    "clean-clone proof required for settled authority"
+  "readiness_includes_zones": [
+    "CANONICAL"
   ],
+  "schema_id": "kt.governance.readiness_scope_manifest.v2",
   "status": "ACTIVE"
 }
