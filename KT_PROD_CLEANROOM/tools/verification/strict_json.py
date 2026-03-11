@@ -22,5 +22,4 @@ def loads_no_dupes(data: str) -> Any:
 
 
 def load_no_dupes(path: Path) -> Any:
-    return loads_no_dupes(path.read_text(encoding="utf-8"))
-
+    return loads_no_dupes(path.read_text(encoding="utf-8-sig"))

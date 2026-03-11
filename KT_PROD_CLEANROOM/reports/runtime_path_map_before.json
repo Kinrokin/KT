@@ -1,0 +1,67 @@
+{
+  "schema_id": "kt.audit.runtime_path_map_before.v1",
+  "action_id": "ACTION_1_FREEZE_REPO_PENDING_AUDIT",
+  "status": "PASS",
+  "generated_utc": "2026-03-11T20:52:00Z",
+  "git_head": "4867542e364501a91c8e619ee3e26693d73b7a98",
+  "lawful_production_entrypoint": {
+    "rule": "safe-run must be the only lawful production entrypoint",
+    "operator_cli": "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
+    "program_focus": "program.certify.canonical_hmac"
+  },
+  "canonical_runtime_path": {
+    "runtime_registry": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+    "canonical_entry": {
+      "module": "kt.entrypoint",
+      "callable": "invoke"
+    },
+    "canonical_spine": {
+      "module": "core.spine",
+      "callable": "run"
+    },
+    "runtime_import_roots": [
+      "cognition",
+      "core",
+      "council",
+      "curriculum",
+      "governance",
+      "kt",
+      "memory",
+      "multiverse",
+      "paradox",
+      "schemas",
+      "temporal",
+      "thermodynamics",
+      "tools",
+      "versioning"
+    ]
+  },
+  "authority_path_before": {
+    "execution_board": {
+      "path": "KT_PROD_CLEANROOM/governance/execution_board.json",
+      "last_synced_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+      "current_posture_state": "TRUTHFUL_GREEN",
+      "authority_mode": "SETTLED_AUTHORITATIVE"
+    },
+    "current_pointer": {
+      "path": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "truth_subject_commit": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+      "posture_enum": "TRUTHFUL_GREEN"
+    },
+    "current_state_receipt": {
+      "path": "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+      "validated_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+      "posture_state": "TRUTHFUL_GREEN"
+    },
+    "readiness_scope_manifest": {
+      "path": "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
+      "authoritative_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
+    }
+  },
+  "known_real_path_context": {
+    "titanium_real_path_attachment_branch": "ops/titanium-realpath-attachment-20260307",
+    "titanium_real_path_attachment_commit": "15cf771",
+    "current_published_documentary_truth_commit": "4867542e364501a91c8e619ee3e26693d73b7a98"
+  },
+  "dominant_pre_change_risk": "tracked live-truth surfaces are stale against the published head"
+}

@@ -1,32 +1,37 @@
-{
-  "active_current_head_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-  "active_supporting_truth_surfaces": [
-    "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
-    "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
-    "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
-    "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
-    "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json",
-    "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
-    "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
-    "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json",
-    "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
-    "KT_PROD_CLEANROOM/reports/domain_maturity_matrix.json"
-  ],
-  "documentary_only_patterns": [
-    "docs/**",
-    "KT_PROD_CLEANROOM/docs/**",
-    "docs/audit/**"
-  ],
-  "effective_utc": "2026-03-11T00:00:00Z",
-  "law_id": "DOCUMENTARY_TRUTH_POLICY_V1_20260311",
-  "rules": [
-    "The generated current pointer is the only lawful present-tense current-head truth source.",
-    "Tracked report receipts may support, mirror, or explain current truth, but they must never outrank the current pointer.",
-    "Documentary and commercial markdown surfaces are never active posture authority.",
-    "If active supporting truth surfaces disagree with the current pointer, authority convergence must fail closed."
-  ],
-  "schema_id": "kt.governance.documentary_truth_policy.v1",
-  "status": "ACTIVE",
-  "supersedes": [],
-  "summary": "Separates active current-head truth from tracked supporting mirrors and documentary explanation surfaces."
+﻿{
+    "active_current_head_truth_source":  "kt_truth_ledger:ledger/current/current_pointer.json",
+    "active_supporting_truth_surfaces":  [
+                                             "kt_truth_ledger:ledger/current/current_state_receipt.json",
+                                             "kt_truth_ledger:ledger/current/runtime_closure_audit.json",
+                                             "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+                                             "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+                                             "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+                                             "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+                                             "KT_PROD_CLEANROOM/reports/domain_maturity_matrix.json"
+                                         ],
+    "documentary_only_patterns":  [
+                                      "docs/**",
+                                      "KT_PROD_CLEANROOM/docs/**",
+                                      "docs/audit/**"
+                                  ],
+    "effective_utc":  "2026-03-11T22:00:00Z",
+    "law_id":  "DOCUMENTARY_TRUTH_POLICY_V1_20260311",
+    "rules":  [
+                  "The truth ledger current pointer is the only lawful present-tense current-head truth source during the ledger transition.",
+                  "Main-bound current truth artifacts may remain only as documentary or superseded explanation surfaces and must never outrank the ledger pointer.",
+                  "Documentary and commercial markdown surfaces are never active posture authority.",
+                  "If board, readiness, ledger pointer, or active supporting truth surfaces disagree, authority convergence must fail closed."
+              ],
+    "schema_id":  "kt.governance.documentary_truth_policy.v1",
+    "status":  "ACTIVE",
+    "supersedes":  [
+
+                   ],
+    "summary":  "Promotes the zero-history truth ledger as the active current-head truth source while retaining main-bound truth artifacts as documentary-only surfaces until published self-convergence is proven.",
+    "documentary_only_refs":  [
+                                  "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+                                  "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+                                  "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json"
+                              ]
 }
+

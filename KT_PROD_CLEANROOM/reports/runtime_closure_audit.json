@@ -1,4 +1,21 @@
 {
+  "schema_id": "kt.operator.runtime_closure_audit.v4",
+  "generated_utc": "2026-03-11T22:20:00Z",
+  "status": "SUPERSEDED_DOCUMENTARY_ONLY",
+  "documentary_only": true,
+  "live_authority": false,
+  "authority_role": "DOCUMENTARY_ONLY",
+  "transition_state": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY_PENDING_PUBLICATION",
+  "published_head_authority_claimed": false,
+  "superseded_documentary_validated_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+  "superseded_by_truth_source": "kt_truth_ledger:ledger/current/runtime_closure_audit.json",
+  "branch_ref": "main",
+  "current_state": "TRUTHFUL_GREEN",
+  "posture_state": "TRUTHFUL_GREEN",
+  "overall_verdict": "DOCUMENTARY_ONLY_SUPERSEDED",
+  "release_decision": "REFER_TO_LEDGER_RUNTIME_CLOSURE_AUDIT",
+  "repo_hygiene_status": "DOCUMENTARY_ONLY",
+  "validator_substance_checked": true,
   "audit_scope": [
     "live truth reconciliation",
     "canonical readiness synchronization",
@@ -6,8 +23,16 @@
     "truthful posture sealing"
   ],
   "blocking_groups": [],
-  "branch_ref": "main",
-  "current_state": "TRUTHFUL_GREEN",
+  "notes": [
+    "This main-bound runtime closure audit is retained as documentary evidence only.",
+    "Active runtime closure authority now resolves from the ledger witness plane."
+  ],
+  "real_path_targets_checked": [
+    "program.certify.canonical_hmac",
+    "program.hat_demo",
+    "program.red_assault.serious_v1",
+    "safe-run:program.certify.canonical_hmac"
+  ],
   "evidence_plane_targets_checked": [
     "delivery/delivery_manifest.json",
     "evidence/constitutional_snapshot.json",
@@ -16,24 +41,5 @@
     "evidence/replay_receipt.json",
     "evidence/secret_scan_report.json",
     "reports/bindingloop_check.json"
-  ],
-  "generated_utc": "2026-03-11T02:24:17Z",
-  "notes": [
-    "Posture synchronized from live validation state CANONICAL_READY_FOR_REEARNED_GREEN.",
-    "Only truth-engine-aligned receipts remain active truth surfaces."
-  ],
-  "overall_verdict": "PASS",
-  "posture_state": "TRUTHFUL_GREEN",
-  "real_path_targets_checked": [
-    "program.certify.canonical_hmac",
-    "program.hat_demo",
-    "program.red_assault.serious_v1",
-    "safe-run:program.certify.canonical_hmac"
-  ],
-  "release_decision": "GO_PRESS_BUTTON_PRODUCTION_ELIGIBLE",
-  "repo_hygiene_status": "PASS",
-  "schema_id": "kt.operator.runtime_closure_audit.v3",
-  "status": "PASS",
-  "validated_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7",
-  "validator_substance_checked": true
+  ]
 }

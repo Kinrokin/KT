@@ -1,18 +1,29 @@
-{
-  "schema_id": "kt.governance.truth_pointer_rules.v1",
-  "rules_id": "TRUTH_POINTER_RULES_V1_20260310",
-  "effective_utc": "2026-03-10T00:00:00Z",
-  "expires_utc": "2026-09-10T00:00:00Z",
-  "supersedes": [],
-  "status": "ACTIVE",
-  "current_pointer_ref": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-  "pointer_role": "The current pointer is the only legal mutable declaration of which immutable truth bundle is current for canonical posture.",
-  "required_fields": [
-    "truth_subject_commit",
-    "truth_produced_at_commit",
-    "current_bundle_hash",
-    "current_bundle_ref",
-    "authority_level",
-    "posture_enum"
-  ]
+﻿{
+    "schema_id":  "kt.governance.truth_pointer_rules.v1",
+    "rules_id":  "TRUTH_POINTER_RULES_V1_20260310",
+    "effective_utc":  "2026-03-10T00:00:00Z",
+    "expires_utc":  "2026-09-10T00:00:00Z",
+    "supersedes":  [
+
+                   ],
+    "status":  "ACTIVE",
+    "current_pointer_ref":  "kt_truth_ledger:ledger/current/current_pointer.json",
+    "truth_ledger_branch":  "kt_truth_ledger",
+    "truth_ledger_pointer_ref":  "kt_truth_ledger:ledger/current/current_pointer.json",
+    "truth_ledger_current_pointer_rel":  "ledger/current/current_pointer.json",
+    "transition_state":  "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY_PENDING_PUBLICATION",
+    "transition_note":  "Action 12 promotes the local truth ledger as the active current-head witness and purges main-bound live-truth responsibility. Published-head self-convergence remains unresolved until the ledger becomes an admissible published authority plane.",
+    "pointer_role":  "The current pointer is the only legal mutable declaration of which immutable truth bundle is current for canonical posture.",
+    "required_fields":  [
+                            "truth_subject_commit",
+                            "truth_produced_at_commit",
+                            "current_bundle_hash",
+                            "current_bundle_ref",
+                            "authority_level",
+                            "posture_enum"
+                        ],
+    "active_truth_source_ref":  "kt_truth_ledger:ledger/current/current_pointer.json",
+    "proof_class":  "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+    "published_head_authority_claimed":  false
 }
+

@@ -1,0 +1,19 @@
+{
+  "schema_id": "kt.audit.rollback_plan.v1",
+  "action_id": "ACTION_1_FREEZE_REPO_PENDING_AUDIT",
+  "status": "READY",
+  "generated_utc": "2026-03-11T20:52:00Z",
+  "rollback_scope": "WS0 audit artifacts only",
+  "rollback_steps": [
+    "Delete KT_PROD_CLEANROOM/reports/system_audit_scope.json.",
+    "Delete KT_PROD_CLEANROOM/reports/frozen_repo_receipt.json.",
+    "Delete KT_PROD_CLEANROOM/reports/runtime_path_map_before.json.",
+    "Delete KT_PROD_CLEANROOM/reports/blast_radius_map.json.",
+    "Delete KT_PROD_CLEANROOM/reports/rollback_plan.json."
+  ],
+  "do_not_revert": [
+    "published hardening tranche at 60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "published documentary truth and dependency integrity tranche at 4867542e364501a91c8e619ee3e26693d73b7a98"
+  ],
+  "fail_closed_rule": "If Action 1 artifacts are disputed, remove only these five audit files and leave all prior runtime, governance, and truth work untouched."
+}

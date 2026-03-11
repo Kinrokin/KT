@@ -74,10 +74,10 @@ def _seed_repo(tmp_path: Path, *, posture_state: str = "CANONICAL_READY_FOR_REEA
     _write_json(tmp_path / "KT_PROD_CLEANROOM" / "reports" / "real_path_attachment_matrix.json", {
         "schema_id": "kt.operator.real_path_attachment_matrix.v1",
         "rows": [
-            {"program_id": "program.certify.canonical_hmac", "safe_run_enforced": False},
-            {"program_id": "program.hat_demo", "safe_run_enforced": False},
-            {"program_id": "program.red_assault.serious_v1", "safe_run_enforced": False},
-            {"program_id": "program.hat_demo", "safe_run_enforced": True},
+            {"program_id": "program.certify.canonical_hmac", "safe_run_enforced": False, "attachment_status": "PASS"},
+            {"program_id": "program.hat_demo", "safe_run_enforced": False, "attachment_status": "PASS"},
+            {"program_id": "program.red_assault.serious_v1", "safe_run_enforced": False, "attachment_status": "PASS"},
+            {"program_id": "program.hat_demo", "safe_run_enforced": True, "attachment_status": "PASS"},
         ],
     })
     _write_json(tmp_path / "KT_PROD_CLEANROOM" / "reports" / "source_integrity_receipt.json", {"status": "PASS"})
@@ -144,3 +144,19 @@ def test_verify_posture_passes_for_truthful_green(tmp_path: Path) -> None:
     report = verify_posture(root=root, expected_posture="TRUTHFUL_GREEN")
     assert report["status"] == "PASS"
     assert report["one_button_state"]["status"] == "PASS"
+
+
+def test_verify_posture_fails_when_required_real_path_row_is_not_pass(tmp_path: Path) -> None:
+    root = _seed_repo(tmp_path, equal_alias=True)
+    matrix_path = root / "KT_PROD_CLEANROOM" / "reports" / "real_path_attachment_matrix.json"
+    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+    matrix["rows"][0]["attachment_status"] = "FAIL_CLOSED"
+    matrix["rows"][0]["failure_reason"] = "FAIL_CLOSED: repo is not clean"
+    _write_json(matrix_path, matrix)
+
+    try:
+        verify_posture(root=root, expected_posture="CANONICAL_READY_FOR_REEARNED_GREEN")
+    except RuntimeError as exc:
+        assert "missing PASS attachment rows" in str(exc)
+    else:
+        raise AssertionError("expected real_path_attachment_matrix FAIL_CLOSED required row to fail closed")

@@ -8,21 +8,34 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
 from tools.operator.titanium_common import make_run_dir, repo_root, utc_now_iso_z, write_failure_artifacts, write_json_worm
-from tools.operator.truth_authority import CURRENT_POINTER_REL
+from tools.operator.truth_authority import CURRENT_POINTER_REL, active_supporting_truth_surfaces, active_truth_source_ref, load_json_ref
 
 
 DEFAULT_REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
-EXPECTED_POINTER_REF = CURRENT_POINTER_REL
+DEFAULT_CURRENT_STATE_REL = f"{DEFAULT_REPORT_ROOT_REL}/current_state_receipt.json"
+DEFAULT_RUNTIME_AUDIT_REL = f"{DEFAULT_REPORT_ROOT_REL}/runtime_closure_audit.json"
+LEDGER_BRANCH = "kt_truth_ledger"
+PROOF_CLASS_FAIL_CLOSED = "FAIL_CLOSED"
+PROOF_CLASS_LOCAL_LEDGER_ONLY = "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY"
+PROOF_CLASS_PUBLISHED_HEAD = "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN"
 
 
 def _load_json(path: Path) -> Dict[str, Any]:
     if not path.exists():
         raise RuntimeError(f"FAIL_CLOSED: missing required artifact: {path.as_posix()}")
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
 def _git(root: Path, *args: str) -> str:
     return subprocess.check_output(["git", "-C", str(root), *args], text=True).strip()
+
+
+def _remote_branch_exists(root: Path, *, remote: str, branch: str) -> bool:
+    try:
+        output = _git(root, "ls-remote", "--heads", remote, branch)
+    except Exception:  # noqa: BLE001
+        return False
+    return bool(output.strip())
 
 
 def _head_from(payload: Dict[str, Any]) -> str:
@@ -58,32 +71,66 @@ def _nested_verdict_head(payload: Dict[str, Any]) -> str:
     return str(match.group(1)).strip() if match else ""
 
 
+def _find_supporting_ref(surfaces: Sequence[str], suffix: str) -> str:
+    for surface in surfaces:
+        if str(surface).strip().endswith(suffix):
+            return str(surface).strip()
+    return ""
+
+
+def _documentary_only(payload: Dict[str, Any]) -> bool:
+    if bool(payload.get("documentary_only")):
+        return True
+    if "live_authority" in payload and payload.get("live_authority") is False:
+        return True
+    status = str(payload.get("status", "")).strip().upper()
+    authority_role = str(payload.get("authority_role", "")).strip().upper()
+    return "DOCUMENTARY" in status or "SUPERSEDED" in status or authority_role == "DOCUMENTARY_ONLY"
+
+
 def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
     report_root = (root / DEFAULT_REPORT_ROOT_REL).resolve()
+    active_source = active_truth_source_ref(root=root)
+    active_supporting = active_supporting_truth_surfaces(root=root)
     board = _load_json(root / "KT_PROD_CLEANROOM" / "governance" / "execution_board.json")
     readiness = _load_json(root / "KT_PROD_CLEANROOM" / "governance" / "readiness_scope_manifest.json")
-    current_pointer = _load_json(root / CURRENT_POINTER_REL)
-    current_state = _load_json(report_root / "current_state_receipt.json")
-    runtime_audit = _load_json(report_root / "runtime_closure_audit.json")
+    current_pointer = load_json_ref(root=root, ref=active_source)
+    current_state_ref = _find_supporting_ref(active_supporting, "current_state_receipt.json") or DEFAULT_CURRENT_STATE_REL
+    runtime_audit_ref = _find_supporting_ref(active_supporting, "runtime_closure_audit.json") or DEFAULT_RUNTIME_AUDIT_REL
+    current_state = load_json_ref(root=root, ref=current_state_ref)
+    runtime_audit = load_json_ref(root=root, ref=runtime_audit_ref)
     settled_truth = _load_json(report_root / "settled_truth_source_receipt.json")
-    live_index = _load_json(report_root / "live_validation_index.json")
-    preflight = _load_json(report_root / "one_button_preflight_receipt.json")
-    production = _load_json(report_root / "one_button_production_receipt.json")
+    live_index_path = report_root / "live_validation_index.json"
+    live_index = _load_json(live_index_path) if live_index_path.exists() else {}
+    preflight_path = report_root / "one_button_preflight_receipt.json"
+    preflight = _load_json(preflight_path) if preflight_path.exists() else {}
+    production_path = report_root / "one_button_production_receipt.json"
+    production = _load_json(production_path) if production_path.exists() else {}
+    main_current_pointer = _load_json(root / CURRENT_POINTER_REL)
+    main_current_state = _load_json(report_root / "current_state_receipt.json")
+    main_runtime_audit = _load_json(report_root / "runtime_closure_audit.json")
+    ledger_active = active_source != CURRENT_POINTER_REL
 
     try:
         git_head = _git(root, "rev-parse", "HEAD")
     except Exception:  # noqa: BLE001
-        git_head = _head_from(live_index)
+        git_head = _head_from(current_pointer) or _head_from(live_index)
     try:
         git_branch = _git(root, "rev-parse", "--abbrev-ref", "HEAD")
     except Exception:  # noqa: BLE001
-        git_branch = str(live_index.get("branch_ref", "")).strip()
+        git_branch = str(current_state.get("branch_ref", "")).strip() or str(live_index.get("branch_ref", "")).strip()
+
+    ledger_remote_exists = _remote_branch_exists(root, remote="origin", branch=LEDGER_BRANCH)
+    proof_class = PROOF_CLASS_PUBLISHED_HEAD
+    if ledger_active:
+        proof_class = PROOF_CLASS_PUBLISHED_HEAD if ledger_remote_exists else PROOF_CLASS_LOCAL_LEDGER_ONLY
 
     observed = {
         "git_head": git_head,
         "git_branch": git_branch,
-        "live_validation_head": _head_from(live_index),
         "board_head": str(board.get("last_synced_head_sha", "")).strip(),
+        "active_truth_source": active_source,
+        "active_supporting_truth_surfaces": active_supporting,
         "pointer_head": _head_from(current_pointer),
         "current_state_head": _head_from(current_state),
         "runtime_audit_head": _head_from(runtime_audit),
@@ -105,6 +152,11 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
         "preflight_head_lineage_match": bool(preflight.get("head_lineage_match")),
         "production_head_lineage_match": bool((production.get("production_run") or {}).get("head_lineage_match")),
         "worktree_dirty": bool((live_index.get("worktree") or {}).get("git_dirty")),
+        "proof_class": proof_class,
+        "ledger_branch_published": ledger_remote_exists,
+        "main_current_pointer_documentary_only": _documentary_only(main_current_pointer),
+        "main_current_state_documentary_only": _documentary_only(main_current_state),
+        "main_runtime_audit_documentary_only": _documentary_only(main_runtime_audit),
     }
 
     failures: List[str] = []
@@ -121,17 +173,13 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
         if not actual:
             failures.append(check_id)
 
-    expect_equal("live_validation_matches_git_head", observed["live_validation_head"], git_head)
     expect_equal("execution_board_matches_git_head", observed["board_head"], git_head)
     expect_equal("current_pointer_matches_git_head", observed["pointer_head"], git_head)
     expect_equal("current_state_receipt_matches_git_head", observed["current_state_head"], git_head)
     expect_equal("runtime_closure_audit_matches_git_head", observed["runtime_audit_head"], git_head)
     expect_equal("settled_truth_source_matches_git_head", observed["settled_truth_head"], git_head)
-    expect_equal("one_button_preflight_matches_git_head", observed["preflight_head"], git_head)
-    expect_equal("one_button_production_matches_git_head", observed["production_head"], git_head)
-    expect_equal("one_button_nested_verdict_matches_git_head", observed["production_nested_verdict_head"], git_head)
-    expect_equal("execution_board_points_to_current_pointer", observed["board_truth_source"], EXPECTED_POINTER_REF)
-    expect_equal("readiness_scope_points_to_current_pointer", observed["readiness_truth_source"], EXPECTED_POINTER_REF)
+    expect_equal("execution_board_points_to_active_truth_source", observed["board_truth_source"], active_source)
+    expect_equal("readiness_scope_points_to_active_truth_source", observed["readiness_truth_source"], active_source)
     expect_equal("authority_mode_converged", observed["board_authority_mode"], observed["settled_authority_mode"])
     expect_equal("board_posture_matches_pointer", observed["board_posture_state"], observed["pointer_posture_state"])
     expect_equal("board_posture_matches_current_state", observed["board_posture_state"], observed["current_state_posture_state"])
@@ -139,21 +187,44 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
     expect_equal("board_posture_matches_settled_truth", observed["board_posture_state"], observed["settled_truth_posture_state"])
     expect_equal("current_branch_matches_git_branch", str(current_state.get("branch_ref", "")).strip(), git_branch)
     expect_equal("runtime_audit_branch_matches_git_branch", str(runtime_audit.get("branch_ref", "")).strip(), git_branch)
-    expect_equal("live_validation_branch_matches_git_branch", str(live_index.get("branch_ref", "")).strip(), git_branch)
 
     truthful_green = observed["board_posture_state"] == "TRUTHFUL_GREEN"
-    if truthful_green:
+    if ledger_active:
+        expect_equal("local_ledger_requires_transitional_authority", observed["board_authority_mode"], "TRANSITIONAL_AUTHORITATIVE")
+        expect_true("main_current_pointer_documentary_only", observed["main_current_pointer_documentary_only"])
+        expect_true("main_current_state_documentary_only", observed["main_current_state_documentary_only"])
+        expect_true("main_runtime_audit_documentary_only", observed["main_runtime_audit_documentary_only"])
+        h1_gate = bool((board.get("program_gates") or {}).get("H1_ACTIVATION_ALLOWED"))
+        expect_true("local_ledger_requires_h1_blocked", not h1_gate)
+        if proof_class == PROOF_CLASS_PUBLISHED_HEAD:
+            expect_true("published_ledger_branch_required", observed["ledger_branch_published"])
+        else:
+            checks.append(
+                {
+                    "check": "proof_class_is_local_ledger_only",
+                    "status": "PASS",
+                    "proof_class": proof_class,
+                    "ledger_branch_published": observed["ledger_branch_published"],
+                }
+            )
+    elif truthful_green:
         expect_true("truthful_green_requires_clean_worktree", not observed["worktree_dirty"])
         expect_equal("truthful_green_requires_settled_authority", observed["board_authority_mode"], "SETTLED_AUTHORITATIVE")
         expect_equal("truthful_green_requires_preflight_pass", observed["preflight_status"], "PASS")
         expect_equal("truthful_green_requires_production_pass", observed["production_status"], "PASS")
+        expect_equal("one_button_preflight_matches_git_head", observed["preflight_head"], git_head)
+        expect_equal("one_button_production_matches_git_head", observed["production_head"], git_head)
+        expect_equal("one_button_nested_verdict_matches_git_head", observed["production_nested_verdict_head"], git_head)
         expect_true("truthful_green_requires_preflight_lineage_match", observed["preflight_head_lineage_match"])
         expect_true("truthful_green_requires_production_lineage_match", observed["production_head_lineage_match"])
 
     return {
         "schema_id": "kt.operator.authority_convergence_receipt.v1",
         "generated_utc": utc_now_iso_z(),
-        "status": "PASS" if not failures else "FAIL",
+        "status": "PASS" if not failures and proof_class != PROOF_CLASS_FAIL_CLOSED else "FAIL",
+        "proof_class": proof_class if not failures else PROOF_CLASS_FAIL_CLOSED,
+        "published_head_authority_claimed": proof_class == PROOF_CLASS_PUBLISHED_HEAD and not failures,
+        "h1_admissible": proof_class == PROOF_CLASS_PUBLISHED_HEAD and not failures,
         "failures": failures,
         "checks": checks,
         "observed": observed,

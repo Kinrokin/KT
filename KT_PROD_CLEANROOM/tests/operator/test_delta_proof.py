@@ -85,8 +85,16 @@ def test_delta_proof_computes_deltas_and_emits_delivery(tmp_path: Path) -> None:
         capture_output=True,
     )
     assert p.returncode == 0, p.stdout + "\n" + p.stderr
-    assert (out_run / "reports" / "delta_proof.json").exists()
+    report_path = out_run / "reports" / "delta_proof.json"
+    assert report_path.exists()
     assert (out_run / "delivery" / "delivery_manifest.json").exists()
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    expected_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=str(repo_root), env=env, text=True).strip()
+    expected_branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=str(repo_root), env=env, text=True).strip()
+    assert report["validated_head_sha"] == expected_head
+    assert report["branch_ref"] == expected_branch
+    assert report["scope"] == "candidate_tracked_worktree_delta_accounting_only"
+    assert report["published_head_authority_claimed"] is False
 
 
 def test_delta_proof_fails_closed_on_probe_bundle_mismatch(tmp_path: Path) -> None:

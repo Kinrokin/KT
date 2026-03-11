@@ -1,13 +1,20 @@
-{
-  "clean_clone_proof_ref": "KT_PROD_CLEANROOM/reports/live_validation_index.json",
-  "execution_board_ref": "KT_PROD_CLEANROOM/governance/execution_board.json",
-  "generated_utc": "2026-03-11T02:24:26Z",
-  "new_authority_state": "SETTLED_AUTHORITATIVE",
-  "open_blockers": [],
-  "posture_sync_ref": "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
-  "prior_authority_state": "TRANSITIONAL_AUTHORITATIVE",
-  "promotion_verdict": "PASS",
-  "schema_id": "kt.operator.settled_authority_promotion_receipt.v1",
-  "truth_supersession_ref": "KT_PROD_CLEANROOM/reports/truth_supersession_receipt.json",
-  "validated_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7"
+﻿{
+    "schema_id":  "kt.operator.settled_authority_promotion_receipt.v1",
+    "generated_utc":  "2026-03-11T22:00:00Z",
+    "prior_authority_state":  "SETTLED_AUTHORITATIVE",
+    "new_authority_state":  "TRANSITIONAL_AUTHORITATIVE",
+    "promotion_verdict":  "HOLD",
+    "proof_class":  "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+    "validated_head_sha":  "4867542e364501a91c8e619ee3e26693d73b7a98",
+    "clean_clone_proof_ref":  "KT_PROD_CLEANROOM/reports/twocleanclone_proof.json",
+    "posture_sync_ref":  "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+    "truth_supersession_ref":  "KT_PROD_CLEANROOM/reports/truth_supersession_receipt.json",
+    "execution_board_ref":  "KT_PROD_CLEANROOM/governance/execution_board.json",
+    "open_blockers":  [
+                          "LEDGER_LOCAL_ONLY",
+                          "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+                          "H1_BLOCKED_UNTIL_PUBLISHED_SELF_CONVERGENCE"
+                      ],
+    "published_head_authority_claimed":  false
 }
+

@@ -1,36 +1,33 @@
 {
+  "active_current_head_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
   "checks": [
     {
-      "actual": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-      "check": "active_current_head_truth_source_is_current_pointer",
-      "expected": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "check": "active_current_head_truth_source_declared",
       "status": "PASS"
     },
     {
-      "actual": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
       "check": "execution_board_uses_policy_active_source",
-      "expected": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
       "status": "PASS"
     },
     {
-      "actual": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
       "check": "readiness_scope_uses_policy_active_source",
-      "expected": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
       "status": "PASS"
     },
     {
       "check": "supporting_truth_surfaces_declared",
       "status": "PASS",
       "supporting_truth_surfaces": [
-        "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
-        "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+        "kt_truth_ledger:ledger/current/current_state_receipt.json",
+        "kt_truth_ledger:ledger/current/runtime_closure_audit.json",
         "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
-        "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
-        "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json",
-        "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
-        "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
-        "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json",
         "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
         "KT_PROD_CLEANROOM/reports/domain_maturity_matrix.json"
       ]
     },
@@ -41,22 +38,51 @@
         "KT_PROD_CLEANROOM/docs/**",
         "docs/audit/**"
       ],
+      "documentary_only_refs": [
+        "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+        "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+        "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json"
+      ],
       "status": "PASS"
     },
     {
       "active_supporting_truth_surfaces": [
-        "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
-        "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+        "kt_truth_ledger:ledger/current/current_state_receipt.json",
+        "kt_truth_ledger:ledger/current/runtime_closure_audit.json",
         "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
-        "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
-        "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json",
-        "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
-        "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
-        "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json",
         "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
         "KT_PROD_CLEANROOM/reports/domain_maturity_matrix.json"
       ],
-      "check": "current_pointer_not_redeclared_as_supporting_surface",
+      "check": "active_truth_source_not_redeclared_as_supporting_surface",
+      "status": "PASS"
+    },
+    {
+      "check": "main_current_pointer_marked_documentary_only",
+      "documentary_only_refs": [
+        "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+        "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+        "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "main_current_state_marked_documentary_only",
+      "documentary_only_refs": [
+        "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+        "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+        "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "main_runtime_audit_marked_documentary_only",
+      "documentary_only_refs": [
+        "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+        "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+        "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json"
+      ],
       "status": "PASS"
     }
   ],

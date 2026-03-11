@@ -1,63 +1,53 @@
 {
-  "generated_utc": "2026-03-08T15:13:10Z",
+  "generated_utc": "2026-03-11T15:34:35Z",
   "schema_id": "kt.sovereign.real_path_trace_bundle.v1",
+  "status": "FAIL_CLOSED_PARTIAL",
+  "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98",
   "targets": [
     {
+      "failure_reason": "FAIL_CLOSED: repo is not clean",
       "program_id": "program.certify.canonical_hmac",
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A04_certify_canonical_hmac_clean",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A02_20260311_certify_canonical_hmac_currenthead",
       "trace": {
-        "bindingloop_status": "PASS",
-        "created_utc": "2026-03-08T14:07:48Z",
-        "delivery_contract_status": "PASS",
-        "delivery_manifest": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A04_certify_canonical_hmac_clean/delivery/delivery_manifest.json",
-        "head": "15cf771ae299294e7be5b3229854d352afd98945",
+        "bindingloop_status": "NOT_RUN",
+        "created_utc": "2026-03-11T15:34:26Z",
+        "delivery_contract_status": "NOT_RUN",
+        "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
         "lane_id": "KT_OPERATOR_CANONICAL_HMAC",
         "lane_label": "canonical_hmac",
         "program_id": "program.certify.canonical_hmac",
         "safe_run_enforced": false,
         "schema_id": "kt.operator.real_path_trace.v1",
+        "status": "FAIL_CLOSED",
         "trace": {
-          "bundle_emitter_used": "_emit_delivery_bundle",
+          "bundle_emitter_used": "NOT_EMITTED",
           "entrypoint": "python -m tools.operator.kt_cli",
-          "evidence_plane_complete": true,
+          "evidence_plane_complete": false,
           "lane": "canonical_hmac",
           "ledger_append_observed": false,
           "production_intended_blocked_if_missing": false,
           "program_id": "program.certify.canonical_hmac",
           "safe_run_enforced": false,
-          "titanium_checkpoints_exercised": [
-            "reports/operator_fingerprint.json",
-            "reports/operator_intent.json",
-            "evidence/constitutional_snapshot.json",
-            "evidence/worm_manifest.json",
-            "evidence/evidence_core_merkle.json",
-            "delivery/delivery_manifest.json",
-            "delivery/delivery_lint_report.json",
-            "evidence/replay_receipt.json",
-            "evidence/secret_scan_report.json",
-            "reports/bindingloop_check.json"
-          ],
-          "validator_set_exercised": [
-            "program.bindingloop.verify",
-            "program.delivery.contract.validate"
-          ]
+          "titanium_checkpoints_exercised": [],
+          "validator_set_exercised": []
         }
       }
     },
     {
       "program_id": "program.hat_demo",
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A04_hat_demo_attached",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A02_20260311_hat_demo_currenthead",
       "trace": {
         "bindingloop_status": "PASS",
-        "created_utc": "2026-03-08T14:08:16Z",
+        "created_utc": "2026-03-11T15:34:34Z",
         "delivery_contract_status": "PASS",
-        "delivery_manifest": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A04_hat_demo_attached/delivery/delivery_manifest.json",
-        "head": "15cf771ae299294e7be5b3229854d352afd98945",
+        "delivery_manifest": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A02_20260311_hat_demo_currenthead/delivery/delivery_manifest.json",
+        "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
         "lane_id": "KT_OPERATOR_HAT_DEMO_V1",
         "lane_label": "hat_demo.v1",
         "program_id": "program.hat_demo",
         "safe_run_enforced": false,
         "schema_id": "kt.operator.real_path_trace.v1",
+        "status": "PASS",
         "trace": {
           "bundle_emitter_used": "_emit_delivery_bundle",
           "entrypoint": "python -m tools.operator.kt_cli",
@@ -88,18 +78,19 @@
     },
     {
       "program_id": "program.red_assault.serious_v1",
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A04_red_assault_attached",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A02_20260311_red_assault_currenthead",
       "trace": {
         "bindingloop_status": "PASS",
-        "created_utc": "2026-03-08T14:08:22Z",
+        "created_utc": "2026-03-11T15:34:34Z",
         "delivery_contract_status": "PASS",
-        "delivery_manifest": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A04_red_assault_attached/delivery/delivery_manifest.json",
-        "head": "15cf771ae299294e7be5b3229854d352afd98945",
+        "delivery_manifest": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A02_20260311_red_assault_currenthead/delivery/delivery_manifest.json",
+        "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
         "lane_id": "KT_OPERATOR_RED_ASSAULT_SERIOUS_V1",
         "lane_label": "red_assault.serious_v1",
         "program_id": "program.red_assault.serious_v1",
         "safe_run_enforced": false,
         "schema_id": "kt.operator.real_path_trace.v1",
+        "status": "PASS",
         "trace": {
           "bundle_emitter_used": "_emit_delivery_bundle",
           "entrypoint": "python -m tools.operator.kt_cli",
@@ -130,18 +121,19 @@
     },
     {
       "program_id": "program.safe_run.program.hat_demo",
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_safe_run_hat_demo_practice/program_run",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A02_20260311_safe_run_hat_demo_currenthead/program_run",
       "trace": {
         "bindingloop_status": "PASS",
-        "created_utc": "2026-03-08T14:21:50Z",
+        "created_utc": "2026-03-11T15:34:34Z",
         "delivery_contract_status": "PASS",
-        "delivery_manifest": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_safe_run_hat_demo_practice/program_run/delivery/delivery_manifest.json",
-        "head": "15cf771ae299294e7be5b3229854d352afd98945",
+        "delivery_manifest": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A02_20260311_safe_run_hat_demo_currenthead/program_run/delivery/delivery_manifest.json",
+        "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
         "lane_id": "KT_OPERATOR_HAT_DEMO_V1",
         "lane_label": "hat_demo.v1",
         "program_id": "program.hat_demo",
         "safe_run_enforced": true,
         "schema_id": "kt.operator.real_path_trace.v1",
+        "status": "PASS",
         "trace": {
           "bundle_emitter_used": "_emit_delivery_bundle",
           "entrypoint": "safe-run:program.hat_demo",
@@ -169,6 +161,15 @@
           ]
         }
       }
+    }
+  ],
+  "additional_findings": [
+    {
+      "failure_reason": "FAIL_CLOSED: repo is not clean",
+      "program_id": "program.certify.canonical_hmac",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A02_20260311_safe_run_certify_currenthead/program_run",
+      "safe_run_enforced": true,
+      "status": "FAIL_CLOSED"
     }
   ]
 }

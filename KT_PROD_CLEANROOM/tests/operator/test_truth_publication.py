@@ -3,7 +3,13 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from tools.operator.truth_publication import CURRENT_POINTER_REL, publish_truth_artifacts, validate_truth_publication
+from tools.operator.truth_publication import (
+    CURRENT_POINTER_REL,
+    LEDGER_CURRENT_POINTER_REL,
+    publish_truth_artifacts,
+    publish_truth_ledger_witness,
+    validate_truth_publication,
+)
 
 
 def _write_json(path: Path, payload: dict) -> None:
@@ -199,3 +205,26 @@ def test_publish_truth_artifacts_is_stable_on_repeat_publish(tmp_path: Path) -> 
     assert first["truth_bundle_ref"] == second["truth_bundle_ref"]
     pointer = json.loads((tmp_path / CURRENT_POINTER_REL).read_text(encoding="utf-8"))
     assert pointer["supersedes_bundle_hash"] == ""
+
+
+def test_publish_truth_ledger_witness_emits_bootstrap_bundle_outside_main(tmp_path: Path) -> None:
+    source_root = tmp_path / "source"
+    ledger_root = tmp_path / "ledger"
+    _seed_law(source_root)
+    live_validation_index = _seed_reports(source_root)
+
+    publication = publish_truth_ledger_witness(
+        source_root=source_root,
+        ledger_root=ledger_root,
+        report_root_rel="KT_PROD_CLEANROOM/reports",
+        live_validation_index_path=live_validation_index,
+        authority_mode="TRANSITIONAL_AUTHORITATIVE",
+        posture_state="CANONICAL_READY_FOR_REEARNED_GREEN",
+        ledger_branch="kt_truth_ledger",
+    )
+
+    pointer = json.loads((ledger_root / LEDGER_CURRENT_POINTER_REL).read_text(encoding="utf-8"))
+    assert publication["current_pointer_ref"] == "kt_truth_ledger:ledger/current/current_pointer.json"
+    assert pointer["witness_plane"] is True
+    assert pointer["published_head_authority_claimed"] is False
+    assert not (source_root / LEDGER_CURRENT_POINTER_REL).exists()

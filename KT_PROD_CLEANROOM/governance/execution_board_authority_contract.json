@@ -1,21 +1,29 @@
-{
-  "schema_id": "kt.governance.execution_board_authority_contract.v1",
-  "contract_id": "EXECUTION_BOARD_AUTHORITY_CONTRACT_V1_20260309",
-  "authority_modes": [
-    "TRANSITIONAL_AUTHORITATIVE",
-    "SETTLED_AUTHORITATIVE"
-  ],
-  "authoritative_when": [
-    "authoritative_current_head_truth_source == KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-    "authority_mode matches settled_truth_source_receipt status",
-    "last_synced_head_sha matches settled_truth_source_receipt pinned_head_sha when authority is settled",
-    "authority_convergence_receipt status is PASS before TRUTHFUL_GREEN may be claimed"
-  ],
-  "must_never_source_posture_from": [
-    "docs/**",
-    "KT-Codex/**",
-    "KT_TEMPLE_ROOT/**",
-    "KT_PROD_CLEANROOM/05_QUARANTINE/**"
-  ],
-  "status": "ACTIVE"
+﻿{
+    "schema_id":  "kt.governance.execution_board_authority_contract.v1",
+    "contract_id":  "EXECUTION_BOARD_AUTHORITY_CONTRACT_V1_20260309",
+    "authority_modes":  [
+                            "TRANSITIONAL_AUTHORITATIVE",
+                            "SETTLED_AUTHORITATIVE"
+                        ],
+    "future_truth_ledger_witness_source":  "kt_truth_ledger:ledger/current/current_pointer.json",
+    "transition_state":  "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY_PENDING_PUBLICATION",
+    "transition_note":  "Action 12 promotes the local truth ledger as the active current-head witness and purges main-bound live-truth responsibility. Published-head self-convergence remains unresolved until the ledger becomes an admissible published authority plane.",
+    "authoritative_when":  [
+                               "authoritative_current_head_truth_source == kt_truth_ledger:ledger/current/current_pointer.json",
+                               "authority_mode == TRANSITIONAL_AUTHORITATIVE or SETTLED_AUTHORITATIVE as supported by settled_truth_source_receipt",
+                               "last_synced_head_sha matches settled_truth_source_receipt pinned_head_sha for the active proof class",
+                               "authority_convergence_receipt status is PASS before TRUTHFUL_GREEN may be claimed",
+                               "H1 may only be true when published_head_self_convergence_receipt.proof_class == PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN"
+                           ],
+    "must_never_source_posture_from":  [
+                                           "docs/**",
+                                           "KT-Codex/**",
+                                           "KT_TEMPLE_ROOT/**",
+                                           "KT_PROD_CLEANROOM/05_QUARANTINE/**"
+                                       ],
+    "status":  "ACTIVE",
+    "active_truth_source_ref":  "kt_truth_ledger:ledger/current/current_pointer.json",
+    "proof_class":  "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+    "published_head_authority_claimed":  false
 }
+

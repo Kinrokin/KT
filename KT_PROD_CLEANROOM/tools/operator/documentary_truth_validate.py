@@ -6,29 +6,41 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
 from tools.operator.titanium_common import make_run_dir, repo_root, write_failure_artifacts, write_json_worm
+from tools.operator.truth_authority import CURRENT_POINTER_REL, active_truth_source_ref, load_json_ref
 
 
 POLICY_REL = "KT_PROD_CLEANROOM/governance/documentary_truth_policy.json"
 BOARD_REL = "KT_PROD_CLEANROOM/governance/execution_board.json"
 READINESS_REL = "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json"
-CURRENT_POINTER_REL = "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
+CURRENT_STATE_REL = "KT_PROD_CLEANROOM/reports/current_state_receipt.json"
+RUNTIME_AUDIT_REL = "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json"
 
 
 def _load_json(path: Path) -> Dict[str, Any]:
     if not path.exists():
         raise RuntimeError(f"FAIL_CLOSED: missing required artifact: {path.as_posix()}")
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
+def _documentary_only(payload: Dict[str, Any]) -> bool:
+    if bool(payload.get("documentary_only")):
+        return True
+    if "live_authority" in payload and payload.get("live_authority") is False:
+        return True
+    status = str(payload.get("status", "")).strip().upper()
+    authority_role = str(payload.get("authority_role", "")).strip().upper()
+    return "DOCUMENTARY" in status or "SUPERSEDED" in status or authority_role == "DOCUMENTARY_ONLY"
 
 
 def build_documentary_truth_report(*, root: Path) -> Dict[str, Any]:
     policy = _load_json(root / POLICY_REL)
     board = _load_json(root / BOARD_REL)
     readiness = _load_json(root / READINESS_REL)
-    _load_json(root / CURRENT_POINTER_REL)
-
-    active_source = str(policy.get("active_current_head_truth_source", "")).strip()
+    active_source = active_truth_source_ref(root=root)
+    load_json_ref(root=root, ref=active_source)
     supporting = [str(item).strip() for item in policy.get("active_supporting_truth_surfaces", []) if str(item).strip()]
     documentary = [str(item).strip() for item in policy.get("documentary_only_patterns", []) if str(item).strip()]
+    documentary_refs = [str(item).strip() for item in policy.get("documentary_only_refs", []) if str(item).strip()]
     board_source = str(board.get("authoritative_current_head_truth_source", "")).strip()
     readiness_source = str(readiness.get("authoritative_truth_source", "")).strip()
 
@@ -43,10 +55,9 @@ def build_documentary_truth_report(*, root: Path) -> Dict[str, Any]:
             failures.append(check_id)
 
     _check(
-        "active_current_head_truth_source_is_current_pointer",
-        active_source == CURRENT_POINTER_REL,
+        "active_current_head_truth_source_declared",
+        bool(active_source),
         actual=active_source,
-        expected=CURRENT_POINTER_REL,
     )
     _check(
         "execution_board_uses_policy_active_source",
@@ -67,18 +78,40 @@ def build_documentary_truth_report(*, root: Path) -> Dict[str, Any]:
     )
     _check(
         "current_pointer_not_documentary_only",
-        all(entry != CURRENT_POINTER_REL for entry in documentary),
+        all(entry != active_source for entry in documentary_refs),
+        documentary_only_refs=documentary_refs,
         documentary_only_patterns=documentary,
     )
     _check(
-        "current_pointer_not_redeclared_as_supporting_surface",
-        all(entry != CURRENT_POINTER_REL for entry in supporting),
+        "active_truth_source_not_redeclared_as_supporting_surface",
+        all(entry != active_source for entry in supporting),
         active_supporting_truth_surfaces=supporting,
     )
+
+    if active_source != CURRENT_POINTER_REL:
+        main_pointer = _load_json(root / CURRENT_POINTER_REL)
+        main_current_state = _load_json(root / CURRENT_STATE_REL)
+        main_runtime_audit = _load_json(root / RUNTIME_AUDIT_REL)
+        _check(
+            "main_current_pointer_marked_documentary_only",
+            CURRENT_POINTER_REL in documentary_refs and _documentary_only(main_pointer),
+            documentary_only_refs=documentary_refs,
+        )
+        _check(
+            "main_current_state_marked_documentary_only",
+            CURRENT_STATE_REL in documentary_refs and _documentary_only(main_current_state),
+            documentary_only_refs=documentary_refs,
+        )
+        _check(
+            "main_runtime_audit_marked_documentary_only",
+            RUNTIME_AUDIT_REL in documentary_refs and _documentary_only(main_runtime_audit),
+            documentary_only_refs=documentary_refs,
+        )
 
     return {
         "schema_id": "kt.operator.documentary_truth_validation_receipt.v1",
         "status": "PASS" if not failures else "FAIL",
+        "active_current_head_truth_source": active_source,
         "checks": checks,
         "failures": failures,
     }

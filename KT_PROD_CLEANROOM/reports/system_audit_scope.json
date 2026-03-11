@@ -1,0 +1,50 @@
+{
+  "schema_id": "kt.audit.system_audit_scope.v1",
+  "action_id": "ACTION_1_FREEZE_REPO_PENDING_AUDIT",
+  "work_order_id": "WORK_ORDER_KT_SOVEREIGN_COMPLETION_SELF_CONVERGED_GREEN_H1_ACTIVATION",
+  "status": "PASS",
+  "freeze_state": "ACTIVE_UNTIL_FULL_AUDIT_PASSES",
+  "generated_utc": "2026-03-11T20:52:00Z",
+  "repo_root": "d:/user/rober/OneDrive/KingsTheorem_Archive",
+  "git_head": "4867542e364501a91c8e619ee3e26693d73b7a98",
+  "git_branch": "main",
+  "git_branch_state": "main...origin/main",
+  "repo_clean_before_action": true,
+  "repo_clean_after_action_expected": false,
+  "current_legal_scope": [
+    "WS0_AUDIT_FREEZE_AND_SCOPE_LOCK"
+  ],
+  "current_legal_outputs": [
+    "KT_PROD_CLEANROOM/reports/system_audit_scope.json",
+    "KT_PROD_CLEANROOM/reports/frozen_repo_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_path_map_before.json",
+    "KT_PROD_CLEANROOM/reports/blast_radius_map.json",
+    "KT_PROD_CLEANROOM/reports/rollback_plan.json"
+  ],
+  "core_problem_statement": "Published head 4867542e364501a91c8e619ee3e26693d73b7a98 does not match the tracked live-truth surfaces, which remain stamped to 60b05c4be50c07deac6fc01a471c94e77877dec7.",
+  "current_truth_divergence": {
+    "git_head": "4867542e364501a91c8e619ee3e26693d73b7a98",
+    "execution_board_last_synced_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "current_pointer_truth_subject_commit": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "current_state_receipt_validated_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "authority_divergence_present": true
+  },
+  "audit_focus": [
+    "repo freeze discipline",
+    "real-path preservation",
+    "authority divergence accounting",
+    "runtime path mapping before change",
+    "blast-radius containment",
+    "rollback containment"
+  ],
+  "out_of_scope_until_next_explicit_approval": [
+    "runtime code edits",
+    "governance law edits",
+    "truth regeneration",
+    "CI changes",
+    "truth-ledger branch creation",
+    "H1 benchmarking",
+    "router activation"
+  ],
+  "next_legal_action_after_approval": "ACTION_2_RECONFIRM_REAL_PATH_ATTACHMENT_MATRIX"
+}

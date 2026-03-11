@@ -1,8 +1,19 @@
 {
-  "generated_utc": "2026-03-08T15:13:10Z",
-  "reason": "No unrelated repo failures remain outside the sovereign closure scope.",
   "schema_id": "kt.sovereign.quarantine_scope_receipt.v1",
-  "scope": [],
+  "generated_utc": "2026-03-11T20:06:30Z",
+  "branch_ref": "main",
+  "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98",
+  "scope_kind": "candidate_tracked_worktree_repo_hygiene_only",
   "status": "NOT_REQUIRED",
+  "reason": "No unrelated repo failures remain outside the sovereign candidate closure scope. Remaining dirt is classified as allowed candidate tracked deltas, allowed WS0 untracked audit artifacts, or allowed CI untracked artifacts.",
+  "scope": [],
+  "allowed_scope_refs": {
+    "candidate_tracked_deltas_ref": "KT_PROD_CLEANROOM/reports/repo_hygiene_summary.json",
+    "ws0_untracked_ref": "KT_PROD_CLEANROOM/reports/system_audit_scope.json",
+    "ci_untracked_refs": [
+      "ci/delivery/cidelivery_manifest.json",
+      "ci/evidence/cireplay_receipt.json"
+    ]
+  },
   "unrelated_entries": []
 }

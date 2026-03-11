@@ -1,20 +1,22 @@
-{
-  "generated_utc": "2026-03-11T03:31:06Z",
-  "integrity_supporting_artifacts": [
-    "KT_PROD_CLEANROOM/reports/dependency_inventory.json",
-    "KT_PROD_CLEANROOM/reports/python_environment_manifest.json",
-    "KT_PROD_CLEANROOM/reports/sbom_cyclonedx.json"
-  ],
-  "schema_id": "kt.public_verifier_manifest.v2",
-  "state_receipts": [
-    "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
-    "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json",
-    "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
-    "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
-    "KT_PROD_CLEANROOM/reports/documentary_truth_validation_receipt.json",
-    "KT_PROD_CLEANROOM/reports/dependency_inventory_validation_receipt.json"
-  ],
-  "status": "PASS",
-  "truth_pointer_ref": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-  "validated_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7"
+﻿{
+    "schema_id":  "kt.public_verifier_manifest.v2",
+    "generated_utc":  "2026-03-11T22:00:00Z",
+    "status":  "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+    "validated_head_sha":  "4867542e364501a91c8e619ee3e26693d73b7a98",
+    "truth_pointer_ref":  "kt_truth_ledger:ledger/current/current_pointer.json",
+    "proof_class":  "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+    "published_head_authority_claimed":  false,
+    "state_receipts":  [
+                           "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+                           "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+                           "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+                           "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+                           "KT_PROD_CLEANROOM/reports/documentary_truth_validation_receipt.json"
+                       ],
+    "integrity_supporting_artifacts":  [
+                                           "KT_PROD_CLEANROOM/reports/dependency_inventory.json",
+                                           "KT_PROD_CLEANROOM/reports/python_environment_manifest.json",
+                                           "KT_PROD_CLEANROOM/reports/sbom_cyclonedx.json"
+                                       ]
 }
+

@@ -2,11 +2,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
 from tools.operator.hashpin import _registry_path, _resolve_repo_path
-from tools.operator.titanium_common import load_json, make_run_dir, repo_root, write_failure_artifacts, write_json_worm
+from tools.operator.titanium_common import load_json, make_run_dir, repo_root, utc_now_iso_z, write_failure_artifacts, write_json_worm
 
 
 def _collect_required_paths(root: Path) -> List[str]:
@@ -34,6 +35,10 @@ def _collect_required_paths(root: Path) -> List[str]:
     return sorted(set(paths))
 
 
+def _git(root: Path, *args: str) -> str:
+    return subprocess.check_output(["git", *args], cwd=str(root), text=True).strip()
+
+
 def _verify_source_integrity() -> Dict[str, Any]:
     root = repo_root()
     checked: List[Dict[str, Any]] = []
@@ -53,7 +58,15 @@ def _verify_source_integrity() -> Dict[str, Any]:
             entry["error"] = "empty_file"
             failures.append(f"{rel}:empty")
         checked.append(entry)
-    return {"schema_id": "kt.operator.source_integrity_report.v1", "checked": checked, "status": "PASS" if not failures else "FAIL", "failures": failures}
+    return {
+        "schema_id": "kt.operator.source_integrity_report.v1",
+        "generated_utc": utc_now_iso_z(),
+        "branch_ref": _git(root, "rev-parse", "--abbrev-ref", "HEAD"),
+        "validated_head_sha": _git(root, "rev-parse", "HEAD"),
+        "checked": checked,
+        "status": "PASS" if not failures else "FAIL",
+        "failures": failures,
+    }
 
 
 def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
@@ -72,7 +85,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         write_json_worm(run_dir / "reports" / "source_integrity_report.json", report, label="source_integrity_report.json")
         write_json_worm(
             run_dir / "reports" / "source_integrity_receipt.json",
-            {"schema_id": "kt.operator.source_integrity_receipt.v1", "status": report["status"]},
+            {
+                "schema_id": "kt.operator.source_integrity_receipt.v1",
+                "status": report["status"],
+                "branch_ref": report["branch_ref"],
+                "validated_head_sha": report["validated_head_sha"],
+            },
             label="source_integrity_receipt.json",
         )
         if report["status"] != "PASS":

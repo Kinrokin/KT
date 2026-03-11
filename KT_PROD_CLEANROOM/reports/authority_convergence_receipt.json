@@ -1,75 +1,51 @@
 {
   "checks": [
     {
-      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
-      "check": "live_validation_matches_git_head",
-      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
-      "status": "PASS"
-    },
-    {
-      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+      "actual": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "check": "execution_board_matches_git_head",
-      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+      "expected": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "status": "PASS"
     },
     {
-      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+      "actual": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "check": "current_pointer_matches_git_head",
-      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+      "expected": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "status": "PASS"
     },
     {
-      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+      "actual": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "check": "current_state_receipt_matches_git_head",
-      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+      "expected": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "status": "PASS"
     },
     {
-      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+      "actual": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "check": "runtime_closure_audit_matches_git_head",
-      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+      "expected": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "status": "PASS"
     },
     {
-      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+      "actual": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "check": "settled_truth_source_matches_git_head",
-      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+      "expected": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "status": "PASS"
     },
     {
-      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
-      "check": "one_button_preflight_matches_git_head",
-      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "check": "execution_board_points_to_active_truth_source",
+      "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
       "status": "PASS"
     },
     {
-      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
-      "check": "one_button_production_matches_git_head",
-      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "check": "readiness_scope_points_to_active_truth_source",
+      "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
       "status": "PASS"
     },
     {
-      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
-      "check": "one_button_nested_verdict_matches_git_head",
-      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
-      "status": "PASS"
-    },
-    {
-      "actual": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-      "check": "execution_board_points_to_current_pointer",
-      "expected": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-      "status": "PASS"
-    },
-    {
-      "actual": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-      "check": "readiness_scope_points_to_current_pointer",
-      "expected": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-      "status": "PASS"
-    },
-    {
-      "actual": "SETTLED_AUTHORITATIVE",
+      "actual": "TRANSITIONAL_AUTHORITATIVE",
       "check": "authority_mode_converged",
-      "expected": "SETTLED_AUTHORITATIVE",
+      "expected": "TRANSITIONAL_AUTHORITATIVE",
       "status": "PASS"
     },
     {
@@ -109,58 +85,65 @@
       "status": "PASS"
     },
     {
-      "actual": "main",
-      "check": "live_validation_branch_matches_git_branch",
-      "expected": "main",
+      "actual": "TRANSITIONAL_AUTHORITATIVE",
+      "check": "local_ledger_requires_transitional_authority",
+      "expected": "TRANSITIONAL_AUTHORITATIVE",
       "status": "PASS"
     },
     {
       "actual": true,
-      "check": "truthful_green_requires_clean_worktree",
-      "status": "PASS"
-    },
-    {
-      "actual": "SETTLED_AUTHORITATIVE",
-      "check": "truthful_green_requires_settled_authority",
-      "expected": "SETTLED_AUTHORITATIVE",
-      "status": "PASS"
-    },
-    {
-      "actual": "PASS",
-      "check": "truthful_green_requires_preflight_pass",
-      "expected": "PASS",
-      "status": "PASS"
-    },
-    {
-      "actual": "PASS",
-      "check": "truthful_green_requires_production_pass",
-      "expected": "PASS",
+      "check": "main_current_pointer_documentary_only",
       "status": "PASS"
     },
     {
       "actual": true,
-      "check": "truthful_green_requires_preflight_lineage_match",
+      "check": "main_current_state_documentary_only",
       "status": "PASS"
     },
     {
       "actual": true,
-      "check": "truthful_green_requires_production_lineage_match",
+      "check": "main_runtime_audit_documentary_only",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "check": "local_ledger_requires_h1_blocked",
+      "status": "PASS"
+    },
+    {
+      "check": "proof_class_is_local_ledger_only",
+      "ledger_branch_published": false,
+      "proof_class": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
       "status": "PASS"
     }
   ],
   "failures": [],
-  "generated_utc": "2026-03-11T02:24:26Z",
+  "generated_utc": "2026-03-11T21:20:03Z",
+  "h1_admissible": false,
   "observed": {
-    "board_authority_mode": "SETTLED_AUTHORITATIVE",
-    "board_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "active_supporting_truth_surfaces": [
+      "kt_truth_ledger:ledger/current/current_state_receipt.json",
+      "kt_truth_ledger:ledger/current/runtime_closure_audit.json",
+      "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+      "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+      "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+      "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+      "KT_PROD_CLEANROOM/reports/domain_maturity_matrix.json"
+    ],
+    "active_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
+    "board_authority_mode": "TRANSITIONAL_AUTHORITATIVE",
+    "board_head": "4867542e364501a91c8e619ee3e26693d73b7a98",
     "board_posture_state": "TRUTHFUL_GREEN",
-    "board_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-    "current_state_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "board_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
+    "current_state_head": "4867542e364501a91c8e619ee3e26693d73b7a98",
     "current_state_posture_state": "TRUTHFUL_GREEN",
     "git_branch": "main",
-    "git_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
-    "live_validation_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
-    "pointer_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "git_head": "4867542e364501a91c8e619ee3e26693d73b7a98",
+    "ledger_branch_published": false,
+    "main_current_pointer_documentary_only": true,
+    "main_current_state_documentary_only": true,
+    "main_runtime_audit_documentary_only": true,
+    "pointer_head": "4867542e364501a91c8e619ee3e26693d73b7a98",
     "pointer_posture_state": "TRUTHFUL_GREEN",
     "preflight_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
     "preflight_head_lineage_match": true,
@@ -169,14 +152,17 @@
     "production_head_lineage_match": true,
     "production_nested_verdict_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
     "production_status": "PASS",
-    "readiness_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-    "runtime_audit_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "proof_class": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+    "readiness_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
+    "runtime_audit_head": "4867542e364501a91c8e619ee3e26693d73b7a98",
     "runtime_audit_posture_state": "TRUTHFUL_GREEN",
-    "settled_authority_mode": "SETTLED_AUTHORITATIVE",
-    "settled_truth_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "settled_authority_mode": "TRANSITIONAL_AUTHORITATIVE",
+    "settled_truth_head": "4867542e364501a91c8e619ee3e26693d73b7a98",
     "settled_truth_posture_state": "TRUTHFUL_GREEN",
     "worktree_dirty": false
   },
+  "proof_class": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+  "published_head_authority_claimed": false,
   "schema_id": "kt.operator.authority_convergence_receipt.v1",
   "status": "PASS"
 }

@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import hmac
 import json
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
@@ -13,6 +14,7 @@ from tools.operator.titanium_common import (
     load_json,
     make_run_dir,
     repo_root,
+    utc_now_iso_z,
     write_failure_artifacts,
     write_json_worm,
 )
@@ -24,6 +26,15 @@ def _registry_path(root: Path) -> Path:
 
 def _manifest_path(root: Path) -> Path:
     return (root / "KT_PROD_CLEANROOM" / "governance" / "governance_manifest.json").resolve()
+
+
+def _git(root: Path, *args: str) -> str:
+    return subprocess.check_output(["git", *args], cwd=str(root), text=True).strip()
+
+
+def _git_lines(root: Path, *args: str) -> List[str]:
+    output = _git(root, *args)
+    return [line.strip().replace("\\", "/") for line in output.splitlines() if line.strip()]
 
 
 def _resolve_repo_path(root: Path, relpath: str) -> Path:
@@ -70,6 +81,24 @@ def compute_all_targets(root: Path) -> Dict[str, Dict[str, Any]]:
     return out
 
 
+def _subject_scope(root: Path, registry: Dict[str, Any]) -> Dict[str, Any]:
+    targets = registry.get("targets")
+    if not isinstance(targets, dict):
+        raise RuntimeError("FAIL_CLOSED: pin_registry.targets missing or invalid")
+    return {
+        "kind": "candidate_tracked_worktree_required_pin_targets_only",
+        "branch_ref": _git(root, "rev-parse", "--abbrev-ref", "HEAD"),
+        "validated_head_sha": _git(root, "rev-parse", "HEAD"),
+        "required_pin_targets": sorted(str(name) for name in targets.keys()),
+        "tracked_delta_paths": _git_lines(root, "diff", "--name-only"),
+        "excluded_untracked_paths": _git_lines(root, "ls-files", "--others", "--exclude-standard"),
+        "excluded_generated_run_globs": ["KT_PROD_CLEANROOM/exports/_runs/**"],
+        "excludes_untracked_from_pin_inputs": True,
+        "excludes_generated_runs_from_pin_inputs": True,
+        "pin_inputs_are_explicit_registry_targets_only": True,
+    }
+
+
 def _verify_hmac_sig(*, manifest_sha256: str, signer: str, sig_file: Path) -> Dict[str, Any]:
     sig_obj = load_json(sig_file)
     if str(sig_obj.get("signer", "")).strip() != signer:
@@ -89,6 +118,7 @@ def _verify_hmac_sig(*, manifest_sha256: str, signer: str, sig_file: Path) -> Di
 
 def _cmd_compute(*, run_dir: Path, target_name: str) -> int:
     root = repo_root()
+    registry = load_json(_registry_path(root))
     computed = compute_all_targets(root)
     if target_name and target_name != "all":
         if target_name not in computed:
@@ -96,8 +126,24 @@ def _cmd_compute(*, run_dir: Path, target_name: str) -> int:
         selected = {target_name: computed[target_name]}
     else:
         selected = computed
-    report = {"schema_id": "kt.operator.hashpin_results.v1", "targets": selected}
-    receipt = {"schema_id": "kt.operator.hashpin_receipt.v1", "target_count": len(selected)}
+    subject_scope = _subject_scope(root, registry)
+    report = {
+        "schema_id": "kt.operator.hashpin_results.v1",
+        "generated_utc": utc_now_iso_z(),
+        "branch_ref": subject_scope["branch_ref"],
+        "validated_head_sha": subject_scope["validated_head_sha"],
+        "subject_scope": subject_scope,
+        "targets": selected,
+    }
+    receipt = {
+        "schema_id": "kt.operator.hashpin_receipt.v1",
+        "generated_utc": report["generated_utc"],
+        "branch_ref": report["branch_ref"],
+        "validated_head_sha": report["validated_head_sha"],
+        "subject_scope_kind": subject_scope["kind"],
+        "target_count": len(selected),
+        "status": "PASS",
+    }
     write_json_worm(run_dir / "reports" / "hashpin_results.json", report, label="hashpin_results.json")
     write_json_worm(run_dir / "reports" / "hashpin_receipt.json", receipt, label="hashpin_receipt.json")
     print(json.dumps(report, sort_keys=True, ensure_ascii=True))
@@ -109,6 +155,7 @@ def _cmd_verify_required_pins(*, run_dir: Path) -> int:
     registry = load_json(_registry_path(root))
     manifest = load_json(_manifest_path(root))
     computed = compute_all_targets(root)
+    subject_scope = _subject_scope(root, registry)
     failures: List[str] = []
     checked: List[Dict[str, Any]] = []
     for pin in registry.get("required_pins", []):
@@ -128,7 +175,15 @@ def _cmd_verify_required_pins(*, run_dir: Path) -> int:
         if manifest_sha != expected:
             failures.append(f"{pin_id}:manifest_sha_mismatch")
         checked.append({"pin_id": pin_id, "target": target, "expected_sha256": expected, "status": status})
-    report = {"schema_id": "kt.operator.hashpin_verification.v1", "checked": checked, "status": "PASS" if not failures else "FAIL"}
+    report = {
+        "schema_id": "kt.operator.hashpin_verification.v1",
+        "generated_utc": utc_now_iso_z(),
+        "branch_ref": subject_scope["branch_ref"],
+        "validated_head_sha": subject_scope["validated_head_sha"],
+        "subject_scope": subject_scope,
+        "checked": checked,
+        "status": "PASS" if not failures else "FAIL",
+    }
     if failures:
         report["failures"] = failures
     write_json_worm(run_dir / "reports" / "hashpin_verification.json", report, label="hashpin_verification.json")

@@ -1,0 +1,47 @@
+﻿{
+    "schema_id":  "kt.ci.delivery_manifest.v1",
+    "generated_utc":  "2026-03-11T17:40:03Z",
+    "branch_ref":  "main",
+    "validated_head_sha":  "4867542e364501a91c8e619ee3e26693d73b7a98",
+    "promotion_scope":  "ci_execution_governance_only",
+    "published_head_authority_claimed":  false,
+    "p0_gate_definitions":  {
+                                "path":  "ci/gates/p0_gate_definitions.json",
+                                "sha256":  "2e452bb6ba03c81c241e41d00b08cf9f4fa1b4edcf249f34b6a17ee3d278e545",
+                                "job_ids":  [
+                                                "ci.ws0.delivery_parity",
+                                                "ci.ws1.mai_conformance_and_provenance",
+                                                "ci.ws2.hermetic_replay_and_bindingloop",
+                                                "ci.ws3.constitution_epoch_drift_amendment",
+                                                "ci.p0.program_catalog_verify"
+                                            ]
+                            },
+    "workflows":  {
+                      "warn_only":  {
+                                        "name":  "P0 Warn-Only Closure Ladder",
+                                        "path":  ".github/workflows/ci_p0_warn_only_closure.yml",
+                                        "sha256":  "e2e6b201dd92eaff07545c263a8cf6eae7adf55ec86651b5d5210b778c749da5",
+                                        "active_on_repo":  true,
+                                        "triggers":  [
+                                                         "workflow_dispatch",
+                                                         "pull_request"
+                                                     ]
+                                    },
+                      "fail_closed_main":  {
+                                               "name":  "P0 Fail-Closed Main Ladder",
+                                               "path":  ".github/workflows/ci_p0_fail_closed_main.yml",
+                                               "sha256":  "0a4c3cc6a1c66945bab66158e2562c33d29964bfd7c1bf5582db5516bbefafa7",
+                                               "active_on_repo":  true,
+                                               "triggers":  [
+                                                                "workflow_dispatch",
+                                                                "push:main"
+                                                            ]
+                                           }
+                  },
+    "required_artifacts":  [
+                               "ci/delivery/cidelivery_manifest.json",
+                               "ci/evidence/cireplay_receipt.json",
+                               "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json"
+                           ]
+}
+

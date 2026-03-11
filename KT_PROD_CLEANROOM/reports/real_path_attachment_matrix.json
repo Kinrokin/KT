@@ -1,36 +1,30 @@
 {
-  "created_utc": "2026-03-08T15:13:10Z",
+  "created_utc": "2026-03-11T15:34:35Z",
+  "schema_id": "kt.operator.real_path_attachment_matrix.v1",
+  "status": "FAIL_CLOSED_PARTIAL",
+  "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98",
   "rows": [
     {
-      "bundle_emitter_used": "_emit_delivery_bundle",
+      "attachment_status": "FAIL_CLOSED",
+      "bundle_emitter_used": "NOT_EMITTED",
       "entrypoint": "python -m tools.operator.kt_cli",
-      "evidence_plane_complete": true,
+      "evidence_plane_complete": false,
+      "failure_reason": "FAIL_CLOSED: repo is not clean",
+      "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "lane": "canonical_hmac",
       "ledger_append_observed": false,
       "production_intended_blocked_if_missing": false,
       "program_id": "program.certify.canonical_hmac",
       "safe_run_enforced": false,
-      "titanium_checkpoints_exercised": [
-        "reports/operator_fingerprint.json",
-        "reports/operator_intent.json",
-        "evidence/constitutional_snapshot.json",
-        "evidence/worm_manifest.json",
-        "evidence/evidence_core_merkle.json",
-        "delivery/delivery_manifest.json",
-        "delivery/delivery_lint_report.json",
-        "evidence/replay_receipt.json",
-        "evidence/secret_scan_report.json",
-        "reports/bindingloop_check.json"
-      ],
-      "validator_set_exercised": [
-        "program.bindingloop.verify",
-        "program.delivery.contract.validate"
-      ]
+      "titanium_checkpoints_exercised": [],
+      "validator_set_exercised": []
     },
     {
+      "attachment_status": "PASS",
       "bundle_emitter_used": "_emit_delivery_bundle",
       "entrypoint": "python -m tools.operator.kt_cli",
       "evidence_plane_complete": true,
+      "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "lane": "hat_demo.v1",
       "ledger_append_observed": true,
       "production_intended_blocked_if_missing": false,
@@ -54,9 +48,11 @@
       ]
     },
     {
+      "attachment_status": "PASS",
       "bundle_emitter_used": "_emit_delivery_bundle",
       "entrypoint": "python -m tools.operator.kt_cli",
       "evidence_plane_complete": true,
+      "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "lane": "red_assault.serious_v1",
       "ledger_append_observed": true,
       "production_intended_blocked_if_missing": false,
@@ -80,9 +76,11 @@
       ]
     },
     {
+      "attachment_status": "PASS",
       "bundle_emitter_used": "_emit_delivery_bundle",
       "entrypoint": "safe-run:program.hat_demo",
       "evidence_plane_complete": true,
+      "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "lane": "hat_demo.v1",
       "ledger_append_observed": true,
       "production_intended_blocked_if_missing": true,
@@ -105,6 +103,5 @@
         "program.delivery.contract.validate"
       ]
     }
-  ],
-  "schema_id": "kt.operator.real_path_attachment_matrix.v1"
+  ]
 }

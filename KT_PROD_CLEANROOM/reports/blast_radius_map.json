@@ -1,0 +1,40 @@
+{
+  "schema_id": "kt.audit.blast_radius_map.v1",
+  "action_id": "ACTION_1_FREEZE_REPO_PENDING_AUDIT",
+  "status": "PASS",
+  "generated_utc": "2026-03-11T20:52:00Z",
+  "touch_class": "audit_artifacts_only",
+  "expected_touched_paths": [
+    "KT_PROD_CLEANROOM/reports/system_audit_scope.json",
+    "KT_PROD_CLEANROOM/reports/frozen_repo_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_path_map_before.json",
+    "KT_PROD_CLEANROOM/reports/blast_radius_map.json",
+    "KT_PROD_CLEANROOM/reports/rollback_plan.json"
+  ],
+  "protected_paths": {
+    "runtime": [
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/**"
+    ],
+    "governance_law": [
+      "KT_PROD_CLEANROOM/governance/**"
+    ],
+    "live_truth": [
+      "KT_PROD_CLEANROOM/exports/_truth/**",
+      "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+      "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+      "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+      "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
+      "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json"
+    ],
+    "ci": [
+      ".github/**",
+      "ci/**"
+    ],
+    "commercial_identity": [
+      "KT_PROD_CLEANROOM/docs/commercial/**"
+    ]
+  },
+  "core_touch_expected": false,
+  "parallel_runtime_risk": "none_for_action_1",
+  "business_menu_drift_risk": "none_for_action_1"
+}

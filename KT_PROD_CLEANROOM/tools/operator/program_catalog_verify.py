@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
-from tools.operator.titanium_common import load_json, make_run_dir, repo_root, write_failure_artifacts, write_json_worm
+from tools.operator.titanium_common import load_json, make_run_dir, repo_root, utc_now_iso_z, write_failure_artifacts, write_json_worm
 
 
 def _catalog_path(root: Path) -> Path:
@@ -14,6 +15,10 @@ def _catalog_path(root: Path) -> Path:
 
 def _resolve(root: Path, rel: str) -> Path:
     return (root / rel).resolve()
+
+
+def _git(root: Path, *args: str) -> str:
+    return subprocess.check_output(["git", *args], cwd=str(root), text=True).strip()
 
 
 def _verify_catalog(*, check_job: str = "", strict: bool = False) -> Dict[str, Any]:
@@ -52,6 +57,9 @@ def _verify_catalog(*, check_job: str = "", strict: bool = False) -> Dict[str, A
     report = {
         "checked_job": check_job or None,
         "failures": failures,
+        "generated_utc": utc_now_iso_z(),
+        "branch_ref": _git(root, "rev-parse", "--abbrev-ref", "HEAD"),
+        "validated_head_sha": _git(root, "rev-parse", "HEAD"),
         "programs": programs_report,
         "schema_id": "kt.operator.program_catalog_report.v1",
         "status": "PASS" if not failures else "FAIL",

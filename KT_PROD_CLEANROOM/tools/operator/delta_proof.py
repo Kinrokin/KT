@@ -125,6 +125,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     (run_dir / "reports").mkdir(parents=True, exist_ok=True)
 
     head = kt_cli._git(repo_root=repo_root, args=["rev-parse", "HEAD"])  # noqa: SLF001
+    branch = kt_cli._git(repo_root=repo_root, args=["rev-parse", "--abbrev-ref", "HEAD"])  # noqa: SLF001
     git_status = kt_cli._git(repo_root=repo_root, args=["status", "--porcelain=v1"])  # noqa: SLF001
     _write_json_worm(
         path=(run_dir / "env_keys.json").resolve(),
@@ -217,7 +218,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "created_utc": _utc_now_iso_z(),
         "delta_proof_id": "",
         "profile": str(args.profile),
-        "head": head,
+        "branch_ref": branch,
+        "validated_head_sha": head,
+        "scope": "candidate_tracked_worktree_delta_accounting_only",
+        "published_head_authority_claimed": False,
         "baseline_run_dir": baseline.as_posix(),
         "post_run_dir": post.as_posix(),
         "lock_facts": {"baseline": bfacts, "post": pfacts, "mismatches": mismatches},

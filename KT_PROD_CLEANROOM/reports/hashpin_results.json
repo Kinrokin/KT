@@ -1,5 +1,49 @@
 {
+  "branch_ref": "main",
+  "generated_utc": "2026-03-11T16:44:43Z",
   "schema_id": "kt.operator.hashpin_results.v1",
+  "subject_scope": {
+    "branch_ref": "main",
+    "excluded_generated_run_globs": [
+      "KT_PROD_CLEANROOM/exports/_runs/**"
+    ],
+    "excluded_untracked_paths": [
+      "KT_PROD_CLEANROOM/reports/blast_radius_map.json",
+      "KT_PROD_CLEANROOM/reports/frozen_repo_receipt.json",
+      "KT_PROD_CLEANROOM/reports/rollback_plan.json",
+      "KT_PROD_CLEANROOM/reports/runtime_path_map_before.json",
+      "KT_PROD_CLEANROOM/reports/system_audit_scope.json"
+    ],
+    "excludes_generated_runs_from_pin_inputs": true,
+    "excludes_untracked_from_pin_inputs": true,
+    "kind": "candidate_tracked_worktree_required_pin_targets_only",
+    "pin_inputs_are_explicit_registry_targets_only": true,
+    "required_pin_targets": [
+      "authority_os",
+      "ci_gate_definitions",
+      "packet_bundle",
+      "sku_registry",
+      "tier0_locator_bundle",
+      "tier1_locator_bundle",
+      "titanium_work_order"
+    ],
+    "tracked_delta_paths": [
+      "KT_PROD_CLEANROOM/reports/program_catalog_report.json",
+      "KT_PROD_CLEANROOM/reports/real_path_attachment_matrix.json",
+      "KT_PROD_CLEANROOM/reports/real_path_trace.json",
+      "KT_PROD_CLEANROOM/reports/runtime_attach_assertions.json",
+      "KT_PROD_CLEANROOM/reports/source_integrity_receipt.json",
+      "KT_PROD_CLEANROOM/reports/source_integrity_report.json",
+      "KT_PROD_CLEANROOM/reports/validator_substance_summary.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_posture_consistency.py",
+      "KT_PROD_CLEANROOM/tests/operator/test_titanium_substrate.py",
+      "KT_PROD_CLEANROOM/tools/operator/hashpin.py",
+      "KT_PROD_CLEANROOM/tools/operator/posture_consistency.py",
+      "KT_PROD_CLEANROOM/tools/operator/program_catalog_verify.py",
+      "KT_PROD_CLEANROOM/tools/operator/source_integrity.py"
+    ],
+    "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+  },
   "targets": {
     "authority_os": {
       "mode": "canonical_json",
@@ -52,8 +96,44 @@
     "tier1_locator_bundle": {
       "entries": [
         {
+          "path": "KT_PROD_CLEANROOM/governance/authority_convergence_contract.json",
+          "sha256": "21a4373a5687f1963dfe2088cf1546d796b140757d930e4617d3b4ceb0a742ee"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+          "sha256": "34cafcde2975088addb29fa43fbcc5898a8504df5c3a864145fee5ca6519344f"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/governance/dependency_integrity_contract.json",
+          "sha256": "24c7c5ac30f984ae8f9e3da2691d8576f7944568b37bc8261e2e0709df3b6c9d"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/governance/documentary_truth_policy.json",
+          "sha256": "659af3fc9562da2b117794f866387c3b2a020bbf164007e12559ee39d4d02f07"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/governance/execution_board_authority_contract.json",
+          "sha256": "8351d2b313d737a5217dd4a9e6f40e08385e95a7eae1d2e7443cb643431e1e9b"
+        },
+        {
           "path": "KT_PROD_CLEANROOM/governance/program_catalog.json",
-          "sha256": "75c2321cce3fbd83e9e94b57d5cedc9005a2f87e3b9e21f67cb00e0e78fbfe63"
+          "sha256": "ca76688451a7c5b8d7e9b1c6fc22adfba4bd19d794ccbf2f7de24852f76853a4"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
+          "sha256": "e85d0a38b9b594ef455afa57ab91fd76c599f62d906145a924256e4d8eb26d51"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/governance/settled_truth_source_contract.json",
+          "sha256": "1b4a69598f5a533c67a3588beabadcff5f19eb108e97870709badcec833dc080"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/governance/status_taxonomy.json",
+          "sha256": "14757b371f98e8c907ff7ab798f21ff42d33b0f8bc20dcbc32be575f2f323c10"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+          "sha256": "c801eb2a943115f9bbf8b04f99b57f14d9c55136e9292608db2b4c7b3d3ce2f2"
         },
         {
           "path": "ci/gates/p0_gate_definitions.json",
@@ -62,7 +142,7 @@
       ],
       "mode": "locator_bundle",
       "path": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/governance/tier_locators/tier1_files.json",
-      "sha256": "cb58ecc5c0187a681eb5b75855dcba276db2d1834b0e4cc3dc78cbfd48ccfb4b",
+      "sha256": "6220c209c453a04499aa69afdf7720383f97fcd802fe4043e6a21b8c20cdcda8",
       "target": "tier1_locator_bundle"
     },
     "titanium_work_order": {
@@ -71,5 +151,6 @@
       "sha256": "0644a3dd17762190edcbf9caa5b917e8550478b5258a09b769d0fc3870958475",
       "target": "titanium_work_order"
     }
-  }
+  },
+  "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
 }

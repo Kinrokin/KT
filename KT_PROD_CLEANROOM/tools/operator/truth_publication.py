@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Optional, Sequence
 from tools.canonicalize.kt_canonicalize import canonicalize_bytes, sha256_hex
 from tools.operator.authority_convergence_validate import build_authority_convergence_report
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
-from tools.operator.truth_authority import path_ref
+from tools.operator.truth_authority import active_truth_source_ref, load_json_ref, path_ref
 
 
 DEFAULT_REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
@@ -18,6 +18,13 @@ TRUTH_CURRENT_DIR_REL = f"{GENERATED_TRUTH_ROOT_REL}/current"
 TRUTH_BUNDLES_ROOT_REL = f"{GENERATED_TRUTH_ROOT_REL}/bundles"
 CURRENT_POINTER_REL = f"{TRUTH_CURRENT_DIR_REL}/current_pointer.json"
 CURRENT_MANIFEST_REL = f"{TRUTH_CURRENT_DIR_REL}/current_bundle_manifest.json"
+TRUTH_LEDGER_BRANCH = "kt_truth_ledger"
+LEDGER_ROOT_REL = "ledger"
+LEDGER_CURRENT_DIR_REL = f"{LEDGER_ROOT_REL}/current"
+LEDGER_BUNDLES_ROOT_REL = f"{LEDGER_ROOT_REL}/bundles"
+LEDGER_HISTORY_ROOT_REL = f"{LEDGER_ROOT_REL}/history"
+LEDGER_CURRENT_POINTER_REL = f"{LEDGER_CURRENT_DIR_REL}/current_pointer.json"
+LEDGER_CURRENT_MANIFEST_REL = f"{LEDGER_CURRENT_DIR_REL}/current_bundle_manifest.json"
 
 TRUTH_PUBLICATION_REQUIRED_LAW_SURFACES: List[str] = [
     "KT_PROD_CLEANROOM/governance/truth_publication_contract.json",
@@ -113,6 +120,10 @@ def _report_path(root: Path, report_root_rel: str, name: str) -> Path:
     return (root / report_root_rel / name).resolve()
 
 
+def ledger_ref(*, branch: str, relpath: str) -> str:
+    return f"{branch}:{Path(relpath).as_posix()}"
+
+
 def _bundle_sources(*, root: Path, report_root_rel: str) -> List[Dict[str, Any]]:
     rows: List[Dict[str, Any]] = []
     for name in MANDATORY_BUNDLE_REPORTS:
@@ -180,6 +191,13 @@ def _truth_bundle_schema() -> Dict[str, Any]:
 
 def _read_previous_pointer(root: Path) -> Dict[str, Any]:
     pointer_path = (root / CURRENT_POINTER_REL).resolve()
+    if not pointer_path.exists():
+        return {}
+    return load_json(pointer_path)
+
+
+def _read_previous_ledger_pointer(*, ledger_root: Path) -> Dict[str, Any]:
+    pointer_path = (ledger_root / LEDGER_CURRENT_POINTER_REL).resolve()
     if not pointer_path.exists():
         return {}
     return load_json(pointer_path)
@@ -485,6 +503,130 @@ def publish_truth_artifacts(
     }
 
 
+def publish_truth_ledger_witness(
+    *,
+    source_root: Path,
+    ledger_root: Path,
+    report_root_rel: str,
+    live_validation_index_path: Path,
+    authority_mode: str,
+    posture_state: str,
+    ledger_branch: str = TRUTH_LEDGER_BRANCH,
+) -> Dict[str, Any]:
+    sources = _bundle_sources(root=source_root, report_root_rel=report_root_rel)
+    live_index = _load_required(live_validation_index_path)
+    worktree = live_index.get("worktree") if isinstance(live_index.get("worktree"), dict) else {}
+    subject_commit = str(worktree.get("head_sha", "")).strip()
+    if not subject_commit:
+        raise RuntimeError("FAIL_CLOSED: live validation index missing worktree.head_sha")
+    producer_commit = subject_commit
+    generated_utc = str(live_index.get("generated_utc", "")).strip() or utc_now_iso_z()
+    previous_pointer = _read_previous_ledger_pointer(ledger_root=ledger_root)
+    live_validation_index_ref = path_ref(root=source_root, path=live_validation_index_path)
+    descriptor = _bundle_descriptor(
+        subject_commit=subject_commit,
+        producer_commit=producer_commit,
+        authority_mode=authority_mode,
+        posture_state=posture_state,
+        generated_utc=generated_utc,
+        report_root_rel=report_root_rel,
+        live_validation_index_ref=live_validation_index_ref,
+        sources=sources,
+    )
+    descriptor["witness_plane"] = {
+        "branch": ledger_branch,
+        "mode": "BOOTSTRAP_WITNESS_ONLY",
+        "published_head_authority_claimed": False,
+        "main_purge_completed": False,
+    }
+    bundle_hash = _canonical_hash(descriptor)
+    bundle_id = f"LEDGER_TRUTH_BUNDLE_{subject_commit[:12]}_{bundle_hash[:16]}"
+    descriptor["truth_bundle_hash"] = bundle_hash
+    descriptor["truth_bundle_id"] = bundle_id
+
+    bundle_dir = (ledger_root / LEDGER_BUNDLES_ROOT_REL / subject_commit / bundle_hash).resolve()
+    bundle_dir.mkdir(parents=True, exist_ok=True)
+    payload_dir = bundle_dir / "payloads"
+    payload_dir.mkdir(parents=True, exist_ok=True)
+    for row in sources:
+        write_json_stable(payload_dir / str(row["name"]), row["payload"])
+    write_json_stable(bundle_dir / "truth_bundle.json", descriptor)
+
+    current_dir = (ledger_root / LEDGER_CURRENT_DIR_REL).resolve()
+    current_dir.mkdir(parents=True, exist_ok=True)
+    bundle_rel = str((Path(LEDGER_BUNDLES_ROOT_REL) / subject_commit / bundle_hash / "truth_bundle.json").as_posix())
+    bundle_ref = ledger_ref(branch=ledger_branch, relpath=bundle_rel)
+    previous_bundle_hash = str(previous_pointer.get("current_bundle_hash", "")).strip()
+    superseded_bundle_hash = previous_bundle_hash if previous_bundle_hash and previous_bundle_hash != bundle_hash else ""
+    current_manifest_rel = str((Path(LEDGER_CURRENT_DIR_REL) / "current_bundle_manifest.json").as_posix())
+    pointer_payload = {
+        "schema_id": "kt.operator.truth_pointer.v1",
+        "generated_utc": generated_utc,
+        "status": "ACTIVE",
+        "truth_subject_commit": subject_commit,
+        "truth_produced_at_commit": producer_commit,
+        "current_bundle_hash": bundle_hash,
+        "current_bundle_ref": bundle_ref,
+        "current_bundle_manifest_ref": ledger_ref(branch=ledger_branch, relpath=current_manifest_rel),
+        "zone_scope": ["CANONICAL"],
+        "authority_level": authority_mode,
+        "posture_enum": posture_state,
+        "freshness_contract_ref": "KT_PROD_CLEANROOM/governance/truth_freshness_windows.json",
+        "supersedes_bundle_hash": superseded_bundle_hash,
+        "board_contract_ref": "KT_PROD_CLEANROOM/governance/execution_board.json",
+        "witness_plane": True,
+        "transition_state": "LEDGER_BOOTSTRAPPED_PENDING_PURGE",
+        "published_head_authority_claimed": False,
+    }
+    manifest_payload = {
+        "schema_id": "kt.operator.truth_snapshot_manifest.v1",
+        "generated_utc": generated_utc,
+        "truth_bundle_id": bundle_id,
+        "truth_bundle_hash": bundle_hash,
+        "truth_bundle_ref": bundle_ref,
+        "truth_subject_commit": subject_commit,
+        "files": descriptor["files"],
+        "witness_plane": True,
+        "published_head_authority_claimed": False,
+    }
+    write_json_stable(current_dir / "current_bundle_manifest.json", manifest_payload)
+    write_json_stable(current_dir / "current_pointer.json", pointer_payload)
+
+    history_dir = (ledger_root / LEDGER_HISTORY_ROOT_REL / subject_commit).resolve()
+    history_dir.mkdir(parents=True, exist_ok=True)
+    publication_receipt = {
+        "schema_id": "kt.operator.truth_ledger_publication_receipt.v1",
+        "generated_utc": generated_utc,
+        "status": "PASS",
+        "ledger_branch": ledger_branch,
+        "truth_subject_commit": subject_commit,
+        "truth_produced_at_commit": producer_commit,
+        "truth_bundle_hash": bundle_hash,
+        "truth_bundle_ref": bundle_ref,
+        "current_pointer_ref": ledger_ref(branch=ledger_branch, relpath=LEDGER_CURRENT_POINTER_REL),
+        "current_bundle_manifest_ref": ledger_ref(branch=ledger_branch, relpath=current_manifest_rel),
+        "transition_state": "LEDGER_BOOTSTRAPPED_PENDING_PURGE",
+        "witness_only": True,
+        "published_head_authority_claimed": False,
+        "source_report_root_ref": report_root_rel,
+    }
+    write_json_stable(history_dir / "publication_receipt.json", publication_receipt)
+
+    return {
+        "ledger_branch": ledger_branch,
+        "truth_bundle_hash": bundle_hash,
+        "truth_bundle_ref": bundle_ref,
+        "current_pointer_ref": ledger_ref(branch=ledger_branch, relpath=LEDGER_CURRENT_POINTER_REL),
+        "current_manifest_ref": ledger_ref(branch=ledger_branch, relpath=current_manifest_rel),
+        "history_receipt_ref": ledger_ref(
+            branch=ledger_branch,
+            relpath=str((Path(LEDGER_HISTORY_ROOT_REL) / subject_commit / "publication_receipt.json").as_posix()),
+        ),
+        "truth_subject_commit": subject_commit,
+        "published_head_authority_claimed": False,
+    }
+
+
 def validate_truth_publication(*, root: Path) -> Dict[str, Any]:
     failures: List[str] = []
     checks: List[Dict[str, Any]] = []
@@ -499,22 +641,34 @@ def validate_truth_publication(*, root: Path) -> Dict[str, Any]:
         if not ok:
             failures.append(f"missing_artifact:{rel}")
 
-    current_pointer_path = (root / CURRENT_POINTER_REL).resolve()
-    current_pointer = load_json(current_pointer_path) if current_pointer_path.exists() else {}
+    active_source = active_truth_source_ref(root=root)
+    current_pointer = load_json_ref(root=root, ref=active_source)
     pointer_ref = str(current_pointer.get("current_bundle_ref", "")).strip()
     pointer_ok = bool(pointer_ref)
-    checks.append({"check": "current_pointer_has_bundle_ref", "status": "PASS" if pointer_ok else "FAIL", "current_bundle_ref": pointer_ref})
+    checks.append(
+        {
+            "check": "active_truth_pointer_has_bundle_ref",
+            "status": "PASS" if pointer_ok else "FAIL",
+            "active_truth_source": active_source,
+            "current_bundle_ref": pointer_ref,
+        }
+    )
     if not pointer_ok:
         failures.append("current_pointer_missing_bundle_ref")
 
-    bundle_path = (root / pointer_ref).resolve() if pointer_ref else Path()
-    bundle_exists = bundle_path.exists() if pointer_ref else False
+    bundle_exists = False
+    bundle: Dict[str, Any] = {}
+    if pointer_ref:
+        try:
+            bundle = load_json_ref(root=root, ref=pointer_ref)
+            bundle_exists = True
+        except Exception:  # noqa: BLE001
+            bundle_exists = False
     checks.append({"check": "pointed_bundle_exists", "status": "PASS" if bundle_exists else "FAIL"})
     if pointer_ref and not bundle_exists:
         failures.append("pointed_bundle_missing")
 
     if bundle_exists:
-        bundle = load_json(bundle_path)
         bundle_hash_matches = str(bundle.get("truth_bundle_hash", "")).strip() == str(current_pointer.get("current_bundle_hash", "")).strip()
         checks.append({"check": "pointer_bundle_hash_matches", "status": "PASS" if bundle_hash_matches else "FAIL"})
         if not bundle_hash_matches:
@@ -524,19 +678,19 @@ def validate_truth_publication(*, root: Path) -> Dict[str, Any]:
     if execution_board_path.exists():
         board = load_json(execution_board_path)
         board_ref = str(board.get("authoritative_current_head_truth_source", "")).strip()
-        board_ok = board_ref == CURRENT_POINTER_REL
-        checks.append({"check": "execution_board_points_to_current_pointer", "status": "PASS" if board_ok else "FAIL", "actual": board_ref})
+        board_ok = board_ref == active_source
+        checks.append({"check": "execution_board_points_to_active_truth_source", "status": "PASS" if board_ok else "FAIL", "actual": board_ref, "expected": active_source})
         if not board_ok:
-            failures.append("execution_board_not_pointing_to_current_pointer")
+            failures.append("execution_board_not_pointing_to_active_truth_source")
 
     readiness_path = root / "KT_PROD_CLEANROOM" / "governance" / "readiness_scope_manifest.json"
     if readiness_path.exists():
         readiness = load_json(readiness_path)
         readiness_ref = str(readiness.get("authoritative_truth_source", "")).strip()
-        readiness_ok = readiness_ref == CURRENT_POINTER_REL
-        checks.append({"check": "readiness_scope_points_to_current_pointer", "status": "PASS" if readiness_ok else "FAIL", "actual": readiness_ref})
+        readiness_ok = readiness_ref == active_source
+        checks.append({"check": "readiness_scope_points_to_active_truth_source", "status": "PASS" if readiness_ok else "FAIL", "actual": readiness_ref, "expected": active_source})
         if not readiness_ok:
-            failures.append("readiness_scope_not_pointing_to_current_pointer")
+            failures.append("readiness_scope_not_pointing_to_active_truth_source")
 
     supersession_path = root / "KT_PROD_CLEANROOM" / "reports" / "truth_publication_supersession_receipt.json"
     if supersession_path.exists():

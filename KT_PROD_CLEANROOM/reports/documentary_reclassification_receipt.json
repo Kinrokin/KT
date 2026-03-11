@@ -1,0 +1,31 @@
+﻿{
+    "schema_id":  "kt.operator.documentary_reclassification_receipt.v1",
+    "generated_utc":  "2026-03-11T22:00:00Z",
+    "status":  "PASS",
+    "validated_head_sha":  "4867542e364501a91c8e619ee3e26693d73b7a98",
+    "proof_class":  "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+    "reclassified":  [
+                         {
+                             "path":  "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+                             "prior_validated_head_sha":  "60b05c4be50c07deac6fc01a471c94e77877dec7",
+                             "new_role":  "DOCUMENTARY_ONLY"
+                         },
+                         {
+                             "path":  "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+                             "prior_validated_head_sha":  "60b05c4be50c07deac6fc01a471c94e77877dec7",
+                             "new_role":  "DOCUMENTARY_ONLY"
+                         },
+                         {
+                             "path":  "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+                             "prior_validated_head_sha":  "60b05c4be50c07deac6fc01a471c94e77877dec7",
+                             "new_role":  "DOCUMENTARY_ONLY"
+                         },
+                         {
+                             "path":  "KT_PROD_CLEANROOM/governance/execution_board.json",
+                             "new_role":  "GOVERNANCE_MIRROR",
+                             "authoritative_truth_source":  "kt_truth_ledger:ledger/current/current_pointer.json"
+                         }
+                     ],
+    "published_head_authority_claimed":  false
+}
+

@@ -1,55 +1,93 @@
 {
-  "generated_utc": "2026-03-08T15:13:10Z",
+  "branch_ref": "main",
+  "candidate_scope": "candidate_tracked_worktree_execution_sealing_only",
+  "generated_utc": "2026-03-11T17:04:37Z",
+  "nested_safe_run_evidence": {
+    "bindingloop_check_run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_bindingloop_verify_candidate_fresh",
+    "delivery_contract_validate_run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_delivery_validate_candidate_fresh",
+    "nested_delivery_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_safe_run_hat_demo_candidate_fresh/program_run/delivery",
+    "nested_program_run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_safe_run_hat_demo_candidate_fresh/program_run",
+    "replay_lint_run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_replay_lint_candidate_fresh_rerun",
+    "safe_run_hat_demo_practice_run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_safe_run_hat_demo_candidate_fresh"
+  },
+  "notes": [
+    "This report proves candidate tracked-worktree execution sealing only.",
+    "It does not prove two-clean-clone reproducibility.",
+    "It does not prove published-head self-converged authority.",
+    "The first replay attempt fail-closed because the temporary generated mve_match.json was written with a UTF-8 BOM; stage 8 was rerun with a no-BOM file against the same nested safe-run evidence and then passed without tracked code changes."
+  ],
   "schema_id": "kt.sovereign.practice_mode_chain_summary.v1",
   "stages": [
     {
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_source_integrity",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_source_integrity_candidate_fresh",
       "stage": "source_integrity",
       "status": "PASS",
+      "used_expected_existing_path": true,
+      "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "verdict": "PASS"
     },
     {
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_hashpin_verify",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_hashpin_verify_candidate_fresh",
       "stage": "hashpin_verify",
       "status": "PASS",
+      "used_expected_existing_path": true,
+      "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "verdict": "PASS"
     },
     {
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_program_catalog",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_program_catalog_candidate_fresh",
       "stage": "program_catalog_verify",
       "status": "PASS",
+      "used_expected_existing_path": true,
+      "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "verdict": "PASS"
     },
     {
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_governance_verify",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_governance_manifest_candidate_fresh",
       "stage": "governance_manifest_verify",
       "status": "PASS",
+      "used_expected_existing_path": true,
+      "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "verdict": "PASS"
     },
     {
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_safe_run_hat_demo_practice",
+      "nested_program_run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_safe_run_hat_demo_candidate_fresh/program_run",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_safe_run_hat_demo_candidate_fresh",
       "stage": "safe_run_hat_demo_practice",
       "status": "PASS",
-      "verdict": "KT_SAFE_RUN_PASS cmd=safe-run profile=v1 assurance_mode=practice program_id=program.hat_demo nested_run=D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_safe_run_hat_demo_practice/program_run"
+      "used_expected_existing_path": true,
+      "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98",
+      "verdict": "KT_SAFE_RUN_PASS cmd=safe-run profile=v1 assurance_mode=practice program_id=program.hat_demo nested_run=D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_safe_run_hat_demo_candidate_fresh/program_run"
     },
     {
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_delivery_validate",
+      "delivery_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_safe_run_hat_demo_candidate_fresh/program_run/delivery",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_delivery_validate_candidate_fresh",
       "stage": "delivery_contract_validate",
       "status": "PASS",
+      "used_expected_existing_path": true,
+      "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "verdict": "PASS"
     },
     {
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_bindingloop_verify",
+      "nested_program_run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_safe_run_hat_demo_candidate_fresh/program_run",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_bindingloop_verify_candidate_fresh",
       "stage": "bindingloop_verify",
       "status": "PASS",
+      "used_expected_existing_path": true,
+      "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "verdict": "PASS"
     },
     {
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_replay_lint",
+      "delivery_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_safe_run_hat_demo_candidate_fresh/program_run/delivery",
+      "mve_path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_replay_lint_candidate_fresh_rerun/mve_match.json",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A07_20260311_replay_lint_candidate_fresh_rerun",
       "stage": "hermetic_replay_lint",
       "status": "PASS",
+      "used_expected_existing_path": true,
+      "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "verdict": "PASS"
     }
   ],
-  "status": "PASS"
+  "status": "PASS",
+  "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
 }

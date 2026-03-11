@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, Iterable, List
 
@@ -9,6 +11,8 @@ from tools.operator.titanium_common import utc_now_iso_z
 SETTLED_AUTHORITATIVE = "SETTLED_AUTHORITATIVE"
 TRANSITIONAL_AUTHORITATIVE = "TRANSITIONAL_AUTHORITATIVE"
 CURRENT_POINTER_REL = "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
+LEDGER_CURRENT_POINTER_REF = "kt_truth_ledger:ledger/current/current_pointer.json"
+DOCUMENTARY_TRUTH_POLICY_REL = "KT_PROD_CLEANROOM/governance/documentary_truth_policy.json"
 
 
 def path_ref(*, root: Path, path: Path) -> str:
@@ -18,6 +22,56 @@ def path_ref(*, root: Path, path: Path) -> str:
         return path_resolved.relative_to(root_resolved).as_posix()
     except ValueError:
         return path_resolved.as_posix()
+
+
+def is_branch_ref(ref: str) -> bool:
+    value = str(ref).strip()
+    return ":" in value and not value.startswith("/") and not value[1:3] == ":\\"
+
+
+def load_json_ref(*, root: Path, ref: str) -> Dict[str, Any]:
+    value = str(ref).strip()
+    if not value:
+        raise RuntimeError("FAIL_CLOSED: empty JSON ref")
+    if is_branch_ref(value):
+        branch, relpath = value.split(":", 1)
+        try:
+            content = subprocess.check_output(
+                ["git", "-C", str(root), "show", f"{branch}:{relpath}"],
+                text=True,
+                encoding="utf-8",
+            )
+        except Exception as exc:  # noqa: BLE001
+            # Local bootstrap and unit-test fixtures may exercise ledger refs
+            # before a real git branch exists. In that case, fall back to the
+            # filesystem path encoded by the branch ref.
+            fallback = (root / Path(relpath)).resolve()
+            if not fallback.exists():
+                raise RuntimeError(f"FAIL_CLOSED: unable to load branch ref {value}: {exc}") from exc
+            return json.loads(fallback.read_text(encoding="utf-8"))
+        return json.loads(content.lstrip("\ufeff"))
+    path = (root / Path(value)).resolve()
+    if not path.exists():
+        raise RuntimeError(f"FAIL_CLOSED: missing required artifact: {path.as_posix()}")
+    return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
+def active_truth_source_ref(*, root: Path) -> str:
+    policy_path = root / DOCUMENTARY_TRUTH_POLICY_REL
+    if not policy_path.exists():
+        return CURRENT_POINTER_REL
+    policy = json.loads(policy_path.read_text(encoding="utf-8-sig"))
+    active = str(policy.get("active_current_head_truth_source", "")).strip()
+    return active or CURRENT_POINTER_REL
+
+
+def active_supporting_truth_surfaces(*, root: Path) -> List[str]:
+    policy_path = root / DOCUMENTARY_TRUTH_POLICY_REL
+    if not policy_path.exists():
+        return []
+    policy = json.loads(policy_path.read_text(encoding="utf-8-sig"))
+    rows = policy.get("active_supporting_truth_surfaces") if isinstance(policy.get("active_supporting_truth_surfaces"), list) else []
+    return [str(item).strip() for item in rows if str(item).strip()]
 
 
 def index_check(index: Dict[str, Any], check_id: str) -> Dict[str, Any]:

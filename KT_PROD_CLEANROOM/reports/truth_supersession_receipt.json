@@ -1,12 +1,37 @@
-{
-  "active_truth_root": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-  "authority_status": "SETTLED_AUTHORITATIVE",
-  "current_head_truth_source": "KT_PROD_CLEANROOM/reports/live_validation_index.json",
-  "derived_posture_state": "TRUTHFUL_GREEN",
-  "generated_utc": "2026-03-11T02:24:17Z",
-  "open_blockers": [],
-  "schema_id": "kt.operator.truth_supersession_receipt.v1",
-  "status": "PASS",
-  "superseded_surfaces": [],
-  "supporting_tracked_truth_index": "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json"
+﻿{
+    "schema_id":  "kt.operator.truth_supersession_receipt.v1",
+    "generated_utc":  "2026-03-11T22:00:00Z",
+    "status":  "PASS",
+    "current_head_truth_source":  "kt_truth_ledger:ledger/current/current_state_receipt.json",
+    "active_truth_root":  "kt_truth_ledger:ledger/current/current_pointer.json",
+    "supporting_tracked_truth_index":  "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+    "authority_status":  "TRANSITIONAL_AUTHORITATIVE",
+    "proof_class":  "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+    "derived_posture_state":  "TRUTHFUL_GREEN",
+    "superseded_surfaces":  [
+                                {
+                                    "path":  "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+                                    "superseded_by":  "kt_truth_ledger:ledger/current/current_pointer.json",
+                                    "authoritative_head_sha":  "4867542e364501a91c8e619ee3e26693d73b7a98",
+                                    "reason":  "MAIN_LIVE_TRUTH_PURGED"
+                                },
+                                {
+                                    "path":  "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+                                    "superseded_by":  "kt_truth_ledger:ledger/current/current_state_receipt.json",
+                                    "authoritative_head_sha":  "4867542e364501a91c8e619ee3e26693d73b7a98",
+                                    "reason":  "MAIN_LIVE_TRUTH_PURGED"
+                                },
+                                {
+                                    "path":  "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+                                    "superseded_by":  "kt_truth_ledger:ledger/current/runtime_closure_audit.json",
+                                    "authoritative_head_sha":  "4867542e364501a91c8e619ee3e26693d73b7a98",
+                                    "reason":  "MAIN_LIVE_TRUTH_PURGED"
+                                }
+                            ],
+    "open_blockers":  [
+                          "LEDGER_LOCAL_ONLY",
+                          "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED"
+                      ],
+    "published_head_authority_claimed":  false
 }
+

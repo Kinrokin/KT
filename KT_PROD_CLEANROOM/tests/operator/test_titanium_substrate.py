@@ -52,6 +52,97 @@ def test_program_catalog_and_source_integrity_pass(tmp_path: Path) -> None:
     )
     assert p2.returncode == 0, p2.stdout + "\n" + p2.stderr
 
+    expected_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=str(repo_root), env=env, text=True).strip()
+    expected_branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=str(repo_root), env=env, text=True).strip()
+
+    catalog_report = json.loads((root / "catalog" / "reports" / "program_catalog_report.json").read_text(encoding="utf-8"))
+    source_report = json.loads((root / "source" / "reports" / "source_integrity_report.json").read_text(encoding="utf-8"))
+    source_receipt = json.loads((root / "source" / "reports" / "source_integrity_receipt.json").read_text(encoding="utf-8"))
+
+    assert catalog_report["validated_head_sha"] == expected_head
+    assert catalog_report["branch_ref"] == expected_branch
+    assert source_report["validated_head_sha"] == expected_head
+    assert source_report["branch_ref"] == expected_branch
+    assert source_receipt["validated_head_sha"] == expected_head
+    assert source_receipt["branch_ref"] == expected_branch
+
+
+def test_hashpin_reports_are_head_stamped_and_candidate_scoped(tmp_path: Path) -> None:
+    repo_root = Path(__file__).resolve().parents[3]
+    root = write_root(repo_root=repo_root) / "titanium_substrate" / f"hashpin_{tmp_path.name}_{os.getpid()}_{time.time_ns()}"
+    root.mkdir(parents=True, exist_ok=False)
+    env = _py_env(repo_root)
+
+    p1 = subprocess.run(
+        ["python", "-m", "tools.operator.hashpin", "compute", "--target", "all", "--run-root", str(root / "compute")],
+        cwd=str(repo_root),
+        env=env,
+        text=True,
+        capture_output=True,
+    )
+    assert p1.returncode == 0, p1.stdout + "\n" + p1.stderr
+
+    p2 = subprocess.run(
+        ["python", "-m", "tools.operator.hashpin", "verify-required-pins", "--run-root", str(root / "verify")],
+        cwd=str(repo_root),
+        env=env,
+        text=True,
+        capture_output=True,
+    )
+    assert p2.returncode == 0, p2.stdout + "\n" + p2.stderr
+
+    expected_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=str(repo_root), env=env, text=True).strip()
+    expected_branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=str(repo_root), env=env, text=True).strip()
+
+    results = json.loads((root / "compute" / "reports" / "hashpin_results.json").read_text(encoding="utf-8"))
+    receipt = json.loads((root / "compute" / "reports" / "hashpin_receipt.json").read_text(encoding="utf-8"))
+    verification = json.loads((root / "verify" / "reports" / "hashpin_verification.json").read_text(encoding="utf-8"))
+
+    assert results["validated_head_sha"] == expected_head
+    assert results["branch_ref"] == expected_branch
+    assert receipt["validated_head_sha"] == expected_head
+    assert receipt["branch_ref"] == expected_branch
+    assert verification["validated_head_sha"] == expected_head
+    assert verification["branch_ref"] == expected_branch
+
+    assert results["subject_scope"]["kind"] == "candidate_tracked_worktree_required_pin_targets_only"
+    assert receipt["subject_scope_kind"] == "candidate_tracked_worktree_required_pin_targets_only"
+    assert verification["subject_scope"]["kind"] == "candidate_tracked_worktree_required_pin_targets_only"
+    assert results["subject_scope"]["excludes_untracked_from_pin_inputs"] is True
+    assert results["subject_scope"]["excludes_generated_runs_from_pin_inputs"] is True
+    assert "KT_PROD_CLEANROOM/exports/_runs/**" in results["subject_scope"]["excluded_generated_run_globs"]
+
+
+def test_god_status_is_head_stamped_and_preserves_ci_platform_block_warning(tmp_path: Path) -> None:
+    repo_root = Path(__file__).resolve().parents[3]
+    root = write_root(repo_root=repo_root) / "titanium_substrate" / f"god_{tmp_path.name}_{os.getpid()}_{time.time_ns()}"
+    root.mkdir(parents=True, exist_ok=False)
+    env = _py_env(repo_root)
+
+    p = subprocess.run(
+        ["python", "-m", "tools.operator.god_status", "--profile", "v1", "--run-root", str(root / "god")],
+        cwd=str(repo_root),
+        env=env,
+        text=True,
+        capture_output=True,
+    )
+    assert p.returncode == 0, p.stdout + "\n" + p.stderr
+
+    expected_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=str(repo_root), env=env, text=True).strip()
+    expected_branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=str(repo_root), env=env, text=True).strip()
+
+    verdict = json.loads((root / "god" / "reports" / "godstatus_verdict.json").read_text(encoding="utf-8"))
+    cooldown = json.loads((root / "god" / "reports" / "godstatus_cooldown_state.json").read_text(encoding="utf-8"))
+
+    assert verdict["validated_head_sha"] == expected_head
+    assert verdict["branch_ref"] == expected_branch
+    assert cooldown["validated_head_sha"] == expected_head
+    assert cooldown["branch_ref"] == expected_branch
+    assert verdict["ci_gate_promotion_status"] in {"PASS_WITH_PLATFORM_BLOCK", "PASS", "PASS_WITH_WARNINGS"}
+    if verdict["ci_gate_promotion_status"] == "PASS_WITH_PLATFORM_BLOCK":
+        assert verdict["status"] == "PASS_WITH_WARNINGS"
+        assert "ci_execution_governance_platform_block" in verdict["warnings"]
+
 
 def test_governance_manifest_verify_fails_closed_without_signatures(tmp_path: Path) -> None:
     repo_root = Path(__file__).resolve().parents[3]

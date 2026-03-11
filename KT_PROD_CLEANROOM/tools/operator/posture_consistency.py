@@ -50,14 +50,39 @@ def _verify_real_path_matrix(matrix: Dict[str, Any]) -> Dict[str, Any]:
     program_ids = {str(row.get("program_id", "")).strip() for row in rows if isinstance(row, dict)}
     required = {"program.certify.canonical_hmac", "program.hat_demo", "program.red_assault.serious_v1"}
     missing = sorted(x for x in required if x not in program_ids)
-    safe_run_ok = any(bool(row.get("safe_run_enforced")) for row in rows if isinstance(row, dict))
+    def _row_passes(row: Dict[str, Any]) -> bool:
+        status = str(row.get("attachment_status") or row.get("status") or "PASS").strip().upper()
+        return status == "PASS"
+
+    required_passes = {
+        program_id: any(
+            isinstance(row, dict)
+            and str(row.get("program_id", "")).strip() == program_id
+            and _row_passes(row)
+            for row in rows
+        )
+        for program_id in required
+    }
+    failed_required = sorted(program_id for program_id, ok in required_passes.items() if not ok)
+    safe_run_ok = any(
+        isinstance(row, dict)
+        and bool(row.get("safe_run_enforced"))
+        and _row_passes(row)
+        for row in rows
+    )
     if missing:
         raise RuntimeError(f"FAIL_CLOSED: real_path_attachment_matrix missing targets: {', '.join(missing)}")
+    if failed_required:
+        raise RuntimeError(
+            "FAIL_CLOSED: real_path_attachment_matrix missing PASS attachment rows for: "
+            + ", ".join(failed_required)
+        )
     if not safe_run_ok:
         raise RuntimeError("FAIL_CLOSED: real_path_attachment_matrix missing safe-run enforced row")
     return {
         "status": "PASS",
         "program_ids": sorted(program_ids),
+        "required_passes": required_passes,
         "safe_run_enforced_present": safe_run_ok,
     }
 

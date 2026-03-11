@@ -1,98 +1,158 @@
 {
-  "generated_utc": "2026-03-08T15:13:10Z",
+  "current_head_constraints": {
+    "certify_cleanliness_rule_preserved": true,
+    "current_head": "4867542e364501a91c8e619ee3e26693d73b7a98",
+    "repo_clean_required_for_certify": true,
+    "safe_run_production_bypass_result": "FAIL_CLOSED",
+    "special_note": "Action 3 preserved the Action 2 invariant: certify cleanliness was not weakened to bypass the dirty-worktree blocker."
+  },
+  "generated_utc": "2026-03-11T15:51:39Z",
   "happy_path_proofs": [
     {
+      "evidence_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A03_20260311_delivery_happy_currenthead/reports/delivery_contract_validation.json",
+      "expected_behavior": "PASS",
+      "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "name": "delivery_contract_happy",
+      "proof_type": "direct_current_head_run",
       "reports": [
         "reports/delivery_contract_validation.json"
       ],
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05b_delivery_validator_happy",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A03_20260311_delivery_happy_currenthead",
       "status": "PASS"
     },
     {
+      "evidence_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A03_20260311_bindingloop_happy_currenthead/reports/bindingloop_check.json",
+      "expected_behavior": "PASS",
+      "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "name": "bindingloop_happy",
-      "reports": [],
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05_bindingloop_happy",
+      "proof_type": "direct_current_head_run",
+      "reports": [
+        "reports/bindingloop_check.json"
+      ],
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A03_20260311_bindingloop_happy_currenthead",
       "status": "PASS"
     },
     {
+      "evidence_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A03_20260311_replay_match_currenthead/reports/replay_receipt.json",
+      "expected_behavior": "PASS",
+      "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "name": "replay_happy",
+      "proof_type": "direct_current_head_run",
       "reports": [
         "reports/replay_receipt.json"
       ],
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05d_replay_happy",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A03_20260311_replay_match_currenthead",
       "status": "PASS"
+    }
+  ],
+  "hardening_actions": [
+    {
+      "change_class": "validator_hardening",
+      "files": [
+        "KT_PROD_CLEANROOM/tools/operator/posture_consistency.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_posture_consistency.py"
+      ],
+      "reason": "The posture validator previously accepted a real_path_attachment_matrix with required program IDs plus any safe-run row even when a required row itself was FAIL_CLOSED.",
+      "result": "The validator now requires PASS attachment rows for program.certify.canonical_hmac, program.hat_demo, and program.red_assault.serious_v1, and the safe-run row must also be PASS."
     }
   ],
   "negative_path_proofs": [
     {
+      "evidence_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A03_20260311_bindingloop_mutation_currenthead/reports/errortaxonomy.json",
       "expected_behavior": "FAIL_CLOSED",
+      "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "name": "bindingloop_mutation",
+      "proof_type": "direct_current_head_run",
       "reports": [
         "reports/bindingloop_violation_receipt.json",
         "reports/errortaxonomy.json",
         "reports/failure_fingerprint.json"
       ],
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05b_bindingloop_mutation_check",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A03_20260311_bindingloop_mutation_currenthead",
       "status": "PASS",
-      "verdict": ""
+      "verdict": "Return code 21 with BINDING_LOOP_FAIL"
     },
     {
+      "evidence_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A03_20260311_delivery_missing_currenthead/reports/errortaxonomy.json",
       "expected_behavior": "FAIL_CLOSED",
+      "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "name": "delivery_missing_artifact",
+      "proof_type": "direct_current_head_run",
       "reports": [
         "reports/errortaxonomy.json",
         "reports/failure_fingerprint.json"
       ],
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05b_delivery_missing_check",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A03_20260311_delivery_missing_currenthead",
       "status": "PASS",
-      "verdict": ""
+      "verdict": "Return code 20 with DELIVERY_CONTRACT_FAIL"
     },
     {
+      "evidence_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A03_20260311_replay_mismatch_currenthead/reports/errortaxonomy.json",
       "expected_behavior": "FAIL_CLOSED",
+      "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "name": "replay_mismatch",
+      "proof_type": "direct_current_head_run",
       "reports": [
         "reports/errortaxonomy.json",
         "reports/failure_fingerprint.json"
       ],
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05d_replay_mismatch_check",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A03_20260311_replay_mismatch_currenthead",
       "status": "PASS",
-      "verdict": ""
+      "verdict": "Return code 30 with REPLAY_NONDETERMINISTIC"
     },
     {
+      "evidence_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A03_20260311_governance_negative_currenthead/reports/errortaxonomy.json",
       "expected_behavior": "FAIL_CLOSED",
+      "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "name": "governance_missing_signature",
+      "proof_type": "direct_current_head_run",
       "reports": [
         "reports/errortaxonomy.json",
-        "reports/failure_fingerprint.json",
-        "reports/governance_manifest_verification.json"
+        "reports/failure_fingerprint.json"
       ],
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A05b_governance_manifest_negative",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A03_20260311_governance_negative_currenthead",
       "status": "PASS",
-      "verdict": ""
+      "verdict": "Return code 14 with GOV_MANIFEST_INVALID"
     },
     {
+      "evidence_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A03_20260311_safe_run_production_block_currenthead/reports/operator_preflight.json",
       "expected_behavior": "FAIL_CLOSED",
+      "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "name": "safe_run_production_bypass",
+      "proof_type": "direct_current_head_run",
       "reports": [
-        "preflight_hashpin/reports/hashpin_verification.json",
-        "reports/errortaxonomy.json",
-        "reports/failure_fingerprint.json",
-        "reports/operator_fingerprint.json",
-        "reports/operator_intent.json",
         "reports/operator_preflight.json"
       ],
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A09_safe_run_production_block",
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A03_20260311_safe_run_production_block_currenthead",
       "status": "PASS",
-      "verdict": ""
+      "verdict": "Production safe-run blocked on dirty worktree before nested dispatch"
+    },
+    {
+      "evidence_ref": "KT_PROD_CLEANROOM/tests/operator/test_posture_consistency.py::test_verify_posture_fails_when_required_real_path_row_is_not_pass",
+      "expected_behavior": "FAIL_CLOSED",
+      "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
+      "name": "posture_real_path_fail_closed_guard",
+      "proof_type": "pytest_current_head",
+      "reports": [],
+      "run_dir": "",
+      "status": "PASS",
+      "verdict": "The posture validator now rejects matrices where a required program row exists but is not PASS."
     }
   ],
+  "pytest_current_head_evidence": {
+    "command": "python -m pytest -q KT_PROD_CLEANROOM/tests/operator/test_titanium_substrate.py KT_PROD_CLEANROOM/tests/operator/test_posture_consistency.py",
+    "result": "15 passed in 10.87s",
+    "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+  },
   "real_path_targets": [
-    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A04_certify_canonical_hmac_clean",
-    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A04_hat_demo_attached",
-    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A04_red_assault_attached",
-    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A10_safe_run_hat_demo_practice/program_run"
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A02_20260311_certify_canonical_hmac_currenthead",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A02_20260311_hat_demo_currenthead",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A02_20260311_red_assault_currenthead",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A02_20260311_safe_run_hat_demo_currenthead/program_run",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A02_20260311_safe_run_certify_currenthead/program_run"
   ],
   "schema_id": "kt.sovereign.validator_substance_summary.v1",
-  "status": "PASS"
+  "status": "PASS_WITH_HARDENING",
+  "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98",
+  "validator_gap_closed": "posture_consistency now enforces PASS status on required real-path rows instead of accepting mere row presence"
 }

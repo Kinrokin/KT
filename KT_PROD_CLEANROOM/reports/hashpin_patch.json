@@ -1,92 +1,60 @@
 {
-  "manifest_field_updates": [
-    {
-      "field": "packet_bundle_sha256",
-      "value": "13f4e33abcad4f108726245126701056d0d1b125aa909c2e17e228da6fcbc0dc"
-    },
-    {
-      "field": "authority_os_sha256",
-      "value": "0644a3dd17762190edcbf9caa5b917e8550478b5258a09b769d0fc3870958475"
-    },
-    {
-      "field": "titanium_work_order_sha256",
-      "value": "0644a3dd17762190edcbf9caa5b917e8550478b5258a09b769d0fc3870958475"
-    },
-    {
-      "field": "sku_registry_sha256",
-      "value": "fc952075e41a9e231b6013b5f0d14644602989e3650305be17b1e4455e1354c5"
-    },
-    {
-      "field": "ci_gate_definitions_sha256",
-      "value": "92f57520316221212c1671f4115c9bddf333974035ef9976dfbbcb0f133f09e2"
-    },
-    {
-      "field": "tier0_bundle_sha256",
-      "value": "681ce139c01dfacda4b28c7d377a18227f41d9338863a70f19253d2bb7933519"
-    },
-    {
-      "field": "tier1_bundle_sha256",
-      "value": "cb58ecc5c0187a681eb5b75855dcba276db2d1834b0e4cc3dc78cbfd48ccfb4b"
-    }
-  ],
-  "manifest_sha256_after": "ea66bc3e4f13f02d9971a4756224d67b8b29031857747c45d809d2b804403bde",
-  "required_pin_updates": [
-    {
-      "after_sha256": "13f4e33abcad4f108726245126701056d0d1b125aa909c2e17e228da6fcbc0dc",
-      "after_status": "PINNED",
-      "before_status": "PINNED",
-      "pin_id": "PIN_PACKET_BUNDLE_SHA256",
-      "target": "packet_bundle"
-    },
-    {
-      "after_sha256": "0644a3dd17762190edcbf9caa5b917e8550478b5258a09b769d0fc3870958475",
-      "after_status": "PINNED",
-      "before_status": "PINNED",
-      "pin_id": "PIN_AUTHORITY_OS_SHA256",
-      "target": "authority_os"
-    },
-    {
-      "after_sha256": "0644a3dd17762190edcbf9caa5b917e8550478b5258a09b769d0fc3870958475",
-      "after_status": "PINNED",
-      "before_status": "PINNED",
-      "pin_id": "PIN_TITANIUM_WORK_ORDER_SHA256",
-      "target": "titanium_work_order"
-    },
-    {
-      "after_sha256": "fc952075e41a9e231b6013b5f0d14644602989e3650305be17b1e4455e1354c5",
-      "after_status": "PINNED",
-      "before_status": "PINNED",
-      "pin_id": "PIN_SKU_REGISTRY_SHA256",
-      "target": "sku_registry"
-    },
-    {
-      "after_sha256": "92f57520316221212c1671f4115c9bddf333974035ef9976dfbbcb0f133f09e2",
-      "after_status": "PINNED",
-      "before_status": "PINNED",
-      "pin_id": "PIN_CI_GATE_DEFS_SHA256",
-      "target": "ci_gate_definitions"
-    },
-    {
-      "after_sha256": "681ce139c01dfacda4b28c7d377a18227f41d9338863a70f19253d2bb7933519",
-      "after_status": "PINNED",
-      "before_status": "PINNED",
-      "pin_id": "PIN_TIER0_LOCATOR_BUNDLE_SHA256",
-      "target": "tier0_locator_bundle"
-    },
-    {
-      "after_sha256": "cb58ecc5c0187a681eb5b75855dcba276db2d1834b0e4cc3dc78cbfd48ccfb4b",
-      "after_status": "PINNED",
-      "before_status": "PINNED",
-      "pin_id": "PIN_TIER1_LOCATOR_BUNDLE_SHA256",
-      "target": "tier1_locator_bundle"
-    }
-  ],
+  "branch_ref": "main",
+  "generated_utc": "2026-03-11T16:44:43Z",
+  "governance_manifest_already_reconciled": true,
+  "governance_manifest_sha256_current": "8a8ca1afd5c3130bcb55d889088ed88525700d697401c2c1e0c5f5c43c5c13c1",
+  "manifest_field_updates": [],
+  "manifest_updates_deferred_to_action_6": true,
+  "required_pin_updates": [],
   "schema_id": "kt.operator.hashpin_patch.v1",
   "signature_sidecars": [
     "KT_PROD_CLEANROOM/governance/governance_manifest.sig.OP1",
     "KT_PROD_CLEANROOM/governance/governance_manifest.sig.OP2"
   ],
   "status": "PASS",
+  "subject_scope": {
+    "branch_ref": "main",
+    "excluded_generated_run_globs": [
+      "KT_PROD_CLEANROOM/exports/_runs/**"
+    ],
+    "excluded_untracked_paths": [
+      "KT_PROD_CLEANROOM/reports/blast_radius_map.json",
+      "KT_PROD_CLEANROOM/reports/frozen_repo_receipt.json",
+      "KT_PROD_CLEANROOM/reports/rollback_plan.json",
+      "KT_PROD_CLEANROOM/reports/runtime_path_map_before.json",
+      "KT_PROD_CLEANROOM/reports/system_audit_scope.json"
+    ],
+    "excludes_generated_runs_from_pin_inputs": true,
+    "excludes_untracked_from_pin_inputs": true,
+    "kind": "candidate_tracked_worktree_required_pin_targets_only",
+    "pin_inputs_are_explicit_registry_targets_only": true,
+    "required_pin_targets": [
+      "authority_os",
+      "ci_gate_definitions",
+      "packet_bundle",
+      "sku_registry",
+      "tier0_locator_bundle",
+      "tier1_locator_bundle",
+      "titanium_work_order"
+    ],
+    "tracked_delta_paths": [
+      "KT_PROD_CLEANROOM/reports/program_catalog_report.json",
+      "KT_PROD_CLEANROOM/reports/real_path_attachment_matrix.json",
+      "KT_PROD_CLEANROOM/reports/real_path_trace.json",
+      "KT_PROD_CLEANROOM/reports/runtime_attach_assertions.json",
+      "KT_PROD_CLEANROOM/reports/source_integrity_receipt.json",
+      "KT_PROD_CLEANROOM/reports/source_integrity_report.json",
+      "KT_PROD_CLEANROOM/reports/validator_substance_summary.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_posture_consistency.py",
+      "KT_PROD_CLEANROOM/tests/operator/test_titanium_substrate.py",
+      "KT_PROD_CLEANROOM/tools/operator/hashpin.py",
+      "KT_PROD_CLEANROOM/tools/operator/posture_consistency.py",
+      "KT_PROD_CLEANROOM/tools/operator/program_catalog_verify.py",
+      "KT_PROD_CLEANROOM/tools/operator/source_integrity.py"
+    ],
+    "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+  },
   "updated_manifest": "KT_PROD_CLEANROOM/governance/governance_manifest.json",
-  "updated_registry": "KT_PROD_CLEANROOM/governance/pin_registry.json"
+  "updated_registry": "KT_PROD_CLEANROOM/governance/pin_registry.json",
+  "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
 }
