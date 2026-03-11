@@ -1,58 +1,58 @@
 {
   "checks": [
     {
-      "actual": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
+      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
       "check": "live_validation_matches_git_head",
-      "expected": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
+      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
       "status": "PASS"
     },
     {
-      "actual": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
+      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
       "check": "execution_board_matches_git_head",
-      "expected": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
+      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
       "status": "PASS"
     },
     {
-      "actual": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
+      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
       "check": "current_pointer_matches_git_head",
-      "expected": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
+      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
       "status": "PASS"
     },
     {
-      "actual": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
+      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
       "check": "current_state_receipt_matches_git_head",
-      "expected": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
+      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
       "status": "PASS"
     },
     {
-      "actual": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
+      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
       "check": "runtime_closure_audit_matches_git_head",
-      "expected": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
+      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
       "status": "PASS"
     },
     {
-      "actual": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
+      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
       "check": "settled_truth_source_matches_git_head",
-      "expected": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
+      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
       "status": "PASS"
     },
     {
-      "actual": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
+      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
       "check": "one_button_preflight_matches_git_head",
-      "expected": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
+      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
       "status": "PASS"
     },
     {
-      "actual": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
+      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
       "check": "one_button_production_matches_git_head",
-      "expected": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
+      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
       "status": "PASS"
     },
     {
-      "actual": "abf00e56afc781cef862442d154a2eb1537c4ece",
+      "actual": "60b05c4be50c07deac6fc01a471c94e77877dec7",
       "check": "one_button_nested_verdict_matches_git_head",
-      "expected": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
-      "status": "FAIL"
+      "expected": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+      "status": "PASS"
     },
     {
       "actual": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
@@ -67,33 +67,33 @@
       "status": "PASS"
     },
     {
-      "actual": "TRANSITIONAL_AUTHORITATIVE",
+      "actual": "SETTLED_AUTHORITATIVE",
       "check": "authority_mode_converged",
-      "expected": "TRANSITIONAL_AUTHORITATIVE",
+      "expected": "SETTLED_AUTHORITATIVE",
       "status": "PASS"
     },
     {
-      "actual": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+      "actual": "TRUTHFUL_GREEN",
       "check": "board_posture_matches_pointer",
-      "expected": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+      "expected": "TRUTHFUL_GREEN",
       "status": "PASS"
     },
     {
-      "actual": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+      "actual": "TRUTHFUL_GREEN",
       "check": "board_posture_matches_current_state",
-      "expected": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+      "expected": "TRUTHFUL_GREEN",
       "status": "PASS"
     },
     {
-      "actual": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+      "actual": "TRUTHFUL_GREEN",
       "check": "board_posture_matches_runtime_audit",
-      "expected": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+      "expected": "TRUTHFUL_GREEN",
       "status": "PASS"
     },
     {
-      "actual": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+      "actual": "TRUTHFUL_GREEN",
       "check": "board_posture_matches_settled_truth",
-      "expected": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+      "expected": "TRUTHFUL_GREEN",
       "status": "PASS"
     },
     {
@@ -113,39 +113,70 @@
       "check": "live_validation_branch_matches_git_branch",
       "expected": "main",
       "status": "PASS"
+    },
+    {
+      "actual": true,
+      "check": "truthful_green_requires_clean_worktree",
+      "status": "PASS"
+    },
+    {
+      "actual": "SETTLED_AUTHORITATIVE",
+      "check": "truthful_green_requires_settled_authority",
+      "expected": "SETTLED_AUTHORITATIVE",
+      "status": "PASS"
+    },
+    {
+      "actual": "PASS",
+      "check": "truthful_green_requires_preflight_pass",
+      "expected": "PASS",
+      "status": "PASS"
+    },
+    {
+      "actual": "PASS",
+      "check": "truthful_green_requires_production_pass",
+      "expected": "PASS",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "check": "truthful_green_requires_preflight_lineage_match",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "check": "truthful_green_requires_production_lineage_match",
+      "status": "PASS"
     }
   ],
-  "failures": [
-    "one_button_nested_verdict_matches_git_head"
-  ],
-  "generated_utc": "2026-03-11T01:55:01Z",
+  "failures": [],
+  "generated_utc": "2026-03-11T02:24:26Z",
   "observed": {
-    "board_authority_mode": "TRANSITIONAL_AUTHORITATIVE",
-    "board_head": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
-    "board_posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+    "board_authority_mode": "SETTLED_AUTHORITATIVE",
+    "board_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "board_posture_state": "TRUTHFUL_GREEN",
     "board_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-    "current_state_head": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
-    "current_state_posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+    "current_state_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "current_state_posture_state": "TRUTHFUL_GREEN",
     "git_branch": "main",
-    "git_head": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
-    "live_validation_head": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
-    "pointer_head": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
-    "pointer_posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
-    "preflight_head": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
-    "preflight_head_lineage_match": false,
-    "preflight_status": "FAIL",
-    "production_head": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
-    "production_head_lineage_match": false,
-    "production_nested_verdict_head": "abf00e56afc781cef862442d154a2eb1537c4ece",
-    "production_status": "FAIL",
+    "git_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "live_validation_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "pointer_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "pointer_posture_state": "TRUTHFUL_GREEN",
+    "preflight_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "preflight_head_lineage_match": true,
+    "preflight_status": "PASS",
+    "production_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "production_head_lineage_match": true,
+    "production_nested_verdict_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "production_status": "PASS",
     "readiness_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-    "runtime_audit_head": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
-    "runtime_audit_posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
-    "settled_authority_mode": "TRANSITIONAL_AUTHORITATIVE",
-    "settled_truth_head": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
-    "settled_truth_posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
-    "worktree_dirty": true
+    "runtime_audit_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "runtime_audit_posture_state": "TRUTHFUL_GREEN",
+    "settled_authority_mode": "SETTLED_AUTHORITATIVE",
+    "settled_truth_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "settled_truth_posture_state": "TRUTHFUL_GREEN",
+    "worktree_dirty": false
   },
   "schema_id": "kt.operator.authority_convergence_receipt.v1",
-  "status": "FAIL"
+  "status": "PASS"
 }

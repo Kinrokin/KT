@@ -1,0 +1,27 @@
+{
+  "dependency_inventory_ref": "KT_PROD_CLEANROOM/reports/dependency_inventory.json",
+  "domain_id": "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE",
+  "effective_utc": "2026-03-11T00:00:00Z",
+  "environment_manifest_ref": "KT_PROD_CLEANROOM/reports/python_environment_manifest.json",
+  "law_id": "DEPENDENCY_INTEGRITY_CONTRACT_V1_20260311",
+  "required_commands": [
+    "python -m tools.operator.dependency_inventory_emit",
+    "python -m tools.operator.dependency_inventory_validate"
+  ],
+  "rules": [
+    "Canonical runtime, operator, and operator-test Python imports must be inventoryable deterministically from the current head.",
+    "A baseline dependency inventory and CycloneDX-style SBOM preview must exist for the current head before publication-grade claims.",
+    "Dependency evidence is supporting integrity evidence; it does not replace runtime truth or authority convergence."
+  ],
+  "sbom_ref": "KT_PROD_CLEANROOM/reports/sbom_cyclonedx.json",
+  "schema_id": "kt.governance.dependency_integrity_contract.v1",
+  "scope_roots": [
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src",
+    "KT_PROD_CLEANROOM/tools/operator",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests",
+    "KT_PROD_CLEANROOM/tests/operator"
+  ],
+  "status": "ACTIVE",
+  "summary": "Baseline dependency and environment evidence required for ordinary software integrity seriousness.",
+  "supersedes": []
+}

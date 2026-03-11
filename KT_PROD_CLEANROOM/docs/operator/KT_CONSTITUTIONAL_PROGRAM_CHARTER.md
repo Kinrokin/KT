@@ -28,8 +28,12 @@ KT exists to execute under law, evolve under law, prove its own improvement unde
 ## Immediate Program Law
 
 - `KT_PROD_CLEANROOM/governance/settled_truth_source_contract.json`
+- `KT_PROD_CLEANROOM/governance/authority_convergence_contract.json`
+- `KT_PROD_CLEANROOM/governance/status_taxonomy.json`
 - `KT_PROD_CLEANROOM/governance/trust_zone_registry.json`
 - `KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json`
+- `KT_PROD_CLEANROOM/governance/documentary_truth_policy.json`
+- `KT_PROD_CLEANROOM/governance/dependency_integrity_contract.json`
 - `KT_PROD_CLEANROOM/governance/canonical_freeze_manifest.json`
 - `KT_PROD_CLEANROOM/governance/amendment_scope_manifest.json`
 - `KT_PROD_CLEANROOM/governance/execution_board.json`

@@ -5,9 +5,17 @@
     "status": "PASS"
   },
   "branch_ref": "main",
-  "live_validation_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+  "live_validation_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
   "one_button_state": {
     "checks": [
+      {
+        "artifact": "one_button_preflight_receipt.json",
+        "status": "PASS"
+      },
+      {
+        "artifact": "one_button_production_receipt.json",
+        "status": "PASS"
+      },
       {
         "artifact": "main_branch_protection_receipt.json",
         "status": "PASS"
@@ -15,7 +23,7 @@
     ],
     "status": "PASS"
   },
-  "posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+  "posture_state": "TRUTHFUL_GREEN",
   "preserved_branch_closure": {
     "checks": [
       {
@@ -66,5 +74,5 @@
   },
   "schema_id": "kt.operator.posture_consistency_receipt.v1",
   "status": "PASS",
-  "validated_head_sha": "159d26a183c2e5dcd2ca9164e06010a4007abf79"
+  "validated_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7"
 }

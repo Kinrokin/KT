@@ -1,7 +1,5 @@
 {
-  "active_stop_gates": [
-    "DIRTY_WORKTREE"
-  ],
+  "active_stop_gates": [],
   "branch_ref": "main",
   "closure_receipts": [
     "KT_PROD_CLEANROOM/reports/live_validation_index.json",
@@ -12,20 +10,20 @@
     "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
     "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json"
   ],
-  "current_p0_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
-  "current_release_decision": "HOLD_DIRTY_WORKTREE",
+  "current_p0_state": "TRUTHFUL_GREEN",
+  "current_release_decision": "GO_PRESS_BUTTON_PRODUCTION_ELIGIBLE",
   "finish_line_predicates": {
     "canonical_scope_enforced": true,
     "constitutional_truth_live": true,
-    "current_worktree_clean": false,
-    "one_button_current_head_pass": false,
+    "current_worktree_clean": true,
+    "one_button_current_head_pass": true,
     "posture_receipts_synchronized": true,
     "truth_engine_authoritative": true,
-    "truthful_green_active": false
+    "truthful_green_active": true
   },
-  "generated_utc": "2026-03-11T01:43:40Z",
-  "next_allowed_transition": "COMMIT_OR_CLEAN_ACTIVE_WORKTREE",
-  "posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+  "generated_utc": "2026-03-11T02:24:17Z",
+  "next_allowed_transition": "NONE_REQUIRED_RUNTIME_LAWFUL_GREEN_ACTIVE",
+  "posture_state": "TRUTHFUL_GREEN",
   "schema_id": "kt.operator.current_state_receipt.v3",
   "status": "PASS",
   "truth_sources": [
@@ -35,6 +33,6 @@
     "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
     "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json"
   ],
-  "validated_head_sha": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
+  "validated_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7",
   "validation_index_ref": "KT_PROD_CLEANROOM/reports/live_validation_index.json"
 }

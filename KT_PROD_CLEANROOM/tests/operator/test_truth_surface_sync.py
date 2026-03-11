@@ -3,12 +3,20 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from tools.operator.dependency_inventory_emit import build_dependency_reports
 from tools.operator.truth_surface_sync import _sync_secondary_surfaces
 
 
 def _write_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def _write_dependency_reports(root: Path) -> None:
+    reports = build_dependency_reports(root=root, scan_roots=("KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src",))
+    _write_json(root / "KT_PROD_CLEANROOM" / "reports" / "dependency_inventory.json", reports["inventory"])
+    _write_json(root / "KT_PROD_CLEANROOM" / "reports" / "python_environment_manifest.json", reports["environment"])
+    _write_json(root / "KT_PROD_CLEANROOM" / "reports" / "sbom_cyclonedx.json", reports["sbom"])
 
 
 def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path: Path) -> None:
@@ -42,6 +50,20 @@ def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path
             "current_posture_state": "TRUTH_DEFECTS_PRESENT",
         },
     )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM" / "governance" / "documentary_truth_policy.json",
+        {
+            "schema_id": "kt.governance.documentary_truth_policy.v1",
+            "active_current_head_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+            "active_supporting_truth_surfaces": ["KT_PROD_CLEANROOM/reports/current_state_receipt.json"],
+            "documentary_only_patterns": ["docs/**"],
+        },
+    )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM" / "exports" / "_truth" / "current" / "current_pointer.json",
+        {"status": "ACTIVE"},
+    )
+    _write_dependency_reports(tmp_path)
 
     _sync_secondary_surfaces(
         root=tmp_path,
@@ -58,6 +80,9 @@ def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path
     board = json.loads((tmp_path / "KT_PROD_CLEANROOM" / "governance" / "execution_board.json").read_text(encoding="utf-8"))
     freeze = json.loads((tmp_path / "KT_PROD_CLEANROOM" / "governance" / "h0_freeze_policy.json").read_text(encoding="utf-8"))
     promotion = json.loads((tmp_path / "KT_PROD_CLEANROOM" / "reports" / "settled_authority_promotion_receipt.json").read_text(encoding="utf-8"))
+    documentary = json.loads((tmp_path / "KT_PROD_CLEANROOM" / "reports" / "documentary_truth_validation_receipt.json").read_text(encoding="utf-8"))
+    dependency = json.loads((tmp_path / "KT_PROD_CLEANROOM" / "reports" / "dependency_inventory_validation_receipt.json").read_text(encoding="utf-8"))
+    verifier = json.loads((tmp_path / "KT_PROD_CLEANROOM" / "reports" / "public_verifier_manifest.json").read_text(encoding="utf-8"))
 
     assert readiness["current_authority_mode"] == "SETTLED_AUTHORITATIVE"
     assert readiness["authoritative_truth_source"] == "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
@@ -92,6 +117,11 @@ def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path
     assert freeze["amendment_scope_manifest"] == "KT_PROD_CLEANROOM/governance/amendment_scope_manifest.json"
     assert promotion["new_authority_state"] == "SETTLED_AUTHORITATIVE"
     assert promotion["promotion_verdict"] == "PASS"
+    assert documentary["status"] == "PASS"
+    assert dependency["status"] == "PASS"
+    assert verifier["validated_head_sha"] == "abc123"
+    assert verifier["truth_pointer_ref"] == "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
+    assert "KT_PROD_CLEANROOM/reports/dependency_inventory_validation_receipt.json" in verifier["state_receipts"]
 
 
 def test_sync_secondary_surfaces_is_stable_on_repeat_sync(tmp_path: Path) -> None:
@@ -125,6 +155,20 @@ def test_sync_secondary_surfaces_is_stable_on_repeat_sync(tmp_path: Path) -> Non
             "current_posture_state": "TRUTH_DEFECTS_PRESENT",
         },
     )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM" / "governance" / "documentary_truth_policy.json",
+        {
+            "schema_id": "kt.governance.documentary_truth_policy.v1",
+            "active_current_head_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+            "active_supporting_truth_surfaces": ["KT_PROD_CLEANROOM/reports/current_state_receipt.json"],
+            "documentary_only_patterns": ["docs/**"],
+        },
+    )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM" / "exports" / "_truth" / "current" / "current_pointer.json",
+        {"status": "ACTIVE"},
+    )
+    _write_dependency_reports(tmp_path)
 
     _sync_secondary_surfaces(
         root=tmp_path,

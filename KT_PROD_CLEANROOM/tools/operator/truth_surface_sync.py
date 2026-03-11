@@ -7,6 +7,8 @@ from typing import Any, Dict, List, Optional, Sequence
 
 from tools.operator.posture_consistency import verify_posture
 from tools.operator.authority_convergence_validate import build_authority_convergence_report
+from tools.operator.dependency_inventory_validate import build_dependency_inventory_validation_report
+from tools.operator.documentary_truth_validate import build_documentary_truth_report
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
 from tools.operator.truth_authority import build_settled_truth_source_receipt, build_truth_supersession_receipt, path_ref
 from tools.operator.truth_publication import (
@@ -279,6 +281,51 @@ def _domain_maturity_matrix_payload(*, board: Dict[str, Any]) -> Dict[str, Any]:
             }
             for row in domains
             if isinstance(row, dict)
+        ],
+    }
+
+
+def _public_verifier_manifest_payload(
+    *,
+    live_head: str,
+    truth_source_ref: str,
+    authority_mode: str,
+    convergence_status: str,
+    report_root_rel: str,
+) -> Dict[str, Any]:
+    status = "PASS" if authority_mode == "SETTLED_AUTHORITATIVE" and convergence_status == "PASS" else "HOLD"
+    return {
+        "schema_id": "kt.public_verifier_manifest.v2",
+        "generated_utc": utc_now_iso_z(),
+        "status": status,
+        "validated_head_sha": live_head,
+        "truth_pointer_ref": truth_source_ref,
+        "state_receipts": [
+            _report_ref(report_root_rel, "current_state_receipt.json"),
+            _report_ref(report_root_rel, "truth_publication_stabilization_receipt.json"),
+            _report_ref(report_root_rel, "main_branch_protection_receipt.json"),
+            _report_ref(report_root_rel, "authority_convergence_receipt.json"),
+            _report_ref(report_root_rel, "documentary_truth_validation_receipt.json"),
+            _report_ref(report_root_rel, "dependency_inventory_validation_receipt.json"),
+        ],
+        "integrity_supporting_artifacts": [
+            _report_ref(report_root_rel, "dependency_inventory.json"),
+            _report_ref(report_root_rel, "python_environment_manifest.json"),
+            _report_ref(report_root_rel, "sbom_cyclonedx.json"),
+        ],
+    }
+
+
+def _external_audit_packet_manifest_payload(*, live_head: str) -> Dict[str, Any]:
+    return {
+        "schema_id": "kt.external_audit_packet_manifest.v2",
+        "generated_utc": utc_now_iso_z(),
+        "status": "PASS",
+        "validated_head_sha": live_head,
+        "packet_refs": [
+            "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/README.md",
+            "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/KT_FULL_COMPLETION_ATTEMPT_REPORT_20260310.md",
+            "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/DOMAIN1_PUBLICATION_ARCHITECTURE_PROGRESS_REPORT_20260310.md",
         ],
     }
 
@@ -768,6 +815,25 @@ def _sync_secondary_surfaces(
                 open_blockers=deduped_blockers,
             ),
         )
+    reports_root = root / DEFAULT_REPORT_ROOT_REL
+    _write_json(
+        reports_root / "dependency_inventory_validation_receipt.json",
+        build_dependency_inventory_validation_report(root=root, report_root=reports_root),
+    )
+    _write_json(
+        reports_root / "public_verifier_manifest.json",
+        _public_verifier_manifest_payload(
+            live_head=live_head,
+            truth_source_ref=truth_source_ref,
+            authority_mode=authority_mode,
+            convergence_status=convergence_status,
+            report_root_rel=DEFAULT_REPORT_ROOT_REL,
+        ),
+    )
+    _write_json(
+        reports_root / "external_audit_packet_manifest.json",
+        _external_audit_packet_manifest_payload(live_head=live_head),
+    )
     board_state = _build_constitutional_board_state(
         root=root,
         authority_mode=authority_mode,
@@ -785,6 +851,17 @@ def _sync_secondary_surfaces(
     execution_board["domain_gate_statuses"] = board_state["domain_gate_statuses"]
     execution_board["constitutional_domains"] = board_state["constitutional_domains"]
     _write_json(root / "KT_PROD_CLEANROOM" / "governance" / "execution_board.json", execution_board)
+    _write_json(reports_root / "documentary_truth_validation_receipt.json", build_documentary_truth_report(root=root))
+    _write_json(
+        reports_root / "public_verifier_manifest.json",
+        _public_verifier_manifest_payload(
+            live_head=live_head,
+            truth_source_ref=truth_source_ref,
+            authority_mode=authority_mode,
+            convergence_status=convergence_status,
+            report_root_rel=DEFAULT_REPORT_ROOT_REL,
+        ),
+    )
 
 
 def _reconciliation_report(*, report_root: Path, report_root_rel: str, derived_state: str, live_head: str) -> Dict[str, Any]:

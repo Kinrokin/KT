@@ -5,7 +5,7 @@
     "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
     "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json"
   ],
-  "authority_mode": "TRANSITIONAL_AUTHORITATIVE",
+  "authority_mode": "SETTLED_AUTHORITATIVE",
   "board_authority_contract": "KT_PROD_CLEANROOM/governance/execution_board_authority_contract.json",
   "board_id": "EXECUTION_BOARD_V3_20260309",
   "completion_program_ref": "KT_PROD_CLEANROOM/docs/operator/KT_CONSTITUTIONAL_COMPLETION_PROGRAM.md",
@@ -33,28 +33,17 @@
           "status": "PASS"
         },
         {
-          "failures": [
-            "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json status=HOLD"
-          ],
+          "failures": [],
           "rule": "required_artifacts_healthy",
-          "status": "FAIL"
+          "status": "PASS"
         }
       ],
-      "active_blockers": [
-        "active worktree is dirty",
-        "WORKTREE_DIRTY",
-        "one_button_nested_verdict_matches_git_head",
-        "authority mode is not settled authoritative",
-        "validated subject worktree was dirty",
-        "posture state is CANONICAL_VALIDATED_DIRTY_WORKTREE, not TRUTHFUL_GREEN",
-        "authority convergence failed: one_button_nested_verdict_matches_git_head",
-        "unhealthy artifact: KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json status=HOLD"
-      ],
+      "active_blockers": [],
       "domain_id": "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE",
       "entry_gate": "FOUNDATIONAL_LAW_TRANCHE_COMPLETE",
       "exit_gate": "TRUTH_PUBLICATION_STABILIZED",
-      "gate_state": "IN_PROGRESS",
-      "maturity_state": "MATERIALIZED",
+      "gate_state": "OPEN",
+      "maturity_state": "ACTIVE_AUTHORITY",
       "required_artifacts": [
         "KT_PROD_CLEANROOM/reports/settled_authority_promotion_receipt.json",
         "KT_PROD_CLEANROOM/reports/truth_bundle.schema.json",
@@ -76,7 +65,7 @@
         "KT_PROD_CLEANROOM/governance/truth_pointer_rules.json",
         "KT_PROD_CLEANROOM/governance/current_pointer_transition_rules.json"
       ],
-      "status": "MATERIALIZED",
+      "status": "ACTIVE_AUTHORITY",
       "title": "Truth publication architecture"
     },
     {
@@ -84,7 +73,7 @@
         {
           "gate_id": "H1_ACTIVATION_ALLOWED",
           "rule": "entry_gate_open",
-          "status": "FAIL"
+          "status": "PASS"
         },
         {
           "missing": [],
@@ -107,14 +96,12 @@
           "status": "PASS"
         }
       ],
-      "active_blockers": [
-        "entry gate closed: H1_ACTIVATION_ALLOWED"
-      ],
+      "active_blockers": [],
       "domain_id": "DOMAIN_2_PROMOTION_CIVILIZATION",
       "entry_gate": "H1_ACTIVATION_ALLOWED",
       "exit_gate": "PROMOTION_CIVILIZATION_RATIFIED",
-      "gate_state": "LOCKED",
-      "maturity_state": "MATERIALIZED",
+      "gate_state": "IN_PROGRESS",
+      "maturity_state": "TESTED",
       "required_artifacts": [
         "KT_PROD_CLEANROOM/governance/crucible_registry.json",
         "KT_PROD_CLEANROOM/governance/adapter_registry.json",
@@ -138,7 +125,7 @@
         "KT_PROD_CLEANROOM/governance/revalidation_law.json",
         "KT_PROD_CLEANROOM/governance/retirement_law.json"
       ],
-      "status": "MATERIALIZED",
+      "status": "TESTED",
       "title": "Promotion civilization"
     },
     {
@@ -361,10 +348,10 @@
     }
   ],
   "current_constitutional_domain": {
-    "domain_id": "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE",
-    "title": "Truth publication architecture"
+    "domain_id": "DOMAIN_2_PROMOTION_CIVILIZATION",
+    "title": "Promotion civilization"
   },
-  "current_posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+  "current_posture_state": "TRUTHFUL_GREEN",
   "domain_gate_statuses": [
     {
       "blockers": [],
@@ -373,32 +360,19 @@
       "open": true
     },
     {
-      "blockers": [
-        "active worktree is dirty",
-        "WORKTREE_DIRTY",
-        "one_button_nested_verdict_matches_git_head",
-        "authority mode is not settled authoritative",
-        "validated subject worktree was dirty",
-        "posture state is CANONICAL_VALIDATED_DIRTY_WORKTREE, not TRUTHFUL_GREEN",
-        "authority convergence failed: one_button_nested_verdict_matches_git_head",
-        "unhealthy artifact: KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json status=HOLD"
-      ],
+      "blockers": [],
       "domain_id": "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE",
       "gate_id": "TRUTH_PUBLICATION_STABILIZED",
-      "open": false
+      "open": true
     },
     {
-      "blockers": [
-        "entry gate closed: H1_ACTIVATION_ALLOWED"
-      ],
+      "blockers": [],
       "domain_id": "DOMAIN_2_PROMOTION_CIVILIZATION",
       "gate_id": "H1_ACTIVATION_ALLOWED",
-      "open": false
+      "open": true
     },
     {
-      "blockers": [
-        "entry gate closed: H1_ACTIVATION_ALLOWED"
-      ],
+      "blockers": [],
       "domain_id": "DOMAIN_2_PROMOTION_CIVILIZATION",
       "gate_id": "PROMOTION_CIVILIZATION_RATIFIED",
       "open": false
@@ -436,21 +410,17 @@
       "open": false
     }
   ],
-  "last_synced_head_sha": "159d26a183c2e5dcd2ca9164e06010a4007abf79",
-  "open_blockers": [
-    "active worktree is dirty",
-    "WORKTREE_DIRTY",
-    "one_button_nested_verdict_matches_git_head"
-  ],
+  "last_synced_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+  "open_blockers": [],
   "program_gates": {
     "CAPABILITY_ATLAS_RATIFIED": false,
     "CONSTITUTIONAL_COURT_RATIFIED": false,
     "ECONOMIC_TRUTH_PLANE_RATIFIED": false,
     "EXTERNAL_LEGIBILITY_RATIFIED": false,
     "FOUNDATIONAL_LAW_TRANCHE_COMPLETE": true,
-    "H1_ACTIVATION_ALLOWED": false,
+    "H1_ACTIVATION_ALLOWED": true,
     "PROMOTION_CIVILIZATION_RATIFIED": false,
-    "TRUTH_PUBLICATION_STABILIZED": false
+    "TRUTH_PUBLICATION_STABILIZED": true
   },
   "schema_id": "kt.governance.execution_board.v3",
   "status": "ACTIVE",
@@ -463,7 +433,7 @@
     },
     {
       "exit_condition": "truthful green from active clean worktree with settled authority",
-      "status": "BLOCKED",
+      "status": "READY",
       "workstream_id": "PHASE_1_H0_FREEZE"
     },
     {
@@ -478,7 +448,7 @@
     },
     {
       "exit_condition": "current-head truth source is settled authoritative on a clean clone",
-      "status": "BLOCKED",
+      "status": "COMPLETED",
       "workstream_id": "PHASE_4_SETTLED_AUTHORITY"
     }
   ]
