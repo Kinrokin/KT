@@ -1,0 +1,22 @@
+{
+  "schema_id": "kt.governance.status_taxonomy.v1",
+  "taxonomy_id": "KT_STATUS_TAXONOMY_V1_20260310",
+  "status": "ACTIVE",
+  "maturity_ladder": [
+    "PLANNED",
+    "SPECIFIED",
+    "MATERIALIZED",
+    "TESTED",
+    "PROVEN_ON_CURRENT_HEAD",
+    "ACTIVE_AUTHORITY",
+    "EXTERNALLY_ADMISSIBLE",
+    "ARCHIVED",
+    "SUPERSEDED"
+  ],
+  "rules": [
+    "No domain may claim ACTIVE_AUTHORITY unless it is represented consistently across all authority surfaces on the current head.",
+    "No domain may claim PROVEN_ON_CURRENT_HEAD unless its evidence artifacts were produced for the current head.",
+    "Materialized surfaces are real tracked surfaces, but not active authority by existence alone.",
+    "Externally admissible surfaces must be current-head consistent and explicitly labeled for external consumption."
+  ]
+}

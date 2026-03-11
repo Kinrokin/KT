@@ -1,0 +1,41 @@
+{
+  "schema_id": "kt.governance.authority_convergence_contract.v1",
+  "contract_id": "AUTHORITY_CONVERGENCE_CONTRACT_V1_20260310",
+  "status": "ACTIVE",
+  "summary": "Current-tense authority claims are legal only when all active authority surfaces converge on the same subject head, posture, and authority source.",
+  "required_surfaces": [
+    "KT_PROD_CLEANROOM/governance/execution_board.json",
+    "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
+    "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+    "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+    "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
+    "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
+    "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
+  ],
+  "required_equalities": [
+    "git HEAD == live_validation_index.worktree.head_sha",
+    "git HEAD == execution_board.last_synced_head_sha",
+    "git HEAD == current_pointer.truth_subject_commit",
+    "git HEAD == current_state_receipt.validated_head_sha",
+    "git HEAD == runtime_closure_audit.validated_head_sha",
+    "git HEAD == settled_truth_source_receipt.pinned_head_sha",
+    "execution_board.authoritative_current_head_truth_source == KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+    "readiness_scope_manifest.authoritative_truth_source == KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+    "execution_board.authority_mode == settled_truth_source_receipt.status",
+    "execution_board.current_posture_state == current_pointer.posture_enum"
+  ],
+  "required_truthful_green_predicates": [
+    "one_button_preflight_receipt.status == PASS",
+    "one_button_production_receipt.status == PASS",
+    "one_button_preflight_receipt.head_lineage_match == true",
+    "one_button_production_receipt.production_run.head_lineage_match == true",
+    "live_validation_index.worktree.git_dirty == false"
+  ],
+  "failure_effects": [
+    "block green posture",
+    "block publication stabilization",
+    "block H1 activation",
+    "emit authority divergence receipt"
+  ]
+}

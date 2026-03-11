@@ -1,5 +1,7 @@
 # KT Certification Pack (Operator Deliverable)
 
+This document describes the current certification lane and explicitly marks older sealed baselines as historical only.
+
 This offering produces an auditor-grade evidence pack proving a specific KT state passes the governed sweep harness.
 
 SKU: `SKU_CERT`  
@@ -8,14 +10,25 @@ Lane: `certify.canonical_hmac`
 ## Business outcome (what you can say without hand-waving)
 - “This pinned system state was evaluated under a governed harness and produced a replayable evidence bundle with a mechanical PASS/FAIL verdict.”
 
-## Canonical Anchors (KT V1)
+## Current Canonical Baseline
+
+Current certification posture is defined only by the live authority surfaces:
+
+- `KT_PROD_CLEANROOM/governance/execution_board.json`
+- `KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json`
+- `KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json`
+
+Any older sealed tag or commit is historical unless re-promoted by those current authority surfaces.
+
+## Historical V1 Baseline (Documentary Only)
+
 - Sealed tag: `KT_V1_SEALED_20260217`
 - Sealed commit: `7b7f6e71d43c0aa60d4bc91be47e679491883871`
 - Law bundle hash: `cd593dee1cc0b4c30273c90331124c3686f510ff990005609b3653268e66d906`
 - Suite registry id: `e7a37cdc2a84b042dc1f594d1f84b4ba0a843c49de4925a06e6117fbac1eff17`
 
 ## Customer Inputs (Required)
-- A repository checkout to certify (typically `KT_V1_SEALED_20260217`).
+- A repository checkout to certify, pinned explicitly for the engagement.
 - A clean operator machine with Python available.
 - Permission to write evidence under `KT_PROD_CLEANROOM/exports/_runs/...` (WORM).
 - For canonical-lane PASS:
@@ -51,3 +64,4 @@ For client delivery, the operator factory also emits the standard delivery bundl
 - Sweep harness final status `PASS`.
 - In canonical lane: meta-evaluator canonical pass (`PASS`) with HMAC.
 - Evidence pack is WORM-correct (no overwrite; no delete).
+- Current-tense certification claims are legal only if authority convergence also passes on the same pinned head.

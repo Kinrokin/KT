@@ -50,6 +50,8 @@ def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path
         truth_source_ref="KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
         authority_mode="SETTLED_AUTHORITATIVE",
         open_blockers=["CLEAN_CLONE_NOT_RUN"],
+        convergence_status="FAIL",
+        convergence_failures=["execution_board_matches_git_head"],
     )
 
     readiness = json.loads((tmp_path / "KT_PROD_CLEANROOM" / "governance" / "readiness_scope_manifest.json").read_text(encoding="utf-8"))
@@ -63,6 +65,7 @@ def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path
 
     assert board["authority_mode"] == "SETTLED_AUTHORITATIVE"
     assert board["schema_id"] == "kt.governance.execution_board.v3"
+    assert board["status_taxonomy_ref"] == "KT_PROD_CLEANROOM/governance/status_taxonomy.json"
     assert board["completion_program_ref"] == "KT_PROD_CLEANROOM/docs/operator/KT_CONSTITUTIONAL_COMPLETION_PROGRAM.md"
     assert board["authoritative_current_head_truth_source"] == "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
     assert board["last_synced_head_sha"] == "abc123"
@@ -72,9 +75,13 @@ def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path
     assert board["current_constitutional_domain"]["domain_id"] == "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE"
     domain1 = next(row for row in board["constitutional_domains"] if row["domain_id"] == "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE")
     domain2 = next(row for row in board["constitutional_domains"] if row["domain_id"] == "DOMAIN_2_PROMOTION_CIVILIZATION")
-    assert domain1["status"] == "ACTIVE"
+    assert domain1["status"] == "SPECIFIED"
+    assert domain1["maturity_state"] == "SPECIFIED"
+    assert domain1["gate_state"] == "IN_PROGRESS"
     assert "CLEAN_CLONE_NOT_RUN" in domain1["active_blockers"]
-    assert domain2["status"] == "LOCKED"
+    assert "authority convergence failed: execution_board_matches_git_head" in domain1["active_blockers"]
+    assert domain2["status"] == "SPECIFIED"
+    assert domain2["gate_state"] == "LOCKED"
     h1_gate = next(row for row in board["domain_gate_statuses"] if row["gate_id"] == "H1_ACTIVATION_ALLOWED")
     assert h1_gate["domain_id"] == "DOMAIN_2_PROMOTION_CIVILIZATION"
     assert h1_gate["open"] is False
@@ -126,6 +133,8 @@ def test_sync_secondary_surfaces_is_stable_on_repeat_sync(tmp_path: Path) -> Non
         truth_source_ref="KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
         authority_mode="SETTLED_AUTHORITATIVE",
         open_blockers=["GREEN_NOT_REEARNED"],
+        convergence_status="FAIL",
+        convergence_failures=["current_pointer_matches_git_head"],
     )
     first_promotion = (tmp_path / "KT_PROD_CLEANROOM" / "reports" / "settled_authority_promotion_receipt.json").read_text(encoding="utf-8")
     first_board = (tmp_path / "KT_PROD_CLEANROOM" / "governance" / "execution_board.json").read_text(encoding="utf-8")
@@ -137,6 +146,8 @@ def test_sync_secondary_surfaces_is_stable_on_repeat_sync(tmp_path: Path) -> Non
         truth_source_ref="KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
         authority_mode="SETTLED_AUTHORITATIVE",
         open_blockers=["GREEN_NOT_REEARNED"],
+        convergence_status="FAIL",
+        convergence_failures=["current_pointer_matches_git_head"],
     )
     second_promotion = (tmp_path / "KT_PROD_CLEANROOM" / "reports" / "settled_authority_promotion_receipt.json").read_text(encoding="utf-8")
     second_board = (tmp_path / "KT_PROD_CLEANROOM" / "governance" / "execution_board.json").read_text(encoding="utf-8")

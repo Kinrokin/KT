@@ -10,13 +10,28 @@ The execution mandate that binds agents to that order lives in `KT_PROD_CLEANROO
 
 ## Current Constitutional Baseline
 
-- Foundational law tranche status: complete
-- Current authority mode: `SETTLED_AUTHORITATIVE`
-- Current posture state: `CANONICAL_READY_FOR_REEARNED_GREEN`
-- Execution board gates:
-  - `FOUNDATIONAL_LAW_TRANCHE_COMPLETE=true`
-  - `H1_ACTIVATION_ALLOWED=false`
-- Remaining blocker to `TRUTHFUL_GREEN`: current-head one-button receipts have not yet re-earned green from a stable publication model
+This document is doctrine, not current-tense posture authority.
+
+Live constitutional state is carried only by:
+
+- `KT_PROD_CLEANROOM/governance/execution_board.json`
+- `KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json`
+- `KT_PROD_CLEANROOM/reports/domain_maturity_matrix.json`
+- `KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json`
+
+The permanent maturity ladder is:
+
+- `PLANNED`
+- `SPECIFIED`
+- `MATERIALIZED`
+- `TESTED`
+- `PROVEN_ON_CURRENT_HEAD`
+- `ACTIVE_AUTHORITY`
+- `EXTERNALLY_ADMISSIBLE`
+- `ARCHIVED`
+- `SUPERSEDED`
+
+No domain may be treated as active authority merely because surfaces exist.
 
 The current constitutional center already exists in tracked law:
 
@@ -60,11 +75,11 @@ This gate is already satisfied. It means the authority center, six-zone law, fre
 
 ### Gate B: Truth Publication Stabilized
 
-This gate is not yet satisfied. It opens only when current-head truth can be published without forcing permanent clean-worktree contradiction on the audited target.
+This gate opens only when current-head truth can be published, converged, and validated on the same head without authority-surface contradiction.
 
 ### Gate C: H1 Activation Allowed
 
-This gate opens only after Gate B and after promotion law exists for Lab to Canonical movement. Until then, upper-stack work may be drafted, tested, and measured, but not promoted as constitutional product authority.
+This gate opens only after Gate B and after promotion law exists for Lab to Canonical movement. Until then, upper-stack work may be drafted, measured, or materialized, but not promoted as constitutional product authority.
 
 ## Domain 1: Truth Publication Architecture
 

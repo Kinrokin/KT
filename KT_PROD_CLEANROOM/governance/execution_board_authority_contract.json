@@ -6,9 +6,10 @@
     "SETTLED_AUTHORITATIVE"
   ],
   "authoritative_when": [
-    "authoritative_current_head_truth_source is under KT_PROD_CLEANROOM/reports/**",
+    "authoritative_current_head_truth_source == KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
     "authority_mode matches settled_truth_source_receipt status",
-    "last_synced_head_sha matches settled_truth_source_receipt pinned_head_sha when authority is settled"
+    "last_synced_head_sha matches settled_truth_source_receipt pinned_head_sha when authority is settled",
+    "authority_convergence_receipt status is PASS before TRUTHFUL_GREEN may be claimed"
   ],
   "must_never_source_posture_from": [
     "docs/**",

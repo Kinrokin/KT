@@ -1,7 +1,11 @@
 {
   "authoritative_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-  "current_authority_mode": "SETTLED_AUTHORITATIVE",
-  "current_blockers": [],
+  "current_authority_mode": "TRANSITIONAL_AUTHORITATIVE",
+  "current_blockers": [
+    "active worktree is dirty",
+    "WORKTREE_DIRTY",
+    "one_button_nested_verdict_matches_git_head"
+  ],
   "manifest_id": "READINESS_SCOPE_V2_20260309",
   "readiness_excludes_zones": [
     "LAB",

@@ -29,6 +29,9 @@ def _seed_law(root: Path) -> None:
         {
             "schema_id": "kt.governance.execution_board.v3",
             "authoritative_current_head_truth_source": CURRENT_POINTER_REL,
+            "last_synced_head_sha": "abc123",
+            "authority_mode": "SETTLED_AUTHORITATIVE",
+            "current_posture_state": "TRUTHFUL_GREEN",
         },
     )
     _write_json(
@@ -98,6 +101,7 @@ def _seed_reports(root: Path) -> Path:
             "generated_utc": "2026-03-10T00:00:00Z",
             "status": "SETTLED_AUTHORITATIVE",
             "pinned_head_sha": "abc123",
+            "derived_posture_state": "TRUTHFUL_GREEN",
         },
         "truth_supersession_receipt.json": {
             "schema_id": "kt.operator.truth_supersession_receipt.v1",
@@ -109,6 +113,25 @@ def _seed_reports(root: Path) -> Path:
             "schema_id": "kt.operator.settled_authority_promotion_receipt.v1",
             "generated_utc": "2026-03-10T00:00:00Z",
             "promotion_verdict": "PASS",
+        },
+        "one_button_preflight_receipt.json": {
+            "schema_id": "kt.one_button_preflight_receipt.v2",
+            "created_utc": "2026-03-10T00:00:00Z",
+            "status": "PASS",
+            "validated_head_sha": "abc123",
+            "branch_ref": "main",
+            "head_lineage_match": True,
+        },
+        "one_button_production_receipt.json": {
+            "schema_id": "kt.one_button_production_receipt.v2",
+            "created_utc": "2026-03-10T00:00:00Z",
+            "status": "PASS",
+            "validated_head_sha": "abc123",
+            "branch_ref": "main",
+            "production_run": {
+                "head_lineage_match": True,
+                "nested_verdict_head_sha": "abc123",
+            },
         },
     }.items():
         _write_json(reports / name, payload)

@@ -1,15 +1,20 @@
 {
   "authoritative_current_pointer_ref": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-  "authority_mode": "SETTLED_AUTHORITATIVE",
-  "blockers": [],
-  "board_transition_ready": true,
-  "contradiction_count": 0,
-  "generated_utc": "2026-03-09T22:23:39Z",
-  "posture_state": "TRUTHFUL_GREEN",
+  "authority_mode": "TRANSITIONAL_AUTHORITATIVE",
+  "blockers": [
+    "authority mode is not settled authoritative",
+    "validated subject worktree was dirty",
+    "posture state is CANONICAL_VALIDATED_DIRTY_WORKTREE, not TRUTHFUL_GREEN",
+    "WORKTREE_DIRTY"
+  ],
+  "board_transition_ready": false,
+  "contradiction_count": 4,
+  "generated_utc": "2026-03-11T01:43:40Z",
+  "posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
   "required_board_transition": "TRUTH_PUBLICATION_STABILIZED=true",
   "schema_id": "kt.operator.truth_publication_stabilization_receipt.v1",
-  "status": "PASS",
-  "truth_bundle_hash": "80fdf33f390a10eceaa1bd60acefca3ac4f17d7d88ea7640260980b73b574471",
-  "truth_bundle_ref": "KT_PROD_CLEANROOM/exports/_truth/bundles/8d8a71ae4d6cf22d0c89d692cd538e967dc40a97/80fdf33f390a10eceaa1bd60acefca3ac4f17d7d88ea7640260980b73b574471/truth_bundle.json",
-  "truth_subject_commit": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
+  "status": "HOLD",
+  "truth_bundle_hash": "18c2bd056d01214644242ee608fb1eaddbcda562140f0b4651697835ada1e258",
+  "truth_bundle_ref": "KT_PROD_CLEANROOM/exports/_truth/bundles/159d26a183c2e5dcd2ca9164e06010a4007abf79/18c2bd056d01214644242ee608fb1eaddbcda562140f0b4651697835ada1e258/truth_bundle.json",
+  "truth_subject_commit": "159d26a183c2e5dcd2ca9164e06010a4007abf79"
 }

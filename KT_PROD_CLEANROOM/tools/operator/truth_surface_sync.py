@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
 from tools.operator.posture_consistency import verify_posture
+from tools.operator.authority_convergence_validate import build_authority_convergence_report
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
 from tools.operator.truth_authority import build_settled_truth_source_receipt, build_truth_supersession_receipt, path_ref
 from tools.operator.truth_publication import (
@@ -25,6 +26,16 @@ from tools.operator.truth_engine import (
 
 DEFAULT_REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
 COMPLETION_PROGRAM_REF = "KT_PROD_CLEANROOM/docs/operator/KT_CONSTITUTIONAL_COMPLETION_PROGRAM.md"
+STATUS_TAXONOMY_REF = "KT_PROD_CLEANROOM/governance/status_taxonomy.json"
+AUTHORITY_CONVERGENCE_RECEIPT_REF = f"{DEFAULT_REPORT_ROOT_REL}/authority_convergence_receipt.json"
+
+PLANNED = "PLANNED"
+SPECIFIED = "SPECIFIED"
+MATERIALIZED = "MATERIALIZED"
+TESTED = "TESTED"
+PROVEN_ON_CURRENT_HEAD = "PROVEN_ON_CURRENT_HEAD"
+ACTIVE_AUTHORITY = "ACTIVE_AUTHORITY"
+EXTERNALLY_ADMISSIBLE = "EXTERNALLY_ADMISSIBLE"
 
 CONSTITUTIONAL_DOMAINS: List[Dict[str, Any]] = [
     {
@@ -205,7 +216,82 @@ def _surface_health_failures(*, root: Path, paths: Sequence[str], allowed_status
     return failures
 
 
-def _build_constitutional_board_state(*, root: Path, authority_mode: str, posture_state: str, open_blockers: Sequence[str]) -> Dict[str, Any]:
+def _domain_maturity_state(
+    *,
+    domain_id: str,
+    entry_gate_open: bool,
+    truth_publication_stabilized: bool,
+    posture_state: str,
+    authority_mode: str,
+    missing_law_surfaces: Sequence[str],
+    missing_artifacts: Sequence[str],
+    unhealthy_law_surfaces: Sequence[str],
+    unhealthy_artifacts: Sequence[str],
+    convergence_status: str,
+) -> str:
+    all_present = not missing_law_surfaces and not missing_artifacts and not unhealthy_law_surfaces and not unhealthy_artifacts
+    any_present = not (len(missing_law_surfaces) > 0 and len(missing_artifacts) > 0)
+    if domain_id == "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE":
+        if truth_publication_stabilized and authority_mode == "SETTLED_AUTHORITATIVE" and posture_state == TRUTHFUL_GREEN:
+            return ACTIVE_AUTHORITY
+        if convergence_status == "PASS" and all_present:
+            return PROVEN_ON_CURRENT_HEAD
+        if all_present:
+            return TESTED
+        return MATERIALIZED if any_present else SPECIFIED
+    if domain_id == "DOMAIN_2_PROMOTION_CIVILIZATION":
+        if entry_gate_open and all_present:
+            return TESTED
+        return MATERIALIZED if any_present else SPECIFIED
+    if all_present:
+        return MATERIALIZED
+    return SPECIFIED if any_present else PLANNED
+
+
+def _domain_gate_state(*, entry_gate_open: bool, exit_gate_open: bool) -> str:
+    if exit_gate_open:
+        return "OPEN"
+    if not entry_gate_open:
+        return "LOCKED"
+    return "IN_PROGRESS"
+
+
+def _maturity_claim_open(maturity_state: str) -> bool:
+    return maturity_state in {PROVEN_ON_CURRENT_HEAD, ACTIVE_AUTHORITY, EXTERNALLY_ADMISSIBLE}
+
+
+def _domain_maturity_matrix_payload(*, board: Dict[str, Any]) -> Dict[str, Any]:
+    domains = board.get("constitutional_domains") if isinstance(board.get("constitutional_domains"), list) else []
+    return {
+        "schema_id": "kt.operator.domain_maturity_matrix.v1",
+        "generated_utc": utc_now_iso_z(),
+        "status": "ACTIVE",
+        "status_taxonomy_ref": STATUS_TAXONOMY_REF,
+        "board_ref": "KT_PROD_CLEANROOM/governance/execution_board.json",
+        "domains": [
+            {
+                "domain_id": str(row.get("domain_id", "")).strip(),
+                "title": str(row.get("title", "")).strip(),
+                "maturity_state": str(row.get("maturity_state", "")).strip(),
+                "gate_state": str(row.get("gate_state", "")).strip(),
+                "entry_gate": str(row.get("entry_gate", "")).strip(),
+                "exit_gate": str(row.get("exit_gate", "")).strip(),
+            }
+            for row in domains
+            if isinstance(row, dict)
+        ],
+    }
+
+
+def _build_constitutional_board_state(
+    *,
+    root: Path,
+    authority_mode: str,
+    posture_state: str,
+    open_blockers: Sequence[str],
+    convergence_status: str,
+    convergence_failures: Sequence[str],
+) -> Dict[str, Any]:
     publication_state = load_publication_stabilization_state(root=root)
     truth_publication_stabilized = (
         authority_mode == "SETTLED_AUTHORITATIVE"
@@ -213,6 +299,7 @@ def _build_constitutional_board_state(*, root: Path, authority_mode: str, postur
         and not list(open_blockers)
         and str(publication_state.get("status", "")).strip() == "PASS"
         and bool(publication_state.get("board_transition_ready"))
+        and convergence_status == "PASS"
     )
     program_gates: Dict[str, bool] = {
         "FOUNDATIONAL_LAW_TRANCHE_COMPLETE": True,
@@ -282,6 +369,8 @@ def _build_constitutional_board_state(*, root: Path, authority_mode: str, postur
                 publication_blockers = [str(item).strip() for item in publication_state.get("blockers", []) if str(item).strip()]
                 if publication_blockers:
                     domain_blockers.extend(publication_blockers)
+                if convergence_failures:
+                    domain_blockers.extend(f"authority convergence failed: {item}" for item in convergence_failures)
                 if not open_blockers and not publication_blockers:
                     domain_blockers.append("truth publication architecture has not yet stabilized")
         else:
@@ -300,26 +389,32 @@ def _build_constitutional_board_state(*, root: Path, authority_mode: str, postur
             seen_blockers.add(blocker)
             deduped_domain_blockers.append(blocker)
 
+        maturity_state = _domain_maturity_state(
+            domain_id=domain_id,
+            entry_gate_open=entry_gate_open,
+            truth_publication_stabilized=truth_publication_stabilized,
+            posture_state=posture_state,
+            authority_mode=authority_mode,
+            missing_law_surfaces=missing_law_surfaces,
+            missing_artifacts=missing_artifacts,
+            unhealthy_law_surfaces=unhealthy_law_surfaces,
+            unhealthy_artifacts=unhealthy_artifacts,
+            convergence_status=convergence_status,
+        )
         if domain_id == "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE":
             exit_gate_open = truth_publication_stabilized
-            status = "COMPLETED" if truth_publication_stabilized else "ACTIVE"
         else:
-            exit_gate_open = bool(entry_gate_open and not deduped_domain_blockers)
+            exit_gate_open = bool(entry_gate_open and _maturity_claim_open(maturity_state) and not deduped_domain_blockers)
             program_gates[exit_gate] = exit_gate_open
-        if domain_id != "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE" and not entry_gate_open:
-            status = "LOCKED"
-        elif exit_gate_open:
-            status = "COMPLETED"
-        elif domain_id == "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE":
-            status = "ACTIVE"
-        else:
-            status = "ACTIVE"
+        gate_state = _domain_gate_state(entry_gate_open=entry_gate_open, exit_gate_open=exit_gate_open)
 
         constitutional_domains.append(
             {
                 "domain_id": domain_id,
                 "title": title,
-                "status": status,
+                "status": maturity_state,
+                "maturity_state": maturity_state,
+                "gate_state": gate_state,
                 "entry_gate": entry_gate,
                 "exit_gate": exit_gate,
                 "activation_rules": activation_rules,
@@ -352,9 +447,17 @@ def _build_constitutional_board_state(*, root: Path, authority_mode: str, postur
             if next_gate not in program_gates:
                 program_gates[next_gate] = truth_publication_stabilized if next_gate == "H1_ACTIVATION_ALLOWED" else False
 
-    current_domain = next((row for row in constitutional_domains if row["status"] == "ACTIVE"), constitutional_domains[-1])
+    current_domain = next(
+        (
+            row
+            for row in constitutional_domains
+            if str(row.get("maturity_state", "")).strip() not in {ACTIVE_AUTHORITY, EXTERNALLY_ADMISSIBLE}
+        ),
+        constitutional_domains[-1],
+    )
     return {
         "completion_program_ref": COMPLETION_PROGRAM_REF,
+        "status_taxonomy_ref": STATUS_TAXONOMY_REF,
         "current_constitutional_domain": {
             "domain_id": current_domain["domain_id"],
             "title": current_domain["title"],
@@ -600,6 +703,8 @@ def _sync_secondary_surfaces(
     truth_source_ref: str,
     authority_mode: str,
     open_blockers: List[str],
+    convergence_status: str,
+    convergence_failures: Sequence[str],
 ) -> None:
     readiness_scope = _load_required(root / "KT_PROD_CLEANROOM" / "governance" / "readiness_scope_manifest.json")
     blockers: List[str] = []
@@ -668,10 +773,13 @@ def _sync_secondary_surfaces(
         authority_mode=authority_mode,
         posture_state=posture_state,
         open_blockers=deduped_blockers,
+        convergence_status=convergence_status,
+        convergence_failures=convergence_failures,
     )
     execution_board["schema_id"] = "kt.governance.execution_board.v3"
     execution_board["board_id"] = "EXECUTION_BOARD_V3_20260309"
     execution_board["completion_program_ref"] = board_state["completion_program_ref"]
+    execution_board["status_taxonomy_ref"] = board_state["status_taxonomy_ref"]
     execution_board["current_constitutional_domain"] = board_state["current_constitutional_domain"]
     execution_board["program_gates"] = board_state["program_gates"]
     execution_board["domain_gate_statuses"] = board_state["domain_gate_statuses"]
@@ -837,7 +945,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             truth_source_ref=str(publication.get("current_pointer_ref", CURRENT_POINTER_REL)).strip() or CURRENT_POINTER_REL,
             authority_mode=str(settled_truth.get("status", "")).strip(),
             open_blockers=[str(item).strip() for item in settled_truth.get("open_blockers", []) if str(item).strip()],
+            convergence_status="PENDING",
+            convergence_failures=[],
         )
+        convergence = build_authority_convergence_report(root=root)
+        convergence_failures = [str(item).strip() for item in convergence.get("failures", []) if str(item).strip()]
+        _sync_secondary_surfaces(
+            root=root,
+            posture_state=derived_state,
+            live_head=live_head,
+            truth_source_ref=str(publication.get("current_pointer_ref", CURRENT_POINTER_REL)).strip() or CURRENT_POINTER_REL,
+            authority_mode=str(settled_truth.get("status", "")).strip(),
+            open_blockers=[str(item).strip() for item in settled_truth.get("open_blockers", []) if str(item).strip()] + convergence_failures,
+            convergence_status=str(convergence.get("status", "")).strip() or "FAIL",
+            convergence_failures=convergence_failures,
+        )
+        convergence = build_authority_convergence_report(root=root)
+        _write_json(reports_root / "authority_convergence_receipt.json", convergence)
+        board_after_sync = _load_required(root / "KT_PROD_CLEANROOM" / "governance" / "execution_board.json")
+        _write_json(reports_root / "domain_maturity_matrix.json", _domain_maturity_matrix_payload(board=board_after_sync))
 
     print(
         json.dumps(

@@ -8,13 +8,18 @@ This document is the canonical design for finishing KT from the current settled-
 
 ### Baseline Facts
 
-- Pinned constitutional head: `8d8a71ae4d6cf22d0c89d692cd538e967dc40a97`
-- Current authority mode: `SETTLED_AUTHORITATIVE`
-- Current posture state: `CANONICAL_READY_FOR_REEARNED_GREEN`
-- Active constitutional domain: `DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE`
-- `FOUNDATIONAL_LAW_TRANCHE_COMPLETE=true`
-- `TRUTH_PUBLICATION_STABILIZED=false`
-- `H1_ACTIVATION_ALLOWED=false`
+This blueprint is canonical doctrine, not live current-state authority.
+
+The only live current-state sources are:
+
+- `KT_PROD_CLEANROOM/governance/execution_board.json`
+- `KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json`
+- `KT_PROD_CLEANROOM/reports/domain_maturity_matrix.json`
+- `KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json`
+
+The permanent maturity taxonomy is tracked in:
+
+- `KT_PROD_CLEANROOM/governance/status_taxonomy.json`
 
 ### Current Constitutional Center
 
@@ -51,14 +56,12 @@ The following surfaces may be useful, but are not legal posture authority unless
 
 ### Current Structural Contradiction
 
-KT's remaining blocker is not conceptual confusion. It is a publication-architecture contradiction:
+The primary constitutional risk is no longer lack of law. It is authority divergence.
 
-1. law and live current-state truth still share the same mutable tracked surface
-2. publishing current-head truth mutates the repo state that truth is trying to describe
-3. the newly published tracked truth then becomes stale against the new `HEAD`
-4. a durable clean-worktree truth state therefore cannot remain stable
+If board, pointer, receipts, and current git head disagree, KT must fail closed and demote maturity. That rule is now carried by:
 
-Until this contradiction is removed, KT may be settled-authoritative on a pinned head, but it may not lawfully claim stable `TRUTHFUL_GREEN`.
+- `KT_PROD_CLEANROOM/governance/authority_convergence_contract.json`
+- `KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json`
 
 ## Part II. KT Final Mission
 
@@ -699,6 +702,10 @@ KT may not call itself complete until the following closure receipts exist and a
 - `KT_PROD_CLEANROOM/reports/economic_truth_plane_ratification_receipt.json`
 - `KT_PROD_CLEANROOM/reports/external_legibility_completion_receipt.json`
 - `KT_PROD_CLEANROOM/reports/constitutional_completion_receipt.json`
+
+Domain closure must also be represented in:
+
+- `KT_PROD_CLEANROOM/reports/domain_maturity_matrix.json`
 
 ## Part IX. What Must Be True Before KT May Lawfully Call Itself Complete
 

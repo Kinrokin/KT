@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
 from tools.canonicalize.kt_canonicalize import canonicalize_bytes, sha256_hex
+from tools.operator.authority_convergence_validate import build_authority_convergence_report
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
 from tools.operator.truth_authority import path_ref
 
@@ -56,6 +57,8 @@ OPTIONAL_BUNDLE_REPORTS: List[str] = [
     "truth_surface_reconciliation_report.json",
     "one_button_preflight_receipt.json",
     "one_button_production_receipt.json",
+    "authority_convergence_receipt.json",
+    "domain_maturity_matrix.json",
     "p0_green_full_receipt.json",
     "kt_green_final_receipt.json",
 ]
@@ -74,6 +77,8 @@ TRACKED_DOCUMENTARY_SURFACES: List[str] = [
         "truth_surface_reconciliation_report.json",
         "one_button_preflight_receipt.json",
         "one_button_production_receipt.json",
+        "authority_convergence_receipt.json",
+        "domain_maturity_matrix.json",
         "p0_green_full_receipt.json",
         "kt_green_final_receipt.json",
     )
@@ -553,6 +558,18 @@ def validate_truth_publication(*, root: Path) -> Dict[str, Any]:
                 "board_transition_ready": board_transition_ready,
             }
         )
+
+    convergence = build_authority_convergence_report(root=root)
+    convergence_ok = str(convergence.get("status", "")).strip() == "PASS"
+    checks.append(
+        {
+            "check": "authority_convergence_passes",
+            "status": "PASS" if convergence_ok else "FAIL",
+            "failures": convergence.get("failures", []),
+        }
+    )
+    if not convergence_ok:
+        failures.append("authority_convergence_failed")
 
     return {
         "schema_id": "kt.operator.truth_publication_validation_receipt.v1",
