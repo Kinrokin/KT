@@ -591,6 +591,13 @@ def publish_truth_ledger_witness(
     }
     write_json_stable(current_dir / "current_bundle_manifest.json", manifest_payload)
     write_json_stable(current_dir / "current_pointer.json", pointer_payload)
+    # The convergence contract treats ledger/current/* as the convenience "current" plane,
+    # not just bundle payloads. Keep these copies in sync with the published bundle inputs.
+    for required_current in ("current_state_receipt.json", "runtime_closure_audit.json"):
+        for row in sources:
+            if str(row.get("name", "")).strip() == required_current:
+                write_json_stable(current_dir / required_current, row["payload"])
+                break
 
     history_dir = (ledger_root / LEDGER_HISTORY_ROOT_REL / subject_commit).resolve()
     history_dir.mkdir(parents=True, exist_ok=True)
