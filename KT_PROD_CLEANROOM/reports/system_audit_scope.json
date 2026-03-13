@@ -1,50 +1,123 @@
 {
-  "schema_id": "kt.audit.system_audit_scope.v1",
-  "action_id": "ACTION_1_FREEZE_REPO_PENDING_AUDIT",
-  "work_order_id": "WORK_ORDER_KT_SOVEREIGN_COMPLETION_SELF_CONVERGED_GREEN_H1_ACTIVATION",
-  "status": "PASS",
-  "freeze_state": "ACTIVE_UNTIL_FULL_AUDIT_PASSES",
-  "generated_utc": "2026-03-11T20:52:00Z",
+  "schema_id": "kt.external_admissibility.system_audit_scope.v2",
+  "work_order_id": "WORK_ORDER_KT_EXTERNAL_ADMISSIBILITY_AND_FRONTIER_SETTLEMENT",
+  "generated_utc": "2026-03-12T17:58:30.9376821Z",
   "repo_root": "d:/user/rober/OneDrive/KingsTheorem_Archive",
-  "git_head": "4867542e364501a91c8e619ee3e26693d73b7a98",
-  "git_branch": "main",
-  "git_branch_state": "main...origin/main",
-  "repo_clean_before_action": true,
-  "repo_clean_after_action_expected": false,
-  "current_legal_scope": [
-    "WS0_AUDIT_FREEZE_AND_SCOPE_LOCK"
-  ],
-  "current_legal_outputs": [
-    "KT_PROD_CLEANROOM/reports/system_audit_scope.json",
-    "KT_PROD_CLEANROOM/reports/frozen_repo_receipt.json",
-    "KT_PROD_CLEANROOM/reports/runtime_path_map_before.json",
-    "KT_PROD_CLEANROOM/reports/blast_radius_map.json",
-    "KT_PROD_CLEANROOM/reports/rollback_plan.json"
-  ],
-  "core_problem_statement": "Published head 4867542e364501a91c8e619ee3e26693d73b7a98 does not match the tracked live-truth surfaces, which remain stamped to 60b05c4be50c07deac6fc01a471c94e77877dec7.",
-  "current_truth_divergence": {
-    "git_head": "4867542e364501a91c8e619ee3e26693d73b7a98",
-    "execution_board_last_synced_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
-    "current_pointer_truth_subject_commit": "60b05c4be50c07deac6fc01a471c94e77877dec7",
-    "current_state_receipt_validated_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
-    "authority_divergence_present": true
+  "repo_frozen_until_audit_passes": true,
+  "repo_state_rescan": {
+    "snapshot_before_ws0": {
+      "git_head": "fddaa73016b1d2e3380551ca1a3507f27ea1cfb8",
+      "tracked_deltas": [],
+      "untracked": [],
+      "captured_state": "clean_repo_before_ws0",
+      "captured_utc": "2026-03-11T23:59:00Z"
+    },
+    "snapshot_current_pre_ws1": {
+      "git_head": "fddaa73016b1d2e3380551ca1a3507f27ea1cfb8",
+      "tracked_deltas": [
+        "KT_PROD_CLEANROOM/reports/blast_radius_map.json",
+        "KT_PROD_CLEANROOM/reports/system_audit_scope.json"
+      ],
+      "untracked": [
+        "KT_PROD_CLEANROOM/reports/dependency_touch_matrix.json",
+        "KT_PROD_CLEANROOM/reports/external_admissibility_gap_register.json"
+      ],
+      "captured_state": "ws0_audit_artifacts_present",
+      "captured_utc": "2026-03-12T17:58:30.9376821Z"
+    },
+    "reconciliation_note": "Repo state is tracked as two snapshots: before WS0 and current pre-WS1. No generic clean-state claim is allowed."
   },
-  "audit_focus": [
-    "repo freeze discipline",
-    "real-path preservation",
-    "authority divergence accounting",
-    "runtime path mapping before change",
-    "blast-radius containment",
-    "rollback containment"
-  ],
-  "out_of_scope_until_next_explicit_approval": [
-    "runtime code edits",
-    "governance law edits",
-    "truth regeneration",
-    "CI changes",
-    "truth-ledger branch creation",
-    "H1 benchmarking",
-    "router activation"
-  ],
-  "next_legal_action_after_approval": "ACTION_2_RECONFIRM_REAL_PATH_ATTACHMENT_MATRIX"
+  "truth_topology": {
+    "published_head": "fddaa73016b1d2e3380551ca1a3507f27ea1cfb8",
+    "live_authority_source": "kt_truth_ledger:ledger/current/current_pointer.json",
+    "truth_ledger_branch": {
+      "name": "kt_truth_ledger",
+      "remote_ref": "origin/kt_truth_ledger",
+      "published_head_sha": "88d183b48be043917e3eed0fc48b62de39c29c48",
+      "zero_history_with_main": true
+    },
+    "proof_class": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+    "authority_mode": "TRANSITIONAL_AUTHORITATIVE",
+    "published_head_authority_claimed": false,
+    "published_head_self_convergence_is_false": true,
+    "main_bound_documentary_truth_surfaces": [
+      "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+      "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+      "KT_PROD_CLEANROOM/governance/execution_board.json"
+    ],
+    "known_gap_that_must_not_be_overclaimed": "truth_authority.py still contains at least one main-pointer default path in a live receipt-builder flow and is deferred to WS2/WS3"
+  },
+  "scanned_surface_groups": {
+    "runtime_core": [
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
+    ],
+    "truth_law": [
+      "KT_PROD_CLEANROOM/governance/authority_convergence_contract.json",
+      "KT_PROD_CLEANROOM/governance/documentary_truth_policy.json",
+      "KT_PROD_CLEANROOM/governance/truth_bundle_contract.json",
+      "KT_PROD_CLEANROOM/governance/truth_pointer_rules.json",
+      "KT_PROD_CLEANROOM/governance/execution_board_authority_contract.json"
+    ],
+    "truth_tooling": [
+      "KT_PROD_CLEANROOM/tools/operator/truth_authority.py",
+      "KT_PROD_CLEANROOM/tools/operator/authority_convergence_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/documentary_truth_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/truth_publication.py",
+      "KT_PROD_CLEANROOM/tools/operator/truth_surface_sync.py",
+      "KT_PROD_CLEANROOM/tools/operator/truth_publication_validate.py"
+    ],
+    "commercial_and_external_surfaces": [
+      "KT_PROD_CLEANROOM/docs/commercial/KT_CERTIFICATION_PACK.md",
+      "KT_PROD_CLEANROOM/docs/commercial/KT_OPERATOR_FACTORY_SKU_CATALOG.md",
+      "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+    ]
+  },
+  "current_admissibility_summary": {
+    "candidate_tracked_worktree_execution_sealing": "PASS",
+    "minimum_clean_clone_reproducibility": "PASS",
+    "ci_execution_governance": "PASS_WITH_PLATFORM_BLOCK",
+    "published_head_self_convergence": "NOT_PROVEN",
+    "h1_activation": "BLOCKED",
+    "router_and_multi_adapter_activation": "BLOCKED"
+  },
+  "known_blockers": [
+    {
+      "id": "GAP_PUBLISHED_HEAD_AUTHORITY_UNRESOLVED",
+      "severity": "CRITICAL",
+      "summary": "Live authority is only locally admissible, not published-head admissible."
+    },
+    {
+      "id": "GAP_STALE_LEDGER_PUBLICATION_REPORTING",
+      "severity": "HIGH",
+      "summary": "Published-head self-convergence receipt still reports ledger_branch_published=false after remote publication."
+    },
+    {
+      "id": "GAP_AUTHORITY_POINTER_CONTRACT_DRIFT",
+      "severity": "HIGH",
+      "summary": "truth_authority.py still contains at least one main-pointer-defaulted receipt path."
+    },
+    {
+      "id": "GAP_PLATFORM_GOVERNANCE_AMBIGUITY",
+      "severity": "HIGH",
+      "summary": "Workflow evidence is fresh, but branch-protection/ruleset enforcement remains platform-blocked."
+    },
+    {
+      "id": "GAP_RUNTIME_BOUNDARY_CONTRADICTION",
+      "severity": "HIGH",
+      "summary": "Runtime registry includes tools root while scope law quarantines src/tools."
+    },
+    {
+      "id": "GAP_MINIMUM_SCOPE_REPRODUCIBILITY_ONLY",
+      "severity": "MEDIUM",
+      "summary": "Clean-clone proof covers certify and hat_demo only."
+    },
+    {
+      "id": "GAP_COMMERCIAL_TOPOLOGY_STALENESS",
+      "severity": "MEDIUM",
+      "summary": "Commercial certification surface still references main current pointer as live baseline."
+    }
+  ]
 }

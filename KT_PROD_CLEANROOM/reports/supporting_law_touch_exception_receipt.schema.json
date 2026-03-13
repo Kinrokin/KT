@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "kt.ws1.supporting_law_touch_exception_receipt.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "work_order_id",
+    "action_id",
+    "workstream",
+    "generated_utc",
+    "supporting_law_touch",
+    "exact_consumer_incompatibility",
+    "proof_not_deferrable_to_ws2_plus"
+  ],
+  "properties": {
+    "schema_id": { "type": "string" },
+    "work_order_id": { "type": "string" },
+    "action_id": { "type": "integer" },
+    "workstream": { "type": "string" },
+    "generated_utc": { "type": "string" },
+    "supporting_law_touch": { "type": "string" },
+    "exact_consumer_incompatibility": { "type": "string" },
+    "proof_not_deferrable_to_ws2_plus": { "type": "string" },
+    "approved_under_exception": { "type": "boolean" }
+  }
+}
+

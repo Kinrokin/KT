@@ -1,0 +1,73 @@
+{
+  "schema_id": "kt.external_admissibility.dependency_touch_matrix.v2",
+  "work_order_id": "WORK_ORDER_KT_EXTERNAL_ADMISSIBILITY_AND_FRONTIER_SETTLEMENT",
+  "generated_utc": "2026-03-12T17:58:30.9376821Z",
+  "workstream_scopes": [
+    {
+      "workstream": "WS1_AUTHORITY_CONTRACT_FREEZE_AND_DOCUMENTARY_DEMOTION",
+      "mutates": [
+        "KT_PROD_CLEANROOM/governance/AUTHORITY_CONTRACT.md",
+        "KT_PROD_CLEANROOM/reports/documentary_truth_demotions_receipt.json",
+        "KT_PROD_CLEANROOM/reports/WS1_fail_closed_contradiction_receipt.json",
+        "KT_PROD_CLEANROOM/reports/WS1_execution_contract.json",
+        "KT_PROD_CLEANROOM/reports/WS1_completion_report.schema.json",
+        "KT_PROD_CLEANROOM/reports/WS1_completion_report.json",
+        "KT_PROD_CLEANROOM/reports/supporting_law_touch_exception_receipt.schema.json",
+        "KT_PROD_CLEANROOM/reports/system_audit_scope.json",
+        "KT_PROD_CLEANROOM/reports/dependency_touch_matrix.json",
+        "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+        "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+        "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+        "KT_PROD_CLEANROOM/governance/execution_board.json"
+      ],
+      "reads_for_scan": [
+        "KT_PROD_CLEANROOM/governance/documentary_truth_policy.json",
+        "KT_PROD_CLEANROOM/governance/truth_pointer_rules.json",
+        "KT_PROD_CLEANROOM/governance/authority_convergence_contract.json",
+        "KT_PROD_CLEANROOM/governance/execution_board_authority_contract.json",
+        "KT_PROD_CLEANROOM/tools/operator/documentary_truth_validate.py",
+        "KT_PROD_CLEANROOM/tools/operator/authority_convergence_validate.py",
+        "KT_PROD_CLEANROOM/tools/operator/truth_authority.py",
+        "KT_PROD_CLEANROOM/tools/operator/truth_surface_sync.py",
+        "KT_PROD_CLEANROOM/tools/operator/truth_engine.py",
+        "KT_PROD_CLEANROOM/tools/operator/truth_publication.py",
+        "KT_PROD_CLEANROOM/docs/commercial/KT_CERTIFICATION_PACK.md",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "impacted_but_frozen": [
+        "KT_PROD_CLEANROOM/docs/commercial/KT_CERTIFICATION_PACK.md",
+        "KT_PROD_CLEANROOM/docs/commercial/KT_OPERATOR_FACTORY_SKU_CATALOG.md",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "protected": [
+        "KT_PROD_CLEANROOM/docs/commercial/**",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/**",
+        "KT_PROD_CLEANROOM/tools/operator/truth_authority.py",
+        "KT_PROD_CLEANROOM/tools/operator/authority_convergence_validate.py",
+        "KT_PROD_CLEANROOM/tools/operator/documentary_truth_validate.py",
+        "KT_PROD_CLEANROOM/tools/operator/truth_publication_validate.py",
+        "kt_truth_ledger:*",
+        ".github/workflows/**"
+      ],
+      "deferred_to_later_workstreams": [
+        "WS2_AUTHORITY_RESOLVER_SINGULARITY",
+        "WS3_REPORTING_INTEGRITY_REPAIR",
+        "WS4_PUBLISHED_HEAD_ADMISSIBLE_CONVERGENCE",
+        "WS5_AUTHORITY_BUNDLE_AND_ATTESTATION_FABRIC",
+        "WS6_SIGSTORE_AND_IN_TOTO_PUBLICATION_LAYER",
+        "WS7_PUBLIC_VERIFIER_PRODUCTIZATION",
+        "WS8_REPRODUCIBILITY_EXPANSION_REPRESENTATIVE_AUTHORITY_LANE",
+        "WS9_PLATFORM_GOVERNANCE_PROOF_OR_FORMAL_NARROWING",
+        "WS10_RUNTIME_BOUNDARY_AND_CLAIM_COMPILER_SETTLEMENT",
+        "WS11_FULL_DEMONSTRATION_AND_H1_GATE_EVALUATION"
+      ]
+    }
+  ],
+  "notes": [
+    "`mutates` is the only allowed edit cone for the workstream.",
+    "`reads_for_scan` are read-only dependency-awareness inputs (no mutation implied).",
+    "`impacted_but_frozen` are known-stale or downstream-impacted surfaces that are explicitly out of scope for mutation.",
+    "`protected` are surfaces that must not be touched by this workstream under any circumstance.",
+    "Any supporting law surface edits beyond the default `mutates` set are exception-only and require per-file necessity proof."
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "kt.ws1.completion_report.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "work_order_id",
+    "action_id",
+    "workstream",
+    "generated_utc",
+    "planned_mutates",
+    "actual_touched",
+    "unexpected_touches",
+    "protected_touch_violations",
+    "consumer_rescan",
+    "mirror_digests",
+    "semantic_ceiling_after_ws1",
+    "verdict"
+  ],
+  "properties": {
+    "schema_id": { "type": "string" },
+    "work_order_id": { "type": "string" },
+    "action_id": { "type": "integer" },
+    "workstream": { "type": "string" },
+    "generated_utc": { "type": "string" },
+    "planned_mutates": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "preexisting_changes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tracked_deltas", "untracked"],
+      "properties": {
+        "tracked_deltas": { "type": "array", "items": { "type": "string" } },
+        "untracked": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "actual_touched": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "unexpected_touches": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "protected_touch_violations": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "post_ws1_repo_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["git_head", "status_porcelain"],
+      "properties": {
+        "git_head": { "type": "string" },
+        "status_porcelain": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "consumer_rescan": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["consumer", "classification", "reads_surface", "expects_live_payload", "result"],
+        "properties": {
+          "consumer": { "type": "string" },
+          "classification": {
+            "type": "string",
+            "enum": ["machine_validator", "human_operator", "adversarial_auditor", "commercial_collateral"]
+          },
+          "reads_surface": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "expects_live_payload": { "type": "boolean" },
+          "result": {
+            "type": "string",
+            "enum": ["SAFE_AFTER_NORMALIZATION", "IMPACTED_BUT_FROZEN_DEFERRED", "FAIL_CLOSED_CONTRADICTION"]
+          },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "mirror_digests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "before_sha256", "after_sha256", "normalized"],
+        "properties": {
+          "path": { "type": "string" },
+          "before_sha256": { "type": ["string", "null"] },
+          "after_sha256": { "type": ["string", "null"] },
+          "normalized": { "type": "boolean" }
+        }
+      }
+    },
+    "supporting_law_exceptions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "semantic_ceiling_after_ws1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resolver_singularity_complete",
+        "published_head_admissibility_complete",
+        "reporting_integrity_repair_complete",
+        "h1_allowed"
+      ],
+      "properties": {
+        "resolver_singularity_complete": { "type": "boolean" },
+        "published_head_admissibility_complete": { "type": "boolean" },
+        "reporting_integrity_repair_complete": { "type": "boolean" },
+        "h1_allowed": { "type": "boolean" }
+      }
+    },
+    "verdict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "proof_class"],
+      "properties": {
+        "status": { "type": "string", "enum": ["PASS", "FAIL_CLOSED"] },
+        "proof_class": {
+          "type": "string",
+          "enum": ["FAIL_CLOSED", "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY"]
+        },
+        "reason": { "type": "string" }
+      }
+    }
+  }
+}

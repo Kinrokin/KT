@@ -1,40 +1,162 @@
 {
-  "schema_id": "kt.audit.blast_radius_map.v1",
-  "action_id": "ACTION_1_FREEZE_REPO_PENDING_AUDIT",
-  "status": "PASS",
-  "generated_utc": "2026-03-11T20:52:00Z",
-  "touch_class": "audit_artifacts_only",
-  "expected_touched_paths": [
-    "KT_PROD_CLEANROOM/reports/system_audit_scope.json",
-    "KT_PROD_CLEANROOM/reports/frozen_repo_receipt.json",
-    "KT_PROD_CLEANROOM/reports/runtime_path_map_before.json",
-    "KT_PROD_CLEANROOM/reports/blast_radius_map.json",
-    "KT_PROD_CLEANROOM/reports/rollback_plan.json"
+  "schema_id": "kt.external_admissibility.blast_radius_map.v1",
+  "work_order_id": "WORK_ORDER_KT_EXTERNAL_ADMISSIBILITY_AND_FRONTIER_SETTLEMENT",
+  "action_id": 1,
+  "generated_utc": "2026-03-11T23:59:01Z",
+  "change_program_scope": [
+    "authority contract settlement",
+    "documentary demotion",
+    "authority resolver singularity",
+    "reporting integrity repair",
+    "published-head convergence",
+    "attestation fabric",
+    "public verifier",
+    "reproducibility expansion",
+    "platform governance proof or narrowing",
+    "runtime boundary settlement",
+    "claim compiler",
+    "conditional H1 gate evaluation"
   ],
-  "protected_paths": {
-    "runtime": [
-      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/**"
-    ],
-    "governance_law": [
-      "KT_PROD_CLEANROOM/governance/**"
-    ],
-    "live_truth": [
-      "KT_PROD_CLEANROOM/exports/_truth/**",
-      "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
-      "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
-      "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
-      "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
-      "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json"
-    ],
-    "ci": [
-      ".github/**",
-      "ci/**"
-    ],
-    "commercial_identity": [
-      "KT_PROD_CLEANROOM/docs/commercial/**"
-    ]
+  "blast_radius_by_plane": {
+    "runtime_core": {
+      "risk": "HIGH_IF_TOUCHED",
+      "surfaces": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
+      ],
+      "why": "Runtime boundary integrity and canonical execution identity must not drift during authority work."
+    },
+    "governance_and_truth_law": {
+      "risk": "HIGH",
+      "surfaces": [
+        "KT_PROD_CLEANROOM/governance/authority_convergence_contract.json",
+        "KT_PROD_CLEANROOM/governance/documentary_truth_policy.json",
+        "KT_PROD_CLEANROOM/governance/truth_bundle_contract.json",
+        "KT_PROD_CLEANROOM/governance/truth_pointer_rules.json",
+        "KT_PROD_CLEANROOM/governance/execution_board_authority_contract.json",
+        "KT_PROD_CLEANROOM/governance/execution_board.json"
+      ],
+      "why": "These files define active authority resolution and proof-class limits."
+    },
+    "truth_publication_and_resolution": {
+      "risk": "CRITICAL",
+      "surfaces": [
+        "KT_PROD_CLEANROOM/tools/operator/truth_authority.py",
+        "KT_PROD_CLEANROOM/tools/operator/authority_convergence_validate.py",
+        "KT_PROD_CLEANROOM/tools/operator/documentary_truth_validate.py",
+        "KT_PROD_CLEANROOM/tools/operator/truth_publication.py",
+        "KT_PROD_CLEANROOM/tools/operator/truth_surface_sync.py",
+        "KT_PROD_CLEANROOM/tools/operator/truth_publication_validate.py"
+      ],
+      "why": "These are the active resolver, validator, publication, and mirror-management surfaces."
+    },
+    "live_truth_and_documentary_mirrors": {
+      "risk": "CRITICAL",
+      "surfaces": [
+        "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+        "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+        "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/documentary_truth_validation_receipt.json"
+      ],
+      "why": "These are the most sensitive truth and mirror surfaces and the highest overclaim risk."
+    },
+    "witness_plane": {
+      "risk": "CRITICAL",
+      "surfaces": [
+        "origin/kt_truth_ledger",
+        "kt_truth_ledger:ledger/current/current_pointer.json",
+        "kt_truth_ledger:ledger/current/current_bundle_manifest.json",
+        "kt_truth_ledger:ledger/history/<head>/publication_receipt.json"
+      ],
+      "why": "The witness plane is the candidate active truth source and the publication-grade authority path."
+    },
+    "ci_and_platform_governance": {
+      "risk": "HIGH",
+      "surfaces": [
+        ".github/workflows/ci_p0_warn_only_closure.yml",
+        ".github/workflows/ci_p0_fail_closed_main.yml",
+        "KT_PROD_CLEANROOM/tools/operator/github_ruleset.py",
+        "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json",
+        "ci/delivery/cidelivery_manifest.json",
+        "ci/evidence/cireplay_receipt.json"
+      ],
+      "why": "Current workflow governance is fresh, but platform enforcement is still ambiguous."
+    },
+    "commercial_and_external_claims": {
+      "risk": "HIGH",
+      "surfaces": [
+        "KT_PROD_CLEANROOM/docs/commercial/KT_CERTIFICATION_PACK.md",
+        "KT_PROD_CLEANROOM/docs/commercial/KT_OPERATOR_FACTORY_SKU_CATALOG.md",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "why": "These are the most likely surfaces to outrun admissible proof class."
+    }
   },
-  "core_touch_expected": false,
-  "parallel_runtime_risk": "none_for_action_1",
-  "business_menu_drift_risk": "none_for_action_1"
+  "protected_surfaces": [
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/**",
+    "KT_PROD_CLEANROOM/docs/commercial/**",
+    "KT_PROD_CLEANROOM/reports/practice_mode_chain_summary.json",
+    "KT_PROD_CLEANROOM/reports/twocleanclone_proof.json",
+    "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json"
+  ],
+  "high_risk_couplings": [
+    {
+      "from": "truth_authority.py",
+      "to": [
+        "authority_convergence_validate.py",
+        "documentary_truth_validate.py",
+        "execution_board.json",
+        "current_state_receipt.json",
+        "current_pointer.json",
+        "KT_CERTIFICATION_PACK.md"
+      ],
+      "risk": "semantic drift in authority resolution propagates to validation, board posture, mirrors, and buyer-facing collateral"
+    },
+    {
+      "from": "RUNTIME_REGISTRY.json",
+      "to": [
+        "trust_zone_registry.json",
+        "canonical_scope_manifest.json",
+        "runtime boundary integrity claims"
+      ],
+      "risk": "tools-root contradiction undermines canonical runtime boundary legitimacy"
+    },
+    {
+      "from": "ci_p0_fail_closed_main.yml",
+      "to": [
+        "ci_gate_promotion_receipt.json",
+        "github_ruleset.py",
+        "platform-governance claims"
+      ],
+      "risk": "workflow evidence can be overread as platform enforcement if receipts collapse categories"
+    },
+    {
+      "from": "public_verifier_manifest.json",
+      "to": [
+        "commercial positioning",
+        "authority proof class",
+        "external admissibility claims"
+      ],
+      "risk": "manifest-only verifier can be mistaken for outsider-runnable verification"
+    }
+  ],
+  "action_1_touch_policy": {
+    "allowed_touches": [
+      "KT_PROD_CLEANROOM/reports/system_audit_scope.json",
+      "KT_PROD_CLEANROOM/reports/blast_radius_map.json",
+      "KT_PROD_CLEANROOM/reports/dependency_touch_matrix.json",
+      "KT_PROD_CLEANROOM/reports/external_admissibility_gap_register.json"
+    ],
+    "forbidden_touches": [
+      "runtime core files",
+      "governance contracts",
+      "truth mirrors",
+      "truth resolver code",
+      "ci workflow files",
+      "commercial docs"
+    ]
+  }
 }

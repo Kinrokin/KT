@@ -1,0 +1,158 @@
+{
+  "schema_id": "kt.external_admissibility.gap_register.v1",
+  "work_order_id": "WORK_ORDER_KT_EXTERNAL_ADMISSIBILITY_AND_FRONTIER_SETTLEMENT",
+  "action_id": 1,
+  "generated_utc": "2026-03-11T23:59:03Z",
+  "current_state": {
+    "published_head": "fddaa73016b1d2e3380551ca1a3507f27ea1cfb8",
+    "current_proof_class": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+    "h1_status": "BLOCKED",
+    "router_multi_adapter_status": "BLOCKED"
+  },
+  "gaps": [
+    {
+      "id": "EA_001_PUBLISHED_HEAD_AUTHORITY_NOT_ADMISSIBLE",
+      "severity": "CRITICAL",
+      "category": "truth_authority",
+      "current_evidence": [
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json"
+      ],
+      "current_fact": "Same-head convergence is only admissible as local-ledger truth, not published-head truth.",
+      "blocks": [
+        "published authority claim",
+        "enterprise-grade legitimacy",
+        "H1 activation"
+      ],
+      "required_to_clear": [
+        "fresh-clone published-head admissible convergence",
+        "single resolver contract with no local-only dependencies"
+      ]
+    },
+    {
+      "id": "EA_002_STALE_LEDGER_PUBLICATION_REPORTING",
+      "severity": "HIGH",
+      "category": "reporting_integrity",
+      "current_evidence": [
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json"
+      ],
+      "current_fact": "Receipt still says ledger_branch_published=false despite origin/kt_truth_ledger existing.",
+      "blocks": [
+        "clean publication reporting",
+        "high reporting-integrity score"
+      ],
+      "required_to_clear": [
+        "receipt recomputation against remote publication fact",
+        "cross-receipt contradiction detection"
+      ]
+    },
+    {
+      "id": "EA_003_MAIN_POINTER_CONTRACT_DRIFT",
+      "severity": "HIGH",
+      "category": "truth_topology",
+      "current_evidence": [
+        "KT_PROD_CLEANROOM/tools/operator/truth_authority.py"
+      ],
+      "current_fact": "At least one receipt-builder path still defaults authoritative_current_pointer_ref to the main pointer constant.",
+      "blocks": [
+        "single authority contract",
+        "clean external resolver semantics"
+      ],
+      "required_to_clear": [
+        "all authority receipts derive active pointer from resolver result",
+        "no main-pointer default in live authority paths"
+      ]
+    },
+    {
+      "id": "EA_004_PLATFORM_GOVERNANCE_AMBIGUITY",
+      "severity": "HIGH",
+      "category": "governance_legitimacy",
+      "current_evidence": [
+        "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json",
+        "KT_PROD_CLEANROOM/tools/operator/github_ruleset.py"
+      ],
+      "current_fact": "Workflow execution governance is fresh, but branch-protection/ruleset verification is blocked by GitHub 403.",
+      "blocks": [
+        "fresh platform-enforced governance proof",
+        "higher enterprise legitimacy"
+      ],
+      "required_to_clear": [
+        "fresh active-rules proof",
+        "or explicit formal narrowing away from platform enforcement claims"
+      ]
+    },
+    {
+      "id": "EA_005_RUNTIME_BOUNDARY_CONTRADICTION",
+      "severity": "HIGH",
+      "category": "runtime_integrity",
+      "current_evidence": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+        "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+        "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json"
+      ],
+      "current_fact": "Runtime registry includes tools root while trust-zone and scope law quarantine src/tools.",
+      "blocks": [
+        "runtime-boundary settlement",
+        "high architectural coherence"
+      ],
+      "required_to_clear": [
+        "runtime roots and quarantine law made consistent",
+        "runtime-boundary integrity receipt"
+      ]
+    },
+    {
+      "id": "EA_006_MINIMUM_SCOPE_REPRODUCIBILITY_ONLY",
+      "severity": "MEDIUM",
+      "category": "reproducibility",
+      "current_evidence": [
+        "KT_PROD_CLEANROOM/reports/twocleanclone_proof.json",
+        "KT_PROD_CLEANROOM/reports/proofrunbundle_index.json"
+      ],
+      "current_fact": "Clean-clone reproducibility is proven only for certify and hat_demo.",
+      "blocks": [
+        "representative authority-lane reproducibility",
+        "higher reproducibility band"
+      ],
+      "required_to_clear": [
+        "representative authority-sensitive lane proof",
+        "cross-environment controlled variation"
+      ]
+    },
+    {
+      "id": "EA_007_COMMERCIAL_TOPOLOGY_STALENESS",
+      "severity": "MEDIUM",
+      "category": "commercial_readiness",
+      "current_evidence": [
+        "KT_PROD_CLEANROOM/docs/commercial/KT_CERTIFICATION_PACK.md"
+      ],
+      "current_fact": "Commercial pack still references main current pointer as a current baseline surface.",
+      "blocks": [
+        "clean buyer-safe authority story",
+        "commercial readiness above current cap"
+      ],
+      "required_to_clear": [
+        "collateral updated to ledger-active topology",
+        "proof-class caveats rendered mechanically"
+      ]
+    },
+    {
+      "id": "EA_008_PROVENANCE_AND_TRANSPARENCY_FABRIC_ABSENT",
+      "severity": "MEDIUM",
+      "category": "supply_chain_and_external_verifiability",
+      "current_evidence": [
+        "KT_PROD_CLEANROOM/reports/dependency_inventory.json",
+        "KT_PROD_CLEANROOM/reports/sbom_cyclonedx.json"
+      ],
+      "current_fact": "Inventory and SBOM exist, but active authority bundles are not yet signed/transparency-backed/policy-verifiable.",
+      "blocks": [
+        "publication-grade witness plane",
+        "outsider-verifiable authority appliance posture"
+      ],
+      "required_to_clear": [
+        "attested authority bundles",
+        "verifier trust policy",
+        "transparency evidence"
+      ]
+    }
+  ]
+}

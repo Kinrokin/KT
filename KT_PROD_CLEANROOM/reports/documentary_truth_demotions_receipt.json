@@ -1,0 +1,64 @@
+{
+  "schema_id": "kt.ws1.documentary_truth_demotions_receipt.v1",
+  "work_order_id": "WORK_ORDER_KT_EXTERNAL_ADMISSIBILITY_AND_FRONTIER_SETTLEMENT",
+  "action_id": 2,
+  "workstream": "WS1_AUTHORITY_CONTRACT_FREEZE_AND_DOCUMENTARY_DEMOTION",
+  "generated_utc": "2026-03-12T18:17:25.9546678Z",
+  "git_head": "fddaa73016b1d2e3380551ca1a3507f27ea1cfb8",
+  "active_truth_source_policy_ref": "kt_truth_ledger:ledger/current/current_pointer.json",
+  "proof_class": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+  "mirror_digest_proof": [
+    {
+      "path": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "before_sha256": "82fed1d606a7f634b4c87f947369a4da74a93269725f488dee50919095ce2746",
+      "after_sha256": "ff08d57ac2e0fce95080732f98e86050ae24fa1938ca4cb8b75664e30157bad7",
+      "normalized": true
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+      "before_sha256": "527ac01e0765e9282af271b9bd1bee71d07687ddc4a9c7a445610cd9787fa48f",
+      "after_sha256": "3fd98ff2c45dc2b7018c5812c0920b1dd357c860c67bace3006d5478af04cd0f",
+      "normalized": true
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+      "before_sha256": "b9477fffec1b53b908e95dd9ff8941ad3c905952b7161d4259a1e560aa0b5252",
+      "after_sha256": "5437250c5a41977aa5f95a8ee4f2abce476c2724e4a1813e5bc14d74bdbd78d7",
+      "normalized": true
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/governance/execution_board.json",
+      "before_sha256": "c717b4c0e686058275a084addf06033a2f059b580cdf0254c831a39d62132bd3",
+      "after_sha256": "4efff045f70dbd47942b76dc643f0b5024f05ec0cc2fd8e2ea48f2d3ea7c2d1b",
+      "normalized": true
+    }
+  ],
+  "exact_documentary_contract_required_on_each_main_bound_mirror": {
+    "DOCUMENTARY_ONLY": true,
+    "ACTIVE_AUTHORITY": false,
+    "SUPERSEDED_BY": "kt_truth_ledger:ledger/current/current_pointer.json",
+    "RESOLUTION_PATH": "authority_resolver",
+    "MIRROR_CLASS": "documentary_compatibility_surface",
+    "LIVE_TRUTH_ALLOWED": false
+  },
+  "forbidden_top_level_fields_on_each_main_bound_mirror": [
+    "authoritative_current_pointer_ref",
+    "authoritative_truth_state",
+    "live_truth",
+    "published_head_ready",
+    "active_pointer_payload"
+  ],
+  "git_tracking_note": {
+    "main_current_pointer_is_gitignored_by_default": true,
+    "main_current_pointer_force_added_to_git_index": true,
+    "note": "The main-bound pointer mirror is intentionally documentary-only, but must exist in published sources for downstream validators and fresh-clone checks."
+  },
+  "supporting_law_exceptions": [],
+  "semantic_ceiling_after_ws1": {
+    "resolver_singularity_complete": false,
+    "published_head_admissibility_complete": false,
+    "reporting_integrity_repair_complete": false,
+    "h1_allowed": false
+  }
+}
+
