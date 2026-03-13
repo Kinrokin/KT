@@ -82,6 +82,24 @@ def load_json_ref(*, root: Path, ref: str) -> Dict[str, Any]:
         raise RuntimeError("FAIL_CLOSED: empty JSON ref")
     if is_branch_ref(value):
         branch, relpath = value.split(":", 1)
+        if _is_git_worktree(root) and not _git_ref_exists(root=root, ref=branch):
+            remotes = _git_remotes(root)
+            if any(str(branch).strip().startswith(f"{remote}/") for remote in remotes):
+                raise RuntimeError(f"FAIL_CLOSED: unable to load branch ref {value}: branch ref missing: {branch}")
+
+            attempted: List[str] = [str(branch).strip()]
+            for remote in remotes:
+                candidate = f"{remote}/{str(branch).strip()}"
+                attempted.append(candidate)
+                if not _git_ref_exists(root=root, ref=candidate):
+                    continue
+                try:
+                    candidate_content = _git_show_ref_path(root=root, ref=candidate, relpath=relpath)
+                    return json.loads(candidate_content.lstrip("\ufeff"))
+                except Exception:  # noqa: BLE001
+                    continue
+            attempted_s = ", ".join(attempted)
+            raise RuntimeError(f"FAIL_CLOSED: unable to load branch ref {value} (attempted: {attempted_s}): branch ref missing: {branch}")
         try:
             content = _git_show_ref_path(root=root, ref=branch, relpath=relpath)
         except Exception as exc:  # noqa: BLE001
@@ -92,27 +110,7 @@ def load_json_ref(*, root: Path, ref: str) -> Dict[str, Any]:
                 # If the ref doesn't exist locally (common in fresh clones), fall back to a
                 # remote-tracking ref (e.g. origin/<branch>). If the ref exists locally,
                 # do not mask missing-file errors by falling back elsewhere.
-                if _git_ref_exists(root=root, ref=branch):
-                    raise RuntimeError(f"FAIL_CLOSED: unable to load branch ref {value}: {exc}") from exc
-
-                remotes = _git_remotes(root)
-                if any(str(branch).strip().startswith(f"{remote}/") for remote in remotes):
-                    raise RuntimeError(f"FAIL_CLOSED: unable to load branch ref {value}: {exc}") from exc
-
-                attempted: List[str] = [str(branch).strip()]
-                for remote in remotes:
-                    candidate = f"{remote}/{str(branch).strip()}"
-                    attempted.append(candidate)
-                    if not _git_ref_exists(root=root, ref=candidate):
-                        continue
-                    try:
-                        candidate_content = _git_show_ref_path(root=root, ref=candidate, relpath=relpath)
-                        return json.loads(candidate_content.lstrip("\ufeff"))
-                    except Exception:  # noqa: BLE001
-                        continue
-
-                attempted_s = ", ".join(attempted)
-                raise RuntimeError(f"FAIL_CLOSED: unable to load branch ref {value} (attempted: {attempted_s}): {exc}") from exc
+                raise RuntimeError(f"FAIL_CLOSED: unable to load branch ref {value}: {exc}") from exc
 
             fallback = (root / Path(relpath)).resolve()
             if not fallback.exists():
