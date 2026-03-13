@@ -1,4 +1,5 @@
 {
+  "authority_level": "TRANSITIONAL_AUTHORITATIVE",
   "files": [
     {
       "bundle_relpath": "payloads/live_validation_index.json",
@@ -57,12 +58,28 @@
       "source_ref": "KT_PROD_CLEANROOM/exports/_runs/_ws4_ledger_seed_reports/truth_supersession_receipt.json"
     }
   ],
+  "freshness_contract_ref": "KT_PROD_CLEANROOM/governance/truth_freshness_windows.json",
   "generated_utc": "2026-03-13T02:59:56Z",
-  "published_head_authority_claimed": false,
-  "schema_id": "kt.operator.truth_snapshot_manifest.v1",
+  "posture_enum": "TRUTHFUL_GREEN",
+  "report_root_ref": "KT_PROD_CLEANROOM/exports/_runs/_ws4_ledger_seed_reports",
+  "schema_id": "kt.operator.truth_bundle.v1",
   "truth_bundle_hash": "957d914fd70f333d7ebea13b53b7b648de3bec8d13e3a8f29ea847d9fe945c94",
   "truth_bundle_id": "LEDGER_TRUTH_BUNDLE_2aef468122c2_957d914fd70f333d",
-  "truth_bundle_ref": "kt_truth_ledger:ledger/bundles/2aef468122c20c1a9f7c9b079ceca8e09cd5980c/957d914fd70f333d7ebea13b53b7b648de3bec8d13e3a8f29ea847d9fe945c94/truth_bundle.json",
+  "truth_produced_at_commit": "2aef468122c20c1a9f7c9b079ceca8e09cd5980c",
   "truth_subject_commit": "2aef468122c20c1a9f7c9b079ceca8e09cd5980c",
-  "witness_plane": true
+  "validation_index_ref": "KT_PROD_CLEANROOM/exports/_runs/_ws4_ledger_seed_reports/live_validation_index.json",
+  "validator_set": [
+    "tools.operator.truth_engine",
+    "tools.operator.truth_surface_sync",
+    "tools.operator.truth_publication_validate"
+  ],
+  "witness_plane": {
+    "branch": "kt_truth_ledger",
+    "main_purge_completed": false,
+    "mode": "BOOTSTRAP_WITNESS_ONLY",
+    "published_head_authority_claimed": false
+  },
+  "zone_scope": [
+    "CANONICAL"
+  ]
 }
