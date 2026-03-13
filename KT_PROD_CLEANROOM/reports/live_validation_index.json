@@ -75,21 +75,21 @@
       "check_id": "operator_clean_clone_smoke",
       "command": "git clone <repo> <tmp> && python -m pytest -q KT_PROD_CLEANROOM/tests/fl3/test_hat_demo_guardrails.py KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py",
       "context": {
-        "clean_clone_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7"
+        "clean_clone_head_sha": "ebfb9cec15c03e6a2c41f2f930dde1079b75316e"
       },
       "critical": true,
       "dirty_sensitive": false,
-      "observed": "5 passed in 6.91s",
+      "observed": "5 passed in 12.00s",
       "scope": "clean_clone_validation",
       "status": "PASS",
       "summary": "operator clean-clone smoke passed"
     }
   ],
-  "generated_utc": "2026-03-11T02:24:17Z",
+  "generated_utc": "2026-03-13T06:44:05Z",
   "schema_id": "kt.operator.live_validation_index.v1",
   "worktree": {
     "dirty_files": [],
     "git_dirty": false,
-    "head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7"
+    "head_sha": "ebfb9cec15c03e6a2c41f2f930dde1079b75316e"
   }
 }
