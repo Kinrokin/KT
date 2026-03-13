@@ -9,21 +9,13 @@
   "one_button_state": {
     "checks": [
       {
-        "artifact": "one_button_preflight_receipt.json",
-        "status": "PASS"
-      },
-      {
-        "artifact": "one_button_production_receipt.json",
-        "status": "PASS"
-      },
-      {
         "artifact": "main_branch_protection_receipt.json",
-        "status": "PASS"
+        "status": "BLOCKED"
       }
     ],
     "status": "PASS"
   },
-  "posture_state": "TRUTHFUL_GREEN",
+  "posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
   "preserved_branch_closure": {
     "checks": [
       {
@@ -33,6 +25,11 @@
           "program.hat_demo",
           "program.red_assault.serious_v1"
         ],
+        "required_passes": {
+          "program.certify.canonical_hmac": true,
+          "program.hat_demo": true,
+          "program.red_assault.serious_v1": true
+        },
         "safe_run_enforced_present": true,
         "status": "PASS"
       },
@@ -63,16 +60,16 @@
       },
       {
         "artifact": "godstatus_verdict.json",
-        "status": "PASS"
+        "status": "PASS_WITH_WARNINGS"
       },
       {
         "artifact": "ci_gate_promotion_receipt.json",
-        "status": "WARN_ONLY_LIVE"
+        "status": "PASS_WITH_PLATFORM_BLOCK"
       }
     ],
     "status": "PASS"
   },
   "schema_id": "kt.operator.posture_consistency_receipt.v1",
   "status": "PASS",
-  "validated_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7"
+  "validated_head_sha": "ebfb9cec15c03e6a2c41f2f930dde1079b75316e"
 }

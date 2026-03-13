@@ -1,43 +1,15 @@
 {
-  "schema_id": "kt.operator.runtime_closure_audit.v4",
-  "generated_utc": "2026-03-11T22:20:00Z",
-  "status": "SUPERSEDED_DOCUMENTARY_ONLY",
-  "DOCUMENTARY_ONLY": true,
-  "ACTIVE_AUTHORITY": false,
-  "SUPERSEDED_BY": "kt_truth_ledger:ledger/current/current_pointer.json",
-  "RESOLUTION_PATH": "authority_resolver",
-  "MIRROR_CLASS": "documentary_compatibility_surface",
-  "LIVE_TRUTH_ALLOWED": false,
-  "live_authority": false,
-  "authority_role": "DOCUMENTARY_ONLY",
-  "transition_state": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY_PENDING_PUBLICATION",
-  "published_head_authority_claimed": false,
-  "superseded_documentary_validated_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7",
-  "superseded_by_truth_source": "kt_truth_ledger:ledger/current/runtime_closure_audit.json",
-  "branch_ref": "main",
-  "current_state": "TRUTHFUL_GREEN",
-  "posture_state": "TRUTHFUL_GREEN",
-  "overall_verdict": "DOCUMENTARY_ONLY_SUPERSEDED",
-  "release_decision": "REFER_TO_LEDGER_RUNTIME_CLOSURE_AUDIT",
-  "repo_hygiene_status": "DOCUMENTARY_ONLY",
-  "validator_substance_checked": true,
   "audit_scope": [
     "live truth reconciliation",
     "canonical readiness synchronization",
     "one-button current-head admissibility",
     "truthful posture sealing"
   ],
-  "blocking_groups": [],
-  "notes": [
-    "This main-bound runtime closure audit is retained as documentary evidence only.",
-    "Active runtime closure authority now resolves from the ledger witness plane."
+  "blocking_groups": [
+    "GREEN_NOT_REEARNED"
   ],
-  "real_path_targets_checked": [
-    "program.certify.canonical_hmac",
-    "program.hat_demo",
-    "program.red_assault.serious_v1",
-    "safe-run:program.certify.canonical_hmac"
-  ],
+  "branch_ref": "main",
+  "current_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
   "evidence_plane_targets_checked": [
     "delivery/delivery_manifest.json",
     "evidence/constitutional_snapshot.json",
@@ -46,5 +18,24 @@
     "evidence/replay_receipt.json",
     "evidence/secret_scan_report.json",
     "reports/bindingloop_check.json"
-  ]
+  ],
+  "generated_utc": "2026-03-13T06:44:05Z",
+  "notes": [
+    "Posture synchronized from live validation state CANONICAL_READY_FOR_REEARNED_GREEN.",
+    "Only truth-engine-aligned receipts remain active truth surfaces."
+  ],
+  "overall_verdict": "PASS",
+  "posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+  "real_path_targets_checked": [
+    "program.certify.canonical_hmac",
+    "program.hat_demo",
+    "program.red_assault.serious_v1",
+    "safe-run:program.certify.canonical_hmac"
+  ],
+  "release_decision": "HOLD_CANONICAL_READY_FOR_REEARNED_GREEN",
+  "repo_hygiene_status": "PASS",
+  "schema_id": "kt.operator.runtime_closure_audit.v3",
+  "status": "PASS",
+  "validated_head_sha": "ebfb9cec15c03e6a2c41f2f930dde1079b75316e",
+  "validator_substance_checked": true
 }

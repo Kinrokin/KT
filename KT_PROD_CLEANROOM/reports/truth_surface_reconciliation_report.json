@@ -2,26 +2,28 @@
   "active_report_root": "KT_PROD_CLEANROOM/reports",
   "claimed_state": {
     "current_state_receipt": {
-      "posture_state": "TRUTHFUL_GREEN",
+      "posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
       "status": "PASS",
-      "validated_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7"
+      "validated_head_sha": "ebfb9cec15c03e6a2c41f2f930dde1079b75316e"
     },
     "posture_consistency_receipt": {
-      "posture_state": "TRUTHFUL_GREEN",
+      "posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
       "status": "PASS"
     },
     "runtime_closure_audit": {
-      "posture_state": "TRUTHFUL_GREEN",
+      "posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
       "status": "PASS",
-      "validated_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7"
+      "validated_head_sha": "ebfb9cec15c03e6a2c41f2f930dde1079b75316e"
     }
   },
-  "generated_utc": "2026-03-11T02:24:17Z",
+  "generated_utc": "2026-03-13T06:44:05Z",
   "live_state": {
-    "derived_state": "TRUTHFUL_GREEN",
-    "live_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7"
+    "derived_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+    "live_head_sha": "ebfb9cec15c03e6a2c41f2f930dde1079b75316e"
   },
   "reconciliation_result": "TRUTH_SURFACES_SYNCHRONIZED",
-  "required_next_actions": [],
+  "required_next_actions": [
+    "re-earn green from current-head one-button receipts"
+  ],
   "schema_id": "kt.operator.truth_surface_reconciliation_report.v2"
 }

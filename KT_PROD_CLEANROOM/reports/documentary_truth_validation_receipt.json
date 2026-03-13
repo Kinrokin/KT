@@ -7,16 +7,16 @@
       "status": "PASS"
     },
     {
-      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "actual": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
       "check": "execution_board_uses_policy_active_source",
       "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
-      "status": "PASS"
+      "status": "FAIL"
     },
     {
-      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "actual": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
       "check": "readiness_scope_uses_policy_active_source",
       "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
-      "status": "PASS"
+      "status": "FAIL"
     },
     {
       "check": "supporting_truth_surfaces_declared",
@@ -65,7 +65,7 @@
         "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
         "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json"
       ],
-      "status": "PASS"
+      "status": "FAIL"
     },
     {
       "check": "main_current_state_marked_documentary_only",
@@ -74,7 +74,7 @@
         "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
         "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json"
       ],
-      "status": "PASS"
+      "status": "FAIL"
     },
     {
       "check": "main_runtime_audit_marked_documentary_only",
@@ -83,10 +83,16 @@
         "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
         "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json"
       ],
-      "status": "PASS"
+      "status": "FAIL"
     }
   ],
-  "failures": [],
+  "failures": [
+    "execution_board_uses_policy_active_source",
+    "readiness_scope_uses_policy_active_source",
+    "main_current_pointer_marked_documentary_only",
+    "main_current_state_marked_documentary_only",
+    "main_runtime_audit_marked_documentary_only"
+  ],
   "schema_id": "kt.operator.documentary_truth_validation_receipt.v1",
-  "status": "PASS"
+  "status": "FAIL"
 }

@@ -1,25 +1,8 @@
 {
-  "schema_id": "kt.operator.current_state_receipt.v4",
-  "generated_utc": "2026-03-11T22:20:00Z",
-  "status": "SUPERSEDED_DOCUMENTARY_ONLY",
-  "DOCUMENTARY_ONLY": true,
-  "ACTIVE_AUTHORITY": false,
-  "SUPERSEDED_BY": "kt_truth_ledger:ledger/current/current_pointer.json",
-  "RESOLUTION_PATH": "authority_resolver",
-  "MIRROR_CLASS": "documentary_compatibility_surface",
-  "LIVE_TRUTH_ALLOWED": false,
-  "live_authority": false,
-  "authority_role": "DOCUMENTARY_ONLY",
-  "transition_state": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY_PENDING_PUBLICATION",
-  "published_head_authority_claimed": false,
-  "superseded_documentary_validated_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7",
-  "superseded_by_truth_source": "kt_truth_ledger:ledger/current/current_state_receipt.json",
+  "active_stop_gates": [
+    "GREEN_NOT_REEARNED"
+  ],
   "branch_ref": "main",
-  "current_p0_state": "TRUTHFUL_GREEN",
-  "posture_state": "TRUTHFUL_GREEN",
-  "current_release_decision": "DOCUMENTARY_ONLY_SUPERSEDED",
-  "next_allowed_transition": "REFER_TO_LEDGER_CURRENT_STATE_RECEIPT",
-  "validation_index_ref": "KT_PROD_CLEANROOM/reports/live_validation_index.json",
   "closure_receipts": [
     "KT_PROD_CLEANROOM/reports/live_validation_index.json",
     "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
@@ -29,6 +12,22 @@
     "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
     "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json"
   ],
+  "current_p0_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+  "current_release_decision": "HOLD_CANONICAL_READY_FOR_REEARNED_GREEN",
+  "finish_line_predicates": {
+    "canonical_scope_enforced": true,
+    "constitutional_truth_live": true,
+    "current_worktree_clean": true,
+    "one_button_current_head_pass": false,
+    "posture_receipts_synchronized": true,
+    "truth_engine_authoritative": true,
+    "truthful_green_active": false
+  },
+  "generated_utc": "2026-03-13T06:44:05Z",
+  "next_allowed_transition": "REENABLE_GREEN_FROM_CURRENT_HEAD",
+  "posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+  "schema_id": "kt.operator.current_state_receipt.v3",
+  "status": "PASS",
   "truth_sources": [
     "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
     "KT_PROD_CLEANROOM/reports/live_validation_index.json",
@@ -36,13 +35,6 @@
     "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
     "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json"
   ],
-  "finish_line_predicates": {
-    "canonical_scope_enforced": true,
-    "constitutional_truth_live": false,
-    "current_worktree_clean": true,
-    "one_button_current_head_pass": true,
-    "posture_receipts_synchronized": false,
-    "truth_engine_authoritative": false,
-    "truthful_green_active": false
-  }
+  "validated_head_sha": "ebfb9cec15c03e6a2c41f2f930dde1079b75316e",
+  "validation_index_ref": "KT_PROD_CLEANROOM/reports/live_validation_index.json"
 }
