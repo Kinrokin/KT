@@ -1,0 +1,92 @@
+{
+  "bundle_id": "KT_AUTHORITY_BUNDLE_cbc921601b64_904cf0967b5a850d",
+  "envelope": {
+    "attestation_mode": "SIGSTORE_COSIGN_BLOB_BUNDLE_V1_KEYPAIR",
+    "generated_utc": "2026-03-13T21:29:15Z",
+    "schema_id": "kt.authority.envelope.v1",
+    "signatures": [
+      {
+        "bundle_ref": "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.bundle.json",
+        "bundle_sha256": "b78185f68b8a82eb4b1751695c84ae7aebef7022c3d090695a219375e1afc98d",
+        "cosign": {
+          "builddate": "2024-04-10T21:57:27Z",
+          "compiler": "gc",
+          "cosign": "A tool for Container Signing, Verification and Storage in an OCI registry.",
+          "gitcommit": "fb651b4ddd8176bd81756fca2d988dd8611f514d",
+          "gittreestate": "clean",
+          "gitversion": "v2.2.4",
+          "goversion": "go1.21.8",
+          "platform": "windows/amd64",
+          "raw": [
+            "______   ______        _______. __    _______ .__   __.",
+            "/      | /  __  \\      /       ||  |  /  _____||  \\ |  |",
+            "|  ,----'|  |  |  |    |   (----`|  | |  |  __  |   \\|  |",
+            "|  |     |  |  |  |     \\   \\    |  | |  | |_ | |  . `  |",
+            "|  `----.|  `--'  | .----)   |   |  | |  |__| | |  |\\   |",
+            "\\______| \\______/  |_______/    |__|  \\______| |__| \\__|",
+            "cosign: A tool for Container Signing, Verification and Storage in an OCI registry.",
+            "GitVersion:    v2.2.4",
+            "GitCommit:     fb651b4ddd8176bd81756fca2d988dd8611f514d",
+            "GitTreeState:  clean",
+            "BuildDate:     2024-04-10T21:57:27Z",
+            "GoVersion:     go1.21.8",
+            "Compiler:      gc",
+            "Platform:      windows/amd64"
+          ]
+        },
+        "format": "cosign.verify-blob",
+        "public_key_ref": "KT_PROD_CLEANROOM/governance/signers/kt_op1_cosign.pub",
+        "public_key_sha256": "c4c5f8d7513d01729b4b2ad3795b4eb62bb0ab901beb9053ffe82b400e5e02aa",
+        "signature_ref": "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.sig",
+        "signature_sha256": "86d6f330ebc9f0bb3e6e9fd01f5f2b60946c32c6633303fd6da429ca0445aac4",
+        "signer_id": "KT_OP1_COSIGN_KEYPAIR",
+        "statement_ref": "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json",
+        "statement_sha256": "dcf26d69477e05620de9b15bb340f70ac9097159f1a98842dc82c8104fec8522",
+        "tlog_verified": true
+      }
+    ],
+    "subject_sha256": "904cf0967b5a850d82cd3c5109fdacf1547c172ea01d40ab3f56cae95b85867f",
+    "transparency": {
+      "rekor_bundle_ref": "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.bundle.json",
+      "rekor_bundle_sha256": "b78185f68b8a82eb4b1751695c84ae7aebef7022c3d090695a219375e1afc98d",
+      "tlog_verified": true
+    }
+  },
+  "schema_id": "kt.authority.bundle.v1",
+  "subject": {
+    "evidence": [
+      {
+        "name": "active_truth_pointer",
+        "ref": "kt_truth_ledger:ledger/current/current_pointer.json",
+        "sha256": "2fb8b8571a1778dff3f2eedb19d3ac01f47d7de6460f49479ca2336967fcfdd4"
+      },
+      {
+        "name": "settled_truth_source_receipt.json",
+        "ref": "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+        "sha256": "d5c58fb3bead00ec2f5a269d36afc5173115a6767e53ed919d4db5a52d3f60c8"
+      },
+      {
+        "name": "authority_convergence_receipt.json",
+        "ref": "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "sha256": "3676500d17c4cdb57569d2ac0eef31fcdafbf73c10153e816cac644a721e0e43"
+      },
+      {
+        "name": "published_head_self_convergence_receipt.json",
+        "ref": "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+        "sha256": "e857bcf90024420b6240a1cfb14aa75c0584e241c867c58950b508ea1ac08654"
+      }
+    ],
+    "law_surface_hashes": {
+      "KT_PROD_CLEANROOM/governance/attestation_fabric_contract.json": "0400a5e74bba0431f7e1d6516e21f4ec8a96720241e91f0fcdcb3a95a380eb36",
+      "KT_PROD_CLEANROOM/governance/authority_bundle.schema.json": "1ea818e7e367944dff862b9a181dbf85c2b882eed69320e8557ed5658815367a",
+      "KT_PROD_CLEANROOM/governance/authority_subject_contract.json": "beccdd4d792fd7db38484047099463cb2e6a85f4b2d96c857b828f1d20075005",
+      "KT_PROD_CLEANROOM/governance/signer_identity_policy.json": "c17f0d69346ccc120ce696ae35cb2f75e31253dc929a57a13556c6e45e93c7d0",
+      "KT_PROD_CLEANROOM/governance/supply_chain_layout.json": "4b09b806492c51c4790d4ee07a6d35ccceb5d9059565b08bfe2d35d57a795585"
+    },
+    "schema_id": "kt.authority.subject.v1",
+    "supersedes_subject_sha256": "",
+    "truth_produced_at_commit": "cbc921601b646d7962555c902ea2747963fd9fad",
+    "truth_subject_commit": "cbc921601b646d7962555c902ea2747963fd9fad"
+  },
+  "subject_sha256": "904cf0967b5a850d82cd3c5109fdacf1547c172ea01d40ab3f56cae95b85867f"
+}

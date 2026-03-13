@@ -1,34 +1,34 @@
 {
   "checks": [
     {
-      "actual": "ebfb9cec15c03e6a2c41f2f930dde1079b75316e",
+      "actual": "cbc921601b646d7962555c902ea2747963fd9fad",
       "check": "execution_board_matches_git_head",
-      "expected": "30a461fc747365fe29a08f7d036b44acf03aaacd",
-      "status": "FAIL"
+      "expected": "cbc921601b646d7962555c902ea2747963fd9fad",
+      "status": "PASS"
     },
     {
       "actual": "aac5a4a7c3a4e4ce8b6f506d9ac3292ede32ba03",
       "check": "current_pointer_matches_git_head",
-      "expected": "30a461fc747365fe29a08f7d036b44acf03aaacd",
+      "expected": "cbc921601b646d7962555c902ea2747963fd9fad",
       "status": "FAIL"
     },
     {
       "actual": "aac5a4a7c3a4e4ce8b6f506d9ac3292ede32ba03",
       "check": "current_state_receipt_matches_git_head",
-      "expected": "30a461fc747365fe29a08f7d036b44acf03aaacd",
+      "expected": "cbc921601b646d7962555c902ea2747963fd9fad",
       "status": "FAIL"
     },
     {
       "actual": "aac5a4a7c3a4e4ce8b6f506d9ac3292ede32ba03",
       "check": "runtime_closure_audit_matches_git_head",
-      "expected": "30a461fc747365fe29a08f7d036b44acf03aaacd",
+      "expected": "cbc921601b646d7962555c902ea2747963fd9fad",
       "status": "FAIL"
     },
     {
-      "actual": "ebfb9cec15c03e6a2c41f2f930dde1079b75316e",
+      "actual": "cbc921601b646d7962555c902ea2747963fd9fad",
       "check": "settled_truth_source_matches_git_head",
-      "expected": "30a461fc747365fe29a08f7d036b44acf03aaacd",
-      "status": "FAIL"
+      "expected": "cbc921601b646d7962555c902ea2747963fd9fad",
+      "status": "PASS"
     },
     {
       "actual": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
@@ -123,11 +123,9 @@
     }
   ],
   "failures": [
-    "execution_board_matches_git_head",
     "current_pointer_matches_git_head",
     "current_state_receipt_matches_git_head",
     "runtime_closure_audit_matches_git_head",
-    "settled_truth_source_matches_git_head",
     "execution_board_points_to_active_truth_source",
     "readiness_scope_points_to_active_truth_source",
     "board_posture_matches_pointer",
@@ -138,7 +136,7 @@
     "main_current_state_documentary_only",
     "main_runtime_audit_documentary_only"
   ],
-  "generated_utc": "2026-03-13T06:44:43Z",
+  "generated_utc": "2026-03-13T17:00:43Z",
   "h1_admissible": false,
   "observed": {
     "active_current_pointer_documentary_only": false,
@@ -153,13 +151,13 @@
     ],
     "active_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
     "board_authority_mode": "SETTLED_AUTHORITATIVE",
-    "board_head": "ebfb9cec15c03e6a2c41f2f930dde1079b75316e",
+    "board_head": "cbc921601b646d7962555c902ea2747963fd9fad",
     "board_posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
     "board_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
     "current_state_head": "aac5a4a7c3a4e4ce8b6f506d9ac3292ede32ba03",
     "current_state_posture_state": "TRUTHFUL_GREEN",
     "git_branch": "main",
-    "git_head": "30a461fc747365fe29a08f7d036b44acf03aaacd",
+    "git_head": "cbc921601b646d7962555c902ea2747963fd9fad",
     "ledger_branch_published": true,
     "main_current_pointer_documentary_only": false,
     "main_current_state_documentary_only": false,
@@ -178,7 +176,7 @@
     "runtime_audit_head": "aac5a4a7c3a4e4ce8b6f506d9ac3292ede32ba03",
     "runtime_audit_posture_state": "TRUTHFUL_GREEN",
     "settled_authority_mode": "SETTLED_AUTHORITATIVE",
-    "settled_truth_head": "ebfb9cec15c03e6a2c41f2f930dde1079b75316e",
+    "settled_truth_head": "cbc921601b646d7962555c902ea2747963fd9fad",
     "settled_truth_posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
     "worktree_dirty": false
   },

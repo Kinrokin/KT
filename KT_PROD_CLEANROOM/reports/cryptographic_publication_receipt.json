@@ -1,14 +1,74 @@
 {
-  "schema_id": "kt.operator.cryptographic_publication_receipt.v1",
-  "generated_utc": "",
-  "status": "MISSING",
-  "checks": [],
-  "failures": [
-    "cryptographic publication has not been executed on this checkout"
+  "artifact_dir": "KT_PROD_CLEANROOM/reports/cryptographic_publication",
+  "authority_bundle_subject_sha256": "904cf0967b5a850d82cd3c5109fdacf1547c172ea01d40ab3f56cae95b85867f",
+  "bundle_sha256": "b78185f68b8a82eb4b1751695c84ae7aebef7022c3d090695a219375e1afc98d",
+  "checks": [
+    {
+      "check": "signer_policy_present",
+      "policy_ref": "KT_PROD_CLEANROOM/governance/signer_identity_policy.json",
+      "status": "PASS"
+    },
+    {
+      "check": "signer_allowed_by_policy",
+      "signer_id": "KT_OP1_COSIGN_KEYPAIR",
+      "status": "PASS"
+    },
+    {
+      "check": "signer_pubkey_matches_policy_sha256",
+      "public_key_ref": "KT_PROD_CLEANROOM/governance/signers/kt_op1_cosign.pub",
+      "status": "PASS"
+    },
+    {
+      "check": "supply_chain_layout_present",
+      "layout_ref": "KT_PROD_CLEANROOM/governance/supply_chain_layout.json",
+      "status": "PASS"
+    },
+    {
+      "check": "authority_subject_minted",
+      "status": "PASS",
+      "subject_ref": "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_subject.json",
+      "subject_sha256": "904cf0967b5a850d82cd3c5109fdacf1547c172ea01d40ab3f56cae95b85867f"
+    },
+    {
+      "check": "in_toto_statement_minted",
+      "statement_ref": "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json",
+      "status": "PASS"
+    },
+    {
+      "check": "cosign_present",
+      "cosign_exe": "D:/user/rober/OneDrive/KingsTheorem_Archive/tmp/sigstore/cosign/v2.2.4/cosign.exe",
+      "status": "PASS"
+    },
+    {
+      "check": "cosign_password_present",
+      "status": "PASS"
+    },
+    {
+      "check": "cosign_sign_blob",
+      "status": "PASS"
+    },
+    {
+      "check": "cosign_verify_blob_with_tlog",
+      "status": "PASS"
+    },
+    {
+      "bundle_ref": "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_bundle.json",
+      "check": "authority_bundle_minted_and_validated",
+      "status": "PASS"
+    }
   ],
+  "failures": [],
+  "generated_utc": "2026-03-13T21:29:15Z",
+  "layout_ref": "KT_PROD_CLEANROOM/governance/supply_chain_layout.json",
+  "policy_ref": "KT_PROD_CLEANROOM/governance/signer_identity_policy.json",
+  "schema_id": "kt.operator.cryptographic_publication_receipt.v1",
   "semantic_ceiling": {
-    "published_head_authority_claimed": false,
-    "h1_allowed": false
-  }
+    "h1_allowed": false,
+    "published_head_authority_claimed": false
+  },
+  "signature_sha256": "86d6f330ebc9f0bb3e6e9fd01f5f2b60946c32c6633303fd6da429ca0445aac4",
+  "signer_id": "KT_OP1_COSIGN_KEYPAIR",
+  "statement_sha256": "dcf26d69477e05620de9b15bb340f70ac9097159f1a98842dc82c8104fec8522",
+  "status": "PASS",
+  "subject_sha256": "904cf0967b5a850d82cd3c5109fdacf1547c172ea01d40ab3f56cae95b85867f"
 }
-
