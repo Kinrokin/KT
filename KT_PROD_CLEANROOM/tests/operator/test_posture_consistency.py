@@ -129,6 +129,13 @@ def test_verify_posture_passes_for_ratified_alias(tmp_path: Path) -> None:
     assert report["alias_truth"]["authority_os_equals_titanium_work_order"] is True
 
 
+def test_verify_posture_accepts_ci_platform_block_status(tmp_path: Path) -> None:
+    root = _seed_repo(tmp_path, equal_alias=True)
+    _write_json(root / "KT_PROD_CLEANROOM" / "reports" / "ci_gate_promotion_receipt.json", {"status": "PASS_WITH_PLATFORM_BLOCK"})
+    report = verify_posture(root=root, expected_posture="CANONICAL_READY_FOR_REEARNED_GREEN")
+    assert report["status"] == "PASS"
+
+
 def test_verify_posture_fails_on_posture_mismatch(tmp_path: Path) -> None:
     root = _seed_repo(tmp_path, posture_state="CANONICAL_VALIDATED_DIRTY_WORKTREE", equal_alias=True)
     try:

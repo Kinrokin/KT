@@ -1,8 +1,8 @@
 {
-  "created_utc": "2026-03-11T15:34:35Z",
+  "created_utc": "2026-03-13T06:39:01Z",
   "schema_id": "kt.operator.real_path_attachment_matrix.v1",
-  "status": "FAIL_CLOSED_PARTIAL",
-  "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98",
+  "status": "PASS_WITH_WARNINGS",
+  "validated_head_sha": "bb1cfc987e8013c8369202b9b1a299455376072e",
   "rows": [
     {
       "attachment_status": "FAIL_CLOSED",
@@ -18,6 +18,35 @@
       "safe_run_enforced": false,
       "titanium_checkpoints_exercised": [],
       "validator_set_exercised": []
+    },
+    {
+      "attachment_status": "PASS",
+      "bundle_emitter_used": "_emit_delivery_bundle",
+      "entrypoint": "python -m tools.operator.kt_cli",
+      "evidence_plane_complete": true,
+      "head": "bb1cfc987e8013c8369202b9b1a299455376072e",
+      "lane": "canonical_hmac",
+      "ledger_append_observed": true,
+      "production_intended_blocked_if_missing": false,
+      "program_id": "program.certify.canonical_hmac",
+      "run_dir_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260313T063301235108Z_certify",
+      "safe_run_enforced": false,
+      "titanium_checkpoints_exercised": [
+        "reports/operator_fingerprint.json",
+        "reports/operator_intent.json",
+        "evidence/constitutional_snapshot.json",
+        "evidence/worm_manifest.json",
+        "evidence/evidence_core_merkle.json",
+        "delivery/delivery_manifest.json",
+        "delivery/delivery_lint_report.json",
+        "evidence/replay_receipt.json",
+        "evidence/secret_scan_report.json",
+        "reports/bindingloop_check.json"
+      ],
+      "validator_set_exercised": [
+        "program.bindingloop.verify",
+        "program.delivery.contract.validate"
+      ]
     },
     {
       "attachment_status": "PASS",

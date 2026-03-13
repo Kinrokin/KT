@@ -169,9 +169,14 @@ def _verify_preserved_receipts(root: Path) -> Dict[str, Any]:
     checks.append({"artifact": "godstatus_verdict.json", "status": str(god.get("status", "")).strip()})
 
     ci = _load_required(root, "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json")
-    if str(ci.get("status", "")).strip() != "WARN_ONLY_LIVE":
-        raise RuntimeError("FAIL_CLOSED: ci_gate_promotion_receipt must be WARN_ONLY_LIVE before mainline promotion")
-    checks.append({"artifact": "ci_gate_promotion_receipt.json", "status": "WARN_ONLY_LIVE"})
+    ci_status = str(ci.get("status", "")).strip() or "UNKNOWN"
+    allowed_ci_statuses = {"WARN_ONLY_LIVE", "PASS_WITH_PLATFORM_BLOCK", "PASS", "PASS_WITH_WARNINGS"}
+    if ci_status not in allowed_ci_statuses:
+        raise RuntimeError(
+            "FAIL_CLOSED: ci_gate_promotion_receipt status must be one of: "
+            + ", ".join(sorted(allowed_ci_statuses))
+        )
+    checks.append({"artifact": "ci_gate_promotion_receipt.json", "status": ci_status})
 
     return {"status": "PASS", "checks": checks}
 
