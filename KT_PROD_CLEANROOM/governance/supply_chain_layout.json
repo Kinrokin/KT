@@ -1,0 +1,75 @@
+{
+  "schema_id": "kt.governance.supply_chain_layout.v1",
+  "layout_id": "SUPPLY_CHAIN_LAYOUT_V1_20260313",
+  "effective_utc": "2026-03-13T00:00:00Z",
+  "expires_utc": "2026-09-13T00:00:00Z",
+  "supersedes": [],
+  "status": "ACTIVE",
+  "semantic_ceiling": {
+    "published_head_authority_claimed": false,
+    "h1_allowed": false
+  },
+  "notes": [
+    "This is an in-toto aligned publication layout contract for KT authority bundles.",
+    "It is a machine-parsable step layout, not a claim that full in-toto enforcement is already deployed."
+  ],
+  "publication": {
+    "statement_type": "https://in-toto.io/Statement/v0.1",
+    "predicate_type": "https://kings-theorem.io/attestations/kt-authority-subject/v1",
+    "signer_identity_policy_ref": "KT_PROD_CLEANROOM/governance/signer_identity_policy.json",
+    "artifact_roots": {
+      "reports_root": "KT_PROD_CLEANROOM/reports",
+      "cryptographic_publication_artifacts_dir": "KT_PROD_CLEANROOM/reports/cryptographic_publication"
+    },
+    "steps": [
+      {
+        "step_name": "mint_authority_subject",
+        "materials": [
+          "KT_PROD_CLEANROOM/governance/authority_subject_contract.json",
+          "KT_PROD_CLEANROOM/governance/attestation_fabric_contract.json",
+          "KT_PROD_CLEANROOM/governance/authority_bundle.schema.json",
+          "KT_PROD_CLEANROOM/governance/signer_identity_policy.json",
+          "KT_PROD_CLEANROOM/governance/supply_chain_layout.json"
+        ],
+        "products": [
+          "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_subject.json"
+        ]
+      },
+      {
+        "step_name": "mint_in_toto_statement",
+        "materials": [
+          "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_subject.json"
+        ],
+        "products": [
+          "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json"
+        ]
+      },
+      {
+        "step_name": "sigstore_cosign_sign_statement",
+        "materials": [
+          "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json"
+        ],
+        "products": [
+          "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.sig",
+          "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.bundle.json"
+        ],
+        "requires": {
+          "transparency_log": true,
+          "signer_policy_ref": "KT_PROD_CLEANROOM/governance/signer_identity_policy.json"
+        }
+      },
+      {
+        "step_name": "sigstore_cosign_verify_statement",
+        "materials": [
+          "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json",
+          "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.sig",
+          "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.bundle.json"
+        ],
+        "products": [
+          "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json"
+        ]
+      }
+    ]
+  }
+}
+

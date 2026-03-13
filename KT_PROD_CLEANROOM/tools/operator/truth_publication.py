@@ -1,12 +1,22 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import os
+import shutil
 import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
 from tools.canonicalize.kt_canonicalize import canonicalize_bytes, sha256_hex
+from tools.operator.crypto_attestation import (
+    load_authority_bundle_schema,
+    mint_authority_bundle,
+    mint_envelope,
+    subject_sha256 as authority_subject_sha256,
+    validate_authority_bundle,
+)
 from tools.operator.authority_convergence_validate import build_authority_convergence_report
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
 from tools.operator.truth_authority import active_truth_source_ref, load_json_ref, path_ref
@@ -25,6 +35,22 @@ LEDGER_BUNDLES_ROOT_REL = f"{LEDGER_ROOT_REL}/bundles"
 LEDGER_HISTORY_ROOT_REL = f"{LEDGER_ROOT_REL}/history"
 LEDGER_CURRENT_POINTER_REL = f"{LEDGER_CURRENT_DIR_REL}/current_pointer.json"
 LEDGER_CURRENT_MANIFEST_REL = f"{LEDGER_CURRENT_DIR_REL}/current_bundle_manifest.json"
+
+CRYPTO_PUBLICATION_DIR_REL = "KT_PROD_CLEANROOM/reports/cryptographic_publication"
+CRYPTO_PUBLICATION_SUBJECT_REL = f"{CRYPTO_PUBLICATION_DIR_REL}/authority_subject.json"
+CRYPTO_PUBLICATION_STATEMENT_REL = f"{CRYPTO_PUBLICATION_DIR_REL}/in_toto_statement.json"
+CRYPTO_PUBLICATION_SIGNATURE_REL = f"{CRYPTO_PUBLICATION_DIR_REL}/in_toto_statement.sig"
+CRYPTO_PUBLICATION_BUNDLE_REL = f"{CRYPTO_PUBLICATION_DIR_REL}/in_toto_statement.bundle.json"
+CRYPTO_PUBLICATION_AUTHORITY_BUNDLE_REL = f"{CRYPTO_PUBLICATION_DIR_REL}/authority_bundle.json"
+CRYPTO_PUBLICATION_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json"
+
+SIGNER_IDENTITY_POLICY_REL = "KT_PROD_CLEANROOM/governance/signer_identity_policy.json"
+SUPPLY_CHAIN_LAYOUT_REL = "KT_PROD_CLEANROOM/governance/supply_chain_layout.json"
+DEFAULT_SIGNER_ID = "KT_OP1_COSIGN_KEYPAIR"
+DEFAULT_SIGNER_PUBKEY_REL = "KT_PROD_CLEANROOM/governance/signers/kt_op1_cosign.pub"
+DEFAULT_COSIGN_PRIVATE_KEY_REL = "tmp/sigstore/keys/kt_op1_cosign.key"
+DEFAULT_IN_TOTO_STATEMENT_TYPE = "https://in-toto.io/Statement/v0.1"
+DEFAULT_PREDICATE_TYPE = "https://kings-theorem.io/attestations/kt-authority-subject/v1"
 
 TRUTH_PUBLICATION_REQUIRED_LAW_SURFACES: List[str] = [
     "KT_PROD_CLEANROOM/governance/truth_publication_contract.json",
@@ -187,6 +213,413 @@ def _truth_bundle_schema() -> Dict[str, Any]:
         },
         "status": "ACTIVE",
     }
+
+
+def _sha256_file_bytes(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _sha256_text_normalized(path: Path) -> str:
+    text = path.read_text(encoding="utf-8-sig")
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
+
+
+def _canonical_json_sha256(path: Path) -> str:
+    obj = load_json(path)
+    return sha256_hex(canonicalize_bytes(obj))
+
+
+def _require_hex40(value: str, *, label: str) -> str:
+    v = str(value).strip()
+    if len(v) != 40 or any(ch not in "0123456789abcdef" for ch in v.lower()):
+        raise RuntimeError(f"FAIL_CLOSED: {label} must be 40 lowercase hex characters")
+    return v.lower()
+
+
+def _resolve_cosign_exe(*, root: Path) -> Path:
+    explicit = os.environ.get("KT_COSIGN_EXE", "").strip()
+    if explicit:
+        exe = Path(explicit).expanduser()
+        if not exe.is_absolute():
+            exe = (root / exe).resolve()
+        if not exe.exists():
+            raise RuntimeError(f"FAIL_CLOSED: KT_COSIGN_EXE does not exist: {exe.as_posix()}")
+        return exe
+
+    bundled = (root / "tmp" / "sigstore" / "cosign" / "v2.2.4" / "cosign.exe").resolve()
+    if bundled.exists():
+        return bundled
+
+    found = shutil.which("cosign")
+    if found:
+        return Path(found).resolve()
+
+    raise RuntimeError("FAIL_CLOSED: cosign executable not found (set KT_COSIGN_EXE or install cosign on PATH)")
+
+
+def _cosign_version_info(*, cosign_exe: Path) -> Dict[str, Any]:
+    result = subprocess.run(
+        [str(cosign_exe), "version"],
+        check=True,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    info: Dict[str, Any] = {"raw": []}
+    for line in (result.stdout or "").splitlines():
+        s = line.strip()
+        if not s:
+            continue
+        info["raw"].append(s)
+        if ":" not in s:
+            continue
+        k, v = s.split(":", 1)
+        key = k.strip().lower().replace(" ", "_")
+        val = v.strip()
+        if key and val and key not in info:
+            info[key] = val
+    return info
+
+
+def build_in_toto_statement_for_authority_subject(
+    *,
+    subject_sha256_hex: str,
+    subject_name: str,
+    predicate_type: str = DEFAULT_PREDICATE_TYPE,
+    predicate: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    sha = str(subject_sha256_hex).strip().lower()
+    if len(sha) != 64 or any(ch not in "0123456789abcdef" for ch in sha):
+        raise RuntimeError("FAIL_CLOSED: subject_sha256_hex must be 64 hex characters")
+    return {
+        "_type": DEFAULT_IN_TOTO_STATEMENT_TYPE,
+        "subject": [{"name": str(subject_name).strip(), "digest": {"sha256": sha}}],
+        "predicateType": str(predicate_type).strip(),
+        "predicate": dict(predicate or {}),
+    }
+
+
+def _load_signer_policy(*, root: Path) -> Dict[str, Any]:
+    policy_path = (root / SIGNER_IDENTITY_POLICY_REL).resolve()
+    return load_json(policy_path)
+
+
+def _find_allowed_signer(policy: Dict[str, Any], *, signer_id: str) -> Dict[str, Any]:
+    allowed = policy.get("allowed_signers") if isinstance(policy.get("allowed_signers"), list) else []
+    target = str(signer_id).strip()
+    for row in allowed:
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("signer_id", "")).strip() == target:
+            return row
+    raise RuntimeError(f"FAIL_CLOSED: signer_id not allowed by policy: {target}")
+
+
+def _assert_signer_policy_allows_pubkey(*, root: Path, signer: Dict[str, Any]) -> Dict[str, Any]:
+    pub_ref = str(signer.get("public_key_ref", "")).strip()
+    if not pub_ref:
+        raise RuntimeError("FAIL_CLOSED: signer policy missing public_key_ref")
+    pub_path = (root / pub_ref).resolve()
+    if not pub_path.exists():
+        raise RuntimeError(f"FAIL_CLOSED: signer public key missing: {pub_ref}")
+
+    expected = str(signer.get("public_key_sha256", "")).strip().lower()
+    actual = _sha256_text_normalized(pub_path)
+    if expected and expected != actual:
+        raise RuntimeError("FAIL_CLOSED: signer public key sha256 mismatch against signer policy")
+    return {"public_key_ref": pub_ref, "public_key_path": pub_path, "public_key_sha256": actual}
+
+
+def build_authority_subject_for_current_head(*, root: Path, report_root_rel: str, live_validation_index_path: Path) -> Dict[str, Any]:
+    live_index = _load_required(live_validation_index_path)
+    worktree = live_index.get("worktree") if isinstance(live_index.get("worktree"), dict) else {}
+    subject_commit = _require_hex40(str(worktree.get("head_sha", "")).strip(), label="live_validation_index.worktree.head_sha")
+    produced_commit = subject_commit
+
+    law_paths = [
+        "KT_PROD_CLEANROOM/governance/authority_subject_contract.json",
+        "KT_PROD_CLEANROOM/governance/attestation_fabric_contract.json",
+        "KT_PROD_CLEANROOM/governance/authority_bundle.schema.json",
+        SIGNER_IDENTITY_POLICY_REL,
+        SUPPLY_CHAIN_LAYOUT_REL,
+    ]
+    law_surface_hashes: Dict[str, str] = {}
+    for rel in law_paths:
+        path = (root / rel).resolve()
+        if not path.exists():
+            raise RuntimeError(f"FAIL_CLOSED: missing required authority law surface: {rel}")
+        law_surface_hashes[rel] = _canonical_json_sha256(path)
+
+    evidence: List[Dict[str, Any]] = []
+
+    active_ref = active_truth_source_ref(root=root)
+    active_obj = load_json_ref(root=root, ref=active_ref)
+    evidence.append({"name": "active_truth_pointer", "ref": active_ref, "sha256": _canonical_hash(active_obj)})
+
+    for rel in (
+        "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+    ):
+        path = (root / rel).resolve()
+        if not path.exists():
+            raise RuntimeError(f"FAIL_CLOSED: missing required evidence surface: {rel}")
+        evidence.append({"name": Path(rel).name, "ref": rel, "sha256": _canonical_json_sha256(path)})
+
+    return {
+        "schema_id": "kt.authority.subject.v1",
+        "truth_subject_commit": subject_commit,
+        "truth_produced_at_commit": produced_commit,
+        "law_surface_hashes": law_surface_hashes,
+        "supersedes_subject_sha256": "",
+        "evidence": evidence,
+    }
+
+
+def publish_cryptographic_publication_ws6(
+    *,
+    root: Path,
+    report_root_rel: str,
+    live_validation_index_path: Path,
+    signer_id: str = DEFAULT_SIGNER_ID,
+    cosign_private_key_rel: str = DEFAULT_COSIGN_PRIVATE_KEY_REL,
+) -> Dict[str, Any]:
+    generated_utc = utc_now_iso_z()
+    failures: List[str] = []
+    checks: List[Dict[str, Any]] = []
+
+    receipt_path = (root / CRYPTO_PUBLICATION_RECEIPT_REL).resolve()
+    artifacts_dir = (root / CRYPTO_PUBLICATION_DIR_REL).resolve()
+    artifacts_dir.mkdir(parents=True, exist_ok=True)
+
+    try:
+        policy = _load_signer_policy(root=root)
+        checks.append({"check": "signer_policy_present", "status": "PASS", "policy_ref": SIGNER_IDENTITY_POLICY_REL})
+    except Exception as exc:  # noqa: BLE001
+        failures.append("missing_signer_identity_policy")
+        checks.append({"check": "signer_policy_present", "status": "FAIL", "error": str(exc)})
+        policy = {}
+
+    signer: Dict[str, Any] = {}
+    pubkey_info: Dict[str, Any] = {}
+    if policy:
+        try:
+            signer = _find_allowed_signer(policy, signer_id=str(signer_id))
+            checks.append({"check": "signer_allowed_by_policy", "status": "PASS", "signer_id": str(signer_id)})
+        except Exception as exc:  # noqa: BLE001
+            failures.append("signer_not_allowed_by_policy")
+            checks.append({"check": "signer_allowed_by_policy", "status": "FAIL", "error": str(exc), "signer_id": str(signer_id)})
+
+    if signer:
+        try:
+            pubkey_info = _assert_signer_policy_allows_pubkey(root=root, signer=signer)
+            checks.append({"check": "signer_pubkey_matches_policy_sha256", "status": "PASS", "public_key_ref": pubkey_info.get("public_key_ref", "")})
+        except Exception as exc:  # noqa: BLE001
+            failures.append("signer_pubkey_mismatch")
+            checks.append({"check": "signer_pubkey_matches_policy_sha256", "status": "FAIL", "error": str(exc)})
+
+    try:
+        layout_path = (root / SUPPLY_CHAIN_LAYOUT_REL).resolve()
+        if not layout_path.exists():
+            raise RuntimeError("missing supply_chain_layout.json")
+        load_json(layout_path)
+        checks.append({"check": "supply_chain_layout_present", "status": "PASS", "layout_ref": SUPPLY_CHAIN_LAYOUT_REL})
+    except Exception as exc:  # noqa: BLE001
+        failures.append("missing_supply_chain_layout")
+        checks.append({"check": "supply_chain_layout_present", "status": "FAIL", "error": str(exc)})
+
+    try:
+        subject = build_authority_subject_for_current_head(root=root, report_root_rel=report_root_rel, live_validation_index_path=live_validation_index_path)
+        subj_sha = authority_subject_sha256(subject)
+        write_json_stable(artifacts_dir / "authority_subject.json", subject)
+        checks.append({"check": "authority_subject_minted", "status": "PASS", "subject_sha256": subj_sha, "subject_ref": CRYPTO_PUBLICATION_SUBJECT_REL})
+    except Exception as exc:  # noqa: BLE001
+        failures.append("authority_subject_mint_failed")
+        checks.append({"check": "authority_subject_minted", "status": "FAIL", "error": str(exc)})
+        subject = {}
+        subj_sha = ""
+
+    statement: Dict[str, Any] = {}
+    statement_path = artifacts_dir / "in_toto_statement.json"
+    signature_path = artifacts_dir / "in_toto_statement.sig"
+    bundle_path = artifacts_dir / "in_toto_statement.bundle.json"
+    authority_bundle_path = artifacts_dir / "authority_bundle.json"
+
+    if subj_sha:
+        try:
+            statement = build_in_toto_statement_for_authority_subject(
+                subject_sha256_hex=subj_sha,
+                subject_name=f"kt.authority.subject.v1:{subj_sha}",
+                predicate_type=DEFAULT_PREDICATE_TYPE,
+                predicate={
+                    "schema_id": "kt.in_toto.predicate.authority_subject.v1",
+                    "authority_subject_ref": CRYPTO_PUBLICATION_SUBJECT_REL,
+                    "authority_subject_sha256": subj_sha,
+                    "attestation_fabric_contract_ref": "KT_PROD_CLEANROOM/governance/attestation_fabric_contract.json",
+                    "supply_chain_layout_ref": SUPPLY_CHAIN_LAYOUT_REL,
+                    "signer_identity_policy_ref": SIGNER_IDENTITY_POLICY_REL,
+                },
+            )
+            write_json_stable(statement_path, statement)
+            checks.append({"check": "in_toto_statement_minted", "status": "PASS", "statement_ref": CRYPTO_PUBLICATION_STATEMENT_REL})
+        except Exception as exc:  # noqa: BLE001
+            failures.append("in_toto_statement_mint_failed")
+            checks.append({"check": "in_toto_statement_minted", "status": "FAIL", "error": str(exc)})
+
+    cosign_exe: Optional[Path] = None
+    if not failures and pubkey_info and subj_sha:
+        try:
+            cosign_exe = _resolve_cosign_exe(root=root)
+            checks.append({"check": "cosign_present", "status": "PASS", "cosign_exe": cosign_exe.as_posix()})
+        except Exception as exc:  # noqa: BLE001
+            failures.append("cosign_missing")
+            checks.append({"check": "cosign_present", "status": "FAIL", "error": str(exc)})
+
+    if cosign_exe and not failures:
+        password = os.environ.get("COSIGN_PASSWORD", "")
+        if not str(password).strip():
+            failures.append("cosign_password_missing")
+            checks.append(
+                {
+                    "check": "cosign_password_present",
+                    "status": "FAIL",
+                    "error": "COSIGN_PASSWORD must be set (non-empty) for non-interactive signing",
+                }
+            )
+        else:
+            checks.append({"check": "cosign_password_present", "status": "PASS"})
+
+    if cosign_exe and not failures:
+        try:
+            cosign_key_path = Path(str(cosign_private_key_rel)).expanduser()
+            if not cosign_key_path.is_absolute():
+                cosign_key_path = (root / cosign_key_path).resolve()
+            if not cosign_key_path.exists():
+                raise RuntimeError(f"missing cosign private key: {cosign_key_path.as_posix()}")
+
+            # Sign the exact on-disk bytes of the in-toto statement; the bundle is the
+            # transparency evidence needed for later public verification.
+            subprocess.run(
+                [
+                    str(cosign_exe),
+                    "sign-blob",
+                    "--yes",
+                    "--key",
+                    str(cosign_key_path),
+                    "--bundle",
+                    str(bundle_path),
+                    "--output-signature",
+                    str(signature_path),
+                    str(statement_path),
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                timeout=180,
+            )
+            checks.append({"check": "cosign_sign_blob", "status": "PASS"})
+        except Exception as exc:  # noqa: BLE001
+            failures.append("cosign_sign_failed")
+            checks.append({"check": "cosign_sign_blob", "status": "FAIL", "error": str(exc)})
+
+    if cosign_exe and not failures:
+        try:
+            subprocess.run(
+                [
+                    str(cosign_exe),
+                    "verify-blob",
+                    "--key",
+                    str(pubkey_info["public_key_path"]),
+                    "--signature",
+                    str(signature_path),
+                    "--bundle",
+                    str(bundle_path),
+                    str(statement_path),
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                timeout=180,
+            )
+            checks.append({"check": "cosign_verify_blob_with_tlog", "status": "PASS"})
+        except Exception as exc:  # noqa: BLE001
+            failures.append("cosign_verify_failed")
+            checks.append({"check": "cosign_verify_blob_with_tlog", "status": "FAIL", "error": str(exc)})
+
+    authority_bundle_obj: Dict[str, Any] = {}
+    if subj_sha and not failures:
+        try:
+            statement_sha256 = _sha256_file_bytes(statement_path)
+            signature_sha256 = _sha256_file_bytes(signature_path)
+            bundle_sha256 = _sha256_file_bytes(bundle_path)
+
+            cosign_info = _cosign_version_info(cosign_exe=cosign_exe) if cosign_exe else {}
+            envelope = mint_envelope(
+                subject_sha256_hex=subj_sha,
+                attestation_mode="SIGSTORE_COSIGN_BLOB_BUNDLE_V1_KEYPAIR",
+                generated_utc=generated_utc,
+                signatures=[
+                    {
+                        "format": "cosign.verify-blob",
+                        "signer_id": str(signer_id).strip(),
+                        "public_key_ref": pubkey_info.get("public_key_ref", ""),
+                        "public_key_sha256": pubkey_info.get("public_key_sha256", ""),
+                        "statement_ref": CRYPTO_PUBLICATION_STATEMENT_REL,
+                        "statement_sha256": statement_sha256,
+                        "signature_ref": CRYPTO_PUBLICATION_SIGNATURE_REL,
+                        "signature_sha256": signature_sha256,
+                        "bundle_ref": CRYPTO_PUBLICATION_BUNDLE_REL,
+                        "bundle_sha256": bundle_sha256,
+                        "tlog_verified": True,
+                        "cosign": cosign_info,
+                    }
+                ],
+                transparency={
+                    "rekor_bundle_ref": CRYPTO_PUBLICATION_BUNDLE_REL,
+                    "rekor_bundle_sha256": bundle_sha256,
+                    "tlog_verified": True,
+                },
+            )
+            authority_bundle_obj = mint_authority_bundle(
+                subject=subject,
+                envelope=envelope,
+                bundle_id=f"KT_AUTHORITY_BUNDLE_{subject['truth_subject_commit'][:12]}_{subj_sha[:16]}",
+            )
+            schema = load_authority_bundle_schema(root=root)
+            validate_authority_bundle(authority_bundle_obj, schema=schema)
+            write_json_stable(authority_bundle_path, authority_bundle_obj)
+            checks.append({"check": "authority_bundle_minted_and_validated", "status": "PASS", "bundle_ref": CRYPTO_PUBLICATION_AUTHORITY_BUNDLE_REL})
+        except Exception as exc:  # noqa: BLE001
+            failures.append("authority_bundle_mint_failed")
+            checks.append({"check": "authority_bundle_minted_and_validated", "status": "FAIL", "error": str(exc)})
+
+    receipt_obj: Dict[str, Any] = {
+        "schema_id": "kt.operator.cryptographic_publication_receipt.v1",
+        "generated_utc": generated_utc,
+        "status": "PASS" if not failures else "FAIL",
+        "signer_id": str(signer_id).strip(),
+        "policy_ref": SIGNER_IDENTITY_POLICY_REL,
+        "layout_ref": SUPPLY_CHAIN_LAYOUT_REL,
+        "artifact_dir": CRYPTO_PUBLICATION_DIR_REL,
+        "subject_sha256": str(subj_sha),
+        "statement_sha256": _sha256_file_bytes(statement_path) if statement_path.exists() else "",
+        "signature_sha256": _sha256_file_bytes(signature_path) if signature_path.exists() else "",
+        "bundle_sha256": _sha256_file_bytes(bundle_path) if bundle_path.exists() else "",
+        "authority_bundle_subject_sha256": str(authority_bundle_obj.get("subject_sha256", "")).strip() if authority_bundle_obj else "",
+        "checks": checks,
+        "failures": failures,
+        "semantic_ceiling": {
+            "published_head_authority_claimed": False,
+            "h1_allowed": False,
+        },
+    }
+    write_json_stable(receipt_path, receipt_obj)
+    if failures:
+        raise RuntimeError("FAIL_CLOSED: cryptographic publication failed: " + "; ".join(failures))
+    return receipt_obj
 
 
 def _read_previous_pointer(root: Path) -> Dict[str, Any]:
@@ -759,6 +1192,9 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     ap.add_argument("--authority-mode", default="SETTLED_AUTHORITATIVE")
     ap.add_argument("--posture-state", default="CANONICAL_READY_FOR_REEARNED_GREEN")
     ap.add_argument("--open-blocker", action="append", default=[])
+    ap.add_argument("--emit-cryptographic-publication", action="store_true", help="WS6: Sign and verify an in-toto statement with cosign and emit cryptographic publication receipts.")
+    ap.add_argument("--signer-id", default=DEFAULT_SIGNER_ID, help="WS6: signer_id defined by signer_identity_policy.json")
+    ap.add_argument("--cosign-private-key", default=DEFAULT_COSIGN_PRIVATE_KEY_REL, help="WS6: path to encrypted cosign private key (private; do not commit)")
     return ap.parse_args(argv)
 
 
@@ -776,6 +1212,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         posture_state=str(args.posture_state),
         board_open_blockers=[str(item) for item in args.open_blocker],
     )
+    if bool(getattr(args, "emit_cryptographic_publication", False)):
+        publish_cryptographic_publication_ws6(
+            root=root,
+            report_root_rel=str(args.report_root),
+            live_validation_index_path=index_path,
+            signer_id=str(getattr(args, "signer_id", DEFAULT_SIGNER_ID)),
+            cosign_private_key_rel=str(getattr(args, "cosign_private_key", DEFAULT_COSIGN_PRIVATE_KEY_REL)),
+        )
     print(json.dumps(publication, sort_keys=True, ensure_ascii=True))
     return 0
 

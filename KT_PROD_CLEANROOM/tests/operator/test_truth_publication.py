@@ -3,9 +3,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from tools.operator.truth_publication import (
     CURRENT_POINTER_REL,
     LEDGER_CURRENT_POINTER_REL,
+    build_in_toto_statement_for_authority_subject,
     publish_truth_artifacts,
     publish_truth_ledger_witness,
     validate_truth_publication,
@@ -228,3 +231,15 @@ def test_publish_truth_ledger_witness_emits_bootstrap_bundle_outside_main(tmp_pa
     assert pointer["witness_plane"] is True
     assert pointer["published_head_authority_claimed"] is False
     assert not (source_root / LEDGER_CURRENT_POINTER_REL).exists()
+
+
+def test_build_in_toto_statement_binds_subject_sha256() -> None:
+    sha = "a" * 64
+    stmt = build_in_toto_statement_for_authority_subject(subject_sha256_hex=sha, subject_name="test-subject")
+    assert stmt["_type"] == "https://in-toto.io/Statement/v0.1"
+    assert stmt["subject"][0]["digest"]["sha256"] == sha
+
+
+def test_build_in_toto_statement_rejects_invalid_sha256() -> None:
+    with pytest.raises(RuntimeError):
+        build_in_toto_statement_for_authority_subject(subject_sha256_hex="nothex", subject_name="x")

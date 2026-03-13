@@ -1,0 +1,37 @@
+{
+  "schema_id": "kt.governance.signer_identity_policy.v1",
+  "policy_id": "SIGNER_IDENTITY_POLICY_V1_20260313",
+  "effective_utc": "2026-03-13T00:00:00Z",
+  "expires_utc": "2026-09-13T00:00:00Z",
+  "supersedes": [],
+  "status": "ACTIVE",
+  "semantic_ceiling": {
+    "published_head_authority_claimed": false,
+    "h1_allowed": false
+  },
+  "rules": {
+    "require_transparency_log": true,
+    "rekor_url_default": "https://rekor.sigstore.dev",
+    "notes": [
+      "WS6 baseline uses cosign keypair signing with Rekor transparency log bundles.",
+      "Keyless identity-bound signing may be added later with explicit issuer and identity constraints."
+    ]
+  },
+  "allowed_signers": [
+    {
+      "signer_id": "KT_OP1_COSIGN_KEYPAIR",
+      "mode": "cosign_keypair",
+      "public_key_ref": "KT_PROD_CLEANROOM/governance/signers/kt_op1_cosign.pub",
+      "public_key_sha256": "95b2e054bfcf4ac91446ce7887cc7ae9cc2399ab391d5824d9f09453a7235443",
+      "allowed_predicates": [
+        "https://kings-theorem.io/attestations/kt-authority-subject/v1"
+      ]
+    }
+  ],
+  "keyless_constraints": {
+    "allowed": false,
+    "certificate_identity": "",
+    "certificate_oidc_issuer": ""
+  }
+}
+
