@@ -1,0 +1,35 @@
+{
+  "schema_id": "kt.operator.reporting_integrity_contract.v1",
+  "contract_id": "REPORTING_INTEGRITY_CONTRACT_V1_20260312",
+  "effective_utc": "2026-03-12T00:00:00Z",
+  "status": "ACTIVE",
+  "summary": "Defines staleness and contradiction rules for ledger-publication reporting so external readers never mistake cached flags for current published state.",
+  "remote": {
+    "name": "origin",
+    "ledger_branch": "kt_truth_ledger"
+  },
+  "targets": {
+    "authority_convergence_receipt": {
+      "path": "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+      "head_field": "observed.git_head",
+      "publication_field": "observed.ledger_branch_published"
+    },
+    "published_head_self_convergence_receipt": {
+      "path": "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+      "head_field": "validated_head_sha",
+      "publication_field": "ledger_branch_published",
+      "ledger_head_field": "ledger_branch_head_sha"
+    }
+  },
+  "rules": [
+    "If receipts disagree with the remote publication fact for ledger_branch_published, verification MUST fail closed.",
+    "If authority_convergence_receipt and published_head_self_convergence_receipt disagree about ledger_branch_published, verification MUST fail closed.",
+    "If either receipt head stamp does not match current git HEAD, verification MUST fail closed (stale receipt).",
+    "Remote reachability is used only for publication reporting and must not be treated as cryptographic proof of authority."
+  ],
+  "semantic_ceiling": {
+    "published_head_authority_claimed": false,
+    "h1_allowed": false
+  }
+}
+

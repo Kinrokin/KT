@@ -3,32 +3,32 @@
     {
       "actual": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "check": "execution_board_matches_git_head",
-      "expected": "4867542e364501a91c8e619ee3e26693d73b7a98",
-      "status": "PASS"
+      "expected": "fddaa73016b1d2e3380551ca1a3507f27ea1cfb8",
+      "status": "FAIL"
     },
     {
       "actual": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "check": "current_pointer_matches_git_head",
-      "expected": "4867542e364501a91c8e619ee3e26693d73b7a98",
-      "status": "PASS"
+      "expected": "fddaa73016b1d2e3380551ca1a3507f27ea1cfb8",
+      "status": "FAIL"
     },
     {
       "actual": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "check": "current_state_receipt_matches_git_head",
-      "expected": "4867542e364501a91c8e619ee3e26693d73b7a98",
-      "status": "PASS"
+      "expected": "fddaa73016b1d2e3380551ca1a3507f27ea1cfb8",
+      "status": "FAIL"
     },
     {
       "actual": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "check": "runtime_closure_audit_matches_git_head",
-      "expected": "4867542e364501a91c8e619ee3e26693d73b7a98",
-      "status": "PASS"
+      "expected": "fddaa73016b1d2e3380551ca1a3507f27ea1cfb8",
+      "status": "FAIL"
     },
     {
       "actual": "4867542e364501a91c8e619ee3e26693d73b7a98",
       "check": "settled_truth_source_matches_git_head",
-      "expected": "4867542e364501a91c8e619ee3e26693d73b7a98",
-      "status": "PASS"
+      "expected": "fddaa73016b1d2e3380551ca1a3507f27ea1cfb8",
+      "status": "FAIL"
     },
     {
       "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
@@ -85,6 +85,11 @@
       "status": "PASS"
     },
     {
+      "actual": true,
+      "check": "active_current_pointer_not_documentary_only",
+      "status": "PASS"
+    },
+    {
       "actual": "TRANSITIONAL_AUTHORITATIVE",
       "check": "local_ledger_requires_transitional_authority",
       "expected": "TRANSITIONAL_AUTHORITATIVE",
@@ -112,15 +117,22 @@
     },
     {
       "check": "proof_class_is_local_ledger_only",
-      "ledger_branch_published": false,
+      "ledger_branch_published": true,
       "proof_class": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
       "status": "PASS"
     }
   ],
-  "failures": [],
-  "generated_utc": "2026-03-11T21:20:03Z",
+  "failures": [
+    "execution_board_matches_git_head",
+    "current_pointer_matches_git_head",
+    "current_state_receipt_matches_git_head",
+    "runtime_closure_audit_matches_git_head",
+    "settled_truth_source_matches_git_head"
+  ],
+  "generated_utc": "2026-03-13T01:51:12Z",
   "h1_admissible": false,
   "observed": {
+    "active_current_pointer_documentary_only": false,
     "active_supporting_truth_surfaces": [
       "kt_truth_ledger:ledger/current/current_state_receipt.json",
       "kt_truth_ledger:ledger/current/runtime_closure_audit.json",
@@ -138,8 +150,8 @@
     "current_state_head": "4867542e364501a91c8e619ee3e26693d73b7a98",
     "current_state_posture_state": "TRUTHFUL_GREEN",
     "git_branch": "main",
-    "git_head": "4867542e364501a91c8e619ee3e26693d73b7a98",
-    "ledger_branch_published": false,
+    "git_head": "fddaa73016b1d2e3380551ca1a3507f27ea1cfb8",
+    "ledger_branch_published": true,
     "main_current_pointer_documentary_only": true,
     "main_current_state_documentary_only": true,
     "main_runtime_audit_documentary_only": true,
@@ -161,8 +173,8 @@
     "settled_truth_posture_state": "TRUTHFUL_GREEN",
     "worktree_dirty": false
   },
-  "proof_class": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+  "proof_class": "FAIL_CLOSED",
   "published_head_authority_claimed": false,
   "schema_id": "kt.operator.authority_convergence_receipt.v1",
-  "status": "PASS"
+  "status": "FAIL"
 }
