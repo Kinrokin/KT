@@ -29,7 +29,25 @@ def _default_run_root(*, repo_root: Path) -> Path:
 def _iter_work_order_files(*, root: Path) -> List[Path]:
     # Deliberately narrow: only WORK_ORDER_*.json, to avoid scanning arbitrary JSON payloads.
     # Use an underscore to avoid self-matching this tool's own report outputs.
-    return sorted([p for p in root.rglob("WORK_ORDER_*.json") if p.is_file()])
+    #
+    # IMPORTANT: exports/_runs/** contains ephemeral operator artifacts (including clean clones of
+    # the repo) and must not be treated as "authoritative exports". Those run directories may
+    # contain draft/proposed work orders or partial snapshots that are intentionally not schema
+    # valid. Scanning them would make canonical verification non-deterministically fail based on
+    # local run history.
+    runs_root = (root / "_runs").resolve()
+    files: List[Path] = []
+    for p in root.rglob("WORK_ORDER_*.json"):
+        if not p.is_file():
+            continue
+        try:
+            if p.resolve().is_relative_to(runs_root):
+                continue
+        except Exception:
+            # Conservative fallback: if we cannot resolve/is_relative_to, keep scanning.
+            pass
+        files.append(p)
+    return sorted(files)
 
 
 def _read_json_obj(path: Path) -> Dict[str, Any]:
