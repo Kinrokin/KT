@@ -195,3 +195,73 @@ def test_authority_convergence_supports_local_ledger_self_convergence_only(tmp_p
     assert report["status"] == "PASS", report
     assert report["proof_class"] == "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY"
     assert report["h1_admissible"] is False
+
+
+def test_authority_convergence_fails_closed_if_active_pointer_is_documentary_only(tmp_path: Path) -> None:
+    # Direct-read attempt against a main-bound documentary mirror: the active truth source
+    # cannot be a pointer marked documentary-only.
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM" / "governance" / "documentary_truth_policy.json",
+        {
+            "active_current_head_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+            "active_supporting_truth_surfaces": [
+                "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+                "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+            ],
+            "documentary_only_patterns": ["docs/**"],
+            "documentary_only_refs": [],
+        },
+    )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM" / "governance" / "execution_board.json",
+        {
+            "schema_id": "kt.governance.execution_board.v3",
+            "last_synced_head_sha": "abc1234",
+            "authoritative_current_head_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+            "authority_mode": "SETTLED_AUTHORITATIVE",
+            "current_posture_state": "TRUTHFUL_GREEN",
+            "program_gates": {"H1_ACTIVATION_ALLOWED": False},
+        },
+    )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM" / "governance" / "readiness_scope_manifest.json",
+        {
+            "schema_id": "kt.governance.readiness_scope_manifest.v2",
+            "authoritative_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+        },
+    )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM" / "exports" / "_truth" / "current" / "current_pointer.json",
+        {
+            "schema_id": "kt.operator.truth_pointer.v1",
+            "truth_subject_commit": "abc1234",
+            "posture_enum": "TRUTHFUL_GREEN",
+            "status": "SUPERSEDED_DOCUMENTARY_ONLY",
+            "live_authority": False,
+        },
+    )
+    for name in ("current_state_receipt.json", "runtime_closure_audit.json"):
+        _write_json(
+            tmp_path / "KT_PROD_CLEANROOM" / "reports" / name,
+            {
+                "schema_id": f"test.{name}",
+                "validated_head_sha": "abc1234",
+                "branch_ref": "main",
+                "posture_state": "TRUTHFUL_GREEN",
+                "status": "PASS",
+            },
+        )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM" / "reports" / "settled_truth_source_receipt.json",
+        {
+            "schema_id": "kt.operator.settled_truth_source_receipt.v1",
+            "status": "SETTLED_AUTHORITATIVE",
+            "pinned_head_sha": "abc1234",
+            "derived_posture_state": "TRUTHFUL_GREEN",
+        },
+    )
+
+    report = build_authority_convergence_report(root=tmp_path)
+    assert report["status"] == "FAIL"
+    assert report["proof_class"] == "FAIL_CLOSED"
+    assert "active_current_pointer_not_documentary_only" in report["failures"]

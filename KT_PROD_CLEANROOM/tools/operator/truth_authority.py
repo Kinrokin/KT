@@ -29,6 +29,53 @@ def is_branch_ref(ref: str) -> bool:
     return ":" in value and not value.startswith("/") and not value[1:3] == ":\\"
 
 
+def _is_git_worktree(root: Path) -> bool:
+    try:
+        out = subprocess.check_output(
+            ["git", "-C", str(root), "rev-parse", "--is-inside-work-tree"],
+            text=True,
+            encoding="utf-8",
+        ).strip()
+    except Exception:  # noqa: BLE001
+        return False
+    return out.lower() == "true"
+
+
+def _git_ref_exists(*, root: Path, ref: str) -> bool:
+    try:
+        subprocess.check_output(
+            ["git", "-C", str(root), "rev-parse", "--verify", "--quiet", str(ref).strip()],
+            text=True,
+            encoding="utf-8",
+        )
+    except Exception:  # noqa: BLE001
+        return False
+    return True
+
+
+def _git_remotes(root: Path) -> List[str]:
+    try:
+        out = subprocess.check_output(
+            ["git", "-C", str(root), "remote"],
+            text=True,
+            encoding="utf-8",
+        )
+    except Exception:  # noqa: BLE001
+        return []
+    remotes = [line.strip() for line in (out or "").splitlines() if line.strip()]
+    if "origin" in remotes:
+        remotes = ["origin"] + [remote for remote in remotes if remote != "origin"]
+    return remotes
+
+
+def _git_show_ref_path(*, root: Path, ref: str, relpath: str) -> str:
+    return subprocess.check_output(
+        ["git", "-C", str(root), "show", f"{str(ref).strip()}:{str(relpath).strip()}"],
+        text=True,
+        encoding="utf-8",
+    )
+
+
 def load_json_ref(*, root: Path, ref: str) -> Dict[str, Any]:
     value = str(ref).strip()
     if not value:
@@ -36,15 +83,37 @@ def load_json_ref(*, root: Path, ref: str) -> Dict[str, Any]:
     if is_branch_ref(value):
         branch, relpath = value.split(":", 1)
         try:
-            content = subprocess.check_output(
-                ["git", "-C", str(root), "show", f"{branch}:{relpath}"],
-                text=True,
-                encoding="utf-8",
-            )
+            content = _git_show_ref_path(root=root, ref=branch, relpath=relpath)
         except Exception as exc:  # noqa: BLE001
-            # Local bootstrap and unit-test fixtures may exercise ledger refs
-            # before a real git branch exists. In that case, fall back to the
+            # Fail closed for real repos: a branch ref must resolve through git.
+            # Only unit-test fixtures (non-git worktrees) may fall back to a
             # filesystem path encoded by the branch ref.
+            if _is_git_worktree(root):
+                # If the ref doesn't exist locally (common in fresh clones), fall back to a
+                # remote-tracking ref (e.g. origin/<branch>). If the ref exists locally,
+                # do not mask missing-file errors by falling back elsewhere.
+                if _git_ref_exists(root=root, ref=branch):
+                    raise RuntimeError(f"FAIL_CLOSED: unable to load branch ref {value}: {exc}") from exc
+
+                remotes = _git_remotes(root)
+                if any(str(branch).strip().startswith(f"{remote}/") for remote in remotes):
+                    raise RuntimeError(f"FAIL_CLOSED: unable to load branch ref {value}: {exc}") from exc
+
+                attempted: List[str] = [str(branch).strip()]
+                for remote in remotes:
+                    candidate = f"{remote}/{str(branch).strip()}"
+                    attempted.append(candidate)
+                    if not _git_ref_exists(root=root, ref=candidate):
+                        continue
+                    try:
+                        candidate_content = _git_show_ref_path(root=root, ref=candidate, relpath=relpath)
+                        return json.loads(candidate_content.lstrip("\ufeff"))
+                    except Exception:  # noqa: BLE001
+                        continue
+
+                attempted_s = ", ".join(attempted)
+                raise RuntimeError(f"FAIL_CLOSED: unable to load branch ref {value} (attempted: {attempted_s}): {exc}") from exc
+
             fallback = (root / Path(relpath)).resolve()
             if not fallback.exists():
                 raise RuntimeError(f"FAIL_CLOSED: unable to load branch ref {value}: {exc}") from exc
@@ -62,7 +131,9 @@ def active_truth_source_ref(*, root: Path) -> str:
         return CURRENT_POINTER_REL
     policy = json.loads(policy_path.read_text(encoding="utf-8-sig"))
     active = str(policy.get("active_current_head_truth_source", "")).strip()
-    return active or CURRENT_POINTER_REL
+    if not active:
+        raise RuntimeError("FAIL_CLOSED: documentary_truth_policy missing active_current_head_truth_source")
+    return active
 
 
 def active_supporting_truth_surfaces(*, root: Path) -> List[str]:
@@ -172,13 +243,14 @@ def build_settled_truth_source_receipt(
         f"{report_root_rel}/posture_consistency_enforcement_receipt.json",
         f"{report_root_rel}/posture_conflict_receipt.json",
     ]
+    active_truth_ref = active_truth_source_ref(root=root)
     return {
         "schema_id": "kt.operator.settled_truth_source_receipt.v1",
         "generated_utc": generated_utc,
         "status": status,
         "branch_ref": branch_ref,
         "pinned_head_sha": live_head,
-        "authoritative_current_pointer_ref": CURRENT_POINTER_REL,
+        "authoritative_current_pointer_ref": active_truth_ref,
         "current_head_truth_source": path_ref(root=root, path=live_validation_index_path),
         "derived_posture_state": str(enforcement.get("derived_state", "")).strip(),
         "worktree_dirty": bool(worktree.get("git_dirty")),
@@ -218,7 +290,7 @@ def build_truth_supersession_receipt(
     conflicts: Dict[str, Any],
 ) -> Dict[str, Any]:
     live_head = _head_from(index)
-    active_truth_root = CURRENT_POINTER_REL
+    active_truth_root = active_truth_source_ref(root=root)
     generated_utc = str(index.get("generated_utc", "")).strip() or utc_now_iso_z()
     superseded: List[Dict[str, Any]] = []
     candidates = {

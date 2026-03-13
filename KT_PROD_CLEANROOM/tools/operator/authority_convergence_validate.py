@@ -121,9 +121,8 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
         git_branch = str(current_state.get("branch_ref", "")).strip() or str(live_index.get("branch_ref", "")).strip()
 
     ledger_remote_exists = _remote_branch_exists(root, remote="origin", branch=LEDGER_BRANCH)
-    proof_class = PROOF_CLASS_PUBLISHED_HEAD
-    if ledger_active:
-        proof_class = PROOF_CLASS_PUBLISHED_HEAD if ledger_remote_exists else PROOF_CLASS_LOCAL_LEDGER_ONLY
+    # WS2 guardrail: do not treat remote branch reachability as published-head admissibility proof.
+    proof_class = PROOF_CLASS_LOCAL_LEDGER_ONLY if ledger_active else PROOF_CLASS_PUBLISHED_HEAD
 
     observed = {
         "git_head": git_head,
@@ -154,6 +153,7 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
         "worktree_dirty": bool((live_index.get("worktree") or {}).get("git_dirty")),
         "proof_class": proof_class,
         "ledger_branch_published": ledger_remote_exists,
+        "active_current_pointer_documentary_only": _documentary_only(current_pointer),
         "main_current_pointer_documentary_only": _documentary_only(main_current_pointer),
         "main_current_state_documentary_only": _documentary_only(main_current_state),
         "main_runtime_audit_documentary_only": _documentary_only(main_runtime_audit),
@@ -187,6 +187,7 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
     expect_equal("board_posture_matches_settled_truth", observed["board_posture_state"], observed["settled_truth_posture_state"])
     expect_equal("current_branch_matches_git_branch", str(current_state.get("branch_ref", "")).strip(), git_branch)
     expect_equal("runtime_audit_branch_matches_git_branch", str(runtime_audit.get("branch_ref", "")).strip(), git_branch)
+    expect_true("active_current_pointer_not_documentary_only", not observed["active_current_pointer_documentary_only"])
 
     truthful_green = observed["board_posture_state"] == "TRUTHFUL_GREEN"
     if ledger_active:
