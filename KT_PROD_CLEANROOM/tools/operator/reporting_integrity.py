@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from tools.operator.authority_convergence_validate import build_authority_convergence_report
 from tools.operator.titanium_common import file_sha256, load_json, utc_now_iso_z, write_json_stable
+from tools.operator.truth_authority import path_ref
 
 
 DEFAULT_REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
@@ -225,8 +226,8 @@ def verify_reporting_integrity(
         "contradictions": contradictions,
         "stale_findings": stale,
         "targets": {
-            "authority_convergence_receipt": authority_path.as_posix(),
-            "published_head_self_convergence_receipt": published_head_path.as_posix(),
+            "authority_convergence_receipt": path_ref(root=root, path=authority_path),
+            "published_head_self_convergence_receipt": path_ref(root=root, path=published_head_path),
         },
     }
 
@@ -249,7 +250,7 @@ def repair_reporting_integrity(
     before: Dict[str, str] = {}
     for path in (authority_path, published_head_path):
         if path.exists():
-            before[path.as_posix()] = file_sha256(path)
+            before[path_ref(root=root, path=path)] = file_sha256(path)
 
     # Recompute the published-head self-convergence receipt directly from remote facts.
     ph_receipt = build_published_head_self_convergence_receipt(
@@ -266,7 +267,7 @@ def repair_reporting_integrity(
     after: Dict[str, str] = {}
     for path in (authority_path, published_head_path):
         if path.exists():
-            after[path.as_posix()] = file_sha256(path)
+            after[path_ref(root=root, path=path)] = file_sha256(path)
 
     verification_after = verify_reporting_integrity(
         root=root,

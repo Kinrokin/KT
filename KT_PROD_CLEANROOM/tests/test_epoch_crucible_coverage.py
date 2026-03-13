@@ -43,7 +43,14 @@ def test_epoch_crucible_coverage() -> None:
     for base in plan_roots:
         if base.exists():
             epoch_plans.extend(base.rglob("EPOCH_*.json"))
-    epoch_plans = [p for p in epoch_plans if "artifacts/epochs" not in p.as_posix()]
+    # Exclude generated run artifacts. Epoch plans under exports/_runs are not
+    # authoritative repo plans and may include experimental/unregistered IDs.
+    epoch_plans = [
+        p
+        for p in epoch_plans
+        if "artifacts/epochs" not in p.as_posix()
+        and "exports/_runs" not in p.as_posix()
+    ]
     epoch_plans = sorted(set(epoch_plans))
     assert epoch_plans, "No epoch plans found (fail-closed)"
 
