@@ -1,0 +1,37 @@
+{
+  "schema_id": "kt.governance.attestation_fabric_contract.v1",
+  "contract_id": "ATTESTATION_FABRIC_CONTRACT_V1_20260313",
+  "effective_utc": "2026-03-13T00:00:00Z",
+  "expires_utc": "2026-09-13T00:00:00Z",
+  "supersedes": [],
+  "status": "ACTIVE",
+  "authority_bundle_schema_ref": "KT_PROD_CLEANROOM/governance/authority_bundle.schema.json",
+  "subject_boundary": {
+    "subject_schema_id": "kt.authority.subject.v1",
+    "deterministic": true,
+    "hash_alg": "sha256",
+    "hash_input": "canonicalize_bytes(subject)",
+    "notes": [
+      "Deterministic subject is the reproducible equality target.",
+      "Any proof material that varies across signings must be outside the subject."
+    ]
+  },
+  "envelope_boundary": {
+    "envelope_schema_id": "kt.authority.envelope.v1",
+    "deterministic": false,
+    "must_bind_subject_sha256": true,
+    "notes": [
+      "Envelope may include timestamps, identity-bound signing material, and transparency evidence.",
+      "Envelope verification is separate from subject reproducibility."
+    ]
+  },
+  "frontier_alignment_notes": [
+    "Later workstreams may encode signatures and transparency evidence using Sigstore bundles and in-toto aligned statements.",
+    "This contract does not assert Sigstore or in-toto completion; it only defines boundaries and binding rules."
+  ],
+  "semantic_ceiling": {
+    "published_head_authority_claimed": false,
+    "h1_allowed": false
+  }
+}
+

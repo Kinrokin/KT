@@ -1,0 +1,45 @@
+{
+  "schema_id": "kt.governance.authority_subject_contract.v1",
+  "contract_id": "AUTHORITY_SUBJECT_CONTRACT_V1_20260313",
+  "effective_utc": "2026-03-13T00:00:00Z",
+  "expires_utc": "2026-09-13T00:00:00Z",
+  "supersedes": [],
+  "status": "ACTIVE",
+  "subject_schema_id": "kt.authority.subject.v1",
+  "subject_hash_rule": "sha256(canonicalize_bytes(subject))",
+  "canonicalization": {
+    "implementation_ref": "KT_PROD_CLEANROOM/tools/canonicalize/kt_canonicalize.py",
+    "algorithm": "JSON normalized for CRLF/LF, dict keys sorted, separators no spaces, UTF-8, allow_nan=false"
+  },
+  "subject_artifact_rules": [
+    "Subject is deterministic and must be bit-for-bit reproducible for identical inputs.",
+    "Subject must never include timestamps or time-varying signing material.",
+    "Subject must bind commit digests, law surface hashes, supersession chain, proof-input evidence refs+hashes, and bundle references."
+  ],
+  "required_top_level_fields": [
+    "schema_id",
+    "truth_subject_commit",
+    "truth_produced_at_commit",
+    "law_surface_hashes",
+    "supersedes_subject_sha256",
+    "evidence"
+  ],
+  "forbidden_keys_anywhere_in_subject": [
+    "created_utc",
+    "generated_utc",
+    "signature",
+    "signatures",
+    "certificate",
+    "certificates",
+    "rekor",
+    "transparency",
+    "envelope",
+    "bundle",
+    "bundle_id"
+  ],
+  "semantic_ceiling": {
+    "published_head_authority_claimed": false,
+    "h1_allowed": false
+  }
+}
+

@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kt.governance.authority_bundle.schema.v1",
+  "schema_id": "kt.governance.authority_bundle.schema.v1",
+  "status": "ACTIVE",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "bundle_id",
+    "subject_sha256",
+    "subject",
+    "envelope"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.authority.bundle.v1"
+    },
+    "bundle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_id",
+        "truth_subject_commit",
+        "truth_produced_at_commit",
+        "law_surface_hashes",
+        "supersedes_subject_sha256",
+        "evidence"
+      ],
+      "properties": {
+        "schema_id": {
+          "const": "kt.authority.subject.v1"
+        },
+        "truth_subject_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "truth_produced_at_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "law_surface_hashes": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "supersedes_subject_sha256": {
+          "type": "string",
+          "pattern": "^$|^[0-9a-f]{64}$"
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref",
+              "sha256"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "envelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_id",
+        "subject_sha256",
+        "generated_utc",
+        "attestation_mode"
+      ],
+      "properties": {
+        "schema_id": {
+          "const": "kt.authority.envelope.v1"
+        },
+        "subject_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "generated_utc": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attestation_mode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "signatures": {
+          "type": "array"
+        },
+        "transparency": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}
+
