@@ -1,0 +1,98 @@
+{
+  "artifact_id": "kt_active_archive_cutline_receipt.json",
+  "checks": [
+    {
+      "check": "all_archive_surfaces_enumerated",
+      "detail": "All candidate archive roots/files must be enumerated in the boundary map.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_active_archive_boundary_map.json",
+        "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_plan.json",
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_snapshot_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "cross_references_fully_classified",
+      "detail": "Every ACTIVE-to-ARCHIVE reference must be classified by consumer plane and relocation consequence.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_active_archive_cross_reference_register.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "archive_relocation_consequences_modeled",
+      "detail": "Archive relocation consequences and target quarantine locations must be explicit.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_archive_quarantine_plan.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "post_touch_accounting_clean",
+      "detail": "Actual touched files must match the lawful WS1 subject set before receipt emission, then the full set including the receipt after sealing.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_active_archive_boundary_map.json",
+        "KT_PROD_CLEANROOM/reports/kt_active_archive_cross_reference_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_archive_quarantine_plan.json",
+        "KT_PROD_CLEANROOM/tools/operator/active_archive_cutline_audit.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_active_archive_cutline_audit.py",
+        "KT_PROD_CLEANROOM/reports/kt_active_archive_cutline_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "d1ac4d016c86a8f00afc8e1c831ef67f0887ff4d",
+  "current_head_commit": "d1ac4d016c86a8f00afc8e1c831ef67f0887ff4d",
+  "evidence_head_commit": "d1ac4d016c86a8f00afc8e1c831ef67f0887ff4d",
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS2_CANONICAL_ACTIVE_TREE_EXECUTION"
+  },
+  "pass_verdict": "ACTIVE_ARCHIVE_CUTLINE_FROZEN",
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.active_archive_cutline_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "froze active/archive cutline map",
+      "enumerated active-to-archive cross references",
+      "modeled archive relocation consequences",
+      "validated touch boundary and workstream gate"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/reports/kt_active_archive_boundary_map.json",
+      "KT_PROD_CLEANROOM/reports/kt_active_archive_cross_reference_register.json",
+      "KT_PROD_CLEANROOM/reports/kt_active_archive_cutline_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_archive_quarantine_plan.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_active_archive_cutline_audit.py",
+      "KT_PROD_CLEANROOM/tools/operator/active_archive_cutline_audit.py"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS1 froze the active/archive cutline, enumerated active-to-archive references, and modeled relocation consequences without mutating archive surfaces.",
+    "step_id": "WS1_STEP_1_FREEZE_ACTIVE_ARCHIVE_CUTLINE",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_active_archive_cutline_audit.py -q"
+    ],
+    "timestamp": "2026-03-14T23:54:02Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.active_archive_cutline_audit"
+    ],
+    "workstream_id": "WS1_ACTIVE_ARCHIVE_CUTLINE_FREEZE"
+  },
+  "subject_head_commit": "d1ac4d016c86a8f00afc8e1c831ef67f0887ff4d",
+  "summary": {
+    "active_surface_count": 12,
+    "archive_surface_count": 16,
+    "cross_reference_count": 132,
+    "hard_violation_count": 28
+  },
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.active_archive_cutline_audit"
+  ],
+  "workstream_id": "WS1_ACTIVE_ARCHIVE_CUTLINE_FREEZE"
+}
