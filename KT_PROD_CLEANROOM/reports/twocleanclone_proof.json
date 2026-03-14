@@ -1,22 +1,25 @@
 {
   "candidate_worktree_execution_sealing_claimed": false,
-  "generated_utc": "2026-03-11T17:10:52Z",
-  "minimum_scope_only": true,
-  "proof_scope": "clean_clone_reproducibility_only",
+  "cross_environment_controlled_variation_complete": false,
+  "cross_environment_controlled_variation_status": "NOT_RUN",
+  "generated_utc": "2026-03-14T05:11:17Z",
+  "minimum_scope_only": false,
+  "proof_scope": "clean_clone_reproducibility_representative_authority_lane_same_mve_only",
   "proofs": [
     {
       "clone_provenance": {
         "clone_a": {
           "clean": true,
-          "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
-          "path": "C:/Users/rober/AppData/Local/Temp/KT_A08_CLONE_A_4867542_20260311T1710"
+          "head": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8",
+          "path": "C:/Users/rober/AppData/Local/Temp/KT_WS8_A_4d7c624_q2idmodx"
         },
         "clone_b": {
           "clean": true,
-          "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
-          "path": "C:/Users/rober/AppData/Local/Temp/KT_A08_CLONE_B_4867542_20260311T1710"
+          "head": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8",
+          "path": "C:/Users/rober/AppData/Local/Temp/KT_WS8_B_4d7c624_fg5i2zy8"
         }
       },
+      "program_id": "program.certify.canonical_hmac",
       "proof_id": "certify",
       "report": {
         "compare_keys": [
@@ -30,20 +33,20 @@
         ],
         "comparisons": [
           {
-            "a_value": "1361e23222a528a36b81cdd028a4973afdddb6fc8daedf2b54d981979c52da24",
-            "b_value": "1361e23222a528a36b81cdd028a4973afdddb6fc8daedf2b54d981979c52da24",
+            "a_value": "adc05f611b637944d7064ef0dda3fd4a7f499a73f33ed03a9bc2b493275de8f6",
+            "b_value": "adc05f611b637944d7064ef0dda3fd4a7f499a73f33ed03a9bc2b493275de8f6",
             "key": "delivery_root_hash",
             "status": "PASS"
           },
           {
-            "a_value": "1544bdc54eed95d7c8b10e4f3901e3cf121af4d30cb86a9bd0640e33532253b4",
-            "b_value": "1544bdc54eed95d7c8b10e4f3901e3cf121af4d30cb86a9bd0640e33532253b4",
+            "a_value": "abe52ee96c7e491bb5b97332a773fefe99167b699113f963ffc25c7c9634c35b",
+            "b_value": "abe52ee96c7e491bb5b97332a773fefe99167b699113f963ffc25c7c9634c35b",
             "key": "bindingloop_check_hash",
             "status": "PASS"
           },
           {
-            "a_value": "d6c106460f51feaeb6d14f82296eb58656ae49c8b42ee602413815f2a15cf76e",
-            "b_value": "d6c106460f51feaeb6d14f82296eb58656ae49c8b42ee602413815f2a15cf76e",
+            "a_value": "7202727897b2032b39e7ff7a707c747460a6e00137b95725f10ac3a725bca968",
+            "b_value": "7202727897b2032b39e7ff7a707c747460a6e00137b95725f10ac3a725bca968",
             "key": "evidence_core_merkle_root_sha256",
             "status": "PASS"
           },
@@ -54,8 +57,8 @@
             "status": "PASS"
           },
           {
-            "a_value": "78a9e536cfc7ab93b8ea0f49427ac5c3aea0a36e014f19fac314de60dc66fb91",
-            "b_value": "78a9e536cfc7ab93b8ea0f49427ac5c3aea0a36e014f19fac314de60dc66fb91",
+            "a_value": "6648094805ed504726724bbe99d569145bf630c6a8eb8a1aec691b30f0842bf6",
+            "b_value": "6648094805ed504726724bbe99d569145bf630c6a8eb8a1aec691b30f0842bf6",
             "key": "governance_manifest_sha256",
             "status": "PASS"
           },
@@ -72,28 +75,29 @@
             "status": "PASS"
           }
         ],
-        "run_a": "C:/Users/rober/AppData/Local/Temp/KT_A08_CLONE_A_4867542_20260311T1710/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A08_certify_canonical_hmac_clean_a",
-        "run_b": "C:/Users/rober/AppData/Local/Temp/KT_A08_CLONE_B_4867542_20260311T1710/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A08_certify_canonical_hmac_clean_b",
+        "run_a": "C:\\Users\\rober\\AppData\\Local\\Temp\\KT_WS8_A_4d7c624_q2idmodx\\KT_PROD_CLEANROOM\\exports\\_runs\\KT_OPERATOR\\WS8_certify_canonical_hmac_4d7c624_clean_a",
+        "run_b": "C:\\Users\\rober\\AppData\\Local\\Temp\\KT_WS8_B_4d7c624_fg5i2zy8\\KT_PROD_CLEANROOM\\exports\\_runs\\KT_OPERATOR\\WS8_certify_canonical_hmac_4d7c624_clean_b",
         "schema_id": "kt.operator.twocleanclone_proof.v1",
         "status": "PASS",
         "violations": []
       },
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A08_twocleanclone_certify_currenthead_fresh",
-      "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS8_twocleanclone_certify_4d7c624",
+      "validated_head_sha": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8"
     },
     {
       "clone_provenance": {
         "clone_a": {
           "clean": true,
-          "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
-          "path": "C:/Users/rober/AppData/Local/Temp/KT_A08_CLONE_A_4867542_20260311T1710"
+          "head": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8",
+          "path": "C:/Users/rober/AppData/Local/Temp/KT_WS8_A_4d7c624_q2idmodx"
         },
         "clone_b": {
           "clean": true,
-          "head": "4867542e364501a91c8e619ee3e26693d73b7a98",
-          "path": "C:/Users/rober/AppData/Local/Temp/KT_A08_CLONE_B_4867542_20260311T1710"
+          "head": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8",
+          "path": "C:/Users/rober/AppData/Local/Temp/KT_WS8_B_4d7c624_fg5i2zy8"
         }
       },
+      "program_id": "program.hat_demo",
       "proof_id": "hat_demo",
       "report": {
         "compare_keys": [
@@ -107,20 +111,20 @@
         ],
         "comparisons": [
           {
-            "a_value": "e013b5fcd20fc49c83d0e8502a40d03732478587fddbe71be81b25e720052e8a",
-            "b_value": "e013b5fcd20fc49c83d0e8502a40d03732478587fddbe71be81b25e720052e8a",
+            "a_value": "a84ecb799607a595db7538250e35c137ad26736aec5b790b3144b86a328d0934",
+            "b_value": "a84ecb799607a595db7538250e35c137ad26736aec5b790b3144b86a328d0934",
             "key": "delivery_root_hash",
             "status": "PASS"
           },
           {
-            "a_value": "06c04d718dc40d76518c69830be46f71234fade4bab36dc2b69fb69e205603dc",
-            "b_value": "06c04d718dc40d76518c69830be46f71234fade4bab36dc2b69fb69e205603dc",
+            "a_value": "0719fbd1a5e4d5050fe8e932f94502b486cf05f5b0e7da2fe86f47171f09c14f",
+            "b_value": "0719fbd1a5e4d5050fe8e932f94502b486cf05f5b0e7da2fe86f47171f09c14f",
             "key": "bindingloop_check_hash",
             "status": "PASS"
           },
           {
-            "a_value": "9bc6936d5f802f264e6099b535c9d41dd1d63acbbc00b17688680a3b82f87a94",
-            "b_value": "9bc6936d5f802f264e6099b535c9d41dd1d63acbbc00b17688680a3b82f87a94",
+            "a_value": "fdd8c6d687c31e6a468e8c5f090896163570b290ccac52a5bbced40e8257cdf6",
+            "b_value": "fdd8c6d687c31e6a468e8c5f090896163570b290ccac52a5bbced40e8257cdf6",
             "key": "evidence_core_merkle_root_sha256",
             "status": "PASS"
           },
@@ -131,8 +135,8 @@
             "status": "PASS"
           },
           {
-            "a_value": "78a9e536cfc7ab93b8ea0f49427ac5c3aea0a36e014f19fac314de60dc66fb91",
-            "b_value": "78a9e536cfc7ab93b8ea0f49427ac5c3aea0a36e014f19fac314de60dc66fb91",
+            "a_value": "6648094805ed504726724bbe99d569145bf630c6a8eb8a1aec691b30f0842bf6",
+            "b_value": "6648094805ed504726724bbe99d569145bf630c6a8eb8a1aec691b30f0842bf6",
             "key": "governance_manifest_sha256",
             "status": "PASS"
           },
@@ -149,18 +153,99 @@
             "status": "PASS"
           }
         ],
-        "run_a": "C:/Users/rober/AppData/Local/Temp/KT_A08_CLONE_A_4867542_20260311T1710/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A08_safe_run_hat_demo_clean_a/program_run",
-        "run_b": "C:/Users/rober/AppData/Local/Temp/KT_A08_CLONE_B_4867542_20260311T1710/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A08_safe_run_hat_demo_clean_b/program_run",
+        "run_a": "C:\\Users\\rober\\AppData\\Local\\Temp\\KT_WS8_A_4d7c624_q2idmodx\\KT_PROD_CLEANROOM\\exports\\_runs\\KT_OPERATOR\\WS8_safe_run_hat_demo_4d7c624_clean_a\\program_run",
+        "run_b": "C:\\Users\\rober\\AppData\\Local\\Temp\\KT_WS8_B_4d7c624_fg5i2zy8\\KT_PROD_CLEANROOM\\exports\\_runs\\KT_OPERATOR\\WS8_safe_run_hat_demo_4d7c624_clean_b\\program_run",
         "schema_id": "kt.operator.twocleanclone_proof.v1",
         "status": "PASS",
         "violations": []
       },
-      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/A08_twocleanclone_hat_demo_currenthead_fresh",
-      "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS8_twocleanclone_hat_demo_4d7c624",
+      "validated_head_sha": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8"
+    },
+    {
+      "clone_provenance": {
+        "clone_a": {
+          "clean": true,
+          "head": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8",
+          "path": "C:/Users/rober/AppData/Local/Temp/KT_WS8_A_4d7c624_q2idmodx"
+        },
+        "clone_b": {
+          "clean": true,
+          "head": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8",
+          "path": "C:/Users/rober/AppData/Local/Temp/KT_WS8_B_4d7c624_fg5i2zy8"
+        }
+      },
+      "program_id": "program.red_assault.serious_v1",
+      "proof_id": "red_assault_serious_v1",
+      "report": {
+        "compare_keys": [
+          "delivery_root_hash",
+          "bindingloop_check_hash",
+          "evidence_core_merkle_root_sha256",
+          "replay_receipt_hash",
+          "governance_manifest_sha256",
+          "constitution_epoch",
+          "mve_environment_fingerprint"
+        ],
+        "comparisons": [
+          {
+            "a_value": "126fa5cccab4b4df55de1173eb364eeaa6774f2cf1577f51f09cd9bc5dc777e5",
+            "b_value": "126fa5cccab4b4df55de1173eb364eeaa6774f2cf1577f51f09cd9bc5dc777e5",
+            "key": "delivery_root_hash",
+            "status": "PASS"
+          },
+          {
+            "a_value": "d79253e964ee635692c46389a43c8fc33ca2124eb8709dbd0b14a00f487760a3",
+            "b_value": "d79253e964ee635692c46389a43c8fc33ca2124eb8709dbd0b14a00f487760a3",
+            "key": "bindingloop_check_hash",
+            "status": "PASS"
+          },
+          {
+            "a_value": "46e2982e92f34480baba85b186c7bbdaeab48c718ec282d83080cf02bc22e539",
+            "b_value": "46e2982e92f34480baba85b186c7bbdaeab48c718ec282d83080cf02bc22e539",
+            "key": "evidence_core_merkle_root_sha256",
+            "status": "PASS"
+          },
+          {
+            "a_value": "04d5a31dd1124c066df1b02bd4b0db0dfb97f697c75041df5d66cc9430906140",
+            "b_value": "04d5a31dd1124c066df1b02bd4b0db0dfb97f697c75041df5d66cc9430906140",
+            "key": "replay_receipt_hash",
+            "status": "PASS"
+          },
+          {
+            "a_value": "6648094805ed504726724bbe99d569145bf630c6a8eb8a1aec691b30f0842bf6",
+            "b_value": "6648094805ed504726724bbe99d569145bf630c6a8eb8a1aec691b30f0842bf6",
+            "key": "governance_manifest_sha256",
+            "status": "PASS"
+          },
+          {
+            "a_value": 1,
+            "b_value": 1,
+            "key": "constitution_epoch",
+            "status": "PASS"
+          },
+          {
+            "a_value": "4c5810e8fda8402a7ed9951b500adf7583c62ac584fabc562d34911abeb4baab",
+            "b_value": "4c5810e8fda8402a7ed9951b500adf7583c62ac584fabc562d34911abeb4baab",
+            "key": "mve_environment_fingerprint",
+            "status": "PASS"
+          }
+        ],
+        "run_a": "C:\\Users\\rober\\AppData\\Local\\Temp\\KT_WS8_A_4d7c624_q2idmodx\\KT_PROD_CLEANROOM\\exports\\_runs\\KT_OPERATOR\\WS8_red_assault_serious_v1_4d7c624_clean_a",
+        "run_b": "C:\\Users\\rober\\AppData\\Local\\Temp\\KT_WS8_B_4d7c624_fg5i2zy8\\KT_PROD_CLEANROOM\\exports\\_runs\\KT_OPERATOR\\WS8_red_assault_serious_v1_4d7c624_clean_b",
+        "schema_id": "kt.operator.twocleanclone_proof.v1",
+        "status": "PASS",
+        "violations": []
+      },
+      "run_dir": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS8_twocleanclone_red_assault_serious_v1_4d7c624",
+      "validated_head_sha": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8"
     }
   ],
   "published_head_authority_claimed": false,
+  "representative_authority_lane_program_id": "program.red_assault.serious_v1",
+  "representative_authority_lane_proof_id": "red_assault_serious_v1",
+  "representative_authority_lane_proven": true,
   "schema_id": "kt.sovereign.twocleanclone_bundle.v1",
   "status": "PASS",
-  "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+  "validated_head_sha": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8"
 }
