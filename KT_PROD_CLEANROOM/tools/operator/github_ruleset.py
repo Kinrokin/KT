@@ -66,6 +66,10 @@ def _repo_slug(default: str = "") -> str:
     return tail
 
 
+def _git(*args: str) -> str:
+    return subprocess.check_output(["git", *args], cwd=str(repo_root()), text=True).strip()
+
+
 def _api_request(*, method: str, path: str, token: str, body: Optional[Dict[str, Any]] = None) -> Any:
     url = f"https://api.github.com{path}"
     data = None
@@ -201,11 +205,13 @@ def _load_ruleset(path_arg: str) -> Dict[str, Any]:
 def _receipt_base(*, repo_slug: str, ruleset_path: str, command: str) -> Dict[str, Any]:
     return {
         "apply_program_id": "program.github.ruleset.apply",
+        "branch_ref": _git("rev-parse", "--abbrev-ref", "HEAD"),
         "command": command,
         "created_utc": utc_now_iso_z(),
         "desired_state_artifact": str(_resolve_path(ruleset_path).relative_to(repo_root())).replace("\\", "/"),
         "repo": repo_slug,
         "schema_id": "kt.main_branch_protection_receipt.v2",
+        "validated_head_sha": _git("rev-parse", "HEAD"),
         "verify_program_id": "program.github.ruleset.verify",
     }
 

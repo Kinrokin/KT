@@ -19,6 +19,25 @@ def _write_dependency_reports(root: Path) -> None:
     _write_json(root / "KT_PROD_CLEANROOM" / "reports" / "sbom_cyclonedx.json", reports["sbom"])
 
 
+def _write_platform_governance_receipts(root: Path) -> None:
+    _write_json(
+        root / "KT_PROD_CLEANROOM" / "reports" / "main_branch_protection_receipt.json",
+        {
+            "schema_id": "kt.main_branch_protection_receipt.v2",
+            "status": "BLOCKED",
+            "claim_admissible": False,
+            "platform_block": {"http_status": 403, "message": "blocked"},
+        },
+    )
+    _write_json(
+        root / "KT_PROD_CLEANROOM" / "reports" / "ci_gate_promotion_receipt.json",
+        {
+            "schema_id": "kt.sovereign.ci_gate_promotion_receipt.v1",
+            "status": "PASS_WITH_PLATFORM_BLOCK",
+        },
+    )
+
+
 def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path: Path) -> None:
     _write_json(
         tmp_path / "KT_PROD_CLEANROOM" / "governance" / "readiness_scope_manifest.json",
@@ -64,6 +83,7 @@ def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path
         {"status": "ACTIVE"},
     )
     _write_dependency_reports(tmp_path)
+    _write_platform_governance_receipts(tmp_path)
 
     _sync_secondary_surfaces(
         root=tmp_path,
@@ -82,6 +102,7 @@ def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path
     promotion = json.loads((tmp_path / "KT_PROD_CLEANROOM" / "reports" / "settled_authority_promotion_receipt.json").read_text(encoding="utf-8"))
     documentary = json.loads((tmp_path / "KT_PROD_CLEANROOM" / "reports" / "documentary_truth_validation_receipt.json").read_text(encoding="utf-8"))
     dependency = json.loads((tmp_path / "KT_PROD_CLEANROOM" / "reports" / "dependency_inventory_validation_receipt.json").read_text(encoding="utf-8"))
+    narrowing = json.loads((tmp_path / "KT_PROD_CLEANROOM" / "reports" / "platform_governance_narrowing_receipt.json").read_text(encoding="utf-8"))
     verifier = json.loads((tmp_path / "KT_PROD_CLEANROOM" / "reports" / "public_verifier_manifest.json").read_text(encoding="utf-8"))
 
     assert readiness["current_authority_mode"] == "SETTLED_AUTHORITATIVE"
@@ -119,7 +140,9 @@ def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path
     assert promotion["promotion_verdict"] == "PASS"
     assert documentary["status"] == "PASS"
     assert dependency["status"] == "PASS"
-    assert verifier["schema_id"] == "kt.public_verifier_manifest.v3"
+    assert narrowing["platform_governance_verdict"] == "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED"
+    assert narrowing["platform_governance_claim_admissible"] is False
+    assert verifier["schema_id"] == "kt.public_verifier_manifest.v4"
     assert verifier["validated_head_sha"] == "abc123"
     assert verifier["evidence_commit"] == ""
     assert verifier["truth_subject_commit"] == "abc123"
@@ -127,8 +150,15 @@ def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path
     assert verifier["publication_receipt_status"] == "MISSING"
     assert verifier["evidence_contains_subject"] is False
     assert verifier["evidence_equals_subject"] is False
+    assert verifier["platform_governance_verdict"] == "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED"
+    assert verifier["platform_governance_claim_admissible"] is False
+    assert verifier["workflow_governance_status"] == "PASS_WITH_PLATFORM_BLOCK"
+    assert verifier["branch_protection_status"] == "BLOCKED"
+    assert verifier["enterprise_legitimacy_ceiling"] == "WORKFLOW_GOVERNANCE_ONLY"
     assert verifier["truth_pointer_ref"] == "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
     assert "KT_PROD_CLEANROOM/reports/dependency_inventory_validation_receipt.json" in verifier["state_receipts"]
+    assert "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json" in verifier["state_receipts"]
+    assert "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json" in verifier["state_receipts"]
 
 
 def test_sync_secondary_surfaces_is_stable_on_repeat_sync(tmp_path: Path) -> None:
@@ -176,6 +206,7 @@ def test_sync_secondary_surfaces_is_stable_on_repeat_sync(tmp_path: Path) -> Non
         {"status": "ACTIVE"},
     )
     _write_dependency_reports(tmp_path)
+    _write_platform_governance_receipts(tmp_path)
 
     _sync_secondary_surfaces(
         root=tmp_path,

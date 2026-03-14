@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
+from tools.operator.platform_governance_narrowing import build_platform_governance_claims, build_platform_governance_narrowing_receipt
 from tools.operator.public_verifier import build_public_verifier_claims
 from tools.operator.posture_consistency import verify_posture
 from tools.operator.authority_convergence_validate import build_authority_convergence_report
@@ -297,8 +298,9 @@ def _public_verifier_manifest_payload(
 ) -> Dict[str, Any]:
     status = "PASS" if authority_mode == "SETTLED_AUTHORITATIVE" and convergence_status == "PASS" else "HOLD"
     claims = build_public_verifier_claims(root=root, live_head=live_head, report_root_rel=report_root_rel)
+    governance_claims = build_platform_governance_claims(root=root, report_root_rel=report_root_rel)
     return {
-        "schema_id": "kt.public_verifier_manifest.v3",
+        "schema_id": "kt.public_verifier_manifest.v4",
         "generated_utc": utc_now_iso_z(),
         "status": status,
         "validated_head_sha": live_head,
@@ -309,11 +311,21 @@ def _public_verifier_manifest_payload(
         "evidence_contains_subject": claims["evidence_contains_subject"],
         "evidence_equals_subject": claims["evidence_equals_subject"],
         "claim_boundary": claims["claim_boundary"],
+        "platform_governance_verdict": governance_claims["platform_governance_verdict"],
+        "platform_governance_claim_admissible": governance_claims["platform_governance_claim_admissible"],
+        "workflow_governance_status": governance_claims["workflow_governance_status"],
+        "branch_protection_status": governance_claims["branch_protection_status"],
+        "platform_governance_claim_boundary": governance_claims["platform_governance_claim_boundary"],
+        "enterprise_legitimacy_ceiling": governance_claims["enterprise_legitimacy_ceiling"],
+        "platform_governance_receipt_refs": governance_claims["platform_governance_receipt_refs"],
+        "platform_block": governance_claims["platform_block"],
         "truth_pointer_ref": truth_source_ref,
         "state_receipts": [
             _report_ref(report_root_rel, "current_state_receipt.json"),
             _report_ref(report_root_rel, "truth_publication_stabilization_receipt.json"),
             _report_ref(report_root_rel, "main_branch_protection_receipt.json"),
+            _report_ref(report_root_rel, "ci_gate_promotion_receipt.json"),
+            _report_ref(report_root_rel, "platform_governance_narrowing_receipt.json"),
             _report_ref(report_root_rel, "authority_convergence_receipt.json"),
             _report_ref(report_root_rel, "documentary_truth_validation_receipt.json"),
             _report_ref(report_root_rel, "dependency_inventory_validation_receipt.json"),
@@ -830,6 +842,10 @@ def _sync_secondary_surfaces(
     _write_json(
         reports_root / "dependency_inventory_validation_receipt.json",
         build_dependency_inventory_validation_report(root=root, report_root=reports_root),
+    )
+    _write_json(
+        reports_root / "platform_governance_narrowing_receipt.json",
+        build_platform_governance_narrowing_receipt(root=root, report_root_rel=DEFAULT_REPORT_ROOT_REL),
     )
     _write_json(
         reports_root / "public_verifier_manifest.json",

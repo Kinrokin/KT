@@ -6,6 +6,7 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
+from tools.operator.platform_governance_narrowing import build_platform_governance_claims
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
 
 
@@ -106,6 +107,7 @@ def build_public_verifier_report(*, root: Path, report_root_rel: str = DEFAULT_R
     }
     if not claims["truth_subject_commit"] or not claims["subject_verdict"]:
         claims = build_public_verifier_claims(root=root, live_head=current_head_commit, report_root_rel=report_root_rel)
+    governance_claims = build_platform_governance_claims(root=root, report_root_rel=report_root_rel)
 
     truth_subject_commit = str(claims.get("truth_subject_commit", "")).strip()
     head_equals_subject = bool(current_head_commit) and bool(truth_subject_commit) and current_head_commit == truth_subject_commit
@@ -141,6 +143,14 @@ def build_public_verifier_report(*, root: Path, report_root_rel: str = DEFAULT_R
         "claim_boundary": str(claims.get("claim_boundary", "")).strip(),
         "head_claim_boundary": head_claim_boundary,
         "publication_evidence_refs": list(claims.get("publication_evidence_refs", [])),
+        "platform_governance_verdict": str(governance_claims.get("platform_governance_verdict", "")).strip(),
+        "platform_governance_claim_admissible": bool(governance_claims.get("platform_governance_claim_admissible")),
+        "workflow_governance_status": str(governance_claims.get("workflow_governance_status", "")).strip(),
+        "branch_protection_status": str(governance_claims.get("branch_protection_status", "")).strip(),
+        "platform_governance_claim_boundary": str(governance_claims.get("platform_governance_claim_boundary", "")).strip(),
+        "enterprise_legitimacy_ceiling": str(governance_claims.get("enterprise_legitimacy_ceiling", "")).strip(),
+        "platform_governance_receipt_refs": list(governance_claims.get("platform_governance_receipt_refs", [])),
+        "platform_block": governance_claims.get("platform_block"),
     }
 
 
