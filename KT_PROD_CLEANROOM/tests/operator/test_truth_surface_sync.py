@@ -19,7 +19,7 @@ def _write_dependency_reports(root: Path) -> None:
     _write_json(root / "KT_PROD_CLEANROOM" / "reports" / "sbom_cyclonedx.json", reports["sbom"])
 
 
-def _write_platform_governance_receipts(root: Path) -> None:
+def _write_platform_governance_receipts(root: Path, subject_head: str) -> None:
     _write_json(
         root / "KT_PROD_CLEANROOM" / "reports" / "main_branch_protection_receipt.json",
         {
@@ -27,6 +27,7 @@ def _write_platform_governance_receipts(root: Path) -> None:
             "status": "BLOCKED",
             "claim_admissible": False,
             "platform_block": {"http_status": 403, "message": "blocked"},
+            "validated_head_sha": subject_head,
         },
     )
     _write_json(
@@ -34,6 +35,7 @@ def _write_platform_governance_receipts(root: Path) -> None:
         {
             "schema_id": "kt.sovereign.ci_gate_promotion_receipt.v1",
             "status": "PASS_WITH_PLATFORM_BLOCK",
+            "head_sha": subject_head,
         },
     )
 
@@ -83,7 +85,7 @@ def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path
         {"status": "ACTIVE"},
     )
     _write_dependency_reports(tmp_path)
-    _write_platform_governance_receipts(tmp_path)
+    _write_platform_governance_receipts(tmp_path, "abc123")
 
     _sync_secondary_surfaces(
         root=tmp_path,
@@ -142,6 +144,7 @@ def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path
     assert dependency["status"] == "PASS"
     assert narrowing["platform_governance_verdict"] == "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED"
     assert narrowing["platform_governance_claim_admissible"] is False
+    assert narrowing["platform_governance_subject_commit"] == "abc123"
     assert verifier["schema_id"] == "kt.public_verifier_manifest.v4"
     assert verifier["validated_head_sha"] == "abc123"
     assert verifier["evidence_commit"] == ""
@@ -151,6 +154,7 @@ def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path
     assert verifier["evidence_contains_subject"] is False
     assert verifier["evidence_equals_subject"] is False
     assert verifier["platform_governance_verdict"] == "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED"
+    assert verifier["platform_governance_subject_commit"] == "abc123"
     assert verifier["platform_governance_claim_admissible"] is False
     assert verifier["workflow_governance_status"] == "PASS_WITH_PLATFORM_BLOCK"
     assert verifier["branch_protection_status"] == "BLOCKED"
@@ -206,7 +210,7 @@ def test_sync_secondary_surfaces_is_stable_on_repeat_sync(tmp_path: Path) -> Non
         {"status": "ACTIVE"},
     )
     _write_dependency_reports(tmp_path)
-    _write_platform_governance_receipts(tmp_path)
+    _write_platform_governance_receipts(tmp_path, "abc123")
 
     _sync_secondary_surfaces(
         root=tmp_path,

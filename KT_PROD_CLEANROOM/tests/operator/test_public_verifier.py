@@ -6,6 +6,7 @@ from pathlib import Path
 
 from tools.operator.public_verifier import (
     HEAD_VERDICT_CONTAINS,
+    GOVERNANCE_HEAD_VERDICT_WORKFLOW_CONTAINS,
     SUBJECT_VERDICT_PROVEN,
     build_public_verifier_claims,
     build_public_verifier_report,
@@ -33,7 +34,7 @@ def _init_git_repo(tmp_path: Path) -> None:
     _git(tmp_path, "config", "user.name", "Test User")
 
 
-def _write_platform_governance_receipts(tmp_path: Path) -> None:
+def _write_platform_governance_receipts(tmp_path: Path, subject_head: str) -> None:
     _write_json(
         tmp_path / "KT_PROD_CLEANROOM" / "reports" / "main_branch_protection_receipt.json",
         {
@@ -41,6 +42,7 @@ def _write_platform_governance_receipts(tmp_path: Path) -> None:
             "status": "BLOCKED",
             "claim_admissible": False,
             "platform_block": {"http_status": 403, "message": "blocked"},
+            "validated_head_sha": subject_head,
         },
     )
     _write_json(
@@ -48,6 +50,7 @@ def _write_platform_governance_receipts(tmp_path: Path) -> None:
         {
             "schema_id": "kt.sovereign.ci_gate_promotion_receipt.v1",
             "status": "PASS_WITH_PLATFORM_BLOCK",
+            "head_sha": subject_head,
         },
     )
 
@@ -84,7 +87,7 @@ def test_build_public_verifier_report_fail_closes_head_claim_to_contains_evidenc
     _init_git_repo(tmp_path)
     (tmp_path / "README.md").write_text("base\n", encoding="utf-8")
     _commit_all(tmp_path, "base")
-    _write_platform_governance_receipts(tmp_path)
+    _write_platform_governance_receipts(tmp_path, "c" * 40)
 
     _write_json(
         tmp_path / "KT_PROD_CLEANROOM" / "reports" / "public_verifier_manifest.json",
@@ -98,6 +101,7 @@ def test_build_public_verifier_report_fail_closes_head_claim_to_contains_evidenc
             "evidence_contains_subject": True,
             "evidence_equals_subject": False,
             "claim_boundary": "evidence commit and subject commit are distinct",
+            "platform_governance_subject_commit": "c" * 40,
             "platform_governance_verdict": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED",
             "platform_governance_claim_admissible": False,
             "workflow_governance_status": "PASS_WITH_PLATFORM_BLOCK",
@@ -128,7 +132,10 @@ def test_build_public_verifier_report_fail_closes_head_claim_to_contains_evidenc
     assert report["head_equals_subject"] is False
     assert report["head_claim_verdict"] == HEAD_VERDICT_CONTAINS
     assert report["platform_governance_verdict"] == "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED"
+    assert report["platform_governance_subject_commit"] == "c" * 40
     assert report["platform_governance_claim_admissible"] is False
     assert report["workflow_governance_status"] == "PASS_WITH_PLATFORM_BLOCK"
     assert report["branch_protection_status"] == "BLOCKED"
     assert report["enterprise_legitimacy_ceiling"] == "WORKFLOW_GOVERNANCE_ONLY"
+    assert report["platform_governance_head_equals_subject"] is False
+    assert report["platform_governance_head_claim_verdict"] == GOVERNANCE_HEAD_VERDICT_WORKFLOW_CONTAINS

@@ -37,18 +37,21 @@ def test_build_platform_governance_claims_narrows_to_workflow_only_when_branch_p
             "status": "BLOCKED",
             "claim_admissible": False,
             "platform_block": {"http_status": 403, "message": "blocked"},
+            "validated_head_sha": "a" * 40,
         },
     )
     _write_json(
         tmp_path / "KT_PROD_CLEANROOM" / "reports" / "ci_gate_promotion_receipt.json",
         {
             "status": "PASS_WITH_PLATFORM_BLOCK",
+            "head_sha": "a" * 40,
         },
     )
 
     claims = build_platform_governance_claims(root=tmp_path)
 
     assert claims["platform_governance_verdict"] == PLATFORM_GOVERNANCE_VERDICT_WORKFLOW_ONLY
+    assert claims["platform_governance_subject_commit"] == "a" * 40
     assert claims["platform_governance_claim_admissible"] is False
     assert claims["workflow_governance_status"] == "PASS_WITH_PLATFORM_BLOCK"
     assert claims["branch_protection_status"] == "BLOCKED"
@@ -62,18 +65,21 @@ def test_build_platform_governance_narrowing_receipt_marks_platform_enforcement_
         {
             "status": "PASS",
             "claim_admissible": True,
+            "validated_head_sha": "b" * 40,
         },
     )
     _write_json(
         tmp_path / "KT_PROD_CLEANROOM" / "reports" / "ci_gate_promotion_receipt.json",
         {
             "status": "PASS",
+            "head_sha": "b" * 40,
         },
     )
 
     receipt = build_platform_governance_narrowing_receipt(root=tmp_path)
 
     assert receipt["platform_governance_verdict"] == PLATFORM_GOVERNANCE_VERDICT_PROVEN
+    assert receipt["platform_governance_subject_commit"] == "b" * 40
     assert receipt["platform_governance_claim_admissible"] is True
     assert receipt["workflow_governance_status"] == "PASS"
     assert receipt["branch_protection_status"] == "PASS"

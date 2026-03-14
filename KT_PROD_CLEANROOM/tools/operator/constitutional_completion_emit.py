@@ -952,6 +952,7 @@ def _domain6_outputs(root: Path, head_sha: str) -> Dict[str, Dict[str, Any]]:
                 "evidence_contains_subject",
                 "evidence_equals_subject",
                 "claim_boundary",
+                "platform_governance_subject_commit",
                 "platform_governance_verdict",
                 "platform_governance_claim_admissible",
                 "workflow_governance_status",
@@ -962,8 +963,9 @@ def _domain6_outputs(root: Path, head_sha: str) -> Dict[str, Dict[str, Any]]:
             ],
             "rules": [
                 "Public verifier manifests may reference authoritative pointers, current-head workflow governance receipts, branch protection verification receipts, platform governance narrowing receipts, and cryptographic publication evidence only.",
-                "Public verifier manifests must emit evidence_commit, truth_subject_commit, subject_verdict, publication_receipt_status, evidence_contains_subject, evidence_equals_subject, claim_boundary, platform_governance_verdict, platform_governance_claim_admissible, workflow_governance_status, branch_protection_status, platform_governance_claim_boundary, enterprise_legitimacy_ceiling, and platform_governance_receipt_refs.",
+                "Public verifier manifests must emit evidence_commit, truth_subject_commit, subject_verdict, publication_receipt_status, evidence_contains_subject, evidence_equals_subject, claim_boundary, platform_governance_subject_commit, platform_governance_verdict, platform_governance_claim_admissible, workflow_governance_status, branch_protection_status, platform_governance_claim_boundary, enterprise_legitimacy_ceiling, and platform_governance_receipt_refs.",
                 "If current HEAD differs from truth_subject_commit, runtime verifier output must phrase HEAD only as containing evidence for the subject and must never claim that HEAD itself is the verified subject.",
+                "If current HEAD differs from platform_governance_subject_commit, runtime verifier output must phrase governance only as evidence for the subject commit and must never claim current-head governance freshness.",
                 "If branch_protection_status is not PASS, manifests and runtime verifier output must not phrase governance on main as platform-enforced.",
             ],
             "required_validators": [
@@ -1016,6 +1018,7 @@ def _domain6_outputs(root: Path, head_sha: str) -> Dict[str, Dict[str, Any]]:
             "evidence_contains_subject": False,
             "evidence_equals_subject": False,
             "claim_boundary": "No passing cryptographic publication receipt is present; do not claim that HEAD is transparency-verified.",
+            "platform_governance_subject_commit": head_sha,
             "platform_governance_verdict": "PLATFORM_GOVERNANCE_NOT_PROVEN",
             "platform_governance_claim_admissible": False,
             "workflow_governance_status": "MISSING",

@@ -22,6 +22,12 @@ HEAD_VERDICT_SUBJECT = "HEAD_IS_TRANSPARENCY_VERIFIED_SUBJECT"
 HEAD_VERDICT_CONTAINS = "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE"
 HEAD_VERDICT_UNPROVEN = "HEAD_TRANSPARENCY_CLAIM_UNPROVEN"
 
+GOVERNANCE_HEAD_VERDICT_PLATFORM_SUBJECT = "HEAD_HAS_PLATFORM_ENFORCEMENT_PROOF"
+GOVERNANCE_HEAD_VERDICT_PLATFORM_CONTAINS = "HEAD_CONTAINS_PLATFORM_ENFORCEMENT_EVIDENCE_FOR_SUBJECT"
+GOVERNANCE_HEAD_VERDICT_WORKFLOW_SUBJECT = "HEAD_HAS_WORKFLOW_GOVERNANCE_ONLY_EVIDENCE"
+GOVERNANCE_HEAD_VERDICT_WORKFLOW_CONTAINS = "HEAD_CONTAINS_WORKFLOW_GOVERNANCE_ONLY_EVIDENCE_FOR_SUBJECT"
+GOVERNANCE_HEAD_VERDICT_UNPROVEN = "HEAD_PLATFORM_GOVERNANCE_CLAIM_UNPROVEN"
+
 
 def _git(root: Path, *args: str) -> str:
     return subprocess.check_output(["git", "-C", str(root), *args], text=True).strip()
@@ -113,6 +119,11 @@ def build_public_verifier_report(*, root: Path, report_root_rel: str = DEFAULT_R
     head_equals_subject = bool(current_head_commit) and bool(truth_subject_commit) and current_head_commit == truth_subject_commit
     evidence_contains_subject = bool(claims.get("evidence_contains_subject"))
     subject_verdict = str(claims.get("subject_verdict", "")).strip() or SUBJECT_VERDICT_UNPROVEN
+    platform_governance_subject_commit = str(governance_claims.get("platform_governance_subject_commit", "")).strip()
+    platform_governance_verdict = str(governance_claims.get("platform_governance_verdict", "")).strip()
+    platform_governance_head_equals_subject = (
+        bool(current_head_commit) and bool(platform_governance_subject_commit) and current_head_commit == platform_governance_subject_commit
+    )
 
     if subject_verdict == SUBJECT_VERDICT_PROVEN and evidence_contains_subject:
         head_claim_verdict = HEAD_VERDICT_SUBJECT if head_equals_subject else HEAD_VERDICT_CONTAINS
@@ -126,6 +137,28 @@ def build_public_verifier_report(*, root: Path, report_root_rel: str = DEFAULT_R
         head_claim_verdict = HEAD_VERDICT_UNPROVEN
         head_claim_boundary = "Current HEAD has no proven transparency claim boundary."
         status = "HOLD"
+
+    if platform_governance_verdict == "PLATFORM_ENFORCEMENT_PROVEN" and platform_governance_subject_commit:
+        platform_governance_head_claim_verdict = (
+            GOVERNANCE_HEAD_VERDICT_PLATFORM_SUBJECT if platform_governance_head_equals_subject else GOVERNANCE_HEAD_VERDICT_PLATFORM_CONTAINS
+        )
+        platform_governance_head_claim_boundary = (
+            "Current HEAD equals platform_governance_subject_commit and has fresh platform-enforcement proof."
+            if platform_governance_head_equals_subject
+            else "Current HEAD contains platform-governance evidence for platform_governance_subject_commit; it is not itself freshly governance-proven."
+        )
+    elif platform_governance_verdict == "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED" and platform_governance_subject_commit:
+        platform_governance_head_claim_verdict = (
+            GOVERNANCE_HEAD_VERDICT_WORKFLOW_SUBJECT if platform_governance_head_equals_subject else GOVERNANCE_HEAD_VERDICT_WORKFLOW_CONTAINS
+        )
+        platform_governance_head_claim_boundary = (
+            "Current HEAD equals platform_governance_subject_commit and has fresh workflow-governance-only evidence, but no platform-enforcement proof."
+            if platform_governance_head_equals_subject
+            else "Current HEAD contains workflow-governance-only evidence for platform_governance_subject_commit; it is not itself freshly governance-proven."
+        )
+    else:
+        platform_governance_head_claim_verdict = GOVERNANCE_HEAD_VERDICT_UNPROVEN
+        platform_governance_head_claim_boundary = "Current HEAD has no proven platform-governance claim boundary."
 
     return {
         "schema_id": "kt.operator.public_verifier_receipt.v1",
@@ -143,6 +176,7 @@ def build_public_verifier_report(*, root: Path, report_root_rel: str = DEFAULT_R
         "claim_boundary": str(claims.get("claim_boundary", "")).strip(),
         "head_claim_boundary": head_claim_boundary,
         "publication_evidence_refs": list(claims.get("publication_evidence_refs", [])),
+        "platform_governance_subject_commit": platform_governance_subject_commit,
         "platform_governance_verdict": str(governance_claims.get("platform_governance_verdict", "")).strip(),
         "platform_governance_claim_admissible": bool(governance_claims.get("platform_governance_claim_admissible")),
         "workflow_governance_status": str(governance_claims.get("workflow_governance_status", "")).strip(),
@@ -151,6 +185,9 @@ def build_public_verifier_report(*, root: Path, report_root_rel: str = DEFAULT_R
         "enterprise_legitimacy_ceiling": str(governance_claims.get("enterprise_legitimacy_ceiling", "")).strip(),
         "platform_governance_receipt_refs": list(governance_claims.get("platform_governance_receipt_refs", [])),
         "platform_block": governance_claims.get("platform_block"),
+        "platform_governance_head_equals_subject": platform_governance_head_equals_subject,
+        "platform_governance_head_claim_verdict": platform_governance_head_claim_verdict,
+        "platform_governance_head_claim_boundary": platform_governance_head_claim_boundary,
     }
 
 

@@ -311,6 +311,7 @@ def _public_verifier_manifest_payload(
         "evidence_contains_subject": claims["evidence_contains_subject"],
         "evidence_equals_subject": claims["evidence_equals_subject"],
         "claim_boundary": claims["claim_boundary"],
+        "platform_governance_subject_commit": governance_claims["platform_governance_subject_commit"],
         "platform_governance_verdict": governance_claims["platform_governance_verdict"],
         "platform_governance_claim_admissible": governance_claims["platform_governance_claim_admissible"],
         "workflow_governance_status": governance_claims["workflow_governance_status"],

@@ -34,8 +34,21 @@ def build_platform_governance_claims(*, root: Path, report_root_rel: str = DEFAU
     branch_status = str(branch.get("status", "")).strip() or "MISSING"
     ci_status = str(ci.get("status", "")).strip() or "MISSING"
     branch_claim_admissible = bool(branch.get("claim_admissible"))
+    branch_head = str(branch.get("validated_head_sha", "")).strip()
+    ci_head = str(ci.get("head_sha", "")).strip() or str(ci.get("validated_head_sha", "")).strip()
+    subject_commit = ci_head or branch_head
 
-    if branch_status == "PASS" and branch_claim_admissible:
+    if branch_head and ci_head and branch_head != ci_head:
+        verdict = PLATFORM_GOVERNANCE_VERDICT_UNPROVEN
+        claim_admissible = False
+        boundary = "Branch-protection and workflow-governance receipts disagree on the governed subject head; no governance upgrade is admissible."
+        allowed_claims = ["governance subject mismatch is explicit"]
+        forbidden_claims = [
+            "platform-enforced governance proven on main",
+            "workflow governance proven on the current head",
+        ]
+        ceiling = "NO_GOVERNANCE_UPGRADE"
+    elif branch_status == "PASS" and branch_claim_admissible:
         verdict = PLATFORM_GOVERNANCE_VERDICT_PROVEN
         claim_admissible = True
         boundary = "Current main has fresh GitHub branch-protection / ruleset enforcement proof; platform-enforced governance claims are admissible."
@@ -43,7 +56,7 @@ def build_platform_governance_claims(*, root: Path, report_root_rel: str = DEFAU
             "platform-enforced governance proven on main",
             "workflow governance live on current head",
         ]
-        forbidden_claims: list[str] = []
+        forbidden_claims = []
         ceiling = "PLATFORM_ENFORCED_CURRENT_HEAD"
     elif ci_status in {"PASS_WITH_PLATFORM_BLOCK", "PASS", "PASS_WITH_WARNINGS"} and branch_status != "PASS":
         verdict = PLATFORM_GOVERNANCE_VERDICT_WORKFLOW_ONLY
@@ -75,6 +88,7 @@ def build_platform_governance_claims(*, root: Path, report_root_rel: str = DEFAU
         ceiling = "NO_GOVERNANCE_UPGRADE"
 
     return {
+        "platform_governance_subject_commit": subject_commit,
         "platform_governance_verdict": verdict,
         "platform_governance_claim_admissible": claim_admissible,
         "workflow_governance_status": ci_status,
