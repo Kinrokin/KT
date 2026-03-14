@@ -1,0 +1,137 @@
+{
+  "actual_touched": [
+    "KT_PROD_CLEANROOM/reports/kt_forgotten_surface_register.json",
+    "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+    "KT_PROD_CLEANROOM/reports/kt_historical_conflicts.json",
+    "KT_PROD_CLEANROOM/reports/kt_historical_memory_ingestion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_historical_resolutions.json",
+    "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json",
+    "KT_PROD_CLEANROOM/tests/operator/test_historical_memory_ingest.py",
+    "KT_PROD_CLEANROOM/tools/operator/historical_memory_ingest.py"
+  ],
+  "checks": [
+    {
+      "check": "prior_gates_passed",
+      "detail": "Step 4 requires Step 1 baseline ingestion and Step 3 constitutional ratification to be PASS.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_governance_baseline_ingestion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_constitutional_spine_ratification_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "historical_governance_ladders_ingested",
+      "detail": "Historical governance ladders must be explicitly carried from the older audit, completion, campaign, and closeout stages.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_resolutions.json",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/IMPLEMENTATION_COMPLETION_REPORT_20260309.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/KT_FULL_COMPLETION_ATTEMPT_REPORT_20260310.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/KT_E2E_COMPLETION_CAMPAIGN_REPORT_20260310.md",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "canon_codex_history_ingested",
+      "detail": "Codex lineage must be represented both as source family history and as explicitly remembered surfaces.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "KT_PROD_CLEANROOM/reports/kt_forgotten_surface_register.json",
+        "KT-Codex/metadata/manifest.json",
+        "KT-Codex/deliverable_manifest.md"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "old_conflict_registers_ingested",
+      "detail": "Historical blocker registers, codex conflict models, and rerun conflict receipts must all be ingested.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_conflicts.json",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/blocker_matrix.json",
+        "KT_PROD_CLEANROOM/reports/run_sweep_audit_failure_matrix.json",
+        "KT-Codex/schemas/conflict_event.schema.json",
+        "KT-Codex/schemas/multiversal_conflict_event.schema.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "crucible_history_ingested",
+      "detail": "Historical crucible registry and run-ledger memory must be summarized with registered entries, observed runs, and exemplar evidence.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/ledgers/c019_crucible_runs.jsonl"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "forgotten_surfaces_explicitly_listed",
+      "detail": "Historically important but noncanonical surfaces must be listed explicitly rather than left to conversational recall.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_forgotten_surface_register.json",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "reopened_defects_classified",
+      "detail": "Historical blockers must be mapped to current resolved, transformed, or still-open dispositions.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/blocker_matrix.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "post_touch_accounting_clean",
+      "detail": "Actual touched set must match the lawful Step 4 subject files plus the ingestion receipt.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_conflicts.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_resolutions.json",
+        "KT_PROD_CLEANROOM/reports/kt_forgotten_surface_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json",
+        "KT_PROD_CLEANROOM/tools/operator/historical_memory_ingest.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_historical_memory_ingest.py",
+        "KT_PROD_CLEANROOM/reports/kt_historical_memory_ingestion_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "claim_boundary": "This receipt validates Step 4 historical memory ingestion for compiled_head_commit only. A later repository head that contains this receipt is evidence about compiled_head_commit, not automatically that compiled head.",
+  "compiled_head_commit": "017017ef93db3ba6b8e5a2a3b708e680ac63ab2d",
+  "controlling_work_order": {
+    "schema_id": "kt.work_order.max_refactor_e2e_institutional_memory_and_full_stack_adjudication.v2",
+    "step_id": 4,
+    "step_name": "HISTORICAL_EVIDENCE_INGESTION_AND_FORGOTTEN_SURFACE_RECOVERY",
+    "work_order_id": "WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION"
+  },
+  "current_head_commit": "017017ef93db3ba6b8e5a2a3b708e680ac63ab2d",
+  "generated_utc": "2026-03-14T17:41:51Z",
+  "next_lawful_step": {
+    "status_after_step_4": "UNLOCKED",
+    "step_id": 5,
+    "step_name": "SNAPSHOT_DETERMINISM_AND_PHYSICAL_INVENTORY"
+  },
+  "pass_verdict": "HISTORICAL_MEMORY_INGESTED",
+  "planned_mutates": [
+    "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+    "KT_PROD_CLEANROOM/reports/kt_historical_conflicts.json",
+    "KT_PROD_CLEANROOM/reports/kt_historical_resolutions.json",
+    "KT_PROD_CLEANROOM/reports/kt_forgotten_surface_register.json",
+    "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json",
+    "KT_PROD_CLEANROOM/tools/operator/historical_memory_ingest.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_historical_memory_ingest.py",
+    "KT_PROD_CLEANROOM/reports/kt_historical_memory_ingestion_receipt.json"
+  ],
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.historical_memory_ingestion_receipt.v1",
+  "status": "PASS",
+  "step1_gate_evidence_commit": "4f39864e596836b806899bc07a2977b713a717b2",
+  "step1_gate_subject_commit": "e6fc81b959bb8fcd0a736527aee7744d70168ad8",
+  "step3_gate_evidence_commit": "2cdc96df365dd69b557e27811f132c38f85f10b4",
+  "step3_gate_subject_commit": "6f6d6038227f068e8a15dfb630dd81532d360032",
+  "unexpected_touches": []
+}
