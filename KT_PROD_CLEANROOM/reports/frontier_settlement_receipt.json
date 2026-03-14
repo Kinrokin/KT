@@ -1,0 +1,75 @@
+{
+  "active_truth_source_ref": "kt_truth_ledger:ledger/current/current_pointer.json",
+  "authority_convergence_proof_class": "FAIL_CLOSED",
+  "authority_convergence_status": "FAIL",
+  "blockers": [
+    "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+    "TRUTH_PUBLICATION_STABILIZED_FALSE",
+    "H1_ACTIVATION_ALLOWED_FALSE",
+    "AUTHORITY_CONVERGENCE_UNRESOLVED"
+  ],
+  "claim_boundary": "This receipt compiles frontier settlement and H1 gate evaluation for compiled_head_commit only. A later repository head that contains this receipt must not be described as the compiled head unless the SHAs match.",
+  "commercial_claim_compiler_compiled_head_commit": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834",
+  "commercial_claims_status": "PASS",
+  "compiled_head_commit": "553f4d362fda0087c7a728d1bdec893cafa6e938",
+  "demonstrated_programs": [
+    {
+      "program_id": "program.certify.canonical_hmac",
+      "proof_id": "certify",
+      "validated_head_sha": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8"
+    },
+    {
+      "program_id": "program.hat_demo",
+      "proof_id": "hat_demo",
+      "validated_head_sha": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8"
+    },
+    {
+      "program_id": "program.red_assault.serious_v1",
+      "proof_id": "red_assault_serious_v1",
+      "validated_head_sha": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8"
+    }
+  ],
+  "documentary_mirror_ref": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+  "enterprise_legitimacy_ceiling": "WORKFLOW_GOVERNANCE_ONLY",
+  "evaluation_failures": [],
+  "frontier_settlement_verdict": "FRONTIER_SETTLED_WITH_H1_BLOCK",
+  "generated_utc": "2026-03-14T14:20:25Z",
+  "h1_allowed": false,
+  "h1_gate_verdict": "H1_BLOCKED",
+  "next_horizon": "H1_SINGLE_ADAPTER_TRUTH",
+  "platform_governance_head_claim_verdict": "HEAD_CONTAINS_WORKFLOW_GOVERNANCE_ONLY_EVIDENCE_FOR_SUBJECT",
+  "platform_governance_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
+  "prerequisites_missing": [
+    "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json proof_class=PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+    "KT_PROD_CLEANROOM/governance/execution_board.json program_gates.TRUTH_PUBLICATION_STABILIZED=true",
+    "KT_PROD_CLEANROOM/governance/execution_board.json program_gates.H1_ACTIVATION_ALLOWED=true",
+    "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json status=PASS"
+  ],
+  "published_head_self_convergence_proof_class": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+  "published_head_self_convergence_status": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+  "representative_authority_lane_program_id": "program.red_assault.serious_v1",
+  "representative_authority_lane_proven": true,
+  "representative_authority_lane_subject_commit": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8",
+  "router_and_multi_adapter_blocked": true,
+  "runtime_boundary_claim_admissible": true,
+  "runtime_boundary_evidence_commit": "ff9d852ef902206263701568045fa736c30d91c5",
+  "runtime_boundary_head_claim_verdict": "HEAD_CONTAINS_RUNTIME_BOUNDARY_EVIDENCE_FOR_SUBJECT",
+  "runtime_boundary_subject_commit": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834",
+  "schema_id": "kt.operator.frontier_settlement_receipt.v1",
+  "single_adapter_benchmarking_allowed": false,
+  "status": "PASS",
+  "supporting_evidence_refs": [
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+    "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+    "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+    "KT_PROD_CLEANROOM/reports/proofrunbundle_index.json",
+    "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+    "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+    "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+    "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json"
+  ],
+  "truth_evidence_commit": "a1b8397ec2b4eb817dabfaecaf5a0327158c8e1f",
+  "truth_head_claim_verdict": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+  "truth_subject_commit": "cbc921601b646d7962555c902ea2747963fd9fad"
+}

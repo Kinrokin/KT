@@ -1,10 +1,26 @@
 {
   "activation_allowed": false,
-  "created_utc": "2026-03-08T23:17:13Z",
+  "claim_boundary": "This receipt evaluates next-horizon activation for compiled_head_commit only. A later repository head that contains this receipt must not be described as the compiled head unless the SHAs match.",
+  "compiled_head_commit": "553f4d362fda0087c7a728d1bdec893cafa6e938",
+  "created_utc": "2026-03-14T14:20:24Z",
+  "h1_gate_verdict": "H1_BLOCKED",
   "next_horizon": "H1_SINGLE_ADAPTER_TRUTH",
   "prerequisites_missing": [
-    "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json status=PASS"
+    "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json proof_class=PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+    "KT_PROD_CLEANROOM/governance/execution_board.json program_gates.TRUTH_PUBLICATION_STABILIZED=true",
+    "KT_PROD_CLEANROOM/governance/execution_board.json program_gates.H1_ACTIVATION_ALLOWED=true",
+    "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json status=PASS"
   ],
-  "schema_id": "kt.next_horizon_activation_receipt.v1",
-  "status": "HOLD"
+  "router_and_multi_adapter_blocked": true,
+  "schema_id": "kt.next_horizon_activation_receipt.v2",
+  "single_adapter_only": true,
+  "status": "HOLD",
+  "supporting_evidence_refs": [
+    "KT_PROD_CLEANROOM/governance/execution_board.json",
+    "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+    "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+    "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+  ]
 }
