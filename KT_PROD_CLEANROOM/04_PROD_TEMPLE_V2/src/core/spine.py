@@ -38,6 +38,7 @@ def _runtime_registry_hash(registry: Any) -> str:
             "canonical_spine": {"module": registry.canonical_spine.module, "callable": registry.canonical_spine.callable},
             "state_vault": {"jsonl_path": registry.state_vault.jsonl_path},
             "runtime_import_roots": list(registry.runtime_import_roots),
+            "compatibility_allowlist_roots": list(registry.compatibility_allowlist_roots),
             "organs_by_root": dict(registry.organs_by_root),
             "import_truth_matrix": {k: list(v) for k, v in registry.import_truth_matrix.items()},
             "dry_run": {"no_network": registry.dry_run.no_network, "providers_enabled": registry.dry_run.providers_enabled},

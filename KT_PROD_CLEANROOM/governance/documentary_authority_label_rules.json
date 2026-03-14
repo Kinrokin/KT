@@ -8,15 +8,19 @@
   "domain_id": "DOMAIN_6_EXTERNAL_LEGIBILITY",
   "effective_utc": "2026-03-10T00:00:00Z",
   "expires_utc": "2026-09-10T00:00:00Z",
-  "law_id": "DOCUMENTARY_AUTHORITY_LABEL_RULES_V1_20260310",
+  "law_id": "DOCUMENTARY_AUTHORITY_LABEL_RULES_V2_20260314",
   "required_validators": [
-    "python -m tools.operator.constitutional_completion_emit"
+    "python -m tools.operator.constitutional_completion_emit",
+    "python -m tools.operator.claim_compiler"
   ],
   "rules": [
-    "Historical and commercial docs must carry explicit documentary-only or historical-only labels."
+    "Historical and commercial docs must carry explicit documentary-only or historical-only labels.",
+    "Commercial docs must point current-tense claim readers to KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json."
   ],
   "schema_id": "kt.governance.documentary_authority_label_rules.v1",
   "status": "ACTIVE",
-  "summary": "Documentary and historical surfaces must never be mistaken for posture authority.",
-  "supersedes": []
+  "summary": "Documentary and historical surfaces must never be mistaken for posture authority, and commercial claims must bind back to the claim compiler.",
+  "supersedes": [
+    "DOCUMENTARY_AUTHORITY_LABEL_RULES_V1_20260310"
+  ]
 }

@@ -1,5 +1,11 @@
 # KT Certification Pack (Operator Deliverable)
 
+Documentary-only commercial surface.
+Current-tense claims in this document are bound by `KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json`.
+Active truth source: `kt_truth_ledger:ledger/current/current_pointer.json`.
+Documentary compatibility mirror on main: `KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json`.
+Verifier source: `KT_PROD_CLEANROOM/reports/public_verifier_manifest.json`.
+
 This document describes the current certification lane and explicitly marks older sealed baselines as historical only.
 
 This offering produces an auditor-grade evidence pack proving a specific KT state passes the governed sweep harness.
@@ -12,13 +18,17 @@ Lane: `certify.canonical_hmac`
 
 ## Current Canonical Baseline
 
-Current certification posture is defined only by the live authority surfaces:
+Current certification posture is defined by the active truth source plus the documentary and verifier surfaces that point to it:
 
-- `KT_PROD_CLEANROOM/governance/execution_board.json`
-- `KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json`
-- `KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json`
+- Active truth source: `kt_truth_ledger:ledger/current/current_pointer.json`
+- Documentary mirror on main: `KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json`
+- Current claim boundary: `KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json`
+- Public verifier surface: `KT_PROD_CLEANROOM/reports/public_verifier_manifest.json`
+- Board context: `KT_PROD_CLEANROOM/governance/execution_board.json`
+- Convergence context: `KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json`
 
 Any older sealed tag or commit is historical unless re-promoted by those current authority surfaces.
+Do not read the main mirror as the active truth source.
 
 ## Historical V1 Baseline (Documentary Only)
 

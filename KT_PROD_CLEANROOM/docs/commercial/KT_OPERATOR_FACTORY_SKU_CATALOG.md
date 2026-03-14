@@ -3,6 +3,11 @@
 This catalog maps the **operator factory lanes** to **commercial SKUs**.
 It is intentionally mechanical: an SKU is accepted only when the referenced **WORM run directory** and **delivery bundle artifacts** exist and validate.
 
+Documentary-only commercial surface.
+Current-tense claims in this document are bound by `KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json`.
+Active truth source: `kt_truth_ledger:ledger/current/current_pointer.json`.
+Verifier source: `KT_PROD_CLEANROOM/reports/public_verifier_manifest.json`.
+
 ## What clients buy (plain language)
 - **Risk reduction** via governed, repeatable verification runs (not ad-hoc testing).
 - **Audit defensibility** via replayable evidence, hash receipts, and tamper-evident run roots.
@@ -183,4 +188,3 @@ Reference spec:
 
 **Pricing logic**
 - Per-iteration pricing (baseline → train → validate → gate → deliver), plus pass-through compute/hardware if applicable.
-

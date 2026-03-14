@@ -1089,19 +1089,25 @@ def _domain6_outputs(root: Path, head_sha: str) -> Dict[str, Dict[str, Any]]:
             },
         ),
         "KT_PROD_CLEANROOM/reports/documentary_authority_labels.json": {
-            "schema_id": "kt.documentary_authority_labels.v1",
+            "schema_id": "kt.documentary_authority_labels.v2",
             "generated_utc": utc_now_iso_z(),
             "status": "ACTIVE",
             "labels": [
                 {"glob": "KT_PROD_CLEANROOM/docs/operator/*.md", "label": "DOCUMENTARY_ONLY_UNLESS_CITED_BY_BOARD"},
+                {"glob": "KT_PROD_CLEANROOM/docs/commercial/*.md", "label": "DOCUMENTARY_ONLY_COMMERCIAL_CLAIMS_BIND_TO_CLAIM_COMPILER"},
                 {"glob": "docs/audit/**", "label": "AUDIT_DOCUMENTARY_ONLY"},
                 {"glob": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/**", "label": "HISTORICAL_ONLY"},
             ],
+            "claim_compiler_receipt_ref": "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
         },
         "KT_PROD_CLEANROOM/reports/commercial_program_catalog.json": {
-            "schema_id": "kt.commercial_program_catalog.v1",
+            "schema_id": "kt.commercial_program_catalog.v2",
             "generated_utc": utc_now_iso_z(),
             "status": "ACTIVE",
+            "documentary_only": True,
+            "claim_compiler_receipt_ref": "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+            "public_verifier_manifest_ref": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+            "runtime_boundary_receipt_ref": "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
             "program_count": len(programs),
             "programs": [
                 {

@@ -27,6 +27,7 @@ RUNTIME_REGISTRY_REQUIRED_FIELDS_ORDER = (
     "canonical_spine",
     "state_vault",
     "runtime_import_roots",
+    "compatibility_allowlist_roots",
     "organs_by_root",
     "import_truth_matrix",
     "dry_run",
@@ -59,6 +60,7 @@ def validate_runtime_registry(payload: Dict[str, Any]) -> None:
     _validate_callable_spec(payload.get("canonical_spine"), "canonical_spine")
     _validate_state_vault(payload.get("state_vault"))
     _validate_string_list(payload.get("runtime_import_roots"), "runtime_import_roots")
+    _validate_string_list(payload.get("compatibility_allowlist_roots"), "compatibility_allowlist_roots", allow_empty=True)
     _validate_mapping(payload.get("organs_by_root"), "organs_by_root")
     _validate_matrix(payload.get("import_truth_matrix"))
     _validate_dry_run(payload.get("dry_run"))
@@ -81,8 +83,11 @@ def _validate_state_vault(value: Any) -> None:
     validate_short_string(entry, "jsonl_path", max_len=256)
 
 
-def _validate_string_list(value: Any, name: str) -> None:
-    if not isinstance(value, list) or not value:
+def _validate_string_list(value: Any, name: str, *, allow_empty: bool = False) -> None:
+    if not isinstance(value, list):
+        expectation = "list" if allow_empty else "non-empty list"
+        raise SchemaValidationError(f"{name} must be a {expectation} (fail-closed)")
+    if not allow_empty and not value:
         raise SchemaValidationError(f"{name} must be a non-empty list (fail-closed)")
     if not all(isinstance(x, str) and x.strip() for x in value):
         raise SchemaValidationError(f"{name} must contain non-empty strings (fail-closed)")

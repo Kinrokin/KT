@@ -40,6 +40,7 @@ def _canonical_registry_hash(registry_obj: Dict[str, object]) -> str:
         "canonical_spine": registry_obj.get("canonical_spine"),
         "state_vault": registry_obj.get("state_vault"),
         "runtime_import_roots": registry_obj.get("runtime_import_roots"),
+        "compatibility_allowlist_roots": registry_obj.get("compatibility_allowlist_roots"),
         "organs_by_root": registry_obj.get("organs_by_root"),
         "import_truth_matrix": registry_obj.get("import_truth_matrix"),
         "dry_run": registry_obj.get("dry_run"),

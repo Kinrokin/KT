@@ -13,6 +13,7 @@ def _write_json(path: Path, payload: dict) -> None:
 
 def _seed_governance(root: Path, *, readiness_excludes: list[str]) -> None:
     gov = root / "KT_PROD_CLEANROOM" / "governance"
+    v2_docs = root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "docs"
     _write_json(
         gov / "trust_zone_registry.json",
         {
@@ -49,7 +50,27 @@ def _seed_governance(root: Path, *, readiness_excludes: list[str]) -> None:
         gov / "runtime_boundary_contract.json",
         {
             "schema_id": "kt.governance.runtime_boundary_contract.v1",
+            "canonical_runtime_roots": ["core", "kt"],
+            "compatibility_allowlist_roots": ["tools"],
             "canonical_runtime_excludes": ["KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/tools/**"],
+        },
+    )
+    _write_json(
+        v2_docs / "RUNTIME_REGISTRY.json",
+        {
+            "schema_id": "kt.runtime_registry.v1",
+            "schema_version_hash": "test-only",
+            "registry_version": "1",
+            "canonical_entry": {"module": "kt.entrypoint", "callable": "invoke"},
+            "canonical_spine": {"module": "core.spine", "callable": "run"},
+            "state_vault": {"jsonl_path": "_runtime_artifacts/state_vault.jsonl"},
+            "runtime_import_roots": ["core", "kt"],
+            "compatibility_allowlist_roots": ["tools"],
+            "organs_by_root": {"core": "Spine", "kt": "Entry Point"},
+            "import_truth_matrix": {"Entry Point": ["Entry Point", "Spine"], "Spine": ["Spine"]},
+            "dry_run": {"no_network": True, "providers_enabled": False},
+            "policy_c": {"drift": {}, "sweep": {}, "static_safety": {}},
+            "adapters": {"registry_schema_id": "kt.adapters.registry.v1", "allowed_export_roots": ["exports/adapters"], "entries": []},
         },
     )
     _write_json(
@@ -99,3 +120,20 @@ def test_validate_trust_zones_fails_when_generated_truth_is_not_excluded_from_re
     report = validate_trust_zones(root=tmp_path)
     assert report["status"] == "FAIL"
     assert "readiness_excludes_incomplete" in report["failures"]
+
+
+def test_validate_trust_zones_fails_when_runtime_registry_keeps_tools_canonical(tmp_path: Path) -> None:
+    _seed_governance(
+        tmp_path,
+        readiness_excludes=["LAB", "ARCHIVE", "COMMERCIAL", "GENERATED_RUNTIME_TRUTH", "QUARANTINED"],
+    )
+    runtime_registry_path = tmp_path / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "docs" / "RUNTIME_REGISTRY.json"
+    runtime_registry = json.loads(runtime_registry_path.read_text(encoding="utf-8"))
+    runtime_registry["runtime_import_roots"] = ["core", "kt", "tools"]
+    runtime_registry["compatibility_allowlist_roots"] = []
+    runtime_registry_path.write_text(json.dumps(runtime_registry, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = validate_trust_zones(root=tmp_path)
+
+    assert report["status"] == "FAIL"
+    assert "runtime_registry_canonical_roots_mismatch" in report["failures"]

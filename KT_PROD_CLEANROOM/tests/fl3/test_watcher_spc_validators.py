@@ -115,3 +115,9 @@ def test_runtime_registry_guard_blocks_watcher_root(tmp_path: Path) -> None:
     with pytest.raises(WatcherSPCValidationError):
         assert_runtime_registry_has_no_watcher_spc(registry_path=p)
 
+
+def test_runtime_registry_guard_blocks_watcher_compatibility_root(tmp_path: Path) -> None:
+    p = tmp_path / "registry.json"
+    _write_json(p, {"runtime_import_roots": ["core"], "compatibility_allowlist_roots": ["watcher"]})
+    with pytest.raises(WatcherSPCValidationError):
+        assert_runtime_registry_has_no_watcher_spc(registry_path=p)

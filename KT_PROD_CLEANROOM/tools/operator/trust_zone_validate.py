@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
+from tools.operator.runtime_boundary_integrity import build_runtime_boundary_integrity_receipt
 from tools.operator.titanium_common import load_json, make_run_dir, repo_root, write_failure_artifacts, write_json_worm
 from tools.operator.truth_authority import expected_readiness_excludes, frozen_surface_coverage
 
@@ -245,6 +246,13 @@ def validate_trust_zones(*, root: Path) -> Dict[str, Any]:
     )
     if not board_truth_source_ok:
         failures.append("execution_board_truth_source_outside_generated_zone")
+
+    runtime_boundary = build_runtime_boundary_integrity_receipt(root=root)
+    checks.extend(list(runtime_boundary.get("checks", [])))
+    for failure in runtime_boundary.get("failures", []):
+        failure_text = str(failure).strip()
+        if failure_text:
+            failures.append(failure_text)
 
     status = "PASS" if not failures else "FAIL"
     return {

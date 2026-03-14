@@ -11,6 +11,7 @@
     "canonical_spine",
     "state_vault",
     "runtime_import_roots",
+    "compatibility_allowlist_roots",
     "organs_by_root",
     "import_truth_matrix",
     "dry_run",
@@ -73,6 +74,12 @@
       }
     },
     "runtime_import_roots": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "compatibility_allowlist_roots": {
       "type": "array",
       "items": {
         "type": "string"

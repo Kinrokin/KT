@@ -46,6 +46,9 @@ def assert_runtime_registry_has_no_watcher_spc(*, registry_path: Path) -> None:
     roots = reg.get("runtime_import_roots")
     if isinstance(roots, list) and any(str(x).strip() == "watcher" for x in roots):
         raise WatcherSPCValidationError("runtime_import_roots must not include 'watcher' in canonical registry (fail-closed)")
+    compatibility_roots = reg.get("compatibility_allowlist_roots")
+    if isinstance(compatibility_roots, list) and any(str(x).strip() == "watcher" for x in compatibility_roots):
+        raise WatcherSPCValidationError("compatibility_allowlist_roots must not include 'watcher' (fail-closed)")
 
     for s in _iter_strings(reg):
         low = s.lower()

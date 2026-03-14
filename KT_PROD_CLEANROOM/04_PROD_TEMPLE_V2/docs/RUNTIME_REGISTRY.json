@@ -1,6 +1,6 @@
 {
   "schema_id": "kt.runtime_registry.v1",
-  "schema_version_hash": "4a878a12fb0e1c17cadd7f29b1f536b44d5eb038098c924722f3d069b6549965",
+  "schema_version_hash": "4c1e81341906ea9720eb93a09ca3a7dbe9e44437dd8fc77b75321414284c8107",
   "registry_version": "1",
   "canonical_entry": {
     "module": "kt.entrypoint",
@@ -26,8 +26,10 @@
     "schemas",
     "temporal",
     "thermodynamics",
-    "tools",
     "versioning"
+  ],
+  "compatibility_allowlist_roots": [
+    "tools"
   ],
   "policy_c": {
     "drift": {
@@ -71,7 +73,6 @@
     "schemas": "Schemas / Contracts",
     "temporal": "Temporal Engine",
     "thermodynamics": "Thermodynamics / Budget",
-    "tools": "Router",
     "versioning": "Schemas / Contracts"
   },
   "import_truth_matrix": {
@@ -87,7 +88,6 @@
       "Multiverse Engine",
       "Paradox Engine",
       "Receipts / Ledger",
-      "Router",
       "Schemas / Contracts",
       "Spine",
       "Temporal Engine",
@@ -127,11 +127,6 @@
     ],
     "Crucible Engine": [
       "Crucible Engine",
-      "Schemas / Contracts",
-      "Thermodynamics / Budget"
-    ],
-    "Router": [
-      "Router",
       "Schemas / Contracts",
       "Thermodynamics / Budget"
     ],

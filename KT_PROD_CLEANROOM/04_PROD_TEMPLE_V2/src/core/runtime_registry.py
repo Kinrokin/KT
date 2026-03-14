@@ -101,6 +101,7 @@ class RuntimeRegistry:
     canonical_spine: CallableSpec
     state_vault: StateVaultSpec
     runtime_import_roots: Tuple[str, ...]
+    compatibility_allowlist_roots: Tuple[str, ...]
     organs_by_root: Mapping[str, str]
     import_truth_matrix: Mapping[str, Tuple[str, ...]]
     dry_run: DryRunSpec
@@ -162,6 +163,7 @@ def load_runtime_registry() -> RuntimeRegistry:
         "canonical_spine",
         "state_vault",
         "runtime_import_roots",
+        "compatibility_allowlist_roots",
         "organs_by_root",
         "import_truth_matrix",
         "dry_run",
@@ -190,11 +192,22 @@ def load_runtime_registry() -> RuntimeRegistry:
     canonical_spine = _parse_callable_spec(data.get("canonical_spine"), name="canonical_spine")
     state_vault = _parse_state_vault_spec(data.get("state_vault"))
     runtime_import_roots = _parse_sorted_str_list(data.get("runtime_import_roots"), name="runtime_import_roots")
+    compatibility_allowlist_roots = _parse_sorted_str_list(
+        data.get("compatibility_allowlist_roots"),
+        name="compatibility_allowlist_roots",
+        allow_empty=True,
+    )
     organs_by_root = _parse_organs_by_root(data.get("organs_by_root"), runtime_import_roots)
     import_truth_matrix = _parse_import_truth_matrix(data.get("import_truth_matrix"))
     dry_run = _parse_dry_run_spec(data.get("dry_run"))
     policy_c = _parse_policy_c_spec(data.get("policy_c"))
     adapters = _parse_adapters_spec(data.get("adapters"))
+
+    overlap = sorted(set(runtime_import_roots).intersection(compatibility_allowlist_roots))
+    if overlap:
+        raise RuntimeRegistryError(
+            f"compatibility_allowlist_roots overlap canonical runtime roots (fail-closed): {overlap}"
+        )
 
     # Root allowlist must cover canonical Entry + Spine module roots (no silent discovery).
     for spec, label in ((canonical_entry, "canonical_entry"), (canonical_spine, "canonical_spine")):
@@ -220,6 +233,7 @@ def load_runtime_registry() -> RuntimeRegistry:
         canonical_spine=canonical_spine,
         state_vault=state_vault,
         runtime_import_roots=runtime_import_roots,
+        compatibility_allowlist_roots=compatibility_allowlist_roots,
         organs_by_root=organs_by_root,
         import_truth_matrix=import_truth_matrix,
         dry_run=dry_run,
@@ -260,6 +274,7 @@ def _parse_state_vault_spec(value: Any) -> StateVaultSpec:
         canonical_spine=CallableSpec("core.spine", "run"),
         state_vault=StateVaultSpec(jsonl_path=jsonl_path),
         runtime_import_roots=(),
+        compatibility_allowlist_roots=(),
         organs_by_root={},
         import_truth_matrix={},
         dry_run=DryRunSpec(no_network=True, providers_enabled=False),
@@ -286,10 +301,13 @@ def _parse_state_vault_spec(value: Any) -> StateVaultSpec:
     return StateVaultSpec(jsonl_path=jsonl_path)
 
 
-def _parse_sorted_str_list(value: Any, *, name: str) -> Tuple[str, ...]:
-    if not isinstance(value, list) or not value or not all(isinstance(x, str) for x in value):
-        raise RuntimeRegistryError(f"{name} must be a non-empty list of strings (fail-closed)")
+def _parse_sorted_str_list(value: Any, *, name: str, allow_empty: bool = False) -> Tuple[str, ...]:
+    if not isinstance(value, list) or not all(isinstance(x, str) for x in value):
+        expectation = "list of strings" if allow_empty else "non-empty list of strings"
+        raise RuntimeRegistryError(f"{name} must be a {expectation} (fail-closed)")
     normalized = [x.strip() for x in value]
+    if not allow_empty and not normalized:
+        raise RuntimeRegistryError(f"{name} must be a non-empty list of strings (fail-closed)")
     if any(not x for x in normalized):
         raise RuntimeRegistryError(f"{name} contains empty strings (fail-closed)")
     if normalized != sorted(normalized):
