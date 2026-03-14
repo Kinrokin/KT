@@ -1,0 +1,98 @@
+{
+  "generated_utc": "2026-03-14T20:46:47Z",
+  "scheduled_obligations": [
+    {
+      "blocker_id": "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+      "current_status": "ACTIVE_WITH_TTL",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitutional_court_procedure.json"
+      ],
+      "expires_utc": "2026-03-21T14:20:24Z",
+      "obligation_id": "PARADOX_HOLD::PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+      "on_expiry_actions": [
+        "FAIL_CLOSED",
+        "CONSTITUTIONAL_COURT_ESCALATION"
+      ],
+      "opened_utc": "2026-03-14T14:20:24Z",
+      "source_hold_surface_ref": "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+      "ttl": "P7D"
+    },
+    {
+      "blocker_id": "TRUTH_PUBLICATION_STABILIZED_FALSE",
+      "current_status": "ACTIVE_WITH_TTL",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitutional_court_procedure.json"
+      ],
+      "expires_utc": "2026-03-21T14:20:24Z",
+      "obligation_id": "PARADOX_HOLD::TRUTH_PUBLICATION_STABILIZED_FALSE",
+      "on_expiry_actions": [
+        "FAIL_CLOSED",
+        "CONSTITUTIONAL_COURT_ESCALATION"
+      ],
+      "opened_utc": "2026-03-14T14:20:24Z",
+      "source_hold_surface_ref": "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+      "ttl": "P7D"
+    },
+    {
+      "blocker_id": "H1_ACTIVATION_ALLOWED_FALSE",
+      "current_status": "ACTIVE_WITH_TTL",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitutional_court_procedure.json"
+      ],
+      "expires_utc": "2026-03-21T14:20:24Z",
+      "obligation_id": "PARADOX_HOLD::H1_ACTIVATION_ALLOWED_FALSE",
+      "on_expiry_actions": [
+        "FAIL_CLOSED",
+        "CONSTITUTIONAL_COURT_ESCALATION"
+      ],
+      "opened_utc": "2026-03-14T14:20:24Z",
+      "source_hold_surface_ref": "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+      "ttl": "P7D"
+    },
+    {
+      "blocker_id": "AUTHORITY_CONVERGENCE_UNRESOLVED",
+      "current_status": "ACTIVE_WITH_TTL",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitutional_court_procedure.json"
+      ],
+      "expires_utc": "2026-03-21T14:20:24Z",
+      "obligation_id": "PARADOX_HOLD::AUTHORITY_CONVERGENCE_UNRESOLVED",
+      "on_expiry_actions": [
+        "FAIL_CLOSED",
+        "CONSTITUTIONAL_COURT_ESCALATION"
+      ],
+      "opened_utc": "2026-03-14T14:20:24Z",
+      "source_hold_surface_ref": "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+      "ttl": "P7D"
+    }
+  ],
+  "scheduler_basis": {
+    "expires_utc": "2026-03-21T14:20:24Z",
+    "opened_utc": "2026-03-14T14:20:24Z",
+    "source_hold_status": "HOLD",
+    "source_hold_surface_ref": "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+    "ttl_duration": "P7D",
+    "ttl_required": true
+  },
+  "schema_id": "kt.operator.proof_obligation_scheduler.v1",
+  "summary": {
+    "default_action": "FAIL_CLOSED",
+    "escalation_actions": [
+      "FAIL_CLOSED",
+      "CONSTITUTIONAL_COURT_ESCALATION"
+    ],
+    "scheduled_count": 4
+  }
+}

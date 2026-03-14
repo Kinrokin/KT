@@ -1,0 +1,114 @@
+{
+  "engine_surface_refs": [
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_schemas.py",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/tests/test_paradox_engine.py"
+  ],
+  "generated_utc": "2026-03-14T20:46:47Z",
+  "schema_id": "kt.operator.paradox_stress_results.v1",
+  "schema_surface_refs": [
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.paradox_event.v1.json",
+    "KT_PROD_CLEANROOM/tools/growth/state/paradox_event_schema_v1.json"
+  ],
+  "stress_cases": [
+    {
+      "case_id": "eligible_signal_single_injection_deterministic",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_schemas.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/tests/test_paradox_engine.py"
+      ],
+      "observation": {
+        "repeat_count": 16,
+        "result_hash": "5bc153c23ea8df24f1b43f7c89957bfb0d4c9b50e38c94a8363e822d3a25bbd7",
+        "status": "INJECTED",
+        "task_hash": "7ae61ed5564296ff457925b4bf446427432e59380f516242d2d7cb75ed9f591c"
+      },
+      "status": "PASS"
+    },
+    {
+      "case_id": "ineligible_signal_fail_closed_to_noop",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_schemas.py"
+      ],
+      "observation": {
+        "status": "NOOP",
+        "task_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "status": "PASS"
+    },
+    {
+      "case_id": "unknown_fields_rejected",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_schemas.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/tests/test_paradox_engine.py"
+      ],
+      "observation": {
+        "rejected": true
+      },
+      "status": "PASS"
+    },
+    {
+      "case_id": "oversized_condition_rejected",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_schemas.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/tests/test_paradox_engine.py"
+      ],
+      "observation": {
+        "rejected": true
+      },
+      "status": "PASS"
+    },
+    {
+      "case_id": "network_side_effects_blocked",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/tests/test_paradox_engine.py"
+      ],
+      "observation": {
+        "network_isolation": true
+      },
+      "status": "PASS"
+    },
+    {
+      "case_id": "context_immutability_preserved",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/tests/test_paradox_engine.py"
+      ],
+      "observation": {
+        "context_immutable": true
+      },
+      "status": "PASS"
+    },
+    {
+      "case_id": "salvage_history_has_no_unresolved_paradox_accumulation",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/tools/growth/state/paradox_event_schema_v1.json"
+      ],
+      "observation": {
+        "dream_files": 529,
+        "dream_files_with_unresolved_paradoxes": 0,
+        "eval_files": 529,
+        "eval_files_with_nonzero_paradox_events": 0,
+        "seed_files": 529,
+        "seed_files_with_nonzero_paradox_events": 0
+      },
+      "status": "PASS"
+    }
+  ],
+  "stress_verdict": "PASS",
+  "summary": {
+    "case_count": 7,
+    "dream_files": 529,
+    "dream_files_with_unresolved_paradoxes": 0,
+    "eval_files": 529,
+    "eval_files_with_nonzero_paradox_events": 0,
+    "pass_count": 7,
+    "seed_files": 529,
+    "seed_files_with_nonzero_paradox_events": 0,
+    "ttl_duration": "P7D",
+    "ttl_required": true
+  }
+}

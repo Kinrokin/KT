@@ -1,0 +1,54 @@
+{
+  "claim_class_id": "paradox_bound_claim",
+  "claims": [
+    {
+      "blockers": [],
+      "claim_id": "PARADOX_PROGRAM_BOUNDED_AT_DOCUMENTARY_CEILING",
+      "claim_text": "Paradox metabolism is now bounded at the documentary-only ceiling by explicit model, invariants, stress results, and counterexample handling.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_paradox_models.tla",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_invariants.json",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_stress_results.json",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_counterexamples.json"
+      ],
+      "status": "evidenced"
+    },
+    {
+      "blockers": [],
+      "claim_id": "PARADOX_HOLD_TTL_ENFORCED",
+      "claim_text": "Current paradox-adjacent hold surfaces are tied to a P7D TTL and explicit expiry escalation actions.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_safety_envelope.json",
+        "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_proof_obligation_scheduler.json"
+      ],
+      "status": "evidenced"
+    },
+    {
+      "blockers": [
+        "DOCUMENTARY_ONLY_CEILING",
+        "FULL_STACK_ADJUDICATION_PENDING"
+      ],
+      "claim_id": "PARADOX_EXTERNAL_SUPERIORITY",
+      "claim_text": "No external superiority, competition-grade, or publication-grade paradox claim is admissible from Step 10 alone.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_claim_taxonomy.json",
+        "KT_PROD_CLEANROOM/reports/kt_state_vector.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+      ],
+      "status": "aspirational"
+    }
+  ],
+  "current_admissibility_ceiling": "DOCUMENTARY_ONLY",
+  "current_status": "evidenced",
+  "generated_utc": "2026-03-14T20:46:47Z",
+  "previous_step7_status": "partially_evidenced",
+  "schema_id": "kt.operator.paradox_claim_matrix.v1",
+  "summary": {
+    "aspirational_count": 1,
+    "claim_count": 3,
+    "evidenced_count": 2,
+    "scheduled_obligation_count": 4,
+    "stress_verdict": "PASS"
+  }
+}

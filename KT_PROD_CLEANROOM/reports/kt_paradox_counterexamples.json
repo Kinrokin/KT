@@ -1,0 +1,84 @@
+{
+  "counterexamples": [
+    {
+      "counterexample_id": "PARADOX_CEX::INFINITE_LOOP_SIGNAL_CHAIN",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_paradox_stress_results.json",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_models.tla"
+      ],
+      "observed": {
+        "repeat_count": 16,
+        "result_hash": "5bc153c23ea8df24f1b43f7c89957bfb0d4c9b50e38c94a8363e822d3a25bbd7",
+        "status": "INJECTED",
+        "task_hash": "7ae61ed5564296ff457925b4bf446427432e59380f516242d2d7cb75ed9f591c"
+      },
+      "status": "DISPROVED_BY_STRESS",
+      "target_invariant": "no_infinite_contradiction_loop"
+    },
+    {
+      "counterexample_id": "PARADOX_CEX::INDEFINITE_H1_HOLD",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_safety_envelope.json",
+        "KT_PROD_CLEANROOM/reports/kt_proof_obligation_scheduler.json"
+      ],
+      "observed": {
+        "expires_utc": "2026-03-21T14:20:24Z",
+        "next_horizon_status": "HOLD",
+        "ttl": "P7D"
+      },
+      "status": "BOUNDED_BY_TTL_POLICY",
+      "target_invariant": "no_indefinite_hold_without_ttl"
+    },
+    {
+      "counterexample_id": "PARADOX_CEX::GOVERNANCE_BYPASS_UNDER_LOAD",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitutional_court_procedure.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "observed": {
+        "frontier_settlement_verdict": "FRONTIER_SETTLED_WITH_H1_BLOCK",
+        "h1_gate_verdict": "H1_BLOCKED"
+      },
+      "status": "DISPROVED_BY_BOUNDARY",
+      "target_invariant": "no_governance_bypass_under_paradox_load"
+    },
+    {
+      "counterexample_id": "PARADOX_CEX::TRIVIAL_NOOP_FLATTENING",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_paradox_stress_results.json",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py"
+      ],
+      "observed": {
+        "eligible_status": "INJECTED",
+        "ineligible_status": "NOOP"
+      },
+      "status": "DISPROVED_BY_ENGINE",
+      "target_invariant": "no_silent_flattening_to_trivial_answers"
+    },
+    {
+      "counterexample_id": "PARADOX_CEX::UNTRACKED_DELTA_GENERATION",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_runtime_and_experiment_memory_sealing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_learning_delta_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_lineage_manifest.json"
+      ],
+      "observed": {
+        "excluded_surfaces": [
+          "KT_PROD_CLEANROOM/reports/behavior_delta_receipt.json",
+          "KT_LANE_LORA_PHASE_B/lora_adapter_export/lora_out/train_report.json"
+        ],
+        "learning_delta_count": 21
+      },
+      "status": "DISPROVED_BY_LINEAGE_GUARD",
+      "target_invariant": "no_untracked_delta_generation_during_resolution"
+    }
+  ],
+  "generated_utc": "2026-03-14T20:46:47Z",
+  "schema_id": "kt.operator.paradox_counterexamples.v1",
+  "summary": {
+    "counterexample_count": 5,
+    "unresolved_count": 0
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "generated_utc": "2026-03-14T20:46:47Z",
+  "invariants": [
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_schemas.py",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_stress_results.json",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_models.tla"
+      ],
+      "invariant_id": "no_infinite_contradiction_loop",
+      "machine_target": [
+        "ParadoxEngine.run",
+        "contradictionLoopDepth <= 1",
+        "stress_cases.eligible_signal_single_injection_deterministic"
+      ],
+      "statement": "Eligible paradox signals resolve to a single injected task and do not recurse indefinitely.",
+      "status": "BOUNDED_BY_MODEL_AND_STRESS"
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_safety_envelope.json",
+        "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_proof_obligation_scheduler.json"
+      ],
+      "invariant_id": "no_indefinite_hold_without_ttl",
+      "machine_target": [
+        "hold_status",
+        "hold_ttl",
+        "escalation_path"
+      ],
+      "statement": "Paradox-adjacent hold states carry a P7D TTL and explicit expiry actions of FAIL_CLOSED or constitutional-court escalation.",
+      "status": "BOUNDED_BY_POLICY_AND_SCHEDULER"
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitutional_court_procedure.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json"
+      ],
+      "invariant_id": "no_governance_bypass_under_paradox_load",
+      "machine_target": [
+        "h1_gate_verdict",
+        "emergency_fail_closed_rule",
+        "on_expiry_actions"
+      ],
+      "statement": "Paradox pressure cannot silently bypass governance; ambiguity routes to H1_BLOCKED, HOLD, or FAIL_CLOSED paths instead of upgrade.",
+      "status": "BOUNDED_BY_FAIL_CLOSED_GOVERNANCE"
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_stress_results.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "invariant_id": "no_silent_flattening_to_trivial_answers",
+      "machine_target": [
+        "ParadoxEngine.run status",
+        "frontier_settlement_verdict",
+        "h1_gate_verdict"
+      ],
+      "statement": "Eligible contradiction signals remain explicit injections, and blocked frontier surfaces remain explicitly blocked rather than flattened to green.",
+      "status": "BOUNDED_BY_ENGINE_AND_BOUNDARY_SURFACES"
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_runtime_and_experiment_memory_sealing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_learning_delta_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_lineage_manifest.json"
+      ],
+      "invariant_id": "no_untracked_delta_generation_during_resolution",
+      "machine_target": [
+        "learning_delta.lineage_complete",
+        "learning_delta_exclusions",
+        "canonical_precedence_rules"
+      ],
+      "statement": "No delta may emerge from paradox resolution unless it is already lineaged through the Step 9 governed experiment and delta registries.",
+      "status": "BOUNDED_BY_STEP9_LINEAGE_GUARDS"
+    }
+  ],
+  "required_invariant_ids": [
+    "no_infinite_contradiction_loop",
+    "no_indefinite_hold_without_ttl",
+    "no_governance_bypass_under_paradox_load",
+    "no_silent_flattening_to_trivial_answers",
+    "no_untracked_delta_generation_during_resolution"
+  ],
+  "schema_id": "kt.operator.paradox_invariants.v1",
+  "summary": {
+    "all_required_present": true,
+    "invariant_count": 5,
+    "ttl_policy_ref": "KT_PROD_CLEANROOM/governance/foundation_pack/kt_safety_envelope.json"
+  }
+}
