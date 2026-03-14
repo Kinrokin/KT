@@ -1,0 +1,114 @@
+{
+  "actual_touched": [
+    "KT_PROD_CLEANROOM/reports/kt_parse_failures.json",
+    "KT_PROD_CLEANROOM/reports/kt_parse_results.json",
+    "KT_PROD_CLEANROOM/reports/kt_physical_inventory.json",
+    "KT_PROD_CLEANROOM/reports/kt_snapshot_inventory_compilation_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_snapshot_manifest.json",
+    "KT_PROD_CLEANROOM/tests/operator/test_snapshot_inventory_compile.py",
+    "KT_PROD_CLEANROOM/tools/operator/snapshot_inventory_compile.py"
+  ],
+  "checks": [
+    {
+      "check": "prior_gate_passed",
+      "detail": "Step 5 requires the Step 4 historical memory ingestion receipt to be PASS.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_memory_ingestion_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "full_file_inventory_coverage",
+      "detail": "The deterministic snapshot scope must cover every tracked file plus explicit nonignored untracked files; ignored residue is summarized separately.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_snapshot_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_physical_inventory.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "every_file_has_required_fields",
+      "detail": "Every file entry must carry path, size, type, hash, generation status, parse state, and trust zone.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_snapshot_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "parse_failures_explicit",
+      "detail": "Parse failures must be explicit and count-consistent with the parse results summary.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_parse_results.json",
+        "KT_PROD_CLEANROOM/reports/kt_parse_failures.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "deterministic_rerun_semantics",
+      "detail": "A second compiler run over the same head must reproduce semantically identical outputs.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_snapshot_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_physical_inventory.json",
+        "KT_PROD_CLEANROOM/reports/kt_parse_results.json",
+        "KT_PROD_CLEANROOM/reports/kt_parse_failures.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "state_taint_status_consistent",
+      "detail": "Manifest, parse results, and parse failures must agree on state taint status.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_snapshot_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_parse_results.json",
+        "KT_PROD_CLEANROOM/reports/kt_parse_failures.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "post_touch_accounting_clean",
+      "detail": "Actual touched set must match the lawful Step 5 subject files plus the compilation receipt.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_snapshot_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_physical_inventory.json",
+        "KT_PROD_CLEANROOM/reports/kt_parse_results.json",
+        "KT_PROD_CLEANROOM/reports/kt_parse_failures.json",
+        "KT_PROD_CLEANROOM/tools/operator/snapshot_inventory_compile.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_snapshot_inventory_compile.py",
+        "KT_PROD_CLEANROOM/reports/kt_snapshot_inventory_compilation_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "claim_boundary": "This receipt validates Step 5 snapshot determinism and physical inventory for compiled_head_commit only. A later repository head that contains this receipt is evidence about compiled_head_commit, not automatically that compiled head.",
+  "compiled_head_commit": "430506a7e8223690cef4720340b324b988d9a8d5",
+  "controlling_work_order": {
+    "schema_id": "kt.work_order.max_refactor_e2e_institutional_memory_and_full_stack_adjudication.v2",
+    "step_id": 5,
+    "step_name": "SNAPSHOT_DETERMINISM_AND_PHYSICAL_INVENTORY",
+    "work_order_id": "WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION"
+  },
+  "current_head_commit": "430506a7e8223690cef4720340b324b988d9a8d5",
+  "generated_utc": "2026-03-14T18:29:54Z",
+  "next_lawful_step": {
+    "status_after_step_5": "UNLOCKED",
+    "step_id": 6,
+    "step_name": "STRUCTURAL_PARSE_TAG_CATALOG_AND_GRAPH_COMPILATION"
+  },
+  "pass_verdict": "SNAPSHOT_AND_INVENTORY_COMPILED",
+  "planned_mutates": [
+    "KT_PROD_CLEANROOM/reports/kt_snapshot_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_physical_inventory.json",
+    "KT_PROD_CLEANROOM/reports/kt_parse_results.json",
+    "KT_PROD_CLEANROOM/reports/kt_parse_failures.json",
+    "KT_PROD_CLEANROOM/tools/operator/snapshot_inventory_compile.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_snapshot_inventory_compile.py",
+    "KT_PROD_CLEANROOM/reports/kt_snapshot_inventory_compilation_receipt.json"
+  ],
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.snapshot_inventory_compilation_receipt.v1",
+  "state_taint_status": "CLEAR",
+  "status": "PASS",
+  "step4_gate_evidence_commit": "3532ac0ec1985cd360fbdd96c33dcdc5cad7b435",
+  "step4_gate_subject_commit": "017017ef93db3ba6b8e5a2a3b708e680ac63ab2d",
+  "unexpected_touches": []
+}
