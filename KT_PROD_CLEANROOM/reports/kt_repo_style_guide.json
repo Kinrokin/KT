@@ -1,0 +1,36 @@
+{
+  "claim_boundary": "This style guide is a proposal for future normalization work. It does not retroactively make all existing surfaces compliant.",
+  "docs_conventions": [
+    "root README is orientation-only",
+    "public docs define audience and claim boundary",
+    "commercial docs remain claim-compiler bound",
+    "codex docs remain lineage-only unless later ratified"
+  ],
+  "generated_utc": "2026-03-14T19:38:20Z",
+  "json_conventions": [
+    "ASCII, LF, stable key ordering",
+    "schema_id required on structured governed artifacts",
+    "generated_utc required on emitted artifacts",
+    "claim-bearing artifacts require explicit evidence refs or boundary text"
+  ],
+  "naming_conventions": [
+    "receipts end with _receipt.json",
+    "schemas end with .schema.json",
+    "work orders use WORK_ORDER_* for controlling packets and kt_*_work_order.json for generated plans",
+    "generated machine-state artifacts use lowercase kt_* names"
+  ],
+  "path_conventions": [
+    "live governed law stays under KT_PROD_CLEANROOM/governance/",
+    "runtime code and schemas stay under KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/",
+    "committed generated evidence stays under KT_PROD_CLEANROOM/reports/",
+    "root stays orientation/legal/launcher only",
+    "historical and legacy material should converge into KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/"
+  ],
+  "python_conventions": [
+    "one governed compiler per file with deterministic CLI",
+    "focused test alongside each new compiler",
+    "proposal-only steps must not mutate live canon while planning future work"
+  ],
+  "schema_id": "kt.operator.repo_style_guide.v1",
+  "style_status": "PROPOSED_UNRATIFIED"
+}

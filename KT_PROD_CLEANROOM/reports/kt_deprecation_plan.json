@@ -1,0 +1,79 @@
+{
+  "claim_boundary": "Deprecation entries are future migration intents only. No listed surface loses validity until its replacement and migration receipt both exist.",
+  "deprecations": [
+    {
+      "current_surface": "docs/audit/**",
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md",
+        "docs/audit",
+        "KT_TEMPLE_ROOT",
+        "KT_LANE_LORA_PHASE_B"
+      ],
+      "future_status": "ARCHIVE_ONLY",
+      "surface_id": "root_docs_audit_tree",
+      "target_root": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/docs_audit/",
+      "trigger": "archive migration package execution"
+    },
+    {
+      "current_surface": "KT_TEMPLE_ROOT/** and KT_LANE_LORA_PHASE_B/**",
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md",
+        "docs/audit",
+        "KT_TEMPLE_ROOT",
+        "KT_LANE_LORA_PHASE_B"
+      ],
+      "future_status": "ARCHIVE_ONLY",
+      "surface_id": "legacy_root_runtime_roots",
+      "target_root": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/legacy_runtime/",
+      "trigger": "root and archive boundary execution"
+    },
+    {
+      "current_surface": "EPOCH_*.json, OPERATION_A_*, RUN_REPORT.md, runbook.txt, work_order.json",
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md",
+        "docs/audit",
+        "KT_TEMPLE_ROOT",
+        "KT_LANE_LORA_PHASE_B"
+      ],
+      "future_status": "ARCHIVE_ONLY",
+      "surface_id": "root_epoch_and_operation_files",
+      "target_root": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_legacy/",
+      "trigger": "root and archive boundary execution"
+    },
+    {
+      "current_surface": ".env.secret",
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/local_residue_summary.json",
+        ".env.secret"
+      ],
+      "future_status": "REMOVED_FROM_REPO_SURFACE",
+      "surface_id": "root_secret_residue",
+      "target_root": "LOCAL_SECRET_MANAGER_OR_UNTRACKED_ENV",
+      "trigger": "generated artifact boundary execution"
+    },
+    {
+      "current_surface": "run_manifest.schema.json",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_contract_index.json"
+      ],
+      "future_status": "ARCHIVE_SCHEMA_ONLY",
+      "surface_id": "root_run_manifest_schema",
+      "target_root": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/schemas/",
+      "trigger": "schema housing execution"
+    },
+    {
+      "current_surface": "REPO_CANON.md",
+      "evidence_refs": [
+        "REPO_CANON.md",
+        "README.md"
+      ],
+      "future_status": "RETAIN_AS_TRANSITIONAL_POINTER_UNTIL_GENERATED_DOCTRINE_EXISTS",
+      "surface_id": "manual_repo_canon_inventory",
+      "target_root": "docs/generated/",
+      "trigger": "step11_doctrine_generation"
+    }
+  ],
+  "generated_utc": "2026-03-14T19:38:20Z",
+  "proposal_status": "PROPOSED_UNRATIFIED",
+  "schema_id": "kt.operator.deprecation_plan.v1"
+}

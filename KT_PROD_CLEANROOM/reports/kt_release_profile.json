@@ -1,0 +1,148 @@
+{
+  "claim_boundary": "Release profile proposals are bounded by the current Step 7 state vector and may not overread blocked horizons as released capability.",
+  "current_ceiling": {
+    "blocked_horizons": [
+      "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+      "H1_SINGLE_ADAPTER_ALLOWED",
+      "PLATFORM_ENFORCEMENT_PROVEN",
+      "CROSS_ENV_CONTROLLED_VARIATION_COMPLETE"
+    ],
+    "current_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK"
+  },
+  "generated_utc": "2026-03-14T19:38:45Z",
+  "h1_allowed": false,
+  "profile_status": "PROPOSED_FROM_CURRENT_CEILING",
+  "profiles": [
+    {
+      "blocked_by": [],
+      "current_status": "ADMISSIBLE_WITH_BOUNDARIES",
+      "forbidden_claims": [
+        "HEAD_IS_VERIFIED_SUBJECT",
+        "H1_ALLOWED",
+        "PLATFORM_ENFORCED_GOVERNANCE_PROVEN"
+      ],
+      "profile_id": "internal_operator_audit_release",
+      "required_evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_judgment_plane_computation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+      ],
+      "target_quality": {
+        "governance_quality": "QL2",
+        "operability_quality": "QL1",
+        "proof_quality": "QL2",
+        "runtime_quality": "QL3"
+      }
+    },
+    {
+      "blocked_by": [],
+      "current_status": "ADMISSIBLE_WITH_BOUNDARIES",
+      "forbidden_claims": [
+        "H1_ALLOWED",
+        "PLATFORM_ENFORCED_GOVERNANCE_PROVEN",
+        "CROSS_ENV_REPRODUCIBILITY_COMPLETE"
+      ],
+      "profile_id": "external_specialist_demo_release",
+      "required_evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json"
+      ],
+      "target_quality": {
+        "governance_quality": "QL2",
+        "operability_quality": "QL2",
+        "proof_quality": "QL2",
+        "runtime_quality": "QL3"
+      }
+    },
+    {
+      "blocked_by": [
+        "PLATFORM_ENFORCEMENT_UNPROVEN"
+      ],
+      "current_status": "HOLD_PENDING_PLATFORM_AND_PROFILE_WORK",
+      "forbidden_claims": [
+        "PLATFORM_ENFORCED_GOVERNANCE_PROVEN",
+        "H1_ALLOWED"
+      ],
+      "profile_id": "governed_partner_review_release",
+      "required_evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_state_vector.json"
+      ],
+      "target_quality": {
+        "governance_quality": "QL3",
+        "operability_quality": "QL2",
+        "proof_quality": "QL2",
+        "runtime_quality": "QL3"
+      }
+    },
+    {
+      "blocked_by": [
+        "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN",
+        "DELTA_LINEAGE_MISSING",
+        "QUALITY_LEVEL_BELOW_TARGET"
+      ],
+      "current_status": "BLOCKED",
+      "forbidden_claims": [
+        "COMPETITION_READY",
+        "H1_ALLOWED"
+      ],
+      "profile_id": "competition_release",
+      "required_evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_state_vector.json"
+      ],
+      "target_quality": {
+        "competition_quality": "QL3",
+        "governance_quality": "QL3",
+        "operability_quality": "QL3",
+        "proof_quality": "QL3",
+        "runtime_quality": "QL3"
+      }
+    },
+    {
+      "blocked_by": [
+        "PARADOX_PROGRAM_UNBOUNDED",
+        "PLATFORM_ENFORCEMENT_UNPROVEN",
+        "DOCTRINE_AND_PROFILES_GENERATED_PENDING"
+      ],
+      "current_status": "BLOCKED",
+      "forbidden_claims": [
+        "PUBLICATION_READY",
+        "H1_ALLOWED",
+        "HEAD_IS_VERIFIED_SUBJECT"
+      ],
+      "profile_id": "publication_release",
+      "required_evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_state_vector.json"
+      ],
+      "target_quality": {
+        "governance_quality": "QL3",
+        "operability_quality": "QL3",
+        "proof_quality": "QL3",
+        "publication_quality": "QL3",
+        "runtime_quality": "QL3"
+      }
+    }
+  ],
+  "quality_snapshot": {
+    "adjudication_plane": "QL2",
+    "archive_memory_plane": "QL1",
+    "commercial_surface_plane": "QL2",
+    "constitutional_meta_governance": "QL2",
+    "experiment_crucible_plane": "QL2",
+    "governance_spine": "QL2",
+    "lab_adaptation_plane": "QL1",
+    "operator_factory": "QL2",
+    "paradox_metabolism_plane": "QL1",
+    "public_claims_and_doctrine_plane": "QL2",
+    "release_profile_plane": "QL1",
+    "runtime_spine": "QL3",
+    "truth_authority_plane": "QL2",
+    "verification_delivery_security_plane": "QL2"
+  },
+  "schema_id": "kt.operator.release_profile.v1"
+}

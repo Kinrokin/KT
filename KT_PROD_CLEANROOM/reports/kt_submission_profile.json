@@ -1,0 +1,89 @@
+{
+  "claim_boundary": "Submission bundles are proposed artifact selections only. They must inherit the same claim ceiling and blockers as the current state vector.",
+  "generated_utc": "2026-03-14T19:38:45Z",
+  "h1_allowed": false,
+  "profile_status": "PROPOSED_FROM_CURRENT_CEILING",
+  "profiles": [
+    {
+      "blocked_by": [],
+      "current_status": "ADMISSIBLE_WITH_BOUNDARIES",
+      "forbidden_claims": [
+        "HEAD_IS_VERIFIED_SUBJECT",
+        "H1_ALLOWED"
+      ],
+      "included_surfaces": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_judgment_plane_computation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_state_vector.json"
+      ],
+      "profile_id": "auditor_packet"
+    },
+    {
+      "blocked_by": [],
+      "current_status": "ADMISSIBLE_WITH_BOUNDARIES",
+      "forbidden_claims": [
+        "PLATFORM_ENFORCED_GOVERNANCE_PROVEN",
+        "H1_ALLOWED"
+      ],
+      "included_surfaces": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_profile.json"
+      ],
+      "profile_id": "specialist_demo_packet"
+    },
+    {
+      "blocked_by": [
+        "PLATFORM_ENFORCEMENT_UNPROVEN"
+      ],
+      "current_status": "HOLD_PENDING_PLATFORM_AND_PROFILE_WORK",
+      "forbidden_claims": [
+        "PLATFORM_ENFORCED_GOVERNANCE_PROVEN",
+        "H1_ALLOWED"
+      ],
+      "included_surfaces": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_profile.json"
+      ],
+      "profile_id": "partner_review_packet"
+    },
+    {
+      "blocked_by": [
+        "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN",
+        "DELTA_LINEAGE_MISSING"
+      ],
+      "current_status": "BLOCKED",
+      "forbidden_claims": [
+        "COMPETITION_READY",
+        "H1_ALLOWED"
+      ],
+      "included_surfaces": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_profile.json"
+      ],
+      "profile_id": "competition_bundle"
+    },
+    {
+      "blocked_by": [
+        "PARADOX_PROGRAM_UNBOUNDED",
+        "DOCTRINE_AND_PROFILES_GENERATED_PENDING",
+        "PLATFORM_ENFORCEMENT_UNPROVEN"
+      ],
+      "current_status": "BLOCKED",
+      "forbidden_claims": [
+        "PUBLICATION_READY",
+        "HEAD_IS_VERIFIED_SUBJECT",
+        "H1_ALLOWED"
+      ],
+      "included_surfaces": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_profile.json"
+      ],
+      "profile_id": "publication_peer_review_bundle"
+    }
+  ],
+  "schema_id": "kt.operator.submission_profile.v1"
+}

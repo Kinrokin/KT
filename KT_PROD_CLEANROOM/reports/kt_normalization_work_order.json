@@ -1,0 +1,206 @@
+{
+  "claim_boundary": "This work order schedules future normalization only. It does not authorize execution until a later explicit approval and must remain reversible with migration tests and rollback plans for every package.",
+  "generated_utc": "2026-03-14T19:38:20Z",
+  "proposal_only": true,
+  "root_noise_entries": [
+    ".env.secret",
+    ".pytest_cache",
+    ".venv",
+    "__pycache__",
+    "acceptance_checklist.txt",
+    "analyze_autonomous_run.py",
+    "analyze_escalation.py",
+    "autonomous_analysis.json",
+    "autonomous_escalation_log.json",
+    "cell.sh",
+    "ci",
+    "EPOCH_CROSS.json",
+    "epoch_escalation_log.json",
+    "EPOCH_GOV.json",
+    "EPOCH_PARADOX.json",
+    "exports",
+    "KAGGLE_CELL_MRT1_FINAL.txt",
+    "KAGGLE_MRT1_E2E_FINAL.sh",
+    "KT_LANE_LORA_PHASE_B",
+    "KT_TEMPLE_ROOT",
+    "OPERATION_A_COMPLETION_SUMMARY.txt",
+    "OPERATION_A_FINAL_REPORT.md",
+    "OPERATION_A_INDEX.md",
+    "PHASE_A_BOM.json",
+    "phaseA_commit_hash.txt",
+    "run_autonomous_escalation.py",
+    "run_epoch_escalation.py",
+    "run_manifest.schema.json",
+    "RUN_REPORT.md",
+    "runbook.txt",
+    "tmp",
+    "work_order.json"
+  ],
+  "schema_id": "kt.operator.normalization_work_order.v1",
+  "work_order_status": "PROPOSED_UNRATIFIED",
+  "work_packages": [
+    {
+      "blocked_by": [
+        "ROOT_ARCHIVE_CONTAMINATION"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json"
+      ],
+      "migration_tests": [
+        "verify every migrated path resolves from an archive index or redirect manifest",
+        "verify no runtime, governance, or public claim surface path changes without explicit path-map receipts",
+        "verify root noise count strictly decreases and allowed root keep set remains intact"
+      ],
+      "objective": "Move legacy root clutter and historical audit material into the archive vault while preserving lineage references.",
+      "package_id": "WP_STEP8_ROOT_AND_ARCHIVE_BOUNDARY",
+      "rollback_plan": [
+        "restore the original root paths from the migration manifest",
+        "revert archive-vault additions and redirect files in one atomic rollback commit"
+      ],
+      "target_paths": [
+        "docs/audit/**",
+        "KT_TEMPLE_ROOT/**",
+        "KT_LANE_LORA_PHASE_B/**",
+        "EPOCH_*.json",
+        "OPERATION_A_*",
+        "RUN_REPORT.md",
+        "runbook.txt",
+        "work_order.json"
+      ],
+      "title": "Root and Archive Boundary"
+    },
+    {
+      "blocked_by": [],
+      "evidence_refs": [
+        "README.md",
+        "KT_PROD_CLEANROOM/reports/kt_docs_topology.json",
+        "REPO_CANON.md"
+      ],
+      "migration_tests": [
+        "verify root README stays orientation-only and points into canonical docs lanes",
+        "verify every moved doc retains explicit audience and claim-boundary markers",
+        "verify docs link graph resolves without depending on deprecated root files"
+      ],
+      "objective": "Separate public manuals, operator docs, commercial docs, generated doctrine, and archived audits into stable lanes.",
+      "package_id": "WP_STEP8_DOCS_TOPOLOGY_RATIONALIZATION",
+      "rollback_plan": [
+        "restore prior docs paths from the docs topology manifest",
+        "remove generated redirects and restore previous cross-links"
+      ],
+      "target_paths": [
+        "README.md",
+        "docs/**",
+        "KT_PROD_CLEANROOM/docs/**",
+        "KT-Codex/**"
+      ],
+      "title": "Docs Topology Rationalization"
+    },
+    {
+      "blocked_by": [],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_contract_index.json",
+        "KT_PROD_CLEANROOM/reports/kt_schema_unification_plan.json"
+      ],
+      "migration_tests": [
+        "verify every schema has exactly one declared canonical home and versioned filename",
+        "verify report schemas are physically separated from live report instances",
+        "verify no schema move changes a schema_id without an explicit supersession note"
+      ],
+      "objective": "Unify schema homes so runtime, foundation, report, codex, and archive schemas stop competing for the same semantic role.",
+      "package_id": "WP_STEP8_SCHEMA_HOUSING_AND_NAMING",
+      "rollback_plan": [
+        "restore original schema locations from the schema move ledger",
+        "repoint schema indexes to their pre-migration paths and rerun validators"
+      ],
+      "target_paths": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/**",
+        "KT_PROD_CLEANROOM/governance/foundation_pack/**",
+        "KT_PROD_CLEANROOM/reports/*.schema.json",
+        "KT-Codex/schemas/**",
+        "run_manifest.schema.json"
+      ],
+      "title": "Schema Housing and Naming"
+    },
+    {
+      "blocked_by": [
+        "LOCAL_RESIDUE_PRESENT"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_truth_surface_map.json",
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json"
+      ],
+      "migration_tests": [
+        "verify committed generated artifacts all carry schema_id, generated_utc, and evidence refs",
+        "verify documentary mirrors remain non-authoritative after any rehouse",
+        "verify local secret-like residue is removed from canonical root scope"
+      ],
+      "objective": "Clarify what may be committed, what is documentary-only, what is lineage-only, and what must remain local or ephemeral.",
+      "package_id": "WP_STEP8_GENERATED_ARTIFACT_BOUNDARY",
+      "rollback_plan": [
+        "restore prior artifact roots and reapply the previous gitignore/local-only rules",
+        "revert any artifact-class registry updates in one rollback commit"
+      ],
+      "target_paths": [
+        "KT_PROD_CLEANROOM/reports/**",
+        "KT_PROD_CLEANROOM/exports/**",
+        "KT_PROD_CLEANROOM/tools/growth/ledgers/**",
+        "tmp/**",
+        ".env.secret"
+      ],
+      "title": "Generated Artifact Boundary"
+    },
+    {
+      "blocked_by": [
+        "H1_ACTIVATION_GATE_CLOSED",
+        "PLATFORM_ENFORCEMENT_UNPROVEN"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_release_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_submission_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_state_vector.json"
+      ],
+      "migration_tests": [
+        "verify every bundle profile lists allowed and forbidden claims",
+        "verify no release bundle claims H1, platform enforcement, or fresh HEAD truth verification while blockers remain open",
+        "verify included artifacts are limited to each profile's declared scope"
+      ],
+      "objective": "Create profile-specific release and submission bundle layouts that cannot overread current proof ceilings.",
+      "package_id": "WP_STEP8_RELEASE_AND_SUBMISSION_LAYOUT",
+      "rollback_plan": [
+        "remove generated profile roots and restore previous release notes or bundle manifests",
+        "revert profile index changes and re-run profile validators"
+      ],
+      "target_paths": [
+        "docs/generated/profiles/**",
+        "KT_PROD_CLEANROOM/reports/**",
+        "docs/**"
+      ],
+      "title": "Release and Submission Layout"
+    },
+    {
+      "blocked_by": [],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "KT_PROD_CLEANROOM/reports/kt_tag_catalog.json"
+      ],
+      "migration_tests": [
+        "verify codex surfaces are labeled lineage-only in all indexes",
+        "verify no public or governance index points to codex as current law",
+        "verify codex cross-links into public docs are explicitly marked draft lineage"
+      ],
+      "objective": "Keep KT-Codex available as historical/draft lineage without letting it silently compete with ratified law or public manuals.",
+      "package_id": "WP_STEP8_CODEX_AND_LINEAGE_BOUNDARY",
+      "rollback_plan": [
+        "restore prior codex references and labels from the codex boundary manifest",
+        "revert docs/governance cross-reference updates in one rollback commit"
+      ],
+      "target_paths": [
+        "KT-Codex/**",
+        "docs/**",
+        "KT_PROD_CLEANROOM/governance/**"
+      ],
+      "title": "Codex and Lineage Boundary"
+    }
+  ]
+}

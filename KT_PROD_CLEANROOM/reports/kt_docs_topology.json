@@ -1,0 +1,101 @@
+{
+  "claim_boundary": "Docs topology defines future housing and audience lanes only. It does not itself publish new doctrine.",
+  "generated_utc": "2026-03-14T19:38:20Z",
+  "layers": [
+    {
+      "audience": "all entrants",
+      "canonical_root": "ROOT",
+      "claim_boundary": "orientation only; no canon ratification by root summaries",
+      "included_surfaces": [
+        "README.md",
+        "LICENSE",
+        "REPO_CANON.md",
+        "run_kt_e2e.sh"
+      ],
+      "layer_id": "root_orientation",
+      "status": "ACTIVE_MINIMAL_KEEP"
+    },
+    {
+      "audience": "public specialist readers",
+      "canonical_root": "docs/",
+      "claim_boundary": "must not outrun machine-state claim ceilings",
+      "included_surfaces": [
+        "docs/KT_OVERVIEW.md",
+        "docs/KT_ARCHITECTURE.md",
+        "docs/KT_THREAT_MODEL.md",
+        "docs/RUNBOOK.md"
+      ],
+      "layer_id": "public_manual_docs",
+      "status": "ACTIVE_MANUAL_DOCS"
+    },
+    {
+      "audience": "operators and maintainers",
+      "canonical_root": "KT_PROD_CLEANROOM/docs/operator/",
+      "claim_boundary": "internal doctrine and runbooks remain subordinate to governance law and receipts",
+      "included_surfaces": [
+        "KT_PROD_CLEANROOM/docs/operator/**"
+      ],
+      "layer_id": "operator_internal_docs",
+      "status": "ACTIVE_INTERNAL_DOCS"
+    },
+    {
+      "audience": "commercial and external evaluation readers",
+      "canonical_root": "KT_PROD_CLEANROOM/docs/commercial/",
+      "claim_boundary": "documentary only; compiler-bounded claims only",
+      "included_surfaces": [
+        "KT_PROD_CLEANROOM/docs/commercial/**"
+      ],
+      "layer_id": "commercial_docs",
+      "status": "ACTIVE_BOUND_BY_CLAIM_COMPILER"
+    },
+    {
+      "audience": "future external/public doctrine consumers",
+      "canonical_root": "docs/generated/",
+      "claim_boundary": "machine-state derived only after Step 11",
+      "included_surfaces": [
+        "KT_Whitepaper_vN.md",
+        "KT_Governance_Spine_vN.md",
+        "kt_*_profile artifacts"
+      ],
+      "layer_id": "generated_doctrine_target",
+      "status": "TARGET_NOT_YET_CREATED"
+    },
+    {
+      "audience": "historians and auditors",
+      "canonical_root": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/docs_audit/",
+      "claim_boundary": "lineage memory only, not current law",
+      "included_surfaces": [
+        "docs/audit/**"
+      ],
+      "layer_id": "audit_archive_target",
+      "status": "TARGET_FOR_ROOT_ARCHIVE_MIGRATION"
+    },
+    {
+      "audience": "draft doctrine and external packet readers",
+      "canonical_root": "KT-Codex/",
+      "claim_boundary": "draft lineage, not active canon",
+      "included_surfaces": [
+        "KT-Codex/**"
+      ],
+      "layer_id": "codex_lineage_docs",
+      "status": "ACTIVE_LINEAGE_ONLY"
+    }
+  ],
+  "migration_targets": [
+    {
+      "from": "docs/audit/**",
+      "to": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/docs_audit/"
+    },
+    {
+      "from": "KT-Codex/**",
+      "note": "keep in place but label lineage-only",
+      "to": "KT-Codex/**"
+    },
+    {
+      "from": "future generated doctrine artifacts",
+      "to": "docs/generated/"
+    }
+  ],
+  "proposal_status": "PROPOSED_UNRATIFIED",
+  "schema_id": "kt.operator.docs_topology.v1"
+}

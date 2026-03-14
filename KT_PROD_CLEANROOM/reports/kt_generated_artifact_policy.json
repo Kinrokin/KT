@@ -1,0 +1,75 @@
+{
+  "artifact_classes": [
+    {
+      "artifact_class_id": "ratified_authored_law",
+      "canonical_roots": [
+        "KT_PROD_CLEANROOM/governance/",
+        "KT_PROD_CLEANROOM/governance/foundation_pack/",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/"
+      ],
+      "commit_policy": "COMMITTED_AUTHORED",
+      "law_effect": "ACTIVE_WHEN_RATIFIED"
+    },
+    {
+      "artifact_class_id": "governed_generated_reports",
+      "canonical_roots": [
+        "KT_PROD_CLEANROOM/reports/"
+      ],
+      "commit_policy": "COMMITTED_IF_DETERMINISTIC_AND_SCHEMA_BOUND",
+      "law_effect": "EVIDENCE_ONLY_UNLESS_RATIFIED_ELSEWHERE"
+    },
+    {
+      "artifact_class_id": "documentary_mirrors",
+      "canonical_roots": [
+        "KT_PROD_CLEANROOM/exports/_truth/current/"
+      ],
+      "commit_policy": "COMMITTED_ONLY_FOR_DECLARED_MIRRORS",
+      "law_effect": "DOCUMENTARY_ONLY_NON_AUTHORITATIVE"
+    },
+    {
+      "artifact_class_id": "committed_lineage_ledgers",
+      "canonical_roots": [
+        "KT_PROD_CLEANROOM/tools/growth/ledgers/"
+      ],
+      "commit_policy": "COMMITTED_ONLY_WHEN_REFERENCED_BY_REGISTRY_OR_RECEIPT",
+      "law_effect": "LINEAGE_ONLY_UNLESS_PROMOTED_BY_GOVERNED_RULES"
+    },
+    {
+      "artifact_class_id": "ephemeral_operator_runs",
+      "canonical_roots": [
+        "KT_PROD_CLEANROOM/exports/_runs/",
+        "tmp/",
+        ".pytest_cache/",
+        "__pycache__/"
+      ],
+      "commit_policy": "LOCAL_OR_EPHEMERAL_ONLY",
+      "law_effect": "NONE"
+    },
+    {
+      "artifact_class_id": "generated_doctrine_and_profiles",
+      "canonical_roots": [
+        "docs/generated/"
+      ],
+      "commit_policy": "COMMITTED_ONLY_AFTER_MACHINE_STATE_GENERATION_AND_RATIFICATION_LOG",
+      "law_effect": "PUBLIC_DERIVATIVE_ONLY_UNTIL_RATIFIED"
+    },
+    {
+      "artifact_class_id": "local_secret_residue",
+      "canonical_roots": [
+        ".env.secret"
+      ],
+      "commit_policy": "MUST_NOT_EXIST_IN_REPO_ROOT",
+      "law_effect": "FORBIDDEN"
+    }
+  ],
+  "claim_boundary": "Generated artifacts may support evidence chains, but they do not become law or fresh authority claims by being generated alone.",
+  "forbidden_outcomes": [
+    "generated doctrine becoming law without ratification",
+    "documentary mirrors treated as active authority",
+    "ephemeral operator runs committed as canonical evidence without schema-bound receipts",
+    "secret-like residue remaining at repo root"
+  ],
+  "generated_utc": "2026-03-14T19:38:20Z",
+  "policy_status": "PROPOSED_UNRATIFIED",
+  "schema_id": "kt.operator.generated_artifact_policy.v1"
+}

@@ -1,0 +1,199 @@
+{
+  "claim_boundary": "This plan proposes future path moves only. No path listed here changes active canon until a later migration work order is executed and ratified.",
+  "current_root_entries": [
+    ".devcontainer",
+    ".env.secret",
+    ".gitattributes",
+    ".github",
+    ".gitignore",
+    ".pytest_cache",
+    ".venv",
+    ".vscode",
+    "__pycache__",
+    "acceptance_checklist.txt",
+    "analyze_autonomous_run.py",
+    "analyze_escalation.py",
+    "autonomous_analysis.json",
+    "autonomous_escalation_log.json",
+    "cell.sh",
+    "ci",
+    "docs",
+    "EPOCH_CROSS.json",
+    "epoch_escalation_log.json",
+    "EPOCH_GOV.json",
+    "EPOCH_PARADOX.json",
+    "exports",
+    "KAGGLE_CELL_MRT1_FINAL.txt",
+    "KAGGLE_MRT1_E2E_FINAL.sh",
+    "KT-Codex",
+    "KT_LANE_LORA_PHASE_B",
+    "KT_PROD_CLEANROOM",
+    "KT_TEMPLE_ROOT",
+    "LICENSE",
+    "OPERATION_A_COMPLETION_SUMMARY.txt",
+    "OPERATION_A_FINAL_REPORT.md",
+    "OPERATION_A_INDEX.md",
+    "PHASE_A_BOM.json",
+    "phaseA_commit_hash.txt",
+    "README.md",
+    "REPO_CANON.md",
+    "run_autonomous_escalation.py",
+    "run_epoch_escalation.py",
+    "run_kt_e2e.sh",
+    "run_manifest.schema.json",
+    "RUN_REPORT.md",
+    "runbook.txt",
+    "tmp",
+    "work_order.json"
+  ],
+  "current_root_noise_entries": [
+    ".env.secret",
+    ".pytest_cache",
+    ".venv",
+    "__pycache__",
+    "acceptance_checklist.txt",
+    "analyze_autonomous_run.py",
+    "analyze_escalation.py",
+    "autonomous_analysis.json",
+    "autonomous_escalation_log.json",
+    "cell.sh",
+    "ci",
+    "EPOCH_CROSS.json",
+    "epoch_escalation_log.json",
+    "EPOCH_GOV.json",
+    "EPOCH_PARADOX.json",
+    "exports",
+    "KAGGLE_CELL_MRT1_FINAL.txt",
+    "KAGGLE_MRT1_E2E_FINAL.sh",
+    "KT_LANE_LORA_PHASE_B",
+    "KT_TEMPLE_ROOT",
+    "OPERATION_A_COMPLETION_SUMMARY.txt",
+    "OPERATION_A_FINAL_REPORT.md",
+    "OPERATION_A_INDEX.md",
+    "PHASE_A_BOM.json",
+    "phaseA_commit_hash.txt",
+    "run_autonomous_escalation.py",
+    "run_epoch_escalation.py",
+    "run_manifest.schema.json",
+    "RUN_REPORT.md",
+    "runbook.txt",
+    "tmp",
+    "work_order.json"
+  ],
+  "generated_utc": "2026-03-14T19:38:20Z",
+  "path_groups": [
+    {
+      "canonical_target_root": "ROOT_KEEP_SET",
+      "current_surfaces": [
+        "README.md",
+        "LICENSE",
+        "REPO_CANON.md",
+        "run_kt_e2e.sh",
+        ".github/**",
+        ".devcontainer/**"
+      ],
+      "disposition": "KEEP_MINIMAL_ROOT_ORIENTATION",
+      "evidence_refs": [
+        "README.md",
+        "REPO_CANON.md"
+      ],
+      "group_id": "root_orientation_keep"
+    },
+    {
+      "canonical_target_root": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/docs_audit/",
+      "current_surfaces": [
+        "docs/audit/**"
+      ],
+      "disposition": "MIGRATE_TO_ARCHIVE_ROOT",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json"
+      ],
+      "group_id": "audit_archive_migration"
+    },
+    {
+      "canonical_target_root": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/legacy_runtime/",
+      "current_surfaces": [
+        "KT_TEMPLE_ROOT/**",
+        "KT_LANE_LORA_PHASE_B/**"
+      ],
+      "disposition": "MIGRATE_TO_ARCHIVE_ROOT",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json"
+      ],
+      "group_id": "legacy_runtime_archive_migration"
+    },
+    {
+      "canonical_target_root": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_legacy/",
+      "current_surfaces": [
+        "EPOCH_CROSS.json",
+        "EPOCH_GOV.json",
+        "EPOCH_PARADOX.json",
+        "OPERATION_A_*",
+        "RUN_REPORT.md",
+        "acceptance_checklist.txt",
+        "runbook.txt",
+        "work_order.json"
+      ],
+      "disposition": "MIGRATE_TO_ARCHIVE_ROOT",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json"
+      ],
+      "group_id": "root_legacy_operations_archive"
+    },
+    {
+      "canonical_target_root": "KT_PROD_CLEANROOM/reports/",
+      "current_surfaces": [
+        "KT_PROD_CLEANROOM/reports/**",
+        "KT_PROD_CLEANROOM/exports/_truth/current/**"
+      ],
+      "disposition": "KEEP_GENERATED_REPORTS_WITH_DOCUMENTARY_MIRRORS_SEPARATE",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_truth_surface_map.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "group_id": "generated_truth_keep"
+    },
+    {
+      "canonical_target_root": "LOCAL_UNTRACKED_SECRET_STORE",
+      "current_surfaces": [
+        ".env.secret"
+      ],
+      "disposition": "EJECT_FROM_REPO_SURFACE",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json"
+      ],
+      "group_id": "local_secret_ejection"
+    },
+    {
+      "canonical_target_root": "docs/generated/profiles/",
+      "current_surfaces": [
+        "docs/**",
+        "KT_PROD_CLEANROOM/reports/**"
+      ],
+      "disposition": "CREATE_FUTURE_MACHINE_DERIVED_PROFILE_ROOT",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_state_vector.json",
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_release_law.json"
+      ],
+      "group_id": "future_profiles_root"
+    }
+  ],
+  "proposal_status": "PROPOSED_UNRATIFIED",
+  "root_keep_set": [
+    ".devcontainer",
+    ".gitattributes",
+    ".github",
+    ".gitignore",
+    ".vscode",
+    "KT-Codex",
+    "KT_PROD_CLEANROOM",
+    "LICENSE",
+    "README.md",
+    "REPO_CANON.md",
+    "docs",
+    "run_kt_e2e.sh"
+  ],
+  "schema_id": "kt.operator.path_unification_plan.v1"
+}

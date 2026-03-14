@@ -1,0 +1,91 @@
+{
+  "claim_boundary": "This schema plan proposes housing and naming rules only. It does not move any schema surface yet.",
+  "concrete_migration_candidates": [
+    {
+      "current_path": "KT_PROD_CLEANROOM/reports/WS1_completion_report.schema.json",
+      "proposed_path": "KT_PROD_CLEANROOM/reports/schemas/WS1_completion_report.schema.json"
+    },
+    {
+      "current_path": "KT_PROD_CLEANROOM/reports/supporting_law_touch_exception_receipt.schema.json",
+      "proposed_path": "KT_PROD_CLEANROOM/reports/schemas/supporting_law_touch_exception_receipt.schema.json"
+    },
+    {
+      "current_path": "run_manifest.schema.json",
+      "proposed_path": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/schemas/run_manifest.schema.json"
+    }
+  ],
+  "current_contract_summary": {
+    "contract_count": 222,
+    "contract_kind_counts": {
+      "contract_surface": 21,
+      "law_surface": 20,
+      "manifest_surface": 21,
+      "policy_surface": 16,
+      "registry_surface": 9,
+      "rules_surface": 18,
+      "schema_contract": 26,
+      "structured_surface": 91
+    }
+  },
+  "generated_utc": "2026-03-14T19:38:20Z",
+  "normalization_rules": [
+    "one canonical home per schema family",
+    "schema and instance surfaces must remain physically separable where feasible",
+    "generated report schemas must not remain co-mingled with live reports once migrated",
+    "root-level active schemas are forbidden after normalization; remaining root schemas become archive lineage only",
+    "schema_id version bumps require explicit temporal supersession notes"
+  ],
+  "proposal_status": "PROPOSED_UNRATIFIED",
+  "schema_families": [
+    {
+      "canonical_root": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_contract_index.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+      ],
+      "family_id": "runtime_execution_schemas",
+      "scope": "runtime contracts and execution schemas",
+      "status": "KEEP_CURRENT_CANONICAL_HOME"
+    },
+    {
+      "canonical_root": "KT_PROD_CLEANROOM/governance/foundation_pack/",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_organ_ontology.json",
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_release_law.json"
+      ],
+      "family_id": "foundation_and_meta_schemas",
+      "scope": "foundation pack schemas and cross-step compiler base schemas",
+      "status": "KEEP_CURRENT_CANONICAL_HOME"
+    },
+    {
+      "canonical_root": "KT_PROD_CLEANROOM/reports/schemas/",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_contract_index.json"
+      ],
+      "family_id": "generated_report_schemas",
+      "scope": "schemas that currently sit beside live generated reports",
+      "status": "TARGET_HOME_NOT_YET_CREATED"
+    },
+    {
+      "canonical_root": "KT-Codex/schemas/",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "KT_PROD_CLEANROOM/reports/kt_tag_catalog.json"
+      ],
+      "family_id": "codex_lineage_schemas",
+      "scope": "codex-side lineage or external-draft schemas",
+      "status": "KEEP_AS_LINEAGE_ONLY"
+    },
+    {
+      "canonical_root": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/schemas/",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_contract_index.json"
+      ],
+      "family_id": "archive_legacy_schemas",
+      "scope": "root-level or deprecated legacy schemas retained only for lineage",
+      "status": "TARGET_HOME_NOT_YET_CREATED"
+    }
+  ],
+  "schema_id": "kt.operator.schema_unification_plan.v1"
+}
