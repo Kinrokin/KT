@@ -1,0 +1,142 @@
+{
+  "actual_touched": [
+    "KT_PROD_CLEANROOM/reports/kt_canon_proposal.json",
+    "KT_PROD_CLEANROOM/reports/kt_canon_ratification_log.json",
+    "KT_PROD_CLEANROOM/reports/kt_deprecation_plan.json",
+    "KT_PROD_CLEANROOM/reports/kt_docs_topology.json",
+    "KT_PROD_CLEANROOM/reports/kt_generated_artifact_policy.json",
+    "KT_PROD_CLEANROOM/reports/kt_normalization_and_professionalization_planning_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_normalization_work_order.json",
+    "KT_PROD_CLEANROOM/reports/kt_path_unification_plan.json",
+    "KT_PROD_CLEANROOM/reports/kt_release_profile.json",
+    "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_plan.json",
+    "KT_PROD_CLEANROOM/reports/kt_repo_style_guide.json",
+    "KT_PROD_CLEANROOM/reports/kt_schema_unification_plan.json",
+    "KT_PROD_CLEANROOM/reports/kt_submission_profile.json",
+    "KT_PROD_CLEANROOM/tests/operator/test_canon_normalization_plan_compile.py",
+    "KT_PROD_CLEANROOM/tools/operator/canon_normalization_plan_compile.py"
+  ],
+  "checks": [
+    {
+      "check": "step7_gate_passed",
+      "detail": "Step 8 requires the Step 7 judgment-plane receipt to be PASS.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_judgment_plane_computation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "one_canonical_path_proposal_per_major_function",
+      "detail": "Canon proposal covers every Step 8 major function with an explicit canonical root proposal.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_canon_proposal.json",
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_organ_ontology.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "generated_and_deprecated_artifact_policies_exist",
+      "detail": "Generated artifact policy and deprecation plan are both present and proposal-only.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_generated_artifact_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_deprecation_plan.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "professionalization_plan_covers_required_axes",
+      "detail": "Repo professionalization plan must cover repo shape, docs, schemas, release layout, and submission layout.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_plan.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "all_work_packages_have_migration_tests_and_rollback",
+      "detail": "Every planned normalization package must carry migration tests and rollback plan arrays.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_normalization_work_order.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "proposal_only_and_no_claim_upgrade",
+      "detail": "Canon ratification log must remain unratified and release/submission profiles must preserve the current blocked horizons.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_canon_ratification_log.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_submission_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_state_vector.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "post_touch_accounting_clean",
+      "detail": "Actual touched set must match the lawful Step 8 subject files plus the planning receipt.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_canon_proposal.json",
+        "KT_PROD_CLEANROOM/reports/kt_canon_ratification_log.json",
+        "KT_PROD_CLEANROOM/reports/kt_normalization_work_order.json",
+        "KT_PROD_CLEANROOM/reports/kt_path_unification_plan.json",
+        "KT_PROD_CLEANROOM/reports/kt_schema_unification_plan.json",
+        "KT_PROD_CLEANROOM/reports/kt_generated_artifact_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_deprecation_plan.json",
+        "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_plan.json",
+        "KT_PROD_CLEANROOM/reports/kt_repo_style_guide.json",
+        "KT_PROD_CLEANROOM/reports/kt_docs_topology.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_submission_profile.json",
+        "KT_PROD_CLEANROOM/tools/operator/canon_normalization_plan_compile.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_canon_normalization_plan_compile.py",
+        "KT_PROD_CLEANROOM/reports/kt_normalization_and_professionalization_planning_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "claim_boundary": "This receipt validates Step 8 planning artifacts for compiled_head_commit only. The outputs are proposal-only and do not ratify canon or authorize repository mutations beyond the planning artifacts themselves.",
+  "compiled_head_commit": "632195746bb72be4a7409286206670df12556bc6",
+  "controlling_work_order": {
+    "schema_id": "kt.work_order.max_refactor_e2e_institutional_memory_and_full_stack_adjudication.v2",
+    "step_id": 8,
+    "step_name": "CANON_PROPOSAL_NORMALIZATION_PLAN_AND_REPO_PROFESSIONALIZATION_PLAN",
+    "work_order_id": "WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION"
+  },
+  "current_head_commit": "632195746bb72be4a7409286206670df12556bc6",
+  "generated_utc": "2026-03-14T19:39:10Z",
+  "next_lawful_step": {
+    "status_after_step_8": "UNLOCKED",
+    "step_id": 9,
+    "step_name": "RUNTIME_EXPERIMENT_CRUCIBLE_AND_DELTA_REGISTRY"
+  },
+  "pass_verdict": "NORMALIZATION_AND_PROFESSIONALIZATION_PLANNED",
+  "planned_mutates": [
+    "KT_PROD_CLEANROOM/reports/kt_canon_proposal.json",
+    "KT_PROD_CLEANROOM/reports/kt_canon_ratification_log.json",
+    "KT_PROD_CLEANROOM/reports/kt_normalization_work_order.json",
+    "KT_PROD_CLEANROOM/reports/kt_path_unification_plan.json",
+    "KT_PROD_CLEANROOM/reports/kt_schema_unification_plan.json",
+    "KT_PROD_CLEANROOM/reports/kt_generated_artifact_policy.json",
+    "KT_PROD_CLEANROOM/reports/kt_deprecation_plan.json",
+    "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_plan.json",
+    "KT_PROD_CLEANROOM/reports/kt_repo_style_guide.json",
+    "KT_PROD_CLEANROOM/reports/kt_docs_topology.json",
+    "KT_PROD_CLEANROOM/reports/kt_release_profile.json",
+    "KT_PROD_CLEANROOM/reports/kt_submission_profile.json",
+    "KT_PROD_CLEANROOM/tools/operator/canon_normalization_plan_compile.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_canon_normalization_plan_compile.py",
+    "KT_PROD_CLEANROOM/reports/kt_normalization_and_professionalization_planning_receipt.json"
+  ],
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.normalization_and_professionalization_planning_receipt.v1",
+  "status": "PASS",
+  "step7_gate_evidence_commit": "e7606335d4a4d9c9a96077f79c469871f898bd4e",
+  "step7_gate_subject_commit": "299df3a125b8899aebd899ece4f01945ae2ca0bf",
+  "summary": {
+    "deprecation_count": 6,
+    "major_function_count": 15,
+    "release_profile_count": 5,
+    "submission_profile_count": 5,
+    "work_package_count": 6
+  },
+  "unexpected_touches": []
+}
