@@ -1,0 +1,117 @@
+{
+  "actual_touched": [
+    "KT_PROD_CLEANROOM/reports/kt_paradox_claim_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_paradox_counterexamples.json",
+    "KT_PROD_CLEANROOM/reports/kt_paradox_invariants.json",
+    "KT_PROD_CLEANROOM/reports/kt_paradox_models.tla",
+    "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_paradox_stress_results.json",
+    "KT_PROD_CLEANROOM/reports/kt_proof_obligation_scheduler.json",
+    "KT_PROD_CLEANROOM/tests/operator/test_paradox_verification_compile.py",
+    "KT_PROD_CLEANROOM/tools/operator/paradox_verification_compile.py"
+  ],
+  "checks": [
+    {
+      "check": "step9_gate_passed",
+      "detail": "Step 10 requires the Step 9 runtime and experiment memory receipt to be PASS.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_runtime_and_experiment_memory_sealing_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "required_invariants_covered_exactly",
+      "detail": "All five Step 10 required invariants must be present in the compiled paradox invariants artifact.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_paradox_invariants.json",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_models.tla"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "stress_program_passes",
+      "detail": "Paradox engine stress and salvage-history scans must pass without unresolved accumulation or network side effects.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_paradox_stress_results.json",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/tests/test_paradox_engine.py"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "hold_scheduler_enforces_ttl",
+      "detail": "Current HOLD surfaces must be scheduled with TTL and expiry actions of FAIL_CLOSED or constitutional-court escalation.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_proof_obligation_scheduler.json",
+        "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_safety_envelope.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "untracked_delta_generation_remains_blocked",
+      "detail": "Paradox resolution may not manufacture unlineaged deltas outside the Step 9 governed lineage surfaces.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_learning_delta_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_lineage_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_counterexamples.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "post_touch_accounting_clean",
+      "detail": "Actual touched set must match the lawful Step 10 subject files plus the Step 10 receipt.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_paradox_models.tla",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_invariants.json",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_counterexamples.json",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_stress_results.json",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_claim_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_proof_obligation_scheduler.json",
+        "KT_PROD_CLEANROOM/tools/operator/paradox_verification_compile.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_paradox_verification_compile.py",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "claim_boundary": "This receipt bounds the paradox program for compiled_head_commit only. It does not reopen authority settlement, platform enforcement, or H1 activation, and it does not upgrade the ceiling beyond documentary-only paradox claims.",
+  "compiled_head_commit": "44ec40a73ea759af1072f4182b17cee82fd47f03",
+  "controlling_work_order": {
+    "schema_id": "kt.work_order.max_refactor_e2e_institutional_memory_and_full_stack_adjudication.v2",
+    "step_id": 10,
+    "step_name": "PARADOX_METABOLISM_VERIFICATION_PROGRAM",
+    "work_order_id": "WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION"
+  },
+  "current_head_commit": "44ec40a73ea759af1072f4182b17cee82fd47f03",
+  "generated_utc": "2026-03-14T20:48:46Z",
+  "next_lawful_step": {
+    "status_after_step_10": "UNLOCKED",
+    "step_id": 11,
+    "step_name": "DOCTRINE_COMPILER_PROFILES_AND_EXTERNAL_PROFESSIONALIZATION"
+  },
+  "pass_verdict": "PARADOX_PROGRAM_BOUNDED",
+  "planned_mutates": [
+    "KT_PROD_CLEANROOM/reports/kt_paradox_models.tla",
+    "KT_PROD_CLEANROOM/reports/kt_paradox_invariants.json",
+    "KT_PROD_CLEANROOM/reports/kt_paradox_counterexamples.json",
+    "KT_PROD_CLEANROOM/reports/kt_paradox_stress_results.json",
+    "KT_PROD_CLEANROOM/reports/kt_paradox_claim_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_proof_obligation_scheduler.json",
+    "KT_PROD_CLEANROOM/tools/operator/paradox_verification_compile.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_paradox_verification_compile.py",
+    "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json"
+  ],
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.paradox_program_bounded_receipt.v1",
+  "status": "PASS",
+  "step9_gate_evidence_commit": "e4124a177ff8ac7b47546103ff7aec493040f300",
+  "step9_gate_subject_commit": "6a8878ce23d1fba213108617c01b4d268f4b0238",
+  "summary": {
+    "counterexample_count": 5,
+    "required_invariant_count": 5,
+    "scheduled_obligation_count": 4,
+    "stress_case_count": 7
+  },
+  "unexpected_touches": []
+}
