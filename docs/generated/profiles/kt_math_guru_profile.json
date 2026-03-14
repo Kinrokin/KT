@@ -1,0 +1,34 @@
+{
+  "audience": "proof-centric specialist reviewer",
+  "current_admissibility_ceiling": "DOCUMENTARY_ONLY_WITH_FORMAL_MODEL_AND_STRESS",
+  "current_evidence_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_paradox_invariants.json",
+    "KT_PROD_CLEANROOM/reports/kt_paradox_counterexamples.json",
+    "KT_PROD_CLEANROOM/reports/kt_paradox_stress_results.json",
+    "KT_PROD_CLEANROOM/reports/kt_paradox_claim_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_proof_obligation_scheduler.json",
+    "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+  ],
+  "current_status": "ADMISSIBLE_WITH_BOUNDARIES",
+  "explicit_gaps": [
+    "no published-head self-convergence proof",
+    "authority convergence remains fail-closed",
+    "paradox evidence remains documentary-only, not external superiority proof"
+  ],
+  "forbidden_claims": [
+    "EXTERNAL_PARADOX_SUPERIORITY_PROVEN",
+    "HEAD_IS_VERIFIED_SUBJECT",
+    "H1_ALLOWED"
+  ],
+  "generated_utc": "2026-03-14T21:03:46Z",
+  "playbook_ref": "docs/generated/playbooks/kt_math_guru_training_runbook.md",
+  "profile_id": "math_guru",
+  "required_capabilities": [
+    "read the paradox TLA model and invariant set",
+    "trace counterexamples to receipts and runtime behavior",
+    "distinguish documentary proof from unresolved authority convergence",
+    "follow proof obligations and blocker ladders without narrative upgrade"
+  ],
+  "schema_id": "kt.doctrine.profile.v1",
+  "target_quality_level": "QL2"
+}
