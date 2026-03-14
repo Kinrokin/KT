@@ -1,0 +1,143 @@
+{
+  "generated_utc": "2026-03-14T21:17:58Z",
+  "obligations": [
+    {
+      "blocked_proof_classes": [
+        "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+        "H1_SINGLE_ADAPTER_ALLOWED"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+      ],
+      "obligation_id": "OBLIGATION::AUTHORITY_CONVERGENCE_UNRESOLVED",
+      "severity": "CRITICAL",
+      "statement": "Resolve blocker AUTHORITY_CONVERGENCE_UNRESOLVED before claiming blocked proof classes.",
+      "status": "OPEN"
+    },
+    {
+      "blocked_proof_classes": [
+        "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+        "H1_SINGLE_ADAPTER_ALLOWED"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "obligation_id": "OBLIGATION::PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+      "severity": "CRITICAL",
+      "statement": "Resolve blocker PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED before claiming blocked proof classes.",
+      "status": "OPEN"
+    },
+    {
+      "blocked_proof_classes": [
+        "H1_SINGLE_ADAPTER_ALLOWED"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json"
+      ],
+      "obligation_id": "OBLIGATION::H1_ACTIVATION_GATE_CLOSED",
+      "severity": "HIGH",
+      "statement": "Resolve blocker H1_ACTIVATION_GATE_CLOSED before claiming blocked proof classes.",
+      "status": "OPEN"
+    },
+    {
+      "blocked_proof_classes": [
+        "PLATFORM_ENFORCEMENT_PROVEN"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "obligation_id": "OBLIGATION::PLATFORM_ENFORCEMENT_UNPROVEN",
+      "severity": "HIGH",
+      "statement": "Resolve blocker PLATFORM_ENFORCEMENT_UNPROVEN before claiming blocked proof classes.",
+      "status": "OPEN"
+    },
+    {
+      "blocked_proof_classes": [
+        "H1_SINGLE_ADAPTER_ALLOWED"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/execution_board.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "obligation_id": "OBLIGATION::TRUTH_PUBLICATION_STABILIZED_FALSE",
+      "severity": "HIGH",
+      "statement": "Resolve blocker TRUTH_PUBLICATION_STABILIZED_FALSE before claiming blocked proof classes.",
+      "status": "OPEN"
+    },
+    {
+      "blocked_proof_classes": [
+        "CROSS_ENV_CONTROLLED_VARIATION_COMPLETE"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/twocleanclone_proof.json"
+      ],
+      "obligation_id": "OBLIGATION::CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN",
+      "severity": "MEDIUM",
+      "statement": "Resolve blocker CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN before claiming blocked proof classes.",
+      "status": "OPEN"
+    },
+    {
+      "blocked_proof_classes": [
+        "competition_release"
+      ],
+      "evidence_refs": [
+        "docs/generated/profiles/kt_competition_profile.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json"
+      ],
+      "obligation_id": "OBLIGATION::COMPETITION_PROFILE_QL3",
+      "severity": "P1_claim_evidence",
+      "statement": "Raise competition-facing quality and reproducibility to QL3 before any competition-ready claim.",
+      "status": "OPEN"
+    },
+    {
+      "blocked_proof_classes": [
+        "publication_release"
+      ],
+      "evidence_refs": [
+        "docs/generated/profiles/kt_publication_profile.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json"
+      ],
+      "obligation_id": "OBLIGATION::PUBLICATION_PROFILE_QL3",
+      "severity": "P1_claim_evidence",
+      "statement": "Raise publication-facing truth, governance, and operability surfaces to QL3 before any publication-ready claim.",
+      "status": "OPEN"
+    },
+    {
+      "blocked_proof_classes": [
+        "repo_professionalization_complete"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_plan.json"
+      ],
+      "obligation_id": "OBLIGATION::REMOVE_LOCAL_RESIDUE_FROM_CANONICAL_ROOT",
+      "severity": "P0_runtime_integrity",
+      "statement": "Remove local secret-like residue from the canonical root scope.",
+      "status": "OPEN"
+    },
+    {
+      "blocked_proof_classes": [
+        "repo_professionalization_complete"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_plan.json"
+      ],
+      "obligation_id": "OBLIGATION::MIGRATE_ROOT_ARCHIVE_CONTAMINATION",
+      "severity": "P2_duplicate_surface",
+      "statement": "Move historical archive material out of root/docs-audit lanes into the archive vault plan.",
+      "status": "OPEN"
+    }
+  ],
+  "schema_id": "kt.operator.proof_obligations.v1",
+  "summary": {
+    "open_obligation_count": 10
+  }
+}

@@ -1,0 +1,597 @@
+{
+  "adjudication_structure": [
+    "red_team_attack",
+    "blue_team_hardening",
+    "magistrate_scoring"
+  ],
+  "attack_vector_ref": "KT_PROD_CLEANROOM/reports/kt_attack_vectors.json",
+  "claim_assessments": [
+    {
+      "blocked_by": [],
+      "ceiling": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED_SUBJECT",
+      "claim_id": "CLAIM::TRANSPARENCY_VERIFIED_TRUTH_SUBJECT",
+      "classification": "proven",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json"
+      ],
+      "scope": "cbc921601b646d7962555c902ea2747963fd9fad",
+      "statement": "A transparency-verified truth subject exists at the documented truth subject commit."
+    },
+    {
+      "blocked_by": [
+        "AUTHORITY_CONVERGENCE_UNRESOLVED",
+        "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED"
+      ],
+      "ceiling": "TRANSPARENCY_VERIFIED_SUBJECT_ONLY",
+      "claim_id": "CLAIM::TRUTH_AUTHORITY_BEYOND_SUBJECT_CEILING",
+      "classification": "evidenced_only",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json"
+      ],
+      "scope": "current-head authority",
+      "statement": "Truth authority is evidenced only up to the transparency-verified subject ceiling; current-head authority convergence remains unresolved."
+    },
+    {
+      "blocked_by": [
+        "AUTHORITY_CONVERGENCE_UNRESOLVED"
+      ],
+      "ceiling": "FAIL_CLOSED",
+      "claim_id": "CLAIM::CURRENT_HEAD_AUTHORITY_CONVERGENCE_PASS",
+      "classification": "contradicted",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+      ],
+      "scope": "current-head authority convergence",
+      "statement": "Current-head authority convergence is not passing on the retained stack."
+    },
+    {
+      "blocked_by": [],
+      "ceiling": "WORKFLOW_GOVERNANCE_ONLY",
+      "claim_id": "CLAIM::WORKFLOW_GOVERNANCE_ONLY_LEGITIMACY",
+      "classification": "proven",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "scope": "7bd610b507328eb72622ce24678620f5469f3848",
+      "statement": "Workflow governance legitimacy is proven, with platform-enforced governance explicitly blocked."
+    },
+    {
+      "blocked_by": [
+        "PLATFORM_ENFORCEMENT_UNPROVEN"
+      ],
+      "ceiling": "BLOCKED",
+      "claim_id": "CLAIM::PLATFORM_ENFORCEMENT_PROVEN",
+      "classification": "contradicted",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "scope": "platform governance",
+      "statement": "Platform-enforced governance is not proven on main."
+    },
+    {
+      "blocked_by": [],
+      "ceiling": "CANONICAL_RUNTIME_BOUNDARY_SETTLED",
+      "claim_id": "CLAIM::CANONICAL_RUNTIME_BOUNDARY_SETTLED",
+      "classification": "proven",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+      ],
+      "scope": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834",
+      "statement": "Canonical runtime boundary integrity is settled for the runtime-boundary subject commit."
+    },
+    {
+      "blocked_by": [],
+      "ceiling": "REPRESENTATIVE_AUTHORITY_LANE_SAME_MVE_ONLY",
+      "claim_id": "CLAIM::REPRESENTATIVE_SAME_MVE_REPRODUCIBILITY",
+      "classification": "proven",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_runtime_and_experiment_memory_sealing_receipt.json"
+      ],
+      "scope": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8",
+      "statement": "Representative same-MVE authority-lane reproducibility is proven."
+    },
+    {
+      "blocked_by": [
+        "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN"
+      ],
+      "ceiling": "NOT_ATTAINED",
+      "claim_id": "CLAIM::CROSS_ENV_REPRODUCIBILITY_COMPLETE",
+      "classification": "aspirational",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "scope": "cross-environment reproducibility",
+      "statement": "Cross-environment controlled variation is not yet complete."
+    },
+    {
+      "blocked_by": [],
+      "ceiling": "DOCUMENTARY_ONLY",
+      "claim_id": "CLAIM::EXPERIMENT_AND_DELTA_LINEAGE_AUDITABLE",
+      "classification": "proven",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_runtime_and_experiment_memory_sealing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_lineage_manifest.json"
+      ],
+      "scope": "experiment crucible memory",
+      "statement": "Governed experiments, learning deltas, and receipt lineage are now auditable."
+    },
+    {
+      "blocked_by": [],
+      "ceiling": "DOCUMENTARY_ONLY",
+      "claim_id": "CLAIM::PARADOX_PROGRAM_BOUNDED",
+      "classification": "proven",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_claim_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_proof_obligation_scheduler.json"
+      ],
+      "scope": "paradox metabolism",
+      "statement": "Paradox metabolism is bounded at documentary-only ceiling with explicit stress, counterexamples, and TTL obligations."
+    },
+    {
+      "blocked_by": [],
+      "ceiling": "DOCUMENTARY_ONLY",
+      "claim_id": "CLAIM::DOCTRINE_GENERATED_FROM_MACHINE_STATE",
+      "classification": "proven",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_doctrine_and_profiles_generation_receipt.json",
+        "docs/generated/kt_doctrine_manifest.json",
+        "docs/generated/kt_doctrine_ratification_log.json"
+      ],
+      "scope": "public claims and doctrine",
+      "statement": "Doctrine, profiles, and playbooks are generated from machine-state inputs and ratified for documentary use."
+    },
+    {
+      "blocked_by": [],
+      "ceiling": "DOCUMENTARY_ONLY",
+      "claim_id": "CLAIM::COMMERCIAL_SURFACE_DOCUMENTARY_BOUNDARY",
+      "classification": "proven",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "scope": "commercial surface",
+      "statement": "Commercial claims remain documentary-only and compiler-bounded."
+    },
+    {
+      "blocked_by": [
+        "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+        "TRUTH_PUBLICATION_STABILIZED_FALSE",
+        "H1_ACTIVATION_ALLOWED_FALSE",
+        "AUTHORITY_CONVERGENCE_UNRESOLVED"
+      ],
+      "ceiling": "BLOCKED",
+      "claim_id": "CLAIM::H1_ACTIVATION_ALLOWED",
+      "classification": "contradicted",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "scope": "H1 activation",
+      "statement": "H1 activation is still blocked."
+    },
+    {
+      "blocked_by": [
+        "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN",
+        "H1_ACTIVATION_GATE_CLOSED",
+        "QUALITY_LEVEL_BELOW_TARGET"
+      ],
+      "ceiling": "BLOCKED",
+      "claim_id": "CLAIM::COMPETITION_RELEASE_READY",
+      "classification": "aspirational",
+      "evidence_refs": [
+        "docs/generated/profiles/kt_competition_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_profile.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json"
+      ],
+      "scope": "competition profile",
+      "statement": "Competition release readiness is not yet admissible."
+    },
+    {
+      "blocked_by": [
+        "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+        "PLATFORM_ENFORCEMENT_UNPROVEN",
+        "TRUTH_PUBLICATION_STABILIZED_FALSE"
+      ],
+      "ceiling": "BLOCKED",
+      "claim_id": "CLAIM::PUBLICATION_RELEASE_READY",
+      "classification": "aspirational",
+      "evidence_refs": [
+        "docs/generated/profiles/kt_publication_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "scope": "publication profile",
+      "statement": "Publication release readiness is not yet admissible."
+    },
+    {
+      "blocked_by": [
+        "LOCAL_RESIDUE_PRESENT",
+        "ROOT_ARCHIVE_CONTAMINATION"
+      ],
+      "ceiling": "PROPOSAL_ONLY",
+      "claim_id": "CLAIM::FULL_REPO_PROFESSIONALIZATION_COMPLETE",
+      "classification": "contradicted",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_plan.json",
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json"
+      ],
+      "scope": "repo professionalization",
+      "statement": "The repo is not yet fully professionalized; root noise, root archive contamination, and local residue remain open."
+    },
+    {
+      "blocked_by": [],
+      "ceiling": "BLOCKED",
+      "claim_id": "CLAIM::CURRENT_HEAD_MAY_BE_PHRASED_AS_VERIFIED_SUBJECT",
+      "classification": "contradicted",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "docs/generated/kt_doctrine_ratification_log.json"
+      ],
+      "scope": "current-head public phrasing",
+      "statement": "Current heads may not be phrased as the verified subject unless the SHAs match."
+    },
+    {
+      "blocked_by": [],
+      "ceiling": "DOCUMENTARY_ONLY",
+      "claim_id": "CLAIM::HISTORICAL_MEMORY_INGESTED",
+      "classification": "proven",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_memory_ingestion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json"
+      ],
+      "scope": "historical lineage",
+      "statement": "Historical claims, conflicts, resolutions, and reopened defects are ingested into machine-usable memory."
+    }
+  ],
+  "claim_boundary": "This adjudication is derived from cited receipts, doctrine artifacts, and proof ceilings. Completion does not remove the open blockers or upgrade blocked horizons.",
+  "claim_classification_summary": {
+    "aspirational": 3,
+    "contradicted": 5,
+    "evidenced_only": 1,
+    "proven": 9
+  },
+  "completion_status": "FULL_STACK_ADJUDICATION_COMPLETE",
+  "generated_utc": "2026-03-14T21:17:58Z",
+  "open_blockers": [
+    "AUTHORITY_CONVERGENCE_UNRESOLVED",
+    "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+    "H1_ACTIVATION_GATE_CLOSED",
+    "PLATFORM_ENFORCEMENT_UNPROVEN",
+    "TRUTH_PUBLICATION_STABILIZED_FALSE",
+    "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN"
+  ],
+  "organ_assessments": [
+    {
+      "adjudication_verdict": "PROVEN_AT_WORKFLOW_CEILING",
+      "blockers": [
+        "PLATFORM_ENFORCEMENT_UNPROVEN"
+      ],
+      "current_ceiling": "WORKFLOW_GOVERNANCE_ONLY",
+      "current_status": "WORKFLOW_GOVERNANCE_ONLY_EVIDENCED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "label": "Governance Spine",
+      "organ_class": "governance",
+      "organ_id": "governance_spine",
+      "quality_level": "QL2",
+      "trust_zones": [
+        "CANONICAL"
+      ]
+    },
+    {
+      "adjudication_verdict": "PROVEN_WITH_PLATFORM_LIMIT",
+      "blockers": [
+        "PLATFORM_ENFORCEMENT_UNPROVEN"
+      ],
+      "current_ceiling": "COURT_DEFINED_BUT_PLATFORM_LIMITED",
+      "current_status": "RATIFIED_PLATFORM_LIMITED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "docs/generated/kt_doctrine_ratification_log.json"
+      ],
+      "label": "Constitutional Meta-Governance",
+      "organ_class": "constitutional",
+      "organ_id": "constitutional_meta_governance",
+      "quality_level": "QL2",
+      "trust_zones": [
+        "CANONICAL"
+      ]
+    },
+    {
+      "adjudication_verdict": "EVIDENCED_ONLY_AT_SUBJECT_CEILING",
+      "blockers": [
+        "AUTHORITY_CONVERGENCE_UNRESOLVED",
+        "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+        "TRUTH_PUBLICATION_STABILIZED_FALSE"
+      ],
+      "current_ceiling": "TRANSPARENCY_VERIFIED_SUBJECT_ONLY",
+      "current_status": "SUBJECT_ONLY_EVIDENCED_CURRENT_HEAD_UNSETTLED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+      ],
+      "label": "Truth Authority Plane",
+      "organ_class": "truth",
+      "organ_id": "truth_authority_plane",
+      "quality_level": "QL2",
+      "trust_zones": [
+        "CANONICAL",
+        "GENERATED_RUNTIME_TRUTH"
+      ]
+    },
+    {
+      "adjudication_verdict": "PROVEN_CANONICAL_BOUNDARY",
+      "blockers": [],
+      "current_ceiling": "CANONICAL_RUNTIME_BOUNDARY_SETTLED",
+      "current_status": "CANONICAL_BOUNDARY_SETTLED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+      ],
+      "label": "Runtime Spine",
+      "organ_class": "runtime",
+      "organ_id": "runtime_spine",
+      "quality_level": "QL3",
+      "trust_zones": [
+        "CANONICAL",
+        "QUARANTINED",
+        "GENERATED_RUNTIME_TRUTH"
+      ]
+    },
+    {
+      "adjudication_verdict": "SURVIVED_WITH_BOUNDARY_ENFORCEMENT",
+      "blockers": [
+        "AUTHORITY_CONVERGENCE_UNRESOLVED",
+        "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED"
+      ],
+      "current_ceiling": "OPERATOR_CONTROLLED_WITH_CLAIM_BOUNDARIES",
+      "current_status": "BOUNDARY_ENFORCING_OUTPUTS_ACTIVE",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_doctrine_and_profiles_generation_receipt.json"
+      ],
+      "label": "Operator Factory",
+      "organ_class": "operations",
+      "organ_id": "operator_factory",
+      "quality_level": "QL2",
+      "trust_zones": [
+        "CANONICAL",
+        "GENERATED_RUNTIME_TRUTH"
+      ]
+    },
+    {
+      "adjudication_verdict": "PROVEN_TRANSPARENCY_AND_BUNDLE",
+      "blockers": [],
+      "current_ceiling": "TRANSPARENCY_AND_DELIVERY_EVIDENCE_ONLY",
+      "current_status": "TRANSPARENCY_SUBJECT_PUBLISHED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json"
+      ],
+      "label": "Verification, Delivery, and Security Plane",
+      "organ_class": "verification",
+      "organ_id": "verification_delivery_security_plane",
+      "quality_level": "QL2",
+      "trust_zones": [
+        "CANONICAL",
+        "GENERATED_RUNTIME_TRUTH"
+      ]
+    },
+    {
+      "adjudication_verdict": "PROMOTION_REQUIRED_BEFORE_CANON",
+      "blockers": [],
+      "current_ceiling": "PROMOTION_REQUIRED_BEFORE_CANON",
+      "current_status": "PROMOTION_REQUIRED_BEFORE_CANON",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_runtime_and_experiment_memory_sealing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_plan.json"
+      ],
+      "label": "Lab Adaptation Plane",
+      "organ_class": "laboratory",
+      "organ_id": "lab_adaptation_plane",
+      "quality_level": "QL1",
+      "trust_zones": [
+        "LAB",
+        "CANONICAL"
+      ]
+    },
+    {
+      "adjudication_verdict": "PROVEN_AT_REPRESENTATIVE_BAND",
+      "blockers": [
+        "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN"
+      ],
+      "current_ceiling": "REPRESENTATIVE_SAME_MVE_ONLY",
+      "current_status": "RUNTIME_AND_EXPERIMENT_MEMORY_SEALED_REPRESENTATIVE_ONLY",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_runtime_and_experiment_memory_sealing_receipt.json"
+      ],
+      "label": "Experiment Crucible Plane",
+      "organ_class": "experiment",
+      "organ_id": "experiment_crucible_plane",
+      "quality_level": "QL2",
+      "trust_zones": [
+        "CANONICAL",
+        "GENERATED_RUNTIME_TRUTH",
+        "LAB"
+      ]
+    },
+    {
+      "adjudication_verdict": "PROVEN_AT_DOCUMENTARY_CEILING",
+      "blockers": [],
+      "current_ceiling": "FRONTIER_SETTLED_WITH_H1_BLOCK",
+      "current_status": "BOUNDED_AT_DOCUMENTARY_CEILING",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_proof_obligation_scheduler.json"
+      ],
+      "label": "Paradox Metabolism Plane",
+      "organ_class": "paradox",
+      "organ_id": "paradox_metabolism_plane",
+      "quality_level": "QL1",
+      "trust_zones": [
+        "CANONICAL",
+        "GENERATED_RUNTIME_TRUTH"
+      ]
+    },
+    {
+      "adjudication_verdict": "GENERATED_WITH_EXPLICIT_BOUNDARIES",
+      "blockers": [],
+      "current_ceiling": "EVIDENCE_CONTAINS_SUBJECT_BOUNDARY_ONLY",
+      "current_status": "MACHINE_STATE_DOCTRINE_GENERATED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_doctrine_and_profiles_generation_receipt.json",
+        "docs/generated/kt_doctrine_manifest.json",
+        "docs/generated/kt_doctrine_ratification_log.json"
+      ],
+      "label": "Public Claims and Doctrine Plane",
+      "organ_class": "claims",
+      "organ_id": "public_claims_and_doctrine_plane",
+      "quality_level": "QL2",
+      "trust_zones": [
+        "CANONICAL",
+        "GENERATED_RUNTIME_TRUTH",
+        "COMMERCIAL"
+      ]
+    },
+    {
+      "adjudication_verdict": "PROVEN_DOCUMENTARY_ONLY",
+      "blockers": [],
+      "current_ceiling": "DOCUMENTARY_ONLY_WITH_COMPILER_BOUNDARY",
+      "current_status": "DOCUMENTARY_BOUNDARY_ENFORCED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "label": "Commercial Surface Plane",
+      "organ_class": "commercial",
+      "organ_id": "commercial_surface_plane",
+      "quality_level": "QL2",
+      "trust_zones": [
+        "COMMERCIAL",
+        "GENERATED_RUNTIME_TRUTH"
+      ]
+    },
+    {
+      "adjudication_verdict": "INGESTED_WITH_ROOT_CONTAMINATION_RISK",
+      "blockers": [
+        "ROOT_ARCHIVE_CONTAMINATION"
+      ],
+      "current_ceiling": "LINEAGE_ONLY_NOT_CURRENT_TRUTH",
+      "current_status": "LINEAGE_MEMORY_INGESTED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_memory_ingestion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json"
+      ],
+      "label": "Archive Memory Plane",
+      "organ_class": "archive",
+      "organ_id": "archive_memory_plane",
+      "quality_level": "QL1",
+      "trust_zones": [
+        "ARCHIVE",
+        "COMMERCIAL"
+      ]
+    },
+    {
+      "adjudication_verdict": "BLOCKED_BY_OPEN_HORIZONS",
+      "blockers": [
+        "H1_ACTIVATION_GATE_CLOSED"
+      ],
+      "current_ceiling": "H1_BLOCKED",
+      "current_status": "BOUNDED_RELEASE_PROFILES_ONLY",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_release_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_submission_profile.json",
+        "docs/generated/profiles/kt_outsider_onboarding_profile.json",
+        "docs/generated/profiles/kt_competition_profile.json",
+        "docs/generated/profiles/kt_publication_profile.json"
+      ],
+      "label": "Release Profile Plane",
+      "organ_class": "release",
+      "organ_id": "release_profile_plane",
+      "quality_level": "QL1",
+      "trust_zones": [
+        "CANONICAL",
+        "GENERATED_RUNTIME_TRUTH",
+        "COMMERCIAL"
+      ]
+    },
+    {
+      "adjudication_verdict": "FULL_STACK_ADJUDICATION_COMPLETE_WITH_OPEN_BLOCKERS",
+      "blockers": [
+        "AUTHORITY_CONVERGENCE_UNRESOLVED",
+        "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+        "H1_ACTIVATION_GATE_CLOSED"
+      ],
+      "current_ceiling": "SEALED_WITH_OPEN_BLOCKERS",
+      "current_status": "SEALED_BASELINE_PRE_FINAL_ADJUDICATION",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+        "KT_PROD_CLEANROOM/reports/kt_doctrine_and_profiles_generation_receipt.json"
+      ],
+      "label": "Adjudication Plane",
+      "organ_class": "adjudication",
+      "organ_id": "adjudication_plane",
+      "quality_level": "QL2",
+      "trust_zones": [
+        "CANONICAL",
+        "GENERATED_RUNTIME_TRUTH"
+      ]
+    }
+  ],
+  "organ_coverage": {
+    "all_major_organs_covered": true,
+    "covered_organ_count": 14,
+    "required_organ_count": 14
+  },
+  "proof_obligations_ref": "KT_PROD_CLEANROOM/reports/kt_proof_obligations.json",
+  "release_readiness_matrix_ref": "KT_PROD_CLEANROOM/reports/kt_release_readiness_matrix.json",
+  "residual_risks": [
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_plan.json"
+      ],
+      "risk_id": "LOCAL_RESIDUE_PRESENT",
+      "severity": "P0_runtime_integrity",
+      "status": "OPEN"
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_plan.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_memory_ingestion_receipt.json"
+      ],
+      "risk_id": "ROOT_ARCHIVE_CONTAMINATION",
+      "severity": "P2_duplicate_surface",
+      "status": "OPEN"
+    }
+  ],
+  "schema_id": "kt.operator.full_stack_audit.v1",
+  "supporting_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_doctrine_and_profiles_generation_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_runtime_and_experiment_memory_sealing_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+    "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+    "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+    "docs/generated/kt_doctrine_manifest.json",
+    "docs/generated/kt_doctrine_ratification_log.json"
+  ]
+}

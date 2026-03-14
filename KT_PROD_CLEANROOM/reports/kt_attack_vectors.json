@@ -1,0 +1,236 @@
+{
+  "adjudication_structure": [
+    "red_team_attack",
+    "blue_team_hardening",
+    "magistrate_scoring"
+  ],
+  "attack_vectors": [
+    {
+      "attack_id": "AV01_HEAD_SUBJECT_OVERREAD",
+      "blue_team_hardening": {
+        "evidence_refs": [
+          "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+          "docs/generated/kt_doctrine_ratification_log.json",
+          "docs/generated/profiles/kt_outsider_onboarding_profile.json"
+        ],
+        "observed_barrier": "Public verifier and generated doctrine forbid phrasing HEAD as the verified subject unless SHAs match."
+      },
+      "magistrate_scoring": {
+        "severity": "P0_authority",
+        "verdict": "SURVIVED_FAIL_CLOSED"
+      },
+      "red_team_attack": {
+        "hypothesis": "Current HEAD can be described as the transparency-verified subject even when the subject and evidence SHAs differ."
+      },
+      "target_organs": [
+        "truth_authority_plane",
+        "public_claims_and_doctrine_plane"
+      ]
+    },
+    {
+      "attack_id": "AV02_PLATFORM_GOVERNANCE_OVERCLAIM",
+      "blue_team_hardening": {
+        "evidence_refs": [
+          "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+          "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+          "docs/generated/profiles/kt_publication_profile.json"
+        ],
+        "observed_barrier": "Platform-governance narrowing and generated profiles keep platform enforcement blocked."
+      },
+      "magistrate_scoring": {
+        "severity": "P1_governance",
+        "verdict": "SURVIVED_FAIL_CLOSED"
+      },
+      "red_team_attack": {
+        "hypothesis": "Workflow governance proof can be inflated into platform-enforced governance."
+      },
+      "target_organs": [
+        "governance_spine",
+        "public_claims_and_doctrine_plane"
+      ]
+    },
+    {
+      "attack_id": "AV03_RUNTIME_BOUNDARY_BLEED",
+      "blue_team_hardening": {
+        "evidence_refs": [
+          "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+          "docs/generated/kt_doctrine_manifest.json"
+        ],
+        "observed_barrier": "Runtime boundary receipt and generated doctrine keep compatibility roots quarantined."
+      },
+      "magistrate_scoring": {
+        "severity": "P0_runtime_integrity",
+        "verdict": "SURVIVED_FAIL_CLOSED"
+      },
+      "red_team_attack": {
+        "hypothesis": "Compatibility-only roots can be smuggled back into canonical runtime claims."
+      },
+      "target_organs": [
+        "runtime_spine",
+        "operator_factory"
+      ]
+    },
+    {
+      "attack_id": "AV04_H1_PREMATURE_ACTIVATION",
+      "blue_team_hardening": {
+        "evidence_refs": [
+          "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+          "docs/generated/profiles/kt_competition_profile.json",
+          "docs/generated/profiles/kt_publication_profile.json"
+        ],
+        "observed_barrier": "Frontier settlement and release/doctrine profiles keep H1 explicitly blocked."
+      },
+      "magistrate_scoring": {
+        "severity": "P0_authority",
+        "verdict": "SURVIVED_FAIL_CLOSED"
+      },
+      "red_team_attack": {
+        "hypothesis": "H1 can be described as open because frontier settlement exists."
+      },
+      "target_organs": [
+        "paradox_metabolism_plane",
+        "release_profile_plane"
+      ]
+    },
+    {
+      "attack_id": "AV05_PARADOX_INDEFINITE_HOLD",
+      "blue_team_hardening": {
+        "evidence_refs": [
+          "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json",
+          "KT_PROD_CLEANROOM/reports/kt_proof_obligation_scheduler.json"
+        ],
+        "observed_barrier": "The paradox proof-obligation scheduler applies TTL and fail-closed/escalation semantics to active holds."
+      },
+      "magistrate_scoring": {
+        "severity": "P1_claim_evidence",
+        "verdict": "SURVIVED_WITH_TTL"
+      },
+      "red_team_attack": {
+        "hypothesis": "Paradox-related hold states can remain indefinite without escalation."
+      },
+      "target_organs": [
+        "paradox_metabolism_plane"
+      ]
+    },
+    {
+      "attack_id": "AV06_UNTRACKED_DELTA_GENERATION",
+      "blue_team_hardening": {
+        "evidence_refs": [
+          "KT_PROD_CLEANROOM/reports/kt_runtime_and_experiment_memory_sealing_receipt.json",
+          "KT_PROD_CLEANROOM/reports/kt_lineage_manifest.json",
+          "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json"
+        ],
+        "observed_barrier": "Step 9 lineage sealing and Step 10 counterexample handling keep untracked deltas inadmissible."
+      },
+      "magistrate_scoring": {
+        "severity": "P1_claim_evidence",
+        "verdict": "SURVIVED_FAIL_CLOSED"
+      },
+      "red_team_attack": {
+        "hypothesis": "Resolution or training deltas can be manufactured without governed lineage."
+      },
+      "target_organs": [
+        "experiment_crucible_plane",
+        "paradox_metabolism_plane"
+      ]
+    },
+    {
+      "attack_id": "AV07_COMPETITION_PUBLICATION_OVERRUN",
+      "blue_team_hardening": {
+        "evidence_refs": [
+          "docs/generated/profiles/kt_competition_profile.json",
+          "docs/generated/profiles/kt_publication_profile.json",
+          "docs/generated/kt_doctrine_ratification_log.json"
+        ],
+        "observed_barrier": "Competition and publication profiles remain blocked with explicit forbidden claims and gaps."
+      },
+      "magistrate_scoring": {
+        "severity": "P1_claim_evidence",
+        "verdict": "SURVIVED_FAIL_CLOSED"
+      },
+      "red_team_attack": {
+        "hypothesis": "Generated doctrine can overstate competition or publication readiness."
+      },
+      "target_organs": [
+        "release_profile_plane",
+        "public_claims_and_doctrine_plane"
+      ]
+    },
+    {
+      "attack_id": "AV08_ARCHIVE_CONTAMINATION_PROMOTION",
+      "blue_team_hardening": {
+        "evidence_refs": [
+          "KT_PROD_CLEANROOM/reports/kt_historical_memory_ingestion_receipt.json",
+          "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json",
+          "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_plan.json"
+        ],
+        "observed_barrier": "Historical ingestion and docs topology label archive/codex surfaces as lineage-only, but physical contamination remains open."
+      },
+      "magistrate_scoring": {
+        "severity": "P2_duplicate_surface",
+        "verdict": "RESIDUAL_RISK_ACKNOWLEDGED"
+      },
+      "red_team_attack": {
+        "hypothesis": "Root archive clutter can still confuse canon versus lineage."
+      },
+      "target_organs": [
+        "archive_memory_plane",
+        "public_claims_and_doctrine_plane"
+      ]
+    },
+    {
+      "attack_id": "AV09_LOCAL_SECRET_RESIDUE",
+      "blue_team_hardening": {
+        "evidence_refs": [
+          "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json",
+          "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_plan.json"
+        ],
+        "observed_barrier": "The residue is explicitly remembered as still-open risk rather than ignored, but it is not yet removed."
+      },
+      "magistrate_scoring": {
+        "severity": "P0_runtime_integrity",
+        "verdict": "OPEN_HYGIENE_RISK"
+      },
+      "red_team_attack": {
+        "hypothesis": "Local secret-like residue at repo root could contaminate a release or audit reading."
+      },
+      "target_organs": [
+        "archive_memory_plane",
+        "release_profile_plane"
+      ]
+    },
+    {
+      "attack_id": "AV10_CROSS_ENV_REPRODUCIBILITY_INFLATION",
+      "blue_team_hardening": {
+        "evidence_refs": [
+          "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+          "docs/generated/profiles/kt_competition_profile.json",
+          "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+        ],
+        "observed_barrier": "Reproducibility receipts and competition profiles keep the claim bounded to the representative same-MVE band."
+      },
+      "magistrate_scoring": {
+        "severity": "P1_claim_evidence",
+        "verdict": "SURVIVED_FAIL_CLOSED"
+      },
+      "red_team_attack": {
+        "hypothesis": "Representative same-MVE reproducibility can be narrated as cross-environment completion."
+      },
+      "target_organs": [
+        "experiment_crucible_plane",
+        "release_profile_plane"
+      ]
+    }
+  ],
+  "generated_utc": "2026-03-14T21:17:58Z",
+  "schema_id": "kt.operator.attack_vectors.v1",
+  "summary": {
+    "attack_vector_count": 10,
+    "verdict_counts": {
+      "OPEN_HYGIENE_RISK": 1,
+      "RESIDUAL_RISK_ACKNOWLEDGED": 1,
+      "SURVIVED_FAIL_CLOSED": 7,
+      "SURVIVED_WITH_TTL": 1
+    }
+  }
+}

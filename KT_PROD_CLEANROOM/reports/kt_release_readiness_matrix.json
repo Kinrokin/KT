@@ -1,0 +1,296 @@
+{
+  "claim_boundary": "Readiness rows inherit the current blocker ladder and must not be read as horizon upgrades while blockers remain open.",
+  "generated_utc": "2026-03-14T21:17:58Z",
+  "profiles": [
+    {
+      "blocked_by": [],
+      "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_judgment_plane_computation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+      ],
+      "forbidden_claims": [
+        "HEAD_IS_VERIFIED_SUBJECT",
+        "H1_ALLOWED",
+        "PLATFORM_ENFORCED_GOVERNANCE_PROVEN"
+      ],
+      "profile_family": "release_profile_plan",
+      "profile_id": "internal_operator_audit_release",
+      "readiness_verdict": "READY_WITH_BOUNDARIES"
+    },
+    {
+      "blocked_by": [],
+      "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json"
+      ],
+      "forbidden_claims": [
+        "H1_ALLOWED",
+        "PLATFORM_ENFORCED_GOVERNANCE_PROVEN",
+        "CROSS_ENV_REPRODUCIBILITY_COMPLETE"
+      ],
+      "profile_family": "release_profile_plan",
+      "profile_id": "external_specialist_demo_release",
+      "readiness_verdict": "READY_WITH_BOUNDARIES"
+    },
+    {
+      "blocked_by": [
+        "PLATFORM_ENFORCEMENT_UNPROVEN"
+      ],
+      "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_state_vector.json"
+      ],
+      "forbidden_claims": [
+        "PLATFORM_ENFORCED_GOVERNANCE_PROVEN",
+        "H1_ALLOWED"
+      ],
+      "profile_family": "release_profile_plan",
+      "profile_id": "governed_partner_review_release",
+      "readiness_verdict": "HOLD"
+    },
+    {
+      "blocked_by": [
+        "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN",
+        "DELTA_LINEAGE_MISSING",
+        "QUALITY_LEVEL_BELOW_TARGET"
+      ],
+      "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_state_vector.json"
+      ],
+      "forbidden_claims": [
+        "COMPETITION_READY",
+        "H1_ALLOWED"
+      ],
+      "profile_family": "release_profile_plan",
+      "profile_id": "competition_release",
+      "readiness_verdict": "BLOCKED"
+    },
+    {
+      "blocked_by": [
+        "PARADOX_PROGRAM_UNBOUNDED",
+        "PLATFORM_ENFORCEMENT_UNPROVEN",
+        "DOCTRINE_AND_PROFILES_GENERATED_PENDING"
+      ],
+      "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_state_vector.json"
+      ],
+      "forbidden_claims": [
+        "PUBLICATION_READY",
+        "H1_ALLOWED",
+        "HEAD_IS_VERIFIED_SUBJECT"
+      ],
+      "profile_family": "release_profile_plan",
+      "profile_id": "publication_release",
+      "readiness_verdict": "BLOCKED"
+    },
+    {
+      "blocked_by": [],
+      "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_judgment_plane_computation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_state_vector.json"
+      ],
+      "forbidden_claims": [
+        "HEAD_IS_VERIFIED_SUBJECT",
+        "H1_ALLOWED"
+      ],
+      "profile_family": "submission_profile_plan",
+      "profile_id": "auditor_packet",
+      "readiness_verdict": "READY_WITH_BOUNDARIES"
+    },
+    {
+      "blocked_by": [],
+      "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_profile.json"
+      ],
+      "forbidden_claims": [
+        "PLATFORM_ENFORCED_GOVERNANCE_PROVEN",
+        "H1_ALLOWED"
+      ],
+      "profile_family": "submission_profile_plan",
+      "profile_id": "specialist_demo_packet",
+      "readiness_verdict": "READY_WITH_BOUNDARIES"
+    },
+    {
+      "blocked_by": [
+        "PLATFORM_ENFORCEMENT_UNPROVEN"
+      ],
+      "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_profile.json"
+      ],
+      "forbidden_claims": [
+        "PLATFORM_ENFORCED_GOVERNANCE_PROVEN",
+        "H1_ALLOWED"
+      ],
+      "profile_family": "submission_profile_plan",
+      "profile_id": "partner_review_packet",
+      "readiness_verdict": "HOLD"
+    },
+    {
+      "blocked_by": [
+        "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN",
+        "DELTA_LINEAGE_MISSING"
+      ],
+      "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_profile.json"
+      ],
+      "forbidden_claims": [
+        "COMPETITION_READY",
+        "H1_ALLOWED"
+      ],
+      "profile_family": "submission_profile_plan",
+      "profile_id": "competition_bundle",
+      "readiness_verdict": "BLOCKED"
+    },
+    {
+      "blocked_by": [
+        "PARADOX_PROGRAM_UNBOUNDED",
+        "DOCTRINE_AND_PROFILES_GENERATED_PENDING",
+        "PLATFORM_ENFORCEMENT_UNPROVEN"
+      ],
+      "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_profile.json"
+      ],
+      "forbidden_claims": [
+        "PUBLICATION_READY",
+        "HEAD_IS_VERIFIED_SUBJECT",
+        "H1_ALLOWED"
+      ],
+      "profile_family": "submission_profile_plan",
+      "profile_id": "publication_peer_review_bundle",
+      "readiness_verdict": "BLOCKED"
+    },
+    {
+      "blocked_by": [
+        "published-head self-convergence remains unresolved",
+        "authority convergence remains fail-closed",
+        "H1 activation remains blocked"
+      ],
+      "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
+      "evidence_refs": [
+        "docs/generated/profiles/kt_outsider_onboarding_profile.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_self_description.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "forbidden_claims": [
+        "HEAD_IS_VERIFIED_SUBJECT",
+        "PLATFORM_ENFORCED_GOVERNANCE_PROVEN",
+        "H1_ALLOWED"
+      ],
+      "profile_family": "generated_doctrine_profile",
+      "profile_id": "outsider_onboarding",
+      "readiness_verdict": "READY_WITH_BOUNDARIES"
+    },
+    {
+      "blocked_by": [
+        "cross-environment controlled variation not run",
+        "current release profile plane is below QL3 target",
+        "H1 remains blocked for single-adapter activation claims"
+      ],
+      "claim_ceiling": "REPRESENTATIVE_SAME_MVE_ONLY",
+      "evidence_refs": [
+        "docs/generated/profiles/kt_competition_profile.json",
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_runtime_and_experiment_memory_sealing_receipt.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+      ],
+      "forbidden_claims": [
+        "COMPETITION_READY",
+        "H1_ALLOWED",
+        "PLATFORM_ENFORCED_GOVERNANCE_PROVEN"
+      ],
+      "profile_family": "generated_doctrine_profile",
+      "profile_id": "competition",
+      "readiness_verdict": "BLOCKED"
+    },
+    {
+      "blocked_by": [
+        "published-head self-convergence remains unresolved",
+        "authority convergence remains unresolved",
+        "truth publication is not stabilized true",
+        "platform enforcement remains unproven",
+        "publication-grade QL3 ceiling is not yet admissible"
+      ],
+      "claim_ceiling": "DOCUMENTARY_ONLY_WITH_SUBJECT_BOUNDARY",
+      "evidence_refs": [
+        "docs/generated/profiles/kt_publication_profile.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "forbidden_claims": [
+        "PUBLICATION_READY",
+        "HEAD_IS_VERIFIED_SUBJECT",
+        "PLATFORM_ENFORCED_GOVERNANCE_PROVEN",
+        "H1_ALLOWED"
+      ],
+      "profile_family": "generated_doctrine_profile",
+      "profile_id": "publication",
+      "readiness_verdict": "BLOCKED"
+    },
+    {
+      "blocked_by": [
+        "no published-head self-convergence proof",
+        "authority convergence remains fail-closed",
+        "paradox evidence remains documentary-only, not external superiority proof"
+      ],
+      "claim_ceiling": "DOCUMENTARY_ONLY_WITH_FORMAL_MODEL_AND_STRESS",
+      "evidence_refs": [
+        "docs/generated/profiles/kt_math_guru_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_invariants.json",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_counterexamples.json",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_stress_results.json",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_claim_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_proof_obligation_scheduler.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "forbidden_claims": [
+        "EXTERNAL_PARADOX_SUPERIORITY_PROVEN",
+        "HEAD_IS_VERIFIED_SUBJECT",
+        "H1_ALLOWED"
+      ],
+      "profile_family": "generated_doctrine_profile",
+      "profile_id": "math_guru",
+      "readiness_verdict": "READY_WITH_BOUNDARIES"
+    }
+  ],
+  "schema_id": "kt.operator.release_readiness_matrix.v1",
+  "summary": {
+    "blocked_count": 6,
+    "hold_count": 2,
+    "profile_count": 14,
+    "ready_with_boundaries_count": 6
+  }
+}
