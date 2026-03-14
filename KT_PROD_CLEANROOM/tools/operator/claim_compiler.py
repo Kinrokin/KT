@@ -49,6 +49,8 @@ def _program_catalog_payload(*, root: Path, compiler_receipt: Dict[str, Any], re
         "generated_utc": utc_now_iso_z(),
         "status": "ACTIVE" if compiler_receipt["status"] == "PASS" else "HOLD",
         "documentary_only": True,
+        "compiled_head_commit": compiler_receipt["compiled_head_commit"],
+        "claim_compiler_claim_boundary": compiler_receipt["claim_compiler_claim_boundary"],
         "active_truth_source_ref": compiler_receipt["active_truth_source_ref"],
         "documentary_mirror_ref": compiler_receipt["documentary_mirror_ref"],
         "claim_compiler_receipt_ref": _report_ref(report_root_rel, "commercial_claim_compiler_receipt.json"),
@@ -108,10 +110,10 @@ def _truth_allowed_claim(report: Dict[str, Any]) -> str:
     current_head = str(report.get("current_head_commit", "")).strip()
     subject = str(report.get("truth_subject_commit", "")).strip()
     if verdict == "HEAD_IS_TRANSPARENCY_VERIFIED_SUBJECT":
-        return f"Current HEAD {current_head} is the transparency-verified subject commit."
+        return f"Compiled subject head {current_head} is the transparency-verified subject commit."
     if verdict == "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE":
-        return f"Current HEAD {current_head} contains transparency-verified evidence for subject commit {subject}."
-    return "No current-head transparency claim is admissible."
+        return f"Compiled subject head {current_head} contains transparency-verified evidence for subject commit {subject}."
+    return "No compiled-subject transparency claim is admissible."
 
 
 def _governance_allowed_claim(report: Dict[str, Any]) -> str:
@@ -119,14 +121,14 @@ def _governance_allowed_claim(report: Dict[str, Any]) -> str:
     current_head = str(report.get("current_head_commit", "")).strip()
     subject = str(report.get("platform_governance_subject_commit", "")).strip()
     if verdict == "HEAD_HAS_PLATFORM_ENFORCEMENT_PROOF":
-        return f"Current HEAD {current_head} has fresh platform-enforcement governance proof."
+        return f"Compiled subject head {current_head} has fresh platform-enforcement governance proof."
     if verdict == "HEAD_CONTAINS_PLATFORM_ENFORCEMENT_EVIDENCE_FOR_SUBJECT":
-        return f"Current HEAD {current_head} contains platform-enforcement evidence for subject commit {subject}."
+        return f"Compiled subject head {current_head} contains platform-enforcement evidence for subject commit {subject}."
     if verdict == "HEAD_HAS_WORKFLOW_GOVERNANCE_ONLY_EVIDENCE":
-        return f"Current HEAD {current_head} has fresh workflow-governance-only evidence and no platform-enforcement proof."
+        return f"Compiled subject head {current_head} has fresh workflow-governance-only evidence and no platform-enforcement proof."
     if verdict == "HEAD_CONTAINS_WORKFLOW_GOVERNANCE_ONLY_EVIDENCE_FOR_SUBJECT":
-        return f"Current HEAD {current_head} contains workflow-governance-only evidence for subject commit {subject}."
-    return "No current-head governance claim is admissible."
+        return f"Compiled subject head {current_head} contains workflow-governance-only evidence for subject commit {subject}."
+    return "No compiled-subject governance claim is admissible."
 
 
 def _runtime_boundary_allowed_claim(report: Dict[str, Any]) -> str:
@@ -134,10 +136,10 @@ def _runtime_boundary_allowed_claim(report: Dict[str, Any]) -> str:
     current_head = str(report.get("current_head_commit", "")).strip()
     subject = str(report.get("runtime_boundary_subject_commit", "")).strip()
     if verdict == "HEAD_HAS_RUNTIME_BOUNDARY_PROOF":
-        return f"Current HEAD {current_head} has fresh canonical runtime-boundary proof."
+        return f"Compiled subject head {current_head} has fresh canonical runtime-boundary proof."
     if verdict == "HEAD_CONTAINS_RUNTIME_BOUNDARY_EVIDENCE_FOR_SUBJECT":
-        return f"Current HEAD {current_head} contains runtime-boundary evidence for subject commit {subject}."
-    return "No current-head runtime-boundary claim is admissible."
+        return f"Compiled subject head {current_head} contains runtime-boundary evidence for subject commit {subject}."
+    return "No compiled-subject runtime-boundary claim is admissible."
 
 
 def build_claim_compiler_receipt(*, root: Path, report_root_rel: str = DEFAULT_REPORT_ROOT_REL) -> Dict[str, Any]:
@@ -162,6 +164,7 @@ def build_claim_compiler_receipt(*, root: Path, report_root_rel: str = DEFAULT_R
         "Do not claim current HEAD itself is the transparency-verified subject when head_equals_subject is false.",
         "Do not claim platform-enforced governance on main while branch_protection_status is not PASS.",
         "Do not claim current HEAD itself has fresh runtime-boundary proof when runtime_boundary_head_equals_subject is false.",
+        "Do not read this receipt as a claim about a later evidence head when compiled_head_commit differs from live HEAD.",
         f"Do not claim {documentary_mirror_ref} is the active truth source.",
         "Do not claim src/tools is canonical runtime.",
         "Do not claim H1 is allowed.",
@@ -182,6 +185,11 @@ def build_claim_compiler_receipt(*, root: Path, report_root_rel: str = DEFAULT_R
         "generated_utc": utc_now_iso_z(),
         "status": status,
         "current_head_commit": verifier_report["current_head_commit"],
+        "compiled_head_commit": verifier_report["current_head_commit"],
+        "claim_compiler_claim_boundary": (
+            "This receipt compiles admissible commercial claims for compiled_head_commit only. "
+            "A later repository head that contains this receipt must not be described as the compiled subject head unless the SHAs match."
+        ),
         "active_truth_source_ref": active_truth_source_ref,
         "documentary_mirror_ref": documentary_mirror_ref,
         "truth_subject_commit": verifier_report["truth_subject_commit"],
