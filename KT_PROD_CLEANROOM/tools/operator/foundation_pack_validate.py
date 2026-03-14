@@ -130,11 +130,49 @@ def _git_last_commit_for_paths(root: Path, paths: Sequence[str]) -> str:
         return ""
 
 
+def _git_history_for_paths(root: Path, paths: Sequence[str]) -> List[str]:
+    existing = [str(Path(path).as_posix()) for path in paths if (root / Path(path)).exists()]
+    if not existing:
+        return []
+    try:
+        output = _git(root, "log", "--format=%H", "--", *existing)
+    except Exception:  # noqa: BLE001
+        return []
+    return [str(line).strip() for line in output.splitlines() if str(line).strip()]
+
+
+def _git_parent(root: Path, commit: str) -> str:
+    if not str(commit).strip():
+        return ""
+    try:
+        return _git(root, "rev-parse", f"{commit}^")
+    except Exception:  # noqa: BLE001
+        return ""
+
+
 def _git_changed_files(root: Path, commit: str) -> List[str]:
     if not str(commit).strip():
         return []
     try:
         output = _git(root, "show", "--pretty=", "--name-only", commit)
+    except Exception:  # noqa: BLE001
+        return []
+    files = []
+    for line in output.splitlines():
+        value = str(line).strip().replace("\\", "/")
+        if value:
+            files.append(value)
+    return files
+
+
+def _git_diff_files(root: Path, older: str, newer: str, paths: Sequence[str]) -> List[str]:
+    if not str(older).strip() or not str(newer).strip():
+        return []
+    existing = [str(Path(path).as_posix()) for path in paths if (root / Path(path)).exists()]
+    if not existing:
+        return []
+    try:
+        output = _git(root, "diff", "--name-only", older, newer, "--", *existing)
     except Exception:  # noqa: BLE001
         return []
     files = []
@@ -392,7 +430,13 @@ def build_foundation_pack_ratification_report(*, root: Path) -> Dict[str, Any]:
 
     subject_commit = _git_last_commit_for_paths(root, SUBJECT_ARTIFACT_REFS)
     current_head_commit = _git_head(root)
-    actual_touched = sorted(set(_git_changed_files(root, subject_commit) + [RECEIPT_REL]))
+    subject_history = _git_history_for_paths(root, SUBJECT_ARTIFACT_REFS)
+    earliest_subject_commit = subject_history[-1] if subject_history else ""
+    step_baseline_commit = _git_parent(root, earliest_subject_commit)
+    actual_subject_touched = _git_diff_files(root, step_baseline_commit, subject_commit, SUBJECT_ARTIFACT_REFS)
+    if not actual_subject_touched:
+        actual_subject_touched = _git_changed_files(root, subject_commit)
+    actual_touched = sorted(set(actual_subject_touched + [RECEIPT_REL]))
     unexpected_touches = sorted(set(actual_touched) - set(PLANNED_MUTATES))
     protected_touch_violations = sorted(path for path in actual_touched if _is_protected(path))
     post_touch_ok = set(actual_touched) == set(PLANNED_MUTATES) and not unexpected_touches and not protected_touch_violations
