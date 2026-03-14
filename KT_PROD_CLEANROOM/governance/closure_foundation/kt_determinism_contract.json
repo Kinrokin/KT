@@ -1,0 +1,86 @@
+{
+  "artifact_id": "kt_determinism_contract.json",
+  "closure_boundary": {
+    "closes_existing_blockers": [],
+    "foundation_ratification_only": true,
+    "opens_release_gates": []
+  },
+  "current_proof_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
+  "enforcement_layers": [
+    "validator",
+    "pytest_gate",
+    "build_bundle",
+    "publication_bundle"
+  ],
+  "forbidden_states": [
+    "canonical_runner_undefined",
+    "uncontrolled_wall_clock_in_hash_critical_bundle",
+    "non_canonical_json_serialization",
+    "mixed_newline_policy",
+    "platform_specific_path_ordering",
+    "network_required_for_deterministic_build"
+  ],
+  "invariants": [
+    "Hash-critical bundles must be reproducible within an approved environment using canonical serialization and canonical file ordering.",
+    "Signed or release-critical artifacts must not depend on wall-clock timestamps.",
+    "Path separators, newline policy, and file ordering must be normalized before hashing or bundling.",
+    "The determinism contract defines the envelope; it does not itself claim cross-environment proof."
+  ],
+  "minimum_environments": [
+    "linux",
+    "windows",
+    "third_controlled_environment"
+  ],
+  "network_policy_for_build_and_bundle": {
+    "allowed_exceptions": [
+      "Transparency-log submission during a later publication attestation workstream"
+    ],
+    "default_mode": "OFFLINE_REQUIRED",
+    "forbidden_states": [
+      "implicit_package_fetch",
+      "remote_clock_dependency",
+      "network_required_for_hash_stability"
+    ]
+  },
+  "path_policy": {
+    "canonical_separator": "/",
+    "normalized_path_separators": true,
+    "relative_paths_only_in_manifests": true
+  },
+  "purpose": "Define the determinism envelope that later reproducibility and publication work must satisfy before stronger claims are lawful.",
+  "required_controls": [
+    "canonical_runner_image_hash",
+    "os_profile_matrix",
+    "python_and_tool_versions_pinned",
+    "canonical_json_serialization",
+    "canonical_file_ordering",
+    "normalized_path_separators",
+    "explicit_newline_policy",
+    "SOURCE_DATE_EPOCH_or_equivalent_timestamp_control",
+    "deterministic_archive_creation",
+    "network_policy_for_build_and_bundle"
+  ],
+  "runner_constraints": {
+    "canonical_runner_identity": [
+      "image_hash",
+      "python_version",
+      "tool_version_manifest"
+    ],
+    "environment_matrix_ref": "linux, windows, third_controlled_environment",
+    "same_environment_rerun_required": true
+  },
+  "schema_id": "kt.closure_foundation.determinism_contract.v1",
+  "serialization_rules": {
+    "canonical_file_ordering": "byte-stable sorted relative paths",
+    "explicit_newline_policy": "LF_ONLY",
+    "json": "canonical_json_serialization",
+    "key_order": "stable_sorted_keys",
+    "unicode_policy": "UTF_8_EXPLICIT"
+  },
+  "timestamp_policy": {
+    "control": "SOURCE_DATE_EPOCH_or_equivalent_timestamp_control",
+    "hash_critical_artifacts_must_strip_wall_clock_fields": true,
+    "non_hash_critical_receipts_may_record_generated_utc": true
+  },
+  "version": "1.0.0"
+}

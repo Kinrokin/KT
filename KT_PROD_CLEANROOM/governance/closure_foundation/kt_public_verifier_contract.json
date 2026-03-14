@@ -1,0 +1,55 @@
+{
+  "allowed_contract_dependencies": [
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+    "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+    "KT_PROD_CLEANROOM/governance/public_verifier_rules.json"
+  ],
+  "closure_boundary": {
+    "closes_existing_blockers": [],
+    "foundation_ratification_only": true,
+    "opens_release_gates": []
+  },
+  "fail_closed_conditions": [
+    "missing_required_input",
+    "subject_evidence_boundary_ambiguous",
+    "current_head_overread_attempted",
+    "platform_governance_claim_above_proof_class",
+    "archive_dependency_detected",
+    "runtime_dependency_outside_allowed_contracts"
+  ],
+  "forbidden_runtime_dependencies": [
+    "KT_ARCHIVE/**",
+    "**/archive/**",
+    "**/historical/**",
+    "docs/generated/**"
+  ],
+  "offline_verification_capable": true,
+  "release_state": {
+    "current_proof_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
+    "independent_public_release_status": "FOUNDATION_ONLY_NOT_RELEASED"
+  },
+  "required_inputs": [
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+    "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+  ],
+  "schema_id": "kt.closure_foundation.public_verifier_contract.v1",
+  "subject_evidence_boundary_rules": [
+    "If current HEAD differs from truth_subject_commit, the verifier may only say HEAD contains evidence for the subject.",
+    "If current HEAD differs from platform_governance_subject_commit, the verifier may only say HEAD contains governance evidence for the subject.",
+    "If any required input is missing or stale, the verifier must emit HOLD or FAIL_CLOSED rather than optimistic language."
+  ],
+  "supported_proof_classes": [
+    "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED_SUBJECT",
+    "WORKFLOW_GOVERNANCE_ONLY",
+    "CANONICAL_RUNTIME_BOUNDARY_SETTLED",
+    "FRONTIER_SETTLEMENT_WITH_H1_BLOCK"
+  ],
+  "verifier_id": "KT_PUBLIC_VERIFIER_CONTRACT_V1",
+  "version": "1.0.0"
+}

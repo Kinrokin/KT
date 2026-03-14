@@ -1,0 +1,94 @@
+{
+  "artifact_id": "kt_tuf_root_policy.json",
+  "closure_boundary": {
+    "closes_existing_blockers": [],
+    "foundation_ratification_only": true,
+    "opens_release_gates": []
+  },
+  "enforcement_layers": [
+    "root_policy_validator",
+    "publication_attestation_validator",
+    "release_law_gate"
+  ],
+  "forbidden_states": [
+    "trust_root_undefined",
+    "threshold_zero",
+    "root_key_not_hash_bound",
+    "unsigned_root_rotation",
+    "publication_grade_claim_without_threshold_backed_root"
+  ],
+  "invariants": [
+    "A named root of trust must exist before publication-grade attestation is claimed.",
+    "Every active root key must be hash-bound to a checked-in public key reference.",
+    "Rotation rules must be explicit before stronger public-release claims are lawful.",
+    "Bootstrap 1-of-1 root state is allowed only as an explicit boundary, not as a hidden assumption."
+  ],
+  "policy_id": "KT_TUF_ROOT_POLICY_V1",
+  "purpose": "Define KT's root-of-trust policy, role thresholds, and rotation law for later publication-grade attestation work.",
+  "root_of_trust": {
+    "bootstrap_state": "BOOTSTRAP_THRESHOLD_1_OF_1",
+    "root_keys": [
+      {
+        "key_id": "KT_OP1_COSIGN_KEYPAIR",
+        "public_key_ref": "KT_PROD_CLEANROOM/governance/signers/kt_op1_cosign.pub",
+        "public_key_sha256": "c4c5f8d7513d01729b4b2ad3795b4eb62bb0ab901beb9053ffe82b400e5e02aa",
+        "status": "ACTIVE"
+      }
+    ],
+    "threshold": 1,
+    "trust_root_id": "KT_TUF_ROOT_BOOTSTRAP_20260314"
+  },
+  "role_thresholds": [
+    {
+      "allowed_key_ids": [
+        "KT_OP1_COSIGN_KEYPAIR"
+      ],
+      "role_id": "root",
+      "threshold": 1
+    },
+    {
+      "allowed_key_ids": [
+        "KT_OP1_COSIGN_KEYPAIR"
+      ],
+      "role_id": "targets",
+      "threshold": 1
+    },
+    {
+      "allowed_key_ids": [
+        "KT_OP1_COSIGN_KEYPAIR"
+      ],
+      "role_id": "snapshot",
+      "threshold": 1
+    },
+    {
+      "allowed_key_ids": [
+        "KT_OP1_COSIGN_KEYPAIR"
+      ],
+      "role_id": "timestamp",
+      "threshold": 1
+    }
+  ],
+  "rotation_rules": {
+    "compromise_response": [
+      "revoke_compromised_key",
+      "mint_new_root",
+      "re-sign_root_metadata",
+      "re-emit_attestation_bundle"
+    ],
+    "mandatory_before_public_release": [
+      "ratify_multi_key_root_plan_if_additional_operators_exist",
+      "document_threshold_change_receipt_if_threshold_moves_above_1"
+    ],
+    "max_root_key_age_days": 180,
+    "root_policy_refs": [
+      "KT_PROD_CLEANROOM/governance/signer_identity_policy.json",
+      "KT_PROD_CLEANROOM/governance/supply_chain_layout.json"
+    ]
+  },
+  "semantic_boundary": {
+    "publication_grade_attestation_proven": false,
+    "trust_root_defined_for_future_workstreams": true
+  },
+  "schema_id": "kt.closure_foundation.tuf_root_policy.v1",
+  "version": "1.0.0"
+}

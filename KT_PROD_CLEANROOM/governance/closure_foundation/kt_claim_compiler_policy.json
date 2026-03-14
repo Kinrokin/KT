@@ -1,0 +1,55 @@
+{
+  "always_on_surfaces": [
+    "docs/generated/**",
+    "KT_PROD_CLEANROOM/docs/commercial/**",
+    "KT_PROD_CLEANROOM/reports/kt_release_readiness_matrix.json",
+    "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json"
+  ],
+  "ambiguity_downgrade_policy": {
+    "default_class_on_ambiguity": "LOWEST_ADMISSIBLE_TIER",
+    "downgrade_triggers": [
+      "missing_provenance",
+      "missing_receipt_lineage",
+      "subject_evidence_boundary_ambiguous",
+      "governance_class_ambiguous",
+      "truth_source_ambiguous",
+      "runtime_boundary_ambiguous"
+    ]
+  },
+  "closure_boundary": {
+    "closes_existing_blockers": [],
+    "foundation_ratification_only": true,
+    "opens_release_gates": []
+  },
+  "enforcement_layers": [
+    "claim_compiler_runtime",
+    "generated_docs_validation",
+    "commercial_docs_validation",
+    "release_profile_generation",
+    "pytest_gate"
+  ],
+  "forbidden_states": [
+    "claim_above_active_proof_class",
+    "uncited_freeform_text",
+    "archive_required_for_claim_compilation",
+    "subject_evidence_overread_language",
+    "live_truth_claim_from_documentary_mirror"
+  ],
+  "invariants": [
+    "Every public or commercial claim must be backed by cited machine-state receipts.",
+    "Any ambiguity must downgrade language instead of preserving the stronger claim.",
+    "Documentary mirrors may never be phrased as the live truth source.",
+    "Claim compiler activation in WS8 may strengthen enforcement, but this policy already forbids optimistic language today."
+  ],
+  "policy_id": "KT_CLAIM_COMPILER_POLICY_V1",
+  "purpose": "Define fail-closed claim-compilation law so public and commercial language never outruns the active proof class.",
+  "required_inputs": [
+    "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+    "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+    "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json"
+  ],
+  "schema_id": "kt.closure_foundation.claim_compiler_policy.v1",
+  "version": "1.0.0"
+}
