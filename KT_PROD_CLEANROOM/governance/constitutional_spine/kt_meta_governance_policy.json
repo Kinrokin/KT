@@ -1,0 +1,53 @@
+{
+  "auditor_of_auditors": {
+    "authority_refs": [
+      "KT_PROD_CLEANROOM/governance/constitutional_court_contract.json",
+      "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitutional_court_procedure.json",
+      "KT_PROD_CLEANROOM/reports/kt_governance_closeout_bundle.json",
+      "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+    ],
+    "independence_rule": "Auditors may not ratify their own governance changes without a constitutional court path and explicit evidence chain.",
+    "required_evidence_chain_classes": [
+      "governance_contract",
+      "receipt",
+      "manifest"
+    ],
+    "role_id": "constitutional_court"
+  },
+  "baseline_evidence_commit": "c0625e3f02089159ab4e528020a2e7a438e392f0",
+  "baseline_is_frozen_input": true,
+  "baseline_subject_commit": "c653eefb88b886b4e16f006feabff982992d6d19",
+  "generated_utc": "2026-03-14T17:17:48Z",
+  "governance_of_governance": {
+    "allowed_change_paths": [
+      "constitutional_review",
+      "amendment_receipt",
+      "appeal_receipt",
+      "precedent_registration"
+    ],
+    "authority_refs": [
+      "KT_PROD_CLEANROOM/governance/constitutional_court_contract.json",
+      "KT_PROD_CLEANROOM/governance/amendment_law.json",
+      "KT_PROD_CLEANROOM/governance/appeal_law.json",
+      "KT_PROD_CLEANROOM/governance/constitutional_review_triggers.json",
+      "KT_PROD_CLEANROOM/governance/amendment_scope_manifest.json",
+      "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitution_manifest.json",
+      "KT_PROD_CLEANROOM/governance/constitutional_spine/KT_Constitution_v1.md"
+    ],
+    "forbidden_shortcuts": [
+      "generated_doctrine_as_law_without_ratification",
+      "silent_claim_upgrade",
+      "freeform_reopening_of_sealed_baseline"
+    ],
+    "governing_organ_id": "constitutional_meta_governance"
+  },
+  "policy_id": "KT_META_GOVERNANCE_POLICY_V1_20260314",
+  "reopen_rules": [
+    "A sealed baseline may be cited as immutable input but may not be reopened without a named amendment or appeal artifact.",
+    "Any contradiction touching authority, runtime integrity, publication claims, security, or external profiles fails closed until reviewed.",
+    "Generated doctrine may propose canon but may not ratify canon."
+  ],
+  "schema_id": "kt.constitution.meta_governance_policy.v1",
+  "status": "ACTIVE",
+  "successor_law_rule": "Future constitutional versions must cite superseded surfaces, rationale, rollback path, and precedent disposition."
+}

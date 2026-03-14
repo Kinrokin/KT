@@ -1,0 +1,41 @@
+{
+  "forbidden_forgetting": [
+    "deleting ratified law without supersession",
+    "discarding blocker lineage while blockers remain open",
+    "flattening evidence-subject distinctions into HEAD-only narratives"
+  ],
+  "generated_utc": "2026-03-14T17:17:48Z",
+  "law_id": "KT_FORGETTING_LAW_V1_20260314",
+  "reopen_triggers": [
+    "historical_conflict_reintroduced",
+    "state_taint_detected_on_sovereign_path",
+    "claim_ceiling_contradicted_by_new_receipt"
+  ],
+  "retention_classes": [
+    {
+      "class_id": "canonical_law",
+      "forgetting_policy": "never_delete_without_ratified_supersession",
+      "surface_globs": [
+        "KT_PROD_CLEANROOM/governance/**"
+      ]
+    },
+    {
+      "class_id": "generated_runtime_truth",
+      "forgetting_policy": "retain_latest_subject_evidence_and_supersession_lineage",
+      "surface_globs": [
+        "KT_PROD_CLEANROOM/reports/**",
+        "KT_PROD_CLEANROOM/exports/_truth/**"
+      ]
+    },
+    {
+      "class_id": "archive_lineage",
+      "forgetting_policy": "preserve_lineage_but_do_not_promote_to_current_truth",
+      "surface_globs": [
+        "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/**",
+        "docs/audit/**"
+      ]
+    }
+  ],
+  "schema_id": "kt.constitution.forgetting_law.v1",
+  "status": "ACTIVE"
+}

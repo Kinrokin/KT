@@ -1,0 +1,110 @@
+{
+  "cost_axes": [
+    "compute_units",
+    "operator_review_hours",
+    "risk_multiplier",
+    "reproduction_cost_band",
+    "publication_cost_band",
+    "governance_change_cost_band"
+  ],
+  "generated_utc": "2026-03-14T17:17:48Z",
+  "high_cost_triggers": [
+    "AUTHORITY_CONVERGENCE_UNRESOLVED",
+    "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+    "H1_ACTIVATION_GATE_CLOSED",
+    "PLATFORM_ENFORCEMENT_UNPROVEN",
+    "TRUTH_PUBLICATION_STABILIZED_FALSE",
+    "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN"
+  ],
+  "mode_cost_classes": [
+    {
+      "compute_units": 1,
+      "mode_id": "read_only_plus_bundle_emit",
+      "operator_review_hours": 2,
+      "risk_multiplier": 1.0
+    },
+    {
+      "compute_units": 2,
+      "mode_id": "proposal_then_ratification",
+      "operator_review_hours": 6,
+      "risk_multiplier": 1.4
+    },
+    {
+      "compute_units": 2,
+      "mode_id": "read_only_ingestion",
+      "operator_review_hours": 3,
+      "risk_multiplier": 1.1
+    },
+    {
+      "compute_units": 3,
+      "mode_id": "read_only_compiler_run",
+      "operator_review_hours": 4,
+      "risk_multiplier": 1.2
+    },
+    {
+      "compute_units": 2,
+      "mode_id": "read_only_rule_engine_run",
+      "operator_review_hours": 4,
+      "risk_multiplier": 1.2
+    },
+    {
+      "compute_units": 2,
+      "mode_id": "proposal_only",
+      "operator_review_hours": 5,
+      "risk_multiplier": 1.2
+    },
+    {
+      "compute_units": 3,
+      "mode_id": "read_only_registry_compilation",
+      "operator_review_hours": 4,
+      "risk_multiplier": 1.2
+    },
+    {
+      "compute_units": 5,
+      "mode_id": "mixed_modeling_and_testing",
+      "operator_review_hours": 8,
+      "risk_multiplier": 1.8
+    },
+    {
+      "compute_units": 3,
+      "mode_id": "generated_docs_plus_ratification",
+      "operator_review_hours": 6,
+      "risk_multiplier": 1.5
+    },
+    {
+      "compute_units": 6,
+      "mode_id": "adversarial_tribunal",
+      "operator_review_hours": 12,
+      "risk_multiplier": 2.0
+    }
+  ],
+  "model_id": "KT_COST_MODEL_V1_20260314",
+  "schema_id": "kt.constitution.cost_model.v1",
+  "status": "ACTIVE",
+  "zone_risk_multipliers": [
+    {
+      "risk_multiplier": 1.5,
+      "zone_id": "CANONICAL"
+    },
+    {
+      "risk_multiplier": 1.2,
+      "zone_id": "LAB"
+    },
+    {
+      "risk_multiplier": 1.0,
+      "zone_id": "ARCHIVE"
+    },
+    {
+      "risk_multiplier": 1.3,
+      "zone_id": "COMMERCIAL"
+    },
+    {
+      "risk_multiplier": 1.4,
+      "zone_id": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "risk_multiplier": 1.8,
+      "zone_id": "QUARANTINED"
+    }
+  ]
+}

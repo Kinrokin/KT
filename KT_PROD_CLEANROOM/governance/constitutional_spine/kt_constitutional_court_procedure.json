@@ -1,0 +1,76 @@
+{
+  "amendment_scope_ref": "KT_PROD_CLEANROOM/governance/amendment_scope_manifest.json",
+  "court_contract_ref": "KT_PROD_CLEANROOM/governance/constitutional_court_contract.json",
+  "emergency_fail_closed_rule": "If authority, runtime integrity, or publication semantics are ambiguous, the court freezes the act and requires explicit contradiction evidence.",
+  "filing_types": [
+    {
+      "allowed_dispositions": [
+        "RATIFIED",
+        "REJECTED",
+        "FAIL_CLOSED"
+      ],
+      "filing_type": "amendment",
+      "governing_law_ref": "KT_PROD_CLEANROOM/governance/amendment_law.json",
+      "required_fields": [
+        "subject_surfaces",
+        "rationale",
+        "rollback_refs",
+        "required_signers"
+      ]
+    },
+    {
+      "allowed_dispositions": [
+        "UPHELD",
+        "REMANDED",
+        "REJECTED",
+        "FAIL_CLOSED"
+      ],
+      "filing_type": "appeal",
+      "governing_law_ref": "KT_PROD_CLEANROOM/governance/appeal_law.json",
+      "required_fields": [
+        "disputed_act",
+        "desired_disposition",
+        "evidence_refs"
+      ]
+    },
+    {
+      "allowed_dispositions": [
+        "RECORDED"
+      ],
+      "filing_type": "dissent",
+      "governing_law_ref": "KT_PROD_CLEANROOM/governance/constitutional_court_contract.json",
+      "required_fields": [
+        "reviewed_act",
+        "reason",
+        "evidence_refs"
+      ]
+    },
+    {
+      "allowed_dispositions": [
+        "REGISTERED",
+        "FAIL_CLOSED"
+      ],
+      "filing_type": "precedent_entry",
+      "governing_law_ref": "KT_PROD_CLEANROOM/governance/constitutional_court_contract.json",
+      "required_fields": [
+        "reviewed_act",
+        "disposition",
+        "authority_refs"
+      ]
+    }
+  ],
+  "generated_utc": "2026-03-14T17:17:48Z",
+  "precedent_registry_policy": {
+    "appeal_and_dissent_channels_must_be_explicit": true,
+    "empty_channels_still_require_presence": true,
+    "required_fields": [
+      "reviewed_act",
+      "disposition",
+      "authority_refs"
+    ]
+  },
+  "procedure_id": "KT_CONSTITUTIONAL_COURT_PROCEDURE_V1_20260314",
+  "review_trigger_ref": "KT_PROD_CLEANROOM/governance/constitutional_review_triggers.json",
+  "schema_id": "kt.constitution.court_procedure.v1",
+  "status": "ACTIVE"
+}

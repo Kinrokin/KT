@@ -1,0 +1,95 @@
+{
+  "current_open_blockers": [
+    "AUTHORITY_CONVERGENCE_UNRESOLVED",
+    "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+    "H1_ACTIVATION_GATE_CLOSED",
+    "PLATFORM_ENFORCEMENT_UNPROVEN",
+    "TRUTH_PUBLICATION_STABILIZED_FALSE",
+    "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN"
+  ],
+  "current_system_caps": {
+    "activation_ceiling": "H1_BLOCKED",
+    "governance_ceiling": "WORKFLOW_GOVERNANCE_ONLY",
+    "reproducibility_ceiling": "REPRESENTATIVE_AUTHORITY_LANE_SAME_MVE_ONLY",
+    "runtime_boundary_ceiling": "CANONICAL_RUNTIME_BOUNDARY_SETTLED"
+  },
+  "generated_utc": "2026-03-14T17:17:48Z",
+  "lattice_id": "KT_READINESS_LATTICE_V1_20260314",
+  "nodes": [
+    {
+      "blocking_conditions": [
+        "state_taint_status != CLEAR"
+      ],
+      "current_admissibility_ceiling": "internal_diagnostic_only",
+      "minimum_quality_level": "QL1",
+      "profile_id": "internal_only",
+      "required_claim_classes": [
+        "truth_authority_claim",
+        "runtime_boundary_claim"
+      ]
+    },
+    {
+      "blocking_conditions": [
+        "truth_authority_claim status is contradicted",
+        "runtime_boundary_claim status is contradicted"
+      ],
+      "current_admissibility_ceiling": "bounded_external_demo_only",
+      "minimum_quality_level": "QL2",
+      "profile_id": "external_demo_or_specialist_use",
+      "required_claim_classes": [
+        "truth_authority_claim",
+        "runtime_boundary_claim",
+        "commercial_surface_claim"
+      ]
+    },
+    {
+      "blocking_conditions": [
+        "governance_legitimacy_claim exceeds WORKFLOW_GOVERNANCE_ONLY",
+        "reproducibility_claim is not evidenced at representative same-MVE band",
+        "release_readiness_claim is not evidenced"
+      ],
+      "current_admissibility_ceiling": "competition_and_publication_on_bounded_surface_only",
+      "minimum_quality_level": "QL3",
+      "profile_id": "competition_and_publication_grade",
+      "required_claim_classes": [
+        "truth_authority_claim",
+        "governance_legitimacy_claim",
+        "runtime_boundary_claim",
+        "reproducibility_claim",
+        "release_readiness_claim"
+      ]
+    },
+    {
+      "blocking_conditions": [
+        "commercial_surface_claim exceeds DOCUMENTARY_ONLY",
+        "commercial docs omit compiler boundary markers"
+      ],
+      "current_admissibility_ceiling": "documentary_only",
+      "minimum_quality_level": "QL2",
+      "profile_id": "commercial_documentary_only",
+      "required_claim_classes": [
+        "commercial_surface_claim",
+        "doctrine_generation_claim"
+      ]
+    },
+    {
+      "blocking_conditions": [
+        "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+        "AUTHORITY_CONVERGENCE_UNRESOLVED",
+        "TRUTH_PUBLICATION_STABILIZED_FALSE",
+        "H1_ACTIVATION_GATE_CLOSED"
+      ],
+      "current_admissibility_ceiling": "blocked",
+      "minimum_quality_level": "QL3",
+      "profile_id": "h1_activation",
+      "required_claim_classes": [
+        "truth_authority_claim",
+        "governance_legitimacy_claim",
+        "runtime_boundary_claim",
+        "release_readiness_claim"
+      ]
+    }
+  ],
+  "schema_id": "kt.constitution.readiness_lattice.v1",
+  "status": "ACTIVE"
+}

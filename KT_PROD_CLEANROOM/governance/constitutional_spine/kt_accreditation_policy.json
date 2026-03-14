@@ -1,0 +1,62 @@
+{
+  "forbidden_accreditations": [
+    "No role may ratify canon from lab or archive surfaces without governed promotion.",
+    "No publication-facing role may exceed documentary or evidence-backed claim ceilings."
+  ],
+  "generated_utc": "2026-03-14T17:17:48Z",
+  "policy_id": "KT_ACCREDITATION_POLICY_V1_20260314",
+  "roles": [
+    {
+      "may_emit": [
+        "reports",
+        "manifests",
+        "receipts"
+      ],
+      "minimum_profile": "internal_only",
+      "required_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_foundation_pack_ratification_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_governance_baseline_ingestion_receipt.json"
+      ],
+      "role_id": "operator"
+    },
+    {
+      "may_emit": [
+        "ratified_governance_changes",
+        "canonical_runtime_changes"
+      ],
+      "minimum_profile": "external_demo_or_specialist_use",
+      "required_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitutional_court_procedure.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_meta_governance_policy.json"
+      ],
+      "role_id": "maintainer"
+    },
+    {
+      "may_emit": [
+        "audits",
+        "contradiction_reports",
+        "ceiling_reviews"
+      ],
+      "minimum_profile": "competition_and_publication_grade",
+      "required_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitution_manifest.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitutional_court_procedure.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "role_id": "auditor"
+    },
+    {
+      "may_emit": [
+        "documentary_only_public_profiles"
+      ],
+      "minimum_profile": "competition_and_publication_grade",
+      "required_refs": [
+        "KT_PROD_CLEANROOM/governance/public_verifier_rules.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "role_id": "publication_author"
+    }
+  ],
+  "schema_id": "kt.constitution.accreditation_policy.v1",
+  "status": "ACTIVE"
+}

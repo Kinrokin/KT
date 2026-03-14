@@ -1,0 +1,41 @@
+{
+  "current_epoch_id": "epoch_2_foundation_and_baseline_frozen",
+  "epochs": [
+    {
+      "entry_condition": "Pre-refactor KT history exists but is not yet compiler-ingested under the new constitutional packet.",
+      "epoch_id": "epoch_0_historical_pre_baseline",
+      "status": "historical"
+    },
+    {
+      "entry_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_governance_closeout_bundle.json",
+      "epoch_id": "epoch_1_governance_closeout_frozen",
+      "evidence_commit": "c0625e3f02089159ab4e528020a2e7a438e392f0",
+      "status": "ratified",
+      "subject_commit": "c653eefb88b886b4e16f006feabff982992d6d19"
+    },
+    {
+      "entry_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_foundation_pack_ratification_receipt.json",
+      "epoch_id": "epoch_2_foundation_and_baseline_frozen",
+      "evidence_commit": "5a4f2365fca9aacb761d9b9ce032e5578c64f5a8",
+      "status": "ratified",
+      "subject_commit": "f081b94881e2e9d4aa0b01cdec0360d47bce844b"
+    },
+    {
+      "entry_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_constitutional_spine_ratification_receipt.json",
+      "epoch_id": "epoch_3_constitutional_spine_ratification",
+      "evidence_commit": "SET_BY_GIT_AFTER_STEP_3_RECEIPT_COMMIT",
+      "status": "pending_step_3_receipt",
+      "subject_commit": "SET_BY_GIT_AFTER_STEP_3_SUBJECT_COMMIT"
+    }
+  ],
+  "generated_utc": "2026-03-14T17:17:48Z",
+  "model_id": "KT_EPOCH_MODEL_V1_20260314",
+  "pending_epoch_id": "epoch_3_constitutional_spine_ratification",
+  "schema_id": "kt.constitution.epoch_model.v1",
+  "status": "ACTIVE",
+  "transition_rules": [
+    "An epoch transition is admissible only when its governing receipt exists and passes.",
+    "Later evidence heads may describe an earlier subject epoch but do not become that subject epoch unless SHAs match.",
+    "Historical ingestion may widen memory, but it may not silently rewrite earlier epoch boundaries."
+  ]
+}
