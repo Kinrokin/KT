@@ -1,0 +1,72 @@
+{
+  "baseline_evidence_commit": "c0625e3f02089159ab4e528020a2e7a438e392f0",
+  "baseline_subject_commit": "c653eefb88b886b4e16f006feabff982992d6d19",
+  "closeout_verdict": "SEALED_WITH_OPEN_BLOCKERS",
+  "current_ceiling_by_domain": {
+    "activation": {
+      "boundary": "Frontier settlement is proven as evaluation only; H1 remains blocked.",
+      "ceiling_id": "H1_BLOCKED",
+      "evidence_commit": "86a52c95beb1fc26546d4e3f46873429d80ae44b",
+      "subject_commit": "553f4d362fda0087c7a728d1bdec893cafa6e938"
+    },
+    "governance": {
+      "boundary": "Current-head workflow governance is fresh, but GitHub branch-protection / ruleset enforcement is not proven on main. Do not claim platform-enforced governance while main_branch_protection_receipt is not PASS.",
+      "ceiling_id": "WORKFLOW_GOVERNANCE_ONLY",
+      "evidence_commit": "276656b263eb4fc320bb4d9b8217ab91ca27925a",
+      "subject_commit": "7bd610b507328eb72622ce24678620f5469f3848"
+    },
+    "reproducibility": {
+      "boundary": "Representative authority-lane reproducibility is proven only on the same MVE, not across controlled environment variation.",
+      "ceiling_id": "REPRESENTATIVE_AUTHORITY_LANE_SAME_MVE_ONLY",
+      "evidence_commit": "501a91ada969b7846751eeaaf6883755e7441abb",
+      "subject_commit": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8"
+    },
+    "runtime_boundary": {
+      "boundary": "Canonical runtime proof applies to runtime_boundary_subject_commit only; later evidence heads contain proof for that subject unless SHAs match.",
+      "ceiling_id": "CANONICAL_RUNTIME_BOUNDARY_SETTLED",
+      "evidence_commit": "ff9d852ef902206263701568045fa736c30d91c5",
+      "subject_commit": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834"
+    },
+    "truth_subject": {
+      "boundary": "evidence_commit identifies the commit that last changed the cryptographic publication evidence; truth_subject_commit identifies the transparency-verified subject commit. Consumers must not equate them unless evidence_equals_subject is true.",
+      "ceiling_id": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED_SUBJECT",
+      "evidence_commit": "a1b8397ec2b4eb817dabfaecaf5a0327158c8e1f",
+      "subject_commit": "cbc921601b646d7962555c902ea2747963fd9fad"
+    }
+  },
+  "generated_utc": "2026-03-14T16:58:58Z",
+  "highest_attained_proof_class": {
+    "boundary": "Frontier settlement is complete as an evaluation; H1 remains blocked.",
+    "proof_class_id": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
+    "rank": 9,
+    "subject_commit": "553f4d362fda0087c7a728d1bdec893cafa6e938"
+  },
+  "no_new_governance_victory_claims": true,
+  "schema_id": "kt.operator.claim_ceiling_summary.v1",
+  "unattained_proof_classes": [
+    {
+      "boundary": "Would permit published-head authority claims only if explicitly proven.",
+      "proof_class_id": "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+      "rank": 4,
+      "subject_commit": "cbc921601b646d7962555c902ea2747963fd9fad"
+    },
+    {
+      "boundary": "Would allow only H1 single-adapter benchmarking, not router or multi-adapter activation.",
+      "proof_class_id": "H1_SINGLE_ADAPTER_ALLOWED",
+      "rank": 10,
+      "subject_commit": "553f4d362fda0087c7a728d1bdec893cafa6e938"
+    },
+    {
+      "boundary": "Would raise governance legitimacy beyond workflow governance only.",
+      "proof_class_id": "PLATFORM_ENFORCEMENT_PROVEN",
+      "rank": 11,
+      "subject_commit": "7bd610b507328eb72622ce24678620f5469f3848"
+    },
+    {
+      "boundary": "Would raise reproducibility beyond same-MVE authority-lane proof.",
+      "proof_class_id": "CROSS_ENV_CONTROLLED_VARIATION_COMPLETE",
+      "rank": 12,
+      "subject_commit": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8"
+    }
+  ]
+}

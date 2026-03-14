@@ -1,0 +1,91 @@
+{
+  "baseline_evidence_commit": "c0625e3f02089159ab4e528020a2e7a438e392f0",
+  "baseline_subject_commit": "c653eefb88b886b4e16f006feabff982992d6d19",
+  "claim_boundary": "This map freezes governance-domain evidence_commit versus subject_commit pairs for the sealed baseline. Later repository heads may contain this map as evidence, but they do not become the mapped subject commits unless the SHAs match.",
+  "entries": [
+    {
+      "claim_boundary": "This closeout summary states what is proven and not proven for compiled_head_commit only. A later repository head that contains this summary must not be described as the compiled head unless the SHAs match.",
+      "domain_id": "governance_closeout_baseline",
+      "evidence_commit": "c0625e3f02089159ab4e528020a2e7a438e392f0",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_blocker_register.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_proof_class_ladder.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "subject_commit": "c653eefb88b886b4e16f006feabff982992d6d19",
+      "verdict": "SEALED_WITH_OPEN_BLOCKERS"
+    },
+    {
+      "claim_boundary": "evidence_commit identifies the commit that last changed the cryptographic publication evidence; truth_subject_commit identifies the transparency-verified subject commit. Consumers must not equate them unless evidence_equals_subject is true.",
+      "domain_id": "transparency_verified_truth_subject",
+      "evidence_commit": "a1b8397ec2b4eb817dabfaecaf5a0327158c8e1f",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_subject.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "subject_commit": "cbc921601b646d7962555c902ea2747963fd9fad",
+      "verdict": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED"
+    },
+    {
+      "claim_boundary": "Current-head workflow governance is fresh, but GitHub branch-protection / ruleset enforcement is not proven on main. Do not claim platform-enforced governance while main_branch_protection_receipt is not PASS.",
+      "domain_id": "workflow_governance_only",
+      "evidence_commit": "276656b263eb4fc320bb4d9b8217ab91ca27925a",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
+      "verdict": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED"
+    },
+    {
+      "claim_boundary": "Canonical runtime proof applies to runtime_boundary_subject_commit only; later evidence heads contain proof for that subject unless SHAs match.",
+      "domain_id": "canonical_runtime_boundary",
+      "evidence_commit": "ff9d852ef902206263701568045fa736c30d91c5",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/commercial_program_catalog.json"
+      ],
+      "subject_commit": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834",
+      "verdict": "CANONICAL_RUNTIME_BOUNDARY_SETTLED"
+    },
+    {
+      "claim_boundary": "Representative authority-lane reproducibility is proven only on the same MVE, not across controlled environment variation.",
+      "domain_id": "representative_authority_lane_reproducibility",
+      "evidence_commit": "501a91ada969b7846751eeaaf6883755e7441abb",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/proofrunbundle_index.json",
+        "KT_PROD_CLEANROOM/reports/twocleanclone_proof.json"
+      ],
+      "subject_commit": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8",
+      "verdict": "REPRESENTATIVE_SAME_MVE_ONLY"
+    },
+    {
+      "claim_boundary": "This receipt evaluates H1 admissibility for compiled_head_commit only. A later repository head that contains this receipt must not be described as the compiled head unless the SHAs match.",
+      "domain_id": "frontier_settlement_h1_gate",
+      "evidence_commit": "86a52c95beb1fc26546d4e3f46873429d80ae44b",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json"
+      ],
+      "subject_commit": "553f4d362fda0087c7a728d1bdec893cafa6e938",
+      "verdict": "FRONTIER_SETTLED_WITH_H1_BLOCK"
+    },
+    {
+      "claim_boundary": "This receipt ratifies the Step 2 foundation pack for compiled_head_commit only. A later repository head that contains this receipt is evidence about compiled_head_commit, not automatically the compiled head itself.",
+      "domain_id": "foundation_pack_gate",
+      "evidence_commit": "5a4f2365fca9aacb761d9b9ce032e5578c64f5a8",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_foundation_pack_ratification_receipt.json"
+      ],
+      "subject_commit": "f081b94881e2e9d4aa0b01cdec0360d47bce844b",
+      "verdict": "FOUNDATION_PACK_RATIFIED"
+    }
+  ],
+  "generated_utc": "2026-03-14T16:58:58Z",
+  "schema_id": "kt.operator.governance_evidence_subject_map.v1"
+}
