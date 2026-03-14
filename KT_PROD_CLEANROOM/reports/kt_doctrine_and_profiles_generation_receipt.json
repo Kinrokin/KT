@@ -1,0 +1,163 @@
+{
+  "actual_touched": [
+    "KT_PROD_CLEANROOM/reports/kt_doctrine_and_profiles_generation_receipt.json",
+    "KT_PROD_CLEANROOM/tests/operator/test_doctrine_profiles_compile.py",
+    "KT_PROD_CLEANROOM/tools/operator/doctrine_profiles_compile.py",
+    "docs/generated/KT_Academy_Training_v1.md",
+    "docs/generated/KT_Cognitive_Architecture_v1.md",
+    "docs/generated/KT_Governance_Spine_v1.md",
+    "docs/generated/KT_Paradox_Metabolism_v1.md",
+    "docs/generated/KT_Whitepaper_v1.md",
+    "docs/generated/kt_doctrine_compiler_spec.json",
+    "docs/generated/kt_doctrine_manifest.json",
+    "docs/generated/kt_doctrine_ratification_log.json",
+    "docs/generated/kt_master_spec.md",
+    "docs/generated/playbooks/kt_auditor_playbook.md",
+    "docs/generated/playbooks/kt_competition_runbook.md",
+    "docs/generated/playbooks/kt_maintainer_playbook.md",
+    "docs/generated/playbooks/kt_math_guru_training_runbook.md",
+    "docs/generated/profiles/kt_competition_profile.json",
+    "docs/generated/profiles/kt_math_guru_profile.json",
+    "docs/generated/profiles/kt_outsider_onboarding_profile.json",
+    "docs/generated/profiles/kt_publication_profile.json"
+  ],
+  "checks": [
+    {
+      "check": "step10_gate_passed",
+      "detail": "Step 11 requires the Step 10 paradox receipt to be PASS.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "doctrine_generated_from_machine_state",
+      "detail": "Doctrine compiler spec and manifest must be grounded in explicit machine-state refs, not narrative-only inputs.",
+      "refs": [
+        "docs/generated/kt_doctrine_compiler_spec.json",
+        "docs/generated/kt_doctrine_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_state_vector.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "profiles_list_capabilities_evidence_and_gaps",
+      "detail": "Generated profiles must include required capabilities, current evidence refs, and explicit gaps.",
+      "refs": [
+        "docs/generated/profiles/kt_outsider_onboarding_profile.json",
+        "docs/generated/profiles/kt_competition_profile.json",
+        "docs/generated/profiles/kt_publication_profile.json",
+        "docs/generated/profiles/kt_math_guru_profile.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "outsider_onboarding_explicit",
+      "detail": "Outsider onboarding must be an admissible bounded profile with explicit evidence refs and forbidden claims.",
+      "refs": [
+        "docs/generated/profiles/kt_outsider_onboarding_profile.json",
+        "docs/generated/KT_Academy_Training_v1.md"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "competition_and_publication_boundaries_explicit",
+      "detail": "Competition and publication profiles must remain blocked while their current blockers remain open.",
+      "refs": [
+        "docs/generated/profiles/kt_competition_profile.json",
+        "docs/generated/profiles/kt_publication_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ratification_keeps_law_precedence",
+      "detail": "Doctrine ratification must explicitly state that generated doctrine is subordinate to constitutional and governance law.",
+      "refs": [
+        "docs/generated/kt_doctrine_ratification_log.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/KT_Constitution_v1.md",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_meta_governance_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "post_touch_accounting_clean",
+      "detail": "Actual touched set must match the lawful Step 11 subject files plus the Step 11 receipt.",
+      "refs": [
+        "docs/generated/kt_doctrine_compiler_spec.json",
+        "docs/generated/kt_doctrine_manifest.json",
+        "docs/generated/kt_doctrine_ratification_log.json",
+        "docs/generated/profiles/kt_outsider_onboarding_profile.json",
+        "docs/generated/profiles/kt_competition_profile.json",
+        "docs/generated/profiles/kt_publication_profile.json",
+        "docs/generated/profiles/kt_math_guru_profile.json",
+        "docs/generated/kt_master_spec.md",
+        "docs/generated/KT_Whitepaper_v1.md",
+        "docs/generated/KT_Governance_Spine_v1.md",
+        "docs/generated/KT_Cognitive_Architecture_v1.md",
+        "docs/generated/KT_Paradox_Metabolism_v1.md",
+        "docs/generated/KT_Academy_Training_v1.md",
+        "docs/generated/playbooks/kt_maintainer_playbook.md",
+        "docs/generated/playbooks/kt_auditor_playbook.md",
+        "docs/generated/playbooks/kt_competition_runbook.md",
+        "docs/generated/playbooks/kt_math_guru_training_runbook.md",
+        "KT_PROD_CLEANROOM/tools/operator/doctrine_profiles_compile.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_doctrine_profiles_compile.py",
+        "KT_PROD_CLEANROOM/reports/kt_doctrine_and_profiles_generation_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "claim_boundary": "This receipt seals machine-state-derived doctrine and profiles for compiled_head_commit only. The generated surfaces remain subordinate to law and may not overread blocked horizons or subject-evidence lag.",
+  "compiled_head_commit": "5d0bba70692ef8f54d1c83b6c607fbb853370bb2",
+  "controlling_work_order": {
+    "schema_id": "kt.work_order.max_refactor_e2e_institutional_memory_and_full_stack_adjudication.v2",
+    "step_id": 11,
+    "step_name": "DOCTRINE_COMPILER_PROFILES_AND_EXTERNAL_PROFESSIONALIZATION",
+    "work_order_id": "WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION"
+  },
+  "current_head_commit": "5d0bba70692ef8f54d1c83b6c607fbb853370bb2",
+  "generated_utc": "2026-03-14T21:05:16Z",
+  "next_lawful_step": {
+    "status_after_step_11": "UNLOCKED",
+    "step_id": 12,
+    "step_name": "FULL_STACK_ADJUDICATION_RELEASE_READINESS_AND_FINAL_E2E_AUDIT"
+  },
+  "pass_verdict": "DOCTRINE_AND_PROFILES_GENERATED",
+  "planned_mutates": [
+    "docs/generated/kt_doctrine_compiler_spec.json",
+    "docs/generated/kt_doctrine_manifest.json",
+    "docs/generated/kt_doctrine_ratification_log.json",
+    "docs/generated/profiles/kt_outsider_onboarding_profile.json",
+    "docs/generated/profiles/kt_competition_profile.json",
+    "docs/generated/profiles/kt_publication_profile.json",
+    "docs/generated/profiles/kt_math_guru_profile.json",
+    "docs/generated/kt_master_spec.md",
+    "docs/generated/KT_Whitepaper_v1.md",
+    "docs/generated/KT_Governance_Spine_v1.md",
+    "docs/generated/KT_Cognitive_Architecture_v1.md",
+    "docs/generated/KT_Paradox_Metabolism_v1.md",
+    "docs/generated/KT_Academy_Training_v1.md",
+    "docs/generated/playbooks/kt_maintainer_playbook.md",
+    "docs/generated/playbooks/kt_auditor_playbook.md",
+    "docs/generated/playbooks/kt_competition_runbook.md",
+    "docs/generated/playbooks/kt_math_guru_training_runbook.md",
+    "KT_PROD_CLEANROOM/tools/operator/doctrine_profiles_compile.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_doctrine_profiles_compile.py",
+    "KT_PROD_CLEANROOM/reports/kt_doctrine_and_profiles_generation_receipt.json"
+  ],
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.doctrine_and_profiles_generation_receipt.v1",
+  "status": "PASS",
+  "step10_gate_evidence_commit": "a45ced0009548bd2151da0d80c4d02672690cf0f",
+  "step10_gate_subject_commit": "44ec40a73ea759af1072f4182b17cee82fd47f03",
+  "summary": {
+    "deliverable_count": 17,
+    "generated_doc_count": 6,
+    "playbook_count": 4,
+    "profile_count": 4
+  },
+  "unexpected_touches": []
+}
