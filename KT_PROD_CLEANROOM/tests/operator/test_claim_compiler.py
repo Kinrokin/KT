@@ -150,7 +150,7 @@ def test_claim_compiler_passes_when_docs_and_receipts_are_aligned(tmp_path: Path
     assert receipt["platform_governance_head_claim_verdict"] == "HEAD_CONTAINS_WORKFLOW_GOVERNANCE_ONLY_EVIDENCE_FOR_SUBJECT"
     assert receipt["runtime_boundary_head_claim_verdict"] == "HEAD_CONTAINS_RUNTIME_BOUNDARY_EVIDENCE_FOR_SUBJECT"
     assert all("Current HEAD" not in claim for claim in receipt["allowed_current_claims"])
-    assert all("Compiled subject head" in claim for claim in receipt["allowed_current_claims"][:3])
+    assert all("Compiled head" in claim for claim in receipt["allowed_current_claims"][:3])
 
 
 def test_claim_compiler_fails_when_commercial_docs_miss_required_markers(tmp_path: Path) -> None:
