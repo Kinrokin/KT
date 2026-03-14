@@ -1,0 +1,135 @@
+{
+  "claim_boundary": "This proof-class ladder summarizes attained and unattained WS0-WS11 classes for compiled_head_commit only. A later repository head that contains this ladder must not be described as the compiled head unless the SHAs match.",
+  "compiled_head_commit": "c653eefb88b886b4e16f006feabff982992d6d19",
+  "generated_utc": "2026-03-14T14:38:45Z",
+  "levels": [
+    {
+      "attained": true,
+      "boundary": "Main-bound mirrors are documentary compatibility surfaces only.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/WS1_completion_report.json"
+      ],
+      "proof_class_id": "DOCUMENTARY_DEMOTION_FROZEN",
+      "rank": 1,
+      "subject_commit": "fddaa73016b1d2e3380551ca1a3507f27ea1cfb8"
+    },
+    {
+      "attained": true,
+      "boundary": "Active truth source is the ledger current pointer, not the main mirror.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+        "KT_PROD_CLEANROOM/reports/truth_supersession_receipt.json"
+      ],
+      "proof_class_id": "SETTLED_AUTHORITATIVE_LEDGER_CURRENT_HEAD",
+      "rank": 2,
+      "subject_commit": "7bd610b507328eb72622ce24678620f5469f3848"
+    },
+    {
+      "attained": true,
+      "boundary": "Remote publication reporting is accurate without upgrading authority proof class.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/reporting_integrity_repair_receipt.json"
+      ],
+      "proof_class_id": "REPORTING_INTEGRITY_REPAIRED",
+      "rank": 3,
+      "subject_commit": "cbc921601b646d7962555c902ea2747963fd9fad"
+    },
+    {
+      "attained": false,
+      "boundary": "Would permit published-head authority claims only if explicitly proven.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json"
+      ],
+      "proof_class_id": "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+      "rank": 4,
+      "subject_commit": "cbc921601b646d7962555c902ea2747963fd9fad"
+    },
+    {
+      "attained": true,
+      "boundary": "Transparency verification applies to truth_subject_commit, not automatically to current HEAD.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json"
+      ],
+      "proof_class_id": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED_SUBJECT",
+      "rank": 5,
+      "subject_commit": "cbc921601b646d7962555c902ea2747963fd9fad"
+    },
+    {
+      "attained": true,
+      "boundary": "Workflow governance is proven; platform enforcement is not.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "proof_class_id": "WORKFLOW_GOVERNANCE_ONLY",
+      "rank": 6,
+      "subject_commit": "7bd610b507328eb72622ce24678620f5469f3848"
+    },
+    {
+      "attained": true,
+      "boundary": "Compatibility-only roots are quarantined outside canonical runtime truth.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+      ],
+      "proof_class_id": "CANONICAL_RUNTIME_BOUNDARY_SETTLED",
+      "rank": 7,
+      "subject_commit": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834"
+    },
+    {
+      "attained": true,
+      "boundary": "Representative authority-lane reproducibility is proven only on the same MVE, not cross-environment.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/proofrunbundle_index.json"
+      ],
+      "proof_class_id": "REPRESENTATIVE_AUTHORITY_LANE_SAME_MVE_ONLY",
+      "rank": 8,
+      "subject_commit": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8"
+    },
+    {
+      "attained": true,
+      "boundary": "Frontier settlement is complete as an evaluation; H1 remains blocked.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "proof_class_id": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
+      "rank": 9,
+      "subject_commit": "553f4d362fda0087c7a728d1bdec893cafa6e938"
+    },
+    {
+      "attained": false,
+      "boundary": "Would allow only H1 single-adapter benchmarking, not router or multi-adapter activation.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json"
+      ],
+      "proof_class_id": "H1_SINGLE_ADAPTER_ALLOWED",
+      "rank": 10,
+      "subject_commit": "553f4d362fda0087c7a728d1bdec893cafa6e938"
+    },
+    {
+      "attained": false,
+      "boundary": "Would raise governance legitimacy beyond workflow governance only.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json"
+      ],
+      "proof_class_id": "PLATFORM_ENFORCEMENT_PROVEN",
+      "rank": 11,
+      "subject_commit": "7bd610b507328eb72622ce24678620f5469f3848"
+    },
+    {
+      "attained": false,
+      "boundary": "Would raise reproducibility beyond same-MVE authority-lane proof.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/twocleanclone_proof.json"
+      ],
+      "proof_class_id": "CROSS_ENV_CONTROLLED_VARIATION_COMPLETE",
+      "rank": 12,
+      "subject_commit": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8"
+    }
+  ],
+  "schema_id": "kt.operator.ws0_ws11_closeout_proof_class_ladder.v1"
+}

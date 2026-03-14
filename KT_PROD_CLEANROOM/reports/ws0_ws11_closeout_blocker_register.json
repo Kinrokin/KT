@@ -1,0 +1,153 @@
+{
+  "claim_boundary": "This blocker register describes the final retained WS0-WS11 ceiling for compiled_head_commit only. A later repository head that contains this register must not be described as the compiled head unless the SHAs match.",
+  "compiled_head_commit": "c653eefb88b886b4e16f006feabff982992d6d19",
+  "frontier_settlement_verdict": "FRONTIER_SETTLED_WITH_H1_BLOCK",
+  "generated_utc": "2026-03-14T14:38:44Z",
+  "platform_governance_verdict": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED",
+  "remaining_blockers": [
+    {
+      "blocker_id": "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+      "blocks": [
+        "published-head self-convergence proof",
+        "H1 activation",
+        "higher authority claims"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "severity": "CRITICAL",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "AUTHORITY_CONVERGENCE_UNRESOLVED",
+      "blocks": [
+        "truth publication stabilization",
+        "H1 activation",
+        "current-head authority closure"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+      ],
+      "severity": "CRITICAL",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "TRUTH_PUBLICATION_STABILIZED_FALSE",
+      "blocks": [
+        "Domain 1 closure",
+        "H1 activation",
+        "promotion-civilization entry"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/execution_board.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "severity": "HIGH",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "PLATFORM_ENFORCEMENT_UNPROVEN",
+      "blocks": [
+        "platform-enforced governance claims",
+        "enterprise legitimacy above workflow governance only"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "severity": "HIGH",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN",
+      "blocks": [
+        "higher reproducibility band",
+        "cross-environment authority-lane proof"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/twocleanclone_proof.json"
+      ],
+      "severity": "MEDIUM",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "H1_ACTIVATION_GATE_CLOSED",
+      "blocks": [
+        "single-adapter H1 activation",
+        "router and multi-adapter activation"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json"
+      ],
+      "severity": "HIGH",
+      "status": "OPEN"
+    }
+  ],
+  "representative_authority_lane_proven": true,
+  "resolved_blockers": [
+    {
+      "blocker_id": "DOCUMENTARY_MIRROR_AMBIGUITY_CLEARED",
+      "cleared_by": "WS1",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/WS1_completion_report.json",
+        "KT_PROD_CLEANROOM/reports/documentary_truth_demotions_receipt.json"
+      ]
+    },
+    {
+      "blocker_id": "STALE_LEDGER_PUBLICATION_REPORTING_CLEARED",
+      "cleared_by": "WS3",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/reporting_integrity_repair_receipt.json"
+      ]
+    },
+    {
+      "blocker_id": "TRANSPARENCY_PUBLICATION_LAYER_COMPLETE",
+      "cleared_by": "WS6",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json"
+      ]
+    },
+    {
+      "blocker_id": "PUBLIC_VERIFIER_OVERREAD_ELIMINATED",
+      "cleared_by": "WS7",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ]
+    },
+    {
+      "blocker_id": "REPRESENTATIVE_AUTHORITY_LANE_SAME_MVE_PROVEN",
+      "cleared_by": "WS8",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/proofrunbundle_index.json"
+      ]
+    },
+    {
+      "blocker_id": "PLATFORM_GOVERNANCE_AMBIGUITY_FORMALLY_NARROWED",
+      "cleared_by": "WS9",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json"
+      ]
+    },
+    {
+      "blocker_id": "RUNTIME_BOUNDARY_CONTRADICTION_CLEARED",
+      "cleared_by": "WS10",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+      ]
+    },
+    {
+      "blocker_id": "COMMERCIAL_CLAIM_OVERREAD_BOUNDARY_ENFORCED",
+      "cleared_by": "WS10",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/commercial_program_catalog.json"
+      ]
+    }
+  ],
+  "schema_id": "kt.operator.ws0_ws11_closeout_blocker_register.v1"
+}
