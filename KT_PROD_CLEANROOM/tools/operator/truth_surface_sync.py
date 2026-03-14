@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
+from tools.operator.public_verifier import build_public_verifier_claims
 from tools.operator.posture_consistency import verify_posture
 from tools.operator.authority_convergence_validate import build_authority_convergence_report
 from tools.operator.dependency_inventory_validate import build_dependency_inventory_validation_report
@@ -287,6 +288,7 @@ def _domain_maturity_matrix_payload(*, board: Dict[str, Any]) -> Dict[str, Any]:
 
 def _public_verifier_manifest_payload(
     *,
+    root: Path,
     live_head: str,
     truth_source_ref: str,
     authority_mode: str,
@@ -294,11 +296,19 @@ def _public_verifier_manifest_payload(
     report_root_rel: str,
 ) -> Dict[str, Any]:
     status = "PASS" if authority_mode == "SETTLED_AUTHORITATIVE" and convergence_status == "PASS" else "HOLD"
+    claims = build_public_verifier_claims(root=root, live_head=live_head, report_root_rel=report_root_rel)
     return {
-        "schema_id": "kt.public_verifier_manifest.v2",
+        "schema_id": "kt.public_verifier_manifest.v3",
         "generated_utc": utc_now_iso_z(),
         "status": status,
         "validated_head_sha": live_head,
+        "evidence_commit": claims["evidence_commit"],
+        "truth_subject_commit": claims["truth_subject_commit"],
+        "subject_verdict": claims["subject_verdict"],
+        "publication_receipt_status": claims["publication_receipt_status"],
+        "evidence_contains_subject": claims["evidence_contains_subject"],
+        "evidence_equals_subject": claims["evidence_equals_subject"],
+        "claim_boundary": claims["claim_boundary"],
         "truth_pointer_ref": truth_source_ref,
         "state_receipts": [
             _report_ref(report_root_rel, "current_state_receipt.json"),
@@ -308,6 +318,7 @@ def _public_verifier_manifest_payload(
             _report_ref(report_root_rel, "documentary_truth_validation_receipt.json"),
             _report_ref(report_root_rel, "dependency_inventory_validation_receipt.json"),
         ],
+        "publication_evidence_refs": claims["publication_evidence_refs"],
         "integrity_supporting_artifacts": [
             _report_ref(report_root_rel, "dependency_inventory.json"),
             _report_ref(report_root_rel, "python_environment_manifest.json"),
@@ -823,6 +834,7 @@ def _sync_secondary_surfaces(
     _write_json(
         reports_root / "public_verifier_manifest.json",
         _public_verifier_manifest_payload(
+            root=root,
             live_head=live_head,
             truth_source_ref=truth_source_ref,
             authority_mode=authority_mode,
@@ -855,6 +867,7 @@ def _sync_secondary_surfaces(
     _write_json(
         reports_root / "public_verifier_manifest.json",
         _public_verifier_manifest_payload(
+            root=root,
             live_head=live_head,
             truth_source_ref=truth_source_ref,
             authority_mode=authority_mode,

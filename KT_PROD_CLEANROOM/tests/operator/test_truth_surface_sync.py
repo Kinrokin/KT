@@ -119,7 +119,14 @@ def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path
     assert promotion["promotion_verdict"] == "PASS"
     assert documentary["status"] == "PASS"
     assert dependency["status"] == "PASS"
+    assert verifier["schema_id"] == "kt.public_verifier_manifest.v3"
     assert verifier["validated_head_sha"] == "abc123"
+    assert verifier["evidence_commit"] == ""
+    assert verifier["truth_subject_commit"] == "abc123"
+    assert verifier["subject_verdict"] == "TRANSPARENCY_VERIFICATION_NOT_PROVEN"
+    assert verifier["publication_receipt_status"] == "MISSING"
+    assert verifier["evidence_contains_subject"] is False
+    assert verifier["evidence_equals_subject"] is False
     assert verifier["truth_pointer_ref"] == "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
     assert "KT_PROD_CLEANROOM/reports/dependency_inventory_validation_receipt.json" in verifier["state_receipts"]
 
