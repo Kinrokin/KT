@@ -1,0 +1,299 @@
+{
+  "class_rule_results": [
+    {
+      "derived_status": "evidenced",
+      "detail": "Commercial surfaces are bounded to documentary-only claims and tied back to verifier and runtime-boundary receipts.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+      ],
+      "rule_id": "RULE::commercial_surface_claim",
+      "status": "PASS",
+      "target_id": "commercial_surface_claim"
+    },
+    {
+      "derived_status": "partially_evidenced",
+      "detail": "Public claim boundaries are machine-enforced, but the dedicated doctrine compiler, profiles, and ratification outputs are still pending.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_self_description.json",
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "rule_id": "RULE::doctrine_generation_claim",
+      "status": "HOLD",
+      "target_id": "doctrine_generation_claim"
+    },
+    {
+      "derived_status": "partially_evidenced",
+      "detail": "Historical crucible lineage and current adapter/model/sector lineage are present, but the dedicated experiment and learning-delta registries are still missing.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_data_lineage.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json"
+      ],
+      "rule_id": "RULE::experiment_lineage_claim",
+      "status": "HOLD",
+      "target_id": "experiment_lineage_claim"
+    },
+    {
+      "derived_status": "evidenced",
+      "detail": "Workflow governance is evidenced and platform-governance overread is mechanically blocked while platform enforcement remains unproven.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "rule_id": "RULE::governance_legitimacy_claim",
+      "status": "PASS",
+      "target_id": "governance_legitimacy_claim"
+    },
+    {
+      "derived_status": "evidenced",
+      "detail": "Historical audits, conflicts, resolutions, codex lineage, and reopened defects are ingested as machine-usable memory.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_conflicts.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_resolutions.json",
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json"
+      ],
+      "rule_id": "RULE::historical_lineage_claim",
+      "status": "PASS",
+      "target_id": "historical_lineage_claim"
+    },
+    {
+      "derived_status": "partially_evidenced",
+      "detail": "Frontier settlement gives bounded paradox-adjacent evidence, but the dedicated paradox verification program artifacts are not yet present.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+      ],
+      "rule_id": "RULE::paradox_bound_claim",
+      "status": "HOLD",
+      "target_id": "paradox_bound_claim"
+    },
+    {
+      "derived_status": "partially_evidenced",
+      "detail": "Bounded external and publication-facing surfaces exist, but H1 remains blocked and no final release-readiness matrix exists yet.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "rule_id": "RULE::release_readiness_claim",
+      "status": "HOLD",
+      "target_id": "release_readiness_claim"
+    },
+    {
+      "derived_status": "evidenced",
+      "detail": "Representative authority-lane reproducibility is proven on the same MVE, but cross-environment variation remains open.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json"
+      ],
+      "rule_id": "RULE::reproducibility_claim",
+      "status": "PASS",
+      "target_id": "reproducibility_claim"
+    },
+    {
+      "derived_status": "evidenced",
+      "detail": "Canonical runtime roots are settled for the runtime-boundary subject and compatibility-only roots remain quarantined.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+      ],
+      "rule_id": "RULE::runtime_boundary_claim",
+      "status": "PASS",
+      "target_id": "runtime_boundary_claim"
+    },
+    {
+      "derived_status": "evidenced",
+      "detail": "Cryptographic publication and transparency verification are evidenced for the truth subject commit, with explicit subject/evidence lag handling.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "rule_id": "RULE::transparency_publication_claim",
+      "status": "PASS",
+      "target_id": "transparency_publication_claim"
+    },
+    {
+      "derived_status": "partially_evidenced",
+      "detail": "Settled truth source and transparency-verified truth subject are evidenced, but current-head authority convergence and published-head self-convergence remain unresolved.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+        "KT_PROD_CLEANROOM/reports/kt_open_blocker_ladder.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json"
+      ],
+      "rule_id": "RULE::truth_authority_claim",
+      "status": "HOLD",
+      "target_id": "truth_authority_claim"
+    }
+  ],
+  "derived_rule_results": [
+    {
+      "detail": "Adapter/model/sector/historical/governance lineage exists, but experiment and delta lineage sealing remains incomplete.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_data_lineage.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "KT_PROD_CLEANROOM/reports/kt_governance_baseline_ingestion_receipt.json"
+      ],
+      "rule_id": "DERIVED::lineage_domains_present",
+      "status": "HOLD",
+      "target_id": "lineage_completeness"
+    },
+    {
+      "detail": "Canon and normalization planning artifacts are not yet present.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_graph_and_catalog_compilation_receipt.json"
+      ],
+      "rule_id": "DERIVED::canon_normalization_pending",
+      "status": "HOLD",
+      "target_id": "normalization_status"
+    },
+    {
+      "detail": "Dedicated paradox verification artifacts are still missing.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+      ],
+      "rule_id": "DERIVED::paradox_program_pending",
+      "status": "HOLD",
+      "target_id": "paradox_program"
+    },
+    {
+      "detail": "Doctrine compiler and profile outputs are still missing.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_self_description.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitution_manifest.json"
+      ],
+      "rule_id": "DERIVED::doctrine_generation_pending",
+      "status": "HOLD",
+      "target_id": "doctrine_version"
+    },
+    {
+      "detail": "Full-stack adjudication artifacts are still missing.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_registry.json"
+      ],
+      "rule_id": "DERIVED::full_stack_adjudication_pending",
+      "status": "HOLD",
+      "target_id": "adjudication_status"
+    }
+  ],
+  "generated_utc": "2026-03-14T19:18:16Z",
+  "readiness_profile_results": [
+    {
+      "blocking_conditions": [
+        "state_taint_status != CLEAR"
+      ],
+      "detail": "State taint is clear and no internal-only blocker is active.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_registry.json"
+      ],
+      "required_claim_classes": [
+        "truth_authority_claim",
+        "runtime_boundary_claim"
+      ],
+      "rule_id": "PROFILE::internal_only",
+      "status": "PASS",
+      "target_id": "internal_only"
+    },
+    {
+      "blocking_conditions": [
+        "truth_authority_claim status is contradicted",
+        "runtime_boundary_claim status is contradicted"
+      ],
+      "detail": "Truth-authority is bounded rather than contradicted, runtime boundary is evidenced, and documentary/commercial boundaries are present.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_registry.json"
+      ],
+      "required_claim_classes": [
+        "truth_authority_claim",
+        "runtime_boundary_claim",
+        "commercial_surface_claim"
+      ],
+      "rule_id": "PROFILE::external_demo_or_specialist_use",
+      "status": "PASS",
+      "target_id": "external_demo_or_specialist_use"
+    },
+    {
+      "blocking_conditions": [
+        "governance_legitimacy_claim exceeds WORKFLOW_GOVERNANCE_ONLY",
+        "reproducibility_claim is not evidenced at representative same-MVE band",
+        "release_readiness_claim is not evidenced"
+      ],
+      "detail": "Competition/publication surfaces stay bounded, but release readiness is not fully evidenced and H1 remains blocked.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_registry.json"
+      ],
+      "required_claim_classes": [
+        "truth_authority_claim",
+        "governance_legitimacy_claim",
+        "runtime_boundary_claim",
+        "reproducibility_claim",
+        "release_readiness_claim"
+      ],
+      "rule_id": "PROFILE::competition_and_publication_grade",
+      "status": "HOLD",
+      "target_id": "competition_and_publication_grade"
+    },
+    {
+      "blocking_conditions": [
+        "commercial_surface_claim exceeds DOCUMENTARY_ONLY",
+        "commercial docs omit compiler boundary markers"
+      ],
+      "detail": "Commercial documentary-only boundaries and required markers are evidenced.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_registry.json"
+      ],
+      "required_claim_classes": [
+        "commercial_surface_claim",
+        "doctrine_generation_claim"
+      ],
+      "rule_id": "PROFILE::commercial_documentary_only",
+      "status": "PASS",
+      "target_id": "commercial_documentary_only"
+    },
+    {
+      "blocking_conditions": [
+        "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+        "AUTHORITY_CONVERGENCE_UNRESOLVED",
+        "TRUTH_PUBLICATION_STABILIZED_FALSE",
+        "H1_ACTIVATION_GATE_CLOSED"
+      ],
+      "detail": "Published-head self-convergence, authority convergence, truth-publication stabilization, and H1 activation remain blocked.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_registry.json"
+      ],
+      "required_claim_classes": [
+        "truth_authority_claim",
+        "governance_legitimacy_claim",
+        "runtime_boundary_claim",
+        "release_readiness_claim"
+      ],
+      "rule_id": "PROFILE::h1_activation",
+      "status": "BLOCKED",
+      "target_id": "h1_activation"
+    }
+  ],
+  "schema_id": "kt.operator.rule_results.v1"
+}

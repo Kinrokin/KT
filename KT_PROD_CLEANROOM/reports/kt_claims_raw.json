@@ -1,0 +1,662 @@
+{
+  "claims": [
+    {
+      "claim_class_id": "historical_lineage_claim",
+      "claim_id": "STEP7_AUDIT_CLEAN_CLONE_EQUIVALENCE_NOT_PROVEN_20260309",
+      "claim_text": "The historical audit refused clean-clone equivalence at the pinned head.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/README.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/blocker_matrix.json"
+      ],
+      "extracted_from": "historical_claims",
+      "plane": "proof_plane",
+      "source_epoch": "2026-03-09_authority_audit",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+      "surface_status": "partially_evidenced"
+    },
+    {
+      "claim_class_id": "historical_lineage_claim",
+      "claim_id": "STEP7_AUDIT_REMOTE_PARITY_NOT_ACHIEVED_20260309",
+      "claim_text": "The 2026-03-09 authority audit recorded local main ahead of origin/main by six commits.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/README.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/blocker_matrix.json"
+      ],
+      "extracted_from": "historical_claims",
+      "plane": "judgment_plane",
+      "source_epoch": "2026-03-09_authority_audit",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+      "surface_status": "obsolete"
+    },
+    {
+      "claim_class_id": "release_readiness_claim",
+      "claim_id": "STEP7_CEILING_ACTIVATION",
+      "claim_text": "Current admissibility ceiling for activation is H1_BLOCKED.",
+      "evidence_refs": [
+        "86a52c95beb1fc26546d4e3f46873429d80ae44b",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "extracted_from": "claim_ceiling_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "step1_governance_baseline",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+      "surface_status": "current_ceiling"
+    },
+    {
+      "claim_class_id": "governance_legitimacy_claim",
+      "claim_id": "STEP7_CEILING_GOVERNANCE",
+      "claim_text": "Current admissibility ceiling for governance is WORKFLOW_GOVERNANCE_ONLY.",
+      "evidence_refs": [
+        "276656b263eb4fc320bb4d9b8217ab91ca27925a",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "extracted_from": "claim_ceiling_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "step1_governance_baseline",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+      "surface_status": "current_ceiling"
+    },
+    {
+      "claim_class_id": "reproducibility_claim",
+      "claim_id": "STEP7_CEILING_REPRODUCIBILITY",
+      "claim_text": "Current admissibility ceiling for reproducibility is REPRESENTATIVE_AUTHORITY_LANE_SAME_MVE_ONLY.",
+      "evidence_refs": [
+        "501a91ada969b7846751eeaaf6883755e7441abb",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "extracted_from": "claim_ceiling_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "step1_governance_baseline",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+      "surface_status": "current_ceiling"
+    },
+    {
+      "claim_class_id": "runtime_boundary_claim",
+      "claim_id": "STEP7_CEILING_RUNTIME_BOUNDARY",
+      "claim_text": "Current admissibility ceiling for runtime_boundary is CANONICAL_RUNTIME_BOUNDARY_SETTLED.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+        "ff9d852ef902206263701568045fa736c30d91c5"
+      ],
+      "extracted_from": "claim_ceiling_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "step1_governance_baseline",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+      "surface_status": "current_ceiling"
+    },
+    {
+      "claim_class_id": "truth_authority_claim",
+      "claim_id": "STEP7_CEILING_TRUTH_SUBJECT",
+      "claim_text": "Current admissibility ceiling for truth_subject is PUBLISHED_HEAD_TRANSPARENCY_VERIFIED_SUBJECT.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+        "a1b8397ec2b4eb817dabfaecaf5a0327158c8e1f"
+      ],
+      "extracted_from": "claim_ceiling_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "step1_governance_baseline",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+      "surface_status": "current_ceiling"
+    },
+    {
+      "claim_class_id": "truth_authority_claim",
+      "claim_id": "STEP7_CLOSEOUT_NOT_PROVEN_01",
+      "claim_text": "Published-head self-convergence is not proven on the retained final stack.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "extracted_from": "ws0_ws11_closeout_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "ws0_ws11_closeout",
+      "source_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+      "surface_status": "not_proven"
+    },
+    {
+      "claim_class_id": "truth_authority_claim",
+      "claim_id": "STEP7_CLOSEOUT_NOT_PROVEN_02",
+      "claim_text": "Authority convergence does not pass on the retained final stack.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "extracted_from": "ws0_ws11_closeout_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "ws0_ws11_closeout",
+      "source_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+      "surface_status": "not_proven"
+    },
+    {
+      "claim_class_id": "release_readiness_claim",
+      "claim_id": "STEP7_CLOSEOUT_NOT_PROVEN_03",
+      "claim_text": "Truth publication stabilized remains false on the execution board.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/execution_board.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "extracted_from": "ws0_ws11_closeout_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "ws0_ws11_closeout",
+      "source_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+      "surface_status": "not_proven"
+    },
+    {
+      "claim_class_id": "governance_legitimacy_claim",
+      "claim_id": "STEP7_CLOSEOUT_NOT_PROVEN_04",
+      "claim_text": "Platform-enforced governance is not proven; the legitimacy ceiling remains workflow-governance-only.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "extracted_from": "ws0_ws11_closeout_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "ws0_ws11_closeout",
+      "source_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+      "surface_status": "not_proven"
+    },
+    {
+      "claim_class_id": "reproducibility_claim",
+      "claim_id": "STEP7_CLOSEOUT_NOT_PROVEN_05",
+      "claim_text": "Cross-environment controlled variation is not complete.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "extracted_from": "ws0_ws11_closeout_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "ws0_ws11_closeout",
+      "source_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+      "surface_status": "not_proven"
+    },
+    {
+      "claim_class_id": "release_readiness_claim",
+      "claim_id": "STEP7_CLOSEOUT_NOT_PROVEN_06",
+      "claim_text": "H1 is not allowed, single-adapter benchmarking is not open, and router or multi-adapter activation remains blocked.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "extracted_from": "ws0_ws11_closeout_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "ws0_ws11_closeout",
+      "source_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+      "surface_status": "not_proven"
+    },
+    {
+      "claim_class_id": "transparency_publication_claim",
+      "claim_id": "STEP7_CLOSEOUT_NOT_PROVEN_07",
+      "claim_text": "Current evidence heads are not themselves the transparency-verified truth subject or fresh runtime-boundary subject unless the SHAs match.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "extracted_from": "ws0_ws11_closeout_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "ws0_ws11_closeout",
+      "source_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+      "surface_status": "not_proven"
+    },
+    {
+      "claim_class_id": "truth_authority_claim",
+      "claim_id": "STEP7_CLOSEOUT_PROVEN_01",
+      "claim_text": "Documentary demotion on main-bound truth mirrors is frozen and explicit.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/WS1_completion_report.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "extracted_from": "ws0_ws11_closeout_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "ws0_ws11_closeout",
+      "source_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+      "surface_status": "proven"
+    },
+    {
+      "claim_class_id": "truth_authority_claim",
+      "claim_id": "STEP7_CLOSEOUT_PROVEN_02",
+      "claim_text": "The active truth source is the ledger current pointer and settled truth is authoritative on its subject head.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "extracted_from": "ws0_ws11_closeout_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "ws0_ws11_closeout",
+      "source_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+      "surface_status": "proven"
+    },
+    {
+      "claim_class_id": "transparency_publication_claim",
+      "claim_id": "STEP7_CLOSEOUT_PROVEN_03",
+      "claim_text": "A transparency-verified truth subject exists and current heads only contain evidence for that subject unless the SHAs match.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "extracted_from": "ws0_ws11_closeout_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "ws0_ws11_closeout",
+      "source_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+      "surface_status": "proven"
+    },
+    {
+      "claim_class_id": "governance_legitimacy_claim",
+      "claim_id": "STEP7_CLOSEOUT_PROVEN_04",
+      "claim_text": "Workflow governance is proven, but only as workflow governance and not as platform-enforced governance.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "extracted_from": "ws0_ws11_closeout_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "ws0_ws11_closeout",
+      "source_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+      "surface_status": "proven"
+    },
+    {
+      "claim_class_id": "runtime_boundary_claim",
+      "claim_id": "STEP7_CLOSEOUT_PROVEN_05",
+      "claim_text": "Canonical runtime boundary integrity is settled for its subject head.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "extracted_from": "ws0_ws11_closeout_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "ws0_ws11_closeout",
+      "source_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+      "surface_status": "proven"
+    },
+    {
+      "claim_class_id": "reproducibility_claim",
+      "claim_id": "STEP7_CLOSEOUT_PROVEN_06",
+      "claim_text": "Representative authority-lane reproducibility is proven on the same MVE for certify, hat_demo, and program.red_assault.serious_v1.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/proofrunbundle_index.json",
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "extracted_from": "ws0_ws11_closeout_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "ws0_ws11_closeout",
+      "source_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+      "surface_status": "proven"
+    },
+    {
+      "claim_class_id": "runtime_boundary_claim",
+      "claim_id": "STEP7_CLOSEOUT_PROVEN_07",
+      "claim_text": "Commercial claim boundaries are documentary-only and bound to the verifier, runtime boundary, and active truth source.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/commercial_program_catalog.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "extracted_from": "ws0_ws11_closeout_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "ws0_ws11_closeout",
+      "source_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+      "surface_status": "proven"
+    },
+    {
+      "claim_class_id": "release_readiness_claim",
+      "claim_id": "STEP7_CLOSEOUT_PROVEN_08",
+      "claim_text": "Frontier settlement is complete as an evaluation and the final H1 gate was lawfully checked.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "extracted_from": "ws0_ws11_closeout_summary",
+      "plane": "judgment_plane",
+      "source_epoch": "ws0_ws11_closeout",
+      "source_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+      "surface_status": "proven"
+    },
+    {
+      "claim_class_id": "historical_lineage_claim",
+      "claim_id": "STEP7_CODEX_OUTSIDE_LAW_SURFACES_AND_STILL_DRAFT",
+      "claim_text": "KT-Codex content is intentionally outside KT_PROD_CLEANROOM law surfaces and remains draft lineage material.",
+      "evidence_refs": [
+        "KT-Codex/deliverable_manifest.md",
+        "KT-Codex/metadata/manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json"
+      ],
+      "extracted_from": "historical_claims",
+      "plane": "lineage_plane",
+      "source_epoch": "2026-02-19_codex_initial_release",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+      "surface_status": "evidenced"
+    },
+    {
+      "claim_class_id": "commercial_surface_claim",
+      "claim_id": "STEP7_COMMERCIAL_SURFACE_DOCUMENTARY_ONLY",
+      "claim_text": "Commercial surfaces are documentary-only and bound to machine evidence receipts.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+      ],
+      "extracted_from": "commercial_claim_compiler_receipt",
+      "plane": "operability_plane",
+      "source_epoch": "ws10",
+      "source_ref": "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+      "surface_status": "PASS"
+    },
+    {
+      "claim_class_id": "historical_lineage_claim",
+      "claim_id": "STEP7_CRUCIBLE_REGISTRY_LAB_ONLY_UNTIL_PROMOTED",
+      "claim_text": "The historical crucible registry marks listed crucibles as lab-only until promoted.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "KT_PROD_CLEANROOM/tools/growth/ledgers/c019_crucible_runs.jsonl"
+      ],
+      "extracted_from": "historical_claims",
+      "plane": "lineage_plane",
+      "source_epoch": "2026-03-10_crucible_registry",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+      "surface_status": "evidenced"
+    },
+    {
+      "claim_class_id": "doctrine_generation_claim",
+      "claim_id": "STEP7_DOCTRINE_COMPILER_STILL_FUTURE",
+      "claim_text": "Doctrine, profiles, and external professionalization remain future machine-state generation work.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitution_manifest.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_self_description.json"
+      ],
+      "extracted_from": "work_order",
+      "plane": "operability_plane",
+      "source_epoch": "work_order_step_11",
+      "source_ref": "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+      "surface_status": "planned"
+    },
+    {
+      "claim_class_id": "historical_lineage_claim",
+      "claim_id": "STEP7_E2E_CAMPAIGN_WORKSPACE_COMPLETE_NOT_PUBLICATION_GRADE",
+      "claim_text": "The historical campaign report claimed workspace completion but explicitly refused publication-grade finalization.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/KT_E2E_COMPLETION_CAMPAIGN_REPORT_20260310.md"
+      ],
+      "extracted_from": "historical_claims",
+      "plane": "judgment_plane",
+      "source_epoch": "2026-03-10_workspace_campaign",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+      "surface_status": "obsolete"
+    },
+    {
+      "claim_class_id": "experiment_lineage_claim",
+      "claim_id": "STEP7_EXPERIMENT_LINEAGE_REGISTRY_STILL_FUTURE",
+      "claim_text": "Experiment and learning-delta lineage sealing remains a future registry compilation obligation.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_data_lineage.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json"
+      ],
+      "extracted_from": "work_order",
+      "plane": "lineage_plane",
+      "source_epoch": "work_order_step_9",
+      "source_ref": "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+      "surface_status": "planned"
+    },
+    {
+      "claim_class_id": "release_readiness_claim",
+      "claim_id": "STEP7_FRONTIER_SETTLED_H1_BLOCKED",
+      "claim_text": "Frontier settlement completed as evaluation, but H1 remains blocked.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "extracted_from": "frontier_settlement_receipt",
+      "plane": "proof_plane",
+      "source_epoch": "ws11",
+      "source_ref": "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+      "surface_status": "PASS"
+    },
+    {
+      "claim_class_id": "historical_lineage_claim",
+      "claim_id": "STEP7_FULL_COMPLETION_ATTEMPT_OFFICIAL_COMPLETION_REFUSED",
+      "claim_text": "The historical completion-attempt report refused official end-to-end completion because tracked live state and HEAD were recursively coupled.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/KT_FULL_COMPLETION_ATTEMPT_REPORT_20260310.md"
+      ],
+      "extracted_from": "historical_claims",
+      "plane": "judgment_plane",
+      "source_epoch": "2026-03-10_full_completion_attempt",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+      "surface_status": "evidenced"
+    },
+    {
+      "claim_class_id": "truth_authority_claim",
+      "claim_id": "STEP7_HEAD_SUBJECT_LAG_IS_TYPED",
+      "claim_text": "Current HEAD contains evidence for the truth subject commit but is not itself the truth subject unless SHAs match.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "extracted_from": "public_verifier_manifest",
+      "plane": "judgment_plane",
+      "source_epoch": "ws7",
+      "source_ref": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "surface_status": "bounded"
+    },
+    {
+      "claim_class_id": "historical_lineage_claim",
+      "claim_id": "STEP7_HISTORICAL_BLOCKER_PACKET_WAS_OPEN",
+      "claim_text": "The original blocker packet remained open with unresolved remote parity, clean-clone proof, stale truth surfaces, residue, and archive contamination.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/blocker_matrix.json"
+      ],
+      "extracted_from": "historical_claims",
+      "plane": "proof_plane",
+      "source_epoch": "2026-03-09_authority_audit",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+      "surface_status": "evidenced"
+    },
+    {
+      "claim_class_id": "historical_lineage_claim",
+      "claim_id": "STEP7_IMPLEMENTATION_TRANCHE_FOUNDATIONAL_LAW_COMPLETE_BUT_UNSETTLED",
+      "claim_text": "The implementation tranche completed foundational law work but still refused final settled authority until a pinned clean head was reratified.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_governance_closeout_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/IMPLEMENTATION_COMPLETION_REPORT_20260309.md"
+      ],
+      "extracted_from": "historical_claims",
+      "plane": "temporal_plane",
+      "source_epoch": "2026-03-09_foundational_law_tranche",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+      "surface_status": "obsolete"
+    },
+    {
+      "claim_class_id": "paradox_bound_claim",
+      "claim_id": "STEP7_PARADOX_BOUNDING_STILL_FUTURE",
+      "claim_text": "Paradox metabolism verification remains a future bounded-program obligation and is not yet sealed by dedicated paradox artifacts.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+      ],
+      "extracted_from": "work_order",
+      "plane": "proof_plane",
+      "source_epoch": "work_order_step_10",
+      "source_ref": "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+      "surface_status": "planned"
+    },
+    {
+      "claim_class_id": "governance_legitimacy_claim",
+      "claim_id": "STEP7_PLATFORM_GOVERNANCE_WORKFLOW_ONLY",
+      "claim_text": "Workflow governance is evidenced, but platform-enforced governance remains unproven.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "extracted_from": "platform_governance_narrowing_receipt",
+      "plane": "judgment_plane",
+      "source_epoch": "ws9",
+      "source_ref": "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+      "surface_status": "PASS_WITH_PLATFORM_BLOCK"
+    },
+    {
+      "claim_class_id": "reproducibility_claim",
+      "claim_id": "STEP7_REPRODUCIBILITY_REPRESENTATIVE_ONLY",
+      "claim_text": "Representative authority-lane reproducibility is proven on the same MVE, but cross-environment controlled variation is not complete.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json"
+      ],
+      "extracted_from": "representative_authority_lane_reproducibility_receipt",
+      "plane": "proof_plane",
+      "source_epoch": "ws8",
+      "source_ref": "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+      "surface_status": "PASS"
+    },
+    {
+      "claim_class_id": "runtime_boundary_claim",
+      "claim_id": "STEP7_RUNTIME_BOUNDARY_SETTLED",
+      "claim_text": "Canonical runtime roots are settled and compatibility-only roots remain quarantined.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+      ],
+      "extracted_from": "runtime_boundary_integrity_receipt",
+      "plane": "proof_plane",
+      "source_epoch": "ws10",
+      "source_ref": "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+      "surface_status": "PASS"
+    },
+    {
+      "claim_class_id": "historical_lineage_claim",
+      "claim_id": "STEP7_SCORECARD_CAPABILITY_EXCEEDS_CERTIFICATION",
+      "claim_text": "The scorecard concluded that the repo could do more than it could certify.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/subsystem_scorecard.md"
+      ],
+      "extracted_from": "historical_claims",
+      "plane": "operability_plane",
+      "source_epoch": "2026-03-09_authority_audit",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+      "surface_status": "evidenced"
+    },
+    {
+      "claim_class_id": "transparency_publication_claim",
+      "claim_id": "STEP7_TRUTH_SUBJECT_TRANSPARENCY_VERIFIED",
+      "claim_text": "Truth subject commit cbc921601b646d7962555c902ea2747963fd9fad is transparency-verified while evidence commit remains separate.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "extracted_from": "public_verifier_manifest",
+      "plane": "proof_plane",
+      "source_epoch": "ws6_ws7",
+      "source_ref": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "surface_status": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED"
+    },
+    {
+      "claim_class_id": "truth_authority_claim",
+      "claim_id": "STEP7_UNATTAINED_PROOF_01",
+      "claim_text": "Proof class PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN is not yet attained.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "extracted_from": "claim_ceiling_summary",
+      "plane": "proof_plane",
+      "source_epoch": "step1_governance_baseline",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+      "surface_status": "unattained"
+    },
+    {
+      "claim_class_id": "release_readiness_claim",
+      "claim_id": "STEP7_UNATTAINED_PROOF_02",
+      "claim_text": "Proof class H1_SINGLE_ADAPTER_ALLOWED is not yet attained.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "extracted_from": "claim_ceiling_summary",
+      "plane": "proof_plane",
+      "source_epoch": "step1_governance_baseline",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+      "surface_status": "unattained"
+    },
+    {
+      "claim_class_id": "governance_legitimacy_claim",
+      "claim_id": "STEP7_UNATTAINED_PROOF_03",
+      "claim_text": "Proof class PLATFORM_ENFORCEMENT_PROVEN is not yet attained.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "extracted_from": "claim_ceiling_summary",
+      "plane": "proof_plane",
+      "source_epoch": "step1_governance_baseline",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+      "surface_status": "unattained"
+    },
+    {
+      "claim_class_id": "reproducibility_claim",
+      "claim_id": "STEP7_UNATTAINED_PROOF_04",
+      "claim_text": "Proof class CROSS_ENV_CONTROLLED_VARIATION_COMPLETE is not yet attained.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "extracted_from": "claim_ceiling_summary",
+      "plane": "proof_plane",
+      "source_epoch": "step1_governance_baseline",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+      "surface_status": "unattained"
+    }
+  ],
+  "generated_utc": "2026-03-14T19:18:16Z",
+  "schema_id": "kt.operator.claims_raw.v1",
+  "source_surfaces": [
+    {
+      "extracted_claim_count": 3,
+      "surface_ref": "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json"
+    },
+    {
+      "extracted_claim_count": 1,
+      "surface_ref": "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json"
+    },
+    {
+      "extracted_claim_count": 1,
+      "surface_ref": "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+    },
+    {
+      "extracted_claim_count": 9,
+      "surface_ref": "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+    },
+    {
+      "extracted_claim_count": 9,
+      "surface_ref": "KT_PROD_CLEANROOM/reports/kt_historical_claims.json"
+    },
+    {
+      "extracted_claim_count": 1,
+      "surface_ref": "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json"
+    },
+    {
+      "extracted_claim_count": 2,
+      "surface_ref": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+    },
+    {
+      "extracted_claim_count": 1,
+      "surface_ref": "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json"
+    },
+    {
+      "extracted_claim_count": 1,
+      "surface_ref": "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+    },
+    {
+      "extracted_claim_count": 15,
+      "surface_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+    }
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "conflicts": [
+    {
+      "affected_claim_classes": [
+        "truth_authority_claim",
+        "release_readiness_claim"
+      ],
+      "conflict_id": "AUTHORITY_CONVERGENCE_UNRESOLVED",
+      "counterexample_ids": [
+        "COUNTEREXAMPLE::CURRENT_HEAD_AUTHORITY_DIVERGENCE"
+      ],
+      "description": "Current-head authority surfaces remain divergent on pointer and posture state.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+      ],
+      "severity": "P0_authority",
+      "status": "ACTIVE"
+    },
+    {
+      "affected_claim_classes": [
+        "truth_authority_claim",
+        "release_readiness_claim"
+      ],
+      "conflict_id": "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+      "counterexample_ids": [
+        "COUNTEREXAMPLE::HEAD_NOT_EQUAL_TRUTH_SUBJECT"
+      ],
+      "description": "Published-head self-convergence remains local-ledger-only and does not support current-head authority closure.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "severity": "P0_authority",
+      "status": "ACTIVE"
+    },
+    {
+      "affected_claim_classes": [
+        "release_readiness_claim"
+      ],
+      "conflict_id": "LOCAL_RESIDUE_PRESENT",
+      "counterexample_ids": [
+        "COUNTEREXAMPLE::LOCAL_SECRET_RESIDUE_PRESENT"
+      ],
+      "description": "The local secret-like residue still exists at repo root.",
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/local_residue_summary.json",
+        ".env.secret"
+      ],
+      "severity": "P0_runtime_integrity",
+      "status": "STILL_OPEN"
+    },
+    {
+      "affected_claim_classes": [
+        "release_readiness_claim"
+      ],
+      "conflict_id": "H1_ACTIVATION_GATE_CLOSED",
+      "counterexample_ids": [
+        "COUNTEREXAMPLE::H1_GATE_CLOSED"
+      ],
+      "description": "H1 and higher-horizon activation remain blocked.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json"
+      ],
+      "severity": "P1_governance",
+      "status": "ACTIVE"
+    },
+    {
+      "affected_claim_classes": [
+        "governance_legitimacy_claim"
+      ],
+      "conflict_id": "PLATFORM_ENFORCEMENT_UNPROVEN",
+      "counterexample_ids": [
+        "COUNTEREXAMPLE::PLATFORM_ENFORCEMENT_BLOCKED"
+      ],
+      "description": "Governance remains workflow-only because platform branch-protection enforcement is not proven.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "severity": "P1_governance",
+      "status": "ACTIVE"
+    },
+    {
+      "affected_claim_classes": [
+        "reproducibility_claim"
+      ],
+      "conflict_id": "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN",
+      "counterexample_ids": [
+        "COUNTEREXAMPLE::CROSS_ENV_VARIATION_NOT_RUN"
+      ],
+      "description": "Cross-environment controlled variation remains unproven, limiting reproducibility to the representative same-MVE band.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/twocleanclone_proof.json"
+      ],
+      "severity": "P1_claim_evidence",
+      "status": "ACTIVE"
+    },
+    {
+      "affected_claim_classes": [
+        "experiment_lineage_claim"
+      ],
+      "conflict_id": "DELTA_LINEAGE_MISSING",
+      "counterexample_ids": [
+        "COUNTEREXAMPLE::EXPERIMENT_DELTA_LINEAGE_ARTIFACTS_MISSING"
+      ],
+      "description": "Dedicated experiment and learning-delta registries are not yet present.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_data_lineage.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json"
+      ],
+      "severity": "P1_claim_evidence",
+      "status": "ACTIVE"
+    },
+    {
+      "affected_claim_classes": [
+        "paradox_bound_claim"
+      ],
+      "conflict_id": "PARADOX_PROGRAM_UNBOUNDED",
+      "counterexample_ids": [
+        "COUNTEREXAMPLE::PARADOX_VERIFICATION_ARTIFACTS_MISSING"
+      ],
+      "description": "Dedicated paradox verification artifacts are not yet present, so paradox metabolism is not yet formally bounded by its own program.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+      ],
+      "severity": "P1_claim_evidence",
+      "status": "ACTIVE"
+    },
+    {
+      "affected_claim_classes": [
+        "truth_authority_claim",
+        "release_readiness_claim"
+      ],
+      "conflict_id": "TRUTH_PUBLICATION_STABILIZED_FALSE",
+      "counterexample_ids": [
+        "COUNTEREXAMPLE::CURRENT_HEAD_AUTHORITY_DIVERGENCE"
+      ],
+      "description": "Truth publication stabilization remains false on the retained execution surfaces.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/execution_board.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "severity": "P1_claim_evidence",
+      "status": "ACTIVE"
+    },
+    {
+      "affected_claim_classes": [
+        "historical_lineage_claim"
+      ],
+      "conflict_id": "ROOT_ARCHIVE_CONTAMINATION",
+      "counterexample_ids": [
+        "COUNTEREXAMPLE::ROOT_ARCHIVE_CONTAMINATION_PRESENT"
+      ],
+      "description": "Historical archive material still sits at the repo root and under docs/audit.",
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md",
+        "docs/audit",
+        "KT_TEMPLE_ROOT",
+        "KT_LANE_LORA_PHASE_B"
+      ],
+      "severity": "P2_duplicate_surface",
+      "status": "STILL_OPEN"
+    }
+  ],
+  "generated_utc": "2026-03-14T19:18:16Z",
+  "schema_id": "kt.operator.conflict_register.v1"
+}

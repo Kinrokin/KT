@@ -1,0 +1,355 @@
+{
+  "claim_classes": [
+    {
+      "applicable_organs": [
+        "commercial_surface_plane",
+        "release_profile_plane"
+      ],
+      "blockers": [],
+      "claim_class_id": "commercial_surface_claim",
+      "current_admissibility_ceiling": "DOCUMENTARY_ONLY",
+      "evidence_chain_complete": true,
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+      ],
+      "judgment_summary": "Commercial surfaces are bounded to documentary-only claims and tied back to verifier and runtime-boundary receipts.",
+      "label": "Commercial Surface Claim",
+      "max_admissibility_ceiling": "DOCUMENTARY_ONLY",
+      "raw_claim_ids": [
+        "STEP7_COMMERCIAL_SURFACE_DOCUMENTARY_ONLY"
+      ],
+      "required_evidence_classes": [
+        "receipt",
+        "catalog",
+        "verifier_manifest"
+      ],
+      "status": "evidenced"
+    },
+    {
+      "applicable_organs": [
+        "public_claims_and_doctrine_plane",
+        "commercial_surface_plane"
+      ],
+      "blockers": [
+        "DOCTRINE_GENERATION_PENDING"
+      ],
+      "claim_class_id": "doctrine_generation_claim",
+      "current_admissibility_ceiling": "DOCUMENTARY_ONLY",
+      "evidence_chain_complete": true,
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_self_description.json",
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "judgment_summary": "Public claim boundaries are machine-enforced, but the dedicated doctrine compiler, profiles, and ratification outputs are still pending.",
+      "label": "Doctrine Generation Claim",
+      "max_admissibility_ceiling": "DOCUMENTARY_ONLY",
+      "raw_claim_ids": [
+        "STEP7_DOCTRINE_COMPILER_STILL_FUTURE"
+      ],
+      "required_evidence_classes": [
+        "manifest",
+        "receipt",
+        "ratification_log"
+      ],
+      "status": "partially_evidenced"
+    },
+    {
+      "applicable_organs": [
+        "experiment_crucible_plane",
+        "lab_adaptation_plane"
+      ],
+      "blockers": [
+        "DELTA_LINEAGE_MISSING"
+      ],
+      "claim_class_id": "experiment_lineage_claim",
+      "current_admissibility_ceiling": "DOCUMENTARY_ONLY",
+      "evidence_chain_complete": true,
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_data_lineage.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json"
+      ],
+      "judgment_summary": "Historical crucible lineage and current adapter/model/sector lineage are present, but the dedicated experiment and learning-delta registries are still missing.",
+      "label": "Experiment Lineage Claim",
+      "max_admissibility_ceiling": "DOCUMENTARY_ONLY",
+      "raw_claim_ids": [
+        "STEP7_EXPERIMENT_LINEAGE_REGISTRY_STILL_FUTURE"
+      ],
+      "required_evidence_classes": [
+        "registry_entry",
+        "receipt",
+        "config"
+      ],
+      "status": "partially_evidenced"
+    },
+    {
+      "applicable_organs": [
+        "governance_spine",
+        "constitutional_meta_governance",
+        "public_claims_and_doctrine_plane"
+      ],
+      "blockers": [
+        "PLATFORM_ENFORCEMENT_UNPROVEN"
+      ],
+      "claim_class_id": "governance_legitimacy_claim",
+      "current_admissibility_ceiling": "WORKFLOW_GOVERNANCE_ONLY",
+      "evidence_chain_complete": true,
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "judgment_summary": "Workflow governance is evidenced and platform-governance overread is mechanically blocked while platform enforcement remains unproven.",
+      "label": "Governance Legitimacy Claim",
+      "max_admissibility_ceiling": "WORKFLOW_GOVERNANCE_ONLY",
+      "raw_claim_ids": [
+        "STEP7_CEILING_GOVERNANCE",
+        "STEP7_CLOSEOUT_NOT_PROVEN_04",
+        "STEP7_CLOSEOUT_PROVEN_04",
+        "STEP7_PLATFORM_GOVERNANCE_WORKFLOW_ONLY",
+        "STEP7_UNATTAINED_PROOF_03"
+      ],
+      "required_evidence_classes": [
+        "governance_contract",
+        "receipt",
+        "runtime_verifier_output"
+      ],
+      "status": "evidenced"
+    },
+    {
+      "applicable_organs": [
+        "archive_memory_plane",
+        "adjudication_plane"
+      ],
+      "blockers": [],
+      "claim_class_id": "historical_lineage_claim",
+      "current_admissibility_ceiling": "DOCUMENTARY_ONLY",
+      "evidence_chain_complete": true,
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_conflicts.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_resolutions.json",
+        "KT_PROD_CLEANROOM/reports/kt_reopened_defect_register.json"
+      ],
+      "judgment_summary": "Historical audits, conflicts, resolutions, codex lineage, and reopened defects are ingested as machine-usable memory.",
+      "label": "Historical Lineage Claim",
+      "max_admissibility_ceiling": "DOCUMENTARY_ONLY",
+      "raw_claim_ids": [
+        "STEP7_AUDIT_CLEAN_CLONE_EQUIVALENCE_NOT_PROVEN_20260309",
+        "STEP7_AUDIT_REMOTE_PARITY_NOT_ACHIEVED_20260309",
+        "STEP7_CODEX_OUTSIDE_LAW_SURFACES_AND_STILL_DRAFT",
+        "STEP7_CRUCIBLE_REGISTRY_LAB_ONLY_UNTIL_PROMOTED",
+        "STEP7_E2E_CAMPAIGN_WORKSPACE_COMPLETE_NOT_PUBLICATION_GRADE",
+        "STEP7_FULL_COMPLETION_ATTEMPT_OFFICIAL_COMPLETION_REFUSED",
+        "STEP7_HISTORICAL_BLOCKER_PACKET_WAS_OPEN",
+        "STEP7_IMPLEMENTATION_TRANCHE_FOUNDATIONAL_LAW_COMPLETE_BUT_UNSETTLED",
+        "STEP7_SCORECARD_CAPABILITY_EXCEEDS_CERTIFICATION"
+      ],
+      "required_evidence_classes": [
+        "archive_record",
+        "audit_packet",
+        "resolution_log"
+      ],
+      "status": "evidenced"
+    },
+    {
+      "applicable_organs": [
+        "paradox_metabolism_plane",
+        "adjudication_plane"
+      ],
+      "blockers": [
+        "PARADOX_PROGRAM_UNBOUNDED"
+      ],
+      "claim_class_id": "paradox_bound_claim",
+      "current_admissibility_ceiling": "DOCUMENTARY_ONLY",
+      "evidence_chain_complete": true,
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+      ],
+      "judgment_summary": "Frontier settlement gives bounded paradox-adjacent evidence, but the dedicated paradox verification program artifacts are not yet present.",
+      "label": "Paradox Bound Claim",
+      "max_admissibility_ceiling": "DOCUMENTARY_ONLY",
+      "raw_claim_ids": [
+        "STEP7_PARADOX_BOUNDING_STILL_FUTURE"
+      ],
+      "required_evidence_classes": [
+        "model",
+        "counterexample_register",
+        "receipt"
+      ],
+      "status": "partially_evidenced"
+    },
+    {
+      "applicable_organs": [
+        "release_profile_plane",
+        "adjudication_plane"
+      ],
+      "blockers": [
+        "H1_ACTIVATION_GATE_CLOSED",
+        "QUALITY_LEVEL_BELOW_TARGET"
+      ],
+      "claim_class_id": "release_readiness_claim",
+      "current_admissibility_ceiling": "COMPETITION_AND_PUBLICATION_GRADE",
+      "evidence_chain_complete": true,
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "judgment_summary": "Bounded external and publication-facing surfaces exist, but H1 remains blocked and no final release-readiness matrix exists yet.",
+      "label": "Release Readiness Claim",
+      "max_admissibility_ceiling": "COMPETITION_AND_PUBLICATION_GRADE",
+      "raw_claim_ids": [
+        "STEP7_CEILING_ACTIVATION",
+        "STEP7_CLOSEOUT_NOT_PROVEN_03",
+        "STEP7_CLOSEOUT_NOT_PROVEN_06",
+        "STEP7_CLOSEOUT_PROVEN_08",
+        "STEP7_FRONTIER_SETTLED_H1_BLOCKED",
+        "STEP7_UNATTAINED_PROOF_02"
+      ],
+      "required_evidence_classes": [
+        "grade_receipt",
+        "readiness_matrix",
+        "receipt"
+      ],
+      "status": "partially_evidenced"
+    },
+    {
+      "applicable_organs": [
+        "experiment_crucible_plane",
+        "release_profile_plane"
+      ],
+      "blockers": [
+        "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN"
+      ],
+      "claim_class_id": "reproducibility_claim",
+      "current_admissibility_ceiling": "REPRESENTATIVE_SAME_MVE_ONLY",
+      "evidence_chain_complete": true,
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json"
+      ],
+      "judgment_summary": "Representative authority-lane reproducibility is proven on the same MVE, but cross-environment variation remains open.",
+      "label": "Reproducibility Claim",
+      "max_admissibility_ceiling": "REPRESENTATIVE_SAME_MVE_ONLY",
+      "raw_claim_ids": [
+        "STEP7_CEILING_REPRODUCIBILITY",
+        "STEP7_CLOSEOUT_NOT_PROVEN_05",
+        "STEP7_CLOSEOUT_PROVEN_06",
+        "STEP7_REPRODUCIBILITY_REPRESENTATIVE_ONLY",
+        "STEP7_UNATTAINED_PROOF_04"
+      ],
+      "required_evidence_classes": [
+        "receipt",
+        "run_bundle",
+        "diff_summary"
+      ],
+      "status": "evidenced"
+    },
+    {
+      "applicable_organs": [
+        "runtime_spine",
+        "operator_factory",
+        "public_claims_and_doctrine_plane"
+      ],
+      "blockers": [],
+      "claim_class_id": "runtime_boundary_claim",
+      "current_admissibility_ceiling": "CANONICAL_RUNTIME_BOUNDARY_SUBJECT_ONLY",
+      "evidence_chain_complete": true,
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+      ],
+      "judgment_summary": "Canonical runtime roots are settled for the runtime-boundary subject and compatibility-only roots remain quarantined.",
+      "label": "Runtime Boundary Claim",
+      "max_admissibility_ceiling": "CANONICAL_RUNTIME_BOUNDARY_SUBJECT_ONLY",
+      "raw_claim_ids": [
+        "STEP7_CEILING_RUNTIME_BOUNDARY",
+        "STEP7_CLOSEOUT_PROVEN_05",
+        "STEP7_CLOSEOUT_PROVEN_07",
+        "STEP7_RUNTIME_BOUNDARY_SETTLED"
+      ],
+      "required_evidence_classes": [
+        "governance_contract",
+        "receipt",
+        "runtime_registry"
+      ],
+      "status": "evidenced"
+    },
+    {
+      "applicable_organs": [
+        "verification_delivery_security_plane",
+        "public_claims_and_doctrine_plane"
+      ],
+      "blockers": [],
+      "claim_class_id": "transparency_publication_claim",
+      "current_admissibility_ceiling": "TRANSPARENCY_VERIFIED_SUBJECT_ONLY",
+      "evidence_chain_complete": true,
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "judgment_summary": "Cryptographic publication and transparency verification are evidenced for the truth subject commit, with explicit subject/evidence lag handling.",
+      "label": "Transparency Publication Claim",
+      "max_admissibility_ceiling": "TRANSPARENCY_VERIFIED_SUBJECT_ONLY",
+      "raw_claim_ids": [
+        "STEP7_CLOSEOUT_NOT_PROVEN_07",
+        "STEP7_CLOSEOUT_PROVEN_03",
+        "STEP7_TRUTH_SUBJECT_TRANSPARENCY_VERIFIED"
+      ],
+      "required_evidence_classes": [
+        "attestation",
+        "receipt",
+        "subject_manifest"
+      ],
+      "status": "evidenced"
+    },
+    {
+      "applicable_organs": [
+        "truth_authority_plane",
+        "public_claims_and_doctrine_plane"
+      ],
+      "blockers": [
+        "AUTHORITY_CONVERGENCE_UNRESOLVED",
+        "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED"
+      ],
+      "claim_class_id": "truth_authority_claim",
+      "current_admissibility_ceiling": "TRANSPARENCY_VERIFIED_SUBJECT_ONLY",
+      "evidence_chain_complete": true,
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+        "KT_PROD_CLEANROOM/reports/kt_open_blocker_ladder.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json"
+      ],
+      "judgment_summary": "Settled truth source and transparency-verified truth subject are evidenced, but current-head authority convergence and published-head self-convergence remain unresolved.",
+      "label": "Truth Authority Claim",
+      "max_admissibility_ceiling": "TRANSPARENCY_VERIFIED_SUBJECT_ONLY",
+      "raw_claim_ids": [
+        "STEP7_CEILING_TRUTH_SUBJECT",
+        "STEP7_CLOSEOUT_NOT_PROVEN_01",
+        "STEP7_CLOSEOUT_NOT_PROVEN_02",
+        "STEP7_CLOSEOUT_PROVEN_01",
+        "STEP7_CLOSEOUT_PROVEN_02",
+        "STEP7_HEAD_SUBJECT_LAG_IS_TYPED",
+        "STEP7_UNATTAINED_PROOF_01"
+      ],
+      "required_evidence_classes": [
+        "governance_contract",
+        "receipt",
+        "manifest"
+      ],
+      "status": "partially_evidenced"
+    }
+  ],
+  "generated_utc": "2026-03-14T19:18:16Z",
+  "schema_id": "kt.operator.claim_registry.v1"
+}

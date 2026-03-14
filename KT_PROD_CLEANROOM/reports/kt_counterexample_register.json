@@ -1,0 +1,176 @@
+{
+  "counterexamples": [
+    {
+      "claim_class_id": "truth_authority_claim",
+      "counterexample_id": "COUNTEREXAMPLE::CURRENT_HEAD_AUTHORITY_DIVERGENCE",
+      "description": "Main-bound pointer, current-state, and runtime-closure surfaces do not converge on the current authority head.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_open_blocker_ladder.json"
+      ],
+      "expected": {
+        "all_heads_equal": true
+      },
+      "observed": {
+        "board_head": "7bd610b507328eb72622ce24678620f5469f3848",
+        "current_state_head": "aac5a4a7c3a4e4ce8b6f506d9ac3292ede32ba03",
+        "pointer_head": "aac5a4a7c3a4e4ce8b6f506d9ac3292ede32ba03",
+        "runtime_audit_head": "aac5a4a7c3a4e4ce8b6f506d9ac3292ede32ba03"
+      },
+      "severity": "P0_authority"
+    },
+    {
+      "claim_class_id": "truth_authority_claim",
+      "counterexample_id": "COUNTEREXAMPLE::HEAD_NOT_EQUAL_TRUTH_SUBJECT",
+      "description": "The current evidence commit is not the same SHA as the transparency-verified truth subject commit.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "expected": {
+        "evidence_equals_subject": true
+      },
+      "observed": {
+        "evidence_commit": "a1b8397ec2b4eb817dabfaecaf5a0327158c8e1f",
+        "evidence_equals_subject": false,
+        "truth_subject_commit": "cbc921601b646d7962555c902ea2747963fd9fad"
+      },
+      "severity": "P0_authority"
+    },
+    {
+      "claim_class_id": "release_readiness_claim",
+      "counterexample_id": "COUNTEREXAMPLE::LOCAL_SECRET_RESIDUE_PRESENT",
+      "description": "A local secret-like residue file remains at repo root.",
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/local_residue_summary.json",
+        ".env.secret"
+      ],
+      "expected": {
+        "env_secret_exists": false
+      },
+      "observed": {
+        "env_secret_exists": true
+      },
+      "severity": "P0_runtime_integrity"
+    },
+    {
+      "claim_class_id": "release_readiness_claim",
+      "counterexample_id": "COUNTEREXAMPLE::H1_GATE_CLOSED",
+      "description": "H1 remains blocked and no single-adapter benchmarking or router activation is admissible.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+      ],
+      "expected": {
+        "h1_allowed": true
+      },
+      "observed": {
+        "h1_allowed": false,
+        "next_allowed_transition": "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN"
+      },
+      "severity": "P1_governance"
+    },
+    {
+      "claim_class_id": "governance_legitimacy_claim",
+      "counterexample_id": "COUNTEREXAMPLE::PLATFORM_ENFORCEMENT_BLOCKED",
+      "description": "Platform branch-protection enforcement is blocked and cannot support a platform-enforced governance claim.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "expected": {
+        "branch_protection_status": "PASS"
+      },
+      "observed": {
+        "branch_protection_status": "BLOCKED",
+        "platform_block": {
+          "http_status": 403,
+          "message": "Upgrade to GitHub Pro or make this repository public to enable this feature."
+        }
+      },
+      "severity": "P1_governance"
+    },
+    {
+      "claim_class_id": "reproducibility_claim",
+      "counterexample_id": "COUNTEREXAMPLE::CROSS_ENV_VARIATION_NOT_RUN",
+      "description": "Representative reproducibility is same-MVE only; cross-environment controlled variation is still not run.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_open_blocker_ladder.json"
+      ],
+      "expected": {
+        "cross_environment_controlled_variation_complete": true
+      },
+      "observed": {
+        "cross_environment_controlled_variation_complete": false,
+        "reproducibility_band": "REPRESENTATIVE_AUTHORITY_LANE_SAME_MVE_ONLY"
+      },
+      "severity": "P1_claim_evidence"
+    },
+    {
+      "claim_class_id": "experiment_lineage_claim",
+      "counterexample_id": "COUNTEREXAMPLE::EXPERIMENT_DELTA_LINEAGE_ARTIFACTS_MISSING",
+      "description": "Dedicated experiment and learning-delta lineage outputs are not yet present.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_data_lineage.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json"
+      ],
+      "expected": {
+        "missing_artifacts": []
+      },
+      "observed": {
+        "missing_artifacts": [
+          "KT_PROD_CLEANROOM/reports/kt_experiment_registry.json",
+          "KT_PROD_CLEANROOM/reports/kt_learning_delta_register.json",
+          "KT_PROD_CLEANROOM/reports/kt_receipt_lineage_register.json"
+        ]
+      },
+      "severity": "P1_claim_evidence"
+    },
+    {
+      "claim_class_id": "paradox_bound_claim",
+      "counterexample_id": "COUNTEREXAMPLE::PARADOX_VERIFICATION_ARTIFACTS_MISSING",
+      "description": "Dedicated paradox verification artifacts are not yet present.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+      ],
+      "expected": {
+        "missing_artifacts": []
+      },
+      "observed": {
+        "missing_artifacts": [
+          "KT_PROD_CLEANROOM/reports/kt_paradox_models.tla",
+          "KT_PROD_CLEANROOM/reports/kt_paradox_stress_results.json",
+          "KT_PROD_CLEANROOM/reports/kt_paradox_counterexamples.json"
+        ]
+      },
+      "severity": "P1_claim_evidence"
+    },
+    {
+      "claim_class_id": "historical_lineage_claim",
+      "counterexample_id": "COUNTEREXAMPLE::ROOT_ARCHIVE_CONTAMINATION_PRESENT",
+      "description": "Historical archive surfaces remain physically co-located with active repo-control surfaces.",
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md",
+        "docs/audit",
+        "KT_TEMPLE_ROOT",
+        "KT_LANE_LORA_PHASE_B"
+      ],
+      "expected": {
+        "docs_audit_exists": false,
+        "kt_lane_lora_phase_b_exists": false,
+        "kt_temple_root_exists": false
+      },
+      "observed": {
+        "docs_audit_exists": true,
+        "kt_lane_lora_phase_b_exists": true,
+        "kt_temple_root_exists": true
+      },
+      "severity": "P2_duplicate_surface"
+    }
+  ],
+  "generated_utc": "2026-03-14T19:18:16Z",
+  "schema_id": "kt.operator.counterexample_register.v1"
+}

@@ -1,0 +1,245 @@
+{
+  "adjudication_status": "PRE_ADJUDICATION_PENDING_STEP_12",
+  "canon_version": "UNRATIFIED_STEP_8_PENDING",
+  "claim_ceiling_status": {
+    "blocked_horizons": [
+      "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+      "H1_SINGLE_ADAPTER_ALLOWED",
+      "PLATFORM_ENFORCEMENT_PROVEN",
+      "CROSS_ENV_CONTROLLED_VARIATION_COMPLETE"
+    ],
+    "current_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK"
+  },
+  "doctrine_version": "UNGENERATED_STEP_11_PENDING",
+  "generated_utc": "2026-03-14T19:18:16Z",
+  "lineage_completeness": {
+    "coverage_ratio": 0.857143,
+    "status": "PARTIAL_EXPERIMENT_DELTA_LINEAGE_PENDING"
+  },
+  "normalization_status": "PLANNING_PENDING_STEP_8",
+  "open_blockers": [
+    "AUTHORITY_CONVERGENCE_UNRESOLVED",
+    "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+    "H1_ACTIVATION_GATE_CLOSED",
+    "PLATFORM_ENFORCEMENT_UNPROVEN",
+    "TRUTH_PUBLICATION_STABILIZED_FALSE",
+    "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN"
+  ],
+  "organ_readiness": [
+    {
+      "blockers": [
+        "AUTHORITY_CONVERGENCE_UNRESOLVED",
+        "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+        "H1_ACTIVATION_GATE_CLOSED"
+      ],
+      "organ_id": "adjudication_plane",
+      "quality_level": "QL2",
+      "status": "SEALED_BASELINE_PRE_FINAL_ADJUDICATION"
+    },
+    {
+      "blockers": [
+        "ROOT_ARCHIVE_CONTAMINATION"
+      ],
+      "organ_id": "archive_memory_plane",
+      "quality_level": "QL1",
+      "status": "LINEAGE_MEMORY_INGESTED"
+    },
+    {
+      "blockers": [],
+      "organ_id": "commercial_surface_plane",
+      "quality_level": "QL2",
+      "status": "DOCUMENTARY_BOUNDARY_ENFORCED"
+    },
+    {
+      "blockers": [
+        "PLATFORM_ENFORCEMENT_UNPROVEN"
+      ],
+      "organ_id": "constitutional_meta_governance",
+      "quality_level": "QL2",
+      "status": "RATIFIED_PLATFORM_LIMITED"
+    },
+    {
+      "blockers": [
+        "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN",
+        "DELTA_LINEAGE_MISSING"
+      ],
+      "organ_id": "experiment_crucible_plane",
+      "quality_level": "QL2",
+      "status": "REPRESENTATIVE_ONLY_PROVEN"
+    },
+    {
+      "blockers": [
+        "PLATFORM_ENFORCEMENT_UNPROVEN"
+      ],
+      "organ_id": "governance_spine",
+      "quality_level": "QL2",
+      "status": "WORKFLOW_GOVERNANCE_ONLY_EVIDENCED"
+    },
+    {
+      "blockers": [],
+      "organ_id": "lab_adaptation_plane",
+      "quality_level": "QL1",
+      "status": "PROMOTION_REQUIRED_BEFORE_CANON"
+    },
+    {
+      "blockers": [
+        "AUTHORITY_CONVERGENCE_UNRESOLVED",
+        "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED"
+      ],
+      "organ_id": "operator_factory",
+      "quality_level": "QL2",
+      "status": "BOUNDARY_ENFORCING_OUTPUTS_ACTIVE"
+    },
+    {
+      "blockers": [
+        "PARADOX_PROGRAM_UNBOUNDED"
+      ],
+      "organ_id": "paradox_metabolism_plane",
+      "quality_level": "QL1",
+      "status": "FRONTIER_EVALUATED_FORMAL_BOUND_PENDING"
+    },
+    {
+      "blockers": [],
+      "organ_id": "public_claims_and_doctrine_plane",
+      "quality_level": "QL2",
+      "status": "CLAIM_BOUNDARY_ENFORCED"
+    },
+    {
+      "blockers": [
+        "H1_ACTIVATION_GATE_CLOSED"
+      ],
+      "organ_id": "release_profile_plane",
+      "quality_level": "QL1",
+      "status": "BOUNDED_RELEASE_PROFILES_ONLY"
+    },
+    {
+      "blockers": [],
+      "organ_id": "runtime_spine",
+      "quality_level": "QL3",
+      "status": "CANONICAL_BOUNDARY_SETTLED"
+    },
+    {
+      "blockers": [
+        "AUTHORITY_CONVERGENCE_UNRESOLVED",
+        "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+        "TRUTH_PUBLICATION_STABILIZED_FALSE"
+      ],
+      "organ_id": "truth_authority_plane",
+      "quality_level": "QL2",
+      "status": "SUBJECT_ONLY_EVIDENCED_CURRENT_HEAD_UNSETTLED"
+    },
+    {
+      "blockers": [],
+      "organ_id": "verification_delivery_security_plane",
+      "quality_level": "QL2",
+      "status": "TRANSPARENCY_SUBJECT_PUBLISHED"
+    }
+  ],
+  "proof_obligations": [
+    {
+      "description": "Promote published-head self-convergence beyond local-ledger-only proof.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_open_blocker_ladder.json"
+      ],
+      "obligation_id": "OBLIGATION::PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+      "severity": "P0_authority",
+      "status": "OPEN"
+    },
+    {
+      "description": "Reconcile authority surfaces so the current authority head converges without fail-closed mismatches.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_open_blocker_ladder.json"
+      ],
+      "obligation_id": "OBLIGATION::AUTHORITY_CONVERGENCE_PASS",
+      "severity": "P0_authority",
+      "status": "OPEN"
+    },
+    {
+      "description": "Raise truth-publication stabilization from false to true on the retained execution surfaces.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "obligation_id": "OBLIGATION::TRUTH_PUBLICATION_STABILIZED_TRUE",
+      "severity": "P1_claim_evidence",
+      "status": "OPEN"
+    },
+    {
+      "description": "Prove platform branch-protection enforcement before any platform-governance claim beyond workflow-only legitimacy.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "obligation_id": "OBLIGATION::PLATFORM_ENFORCEMENT_PROVEN",
+      "severity": "P1_governance",
+      "status": "OPEN"
+    },
+    {
+      "description": "Extend reproducibility beyond the representative same-MVE band by running controlled cross-environment proof.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_open_blocker_ladder.json"
+      ],
+      "obligation_id": "OBLIGATION::CROSS_ENV_CONTROLLED_VARIATION_COMPLETE",
+      "severity": "P1_claim_evidence",
+      "status": "OPEN"
+    },
+    {
+      "description": "Emit experiment, learning-delta, and receipt-lineage registries so experiment lineage becomes fully auditable.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_data_lineage.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json"
+      ],
+      "obligation_id": "OBLIGATION::EXPERIMENT_DELTA_LINEAGE_SEALED",
+      "severity": "P1_claim_evidence",
+      "status": "OPEN"
+    },
+    {
+      "description": "Emit the dedicated paradox models, invariants, counterexamples, and stress results.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+      ],
+      "obligation_id": "OBLIGATION::PARADOX_PROGRAM_BOUNDED",
+      "severity": "P1_claim_evidence",
+      "status": "OPEN"
+    },
+    {
+      "description": "Propose canon, normalization, and repo professionalization artifacts before any whole-repo normalization work.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_graph_and_catalog_compilation_receipt.json"
+      ],
+      "obligation_id": "OBLIGATION::CANON_AND_NORMALIZATION_PLANNED",
+      "severity": "P2_schema_drift",
+      "status": "OPEN"
+    },
+    {
+      "description": "Generate doctrine, profiles, and playbooks directly from machine state.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_self_description.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitution_manifest.json"
+      ],
+      "obligation_id": "OBLIGATION::DOCTRINE_AND_PROFILES_GENERATED",
+      "severity": "P3_doc_staleness",
+      "status": "OPEN"
+    },
+    {
+      "description": "Run final whole-system adjudication and emit release-readiness and closeout artifacts.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_registry.json"
+      ],
+      "obligation_id": "OBLIGATION::FULL_STACK_ADJUDICATION_COMPLETE",
+      "severity": "P1_claim_evidence",
+      "status": "OPEN"
+    }
+  ],
+  "repo_head_commit": "21d90b916290c262f7c9e27a0ad10cf91c4a1eca",
+  "schema_id": "kt.operator.state_vector.v1",
+  "state_vector_id": "kt_state_vector::21d90b916290c262f7c9e27a0ad10cf91c4a1eca"
+}
