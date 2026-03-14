@@ -3,6 +3,26 @@
   "invariants": [
     {
       "active_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_court_contract.json",
+        "KT_PROD_CLEANROOM/governance/amendment_law.json",
+        "KT_PROD_CLEANROOM/governance/appeal_law.json"
+      ],
+      "enforcement_class": "active_contract_check",
+      "failure_effect": "Governance changes that bypass court, amendment, or appeal law are inadmissible.",
+      "invariant_id": "constitutional_changes_require_governed_procedure",
+      "machine_target": [
+        "constitutional_review_trigger",
+        "amendment_scope",
+        "appeal_path"
+      ],
+      "organ_id": "constitutional_meta_governance",
+      "planned_workstreams": [],
+      "severity": "P1_governance",
+      "statement": "Governance changes must pass through governed constitutional procedure; doctrine or narrative may not silently amend law.",
+      "verification_commands": []
+    },
+    {
+      "active_refs": [
         "KT_PROD_CLEANROOM/governance/public_verifier_rules.json",
         "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
       ],
@@ -105,6 +125,29 @@
       "statement": "Canonical runtime roots must exclude tools, which may exist only as quarantined compatibility roots.",
       "verification_commands": [
         "python -m tools.operator.runtime_boundary_integrity"
+      ]
+    },
+    {
+      "active_refs": [
+        "KT_PROD_CLEANROOM/governance/public_verifier_rules.json",
+        "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_release_law.json"
+      ],
+      "enforcement_class": "active_contract_check",
+      "failure_effect": "Operator outputs must fail closed rather than silently upgrade claim ceilings or release posture.",
+      "invariant_id": "operator_factory_outputs_must_respect_claim_ceiling",
+      "machine_target": [
+        "claim_boundary",
+        "publication_receipt_status",
+        "readiness_scope"
+      ],
+      "organ_id": "operator_factory",
+      "planned_workstreams": [],
+      "severity": "P1_claim_evidence",
+      "statement": "Operator tools may emit receipts and manifests, but they may not upgrade authority, release, or publication claims beyond active law and evidence.",
+      "verification_commands": [
+        "python -m tools.operator.public_verifier",
+        "python -m tools.operator.readiness_grade"
       ]
     },
     {
