@@ -1,0 +1,42 @@
+{
+  "generated_utc": "2026-03-14T18:29:04Z",
+  "schema_id": "kt.operator.parse_results.v1",
+  "snapshot_manifest_ref": "KT_PROD_CLEANROOM/reports/kt_snapshot_manifest.json",
+  "source_head_commit": "3532ac0ec1985cd360fbdd96c33dcdc5cad7b435",
+  "state_taint_status": "CLEAR",
+  "summary": {
+    "opaque_file_count": 4,
+    "parse_failed_file_count": 1,
+    "parseable_file_count": 1903,
+    "parser_family_counts": {
+      "binary_suffix": 2,
+      "csv": 1,
+      "json": 792,
+      "json_schema": 26,
+      "jsonl": 13,
+      "opaque": 2,
+      "python": 632,
+      "utf8_text": 440
+    },
+    "trust_zone_parse_state_counts": {
+      "ARCHIVE": {
+        "opaque": 3
+      },
+      "CANONICAL": {
+        "opaque": 0
+      },
+      "COMMERCIAL": {
+        "opaque": 0
+      },
+      "GENERATED_RUNTIME_TRUTH": {
+        "opaque": 0
+      },
+      "LAB": {
+        "opaque": 0
+      },
+      "QUARANTINED": {
+        "opaque": 1
+      }
+    }
+  }
+}

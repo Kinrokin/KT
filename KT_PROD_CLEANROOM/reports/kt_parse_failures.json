@@ -1,0 +1,29 @@
+{
+  "generated_utc": "2026-03-14T18:29:04Z",
+  "opaque_counts_by_zone": {
+    "ARCHIVE": 3,
+    "CANONICAL": 0,
+    "COMMERCIAL": 0,
+    "GENERATED_RUNTIME_TRUTH": 0,
+    "LAB": 0,
+    "QUARANTINED": 1
+  },
+  "parse_failed_files": [
+    {
+      "file_type": "jsonl",
+      "parse_reason": "json_decode_error:Expecting value",
+      "parser_family": "jsonl",
+      "path": "KT_PROD_CLEANROOM/AUDITS/UTILITY_PACK_V1/bench_prompts.jsonl",
+      "taint_reason": "",
+      "taints_state": false,
+      "tracking_status": "tracked",
+      "trust_zone": "CANONICAL"
+    }
+  ],
+  "schema_id": "kt.operator.parse_failures.v1",
+  "snapshot_manifest_ref": "KT_PROD_CLEANROOM/reports/kt_snapshot_manifest.json",
+  "source_head_commit": "3532ac0ec1985cd360fbdd96c33dcdc5cad7b435",
+  "state_taint_status": "CLEAR",
+  "taint_rule": "If an opaque or parse_failed artifact contaminates a sovereign or critical runtime path, mark STATE_TAINTED and block downstream proof promotion until isolated or resolved.",
+  "tainting_files": []
+}
