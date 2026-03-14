@@ -1,0 +1,260 @@
+{
+  "actual_touched": [
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/KT_Constitution_v1.md",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_accreditation_policy.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitution_manifest.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitutional_court_procedure.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_cost_model.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_epoch_model.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_forgetting_law.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_meta_governance_policy.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_organ_dependency_matrix.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_self_description.json",
+    "KT_PROD_CLEANROOM/reports/kt_constitutional_spine_ratification_receipt.json",
+    "KT_PROD_CLEANROOM/tests/operator/test_constitutional_spine_ratify.py",
+    "KT_PROD_CLEANROOM/tools/operator/constitutional_spine_ratify.py"
+  ],
+  "artifact_digests": [
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/governance/constitutional_spine/KT_Constitution_v1.md",
+      "sha256": "e2cbff2bbc373af4c119e1a14cf900b69d0817c3fb5c93f3393e7e14cb100095"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitution_manifest.json",
+      "sha256": "6c89dfb32b21126100ba54289c13a250ac719317e191b5664cd8e89881ac945c"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_meta_governance_policy.json",
+      "sha256": "1fb75ecca25f65bbfc620be8ffbe34b7e5d2a1bc8ebca986b5a5bf9c2cddfa09"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitutional_court_procedure.json",
+      "sha256": "a50baaa2fc4daedced497ae85b7fab43b45fe45222b64f87d2cffeef831a1515"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_organ_dependency_matrix.json",
+      "sha256": "2d9b64f708d67f8d9af6fc78f739244e622209e9425dab4a7191318c5710c8eb"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_epoch_model.json",
+      "sha256": "73f37d5eb9e5617560dbc440f25a9ddc1802eace73d26a744ed678402ac938dd"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json",
+      "sha256": "ceb4682a7cad939f064df7a120833dfc06f921ad659084635fcd617a9e4a20cf"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json",
+      "sha256": "3648034e5665c8c71652f0ec7b3a3f9bc48be9571a86841a468164092123c64f"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_forgetting_law.json",
+      "sha256": "1254b0c73550112c005c7db836059eb789f13033f7172df9ea65998056c99cbd"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_accreditation_policy.json",
+      "sha256": "20648194bb59f9aeee93c6b78535f90ef0f1f5ce6dd7833ff1553d2dc9150585"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_self_description.json",
+      "sha256": "709d0e96aa2bdcab049eb67307e2c3ef78bf2225930e7555317fd76d5e1e60aa"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_cost_model.json",
+      "sha256": "7072d7d3fc3292ef2016939b72bac1cb7647bd14514c01f7d7053dc72b9d7d04"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/tools/operator/constitutional_spine_ratify.py",
+      "sha256": "93f08cc6f2b43ffe1c802c846a767886f0c3dd4b355560976d1cbb3820a62fde"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/tests/operator/test_constitutional_spine_ratify.py",
+      "sha256": "4ddaa76ce13cecd5318bf6f03bea92ae065b497a4afe74975e4d1ce8d432f9e3"
+    }
+  ],
+  "baseline_gate_ref": "KT_PROD_CLEANROOM/reports/kt_governance_baseline_ingestion_receipt.json",
+  "checks": [
+    {
+      "check": "foundation_pack_gate_passed",
+      "detail": "Step 2 foundation pack ratification must remain PASS before Step 3 is admissible.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_foundation_pack_ratification_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "governance_baseline_gate_passed",
+      "detail": "Step 1 governance baseline ingestion must remain PASS before Step 3 is admissible.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_governance_baseline_ingestion_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "constitution_defines_identity_and_boundaries",
+      "detail": "The constitution document must define KT identity, prohibitions, law/evidence/proof semantics, and ratification inputs.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/KT_Constitution_v1.md"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "meta_governance_explicit",
+      "detail": "Meta-governance must define who governs governance, who audits auditors, and how reopening works.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_meta_governance_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "constitutional_court_procedure_explicit",
+      "detail": "Court procedure must define amendment, appeal, dissent, and precedent paths.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitutional_court_procedure.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_court_contract.json",
+        "KT_PROD_CLEANROOM/governance/amendment_law.json",
+        "KT_PROD_CLEANROOM/governance/appeal_law.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "epoch_model_exists",
+      "detail": "Epoch model must define current and pending constitutional epochs.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_epoch_model.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "forgetting_law_exists",
+      "detail": "Forgetting law must define retention classes and reopening triggers.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_forgetting_law.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "dependency_matrix_exists",
+      "detail": "Dependency matrix must cover every first-class organ and at least one dependency edge.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_organ_dependency_matrix.json",
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_organ_ontology.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "self_description_exists",
+      "detail": "Self-description must state what KT is, is not, and how many organs it declares.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_self_description.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "quality_policy_and_readiness_lattice_exist",
+      "detail": "Quality policy and readiness lattice must be explicit and profile-aware.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "cost_model_exists",
+      "detail": "Cost model must cover every Step 2 run mode.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_cost_model.json",
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_run_modes.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "accreditation_policy_exists",
+      "detail": "Accreditation policy must define governed roles and forbidden accreditations.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_accreditation_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "constitution_manifest_complete",
+      "detail": "Manifest must reference the full Step 3 deliverable set and carry matching digests for ratified inputs.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitution_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "claim_boundary_preserved",
+      "detail": "Step 3 must not silently upgrade governance, truth, or H1 ceilings while defining the constitutional spine.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/KT_Constitution_v1.md",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_self_description.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "post_touch_accounting_clean",
+      "detail": "Actual touched set must match the lawful Step 3 subject files plus the Step 3 receipt.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/KT_Constitution_v1.md",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitution_manifest.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_meta_governance_policy.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitutional_court_procedure.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_organ_dependency_matrix.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_epoch_model.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_forgetting_law.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_accreditation_policy.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_self_description.json",
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_cost_model.json",
+        "KT_PROD_CLEANROOM/tools/operator/constitutional_spine_ratify.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_constitutional_spine_ratify.py",
+        "KT_PROD_CLEANROOM/reports/kt_constitutional_spine_ratification_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "claim_boundary": "This receipt ratifies the Step 3 constitutional spine for compiled_head_commit only. A later repository head that contains this receipt is evidence about compiled_head_commit, not automatically the compiled head itself.",
+  "compiled_head_commit": "6f6d6038227f068e8a15dfb630dd81532d360032",
+  "controlling_work_order": {
+    "schema_id": "kt.work_order.max_refactor_e2e_institutional_memory_and_full_stack_adjudication.v2",
+    "step_id": 3,
+    "step_name": "CONSTITUTIONAL_SPINE_AND_META_GOVERNANCE",
+    "work_order_id": "WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION"
+  },
+  "current_head_commit": "6f6d6038227f068e8a15dfb630dd81532d360032",
+  "foundation_gate_ref": "KT_PROD_CLEANROOM/reports/kt_foundation_pack_ratification_receipt.json",
+  "generated_utc": "2026-03-14T17:18:53Z",
+  "next_lawful_step": {
+    "status_after_step_3": "UNLOCKED",
+    "step_id": 4,
+    "step_name": "HISTORICAL_EVIDENCE_INGESTION_AND_FORGOTTEN_SURFACE_RECOVERY"
+  },
+  "pass_verdict": "CONSTITUTIONAL_SPINE_RATIFIED",
+  "planned_mutates": [
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/KT_Constitution_v1.md",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitution_manifest.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_meta_governance_policy.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitutional_court_procedure.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_organ_dependency_matrix.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_epoch_model.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_forgetting_law.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_accreditation_policy.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_self_description.json",
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_cost_model.json",
+    "KT_PROD_CLEANROOM/tools/operator/constitutional_spine_ratify.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_constitutional_spine_ratify.py",
+    "KT_PROD_CLEANROOM/reports/kt_constitutional_spine_ratification_receipt.json"
+  ],
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.constitutional_spine_ratification_receipt.v1",
+  "status": "PASS",
+  "unexpected_touches": []
+}
