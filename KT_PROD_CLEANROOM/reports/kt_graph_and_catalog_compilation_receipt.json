@@ -1,0 +1,260 @@
+{
+  "actual_touched": [
+    "KT_PROD_CLEANROOM/reports/kt_adapter_registry.json",
+    "KT_PROD_CLEANROOM/reports/kt_contract_index.json",
+    "KT_PROD_CLEANROOM/reports/kt_data_lineage.json",
+    "KT_PROD_CLEANROOM/reports/kt_fact_graph.json",
+    "KT_PROD_CLEANROOM/reports/kt_graph_and_catalog_compilation_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_model_registry.json",
+    "KT_PROD_CLEANROOM/reports/kt_runtime_graph.json",
+    "KT_PROD_CLEANROOM/reports/kt_sector_harness_registry.json",
+    "KT_PROD_CLEANROOM/reports/kt_symbol_index.json",
+    "KT_PROD_CLEANROOM/reports/kt_tag_catalog.json",
+    "KT_PROD_CLEANROOM/reports/kt_temporal_graph.json",
+    "KT_PROD_CLEANROOM/reports/kt_truth_surface_map.json",
+    "KT_PROD_CLEANROOM/tests/operator/test_structural_graph_catalog_compile.py",
+    "KT_PROD_CLEANROOM/tools/operator/structural_graph_catalog_compile.py"
+  ],
+  "checks": [
+    {
+      "check": "step5_gate_passed",
+      "detail": "Step 6 requires the Step 5 snapshot inventory compilation receipt to be PASS with CLEAR state taint.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_snapshot_inventory_compilation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "graph_outputs_validate_against_foundation_schema",
+      "detail": "Fact, temporal, lineage, and runtime graphs all validate against the ratified foundation graph schema.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_fact_graph.schema.json",
+        "KT_PROD_CLEANROOM/reports/kt_fact_graph.json",
+        "KT_PROD_CLEANROOM/reports/kt_temporal_graph.json",
+        "KT_PROD_CLEANROOM/reports/kt_data_lineage.json",
+        "KT_PROD_CLEANROOM/reports/kt_runtime_graph.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "all_edges_carry_provenance",
+      "detail": "Every emitted graph edge carries explicit provenance refs; missing-provenance edges fail closed.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_fact_graph.json",
+        "KT_PROD_CLEANROOM/reports/kt_temporal_graph.json",
+        "KT_PROD_CLEANROOM/reports/kt_data_lineage.json",
+        "KT_PROD_CLEANROOM/reports/kt_runtime_graph.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "tags_and_facets_applied_consistently",
+      "detail": "Tag catalog assignments and graph facets are derived from the same deterministic classifier over the sealed Step 5 parseable surface set.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_tag_catalog.json",
+        "KT_PROD_CLEANROOM/reports/kt_fact_graph.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "temporal_supersession_and_deprecation_represented",
+      "detail": "Temporal graph carries both supersession edges and deprecation/archive status edges from explicit historical and governance surfaces.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_temporal_graph.json",
+        "KT_PROD_CLEANROOM/reports/kt_forgotten_surface_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_conflicts.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_resolutions.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "adapter_model_sector_data_lineage_exists",
+      "detail": "Adapter, model, sector, and data-asset lineage nodes and edges are all present and linked to explicit source refs.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_data_lineage.json",
+        "KT_PROD_CLEANROOM/reports/kt_adapter_registry.json",
+        "KT_PROD_CLEANROOM/reports/kt_model_registry.json",
+        "KT_PROD_CLEANROOM/reports/kt_sector_harness_registry.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "deterministic_rerun_semantics",
+      "detail": "A second Step 6 compiler run over the same gated inputs reproduces semantically identical outputs.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_fact_graph.json",
+        "KT_PROD_CLEANROOM/reports/kt_temporal_graph.json",
+        "KT_PROD_CLEANROOM/reports/kt_data_lineage.json",
+        "KT_PROD_CLEANROOM/reports/kt_adapter_registry.json",
+        "KT_PROD_CLEANROOM/reports/kt_model_registry.json",
+        "KT_PROD_CLEANROOM/reports/kt_sector_harness_registry.json",
+        "KT_PROD_CLEANROOM/reports/kt_tag_catalog.json",
+        "KT_PROD_CLEANROOM/reports/kt_symbol_index.json",
+        "KT_PROD_CLEANROOM/reports/kt_contract_index.json",
+        "KT_PROD_CLEANROOM/reports/kt_truth_surface_map.json",
+        "KT_PROD_CLEANROOM/reports/kt_runtime_graph.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "post_touch_accounting_clean",
+      "detail": "Actual touched set must match the lawful Step 6 subject files plus the compilation receipt.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_fact_graph.json",
+        "KT_PROD_CLEANROOM/reports/kt_temporal_graph.json",
+        "KT_PROD_CLEANROOM/reports/kt_data_lineage.json",
+        "KT_PROD_CLEANROOM/reports/kt_adapter_registry.json",
+        "KT_PROD_CLEANROOM/reports/kt_model_registry.json",
+        "KT_PROD_CLEANROOM/reports/kt_sector_harness_registry.json",
+        "KT_PROD_CLEANROOM/reports/kt_tag_catalog.json",
+        "KT_PROD_CLEANROOM/reports/kt_symbol_index.json",
+        "KT_PROD_CLEANROOM/reports/kt_contract_index.json",
+        "KT_PROD_CLEANROOM/reports/kt_truth_surface_map.json",
+        "KT_PROD_CLEANROOM/reports/kt_runtime_graph.json",
+        "KT_PROD_CLEANROOM/tools/operator/structural_graph_catalog_compile.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_structural_graph_catalog_compile.py",
+        "KT_PROD_CLEANROOM/reports/kt_graph_and_catalog_compilation_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "claim_boundary": "This receipt validates the Step 6 structural graph, catalog, and lineage outputs for compiled_head_commit only, derived from the sealed Step 5 snapshot surface set. A later repository head that contains this receipt is evidence about compiled_head_commit, not a fresh graph claim for itself.",
+  "compiled_head_commit": "109a2569426603c8d8dc687ed3c6819b882b81fb",
+  "controlling_work_order": {
+    "schema_id": "kt.work_order.max_refactor_e2e_institutional_memory_and_full_stack_adjudication.v2",
+    "step_id": 6,
+    "step_name": "STRUCTURAL_PARSE_TAG_CATALOG_AND_GRAPH_COMPILATION",
+    "work_order_id": "WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION"
+  },
+  "current_head_commit": "109a2569426603c8d8dc687ed3c6819b882b81fb",
+  "generated_utc": "2026-03-14T18:51:17Z",
+  "graph_stats": {
+    "data_lineage": {
+      "edge_count": 219,
+      "edge_type_counts": {
+        "adds_policy": 5,
+        "anchored_by": 1,
+        "applies_to_program": 20,
+        "declared_in": 9,
+        "documented_by": 72,
+        "extends_suite_scope": 47,
+        "guarded_by": 2,
+        "historically_documented_by": 26,
+        "requires_reporting_field": 20,
+        "routes_domain": 3,
+        "specified_by": 14
+      },
+      "node_count": 132,
+      "node_type_counts": {
+        "adapter": 13,
+        "crucible": 14,
+        "data_asset": 33,
+        "domain_tag": 3,
+        "model": 4,
+        "policy": 5,
+        "program": 4,
+        "reporting_field": 4,
+        "sector": 5,
+        "suite": 47
+      }
+    },
+    "fact_graph": {
+      "edge_count": 2184,
+      "edge_type_counts": {
+        "classified_in_zone": 1903,
+        "depends_on_organ": 30,
+        "organ_references_surface": 231,
+        "sector_applies_to_program": 20
+      },
+      "node_count": 1950,
+      "node_type_counts": {
+        "adapter": 13,
+        "artifact_surface": 1903,
+        "model": 4,
+        "organ": 14,
+        "program": 4,
+        "sector": 5,
+        "snapshot_source": 1,
+        "trust_zone": 6
+      }
+    },
+    "runtime_graph": {
+      "edge_count": 39,
+      "edge_type_counts": {
+        "contains_canonical_entry": 1,
+        "contains_canonical_spine": 1,
+        "imports_root": 23,
+        "invokes_canonical_spine": 1,
+        "maps_to_runtime_organ": 13
+      },
+      "node_count": 29,
+      "node_type_counts": {
+        "runtime_callable": 2,
+        "runtime_organ": 12,
+        "runtime_root": 14,
+        "runtime_source": 1
+      }
+    },
+    "temporal_graph": {
+      "edge_count": 86,
+      "edge_type_counts": {
+        "currently_evidenced_by": 18,
+        "has_temporal_status": 19,
+        "historically_evidenced_by": 17,
+        "references_surface": 19,
+        "reopened_as_current_disposition": 8,
+        "resolved_later": 3,
+        "supersedes": 2
+      },
+      "node_count": 90,
+      "node_type_counts": {
+        "artifact_ref": 36,
+        "external_ref": 10,
+        "forgotten_surface": 19,
+        "historical_conflict": 8,
+        "historical_resolution": 3,
+        "reopened_defect": 8,
+        "temporal_status": 6
+      }
+    }
+  },
+  "next_lawful_step": {
+    "status_after_step_6": "UNLOCKED",
+    "step_id": 7,
+    "step_name": "CLAIM_EXTRACTION_JUDGMENT_ENGINE_AND_STATE_VECTOR"
+  },
+  "pass_verdict": "GRAPH_AND_CATALOG_COMPILED",
+  "planned_mutates": [
+    "KT_PROD_CLEANROOM/reports/kt_fact_graph.json",
+    "KT_PROD_CLEANROOM/reports/kt_temporal_graph.json",
+    "KT_PROD_CLEANROOM/reports/kt_data_lineage.json",
+    "KT_PROD_CLEANROOM/reports/kt_adapter_registry.json",
+    "KT_PROD_CLEANROOM/reports/kt_model_registry.json",
+    "KT_PROD_CLEANROOM/reports/kt_sector_harness_registry.json",
+    "KT_PROD_CLEANROOM/reports/kt_tag_catalog.json",
+    "KT_PROD_CLEANROOM/reports/kt_symbol_index.json",
+    "KT_PROD_CLEANROOM/reports/kt_contract_index.json",
+    "KT_PROD_CLEANROOM/reports/kt_truth_surface_map.json",
+    "KT_PROD_CLEANROOM/reports/kt_runtime_graph.json",
+    "KT_PROD_CLEANROOM/tools/operator/structural_graph_catalog_compile.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_structural_graph_catalog_compile.py",
+    "KT_PROD_CLEANROOM/reports/kt_graph_and_catalog_compilation_receipt.json"
+  ],
+  "protected_touch_violations": [],
+  "registry_stats": {
+    "adapter_count": 13,
+    "contract_count": 222,
+    "model_count": 4,
+    "sector_count": 5,
+    "symbol_count": 4963,
+    "truth_surface_count": 179
+  },
+  "schema_id": "kt.operator.graph_and_catalog_compilation_receipt.v1",
+  "source_snapshot_head_commit": "3532ac0ec1985cd360fbdd96c33dcdc5cad7b435",
+  "source_snapshot_id": "kt_snapshot::3532ac0ec1985cd360fbdd96c33dcdc5cad7b435::1908::192088c20b724f0447b6a52da4cb9310110230afde4f83b9d7db0f360ac6ac0a",
+  "source_snapshot_ref": "KT_PROD_CLEANROOM/reports/kt_snapshot_manifest.json",
+  "status": "PASS",
+  "step5_gate_evidence_commit": "45b2c9d291833a7e482afc64064eeb6ac4b32358",
+  "step5_gate_subject_commit": "430506a7e8223690cef4720340b324b988d9a8d5",
+  "unexpected_touches": []
+}
