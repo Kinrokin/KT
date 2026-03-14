@@ -1,24 +1,40 @@
 {
+  "branch_protection_status": "BLOCKED",
   "claim_boundary": "evidence_commit identifies the commit that last changed the cryptographic publication evidence; truth_subject_commit identifies the transparency-verified subject commit. Consumers must not equate them unless evidence_equals_subject is true.",
+  "enterprise_legitimacy_ceiling": "WORKFLOW_GOVERNANCE_ONLY",
   "evidence_commit": "a1b8397ec2b4eb817dabfaecaf5a0327158c8e1f",
   "evidence_contains_subject": true,
   "evidence_equals_subject": false,
-  "generated_utc": "2026-03-14T00:25:12Z",
+  "generated_utc": "2026-03-14T12:15:07Z",
   "integrity_supporting_artifacts": [
     "KT_PROD_CLEANROOM/reports/dependency_inventory.json",
     "KT_PROD_CLEANROOM/reports/python_environment_manifest.json",
     "KT_PROD_CLEANROOM/reports/sbom_cyclonedx.json"
   ],
+  "platform_block": {
+    "http_status": 403,
+    "message": "Upgrade to GitHub Pro or make this repository public to enable this feature."
+  },
+  "platform_governance_claim_admissible": false,
+  "platform_governance_claim_boundary": "Current-head workflow governance is fresh, but GitHub branch-protection / ruleset enforcement is not proven on main. Do not claim platform-enforced governance while main_branch_protection_receipt is not PASS.",
+  "platform_governance_receipt_refs": [
+    "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json"
+  ],
+  "platform_governance_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
+  "platform_governance_verdict": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED",
   "publication_evidence_refs": [
     "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
     "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_subject.json"
   ],
   "publication_receipt_status": "PASS",
-  "schema_id": "kt.public_verifier_manifest.v3",
+  "schema_id": "kt.public_verifier_manifest.v4",
   "state_receipts": [
     "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
     "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json",
     "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
+    "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
     "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
     "KT_PROD_CLEANROOM/reports/documentary_truth_validation_receipt.json",
     "KT_PROD_CLEANROOM/reports/dependency_inventory_validation_receipt.json"
@@ -27,5 +43,6 @@
   "subject_verdict": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
   "truth_pointer_ref": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
   "truth_subject_commit": "cbc921601b646d7962555c902ea2747963fd9fad",
-  "validated_head_sha": "cbc921601b646d7962555c902ea2747963fd9fad"
+  "validated_head_sha": "7bd610b507328eb72622ce24678620f5469f3848",
+  "workflow_governance_status": "PASS_WITH_PLATFORM_BLOCK"
 }
