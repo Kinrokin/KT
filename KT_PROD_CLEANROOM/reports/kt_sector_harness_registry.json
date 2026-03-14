@@ -1,0 +1,207 @@
+{
+  "generated_utc": "2026-03-14T18:50:40Z",
+  "schema_id": "kt.operator.sector_harness_registry.v1",
+  "sectors": [
+    {
+      "applies_to": [
+        "certify",
+        "continuous_gov",
+        "forge",
+        "red_assault"
+      ],
+      "domain_slug": "fintech.v1",
+      "pack_ref": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json",
+      "pack_sha256": "0f7ab71ff930375103daa6d6a12e0aaf9dc95de6cc4f5620108a27db7a74c500",
+      "policy_additions": [
+        "kt.policy.domain.fintech.reporting.v1"
+      ],
+      "reporting_fields": [
+        "adapter_id",
+        "base_model_id",
+        "customer_slug",
+        "seed"
+      ],
+      "sector_id": "domain.fintech.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "suite_scope_additions": [
+        "kt.suite.domain.fintech.v1",
+        "kt.suite.fintech.aml_kyc_sanctions.v1",
+        "kt.suite.fintech.audit_narration.v1",
+        "kt.suite.fintech.disclosures.v1",
+        "kt.suite.fintech.fraud_defense.v1",
+        "kt.suite.fintech.lending_underwriting.v1",
+        "kt.suite.fintech.payments_support.v1",
+        "kt.suite.fintech.privacy_boundaries.v1",
+        "kt.suite.fintech.trading_integrity.v1"
+      ],
+      "trust_zone": "CANONICAL",
+      "version": "1.0.0"
+    },
+    {
+      "applies_to": [
+        "certify",
+        "continuous_gov",
+        "forge",
+        "red_assault"
+      ],
+      "domain_slug": "healthcare.v1",
+      "pack_ref": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json",
+      "pack_sha256": "b8e70123f7fb0a42f3ed81918ad1662706f2ac3d1e11fd4c272a7f226dc95358",
+      "policy_additions": [
+        "kt.policy.domain.healthcare.reporting.v1"
+      ],
+      "reporting_fields": [
+        "adapter_id",
+        "base_model_id",
+        "customer_slug",
+        "seed"
+      ],
+      "sector_id": "domain.healthcare.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "suite_scope_additions": [
+        "kt.suite.domain.healthcare.v1",
+        "kt.suite.healthcare.audit_narration.v1",
+        "kt.suite.healthcare.billing_coverage.v1",
+        "kt.suite.healthcare.crisis_response.v1",
+        "kt.suite.healthcare.documentation_templates.v1",
+        "kt.suite.healthcare.medication_education.v1",
+        "kt.suite.healthcare.phi_privacy_boundaries.v1",
+        "kt.suite.healthcare.scope_navigation.v1",
+        "kt.suite.healthcare.social_engineering_resistance.v1",
+        "kt.suite.healthcare.symptom_triage.v1"
+      ],
+      "trust_zone": "CANONICAL",
+      "version": "1.0.0"
+    },
+    {
+      "applies_to": [
+        "certify",
+        "continuous_gov",
+        "forge",
+        "red_assault"
+      ],
+      "domain_slug": "insurance.v1",
+      "pack_ref": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json",
+      "pack_sha256": "fd82eea9e2f377512a2f0b4072771341d5873bb36609226818dcb404605e91f4",
+      "policy_additions": [
+        "kt.policy.domain.insurance.reporting.v1"
+      ],
+      "reporting_fields": [
+        "adapter_id",
+        "base_model_id",
+        "customer_slug",
+        "seed"
+      ],
+      "sector_id": "domain.insurance.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "suite_scope_additions": [
+        "kt.suite.domain.insurance.v1",
+        "kt.suite.insurance.audit_narration.v1",
+        "kt.suite.insurance.claims_documentation.v1",
+        "kt.suite.insurance.coverage_concepts.v1",
+        "kt.suite.insurance.disputes_appeals.v1",
+        "kt.suite.insurance.fraud_refusal.v1",
+        "kt.suite.insurance.privacy_boundaries.v1",
+        "kt.suite.insurance.social_engineering_resistance.v1",
+        "kt.suite.insurance.underwriting_fairness.v1"
+      ],
+      "trust_zone": "CANONICAL",
+      "version": "1.0.0"
+    },
+    {
+      "applies_to": [
+        "certify",
+        "continuous_gov",
+        "forge",
+        "red_assault"
+      ],
+      "domain_slug": "public_sector_chain.v1",
+      "pack_ref": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json",
+      "pack_sha256": "11cad18b1297ed803df9ccad00048510fedb46f959ffaa83780d1ee1f3e178bd",
+      "policy_additions": [
+        "kt.policy.domain.public_sector_chain.reporting.v1"
+      ],
+      "reporting_fields": [
+        "adapter_id",
+        "base_model_id",
+        "customer_slug",
+        "seed"
+      ],
+      "sector_id": "domain.public_sector_chain.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "suite_scope_additions": [
+        "kt.suite.domain.public_sector_chain.v1",
+        "kt.suite.public_sector.audit_narration.v1",
+        "kt.suite.public_sector.chain_of_custody_templates.v1",
+        "kt.suite.public_sector.evidence_bundle_replay.v1",
+        "kt.suite.public_sector.privacy_classification_boundaries.v1",
+        "kt.suite.public_sector.procurement_integrity.v1",
+        "kt.suite.public_sector.public_communications_templates.v1",
+        "kt.suite.public_sector.records_handling_retention.v1",
+        "kt.suite.public_sector.social_engineering_resistance.v1"
+      ],
+      "trust_zone": "CANONICAL",
+      "version": "1.0.0"
+    },
+    {
+      "applies_to": [
+        "certify",
+        "continuous_gov",
+        "forge",
+        "red_assault"
+      ],
+      "domain_slug": "security_compliance.v1",
+      "pack_ref": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json",
+      "pack_sha256": "0a2f5dc70d2a74474eb997c8b070411acbf8f280d47adf683ec52dac07f5d24b",
+      "policy_additions": [
+        "kt.policy.domain.security_compliance.reporting.v1"
+      ],
+      "reporting_fields": [
+        "adapter_id",
+        "base_model_id",
+        "customer_slug",
+        "seed"
+      ],
+      "sector_id": "domain.security_compliance.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "suite_scope_additions": [
+        "kt.suite.compliance.audit_templates.v1",
+        "kt.suite.domain.security_compliance.v1",
+        "kt.suite.security.anti_theater.v1",
+        "kt.suite.security.audit_chain_of_custody.v1",
+        "kt.suite.security.defensive_hardening.v1",
+        "kt.suite.security.incident_response.v1",
+        "kt.suite.security.offensive_enablement_refusal.v1",
+        "kt.suite.security.secrets_hygiene.v1",
+        "kt.suite.security.secure_coding.v1",
+        "kt.suite.security.social_engineering_resistance.v1"
+      ],
+      "trust_zone": "CANONICAL",
+      "version": "1.0.0"
+    }
+  ],
+  "summary": {
+    "applies_to_programs": [
+      "certify",
+      "continuous_gov",
+      "forge",
+      "red_assault"
+    ],
+    "sector_count": 5
+  }
+}

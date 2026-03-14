@@ -1,0 +1,3384 @@
+{
+  "generated_utc": "2026-03-14T18:50:40Z",
+  "schema_id": "kt.operator.truth_surface_map.v1",
+  "source_snapshot_ref": "KT_PROD_CLEANROOM/reports/kt_snapshot_manifest.json",
+  "summary": {
+    "authority_role_counts": {
+      "documentary_only": 2,
+      "policy_surface": 24,
+      "supporting_surface": 142,
+      "truth_receipt": 10,
+      "verifier_surface": 1
+    },
+    "surface_class_counts": {
+      "documentary_mirror": 1,
+      "execution_board_surface": 1,
+      "governance_truth_law": 22,
+      "public_verifier_manifest": 1,
+      "publication_surface": 16,
+      "settled_truth_receipt": 1,
+      "structured_truth_surface": 3,
+      "truth_receipt_or_manifest": 97,
+      "truth_surface": 37
+    },
+    "surface_count": 179
+  },
+  "surfaces": [
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "yaml",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        ".github/workflows/ci_truth_barrier.yml"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": ".github/workflows/ci_truth_barrier.yml",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "markdown",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/verification/C010_IMPORT_TRUTH_RUNTIME_PROOF.md"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/verification/C010_IMPORT_TRUTH_RUNTIME_PROOF.md",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/import_truth_guard.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/import_truth_guard.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V1/seal_meta_evaluator_seal_verifier_engineer_v1.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V1/seal_meta_evaluator_seal_verifier_engineer_v1.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V1/seal_meta_evaluator_seal_verifier_v1.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V1/seal_meta_evaluator_seal_verifier_v1.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "documentary_only",
+      "claim_fields": [],
+      "commit_fields": {
+        "truth_produced_at_commit": "7bd610b507328eb72622ce24678620f5469f3848",
+        "truth_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848"
+      },
+      "documentary_only": true,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_pointer.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "documentary_mirror",
+      "surface_ref": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "markdown",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/AUTHORITY_CONTRACT.md"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/AUTHORITY_CONTRACT.md",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json_schema",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.authority_bundle.schema.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/authority_bundle.schema.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/authority_bundle.schema.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.authority_convergence_contract.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/authority_convergence_contract.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/authority_convergence_contract.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.context_packet_handoff.v3",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/authority_os/KT_CONTEXT_PACKET_HANDOFF_V3.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/authority_os/KT_CONTEXT_PACKET_HANDOFF_V3.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.titanium_enforcement_bundle.v3",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/authority_os/KT_TITANIUM_ENFORCEMENT_BUNDLE_V3.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/authority_os/KT_TITANIUM_ENFORCEMENT_BUNDLE_V3.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.authority_subject_contract.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/authority_subject_contract.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/authority_subject_contract.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.current_pointer_transition_rules.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/current_pointer_transition_rules.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/current_pointer_transition_rules.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.documentary_authority_label_rules.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/documentary_authority_label_rules.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/documentary_authority_label_rules.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.documentary_truth_policy.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/documentary_truth_policy.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/documentary_truth_policy.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.economic_truth_plane_contract.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/economic_truth_plane_contract.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/economic_truth_plane_contract.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "documentary_only",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": true,
+      "file_type": "json",
+      "live_truth_allowed": false,
+      "schema_id": "kt.governance.execution_board.v3",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/execution_board.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [
+        "kt_truth_ledger:ledger/current/current_pointer.json"
+      ],
+      "surface_class": "execution_board_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/execution_board.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.execution_board_authority_contract.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/execution_board_authority_contract.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/execution_board_authority_contract.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.public_verifier_rules.v3",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/public_verifier_rules.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/public_verifier_rules.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.settled_authority_migration_contract.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/settled_authority_migration_contract.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/settled_authority_migration_contract.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.settled_truth_source_contract.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/settled_truth_source_contract.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/settled_truth_source_contract.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.tracked_vs_generated_truth_boundary.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/tracked_vs_generated_truth_boundary.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/tracked_vs_generated_truth_boundary.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.truth_bundle_contract.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/truth_bundle_contract.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/truth_bundle_contract.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.truth_engine_contract.v2",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/truth_engine_contract.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/truth_engine_contract.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.truth_freshness_windows.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/truth_freshness_windows.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/truth_freshness_windows.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.truth_invalidation_rules.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/truth_invalidation_rules.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/truth_invalidation_rules.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.truth_pointer_rules.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/truth_pointer_rules.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/truth_pointer_rules.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.truth_publication_cleanliness_rules.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/truth_publication_cleanliness_rules.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "publication_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/truth_publication_cleanliness_rules.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.truth_publication_contract.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/truth_publication_contract.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "publication_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/truth_publication_contract.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.truth_snapshot_retention_rules.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/truth_snapshot_retention_rules.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/truth_snapshot_retention_rules.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "policy_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.truth_supersession_rules.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/truth_supersession_rules.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "governance_truth_law",
+      "surface_ref": "KT_PROD_CLEANROOM/governance/truth_supersession_rules.json",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.ws1.completion_report.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/WS1_completion_report.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/WS1_completion_report.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.ws1.fail_closed_contradiction_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/WS1_fail_closed_contradiction_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "NOT_EMITTED",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/WS1_fail_closed_contradiction_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "ffa028b933a0ea4083beb39b586e3d8cbb78d178"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.alias_truth_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/alias_truth_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/alias_truth_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.constitutional_court.amendment_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/amendment_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/amendment_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.constitutional_court.appeal_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/appeal_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/appeal_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.authority_convergence_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "FAIL",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.behavior_delta_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/behavior_delta_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/behavior_delta_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.external_admissibility.blast_radius_map.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/blast_radius_map.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/blast_radius_map.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.sovereign.ci_gate_promotion_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS_WITH_PLATFORM_BLOCK",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "truth_receipt",
+      "claim_fields": [],
+      "commit_fields": {
+        "compiled_head_commit": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834",
+        "current_head_commit": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834",
+        "platform_governance_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
+        "runtime_boundary_evidence_commit": "99c7f0f08cca29aaf5977fc55ed1e87dfba80406",
+        "runtime_boundary_subject_commit": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834",
+        "truth_evidence_commit": "a1b8397ec2b4eb817dabfaecaf5a0327158c8e1f",
+        "truth_subject_commit": "cbc921601b646d7962555c902ea2747963fd9fad"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.commercial_claim_compiler_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "compiled_head_commit": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.commercial_program_catalog.v2",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_program_catalog.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/commercial_program_catalog.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.constitutional_freeze_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/constitutional_freeze_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/constitutional_freeze_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_repair_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/constitutional_guard_repair_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/constitutional_guard_repair_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.constitutional_court.review_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/constitutional_review_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/constitutional_review_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.core_truth_defect_matrix.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/core_truth_defect_matrix.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/core_truth_defect_matrix.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.authority.bundle.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_bundle.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "publication_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_bundle.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "truth_receipt",
+      "claim_fields": [],
+      "commit_fields": {
+        "truth_produced_at_commit": "cbc921601b646d7962555c902ea2747963fd9fad",
+        "truth_subject_commit": "cbc921601b646d7962555c902ea2747963fd9fad"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.authority.subject.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_subject.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "publication_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_subject.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.bundle.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "publication_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.bundle.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "publication_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "unknown",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.sig"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "publication_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.sig",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.cryptographic_publication_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "publication_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "7bd610b507328eb72622ce24678620f5469f3848"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.current_state_receipt.v3",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.customer_delivery_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/customer_delivery_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/customer_delivery_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.dependency_inventory_validation_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/dependency_inventory_validation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "FAIL",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/dependency_inventory_validation_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.external_admissibility.dependency_touch_matrix.v2",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/dependency_touch_matrix.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/dependency_touch_matrix.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.constitutional_court.dissent_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/dissent_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/dissent_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.documentary_authority_labels.v2",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/documentary_authority_labels.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/documentary_authority_labels.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {
+        "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.documentary_reclassification_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/documentary_reclassification_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/documentary_reclassification_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.ws1.documentary_truth_demotions_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/documentary_truth_demotions_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/documentary_truth_demotions_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.documentary_truth_validation_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/documentary_truth_validation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "FAIL",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/documentary_truth_validation_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json_schema",
+      "live_truth_allowed": null,
+      "schema_id": "kt.economic_truth_plane.schema.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/economic_truth_plane.schema.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/economic_truth_plane.schema.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.external_admissibility.gap_register.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/external_admissibility_gap_register.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/external_admissibility_gap_register.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "7bd610b507328eb72622ce24678620f5469f3848"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.external_audit_packet_manifest.v2",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "truth_receipt",
+      "claim_fields": [
+        "h1_allowed"
+      ],
+      "commit_fields": {
+        "commercial_claim_compiler_compiled_head_commit": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834",
+        "compiled_head_commit": "553f4d362fda0087c7a728d1bdec893cafa6e938",
+        "platform_governance_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
+        "representative_authority_lane_subject_commit": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8",
+        "runtime_boundary_evidence_commit": "ff9d852ef902206263701568045fa736c30d91c5",
+        "runtime_boundary_subject_commit": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834",
+        "truth_evidence_commit": "a1b8397ec2b4eb817dabfaecaf5a0327158c8e1f",
+        "truth_subject_commit": "cbc921601b646d7962555c902ea2747963fd9fad"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.frontier_settlement_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.audit.frozen_repo_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/frozen_repo_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/frozen_repo_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.governance_manifest_verification.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/governance_manifest_verification.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/governance_manifest_verification.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.h0_done_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/h0_done_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/h0_done_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.h0_freeze_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/h0_freeze_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/h0_freeze_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [
+        "h1_allowed",
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {
+        "compiled_head_commit": "553f4d362fda0087c7a728d1bdec893cafa6e938",
+        "representative_authority_lane_subject_commit": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8",
+        "validated_head_sha": "553f4d362fda0087c7a728d1bdec893cafa6e938"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.h1_activation_gate_receipt.v2",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "BLOCKED",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.hashpin_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/hashpin_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/hashpin_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.green_final_receipt.v2",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_green_final_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "SUPERSEDED",
+      "superseded_by": [
+        "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+        "KT_PROD_CLEANROOM/reports/live_validation_index.json",
+        "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json",
+        "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json"
+      ],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/kt_green_final_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.legacy_quarantine_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/legacy_quarantine_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/legacy_quarantine_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {
+        "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.live_truth_purge_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/live_truth_purge_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/live_truth_purge_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.live_validation_index.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/live_validation_index.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/live_validation_index.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.main_branch_protection_receipt.v2",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/main_branch_protection_active_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/main_branch_protection_active_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "7bd610b507328eb72622ce24678620f5469f3848"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.main_branch_protection_receipt.v2",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "BLOCKED",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.main_fail_closed_run_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/main_fail_closed_run_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/main_fail_closed_run_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.main_merge_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/main_merge_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/main_merge_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.merge_interference_index.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/merge_interference_index.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/merge_interference_index.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.sovereign.negative_test_summary.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/negative_test_summary.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/negative_test_summary.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "compiled_head_commit": "553f4d362fda0087c7a728d1bdec893cafa6e938"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.next_horizon_activation_receipt.v2",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "HOLD",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/next_horizon_activation_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.non_regression_summary.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/non_regression_summary.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/non_regression_summary.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.one_button_preflight_receipt.v2",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/one_button_preflight_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.one_button_production_receipt.v2",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "7bd610b507328eb72622ce24678620f5469f3848"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.p0_green_full_receipt.v2",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/p0_green_full_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "SUPERSEDED",
+      "superseded_by": [
+        "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+        "KT_PROD_CLEANROOM/reports/live_validation_index.json",
+        "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json",
+        "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json"
+      ],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/p0_green_full_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [
+        "platform_governance_verdict"
+      ],
+      "commit_fields": {
+        "platform_governance_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
+        "validated_head_sha": "7bd610b507328eb72622ce24678620f5469f3848"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.platform_governance_narrowing_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.posture_conflict_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.posture_consistency_enforcement_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "7bd610b507328eb72622ce24678620f5469f3848"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.posture_consistency_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.sovereign.practice_mode_chain_summary.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/practice_mode_chain_summary.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/practice_mode_chain_summary.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.program_catalog_report.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/program_catalog_report.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/program_catalog_report.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.promotion_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/promotion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/promotion_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.sovereign.proofrunbundle_index.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/proofrunbundle_index.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/proofrunbundle_index.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "verifier_surface",
+      "claim_fields": [
+        "platform_governance_verdict",
+        "subject_verdict"
+      ],
+      "commit_fields": {
+        "evidence_commit": "a1b8397ec2b4eb817dabfaecaf5a0327158c8e1f",
+        "platform_governance_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
+        "truth_subject_commit": "cbc921601b646d7962555c902ea2747963fd9fad",
+        "validated_head_sha": "7bd610b507328eb72622ce24678620f5469f3848"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.public_verifier_manifest.v4",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "HOLD",
+      "superseded_by": [],
+      "surface_class": "public_verifier_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {
+        "validated_head_sha": "cbc921601b646d7962555c902ea2747963fd9fad"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.published_head_self_convergence_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.python_environment_manifest.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/python_environment_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/python_environment_manifest.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.sovereign.quarantine_scope_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/quarantine_scope_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "NOT_REQUIRED",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/quarantine_scope_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {
+        "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.redteam.reattack_manifest.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/reattack_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/reattack_manifest.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {
+        "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.sovereign.redteam_tier0_to_tier2_summary.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/redteam_tier0_to_tier2_summary.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/redteam_tier0_to_tier2_summary.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.sovereign.repo_hygiene_summary.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/repo_hygiene_summary.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS_WITH_ALLOWED_CANDIDATE_DIRT",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/repo_hygiene_summary.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.reporting_integrity_repair_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/reporting_integrity_repair_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/reporting_integrity_repair_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [
+        "h1_allowed",
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {
+        "validated_head_sha": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.representative_authority_lane_reproducibility_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.revalidation_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/revalidation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/revalidation_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.risk_adjusted_route_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/risk_adjusted_route_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/risk_adjusted_route_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.risk_ledger_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/risk_ledger_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/risk_ledger_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.rollback_plan_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/rollback_plan_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/rollback_plan_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [
+        "runtime_boundary_verdict"
+      ],
+      "commit_fields": {
+        "runtime_boundary_subject_commit": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834",
+        "validated_head_sha": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.runtime_boundary_integrity_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "7bd610b507328eb72622ce24678620f5469f3848"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.runtime_closure_audit.v3",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.scope_lock_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/scope_lock_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/scope_lock_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "ebfb9cec15c03e6a2c41f2f930dde1079b75316e"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.settled_authority_promotion_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/settled_authority_promotion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/settled_authority_promotion_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.settled_truth_source_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "SETTLED_AUTHORITATIVE",
+      "superseded_by": [],
+      "surface_class": "settled_truth_receipt",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.source_integrity_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/source_integrity_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/source_integrity_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_repair_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/spine_verdict_repair_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/spine_verdict_repair_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "truth_receipt",
+      "claim_fields": [
+        "active_truth_source",
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {
+        "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.supersession_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/supersession_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/supersession_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json_schema",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/supporting_law_touch_exception_receipt.schema.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/supporting_law_touch_exception_receipt.schema.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.external_admissibility.system_audit_scope.v2",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/system_audit_scope.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/system_audit_scope.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json_schema",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_bundle.schema.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/truth_bundle.schema.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/truth_bundle.schema.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_bundle_catalog.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/truth_bundle_catalog.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/truth_bundle_catalog.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "truth_receipt",
+      "claim_fields": [
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {
+        "truth_subject_commit": "4867542e364501a91c8e619ee3e26693d73b7a98",
+        "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_bundle_emit_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/truth_bundle_emit_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/truth_bundle_emit_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "truth_receipt",
+      "claim_fields": [],
+      "commit_fields": {
+        "truth_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_clean_state_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/truth_clean_state_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/truth_clean_state_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {
+        "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_ledger_bootstrap_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/truth_ledger_bootstrap_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/truth_ledger_bootstrap_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {
+        "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_ledger_contract_freeze_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/truth_ledger_contract_freeze_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/truth_ledger_contract_freeze_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {
+        "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_pointer_emit_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/truth_pointer_emit_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/truth_pointer_emit_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "truth_receipt",
+      "claim_fields": [],
+      "commit_fields": {
+        "truth_produced_at_commit": "7bd610b507328eb72622ce24678620f5469f3848",
+        "truth_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_pointer_index.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/truth_pointer_index.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/truth_pointer_index.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "truth_receipt",
+      "claim_fields": [],
+      "commit_fields": {
+        "truth_produced_at_commit": "7bd610b507328eb72622ce24678620f5469f3848",
+        "truth_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_publication_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/truth_publication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "publication_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/truth_publication_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "truth_receipt",
+      "claim_fields": [],
+      "commit_fields": {
+        "truth_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_publication_stabilization_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "HOLD",
+      "superseded_by": [],
+      "surface_class": "publication_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_publication_supersession_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/truth_publication_supersession_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "publication_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/truth_publication_supersession_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "truth_receipt",
+      "claim_fields": [],
+      "commit_fields": {
+        "truth_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_snapshot_manifest.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/truth_snapshot_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/truth_snapshot_manifest.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_supersession_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/truth_supersession_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/truth_supersession_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_surface_reconciliation_report.v2",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/truth_surface_reconciliation_report.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/truth_surface_reconciliation_report.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [
+        "published_head_authority_claimed"
+      ],
+      "commit_fields": {
+        "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.truth_surface_sync_refactor_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/truth_surface_sync_refactor_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/truth_surface_sync_refactor_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.uncertainty_cost_index.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/uncertainty_cost_index.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/uncertainty_cost_index.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "4867542e364501a91c8e619ee3e26693d73b7a98"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.sovereign.validator_substance_summary.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/validator_substance_summary.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS_WITH_HARDENING",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/validator_substance_summary.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [
+        "platform_governance_verdict"
+      ],
+      "commit_fields": {
+        "compiled_head_commit": "c653eefb88b886b4e16f006feabff982992d6d19"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.ws0_ws11_closeout_blocker_register.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_blocker_register.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_blocker_register.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "compiled_head_commit": "c653eefb88b886b4e16f006feabff982992d6d19"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.ws0_ws11_closeout_proof_class_ladder.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_proof_class_ladder.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_proof_class_ladder.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "compiled_head_commit": "c653eefb88b886b4e16f006feabff982992d6d19"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.ws0_ws11_closeout_receipt_index.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "compiled_head_commit": "c653eefb88b886b4e16f006feabff982992d6d19"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.operator.ws0_ws11_closeout_summary.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {
+        "validated_head_sha": "8d8a71ae4d6cf22d0c89d692cd538e967dc40a97"
+      },
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.governance.zone_crossing_receipt.v1",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/zone_crossing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json"
+      ],
+      "status": "PASS",
+      "superseded_by": [],
+      "surface_class": "truth_receipt_or_manifest",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/zone_crossing_receipt.json",
+      "trust_zone": "GENERATED_RUNTIME_TRUTH"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tests/operator/test_authority_bundle_determinism.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tests/operator/test_authority_bundle_determinism.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tests/operator/test_authority_convergence_validate.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tests/operator/test_authority_convergence_validate.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tests/operator/test_authority_grade.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tests/operator/test_authority_grade.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tests/operator/test_documentary_truth_validate.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tests/operator/test_documentary_truth_validate.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tests/operator/test_no_parallel_truth_resolution.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tests/operator/test_no_parallel_truth_resolution.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tests/operator/test_public_verifier.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tests/operator/test_public_verifier.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tests/operator/test_truth_authority_branch_ref_resolution.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tests/operator/test_truth_authority_branch_ref_resolution.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tests/operator/test_truth_engine_and_authority.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tests/operator/test_truth_engine_and_authority.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "publication_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tests/operator/test_truth_publication_ledger_witness_current_surfaces.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "publication_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tests/operator/test_truth_publication_ledger_witness_current_surfaces.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tests/operator/test_truth_surface_sync.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tests/operator/test_truth_surface_sync.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/authority_convergence_validate.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tools/operator/authority_convergence_validate.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/authority_grade.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tools/operator/authority_grade.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/documentary_truth_validate.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tools/operator/documentary_truth_validate.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/public_verifier.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tools/operator/public_verifier.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/run_truth_matrix.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tools/operator/run_truth_matrix.py",
+      "trust_zone": "ARCHIVE"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/truth_authority.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tools/operator/truth_authority.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/truth_engine.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tools/operator/truth_engine.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/truth_publication.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "publication_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tools/operator/truth_publication.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/truth_publication_validate.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "publication_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tools/operator/truth_publication_validate.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "python",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/truth_surface_sync.py"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "KT_PROD_CLEANROOM/tools/operator/truth_surface_sync.py",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "yaml",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "ci/jobs/verify_truth_barrier.yml"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "ci/jobs/verify_truth_barrier.yml",
+      "trust_zone": "CANONICAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "markdown",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/DOMAIN1_PUBLICATION_ARCHITECTURE_PROGRESS_REPORT_20260310.md"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "publication_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/DOMAIN1_PUBLICATION_ARCHITECTURE_PROGRESS_REPORT_20260310.md",
+      "trust_zone": "COMMERCIAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "markdown",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/IMPLEMENTATION_COMPLETION_REPORT_20260309.md"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/IMPLEMENTATION_COMPLETION_REPORT_20260309.md",
+      "trust_zone": "COMMERCIAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "markdown",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/KT_E2E_COMPLETION_CAMPAIGN_REPORT_20260310.md"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/KT_E2E_COMPLETION_CAMPAIGN_REPORT_20260310.md",
+      "trust_zone": "COMMERCIAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "markdown",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/KT_FULL_COMPLETION_ATTEMPT_REPORT_20260310.md"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/KT_FULL_COMPLETION_ATTEMPT_REPORT_20260310.md",
+      "trust_zone": "COMMERCIAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "markdown",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/README.md"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/README.md",
+      "trust_zone": "COMMERCIAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.audit.blocker_matrix.v1",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/blocker_matrix.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "structured_truth_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/blocker_matrix.json",
+      "trust_zone": "COMMERCIAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.audit.current_head_truth_source.v1",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/current_head_truth_source.json"
+      ],
+      "status": "TRANSITIONAL_AUTHORITATIVE",
+      "superseded_by": [],
+      "surface_class": "structured_truth_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/current_head_truth_source.json",
+      "trust_zone": "COMMERCIAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "markdown",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/final_kt_snapshot.md"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/final_kt_snapshot.md",
+      "trust_zone": "COMMERCIAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/local_residue_summary.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/local_residue_summary.json",
+      "trust_zone": "COMMERCIAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "markdown",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/operator_posture_note.md"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/operator_posture_note.md",
+      "trust_zone": "COMMERCIAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "csv",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/repo_census.csv"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/repo_census.csv",
+      "trust_zone": "COMMERCIAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/repo_census_summary.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/repo_census_summary.json",
+      "trust_zone": "COMMERCIAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/repo_target.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/repo_target.json",
+      "trust_zone": "COMMERCIAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "markdown",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/subsystem_scorecard.md"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/subsystem_scorecard.md",
+      "trust_zone": "COMMERCIAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "markdown",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/system_atlas.md"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/system_atlas.md",
+      "trust_zone": "COMMERCIAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "json",
+      "live_truth_allowed": null,
+      "schema_id": "kt.audit.trust_zone_registry.v2",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/trust_zone_registry.json"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "structured_truth_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/trust_zone_registry.json",
+      "trust_zone": "COMMERCIAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "markdown",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/truth_authority_map.md"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/truth_authority_map.md",
+      "trust_zone": "COMMERCIAL"
+    },
+    {
+      "authority_role": "supporting_surface",
+      "claim_fields": [],
+      "commit_fields": {},
+      "documentary_only": false,
+      "file_type": "markdown",
+      "live_truth_allowed": null,
+      "schema_id": "",
+      "source_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "status": "",
+      "superseded_by": [],
+      "surface_class": "truth_surface",
+      "surface_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md",
+      "trust_zone": "COMMERCIAL"
+    }
+  ]
+}

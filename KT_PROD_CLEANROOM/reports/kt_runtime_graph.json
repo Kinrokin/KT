@@ -1,0 +1,873 @@
+{
+  "edges": [
+    {
+      "edge_id": "edge::8c78aa155aeb719d",
+      "edge_type": "contains_canonical_entry",
+      "from_node": "runtime_root::kt",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_callable::kt.entrypoint.invoke"
+    },
+    {
+      "edge_id": "edge::f525ce40444e70e7",
+      "edge_type": "contains_canonical_spine",
+      "from_node": "runtime_root::core",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_callable::core.spine.run"
+    },
+    {
+      "edge_id": "edge::bfe957c2ec6edbb5",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::cognition",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/cognitive_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/cognitive_schemas.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/planners/step_planner.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/tests/test_cognitive_engine.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::schemas"
+    },
+    {
+      "edge_id": "edge::b88cf9ce0b979fd2",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::core",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::cognition"
+    },
+    {
+      "edge_id": "edge::f4d63f4830022638",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::core",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::council"
+    },
+    {
+      "edge_id": "edge::c58128d5791f21dc",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::core",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::curriculum"
+    },
+    {
+      "edge_id": "edge::31ed8ff5f963afd5",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::core",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::governance"
+    },
+    {
+      "edge_id": "edge::589db31cd8f38138",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::core",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/routing_receipts.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::memory"
+    },
+    {
+      "edge_id": "edge::74a1539c5bae70d0",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::core",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::multiverse"
+    },
+    {
+      "edge_id": "edge::dcca245b77603ba2",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::core",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::paradox"
+    },
+    {
+      "edge_id": "edge::28404f58808190e4",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::core",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/invariants_gate.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/routing_receipts.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/runtime_registry.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::schemas"
+    },
+    {
+      "edge_id": "edge::cc6c4b33be798da5",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::core",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::temporal"
+    },
+    {
+      "edge_id": "edge::60bf7c6580080ae2",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::core",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::thermodynamics"
+    },
+    {
+      "edge_id": "edge::c1eb502770e90fa6",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::council",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/council/council_router.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/council/council_schemas.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/council/tests/test_council_router.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/council/thermo_ledger.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::schemas"
+    },
+    {
+      "edge_id": "edge::f150b6f43631b4ff",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::curriculum",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/curriculum/curriculum_ingest.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/curriculum/curriculum_schemas.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/curriculum/tests/test_curriculum_boundary.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::schemas"
+    },
+    {
+      "edge_id": "edge::73c0f012242b0b44",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::entrypoint.py",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/entrypoint.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::core"
+    },
+    {
+      "edge_id": "edge::9903888124c8f836",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::governance",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/governance/audit.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/governance/event_logger.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::memory"
+    },
+    {
+      "edge_id": "edge::910997ddd3b5e1a6",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::kt",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::core"
+    },
+    {
+      "edge_id": "edge::c66546223225259b",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::memory",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/memory/replay.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/memory/state_vault.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::schemas"
+    },
+    {
+      "edge_id": "edge::5b1d84515a8900af",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::memory",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/memory/replay.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/memory/state_vault.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::versioning"
+    },
+    {
+      "edge_id": "edge::aa0e9e677c6254f5",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::multiverse",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/multiverse/multiverse_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/multiverse/multiverse_schemas.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/multiverse/tests/test_multiverse_engine.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::schemas"
+    },
+    {
+      "edge_id": "edge::c8b6aecd7fcbc403",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::paradox",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_schemas.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/tests/test_paradox_engine.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::schemas"
+    },
+    {
+      "edge_id": "edge::83b0c69d0bd0d684",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::temporal",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/temporal_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/temporal_schemas.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/tests/test_temporal_engine.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::schemas"
+    },
+    {
+      "edge_id": "edge::df879d195ad19c03",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::thermodynamics",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/thermodynamics/budget_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/thermodynamics/budget_schemas.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/thermodynamics/tests/test_budget_engine.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::schemas"
+    },
+    {
+      "edge_id": "edge::088d18db42564dc8",
+      "edge_type": "imports_root",
+      "from_node": "runtime_root::tools",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/tools/orchestrators/live_hashed_orchestrator.py"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_root::council"
+    },
+    {
+      "edge_id": "edge::816e0b3c97231af0",
+      "edge_type": "invokes_canonical_spine",
+      "from_node": "runtime_callable::kt.entrypoint.invoke",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_callable::core.spine.run"
+    },
+    {
+      "edge_id": "edge::4d42fee0cb5df46c",
+      "edge_type": "maps_to_runtime_organ",
+      "from_node": "runtime_root::cognition",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_organ::Crucible Engine"
+    },
+    {
+      "edge_id": "edge::9c159c4db331ef96",
+      "edge_type": "maps_to_runtime_organ",
+      "from_node": "runtime_root::core",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_organ::Spine"
+    },
+    {
+      "edge_id": "edge::f4e55b9e8189cd99",
+      "edge_type": "maps_to_runtime_organ",
+      "from_node": "runtime_root::council",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_organ::Council Router Engine"
+    },
+    {
+      "edge_id": "edge::4c478acfc948a180",
+      "edge_type": "maps_to_runtime_organ",
+      "from_node": "runtime_root::curriculum",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_organ::Curriculum Boundary"
+    },
+    {
+      "edge_id": "edge::d254db551604e9a5",
+      "edge_type": "maps_to_runtime_organ",
+      "from_node": "runtime_root::governance",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_organ::Governance Kernel"
+    },
+    {
+      "edge_id": "edge::05536c85d6d7d62c",
+      "edge_type": "maps_to_runtime_organ",
+      "from_node": "runtime_root::kt",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_organ::Entry Point"
+    },
+    {
+      "edge_id": "edge::37c8eb6c92a0cadc",
+      "edge_type": "maps_to_runtime_organ",
+      "from_node": "runtime_root::memory",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_organ::Receipts / Ledger"
+    },
+    {
+      "edge_id": "edge::907eaf9e0f310958",
+      "edge_type": "maps_to_runtime_organ",
+      "from_node": "runtime_root::multiverse",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_organ::Multiverse Engine"
+    },
+    {
+      "edge_id": "edge::5983ce0fed83a28f",
+      "edge_type": "maps_to_runtime_organ",
+      "from_node": "runtime_root::paradox",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_organ::Paradox Engine"
+    },
+    {
+      "edge_id": "edge::7d9fc1bacc0ce2ce",
+      "edge_type": "maps_to_runtime_organ",
+      "from_node": "runtime_root::schemas",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_organ::Schemas / Contracts"
+    },
+    {
+      "edge_id": "edge::52ba8c02b6db255a",
+      "edge_type": "maps_to_runtime_organ",
+      "from_node": "runtime_root::temporal",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_organ::Temporal Engine"
+    },
+    {
+      "edge_id": "edge::0ed1982ee116b837",
+      "edge_type": "maps_to_runtime_organ",
+      "from_node": "runtime_root::thermodynamics",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_organ::Thermodynamics / Budget"
+    },
+    {
+      "edge_id": "edge::dd02ce407017b01d",
+      "edge_type": "maps_to_runtime_organ",
+      "from_node": "runtime_root::versioning",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "runtime_organ::Schemas / Contracts"
+    }
+  ],
+  "generated_utc": "2026-03-14T18:50:40Z",
+  "graph_id": "runtime_graph::6b86b273ff34fce1",
+  "nodes": [
+    {
+      "attributes": {
+        "callable": "run",
+        "module": "core.spine"
+      },
+      "facets": [
+        "canonical_spine"
+      ],
+      "label": "core.spine.run",
+      "node_id": "runtime_callable::core.spine.run",
+      "node_type": "runtime_callable",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "callable": "invoke",
+        "module": "kt.entrypoint"
+      },
+      "facets": [
+        "canonical_entry"
+      ],
+      "label": "kt.entrypoint.invoke",
+      "node_id": "runtime_callable::kt.entrypoint.invoke",
+      "node_type": "runtime_callable",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "organ_label": "Council Router Engine"
+      },
+      "facets": [
+        "runtime_organ"
+      ],
+      "label": "Council Router Engine",
+      "node_id": "runtime_organ::Council Router Engine",
+      "node_type": "runtime_organ",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "organ_label": "Crucible Engine"
+      },
+      "facets": [
+        "runtime_organ"
+      ],
+      "label": "Crucible Engine",
+      "node_id": "runtime_organ::Crucible Engine",
+      "node_type": "runtime_organ",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "organ_label": "Curriculum Boundary"
+      },
+      "facets": [
+        "runtime_organ"
+      ],
+      "label": "Curriculum Boundary",
+      "node_id": "runtime_organ::Curriculum Boundary",
+      "node_type": "runtime_organ",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "organ_label": "Entry Point"
+      },
+      "facets": [
+        "runtime_organ"
+      ],
+      "label": "Entry Point",
+      "node_id": "runtime_organ::Entry Point",
+      "node_type": "runtime_organ",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "organ_label": "Governance Kernel"
+      },
+      "facets": [
+        "runtime_organ"
+      ],
+      "label": "Governance Kernel",
+      "node_id": "runtime_organ::Governance Kernel",
+      "node_type": "runtime_organ",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "organ_label": "Multiverse Engine"
+      },
+      "facets": [
+        "runtime_organ"
+      ],
+      "label": "Multiverse Engine",
+      "node_id": "runtime_organ::Multiverse Engine",
+      "node_type": "runtime_organ",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "organ_label": "Paradox Engine"
+      },
+      "facets": [
+        "runtime_organ"
+      ],
+      "label": "Paradox Engine",
+      "node_id": "runtime_organ::Paradox Engine",
+      "node_type": "runtime_organ",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "organ_label": "Receipts / Ledger"
+      },
+      "facets": [
+        "runtime_organ"
+      ],
+      "label": "Receipts / Ledger",
+      "node_id": "runtime_organ::Receipts / Ledger",
+      "node_type": "runtime_organ",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "organ_label": "Schemas / Contracts"
+      },
+      "facets": [
+        "runtime_organ"
+      ],
+      "label": "Schemas / Contracts",
+      "node_id": "runtime_organ::Schemas / Contracts",
+      "node_type": "runtime_organ",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "organ_label": "Spine"
+      },
+      "facets": [
+        "runtime_organ"
+      ],
+      "label": "Spine",
+      "node_id": "runtime_organ::Spine",
+      "node_type": "runtime_organ",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "organ_label": "Temporal Engine"
+      },
+      "facets": [
+        "runtime_organ"
+      ],
+      "label": "Temporal Engine",
+      "node_id": "runtime_organ::Temporal Engine",
+      "node_type": "runtime_organ",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "organ_label": "Thermodynamics / Budget"
+      },
+      "facets": [
+        "runtime_organ"
+      ],
+      "label": "Thermodynamics / Budget",
+      "node_id": "runtime_organ::Thermodynamics / Budget",
+      "node_type": "runtime_organ",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "compatibility_only": false,
+        "runtime_import_root": "cognition"
+      },
+      "facets": [
+        "root_class:canonical"
+      ],
+      "label": "cognition",
+      "node_id": "runtime_root::cognition",
+      "node_type": "runtime_root",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "compatibility_only": false,
+        "runtime_import_root": "core"
+      },
+      "facets": [
+        "root_class:canonical"
+      ],
+      "label": "core",
+      "node_id": "runtime_root::core",
+      "node_type": "runtime_root",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "compatibility_only": false,
+        "runtime_import_root": "council"
+      },
+      "facets": [
+        "root_class:canonical"
+      ],
+      "label": "council",
+      "node_id": "runtime_root::council",
+      "node_type": "runtime_root",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "compatibility_only": false,
+        "runtime_import_root": "curriculum"
+      },
+      "facets": [
+        "root_class:canonical"
+      ],
+      "label": "curriculum",
+      "node_id": "runtime_root::curriculum",
+      "node_type": "runtime_root",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "compatibility_only": false,
+        "runtime_import_root": "governance"
+      },
+      "facets": [
+        "root_class:canonical"
+      ],
+      "label": "governance",
+      "node_id": "runtime_root::governance",
+      "node_type": "runtime_root",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "compatibility_only": false,
+        "runtime_import_root": "kt"
+      },
+      "facets": [
+        "root_class:canonical"
+      ],
+      "label": "kt",
+      "node_id": "runtime_root::kt",
+      "node_type": "runtime_root",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "compatibility_only": false,
+        "runtime_import_root": "memory"
+      },
+      "facets": [
+        "root_class:canonical"
+      ],
+      "label": "memory",
+      "node_id": "runtime_root::memory",
+      "node_type": "runtime_root",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "compatibility_only": false,
+        "runtime_import_root": "multiverse"
+      },
+      "facets": [
+        "root_class:canonical"
+      ],
+      "label": "multiverse",
+      "node_id": "runtime_root::multiverse",
+      "node_type": "runtime_root",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "compatibility_only": false,
+        "runtime_import_root": "paradox"
+      },
+      "facets": [
+        "root_class:canonical"
+      ],
+      "label": "paradox",
+      "node_id": "runtime_root::paradox",
+      "node_type": "runtime_root",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "compatibility_only": false,
+        "runtime_import_root": "schemas"
+      },
+      "facets": [
+        "root_class:canonical"
+      ],
+      "label": "schemas",
+      "node_id": "runtime_root::schemas",
+      "node_type": "runtime_root",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "compatibility_only": false,
+        "runtime_import_root": "temporal"
+      },
+      "facets": [
+        "root_class:canonical"
+      ],
+      "label": "temporal",
+      "node_id": "runtime_root::temporal",
+      "node_type": "runtime_root",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "compatibility_only": false,
+        "runtime_import_root": "thermodynamics"
+      },
+      "facets": [
+        "root_class:canonical"
+      ],
+      "label": "thermodynamics",
+      "node_id": "runtime_root::thermodynamics",
+      "node_type": "runtime_root",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "compatibility_only": true,
+        "runtime_import_root": "tools"
+      },
+      "facets": [
+        "root_class:compatibility"
+      ],
+      "label": "tools",
+      "node_id": "runtime_root::tools",
+      "node_type": "runtime_root",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "compatibility_only": false,
+        "runtime_import_root": "versioning"
+      },
+      "facets": [
+        "root_class:canonical"
+      ],
+      "label": "versioning",
+      "node_id": "runtime_root::versioning",
+      "node_type": "runtime_root",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    },
+    {
+      "attributes": {
+        "registry_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      },
+      "facets": [
+        "source:runtime_registry"
+      ],
+      "label": "Runtime Registry",
+      "node_id": "runtime_source::registry",
+      "node_type": "runtime_source",
+      "plane": "operability_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+      ]
+    }
+  ],
+  "schema_id": "kt.operator.runtime_graph.v1"
+}

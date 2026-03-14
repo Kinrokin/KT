@@ -1,0 +1,79 @@
+{
+  "generated_utc": "2026-03-14T18:50:40Z",
+  "models": [
+    {
+      "declared_in": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_cost_model.json"
+      ],
+      "model_class": "governance_model",
+      "model_id": "KT_COST_MODEL_V1_20260314",
+      "observed_fields": [
+        "model_id"
+      ],
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_cost_model.json"
+      ],
+      "trust_zones": [
+        "CANONICAL"
+      ]
+    },
+    {
+      "declared_in": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_epoch_model.json"
+      ],
+      "model_class": "governance_model",
+      "model_id": "KT_EPOCH_MODEL_V1_20260314",
+      "observed_fields": [
+        "model_id"
+      ],
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_epoch_model.json"
+      ],
+      "trust_zones": [
+        "CANONICAL"
+      ]
+    },
+    {
+      "declared_in": [
+        "KT_PROD_CLEANROOM/AUDITS/ANCHOR_REFERENCE_SET.json"
+      ],
+      "model_class": "base_model",
+      "model_id": "mistral-7b",
+      "observed_fields": [
+        "baseline_model_id"
+      ],
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/ANCHOR_REFERENCE_SET.json"
+      ],
+      "trust_zones": [
+        "CANONICAL"
+      ]
+    },
+    {
+      "declared_in": [
+        "KT_LANE_LORA_PHASE_B/lora_adapter_export/lora_out/train_report.json"
+      ],
+      "model_class": "named_model",
+      "model_id": "mistralai/Mistral-7B-v0.1",
+      "observed_fields": [
+        "model_id"
+      ],
+      "source_refs": [
+        "KT_LANE_LORA_PHASE_B/lora_adapter_export/lora_out/train_report.json"
+      ],
+      "trust_zones": [
+        "ARCHIVE"
+      ]
+    }
+  ],
+  "schema_id": "kt.operator.model_registry.v1",
+  "source_snapshot_ref": "KT_PROD_CLEANROOM/reports/kt_snapshot_manifest.json",
+  "summary": {
+    "model_class_counts": {
+      "base_model": 1,
+      "governance_model": 2,
+      "named_model": 1
+    },
+    "model_count": 4
+  }
+}

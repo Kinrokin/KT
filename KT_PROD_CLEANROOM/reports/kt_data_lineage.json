@@ -1,0 +1,4795 @@
+{
+  "edges": [
+    {
+      "edge_id": "edge::70c5755356bfea4f",
+      "edge_type": "adds_policy",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "policy::kt.policy.domain.fintech.reporting.v1"
+    },
+    {
+      "edge_id": "edge::05fd5b507c3a9699",
+      "edge_type": "adds_policy",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "policy::kt.policy.domain.healthcare.reporting.v1"
+    },
+    {
+      "edge_id": "edge::c9d1b3c64441c39a",
+      "edge_type": "adds_policy",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "policy::kt.policy.domain.insurance.reporting.v1"
+    },
+    {
+      "edge_id": "edge::fde46816254fa2bd",
+      "edge_type": "adds_policy",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "policy::kt.policy.domain.public_sector_chain.reporting.v1"
+    },
+    {
+      "edge_id": "edge::d36806e62d7ab9ff",
+      "edge_type": "adds_policy",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "policy::kt.policy.domain.security_compliance.reporting.v1"
+    },
+    {
+      "edge_id": "edge::26612b4f1d5a9278",
+      "edge_type": "anchored_by",
+      "from_node": "model::mistral-7b",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/ANCHOR_REFERENCE_SET.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ANCHOR_REFERENCE_SET.json"
+    },
+    {
+      "edge_id": "edge::217eeb57635bc154",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::certify"
+    },
+    {
+      "edge_id": "edge::ca2935fa53e5477d",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::continuous_gov"
+    },
+    {
+      "edge_id": "edge::52dcddff99f58b43",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::forge"
+    },
+    {
+      "edge_id": "edge::b7b0b8159e81c9ed",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::red_assault"
+    },
+    {
+      "edge_id": "edge::7893d80c4c5b3f18",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::certify"
+    },
+    {
+      "edge_id": "edge::03d9f2d94d8fbab8",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::continuous_gov"
+    },
+    {
+      "edge_id": "edge::c1e26dde86b6e222",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::forge"
+    },
+    {
+      "edge_id": "edge::f91e0bd6884086aa",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::red_assault"
+    },
+    {
+      "edge_id": "edge::2003528e4cc21805",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::certify"
+    },
+    {
+      "edge_id": "edge::6e5b68c625c7e40e",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::continuous_gov"
+    },
+    {
+      "edge_id": "edge::87df6d35017dde37",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::forge"
+    },
+    {
+      "edge_id": "edge::97cd6650fbe1de4d",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::red_assault"
+    },
+    {
+      "edge_id": "edge::264364d279a8d0c5",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::certify"
+    },
+    {
+      "edge_id": "edge::63a96a9cd20bd72d",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::continuous_gov"
+    },
+    {
+      "edge_id": "edge::e46be326dc3e7df3",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::forge"
+    },
+    {
+      "edge_id": "edge::7fb5dadf8050345e",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::red_assault"
+    },
+    {
+      "edge_id": "edge::4b3b0ba6973e0150",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::certify"
+    },
+    {
+      "edge_id": "edge::e1a6d2ca73f40058",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::continuous_gov"
+    },
+    {
+      "edge_id": "edge::312100f7f8c26c88",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::forge"
+    },
+    {
+      "edge_id": "edge::7f0a16e6504be9cb",
+      "edge_type": "applies_to_program",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "program::red_assault"
+    },
+    {
+      "edge_id": "edge::256836ae9e3a42e4",
+      "edge_type": "declared_in",
+      "from_node": "model::KT_COST_MODEL_V1_20260314",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_cost_model.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/constitutional_spine/kt_cost_model.json"
+    },
+    {
+      "edge_id": "edge::72f1718ee7c558ec",
+      "edge_type": "declared_in",
+      "from_node": "model::KT_EPOCH_MODEL_V1_20260314",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_epoch_model.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/constitutional_spine/kt_epoch_model.json"
+    },
+    {
+      "edge_id": "edge::b98e90428cf4036d",
+      "edge_type": "declared_in",
+      "from_node": "model::mistral-7b",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/ANCHOR_REFERENCE_SET.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ANCHOR_REFERENCE_SET.json"
+    },
+    {
+      "edge_id": "edge::efb25e3502c466ed",
+      "edge_type": "declared_in",
+      "from_node": "model::mistralai/Mistral-7B-v0.1",
+      "provenance_refs": [
+        "KT_LANE_LORA_PHASE_B/lora_adapter_export/lora_out/train_report.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_LANE_LORA_PHASE_B/lora_adapter_export/lora_out/train_report.json"
+    },
+    {
+      "edge_id": "edge::7570b207221d21ce",
+      "edge_type": "declared_in",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+    },
+    {
+      "edge_id": "edge::aaa78caad112c571",
+      "edge_type": "declared_in",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+    },
+    {
+      "edge_id": "edge::de271cd8a9bad3e8",
+      "edge_type": "declared_in",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+    },
+    {
+      "edge_id": "edge::8824845e9f08936a",
+      "edge_type": "declared_in",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+    },
+    {
+      "edge_id": "edge::6be205ca58675e2e",
+      "edge_type": "declared_in",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+    },
+    {
+      "edge_id": "edge::4f7e1cf908ae52cf",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.alpha.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json"
+    },
+    {
+      "edge_id": "edge::01b4c9bb6bf5f633",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.alpha.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
+    },
+    {
+      "edge_id": "edge::4eb2d7b3fdbc2d9b",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.alpha.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json"
+    },
+    {
+      "edge_id": "edge::2dc16b26bbf81ffb",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.alpha.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/adapter_registry.json"
+    },
+    {
+      "edge_id": "edge::0071fca98bff3c53",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.architect.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json"
+    },
+    {
+      "edge_id": "edge::29344fd9e5a3d3f7",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.architect.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
+    },
+    {
+      "edge_id": "edge::92810ee94f5d9d8e",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.architect.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json"
+    },
+    {
+      "edge_id": "edge::5d11675938280984",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.architect.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/adapter_registry.json"
+    },
+    {
+      "edge_id": "edge::b491a899fb546847",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.auditor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json"
+    },
+    {
+      "edge_id": "edge::810dd97a28dc972d",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.auditor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
+    },
+    {
+      "edge_id": "edge::2298f25433ad9683",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.auditor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json"
+    },
+    {
+      "edge_id": "edge::fb683ccbf6d8551b",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.auditor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/adapter_registry.json"
+    },
+    {
+      "edge_id": "edge::4a2f44cdd865a604",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.auditor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/lobe_role_registry.json"
+    },
+    {
+      "edge_id": "edge::d9b6ce53c79a986b",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.auditor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/router_policy_registry.json"
+    },
+    {
+      "edge_id": "edge::d1c9b88c7afa03aa",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.auditor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json"
+    },
+    {
+      "edge_id": "edge::6ddfb9c657d5abb6",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.auditor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+    },
+    {
+      "edge_id": "edge::ef48d464bb956e97",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.beta.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json"
+    },
+    {
+      "edge_id": "edge::1861c7944da058a0",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.beta.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
+    },
+    {
+      "edge_id": "edge::c0b78bad96f0e694",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.beta.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json"
+    },
+    {
+      "edge_id": "edge::b61664007b890b01",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.beta.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/adapter_registry.json"
+    },
+    {
+      "edge_id": "edge::219b61635e203064",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.censor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json"
+    },
+    {
+      "edge_id": "edge::51176033ab0b9379",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.censor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
+    },
+    {
+      "edge_id": "edge::5ab4be8c6046b7fc",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.censor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json"
+    },
+    {
+      "edge_id": "edge::225772c068301185",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.censor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/adapter_registry.json"
+    },
+    {
+      "edge_id": "edge::c0b40d96e6b930d5",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.censor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/lobe_role_registry.json"
+    },
+    {
+      "edge_id": "edge::7891d0d61b8d81b9",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.censor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/router_policy_registry.json"
+    },
+    {
+      "edge_id": "edge::e1ef7c07a0a91a35",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.censor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json"
+    },
+    {
+      "edge_id": "edge::1a69eb805e527f33",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.censor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+    },
+    {
+      "edge_id": "edge::21e8ae852413aaee",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.child.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json"
+    },
+    {
+      "edge_id": "edge::5e40148781ea6d0c",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.child.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
+    },
+    {
+      "edge_id": "edge::84adb7d3f3757290",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.child.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json"
+    },
+    {
+      "edge_id": "edge::21edd9c67ebab67b",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.child.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/adapter_registry.json"
+    },
+    {
+      "edge_id": "edge::7d7ee94edb891990",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.critic.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json"
+    },
+    {
+      "edge_id": "edge::373cb688ab28884c",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.critic.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
+    },
+    {
+      "edge_id": "edge::6c42fac8fe196cbc",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.critic.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json"
+    },
+    {
+      "edge_id": "edge::d77536c05e68aedf",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.critic.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/adapter_registry.json"
+    },
+    {
+      "edge_id": "edge::8c7d147bdf9bb1f5",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.muse.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json"
+    },
+    {
+      "edge_id": "edge::9a65137254b2470a",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.muse.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
+    },
+    {
+      "edge_id": "edge::ddb1cc88336009aa",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.muse.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json"
+    },
+    {
+      "edge_id": "edge::ffa92f29cabc718b",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.muse.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/adapter_registry.json"
+    },
+    {
+      "edge_id": "edge::f00aae9bf64d7255",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.muse.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/lobe_role_registry.json"
+    },
+    {
+      "edge_id": "edge::93f51b90e70b7a90",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.muse.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/router_policy_registry.json"
+    },
+    {
+      "edge_id": "edge::5c3b7047fa8968d1",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.muse.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json"
+    },
+    {
+      "edge_id": "edge::4e6445f9f8d8f65f",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.muse.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+    },
+    {
+      "edge_id": "edge::cadb5be91ead5160",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.p1.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json"
+    },
+    {
+      "edge_id": "edge::40d922d661fbe3d3",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.p1.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
+    },
+    {
+      "edge_id": "edge::bbe8491cd451b5d3",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.p1.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json"
+    },
+    {
+      "edge_id": "edge::bb332d0470160ef7",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.p1.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/adapter_registry.json"
+    },
+    {
+      "edge_id": "edge::5001ed8b2cf7f47a",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.p2.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json"
+    },
+    {
+      "edge_id": "edge::1b6012abc019be84",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.p2.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
+    },
+    {
+      "edge_id": "edge::fc9dc826cb495d3a",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.p2.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json"
+    },
+    {
+      "edge_id": "edge::b75a33a82568cf7c",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.p2.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/adapter_registry.json"
+    },
+    {
+      "edge_id": "edge::bb2aca2d80e1fdaa",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.quant.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json"
+    },
+    {
+      "edge_id": "edge::6a53babae6a1e3df",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.quant.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
+    },
+    {
+      "edge_id": "edge::d42129bec9078e4e",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.quant.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json"
+    },
+    {
+      "edge_id": "edge::3821e3a5b168abac",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.quant.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/adapter_registry.json"
+    },
+    {
+      "edge_id": "edge::9487bce5985824ec",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.quant.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/lobe_role_registry.json"
+    },
+    {
+      "edge_id": "edge::8ca632df9fbb5ea2",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.quant.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/router_policy_registry.json"
+    },
+    {
+      "edge_id": "edge::e18512a6e83fae4c",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.quant.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json"
+    },
+    {
+      "edge_id": "edge::63ed8b1eecb3e0ef",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.quant.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+    },
+    {
+      "edge_id": "edge::61c07887960e172a",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.scout.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json"
+    },
+    {
+      "edge_id": "edge::fa09c01d69059dc9",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.scout.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
+    },
+    {
+      "edge_id": "edge::b08ade9c9a886ab4",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.scout.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json"
+    },
+    {
+      "edge_id": "edge::8f5022102ba53c36",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.scout.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/adapter_registry.json"
+    },
+    {
+      "edge_id": "edge::8ef9d4a92f5292a1",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.strategist.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json"
+    },
+    {
+      "edge_id": "edge::3be5427e65d8c1d9",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.strategist.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
+    },
+    {
+      "edge_id": "edge::69caaa0b734d681b",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.strategist.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json"
+    },
+    {
+      "edge_id": "edge::10d7bba1cf3654e2",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.strategist.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/adapter_registry.json"
+    },
+    {
+      "edge_id": "edge::160c2bf865e3e19c",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.strategist.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/lobe_role_registry.json"
+    },
+    {
+      "edge_id": "edge::6a809087fe47eece",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.strategist.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/governance/router_policy_registry.json"
+    },
+    {
+      "edge_id": "edge::3a4c4d3bd0af8ecf",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.strategist.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json"
+    },
+    {
+      "edge_id": "edge::2d02db031dbdd2d5",
+      "edge_type": "documented_by",
+      "from_node": "adapter::lobe.strategist.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+    },
+    {
+      "edge_id": "edge::691aa303922b9b6a",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.domain.fintech.v1"
+    },
+    {
+      "edge_id": "edge::a7d877531f2424f6",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.fintech.aml_kyc_sanctions.v1"
+    },
+    {
+      "edge_id": "edge::0836bfb8df54b669",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.fintech.audit_narration.v1"
+    },
+    {
+      "edge_id": "edge::fe198c01d044894f",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.fintech.disclosures.v1"
+    },
+    {
+      "edge_id": "edge::9f3b1c4e28e8f34a",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.fintech.fraud_defense.v1"
+    },
+    {
+      "edge_id": "edge::ea75bcf0c9876d5c",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.fintech.lending_underwriting.v1"
+    },
+    {
+      "edge_id": "edge::725a5457379157c9",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.fintech.payments_support.v1"
+    },
+    {
+      "edge_id": "edge::6b1140952b4579cc",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.fintech.privacy_boundaries.v1"
+    },
+    {
+      "edge_id": "edge::227bf65283723849",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.fintech.trading_integrity.v1"
+    },
+    {
+      "edge_id": "edge::46d391a00715c4e5",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.domain.healthcare.v1"
+    },
+    {
+      "edge_id": "edge::272f3a43a8e9c85b",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.healthcare.audit_narration.v1"
+    },
+    {
+      "edge_id": "edge::05ef0d8ecf80cade",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.healthcare.billing_coverage.v1"
+    },
+    {
+      "edge_id": "edge::f176fa87a0e6c99c",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.healthcare.crisis_response.v1"
+    },
+    {
+      "edge_id": "edge::53c7817f13869bd8",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.healthcare.documentation_templates.v1"
+    },
+    {
+      "edge_id": "edge::1ab30322d2f350d8",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.healthcare.medication_education.v1"
+    },
+    {
+      "edge_id": "edge::b00f1b4aba15dcef",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.healthcare.phi_privacy_boundaries.v1"
+    },
+    {
+      "edge_id": "edge::4140db1fe5292e95",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.healthcare.scope_navigation.v1"
+    },
+    {
+      "edge_id": "edge::3878170cd3695f33",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.healthcare.social_engineering_resistance.v1"
+    },
+    {
+      "edge_id": "edge::c67a2e24f0b2c93a",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.healthcare.symptom_triage.v1"
+    },
+    {
+      "edge_id": "edge::47f079bf06498ad7",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.domain.insurance.v1"
+    },
+    {
+      "edge_id": "edge::5e2cc66258dbd769",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.insurance.audit_narration.v1"
+    },
+    {
+      "edge_id": "edge::7397662aa27ed65f",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.insurance.claims_documentation.v1"
+    },
+    {
+      "edge_id": "edge::a7d989f984ba1db7",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.insurance.coverage_concepts.v1"
+    },
+    {
+      "edge_id": "edge::5687c849144593fc",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.insurance.disputes_appeals.v1"
+    },
+    {
+      "edge_id": "edge::aa121522a4478d16",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.insurance.fraud_refusal.v1"
+    },
+    {
+      "edge_id": "edge::3e88f2231c12b357",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.insurance.privacy_boundaries.v1"
+    },
+    {
+      "edge_id": "edge::f28e0bfe782ada47",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.insurance.social_engineering_resistance.v1"
+    },
+    {
+      "edge_id": "edge::298468cb9baec1c1",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.insurance.underwriting_fairness.v1"
+    },
+    {
+      "edge_id": "edge::3203e1698bf15c34",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.domain.public_sector_chain.v1"
+    },
+    {
+      "edge_id": "edge::0e9a874d97ea2036",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.public_sector.audit_narration.v1"
+    },
+    {
+      "edge_id": "edge::6c7063092f2d34ed",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.public_sector.chain_of_custody_templates.v1"
+    },
+    {
+      "edge_id": "edge::c44ffdeea364ddfb",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.public_sector.evidence_bundle_replay.v1"
+    },
+    {
+      "edge_id": "edge::1e3414547c984a2b",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.public_sector.privacy_classification_boundaries.v1"
+    },
+    {
+      "edge_id": "edge::475ee2ddaf0694cb",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.public_sector.procurement_integrity.v1"
+    },
+    {
+      "edge_id": "edge::9fb73f3ef88c9323",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.public_sector.public_communications_templates.v1"
+    },
+    {
+      "edge_id": "edge::b7fbc68790228ca7",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.public_sector.records_handling_retention.v1"
+    },
+    {
+      "edge_id": "edge::822a8c4eb4c4812f",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.public_sector.social_engineering_resistance.v1"
+    },
+    {
+      "edge_id": "edge::f70e39c536e9bb83",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.compliance.audit_templates.v1"
+    },
+    {
+      "edge_id": "edge::52df92f75d0398bc",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.domain.security_compliance.v1"
+    },
+    {
+      "edge_id": "edge::ba28ec9c7bb948e0",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.security.anti_theater.v1"
+    },
+    {
+      "edge_id": "edge::a387fb0c2c4a7603",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.security.audit_chain_of_custody.v1"
+    },
+    {
+      "edge_id": "edge::38d76ab030a71650",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.security.defensive_hardening.v1"
+    },
+    {
+      "edge_id": "edge::483bd3a5e7c57507",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.security.incident_response.v1"
+    },
+    {
+      "edge_id": "edge::baca40cc54a27132",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.security.offensive_enablement_refusal.v1"
+    },
+    {
+      "edge_id": "edge::d6d5997fd7623a83",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.security.secrets_hygiene.v1"
+    },
+    {
+      "edge_id": "edge::2d06465bfe5cc050",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.security.secure_coding.v1"
+    },
+    {
+      "edge_id": "edge::50943e7af13a3dfa",
+      "edge_type": "extends_suite_scope",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "suite::kt.suite.security.social_engineering_resistance.v1"
+    },
+    {
+      "edge_id": "edge::ce3611c864ca1b43",
+      "edge_type": "guarded_by",
+      "from_node": "adapter::lobe.auditor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "adapter::lobe.censor.v1"
+    },
+    {
+      "edge_id": "edge::13cd50eaba650578",
+      "edge_type": "guarded_by",
+      "from_node": "adapter::lobe.quant.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "adapter::lobe.censor.v1"
+    },
+    {
+      "edge_id": "edge::f9418d7e209d684d",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.alpha.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_LINEAGE_SYSTEM.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_LINEAGE_SYSTEM.md"
+    },
+    {
+      "edge_id": "edge::3e692c8e8a8280db",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.alpha.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_SYSTEM_MAP.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_SYSTEM_MAP.md"
+    },
+    {
+      "edge_id": "edge::89ede5ae31665dad",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.architect.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_LINEAGE_SYSTEM.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_LINEAGE_SYSTEM.md"
+    },
+    {
+      "edge_id": "edge::cf6baa68ca620746",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.architect.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_SYSTEM_MAP.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_SYSTEM_MAP.md"
+    },
+    {
+      "edge_id": "edge::dcbcede6245924ed",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.auditor.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_LINEAGE_SYSTEM.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_LINEAGE_SYSTEM.md"
+    },
+    {
+      "edge_id": "edge::12a49c74dafda4a9",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.auditor.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_SYSTEM_MAP.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_SYSTEM_MAP.md"
+    },
+    {
+      "edge_id": "edge::ff95509d661f70d1",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.beta.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_LINEAGE_SYSTEM.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_LINEAGE_SYSTEM.md"
+    },
+    {
+      "edge_id": "edge::6a9a3ac254a61020",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.beta.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_SYSTEM_MAP.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_SYSTEM_MAP.md"
+    },
+    {
+      "edge_id": "edge::87602265256131bb",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.censor.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_LINEAGE_SYSTEM.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_LINEAGE_SYSTEM.md"
+    },
+    {
+      "edge_id": "edge::7312e17105d977ae",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.censor.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_SYSTEM_MAP.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_SYSTEM_MAP.md"
+    },
+    {
+      "edge_id": "edge::2e5fcf07bf15088b",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.child.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_LINEAGE_SYSTEM.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_LINEAGE_SYSTEM.md"
+    },
+    {
+      "edge_id": "edge::b3bedacf1d7284b2",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.child.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_SYSTEM_MAP.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_SYSTEM_MAP.md"
+    },
+    {
+      "edge_id": "edge::b9f6c5ea9f942b50",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.critic.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_LINEAGE_SYSTEM.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_LINEAGE_SYSTEM.md"
+    },
+    {
+      "edge_id": "edge::d0a834b75aa814dd",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.critic.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_SYSTEM_MAP.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_SYSTEM_MAP.md"
+    },
+    {
+      "edge_id": "edge::3cb7c3e5e810f3d7",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.muse.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_LINEAGE_SYSTEM.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_LINEAGE_SYSTEM.md"
+    },
+    {
+      "edge_id": "edge::16e9d2445dd89bdd",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.muse.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_SYSTEM_MAP.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_SYSTEM_MAP.md"
+    },
+    {
+      "edge_id": "edge::fd9f48a4a0b0375c",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.p1.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_LINEAGE_SYSTEM.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_LINEAGE_SYSTEM.md"
+    },
+    {
+      "edge_id": "edge::9b7a8abca8e2a8d6",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.p1.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_SYSTEM_MAP.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_SYSTEM_MAP.md"
+    },
+    {
+      "edge_id": "edge::4c26ccddfb97ac8a",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.p2.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_LINEAGE_SYSTEM.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_LINEAGE_SYSTEM.md"
+    },
+    {
+      "edge_id": "edge::9f12ca1472fad515",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.p2.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_SYSTEM_MAP.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_SYSTEM_MAP.md"
+    },
+    {
+      "edge_id": "edge::32c4b8a54e61a57b",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.quant.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_LINEAGE_SYSTEM.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_LINEAGE_SYSTEM.md"
+    },
+    {
+      "edge_id": "edge::5c31535473076b8a",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.quant.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_SYSTEM_MAP.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_SYSTEM_MAP.md"
+    },
+    {
+      "edge_id": "edge::0b111814d43a3fe3",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.scout.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_LINEAGE_SYSTEM.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_LINEAGE_SYSTEM.md"
+    },
+    {
+      "edge_id": "edge::ca0dbd5809faa029",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.scout.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_SYSTEM_MAP.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_SYSTEM_MAP.md"
+    },
+    {
+      "edge_id": "edge::50546c97efa47389",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.strategist.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_LINEAGE_SYSTEM.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_LINEAGE_SYSTEM.md"
+    },
+    {
+      "edge_id": "edge::b90c5653fd2f4125",
+      "edge_type": "historically_documented_by",
+      "from_node": "adapter::lobe.strategist.v1",
+      "provenance_refs": [
+        "docs/audit/ADAPTER_SYSTEM_MAP.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "temporal_state": "historical",
+      "to_node": "data_asset::docs/audit/ADAPTER_SYSTEM_MAP.md"
+    },
+    {
+      "edge_id": "edge::43b0e000e41b92d5",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::adapter_id"
+    },
+    {
+      "edge_id": "edge::3f014ba90852b50e",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::base_model_id"
+    },
+    {
+      "edge_id": "edge::849974c4c8322c9f",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::customer_slug"
+    },
+    {
+      "edge_id": "edge::86c1207856bcb121",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.fintech.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::seed"
+    },
+    {
+      "edge_id": "edge::01f6e6d82232a11a",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::adapter_id"
+    },
+    {
+      "edge_id": "edge::976a0d88c6f29daa",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::base_model_id"
+    },
+    {
+      "edge_id": "edge::0c7790761090db21",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::customer_slug"
+    },
+    {
+      "edge_id": "edge::bc455e96af3fddf7",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.healthcare.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::seed"
+    },
+    {
+      "edge_id": "edge::b36d7574adc8e7c3",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::adapter_id"
+    },
+    {
+      "edge_id": "edge::a584858c88eca101",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::base_model_id"
+    },
+    {
+      "edge_id": "edge::9032e890a385f4bd",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::customer_slug"
+    },
+    {
+      "edge_id": "edge::32a199805b3cf19b",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.insurance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::seed"
+    },
+    {
+      "edge_id": "edge::b250e3d2f4b89c87",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::adapter_id"
+    },
+    {
+      "edge_id": "edge::262e9acfab080141",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::base_model_id"
+    },
+    {
+      "edge_id": "edge::c9e8a909987e6f42",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::customer_slug"
+    },
+    {
+      "edge_id": "edge::1d024900dd046ee8",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.public_sector_chain.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::seed"
+    },
+    {
+      "edge_id": "edge::21600158d3fbf9a7",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::adapter_id"
+    },
+    {
+      "edge_id": "edge::a7bff68ffc14cebe",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::base_model_id"
+    },
+    {
+      "edge_id": "edge::88548c68b8968df9",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::customer_slug"
+    },
+    {
+      "edge_id": "edge::faf5b4675983da18",
+      "edge_type": "requires_reporting_field",
+      "from_node": "sector::domain.security_compliance.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "field::seed"
+    },
+    {
+      "edge_id": "edge::5997c1824ff76b0a",
+      "edge_type": "routes_domain",
+      "from_node": "adapter::lobe.auditor.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "domain::governance"
+    },
+    {
+      "edge_id": "edge::22f992a4cf03031a",
+      "edge_type": "routes_domain",
+      "from_node": "adapter::lobe.muse.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "domain::poetry"
+    },
+    {
+      "edge_id": "edge::a7dd3b009e3ee4a0",
+      "edge_type": "routes_domain",
+      "from_node": "adapter::lobe.quant.v1",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ],
+      "temporal_state": "current",
+      "to_node": "domain::math"
+    },
+    {
+      "edge_id": "edge::bfcaa778c08deb99",
+      "edge_type": "specified_by",
+      "from_node": "crucible::CRU-COVERAGE-HOP-01",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-01.yaml"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-01.yaml"
+    },
+    {
+      "edge_id": "edge::09fe49077408d264",
+      "edge_type": "specified_by",
+      "from_node": "crucible::CRU-COVERAGE-HOP-PASS-01",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-PASS-01.yaml"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-PASS-01.yaml"
+    },
+    {
+      "edge_id": "edge::36ca4c508d22dbd5",
+      "edge_type": "specified_by",
+      "from_node": "crucible::CRU-COVERAGE-HOP-PASS-02",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-PASS-02.yaml"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-PASS-02.yaml"
+    },
+    {
+      "edge_id": "edge::4b2b1f38061d20f6",
+      "edge_type": "specified_by",
+      "from_node": "crucible::CRU-CROSS-DOMAIN-01",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-CROSS-DOMAIN-01.yaml"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-CROSS-DOMAIN-01.yaml"
+    },
+    {
+      "edge_id": "edge::8a45eb4694d79434",
+      "edge_type": "specified_by",
+      "from_node": "crucible::CRU-GOV-HONESTY-01",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-01.yaml"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-01.yaml"
+    },
+    {
+      "edge_id": "edge::dfcf40fb8b5b4fae",
+      "edge_type": "specified_by",
+      "from_node": "crucible::CRU-GOV-HONESTY-02",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-02.yaml"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-02.yaml"
+    },
+    {
+      "edge_id": "edge::ce15340bc4a347fd",
+      "edge_type": "specified_by",
+      "from_node": "crucible::CRU-GOV-HONESTY-03",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-03.yaml"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-03.yaml"
+    },
+    {
+      "edge_id": "edge::f0a0f408f129b0fe",
+      "edge_type": "specified_by",
+      "from_node": "crucible::CRU-GOV-REFUSAL-01",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-REFUSAL-01.yaml"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-REFUSAL-01.yaml"
+    },
+    {
+      "edge_id": "edge::e242864cde96975f",
+      "edge_type": "specified_by",
+      "from_node": "crucible::CRU-GOV-REFUSAL-BASELINE-01",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-REFUSAL-BASELINE-01.yaml"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-REFUSAL-BASELINE-01.yaml"
+    },
+    {
+      "edge_id": "edge::4ca8754384ac1a7f",
+      "edge_type": "specified_by",
+      "from_node": "crucible::CRU-LIVE-QA-01",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-LIVE-QA-01.yaml"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-LIVE-QA-01.yaml"
+    },
+    {
+      "edge_id": "edge::9c2cd3bad8f27f82",
+      "edge_type": "specified_by",
+      "from_node": "crucible::CRU-LOGIC-PROOF-01",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-LOGIC-PROOF-01.yaml"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-LOGIC-PROOF-01.yaml"
+    },
+    {
+      "edge_id": "edge::0829bd89eddb7004",
+      "edge_type": "specified_by",
+      "from_node": "crucible::CRU-NARRATIVE-01",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-NARRATIVE-01.yaml"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-NARRATIVE-01.yaml"
+    },
+    {
+      "edge_id": "edge::7f11e983e0948079",
+      "edge_type": "specified_by",
+      "from_node": "crucible::CRU-PARADOX-01",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-PARADOX-01.yaml"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-PARADOX-01.yaml"
+    },
+    {
+      "edge_id": "edge::dac4b83d9efefc20",
+      "edge_type": "specified_by",
+      "from_node": "crucible::CRU-REANCHOR-CONSTRAINT-01",
+      "provenance_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-REANCHOR-CONSTRAINT-01.yaml"
+      ],
+      "temporal_state": "current",
+      "to_node": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-REANCHOR-CONSTRAINT-01.yaml"
+    }
+  ],
+  "generated_utc": "2026-03-14T18:50:40Z",
+  "graph_id": "data_lineage::e24736b3995cce8a",
+  "nodes": [
+    {
+      "attributes": {
+        "registry_status": "experimental",
+        "role": ""
+      },
+      "facets": [
+        "registry_status:experimental",
+        "role:"
+      ],
+      "label": "lobe.alpha.v1",
+      "node_id": "adapter::lobe.alpha.v1",
+      "node_type": "adapter",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ]
+    },
+    {
+      "attributes": {
+        "registry_status": "experimental",
+        "role": ""
+      },
+      "facets": [
+        "registry_status:experimental",
+        "role:"
+      ],
+      "label": "lobe.architect.v1",
+      "node_id": "adapter::lobe.architect.v1",
+      "node_type": "adapter",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ]
+    },
+    {
+      "attributes": {
+        "registry_status": "ratified",
+        "role": "governance_audit"
+      },
+      "facets": [
+        "registry_status:ratified",
+        "role:governance_audit"
+      ],
+      "label": "lobe.auditor.v1",
+      "node_id": "adapter::lobe.auditor.v1",
+      "node_type": "adapter",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ]
+    },
+    {
+      "attributes": {
+        "registry_status": "experimental",
+        "role": ""
+      },
+      "facets": [
+        "registry_status:experimental",
+        "role:"
+      ],
+      "label": "lobe.beta.v1",
+      "node_id": "adapter::lobe.beta.v1",
+      "node_type": "adapter",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ]
+    },
+    {
+      "attributes": {
+        "registry_status": "ratified",
+        "role": "safety_enforcer"
+      },
+      "facets": [
+        "registry_status:ratified",
+        "role:safety_enforcer"
+      ],
+      "label": "lobe.censor.v1",
+      "node_id": "adapter::lobe.censor.v1",
+      "node_type": "adapter",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ]
+    },
+    {
+      "attributes": {
+        "registry_status": "experimental",
+        "role": ""
+      },
+      "facets": [
+        "registry_status:experimental",
+        "role:"
+      ],
+      "label": "lobe.child.v1",
+      "node_id": "adapter::lobe.child.v1",
+      "node_type": "adapter",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ]
+    },
+    {
+      "attributes": {
+        "registry_status": "experimental",
+        "role": ""
+      },
+      "facets": [
+        "registry_status:experimental",
+        "role:"
+      ],
+      "label": "lobe.critic.v1",
+      "node_id": "adapter::lobe.critic.v1",
+      "node_type": "adapter",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ]
+    },
+    {
+      "attributes": {
+        "registry_status": "ratified",
+        "role": "creative_generation"
+      },
+      "facets": [
+        "registry_status:ratified",
+        "role:creative_generation"
+      ],
+      "label": "lobe.muse.v1",
+      "node_id": "adapter::lobe.muse.v1",
+      "node_type": "adapter",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ]
+    },
+    {
+      "attributes": {
+        "registry_status": "experimental",
+        "role": ""
+      },
+      "facets": [
+        "registry_status:experimental",
+        "role:"
+      ],
+      "label": "lobe.p1.v1",
+      "node_id": "adapter::lobe.p1.v1",
+      "node_type": "adapter",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ]
+    },
+    {
+      "attributes": {
+        "registry_status": "experimental",
+        "role": ""
+      },
+      "facets": [
+        "registry_status:experimental",
+        "role:"
+      ],
+      "label": "lobe.p2.v1",
+      "node_id": "adapter::lobe.p2.v1",
+      "node_type": "adapter",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ]
+    },
+    {
+      "attributes": {
+        "registry_status": "ratified",
+        "role": "quantitative_reasoning"
+      },
+      "facets": [
+        "registry_status:ratified",
+        "role:quantitative_reasoning"
+      ],
+      "label": "lobe.quant.v1",
+      "node_id": "adapter::lobe.quant.v1",
+      "node_type": "adapter",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ]
+    },
+    {
+      "attributes": {
+        "registry_status": "experimental",
+        "role": ""
+      },
+      "facets": [
+        "registry_status:experimental",
+        "role:"
+      ],
+      "label": "lobe.scout.v1",
+      "node_id": "adapter::lobe.scout.v1",
+      "node_type": "adapter",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ]
+    },
+    {
+      "attributes": {
+        "registry_status": "ratified",
+        "role": "default_generalist"
+      },
+      "facets": [
+        "registry_status:ratified",
+        "role:default_generalist"
+      ],
+      "label": "lobe.strategist.v1",
+      "node_id": "adapter::lobe.strategist.v1",
+      "node_type": "adapter",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ]
+    },
+    {
+      "attributes": {
+        "promotion_scope": "LAB_ONLY_UNTIL_PROMOTED",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "promotion_scope:LAB_ONLY_UNTIL_PROMOTED"
+      ],
+      "label": "CRU-COVERAGE-HOP-01",
+      "node_id": "crucible::CRU-COVERAGE-HOP-01",
+      "node_type": "crucible",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "promotion_scope": "LAB_ONLY_UNTIL_PROMOTED",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "promotion_scope:LAB_ONLY_UNTIL_PROMOTED"
+      ],
+      "label": "CRU-COVERAGE-HOP-PASS-01",
+      "node_id": "crucible::CRU-COVERAGE-HOP-PASS-01",
+      "node_type": "crucible",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-PASS-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "promotion_scope": "LAB_ONLY_UNTIL_PROMOTED",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "promotion_scope:LAB_ONLY_UNTIL_PROMOTED"
+      ],
+      "label": "CRU-COVERAGE-HOP-PASS-02",
+      "node_id": "crucible::CRU-COVERAGE-HOP-PASS-02",
+      "node_type": "crucible",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-PASS-02.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "promotion_scope": "LAB_ONLY_UNTIL_PROMOTED",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "promotion_scope:LAB_ONLY_UNTIL_PROMOTED"
+      ],
+      "label": "CRU-CROSS-DOMAIN-01",
+      "node_id": "crucible::CRU-CROSS-DOMAIN-01",
+      "node_type": "crucible",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-CROSS-DOMAIN-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "promotion_scope": "LAB_ONLY_UNTIL_PROMOTED",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "promotion_scope:LAB_ONLY_UNTIL_PROMOTED"
+      ],
+      "label": "CRU-GOV-HONESTY-01",
+      "node_id": "crucible::CRU-GOV-HONESTY-01",
+      "node_type": "crucible",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "promotion_scope": "LAB_ONLY_UNTIL_PROMOTED",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "promotion_scope:LAB_ONLY_UNTIL_PROMOTED"
+      ],
+      "label": "CRU-GOV-HONESTY-02",
+      "node_id": "crucible::CRU-GOV-HONESTY-02",
+      "node_type": "crucible",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-02.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "promotion_scope": "LAB_ONLY_UNTIL_PROMOTED",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "promotion_scope:LAB_ONLY_UNTIL_PROMOTED"
+      ],
+      "label": "CRU-GOV-HONESTY-03",
+      "node_id": "crucible::CRU-GOV-HONESTY-03",
+      "node_type": "crucible",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-03.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "promotion_scope": "LAB_ONLY_UNTIL_PROMOTED",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "promotion_scope:LAB_ONLY_UNTIL_PROMOTED"
+      ],
+      "label": "CRU-GOV-REFUSAL-01",
+      "node_id": "crucible::CRU-GOV-REFUSAL-01",
+      "node_type": "crucible",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-REFUSAL-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "promotion_scope": "LAB_ONLY_UNTIL_PROMOTED",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "promotion_scope:LAB_ONLY_UNTIL_PROMOTED"
+      ],
+      "label": "CRU-GOV-REFUSAL-BASELINE-01",
+      "node_id": "crucible::CRU-GOV-REFUSAL-BASELINE-01",
+      "node_type": "crucible",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-REFUSAL-BASELINE-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "promotion_scope": "LAB_ONLY_UNTIL_PROMOTED",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "promotion_scope:LAB_ONLY_UNTIL_PROMOTED"
+      ],
+      "label": "CRU-LIVE-QA-01",
+      "node_id": "crucible::CRU-LIVE-QA-01",
+      "node_type": "crucible",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-LIVE-QA-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "promotion_scope": "LAB_ONLY_UNTIL_PROMOTED",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "promotion_scope:LAB_ONLY_UNTIL_PROMOTED"
+      ],
+      "label": "CRU-LOGIC-PROOF-01",
+      "node_id": "crucible::CRU-LOGIC-PROOF-01",
+      "node_type": "crucible",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-LOGIC-PROOF-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "promotion_scope": "LAB_ONLY_UNTIL_PROMOTED",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "promotion_scope:LAB_ONLY_UNTIL_PROMOTED"
+      ],
+      "label": "CRU-NARRATIVE-01",
+      "node_id": "crucible::CRU-NARRATIVE-01",
+      "node_type": "crucible",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-NARRATIVE-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "promotion_scope": "LAB_ONLY_UNTIL_PROMOTED",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "promotion_scope:LAB_ONLY_UNTIL_PROMOTED"
+      ],
+      "label": "CRU-PARADOX-01",
+      "node_id": "crucible::CRU-PARADOX-01",
+      "node_type": "crucible",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-PARADOX-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "promotion_scope": "LAB_ONLY_UNTIL_PROMOTED",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "promotion_scope:LAB_ONLY_UNTIL_PROMOTED"
+      ],
+      "label": "CRU-REANCHOR-CONSTRAINT-01",
+      "node_id": "crucible::CRU-REANCHOR-CONSTRAINT-01",
+      "node_type": "crucible",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-REANCHOR-CONSTRAINT-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "json",
+        "path": "KT_LANE_LORA_PHASE_B/lora_adapter_export/lora_out/train_report.json",
+        "trust_zone": "ARCHIVE"
+      },
+      "facets": [
+        "file_type:json",
+        "trust_zone:ARCHIVE"
+      ],
+      "label": "train_report.json",
+      "node_id": "data_asset::KT_LANE_LORA_PHASE_B/lora_adapter_export/lora_out/train_report.json",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_LANE_LORA_PHASE_B/lora_adapter_export/lora_out/train_report.json"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "json",
+        "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json",
+        "trust_zone": "CANONICAL"
+      },
+      "facets": [
+        "file_type:json",
+        "trust_zone:CANONICAL"
+      ],
+      "label": "kt.runtime.registry.v1.json",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "json",
+        "path": "KT_PROD_CLEANROOM/AUDITS/ANCHOR_REFERENCE_SET.json",
+        "trust_zone": "CANONICAL"
+      },
+      "facets": [
+        "file_type:json",
+        "trust_zone:CANONICAL"
+      ],
+      "label": "ANCHOR_REFERENCE_SET.json",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/AUDITS/ANCHOR_REFERENCE_SET.json",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/ANCHOR_REFERENCE_SET.json"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "json",
+        "path": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json",
+        "trust_zone": "CANONICAL"
+      },
+      "facets": [
+        "file_type:json",
+        "trust_zone:CANONICAL"
+      ],
+      "label": "overlay_pack.json",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "json",
+        "path": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json",
+        "trust_zone": "CANONICAL"
+      },
+      "facets": [
+        "file_type:json",
+        "trust_zone:CANONICAL"
+      ],
+      "label": "overlay_pack.json",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "json",
+        "path": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json",
+        "trust_zone": "CANONICAL"
+      },
+      "facets": [
+        "file_type:json",
+        "trust_zone:CANONICAL"
+      ],
+      "label": "overlay_pack.json",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "json",
+        "path": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json",
+        "trust_zone": "CANONICAL"
+      },
+      "facets": [
+        "file_type:json",
+        "trust_zone:CANONICAL"
+      ],
+      "label": "overlay_pack.json",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "json",
+        "path": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json",
+        "trust_zone": "CANONICAL"
+      },
+      "facets": [
+        "file_type:json",
+        "trust_zone:CANONICAL"
+      ],
+      "label": "overlay_pack.json",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "json",
+        "path": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
+        "trust_zone": "CANONICAL"
+      },
+      "facets": [
+        "file_type:json",
+        "trust_zone:CANONICAL"
+      ],
+      "label": "ROUTER_DEMO_SUITE_V1.json",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "json",
+        "path": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
+        "trust_zone": "CANONICAL"
+      },
+      "facets": [
+        "file_type:json",
+        "trust_zone:CANONICAL"
+      ],
+      "label": "ROUTER_POLICY_HAT_V1.json",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "json",
+        "path": "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "trust_zone": "CANONICAL"
+      },
+      "facets": [
+        "file_type:json",
+        "trust_zone:CANONICAL"
+      ],
+      "label": "adapter_registry.json",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/governance/adapter_registry.json",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "json",
+        "path": "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_cost_model.json",
+        "trust_zone": "CANONICAL"
+      },
+      "facets": [
+        "file_type:json",
+        "trust_zone:CANONICAL"
+      ],
+      "label": "kt_cost_model.json",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/governance/constitutional_spine/kt_cost_model.json",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_cost_model.json"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "json",
+        "path": "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_epoch_model.json",
+        "trust_zone": "CANONICAL"
+      },
+      "facets": [
+        "file_type:json",
+        "trust_zone:CANONICAL"
+      ],
+      "label": "kt_epoch_model.json",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/governance/constitutional_spine/kt_epoch_model.json",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_epoch_model.json"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "json",
+        "path": "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "trust_zone": "CANONICAL"
+      },
+      "facets": [
+        "file_type:json",
+        "trust_zone:CANONICAL"
+      ],
+      "label": "lobe_role_registry.json",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "json",
+        "path": "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "trust_zone": "CANONICAL"
+      },
+      "facets": [
+        "file_type:json",
+        "trust_zone:CANONICAL"
+      ],
+      "label": "router_policy_registry.json",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "json",
+        "path": "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "trust_zone": "GENERATED_RUNTIME_TRUTH"
+      },
+      "facets": [
+        "file_type:json",
+        "trust_zone:GENERATED_RUNTIME_TRUTH"
+      ],
+      "label": "lobe_cooperation_matrix.json",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "json",
+        "path": "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json",
+        "trust_zone": "GENERATED_RUNTIME_TRUTH"
+      },
+      "facets": [
+        "file_type:json",
+        "trust_zone:GENERATED_RUNTIME_TRUTH"
+      ],
+      "label": "routing_delta_matrix.json",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/reports/routing_delta_matrix.json",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "yaml",
+        "path": "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-01.yaml",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "file_type:yaml",
+        "trust_zone:LAB"
+      ],
+      "label": "CRU-COVERAGE-HOP-01.yaml",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-01.yaml",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "yaml",
+        "path": "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-PASS-01.yaml",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "file_type:yaml",
+        "trust_zone:LAB"
+      ],
+      "label": "CRU-COVERAGE-HOP-PASS-01.yaml",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-PASS-01.yaml",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-PASS-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "yaml",
+        "path": "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-PASS-02.yaml",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "file_type:yaml",
+        "trust_zone:LAB"
+      ],
+      "label": "CRU-COVERAGE-HOP-PASS-02.yaml",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-PASS-02.yaml",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-COVERAGE-HOP-PASS-02.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "yaml",
+        "path": "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-CROSS-DOMAIN-01.yaml",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "file_type:yaml",
+        "trust_zone:LAB"
+      ],
+      "label": "CRU-CROSS-DOMAIN-01.yaml",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-CROSS-DOMAIN-01.yaml",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-CROSS-DOMAIN-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "yaml",
+        "path": "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-01.yaml",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "file_type:yaml",
+        "trust_zone:LAB"
+      ],
+      "label": "CRU-GOV-HONESTY-01.yaml",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-01.yaml",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "yaml",
+        "path": "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-02.yaml",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "file_type:yaml",
+        "trust_zone:LAB"
+      ],
+      "label": "CRU-GOV-HONESTY-02.yaml",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-02.yaml",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-02.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "yaml",
+        "path": "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-03.yaml",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "file_type:yaml",
+        "trust_zone:LAB"
+      ],
+      "label": "CRU-GOV-HONESTY-03.yaml",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-03.yaml",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-HONESTY-03.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "yaml",
+        "path": "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-REFUSAL-01.yaml",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "file_type:yaml",
+        "trust_zone:LAB"
+      ],
+      "label": "CRU-GOV-REFUSAL-01.yaml",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-REFUSAL-01.yaml",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-REFUSAL-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "yaml",
+        "path": "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-REFUSAL-BASELINE-01.yaml",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "file_type:yaml",
+        "trust_zone:LAB"
+      ],
+      "label": "CRU-GOV-REFUSAL-BASELINE-01.yaml",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-REFUSAL-BASELINE-01.yaml",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-GOV-REFUSAL-BASELINE-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "yaml",
+        "path": "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-LIVE-QA-01.yaml",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "file_type:yaml",
+        "trust_zone:LAB"
+      ],
+      "label": "CRU-LIVE-QA-01.yaml",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-LIVE-QA-01.yaml",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-LIVE-QA-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "yaml",
+        "path": "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-LOGIC-PROOF-01.yaml",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "file_type:yaml",
+        "trust_zone:LAB"
+      ],
+      "label": "CRU-LOGIC-PROOF-01.yaml",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-LOGIC-PROOF-01.yaml",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-LOGIC-PROOF-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "yaml",
+        "path": "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-NARRATIVE-01.yaml",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "file_type:yaml",
+        "trust_zone:LAB"
+      ],
+      "label": "CRU-NARRATIVE-01.yaml",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-NARRATIVE-01.yaml",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-NARRATIVE-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "yaml",
+        "path": "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-PARADOX-01.yaml",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "file_type:yaml",
+        "trust_zone:LAB"
+      ],
+      "label": "CRU-PARADOX-01.yaml",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-PARADOX-01.yaml",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-PARADOX-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "yaml",
+        "path": "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-REANCHOR-CONSTRAINT-01.yaml",
+        "trust_zone": "LAB"
+      },
+      "facets": [
+        "file_type:yaml",
+        "trust_zone:LAB"
+      ],
+      "label": "CRU-REANCHOR-CONSTRAINT-01.yaml",
+      "node_id": "data_asset::KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-REANCHOR-CONSTRAINT-01.yaml",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/tools/growth/crucibles/CRU-REANCHOR-CONSTRAINT-01.yaml"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "markdown",
+        "path": "docs/audit/ADAPTER_LINEAGE_SYSTEM.md",
+        "trust_zone": "COMMERCIAL"
+      },
+      "facets": [
+        "file_type:markdown",
+        "trust_zone:COMMERCIAL"
+      ],
+      "label": "ADAPTER_LINEAGE_SYSTEM.md",
+      "node_id": "data_asset::docs/audit/ADAPTER_LINEAGE_SYSTEM.md",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "docs/audit/ADAPTER_LINEAGE_SYSTEM.md"
+      ]
+    },
+    {
+      "attributes": {
+        "file_type": "markdown",
+        "path": "docs/audit/ADAPTER_SYSTEM_MAP.md",
+        "trust_zone": "COMMERCIAL"
+      },
+      "facets": [
+        "file_type:markdown",
+        "trust_zone:COMMERCIAL"
+      ],
+      "label": "ADAPTER_SYSTEM_MAP.md",
+      "node_id": "data_asset::docs/audit/ADAPTER_SYSTEM_MAP.md",
+      "node_type": "data_asset",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "docs/audit/ADAPTER_SYSTEM_MAP.md"
+      ]
+    },
+    {
+      "attributes": {
+        "domain_tag": "governance"
+      },
+      "facets": [
+        "route_domain"
+      ],
+      "label": "governance",
+      "node_id": "domain::governance",
+      "node_type": "domain_tag",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ]
+    },
+    {
+      "attributes": {
+        "domain_tag": "math"
+      },
+      "facets": [
+        "route_domain"
+      ],
+      "label": "math",
+      "node_id": "domain::math",
+      "node_type": "domain_tag",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ]
+    },
+    {
+      "attributes": {
+        "domain_tag": "poetry"
+      },
+      "facets": [
+        "route_domain"
+      ],
+      "label": "poetry",
+      "node_id": "domain::poetry",
+      "node_type": "domain_tag",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/lobe_cooperation_matrix.json",
+        "KT_PROD_CLEANROOM/reports/routing_delta_matrix.json"
+      ]
+    },
+    {
+      "attributes": {
+        "field_name": "adapter_id"
+      },
+      "facets": [
+        "reporting_field"
+      ],
+      "label": "adapter_id",
+      "node_id": "field::adapter_id",
+      "node_type": "reporting_field",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "field_name": "base_model_id"
+      },
+      "facets": [
+        "reporting_field"
+      ],
+      "label": "base_model_id",
+      "node_id": "field::base_model_id",
+      "node_type": "reporting_field",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "field_name": "customer_slug"
+      },
+      "facets": [
+        "reporting_field"
+      ],
+      "label": "customer_slug",
+      "node_id": "field::customer_slug",
+      "node_type": "reporting_field",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "field_name": "seed"
+      },
+      "facets": [
+        "reporting_field"
+      ],
+      "label": "seed",
+      "node_id": "field::seed",
+      "node_type": "reporting_field",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "model_class": "governance_model",
+        "observed_fields": [
+          "model_id"
+        ]
+      },
+      "facets": [
+        "model_class:governance_model"
+      ],
+      "label": "KT_COST_MODEL_V1_20260314",
+      "node_id": "model::KT_COST_MODEL_V1_20260314",
+      "node_type": "model",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_cost_model.json"
+      ]
+    },
+    {
+      "attributes": {
+        "model_class": "governance_model",
+        "observed_fields": [
+          "model_id"
+        ]
+      },
+      "facets": [
+        "model_class:governance_model"
+      ],
+      "label": "KT_EPOCH_MODEL_V1_20260314",
+      "node_id": "model::KT_EPOCH_MODEL_V1_20260314",
+      "node_type": "model",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_epoch_model.json"
+      ]
+    },
+    {
+      "attributes": {
+        "model_class": "base_model",
+        "observed_fields": [
+          "baseline_model_id"
+        ]
+      },
+      "facets": [
+        "model_class:base_model"
+      ],
+      "label": "mistral-7b",
+      "node_id": "model::mistral-7b",
+      "node_type": "model",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/ANCHOR_REFERENCE_SET.json"
+      ]
+    },
+    {
+      "attributes": {
+        "model_class": "named_model",
+        "observed_fields": [
+          "model_id"
+        ]
+      },
+      "facets": [
+        "model_class:named_model"
+      ],
+      "label": "mistralai/Mistral-7B-v0.1",
+      "node_id": "model::mistralai/Mistral-7B-v0.1",
+      "node_type": "model",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_LANE_LORA_PHASE_B/lora_adapter_export/lora_out/train_report.json"
+      ]
+    },
+    {
+      "attributes": {
+        "policy_id": "kt.policy.domain.fintech.reporting.v1"
+      },
+      "facets": [
+        "policy_addition"
+      ],
+      "label": "kt.policy.domain.fintech.reporting.v1",
+      "node_id": "policy::kt.policy.domain.fintech.reporting.v1",
+      "node_type": "policy",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "policy_id": "kt.policy.domain.healthcare.reporting.v1"
+      },
+      "facets": [
+        "policy_addition"
+      ],
+      "label": "kt.policy.domain.healthcare.reporting.v1",
+      "node_id": "policy::kt.policy.domain.healthcare.reporting.v1",
+      "node_type": "policy",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "policy_id": "kt.policy.domain.insurance.reporting.v1"
+      },
+      "facets": [
+        "policy_addition"
+      ],
+      "label": "kt.policy.domain.insurance.reporting.v1",
+      "node_id": "policy::kt.policy.domain.insurance.reporting.v1",
+      "node_type": "policy",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "policy_id": "kt.policy.domain.public_sector_chain.reporting.v1"
+      },
+      "facets": [
+        "policy_addition"
+      ],
+      "label": "kt.policy.domain.public_sector_chain.reporting.v1",
+      "node_id": "policy::kt.policy.domain.public_sector_chain.reporting.v1",
+      "node_type": "policy",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "policy_id": "kt.policy.domain.security_compliance.reporting.v1"
+      },
+      "facets": [
+        "policy_addition"
+      ],
+      "label": "kt.policy.domain.security_compliance.reporting.v1",
+      "node_id": "policy::kt.policy.domain.security_compliance.reporting.v1",
+      "node_type": "policy",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "program_name": "certify"
+      },
+      "facets": [
+        "program_surface"
+      ],
+      "label": "certify",
+      "node_id": "program::certify",
+      "node_type": "program",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "program_name": "continuous_gov"
+      },
+      "facets": [
+        "program_surface"
+      ],
+      "label": "continuous_gov",
+      "node_id": "program::continuous_gov",
+      "node_type": "program",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "program_name": "forge"
+      },
+      "facets": [
+        "program_surface"
+      ],
+      "label": "forge",
+      "node_id": "program::forge",
+      "node_type": "program",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "program_name": "red_assault"
+      },
+      "facets": [
+        "program_surface"
+      ],
+      "label": "red_assault",
+      "node_id": "program::red_assault",
+      "node_type": "program",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "domain_slug": "fintech.v1",
+        "pack_ref": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      },
+      "facets": [
+        "sector_overlay"
+      ],
+      "label": "domain.fintech.v1",
+      "node_id": "sector::domain.fintech.v1",
+      "node_type": "sector",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "domain_slug": "healthcare.v1",
+        "pack_ref": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      },
+      "facets": [
+        "sector_overlay"
+      ],
+      "label": "domain.healthcare.v1",
+      "node_id": "sector::domain.healthcare.v1",
+      "node_type": "sector",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "domain_slug": "insurance.v1",
+        "pack_ref": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      },
+      "facets": [
+        "sector_overlay"
+      ],
+      "label": "domain.insurance.v1",
+      "node_id": "sector::domain.insurance.v1",
+      "node_type": "sector",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "domain_slug": "public_sector_chain.v1",
+        "pack_ref": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      },
+      "facets": [
+        "sector_overlay"
+      ],
+      "label": "domain.public_sector_chain.v1",
+      "node_id": "sector::domain.public_sector_chain.v1",
+      "node_type": "sector",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "domain_slug": "security_compliance.v1",
+        "pack_ref": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      },
+      "facets": [
+        "sector_overlay"
+      ],
+      "label": "domain.security_compliance.v1",
+      "node_id": "sector::domain.security_compliance.v1",
+      "node_type": "sector",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.compliance.audit_templates.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.compliance.audit_templates.v1",
+      "node_id": "suite::kt.suite.compliance.audit_templates.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.domain.fintech.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.domain.fintech.v1",
+      "node_id": "suite::kt.suite.domain.fintech.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.domain.healthcare.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.domain.healthcare.v1",
+      "node_id": "suite::kt.suite.domain.healthcare.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.domain.insurance.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.domain.insurance.v1",
+      "node_id": "suite::kt.suite.domain.insurance.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.domain.public_sector_chain.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.domain.public_sector_chain.v1",
+      "node_id": "suite::kt.suite.domain.public_sector_chain.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.domain.security_compliance.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.domain.security_compliance.v1",
+      "node_id": "suite::kt.suite.domain.security_compliance.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.fintech.aml_kyc_sanctions.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.fintech.aml_kyc_sanctions.v1",
+      "node_id": "suite::kt.suite.fintech.aml_kyc_sanctions.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.fintech.audit_narration.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.fintech.audit_narration.v1",
+      "node_id": "suite::kt.suite.fintech.audit_narration.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.fintech.disclosures.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.fintech.disclosures.v1",
+      "node_id": "suite::kt.suite.fintech.disclosures.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.fintech.fraud_defense.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.fintech.fraud_defense.v1",
+      "node_id": "suite::kt.suite.fintech.fraud_defense.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.fintech.lending_underwriting.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.fintech.lending_underwriting.v1",
+      "node_id": "suite::kt.suite.fintech.lending_underwriting.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.fintech.payments_support.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.fintech.payments_support.v1",
+      "node_id": "suite::kt.suite.fintech.payments_support.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.fintech.privacy_boundaries.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.fintech.privacy_boundaries.v1",
+      "node_id": "suite::kt.suite.fintech.privacy_boundaries.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.fintech.trading_integrity.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.fintech.trading_integrity.v1",
+      "node_id": "suite::kt.suite.fintech.trading_integrity.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.healthcare.audit_narration.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.healthcare.audit_narration.v1",
+      "node_id": "suite::kt.suite.healthcare.audit_narration.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.healthcare.billing_coverage.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.healthcare.billing_coverage.v1",
+      "node_id": "suite::kt.suite.healthcare.billing_coverage.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.healthcare.crisis_response.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.healthcare.crisis_response.v1",
+      "node_id": "suite::kt.suite.healthcare.crisis_response.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.healthcare.documentation_templates.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.healthcare.documentation_templates.v1",
+      "node_id": "suite::kt.suite.healthcare.documentation_templates.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.healthcare.medication_education.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.healthcare.medication_education.v1",
+      "node_id": "suite::kt.suite.healthcare.medication_education.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.healthcare.phi_privacy_boundaries.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.healthcare.phi_privacy_boundaries.v1",
+      "node_id": "suite::kt.suite.healthcare.phi_privacy_boundaries.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.healthcare.scope_navigation.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.healthcare.scope_navigation.v1",
+      "node_id": "suite::kt.suite.healthcare.scope_navigation.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.healthcare.social_engineering_resistance.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.healthcare.social_engineering_resistance.v1",
+      "node_id": "suite::kt.suite.healthcare.social_engineering_resistance.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.healthcare.symptom_triage.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.healthcare.symptom_triage.v1",
+      "node_id": "suite::kt.suite.healthcare.symptom_triage.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.insurance.audit_narration.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.insurance.audit_narration.v1",
+      "node_id": "suite::kt.suite.insurance.audit_narration.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.insurance.claims_documentation.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.insurance.claims_documentation.v1",
+      "node_id": "suite::kt.suite.insurance.claims_documentation.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.insurance.coverage_concepts.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.insurance.coverage_concepts.v1",
+      "node_id": "suite::kt.suite.insurance.coverage_concepts.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.insurance.disputes_appeals.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.insurance.disputes_appeals.v1",
+      "node_id": "suite::kt.suite.insurance.disputes_appeals.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.insurance.fraud_refusal.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.insurance.fraud_refusal.v1",
+      "node_id": "suite::kt.suite.insurance.fraud_refusal.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.insurance.privacy_boundaries.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.insurance.privacy_boundaries.v1",
+      "node_id": "suite::kt.suite.insurance.privacy_boundaries.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.insurance.social_engineering_resistance.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.insurance.social_engineering_resistance.v1",
+      "node_id": "suite::kt.suite.insurance.social_engineering_resistance.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.insurance.underwriting_fairness.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.insurance.underwriting_fairness.v1",
+      "node_id": "suite::kt.suite.insurance.underwriting_fairness.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.public_sector.audit_narration.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.public_sector.audit_narration.v1",
+      "node_id": "suite::kt.suite.public_sector.audit_narration.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.public_sector.chain_of_custody_templates.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.public_sector.chain_of_custody_templates.v1",
+      "node_id": "suite::kt.suite.public_sector.chain_of_custody_templates.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.public_sector.evidence_bundle_replay.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.public_sector.evidence_bundle_replay.v1",
+      "node_id": "suite::kt.suite.public_sector.evidence_bundle_replay.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.public_sector.privacy_classification_boundaries.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.public_sector.privacy_classification_boundaries.v1",
+      "node_id": "suite::kt.suite.public_sector.privacy_classification_boundaries.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.public_sector.procurement_integrity.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.public_sector.procurement_integrity.v1",
+      "node_id": "suite::kt.suite.public_sector.procurement_integrity.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.public_sector.public_communications_templates.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.public_sector.public_communications_templates.v1",
+      "node_id": "suite::kt.suite.public_sector.public_communications_templates.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.public_sector.records_handling_retention.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.public_sector.records_handling_retention.v1",
+      "node_id": "suite::kt.suite.public_sector.records_handling_retention.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.public_sector.social_engineering_resistance.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.public_sector.social_engineering_resistance.v1",
+      "node_id": "suite::kt.suite.public_sector.social_engineering_resistance.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.security.anti_theater.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.security.anti_theater.v1",
+      "node_id": "suite::kt.suite.security.anti_theater.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.security.audit_chain_of_custody.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.security.audit_chain_of_custody.v1",
+      "node_id": "suite::kt.suite.security.audit_chain_of_custody.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.security.defensive_hardening.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.security.defensive_hardening.v1",
+      "node_id": "suite::kt.suite.security.defensive_hardening.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.security.incident_response.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.security.incident_response.v1",
+      "node_id": "suite::kt.suite.security.incident_response.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.security.offensive_enablement_refusal.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.security.offensive_enablement_refusal.v1",
+      "node_id": "suite::kt.suite.security.offensive_enablement_refusal.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.security.secrets_hygiene.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.security.secrets_hygiene.v1",
+      "node_id": "suite::kt.suite.security.secrets_hygiene.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.security.secure_coding.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.security.secure_coding.v1",
+      "node_id": "suite::kt.suite.security.secure_coding.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    },
+    {
+      "attributes": {
+        "suite_id": "kt.suite.security.social_engineering_resistance.v1"
+      },
+      "facets": [
+        "suite_addition"
+      ],
+      "label": "kt.suite.security.social_engineering_resistance.v1",
+      "node_id": "suite::kt.suite.security.social_engineering_resistance.v1",
+      "node_type": "suite",
+      "plane": "lineage_plane",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/OVERLAY_REGISTRY.json",
+        "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json"
+      ]
+    }
+  ],
+  "schema_id": "kt.operator.data_lineage.v1"
+}
