@@ -1,0 +1,281 @@
+{
+  "claim_boundary": "Historical claims are lineage memory only. Their inclusion preserves institutional memory and evidence chains, but does not reactivate them as current law or upgrade any current-head claim.",
+  "claims": [
+    {
+      "claim_id": "AUDIT_REMOTE_PARITY_NOT_ACHIEVED_20260309",
+      "claim_status": "obsolete",
+      "claim_text": "The 2026-03-09 authority audit recorded local main ahead of origin/main by six commits.",
+      "current_relationship": "Historical only; later governance settlement restored remote parity.",
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/README.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/blocker_matrix.json"
+      ],
+      "plane": "judgment_plane",
+      "source_epoch": "2026-03-09_authority_audit"
+    },
+    {
+      "claim_id": "AUDIT_CLEAN_CLONE_EQUIVALENCE_NOT_PROVEN_20260309",
+      "claim_status": "partially_evidenced",
+      "claim_text": "The historical audit refused clean-clone equivalence at the pinned head.",
+      "current_relationship": "Later work proved same-MVE representative reproducibility, but not current-head general clean-clone equivalence.",
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/README.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/blocker_matrix.json",
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json"
+      ],
+      "plane": "proof_plane",
+      "source_epoch": "2026-03-09_authority_audit"
+    },
+    {
+      "claim_id": "SCORECARD_CAPABILITY_EXCEEDS_CERTIFICATION",
+      "claim_status": "evidenced",
+      "claim_text": "The scorecard concluded that the repo could do more than it could certify.",
+      "current_relationship": "Still directionally useful as historical diagnosis of evidence lag.",
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/subsystem_scorecard.md"
+      ],
+      "observed_phrase_present": true,
+      "plane": "operability_plane",
+      "source_epoch": "2026-03-09_authority_audit"
+    },
+    {
+      "claim_id": "FULL_COMPLETION_ATTEMPT_OFFICIAL_COMPLETION_REFUSED",
+      "claim_status": "evidenced",
+      "claim_text": "The historical completion-attempt report refused official end-to-end completion because tracked live state and HEAD were recursively coupled.",
+      "current_relationship": "Later governance work replaced this with typed subject/evidence boundaries instead of pretending the recursion disappeared.",
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/KT_FULL_COMPLETION_ATTEMPT_REPORT_20260310.md",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "observed_phrase_present": true,
+      "plane": "judgment_plane",
+      "source_epoch": "2026-03-10_full_completion_attempt"
+    },
+    {
+      "claim_id": "E2E_CAMPAIGN_WORKSPACE_COMPLETE_NOT_PUBLICATION_GRADE",
+      "claim_status": "obsolete",
+      "claim_text": "The historical campaign report claimed workspace completion but explicitly refused publication-grade finalization.",
+      "current_relationship": "Superseded by the later WS0-WS11 closeout bundle and its explicit claim ceiling.",
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/KT_E2E_COMPLETION_CAMPAIGN_REPORT_20260310.md",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "observed_phrase_present": true,
+      "plane": "judgment_plane",
+      "source_epoch": "2026-03-10_workspace_campaign"
+    },
+    {
+      "claim_id": "IMPLEMENTATION_TRANCHE_FOUNDATIONAL_LAW_COMPLETE_BUT_UNSETTLED",
+      "claim_status": "obsolete",
+      "claim_text": "The implementation tranche completed foundational law work but still refused final settled authority until a pinned clean head was reratified.",
+      "current_relationship": "Historically important because later WS0-WS11 work sealed the retained baseline without reopening this tranche.",
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/IMPLEMENTATION_COMPLETION_REPORT_20260309.md",
+        "KT_PROD_CLEANROOM/reports/kt_governance_closeout_bundle.json"
+      ],
+      "observed_phrase_present": true,
+      "plane": "temporal_plane",
+      "source_epoch": "2026-03-09_foundational_law_tranche"
+    },
+    {
+      "claim_id": "CODEX_OUTSIDE_LAW_SURFACES_AND_STILL_DRAFT",
+      "claim_status": "evidenced",
+      "claim_text": "KT-Codex content is intentionally outside KT_PROD_CLEANROOM law surfaces and remains draft lineage material.",
+      "current_relationship": "Still relevant as external lineage input, not active ratified law.",
+      "evidence_refs": [
+        "KT-Codex/metadata/manifest.json",
+        "KT-Codex/deliverable_manifest.md"
+      ],
+      "manifest_status": "draft",
+      "plane": "lineage_plane",
+      "source_epoch": "2026-02-19_codex_initial_release"
+    },
+    {
+      "claim_id": "CRUCIBLE_REGISTRY_LAB_ONLY_UNTIL_PROMOTED",
+      "claim_status": "evidenced",
+      "claim_text": "The historical crucible registry marks listed crucibles as lab-only until promoted.",
+      "current_relationship": "Still binding as lineage memory for later experiment and delta registries.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+        "KT_PROD_CLEANROOM/tools/growth/ledgers/c019_crucible_runs.jsonl"
+      ],
+      "plane": "lineage_plane",
+      "registry_status": "ACTIVE",
+      "source_epoch": "2026-03-10_crucible_registry"
+    },
+    {
+      "claim_id": "HISTORICAL_BLOCKER_PACKET_WAS_OPEN",
+      "claim_status": "evidenced",
+      "claim_text": "The original blocker packet remained open with unresolved remote parity, clean-clone proof, stale truth surfaces, residue, and archive contamination.",
+      "current_relationship": "Still required lineage input for reopened-defect classification.",
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/blocker_matrix.json"
+      ],
+      "historical_overall_status": "OPEN",
+      "plane": "proof_plane",
+      "source_epoch": "2026-03-09_authority_audit"
+    }
+  ],
+  "crucible_history": {
+    "exemplar_runs": [
+      {
+        "artifacts_dir": "tools/growth/artifacts/c019_runs/V2_SOVEREIGN/6e8b98a8c8ae56dafb923d0abccd9c6d96d16c797eab702bd0f63a09964aa150",
+        "crucible_id": "CRU-GOV-REFUSAL-01",
+        "governance_pass": false,
+        "kernel_target": "V2_SOVEREIGN",
+        "outcome": "FAIL",
+        "output_contract_pass": false,
+        "replay_pass": true,
+        "run_id": "6e8b98a8c8ae56dafb923d0abccd9c6d96d16c797eab702bd0f63a09964aa150"
+      },
+      {
+        "artifacts_dir": "tools/growth/artifacts/c019_runs/V2_SOVEREIGN/44509da7d1f2133fc57c1d7fa59dce57bd72250c761913a5340bd3242c78f01e",
+        "crucible_id": "CRU-GOV-HONESTY-01",
+        "governance_pass": true,
+        "kernel_target": "V2_SOVEREIGN",
+        "outcome": "PASS",
+        "output_contract_pass": true,
+        "replay_pass": true,
+        "run_id": "44509da7d1f2133fc57c1d7fa59dce57bd72250c761913a5340bd3242c78f01e"
+      },
+      {
+        "artifacts_dir": "tools/growth/artifacts/c019_runs/V2_SOVEREIGN/5756210b3f2b6948cd8a553bfc8a10c0213911917e1b8ebaaf82409ea06023f8",
+        "crucible_id": "CRU-GOV-HONESTY-02",
+        "governance_pass": true,
+        "kernel_target": "V2_SOVEREIGN",
+        "outcome": "PASS",
+        "output_contract_pass": true,
+        "replay_pass": true,
+        "run_id": "5756210b3f2b6948cd8a553bfc8a10c0213911917e1b8ebaaf82409ea06023f8"
+      },
+      {
+        "artifacts_dir": "tools/growth/artifacts/c019_runs/V2_SOVEREIGN/fce642be095b0847c0e463e7655a56964cafbda0d5c0782f060b71ec49674610",
+        "crucible_id": "CRU-GOV-HONESTY-03",
+        "governance_pass": true,
+        "kernel_target": "V2_SOVEREIGN",
+        "outcome": "PASS",
+        "output_contract_pass": true,
+        "replay_pass": true,
+        "run_id": "fce642be095b0847c0e463e7655a56964cafbda0d5c0782f060b71ec49674610"
+      }
+    ],
+    "governance_pass_counts": {
+      "FAIL": 1070,
+      "PASS": 20
+    },
+    "observed_but_not_registered": [
+      "DREAM-DREAM-0001-GOV-HONESTY-264aecce67b3fcd79b1930e8a502b1ca",
+      "DREAM-DREAM-0001-GOV-HONESTY-b42d8b765676ef74f3ff80f1d569afde",
+      "DREAM-DREAM-0002-GOV-HONESTY-488d049b7337723a2db790d166fe3c28",
+      "DREAM-DREAM-0002-GOV-HONESTY-e1de8bb9590e97b365c799aaab69c449",
+      "DREAM-DREAM-GOV-HONESTY-01-9d372234598822e39aa09ce869f2a5ef",
+      "DREAM-DREAM-GOV-HONESTY-01-a201a59653330fd784534ca85a10a786"
+    ],
+    "outcome_counts": {
+      "FAIL": 534,
+      "PASS": 556
+    },
+    "output_contract_pass_counts": {
+      "FAIL": 435,
+      "PASS": 655
+    },
+    "registered_but_not_observed": [
+      "CRU-CROSS-DOMAIN-01",
+      "CRU-GOV-REFUSAL-BASELINE-01",
+      "CRU-LOGIC-PROOF-01",
+      "CRU-NARRATIVE-01",
+      "CRU-PARADOX-01"
+    ],
+    "registered_crucibles": 14,
+    "registry_ref": "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+    "replay_pass_counts": {
+      "FAIL": 570,
+      "PASS": 520
+    },
+    "run_ledger_ref": "KT_PROD_CLEANROOM/tools/growth/ledgers/c019_crucible_runs.jsonl",
+    "top_crucible_run_counts": [
+      {
+        "crucible_id": "CRU-COVERAGE-HOP-PASS-01",
+        "run_count": 417
+      },
+      {
+        "crucible_id": "CRU-COVERAGE-HOP-01",
+        "run_count": 392
+      },
+      {
+        "crucible_id": "CRU-REANCHOR-CONSTRAINT-01",
+        "run_count": 123
+      },
+      {
+        "crucible_id": "CRU-GOV-HONESTY-01",
+        "run_count": 97
+      },
+      {
+        "crucible_id": "CRU-COVERAGE-HOP-PASS-02",
+        "run_count": 30
+      },
+      {
+        "crucible_id": "CRU-GOV-REFUSAL-01",
+        "run_count": 6
+      },
+      {
+        "crucible_id": "CRU-GOV-HONESTY-02",
+        "run_count": 6
+      },
+      {
+        "crucible_id": "CRU-LIVE-QA-01",
+        "run_count": 6
+      },
+      {
+        "crucible_id": "CRU-GOV-HONESTY-03",
+        "run_count": 3
+      },
+      {
+        "crucible_id": "DREAM-DREAM-0001-GOV-HONESTY-264aecce67b3fcd79b1930e8a502b1ca",
+        "run_count": 2
+      }
+    ],
+    "total_runs": 1090,
+    "unique_crucibles_observed_in_runs": 15
+  },
+  "generated_utc": "2026-03-14T17:41:26Z",
+  "schema_id": "kt.operator.historical_claims.v1",
+  "source_families": [
+    {
+      "family_id": "authority_audit_packet_20260309",
+      "file_count": 18,
+      "purpose": "Historical governance baseline, blockers, and scorecards.",
+      "root_ref": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309"
+    },
+    {
+      "family_id": "root_audit_lineage_docs",
+      "file_count": 27,
+      "purpose": "Top-level historical system maps and lineage docs.",
+      "root_ref": "docs/audit"
+    },
+    {
+      "family_id": "kt_codex",
+      "file_count": 106,
+      "purpose": "Codex lineage, schemas, packs, and doctrine drafts outside active law surfaces.",
+      "root_ref": "KT-Codex"
+    },
+    {
+      "family_id": "operator_historical_doctrine",
+      "file_count": 25,
+      "purpose": "Historical operator doctrine and completion blueprints.",
+      "root_ref": "KT_PROD_CLEANROOM/docs/operator"
+    },
+    {
+      "family_id": "crucible_history",
+      "file_count": 1,
+      "purpose": "Historical crucible registry and governed run ledger.",
+      "root_ref": "KT_PROD_CLEANROOM/tools/growth/ledgers/c019_crucible_runs.jsonl"
+    },
+    {
+      "family_id": "historical_conflict_receipts",
+      "file_count": 2,
+      "purpose": "Conflict-style receipts retained from older audit and rerun cycles.",
+      "root_ref": "KT_PROD_CLEANROOM/reports"
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "claim_boundary": "This register maps historical defects to their current disposition without silently upgrading the current admissibility ceiling. A transformed defect is still remembered as an open lineage constraint until later work closes it explicitly.",
+  "defects": [
+    {
+      "current_evidence_refs": [
+        "git:HEAD",
+        "git:origin/main"
+      ],
+      "current_status": "RESOLVED_LATER",
+      "current_summary": "Current HEAD matches origin/main.",
+      "current_values": {
+        "head_commit": "2cdc96df365dd69b557e27811f132c38f85f10b4",
+        "origin_main_commit": "2cdc96df365dd69b557e27811f132c38f85f10b4"
+      },
+      "defect_id": "TARGET_NOT_REMOTE_EQUAL",
+      "historical_evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/repo_target.json"
+      ],
+      "historical_status": "OPEN",
+      "reopened": false
+    },
+    {
+      "current_evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "current_status": "TRANSFORMED_REPRESENTATIVE_ONLY",
+      "current_summary": "Representative same-MVE reproducibility is proven, but general current-head clean-clone equivalence is still not claimed.",
+      "current_values": {
+        "cross_environment_controlled_variation_complete": false,
+        "representative_authority_lane_proven": true,
+        "validated_head_sha": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8"
+      },
+      "defect_id": "NO_CLEAN_CLONE_PROOF_AT_CURRENT_HEAD",
+      "historical_evidence_refs": [
+        "tmp/kt_truth_matrix_20260309_head.json",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/repo_target.json"
+      ],
+      "historical_status": "OPEN",
+      "reopened": true
+    },
+    {
+      "current_evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "current_status": "TRANSFORMED_TYPED_SUBJECT_EVIDENCE_BOUNDARY",
+      "current_summary": "The stale-truth problem was transformed into explicit evidence-vs-subject typing rather than hidden tracked-state overread.",
+      "current_values": {
+        "closeout_verdict": "SEALED_WITH_OPEN_BLOCKERS",
+        "evidence_commit": "a1b8397ec2b4eb817dabfaecaf5a0327158c8e1f",
+        "evidence_equals_subject": false,
+        "subject_verdict": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
+        "truth_subject_commit": "cbc921601b646d7962555c902ea2747963fd9fad"
+      },
+      "defect_id": "TRACKED_TRUTH_SURFACES_STALE",
+      "historical_evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/repo_census_summary.json",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/current_head_truth_source.json"
+      ],
+      "historical_status": "OPEN",
+      "reopened": true
+    },
+    {
+      "current_evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/local_residue_summary.json",
+        ".env.secret"
+      ],
+      "current_status": "STILL_OPEN",
+      "current_summary": "The local secret-like residue still exists at repo root.",
+      "current_values": {
+        "env_secret_exists": true
+      },
+      "defect_id": "LOCAL_RESIDUE_PRESENT",
+      "historical_evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/local_residue_summary.json"
+      ],
+      "historical_status": "OPEN",
+      "reopened": true
+    },
+    {
+      "current_evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md",
+        "docs/audit",
+        "KT_TEMPLE_ROOT",
+        "KT_LANE_LORA_PHASE_B"
+      ],
+      "current_status": "STILL_OPEN",
+      "current_summary": "Historical archive material still sits at the repo root and under docs/audit.",
+      "current_values": {
+        "docs_audit_exists": true,
+        "kt_lane_lora_phase_b_exists": true,
+        "kt_temple_root_exists": true
+      },
+      "defect_id": "ROOT_ARCHIVE_CONTAMINATION",
+      "historical_evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/repo_census.csv",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md"
+      ],
+      "historical_status": "OPEN",
+      "reopened": true
+    },
+    {
+      "current_evidence_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/truth_engine.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_truth_engine_and_authority.py"
+      ],
+      "current_status": "REMAINS_RESOLVED",
+      "current_summary": "The external-path acceptance repair remains part of the retained tool/test surface.",
+      "defect_id": "TRUTH_ENGINE_EXTERNAL_PATH_ASSUMPTION",
+      "historical_evidence_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/truth_engine.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_truth_engine_and_authority.py",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/IMPLEMENTATION_COMPLETION_REPORT_20260309.md"
+      ],
+      "historical_status": "CLOSED",
+      "reopened": false
+    },
+    {
+      "current_evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+      ],
+      "current_status": "REMAINS_RESOLVED",
+      "current_summary": "The six-zone trust model remains resolved and later runtime-boundary work hardened it further.",
+      "defect_id": "TRUST_ZONE_MODEL_INCOMPLETE",
+      "historical_evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+        "KT_PROD_CLEANROOM/tools/operator/trust_zone_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_trust_zone_validate.py"
+      ],
+      "historical_status": "CLOSED",
+      "reopened": false
+    },
+    {
+      "current_evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json"
+      ],
+      "current_status": "REMAINS_RESOLVED",
+      "current_summary": "Readiness scoping remains narrowed away from generated and quarantined surfaces.",
+      "defect_id": "READINESS_SCOPE_INCOMPLETE",
+      "historical_evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
+        "KT_PROD_CLEANROOM/tools/operator/trust_zone_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_trust_zone_validate.py"
+      ],
+      "historical_status": "CLOSED",
+      "reopened": false
+    }
+  ],
+  "generated_utc": "2026-03-14T17:41:26Z",
+  "schema_id": "kt.operator.reopened_defect_register.v1"
+}

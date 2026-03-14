@@ -1,0 +1,225 @@
+{
+  "claim_boundary": "Historical resolutions record explicit closures, fail-closed clearances, and governance-ladder transitions stated in prior artifacts. They preserve chronology without reopening any closed domain.",
+  "generated_utc": "2026-03-14T17:41:26Z",
+  "historical_governance_ladders": [
+    {
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/README.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/blocker_matrix.json"
+      ],
+      "ladder_id": "AUTHORITY_AUDIT_20260309",
+      "ladder_status": "OPEN_BLOCKERS",
+      "statement": "The 2026-03-09 authority audit packet opened a blocker ladder instead of claiming green closure."
+    },
+    {
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/IMPLEMENTATION_COMPLETION_REPORT_20260309.md"
+      ],
+      "ladder_id": "IMPLEMENTATION_TRANCHE_20260309",
+      "ladder_status": "FOUNDATIONAL_LAW_COMPLETE_BUT_UNSETTLED",
+      "statement": "The implementation tranche completed foundational law work but required a later pinned-head ratification cycle."
+    },
+    {
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/KT_FULL_COMPLETION_ATTEMPT_REPORT_20260310.md"
+      ],
+      "ladder_id": "FULL_COMPLETION_ATTEMPT_20260310",
+      "ladder_status": "OFFICIAL_COMPLETION_REFUSED",
+      "statement": "The full completion attempt report refused official completion because tracked state and HEAD were recursively coupled."
+    },
+    {
+      "evidence_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/KT_E2E_COMPLETION_CAMPAIGN_REPORT_20260310.md"
+      ],
+      "ladder_id": "WORKSPACE_CAMPAIGN_20260310",
+      "ladder_status": "WORKSPACE_COMPLETE_NOT_PUBLICATION_GRADE",
+      "statement": "The workspace campaign declared local board completion but explicitly withheld publication-grade closure."
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_blocker_register.json"
+      ],
+      "ladder_id": "WS0_WS11_CLOSEOUT_20260314",
+      "ladder_status": "SEALED_WITH_OPEN_BLOCKERS",
+      "statement": "The retained WS0-WS11 baseline sealed the admissibility ceiling with explicit proven and not_proven boundaries."
+    }
+  ],
+  "receipt_clearances": [
+    {
+      "cause_class": "TRANSIENT_FACTORY_EXPORT_STATE",
+      "clearance_id": "CLEARANCE::KT_PROD_CLEANROOM/tests/fl3/test_fl3_budget_and_unlock.py::test_fl3_global_unlock_requires_artifact",
+      "clearance_status": "PASS",
+      "code_change_required": false,
+      "disposition": "CLEARED_ON_LAWFUL_RERUN",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/run_sweep_audit_failure_matrix.json"
+      ],
+      "test_id": "KT_PROD_CLEANROOM/tests/fl3/test_fl3_budget_and_unlock.py::test_fl3_global_unlock_requires_artifact"
+    },
+    {
+      "cause_class": "TRANSIENT_FACTORY_EXPORT_STATE",
+      "clearance_id": "CLEARANCE::KT_PROD_CLEANROOM/tests/fl3/test_fl3_factory_smoke_dryrun.py::test_fl3_factory_smoke_dryrun",
+      "clearance_status": "PASS",
+      "code_change_required": false,
+      "disposition": "CLEARED_ON_LAWFUL_RERUN",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/run_sweep_audit_failure_matrix.json"
+      ],
+      "test_id": "KT_PROD_CLEANROOM/tests/fl3/test_fl3_factory_smoke_dryrun.py::test_fl3_factory_smoke_dryrun"
+    },
+    {
+      "cause_class": "TRANSIENT_FACTORY_EXPORT_STATE",
+      "clearance_id": "CLEARANCE::KT_PROD_CLEANROOM/tests/fl3/test_fl3_srr_air_exclusivity.py::test_factory_outputs_do_not_emit_runtime_srr_air",
+      "clearance_status": "PASS",
+      "code_change_required": false,
+      "disposition": "CLEARED_ON_LAWFUL_RERUN",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/run_sweep_audit_failure_matrix.json"
+      ],
+      "test_id": "KT_PROD_CLEANROOM/tests/fl3/test_fl3_srr_air_exclusivity.py::test_factory_outputs_do_not_emit_runtime_srr_air"
+    },
+    {
+      "cause_class": "TRANSIENT_FACTORY_EXPORT_STATE",
+      "clearance_id": "CLEARANCE::KT_PROD_CLEANROOM/tests/fl3/test_fl3_tournament_blindness.py::test_fl3_factory_tournament_emits_blind_pack_and_mapping",
+      "clearance_status": "PASS",
+      "code_change_required": false,
+      "disposition": "CLEARED_ON_LAWFUL_RERUN",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/run_sweep_audit_failure_matrix.json"
+      ],
+      "test_id": "KT_PROD_CLEANROOM/tests/fl3/test_fl3_tournament_blindness.py::test_fl3_factory_tournament_emits_blind_pack_and_mapping"
+    },
+    {
+      "cause_class": "TRANSIENT_FACTORY_EXPORT_STATE",
+      "clearance_id": "CLEARANCE::KT_PROD_CLEANROOM/tests/fl3/test_fl3_vrr_lane.py::test_fl3_vrr_lane_emits_no_promotion_artifacts",
+      "clearance_status": "PASS",
+      "code_change_required": false,
+      "disposition": "CLEARED_ON_LAWFUL_RERUN",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/run_sweep_audit_failure_matrix.json"
+      ],
+      "test_id": "KT_PROD_CLEANROOM/tests/fl3/test_fl3_vrr_lane.py::test_fl3_vrr_lane_emits_no_promotion_artifacts"
+    },
+    {
+      "cause_class": "TRANSIENT_FACTORY_EXPORT_STATE",
+      "clearance_id": "CLEARANCE::KT_PROD_CLEANROOM/tests/fl3/test_fl4_metabolism_perturbation.py::test_fl4_metabolism_perturbations_change_hash_root",
+      "clearance_status": "PASS",
+      "code_change_required": false,
+      "disposition": "CLEARED_ON_LAWFUL_RERUN",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/run_sweep_audit_failure_matrix.json"
+      ],
+      "test_id": "KT_PROD_CLEANROOM/tests/fl3/test_fl4_metabolism_perturbation.py::test_fl4_metabolism_perturbations_change_hash_root"
+    },
+    {
+      "cause_class": "TRANSIENT_FACTORY_EXPORT_STATE",
+      "clearance_id": "CLEARANCE::KT_PROD_CLEANROOM/tests/fl3/test_fl4_promotion_atomic.py::test_fl4_atomic_promotion_creates_promoted_package_and_updates_index",
+      "clearance_status": "PASS",
+      "code_change_required": false,
+      "disposition": "CLEARED_ON_LAWFUL_RERUN",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/run_sweep_audit_failure_matrix.json"
+      ],
+      "test_id": "KT_PROD_CLEANROOM/tests/fl3/test_fl4_promotion_atomic.py::test_fl4_atomic_promotion_creates_promoted_package_and_updates_index"
+    },
+    {
+      "cause_class": "TRANSIENT_FACTORY_EXPORT_STATE",
+      "clearance_id": "CLEARANCE::KT_PROD_CLEANROOM/tests/fl3/test_fl4_utility_pack_binding.py::test_eval_report_utility_pack_hash_mismatch_fails_closed",
+      "clearance_status": "PASS",
+      "code_change_required": false,
+      "disposition": "CLEARED_ON_LAWFUL_RERUN",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/run_sweep_audit_failure_matrix.json"
+      ],
+      "test_id": "KT_PROD_CLEANROOM/tests/fl3/test_fl4_utility_pack_binding.py::test_eval_report_utility_pack_hash_mismatch_fails_closed"
+    },
+    {
+      "cause_class": "TRANSIENT_FACTORY_EXPORT_STATE",
+      "clearance_id": "CLEARANCE::KT_PROD_CLEANROOM/tests/fl3/test_fl4_weight_artifacts_rejected.py::test_canonical_lane_rejects_weight_artifact_extensions[.ckpt]",
+      "clearance_status": "PASS",
+      "code_change_required": false,
+      "disposition": "CLEARED_ON_LAWFUL_RERUN",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/run_sweep_audit_failure_matrix.json"
+      ],
+      "test_id": "KT_PROD_CLEANROOM/tests/fl3/test_fl4_weight_artifacts_rejected.py::test_canonical_lane_rejects_weight_artifact_extensions[.ckpt]"
+    },
+    {
+      "cause_class": "TRANSIENT_FACTORY_EXPORT_STATE",
+      "clearance_id": "CLEARANCE::KT_PROD_CLEANROOM/tests/fl3/test_fl4_weight_artifacts_rejected.py::test_canonical_lane_rejects_weight_artifact_extensions[.onnx]",
+      "clearance_status": "PASS",
+      "code_change_required": false,
+      "disposition": "CLEARED_ON_LAWFUL_RERUN",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/run_sweep_audit_failure_matrix.json"
+      ],
+      "test_id": "KT_PROD_CLEANROOM/tests/fl3/test_fl4_weight_artifacts_rejected.py::test_canonical_lane_rejects_weight_artifact_extensions[.onnx]"
+    },
+    {
+      "cause_class": "TRANSIENT_REPO_DIRTY_MARKER_STATE",
+      "clearance_id": "CLEARANCE::KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py::test_kt_cli_status_smoke_and_worm_collision",
+      "clearance_status": "PASS",
+      "code_change_required": false,
+      "disposition": "CLEARED_ON_LAWFUL_RERUN",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/run_sweep_audit_failure_matrix.json"
+      ],
+      "test_id": "KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py::test_kt_cli_status_smoke_and_worm_collision"
+    },
+    {
+      "cause_class": "TRANSIENT_POLICY_C_PLAN_LOCK",
+      "clearance_id": "CLEARANCE::KT_PROD_CLEANROOM/tests/policy_c/test_sweep_determinism_rerun.py::TestSweepDeterminismRerun::test_rerun_content_hashes",
+      "clearance_status": "PASS",
+      "code_change_required": false,
+      "disposition": "CLEARED_ON_LAWFUL_RERUN",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/run_sweep_audit_failure_matrix.json"
+      ],
+      "test_id": "KT_PROD_CLEANROOM/tests/policy_c/test_sweep_determinism_rerun.py::TestSweepDeterminismRerun::test_rerun_content_hashes"
+    }
+  ],
+  "resolved_blockers": [
+    {
+      "blocker_id": "TRUTH_ENGINE_EXTERNAL_PATH_ASSUMPTION",
+      "description": "truth_engine.py now accepts external live-validation indexes and preserves an absolute validation_index_ref when the source is outside the repo root.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/truth_engine.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_truth_engine_and_authority.py",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/IMPLEMENTATION_COMPLETION_REPORT_20260309.md"
+      ],
+      "exit_criteria": [
+        "accept external truth inputs without forcing repo-relative paths",
+        "cover the fix with a regression test"
+      ],
+      "historical_status": "CLOSED"
+    },
+    {
+      "blocker_id": "TRUST_ZONE_MODEL_INCOMPLETE",
+      "description": "Tracked governance now models canonical, lab, archive, commercial, generated/runtime truth, and quarantined as distinct zones.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+        "KT_PROD_CLEANROOM/tools/operator/trust_zone_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_trust_zone_validate.py"
+      ],
+      "exit_criteria": [
+        "track canonical, lab, archive, commercial, generated/runtime truth, and quarantined as distinct zones"
+      ],
+      "historical_status": "CLOSED"
+    },
+    {
+      "blocker_id": "READINESS_SCOPE_INCOMPLETE",
+      "description": "Tracked readiness law now excludes generated/runtime truth and quarantined surfaces from readiness claims.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
+        "KT_PROD_CLEANROOM/tools/operator/trust_zone_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_trust_zone_validate.py"
+      ],
+      "exit_criteria": [
+        "exclude generated/runtime truth and quarantined surfaces from readiness claims"
+      ],
+      "historical_status": "CLOSED"
+    }
+  ],
+  "schema_id": "kt.operator.historical_resolutions.v1"
+}
