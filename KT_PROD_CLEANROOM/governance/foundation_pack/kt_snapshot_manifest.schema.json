@@ -1,0 +1,106 @@
+{
+  "$id": "kt.foundation_pack.snapshot_manifest.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "file_entry": {
+      "additionalProperties": false,
+      "properties": {
+        "file_type": {
+          "type": "string"
+        },
+        "generation_status": {
+          "enum": [
+            "authored",
+            "generated",
+            "vendored",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        "parse_state": {
+          "enum": [
+            "parseable",
+            "opaque",
+            "parse_failed"
+          ],
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        "size_bytes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "trust_zone": {
+          "enum": [
+            "CANONICAL",
+            "LAB",
+            "ARCHIVE",
+            "COMMERCIAL",
+            "GENERATED_RUNTIME_TRUTH",
+            "QUARANTINED"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "size_bytes",
+        "file_type",
+        "sha256",
+        "generation_status",
+        "parse_state",
+        "trust_zone"
+      ],
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "files": {
+      "items": {
+        "$ref": "#/$defs/file_entry"
+      },
+      "type": "array"
+    },
+    "generated_utc": {
+      "type": "string"
+    },
+    "repo_root": {
+      "type": "string"
+    },
+    "schema_id": {
+      "type": "string"
+    },
+    "snapshot_id": {
+      "type": "string"
+    },
+    "source_head_commit": {
+      "pattern": "^[a-f0-9]{40}$",
+      "type": "string"
+    },
+    "state_taint_status": {
+      "enum": [
+        "CLEAR",
+        "STATE_TAINTED"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "snapshot_id",
+    "generated_utc",
+    "repo_root",
+    "source_head_commit",
+    "state_taint_status",
+    "files"
+  ],
+  "title": "KT Snapshot Manifest Schema",
+  "type": "object"
+}

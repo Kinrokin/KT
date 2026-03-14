@@ -1,0 +1,72 @@
+{
+  "ambiguity_rules": [
+    "Fail closed on ambiguity touching authority, runtime integrity, paradox handling, publication claims, security, or external profiles.",
+    "Do not widen scope silently. Emit contradiction evidence instead.",
+    "No current-head claim may overread subject-evidence lag."
+  ],
+  "claim_upgrade_guards": [
+    "Generated doctrine may not become law without ratification artifacts.",
+    "Commercial or outward-facing surfaces may not claim platform enforcement while branch_protection_status is not PASS.",
+    "No release or competition statement may exceed the highest evidence-backed claim ceiling.",
+    "HEAD may be described as containing evidence for a subject when SHAs differ, but not as the proved subject itself."
+  ],
+  "contradiction_response": {
+    "default_action": "FAIL_CLOSED",
+    "required_artifact_classes": [
+      "contradiction_receipt",
+      "blocker_register_update",
+      "proof_obligation_entry"
+    ]
+  },
+  "envelope_id": "KT_FOUNDATION_SAFETY_ENVELOPE_V1_20260314",
+  "fail_closed_domains": [
+    "authority",
+    "runtime_integrity",
+    "publication_claims",
+    "security",
+    "external_profiles",
+    "paradox_resolution",
+    "governance"
+  ],
+  "foundation_pack_version": "2026-03-14.foundation.v1",
+  "paradox_hold_policy": {
+    "escalation_actions": [
+      "FAIL_CLOSED",
+      "CONSTITUTIONAL_COURT_ESCALATION"
+    ],
+    "indefinite_hold_forbidden": true,
+    "max_hold_without_escalation": "P7D",
+    "ttl_required": true
+  },
+  "protected_surfaces": [
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/**",
+    "kt_truth_ledger:*",
+    ".github/workflows/**",
+    "KT_PROD_CLEANROOM/docs/commercial/**"
+  ],
+  "schema_id": "kt.foundation_pack.safety_envelope.v1",
+  "source_law_refs": [
+    "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+    "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+    "KT_PROD_CLEANROOM/governance/public_verifier_rules.json",
+    "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_blocker_register.json"
+  ],
+  "state_taint_rule": {
+    "blocked_promotions": [
+      "proof_promotion",
+      "release_promotion",
+      "claim_ceiling_upgrade"
+    ],
+    "clearance_requirements": [
+      "opaque artifact isolated or removed",
+      "critical path rescanned",
+      "taint receipt regenerated"
+    ],
+    "taint_status": "STATE_TAINTED",
+    "trigger_conditions": [
+      "opaque artifact on sovereign path",
+      "parse_failed artifact on canonical runtime path",
+      "unparseable artifact on authority-defining path"
+    ]
+  }
+}

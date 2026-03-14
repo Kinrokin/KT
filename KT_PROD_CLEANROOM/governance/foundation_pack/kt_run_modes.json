@@ -1,0 +1,116 @@
+{
+  "foundation_pack_version": "2026-03-14.foundation.v1",
+  "modes": [
+    {
+      "claim_upgrade_allowed": false,
+      "description": "Read-only analysis plus bundle emission against frozen inputs.",
+      "explicit_approval_required_to_continue": true,
+      "explicit_post_touch_report_required": true,
+      "mode_id": "read_only_plus_bundle_emit",
+      "mutation_allowed": false,
+      "ratification_required": false,
+      "receipt_required": true,
+      "requires_audit_contract_pass": true
+    },
+    {
+      "claim_upgrade_allowed": true,
+      "description": "Proposal work followed by explicit ratification before any downstream reliance.",
+      "explicit_approval_required_to_continue": true,
+      "explicit_post_touch_report_required": true,
+      "mode_id": "proposal_then_ratification",
+      "mutation_allowed": true,
+      "ratification_required": true,
+      "receipt_required": true,
+      "requires_audit_contract_pass": true
+    },
+    {
+      "claim_upgrade_allowed": false,
+      "description": "Historical and baseline ingestion without mutating canon or runtime.",
+      "explicit_approval_required_to_continue": true,
+      "explicit_post_touch_report_required": true,
+      "mode_id": "read_only_ingestion",
+      "mutation_allowed": false,
+      "ratification_required": false,
+      "receipt_required": true,
+      "requires_audit_contract_pass": true
+    },
+    {
+      "claim_upgrade_allowed": false,
+      "description": "Compiler runs that inventory, parse, graph, and catalog without mutating source canon.",
+      "explicit_approval_required_to_continue": true,
+      "explicit_post_touch_report_required": true,
+      "mode_id": "read_only_compiler_run",
+      "mutation_allowed": false,
+      "ratification_required": false,
+      "receipt_required": true,
+      "requires_audit_contract_pass": true
+    },
+    {
+      "claim_upgrade_allowed": false,
+      "description": "Rule-engine runs that derive judgments only from explicit evidence chains.",
+      "explicit_approval_required_to_continue": true,
+      "explicit_post_touch_report_required": true,
+      "mode_id": "read_only_rule_engine_run",
+      "mutation_allowed": false,
+      "ratification_required": false,
+      "receipt_required": true,
+      "requires_audit_contract_pass": true
+    },
+    {
+      "claim_upgrade_allowed": false,
+      "description": "Planning-only mode for canon, normalization, and professionalization proposals.",
+      "explicit_approval_required_to_continue": true,
+      "explicit_post_touch_report_required": true,
+      "mode_id": "proposal_only",
+      "mutation_allowed": false,
+      "ratification_required": false,
+      "receipt_required": true,
+      "requires_audit_contract_pass": true
+    },
+    {
+      "claim_upgrade_allowed": false,
+      "description": "Registry compilation for experiment, lineage, and runtime memory surfaces.",
+      "explicit_approval_required_to_continue": true,
+      "explicit_post_touch_report_required": true,
+      "mode_id": "read_only_registry_compilation",
+      "mutation_allowed": false,
+      "ratification_required": false,
+      "receipt_required": true,
+      "requires_audit_contract_pass": true
+    },
+    {
+      "claim_upgrade_allowed": false,
+      "description": "Mixed modeling and testing mode for bounded formalization work such as paradox verification.",
+      "explicit_approval_required_to_continue": true,
+      "explicit_post_touch_report_required": true,
+      "mode_id": "mixed_modeling_and_testing",
+      "mutation_allowed": true,
+      "ratification_required": true,
+      "receipt_required": true,
+      "requires_audit_contract_pass": true
+    },
+    {
+      "claim_upgrade_allowed": false,
+      "description": "Generated document mode where doctrine and profiles are emitted from machine state and then ratified.",
+      "explicit_approval_required_to_continue": true,
+      "explicit_post_touch_report_required": true,
+      "mode_id": "generated_docs_plus_ratification",
+      "mutation_allowed": true,
+      "ratification_required": true,
+      "receipt_required": true,
+      "requires_audit_contract_pass": true
+    },
+    {
+      "claim_upgrade_allowed": false,
+      "description": "Adversarial tribunal mode combining red-team attack, blue-team hardening, and magistrate scoring.",
+      "explicit_approval_required_to_continue": true,
+      "explicit_post_touch_report_required": true,
+      "mode_id": "adversarial_tribunal",
+      "mutation_allowed": true,
+      "ratification_required": true,
+      "receipt_required": true,
+      "requires_audit_contract_pass": true
+    }
+  ],
+  "schema_id": "kt.foundation_pack.run_modes.v1"
+}

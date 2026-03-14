@@ -1,0 +1,305 @@
+{
+  "admissibility_ceilings": [
+    "DOCUMENTARY_ONLY",
+    "EVIDENCE_CONTAINS_SUBJECT_ONLY",
+    "TRANSPARENCY_VERIFIED_SUBJECT_ONLY",
+    "WORKFLOW_GOVERNANCE_ONLY",
+    "CANONICAL_RUNTIME_BOUNDARY_SUBJECT_ONLY",
+    "REPRESENTATIVE_SAME_MVE_ONLY",
+    "COMPETITION_AND_PUBLICATION_GRADE",
+    "H1_ACTIVATION"
+  ],
+  "claim_ceiling_rule": "No claim may exceed the highest admissibility supported by explicit evidence-chain-backed machine outputs.",
+  "claim_classes": [
+    {
+      "allowed_statuses": [
+        "evidenced",
+        "partially_evidenced",
+        "contradicted",
+        "aspirational",
+        "obsolete",
+        "unclear"
+      ],
+      "applicable_organs": [
+        "truth_authority_plane",
+        "public_claims_and_doctrine_plane"
+      ],
+      "blocked_by": [
+        "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+        "AUTHORITY_CONVERGENCE_UNRESOLVED"
+      ],
+      "claim_class_id": "truth_authority_claim",
+      "description": "Claims about what surface is authoritative, settled, or admissible as current truth.",
+      "label": "Truth Authority Claim",
+      "max_admissibility_ceiling": "TRANSPARENCY_VERIFIED_SUBJECT_ONLY",
+      "required_evidence_classes": [
+        "governance_contract",
+        "receipt",
+        "manifest"
+      ]
+    },
+    {
+      "allowed_statuses": [
+        "evidenced",
+        "partially_evidenced",
+        "contradicted",
+        "aspirational",
+        "unclear"
+      ],
+      "applicable_organs": [
+        "verification_delivery_security_plane",
+        "public_claims_and_doctrine_plane"
+      ],
+      "blocked_by": [
+        "TRANSPARENCY_PUBLICATION_RECEIPT_MISSING"
+      ],
+      "claim_class_id": "transparency_publication_claim",
+      "description": "Claims that a subject commit is signed, published, and transparency-verified.",
+      "label": "Transparency Publication Claim",
+      "max_admissibility_ceiling": "TRANSPARENCY_VERIFIED_SUBJECT_ONLY",
+      "required_evidence_classes": [
+        "attestation",
+        "receipt",
+        "subject_manifest"
+      ]
+    },
+    {
+      "allowed_statuses": [
+        "evidenced",
+        "partially_evidenced",
+        "contradicted",
+        "aspirational",
+        "unclear"
+      ],
+      "applicable_organs": [
+        "governance_spine",
+        "constitutional_meta_governance",
+        "public_claims_and_doctrine_plane"
+      ],
+      "blocked_by": [
+        "PLATFORM_ENFORCEMENT_UNPROVEN"
+      ],
+      "claim_class_id": "governance_legitimacy_claim",
+      "description": "Claims about workflow governance, platform enforcement, and legitimacy ceilings.",
+      "label": "Governance Legitimacy Claim",
+      "max_admissibility_ceiling": "WORKFLOW_GOVERNANCE_ONLY",
+      "required_evidence_classes": [
+        "governance_contract",
+        "receipt",
+        "runtime_verifier_output"
+      ]
+    },
+    {
+      "allowed_statuses": [
+        "evidenced",
+        "partially_evidenced",
+        "contradicted",
+        "aspirational",
+        "unclear"
+      ],
+      "applicable_organs": [
+        "runtime_spine",
+        "operator_factory",
+        "public_claims_and_doctrine_plane"
+      ],
+      "blocked_by": [
+        "RUNTIME_BOUNDARY_UNSETTLED"
+      ],
+      "claim_class_id": "runtime_boundary_claim",
+      "description": "Claims about canonical runtime roots, namespace purity, and compatibility-only quarantine.",
+      "label": "Runtime Boundary Claim",
+      "max_admissibility_ceiling": "CANONICAL_RUNTIME_BOUNDARY_SUBJECT_ONLY",
+      "required_evidence_classes": [
+        "governance_contract",
+        "receipt",
+        "runtime_registry"
+      ]
+    },
+    {
+      "allowed_statuses": [
+        "evidenced",
+        "partially_evidenced",
+        "contradicted",
+        "aspirational",
+        "unclear"
+      ],
+      "applicable_organs": [
+        "experiment_crucible_plane",
+        "release_profile_plane"
+      ],
+      "blocked_by": [
+        "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN"
+      ],
+      "claim_class_id": "reproducibility_claim",
+      "description": "Claims about representative clean-clone proof, reproducibility bands, and environmental control.",
+      "label": "Reproducibility Claim",
+      "max_admissibility_ceiling": "REPRESENTATIVE_SAME_MVE_ONLY",
+      "required_evidence_classes": [
+        "receipt",
+        "run_bundle",
+        "diff_summary"
+      ]
+    },
+    {
+      "allowed_statuses": [
+        "evidenced",
+        "partially_evidenced",
+        "contradicted",
+        "aspirational",
+        "unclear"
+      ],
+      "applicable_organs": [
+        "experiment_crucible_plane",
+        "lab_adaptation_plane"
+      ],
+      "blocked_by": [
+        "DELTA_LINEAGE_MISSING"
+      ],
+      "claim_class_id": "experiment_lineage_claim",
+      "description": "Claims that experiments, crucibles, and learning deltas are fully lineaged and governed.",
+      "label": "Experiment Lineage Claim",
+      "max_admissibility_ceiling": "DOCUMENTARY_ONLY",
+      "required_evidence_classes": [
+        "registry_entry",
+        "receipt",
+        "config"
+      ]
+    },
+    {
+      "allowed_statuses": [
+        "evidenced",
+        "partially_evidenced",
+        "contradicted",
+        "aspirational",
+        "unclear"
+      ],
+      "applicable_organs": [
+        "paradox_metabolism_plane",
+        "adjudication_plane"
+      ],
+      "blocked_by": [
+        "PARADOX_PROGRAM_UNBOUNDED"
+      ],
+      "claim_class_id": "paradox_bound_claim",
+      "description": "Claims that contradiction handling, hold TTL, and paradox metabolism are bounded.",
+      "label": "Paradox Bound Claim",
+      "max_admissibility_ceiling": "DOCUMENTARY_ONLY",
+      "required_evidence_classes": [
+        "model",
+        "counterexample_register",
+        "receipt"
+      ]
+    },
+    {
+      "allowed_statuses": [
+        "evidenced",
+        "partially_evidenced",
+        "contradicted",
+        "aspirational",
+        "obsolete",
+        "unclear"
+      ],
+      "applicable_organs": [
+        "public_claims_and_doctrine_plane",
+        "commercial_surface_plane"
+      ],
+      "blocked_by": [
+        "CLAIM_CEILING_EXCEEDED"
+      ],
+      "claim_class_id": "doctrine_generation_claim",
+      "description": "Claims that doctrine, profiles, and public-facing materials are machine-state-derived and within ceiling.",
+      "label": "Doctrine Generation Claim",
+      "max_admissibility_ceiling": "DOCUMENTARY_ONLY",
+      "required_evidence_classes": [
+        "manifest",
+        "receipt",
+        "ratification_log"
+      ]
+    },
+    {
+      "allowed_statuses": [
+        "evidenced",
+        "partially_evidenced",
+        "contradicted",
+        "aspirational",
+        "unclear"
+      ],
+      "applicable_organs": [
+        "commercial_surface_plane",
+        "release_profile_plane"
+      ],
+      "blocked_by": [
+        "COMMERCIAL_BOUNDARY_VIOLATION"
+      ],
+      "claim_class_id": "commercial_surface_claim",
+      "description": "Claims made in catalogs, commercial docs, and external materials about KT programs and capabilities.",
+      "label": "Commercial Surface Claim",
+      "max_admissibility_ceiling": "DOCUMENTARY_ONLY",
+      "required_evidence_classes": [
+        "receipt",
+        "catalog",
+        "verifier_manifest"
+      ]
+    },
+    {
+      "allowed_statuses": [
+        "evidenced",
+        "partially_evidenced",
+        "contradicted",
+        "aspirational",
+        "unclear"
+      ],
+      "applicable_organs": [
+        "release_profile_plane",
+        "adjudication_plane"
+      ],
+      "blocked_by": [
+        "QUALITY_LEVEL_BELOW_TARGET",
+        "H1_ACTIVATION_GATE_CLOSED"
+      ],
+      "claim_class_id": "release_readiness_claim",
+      "description": "Claims that KT is ready for internal, external, competition, publication, or activation profiles.",
+      "label": "Release Readiness Claim",
+      "max_admissibility_ceiling": "COMPETITION_AND_PUBLICATION_GRADE",
+      "required_evidence_classes": [
+        "grade_receipt",
+        "readiness_matrix",
+        "receipt"
+      ]
+    },
+    {
+      "allowed_statuses": [
+        "evidenced",
+        "partially_evidenced",
+        "contradicted",
+        "aspirational",
+        "obsolete",
+        "unclear"
+      ],
+      "applicable_organs": [
+        "archive_memory_plane",
+        "adjudication_plane"
+      ],
+      "blocked_by": [],
+      "claim_class_id": "historical_lineage_claim",
+      "description": "Claims about what was previously believed, attempted, deprecated, or reopened across KT history.",
+      "label": "Historical Lineage Claim",
+      "max_admissibility_ceiling": "DOCUMENTARY_ONLY",
+      "required_evidence_classes": [
+        "archive_record",
+        "audit_packet",
+        "resolution_log"
+      ]
+    }
+  ],
+  "claim_statuses": [
+    "evidenced",
+    "partially_evidenced",
+    "contradicted",
+    "aspirational",
+    "obsolete",
+    "unclear"
+  ],
+  "foundation_pack_version": "2026-03-14.foundation.v1",
+  "schema_id": "kt.foundation_pack.claim_taxonomy.v1"
+}

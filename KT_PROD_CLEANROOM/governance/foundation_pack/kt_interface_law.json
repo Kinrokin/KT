@@ -1,0 +1,106 @@
+{
+  "foundation_pack_version": "2026-03-14.foundation.v1",
+  "law_id": "KT_FOUNDATION_INTERFACE_LAW_V1_20260314",
+  "organ_transitions": [
+    {
+      "claim_boundary": "Public claims may summarize truth only through verifier-bound evidence, never by reading documentary mirrors as live authority.",
+      "required_artifacts": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/governance/public_verifier_rules.json"
+      ],
+      "source_organ": "truth_authority_plane",
+      "status": "CONDITIONAL",
+      "target_organ": "public_claims_and_doctrine_plane",
+      "transition_id": "truth_to_public_claims_via_verifier"
+    },
+    {
+      "claim_boundary": "Runtime claims may reach release profiles only through settled runtime-boundary receipts and bounded readiness surfaces.",
+      "required_artifacts": [
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+        "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json"
+      ],
+      "source_organ": "runtime_spine",
+      "status": "CONDITIONAL",
+      "target_organ": "release_profile_plane",
+      "transition_id": "runtime_to_release_via_boundary_receipts"
+    },
+    {
+      "claim_boundary": "Learning deltas are admissible only when experiment lineage is explicit and ratified.",
+      "required_artifacts": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json"
+      ],
+      "source_organ": "experiment_crucible_plane",
+      "status": "CONDITIONAL",
+      "target_organ": "lab_adaptation_plane",
+      "transition_id": "experiment_to_lab_via_lineaged_delta"
+    },
+    {
+      "claim_boundary": "Commercial surfaces may reflect machine-state outputs only through claim compiler receipts and never as self-ratifying truth.",
+      "required_artifacts": [
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/commercial_program_catalog.json"
+      ],
+      "source_organ": "public_claims_and_doctrine_plane",
+      "status": "CONDITIONAL",
+      "target_organ": "commercial_surface_plane",
+      "transition_id": "public_claims_to_commercial_via_compiler"
+    }
+  ],
+  "ratification_rule": "No mutation may begin until the relevant audit or ratification contract passes, and no organ may ratify itself through narrative alone.",
+  "schema_id": "kt.foundation_pack.interface_law.v1",
+  "source_law_refs": [
+    "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+    "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+    "KT_PROD_CLEANROOM/governance/public_verifier_rules.json",
+    "KT_PROD_CLEANROOM/governance/runtime_boundary_contract.json"
+  ],
+  "zone_transitions": [
+    {
+      "claim_boundary": "LAB may propose canon but may not become canonical truth without explicit ratification evidence.",
+      "required_artifacts": [
+        "ratified_promotion_receipt",
+        "migration_test_receipt",
+        "rollback_plan"
+      ],
+      "source_zone": "LAB",
+      "status": "CONDITIONAL",
+      "target_zone": "CANONICAL",
+      "transition_id": "lab_to_canonical_requires_ratification"
+    },
+    {
+      "claim_boundary": "GENERATED_RUNTIME_TRUTH may inform current claims only when bound to subject/evidence semantics and active verifier law.",
+      "required_artifacts": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json"
+      ],
+      "source_zone": "GENERATED_RUNTIME_TRUTH",
+      "status": "CONDITIONAL",
+      "target_zone": "COMMERCIAL",
+      "transition_id": "generated_truth_to_documentary_claims_via_verifier"
+    },
+    {
+      "claim_boundary": "ARCHIVE is lineage-only and may not define current truth.",
+      "required_artifacts": [],
+      "source_zone": "ARCHIVE",
+      "status": "FORBIDDEN",
+      "target_zone": "CANONICAL",
+      "transition_id": "archive_to_canonical_forbidden"
+    },
+    {
+      "claim_boundary": "QUARANTINED surfaces must never become canonical runtime roots or active truth sources.",
+      "required_artifacts": [],
+      "source_zone": "QUARANTINED",
+      "status": "FORBIDDEN",
+      "target_zone": "CANONICAL",
+      "transition_id": "quarantined_to_canonical_forbidden"
+    },
+    {
+      "claim_boundary": "COMMERCIAL surfaces may not ratify governance, runtime, or authority truth.",
+      "required_artifacts": [],
+      "source_zone": "COMMERCIAL",
+      "status": "FORBIDDEN",
+      "target_zone": "CANONICAL",
+      "transition_id": "commercial_to_canonical_truth_forbidden"
+    }
+  ]
+}

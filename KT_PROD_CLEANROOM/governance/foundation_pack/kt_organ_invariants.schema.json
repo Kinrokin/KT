@@ -1,0 +1,106 @@
+{
+  "$id": "kt.foundation_pack.organ_invariants.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "invariant": {
+      "additionalProperties": false,
+      "properties": {
+        "active_refs": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "enforcement_class": {
+          "enum": [
+            "active_contract_check",
+            "active_receipt_check",
+            "active_runtime_verifier",
+            "planned_workstream_target"
+          ],
+          "type": "string"
+        },
+        "failure_effect": {
+          "type": "string"
+        },
+        "invariant_id": {
+          "type": "string"
+        },
+        "machine_target": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "organ_id": {
+          "type": "string"
+        },
+        "planned_workstreams": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "severity": {
+          "enum": [
+            "P0_authority",
+            "P0_runtime_integrity",
+            "P1_governance",
+            "P1_claim_evidence",
+            "P2_schema_drift",
+            "P2_duplicate_surface",
+            "P3_doc_staleness"
+          ],
+          "type": "string"
+        },
+        "statement": {
+          "type": "string"
+        },
+        "verification_commands": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "invariant_id",
+        "organ_id",
+        "severity",
+        "statement",
+        "enforcement_class",
+        "active_refs",
+        "planned_workstreams",
+        "machine_target",
+        "failure_effect",
+        "verification_commands"
+      ],
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "foundation_pack_version": {
+      "type": "string"
+    },
+    "invariants": {
+      "items": {
+        "$ref": "#/$defs/invariant"
+      },
+      "minItems": 10,
+      "type": "array"
+    },
+    "schema_id": {
+      "const": "kt.foundation_pack.organ_invariants.v1",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "foundation_pack_version",
+    "invariants"
+  ],
+  "title": "KT Organ Invariants",
+  "type": "object"
+}

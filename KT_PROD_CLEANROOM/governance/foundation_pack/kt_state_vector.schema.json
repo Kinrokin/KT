@@ -1,0 +1,170 @@
+{
+  "$id": "kt.foundation_pack.state_vector.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "organ_readiness": {
+      "additionalProperties": false,
+      "properties": {
+        "blockers": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "organ_id": {
+          "type": "string"
+        },
+        "quality_level": {
+          "enum": [
+            "QL0",
+            "QL1",
+            "QL2",
+            "QL3"
+          ],
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "organ_id",
+        "quality_level",
+        "status",
+        "blockers"
+      ],
+      "type": "object"
+    },
+    "proof_obligation": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "obligation_id": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "obligation_id",
+        "description",
+        "severity",
+        "status",
+        "evidence_refs"
+      ],
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "adjudication_status": {
+      "type": "string"
+    },
+    "canon_version": {
+      "type": "string"
+    },
+    "claim_ceiling_status": {
+      "additionalProperties": false,
+      "properties": {
+        "blocked_horizons": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "current_ceiling": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "current_ceiling",
+        "blocked_horizons"
+      ],
+      "type": "object"
+    },
+    "doctrine_version": {
+      "type": "string"
+    },
+    "generated_utc": {
+      "type": "string"
+    },
+    "lineage_completeness": {
+      "additionalProperties": false,
+      "properties": {
+        "coverage_ratio": {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "coverage_ratio"
+      ],
+      "type": "object"
+    },
+    "normalization_status": {
+      "type": "string"
+    },
+    "open_blockers": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "organ_readiness": {
+      "items": {
+        "$ref": "#/$defs/organ_readiness"
+      },
+      "type": "array"
+    },
+    "proof_obligations": {
+      "items": {
+        "$ref": "#/$defs/proof_obligation"
+      },
+      "type": "array"
+    },
+    "repo_head_commit": {
+      "pattern": "^[a-f0-9]{40}$",
+      "type": "string"
+    },
+    "schema_id": {
+      "type": "string"
+    },
+    "state_vector_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "state_vector_id",
+    "generated_utc",
+    "repo_head_commit",
+    "claim_ceiling_status",
+    "open_blockers",
+    "organ_readiness",
+    "doctrine_version",
+    "canon_version",
+    "proof_obligations",
+    "lineage_completeness",
+    "normalization_status",
+    "adjudication_status"
+  ],
+  "title": "KT State Vector Schema",
+  "type": "object"
+}

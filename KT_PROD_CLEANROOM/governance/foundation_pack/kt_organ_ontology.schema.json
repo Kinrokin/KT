@@ -1,0 +1,137 @@
+{
+  "$id": "kt.foundation_pack.organ_ontology.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "organ": {
+      "additionalProperties": false,
+      "properties": {
+        "current_ceiling": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "law_refs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "organ_class": {
+          "enum": [
+            "governance",
+            "constitutional",
+            "truth",
+            "runtime",
+            "operations",
+            "verification",
+            "laboratory",
+            "experiment",
+            "paradox",
+            "claims",
+            "commercial",
+            "archive",
+            "release",
+            "adjudication"
+          ],
+          "type": "string"
+        },
+        "organ_id": {
+          "type": "string"
+        },
+        "primary_planes": {
+          "items": {
+            "enum": [
+              "fact_plane",
+              "judgment_plane",
+              "temporal_plane",
+              "proof_plane",
+              "operability_plane",
+              "lineage_plane"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "primary_surfaces": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "state_signals": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "trust_zones": {
+          "items": {
+            "enum": [
+              "CANONICAL",
+              "LAB",
+              "ARCHIVE",
+              "COMMERCIAL",
+              "GENERATED_RUNTIME_TRUTH",
+              "QUARANTINED"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "upstream_organs": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "organ_id",
+        "label",
+        "organ_class",
+        "description",
+        "primary_planes",
+        "trust_zones",
+        "primary_surfaces",
+        "upstream_organs",
+        "law_refs",
+        "state_signals",
+        "current_ceiling"
+      ],
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "foundation_pack_version": {
+      "type": "string"
+    },
+    "organs": {
+      "items": {
+        "$ref": "#/$defs/organ"
+      },
+      "minItems": 12,
+      "type": "array"
+    },
+    "schema_id": {
+      "const": "kt.foundation_pack.organ_ontology.v1",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "foundation_pack_version",
+    "organs"
+  ],
+  "title": "KT Organ Ontology",
+  "type": "object"
+}

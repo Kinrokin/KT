@@ -1,0 +1,126 @@
+{
+  "$id": "kt.foundation_pack.fact_graph.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "edge": {
+      "additionalProperties": false,
+      "properties": {
+        "edge_id": {
+          "type": "string"
+        },
+        "edge_type": {
+          "type": "string"
+        },
+        "from_node": {
+          "type": "string"
+        },
+        "provenance_refs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "temporal_state": {
+          "type": "string"
+        },
+        "to_node": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "edge_id",
+        "edge_type",
+        "from_node",
+        "to_node",
+        "provenance_refs",
+        "temporal_state"
+      ],
+      "type": "object"
+    },
+    "node": {
+      "additionalProperties": false,
+      "properties": {
+        "attributes": {
+          "type": "object"
+        },
+        "facets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "label": {
+          "type": "string"
+        },
+        "node_id": {
+          "type": "string"
+        },
+        "node_type": {
+          "type": "string"
+        },
+        "plane": {
+          "enum": [
+            "fact_plane",
+            "judgment_plane",
+            "temporal_plane",
+            "proof_plane",
+            "operability_plane",
+            "lineage_plane"
+          ],
+          "type": "string"
+        },
+        "source_refs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "required": [
+        "node_id",
+        "node_type",
+        "label",
+        "plane",
+        "source_refs",
+        "facets",
+        "attributes"
+      ],
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/edge"
+      },
+      "type": "array"
+    },
+    "generated_utc": {
+      "type": "string"
+    },
+    "graph_id": {
+      "type": "string"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/node"
+      },
+      "type": "array"
+    },
+    "schema_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "graph_id",
+    "generated_utc",
+    "nodes",
+    "edges"
+  ],
+  "title": "KT Fact Graph Schema",
+  "type": "object"
+}

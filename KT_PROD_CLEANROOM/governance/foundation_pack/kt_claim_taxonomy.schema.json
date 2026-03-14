@@ -1,0 +1,105 @@
+{
+  "$id": "kt.foundation_pack.claim_taxonomy.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "claim_class": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_statuses": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "applicable_organs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "blocked_by": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "claim_class_id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "max_admissibility_ceiling": {
+          "type": "string"
+        },
+        "required_evidence_classes": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "required": [
+        "claim_class_id",
+        "label",
+        "description",
+        "applicable_organs",
+        "allowed_statuses",
+        "required_evidence_classes",
+        "max_admissibility_ceiling",
+        "blocked_by"
+      ],
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "admissibility_ceilings": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 4,
+      "type": "array"
+    },
+    "claim_classes": {
+      "items": {
+        "$ref": "#/$defs/claim_class"
+      },
+      "minItems": 8,
+      "type": "array"
+    },
+    "claim_statuses": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 6,
+      "type": "array"
+    },
+    "claim_ceiling_rule": {
+      "type": "string"
+    },
+    "foundation_pack_version": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.foundation_pack.claim_taxonomy.v1",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "foundation_pack_version",
+    "claim_statuses",
+    "admissibility_ceilings",
+    "claim_ceiling_rule",
+    "claim_classes"
+  ],
+  "title": "KT Claim Taxonomy",
+  "type": "object"
+}

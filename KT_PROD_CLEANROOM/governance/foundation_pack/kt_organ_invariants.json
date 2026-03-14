@@ -1,0 +1,296 @@
+{
+  "foundation_pack_version": "2026-03-14.foundation.v1",
+  "invariants": [
+    {
+      "active_refs": [
+        "KT_PROD_CLEANROOM/governance/public_verifier_rules.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "enforcement_class": "active_runtime_verifier",
+      "failure_effect": "Any current-head truth claim must fail closed to evidence-for-subject wording.",
+      "invariant_id": "no_current_head_truth_overread",
+      "machine_target": [
+        "truth_subject_commit",
+        "head_claim_verdict",
+        "head_equals_subject"
+      ],
+      "organ_id": "public_claims_and_doctrine_plane",
+      "planned_workstreams": [],
+      "severity": "P0_authority",
+      "statement": "If current HEAD differs from truth_subject_commit, public outputs must never phrase HEAD as the verified truth subject.",
+      "verification_commands": [
+        "python -m tools.operator.public_verifier"
+      ]
+    },
+    {
+      "active_refs": [
+        "KT_PROD_CLEANROOM/governance/settled_truth_source_contract.json",
+        "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json"
+      ],
+      "enforcement_class": "active_receipt_check",
+      "failure_effect": "Authority claims fail closed if the ledger current pointer is not the active truth source.",
+      "invariant_id": "ledger_pointer_is_active_truth_source",
+      "machine_target": [
+        "active_truth_source",
+        "status",
+        "pinned_head_sha"
+      ],
+      "organ_id": "truth_authority_plane",
+      "planned_workstreams": [],
+      "severity": "P0_authority",
+      "statement": "The active truth source must be the ledger current pointer, not a main-bound documentary mirror.",
+      "verification_commands": [
+        "python -m tools.operator.settled_truth_source"
+      ]
+    },
+    {
+      "active_refs": [
+        "KT_PROD_CLEANROOM/governance/documentary_truth_policy.json",
+        "KT_PROD_CLEANROOM/reports/WS1_completion_report.json"
+      ],
+      "enforcement_class": "active_contract_check",
+      "failure_effect": "Documentary mirrors may not be read as live authority surfaces.",
+      "invariant_id": "documentary_mirrors_are_non_authoritative",
+      "machine_target": [
+        "DOCUMENTARY_ONLY",
+        "ACTIVE_AUTHORITY",
+        "LIVE_TRUTH_ALLOWED"
+      ],
+      "organ_id": "truth_authority_plane",
+      "planned_workstreams": [],
+      "severity": "P0_authority",
+      "statement": "Main-bound truth mirrors are documentary compatibility surfaces only and may not retain live-authority semantics.",
+      "verification_commands": [
+        "python -m tools.operator.documentary_truth_validate"
+      ]
+    },
+    {
+      "active_refs": [
+        "KT_PROD_CLEANROOM/governance/public_verifier_rules.json",
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json"
+      ],
+      "enforcement_class": "active_runtime_verifier",
+      "failure_effect": "Governance claims must be bounded to workflow governance only unless platform enforcement is explicitly proven.",
+      "invariant_id": "workflow_governance_only_without_platform_proof",
+      "machine_target": [
+        "platform_governance_verdict",
+        "branch_protection_status",
+        "platform_governance_head_claim_verdict"
+      ],
+      "organ_id": "governance_spine",
+      "planned_workstreams": [],
+      "severity": "P1_governance",
+      "statement": "Main may not be described as platform-enforced when branch protection proof is blocked or absent.",
+      "verification_commands": [
+        "python -m tools.operator.platform_governance_narrowing",
+        "python -m tools.operator.public_verifier"
+      ]
+    },
+    {
+      "active_refs": [
+        "KT_PROD_CLEANROOM/governance/runtime_boundary_contract.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+      ],
+      "enforcement_class": "active_receipt_check",
+      "failure_effect": "Compatibility-only roots such as src/tools remain outside canonical runtime proof.",
+      "invariant_id": "canonical_runtime_excludes_tools_root",
+      "machine_target": [
+        "runtime_boundary_verdict",
+        "canonical_runtime_roots",
+        "compatibility_allowlist_roots"
+      ],
+      "organ_id": "runtime_spine",
+      "planned_workstreams": [],
+      "severity": "P0_runtime_integrity",
+      "statement": "Canonical runtime roots must exclude tools, which may exist only as quarantined compatibility roots.",
+      "verification_commands": [
+        "python -m tools.operator.runtime_boundary_integrity"
+      ]
+    },
+    {
+      "active_refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/commercial_program_catalog.json"
+      ],
+      "enforcement_class": "active_receipt_check",
+      "failure_effect": "Commercial and documentary surfaces may not outrun verifier-backed evidence ceilings.",
+      "invariant_id": "commercial_claims_are_documentary_only",
+      "machine_target": [
+        "forbidden_claims",
+        "active_truth_source",
+        "documentary_mirror_status"
+      ],
+      "organ_id": "commercial_surface_plane",
+      "planned_workstreams": [],
+      "severity": "P1_claim_evidence",
+      "statement": "Commercial and outward-facing claims must stay documentary-only and must not overread HEAD as the verified subject.",
+      "verification_commands": [
+        "python -m tools.operator.claim_compiler"
+      ]
+    },
+    {
+      "active_refs": [
+        "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+        "KT_PROD_CLEANROOM/governance/trust_zone_registry.json"
+      ],
+      "enforcement_class": "active_contract_check",
+      "failure_effect": "Archive and quarantined materials are blocked from defining current truth or canonical runtime.",
+      "invariant_id": "archive_and_quarantine_cannot_define_current_truth",
+      "machine_target": [
+        "archive_only_surfaces",
+        "quarantined_from_canonical_truth",
+        "excluded_from_canonical_truth"
+      ],
+      "organ_id": "archive_memory_plane",
+      "planned_workstreams": [],
+      "severity": "P0_authority",
+      "statement": "Archive and quarantine zones may preserve lineage, but they must never define current truth or canonical runtime.",
+      "verification_commands": [
+        "python -m tools.operator.dependency_inventory_validate"
+      ]
+    },
+    {
+      "active_refs": [
+        "KT_PROD_CLEANROOM/governance/crucible_registry.json"
+      ],
+      "enforcement_class": "planned_workstream_target",
+      "failure_effect": "Unlineaged deltas must fail closed and remain inadmissible until a governed experiment registry exists.",
+      "invariant_id": "learning_deltas_require_experiment_lineage",
+      "machine_target": [
+        "experiment_config",
+        "receipt_lineage",
+        "delta_origin"
+      ],
+      "organ_id": "experiment_crucible_plane",
+      "planned_workstreams": [
+        "STEP_9_RUNTIME_EXPERIMENT_CRUCIBLE_AND_DELTA_REGISTRY"
+      ],
+      "severity": "P1_claim_evidence",
+      "statement": "No learning delta is admissible unless it is lineaged to a governed experiment or crucible artifact with explicit receipts.",
+      "verification_commands": []
+    },
+    {
+      "active_refs": [],
+      "enforcement_class": "planned_workstream_target",
+      "failure_effect": "Paradox holds must escalate or fail closed rather than remain indefinite.",
+      "invariant_id": "paradox_holds_require_ttl_or_fail_closed",
+      "machine_target": [
+        "hold_status",
+        "hold_ttl",
+        "escalation_path"
+      ],
+      "organ_id": "paradox_metabolism_plane",
+      "planned_workstreams": [
+        "STEP_10_PARADOX_METABOLISM_VERIFICATION_PROGRAM"
+      ],
+      "severity": "P0_runtime_integrity",
+      "statement": "Paradox hold states must carry TTL or forced escalation semantics; indefinite hold is forbidden.",
+      "verification_commands": []
+    },
+    {
+      "active_refs": [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_safety_envelope.json",
+        "KT_PROD_CLEANROOM/governance/trust_zone_registry.json"
+      ],
+      "enforcement_class": "planned_workstream_target",
+      "failure_effect": "Critical paths become STATE_TAINTED and downstream proof promotion is blocked until opaque contamination is isolated or removed.",
+      "invariant_id": "opaque_sovereign_path_taints_state",
+      "machine_target": [
+        "parse_state",
+        "trust_zone",
+        "state_taint_status"
+      ],
+      "organ_id": "verification_delivery_security_plane",
+      "planned_workstreams": [
+        "STEP_5_SNAPSHOT_DETERMINISM_AND_PHYSICAL_INVENTORY"
+      ],
+      "severity": "P0_runtime_integrity",
+      "statement": "If an opaque or parse-failed artifact contaminates a sovereign or critical runtime path, the path must be marked STATE_TAINTED.",
+      "verification_commands": []
+    },
+    {
+      "active_refs": [
+        "KT_PROD_CLEANROOM/governance/public_verifier_rules.json",
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_release_law.json"
+      ],
+      "enforcement_class": "planned_workstream_target",
+      "failure_effect": "Generated doctrine and profiles must not outrun evidence-backed claim ceilings or release gates.",
+      "invariant_id": "doctrine_must_be_machine_state_derived",
+      "machine_target": [
+        "claim_ceiling_status",
+        "doctrine_manifest",
+        "profile_gap_register"
+      ],
+      "organ_id": "public_claims_and_doctrine_plane",
+      "planned_workstreams": [
+        "STEP_11_DOCTRINE_COMPILER_PROFILES_AND_EXTERNAL_PROFESSIONALIZATION"
+      ],
+      "severity": "P1_claim_evidence",
+      "statement": "Doctrine and profile outputs are admissible only when generated from ratified machine state and explicit evidence chains.",
+      "verification_commands": []
+    },
+    {
+      "active_refs": [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_release_law.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "enforcement_class": "active_receipt_check",
+      "failure_effect": "Release or activation claims above the current quality and proof ceilings must remain blocked.",
+      "invariant_id": "release_profiles_block_on_quality_and_claim_ceiling",
+      "machine_target": [
+        "quality_level",
+        "current_admissibility_ceiling",
+        "h1_allowed"
+      ],
+      "organ_id": "release_profile_plane",
+      "planned_workstreams": [],
+      "severity": "P1_claim_evidence",
+      "statement": "Any organ below the required quality level for a target use case must be blocked from that use case.",
+      "verification_commands": [
+        "python -m tools.operator.readiness_grade",
+        "python -m tools.operator.authority_grade"
+      ]
+    },
+    {
+      "active_refs": [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_interface_law.json"
+      ],
+      "enforcement_class": "active_contract_check",
+      "failure_effect": "Lab and experimental surfaces may propose canon, but may not ratify canon or current truth directly.",
+      "invariant_id": "lab_promotion_requires_ratified_transition",
+      "machine_target": [
+        "source_zone",
+        "target_zone",
+        "required_artifacts"
+      ],
+      "organ_id": "lab_adaptation_plane",
+      "planned_workstreams": [],
+      "severity": "P1_governance",
+      "statement": "Promotion from lab to canonical status requires explicit ratification artifacts and may not occur via freeform mutation.",
+      "verification_commands": []
+    },
+    {
+      "active_refs": [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_state_vector.schema.json",
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_evidence_ledger.schema.json"
+      ],
+      "enforcement_class": "planned_workstream_target",
+      "failure_effect": "Whole-system adjudication must fail closed if state vector and evidence-ledger outputs are absent or inconsistent.",
+      "invariant_id": "adjudication_requires_state_vector_and_evidence_ledger",
+      "machine_target": [
+        "claim_ceiling_status",
+        "proof_obligations",
+        "evidence_chain"
+      ],
+      "organ_id": "adjudication_plane",
+      "planned_workstreams": [
+        "STEP_7_CLAIM_EXTRACTION_JUDGMENT_ENGINE_AND_STATE_VECTOR",
+        "STEP_12_FULL_STACK_ADJUDICATION_RELEASE_READINESS_AND_FINAL_E2E_AUDIT"
+      ],
+      "severity": "P1_claim_evidence",
+      "statement": "Whole-system adjudication is admissible only when state vector and evidence ledger outputs exist and agree on claim ceilings and proof obligations.",
+      "verification_commands": []
+    }
+  ],
+  "schema_id": "kt.foundation_pack.organ_invariants.v1"
+}
