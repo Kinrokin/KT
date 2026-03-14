@@ -1,0 +1,128 @@
+{
+  "actual_touched": [
+    "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+    "KT_PROD_CLEANROOM/reports/kt_governance_baseline_ingestion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_governance_closeout_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_governance_evidence_subject_map.json",
+    "KT_PROD_CLEANROOM/reports/kt_open_blocker_ladder.json",
+    "KT_PROD_CLEANROOM/tests/operator/test_governance_baseline_ingest.py",
+    "KT_PROD_CLEANROOM/tools/operator/governance_baseline_ingest.py"
+  ],
+  "baseline_evidence_commit": "c0625e3f02089159ab4e528020a2e7a438e392f0",
+  "baseline_subject_commit": "c653eefb88b886b4e16f006feabff982992d6d19",
+  "checks": [
+    {
+      "check": "foundation_pack_gate_passed",
+      "detail": "Step 2 foundation pack ratification must be PASS before Step 1 ingestion is admissible.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_foundation_pack_ratification_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "baseline_subject_commit_explicit_and_consistent",
+      "detail": "All Step 1 artifacts must pin the same governance baseline subject commit.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_governance_closeout_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_open_blocker_ladder.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+        "KT_PROD_CLEANROOM/reports/kt_governance_evidence_subject_map.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "baseline_evidence_commit_explicit",
+      "detail": "All Step 1 artifacts must pin the same governance baseline evidence commit.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_governance_closeout_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_open_blocker_ladder.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+        "KT_PROD_CLEANROOM/reports/kt_governance_evidence_subject_map.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "proven_vs_not_proven_explicit",
+      "detail": "The baseline bundle must carry explicit proven and not_proven sections without mutation.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_governance_closeout_bundle.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "open_blockers_explicit",
+      "detail": "The blocker ladder must preserve the open blocker set exactly from the sealed closeout baseline.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_open_blocker_ladder.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_blocker_register.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "no_new_governance_victory_claims_introduced",
+      "detail": "Step 1 may freeze the baseline but must not upgrade governance, authority, runtime, or activation claims.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_governance_closeout_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_proof_class_ladder.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "governance_evidence_subject_map_explicit",
+      "detail": "The evidence-subject map must expose explicit evidence_commit and subject_commit pairs for the baseline governance domains.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_governance_evidence_subject_map.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "post_touch_accounting_clean",
+      "detail": "Actual touched set must match the lawful Step 1 subject files plus the ingestion receipt.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_governance_closeout_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_open_blocker_ladder.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+        "KT_PROD_CLEANROOM/reports/kt_governance_evidence_subject_map.json",
+        "KT_PROD_CLEANROOM/tools/operator/governance_baseline_ingest.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_governance_baseline_ingest.py",
+        "KT_PROD_CLEANROOM/reports/kt_governance_baseline_ingestion_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "claim_boundary": "This receipt validates the Step 1 governance baseline ingestion for compiled_head_commit only. The frozen governance baseline remains the earlier baseline_subject_commit/baseline_evidence_commit pair; this receipt is later evidence about that pair.",
+  "compiled_head_commit": "e6fc81b959bb8fcd0a736527aee7744d70168ad8",
+  "controlling_work_order": {
+    "schema_id": "kt.work_order.max_refactor_e2e_institutional_memory_and_full_stack_adjudication.v2",
+    "step_id": 1,
+    "step_name": "KT_GOVERNANCE_CLOSEOUT_BASELINE_INGESTION",
+    "work_order_id": "WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION"
+  },
+  "current_head_commit": "e6fc81b959bb8fcd0a736527aee7744d70168ad8",
+  "foundation_gate_evidence_commit": "5a4f2365fca9aacb761d9b9ce032e5578c64f5a8",
+  "foundation_gate_ref": "KT_PROD_CLEANROOM/reports/kt_foundation_pack_ratification_receipt.json",
+  "foundation_gate_subject_commit": "f081b94881e2e9d4aa0b01cdec0360d47bce844b",
+  "generated_utc": "2026-03-14T16:59:51Z",
+  "next_lawful_step": {
+    "status_after_step_1": "UNLOCKED",
+    "step_id": 3,
+    "step_name": "CONSTITUTIONAL_SPINE_AND_META_GOVERNANCE"
+  },
+  "pass_verdict": "BASELINE_FROZEN",
+  "planned_mutates": [
+    "KT_PROD_CLEANROOM/reports/kt_governance_closeout_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_open_blocker_ladder.json",
+    "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+    "KT_PROD_CLEANROOM/reports/kt_governance_evidence_subject_map.json",
+    "KT_PROD_CLEANROOM/tools/operator/governance_baseline_ingest.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_governance_baseline_ingest.py",
+    "KT_PROD_CLEANROOM/reports/kt_governance_baseline_ingestion_receipt.json"
+  ],
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.governance_baseline_ingestion_receipt.v1",
+  "status": "PASS",
+  "unexpected_touches": []
+}
