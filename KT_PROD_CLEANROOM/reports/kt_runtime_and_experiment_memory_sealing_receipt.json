@@ -1,0 +1,127 @@
+{
+  "actual_touched": [
+    "KT_PROD_CLEANROOM/reports/kt_crucible_run_log.json",
+    "KT_PROD_CLEANROOM/reports/kt_execution_trace_schema.json",
+    "KT_PROD_CLEANROOM/reports/kt_experiment_registry.json",
+    "KT_PROD_CLEANROOM/reports/kt_fitness_ecology.json",
+    "KT_PROD_CLEANROOM/reports/kt_fitness_pressure_register.json",
+    "KT_PROD_CLEANROOM/reports/kt_learning_delta_register.json",
+    "KT_PROD_CLEANROOM/reports/kt_lineage_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_receipt_lineage_register.json",
+    "KT_PROD_CLEANROOM/reports/kt_runtime_and_experiment_memory_sealing_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_runtime_event_schema.json",
+    "KT_PROD_CLEANROOM/tests/operator/test_runtime_experiment_registry_compile.py",
+    "KT_PROD_CLEANROOM/tools/operator/runtime_experiment_registry_compile.py"
+  ],
+  "checks": [
+    {
+      "check": "step8_gate_passed",
+      "detail": "Step 9 requires the Step 8 planning receipt to be PASS.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_normalization_and_professionalization_planning_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "every_experiment_has_config_metrics_verdict_receipts_and_lineage",
+      "detail": "Every governed experiment row must expose non-empty config, metric, verdict, receipt, and lineage refs.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_experiment_registry.json",
+        "KT_PROD_CLEANROOM/reports/kt_crucible_run_log.json",
+        "KT_PROD_CLEANROOM/reports/proofrunbundle_index.json",
+        "KT_PROD_CLEANROOM/exports/adapters/promoted_index.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "every_learning_delta_points_back_to_experiment_lineage",
+      "detail": "Admissible learning deltas must be backed by a governed experiment and have complete lineage.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_learning_delta_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_lineage_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "runtime_event_and_execution_trace_schemas_exist",
+      "detail": "Step 9 must formalize both runtime-event and execution-trace schema surfaces.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_runtime_event_schema.json",
+        "KT_PROD_CLEANROOM/reports/kt_execution_trace_schema.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "fitness_ecology_formalized",
+      "detail": "Step 9 must formalize fitness engines and pressure surfaces from sectors and promoted adapter regions.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_fitness_ecology.json",
+        "KT_PROD_CLEANROOM/reports/kt_fitness_pressure_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_sector_harness_registry.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "post_touch_accounting_clean",
+      "detail": "Actual touched set must match the lawful Step 9 subject files plus the Step 9 receipt.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_experiment_registry.json",
+        "KT_PROD_CLEANROOM/reports/kt_crucible_run_log.json",
+        "KT_PROD_CLEANROOM/reports/kt_learning_delta_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_receipt_lineage_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_runtime_event_schema.json",
+        "KT_PROD_CLEANROOM/reports/kt_execution_trace_schema.json",
+        "KT_PROD_CLEANROOM/reports/kt_lineage_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_fitness_ecology.json",
+        "KT_PROD_CLEANROOM/reports/kt_fitness_pressure_register.json",
+        "KT_PROD_CLEANROOM/tools/operator/runtime_experiment_registry_compile.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_runtime_experiment_registry_compile.py",
+        "KT_PROD_CLEANROOM/reports/kt_runtime_and_experiment_memory_sealing_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "claim_boundary": "This receipt seals Step 9 registry outputs for compiled_head_commit only. A later repository head that contains this receipt is evidence about compiled_head_commit, not a fresh Step 9 lineage seal for itself.",
+  "compiled_head_commit": "6a8878ce23d1fba213108617c01b4d268f4b0238",
+  "controlling_work_order": {
+    "schema_id": "kt.work_order.max_refactor_e2e_institutional_memory_and_full_stack_adjudication.v2",
+    "step_id": 9,
+    "step_name": "RUNTIME_EXPERIMENT_CRUCIBLE_AND_DELTA_REGISTRY",
+    "work_order_id": "WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION"
+  },
+  "current_head_commit": "6a8878ce23d1fba213108617c01b4d268f4b0238",
+  "generated_utc": "2026-03-14T20:02:03Z",
+  "next_lawful_step": {
+    "status_after_step_9": "UNLOCKED",
+    "step_id": 10,
+    "step_name": "PARADOX_METABOLISM_VERIFICATION_PROGRAM"
+  },
+  "pass_verdict": "RUNTIME_AND_EXPERIMENT_MEMORY_SEALED",
+  "planned_mutates": [
+    "KT_PROD_CLEANROOM/reports/kt_experiment_registry.json",
+    "KT_PROD_CLEANROOM/reports/kt_crucible_run_log.json",
+    "KT_PROD_CLEANROOM/reports/kt_learning_delta_register.json",
+    "KT_PROD_CLEANROOM/reports/kt_receipt_lineage_register.json",
+    "KT_PROD_CLEANROOM/reports/kt_runtime_event_schema.json",
+    "KT_PROD_CLEANROOM/reports/kt_execution_trace_schema.json",
+    "KT_PROD_CLEANROOM/reports/kt_lineage_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_fitness_ecology.json",
+    "KT_PROD_CLEANROOM/reports/kt_fitness_pressure_register.json",
+    "KT_PROD_CLEANROOM/tools/operator/runtime_experiment_registry_compile.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_runtime_experiment_registry_compile.py",
+    "KT_PROD_CLEANROOM/reports/kt_runtime_and_experiment_memory_sealing_receipt.json"
+  ],
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.runtime_and_experiment_memory_sealing_receipt.v1",
+  "status": "PASS",
+  "step8_gate_evidence_commit": "683b6a4b641bc8294185d3a25b08279998e25316",
+  "step8_gate_subject_commit": "632195746bb72be4a7409286206670df12556bc6",
+  "summary": {
+    "crucible_run_count": 40,
+    "experiment_count": 39,
+    "learning_delta_count": 21,
+    "observed_unregistered_crucible_count": 6,
+    "receipt_lineage_count": 64
+  },
+  "unexpected_touches": []
+}
