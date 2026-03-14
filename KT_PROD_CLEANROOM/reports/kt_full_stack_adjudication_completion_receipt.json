@@ -1,0 +1,124 @@
+{
+  "actual_touched": [
+    "KT_PROD_CLEANROOM/reports/kt_adjudication_closeout_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_attack_vectors.json",
+    "KT_PROD_CLEANROOM/reports/kt_full_stack_adjudication_completion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_full_stack_audit.json",
+    "KT_PROD_CLEANROOM/reports/kt_proof_obligations.json",
+    "KT_PROD_CLEANROOM/reports/kt_release_readiness_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_survival_metrics.json",
+    "KT_PROD_CLEANROOM/tests/operator/test_full_stack_adjudication_compile.py",
+    "KT_PROD_CLEANROOM/tools/operator/full_stack_adjudication_compile.py"
+  ],
+  "checks": [
+    {
+      "check": "step11_gate_passed",
+      "detail": "Step 12 requires the Step 11 doctrine receipt to be PASS.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_doctrine_and_profiles_generation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "all_major_organs_covered",
+      "detail": "All first-class organs from the foundation ontology must be covered in the adjudication.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_organ_ontology.json",
+        "KT_PROD_CLEANROOM/reports/kt_full_stack_audit.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "all_major_claims_classified",
+      "detail": "Major claims must all be classified as proven, evidenced_only, contradicted, or aspirational.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_full_stack_audit.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "remaining_proof_obligations_explicit",
+      "detail": "Remaining proof obligations must be listed explicitly in the Step 12 obligation register.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_proof_obligations.json",
+        "KT_PROD_CLEANROOM/reports/kt_open_blocker_ladder.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "release_readiness_explicit_per_profile",
+      "detail": "Release and operating profile readiness must be explicit per profile row.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_release_readiness_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_submission_profile.json",
+        "docs/generated/profiles/kt_outsider_onboarding_profile.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "no_claim_upgrade_beyond_current_ceiling",
+      "detail": "Step 12 may not claim platform enforcement, H1, or current-head truth verification as proven.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_full_stack_audit.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "post_touch_accounting_clean",
+      "detail": "Actual touched set must match the lawful Step 12 subject files plus the Step 12 receipt.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_full_stack_audit.json",
+        "KT_PROD_CLEANROOM/reports/kt_attack_vectors.json",
+        "KT_PROD_CLEANROOM/reports/kt_survival_metrics.json",
+        "KT_PROD_CLEANROOM/reports/kt_proof_obligations.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_readiness_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_adjudication_closeout_bundle.json",
+        "KT_PROD_CLEANROOM/tools/operator/full_stack_adjudication_compile.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_full_stack_adjudication_compile.py",
+        "KT_PROD_CLEANROOM/reports/kt_full_stack_adjudication_completion_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "claim_boundary": "This receipt seals the final Step 12 adjudication for compiled_head_commit only. Completion does not clear the open blockers or elevate blocked horizons.",
+  "compiled_head_commit": "b2dee17eb5bd27c5a5fc47b1a531a217bddd3fd8",
+  "controlling_work_order": {
+    "schema_id": "kt.work_order.max_refactor_e2e_institutional_memory_and_full_stack_adjudication.v2",
+    "step_id": 12,
+    "step_name": "FULL_STACK_ADJUDICATION_RELEASE_READINESS_AND_FINAL_E2E_AUDIT",
+    "work_order_id": "WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION"
+  },
+  "current_head_commit": "b2dee17eb5bd27c5a5fc47b1a531a217bddd3fd8",
+  "generated_utc": "2026-03-14T21:18:52Z",
+  "next_lawful_step": {
+    "status_after_step_12": "PROGRAM_COMPLETE",
+    "step_id": 0,
+    "step_name": "NONE"
+  },
+  "pass_verdict": "FULL_STACK_ADJUDICATION_COMPLETE",
+  "planned_mutates": [
+    "KT_PROD_CLEANROOM/reports/kt_full_stack_audit.json",
+    "KT_PROD_CLEANROOM/reports/kt_attack_vectors.json",
+    "KT_PROD_CLEANROOM/reports/kt_survival_metrics.json",
+    "KT_PROD_CLEANROOM/reports/kt_proof_obligations.json",
+    "KT_PROD_CLEANROOM/reports/kt_release_readiness_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_adjudication_closeout_bundle.json",
+    "KT_PROD_CLEANROOM/tools/operator/full_stack_adjudication_compile.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_full_stack_adjudication_compile.py",
+    "KT_PROD_CLEANROOM/reports/kt_full_stack_adjudication_completion_receipt.json"
+  ],
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.full_stack_adjudication_completion_receipt.v1",
+  "status": "PASS",
+  "step11_gate_evidence_commit": "f4863e9555a919ac4775acb30508c85de6b0ef77",
+  "step11_gate_subject_commit": "5d0bba70692ef8f54d1c83b6c607fbb853370bb2",
+  "summary": {
+    "claim_count": 18,
+    "open_proof_obligation_count": 10,
+    "organ_count": 14,
+    "profile_count": 14
+  },
+  "unexpected_touches": []
+}
