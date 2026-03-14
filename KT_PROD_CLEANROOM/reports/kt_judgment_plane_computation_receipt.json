@@ -1,0 +1,124 @@
+{
+  "actual_touched": [
+    "KT_PROD_CLEANROOM/reports/kt_claim_evidence_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_claim_registry.json",
+    "KT_PROD_CLEANROOM/reports/kt_claims_raw.json",
+    "KT_PROD_CLEANROOM/reports/kt_conflict_register.json",
+    "KT_PROD_CLEANROOM/reports/kt_counterexample_register.json",
+    "KT_PROD_CLEANROOM/reports/kt_judgment_plane_computation_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_rule_results.json",
+    "KT_PROD_CLEANROOM/reports/kt_state_vector.json",
+    "KT_PROD_CLEANROOM/tests/operator/test_claim_judgment_compile.py",
+    "KT_PROD_CLEANROOM/tools/operator/claim_judgment_compile.py"
+  ],
+  "checks": [
+    {
+      "check": "step6_gate_passed",
+      "detail": "Step 7 requires the Step 6 graph and catalog receipt to be PASS.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_graph_and_catalog_compilation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "major_claim_surfaces_extracted",
+      "detail": "Closeout, verifier, runtime, governance, commercial, frontier, historical, and work-order claim-bearing surfaces are all represented in the raw claim set.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claims_raw.json",
+        "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_historical_claims.json",
+        "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "every_judgment_has_evidence_chains",
+      "detail": "Every claim-class judgment must carry evidence refs and raw claim IDs.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_registry.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_evidence_matrix.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "state_vector_validates_schema",
+      "detail": "The Step 7 state vector validates against the ratified foundation schema and includes the required fields.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_state_vector.json",
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_state_vector.schema.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "conflicts_severity_ranked",
+      "detail": "Active conflicts are severity-ranked according to the ratified conflict model.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_conflict_register.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "post_touch_accounting_clean",
+      "detail": "Actual touched set must match the lawful Step 7 subject files plus the judgment receipt.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claims_raw.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_registry.json",
+        "KT_PROD_CLEANROOM/reports/kt_rule_results.json",
+        "KT_PROD_CLEANROOM/reports/kt_conflict_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_counterexample_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_evidence_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_state_vector.json",
+        "KT_PROD_CLEANROOM/tools/operator/claim_judgment_compile.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_claim_judgment_compile.py",
+        "KT_PROD_CLEANROOM/reports/kt_judgment_plane_computation_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "claim_boundary": "This receipt validates the Step 7 judgment-plane outputs for compiled_head_commit only. A later repository head that contains this receipt is evidence about compiled_head_commit, not a fresh Step 7 judgment for itself.",
+  "compiled_head_commit": "299df3a125b8899aebd899ece4f01945ae2ca0bf",
+  "controlling_work_order": {
+    "schema_id": "kt.work_order.max_refactor_e2e_institutional_memory_and_full_stack_adjudication.v2",
+    "step_id": 7,
+    "step_name": "CLAIM_EXTRACTION_JUDGMENT_ENGINE_AND_STATE_VECTOR",
+    "work_order_id": "WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION"
+  },
+  "current_head_commit": "299df3a125b8899aebd899ece4f01945ae2ca0bf",
+  "generated_utc": "2026-03-14T19:19:02Z",
+  "next_lawful_step": {
+    "status_after_step_7": "UNLOCKED",
+    "step_id": 8,
+    "step_name": "CANON_PROPOSAL_NORMALIZATION_PLAN_AND_REPO_PROFESSIONALIZATION_PLAN"
+  },
+  "pass_verdict": "JUDGMENT_PLANE_COMPUTED",
+  "planned_mutates": [
+    "KT_PROD_CLEANROOM/reports/kt_claims_raw.json",
+    "KT_PROD_CLEANROOM/reports/kt_claim_registry.json",
+    "KT_PROD_CLEANROOM/reports/kt_rule_results.json",
+    "KT_PROD_CLEANROOM/reports/kt_conflict_register.json",
+    "KT_PROD_CLEANROOM/reports/kt_counterexample_register.json",
+    "KT_PROD_CLEANROOM/reports/kt_claim_evidence_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_state_vector.json",
+    "KT_PROD_CLEANROOM/tools/operator/claim_judgment_compile.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_claim_judgment_compile.py",
+    "KT_PROD_CLEANROOM/reports/kt_judgment_plane_computation_receipt.json"
+  ],
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.judgment_plane_computation_receipt.v1",
+  "status": "PASS",
+  "step6_gate_evidence_commit": "21d90b916290c262f7c9e27a0ad10cf91c4a1eca",
+  "step6_gate_subject_commit": "109a2569426603c8d8dc687ed3c6819b882b81fb",
+  "summary": {
+    "active_conflict_count": 10,
+    "claim_class_count": 11,
+    "counterexample_count": 9,
+    "open_blocker_count": 6,
+    "raw_claim_count": 43
+  },
+  "unexpected_touches": []
+}
