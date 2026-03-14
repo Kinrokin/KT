@@ -1,0 +1,84 @@
+{
+  "claim_boundary": "Fitness ecology formalizes current governed fitness engines and pressures only. It does not promote any new runtime or release claim.",
+  "engines": [
+    {
+      "engine_id": "suite_fitness_engine",
+      "inputs": [
+        "sector suites",
+        "program-run sweep outputs"
+      ],
+      "outputs": [
+        "suite_eval_report",
+        "fitness verdicts"
+      ],
+      "tool_ref": "KT_PROD_CLEANROOM/tools/suites/compute_suite_fitness.py"
+    },
+    {
+      "engine_id": "cognitive_fitness_engine",
+      "inputs": [
+        "reasoning traces",
+        "policy bindings",
+        "eval reports"
+      ],
+      "outputs": [
+        "cognitive fitness",
+        "fitness-region bindings"
+      ],
+      "tool_ref": "KT_PROD_CLEANROOM/tools/verification/compute_cognitive_fitness.py"
+    },
+    {
+      "engine_id": "temporal_fitness_engine",
+      "inputs": [
+        "temporal ledgers",
+        "head comparisons"
+      ],
+      "outputs": [
+        "temporal fitness ledger"
+      ],
+      "tool_ref": "KT_PROD_CLEANROOM/tools/eval/temporal_fitness_ledger.py"
+    },
+    {
+      "engine_id": "factory_phase_trace_engine",
+      "inputs": [
+        "factory job",
+        "training phases"
+      ],
+      "outputs": [
+        "phase traces"
+      ],
+      "tool_ref": "KT_PROD_CLEANROOM/tools/training/fl3_factory/trace.py"
+    }
+  ],
+  "generated_utc": "2026-03-14T20:01:12Z",
+  "promoted_adapter_region_counts": {
+    "A": 19
+  },
+  "schema_id": "kt.operator.fitness_ecology.v1",
+  "sector_suite_counts": [
+    {
+      "pack_ref": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.fintech.v1/overlay_pack.json",
+      "sector_id": "domain.fintech.v1",
+      "suite_count": 9
+    },
+    {
+      "pack_ref": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.healthcare.v1/overlay_pack.json",
+      "sector_id": "domain.healthcare.v1",
+      "suite_count": 10
+    },
+    {
+      "pack_ref": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.insurance.v1/overlay_pack.json",
+      "sector_id": "domain.insurance.v1",
+      "suite_count": 9
+    },
+    {
+      "pack_ref": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.public_sector_chain.v1/overlay_pack.json",
+      "sector_id": "domain.public_sector_chain.v1",
+      "suite_count": 9
+    },
+    {
+      "pack_ref": "KT_PROD_CLEANROOM/AUDITS/OVERLAYS/packs/domain.security_compliance.v1/overlay_pack.json",
+      "sector_id": "domain.security_compliance.v1",
+      "suite_count": 10
+    }
+  ]
+}

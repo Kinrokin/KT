@@ -1,0 +1,71 @@
+{
+  "admissible_learning_delta_ids": [
+    "learning_delta::267aa5e973fd81a1dfe98ddcc6c92395ec6ffa98a0ccd744f9476699a875cc28",
+    "learning_delta::4a2a7536cb000eca82e62b45cabbe50a8584e7e7fabcda35f777316231748270",
+    "learning_delta::4c65d78c832ac2e8f2dd4c24c7e04b84d1f3dfc1f44c1a70c19829bda9957338",
+    "learning_delta::4d774fdc10fcfd06ba29b4f77a33b5587c3b7769c63d2618e180fd5d6fccd613",
+    "learning_delta::5242c39229fb368f52dea27ea82b37b58e16f2bf91071b21ce3be24c00edce06",
+    "learning_delta::5563661fd13808bd9055a6d679752c0debcaa6b793898368dfd92ce15b90b03a",
+    "learning_delta::689e659a2908722cd092685d382b290ac30c95ebeb464f93b0ec7de30c90dd46",
+    "learning_delta::85b86e49ffc1dd1a5f86c6819a5075937fe7700b5305f1c86221d0f78907190e",
+    "learning_delta::87042ffb28d018b5a3c7bd536eb7be9f2cbd0b3a05fd730bab6ce4daa28fc514",
+    "learning_delta::8812fbcfa16f5489126a7e7c58f7862669126c2a06b258687b1f6ac93dc014b4",
+    "learning_delta::8ceeb0baf48c9d0bfb2d7d07366d27f9d2876801efe7fa7bf64c1cd371bb031d",
+    "learning_delta::9fa109531dc1201561fa1c61c05e552bd56fc51526129a0216553705fbf6aae2",
+    "learning_delta::b070fcff5670f8360333f1651ad53cbc4d8285956ddefda74017a7181d681001",
+    "learning_delta::ba6164ea8c947a0a86e044e9b04f3e98b4d9f05b0326e33287f80c145c912d14",
+    "learning_delta::bef16197a9cc422bd90e38c81c2a7d04723374f94c9b06f70e401fe39d6e4433",
+    "learning_delta::canonical_hmac_one_button",
+    "learning_delta::d40da5dfd370517906928e4ebfeb67bcd55d49f36df8813ca107ac2bc7dbe01d",
+    "learning_delta::f3948939c6f0bd0a0bbd75730d5f385f15f67ff8fb4ab6e98551097d0c70f2c6",
+    "learning_delta::f572c5936d99e8b8790e919760a5d8a231d2c9fcc4ded4cd7de65a79d119116f",
+    "learning_delta::f7ebcf5392a2bfa439b5dd1717715cb7050ef0c7389435924ee09bd8da9389f9",
+    "learning_delta::red_assault_current_head_refresh"
+  ],
+  "anomalies": {
+    "conflicting_duplicate_run_count": 9,
+    "duplicate_ledger_row_count": 1050,
+    "observed_unregistered_crucibles": [
+      "DREAM-DREAM-0001-GOV-HONESTY-264aecce67b3fcd79b1930e8a502b1ca",
+      "DREAM-DREAM-0001-GOV-HONESTY-b42d8b765676ef74f3ff80f1d569afde",
+      "DREAM-DREAM-0002-GOV-HONESTY-488d049b7337723a2db790d166fe3c28",
+      "DREAM-DREAM-0002-GOV-HONESTY-e1de8bb9590e97b365c799aaab69c449",
+      "DREAM-DREAM-GOV-HONESTY-01-9d372234598822e39aa09ce869f2a5ef",
+      "DREAM-DREAM-GOV-HONESTY-01-a201a59653330fd784534ca85a10a786"
+    ],
+    "registered_unobserved_crucibles": [
+      "CRU-CROSS-DOMAIN-01",
+      "CRU-GOV-REFUSAL-BASELINE-01",
+      "CRU-LOGIC-PROOF-01",
+      "CRU-NARRATIVE-01",
+      "CRU-PARADOX-01"
+    ]
+  },
+  "canonical_precedence_rules": [
+    "runner_record.json is canonical for crucible-run truth when duplicated JSONL ledger rows disagree",
+    "duplicate-ledger drift is preserved as anomaly evidence rather than flattened away",
+    "delta-like artifacts without governed experiment or crucible lineage are excluded from admissible learning deltas"
+  ],
+  "generated_utc": "2026-03-14T20:01:12Z",
+  "governed_scope": {
+    "crucible_registry_ref": "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+    "crucible_run_ledger_ref": "KT_PROD_CLEANROOM/tools/growth/ledgers/c019_crucible_runs.jsonl",
+    "promoted_adapter_index_ref": "KT_PROD_CLEANROOM/exports/adapters/promoted_index.json",
+    "proof_bundle_index_ref": "KT_PROD_CLEANROOM/reports/proofrunbundle_index.json",
+    "runtime_delta_refs": [
+      "KT_PROD_CLEANROOM/reports/delta_proof.json",
+      "KT_PROD_CLEANROOM/reports/canonical_hmac_one_button_delta_proof.json"
+    ]
+  },
+  "learning_delta_exclusions": [
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/reports/behavior_delta_receipt.json",
+      "reason": "delta-like receipt lacks governed experiment or crucible lineage and remains excluded from admissible learning deltas"
+    },
+    {
+      "artifact_ref": "KT_LANE_LORA_PHASE_B/lora_adapter_export/lora_out/train_report.json",
+      "reason": "legacy train report lacks governed training-admission and promotion receipt lineage"
+    }
+  ],
+  "schema_id": "kt.operator.lineage_manifest.v1"
+}
