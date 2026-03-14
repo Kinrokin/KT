@@ -1,0 +1,37 @@
+{
+  "schema_id": "kt.work_order.execution_precedence_note.v1",
+  "work_order_id": "WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION",
+  "status": "ACTIVE",
+  "generated_utc": "2026-03-14T00:00:00Z",
+  "packet_ref": "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
+  "governance_baseline_refs": [
+    "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_receipt_index.json",
+    "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_blocker_register.json",
+    "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_proof_class_ladder.json",
+    "KT_PROD_CLEANROOM/reports/ws0_ws11_closeout_summary.json"
+  ],
+  "execution_precedence": {
+    "packet_is_controlling_order": true,
+    "governance_lane_is_input_not_target": true,
+    "first_executable_step_id": 2,
+    "first_executable_step_name": "FOUNDATION_PACK_RATIFICATION",
+    "step_1_status_before_step_2": "BLOCKED_BY_FOUNDATION_PACK_GATE",
+    "reason": "foundation_pack_required_before_ingestion.required=true prohibits ingestion, tagging, or cataloging compiler work until the foundation pack exists and validates.",
+    "post_step_2_sequence": [
+      1,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "operator_rule": "No freeform coding, ingestion, tagging, or normalization work may begin before Step 2 passes. After Step 2 passes, execute Step 1 baseline ingestion, then continue strictly sequentially with explicit approval between mutation or ratification steps."
+  },
+  "claim_boundary": "This note does not change the governing packet. It resolves execution order only so the packet can be applied without violating its own foundation-pack gate.",
+  "admissible_immediate_action": "FOUNDATION_PACK_RATIFICATION_ONLY"
+}
