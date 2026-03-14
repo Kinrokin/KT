@@ -1,0 +1,201 @@
+{
+  "artifact_id": "kt_closure_foundation_receipt.json",
+  "checks": [
+    {
+      "check": "determinism_controls_complete",
+      "detail": "Determinism contract must define the exact required control set from the governing packet.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "determinism_environments_complete",
+      "detail": "Determinism contract must define linux, windows, and one third controlled environment.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "determinism_serialization_explicit",
+      "detail": "Determinism contract must explicitly pin canonical serialization, file ordering, and newline policy.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "tuf_root_policy_explicit_and_threshold_backed",
+      "detail": "TUF root policy must define a trust root, positive threshold, and explicit rotation rules.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_tuf_root_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "tuf_root_policy_matches_active_signer",
+      "detail": "Root-of-trust policy must bind to the checked-in active signer and matching public-key hash.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_tuf_root_policy.json",
+        "KT_PROD_CLEANROOM/governance/signer_identity_policy.json",
+        "KT_PROD_CLEANROOM/governance/signers/kt_op1_cosign.pub"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "public_verifier_contract_explicit_and_fail_closed",
+      "detail": "Public verifier contract must be explicit, offline-capable, and fail closed on boundary or dependency ambiguity.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_public_verifier_contract.json",
+        "KT_PROD_CLEANROOM/governance/public_verifier_rules.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "public_verifier_contract_aligned_to_active_verifier_surfaces",
+      "detail": "Public verifier contract must bind to the current verifier surfaces rather than freeform runtime internals.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_public_verifier_contract.json",
+        "KT_PROD_CLEANROOM/governance/public_verifier_rules.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "claim_compiler_policy_downgrades_on_ambiguity",
+      "detail": "Claim compiler policy must explicitly downgrade on ambiguity rather than preserve stronger language.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_claim_compiler_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "claim_compiler_policy_covers_designated_public_surfaces",
+      "detail": "Claim compiler policy must cover generated doctrine and commercial public surfaces.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_claim_compiler_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "closure_foundation_does_not_upgrade_gates_or_blockers",
+      "detail": "WS0 must ratify foundation law only; it may not claim blocker closure or gate opening.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json",
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_tuf_root_policy.json",
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_public_verifier_contract.json",
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_claim_compiler_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "closure_foundation_anchored_to_current_proof_ceiling",
+      "detail": "WS0 foundation artifacts must state the current proof ceiling instead of overclaiming later closure states.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json",
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_public_verifier_contract.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "post_touch_accounting_clean",
+      "detail": "Actual touched files must match the lawful WS0 subject set before receipt emission, then the full set including the receipt after sealing.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json",
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_tuf_root_policy.json",
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_public_verifier_contract.json",
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_claim_compiler_policy.json",
+        "KT_PROD_CLEANROOM/tools/operator/closure_foundation_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_closure_foundation_validate.py",
+        "KT_PROD_CLEANROOM/reports/kt_closure_foundation_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "446e2a34d34a4809bf7b157087f6b572ae6e2892",
+  "current_head_commit": "446e2a34d34a4809bf7b157087f6b572ae6e2892",
+  "evidence_head_commit": "446e2a34d34a4809bf7b157087f6b572ae6e2892",
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS1_ACTIVE_ARCHIVE_CUTLINE_FREEZE"
+  },
+  "pass_verdict": "CLOSURE_FOUNDATION_RATIFIED",
+  "planned_mutates": [
+    "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json",
+    "KT_PROD_CLEANROOM/governance/closure_foundation/kt_tuf_root_policy.json",
+    "KT_PROD_CLEANROOM/governance/closure_foundation/kt_public_verifier_contract.json",
+    "KT_PROD_CLEANROOM/governance/closure_foundation/kt_claim_compiler_policy.json",
+    "KT_PROD_CLEANROOM/tools/operator/closure_foundation_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_closure_foundation_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_closure_foundation_receipt.json"
+  ],
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.closure_foundation_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "ratified determinism contract",
+      "ratified TUF root policy",
+      "ratified public verifier contract",
+      "ratified claim compiler policy",
+      "validated closure foundation boundaries and touch set"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/governance/closure_foundation/kt_claim_compiler_policy.json",
+      "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json",
+      "KT_PROD_CLEANROOM/governance/closure_foundation/kt_public_verifier_contract.json",
+      "KT_PROD_CLEANROOM/governance/closure_foundation/kt_tuf_root_policy.json",
+      "KT_PROD_CLEANROOM/reports/kt_closure_foundation_receipt.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_closure_foundation_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/closure_foundation_validate.py"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS0 closure-foundation artifacts are ratified and no release or blocker state was upgraded.",
+    "step_id": "WS0_STEP_1_RATIFY_CLOSURE_FOUNDATION",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_closure_foundation_validate.py -q"
+    ],
+    "timestamp": "2026-03-14T23:16:21Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.closure_foundation_validate"
+    ],
+    "workstream_id": "WS0_CLOSURE_FOUNDATION_FREEZE"
+  },
+  "subject_head_commit": "446e2a34d34a4809bf7b157087f6b572ae6e2892",
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.closure_foundation_validate"
+  ],
+  "workstream_id": "WS0_CLOSURE_FOUNDATION_FREEZE",
+  "workstream_open_blockers_snapshot": [
+    {
+      "boundary": "Would permit published-head authority claims only if explicitly proven.",
+      "proof_class_id": "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+      "rank": 4,
+      "subject_commit": "cbc921601b646d7962555c902ea2747963fd9fad"
+    },
+    {
+      "boundary": "Would allow only H1 single-adapter benchmarking, not router or multi-adapter activation.",
+      "proof_class_id": "H1_SINGLE_ADAPTER_ALLOWED",
+      "rank": 10,
+      "subject_commit": "553f4d362fda0087c7a728d1bdec893cafa6e938"
+    },
+    {
+      "boundary": "Would raise governance legitimacy beyond workflow governance only.",
+      "proof_class_id": "PLATFORM_ENFORCEMENT_PROVEN",
+      "rank": 11,
+      "subject_commit": "7bd610b507328eb72622ce24678620f5469f3848"
+    },
+    {
+      "boundary": "Would raise reproducibility beyond same-MVE authority-lane proof.",
+      "proof_class_id": "CROSS_ENV_CONTROLLED_VARIATION_COMPLETE",
+      "rank": 12,
+      "subject_commit": "4d7c6245b5932cdf8d2054192690e1e2675ba2d8"
+    }
+  ]
+}
