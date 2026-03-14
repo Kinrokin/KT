@@ -1,0 +1,444 @@
+{
+  "active_keep_roots": [
+    ".devcontainer",
+    ".gitattributes",
+    ".github",
+    ".gitignore",
+    ".vscode",
+    "KT-Codex",
+    "KT_PROD_CLEANROOM",
+    "LICENSE",
+    "README.md",
+    "REPO_CANON.md",
+    "docs",
+    "run_kt_e2e.sh"
+  ],
+  "archive_surfaces": [
+    "EPOCH_CROSS.json",
+    "EPOCH_GOV.json",
+    "EPOCH_PARADOX.json",
+    "KAGGLE_CELL_MRT1_FINAL.txt",
+    "KAGGLE_MRT1_E2E_FINAL.sh",
+    "KT_LANE_LORA_PHASE_B/",
+    "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/",
+    "KT_TEMPLE_ROOT/",
+    "OPERATION_A_COMPLETION_SUMMARY.txt",
+    "OPERATION_A_FINAL_REPORT.md",
+    "OPERATION_A_INDEX.md",
+    "PHASE_A_BOM.json",
+    "RUN_REPORT.md",
+    "docs/audit/",
+    "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md",
+    "run_autonomous_escalation.py",
+    "run_epoch_escalation.py",
+    "run_manifest.schema.json",
+    "runbook.txt",
+    "work_order.json"
+  ],
+  "claim_boundary": "This map freezes the cutline and violation inventory only. It does not execute cleanup or externalization yet.",
+  "embedded_archive_islands": [
+    {
+      "active_root": "KT_PROD_CLEANROOM",
+      "archive_island": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/",
+      "reason": "Archive vault currently exists under the active cleanroom tree and must remain non-required by ACTIVE."
+    },
+    {
+      "active_root": "docs",
+      "archive_island": "docs/audit/",
+      "reason": "Historical audit material remains nested under the active docs root."
+    }
+  ],
+  "generated_utc": "2026-03-14T23:52:37Z",
+  "schema_id": "kt.operator.active_archive_boundary_map.v1",
+  "summary": {
+    "active_surface_count": 12,
+    "archive_surface_count": 16,
+    "embedded_archive_island_count": 2,
+    "nonactive_quarantined_count": 5,
+    "top_level_surface_count": 33
+  },
+  "top_level_boundaries": [
+    {
+      "boundary_role": "ACTIVE",
+      "current_trust_zones": [
+        "CANONICAL"
+      ],
+      "file_count": 1,
+      "root_path": ".devcontainer",
+      "sample_paths": [
+        ".devcontainer/devcontainer.json"
+      ]
+    },
+    {
+      "boundary_role": "ACTIVE",
+      "current_trust_zones": [
+        "CANONICAL"
+      ],
+      "file_count": 1,
+      "root_path": ".gitattributes",
+      "sample_paths": [
+        ".gitattributes"
+      ]
+    },
+    {
+      "boundary_role": "ACTIVE",
+      "current_trust_zones": [
+        "CANONICAL"
+      ],
+      "file_count": 11,
+      "root_path": ".github",
+      "sample_paths": [
+        ".github/workflows/ci_audits_json_valid.yml",
+        ".github/workflows/ci_epic15_governance.yml",
+        ".github/workflows/ci_epic16_governance.yml"
+      ]
+    },
+    {
+      "boundary_role": "ACTIVE",
+      "current_trust_zones": [
+        "CANONICAL"
+      ],
+      "file_count": 1,
+      "root_path": ".gitignore",
+      "sample_paths": [
+        ".gitignore"
+      ]
+    },
+    {
+      "boundary_role": "ARCHIVE",
+      "current_trust_zones": [
+        "ARCHIVE"
+      ],
+      "file_count": 1,
+      "root_path": "EPOCH_CROSS.json",
+      "sample_paths": [
+        "EPOCH_CROSS.json"
+      ]
+    },
+    {
+      "boundary_role": "ARCHIVE",
+      "current_trust_zones": [
+        "ARCHIVE"
+      ],
+      "file_count": 1,
+      "root_path": "EPOCH_GOV.json",
+      "sample_paths": [
+        "EPOCH_GOV.json"
+      ]
+    },
+    {
+      "boundary_role": "ARCHIVE",
+      "current_trust_zones": [
+        "ARCHIVE"
+      ],
+      "file_count": 1,
+      "root_path": "EPOCH_PARADOX.json",
+      "sample_paths": [
+        "EPOCH_PARADOX.json"
+      ]
+    },
+    {
+      "boundary_role": "ARCHIVE",
+      "current_trust_zones": [
+        "ARCHIVE"
+      ],
+      "file_count": 1,
+      "root_path": "KAGGLE_CELL_MRT1_FINAL.txt",
+      "sample_paths": [
+        "KAGGLE_CELL_MRT1_FINAL.txt"
+      ]
+    },
+    {
+      "boundary_role": "ARCHIVE",
+      "current_trust_zones": [
+        "ARCHIVE"
+      ],
+      "file_count": 1,
+      "root_path": "KAGGLE_MRT1_E2E_FINAL.sh",
+      "sample_paths": [
+        "KAGGLE_MRT1_E2E_FINAL.sh"
+      ]
+    },
+    {
+      "boundary_role": "ACTIVE",
+      "current_trust_zones": [
+        "COMMERCIAL"
+      ],
+      "file_count": 106,
+      "root_path": "KT-Codex",
+      "sample_paths": [
+        "KT-Codex/KT-Codex-Master-Prompt-v1.md",
+        "KT-Codex/KT-TOC-Persona-Glossary-CitationSeed.md",
+        "KT-Codex/Volume-I-Doctrine/01-KT-Doctrine-and-Philosophy.md"
+      ]
+    },
+    {
+      "boundary_role": "ARCHIVE",
+      "current_trust_zones": [
+        "ARCHIVE"
+      ],
+      "file_count": 9,
+      "root_path": "KT_LANE_LORA_PHASE_B",
+      "sample_paths": [
+        "KT_LANE_LORA_PHASE_B/lora_adapter_export.zip",
+        "KT_LANE_LORA_PHASE_B/lora_adapter_export/lora_out/adapter/README.md",
+        "KT_LANE_LORA_PHASE_B/lora_adapter_export/lora_out/adapter/adapter_config.json"
+      ]
+    },
+    {
+      "boundary_role": "ACTIVE",
+      "current_trust_zones": [
+        "ARCHIVE",
+        "CANONICAL",
+        "COMMERCIAL",
+        "GENERATED_RUNTIME_TRUTH",
+        "LAB",
+        "QUARANTINED"
+      ],
+      "file_count": 1712,
+      "root_path": "KT_PROD_CLEANROOM",
+      "sample_paths": [
+        "KT_PROD_CLEANROOM/00_README_FIRST/W4_NAMING_CONVENTIONS.md",
+        "KT_PROD_CLEANROOM/00_README_FIRST/W4_PHASE_GATES.md",
+        "KT_PROD_CLEANROOM/00_README_FIRST/W4_RULES.md"
+      ]
+    },
+    {
+      "boundary_role": "ACTIVE",
+      "current_trust_zones": [
+        "COMMERCIAL"
+      ],
+      "file_count": 1,
+      "root_path": "LICENSE",
+      "sample_paths": [
+        "LICENSE"
+      ]
+    },
+    {
+      "boundary_role": "ARCHIVE",
+      "current_trust_zones": [
+        "ARCHIVE"
+      ],
+      "file_count": 1,
+      "root_path": "OPERATION_A_COMPLETION_SUMMARY.txt",
+      "sample_paths": [
+        "OPERATION_A_COMPLETION_SUMMARY.txt"
+      ]
+    },
+    {
+      "boundary_role": "ARCHIVE",
+      "current_trust_zones": [
+        "ARCHIVE"
+      ],
+      "file_count": 1,
+      "root_path": "OPERATION_A_FINAL_REPORT.md",
+      "sample_paths": [
+        "OPERATION_A_FINAL_REPORT.md"
+      ]
+    },
+    {
+      "boundary_role": "ARCHIVE",
+      "current_trust_zones": [
+        "ARCHIVE"
+      ],
+      "file_count": 1,
+      "root_path": "OPERATION_A_INDEX.md",
+      "sample_paths": [
+        "OPERATION_A_INDEX.md"
+      ]
+    },
+    {
+      "boundary_role": "ARCHIVE",
+      "current_trust_zones": [
+        "ARCHIVE"
+      ],
+      "file_count": 1,
+      "root_path": "PHASE_A_BOM.json",
+      "sample_paths": [
+        "PHASE_A_BOM.json"
+      ]
+    },
+    {
+      "boundary_role": "ACTIVE",
+      "current_trust_zones": [
+        "COMMERCIAL"
+      ],
+      "file_count": 1,
+      "root_path": "README.md",
+      "sample_paths": [
+        "README.md"
+      ]
+    },
+    {
+      "boundary_role": "ACTIVE",
+      "current_trust_zones": [
+        "CANONICAL"
+      ],
+      "file_count": 1,
+      "root_path": "REPO_CANON.md",
+      "sample_paths": [
+        "REPO_CANON.md"
+      ]
+    },
+    {
+      "boundary_role": "ARCHIVE",
+      "current_trust_zones": [
+        "ARCHIVE"
+      ],
+      "file_count": 1,
+      "root_path": "RUN_REPORT.md",
+      "sample_paths": [
+        "RUN_REPORT.md"
+      ]
+    },
+    {
+      "boundary_role": "NONACTIVE_QUARANTINED",
+      "current_trust_zones": [
+        "QUARANTINED"
+      ],
+      "file_count": 1,
+      "root_path": "acceptance_checklist.txt",
+      "sample_paths": [
+        "acceptance_checklist.txt"
+      ]
+    },
+    {
+      "boundary_role": "NONACTIVE_QUARANTINED",
+      "current_trust_zones": [
+        "QUARANTINED"
+      ],
+      "file_count": 1,
+      "root_path": "analyze_autonomous_run.py",
+      "sample_paths": [
+        "analyze_autonomous_run.py"
+      ]
+    },
+    {
+      "boundary_role": "NONACTIVE_QUARANTINED",
+      "current_trust_zones": [
+        "QUARANTINED"
+      ],
+      "file_count": 1,
+      "root_path": "analyze_escalation.py",
+      "sample_paths": [
+        "analyze_escalation.py"
+      ]
+    },
+    {
+      "boundary_role": "NONACTIVE_QUARANTINED",
+      "current_trust_zones": [
+        "QUARANTINED"
+      ],
+      "file_count": 1,
+      "root_path": "cell.sh",
+      "sample_paths": [
+        "cell.sh"
+      ]
+    },
+    {
+      "boundary_role": "ACTIVE",
+      "current_trust_zones": [
+        "CANONICAL"
+      ],
+      "file_count": 9,
+      "root_path": "ci",
+      "sample_paths": [
+        "ci/delivery/cidelivery_manifest.json",
+        "ci/evidence/cireplay_receipt.json",
+        "ci/gates/p0_gate_definitions.json"
+      ]
+    },
+    {
+      "boundary_role": "ACTIVE",
+      "current_trust_zones": [
+        "ARCHIVE",
+        "COMMERCIAL"
+      ],
+      "file_count": 34,
+      "root_path": "docs",
+      "sample_paths": [
+        "docs/EXECUTION_PROMPT.md",
+        "docs/KT_ARCHITECTURE.md",
+        "docs/KT_EXPLAINED_TO_LAWYERS.md"
+      ]
+    },
+    {
+      "boundary_role": "NONACTIVE_QUARANTINED",
+      "current_trust_zones": [
+        "QUARANTINED"
+      ],
+      "file_count": 1,
+      "root_path": "phaseA_commit_hash.txt",
+      "sample_paths": [
+        "phaseA_commit_hash.txt"
+      ]
+    },
+    {
+      "boundary_role": "ARCHIVE",
+      "current_trust_zones": [
+        "ARCHIVE"
+      ],
+      "file_count": 1,
+      "root_path": "run_autonomous_escalation.py",
+      "sample_paths": [
+        "run_autonomous_escalation.py"
+      ]
+    },
+    {
+      "boundary_role": "ARCHIVE",
+      "current_trust_zones": [
+        "ARCHIVE"
+      ],
+      "file_count": 1,
+      "root_path": "run_epoch_escalation.py",
+      "sample_paths": [
+        "run_epoch_escalation.py"
+      ]
+    },
+    {
+      "boundary_role": "ACTIVE",
+      "current_trust_zones": [
+        "ARCHIVE"
+      ],
+      "file_count": 1,
+      "root_path": "run_kt_e2e.sh",
+      "sample_paths": [
+        "run_kt_e2e.sh"
+      ]
+    },
+    {
+      "boundary_role": "ARCHIVE",
+      "current_trust_zones": [
+        "ARCHIVE"
+      ],
+      "file_count": 1,
+      "root_path": "run_manifest.schema.json",
+      "sample_paths": [
+        "run_manifest.schema.json"
+      ]
+    },
+    {
+      "boundary_role": "ARCHIVE",
+      "current_trust_zones": [
+        "ARCHIVE"
+      ],
+      "file_count": 1,
+      "root_path": "runbook.txt",
+      "sample_paths": [
+        "runbook.txt"
+      ]
+    },
+    {
+      "boundary_role": "ARCHIVE",
+      "current_trust_zones": [
+        "ARCHIVE"
+      ],
+      "file_count": 1,
+      "root_path": "work_order.json",
+      "sample_paths": [
+        "work_order.json"
+      ]
+    }
+  ],
+  "workstream_id": "WS1_ACTIVE_ARCHIVE_CUTLINE_FREEZE"
+}

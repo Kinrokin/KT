@@ -1,0 +1,379 @@
+{
+  "archive_root_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT",
+  "generated_utc": "2026-03-14T23:52:38Z",
+  "quarantine_entries": [
+    {
+      "active_reference_count": 4,
+      "archive_ref_class": "root_archive_surface",
+      "archive_surface": "EPOCH_CROSS.json",
+      "consumer_planes": [
+        "other",
+        "runtime"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_archive/EPOCH_CROSS.json",
+      "relocation_consequences": [
+        "ACTIVE_RUNTIME_BREAK_IF_ARCHIVE_MOVED",
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 3,
+      "archive_ref_class": "root_archive_surface",
+      "archive_surface": "EPOCH_GOV.json",
+      "consumer_planes": [
+        "other"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_archive/EPOCH_GOV.json",
+      "relocation_consequences": [
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 2,
+      "archive_ref_class": "root_archive_surface",
+      "archive_surface": "EPOCH_PARADOX.json",
+      "consumer_planes": [
+        "other"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_archive/EPOCH_PARADOX.json",
+      "relocation_consequences": [
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 2,
+      "archive_ref_class": "root_archive_surface",
+      "archive_surface": "KAGGLE_CELL_MRT1_FINAL.txt",
+      "consumer_planes": [
+        "other"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_archive/KAGGLE_CELL_MRT1_FINAL.txt",
+      "relocation_consequences": [
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 2,
+      "archive_ref_class": "root_archive_surface",
+      "archive_surface": "KAGGLE_MRT1_E2E_FINAL.sh",
+      "consumer_planes": [
+        "other"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_archive/KAGGLE_MRT1_E2E_FINAL.sh",
+      "relocation_consequences": [
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 10,
+      "archive_ref_class": "legacy_root_archive_dir",
+      "archive_surface": "KT_LANE_LORA_PHASE_B/",
+      "consumer_planes": [
+        "other",
+        "runtime"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_archive/KT_LANE_LORA_PHASE_B",
+      "relocation_consequences": [
+        "ACTIVE_RUNTIME_BREAK_IF_ARCHIVE_MOVED",
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 28,
+      "archive_ref_class": "archive_vault_surface",
+      "archive_surface": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/",
+      "consumer_planes": [
+        "doc",
+        "other",
+        "runtime",
+        "test"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/",
+      "relocation_consequences": [
+        "ACTIVE_DOC_LINK_BREAK_IF_ARCHIVE_MOVED",
+        "ACTIVE_RUNTIME_BREAK_IF_ARCHIVE_MOVED",
+        "ACTIVE_TEST_BREAK_IF_ARCHIVE_MOVED",
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 14,
+      "archive_ref_class": "legacy_root_archive_dir",
+      "archive_surface": "KT_TEMPLE_ROOT/",
+      "consumer_planes": [
+        "doc",
+        "other",
+        "runtime",
+        "test"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_archive/KT_TEMPLE_ROOT",
+      "relocation_consequences": [
+        "ACTIVE_DOC_LINK_BREAK_IF_ARCHIVE_MOVED",
+        "ACTIVE_RUNTIME_BREAK_IF_ARCHIVE_MOVED",
+        "ACTIVE_TEST_BREAK_IF_ARCHIVE_MOVED",
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 2,
+      "archive_ref_class": "root_archive_surface",
+      "archive_surface": "OPERATION_A_COMPLETION_SUMMARY.txt",
+      "consumer_planes": [
+        "other"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_archive/OPERATION_A_COMPLETION_SUMMARY.txt",
+      "relocation_consequences": [
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 2,
+      "archive_ref_class": "root_archive_surface",
+      "archive_surface": "OPERATION_A_FINAL_REPORT.md",
+      "consumer_planes": [
+        "other"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_archive/OPERATION_A_FINAL_REPORT.md",
+      "relocation_consequences": [
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 2,
+      "archive_ref_class": "root_archive_surface",
+      "archive_surface": "OPERATION_A_INDEX.md",
+      "consumer_planes": [
+        "other"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_archive/OPERATION_A_INDEX.md",
+      "relocation_consequences": [
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 2,
+      "archive_ref_class": "root_archive_surface",
+      "archive_surface": "PHASE_A_BOM.json",
+      "consumer_planes": [
+        "other"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_archive/PHASE_A_BOM.json",
+      "relocation_consequences": [
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 6,
+      "archive_ref_class": "root_archive_surface",
+      "archive_surface": "RUN_REPORT.md",
+      "consumer_planes": [
+        "other",
+        "runtime"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_archive/RUN_REPORT.md",
+      "relocation_consequences": [
+        "ACTIVE_RUNTIME_BREAK_IF_ARCHIVE_MOVED",
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 23,
+      "archive_ref_class": "historical_audit_surface",
+      "archive_surface": "docs/audit/",
+      "consumer_planes": [
+        "other",
+        "runtime"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/docs_audit/",
+      "relocation_consequences": [
+        "ACTIVE_RUNTIME_BREAK_IF_ARCHIVE_MOVED",
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 6,
+      "archive_ref_class": "historical_audit_surface",
+      "archive_surface": "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/workset_and_priority_order.md",
+      "consumer_planes": [
+        "other"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/docs_audit/",
+      "relocation_consequences": [
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 2,
+      "archive_ref_class": "root_archive_surface",
+      "archive_surface": "run_autonomous_escalation.py",
+      "consumer_planes": [
+        "other"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_archive/run_autonomous_escalation.py",
+      "relocation_consequences": [
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 2,
+      "archive_ref_class": "root_archive_surface",
+      "archive_surface": "run_epoch_escalation.py",
+      "consumer_planes": [
+        "other"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_archive/run_epoch_escalation.py",
+      "relocation_consequences": [
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 4,
+      "archive_ref_class": "root_archive_surface",
+      "archive_surface": "run_manifest.schema.json",
+      "consumer_planes": [
+        "other"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_archive/run_manifest.schema.json",
+      "relocation_consequences": [
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 7,
+      "archive_ref_class": "root_archive_surface",
+      "archive_surface": "runbook.txt",
+      "consumer_planes": [
+        "other",
+        "runtime"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_archive/runbook.txt",
+      "relocation_consequences": [
+        "ACTIVE_RUNTIME_BREAK_IF_ARCHIVE_MOVED",
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    },
+    {
+      "active_reference_count": 9,
+      "archive_ref_class": "root_archive_surface",
+      "archive_surface": "work_order.json",
+      "consumer_planes": [
+        "doc",
+        "other",
+        "test"
+      ],
+      "current_boundary_status": "BLOCKED_FOR_EXTERNALIZATION",
+      "proposed_archive_target": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/root_archive/work_order.json",
+      "relocation_consequences": [
+        "ACTIVE_DOC_LINK_BREAK_IF_ARCHIVE_MOVED",
+        "ACTIVE_TEST_BREAK_IF_ARCHIVE_MOVED",
+        "NON_RUNTIME_DOCUMENTARY_BREAK_IF_ARCHIVE_MOVED"
+      ],
+      "required_preconditions_before_move": [
+        "remove_or_replace_active_references",
+        "rerun_archive_externalization_proof"
+      ]
+    }
+  ],
+  "schema_id": "kt.operator.archive_quarantine_plan.v1",
+  "summary": {
+    "archive_surface_count": 20,
+    "blocked_for_externalization_count": 20,
+    "ready_for_externalization_count": 0
+  },
+  "workstream_id": "WS1_ACTIVE_ARCHIVE_CUTLINE_FREEZE"
+}
