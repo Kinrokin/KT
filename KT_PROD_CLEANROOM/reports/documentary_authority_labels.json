@@ -1,9 +1,14 @@
 {
-  "generated_utc": "2026-03-10T13:29:07Z",
+  "claim_compiler_receipt_ref": "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+  "generated_utc": "2026-03-14T13:55:58Z",
   "labels": [
     {
       "glob": "KT_PROD_CLEANROOM/docs/operator/*.md",
       "label": "DOCUMENTARY_ONLY_UNLESS_CITED_BY_BOARD"
+    },
+    {
+      "glob": "KT_PROD_CLEANROOM/docs/commercial/*.md",
+      "label": "DOCUMENTARY_ONLY_COMMERCIAL_CLAIMS_BIND_TO_CLAIM_COMPILER"
     },
     {
       "glob": "docs/audit/**",
@@ -14,6 +19,6 @@
       "label": "HISTORICAL_ONLY"
     }
   ],
-  "schema_id": "kt.documentary_authority_labels.v1",
+  "schema_id": "kt.documentary_authority_labels.v2",
   "status": "ACTIVE"
 }
