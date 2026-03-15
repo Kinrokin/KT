@@ -47,7 +47,7 @@ def _git_head(root: Path) -> str:
 
 
 def _git_status_paths(root: Path) -> List[str]:
-    out = _git(root, "status", "--porcelain=v1")
+    out = subprocess.check_output(["git", "-C", str(root), "status", "--porcelain=v1"], text=True)
     rows: List[str] = []
     for line in out.splitlines():
         rel = line[3:].strip()
