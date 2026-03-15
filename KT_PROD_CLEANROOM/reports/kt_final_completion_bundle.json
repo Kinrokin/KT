@@ -1,0 +1,84 @@
+{
+  "active_tree_state": {
+    "pass_verdict": "ACTIVE_CANONICAL_TREE_SETTLED",
+    "status": "PASS"
+  },
+  "active_truth_source_ref": "kt_truth_ledger:ledger/current/current_pointer.json",
+  "archive_separation_state": {
+    "pass_verdict": "ACTIVE_ARCHIVE_SEPARATION_PROVEN",
+    "status": "PASS"
+  },
+  "artifact_id": "kt_final_completion_bundle.json",
+  "compiled_head_commit": "1518280c3b0dd7fb6a74c60537c7b8717722cdaa",
+  "evidence_head_commit": "1518280c3b0dd7fb6a74c60537c7b8717722cdaa",
+  "gates": {
+    "adapter_testing": "OPEN",
+    "h1": "BLOCKED",
+    "public_showability": "BLOCKED",
+    "tournament": "BLOCKED"
+  },
+  "generated_utc": "2026-03-15T13:09:50Z",
+  "governance_boundary": {
+    "platform_governance_claim_admissible": false,
+    "platform_governance_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
+    "platform_governance_verdict": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED"
+  },
+  "lawful_now": [
+    "adapter testing on the bounded canonical active tree",
+    "offline public verification using the released verifier bundle",
+    "workflow-governance-only current-head claims within the verifier boundary",
+    "documentary commercial/doctrine use bounded by the active claim compiler"
+  ],
+  "proof_class_summary": {
+    "activation_state": "H1_BLOCKED",
+    "governance_ceiling": "WORKFLOW_GOVERNANCE_ONLY",
+    "reproducibility": "CROSS_ENV_REPRODUCIBILITY_PROVEN",
+    "runtime_boundary": "CANONICAL_RUNTIME_BOUNDARY_SETTLED",
+    "truth_authority": "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN"
+  },
+  "release_law_state": {
+    "competition_and_publication_profile_ceiling": "competition_and_publication_on_bounded_surface_only",
+    "forbidden_release_claims": [
+      "HEAD is the transparency-verified truth subject when evidence and subject SHAs differ",
+      "platform-enforced governance is proven while branch protection remains blocked",
+      "src/tools is a canonical runtime root",
+      "H1 is allowed while h1_allowed is false",
+      "cross-environment reproducibility is complete while only same-MVE proof exists"
+    ],
+    "law_id": "KT_FOUNDATION_RELEASE_LAW_V1_20260314"
+  },
+  "schema_id": "kt.operator.final_completion_bundle.v1",
+  "still_blocked": [
+    "platform-enforced governance on main",
+    "tournament readiness",
+    "public showability",
+    "H1 activation"
+  ],
+  "subject_head_commit": "1518280c3b0dd7fb6a74c60537c7b8717722cdaa",
+  "supporting_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_authority_closure_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_archive_externalization_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_completion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_determinism_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_authority_topology_cutover_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_truth_publication_stabilization_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_claim_compiler_activation_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_adapter_testing_gate_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_tournament_readiness_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_showability_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_full_stack_adjudication_recut_receipt.json"
+  ],
+  "trust_root_id": "KT_TUF_ROOT_BOOTSTRAP_20260314",
+  "trust_root_policy_ref": "KT_PROD_CLEANROOM/governance/closure_foundation/kt_tuf_root_policy.json",
+  "truth_subject_boundary": {
+    "current_head_claim_verdict": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+    "truth_evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
+    "truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7"
+  },
+  "work_order_id": "WORK_ORDER_KT_TOTAL_CLOSURE_CAMPAIGN_TO_ACTIVE_CANONICAL_RELEASE",
+  "work_order_schema_id": "kt.work_order.total_closure_campaign.v1"
+}

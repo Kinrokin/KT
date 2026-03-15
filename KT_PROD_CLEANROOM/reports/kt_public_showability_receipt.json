@@ -1,0 +1,25 @@
+{
+  "artifact_id": "kt_public_showability_receipt.json",
+  "blocking_conditions": [
+    "TOURNAMENT_GATE_BLOCKED",
+    "PUBLICATION_PROFILE_BLOCKED"
+  ],
+  "claim_boundary": "Public showability may open only if tournament gate is open and the publication profile is truly ready. Otherwise the horizon remains explicitly blocked.",
+  "compiled_head_commit": "1518280c3b0dd7fb6a74c60537c7b8717722cdaa",
+  "evidence_head_commit": "1518280c3b0dd7fb6a74c60537c7b8717722cdaa",
+  "generated_utc": "2026-03-15T13:09:23Z",
+  "next_lawful_step": {
+    "status_after_workstream": "COMPLETE",
+    "workstream_id": "NONE_CAMPAIGN_COMPLETE"
+  },
+  "pass_verdict": "PUBLIC_SHOWABILITY_BLOCKED",
+  "protected_touch_violations": [],
+  "public_showability_gate_status": "BLOCKED",
+  "schema_id": "kt.operator.public_showability_receipt.v1",
+  "status": "BLOCKED",
+  "subject_head_commit": "1518280c3b0dd7fb6a74c60537c7b8717722cdaa",
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.total_closure_completion_validate"
+  ]
+}

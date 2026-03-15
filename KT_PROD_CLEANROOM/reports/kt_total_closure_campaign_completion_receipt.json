@@ -1,0 +1,102 @@
+{
+  "adapter_testing_gate_status": "OPEN",
+  "artifact_id": "kt_total_closure_campaign_completion_receipt.json",
+  "campaign_completion_state": "SEALED_WITH_BLOCKED_PUBLIC_HORIZONS",
+  "checks": [
+    {
+      "check": "final_bundle_names_active_truth_source_and_trust_root",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json",
+        "KT_PROD_CLEANROOM/reports/kt_final_completion_bundle.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "final_bundle_names_proof_class_release_law_and_archive_state",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_archive_externalization_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_completion_receipt.json",
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_release_law.json",
+        "KT_PROD_CLEANROOM/reports/kt_final_completion_bundle.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "open_and_blocked_gates_explicit",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_adapter_testing_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_tournament_readiness_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_showability_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "public_showability_not_softened_when_blocked",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_showability_receipt.json",
+        "docs/generated/profiles/kt_publication_profile.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "post_touch_accounting_clean",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_completion_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_showability_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_total_closure_campaign_completion_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "1518280c3b0dd7fb6a74c60537c7b8717722cdaa",
+  "evidence_head_commit": "1518280c3b0dd7fb6a74c60537c7b8717722cdaa",
+  "generated_utc": "2026-03-15T13:09:50Z",
+  "next_lawful_step": {
+    "status_after_workstream": "COMPLETE",
+    "workstream_id": "NONE_CAMPAIGN_COMPLETE"
+  },
+  "pass_verdict": "TOTAL_CLOSURE_CAMPAIGN_SEALED",
+  "protected_touch_violations": [],
+  "public_showability_gate_status": "BLOCKED",
+  "schema_id": "kt.operator.total_closure_campaign_completion_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "sealed the final completion bundle from the live WS2-WS11 closure receipts",
+      "declared the exact open and blocked gates without softening the blocked public horizons",
+      "sealed the final public-showability read as blocked while adapter testing remains lawfully open"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/reports/kt_final_completion_bundle.json",
+      "KT_PROD_CLEANROOM/reports/kt_public_showability_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_total_closure_campaign_completion_receipt.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_total_closure_completion_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/total_closure_completion_validate.py"
+    ],
+    "issues_found": [
+      "public_showability_blocked_due_to_tournament_and_publication_profile_state"
+    ],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS12 seals the campaign by naming the final lawful operating boundary: adapter testing open, tournament/public showability blocked, workflow governance only, and H1 blocked.",
+    "step_id": "WS12_STEP_1_SEAL_TOTAL_CLOSURE_STATE",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_total_closure_completion_validate.py -q"
+    ],
+    "timestamp": "2026-03-15T13:09:50Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.total_closure_completion_validate"
+    ],
+    "workstream_id": "WS12_FINAL_COMPLETION_BUNDLE"
+  },
+  "subject_head_commit": "1518280c3b0dd7fb6a74c60537c7b8717722cdaa",
+  "tournament_gate_status": "BLOCKED",
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.total_closure_completion_validate"
+  ],
+  "work_order_id": "WORK_ORDER_KT_TOTAL_CLOSURE_CAMPAIGN_TO_ACTIVE_CANONICAL_RELEASE",
+  "work_order_schema_id": "kt.work_order.total_closure_campaign.v1"
+}
