@@ -1,0 +1,168 @@
+{
+  "artifact_id": "kt_external_reproduction_receipt.json",
+  "checks": [
+    {
+      "check": "prewrite_workspace_scope_clean",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/external_reproduction_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_external_reproduction_validate.py",
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "workstream_touches_remain_in_scope",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/external_reproduction_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_external_reproduction_validate.py",
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws19_detached_package_pass",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "two_independent_clean_environments_recorded",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "one_environment_runs_outside_repo_root",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "both_environments_verify_attested_subjects",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "environment_metadata_recorded",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "replay_recipe_is_explicit",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "stronger_claims_explicitly_withheld",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "f1b57402a3f2d199d50a1e3b71314ec6e7dd84ba",
+  "created_files": [
+    "KT_PROD_CLEANROOM/tools/operator/external_reproduction_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_external_reproduction_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+    "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json"
+  ],
+  "deleted_files": [],
+  "evidence_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "generated_utc": "2026-03-15T20:34:01Z",
+  "input_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+    "KT_PROD_CLEANROOM/tools/operator/external_reproduction_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_external_reproduction_validate.py"
+  ],
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS21_BOUNDED_PUBLIC_HORIZON_OPEN"
+  },
+  "pass_verdict": "INDEPENDENT_EXTERNAL_REPRODUCTION_MATRIX_PROVEN",
+  "protected_touch_violations": [],
+  "retained_new_files": [
+    "KT_PROD_CLEANROOM/tools/operator/external_reproduction_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_external_reproduction_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+    "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json"
+  ],
+  "schema_id": "kt.operator.external_reproduction_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "defined two independent clean environments using separate detached package copies",
+      "verified the sealed detached verifier package in both environments and recorded environment metadata",
+      "emitted an explicit replay recipe and reproduction matrix without widening into public horizon claims"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json",
+      "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+      "KT_PROD_CLEANROOM/tests/operator/test_external_reproduction_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/external_reproduction_validate.py"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS20 proves same-host independent clean-environment verification of the sealed detached verifier package with an explicit replay recipe.",
+    "step_id": "WS20_STEP_1_PROVE_TWO_CLEAN_ENVIRONMENT_VERIFICATION",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_external_reproduction_validate.py -q"
+    ],
+    "timestamp": "2026-03-15T20:34:01Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.external_reproduction_validate"
+    ],
+    "workstream_id": "WS20_INDEPENDENT_EXTERNAL_REPRODUCTION"
+  },
+  "subject_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "summary": {
+    "environment_count": 2,
+    "matrix_ref": "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json",
+    "recipe_ref": "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+    "source_package_root_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/package",
+    "stronger_claim_not_made": "WS20 proves only same-host independent clean-environment verification of the sealed detached verifier package. It does not claim cross-host or third-party reproduction, full artifact reconstruction beyond attested-subject verification, public horizon opening, or any WS21 public-release claim.",
+    "successful_environment_count": 2,
+    "verification_scope": "TWO_CLEAN_ENVIRONMENTS_VERIFY_THE_SEALED_DETACHED_VERIFIER_PACKAGE"
+  },
+  "superseded_files_removed_or_demoted": [],
+  "surface_classifications": {
+    "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json": "generated reproduction matrix",
+    "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json": "generated receipt",
+    "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md": "generated replay recipe",
+    "KT_PROD_CLEANROOM/tests/operator/test_external_reproduction_validate.py": "validator/test file",
+    "KT_PROD_CLEANROOM/tools/operator/external_reproduction_validate.py": "canonical active file"
+  },
+  "temporary_files_removed": [],
+  "tests_run": [
+    "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_external_reproduction_validate.py -q"
+  ],
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.external_reproduction_validate"
+  ],
+  "work_order_id": "WORK_ORDER_KT_FRONTIER_ELEVATION_AND_PUBLIC_DEFENSIBILITY",
+  "work_order_schema_id": "kt.work_order.frontier_elevation_and_public_defensibility.v2",
+  "workstream_id": "WS20_INDEPENDENT_EXTERNAL_REPRODUCTION"
+}
