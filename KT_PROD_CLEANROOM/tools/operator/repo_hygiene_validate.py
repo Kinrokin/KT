@@ -123,8 +123,8 @@ def _git_status_porcelain(root: Path) -> List[str]:
     return [line.rstrip() for line in output.splitlines() if line.strip()]
 
 
-def _git_status_branch(root: Path) -> str:
-    return _git(root, "status", "--short", "--branch")
+def _git_branch_ref(root: Path) -> str:
+    return _git(root, "rev-parse", "--abbrev-ref", "HEAD")
 
 
 def _git_last_commit_for_paths(root: Path, paths: Sequence[str]) -> str:
@@ -361,7 +361,7 @@ def _common_receipt_fields(*, root: Path, status: str, pass_verdict: str) -> Dic
 
 def build_worktree_clean_state_receipt(root: Path, inventory: Dict[str, Any]) -> Dict[str, Any]:
     status_lines = _git_status_porcelain(root)
-    branch_status = _git_status_branch(root)
+    branch_ref = _git_branch_ref(root)
     hidden_ignore = inventory["hidden_ignore_rules"]
     root_entries_match = bool(inventory.get("root_entries_match_canonical_keep_set"))
     secret_free = not list(inventory.get("secret_like_root_surfaces_present", []))
@@ -380,7 +380,7 @@ def build_worktree_clean_state_receipt(root: Path, inventory: Dict[str, Any]) ->
         {
             "artifact_id": Path(CLEAN_STATE_RECEIPT_REL).name,
             "schema_id": "kt.operator.worktree_clean_state_receipt.v1",
-            "git_status_branch": branch_status,
+            "branch_ref": branch_ref,
             "git_status_porcelain": status_lines,
             "git_status_clean": git_clean,
             "root_entries": list(inventory.get("root_entries", [])),
