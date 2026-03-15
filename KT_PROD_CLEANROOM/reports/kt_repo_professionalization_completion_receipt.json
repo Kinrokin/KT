@@ -1,0 +1,96 @@
+{
+  "artifact_id": "kt_repo_professionalization_completion_receipt.json",
+  "checks": [
+    {
+      "check": "archive_rehomed_under_canonical_root",
+      "detail": "Embedded archive surfaces were relocated under KT_ARCHIVE and manifest-listed.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_archive_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_deprecation_execution_log.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "active_hard_dependencies_cleared",
+      "detail": "Active runtime/test/build dependencies on archive surfaces must be eliminated or excluded from the canonical tree.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_canonical_tree_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "tracked_root_is_canonical_keep_set",
+      "detail": "Tracked repo root must match the boring canonical keep-set.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_canonical_tree_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "archive_content_bytes_not_edited",
+      "detail": "WS2 relocated historical material without editing tracked archive file bytes.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_archive_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_deprecation_execution_log.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "c50bfae7335183fcf58a7646371abca0237ee409",
+  "evidence_head_commit": "c50bfae7335183fcf58a7646371abca0237ee409",
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS3_ARCHIVE_EXTERNALIZATION_PROOF"
+  },
+  "pass_verdict": "ACTIVE_CANONICAL_TREE_SETTLED",
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.repo_professionalization_completion_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "re-rooted embedded archive surfaces under KT_ARCHIVE",
+      "removed obsolete historical reports from the active cleanroom root",
+      "sealed canonical active-tree and archive manifests",
+      "classified residual archive mentions into documentary or excluded historical buckets"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/reports/kt_canonical_tree_manifest.json",
+      "KT_PROD_CLEANROOM/reports/kt_deprecation_execution_log.json",
+      "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_completion_receipt.json",
+      "KT_PROD_CLEANROOM/tools/operator/canonical_tree_execute.py",
+      "KT_PROD_CLEANROOM/reports/kt_canonical_tree_manifest.json",
+      "KT_PROD_CLEANROOM/reports/kt_archive_manifest.json",
+      "KT_PROD_CLEANROOM/reports/kt_deprecation_execution_log.json",
+      "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_completion_receipt.json"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS2 executed the planned cutline by rehoming archive material, excluding archive-bound historical/lab surfaces from the canonical active tree, and eliminating hard archive dependencies from active runtime/test/build lanes.",
+    "step_id": "WS2_STEP_1_EXECUTE_CANONICAL_TREE",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_canonical_tree_execute.py -q"
+    ],
+    "timestamp": "2026-03-15T00:42:01Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.canonical_tree_execute"
+    ],
+    "workstream_id": "WS2_CANONICAL_ACTIVE_TREE_EXECUTION"
+  },
+  "subject_head_commit": "c50bfae7335183fcf58a7646371abca0237ee409",
+  "summary": {
+    "baseline_cross_reference_count": 132,
+    "baseline_hard_violation_count": 28,
+    "current_hard_violation_count": 0,
+    "documentary_allowed_count": 33,
+    "excluded_noncanonical_count": 176,
+    "historical_identifier_count": 1,
+    "tracked_archive_file_count": 116
+  },
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.canonical_tree_execute"
+  ],
+  "workstream_id": "WS2_CANONICAL_ACTIVE_TREE_EXECUTION"
+}
