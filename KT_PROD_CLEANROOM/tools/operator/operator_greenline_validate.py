@@ -303,7 +303,7 @@ def build_greenline_outputs_from_artifacts(
     current_blockers = [str(item) for item in current_readiness_report.get("blockers", [])]
     baseline_blockers = [str(item) for item in baseline_report.get("blockers", [])]
 
-    unexpected = sorted(path for path in changed_files if path not in SUBJECT_TOUCH_REFS)
+    unexpected = sorted(path for path in changed_files if path not in WORKSTREAM_FILES_TOUCHED)
     protected = sorted(path for path in changed_files if _is_protected(path))
     if unexpected or protected:
         raise RuntimeError(
@@ -537,9 +537,9 @@ def build_greenline_outputs_from_artifacts(
             "refs": [current_readiness_ref],
         },
         {
-            "check": "subject_touches_remain_in_scope",
+            "check": "workstream_touches_remain_in_scope",
             "status": "PASS" if not unexpected and not protected else "FAIL",
-            "refs": list(SUBJECT_TOUCH_REFS),
+            "refs": list(WORKSTREAM_FILES_TOUCHED),
         },
         {
             "check": "status_lane_recovers",
