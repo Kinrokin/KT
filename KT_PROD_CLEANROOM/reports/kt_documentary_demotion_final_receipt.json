@@ -1,0 +1,56 @@
+{
+  "active_truth_source_ref": "kt_truth_ledger:ledger/current/current_pointer.json",
+  "artifact_id": "kt_documentary_demotion_final_receipt.json",
+  "compiled_head_commit": "24aae9d5958ff40aedb065ac759221eed0d2ce67",
+  "evidence_head_commit": "24aae9d5958ff40aedb065ac759221eed0d2ce67",
+  "generated_utc": "2026-03-15T04:10:49Z",
+  "mirror_targets": [
+    {
+      "documentary_only": true,
+      "expected_superseded_by": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "live_authority": false,
+      "mirror_class": "documentary_compatibility_surface",
+      "path": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "status": "SUPERSEDED_DOCUMENTARY_ONLY",
+      "superseded_by": "kt_truth_ledger:ledger/current/current_pointer.json"
+    },
+    {
+      "documentary_only": true,
+      "expected_superseded_by": "kt_truth_ledger:ledger/current/current_state_receipt.json",
+      "live_authority": false,
+      "mirror_class": "documentary_compatibility_surface",
+      "path": "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+      "status": "PASS",
+      "superseded_by": [
+        "kt_truth_ledger:ledger/current/current_pointer.json",
+        "kt_truth_ledger:ledger/current/current_state_receipt.json"
+      ]
+    },
+    {
+      "documentary_only": true,
+      "expected_superseded_by": "kt_truth_ledger:ledger/current/runtime_closure_audit.json",
+      "live_authority": false,
+      "mirror_class": "documentary_compatibility_surface",
+      "path": "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+      "status": "PASS",
+      "superseded_by": [
+        "kt_truth_ledger:ledger/current/current_pointer.json",
+        "kt_truth_ledger:ledger/current/runtime_closure_audit.json"
+      ]
+    }
+  ],
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS7_TRUST_ROOT_AND_PUBLICATION_ATTESTATION"
+  },
+  "pass_verdict": "DOCUMENTARY_DEMOTION_FINALIZED",
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.documentary_demotion_final_receipt.v1",
+  "status": "PASS",
+  "subject_head_commit": "24aae9d5958ff40aedb065ac759221eed0d2ce67",
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.authority_topology_cutover_validate"
+  ],
+  "workstream_id": "WS6_LEDGER_LED_AUTHORITY_FINALIZATION"
+}

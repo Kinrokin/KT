@@ -7,16 +7,16 @@
       "status": "PASS"
     },
     {
-      "actual": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
       "check": "execution_board_uses_policy_active_source",
       "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
-      "status": "FAIL"
+      "status": "PASS"
     },
     {
-      "actual": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
       "check": "readiness_scope_uses_policy_active_source",
       "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
-      "status": "FAIL"
+      "status": "PASS"
     },
     {
       "check": "supporting_truth_surfaces_declared",
@@ -36,7 +36,7 @@
       "documentary_only_patterns": [
         "docs/**",
         "KT_PROD_CLEANROOM/docs/**",
-        "docs/audit/**"
+        "KT_ARCHIVE/docs/audit/**"
       ],
       "documentary_only_refs": [
         "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
@@ -65,7 +65,7 @@
         "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
         "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json"
       ],
-      "status": "FAIL"
+      "status": "PASS"
     },
     {
       "check": "main_current_state_marked_documentary_only",
@@ -74,7 +74,7 @@
         "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
         "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json"
       ],
-      "status": "FAIL"
+      "status": "PASS"
     },
     {
       "check": "main_runtime_audit_marked_documentary_only",
@@ -83,16 +83,10 @@
         "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
         "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json"
       ],
-      "status": "FAIL"
+      "status": "PASS"
     }
   ],
-  "failures": [
-    "execution_board_uses_policy_active_source",
-    "readiness_scope_uses_policy_active_source",
-    "main_current_pointer_marked_documentary_only",
-    "main_current_state_marked_documentary_only",
-    "main_runtime_audit_marked_documentary_only"
-  ],
+  "failures": [],
   "schema_id": "kt.operator.documentary_truth_validation_receipt.v1",
-  "status": "FAIL"
+  "status": "PASS"
 }

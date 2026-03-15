@@ -1,0 +1,215 @@
+{
+  "active_truth_source_ref": "kt_truth_ledger:ledger/current/current_pointer.json",
+  "artifact_id": "kt_authority_topology_cutover_receipt.json",
+  "checks": [
+    {
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "check": "policy_active_truth_source_is_ledger_pointer",
+      "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "status": "PASS"
+    },
+    {
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "check": "execution_board_points_to_ledger_pointer",
+      "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "status": "PASS"
+    },
+    {
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "check": "readiness_scope_points_to_ledger_pointer",
+      "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "status": "PASS"
+    },
+    {
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "check": "settled_truth_source_contract_points_to_ledger_pointer",
+      "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "status": "PASS"
+    },
+    {
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "check": "current_pointer_transition_rules_point_to_ledger_pointer",
+      "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "status": "PASS"
+    },
+    {
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "check": "truth_snapshot_retention_rules_point_to_ledger_pointer",
+      "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "status": "PASS"
+    },
+    {
+      "check": "settled_authority_migration_outputs_ledger_pointer",
+      "required_outputs": [
+        "KT_PROD_CLEANROOM/reports/settled_authority_promotion_receipt.json",
+        "kt_truth_ledger:ledger/current/current_pointer.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "truth_boundary_promotes_only_ledger_generated_authority",
+      "generated_authoritative_surfaces": [
+        "kt_truth_ledger:ledger/current/current_pointer.json",
+        "kt_truth_ledger:ledger/current/current_bundle_manifest.json",
+        "kt_truth_ledger:ledger/bundles/**"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "truth_boundary_demotes_repo_mirror_surfaces",
+      "status": "PASS",
+      "tracked_documentary_surfaces": [
+        "KT_PROD_CLEANROOM/reports/live_validation_index.json",
+        "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+        "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+        "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+        "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
+        "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json",
+        "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+        "KT_PROD_CLEANROOM/reports/truth_supersession_receipt.json"
+      ]
+    },
+    {
+      "check": "canonical_scope_includes_ledger_truth_refs",
+      "generated_truth_surfaces": [
+        "kt_truth_ledger:ledger/current/current_pointer.json",
+        "kt_truth_ledger:ledger/current/current_state_receipt.json",
+        "kt_truth_ledger:ledger/current/runtime_closure_audit.json",
+        "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+        "KT_PROD_CLEANROOM/exports/_truth/current/current_bundle_manifest.json",
+        "KT_PROD_CLEANROOM/reports/live_validation_index.json",
+        "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+        "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+        "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
+        "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
+        "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json",
+        "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+        "KT_PROD_CLEANROOM/reports/truth_supersession_receipt.json",
+        "KT_PROD_CLEANROOM/reports/truth_bundle.schema.json",
+        "KT_PROD_CLEANROOM/reports/truth_bundle_catalog.json",
+        "KT_PROD_CLEANROOM/reports/truth_pointer_index.json",
+        "KT_PROD_CLEANROOM/reports/truth_publication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/truth_snapshot_manifest.json",
+        "KT_PROD_CLEANROOM/reports/truth_clean_state_receipt.json",
+        "KT_PROD_CLEANROOM/reports/truth_publication_supersession_receipt.json",
+        "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "check": "public_verifier_manifest_points_to_ledger_pointer",
+      "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "status": "PASS"
+    },
+    {
+      "authority_refs": [
+        "kt_truth_ledger:ledger/current/current_pointer.json",
+        "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+        "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_subject.json"
+      ],
+      "check": "public_verifier_rules_reference_ledger_pointer",
+      "status": "PASS"
+    },
+    {
+      "authority_refs": [
+        "KT_PROD_CLEANROOM/docs/operator/KT_CONSTITUTIONAL_PROGRAM_CHARTER.md",
+        "KT_PROD_CLEANROOM/docs/operator/KT_CONSTITUTIONAL_COMPLETION_PROGRAM.md",
+        "KT_PROD_CLEANROOM/docs/operator/KT_FINAL_CONSTITUTIONAL_COMPLETION_BLUEPRINT.md",
+        "KT_PROD_CLEANROOM/docs/operator/KT_FULL_AGENT_COMPLETION_MANDATE.md",
+        "kt_truth_ledger:ledger/current/current_pointer.json",
+        "KT_PROD_CLEANROOM/reports/customer_delivery_receipt.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json"
+      ],
+      "check": "external_legibility_contract_references_ledger_pointer",
+      "status": "PASS"
+    },
+    {
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "check": "constitutional_completion_emit_default_truth_pointer_is_ledger",
+      "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "status": "PASS"
+    },
+    {
+      "check": "documentary_truth_validation_passes",
+      "failures": [],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "24aae9d5958ff40aedb065ac759221eed0d2ce67",
+  "documentary_validation_ref": "KT_PROD_CLEANROOM/reports/documentary_truth_validation_receipt.json",
+  "documentary_validation_status": "PASS",
+  "evidence_head_commit": "24aae9d5958ff40aedb065ac759221eed0d2ce67",
+  "generated_utc": "2026-03-15T04:10:49Z",
+  "issues_found": [],
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS7_TRUST_ROOT_AND_PUBLICATION_ATTESTATION"
+  },
+  "pass_verdict": "LEDGER_AUTHORITY_FINALIZED",
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.authority_topology_cutover_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "cut over live authority contracts to the ledger current pointer",
+      "pointed execution board and readiness scope at the ledger current pointer",
+      "marked main-bound current truth mirrors documentary-only",
+      "repointed public verifier and external legibility surfaces to the ledger current pointer",
+      "validated the final documentary demotion boundary"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+      "KT_PROD_CLEANROOM/governance/current_pointer_transition_rules.json",
+      "KT_PROD_CLEANROOM/governance/execution_board.json",
+      "KT_PROD_CLEANROOM/governance/external_legibility_contract.json",
+      "KT_PROD_CLEANROOM/governance/public_verifier_rules.json",
+      "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
+      "KT_PROD_CLEANROOM/governance/settled_authority_migration_contract.json",
+      "KT_PROD_CLEANROOM/governance/settled_truth_source_contract.json",
+      "KT_PROD_CLEANROOM/governance/tracked_vs_generated_truth_boundary.json",
+      "KT_PROD_CLEANROOM/governance/truth_snapshot_retention_rules.json",
+      "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+      "KT_PROD_CLEANROOM/reports/documentary_truth_validation_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_authority_topology_cutover_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_documentary_demotion_final_receipt.json",
+      "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+      "KT_PROD_CLEANROOM/reports/truth_clean_state_receipt.json",
+      "KT_PROD_CLEANROOM/reports/truth_pointer_index.json",
+      "KT_PROD_CLEANROOM/reports/truth_publication_receipt.json",
+      "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json",
+      "KT_PROD_CLEANROOM/reports/truth_publication_supersession_receipt.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_authority_topology_cutover.py",
+      "KT_PROD_CLEANROOM/tools/operator/authority_topology_cutover_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/constitutional_completion_emit.py"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS6 finalizes the ledger-led live authority topology and freezes the repo mirrors as documentary-only.",
+    "step_id": "WS6_STEP_1_FINALIZE_LEDGER_AUTHORITY_TOPOLOGY",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_authority_topology_cutover.py -q"
+    ],
+    "timestamp": "2026-03-15T04:10:49Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.authority_topology_cutover_validate"
+    ],
+    "workstream_id": "WS6_LEDGER_LED_AUTHORITY_FINALIZATION"
+  },
+  "subject_head_commit": "24aae9d5958ff40aedb065ac759221eed0d2ce67",
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.authority_topology_cutover_validate"
+  ],
+  "workstream_id": "WS6_LEDGER_LED_AUTHORITY_FINALIZATION"
+}
