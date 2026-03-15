@@ -13,6 +13,8 @@ from tools.verification.fl3_meta_evaluator import compute_law_bundle_hash, load_
 from tools.verification.fl3_validators import FL3ValidationError
 from tools.verification.worm_write import write_text_worm
 
+RECEIPTS_DIR_REL = "KT_ARCHIVE/vault/receipts"
+
 
 def _utc_now_basic_z() -> str:
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
@@ -72,6 +74,18 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
         help="Optional sweep id used as a subdir name under run_root/sweeps/. Default: UTC timestamp.",
     )
     return ap.parse_args(argv)
+
+
+def _validate_receipts_cmd(*, out_dir: Path) -> List[str]:
+    return [
+        "python",
+        "-m",
+        "tools.verification.validate_receipts",
+        "--receipts-dir",
+        RECEIPTS_DIR_REL,
+        "--out-dir",
+        str(out_dir),
+    ]
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
@@ -155,7 +169,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         raise FL3ValidationError("FAIL_CLOSED: law bundle recompute mismatch vs LAW_BUNDLE_FL3.sha256")
 
     # Receipt validation (if EPIC_23 tool exists).
-    validate_cmd = ["python", "-m", "tools.verification.validate_receipts", "--out-dir", str(sweep_dir)]
+    validate_cmd = _validate_receipts_cmd(out_dir=sweep_dir)
     tool_path = repo_root / "KT_PROD_CLEANROOM" / "tools" / "verification" / "validate_receipts.py"
     if not tool_path.exists():
         write_text_worm(
