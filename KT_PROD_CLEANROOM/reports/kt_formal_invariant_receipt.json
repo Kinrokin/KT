@@ -1,0 +1,253 @@
+{
+  "artifact_id": "kt_formal_invariant_receipt.json",
+  "checks": [
+    {
+      "check": "prewrite_workspace_scope_clean",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/formal_invariant_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_formal_invariant_validate.py",
+        "KT_PROD_CLEANROOM/reports/kt_core_invariants.tla",
+        "KT_PROD_CLEANROOM/reports/kt_model_check_results.json",
+        "KT_PROD_CLEANROOM/reports/kt_formal_invariant_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "workstream_touches_remain_in_scope",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/formal_invariant_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_formal_invariant_validate.py",
+        "KT_PROD_CLEANROOM/reports/kt_core_invariants.tla",
+        "KT_PROD_CLEANROOM/reports/kt_model_check_results.json",
+        "KT_PROD_CLEANROOM/reports/kt_formal_invariant_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws22_external_challenge_bootstrap_pass",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_red_team_results_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "required_invariant_ids_exist_in_registry",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_organ_invariants.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "documentary_truth_policy_and_authority_contract_active",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/documentary_truth_policy.json",
+        "KT_PROD_CLEANROOM/governance/authority_convergence_contract.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "formal_model_spec_emitted",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_core_invariants.tla"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "bounded_model_checker_passes",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_model_check_results.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "anti_overread_holds_in_all_reachable_states",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_model_check_results.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "documentary_non_authority_holds_in_all_reachable_states",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_model_check_results.json",
+        "KT_PROD_CLEANROOM/governance/documentary_truth_policy.json",
+        "KT_PROD_CLEANROOM/reports/documentary_truth_validation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "authority_closure_monotonicity_holds_in_all_reachable_states",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_model_check_results.json",
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_authority_closure_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "observed_current_state_is_reachable_in_model",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_model_check_results.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "formal_model_is_tied_to_release_critical_logic",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_organ_invariants.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/governance/documentary_truth_policy.json",
+        "KT_PROD_CLEANROOM/governance/authority_convergence_contract.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "stronger_claims_explicitly_withheld",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_model_check_results.json",
+        "KT_PROD_CLEANROOM/reports/kt_formal_invariant_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "474a14f9d404e70524e60526d8fa427ae5948b94",
+  "created_files": [
+    "KT_PROD_CLEANROOM/tools/operator/formal_invariant_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_formal_invariant_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_core_invariants.tla",
+    "KT_PROD_CLEANROOM/reports/kt_model_check_results.json",
+    "KT_PROD_CLEANROOM/reports/kt_formal_invariant_receipt.json"
+  ],
+  "deleted_files": [],
+  "evidence_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "generated_utc": "2026-03-15T21:26:56Z",
+  "input_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_red_team_results_receipt.json",
+    "KT_PROD_CLEANROOM/governance/foundation_pack/kt_organ_invariants.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+    "KT_PROD_CLEANROOM/governance/documentary_truth_policy.json",
+    "KT_PROD_CLEANROOM/reports/documentary_truth_validation_receipt.json",
+    "KT_PROD_CLEANROOM/governance/authority_convergence_contract.json",
+    "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_authority_closure_receipt.json",
+    "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_core_invariants.tla",
+    "KT_PROD_CLEANROOM/reports/kt_model_check_results.json",
+    "KT_PROD_CLEANROOM/tools/operator/formal_invariant_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_formal_invariant_validate.py"
+  ],
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS24_FRONTIER_RECUT_AND_SOTA_READJUDICATION"
+  },
+  "pass_verdict": "CORE_RELEASE_INVARIANTS_MODELED_AND_BOUNDED_CHECKED",
+  "protected_touch_violations": [],
+  "questions": {
+    "what_exact_invariants_were_modeled": [
+      "subject_evidence_current_head_anti_overread",
+      "documentary_mirror_non_authority",
+      "authority_closure_monotonicity"
+    ],
+    "what_exact_release_critical_logic_was_bound": [
+      [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_organ_invariants.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json"
+      ],
+      [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_organ_invariants.json",
+        "KT_PROD_CLEANROOM/governance/documentary_truth_policy.json",
+        "KT_PROD_CLEANROOM/reports/documentary_truth_validation_receipt.json"
+      ],
+      [
+        "KT_PROD_CLEANROOM/governance/authority_convergence_contract.json",
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_authority_closure_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ]
+    ],
+    "what_stronger_claim_is_not_made": "WS23 proves only a bounded formal model of three release-critical invariants and an explicit-state check over the modeled lawful transition system. It does not claim a full unbounded machine-checked proof of the entire repository, does not prove arbitrary future code mutations safe, and does not upgrade public-horizon, competition, H1, governance, or final SOTA-readjudication claims."
+  },
+  "retained_new_files": [
+    "KT_PROD_CLEANROOM/tools/operator/formal_invariant_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_formal_invariant_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_core_invariants.tla",
+    "KT_PROD_CLEANROOM/reports/kt_model_check_results.json",
+    "KT_PROD_CLEANROOM/reports/kt_formal_invariant_receipt.json"
+  ],
+  "schema_id": "kt.operator.formal_invariant_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "modeled the three required core invariants in a bounded TLA+ state model",
+      "ran an explicit-state checker over the lawful transition system and recorded reachable states and transitions",
+      "bound each modeled invariant to current release-critical receipts and contracts rather than abstracting them away",
+      "recorded the bounded assumptions and explicit stronger claims not made"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/reports/kt_core_invariants.tla",
+      "KT_PROD_CLEANROOM/reports/kt_formal_invariant_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_model_check_results.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_formal_invariant_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/formal_invariant_validate.py"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS23 models and bounded-checks the core release-critical invariants without widening into broader formal-methods theater.",
+    "step_id": "WS23_STEP_1_MODEL_AND_CHECK_CORE_INVARIANTS",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_formal_invariant_validate.py -q"
+    ],
+    "timestamp": "2026-03-15T21:26:56Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.formal_invariant_validate"
+    ],
+    "workstream_id": "WS23_FORMAL_INVARIANT_PROOF_CORE"
+  },
+  "subject_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "summary": {
+    "model_results_ref": "KT_PROD_CLEANROOM/reports/kt_model_check_results.json",
+    "model_spec_ref": "KT_PROD_CLEANROOM/reports/kt_core_invariants.tla",
+    "modeled_invariant_count": 3,
+    "observed_current_state_match_count": 2,
+    "reachable_state_count": 6,
+    "reachable_transition_count": 24,
+    "stronger_claim_not_made": "WS23 proves only a bounded formal model of three release-critical invariants and an explicit-state check over the modeled lawful transition system. It does not claim a full unbounded machine-checked proof of the entire repository, does not prove arbitrary future code mutations safe, and does not upgrade public-horizon, competition, H1, governance, or final SOTA-readjudication claims."
+  },
+  "superseded_files_removed_or_demoted": [],
+  "surface_classifications": {
+    "KT_PROD_CLEANROOM/reports/kt_core_invariants.tla": "generated formal model",
+    "KT_PROD_CLEANROOM/reports/kt_formal_invariant_receipt.json": "generated receipt",
+    "KT_PROD_CLEANROOM/reports/kt_model_check_results.json": "generated model-check results",
+    "KT_PROD_CLEANROOM/tests/operator/test_formal_invariant_validate.py": "validator/test file",
+    "KT_PROD_CLEANROOM/tools/operator/formal_invariant_validate.py": "canonical active file"
+  },
+  "temporary_files_removed": [],
+  "tests_run": [
+    "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_formal_invariant_validate.py -q"
+  ],
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.formal_invariant_validate"
+  ],
+  "waste_control": {
+    "created_files_count": 5,
+    "deleted_files_count": 0,
+    "net_artifact_delta": 5,
+    "retention_justifications": [
+      "validator and focused regression are required for the new proof surface",
+      "TLA spec, model-check results, and formal receipt are the declared WS23 deliverables"
+    ],
+    "superseded_files_removed_count": 0,
+    "temporary_files_removed_count": 0
+  },
+  "work_order_id": "WORK_ORDER_KT_FRONTIER_ELEVATION_AND_PUBLIC_DEFENSIBILITY",
+  "work_order_schema_id": "kt.work_order.frontier_elevation_and_public_defensibility.v2",
+  "workstream_id": "WS23_FORMAL_INVARIANT_PROOF_CORE"
+}

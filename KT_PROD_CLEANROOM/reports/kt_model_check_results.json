@@ -1,0 +1,148 @@
+{
+  "artifact_id": "kt_model_check_results.json",
+  "assumptions_and_bounded_abstractions": [
+    "The model abstracts only the release-critical state variables needed to express the three required invariants.",
+    "The checker explores the lawful transition system encoded by the current contracts and receipts; it does not model arbitrary future code mutation.",
+    "The observed current state is taken from the active receipts and must be reachable within the bounded transition depth.",
+    "This workstream does not claim a full unbounded proof of the entire repository or every future runtime path."
+  ],
+  "checker_engine": "PYTHON_EXPLICIT_STATE_ENUMERATOR_V1",
+  "compiled_head_commit": "474a14f9d404e70524e60526d8fa427ae5948b94",
+  "counterexamples": [],
+  "evidence_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "exploration_summary": {
+    "state_count": 6,
+    "status": "PASS",
+    "transition_count": 24
+  },
+  "generated_utc": "2026-03-15T21:26:56Z",
+  "initial_state": {
+    "active_truth_source_is_ledger": true,
+    "authority_rank": 1,
+    "current_head_authority_claimed": true,
+    "h1_allowed": false,
+    "head_claim_evidence_only": false,
+    "head_equals_subject": true,
+    "main_pointer_doc_only": true,
+    "main_runtime_doc_only": true,
+    "main_state_doc_only": true,
+    "previous_authority_rank": 1,
+    "published_head_authority_claimed": true
+  },
+  "max_exploration_depth": 4,
+  "model_language": "TLA+",
+  "model_spec_ref": "KT_PROD_CLEANROOM/reports/kt_core_invariants.tla",
+  "modeled_invariants": [
+    {
+      "invariant_id": "subject_evidence_current_head_anti_overread",
+      "observed_values": {
+        "claim_boundary": "evidence_commit identifies the commit that last changed the cryptographic publication evidence; truth_subject_commit identifies the transparency-verified subject commit. Consumers must not equate them unless evidence_equals_subject is true.",
+        "current_head_authority_claimed": false,
+        "current_head_claim_verdict": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+        "head_equals_subject": false
+      },
+      "release_critical_refs": [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_organ_invariants.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "invariant_id": "documentary_mirror_non_authority",
+      "observed_values": {
+        "active_current_head_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
+        "documentary_only_refs": [
+          "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+          "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+          "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json"
+        ],
+        "validation_status": "PASS"
+      },
+      "release_critical_refs": [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_organ_invariants.json",
+        "KT_PROD_CLEANROOM/governance/documentary_truth_policy.json",
+        "KT_PROD_CLEANROOM/reports/documentary_truth_validation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "invariant_id": "authority_closure_monotonicity",
+      "observed_values": {
+        "authority_closure_pass_verdict": "AUTHORITY_AND_PUBLISHED_HEAD_CLOSED",
+        "authority_closure_status": "PASS",
+        "authority_proof_class": "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+        "h1_allowed": false
+      },
+      "release_critical_refs": [
+        "KT_PROD_CLEANROOM/governance/authority_convergence_contract.json",
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_authority_closure_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "observed_current_state": {
+    "active_truth_source_is_ledger": true,
+    "authority_rank": 2,
+    "current_head_authority_claimed": false,
+    "h1_allowed": false,
+    "head_claim_evidence_only": true,
+    "head_equals_subject": false,
+    "main_pointer_doc_only": true,
+    "main_runtime_doc_only": true,
+    "main_state_doc_only": true,
+    "previous_authority_rank": 1,
+    "published_head_authority_claimed": true
+  },
+  "observed_current_state_match": {
+    "match_count": 2,
+    "matches": [
+      {
+        "path": [
+          "AdvanceCurrentHeadEvidence",
+          "SealAuthorityClosure"
+        ],
+        "state": {
+          "active_truth_source_is_ledger": true,
+          "authority_rank": 2,
+          "current_head_authority_claimed": false,
+          "h1_allowed": false,
+          "head_claim_evidence_only": true,
+          "head_equals_subject": false,
+          "main_pointer_doc_only": true,
+          "main_runtime_doc_only": true,
+          "main_state_doc_only": true,
+          "previous_authority_rank": 1,
+          "published_head_authority_claimed": true
+        },
+        "state_id": "S3"
+      },
+      {
+        "path": [
+          "SealAuthorityClosure",
+          "AdvanceCurrentHeadEvidence"
+        ],
+        "state": {
+          "active_truth_source_is_ledger": true,
+          "authority_rank": 2,
+          "current_head_authority_claimed": false,
+          "h1_allowed": false,
+          "head_claim_evidence_only": true,
+          "head_equals_subject": false,
+          "main_pointer_doc_only": true,
+          "main_runtime_doc_only": true,
+          "main_state_doc_only": true,
+          "previous_authority_rank": 2,
+          "published_head_authority_claimed": true
+        },
+        "state_id": "S4"
+      }
+    ],
+    "status": "PASS"
+  },
+  "schema_id": "kt.operator.model_check_results.v1",
+  "stronger_claim_not_made": "WS23 proves only a bounded formal model of three release-critical invariants and an explicit-state check over the modeled lawful transition system. It does not claim a full unbounded machine-checked proof of the entire repository, does not prove arbitrary future code mutations safe, and does not upgrade public-horizon, competition, H1, governance, or final SOTA-readjudication claims.",
+  "subject_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee"
+}
