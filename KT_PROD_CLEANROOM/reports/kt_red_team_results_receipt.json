@@ -1,0 +1,252 @@
+{
+  "artifact_id": "kt_red_team_results_receipt.json",
+  "auditor_paths": [
+    {
+      "detached_package_root_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/package",
+      "entrypoint": "python -m tools.operator.public_verifier_detached_runtime",
+      "expected_result": "PASS",
+      "kill_conditions_tested": [
+        "DETACHED_REPLAY_FAILS_WITH_DECLARED_INPUTS",
+        "DETACHED_VS_REPO_LOCAL_PARITY_BREAK",
+        "HIDDEN_REPO_LOCAL_OR_TRUST_INPUT_DEPENDENCY"
+      ],
+      "path_id": "WS21_DETACHED_VERIFIER_REPLAY_PATH",
+      "path_kind": "EXTERNAL_AUDITOR_REPLAY",
+      "replay_recipe_ref": "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+      "runnable_without_repo_checkout": true,
+      "scope_boundary": "External parties may inspect and replay the sealed detached verifier package, confirm detached-vs-repo-local parity, and verify the bounded critical artifact set named by the sealed WS18/WS19/WS20 substrate. No broader execution, publication, tournament, H1, production, or economic horizon is opened by this workstream.",
+      "status": "RUNNABLE",
+      "supporting_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_horizon_replay_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+        "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_horizon_receipt.json"
+      ]
+    }
+  ],
+  "bootstrap_log": [
+    {
+      "description": "Published one runnable external auditor path tied to the verifier-only public horizon.",
+      "disposition": "ACKNOWLEDGED_INFORMATIONAL",
+      "entry_id": "WS22_BOOTSTRAP_AUDITOR_PATH_PUBLICATION",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_challenge_protocol.json",
+        "KT_PROD_CLEANROOM/reports/kt_bounty_scope.md",
+        "KT_PROD_CLEANROOM/reports/kt_public_horizon_replay_bundle.json"
+      ],
+      "status": "RECORDED"
+    }
+  ],
+  "bounty_scope_ref": "KT_PROD_CLEANROOM/reports/kt_bounty_scope.md",
+  "challenge_protocol_ref": "KT_PROD_CLEANROOM/reports/kt_external_challenge_protocol.json",
+  "checks": [
+    {
+      "check": "prewrite_workspace_scope_clean",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/red_team_protocol_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_red_team_protocol_validate.py",
+        "KT_PROD_CLEANROOM/reports/kt_external_challenge_protocol.json",
+        "KT_PROD_CLEANROOM/reports/kt_red_team_results_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_bounty_scope.md"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "workstream_touches_remain_in_scope",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/red_team_protocol_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_red_team_protocol_validate.py",
+        "KT_PROD_CLEANROOM/reports/kt_external_challenge_protocol.json",
+        "KT_PROD_CLEANROOM/reports/kt_red_team_results_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_bounty_scope.md"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws21_verifier_only_horizon_pass",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_horizon_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "exactly_one_public_horizon_remains_open",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "broader_public_horizon_claims_remain_closed",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "challenge_protocol_has_explicit_kill_conditions",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_challenge_protocol.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "challenge_protocol_has_submission_format",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_challenge_protocol.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "at_least_one_external_auditor_path_is_runnable",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_challenge_protocol.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_horizon_replay_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "bounty_scope_preserves_claim_ceiling",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_bounty_scope.md"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "findings_register_is_dispositioned_or_explicitly_empty",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_red_team_results_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "stronger_claims_explicitly_withheld",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_challenge_protocol.json",
+        "KT_PROD_CLEANROOM/reports/kt_bounty_scope.md",
+        "KT_PROD_CLEANROOM/reports/kt_red_team_results_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "ccdf09f270033032836a1d94e00fda6dcd78f522",
+  "created_files": [
+    "KT_PROD_CLEANROOM/tools/operator/red_team_protocol_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_red_team_protocol_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_external_challenge_protocol.json",
+    "KT_PROD_CLEANROOM/reports/kt_red_team_results_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_bounty_scope.md"
+  ],
+  "deleted_files": [],
+  "disposition_policy_ref": "KT_PROD_CLEANROOM/reports/kt_external_challenge_protocol.json",
+  "evidence_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "findings": [],
+  "generated_utc": "2026-03-15T21:10:54Z",
+  "input_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_horizon_replay_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_horizon_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+    "KT_PROD_CLEANROOM/reports/kt_external_challenge_protocol.json",
+    "KT_PROD_CLEANROOM/reports/kt_red_team_results_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_bounty_scope.md",
+    "KT_PROD_CLEANROOM/tools/operator/red_team_protocol_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_red_team_protocol_validate.py"
+  ],
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS23_FORMAL_INVARIANT_PROOF_CORE"
+  },
+  "pass_verdict": "EXTERNAL_CHALLENGE_PROTOCOL_BOOTSTRAPPED",
+  "protected_touch_violations": [],
+  "questions": {
+    "what_are_the_exact_kill_conditions": [
+      "DETACHED_REPLAY_FAILS_WITH_DECLARED_INPUTS",
+      "DETACHED_VS_REPO_LOCAL_PARITY_BREAK",
+      "HIDDEN_REPO_LOCAL_OR_TRUST_INPUT_DEPENDENCY",
+      "CLAIM_BOUNDARY_BREACH"
+    ],
+    "what_external_auditor_path_is_runnable": "WS21_DETACHED_VERIFIER_REPLAY_PATH",
+    "what_stronger_claim_is_not_made": "WS22 bootstraps an external challenge and bounty process only for the verifier-only public verification horizon. It does not widen public-horizon claims, does not treat the absence of submissions as proof of absence, and does not upgrade tournament, H1, production, economic, publication-readiness, or platform-governance claims."
+  },
+  "retained_new_files": [
+    "KT_PROD_CLEANROOM/tools/operator/red_team_protocol_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_red_team_protocol_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_external_challenge_protocol.json",
+    "KT_PROD_CLEANROOM/reports/kt_red_team_results_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_bounty_scope.md"
+  ],
+  "schema_id": "kt.operator.red_team_results_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "published a verifier-only external challenge protocol bound to the sealed WS21 public horizon",
+      "declared explicit kill conditions and a submission contract",
+      "published a narrow bounty scope that keeps broader public-horizon claims closed",
+      "opened a disposition register with an explicit no-findings-yet bootstrap state"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/reports/kt_bounty_scope.md",
+      "KT_PROD_CLEANROOM/reports/kt_external_challenge_protocol.json",
+      "KT_PROD_CLEANROOM/reports/kt_red_team_results_receipt.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_red_team_protocol_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/red_team_protocol_validate.py"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS22 bootstraps a verifier-only external challenge path with explicit kill conditions, one runnable auditor path, and a disposition register.",
+    "step_id": "WS22_STEP_1_PUBLISH_CHALLENGE_PROTOCOL_AND_REGISTER",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_red_team_protocol_validate.py -q"
+    ],
+    "timestamp": "2026-03-15T21:10:54Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.red_team_protocol_validate"
+    ],
+    "workstream_id": "WS22_INDEPENDENT_RED_TEAM_AND_BOUNTY_BOOTSTRAP"
+  },
+  "subject_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "summary": {
+    "auditor_path_count": 1,
+    "bootstrap_log_count": 1,
+    "challenge_window_status": "OPEN",
+    "kill_condition_count": 4,
+    "registered_findings_count": 0,
+    "stronger_claim_not_made": "WS22 bootstraps an external challenge and bounty process only for the verifier-only public verification horizon. It does not widen public-horizon claims, does not treat the absence of submissions as proof of absence, and does not upgrade tournament, H1, production, economic, publication-readiness, or platform-governance claims.",
+    "submission_window_status": "OPEN_NO_FINDINGS_YET"
+  },
+  "superseded_files_removed_or_demoted": [],
+  "surface_classifications": {
+    "KT_PROD_CLEANROOM/reports/kt_bounty_scope.md": "generated documentary scope",
+    "KT_PROD_CLEANROOM/reports/kt_external_challenge_protocol.json": "generated challenge protocol",
+    "KT_PROD_CLEANROOM/reports/kt_red_team_results_receipt.json": "generated receipt",
+    "KT_PROD_CLEANROOM/tests/operator/test_red_team_protocol_validate.py": "validator/test file",
+    "KT_PROD_CLEANROOM/tools/operator/red_team_protocol_validate.py": "canonical active file"
+  },
+  "temporary_files_removed": [],
+  "tests_run": [
+    "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_red_team_protocol_validate.py -q"
+  ],
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.red_team_protocol_validate"
+  ],
+  "waste_control": {
+    "created_files_count": 5,
+    "deleted_files_count": 0,
+    "net_artifact_delta": 5,
+    "retention_justifications": [
+      "validator and focused regression are required for the new proof surface",
+      "challenge protocol, bounty scope, and results receipt are the declared WS22 deliverables"
+    ],
+    "superseded_files_removed_count": 0,
+    "temporary_files_removed_count": 0
+  },
+  "work_order_id": "WORK_ORDER_KT_FRONTIER_ELEVATION_AND_PUBLIC_DEFENSIBILITY",
+  "work_order_schema_id": "kt.work_order.frontier_elevation_and_public_defensibility.v2",
+  "workstream_id": "WS22_INDEPENDENT_RED_TEAM_AND_BOUNTY_BOOTSTRAP"
+}

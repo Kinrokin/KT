@@ -1,0 +1,170 @@
+{
+  "artifact_id": "kt_external_challenge_protocol.json",
+  "artifact_subject_root_sha256": "ac68cce295590ce9e0792d7e0f0f41fc7ca2e693f2599419abd418e860939ff8",
+  "auditor_paths": [
+    {
+      "detached_package_root_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/package",
+      "entrypoint": "python -m tools.operator.public_verifier_detached_runtime",
+      "expected_result": "PASS",
+      "kill_conditions_tested": [
+        "DETACHED_REPLAY_FAILS_WITH_DECLARED_INPUTS",
+        "DETACHED_VS_REPO_LOCAL_PARITY_BREAK",
+        "HIDDEN_REPO_LOCAL_OR_TRUST_INPUT_DEPENDENCY"
+      ],
+      "path_id": "WS21_DETACHED_VERIFIER_REPLAY_PATH",
+      "path_kind": "EXTERNAL_AUDITOR_REPLAY",
+      "replay_recipe_ref": "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+      "runnable_without_repo_checkout": true,
+      "scope_boundary": "External parties may inspect and replay the sealed detached verifier package, confirm detached-vs-repo-local parity, and verify the bounded critical artifact set named by the sealed WS18/WS19/WS20 substrate. No broader execution, publication, tournament, H1, production, or economic horizon is opened by this workstream.",
+      "status": "RUNNABLE",
+      "supporting_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_horizon_replay_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+        "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_horizon_receipt.json"
+      ]
+    }
+  ],
+  "challenge_window_status": "OPEN",
+  "compiled_head_commit": "ccdf09f270033032836a1d94e00fda6dcd78f522",
+  "disposition_policy": {
+    "allowed_dispositions": [
+      "REPRODUCED_OPEN",
+      "NOT_REPRODUCED_WITH_EVIDENCE",
+      "REJECTED_AS_OUT_OF_SCOPE",
+      "DUPLICATE",
+      "ACKNOWLEDGED_INFORMATIONAL",
+      "FIX_CONFIRMED_IN_LATER_WORKSTREAM"
+    ],
+    "burying_findings_forbidden": true,
+    "required_finding_fields": [
+      "finding_id",
+      "claimed_kill_condition_id",
+      "status",
+      "disposition",
+      "evidence_refs"
+    ]
+  },
+  "evidence_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "exact_artifact_subjects_covered": [
+    {
+      "kind": "delivery_zip",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/KT_DELIVERY_WS15_canonical_hmac_seal_b4789a5.zip",
+      "sha256": "6ce7d2f569246d699fc21ec1cf4a1d73f92d298f1281f0081d364823c850c378"
+    },
+    {
+      "kind": "delivery_pack_manifest",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/KT_DELIVERY_WS15_canonical_hmac_seal_b4789a5/delivery_pack_manifest.json",
+      "sha256": "5d4e28b168374e78135f3f86ff25d91f99679e44886b81815560ea57a32058bf"
+    },
+    {
+      "kind": "operator_delivery_manifest",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/delivery_manifest.json",
+      "sha256": "5ed311724fc7af69ef3f1199e86f5113bb04f6693de76563363ee8b491c29f89"
+    },
+    {
+      "kind": "replay_ps1",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay.ps1",
+      "sha256": "23f64accd320771ccd0f40284ce79ea426faa5046c21e562deb8e4c42cc5ac22"
+    },
+    {
+      "kind": "replay_sh",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay.sh",
+      "sha256": "4d8d5832cc5113165232764917c8e0740e8e3abb57c0271b0f077854c0ce95b0"
+    },
+    {
+      "kind": "replay_receipt",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay_receipt.json",
+      "sha256": "7361954877676b1f278162a9db9a37c74821fd1a149db7de58c2065d9cdf8e94"
+    },
+    {
+      "kind": "run_protocol",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/run_protocol.json",
+      "sha256": "6df0da2c42aae85d3a2a1d2defe2ee53168de0630408fb90a9187ccce840939f"
+    },
+    {
+      "kind": "operator_fingerprint",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/reports/operator_fingerprint.json",
+      "sha256": "cbdabc03aa2d1489befa015af6a042959e4cde2caf40076195bb2913e33158a0"
+    },
+    {
+      "kind": "real_path_attachment_receipt",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/reports/real_path_attachment_receipt.json",
+      "sha256": "127e46717a3c3cb4709dc0b971f58db4e87f85eeeb1852ea7e65b7030fc844ca"
+    }
+  ],
+  "generated_utc": "2026-03-15T21:10:54Z",
+  "kill_conditions": [
+    {
+      "description": "Following the published verifier-only replay path does not reproduce a PASS detached verifier result on the declared bounded subject set.",
+      "kill_condition_id": "DETACHED_REPLAY_FAILS_WITH_DECLARED_INPUTS",
+      "proof_required": [
+        "verbatim command transcript",
+        "detached runtime receipt",
+        "environment metadata",
+        "exact package root hash or manifest reference"
+      ],
+      "severity": "KILL"
+    },
+    {
+      "description": "The detached verifier conclusion diverges from the repo-local parity field set for the same bounded subject set.",
+      "kill_condition_id": "DETACHED_VS_REPO_LOCAL_PARITY_BREAK",
+      "proof_required": [
+        "detached public verifier report",
+        "repo-local comparison report",
+        "field-level mismatch table"
+      ],
+      "severity": "KILL"
+    },
+    {
+      "description": "The verifier-only replay path requires undeclared repo-local state, undeclared trust inputs, or hidden tribal knowledge beyond the published recipe and bundle.",
+      "kill_condition_id": "HIDDEN_REPO_LOCAL_OR_TRUST_INPUT_DEPENDENCY",
+      "proof_required": [
+        "missing dependency evidence",
+        "filesystem or environment trace",
+        "published reference proving the dependency was undeclared"
+      ],
+      "severity": "KILL"
+    },
+    {
+      "description": "A WS21/WS22 public artifact implies broader public showability, tournament, H1, production, economic, or governance claims than the verifier-only horizon allows.",
+      "kill_condition_id": "CLAIM_BOUNDARY_BREACH",
+      "proof_required": [
+        "artifact reference",
+        "quoted or machine-extracted claim text",
+        "boundary reference showing the claim exceeds the allowed horizon"
+      ],
+      "severity": "KILL"
+    }
+  ],
+  "open_horizon": {
+    "allowed_horizon_choice": "bounded public showability",
+    "horizon_id": "VERIFIER_ONLY_PUBLIC_VERIFICATION",
+    "receipt_ref": "KT_PROD_CLEANROOM/reports/kt_public_horizon_receipt.json",
+    "scope_boundary": "External parties may inspect and replay the sealed detached verifier package, confirm detached-vs-repo-local parity, and verify the bounded critical artifact set named by the sealed WS18/WS19/WS20 substrate. No broader execution, publication, tournament, H1, production, or economic horizon is opened by this workstream.",
+    "scope_ref": "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json"
+  },
+  "schema_id": "kt.operator.external_challenge_protocol.v1",
+  "stronger_claim_not_made": "WS22 bootstraps an external challenge and bounty process only for the verifier-only public verification horizon. It does not widen public-horizon claims, does not treat the absence of submissions as proof of absence, and does not upgrade tournament, H1, production, economic, publication-readiness, or platform-governance claims.",
+  "subject_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "submission_format": {
+    "required_fields": [
+      "submission_id",
+      "reporter_alias",
+      "challenge_class",
+      "claimed_kill_condition_id",
+      "reproduction_steps",
+      "evidence_refs",
+      "environment_metadata",
+      "observed_result",
+      "expected_result"
+    ],
+    "submission_modes": [
+      "signed_json_bundle",
+      "plain_json_with_artifact_refs"
+    ]
+  },
+  "work_order_id": "WORK_ORDER_KT_FRONTIER_ELEVATION_AND_PUBLIC_DEFENSIBILITY",
+  "work_order_schema_id": "kt.work_order.frontier_elevation_and_public_defensibility.v2",
+  "workstream_id": "WS22_INDEPENDENT_RED_TEAM_AND_BOUNTY_BOOTSTRAP"
+}
