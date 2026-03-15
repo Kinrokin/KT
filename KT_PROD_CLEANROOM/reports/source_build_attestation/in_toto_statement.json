@@ -1,0 +1,72 @@
+{
+  "_type": "https://in-toto.io/Statement/v0.1",
+  "predicate": {
+    "attestation_fabric_contract_ref": "KT_PROD_CLEANROOM/governance/attestation_fabric_contract.json",
+    "attested_source_revision": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+    "authority_bundle_schema_ref": "KT_PROD_CLEANROOM/governance/authority_bundle.schema.json",
+    "critical_artifact_count": 9,
+    "critical_artifact_root_sha256": "ae87ae54ad84875b35da382dec54c778032dbfd105e17ab05d3bb552bb6048c2",
+    "critical_artifact_subjects": [
+      {
+        "kind": "operator_delivery_manifest",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/delivery_manifest.json",
+        "sha256": "5ed311724fc7af69ef3f1199e86f5113bb04f6693de76563363ee8b491c29f89"
+      },
+      {
+        "kind": "delivery_pack_manifest",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/KT_DELIVERY_WS15_canonical_hmac_seal_b4789a5/delivery_pack_manifest.json",
+        "sha256": "5d4e28b168374e78135f3f86ff25d91f99679e44886b81815560ea57a32058bf"
+      },
+      {
+        "kind": "delivery_zip",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/KT_DELIVERY_WS15_canonical_hmac_seal_b4789a5.zip",
+        "sha256": "6ce7d2f569246d699fc21ec1cf4a1d73f92d298f1281f0081d364823c850c378"
+      },
+      {
+        "kind": "operator_fingerprint",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/reports/operator_fingerprint.json",
+        "sha256": "cbdabc03aa2d1489befa015af6a042959e4cde2caf40076195bb2913e33158a0"
+      },
+      {
+        "kind": "replay_receipt",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay_receipt.json",
+        "sha256": "7361954877676b1f278162a9db9a37c74821fd1a149db7de58c2065d9cdf8e94"
+      },
+      {
+        "kind": "run_protocol",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/run_protocol.json",
+        "sha256": "6df0da2c42aae85d3a2a1d2defe2ee53168de0630408fb90a9187ccce840939f"
+      },
+      {
+        "kind": "replay_sh",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay.sh",
+        "sha256": "4d8d5832cc5113165232764917c8e0740e8e3abb57c0271b0f077854c0ce95b0"
+      },
+      {
+        "kind": "replay_ps1",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay.ps1",
+        "sha256": "23f64accd320771ccd0f40284ce79ea426faa5046c21e562deb8e4c42cc5ac22"
+      },
+      {
+        "kind": "real_path_attachment_receipt",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/reports/real_path_attachment_receipt.json",
+        "sha256": "127e46717a3c3cb4709dc0b971f58db4e87f85eeeb1852ea7e65b7030fc844ca"
+      }
+    ],
+    "revision_policy_ref": "KT_PROD_CLEANROOM/reports/kt_signed_revision_policy.json",
+    "schema_id": "kt.in_toto.predicate.source_build_subject.v1",
+    "stronger_claim_not_made": "WS17 does not claim detached verifier packaging, outsider replay, public horizon opening, or the WS18 build-provenance/VSA upgrade.",
+    "supply_chain_layout_ref": "KT_PROD_CLEANROOM/governance/supply_chain_layout.json",
+    "ws16_manifest_ref": "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_manifest.json",
+    "ws16_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_receipt.json"
+  },
+  "predicateType": "https://kings-theorem.io/attestations/kt-source-build-subject/v1",
+  "subject": [
+    {
+      "digest": {
+        "sha256": "55bbf50181dd09956a7dfeb27b3a8e768dfb9de09f49d6f65b810b25d6b07a7b"
+      },
+      "name": "kt.source_build.subject.v1:55bbf50181dd09956a7dfeb27b3a8e768dfb9de09f49d6f65b810b25d6b07a7b"
+    }
+  ]
+}

@@ -1,0 +1,273 @@
+{
+  "artifact_id": "kt_revision_trust_receipt.json",
+  "checks": [
+    {
+      "check": "prewrite_workspace_scope_clean",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/source_build_attestation_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_source_build_attestation_validate.py",
+        "KT_PROD_CLEANROOM/reports/kt_signed_revision_policy.json",
+        "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_subject.json",
+        "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json",
+        "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_source_provenance.dsse",
+        "KT_PROD_CLEANROOM/reports/kt_revision_trust_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "workstream_touches_remain_in_scope",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/source_build_attestation_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_source_build_attestation_validate.py",
+        "KT_PROD_CLEANROOM/reports/kt_signed_revision_policy.json",
+        "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_subject.json",
+        "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json",
+        "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_source_provenance.dsse",
+        "KT_PROD_CLEANROOM/reports/kt_revision_trust_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws15_status_pass",
+      "refs": [
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_status_seal_b4789a5/status_report.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws15_authority_grade_a",
+      "refs": [
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_authority_grade_b4789a5/reports/authority_grade.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws16_envelope_pass",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "source_revision_converges_with_sealed_substrate",
+      "refs": [
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_status_seal_b4789a5/status_report.json",
+        "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "dual_hmac_authority_bundle_signoffs_valid",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_bundle.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "bounded_critical_artifact_set_covered",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "stronger_claims_explicitly_withheld",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_signed_revision_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_source_provenance.dsse"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "created_files": [
+    "KT_PROD_CLEANROOM/tools/operator/source_build_attestation_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_source_build_attestation_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_signed_revision_policy.json",
+    "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_subject.json",
+    "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json",
+    "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_source_provenance.dsse",
+    "KT_PROD_CLEANROOM/reports/kt_revision_trust_receipt.json"
+  ],
+  "deleted_files": [],
+  "evidence_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "generated_utc": "2026-03-15T19:27:52Z",
+  "input_refs": [
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_status_seal_b4789a5/status_report.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_authority_grade_b4789a5/reports/authority_grade.json",
+    "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_signed_revision_policy.json",
+    "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_subject.json",
+    "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json",
+    "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_source_provenance.dsse",
+    "KT_PROD_CLEANROOM/tools/operator/source_build_attestation_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_source_build_attestation_validate.py"
+  ],
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS18_BUILD_PROVENANCE_AND_VSA_UPGRADE"
+  },
+  "pass_verdict": "SOURCE_BUILD_ATTESTATION_PROVEN",
+  "protected_touch_violations": [],
+  "questions": {
+    "exact_artifact_subjects_covered": [
+      {
+        "kind": "operator_delivery_manifest",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/delivery_manifest.json",
+        "sha256": "5ed311724fc7af69ef3f1199e86f5113bb04f6693de76563363ee8b491c29f89"
+      },
+      {
+        "kind": "delivery_pack_manifest",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/KT_DELIVERY_WS15_canonical_hmac_seal_b4789a5/delivery_pack_manifest.json",
+        "sha256": "5d4e28b168374e78135f3f86ff25d91f99679e44886b81815560ea57a32058bf"
+      },
+      {
+        "kind": "delivery_zip",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/KT_DELIVERY_WS15_canonical_hmac_seal_b4789a5.zip",
+        "sha256": "6ce7d2f569246d699fc21ec1cf4a1d73f92d298f1281f0081d364823c850c378"
+      },
+      {
+        "kind": "operator_fingerprint",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/reports/operator_fingerprint.json",
+        "sha256": "cbdabc03aa2d1489befa015af6a042959e4cde2caf40076195bb2913e33158a0"
+      },
+      {
+        "kind": "replay_receipt",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay_receipt.json",
+        "sha256": "7361954877676b1f278162a9db9a37c74821fd1a149db7de58c2065d9cdf8e94"
+      },
+      {
+        "kind": "run_protocol",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/run_protocol.json",
+        "sha256": "6df0da2c42aae85d3a2a1d2defe2ee53168de0630408fb90a9187ccce840939f"
+      },
+      {
+        "kind": "replay_sh",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay.sh",
+        "sha256": "4d8d5832cc5113165232764917c8e0740e8e3abb57c0271b0f077854c0ce95b0"
+      },
+      {
+        "kind": "replay_ps1",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay.ps1",
+        "sha256": "23f64accd320771ccd0f40284ce79ea426faa5046c21e562deb8e4c42cc5ac22"
+      },
+      {
+        "kind": "real_path_attachment_receipt",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/reports/real_path_attachment_receipt.json",
+        "sha256": "127e46717a3c3cb4709dc0b971f58db4e87f85eeeb1852ea7e65b7030fc844ca"
+      }
+    ],
+    "exact_attestation_format_and_trust_path": {
+      "attestation_format": "kt.authority.bundle.v1 with dual local HMAC signoffs plus documentary DSSE-wrapped in-toto Statement v0.1",
+      "authority_bundle_ref": "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_bundle.json",
+      "authority_subject_ref": "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_subject.json",
+      "in_toto_statement_ref": "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json",
+      "source_provenance_dsse_ref": "KT_PROD_CLEANROOM/reports/kt_source_provenance.dsse",
+      "trust_path_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_signed_revision_policy.json",
+        "KT_PROD_CLEANROOM/governance/attestation_fabric_contract.json",
+        "KT_PROD_CLEANROOM/governance/authority_bundle.schema.json",
+        "KT_PROD_CLEANROOM/governance/supply_chain_layout.json",
+        "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_receipt.json",
+        "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_subject.json",
+        "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json",
+        "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_source_provenance.dsse"
+      ]
+    },
+    "exact_source_revision": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+    "exact_stronger_claim_not_made": "WS17 does not claim detached verifier packaging, outsider replay, public horizon opening, or the WS18 build-provenance/VSA upgrade."
+  },
+  "retained_new_files": [
+    "KT_PROD_CLEANROOM/tools/operator/source_build_attestation_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_source_build_attestation_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_signed_revision_policy.json",
+    "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_subject.json",
+    "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json",
+    "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_source_provenance.dsse",
+    "KT_PROD_CLEANROOM/reports/kt_revision_trust_receipt.json"
+  ],
+  "schema_id": "kt.operator.revision_trust_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "declared the exact sealed source revision trusted for the bounded critical artifact set",
+      "minted a deterministic authority subject tied directly to the sealed WS15/WS16 substrate and the exact artifact subjects",
+      "bound the subject with dual local HMAC signoffs and emitted a documentary in-toto wrapper without widening into detached verifier or public horizon claims"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/reports/kt_revision_trust_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_signed_revision_policy.json",
+      "KT_PROD_CLEANROOM/reports/kt_source_provenance.dsse",
+      "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_bundle.json",
+      "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_subject.json",
+      "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_source_build_attestation_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/source_build_attestation_validate.py"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS17 proves only the trusted sealed source revision and bounded source/build attestation path for the critical artifact set.",
+    "step_id": "WS17_STEP_1_BIND_TRUSTED_SOURCE_REVISION_TO_CRITICAL_ARTIFACT_SET",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_source_build_attestation_validate.py -q"
+    ],
+    "timestamp": "2026-03-15T19:27:52Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.source_build_attestation_validate"
+    ],
+    "workstream_id": "WS17_SOURCE_BUILD_ATTESTATION"
+  },
+  "subject_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "summary": {
+    "attestation_format": "kt.authority.bundle.v1 with dual local HMAC signoffs plus documentary DSSE-wrapped in-toto Statement v0.1",
+    "attested_source_revision": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+    "critical_artifact_count": 9,
+    "critical_artifact_root_sha256": "ae87ae54ad84875b35da382dec54c778032dbfd105e17ab05d3bb552bb6048c2",
+    "stronger_claim_not_made": "WS17 does not claim detached verifier packaging, outsider replay, public horizon opening, or the WS18 build-provenance/VSA upgrade.",
+    "trust_path_refs": [
+      "KT_PROD_CLEANROOM/reports/kt_signed_revision_policy.json",
+      "KT_PROD_CLEANROOM/governance/attestation_fabric_contract.json",
+      "KT_PROD_CLEANROOM/governance/authority_bundle.schema.json",
+      "KT_PROD_CLEANROOM/governance/supply_chain_layout.json",
+      "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_manifest.json",
+      "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_receipt.json",
+      "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_subject.json",
+      "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json",
+      "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_bundle.json",
+      "KT_PROD_CLEANROOM/reports/kt_source_provenance.dsse"
+    ]
+  },
+  "superseded_files_removed_or_demoted": [],
+  "surface_classifications": {
+    "KT_PROD_CLEANROOM/reports/kt_revision_trust_receipt.json": "generated receipt",
+    "KT_PROD_CLEANROOM/reports/kt_signed_revision_policy.json": "generated revision trust policy",
+    "KT_PROD_CLEANROOM/reports/kt_source_provenance.dsse": "generated documentary DSSE wrapper",
+    "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_bundle.json": "generated authority bundle",
+    "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_subject.json": "generated attestation subject",
+    "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json": "generated in-toto statement",
+    "KT_PROD_CLEANROOM/tests/operator/test_source_build_attestation_validate.py": "validator/test file",
+    "KT_PROD_CLEANROOM/tools/operator/source_build_attestation_validate.py": "canonical active file"
+  },
+  "temporary_files_removed": [],
+  "tests_run": [
+    "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_source_build_attestation_validate.py -q"
+  ],
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.source_build_attestation_validate"
+  ],
+  "work_order_id": "WORK_ORDER_KT_FRONTIER_ELEVATION_AND_PUBLIC_DEFENSIBILITY",
+  "work_order_schema_id": "kt.work_order.frontier_elevation_and_public_defensibility.v2",
+  "workstream_id": "WS17_SOURCE_BUILD_ATTESTATION"
+}

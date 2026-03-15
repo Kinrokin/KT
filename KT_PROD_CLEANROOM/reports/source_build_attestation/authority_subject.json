@@ -1,0 +1,79 @@
+{
+  "evidence": [
+    {
+      "name": "ws15_status_report",
+      "ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_status_seal_b4789a5/status_report.json",
+      "sha256": "bd63e3395f00c2e050ce5c96b3603d898062e37a4afdcc6ca2db20f0e3de49ab"
+    },
+    {
+      "name": "ws15_authority_grade_report",
+      "ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_authority_grade_b4789a5/reports/authority_grade.json",
+      "sha256": "ea71160bd5bf9908000f105bd6d2494f6e153a9c4e189dec97fdb1c2992db7df"
+    },
+    {
+      "name": "ws16_hermetic_build_envelope_manifest",
+      "ref": "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_manifest.json",
+      "sha256": "865357c4e5bde47a663d650b696081dfb140c9918fdfb32f461129c8fe1752a1"
+    },
+    {
+      "name": "ws16_hermetic_build_envelope_receipt",
+      "ref": "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_receipt.json",
+      "sha256": "55c75a6a7a4f5417a023499d0045f3d2c41bc34a086d588cae00ef9bda74f484"
+    },
+    {
+      "name": "critical_artifact_1_operator_delivery_manifest",
+      "ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/delivery_manifest.json",
+      "sha256": "5ed311724fc7af69ef3f1199e86f5113bb04f6693de76563363ee8b491c29f89"
+    },
+    {
+      "name": "critical_artifact_2_delivery_pack_manifest",
+      "ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/KT_DELIVERY_WS15_canonical_hmac_seal_b4789a5/delivery_pack_manifest.json",
+      "sha256": "5d4e28b168374e78135f3f86ff25d91f99679e44886b81815560ea57a32058bf"
+    },
+    {
+      "name": "critical_artifact_3_delivery_zip",
+      "ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/KT_DELIVERY_WS15_canonical_hmac_seal_b4789a5.zip",
+      "sha256": "6ce7d2f569246d699fc21ec1cf4a1d73f92d298f1281f0081d364823c850c378"
+    },
+    {
+      "name": "critical_artifact_4_operator_fingerprint",
+      "ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/reports/operator_fingerprint.json",
+      "sha256": "cbdabc03aa2d1489befa015af6a042959e4cde2caf40076195bb2913e33158a0"
+    },
+    {
+      "name": "critical_artifact_5_replay_receipt",
+      "ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay_receipt.json",
+      "sha256": "7361954877676b1f278162a9db9a37c74821fd1a149db7de58c2065d9cdf8e94"
+    },
+    {
+      "name": "critical_artifact_6_run_protocol",
+      "ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/run_protocol.json",
+      "sha256": "6df0da2c42aae85d3a2a1d2defe2ee53168de0630408fb90a9187ccce840939f"
+    },
+    {
+      "name": "critical_artifact_7_replay_sh",
+      "ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay.sh",
+      "sha256": "4d8d5832cc5113165232764917c8e0740e8e3abb57c0271b0f077854c0ce95b0"
+    },
+    {
+      "name": "critical_artifact_8_replay_ps1",
+      "ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay.ps1",
+      "sha256": "23f64accd320771ccd0f40284ce79ea426faa5046c21e562deb8e4c42cc5ac22"
+    },
+    {
+      "name": "critical_artifact_9_real_path_attachment_receipt",
+      "ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/reports/real_path_attachment_receipt.json",
+      "sha256": "127e46717a3c3cb4709dc0b971f58db4e87f85eeeb1852ea7e65b7030fc844ca"
+    }
+  ],
+  "law_surface_hashes": {
+    "KT_PROD_CLEANROOM/governance/attestation_fabric_contract.json": "0400a5e74bba0431f7e1d6516e21f4ec8a96720241e91f0fcdcb3a95a380eb36",
+    "KT_PROD_CLEANROOM/governance/authority_bundle.schema.json": "1ea818e7e367944dff862b9a181dbf85c2b882eed69320e8557ed5658815367a",
+    "KT_PROD_CLEANROOM/governance/supply_chain_layout.json": "4b09b806492c51c4790d4ee07a6d35ccceb5d9059565b08bfe2d35d57a795585",
+    "KT_PROD_CLEANROOM/reports/kt_signed_revision_policy.json": "cfe7fd8dff7a3b88359c3ba86481d82e06ce30adf0213ac83c5a5183e3373185"
+  },
+  "schema_id": "kt.authority.subject.v1",
+  "supersedes_subject_sha256": "",
+  "truth_produced_at_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "truth_subject_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee"
+}
