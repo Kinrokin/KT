@@ -1,14 +1,14 @@
 {
   "active_truth_source_ref": "kt_truth_ledger:ledger/current/current_pointer.json",
   "allowed_current_claims": [
-    "Compiled head 16fa01fce86c7df9d9ce7f4730fd9b7725b3d834 contains transparency-verified evidence for subject commit cbc921601b646d7962555c902ea2747963fd9fad.",
-    "Compiled head 16fa01fce86c7df9d9ce7f4730fd9b7725b3d834 contains workflow-governance-only evidence for subject commit 7bd610b507328eb72622ce24678620f5469f3848.",
-    "Compiled head 16fa01fce86c7df9d9ce7f4730fd9b7725b3d834 has fresh canonical runtime-boundary proof.",
+    "Compiled head 2a6d3621491ce0ee167335f9fd8c97977e9fe292 contains transparency-verified evidence for subject commit d56de5c40345c0c187f6ebca1b0727ff0f5cefd7.",
+    "Compiled head 2a6d3621491ce0ee167335f9fd8c97977e9fe292 contains workflow-governance-only evidence for subject commit 7bd610b507328eb72622ce24678620f5469f3848.",
+    "Compiled head 2a6d3621491ce0ee167335f9fd8c97977e9fe292 contains runtime-boundary evidence for subject commit 16fa01fce86c7df9d9ce7f4730fd9b7725b3d834.",
     "Active truth source is kt_truth_ledger:ledger/current/current_pointer.json; KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json is a documentary compatibility mirror only."
   ],
   "claim_compiler_claim_boundary": "This receipt compiles admissible commercial claims for compiled_head_commit only. A later repository head that contains this receipt must not be described as the compiled head unless the SHAs match.",
   "claim_compiler_receipt_ref": "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
-  "compiled_head_commit": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834",
+  "compiled_head_commit": "2a6d3621491ce0ee167335f9fd8c97977e9fe292",
   "documentary_mirror_ref": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
   "documentary_only": true,
   "forbidden_current_claims": [
@@ -20,7 +20,7 @@
     "Do not claim src/tools is canonical runtime.",
     "Do not claim H1 is allowed."
   ],
-  "generated_utc": "2026-03-14T14:02:04Z",
+  "generated_utc": "2026-03-15T11:43:19Z",
   "platform_governance_head_claim_verdict": "HEAD_CONTAINS_WORKFLOW_GOVERNANCE_ONLY_EVIDENCE_FOR_SUBJECT",
   "program_count": 23,
   "programs": [
@@ -141,7 +141,7 @@
     }
   ],
   "public_verifier_manifest_ref": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
-  "runtime_boundary_head_claim_verdict": "HEAD_HAS_RUNTIME_BOUNDARY_PROOF",
+  "runtime_boundary_head_claim_verdict": "HEAD_CONTAINS_RUNTIME_BOUNDARY_EVIDENCE_FOR_SUBJECT",
   "runtime_boundary_receipt_ref": "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
   "schema_id": "kt.commercial_program_catalog.v2",
   "status": "ACTIVE",

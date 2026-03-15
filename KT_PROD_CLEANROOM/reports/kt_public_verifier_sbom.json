@@ -1,0 +1,117 @@
+{
+  "compiled_head_commit": "2a6d3621491ce0ee167335f9fd8c97977e9fe292",
+  "component_count": 13,
+  "components": [
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/operator/public_verifier.py",
+      "role": "local_dependency",
+      "sha256": "79d91392dd3fa0160985d5db3fee4f07b055993a3071b06fa1b47d78f7046588"
+    },
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/operator/platform_governance_narrowing.py",
+      "role": "local_dependency",
+      "sha256": "30beb7fbcd52bb10a500ae3e889f27e333a82f8a3516b1ae5af6ef5b1808c811"
+    },
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/operator/titanium_common.py",
+      "role": "local_dependency",
+      "sha256": "13990bbcd3470aef23d72f88bb0b7507c5ce7bde0b9630fd5f01165d329974a0"
+    },
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/canonicalize/kt_canonicalize.py",
+      "role": "local_dependency",
+      "sha256": "63c695b39b38692be0f5b50cd5f7e922ef55337b16b79e561d03f042fee0f62e"
+    },
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/verification/fl3_canonical.py",
+      "role": "local_dependency",
+      "sha256": "b5e54a2defc74cddfa49cd7da0ee9de9b200c5c3e7a7e1f6d699d7d0d9e97ca8"
+    },
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/verification/strict_json.py",
+      "role": "local_dependency",
+      "sha256": "82d2986f40ca5b40c2339a68560334ca06e273473d6227cffdce308d42ba34bd"
+    },
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/verification/worm_write.py",
+      "role": "local_dependency",
+      "sha256": "ffa8638807f7a14ebbb85e1fbbb0ae1b50a833da201640969853fe8ddcf52d81"
+    },
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/verification/fl3_validators.py",
+      "role": "local_dependency",
+      "sha256": "f77f7f02690a3e4a4a22329705e86c0a4d3d601644d6b1c724e3c5a035be4d60"
+    },
+    {
+      "component_type": "contract_input",
+      "path": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "role": "required_input",
+      "sha256": "e0b2de5e4c89e6e9cc3d54e7f65f7c7660445f44bd1519514122c1f139df064b"
+    },
+    {
+      "component_type": "contract_input",
+      "path": "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+      "role": "required_input",
+      "sha256": "3591bf3b465682a04e0d6f5daba2d65014ab1436ec2d7196687c1f9dab1853a2"
+    },
+    {
+      "component_type": "contract_input",
+      "path": "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+      "role": "required_input",
+      "sha256": "99863e2106be890ec194591a62d533d32218de49274d7c7ed2b3ee7f7d1747e8"
+    },
+    {
+      "component_type": "contract_input",
+      "path": "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+      "role": "required_input",
+      "sha256": "951bccd9be57f535ed3ad7baa5be2fd386fa9e312f350b050499f93972baa10e"
+    },
+    {
+      "component_type": "contract_input",
+      "path": "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+      "role": "required_input",
+      "sha256": "52dd647840b511fa20b28678ec6dd96870a1c5b53942e1552c09f7d996c71a82"
+    }
+  ],
+  "excluded_paths": [
+    "KT_ARCHIVE/**",
+    "**/archive/**",
+    "**/historical/**",
+    "docs/generated/**"
+  ],
+  "generated_at": "2026-03-15T11:43:18Z",
+  "generated_from": [
+    "KT_PROD_CLEANROOM/tools/operator/public_verifier.py",
+    "KT_PROD_CLEANROOM/governance/closure_foundation/kt_public_verifier_contract.json",
+    "KT_PROD_CLEANROOM/governance/public_verifier_rules.json"
+  ],
+  "included_paths": [
+    "KT_PROD_CLEANROOM/tools/operator/public_verifier.py",
+    "KT_PROD_CLEANROOM/tools/operator/platform_governance_narrowing.py",
+    "KT_PROD_CLEANROOM/tools/operator/titanium_common.py",
+    "KT_PROD_CLEANROOM/tools/canonicalize/kt_canonicalize.py",
+    "KT_PROD_CLEANROOM/tools/verification/fl3_canonical.py",
+    "KT_PROD_CLEANROOM/tools/verification/strict_json.py",
+    "KT_PROD_CLEANROOM/tools/verification/worm_write.py",
+    "KT_PROD_CLEANROOM/tools/verification/fl3_validators.py",
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+    "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+  ],
+  "manifest_id": "KT_PUBLIC_VERIFIER_SBOM_V1",
+  "schema_id": "kt.operator.public_verifier_sbom.v1",
+  "scope": "public_verifier_release",
+  "sha256": "550d16b7bb696859ca6407972f0dc83f8d38bd542cad92840af1ff90fd0e419e",
+  "third_party_component_count": 0,
+  "version": "1.0.0"
+}

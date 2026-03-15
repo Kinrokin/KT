@@ -1,0 +1,46 @@
+{
+  "artifact_id": "kt_public_verifier_attestation.json",
+  "checks": [
+    {
+      "check": "publication_stabilization_receipt_pass",
+      "status": "PASS"
+    },
+    {
+      "check": "sigstore_bundle_pass",
+      "status": "PASS"
+    },
+    {
+      "check": "rekor_receipt_pass",
+      "status": "PASS"
+    }
+  ],
+  "claim_compiler_receipt_ref": "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+  "claim_compiler_receipt_sha256": "3eb14b3fb6575431edf29517a35c235290524342f413231620b51a31fa962f75",
+  "claim_compiler_status": "PASS",
+  "compiled_head_commit": "2a6d3621491ce0ee167335f9fd8c97977e9fe292",
+  "generated_utc": "2026-03-15T11:43:18Z",
+  "head_claim_verdict": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+  "public_verifier_manifest_ref": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+  "public_verifier_manifest_sha256": "e0b2de5e4c89e6e9cc3d54e7f65f7c7660445f44bd1519514122c1f139df064b",
+  "publication_stabilization_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_truth_publication_stabilization_receipt.json",
+  "rekor_inclusion_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
+  "rekor_log_id": "c0d23d6ad406973f9559f3ba2d1ca01f84147d8ffc5b8445c224f98b9591801d",
+  "rekor_log_index": 1107163963,
+  "release_manifest_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_manifest.json",
+  "release_manifest_sha256": "a233eea940ab0d3fc13290542fa1ff3cbe2dd293f6b1e05d986fdcd654b7a0f4",
+  "sbom_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_sbom.json",
+  "sbom_sha256": "550d16b7bb696859ca6407972f0dc83f8d38bd542cad92840af1ff90fd0e419e",
+  "schema_id": "kt.operator.public_verifier_attestation.v1",
+  "semantic_boundary": {
+    "authority_convergence_resolved": false,
+    "h1_allowed": false,
+    "published_head_self_convergence_resolved": false
+  },
+  "sigstore_bundle_sha256": "d750a18224fd8909a52eec4195f5fc4fd5e28ab308ac28ea604c623b19d490d1",
+  "sigstore_publication_bundle_ref": "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
+  "status": "PASS",
+  "trust_root_id": "KT_TUF_ROOT_BOOTSTRAP_20260314",
+  "truth_evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
+  "truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+  "tuf_root_initialization_ref": "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json"
+}

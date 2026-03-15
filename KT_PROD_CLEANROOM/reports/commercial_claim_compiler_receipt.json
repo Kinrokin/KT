@@ -1,9 +1,9 @@
 {
   "active_truth_source_ref": "kt_truth_ledger:ledger/current/current_pointer.json",
   "allowed_current_claims": [
-    "Compiled head 16fa01fce86c7df9d9ce7f4730fd9b7725b3d834 contains transparency-verified evidence for subject commit cbc921601b646d7962555c902ea2747963fd9fad.",
-    "Compiled head 16fa01fce86c7df9d9ce7f4730fd9b7725b3d834 contains workflow-governance-only evidence for subject commit 7bd610b507328eb72622ce24678620f5469f3848.",
-    "Compiled head 16fa01fce86c7df9d9ce7f4730fd9b7725b3d834 has fresh canonical runtime-boundary proof.",
+    "Compiled head 2a6d3621491ce0ee167335f9fd8c97977e9fe292 contains transparency-verified evidence for subject commit d56de5c40345c0c187f6ebca1b0727ff0f5cefd7.",
+    "Compiled head 2a6d3621491ce0ee167335f9fd8c97977e9fe292 contains workflow-governance-only evidence for subject commit 7bd610b507328eb72622ce24678620f5469f3848.",
+    "Compiled head 2a6d3621491ce0ee167335f9fd8c97977e9fe292 contains runtime-boundary evidence for subject commit 16fa01fce86c7df9d9ce7f4730fd9b7725b3d834.",
     "Active truth source is kt_truth_ledger:ledger/current/current_pointer.json; KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json is a documentary compatibility mirror only."
   ],
   "claim_compiler_claim_boundary": "This receipt compiles admissible commercial claims for compiled_head_commit only. A later repository head that contains this receipt must not be described as the compiled head unless the SHAs match.",
@@ -32,8 +32,8 @@
       "status": "PASS"
     }
   ],
-  "compiled_head_commit": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834",
-  "current_head_commit": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834",
+  "compiled_head_commit": "2a6d3621491ce0ee167335f9fd8c97977e9fe292",
+  "current_head_commit": "2a6d3621491ce0ee167335f9fd8c97977e9fe292",
   "documentary_mirror_ref": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
   "forbidden_current_claims": [
     "Do not claim current HEAD itself is the transparency-verified subject when head_equals_subject is false.",
@@ -44,7 +44,7 @@
     "Do not claim src/tools is canonical runtime.",
     "Do not claim H1 is allowed."
   ],
-  "generated_utc": "2026-03-14T14:02:04Z",
+  "generated_utc": "2026-03-15T11:43:19Z",
   "input_refs": [
     "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
     "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
@@ -54,14 +54,14 @@
   "platform_governance_head_claim_boundary": "Current HEAD contains workflow-governance-only evidence for platform_governance_subject_commit; it is not itself freshly governance-proven.",
   "platform_governance_head_claim_verdict": "HEAD_CONTAINS_WORKFLOW_GOVERNANCE_ONLY_EVIDENCE_FOR_SUBJECT",
   "platform_governance_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
-  "runtime_boundary_evidence_commit": "99c7f0f08cca29aaf5977fc55ed1e87dfba80406",
-  "runtime_boundary_head_claim_boundary": "Current HEAD equals runtime_boundary_subject_commit and has fresh runtime-boundary proof.",
-  "runtime_boundary_head_claim_verdict": "HEAD_HAS_RUNTIME_BOUNDARY_PROOF",
+  "runtime_boundary_evidence_commit": "ff9d852ef902206263701568045fa736c30d91c5",
+  "runtime_boundary_head_claim_boundary": "Current HEAD contains runtime-boundary evidence for runtime_boundary_subject_commit; it is not itself freshly boundary-proven.",
+  "runtime_boundary_head_claim_verdict": "HEAD_CONTAINS_RUNTIME_BOUNDARY_EVIDENCE_FOR_SUBJECT",
   "runtime_boundary_subject_commit": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834",
   "schema_id": "kt.operator.commercial_claim_compiler_receipt.v1",
   "status": "PASS",
-  "truth_evidence_commit": "a1b8397ec2b4eb817dabfaecaf5a0327158c8e1f",
+  "truth_evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
   "truth_head_claim_boundary": "Current HEAD contains transparency-verified evidence for truth_subject_commit; HEAD is not itself the verified subject.",
   "truth_head_claim_verdict": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
-  "truth_subject_commit": "cbc921601b646d7962555c902ea2747963fd9fad"
+  "truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7"
 }

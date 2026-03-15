@@ -1,0 +1,88 @@
+{
+  "allowed_contract_dependencies": [
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+    "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+    "KT_PROD_CLEANROOM/governance/public_verifier_rules.json"
+  ],
+  "claim_boundary": "evidence_commit identifies the commit that last changed the cryptographic publication evidence; truth_subject_commit identifies the transparency-verified subject commit. Consumers must not equate them unless evidence_equals_subject is true.",
+  "compiled_head_commit": "2a6d3621491ce0ee167335f9fd8c97977e9fe292",
+  "evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
+  "excluded_paths": [
+    "KT_ARCHIVE/**",
+    "**/archive/**",
+    "**/historical/**",
+    "docs/generated/**"
+  ],
+  "fail_closed_conditions": [
+    "missing_required_input",
+    "subject_evidence_boundary_ambiguous",
+    "current_head_overread_attempted",
+    "platform_governance_claim_above_proof_class",
+    "archive_dependency_detected",
+    "runtime_dependency_outside_allowed_contracts"
+  ],
+  "generated_at": "2026-03-15T11:43:18Z",
+  "generated_from": [
+    "KT_PROD_CLEANROOM/governance/closure_foundation/kt_public_verifier_contract.json",
+    "KT_PROD_CLEANROOM/governance/closure_foundation/kt_claim_compiler_policy.json",
+    "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json",
+    "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_truth_publication_stabilization_receipt.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+  ],
+  "head_claim_boundary": "Current HEAD contains transparency-verified evidence for truth_subject_commit; HEAD is not itself the verified subject.",
+  "head_claim_verdict": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+  "included_paths": [
+    "KT_PROD_CLEANROOM/tools/operator/public_verifier.py",
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/governance/closure_foundation/kt_public_verifier_contract.json",
+    "KT_PROD_CLEANROOM/governance/public_verifier_rules.json",
+    "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json",
+    "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_truth_publication_stabilization_receipt.json"
+  ],
+  "local_dependency_closure": [
+    "KT_PROD_CLEANROOM/tools/operator/public_verifier.py",
+    "KT_PROD_CLEANROOM/tools/operator/platform_governance_narrowing.py",
+    "KT_PROD_CLEANROOM/tools/operator/titanium_common.py",
+    "KT_PROD_CLEANROOM/tools/canonicalize/kt_canonicalize.py",
+    "KT_PROD_CLEANROOM/tools/verification/fl3_canonical.py",
+    "KT_PROD_CLEANROOM/tools/verification/strict_json.py",
+    "KT_PROD_CLEANROOM/tools/verification/worm_write.py",
+    "KT_PROD_CLEANROOM/tools/verification/fl3_validators.py"
+  ],
+  "manifest_id": "KT_PUBLIC_VERIFIER_RELEASE_MANIFEST_V1",
+  "offline_verification_capable": true,
+  "platform_governance_head_claim_verdict": "HEAD_CONTAINS_WORKFLOW_GOVERNANCE_ONLY_EVIDENCE_FOR_SUBJECT",
+  "release_entrypoint": "python -m tools.operator.public_verifier",
+  "required_inputs": [
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+    "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+  ],
+  "schema_id": "kt.operator.public_verifier_release_manifest.v1",
+  "scope": "public_verifier_release",
+  "sha256": "a233eea940ab0d3fc13290542fa1ff3cbe2dd293f6b1e05d986fdcd654b7a0f4",
+  "subject_evidence_boundary_rules": [
+    "If current HEAD differs from truth_subject_commit, the verifier may only say HEAD contains evidence for the subject.",
+    "If current HEAD differs from platform_governance_subject_commit, the verifier may only say HEAD contains governance evidence for the subject.",
+    "If any required input is missing or stale, the verifier must emit HOLD or FAIL_CLOSED rather than optimistic language."
+  ],
+  "subject_verdict": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
+  "supported_proof_classes": [
+    "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED_SUBJECT",
+    "WORKFLOW_GOVERNANCE_ONLY",
+    "CANONICAL_RUNTIME_BOUNDARY_SETTLED",
+    "FRONTIER_SETTLEMENT_WITH_H1_BLOCK"
+  ],
+  "truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+  "verifier_id": "KT_PUBLIC_VERIFIER_CONTRACT_V1",
+  "version": "1.0.0"
+}
