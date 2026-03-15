@@ -1,0 +1,236 @@
+{
+  "artifact_id": "kt_build_verification_receipt.json",
+  "checks": [
+    {
+      "check": "prewrite_workspace_scope_clean",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/build_verification_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_build_verification_validate.py",
+        "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+        "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse",
+        "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "workstream_touches_remain_in_scope",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/build_verification_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_build_verification_validate.py",
+        "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+        "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse",
+        "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws16_envelope_pass",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws17_source_attestation_pass",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_revision_trust_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_signed_revision_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "source_provenance_present",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_source_provenance.dsse"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "build_provenance_signoffs_verified",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "verification_summary_signoffs_verified",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "artifact_subjects_align_across_provenance_vsa_publication",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+        "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse",
+        "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "stronger_claims_explicitly_withheld",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+        "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "created_files": [
+    "KT_PROD_CLEANROOM/tools/operator/build_verification_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_build_verification_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+    "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse",
+    "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json"
+  ],
+  "deleted_files": [],
+  "evidence_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "generated_utc": "2026-03-15T19:43:39Z",
+  "input_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_revision_trust_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_signed_revision_policy.json",
+    "KT_PROD_CLEANROOM/reports/kt_source_provenance.dsse",
+    "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+    "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse",
+    "KT_PROD_CLEANROOM/tools/operator/build_verification_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_build_verification_validate.py"
+  ],
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS19_DETACHED_PUBLIC_VERIFIER_PACKAGE"
+  },
+  "pass_verdict": "BUILD_PROVENANCE_AND_VSA_ALIGNED",
+  "protected_touch_violations": [],
+  "questions": {
+    "exact_artifact_subjects_covered": [
+      {
+        "kind": "delivery_zip",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/KT_DELIVERY_WS15_canonical_hmac_seal_b4789a5.zip",
+        "sha256": "6ce7d2f569246d699fc21ec1cf4a1d73f92d298f1281f0081d364823c850c378"
+      },
+      {
+        "kind": "delivery_pack_manifest",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/KT_DELIVERY_WS15_canonical_hmac_seal_b4789a5/delivery_pack_manifest.json",
+        "sha256": "5d4e28b168374e78135f3f86ff25d91f99679e44886b81815560ea57a32058bf"
+      },
+      {
+        "kind": "operator_delivery_manifest",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/delivery_manifest.json",
+        "sha256": "5ed311724fc7af69ef3f1199e86f5113bb04f6693de76563363ee8b491c29f89"
+      },
+      {
+        "kind": "replay_ps1",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay.ps1",
+        "sha256": "23f64accd320771ccd0f40284ce79ea426faa5046c21e562deb8e4c42cc5ac22"
+      },
+      {
+        "kind": "replay_sh",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay.sh",
+        "sha256": "4d8d5832cc5113165232764917c8e0740e8e3abb57c0271b0f077854c0ce95b0"
+      },
+      {
+        "kind": "replay_receipt",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay_receipt.json",
+        "sha256": "7361954877676b1f278162a9db9a37c74821fd1a149db7de58c2065d9cdf8e94"
+      },
+      {
+        "kind": "run_protocol",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/run_protocol.json",
+        "sha256": "6df0da2c42aae85d3a2a1d2defe2ee53168de0630408fb90a9187ccce840939f"
+      },
+      {
+        "kind": "operator_fingerprint",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/reports/operator_fingerprint.json",
+        "sha256": "cbdabc03aa2d1489befa015af6a042959e4cde2caf40076195bb2913e33158a0"
+      },
+      {
+        "kind": "real_path_attachment_receipt",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/reports/real_path_attachment_receipt.json",
+        "sha256": "127e46717a3c3cb4709dc0b971f58db4e87f85eeeb1852ea7e65b7030fc844ca"
+      }
+    ],
+    "exact_stronger_claim_not_made": "WS18 does not claim detached verifier packaging, external reproduction, outsider replay, or public horizon opening.",
+    "provenance_vsa_publication_subject_alignment": {
+      "publication_surface_boundary": "For WS18, publication surface means the sealed WS15 canonical delivery publication bundle carried forward by the WS16 critical artifact set; it does not collapse that artifact set into the earlier WS7 authority-subject publication surface.",
+      "publication_surface_ref": "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_manifest.json",
+      "status": "PASS",
+      "subject_count": 9,
+      "subject_root_sha256": "ac68cce295590ce9e0792d7e0f0f41fc7ca2e693f2599419abd418e860939ff8"
+    }
+  },
+  "retained_new_files": [
+    "KT_PROD_CLEANROOM/tools/operator/build_verification_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_build_verification_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+    "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse",
+    "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json"
+  ],
+  "schema_id": "kt.operator.build_verification_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "emitted build provenance for the bounded critical artifact set",
+      "emitted verification summary attestation for the same bounded critical artifact set",
+      "proved that provenance, verification summary, and the sealed canonical delivery publication surface all point to the same artifact subjects"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+      "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse",
+      "KT_PROD_CLEANROOM/tests/operator/test_build_verification_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/build_verification_validate.py"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS18 binds build provenance, verification summary, and the bounded publication surface to the same sealed critical artifact subjects.",
+    "step_id": "WS18_STEP_1_BIND_PROVENANCE_VSA_AND_PUBLICATION_SUBJECTS",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_build_verification_validate.py -q"
+    ],
+    "timestamp": "2026-03-15T19:43:39Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.build_verification_validate"
+    ],
+    "workstream_id": "WS18_BUILD_PROVENANCE_AND_VSA_UPGRADE"
+  },
+  "subject_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "summary": {
+    "artifact_subject_count": 9,
+    "artifact_subject_root_sha256": "ac68cce295590ce9e0792d7e0f0f41fc7ca2e693f2599419abd418e860939ff8",
+    "build_provenance_ref": "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+    "publication_surface_ref": "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_manifest.json",
+    "stronger_claim_not_made": "WS18 does not claim detached verifier packaging, external reproduction, outsider replay, or public horizon opening.",
+    "verification_summary_ref": "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse",
+    "verifier_citation_ready_refs": [
+      "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+      "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse",
+      "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_manifest.json"
+    ]
+  },
+  "superseded_files_removed_or_demoted": [],
+  "surface_classifications": {
+    "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse": "generated documentary DSSE wrapper",
+    "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json": "generated receipt",
+    "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse": "generated documentary DSSE wrapper",
+    "KT_PROD_CLEANROOM/tests/operator/test_build_verification_validate.py": "validator/test file",
+    "KT_PROD_CLEANROOM/tools/operator/build_verification_validate.py": "canonical active file"
+  },
+  "temporary_files_removed": [],
+  "tests_run": [
+    "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_build_verification_validate.py -q"
+  ],
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.build_verification_validate"
+  ],
+  "work_order_id": "WORK_ORDER_KT_FRONTIER_ELEVATION_AND_PUBLIC_DEFENSIBILITY",
+  "work_order_schema_id": "kt.work_order.frontier_elevation_and_public_defensibility.v2",
+  "workstream_id": "WS18_BUILD_PROVENANCE_AND_VSA_UPGRADE"
+}
