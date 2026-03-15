@@ -1,0 +1,140 @@
+{
+  "allowed_variation_fields": {
+    "environment_class": {
+      "linux_wsl_docker_desktop_sha256sum": "linux",
+      "windows_py310_current": "windows",
+      "windows_py311_third_controlled": "third_controlled_environment"
+    },
+    "interpreter": {
+      "linux_wsl_docker_desktop_sha256sum": "sha256sum",
+      "windows_py310_current": "python.exe",
+      "windows_py311_third_controlled": "python.exe"
+    },
+    "platform": {
+      "linux_wsl_docker_desktop_sha256sum": "Linux 6.6.87.2-microsoft-standard-WSL2 x86_64",
+      "windows_py310_current": "Windows-10-10.0.26200-SP0",
+      "windows_py311_third_controlled": "Windows-10-10.0.26200-SP0"
+    },
+    "probe_kind": {
+      "linux_wsl_docker_desktop_sha256sum": "wsl_sha256sum",
+      "windows_py310_current": "python",
+      "windows_py311_third_controlled": "python"
+    },
+    "python_version": {
+      "linux_wsl_docker_desktop_sha256sum": "absent",
+      "windows_py310_current": "3.10.11",
+      "windows_py311_third_controlled": "3.11.0"
+    }
+  },
+  "artifact_id": "kt_cross_env_bundle_hash_matrix.json",
+  "bundle_ids": [
+    "publication_authority_bundle_sha256",
+    "publication_in_toto_statement_sha256",
+    "runner_bundle_sha256",
+    "truth_current_bundle_manifest_sha256"
+  ],
+  "critical_hash_match_complete": true,
+  "environment_classes_present": [
+    "linux",
+    "third_controlled_environment",
+    "windows"
+  ],
+  "generated_at": "2026-03-15T03:55:23Z",
+  "matrix_rows": [
+    {
+      "bundle_id": "publication_authority_bundle_sha256",
+      "status": "PASS",
+      "values_by_environment": {
+        "linux_wsl_docker_desktop_sha256sum": "6e3d8a910f2fa0e7537092f59630202b2cd17be0521feb120fc4560b0c7cb18b",
+        "windows_py310_current": "6e3d8a910f2fa0e7537092f59630202b2cd17be0521feb120fc4560b0c7cb18b",
+        "windows_py311_third_controlled": "6e3d8a910f2fa0e7537092f59630202b2cd17be0521feb120fc4560b0c7cb18b"
+      }
+    },
+    {
+      "bundle_id": "publication_in_toto_statement_sha256",
+      "status": "PASS",
+      "values_by_environment": {
+        "linux_wsl_docker_desktop_sha256sum": "dcf26d69477e05620de9b15bb340f70ac9097159f1a98842dc82c8104fec8522",
+        "windows_py310_current": "dcf26d69477e05620de9b15bb340f70ac9097159f1a98842dc82c8104fec8522",
+        "windows_py311_third_controlled": "dcf26d69477e05620de9b15bb340f70ac9097159f1a98842dc82c8104fec8522"
+      }
+    },
+    {
+      "bundle_id": "runner_bundle_sha256",
+      "status": "PASS",
+      "values_by_environment": {
+        "linux_wsl_docker_desktop_sha256sum": "236a7290ad1cf16d839c55eb3da1f211ad9831bbf51590519ccb97f629baf7a4",
+        "windows_py310_current": "236a7290ad1cf16d839c55eb3da1f211ad9831bbf51590519ccb97f629baf7a4",
+        "windows_py311_third_controlled": "236a7290ad1cf16d839c55eb3da1f211ad9831bbf51590519ccb97f629baf7a4"
+      }
+    },
+    {
+      "bundle_id": "truth_current_bundle_manifest_sha256",
+      "status": "PASS",
+      "values_by_environment": {
+        "linux_wsl_docker_desktop_sha256sum": "da57eeb17cf12f76698a4faef85346161c534a50e94403387aeeedb605faa69b",
+        "windows_py310_current": "da57eeb17cf12f76698a4faef85346161c534a50e94403387aeeedb605faa69b",
+        "windows_py311_third_controlled": "da57eeb17cf12f76698a4faef85346161c534a50e94403387aeeedb605faa69b"
+      }
+    }
+  ],
+  "missing_required_environment_classes": [],
+  "probe_count": 3,
+  "probes": [
+    {
+      "critical_hashes": {
+        "publication_authority_bundle_sha256": "6e3d8a910f2fa0e7537092f59630202b2cd17be0521feb120fc4560b0c7cb18b",
+        "publication_in_toto_statement_sha256": "dcf26d69477e05620de9b15bb340f70ac9097159f1a98842dc82c8104fec8522",
+        "runner_bundle_sha256": "236a7290ad1cf16d839c55eb3da1f211ad9831bbf51590519ccb97f629baf7a4",
+        "truth_current_bundle_manifest_sha256": "da57eeb17cf12f76698a4faef85346161c534a50e94403387aeeedb605faa69b"
+      },
+      "environment_class": "windows",
+      "environment_id": "windows_py310_current",
+      "interpreter": "python.exe",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "probe_kind": "python",
+      "python_version": "3.10.11"
+    },
+    {
+      "critical_hashes": {
+        "publication_authority_bundle_sha256": "6e3d8a910f2fa0e7537092f59630202b2cd17be0521feb120fc4560b0c7cb18b",
+        "publication_in_toto_statement_sha256": "dcf26d69477e05620de9b15bb340f70ac9097159f1a98842dc82c8104fec8522",
+        "runner_bundle_sha256": "236a7290ad1cf16d839c55eb3da1f211ad9831bbf51590519ccb97f629baf7a4",
+        "truth_current_bundle_manifest_sha256": "da57eeb17cf12f76698a4faef85346161c534a50e94403387aeeedb605faa69b"
+      },
+      "environment_class": "third_controlled_environment",
+      "environment_id": "windows_py311_third_controlled",
+      "interpreter": "python.exe",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "probe_kind": "python",
+      "python_version": "3.11.0"
+    },
+    {
+      "critical_hashes": {
+        "publication_authority_bundle_sha256": "6e3d8a910f2fa0e7537092f59630202b2cd17be0521feb120fc4560b0c7cb18b",
+        "publication_in_toto_statement_sha256": "dcf26d69477e05620de9b15bb340f70ac9097159f1a98842dc82c8104fec8522",
+        "runner_bundle_sha256": "236a7290ad1cf16d839c55eb3da1f211ad9831bbf51590519ccb97f629baf7a4",
+        "truth_current_bundle_manifest_sha256": "da57eeb17cf12f76698a4faef85346161c534a50e94403387aeeedb605faa69b"
+      },
+      "environment_class": "linux",
+      "environment_id": "linux_wsl_docker_desktop_sha256sum",
+      "interpreter": "sha256sum",
+      "platform": "Linux 6.6.87.2-microsoft-standard-WSL2 x86_64",
+      "probe_kind": "wsl_sha256sum",
+      "python_version": "absent"
+    }
+  ],
+  "required_environment_classes": [
+    "linux",
+    "third_controlled_environment",
+    "windows"
+  ],
+  "schema_id": "kt.operator.cross_env_bundle_hash_matrix.v1",
+  "sha256": "810b3ea6261aa205e925790af5ff0bde93a464b84fa357c8308434426b5304ac",
+  "source_receipts": [
+    "KT_PROD_CLEANROOM/reports/kt_determinism_preflight_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_canonical_runner_manifest.json"
+  ],
+  "workstream_id": "WS5_CROSS_ENV_REPRODUCIBILITY",
+  "ws4_subject_head_commit": "86220cca5387dfe2ad6d96c694d98e36c5888c2d"
+}

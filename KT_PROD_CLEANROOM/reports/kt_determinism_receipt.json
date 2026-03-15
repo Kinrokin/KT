@@ -1,0 +1,89 @@
+{
+  "artifact_id": "kt_determinism_receipt.json",
+  "checks": [
+    {
+      "check": "required_environment_classes_present",
+      "detail": "Windows, Linux, and one additional controlled environment must all be recorded in the matrix.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_cross_env_bundle_hash_matrix.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "critical_hashes_match_across_environments",
+      "detail": "Critical truth/publication bundle hashes must be identical across the recorded environments.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_cross_env_bundle_hash_matrix.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "allowed_variation_explicit",
+      "detail": "Platform, interpreter, and python-version differences are recorded and excluded from the critical hash set.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_cross_env_bundle_hash_matrix.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "d8cbbef778e0620e5b14a74ebf19098416916491",
+  "evidence_head_commit": "d8cbbef778e0620e5b14a74ebf19098416916491",
+  "matrix_ref": "KT_PROD_CLEANROOM/reports/kt_cross_env_bundle_hash_matrix.json",
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS6_LEDGER_LED_AUTHORITY_FINALIZATION"
+  },
+  "pass_verdict": "CROSS_ENV_REPRODUCIBILITY_PROVEN",
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.cross_env_determinism_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "computed the critical runner bundle hash in the current Windows python environment",
+      "computed the same critical hash set in an additional controlled Windows python environment",
+      "computed the same critical hash set in a WSL Linux shell environment",
+      "recorded environment differences as allowed variation outside the critical hash set"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/reports/kt_cross_env_bundle_hash_matrix.json",
+      "KT_PROD_CLEANROOM/reports/kt_determinism_receipt.json",
+      "KT_PROD_CLEANROOM/tools/operator/cross_env_reproducibility.py"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS5 proves the critical truth/publication bundle hash set is stable across Windows, Linux, and a third controlled environment.",
+    "step_id": "WS5_STEP_1_PROVE_CROSS_ENV_HASH_STABILITY",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_cross_env_reproducibility.py -q"
+    ],
+    "timestamp": "2026-03-15T03:55:24Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.cross_env_reproducibility"
+    ],
+    "workstream_id": "WS5_CROSS_ENV_REPRODUCIBILITY"
+  },
+  "subject_head_commit": "d8cbbef778e0620e5b14a74ebf19098416916491",
+  "summary": {
+    "bundle_count": 4,
+    "bundle_ids": [
+      "publication_authority_bundle_sha256",
+      "publication_in_toto_statement_sha256",
+      "runner_bundle_sha256",
+      "truth_current_bundle_manifest_sha256"
+    ],
+    "environment_classes_present": [
+      "linux",
+      "third_controlled_environment",
+      "windows"
+    ],
+    "environment_count": 3,
+    "mismatched_bundle_count": 0
+  },
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.cross_env_reproducibility"
+  ],
+  "workstream_id": "WS5_CROSS_ENV_REPRODUCIBILITY"
+}
