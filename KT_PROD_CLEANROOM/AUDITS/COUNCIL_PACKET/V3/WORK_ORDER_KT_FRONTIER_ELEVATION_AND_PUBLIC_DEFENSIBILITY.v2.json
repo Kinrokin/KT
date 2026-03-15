@@ -1,0 +1,938 @@
+{
+  "schema_id": "kt.work_order.frontier_elevation_and_public_defensibility.v2",
+  "work_order_id": "WORK_ORDER_KT_FRONTIER_ELEVATION_AND_PUBLIC_DEFENSIBILITY",
+  "version": "2.0.0",
+  "priority": "critical",
+  "single_focus_mode": true,
+  "program_class": "constitution_grade_closure_hardening_provenance_reproducibility_and_public_horizon_campaign",
+  "status": "READY_FOR_DELIVERY",
+  "meta": {
+    "title": "KT Frontier Elevation and Public Defensibility Campaign",
+    "owner": "Robert King",
+    "timezone": "America/Chicago",
+    "intent": "Raise KT from a sealed Advanced closure state into a publicly defensible bounded-SOTA state by eliminating live operational contradictions, restoring delivery integrity, strengthening source/build trust, packaging detached verification, enabling independent reproduction, and opening exactly one bounded public horizon with machine-checkable proof.",
+    "temperament": [
+      "ruthless",
+      "boring",
+      "flat",
+      "exact",
+      "single-purpose",
+      "zero-ambiguity",
+      "anti-soup",
+      "anti-grandiosity",
+      "anti-overclaim",
+      "fail-closed",
+      "machine-auditable",
+      "externally-checkable"
+    ],
+    "teaching_guidance": [
+      "Make KT less mystical and more undeniable.",
+      "Do not add ornamental architecture while live proof surfaces are still dirty.",
+      "Do not solve three things halfway; solve one thing completely.",
+      "Prefer repair of known red lanes over invention of new subsystems.",
+      "Any claim not forced by receipts is forbidden.",
+      "Any residual class must be typed, bounded, and named; never hand-wave."
+    ]
+  },
+  "authorizing_context": {
+    "program_predecessor": "KT Total Closure Campaign",
+    "sealed_predecessor_status": "TOTAL_CLOSURE_CAMPAIGN_SEALED",
+    "current_closure_head": "d48b38f96cfd8997ba4cdb929dec3974d3233af7",
+    "current_truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+    "current_truth_evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
+    "current_governance_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
+    "current_truth_authority_class": "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+    "current_governance_class": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED",
+    "current_enterprise_legitimacy_ceiling": "WORKFLOW_GOVERNANCE_ONLY",
+    "current_public_verifier_status": "PASS",
+    "current_adapter_testing_status": "OPEN",
+    "current_tournament_status": "BLOCKED",
+    "current_public_showability_status": "BLOCKED",
+    "current_h1_status": "BLOCKED",
+    "current_invariants_already_won": [
+      "ledger-led truth authority is active",
+      "documentary mirrors are non-authoritative",
+      "subject/evidence/current-head anti-overread is active",
+      "publication-grade attestation is present",
+      "public verifier is active",
+      "claim compiler is active",
+      "governance claim narrowing is sealed and explicit"
+    ],
+    "known_live_grade_caps_from_rerun_audit": [
+      "operator-factory readiness held by failing status/ci_sim lanes",
+      "authority grading capped by stale or missing canonical HMAC delivery-integrity path",
+      "audit target not pristine while local residue or secret-like files remain",
+      "no detached verifier package",
+      "no independent third-party reproduction proof",
+      "no open public horizon with replayable receipts"
+    ]
+  },
+  "mission": {
+    "primary": "Convert KT from a sealed internal closure stack into a stronger public proof appliance with cleaner live operator reality and one bounded open proving ground.",
+    "secondary": [
+      "Eliminate every audit-grade defect that is currently fixable without lying about the remaining ceiling.",
+      "Make source, build, publication, and verification stronger than repo-local trust.",
+      "Ensure live readiness and authority grades converge upward toward the sealed closure state instead of contradicting it.",
+      "Preserve lawful narrowing where proof remains absent."
+    ],
+    "non_goals_until_explicitly_unlocked": [
+      "No blanket GOD_TIER claim.",
+      "No beyond-SOTA-overall claim while red critical lanes remain.",
+      "No platform-governance inflation beyond WORKFLOW_GOVERNANCE_ONLY unless admissible proof exists.",
+      "No tournament/public/H1 upgrades by narrative.",
+      "No architectural sprawl unrelated to measurable closure pressure."
+    ]
+  },
+  "program_objective": {
+    "target_audit_state": "Bounded system moves from Advanced/A- toward SOTA/A or A+ on the live audited target.",
+    "success_is_not": [
+      "More doctrine alone",
+      "More receipts without stronger proof",
+      "More categories without stronger execution",
+      "More branding without public replayability"
+    ],
+    "success_is": [
+      "clean worktree and secret hygiene",
+      "green critical operator-factory lanes",
+      "delivery-integrity restoration",
+      "source and build attestation upgrade",
+      "detached verifier package",
+      "independent external reproduction",
+      "one bounded public horizon open with receipts"
+    ]
+  },
+  "reference_models": {
+    "design_alignment": [
+      "Sigstore signing and verification",
+      "Rekor transparency inclusion",
+      "TUF-distributed trust roots",
+      "in-toto attestation framework",
+      "SLSA source/build provenance and verification-summary posture",
+      "bit-for-bit reproducible-build discipline"
+    ],
+    "kt_translation": {
+      "root_of_trust": "attested subject artifacts plus verifier trust policy",
+      "ledger_role": "published witness plane and live truth pointer",
+      "repo_role": "canonical active tree plus documentary evidence surfaces",
+      "proof_appliance_goal": "any serious auditor can verify KT from detached tooling and published evidence without tribal knowledge"
+    }
+  },
+  "operator_doctrine": {
+    "execution_mode": "one workstream at a time",
+    "micro_step_rule": "within each workstream, execute only the next unresolved atomic step; do not parallelize unresolved defect classes",
+    "mandatory_pause_rule": "after each workstream seal, stop and wait for explicit approval string APPROVED: PROCEED",
+    "pre_mutation_actions": [
+      "rescan all relevant files/receipts in chronological order",
+      "audit full blast radius across touched and downstream-affected surfaces",
+      "confirm current claim ceiling and active blockers",
+      "record baseline commands, outputs, failing tests, and expected post-fix deltas"
+    ],
+    "mutation_discipline": [
+      "touch only what the workstream requires",
+      "do not silently reclassify historical or documentary surfaces into active truth",
+      "do not widen a workstream to absorb adjacent cleanup unless the adjacent cleanup is a declared blocker to the current step",
+      "prefer deletion, demotion, or explicit quarantine over vague compatibility hacks"
+    ],
+    "proof_discipline": [
+      "every material change must emit a receipt",
+      "every receipt must name subject head and evidence head",
+      "every pass verdict must be machine-checkable",
+      "every blocker must be named, typed, and preserved until actually resolved"
+    ],
+    "autonomy_limits": [
+      "the bot may work autonomously inside the current workstream only",
+      "the bot may not self-authorize the next workstream",
+      "the bot may not upgrade proof class, readiness, governance, or public horizon state without the required receipts",
+      "the bot may not omit failing evidence to make a workstream look clean"
+    ]
+  },
+  "global_invariants": [
+    "Fail closed on ambiguity.",
+    "No claim may outrun computed proof class.",
+    "No active truth may be read from documentary mirrors.",
+    "No subject/evidence/current-head overread is allowed.",
+    "No workstream may silently reopen archive contamination.",
+    "No workstream may silently weaken canonical runner determinism.",
+    "No workstream may silently weaken verifier independence or publication attestation.",
+    "No workstream may silently weaken lawful governance narrowing.",
+    "No secret-like file may remain in the audited target.",
+    "No workstream may seal while git status is dirty.",
+    "No public-horizon opening is lawful without replayable receipts."
+  ],
+  "forbidden_moves": [
+    "Do not claim platform-enforced governance while branch-protection proof is blocked.",
+    "Do not claim current HEAD itself is the transparency-verified subject when head_equals_subject is false.",
+    "Do not claim H1 is open until a dedicated horizon receipt says so.",
+    "Do not invent a detached verifier while it still depends on hidden repo-local state.",
+    "Do not call a build hermetic unless inputs, environment, and outputs are actually pinned and reproduced.",
+    "Do not count documentary mentions as runtime defects unless they are execution-coupled.",
+    "Do not widen public claims because the claim compiler text looks strong."
+  ],
+  "cleanliness_and_waste_control": {
+    "policy": "The bot must minimize artifact sprawl and may not solve the defect by increasing unmanaged artifact count without explicit justification.",
+    "no_leftover_classes": [
+      "orphan helper scripts",
+      "duplicate manifests",
+      "superseded temporary files",
+      "ad hoc debug outputs",
+      "one-off migration utilities without explicit retention justification",
+      "generated artifacts outside approved output locations",
+      "stale receipts superseded by the current workstream unless policy requires retention"
+    ],
+    "required_file_classifications": [
+      "canonical active file",
+      "validator/test file",
+      "documentary evidence",
+      "generated artifact",
+      "temporary migration utility",
+      "historical/archive-only",
+      "ignore-only local residue"
+    ],
+    "temporary_utility_rule": "Any file classified as temporary migration utility must be deleted before sealing unless the workstream explicitly ratifies it as permanent.",
+    "generated_artifact_rule": "Any generated artifact must be written only to approved artifact locations.",
+    "superseded_file_rule": "Any superseded file must be removed, demoted to documentary or historical, or explicitly retained with a stated reason in the receipt.",
+    "preferred_resolution_order": [
+      "repair in place",
+      "reuse existing canonical surface",
+      "delete obsolete surface",
+      "add new surface only if no lawful existing surface can carry the fix"
+    ],
+    "required_receipt_fields": [
+      "created_files",
+      "deleted_files",
+      "retained_new_files",
+      "temporary_files_removed",
+      "superseded_files_removed_or_demoted"
+    ],
+    "required_waste_control_block": {
+      "created_files_count": 0,
+      "deleted_files_count": 0,
+      "temporary_files_removed_count": 0,
+      "superseded_files_removed_count": 0,
+      "net_artifact_delta": 0,
+      "retention_justifications": []
+    }
+  },
+  "artifact_contracts": {
+    "common_required_fields": [
+      "schema_id",
+      "artifact_id",
+      "generated_utc",
+      "subject_head_commit",
+      "evidence_head_commit",
+      "status",
+      "pass_verdict",
+      "unexpected_touches",
+      "protected_touch_violations",
+      "validators_run",
+      "tests_run",
+      "input_refs",
+      "step_report",
+      "next_lawful_step",
+      "created_files",
+      "deleted_files",
+      "retained_new_files",
+      "temporary_files_removed",
+      "superseded_files_removed_or_demoted",
+      "waste_control"
+    ],
+    "receipt_template_rules": {
+      "status_values": [
+        "PASS",
+        "BLOCKED",
+        "FAIL",
+        "NOT_APPLICABLE"
+      ],
+      "pass_verdict_rules": [
+        "must be typed and specific",
+        "must match live evidence",
+        "must not imply higher readiness or legitimacy than actually proven"
+      ]
+    },
+    "manifest_template_rules": {
+      "required_fields": [
+        "artifact_subjects",
+        "hashes",
+        "source_commit",
+        "builder_or_generator",
+        "policy_refs",
+        "verification_refs"
+      ]
+    },
+    "matrix_template_rules": {
+      "required_fields": [
+        "rows",
+        "environment_metadata",
+        "expected_result",
+        "actual_result",
+        "mismatch_count",
+        "resolution_or_blocker"
+      ]
+    },
+    "dsse_template_rules": {
+      "required_fields": [
+        "envelope_type",
+        "predicate_type",
+        "subject",
+        "signatures",
+        "verification_policy_ref"
+      ]
+    }
+  },
+  "grading_targets": {
+    "minimum_post_campaign_targets": {
+      "repo_hygiene": "A",
+      "operator_factory_readiness": "B+",
+      "authority_grade": "A-",
+      "external_verifiability": "A",
+      "bounded_public_horizon": "B+",
+      "overall_bounded_system_grade": "A"
+    },
+    "hard_stop_if_true": [
+      "critical CI remains red after recovery workstream",
+      "delivery-integrity evidence remains missing after restoration workstream",
+      "detached verifier still depends on hidden local state",
+      "no bounded public horizon is actually opened",
+      "live grades still materially contradict closure receipts at campaign end"
+    ]
+  },
+  "workstreams": [
+    {
+      "workstream_id": "WS13_REPO_HYGIENE_AND_AUDIT_TARGET_CLEANROOM",
+      "title": "Repo Hygiene and Audit Target Cleanroom",
+      "intent": "Eliminate all noncanonical local residue and bring the audited target to a clean, secrets-free, commit-ready state.",
+      "why_now": "A dirty worktree, secret residue, or shadow files will poison every later audit, attestation, and public claim.",
+      "prerequisites": [
+        "WS12 sealed",
+        "current closure state re-read",
+        "current ignore rules audited"
+      ],
+      "allowed_surface_classes": [
+        "root hygiene files",
+        "ignore rules",
+        "secret inventory outputs",
+        "repo hygiene validators/tests",
+        "receipts for this workstream"
+      ],
+      "forbidden_surface_classes": [
+        "authority topology",
+        "public verifier logic",
+        "runtime truth logic",
+        "archive mutation"
+      ],
+      "tasks": [
+        "inventory all secret-like files, local-only files, and untracked residue",
+        "remove or quarantine .env.secret and any equivalent secret-bearing artifact from the audited target",
+        "commit or remove restored audit packets and any other drift that changes the audit surface",
+        "ensure ignored files do not hide runtime-significant dependencies",
+        "emit clean-state receipt only after git status is clean"
+      ],
+      "deliverables": [
+        "kt_repo_hygiene_receipt.json",
+        "kt_secret_surface_inventory.json",
+        "kt_worktree_clean_state_receipt.json"
+      ],
+      "validators_run": [
+        "python -m tools.operator.repo_hygiene_validate"
+      ],
+      "tests_run": [
+        "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_repo_hygiene_validate.py -q"
+      ],
+      "pass_conditions": [
+        "No secret-like file remains in the audited target.",
+        "No untracked or uncommitted file changes the audit surface.",
+        "git status is clean.",
+        "Ignored-file policy does not conceal runtime-significant inputs."
+      ],
+      "fail_conditions": [
+        "Any secret-like file remains.",
+        "Any untracked artifact changes the audit target.",
+        "The workstream mutates protected runtime or authority surfaces.",
+        "The repo is not clean at seal time."
+      ],
+      "next_lawful_workstream": "WS14_OPERATOR_FACTORY_GREENLINE_RECOVERY"
+    },
+    {
+      "workstream_id": "WS14_OPERATOR_FACTORY_GREENLINE_RECOVERY",
+      "title": "Operator-Factory Greenline Recovery",
+      "intent": "Repair the failing live operator lanes so readiness is no longer held down by red status and ci_sim failures.",
+      "why_now": "No SOTA claim survives red critical CI.",
+      "prerequisites": [
+        "WS13 PASS"
+      ],
+      "allowed_surface_classes": [
+        "status lane code",
+        "ci_sim lane code",
+        "law-bundle path code",
+        "operator CLI tests",
+        "deterministic report surfaces",
+        "hashpin surfaces",
+        "truth-publication tests tied to failing lanes",
+        "receipts for this workstream"
+      ],
+      "forbidden_surface_classes": [
+        "governance claim boundary",
+        "archive policy",
+        "public horizon policy",
+        "historical/doc-only surfaces except as test fixtures"
+      ],
+      "tasks": [
+        "baseline every currently failing lane and preserve the failing evidence",
+        "repair status lane",
+        "repair certify ci_sim lane",
+        "repair failing law-bundle, operator CLI, deterministic report, hashpin, and truth-publication surfaces if they are part of the live red set",
+        "re-run readiness grading on the repaired target",
+        "emit exact before/after failure delta matrix"
+      ],
+      "deliverables": [
+        "kt_operator_greenline_receipt.json",
+        "kt_ci_sim_repair_matrix.json",
+        "kt_readiness_grade_post_repair.json"
+      ],
+      "validators_run": [
+        "python -m tools.operator.operator_greenline_validate",
+        "python -m tools.operator.readiness_grade"
+      ],
+      "tests_run": [
+        "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_operator_greenline_validate.py -q",
+        "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_status_lane.py KT_PROD_CLEANROOM/tests/operator/test_ci_sim_lane.py -q"
+      ],
+      "pass_conditions": [
+        "status lane passes",
+        "certify ci_sim passes",
+        "all prior critical red failures targeted by this workstream are green",
+        "fresh readiness grade no longer holds on those exact defect classes"
+      ],
+      "fail_conditions": [
+        "Any targeted critical lane remains red",
+        "A fix weakens canonical runner or authority proofs",
+        "Readiness remains HOLD for the same unresolved classes"
+      ],
+      "next_lawful_workstream": "WS15_DELIVERY_INTEGRITY_RESTORATION"
+    },
+    {
+      "workstream_id": "WS15_DELIVERY_INTEGRITY_RESTORATION",
+      "title": "Delivery Integrity Restoration",
+      "intent": "Restore the canonical HMAC delivery pack path and clear stale delivery-integrity caps on authority grading.",
+      "why_now": "Authority cannot stay strong while delivery-integrity evidence is stale or missing.",
+      "prerequisites": [
+        "WS14 PASS"
+      ],
+      "allowed_surface_classes": [
+        "delivery pack generation logic",
+        "canonical delivery pack manifests",
+        "authority-grade inputs and validators",
+        "delivery-integrity tests",
+        "receipts for this workstream"
+      ],
+      "forbidden_surface_classes": [
+        "historical archive mutation",
+        "governance boundary",
+        "public horizon policy"
+      ],
+      "tasks": [
+        "identify the canonical delivery pack path expected by the authority grader",
+        "recreate or correctly repoint the canonical HMAC delivery pack",
+        "validate manifest completeness and integrity against current authority receipts",
+        "rerun authority grading on the repaired target",
+        "record exact before/after grade impact"
+      ],
+      "deliverables": [
+        "kt_delivery_integrity_receipt.json",
+        "kt_canonical_delivery_pack_manifest.json",
+        "kt_authority_grade_post_repair.json"
+      ],
+      "validators_run": [
+        "python -m tools.operator.delivery_integrity_validate",
+        "python -m tools.operator.authority_grade"
+      ],
+      "tests_run": [
+        "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_delivery_integrity_validate.py -q"
+      ],
+      "pass_conditions": [
+        "Canonical delivery pack path exists and is valid.",
+        "Authority-grade inputs resolve cleanly.",
+        "Authority grade no longer holds on missing or stale delivery-integrity evidence."
+      ],
+      "fail_conditions": [
+        "Delivery path remains missing or stale.",
+        "Authority grading remains capped by the same delivery defect.",
+        "Repair unlawfully mutates archive or documentary-only surfaces."
+      ],
+      "next_lawful_workstream": "WS16_HERMETIC_BUILD_ENVELOPE"
+    },
+    {
+      "workstream_id": "WS16_HERMETIC_BUILD_ENVELOPE",
+      "title": "Hermetic Build Envelope",
+      "intent": "Define and verify a hermetic or near-hermetic build envelope for the detached verifier and critical publication bundle set.",
+      "why_now": "Build verification is stronger when the environment is pinned before provenance/VSA are emitted.",
+      "prerequisites": [
+        "WS15 PASS"
+      ],
+      "allowed_surface_classes": [
+        "build system definitions",
+        "build environment manifests",
+        "input pinsets",
+        "rebuild validators",
+        "receipts for this workstream"
+      ],
+      "forbidden_surface_classes": [
+        "authority subject logic",
+        "claim compiler policy",
+        "public horizon state"
+      ],
+      "tasks": [
+        "declare the critical artifact set to be built hermetically",
+        "pin critical build inputs and remove hidden network dependence where practical",
+        "declare reproducibility-critical environment variables and strip noncritical wall-clock variation",
+        "rebuild in the declared envelope and compare subject hashes",
+        "emit exact envelope manifest and rebuild receipt"
+      ],
+      "deliverables": [
+        "kt_hermetic_build_manifest.json",
+        "kt_build_input_pinset.json",
+        "kt_hermetic_rebuild_receipt.json"
+      ],
+      "validators_run": [
+        "python -m tools.operator.hermetic_build_validate"
+      ],
+      "tests_run": [
+        "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_hermetic_build_validate.py -q"
+      ],
+      "pass_conditions": [
+        "Critical build environment is declaratively specified.",
+        "Critical build inputs are pinned.",
+        "Rebuild in the declared envelope reproduces the expected subject artifacts for the declared set."
+      ],
+      "fail_conditions": [
+        "Hidden network or environment dependencies remain in the critical build path.",
+        "Hermetic claim is made for surfaces not actually pinned and reproduced.",
+        "Rebuild does not match expected subjects."
+      ],
+      "next_lawful_workstream": "WS17_SOURCE_TRUST_AND_REVISION_ATTESTATION"
+    },
+    {
+      "workstream_id": "WS17_SOURCE_TRUST_AND_REVISION_ATTESTATION",
+      "title": "Source Trust and Revision Attestation",
+      "intent": "Add source-side trust evidence so KT is revision-attested as well as publication-attested.",
+      "why_now": "Current KT is strong on publication proof; source/revision trust is the next leverage point.",
+      "prerequisites": [
+        "WS16 PASS"
+      ],
+      "allowed_surface_classes": [
+        "revision signing policy",
+        "commit/tag signing config and docs",
+        "source provenance emitters",
+        "source trust validators/tests",
+        "receipts for this workstream"
+      ],
+      "forbidden_surface_classes": [
+        "truth claim ceiling",
+        "archive surfaces",
+        "public horizon state"
+      ],
+      "tasks": [
+        "define protected revision surfaces",
+        "require signing of release-relevant commits and tags",
+        "emit source provenance for the evaluated revision",
+        "bind revision trust policy to later verifier consumption"
+      ],
+      "deliverables": [
+        "kt_source_provenance.dsse",
+        "kt_revision_trust_receipt.json",
+        "kt_signed_revision_policy.json"
+      ],
+      "validators_run": [
+        "python -m tools.operator.source_trust_validate"
+      ],
+      "tests_run": [
+        "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_source_trust_validate.py -q"
+      ],
+      "pass_conditions": [
+        "Protected release revisions are signed or explicitly policy-exempt with justification.",
+        "Source provenance exists for the evaluated revision.",
+        "Revision trust can be tied to later build/publication verification."
+      ],
+      "fail_conditions": [
+        "Unsigned protected release revisions remain admissible.",
+        "Source provenance cannot be tied to the evaluated revision."
+      ],
+      "next_lawful_workstream": "WS18_BUILD_PROVENANCE_AND_VSA_UPGRADE"
+    },
+    {
+      "workstream_id": "WS18_BUILD_PROVENANCE_AND_VSA_UPGRADE",
+      "title": "Build Provenance and Verification Summary Upgrade",
+      "intent": "Upgrade KT from publication attestation only to stronger build-verification posture with explicit provenance and verification-summary outputs.",
+      "why_now": "Once the build envelope is defined, provenance and verification summary become much stronger evidence instead of decorative metadata.",
+      "prerequisites": [
+        "WS17 PASS"
+      ],
+      "allowed_surface_classes": [
+        "build provenance emitters",
+        "verification summary emitters",
+        "verifier manifest integration",
+        "DSSE outputs",
+        "receipts for this workstream"
+      ],
+      "forbidden_surface_classes": [
+        "governance claim ceiling",
+        "public horizon state",
+        "archive policy"
+      ],
+      "tasks": [
+        "emit build provenance for the critical artifact set",
+        "emit verification summary attestation for the verified artifact set",
+        "bind provenance, verification summary, and publication receipts to the same artifact subjects",
+        "upgrade verifier outputs to reference these stronger build-side proofs"
+      ],
+      "deliverables": [
+        "kt_build_provenance.dsse",
+        "kt_verification_summary_attestation.dsse",
+        "kt_build_verification_receipt.json"
+      ],
+      "validators_run": [
+        "python -m tools.operator.build_verification_validate"
+      ],
+      "tests_run": [
+        "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_build_verification_validate.py -q"
+      ],
+      "pass_conditions": [
+        "Build provenance exists for canonical release artifacts.",
+        "Verification Summary Attestation exists for the verified artifact set.",
+        "Verifier outputs can cite both provenance and verification summary for the same artifact subjects."
+      ],
+      "fail_conditions": [
+        "Artifact subjects do not match across provenance, verification summary, and publication receipts.",
+        "Attestations exist but are not verified by policy."
+      ],
+      "next_lawful_workstream": "WS19_DETACHED_PUBLIC_VERIFIER_PACKAGE"
+    },
+    {
+      "workstream_id": "WS19_DETACHED_PUBLIC_VERIFIER_PACKAGE",
+      "title": "Detached Public Verifier Package",
+      "intent": "Turn the public verifier into a detached proof appliance that can run outside the repo checkout.",
+      "why_now": "Repo-local verification is strong; detached verification is harder to dispute.",
+      "prerequisites": [
+        "WS18 PASS"
+      ],
+      "allowed_surface_classes": [
+        "public verifier packaging",
+        "detached runtime wrapper",
+        "detached verifier release manifest",
+        "detached verifier sbom",
+        "receipts for this workstream"
+      ],
+      "forbidden_surface_classes": [
+        "truth subject logic",
+        "governance ceiling",
+        "tournament/public horizon policy"
+      ],
+      "tasks": [
+        "package the verifier for detached execution",
+        "ensure it resolves trust root, provenance, Rekor, and authority state without hidden repo-local assumptions",
+        "sign the detached verifier release and emit its SBOM",
+        "compare detached verifier conclusion to repo-local verifier conclusion"
+      ],
+      "deliverables": [
+        "kt_public_verifier_detached_release_manifest.json",
+        "kt_public_verifier_detached_sbom.json",
+        "kt_public_verifier_detached_receipt.json"
+      ],
+      "validators_run": [
+        "python -m tools.operator.public_verifier_detached_validate"
+      ],
+      "tests_run": [
+        "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_public_verifier_detached_validate.py -q"
+      ],
+      "pass_conditions": [
+        "Verifier package runs detached from the repo checkout.",
+        "Detached verifier checks trust root, provenance, Rekor, and authority state correctly.",
+        "Detached verifier conclusion matches repo-local verifier conclusion."
+      ],
+      "fail_conditions": [
+        "Detached verifier still depends on hidden repo-local files or mutable local state.",
+        "Detached verifier and repo-local verifier disagree."
+      ],
+      "next_lawful_workstream": "WS20_INDEPENDENT_EXTERNAL_REPRODUCTION"
+    },
+    {
+      "workstream_id": "WS20_INDEPENDENT_EXTERNAL_REPRODUCTION",
+      "title": "Independent External Reproduction",
+      "intent": "Prove KT can be independently reproduced or verified from outside the original operator environment.",
+      "why_now": "Detached tooling without outside reproduction is still too self-contained to be maximally persuasive.",
+      "prerequisites": [
+        "WS19 PASS"
+      ],
+      "allowed_surface_classes": [
+        "external reproduction recipe",
+        "reproduction matrix",
+        "environment descriptors",
+        "receipts for this workstream"
+      ],
+      "forbidden_surface_classes": [
+        "authority logic changes",
+        "governance claim changes",
+        "public horizon changes"
+      ],
+      "tasks": [
+        "define at least two independent clean environments",
+        "reproduce the critical artifact set or verify the attested subjects in both",
+        "record environment metadata and exact replay instructions",
+        "emit a replay recipe that does not rely on tribal knowledge"
+      ],
+      "deliverables": [
+        "kt_external_reproduction_matrix.json",
+        "kt_independent_replay_recipe.md",
+        "kt_external_reproduction_receipt.json"
+      ],
+      "validators_run": [
+        "python -m tools.operator.external_reproduction_validate"
+      ],
+      "tests_run": [
+        "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_external_reproduction_validate.py -q"
+      ],
+      "pass_conditions": [
+        "At least two independent clean environments reproduce or successfully verify the declared critical artifact set.",
+        "Results are recorded with environment metadata.",
+        "External recipe is end-to-end and explicit."
+      ],
+      "fail_conditions": [
+        "Only the original operator environment can reproduce or verify the results.",
+        "External recipe relies on tribal knowledge or hidden state."
+      ],
+      "next_lawful_workstream": "WS21_BOUNDED_PUBLIC_HORIZON_OPEN"
+    },
+    {
+      "workstream_id": "WS21_BOUNDED_PUBLIC_HORIZON_OPEN",
+      "title": "Bounded Public Horizon Open",
+      "intent": "Open exactly one bounded public horizon so KT is no longer purely internally adjudicated.",
+      "why_now": "This is the step that kills the 'still blocked / still internal' critique.",
+      "prerequisites": [
+        "WS20 PASS"
+      ],
+      "allowed_surface_classes": [
+        "one chosen horizon only",
+        "scope contract",
+        "blocker matrix",
+        "replay bundle",
+        "receipts for this workstream"
+      ],
+      "forbidden_surface_classes": [
+        "unselected horizon upgrades",
+        "broad public or tournament claims outside the chosen horizon",
+        "platform-governance inflation"
+      ],
+      "allowed_horizon_choices": [
+        "bounded public showability",
+        "bounded tournament lane",
+        "bounded H1 single-adapter lane"
+      ],
+      "tasks": [
+        "select one horizon only",
+        "define exact scope, inputs, outputs, and replay contract",
+        "open the chosen horizon with receipts and bounded claim language",
+        "prove the horizon is externally inspectable or replayable"
+      ],
+      "deliverables": [
+        "kt_bounded_public_horizon_contract.json",
+        "kt_public_horizon_receipt.json",
+        "kt_public_horizon_replay_bundle.json"
+      ],
+      "validators_run": [
+        "python -m tools.operator.public_horizon_validate"
+      ],
+      "tests_run": [
+        "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_public_horizon_validate.py -q"
+      ],
+      "pass_conditions": [
+        "Exactly one horizon is opened.",
+        "The opened horizon has scope contract, blocker matrix, and pass/fail receipts.",
+        "The opened horizon is externally inspectable or replayable."
+      ],
+      "fail_conditions": [
+        "A horizon is marked open by narrative rather than receipts.",
+        "Multiple horizons are silently widened.",
+        "Scope is vague or not replayable."
+      ],
+      "next_lawful_workstream": "WS22_INDEPENDENT_RED_TEAM_AND_BOUNTY_BOOTSTRAP"
+    },
+    {
+      "workstream_id": "WS22_INDEPENDENT_RED_TEAM_AND_BOUNTY_BOOTSTRAP",
+      "title": "Independent Red Team and Bounty Bootstrap",
+      "intent": "Invite non-author reviewers to attack the proof plane and record results in the evidence plane.",
+      "why_now": "External challenge data is stronger than self-congratulation.",
+      "prerequisites": [
+        "WS21 PASS"
+      ],
+      "allowed_surface_classes": [
+        "challenge protocol",
+        "bounty scope",
+        "red-team result receipts",
+        "disposition logic"
+      ],
+      "forbidden_surface_classes": [
+        "unbounded public claim upgrades",
+        "burying challenge results outside evidence surfaces"
+      ],
+      "tasks": [
+        "define exact 'kill' conditions for the red team",
+        "publish challenge protocol and submission format",
+        "record at least one externally runnable red-team or auditor path",
+        "require all findings to be dispositioned in receipts"
+      ],
+      "deliverables": [
+        "kt_external_challenge_protocol.json",
+        "kt_red_team_results_receipt.json",
+        "kt_bounty_scope.md"
+      ],
+      "validators_run": [
+        "python -m tools.operator.red_team_protocol_validate"
+      ],
+      "tests_run": [
+        "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_red_team_protocol_validate.py -q"
+      ],
+      "pass_conditions": [
+        "Independent challenge protocol exists.",
+        "At least one external red-team or auditor recipe is runnable.",
+        "Findings are logged and dispositioned without weakening claim discipline."
+      ],
+      "fail_conditions": [
+        "Red-team process is symbolic and not executable.",
+        "Findings can be buried or resolved narratively."
+      ],
+      "next_lawful_workstream": "WS23_FORMAL_INVARIANT_PROOF_CORE"
+    },
+    {
+      "workstream_id": "WS23_FORMAL_INVARIANT_PROOF_CORE",
+      "title": "Formal Invariant Proof Core",
+      "intent": "Formally specify and check the small set of invariants that matter most to KT's claim boundary.",
+      "why_now": "Only a few invariants truly matter for KT's legitimacy; those should be modeled, not merely tested.",
+      "prerequisites": [
+        "WS22 PASS"
+      ],
+      "allowed_surface_classes": [
+        "formal model files",
+        "model-check results",
+        "formal invariant receipts"
+      ],
+      "forbidden_surface_classes": [
+        "broad formal-methods theater",
+        "toy invariants unrelated to release-critical logic"
+      ],
+      "required_invariants": [
+        "subject/evidence/current-head anti-overread invariant",
+        "documentary-mirror non-authority invariant",
+        "authority-closure monotonicity invariant"
+      ],
+      "tasks": [
+        "formally model the three required invariants",
+        "run the model checker",
+        "record results and any assumptions or bounded abstractions"
+      ],
+      "deliverables": [
+        "kt_core_invariants.tla",
+        "kt_formal_invariant_receipt.json",
+        "kt_model_check_results.json"
+      ],
+      "validators_run": [
+        "python -m tools.operator.formal_invariant_validate"
+      ],
+      "tests_run": [
+        "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_formal_invariant_validate.py -q"
+      ],
+      "pass_conditions": [
+        "All three required invariants are modeled.",
+        "Model-check results are recorded.",
+        "Modeled invariants correspond to real release-critical logic."
+      ],
+      "fail_conditions": [
+        "Formal methods are claimed broadly but only toy examples exist.",
+        "Modeled invariants do not correspond to real release-critical logic."
+      ],
+      "next_lawful_workstream": "WS24_FRONTIER_RECUT_AND_SOTA_READJUDICATION"
+    },
+    {
+      "workstream_id": "WS24_FRONTIER_RECUT_AND_SOTA_READJUDICATION",
+      "title": "Frontier Recut and SOTA Readjudication",
+      "intent": "Rerun the adversarial audit on the cleaned, externally reproducible, publicly opened state and decide whether KT has actually crossed into bounded SOTA on the live audited target.",
+      "why_now": "This is the only lawful place to make a stronger system-wide claim.",
+      "prerequisites": [
+        "WS23 PASS"
+      ],
+      "allowed_surface_classes": [
+        "audit packet",
+        "scorecard",
+        "readjudication receipt",
+        "comparative reports"
+      ],
+      "forbidden_surface_classes": [
+        "claim inflation without live-grade support",
+        "stale audit packet reuse"
+      ],
+      "tasks": [
+        "rerun full adversarial audit on the final audited target",
+        "compare March baseline, WS12 state, and frontier-elevated state",
+        "check that live readiness and authority grades no longer materially contradict closure receipts",
+        "issue bounded final verdict only from current evidence"
+      ],
+      "deliverables": [
+        "kt_frontier_audit_packet.json",
+        "kt_frontier_rerun_scorecard.json",
+        "kt_sota_readjudication_receipt.json"
+      ],
+      "validators_run": [
+        "python -m tools.operator.frontier_readjudication_validate"
+      ],
+      "tests_run": [
+        "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_frontier_readjudication_validate.py -q"
+      ],
+      "pass_conditions": [
+        "All prior receipts resolve on the final audited target.",
+        "Live readiness and authority grades no longer materially undercut the closure claim.",
+        "The rerun audit compares baseline, WS12, and final state explicitly."
+      ],
+      "fail_conditions": [
+        "Audit packet is stale or irreproducible.",
+        "Live grades still materially contradict the claimed frontier posture."
+      ],
+      "next_lawful_workstream": "PROGRAM_COMPLETE"
+    }
+  ],
+  "final_truth_conditions": {
+    "allowed_end_states": [
+      "SOTA on a bounded system with one open public horizon and no red critical live-grade contradictions.",
+      "Advanced-plus with honest remaining blockers if one or more campaign gates fail."
+    ],
+    "forbidden_end_states": [
+      "GOD_TIER claim with blocked public horizons.",
+      "Beyond-SOTA overall claim with red critical CI or missing delivery integrity.",
+      "Platform-governance inflation without admissible proof.",
+      "Public-horizon claims that are not externally replayable."
+    ]
+  },
+  "bot_output_contract": {
+    "format": "JSON-first, receipt-backed, minimal prose",
+    "required_after_each_atomic_step": [
+      "what was checked",
+      "what changed",
+      "what still blocks closure",
+      "exact commands run",
+      "exact files touched",
+      "exact pass/fail delta"
+    ],
+    "required_after_each_workstream": [
+      "WS##_complete_and_sealed message",
+      "subject_head",
+      "evidence_head",
+      "artifact list",
+      "status",
+      "pass_verdict",
+      "unexpected_touches",
+      "protected_touch_violations",
+      "validators/tests run",
+      "git status state",
+      "next lawful workstream",
+      "wait for APPROVED: PROCEED"
+    ]
+  }
+}
