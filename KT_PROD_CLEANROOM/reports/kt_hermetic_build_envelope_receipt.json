@@ -64,7 +64,7 @@
   ],
   "deleted_files": [],
   "evidence_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
-  "generated_utc": "2026-03-15T19:03:50Z",
+  "generated_utc": "2026-03-15T19:04:11Z",
   "input_refs": [
     "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_status_seal_b4789a5/status_report.json",
     "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_authority_grade_b4789a5/reports/authority_grade.json",
@@ -98,6 +98,8 @@
       "replayed the delivery contract under the bounded MVE envelope to prove a narrow near-hermetic build claim"
     ],
     "files_touched": [
+      "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_manifest.json",
+      "KT_PROD_CLEANROOM/reports/kt_hermetic_build_envelope_receipt.json",
       "KT_PROD_CLEANROOM/tests/operator/test_hermetic_build_envelope_validate.py",
       "KT_PROD_CLEANROOM/tools/operator/hermetic_build_envelope_validate.py"
     ],
@@ -110,7 +112,7 @@
       "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_hermetic_build_envelope_validate.py -q",
       "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_titanium_substrate.py -k hermetic_replay_linter -q"
     ],
-    "timestamp": "2026-03-15T19:03:50Z",
+    "timestamp": "2026-03-15T19:04:11Z",
     "unexpected_touches": [],
     "validators_run": [
       "python -m tools.operator.hermetic_build_envelope_validate",
