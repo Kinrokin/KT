@@ -8,12 +8,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
+from tools.operator.canonical_tree_execute import ARCHIVE_VAULT_RECEIPTS_PREFIX
 from tools.verification.fl3_canonical import repo_root_from
 from tools.verification.fl3_meta_evaluator import compute_law_bundle_hash, load_law_bundle
 from tools.verification.fl3_validators import FL3ValidationError
 from tools.verification.worm_write import write_text_worm
 
-RECEIPTS_DIR_REL = "KT_ARCHIVE/vault/receipts"
+RECEIPTS_DIR_REL = ARCHIVE_VAULT_RECEIPTS_PREFIX
 
 
 def _utc_now_basic_z() -> str:
