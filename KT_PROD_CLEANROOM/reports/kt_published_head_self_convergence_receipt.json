@@ -1,0 +1,30 @@
+{
+  "artifact_id": "kt_published_head_self_convergence_receipt.json",
+  "blockers": [],
+  "compiled_head_commit": "1c9b27bc87696fced1c1902c77fb1d9ffa99f5d0",
+  "current_head_authority_claimed": false,
+  "current_head_claim_verdict": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+  "current_head_commit": "1c9b27bc87696fced1c1902c77fb1d9ffa99f5d0",
+  "evidence_head_commit": "1c9b27bc87696fced1c1902c77fb1d9ffa99f5d0",
+  "generated_utc": "2026-03-15T12:11:38Z",
+  "head_equals_subject": false,
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS10_PLATFORM_GOVERNANCE_FINAL_DECISION"
+  },
+  "pass_verdict": "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+  "proof_class": "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+  "protected_touch_violations": [],
+  "published_head_authority_claimed": true,
+  "schema_id": "kt.operator.ws9_published_head_self_convergence_receipt.v1",
+  "source_receipt_ref": "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+  "status": "PASS",
+  "subject_head_commit": "1c9b27bc87696fced1c1902c77fb1d9ffa99f5d0",
+  "truth_evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
+  "truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.authority_convergence_validate",
+    "python -m tools.operator.reporting_integrity --mode verify"
+  ]
+}

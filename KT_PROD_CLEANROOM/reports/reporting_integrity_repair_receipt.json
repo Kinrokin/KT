@@ -1,44 +1,45 @@
 {
-  "current_git_head": "cbc921601b646d7962555c902ea2747963fd9fad",
-  "generated_utc": "2026-03-13T17:03:02Z",
+  "current_git_head": "1c9b27bc87696fced1c1902c77fb1d9ffa99f5d0",
+  "generated_utc": "2026-03-15T12:11:33Z",
   "remote_fact": {
     "branch": "kt_truth_ledger",
     "error": "",
-    "head_sha": "d84e365d4e562f223bdaf4cea1ed7fd35e8928b4",
+    "head_sha": "03e9d79a97ca6849535ac05d0c31d924716e87bb",
     "published": true,
     "reachable": true,
     "remote": "origin"
   },
-  "schema_id": "kt.operator.reporting_integrity_repair_receipt.v1",
+  "schema_id": "kt.operator.reporting_integrity_repair_receipt.v2",
   "semantic_ceiling": {
+    "current_head_authority_claimed": false,
     "h1_allowed": false,
-    "published_head_authority_claimed": false
+    "published_head_authority_claimed": true
   },
   "status": "PASS",
   "touched": [
     {
-      "after_sha256": "b9d9c5b75c5a70128cfddfb9bc69d3ff72b75218722ee85720ce71dddc658ee1",
-      "before_sha256": "b9d9c5b75c5a70128cfddfb9bc69d3ff72b75218722ee85720ce71dddc658ee1",
-      "changed": false,
+      "after_sha256": "635050e4e34d29245966734df63e59996e8eed1d14736f683341e91e08b217a2",
+      "before_sha256": "38dd7d00d8c6683aabc39a39b1935372574f59b8e41727abca0a299af8145693",
+      "changed": true,
       "path": "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json"
     },
     {
-      "after_sha256": "46ca93c15b1c9d1c55cc8b2066ed63b6669554296c10d6f28d7d7295ec22a1be",
-      "before_sha256": "83aceb76d72f266d8a06c78432294a0bf624e1b786bca64a621cf03dfdc1ba33",
+      "after_sha256": "59d7d229289f444069c3e347f85afedbb9300b7d65d9f1055218c651dcdf9dd3",
+      "before_sha256": "46ca93c15b1c9d1c55cc8b2066ed63b6669554296c10d6f28d7d7295ec22a1be",
       "changed": true,
       "path": "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json"
     }
   ],
   "verification_after": {
     "contradictions": [],
-    "current_git_head": "cbc921601b646d7962555c902ea2747963fd9fad",
-    "generated_utc": "2026-03-13T17:03:02Z",
+    "current_git_head": "1c9b27bc87696fced1c1902c77fb1d9ffa99f5d0",
+    "generated_utc": "2026-03-15T12:11:33Z",
     "ledger_branch": "kt_truth_ledger",
-    "ledger_branch_head_sha": "d84e365d4e562f223bdaf4cea1ed7fd35e8928b4",
+    "ledger_branch_head_sha": "03e9d79a97ca6849535ac05d0c31d924716e87bb",
     "ledger_branch_published": true,
     "ledger_remote": "origin",
     "ledger_remote_reachable": true,
-    "schema_id": "kt.operator.reporting_integrity_receipt.v1",
+    "schema_id": "kt.operator.reporting_integrity_receipt.v2",
     "stale_findings": [],
     "status": "PASS",
     "targets": {

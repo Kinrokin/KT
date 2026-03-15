@@ -1,18 +1,35 @@
 {
-  "blockers": [
-    "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED"
-  ],
-  "generated_utc": "2026-03-13T17:02:59Z",
+  "blockers": [],
+  "claim_boundary": "This receipt proves published-head self-convergence for truth_subject_commit. If current_head_commit differs, current_head_commit may claim only that it contains evidence for the published subject.",
+  "current_head_authority_claimed": false,
+  "current_head_claim_verdict": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+  "current_head_commit": "1c9b27bc87696fced1c1902c77fb1d9ffa99f5d0",
+  "evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
+  "generated_utc": "2026-03-15T12:11:30Z",
+  "head_equals_subject": false,
   "ledger_branch": "kt_truth_ledger",
-  "ledger_branch_head_sha": "d84e365d4e562f223bdaf4cea1ed7fd35e8928b4",
+  "ledger_branch_head_sha": "03e9d79a97ca6849535ac05d0c31d924716e87bb",
   "ledger_branch_published": true,
   "ledger_remote": "origin",
   "ledger_remote_error": "",
   "ledger_remote_reachable": true,
-  "main_live_truth_purged": false,
-  "proof_class": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
-  "published_head_authority_claimed": false,
-  "schema_id": "kt.operator.published_head_self_convergence_receipt.v1",
-  "status": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
-  "validated_head_sha": "cbc921601b646d7962555c902ea2747963fd9fad"
+  "main_live_truth_purged": true,
+  "observed": {
+    "active_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
+    "ledger_current_state_head": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+    "ledger_current_state_posture": "TRUTHFUL_GREEN",
+    "ledger_pointer_head": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+    "ledger_pointer_posture": "TRUTHFUL_GREEN",
+    "ledger_runtime_audit_head": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+    "ledger_runtime_audit_posture": "TRUTHFUL_GREEN",
+    "publication_receipt_status": "PASS",
+    "stabilization_status": "PASS",
+    "verifier_subject_verdict": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED"
+  },
+  "proof_class": "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+  "published_head_authority_claimed": true,
+  "schema_id": "kt.operator.published_head_self_convergence_receipt.v2",
+  "status": "PASS",
+  "truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+  "validated_head_sha": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7"
 }

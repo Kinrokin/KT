@@ -1,187 +1,168 @@
 {
   "checks": [
     {
-      "actual": "7bd610b507328eb72622ce24678620f5469f3848",
-      "check": "execution_board_matches_git_head",
-      "expected": "7bd610b507328eb72622ce24678620f5469f3848",
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "check": "active_truth_source_is_ledger_pointer",
+      "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
       "status": "PASS"
     },
     {
-      "actual": "aac5a4a7c3a4e4ce8b6f506d9ac3292ede32ba03",
-      "check": "current_pointer_matches_git_head",
-      "expected": "7bd610b507328eb72622ce24678620f5469f3848",
-      "status": "FAIL"
-    },
-    {
-      "actual": "aac5a4a7c3a4e4ce8b6f506d9ac3292ede32ba03",
-      "check": "current_state_receipt_matches_git_head",
-      "expected": "7bd610b507328eb72622ce24678620f5469f3848",
-      "status": "FAIL"
-    },
-    {
-      "actual": "aac5a4a7c3a4e4ce8b6f506d9ac3292ede32ba03",
-      "check": "runtime_closure_audit_matches_git_head",
-      "expected": "7bd610b507328eb72622ce24678620f5469f3848",
-      "status": "FAIL"
-    },
-    {
-      "actual": "7bd610b507328eb72622ce24678620f5469f3848",
-      "check": "settled_truth_source_matches_git_head",
-      "expected": "7bd610b507328eb72622ce24678620f5469f3848",
-      "status": "PASS"
-    },
-    {
-      "actual": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
       "check": "execution_board_points_to_active_truth_source",
       "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
-      "status": "FAIL"
+      "status": "PASS"
     },
     {
-      "actual": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
       "check": "readiness_scope_points_to_active_truth_source",
       "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
-      "status": "FAIL"
-    },
-    {
-      "actual": "SETTLED_AUTHORITATIVE",
-      "check": "authority_mode_converged",
-      "expected": "SETTLED_AUTHORITATIVE",
-      "status": "PASS"
-    },
-    {
-      "actual": "CANONICAL_READY_FOR_REEARNED_GREEN",
-      "check": "board_posture_matches_pointer",
-      "expected": "TRUTHFUL_GREEN",
-      "status": "FAIL"
-    },
-    {
-      "actual": "CANONICAL_READY_FOR_REEARNED_GREEN",
-      "check": "board_posture_matches_current_state",
-      "expected": "TRUTHFUL_GREEN",
-      "status": "FAIL"
-    },
-    {
-      "actual": "CANONICAL_READY_FOR_REEARNED_GREEN",
-      "check": "board_posture_matches_runtime_audit",
-      "expected": "TRUTHFUL_GREEN",
-      "status": "FAIL"
-    },
-    {
-      "actual": "CANONICAL_READY_FOR_REEARNED_GREEN",
-      "check": "board_posture_matches_settled_truth",
-      "expected": "CANONICAL_READY_FOR_REEARNED_GREEN",
-      "status": "PASS"
-    },
-    {
-      "actual": "main",
-      "check": "current_branch_matches_git_branch",
-      "expected": "main",
-      "status": "PASS"
-    },
-    {
-      "actual": "main",
-      "check": "runtime_audit_branch_matches_git_branch",
-      "expected": "main",
       "status": "PASS"
     },
     {
       "actual": true,
-      "check": "active_current_pointer_not_documentary_only",
+      "check": "ledger_branch_published",
+      "remote_error": "",
       "status": "PASS"
     },
     {
-      "actual": "SETTLED_AUTHORITATIVE",
-      "check": "local_ledger_requires_transitional_authority",
-      "expected": "TRANSITIONAL_AUTHORITATIVE",
-      "status": "FAIL"
+      "actual": "PASS",
+      "check": "publication_receipt_passes",
+      "expected": "PASS",
+      "status": "PASS"
     },
     {
-      "actual": false,
+      "actual": "PASS",
+      "check": "publication_stabilization_passes",
+      "expected": "PASS",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "check": "truth_publication_stabilized",
+      "status": "PASS"
+    },
+    {
+      "actual": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "check": "authority_subject_matches_stabilization_subject",
+      "expected": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "status": "PASS"
+    },
+    {
+      "actual": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "check": "authority_subject_matches_verifier_subject",
+      "expected": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "status": "PASS"
+    },
+    {
+      "actual": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
+      "check": "verifier_subject_verdict_proven",
+      "expected": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
+      "status": "PASS"
+    },
+    {
+      "actual": "PASS",
+      "check": "verifier_publication_receipt_passes",
+      "expected": "PASS",
+      "status": "PASS"
+    },
+    {
+      "actual": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "check": "ledger_pointer_matches_truth_subject",
+      "expected": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "status": "PASS"
+    },
+    {
+      "actual": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "check": "ledger_current_state_matches_truth_subject",
+      "expected": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "status": "PASS"
+    },
+    {
+      "actual": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "check": "ledger_runtime_audit_matches_truth_subject",
+      "expected": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "status": "PASS"
+    },
+    {
+      "actual": "TRUTHFUL_GREEN",
+      "check": "ledger_current_state_posture_matches_pointer",
+      "expected": "TRUTHFUL_GREEN",
+      "status": "PASS"
+    },
+    {
+      "actual": "TRUTHFUL_GREEN",
+      "check": "ledger_runtime_audit_posture_matches_pointer",
+      "expected": "TRUTHFUL_GREEN",
+      "status": "PASS"
+    },
+    {
+      "actual": "PASS",
+      "check": "documentary_truth_validation_passes",
+      "expected": "PASS",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
       "check": "main_current_pointer_documentary_only",
-      "status": "FAIL"
-    },
-    {
-      "actual": false,
-      "check": "main_current_state_documentary_only",
-      "status": "FAIL"
-    },
-    {
-      "actual": false,
-      "check": "main_runtime_audit_documentary_only",
-      "status": "FAIL"
-    },
-    {
-      "actual": true,
-      "check": "local_ledger_requires_h1_blocked",
       "status": "PASS"
     },
     {
-      "check": "proof_class_is_local_ledger_only",
-      "ledger_branch_published": true,
-      "proof_class": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+      "actual": true,
+      "check": "main_current_state_documentary_only",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "check": "main_runtime_audit_documentary_only",
+      "status": "PASS"
+    },
+    {
+      "actual": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+      "check": "current_head_claim_boundary_preserved",
+      "expected": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
       "status": "PASS"
     }
   ],
-  "failures": [
-    "current_pointer_matches_git_head",
-    "current_state_receipt_matches_git_head",
-    "runtime_closure_audit_matches_git_head",
-    "execution_board_points_to_active_truth_source",
-    "readiness_scope_points_to_active_truth_source",
-    "board_posture_matches_pointer",
-    "board_posture_matches_current_state",
-    "board_posture_matches_runtime_audit",
-    "local_ledger_requires_transitional_authority",
-    "main_current_pointer_documentary_only",
-    "main_current_state_documentary_only",
-    "main_runtime_audit_documentary_only"
-  ],
-  "generated_utc": "2026-03-14T12:15:12Z",
+  "current_head_authority_claimed": false,
+  "failures": [],
+  "generated_utc": "2026-03-15T12:11:30Z",
   "h1_admissible": false,
   "observed": {
-    "active_current_pointer_documentary_only": false,
-    "active_supporting_truth_surfaces": [
-      "kt_truth_ledger:ledger/current/current_state_receipt.json",
-      "kt_truth_ledger:ledger/current/runtime_closure_audit.json",
-      "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
-      "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
-      "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
-      "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
-      "KT_PROD_CLEANROOM/reports/domain_maturity_matrix.json"
-    ],
     "active_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
-    "board_authority_mode": "SETTLED_AUTHORITATIVE",
-    "board_head": "7bd610b507328eb72622ce24678620f5469f3848",
-    "board_posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
-    "board_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-    "current_state_head": "aac5a4a7c3a4e4ce8b6f506d9ac3292ede32ba03",
-    "current_state_posture_state": "TRUTHFUL_GREEN",
-    "git_branch": "main",
-    "git_head": "7bd610b507328eb72622ce24678620f5469f3848",
+    "board_authority_mode": "TRANSITIONAL_AUTHORITATIVE",
+    "board_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
+    "current_head_commit": "1c9b27bc87696fced1c1902c77fb1d9ffa99f5d0",
+    "current_head_equals_truth_subject": false,
+    "documentary_validation_status": "PASS",
+    "evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
+    "ledger_branch": "kt_truth_ledger",
+    "ledger_branch_head_sha": "03e9d79a97ca6849535ac05d0c31d924716e87bb",
     "ledger_branch_published": true,
-    "main_current_pointer_documentary_only": false,
-    "main_current_state_documentary_only": false,
-    "main_runtime_audit_documentary_only": false,
-    "pointer_head": "aac5a4a7c3a4e4ce8b6f506d9ac3292ede32ba03",
-    "pointer_posture_state": "TRUTHFUL_GREEN",
-    "preflight_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
-    "preflight_head_lineage_match": true,
-    "preflight_status": "PASS",
-    "production_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
-    "production_head_lineage_match": true,
-    "production_nested_verdict_head": "60b05c4be50c07deac6fc01a471c94e77877dec7",
-    "production_status": "PASS",
-    "proof_class": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
-    "readiness_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
-    "runtime_audit_head": "aac5a4a7c3a4e4ce8b6f506d9ac3292ede32ba03",
-    "runtime_audit_posture_state": "TRUTHFUL_GREEN",
-    "settled_authority_mode": "SETTLED_AUTHORITATIVE",
-    "settled_truth_head": "7bd610b507328eb72622ce24678620f5469f3848",
-    "settled_truth_posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
-    "worktree_dirty": false
+    "ledger_branch_reachable": true,
+    "ledger_branch_remote": "origin",
+    "ledger_current_state_head": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+    "ledger_current_state_posture": "TRUTHFUL_GREEN",
+    "ledger_pointer_head": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+    "ledger_pointer_posture": "TRUTHFUL_GREEN",
+    "ledger_runtime_audit_head": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+    "ledger_runtime_audit_posture": "TRUTHFUL_GREEN",
+    "main_current_pointer_documentary_only": true,
+    "main_current_state_documentary_only": true,
+    "main_runtime_audit_documentary_only": true,
+    "publication_receipt_status": "PASS",
+    "readiness_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
+    "stabilization_status": "PASS",
+    "stabilization_truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+    "truth_publication_stabilized": true,
+    "truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+    "verifier_evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
+    "verifier_head_claim_verdict": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+    "verifier_publication_receipt_status": "PASS",
+    "verifier_subject_verdict": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
+    "verifier_truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7"
   },
-  "proof_class": "FAIL_CLOSED",
-  "published_head_authority_claimed": false,
-  "schema_id": "kt.operator.authority_convergence_receipt.v1",
-  "status": "FAIL"
+  "proof_class": "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+  "published_head_authority_claimed": true,
+  "schema_id": "kt.operator.authority_convergence_receipt.v2",
+  "status": "PASS"
 }
