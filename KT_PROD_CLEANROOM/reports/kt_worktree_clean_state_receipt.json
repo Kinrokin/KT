@@ -1,0 +1,192 @@
+{
+  "artifact_id": "kt_worktree_clean_state_receipt.json",
+  "branch_ref": "main",
+  "check_results": [
+    {
+      "check": "git_status_clean",
+      "status": "PASS"
+    },
+    {
+      "check": "root_entries_match_canonical_keep_set",
+      "status": "PASS"
+    },
+    {
+      "check": "root_secret_surfaces_absent",
+      "status": "PASS"
+    },
+    {
+      "check": "root_local_residue_absent",
+      "status": "PASS"
+    },
+    {
+      "check": "hidden_ignore_rules_clear",
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "0ed6d73ca78aab80ddc4225b05c989abedf43ea7",
+  "created_files": [
+    "KT_PROD_CLEANROOM/tools/operator/repo_hygiene_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_repo_hygiene_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_secret_surface_inventory.json",
+    "KT_PROD_CLEANROOM/reports/kt_repo_hygiene_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_worktree_clean_state_receipt.json"
+  ],
+  "deleted_files": [
+    ".env.secret",
+    ".pytest_cache/",
+    ".venv/",
+    ".vscode/",
+    "__pycache__/",
+    "autonomous_analysis.json",
+    "autonomous_escalation_log.json",
+    "epoch_escalation_log.json",
+    "exports/",
+    "tmp/"
+  ],
+  "evidence_head_commit": "0ed6d73ca78aab80ddc4225b05c989abedf43ea7",
+  "generated_utc": "2026-03-15T15:17:23Z",
+  "git_status_clean": true,
+  "git_status_porcelain": [],
+  "hidden_ignore_rules": {
+    "core_excludesfile": "",
+    "git_info_exclude_noncomment_lines": []
+  },
+  "input_refs": [
+    ".gitignore",
+    "KT_PROD_CLEANROOM/reports/kt_canonical_tree_manifest.json",
+    "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+    "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+    "KT_PROD_CLEANROOM/reports/repo_hygiene_summary.json",
+    "KT_PROD_CLEANROOM/reports/kt_final_completion_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_total_closure_campaign_completion_receipt.json"
+  ],
+  "local_root_residue_present": [],
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS14_OPERATOR_FACTORY_GREENLINE_RECOVERY"
+  },
+  "pass_verdict": "WORKTREE_CLEAN_STATE_PROVEN",
+  "protected_touch_violations": [],
+  "required_root_keep_set": [
+    ".devcontainer",
+    ".gitattributes",
+    ".github",
+    ".gitignore",
+    "ci",
+    "docs",
+    "KT-Codex",
+    "KT_ARCHIVE",
+    "KT_PROD_CLEANROOM",
+    "LICENSE",
+    "README.md",
+    "REPO_CANON.md",
+    "run_kt_e2e.sh"
+  ],
+  "retained_new_files": [
+    "KT_PROD_CLEANROOM/tools/operator/repo_hygiene_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_repo_hygiene_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_secret_surface_inventory.json",
+    "KT_PROD_CLEANROOM/reports/kt_repo_hygiene_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_worktree_clean_state_receipt.json"
+  ],
+  "root_entries": [
+    ".devcontainer",
+    ".gitattributes",
+    ".github",
+    ".gitignore",
+    "ci",
+    "docs",
+    "KT-Codex",
+    "KT_ARCHIVE",
+    "KT_PROD_CLEANROOM",
+    "LICENSE",
+    "README.md",
+    "REPO_CANON.md",
+    "run_kt_e2e.sh"
+  ],
+  "root_entries_match_canonical_keep_set": true,
+  "schema_id": "kt.operator.worktree_clean_state_receipt.v1",
+  "secret_like_root_surfaces_present": [],
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "verified the tracked worktree is clean before seal",
+      "verified the repo root matches the canonical keep-set",
+      "verified no root secret-like or ignore-only residue remains"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/tools/operator/repo_hygiene_validate.py",
+      "KT_PROD_CLEANROOM/tests/operator/test_repo_hygiene_validate.py",
+      "KT_PROD_CLEANROOM/reports/kt_secret_surface_inventory.json",
+      "KT_PROD_CLEANROOM/reports/kt_repo_hygiene_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_worktree_clean_state_receipt.json"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS13 clean-state proof is sealed only when tracked worktree and repo-root audit target are both clean.",
+    "step_id": "WS13_STEP_1_REPAIR_ROOT_HYGIENE",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_repo_hygiene_validate.py -q"
+    ],
+    "timestamp": "2026-03-15T15:17:23Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.repo_hygiene_validate"
+    ],
+    "workstream_id": "WS13_REPO_HYGIENE_AND_AUDIT_TARGET_CLEANROOM"
+  },
+  "subject_head_commit": "0ed6d73ca78aab80ddc4225b05c989abedf43ea7",
+  "superseded_files_removed_or_demoted": [],
+  "surface_classifications": {
+    ".env.secret": "ignore-only local residue",
+    ".pytest_cache/": "ignore-only local residue",
+    ".venv/": "ignore-only local residue",
+    ".vscode/": "ignore-only local residue",
+    "KT_PROD_CLEANROOM/reports/kt_repo_hygiene_receipt.json": "generated artifact",
+    "KT_PROD_CLEANROOM/reports/kt_secret_surface_inventory.json": "generated artifact",
+    "KT_PROD_CLEANROOM/reports/kt_worktree_clean_state_receipt.json": "generated artifact",
+    "KT_PROD_CLEANROOM/tests/operator/test_repo_hygiene_validate.py": "validator/test file",
+    "KT_PROD_CLEANROOM/tools/operator/repo_hygiene_validate.py": "canonical active file",
+    "__pycache__/": "ignore-only local residue",
+    "autonomous_analysis.json": "ignore-only local residue",
+    "autonomous_escalation_log.json": "ignore-only local residue",
+    "epoch_escalation_log.json": "ignore-only local residue",
+    "exports/": "ignore-only local residue",
+    "tmp/": "ignore-only local residue"
+  },
+  "temporary_files_removed": [
+    ".pytest_cache/",
+    ".venv/",
+    ".vscode/",
+    "__pycache__/",
+    "autonomous_analysis.json",
+    "autonomous_escalation_log.json",
+    "epoch_escalation_log.json",
+    "exports/",
+    "tmp/"
+  ],
+  "tests_run": [
+    "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_repo_hygiene_validate.py -q"
+  ],
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.repo_hygiene_validate"
+  ],
+  "waste_control": {
+    "created_files_count": 5,
+    "deleted_files_count": 10,
+    "net_artifact_delta": -5,
+    "retention_justifications": [
+      {
+        "path": "KT_PROD_CLEANROOM/reports/repo_hygiene_summary.json",
+        "reason": "retained as documentary historical evidence superseded by WS13 hygiene receipts"
+      }
+    ],
+    "superseded_files_removed_count": 0,
+    "temporary_files_removed_count": 9
+  },
+  "work_order_id": "WORK_ORDER_KT_FRONTIER_ELEVATION_AND_PUBLIC_DEFENSIBILITY",
+  "work_order_schema_id": "kt.work_order.frontier_elevation_and_public_defensibility.v2",
+  "workstream_id": "WS13_REPO_HYGIENE_AND_AUDIT_TARGET_CLEANROOM"
+}
