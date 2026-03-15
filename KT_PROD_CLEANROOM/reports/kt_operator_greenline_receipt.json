@@ -1,0 +1,244 @@
+{
+  "artifact_id": "kt_operator_greenline_receipt.json",
+  "baseline_readiness_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260315T134212812305Z_readiness-grade/reports/readiness_grade.json",
+  "checks": [
+    {
+      "check": "prewrite_git_status_clean",
+      "refs": [
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS14_readiness_post_repair_seal/reports/readiness_grade.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "workstream_touches_remain_in_scope",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
+        "KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py",
+        "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256",
+        "KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260315T154138Z.json",
+        "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260315T154157Z.json",
+        "KT_PROD_CLEANROOM/tests/fl3/test_fl3_receipts_no_secrets.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py",
+        "KT_PROD_CLEANROOM/governance/pin_registry.json",
+        "KT_PROD_CLEANROOM/governance/governance_manifest.json",
+        "KT_PROD_CLEANROOM/tools/operator/operator_greenline_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_operator_greenline_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_status_lane.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_ci_sim_lane.py",
+        "KT_PROD_CLEANROOM/reports/kt_operator_greenline_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_ci_sim_repair_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_readiness_grade_post_repair.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "status_lane_recovers",
+      "refs": [
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS14_status_seal/status_report.json",
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS14_status_seal/verdict.txt"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ci_sim_lane_recovers",
+      "refs": [
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS14_ci_sim_seal/certify_report.json",
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS14_ci_sim_seal/verdict.txt"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "targeted_blockers_cleared",
+      "refs": [
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260315T134212812305Z_readiness-grade/reports/readiness_grade.json",
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS14_readiness_post_repair_seal/reports/readiness_grade.json",
+        "KT_PROD_CLEANROOM/reports/kt_ci_sim_repair_matrix.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "post_repair_readiness_meets_floor",
+      "refs": [
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS14_readiness_post_repair_seal/reports/readiness_grade.json",
+        "KT_PROD_CLEANROOM/reports/kt_readiness_grade_post_repair.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "4e8826f041c0b7f2d048134727bb4baef72c545c",
+  "created_files": [
+    "KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260315T154138Z.json",
+    "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260315T154157Z.json",
+    "KT_PROD_CLEANROOM/tools/operator/operator_greenline_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_operator_greenline_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_status_lane.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_ci_sim_lane.py",
+    "KT_PROD_CLEANROOM/reports/kt_operator_greenline_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_ci_sim_repair_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_readiness_grade_post_repair.json"
+  ],
+  "current_ci_sim_run_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS14_ci_sim_seal",
+  "current_readiness_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS14_readiness_post_repair_seal/reports/readiness_grade.json",
+  "current_status_run_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS14_status_seal",
+  "deleted_files": [],
+  "evidence_head_commit": "4e8826f041c0b7f2d048134727bb4baef72c545c",
+  "generated_utc": "2026-03-15T16:09:48Z",
+  "input_refs": [
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260315T134212812305Z_readiness-grade/reports/readiness_grade.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS14_readiness_post_repair_seal/reports/readiness_grade.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS14_status_seal/status_report.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS14_status_seal/verdict.txt",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS14_ci_sim_seal/certify_report.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS14_ci_sim_seal/verdict.txt",
+    "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py",
+    "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256",
+    "KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260315T154138Z.json",
+    "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260315T154157Z.json",
+    "KT_PROD_CLEANROOM/tests/fl3/test_fl3_receipts_no_secrets.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py",
+    "KT_PROD_CLEANROOM/governance/pin_registry.json",
+    "KT_PROD_CLEANROOM/governance/governance_manifest.json",
+    "KT_PROD_CLEANROOM/tools/operator/operator_greenline_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_operator_greenline_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_status_lane.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_ci_sim_lane.py"
+  ],
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS15_DELIVERY_INTEGRITY_RESTORATION"
+  },
+  "pass_verdict": "OPERATOR_FACTORY_GREENLINE_RECOVERED",
+  "protected_touch_violations": [],
+  "retained_new_files": [
+    "KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260315T154138Z.json",
+    "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260315T154157Z.json",
+    "KT_PROD_CLEANROOM/tools/operator/operator_greenline_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_operator_greenline_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_status_lane.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_ci_sim_lane.py",
+    "KT_PROD_CLEANROOM/reports/kt_operator_greenline_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_ci_sim_repair_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_readiness_grade_post_repair.json"
+  ],
+  "schema_id": "kt.operator.operator_greenline_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "repaired the operator CLI bootstrap so status and ci_sim no longer depend on external PYTHONPATH",
+      "refreshed the law bundle pinset and generated the canonical law change evidence",
+      "repaired ci_sim validation and hashpin drift, then reran status, ci_sim, and readiness on a clean subject head"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py",
+      "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256",
+      "KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260315T154138Z.json",
+      "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260315T154157Z.json",
+      "KT_PROD_CLEANROOM/tests/fl3/test_fl3_receipts_no_secrets.py",
+      "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py",
+      "KT_PROD_CLEANROOM/governance/pin_registry.json",
+      "KT_PROD_CLEANROOM/governance/governance_manifest.json",
+      "KT_PROD_CLEANROOM/tools/operator/operator_greenline_validate.py",
+      "KT_PROD_CLEANROOM/tests/operator/test_operator_greenline_validate.py",
+      "KT_PROD_CLEANROOM/tests/operator/test_status_lane.py",
+      "KT_PROD_CLEANROOM/tests/operator/test_ci_sim_lane.py",
+      "KT_PROD_CLEANROOM/reports/kt_operator_greenline_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_ci_sim_repair_matrix.json",
+      "KT_PROD_CLEANROOM/reports/kt_readiness_grade_post_repair.json"
+    ],
+    "issues_found": [
+      "STATUS_LANE_NOT_PASS",
+      "LANE_NOT_OK:status",
+      "LANE_NOT_OK:certify.ci_sim",
+      "CANONICAL_HMAC_NOT_RUNNABLE_CLEAN"
+    ],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS14 clears the red status and ci_sim defect classes and raises the live readiness grade above the B+ floor.",
+    "step_id": "WS14_STEP_1_REPAIR_OPERATOR_GREENLINES",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_operator_greenline_validate.py -q",
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_status_lane.py KT_PROD_CLEANROOM/tests/operator/test_ci_sim_lane.py -q"
+    ],
+    "timestamp": "2026-03-15T16:09:48Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.operator_greenline_validate",
+      "python -m tools.operator.readiness_grade"
+    ],
+    "workstream_id": "WS14_OPERATOR_FACTORY_GREENLINE_RECOVERY"
+  },
+  "subject_head_commit": "4e8826f041c0b7f2d048134727bb4baef72c545c",
+  "summary": {
+    "baseline_grade": "D",
+    "baseline_score": 60,
+    "current_grade": "A",
+    "current_score": 100,
+    "delta_score": 40,
+    "targeted_blockers_cleared": [
+      "STATUS_LANE_NOT_PASS",
+      "LANE_NOT_OK:status",
+      "LANE_NOT_OK:certify.ci_sim",
+      "CANONICAL_HMAC_NOT_RUNNABLE_CLEAN"
+    ],
+    "targeted_blockers_remaining": []
+  },
+  "superseded_files_removed_or_demoted": [],
+  "surface_classifications": {
+    "KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260315T154138Z.json": "documentary evidence",
+    "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260315T154157Z.json": "documentary evidence",
+    "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256": "canonical active file",
+    "KT_PROD_CLEANROOM/governance/governance_manifest.json": "canonical active file",
+    "KT_PROD_CLEANROOM/governance/pin_registry.json": "canonical active file",
+    "KT_PROD_CLEANROOM/reports/kt_ci_sim_repair_matrix.json": "generated artifact",
+    "KT_PROD_CLEANROOM/reports/kt_operator_greenline_receipt.json": "generated artifact",
+    "KT_PROD_CLEANROOM/reports/kt_readiness_grade_post_repair.json": "generated artifact",
+    "KT_PROD_CLEANROOM/tests/fl3/test_fl3_receipts_no_secrets.py": "validator/test file",
+    "KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py": "validator/test file",
+    "KT_PROD_CLEANROOM/tests/operator/test_ci_sim_lane.py": "validator/test file",
+    "KT_PROD_CLEANROOM/tests/operator/test_operator_greenline_validate.py": "validator/test file",
+    "KT_PROD_CLEANROOM/tests/operator/test_status_lane.py": "validator/test file",
+    "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py": "validator/test file",
+    "KT_PROD_CLEANROOM/tools/operator/kt_cli.py": "canonical active file",
+    "KT_PROD_CLEANROOM/tools/operator/operator_greenline_validate.py": "canonical active file"
+  },
+  "temporary_files_removed": [],
+  "tests_run": [
+    "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_operator_greenline_validate.py -q",
+    "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_status_lane.py KT_PROD_CLEANROOM/tests/operator/test_ci_sim_lane.py -q"
+  ],
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.operator_greenline_validate",
+    "python -m tools.operator.readiness_grade"
+  ],
+  "waste_control": {
+    "created_files_count": 9,
+    "deleted_files_count": 0,
+    "net_artifact_delta": 9,
+    "retention_justifications": [
+      {
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260315T134212812305Z_readiness-grade/reports/readiness_grade.json",
+        "reason": "retained as documentary historical baseline for the WS14 repair delta"
+      },
+      {
+        "path": "KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260315T154138Z.json",
+        "reason": "retained as documentary evidence for the refreshed law bundle pinset"
+      },
+      {
+        "path": "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260315T154157Z.json",
+        "reason": "retained as documentary evidence for the WS14 law bundle change"
+      },
+      {
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS14_*",
+        "reason": "retained under the approved operator run root as validator evidence, not as canonical active files"
+      }
+    ],
+    "superseded_files_removed_count": 0,
+    "temporary_files_removed_count": 0
+  },
+  "work_order_id": "WORK_ORDER_KT_FRONTIER_ELEVATION_AND_PUBLIC_DEFENSIBILITY",
+  "work_order_schema_id": "kt.work_order.frontier_elevation_and_public_defensibility.v2",
+  "workstream_id": "WS14_OPERATOR_FACTORY_GREENLINE_RECOVERY"
+}
