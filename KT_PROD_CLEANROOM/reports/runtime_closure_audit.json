@@ -19,8 +19,12 @@
     "evidence/secret_scan_report.json",
     "reports/bindingloop_check.json"
   ],
+  "documentary_only": true,
   "generated_utc": "2026-03-14T12:14:07Z",
+  "live_authority": false,
+  "mirror_class": "documentary_compatibility_surface",
   "notes": [
+    "Documentary-only mirror. Live authority resolves from kt_truth_ledger:ledger/current/current_pointer.json.",
     "Posture synchronized from live validation state CANONICAL_READY_FOR_REEARNED_GREEN.",
     "Only truth-engine-aligned receipts remain active truth surfaces."
   ],
@@ -36,6 +40,10 @@
   "repo_hygiene_status": "PASS",
   "schema_id": "kt.operator.runtime_closure_audit.v3",
   "status": "PASS",
+  "superseded_by": [
+    "kt_truth_ledger:ledger/current/current_pointer.json",
+    "kt_truth_ledger:ledger/current/runtime_closure_audit.json"
+  ],
   "validated_head_sha": "7bd610b507328eb72622ce24678620f5469f3848",
   "validator_substance_checked": true
 }

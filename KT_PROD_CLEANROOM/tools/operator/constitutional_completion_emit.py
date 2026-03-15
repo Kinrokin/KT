@@ -15,7 +15,7 @@ ROUTER_POLICY_REF = "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json"
 ROUTER_DEMO_SUITE_REF = "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
 CRUCIBLE_REGISTRY_REF = "KT_PROD_CLEANROOM/tools/growth/crucibles/CRUCIBLE_REGISTRY.yaml"
 PROGRAM_CATALOG_REF = "KT_PROD_CLEANROOM/governance/program_catalog.json"
-TRUTH_POINTER_REF = "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
+TRUTH_POINTER_REF = "kt_truth_ledger:ledger/current/current_pointer.json"
 
 DOMAIN2_TEST_REFS = [
     "KT_PROD_CLEANROOM/tools/growth/crucibles/tests/test_crucible_registry.py",
