@@ -121,13 +121,13 @@ def _delivery_integrity_checks(
     pack_dir_raw = str(delivery_manifest.get("delivery_dir", "")).strip()
     if not pack_dir_raw:
         raise FL3ValidationError(f"FAIL_CLOSED: {lane_name}: delivery_manifest.delivery_dir missing/empty")
+
     delivery_pack_dir = Path(pack_dir_raw).expanduser()
     if not delivery_pack_dir.is_absolute():
-        delivery_pack_dir = (repo_root / delivery_pack_dir).resolve()
+        delivery_pack_dir = (lane_run_dir / delivery_pack_dir).resolve()
     delivery_pack_dir = delivery_pack_dir.resolve()
     if not delivery_pack_dir.exists() or not delivery_pack_dir.is_dir():
         raise FL3ValidationError(f"FAIL_CLOSED: {lane_name}: delivery pack dir missing: {delivery_pack_dir.as_posix()}")
-    # Require delivery pack directory is inside the lane run root delivery/ folder.
     try:
         delivery_pack_dir.relative_to(delivery_out_dir)
     except Exception as exc:  # noqa: BLE001

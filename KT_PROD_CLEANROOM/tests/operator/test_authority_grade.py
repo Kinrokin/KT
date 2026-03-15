@@ -101,7 +101,7 @@ def _make_delivery_lane(*, run_dir: Path, lane_label: str) -> None:
         run_dir / "delivery" / "delivery_manifest.json",
         {
             "schema_id": "kt.operator.delivery_manifest.unbound.v1",
-            "delivery_dir": pack_root.as_posix(),
+            "delivery_dir": f"delivery/{pack_root.name}",
             "delivery_zip": {"path": (run_dir / "delivery" / "dummy.zip").as_posix(), "sha256": "2" * 64},
         },
     )
