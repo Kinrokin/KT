@@ -308,3 +308,25 @@ def test_repair_recomputes_ws9_reporting_receipts(tmp_path: Path) -> None:
     assert published["validated_head_sha"] == head
     assert published["ledger_branch_published"] is True
     assert published["ledger_branch_head_sha"]
+
+
+def test_verify_tolerates_post_evidence_head_advance(tmp_path: Path) -> None:
+    _init_repo_with_remote(tmp_path)
+    head = _git(tmp_path, "rev-parse", "HEAD")
+    _seed_ws9_surfaces(tmp_path, head=head)
+    _git_call(tmp_path, "add", ".")
+    _git_call(tmp_path, "commit", "-m", "seed ws9")
+    _git_call(tmp_path, "push", "-u", "origin", "main")
+    _git_call(tmp_path, "push", "origin", "HEAD:refs/heads/kt_truth_ledger")
+    _git_call(tmp_path, "fetch", "origin", "kt_truth_ledger")
+
+    repair = repair_reporting_integrity(root=tmp_path)
+    assert repair["status"] == "PASS", repair
+
+    (tmp_path / "EVIDENCE_ONLY.txt").write_text("evidence\n", encoding="utf-8", newline="\n")
+    _git_call(tmp_path, "add", "EVIDENCE_ONLY.txt")
+    _git_call(tmp_path, "commit", "-m", "advance evidence head")
+
+    verify = verify_reporting_integrity(root=tmp_path)
+    assert verify["status"] == "PASS", verify
+    assert verify["current_git_head"] != head

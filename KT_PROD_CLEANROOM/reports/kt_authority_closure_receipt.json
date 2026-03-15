@@ -3,10 +3,10 @@
   "authority_convergence_proof_class": "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
   "authority_convergence_ref": "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
   "authority_convergence_status": "PASS",
-  "compiled_head_commit": "1c9b27bc87696fced1c1902c77fb1d9ffa99f5d0",
-  "current_head_commit": "1c9b27bc87696fced1c1902c77fb1d9ffa99f5d0",
-  "evidence_head_commit": "1c9b27bc87696fced1c1902c77fb1d9ffa99f5d0",
-  "generated_utc": "2026-03-15T12:11:38Z",
+  "compiled_head_commit": "c1d9fda4fe59b988df4940aaca75c80fe04f5c66",
+  "current_head_commit": "c1d9fda4fe59b988df4940aaca75c80fe04f5c66",
+  "evidence_head_commit": "c1d9fda4fe59b988df4940aaca75c80fe04f5c66",
+  "generated_utc": "2026-03-15T12:16:11Z",
   "head_equals_subject": false,
   "kt_published_head_self_convergence_ref": "KT_PROD_CLEANROOM/reports/kt_published_head_self_convergence_receipt.json",
   "next_lawful_step": {
@@ -26,6 +26,7 @@
     "actions_taken": [
       "verified the ledger current surfaces against the published truth subject",
       "re-emitted the legacy authority and published-head self-convergence receipts under the WS9 contract",
+      "fixed post-evidence-head reporting integrity comparison so current-head observation drift does not invalidate the published-subject proof",
       "sealed WS9 kt_* closure receipts without upgrading H1"
     ],
     "files_touched": [
@@ -33,7 +34,10 @@
       "KT_PROD_CLEANROOM/reports/kt_authority_closure_receipt.json",
       "KT_PROD_CLEANROOM/reports/kt_published_head_self_convergence_receipt.json",
       "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
-      "KT_PROD_CLEANROOM/reports/reporting_integrity_repair_receipt.json"
+      "KT_PROD_CLEANROOM/reports/reporting_integrity_repair_receipt.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_reporting_integrity.py",
+      "KT_PROD_CLEANROOM/tools/operator/authority_convergence_closeout.py",
+      "KT_PROD_CLEANROOM/tools/operator/reporting_integrity.py"
     ],
     "issues_found": [],
     "pass_fail_status": "PASS",
@@ -43,7 +47,7 @@
     "tests_run": [
       "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_authority_convergence_validate.py KT_PROD_CLEANROOM/tests/operator/test_reporting_integrity.py KT_PROD_CLEANROOM/tests/operator/test_authority_convergence_closeout.py -q"
     ],
-    "timestamp": "2026-03-15T12:11:38Z",
+    "timestamp": "2026-03-15T12:16:11Z",
     "unexpected_touches": [],
     "validators_run": [
       "python -m tools.operator.authority_convergence_validate",
@@ -51,7 +55,7 @@
     ],
     "workstream_id": "WS9_AUTHORITY_AND_PUBLISHED_HEAD_CLOSURE"
   },
-  "subject_head_commit": "1c9b27bc87696fced1c1902c77fb1d9ffa99f5d0",
+  "subject_head_commit": "c1d9fda4fe59b988df4940aaca75c80fe04f5c66",
   "truth_evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
   "truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
   "unexpected_touches": [],
