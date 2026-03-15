@@ -1,0 +1,268 @@
+{
+  "artifact_id": "kt_determinism_preflight_receipt.json",
+  "checks": [
+    {
+      "check": "canonical_runner_defined_and_singular",
+      "detail": "WS4 ratifies a single canonical runner command surface and demotes other runner-like surfaces to noncanonical helper status.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_canonical_runner_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "canonical_runner_pinned_by_hash",
+      "detail": "The canonical runner must be pinned by a deterministic runner-envelope hash.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_canonical_runner_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "required_controls_present",
+      "detail": "All determinism contract required controls must be present in the preflight manifest.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json",
+        "KT_PROD_CLEANROOM/reports/kt_canonical_runner_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "newline_policy_enforced",
+      "detail": "Critical runner and contract text surfaces must use LF-only newlines.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+        "KT_PROD_CLEANROOM/governance/runtime_boundary_contract.json",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+        "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
+        "run_kt_e2e.sh",
+        "REPO_CANON.md"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "timestamp_policy_enforced",
+      "detail": "The WS4 preflight bundle uses SOURCE_DATE_EPOCH and strips wall-clock time from the hash-critical payload.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json",
+        "KT_PROD_CLEANROOM/reports/kt_canonical_runner_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "same_environment_rerun_deterministic",
+      "detail": "Two hash-critical bundle builds in the same environment must hash identically.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_canonical_runner_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_determinism_preflight_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "86220cca5387dfe2ad6d96c694d98e36c5888c2d",
+  "determinism_bundle_first": {
+    "bundle_sha256": "0e1229bc036f793ffe1b7d2a2bd4ae7eb8fc2f29df530fd6bd318a865ab1fe5e",
+    "payload": {
+      "bundle_id": "KT_DETERMINISM_PREFLIGHT_BUNDLE_WS4_V1",
+      "canonical_runner_command": [
+        "python",
+        "-m",
+        "tools.operator.kt_cli",
+        "--profile",
+        "v1",
+        "safe-run"
+      ],
+      "canonical_runtime_entry": {
+        "callable": "invoke",
+        "module": "kt.entrypoint"
+      },
+      "canonical_runtime_spine": {
+        "callable": "run",
+        "module": "core.spine"
+      },
+      "critical_surface_digests": [
+        {
+          "path": "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json",
+          "sha256": "b052ce7685631e4b2b3ab5712c89cff2fcff7af4421a681f6bc0c75816a30a40"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+          "sha256": "ff851b42652ff9bb55c49ba65cedf95e3239ad0babf1d26ab9760cfb8873d8a0"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/governance/runtime_boundary_contract.json",
+          "sha256": "1a37dca16fb2f7b1263c97243a37f07c426ea2c86b972713364692a0a218779d"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
+          "sha256": "befcab990cfdfd5e8a342a344431edf1f3fd1a97156d705d6a262f2bbae0c2bf"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+          "sha256": "da9ce183b439da686370b2ec19c4005d1c44478d5ac42f786a08f87afe94c51e"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
+          "sha256": "103f3f80fda841768777c94d226fdb1c3667e6e7f3a89f80fa4c047aa15ee89d"
+        }
+      ],
+      "path_order": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json",
+        "KT_PROD_CLEANROOM/governance/runtime_boundary_contract.json",
+        "KT_PROD_CLEANROOM/tools/operator/kt_cli.py"
+      ],
+      "runner_id": "kt_cli_safe_run_v1",
+      "runner_image_hash": "sha256:1dcf4d82980aacdc5ed0b21c43655d430fc31e2a6a58be6440bd432703e876d4",
+      "serialization_rules": {
+        "canonical_file_ordering": "byte-stable sorted relative paths",
+        "explicit_newline_policy": "LF_ONLY",
+        "json": "canonical_json_serialization",
+        "key_order": "stable_sorted_keys",
+        "unicode_policy": "UTF_8_EXPLICIT"
+      },
+      "timestamp_control": {
+        "env_var": "SOURCE_DATE_EPOCH",
+        "value": "1700000000",
+        "wall_clock_stripped_from_hash_critical_payload": true
+      }
+    }
+  },
+  "determinism_bundle_second": {
+    "bundle_sha256": "0e1229bc036f793ffe1b7d2a2bd4ae7eb8fc2f29df530fd6bd318a865ab1fe5e",
+    "payload": {
+      "bundle_id": "KT_DETERMINISM_PREFLIGHT_BUNDLE_WS4_V1",
+      "canonical_runner_command": [
+        "python",
+        "-m",
+        "tools.operator.kt_cli",
+        "--profile",
+        "v1",
+        "safe-run"
+      ],
+      "canonical_runtime_entry": {
+        "callable": "invoke",
+        "module": "kt.entrypoint"
+      },
+      "canonical_runtime_spine": {
+        "callable": "run",
+        "module": "core.spine"
+      },
+      "critical_surface_digests": [
+        {
+          "path": "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json",
+          "sha256": "b052ce7685631e4b2b3ab5712c89cff2fcff7af4421a681f6bc0c75816a30a40"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+          "sha256": "ff851b42652ff9bb55c49ba65cedf95e3239ad0babf1d26ab9760cfb8873d8a0"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/governance/runtime_boundary_contract.json",
+          "sha256": "1a37dca16fb2f7b1263c97243a37f07c426ea2c86b972713364692a0a218779d"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
+          "sha256": "befcab990cfdfd5e8a342a344431edf1f3fd1a97156d705d6a262f2bbae0c2bf"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+          "sha256": "da9ce183b439da686370b2ec19c4005d1c44478d5ac42f786a08f87afe94c51e"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
+          "sha256": "103f3f80fda841768777c94d226fdb1c3667e6e7f3a89f80fa4c047aa15ee89d"
+        }
+      ],
+      "path_order": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json",
+        "KT_PROD_CLEANROOM/governance/runtime_boundary_contract.json",
+        "KT_PROD_CLEANROOM/tools/operator/kt_cli.py"
+      ],
+      "runner_id": "kt_cli_safe_run_v1",
+      "runner_image_hash": "sha256:1dcf4d82980aacdc5ed0b21c43655d430fc31e2a6a58be6440bd432703e876d4",
+      "serialization_rules": {
+        "canonical_file_ordering": "byte-stable sorted relative paths",
+        "explicit_newline_policy": "LF_ONLY",
+        "json": "canonical_json_serialization",
+        "key_order": "stable_sorted_keys",
+        "unicode_policy": "UTF_8_EXPLICIT"
+      },
+      "timestamp_control": {
+        "env_var": "SOURCE_DATE_EPOCH",
+        "value": "1700000000",
+        "wall_clock_stripped_from_hash_critical_payload": true
+      }
+    }
+  },
+  "evidence_head_commit": "86220cca5387dfe2ad6d96c694d98e36c5888c2d",
+  "newline_failures": [],
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS5_CROSS_ENV_REPRODUCIBILITY"
+  },
+  "pass_verdict": "DETERMINISM_ENVELOPE_RATIFIED",
+  "protected_touch_violations": [],
+  "required_controls_present": {
+    "SOURCE_DATE_EPOCH_or_equivalent_timestamp_control": true,
+    "canonical_file_ordering": true,
+    "canonical_json_serialization": true,
+    "canonical_runner_image_hash": true,
+    "deterministic_archive_creation": true,
+    "explicit_newline_policy": true,
+    "network_policy_for_build_and_bundle": true,
+    "normalized_path_separators": true,
+    "os_profile_matrix": true,
+    "python_and_tool_versions_pinned": true
+  },
+  "schema_id": "kt.operator.determinism_preflight_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "ratified a single canonical runner command surface bound to kt_cli safe-run",
+      "pinned the observed runner envelope by deterministic hash",
+      "checked LF-only newline policy on critical runner and contract surfaces",
+      "built the same hash-critical preflight bundle twice in the same environment and compared hashes"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/reports/kt_canonical_runner_manifest.json",
+      "KT_PROD_CLEANROOM/reports/kt_determinism_preflight_receipt.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_determinism_preflight.py",
+      "KT_PROD_CLEANROOM/tools/operator/determinism_preflight.py"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS4 ratified the same-environment determinism envelope for the canonical runner without claiming cross-environment proof.",
+    "step_id": "WS4_STEP_1_RATIFY_DETERMINISM_ENVELOPE",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_determinism_preflight.py -q"
+    ],
+    "timestamp": "2026-03-15T03:41:37Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.determinism_preflight"
+    ],
+    "workstream_id": "WS4_DETERMINISM_AND_CANONICAL_RUNNER"
+  },
+  "subject_head_commit": "86220cca5387dfe2ad6d96c694d98e36c5888c2d",
+  "summary": {
+    "critical_surface_count": 6,
+    "newline_failure_count": 0,
+    "noncanonical_runner_count": 20,
+    "runner_image_hash": "sha256:1dcf4d82980aacdc5ed0b21c43655d430fc31e2a6a58be6440bd432703e876d4",
+    "same_environment_bundle_sha256": "0e1229bc036f793ffe1b7d2a2bd4ae7eb8fc2f29df530fd6bd318a865ab1fe5e",
+    "same_environment_rerun_equal": true
+  },
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.determinism_preflight"
+  ],
+  "workstream_id": "WS4_DETERMINISM_AND_CANONICAL_RUNNER"
+}

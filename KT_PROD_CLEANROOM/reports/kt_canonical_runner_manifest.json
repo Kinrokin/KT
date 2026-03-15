@@ -1,0 +1,175 @@
+{
+  "canonical_runner_command": [
+    "python",
+    "-m",
+    "tools.operator.kt_cli",
+    "--profile",
+    "v1",
+    "safe-run"
+  ],
+  "canonical_runner_script_ref": "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
+  "canonical_runner_workdir": "KT_PROD_CLEANROOM",
+  "canonical_runtime_entry": {
+    "callable": "invoke",
+    "module": "kt.entrypoint"
+  },
+  "canonical_runtime_spine": {
+    "callable": "run",
+    "module": "core.spine"
+  },
+  "critical_surface_digests": [
+    {
+      "path": "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json",
+      "sha256": "b052ce7685631e4b2b3ab5712c89cff2fcff7af4421a681f6bc0c75816a30a40"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+      "sha256": "ff851b42652ff9bb55c49ba65cedf95e3239ad0babf1d26ab9760cfb8873d8a0"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/governance/runtime_boundary_contract.json",
+      "sha256": "1a37dca16fb2f7b1263c97243a37f07c426ea2c86b972713364692a0a218779d"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
+      "sha256": "befcab990cfdfd5e8a342a344431edf1f3fd1a97156d705d6a262f2bbae0c2bf"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+      "sha256": "da9ce183b439da686370b2ec19c4005d1c44478d5ac42f786a08f87afe94c51e"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
+      "sha256": "103f3f80fda841768777c94d226fdb1c3667e6e7f3a89f80fa4c047aa15ee89d"
+    }
+  ],
+  "current_environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python_executable_name": "python.exe",
+    "python_version": "3.10.11"
+  },
+  "excluded_paths": [
+    "KT_ARCHIVE/**",
+    "KT_PROD_CLEANROOM/tools/growth/**",
+    "KT_PROD_CLEANROOM/03_SYNTHESIS_LAB/**",
+    "KT_PROD_CLEANROOM/reports/**"
+  ],
+  "generated_at": "2026-03-15T03:41:19Z",
+  "generated_from": [
+    "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+    "KT_PROD_CLEANROOM/governance/runtime_boundary_contract.json",
+    "KT_PROD_CLEANROOM/reports/kt_archive_externalization_receipt.json",
+    "REPO_CANON.md"
+  ],
+  "included_paths": [
+    "KT_PROD_CLEANROOM/governance/closure_foundation/kt_determinism_contract.json",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+    "KT_PROD_CLEANROOM/governance/runtime_boundary_contract.json",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+    "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
+    "KT_PROD_CLEANROOM/tools/operator/determinism_preflight.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_determinism_preflight.py"
+  ],
+  "manifest_id": "KT_CANONICAL_RUNNER_MANIFEST_WS4_V1",
+  "minimum_environments": [
+    "linux",
+    "windows",
+    "third_controlled_environment"
+  ],
+  "network_policy_for_build_and_bundle": {
+    "allowed_exceptions": [
+      "Transparency-log submission during a later publication attestation workstream"
+    ],
+    "default_mode": "OFFLINE_REQUIRED",
+    "forbidden_states": [
+      "implicit_package_fetch",
+      "remote_clock_dependency",
+      "network_required_for_hash_stability"
+    ]
+  },
+  "noncanonical_runner_surfaces": [
+    "KT_PROD_CLEANROOM/docs/operator/notebooks/books/KT_BOOK_03_SELECT_SUITES_RUNNER.md",
+    "KT_PROD_CLEANROOM/docs/operator/notebooks/books/KT_BOOK_04_POLICY_C_SWEEP_RUNNER.md",
+    "KT_PROD_CLEANROOM/policy_c/sweep_runner.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_epic15_tournament_runner.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_mve_runner_determinism.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_books_runner.py",
+    "KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_sweep_runner_integration.py",
+    "KT_PROD_CLEANROOM/tools/eval/mve_runner.py",
+    "KT_PROD_CLEANROOM/tools/governance/governance_twin_runner.py",
+    "KT_PROD_CLEANROOM/tools/growth/crucible_runner.py",
+    "KT_PROD_CLEANROOM/tools/growth/crucibles/crucible_runner.py",
+    "KT_PROD_CLEANROOM/tools/growth/crucibles/tests/test_crucible_runner.py",
+    "KT_PROD_CLEANROOM/tools/growth/distillation/distill_runner.py",
+    "KT_PROD_CLEANROOM/tools/growth/dream_loop/dream_runner.py",
+    "KT_PROD_CLEANROOM/tools/growth/eval_harness/eval_runner.py",
+    "KT_PROD_CLEANROOM/tools/growth/eval_harness_plus/eval_plus_runner.py",
+    "KT_PROD_CLEANROOM/tools/growth/orchestrator/cycle_runner.py",
+    "KT_PROD_CLEANROOM/tools/operator/books_runner.py",
+    "KT_PROD_CLEANROOM/tools/training/operation_a_runner.py",
+    "run_kt_e2e.sh"
+  ],
+  "required_controls": [
+    "canonical_runner_image_hash",
+    "os_profile_matrix",
+    "python_and_tool_versions_pinned",
+    "canonical_json_serialization",
+    "canonical_file_ordering",
+    "normalized_path_separators",
+    "explicit_newline_policy",
+    "SOURCE_DATE_EPOCH_or_equivalent_timestamp_control",
+    "deterministic_archive_creation",
+    "network_policy_for_build_and_bundle"
+  ],
+  "runner_candidates": [
+    "KT_PROD_CLEANROOM/docs/operator/notebooks/books/KT_BOOK_03_SELECT_SUITES_RUNNER.md",
+    "KT_PROD_CLEANROOM/docs/operator/notebooks/books/KT_BOOK_04_POLICY_C_SWEEP_RUNNER.md",
+    "KT_PROD_CLEANROOM/policy_c/sweep_runner.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_epic15_tournament_runner.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_mve_runner_determinism.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_books_runner.py",
+    "KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_sweep_runner_integration.py",
+    "KT_PROD_CLEANROOM/tools/eval/mve_runner.py",
+    "KT_PROD_CLEANROOM/tools/governance/governance_twin_runner.py",
+    "KT_PROD_CLEANROOM/tools/growth/crucible_runner.py",
+    "KT_PROD_CLEANROOM/tools/growth/crucibles/crucible_runner.py",
+    "KT_PROD_CLEANROOM/tools/growth/crucibles/tests/test_crucible_runner.py",
+    "KT_PROD_CLEANROOM/tools/growth/distillation/distill_runner.py",
+    "KT_PROD_CLEANROOM/tools/growth/dream_loop/dream_runner.py",
+    "KT_PROD_CLEANROOM/tools/growth/eval_harness/eval_runner.py",
+    "KT_PROD_CLEANROOM/tools/growth/eval_harness_plus/eval_plus_runner.py",
+    "KT_PROD_CLEANROOM/tools/growth/orchestrator/cycle_runner.py",
+    "KT_PROD_CLEANROOM/tools/operator/books_runner.py",
+    "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
+    "KT_PROD_CLEANROOM/tools/training/operation_a_runner.py",
+    "run_kt_e2e.sh"
+  ],
+  "runner_id": "kt_cli_safe_run_v1",
+  "runner_identity": {
+    "image_hash": "sha256:1dcf4d82980aacdc5ed0b21c43655d430fc31e2a6a58be6440bd432703e876d4",
+    "image_hash_mode": "local_python_envelope_hash"
+  },
+  "same_environment_rerun_required": true,
+  "scope": "CANONICAL_RUNNER_AND_DETERMINISM_PREFLIGHT",
+  "serialization_rules": {
+    "canonical_file_ordering": "byte-stable sorted relative paths",
+    "explicit_newline_policy": "LF_ONLY",
+    "json": "canonical_json_serialization",
+    "key_order": "stable_sorted_keys",
+    "unicode_policy": "UTF_8_EXPLICIT"
+  },
+  "sha256": "87462a94b68ffc325b84d901cef200e4a7dcf15a0c24d8697237f7a2e513e121",
+  "source_date_epoch_control": {
+    "env_var": "SOURCE_DATE_EPOCH",
+    "fixed_value_for_ws4_preflight": "1700000000"
+  },
+  "timestamp_policy": {
+    "control": "SOURCE_DATE_EPOCH_or_equivalent_timestamp_control",
+    "hash_critical_artifacts_must_strip_wall_clock_fields": true,
+    "non_hash_critical_receipts_may_record_generated_utc": true
+  },
+  "version": "1.0.0",
+  "ws3_archive_separation_status": "PASS"
+}
