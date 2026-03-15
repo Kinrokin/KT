@@ -1211,7 +1211,15 @@ def cmd_certify_ci_sim(*, repo_root: Path, profile: V1Profile, run_dir: Path, al
     # Validators (client-of-tools).
     step(
         "validate_receipts",
-        ["python", "-m", "tools.verification.validate_receipts", "--out-dir", str(run_dir)],
+        [
+            "python",
+            "-m",
+            "tools.verification.validate_receipts",
+            "--receipts-dir",
+            "KT_ARCHIVE/vault/receipts",
+            "--out-dir",
+            str(run_dir),
+        ],
         step_env=dict(env),
     )
     step(
