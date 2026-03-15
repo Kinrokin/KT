@@ -90,9 +90,11 @@ DOCUMENTARY_ALLOWED_PATTERNS = [
     "KT_PROD_CLEANROOM/tests/fl3/test_fl3_schema_freeze.py",
     "KT_PROD_CLEANROOM/tests/operator/test_snapshot_inventory_compile.py",
     "KT_PROD_CLEANROOM/tests/operator/test_trust_zone_validate.py",
+    TEST_REL,
     "KT_PROD_CLEANROOM/tools/operator/claim_compiler.py",
     "KT_PROD_CLEANROOM/tools/operator/constitutional_completion_emit.py",
     "KT_PROD_CLEANROOM/tools/operator/constitutional_spine_ratify.py",
+    TOOL_REL,
     "KT_PROD_CLEANROOM/exports/law/kt.constitution_pointer.v1.json",
 ]
 OLD_ARCHIVE_LITERAL_TOKENS = [
@@ -204,7 +206,10 @@ def _git_head(root: Path) -> str:
 
 
 def _git_status_lines(root: Path) -> List[str]:
-    output = _git(root, "status", "--short")
+    output = subprocess.check_output(
+        ["git", "-C", str(root), "status", "--short"],
+        text=True,
+    )
     return [line.rstrip() for line in output.splitlines() if line.strip()]
 
 
