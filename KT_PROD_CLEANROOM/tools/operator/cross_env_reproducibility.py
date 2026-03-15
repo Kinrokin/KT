@@ -237,82 +237,56 @@ def run_python_probe(root: Path, *, launcher: Sequence[str], environment_id: str
     return _parse_probe_output(output)
 
 
-def _wsl_shell_command() -> str:
-    quoted_files = " ".join(f"'{rel}'" for rel in CRITICAL_RUNNER_FILES)
-    truth_path = CRITICAL_FILE_BUNDLES["truth_current_bundle_manifest_sha256"]
-    authority_path = CRITICAL_FILE_BUNDLES["publication_authority_bundle_sha256"]
-    statement_path = CRITICAL_FILE_BUNDLES["publication_in_toto_statement_sha256"]
-    return (
-        "set -eu;"
-        "runner_sha=$({ "
-        f"printf 'runner_id=%s\\n' '{RUNNER_ID}'; "
-        f"printf 'command=%s\\n' '{RUNNER_COMMAND}'; "
-        f"printf 'entry=%s\\n' '{RUNTIME_ENTRY}'; "
-        f"printf 'spine=%s\\n' '{RUNTIME_SPINE}'; "
-        f"printf 'source_date_epoch=%s\\n' '{SOURCE_DATE_EPOCH_VALUE}'; "
-        f"for p in {quoted_files}; do "
-        "sha=$(sha256sum \"$p\" | awk '{print $1}'); "
-        "printf 'file:%s:%s\\n' \"$p\" \"$sha\"; "
-        "done; "
-        "} | sha256sum | awk '{print $1}');"
-        f"truth_sha=$(sha256sum '{truth_path}' | awk '{{print $1}}');"
-        f"authority_sha=$(sha256sum '{authority_path}' | awk '{{print $1}}');"
-        f"statement_sha=$(sha256sum '{statement_path}' | awk '{{print $1}}');"
-        "printf 'environment_id=linux_wsl_docker_desktop_shell\\n';"
-        "printf 'environment_class=linux\\n';"
-        "printf 'probe_kind=shell\\n';"
-        "printf 'platform=%s\\n' \"$(uname -srm)\";"
-        "printf 'python_version=absent\\n';"
-        "printf 'interpreter=sh\\n';"
-        "printf 'runner_bundle_sha256=%s\\n' \"$runner_sha\";"
-        "printf 'truth_current_bundle_manifest_sha256=%s\\n' \"$truth_sha\";"
-        "printf 'publication_authority_bundle_sha256=%s\\n' \"$authority_sha\";"
-        "printf 'publication_in_toto_statement_sha256=%s\\n' \"$statement_sha\";"
-    )
+def _run_wsl(root: Path, *args: str) -> str:
+    return subprocess.check_output(["wsl.exe", "-d", WSL_DISTRO, *args], cwd=str(root.resolve()), text=True).strip()
 
 
-def _parse_shell_probe(text: str) -> Dict[str, Any]:
+def _parse_sha256sum_rows(output: str) -> Dict[str, str]:
     rows: Dict[str, str] = {}
-    for line in text.splitlines():
-        if "=" not in line:
+    for line in output.splitlines():
+        line = line.strip()
+        if not line:
             continue
-        key, value = line.split("=", 1)
-        rows[key.strip()] = value.strip()
-    required = {
-        "environment_id",
-        "environment_class",
-        "probe_kind",
-        "platform",
-        "python_version",
-        "interpreter",
-        "runner_bundle_sha256",
-        "truth_current_bundle_manifest_sha256",
-        "publication_authority_bundle_sha256",
-        "publication_in_toto_statement_sha256",
-    }
-    missing = sorted(required.difference(rows))
-    if missing:
-        raise RuntimeError("FAIL_CLOSED: incomplete linux shell probe output: " + ", ".join(missing))
-    return {
-        "environment_id": rows["environment_id"],
-        "environment_class": rows["environment_class"],
-        "probe_kind": rows["probe_kind"],
-        "platform": rows["platform"],
-        "python_version": rows["python_version"],
-        "interpreter": rows["interpreter"],
-        "critical_hashes": {
-            "runner_bundle_sha256": rows["runner_bundle_sha256"],
-            "truth_current_bundle_manifest_sha256": rows["truth_current_bundle_manifest_sha256"],
-            "publication_authority_bundle_sha256": rows["publication_authority_bundle_sha256"],
-            "publication_in_toto_statement_sha256": rows["publication_in_toto_statement_sha256"],
-        },
-    }
+        parts = line.split(maxsplit=1)
+        if len(parts) != 2:
+            raise RuntimeError("FAIL_CLOSED: malformed sha256sum output row")
+        digest, raw_path = parts
+        path = raw_path.strip()
+        if path.startswith("*"):
+            path = path[1:]
+        rows[path] = digest
+    return rows
 
 
 def run_linux_shell_probe(root: Path) -> Dict[str, Any]:
-    cmd = ["wsl.exe", "-d", WSL_DISTRO, "sh", "-lc", _wsl_shell_command()]
-    output = subprocess.check_output(cmd, cwd=str(root.resolve()), text=True)
-    return _parse_shell_probe(output)
+    paths = list(CRITICAL_RUNNER_FILES) + list(CRITICAL_FILE_BUNDLES.values())
+    sha_rows = _parse_sha256sum_rows(_run_wsl(root, "sha256sum", *paths))
+    missing = [path for path in paths if path not in sha_rows]
+    if missing:
+        raise RuntimeError("FAIL_CLOSED: missing linux sha256 rows: " + ", ".join(missing))
+    runner_lines = [
+        f"runner_id={RUNNER_ID}",
+        f"command={RUNNER_COMMAND}",
+        f"entry={RUNTIME_ENTRY}",
+        f"spine={RUNTIME_SPINE}",
+        f"source_date_epoch={SOURCE_DATE_EPOCH_VALUE}",
+    ]
+    for rel in CRITICAL_RUNNER_FILES:
+        runner_lines.append(f"file:{rel}:{sha_rows[rel]}")
+    return {
+        "environment_id": "linux_wsl_docker_desktop_sha256sum",
+        "environment_class": "linux",
+        "probe_kind": "wsl_sha256sum",
+        "platform": _run_wsl(root, "uname", "-srm"),
+        "python_version": "absent",
+        "interpreter": "sha256sum",
+        "critical_hashes": {
+            "runner_bundle_sha256": _sha256_bytes(("\n".join(runner_lines) + "\n").encode("utf-8")),
+            "truth_current_bundle_manifest_sha256": sha_rows[CRITICAL_FILE_BUNDLES["truth_current_bundle_manifest_sha256"]],
+            "publication_authority_bundle_sha256": sha_rows[CRITICAL_FILE_BUNDLES["publication_authority_bundle_sha256"]],
+            "publication_in_toto_statement_sha256": sha_rows[CRITICAL_FILE_BUNDLES["publication_in_toto_statement_sha256"]],
+        },
+    }
 
 
 def build_probe_matrix(probes: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
