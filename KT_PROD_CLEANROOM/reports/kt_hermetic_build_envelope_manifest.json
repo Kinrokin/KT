@@ -1,0 +1,102 @@
+{
+  "artifact_id": "kt_hermetic_build_envelope_manifest.json",
+  "bundle_root_hash": "3e02eae9e197186e5885cf874f3bb2da4b6de3bb3c481bbd217cc14be9e928ad",
+  "canonical_run_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5",
+  "claim_ceiling": "no real container digest is pinned; replay claim is limited to the recorded platform and Python-version fingerprint only",
+  "compiled_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "container_image_digest": "LOCAL_UNCONTAINERIZED_ENVIRONMENT",
+  "critical_artifact_count": 9,
+  "critical_artifact_root_sha256": "ae87ae54ad84875b35da382dec54c778032dbfd105e17ab05d3bb552bb6048c2",
+  "critical_artifacts": [
+    {
+      "kind": "operator_delivery_manifest",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/delivery_manifest.json",
+      "sha256": "5ed311724fc7af69ef3f1199e86f5113bb04f6693de76563363ee8b491c29f89"
+    },
+    {
+      "kind": "delivery_pack_manifest",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/KT_DELIVERY_WS15_canonical_hmac_seal_b4789a5/delivery_pack_manifest.json",
+      "sha256": "5d4e28b168374e78135f3f86ff25d91f99679e44886b81815560ea57a32058bf"
+    },
+    {
+      "kind": "delivery_zip",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/KT_DELIVERY_WS15_canonical_hmac_seal_b4789a5.zip",
+      "sha256": "6ce7d2f569246d699fc21ec1cf4a1d73f92d298f1281f0081d364823c850c378"
+    },
+    {
+      "kind": "operator_fingerprint",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/reports/operator_fingerprint.json",
+      "sha256": "cbdabc03aa2d1489befa015af6a042959e4cde2caf40076195bb2913e33158a0"
+    },
+    {
+      "kind": "replay_receipt",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay_receipt.json",
+      "sha256": "7361954877676b1f278162a9db9a37c74821fd1a149db7de58c2065d9cdf8e94"
+    },
+    {
+      "kind": "run_protocol",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/run_protocol.json",
+      "sha256": "6df0da2c42aae85d3a2a1d2defe2ee53168de0630408fb90a9187ccce840939f"
+    },
+    {
+      "kind": "replay_sh",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay.sh",
+      "sha256": "4d8d5832cc5113165232764917c8e0740e8e3abb57c0271b0f077854c0ce95b0"
+    },
+    {
+      "kind": "replay_ps1",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay.ps1",
+      "sha256": "23f64accd320771ccd0f40284ce79ea426faa5046c21e562deb8e4c42cc5ac22"
+    },
+    {
+      "kind": "real_path_attachment_receipt",
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/reports/real_path_attachment_receipt.json",
+      "sha256": "127e46717a3c3cb4709dc0b971f58db4e87f85eeeb1852ea7e65b7030fc844ca"
+    }
+  ],
+  "delivery_pack_id": "26f1f149c4996da2530dadafaf1be33e3fee6d4c089660b13e2885fbf522eabe",
+  "envelope_mode": "NEAR_HERMETIC_LOCAL_ENV_FINGERPRINTED",
+  "evidence_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "generated_utc": "2026-03-15T19:03:50Z",
+  "hermetic_replay_receipt_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS16_hermetic_replay_proof/reports/replay_receipt.json",
+  "hermetic_replay_run_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS16_hermetic_replay_proof",
+  "input_refs": [
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_status_seal_b4789a5/status_report.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_authority_grade_b4789a5/reports/authority_grade.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/delivery_manifest.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/KT_DELIVERY_WS15_canonical_hmac_seal_b4789a5/delivery_pack_manifest.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/reports/operator_fingerprint.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay_receipt.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/run_protocol.json"
+  ],
+  "mve_environment_fingerprint": "4c5810e8fda8402a7ed9951b500adf7583c62ac584fabc562d34911abeb4baab",
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS17_SOURCE_BUILD_ATTESTATION"
+  },
+  "os_release": "Windows-10-10.0.26200-SP0",
+  "pass_verdict": "NEAR_HERMETIC_BUILD_ENVELOPE_PROVEN",
+  "pins": {
+    "determinism_expected_root_hash": "c574cd28deba7020b1ff41f249c02f403cbe8e045cb961222183880977bdb10e",
+    "law_bundle_hash": "e874b7be962b760e244384815226e4f0705ab84437a67ccc2eb31a9766f4bb86",
+    "sealed_commit": "7b7f6e71d43c0aa60d4bc91be47e679491883871",
+    "sealed_tag": "KT_V1_SEALED_20260217",
+    "suite_registry_id": "a1d21d415568931778b718827c278918529af8490a1b456ba97f27a9a18be8fc"
+  },
+  "python_version": "3.10.11",
+  "replay_command": "python -m tools.delivery.delivery_linter --delivery-dir .",
+  "runtime_fingerprint": "c00c998d3e7a0c3ef7edb41d0fab60dee01c747531b2a458e13533a506cbc438",
+  "schema_id": "kt.operator.hermetic_build_envelope_manifest.v1",
+  "status": "PASS",
+  "subject_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "summary": {
+    "authority_grade_a": true,
+    "canonical_delivery_contract_status": "PASS",
+    "hermetic_replay_status": "PASS",
+    "status_lane_pass": true
+  },
+  "work_order_id": "WORK_ORDER_KT_FRONTIER_ELEVATION_AND_PUBLIC_DEFENSIBILITY",
+  "work_order_schema_id": "kt.work_order.frontier_elevation_and_public_defensibility.v2",
+  "workstream_id": "WS16_HERMETIC_BUILD_ENVELOPE"
+}
