@@ -1,0 +1,134 @@
+{
+  "active_export": {
+    "archive_root_present_in_export": false,
+    "excluded_paths": [
+      "KT_ARCHIVE/**",
+      ".env.secret",
+      ".pytest_cache/**",
+      ".venv/**",
+      "__pycache__/**",
+      "autonomous_analysis.json",
+      "autonomous_escalation_log.json",
+      "epoch_escalation_log.json",
+      "exports/**",
+      "tmp/**",
+      "KT_PROD_CLEANROOM/03_SYNTHESIS_LAB/**",
+      "KT_PROD_CLEANROOM/reports/**",
+      "KT_PROD_CLEANROOM/exports/_runs/**",
+      "KT_PROD_CLEANROOM/exports/adapters_shadow/**",
+      "KT_PROD_CLEANROOM/tools/audit_intelligence/**",
+      "KT_PROD_CLEANROOM/tools/growth/**",
+      "KT_PROD_CLEANROOM/tools/probes/**",
+      "KT_PROD_CLEANROOM/tools/operator/active_archive_cutline_audit.py",
+      "KT_PROD_CLEANROOM/tools/operator/canon_normalization_plan_compile.py",
+      "KT_PROD_CLEANROOM/tools/operator/historical_memory_ingest.py",
+      "KT_PROD_CLEANROOM/tools/operator/runtime_experiment_registry_compile.py",
+      "KT_PROD_CLEANROOM/tools/verification/tests/test_validate_receipts.py",
+      "KT_PROD_CLEANROOM/tools/verification/validate_receipts.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_audit_intelligence.py",
+      "KT_PROD_CLEANROOM/tests/operator/test_active_archive_cutline_audit.py"
+    ],
+    "exported_file_count": 1464,
+    "included_paths": [
+      ".devcontainer/**",
+      ".gitattributes",
+      ".github/**",
+      ".gitignore",
+      "ci/**",
+      "docs/**",
+      "KT-Codex/**",
+      "KT_PROD_CLEANROOM/**",
+      "LICENSE",
+      "README.md",
+      "REPO_CANON.md",
+      "run_kt_e2e.sh"
+    ],
+    "top_level_roots": [
+      ".devcontainer",
+      ".gitattributes",
+      ".github",
+      ".gitignore",
+      "ci",
+      "docs",
+      "KT-Codex",
+      "KT_PROD_CLEANROOM",
+      "LICENSE",
+      "README.md",
+      "REPO_CANON.md",
+      "run_kt_e2e.sh"
+    ]
+  },
+  "archive_root": "KT_ARCHIVE",
+  "artifact_id": "kt_archive_externalization_test_plan.json",
+  "doc_sufficiency_policy": {
+    "forbidden_link_classes": [
+      "archive_link_target",
+      "missing_local_target",
+      "link_escapes_active_export",
+      "forbidden_javascript_href"
+    ],
+    "scanned_surfaces": [
+      "README.md",
+      "REPO_CANON.md",
+      "docs/**",
+      "KT-Codex/**",
+      "KT_PROD_CLEANROOM/00_README_FIRST/**",
+      "KT_PROD_CLEANROOM/01_INPUTS_READONLY/**",
+      "KT_PROD_CLEANROOM/02_PROVENANCE_LEDGER/**",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/**",
+      "KT_PROD_CLEANROOM/docs/**"
+    ]
+  },
+  "generated_at": "2026-03-15T00:53:08Z",
+  "pass_conditions": [
+    "detached active export contains no KT_ARCHIVE root",
+    "active-only validator commands pass inside detached export",
+    "active-only pytest lane passes inside detached export",
+    "active docs contain no broken local links and no archive link targets"
+  ],
+  "proof_mode": "copy canonical active tracked files to a detached temporary workspace, omit KT_ARCHIVE entirely, initialize a local git repo, run active-only validators/tests, and scan active docs for broken local links.",
+  "schema_id": "kt.operator.archive_externalization_test_plan.v1",
+  "sha256": "4f69910d5f29fb0e8a6f1a3759349dd8d5e8e218414acf20a52da2117fe14080",
+  "source_receipts": [
+    "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_completion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_canonical_tree_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_archive_manifest.json"
+  ],
+  "test_commands": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/operator/test_public_verifier.py",
+        "tests/operator/test_snapshot_inventory_compile.py",
+        "tests/operator/test_trust_zone_validate.py",
+        "-q"
+      ],
+      "cwd_rel": "KT_PROD_CLEANROOM",
+      "label": "active_export_pytest_lane"
+    }
+  ],
+  "validator_commands": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "tools.operator.trust_zone_validate"
+      ],
+      "cwd_rel": "KT_PROD_CLEANROOM",
+      "label": "trust_zone_validate_export"
+    },
+    {
+      "command": [
+        "python",
+        "-c",
+        "import tools.operator.claim_compiler, tools.operator.public_verifier, tools.operator.trust_zone_validate; print('PASS')"
+      ],
+      "cwd_rel": "KT_PROD_CLEANROOM",
+      "label": "active_import_smoke"
+    }
+  ],
+  "workstream_id": "WS3_ARCHIVE_EXTERNALIZATION_PROOF",
+  "ws2_subject_head_commit": "c50bfae7335183fcf58a7646371abca0237ee409"
+}

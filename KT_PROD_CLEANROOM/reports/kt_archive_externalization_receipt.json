@@ -1,0 +1,125 @@
+{
+  "artifact_id": "kt_archive_externalization_receipt.json",
+  "checks": [
+    {
+      "check": "detached_active_export_omits_archive_root",
+      "detail": "The detached active export must contain no KT_ARCHIVE root.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_archive_externalization_test_plan.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "active_only_validators_pass_without_archive",
+      "detail": "Validators executed inside the detached active export must pass without KT_ARCHIVE present.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_archive_externalization_test_plan.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "active_only_pytest_lane_passes_without_archive",
+      "detail": "Selected active-only tests must pass inside the detached active export.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_archive_externalization_test_plan.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "active_docs_have_no_archive_or_broken_local_links",
+      "detail": "Active docs must not contain broken local links or links targeting KT_ARCHIVE.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_archive_externalization_test_plan.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "072b2cac5d474c18376223d407a3a57a5db7e6bf",
+  "doc_link_failures": [],
+  "evidence_head_commit": "072b2cac5d474c18376223d407a3a57a5db7e6bf",
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS4_DETERMINISM_AND_CANONICAL_RUNNER"
+  },
+  "pass_verdict": "ACTIVE_ARCHIVE_SEPARATION_PROVEN",
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.archive_externalization_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "copied the canonical active tracked tree into a detached temporary workspace",
+      "omitted KT_ARCHIVE entirely from the detached export",
+      "initialized a local git repo for the detached active export",
+      "ran active-only validators and tests inside the detached export",
+      "scanned active docs for broken local links and archive targets"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/reports/kt_archive_externalization_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_archive_externalization_test_plan.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_archive_externalization.py",
+      "KT_PROD_CLEANROOM/tools/operator/archive_externalization_test.py"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS3 proves archive externalization by validating a detached active export with KT_ARCHIVE absent.",
+    "step_id": "WS3_STEP_1_PROVE_ARCHIVE_EXTERNALIZATION",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_archive_externalization.py -q",
+      "python -m pytest tests/operator/test_public_verifier.py tests/operator/test_snapshot_inventory_compile.py tests/operator/test_trust_zone_validate.py -q"
+    ],
+    "timestamp": "2026-03-15T00:53:31Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.archive_externalization_test",
+      "python -m tools.operator.trust_zone_validate",
+      "python -c \"import tools.operator.claim_compiler, tools.operator.public_verifier, tools.operator.trust_zone_validate; print('PASS')\""
+    ],
+    "workstream_id": "WS3_ARCHIVE_EXTERNALIZATION_PROOF"
+  },
+  "subject_head_commit": "072b2cac5d474c18376223d407a3a57a5db7e6bf",
+  "summary": {
+    "archive_root_present_in_export": false,
+    "broken_doc_link_count": 0,
+    "doc_files_scanned": 169,
+    "export_file_count": 1464,
+    "test_pass_count": 1,
+    "validator_pass_count": 2
+  },
+  "test_results": [
+    {
+      "command": "python -m pytest tests/operator/test_public_verifier.py tests/operator/test_snapshot_inventory_compile.py tests/operator/test_trust_zone_validate.py -q",
+      "cwd_rel": "KT_PROD_CLEANROOM",
+      "exit_code": 0,
+      "label": "active_export_pytest_lane",
+      "status": "PASS",
+      "stderr_tail": "",
+      "stdout_tail": ".........                                                                [100%]\n9 passed in 6.28s\n"
+    }
+  ],
+  "unexpected_touches": [],
+  "validator_results": [
+    {
+      "command": "python -m tools.operator.trust_zone_validate",
+      "cwd_rel": "KT_PROD_CLEANROOM",
+      "exit_code": 0,
+      "label": "trust_zone_validate_export",
+      "status": "PASS",
+      "stderr_tail": "",
+      "stdout_tail": "{\"checks\": [{\"check\": \"required_zones_present\", \"missing\": [], \"status\": \"PASS\"}, {\"check\": \"readiness_zones_declared_in_registry\", \"excludes\": [\"LAB\", \"ARCHIVE\", \"COMMERCIAL\", \"GENERATED_RUNTIME_TRUTH\", \"QUARANTINED\"], \"includes\": [\"CANONICAL\"], \"status\": \"PASS\"}, {\"check\": \"canonical_primary_surfaces_in_canonical_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"generated_truth_surfaces_in_generated_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"documentary_only_surfaces_in_commercial_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"quarantine_patterns_excluded_from_canonical_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"quarantine_patterns_in_quarantined_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"runtime_boundary_excludes_reflected_in_canonical_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"readiness_scoped_to_canonical_only\", \"status\": \"PASS\"}, {\"actual\": [\"ARCHIVE\", \"COMMERCIAL\", \"GENERATED_RUNTIME_TRUTH\", \"LAB\", \"QUARANTINED\"], \"check\": \"readiness_excludes_all_noncanonical_zones\", \"expected\": [\"ARCHIVE\", \"COMMERCIAL\", \"GENERATED_RUNTIME_TRUTH\", \"LAB\", \"QUARANTINED\"], \"status\": \"PASS\"}, {\"check\": \"frozen_surfaces_live_in_canonical_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"frozen_surfaces_covered_by_amendment_scope\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"settled_truth_root_in_generated_zone\", \"status\": \"PASS\", \"truth_root\": \"KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json\"}, {\"check\": \"execution_board_truth_source_in_generated_zone\", \"status\": \"PASS\", \"truth_source\": \"KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json\"}, {\"actual\": [\"cognition\", \"core\", \"council\", \"curriculum\", \"governance\", \"kt\", \"memory\", \"multiverse\", \"paradox\", \"schemas\", \"temporal\", \"thermodynamics\", \"versioning\"], \"check\": \"runtime_registry_canonical_roots_match_contract\", \"expected\": [\"cognition\", \"core\", \"council\", \"curriculum\", \"governance\", \"kt\", \"memory\", \"multiverse\", \"paradox\", \"schemas\", \"temporal\", \"thermodynamics\", \"versioning\"], \"status\": \"PASS\"}, {\"actual\": [\"tools\"], \"check\": \"runtime_registry_compatibility_roots_match_contract\", \"expected\": [\"tools\"], \"status\": \"PASS\"}, {\"check\": \"compatibility_roots_not_canonical\", \"overlap\": [], \"status\": \"PASS\"}, {\"check\": \"compatibility_roots_quarantined_in_scope_manifest\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"compatibility_roots_excluded_by_runtime_boundary_contract\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"compatibility_roots_excluded_from_canonical_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"compatibility_roots_present_in_quarantined_zone\", \"mismatches\": [], \"status\": \"PASS\"}], \"failures\": [], \"schema_id\": \"kt.operator.trust_zone_validation_receipt.v2\", \"status\": \"PASS\"}\n"
+    },
+    {
+      "command": "python -c import tools.operator.claim_compiler, tools.operator.public_verifier, tools.operator.trust_zone_validate; print('PASS')",
+      "cwd_rel": "KT_PROD_CLEANROOM",
+      "exit_code": 0,
+      "label": "active_import_smoke",
+      "status": "PASS",
+      "stderr_tail": "",
+      "stdout_tail": "PASS\n"
+    }
+  ],
+  "validators_run": [
+    "python -m tools.operator.archive_externalization_test"
+  ],
+  "workstream_id": "WS3_ARCHIVE_EXTERNALIZATION_PROOF"
+}
