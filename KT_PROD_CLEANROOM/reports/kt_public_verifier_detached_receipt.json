@@ -1,0 +1,261 @@
+{
+  "artifact_id": "kt_public_verifier_detached_receipt.json",
+  "checks": [
+    {
+      "check": "prewrite_workspace_scope_clean",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_runtime.py",
+        "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_public_verifier_detached_validate.py",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "workstream_touches_remain_in_scope",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_runtime.py",
+        "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_public_verifier_detached_validate.py",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws17_source_attestation_pass",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_revision_trust_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws18_build_verification_pass",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "detached_release_manifest_signoffs_verified",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "detached_runtime_executes_without_repo_checkout",
+      "refs": [
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_runtime_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "detached_runtime_checks_trust_surfaces",
+      "refs": [
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_runtime_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "detached_vs_repo_local_conclusion_parity",
+      "refs": [
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_runtime_receipt.json",
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_public_verifier_report.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "stronger_claims_explicitly_withheld",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_runtime_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "c55c19eea493e72f87b417593060dd91e86815e6",
+  "created_files": [
+    "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_runtime.py",
+    "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_public_verifier_detached_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json"
+  ],
+  "deleted_files": [],
+  "detached_vs_repo_local_conclusion_parity": {
+    "claim_boundary": {
+      "detached": "evidence_commit identifies the commit that last changed the cryptographic publication evidence; truth_subject_commit identifies the transparency-verified subject commit. Consumers must not equate them unless evidence_equals_subject is true.",
+      "match": true,
+      "repo_local": "evidence_commit identifies the commit that last changed the cryptographic publication evidence; truth_subject_commit identifies the transparency-verified subject commit. Consumers must not equate them unless evidence_equals_subject is true."
+    },
+    "enterprise_legitimacy_ceiling": {
+      "detached": "WORKFLOW_GOVERNANCE_ONLY",
+      "match": true,
+      "repo_local": "WORKFLOW_GOVERNANCE_ONLY"
+    },
+    "head_claim_boundary": {
+      "detached": "Current HEAD contains transparency-verified evidence for truth_subject_commit; HEAD is not itself the verified subject.",
+      "match": true,
+      "repo_local": "Current HEAD contains transparency-verified evidence for truth_subject_commit; HEAD is not itself the verified subject."
+    },
+    "head_claim_verdict": {
+      "detached": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+      "match": true,
+      "repo_local": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE"
+    },
+    "platform_governance_claim_boundary": {
+      "detached": "Current-head workflow governance is fresh, but GitHub branch-protection / ruleset enforcement is not proven on main. Do not claim platform-enforced governance while main_branch_protection_receipt is not PASS.",
+      "match": true,
+      "repo_local": "Current-head workflow governance is fresh, but GitHub branch-protection / ruleset enforcement is not proven on main. Do not claim platform-enforced governance while main_branch_protection_receipt is not PASS."
+    },
+    "platform_governance_head_claim_boundary": {
+      "detached": "Current HEAD contains workflow-governance-only evidence for platform_governance_subject_commit; it is not itself freshly governance-proven.",
+      "match": true,
+      "repo_local": "Current HEAD contains workflow-governance-only evidence for platform_governance_subject_commit; it is not itself freshly governance-proven."
+    },
+    "platform_governance_head_claim_verdict": {
+      "detached": "HEAD_CONTAINS_WORKFLOW_GOVERNANCE_ONLY_EVIDENCE_FOR_SUBJECT",
+      "match": true,
+      "repo_local": "HEAD_CONTAINS_WORKFLOW_GOVERNANCE_ONLY_EVIDENCE_FOR_SUBJECT"
+    },
+    "platform_governance_verdict": {
+      "detached": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED",
+      "match": true,
+      "repo_local": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED"
+    },
+    "publication_receipt_status": {
+      "detached": "PASS",
+      "match": true,
+      "repo_local": "PASS"
+    },
+    "status": {
+      "detached": "PASS",
+      "match": true,
+      "repo_local": "PASS"
+    },
+    "subject_verdict": {
+      "detached": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
+      "match": true,
+      "repo_local": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED"
+    }
+  },
+  "evidence_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "generated_utc": "2026-03-15T20:05:58Z",
+  "input_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_signed_revision_policy.json",
+    "KT_PROD_CLEANROOM/reports/kt_revision_trust_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_source_provenance.dsse",
+    "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+    "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse",
+    "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json",
+    "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
+    "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_runtime.py",
+    "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_public_verifier_detached_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json"
+  ],
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS20_INDEPENDENT_EXTERNAL_REPRODUCTION"
+  },
+  "pass_verdict": "DETACHED_PUBLIC_VERIFIER_PACKAGE_PROVEN",
+  "protected_touch_violations": [],
+  "retained_new_files": [
+    "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_runtime.py",
+    "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_public_verifier_detached_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json"
+  ],
+  "schema_id": "kt.operator.public_verifier_detached_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "packaged the detached public verifier runtime and its bounded trust/provenance/governance inputs",
+      "emitted the detached verifier release manifest and SBOM with dual local HMAC release signoffs",
+      "ran the verifier outside a repo checkout and compared its conclusion fields to the repo-local verifier output"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+      "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_public_verifier_detached_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_runtime.py",
+      "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_validate.py"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS19 proves that the repo-authored detached verifier package reproduces the repo-local verifier conclusion from packaged trust surfaces only.",
+    "step_id": "WS19_STEP_1_PACKAGE_AND_PROVE_DETACHED_VERIFIER_PARITY",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_public_verifier_detached_validate.py -q"
+    ],
+    "timestamp": "2026-03-15T20:05:58Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.public_verifier_detached_validate"
+    ],
+    "workstream_id": "WS19_DETACHED_PUBLIC_VERIFIER_PACKAGE"
+  },
+  "subject_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "summary": {
+    "detached_current_head_commit": "",
+    "detached_package_root_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/package",
+    "detached_runtime_receipt_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_runtime_receipt.json",
+    "detached_runtime_report_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_public_verifier_report.json",
+    "publication_surface_boundary": "For WS18, publication surface means the sealed WS15 canonical delivery publication bundle carried forward by the WS16 critical artifact set; it does not collapse that artifact set into the earlier WS7 authority-subject publication surface.",
+    "repo_local_current_head_commit": "c55c19eea493e72f87b417593060dd91e86815e6",
+    "repo_local_parity_fields": [
+      "status",
+      "subject_verdict",
+      "publication_receipt_status",
+      "head_claim_verdict",
+      "claim_boundary",
+      "head_claim_boundary",
+      "platform_governance_verdict",
+      "platform_governance_head_claim_verdict",
+      "platform_governance_claim_boundary",
+      "platform_governance_head_claim_boundary",
+      "enterprise_legitimacy_ceiling"
+    ],
+    "stronger_claim_not_made": "WS19 does not claim independent external reproduction, third-party detached replay, or public horizon opening."
+  },
+  "superseded_files_removed_or_demoted": [],
+  "supporting_runtime_artifacts": [
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_runtime_receipt.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_public_verifier_report.json"
+  ],
+  "surface_classifications": {
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json": "generated receipt",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json": "generated detached release manifest",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json": "generated detached verifier sbom",
+    "KT_PROD_CLEANROOM/tests/operator/test_public_verifier_detached_validate.py": "validator/test file",
+    "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_runtime.py": "detached runtime wrapper",
+    "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_validate.py": "canonical active file"
+  },
+  "temporary_files_removed": [],
+  "tests_run": [
+    "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_public_verifier_detached_validate.py -q"
+  ],
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.public_verifier_detached_validate"
+  ],
+  "work_order_id": "WORK_ORDER_KT_FRONTIER_ELEVATION_AND_PUBLIC_DEFENSIBILITY",
+  "work_order_schema_id": "kt.work_order.frontier_elevation_and_public_defensibility.v2",
+  "workstream_id": "WS19_DETACHED_PUBLIC_VERIFIER_PACKAGE"
+}
