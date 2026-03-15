@@ -1,0 +1,71 @@
+{
+  "adapter_testing_gate_status": "OPEN",
+  "artifact_id": "kt_full_stack_adjudication_recut_receipt.json",
+  "blocked_count": 6,
+  "competition_profile_status": "BLOCKED",
+  "compiled_head_commit": "ee5a20f5ff6a333471ac47a89f58130958588b0b",
+  "evidence_head_commit": "ee5a20f5ff6a333471ac47a89f58130958588b0b",
+  "generated_utc": "2026-03-15T12:51:42Z",
+  "hold_count": 2,
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS12_FINAL_COMPLETION_BUNDLE"
+  },
+  "pass_verdict": "FINAL_RECUT_AND_ADJUDICATION_COMPLETE",
+  "protected_touch_violations": [],
+  "publication_profile_status": "BLOCKED",
+  "ready_with_boundaries_count": 6,
+  "schema_id": "kt.operator.full_stack_adjudication_recut_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "regenerated stale generated doctrine and profile surfaces against the WS9 authority-closure and WS10 governance-finalization receipts",
+      "recut the release readiness matrix to reflect the live gate state",
+      "opened adapter testing only where all closure receipts now pass",
+      "kept tournament and publication blocked where the profiles remain below the required grade"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/reports/kt_adapter_testing_gate_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_full_stack_adjudication_recut_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_release_readiness_matrix.json",
+      "KT_PROD_CLEANROOM/reports/kt_tournament_readiness_receipt.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_final_recut_and_adjudication.py",
+      "KT_PROD_CLEANROOM/tools/operator/final_recut_and_adjudication.py",
+      "docs/generated/KT_Academy_Training_v1.md",
+      "docs/generated/KT_Governance_Spine_v1.md",
+      "docs/generated/KT_Whitepaper_v1.md",
+      "docs/generated/kt_doctrine_compiler_spec.json",
+      "docs/generated/kt_doctrine_manifest.json",
+      "docs/generated/kt_doctrine_ratification_log.json",
+      "docs/generated/kt_master_spec.md",
+      "docs/generated/playbooks/kt_auditor_playbook.md",
+      "docs/generated/playbooks/kt_competition_runbook.md",
+      "docs/generated/playbooks/kt_maintainer_playbook.md",
+      "docs/generated/playbooks/kt_math_guru_training_runbook.md",
+      "docs/generated/profiles/kt_competition_profile.json",
+      "docs/generated/profiles/kt_math_guru_profile.json",
+      "docs/generated/profiles/kt_outsider_onboarding_profile.json",
+      "docs/generated/profiles/kt_publication_profile.json"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS11 refreshes the generated doctrine/readiness layer so it reflects the post-WS10 live state without reopening closed authority or governance work.",
+    "step_id": "WS11_STEP_1_REGENERATE_DOCTRINE_AND_READINESS",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_final_recut_and_adjudication.py -q"
+    ],
+    "timestamp": "2026-03-15T12:51:42Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.final_recut_and_adjudication"
+    ],
+    "workstream_id": "WS11_FINAL_RECUT_AND_RE-ADJUDICATION"
+  },
+  "subject_head_commit": "ee5a20f5ff6a333471ac47a89f58130958588b0b",
+  "tournament_gate_status": "BLOCKED",
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.final_recut_and_adjudication"
+  ]
+}

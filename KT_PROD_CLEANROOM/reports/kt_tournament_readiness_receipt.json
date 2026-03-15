@@ -1,0 +1,25 @@
+{
+  "artifact_id": "kt_tournament_readiness_receipt.json",
+  "blocking_conditions": [
+    "competition profile status is BLOCKED",
+    "publication profile status is BLOCKED"
+  ],
+  "claim_boundary": "Tournament and public showability stay blocked unless the competition and publication profiles are both truly ready at the current evidence base.",
+  "compiled_head_commit": "ee5a20f5ff6a333471ac47a89f58130958588b0b",
+  "evidence_head_commit": "ee5a20f5ff6a333471ac47a89f58130958588b0b",
+  "generated_utc": "2026-03-15T12:51:42Z",
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS12_FINAL_COMPLETION_BUNDLE"
+  },
+  "pass_verdict": "TOURNAMENT_GATE_BLOCKED",
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.tournament_readiness_receipt.v1",
+  "status": "BLOCKED",
+  "subject_head_commit": "ee5a20f5ff6a333471ac47a89f58130958588b0b",
+  "tournament_gate_status": "BLOCKED",
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.final_recut_and_adjudication"
+  ]
+}

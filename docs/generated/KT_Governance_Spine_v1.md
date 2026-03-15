@@ -14,16 +14,10 @@ This document is generated from the constitutional spine, the governance baselin
 
 ## Governance Blockers
 - PLATFORM_ENFORCEMENT_UNPROVEN
-- PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED
-- AUTHORITY_CONVERGENCE_UNRESOLVED
-
+- H1_ACTIVATION_GATE_CLOSED
 
 ## Source Refs
 - KT_PROD_CLEANROOM/governance/constitutional_spine/KT_Constitution_v1.md
-- KT_PROD_CLEANROOM/governance/constitutional_spine/kt_constitution_manifest.json
-- KT_PROD_CLEANROOM/governance/constitutional_spine/kt_meta_governance_policy.json
-- KT_PROD_CLEANROOM/reports/kt_governance_closeout_bundle.json
-- KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json
+- KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json
 - KT_PROD_CLEANROOM/reports/public_verifier_manifest.json
 - KT_PROD_CLEANROOM/governance/public_verifier_rules.json
-

@@ -1,0 +1,58 @@
+{
+  "adapter_testing_gate_status": "OPEN",
+  "artifact_id": "kt_adapter_testing_gate_receipt.json",
+  "claim_boundary": "Adapter testing is opened only on the bounded active tree. This does not open tournament, publication, or H1 claims.",
+  "compiled_head_commit": "ee5a20f5ff6a333471ac47a89f58130958588b0b",
+  "evidence_head_commit": "ee5a20f5ff6a333471ac47a89f58130958588b0b",
+  "generated_utc": "2026-03-15T12:51:42Z",
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS12_FINAL_COMPLETION_BUNDLE"
+  },
+  "pass_verdict": "ADAPTER_TESTING_GATE_OPEN",
+  "preconditions": [
+    {
+      "check": "ACTIVE_ARCHIVE_SEPARATION_PROVEN",
+      "ref": "KT_PROD_CLEANROOM/reports/kt_archive_externalization_receipt.json",
+      "status": "PASS"
+    },
+    {
+      "check": "ACTIVE_CANONICAL_TREE_SETTLED",
+      "ref": "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_completion_receipt.json",
+      "status": "PASS"
+    },
+    {
+      "check": "CROSS_ENV_REPRODUCIBILITY_PROVEN",
+      "ref": "KT_PROD_CLEANROOM/reports/kt_determinism_receipt.json",
+      "status": "PASS"
+    },
+    {
+      "check": "LEDGER_AUTHORITY_FINALIZED",
+      "ref": "KT_PROD_CLEANROOM/reports/kt_authority_topology_cutover_receipt.json",
+      "status": "PASS"
+    },
+    {
+      "check": "PUBLIC_VERIFIER_RELEASED",
+      "ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_manifest.json",
+      "status": "PASS"
+    },
+    {
+      "check": "CLAIM_COMPILER_ACTIVE",
+      "ref": "KT_PROD_CLEANROOM/reports/kt_claim_compiler_activation_receipt.json",
+      "status": "PASS"
+    },
+    {
+      "check": "NO_UNRESOLVED_P0_AUTHORITY_OR_RUNTIME_CONFLICTS",
+      "ref": "KT_PROD_CLEANROOM/reports/kt_authority_closure_receipt.json",
+      "status": "PASS"
+    }
+  ],
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.adapter_testing_gate_receipt.v1",
+  "status": "PASS",
+  "subject_head_commit": "ee5a20f5ff6a333471ac47a89f58130958588b0b",
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.final_recut_and_adjudication"
+  ]
+}

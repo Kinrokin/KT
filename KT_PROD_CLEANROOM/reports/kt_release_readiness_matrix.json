@@ -1,19 +1,18 @@
 {
-  "claim_boundary": "Readiness rows inherit the current blocker ladder and must not be read as horizon upgrades while blockers remain open.",
-  "generated_utc": "2026-03-14T21:17:58Z",
+  "claim_boundary": "Readiness rows are derived from current gate receipts and must not be read as authority, governance, or H1 upgrades while boundary receipts still cap those horizons.",
+  "generated_utc": "2026-03-15T12:51:42Z",
   "profiles": [
     {
       "blocked_by": [],
       "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
       "evidence_refs": [
-        "KT_PROD_CLEANROOM/reports/kt_judgment_plane_computation_receipt.json",
-        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
-        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
+        "KT_PROD_CLEANROOM/reports/kt_authority_closure_receipt.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
       ],
       "forbidden_claims": [
         "HEAD_IS_VERIFIED_SUBJECT",
-        "H1_ALLOWED",
-        "PLATFORM_ENFORCED_GOVERNANCE_PROVEN"
+        "H1_ALLOWED"
       ],
       "profile_family": "release_profile_plan",
       "profile_id": "internal_operator_audit_release",
@@ -23,14 +22,14 @@
       "blocked_by": [],
       "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
       "evidence_refs": [
-        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
-        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
-        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json"
+        "KT_PROD_CLEANROOM/reports/kt_authority_closure_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json",
+        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json"
       ],
       "forbidden_claims": [
-        "H1_ALLOWED",
+        "HEAD_IS_VERIFIED_SUBJECT",
         "PLATFORM_ENFORCED_GOVERNANCE_PROVEN",
-        "CROSS_ENV_REPRODUCIBILITY_COMPLETE"
+        "H1_ALLOWED"
       ],
       "profile_family": "release_profile_plan",
       "profile_id": "external_specialist_demo_release",
@@ -38,13 +37,13 @@
     },
     {
       "blocked_by": [
-        "PLATFORM_ENFORCEMENT_UNPROVEN"
+        "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED"
       ],
       "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
       "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json",
         "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
-        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
-        "KT_PROD_CLEANROOM/reports/kt_state_vector.json"
+        "KT_PROD_CLEANROOM/reports/kt_adapter_testing_gate_receipt.json"
       ],
       "forbidden_claims": [
         "PLATFORM_ENFORCED_GOVERNANCE_PROVEN",
@@ -56,14 +55,14 @@
     },
     {
       "blocked_by": [
-        "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN",
-        "DELTA_LINEAGE_MISSING",
-        "QUALITY_LEVEL_BELOW_TARGET"
+        "competition-grade QL3 ceiling is not yet admissible",
+        "H1 activation remains blocked"
       ],
       "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
       "evidence_refs": [
-        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
-        "KT_PROD_CLEANROOM/reports/kt_state_vector.json"
+        "docs/generated/profiles/kt_competition_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_determinism_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_adapter_testing_gate_receipt.json"
       ],
       "forbidden_claims": [
         "COMPETITION_READY",
@@ -75,20 +74,20 @@
     },
     {
       "blocked_by": [
-        "PARADOX_PROGRAM_UNBOUNDED",
-        "PLATFORM_ENFORCEMENT_UNPROVEN",
-        "DOCTRINE_AND_PROFILES_GENERATED_PENDING"
+        "governance legitimacy remains capped at WORKFLOW_GOVERNANCE_ONLY",
+        "publication-grade QL3 ceiling is not yet admissible",
+        "H1 activation remains blocked"
       ],
       "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
       "evidence_refs": [
-        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
-        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
-        "KT_PROD_CLEANROOM/reports/kt_state_vector.json"
+        "docs/generated/profiles/kt_publication_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_authority_closure_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json"
       ],
       "forbidden_claims": [
         "PUBLICATION_READY",
-        "H1_ALLOWED",
-        "HEAD_IS_VERIFIED_SUBJECT"
+        "HEAD_IS_VERIFIED_SUBJECT",
+        "H1_ALLOWED"
       ],
       "profile_family": "release_profile_plan",
       "profile_id": "publication_release",
@@ -100,8 +99,7 @@
       "evidence_refs": [
         "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
         "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
-        "KT_PROD_CLEANROOM/reports/kt_judgment_plane_computation_receipt.json",
-        "KT_PROD_CLEANROOM/reports/kt_state_vector.json"
+        "docs/generated/playbooks/kt_auditor_playbook.md"
       ],
       "forbidden_claims": [
         "HEAD_IS_VERIFIED_SUBJECT",
@@ -115,9 +113,9 @@
       "blocked_by": [],
       "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
       "evidence_refs": [
-        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
-        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
-        "KT_PROD_CLEANROOM/reports/kt_release_profile.json"
+        "docs/generated/profiles/kt_outsider_onboarding_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_adapter_testing_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
       ],
       "forbidden_claims": [
         "PLATFORM_ENFORCED_GOVERNANCE_PROVEN",
@@ -129,13 +127,13 @@
     },
     {
       "blocked_by": [
-        "PLATFORM_ENFORCEMENT_UNPROVEN"
+        "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED"
       ],
       "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
       "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json",
         "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
-        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
-        "KT_PROD_CLEANROOM/reports/kt_release_profile.json"
+        "docs/generated/KT_Governance_Spine_v1.md"
       ],
       "forbidden_claims": [
         "PLATFORM_ENFORCED_GOVERNANCE_PROVEN",
@@ -147,13 +145,14 @@
     },
     {
       "blocked_by": [
-        "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN",
-        "DELTA_LINEAGE_MISSING"
+        "competition-grade QL3 ceiling is not yet admissible",
+        "H1 activation remains blocked"
       ],
       "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
       "evidence_refs": [
-        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
-        "KT_PROD_CLEANROOM/reports/kt_release_profile.json"
+        "docs/generated/profiles/kt_competition_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_determinism_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_tournament_readiness_receipt.json"
       ],
       "forbidden_claims": [
         "COMPETITION_READY",
@@ -165,15 +164,15 @@
     },
     {
       "blocked_by": [
-        "PARADOX_PROGRAM_UNBOUNDED",
-        "DOCTRINE_AND_PROFILES_GENERATED_PENDING",
-        "PLATFORM_ENFORCEMENT_UNPROVEN"
+        "governance legitimacy remains capped at WORKFLOW_GOVERNANCE_ONLY",
+        "publication-grade QL3 ceiling is not yet admissible",
+        "H1 activation remains blocked"
       ],
       "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
       "evidence_refs": [
-        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
-        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
-        "KT_PROD_CLEANROOM/reports/kt_release_profile.json"
+        "docs/generated/profiles/kt_publication_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_tournament_readiness_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
       ],
       "forbidden_claims": [
         "PUBLICATION_READY",
@@ -186,18 +185,17 @@
     },
     {
       "blocked_by": [
-        "published-head self-convergence remains unresolved",
-        "authority convergence remains fail-closed",
+        "current head is evidence for the published truth subject unless SHAs match",
+        "governance legitimacy remains capped at WORKFLOW_GOVERNANCE_ONLY",
         "H1 activation remains blocked"
       ],
       "claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
       "evidence_refs": [
-        "docs/generated/profiles/kt_outsider_onboarding_profile.json",
-        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_self_description.json",
+        "KT_PROD_CLEANROOM/reports/kt_authority_closure_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json",
         "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
         "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
-        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
-        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+        "KT_PROD_CLEANROOM/reports/kt_adapter_testing_gate_receipt.json"
       ],
       "forbidden_claims": [
         "HEAD_IS_VERIFIED_SUBJECT",
@@ -210,18 +208,17 @@
     },
     {
       "blocked_by": [
-        "cross-environment controlled variation not run",
-        "current release profile plane is below QL3 target",
+        "cross-environment proof covers critical bundle stability, not full tournament runtime parity",
+        "competition-grade QL3 ceiling is not yet admissible",
         "H1 remains blocked for single-adapter activation claims"
       ],
       "claim_ceiling": "REPRESENTATIVE_SAME_MVE_ONLY",
       "evidence_refs": [
-        "docs/generated/profiles/kt_competition_profile.json",
-        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_determinism_receipt.json",
         "KT_PROD_CLEANROOM/reports/kt_runtime_and_experiment_memory_sealing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_adapter_testing_gate_receipt.json",
         "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json",
-        "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json",
-        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json"
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
       ],
       "forbidden_claims": [
         "COMPETITION_READY",
@@ -234,21 +231,18 @@
     },
     {
       "blocked_by": [
-        "published-head self-convergence remains unresolved",
-        "authority convergence remains unresolved",
-        "truth publication is not stabilized true",
-        "platform enforcement remains unproven",
-        "publication-grade QL3 ceiling is not yet admissible"
+        "current head must be described as containing evidence for the verified subject unless SHAs match",
+        "governance legitimacy remains capped at WORKFLOW_GOVERNANCE_ONLY",
+        "publication-grade QL3 ceiling is not yet admissible",
+        "H1 remains blocked"
       ],
       "claim_ceiling": "DOCUMENTARY_ONLY_WITH_SUBJECT_BOUNDARY",
       "evidence_refs": [
-        "docs/generated/profiles/kt_publication_profile.json",
+        "KT_PROD_CLEANROOM/reports/kt_authority_closure_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_truth_publication_stabilization_receipt.json",
         "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
-        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
-        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
-        "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
-        "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json",
-        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+        "KT_PROD_CLEANROOM/reports/kt_tournament_readiness_receipt.json"
       ],
       "forbidden_claims": [
         "PUBLICATION_READY",
@@ -262,19 +256,15 @@
     },
     {
       "blocked_by": [
-        "no published-head self-convergence proof",
-        "authority convergence remains fail-closed",
-        "paradox evidence remains documentary-only, not external superiority proof"
+        "paradox evidence remains documentary-only, not external superiority proof",
+        "current head is evidence for the verified truth subject unless SHAs match",
+        "H1 remains blocked"
       ],
       "claim_ceiling": "DOCUMENTARY_ONLY_WITH_FORMAL_MODEL_AND_STRESS",
       "evidence_refs": [
-        "docs/generated/profiles/kt_math_guru_profile.json",
-        "KT_PROD_CLEANROOM/reports/kt_paradox_invariants.json",
-        "KT_PROD_CLEANROOM/reports/kt_paradox_counterexamples.json",
-        "KT_PROD_CLEANROOM/reports/kt_paradox_stress_results.json",
-        "KT_PROD_CLEANROOM/reports/kt_paradox_claim_matrix.json",
-        "KT_PROD_CLEANROOM/reports/kt_proof_obligation_scheduler.json",
-        "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+        "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_authority_closure_receipt.json",
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
       ],
       "forbidden_claims": [
         "EXTERNAL_PARADOX_SUPERIORITY_PROVEN",
@@ -286,7 +276,7 @@
       "readiness_verdict": "READY_WITH_BOUNDARIES"
     }
   ],
-  "schema_id": "kt.operator.release_readiness_matrix.v1",
+  "schema_id": "kt.operator.release_readiness_matrix.v2",
   "summary": {
     "blocked_count": 6,
     "hold_count": 2,

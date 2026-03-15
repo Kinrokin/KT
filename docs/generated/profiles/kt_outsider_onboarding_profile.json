@@ -2,16 +2,16 @@
   "audience": "specialist outsider or new entrant",
   "current_admissibility_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
   "current_evidence_refs": [
-    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_self_description.json",
+    "KT_PROD_CLEANROOM/reports/kt_authority_closure_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json",
     "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
     "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
-    "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
-    "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+    "KT_PROD_CLEANROOM/reports/kt_adapter_testing_gate_receipt.json"
   ],
   "current_status": "ADMISSIBLE_WITH_BOUNDARIES",
   "explicit_gaps": [
-    "published-head self-convergence remains unresolved",
-    "authority convergence remains fail-closed",
+    "current head is evidence for the published truth subject unless SHAs match",
+    "governance legitimacy remains capped at WORKFLOW_GOVERNANCE_ONLY",
     "H1 activation remains blocked"
   ],
   "forbidden_claims": [
@@ -19,14 +19,14 @@
     "PLATFORM_ENFORCED_GOVERNANCE_PROVEN",
     "H1_ALLOWED"
   ],
-  "generated_utc": "2026-03-14T21:03:46Z",
+  "generated_utc": "2026-03-15T12:51:42Z",
   "playbook_ref": "docs/generated/playbooks/kt_auditor_playbook.md",
   "profile_id": "outsider_onboarding",
   "required_capabilities": [
     "understand evidence-versus-subject lag",
     "read the public verifier boundary",
-    "identify canonical runtime versus compatibility roots",
-    "track open blockers without upgrading claims"
+    "track workflow-governance-only limits without overclaim",
+    "follow open blockers without upgrading H1"
   ],
   "schema_id": "kt.doctrine.profile.v1",
   "target_quality_level": "QL2"

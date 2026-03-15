@@ -1,38 +1,39 @@
 {
   "compiled_claim_ceiling": "FRONTIER_SETTLEMENT_WITH_H1_BLOCK",
-  "compiler_surface_ref": "KT_PROD_CLEANROOM/tools/operator/doctrine_profiles_compile.py",
+  "compiler_surface_ref": "KT_PROD_CLEANROOM/tools/operator/final_recut_and_adjudication.py",
   "forbidden_claims": [
     "HEAD_IS_VERIFIED_SUBJECT",
     "PLATFORM_ENFORCED_GOVERNANCE_PROVEN",
     "H1_ALLOWED",
-    "EXTERNAL_PARADOX_SUPERIORITY_PROVEN"
+    "PUBLICATION_READY",
+    "COMPETITION_READY"
   ],
-  "gate_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json",
-  "generated_utc": "2026-03-14T21:03:46Z",
+  "gate_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_full_stack_adjudication_recut_receipt.json",
+  "generated_utc": "2026-03-15T12:51:42Z",
   "generation_rules": [
     "doctrine must be derived from cited machine-state refs only",
     "generated doctrine may not amend constitutional or governance law",
     "profiles must list current evidence refs and explicit gaps",
     "generated docs must preserve subject-versus-evidence lag when SHAs differ",
-    "competition and publication docs must remain blocked while their blockers remain open"
+    "adapter testing may open only when all gate preconditions pass",
+    "tournament and publication docs must remain blocked while their gate receipts remain blocked"
   ],
   "input_refs": [
-    "KT_PROD_CLEANROOM/AUDITS/COUNCIL_PACKET/V2/WORK_ORDER_KT_MAX_REFACTOR_E2E_INSTITUTIONAL_MEMORY_AND_FULL_STACK_ADJUDICATION.v2.json",
-    "KT_PROD_CLEANROOM/reports/kt_graph_and_catalog_compilation_receipt.json",
-    "KT_PROD_CLEANROOM/reports/kt_normalization_and_professionalization_planning_receipt.json",
-    "KT_PROD_CLEANROOM/reports/kt_runtime_and_experiment_memory_sealing_receipt.json",
-    "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json",
-    "KT_PROD_CLEANROOM/reports/kt_state_vector.json",
-    "KT_PROD_CLEANROOM/reports/kt_claim_registry.json",
-    "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+    "KT_PROD_CLEANROOM/reports/kt_authority_closure_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json",
     "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
-    "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
     "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
-    "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
-    "KT_PROD_CLEANROOM/reports/frontier_settlement_receipt.json",
-    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_self_description.json",
+    "KT_PROD_CLEANROOM/reports/kt_truth_publication_stabilization_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_determinism_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_archive_externalization_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_repo_professionalization_completion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_claim_compiler_activation_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_runtime_and_experiment_memory_sealing_receipt.json",
     "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_quality_policy.json",
-    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json"
+    "KT_PROD_CLEANROOM/governance/constitutional_spine/kt_readiness_lattice.json",
+    "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
   ],
   "output_refs": [
     "docs/generated/kt_doctrine_compiler_spec.json",
@@ -53,5 +54,5 @@
     "docs/generated/playbooks/kt_competition_runbook.md",
     "docs/generated/playbooks/kt_math_guru_training_runbook.md"
   ],
-  "schema_id": "kt.doctrine.compiler_spec.v1"
+  "schema_id": "kt.doctrine.compiler_spec.v2"
 }
