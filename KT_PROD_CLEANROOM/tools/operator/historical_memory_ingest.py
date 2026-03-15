@@ -22,7 +22,8 @@ REPRESENTATIVE_REPRO_REL = f"{REPORT_ROOT_REL}/representative_authority_lane_rep
 RUN_SWEEP_MATRIX_REL = f"{REPORT_ROOT_REL}/run_sweep_audit_failure_matrix.json"
 POSTURE_CONFLICT_REL = f"{REPORT_ROOT_REL}/posture_conflict_receipt.json"
 
-AUDIT_PACKET_DIR_REL = "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309"
+ARCHIVE_ROOT_REL = "KT_ARCHIVE"
+AUDIT_PACKET_DIR_REL = f"{ARCHIVE_ROOT_REL}/docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309"
 AUDIT_README_REL = f"{AUDIT_PACKET_DIR_REL}/README.md"
 AUDIT_BLOCKER_MATRIX_REL = f"{AUDIT_PACKET_DIR_REL}/blocker_matrix.json"
 AUDIT_SCORECARD_REL = f"{AUDIT_PACKET_DIR_REL}/subsystem_scorecard.md"
@@ -195,8 +196,8 @@ def _source_family_rows(root: Path) -> List[Dict[str, Any]]:
         },
         {
             "family_id": "root_audit_lineage_docs",
-            "root_ref": "docs/audit",
-            "file_count": _count_files(root, "docs/audit"),
+            "root_ref": "KT_ARCHIVE/docs/audit",
+            "file_count": _count_files(root, "KT_ARCHIVE/docs/audit"),
             "purpose": "Top-level historical system maps and lineage docs.",
         },
         {
@@ -549,60 +550,60 @@ def build_forgotten_surface_register(*, root: Path) -> Dict[str, Any]:
 
     surfaces = [
         {
-            "surface_ref": "docs/audit/ADAPTER_LINEAGE_SYSTEM.md",
+            "surface_ref": "KT_ARCHIVE/docs/audit/ADAPTER_LINEAGE_SYSTEM.md",
             "surface_class": "historical_lineage_doc",
             "current_status": "historical_reference_only",
             "historical_role": "adapter lineage system map",
             "recovery_track": "step_6_graph_and_lineage_compilation",
-            "evidence_refs": ["docs/audit/ADAPTER_LINEAGE_SYSTEM.md", AUDIT_WORKSET_REL],
+            "evidence_refs": ["KT_ARCHIVE/docs/audit/ADAPTER_LINEAGE_SYSTEM.md", AUDIT_WORKSET_REL],
         },
         {
-            "surface_ref": "docs/audit/ADAPTER_SYSTEM_MAP.md",
+            "surface_ref": "KT_ARCHIVE/docs/audit/ADAPTER_SYSTEM_MAP.md",
             "surface_class": "historical_system_map",
             "current_status": "historical_reference_only",
             "historical_role": "adapter topology and control-surface map",
             "recovery_track": "step_6_graph_and_lineage_compilation",
-            "evidence_refs": ["docs/audit/ADAPTER_SYSTEM_MAP.md", AUDIT_WORKSET_REL],
+            "evidence_refs": ["KT_ARCHIVE/docs/audit/ADAPTER_SYSTEM_MAP.md", AUDIT_WORKSET_REL],
         },
         {
-            "surface_ref": "docs/audit/CRUCIBLE_OUTPUT_SCHEMA.md",
+            "surface_ref": "KT_ARCHIVE/docs/audit/CRUCIBLE_OUTPUT_SCHEMA.md",
             "surface_class": "historical_contract_doc",
             "current_status": "historical_reference_only",
             "historical_role": "older crucible output contract",
             "recovery_track": "step_9_runtime_experiment_memory",
-            "evidence_refs": ["docs/audit/CRUCIBLE_OUTPUT_SCHEMA.md", CRUCIBLE_RUN_LEDGER_REL],
+            "evidence_refs": ["KT_ARCHIVE/docs/audit/CRUCIBLE_OUTPUT_SCHEMA.md", CRUCIBLE_RUN_LEDGER_REL],
         },
         {
-            "surface_ref": "docs/audit/EPOCH_EXECUTION_FLOW.md",
+            "surface_ref": "KT_ARCHIVE/docs/audit/EPOCH_EXECUTION_FLOW.md",
             "surface_class": "historical_execution_doc",
             "current_status": "historical_reference_only",
             "historical_role": "older epoch execution model",
             "recovery_track": "step_3_constitutional_spine_and_meta_governance",
-            "evidence_refs": ["docs/audit/EPOCH_EXECUTION_FLOW.md", AUDIT_WORKSET_REL],
+            "evidence_refs": ["KT_ARCHIVE/docs/audit/EPOCH_EXECUTION_FLOW.md", AUDIT_WORKSET_REL],
         },
         {
-            "surface_ref": "docs/audit/KT_E2E_PROTOCOL.md",
+            "surface_ref": "KT_ARCHIVE/docs/audit/KT_E2E_PROTOCOL.md",
             "surface_class": "historical_protocol_doc",
             "current_status": "historical_reference_only",
             "historical_role": "older end-to-end protocol doctrine",
             "recovery_track": "step_12_full_stack_adjudication",
-            "evidence_refs": ["docs/audit/KT_E2E_PROTOCOL.md", AUDIT_WORKSET_REL],
+            "evidence_refs": ["KT_ARCHIVE/docs/audit/KT_E2E_PROTOCOL.md", AUDIT_WORKSET_REL],
         },
         {
-            "surface_ref": "docs/audit/KT_LEARNING_SYSTEM_MASTER_MAP.md",
+            "surface_ref": "KT_ARCHIVE/docs/audit/KT_LEARNING_SYSTEM_MASTER_MAP.md",
             "surface_class": "historical_learning_doc",
             "current_status": "historical_reference_only",
             "historical_role": "learning-system topology and memory surface",
             "recovery_track": "step_9_runtime_experiment_memory",
-            "evidence_refs": ["docs/audit/KT_LEARNING_SYSTEM_MASTER_MAP.md", "docs/audit/LEARNING_SIGNAL_INDEX.md"],
+            "evidence_refs": ["KT_ARCHIVE/docs/audit/KT_LEARNING_SYSTEM_MASTER_MAP.md", "KT_ARCHIVE/docs/audit/LEARNING_SIGNAL_INDEX.md"],
         },
         {
-            "surface_ref": "docs/audit/LEARNING_SIGNAL_INDEX.md",
+            "surface_ref": "KT_ARCHIVE/docs/audit/LEARNING_SIGNAL_INDEX.md",
             "surface_class": "historical_learning_doc",
             "current_status": "historical_reference_only",
             "historical_role": "signal taxonomy for older learning surfaces",
             "recovery_track": "step_9_runtime_experiment_memory",
-            "evidence_refs": ["docs/audit/LEARNING_SIGNAL_INDEX.md", "docs/audit/KT_LEARNING_SYSTEM_MASTER_MAP.md"],
+            "evidence_refs": ["KT_ARCHIVE/docs/audit/LEARNING_SIGNAL_INDEX.md", "KT_ARCHIVE/docs/audit/KT_LEARNING_SYSTEM_MASTER_MAP.md"],
         },
         {
             "surface_ref": CODEX_MANIFEST_REL,
@@ -653,7 +654,7 @@ def build_forgotten_surface_register(*, root: Path) -> Dict[str, Any]:
             "evidence_refs": [OPERATOR_MANDATE_REL, AUDIT_FULL_ATTEMPT_REL],
         },
         {
-            "surface_ref": "KT_TEMPLE_ROOT",
+            "surface_ref": "KT_ARCHIVE/legacy_runtime/KT_TEMPLE_ROOT",
             "surface_class": "archive_root",
             "current_status": "archive_only_root_residue",
             "historical_role": "preserved earlier KT root",
@@ -661,7 +662,7 @@ def build_forgotten_surface_register(*, root: Path) -> Dict[str, Any]:
             "evidence_refs": [AUDIT_WORKSET_REL, AUDIT_REPO_CENSUS_REL],
         },
         {
-            "surface_ref": "KT_LANE_LORA_PHASE_B",
+            "surface_ref": "KT_ARCHIVE/legacy_runtime/KT_LANE_LORA_PHASE_B",
             "surface_class": "archive_root",
             "current_status": "archive_only_root_residue",
             "historical_role": "older lane export tree retained at repo root",
@@ -669,7 +670,7 @@ def build_forgotten_surface_register(*, root: Path) -> Dict[str, Any]:
             "evidence_refs": [AUDIT_WORKSET_REL, AUDIT_REPO_CENSUS_REL],
         },
         {
-            "surface_ref": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT",
+            "surface_ref": "KT_ARCHIVE/vault",
             "surface_class": "archive_surface",
             "current_status": "archive_only",
             "historical_role": "in-repo archive vault",
@@ -677,7 +678,7 @@ def build_forgotten_surface_register(*, root: Path) -> Dict[str, Any]:
             "evidence_refs": [AUDIT_WORKSET_REL],
         },
         {
-            "surface_ref": "EPOCH_CROSS.json",
+            "surface_ref": "KT_ARCHIVE/root_legacy/EPOCH_CROSS.json",
             "surface_class": "root_historical_operation_artifact",
             "current_status": "root_archive_contamination_risk",
             "historical_role": "root historical operation artifact",
@@ -685,7 +686,7 @@ def build_forgotten_surface_register(*, root: Path) -> Dict[str, Any]:
             "evidence_refs": [AUDIT_REPO_CENSUS_REL, AUDIT_WORKSET_REL],
         },
         {
-            "surface_ref": "RUN_REPORT.md",
+            "surface_ref": "KT_ARCHIVE/root_legacy/RUN_REPORT.md",
             "surface_class": "root_historical_operation_artifact",
             "current_status": "root_archive_contamination_risk",
             "historical_role": "root historical run report",
@@ -693,7 +694,7 @@ def build_forgotten_surface_register(*, root: Path) -> Dict[str, Any]:
             "evidence_refs": [AUDIT_REPO_CENSUS_REL, AUDIT_WORKSET_REL],
         },
         {
-            "surface_ref": "runbook.txt",
+            "surface_ref": "KT_ARCHIVE/root_legacy/runbook.txt",
             "surface_class": "root_historical_operation_artifact",
             "current_status": "root_archive_contamination_risk",
             "historical_role": "root historical runbook",
@@ -785,13 +786,13 @@ def build_reopened_defect_register(*, root: Path) -> Dict[str, Any]:
             "historical_status": str(blocker_rows["ROOT_ARCHIVE_CONTAMINATION"].get("status", "")).strip(),
             "current_status": "STILL_OPEN",
             "reopened": True,
-            "current_summary": "Historical archive material still sits at the repo root and under docs/audit.",
-            "current_evidence_refs": [AUDIT_WORKSET_REL, "docs/audit", "KT_TEMPLE_ROOT", "KT_LANE_LORA_PHASE_B"],
+            "current_summary": "Historical archive material has been re-rooted under KT_ARCHIVE and remains lineage-only.",
+            "current_evidence_refs": [AUDIT_WORKSET_REL, "KT_ARCHIVE/docs/audit", "KT_ARCHIVE/legacy_runtime/KT_TEMPLE_ROOT", "KT_ARCHIVE/legacy_runtime/KT_LANE_LORA_PHASE_B"],
             "historical_evidence_refs": list(blocker_rows["ROOT_ARCHIVE_CONTAMINATION"].get("evidence_paths", [])),
             "current_values": {
-                "docs_audit_exists": (root / "docs" / "audit").exists(),
-                "kt_temple_root_exists": (root / "KT_TEMPLE_ROOT").exists(),
-                "kt_lane_lora_phase_b_exists": (root / "KT_LANE_LORA_PHASE_B").exists(),
+                "docs_audit_exists": (root / "KT_ARCHIVE" / "docs" / "audit").exists(),
+                "kt_temple_root_exists": (root / "KT_ARCHIVE" / "legacy_runtime" / "KT_TEMPLE_ROOT").exists(),
+                "kt_lane_lora_phase_b_exists": (root / "KT_ARCHIVE" / "legacy_runtime" / "KT_LANE_LORA_PHASE_B").exists(),
             },
         },
         {

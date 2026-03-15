@@ -49,7 +49,7 @@ V1 = V1Profile(
     law_bundle_hash="6e1ed73ef6db2299b1f67fbdda12c07e5aeba7ad6039ecab889fa43d48db18a4",
     suite_registry_id="a1d21d415568931778b718827c278918529af8490a1b456ba97f27a9a18be8fc",
     determinism_expected_root_hash="c574cd28deba7020b1ff41f249c02f403cbe8e045cb961222183880977bdb10e",
-    authoritative_reseal_receipt=("KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/receipts/KT_CHANGE_RECEIPT_EPIC_HMAC_RESEAL_V1_POST_20260301T145027Z.json"),
+    authoritative_reseal_receipt=("KT_PROD_CLEANROOM/reports/kt_archive_manifest.json#vault_receipt_epic_hmac_reseal_v1_post_20260301t145027z"),
     router_policy_ref="KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
     router_demo_suite_ref="KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
 )

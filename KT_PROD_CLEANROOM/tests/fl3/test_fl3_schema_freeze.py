@@ -399,7 +399,7 @@ def test_fl3_schema_validates_examples() -> None:
         "schema_id": "kt.probe_synthesis_manifest.v1",
         "schema_version_hash": schema_version_hash("fl3/kt.probe_synthesis_manifest.v1.json"),
         "manifest_id": "",
-        "vault_root_rel": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT",
+        "vault_root_rel": "KT_ARCHIVE/vault",
         "event_count": 3,
         "min_support": 3,
         "created_at": "1970-01-01T00:00:00Z",
@@ -1263,7 +1263,7 @@ def test_fl3_schema_validates_examples() -> None:
         "schema_id": "kt.audit_event_index.v1",
         "schema_version_hash": schema_version_hash("fl3/kt.audit_event_index.v1.json"),
         "index_id": "",
-        "vault_root_rel": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT",
+        "vault_root_rel": "KT_ARCHIVE/vault",
         "entries": [
             {
                 "path": "audit_events/event_1.json",
@@ -1353,7 +1353,7 @@ def test_fl3_schema_validates_examples() -> None:
         "schema_id": "kt.audit_intelligence_report.v1",
         "schema_version_hash": schema_version_hash("fl3/kt.audit_intelligence_report.v1.json"),
         "report_id": "",
-        "vault_root_rel": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT",
+        "vault_root_rel": "KT_ARCHIVE/vault",
         "config_id": aic["config_id"],
         "ingested_events": 1,
         "clusters": [apc["cluster_id"]],

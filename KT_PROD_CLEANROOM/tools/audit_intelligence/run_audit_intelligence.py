@@ -250,13 +250,13 @@ def run_audit_intelligence(
 ) -> Dict[str, Any]:
     with offline_guard():
         repo_root = repo_root_from(Path(__file__))
-        canonical_vault = (repo_root / "KT_PROD_CLEANROOM" / "06_ARCHIVE_VAULT").resolve()
+        canonical_vault = (repo_root / "KT_ARCHIVE" / "vault").resolve()
         vault_root = vault_root.resolve()
         if not allow_noncanonical_vault:
             try:
                 vault_root.relative_to(canonical_vault)
             except Exception as exc:  # noqa: BLE001
-                raise AuditIntelError("FAIL_CLOSED: vault_root must be under KT_PROD_CLEANROOM/06_ARCHIVE_VAULT") from exc
+                raise AuditIntelError("FAIL_CLOSED: vault_root must be under KT_ARCHIVE/vault") from exc
 
         events_root = vault_root / "audit_events"
         if not events_root.exists() or not events_root.is_dir():
@@ -386,7 +386,7 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     ap.add_argument("--min-cluster-size", type=int, default=3)
     ap.add_argument("--proposal-cooldown-hours", type=int, default=24)
     ap.add_argument("--reason-code-allowlist", default=None, help="Comma-separated list of reason codes to consider.")
-    ap.add_argument("--allow-noncanonical-vault", action="store_true", help="Allow vault roots outside KT_PROD_CLEANROOM/06_ARCHIVE_VAULT (tests only).")
+    ap.add_argument("--allow-noncanonical-vault", action="store_true", help="Allow vault roots outside KT_ARCHIVE/vault (tests only).")
     return ap.parse_args(argv)
 
 

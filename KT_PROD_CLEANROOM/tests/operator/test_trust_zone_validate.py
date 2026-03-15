@@ -21,7 +21,7 @@ def _seed_governance(root: Path, *, readiness_excludes: list[str]) -> None:
             "zones": [
                 {"zone_id": "CANONICAL", "include": ["KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/**", "KT_PROD_CLEANROOM/governance/**"], "exclude": ["KT_PROD_CLEANROOM/reports/**", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/tools/**", "KT_PROD_CLEANROOM/05_QUARANTINE/**"]},
                 {"zone_id": "LAB", "include": ["KT_PROD_CLEANROOM/03_SYNTHESIS_LAB/**"], "exclude": []},
-                {"zone_id": "ARCHIVE", "include": ["KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/**"], "exclude": []},
+                {"zone_id": "ARCHIVE", "include": ["KT_ARCHIVE/**"], "exclude": []},
                 {"zone_id": "COMMERCIAL", "include": ["docs/**"], "exclude": []},
                 {"zone_id": "GENERATED_RUNTIME_TRUTH", "include": ["KT_PROD_CLEANROOM/reports/**", "KT_PROD_CLEANROOM/exports/_truth/**"], "exclude": []},
                 {"zone_id": "QUARANTINED", "include": ["KT_PROD_CLEANROOM/05_QUARANTINE/**", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/tools/**"], "exclude": []},

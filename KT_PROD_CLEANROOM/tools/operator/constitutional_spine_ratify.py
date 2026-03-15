@@ -679,7 +679,7 @@ def build_forgetting_law(*, ctx: Dict[str, Any]) -> Dict[str, Any]:
             },
             {
                 "class_id": "archive_lineage",
-                "surface_globs": ["KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/**", "docs/audit/**"],
+                "surface_globs": ["KT_ARCHIVE/vault/**", "KT_ARCHIVE/docs/audit/**"],
                 "forgetting_policy": "preserve_lineage_but_do_not_promote_to_current_truth",
             },
         ],

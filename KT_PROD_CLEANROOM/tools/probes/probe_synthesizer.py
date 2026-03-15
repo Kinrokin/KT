@@ -120,13 +120,13 @@ def run_probe_synthesis(
     allow_noncanonical_vault: bool,
 ) -> Dict[str, Any]:
     repo_root = repo_root_from(Path(__file__))
-    canonical_vault = (repo_root / "KT_PROD_CLEANROOM" / "06_ARCHIVE_VAULT").resolve()
+    canonical_vault = (repo_root / "KT_ARCHIVE" / "vault").resolve()
     vault_root = vault_root.resolve()
     if not allow_noncanonical_vault:
         try:
             vault_root.relative_to(canonical_vault)
         except Exception as exc:  # noqa: BLE001
-            raise ProbeSynthesisError("FAIL_CLOSED: vault_root must be under KT_PROD_CLEANROOM/06_ARCHIVE_VAULT") from exc
+            raise ProbeSynthesisError("FAIL_CLOSED: vault_root must be under KT_ARCHIVE/vault") from exc
 
     events_root = vault_root / "audit_events"
     if not events_root.exists() or not events_root.is_dir():

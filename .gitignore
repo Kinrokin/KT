@@ -1,6 +1,5 @@
-# Safety: do not publish Mass Reality / Temple / local editor config
+# Safety: do not publish Mass Reality / local editor config
 KT_MASS_REALITY/
-KT_TEMPLE_ROOT/
 .vscode/
 
 # Local validation clones / archives (never committed)
@@ -35,15 +34,16 @@ KT_PROD_CLEANROOM/tools/growth/ledgers/**
 !KT_PROD_CLEANROOM/tools/growth/ledgers/.gitkeep
 !KT_PROD_CLEANROOM/tools/growth/ledgers/LEDGER_POLICY.md
 
-# Public release: exclude internal cleanroom inputs/ledgers/labs/quarantine/vault
+# Public release: exclude internal cleanroom inputs/ledgers/labs/quarantine/archive
 KT_PROD_CLEANROOM/01_INPUTS_READONLY/
 KT_PROD_CLEANROOM/02_PROVENANCE_LEDGER/
 KT_PROD_CLEANROOM/03_SYNTHESIS_LAB/
 KT_PROD_CLEANROOM/05_QUARANTINE/
-KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/*
-!KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/receipts/
-!KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/receipts/**
-!KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/receipts/*.json
+KT_ARCHIVE/vault/*
+!KT_ARCHIVE/vault/receipts/
+!KT_ARCHIVE/vault/receipts/**
+!KT_ARCHIVE/vault/receipts/*.json
+KT_ARCHIVE/legacy_runtime/KT_TEMPLE_ROOT/
 
 # Local secret and env files
 .env

@@ -38,7 +38,7 @@ def _seed_minimal_contract(root: Path) -> None:
             "zones": [
                 {"zone_id": "CANONICAL", "include": ["KT_PROD_CLEANROOM/governance/**", "KT_PROD_CLEANROOM/tools/operator/**", "KT_PROD_CLEANROOM/tests/**"], "exclude": ["KT_PROD_CLEANROOM/reports/**"]},
                 {"zone_id": "LAB", "include": ["KT_PROD_CLEANROOM/03_SYNTHESIS_LAB/**"], "exclude": []},
-                {"zone_id": "ARCHIVE", "include": ["KT_TEMPLE_ROOT/**"], "exclude": []},
+                {"zone_id": "ARCHIVE", "include": ["KT_ARCHIVE/**"], "exclude": []},
                 {"zone_id": "COMMERCIAL", "include": ["docs/**", "README.md", "LICENSE"], "exclude": []},
                 {"zone_id": "GENERATED_RUNTIME_TRUTH", "include": ["KT_PROD_CLEANROOM/reports/**", "KT_PROD_CLEANROOM/exports/_truth/**"], "exclude": []},
                 {"zone_id": "QUARANTINED", "include": ["KT_PROD_CLEANROOM/05_QUARANTINE/**"], "exclude": []},

@@ -258,4 +258,4 @@ def test_audit_intelligence_noncanonical_vault_rejected_without_flag(tmp_path: P
         )
         assert False, "expected FAIL_CLOSED"
     except AuditIntelError as exc:
-        assert "vault_root must be under KT_PROD_CLEANROOM/06_ARCHIVE_VAULT" in str(exc)
+        assert "vault_root must be under KT_ARCHIVE/vault" in str(exc)

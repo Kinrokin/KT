@@ -25,7 +25,7 @@ These anchors are treated as immutable facts for KT V1. Operators must verify th
 - Law bundle hash (V1): `cd593dee1cc0b4c30273c90331124c3686f510ff990005609b3653268e66d906`
 - Suite registry id (V1): `e7a37cdc2a84b042dc1f594d1f84b4ba0a843c49de4925a06e6117fbac1eff17`
 - Determinism expected root hash (V1): `c574cd28deba7020b1ff41f249c02f403cbe8e045cb961222183880977bdb10e`
-- Authoritative V1 reseal receipt (do not edit): `KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/receipts/KT_CHANGE_RECEIPT_EPIC24_V1_RESEAL_UNDER_CURRENT_LAW_FIX_POST_CANONICAL_HMAC_20260217T225856Z.json`
+- Archived authoritative V1 reseal receipt (do not edit): `KT_PROD_CLEANROOM/reports/kt_archive_manifest.json` entry `vault_receipt_epic24_v1_reseal_under_current_law_fix_post_canonical_hmac_20260217t225856z`
 
 #### Evidence posture (plain-English)
 Evidence is the deliverable. Every meaningful action must emit WORM artifacts under `KT_PROD_CLEANROOM/exports/_runs/**` (and allowlisted export roots where explicitly permitted). Any write outside allowed roots is a governance defect. [SRC:USER_PACKET]
@@ -193,4 +193,3 @@ Acceptance criteria:
 - [SRC:INTERNAL:KT_CLIENT_READY_PACK]
 - [SRC:USER_PACKET]
 - [SRC:NEEDS_VERIFICATION]
-

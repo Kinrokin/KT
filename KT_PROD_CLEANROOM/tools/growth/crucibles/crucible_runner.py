@@ -233,7 +233,7 @@ def _v2_kernel_root() -> Path:
 
 def _v1_kernel_root() -> Path:
     # Workspace root inferred relative to cleanroom.
-    return _repo_root().parents[0] / "KT_TEMPLE_ROOT"
+    return _repo_root().parents[0] / "KT_ARCHIVE" / "legacy_runtime" / "KT_TEMPLE_ROOT"
 
 
 def _load_v2_registry_state_vault_relpath() -> str:

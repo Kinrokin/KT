@@ -52,8 +52,8 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Fail-closed validation of all change receipts in the archive vault.")
     ap.add_argument(
         "--receipts-dir",
-        default="KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/receipts",
-        help="Path to receipts directory (repo-relative by default).",
+        required=True,
+        help="Path to receipts directory (repo-relative or absolute).",
     )
     ap.add_argument("--out-dir", required=True, help="Write receipts_validation_report.json under this directory (WORM).")
     return ap.parse_args(argv)
@@ -90,4 +90,3 @@ if __name__ == "__main__":
         raise SystemExit(main())
     except FL3ValidationError as exc:
         raise SystemExit(f"FAIL_CLOSED: {exc}") from exc
-

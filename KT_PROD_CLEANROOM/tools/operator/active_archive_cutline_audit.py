@@ -149,13 +149,13 @@ def _consumer_plane(path: str) -> str:
 
 def _archive_ref_class(path: str) -> str:
     normalized = _normalize(path)
-    if normalized.startswith("KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/"):
+    if normalized.startswith("KT_ARCHIVE/vault/"):
         return "archive_vault_surface"
-    if normalized.startswith("docs/audit/"):
+    if normalized.startswith("KT_ARCHIVE/docs/audit/"):
         return "historical_audit_surface"
-    if normalized.startswith("KT_TEMPLE_ROOT/") or normalized == "KT_TEMPLE_ROOT":
+    if normalized.startswith("KT_ARCHIVE/legacy_runtime/KT_TEMPLE_ROOT/") or normalized == "KT_ARCHIVE/legacy_runtime/KT_TEMPLE_ROOT":
         return "legacy_root_archive_dir"
-    if normalized.startswith("KT_LANE_LORA_PHASE_B/") or normalized == "KT_LANE_LORA_PHASE_B":
+    if normalized.startswith("KT_ARCHIVE/legacy_runtime/KT_LANE_LORA_PHASE_B/") or normalized == "KT_ARCHIVE/legacy_runtime/KT_LANE_LORA_PHASE_B":
         return "legacy_root_archive_dir"
     return "root_archive_surface"
 
@@ -197,7 +197,7 @@ def _derive_boundary_sets(
     snapshot_files: List[Dict[str, Any]],
 ) -> Dict[str, Any]:
     active_keep = set(plan.get("target_top_level_layout", {}).get("minimal_root_keep", []))
-    archive_root = str(plan.get("target_top_level_layout", {}).get("archive_root", "")).rstrip("/")
+    archive_root = "KT_ARCHIVE"
 
     archive_explicit: List[str] = []
     if archive_root:
@@ -241,7 +241,7 @@ def _derive_boundary_sets(
         current["trust_zones"].add(str(row.get("trust_zone", "")).strip())
         if len(current["sample_paths"]) < 3:
             current["sample_paths"].append(path)
-        if path.startswith("docs/audit/"):
+        if path.startswith("KT_ARCHIVE/docs/audit/"):
             current["contains_docs_audit"] = True
         if path.startswith(f"{archive_root}/") or path == archive_root:
             current["contains_archive_vault"] = True
@@ -266,8 +266,8 @@ def _derive_boundary_sets(
             embedded_archive_islands.append(
                 {
                     "active_root": "docs",
-                    "archive_island": "docs/audit/",
-                    "reason": "Historical audit material remains nested under the active docs root.",
+                    "archive_island": "KT_ARCHIVE/docs/audit/",
+                    "reason": "Historical audit material now lives under the top-level archive root.",
                 }
             )
         if top == "KT_PROD_CLEANROOM" and row["contains_archive_vault"]:
@@ -275,7 +275,7 @@ def _derive_boundary_sets(
                 {
                     "active_root": "KT_PROD_CLEANROOM",
                     "archive_island": f"{archive_root}/",
-                    "reason": "Archive vault currently exists under the active cleanroom tree and must remain non-required by ACTIVE.",
+                    "reason": "Archive material is re-rooted at the top level and must remain non-required by ACTIVE.",
                 }
             )
 
@@ -342,7 +342,10 @@ def _scan_cross_references(root: Path, *, consumer_files: Sequence[str], archive
         needles.append((normalized, normalized.rstrip("/")))
 
     for consumer in consumer_files:
-        text = (root / Path(consumer)).read_text(encoding="utf-8", errors="ignore").replace("\\", "/")
+        consumer_path = (root / Path(consumer)).resolve()
+        if not consumer_path.exists() or not consumer_path.is_file():
+            continue
+        text = consumer_path.read_text(encoding="utf-8", errors="ignore").replace("\\", "/")
         plane = _consumer_plane(consumer)
         for archive, loose in needles:
             if archive not in text and loose not in text:
@@ -421,12 +424,12 @@ def _build_quarantine_plan(*, boundary_map: Dict[str, Any], cross_refs: Dict[str
         hits = [row for row in register_rows if row["archive_ref"] == archive_surface]
         planes = sorted({row["consumer_plane"] for row in hits})
         consequences = sorted({row["relocation_consequence"] for row in hits})
-        if archive_surface.startswith("KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/"):
+        if archive_surface.startswith("KT_ARCHIVE/vault/"):
             target = archive_surface
-        elif archive_surface.startswith("docs/audit/"):
-            target = f"{archive_root}/docs_audit/"
+        elif archive_surface.startswith("KT_ARCHIVE/docs/audit/"):
+            target = archive_surface
         else:
-            target = f"{archive_root}/root_archive/{archive_surface.rstrip('/').replace('/', '__')}"
+            target = archive_surface
         rows.append(
             {
                 "archive_surface": archive_surface,

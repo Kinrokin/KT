@@ -6,7 +6,7 @@ V2 is **DONE iff** every gate below is proven `PASS`, all required artifacts exi
 
 ## G0 — Authority Lock (Precondition)
 
-- `KT_TEMPLE_ROOT/` remains **KT_TEMPLE_V1** (law; read-only).
+- The archived KT_TEMPLE_V1 legacy root recorded in `KT_PROD_CLEANROOM/reports/kt_archive_manifest.json` remains **KT_TEMPLE_V1** (law; read-only).
 - `KT_MASS_REALITY/` remains read-only evidence (no destructive edits).
 - `KT_PROD_CLEANROOM/` is the only writable W4 location.
 - V2 Negative Space is enforced: **only** `KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/` is runtime-importable.

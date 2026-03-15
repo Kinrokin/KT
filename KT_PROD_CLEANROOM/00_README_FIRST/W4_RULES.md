@@ -1,7 +1,7 @@
 # W4 RULES (KT_PROD_CLEANROOM)
 
 ## Authority Lock
-- `KT_TEMPLE_ROOT/` is KT_TEMPLE_V1 and is **law** and **read-only**.
+- The archived KT_TEMPLE_V1 legacy root is recorded in `KT_PROD_CLEANROOM/reports/kt_archive_manifest.json` and remains **law** and **read-only**.
 - `KT_MASS_REALITY/` is read-only input evidence (variants + priors); provenance must be preserved.
 - `KT_PROD_CLEANROOM/` is the only writable location for W4 work.
 

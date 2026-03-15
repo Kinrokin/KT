@@ -23,10 +23,10 @@ def test_ws1_outputs_enumerate_archive_surfaces_and_cross_references() -> None:
     quarantine_plan = outputs[QUARANTINE_PLAN_REL]
 
     assert boundary_map["summary"]["archive_surface_count"] >= 1
-    assert boundary_map["summary"]["embedded_archive_island_count"] >= 1
-    assert any(row["archive_surface"] == "docs/audit/" for row in quarantine_plan["quarantine_entries"])
-    assert any(row["archive_surface"].startswith("KT_TEMPLE_ROOT") for row in quarantine_plan["quarantine_entries"])
-    assert any(row["archive_ref"] == "docs/audit/" for row in cross_refs["cross_references"])
+    assert any(surface.startswith("KT_ARCHIVE/") or surface == "KT_ARCHIVE/" for surface in boundary_map["archive_surfaces"])
+    assert any(row["archive_surface"] == "KT_ARCHIVE/" for row in quarantine_plan["quarantine_entries"])
+    assert any(row["archive_surface"] == "KT_LANE_LORA_PHASE_B/" for row in quarantine_plan["quarantine_entries"])
+    assert any(row["archive_ref"] == "KT_ARCHIVE/" for row in cross_refs["cross_references"])
 
     for row in cross_refs["cross_references"]:
         assert row["consumer_plane"]

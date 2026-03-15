@@ -22,7 +22,7 @@ REPRODUCIBILITY_REL = f"{REPORT_ROOT_REL}/representative_authority_lane_reproduc
 DELTA_PROOF_REL = f"{REPORT_ROOT_REL}/delta_proof.json"
 CANONICAL_HMAC_DELTA_REL = f"{REPORT_ROOT_REL}/canonical_hmac_one_button_delta_proof.json"
 BEHAVIOR_DELTA_REL = f"{REPORT_ROOT_REL}/behavior_delta_receipt.json"
-LEGACY_TRAIN_REPORT_REL = "KT_LANE_LORA_PHASE_B/lora_adapter_export/lora_out/train_report.json"
+LEGACY_TRAIN_REPORT_REL = "KT_ARCHIVE/legacy_runtime/KT_LANE_LORA_PHASE_B/lora_adapter_export/lora_out/train_report.json"
 SECTOR_REGISTRY_REL = f"{REPORT_ROOT_REL}/kt_sector_harness_registry.json"
 
 RUNTIME_EVENT_SCHEMA_REFS = [

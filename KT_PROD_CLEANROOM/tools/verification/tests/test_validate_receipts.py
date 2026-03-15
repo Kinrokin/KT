@@ -32,7 +32,6 @@ def test_validate_receipts_dir_fails_closed_on_unknown_schema_id(tmp_path: Path)
 
 
 def test_validate_receipts_dir_passes_on_repo_receipts() -> None:
-    receipts_dir = Path("KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/receipts")
+    receipts_dir = Path("KT_ARCHIVE/vault/receipts")
     report = validate_receipts_dir(receipts_dir=receipts_dir)
     assert report["status"] == "PASS"
-

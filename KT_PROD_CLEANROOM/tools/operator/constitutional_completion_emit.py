@@ -1050,9 +1050,12 @@ def _domain6_outputs(root: Path, head_sha: str) -> Dict[str, Dict[str, Any]]:
             "status": "PASS",
             "validated_head_sha": head_sha,
             "packet_refs": [
-                "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/README.md",
-                "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/KT_FULL_COMPLETION_ATTEMPT_REPORT_20260310.md",
-                "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/DOMAIN1_PUBLICATION_ARCHITECTURE_PROGRESS_REPORT_20260310.md",
+                "KT_PROD_CLEANROOM/reports/kt_archive_manifest.json",
+            ],
+            "archived_packet_entry_ids": [
+                "docs_audit_kt_repo_authority_audit_20260309_readme_md",
+                "docs_audit_kt_repo_authority_audit_20260309_kt_full_completion_attempt_report_20260310_md",
+                "docs_audit_kt_repo_authority_audit_20260309_domain1_publication_architecture_progress_report_20260310_md",
             ],
         },
         "KT_PROD_CLEANROOM/reports/deployment_profiles.json": {
@@ -1095,8 +1098,8 @@ def _domain6_outputs(root: Path, head_sha: str) -> Dict[str, Dict[str, Any]]:
             "labels": [
                 {"glob": "KT_PROD_CLEANROOM/docs/operator/*.md", "label": "DOCUMENTARY_ONLY_UNLESS_CITED_BY_BOARD"},
                 {"glob": "KT_PROD_CLEANROOM/docs/commercial/*.md", "label": "DOCUMENTARY_ONLY_COMMERCIAL_CLAIMS_BIND_TO_CLAIM_COMPILER"},
-                {"glob": "docs/audit/**", "label": "AUDIT_DOCUMENTARY_ONLY"},
-                {"glob": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/**", "label": "HISTORICAL_ONLY"},
+                {"glob": "KT_ARCHIVE/docs/audit/**", "label": "AUDIT_DOCUMENTARY_ONLY"},
+                {"glob": "KT_ARCHIVE/**", "label": "HISTORICAL_ONLY"},
             ],
             "claim_compiler_receipt_ref": "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
         },

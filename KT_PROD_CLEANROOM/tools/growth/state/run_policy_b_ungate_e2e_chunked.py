@@ -18,7 +18,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 BASE_MODEL = "mistralai/Mistral-7B-v0.1"
 POLICY_A_ADAPTER = Path("KT_LANE_LORA_PHASE_A/kt_lane_lora/kt_lane_lora_adapter").resolve()
-POLICY_B_ADAPTER = Path("KT_LANE_LORA_PHASE_B/lora_adapter_export/lora_out/adapter").resolve()
+POLICY_B_ADAPTER = Path("KT_ARCHIVE/legacy_runtime/KT_LANE_LORA_PHASE_B/lora_adapter_export/lora_out/adapter").resolve()
 
 PROMPTS: List[str] = [
     "A system receives two reports that conflict.\n\n"

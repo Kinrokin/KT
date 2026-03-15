@@ -85,8 +85,8 @@ def _documentary_labels_payload(*, report_root_rel: str) -> Dict[str, Any]:
                 "glob": "KT_PROD_CLEANROOM/docs/commercial/*.md",
                 "label": "DOCUMENTARY_ONLY_COMMERCIAL_CLAIMS_BIND_TO_CLAIM_COMPILER",
             },
-            {"glob": "docs/audit/**", "label": "AUDIT_DOCUMENTARY_ONLY"},
-            {"glob": "KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/**", "label": "HISTORICAL_ONLY"},
+            {"glob": "KT_ARCHIVE/docs/audit/**", "label": "AUDIT_DOCUMENTARY_ONLY"},
+            {"glob": "KT_ARCHIVE/**", "label": "HISTORICAL_ONLY"},
         ],
         "claim_compiler_receipt_ref": _report_ref(report_root_rel, "commercial_claim_compiler_receipt.json"),
     }

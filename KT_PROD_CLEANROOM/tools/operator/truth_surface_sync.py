@@ -347,9 +347,12 @@ def _external_audit_packet_manifest_payload(*, live_head: str) -> Dict[str, Any]
         "status": "PASS",
         "validated_head_sha": live_head,
         "packet_refs": [
-            "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/README.md",
-            "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/KT_FULL_COMPLETION_ATTEMPT_REPORT_20260310.md",
-            "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/DOMAIN1_PUBLICATION_ARCHITECTURE_PROGRESS_REPORT_20260310.md",
+            "KT_PROD_CLEANROOM/reports/kt_archive_manifest.json",
+        ],
+        "archived_packet_entry_ids": [
+            "docs_audit_kt_repo_authority_audit_20260309_readme_md",
+            "docs_audit_kt_repo_authority_audit_20260309_kt_full_completion_attempt_report_20260310_md",
+            "docs_audit_kt_repo_authority_audit_20260309_domain1_publication_architecture_progress_report_20260310_md",
         ],
     }
 

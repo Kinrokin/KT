@@ -8,7 +8,7 @@ This is a minimal spine that ties together operator workflow, governance anchors
 - Law bundle hash: `KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256`
 - Suite registry: `KT_PROD_CLEANROOM/AUDITS/SUITE_REGISTRY_FL3.json`
 - Determinism anchor: `KT_PROD_CLEANROOM/AUDITS/FL4_DETERMINISM_ANCHOR.v1.json`
-- Authoritative V1 receipt: `KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/receipts/KT_CHANGE_RECEIPT_EPIC24_V1_RESEAL_UNDER_CURRENT_LAW_FIX_POST_CANONICAL_HMAC_20260217T225856Z.json`
+- Archived authoritative V1 receipt: `KT_PROD_CLEANROOM/reports/kt_archive_manifest.json` entry `vault_receipt_epic24_v1_reseal_under_current_law_fix_post_canonical_hmac_20260217t225856z`
 
 ## Operator Console
 - CLI: `python -m tools.operator.kt_cli --help`
@@ -26,7 +26,7 @@ This is a minimal spine that ties together operator workflow, governance anchors
 
 ## Evidence Discipline
 - Run roots: `KT_PROD_CLEANROOM/exports/_runs/...` (WORM)
-- Sealed evidence vault: `KT_PROD_CLEANROOM/06_ARCHIVE_VAULT/receipts/`
+- Sealed evidence vault: `KT_PROD_CLEANROOM/reports/kt_archive_manifest.json` (`KT_ARCHIVE/vault/receipts/` is historical-only)
 - Delivery bundle spec: `KT_PROD_CLEANROOM/docs/commercial/KT_DELIVERY_BUNDLE_SPEC.md`
 - Readiness rubric: `KT_PROD_CLEANROOM/docs/operator/KT_READINESS_GRADE_RUBRIC.md`
 

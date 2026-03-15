@@ -10,13 +10,13 @@ Candidate (Mass Reality):
 - `KT_MASS_REALITY/01_INBOX_DROPZONE/01_REPOS_RAW/KingsTheorem_v53/kings-theorem-v53/core/state_vault.py`
   - sha256: `8b94ab602e81c1da57387300a519072610facf4efd55cd2be481780f0ab43037`
 
-Temple V1 baseline (authority reference only):
+Temple V1 baseline (historical source identifiers only; tracked documentary snapshot under `KT_PROD_CLEANROOM/01_INPUTS_READONLY/TEMPLE_V1_SNAPSHOT/`):
 
 - `KT_TEMPLE_ROOT/src/memory/ledger.py`
   - sha256: `af30320e9609d4da1fb34cf72e4c499461e93b39d607a7a7708387b08bf72b83`
 - `KT_TEMPLE_ROOT/src/memory/replay.py`
   - sha256: `64a776eed69abeb9b87f2e0e245b0dec9f47ee132035c2bbc4b510974af4e067`
-- `KT_TEMPLE_ROOT/src/schemas/receipt_schema.py` (receipt record allowlist + hash binding)
+- `KT_TEMPLE_ROOT/src/schemas/receipt_schema.py` (historical source identifier; receipt record allowlist + hash binding)
 
 Current V2 working tree (Cleanroom):
 
@@ -116,4 +116,3 @@ Yes, directly:
 
 - C008 proceeds as a V2-native implementation modeled on V1’s append-only ledger posture, but upgraded to C002 registry-bound schema enforcement and S2 state-vault schema primacy.
 - Candidate `state_vault.py` may contribute *conceptual* ideas (e.g., chain verification routines), but its persistence topology (SQLite + mutable flux + rollback) is disqualified from direct reuse under current constitutional constraints.
-
