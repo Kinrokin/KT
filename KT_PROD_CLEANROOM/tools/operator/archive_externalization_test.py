@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Sequence, Tuple
 
 from tools.canonicalize.kt_canonicalize import canonicalize_bytes, sha256_hex
+from tools.operator.canonical_tree_execute import ARCHIVE_GLOB, CURRENT_ARCHIVE_LITERAL, EMBEDDED_ARCHIVE_SEGMENT
 from tools.operator.titanium_common import load_json, repo_root, semantically_equal_json, utc_now_iso_z, write_json_stable
 
 
@@ -82,7 +83,7 @@ ALLOWED_TOUCH_PATTERNS = [
 ]
 
 PROTECTED_TOUCH_PATTERNS = [
-    "KT_ARCHIVE/**",
+    ARCHIVE_GLOB,
     ".github/workflows/**",
 ]
 
@@ -108,7 +109,7 @@ def _git_status_lines(root: Path) -> List[str]:
 def _git_changed_files(root: Path, commit: str) -> List[str]:
     if not str(commit).strip():
         return []
-    output = _git(root, "show", "--pretty=", "--name-only", commit)
+    output = _git(root, "diff-tree", "--root", "--no-commit-id", "--name-only", "-r", commit)
     return [line.strip().replace("\\", "/") for line in output.splitlines() if line.strip()]
 
 
@@ -155,7 +156,7 @@ def tracked_active_export_files(root: Path, canonical_manifest: Dict[str, Any]) 
             continue
         if _matches_any(rel, excluded):
             continue
-        if rel.startswith("KT_ARCHIVE/"):
+        if rel.startswith(CURRENT_ARCHIVE_LITERAL):
             continue
         rows.append(rel)
     return sorted(rows, key=str.lower)
@@ -218,7 +219,7 @@ def scan_doc_link_failures(root: Path, export_files: Sequence[str]) -> List[Dict
                 failures.append({"path": rel, "target": raw_target, "reason": "forbidden_javascript_href"})
                 continue
             normalized = target.replace("\\", "/")
-            if normalized.startswith("KT_ARCHIVE/") or "/KT_ARCHIVE/" in normalized:
+            if normalized.startswith(CURRENT_ARCHIVE_LITERAL) or EMBEDDED_ARCHIVE_SEGMENT in normalized:
                 failures.append({"path": rel, "target": raw_target, "reason": "archive_link_target"})
                 continue
             if normalized.startswith("/"):

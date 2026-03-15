@@ -479,7 +479,7 @@ def _step_context(root: Path) -> Dict[str, Any]:
     }
 
 
-def _parseable_entry_map(snapshot_manifest: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
+def _parseable_entry_map(root: Path, snapshot_manifest: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
     out: Dict[str, Dict[str, Any]] = {}
     for entry in snapshot_manifest.get("files", []):
         if not isinstance(entry, dict):
@@ -487,8 +487,12 @@ def _parseable_entry_map(snapshot_manifest: Dict[str, Any]) -> Dict[str, Dict[st
         if str(entry.get("parse_state", "")).strip() != "parseable":
             continue
         rel = _normalize_ref(str(entry.get("path", "")))
-        if rel:
-            out[rel] = dict(entry)
+        if not rel:
+            continue
+        path = (root / Path(rel)).resolve()
+        if not path.exists() or path.is_dir():
+            continue
+        out[rel] = dict(entry)
     return out
 
 
@@ -1699,7 +1703,7 @@ def _compile_data_lineage_graph(
 
 def _build_graph_and_catalog_reports(root: Path, *, generated_utc: str) -> Dict[str, Any]:
     ctx = _step_context(root)
-    parseable_map = _parseable_entry_map(ctx["snapshot_manifest"])
+    parseable_map = _parseable_entry_map(root, ctx["snapshot_manifest"])
     if not parseable_map:
         raise RuntimeError("FAIL_CLOSED: Step 6 parseable surface set is empty.")
 

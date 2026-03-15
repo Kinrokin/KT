@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
 from tools.delivery.delivery_contract_validator import validate_delivery_contract
+from tools.operator.canonical_tree_execute import ARCHIVE_GLOB
 from tools.operator.titanium_common import (
     file_sha256,
     load_json,
@@ -42,7 +43,7 @@ TESTS_RUN = [
     "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_delivery_integrity_validate.py -q",
     "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_authority_grade.py -q",
 ]
-PROTECTED_PATTERNS = ("KT_ARCHIVE/**", "**/archive/**", "**/historical/**")
+PROTECTED_PATTERNS = (ARCHIVE_GLOB, "**/archive/**", "**/historical/**")
 VOLATILE_JSON_KEYS = ("generated_utc", "timestamp")
 
 SUBJECT_TOUCH_REFS = [

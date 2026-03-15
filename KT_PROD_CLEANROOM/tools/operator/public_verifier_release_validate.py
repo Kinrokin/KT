@@ -8,6 +8,7 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set
 
+from tools.operator.canonical_tree_execute import ARCHIVE_DOCS_AUDIT_GLOB, ARCHIVE_GLOB, CURRENT_ARCHIVE_LITERAL
 from tools.operator.claim_compiler import build_claim_compiler_receipt
 from tools.operator.platform_governance_finalize import build_platform_governance_final_claims
 from tools.operator.public_verifier import build_public_verifier_claims, build_public_verifier_report
@@ -63,12 +64,12 @@ ALLOWED_SOURCE_ROOTS = (
     "KT_PROD_CLEANROOM/tools/verification/",
 )
 FORBIDDEN_DEPENDENCY_PATTERNS = (
-    "KT_ARCHIVE/",
+    CURRENT_ARCHIVE_LITERAL,
     "docs/generated/",
     "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/",
 )
 PROTECTED_TOUCH_PATTERNS = (
-    "KT_ARCHIVE/",
+    CURRENT_ARCHIVE_LITERAL,
     ".github/workflows/",
 )
 
@@ -270,8 +271,8 @@ def _documentary_labels_payload(*, report_root_rel: str) -> Dict[str, Any]:
                 "glob": "KT_PROD_CLEANROOM/docs/commercial/*.md",
                 "label": "DOCUMENTARY_ONLY_COMMERCIAL_CLAIMS_BIND_TO_CLAIM_COMPILER",
             },
-            {"glob": "KT_ARCHIVE/docs/audit/**", "label": "AUDIT_DOCUMENTARY_ONLY"},
-            {"glob": "KT_ARCHIVE/**", "label": "HISTORICAL_ONLY"},
+            {"glob": ARCHIVE_DOCS_AUDIT_GLOB, "label": "AUDIT_DOCUMENTARY_ONLY"},
+            {"glob": ARCHIVE_GLOB, "label": "HISTORICAL_ONLY"},
         ],
         "claim_compiler_receipt_ref": _report_ref(report_root_rel, "commercial_claim_compiler_receipt.json"),
     }

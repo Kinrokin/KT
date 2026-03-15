@@ -7,6 +7,7 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
+from tools.operator.canonical_tree_execute import ARCHIVE_GLOB
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
 
 
@@ -42,7 +43,7 @@ TARGETED_BLOCKERS = [
     "CANONICAL_HMAC_NOT_RUNNABLE_CLEAN",
 ]
 MINIMUM_POST_REPAIR_GRADE = "B+"
-PROTECTED_PATTERNS = ("KT_ARCHIVE/**", "**/archive/**", "**/historical/**")
+PROTECTED_PATTERNS = (ARCHIVE_GLOB, "**/archive/**", "**/historical/**")
 VOLATILE_JSON_KEYS = ("generated_utc", "timestamp")
 
 VALIDATORS_RUN = [

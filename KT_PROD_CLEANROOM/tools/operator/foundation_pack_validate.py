@@ -154,7 +154,7 @@ def _git_changed_files(root: Path, commit: str) -> List[str]:
     if not str(commit).strip():
         return []
     try:
-        output = _git(root, "show", "--pretty=", "--name-only", commit)
+        output = _git(root, "diff-tree", "--root", "--no-commit-id", "--name-only", "-r", commit)
     except Exception:  # noqa: BLE001
         return []
     files = []

@@ -7,6 +7,7 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
+from tools.operator.canonical_tree_execute import ARCHIVE_GLOB
 from tools.operator.constitutional_completion_emit import TRUTH_POINTER_REF
 from tools.operator.documentary_truth_validate import build_documentary_truth_report
 from tools.operator.titanium_common import repo_root, utc_now_iso_z, write_json_stable
@@ -63,7 +64,7 @@ ALLOWED_TOUCH_PATTERNS = [
 
 PROTECTED_TOUCH_PATTERNS = [
     ".github/workflows/**",
-    "KT_ARCHIVE/**",
+    ARCHIVE_GLOB,
 ]
 
 MIRROR_TARGETS: List[Tuple[str, str]] = [
@@ -100,7 +101,7 @@ def _git_changed_files(root: Path, commit: str) -> List[str]:
     if not commit:
         return []
     try:
-        output = _git(root, "show", "--pretty=", "--name-only", commit)
+        output = _git(root, "diff-tree", "--root", "--no-commit-id", "--name-only", "-r", commit)
     except Exception:  # noqa: BLE001
         return []
     return [line.strip().replace("\\", "/") for line in output.splitlines() if line.strip()]

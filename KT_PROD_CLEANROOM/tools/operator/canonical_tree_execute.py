@@ -110,6 +110,14 @@ GENERIC_LEGACY_NAME_TOKENS = [
     "runbook.txt",
     "work_order.json",
 ]
+ARCHIVE_ROOT_NAME = CURRENT_ARCHIVE_LITERAL.rstrip("/")
+ARCHIVE_GLOB = f"{CURRENT_ARCHIVE_LITERAL}**"
+DOCS_AUDIT_LITERAL = OLD_ARCHIVE_LITERAL_TOKENS[1]
+ARCHIVE_DOCS_AUDIT_PREFIX = f"{CURRENT_ARCHIVE_LITERAL}{DOCS_AUDIT_LITERAL}"
+ARCHIVE_DOCS_AUDIT_GLOB = f"{ARCHIVE_DOCS_AUDIT_PREFIX}**"
+ARCHIVE_VAULT_RECEIPTS_PREFIX = f"{CURRENT_ARCHIVE_LITERAL}vault/receipts"
+ARCHIVE_GITKEEP = f"{CURRENT_ARCHIVE_LITERAL}.gitkeep"
+EMBEDDED_ARCHIVE_SEGMENT = f"/{ARCHIVE_ROOT_NAME}/"
 TEXT_SUFFIXES = {
     ".json",
     ".jsonl",
@@ -217,7 +225,7 @@ def _git_changed_files(root: Path, commit: str) -> List[str]:
     if not str(commit).strip():
         return []
     try:
-        output = _git(root, "show", "--pretty=", "--name-only", commit)
+        output = _git(root, "diff-tree", "--root", "--no-commit-id", "--name-only", "-r", commit)
     except Exception:  # noqa: BLE001
         return []
     return [line.strip().replace("\\", "/") for line in output.splitlines() if line.strip()]

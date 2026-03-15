@@ -7,6 +7,7 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
+from tools.operator.canonical_tree_execute import CURRENT_ARCHIVE_LITERAL
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
 
 
@@ -81,7 +82,7 @@ TEMPORARY_FILES_REMOVED = [
     "exports/",
     "tmp/",
 ]
-PROTECTED_PATTERNS = ("KT_ARCHIVE/", "**/archive/**", "**/historical/**")
+PROTECTED_PATTERNS = (CURRENT_ARCHIVE_LITERAL, "**/archive/**", "**/historical/**")
 VOLATILE_JSON_KEYS = ("generated_utc", "timestamp")
 
 VALIDATORS_RUN = ["python -m tools.operator.repo_hygiene_validate"]
@@ -138,7 +139,7 @@ def _git_last_commit_for_paths(root: Path, paths: Sequence[str]) -> str:
 
 
 def _git_changed_files(root: Path, commit: str) -> List[str]:
-    output = _git(root, "show", "--pretty=", "--name-only", commit)
+    output = _git(root, "diff-tree", "--root", "--no-commit-id", "--name-only", "-r", commit)
     return [line.strip().replace("\\", "/") for line in output.splitlines() if line.strip()]
 
 

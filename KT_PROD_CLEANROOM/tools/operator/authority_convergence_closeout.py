@@ -6,6 +6,7 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
+from tools.operator.canonical_tree_execute import CURRENT_ARCHIVE_LITERAL
 from tools.operator.titanium_common import repo_root, utc_now_iso_z, write_json_stable
 
 
@@ -41,7 +42,7 @@ ALLOWED_TOUCHES = {
     "KT_PROD_CLEANROOM/governance/execution_board.json",
     "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
 }
-PROTECTED_PATTERNS = (".github/workflows/", "KT_ARCHIVE/")
+PROTECTED_PATTERNS = (".github/workflows/", CURRENT_ARCHIVE_LITERAL)
 
 
 def _git(root: Path, *args: str) -> str:

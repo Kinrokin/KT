@@ -7,6 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
+from tools.operator.canonical_tree_execute import ARCHIVE_GITKEEP
 from tools.operator.repo_hygiene_validate import build_ws13_outputs
 
 
@@ -33,7 +34,7 @@ def _seed_required_tree(tmp_path: Path) -> None:
         "ci/.gitkeep",
         "docs/.gitkeep",
         "KT-Codex/.gitkeep",
-        "KT_ARCHIVE/.gitkeep",
+        ARCHIVE_GITKEEP,
         "KT_PROD_CLEANROOM/.gitkeep",
     ]:
         path = tmp_path / rel

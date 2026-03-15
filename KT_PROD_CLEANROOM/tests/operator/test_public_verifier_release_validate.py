@@ -9,6 +9,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
+from tools.operator.canonical_tree_execute import ARCHIVE_GLOB
 from tools.operator.public_verifier_release_validate import (
     CLAIM_COMPILER_ACTIVATION_RECEIPT_REL,
     CLAIM_COMPILER_POLICY_REL,
@@ -111,7 +112,7 @@ def _seed_contracts_and_receipts(tmp_path: Path, *, head_sha: str, truth_subject
             ],
             "fail_closed_conditions": ["missing_required_input", "subject_evidence_boundary_ambiguous"],
             "allowed_contract_dependencies": [PUBLIC_VERIFIER_MANIFEST_REL],
-            "forbidden_runtime_dependencies": ["KT_ARCHIVE/**", "docs/generated/**"],
+            "forbidden_runtime_dependencies": [ARCHIVE_GLOB, "docs/generated/**"],
         },
     )
     _write_json(

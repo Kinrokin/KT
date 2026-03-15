@@ -11,6 +11,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Sequence, Tuple
 
+from tools.operator.canonical_tree_execute import ARCHIVE_GLOB
+
 
 WORKSTREAM_ID = "WS5_CROSS_ENV_REPRODUCIBILITY"
 STEP_ID = "WS5_STEP_1_PROVE_CROSS_ENV_HASH_STABILITY"
@@ -57,7 +59,7 @@ ALLOWED_TOUCH_PATTERNS = [
 
 PROTECTED_TOUCH_PATTERNS = [
     ".github/workflows/**",
-    "KT_ARCHIVE/**",
+    ARCHIVE_GLOB,
 ]
 
 VOLATILE_JSON_KEYS = ("generated_at", "timestamp")
@@ -91,7 +93,7 @@ def _git_status_lines(root: Path) -> List[str]:
 def _git_changed_files(root: Path, commit: str) -> List[str]:
     if not str(commit).strip():
         return []
-    output = _git(root, "show", "--pretty=", "--name-only", commit)
+    output = _git(root, "diff-tree", "--root", "--no-commit-id", "--name-only", "-r", commit)
     return [line.strip().replace("\\", "/") for line in output.splitlines() if line.strip()]
 
 

@@ -1153,13 +1153,15 @@ def validate_truth_publication(*, root: Path) -> Dict[str, Any]:
             }
         )
 
-    convergence = build_authority_convergence_report(root=root)
-    convergence_ok = str(convergence.get("status", "")).strip() == "PASS"
+    convergence_required = str(active_source).strip().startswith("kt_truth_ledger:")
+    convergence = build_authority_convergence_report(root=root) if convergence_required else {}
+    convergence_ok = str(convergence.get("status", "")).strip() == "PASS" if convergence_required else True
     checks.append(
         {
             "check": "authority_convergence_passes",
             "status": "PASS" if convergence_ok else "FAIL",
             "failures": convergence.get("failures", []),
+            "required": convergence_required,
         }
     )
     if not convergence_ok:

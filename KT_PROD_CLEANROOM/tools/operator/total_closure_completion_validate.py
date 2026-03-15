@@ -6,6 +6,7 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
+from tools.operator.canonical_tree_execute import CURRENT_ARCHIVE_LITERAL
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
 
 
@@ -48,7 +49,7 @@ ALLOWED_TOUCHES = {
     "KT_PROD_CLEANROOM/tools/operator/total_closure_completion_validate.py",
     "KT_PROD_CLEANROOM/tests/operator/test_total_closure_completion_validate.py",
 }
-PROTECTED_PATTERNS = ("KT_ARCHIVE/", ".github/workflows/")
+PROTECTED_PATTERNS = (CURRENT_ARCHIVE_LITERAL, ".github/workflows/")
 
 
 def _git(root: Path, *args: str) -> str:

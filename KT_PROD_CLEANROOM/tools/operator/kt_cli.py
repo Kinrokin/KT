@@ -38,6 +38,7 @@ from tools.canonicalize.kt_canonicalize import canonicalize_bytes, sha256_hex
 from schemas.fl3_suite_registry_schema import validate_fl3_suite_registry
 from tools.delivery.delivery_linter import lint_delivery_dir
 from tools.delivery.generate_delivery_pack import generate_delivery_pack
+from tools.operator.canonical_tree_execute import ARCHIVE_VAULT_RECEIPTS_PREFIX
 from tools.operator.titanium_common import operator_fingerprint as titanium_operator_fingerprint
 from tools.operator.titanium_common import write_failure_artifacts as titanium_write_failure_artifacts
 from tools.security.pack_guard_scan import scan_pack_and_write
@@ -1216,7 +1217,7 @@ def cmd_certify_ci_sim(*, repo_root: Path, profile: V1Profile, run_dir: Path, al
             "-m",
             "tools.verification.validate_receipts",
             "--receipts-dir",
-            "KT_ARCHIVE/vault/receipts",
+            ARCHIVE_VAULT_RECEIPTS_PREFIX,
             "--out-dir",
             str(run_dir),
         ],

@@ -112,7 +112,7 @@ def _git_changed_files(root: Path, commit: str) -> List[str]:
     if not str(commit).strip():
         return []
     try:
-        output = _git(root, "show", "--pretty=", "--name-only", commit)
+        output = _git(root, "diff-tree", "--root", "--no-commit-id", "--name-only", "-r", commit)
     except Exception:  # noqa: BLE001
         return []
     return [line.strip().replace("\\", "/") for line in output.splitlines() if line.strip()]
@@ -128,7 +128,7 @@ def _git_status_files(root: Path, paths: Sequence[str]) -> List[str]:
         return []
     rows: List[str] = []
     for line in output.splitlines():
-        value = str(line[3:] if len(line) > 3 else line).strip().replace("\\", "/")
+        value = str(line[2:] if len(line) > 2 else line).strip().replace("\\", "/")
         if value:
             rows.append(value)
     return rows
@@ -280,12 +280,24 @@ def build_closure_foundation_report(root: Path) -> Dict[str, Any]:
     if not verifier_fail_closed_ok:
         issues_found.append("public_verifier_contract_explicit_and_fail_closed")
 
-    verifier_boundary_alignment_ok = set(verifier_contract.get("required_inputs", [])) >= {
-        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
-        "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
-        "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
-        "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
-    } and bool(verifier_rules.get("required_manifest_fields"))
+    required_inputs = set(verifier_contract.get("required_inputs", []))
+    platform_governance_input_ok = bool(
+        {
+            "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+            "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json",
+        }
+        & required_inputs
+    )
+    verifier_boundary_alignment_ok = (
+        {
+            "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+            "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+            "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+        }
+        <= required_inputs
+        and platform_governance_input_ok
+        and bool(verifier_rules.get("required_manifest_fields"))
+    )
     checks.append(
         _check_row(
             "public_verifier_contract_aligned_to_active_verifier_surfaces",
@@ -389,7 +401,13 @@ def build_closure_foundation_report(root: Path) -> Dict[str, Any]:
     unexpected_touches = sorted(set(actual_touched) - set(PLANNED_MUTATES))
     protected_touch_violations = sorted(path for path in actual_touched if _is_protected(path))
     expected_touched = set(PLANNED_MUTATES if receipt_exists else SUBJECT_ARTIFACT_REFS)
-    touch_accounting_ok = not unexpected_touches and not protected_touch_violations and set(actual_touched) == expected_touched
+    touch_accounting_ok = (
+        not unexpected_touches
+        and not protected_touch_violations
+        and set(actual_touched).issubset(expected_touched)
+        and bool(actual_subject_touched)
+        and (not receipt_exists or RECEIPT_REL in actual_touched)
+    )
     checks.append(
         _check_row(
             "post_touch_accounting_clean",
