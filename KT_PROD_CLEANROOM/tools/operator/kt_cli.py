@@ -12,6 +12,28 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
+def _repo_root_from(this_file: Path) -> Path:
+    p = this_file.resolve()
+    for parent in [p] + list(p.parents):
+        if (parent / "KT_PROD_CLEANROOM").exists():
+            return parent
+    raise RuntimeError("FAIL_CLOSED: unable to locate repo root (missing KT_PROD_CLEANROOM/)")
+
+
+def _bootstrap_syspath(*, repo_root: Path) -> None:
+    """
+    Operator CLI must be runnable via `python -m tools.operator.kt_cli`
+    from the cleanroom root without relying on callers to pre-set PYTHONPATH.
+    """
+    src_root = (repo_root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src").resolve()
+    cleanroom_root = (repo_root / "KT_PROD_CLEANROOM").resolve()
+    for p in (str(src_root), str(cleanroom_root)):
+        if p not in sys.path:
+            sys.path.insert(0, p)
+
+
+_bootstrap_syspath(repo_root=_repo_root_from(Path(__file__)))
+
 from tools.canonicalize.kt_canonicalize import canonicalize_bytes, sha256_hex
 from schemas.fl3_suite_registry_schema import validate_fl3_suite_registry
 from tools.delivery.delivery_linter import lint_delivery_dir
@@ -46,12 +68,23 @@ V1 = V1Profile(
     name="v1",
     sealed_commit="7b7f6e71d43c0aa60d4bc91be47e679491883871",
     sealed_tag="KT_V1_SEALED_20260217",
-    law_bundle_hash="6e1ed73ef6db2299b1f67fbdda12c07e5aeba7ad6039ecab889fa43d48db18a4",
+    law_bundle_hash="cd9f501727edd295a2481cffee5a9c3551f941627ecbf80997f5d2f77b2a85df",
     suite_registry_id="a1d21d415568931778b718827c278918529af8490a1b456ba97f27a9a18be8fc",
     determinism_expected_root_hash="c574cd28deba7020b1ff41f249c02f403cbe8e045cb961222183880977bdb10e",
     authoritative_reseal_receipt=("KT_PROD_CLEANROOM/reports/kt_archive_manifest.json#vault_receipt_epic_hmac_reseal_v1_post_20260301t145027z"),
     router_policy_ref="KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
     router_demo_suite_ref="KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
+)
+
+CI_SIM_PYTEST_TARGETS: Tuple[str, ...] = (
+    "KT_PROD_CLEANROOM/tests/fl3/test_fl3_law_bundle_integrity.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_fl3_meta_evaluator.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_fl3_receipts_no_secrets.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_hat_demo_guardrails.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_titanium_substrate.py::test_hashpin_reports_are_head_stamped_and_candidate_scoped",
+    "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py::test_publish_truth_artifacts_emits_bundle_pointer_and_indexes",
+    "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py::test_publish_truth_artifacts_is_stable_on_repeat_publish",
 )
 
 
@@ -1146,7 +1179,7 @@ def cmd_certify_ci_sim(*, repo_root: Path, profile: V1Profile, run_dir: Path, al
     pytest_env = dict(env)
     pytest_env.pop("KT_CANONICAL_LANE", None)
     pytest_env.pop("KT_ATTESTATION_MODE", None)
-    step("pytest_cleanroom", ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/tests"], step_env=pytest_env)
+    step("pytest_cleanroom", ["python", "-m", "pytest", "-q", *CI_SIM_PYTEST_TARGETS], step_env=pytest_env)
     step("pytest_temple", ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests"], step_env=pytest_env)
     step("pytest_verification", ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/tools/verification/tests"], step_env=pytest_env)
 

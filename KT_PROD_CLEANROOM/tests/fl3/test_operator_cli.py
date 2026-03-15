@@ -28,6 +28,32 @@ def _base_env(repo_root: Path) -> dict[str, str]:
     return env
 
 
+def test_kt_cli_status_smoke_without_external_pythonpath() -> None:
+    repo_root = _repo_root()
+    cleanroom_root = repo_root / "KT_PROD_CLEANROOM"
+    out_root = _operator_test_root(repo_root)
+    out_root.mkdir(parents=True, exist_ok=True)
+    run_root = unique_run_dir(parent=out_root, label="status_smoke_no_pythonpath")
+
+    env = dict(os.environ)
+    env.pop("PYTHONPATH", None)
+    env.setdefault("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
+
+    cmd = ["python", "-m", "tools.operator.kt_cli", "--run-root", str(run_root), "status", "--allow-dirty"]
+    p = subprocess.run(
+        cmd,
+        cwd=str(cleanroom_root),
+        env=env,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+    assert p.returncode == 0, p.stdout
+    assert (run_root / "verdict.txt").exists()
+    verdict = (run_root / "verdict.txt").read_text(encoding="utf-8", errors="replace")
+    assert "KT_STATUS_PASS" in verdict
+
+
 def test_kt_cli_status_smoke_and_worm_collision() -> None:
     repo_root = _repo_root()
     out_root = _operator_test_root(repo_root)

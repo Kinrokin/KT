@@ -50,6 +50,17 @@ def _seed_law(root: Path) -> None:
             "authoritative_truth_source": CURRENT_POINTER_REL,
         },
     )
+    _write_json(
+        gov / "documentary_truth_policy.json",
+        {
+            "schema_id": "kt.governance.documentary_truth_policy.v1",
+            "active_current_head_truth_source": CURRENT_POINTER_REL,
+            "active_supporting_truth_surfaces": [
+                "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+                "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+            ],
+        },
+    )
 
 
 def _seed_reports(root: Path) -> Path:
@@ -118,6 +129,45 @@ def _seed_reports(root: Path) -> Path:
             "status": "PASS",
             "derived_posture_state": "TRUTHFUL_GREEN",
         },
+        "kt_truth_publication_stabilization_receipt.json": {
+            "schema_id": "kt.operator.truth_publication_stabilization_receipt.v1",
+            "generated_utc": "2026-03-10T00:00:00Z",
+            "status": "PASS",
+            "truth_publication_stabilized": True,
+            "truth_subject_commit": "abc123",
+        },
+        "cryptographic_publication_receipt.json": {
+            "schema_id": "kt.operator.cryptographic_publication_receipt.v1",
+            "generated_utc": "2026-03-10T00:00:00Z",
+            "status": "PASS",
+        },
+        "documentary_truth_validation_receipt.json": {
+            "schema_id": "kt.operator.documentary_truth_validation_receipt.v1",
+            "generated_utc": "2026-03-10T00:00:00Z",
+            "status": "PASS",
+        },
+        "public_verifier_manifest.json": {
+            "schema_id": "kt.operator.public_verifier_manifest.v1",
+            "truth_subject_commit": "abc123",
+            "evidence_commit": "def456",
+            "subject_verdict": "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+            "publication_receipt_status": "PASS",
+            "evidence_contains_subject": True,
+            "evidence_equals_subject": False,
+            "claim_boundary": "Fixture manifest contains publication evidence for abc123 without claiming the temp head equals the subject.",
+        },
+        "main_branch_protection_receipt.json": {
+            "schema_id": "kt.operator.main_branch_protection_receipt.v1",
+            "status": "BLOCKED",
+            "claim_admissible": False,
+            "validated_head_sha": "abc123",
+            "platform_block": "GITHUB_403",
+        },
+        "ci_gate_promotion_receipt.json": {
+            "schema_id": "kt.operator.ci_gate_promotion_receipt.v1",
+            "status": "PASS_WITH_PLATFORM_BLOCK",
+            "head_sha": "abc123",
+        },
         "settled_authority_promotion_receipt.json": {
             "schema_id": "kt.operator.settled_authority_promotion_receipt.v1",
             "generated_utc": "2026-03-10T00:00:00Z",
@@ -144,6 +194,13 @@ def _seed_reports(root: Path) -> Path:
         },
     }.items():
         _write_json(reports / name, payload)
+    _write_json(
+        reports / "cryptographic_publication" / "authority_subject.json",
+        {
+            "schema_id": "kt.operator.authority_subject.v1",
+            "truth_subject_commit": "abc123",
+        },
+    )
     return live_validation_index
 
 

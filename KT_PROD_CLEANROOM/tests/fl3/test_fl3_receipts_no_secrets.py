@@ -8,7 +8,7 @@ _REPO_ROOT = bootstrap_syspath()
 
 
 def test_receipts_do_not_contain_secret_markers() -> None:
-    receipts_dir = (_REPO_ROOT / "KT_PROD_CLEANROOM" / "06_ARCHIVE_VAULT" / "receipts").resolve()
+    receipts_dir = (_REPO_ROOT / "KT_ARCHIVE" / "vault" / "receipts").resolve()
     assert receipts_dir.exists(), f"missing receipts dir: {receipts_dir.as_posix()}"
 
     # High-confidence secret markers only. Do NOT flag env var names, which legitimately appear in notes.
@@ -29,4 +29,3 @@ def test_receipts_do_not_contain_secret_markers() -> None:
                 break
 
     assert not hits, "Secret-like markers found in receipts (fail-closed):\n" + "\n".join(hits)
-
