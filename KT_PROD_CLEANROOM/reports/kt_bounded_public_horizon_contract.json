@@ -1,0 +1,200 @@
+{
+  "artifact_id": "kt_bounded_public_horizon_contract.json",
+  "blocker_matrix": [
+    {
+      "blocking_condition": "Broader publication/showability remains blocked and is not overridden by verifier-only replay.",
+      "blocking_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_showability_receipt.json",
+        "docs/generated/profiles/kt_publication_profile.json"
+      ],
+      "status": "BLOCKED",
+      "surface_id": "BROADER_PUBLIC_SHOWABILITY"
+    },
+    {
+      "blocking_condition": "Competition and tournament surfaces remain blocked by the competition profile and tournament readiness receipt.",
+      "blocking_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_tournament_readiness_receipt.json",
+        "docs/generated/profiles/kt_competition_profile.json",
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_release_law.json"
+      ],
+      "status": "BLOCKED",
+      "surface_id": "COMPETITION_HORIZON"
+    },
+    {
+      "blocking_condition": "Production remains closed while platform-enforced governance is not proven on main.",
+      "blocking_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_final_completion_bundle.json"
+      ],
+      "status": "BLOCKED",
+      "surface_id": "PRODUCTION_HORIZON"
+    },
+    {
+      "blocking_condition": "Economic/commercial horizon remains limited to documentary use and is not opened for live deployment or public market claims.",
+      "blocking_refs": [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_release_law.json",
+        "KT_PROD_CLEANROOM/reports/kt_final_completion_bundle.json"
+      ],
+      "status": "BLOCKED",
+      "surface_id": "ECONOMIC_HORIZON"
+    },
+    {
+      "blocking_condition": "H1 remains blocked and cannot be inferred from public verification replay.",
+      "blocking_refs": [
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_release_law.json"
+      ],
+      "status": "BLOCKED",
+      "surface_id": "H1_SINGLE_ADAPTER_HORIZON"
+    }
+  ],
+  "compiled_head_commit": "811c1d45554ab508c2604edd4ddb23617af789c1",
+  "evidence_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "generated_utc": "2026-03-15T20:56:11Z",
+  "horizon_matrix": [
+    {
+      "allowed_horizon_choice": "bounded public showability",
+      "horizon_id": "VERIFIER_ONLY_PUBLIC_VERIFICATION",
+      "reason": "WS19 detached verifier packaging and WS20 independent clean-environment replay make a verifier-only public validation surface externally inspectable.",
+      "receipt_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json"
+      ],
+      "status": "OPEN",
+      "supporting_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md"
+      ]
+    },
+    {
+      "allowed_horizon_choice": "bounded tournament lane",
+      "horizon_id": "BOUNDED_TOURNAMENT_LANE",
+      "reason": "Tournament remains blocked by the sealed tournament readiness receipt and competition profile.",
+      "receipt_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_tournament_readiness_receipt.json",
+        "docs/generated/profiles/kt_competition_profile.json"
+      ],
+      "status": "BLOCKED",
+      "supporting_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_showability_receipt.json"
+      ]
+    },
+    {
+      "allowed_horizon_choice": "bounded H1 single-adapter lane",
+      "horizon_id": "BOUNDED_H1_SINGLE_ADAPTER_LANE",
+      "reason": "H1 single-adapter activation remains blocked by the sealed H1 gate receipt and release-law H1 profile.",
+      "receipt_refs": [
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "status": "BLOCKED",
+      "supporting_refs": [
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_release_law.json"
+      ]
+    }
+  ],
+  "schema_id": "kt.operator.bounded_public_horizon_contract.v1",
+  "selected_horizon": {
+    "allowed_actions": [
+      "inspect the detached verifier release manifest and bounded trust inputs",
+      "replay verifier-only validation using the detached package and explicit recipe",
+      "compare detached verifier conclusions against the repo-local parity field set",
+      "inspect the bounded critical artifact subject set and the subject/evidence boundary"
+    ],
+    "allowed_horizon_choice": "bounded public showability",
+    "artifact_subject_root_sha256": "ac68cce295590ce9e0792d7e0f0f41fc7ca2e693f2599419abd418e860939ff8",
+    "exact_artifact_subjects_covered": [
+      {
+        "kind": "delivery_zip",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/KT_DELIVERY_WS15_canonical_hmac_seal_b4789a5.zip",
+        "sha256": "6ce7d2f569246d699fc21ec1cf4a1d73f92d298f1281f0081d364823c850c378"
+      },
+      {
+        "kind": "delivery_pack_manifest",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/KT_DELIVERY_WS15_canonical_hmac_seal_b4789a5/delivery_pack_manifest.json",
+        "sha256": "5d4e28b168374e78135f3f86ff25d91f99679e44886b81815560ea57a32058bf"
+      },
+      {
+        "kind": "operator_delivery_manifest",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/delivery_manifest.json",
+        "sha256": "5ed311724fc7af69ef3f1199e86f5113bb04f6693de76563363ee8b491c29f89"
+      },
+      {
+        "kind": "replay_ps1",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay.ps1",
+        "sha256": "23f64accd320771ccd0f40284ce79ea426faa5046c21e562deb8e4c42cc5ac22"
+      },
+      {
+        "kind": "replay_sh",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay.sh",
+        "sha256": "4d8d5832cc5113165232764917c8e0740e8e3abb57c0271b0f077854c0ce95b0"
+      },
+      {
+        "kind": "replay_receipt",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay_receipt.json",
+        "sha256": "7361954877676b1f278162a9db9a37c74821fd1a149db7de58c2065d9cdf8e94"
+      },
+      {
+        "kind": "run_protocol",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/run_protocol.json",
+        "sha256": "6df0da2c42aae85d3a2a1d2defe2ee53168de0630408fb90a9187ccce840939f"
+      },
+      {
+        "kind": "operator_fingerprint",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/reports/operator_fingerprint.json",
+        "sha256": "cbdabc03aa2d1489befa015af6a042959e4cde2caf40076195bb2913e33158a0"
+      },
+      {
+        "kind": "real_path_attachment_receipt",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/reports/real_path_attachment_receipt.json",
+        "sha256": "127e46717a3c3cb4709dc0b971f58db4e87f85eeeb1852ea7e65b7030fc844ca"
+      }
+    ],
+    "forbidden_inferences": [
+      "broader publication readiness",
+      "tournament readiness",
+      "H1 single-adapter activation",
+      "competition readiness",
+      "production deployment readiness",
+      "economic/commercial readiness",
+      "platform-enforced governance"
+    ],
+    "horizon_id": "VERIFIER_ONLY_PUBLIC_VERIFICATION",
+    "legacy_boundary": "This WS21 horizon uses the bounded public showability lane only in verifier-only form. It does not override the broader publication/showability gate, which remains blocked.",
+    "publication_surface_boundary": "For WS18, publication surface means the sealed WS15 canonical delivery publication bundle carried forward by the WS16 critical artifact set; it does not collapse that artifact set into the earlier WS7 authority-subject publication surface.",
+    "replay_contract": {
+      "at_least_one_environment_outside_repo_root": true,
+      "detached_entrypoint": "python -m tools.operator.public_verifier_detached_runtime",
+      "detached_package_root_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/package",
+      "detached_package_root_sha256": "084de6ad1b3c7a4f8494344c3e6e509edc1acf4492b47d12f0a6dab07b11464e",
+      "expected_repo_local_parity_fields": [
+        "status",
+        "subject_verdict",
+        "publication_receipt_status",
+        "head_claim_verdict",
+        "claim_boundary",
+        "head_claim_boundary",
+        "platform_governance_verdict",
+        "platform_governance_head_claim_verdict",
+        "platform_governance_claim_boundary",
+        "platform_governance_head_claim_boundary",
+        "enterprise_legitimacy_ceiling"
+      ],
+      "expected_result": "PASS",
+      "expected_verification_scope": "TWO_CLEAN_ENVIRONMENTS_VERIFY_THE_SEALED_DETACHED_VERIFIER_PACKAGE",
+      "replay_recipe_ref": "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+      "same_host_independent_environment_count": 2,
+      "supporting_receipt_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json"
+      ]
+    },
+    "scope": "External parties may inspect and replay the sealed detached verifier package, confirm detached-vs-repo-local parity, and verify the bounded critical artifact set named by the sealed WS18/WS19/WS20 substrate. No broader execution, publication, tournament, H1, production, or economic horizon is opened by this workstream.",
+    "status": "OPEN"
+  },
+  "stronger_claim_not_made": "WS21 opens only a verifier-only public verification horizon for the sealed detached verifier package and the bounded critical artifact set. It does not claim broader public showability or publication readiness, tournament readiness, H1 single-adapter activation, competition readiness, production deployment readiness, economic/commercial readiness, platform-enforced governance, or any broader outsider/public reproducibility than the WS20 same-host independent clean-environment matrix.",
+  "subject_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "work_order_id": "WORK_ORDER_KT_FRONTIER_ELEVATION_AND_PUBLIC_DEFENSIBILITY",
+  "work_order_schema_id": "kt.work_order.frontier_elevation_and_public_defensibility.v2",
+  "workstream_id": "WS21_BOUNDED_PUBLIC_HORIZON_OPEN"
+}

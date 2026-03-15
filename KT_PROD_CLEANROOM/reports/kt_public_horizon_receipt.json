@@ -1,0 +1,249 @@
+{
+  "artifact_id": "kt_public_horizon_receipt.json",
+  "checks": [
+    {
+      "check": "prewrite_workspace_scope_clean",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/public_horizon_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_public_horizon_validate.py",
+        "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_horizon_replay_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_horizon_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "workstream_touches_remain_in_scope",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/public_horizon_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_public_horizon_validate.py",
+        "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_horizon_replay_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_horizon_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws18_subject_alignment_receipt_pass",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws19_detached_package_pass",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws20_independent_replay_pass",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "subject_evidence_anchor_aligns_to_sealed_substrate",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "exactly_one_horizon_open",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "scope_contract_and_blocker_matrix_present",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "opened_horizon_is_externally_replayable",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_horizon_replay_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "broader_public_showability_still_blocked",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_showability_receipt.json",
+        "docs/generated/profiles/kt_publication_profile.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "tournament_remains_blocked",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_tournament_readiness_receipt.json",
+        "docs/generated/profiles/kt_competition_profile.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "h1_remains_blocked",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "production_and_economic_horizons_remain_closed",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/governance/foundation_pack/kt_release_law.json",
+        "KT_PROD_CLEANROOM/reports/kt_final_completion_bundle.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "offline_public_verification_is_lawful_now",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_completion_bundle.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "stronger_claims_explicitly_withheld",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_horizon_replay_bundle.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "811c1d45554ab508c2604edd4ddb23617af789c1",
+  "created_files": [
+    "KT_PROD_CLEANROOM/tools/operator/public_horizon_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_public_horizon_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_horizon_replay_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_horizon_receipt.json"
+  ],
+  "deleted_files": [],
+  "evidence_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "generated_utc": "2026-03-15T20:56:11Z",
+  "input_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+    "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_showability_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_tournament_readiness_receipt.json",
+    "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+    "docs/generated/profiles/kt_publication_profile.json",
+    "docs/generated/profiles/kt_competition_profile.json",
+    "KT_PROD_CLEANROOM/reports/kt_final_completion_bundle.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/governance/foundation_pack/kt_release_law.json",
+    "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_horizon_replay_bundle.json",
+    "KT_PROD_CLEANROOM/tools/operator/public_horizon_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_public_horizon_validate.py"
+  ],
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS22_INDEPENDENT_RED_TEAM_AND_BOUNTY_BOOTSTRAP"
+  },
+  "pass_verdict": "VERIFIER_ONLY_BOUNDED_PUBLIC_HORIZON_OPENED",
+  "protected_touch_violations": [],
+  "questions": {
+    "what_exact_horizon_is_opened": {
+      "allowed_horizon_choice": "bounded public showability",
+      "horizon_id": "VERIFIER_ONLY_PUBLIC_VERIFICATION",
+      "scope": "External parties may inspect and replay the sealed detached verifier package, confirm detached-vs-repo-local parity, and verify the bounded critical artifact set named by the sealed WS18/WS19/WS20 substrate. No broader execution, publication, tournament, H1, production, or economic horizon is opened by this workstream."
+    },
+    "what_exact_replay_surface_makes_it_publicly_inspectable": {
+      "detached_entrypoint": "python -m tools.operator.public_verifier_detached_runtime",
+      "detached_package_root_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/package",
+      "detached_package_root_sha256": "084de6ad1b3c7a4f8494344c3e6e509edc1acf4492b47d12f0a6dab07b11464e",
+      "external_reproduction_matrix_ref": "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json",
+      "replay_recipe_ref": "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md"
+    },
+    "what_exact_stronger_claim_is_not_made": "WS21 opens only a verifier-only public verification horizon for the sealed detached verifier package and the bounded critical artifact set. It does not claim broader public showability or publication readiness, tournament readiness, H1 single-adapter activation, competition readiness, production deployment readiness, economic/commercial readiness, platform-enforced governance, or any broader outsider/public reproducibility than the WS20 same-host independent clean-environment matrix."
+  },
+  "retained_new_files": [
+    "KT_PROD_CLEANROOM/tools/operator/public_horizon_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_public_horizon_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_horizon_replay_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_horizon_receipt.json"
+  ],
+  "schema_id": "kt.operator.public_horizon_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "selected exactly one horizon: verifier-only public verification on the bounded public showability lane",
+      "bound the open horizon to the sealed WS18/WS19/WS20 substrate and exact critical artifact subject set",
+      "emitted a blocker matrix that keeps broader public showability, competition, production, economic, tournament, and H1 horizons closed",
+      "emitted a replay bundle that points to the detached verifier package and the explicit independent replay recipe"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json",
+      "KT_PROD_CLEANROOM/reports/kt_public_horizon_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_public_horizon_replay_bundle.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_public_horizon_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/public_horizon_validate.py"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS21 opens exactly one verifier-only public verification horizon with explicit replay inputs, bounded scope, and explicit closed horizons.",
+    "step_id": "WS21_STEP_1_OPEN_VERIFIER_ONLY_PUBLIC_HORIZON",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_public_horizon_validate.py -q"
+    ],
+    "timestamp": "2026-03-15T20:56:11Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.public_horizon_validate"
+    ],
+    "workstream_id": "WS21_BOUNDED_PUBLIC_HORIZON_OPEN"
+  },
+  "subject_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "summary": {
+    "artifact_subject_count": 9,
+    "artifact_subject_root_sha256": "ac68cce295590ce9e0792d7e0f0f41fc7ca2e693f2599419abd418e860939ff8",
+    "broader_closed_surface_count": 5,
+    "contract_ref": "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json",
+    "opened_horizon_choice": "bounded public showability",
+    "opened_horizon_id": "VERIFIER_ONLY_PUBLIC_VERIFICATION",
+    "replay_bundle_ref": "KT_PROD_CLEANROOM/reports/kt_public_horizon_replay_bundle.json",
+    "stronger_claim_not_made": "WS21 opens only a verifier-only public verification horizon for the sealed detached verifier package and the bounded critical artifact set. It does not claim broader public showability or publication readiness, tournament readiness, H1 single-adapter activation, competition readiness, production deployment readiness, economic/commercial readiness, platform-enforced governance, or any broader outsider/public reproducibility than the WS20 same-host independent clean-environment matrix."
+  },
+  "superseded_files_removed_or_demoted": [],
+  "surface_classifications": {
+    "KT_PROD_CLEANROOM/reports/kt_bounded_public_horizon_contract.json": "generated public horizon contract",
+    "KT_PROD_CLEANROOM/reports/kt_public_horizon_receipt.json": "generated receipt",
+    "KT_PROD_CLEANROOM/reports/kt_public_horizon_replay_bundle.json": "generated replay bundle index",
+    "KT_PROD_CLEANROOM/tests/operator/test_public_horizon_validate.py": "validator/test file",
+    "KT_PROD_CLEANROOM/tools/operator/public_horizon_validate.py": "canonical active file"
+  },
+  "temporary_files_removed": [],
+  "tests_run": [
+    "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_public_horizon_validate.py -q"
+  ],
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.public_horizon_validate"
+  ],
+  "work_order_id": "WORK_ORDER_KT_FRONTIER_ELEVATION_AND_PUBLIC_DEFENSIBILITY",
+  "work_order_schema_id": "kt.work_order.frontier_elevation_and_public_defensibility.v2",
+  "workstream_id": "WS21_BOUNDED_PUBLIC_HORIZON_OPEN"
+}

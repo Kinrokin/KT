@@ -1,0 +1,108 @@
+{
+  "artifact_id": "kt_public_horizon_replay_bundle.json",
+  "compiled_head_commit": "811c1d45554ab508c2604edd4ddb23617af789c1",
+  "evidence_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "generated_utc": "2026-03-15T20:56:11Z",
+  "opened_horizon_choice": "bounded public showability",
+  "opened_horizon_id": "VERIFIER_ONLY_PUBLIC_VERIFICATION",
+  "public_auditor_steps": [
+    "inspect the detached release manifest and confirm the bounded trust input set",
+    "copy the detached package into a clean environment",
+    "run the detached verifier entrypoint exactly as specified by the replay recipe",
+    "confirm the detached runtime receipt reports PASS and detached_root_detected=true",
+    "compare detached conclusions against the repo-local parity field set recorded in the release manifest"
+  ],
+  "replay_surface": {
+    "detached_entrypoint": "python -m tools.operator.public_verifier_detached_runtime",
+    "detached_package_root_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/package",
+    "detached_package_root_sha256": "084de6ad1b3c7a4f8494344c3e6e509edc1acf4492b47d12f0a6dab07b11464e",
+    "detached_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+    "detached_release_manifest_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+    "environment_rows": [
+      {
+        "detached_public_verifier_report_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS20_external_reproduction_proof/reports/env_a_public_verifier_report.json",
+        "detached_runtime_receipt_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS20_external_reproduction_proof/reports/env_a_runtime_receipt.json",
+        "environment_id": "clean_env_repo_copy",
+        "package_root": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS20_external_reproduction_proof/env_a/package",
+        "package_root_inside_repo_root": true,
+        "status": "PASS"
+      },
+      {
+        "detached_public_verifier_report_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS20_external_reproduction_proof/reports/env_b_public_verifier_report.json",
+        "detached_runtime_receipt_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS20_external_reproduction_proof/reports/env_b_runtime_receipt.json",
+        "environment_id": "clean_env_temp_copy",
+        "package_root": "C:/Users/rober/AppData/Local/Temp/KT_WS20_external_env_b_k251mqjs/package",
+        "package_root_inside_repo_root": false,
+        "status": "PASS"
+      }
+    ],
+    "external_reproduction_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json",
+    "externally_inspectable_or_replayable": true,
+    "public_verifier_manifest_ref": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "replay_recipe_ref": "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+    "reproduction_matrix_ref": "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json"
+  },
+  "schema_id": "kt.operator.public_horizon_replay_bundle.v1",
+  "stronger_claim_not_made": "WS21 opens only a verifier-only public verification horizon for the sealed detached verifier package and the bounded critical artifact set. It does not claim broader public showability or publication readiness, tournament readiness, H1 single-adapter activation, competition readiness, production deployment readiness, economic/commercial readiness, platform-enforced governance, or any broader outsider/public reproducibility than the WS20 same-host independent clean-environment matrix.",
+  "subject_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "supporting_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+  ],
+  "verification_target": {
+    "artifact_subject_root_sha256": "ac68cce295590ce9e0792d7e0f0f41fc7ca2e693f2599419abd418e860939ff8",
+    "exact_artifact_subjects_covered": [
+      {
+        "kind": "delivery_zip",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/KT_DELIVERY_WS15_canonical_hmac_seal_b4789a5.zip",
+        "sha256": "6ce7d2f569246d699fc21ec1cf4a1d73f92d298f1281f0081d364823c850c378"
+      },
+      {
+        "kind": "delivery_pack_manifest",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/KT_DELIVERY_WS15_canonical_hmac_seal_b4789a5/delivery_pack_manifest.json",
+        "sha256": "5d4e28b168374e78135f3f86ff25d91f99679e44886b81815560ea57a32058bf"
+      },
+      {
+        "kind": "operator_delivery_manifest",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/delivery/delivery_manifest.json",
+        "sha256": "5ed311724fc7af69ef3f1199e86f5113bb04f6693de76563363ee8b491c29f89"
+      },
+      {
+        "kind": "replay_ps1",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay.ps1",
+        "sha256": "23f64accd320771ccd0f40284ce79ea426faa5046c21e562deb8e4c42cc5ac22"
+      },
+      {
+        "kind": "replay_sh",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay.sh",
+        "sha256": "4d8d5832cc5113165232764917c8e0740e8e3abb57c0271b0f077854c0ce95b0"
+      },
+      {
+        "kind": "replay_receipt",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/replay_receipt.json",
+        "sha256": "7361954877676b1f278162a9db9a37c74821fd1a149db7de58c2065d9cdf8e94"
+      },
+      {
+        "kind": "run_protocol",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/evidence/run_protocol.json",
+        "sha256": "6df0da2c42aae85d3a2a1d2defe2ee53168de0630408fb90a9187ccce840939f"
+      },
+      {
+        "kind": "operator_fingerprint",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/reports/operator_fingerprint.json",
+        "sha256": "cbdabc03aa2d1489befa015af6a042959e4cde2caf40076195bb2913e33158a0"
+      },
+      {
+        "kind": "real_path_attachment_receipt",
+        "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/reports/real_path_attachment_receipt.json",
+        "sha256": "127e46717a3c3cb4709dc0b971f58db4e87f85eeeb1852ea7e65b7030fc844ca"
+      }
+    ],
+    "publication_surface_boundary": "For WS18, publication surface means the sealed WS15 canonical delivery publication bundle carried forward by the WS16 critical artifact set; it does not collapse that artifact set into the earlier WS7 authority-subject publication surface."
+  }
+}
