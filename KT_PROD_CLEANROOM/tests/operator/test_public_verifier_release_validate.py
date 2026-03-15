@@ -58,9 +58,24 @@ def _seed_public_verifier_sources(tmp_path: Path, *, forbidden_runtime_import: b
     runtime_import = "from tools.temple.runtime import bad\n" if forbidden_runtime_import else ""
     _write_text(
         tmp_path / "KT_PROD_CLEANROOM/tools/operator/public_verifier.py",
-        "from tools.operator.platform_governance_narrowing import build_platform_governance_claims\n"
+        "from tools.operator.platform_governance_finalize import build_platform_governance_final_claims\n"
         "from tools.operator.titanium_common import load_json\n"
         f"{runtime_import}",
+    )
+    _write_text(
+        tmp_path / "KT_PROD_CLEANROOM/tools/operator/platform_governance_finalize.py",
+        "def build_platform_governance_final_claims(*, root, report_root_rel='KT_PROD_CLEANROOM/reports'):\n"
+        "    return {\n"
+        "        'platform_governance_subject_commit': 'c'*40,\n"
+        "        'platform_governance_verdict': 'WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED',\n"
+        "        'platform_governance_claim_admissible': False,\n"
+        "        'workflow_governance_status': 'PASS_WITH_PLATFORM_BLOCK',\n"
+        "        'branch_protection_status': 'BLOCKED',\n"
+        "        'platform_governance_claim_boundary': 'workflow governance only',\n"
+        "        'enterprise_legitimacy_ceiling': 'WORKFLOW_GOVERNANCE_ONLY',\n"
+        "        'platform_governance_receipt_refs': ['KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json'],\n"
+        "        'platform_block': {'http_status': 403},\n"
+        "    }\n",
     )
     _write_text(tmp_path / "KT_PROD_CLEANROOM/tools/operator/platform_governance_narrowing.py", "from tools.operator.titanium_common import load_json\n")
     _write_text(
@@ -86,7 +101,7 @@ def _seed_contracts_and_receipts(tmp_path: Path, *, head_sha: str, truth_subject
             "required_inputs": [
                 PUBLIC_VERIFIER_MANIFEST_REL,
                 "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
-                "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+                "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json",
                 "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
                 "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
             ],
@@ -118,7 +133,7 @@ def _seed_contracts_and_receipts(tmp_path: Path, *, head_sha: str, truth_subject
     )
     _write_json(tmp_path / "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json", {"status": "PASS_WITH_PLATFORM_BLOCK", "head_sha": "c" * 40})
     _write_json(
-        tmp_path / "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+        tmp_path / "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json",
         {
             "platform_governance_subject_commit": "c" * 40,
             "platform_governance_verdict": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED",

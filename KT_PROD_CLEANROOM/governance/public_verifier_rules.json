@@ -4,7 +4,7 @@
     "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
     "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
     "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json",
-    "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json",
     "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
     "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_subject.json"
   ],
@@ -32,14 +32,14 @@
   "required_validators": [
     "python -m tools.operator.truth_surface_sync --sync-secondary-surfaces",
     "python -m tools.operator.ci_governance_receipt",
-    "python -m tools.operator.platform_governance_narrowing",
+    "python -m tools.operator.platform_governance_finalize",
     "python -m tools.operator.public_verifier",
     "python -m tools.operator.authority_convergence_validate",
     "python -m tools.operator.documentary_truth_validate",
     "python -m tools.operator.dependency_inventory_validate"
   ],
   "rules": [
-    "Public verifier manifests may reference authoritative pointers, current-head workflow governance receipts, branch protection verification receipts, platform governance narrowing receipts, and cryptographic publication evidence only.",
+    "Public verifier manifests may reference authoritative pointers, current-head workflow governance receipts, branch protection verification receipts, finalized platform governance decision receipts, and cryptographic publication evidence only.",
     "Public verifier manifests must emit evidence_commit, truth_subject_commit, subject_verdict, publication_receipt_status, evidence_contains_subject, evidence_equals_subject, claim_boundary, platform_governance_subject_commit, platform_governance_verdict, platform_governance_claim_admissible, workflow_governance_status, branch_protection_status, platform_governance_claim_boundary, enterprise_legitimacy_ceiling, and platform_governance_receipt_refs.",
     "If current HEAD differs from truth_subject_commit, runtime verifier output must phrase HEAD only as containing evidence for the subject and must never claim that HEAD itself is the verified subject.",
     "If current HEAD differs from platform_governance_subject_commit, runtime verifier output must phrase governance only as evidence for the subject commit and must never claim current-head governance freshness.",
@@ -47,6 +47,6 @@
   ],
   "schema_id": "kt.governance.public_verifier_rules.v3",
   "status": "ACTIVE",
-  "summary": "Public verifier surfaces must separate evidence commits from truth subject commits and must formalize workflow-only governance whenever fresh platform enforcement proof is blocked.",
+  "summary": "Public verifier surfaces must separate evidence commits from truth subject commits and must formalize the finalized governance class whenever fresh platform enforcement proof is blocked.",
   "supersedes": []
 }

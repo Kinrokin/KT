@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set
 
 from tools.operator.claim_compiler import build_claim_compiler_receipt
-from tools.operator.platform_governance_narrowing import build_platform_governance_claims
+from tools.operator.platform_governance_finalize import build_platform_governance_final_claims
 from tools.operator.public_verifier import build_public_verifier_claims, build_public_verifier_report
 from tools.operator.titanium_common import file_sha256, load_json, repo_root, utc_now_iso_z, write_json_stable
 
@@ -181,7 +181,7 @@ def _local_dependency_closure(root: Path, start_rel: str) -> List[str]:
 
 def _public_verifier_manifest_payload(*, root: Path, live_head: str, report_root_rel: str) -> Dict[str, Any]:
     claims = build_public_verifier_claims(root=root, live_head=live_head, report_root_rel=report_root_rel)
-    governance_claims = build_platform_governance_claims(root=root, report_root_rel=report_root_rel)
+    governance_claims = build_platform_governance_final_claims(root=root, report_root_rel=report_root_rel)
     settled_truth = _load_required_json(root, SETTLED_TRUTH_RECEIPT_REL)
     convergence = _load_required_json(root, AUTHORITY_CONVERGENCE_RECEIPT_REL)
     status = "PASS" if str(convergence.get("status", "")).strip() == "PASS" and str(claims.get("publication_receipt_status", "")).strip() == "PASS" else "HOLD"
@@ -212,7 +212,7 @@ def _public_verifier_manifest_payload(*, root: Path, live_head: str, report_root
             _report_ref(report_root_rel, "kt_truth_publication_stabilization_receipt.json"),
             _report_ref(report_root_rel, "main_branch_protection_receipt.json"),
             _report_ref(report_root_rel, "ci_gate_promotion_receipt.json"),
-            _report_ref(report_root_rel, "platform_governance_narrowing_receipt.json"),
+            _report_ref(report_root_rel, "kt_platform_governance_final_decision_receipt.json"),
             _report_ref(report_root_rel, "authority_convergence_receipt.json"),
             _report_ref(report_root_rel, "documentary_truth_validation_receipt.json"),
             _report_ref(report_root_rel, "dependency_inventory_validation_receipt.json"),

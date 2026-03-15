@@ -1,0 +1,34 @@
+{
+  "artifact_id": "kt_platform_governance_proven_receipt.json",
+  "branch_protection_status": "BLOCKED",
+  "compiled_head_commit": "ea6b3759f487f9d034ea2410392a9c340a91f372",
+  "enterprise_legitimacy_ceiling": "WORKFLOW_GOVERNANCE_ONLY",
+  "evidence_head_commit": "ea6b3759f487f9d034ea2410392a9c340a91f372",
+  "generated_utc": "2026-03-15T12:29:59Z",
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS11_FINAL_RECUT_AND_RE-ADJUDICATION"
+  },
+  "pass_verdict": "NOT_APPLICABLE",
+  "platform_block": {
+    "http_status": 403,
+    "message": "Upgrade to GitHub Pro or make this repository public to enable this feature."
+  },
+  "platform_governance_claim_admissible": false,
+  "platform_governance_claim_boundary": "Current-head workflow governance is fresh, but GitHub branch-protection / ruleset enforcement is not proven on main. Do not claim platform-enforced governance while main_branch_protection_receipt is not PASS.",
+  "platform_governance_receipt_refs": [
+    "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json"
+  ],
+  "platform_governance_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
+  "platform_governance_verdict": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED",
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.platform_governance_proven_receipt.v1",
+  "status": "NOT_APPLICABLE",
+  "subject_head_commit": "ea6b3759f487f9d034ea2410392a9c340a91f372",
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.platform_governance_finalize"
+  ],
+  "workflow_governance_status": "PASS_WITH_PLATFORM_BLOCK"
+}

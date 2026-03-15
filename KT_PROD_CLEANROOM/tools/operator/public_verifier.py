@@ -6,7 +6,7 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
-from tools.operator.platform_governance_narrowing import build_platform_governance_claims
+from tools.operator.platform_governance_finalize import build_platform_governance_final_claims
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
 
 
@@ -113,7 +113,7 @@ def build_public_verifier_report(*, root: Path, report_root_rel: str = DEFAULT_R
     }
     if not claims["truth_subject_commit"] or not claims["subject_verdict"]:
         claims = build_public_verifier_claims(root=root, live_head=current_head_commit, report_root_rel=report_root_rel)
-    governance_claims = build_platform_governance_claims(root=root, report_root_rel=report_root_rel)
+    governance_claims = build_platform_governance_final_claims(root=root, report_root_rel=report_root_rel)
 
     truth_subject_commit = str(claims.get("truth_subject_commit", "")).strip()
     head_equals_subject = bool(current_head_commit) and bool(truth_subject_commit) and current_head_commit == truth_subject_commit

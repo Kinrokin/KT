@@ -1,0 +1,88 @@
+{
+  "allowed_current_claims": [
+    "fail-closed workflow governance is live on the current head",
+    "the desired GitHub ruleset is committed in-repo",
+    "platform block or missing branch-protection proof is explicit"
+  ],
+  "artifact_id": "kt_platform_governance_final_decision_receipt.json",
+  "branch_protection_status": "BLOCKED",
+  "compiled_head_commit": "ea6b3759f487f9d034ea2410392a9c340a91f372",
+  "decision_mode": "LAWFUL_NARROWING",
+  "enterprise_legitimacy_ceiling": "WORKFLOW_GOVERNANCE_ONLY",
+  "evidence_head_commit": "ea6b3759f487f9d034ea2410392a9c340a91f372",
+  "forbidden_current_claims": [
+    "platform-enforced governance proven on main",
+    "fresh active branch-protection / ruleset enforcement on main",
+    "higher enterprise legitimacy from platform enforcement"
+  ],
+  "generated_utc": "2026-03-15T12:30:18Z",
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS11_FINAL_RECUT_AND_RE-ADJUDICATION"
+  },
+  "pass_verdict": "PLATFORM_GOVERNANCE_FINALIZED",
+  "platform_block": {
+    "http_status": 403,
+    "message": "Upgrade to GitHub Pro or make this repository public to enable this feature."
+  },
+  "platform_governance_claim_admissible": false,
+  "platform_governance_claim_boundary": "Current-head workflow governance is fresh, but GitHub branch-protection / ruleset enforcement is not proven on main. Do not claim platform-enforced governance while main_branch_protection_receipt is not PASS.",
+  "platform_governance_receipt_refs": [
+    "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
+    "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_platform_governance_lawful_narrowing_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json"
+  ],
+  "platform_governance_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
+  "platform_governance_verdict": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED",
+  "protected_touch_violations": [],
+  "release_law_ref": "KT_PROD_CLEANROOM/governance/foundation_pack/kt_release_law.json",
+  "schema_id": "kt.operator.platform_governance_final_decision_receipt.v1",
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "resolved platform governance to either platform proof or explicit workflow-only narrowing from live source receipts",
+      "refreshed the public verifier manifest to point at the final governance decision surface",
+      "sealed WS10 governance final-decision receipts without upgrading claims above the live branch-protection evidence"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/governance/closure_foundation/kt_claim_compiler_policy.json",
+      "KT_PROD_CLEANROOM/governance/closure_foundation/kt_public_verifier_contract.json",
+      "KT_PROD_CLEANROOM/governance/foundation_pack/kt_release_law.json",
+      "KT_PROD_CLEANROOM/governance/public_verifier_rules.json",
+      "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_platform_governance_lawful_narrowing_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_platform_governance_proven_receipt.json",
+      "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_platform_governance_finalize.py",
+      "KT_PROD_CLEANROOM/tests/operator/test_public_verifier.py",
+      "KT_PROD_CLEANROOM/tests/operator/test_public_verifier_release_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/platform_governance_finalize.py",
+      "KT_PROD_CLEANROOM/tools/operator/public_verifier.py",
+      "KT_PROD_CLEANROOM/tools/operator/public_verifier_release_validate.py"
+    ],
+    "issues_found": [
+      "platform_enforcement_unavailable_due_to_live_branch_protection_block"
+    ],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS10 either proves platform enforcement or permanently narrows governance claims to the highest live admissible class.",
+    "step_id": "WS10_STEP_1_PLATFORM_GOVERNANCE_FINALIZATION",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_platform_governance_finalize.py KT_PROD_CLEANROOM/tests/operator/test_public_verifier.py -q"
+    ],
+    "timestamp": "2026-03-15T12:30:18Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.platform_governance_finalize"
+    ],
+    "workstream_id": "WS10_PLATFORM_GOVERNANCE_FINAL_DECISION"
+  },
+  "subject_head_commit": "ea6b3759f487f9d034ea2410392a9c340a91f372",
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.platform_governance_finalize"
+  ],
+  "workflow_governance_status": "PASS_WITH_PLATFORM_BLOCK"
+}
