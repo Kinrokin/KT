@@ -1,0 +1,100 @@
+{
+  "artifact_id": "kt_truth_publication_stabilization_receipt.json",
+  "checks": [
+    {
+      "check": "tuf_root_policy_threshold_backed",
+      "status": "PASS",
+      "threshold": 1
+    },
+    {
+      "check": "signer_root_key_hashes_match",
+      "root_key_count": 1,
+      "status": "PASS"
+    },
+    {
+      "check": "cryptographic_publication_receipt_passes",
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+      "status": "PASS"
+    },
+    {
+      "actual": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "check": "authority_subject_matches_compiled_head",
+      "expected": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "status": "PASS"
+    },
+    {
+      "check": "rekor_inclusion_evidence_present",
+      "log_id": "c0d23d6ad406973f9559f3ba2d1ca01f84147d8ffc5b8445c224f98b9591801d",
+      "log_index": 1107163963,
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+  "evidence_head_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+  "follow_on_blockers": [
+    "AUTHORITY_CONVERGENCE_UNRESOLVED",
+    "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+    "H1_ACTIVATION_GATE_CLOSED",
+    "PLATFORM_ENFORCEMENT_UNPROVEN"
+  ],
+  "generated_utc": "2026-03-15T04:37:47Z",
+  "next_lawful_step": {
+    "status_after_workstream": "UNLOCKED",
+    "workstream_id": "WS8_PUBLIC_VERIFIER_AND_CLAIM_COMPILER_ACTIVATION"
+  },
+  "pass_verdict": "PUBLICATION_GRADE_ATTESTATION_PROVEN",
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.truth_publication_stabilization_receipt.v2",
+  "semantic_boundary": {
+    "authority_convergence_resolved": false,
+    "h1_allowed": false,
+    "published_head_authority_claimed": false,
+    "published_head_self_convergence_resolved": false
+  },
+  "status": "PASS",
+  "step_report": {
+    "actions_taken": [
+      "refreshed current-head sigstore publication evidence",
+      "derived threshold-backed TUF root initialization from the ratified root policy",
+      "derived in-toto layout and documentary DSSE wrapper from the verified publication statement",
+      "extracted Rekor inclusion evidence into a dedicated receipt",
+      "sealed WS7 publication attestation without upgrading authority convergence or H1 claims"
+    ],
+    "files_touched": [
+      "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_bundle.json",
+      "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_subject.json",
+      "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.bundle.json",
+      "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json",
+      "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.sig",
+      "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_in_toto_layout.json",
+      "KT_PROD_CLEANROOM/reports/kt_in_toto_provenance.dsse",
+      "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
+      "KT_PROD_CLEANROOM/reports/kt_truth_publication_stabilization_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS7 proves trust-root-backed sigstore publication attestation and transparency inclusion for the current subject while keeping authority convergence and H1 out of scope.",
+    "step_id": "WS7_STEP_1_PUBLICATION_GRADE_ATTESTATION",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_publication_attestation_validate.py -q"
+    ],
+    "timestamp": "2026-03-15T04:37:47Z",
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.publication_attestation_validate"
+    ],
+    "workstream_id": "WS7_TRUST_ROOT_AND_PUBLICATION_ATTESTATION"
+  },
+  "subject_head_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+  "trust_root_id": "KT_TUF_ROOT_BOOTSTRAP_20260314",
+  "truth_publication_stabilized": true,
+  "truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.publication_attestation_validate"
+  ]
+}

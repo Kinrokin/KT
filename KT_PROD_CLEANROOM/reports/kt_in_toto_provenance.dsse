@@ -1,0 +1,25 @@
+{
+  "artifact_id": "kt_in_toto_provenance.dsse",
+  "compiled_head_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+  "documentary_boundary": {
+    "interpretation": "This is a documentary DSSE wrapper around a verified cosign sign-blob attestation. Verification must follow the sigstore bundle and cryptographic publication receipt, not generic DSSE tooling alone.",
+    "standard_dsse_signature": false
+  },
+  "generated_utc": "2026-03-15T04:37:47Z",
+  "payloadBase64": "ewogICJfdHlwZSI6ICJodHRwczovL2luLXRvdG8uaW8vU3RhdGVtZW50L3YwLjEiLAogICJwcmVkaWNhdGUiOiB7CiAgICAiYXR0ZXN0YXRpb25fZmFicmljX2NvbnRyYWN0X3JlZiI6ICJLVF9QUk9EX0NMRUFOUk9PTS9nb3Zlcm5hbmNlL2F0dGVzdGF0aW9uX2ZhYnJpY19jb250cmFjdC5qc29uIiwKICAgICJhdXRob3JpdHlfc3ViamVjdF9yZWYiOiAiS1RfUFJPRF9DTEVBTlJPT00vcmVwb3J0cy9jcnlwdG9ncmFwaGljX3B1YmxpY2F0aW9uL2F1dGhvcml0eV9zdWJqZWN0Lmpzb24iLAogICAgImF1dGhvcml0eV9zdWJqZWN0X3NoYTI1NiI6ICJkOTE0MDgwMTZiNWY1MDYxZjYxZGVmMjUwYTA4ZDU3NDA4MDc5OTQ1ODI1NTlkMzBkMjAzOGY0OWJmMDAwYzVmIiwKICAgICJzY2hlbWFfaWQiOiAia3QuaW5fdG90by5wcmVkaWNhdGUuYXV0aG9yaXR5X3N1YmplY3QudjEiLAogICAgInNpZ25lcl9pZGVudGl0eV9wb2xpY3lfcmVmIjogIktUX1BST0RfQ0xFQU5ST09NL2dvdmVybmFuY2Uvc2lnbmVyX2lkZW50aXR5X3BvbGljeS5qc29uIiwKICAgICJzdXBwbHlfY2hhaW5fbGF5b3V0X3JlZiI6ICJLVF9QUk9EX0NMRUFOUk9PTS9nb3Zlcm5hbmNlL3N1cHBseV9jaGFpbl9sYXlvdXQuanNvbiIsCiAgICAidHVmX3Jvb3RfcG9saWN5X3JlZiI6ICJLVF9QUk9EX0NMRUFOUk9PTS9nb3Zlcm5hbmNlL2Nsb3N1cmVfZm91bmRhdGlvbi9rdF90dWZfcm9vdF9wb2xpY3kuanNvbiIKICB9LAogICJwcmVkaWNhdGVUeXBlIjogImh0dHBzOi8va2luZ3MtdGhlb3JlbS5pby9hdHRlc3RhdGlvbnMva3QtYXV0aG9yaXR5LXN1YmplY3QvdjEiLAogICJzdWJqZWN0IjogWwogICAgewogICAgICAiZGlnZXN0IjogewogICAgICAgICJzaGEyNTYiOiAiZDkxNDA4MDE2YjVmNTA2MWY2MWRlZjI1MGEwOGQ1NzQwODA3OTk0NTgyNTU5ZDMwZDIwMzhmNDliZjAwMGM1ZiIKICAgICAgfSwKICAgICAgIm5hbWUiOiAia3QuYXV0aG9yaXR5LnN1YmplY3QudjE6ZDkxNDA4MDE2YjVmNTA2MWY2MWRlZjI1MGEwOGQ1NzQwODA3OTk0NTgyNTU5ZDMwZDIwMzhmNDliZjAwMGM1ZiIKICAgIH0KICBdCn0K",
+  "payloadType": "application/vnd.in-toto+json",
+  "payload_sha256": "d58859f38dee7f2a93eacd35c1b98aa27f57cd123c70cdc31022691291fc4a3e",
+  "schema_id": "kt.operator.in_toto_provenance.dsse.v1",
+  "signatures": [
+    {
+      "bundle_ref": "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.bundle.json",
+      "bundle_sha256": "37c230b419b1d6add9c360a45773be1e266009f362915e70e602a8154ba6005c",
+      "keyid": "KT_OP1_COSIGN_KEYPAIR",
+      "sig": "MEYCIQDnh1aD1MGXzve/46aSuKM08MxZ/7Ae8UCSuXm6hOhRfQIhAOKAEVijOeF/KBfrp9Lj4edMII3jUyGRTZeClvVf1jaU",
+      "signature_mode": "COSIGN_SIGN_BLOB",
+      "signature_ref": "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.sig",
+      "verified_with_tlog": true
+    }
+  ],
+  "status": "PASS"
+}

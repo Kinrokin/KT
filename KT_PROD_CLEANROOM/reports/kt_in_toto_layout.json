@@ -1,0 +1,65 @@
+{
+  "artifact_id": "kt_in_toto_layout.json",
+  "compiled_head_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+  "generated_utc": "2026-03-15T04:37:47Z",
+  "layout_source_ref": "KT_PROD_CLEANROOM/governance/supply_chain_layout.json",
+  "predicate_type": "https://kings-theorem.io/attestations/kt-authority-subject/v1",
+  "root_policy_ref": "KT_PROD_CLEANROOM/governance/closure_foundation/kt_tuf_root_policy.json",
+  "schema_id": "kt.operator.in_toto_layout.v1",
+  "semantic_boundary": {
+    "h1_allowed": false,
+    "published_head_authority_claimed": false
+  },
+  "statement_type": "https://in-toto.io/Statement/v0.1",
+  "status": "PASS",
+  "steps": [
+    {
+      "materials": [
+        "KT_PROD_CLEANROOM/governance/authority_subject_contract.json",
+        "KT_PROD_CLEANROOM/governance/attestation_fabric_contract.json",
+        "KT_PROD_CLEANROOM/governance/authority_bundle.schema.json",
+        "KT_PROD_CLEANROOM/governance/signer_identity_policy.json",
+        "KT_PROD_CLEANROOM/governance/supply_chain_layout.json"
+      ],
+      "products": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_subject.json"
+      ],
+      "step_name": "mint_authority_subject"
+    },
+    {
+      "materials": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_subject.json"
+      ],
+      "products": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json"
+      ],
+      "step_name": "mint_in_toto_statement"
+    },
+    {
+      "materials": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json"
+      ],
+      "products": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.sig",
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.bundle.json"
+      ],
+      "requires": {
+        "signer_policy_ref": "KT_PROD_CLEANROOM/governance/signer_identity_policy.json",
+        "transparency_log": true
+      },
+      "step_name": "sigstore_cosign_sign_statement"
+    },
+    {
+      "materials": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json",
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.sig",
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.bundle.json"
+      ],
+      "products": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json"
+      ],
+      "step_name": "sigstore_cosign_verify_statement"
+    }
+  ],
+  "trust_root_id": "KT_TUF_ROOT_BOOTSTRAP_20260314"
+}

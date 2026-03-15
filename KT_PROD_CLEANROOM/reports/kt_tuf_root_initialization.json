@@ -1,0 +1,55 @@
+{
+  "artifact_id": "kt_tuf_root_initialization.json",
+  "bootstrap_state": "BOOTSTRAP_THRESHOLD_1_OF_1",
+  "compiled_head_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+  "generated_utc": "2026-03-15T04:37:47Z",
+  "role_thresholds": [
+    {
+      "allowed_key_ids": [
+        "KT_OP1_COSIGN_KEYPAIR"
+      ],
+      "role_id": "root",
+      "threshold": 1
+    },
+    {
+      "allowed_key_ids": [
+        "KT_OP1_COSIGN_KEYPAIR"
+      ],
+      "role_id": "targets",
+      "threshold": 1
+    },
+    {
+      "allowed_key_ids": [
+        "KT_OP1_COSIGN_KEYPAIR"
+      ],
+      "role_id": "snapshot",
+      "threshold": 1
+    },
+    {
+      "allowed_key_ids": [
+        "KT_OP1_COSIGN_KEYPAIR"
+      ],
+      "role_id": "timestamp",
+      "threshold": 1
+    }
+  ],
+  "root_policy_ref": "KT_PROD_CLEANROOM/governance/closure_foundation/kt_tuf_root_policy.json",
+  "schema_id": "kt.operator.tuf_root_initialization.v1",
+  "semantic_boundary": {
+    "h1_allowed": false,
+    "published_head_authority_claimed": false
+  },
+  "status": "PASS",
+  "threshold": 1,
+  "threshold_backed": true,
+  "trust_root_id": "KT_TUF_ROOT_BOOTSTRAP_20260314",
+  "verified_root_keys": [
+    {
+      "actual_public_key_sha256": "c4c5f8d7513d01729b4b2ad3795b4eb62bb0ab901beb9053ffe82b400e5e02aa",
+      "key_id": "KT_OP1_COSIGN_KEYPAIR",
+      "public_key_ref": "KT_PROD_CLEANROOM/governance/signers/kt_op1_cosign.pub",
+      "public_key_sha256": "c4c5f8d7513d01729b4b2ad3795b4eb62bb0ab901beb9053ffe82b400e5e02aa",
+      "status": "PASS"
+    }
+  ]
+}
