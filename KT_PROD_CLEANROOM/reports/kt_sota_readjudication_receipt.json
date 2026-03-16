@@ -1,0 +1,165 @@
+{
+  "artifact_id": "kt_sota_readjudication_receipt.json",
+  "checks": [
+    {
+      "check": "baseline_audit_packet_present",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws12_closure_state_present",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_total_closure_campaign_completion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_final_completion_bundle.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "frontier_rerun_comparison_explicit",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_frontier_audit_packet.json",
+        "KT_PROD_CLEANROOM/reports/kt_frontier_rerun_scorecard.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "all_prior_receipts_resolve_on_final_audited_target",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_repo_hygiene_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_operator_greenline_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_revision_trust_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_horizon_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_red_team_results_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_formal_invariant_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "live_readiness_and_authority_no_longer_materially_contradict_claim",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_operator_greenline_receipt.json",
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_authority_grade_b4789a5/verdict.txt"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "workstream_touches_remain_in_scope",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_frontier_audit_packet.json",
+        "KT_PROD_CLEANROOM/reports/kt_frontier_rerun_scorecard.json",
+        "KT_PROD_CLEANROOM/reports/kt_sota_readjudication_receipt.json",
+        "KT_PROD_CLEANROOM/tests/operator/test_frontier_readjudication_validate.py",
+        "KT_PROD_CLEANROOM/tools/operator/frontier_readjudication_validate.py"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "created_files": [
+    "KT_PROD_CLEANROOM/tools/operator/frontier_readjudication_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_frontier_readjudication_validate.py",
+    "KT_PROD_CLEANROOM/reports/kt_frontier_audit_packet.json",
+    "KT_PROD_CLEANROOM/reports/kt_frontier_rerun_scorecard.json",
+    "KT_PROD_CLEANROOM/reports/kt_sota_readjudication_receipt.json"
+  ],
+  "evaluated_repo_head_commit": "0cf1ccdde5a5543678daffe9e60284c903b911ab",
+  "evidence_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "files_touched": [
+    "KT_PROD_CLEANROOM/reports/kt_frontier_audit_packet.json",
+    "KT_PROD_CLEANROOM/reports/kt_frontier_rerun_scorecard.json",
+    "KT_PROD_CLEANROOM/reports/kt_sota_readjudication_receipt.json",
+    "KT_PROD_CLEANROOM/tests/operator/test_frontier_readjudication_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/frontier_readjudication_validate.py"
+  ],
+  "generated_utc": "2026-03-15T21:58:57Z",
+  "next_lawful_step": {
+    "status_after_workstream": "COMPLETE",
+    "workstream_id": "PROGRAM_COMPLETE"
+  },
+  "pass_verdict": "BOUNDED_SOTA_ON_LIVE_AUDITED_TARGET_PROVEN",
+  "protected_touch_violations": [],
+  "questions": {
+    "do_live_grades_materially_contradict_closure_receipts": {
+      "authority_grade": "A",
+      "detail": "Live readiness and authority grades now support the bounded frontier claim: repo hygiene is clean, operator greenlines are recovered, delivery integrity reruns are green, and the stronger closed horizons from WS12 remain explicitly closed except for the single WS21 verifier-only horizon.",
+      "readiness_grade": "A",
+      "status": "PASS"
+    },
+    "how_march_baseline_ws12_and_final_compare": {
+      "frontier_posture": "BOUNDED_SOTA_A",
+      "overall_bounded_system_grade": "A",
+      "packet_ref": "KT_PROD_CLEANROOM/reports/kt_frontier_audit_packet.json",
+      "scorecard_ref": "KT_PROD_CLEANROOM/reports/kt_frontier_rerun_scorecard.json",
+      "status": "PASS"
+    },
+    "what_final_audited_target_was_rerun": {
+      "evaluated_repo_head_commit": "0cf1ccdde5a5543678daffe9e60284c903b911ab",
+      "sealed_evidence_anchor_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+      "sealed_subject_anchor_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+      "status": "PASS"
+    },
+    "what_stronger_claim_is_not_made": "WS24 proves only that KT has reached bounded SOTA on the current live audited target with one verifier-only public verification horizon open and no red critical live-grade contradictions. It does not claim beyond-SOTA overall, does not open competition, H1, production, economic, or platform-governance horizons, and does not treat an open external challenge window with no findings yet as proof of adversarial exhaustion."
+  },
+  "schema_id": "kt.operator.sota_readjudication_receipt.v1",
+  "status": "PASS",
+  "step_id": "WS24_STEP_1_RERUN_FRONTIER_AUDIT_AND_ISSUE_BOUNDED_VERDICT",
+  "step_report": {
+    "actions_taken": [
+      "rebuilt the frontier audit packet from the archived March audit, WS12 closure state, and the sealed WS13-WS23 frontier-elevation evidence ladder",
+      "compared baseline, WS12, and final state explicitly across repo hygiene, operator readiness, delivery integrity/live authority, external verifiability, and bounded public horizon posture",
+      "issued a bounded final verdict from the current evidence without widening beyond the verifier-only public horizon or other still-closed horizons"
+    ],
+    "issues_found": [],
+    "pass_fail_status": "PASS",
+    "protected_touch_violations": [],
+    "resolution": "WS24 reruns the adversarial frontier readjudication on the final audited target and finds that KT has crossed into bounded SOTA on the live audited target.",
+    "step_id": "WS24_STEP_1_RERUN_FRONTIER_AUDIT_AND_ISSUE_BOUNDED_VERDICT",
+    "tests_run": [
+      "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_frontier_readjudication_validate.py -q"
+    ],
+    "unexpected_touches": [],
+    "validators_run": [
+      "python -m tools.operator.frontier_readjudication_validate"
+    ],
+    "workstream_id": "WS24_FRONTIER_RECUT_AND_SOTA_READJUDICATION"
+  },
+  "stronger_claim_not_made": "WS24 proves only that KT has reached bounded SOTA on the current live audited target with one verifier-only public verification horizon open and no red critical live-grade contradictions. It does not claim beyond-SOTA overall, does not open competition, H1, production, economic, or platform-governance horizons, and does not treat an open external challenge window with no findings yet as proof of adversarial exhaustion.",
+  "subject_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "supporting_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_total_closure_campaign_completion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_final_completion_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_repo_hygiene_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_operator_greenline_receipt.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_status_seal_b4789a5/verdict.txt",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/verdict.txt",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_authority_grade_b4789a5/verdict.txt",
+    "KT_PROD_CLEANROOM/reports/kt_revision_trust_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_horizon_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_red_team_results_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_formal_invariant_receipt.json"
+  ],
+  "surface_classifications": {
+    "KT_PROD_CLEANROOM/reports/kt_frontier_audit_packet.json": "generated audit packet",
+    "KT_PROD_CLEANROOM/reports/kt_frontier_rerun_scorecard.json": "generated comparative scorecard",
+    "KT_PROD_CLEANROOM/reports/kt_sota_readjudication_receipt.json": "generated readjudication receipt",
+    "KT_PROD_CLEANROOM/tests/operator/test_frontier_readjudication_validate.py": "validator/test file",
+    "KT_PROD_CLEANROOM/tools/operator/frontier_readjudication_validate.py": "canonical active file"
+  },
+  "tests_run": [
+    "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_frontier_readjudication_validate.py -q"
+  ],
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.frontier_readjudication_validate"
+  ],
+  "work_order_id": "WORK_ORDER_KT_FRONTIER_ELEVATION_AND_PUBLIC_DEFENSIBILITY",
+  "work_order_schema_id": "kt.work_order.frontier_elevation_and_public_defensibility.v2",
+  "workstream_id": "WS24_FRONTIER_RECUT_AND_SOTA_READJUDICATION"
+}

@@ -1,0 +1,90 @@
+{
+  "artifact_id": "kt_frontier_audit_packet.json",
+  "comparative_window": {
+    "frontier_elevated_state": {
+      "authority_grade": "A",
+      "bounded_public_horizon_grade": "B+",
+      "external_verifiability_grade": "A",
+      "operator_factory_readiness_grade": "A",
+      "operator_greenline_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_operator_greenline_receipt.json",
+      "overall_bounded_system_grade": "A",
+      "repo_hygiene_grade": "A",
+      "repo_hygiene_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_repo_hygiene_receipt.json",
+      "ws15_authority_verdict_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_authority_grade_b4789a5/verdict.txt",
+      "ws15_canonical_hmac_verdict_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/verdict.txt",
+      "ws15_status_verdict_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_status_seal_b4789a5/verdict.txt",
+      "ws17_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_revision_trust_receipt.json",
+      "ws18_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json",
+      "ws19_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+      "ws20_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json",
+      "ws21_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_public_horizon_receipt.json",
+      "ws22_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_red_team_results_receipt.json",
+      "ws23_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_formal_invariant_receipt.json"
+    },
+    "march_baseline": {
+      "clean_clone_equivalent": false,
+      "ignored_local_residue_present": true,
+      "main_problem": "KT is a strong canonical runtime plus operator-factory repo with explicit law, broad verification, and a real fail-closed posture model. Its main problem is not missing system design; it is authority drift between live evidence, tracked truth surfaces, and the surrounding lab and archive mass.",
+      "manifest_ref": "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+      "packet_refs": [
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/README.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/KT_FULL_COMPLETION_ATTEMPT_REPORT_20260310.md",
+        "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/DOMAIN1_PUBLICATION_ARCHITECTURE_PROGRESS_REPORT_20260310.md"
+      ],
+      "secret_like_local_residue": ".env.secret",
+      "target_head_commit": "46173df31a9242c2e8f4bd7a1494b3466d1a89b9",
+      "validated_head_sha": "7bd610b507328eb72622ce24678620f5469f3848"
+    },
+    "ws12_closure_state": {
+      "adapter_testing_gate_status": "OPEN",
+      "bundle_ref": "KT_PROD_CLEANROOM/reports/kt_final_completion_bundle.json",
+      "campaign_completion_state": "SEALED_WITH_BLOCKED_PUBLIC_HORIZONS",
+      "governance_ceiling": "WORKFLOW_GOVERNANCE_ONLY",
+      "h1_gate_status": "BLOCKED",
+      "public_showability_gate_status": "BLOCKED",
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/kt_total_closure_campaign_completion_receipt.json",
+      "still_blocked": [
+        "platform-enforced governance on main",
+        "tournament readiness",
+        "public showability",
+        "H1 activation"
+      ],
+      "subject_head_commit": "1518280c3b0dd7fb6a74c60537c7b8717722cdaa",
+      "tournament_gate_status": "BLOCKED"
+    }
+  },
+  "evaluated_repo_head_commit": "0cf1ccdde5a5543678daffe9e60284c903b911ab",
+  "generated_utc": "2026-03-15T21:58:57Z",
+  "resolved_campaign_gaps": [
+    "repo hygiene and secret-like local residue resolved",
+    "operator greenlines and live readiness recovered on the audited target",
+    "delivery integrity rerun sealed with status PASS, canonical_hmac PASS, and authority grade A",
+    "source/build attestation and provenance/VSA alignment sealed on the bounded critical artifact set",
+    "detached verifier parity and same-host independent clean-environment replay proven",
+    "exactly one verifier-only public verification horizon opened with explicit closed horizons preserved",
+    "external challenge protocol bootstrapped without widening public-horizon claims",
+    "core release-critical invariants modeled and bounded-checked"
+  ],
+  "schema_id": "kt.operator.frontier_audit_packet.v1",
+  "sealed_evidence_anchor_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "sealed_subject_anchor_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "supporting_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_total_closure_campaign_completion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_final_completion_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_repo_hygiene_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_operator_greenline_receipt.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_status_seal_b4789a5/verdict.txt",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/verdict.txt",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_authority_grade_b4789a5/verdict.txt",
+    "KT_PROD_CLEANROOM/reports/kt_revision_trust_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_horizon_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_red_team_results_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_formal_invariant_receipt.json"
+  ],
+  "work_order_id": "WORK_ORDER_KT_FRONTIER_ELEVATION_AND_PUBLIC_DEFENSIBILITY",
+  "work_order_schema_id": "kt.work_order.frontier_elevation_and_public_defensibility.v2",
+  "workstream_id": "WS24_FRONTIER_RECUT_AND_SOTA_READJUDICATION"
+}

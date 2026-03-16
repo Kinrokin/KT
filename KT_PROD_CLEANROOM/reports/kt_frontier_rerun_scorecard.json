@@ -1,0 +1,242 @@
+{
+  "artifact_id": "kt_frontier_rerun_scorecard.json",
+  "evaluated_repo_head_commit": "0cf1ccdde5a5543678daffe9e60284c903b911ab",
+  "final_readjudication": {
+    "frontier_posture": "BOUNDED_SOTA_A",
+    "overall_bounded_system_grade": "A",
+    "status": "PASS",
+    "stronger_claim_not_made": "WS24 proves only that KT has reached bounded SOTA on the current live audited target with one verifier-only public verification horizon open and no red critical live-grade contradictions. It does not claim beyond-SOTA overall, does not open competition, H1, production, economic, or platform-governance horizons, and does not treat an open external challenge window with no findings yet as proof of adversarial exhaustion."
+  },
+  "generated_utc": "2026-03-15T21:58:57Z",
+  "hard_stop_checks": [
+    {
+      "condition_id": "critical_ci_remains_red_after_recovery_workstream",
+      "detail": "Repo hygiene and operator recovery receipts are both PASS.",
+      "status": "PASS"
+    },
+    {
+      "condition_id": "delivery_integrity_evidence_missing_after_restoration_workstream",
+      "detail": "WS15 status, canonical_hmac, and authority grade all passed on the sealed subject head.",
+      "status": "PASS"
+    },
+    {
+      "condition_id": "detached_verifier_depends_on_hidden_local_state",
+      "detail": "Detached parity and same-host independent clean-environment replay are both proven.",
+      "status": "PASS"
+    },
+    {
+      "condition_id": "no_bounded_public_horizon_is_actually_opened",
+      "detail": "Exactly one verifier-only public verification horizon is open.",
+      "status": "PASS"
+    },
+    {
+      "condition_id": "live_grades_materially_contradict_closure_receipts_at_campaign_end",
+      "detail": "Live readiness and authority grades now support the bounded frontier claim: repo hygiene is clean, operator greenlines are recovered, delivery integrity reruns are green, and the stronger closed horizons from WS12 remain explicitly closed except for the single WS21 verifier-only horizon.",
+      "status": "PASS"
+    }
+  ],
+  "live_grade_contradiction_check": {
+    "authority_grade": "A",
+    "detail": "Live readiness and authority grades now support the bounded frontier claim: repo hygiene is clean, operator greenlines are recovered, delivery integrity reruns are green, and the stronger closed horizons from WS12 remain explicitly closed except for the single WS21 verifier-only horizon.",
+    "readiness_grade": "A",
+    "status": "PASS"
+  },
+  "minimum_post_campaign_targets": {
+    "authority_grade": "A-",
+    "bounded_public_horizon": "B+",
+    "external_verifiability": "A",
+    "operator_factory_readiness": "B+",
+    "overall_bounded_system_grade": "A",
+    "repo_hygiene": "A"
+  },
+  "rows": [
+    {
+      "comparison_result": "MATERIAL_IMPROVEMENT_TO_TARGET",
+      "frontier_elevated_state": {
+        "detail": "root residue removed, secret-like root surface removed, and canonical keep-set restored",
+        "grade": "A",
+        "status": "PASS"
+      },
+      "label": "Repo hygiene and audit-target cleanliness",
+      "march_baseline": {
+        "detail": "ignored residue, local secret-like residue, and no clean-clone equivalent",
+        "grade": "C-",
+        "status": "BLOCKED"
+      },
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_total_closure_campaign_completion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_repo_hygiene_receipt.json"
+      ],
+      "row_id": "repo_hygiene",
+      "ws12_closure_state": {
+        "detail": "closure was sealed, but the campaign still had blocked public horizons and no final frontier rerun",
+        "grade": "B",
+        "status": "SEALED_WITH_BOUNDARY"
+      }
+    },
+    {
+      "comparison_result": "LIVE_GRADE_RECOVERED_AND_EXCEEDS_TARGET",
+      "frontier_elevated_state": {
+        "detail": "status and ci_sim recovered and live readiness reran to grade A",
+        "grade": "A",
+        "status": "PASS"
+      },
+      "label": "Operator-factory readiness on the live audited target",
+      "march_baseline": {
+        "detail": "truth-sync gap between live runs and tracked receipts required re-ratification",
+        "grade": "B",
+        "status": "HOLD"
+      },
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_total_closure_campaign_completion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_operator_greenline_receipt.json"
+      ],
+      "row_id": "operator_factory_readiness",
+      "ws12_closure_state": {
+        "detail": "adapter testing was open, but tournament/public showability and H1 remained blocked",
+        "grade": "B",
+        "status": "BOUNDARIED"
+      }
+    },
+    {
+      "comparison_result": "NO_LONGER_MATERIALLY_CONTRADICTED_BY_LIVE_AUTHORITY",
+      "frontier_elevated_state": {
+        "detail": "status PASS, canonical_hmac PASS, and authority grade A on the sealed WS15 subject head",
+        "grade": "A",
+        "status": "PASS"
+      },
+      "label": "Delivery integrity and live authority grade",
+      "march_baseline": {
+        "detail": "delivery/security existed, but latest delivery posture was not freshly sealed against the live audited target",
+        "grade": "B",
+        "status": "HOLD"
+      },
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_completion_bundle.json",
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_status_seal_b4789a5/verdict.txt",
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_canonical_hmac_seal_b4789a5/verdict.txt",
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS15_authority_grade_b4789a5/verdict.txt"
+      ],
+      "row_id": "delivery_integrity_and_live_authority",
+      "ws12_closure_state": {
+        "detail": "closure named the lawful boundary, but WS15 delivery-integrity reruns had not happened yet",
+        "grade": "B+",
+        "status": "BOUNDARIED"
+      }
+    },
+    {
+      "comparison_result": "TARGET_MET_WITH_CURRENT_EVIDENCE",
+      "frontier_elevated_state": {
+        "detail": "source/build attestation, provenance/VSA alignment, detached parity, and same-host independent clean-environment replay are all proven",
+        "grade": "A",
+        "status": "PASS"
+      },
+      "label": "Detached verification and independent replay strength",
+      "march_baseline": {
+        "detail": "tracked evidence bundle was stale and clean-clone smoke was skipped in the fresh run",
+        "grade": "C+",
+        "status": "HOLD"
+      },
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_completion_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_revision_trust_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json"
+      ],
+      "row_id": "external_verifiability",
+      "ws12_closure_state": {
+        "detail": "offline verifier release existed, but detached parity and independent clean-environment replay were not yet proven",
+        "grade": "B",
+        "status": "BOUNDARIED"
+      }
+    },
+    {
+      "comparison_result": "EXACTLY_ONE_HORIZON_OPENED_WITH_BOUNDARY_PRESERVED",
+      "frontier_elevated_state": {
+        "detail": "exactly one verifier-only public verification horizon is open with an external challenge protocol and no findings yet",
+        "grade": "B+",
+        "status": "PASS"
+      },
+      "label": "Bounded public verification horizon",
+      "march_baseline": {
+        "detail": "no bounded public horizon with replayable receipts was open",
+        "grade": "C",
+        "status": "BLOCKED"
+      },
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_total_closure_campaign_completion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_horizon_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_red_team_results_receipt.json"
+      ],
+      "row_id": "bounded_public_horizon",
+      "ws12_closure_state": {
+        "detail": "adapter testing was open, but tournament and public showability remained blocked",
+        "grade": "C",
+        "status": "BLOCKED"
+      }
+    },
+    {
+      "comparison_result": "NEW_SUPPORTING_PROOF_SURFACE_ADDED",
+      "frontier_elevated_state": {
+        "detail": "three core release-critical invariants are modeled in TLA+ and bounded-checked against the current release logic",
+        "grade": "A-",
+        "status": "PASS"
+      },
+      "label": "Formal support for release-critical invariants",
+      "march_baseline": {
+        "detail": "no bounded formal invariant core was part of the March audit packet",
+        "grade": "C",
+        "status": "NOT_MODELED"
+      },
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_formal_invariant_receipt.json"
+      ],
+      "row_id": "formal_release_invariants",
+      "ws12_closure_state": {
+        "detail": "WS12 sealed closure boundaries without a bounded formal model of release-critical invariants",
+        "grade": "C",
+        "status": "NOT_MODELED"
+      }
+    }
+  ],
+  "schema_id": "kt.operator.frontier_rerun_scorecard.v1",
+  "sealed_subject_anchor_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "target_checks": [
+    {
+      "minimum_required": "A",
+      "observed_grade": "A",
+      "status": "PASS",
+      "target_id": "repo_hygiene"
+    },
+    {
+      "minimum_required": "B+",
+      "observed_grade": "A",
+      "status": "PASS",
+      "target_id": "operator_factory_readiness"
+    },
+    {
+      "minimum_required": "A-",
+      "observed_grade": "A",
+      "status": "PASS",
+      "target_id": "authority_grade"
+    },
+    {
+      "minimum_required": "A",
+      "observed_grade": "A",
+      "status": "PASS",
+      "target_id": "external_verifiability"
+    },
+    {
+      "minimum_required": "B+",
+      "observed_grade": "B+",
+      "status": "PASS",
+      "target_id": "bounded_public_horizon"
+    }
+  ],
+  "work_order_id": "WORK_ORDER_KT_FRONTIER_ELEVATION_AND_PUBLIC_DEFENSIBILITY",
+  "work_order_schema_id": "kt.work_order.frontier_elevation_and_public_defensibility.v2",
+  "workstream_id": "WS24_FRONTIER_RECUT_AND_SOTA_READJUDICATION"
+}
