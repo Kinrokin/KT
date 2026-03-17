@@ -1,0 +1,188 @@
+{
+  "schema_id": "kt.governance.trust_root_policy.v1",
+  "policy_id": "KT_SOVEREIGN_TRUST_ROOT_POLICY_V1_20260317_RERATIFIED_3_OF_3",
+  "status": "EXECUTED_RERATIFIED_3_OF_3",
+  "generated_utc": "2026-03-17T19:32:42Z",
+  "current_repo_head": "bd8984cc3c47af7409e5d960eb5d4c8f54c2eebc",
+  "ws9_truth_source_ref": "KT_PROD_CLEANROOM/reports/kt_current_head_truth_source.json",
+  "predecessor_policy_ref": "KT_PROD_CLEANROOM/governance/closure_foundation/kt_tuf_root_policy.json",
+  "semantic_boundary": {
+    "air_gapped_ceremony_executed": true,
+    "offline_root_material_present": true,
+    "release_signer_material_present": false,
+    "verifier_acceptance_upgraded": false,
+    "lawful_current_claim": "WS10 root ceremony executed off-box under a reratified 3-of-3 root boundary only. Release, producer, CI, and verifier-acceptance roles remain planned. WS11 has not started."
+  },
+  "closure_boundary": {
+    "preparatory_only": false,
+    "requires_offbox_execution_for_pass": false,
+    "next_required_step": "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION"
+  },
+  "inheritance": {
+    "foundation_trust_root_id": "KT_TUF_ROOT_BOOTSTRAP_20260314",
+    "foundation_bootstrap_state": "BOOTSTRAP_THRESHOLD_1_OF_1",
+    "foundation_threshold": 1,
+    "subject_head_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+    "evidence_head_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4"
+  },
+  "topology_reratification": {
+    "prior_root_threshold": 3,
+    "prior_root_signer_count": 5,
+    "reratified_root_threshold": 3,
+    "reratified_root_signer_count": 3,
+    "reason": "Imported off-box evidence proves an executed 3-of-3 root ceremony and does not prove the earlier planned 3-of-5 topology.",
+    "approved_by_operator": "robert_thomas_king"
+  },
+  "forbidden_states": [
+    "connected_host_root_generation_labeled_air_gapped",
+    "unsigned_root_metadata_acceptance",
+    "quorum_claim_without_witnessed_offline_signers",
+    "ws11_transparency_claim_before_activation"
+  ],
+  "invariants": [
+    "Root material for WS10 PASS must be generated only on an off-box offline host.",
+    "Root quorum claims must match witnessed custody records and the reratified topology.",
+    "Verifier acceptance must remain on the predecessor bootstrap root until later workstreams explicitly widen it.",
+    "This policy proves only the reratified 3-of-3 root boundary, not the earlier planned 3-of-5 boundary."
+  ],
+  "ratified_root_topology": {
+    "target_trust_root_id": "KT_SOVEREIGN_ROOT_TARGET_20260317",
+    "issuance_state": "EXECUTED_OFFBOX_RERATIFIED_3_OF_3",
+    "root_threshold": 3,
+    "root_signer_count": 3,
+    "root_signers": [
+      {
+        "identity_id": "kevin_gratts",
+        "shard_id": "shard_a",
+        "media_id": "usb_a",
+        "issuance_state": "EXECUTED_OFFBOX",
+        "custody_class": "physical_usb_shard_custody",
+        "witness_requirement": "dual_witness_completed"
+      },
+      {
+        "identity_id": "jessica_lack",
+        "shard_id": "shard_b",
+        "media_id": "usb_b",
+        "issuance_state": "EXECUTED_OFFBOX",
+        "custody_class": "physical_usb_shard_custody",
+        "witness_requirement": "dual_witness_completed"
+      },
+      {
+        "identity_id": "ruthie_mckinley",
+        "shard_id": "shard_c",
+        "media_id": "usb_c",
+        "issuance_state": "EXECUTED_OFFBOX",
+        "custody_class": "physical_usb_shard_custody",
+        "witness_requirement": "dual_witness_completed"
+      }
+    ]
+  },
+  "root_ceremony_procedure": {
+    "execution_mode_required": "OFFBOX_AIR_GAPPED_ONLY",
+    "steps": [
+      {
+        "step_id": "prepare_materials",
+        "status": "PASS",
+        "description": "Stage blank hardware, printed checklist, sealed custody packets, and bootstrap trust references without generating any private material on a connected host."
+      },
+      {
+        "step_id": "air_gapped_generate_or_rotate_root",
+        "status": "PASS",
+        "description": "Generate or rotate root shards on the isolated host and record witness identities plus hardware serials."
+      },
+      {
+        "step_id": "offline_verify_threshold_metadata",
+        "status": "PASS",
+        "description": "Verify root metadata offline before any export of public material."
+      },
+      {
+        "step_id": "record_custody_and_storage",
+        "status": "PASS",
+        "description": "Seal shard custody packets, storage locations, and emergency rotation activation instructions."
+      }
+    ],
+    "evidence_required_for_pass": [
+      "witnessed ceremony log signed offline",
+      "hardware inventory and custody log",
+      "root metadata verification transcript",
+      "exported public trust bundle only"
+    ]
+  },
+  "quorum_threshold_rules": [
+    {
+      "role_id": "root",
+      "threshold": 3,
+      "signer_count": 3,
+      "claim_boundary": "The executed WS10 boundary is reratified at 3-of-3 only."
+    },
+    {
+      "role_id": "release",
+      "threshold": 2,
+      "signer_count": 3,
+      "claim_boundary": "Release signing remains planned and unexecuted."
+    },
+    {
+      "role_id": "producer",
+      "threshold": 2,
+      "signer_count": 3,
+      "claim_boundary": "Producer attestations remain planned and unexecuted."
+    },
+    {
+      "role_id": "ci",
+      "threshold": 1,
+      "signer_count": 2,
+      "claim_boundary": "CI identity binding remains planned and unexecuted."
+    },
+    {
+      "role_id": "verifier_acceptance",
+      "threshold": 1,
+      "signer_count": 2,
+      "claim_boundary": "Verifier acceptance remains planned and unexecuted."
+    }
+  ],
+  "custody_and_storage_rules": {
+    "root_shards": [
+      "Store only on offline hardware or media used in the ceremony.",
+      "Require witness-backed custody records for every transferred shard.",
+      "Never copy private root material to connected development machines."
+    ],
+    "release_and_verifier_material": [
+      "Keep release and verifier acceptance material offline when later minted.",
+      "Permit only public references and logical identifiers in connected planning artifacts."
+    ]
+  },
+  "emergency_rotation_path": {
+    "triggers": [
+      "suspected_root_compromise",
+      "custody_breach",
+      "witness_dispute",
+      "hardware_failure"
+    ],
+    "required_actions": [
+      "freeze downstream workstreams",
+      "convene new air-gapped ceremony",
+      "revoke affected identities",
+      "reissue root metadata and verifier acceptance bundle"
+    ]
+  },
+  "verifier_acceptance_impact": {
+    "current_acceptance_state": "BOOTSTRAP_ROOT_ONLY_WITH_RERATIFIED_3_OF_3_EXECUTION_RECORDED",
+    "post_pass_target_state": "THRESHOLD_ROOT_ACCEPTANCE_PENDING_WS11_AND_WS14",
+    "current_boundary": "No verifier acceptance widening is lawful from WS10 execution alone."
+  },
+  "residual_limitations": [
+    "Exact ceremony timestamps were not transcribed and remain UNKNOWN_AT_TRANSCRIPTION.",
+    "Root generation algorithm string was not transcribed beyond a high-level offline-generation statement.",
+    "Public root identifiers and fingerprints were not transcribed into the evidence packet.",
+    "Hardware serial or asset identifiers remain UNKNOWN_AT_TRANSCRIPTION."
+  ],
+  "evidence_import_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_root_ceremony_log.json",
+    "KT_PROD_CLEANROOM/reports/kt_root_key_generation_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_root_shard_custody_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_root_quorum_witness_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_offline_verification_transcript.json",
+    "KT_PROD_CLEANROOM/reports/kt_ceremony_hardware_inventory.json",
+    "KT_PROD_CLEANROOM/reports/kt_ceremony_import_manifest.json"
+  ]
+}

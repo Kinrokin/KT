@@ -1,0 +1,65 @@
+{
+  "artifact_id": "kt_root_ceremony_log.v1",
+  "generated_utc": "UNKNOWN_AT_TRANSCRIPTION",
+  "ceremony_id": "kt_ws10_root_ceremony_2026-03-17_rtking_v1",
+  "status": "COMPLETE",
+  "source_repo_head": "bd8984cc3c47af7409e5d960eb5d4c8f54c2eebc",
+  "ws10_receipt_sha256_before_execution": "8404B45F1AD69984FD2C7F07E1583C187A58A7048A1F73E2017BF512DF33BDDA",
+  "operator_ids": [
+    "robert_thomas_king"
+  ],
+  "witness_ids": [
+    "marry_harris",
+    "lidia_bradford"
+  ],
+  "hardware_media_ids": [
+    "offline_machine_1",
+    "usb_a",
+    "usb_b",
+    "usb_c"
+  ],
+  "start_utc": "UNKNOWN_AT_TRANSCRIPTION",
+  "end_utc": "UNKNOWN_AT_TRANSCRIPTION",
+  "steps": [
+    {
+      "step_id": "verify_export_hashes",
+      "started_utc": "UNKNOWN_AT_TRANSCRIPTION",
+      "ended_utc": "UNKNOWN_AT_TRANSCRIPTION",
+      "status": "PASS",
+      "notes": "Corrected pack used. WS10_PACK_VALIDATION_PASS observed. Export/source snapshot accepted for ceremony use."
+    },
+    {
+      "step_id": "generate_root_material_offline",
+      "started_utc": "UNKNOWN_AT_TRANSCRIPTION",
+      "ended_utc": "UNKNOWN_AT_TRANSCRIPTION",
+      "status": "PASS",
+      "notes": "Root material was generated offline on the ceremony machine."
+    },
+    {
+      "step_id": "assign_shard_custody",
+      "started_utc": "UNKNOWN_AT_TRANSCRIPTION",
+      "ended_utc": "UNKNOWN_AT_TRANSCRIPTION",
+      "status": "PASS",
+      "notes": "Three custody transfers completed: shard A to Kevin Gratts, shard B to Jessica Lack, shard C to Ruthie McKinley."
+    },
+    {
+      "step_id": "verify_quorum",
+      "started_utc": "UNKNOWN_AT_TRANSCRIPTION",
+      "ended_utc": "UNKNOWN_AT_TRANSCRIPTION",
+      "status": "PASS",
+      "notes": "Executed ceremony treated as 3-of-3 for actual present custodians and distributed shard assignments."
+    },
+    {
+      "step_id": "run_offline_verification",
+      "started_utc": "UNKNOWN_AT_TRANSCRIPTION",
+      "ended_utc": "UNKNOWN_AT_TRANSCRIPTION",
+      "status": "PASS",
+      "notes": "Offline verification was performed after generation and custody assignment."
+    }
+  ],
+  "stronger_claim_not_made": [
+    "WS11 has started",
+    "Release readiness is proven",
+    "Verifier acceptance has widened"
+  ]
+}

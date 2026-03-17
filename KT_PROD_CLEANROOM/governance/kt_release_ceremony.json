@@ -1,0 +1,31 @@
+{
+  "schema_id": "kt.governance.release_ceremony.v0",
+  "ceremony_id": "KT_RELEASE_CEREMONY_PREP_V0_20260317",
+  "status": "PREPARED_NOT_EXECUTED",
+  "generated_utc": "2026-03-17T13:12:51Z",
+  "current_repo_head": "bd8984cc3c47af7409e5d960eb5d4c8f54c2eebc",
+  "semantic_boundary": {
+    "preparatory_only": true,
+    "ws15_full_release_law_ratified": false,
+    "lawful_current_claim": "This file records WS10 dependency updates only; it is not a final release-ceremony law."
+  },
+  "dependency_updates": {
+    "new_ws10_dependency": "kt_root_ceremony_receipt.json status PASS",
+    "release_prerequisites": [
+      "WS10 PASS",
+      "WS11 PASS",
+      "WS12 PASS",
+      "WS13 PASS",
+      "WS14 PASS",
+      "WS15 PASS",
+      "WS16 PASS",
+      "WS17A PASS",
+      "WS17B PASS"
+    ],
+    "verifier_acceptance_prerequisites": [
+      "threshold-backed root accepted",
+      "revocation path documented",
+      "verifier acceptance policy released"
+    ]
+  }
+}

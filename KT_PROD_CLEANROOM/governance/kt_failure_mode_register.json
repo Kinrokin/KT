@@ -1,0 +1,44 @@
+{
+  "schema_id": "kt.governance.failure_mode_register.v0",
+  "register_id": "KT_FAILURE_MODE_REGISTER_PREP_V0_20260317",
+  "status": "PREPARED_NOT_EXECUTED",
+  "generated_utc": "2026-03-17T13:12:51Z",
+  "current_repo_head": "bd8984cc3c47af7409e5d960eb5d4c8f54c2eebc",
+  "semantic_boundary": {
+    "preparatory_only": true,
+    "ws15_full_failure_law_ratified": false,
+    "lawful_current_claim": "This register captures WS10 failure modes that must block progression until off-box ceremony evidence exists."
+  },
+  "failure_modes": [
+    {
+      "failure_mode_id": "CONNECTED_ENV_ROOT_GENERATION_CLAIM",
+      "trigger": "Any root material allegedly generated on a connected development host.",
+      "effect": "Immediate invalidation of WS10 PASS claims.",
+      "required_response": "Discard material, emit failure receipt, restart on approved off-box system."
+    },
+    {
+      "failure_mode_id": "CEREMONY_CLAIM_WITHOUT_EVIDENCE",
+      "trigger": "Receipt or narrative claims ceremony execution without witnessable off-box evidence.",
+      "effect": "Stop progression and mark receipt invalid.",
+      "required_response": "Revert to PREPARED_NOT_EXECUTED and document the claim narrowing."
+    },
+    {
+      "failure_mode_id": "ROOT_SHARD_CUSTODY_GAP",
+      "trigger": "Shard custody or storage cannot be independently enumerated.",
+      "effect": "Root cannot be accepted for verifier trust.",
+      "required_response": "Freeze downstream workstreams and rerun ceremony."
+    },
+    {
+      "failure_mode_id": "QUORUM_MISREPRESENTATION",
+      "trigger": "Threshold claim made without recorded signer presence and witness confirmation.",
+      "effect": "Signer topology acceptance fails closed.",
+      "required_response": "Invalidate receipt and require fresh off-box execution."
+    },
+    {
+      "failure_mode_id": "PREMATURE_WS11_WIDENING",
+      "trigger": "Any WS11/Sigstore/Rekor claim appears in WS10-prepared artifacts.",
+      "effect": "Scope violation and claim contamination.",
+      "required_response": "Block advancement and narrow claims back to WS10 preparation only."
+    }
+  ]
+}

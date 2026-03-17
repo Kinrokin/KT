@@ -1,0 +1,51 @@
+{
+  "artifact_id": "kt_offline_verification_transcript.v1",
+  "generated_utc": "UNKNOWN_AT_TRANSCRIPTION",
+  "ceremony_id": "kt_ws10_root_ceremony_2026-03-17_rtking_v1",
+  "status": "COMPLETE",
+  "verifier_operator_ids": [
+    "robert_thomas_king"
+  ],
+  "witness_ids": [
+    "marry_harris",
+    "lidia_bradford"
+  ],
+  "hardware_media_ids": [
+    "offline_machine_1",
+    "usb_a",
+    "usb_b",
+    "usb_c"
+  ],
+  "checks": [
+    {
+      "check_id": "source_hash_manifest_matches_export",
+      "status": "PASS",
+      "notes": "Corrected pack used and pack validation returned WS10_PACK_VALIDATION_PASS."
+    },
+    {
+      "check_id": "root_generation_record_complete",
+      "status": "PASS",
+      "notes": "Offline root generation completed and generation record prepared."
+    },
+    {
+      "check_id": "shard_custody_record_complete",
+      "status": "PASS",
+      "notes": "Three shard custody assignments recorded and witnessed."
+    },
+    {
+      "check_id": "claimed_quorum_matches_recorded_participants",
+      "status": "PASS",
+      "notes": "Executed quorum recorded as 3-of-3 with three present custodians."
+    },
+    {
+      "check_id": "no_private_material_marked_for_import",
+      "status": "PASS",
+      "notes": "Evidence packet excludes private key material and shard contents."
+    }
+  ],
+  "overall_result": "PASS",
+  "stronger_claim_not_made": [
+    "External transparency activation has happened",
+    "Enterprise release readiness is proven"
+  ]
+}

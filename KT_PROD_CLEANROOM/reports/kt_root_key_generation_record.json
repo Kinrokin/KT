@@ -1,0 +1,31 @@
+{
+  "artifact_id": "kt_root_key_generation_record.v1",
+  "generated_utc": "UNKNOWN_AT_TRANSCRIPTION",
+  "ceremony_id": "kt_ws10_root_ceremony_2026-03-17_rtking_v1",
+  "status": "COMPLETE",
+  "generated_offline": true,
+  "operator_ids": [
+    "robert_thomas_king"
+  ],
+  "witness_ids": [
+    "marry_harris",
+    "lidia_bradford"
+  ],
+  "hardware_media_ids": [
+    "offline_machine_1"
+  ],
+  "algorithm": "UNSPECIFIED_OFFLINE_ROOT_GENERATION_METHOD",
+  "key_material_policy": "Never import private key material into KT.",
+  "public_root_identifiers": [],
+  "public_root_fingerprints": [],
+  "shard_strategy": {
+    "scheme": "manual_split_distributed_custody",
+    "threshold": 3,
+    "share_count": 3
+  },
+  "notes": "Root material was generated offline and distributed across three custody artifacts. Public identifiers/fingerprints were not separately transcribed during ceremony and should only be added later if derivable from public material without exposing private key material.",
+  "stronger_claim_not_made": [
+    "Threshold has been satisfied unless recorded separately",
+    "Custody has been proven unless recorded separately"
+  ]
+}

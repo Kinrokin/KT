@@ -1,0 +1,60 @@
+{
+  "schema_id": "kt.operator.ws10_consistency_reseal_receipt.v1",
+  "workstream_id": "WS10_POST_PASS_CONSISTENCY_RECONCILIATION",
+  "governing_workstream": "WS10_AIR_GAPPED_ROOT_CEREMONY_AND_SIGNER_TOPOLOGY",
+  "status": "PASS",
+  "pass_verdict": "WS10_CONTROL_PLANE_RECONCILED_AFTER_RERATIFIED_3_OF_3_PASS",
+  "generated_utc": "2026-03-17T19:52:21Z",
+  "current_repo_head": "bd8984cc3c47af7409e5d960eb5d4c8f54c2eebc",
+  "compiled_against": "bd8984cc3c47af7409e5d960eb5d4c8f54c2eebc",
+  "unexpected_touches": [],
+  "protected_touch_violations": [],
+  "stale_surface_detected": {
+    "surface_ref": "KT_PROD_CLEANROOM/governance/kt_execution_dag.json",
+    "observed_ws10_status_before_reseal": "PREPARED_NOT_EXECUTED",
+    "observed_ws11_status_before_reseal": "LOCKED_PENDING_WS10_PASS",
+    "conflict_summary": "The root ceremony receipt, trust-root policy, and signer topology had already been reratified to a 3-of-3 WS10 PASS while the execution DAG still reflected the pre-execution prepared state."
+  },
+  "reconciliation_actions": [
+    {
+      "path": "KT_PROD_CLEANROOM/governance/kt_execution_dag.json",
+      "action": "RESEALED",
+      "result": "WS10 now reads PASS_RERATIFIED_3_OF_3 and WS11 is UNLOCKED as the next lawful workstream."
+    }
+  ],
+  "validation_results": {
+    "ws10_import_validation": "PASS",
+    "control_plane_alignment_validation": "PASS",
+    "package_root_pytest": "PASS",
+    "repo_root_pytest": "FAIL_EXPECTED_IMPORT_PATH_FRAGILITY"
+  },
+  "commands_run": [
+    "python -m pytest -q tests/operator/test_root_ceremony_prepare.py",
+    "python -m pytest -q KT_PROD_CLEANROOM/tests/operator/test_root_ceremony_prepare.py"
+  ],
+  "import_path_fragility_note": "test_root_ceremony_prepare.py passes from the KT_PROD_CLEANROOM package root and fails from the repo root with ModuleNotFoundError: tools. This was recorded, not hidden, and was not widened into a false all-green claim.",
+  "current_truth_after_reseal": {
+    "ws10_status": "PASS_RERATIFIED_3_OF_3",
+    "root_boundary_proven": "3-of-3 only",
+    "root_boundary_not_proven": "3-of-5",
+    "release_readiness_proven": false,
+    "verifier_acceptance_widened": false,
+    "ws11_started": false,
+    "next_lawful_workstream": "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION"
+  },
+  "evidence_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_root_ceremony_receipt.json",
+    "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+    "KT_PROD_CLEANROOM/governance/kt_signer_topology.json",
+    "KT_PROD_CLEANROOM/governance/kt_execution_dag.json",
+    "KT_PROD_CLEANROOM/reports/kt_ceremony_import_manifest.json"
+  ],
+  "stronger_claim_not_made": [
+    "The original planned 3-of-5 root topology was executed",
+    "Release readiness is proven",
+    "Verifier acceptance widened",
+    "Sigstore or Rekor activation has started",
+    "WS11 has been substantively executed by this reseal step"
+  ],
+  "mutation_scope": "WS10_POST_PASS_CONSISTENCY_RECONCILIATION_ONLY"
+}

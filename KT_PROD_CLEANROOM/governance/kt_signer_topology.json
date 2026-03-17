@@ -1,0 +1,231 @@
+{
+  "schema_id": "kt.governance.signer_topology.v1",
+  "topology_id": "KT_SOVEREIGN_SIGNER_TOPOLOGY_V1_20260317_RERATIFIED_3_OF_3",
+  "status": "EXECUTED_RERATIFIED_3_OF_3",
+  "generated_utc": "2026-03-17T19:32:42Z",
+  "current_repo_head": "bd8984cc3c47af7409e5d960eb5d4c8f54c2eebc",
+  "root_policy_ref": "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+  "signer_identity_policy_ref": "KT_PROD_CLEANROOM/governance/signer_identity_policy.json",
+  "supply_chain_layout_ref": "KT_PROD_CLEANROOM/governance/supply_chain_layout.json",
+  "semantic_boundary": {
+    "identities_are_logical_only": false,
+    "offline_root_issuance_complete": true,
+    "non_root_roles_remain_planned": true,
+    "quorum_witnessed": true,
+    "lawful_current_claim": "Root signer topology is executed and reratified as 3-of-3 only. Release, producer, CI, and verifier-acceptance roles remain planned and unexecuted."
+  },
+  "topology_reratification": {
+    "prior_root_threshold": 3,
+    "prior_root_signer_count": 5,
+    "reratified_root_threshold": 3,
+    "reratified_root_signer_count": 3,
+    "reason": "Imported off-box evidence supports 3-of-3 execution and does not support 3-of-5 execution."
+  },
+  "role_identity_map": [
+    {
+      "identity_id": "kevin_gratts",
+      "role_id": "root",
+      "issuance_state": "EXECUTED_OFFBOX",
+      "custody_class": "physical_usb_shard_custody",
+      "storage_rule": "offline_physical_custody"
+    },
+    {
+      "identity_id": "jessica_lack",
+      "role_id": "root",
+      "issuance_state": "EXECUTED_OFFBOX",
+      "custody_class": "physical_usb_shard_custody",
+      "storage_rule": "offline_physical_custody"
+    },
+    {
+      "identity_id": "ruthie_mckinley",
+      "role_id": "root",
+      "issuance_state": "EXECUTED_OFFBOX",
+      "custody_class": "physical_usb_shard_custody",
+      "storage_rule": "offline_physical_custody"
+    },
+    {
+      "identity_id": "KT_RELEASE_SIGNER_A",
+      "role_id": "release",
+      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "custody_class": "hardware_backed_signing_station",
+      "storage_rule": "release_offline_when_idle"
+    },
+    {
+      "identity_id": "KT_RELEASE_SIGNER_B",
+      "role_id": "release",
+      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "custody_class": "hardware_backed_signing_station",
+      "storage_rule": "release_offline_when_idle"
+    },
+    {
+      "identity_id": "KT_RELEASE_SIGNER_C",
+      "role_id": "release",
+      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "custody_class": "hardware_backed_signing_station",
+      "storage_rule": "release_offline_when_idle"
+    },
+    {
+      "identity_id": "KT_PRODUCER_SIGNER_A",
+      "role_id": "producer",
+      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "custody_class": "attested_build_identity",
+      "storage_rule": "ephemeral_bound_to_attested_runner"
+    },
+    {
+      "identity_id": "KT_PRODUCER_SIGNER_B",
+      "role_id": "producer",
+      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "custody_class": "attested_build_identity",
+      "storage_rule": "ephemeral_bound_to_attested_runner"
+    },
+    {
+      "identity_id": "KT_PRODUCER_SIGNER_C",
+      "role_id": "producer",
+      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "custody_class": "attested_build_identity",
+      "storage_rule": "ephemeral_bound_to_attested_runner"
+    },
+    {
+      "identity_id": "KT_CI_SIGNER_A",
+      "role_id": "ci",
+      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "custody_class": "attested_ci_oidc_identity",
+      "storage_rule": "short_lived_token_only"
+    },
+    {
+      "identity_id": "KT_CI_SIGNER_B",
+      "role_id": "ci",
+      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "custody_class": "attested_ci_oidc_identity",
+      "storage_rule": "short_lived_token_only"
+    },
+    {
+      "identity_id": "KT_VERIFIER_ACCEPTANCE_A",
+      "role_id": "verifier_acceptance",
+      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "custody_class": "offline_verifier_maintainer",
+      "storage_rule": "offline_acceptance_bundle"
+    },
+    {
+      "identity_id": "KT_VERIFIER_ACCEPTANCE_B",
+      "role_id": "verifier_acceptance",
+      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "custody_class": "offline_verifier_maintainer",
+      "storage_rule": "offline_acceptance_bundle"
+    }
+  ],
+  "roles": [
+    {
+      "role_id": "root",
+      "purpose": "Offline trust-root ratification and emergency recovery.",
+      "threshold": 3,
+      "signer_count": 3,
+      "planned_identity_ids": [
+        "kevin_gratts",
+        "jessica_lack",
+        "ruthie_mckinley"
+      ],
+      "issuance_state": "EXECUTED_OFFBOX_RERATIFIED_3_OF_3"
+    },
+    {
+      "role_id": "release",
+      "purpose": "Approve release bundles after verifier acceptance and ceremony prerequisites pass.",
+      "threshold": 2,
+      "signer_count": 3,
+      "planned_identity_ids": [
+        "KT_RELEASE_SIGNER_A",
+        "KT_RELEASE_SIGNER_B",
+        "KT_RELEASE_SIGNER_C"
+      ],
+      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY"
+    },
+    {
+      "role_id": "producer",
+      "purpose": "Attest approved build or artifact production surfaces.",
+      "threshold": 2,
+      "signer_count": 3,
+      "planned_identity_ids": [
+        "KT_PRODUCER_SIGNER_A",
+        "KT_PRODUCER_SIGNER_B",
+        "KT_PRODUCER_SIGNER_C"
+      ],
+      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY"
+    },
+    {
+      "role_id": "ci",
+      "purpose": "Bind automated pipeline identities under later Sigstore/TUF policy.",
+      "threshold": 1,
+      "signer_count": 2,
+      "planned_identity_ids": [
+        "KT_CI_SIGNER_A",
+        "KT_CI_SIGNER_B"
+      ],
+      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY"
+    },
+    {
+      "role_id": "verifier_acceptance",
+      "purpose": "Approve verifier trust-root updates and revocations.",
+      "threshold": 1,
+      "signer_count": 2,
+      "planned_identity_ids": [
+        "KT_VERIFIER_ACCEPTANCE_A",
+        "KT_VERIFIER_ACCEPTANCE_B"
+      ],
+      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY"
+    }
+  ],
+  "quorum_rules": [
+    {
+      "role_id": "root",
+      "quorum_statement": "3 of 3 offline root shard custodians are required and were witnessed for the reratified WS10 boundary."
+    },
+    {
+      "role_id": "release",
+      "quorum_statement": "2 of 3 release maintainers required for release approval."
+    },
+    {
+      "role_id": "producer",
+      "quorum_statement": "2 of 3 producer identities required for artifact promotion."
+    },
+    {
+      "role_id": "ci",
+      "quorum_statement": "1 of 2 attested CI identities required for automated publication support."
+    },
+    {
+      "role_id": "verifier_acceptance",
+      "quorum_statement": "1 of 2 verifier maintainers required to publish an updated acceptance bundle."
+    }
+  ],
+  "custody_and_storage_rules": {
+    "root": "Offline physical shard custody on witness-observed USB media only for the reratified 3-of-3 boundary.",
+    "release": "Hardware-backed signing stations; offline when idle; no shared credentials.",
+    "producer": "Ephemeral identities bound to attested build systems only after later activation.",
+    "ci": "Short-lived OIDC or equivalent attestable identities only after WS11.",
+    "verifier_acceptance": "Offline acceptance bundles; no private verifier trust secrets on connected hosts."
+  },
+  "emergency_rotation_path": {
+    "freeze_condition": "Any root or release identity compromise freezes WS11+ immediately.",
+    "recovery_sequence": [
+      "freeze downstream workstreams",
+      "invoke root ceremony again offline",
+      "reissue trust metadata",
+      "publish revocation and acceptance update"
+    ]
+  },
+  "verifier_acceptance_impact": {
+    "pre_ws11": "Verifier continues to trust only the predecessor bootstrap root plus documentary evidence of the executed 3-of-3 root ceremony.",
+    "post_ws11_and_ws14": "Verifier may consume an updated threshold-backed root only after explicit acceptance-policy workstreams complete."
+  },
+  "release_ceremony_dependency_update": {
+    "release_ceremony_ref": "KT_PROD_CLEANROOM/governance/kt_release_ceremony.json",
+    "new_blocking_dependency": "WS10 receipt must be PASS before any release ceremony can start.",
+    "ws10_status_after_reratification": "SATISFIED_FOR_ROOT_BOUNDARY_ONLY"
+  },
+  "failure_mode_register_ref": "KT_PROD_CLEANROOM/governance/kt_failure_mode_register.json",
+  "execution_dag_ref": "KT_PROD_CLEANROOM/governance/kt_execution_dag.json",
+  "evidence_import_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_root_shard_custody_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_root_quorum_witness_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_ceremony_import_manifest.json"
+  ]
+}

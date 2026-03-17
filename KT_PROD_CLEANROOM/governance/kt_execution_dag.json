@@ -1,0 +1,123 @@
+{
+  "schema_id": "kt.governance.execution_dag.v1",
+  "dag_id": "KT_SOVEREIGN_EXECUTION_DAG_V1_20260317",
+  "status": "ACTIVE",
+  "generated_utc": "2026-03-17T19:52:21Z",
+  "current_repo_head": "bd8984cc3c47af7409e5d960eb5d4c8f54c2eebc",
+  "current_node": "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION",
+  "next_lawful_workstream": "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION",
+  "no_progress_without_proof": true,
+  "semantic_boundary": {
+    "ws9_frozen_locally": true,
+    "ws10_pass_required_before_ws11": true,
+    "lawful_current_claim": "WS10 passed under a reratified 3-of-3 root boundary only. WS11 is now unlocked as the next lawful workstream, but no substantive WS11 work has started in this consistency-reseal step.",
+    "stronger_claim_not_made": [
+      "The original planned 3-of-5 root topology was executed",
+      "Release readiness is proven",
+      "Verifier acceptance widened",
+      "WS11 has already been substantively started"
+    ]
+  },
+  "nodes": [
+    {
+      "id": "WS9_AUTHORITY_AND_PUBLISHED_HEAD_CLOSURE",
+      "depends_on": [],
+      "ratification_checkpoint": "kt_authority_and_published_head_closure_receipt.json",
+      "status": "LOCAL_CHECKPOINT_COMPLETE"
+    },
+    {
+      "id": "WS10_AIR_GAPPED_ROOT_CEREMONY_AND_SIGNER_TOPOLOGY",
+      "depends_on": [
+        "WS9_AUTHORITY_AND_PUBLISHED_HEAD_CLOSURE"
+      ],
+      "ratification_checkpoint": "kt_root_ceremony_receipt.json",
+      "status": "PASS_RERATIFIED_3_OF_3",
+      "advance_requires": [],
+      "claim_boundary": "PASS applies only to the reratified 3-of-3 root boundary. The earlier planned 3-of-5 topology was not proven.",
+      "stale_status_reconciled_from": "PREPARED_NOT_EXECUTED"
+    },
+    {
+      "id": "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION",
+      "depends_on": [
+        "WS10_AIR_GAPPED_ROOT_CEREMONY_AND_SIGNER_TOPOLOGY"
+      ],
+      "ratification_checkpoint": "kt_sigstore_integration_receipt.json",
+      "status": "UNLOCKED",
+      "unlock_basis": "WS10 reratified 3-of-3 PASS plus WS10 consistency reseal",
+      "activation_boundary": "This node is the next lawful workstream only. No substantive WS11 mutation is performed by the reconciliation step."
+    },
+    {
+      "id": "WS12_IN_TOTO_SLSA_AND_TUF_ATTACK_COVERAGE",
+      "depends_on": [
+        "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION"
+      ],
+      "ratification_checkpoint": "kt_supply_chain_policy_receipt.json",
+      "status": "LOCKED_PENDING_WS11_PASS"
+    },
+    {
+      "id": "WS13_ARTIFACT_CLASS_AND_DETERMINISM_ENVELOPE_LOCK",
+      "depends_on": [
+        "WS12_IN_TOTO_SLSA_AND_TUF_ATTACK_COVERAGE"
+      ],
+      "ratification_checkpoint": "kt_determinism_envelope_receipt.json",
+      "status": "LOCKED_PENDING_WS12_PASS"
+    },
+    {
+      "id": "WS14_STATIC_VERIFIER_RELEASE_AND_ACCEPTANCE_POLICY",
+      "depends_on": [
+        "WS13_ARTIFACT_CLASS_AND_DETERMINISM_ENVELOPE_LOCK"
+      ],
+      "ratification_checkpoint": "kt_public_verifier_release_receipt.json",
+      "status": "LOCKED_PENDING_WS13_PASS"
+    },
+    {
+      "id": "WS15_CLAIM_ABI_PROOF_CEILING_IDENTITY_AND_LEDGER_LAW",
+      "depends_on": [
+        "WS14_STATIC_VERIFIER_RELEASE_AND_ACCEPTANCE_POLICY"
+      ],
+      "ratification_checkpoint": "claim_abi_receipt",
+      "status": "LOCKED_PENDING_WS14_PASS"
+    },
+    {
+      "id": "WS16_TRUST_ASSUMPTIONS_TEVV_DATASET_PINNING_AND_COMPARATOR_REGISTRY",
+      "depends_on": [
+        "WS15_CLAIM_ABI_PROOF_CEILING_IDENTITY_AND_LEDGER_LAW"
+      ],
+      "ratification_checkpoint": "tevv_and_benchmark_receipt",
+      "status": "LOCKED_PENDING_WS15_PASS"
+    },
+    {
+      "id": "WS17A_EXTERNAL_CONFIRMATION_ASSURANCE",
+      "depends_on": [
+        "WS16_TRUST_ASSUMPTIONS_TEVV_DATASET_PINNING_AND_COMPARATOR_REGISTRY"
+      ],
+      "ratification_checkpoint": "external_assurance_receipt",
+      "status": "LOCKED_PENDING_WS16_PASS"
+    },
+    {
+      "id": "WS17B_EXTERNAL_CONFIRMATION_CAPABILITY",
+      "depends_on": [
+        "WS16_TRUST_ASSUMPTIONS_TEVV_DATASET_PINNING_AND_COMPARATOR_REGISTRY"
+      ],
+      "ratification_checkpoint": "external_capability_receipt",
+      "status": "LOCKED_PENDING_WS16_PASS"
+    },
+    {
+      "id": "WS18_RELEASE_CEREMONY_AND_FINAL_READJUDICATION",
+      "depends_on": [
+        "WS17A_EXTERNAL_CONFIRMATION_ASSURANCE",
+        "WS17B_EXTERNAL_CONFIRMATION_CAPABILITY"
+      ],
+      "ratification_checkpoint": "final_readjudication_receipt",
+      "status": "LOCKED_PENDING_WS17_PASS"
+    },
+    {
+      "id": "WS19_PRODUCT_SURFACE_AND_LICENSE_TRACK",
+      "depends_on": [
+        "WS18_RELEASE_CEREMONY_AND_FINAL_READJUDICATION"
+      ],
+      "ratification_checkpoint": "product_surface_receipt",
+      "status": "LOCKED_PENDING_WS18_PASS"
+    }
+  ]
+}

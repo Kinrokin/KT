@@ -1,0 +1,157 @@
+{
+  "schema_id": "kt.operator.root_ceremony_receipt.v1",
+  "workstream_id": "WS10_AIR_GAPPED_ROOT_CEREMONY_AND_SIGNER_TOPOLOGY",
+  "status": "PASS",
+  "pass_verdict": "ROOT_CEREMONY_EXECUTED_RERATIFIED_3_OF_3",
+  "subject_head_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+  "evidence_head_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
+  "current_repo_head": "bd8984cc3c47af7409e5d960eb5d4c8f54c2eebc",
+  "compiled_against": "bd8984cc3c47af7409e5d960eb5d4c8f54c2eebc",
+  "generated_utc": "2026-03-17T19:32:42Z",
+  "unexpected_touches": [],
+  "protected_touch_violations": [],
+  "validators_run": [
+    "ws10_evidence_packet::ceremony_id_consistent",
+    "ws10_evidence_packet::root_generated_offline",
+    "ws10_evidence_packet::3_of_3_quorum_witnessed",
+    "ws10_evidence_packet::offline_verification_pass",
+    "ws10_evidence_packet::import_manifest_sha_bound"
+  ],
+  "tests_run": [
+    "json_parse_validation",
+    "evidence_coherence_validation",
+    "tests/operator/test_root_ceremony_prepare.py"
+  ],
+  "trust_assumptions_remaining": [
+    "Exact ceremony timestamps were not transcribed and remain UNKNOWN_AT_TRANSCRIPTION.",
+    "The root generation algorithm string remains unspecified in the imported evidence.",
+    "Public root identifiers and fingerprints were not transcribed into the imported evidence.",
+    "The ceremony machine serial or asset ID remains UNKNOWN_AT_TRANSCRIPTION.",
+    "This PASS is for a reratified 3-of-3 root boundary only; non-root roles remain planned and unexecuted."
+  ],
+  "upgrade_events": [
+    "WS10_OFFBOX_EVIDENCE_IMPORTED",
+    "ROOT_TOPOLOGY_RERATIFIED_FROM_3_OF_5_TO_3_OF_3",
+    "WS10_BLOCKERS_CLEARED_UNDER_NARROWED_ROOT_BOUNDARY"
+  ],
+  "downgrade_events": [
+    "ROOT_EXECUTION_CLAIM_NARROWED_FROM_PLANNED_3_OF_5_TO_EXECUTED_3_OF_3"
+  ],
+  "signer_topology_snapshot": {
+    "root_threshold": "3-of-3 executed and witnessed (reratified from planned 3-of-5)",
+    "release_threshold": "2-of-3 planned only",
+    "producer_threshold": "2-of-3 planned only",
+    "ci_threshold": "1-of-2 planned only",
+    "verifier_acceptance_threshold": "1-of-2 planned only"
+  },
+  "verification_predicate_versions": {
+    "trust_root_policy": "kt.governance.trust_root_policy.v1",
+    "signer_topology": "kt.governance.signer_topology.v1",
+    "root_ceremony_log": "kt_root_ceremony_log.v1",
+    "root_key_generation_record": "kt_root_key_generation_record.v1",
+    "root_shard_custody_record": "kt_root_shard_custody_record.v1",
+    "root_quorum_witness_record": "kt_root_quorum_witness_record.v1",
+    "offline_verification_transcript": "kt_offline_verification_transcript.v1",
+    "ceremony_hardware_inventory": "kt_ceremony_hardware_inventory.v1",
+    "ceremony_import_manifest": "kt_ceremony_import_manifest.v1"
+  },
+  "current_strongest_claim": "WS10 passes for an off-box executed and witnessed root ceremony under a reratified 3-of-3 root boundary on the current local repo head. The earlier planned 3-of-5 boundary was not executed. Release, producer, CI, and verifier-acceptance roles remain planned. WS11 has not started.",
+  "stronger_claim_not_made": [
+    "The original planned 3-of-5 root topology was executed",
+    "Release signer issuance completed",
+    "Producer signer issuance completed",
+    "CI signer issuance completed",
+    "Verifier acceptance widened",
+    "WS11 has started",
+    "Public transparency activation has happened",
+    "Enterprise release readiness is proven"
+  ],
+  "forbidden_claims": [
+    "3-of-5 root execution proven by this packet",
+    "Release readiness proven by WS10 evidence",
+    "Verifier acceptance widened by WS10 evidence",
+    "WS11 completion implied by WS10 PASS",
+    "External transparency activation implied by WS10 PASS"
+  ],
+  "out_of_scope_attack_classes": [
+    "physical_hardware_tampering",
+    "offbox_operator_collusion",
+    "hardware_supply_chain_forensics",
+    "sigstore_rekor_rollout",
+    "external_assurance_confirmation"
+  ],
+  "created_files": [
+    "KT_PROD_CLEANROOM/reports/kt_root_ceremony_log.json",
+    "KT_PROD_CLEANROOM/reports/kt_root_key_generation_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_root_shard_custody_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_root_quorum_witness_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_offline_verification_transcript.json",
+    "KT_PROD_CLEANROOM/reports/kt_ceremony_hardware_inventory.json",
+    "KT_PROD_CLEANROOM/reports/kt_ceremony_import_manifest.json"
+  ],
+  "deleted_files": [],
+  "temporary_files_removed": [],
+  "superseded_files_removed_or_demoted": [],
+  "waste_control": {
+    "files_touched": [
+      "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+      "KT_PROD_CLEANROOM/governance/kt_signer_topology.json",
+      "KT_PROD_CLEANROOM/reports/kt_root_ceremony_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_root_ceremony_log.json",
+      "KT_PROD_CLEANROOM/reports/kt_root_key_generation_record.json",
+      "KT_PROD_CLEANROOM/reports/kt_root_shard_custody_record.json",
+      "KT_PROD_CLEANROOM/reports/kt_root_quorum_witness_record.json",
+      "KT_PROD_CLEANROOM/reports/kt_offline_verification_transcript.json",
+      "KT_PROD_CLEANROOM/reports/kt_ceremony_hardware_inventory.json",
+      "KT_PROD_CLEANROOM/reports/kt_ceremony_import_manifest.json"
+    ],
+    "expected_artifacts_for_this_workstream_only": [
+      "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+      "KT_PROD_CLEANROOM/governance/kt_signer_topology.json",
+      "KT_PROD_CLEANROOM/reports/kt_root_ceremony_receipt.json"
+    ],
+    "receipt_family_for_this_workstream_only": [
+      "KT_PROD_CLEANROOM/reports/kt_root_ceremony_receipt.json"
+    ],
+    "mutation_scope": "WS10_EVIDENCE_IMPORT_AND_3_OF_3_RERATIFICATION_ONLY"
+  },
+  "next_lawful_workstream": "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION",
+  "blocked_by": [],
+  "blocker_evidence_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_root_ceremony_log.json",
+    "KT_PROD_CLEANROOM/reports/kt_root_key_generation_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_root_shard_custody_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_root_quorum_witness_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_offline_verification_transcript.json",
+    "KT_PROD_CLEANROOM/reports/kt_ceremony_hardware_inventory.json",
+    "KT_PROD_CLEANROOM/reports/kt_ceremony_import_manifest.json",
+    "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+    "KT_PROD_CLEANROOM/governance/kt_signer_topology.json"
+  ],
+  "what_is_not_proven": [
+    "The earlier planned 3-of-5 root topology was executed",
+    "Release, producer, CI, and verifier-acceptance roles were executed",
+    "Verifier acceptance widened",
+    "WS11 has started",
+    "Sigstore or Rekor activation has happened"
+  ],
+  "ws10_extension": {
+    "ceremony_status": "EXECUTED_RERATIFIED_3_OF_3",
+    "execution_evidence_present": true,
+    "executed_root_profile": {
+      "threshold": 3,
+      "share_count": 3,
+      "custodians": [
+        "kevin_gratts",
+        "jessica_lack",
+        "ruthie_mckinley"
+      ],
+      "witnesses": [
+        "marry_harris",
+        "lidia_bradford"
+      ]
+    },
+    "import_manifest_ref": "KT_PROD_CLEANROOM/reports/kt_ceremony_import_manifest.json",
+    "import_manifest_status": "COMPLETE"
+  }
+}
