@@ -234,6 +234,16 @@ def _git_changed_files(root: Path, commit: str) -> List[str]:
     return [line.strip().replace("\\", "/") for line in output.splitlines() if line.strip()]
 
 
+def _git_last_commit_for_paths(root: Path, paths: Sequence[str]) -> str:
+    existing = [str(Path(path).as_posix()) for path in paths if (root / Path(path)).exists()]
+    if not existing:
+        return ""
+    try:
+        return _git(root, "log", "-1", "--format=%H", "--", *existing)
+    except Exception:  # noqa: BLE001
+        return ""
+
+
 def _tracked_files(root: Path) -> List[str]:
     output = _git(root, "ls-files")
     return [line.strip().replace("\\", "/") for line in output.splitlines() if line.strip()]
@@ -590,11 +600,19 @@ def build_ws2_outputs(root: Path) -> Dict[str, Dict[str, Any]]:
 def build_ws2_receipt(root: Path) -> Dict[str, Any]:
     outputs = build_ws2_outputs(root)
     current_head = _git_head(root)
+    subject_refs = [
+        CANONICAL_TREE_MANIFEST_REL,
+        ARCHIVE_MANIFEST_REL,
+        DEPRECATION_EXECUTION_LOG_REL,
+        TOOL_REL,
+        TEST_REL,
+    ]
+    subject_head = _git_last_commit_for_paths(root, subject_refs) or current_head
     dirty_paths = _status_paths(root)
     if any(path != RECEIPT_REL for path in dirty_paths):
         touched = sorted(set(dirty_paths + [RECEIPT_REL]), key=str.lower)
     else:
-        touched = sorted(set(_git_changed_files(root, current_head) + dirty_paths + [RECEIPT_REL]), key=str.lower)
+        touched = sorted(set(_git_changed_files(root, subject_head) + dirty_paths + [RECEIPT_REL]), key=str.lower)
     unexpected = _unexpected_touches(touched)
     protected = _protected_touch_violations(touched)
     if unexpected:
@@ -609,9 +627,10 @@ def build_ws2_receipt(root: Path) -> Dict[str, Any]:
         "workstream_id": WORKSTREAM_ID,
         "status": "PASS",
         "pass_verdict": PASS_VERDICT,
-        "compiled_head_commit": current_head,
-        "subject_head_commit": current_head,
-        "evidence_head_commit": current_head,
+        "compiled_head_commit": subject_head,
+        "subject_head_commit": subject_head,
+        "evidence_head_commit": subject_head,
+        "current_head_commit": current_head,
         "unexpected_touches": unexpected,
         "protected_touch_violations": protected,
         "validators_run": [

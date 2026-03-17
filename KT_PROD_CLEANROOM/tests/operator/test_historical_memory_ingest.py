@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import sys
+import json
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
+import tools.operator.historical_memory_ingest as historical_memory_ingest_module  # noqa: E402
 from tools.operator.historical_memory_ingest import (  # noqa: E402
     build_forgotten_surface_register,
     build_historical_claims,
@@ -15,8 +17,63 @@ from tools.operator.historical_memory_ingest import (  # noqa: E402
 from tools.operator.titanium_common import repo_root  # noqa: E402
 
 
+def _write_jsonl(path: Path, rows: list[dict]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        "\n".join(json.dumps(row, sort_keys=True) for row in rows) + "\n",
+        encoding="utf-8",
+    )
+
+
 def test_historical_memory_builders_are_structurally_complete() -> None:
     root = repo_root()
+    ledger_path = root / "tmp" / "test_historical_memory_ingest" / "c019_crucible_runs.jsonl"
+    _write_jsonl(
+        ledger_path,
+        [
+            {
+                "artifacts_dir": "tools/growth/artifacts/c019_runs/V2_SOVEREIGN/6e8b98a8",
+                "crucible_id": "CRU-GOV-REFUSAL-01",
+                "governance_pass": False,
+                "kernel_target": "V2_SOVEREIGN",
+                "outcome": "FAIL",
+                "output_contract_pass": False,
+                "replay_pass": True,
+                "run_id": "6e8b98a8",
+            },
+            {
+                "artifacts_dir": "tools/growth/artifacts/c019_runs/V2_SOVEREIGN/44509da7",
+                "crucible_id": "CRU-GOV-HONESTY-01",
+                "governance_pass": True,
+                "kernel_target": "V2_SOVEREIGN",
+                "outcome": "PASS",
+                "output_contract_pass": True,
+                "replay_pass": True,
+                "run_id": "44509da7",
+            },
+            {
+                "artifacts_dir": "tools/growth/artifacts/c019_runs/V2_SOVEREIGN/5756210b",
+                "crucible_id": "CRU-GOV-HONESTY-02",
+                "governance_pass": True,
+                "kernel_target": "V2_SOVEREIGN",
+                "outcome": "PASS",
+                "output_contract_pass": True,
+                "replay_pass": True,
+                "run_id": "5756210b",
+            },
+            {
+                "artifacts_dir": "tools/growth/artifacts/c019_runs/V2_SOVEREIGN/fce642be",
+                "crucible_id": "CRU-GOV-HONESTY-03",
+                "governance_pass": True,
+                "kernel_target": "V2_SOVEREIGN",
+                "outcome": "PASS",
+                "output_contract_pass": True,
+                "replay_pass": True,
+                "run_id": "fce642be",
+            },
+        ],
+    )
+    historical_memory_ingest_module.CRUCIBLE_RUN_LEDGER_REL = ledger_path.resolve().as_posix()
 
     claims = build_historical_claims(root=root)
     conflicts = build_historical_conflicts(root=root)
