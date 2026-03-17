@@ -17,8 +17,8 @@ def _baseline() -> dict:
     return {
         "manifest_ref": "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
         "packet_refs": [
-            "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/README.md",
-            "docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309/KT_FULL_COMPLETION_ATTEMPT_REPORT_20260310.md",
+            "baseline_packet/README.md",
+            "baseline_packet/KT_FULL_COMPLETION_ATTEMPT_REPORT_20260310.md",
         ],
         "validated_head_sha": "7bd610b507328eb72622ce24678620f5469f3848",
         "baseline_target_head_commit": "46173df31a9242c2e8f4bd7a1494b3466d1a89b9",

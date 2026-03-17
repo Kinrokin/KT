@@ -21,6 +21,8 @@ PUBLIC_VERIFIER_REL = f"{REPORT_ROOT_REL}/public_verifier_manifest.json"
 REPRESENTATIVE_REPRO_REL = f"{REPORT_ROOT_REL}/representative_authority_lane_reproducibility_receipt.json"
 RUN_SWEEP_MATRIX_REL = f"{REPORT_ROOT_REL}/run_sweep_audit_failure_matrix.json"
 POSTURE_CONFLICT_REL = f"{REPORT_ROOT_REL}/posture_conflict_receipt.json"
+ARCHIVE_MANIFEST_REL = f"{REPORT_ROOT_REL}/kt_archive_manifest.json"
+DEPRECATION_EXECUTION_LOG_REL = f"{REPORT_ROOT_REL}/kt_deprecation_execution_log.json"
 
 ARCHIVE_ROOT_REL = "KT_ARCHIVE"
 AUDIT_PACKET_DIR_REL = f"{ARCHIVE_ROOT_REL}/docs/audit/KT_REPO_AUTHORITY_AUDIT_20260309"
@@ -160,6 +162,47 @@ def _count_files(root: Path, rel: str) -> int:
     if path.is_file():
         return 1
     return sum(1 for item in path.rglob("*") if item.is_file())
+
+
+def _archive_manifest_paths(root: Path) -> List[str]:
+    path = (root / Path(ARCHIVE_MANIFEST_REL)).resolve()
+    if not path.exists():
+        return []
+    try:
+        payload = load_json(path)
+    except Exception:  # noqa: BLE001
+        return []
+    rows = payload.get("entries") if isinstance(payload.get("entries"), list) else []
+    return [
+        str(entry.get("path", "")).strip().replace("\\", "/")
+        for entry in rows
+        if isinstance(entry, dict) and str(entry.get("path", "")).strip()
+    ]
+
+
+def _deprecation_archive_paths(root: Path) -> List[str]:
+    path = (root / Path(DEPRECATION_EXECUTION_LOG_REL)).resolve()
+    if not path.exists():
+        return []
+    try:
+        payload = load_json(path)
+    except Exception:  # noqa: BLE001
+        return []
+    rows = payload.get("local_only_residue_not_promoted") if isinstance(payload.get("local_only_residue_not_promoted"), list) else []
+    return [
+        str(row).strip().replace("\\", "/")
+        for row in rows
+        if str(row).strip()
+    ]
+
+
+def _surface_exists(root: Path, surface_ref: str) -> bool:
+    normalized = str(Path(surface_ref)).replace("\\", "/").rstrip("/")
+    if (root / Path(normalized)).exists():
+        return True
+    manifest_prefix = f"{normalized}/"
+    evidence_paths = [*_archive_manifest_paths(root), *_deprecation_archive_paths(root)]
+    return any(path == normalized or path.startswith(manifest_prefix) for path in evidence_paths)
 
 
 def _jsonl_rows(path: Path) -> Iterable[Dict[str, Any]]:
@@ -705,7 +748,7 @@ def build_forgotten_surface_register(*, root: Path) -> Dict[str, Any]:
 
     enriched = []
     for row in surfaces:
-        enriched.append({**row, "exists": (root / Path(str(row["surface_ref"]))).exists()})
+        enriched.append({**row, "exists": _surface_exists(root, str(row["surface_ref"]))})
 
     return {
         "schema_id": "kt.operator.forgotten_surface_register.v1",
@@ -787,11 +830,12 @@ def build_reopened_defect_register(*, root: Path) -> Dict[str, Any]:
             "current_status": "STILL_OPEN",
             "reopened": True,
             "current_summary": "Historical archive material has been re-rooted under KT_ARCHIVE and remains lineage-only.",
-            "current_evidence_refs": [AUDIT_WORKSET_REL, "KT_ARCHIVE/docs/audit", "KT_ARCHIVE/legacy_runtime/KT_TEMPLE_ROOT", "KT_ARCHIVE/legacy_runtime/KT_LANE_LORA_PHASE_B"],
+            "current_evidence_refs": [AUDIT_WORKSET_REL, "KT_ARCHIVE/docs/audit", ARCHIVE_MANIFEST_REL, "KT_ARCHIVE/legacy_runtime/KT_LANE_LORA_PHASE_B"],
             "historical_evidence_refs": list(blocker_rows["ROOT_ARCHIVE_CONTAMINATION"].get("evidence_paths", [])),
             "current_values": {
                 "docs_audit_exists": (root / "KT_ARCHIVE" / "docs" / "audit").exists(),
-                "kt_temple_root_exists": (root / "KT_ARCHIVE" / "legacy_runtime" / "KT_TEMPLE_ROOT").exists(),
+                "kt_temple_root_path_exists": (root / "KT_ARCHIVE" / "legacy_runtime" / "KT_TEMPLE_ROOT").exists(),
+                "kt_temple_root_manifest_backed": _surface_exists(root, "KT_ARCHIVE/legacy_runtime/KT_TEMPLE_ROOT"),
                 "kt_lane_lora_phase_b_exists": (root / "KT_ARCHIVE" / "legacy_runtime" / "KT_LANE_LORA_PHASE_B").exists(),
             },
         },

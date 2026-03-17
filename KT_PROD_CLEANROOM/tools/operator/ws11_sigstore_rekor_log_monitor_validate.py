@@ -6,6 +6,7 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
+from tools.operator.canonical_tree_execute import CURRENT_ARCHIVE_LITERAL
 from tools.operator.titanium_common import file_sha256, load_json, repo_root, utc_now_iso_z, write_json_stable
 
 
@@ -77,7 +78,7 @@ PLANNED_MUTATES = [
     "KT_PROD_CLEANROOM/tools/operator/ws11_sigstore_rekor_log_monitor_validate.py",
     "KT_PROD_CLEANROOM/tests/operator/test_ws11_sigstore_rekor_log_monitor_validate.py",
 ]
-PROTECTED_TOUCH_PATTERNS = ("KT_ARCHIVE/", ".github/workflows/")
+PROTECTED_TOUCH_PATTERNS = (CURRENT_ARCHIVE_LITERAL, ".github/workflows/")
 SECRET_TOKENS = ("KT_HMAC_KEY_", "COSIGN_PASSWORD", "tmp/sigstore/keys/", "private key", "\"env_var\": \"KT_HMAC_")
 
 
