@@ -1,15 +1,12 @@
 {
   "artifact_id": "kt_sigstore_integration_receipt.json",
-  "blocked_by": [
-    "NO_KEYLESS_SIGSTORE_BUNDLE_FOR_DECLARED_WS11_SURFACES",
-    "EXECUTED_SIGNING_PATH_REMAINS_KEYPAIR_BASED"
-  ],
+  "blocked_by": [],
   "carry_forward_truth": {
     "dag_unlock_is_not_campaign_completion": true,
     "ws10_import_path_fragility_visible": "test_root_ceremony_prepare.py passes from the KT_PROD_CLEANROOM package root and fails from the repo root with ModuleNotFoundError: tools. This was recorded, not hidden, and was not widened into a false all-green claim.",
     "ws10_root_boundary": "3-of-3 only; 3-of-5 was not proven."
   },
-  "compiled_against": "aa1c48e72817cd9fa73e30c6e7ba5c8aab62e88b",
+  "compiled_against": "9464288018b6ebb8148cceb666041c62bc1c01ff",
   "created_files": [
     "KT_PROD_CLEANROOM/governance/kt_sigstore_keyless_path_policy.json",
     "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json",
@@ -18,20 +15,22 @@
     "KT_PROD_CLEANROOM/reports/kt_ws11_public_trust_bundle.json",
     "KT_PROD_CLEANROOM/reports/kt_sigstore_integration_receipt.json"
   ],
-  "current_repo_head": "aa1c48e72817cd9fa73e30c6e7ba5c8aab62e88b",
-  "current_strongest_claim": "WS11 has a real KT_LOG_MONITOR plane, Rekor inclusion evidence, a public verification bundle that requires no private or local-secret input for the declared WS11 public surfaces, and declared keyless identity constraints for the Truth Barrier workflow on main. However, the executed signing path remains keypair-based and no matching keyless Sigstore artifact is present, so WS11 is PARTIAL and not PASS.",
+  "current_repo_head": "9464288018b6ebb8148cceb666041c62bc1c01ff",
+  "current_strongest_claim": "WS11 proves a bounded declared public-trust path with keyless Sigstore signing for KT_PROD_CLEANROOM/reports/public_verifier_manifest.json, Rekor inclusion evidence, an active KT_LOG_MONITOR plane, and public-secret-free outsider verification.",
   "declared_identity_constraints": {
     "certificate_identity": "https://github.com/Kinrokin/KT/.github/workflows/ci_truth_barrier.yml@refs/heads/main",
     "certificate_oidc_issuer": "https://token.actions.githubusercontent.com"
   },
-  "generated_utc": "2026-03-17T20:27:49Z",
-  "keyless_backed_ws11_surfaces": [],
+  "generated_utc": "2026-03-17T22:09:48Z",
+  "keyless_backed_ws11_surfaces": [
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+  ],
   "mutation_scope": "WS11_SIGSTORE_REKOR_LOG_MONITOR_ONLY",
-  "next_lawful_workstream": "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION",
-  "pass_verdict": "KEYLESS_DECLARED_REKOR_ACTIVE_BUT_EXECUTION_PENDING",
+  "next_lawful_workstream": "WS12_IN_TOTO_SLSA_AND_TUF_ATTACK_COVERAGE",
+  "pass_verdict": "SIGSTORE_KEYLESS_REKOR_AND_LOG_MONITOR_ACTIVE",
   "protected_touch_violations": [],
   "schema_id": "kt.operator.sigstore_integration_receipt.v1",
-  "status": "PARTIAL",
+  "status": "PASS",
   "step_id": "WS11_STEP_1_SIGSTORE_REKOR_LOG_MONITOR_ACTIVATION",
   "stronger_claim_not_made": [
     "The original 3-of-5 root boundary was proven",
@@ -45,7 +44,8 @@
   ],
   "truth_conditions": {
     "anomaly_handling_and_freeze_behavior_validator_backed": true,
-    "critical_public_artifacts_signed_through_declared_public_trust_path": false,
+    "critical_public_artifacts_signed_through_declared_public_trust_path": true,
+    "executed_signing_path_truly_keyless": true,
     "kt_log_monitor_active_as_real_plane": true,
     "outsider_verification_has_no_private_local_secret_dependency_for_declared_ws11_surfaces": true,
     "rekor_inclusion_evidence_exists": true

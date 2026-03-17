@@ -1,10 +1,10 @@
 {
   "closure_boundary": {
-    "next_required_step": "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION",
+    "next_required_step": "WS12_IN_TOTO_SLSA_AND_TUF_ATTACK_COVERAGE",
     "preparatory_only": false,
     "requires_offbox_execution_for_pass": false
   },
-  "current_repo_head": "aa1c48e72817cd9fa73e30c6e7ba5c8aab62e88b",
+  "current_repo_head": "9464288018b6ebb8148cceb666041c62bc1c01ff",
   "custody_and_storage_rules": {
     "release_and_verifier_material": [
       "Keep release and verifier acceptance material offline when later minted.",
@@ -45,7 +45,7 @@
     "quorum_claim_without_witnessed_offline_signers",
     "ws11_transparency_claim_before_activation"
   ],
-  "generated_utc": "2026-03-17T20:27:49Z",
+  "generated_utc": "2026-03-17T22:09:48Z",
   "inheritance": {
     "evidence_head_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
     "foundation_bootstrap_state": "BOOTSTRAP_THRESHOLD_1_OF_1",
@@ -165,7 +165,7 @@
   "schema_id": "kt.governance.trust_root_policy.v1",
   "semantic_boundary": {
     "air_gapped_ceremony_executed": true,
-    "lawful_current_claim": "WS10 root ceremony remains executed off-box under a reratified 3-of-3 boundary only. WS11 is PARTIAL: Rekor evidence and KT_LOG_MONITOR are active on the declared public surfaces, keyless identity constraints are declared, but the signer path remains keypair-based and no matching keyless bundle is present.",
+    "lawful_current_claim": "WS10 root ceremony remains executed off-box under a reratified 3-of-3 boundary only. WS11 passed with a bounded executed keyless public-trust path, Rekor inclusion evidence, and an active KT_LOG_MONITOR plane.",
     "offline_root_material_present": true,
     "release_signer_material_present": false,
     "verifier_acceptance_upgraded": false

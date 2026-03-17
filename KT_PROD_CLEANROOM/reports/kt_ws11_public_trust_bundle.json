@@ -1,6 +1,6 @@
 {
   "artifact_id": "kt_ws11_public_trust_bundle.json",
-  "current_repo_head": "aa1c48e72817cd9fa73e30c6e7ba5c8aab62e88b",
+  "current_repo_head": "9464288018b6ebb8148cceb666041c62bc1c01ff",
   "declared_ws11_keyless_surfaces": [
     "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
     "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
@@ -10,12 +10,12 @@
     "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json"
   ],
   "evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
-  "generated_utc": "2026-03-17T20:27:49Z",
+  "generated_utc": "2026-03-17T22:09:48Z",
   "head_claim_boundary": "evidence_commit identifies the commit that last changed the cryptographic publication evidence; truth_subject_commit identifies the transparency-verified subject commit. Consumers must not equate them unless evidence_equals_subject is true.",
   "included_public_artifacts": [
     {
       "path": "KT_PROD_CLEANROOM/governance/signer_identity_policy.json",
-      "sha256": "4b36117e1991ccbd56632bd7674ad02aa70039695f8cd2cb006b75572602341c"
+      "sha256": "af6c09b0eee4e458294f5127a937a7da8b4ce7b08c92ba34c1635f24f73eb970"
     },
     {
       "path": "KT_PROD_CLEANROOM/governance/signers/kt_op1_cosign.pub",
@@ -23,15 +23,15 @@
     },
     {
       "path": "KT_PROD_CLEANROOM/governance/kt_sigstore_keyless_path_policy.json",
-      "sha256": "ebc56130ba4a898e830a3b1f137d0dd31fc65e29728f89f84fe4c2c7a78c1437"
+      "sha256": "de890a3b45db83cbce1cc136809d2a296b84accd9930746a4ecd7b9a95ef3298"
     },
     {
       "path": "KT_PROD_CLEANROOM/reports/kt_sigstore_keyless_status.json",
-      "sha256": "7fb77cdb893838ddb5e1c69e06569c56a9f927c04164a5f7fbc1deb0391ebe27"
+      "sha256": "75fa3c5962506320227b73e298b82ca5aa594b980a8af68fec7ee908e252d214"
     },
     {
       "path": "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json",
-      "sha256": "dbca193dd1b355eded2cf6aae7d45bd97d06572beebbc9ca1d9c89c223552ce8"
+      "sha256": "ae54ec5ab9cba65633886b9a9ef987cb9d19552cdc0f999d12ec9019c614acb9"
     },
     {
       "path": "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
@@ -59,8 +59,11 @@
     },
     {
       "path": "KT_PROD_CLEANROOM/reports/kt_log_monitor_plane_receipt.json",
-      "sha256": "cdcc5b67c8fa129adf1271071113294f8c9454c20f3bb23929ad8b60133d72df"
+      "sha256": "616e359710eddd7d3ac51624312b9aa627dc39a7dce190671d2852bd5d3b0e51"
     }
+  ],
+  "keyless_backed_surfaces": [
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
   ],
   "outsider_verification_requires_only_public_material": true,
   "schema_id": "kt.operator.ws11_public_trust_bundle.v1",

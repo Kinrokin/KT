@@ -1,12 +1,5 @@
 {
-  "anomalies": [
-    {
-      "anomaly_id": "SIGSTORE_KEYLESS_PATH_NOT_ACTIVE",
-      "ref": "KT_PROD_CLEANROOM/reports/kt_sigstore_keyless_status.json",
-      "severity": "HIGH",
-      "status": "OPEN"
-    }
-  ],
+  "anomalies": [],
   "artifact_id": "kt_log_monitor_plane_receipt.json",
   "checks": [
     {
@@ -39,7 +32,7 @@
       "refs": [
         "KT_PROD_CLEANROOM/reports/kt_sigstore_keyless_status.json"
       ],
-      "status": "FAIL"
+      "status": "PASS"
     },
     {
       "check": "public_verification_secret_free",
@@ -61,10 +54,10 @@
       "status": "PASS"
     }
   ],
-  "current_repo_head": "aa1c48e72817cd9fa73e30c6e7ba5c8aab62e88b",
-  "freeze_scope": "WS12_PLUS",
-  "freeze_state": "DOWNSTREAM_FREEZE_ACTIVE",
-  "generated_utc": "2026-03-17T20:27:49Z",
+  "current_repo_head": "9464288018b6ebb8148cceb666041c62bc1c01ff",
+  "freeze_scope": "",
+  "freeze_state": "NO_FREEZE",
+  "generated_utc": "2026-03-17T22:09:48Z",
   "plane_id": "KT_LOG_MONITOR",
   "plane_state": "ACTIVE",
   "schema_id": "kt.operator.log_monitor_plane_receipt.v1",
