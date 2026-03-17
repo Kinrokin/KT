@@ -1,0 +1,76 @@
+{
+  "anomalies": [
+    {
+      "anomaly_id": "SIGSTORE_KEYLESS_PATH_NOT_ACTIVE",
+      "ref": "KT_PROD_CLEANROOM/reports/kt_sigstore_keyless_status.json",
+      "severity": "HIGH",
+      "status": "OPEN"
+    }
+  ],
+  "artifact_id": "kt_log_monitor_plane_receipt.json",
+  "checks": [
+    {
+      "check": "sigstore_bundle_pass",
+      "detail": "Sigstore publication bundle must be PASS for WS11 surfaces.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "rekor_receipt_pass",
+      "detail": "Rekor inclusion receipt must be PASS.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "rekor_log_fields_present",
+      "detail": "Rekor inclusion receipt must expose log_id and log_index.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "keyless_path_active_for_pass",
+      "detail": "WS11 PASS requires an active keyless path.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_sigstore_keyless_status.json"
+      ],
+      "status": "FAIL"
+    },
+    {
+      "check": "public_verification_secret_free",
+      "detail": "Declared WS11 public surfaces must require no local secret.",
+      "failures": [],
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/signer_identity_policy.json",
+        "KT_PROD_CLEANROOM/governance/signers/kt_op1_cosign.pub",
+        "KT_PROD_CLEANROOM/governance/kt_sigstore_keyless_path_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_sigstore_keyless_status.json",
+        "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_attestation.json",
+        "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "ec56c043106f68e8efe51086080be656864787e2",
+  "freeze_scope": "WS12_PLUS",
+  "freeze_state": "DOWNSTREAM_FREEZE_ACTIVE",
+  "generated_utc": "2026-03-17T20:10:22Z",
+  "plane_id": "KT_LOG_MONITOR",
+  "plane_state": "ACTIVE",
+  "schema_id": "kt.operator.log_monitor_plane_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "An active monitor means WS11 PASS is earned",
+    "No anomaly means keyless signing is proven"
+  ]
+}

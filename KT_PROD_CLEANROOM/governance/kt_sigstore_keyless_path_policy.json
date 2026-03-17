@@ -1,0 +1,25 @@
+{
+  "activation_requirements": [
+    "signer_identity_policy.json keyless_constraints.allowed must be true",
+    "certificate identity and OIDC issuer constraints must be non-empty",
+    "critical public artifacts must be signed through the keyless path",
+    "Rekor inclusion evidence must be PASS for the declared WS11 surfaces",
+    "outsider verification for the declared WS11 surfaces must require no private or local-secret input"
+  ],
+  "current_activation_state": "NOT_ACTIVE",
+  "current_repo_head": "ec56c043106f68e8efe51086080be656864787e2",
+  "declared_public_trust_path_for_pass": "sigstore_keyless_with_rekor_and_identity_constraints",
+  "generated_utc": "2026-03-17T20:10:22Z",
+  "issuer_constraints": {
+    "certificate_identity": "",
+    "certificate_oidc_issuer": ""
+  },
+  "policy_id": "KT_SIGSTORE_KEYLESS_PATH_POLICY_V1_20260317",
+  "schema_id": "kt.governance.sigstore_keyless_path_policy.v1",
+  "status": "ACTIVE",
+  "stronger_claim_not_made": [
+    "Keyless signing is active today",
+    "The current public bundle already proves keyless signing",
+    "WS11 PASS is earned by policy declaration alone"
+  ]
+}

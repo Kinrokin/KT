@@ -1,0 +1,66 @@
+{
+  "artifact_id": "kt_ws11_public_trust_bundle.json",
+  "current_repo_head": "ec56c043106f68e8efe51086080be656864787e2",
+  "evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
+  "generated_utc": "2026-03-17T20:10:22Z",
+  "head_claim_boundary": "evidence_commit identifies the commit that last changed the cryptographic publication evidence; truth_subject_commit identifies the transparency-verified subject commit. Consumers must not equate them unless evidence_equals_subject is true.",
+  "included_public_artifacts": [
+    {
+      "path": "KT_PROD_CLEANROOM/governance/signer_identity_policy.json",
+      "sha256": "475cd1d24fb375e74ee081c2f7e9105bbbbb1be46ca697572f432d71db76ff74"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/governance/signers/kt_op1_cosign.pub",
+      "sha256": "c4c5f8d7513d01729b4b2ad3795b4eb62bb0ab901beb9053ffe82b400e5e02aa"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/governance/kt_sigstore_keyless_path_policy.json",
+      "sha256": "6da6c4c3df2af3f691c7e410976a333f28db6b12431084554bcc52c4dc899c53"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_sigstore_keyless_status.json",
+      "sha256": "528525fd5b14781d27cf0a112f88acae30a94bcbf93eb13bae2cdc35c965473e"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json",
+      "sha256": "280f494d2dd58da5854c9bb463ae7476fd56571c7872781f8baf086db5d34dba"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
+      "sha256": "d750a18224fd8909a52eec4195f5fc4fd5e28ab308ac28ea604c623b19d490d1"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
+      "sha256": "cbfd629f80dc3cb585fa0fe83232c902a3b24bf3dddeb9e20b4b9db8f14ce7db"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "sha256": "d46a4f5cd351f9dfcf0c61c201c25245ff44862549901be2b5461e82b62a4f3c"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_manifest.json",
+      "sha256": "8a88d833bfaa44f6184f423da2a1ca392e7300a6f0189f4145a052f50f807e6c"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_public_verifier_attestation.json",
+      "sha256": "8ddecdea5b9c5a5e58af01ea07f4d595a2d1f3bc15ff849f51e2c0180a8a55e2"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json",
+      "sha256": "c8abda3b17e381bcf71a35d2d9bc28dc237925352b639f4d3c58cd4ae7e18817"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_log_monitor_plane_receipt.json",
+      "sha256": "18e52f3a23f930b1c849ca769cf93f353a807122412eefd009337db7a3180301"
+    }
+  ],
+  "outsider_verification_requires_only_public_material": true,
+  "schema_id": "kt.operator.ws11_public_trust_bundle.v1",
+  "secret_dependency_violations": [],
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "The current repo head is itself the transparency-verified subject unless the verifier says so",
+    "This bundle upgrades Sigstore keypair evidence into keyless evidence"
+  ],
+  "truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7"
+}

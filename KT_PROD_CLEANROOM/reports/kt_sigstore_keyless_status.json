@@ -1,0 +1,30 @@
+{
+  "artifact_id": "kt_sigstore_keyless_status.json",
+  "blockers": [
+    "KEYLESS_SIGNER_POLICY_DISABLED",
+    "KEYLESS_IDENTITY_CONSTRAINTS_NOT_DECLARED",
+    "NO_KEYLESS_SIGSTORE_BUNDLE_FOR_DECLARED_WS11_SURFACES",
+    "EXECUTED_SIGNING_PATH_REMAINS_KEYPAIR_BASED"
+  ],
+  "current_repo_head": "ec56c043106f68e8efe51086080be656864787e2",
+  "current_signer_modes": [
+    "cosign_keypair"
+  ],
+  "declared_public_trust_path_for_pass": "sigstore_keyless_with_rekor_and_identity_constraints",
+  "executed_signer_id": "KT_OP1_COSIGN_KEYPAIR",
+  "generated_utc": "2026-03-17T20:10:22Z",
+  "keyless_bundle_detected": false,
+  "keyless_constraint_identity": "",
+  "keyless_constraint_oidc_issuer": "",
+  "keyless_constraints_allowed": false,
+  "rekor_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
+  "rekor_receipt_status": "PASS",
+  "schema_id": "kt.operator.sigstore_keyless_status.v1",
+  "signer_policy_ref": "KT_PROD_CLEANROOM/governance/signer_identity_policy.json",
+  "status": "NOT_ACTIVE",
+  "stronger_claim_not_made": [
+    "A keyless signer is active when blocker(s) remain",
+    "The current public bundle proves keyless signing when signer_id remains keypair-based",
+    "WS11 PASS is earned while keyless blockers remain"
+  ]
+}

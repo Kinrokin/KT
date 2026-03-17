@@ -1,0 +1,60 @@
+{
+  "artifact_id": "kt_sigstore_integration_receipt.json",
+  "blocked_by": [
+    "KEYLESS_SIGNER_POLICY_DISABLED",
+    "KEYLESS_IDENTITY_CONSTRAINTS_NOT_DECLARED",
+    "NO_KEYLESS_SIGSTORE_BUNDLE_FOR_DECLARED_WS11_SURFACES",
+    "EXECUTED_SIGNING_PATH_REMAINS_KEYPAIR_BASED"
+  ],
+  "carry_forward_truth": {
+    "dag_unlock_is_not_campaign_completion": true,
+    "ws10_import_path_fragility_visible": "test_root_ceremony_prepare.py passes from the KT_PROD_CLEANROOM package root and fails from the repo root with ModuleNotFoundError: tools. This was recorded, not hidden, and was not widened into a false all-green claim.",
+    "ws10_root_boundary": "3-of-3 only; 3-of-5 was not proven."
+  },
+  "compiled_against": "ec56c043106f68e8efe51086080be656864787e2",
+  "created_files": [
+    "KT_PROD_CLEANROOM/governance/kt_sigstore_keyless_path_policy.json",
+    "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json",
+    "KT_PROD_CLEANROOM/reports/kt_sigstore_keyless_status.json",
+    "KT_PROD_CLEANROOM/reports/kt_log_monitor_plane_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_ws11_public_trust_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_sigstore_integration_receipt.json"
+  ],
+  "current_repo_head": "ec56c043106f68e8efe51086080be656864787e2",
+  "current_strongest_claim": "WS11 has a real KT_LOG_MONITOR plane, Rekor inclusion evidence, and a public verification bundle that requires no private or local-secret input for the declared WS11 public surfaces. However, the executed signing path remains keypair-based and no keyless Sigstore artifact is present, so WS11 is PARTIAL and not PASS.",
+  "generated_utc": "2026-03-17T20:10:22Z",
+  "mutation_scope": "WS11_SIGSTORE_REKOR_LOG_MONITOR_ONLY",
+  "next_lawful_workstream": "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION",
+  "pass_verdict": "KEYPAIR_SIGSTORE_REKOR_ACTIVE_BUT_KEYLESS_NOT_ACTIVE",
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.sigstore_integration_receipt.v1",
+  "status": "PARTIAL",
+  "step_id": "WS11_STEP_1_SIGSTORE_REKOR_LOG_MONITOR_ACTIVATION",
+  "stronger_claim_not_made": [
+    "The original 3-of-5 root boundary was proven",
+    "Release readiness is proven",
+    "Verifier acceptance widened",
+    "WS12 has started",
+    "The campaign is complete"
+  ],
+  "tests_run": [
+    "python -m pytest -q tests/operator/test_ws11_sigstore_rekor_log_monitor_validate.py"
+  ],
+  "truth_conditions": {
+    "anomaly_handling_and_freeze_behavior_validator_backed": true,
+    "critical_public_artifacts_signed_through_declared_public_trust_path": false,
+    "kt_log_monitor_active_as_real_plane": true,
+    "outsider_verification_has_no_private_local_secret_dependency_for_declared_ws11_surfaces": true,
+    "rekor_inclusion_evidence_exists": true
+  },
+  "unexpected_touches": [],
+  "updated_files": [
+    "KT_PROD_CLEANROOM/governance/kt_execution_dag.json",
+    "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+    "KT_PROD_CLEANROOM/governance/kt_signer_topology.json"
+  ],
+  "validators_run": [
+    "python -m tools.operator.ws11_sigstore_rekor_log_monitor_validate"
+  ],
+  "workstream_id": "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION"
+}

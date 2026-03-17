@@ -1,0 +1,43 @@
+{
+  "anomaly_rules": [
+    {
+      "anomaly_id": "SIGSTORE_KEYLESS_PATH_NOT_ACTIVE",
+      "blocks_ws11_pass": true,
+      "freeze_scope": "WS12_PLUS",
+      "severity": "HIGH"
+    },
+    {
+      "anomaly_id": "REKOR_INCLUSION_EVIDENCE_MISSING_OR_FAILING",
+      "blocks_ws11_pass": true,
+      "freeze_scope": "WS12_PLUS",
+      "severity": "CRITICAL"
+    },
+    {
+      "anomaly_id": "PUBLIC_VERIFICATION_REQUIRES_LOCAL_SECRET",
+      "blocks_ws11_pass": true,
+      "freeze_scope": "WS12_PLUS",
+      "severity": "CRITICAL"
+    }
+  ],
+  "current_repo_head": "ec56c043106f68e8efe51086080be656864787e2",
+  "freeze_behavior": {
+    "downstream_scope": "WS12_PLUS",
+    "freeze_on_any_high_or_critical_anomaly": true,
+    "resolution_rule": "A blocking anomaly keeps WS11 as the current lawful workstream until evidence removes the anomaly."
+  },
+  "generated_utc": "2026-03-17T20:10:22Z",
+  "monitor_targets": [
+    "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_sigstore_keyless_status.json",
+    "KT_PROD_CLEANROOM/reports/kt_ws11_public_trust_bundle.json"
+  ],
+  "plane_id": "KT_LOG_MONITOR",
+  "policy_id": "KT_LOG_MONITOR_POLICY_V1_20260317",
+  "schema_id": "kt.governance.log_monitor_policy.v1",
+  "status": "ACTIVE",
+  "stronger_claim_not_made": [
+    "KT_LOG_MONITOR alone upgrades WS11 to PASS",
+    "A monitor anomaly implies compromise rather than a bounded missing-proof condition"
+  ]
+}
