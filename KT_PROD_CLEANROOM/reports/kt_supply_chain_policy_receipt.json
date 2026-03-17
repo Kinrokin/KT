@@ -1,0 +1,191 @@
+{
+  "artifact_id": "kt_supply_chain_policy_receipt.json",
+  "blocked_by": [],
+  "bounded_current_surface": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+  "checks": [
+    {
+      "check": "ws11_receipt_pass",
+      "detail": "WS11 must already be PASS before WS12 ratification.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_sigstore_integration_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "local_truth_barrier_pass_current_head",
+      "detail": "Local truth barrier evidence must pass on the current head without a dirty worktree.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws12_supply_chain/live_validation_index.local.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "remote_truth_barrier_pass_current_head",
+      "detail": "Remote truth barrier evidence must pass on the current head without a dirty worktree.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws12_supply_chain/live_validation_index.ci.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "remote_truth_barrier_step_pass",
+      "detail": "Imported remote diagnostic must show success for the truth barrier step.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws12_supply_chain/kt_truth_barrier_remote_diagnostic.json",
+        "KT_PROD_CLEANROOM/reports/ws12_supply_chain/kt_ws11_keyless_execution_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "current_head_keyless_bundle_bound",
+      "detail": "Imported current-head keyless receipt must bind the declared WS11 surface, signer identity, and bundle SHA.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws12_supply_chain/kt_ws11_keyless_execution_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws12_supply_chain/public_verifier_manifest.sigstore.json",
+        "KT_PROD_CLEANROOM/reports/ws12_supply_chain/public_verifier_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "in_toto_slsa_lineage_present",
+      "detail": "Bounded in-toto/SLSA-aligned lineage artifacts must remain present for the publication/build chain.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json",
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json",
+        "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+        "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse",
+        "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "tuf_attack_coverage_fail_closed",
+      "detail": "TUF attack coverage must fail closed across the declared WS12 scenarios.",
+      "failures": [],
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_signer_topology.json",
+        "KT_PROD_CLEANROOM/governance/supply_chain_layout.json",
+        "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_against": "8e81f68796ed2f4dda280ecd5ac5157e434d922a",
+  "current_repo_head": "8e81f68796ed2f4dda280ecd5ac5157e434d922a",
+  "current_strongest_claim": "WS12 proves a bounded current-head supply-chain policy for KT_PROD_CLEANROOM/reports/public_verifier_manifest.json: local and remote truth-barrier evidence reconcile on the same head, the executed signing path is keyless with imported Rekor-backed evidence, and TUF attack scenarios are covered fail-closed for the declared pre-release surfaces.",
+  "generated_utc": "2026-03-17T23:50:53Z",
+  "imported_evidence": {
+    "imported_hashes": {
+      "KT_PROD_CLEANROOM/reports/ws12_supply_chain/kt_truth_barrier_remote_diagnostic.json": "27daaf478dbb6741650d0e566bd524b97bf4580bc4963dd42036a57fea269e5f",
+      "KT_PROD_CLEANROOM/reports/ws12_supply_chain/kt_ws11_keyless_execution_receipt.json": "401d5533dfa43f25d1dd166e80c563cbe15eb1243bec4b29cefc8c2efae5d8d1",
+      "KT_PROD_CLEANROOM/reports/ws12_supply_chain/live_validation_index.ci.json": "9c4402fda15d55ec925a1e5f57bfc73313eaa11199a15c50136fcaf626022298",
+      "KT_PROD_CLEANROOM/reports/ws12_supply_chain/live_validation_index.local.json": "71cb587f371f3423f63fb5434ff6a901bdf33c33731a32e448ced38111597e6f",
+      "KT_PROD_CLEANROOM/reports/ws12_supply_chain/public_verifier_manifest.json": "092155956a664cbe2cb3846e0ef9ba858e093420073cece8b47b9c76d77d826d",
+      "KT_PROD_CLEANROOM/reports/ws12_supply_chain/public_verifier_manifest.sigstore.json": "faf3657d2a99251921988d07345ade357a7cc6a01d8b3ed990bb5b66af128d29"
+    },
+    "local_truth_index_ref": "KT_PROD_CLEANROOM/reports/ws12_supply_chain/live_validation_index.local.json",
+    "remote_keyless_bundle_ref": "KT_PROD_CLEANROOM/reports/ws12_supply_chain/public_verifier_manifest.sigstore.json",
+    "remote_keyless_execution_receipt_ref": "KT_PROD_CLEANROOM/reports/ws12_supply_chain/kt_ws11_keyless_execution_receipt.json",
+    "remote_truth_barrier_diagnostic_ref": "KT_PROD_CLEANROOM/reports/ws12_supply_chain/kt_truth_barrier_remote_diagnostic.json",
+    "remote_truth_index_ref": "KT_PROD_CLEANROOM/reports/ws12_supply_chain/live_validation_index.ci.json"
+  },
+  "imported_signed_surface_ref": "KT_PROD_CLEANROOM/reports/ws12_supply_chain/public_verifier_manifest.json",
+  "limitations": [
+    "WS12 PASS does not prove release readiness, verifier acceptance widening, or campaign completion.",
+    "WS12 remains bounded to the 3-of-3 WS10 carry-forward truth and the single current-head keyless-backed public verifier manifest surface.",
+    "The repo-root import fragility for certain package-root invocations remains visible and is not erased by WS12.",
+    "The TUF attack coverage here is fail-closed pre-release policy coverage, not proof of a publicly deployed updater fleet."
+  ],
+  "next_lawful_workstream": "WS13_ARTIFACT_CLASS_AND_DETERMINISM_ENVELOPE_LOCK",
+  "pass_verdict": "CURRENT_HEAD_TRUTH_PLANES_RECONCILED_AND_ATTACK_COVERAGE_FAIL_CLOSED",
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.supply_chain_policy_receipt.v1",
+  "status": "PASS",
+  "step_id": "WS12_STEP_1_SUPPLY_CHAIN_AND_TRUTH_RECONCILIATION",
+  "stronger_claim_not_made": [
+    "The earlier planned 3-of-5 root topology was proven",
+    "WS12 proves active public updater deployment",
+    "Release readiness is proven",
+    "Enterprise or product readiness is proven"
+  ],
+  "supply_chain_lineage": {
+    "build_provenance_ref": "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+    "build_verification_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json",
+    "certificate_identity": "https://github.com/Kinrokin/KT/.github/workflows/ci_truth_barrier.yml@refs/heads/main",
+    "certificate_oidc_issuer": "https://token.actions.githubusercontent.com",
+    "publication_in_toto_ref": "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json",
+    "signed_surface_sha256": "092155956a664cbe2cb3846e0ef9ba858e093420073cece8b47b9c76d77d826d",
+    "source_in_toto_ref": "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json",
+    "supply_chain_layout_ref": "KT_PROD_CLEANROOM/governance/supply_chain_layout.json",
+    "verification_summary_ref": "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse",
+    "workflow_run_id": "23221910973"
+  },
+  "tests_run": [
+    "python -m pytest -q tests/operator/test_ws12_supply_chain_policy_validate.py"
+  ],
+  "truth_plane_reconciliation": {
+    "legacy_remote_failure_ref": "KT_PROD_CLEANROOM/reports/ws11_keyless/kt_truth_barrier_remote_diagnostic.json",
+    "legacy_remote_failure_visible": true,
+    "local_truth_current_head_pass": true,
+    "remote_truth_barrier_step_pass": true,
+    "remote_truth_current_head_pass": true
+  },
+  "tuf_attack_scenarios": [
+    {
+      "detail": "Freeze attack is fail-closed by expiry-bearing layout plus KT_LOG_MONITOR freeze behavior.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/supply_chain_layout.json",
+        "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_log_monitor_plane_receipt.json"
+      ],
+      "scenario_id": "tuf_freeze_attack",
+      "status": "PASS"
+    },
+    {
+      "detail": "Rollback of the bounded WS12 public surface is detected by current-head local/remote truth alignment and current-head keyless surface binding.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws12_supply_chain/live_validation_index.local.json",
+        "KT_PROD_CLEANROOM/reports/ws12_supply_chain/live_validation_index.ci.json",
+        "KT_PROD_CLEANROOM/reports/ws12_supply_chain/kt_truth_barrier_remote_diagnostic.json",
+        "KT_PROD_CLEANROOM/reports/ws12_supply_chain/kt_ws11_keyless_execution_receipt.json"
+      ],
+      "scenario_id": "tuf_rollback_attack",
+      "status": "PASS"
+    },
+    {
+      "detail": "Mix-and-match is bounded by exact signed-surface SHA binding and imported bundle SHA verification.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws12_supply_chain/kt_ws11_keyless_execution_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws12_supply_chain/public_verifier_manifest.sigstore.json",
+        "KT_PROD_CLEANROOM/reports/ws12_supply_chain/public_verifier_manifest.json"
+      ],
+      "scenario_id": "tuf_mix_and_match_attack",
+      "status": "PASS"
+    },
+    {
+      "detail": "Key compromise is contained by freeze-and-rotate law instead of silent continued trust.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json"
+      ],
+      "scenario_id": "tuf_key_compromise",
+      "status": "PASS_CONTAINED"
+    },
+    {
+      "detail": "Partial key loss is contained fail-closed: verifier acceptance is not widened, so KT freezes and re-ceremonies instead of overclaiming continuity.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_signer_topology.json",
+        "KT_PROD_CLEANROOM/reports/kt_log_monitor_plane_receipt.json"
+      ],
+      "scenario_id": "tuf_partial_key_loss_and_rotation",
+      "status": "PASS_CONTAINED"
+    }
+  ],
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.ws12_supply_chain_policy_validate"
+  ],
+  "workstream_id": "WS12_IN_TOTO_SLSA_AND_TUF_ATTACK_COVERAGE"
+}

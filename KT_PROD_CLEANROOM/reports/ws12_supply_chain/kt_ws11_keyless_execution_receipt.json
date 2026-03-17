@@ -1,0 +1,30 @@
+{
+  "artifact_id": "kt_ws11_keyless_execution_receipt.json",
+  "branch_ref": "refs/heads/main",
+  "bundle_path": "KT_PROD_CLEANROOM/reports/ws11_keyless/public_verifier_manifest.sigstore.json",
+  "bundle_sha256": "faf3657d2a99251921988d07345ade357a7cc6a01d8b3ed990bb5b66af128d29",
+  "certificate_identity": "https://github.com/Kinrokin/KT/.github/workflows/ci_truth_barrier.yml@refs/heads/main",
+  "certificate_oidc_issuer": "https://token.actions.githubusercontent.com",
+  "executed_signer_id": "KT_CI_TRUTH_BARRIER_KEYLESS_MAIN",
+  "executed_signer_mode": "sigstore_keyless",
+  "keyless_backed_surfaces": [
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+  ],
+  "repo_slug": "Kinrokin/KT",
+  "run_attempt": "1",
+  "run_id": "23221910973",
+  "run_number": "9",
+  "run_url": "https://github.com/Kinrokin/KT/actions/runs/23221910973",
+  "schema_id": "kt.operator.ws11_keyless_execution_receipt.v1",
+  "signed_surface_path": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+  "signed_surface_sha256": "092155956a664cbe2cb3846e0ef9ba858e093420073cece8b47b9c76d77d826d",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "WS11 PASS is earned by artifact upload alone",
+    "WS12 is unlocked by this receipt alone",
+    "Release readiness is proven"
+  ],
+  "verification_status": "PASS",
+  "workflow_name": "Truth Barrier",
+  "workflow_ref": ".github/workflows/ci_truth_barrier.yml"
+}

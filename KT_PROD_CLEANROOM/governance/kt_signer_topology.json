@@ -1,5 +1,5 @@
 {
-  "current_repo_head": "9464288018b6ebb8148cceb666041c62bc1c01ff",
+  "current_repo_head": "8e81f68796ed2f4dda280ecd5ac5157e434d922a",
   "custody_and_storage_rules": {
     "ci": "Short-lived OIDC or equivalent attestable identities only after WS11.",
     "producer": "Ephemeral identities bound to attested build systems only after later activation.",
@@ -23,7 +23,7 @@
   ],
   "execution_dag_ref": "KT_PROD_CLEANROOM/governance/kt_execution_dag.json",
   "failure_mode_register_ref": "KT_PROD_CLEANROOM/governance/kt_failure_mode_register.json",
-  "generated_utc": "2026-03-17T22:09:48Z",
+  "generated_utc": "2026-03-17T23:50:53Z",
   "quorum_rules": [
     {
       "quorum_statement": "3 of 3 offline root shard custodians are required and were witnessed for the reratified WS10 boundary.",
@@ -208,7 +208,7 @@
   "schema_id": "kt.governance.signer_topology.v1",
   "semantic_boundary": {
     "identities_are_logical_only": false,
-    "lawful_current_claim": "Root signer topology remains executed and reratified as 3-of-3 only. WS11 passed for a bounded executed keyless public-trust path; non-root issuance still remains bounded by later workstreams.",
+    "lawful_current_claim": "Root signer topology remains executed and reratified as 3-of-3 only. WS12 passed for bounded current-head supply-chain policy without widening non-root issuance beyond the declared pre-release surfaces.",
     "non_root_roles_remain_planned": true,
     "offline_root_issuance_complete": true,
     "quorum_witnessed": true

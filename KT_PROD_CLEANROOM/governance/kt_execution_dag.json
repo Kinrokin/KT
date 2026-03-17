@@ -1,9 +1,9 @@
 {
-  "current_node": "WS12_IN_TOTO_SLSA_AND_TUF_ATTACK_COVERAGE",
-  "current_repo_head": "9464288018b6ebb8148cceb666041c62bc1c01ff",
+  "current_node": "WS13_ARTIFACT_CLASS_AND_DETERMINISM_ENVELOPE_LOCK",
+  "current_repo_head": "8e81f68796ed2f4dda280ecd5ac5157e434d922a",
   "dag_id": "KT_SOVEREIGN_EXECUTION_DAG_V1_20260317",
-  "generated_utc": "2026-03-17T22:09:48Z",
-  "next_lawful_workstream": "WS12_IN_TOTO_SLSA_AND_TUF_ATTACK_COVERAGE",
+  "generated_utc": "2026-03-17T23:50:53Z",
+  "next_lawful_workstream": "WS13_ARTIFACT_CLASS_AND_DETERMINISM_ENVELOPE_LOCK",
   "no_progress_without_proof": true,
   "nodes": [
     {
@@ -36,12 +36,14 @@
       "unlock_basis": "WS10 reratified 3-of-3 PASS plus WS10 consistency reseal"
     },
     {
+      "blocked_by": [],
+      "claim_boundary": "WS12 PASS proves bounded current-head supply-chain policy and fail-closed TUF attack coverage for the declared pre-release surfaces only.",
       "depends_on": [
         "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION"
       ],
       "id": "WS12_IN_TOTO_SLSA_AND_TUF_ATTACK_COVERAGE",
       "ratification_checkpoint": "kt_supply_chain_policy_receipt.json",
-      "status": "UNLOCKED",
+      "status": "PASS",
       "unlock_basis": "WS11 PASS"
     },
     {
@@ -50,7 +52,8 @@
       ],
       "id": "WS13_ARTIFACT_CLASS_AND_DETERMINISM_ENVELOPE_LOCK",
       "ratification_checkpoint": "kt_determinism_envelope_receipt.json",
-      "status": "LOCKED_PENDING_WS12_PASS"
+      "status": "UNLOCKED",
+      "unlock_basis": "WS12 PASS"
     },
     {
       "depends_on": [
@@ -112,7 +115,7 @@
   ],
   "schema_id": "kt.governance.execution_dag.v1",
   "semantic_boundary": {
-    "lawful_current_claim": "WS10 passed under a reratified 3-of-3 root boundary only. WS11 passed with executed keyless Sigstore evidence for at least one declared surface, Rekor inclusion, and an active KT_LOG_MONITOR plane.",
+    "lawful_current_claim": "WS10 passed under a reratified 3-of-3 root boundary only. WS11 passed with one bounded keyless surface. WS12 passed for bounded current-head supply-chain policy, local/remote truth-plane reconciliation, and fail-closed TUF attack coverage on declared pre-release surfaces.",
     "stronger_claim_not_made": [
       "The original planned 3-of-5 root topology was executed",
       "Release readiness is proven",
