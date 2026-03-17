@@ -12,7 +12,7 @@ from tools.operator.titanium_common import file_sha256, load_json, repo_root, ut
 WORKSTREAM_ID = "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION"
 STEP_ID = "WS11_STEP_1_SIGSTORE_REKOR_LOG_MONITOR_ACTIVATION"
 PASS_VERDICT = "SIGSTORE_KEYLESS_REKOR_AND_LOG_MONITOR_ACTIVE"
-PARTIAL_VERDICT = "KEYPAIR_SIGSTORE_REKOR_ACTIVE_BUT_KEYLESS_NOT_ACTIVE"
+PARTIAL_VERDICT = "KEYLESS_DECLARED_REKOR_ACTIVE_BUT_EXECUTION_PENDING"
 
 REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
 GOVERNANCE_ROOT_REL = "KT_PROD_CLEANROOM/governance"
@@ -35,11 +35,26 @@ LOG_MONITOR_RECEIPT_REL = f"{REPORT_ROOT_REL}/kt_log_monitor_plane_receipt.json"
 PUBLIC_TRUST_BUNDLE_REL = f"{REPORT_ROOT_REL}/kt_ws11_public_trust_bundle.json"
 RECEIPT_REL = f"{REPORT_ROOT_REL}/kt_sigstore_integration_receipt.json"
 
+DECLARED_KEYLESS_SIGNER_ID = "KT_CI_TRUTH_BARRIER_KEYLESS_MAIN"
+DECLARED_KEYLESS_CERTIFICATE_IDENTITY = "https://github.com/Kinrokin/KT/.github/workflows/ci_truth_barrier.yml@refs/heads/main"
+DECLARED_KEYLESS_CERTIFICATE_OIDC_ISSUER = "https://token.actions.githubusercontent.com"
+DECLARED_KEYLESS_WORKFLOW_REF = ".github/workflows/ci_truth_barrier.yml"
+DECLARED_KEYLESS_REPO_SLUG = "Kinrokin/KT"
+DECLARED_KEYLESS_SURFACES = [
+    SIGSTORE_BUNDLE_REL,
+    REKOR_RECEIPT_REL,
+    PUBLIC_VERIFIER_MANIFEST_REL,
+    PUBLIC_VERIFIER_RELEASE_MANIFEST_REL,
+    PUBLIC_VERIFIER_ATTESTATION_REL,
+    TUF_ROOT_INITIALIZATION_REL,
+]
+
 EXECUTION_DAG_REL = f"{GOVERNANCE_ROOT_REL}/kt_execution_dag.json"
 TRUST_ROOT_POLICY_REL = f"{GOVERNANCE_ROOT_REL}/kt_trust_root_policy.json"
 SIGNER_TOPOLOGY_REL = f"{GOVERNANCE_ROOT_REL}/kt_signer_topology.json"
 
 PLANNED_MUTATES = [
+    SIGNER_POLICY_REL,
     KEYLESS_POLICY_REL,
     LOG_MONITOR_POLICY_REL,
     KEYLESS_STATUS_REL,
@@ -130,12 +145,105 @@ def _bundle_keyless_detected(sigstore_bundle: Dict[str, Any]) -> bool:
     )
 
 
+def _bundle_certificate_identity(sigstore_bundle: Dict[str, Any]) -> str:
+    return str(sigstore_bundle.get("certificate_identity", "") or sigstore_bundle.get("certificateIdentity", "")).strip()
+
+
+def _bundle_certificate_oidc_issuer(sigstore_bundle: Dict[str, Any]) -> str:
+    return str(sigstore_bundle.get("certificate_oidc_issuer", "") or sigstore_bundle.get("certificateOidcIssuer", "")).strip()
+
+
 def _write_json(root: Path, rel: str, payload: Dict[str, Any]) -> None:
     write_json_stable((root / Path(rel)).resolve(), payload)
 
 
+def build_ws11_signer_policy(*, signer_policy: Dict[str, Any], generated_utc: str) -> Dict[str, Any]:
+    payload = json.loads(json.dumps(signer_policy))
+    payload["schema_id"] = "kt.governance.signer_identity_policy.v1"
+    payload["status"] = "ACTIVE"
+    payload["effective_utc"] = generated_utc
+
+    prior_policy_id = str(payload.get("policy_id", "")).strip()
+    next_policy_id = "SIGNER_IDENTITY_POLICY_V2_20260317_WS11_KEYLESS_DECLARED"
+    if prior_policy_id and prior_policy_id != next_policy_id:
+        supersedes = payload.get("supersedes") if isinstance(payload.get("supersedes"), list) else []
+        if prior_policy_id not in supersedes:
+            supersedes = [*supersedes, prior_policy_id]
+        payload["supersedes"] = supersedes
+    payload["policy_id"] = next_policy_id
+
+    rules = payload.get("rules") if isinstance(payload.get("rules"), dict) else {}
+    notes = rules.get("notes") if isinstance(rules.get("notes"), list) else []
+    declaration_note = (
+        "WS11 declares a GitHub Actions keyless signer constraint for the Truth Barrier workflow on main; "
+        "this declaration does not itself prove keyless execution."
+    )
+    if declaration_note not in notes:
+        notes.append(declaration_note)
+    rules["notes"] = notes
+    payload["rules"] = rules
+
+    allowed_signers = payload.get("allowed_signers") if isinstance(payload.get("allowed_signers"), list) else []
+    keypair_present = False
+    keyless_present = False
+    for row in allowed_signers:
+        if not isinstance(row, dict):
+            continue
+        signer_id = str(row.get("signer_id", "")).strip()
+        if signer_id == "KT_OP1_COSIGN_KEYPAIR":
+            keypair_present = True
+        if signer_id == DECLARED_KEYLESS_SIGNER_ID:
+            row["mode"] = "sigstore_keyless"
+            row["certificate_identity"] = DECLARED_KEYLESS_CERTIFICATE_IDENTITY
+            row["certificate_oidc_issuer"] = DECLARED_KEYLESS_CERTIFICATE_OIDC_ISSUER
+            row["workflow_ref"] = DECLARED_KEYLESS_WORKFLOW_REF
+            row["repo_slug"] = DECLARED_KEYLESS_REPO_SLUG
+            row["issuance_state"] = "DECLARED_PENDING_EXECUTION"
+            keyless_present = True
+    if not keypair_present:
+        allowed_signers.append(
+            {
+                "signer_id": "KT_OP1_COSIGN_KEYPAIR",
+                "mode": "cosign_keypair",
+                "public_key_ref": SIGNER_PUBKEY_REL,
+                "allowed_predicates": [
+                    "https://kings-theorem.io/attestations/kt-authority-subject/v1",
+                ],
+            }
+        )
+    if not keyless_present:
+        allowed_signers.append(
+            {
+                "signer_id": DECLARED_KEYLESS_SIGNER_ID,
+                "mode": "sigstore_keyless",
+                "certificate_identity": DECLARED_KEYLESS_CERTIFICATE_IDENTITY,
+                "certificate_oidc_issuer": DECLARED_KEYLESS_CERTIFICATE_OIDC_ISSUER,
+                "workflow_ref": DECLARED_KEYLESS_WORKFLOW_REF,
+                "repo_slug": DECLARED_KEYLESS_REPO_SLUG,
+                "issuance_state": "DECLARED_PENDING_EXECUTION",
+                "allowed_predicates": [
+                    "https://kings-theorem.io/attestations/kt-authority-subject/v1",
+                ],
+            }
+        )
+    payload["allowed_signers"] = allowed_signers
+    payload["keyless_constraints"] = {
+        "allowed": True,
+        "certificate_identity": DECLARED_KEYLESS_CERTIFICATE_IDENTITY,
+        "certificate_oidc_issuer": DECLARED_KEYLESS_CERTIFICATE_OIDC_ISSUER,
+    }
+    return payload
+
+
 def build_keyless_policy(*, signer_policy: Dict[str, Any], current_repo_head: str, generated_utc: str) -> Dict[str, Any]:
     keyless_constraints = signer_policy.get("keyless_constraints") if isinstance(signer_policy.get("keyless_constraints"), dict) else {}
+    activation_state = (
+        "DECLARED_PENDING_EXECUTION"
+        if bool(keyless_constraints.get("allowed"))
+        and str(keyless_constraints.get("certificate_identity", "")).strip()
+        and str(keyless_constraints.get("certificate_oidc_issuer", "")).strip()
+        else "NOT_ACTIVE"
+    )
     return {
         "schema_id": "kt.governance.sigstore_keyless_path_policy.v1",
         "policy_id": "KT_SIGSTORE_KEYLESS_PATH_POLICY_V1_20260317",
@@ -143,11 +251,17 @@ def build_keyless_policy(*, signer_policy: Dict[str, Any], current_repo_head: st
         "generated_utc": generated_utc,
         "current_repo_head": current_repo_head,
         "declared_public_trust_path_for_pass": "sigstore_keyless_with_rekor_and_identity_constraints",
-        "current_activation_state": "NOT_ACTIVE",
+        "current_activation_state": activation_state,
         "issuer_constraints": {
             "certificate_identity": str(keyless_constraints.get("certificate_identity", "")).strip(),
             "certificate_oidc_issuer": str(keyless_constraints.get("certificate_oidc_issuer", "")).strip(),
         },
+        "declaration_basis": {
+            "repo_slug": DECLARED_KEYLESS_REPO_SLUG,
+            "workflow_ref": DECLARED_KEYLESS_WORKFLOW_REF,
+            "branch_ref": "refs/heads/main",
+        },
+        "declared_ws11_keyless_surfaces": DECLARED_KEYLESS_SURFACES,
         "activation_requirements": [
             "signer_identity_policy.json keyless_constraints.allowed must be true",
             "certificate identity and OIDC issuer constraints must be non-empty",
@@ -179,6 +293,8 @@ def build_keyless_status(
     bundle_keyless = _bundle_keyless_detected(sigstore_bundle)
     rekor_pass = str(rekor_receipt.get("status", "")).strip() == "PASS"
     signer_id = str(sigstore_bundle.get("signer_id", "")).strip()
+    bundle_identity = _bundle_certificate_identity(sigstore_bundle)
+    bundle_issuer = _bundle_certificate_oidc_issuer(sigstore_bundle)
 
     blockers: List[str] = []
     if not allowed:
@@ -187,6 +303,9 @@ def build_keyless_status(
         blockers.append("KEYLESS_IDENTITY_CONSTRAINTS_NOT_DECLARED")
     if not bundle_keyless:
         blockers.append("NO_KEYLESS_SIGSTORE_BUNDLE_FOR_DECLARED_WS11_SURFACES")
+    if bundle_keyless and constraint_identity and constraint_issuer:
+        if bundle_identity != constraint_identity or bundle_issuer != constraint_issuer:
+            blockers.append("KEYLESS_BUNDLE_IDENTITY_CONSTRAINT_MISMATCH")
     if signer_id and "KEYPAIR" in signer_id.upper():
         blockers.append("EXECUTED_SIGNING_PATH_REMAINS_KEYPAIR_BASED")
     if not rekor_pass:
@@ -203,10 +322,14 @@ def build_keyless_status(
         "declared_public_trust_path_for_pass": "sigstore_keyless_with_rekor_and_identity_constraints",
         "current_signer_modes": signer_modes,
         "executed_signer_id": signer_id,
+        "executed_certificate_identity": bundle_identity,
+        "executed_certificate_oidc_issuer": bundle_issuer,
         "keyless_constraints_allowed": allowed,
         "keyless_constraint_identity": constraint_identity,
         "keyless_constraint_oidc_issuer": constraint_issuer,
         "keyless_bundle_detected": bundle_keyless,
+        "declared_ws11_keyless_surfaces": DECLARED_KEYLESS_SURFACES,
+        "keyless_backed_surfaces": DECLARED_KEYLESS_SURFACES if status == "PASS" else [],
         "rekor_receipt_ref": REKOR_RECEIPT_REL,
         "rekor_receipt_status": str(rekor_receipt.get("status", "")).strip() or "MISSING",
         "blockers": blockers,
@@ -374,6 +497,7 @@ def build_public_trust_bundle(
         "included_public_artifacts": files,
         "outsider_verification_requires_only_public_material": not secret_violations,
         "secret_dependency_violations": secret_violations,
+        "declared_ws11_keyless_surfaces": DECLARED_KEYLESS_SURFACES,
         "stronger_claim_not_made": [
             "The current repo head is itself the transparency-verified subject unless the verifier says so",
             "This bundle upgrades Sigstore keypair evidence into keyless evidence",
@@ -417,6 +541,9 @@ def build_ws11_receipt(
         next_lawful_workstream = WORKSTREAM_ID
 
     carry_forward_note = str(ws10_reseal_receipt.get("import_path_fragility_note", "")).strip()
+    keyless_declared = bool(keyless_status.get("keyless_constraints_allowed")) and bool(
+        str(keyless_status.get("keyless_constraint_identity", "")).strip()
+    ) and bool(str(keyless_status.get("keyless_constraint_oidc_issuer", "")).strip())
     return {
         "schema_id": "kt.operator.sigstore_integration_receipt.v1",
         "artifact_id": Path(RECEIPT_REL).name,
@@ -440,7 +567,10 @@ def build_ws11_receipt(
         },
         "blocked_by": blocked_by,
         "current_strongest_claim": (
-            "WS11 has a real KT_LOG_MONITOR plane, Rekor inclusion evidence, and a public verification bundle that requires no private or local-secret input for the declared WS11 public surfaces. "
+            "WS11 has a real KT_LOG_MONITOR plane, Rekor inclusion evidence, a public verification bundle that requires no private or local-secret input for the declared WS11 public surfaces, "
+            "and declared keyless identity constraints for the Truth Barrier workflow on main. However, the executed signing path remains keypair-based and no matching keyless Sigstore artifact is present, so WS11 is PARTIAL and not PASS."
+            if status == "PARTIAL" and keyless_declared
+            else "WS11 has a real KT_LOG_MONITOR plane, Rekor inclusion evidence, and a public verification bundle that requires no private or local-secret input for the declared WS11 public surfaces. "
             "However, the executed signing path remains keypair-based and no keyless Sigstore artifact is present, so WS11 is PARTIAL and not PASS."
             if status == "PARTIAL"
             else "WS11 proves the declared public-trust path with keyless Sigstore signing, Rekor inclusion evidence, an active KT_LOG_MONITOR plane, and public-secret-free outsider verification."
@@ -461,6 +591,7 @@ def build_ws11_receipt(
             RECEIPT_REL,
         ],
         "updated_files": [
+            SIGNER_POLICY_REL,
             EXECUTION_DAG_REL,
             TRUST_ROOT_POLICY_REL,
             SIGNER_TOPOLOGY_REL,
@@ -474,6 +605,11 @@ def build_ws11_receipt(
         ],
         "next_lawful_workstream": next_lawful_workstream,
         "mutation_scope": "WS11_SIGSTORE_REKOR_LOG_MONITOR_ONLY",
+        "declared_identity_constraints": {
+            "certificate_identity": str(keyless_status.get("keyless_constraint_identity", "")).strip(),
+            "certificate_oidc_issuer": str(keyless_status.get("keyless_constraint_oidc_issuer", "")).strip(),
+        },
+        "keyless_backed_ws11_surfaces": list(keyless_status.get("keyless_backed_surfaces", [])),
     }
 
 
@@ -491,7 +627,7 @@ def _apply_control_plane(
     dag["current_node"] = receipt["next_lawful_workstream"]
     dag["next_lawful_workstream"] = receipt["next_lawful_workstream"]
     dag["semantic_boundary"]["lawful_current_claim"] = (
-        "WS10 passed under a reratified 3-of-3 root boundary only. WS11 is PARTIAL: Rekor evidence and KT_LOG_MONITOR are active on declared public surfaces, but the signer path remains keypair-based and keyless PASS conditions are not met."
+        "WS10 passed under a reratified 3-of-3 root boundary only. WS11 is PARTIAL: Rekor evidence and KT_LOG_MONITOR are active on declared public surfaces, keyless identity constraints are declared, but the executed signer path remains keypair-based and no matching keyless bundle is present."
         if ws11_partial
         else "WS10 passed under a reratified 3-of-3 root boundary only. WS11 passed with keyless Sigstore, Rekor inclusion, and an active KT_LOG_MONITOR plane."
     )
@@ -504,9 +640,9 @@ def _apply_control_plane(
         ws12_node["status"] = "UNLOCKED"
         ws12_node["unlock_basis"] = "WS11 PASS"
     else:
-        ws11_node["status"] = "PARTIAL_KEYPAIR_PUBLIC_ONLY"
+        ws11_node["status"] = "PARTIAL_KEYLESS_DECLARED_PENDING_EXECUTION"
         ws11_node["blocked_by"] = list(receipt.get("blocked_by", []))
-        ws11_node["claim_boundary"] = "WS11 remains partial: public Sigstore/Rekor verification and KT_LOG_MONITOR are active, but no keyless signer path is proven."
+        ws11_node["claim_boundary"] = "WS11 remains partial: public Sigstore/Rekor verification and KT_LOG_MONITOR are active, keyless identity constraints are declared, but no matching keyless signer path is proven."
         ws12_node["status"] = "LOCKED_PENDING_WS11_PASS"
         ws12_node.pop("unlock_basis", None)
     ws11_node["activation_boundary"] = "WS11 must not be overread as release readiness, verifier widening, or campaign completion."
@@ -514,7 +650,7 @@ def _apply_control_plane(
     trust_root_policy["generated_utc"] = str(receipt.get("generated_utc", "")).strip()
     trust_root_policy["current_repo_head"] = str(receipt.get("current_repo_head", "")).strip()
     trust_root_policy["semantic_boundary"]["lawful_current_claim"] = (
-        "WS10 root ceremony remains executed off-box under a reratified 3-of-3 boundary only. WS11 is PARTIAL: Rekor evidence and KT_LOG_MONITOR are active on the declared public surfaces, but the signer path remains keypair-based and keyless PASS conditions are not met."
+        "WS10 root ceremony remains executed off-box under a reratified 3-of-3 boundary only. WS11 is PARTIAL: Rekor evidence and KT_LOG_MONITOR are active on the declared public surfaces, keyless identity constraints are declared, but the signer path remains keypair-based and no matching keyless bundle is present."
         if ws11_partial
         else "WS10 root ceremony remains executed off-box under a reratified 3-of-3 boundary only. WS11 passed with a declared keyless public-trust path, Rekor inclusion evidence, and an active KT_LOG_MONITOR plane."
     )
@@ -523,7 +659,7 @@ def _apply_control_plane(
     signer_topology["generated_utc"] = str(receipt.get("generated_utc", "")).strip()
     signer_topology["current_repo_head"] = str(receipt.get("current_repo_head", "")).strip()
     signer_topology["semantic_boundary"]["lawful_current_claim"] = (
-        "Root signer topology remains executed and reratified as 3-of-3 only. WS11 is PARTIAL: the declared public verification and KT_LOG_MONITOR surfaces are active, but the signer path remains keypair-based and non-root roles remain unexecuted."
+        "Root signer topology remains executed and reratified as 3-of-3 only. WS11 is PARTIAL: the declared public verification and KT_LOG_MONITOR surfaces are active, keyless identity constraints are declared for CI signing, but the signer path remains keypair-based and non-root roles remain unexecuted."
         if ws11_partial
         else "Root signer topology remains executed and reratified as 3-of-3 only. WS11 passed for the declared keyless public-trust path; non-root issuance still remains bounded by later workstreams."
     )
@@ -544,6 +680,8 @@ def emit_ws11_sigstore_activation(*, root: Optional[Path] = None) -> Dict[str, A
         raise RuntimeError("FAIL_CLOSED: WS10 reseal receipt must be PASS before WS11 activation")
 
     signer_policy = _load_required_json(repo, SIGNER_POLICY_REL)
+    signer_policy = build_ws11_signer_policy(signer_policy=signer_policy, generated_utc=generated_utc)
+    _write_json(repo, SIGNER_POLICY_REL, signer_policy)
     sigstore_bundle = _load_required_json(repo, SIGSTORE_BUNDLE_REL)
     rekor_receipt = _load_required_json(repo, REKOR_RECEIPT_REL)
     public_verifier_manifest = _load_required_json(repo, PUBLIC_VERIFIER_MANIFEST_REL)

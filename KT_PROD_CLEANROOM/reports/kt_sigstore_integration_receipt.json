@@ -1,8 +1,6 @@
 {
   "artifact_id": "kt_sigstore_integration_receipt.json",
   "blocked_by": [
-    "KEYLESS_SIGNER_POLICY_DISABLED",
-    "KEYLESS_IDENTITY_CONSTRAINTS_NOT_DECLARED",
     "NO_KEYLESS_SIGSTORE_BUNDLE_FOR_DECLARED_WS11_SURFACES",
     "EXECUTED_SIGNING_PATH_REMAINS_KEYPAIR_BASED"
   ],
@@ -11,7 +9,7 @@
     "ws10_import_path_fragility_visible": "test_root_ceremony_prepare.py passes from the KT_PROD_CLEANROOM package root and fails from the repo root with ModuleNotFoundError: tools. This was recorded, not hidden, and was not widened into a false all-green claim.",
     "ws10_root_boundary": "3-of-3 only; 3-of-5 was not proven."
   },
-  "compiled_against": "ec56c043106f68e8efe51086080be656864787e2",
+  "compiled_against": "aa1c48e72817cd9fa73e30c6e7ba5c8aab62e88b",
   "created_files": [
     "KT_PROD_CLEANROOM/governance/kt_sigstore_keyless_path_policy.json",
     "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json",
@@ -20,12 +18,17 @@
     "KT_PROD_CLEANROOM/reports/kt_ws11_public_trust_bundle.json",
     "KT_PROD_CLEANROOM/reports/kt_sigstore_integration_receipt.json"
   ],
-  "current_repo_head": "ec56c043106f68e8efe51086080be656864787e2",
-  "current_strongest_claim": "WS11 has a real KT_LOG_MONITOR plane, Rekor inclusion evidence, and a public verification bundle that requires no private or local-secret input for the declared WS11 public surfaces. However, the executed signing path remains keypair-based and no keyless Sigstore artifact is present, so WS11 is PARTIAL and not PASS.",
-  "generated_utc": "2026-03-17T20:10:22Z",
+  "current_repo_head": "aa1c48e72817cd9fa73e30c6e7ba5c8aab62e88b",
+  "current_strongest_claim": "WS11 has a real KT_LOG_MONITOR plane, Rekor inclusion evidence, a public verification bundle that requires no private or local-secret input for the declared WS11 public surfaces, and declared keyless identity constraints for the Truth Barrier workflow on main. However, the executed signing path remains keypair-based and no matching keyless Sigstore artifact is present, so WS11 is PARTIAL and not PASS.",
+  "declared_identity_constraints": {
+    "certificate_identity": "https://github.com/Kinrokin/KT/.github/workflows/ci_truth_barrier.yml@refs/heads/main",
+    "certificate_oidc_issuer": "https://token.actions.githubusercontent.com"
+  },
+  "generated_utc": "2026-03-17T20:27:49Z",
+  "keyless_backed_ws11_surfaces": [],
   "mutation_scope": "WS11_SIGSTORE_REKOR_LOG_MONITOR_ONLY",
   "next_lawful_workstream": "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION",
-  "pass_verdict": "KEYPAIR_SIGSTORE_REKOR_ACTIVE_BUT_KEYLESS_NOT_ACTIVE",
+  "pass_verdict": "KEYLESS_DECLARED_REKOR_ACTIVE_BUT_EXECUTION_PENDING",
   "protected_touch_violations": [],
   "schema_id": "kt.operator.sigstore_integration_receipt.v1",
   "status": "PARTIAL",
@@ -49,6 +52,7 @@
   },
   "unexpected_touches": [],
   "updated_files": [
+    "KT_PROD_CLEANROOM/governance/signer_identity_policy.json",
     "KT_PROD_CLEANROOM/governance/kt_execution_dag.json",
     "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
     "KT_PROD_CLEANROOM/governance/kt_signer_topology.json"

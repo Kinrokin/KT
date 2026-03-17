@@ -1,22 +1,32 @@
 {
   "artifact_id": "kt_sigstore_keyless_status.json",
   "blockers": [
-    "KEYLESS_SIGNER_POLICY_DISABLED",
-    "KEYLESS_IDENTITY_CONSTRAINTS_NOT_DECLARED",
     "NO_KEYLESS_SIGSTORE_BUNDLE_FOR_DECLARED_WS11_SURFACES",
     "EXECUTED_SIGNING_PATH_REMAINS_KEYPAIR_BASED"
   ],
-  "current_repo_head": "ec56c043106f68e8efe51086080be656864787e2",
+  "current_repo_head": "aa1c48e72817cd9fa73e30c6e7ba5c8aab62e88b",
   "current_signer_modes": [
-    "cosign_keypair"
+    "cosign_keypair",
+    "sigstore_keyless"
   ],
   "declared_public_trust_path_for_pass": "sigstore_keyless_with_rekor_and_identity_constraints",
+  "declared_ws11_keyless_surfaces": [
+    "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_attestation.json",
+    "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json"
+  ],
+  "executed_certificate_identity": "",
+  "executed_certificate_oidc_issuer": "",
   "executed_signer_id": "KT_OP1_COSIGN_KEYPAIR",
-  "generated_utc": "2026-03-17T20:10:22Z",
+  "generated_utc": "2026-03-17T20:27:49Z",
+  "keyless_backed_surfaces": [],
   "keyless_bundle_detected": false,
-  "keyless_constraint_identity": "",
-  "keyless_constraint_oidc_issuer": "",
-  "keyless_constraints_allowed": false,
+  "keyless_constraint_identity": "https://github.com/Kinrokin/KT/.github/workflows/ci_truth_barrier.yml@refs/heads/main",
+  "keyless_constraint_oidc_issuer": "https://token.actions.githubusercontent.com",
+  "keyless_constraints_allowed": true,
   "rekor_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
   "rekor_receipt_status": "PASS",
   "schema_id": "kt.operator.sigstore_keyless_status.v1",

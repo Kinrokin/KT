@@ -10,6 +10,9 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.operator.ws11_sigstore_rekor_log_monitor_validate import (  # noqa: E402
+    DECLARED_KEYLESS_CERTIFICATE_IDENTITY,
+    DECLARED_KEYLESS_CERTIFICATE_OIDC_ISSUER,
+    DECLARED_KEYLESS_SIGNER_ID,
     EXECUTION_DAG_REL,
     KEYLESS_POLICY_REL,
     KEYLESS_STATUS_REL,
@@ -51,7 +54,14 @@ def _init_git_repo(tmp_path: Path) -> None:
     _git(tmp_path, "config", "user.name", "Test User")
 
 
-def _seed_ws11_repo(tmp_path: Path, *, keyless_allowed: bool = False, keyless_bundle: bool = False) -> None:
+def _seed_ws11_repo(
+    tmp_path: Path,
+    *,
+    keyless_allowed: bool = False,
+    keyless_bundle: bool = False,
+    bundle_identity: str = "",
+    bundle_issuer: str = "",
+) -> None:
     _init_git_repo(tmp_path)
     (tmp_path / "README.md").write_text("base\n", encoding="utf-8")
 
@@ -66,6 +76,7 @@ def _seed_ws11_repo(tmp_path: Path, *, keyless_allowed: bool = False, keyless_bu
         tmp_path / SIGNER_POLICY_REL,
         {
             "schema_id": "kt.governance.signer_identity_policy.v1",
+            "policy_id": "SIGNER_IDENTITY_POLICY_V1_20260313",
             "status": "ACTIVE",
             "allowed_signers": [
                 {
@@ -86,10 +97,10 @@ def _seed_ws11_repo(tmp_path: Path, *, keyless_allowed: bool = False, keyless_bu
         tmp_path / "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
         {
             "status": "PASS",
-            "signer_id": "KT_OP1_SIGSTORE_KEYLESS" if keyless_bundle else "KT_OP1_COSIGN_KEYPAIR",
+            "signer_id": DECLARED_KEYLESS_SIGNER_ID if keyless_bundle else "KT_OP1_COSIGN_KEYPAIR",
             "signer_mode": "sigstore_keyless" if keyless_bundle else "cosign_keypair",
-            "certificate_identity": "spiffe://kt/ws11" if keyless_bundle else "",
-            "certificate_oidc_issuer": "https://issuer.example" if keyless_bundle else "",
+            "certificate_identity": (bundle_identity or DECLARED_KEYLESS_CERTIFICATE_IDENTITY) if keyless_bundle else "",
+            "certificate_oidc_issuer": (bundle_issuer or DECLARED_KEYLESS_CERTIFICATE_OIDC_ISSUER) if keyless_bundle else "",
             "truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
         },
     )
@@ -160,7 +171,18 @@ def test_emit_ws11_partial_when_keyless_path_not_active(tmp_path: Path) -> None:
     receipt = emit_ws11_sigstore_activation(root=tmp_path)
 
     assert receipt["status"] == "PARTIAL"
-    assert "KEYLESS_SIGNER_POLICY_DISABLED" in receipt["blocked_by"]
+    assert receipt["blocked_by"] == [
+        "NO_KEYLESS_SIGSTORE_BUNDLE_FOR_DECLARED_WS11_SURFACES",
+        "EXECUTED_SIGNING_PATH_REMAINS_KEYPAIR_BASED",
+    ]
+    assert receipt["declared_identity_constraints"] == {
+        "certificate_identity": DECLARED_KEYLESS_CERTIFICATE_IDENTITY,
+        "certificate_oidc_issuer": DECLARED_KEYLESS_CERTIFICATE_OIDC_ISSUER,
+    }
+    signer_policy = json.loads((tmp_path / SIGNER_POLICY_REL).read_text(encoding="utf-8"))
+    assert signer_policy["keyless_constraints"]["allowed"] is True
+    assert signer_policy["keyless_constraints"]["certificate_identity"] == DECLARED_KEYLESS_CERTIFICATE_IDENTITY
+    assert signer_policy["keyless_constraints"]["certificate_oidc_issuer"] == DECLARED_KEYLESS_CERTIFICATE_OIDC_ISSUER
     assert receipt["truth_conditions"]["rekor_inclusion_evidence_exists"] is True
     assert receipt["truth_conditions"]["kt_log_monitor_active_as_real_plane"] is True
     assert receipt["truth_conditions"]["outsider_verification_has_no_private_local_secret_dependency_for_declared_ws11_surfaces"] is True
@@ -168,7 +190,7 @@ def test_emit_ws11_partial_when_keyless_path_not_active(tmp_path: Path) -> None:
     dag = json.loads((tmp_path / EXECUTION_DAG_REL).read_text(encoding="utf-8"))
     ws11 = next(row for row in dag["nodes"] if row["id"] == "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION")
     ws12 = next(row for row in dag["nodes"] if row["id"] == "WS12_IN_TOTO_SLSA_AND_TUF_ATTACK_COVERAGE")
-    assert ws11["status"] == "PARTIAL_KEYPAIR_PUBLIC_ONLY"
+    assert ws11["status"] == "PARTIAL_KEYLESS_DECLARED_PENDING_EXECUTION"
     assert ws12["status"] == "LOCKED_PENDING_WS11_PASS"
 
     assert (tmp_path / KEYLESS_POLICY_REL).exists()
@@ -180,15 +202,32 @@ def test_emit_ws11_partial_when_keyless_path_not_active(tmp_path: Path) -> None:
 
 
 def test_emit_ws11_pass_when_keyless_constraints_and_bundle_are_present(tmp_path: Path) -> None:
-    _seed_ws11_repo(tmp_path, keyless_allowed=True, keyless_bundle=True)
+    _seed_ws11_repo(tmp_path, keyless_allowed=False, keyless_bundle=True)
 
     receipt = emit_ws11_sigstore_activation(root=tmp_path)
 
     assert receipt["status"] == "PASS"
     assert receipt["blocked_by"] == []
+    assert receipt["keyless_backed_ws11_surfaces"]
     dag = json.loads((tmp_path / EXECUTION_DAG_REL).read_text(encoding="utf-8"))
     ws12 = next(row for row in dag["nodes"] if row["id"] == "WS12_IN_TOTO_SLSA_AND_TUF_ATTACK_COVERAGE")
     assert ws12["status"] == "UNLOCKED"
+
+
+def test_emit_ws11_partial_when_keyless_bundle_identity_mismatches_declared_constraints(tmp_path: Path) -> None:
+    _seed_ws11_repo(
+        tmp_path,
+        keyless_allowed=False,
+        keyless_bundle=True,
+        bundle_identity="https://github.com/example/other/.github/workflows/ci_truth_barrier.yml@refs/heads/main",
+        bundle_issuer=DECLARED_KEYLESS_CERTIFICATE_OIDC_ISSUER,
+    )
+
+    receipt = emit_ws11_sigstore_activation(root=tmp_path)
+
+    assert receipt["status"] == "PARTIAL"
+    assert "KEYLESS_BUNDLE_IDENTITY_CONSTRAINT_MISMATCH" in receipt["blocked_by"]
+    assert receipt["keyless_backed_ws11_surfaces"] == []
 
 
 def test_emit_ws11_fails_closed_when_rekor_receipt_is_missing(tmp_path: Path) -> None:

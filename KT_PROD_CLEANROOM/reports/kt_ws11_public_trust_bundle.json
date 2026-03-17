@@ -1,13 +1,21 @@
 {
   "artifact_id": "kt_ws11_public_trust_bundle.json",
-  "current_repo_head": "ec56c043106f68e8efe51086080be656864787e2",
+  "current_repo_head": "aa1c48e72817cd9fa73e30c6e7ba5c8aab62e88b",
+  "declared_ws11_keyless_surfaces": [
+    "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
+    "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_attestation.json",
+    "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json"
+  ],
   "evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
-  "generated_utc": "2026-03-17T20:10:22Z",
+  "generated_utc": "2026-03-17T20:27:49Z",
   "head_claim_boundary": "evidence_commit identifies the commit that last changed the cryptographic publication evidence; truth_subject_commit identifies the transparency-verified subject commit. Consumers must not equate them unless evidence_equals_subject is true.",
   "included_public_artifacts": [
     {
       "path": "KT_PROD_CLEANROOM/governance/signer_identity_policy.json",
-      "sha256": "475cd1d24fb375e74ee081c2f7e9105bbbbb1be46ca697572f432d71db76ff74"
+      "sha256": "4b36117e1991ccbd56632bd7674ad02aa70039695f8cd2cb006b75572602341c"
     },
     {
       "path": "KT_PROD_CLEANROOM/governance/signers/kt_op1_cosign.pub",
@@ -15,15 +23,15 @@
     },
     {
       "path": "KT_PROD_CLEANROOM/governance/kt_sigstore_keyless_path_policy.json",
-      "sha256": "6da6c4c3df2af3f691c7e410976a333f28db6b12431084554bcc52c4dc899c53"
+      "sha256": "ebc56130ba4a898e830a3b1f137d0dd31fc65e29728f89f84fe4c2c7a78c1437"
     },
     {
       "path": "KT_PROD_CLEANROOM/reports/kt_sigstore_keyless_status.json",
-      "sha256": "528525fd5b14781d27cf0a112f88acae30a94bcbf93eb13bae2cdc35c965473e"
+      "sha256": "7fb77cdb893838ddb5e1c69e06569c56a9f927c04164a5f7fbc1deb0391ebe27"
     },
     {
       "path": "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json",
-      "sha256": "280f494d2dd58da5854c9bb463ae7476fd56571c7872781f8baf086db5d34dba"
+      "sha256": "dbca193dd1b355eded2cf6aae7d45bd97d06572beebbc9ca1d9c89c223552ce8"
     },
     {
       "path": "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
@@ -51,7 +59,7 @@
     },
     {
       "path": "KT_PROD_CLEANROOM/reports/kt_log_monitor_plane_receipt.json",
-      "sha256": "18e52f3a23f930b1c849ca769cf93f353a807122412eefd009337db7a3180301"
+      "sha256": "cdcc5b67c8fa129adf1271071113294f8c9454c20f3bb23929ad8b60133d72df"
     }
   ],
   "outsider_verification_requires_only_public_material": true,

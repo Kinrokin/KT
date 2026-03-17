@@ -1,36 +1,51 @@
 {
-  "schema_id": "kt.governance.signer_identity_policy.v1",
-  "policy_id": "SIGNER_IDENTITY_POLICY_V1_20260313",
-  "effective_utc": "2026-03-13T00:00:00Z",
-  "expires_utc": "2026-09-13T00:00:00Z",
-  "supersedes": [],
-  "status": "ACTIVE",
-  "semantic_ceiling": {
-    "published_head_authority_claimed": false,
-    "h1_allowed": false
-  },
-  "rules": {
-    "require_transparency_log": true,
-    "rekor_url_default": "https://rekor.sigstore.dev",
-    "notes": [
-      "WS6 baseline uses cosign keypair signing with Rekor transparency log bundles.",
-      "Keyless identity-bound signing may be added later with explicit issuer and identity constraints."
-    ]
-  },
   "allowed_signers": [
     {
-      "signer_id": "KT_OP1_COSIGN_KEYPAIR",
+      "allowed_predicates": [
+        "https://kings-theorem.io/attestations/kt-authority-subject/v1"
+      ],
       "mode": "cosign_keypair",
       "public_key_ref": "KT_PROD_CLEANROOM/governance/signers/kt_op1_cosign.pub",
       "public_key_sha256": "c4c5f8d7513d01729b4b2ad3795b4eb62bb0ab901beb9053ffe82b400e5e02aa",
+      "signer_id": "KT_OP1_COSIGN_KEYPAIR"
+    },
+    {
       "allowed_predicates": [
         "https://kings-theorem.io/attestations/kt-authority-subject/v1"
-      ]
+      ],
+      "certificate_identity": "https://github.com/Kinrokin/KT/.github/workflows/ci_truth_barrier.yml@refs/heads/main",
+      "certificate_oidc_issuer": "https://token.actions.githubusercontent.com",
+      "issuance_state": "DECLARED_PENDING_EXECUTION",
+      "mode": "sigstore_keyless",
+      "repo_slug": "Kinrokin/KT",
+      "signer_id": "KT_CI_TRUTH_BARRIER_KEYLESS_MAIN",
+      "workflow_ref": ".github/workflows/ci_truth_barrier.yml"
     }
   ],
+  "effective_utc": "2026-03-17T20:27:49Z",
+  "expires_utc": "2026-09-13T00:00:00Z",
   "keyless_constraints": {
-    "allowed": false,
-    "certificate_identity": "",
-    "certificate_oidc_issuer": ""
-  }
+    "allowed": true,
+    "certificate_identity": "https://github.com/Kinrokin/KT/.github/workflows/ci_truth_barrier.yml@refs/heads/main",
+    "certificate_oidc_issuer": "https://token.actions.githubusercontent.com"
+  },
+  "policy_id": "SIGNER_IDENTITY_POLICY_V2_20260317_WS11_KEYLESS_DECLARED",
+  "rules": {
+    "notes": [
+      "WS6 baseline uses cosign keypair signing with Rekor transparency log bundles.",
+      "Keyless identity-bound signing may be added later with explicit issuer and identity constraints.",
+      "WS11 declares a GitHub Actions keyless signer constraint for the Truth Barrier workflow on main; this declaration does not itself prove keyless execution."
+    ],
+    "rekor_url_default": "https://rekor.sigstore.dev",
+    "require_transparency_log": true
+  },
+  "schema_id": "kt.governance.signer_identity_policy.v1",
+  "semantic_ceiling": {
+    "h1_allowed": false,
+    "published_head_authority_claimed": false
+  },
+  "status": "ACTIVE",
+  "supersedes": [
+    "SIGNER_IDENTITY_POLICY_V1_20260313"
+  ]
 }

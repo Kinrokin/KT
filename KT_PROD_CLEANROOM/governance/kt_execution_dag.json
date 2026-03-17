@@ -1,8 +1,8 @@
 {
   "current_node": "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION",
-  "current_repo_head": "ec56c043106f68e8efe51086080be656864787e2",
+  "current_repo_head": "aa1c48e72817cd9fa73e30c6e7ba5c8aab62e88b",
   "dag_id": "KT_SOVEREIGN_EXECUTION_DAG_V1_20260317",
-  "generated_utc": "2026-03-17T20:10:22Z",
+  "generated_utc": "2026-03-17T20:27:49Z",
   "next_lawful_workstream": "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION",
   "no_progress_without_proof": true,
   "nodes": [
@@ -26,18 +26,16 @@
     {
       "activation_boundary": "WS11 must not be overread as release readiness, verifier widening, or campaign completion.",
       "blocked_by": [
-        "KEYLESS_SIGNER_POLICY_DISABLED",
-        "KEYLESS_IDENTITY_CONSTRAINTS_NOT_DECLARED",
         "NO_KEYLESS_SIGSTORE_BUNDLE_FOR_DECLARED_WS11_SURFACES",
         "EXECUTED_SIGNING_PATH_REMAINS_KEYPAIR_BASED"
       ],
-      "claim_boundary": "WS11 remains partial: public Sigstore/Rekor verification and KT_LOG_MONITOR are active, but no keyless signer path is proven.",
+      "claim_boundary": "WS11 remains partial: public Sigstore/Rekor verification and KT_LOG_MONITOR are active, keyless identity constraints are declared, but no matching keyless signer path is proven.",
       "depends_on": [
         "WS10_AIR_GAPPED_ROOT_CEREMONY_AND_SIGNER_TOPOLOGY"
       ],
       "id": "WS11_SIGSTORE_REKOR_AND_LOG_MONITOR_ACTIVATION",
       "ratification_checkpoint": "kt_sigstore_integration_receipt.json",
-      "status": "PARTIAL_KEYPAIR_PUBLIC_ONLY",
+      "status": "PARTIAL_KEYLESS_DECLARED_PENDING_EXECUTION",
       "unlock_basis": "WS10 reratified 3-of-3 PASS plus WS10 consistency reseal"
     },
     {
@@ -116,7 +114,7 @@
   ],
   "schema_id": "kt.governance.execution_dag.v1",
   "semantic_boundary": {
-    "lawful_current_claim": "WS10 passed under a reratified 3-of-3 root boundary only. WS11 is PARTIAL: Rekor evidence and KT_LOG_MONITOR are active on declared public surfaces, but the signer path remains keypair-based and keyless PASS conditions are not met.",
+    "lawful_current_claim": "WS10 passed under a reratified 3-of-3 root boundary only. WS11 is PARTIAL: Rekor evidence and KT_LOG_MONITOR are active on declared public surfaces, keyless identity constraints are declared, but the executed signer path remains keypair-based and no matching keyless bundle is present.",
     "stronger_claim_not_made": [
       "The original planned 3-of-5 root topology was executed",
       "Release readiness is proven",
