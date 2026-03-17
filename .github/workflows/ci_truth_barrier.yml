@@ -8,6 +8,10 @@ on:
       - "KT_PROD_CLEANROOM/**"
       - "ci/**"
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   truth-barrier:
     runs-on: ubuntu-latest
@@ -24,6 +28,9 @@ jobs:
       - name: Install Python test dependencies
         run: python -m pip install --upgrade pip pytest
 
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v4.0.0
+
       - name: Run truth barrier
         shell: bash
         env:
@@ -34,3 +41,71 @@ jobs:
           python -m tools.operator.run_truth_matrix --skip-clean-clone --out KT_PROD_CLEANROOM/reports/live_validation_index.ci.json
           python -m tools.operator.truth_surface_sync --live-validation-index KT_PROD_CLEANROOM/reports/live_validation_index.ci.json
           python -m tools.operator.truth_engine --live-validation-index KT_PROD_CLEANROOM/reports/live_validation_index.ci.json
+
+      - name: Keyless sign declared WS11 surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p KT_PROD_CLEANROOM/reports/ws11_keyless
+          cosign sign-blob --yes \
+            --bundle KT_PROD_CLEANROOM/reports/ws11_keyless/public_verifier_manifest.sigstore.json \
+            KT_PROD_CLEANROOM/reports/public_verifier_manifest.json
+
+      - name: Verify declared WS11 keyless surface and emit evidence receipt
+        shell: bash
+        env:
+          EXPECTED_CERT_IDENTITY: https://github.com/Kinrokin/KT/.github/workflows/ci_truth_barrier.yml@refs/heads/main
+          EXPECTED_CERT_OIDC_ISSUER: https://token.actions.githubusercontent.com
+        run: |
+          set -euo pipefail
+          cosign verify-blob KT_PROD_CLEANROOM/reports/public_verifier_manifest.json \
+            --bundle KT_PROD_CLEANROOM/reports/ws11_keyless/public_verifier_manifest.sigstore.json \
+            --certificate-identity "${EXPECTED_CERT_IDENTITY}" \
+            --certificate-oidc-issuer "${EXPECTED_CERT_OIDC_ISSUER}"
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          surface = Path("KT_PROD_CLEANROOM/reports/public_verifier_manifest.json")
+          bundle = Path("KT_PROD_CLEANROOM/reports/ws11_keyless/public_verifier_manifest.sigstore.json")
+          receipt = {
+              "schema_id": "kt.operator.ws11_keyless_execution_receipt.v1",
+              "artifact_id": "kt_ws11_keyless_execution_receipt.json",
+              "status": "PASS",
+              "workflow_name": os.environ["GITHUB_WORKFLOW"],
+              "workflow_ref": ".github/workflows/ci_truth_barrier.yml",
+              "repo_slug": os.environ["GITHUB_REPOSITORY"],
+              "branch_ref": os.environ["GITHUB_REF"],
+              "run_id": os.environ["GITHUB_RUN_ID"],
+              "run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+              "run_number": os.environ["GITHUB_RUN_NUMBER"],
+              "run_url": f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{os.environ['GITHUB_RUN_ID']}",
+              "executed_signer_id": "KT_CI_TRUTH_BARRIER_KEYLESS_MAIN",
+              "executed_signer_mode": "sigstore_keyless",
+              "signed_surface_path": surface.as_posix(),
+              "signed_surface_sha256": hashlib.sha256(surface.read_bytes()).hexdigest(),
+              "keyless_backed_surfaces": [surface.as_posix()],
+              "bundle_path": bundle.as_posix(),
+              "bundle_sha256": hashlib.sha256(bundle.read_bytes()).hexdigest(),
+              "certificate_identity": os.environ["EXPECTED_CERT_IDENTITY"],
+              "certificate_oidc_issuer": os.environ["EXPECTED_CERT_OIDC_ISSUER"],
+              "verification_status": "PASS",
+              "stronger_claim_not_made": [
+                  "WS11 PASS is earned by artifact upload alone",
+                  "WS12 is unlocked by this receipt alone",
+                  "Release readiness is proven",
+              ],
+          }
+          out = Path("KT_PROD_CLEANROOM/reports/ws11_keyless/kt_ws11_keyless_execution_receipt.json")
+          out.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+          PY
+
+      - name: Upload WS11 keyless evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: ws11-keyless-truth-barrier-${{ github.run_id }}
+          path: |
+            KT_PROD_CLEANROOM/reports/ws11_keyless/public_verifier_manifest.sigstore.json
+            KT_PROD_CLEANROOM/reports/ws11_keyless/kt_ws11_keyless_execution_receipt.json
