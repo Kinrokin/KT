@@ -1,0 +1,83 @@
+{
+  "current_repo_head": "fb3d6fb560674a087dd1c62592d11d0922dfce86",
+  "generated_utc": "2026-03-17T12:44:54Z",
+  "rows": [
+    {
+      "blocker_id": "AUTHORITY_CONVERGENCE_UNRESOLVED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json"
+      ],
+      "rationale": "Authority convergence is satisfied only at the published-subject boundary; current HEAD remains evidence-bearing only.",
+      "severity": "CRITICAL",
+      "status": "RESOLVED_WITH_CURRENT_HEAD_NARROWING"
+    },
+    {
+      "blocker_id": "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json"
+      ],
+      "rationale": "Published-head self-convergence is proven, but current HEAD is explicitly narrowed to evidence-bearing status.",
+      "severity": "CRITICAL",
+      "status": "RESOLVED_WITH_CURRENT_HEAD_NARROWING"
+    },
+    {
+      "blocker_id": "H1_ACTIVATION_GATE_CLOSED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+        "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+        "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json"
+      ],
+      "rationale": "H1 remains blocked; no current-head H1 admissibility proof exists and the available H1 receipt is still blocked.",
+      "severity": "HIGH",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "PLATFORM_ENFORCEMENT_UNPROVEN",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json"
+      ],
+      "rationale": "Platform enforcement is still not proven, but the claim is explicitly narrowed to workflow-governance-only.",
+      "severity": "HIGH",
+      "status": "RESOLVED_WITH_CURRENT_HEAD_NARROWING"
+    },
+    {
+      "blocker_id": "TRUTH_PUBLICATION_STABILIZED_FALSE",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_truth_publication_stabilization_receipt.json"
+      ],
+      "rationale": "Truth publication stabilization is PASS and truth_publication_stabilized is true.",
+      "severity": "HIGH",
+      "status": "RESOLVED"
+    },
+    {
+      "blocker_id": "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN_OR_NOT_CURRENT",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+        "KT_PROD_CLEANROOM/reports/twocleanclone_proof.json"
+      ],
+      "rationale": "Cross-environment controlled variation remains not run or not current for the authority lane.",
+      "severity": "MEDIUM",
+      "status": "OPEN"
+    }
+  ],
+  "schema_id": "kt.operator.ws9_blocker_matrix.v1",
+  "stronger_claim_not_made": "This blocker matrix does not clear H1, platform enforcement, or cross-environment controlled variation merely because WS9 is sealed.",
+  "summary": {
+    "open_blockers": [
+      "H1_ACTIVATION_GATE_CLOSED",
+      "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN_OR_NOT_CURRENT"
+    ],
+    "resolved_blockers": [
+      "TRUTH_PUBLICATION_STABILIZED_FALSE"
+    ],
+    "resolved_with_narrowing": [
+      "AUTHORITY_CONVERGENCE_UNRESOLVED",
+      "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+      "PLATFORM_ENFORCEMENT_UNPROVEN"
+    ]
+  },
+  "workstream_id": "WS9_AUTHORITY_AND_PUBLISHED_HEAD_CLOSURE"
+}

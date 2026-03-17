@@ -1,0 +1,125 @@
+{
+  "blocked_by": [
+    "AUTHORITY_CONVERGENCE_UNRESOLVED",
+    "PUBLISHED_HEAD_SELF_CONVERGENCE_UNRESOLVED",
+    "H1_ACTIVATION_GATE_CLOSED",
+    "PLATFORM_ENFORCEMENT_UNPROVEN",
+    "CROSS_ENV_CONTROLLED_VARIATION_NOT_RUN_OR_NOT_CURRENT"
+  ],
+  "blocker_evidence_refs": [
+    "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+    "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+    "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+    "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+    "KT_PROD_CLEANROOM/reports/h1_activation_gate_receipt.json",
+    "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+    "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json",
+    "KT_PROD_CLEANROOM/reports/representative_authority_lane_reproducibility_receipt.json",
+    "KT_PROD_CLEANROOM/reports/twocleanclone_proof.json"
+  ],
+  "compiled_against": "fb3d6fb560674a087dd1c62592d11d0922dfce86",
+  "created_files": [
+    "KT_PROD_CLEANROOM/reports/kt_authority_and_published_head_closure_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_current_head_truth_source.json",
+    "KT_PROD_CLEANROOM/reports/kt_blocker_matrix.json"
+  ],
+  "current_repo_head": "fb3d6fb560674a087dd1c62592d11d0922dfce86",
+  "current_strongest_claim": "Published-head authority convergence is proven for subject d56de5c40345c0c187f6ebca1b0727ff0f5cefd7; current repo head fb3d6fb560674a087dd1c62592d11d0922dfce86 may claim only that it contains transparency-verified subject evidence.",
+  "deleted_files": [],
+  "downgrade_events": [
+    "CURRENT_HEAD_AUTHORITY_CLAIM_NARROWED_TO_EVIDENCE_ONLY"
+  ],
+  "evidence_head_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
+  "forbidden_claims": [
+    "CURRENT_HEAD_IS_TRANSPARENCY_VERIFIED_SUBJECT",
+    "CURRENT_HEAD_AUTHORITY_CLOSED",
+    "PLATFORM_ENFORCEMENT_PROVEN",
+    "H1_SINGLE_ADAPTER_ALLOWED",
+    "CROSS_ENV_CONTROLLED_VARIATION_CURRENT_HEAD_COMPLETE"
+  ],
+  "generated_utc": "2026-03-17T12:44:54Z",
+  "next_lawful_workstream": "WS10_AIR_GAPPED_ROOT_CEREMONY_AND_SIGNER_TOPOLOGY",
+  "out_of_scope_attack_classes": [
+    "AIR_GAPPED_ROOT_CEREMONY",
+    "SIGSTORE_REKOR_MONITORING_ACTIVATION",
+    "IN_TOTO_SLSA_TUF_HARDENING",
+    "DETACHED_VERIFIER_RELEASE",
+    "EXTERNAL_ASSURANCE_CONFIRMATION",
+    "EXTERNAL_CAPABILITY_CONFIRMATION",
+    "COMMERCIAL_LICENSE_TRACK"
+  ],
+  "pass_verdict": "AUTHORITY_AND_PUBLISHED_HEAD_RECONCILED_WITH_CURRENT_HEAD_NARROWING",
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.ws9_authority_and_published_head_closure_receipt.v1",
+  "signer_topology_snapshot": {
+    "lawful_current_claim": "No sovereign root ceremony or signer-topology upgrade is claimed before WS10.",
+    "status": "PRE_WS10_HISTORICAL_SIGNER_TOPOLOGY_ONLY"
+  },
+  "status": "PASS",
+  "stronger_claim_not_made": "This receipt does not claim that current HEAD is the transparency-verified subject, does not claim platform-enforced governance, does not clear H1, and does not claim cross-environment controlled variation is current.",
+  "subject_head_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+  "superseded_files_removed_or_demoted": [],
+  "temporary_files_removed": [],
+  "tests_run": [
+    "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_authority_convergence_validate.py KT_PROD_CLEANROOM/tests/operator/test_reporting_integrity.py KT_PROD_CLEANROOM/tests/operator/test_authority_convergence_closeout.py -q"
+  ],
+  "trust_assumptions_remaining": [
+    "Current repo HEAD differs from the transparency-verified truth subject commit and is therefore evidence-bearing only.",
+    "Platform governance remains explicitly narrowed to workflow-governance-only while branch-protection proof is blocked.",
+    "Cross-environment controlled variation remains not run or not current on the authority lane.",
+    "Historical signer topology remains pre-WS10 and must not be read as sovereign root-ceremony completion."
+  ],
+  "unexpected_touches": [],
+  "upgrade_events": [
+    "WS9_CURRENT_HEAD_TRUTH_SOURCE_REFRESHED",
+    "WS9_BLOCKER_MATRIX_REFRESHED",
+    "WS9_AUTHORITY_BOUNDARY_REFRESHED_ON_CURRENT_HEAD"
+  ],
+  "validators_run": [
+    "python -m tools.operator.authority_convergence_validate",
+    "python -m tools.operator.reporting_integrity --mode verify",
+    "python -m tools.operator.authority_convergence_closeout --emit-sovereign-v1-2"
+  ],
+  "verification_predicate_versions": {
+    "authority_convergence": "kt.operator.authority_convergence_receipt.v2",
+    "blocker_matrix": "kt.operator.ws9_blocker_matrix.v1",
+    "published_head_self_convergence": "kt.operator.published_head_self_convergence_receipt.v2",
+    "reporting_integrity": "kt.operator.reporting_integrity_receipt.v2"
+  },
+  "waste_control": {
+    "files_touched": [
+      "KT_PROD_CLEANROOM/reports/kt_authority_and_published_head_closure_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_blocker_matrix.json",
+      "KT_PROD_CLEANROOM/reports/kt_current_head_truth_source.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_authority_convergence_closeout.py",
+      "KT_PROD_CLEANROOM/tools/operator/authority_convergence_closeout.py"
+    ],
+    "legacy_receipts_preserved": true,
+    "minimum_mutation_set": true,
+    "parallel_runtime_added": false,
+    "parallel_validator_added": false
+  },
+  "workstream_id": "WS9_AUTHORITY_AND_PUBLISHED_HEAD_CLOSURE",
+  "ws9_extension": {
+    "authority_convergence_status": "PASS",
+    "blocker_matrix_ref": "KT_PROD_CLEANROOM/reports/kt_blocker_matrix.json",
+    "current_head_claim_verdict": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+    "current_head_truth_source_ref": "KT_PROD_CLEANROOM/reports/kt_current_head_truth_source.json",
+    "files_touched": [
+      "KT_PROD_CLEANROOM/reports/kt_authority_and_published_head_closure_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_blocker_matrix.json",
+      "KT_PROD_CLEANROOM/reports/kt_current_head_truth_source.json",
+      "KT_PROD_CLEANROOM/tests/operator/test_authority_convergence_closeout.py",
+      "KT_PROD_CLEANROOM/tools/operator/authority_convergence_closeout.py"
+    ],
+    "legacy_receipt_refs": [
+      "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
+      "KT_PROD_CLEANROOM/reports/published_head_self_convergence_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_authority_closure_receipt.json"
+    ],
+    "published_head_self_convergence_status": "PASS",
+    "reporting_integrity_status": "PASS"
+  }
+}
