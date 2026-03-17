@@ -16,6 +16,7 @@ PARTIAL_VERDICT = "KEYLESS_DECLARED_REKOR_ACTIVE_BUT_EXECUTION_PENDING"
 
 REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
 GOVERNANCE_ROOT_REL = "KT_PROD_CLEANROOM/governance"
+WS11_KEYLESS_DIR_REL = f"{REPORT_ROOT_REL}/ws11_keyless"
 
 SIGNER_POLICY_REL = f"{GOVERNANCE_ROOT_REL}/signer_identity_policy.json"
 SIGNER_PUBKEY_REL = f"{GOVERNANCE_ROOT_REL}/signers/kt_op1_cosign.pub"
@@ -29,6 +30,10 @@ PUBLIC_VERIFIER_MANIFEST_REL = f"{REPORT_ROOT_REL}/public_verifier_manifest.json
 PUBLIC_VERIFIER_RELEASE_MANIFEST_REL = f"{REPORT_ROOT_REL}/kt_public_verifier_release_manifest.json"
 PUBLIC_VERIFIER_ATTESTATION_REL = f"{REPORT_ROOT_REL}/kt_public_verifier_attestation.json"
 TUF_ROOT_INITIALIZATION_REL = f"{REPORT_ROOT_REL}/kt_tuf_root_initialization.json"
+KEYLESS_EXECUTION_RECEIPT_REL = f"{WS11_KEYLESS_DIR_REL}/kt_ws11_keyless_execution_receipt.json"
+KEYLESS_EXECUTION_BUNDLE_REL = f"{WS11_KEYLESS_DIR_REL}/public_verifier_manifest.sigstore.json"
+TRUTH_BARRIER_REMOTE_DIAGNOSTIC_REL = f"{WS11_KEYLESS_DIR_REL}/kt_truth_barrier_remote_diagnostic.json"
+WORKFLOW_LIVE_VALIDATION_INDEX_REL = f"{WS11_KEYLESS_DIR_REL}/live_validation_index.ci.json"
 
 KEYLESS_STATUS_REL = f"{REPORT_ROOT_REL}/kt_sigstore_keyless_status.json"
 LOG_MONITOR_RECEIPT_REL = f"{REPORT_ROOT_REL}/kt_log_monitor_plane_receipt.json"
@@ -61,6 +66,10 @@ PLANNED_MUTATES = [
     LOG_MONITOR_RECEIPT_REL,
     PUBLIC_TRUST_BUNDLE_REL,
     RECEIPT_REL,
+    KEYLESS_EXECUTION_RECEIPT_REL,
+    KEYLESS_EXECUTION_BUNDLE_REL,
+    TRUTH_BARRIER_REMOTE_DIAGNOSTIC_REL,
+    WORKFLOW_LIVE_VALIDATION_INDEX_REL,
     EXECUTION_DAG_REL,
     TRUST_ROOT_POLICY_REL,
     SIGNER_TOPOLOGY_REL,
@@ -113,6 +122,13 @@ def _load_required_text(root: Path, rel: str) -> str:
     return path.read_text(encoding="utf-8")
 
 
+def _load_optional_json(root: Path, rel: str) -> Optional[Dict[str, Any]]:
+    path = (root / Path(rel)).resolve()
+    if not path.exists():
+        return None
+    return load_json(path)
+
+
 def _check(value: bool, check_id: str, detail: str, refs: Sequence[str], **extra: Any) -> Dict[str, Any]:
     row: Dict[str, Any] = {
         "check": check_id,
@@ -151,6 +167,32 @@ def _bundle_certificate_identity(sigstore_bundle: Dict[str, Any]) -> str:
 
 def _bundle_certificate_oidc_issuer(sigstore_bundle: Dict[str, Any]) -> str:
     return str(sigstore_bundle.get("certificate_oidc_issuer", "") or sigstore_bundle.get("certificateOidcIssuer", "")).strip()
+
+
+def _execution_backed_surfaces(execution_receipt: Optional[Dict[str, Any]]) -> List[str]:
+    if not isinstance(execution_receipt, dict):
+        return []
+    rows = execution_receipt.get("keyless_backed_surfaces") if isinstance(execution_receipt.get("keyless_backed_surfaces"), list) else []
+    normalized = [
+        str(Path(str(row).strip()).as_posix())
+        for row in rows
+        if str(row).strip()
+    ]
+    declared = set(DECLARED_KEYLESS_SURFACES)
+    return sorted({row for row in normalized if row in declared})
+
+
+def _execution_bundle_sha_matches(*, root: Path, execution_receipt: Optional[Dict[str, Any]]) -> bool:
+    if not isinstance(execution_receipt, dict):
+        return False
+    bundle_rel = str(execution_receipt.get("bundle_path", "")).strip()
+    expected_sha = str(execution_receipt.get("bundle_sha256", "")).strip().lower()
+    if not bundle_rel or not expected_sha:
+        return False
+    bundle_path = (root / Path(bundle_rel)).resolve()
+    if not bundle_path.exists():
+        return False
+    return file_sha256(bundle_path).lower() == expected_sha
 
 
 def _write_json(root: Path, rel: str, payload: Dict[str, Any]) -> None:
@@ -279,9 +321,11 @@ def build_keyless_policy(*, signer_policy: Dict[str, Any], current_repo_head: st
 
 def build_keyless_status(
     *,
+    root: Path,
     signer_policy: Dict[str, Any],
     sigstore_bundle: Dict[str, Any],
     rekor_receipt: Dict[str, Any],
+    execution_receipt: Optional[Dict[str, Any]],
     generated_utc: str,
     current_repo_head: str,
 ) -> Dict[str, Any]:
@@ -290,11 +334,27 @@ def build_keyless_status(
     constraint_identity = str(keyless_constraints.get("certificate_identity", "")).strip()
     constraint_issuer = str(keyless_constraints.get("certificate_oidc_issuer", "")).strip()
     signer_modes = _signer_modes(signer_policy)
-    bundle_keyless = _bundle_keyless_detected(sigstore_bundle)
     rekor_pass = str(rekor_receipt.get("status", "")).strip() == "PASS"
-    signer_id = str(sigstore_bundle.get("signer_id", "")).strip()
-    bundle_identity = _bundle_certificate_identity(sigstore_bundle)
-    bundle_issuer = _bundle_certificate_oidc_issuer(sigstore_bundle)
+    execution_receipt_status = str(execution_receipt.get("status", "")).strip() if isinstance(execution_receipt, dict) else ""
+    execution_verification_status = str(execution_receipt.get("verification_status", "")).strip() if isinstance(execution_receipt, dict) else ""
+    execution_bundle_valid = _execution_bundle_sha_matches(root=root, execution_receipt=execution_receipt)
+    execution_backed_surfaces = _execution_backed_surfaces(execution_receipt) if execution_bundle_valid else []
+
+    execution_signer_id = str(execution_receipt.get("executed_signer_id", "")).strip() if isinstance(execution_receipt, dict) else ""
+    execution_signer_mode = str(execution_receipt.get("executed_signer_mode", "")).strip().lower() if isinstance(execution_receipt, dict) else ""
+    execution_identity = str(execution_receipt.get("certificate_identity", "")).strip() if isinstance(execution_receipt, dict) else ""
+    execution_issuer = str(execution_receipt.get("certificate_oidc_issuer", "")).strip() if isinstance(execution_receipt, dict) else ""
+
+    signer_id = execution_signer_id or str(sigstore_bundle.get("signer_id", "")).strip()
+    bundle_identity = execution_identity or _bundle_certificate_identity(sigstore_bundle)
+    bundle_issuer = execution_issuer or _bundle_certificate_oidc_issuer(sigstore_bundle)
+    bundle_keyless = bool(
+        execution_receipt_status == "PASS"
+        and execution_verification_status == "PASS"
+        and execution_bundle_valid
+        and execution_signer_mode == "sigstore_keyless"
+        and execution_backed_surfaces
+    )
 
     blockers: List[str] = []
     if not allowed:
@@ -312,6 +372,7 @@ def build_keyless_status(
         blockers.append("REKOR_INCLUSION_EVIDENCE_NOT_PASSING")
 
     status = "PASS" if not blockers else "NOT_ACTIVE"
+    keyless_backed_surfaces = execution_backed_surfaces if status == "PASS" else []
     return {
         "schema_id": "kt.operator.sigstore_keyless_status.v1",
         "artifact_id": Path(KEYLESS_STATUS_REL).name,
@@ -329,7 +390,10 @@ def build_keyless_status(
         "keyless_constraint_oidc_issuer": constraint_issuer,
         "keyless_bundle_detected": bundle_keyless,
         "declared_ws11_keyless_surfaces": DECLARED_KEYLESS_SURFACES,
-        "keyless_backed_surfaces": DECLARED_KEYLESS_SURFACES if status == "PASS" else [],
+        "keyless_backed_surfaces": keyless_backed_surfaces,
+        "keyless_execution_receipt_ref": KEYLESS_EXECUTION_RECEIPT_REL if isinstance(execution_receipt, dict) else "",
+        "keyless_execution_bundle_ref": KEYLESS_EXECUTION_BUNDLE_REL if execution_bundle_valid else "",
+        "keyless_execution_bundle_sha256_valid": execution_bundle_valid,
         "rekor_receipt_ref": REKOR_RECEIPT_REL,
         "rekor_receipt_status": str(rekor_receipt.get("status", "")).strip() or "MISSING",
         "blockers": blockers,
@@ -472,6 +536,7 @@ def build_public_trust_bundle(
     *,
     root: Path,
     public_refs: Sequence[str],
+    keyless_status: Dict[str, Any],
     generated_utc: str,
     current_repo_head: str,
     public_verifier_manifest: Dict[str, Any],
@@ -498,6 +563,7 @@ def build_public_trust_bundle(
         "outsider_verification_requires_only_public_material": not secret_violations,
         "secret_dependency_violations": secret_violations,
         "declared_ws11_keyless_surfaces": DECLARED_KEYLESS_SURFACES,
+        "keyless_backed_surfaces": list(keyless_status.get("keyless_backed_surfaces", [])),
         "stronger_claim_not_made": [
             "The current repo head is itself the transparency-verified subject unless the verifier says so",
             "This bundle upgrades Sigstore keypair evidence into keyless evidence",
@@ -518,6 +584,7 @@ def build_ws11_receipt(
     log_monitor_active = str(log_monitor_receipt.get("status", "")).strip() == "PASS" and str(log_monitor_receipt.get("plane_state", "")).strip() == "ACTIVE"
     secret_free = bool(public_trust_bundle.get("outsider_verification_requires_only_public_material"))
     keyless_active = str(keyless_status.get("status", "")).strip() == "PASS"
+    keyless_backed_surfaces = list(keyless_status.get("keyless_backed_surfaces", []))
     freeze_backed = bool(log_monitor_receipt.get("freeze_state"))
 
     if log_monitor_active and secret_free and freeze_backed and rekor_exists and keyless_active:
@@ -559,11 +626,12 @@ def build_ws11_receipt(
         "validators_run": ["python -m tools.operator.ws11_sigstore_rekor_log_monitor_validate"],
         "tests_run": ["python -m pytest -q tests/operator/test_ws11_sigstore_rekor_log_monitor_validate.py"],
         "truth_conditions": {
-            "critical_public_artifacts_signed_through_declared_public_trust_path": keyless_active,
+            "critical_public_artifacts_signed_through_declared_public_trust_path": bool(keyless_backed_surfaces),
             "rekor_inclusion_evidence_exists": rekor_exists,
             "kt_log_monitor_active_as_real_plane": log_monitor_active,
             "anomaly_handling_and_freeze_behavior_validator_backed": freeze_backed,
             "outsider_verification_has_no_private_local_secret_dependency_for_declared_ws11_surfaces": secret_free,
+            "executed_signing_path_truly_keyless": keyless_active,
         },
         "blocked_by": blocked_by,
         "current_strongest_claim": (
@@ -573,7 +641,7 @@ def build_ws11_receipt(
             else "WS11 has a real KT_LOG_MONITOR plane, Rekor inclusion evidence, and a public verification bundle that requires no private or local-secret input for the declared WS11 public surfaces. "
             "However, the executed signing path remains keypair-based and no keyless Sigstore artifact is present, so WS11 is PARTIAL and not PASS."
             if status == "PARTIAL"
-            else "WS11 proves the declared public-trust path with keyless Sigstore signing, Rekor inclusion evidence, an active KT_LOG_MONITOR plane, and public-secret-free outsider verification."
+            else f"WS11 proves a bounded declared public-trust path with keyless Sigstore signing for {', '.join(keyless_backed_surfaces)}, Rekor inclusion evidence, an active KT_LOG_MONITOR plane, and public-secret-free outsider verification."
             if status == "PASS"
             else "WS11 failed closed because the declared public-trust activation surface is incomplete or internally contradictory."
         ),
@@ -629,14 +697,14 @@ def _apply_control_plane(
     dag["semantic_boundary"]["lawful_current_claim"] = (
         "WS10 passed under a reratified 3-of-3 root boundary only. WS11 is PARTIAL: Rekor evidence and KT_LOG_MONITOR are active on declared public surfaces, keyless identity constraints are declared, but the executed signer path remains keypair-based and no matching keyless bundle is present."
         if ws11_partial
-        else "WS10 passed under a reratified 3-of-3 root boundary only. WS11 passed with keyless Sigstore, Rekor inclusion, and an active KT_LOG_MONITOR plane."
+        else "WS10 passed under a reratified 3-of-3 root boundary only. WS11 passed with executed keyless Sigstore evidence for at least one declared surface, Rekor inclusion, and an active KT_LOG_MONITOR plane."
     )
     ws11_node = next(node for node in dag["nodes"] if node["id"] == WORKSTREAM_ID)
     ws12_node = next(node for node in dag["nodes"] if node["id"] == "WS12_IN_TOTO_SLSA_AND_TUF_ATTACK_COVERAGE")
     if ws11_pass:
         ws11_node["status"] = "PASS"
         ws11_node["blocked_by"] = []
-        ws11_node["claim_boundary"] = "WS11 PASS proves only the declared keyless public-trust path and monitor plane for the WS11 surfaces."
+        ws11_node["claim_boundary"] = "WS11 PASS proves only the bounded keyless public-trust path and monitor plane for the exact WS11 surfaces named in kt_sigstore_integration_receipt.json."
         ws12_node["status"] = "UNLOCKED"
         ws12_node["unlock_basis"] = "WS11 PASS"
     else:
@@ -652,7 +720,7 @@ def _apply_control_plane(
     trust_root_policy["semantic_boundary"]["lawful_current_claim"] = (
         "WS10 root ceremony remains executed off-box under a reratified 3-of-3 boundary only. WS11 is PARTIAL: Rekor evidence and KT_LOG_MONITOR are active on the declared public surfaces, keyless identity constraints are declared, but the signer path remains keypair-based and no matching keyless bundle is present."
         if ws11_partial
-        else "WS10 root ceremony remains executed off-box under a reratified 3-of-3 boundary only. WS11 passed with a declared keyless public-trust path, Rekor inclusion evidence, and an active KT_LOG_MONITOR plane."
+        else "WS10 root ceremony remains executed off-box under a reratified 3-of-3 boundary only. WS11 passed with a bounded executed keyless public-trust path, Rekor inclusion evidence, and an active KT_LOG_MONITOR plane."
     )
     trust_root_policy["closure_boundary"]["next_required_step"] = receipt["next_lawful_workstream"]
 
@@ -661,7 +729,7 @@ def _apply_control_plane(
     signer_topology["semantic_boundary"]["lawful_current_claim"] = (
         "Root signer topology remains executed and reratified as 3-of-3 only. WS11 is PARTIAL: the declared public verification and KT_LOG_MONITOR surfaces are active, keyless identity constraints are declared for CI signing, but the signer path remains keypair-based and non-root roles remain unexecuted."
         if ws11_partial
-        else "Root signer topology remains executed and reratified as 3-of-3 only. WS11 passed for the declared keyless public-trust path; non-root issuance still remains bounded by later workstreams."
+        else "Root signer topology remains executed and reratified as 3-of-3 only. WS11 passed for a bounded executed keyless public-trust path; non-root issuance still remains bounded by later workstreams."
     )
 
 
@@ -684,6 +752,7 @@ def emit_ws11_sigstore_activation(*, root: Optional[Path] = None) -> Dict[str, A
     _write_json(repo, SIGNER_POLICY_REL, signer_policy)
     sigstore_bundle = _load_required_json(repo, SIGSTORE_BUNDLE_REL)
     rekor_receipt = _load_required_json(repo, REKOR_RECEIPT_REL)
+    execution_receipt = _load_optional_json(repo, KEYLESS_EXECUTION_RECEIPT_REL)
     public_verifier_manifest = _load_required_json(repo, PUBLIC_VERIFIER_MANIFEST_REL)
     _load_required_json(repo, PUBLIC_VERIFIER_RELEASE_MANIFEST_REL)
     _load_required_json(repo, PUBLIC_VERIFIER_ATTESTATION_REL)
@@ -700,9 +769,11 @@ def emit_ws11_sigstore_activation(*, root: Optional[Path] = None) -> Dict[str, A
     _write_json(repo, KEYLESS_POLICY_REL, keyless_policy)
 
     keyless_status = build_keyless_status(
+        root=repo,
         signer_policy=signer_policy,
         sigstore_bundle=sigstore_bundle,
         rekor_receipt=rekor_receipt,
+        execution_receipt=execution_receipt,
         generated_utc=generated_utc,
         current_repo_head=current_repo_head,
     )
@@ -738,6 +809,7 @@ def emit_ws11_sigstore_activation(*, root: Optional[Path] = None) -> Dict[str, A
     public_trust_bundle = build_public_trust_bundle(
         root=repo,
         public_refs=[*public_refs, LOG_MONITOR_RECEIPT_REL],
+        keyless_status=keyless_status,
         generated_utc=generated_utc,
         current_repo_head=current_repo_head,
         public_verifier_manifest=public_verifier_manifest,

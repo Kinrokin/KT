@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 import sys
@@ -14,6 +15,8 @@ from tools.operator.ws11_sigstore_rekor_log_monitor_validate import (  # noqa: E
     DECLARED_KEYLESS_CERTIFICATE_OIDC_ISSUER,
     DECLARED_KEYLESS_SIGNER_ID,
     EXECUTION_DAG_REL,
+    KEYLESS_EXECUTION_BUNDLE_REL,
+    KEYLESS_EXECUTION_RECEIPT_REL,
     KEYLESS_POLICY_REL,
     KEYLESS_STATUS_REL,
     LOG_MONITOR_POLICY_REL,
@@ -97,10 +100,10 @@ def _seed_ws11_repo(
         tmp_path / "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
         {
             "status": "PASS",
-            "signer_id": DECLARED_KEYLESS_SIGNER_ID if keyless_bundle else "KT_OP1_COSIGN_KEYPAIR",
-            "signer_mode": "sigstore_keyless" if keyless_bundle else "cosign_keypair",
-            "certificate_identity": (bundle_identity or DECLARED_KEYLESS_CERTIFICATE_IDENTITY) if keyless_bundle else "",
-            "certificate_oidc_issuer": (bundle_issuer or DECLARED_KEYLESS_CERTIFICATE_OIDC_ISSUER) if keyless_bundle else "",
+            "signer_id": "KT_OP1_COSIGN_KEYPAIR",
+            "signer_mode": "cosign_keypair",
+            "certificate_identity": "",
+            "certificate_oidc_issuer": "",
             "truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
         },
     )
@@ -122,6 +125,24 @@ def _seed_ws11_repo(
     _write_json(tmp_path / "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_manifest.json", {"status": "PASS"})
     _write_json(tmp_path / "KT_PROD_CLEANROOM/reports/kt_public_verifier_attestation.json", {"status": "PASS"})
     _write_json(tmp_path / "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json", {"status": "PASS"})
+    if keyless_bundle:
+        bundle_path = tmp_path / KEYLESS_EXECUTION_BUNDLE_REL
+        bundle_path.parent.mkdir(parents=True, exist_ok=True)
+        bundle_path.write_text("{\"bundle\":\"ok\"}\n", encoding="utf-8")
+        _write_json(
+            tmp_path / KEYLESS_EXECUTION_RECEIPT_REL,
+            {
+                "status": "PASS",
+                "executed_signer_id": DECLARED_KEYLESS_SIGNER_ID,
+                "executed_signer_mode": "sigstore_keyless",
+                "certificate_identity": bundle_identity or DECLARED_KEYLESS_CERTIFICATE_IDENTITY,
+                "certificate_oidc_issuer": bundle_issuer or DECLARED_KEYLESS_CERTIFICATE_OIDC_ISSUER,
+                "bundle_path": KEYLESS_EXECUTION_BUNDLE_REL,
+                "bundle_sha256": hashlib.sha256(bundle_path.read_bytes()).hexdigest(),
+                "keyless_backed_surfaces": ["KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"],
+                "verification_status": "PASS",
+            },
+        )
     _write_json(
         tmp_path / EXECUTION_DAG_REL,
         {
@@ -208,7 +229,7 @@ def test_emit_ws11_pass_when_keyless_constraints_and_bundle_are_present(tmp_path
 
     assert receipt["status"] == "PASS"
     assert receipt["blocked_by"] == []
-    assert receipt["keyless_backed_ws11_surfaces"]
+    assert receipt["keyless_backed_ws11_surfaces"] == ["KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"]
     dag = json.loads((tmp_path / EXECUTION_DAG_REL).read_text(encoding="utf-8"))
     ws12 = next(row for row in dag["nodes"] if row["id"] == "WS12_IN_TOTO_SLSA_AND_TUF_ATTACK_COVERAGE")
     assert ws12["status"] == "UNLOCKED"
