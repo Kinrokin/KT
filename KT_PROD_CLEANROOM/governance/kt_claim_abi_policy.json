@@ -1,0 +1,158 @@
+{
+  "claim_record_fields": [
+    {
+      "description": "Stable machine-readable identifier for the claim row.",
+      "field_id": "claim_id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "allowed_values": [
+        "ALLOWED_CURRENT",
+        "BLOCKED_CURRENT",
+        "DOCUMENTARY_ONLY"
+      ],
+      "description": "Current admissibility state for the claim.",
+      "field_id": "claim_status",
+      "required": true,
+      "type": "enum"
+    },
+    {
+      "allowed_values": [
+        "truth_authority",
+        "root_trust",
+        "public_trust",
+        "supply_chain",
+        "determinism",
+        "verifier_release",
+        "verifier_acceptance",
+        "release_ceremony",
+        "campaign_state"
+      ],
+      "description": "Governance domain for the claim.",
+      "field_id": "domain",
+      "required": true,
+      "type": "enum"
+    },
+    {
+      "description": "Current repository head against which the ABI output was compiled.",
+      "field_id": "compiled_head_commit",
+      "required": true,
+      "type": "git_sha"
+    },
+    {
+      "description": "Upstream bounded subject head for the cited claim.",
+      "field_id": "subject_head_commit",
+      "required": true,
+      "type": "git_sha_or_empty"
+    },
+    {
+      "allowed_values": [
+        "CURRENT_HEAD_CONTAINS_UPSTREAM_PASS_EVIDENCE",
+        "CURRENT_HEAD_DOCUMENTARY_ONLY_BOUNDARY"
+      ],
+      "description": "Whether the current head is the subject or only contains bounded upstream evidence.",
+      "field_id": "evidence_position",
+      "required": true,
+      "type": "enum"
+    },
+    {
+      "description": "Canonical upstream receipt that governs the claim.",
+      "field_id": "upstream_receipt_ref",
+      "required": true,
+      "type": "repo_relpath"
+    },
+    {
+      "description": "Required current status of the cited upstream receipt.",
+      "field_id": "upstream_receipt_status",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "description": "Named proof ceiling that constrains the claim.",
+      "field_id": "proof_ceiling_id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "description": "Bounded trust scope for the claim.",
+      "field_id": "trust_scope",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "description": "Bounded surface path or scope string for the claim.",
+      "field_id": "surface_scope",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "description": "Human-readable claim string generated from machine state.",
+      "field_id": "statement",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "description": "Machine-cited evidence references for the claim.",
+      "field_id": "evidence_refs",
+      "required": true,
+      "type": "list[string]"
+    },
+    {
+      "description": "Explicit blockers when the claim is not currently admissible.",
+      "field_id": "blockers",
+      "required": true,
+      "type": "list[string]"
+    },
+    {
+      "description": "Stronger claims that remain forbidden.",
+      "field_id": "stronger_claim_not_made",
+      "required": true,
+      "type": "list[string]"
+    }
+  ],
+  "claim_status_semantics": {
+    "ALLOWED_CURRENT": "Current head may make the bounded claim exactly as compiled.",
+    "BLOCKED_CURRENT": "Current head must not make the stronger claim; blockers remain active.",
+    "DOCUMENTARY_ONLY": "Claim is documentary or mirror-only and may not be treated as live authority."
+  },
+  "compiler_output_ref": "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json",
+  "current_repo_head": "421e457058899ee5a780eabf5ca166623cab43e3",
+  "historical_predecessor_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+    "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+    "KT_PROD_CLEANROOM/governance/closure_foundation/kt_claim_compiler_policy.json"
+  ],
+  "invariants": [
+    "Every current claim row must distinguish compiled_head_commit from subject_head_commit whenever current HEAD only contains upstream evidence.",
+    "No claim row may widen bootstrap-root verifier acceptance into threshold-root acceptance without a later explicit acceptance bundle.",
+    "No claim row may convert the WS10 reratified 3-of-3 root execution into a 3-of-5 execution claim.",
+    "No claim row may mark release readiness, release ceremony completion, or campaign completion as ALLOWED_CURRENT at WS15.",
+    "Documentary mirrors may be described only as documentary-only surfaces and never as the active truth source."
+  ],
+  "policy_id": "KT_CLAIM_ABI_POLICY_V1_20260318",
+  "required_field_order": [
+    "claim_id",
+    "claim_status",
+    "domain",
+    "compiled_head_commit",
+    "subject_head_commit",
+    "evidence_position",
+    "upstream_receipt_ref",
+    "upstream_receipt_status",
+    "proof_ceiling_id",
+    "trust_scope",
+    "surface_scope",
+    "statement",
+    "evidence_refs",
+    "blockers",
+    "stronger_claim_not_made"
+  ],
+  "schema_id": "kt.governance.claim_abi_policy.v1",
+  "status": "ACTIVE",
+  "stronger_claim_not_made": [
+    "Claim ABI law itself widens verifier coverage or release readiness.",
+    "WS15 makes threshold-root verifier acceptance active.",
+    "WS15 erases the distinction between current HEAD and upstream frozen proof subjects."
+  ]
+}

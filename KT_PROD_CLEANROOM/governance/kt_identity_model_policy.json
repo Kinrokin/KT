@@ -1,0 +1,203 @@
+{
+  "current_overlap_scan": [
+    {
+      "constraint_id": "root_release_overlap_forbidden",
+      "left_principal_class": "root_custodians",
+      "overlap_identities": [],
+      "right_principal_class": "release_signers",
+      "status": "PASS"
+    },
+    {
+      "constraint_id": "root_producer_overlap_forbidden",
+      "left_principal_class": "root_custodians",
+      "overlap_identities": [],
+      "right_principal_class": "producer_attestors",
+      "status": "PASS"
+    },
+    {
+      "constraint_id": "root_ci_overlap_forbidden",
+      "left_principal_class": "root_custodians",
+      "overlap_identities": [],
+      "right_principal_class": "ci_role_identities",
+      "status": "PASS"
+    },
+    {
+      "constraint_id": "root_verifier_acceptance_overlap_forbidden",
+      "left_principal_class": "root_custodians",
+      "overlap_identities": [],
+      "right_principal_class": "verifier_acceptance_maintainers",
+      "status": "PASS"
+    },
+    {
+      "constraint_id": "release_verifier_acceptance_overlap_forbidden",
+      "left_principal_class": "release_signers",
+      "overlap_identities": [],
+      "right_principal_class": "verifier_acceptance_maintainers",
+      "status": "PASS"
+    },
+    {
+      "constraint_id": "release_ci_keyless_overlap_forbidden",
+      "left_principal_class": "release_signers",
+      "overlap_identities": [],
+      "right_principal_class": "ci_keyless_signers",
+      "status": "PASS"
+    },
+    {
+      "constraint_id": "verifier_acceptance_ci_keyless_overlap_forbidden",
+      "left_principal_class": "verifier_acceptance_maintainers",
+      "overlap_identities": [],
+      "right_principal_class": "ci_keyless_signers",
+      "status": "PASS"
+    },
+    {
+      "constraint_id": "operator_release_overlap_forbidden",
+      "left_principal_class": "local_operator",
+      "overlap_identities": [],
+      "right_principal_class": "release_signers",
+      "status": "PASS"
+    },
+    {
+      "constraint_id": "operator_verifier_acceptance_overlap_forbidden",
+      "left_principal_class": "local_operator",
+      "overlap_identities": [],
+      "right_principal_class": "verifier_acceptance_maintainers",
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "421e457058899ee5a780eabf5ca166623cab43e3",
+  "identity_constraints": [
+    {
+      "constraint_id": "root_release_overlap_forbidden",
+      "enforcement": "FAIL_CLOSED",
+      "left_principal_class": "root_custodians",
+      "right_principal_class": "release_signers",
+      "rule": "Forbidden overlap unless a later explicit workstream law widens it with independent authority.",
+      "scope": "same concrete identity on the same artifact or authority transition"
+    },
+    {
+      "constraint_id": "root_producer_overlap_forbidden",
+      "enforcement": "FAIL_CLOSED",
+      "left_principal_class": "root_custodians",
+      "right_principal_class": "producer_attestors",
+      "rule": "Forbidden overlap unless a later explicit workstream law widens it with independent authority.",
+      "scope": "same concrete identity on the same artifact or authority transition"
+    },
+    {
+      "constraint_id": "root_ci_overlap_forbidden",
+      "enforcement": "FAIL_CLOSED",
+      "left_principal_class": "root_custodians",
+      "right_principal_class": "ci_role_identities",
+      "rule": "Forbidden overlap unless a later explicit workstream law widens it with independent authority.",
+      "scope": "same concrete identity on the same artifact or authority transition"
+    },
+    {
+      "constraint_id": "root_verifier_acceptance_overlap_forbidden",
+      "enforcement": "FAIL_CLOSED",
+      "left_principal_class": "root_custodians",
+      "right_principal_class": "verifier_acceptance_maintainers",
+      "rule": "Forbidden overlap unless a later explicit workstream law widens it with independent authority.",
+      "scope": "same concrete identity on the same artifact or authority transition"
+    },
+    {
+      "constraint_id": "release_verifier_acceptance_overlap_forbidden",
+      "enforcement": "FAIL_CLOSED",
+      "left_principal_class": "release_signers",
+      "right_principal_class": "verifier_acceptance_maintainers",
+      "rule": "Forbidden overlap unless a later explicit workstream law widens it with independent authority.",
+      "scope": "same concrete identity on the same artifact or authority transition"
+    },
+    {
+      "constraint_id": "release_ci_keyless_overlap_forbidden",
+      "enforcement": "FAIL_CLOSED",
+      "left_principal_class": "release_signers",
+      "right_principal_class": "ci_keyless_signers",
+      "rule": "Forbidden overlap unless a later explicit workstream law widens it with independent authority.",
+      "scope": "same concrete identity on the same artifact or authority transition"
+    },
+    {
+      "constraint_id": "verifier_acceptance_ci_keyless_overlap_forbidden",
+      "enforcement": "FAIL_CLOSED",
+      "left_principal_class": "verifier_acceptance_maintainers",
+      "right_principal_class": "ci_keyless_signers",
+      "rule": "Forbidden overlap unless a later explicit workstream law widens it with independent authority.",
+      "scope": "same concrete identity on the same artifact or authority transition"
+    },
+    {
+      "constraint_id": "operator_release_overlap_forbidden",
+      "enforcement": "FAIL_CLOSED",
+      "left_principal_class": "local_operator",
+      "right_principal_class": "release_signers",
+      "rule": "Forbidden overlap unless a later explicit workstream law widens it with independent authority.",
+      "scope": "same concrete identity on the same artifact or authority transition"
+    },
+    {
+      "constraint_id": "operator_verifier_acceptance_overlap_forbidden",
+      "enforcement": "FAIL_CLOSED",
+      "left_principal_class": "local_operator",
+      "right_principal_class": "verifier_acceptance_maintainers",
+      "rule": "Forbidden overlap unless a later explicit workstream law widens it with independent authority.",
+      "scope": "same concrete identity on the same artifact or authority transition"
+    }
+  ],
+  "policy_id": "KT_IDENTITY_MODEL_POLICY_V1_20260318",
+  "principal_sets": {
+    "ci_keyless_signers": [
+      "KT_CI_TRUTH_BARRIER_KEYLESS_MAIN"
+    ],
+    "ci_role_identities": [
+      "KT_CI_SIGNER_A",
+      "KT_CI_SIGNER_B"
+    ],
+    "local_operator": [
+      "robert_thomas_king"
+    ],
+    "producer_attestors": [
+      "KT_PRODUCER_SIGNER_A",
+      "KT_PRODUCER_SIGNER_B",
+      "KT_PRODUCER_SIGNER_C"
+    ],
+    "release_signers": [
+      "KT_RELEASE_SIGNER_A",
+      "KT_RELEASE_SIGNER_B",
+      "KT_RELEASE_SIGNER_C"
+    ],
+    "root_custodians": [
+      "jessica_lack",
+      "kevin_gratts",
+      "ruthie_mckinley"
+    ],
+    "verifier_acceptance_maintainers": [
+      "KT_VERIFIER_ACCEPTANCE_A",
+      "KT_VERIFIER_ACCEPTANCE_B"
+    ]
+  },
+  "schema_id": "kt.governance.identity_model_policy.v1",
+  "self_ratification_barriers": [
+    {
+      "barrier_id": "claim_compiler_must_not_self_ratify_stronger_claims",
+      "enforcement": "FAIL_CLOSED",
+      "rule": "WS15 claim compiler outputs may only compile claims from cited upstream receipts and may not treat kt_claim_abi_receipt.json or kt_claim_proof_ceiling_compiler.json as authority for stronger upstream states."
+    },
+    {
+      "barrier_id": "verifier_acceptance_requires_explicit_upstream_bundle",
+      "enforcement": "FAIL_CLOSED",
+      "rule": "Bootstrap-root-only acceptance may remain active, but threshold-root acceptance may not be self-promoted by WS15 outputs without a later explicit acceptance bundle."
+    },
+    {
+      "barrier_id": "release_approver_cannot_self_accept_same_bundle",
+      "enforcement": "FAIL_CLOSED",
+      "rule": "The same concrete identity may not serve as both release approver and verifier-acceptance maintainer for the same release bundle."
+    }
+  ],
+  "semantic_boundary": {
+    "local_operator_compiles_claims_but_does_not_gain_release_or_verifier_acceptance_power": true,
+    "non_root_roles_remain_logically_declared_or_planned": true,
+    "root_boundary_remains_reratified_3_of_3_only": true
+  },
+  "status": "ACTIVE",
+  "stronger_claim_not_made": [
+    "The current identity model proves independence beyond the declared bounded role sets.",
+    "WS15 executes release or verifier-acceptance authority.",
+    "Overlapping trust roles are acceptable without later explicit law."
+  ]
+}

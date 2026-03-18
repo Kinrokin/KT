@@ -1,0 +1,129 @@
+{
+  "artifact_id": "kt_claim_abi_receipt.json",
+  "blocked_by": [],
+  "checks": [
+    {
+      "check": "ws14_receipt_pass",
+      "detail": "WS14 must already be PASS before WS15 can type and lock current-head claims.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws14_frozen_subject_boundary_preserved",
+      "detail": "WS15 must preserve the frozen WS14 subject head as upstream evidence instead of overreading it as the current subject.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "claim_abi_fields_fully_typed_and_machine_enforced",
+      "detail": "Every compiled claim row must match the locked ABI fields, order, and types.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_claim_abi_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "proof_ceiling_compiler_preserves_current_bootstrap_only_boundary",
+      "detail": "The proof-ceiling compiler must preserve reratified 3-of-3 root truth, bootstrap-root-only verifier acceptance, and blocked release-readiness/campaign-completion claims.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json",
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "identity_model_forbids_self_ratification_and_overlap_abuse",
+      "detail": "Identity model constraints must forbid release/verifier/root/operator overlap abuse for the same authority transition.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_identity_model_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_signer_topology.json",
+        "KT_PROD_CLEANROOM/governance/signer_identity_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ledger_law_locks_immutability_supersession_and_documentary_boundaries",
+      "detail": "Ledger law must keep the settled ledger pointer authoritative and documentary mirrors non-authoritative.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_ledger_law.json",
+        "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+        "KT_PROD_CLEANROOM/governance/truth_supersession_rules.json",
+        "KT_PROD_CLEANROOM/reports/current_state_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "release_ceremony_law_explicit_but_non_executed",
+      "detail": "Release ceremony law must be active and explicit while still blocking release readiness and execution claims.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_release_ceremony.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "failure_mode_register_explicit_and_fail_closed",
+      "detail": "Failure-mode law must explicitly block ABI drift, proof-ceiling overclaims, self-ratification, mirror overread, and release overread.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_failure_mode_register.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws15_outputs_stably_emitted",
+      "detail": "All WS15 law and compiler outputs must re-emit byte-stably from the current source state.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_claim_abi_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_identity_model_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_ledger_law.json",
+        "KT_PROD_CLEANROOM/governance/kt_release_ceremony.json",
+        "KT_PROD_CLEANROOM/governance/kt_failure_mode_register.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_against": "421e457058899ee5a780eabf5ca166623cab43e3",
+  "current_repo_head": "421e457058899ee5a780eabf5ca166623cab43e3",
+  "current_strongest_claim": "WS15 locks a typed claim ABI, deterministic proof-ceiling compiler, identity abuse constraints, ledger law, release-ceremony law, and fail-closed failure register while preserving the reratified 3-of-3 root boundary and bootstrap-root-only verifier acceptance.",
+  "generated_utc": "2026-03-18T05:29:42Z",
+  "next_lawful_workstream": "WS16_TRUST_ASSUMPTIONS_TEVV_DATASET_PINNING_AND_COMPARATOR_REGISTRY",
+  "output_hashes": {
+    "KT_PROD_CLEANROOM/governance/kt_claim_abi_policy.json": "1cfde9c6f6a05ee5a7093454fcc86d56d7bc87665cb692cd468872479ded84a9",
+    "KT_PROD_CLEANROOM/governance/kt_failure_mode_register.json": "dbe8660d339837f53121d65fd12bedb2e704627c8f64e529abe4be8d223b4360",
+    "KT_PROD_CLEANROOM/governance/kt_identity_model_policy.json": "d1e7adbbf24c3d217049c1a1cea3e0565028d61e69a7a1c1b93f957dea8f794f",
+    "KT_PROD_CLEANROOM/governance/kt_ledger_law.json": "65bfdc39383c43b10bbfa442db8993f2211b1de36918eef924a86e83e8dea8e3",
+    "KT_PROD_CLEANROOM/governance/kt_release_ceremony.json": "4605e3b6b0081224bea6175022e2c01b01a386a8948dbfe65fc65092ee81d478",
+    "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json": "e902c2707f5aed6831adc50283b5534e0cf7cde63d070413f93f6ac8aacc6668"
+  },
+  "pass_verdict": "CLAIM_ABI_AND_PROOF_CEILING_LOCKED",
+  "protected_touch_violations": [],
+  "remaining_limitations": [
+    "WS15 does not widen verifier acceptance beyond the bootstrap root.",
+    "WS15 does not prove release readiness, release ceremony execution, or campaign completion.",
+    "WS15 remains bounded to the declared verifier surface coverage already proven in WS14.",
+    "The repo-root import fragility remains visible and is not erased by WS15."
+  ],
+  "schema_id": "kt.operator.claim_abi_receipt.v1",
+  "status": "PASS",
+  "step_id": "WS15_STEP_1_LOCK_CLAIM_ABI_AND_PROOF_CEILING",
+  "stronger_claim_not_made": [
+    "Threshold-root verifier acceptance is active.",
+    "The original planned 3-of-5 root topology was executed.",
+    "Release readiness or release ceremony completion is proven.",
+    "WS16 has already been substantively started."
+  ],
+  "tests_run": [
+    "python -m pytest -q tests/operator/test_ws15_claim_abi_validate.py"
+  ],
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.ws15_claim_abi_validate"
+  ],
+  "workstream_id": "WS15_CLAIM_ABI_PROOF_CEILING_IDENTITY_AND_LEDGER_LAW"
+}

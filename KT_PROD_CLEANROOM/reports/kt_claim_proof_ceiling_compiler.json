@@ -1,0 +1,331 @@
+{
+  "allowed_current_claim_ids": [
+    "active_truth_source_is_ledger_pointer_documentary_mirrors_blocked",
+    "ws10_root_boundary_reratified_3_of_3_only",
+    "ws11_bounded_keyless_public_verifier_surface",
+    "ws12_supply_chain_reconciled_for_bounded_surface",
+    "ws13_determinism_locked_for_declared_class_a_and_b_surfaces",
+    "ws14_bootstrap_root_only_verifier_acceptance_and_static_release"
+  ],
+  "artifact_id": "kt_claim_proof_ceiling_compiler.json",
+  "blocked_current_claim_ids": [
+    "campaign_completion_proven",
+    "original_planned_3_of_5_root_execution_proven",
+    "release_readiness_proven",
+    "threshold_root_verifier_acceptance_active"
+  ],
+  "compiled_against": "421e457058899ee5a780eabf5ca166623cab43e3",
+  "compiled_claims": [
+    {
+      "blockers": [],
+      "claim_id": "active_truth_source_is_ledger_pointer_documentary_mirrors_blocked",
+      "claim_status": "ALLOWED_CURRENT",
+      "compiled_head_commit": "421e457058899ee5a780eabf5ca166623cab43e3",
+      "domain": "truth_authority",
+      "evidence_position": "CURRENT_HEAD_DOCUMENTARY_ONLY_BOUNDARY",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+        "KT_PROD_CLEANROOM/reports/truth_supersession_receipt.json",
+        "KT_PROD_CLEANROOM/reports/current_state_receipt.json"
+      ],
+      "proof_ceiling_id": "LEDGER_POINTER_SETTLED_AUTHORITATIVE",
+      "statement": "Current HEAD may claim only that the settled ledger pointer is the active truth source; documentary mirrors remain non-authoritative.",
+      "stronger_claim_not_made": [
+        "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json is the live truth source",
+        "KT_PROD_CLEANROOM/reports/current_state_receipt.json is live authority"
+      ],
+      "subject_head_commit": "7bd610b507328eb72622ce24678620f5469f3848",
+      "surface_scope": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "trust_scope": "LEDGER_POINTER_ACTIVE_TRUTH_ONLY",
+      "upstream_receipt_ref": "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+      "upstream_receipt_status": "SETTLED_AUTHORITATIVE"
+    },
+    {
+      "blockers": [
+        "WS16_NOT_COMPLETE",
+        "WS17_NOT_COMPLETE",
+        "WS18_NOT_COMPLETE",
+        "WS19_NOT_COMPLETE"
+      ],
+      "claim_id": "campaign_completion_proven",
+      "claim_status": "BLOCKED_CURRENT",
+      "compiled_head_commit": "421e457058899ee5a780eabf5ca166623cab43e3",
+      "domain": "campaign_state",
+      "evidence_position": "CURRENT_HEAD_CONTAINS_UPSTREAM_PASS_EVIDENCE",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/kt_execution_dag.json"
+      ],
+      "proof_ceiling_id": "CAMPAIGN_COMPLETION_PENDING_LATER_WORKSTREAMS",
+      "statement": "Current HEAD must not claim campaign completion; WS16 through WS19 remain ahead.",
+      "stronger_claim_not_made": [
+        "Campaign is complete",
+        "Whole-bundle completion proven"
+      ],
+      "subject_head_commit": "421e457058899ee5a780eabf5ca166623cab43e3",
+      "surface_scope": "execution_dag",
+      "trust_scope": "WS15_ONLY",
+      "upstream_receipt_ref": "KT_PROD_CLEANROOM/governance/kt_execution_dag.json",
+      "upstream_receipt_status": "ACTIVE"
+    },
+    {
+      "blockers": [
+        "PLANNED_3_OF_5_NOT_PROVEN"
+      ],
+      "claim_id": "original_planned_3_of_5_root_execution_proven",
+      "claim_status": "BLOCKED_CURRENT",
+      "compiled_head_commit": "421e457058899ee5a780eabf5ca166623cab43e3",
+      "domain": "root_trust",
+      "evidence_position": "CURRENT_HEAD_CONTAINS_UPSTREAM_PASS_EVIDENCE",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_root_ceremony_receipt.json",
+        "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json"
+      ],
+      "proof_ceiling_id": "PLANNED_3_OF_5_NOT_PROVEN",
+      "statement": "Current HEAD must not claim the earlier planned 3-of-5 root execution; only the reratified 3-of-3 root boundary was executed and witnessed.",
+      "stronger_claim_not_made": [
+        "Original planned 3-of-5 root topology executed"
+      ],
+      "subject_head_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "surface_scope": "root_topology_execution",
+      "trust_scope": "RERATIFIED_ROOT_3_OF_3_ONLY",
+      "upstream_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_root_ceremony_receipt.json",
+      "upstream_receipt_status": "PASS"
+    },
+    {
+      "blockers": [
+        "RELEASE_CEREMONY_NOT_EXECUTED",
+        "UPSTREAM_WORKSTREAMS_NOT_COMPLETE"
+      ],
+      "claim_id": "release_readiness_proven",
+      "claim_status": "BLOCKED_CURRENT",
+      "compiled_head_commit": "421e457058899ee5a780eabf5ca166623cab43e3",
+      "domain": "release_ceremony",
+      "evidence_position": "CURRENT_HEAD_CONTAINS_UPSTREAM_PASS_EVIDENCE",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/kt_release_ceremony.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json"
+      ],
+      "proof_ceiling_id": "RELEASE_CEREMONY_NOT_YET_EXECUTABLE",
+      "statement": "Current HEAD must not claim release readiness or release ceremony completion; WS15 only locks prerequisites and failure law.",
+      "stronger_claim_not_made": [
+        "Release readiness is proven",
+        "Release ceremony executed"
+      ],
+      "subject_head_commit": "421e457058899ee5a780eabf5ca166623cab43e3",
+      "surface_scope": "release_ceremony",
+      "trust_scope": "NOT_READY",
+      "upstream_receipt_ref": "KT_PROD_CLEANROOM/governance/kt_release_ceremony.json",
+      "upstream_receipt_status": "ACTIVE_LOCKED_PENDING_UPSTREAM_WORKSTREAMS"
+    },
+    {
+      "blockers": [
+        "THRESHOLD_ROOT_ACCEPTANCE_PENDING"
+      ],
+      "claim_id": "threshold_root_verifier_acceptance_active",
+      "claim_status": "BLOCKED_CURRENT",
+      "compiled_head_commit": "421e457058899ee5a780eabf5ca166623cab43e3",
+      "domain": "verifier_acceptance",
+      "evidence_position": "CURRENT_HEAD_CONTAINS_UPSTREAM_PASS_EVIDENCE",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json",
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json"
+      ],
+      "proof_ceiling_id": "THRESHOLD_ROOT_ACCEPTANCE_PENDING",
+      "statement": "Current HEAD must not claim threshold-root verifier acceptance; WS14 keeps verifier acceptance bootstrap-root only pending a later explicit acceptance bundle.",
+      "stronger_claim_not_made": [
+        "Threshold-root verifier acceptance is active today"
+      ],
+      "subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+      "surface_scope": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+      "trust_scope": "BOOTSTRAP_ROOT_ONLY",
+      "upstream_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json",
+      "upstream_receipt_status": "PASS"
+    },
+    {
+      "blockers": [],
+      "claim_id": "ws10_root_boundary_reratified_3_of_3_only",
+      "claim_status": "ALLOWED_CURRENT",
+      "compiled_head_commit": "421e457058899ee5a780eabf5ca166623cab43e3",
+      "domain": "root_trust",
+      "evidence_position": "CURRENT_HEAD_CONTAINS_UPSTREAM_PASS_EVIDENCE",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_root_ceremony_receipt.json",
+        "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_signer_topology.json"
+      ],
+      "proof_ceiling_id": "ROOT_BOUNDARY_RERATIFIED_3_OF_3_ONLY",
+      "statement": "Current HEAD contains valid WS10 evidence for an executed off-box reratified 3-of-3 root boundary only.",
+      "stronger_claim_not_made": [
+        "The earlier planned 3-of-5 root topology was executed",
+        "Release, producer, CI, or verifier-acceptance roles were executed"
+      ],
+      "subject_head_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "surface_scope": "offline_root_boundary_only",
+      "trust_scope": "RERATIFIED_ROOT_3_OF_3_ONLY",
+      "upstream_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_root_ceremony_receipt.json",
+      "upstream_receipt_status": "PASS"
+    },
+    {
+      "blockers": [],
+      "claim_id": "ws11_bounded_keyless_public_verifier_surface",
+      "claim_status": "ALLOWED_CURRENT",
+      "compiled_head_commit": "421e457058899ee5a780eabf5ca166623cab43e3",
+      "domain": "public_trust",
+      "evidence_position": "CURRENT_HEAD_CONTAINS_UPSTREAM_PASS_EVIDENCE",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_sigstore_integration_receipt.json",
+        "KT_PROD_CLEANROOM/governance/signer_identity_policy.json"
+      ],
+      "proof_ceiling_id": "DECLARED_KEYLESS_PUBLIC_VERIFIER_SURFACE_ONLY",
+      "statement": "Current HEAD contains bounded WS11 evidence for keyless Sigstore and Rekor-backed verification of the declared public verifier manifest surface only.",
+      "stronger_claim_not_made": [
+        "All verifier surfaces are keyless-backed",
+        "Release readiness is proven from WS11"
+      ],
+      "subject_head_commit": "9464288018b6ebb8148cceb666041c62bc1c01ff",
+      "surface_scope": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "trust_scope": "DECLARED_WS11_SURFACE_ONLY",
+      "upstream_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_sigstore_integration_receipt.json",
+      "upstream_receipt_status": "PASS"
+    },
+    {
+      "blockers": [],
+      "claim_id": "ws12_supply_chain_reconciled_for_bounded_surface",
+      "claim_status": "ALLOWED_CURRENT",
+      "compiled_head_commit": "421e457058899ee5a780eabf5ca166623cab43e3",
+      "domain": "supply_chain",
+      "evidence_position": "CURRENT_HEAD_CONTAINS_UPSTREAM_PASS_EVIDENCE",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_supply_chain_policy_receipt.json"
+      ],
+      "proof_ceiling_id": "CURRENT_HEAD_SUPPLY_CHAIN_BOUNDED_SURFACE_ONLY",
+      "statement": "Current HEAD contains WS12 evidence that supply-chain lineage, truth-barrier reconciliation, and fail-closed TUF attack coverage were proven only for the bounded declared verifier surface.",
+      "stronger_claim_not_made": [
+        "Full updater deployment is proven",
+        "Enterprise or product readiness is proven"
+      ],
+      "subject_head_commit": "8e81f68796ed2f4dda280ecd5ac5157e434d922a",
+      "surface_scope": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "trust_scope": "BOUNDED_SURFACE_SINGLE_KEYLESS_ARTIFACT",
+      "upstream_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_supply_chain_policy_receipt.json",
+      "upstream_receipt_status": "PASS"
+    },
+    {
+      "blockers": [],
+      "claim_id": "ws13_determinism_locked_for_declared_class_a_and_b_surfaces",
+      "claim_status": "ALLOWED_CURRENT",
+      "compiled_head_commit": "421e457058899ee5a780eabf5ca166623cab43e3",
+      "domain": "determinism",
+      "evidence_position": "CURRENT_HEAD_CONTAINS_UPSTREAM_PASS_EVIDENCE",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json"
+      ],
+      "proof_ceiling_id": "DECLARED_CLASS_A_CLASS_B_ONLY",
+      "statement": "Current HEAD contains WS13 evidence that only the declared CLASS_A and CLASS_B surfaces were locked reproducibly across the declared local and CI environments.",
+      "stronger_claim_not_made": [
+        "All KT artifacts are byte-identical across environments",
+        "CLASS_C imported evidence was normalized into deterministic output"
+      ],
+      "subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+      "surface_scope": "KT_PROD_CLEANROOM/governance/kt_artifact_class_policy.json + live_validation_index_v1 canonical profile",
+      "trust_scope": "CLASS_A_AND_CLASS_B_ONLY",
+      "upstream_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json",
+      "upstream_receipt_status": "PASS"
+    },
+    {
+      "blockers": [],
+      "claim_id": "ws14_bootstrap_root_only_verifier_acceptance_and_static_release",
+      "claim_status": "ALLOWED_CURRENT",
+      "compiled_head_commit": "421e457058899ee5a780eabf5ca166623cab43e3",
+      "domain": "verifier_release",
+      "evidence_position": "CURRENT_HEAD_CONTAINS_UPSTREAM_PASS_EVIDENCE",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json",
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json"
+      ],
+      "proof_ceiling_id": "BOOTSTRAP_ROOT_ONLY_VERIFIER_RELEASE_BOUNDARY",
+      "statement": "Current HEAD contains frozen WS14 evidence for a bounded static verifier release artifact set and bootstrap-root-only verifier acceptance on the imported signed public verifier manifest surface.",
+      "stronger_claim_not_made": [
+        "Threshold-root verifier acceptance is active",
+        "Broader verifier coverage is proven",
+        "Release readiness is proven"
+      ],
+      "subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+      "surface_scope": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+      "trust_scope": "BOOTSTRAP_ROOT_ONLY",
+      "upstream_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json",
+      "upstream_receipt_status": "PASS"
+    }
+  ],
+  "current_repo_head": "421e457058899ee5a780eabf5ca166623cab43e3",
+  "documentary_only_claim_ids": [],
+  "generated_utc": "2026-03-18T05:29:42Z",
+  "historical_predecessor_boundary": {
+    "historical_boundary_note": "The historical claim-ceiling summary is preserved as doctrine ancestry only and does not override current WS10-WS14 receipts.",
+    "historical_boundary_only": true,
+    "kt_claim_ceiling_summary_ref": "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json"
+  },
+  "inputs": [
+    {
+      "ref": "KT_PROD_CLEANROOM/reports/kt_root_ceremony_receipt.json",
+      "sha256": "673811ba51499e13ebc867bed70c62bfe78aeb028dc7a124c3fa935249ab1c7f",
+      "status": "PASS"
+    },
+    {
+      "ref": "KT_PROD_CLEANROOM/reports/kt_sigstore_integration_receipt.json",
+      "sha256": "f54a22e266d1f6678a39d84cb2dfb5ddae54b7909180c7658c49c9e0d27cb0b3",
+      "status": "PASS"
+    },
+    {
+      "ref": "KT_PROD_CLEANROOM/reports/kt_supply_chain_policy_receipt.json",
+      "sha256": "41a956b4ce2fd5d5986f3fc74cde9b35f342e6e0f9b1d680b41cf6f7111159b8",
+      "status": "PASS"
+    },
+    {
+      "ref": "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json",
+      "sha256": "62c327d8dbead38ec6e15e8864b499a8f8987ce8c768a015b90d9a48e0345331",
+      "status": "PASS"
+    },
+    {
+      "ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json",
+      "sha256": "e54019ceafce2cd2c298f62912f803f49ed072643af6802549429e9361a69efe",
+      "status": "PASS"
+    },
+    {
+      "ref": "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+      "sha256": "cddee3443f575617dcaf8fd62e00851b96fc955b89b9d2302c7b496878bfb3fc",
+      "status": "ACTIVE"
+    },
+    {
+      "ref": "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+      "sha256": "e8c1437865ad1dc52d918640280eaff431eb2f2124f8a3831eba2561566c1c04",
+      "status": "SETTLED_AUTHORITATIVE"
+    },
+    {
+      "ref": "KT_PROD_CLEANROOM/reports/truth_supersession_receipt.json",
+      "sha256": "41579896e7ade854e1ded51d23b41a781fef05f9f1cbfb9b116f953ce0da6654",
+      "status": "PASS"
+    },
+    {
+      "ref": "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_summary.json",
+      "sha256": "52dd647840b511fa20b28678ec6dd96870a1c5b53942e1552c09f7d996c71a82",
+      "status": "SEALED_WITH_OPEN_BLOCKERS"
+    }
+  ],
+  "proof_ceiling_summary": {
+    "campaign_state": "NOT_COMPLETE",
+    "determinism_scope": "DECLARED_CLASS_A_AND_CLASS_B_ONLY",
+    "documentary_truth_boundary": {
+      "active_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "documentary_current_state_receipt": "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+      "documentary_only": true
+    },
+    "keyless_surface_scope": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "release_state": "NOT_READY",
+    "root_boundary": "RERATIFIED_3_OF_3_ONLY",
+    "verifier_acceptance": "BOOTSTRAP_ROOT_ONLY"
+  },
+  "schema_id": "kt.operator.claim_proof_ceiling_compiler.v1",
+  "status": "PASS"
+}
