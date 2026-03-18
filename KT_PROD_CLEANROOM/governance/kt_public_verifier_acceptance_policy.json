@@ -1,0 +1,166 @@
+{
+  "accepted_current_head_surface": {
+    "keyless_execution_receipt_ref": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+    "keyless_execution_run_id": "23229317266",
+    "signed_surface_import_ref": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+    "signed_surface_sha256": "4b20265a469d3e1d95d3c3a796cd622d14c0f6edb10b1271d9e448139267b225",
+    "truth_barrier_remote_diagnostic_ref": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json",
+    "truth_barrier_remote_run_id": "23229317266"
+  },
+  "accepted_predicate_versions": [
+    {
+      "predicate_type": "https://kings-theorem.io/attestations/kt-authority-subject/v1",
+      "predicate_version": "v1",
+      "scope": "Bounded publication statement verification.",
+      "statement_type": "https://in-toto.io/Statement/v0.1"
+    }
+  ],
+  "accepted_schema_versions": [
+    {
+      "schema_id": "kt.public_verifier_manifest.v4",
+      "scope": "Bounded imported signed verifier surface only."
+    },
+    {
+      "schema_id": "kt.operator.ws11_keyless_execution_receipt.v1",
+      "scope": "Current-head keyless execution carry-forward evidence."
+    },
+    {
+      "schema_id": "kt.operator.truth_barrier_remote_diagnostic.v1",
+      "scope": "Current-head CI truth-barrier success evidence."
+    }
+  ],
+  "accepted_signature_trust_roots": [
+    {
+      "accepted_predicates": [
+        "https://kings-theorem.io/attestations/kt-authority-subject/v1"
+      ],
+      "mode": "cosign_keypair",
+      "public_key_ref": "KT_PROD_CLEANROOM/governance/signers/kt_op1_cosign.pub",
+      "public_key_sha256": "c4c5f8d7513d01729b4b2ad3795b4eb62bb0ab901beb9053ffe82b400e5e02aa",
+      "scope": "Historical publication attestation verification only.",
+      "signer_id": "KT_OP1_COSIGN_KEYPAIR"
+    },
+    {
+      "certificate_identity": "https://github.com/Kinrokin/KT/.github/workflows/ci_truth_barrier.yml@refs/heads/main",
+      "certificate_oidc_issuer": "https://token.actions.githubusercontent.com",
+      "mode": "sigstore_keyless",
+      "rekor_url": "https://rekor.sigstore.dev",
+      "scope": "Bounded current-head verification of the imported WS13 signed public verifier manifest copy only.",
+      "signer_id": "KT_CI_TRUTH_BARRIER_KEYLESS_MAIN"
+    }
+  ],
+  "accepted_verifier_trust_roots": [
+    {
+      "acceptance_state": "ACTIVE_BOOTSTRAP_ACCEPTED",
+      "claim_boundary": "Bootstrap verifier trust root remains the only active accepted root in WS14; threshold-root acceptance is not widened here.",
+      "source_ref": "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json",
+      "trust_root_id": "KT_TUF_ROOT_BOOTSTRAP_20260314"
+    }
+  ],
+  "current_repo_head": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+  "freshness_rules": {
+    "bounded_current_head_evidence_rule": "The imported WS13 CI diagnostic, keyless receipt, and signed-surface copy must agree on the same run_id and signed-surface SHA; no standalone wall-clock TTL is claimed for those imports beyond current-head binding.",
+    "current_head_match_required": true,
+    "max_age_hours": {
+      "current_state_receipt": 24,
+      "live_validation_index": 24,
+      "posture_conflict_receipt": 24,
+      "posture_consistency_enforcement_receipt": 24,
+      "posture_consistency_receipt": 24,
+      "runtime_closure_audit": 24,
+      "settled_truth_source_receipt": 24
+    },
+    "staleness_is_fail_closed": true,
+    "truth_freshness_windows_ref": "KT_PROD_CLEANROOM/governance/truth_freshness_windows.json"
+  },
+  "limitations": [
+    "WS14 does not widen verifier trust-root acceptance beyond the bootstrap root.",
+    "WS14 does not claim release-ceremony completion or release readiness.",
+    "WS14 remains bounded to the imported WS13 current-head signed public verifier surface.",
+    "The repo-root import fragility remains visible and is not erased by WS14."
+  ],
+  "pending_not_yet_accepted_trust_roots": [
+    {
+      "acceptance_state": "PENDING_LATER_ACCEPTANCE_UPDATE",
+      "reason": "WS14 releases the acceptance policy but does not itself publish a threshold-root acceptance bundle.",
+      "source_ref": "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+      "trust_root_id": "KT_SOVEREIGN_ROOT_TARGET_20260317"
+    }
+  ],
+  "policy_id": "KT_PUBLIC_VERIFIER_ACCEPTANCE_POLICY_V1_20260318",
+  "private_secret_dependency_rules": {
+    "allowed_public_material_refs": [
+      "KT_PROD_CLEANROOM/governance/signers/kt_op1_cosign.pub",
+      "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+      "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+      "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+      "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json"
+    ],
+    "forbidden_inputs": [
+      "private signing keys",
+      "HMAC or environment-secret trust material",
+      "connected-host root material",
+      "unpublished trust roots"
+    ],
+    "rule": "Declared verifier release surfaces must be verifiable from packaged public material only."
+  },
+  "release_artifact_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_static_verifier_sbom.json",
+    "KT_PROD_CLEANROOM/reports/kt_static_verifier_attestation.json"
+  ],
+  "revocation_and_freeze_behavior": {
+    "anomaly_rules": [
+      {
+        "anomaly_id": "SIGSTORE_KEYLESS_PATH_NOT_ACTIVE",
+        "blocks_ws11_pass": true,
+        "freeze_scope": "WS12_PLUS",
+        "severity": "HIGH"
+      },
+      {
+        "anomaly_id": "REKOR_INCLUSION_EVIDENCE_MISSING_OR_FAILING",
+        "blocks_ws11_pass": true,
+        "freeze_scope": "WS12_PLUS",
+        "severity": "CRITICAL"
+      },
+      {
+        "anomaly_id": "PUBLIC_VERIFICATION_REQUIRES_LOCAL_SECRET",
+        "blocks_ws11_pass": true,
+        "freeze_scope": "WS12_PLUS",
+        "severity": "CRITICAL"
+      }
+    ],
+    "current_log_monitor_state": "NO_FREEZE",
+    "emergency_rotation_path_ref": "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+    "emergency_rotation_required_actions": [
+      "freeze downstream workstreams",
+      "convene new air-gapped ceremony",
+      "revoke affected identities",
+      "reissue root metadata and verifier acceptance bundle"
+    ],
+    "emergency_rotation_triggers": [
+      "suspected_root_compromise",
+      "custody_breach",
+      "witness_dispute",
+      "hardware_failure"
+    ],
+    "freeze_on_any_high_or_critical_anomaly": true,
+    "freeze_scope": "WS12_PLUS",
+    "log_monitor_policy_ref": "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json",
+    "log_monitor_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_log_monitor_plane_receipt.json"
+  },
+  "schema_id": "kt.governance.public_verifier_acceptance_policy.v1",
+  "status": "ACTIVE",
+  "stronger_claim_not_made": [
+    "Threshold-root verifier acceptance is active today",
+    "All verifier surfaces are keyless-backed",
+    "WS14 proves release ceremony completion"
+  ],
+  "verifier_artifact_reproducibility_class": {
+    "artifact_ref": "KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json",
+    "class_id": "CLASS_A_STATIC_JSON_CURRENT_HEAD",
+    "determinism_envelope_ref": "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json",
+    "enforced_by": "ws14_static_verifier_release_validate.py deterministic re-emit and stable SHA checks"
+  },
+  "ws13_subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b"
+}

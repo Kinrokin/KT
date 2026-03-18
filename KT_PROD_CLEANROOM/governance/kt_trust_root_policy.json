@@ -1,10 +1,10 @@
 {
   "closure_boundary": {
-    "next_required_step": "WS13_ARTIFACT_CLASS_AND_DETERMINISM_ENVELOPE_LOCK",
+    "next_required_step": "WS15_CLAIM_ABI_PROOF_CEILING_IDENTITY_AND_LEDGER_LAW",
     "preparatory_only": false,
     "requires_offbox_execution_for_pass": false
   },
-  "current_repo_head": "8e81f68796ed2f4dda280ecd5ac5157e434d922a",
+  "current_repo_head": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
   "custody_and_storage_rules": {
     "release_and_verifier_material": [
       "Keep release and verifier acceptance material offline when later minted.",
@@ -45,7 +45,7 @@
     "quorum_claim_without_witnessed_offline_signers",
     "ws11_transparency_claim_before_activation"
   ],
-  "generated_utc": "2026-03-17T23:50:53Z",
+  "generated_utc": "2026-03-18T05:09:13Z",
   "inheritance": {
     "evidence_head_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
     "foundation_bootstrap_state": "BOOTSTRAP_THRESHOLD_1_OF_1",
@@ -165,7 +165,7 @@
   "schema_id": "kt.governance.trust_root_policy.v1",
   "semantic_boundary": {
     "air_gapped_ceremony_executed": true,
-    "lawful_current_claim": "WS10 root ceremony remains executed off-box under a reratified 3-of-3 boundary only. WS11 passed with one bounded keyless public-trust surface. WS12 passed for bounded current-head supply-chain policy and fail-closed attack coverage without widening verifier acceptance or release claims.",
+    "lawful_current_claim": "WS10 remains executed under the reratified 3-of-3 root boundary only. WS11, WS12, and WS13 remain bounded. WS14 now publishes bootstrap-root-only verifier acceptance and bounded static verifier release packaging without widening threshold-root acceptance.",
     "offline_root_material_present": true,
     "release_signer_material_present": false,
     "verifier_acceptance_upgraded": false
@@ -180,9 +180,9 @@
     "reratified_root_threshold": 3
   },
   "verifier_acceptance_impact": {
-    "current_acceptance_state": "BOOTSTRAP_ROOT_ONLY_WITH_RERATIFIED_3_OF_3_EXECUTION_RECORDED",
-    "current_boundary": "No verifier acceptance widening is lawful from WS10 execution alone.",
-    "post_pass_target_state": "THRESHOLD_ROOT_ACCEPTANCE_PENDING_WS11_AND_WS14"
+    "current_acceptance_state": "BOOTSTRAP_ROOT_ONLY_WITH_WS14_ACCEPTANCE_POLICY_PUBLISHED",
+    "current_boundary": "WS14 publishes verifier acceptance and distribution policy, but active accepted root remains the bootstrap root only; threshold-root acceptance is still pending a later explicit acceptance bundle.",
+    "post_pass_target_state": "THRESHOLD_ROOT_ACCEPTANCE_STILL_PENDING_LATER_EXPLICIT_BUNDLE"
   },
   "ws9_truth_source_ref": "KT_PROD_CLEANROOM/reports/kt_current_head_truth_source.json"
 }

@@ -1,5 +1,5 @@
 {
-  "current_repo_head": "8e81f68796ed2f4dda280ecd5ac5157e434d922a",
+  "current_repo_head": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
   "custody_and_storage_rules": {
     "ci": "Short-lived OIDC or equivalent attestable identities only after WS11.",
     "producer": "Ephemeral identities bound to attested build systems only after later activation.",
@@ -23,7 +23,7 @@
   ],
   "execution_dag_ref": "KT_PROD_CLEANROOM/governance/kt_execution_dag.json",
   "failure_mode_register_ref": "KT_PROD_CLEANROOM/governance/kt_failure_mode_register.json",
-  "generated_utc": "2026-03-17T23:50:53Z",
+  "generated_utc": "2026-03-18T05:09:13Z",
   "quorum_rules": [
     {
       "quorum_statement": "3 of 3 offline root shard custodians are required and were witnessed for the reratified WS10 boundary.",
@@ -208,7 +208,7 @@
   "schema_id": "kt.governance.signer_topology.v1",
   "semantic_boundary": {
     "identities_are_logical_only": false,
-    "lawful_current_claim": "Root signer topology remains executed and reratified as 3-of-3 only. WS12 passed for bounded current-head supply-chain policy without widening non-root issuance beyond the declared pre-release surfaces.",
+    "lawful_current_claim": "Root signer topology remains executed and reratified as 3-of-3 only. WS14 adds bounded static verifier packaging and bootstrap-root-only acceptance policy without widening non-root signer issuance.",
     "non_root_roles_remain_planned": true,
     "offline_root_issuance_complete": true,
     "quorum_witnessed": true
@@ -225,7 +225,7 @@
     "reratified_root_threshold": 3
   },
   "verifier_acceptance_impact": {
-    "post_ws11_and_ws14": "Verifier may consume an updated threshold-backed root only after explicit acceptance-policy workstreams complete.",
+    "post_ws11_and_ws14": "WS14 completed acceptance-policy packaging only; verifier still consumes the bootstrap root until a later explicit threshold-root acceptance bundle is published.",
     "pre_ws11": "Verifier continues to trust only the predecessor bootstrap root plus documentary evidence of the executed 3-of-3 root ceremony."
   }
 }

@@ -1,0 +1,196 @@
+{
+  "artifact_id": "kt_public_verifier_release_receipt.json",
+  "blocked_by": [],
+  "checks": [
+    {
+      "check": "ws13_receipt_pass",
+      "detail": "WS13 must already be PASS before WS14 can lock verifier release and acceptance policy.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws13_subject_head_preserved",
+      "detail": "WS14 must preserve the frozen WS13 subject head while packaging the static verifier release.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json",
+        "KT_PROD_CLEANROOM/governance/kt_execution_dag.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "declared_current_head_keyless_surface_proven",
+      "detail": "The imported current-head signed verifier surface, keyless receipt, and Sigstore bundle must agree on the same bounded WS11 surface.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "keyless_status_receipt_pass",
+      "detail": "The prior WS11 keyless status receipt must remain PASS while WS14 packages the static verifier release.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_sigstore_keyless_status.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "log_monitor_plane_pass",
+      "detail": "The log monitor plane must remain PASS while WS14 publishes verifier acceptance and revocation behavior.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_log_monitor_plane_receipt.json",
+        "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "static_verifier_dependency_closure_within_allowed_roots",
+      "detail": "Static verifier source closure must remain inside operator/canonicalize/verification helper roots and avoid forbidden runtime paths.",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/public_verifier.py",
+        "KT_PROD_CLEANROOM/tools/operator/platform_governance_finalize.py",
+        "KT_PROD_CLEANROOM/tools/operator/titanium_common.py",
+        "KT_PROD_CLEANROOM/tools/operator/canonical_tree_execute.py",
+        "KT_PROD_CLEANROOM/tools/operator/platform_governance_narrowing.py",
+        "KT_PROD_CLEANROOM/tools/canonicalize/kt_canonicalize.py",
+        "KT_PROD_CLEANROOM/tools/verification/fl3_canonical.py",
+        "KT_PROD_CLEANROOM/tools/verification/strict_json.py",
+        "KT_PROD_CLEANROOM/tools/verification/worm_write.py",
+        "KT_PROD_CLEANROOM/tools/verification/fl3_validators.py"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "packaged_public_inputs_secret_free_and_present",
+      "detail": "Packaged verifier release inputs must be public, present, and free of secret/HMAC/private path dependencies.",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/public_verifier.py",
+        "KT_PROD_CLEANROOM/governance/closure_foundation/kt_public_verifier_contract.json",
+        "KT_PROD_CLEANROOM/governance/public_verifier_rules.json",
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_distribution_policy.json",
+        "KT_PROD_CLEANROOM/governance/signer_identity_policy.json",
+        "KT_PROD_CLEANROOM/governance/supply_chain_layout.json",
+        "KT_PROD_CLEANROOM/governance/truth_freshness_windows.json",
+        "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_log_monitor_plane_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json",
+        "KT_PROD_CLEANROOM/governance/signers/kt_op1_cosign.pub",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json",
+        "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "bootstrap_root_only_acceptance_locked",
+      "detail": "WS14 must explicitly accept only the bootstrap verifier trust root and must not silently widen threshold-root acceptance.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json",
+        "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "threshold_root_acceptance_still_pending",
+      "detail": "Threshold-root acceptance must remain pending after WS14 until a later explicit acceptance bundle is published.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "accepted_predicate_and_schema_versions_explicit",
+      "detail": "WS14 must lock accepted predicate versions and schema versions for declared verifier surfaces.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/governance/supply_chain_layout.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "freshness_and_revocation_behavior_explicit",
+      "detail": "WS14 must lock freshness, anomaly, freeze, and revocation handling for declared verifier surfaces.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/governance/truth_freshness_windows.json",
+        "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "private_secret_dependency_forbidden",
+      "detail": "WS14 must forbid private-secret dependency for the declared verifier release surfaces.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_distribution_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "verifier_release_reproducibility_class_declared_and_enforced",
+      "detail": "The static verifier release artifact set must declare and stably emit its reproducibility class without silently normalizing imported CLASS_C evidence into deterministic artifacts.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_static_verifier_sbom.json",
+        "KT_PROD_CLEANROOM/reports/kt_static_verifier_attestation.json",
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_distribution_policy.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_against": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+  "current_repo_head": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+  "current_strongest_claim": "WS14 defines a bounded static verifier release artifact set and explicit verifier acceptance/distribution policy for bootstrap-root-only verification of the imported current-head keyless public verifier manifest surface.",
+  "generated_utc": "2026-03-18T05:09:13Z",
+  "limitations": [
+    "WS14 does not widen verifier trust-root acceptance beyond the bootstrap root.",
+    "WS14 remains bounded to the imported WS13 current-head signed public verifier manifest surface only.",
+    "WS14 does not prove release readiness, release ceremony completion, or broader verifier coverage.",
+    "The repo-root import fragility remains visible and is not erased by WS14."
+  ],
+  "next_lawful_workstream": "WS15_CLAIM_ABI_PROOF_CEILING_IDENTITY_AND_LEDGER_LAW",
+  "pass_verdict": "STATIC_VERIFIER_RELEASE_AND_ACCEPTANCE_POLICY_LOCKED",
+  "protected_touch_violations": [],
+  "release_artifact_hashes": {
+    "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json": "cddee3443f575617dcaf8fd62e00851b96fc955b89b9d2302c7b496878bfb3fc",
+    "KT_PROD_CLEANROOM/governance/kt_public_verifier_distribution_policy.json": "29e2e799b271f79dbf7b4e3b93942846e1e25067f66ccd5d5c839a34997b4ca5",
+    "KT_PROD_CLEANROOM/reports/kt_static_verifier_attestation.json": "f582a1eda3ff3e2e43b0c1acc59cc14120e09d2fb209272b8d06e727b402ea7a",
+    "KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json": "27bcab29467f34bcd21774df0601606f3aebe27ee55f37aeafa671c9fbe6851a",
+    "KT_PROD_CLEANROOM/reports/kt_static_verifier_sbom.json": "54ed535585028029d2458385526344cc279de8cadd6818d6aa553ce7f7754d54"
+  },
+  "reproducibility_class": {
+    "acceptance_policy": "CLASS_A_STATIC_JSON_CURRENT_HEAD",
+    "distribution_policy": "CLASS_A_STATIC_JSON_CURRENT_HEAD",
+    "packaged_imported_evidence": "CLASS_C_IMPORTED_CURRENT_HEAD_EVIDENCE",
+    "static_release_manifest": "CLASS_A_STATIC_JSON_CURRENT_HEAD",
+    "static_verifier_attestation": "CLASS_A_STATIC_JSON_CURRENT_HEAD_EVIDENCE_SUMMARY",
+    "static_verifier_sbom": "CLASS_A_STATIC_JSON_CURRENT_HEAD"
+  },
+  "schema_id": "kt.operator.public_verifier_release_receipt.v1",
+  "status": "PASS",
+  "step_id": "WS14_STEP_1_RELEASE_STATIC_VERIFIER_AND_LOCK_ACCEPTANCE_POLICY",
+  "stronger_claim_not_made": [
+    "Threshold-root verifier acceptance is active",
+    "All verifier surfaces are keyless-backed",
+    "WS14 proves release ceremony completion or product readiness"
+  ],
+  "tests_run": [
+    "python -m pytest -q tests/operator/test_ws14_static_verifier_release_validate.py"
+  ],
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.ws14_static_verifier_release_validate"
+  ],
+  "workstream_id": "WS14_STATIC_VERIFIER_RELEASE_AND_ACCEPTANCE_POLICY"
+}

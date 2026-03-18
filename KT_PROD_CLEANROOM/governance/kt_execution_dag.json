@@ -1,9 +1,9 @@
 {
-  "current_node": "WS13_ARTIFACT_CLASS_AND_DETERMINISM_ENVELOPE_LOCK",
-  "current_repo_head": "8e81f68796ed2f4dda280ecd5ac5157e434d922a",
+  "current_node": "WS15_CLAIM_ABI_PROOF_CEILING_IDENTITY_AND_LEDGER_LAW",
+  "current_repo_head": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
   "dag_id": "KT_SOVEREIGN_EXECUTION_DAG_V1_20260317",
-  "generated_utc": "2026-03-17T23:50:53Z",
-  "next_lawful_workstream": "WS13_ARTIFACT_CLASS_AND_DETERMINISM_ENVELOPE_LOCK",
+  "generated_utc": "2026-03-18T05:09:13Z",
+  "next_lawful_workstream": "WS15_CLAIM_ABI_PROOF_CEILING_IDENTITY_AND_LEDGER_LAW",
   "no_progress_without_proof": true,
   "nodes": [
     {
@@ -47,21 +47,24 @@
       "unlock_basis": "WS11 PASS"
     },
     {
+      "claim_boundary": "WS13 PASS proves only the declared CLASS_A and CLASS_B surfaces are locked and reproducible on the same subject head across the declared local and CI environments.",
       "depends_on": [
         "WS12_IN_TOTO_SLSA_AND_TUF_ATTACK_COVERAGE"
       ],
       "id": "WS13_ARTIFACT_CLASS_AND_DETERMINISM_ENVELOPE_LOCK",
       "ratification_checkpoint": "kt_determinism_envelope_receipt.json",
-      "status": "UNLOCKED",
+      "status": "PASS",
       "unlock_basis": "WS12 PASS"
     },
     {
+      "claim_boundary": "WS14 PASS proves only the bounded static verifier release artifact set and acceptance/distribution policy for the imported current-head keyless public verifier manifest surface, with bootstrap-root-only verifier acceptance.",
       "depends_on": [
         "WS13_ARTIFACT_CLASS_AND_DETERMINISM_ENVELOPE_LOCK"
       ],
       "id": "WS14_STATIC_VERIFIER_RELEASE_AND_ACCEPTANCE_POLICY",
       "ratification_checkpoint": "kt_public_verifier_release_receipt.json",
-      "status": "LOCKED_PENDING_WS13_PASS"
+      "status": "PASS",
+      "unlock_basis": "WS13 PASS"
     },
     {
       "depends_on": [
@@ -69,7 +72,8 @@
       ],
       "id": "WS15_CLAIM_ABI_PROOF_CEILING_IDENTITY_AND_LEDGER_LAW",
       "ratification_checkpoint": "claim_abi_receipt",
-      "status": "LOCKED_PENDING_WS14_PASS"
+      "status": "UNLOCKED",
+      "unlock_basis": "WS14 PASS"
     },
     {
       "depends_on": [
@@ -115,12 +119,12 @@
   ],
   "schema_id": "kt.governance.execution_dag.v1",
   "semantic_boundary": {
-    "lawful_current_claim": "WS10 passed under a reratified 3-of-3 root boundary only. WS11 passed with one bounded keyless surface. WS12 passed for bounded current-head supply-chain policy, local/remote truth-plane reconciliation, and fail-closed TUF attack coverage on declared pre-release surfaces.",
+    "lawful_current_claim": "WS10 passed under a reratified 3-of-3 root boundary only. WS11 passed with one bounded keyless surface. WS12 passed for bounded current-head supply-chain policy. WS13 passed for bounded artifact-class locking and determinism proof across local Windows and GitHub Actions Ubuntu on the same subject head. WS14 now packages a bounded static verifier release and acceptance policy without widening bootstrap-root verifier acceptance.",
     "stronger_claim_not_made": [
       "The original planned 3-of-5 root topology was executed",
+      "Threshold-root verifier acceptance is active",
       "Release readiness is proven",
-      "Verifier acceptance widened",
-      "WS11 has already been substantively started"
+      "WS15 has already been substantively started"
     ],
     "ws10_pass_required_before_ws11": true,
     "ws9_frozen_locally": true

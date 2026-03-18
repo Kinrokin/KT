@@ -1,0 +1,105 @@
+{
+  "accepted_bootstrap_root_id": "KT_TUF_ROOT_BOOTSTRAP_20260314",
+  "accepted_predicate_versions": [
+    {
+      "predicate_type": "https://kings-theorem.io/attestations/kt-authority-subject/v1",
+      "predicate_version": "v1",
+      "scope": "Bounded publication statement verification.",
+      "statement_type": "https://in-toto.io/Statement/v0.1"
+    }
+  ],
+  "accepted_schema_versions": [
+    {
+      "schema_id": "kt.public_verifier_manifest.v4",
+      "scope": "Bounded imported signed verifier surface only."
+    },
+    {
+      "schema_id": "kt.operator.ws11_keyless_execution_receipt.v1",
+      "scope": "Current-head keyless execution carry-forward evidence."
+    },
+    {
+      "schema_id": "kt.operator.truth_barrier_remote_diagnostic.v1",
+      "scope": "Current-head CI truth-barrier success evidence."
+    }
+  ],
+  "artifact_id": "kt_static_verifier_attestation.json",
+  "current_repo_head": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+  "distribution_policy_summary": {
+    "allowed_distribution_channels": [
+      "repo_snapshot_with_hash_bound_release_manifest",
+      "static_zip_or_directory_bundle_with_packaged_public_evidence",
+      "artifact_download_with_release_manifest_sha_verification"
+    ],
+    "no_private_secret_dependency": true,
+    "offline_verification_capable": true
+  },
+  "freshness_rules": {
+    "bounded_current_head_evidence_rule": "The imported WS13 CI diagnostic, keyless receipt, and signed-surface copy must agree on the same run_id and signed-surface SHA; no standalone wall-clock TTL is claimed for those imports beyond current-head binding.",
+    "current_head_match_required": true,
+    "max_age_hours": {
+      "current_state_receipt": 24,
+      "live_validation_index": 24,
+      "posture_conflict_receipt": 24,
+      "posture_consistency_enforcement_receipt": 24,
+      "posture_consistency_receipt": 24,
+      "runtime_closure_audit": 24,
+      "settled_truth_source_receipt": 24
+    },
+    "staleness_is_fail_closed": true,
+    "truth_freshness_windows_ref": "KT_PROD_CLEANROOM/governance/truth_freshness_windows.json"
+  },
+  "keyless_execution_run_id": "23229317266",
+  "keyless_signed_surface_sha256": "4b20265a469d3e1d95d3c3a796cd622d14c0f6edb10b1271d9e448139267b225",
+  "limitations": [
+    "This attestation summarizes imported current-head keyless evidence; it does not make the imported evidence itself reproducible.",
+    "Verifier acceptance remains bootstrap-root only.",
+    "Release readiness remains unproven."
+  ],
+  "log_monitor_state": "NO_FREEZE",
+  "pending_threshold_root_id": "KT_SOVEREIGN_ROOT_TARGET_20260317",
+  "reproducibility_class": "CLASS_A_STATIC_JSON_CURRENT_HEAD_EVIDENCE_SUMMARY",
+  "revocation_and_freeze_behavior": {
+    "anomaly_rules": [
+      {
+        "anomaly_id": "SIGSTORE_KEYLESS_PATH_NOT_ACTIVE",
+        "blocks_ws11_pass": true,
+        "freeze_scope": "WS12_PLUS",
+        "severity": "HIGH"
+      },
+      {
+        "anomaly_id": "REKOR_INCLUSION_EVIDENCE_MISSING_OR_FAILING",
+        "blocks_ws11_pass": true,
+        "freeze_scope": "WS12_PLUS",
+        "severity": "CRITICAL"
+      },
+      {
+        "anomaly_id": "PUBLIC_VERIFICATION_REQUIRES_LOCAL_SECRET",
+        "blocks_ws11_pass": true,
+        "freeze_scope": "WS12_PLUS",
+        "severity": "CRITICAL"
+      }
+    ],
+    "current_log_monitor_state": "NO_FREEZE",
+    "emergency_rotation_path_ref": "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+    "emergency_rotation_required_actions": [
+      "freeze downstream workstreams",
+      "convene new air-gapped ceremony",
+      "revoke affected identities",
+      "reissue root metadata and verifier acceptance bundle"
+    ],
+    "emergency_rotation_triggers": [
+      "suspected_root_compromise",
+      "custody_breach",
+      "witness_dispute",
+      "hardware_failure"
+    ],
+    "freeze_on_any_high_or_critical_anomaly": true,
+    "freeze_scope": "WS12_PLUS",
+    "log_monitor_policy_ref": "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json",
+    "log_monitor_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_log_monitor_plane_receipt.json"
+  },
+  "schema_id": "kt.operator.static_verifier_attestation.v1",
+  "scope": "ws14_static_verifier_release",
+  "status": "PASS",
+  "truth_barrier_run_id": "23229317266"
+}

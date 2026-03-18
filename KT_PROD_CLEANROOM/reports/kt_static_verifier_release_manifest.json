@@ -1,0 +1,204 @@
+{
+  "acceptance_policy_ref": "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+  "accepted_current_head_surface": {
+    "keyless_bundle_ref": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+    "keyless_bundle_sha256": "1a1f65c3d18850e9738732d2c235942b18973ecd4f6cd6bf09c8063c235f389b",
+    "keyless_execution_receipt_ref": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+    "keyless_execution_run_id": "23229317266",
+    "signed_surface_import_ref": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+    "signed_surface_sha256": "4b20265a469d3e1d95d3c3a796cd622d14c0f6edb10b1271d9e448139267b225",
+    "truth_barrier_diagnostic_ref": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json",
+    "truth_barrier_run_id": "23229317266"
+  },
+  "artifact_id": "kt_static_verifier_release_manifest.json",
+  "current_repo_head": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+  "dependency_closure": [
+    "KT_PROD_CLEANROOM/tools/operator/public_verifier.py",
+    "KT_PROD_CLEANROOM/tools/operator/platform_governance_finalize.py",
+    "KT_PROD_CLEANROOM/tools/operator/titanium_common.py",
+    "KT_PROD_CLEANROOM/tools/operator/canonical_tree_execute.py",
+    "KT_PROD_CLEANROOM/tools/operator/platform_governance_narrowing.py",
+    "KT_PROD_CLEANROOM/tools/canonicalize/kt_canonicalize.py",
+    "KT_PROD_CLEANROOM/tools/verification/fl3_canonical.py",
+    "KT_PROD_CLEANROOM/tools/verification/strict_json.py",
+    "KT_PROD_CLEANROOM/tools/verification/worm_write.py",
+    "KT_PROD_CLEANROOM/tools/verification/fl3_validators.py"
+  ],
+  "distribution_policy_ref": "KT_PROD_CLEANROOM/governance/kt_public_verifier_distribution_policy.json",
+  "limitations": [
+    "The packaged signed surface is a bounded imported copy, not a claim that the mutable runtime verifier manifest is globally reproducible.",
+    "Threshold-root acceptance remains pending.",
+    "Release readiness remains unproven."
+  ],
+  "packaged_components": [
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/operator/public_verifier.py",
+      "role": "verifier_dependency",
+      "sha256": "1fec07c7a23afb91d8b09593d2114a43be251d39b615275854dc09b74fa7afa0"
+    },
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/operator/platform_governance_finalize.py",
+      "role": "verifier_dependency",
+      "sha256": "50aff2c01687acdc340cf281accd750b1854964d085aca1f86754ea909ac5980"
+    },
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/operator/titanium_common.py",
+      "role": "verifier_dependency",
+      "sha256": "13990bbcd3470aef23d72f88bb0b7507c5ce7bde0b9630fd5f01165d329974a0"
+    },
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/operator/canonical_tree_execute.py",
+      "role": "verifier_dependency",
+      "sha256": "10e7b4e06be93124d9f4b80807b191001f8c30568e1e6508bafde22aca685b06"
+    },
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/operator/platform_governance_narrowing.py",
+      "role": "verifier_dependency",
+      "sha256": "30beb7fbcd52bb10a500ae3e889f27e333a82f8a3516b1ae5af6ef5b1808c811"
+    },
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/canonicalize/kt_canonicalize.py",
+      "role": "verifier_dependency",
+      "sha256": "63c695b39b38692be0f5b50cd5f7e922ef55337b16b79e561d03f042fee0f62e"
+    },
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/verification/fl3_canonical.py",
+      "role": "verifier_dependency",
+      "sha256": "b5e54a2defc74cddfa49cd7da0ee9de9b200c5c3e7a7e1f6d699d7d0d9e97ca8"
+    },
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/verification/strict_json.py",
+      "role": "verifier_dependency",
+      "sha256": "82d2986f40ca5b40c2339a68560334ca06e273473d6227cffdce308d42ba34bd"
+    },
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/verification/worm_write.py",
+      "role": "verifier_dependency",
+      "sha256": "ffa8638807f7a14ebbb85e1fbbb0ae1b50a833da201640969853fe8ddcf52d81"
+    },
+    {
+      "component_type": "source",
+      "path": "KT_PROD_CLEANROOM/tools/verification/fl3_validators.py",
+      "role": "verifier_dependency",
+      "sha256": "f77f7f02690a3e4a4a22329705e86c0a4d3d601644d6b1c724e3c5a035be4d60"
+    },
+    {
+      "component_type": "policy",
+      "path": "KT_PROD_CLEANROOM/governance/closure_foundation/kt_public_verifier_contract.json",
+      "role": "verifier_contract",
+      "sha256": "0dc9ca63b55c69c16010677bf116d63e26b6926eccc58b2317d2257847f0e20f"
+    },
+    {
+      "component_type": "policy",
+      "path": "KT_PROD_CLEANROOM/governance/public_verifier_rules.json",
+      "role": "verifier_rules",
+      "sha256": "aced63f15984fe74ef0335d83b1491e0a1ac1d16f9a67603952a52f869ff04cd"
+    },
+    {
+      "component_type": "policy",
+      "path": "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+      "role": "acceptance_policy",
+      "sha256": "cddee3443f575617dcaf8fd62e00851b96fc955b89b9d2302c7b496878bfb3fc"
+    },
+    {
+      "component_type": "policy",
+      "path": "KT_PROD_CLEANROOM/governance/kt_public_verifier_distribution_policy.json",
+      "role": "distribution_policy",
+      "sha256": "29e2e799b271f79dbf7b4e3b93942846e1e25067f66ccd5d5c839a34997b4ca5"
+    },
+    {
+      "component_type": "policy",
+      "path": "KT_PROD_CLEANROOM/governance/signer_identity_policy.json",
+      "role": "signer_identity_policy",
+      "sha256": "af6c09b0eee4e458294f5127a937a7da8b4ce7b08c92ba34c1635f24f73eb970"
+    },
+    {
+      "component_type": "policy",
+      "path": "KT_PROD_CLEANROOM/governance/supply_chain_layout.json",
+      "role": "predicate_layout",
+      "sha256": "fb5279cf1f5b4a31af8f86c2427649b47b9b39692062dbd982665d29e462adb7"
+    },
+    {
+      "component_type": "policy",
+      "path": "KT_PROD_CLEANROOM/governance/truth_freshness_windows.json",
+      "role": "freshness_policy",
+      "sha256": "bd2cfad94e0a003b26eb37d6f9b6b70ef7e5d3a70e092a5ae3089533821a93e1"
+    },
+    {
+      "component_type": "policy",
+      "path": "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json",
+      "role": "log_monitor_policy",
+      "sha256": "ae54ec5ab9cba65633886b9a9ef987cb9d19552cdc0f999d12ec9019c614acb9"
+    },
+    {
+      "component_type": "evidence",
+      "path": "KT_PROD_CLEANROOM/reports/kt_log_monitor_plane_receipt.json",
+      "role": "log_monitor_receipt",
+      "sha256": "616e359710eddd7d3ac51624312b9aa627dc39a7dce190671d2852bd5d3b0e51"
+    },
+    {
+      "component_type": "trust_root",
+      "path": "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json",
+      "role": "bootstrap_root",
+      "sha256": "c8abda3b17e381bcf71a35d2d9bc28dc237925352b639f4d3c58cd4ae7e18817"
+    },
+    {
+      "component_type": "trust_root",
+      "path": "KT_PROD_CLEANROOM/governance/signers/kt_op1_cosign.pub",
+      "role": "historical_cosign_public_key",
+      "sha256": "c4c5f8d7513d01729b4b2ad3795b4eb62bb0ab901beb9053ffe82b400e5e02aa"
+    },
+    {
+      "component_type": "evidence",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+      "role": "bounded_signed_surface_copy",
+      "sha256": "4b20265a469d3e1d95d3c3a796cd622d14c0f6edb10b1271d9e448139267b225"
+    },
+    {
+      "component_type": "evidence",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+      "role": "bounded_sigstore_bundle",
+      "sha256": "1a1f65c3d18850e9738732d2c235942b18973ecd4f6cd6bf09c8063c235f389b"
+    },
+    {
+      "component_type": "evidence",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+      "role": "bounded_keyless_receipt",
+      "sha256": "d2c6a5f96d7e043eaaf200c411198ba4bd964f750339ff2b472d9cfc2b3c5b6a"
+    },
+    {
+      "component_type": "evidence",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json",
+      "role": "bounded_truth_diagnostic",
+      "sha256": "db3d96bf286d6c47d62c89568831d3e8dea80b9c937e9d5e340c61cbc4f20075"
+    },
+    {
+      "component_type": "evidence",
+      "path": "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json",
+      "role": "ws13_boundary_receipt",
+      "sha256": "62c327d8dbead38ec6e15e8864b499a8f8987ce8c768a015b90d9a48e0345331"
+    }
+  ],
+  "reproducibility_class": "CLASS_A_STATIC_JSON_CURRENT_HEAD",
+  "schema_id": "kt.operator.static_verifier_release_manifest.v1",
+  "scope": "ws14_static_verifier_release",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "All verifier surfaces are keyless-backed",
+    "Threshold-root verifier acceptance is active",
+    "Release ceremony completion is proven"
+  ],
+  "verifier_contract_ref": "KT_PROD_CLEANROOM/governance/closure_foundation/kt_public_verifier_contract.json",
+  "verifier_entrypoint": "python -m tools.operator.public_verifier",
+  "verifier_rules_ref": "KT_PROD_CLEANROOM/governance/public_verifier_rules.json",
+  "ws13_subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b"
+}

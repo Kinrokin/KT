@@ -1,0 +1,69 @@
+{
+  "allowed_distribution_channels": [
+    "repo_snapshot_with_hash_bound_release_manifest",
+    "static_zip_or_directory_bundle_with_packaged_public_evidence",
+    "artifact_download_with_release_manifest_sha_verification"
+  ],
+  "artifact_classes": [
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json",
+      "class_id": "CLASS_A_STATIC_JSON_CURRENT_HEAD"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/reports/kt_static_verifier_sbom.json",
+      "class_id": "CLASS_A_STATIC_JSON_CURRENT_HEAD"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+      "class_id": "CLASS_A_STATIC_JSON_CURRENT_HEAD"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/governance/kt_public_verifier_distribution_policy.json",
+      "class_id": "CLASS_A_STATIC_JSON_CURRENT_HEAD"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/reports/kt_static_verifier_attestation.json",
+      "class_id": "CLASS_A_STATIC_JSON_CURRENT_HEAD_EVIDENCE_SUMMARY"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+      "class_id": "CLASS_C_IMPORTED_CURRENT_HEAD_SIGNED_SURFACE"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+      "class_id": "CLASS_C_IMPORTED_TRANSPARENCY_BUNDLE"
+    }
+  ],
+  "current_repo_head": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+  "forbidden_distribution_channels": [
+    "mutable_network_fetch_without_hash_binding",
+    "embedded_private_key_or_secret_material",
+    "secret_backed_remote_verification",
+    "implicit_self_update_without_acceptance_policy"
+  ],
+  "limitations": [
+    "Distribution remains bounded to static packaging and packaged public evidence only.",
+    "WS14 does not define an auto-update fleet or release ceremony channel.",
+    "WS14 does not change the runtime-surface class of KT_PROD_CLEANROOM/reports/public_verifier_manifest.json."
+  ],
+  "no_private_secret_dependency": true,
+  "offline_verification_capable": true,
+  "packaged_public_evidence_refs": [
+    "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+    "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+    "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json",
+    "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json"
+  ],
+  "policy_id": "KT_PUBLIC_VERIFIER_DISTRIBUTION_POLICY_V1_20260318",
+  "release_artifact_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_static_verifier_sbom.json",
+    "KT_PROD_CLEANROOM/reports/kt_static_verifier_attestation.json",
+    "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+    "KT_PROD_CLEANROOM/governance/kt_public_verifier_distribution_policy.json"
+  ],
+  "schema_id": "kt.governance.public_verifier_distribution_policy.v1",
+  "status": "ACTIVE",
+  "verification_entrypoint": "python -m tools.operator.public_verifier"
+}
