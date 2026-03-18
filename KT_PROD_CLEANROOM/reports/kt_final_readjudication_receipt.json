@@ -1,0 +1,134 @@
+{
+  "artifact_id": "kt_final_readjudication_receipt.json",
+  "blocked_by": [],
+  "blocker_matrix_ref": "KT_PROD_CLEANROOM/reports/kt_ws18_blocker_matrix.json",
+  "checks": [
+    {
+      "check": "release_ceremony_status_receipt_pass",
+      "detail": "WS18 requires an explicit, validator-backed release-ceremony status receipt before final readjudication can pass.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_release_ceremony_status_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "blocker_matrix_recomputed_from_current_stack",
+      "detail": "WS18 must recompute blockers from the current lawful stack instead of inheriting an older matrix blindly.",
+      "open_blockers": [
+        "THRESHOLD_ROOT_VERIFIER_ACCEPTANCE_PENDING",
+        "RELEASE_SIGNER_ISSUANCE_PENDING",
+        "PRODUCER_ATTESTATION_BUNDLE_PENDING",
+        "RELEASE_CEREMONY_NOT_EXECUTED",
+        "CURRENT_HEAD_CAPABILITY_NOT_EXTERNALLY_CONFIRMED",
+        "CAMPAIGN_COMPLETION_NOT_PROVEN"
+      ],
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_ws18_blocker_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_capability_confirmation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "blocked_claim_ids": [
+        "campaign_completion_proven",
+        "original_planned_3_of_5_root_execution_proven",
+        "release_readiness_proven",
+        "threshold_root_verifier_acceptance_active"
+      ],
+      "check": "proof_ceiling_still_blocks_stronger_claims",
+      "detail": "The carried-forward proof ceiling must still block release readiness and campaign completion on the current stack.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "bounded_current_assurance_and_historical_capability_kept_distinct",
+      "detail": "WS18 must preserve current-head bounded assurance separately from historical-only capability replay.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_assurance_confirmation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_capability_confirmation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "final_verdict_machine_derived_from_claims_and_blockers",
+      "detail": "WS18 final verdict must be derived from the proof ceiling, release status determination, and the recomputed blocker matrix rather than narrative preference.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_ceremony_status_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_ws18_blocker_matrix.json"
+      ],
+      "release_ceremony_status": "NON_EXECUTED_BLOCKED_BY_PREREQUISITES",
+      "release_eligibility": "NOT_ELIGIBLE",
+      "status": "PASS"
+    }
+  ],
+  "compiled_against": "e4e23f48b7356849619813ffadcd7f5a79347929",
+  "current_repo_head": "e4e23f48b7356849619813ffadcd7f5a79347929",
+  "final_verdict": {
+    "bounded_scope": "Current lawful stack through WS17B with bounded current-head assurance and historical-only capability import.",
+    "campaign_completion_status": "NOT_PROVEN",
+    "current_head_assurance_status": "PROVEN_BOUNDED_SINGLE_SURFACE",
+    "current_head_capability_status": "NOT_EXTERNALLY_CONFIRMED",
+    "historical_capability_status": "PROVEN_HISTORICAL_BOUNDED_ONLY",
+    "open_blockers": [
+      "THRESHOLD_ROOT_VERIFIER_ACCEPTANCE_PENDING",
+      "RELEASE_SIGNER_ISSUANCE_PENDING",
+      "PRODUCER_ATTESTATION_BUNDLE_PENDING",
+      "RELEASE_CEREMONY_NOT_EXECUTED",
+      "CURRENT_HEAD_CAPABILITY_NOT_EXTERNALLY_CONFIRMED",
+      "CAMPAIGN_COMPLETION_NOT_PROVEN"
+    ],
+    "release_ceremony_status": "NON_EXECUTED_BLOCKED_BY_PREREQUISITES",
+    "release_eligibility": "NOT_ELIGIBLE",
+    "status": "PASS",
+    "verdict_id": "CURRENT_LAWFUL_STACK_BOUNDED_NON_RELEASE_ELIGIBLE"
+  },
+  "generated_utc": "2026-03-18T15:56:44.450975Z",
+  "input_hashes": {
+    "KT_PROD_CLEANROOM/reports/kt_claim_abi_receipt.json": "9d070fa04cbee75cd0f298fc0c5de8db0ce481ea14eac787818d3428c39c18a9",
+    "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json": "e902c2707f5aed6831adc50283b5534e0cf7cde63d070413f93f6ac8aacc6668",
+    "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json": "62c327d8dbead38ec6e15e8864b499a8f8987ce8c768a015b90d9a48e0345331",
+    "KT_PROD_CLEANROOM/reports/kt_external_assurance_confirmation_receipt.json": "b8608f062556814ec3b91f581c94be883a9c3bcd278214919331619325434d61",
+    "KT_PROD_CLEANROOM/reports/kt_external_capability_confirmation_receipt.json": "75cffb8580890b6ff7b2143e03c47391c26216e3b12debdd0e84176f218be6bb",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json": "e54019ceafce2cd2c298f62912f803f49ed072643af6802549429e9361a69efe",
+    "KT_PROD_CLEANROOM/reports/kt_release_ceremony_status_receipt.json": "01904dbbc73adb9f2a6012a80758d66f92e3e86be6a8a311c22da8ea2c9db3e2",
+    "KT_PROD_CLEANROOM/reports/kt_root_ceremony_receipt.json": "673811ba51499e13ebc867bed70c62bfe78aeb028dc7a124c3fa935249ab1c7f",
+    "KT_PROD_CLEANROOM/reports/kt_sigstore_integration_receipt.json": "f54a22e266d1f6678a39d84cb2dfb5ddae54b7909180c7658c49c9e0d27cb0b3",
+    "KT_PROD_CLEANROOM/reports/kt_supply_chain_policy_receipt.json": "41a956b4ce2fd5d5986f3fc74cde9b35f342e6e0f9b1d680b41cf6f7111159b8",
+    "KT_PROD_CLEANROOM/reports/kt_tevv_dataset_registry_receipt.json": "cd54a36a1a048b3e5d72a669fccbe4a271d6d4205461919043514857431e26d4",
+    "KT_PROD_CLEANROOM/reports/kt_ws18_blocker_matrix.json": "bb13a08515fa17189361c4338cbf15bda4a7cf2c7af7dcff12f950c516bcca4b"
+  },
+  "next_lawful_workstream": "WS19_PRODUCT_SURFACE_AND_LICENSE_TRACK",
+  "pass_verdict": "FINAL_READJUDICATION_COMPLETE_BOUNDARIED_NON_RELEASE_ELIGIBLE",
+  "proof_ceiling_ref": "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json",
+  "protected_touch_violations": [],
+  "release_ceremony_status_ref": "KT_PROD_CLEANROOM/reports/kt_release_ceremony_status_receipt.json",
+  "remaining_limitations": [
+    "WS18 does not activate threshold-root verifier acceptance.",
+    "WS18 does not execute the release ceremony.",
+    "WS18 does not upgrade historical capability confirmation into current-head capability proof.",
+    "WS18 does not widen verifier coverage beyond the already-bounded surfaces.",
+    "WS18 does not prove campaign completion.",
+    "The repo-root import fragility remains visible and unfixed."
+  ],
+  "schema_id": "kt.operator.ws18.final_readjudication_receipt.v1",
+  "status": "PASS",
+  "step_id": "WS18_STEP_1_RECOMPUTE_RELEASE_STATUS_BLOCKERS_AND_FINAL_VERDICT",
+  "stronger_claim_not_made": [
+    "Release readiness is proven.",
+    "Release ceremony executed.",
+    "Historical-bounded capability confirmation upgrades into current-head capability proof.",
+    "Campaign completion is proven."
+  ],
+  "tests_run": [
+    "python -m pytest -q tests/operator/test_ws18_release_and_final_readjudication_validate.py"
+  ],
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.ws18_release_and_final_readjudication_validate"
+  ],
+  "workstream_id": "WS18_RELEASE_CEREMONY_AND_FINAL_READJUDICATION"
+}

@@ -1,9 +1,9 @@
 {
-  "current_node": "WS17B_EXTERNAL_CONFIRMATION_CAPABILITY",
-  "current_repo_head": "30445f32e188f1355c99c66ff8faf3079d89498a",
+  "current_node": "WS18_RELEASE_CEREMONY_AND_FINAL_READJUDICATION",
+  "current_repo_head": "e4e23f48b7356849619813ffadcd7f5a79347929",
   "dag_id": "KT_SOVEREIGN_EXECUTION_DAG_V1_20260317",
-  "generated_utc": "2026-03-18T14:39:13.754523Z",
-  "next_lawful_workstream": "WS18_RELEASE_CEREMONY_AND_FINAL_READJUDICATION",
+  "generated_utc": "2026-03-18T15:56:44.470327Z",
+  "next_lawful_workstream": "WS19_PRODUCT_SURFACE_AND_LICENSE_TRACK",
   "no_progress_without_proof": true,
   "nodes": [
     {
@@ -107,13 +107,14 @@
       "unlock_basis": "WS16 PASS"
     },
     {
+      "claim_boundary": "WS18 PASS proves only that the current lawful stack has been finally readjudicated as bounded, non-release-eligible, and not campaign-complete. Historical capability confirmation remains historical-only and does not upgrade into current-head capability.",
       "depends_on": [
         "WS17A_EXTERNAL_CONFIRMATION_ASSURANCE",
         "WS17B_EXTERNAL_CONFIRMATION_CAPABILITY"
       ],
       "id": "WS18_RELEASE_CEREMONY_AND_FINAL_READJUDICATION",
-      "ratification_checkpoint": "final_readjudication_receipt",
-      "status": "UNLOCKED"
+      "ratification_checkpoint": "kt_final_readjudication_receipt.json",
+      "status": "PASS"
     },
     {
       "depends_on": [
@@ -121,12 +122,12 @@
       ],
       "id": "WS19_PRODUCT_SURFACE_AND_LICENSE_TRACK",
       "ratification_checkpoint": "product_surface_receipt",
-      "status": "LOCKED_PENDING_WS18_PASS"
+      "status": "UNLOCKED"
     }
   ],
   "schema_id": "kt.governance.execution_dag.v1",
   "semantic_boundary": {
-    "lawful_current_claim": "WS17B proves one outsider-verifiable capability replay of the historical bounded frontier/readjudication bundle on subject head b4789a5 only. It does not upgrade that historical audited target into current-head capability, does not widen verifier coverage, and does not prove release readiness, release ceremony execution, or campaign completion.",
+    "lawful_current_claim": "WS18 has recomputed the current lawful stack as bounded, non-release-eligible, and not campaign-complete. Current-head outsider assurance remains bounded to the declared verifier surface, while outsider capability confirmation remains historical-only.",
     "stronger_claim_not_made": [
       "Threshold-root verifier acceptance is active",
       "Release readiness is proven",
@@ -138,7 +139,9 @@
       "Campaign completion is proven.",
       "WS17B upgrades the historical audited target into current-head capability.",
       "Verifier coverage is broader than the already-bounded imported surfaces.",
-      "Release ceremony execution is proven."
+      "Release ceremony execution is proven.",
+      "Threshold-root verifier acceptance is active.",
+      "Historical-bounded capability confirmation upgrades into current-head capability proof."
     ],
     "ws10_pass_required_before_ws11": true,
     "ws9_frozen_locally": true

@@ -1,0 +1,102 @@
+{
+  "artifact_id": "kt_release_ceremony_status_receipt.json",
+  "blocked_by": [],
+  "checks": [
+    {
+      "check": "ws17b_boundary_frozen_before_ws18",
+      "detail": "WS18 may proceed only after the accepted WS17B pass boundary is frozen first.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_capability_confirmation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws10_through_ws17b_receipt_stack_pass",
+      "detail": "WS18 requires the current lawful bounded receipt stack from WS10 through WS17B to remain PASS before readjudication.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_root_ceremony_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_sigstore_integration_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_supply_chain_policy_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_abi_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_tevv_dataset_registry_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_assurance_confirmation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_capability_confirmation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "threshold_root_acceptance_still_pending",
+      "detail": "Threshold-root verifier acceptance must remain pending until an explicit later acceptance bundle is published.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "release_signer_issuance_still_pending",
+      "detail": "Release signer issuance must remain explicit and unexecuted until a later workstream actually performs it.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_signer_topology.json",
+        "KT_PROD_CLEANROOM/governance/kt_release_ceremony.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "producer_attestation_bundle_still_pending",
+      "detail": "Producer attestation activation must remain explicit and unexecuted until a later workstream performs it.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_signer_topology.json",
+        "KT_PROD_CLEANROOM/governance/kt_release_ceremony.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "release_status_explicit_and_not_executed",
+      "detail": "WS18 must determine release ceremony status explicitly and keep it non-executed when prerequisites remain open.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_release_ceremony.json"
+      ],
+      "release_ceremony_status": "NON_EXECUTED_BLOCKED_BY_PREREQUISITES",
+      "release_eligibility": "NOT_ELIGIBLE",
+      "status": "PASS"
+    },
+    {
+      "check": "historical_capability_not_overread_as_current_head_capability",
+      "detail": "WS18 must preserve the WS17B historical-only capability boundary and not overread it into current-head capability.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_capability_confirmation_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_against": "e4e23f48b7356849619813ffadcd7f5a79347929",
+  "current_repo_head": "e4e23f48b7356849619813ffadcd7f5a79347929",
+  "generated_utc": "2026-03-18T15:56:44.436538Z",
+  "open_execution_prerequisites": [
+    "threshold-root verifier acceptance bundle published and accepted",
+    "release signer issuance completed under later workstream law",
+    "producer attestation bundle activated under later workstream law"
+  ],
+  "pass_verdict": "RELEASE_CEREMONY_NON_EXECUTION_CORRECTLY_DETERMINED",
+  "release_ceremony_status": "NON_EXECUTED_BLOCKED_BY_PREREQUISITES",
+  "release_eligibility": "NOT_ELIGIBLE",
+  "remaining_limitations": [
+    "WS18 does not execute the release ceremony when explicit prerequisites remain open.",
+    "Threshold-root verifier acceptance remains inactive.",
+    "Release signer issuance and producer attestation activation remain unexecuted.",
+    "Historical capability confirmation remains historical-only and does not upgrade into current-head capability.",
+    "The repo-root import fragility remains visible and unfixed."
+  ],
+  "schema_id": "kt.operator.ws18.release_ceremony_status_receipt.v1",
+  "status": "PASS",
+  "step_id": "WS18_STEP_1_RECOMPUTE_RELEASE_STATUS_BLOCKERS_AND_FINAL_VERDICT",
+  "stronger_claim_not_made": [
+    "Release ceremony executed.",
+    "Release readiness is proven.",
+    "Historical capability confirmation upgrades into current-head capability."
+  ],
+  "workstream_id": "WS18_RELEASE_CEREMONY_AND_FINAL_READJUDICATION"
+}

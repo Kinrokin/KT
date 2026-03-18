@@ -1,11 +1,13 @@
 {
   "ceremony_id": "KT_RELEASE_CEREMONY_LAW_V1_20260318",
-  "current_repo_head": "421e457058899ee5a780eabf5ca166623cab43e3",
+  "completed_in_ws18": [
+    "final readjudication completed in WS18"
+  ],
+  "current_repo_head": "e4e23f48b7356849619813ffadcd7f5a79347929",
   "execution_prerequisites_not_yet_met": [
     "threshold-root verifier acceptance bundle published and accepted",
     "release signer issuance completed under later workstream law",
-    "producer attestation bundle activated under later workstream law",
-    "final readjudication completed in WS18"
+    "producer attestation bundle activated under later workstream law"
   ],
   "forbidden_states": [
     "release_ceremony_execution_claim_before_ws18",
@@ -13,9 +15,11 @@
     "release_signing_before_verifier_acceptance_preconditions",
     "using documentary mirrors as release authority inputs"
   ],
-  "generated_utc": "2026-03-18T05:29:42Z",
+  "generated_utc": "2026-03-18T15:56:44.401093Z",
   "predecessor_ref": "KT_PROD_CLEANROOM/governance/kt_release_ceremony.json",
   "predecessor_status": "ACTIVE_LOCKED_PENDING_UPSTREAM_WORKSTREAMS",
+  "release_eligibility": "NOT_ELIGIBLE",
+  "release_execution_status": "NON_EXECUTED_BLOCKED_BY_PREREQUISITES",
   "release_prerequisites": [
     "WS10 PASS under reratified 3-of-3 root boundary only",
     "WS11 PASS with bounded keyless declared verifier surface",
@@ -29,16 +33,19 @@
   ],
   "schema_id": "kt.governance.release_ceremony.v1",
   "semantic_boundary": {
-    "lawful_current_claim": "This file defines release-ceremony prerequisites, trust boundaries, and freeze behavior only. It does not claim release readiness or release-ceremony execution.",
+    "lawful_current_claim": "WS18 completes final readjudication and determines that the release ceremony remains non-executed and not release-eligible until threshold-root acceptance, release signer issuance, and producer attestation activation are proven.",
     "preparatory_only": false,
+    "release_execution_now_lawful": false,
     "release_ready_now": false,
     "ws15_full_release_law_ratified": true
   },
-  "status": "ACTIVE_LOCKED_PENDING_UPSTREAM_WORKSTREAMS",
+  "status": "ACTIVE_LOCKED_PENDING_EXECUTION_PREREQUISITES",
   "stronger_claim_not_made": [
     "Release ceremony executed.",
     "Release readiness proven.",
-    "Threshold-root verifier acceptance is already active."
+    "Threshold-root verifier acceptance is already active.",
+    "Release readiness proven without threshold-root acceptance, release signer issuance, and producer attestation activation.",
+    "Historical-bounded capability confirmation upgrades into current-head capability proof."
   ],
   "verifier_acceptance_preconditions": {
     "acceptance_policy_ref": "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",

@@ -1,0 +1,103 @@
+{
+  "artifact_id": "kt_ws18_blocker_matrix.json",
+  "current_repo_head": "e4e23f48b7356849619813ffadcd7f5a79347929",
+  "generated_utc": "2026-03-18T15:56:44.401093Z",
+  "rows": [
+    {
+      "blocker_id": "THRESHOLD_ROOT_VERIFIER_ACCEPTANCE_PENDING",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json"
+      ],
+      "rationale": "Verifier acceptance remains bootstrap-root only; no threshold-root acceptance bundle has been published and accepted.",
+      "severity": "CRITICAL",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "RELEASE_SIGNER_ISSUANCE_PENDING",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/kt_signer_topology.json",
+        "KT_PROD_CLEANROOM/governance/kt_release_ceremony.json",
+        "KT_PROD_CLEANROOM/reports/kt_root_ceremony_receipt.json"
+      ],
+      "rationale": "Release signers remain planned only and have not been issued under later workstream law.",
+      "severity": "CRITICAL",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "PRODUCER_ATTESTATION_BUNDLE_PENDING",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/kt_signer_topology.json",
+        "KT_PROD_CLEANROOM/governance/kt_release_ceremony.json"
+      ],
+      "rationale": "Producer attestation identities remain planned only and no release-side producer bundle is active.",
+      "severity": "HIGH",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "RELEASE_CEREMONY_NOT_EXECUTED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/kt_release_ceremony.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_ceremony_status_receipt.json"
+      ],
+      "rationale": "WS18 determines release ceremony execution has not occurred and remains blocked by explicit prerequisites.",
+      "severity": "HIGH",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "CURRENT_HEAD_CAPABILITY_NOT_EXTERNALLY_CONFIRMED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_capability_confirmation_receipt.json"
+      ],
+      "rationale": "WS17B confirms historical bounded capability only and must not be overread as current-head capability confirmation.",
+      "severity": "HIGH",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "CAMPAIGN_COMPLETION_NOT_PROVEN",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json"
+      ],
+      "rationale": "The proof ceiling still blocks campaign-completion claims on the current lawful stack.",
+      "severity": "HIGH",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "CURRENT_HEAD_ASSURANCE_CONFIRMED_BOUNDED_ONLY",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_assurance_confirmation_receipt.json"
+      ],
+      "rationale": "Current-head outsider assurance is proven only for the bounded declared public verifier surface.",
+      "severity": "INFO",
+      "status": "RESOLVED_WITH_BOUNDARY"
+    },
+    {
+      "blocker_id": "HISTORICAL_CAPABILITY_CONFIRMED_BOUNDED_ONLY",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_capability_confirmation_receipt.json"
+      ],
+      "rationale": "Historical outsider capability replay is proven only on the bounded frontier/readjudication target and stays historical-only.",
+      "severity": "INFO",
+      "status": "RESOLVED_WITH_BOUNDARY"
+    }
+  ],
+  "schema_id": "kt.operator.ws18.blocker_matrix.v1",
+  "stronger_claim_not_made": "This WS18 blocker matrix does not convert historical capability confirmation into current-head capability, does not activate threshold-root acceptance, and does not claim release readiness, release execution, or campaign completion.",
+  "summary": {
+    "open_blockers": [
+      "THRESHOLD_ROOT_VERIFIER_ACCEPTANCE_PENDING",
+      "RELEASE_SIGNER_ISSUANCE_PENDING",
+      "PRODUCER_ATTESTATION_BUNDLE_PENDING",
+      "RELEASE_CEREMONY_NOT_EXECUTED",
+      "CURRENT_HEAD_CAPABILITY_NOT_EXTERNALLY_CONFIRMED",
+      "CAMPAIGN_COMPLETION_NOT_PROVEN"
+    ],
+    "resolved_blockers": [],
+    "resolved_with_boundary": [
+      "CURRENT_HEAD_ASSURANCE_CONFIRMED_BOUNDED_ONLY",
+      "HISTORICAL_CAPABILITY_CONFIRMED_BOUNDED_ONLY"
+    ]
+  },
+  "workstream_id": "WS18_RELEASE_CEREMONY_AND_FINAL_READJUDICATION"
+}
