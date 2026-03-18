@@ -1,0 +1,93 @@
+{
+  "artifact_id": "kt_external_assurance_confirmation_receipt.json",
+  "assurance_confirmation_mode": "OUTSIDER_VERIFIABLE_SECRET_FREE_DETACHED_REPLAY",
+  "assurance_only_not_capability": true,
+  "blocked_by": [],
+  "bounded_assurance_subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+  "bounded_assurance_surface": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+  "bounded_assurance_surface_sha256": "4b20265a469d3e1d95d3c3a796cd622d14c0f6edb10b1271d9e448139267b225",
+  "checks": [
+    {
+      "check": "ws14_release_receipt_pass",
+      "detail": "WS17A depends on the bounded WS14 static verifier release and acceptance policy lock.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws16_tevv_receipt_pass",
+      "detail": "WS17A depends on the WS16 pinned TEVV pack and replayability rules remaining PASS.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_tevv_dataset_registry_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws17a_is_current_lawful_workstream",
+      "detail": "WS17A may proceed only after the frozen WS16 boundary unlocks the assurance lane.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_execution_dag.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "current_public_verifier_release_package_active",
+      "detail": "WS17A reuses the active WS14 static verifier release and public acceptance/distribution policy surfaces.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_distribution_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "detached_outsider_assurance_replay_pass",
+      "detail": "At least one outsider-verifiable assurance replay must succeed on a detached public package with no repo checkout or private secrets.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws17a_assurance/kt_outsider_assurance_replay_report.json",
+        "KT_PROD_CLEANROOM/reports/ws17a_assurance/kt_external_assurance_import_manifest.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_against": "58ab14cd012d59ef7cb3e83313600fde826894ad",
+  "current_repo_head": "58ab14cd012d59ef7cb3e83313600fde826894ad",
+  "imported_evidence": {
+    "import_manifest_ref": "KT_PROD_CLEANROOM/reports/ws17a_assurance/kt_external_assurance_import_manifest.json",
+    "imported_hashes": {
+      "KT_PROD_CLEANROOM/reports/ws17a_assurance/kt_external_assurance_import_manifest.json": "ed8a329a2cd39c70d480ed2b536a6f1be3730b9ff97adecb246ca4f717c86b18",
+      "KT_PROD_CLEANROOM/reports/ws17a_assurance/kt_outsider_assurance_replay_report.json": "fff708ed00a9609e7f4a529738698647b059a629c3aaadb245f7a825d3876854"
+    },
+    "outsider_replay_report_ref": "KT_PROD_CLEANROOM/reports/ws17a_assurance/kt_outsider_assurance_replay_report.json"
+  },
+  "independent_third_party_confirmation": false,
+  "limitations": [
+    "WS17A proves outsider-verifiable assurance only, not external capability confirmation.",
+    "WS17A remains bounded to the imported public_verifier_manifest current surface already accepted in WS14 and pinned in WS16.",
+    "WS17A does not widen verifier coverage, activate threshold-root acceptance, prove release readiness, or prove campaign completion.",
+    "The repo-root import fragility remains visible and unfixed."
+  ],
+  "next_lawful_workstream": "WS17B_EXTERNAL_CONFIRMATION_CAPABILITY",
+  "outsider_verifiable": true,
+  "pass_verdict": "SECRET_FREE_OUTSIDER_ASSURANCE_REPLAY_PROVEN",
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.ws17a.external_assurance_confirmation_receipt.v1",
+  "sigstore_bundle_ref": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+  "sigstore_bundle_sha256": "1a1f65c3d18850e9738732d2c235942b18973ecd4f6cd6bf09c8063c235f389b",
+  "status": "PASS",
+  "step_id": "WS17A_STEP_1_PROVE_SECRET_FREE_OUTSIDER_ASSURANCE_REPLAY",
+  "stronger_claim_not_made": [
+    "WS17A constitutes external capability confirmation.",
+    "WS17A widens verifier coverage beyond the bounded imported public_verifier_manifest surface.",
+    "WS17A proves release readiness or campaign completion."
+  ],
+  "tests_run": [
+    "python -m pytest -q tests/operator/test_ws17a_external_assurance_validate.py"
+  ],
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.ws17a_external_assurance_validate"
+  ],
+  "workstream_id": "WS17A_EXTERNAL_CONFIRMATION_ASSURANCE"
+}

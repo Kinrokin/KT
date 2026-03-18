@@ -1,0 +1,153 @@
+{
+  "artifact_id": "kt_outsider_assurance_replay_report.json",
+  "assurance_confirmation_mode": "OUTSIDER_VERIFIABLE_SECRET_FREE_DETACHED_REPLAY",
+  "assurance_scope": "ASSURANCE_ONLY_NOT_CAPABILITY",
+  "blocked_by": [],
+  "bounded_current_surface": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+  "bounded_current_surface_sha256": "4b20265a469d3e1d95d3c3a796cd622d14c0f6edb10b1271d9e448139267b225",
+  "bounded_subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+  "certificate_identity": "https://github.com/Kinrokin/KT/.github/workflows/ci_truth_barrier.yml@refs/heads/main",
+  "certificate_oidc_issuer": "https://token.actions.githubusercontent.com",
+  "checks": [
+    {
+      "check": "required_public_inputs_present",
+      "detail": "Detached outsider assurance replay requires the WS14/WS16 public policy and bounded current-surface evidence package only.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_distribution_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_static_verifier_attestation.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_tevv_dataset_registry_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "acceptance_policy_declares_secret_free_public_verification",
+      "detail": "The active acceptance policy must declare a public-material-only verifier path with no hidden secret dependency.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "distribution_policy_secret_free_and_offline_capable",
+      "detail": "The distribution policy must keep outsider verification offline-capable and explicitly forbid secret-backed verification.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_distribution_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "upstream_receipts_and_imported_evidence_schema_valid",
+      "detail": "WS17A must bind only to schema-valid, PASS upstream receipts and imported assurance evidence.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_tevv_dataset_registry_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "allowed_public_refs_contain_no_secret_material",
+      "detail": "Allowed public verification refs must not contain secret or HMAC-backed material.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "bundle_sha256": "1a1f65c3d18850e9738732d2c235942b18973ecd4f6cd6bf09c8063c235f389b",
+      "check": "keyless_receipt_matches_bounded_signed_surface_and_identity",
+      "detail": "The bounded keyless receipt must match the declared signer identity, issuer, signed surface, and imported Sigstore bundle.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json"
+      ],
+      "signed_surface_sha256": "4b20265a469d3e1d95d3c3a796cd622d14c0f6edb10b1271d9e448139267b225",
+      "status": "PASS"
+    },
+    {
+      "check": "remote_truth_barrier_diagnostic_matches_keyless_run",
+      "detail": "The imported CI truth-barrier diagnostic must remain PASS and agree with the keyless run id.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json"
+      ],
+      "run_id": "23229317266",
+      "status": "PASS"
+    },
+    {
+      "check": "carried_forward_subject_head_stable_across_ws14_ws16_and_release_package",
+      "detail": "The outsider assurance replay must remain bound to the same bounded verifier subject carried forward through WS14 and WS16.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_tevv_dataset_registry_receipt.json",
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_static_verifier_attestation.json"
+      ],
+      "status": "PASS",
+      "subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b"
+    },
+    {
+      "check": "ws16_dataset_pins_match_detached_public_package",
+      "detail": "The detached public package must still match the WS16 pinned bounded signed surface and Sigstore bundle hashes.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_tevv_dataset_registry_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "static_release_manifest_matches_bounded_assurance_surface",
+      "detail": "The static verifier release manifest must package the exact bounded current surface accepted by WS14 and pinned by WS16.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "detached_package_has_no_repo_checkout",
+      "detached_package_root": "C:\\Users\\rober\\AppData\\Local\\Temp\\kt_ws17a_assurance_ta4pecf9\\package",
+      "detail": "Outsider assurance replay must run from a detached package without a git checkout.",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/ws17a_external_assurance_validate.py"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "detached_package_root": "C:\\Users\\rober\\AppData\\Local\\Temp\\kt_ws17a_assurance_ta4pecf9\\package",
+  "independent_third_party_confirmation": false,
+  "limitations": [
+    "WS17A proves a secret-free outsider-verifiable assurance replay only; it does not prove external capability confirmation.",
+    "WS17A does not widen verifier coverage beyond the bounded imported current surface.",
+    "WS17A does not activate threshold-root verifier acceptance, release readiness, or campaign completion.",
+    "WS17A does not erase the repo-root import fragility."
+  ],
+  "outsider_verifiable": true,
+  "pass_verdict": "SECRET_FREE_OUTSIDER_ASSURANCE_REPLAY_PROVEN",
+  "repo_checkout_present": false,
+  "run_id": "23229317266",
+  "schema_id": "kt.operator.ws17a.outsider_assurance_replay_report.v1",
+  "sigstore_bundle_ref": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+  "sigstore_bundle_sha256": "1a1f65c3d18850e9738732d2c235942b18973ecd4f6cd6bf09c8063c235f389b",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "An independent third-party capability evaluation has been completed.",
+    "Verifier coverage is broader than the bounded imported public_verifier_manifest surface.",
+    "Release readiness or campaign completion is proven."
+  ]
+}
