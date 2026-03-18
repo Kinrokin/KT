@@ -1,0 +1,143 @@
+{
+  "artifact_id": "kt_tevv_dataset_registry_receipt.json",
+  "blocked_by": [],
+  "checks": [
+    {
+      "check": "upstream_tevv_subject_head_aligned",
+      "detail": "WS16 requires the upstream WS13/WS14 subject head, local/CI live-validation rows, and subject sets to agree on one bounded proof subject.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/local/live_validation_index.local.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/live_validation_index.ci.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/local/kt_determinism_subject_set.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_determinism_subject_set.json"
+      ],
+      "status": "PASS",
+      "subject_candidates": [
+        "a2cc7ba323cf143def4133d722a7e79dbf35729b"
+      ]
+    },
+    {
+      "check": "proof_ceiling_still_blocks_stronger_claims",
+      "detail": "WS16 must preserve the WS15 proof ceiling and keep threshold-root acceptance, release readiness, and campaign completion blocked.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_abi_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "class_b_canonicalization_profile_declared",
+      "detail": "WS16 must reuse the declared WS13 CLASS_B canonicalization profile for local-vs-CI truth-barrier comparison.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "current_head_truth_rows_within_validity_windows",
+      "detail": "WS16 requires the declared local and CI truth-barrier rows to remain within their fail-closed validity windows.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/truth_freshness_windows.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/local/live_validation_index.local.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/live_validation_index.ci.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "bundle_sha256": "1a1f65c3d18850e9738732d2c235942b18973ecd4f6cd6bf09c8063c235f389b",
+      "check": "bounded_keyless_surface_binding_intact",
+      "detail": "WS16 must keep the bounded WS11 surface bound across the keyless receipt, remote diagnostic, signed surface, and Sigstore bundle.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json"
+      ],
+      "signed_surface_sha256": "4b20265a469d3e1d95d3c3a796cd622d14c0f6edb10b1271d9e448139267b225",
+      "status": "PASS"
+    },
+    {
+      "check": "comparator_registry_machine_readable_and_complete",
+      "detail": "WS16 must define a machine-readable comparator registry for exact-hash, canonical, subject-binding, bundle-binding, freshness, and worst-case aggregation.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_comparator_registry.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "tevv_pack_complete_for_declared_scope",
+      "detail": "WS16 requires the TEVV pack manifest to carry every declared required component for the bounded local/CI + keyless surface scope.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_tevv_pack_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_tevv_pack_manifest.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "comparator_registry_ids": [
+    "sha256_exact_file_match_v1",
+    "live_validation_index_canonical_equivalence_v1",
+    "subject_head_equality_v1",
+    "sigstore_bundle_surface_binding_v1",
+    "freshness_window_fail_closed_v1",
+    "worst_case_pack_status_v1"
+  ],
+  "compiled_against": "23ccf8c00ca82274de09e7e3f89b163fd210c544",
+  "current_repo_head": "23ccf8c00ca82274de09e7e3f89b163fd210c544",
+  "current_strongest_claim": "WS16 defines a bounded trust-assumptions register, TEVV pack completeness rules, cryptographically pinned datasets/evidence sets, machine-readable comparators, benchmark validity windows, anti-cherry-picking rules, and replayability requirements for the already-proven bounded truth-barrier and verifier surfaces.",
+  "dataset_hashes": {
+    "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_determinism_subject_set.json": "c3fd55106c1aafad0c8ded8769ec52e65f2531ac4b1dedc72d690f0840ff41fa",
+    "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/live_validation_index.ci.json": "e65191a2607dca19023bd97c93836341c33c909777dca258044ecea2da63dea3",
+    "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json": "4b20265a469d3e1d95d3c3a796cd622d14c0f6edb10b1271d9e448139267b225",
+    "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json": "1a1f65c3d18850e9738732d2c235942b18973ecd4f6cd6bf09c8063c235f389b",
+    "KT_PROD_CLEANROOM/reports/ws13_determinism/local/kt_determinism_subject_set.json": "c3fd55106c1aafad0c8ded8769ec52e65f2531ac4b1dedc72d690f0840ff41fa",
+    "KT_PROD_CLEANROOM/reports/ws13_determinism/local/live_validation_index.local.json": "9793a080f9d38a38f80772ec3eb87b554b09d9d33e6dbfd73ab6c9a40185abfb"
+  },
+  "next_lawful_workstream": "WS17A_EXTERNAL_CONFIRMATION_ASSURANCE",
+  "outputs": {
+    "KT_PROD_CLEANROOM/governance/kt_benchmark_validity_windows.json": "9fcd20b2decadf13df8729833a46e85b762cec7eae2c38735534f4e3e2435a4b",
+    "KT_PROD_CLEANROOM/governance/kt_comparator_registry.json": "d24925be9960db5542bb46d741e94b0ab1944cbd4dc0b36487d105ad0182346a",
+    "KT_PROD_CLEANROOM/governance/kt_dataset_pin_registry.json": "d3d23efc26d02251e9b0732fd07e0a86373d27370dfe9153df98b6b24b63df10",
+    "KT_PROD_CLEANROOM/governance/kt_tevv_pack_policy.json": "ca0cafafff80e5b60878b4ad3a1a6530fc530b8d2fd9f49e72fa62dd77777cd4",
+    "KT_PROD_CLEANROOM/governance/kt_trust_assumptions_register.json": "63cff9c6ed6df3ab9ef20acec58ec3480ee163b8af64e68db4fe81a048b229e6",
+    "KT_PROD_CLEANROOM/reports/kt_tevv_pack_manifest.json": "28cdaae002f936e5ff7667715499bdde81ac06da06906577d79f0b040e2101ef"
+  },
+  "pass_verdict": "TRUST_ASSUMPTIONS_TEVV_DATASET_AND_COMPARATORS_LOCKED",
+  "remaining_limitations": [
+    "WS16 does not constitute external confirmation.",
+    "WS16 does not widen verifier coverage beyond the bounded current surface set.",
+    "WS16 does not activate threshold-root verifier acceptance.",
+    "WS16 does not prove release readiness, release ceremony execution, or campaign completion.",
+    "The repo-root import fragility remains visible and unfixed."
+  ],
+  "replayability_rules": [
+    "hash-bound packs require manifest verification",
+    "public replay surfaces must be secret-free",
+    "receipt replay requires declared deterministic scripts or a replay recipe",
+    "high-severity claims require replay PASS unless the proof layer itself is the failure class",
+    "repo-root import fragility remains visible and not fixed by WS16"
+  ],
+  "schema_id": "kt.operator.tevv_dataset_registry_receipt.v1",
+  "status": "PASS",
+  "step_id": "WS16_STEP_1_LOCK_TEVV_PACK_DATASET_PINS_AND_COMPARATORS",
+  "stronger_claim_not_made": [
+    "WS16 constitutes external assurance or external capability confirmation.",
+    "WS16 proves threshold-root verifier acceptance, release readiness, or campaign completion."
+  ],
+  "tevv_subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+  "trust_assumption_fields_locked": [
+    "assumption_id",
+    "assumption_class",
+    "bounded_scope",
+    "dependency_kind",
+    "statement",
+    "evidence_refs",
+    "validator_refs",
+    "failure_if_false",
+    "fail_closed_if_false",
+    "stronger_claim_not_made"
+  ],
+  "workstream_id": "WS16_TRUST_ASSUMPTIONS_TEVV_DATASET_PINNING_AND_COMPARATOR_REGISTRY"
+}

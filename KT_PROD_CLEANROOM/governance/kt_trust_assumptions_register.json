@@ -1,0 +1,146 @@
+{
+  "assumptions": [
+    {
+      "assumption_class": "ROOT_TRUST_BOUNDARY",
+      "assumption_id": "ASSUME_WS10_ROOT_BOUNDARY_RERATIFIED_3_OF_3_ONLY",
+      "bounded_scope": "WS10 carry-forward root trust claim",
+      "dependency_kind": "UPSTREAM_RECEIPT",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_root_ceremony_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json"
+      ],
+      "fail_closed_if_false": true,
+      "failure_if_false": "WS16 must fail closed because the trust root boundary would be overstated.",
+      "statement": "Current TEVV claims inherit only the reratified 3-of-3 root boundary and must not overread the earlier planned 3-of-5 topology as executed.",
+      "stronger_claim_not_made": [
+        "The original planned 3-of-5 root execution is proven."
+      ],
+      "validator_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/ws16_tevv_dataset_comparator_validate.py"
+      ]
+    },
+    {
+      "assumption_class": "VERIFIER_TRUST_BOUNDARY",
+      "assumption_id": "ASSUME_BOOTSTRAP_ROOT_ONLY_VERIFIER_ACCEPTANCE",
+      "bounded_scope": "WS14 bounded verifier acceptance state",
+      "dependency_kind": "UPSTREAM_POLICY",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json"
+      ],
+      "fail_closed_if_false": true,
+      "failure_if_false": "WS16 must fail closed because verifier trust would widen beyond the current proof ceiling.",
+      "statement": "Verifier acceptance remains bootstrap-root only, and WS16 does not activate threshold-root verifier acceptance.",
+      "stronger_claim_not_made": [
+        "Threshold-root verifier acceptance is active."
+      ],
+      "validator_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/ws16_tevv_dataset_comparator_validate.py"
+      ]
+    },
+    {
+      "assumption_class": "ENVIRONMENT_BOUNDARY",
+      "assumption_id": "ASSUME_DECLARED_LOCAL_AND_CI_ENVIRONMENTS_ONLY",
+      "bounded_scope": "WS13 determinism and TEVV parity environments",
+      "dependency_kind": "UPSTREAM_RECEIPT",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/local/environment_probe.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/environment_probe.json"
+      ],
+      "fail_closed_if_false": true,
+      "failure_if_false": "WS16 must fail closed because local-vs-CI parity would no longer be scoped to proven environments.",
+      "statement": "TEVV parity is bounded to the declared local Windows and GitHub Actions Ubuntu environments on upstream subject head a2cc7ba323cf143def4133d722a7e79dbf35729b.",
+      "stronger_claim_not_made": [
+        "Any environment outside the declared WS13 envelope is automatically compatible."
+      ],
+      "validator_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/ws16_tevv_dataset_comparator_validate.py"
+      ]
+    },
+    {
+      "assumption_class": "PUBLIC_TRUST_DEPENDENCY",
+      "assumption_id": "ASSUME_KEYLESS_AND_REKOR_BIND_THE_DECLARED_WS11_SURFACE",
+      "bounded_scope": "Imported current bounded keyless verifier surface",
+      "dependency_kind": "IMPORTED_EXTERNAL_EVIDENCE",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json"
+      ],
+      "fail_closed_if_false": true,
+      "failure_if_false": "WS16 must fail closed because the declared public-trust surface would lose its bounded signed evidence chain.",
+      "statement": "GitHub OIDC, Sigstore keyless signing, and Rekor inclusion remain bound to the declared public verifier manifest surface only.",
+      "stronger_claim_not_made": [
+        "All KT verifier surfaces are keyless-backed."
+      ],
+      "validator_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/ws16_tevv_dataset_comparator_validate.py"
+      ]
+    },
+    {
+      "assumption_class": "TEVV_COMPLETENESS",
+      "assumption_id": "ASSUME_TEVV_PACK_IS_COMPLETE_ONLY_IF_LOCAL_AND_CI_ROWS_BOTH_EXIST",
+      "bounded_scope": "WS16 TEVV pack completeness",
+      "dependency_kind": "LOCAL_POLICY",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/kt_tevv_pack_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_dataset_pin_registry.json",
+        "KT_PROD_CLEANROOM/reports/kt_tevv_pack_manifest.json"
+      ],
+      "fail_closed_if_false": true,
+      "failure_if_false": "WS16 must fail closed because cherry-picked evidence would become admissible.",
+      "statement": "A WS16 TEVV pack is incomplete unless both local and CI truth-barrier rows, their subject sets, and the imported bounded keyless surface are all present and hash-bound.",
+      "stronger_claim_not_made": [
+        "A single surviving row is enough to certify the TEVV pack."
+      ],
+      "validator_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/ws16_tevv_dataset_comparator_validate.py"
+      ]
+    },
+    {
+      "assumption_class": "REPLAYABILITY_BOUNDARY",
+      "assumption_id": "ASSUME_REPLAYABILITY_MUST_BE_DECLARED_AND_SECRET_FREE",
+      "bounded_scope": "WS16 replayability requirements",
+      "dependency_kind": "LOCAL_POLICY",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+        "KT_PROD_CLEANROOM/tools/verification/replay_manifest_verify.py",
+        "KT_PROD_CLEANROOM/tools/operator/hermetic_replay_linter.py",
+        "KT_PROD_CLEANROOM/tools/verification/fl4_replay_from_receipts.py"
+      ],
+      "fail_closed_if_false": true,
+      "failure_if_false": "WS16 must fail closed because replayability would become ambiguous or secret-backed.",
+      "statement": "Replayability claims must stay bound to declared recipes, manifest verification, and secret-free public surfaces; replay claims do not erase the repo-root import fragility.",
+      "stronger_claim_not_made": [
+        "The repo-root import fragility is fixed.",
+        "Replayability alone proves external confirmation."
+      ],
+      "validator_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/ws16_tevv_dataset_comparator_validate.py"
+      ]
+    }
+  ],
+  "current_repo_head": "23ccf8c00ca82274de09e7e3f89b163fd210c544",
+  "register_id": "KT_TRUST_ASSUMPTIONS_REGISTER_V1_20260318",
+  "required_fields": [
+    "assumption_id",
+    "assumption_class",
+    "bounded_scope",
+    "dependency_kind",
+    "statement",
+    "evidence_refs",
+    "validator_refs",
+    "failure_if_false",
+    "fail_closed_if_false",
+    "stronger_claim_not_made"
+  ],
+  "schema_id": "kt.governance.trust_assumptions_register.v1",
+  "status": "ACTIVE",
+  "stronger_claim_not_made": [
+    "WS16 trust assumptions constitute external confirmation.",
+    "WS16 widens trust or release boundaries beyond the prior proof ceiling."
+  ],
+  "tevv_subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b"
+}

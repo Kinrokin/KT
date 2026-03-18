@@ -1,0 +1,108 @@
+{
+  "current_repo_head": "23ccf8c00ca82274de09e7e3f89b163fd210c544",
+  "pinned_datasets": [
+    {
+      "comparator_ids": [
+        "live_validation_index_canonical_equivalence_v1",
+        "subject_head_equality_v1",
+        "freshness_window_fail_closed_v1"
+      ],
+      "contains_private_material": false,
+      "dataset_class": "CURRENT_HEAD_RUNTIME_EVIDENCE",
+      "dataset_id": "ws13_local_truth_barrier_index",
+      "origin": "local_current_head_bundle",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/local/live_validation_index.local.json",
+      "replay_role": "LOCAL_TRUTH_MATRIX",
+      "sha256": "9793a080f9d38a38f80772ec3eb87b554b09d9d33e6dbfd73ab6c9a40185abfb",
+      "subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b"
+    },
+    {
+      "comparator_ids": [
+        "live_validation_index_canonical_equivalence_v1",
+        "subject_head_equality_v1",
+        "freshness_window_fail_closed_v1"
+      ],
+      "contains_private_material": false,
+      "dataset_class": "CURRENT_HEAD_RUNTIME_EVIDENCE",
+      "dataset_id": "ws13_ci_truth_barrier_index",
+      "origin": "imported_ci_current_head_bundle",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/live_validation_index.ci.json",
+      "replay_role": "CI_TRUTH_MATRIX",
+      "sha256": "e65191a2607dca19023bd97c93836341c33c909777dca258044ecea2da63dea3",
+      "subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b"
+    },
+    {
+      "comparator_ids": [
+        "sha256_exact_file_match_v1",
+        "subject_head_equality_v1"
+      ],
+      "contains_private_material": false,
+      "dataset_class": "CANONICAL_SUBJECT_BINDING",
+      "dataset_id": "ws13_local_subject_set",
+      "origin": "local_current_head_bundle",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/local/kt_determinism_subject_set.json",
+      "replay_role": "LOCAL_SUBJECT_BINDING",
+      "sha256": "c3fd55106c1aafad0c8ded8769ec52e65f2531ac4b1dedc72d690f0840ff41fa",
+      "subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b"
+    },
+    {
+      "comparator_ids": [
+        "sha256_exact_file_match_v1",
+        "subject_head_equality_v1"
+      ],
+      "contains_private_material": false,
+      "dataset_class": "CANONICAL_SUBJECT_BINDING",
+      "dataset_id": "ws13_ci_subject_set",
+      "origin": "imported_ci_current_head_bundle",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_determinism_subject_set.json",
+      "replay_role": "CI_SUBJECT_BINDING",
+      "sha256": "c3fd55106c1aafad0c8ded8769ec52e65f2531ac4b1dedc72d690f0840ff41fa",
+      "subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b"
+    },
+    {
+      "comparator_ids": [
+        "sha256_exact_file_match_v1",
+        "sigstore_bundle_surface_binding_v1"
+      ],
+      "contains_private_material": false,
+      "dataset_class": "IMPORTED_CLASS_C_EVIDENCE",
+      "dataset_id": "ws11_bounded_keyless_signed_surface",
+      "origin": "imported_ci_signed_surface",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+      "replay_role": "BOUNDED_KEYLESS_SURFACE",
+      "sha256": "4b20265a469d3e1d95d3c3a796cd622d14c0f6edb10b1271d9e448139267b225",
+      "subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b"
+    },
+    {
+      "comparator_ids": [
+        "sha256_exact_file_match_v1",
+        "sigstore_bundle_surface_binding_v1"
+      ],
+      "contains_private_material": false,
+      "dataset_class": "IMPORTED_CLASS_C_EVIDENCE",
+      "dataset_id": "ws11_bounded_keyless_sigstore_bundle",
+      "origin": "imported_ci_sigstore_bundle",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+      "replay_role": "BOUNDED_KEYLESS_BUNDLE",
+      "sha256": "1a1f65c3d18850e9738732d2c235942b18973ecd4f6cd6bf09c8063c235f389b",
+      "subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b"
+    }
+  ],
+  "pinning_rules": {
+    "cross_environment_exact_match_requires_declared_exact_comparator": true,
+    "environment_specific_json_requires_declared_canonicalization_or_subject_binding": true,
+    "hash_algorithm": "SHA256_FILE_BYTES",
+    "hash_mismatch_action": "FAIL_CLOSED",
+    "imported_class_c_may_be_pinned_without_being_promoted_to_class_a_or_class_b": true,
+    "pinset_must_be_complete_before_adjudication": true,
+    "repo_relative_paths_only": true
+  },
+  "register_id": "KT_DATASET_PIN_REGISTRY_V1_20260318",
+  "schema_id": "kt.governance.dataset_pin_registry.v1",
+  "status": "ACTIVE",
+  "stronger_claim_not_made": [
+    "WS16 dataset pins convert imported evidence into release-ready deterministic artifacts.",
+    "Pinned TEVV sets prove external capability or product readiness."
+  ],
+  "tevv_subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b"
+}

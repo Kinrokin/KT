@@ -1,9 +1,9 @@
 {
-  "current_node": "WS16_TRUST_ASSUMPTIONS_TEVV_DATASET_PINNING_AND_COMPARATOR_REGISTRY",
-  "current_repo_head": "421e457058899ee5a780eabf5ca166623cab43e3",
+  "current_node": "WS17A_EXTERNAL_CONFIRMATION_ASSURANCE",
+  "current_repo_head": "23ccf8c00ca82274de09e7e3f89b163fd210c544",
   "dag_id": "KT_SOVEREIGN_EXECUTION_DAG_V1_20260317",
-  "generated_utc": "2026-03-18T05:29:42Z",
-  "next_lawful_workstream": "WS16_TRUST_ASSUMPTIONS_TEVV_DATASET_PINNING_AND_COMPARATOR_REGISTRY",
+  "generated_utc": "2026-03-18T09:18:43Z",
+  "next_lawful_workstream": "WS17A_EXTERNAL_CONFIRMATION_ASSURANCE",
   "no_progress_without_proof": true,
   "nodes": [
     {
@@ -77,12 +77,13 @@
       "unlock_basis": "WS14 PASS"
     },
     {
+      "claim_boundary": "WS16 PASS proves only an explicit trust-assumptions register, TEVV pack completeness rules, cryptographically pinned bounded datasets/evidence sets, machine-readable comparator rules, benchmark validity windows, anti-cherry-picking rules, and replayability requirements for the already-bounded truth-barrier and verifier surfaces.",
       "depends_on": [
         "WS15_CLAIM_ABI_PROOF_CEILING_IDENTITY_AND_LEDGER_LAW"
       ],
       "id": "WS16_TRUST_ASSUMPTIONS_TEVV_DATASET_PINNING_AND_COMPARATOR_REGISTRY",
-      "ratification_checkpoint": "tevv_and_benchmark_receipt",
-      "status": "UNLOCKED",
+      "ratification_checkpoint": "kt_tevv_dataset_registry_receipt.json",
+      "status": "PASS",
       "unlock_basis": "WS15 PASS"
     },
     {
@@ -91,7 +92,8 @@
       ],
       "id": "WS17A_EXTERNAL_CONFIRMATION_ASSURANCE",
       "ratification_checkpoint": "external_assurance_receipt",
-      "status": "LOCKED_PENDING_WS16_PASS"
+      "status": "UNLOCKED",
+      "unlock_basis": "WS16 PASS"
     },
     {
       "depends_on": [
@@ -99,7 +101,8 @@
       ],
       "id": "WS17B_EXTERNAL_CONFIRMATION_CAPABILITY",
       "ratification_checkpoint": "external_capability_receipt",
-      "status": "LOCKED_PENDING_WS16_PASS"
+      "status": "UNLOCKED",
+      "unlock_basis": "WS16 PASS"
     },
     {
       "depends_on": [
@@ -121,12 +124,12 @@
   ],
   "schema_id": "kt.governance.execution_dag.v1",
   "semantic_boundary": {
-    "lawful_current_claim": "WS10 passed under a reratified 3-of-3 root boundary only. WS11 passed with one bounded keyless surface. WS12 passed for bounded current-head supply-chain policy. WS13 passed for bounded artifact-class locking and determinism proof across local Windows and GitHub Actions Ubuntu on the same subject head. WS14 froze a bounded static verifier release and bootstrap-root-only acceptance policy. WS15 now locks a typed claim ABI, deterministic proof ceiling, identity abuse barriers, ledger law, and non-executed release law without widening threshold-root acceptance or release readiness.",
+    "lawful_current_claim": "WS10 passed under a reratified 3-of-3 root boundary only. WS11 passed with one bounded keyless surface. WS12 passed for bounded current-head supply-chain policy. WS13 passed for bounded artifact-class locking and determinism proof. WS14 froze a bounded static verifier release and bootstrap-root-only acceptance policy. WS15 locked a typed claim ABI, proof ceiling, identity abuse barriers, ledger law, and non-executed release law. WS16 now locks a bounded trust-assumptions register, TEVV pack completeness rules, pinned evaluation datasets/evidence sets, comparator registry, benchmark validity windows, anti-cherry-picking rules, and replayability requirements without widening threshold-root acceptance, verifier scope, or release readiness.",
     "stronger_claim_not_made": [
-      "The original planned 3-of-5 root topology was executed",
       "Threshold-root verifier acceptance is active",
       "Release readiness is proven",
-      "WS16 has already been substantively started"
+      "Campaign completion is proven",
+      "WS17A or WS17B has already been substantively started"
     ],
     "ws10_pass_required_before_ws11": true,
     "ws9_frozen_locally": true

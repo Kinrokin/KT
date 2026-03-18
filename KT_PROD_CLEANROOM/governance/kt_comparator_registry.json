@@ -1,0 +1,77 @@
+{
+  "comparators": [
+    {
+      "approved_scopes": [
+        "CLASS_A",
+        "CANONICAL_SUBJECT_BINDING",
+        "PIN_REGISTRY_EXACT_ROWS"
+      ],
+      "comparator_id": "sha256_exact_file_match_v1",
+      "deterministic": true,
+      "implemented_by": "KT_PROD_CLEANROOM/tools/operator/ws16_tevv_dataset_comparator_validate.py",
+      "kind": "EXACT_HASH",
+      "success_condition": "lhs_sha256 == rhs_sha256"
+    },
+    {
+      "approved_scopes": [
+        "CLASS_B",
+        "TEVV_LOCAL_CI_PARITY"
+      ],
+      "comparator_id": "live_validation_index_canonical_equivalence_v1",
+      "deterministic": true,
+      "implemented_by": "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json",
+      "kind": "JSON_PROJECTION_CANONICAL_HASH",
+      "profile_id": "live_validation_index_v1",
+      "profile_ref": "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json",
+      "success_condition": "canonical_hash(local_live_validation_index) == canonical_hash(ci_live_validation_index)"
+    },
+    {
+      "approved_scopes": [
+        "UPSTREAM_PROOF_SUBJECT_BINDING"
+      ],
+      "comparator_id": "subject_head_equality_v1",
+      "deterministic": true,
+      "implemented_by": "KT_PROD_CLEANROOM/tools/operator/ws16_tevv_dataset_comparator_validate.py",
+      "kind": "SUBJECT_HEAD_BINDING",
+      "success_condition": "all declared subject_head_commit values are equal"
+    },
+    {
+      "approved_scopes": [
+        "BOUNDED_KEYLESS_PUBLIC_TRUST_SURFACE"
+      ],
+      "comparator_id": "sigstore_bundle_surface_binding_v1",
+      "deterministic": true,
+      "implemented_by": "KT_PROD_CLEANROOM/tools/operator/ws16_tevv_dataset_comparator_validate.py",
+      "kind": "STRUCTURAL_BINDING",
+      "success_condition": "signed surface sha, keyless receipt, bundle sha, and remote diagnostic run id align for the bounded surface"
+    },
+    {
+      "approved_scopes": [
+        "CURRENT_HEAD_RUNTIME_EVIDENCE"
+      ],
+      "comparator_id": "freshness_window_fail_closed_v1",
+      "deterministic": true,
+      "implemented_by": "KT_PROD_CLEANROOM/tools/operator/ws16_tevv_dataset_comparator_validate.py",
+      "kind": "FRESHNESS_WINDOW",
+      "success_condition": "generated_utc age is within the declared maximum hours or the row fails closed"
+    },
+    {
+      "approved_scopes": [
+        "WS16_TEVV_PACK_STATUS"
+      ],
+      "comparator_id": "worst_case_pack_status_v1",
+      "deterministic": true,
+      "implemented_by": "KT_PROD_CLEANROOM/tools/operator/ws16_tevv_dataset_comparator_validate.py",
+      "kind": "PACK_AGGREGATION",
+      "success_condition": "any failed required component forces PACK status away from PASS"
+    }
+  ],
+  "current_repo_head": "23ccf8c00ca82274de09e7e3f89b163fd210c544",
+  "registry_id": "KT_COMPARATOR_REGISTRY_V1_20260318",
+  "schema_id": "kt.governance.comparator_registry.v1",
+  "status": "ACTIVE",
+  "stronger_claim_not_made": [
+    "Comparator registration alone proves broader model superiority.",
+    "WS16 comparators erase environment-specific raw output differences instead of bounding them."
+  ]
+}
