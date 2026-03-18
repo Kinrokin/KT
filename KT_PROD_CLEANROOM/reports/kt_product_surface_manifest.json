@@ -1,0 +1,58 @@
+{
+  "artifact_id": "kt_product_surface_manifest.json",
+  "bounded_proof_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_external_assurance_confirmation_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_final_readjudication_receipt.json"
+  ],
+  "campaign_completion_status": "NOT_PROVEN",
+  "commercial_license_track": "SEPARATE_WRITTEN_LICENSE_REQUIRED_EXTERNAL_TO_REPO",
+  "compiled_against": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+  "current_repo_head": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+  "documentary_ancestry_refs": [
+    "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+    "KT_PROD_CLEANROOM/reports/commercial_program_catalog.json"
+  ],
+  "explicitly_not_included": [
+    "threshold_root_verifier_acceptance",
+    "release_ceremony_execution",
+    "current_head_external_capability_confirmation",
+    "historical_only_capability_import_as_current_product_proof",
+    "campaign_completion"
+  ],
+  "generated_utc": "2026-03-18T16:48:04.660665Z",
+  "included_artifacts": [
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json",
+      "sha256": "27bcab29467f34bcd21774df0601606f3aebe27ee55f37aeafa671c9fbe6851a"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_static_verifier_sbom.json",
+      "sha256": "54ed535585028029d2458385526344cc279de8cadd6818d6aa553ce7f7754d54"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_static_verifier_attestation.json",
+      "sha256": "f582a1eda3ff3e2e43b0c1acc59cc14120e09d2fb209272b8d06e727b402ea7a"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+      "sha256": "cddee3443f575617dcaf8fd62e00851b96fc955b89b9d2302c7b496878bfb3fc"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/governance/kt_public_verifier_distribution_policy.json",
+      "sha256": "29e2e799b271f79dbf7b4e3b93942846e1e25067f66ccd5d5c839a34997b4ca5"
+    }
+  ],
+  "offer_status": "DOCUMENTARY_AND_SPECIALIST_EVALUATION_ONLY",
+  "pilot_status": "DISCOVERY_ONLY_NON_EXECUTION",
+  "product_surface_id": "KT_BOUNDED_STATIC_VERIFIER_EVALUATION_SURFACE_V1",
+  "release_eligibility": "NOT_ELIGIBLE",
+  "repository_license_track": "RESTRICTED_RESEARCH_NONCOMMERCIAL",
+  "schema_id": "kt.product_surface_manifest.v1",
+  "status": "ACTIVE",
+  "stronger_claim_not_made": [
+    "This manifest defines a release-ready or commercially activated product.",
+    "This manifest upgrades historical capability proof into current-head capability."
+  ],
+  "surface_status": "DOCUMENTARY_PRE_RELEASE_NON_RELEASE_ELIGIBLE"
+}

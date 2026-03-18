@@ -1,0 +1,168 @@
+{
+  "artifact_id": "kt_product_surface_receipt.json",
+  "blocked_by": [],
+  "campaign_completion_blocked": true,
+  "campaign_completion_status": "STILL_BLOCKED",
+  "checks": [
+    {
+      "check": "ws18_boundary_frozen_first",
+      "detail": "WS19 may proceed only after the accepted WS18 boundary has been frozen into a descendant checkpoint.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_readjudication_receipt.json",
+        "KT_PROD_CLEANROOM/governance/kt_execution_dag.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "campaign_completion_status": "NOT_PROVEN",
+      "check": "final_verdict_remains_bounded_non_release_eligible",
+      "current_head_capability_status": "NOT_EXTERNALLY_CONFIRMED",
+      "detail": "WS19 may only define a product surface that stays inside the WS18 bounded non-release-eligible verdict.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_readjudication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_ws18_blocker_matrix.json"
+      ],
+      "release_eligibility": "NOT_ELIGIBLE",
+      "status": "PASS"
+    },
+    {
+      "check": "release_ceremony_status_remains_non_executed",
+      "detail": "WS19 must not overread the release lane; release ceremony remains non-executed and not eligible.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_release_ceremony_status_receipt.json"
+      ],
+      "release_ceremony_status": "NON_EXECUTED_BLOCKED_BY_PREREQUISITES",
+      "status": "PASS"
+    },
+    {
+      "check": "repository_license_and_readme_align_to_noncommercial_track",
+      "detail": "Top-level license/readme language must stay aligned to a non-commercial repo track with separate written licensing required for commercial use.",
+      "refs": [
+        "LICENSE",
+        "README.md"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "readiness_scope_keeps_commercial_excluded",
+      "detail": "Commercial surfaces must remain excluded from readiness in the active readiness scope.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "historical_commercial_catalog_is_documentary_ancestry_only",
+      "compiled_head_commit": "2a6d3621491ce0ee167335f9fd8c97977e9fe292",
+      "current_repo_head": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+      "detail": "The older commercial compiler/catalog surfaces may remain as documentary ancestry only and must not be overread as current-head product posture.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/commercial_program_catalog.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "product_claim_ceiling_preconditions_remain_intact",
+      "detail": "WS19 must inherit the existing proof ceiling instead of weakening it: no release readiness, no campaign completion, no threshold-root acceptance, and no current-head capability overread.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_assurance_confirmation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_capability_confirmation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "bounded_static_verifier_surface_remains_anchor",
+      "detail": "WS19 product surface must stay bounded to the already-proven WS14 static verifier release and acceptance surfaces.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json",
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_distribution_policy.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_against": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+  "current_repo_head": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+  "generated_utc": "2026-03-18T16:48:04.694029Z",
+  "input_hashes": {
+    "KT_PROD_CLEANROOM/governance/kt_execution_dag.json": "0bf22dd335cf9d459b5967561c3fcee15c7f9eb06e4c7ad35eba0b806973d513",
+    "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json": "f94123826093176528d3ed0a605f78e75e449d0dc88e2a9d94d493ddd494d088",
+    "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json": "3eb14b3fb6575431edf29517a35c235290524342f413231620b51a31fa962f75",
+    "KT_PROD_CLEANROOM/reports/commercial_program_catalog.json": "0acf0530aa4293f991b47079b2b65c8e93d2f775242725e96fbf133ee5298840",
+    "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json": "e902c2707f5aed6831adc50283b5534e0cf7cde63d070413f93f6ac8aacc6668",
+    "KT_PROD_CLEANROOM/reports/kt_external_assurance_confirmation_receipt.json": "b8608f062556814ec3b91f581c94be883a9c3bcd278214919331619325434d61",
+    "KT_PROD_CLEANROOM/reports/kt_external_capability_confirmation_receipt.json": "75cffb8580890b6ff7b2143e03c47391c26216e3b12debdd0e84176f218be6bb",
+    "KT_PROD_CLEANROOM/reports/kt_final_readjudication_receipt.json": "e3d1f4975758009accab243d6f9444f700faf4efd1f99a2316b77e1ee2377b64",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json": "e54019ceafce2cd2c298f62912f803f49ed072643af6802549429e9361a69efe",
+    "KT_PROD_CLEANROOM/reports/kt_release_ceremony_status_receipt.json": "01904dbbc73adb9f2a6012a80758d66f92e3e86be6a8a311c22da8ea2c9db3e2",
+    "KT_PROD_CLEANROOM/reports/kt_ws18_blocker_matrix.json": "bb13a08515fa17189361c4338cbf15bda4a7cf2c7af7dcff12f950c516bcca4b",
+    "LICENSE": "b694790645afe1c800077eaa8a29c01ee45a00666ae613b4e4b6df823ae6254b",
+    "README.md": "836d05f1eb2160ad251ef6d4a1855458968db3773121c88668fd3e688378163f"
+  },
+  "license_track_policy_ref": "KT_PROD_CLEANROOM/governance/kt_license_track_policy.json",
+  "limitations": [
+    "WS19 does not activate threshold-root verifier acceptance.",
+    "WS19 does not prove current-head external capability confirmation.",
+    "WS19 does not prove release readiness or release ceremony execution.",
+    "WS19 does not widen verifier coverage beyond the already-bounded surfaces.",
+    "WS19 does not prove campaign completion.",
+    "The repo-root import fragility remains visible and unfixed."
+  ],
+  "next_lawful_workstream": null,
+  "pass_verdict": "PRODUCT_SURFACE_AND_LICENSE_TRACK_ALIGNED_TO_BOUNDED_NON_RELEASE_ELIGIBLE_STATE",
+  "product_claim_compiler_ref": "KT_PROD_CLEANROOM/reports/kt_product_claim_compiler.json",
+  "product_claim_policy_ref": "KT_PROD_CLEANROOM/governance/kt_product_claim_policy.json",
+  "product_surface_policy_ref": "KT_PROD_CLEANROOM/governance/kt_product_surface_policy.json",
+  "product_surface_ref": "KT_PROD_CLEANROOM/reports/kt_product_surface_manifest.json",
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.ws19.product_surface_receipt.v1",
+  "semantic_boundary": {
+    "lawful_current_claim": "WS19 defines only a documentary, bounded, non-release-eligible product surface and license track for the static verifier artifact set and associated acceptance/distribution policy. Campaign completion remains blocked.",
+    "stronger_claim_not_made": [
+      "Threshold-root verifier acceptance is active",
+      "Release readiness is proven",
+      "Campaign completion is proven",
+      "WS17A or WS17B has already been substantively started",
+      "WS17A constitutes capability confirmation.",
+      "Verifier coverage is broader than the bounded imported public_verifier_manifest surface.",
+      "Release readiness is proven.",
+      "Campaign completion is proven.",
+      "WS17B upgrades the historical audited target into current-head capability.",
+      "Verifier coverage is broader than the already-bounded imported surfaces.",
+      "Release ceremony execution is proven.",
+      "Threshold-root verifier acceptance is active.",
+      "Historical-bounded capability confirmation upgrades into current-head capability proof.",
+      "WS19 proves release readiness, production readiness, enterprise readiness, or campaign completion.",
+      "WS19 upgrades historical capability confirmation into current-head capability proof.",
+      "WS19 widens verifier coverage beyond the already-bounded surfaces."
+    ],
+    "ws10_pass_required_before_ws11": true,
+    "ws9_frozen_locally": true
+  },
+  "status": "PASS",
+  "step_id": "WS19_STEP_1_DEFINE_BOUNDED_PRODUCT_SURFACE_AND_LICENSE_TRACK",
+  "stronger_claim_not_made": [
+    "Campaign completion is proven.",
+    "Release readiness or production readiness is proven.",
+    "Historical capability confirmation upgrades into current-head capability proof.",
+    "WS19 activates a commercial license inside the repository."
+  ],
+  "tests_run": [
+    "python -m pytest -q tests/operator/test_ws19_product_surface_license_validate.py",
+    "python -m pytest -q tests/operator/test_ws18_release_and_final_readjudication_validate.py tests/operator/test_ws19_product_surface_license_validate.py"
+  ],
+  "unexpected_touches": [],
+  "upstream_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_external_assurance_confirmation_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_external_capability_confirmation_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_final_readjudication_receipt.json"
+  ],
+  "validators_run": [
+    "python -m tools.operator.ws19_product_surface_license_validate"
+  ],
+  "workstream_id": "WS19_PRODUCT_SURFACE_AND_LICENSE_TRACK"
+}

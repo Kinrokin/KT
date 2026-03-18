@@ -1,0 +1,223 @@
+{
+  "allowed_current_claim_ids": [
+    "repo_license_noncommercial_research_only",
+    "commercial_use_requires_separate_written_license",
+    "bounded_product_surface_is_static_verifier_documentary_package_only",
+    "product_surface_non_release_eligible",
+    "pilot_language_discovery_only_non_execution"
+  ],
+  "artifact_id": "kt_product_claim_compiler.json",
+  "blocked_current_claim_ids": [
+    "current_head_capability_proven_for_product_surface",
+    "threshold_root_verifier_acceptance_active_for_product_surface",
+    "enterprise_or_market_ready_product_offer",
+    "campaign_completion_proven"
+  ],
+  "compiled_against": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+  "compiled_claims": [
+    {
+      "blockers": [],
+      "claim_id": "repo_license_noncommercial_research_only",
+      "claim_status": "ALLOWED_CURRENT",
+      "claim_type": "license_track",
+      "compiled_head_commit": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+      "evidence_refs": [
+        "LICENSE",
+        "README.md"
+      ],
+      "license_track": "RESTRICTED_RESEARCH_NONCOMMERCIAL",
+      "statement": "The repository is source-available for non-commercial research, evaluation, and educational use only.",
+      "stronger_claim_not_made": [
+        "The repository license grants commercial deployment, SaaS, redistribution, or bundled product rights."
+      ],
+      "surface_scope": "repository_distribution"
+    },
+    {
+      "blockers": [],
+      "claim_id": "commercial_use_requires_separate_written_license",
+      "claim_status": "ALLOWED_CURRENT",
+      "claim_type": "license_track",
+      "compiled_head_commit": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+      "evidence_refs": [
+        "LICENSE",
+        "README.md"
+      ],
+      "license_track": "SEPARATE_WRITTEN_LICENSE_REQUIRED",
+      "statement": "Any commercial use or benefit requires a separate written license external to this repository.",
+      "stronger_claim_not_made": [
+        "A commercial track is already activated inside the repository."
+      ],
+      "surface_scope": "commercial_activation_boundary"
+    },
+    {
+      "blockers": [],
+      "claim_id": "bounded_product_surface_is_static_verifier_documentary_package_only",
+      "claim_status": "ALLOWED_CURRENT",
+      "claim_type": "product_surface",
+      "compiled_head_commit": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json",
+        "KT_PROD_CLEANROOM/governance/kt_product_surface_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_product_surface_manifest.json"
+      ],
+      "license_track": "DOCUMENTARY_AND_SPECIALIST_EVALUATION_ONLY",
+      "statement": "The current bounded product surface is the static verifier artifact set and acceptance/distribution policy for the already-bounded imported current-head public verifier manifest surface only.",
+      "stronger_claim_not_made": [
+        "The product surface includes release ceremony execution, threshold-root acceptance, or broad verifier deployment.",
+        "The product surface proves current-head capability beyond the bounded verifier surface."
+      ],
+      "surface_scope": "KT_BOUNDED_STATIC_VERIFIER_EVALUATION_SURFACE_V1"
+    },
+    {
+      "blockers": [],
+      "claim_id": "product_surface_non_release_eligible",
+      "claim_status": "ALLOWED_CURRENT",
+      "claim_type": "readiness",
+      "compiled_head_commit": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_readjudication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_ceremony_status_receipt.json"
+      ],
+      "license_track": "NON_RELEASE_ELIGIBLE_BOUNDARY",
+      "statement": "The current product surface remains non-release-eligible under the final readjudication and release-ceremony status receipts.",
+      "stronger_claim_not_made": [
+        "Release readiness or release ceremony completion is proven."
+      ],
+      "surface_scope": "release_eligibility"
+    },
+    {
+      "blockers": [],
+      "claim_id": "pilot_language_discovery_only_non_execution",
+      "claim_status": "ALLOWED_CURRENT",
+      "claim_type": "pilot_language",
+      "compiled_head_commit": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/kt_license_track_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_final_readjudication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_ceremony_status_receipt.json"
+      ],
+      "license_track": "DISCOVERY_ONLY_NON_EXECUTION",
+      "statement": "Any pilot or readiness language must remain discovery-only, documentary, and non-executed while release eligibility is NOT_ELIGIBLE.",
+      "stronger_claim_not_made": [
+        "An active production pilot, release pilot, or market launch is lawful today."
+      ],
+      "surface_scope": "pilot_language"
+    },
+    {
+      "blockers": [],
+      "claim_id": "historical_commercial_catalog_documentary_only",
+      "claim_status": "DOCUMENTARY_ONLY",
+      "claim_type": "product_surface",
+      "compiled_head_commit": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/commercial_program_catalog.json",
+        "KT_PROD_CLEANROOM/governance/kt_product_surface_policy.json"
+      ],
+      "license_track": "DOCUMENTARY_ONLY",
+      "statement": "The historical commercial program catalog remains documentary ancestry only and must not be overread as the current product posture for this head.",
+      "stronger_claim_not_made": [
+        "The historical commercial catalog is the current authoritative product surface for this head."
+      ],
+      "surface_scope": "KT_PROD_CLEANROOM/reports/commercial_program_catalog.json"
+    },
+    {
+      "blockers": [
+        "CURRENT_HEAD_CAPABILITY_NOT_EXTERNALLY_CONFIRMED"
+      ],
+      "claim_id": "current_head_capability_proven_for_product_surface",
+      "claim_status": "BLOCKED_CURRENT",
+      "claim_type": "readiness",
+      "compiled_head_commit": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_readjudication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_capability_confirmation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_ws18_blocker_matrix.json"
+      ],
+      "license_track": "BOUND_CURRENT_HEAD_ONLY",
+      "statement": "The current product surface must not claim current-head external capability proof.",
+      "stronger_claim_not_made": [
+        "Current-head capability is externally confirmed for the product surface."
+      ],
+      "surface_scope": "KT_BOUNDED_STATIC_VERIFIER_EVALUATION_SURFACE_V1"
+    },
+    {
+      "blockers": [
+        "THRESHOLD_ROOT_VERIFIER_ACCEPTANCE_PENDING"
+      ],
+      "claim_id": "threshold_root_verifier_acceptance_active_for_product_surface",
+      "claim_status": "BLOCKED_CURRENT",
+      "claim_type": "readiness",
+      "compiled_head_commit": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_readjudication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_ws18_blocker_matrix.json",
+        "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json"
+      ],
+      "license_track": "BOOTSTRAP_ROOT_ONLY",
+      "statement": "The current product surface must not claim threshold-root verifier acceptance.",
+      "stronger_claim_not_made": [
+        "Threshold-root verifier acceptance is active for the product surface."
+      ],
+      "surface_scope": "KT_BOUNDED_STATIC_VERIFIER_EVALUATION_SURFACE_V1"
+    },
+    {
+      "blockers": [
+        "RELEASE_CEREMONY_NOT_EXECUTED",
+        "RELEASE_SIGNER_ISSUANCE_PENDING",
+        "PRODUCER_ATTESTATION_BUNDLE_PENDING"
+      ],
+      "claim_id": "enterprise_or_market_ready_product_offer",
+      "claim_status": "BLOCKED_CURRENT",
+      "claim_type": "readiness",
+      "compiled_head_commit": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_readjudication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_ceremony_status_receipt.json",
+        "KT_PROD_CLEANROOM/governance/kt_license_track_policy.json"
+      ],
+      "license_track": "NON_RELEASE_ELIGIBLE_BOUNDARY",
+      "statement": "The current product surface must not be described as enterprise-ready, market-ready, production-ready, or release-ready.",
+      "stronger_claim_not_made": [
+        "Enterprise readiness, market readiness, production readiness, or release readiness is proven."
+      ],
+      "surface_scope": "KT_BOUNDED_STATIC_VERIFIER_EVALUATION_SURFACE_V1"
+    },
+    {
+      "blockers": [
+        "CAMPAIGN_COMPLETION_NOT_PROVEN"
+      ],
+      "claim_id": "campaign_completion_proven",
+      "claim_status": "BLOCKED_CURRENT",
+      "claim_type": "campaign_state",
+      "compiled_head_commit": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_readjudication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json"
+      ],
+      "license_track": "CAMPAIGN_STILL_BLOCKED",
+      "statement": "The repository must not claim campaign completion from the WS19 product and license alignment state.",
+      "stronger_claim_not_made": [
+        "Campaign completion is proven."
+      ],
+      "surface_scope": "campaign_state"
+    }
+  ],
+  "current_repo_head": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+  "documentary_only_claim_ids": [
+    "historical_commercial_catalog_documentary_only"
+  ],
+  "generated_utc": "2026-03-18T16:48:04.660665Z",
+  "proof_summary": {
+    "campaign_completion_status": "NOT_PROVEN",
+    "current_head_capability_status": "NOT_EXTERNALLY_CONFIRMED",
+    "historical_capability_status": "PROVEN_HISTORICAL_BOUNDED_ONLY",
+    "release_ceremony_status": "NON_EXECUTED_BLOCKED_BY_PREREQUISITES",
+    "release_eligibility": "NOT_ELIGIBLE"
+  },
+  "schema_id": "kt.operator.product_claim_compiler.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "WS19 product claims prove release readiness, threshold-root acceptance, current-head capability, or campaign completion."
+  ]
+}
