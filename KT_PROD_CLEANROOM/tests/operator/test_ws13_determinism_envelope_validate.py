@@ -241,11 +241,11 @@ def _seed_ws13_repo(tmp_path: Path) -> str:
     return subject_head
 
 
-def _rewrite_ci_probe(path: Path) -> None:
+def _rewrite_probe(path: Path, *, platform_value: str, python_major_minor: str, python_version: str) -> None:
     payload = json.loads(path.read_text(encoding="utf-8"))
-    payload["platform"] = "Linux-6.8.0-github-actions"
-    payload["python_major_minor"] = "3.11"
-    payload["python_version"] = "3.11.11"
+    payload["platform"] = platform_value
+    payload["python_major_minor"] = python_major_minor
+    payload["python_version"] = python_version
     _write_json(path, payload)
 
 
@@ -260,6 +260,12 @@ def test_emit_ws13_pass_when_local_and_ci_subject_sets_match(tmp_path: Path, mon
         environment_provenance="local_user_managed",
         live_validation_index_rel=f"{LOCAL_DIR_REL}/live_validation_index.local.json",
     )
+    _rewrite_probe(
+        tmp_path / LOCAL_DIR_REL / PROBE_FILENAME,
+        platform_value="Windows-10-10.0.26200-SP0",
+        python_major_minor="3.10",
+        python_version="3.10.11",
+    )
     emit_environment_bundle(
         root=tmp_path,
         out_dir_rel=CI_DIR_REL,
@@ -268,7 +274,12 @@ def test_emit_ws13_pass_when_local_and_ci_subject_sets_match(tmp_path: Path, mon
         environment_provenance="github_actions",
         live_validation_index_rel=f"{CI_DIR_REL}/live_validation_index.ci.json",
     )
-    _rewrite_ci_probe(tmp_path / CI_DIR_REL / PROBE_FILENAME)
+    _rewrite_probe(
+        tmp_path / CI_DIR_REL / PROBE_FILENAME,
+        platform_value="Linux-6.8.0-github-actions",
+        python_major_minor="3.11",
+        python_version="3.11.11",
+    )
 
     receipt = emit_ws13_determinism_envelope(root=tmp_path)
     assert receipt["status"] == "PASS"
@@ -293,6 +304,12 @@ def test_emit_ws13_partial_when_class_b_canonical_hashes_drift(tmp_path: Path, m
         environment_provenance="local_user_managed",
         live_validation_index_rel=f"{LOCAL_DIR_REL}/live_validation_index.local.json",
     )
+    _rewrite_probe(
+        tmp_path / LOCAL_DIR_REL / PROBE_FILENAME,
+        platform_value="Windows-10-10.0.26200-SP0",
+        python_major_minor="3.10",
+        python_version="3.10.11",
+    )
     ci_index = json.loads((tmp_path / f"{CI_DIR_REL}/live_validation_index.ci.json").read_text(encoding="utf-8"))
     ci_index["checks"][0]["summary"] = "different summary"
     _write_json(tmp_path / f"{CI_DIR_REL}/live_validation_index.ci.json", ci_index)
@@ -304,7 +321,12 @@ def test_emit_ws13_partial_when_class_b_canonical_hashes_drift(tmp_path: Path, m
         environment_provenance="github_actions",
         live_validation_index_rel=f"{CI_DIR_REL}/live_validation_index.ci.json",
     )
-    _rewrite_ci_probe(tmp_path / CI_DIR_REL / PROBE_FILENAME)
+    _rewrite_probe(
+        tmp_path / CI_DIR_REL / PROBE_FILENAME,
+        platform_value="Linux-6.8.0-github-actions",
+        python_major_minor="3.11",
+        python_version="3.11.11",
+    )
 
     receipt = emit_ws13_determinism_envelope(root=tmp_path)
     assert receipt["status"] == "PARTIAL"
@@ -322,6 +344,12 @@ def test_emit_ws13_fails_closed_when_required_ci_bundle_is_missing(tmp_path: Pat
         environment_class="local_windows",
         environment_provenance="local_user_managed",
         live_validation_index_rel=f"{LOCAL_DIR_REL}/live_validation_index.local.json",
+    )
+    _rewrite_probe(
+        tmp_path / LOCAL_DIR_REL / PROBE_FILENAME,
+        platform_value="Windows-10-10.0.26200-SP0",
+        python_major_minor="3.10",
+        python_version="3.10.11",
     )
     with pytest.raises(RuntimeError, match="missing required WS13 input"):
         emit_ws13_determinism_envelope(root=tmp_path)
