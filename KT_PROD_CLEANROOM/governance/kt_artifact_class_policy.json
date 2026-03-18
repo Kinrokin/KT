@@ -1,0 +1,74 @@
+{
+  "classes": [
+    {
+      "class_id": "CLASS_A",
+      "comparison_mode": "RAW_SHA256_BYTE_IDENTITY",
+      "definition": "Same declared input must yield byte-identical bytes and identical SHA-256 across all declared environments.",
+      "failure_mode": "FAIL_CLOSED_ON_ANY_HASH_MISMATCH",
+      "surfaces": [
+        {
+          "path": "KT_PROD_CLEANROOM/governance/kt_artifact_class_policy.json",
+          "surface_id": "artifact_class_policy"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json",
+          "surface_id": "determinism_envelope_policy"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+          "surface_id": "bounded_public_verifier_manifest"
+        }
+      ]
+    },
+    {
+      "canonicalization_profile_id": "live_validation_index_v1",
+      "class_id": "CLASS_B",
+      "comparison_mode": "CANONICAL_EQUIVALENCE_SHA256",
+      "definition": "Source bytes may differ across environments, but a declared machine canonicalization must reduce them to identical canonical bytes and identical SHA-256.",
+      "failure_mode": "FAIL_CLOSED_ON_ANY_CANONICAL_HASH_MISMATCH",
+      "surfaces": [
+        {
+          "path_role": "environment_bundle/live_validation_index",
+          "surface_id": "current_truth_barrier_live_validation_index"
+        }
+      ]
+    },
+    {
+      "class_id": "CLASS_C",
+      "comparison_mode": "DECLARED_NONDETERMINISTIC",
+      "definition": "Surface is intentionally excluded from reproducibility equality because it embeds transparency-log, workflow-run, human-ceremony, or other bounded non-deterministic material.",
+      "failure_mode": "MUST_NOT_BEOVERREAD_AS_REPRODUCIBLE",
+      "surfaces": [
+        {
+          "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json",
+          "reason": "GitHub workflow run ids, attempts, URLs, and timing metadata are externally assigned.",
+          "surface_id": "current_truth_barrier_remote_diagnostic"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+          "reason": "Current-head keyless receipt binds a specific workflow run and transparency event.",
+          "surface_id": "current_keyless_execution_receipt"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+          "reason": "Sigstore bundle and Rekor inclusion carry signed timestamps and transparency-log envelopes.",
+          "surface_id": "current_keyless_sigstore_bundle"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json",
+          "reason": "Final WS13 receipt is generated after evidence import and may lawfully record wall-clock issuance time.",
+          "surface_id": "ws13_final_receipt"
+        }
+      ]
+    }
+  ],
+  "policy_id": "KT_WS13_ARTIFACT_CLASS_POLICY_V1",
+  "schema_id": "kt.governance.artifact_class_policy.v1",
+  "scope": "Bounded WS13 determinism proof only. Class assignments do not widen release readiness, verifier acceptance, or non-declared artifact surfaces.",
+  "status": "ACTIVE",
+  "stronger_claim_not_made": [
+    "All KT artifacts are now globally reproducible",
+    "CLASS_C surfaces are semantically downgraded or unimportant",
+    "WS13 proves release readiness or campaign completion"
+  ]
+}
