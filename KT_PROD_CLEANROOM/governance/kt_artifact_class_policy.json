@@ -13,10 +13,6 @@
         {
           "path": "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json",
           "surface_id": "determinism_envelope_policy"
-        },
-        {
-          "path": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
-          "surface_id": "bounded_public_verifier_manifest"
         }
       ]
     },
@@ -39,6 +35,16 @@
       "definition": "Surface is intentionally excluded from reproducibility equality because it embeds transparency-log, workflow-run, human-ceremony, or other bounded non-deterministic material.",
       "failure_mode": "MUST_NOT_BEOVERREAD_AS_REPRODUCIBLE",
       "surfaces": [
+        {
+          "path": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+          "reason": "The active verifier manifest is rewritten by truth-surface synchronization and embeds head-bound governance/truth state plus generated_utc; externally verifiable, but not claimed byte-identical across local and CI.",
+          "surface_id": "bounded_public_verifier_manifest_runtime_surface"
+        },
+        {
+          "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+          "reason": "Imported current-head CI signed-surface copy is carried forward as bounded verification evidence, not as a reproducible local/CI byte-identity target.",
+          "surface_id": "current_keyless_signed_public_verifier_manifest_copy"
+        },
         {
           "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json",
           "reason": "GitHub workflow run ids, attempts, URLs, and timing metadata are externally assigned.",

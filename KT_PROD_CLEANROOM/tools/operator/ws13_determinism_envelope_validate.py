@@ -35,6 +35,7 @@ RECEIPT_REL = f"{REPORT_ROOT_REL}/kt_determinism_envelope_receipt.json"
 CI_TRUTH_DIAGNOSTIC_REL = f"{CI_DIR_REL}/kt_truth_barrier_remote_diagnostic.json"
 CI_KEYLESS_RECEIPT_REL = f"{CI_DIR_REL}/kt_ws11_keyless_execution_receipt.json"
 CI_KEYLESS_BUNDLE_REL = f"{CI_DIR_REL}/public_verifier_manifest.sigstore.json"
+CI_SIGNED_SURFACE_REL = f"{CI_DIR_REL}/public_verifier_manifest.json"
 
 REGISTRY_FILENAME = "kt_artifact_class_registry.json"
 ENVELOPE_FILENAME = "kt_determinism_envelope_manifest.json"
@@ -371,6 +372,7 @@ def _ci_keyless_pass(root: Path, signer_identity_policy: Dict[str, Any]) -> Tupl
     diagnostic = _load_required_json(root, CI_TRUTH_DIAGNOSTIC_REL)
     receipt = _load_required_json(root, CI_KEYLESS_RECEIPT_REL)
     bundle_path = (root / Path(CI_KEYLESS_BUNDLE_REL)).resolve()
+    signed_surface_path = (root / Path(CI_SIGNED_SURFACE_REL)).resolve()
     expected_identity = str(signer_identity_policy.get("keyless_constraints", {}).get("certificate_identity", "")).strip()
     expected_issuer = str(signer_identity_policy.get("keyless_constraints", {}).get("certificate_oidc_issuer", "")).strip()
     ok = (
@@ -380,7 +382,8 @@ def _ci_keyless_pass(root: Path, signer_identity_policy: Dict[str, Any]) -> Tupl
         and str(receipt.get("verification_status", "")).strip() == "PASS"
         and str(receipt.get("executed_signer_mode", "")).strip() == "sigstore_keyless"
         and str(receipt.get("signed_surface_path", "")).strip() == PUBLIC_VERIFIER_MANIFEST_REL
-        and str(receipt.get("signed_surface_sha256", "")).strip().lower() == file_sha256((root / Path(PUBLIC_VERIFIER_MANIFEST_REL)).resolve()).lower()
+        and signed_surface_path.exists()
+        and str(receipt.get("signed_surface_sha256", "")).strip().lower() == file_sha256(signed_surface_path).lower()
         and bundle_path.exists()
         and str(receipt.get("certificate_identity", "")).strip() == expected_identity
         and str(receipt.get("certificate_oidc_issuer", "")).strip() == expected_issuer
@@ -459,7 +462,7 @@ def build_ws13_receipt(
         _check(envelope_hashes_match, "determinism_envelope_byte_identity", "The emitted determinism envelope manifest must be byte-identical across local and CI.", [f"{LOCAL_DIR_REL}/{ENVELOPE_FILENAME}", f"{CI_DIR_REL}/{ENVELOPE_FILENAME}"]),
         _check(subject_set_hashes_match, "subject_set_byte_identity", "The emitted determinism subject set must be byte-identical across local and CI.", [f"{LOCAL_DIR_REL}/{SUBJECT_SET_FILENAME}", f"{CI_DIR_REL}/{SUBJECT_SET_FILENAME}"]),
         _check(class_b_match, "class_b_canonical_equivalence", "The CLASS_B live-validation surface must canonicalize to the same SHA-256 across local and CI.", [f"{LOCAL_DIR_REL}/live_validation_index.local.json", f"{CI_DIR_REL}/live_validation_index.ci.json"]),
-        _check(ci_keyless_ok, "current_head_ci_keyless_carry_forward", "Current-head CI evidence must still prove a real keyless path and bound public verifier manifest.", [CI_TRUTH_DIAGNOSTIC_REL, CI_KEYLESS_RECEIPT_REL, CI_KEYLESS_BUNDLE_REL, PUBLIC_VERIFIER_MANIFEST_REL]),
+        _check(ci_keyless_ok, "current_head_ci_keyless_carry_forward", "Current-head CI evidence must still prove a real keyless path and bind the imported signed copy of the declared public verifier manifest surface.", [CI_TRUTH_DIAGNOSTIC_REL, CI_KEYLESS_RECEIPT_REL, CI_KEYLESS_BUNDLE_REL, CI_SIGNED_SURFACE_REL]),
     ]
     return {
         "artifact_class_assignments": {
@@ -495,12 +498,14 @@ def build_ws13_receipt(
             "keyless_execution_receipt_ref": CI_KEYLESS_RECEIPT_REL,
             "keyless_sigstore_bundle_ref": CI_KEYLESS_BUNDLE_REL,
             "run_id": str(ci_keyless_receipt.get("run_id", "")).strip(),
+            "signed_surface_import_ref": CI_SIGNED_SURFACE_REL,
             "signed_surface_path": str(ci_keyless_receipt.get("signed_surface_path", "")).strip(),
+            "signed_surface_sha256": str(ci_keyless_receipt.get("signed_surface_sha256", "")).strip(),
             "truth_barrier_remote_diagnostic_ref": CI_TRUTH_DIAGNOSTIC_REL,
         },
         "limitations": [
             "WS13 PASS is bounded to the declared CLASS_A and CLASS_B surfaces only.",
-            "CLASS_C surfaces remain intentionally non-reproducible and must not be overread as drift failures.",
+            "CLASS_C surfaces remain intentionally non-reproducible and must not be overread as drift failures, including the current-head public verifier manifest carry-forward copy.",
             "The repo-root import fragility for package-root invocation remains visible and is not erased by WS13.",
             "WS13 PASS does not prove release readiness, verifier widening, or campaign completion.",
         ],

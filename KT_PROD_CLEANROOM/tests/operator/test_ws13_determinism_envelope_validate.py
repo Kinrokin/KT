@@ -14,6 +14,7 @@ from tools.operator.ws13_determinism_envelope_validate import (  # noqa: E402
     CI_DIR_REL,
     CI_KEYLESS_BUNDLE_REL,
     CI_KEYLESS_RECEIPT_REL,
+    CI_SIGNED_SURFACE_REL,
     CI_TRUTH_DIAGNOSTIC_REL,
     CLASS_POLICY_REL,
     ENVELOPE_POLICY_REL,
@@ -139,7 +140,6 @@ def _seed_ws13_repo(tmp_path: Path) -> str:
                     "surfaces": [
                         {"path": CLASS_POLICY_REL, "surface_id": "artifact_class_policy"},
                         {"path": ENVELOPE_POLICY_REL, "surface_id": "determinism_envelope_policy"},
-                        {"path": PUBLIC_VERIFIER_MANIFEST_REL, "surface_id": "bounded_public_verifier_manifest"},
                     ],
                 },
                 {
@@ -150,6 +150,8 @@ def _seed_ws13_repo(tmp_path: Path) -> str:
                 {
                     "class_id": "CLASS_C",
                     "surfaces": [
+                        {"path": PUBLIC_VERIFIER_MANIFEST_REL, "surface_id": "bounded_public_verifier_manifest_runtime_surface"},
+                        {"path": CI_SIGNED_SURFACE_REL, "surface_id": "current_keyless_signed_public_verifier_manifest_copy"},
                         {"path": CI_TRUTH_DIAGNOSTIC_REL, "surface_id": "current_truth_barrier_remote_diagnostic"},
                         {"path": CI_KEYLESS_RECEIPT_REL, "surface_id": "current_keyless_execution_receipt"},
                         {"path": CI_KEYLESS_BUNDLE_REL, "surface_id": "current_keyless_sigstore_bundle"},
@@ -221,6 +223,7 @@ def _seed_ws13_repo(tmp_path: Path) -> str:
     bundle_path.parent.mkdir(parents=True, exist_ok=True)
     bundle_path.write_text("{\"bundle\":\"ok\"}\n", encoding="utf-8")
     manifest_sha = hashlib.sha256((tmp_path / PUBLIC_VERIFIER_MANIFEST_REL).read_bytes()).hexdigest()
+    _write_json(tmp_path / CI_SIGNED_SURFACE_REL, json.loads((tmp_path / PUBLIC_VERIFIER_MANIFEST_REL).read_text(encoding="utf-8")))
     bundle_sha = hashlib.sha256(bundle_path.read_bytes()).hexdigest()
     _write_json(
         tmp_path / CI_KEYLESS_RECEIPT_REL,

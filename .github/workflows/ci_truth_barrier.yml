@@ -157,6 +157,7 @@ jobs:
           set -euo pipefail
           mkdir -p KT_PROD_CLEANROOM/reports/ws13_determinism/ci
           cp KT_PROD_CLEANROOM/reports/live_validation_index.ci.json KT_PROD_CLEANROOM/reports/ws13_determinism/ci/live_validation_index.ci.json
+          cp KT_PROD_CLEANROOM/reports/public_verifier_manifest.json KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json
           cp KT_PROD_CLEANROOM/reports/ws11_keyless/kt_truth_barrier_remote_diagnostic.json KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json
           cp KT_PROD_CLEANROOM/reports/ws11_keyless/kt_ws11_keyless_execution_receipt.json KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json
           cp KT_PROD_CLEANROOM/reports/ws11_keyless/public_verifier_manifest.sigstore.json KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json
