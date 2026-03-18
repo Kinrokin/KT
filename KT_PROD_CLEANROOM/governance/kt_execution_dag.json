@@ -1,9 +1,9 @@
 {
-  "current_node": "WS17A_EXTERNAL_CONFIRMATION_ASSURANCE",
-  "current_repo_head": "58ab14cd012d59ef7cb3e83313600fde826894ad",
+  "current_node": "WS17B_EXTERNAL_CONFIRMATION_CAPABILITY",
+  "current_repo_head": "30445f32e188f1355c99c66ff8faf3079d89498a",
   "dag_id": "KT_SOVEREIGN_EXECUTION_DAG_V1_20260317",
-  "generated_utc": "2026-03-18T09:18:43Z",
-  "next_lawful_workstream": "WS17B_EXTERNAL_CONFIRMATION_CAPABILITY",
+  "generated_utc": "2026-03-18T14:39:13.754523Z",
+  "next_lawful_workstream": "WS18_RELEASE_CEREMONY_AND_FINAL_READJUDICATION",
   "no_progress_without_proof": true,
   "nodes": [
     {
@@ -97,12 +97,13 @@
       "unlock_basis": "WS16 PASS"
     },
     {
+      "claim_boundary": "WS17B PASS proves only one outsider-verifiable capability replay of the historical bounded frontier/readjudication bundle on subject head b4789a5. It does not upgrade that historical audited target into current-head capability, does not widen verifier coverage, and does not prove release readiness, release ceremony execution, or campaign completion.",
       "depends_on": [
         "WS16_TRUST_ASSUMPTIONS_TEVV_DATASET_PINNING_AND_COMPARATOR_REGISTRY"
       ],
       "id": "WS17B_EXTERNAL_CONFIRMATION_CAPABILITY",
-      "ratification_checkpoint": "external_capability_receipt",
-      "status": "UNLOCKED",
+      "ratification_checkpoint": "kt_external_capability_confirmation_receipt.json",
+      "status": "PASS",
       "unlock_basis": "WS16 PASS"
     },
     {
@@ -112,7 +113,7 @@
       ],
       "id": "WS18_RELEASE_CEREMONY_AND_FINAL_READJUDICATION",
       "ratification_checkpoint": "final_readjudication_receipt",
-      "status": "LOCKED_PENDING_WS17B_PASS"
+      "status": "UNLOCKED"
     },
     {
       "depends_on": [
@@ -125,7 +126,7 @@
   ],
   "schema_id": "kt.governance.execution_dag.v1",
   "semantic_boundary": {
-    "lawful_current_claim": "WS17A proves one secret-free outsider-verifiable assurance replay for the bounded imported current public_verifier_manifest surface only. It does not prove external capability confirmation, broader verifier coverage, threshold-root acceptance, release readiness, or campaign completion.",
+    "lawful_current_claim": "WS17B proves one outsider-verifiable capability replay of the historical bounded frontier/readjudication bundle on subject head b4789a5 only. It does not upgrade that historical audited target into current-head capability, does not widen verifier coverage, and does not prove release readiness, release ceremony execution, or campaign completion.",
     "stronger_claim_not_made": [
       "Threshold-root verifier acceptance is active",
       "Release readiness is proven",
@@ -134,7 +135,10 @@
       "WS17A constitutes capability confirmation.",
       "Verifier coverage is broader than the bounded imported public_verifier_manifest surface.",
       "Release readiness is proven.",
-      "Campaign completion is proven."
+      "Campaign completion is proven.",
+      "WS17B upgrades the historical audited target into current-head capability.",
+      "Verifier coverage is broader than the already-bounded imported surfaces.",
+      "Release ceremony execution is proven."
     ],
     "ws10_pass_required_before_ws11": true,
     "ws9_frozen_locally": true
