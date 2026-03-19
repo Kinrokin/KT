@@ -16,6 +16,7 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     BLOCKERS_V2,
     BOOTSTRAP_RECEIPT,
     CHILD_DAG,
+    CURRENT_HEAD_CAPABILITY_MATRIX,
     CROSS_HOST_RECEIPT,
     DEPENDENCY_VALIDATION,
     DRIFT_RECEIPT,
@@ -26,11 +27,14 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     PARENT_DAG,
     PARENT_FINAL,
     PARENT_PRODUCT,
+    PHASE_F06,
     PHASE_F03,
     PHASE_F04,
     PHASE_F05,
     PHASE_RUNTIME,
     PHASE_TRUST,
+    ORGAN_ELEVATION_RECEIPT,
+    ORGAN_PROMOTION_MATRIX,
     OUTSIDER_PATH_RECEIPT,
     OUTSIDER_TEST_REL,
     OUTSIDER_TOOL_REL,
@@ -38,6 +42,7 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     PROOF_SUPERSEDE,
     PROOF_V2,
     RELEASE,
+    REGRESSION_MATRIX,
     RUNTIME_MATRIX,
     RUNTIME_RECEIPT,
     SINGLE_REALITY,
@@ -308,7 +313,7 @@ def _seed_repo(tmp_path: Path) -> str:
     return _commit_all(tmp_path, "seed repo evidence")
 
 
-def test_child_campaign_f03_passes_with_declared_proof_surfaces(tmp_path: Path) -> None:
+def test_child_campaign_f05_passes_with_bounded_runtime_truth_and_promotion_matrix(tmp_path: Path) -> None:
     head = _seed_repo(tmp_path)
     summary = emit_follow_on_campaign_v16(tmp_path)
     assert summary["status"] == "ACTIVE"
@@ -317,7 +322,8 @@ def test_child_campaign_f03_passes_with_declared_proof_surfaces(tmp_path: Path) 
     assert summary["phase_results"][PHASE_TRUST] == "PASS"
     assert summary["phase_results"][PHASE_F03] == "PASS"
     assert summary["phase_results"][PHASE_F04] == "PASS"
-    assert summary["next_lawful_phase"] == PHASE_F05
+    assert summary["phase_results"][PHASE_F05] == "PASS"
+    assert summary["next_lawful_phase"] == PHASE_F06
 
     runtime = json.loads((tmp_path / RUNTIME_RECEIPT).read_text(encoding="utf-8"))
     trust = json.loads((tmp_path / TRUST_RECEIPT).read_text(encoding="utf-8"))
@@ -331,6 +337,10 @@ def test_child_campaign_f03_passes_with_declared_proof_surfaces(tmp_path: Path) 
     adjudication = json.loads((tmp_path / ADJUDICATION_PACKET).read_text(encoding="utf-8"))
     split = json.loads((tmp_path / ADJUDICATION_SPLIT_RECEIPT).read_text(encoding="utf-8"))
     outsider = json.loads((tmp_path / OUTSIDER_PATH_RECEIPT).read_text(encoding="utf-8"))
+    capability_matrix = json.loads((tmp_path / CURRENT_HEAD_CAPABILITY_MATRIX).read_text(encoding="utf-8"))
+    promotion_matrix = json.loads((tmp_path / ORGAN_PROMOTION_MATRIX).read_text(encoding="utf-8"))
+    elevation = json.loads((tmp_path / ORGAN_ELEVATION_RECEIPT).read_text(encoding="utf-8"))
+    regression = json.loads((tmp_path / REGRESSION_MATRIX).read_text(encoding="utf-8"))
     assert runtime["status"] == "PASS"
     assert trust["status"] == "PASS"
     assert pipeline["status"] == "PASS"
@@ -341,11 +351,18 @@ def test_child_campaign_f03_passes_with_declared_proof_surfaces(tmp_path: Path) 
     assert adjudication["status"] == "PASS"
     assert split["status"] == "PASS"
     assert outsider["status"] == "PASS"
+    assert capability_matrix["status"] == "PASS"
+    assert promotion_matrix["status"] == "PASS"
+    assert elevation["status"] == "PASS"
+    assert regression["status"] == "PASS"
     assert bench["coverage_percent"] >= 50.0
-    assert state["next_lawful_transition"] == PHASE_F05
+    assert state["next_lawful_transition"] == PHASE_F06
     assert "threshold_root_verifier_acceptance_inactive" not in state["open_blockers"]
     assert "verifier_coverage_not_widened_beyond_bounded_surfaces" not in state["open_blockers"]
     assert state["reproducibility_status"].startswith("DECLARED_CLASS_A_CARRY_FORWARD_CROSS_HOST_PROVEN")
+    assert state["current_head_receipt_or_blocker_coverage_percent"] == 100.0
+    assert any(row["surface_id"] == "openclaw_labor_organ" and row["current_head_receipt_status"] == "BLOCKED" for row in capability_matrix["rows"])
+    assert any(row["surface_id"] == "adapter_layer" and "STUBBED_SURFACE" in row["promotion_blockers"] for row in promotion_matrix["rows"])
 
     for rel in [
         CHILD_DAG,
@@ -366,6 +383,10 @@ def test_child_campaign_f03_passes_with_declared_proof_surfaces(tmp_path: Path) 
         VERIFIER_V2_MANIFEST,
         VERIFIER_V2_VSA,
         OUTSIDER_PATH_RECEIPT,
+        CURRENT_HEAD_CAPABILITY_MATRIX,
+        ORGAN_PROMOTION_MATRIX,
+        ORGAN_ELEVATION_RECEIPT,
+        REGRESSION_MATRIX,
     ]:
         assert (tmp_path / rel).exists()
 
@@ -426,3 +447,19 @@ def test_child_campaign_f04_blocks_if_outsider_runtime_source_missing(tmp_path: 
     assert summary["phase_results"][PHASE_F04] == "BLOCKED"
     assert summary["next_lawful_phase"] == PHASE_F04
     assert split["status"] == "BLOCKED"
+
+
+def test_child_campaign_f05_blocks_if_bounded_runtime_receipt_disappears(tmp_path: Path) -> None:
+    _seed_repo(tmp_path)
+    (tmp_path / "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json").unlink()
+    _commit_all(tmp_path, "remove paradox bounded receipt")
+
+    summary = emit_follow_on_campaign_v16(tmp_path)
+    elevation = json.loads((tmp_path / ORGAN_ELEVATION_RECEIPT).read_text(encoding="utf-8"))
+    promotion = json.loads((tmp_path / ORGAN_PROMOTION_MATRIX).read_text(encoding="utf-8"))
+    paradox_row = next(row for row in promotion["rows"] if row["surface_id"] == "paradox")
+    assert summary["phase_results"][PHASE_F04] == "PASS"
+    assert summary["phase_results"][PHASE_F05] == "BLOCKED"
+    assert summary["next_lawful_phase"] == PHASE_F05
+    assert elevation["status"] == "BLOCKED"
+    assert "NO_CURRENT_HEAD_RECEIPT_BACKING" in paradox_row["promotion_blockers"]

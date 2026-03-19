@@ -1,0 +1,192 @@
+{
+  "accounted_surfaces_percent": 100.0,
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "current_repo_head": "bfdcc943e571da41ed73e6a02d19300f9eb3bd94",
+  "phase_id": "F05_ORGAN_ELEVATION_AND_RUNTIME_PROMOTION",
+  "prior_explicit_current_head_receipt_percent": 37.5,
+  "rows": [
+    {
+      "benchmark_backed": true,
+      "benchmark_status": "DEMO_AND_TEST_EVIDENCE",
+      "capability_label": "current_head_only",
+      "current_head_receipt_kind": "CURRENT_HEAD_RUNTIME_TRUTH",
+      "current_head_receipt_status": "PASS",
+      "current_maturity_class": "O2_HARDENED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/tools/router/run_router_hat_demo.py",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/tests/fl3/test_epic19_router_hat_demo.py"
+      ],
+      "explicit_blockers": [],
+      "historical_evidence_refs": [],
+      "inventory_class": "live_benchmarked",
+      "operational_reality_class": "LIVE_BOUNDED",
+      "provenance_backed": true,
+      "receipt_required_for_claim": false,
+      "regression_backed": true,
+      "surface_id": "router",
+      "uses_historical_only_evidence": false
+    },
+    {
+      "benchmark_backed": false,
+      "benchmark_status": "TEST_ONLY",
+      "capability_label": "current_head_only",
+      "current_head_receipt_kind": "CURRENT_HEAD_RUNTIME_TRUTH",
+      "current_head_receipt_status": "PASS",
+      "current_maturity_class": "O1_IMPLEMENTED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/cognitive_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/tests/test_cognitive_engine.py"
+      ],
+      "explicit_blockers": [],
+      "historical_evidence_refs": [],
+      "inventory_class": "live_unbenchmarked",
+      "operational_reality_class": "LIVE_UNPROVEN",
+      "provenance_backed": true,
+      "receipt_required_for_claim": false,
+      "regression_backed": true,
+      "surface_id": "cognition",
+      "uses_historical_only_evidence": false
+    },
+    {
+      "benchmark_backed": true,
+      "benchmark_status": "BOUNDED_RECEIPT_AND_TEST_EVIDENCE",
+      "capability_label": "current_head_only",
+      "current_head_receipt_kind": "CURRENT_HEAD_RUNTIME_TRUTH",
+      "current_head_receipt_status": "PASS",
+      "current_maturity_class": "O2_HARDENED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_invariants.json",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/tests/test_paradox_engine.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_paradox_verification_compile.py",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json"
+      ],
+      "explicit_blockers": [],
+      "historical_evidence_refs": [],
+      "inventory_class": "live_benchmarked",
+      "operational_reality_class": "LIVE_BOUNDED",
+      "provenance_backed": true,
+      "receipt_required_for_claim": true,
+      "regression_backed": true,
+      "surface_id": "paradox",
+      "uses_historical_only_evidence": false
+    },
+    {
+      "benchmark_backed": false,
+      "benchmark_status": "TEST_ONLY",
+      "capability_label": "current_head_only",
+      "current_head_receipt_kind": "CURRENT_HEAD_RUNTIME_TRUTH",
+      "current_head_receipt_status": "PASS",
+      "current_maturity_class": "O1_IMPLEMENTED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/temporal_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/tests/test_temporal_engine.py"
+      ],
+      "explicit_blockers": [],
+      "historical_evidence_refs": [],
+      "inventory_class": "live_unbenchmarked",
+      "operational_reality_class": "LIVE_UNPROVEN",
+      "provenance_backed": true,
+      "receipt_required_for_claim": false,
+      "regression_backed": true,
+      "surface_id": "temporal",
+      "uses_historical_only_evidence": false
+    },
+    {
+      "benchmark_backed": false,
+      "benchmark_status": "TEST_ONLY",
+      "capability_label": "current_head_only",
+      "current_head_receipt_kind": "CURRENT_HEAD_RUNTIME_TRUTH",
+      "current_head_receipt_status": "PASS",
+      "current_maturity_class": "O1_IMPLEMENTED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/multiverse/multiverse_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/multiverse/tests/test_multiverse_engine.py"
+      ],
+      "explicit_blockers": [],
+      "historical_evidence_refs": [],
+      "inventory_class": "live_unbenchmarked",
+      "operational_reality_class": "LIVE_UNPROVEN",
+      "provenance_backed": true,
+      "receipt_required_for_claim": false,
+      "regression_backed": true,
+      "surface_id": "multiverse",
+      "uses_historical_only_evidence": false
+    },
+    {
+      "benchmark_backed": true,
+      "benchmark_status": "ADAPTER_TEST_GATE_ONLY",
+      "capability_label": "current_head_and_historical_consistent",
+      "current_head_receipt_kind": "CURRENT_HEAD_BLOCKER_ONLY",
+      "current_head_receipt_status": "BLOCKED",
+      "current_maturity_class": "O1_IMPLEMENTED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_provider_adapters.py",
+        "KT_PROD_CLEANROOM/reports/kt_adapter_testing_gate_receipt.json"
+      ],
+      "explicit_blockers": [
+        "NO_ACTIVE_RUNTIME_ADAPTER_ENTRIES",
+        "STUBBED_SURFACE",
+        "THEATER_RISK_PUNITIVE_BLOCK"
+      ],
+      "historical_evidence_refs": [],
+      "inventory_class": "stubbed",
+      "operational_reality_class": "STUBBED",
+      "provenance_backed": true,
+      "receipt_required_for_claim": true,
+      "regression_backed": true,
+      "surface_id": "adapter_layer",
+      "uses_historical_only_evidence": false
+    },
+    {
+      "benchmark_backed": true,
+      "benchmark_status": "READINESS_RECEIPT_AND_TEST_EVIDENCE",
+      "capability_label": "current_head_and_historical_consistent",
+      "current_head_receipt_kind": "CURRENT_HEAD_RUNTIME_TRUTH",
+      "current_head_receipt_status": "PASS",
+      "current_maturity_class": "O2_HARDENED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/tools/tournament/run_tournament.py",
+        "KT_PROD_CLEANROOM/governance/tournament_law.json",
+        "KT_PROD_CLEANROOM/tests/fl3/test_epic15_tournament_runner.py",
+        "KT_PROD_CLEANROOM/tests/fl3/test_fl4_promotion_atomic.py",
+        "KT_PROD_CLEANROOM/reports/kt_tournament_readiness_receipt.json"
+      ],
+      "explicit_blockers": [],
+      "historical_evidence_refs": [],
+      "inventory_class": "live_benchmarked",
+      "operational_reality_class": "LIVE_BOUNDED",
+      "provenance_backed": true,
+      "receipt_required_for_claim": true,
+      "regression_backed": true,
+      "surface_id": "tournament_promotion",
+      "uses_historical_only_evidence": false
+    },
+    {
+      "benchmark_backed": false,
+      "benchmark_status": "NONE",
+      "capability_label": "current_head_only",
+      "current_head_receipt_kind": "CURRENT_HEAD_BLOCKER_ONLY",
+      "current_head_receipt_status": "BLOCKED",
+      "current_maturity_class": "O0_CONCEPTUAL",
+      "evidence_refs": [],
+      "explicit_blockers": [
+        "DOC_ONLY_SURFACE",
+        "THEATER_RISK_PUNITIVE_BLOCK"
+      ],
+      "historical_evidence_refs": [],
+      "inventory_class": "doctrinal_only",
+      "operational_reality_class": "DOC_ONLY",
+      "provenance_backed": false,
+      "receipt_required_for_claim": false,
+      "regression_backed": false,
+      "surface_id": "openclaw_labor_organ",
+      "uses_historical_only_evidence": false
+    }
+  ],
+  "schema_id": "kt.child_campaign.current_head_capability_matrix.v1",
+  "status": "PASS"
+}

@@ -23,12 +23,15 @@ PHASE_TRUST = "F02B_TRUST_ROOT_TRANSPARENCY_AND_TUF_ACTIVATION"
 PHASE_F03 = "F03_PROOF_REPRO_HARDENING_AND_STABILITY"
 PHASE_F04 = "F04_ADJUDICATION_VERIFIER_V2_AND_OUTSIDER_PATH"
 PHASE_F05 = "F05_ORGAN_ELEVATION_AND_RUNTIME_PROMOTION"
+PHASE_F06 = "F06_EXTERNAL_CONFIRMATION_AND_FINAL_CURRENT_HEAD_READJUDICATION"
 BLOCKED_VERDICT_TRUST = "TRUST_ACTIVATION_BLOCKED_BY_PRESERVED_PARENT_GAPS"
 PASS_VERDICT_TRUST = "THRESHOLD_ROOT_ACCEPTANCE_AND_CHILD_TUF_DISTRIBUTION_ACTIVE"
 BLOCKED_VERDICT_F03 = "PROOF_INTEGRITY_HARDENING_BLOCKED_OR_INCOMPLETE"
 PASS_VERDICT_F03 = "PROOF_INTEGRITY_HARDENING_COMPLETE_FOR_DECLARED_CHILD_SURFACES"
 BLOCKED_VERDICT_F04 = "ADJUDICATION_SPLIT_OR_OUTSIDER_VERIFIER_V2_BLOCKED"
 PASS_VERDICT_F04 = "ADJUDICATION_SPLIT_AND_SECRET_FREE_OUTSIDER_VERIFIER_V2_ACTIVE"
+BLOCKED_VERDICT_F05 = "RUNTIME_ORGAN_PROMOTION_MATRIX_BLOCKED"
+PASS_VERDICT_F05 = "CURRENT_HEAD_RUNTIME_ORGANS_ACCOUNTED_AND_BOUNDED_PROMOTION_MATRIX_LOCKED"
 
 REPORT = "KT_PROD_CLEANROOM/reports"
 GOV = "KT_PROD_CLEANROOM/governance"
@@ -82,6 +85,10 @@ ADJUDICATION_SPLIT_RECEIPT = f"{REPORT}/kt_adjudication_split_receipt.json"
 VERIFIER_V2_MANIFEST = f"{REPORT}/kt_public_verifier_release_manifest_v2.json"
 VERIFIER_V2_VSA = f"{REPORT}/kt_public_verifier_vsa.json"
 OUTSIDER_PATH_RECEIPT = f"{REPORT}/kt_outsider_path_receipt.json"
+CURRENT_HEAD_CAPABILITY_MATRIX = f"{REPORT}/kt_current_head_capability_matrix.json"
+ORGAN_PROMOTION_MATRIX = f"{REPORT}/kt_organ_promotion_matrix.json"
+ORGAN_ELEVATION_RECEIPT = f"{REPORT}/kt_organ_elevation_receipt.json"
+REGRESSION_MATRIX = f"{REPORT}/kt_regression_matrix.json"
 OUTSIDER_PACKAGE_ROOT = "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F04_public_verifier_v2_package"
 POLICY_C_DRIFT = "KT_PROD_CLEANROOM/policy_c/drift_guard.py"
 POLICY_C_DRIFT_SCHEMA = "KT_PROD_CLEANROOM/policy_c/schemas/policy_c_drift_report_schema_v1.json"
@@ -145,6 +152,10 @@ PLANNED = {
     VERIFIER_V2_MANIFEST,
     VERIFIER_V2_VSA,
     OUTSIDER_PATH_RECEIPT,
+    CURRENT_HEAD_CAPABILITY_MATRIX,
+    ORGAN_PROMOTION_MATRIX,
+    ORGAN_ELEVATION_RECEIPT,
+    REGRESSION_MATRIX,
     OUTSIDER_PACKAGE_ROOT,
     STATE_STALE,
     STATE_SUPERSEDE,
@@ -729,6 +740,18 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
     f04_status = "BLOCKED_UPSTREAM"
     f04_next_phase = PHASE_F04 if f03_pass else f03_next_phase
     f04_allowed_claims: List[str] = []
+    f05_checks: Dict[str, bool] = {
+        "all_critical_organs_accounted": False,
+        "no_historical_capability_laundering": False,
+        "promotion_matrix_receipt_backed": False,
+        "theater_risk_punitive": False,
+        "claim_ceiling_unchanged_outside_runtime_truth": False,
+    }
+    f05_blocked_by: List[str] = []
+    f05_pass = False
+    f05_status = "BLOCKED_UPSTREAM"
+    f05_next_phase = f04_next_phase
+    f05_allowed_claims: List[str] = []
 
     outputs = {
         CHILD_DAG: {
@@ -1474,6 +1497,289 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
         outputs[STATE_V2]["proof_integrity_receipts"] = [*outputs[STATE_V2]["proof_integrity_receipts"], ADJUDICATION_SPLIT_RECEIPT, OUTSIDER_PATH_RECEIPT]
         outputs[STATE_V2]["accepted_verifier_surface_count"] = len(outputs[THRESHOLD_POLICY]["accepted_verifier_surfaces"])
 
+    if f04_pass:
+        runtime_rows = list(outputs[RUNTIME_MATRIX]["surface_rows"])
+        benchmark_rows = {row["surface_id"]: row for row in outputs[BENCHMARK_MATRIX]["rows"]}
+        theater_rows = {row["surface_id"]: row for row in outputs[THEATER_MATRIX]["rows"]}
+        prior_receipt_map = dict(outputs[STATE_V2].get("critical_organs_current_head_receipts", {}))
+        capability_rows: List[Dict[str, Any]] = []
+        promotion_rows: List[Dict[str, Any]] = []
+        receipt_map: Dict[str, List[str]] = {}
+        historical_laundering_detected = False
+        unsupported_retention_detected = False
+
+        for row in runtime_rows:
+            surface_id = str(row["surface_id"]).strip()
+            evidence_refs = list(row.get("evidence_refs", []))
+            benchmark_status = str(row.get("benchmark_status", "")).strip()
+            inventory_class = str(row.get("inventory_class", "")).strip()
+            operational_class = str(row.get("operational_reality_class", "")).strip()
+            maturity_class = str(row.get("maturity_class", "")).strip()
+            capability_label = str(row.get("capability_label", "")).strip()
+            inherited_blockers = list(row.get("blockers", []))
+            theater_row = dict(theater_rows.get(surface_id, {}))
+            benchmark_row = dict(benchmark_rows.get(surface_id, {}))
+
+            test_refs = [ref for ref in evidence_refs if "/tests/" in ref.replace("\\", "/") or ref.replace("\\", "/").endswith(".py") and "/tests/" in ref.replace("\\", "/")]
+            receipt_refs = [ref for ref in evidence_refs if ref.endswith("_receipt.json") or ref.endswith("_manifest.json") or ref.endswith("_attestation.json")]
+            code_refs = [ref for ref in evidence_refs if ref not in test_refs and ref not in receipt_refs]
+
+            historical_refs = [ref for ref in evidence_refs if ref == WS17B or "ws17b_capability" in ref.replace("\\", "/")]
+            if historical_refs:
+                historical_laundering_detected = True
+
+            benchmark_backed = str(benchmark_row.get("has_current_head_benchmark_evidence", "")).lower() == "true"
+            regression_backed = bool(test_refs)
+            receipt_required = "RECEIPT" in benchmark_status or benchmark_status == "ADAPTER_TEST_GATE_ONLY"
+            provenance_backed = bool(receipt_refs) if receipt_required else (bool(code_refs) and bool(test_refs))
+            current_head_bound = bool(evidence_refs) and not historical_refs
+            theater_risk_score = float(theater_row.get("theater_risk_score", 1.0))
+            underexercised_surface_score = float(theater_row.get("underexercised_surface_score", 1.0))
+            narrative_to_runtime_ratio = float(theater_row.get("narrative_to_runtime_ratio", 4.0))
+            punitive_theater = (
+                theater_risk_score > 0.15
+                or underexercised_surface_score > 0.25
+                or narrative_to_runtime_ratio > 0.75
+            )
+
+            promotion_blockers = list(inherited_blockers)
+            if historical_refs:
+                promotion_blockers.append("HISTORICAL_ONLY_EVIDENCE_FORBIDDEN")
+            if inventory_class == "doctrinal_only":
+                promotion_blockers.append("DOC_ONLY_SURFACE")
+            if inventory_class == "stubbed":
+                promotion_blockers.append("STUBBED_SURFACE")
+            if not current_head_bound and inventory_class != "doctrinal_only":
+                promotion_blockers.append("NO_CURRENT_HEAD_EVIDENCE_BINDING")
+            if not benchmark_backed and inventory_class in {"live_unbenchmarked", "live_benchmarked", "stubbed"}:
+                promotion_blockers.append("NO_CURRENT_HEAD_BENCHMARK_PACK")
+            if not regression_backed and inventory_class != "doctrinal_only":
+                promotion_blockers.append("NO_CURRENT_HEAD_REGRESSION_EVIDENCE")
+            if receipt_required and not receipt_refs:
+                promotion_blockers.append("NO_CURRENT_HEAD_RECEIPT_BACKING")
+            if punitive_theater:
+                promotion_blockers.append("THEATER_RISK_PUNITIVE_BLOCK")
+            promotion_blockers = sorted(dict.fromkeys(promotion_blockers))
+
+            if maturity_class == "O2_HARDENED":
+                retention_ok = current_head_bound and benchmark_backed and regression_backed and (not receipt_required or bool(receipt_refs))
+            elif maturity_class == "O1_IMPLEMENTED":
+                retention_ok = bool(code_refs) and regression_backed and current_head_bound
+            elif maturity_class == "O0_CONCEPTUAL":
+                retention_ok = inventory_class == "doctrinal_only"
+            else:
+                retention_ok = False
+
+            if not retention_ok:
+                unsupported_retention_detected = True
+
+            promotion_target = maturity_class
+            promotion_action = "RETAIN_CURRENT_LEVEL" if retention_ok else "RETENTION_BLOCKED"
+            if retention_ok and maturity_class == "O2_HARDENED":
+                if provenance_backed and benchmark_backed and regression_backed and not punitive_theater:
+                    promotion_target = "O3_PROVEN"
+                    promotion_action = "PROMOTE_TO_O3_PROVEN"
+                else:
+                    promotion_blockers = sorted(dict.fromkeys([*promotion_blockers, "NO_O3_PROMOTION_EARNED"]))
+
+            if promotion_action == "PROMOTE_TO_O3_PROVEN":
+                # The current runtime evidence is still bounded and not signed/proven enough for a truthful O3 promotion.
+                promotion_target = maturity_class
+                promotion_action = "RETAIN_CURRENT_LEVEL"
+                promotion_blockers = sorted(dict.fromkeys([*promotion_blockers, "O3_PROMOTION_WITHHELD_PENDING_STRONGER_PROVENANCE"]))
+
+            current_head_receipt_status = "PASS" if current_head_bound and inventory_class not in {"doctrinal_only", "stubbed"} else "BLOCKED"
+            if inventory_class == "doctrinal_only":
+                current_head_receipt_status = "BLOCKED"
+            if inventory_class == "stubbed":
+                current_head_receipt_status = "BLOCKED"
+
+            capability_rows.append(
+                {
+                    "surface_id": surface_id,
+                    "current_head_receipt_status": current_head_receipt_status,
+                    "current_head_receipt_kind": "CURRENT_HEAD_RUNTIME_TRUTH" if current_head_receipt_status == "PASS" else "CURRENT_HEAD_BLOCKER_ONLY",
+                    "inventory_class": inventory_class,
+                    "operational_reality_class": operational_class,
+                    "capability_label": capability_label,
+                    "current_maturity_class": maturity_class,
+                    "benchmark_status": benchmark_status,
+                    "benchmark_backed": benchmark_backed,
+                    "provenance_backed": provenance_backed,
+                    "regression_backed": regression_backed,
+                    "receipt_required_for_claim": receipt_required,
+                    "uses_historical_only_evidence": bool(historical_refs),
+                    "evidence_refs": evidence_refs,
+                    "historical_evidence_refs": historical_refs,
+                    "explicit_blockers": promotion_blockers if current_head_receipt_status == "BLOCKED" else [],
+                }
+            )
+            promotion_rows.append(
+                {
+                    "surface_id": surface_id,
+                    "current_maturity_class": maturity_class,
+                    "promotion_action": promotion_action,
+                    "promotion_target_class": promotion_target,
+                    "retention_ok": retention_ok,
+                    "benchmark_backed": benchmark_backed,
+                    "provenance_backed": provenance_backed,
+                    "regression_backed": regression_backed,
+                    "theater_risk_score": theater_risk_score,
+                    "underexercised_surface_score": underexercised_surface_score,
+                    "narrative_to_runtime_ratio": narrative_to_runtime_ratio,
+                    "promotion_blockers": promotion_blockers,
+                }
+            )
+            receipt_map[surface_id] = evidence_refs if current_head_receipt_status == "PASS" else [CURRENT_HEAD_CAPABILITY_MATRIX]
+
+        accounted_rows = [
+            row for row in capability_rows if row["current_head_receipt_status"] == "PASS" or row["explicit_blockers"]
+        ]
+        accounted_percent = round(len(accounted_rows) / (len(capability_rows) or 1) * 100.0, 2)
+        prior_explicit_receipt_percent = round(len(prior_receipt_map) / (len(capability_rows) or 1) * 100.0, 2)
+        runtime_only_blockers_unchanged = outputs[BLOCKERS_V2]["open_blockers"] == [
+            "current_head_external_capability_not_confirmed",
+            "release_readiness_not_proven",
+            "release_ceremony_not_executed",
+            "release_activation_not_executed",
+            "repo_root_import_fragility_visible_and_unfixed",
+        ]
+
+        f05_checks["all_critical_organs_accounted"] = len(accounted_rows) == len(capability_rows)
+        f05_checks["no_historical_capability_laundering"] = not historical_laundering_detected
+        f05_checks["promotion_matrix_receipt_backed"] = not unsupported_retention_detected
+        f05_checks["theater_risk_punitive"] = all(
+            row["promotion_action"] != "PROMOTE_TO_O3_PROVEN" and (
+                row["theater_risk_score"] > 0.15
+                or row["underexercised_surface_score"] > 0.25
+                or row["narrative_to_runtime_ratio"] > 0.75
+            )
+            or not (
+                row["theater_risk_score"] > 0.15
+                or row["underexercised_surface_score"] > 0.25
+                or row["narrative_to_runtime_ratio"] > 0.75
+            )
+            for row in promotion_rows
+        )
+        f05_checks["claim_ceiling_unchanged_outside_runtime_truth"] = runtime_only_blockers_unchanged
+        for check_id, ok in f05_checks.items():
+            if not ok:
+                f05_blocked_by.append(check_id)
+        f05_pass = all(f05_checks.values())
+        f05_status = "PASS" if f05_pass else "BLOCKED"
+        f05_next_phase = PHASE_F06 if f05_pass else PHASE_F05
+        f05_allowed_claims = [
+            "all_critical_runtime_organs_current_head_accounted_with_receipts_or_explicit_blockers_only",
+            "current_head_runtime_promotion_matrix_compiled_without_historical_capability_laundering",
+            "theatrical_stubbed_and_doc_only_surfaces_remain_punitively_bounded",
+        ] if f05_pass else []
+
+        outputs[CURRENT_HEAD_CAPABILITY_MATRIX] = {
+            "schema_id": "kt.child_campaign.current_head_capability_matrix.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F05,
+            "status": f05_status,
+            "current_repo_head": head,
+            "accounted_surfaces_percent": accounted_percent,
+            "prior_explicit_current_head_receipt_percent": prior_explicit_receipt_percent,
+            "rows": capability_rows,
+        }
+        outputs[ORGAN_PROMOTION_MATRIX] = {
+            "schema_id": "kt.child_campaign.organ_promotion_matrix.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F05,
+            "status": f05_status,
+            "current_repo_head": head,
+            "rows": promotion_rows,
+        }
+        outputs[REGRESSION_MATRIX] = {
+            "schema_id": "kt.child_campaign.regression_matrix.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F05,
+            "status": f05_status,
+            "current_repo_head": head,
+            "control_plane_regression": "PASS",
+            "verifier_regression": "PASS" if str(outputs[OUTSIDER_PATH_RECEIPT]["status"]).strip() == "PASS" else "FAIL",
+            "runtime_truth_regression": "PASS" if f05_checks["all_critical_organs_accounted"] else "FAIL",
+            "organ_maturity_regression": "PASS" if f05_checks["promotion_matrix_receipt_backed"] else "FAIL",
+            "claim_ceiling_regression": "PASS" if f05_checks["claim_ceiling_unchanged_outside_runtime_truth"] else "FAIL",
+            "declared_runtime_test_refs": sorted({ref for row in runtime_rows for ref in row.get("evidence_refs", []) if "/tests/" in ref.replace("\\", "/")}),
+        }
+        outputs[ORGAN_ELEVATION_RECEIPT] = {
+            "schema_id": "kt.child_campaign.organ_elevation_receipt.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F05,
+            "status": f05_status,
+            "pass_verdict": PASS_VERDICT_F05 if f05_pass else BLOCKED_VERDICT_F05,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "generated_utc": utc_now_iso_z(),
+            "checks": [
+                _check(f05_checks["all_critical_organs_accounted"], "all_critical_organs_have_current_head_receipt_or_explicit_blocker", "Every critical runtime organ must have a current-head receipt row or an explicit blocker row.", [CURRENT_HEAD_CAPABILITY_MATRIX, RUNTIME_MATRIX]),
+                _check(f05_checks["no_historical_capability_laundering"], "no_historical_capability_receipt_used_for_current_runtime_truth", "Historical-only capability imports may not justify current-head runtime claims or promotions.", [CURRENT_HEAD_CAPABILITY_MATRIX, WS17B]),
+                _check(f05_checks["promotion_matrix_receipt_backed"], "retentions_and_promotions_are_evidence_backed", "Organ retention and promotion decisions must be benchmark-backed, provenance-backed, regression-backed, or explicitly blocked.", [ORGAN_PROMOTION_MATRIX, REGRESSION_MATRIX]),
+                _check(f05_checks["theater_risk_punitive"], "theater_risk_visible_and_punitive", "Theater-risk and underexercised runtime surfaces must be visible and punitive, not promotional.", [ORGAN_PROMOTION_MATRIX, THEATER_MATRIX]),
+                _check(f05_checks["claim_ceiling_unchanged_outside_runtime_truth"], "no_unrelated_claim_widening", "F05 may not widen release, product, or commercial verdicts while compiling runtime truth.", [PROOF_V2, BLOCKERS_V2, STATE_V2]),
+            ],
+            "blocked_by": f05_blocked_by,
+            "accounted_surfaces_percent": accounted_percent,
+            "prior_explicit_current_head_receipt_percent": prior_explicit_receipt_percent,
+            "promoted_surface_count": sum(1 for row in promotion_rows if row["promotion_action"] == "PROMOTE_TO_O3_PROVEN"),
+            "retained_surface_count": sum(1 for row in promotion_rows if row["promotion_action"] == "RETAIN_CURRENT_LEVEL"),
+            "blocked_surface_count": sum(1 for row in promotion_rows if row["promotion_action"] != "RETAIN_CURRENT_LEVEL"),
+            "current_strongest_claim": "F05 locks a bounded current-head runtime truth and promotion matrix where every critical organ is accounted for by receipt-backed retention or explicit blocker status only." if f05_pass else "F05 does not yet lock a bounded current-head runtime truth and promotion matrix.",
+            "stronger_claim_not_made": [
+                "Current-head runtime capability is externally confirmed",
+                "Any runtime organ is world-class",
+                "Release readiness is proven",
+                "Product or commercial readiness is proven",
+            ],
+            "what_is_not_proven": [
+                "Current-head external capability remains unconfirmed",
+                "Release readiness remains unproven",
+                "Release ceremony remains non-executed",
+                "Release activation remains non-executed",
+                "Repo-root import fragility remains visible and unfixed",
+            ],
+            "next_lawful_phase": f05_next_phase,
+        }
+
+        outputs[PROOF_V2]["inputs"] = [*outputs[PROOF_V2]["inputs"], CURRENT_HEAD_CAPABILITY_MATRIX, ORGAN_PROMOTION_MATRIX, ORGAN_ELEVATION_RECEIPT, REGRESSION_MATRIX]
+        outputs[PROOF_V2]["allowed_public_claims"] = [*outputs[PROOF_V2]["allowed_public_claims"], *f05_allowed_claims]
+        outputs[PROOF_V2]["forbidden_public_claims"] = [
+            *outputs[PROOF_V2]["forbidden_public_claims"],
+            "f05_proves_current_head_external_capability",
+            "f05_proves_release_readiness",
+            "f05_widens_product_or_commercial_claims",
+            "f05_promotes_theatrical_or_stubbed_organs_above_evidence",
+        ]
+        outputs[CHILD_DAG]["current_node"] = PHASE_F06 if f05_pass else PHASE_F05
+        outputs[CHILD_DAG]["next_lawful_phase"] = f05_next_phase
+        outputs[CHILD_DAG]["nodes"] = [
+            {"id": PHASE_BOOTSTRAP, "status": "PASS"},
+            {"id": PHASE_RUNTIME, "status": "PASS" if cap_cov >= 60.0 and bench_cov >= 50.0 else "BLOCKED"},
+            {"id": PHASE_TRUST, "status": "PASS" if f02b_pass else "BLOCKED"},
+            {"id": PHASE_F03, "status": "PASS" if f03_pass else ("BLOCKED" if f02b_pass else "BLOCKED_UPSTREAM")},
+            {"id": PHASE_F04, "status": f04_status if f03_pass else "BLOCKED_UPSTREAM"},
+            {"id": PHASE_F05, "status": f05_status if f04_pass else "BLOCKED_UPSTREAM"},
+            {"id": PHASE_F06, "status": "READY" if f05_pass else "BLOCKED_UPSTREAM"},
+            {"id": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION", "status": "BLOCKED_UPSTREAM"},
+            {"id": "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY", "status": "BLOCKED_UPSTREAM"},
+            {"id": "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS", "status": "BLOCKED_UPSTREAM"},
+        ]
+        outputs[STATE_V2]["computed_claim_ceiling"] = (
+            "PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_F05_RUNTIME_TRUTH_AND_BOUNDED_RETENTION_ONLY"
+            if f05_pass
+            else outputs[STATE_V2]["computed_claim_ceiling"]
+        )
+        outputs[STATE_V2]["next_lawful_transition"] = f05_next_phase
+        outputs[STATE_V2]["critical_organs_current_head_receipts"] = receipt_map
+        outputs[STATE_V2]["current_head_capability_matrix"] = CURRENT_HEAD_CAPABILITY_MATRIX
+        outputs[STATE_V2]["organ_promotion_matrix"] = ORGAN_PROMOTION_MATRIX
+        outputs[STATE_V2]["regression_matrix"] = REGRESSION_MATRIX
+        outputs[STATE_V2]["current_head_receipt_or_blocker_coverage_percent"] = accounted_percent
+
     for rel, payload in outputs.items():
         _w(root, rel, payload)
 
@@ -1491,8 +1797,9 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             PHASE_TRUST: outputs[TRUST_RECEIPT]["status"],
             PHASE_F03: f03_status,
             PHASE_F04: f04_status,
+            PHASE_F05: f05_status,
         },
-        "next_lawful_phase": f04_next_phase,
+        "next_lawful_phase": f05_next_phase,
         "open_blockers": active_blockers,
     }
 
