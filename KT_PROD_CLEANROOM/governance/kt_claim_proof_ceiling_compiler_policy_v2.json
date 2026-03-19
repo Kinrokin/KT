@@ -1,7 +1,10 @@
 {
   "allowed_public_claims": [
     "threshold_root_verifier_acceptance_active_for_child_scoped_verifier_distribution_surfaces_only",
-    "child_tuf_distribution_active_for_minimal_verifier_bundle_set_only"
+    "child_tuf_distribution_active_for_minimal_verifier_bundle_set_only",
+    "declared_class_a_cross_host_reproducibility_carried_forward_for_unchanged_inherited_subset_only",
+    "bounded_verifier_publication_attestation_chain_present_for_declared_child_f03_surfaces_only",
+    "current_head_dependency_inventory_refresh_and_validation_pass_for_declared_class_a_emitter_paths_only"
   ],
   "blocked_by": [
     "current_head_external_capability_not_confirmed",
@@ -10,13 +13,16 @@
     "release_activation_not_executed",
     "repo_root_import_fragility_visible_and_unfixed"
   ],
-  "current_repo_head": "de024c2e0d662c8f42894cea2d4f9cc7fdef8cc9",
+  "current_repo_head": "8bcd82e6a61a121f78c3c39e22f4092c533dbb3a",
   "forbidden_public_claims": [
     "current_head_external_capability_world_class",
     "release_readiness_proven",
     "release_activation_executed",
     "campaign_completion_proven",
-    "threshold_root_verifier_acceptance_active_beyond_child_scoped_verifier_distribution_surfaces"
+    "threshold_root_verifier_acceptance_active_beyond_child_scoped_verifier_distribution_surfaces",
+    "f03_proves_current_head_runtime_superiority",
+    "f03_proves_release_activation",
+    "f03_proves_full_repo_cross_host_reproducibility"
   ],
   "inputs": [
     "KT_PROD_CLEANROOM/reports/kt_state_vector_v2.json",
@@ -25,7 +31,12 @@
     "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
     "KT_PROD_CLEANROOM/governance/kt_release_ceremony.json",
     "KT_PROD_CLEANROOM/governance/kt_threshold_root_acceptance_policy.json",
-    "KT_PROD_CLEANROOM/governance/kt_tuf_distribution_policy.json"
+    "KT_PROD_CLEANROOM/governance/kt_tuf_distribution_policy.json",
+    "KT_PROD_CLEANROOM/reports/kt_pipeline_attestations_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_slsa_provenance_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_cross_host_repro_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_dependency_airlock_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_drift_and_semantic_stability_receipt.json"
   ],
   "policy_id": "KT_CHILD_CLAIM_PROOF_CEILING_POLICY_V2_20260318",
   "schema_id": "kt.child_campaign.claim_proof_ceiling_compiler_policy.v2",

@@ -4,8 +4,8 @@
   "benchmark_coverage_percent": 50.0,
   "blocker_matrix": "KT_PROD_CLEANROOM/reports/kt_blocker_matrix_v2.json",
   "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
-  "computed_claim_ceiling": "PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_F02B_TRUST_ACTIVATION_ONLY",
-  "computed_state_id": "kt_state_vector_v2::de024c2e0d662c8f42894cea2d4f9cc7fdef8cc9",
+  "computed_claim_ceiling": "PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_F03_PROOF_INTEGRITY_HARDENING_ONLY",
+  "computed_state_id": "kt_state_vector_v2::8bcd82e6a61a121f78c3c39e22f4092c533dbb3a",
   "critical_organs_current_head_receipts": {
     "paradox": [
       "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json"
@@ -30,11 +30,11 @@
     "multiverse",
     "openclaw_labor_organ"
   ],
-  "current_repo_head": "de024c2e0d662c8f42894cea2d4f9cc7fdef8cc9",
+  "current_repo_head": "8bcd82e6a61a121f78c3c39e22f4092c533dbb3a",
   "doctrine_only_surfaces": [
     "openclaw_labor_organ"
   ],
-  "evidence_head_commit": "de024c2e0d662c8f42894cea2d4f9cc7fdef8cc9",
+  "evidence_head_commit": "8bcd82e6a61a121f78c3c39e22f4092c533dbb3a",
   "external_confirmation_status": "CURRENT_HEAD_ASSURANCE_ONLY_AND_HISTORICAL_CAPABILITY_ONLY",
   "historical_only_capability_imports": [
     {
@@ -42,7 +42,7 @@
       "scope": "historical_bounded_frontier_target_only"
     }
   ],
-  "last_update_time": "2026-03-19T14:24:00Z",
+  "last_update_time": "2026-03-19T17:35:08Z",
   "live_capability_surfaces": [
     "router",
     "cognition",
@@ -51,7 +51,7 @@
     "multiverse",
     "tournament_promotion"
   ],
-  "next_lawful_transition": "F03_PROOF_REPRO_HARDENING_AND_STABILITY",
+  "next_lawful_transition": "F04_ADJUDICATION_VERIFIER_V2_AND_OUTSIDER_PATH",
   "open_blockers": [
     "current_head_external_capability_not_confirmed",
     "release_readiness_not_proven",
@@ -76,11 +76,18 @@
   },
   "parent_terminal_state_ref": "KT_PROD_CLEANROOM/reports/kt_product_surface_receipt.json",
   "product_surface_status": "DOCUMENTARY_PRE_RELEASE_NON_RELEASE_ELIGIBLE",
+  "proof_integrity_receipts": [
+    "KT_PROD_CLEANROOM/reports/kt_pipeline_attestations_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_slsa_provenance_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_cross_host_repro_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_dependency_airlock_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_drift_and_semantic_stability_receipt.json"
+  ],
   "release_activation_status": "NON_EXECUTED",
   "release_ceremony_status": "NON_EXECUTED_BLOCKED_BY_PREREQUISITES",
   "release_eligibility_status": "NOT_ELIGIBLE",
   "release_readiness_status": "NOT_PROVEN",
-  "reproducibility_status": "DECLARED_CLASS_A_CLASS_B_ONLY",
+  "reproducibility_status": "DECLARED_CLASS_A_CARRY_FORWARD_CROSS_HOST_PROVEN_FOR_UNCHANGED_INHERITED_SUBSET_ONLY",
   "runtime_operational_reality_classes": {
     "adapter_layer": "STUBBED",
     "cognition": "LIVE_UNPROVEN",
@@ -97,7 +104,7 @@
   "stubbed_surfaces": [
     "adapter_layer"
   ],
-  "subject_head_commit": "de024c2e0d662c8f42894cea2d4f9cc7fdef8cc9",
+  "subject_head_commit": "8bcd82e6a61a121f78c3c39e22f4092c533dbb3a",
   "theater_risk_score_matrix": {
     "adapter_layer": 0.66,
     "cognition": 0.44,
@@ -111,5 +118,5 @@
   "threshold_root_acceptance_policy": "KT_PROD_CLEANROOM/governance/kt_threshold_root_acceptance_policy.json",
   "trust_root_status": "CHILD_THRESHOLD_ROOT_ACCEPTANCE_ACTIVE",
   "tuf_distribution_policy": "KT_PROD_CLEANROOM/governance/kt_tuf_distribution_policy.json",
-  "verifier_status": "CHILD_THRESHOLD_ROOT_ACCEPTANCE_AND_MINIMAL_TUF_DISTRIBUTION_ACTIVE"
+  "verifier_status": "CHILD_THRESHOLD_ROOT_ACCEPTANCE_AND_MINIMAL_TUF_DISTRIBUTION_ACTIVE_WITH_F03_PROOF_INTEGRITY_HARDENING"
 }

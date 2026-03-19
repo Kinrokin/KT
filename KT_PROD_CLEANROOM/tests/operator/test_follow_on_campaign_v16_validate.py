@@ -8,10 +8,15 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
+    AIRLOCK_RECEIPT,
+    ARTIFACT_CLASS,
     BENCHMARK_MATRIX,
     BLOCKERS_V2,
     BOOTSTRAP_RECEIPT,
     CHILD_DAG,
+    CROSS_HOST_RECEIPT,
+    DEPENDENCY_VALIDATION,
+    DRIFT_RECEIPT,
     IDENTITY_MODEL,
     LOG_MONITOR,
     OLD_PROOF,
@@ -20,8 +25,10 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     PARENT_FINAL,
     PARENT_PRODUCT,
     PHASE_F03,
+    PHASE_F04,
     PHASE_RUNTIME,
     PHASE_TRUST,
+    PIPELINE_RECEIPT,
     PROOF_SUPERSEDE,
     PROOF_V2,
     RELEASE,
@@ -34,6 +41,7 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     STATIC_BUNDLE_ATTESTATION,
     STATIC_BUNDLE_MANIFEST,
     STATIC_BUNDLE_SBOM,
+    SLSA_RECEIPT,
     TEST_REL,
     THEATER_MATRIX,
     THRESHOLD_POLICY,
@@ -44,6 +52,7 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     TRUST_ROOT,
     WS11,
     WS12,
+    WS13,
     WS14,
     WS17A,
     WS17B,
@@ -109,9 +118,18 @@ def _seed_runtime(tmp_path: Path) -> None:
 
 def _seed_repo(tmp_path: Path) -> str:
     _init_git_repo(tmp_path)
-    tool_source = Path(__file__).resolve().parents[2] / "tools/operator/follow_on_campaign_v16_validate.py"
-    (tmp_path / TOOL_REL).parent.mkdir(parents=True, exist_ok=True)
-    (tmp_path / TOOL_REL).write_text(tool_source.read_text(encoding="utf-8"), encoding="utf-8", newline="\n")
+    source_root = Path(__file__).resolve().parents[2]
+    for rel in [
+        TOOL_REL,
+        "KT_PROD_CLEANROOM/tools/operator/dependency_inventory_emit.py",
+        "KT_PROD_CLEANROOM/tools/operator/dependency_inventory_validate.py",
+        "KT_PROD_CLEANROOM/tools/operator/titanium_common.py",
+    ]:
+        source = source_root / Path(rel).relative_to("KT_PROD_CLEANROOM")
+        if rel.startswith("KT_PROD_CLEANROOM/"):
+            source = source_root / Path(rel.replace("KT_PROD_CLEANROOM/", "", 1))
+        (tmp_path / rel).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / rel).write_text(source.read_text(encoding="utf-8"), encoding="utf-8", newline="\n")
     (tmp_path / TEST_REL).parent.mkdir(parents=True, exist_ok=True)
     (tmp_path / TEST_REL).write_text("seed\n", encoding="utf-8", newline="\n")
     _seed_runtime(tmp_path)
@@ -138,7 +156,32 @@ def _seed_repo(tmp_path: Path) -> str:
         },
     )
     _write_json(tmp_path / RELEASE, {"schema_id": "kt.governance.release_ceremony.v1", "status": "ACTIVE_LOCKED_PENDING_EXECUTION_PREREQUISITES"})
-    _write_json(tmp_path / "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json", {"schema_id": "kt.governance.determinism_envelope_policy.v1", "status": "ACTIVE"})
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json",
+        {
+            "schema_id": "kt.governance.determinism_envelope_policy.v1",
+            "status": "ACTIVE",
+            "forbidden_drift": ["unordered directory walks", "wall-clock timestamps inside class-a equality targets"],
+            "class_b_canonicalization_profiles": [{"profile_id": "live_validation_index_v1"}],
+            "normalization_rules": {"timestamp_policy": {"class_b_canonicalization_strips_wall_clock_fields": True}},
+        },
+    )
+    _write_json(
+        tmp_path / ARTIFACT_CLASS,
+        {
+            "schema_id": "kt.governance.artifact_class_policy.v1",
+            "status": "ACTIVE",
+            "classes": [
+                {
+                    "class_id": "CLASS_A",
+                    "surfaces": [
+                        {"path": ARTIFACT_CLASS},
+                        {"path": "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json"},
+                    ],
+                }
+            ],
+        },
+    )
     _write_json(
         tmp_path / IDENTITY_MODEL,
         {
@@ -164,32 +207,129 @@ def _seed_repo(tmp_path: Path) -> str:
     _write_json(tmp_path / STATIC_BUNDLE_MANIFEST, {"schema_id": "seed", "status": "PASS"})
     _write_json(tmp_path / STATIC_BUNDLE_SBOM, {"schema_id": "seed", "status": "PASS"})
     _write_json(tmp_path / STATIC_BUNDLE_ATTESTATION, {"schema_id": "seed", "status": "PASS"})
-    _write_json(tmp_path / "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json", {"schema_id": "seed", "status": "PASS"})
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json",
+        {
+            "_type": "https://in-toto.io/Statement/v0.1",
+            "predicate": {"schema_id": "kt.in_toto.predicate.source_build_subject.v1"},
+        },
+    )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json",
+        {
+            "_type": "https://in-toto.io/Statement/v0.1",
+            "predicate": {"schema_id": "kt.in_toto.predicate.authority_subject.v1"},
+        },
+    )
+    _write_json(tmp_path / "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse", {"schema_id": "seed", "status": "PASS"})
+    _write_json(tmp_path / "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse", {"schema_id": "seed", "status": "PASS"})
+    _write_json(tmp_path / "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json", {"schema_id": "seed", "status": "PASS"})
+    _write_json(tmp_path / "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json", {"schema_id": "seed", "status": "PASS"})
+    _write_json(tmp_path / "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json", {"schema_id": "seed", "status": "PASS"})
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+        {
+            "schema_id": "seed",
+            "status": "PASS",
+            "included_paths": [
+                "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json",
+                "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json",
+                "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+                "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse",
+                "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
+                "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
+            ],
+            "packaged_input_refs": [
+                "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json",
+                "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json",
+                "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+                "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse",
+                "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
+                "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
+            ],
+        },
+    )
     _write_json(tmp_path / "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json", {"schema_id": "seed", "status": "PASS"})
-    return _commit_all(tmp_path, "seed repo")
+    _touch(tmp_path / "KT_PROD_CLEANROOM/policy_c/drift_guard.py", "def drift_guard_seed():\n    return 'ok'\n")
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM/policy_c/schemas/policy_c_drift_report_schema_v1.json",
+        {
+            "schema_id": "kt.policy_c.drift_report.v1",
+            "additionalProperties": False,
+            "required": [
+                "epoch_id",
+                "baseline_epoch_id",
+                "pressure_delta_l2",
+                "pressure_delta_max",
+                "invariant_violations",
+                "drift_class",
+                "reason_codes",
+                "timestamp",
+            ],
+        },
+    )
+    for rel in [
+        "KT_PROD_CLEANROOM/tests/policy_c/test_drift_guard.py",
+        "KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_drift_gate.py",
+        "KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_drift_schema.py",
+    ]:
+        _touch(tmp_path / rel, "pass\n")
+    base_head = _commit_all(tmp_path, "seed repo base")
+    _write_json(
+        tmp_path / WS13,
+        {
+            "schema_id": "kt.operator.ws13.determinism_envelope_receipt.v1",
+            "status": "PASS",
+            "current_repo_head": base_head,
+            "compiled_against": base_head,
+            "environments_used": {
+                "local": {"environment_class": "local_windows"},
+                "ci": {"environment_class": "github_actions_ubuntu"},
+            },
+            "hash_comparison_results": {
+                "deterministic_outputs": [
+                    {"artifact": "kt_artifact_class_registry.json", "status": "PASS"},
+                    {"artifact": "kt_determinism_envelope_manifest.json", "status": "PASS"},
+                ]
+            },
+        },
+    )
+    return _commit_all(tmp_path, "seed repo evidence")
 
 
-def test_child_campaign_bootstrap_and_runtime_baseline(tmp_path: Path) -> None:
+def test_child_campaign_f03_passes_with_declared_proof_surfaces(tmp_path: Path) -> None:
     head = _seed_repo(tmp_path)
     summary = emit_follow_on_campaign_v16(tmp_path)
     assert summary["status"] == "ACTIVE"
     assert summary["current_repo_head"] == head
     assert summary["phase_results"][PHASE_RUNTIME] == "PASS"
     assert summary["phase_results"][PHASE_TRUST] == "PASS"
-    assert summary["next_lawful_phase"] == PHASE_F03
+    assert summary["phase_results"][PHASE_F03] == "PASS"
+    assert summary["next_lawful_phase"] == PHASE_F04
 
     runtime = json.loads((tmp_path / RUNTIME_RECEIPT).read_text(encoding="utf-8"))
     trust = json.loads((tmp_path / TRUST_RECEIPT).read_text(encoding="utf-8"))
     bench = json.loads((tmp_path / BENCHMARK_MATRIX).read_text(encoding="utf-8"))
     state = json.loads((tmp_path / STATE_V2).read_text(encoding="utf-8"))
+    pipeline = json.loads((tmp_path / PIPELINE_RECEIPT).read_text(encoding="utf-8"))
+    slsa = json.loads((tmp_path / SLSA_RECEIPT).read_text(encoding="utf-8"))
+    repro = json.loads((tmp_path / CROSS_HOST_RECEIPT).read_text(encoding="utf-8"))
+    airlock = json.loads((tmp_path / AIRLOCK_RECEIPT).read_text(encoding="utf-8"))
+    drift = json.loads((tmp_path / DRIFT_RECEIPT).read_text(encoding="utf-8"))
     assert runtime["status"] == "PASS"
     assert trust["status"] == "PASS"
+    assert pipeline["status"] == "PASS"
+    assert slsa["status"] == "PASS"
+    assert repro["status"] == "PASS"
+    assert airlock["status"] == "PASS"
+    assert drift["status"] == "PASS"
     assert bench["coverage_percent"] >= 50.0
-    assert state["next_lawful_transition"] == PHASE_F03
+    assert state["next_lawful_transition"] == PHASE_F04
     assert "threshold_root_verifier_acceptance_inactive" not in state["open_blockers"]
     assert "verifier_coverage_not_widened_beyond_bounded_surfaces" not in state["open_blockers"]
+    assert state["reproducibility_status"].startswith("DECLARED_CLASS_A_CARRY_FORWARD_CROSS_HOST_PROVEN")
 
-    for rel in [CHILD_DAG, SINGLE_REALITY, PROOF_V2, THRESHOLD_POLICY, TUF_POLICY, BLOCKERS_V2, RUNTIME_MATRIX, THEATER_MATRIX, STATE_STALE, STATE_SUPERSEDE, PROOF_SUPERSEDE, BOOTSTRAP_RECEIPT]:
+    for rel in [CHILD_DAG, SINGLE_REALITY, PROOF_V2, THRESHOLD_POLICY, TUF_POLICY, BLOCKERS_V2, RUNTIME_MATRIX, THEATER_MATRIX, STATE_STALE, STATE_SUPERSEDE, PROOF_SUPERSEDE, BOOTSTRAP_RECEIPT, DEPENDENCY_VALIDATION]:
         assert (tmp_path / rel).exists()
 
 
@@ -220,3 +360,19 @@ def test_child_campaign_fails_if_parent_has_illegal_next_workstream(tmp_path: Pa
         assert "prerequisites are not satisfied" in str(exc)
     else:
         raise AssertionError("expected fail-closed lineage error")
+
+
+def test_child_campaign_f03_blocks_if_class_a_surfaces_drift(tmp_path: Path) -> None:
+    _seed_repo(tmp_path)
+    drifted = json.loads((tmp_path / ARTIFACT_CLASS).read_text(encoding="utf-8"))
+    drifted["status"] = "DRIFTED"
+    _write_json(tmp_path / ARTIFACT_CLASS, drifted)
+    _commit_all(tmp_path, "drift class-a surface")
+
+    summary = emit_follow_on_campaign_v16(tmp_path)
+    repro = json.loads((tmp_path / CROSS_HOST_RECEIPT).read_text(encoding="utf-8"))
+    assert summary["phase_results"][PHASE_TRUST] == "PASS"
+    assert summary["phase_results"][PHASE_F03] == "BLOCKED"
+    assert summary["next_lawful_phase"] == PHASE_F03
+    assert repro["status"] == "BLOCKED"
+    assert repro["class_a_drift_paths"] == [ARTIFACT_CLASS]

@@ -1,11 +1,15 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Sequence
 
+from tools.operator.dependency_inventory_emit import build_dependency_reports
+from tools.operator.dependency_inventory_validate import build_dependency_inventory_validation_report
 from tools.operator.titanium_common import file_sha256, load_json, repo_root, utc_now_iso_z, write_json_stable
 
 
@@ -14,8 +18,11 @@ PHASE_BOOTSTRAP = "F01_LINEAGE_LAW_AND_SUPERSESSION_REPAIR"
 PHASE_RUNTIME = "F02A_RUNTIME_REALITY_AND_CURRENT_HEAD_BASELINE"
 PHASE_TRUST = "F02B_TRUST_ROOT_TRANSPARENCY_AND_TUF_ACTIVATION"
 PHASE_F03 = "F03_PROOF_REPRO_HARDENING_AND_STABILITY"
+PHASE_F04 = "F04_ADJUDICATION_VERIFIER_V2_AND_OUTSIDER_PATH"
 BLOCKED_VERDICT_TRUST = "TRUST_ACTIVATION_BLOCKED_BY_PRESERVED_PARENT_GAPS"
 PASS_VERDICT_TRUST = "THRESHOLD_ROOT_ACCEPTANCE_AND_CHILD_TUF_DISTRIBUTION_ACTIVE"
+BLOCKED_VERDICT_F03 = "PROOF_INTEGRITY_HARDENING_BLOCKED_OR_INCOMPLETE"
+PASS_VERDICT_F03 = "PROOF_INTEGRITY_HARDENING_COMPLETE_FOR_DECLARED_CHILD_SURFACES"
 
 REPORT = "KT_PROD_CLEANROOM/reports"
 GOV = "KT_PROD_CLEANROOM/governance"
@@ -31,18 +38,42 @@ TRUST_ROOT = f"{GOV}/kt_trust_root_policy.json"
 SIGNER_TOPOLOGY = f"{GOV}/kt_signer_topology.json"
 RELEASE = f"{GOV}/kt_release_ceremony.json"
 DETERMINISM = f"{GOV}/kt_determinism_envelope_policy.json"
+ARTIFACT_CLASS = f"{GOV}/kt_artifact_class_policy.json"
 IDENTITY_MODEL = f"{GOV}/kt_identity_model_policy.json"
 LOG_MONITOR_POLICY = f"{GOV}/kt_log_monitor_policy.json"
 THRESHOLD_POLICY = f"{GOV}/kt_threshold_root_acceptance_policy.json"
 TUF_POLICY = f"{GOV}/kt_tuf_distribution_policy.json"
 WS11 = f"{REPORT}/kt_sigstore_integration_receipt.json"
 WS12 = f"{REPORT}/kt_supply_chain_policy_receipt.json"
+WS13 = f"{REPORT}/kt_determinism_envelope_receipt.json"
 WS14 = f"{REPORT}/kt_public_verifier_release_receipt.json"
 WS17A = f"{REPORT}/kt_external_assurance_confirmation_receipt.json"
 WS17B = f"{REPORT}/kt_external_capability_confirmation_receipt.json"
 WS19_DETACHED = f"{REPORT}/kt_public_verifier_detached_receipt.json"
 TUF_ROOT_INIT = f"{REPORT}/kt_tuf_root_initialization.json"
 LOG_MONITOR = f"{REPORT}/kt_log_monitor_plane_receipt.json"
+SOURCE_IN_TOTO = f"{REPORT}/source_build_attestation/in_toto_statement.json"
+PUBLICATION_IN_TOTO = f"{REPORT}/cryptographic_publication/in_toto_statement.json"
+BUILD_PROVENANCE = f"{REPORT}/kt_build_provenance.dsse"
+VERIFICATION_SUMMARY = f"{REPORT}/kt_verification_summary_attestation.dsse"
+BUILD_VERIFICATION = f"{REPORT}/kt_build_verification_receipt.json"
+REKOR_RECEIPT = f"{REPORT}/kt_rekor_inclusion_receipt.json"
+SIGSTORE_BUNDLE = f"{REPORT}/kt_sigstore_publication_bundle.json"
+DETACHED_MANIFEST = f"{REPORT}/kt_public_verifier_detached_release_manifest.json"
+DEPENDENCY_INVENTORY = f"{REPORT}/dependency_inventory.json"
+PYTHON_ENVIRONMENT = f"{REPORT}/python_environment_manifest.json"
+SBOM = f"{REPORT}/sbom_cyclonedx.json"
+DEPENDENCY_VALIDATION = f"{REPORT}/dependency_inventory_validation_receipt.json"
+PIPELINE_RECEIPT = f"{REPORT}/kt_pipeline_attestations_receipt.json"
+SLSA_RECEIPT = f"{REPORT}/kt_slsa_provenance_receipt.json"
+CROSS_HOST_RECEIPT = f"{REPORT}/kt_cross_host_repro_receipt.json"
+AIRLOCK_RECEIPT = f"{REPORT}/kt_dependency_airlock_receipt.json"
+DRIFT_RECEIPT = f"{REPORT}/kt_drift_and_semantic_stability_receipt.json"
+POLICY_C_DRIFT = "KT_PROD_CLEANROOM/policy_c/drift_guard.py"
+POLICY_C_DRIFT_SCHEMA = "KT_PROD_CLEANROOM/policy_c/schemas/policy_c_drift_report_schema_v1.json"
+POLICY_C_TEST_GUARD = "KT_PROD_CLEANROOM/tests/policy_c/test_drift_guard.py"
+POLICY_C_TEST_GATE = "KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_drift_gate.py"
+POLICY_C_TEST_SCHEMA = "KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_drift_schema.py"
 
 CHILD_DAG = f"{GOV}/kt_follow_on_execution_dag_v1_6.json"
 SINGLE_REALITY = f"{GOV}/kt_single_reality_law.json"
@@ -59,6 +90,18 @@ BOOTSTRAP_RECEIPT = f"{REPORT}/kt_follow_on_bootstrap_receipt.json"
 RUNTIME_RECEIPT = f"{REPORT}/kt_current_head_capability_baseline_receipt.json"
 TRUST_RECEIPT = f"{REPORT}/kt_f02b_trust_activation_receipt.json"
 
+F03_CLASS_A_SURFACES = [
+    ARTIFACT_CLASS,
+    DETERMINISM,
+]
+
+F03_EMITTER_IMPORT_SURFACES = [
+    TOOL_REL,
+    "KT_PROD_CLEANROOM/tools/operator/dependency_inventory_emit.py",
+    "KT_PROD_CLEANROOM/tools/operator/dependency_inventory_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/titanium_common.py",
+]
+
 PLANNED = {
     TOOL_REL,
     TEST_REL,
@@ -72,6 +115,15 @@ PLANNED = {
     RUNTIME_MATRIX,
     BENCHMARK_MATRIX,
     THEATER_MATRIX,
+    DEPENDENCY_INVENTORY,
+    PYTHON_ENVIRONMENT,
+    SBOM,
+    DEPENDENCY_VALIDATION,
+    PIPELINE_RECEIPT,
+    SLSA_RECEIPT,
+    CROSS_HOST_RECEIPT,
+    AIRLOCK_RECEIPT,
+    DRIFT_RECEIPT,
     STATE_STALE,
     STATE_SUPERSEDE,
     PROOF_SUPERSEDE,
@@ -149,6 +201,66 @@ def _exists(root: Path, rel: str) -> bool:
 def _maybe_j(root: Path, rel: str) -> Dict[str, Any]:
     path = (root / rel).resolve()
     return load_json(path) if path.exists() else {}
+
+
+def _git_name_only(root: Path, base_commit: str, refs: Sequence[str]) -> List[str]:
+    if not str(base_commit).strip():
+        return list(refs)
+    output = subprocess.check_output(
+        ["git", "-C", str(root), "diff", "--name-only", f"{base_commit}..HEAD", "--", *refs],
+        text=True,
+        encoding="utf-8",
+    )
+    return [line.strip().replace("\\", "/") for line in output.splitlines() if line.strip()]
+
+
+def _extract_import_roots(path: Path) -> List[str]:
+    tree = ast.parse(path.read_text(encoding="utf-8"), filename=path.as_posix())
+    roots = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                root_name = str(alias.name).split(".", 1)[0].strip()
+                if root_name:
+                    roots.add(root_name)
+        elif isinstance(node, ast.ImportFrom):
+            if node.level and not node.module:
+                continue
+            root_name = str(node.module or "").split(".", 1)[0].strip()
+            if root_name:
+                roots.add(root_name)
+    return sorted(roots)
+
+
+def _third_party_imports_for_surfaces(root: Path, inventory: Dict[str, Any], refs: Sequence[str]) -> Dict[str, List[str]]:
+    third_party_roots = {str(row.get("module", "")).strip() for row in inventory.get("third_party_modules", []) if str(row.get("module", "")).strip()}
+    offenders: Dict[str, List[str]] = {}
+    for rel in refs:
+        path = (root / rel).resolve()
+        if not path.exists():
+            offenders[rel] = ["MISSING"]
+            continue
+        imported = _extract_import_roots(path)
+        hits = sorted(root_name for root_name in imported if root_name in third_party_roots)
+        if hits:
+            offenders[rel] = hits
+    return offenders
+
+
+def _refresh_dependency_inventory(root: Path) -> Dict[str, Dict[str, Any]]:
+    report_root = (root / REPORT).resolve()
+    dependency_reports = build_dependency_reports(root=root)
+    _w(root, DEPENDENCY_INVENTORY, dependency_reports["inventory"])
+    _w(root, PYTHON_ENVIRONMENT, dependency_reports["environment"])
+    _w(root, SBOM, dependency_reports["sbom"])
+    validation = build_dependency_inventory_validation_report(root=root, report_root=report_root)
+    _w(root, DEPENDENCY_VALIDATION, validation)
+    return {
+        "inventory": dependency_reports["inventory"],
+        "environment": dependency_reports["environment"],
+        "sbom": dependency_reports["sbom"],
+        "validation": validation,
+    }
 
 
 def _profile(cls: str) -> Dict[str, float]:
@@ -417,6 +529,146 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
         ],
     }
 
+    dependency_bundle: Dict[str, Dict[str, Any]] = {"inventory": {}, "environment": {}, "sbom": {}, "validation": {}}
+    direct_third_party_imports: Dict[str, List[str]] = {}
+    class_a_drift_paths: List[str] = []
+    f03_blocked_by: List[str] = []
+    f03_checks: Dict[str, bool] = {
+        "pipeline_attestations_complete": False,
+        "slsa_lineage_complete": False,
+        "carried_forward_class_a_cross_host_repro": False,
+        "dependency_airlock_valid": False,
+        "drift_and_semantic_stability_guards_active": False,
+    }
+    if f02b_pass:
+        dependency_bundle = _refresh_dependency_inventory(root)
+        required_f03_refs = [
+            WS13,
+            ARTIFACT_CLASS,
+            SOURCE_IN_TOTO,
+            PUBLICATION_IN_TOTO,
+            BUILD_PROVENANCE,
+            VERIFICATION_SUMMARY,
+            BUILD_VERIFICATION,
+            REKOR_RECEIPT,
+            SIGSTORE_BUNDLE,
+            DETACHED_MANIFEST,
+            POLICY_C_DRIFT,
+            POLICY_C_DRIFT_SCHEMA,
+            POLICY_C_TEST_GUARD,
+            POLICY_C_TEST_GATE,
+            POLICY_C_TEST_SCHEMA,
+        ]
+        missing_f03_refs = [rel for rel in required_f03_refs if not _exists(root, rel)]
+        if missing_f03_refs:
+            f03_blocked_by.extend([f"missing:{rel}" for rel in missing_f03_refs])
+        else:
+            ws13 = _j(root, WS13)
+            artifact_class_policy = _j(root, ARTIFACT_CLASS)
+            determinism_policy = _j(root, DETERMINISM)
+            source_in_toto = _j(root, SOURCE_IN_TOTO)
+            publication_in_toto = _j(root, PUBLICATION_IN_TOTO)
+            build_provenance = _j(root, BUILD_PROVENANCE)
+            verification_summary = _j(root, VERIFICATION_SUMMARY)
+            build_verification = _j(root, BUILD_VERIFICATION)
+            rekor_receipt = _j(root, REKOR_RECEIPT)
+            sigstore_bundle = _j(root, SIGSTORE_BUNDLE)
+            detached_manifest = _j(root, DETACHED_MANIFEST)
+            detached_refs = {
+                str(item).strip()
+                for item in [*detached_manifest.get("included_paths", []), *detached_manifest.get("packaged_input_refs", [])]
+                if str(item).strip()
+            }
+            class_a_paths = sorted(
+                {
+                    str(row.get("path", "")).strip()
+                    for clazz in artifact_class_policy.get("classes", [])
+                    if isinstance(clazz, dict) and str(clazz.get("class_id", "")).strip() == "CLASS_A"
+                    for row in clazz.get("surfaces", [])
+                    if isinstance(row, dict) and str(row.get("path", "")).strip()
+                }
+            )
+            ws13_anchor = str(ws13.get("current_repo_head", "")).strip() or str(ws13.get("compiled_against", "")).strip()
+            class_a_drift_paths = _git_name_only(root, ws13_anchor, F03_CLASS_A_SURFACES) if ws13_anchor else list(F03_CLASS_A_SURFACES)
+            direct_third_party_imports = _third_party_imports_for_surfaces(root, dependency_bundle["inventory"], F03_EMITTER_IMPORT_SURFACES)
+
+            source_statement_ok = str(source_in_toto.get("predicate", {}).get("schema_id", "")).strip() == "kt.in_toto.predicate.source_build_subject.v1"
+            publication_statement_ok = str(publication_in_toto.get("predicate", {}).get("schema_id", "")).strip() == "kt.in_toto.predicate.authority_subject.v1"
+            rekor_ok = str(rekor_receipt.get("status", "")).strip() == "PASS"
+            sigstore_ok = str(sigstore_bundle.get("status", "")).strip() == "PASS"
+            build_verification_ok = str(build_verification.get("status", "")).strip() == "PASS"
+            detached_chain_refs_ok = all(
+                rel in detached_refs
+                for rel in (SOURCE_IN_TOTO, PUBLICATION_IN_TOTO, BUILD_PROVENANCE, VERIFICATION_SUMMARY, REKOR_RECEIPT, SIGSTORE_BUNDLE)
+            )
+            f03_checks["pipeline_attestations_complete"] = all(
+                [source_statement_ok, publication_statement_ok, rekor_ok, sigstore_ok, build_verification_ok, detached_chain_refs_ok]
+            )
+
+            build_provenance_ok = str(build_provenance.get("status", "")).strip() == "PASS"
+            verification_summary_ok = str(verification_summary.get("status", "")).strip() == "PASS"
+            f03_checks["slsa_lineage_complete"] = all(
+                [
+                    build_provenance_ok,
+                    verification_summary_ok,
+                    build_verification_ok,
+                    detached_chain_refs_ok,
+                ]
+            )
+
+            ws13_ok = str(ws13.get("status", "")).strip() == "PASS"
+            ws13_local_ok = str(ws13.get("environments_used", {}).get("local", {}).get("environment_class", "")).strip() == "local_windows"
+            ws13_ci_ok = str(ws13.get("environments_used", {}).get("ci", {}).get("environment_class", "")).strip() == "github_actions_ubuntu"
+            ws13_hashes_ok = all(
+                str(row.get("status", "")).strip() == "PASS"
+                for row in ws13.get("hash_comparison_results", {}).get("deterministic_outputs", [])
+            )
+            f03_checks["carried_forward_class_a_cross_host_repro"] = all(
+                [
+                    ws13_ok,
+                    ws13_local_ok,
+                    ws13_ci_ok,
+                    ws13_hashes_ok,
+                    sorted(class_a_paths) == sorted(F03_CLASS_A_SURFACES),
+                    not class_a_drift_paths,
+                ]
+            )
+
+            dependency_validation_ok = str(dependency_bundle["validation"].get("status", "")).strip() == "PASS"
+            inventory_head_ok = str(dependency_bundle["inventory"].get("pinned_head_sha", "")).strip() == head
+            environment_head_ok = str(dependency_bundle["environment"].get("pinned_head_sha", "")).strip() == head
+            sbom_head_ok = str(dependency_bundle["sbom"].get("metadata", {}).get("component", {}).get("version", "")).strip() == head
+            direct_imports_ok = not direct_third_party_imports
+            f03_checks["dependency_airlock_valid"] = all(
+                [dependency_validation_ok, inventory_head_ok, environment_head_ok, sbom_head_ok, direct_imports_ok]
+            )
+
+            forbidden_drift_ok = bool(determinism_policy.get("forbidden_drift", []))
+            canonicalization_ok = bool(determinism_policy.get("class_b_canonicalization_profiles", []))
+            timestamp_policy_ok = (
+                determinism_policy.get("normalization_rules", {})
+                .get("timestamp_policy", {})
+                .get("class_b_canonicalization_strips_wall_clock_fields")
+                is True
+            )
+            drift_surfaces_ok = all(_exists(root, rel) for rel in (POLICY_C_DRIFT, POLICY_C_DRIFT_SCHEMA, POLICY_C_TEST_GUARD, POLICY_C_TEST_GATE, POLICY_C_TEST_SCHEMA))
+            f03_checks["drift_and_semantic_stability_guards_active"] = all(
+                [forbidden_drift_ok, canonicalization_ok, timestamp_policy_ok, drift_surfaces_ok]
+            )
+
+        for check_id, ok in f03_checks.items():
+            if not ok:
+                f03_blocked_by.append(check_id)
+
+    f03_pass = f02b_pass and all(f03_checks.values())
+    f03_status = "PASS" if f03_pass else ("BLOCKED" if f02b_pass else "BLOCKED_UPSTREAM")
+    f03_next_phase = PHASE_F04 if f03_pass else (PHASE_F03 if f02b_pass else PHASE_TRUST)
+    f03_allowed_claims = [
+        "declared_class_a_cross_host_reproducibility_carried_forward_for_unchanged_inherited_subset_only",
+        "bounded_verifier_publication_attestation_chain_present_for_declared_child_f03_surfaces_only",
+        "current_head_dependency_inventory_refresh_and_validation_pass_for_declared_class_a_emitter_paths_only",
+    ] if f03_pass else []
+
     outputs = {
         CHILD_DAG: {
             "schema_id": "kt.child_campaign.execution_dag.v1_6",
@@ -424,14 +676,14 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             "status": "ACTIVE",
             "current_repo_head": head,
             "campaign_execution_state": "ACTIVE" if f02b_pass else "PARTIAL_SUCCESS",
-            "current_node": PHASE_F03 if f02b_pass else PHASE_TRUST,
-            "next_lawful_phase": PHASE_F03 if f02b_pass else PHASE_TRUST,
+            "current_node": PHASE_F04 if f03_pass else (PHASE_F03 if f02b_pass else PHASE_TRUST),
+            "next_lawful_phase": f03_next_phase,
             "nodes": [
                 {"id": PHASE_BOOTSTRAP, "status": "PASS"},
                 {"id": PHASE_RUNTIME, "status": "PASS" if cap_cov >= 60.0 and bench_cov >= 50.0 else "BLOCKED"},
                 {"id": PHASE_TRUST, "status": "PASS" if f02b_pass else "BLOCKED"},
-                {"id": PHASE_F03, "status": "READY" if f02b_pass else "BLOCKED_UPSTREAM"},
-                {"id": "F04_ADJUDICATION_VERIFIER_V2_AND_OUTSIDER_PATH", "status": "BLOCKED_UPSTREAM"},
+                {"id": PHASE_F03, "status": "PASS" if f03_pass else ("BLOCKED" if f02b_pass else "BLOCKED_UPSTREAM")},
+                {"id": PHASE_F04, "status": "READY" if f03_pass else "BLOCKED_UPSTREAM"},
                 {"id": "F05_ORGAN_ELEVATION_AND_RUNTIME_PROMOTION", "status": "BLOCKED_UPSTREAM"},
                 {"id": "F06_EXTERNAL_CONFIRMATION_AND_FINAL_CURRENT_HEAD_READJUDICATION", "status": "BLOCKED_UPSTREAM"},
                 {"id": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION", "status": "BLOCKED_UPSTREAM"},
@@ -458,10 +710,11 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             "status": "ACTIVE",
             "current_repo_head": head,
             "slsa_version_normalized": "v1.2",
-            "inputs": [STATE_V2, BLOCKERS_V2, PARENT_FINAL, TRUST_ROOT, RELEASE, THRESHOLD_POLICY, TUF_POLICY],
+            "inputs": [STATE_V2, BLOCKERS_V2, PARENT_FINAL, TRUST_ROOT, RELEASE, THRESHOLD_POLICY, TUF_POLICY, PIPELINE_RECEIPT, SLSA_RECEIPT, CROSS_HOST_RECEIPT, AIRLOCK_RECEIPT, DRIFT_RECEIPT],
             "allowed_public_claims": [
                 "threshold_root_verifier_acceptance_active_for_child_scoped_verifier_distribution_surfaces_only",
                 "child_tuf_distribution_active_for_minimal_verifier_bundle_set_only",
+                *f03_allowed_claims,
             ] if f02b_pass else [],
             "forbidden_public_claims": [
                 "current_head_external_capability_world_class",
@@ -469,6 +722,9 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
                 "release_activation_executed",
                 "campaign_completion_proven",
                 "threshold_root_verifier_acceptance_active_beyond_child_scoped_verifier_distribution_surfaces",
+                "f03_proves_current_head_runtime_superiority",
+                "f03_proves_release_activation",
+                "f03_proves_full_repo_cross_host_reproducibility",
             ] if f02b_pass else [
                 "current_head_external_capability_world_class",
                 "threshold_root_verifier_acceptance_active",
@@ -482,6 +738,155 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
         BENCHMARK_MATRIX: {"schema_id": "kt.child_campaign.benchmark_coverage_matrix.v1", "campaign_id": CAMPAIGN_ID, "status": "ACTIVE", "current_repo_head": head, "coverage_percent": bench_cov, "required_minimum_for_f02a_pass": 50, "rows": [{"surface_id": row["surface_id"], "benchmark_status": row["benchmark_status"], "has_current_head_benchmark_evidence": row["benchmark_status"] not in {"NONE", "TEST_ONLY"}} for row in rows]},
         THEATER_MATRIX: {"schema_id": "kt.child_campaign.theater_risk_matrix.v1", "campaign_id": CAMPAIGN_ID, "status": "ACTIVE", "current_repo_head": head, "rows": theater_rows},
         BLOCKERS_V2: {"schema_id": "kt.child_campaign.blocker_matrix.v2", "campaign_id": CAMPAIGN_ID, "status": "ACTIVE", "current_repo_head": head, "open_blockers": active_blockers, "rows": blocker_rows},
+        DEPENDENCY_INVENTORY: dependency_bundle["inventory"],
+        PYTHON_ENVIRONMENT: dependency_bundle["environment"],
+        SBOM: dependency_bundle["sbom"],
+        DEPENDENCY_VALIDATION: dependency_bundle["validation"],
+        PIPELINE_RECEIPT: {
+            "schema_id": "kt.child_campaign.pipeline_attestations_receipt.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F03,
+            "status": "PASS" if f03_checks["pipeline_attestations_complete"] else f03_status,
+            "pass_verdict": "DECLARED_VERIFIER_PUBLICATION_PIPELINE_ATTESTATION_CHAIN_COMPLETE" if f03_checks["pipeline_attestations_complete"] else BLOCKED_VERDICT_F03,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "generated_utc": utc_now_iso_z(),
+            "checks": [
+                _check(_exists(root, SOURCE_IN_TOTO), "source_build_statement_present", "The declared source-build in-toto statement must remain present.", [SOURCE_IN_TOTO]),
+                _check(_exists(root, PUBLICATION_IN_TOTO), "publication_statement_present", "The declared publication in-toto statement must remain present.", [PUBLICATION_IN_TOTO]),
+                _check(_exists(root, DETACHED_MANIFEST), "detached_manifest_present", "The detached verifier package manifest must remain present for outsider-oriented proof transport.", [DETACHED_MANIFEST]),
+                _check(f03_checks["pipeline_attestations_complete"], "declared_attestation_chain_complete", "The declared verifier/publication chain must retain its source-build, publication, Rekor, and detached-package attestation surfaces.", [SOURCE_IN_TOTO, PUBLICATION_IN_TOTO, REKOR_RECEIPT, SIGSTORE_BUNDLE, DETACHED_MANIFEST]),
+            ],
+            "current_strongest_claim": "F03 preserves a bounded source-build and publication attestation chain for the declared verifier/publication proof surfaces only." if f03_checks["pipeline_attestations_complete"] else "F03 does not yet prove a complete attestation chain for the declared verifier/publication proof surfaces.",
+            "stronger_claim_not_made": [
+                "All KT pipeline steps are currently attested end-to-end",
+                "Current-head runtime capability is now externally proven",
+                "Release readiness is proven",
+            ],
+            "what_is_not_proven": [
+                "This receipt does not prove current-head runtime capability",
+                "This receipt does not prove release readiness, release ceremony, or release activation",
+                "This receipt does not widen product or commercial claims",
+            ],
+            "next_lawful_phase": f03_next_phase,
+        },
+        SLSA_RECEIPT: {
+            "schema_id": "kt.child_campaign.slsa_provenance_receipt.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F03,
+            "status": "PASS" if f03_checks["slsa_lineage_complete"] else f03_status,
+            "pass_verdict": "BOUNDED_SLSA_ALIGNED_PROVENANCE_AND_VSA_LINEAGE_PRESENT" if f03_checks["slsa_lineage_complete"] else BLOCKED_VERDICT_F03,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "generated_utc": utc_now_iso_z(),
+            "checks": [
+                _check(_exists(root, BUILD_PROVENANCE), "build_provenance_present", "The bounded build provenance artifact must remain present.", [BUILD_PROVENANCE]),
+                _check(_exists(root, VERIFICATION_SUMMARY), "verification_summary_present", "The bounded verification summary attestation must remain present.", [VERIFICATION_SUMMARY]),
+                _check(f03_checks["slsa_lineage_complete"], "bounded_slsa_lineage_complete", "The detached verifier package must carry the bounded provenance and verification-summary lineage needed for proof-integrity hardening.", [BUILD_PROVENANCE, VERIFICATION_SUMMARY, BUILD_VERIFICATION, DETACHED_MANIFEST]),
+                _check(True, "slsa_version_normalized_v1_2", "The child proof-ceiling policy keeps SLSA version language normalized to v1.2.", [PROOF_V2]),
+            ],
+            "current_strongest_claim": "F03 preserves bounded SLSA-aligned provenance and verification-summary lineage for the declared verifier/publication chain only." if f03_checks["slsa_lineage_complete"] else "F03 does not yet preserve a complete bounded SLSA-aligned lineage for the declared verifier/publication chain.",
+            "stronger_claim_not_made": [
+                "A SLSA level-attainment claim is earned",
+                "Current-head runtime provenance is fully attested end-to-end",
+                "Whole-system provenance is proven",
+            ],
+            "what_is_not_proven": [
+                "No SLSA level attainment is claimed",
+                "This receipt does not upgrade historical capability evidence into current-head capability truth",
+                "This receipt does not prove release readiness",
+            ],
+            "next_lawful_phase": f03_next_phase,
+        },
+        CROSS_HOST_RECEIPT: {
+            "schema_id": "kt.child_campaign.cross_host_repro_receipt.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F03,
+            "status": "PASS" if f03_checks["carried_forward_class_a_cross_host_repro"] else f03_status,
+            "pass_verdict": "DECLARED_CLASS_A_CROSS_HOST_REPRO_CARRIED_FORWARD_FOR_UNCHANGED_INHERITED_SUBSET" if f03_checks["carried_forward_class_a_cross_host_repro"] else BLOCKED_VERDICT_F03,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "generated_utc": utc_now_iso_z(),
+            "checks": [
+                _check(_exists(root, WS13), "ws13_receipt_present", "The bounded WS13 cross-host receipt must remain present for carried-forward class-A proof.", [WS13]),
+                _check(not class_a_drift_paths, "class_a_surfaces_unchanged_since_ws13_anchor", "The declared carried-forward class-A surfaces must remain byte-identical on the child head.", [*F03_CLASS_A_SURFACES, WS13]),
+                _check(f03_checks["carried_forward_class_a_cross_host_repro"], "carried_forward_cross_host_repro_valid", "Cross-host reproducibility is carried forward only for the unchanged inherited class-A subset proved by WS13.", [WS13, *F03_CLASS_A_SURFACES]),
+            ],
+            "carried_forward_scope": "UNCHANGED_INHERITED_CLASS_A_SUBSET_ONLY",
+            "class_a_drift_paths": class_a_drift_paths,
+            "current_strongest_claim": "F03 carries forward cross-host reproducibility only for the unchanged inherited class-A subset declared by WS13." if f03_checks["carried_forward_class_a_cross_host_repro"] else "F03 does not yet preserve carried-forward cross-host reproducibility for the declared inherited class-A subset.",
+            "stronger_claim_not_made": [
+                "All child-owned F03 outputs are now cross-host reproducible",
+                "Whole-repo cross-host reproducibility is proven",
+                "The repo-root import fragility is fixed",
+            ],
+            "what_is_not_proven": [
+                "This receipt does not widen reproducibility beyond the unchanged inherited class-A subset",
+                "This receipt does not prove current-head runtime capability",
+                "This receipt does not erase repo-root import fragility",
+            ],
+            "next_lawful_phase": f03_next_phase,
+        },
+        AIRLOCK_RECEIPT: {
+            "schema_id": "kt.child_campaign.dependency_airlock_receipt.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F03,
+            "status": "PASS" if f03_checks["dependency_airlock_valid"] else f03_status,
+            "pass_verdict": "DECLARED_CLASS_A_EMITTER_PATHS_REFRESHED_AND_DEPENDENCY_VALIDATED" if f03_checks["dependency_airlock_valid"] else BLOCKED_VERDICT_F03,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "generated_utc": utc_now_iso_z(),
+            "checks": [
+                _check(str(dependency_bundle.get("validation", {}).get("status", "")).strip() == "PASS", "dependency_inventory_validation_pass", "The dependency inventory, environment manifest, and SBOM must validate on the current head.", [DEPENDENCY_INVENTORY, PYTHON_ENVIRONMENT, SBOM, DEPENDENCY_VALIDATION]),
+                _check(not direct_third_party_imports, "class_a_emitter_direct_imports_have_no_third_party_roots", "The declared class-A emitter paths may not directly import third-party roots from the refreshed inventory.", [*F03_EMITTER_IMPORT_SURFACES, DEPENDENCY_INVENTORY]),
+                _check(f03_checks["dependency_airlock_valid"], "declared_class_a_dependency_path_current_head_bound", "The refreshed dependency evidence must bind to the current head for the declared class-A emitter paths.", [DEPENDENCY_INVENTORY, PYTHON_ENVIRONMENT, SBOM, DEPENDENCY_VALIDATION]),
+            ],
+            "direct_third_party_imports": direct_third_party_imports,
+            "current_strongest_claim": "F03 refreshes and validates current-head dependency evidence for the declared class-A emitter paths only." if f03_checks["dependency_airlock_valid"] else "F03 does not yet validate the current-head dependency evidence for the declared class-A emitter paths.",
+            "stronger_claim_not_made": [
+                "A full mirrored dependency ecosystem is proven for all KT surfaces",
+                "All runtime dependency paths are airlocked",
+                "Release build airgap is proven",
+            ],
+            "what_is_not_proven": [
+                "This receipt is bounded to the declared class-A emitter paths only",
+                "This receipt does not widen runtime or product claims",
+                "This receipt does not prove release readiness",
+            ],
+            "next_lawful_phase": f03_next_phase,
+        },
+        DRIFT_RECEIPT: {
+            "schema_id": "kt.child_campaign.drift_and_semantic_stability_receipt.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F03,
+            "status": "PASS" if f03_checks["drift_and_semantic_stability_guards_active"] else f03_status,
+            "pass_verdict": "DECLARED_PROOF_INTEGRITY_DRIFT_AND_SEMANTIC_GUARDS_ACTIVE" if f03_checks["drift_and_semantic_stability_guards_active"] else BLOCKED_VERDICT_F03,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "generated_utc": utc_now_iso_z(),
+            "checks": [
+                _check(_exists(root, POLICY_C_DRIFT), "policy_c_drift_guard_present", "The drift guard implementation must remain present.", [POLICY_C_DRIFT]),
+                _check(_exists(root, POLICY_C_DRIFT_SCHEMA), "policy_c_drift_schema_present", "The drift guard schema must remain present.", [POLICY_C_DRIFT_SCHEMA]),
+                _check(f03_checks["drift_and_semantic_stability_guards_active"], "declared_drift_and_semantic_guards_active", "Forbidden drift rules, class-B canonicalization, and proof-integrity drift surfaces must remain active.", [DETERMINISM, POLICY_C_DRIFT, POLICY_C_DRIFT_SCHEMA, POLICY_C_TEST_GUARD, POLICY_C_TEST_GATE, POLICY_C_TEST_SCHEMA]),
+            ],
+            "current_strongest_claim": "F03 preserves declared drift and semantic-stability guardrails for proof-integrity surfaces only." if f03_checks["drift_and_semantic_stability_guards_active"] else "F03 does not yet preserve a complete drift and semantic-stability guardrail set for proof-integrity surfaces.",
+            "stronger_claim_not_made": [
+                "All runtime behavior drift is now fully governed",
+                "Product behavior stability is proven",
+                "Current-head capability superiority is proven",
+            ],
+            "what_is_not_proven": [
+                "This receipt is bounded to proof-integrity drift and semantic guardrails only",
+                "This receipt does not widen runtime capability claims",
+                "This receipt does not prove release readiness or product readiness",
+            ],
+            "next_lawful_phase": f03_next_phase,
+        },
         STATE_V2: {
             "schema_id": "kt.child_campaign.state_vector.v2",
             "computed_state_id": f"kt_state_vector_v2::{head}",
@@ -491,24 +896,25 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             "subject_head_commit": head,
             "evidence_head_commit": head,
             "parent_terminal_state_ref": PARENT_PRODUCT,
-            "computed_claim_ceiling": "PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_F02B_TRUST_ACTIVATION_ONLY" if f02b_pass else "PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_BOOTSTRAP_AND_RUNTIME_BASELINE_ONLY",
+            "computed_claim_ceiling": "PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_F03_PROOF_INTEGRITY_HARDENING_ONLY" if f03_pass else ("PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_F02B_TRUST_ACTIVATION_ONLY" if f02b_pass else "PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_BOOTSTRAP_AND_RUNTIME_BASELINE_ONLY"),
             "blocker_matrix": BLOCKERS_V2,
             "trust_root_status": "CHILD_THRESHOLD_ROOT_ACCEPTANCE_ACTIVE" if f02b_pass else "RERATIFIED_3_OF_3_ROOT_EXECUTED_THRESHOLD_ACCEPTANCE_STILL_INACTIVE",
-            "verifier_status": "CHILD_THRESHOLD_ROOT_ACCEPTANCE_AND_MINIMAL_TUF_DISTRIBUTION_ACTIVE" if f02b_pass else "BOUNDED_STATIC_VERIFIER_BOOTSTRAP_ROOT_ONLY",
+            "verifier_status": "CHILD_THRESHOLD_ROOT_ACCEPTANCE_AND_MINIMAL_TUF_DISTRIBUTION_ACTIVE_WITH_F03_PROOF_INTEGRITY_HARDENING" if f03_pass else ("CHILD_THRESHOLD_ROOT_ACCEPTANCE_AND_MINIMAL_TUF_DISTRIBUTION_ACTIVE" if f02b_pass else "BOUNDED_STATIC_VERIFIER_BOOTSTRAP_ROOT_ONLY"),
             "release_readiness_status": "NOT_PROVEN",
             "release_eligibility_status": "NOT_ELIGIBLE",
             "release_ceremony_status": "NON_EXECUTED_BLOCKED_BY_PREREQUISITES",
             "release_activation_status": "NON_EXECUTED",
-            "reproducibility_status": "DECLARED_CLASS_A_CLASS_B_ONLY",
+            "reproducibility_status": "DECLARED_CLASS_A_CARRY_FORWARD_CROSS_HOST_PROVEN_FOR_UNCHANGED_INHERITED_SUBSET_ONLY" if f03_pass else "DECLARED_CLASS_A_CLASS_B_ONLY",
             "product_surface_status": "DOCUMENTARY_PRE_RELEASE_NON_RELEASE_ELIGIBLE",
             "external_confirmation_status": "CURRENT_HEAD_ASSURANCE_ONLY_AND_HISTORICAL_CAPABILITY_ONLY",
-            "next_lawful_transition": PHASE_F03 if f02b_pass else PHASE_TRUST,
+            "next_lawful_transition": f03_next_phase,
             "last_update_time": utc_now_iso_z(),
             "runtime_truth_matrix": RUNTIME_MATRIX,
             "doctrine_only_surfaces": [row["surface_id"] for row in rows if row["inventory_class"] == "doctrinal_only"],
             "stubbed_surfaces": [row["surface_id"] for row in rows if row["inventory_class"] == "stubbed"],
             "live_capability_surfaces": [row["surface_id"] for row in rows if row["inventory_class"] in {"live_unbenchmarked", "live_benchmarked"}],
             "benchmark_coverage_matrix": BENCHMARK_MATRIX,
+            "proof_integrity_receipts": [PIPELINE_RECEIPT, SLSA_RECEIPT, CROSS_HOST_RECEIPT, AIRLOCK_RECEIPT, DRIFT_RECEIPT] if f02b_pass else [],
             "critical_organs_current_head_receipts": {"router": ["KT_PROD_CLEANROOM/tests/fl3/test_epic19_router_hat_demo.py"], "paradox": ["KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json"], "tournament_promotion": ["KT_PROD_CLEANROOM/reports/kt_tournament_readiness_receipt.json"]},
             "organ_promotion_blockers": {row["surface_id"]: row["blockers"] for row in rows if row["blockers"]},
             "organ_maturity_matrix": {row["surface_id"]: row["maturity_class"] for row in rows},
@@ -598,8 +1004,9 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             PHASE_BOOTSTRAP: "PASS",
             PHASE_RUNTIME: outputs[RUNTIME_RECEIPT]["status"],
             PHASE_TRUST: outputs[TRUST_RECEIPT]["status"],
+            PHASE_F03: f03_status,
         },
-        "next_lawful_phase": PHASE_F03 if f02b_pass else PHASE_TRUST,
+        "next_lawful_phase": f03_next_phase,
         "open_blockers": active_blockers,
     }
 
