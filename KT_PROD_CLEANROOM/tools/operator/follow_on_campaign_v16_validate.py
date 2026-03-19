@@ -104,8 +104,12 @@ F07_RELEASE_SIGNER_ISSUANCE = f"{REPORT}/kt_release_signer_issuance_receipt.json
 F07_PRODUCER_ATTESTATION_BUNDLE = f"{REPORT}/kt_producer_attestation_bundle.json"
 F07_RELEASE_CEREMONY_RECEIPT = f"{REPORT}/kt_executed_release_ceremony_receipt.json"
 F07_RELEASE_ACTIVATION_RECEIPT = f"{REPORT}/kt_release_activation_receipt.json"
+F07_EXECUTION_PACK_RECEIPT = f"{REPORT}/kt_f07_release_execution_pack_receipt.json"
 OUTSIDER_PACKAGE_ROOT = "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F04_public_verifier_v2_package"
 F06_RUNTIME_PACKAGE_ROOT = "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F06_paradox_external_confirmation_package"
+F07_EXECUTION_PACK_ROOT = "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F07_release_execution_pack"
+F07_EXECUTION_MANIFEST_NAME = "kt_release_execution_manifest.json"
+F07_EXECUTION_INSTRUCTIONS_NAME = "OFFBOX_RELEASE_EXECUTION_INSTRUCTIONS.md"
 POLICY_C_DRIFT = "KT_PROD_CLEANROOM/policy_c/drift_guard.py"
 POLICY_C_DRIFT_SCHEMA = "KT_PROD_CLEANROOM/policy_c/schemas/policy_c_drift_report_schema_v1.json"
 POLICY_C_TEST_GUARD = "KT_PROD_CLEANROOM/tests/policy_c/test_drift_guard.py"
@@ -185,8 +189,10 @@ PLANNED = {
     F07_PRODUCER_ATTESTATION_BUNDLE,
     F07_RELEASE_CEREMONY_RECEIPT,
     F07_RELEASE_ACTIVATION_RECEIPT,
+    F07_EXECUTION_PACK_RECEIPT,
     OUTSIDER_PACKAGE_ROOT,
     F06_RUNTIME_PACKAGE_ROOT,
+    F07_EXECUTION_PACK_ROOT,
     STATE_STALE,
     STATE_SUPERSEDE,
     PROOF_SUPERSEDE,
@@ -564,6 +570,233 @@ def main() -> int:
 if __name__ == "__main__":
     raise SystemExit(main())
 """
+
+
+def _build_f07_release_execution_instructions() -> str:
+    return """# F07 Off-Box Release Execution Pack
+
+This pack is preparatory only.
+
+It exists to support child-bounded release-legitimacy execution on the lawful off-box path without widening runtime, product, or commercial claims.
+
+## Allowed use
+
+1. Materialize release signer issuance on the declared hardware-backed release lane.
+2. Materialize producer attestation issuance on the declared attested producer lane.
+3. Execute the bounded child release ceremony only after signer and producer materialization are complete.
+4. Execute bounded release activation only after the ceremony is actually executed.
+
+## Forbidden use
+
+- Do not treat this pack as proof that release signer issuance already happened.
+- Do not treat this pack as proof that producer attestation is active.
+- Do not treat this pack as proof that release ceremony or release activation already executed.
+- Do not widen runtime, product, commercial, or whole-system capability claims from this pack alone.
+- Do not substitute same-host simulation for the required off-box execution evidence.
+
+## Required operator return artifacts
+
+1. `operator_inputs/release_signer_issuance_execution.json`
+2. `operator_inputs/producer_attestation_execution.json`
+3. `operator_inputs/release_ceremony_execution.json`
+4. `operator_inputs/release_activation_execution.json`
+
+Each returned artifact must be filled on the lawful off-box path and then brought back for bounded validation. Empty templates are not execution evidence.
+"""
+
+
+def _prepare_f07_release_execution_pack(
+    root: Path,
+    *,
+    head: str,
+    outputs: Dict[str, Dict[str, Any]],
+    release_role: Dict[str, Any],
+    producer_role: Dict[str, Any],
+    threshold_root_active: bool,
+    f07_next_phase: str,
+) -> Dict[str, Any]:
+    package_root = (root / F07_EXECUTION_PACK_ROOT).resolve()
+    if package_root.exists():
+        shutil.rmtree(package_root)
+    package_root.mkdir(parents=True, exist_ok=True)
+
+    instructions_path = (package_root / F07_EXECUTION_INSTRUCTIONS_NAME).resolve()
+    instructions_path.write_text(_build_f07_release_execution_instructions(), encoding="utf-8", newline="\n")
+
+    manifest_refs = [
+        THRESHOLD_POLICY,
+        TUF_POLICY,
+        SIGNER_TOPOLOGY,
+        TRUST_ROOT,
+        RELEASE,
+        FINAL_CURRENT_HEAD_READJUDICATION,
+        F07_THRESHOLD_RECEIPT,
+        F07_RELEASE_SIGNER_ISSUANCE,
+        F07_PRODUCER_ATTESTATION_BUNDLE,
+        F07_RELEASE_CEREMONY_RECEIPT,
+        F07_RELEASE_ACTIVATION_RECEIPT,
+    ]
+    packaged_artifacts: List[Dict[str, Any]] = []
+    for rel in manifest_refs:
+        package_path = _package_rel_for_repo_ref(rel)
+        target = (package_root / package_path).resolve()
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if rel in outputs:
+            write_json_stable(target, outputs[rel], volatile_keys=())
+        else:
+            shutil.copy2((root / rel).resolve(), target)
+        packaged_artifacts.append(
+            {
+                "artifact_ref": rel,
+                "package_path": package_path,
+                "sha256": file_sha256(target),
+            }
+        )
+
+    templates = {
+        "operator_inputs/release_signer_issuance_execution.json": {
+            "schema_id": "kt.child_campaign.release_signer_issuance_execution_template.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F07,
+            "template_only": True,
+            "execution_required": "OFFBOX_ONLY",
+            "role_id": "release",
+            "threshold": release_role.get("threshold", 0),
+            "planned_identity_ids": list(release_role.get("planned_identity_ids", [])),
+            "required_fields": [
+                "executed_utc",
+                "execution_environment_id",
+                "hardware_backed_station_ids",
+                "issued_identity_ids",
+                "witness_ids",
+                "public_bundle_refs",
+                "execution_notes",
+            ],
+        },
+        "operator_inputs/producer_attestation_execution.json": {
+            "schema_id": "kt.child_campaign.producer_attestation_execution_template.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F07,
+            "template_only": True,
+            "execution_required": "OFFBOX_ONLY",
+            "role_id": "producer",
+            "threshold": producer_role.get("threshold", 0),
+            "planned_identity_ids": list(producer_role.get("planned_identity_ids", [])),
+            "required_fields": [
+                "executed_utc",
+                "execution_environment_id",
+                "issued_identity_ids",
+                "attested_runner_ids",
+                "witness_ids",
+                "public_bundle_refs",
+                "execution_notes",
+            ],
+        },
+        "operator_inputs/release_ceremony_execution.json": {
+            "schema_id": "kt.child_campaign.release_ceremony_execution_template.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F07,
+            "template_only": True,
+            "execution_required": "OFFBOX_ONLY",
+            "required_fields": [
+                "executed_utc",
+                "execution_environment_id",
+                "release_bundle_ref",
+                "approver_identity_ids",
+                "producer_bundle_ref",
+                "witness_ids",
+                "ceremony_log_ref",
+                "execution_notes",
+            ],
+        },
+        "operator_inputs/release_activation_execution.json": {
+            "schema_id": "kt.child_campaign.release_activation_execution_template.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F07,
+            "template_only": True,
+            "execution_required": "OFFBOX_ONLY",
+            "required_fields": [
+                "executed_utc",
+                "activation_profile",
+                "activated_bundle_ref",
+                "approver_identity_ids",
+                "activation_notes",
+            ],
+        },
+    }
+    for rel, payload in templates.items():
+        write_json_stable((package_root / rel).resolve(), payload, volatile_keys=())
+
+    manifest = {
+        "schema_id": "kt.child_campaign.release_execution_manifest.v1",
+        "campaign_id": CAMPAIGN_ID,
+        "phase_id": PHASE_F07,
+        "generated_utc": utc_now_iso_z(),
+        "subject_head_commit": head,
+        "evidence_head_commit": head,
+        "current_repo_head": head,
+        "scope": "OFFBOX_RELEASE_LEGITIMACY_EXECUTION_SUPPORT_ONLY",
+        "threshold_root_active": threshold_root_active,
+        "release_role": {
+            "threshold": release_role.get("threshold", 0),
+            "signer_count": release_role.get("signer_count", 0),
+            "planned_identity_ids": list(release_role.get("planned_identity_ids", [])),
+        },
+        "producer_role": {
+            "threshold": producer_role.get("threshold", 0),
+            "signer_count": producer_role.get("signer_count", 0),
+            "planned_identity_ids": list(producer_role.get("planned_identity_ids", [])),
+        },
+        "packaged_artifacts": packaged_artifacts,
+        "required_operator_outputs": sorted(templates.keys()),
+        "subtracks": [
+            "signer_and_producer_materialization",
+            "ceremony_and_activation_execution",
+        ],
+        "limitations": [
+            "This manifest does not prove release signer issuance is executed.",
+            "This manifest does not prove producer attestation is active.",
+            "This manifest does not prove release ceremony or activation execution.",
+            "This manifest does not widen runtime, product, or commercial claims.",
+        ],
+        "next_lawful_phase": f07_next_phase,
+    }
+    write_json_stable((package_root / F07_EXECUTION_MANIFEST_NAME).resolve(), manifest, volatile_keys=())
+
+    return {
+        "schema_id": "kt.child_campaign.release_execution_pack_receipt.v1",
+        "campaign_id": CAMPAIGN_ID,
+        "phase_id": PHASE_F07,
+        "status": "PREPARED_NOT_EXECUTED",
+        "pass_verdict": "CHILD_RELEASE_EXECUTION_PACK_READY_FOR_OFFBOX_USE_ONLY",
+        "subject_head_commit": head,
+        "evidence_head_commit": head,
+        "current_repo_head": head,
+        "generated_utc": utc_now_iso_z(),
+        "package_root_ref": F07_EXECUTION_PACK_ROOT,
+        "package_manifest_ref": f"{F07_EXECUTION_PACK_ROOT}/{F07_EXECUTION_MANIFEST_NAME}",
+        "instructions_ref": f"{F07_EXECUTION_PACK_ROOT}/{F07_EXECUTION_INSTRUCTIONS_NAME}",
+        "required_operator_outputs": sorted(templates.keys()),
+        "subtracks": [
+            "signer_and_producer_materialization",
+            "ceremony_and_activation_execution",
+        ],
+        "blocked_by": [
+            "release_signer_issuance_executed",
+            "producer_attestation_bundle_valid",
+            "release_ceremony_executed",
+            "release_activation_executed",
+        ],
+        "current_strongest_claim": "F07 prepares a child-only off-box execution pack for release signer issuance, producer attestation, ceremony, and activation without claiming any executed release state.",
+        "stronger_claim_not_made": [
+            "Release signer issuance is executed",
+            "Producer attestation is active",
+            "Release ceremony is executed",
+            "Release activation is executed",
+            "Runtime, product, or commercial ceilings are widened",
+        ],
+        "next_lawful_phase": f07_next_phase,
+    }
 
 
 def _run_detached_package_twice(
@@ -2686,6 +2919,32 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             "next_lawful_phase": f07_next_phase,
         }
 
+        outputs[F07_EXECUTION_PACK_RECEIPT] = _prepare_f07_release_execution_pack(
+            root,
+            head=head,
+            outputs=outputs,
+            release_role={
+                "threshold": release_threshold,
+                "signer_count": release_signer_count,
+                "planned_identity_ids": release_role_identities,
+            },
+            producer_role={
+                "threshold": producer_threshold,
+                "signer_count": producer_signer_count,
+                "planned_identity_ids": producer_role_identities,
+            },
+            threshold_root_active=threshold_root_active,
+            f07_next_phase=f07_next_phase,
+        )
+        for rel in (
+            F07_RELEASE_SIGNER_ISSUANCE,
+            F07_PRODUCER_ATTESTATION_BUNDLE,
+            F07_RELEASE_CEREMONY_RECEIPT,
+            F07_RELEASE_ACTIVATION_RECEIPT,
+        ):
+            outputs[rel]["offbox_execution_pack_receipt_ref"] = F07_EXECUTION_PACK_RECEIPT
+            outputs[rel]["offbox_execution_pack_root_ref"] = F07_EXECUTION_PACK_ROOT
+
         outputs[BLOCKERS_V2]["current_repo_head"] = head
         outputs[BLOCKERS_V2]["open_blockers"] = f07_open_blockers
         outputs[BLOCKERS_V2]["rows"] = [
@@ -2763,6 +3022,7 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
         outputs[STATE_V2]["producer_attestation_bundle"] = F07_PRODUCER_ATTESTATION_BUNDLE
         outputs[STATE_V2]["executed_release_ceremony_receipt"] = F07_RELEASE_CEREMONY_RECEIPT
         outputs[STATE_V2]["release_activation_receipt"] = F07_RELEASE_ACTIVATION_RECEIPT
+        outputs[STATE_V2]["release_execution_pack_receipt"] = F07_EXECUTION_PACK_RECEIPT
         outputs[CHILD_DAG]["current_node"] = "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY" if f07_pass else PHASE_F07
         outputs[CHILD_DAG]["next_lawful_phase"] = f07_next_phase
         outputs[CHILD_DAG]["nodes"] = [

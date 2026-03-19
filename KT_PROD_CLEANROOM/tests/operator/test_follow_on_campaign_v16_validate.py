@@ -23,6 +23,10 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     FINAL_BLOCKER_MATRIX,
     FINAL_CLAIM_CEILING,
     FINAL_CURRENT_HEAD_READJUDICATION,
+    F07_EXECUTION_PACK_RECEIPT,
+    F07_EXECUTION_INSTRUCTIONS_NAME,
+    F07_EXECUTION_MANIFEST_NAME,
+    F07_EXECUTION_PACK_ROOT,
     F07_PRODUCER_ATTESTATION_BUNDLE,
     F07_RELEASE_ACTIVATION_RECEIPT,
     F07_RELEASE_CEREMONY_RECEIPT,
@@ -379,6 +383,7 @@ def test_child_campaign_f07_blocks_honestly_when_release_prerequisites_remain_pl
     f07_producer = json.loads((tmp_path / F07_PRODUCER_ATTESTATION_BUNDLE).read_text(encoding="utf-8"))
     f07_ceremony = json.loads((tmp_path / F07_RELEASE_CEREMONY_RECEIPT).read_text(encoding="utf-8"))
     f07_activation = json.loads((tmp_path / F07_RELEASE_ACTIVATION_RECEIPT).read_text(encoding="utf-8"))
+    f07_pack = json.loads((tmp_path / F07_EXECUTION_PACK_RECEIPT).read_text(encoding="utf-8"))
     assert runtime["status"] == "PASS"
     assert trust["status"] == "PASS"
     assert pipeline["status"] == "PASS"
@@ -403,6 +408,8 @@ def test_child_campaign_f07_blocks_honestly_when_release_prerequisites_remain_pl
     assert f07_producer["status"] == "BLOCKED"
     assert f07_ceremony["status"] == "BLOCKED"
     assert f07_activation["status"] == "BLOCKED"
+    assert f07_pack["status"] == "PREPARED_NOT_EXECUTED"
+    assert f07_pack["package_root_ref"] == F07_EXECUTION_PACK_ROOT
     assert bench["coverage_percent"] >= 50.0
     assert state["next_lawful_transition"] == PHASE_F07
     assert "threshold_root_verifier_acceptance_inactive" not in state["open_blockers"]
@@ -414,11 +421,20 @@ def test_child_campaign_f07_blocks_honestly_when_release_prerequisites_remain_pl
     assert state["release_eligibility_status"] == "NOT_ELIGIBLE"
     assert state["release_ceremony_status"] == "NON_EXECUTED_BLOCKED_BY_PREREQUISITES"
     assert state["release_activation_status"] == "NON_EXECUTED"
+    assert state["release_execution_pack_receipt"] == F07_EXECUTION_PACK_RECEIPT
     assert final_readjudication["selected_runtime_surface"] == "paradox"
     assert final_readjudication["current_head_capability_status"] == "SELECTED_RUNTIME_SURFACE_ONLY_OUTSIDER_REPLAY_CONFIRMED"
     assert "current_head_external_capability_not_confirmed" in final_blockers["open_blockers"]
     assert any(row["surface_id"] == "openclaw_labor_organ" and row["current_head_receipt_status"] == "BLOCKED" for row in capability_matrix["rows"])
     assert any(row["surface_id"] == "adapter_layer" and "STUBBED_SURFACE" in row["promotion_blockers"] for row in promotion_matrix["rows"])
+    assert f07_release_signers["offbox_execution_pack_receipt_ref"] == F07_EXECUTION_PACK_RECEIPT
+    assert f07_producer["offbox_execution_pack_receipt_ref"] == F07_EXECUTION_PACK_RECEIPT
+    assert (tmp_path / F07_EXECUTION_PACK_ROOT / F07_EXECUTION_MANIFEST_NAME).exists()
+    assert (tmp_path / F07_EXECUTION_PACK_ROOT / F07_EXECUTION_INSTRUCTIONS_NAME).exists()
+    assert (tmp_path / F07_EXECUTION_PACK_ROOT / "operator_inputs/release_signer_issuance_execution.json").exists()
+    assert (tmp_path / F07_EXECUTION_PACK_ROOT / "operator_inputs/producer_attestation_execution.json").exists()
+    assert (tmp_path / F07_EXECUTION_PACK_ROOT / "operator_inputs/release_ceremony_execution.json").exists()
+    assert (tmp_path / F07_EXECUTION_PACK_ROOT / "operator_inputs/release_activation_execution.json").exists()
 
     for rel in [
         CHILD_DAG,
@@ -453,6 +469,7 @@ def test_child_campaign_f07_blocks_honestly_when_release_prerequisites_remain_pl
         F07_PRODUCER_ATTESTATION_BUNDLE,
         F07_RELEASE_CEREMONY_RECEIPT,
         F07_RELEASE_ACTIVATION_RECEIPT,
+        F07_EXECUTION_PACK_RECEIPT,
     ]:
         assert (tmp_path / rel).exists()
 
