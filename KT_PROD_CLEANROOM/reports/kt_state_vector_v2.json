@@ -1,10 +1,11 @@
 {
+  "accepted_verifier_surface_count": 2,
   "benchmark_coverage_matrix": "KT_PROD_CLEANROOM/reports/kt_benchmark_coverage_matrix.json",
   "benchmark_coverage_percent": 50.0,
   "blocker_matrix": "KT_PROD_CLEANROOM/reports/kt_blocker_matrix_v2.json",
   "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
-  "computed_claim_ceiling": "PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_BOOTSTRAP_AND_RUNTIME_BASELINE_ONLY",
-  "computed_state_id": "kt_state_vector_v2::17cd0c3998e0843187a802fa11db8f590ae3ee45",
+  "computed_claim_ceiling": "PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_F02B_TRUST_ACTIVATION_ONLY",
+  "computed_state_id": "kt_state_vector_v2::de024c2e0d662c8f42894cea2d4f9cc7fdef8cc9",
   "critical_organs_current_head_receipts": {
     "paradox": [
       "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json"
@@ -29,11 +30,11 @@
     "multiverse",
     "openclaw_labor_organ"
   ],
-  "current_repo_head": "17cd0c3998e0843187a802fa11db8f590ae3ee45",
+  "current_repo_head": "de024c2e0d662c8f42894cea2d4f9cc7fdef8cc9",
   "doctrine_only_surfaces": [
     "openclaw_labor_organ"
   ],
-  "evidence_head_commit": "17cd0c3998e0843187a802fa11db8f590ae3ee45",
+  "evidence_head_commit": "de024c2e0d662c8f42894cea2d4f9cc7fdef8cc9",
   "external_confirmation_status": "CURRENT_HEAD_ASSURANCE_ONLY_AND_HISTORICAL_CAPABILITY_ONLY",
   "historical_only_capability_imports": [
     {
@@ -41,7 +42,7 @@
       "scope": "historical_bounded_frontier_target_only"
     }
   ],
-  "last_update_time": "2026-03-19T05:00:40Z",
+  "last_update_time": "2026-03-19T14:24:00Z",
   "live_capability_surfaces": [
     "router",
     "cognition",
@@ -50,14 +51,12 @@
     "multiverse",
     "tournament_promotion"
   ],
-  "next_lawful_transition": "F02B_TRUST_ROOT_TRANSPARENCY_AND_TUF_ACTIVATION",
+  "next_lawful_transition": "F03_PROOF_REPRO_HARDENING_AND_STABILITY",
   "open_blockers": [
-    "threshold_root_verifier_acceptance_inactive",
     "current_head_external_capability_not_confirmed",
     "release_readiness_not_proven",
     "release_ceremony_not_executed",
     "release_activation_not_executed",
-    "verifier_coverage_not_widened_beyond_bounded_surfaces",
     "repo_root_import_fragility_visible_and_unfixed"
   ],
   "organ_maturity_matrix": {
@@ -98,7 +97,7 @@
   "stubbed_surfaces": [
     "adapter_layer"
   ],
-  "subject_head_commit": "17cd0c3998e0843187a802fa11db8f590ae3ee45",
+  "subject_head_commit": "de024c2e0d662c8f42894cea2d4f9cc7fdef8cc9",
   "theater_risk_score_matrix": {
     "adapter_layer": 0.66,
     "cognition": 0.44,
@@ -109,6 +108,8 @@
     "temporal": 0.44,
     "tournament_promotion": 0.18
   },
-  "trust_root_status": "RERATIFIED_3_OF_3_ROOT_EXECUTED_THRESHOLD_ACCEPTANCE_STILL_INACTIVE",
-  "verifier_status": "BOUNDED_STATIC_VERIFIER_BOOTSTRAP_ROOT_ONLY"
+  "threshold_root_acceptance_policy": "KT_PROD_CLEANROOM/governance/kt_threshold_root_acceptance_policy.json",
+  "trust_root_status": "CHILD_THRESHOLD_ROOT_ACCEPTANCE_ACTIVE",
+  "tuf_distribution_policy": "KT_PROD_CLEANROOM/governance/kt_tuf_distribution_policy.json",
+  "verifier_status": "CHILD_THRESHOLD_ROOT_ACCEPTANCE_AND_MINIMAL_TUF_DISTRIBUTION_ACTIVE"
 }

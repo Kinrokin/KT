@@ -12,11 +12,14 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     BLOCKERS_V2,
     BOOTSTRAP_RECEIPT,
     CHILD_DAG,
+    IDENTITY_MODEL,
+    LOG_MONITOR,
     OLD_PROOF,
     OLD_STATE,
     PARENT_DAG,
     PARENT_FINAL,
     PARENT_PRODUCT,
+    PHASE_F03,
     PHASE_RUNTIME,
     PHASE_TRUST,
     PROOF_SUPERSEDE,
@@ -28,14 +31,23 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     STATE_STALE,
     STATE_SUPERSEDE,
     STATE_V2,
+    STATIC_BUNDLE_ATTESTATION,
+    STATIC_BUNDLE_MANIFEST,
+    STATIC_BUNDLE_SBOM,
     TEST_REL,
     THEATER_MATRIX,
+    THRESHOLD_POLICY,
+    TUF_POLICY,
+    TUF_ROOT_INIT,
     TOOL_REL,
     TRUST_RECEIPT,
     TRUST_ROOT,
     WS11,
+    WS12,
+    WS14,
     WS17A,
     WS17B,
+    WS19_DETACHED,
     emit_follow_on_campaign_v16,
 )
 
@@ -108,35 +120,92 @@ def _seed_repo(tmp_path: Path) -> str:
     _write_json(tmp_path / PARENT_PRODUCT, {"schema_id": "kt.operator.ws19.product_surface_receipt.v1", "status": "PASS", "campaign_completion_status": "STILL_BLOCKED", "next_lawful_workstream": None})
     _write_json(tmp_path / OLD_STATE, {"schema_id": "kt.operator.state_vector.v1", "state_vector_id": "legacy", "adjudication_status": "PRE_ADJUDICATION_PENDING_STEP_12"})
     _write_json(tmp_path / OLD_PROOF, {"schema_id": "kt.operator.claim_proof_ceiling_compiler.v1", "status": "PASS"})
-    _write_json(tmp_path / TRUST_ROOT, {"schema_id": "kt.governance.trust_root_policy.v1", "status": "EXECUTED_RERATIFIED_3_OF_3", "verifier_acceptance_impact": {"post_pass_target_state": "THRESHOLD_ROOT_ACCEPTANCE_STILL_PENDING_LATER_EXPLICIT_BUNDLE"}})
-    _write_json(tmp_path / "KT_PROD_CLEANROOM/governance/kt_signer_topology.json", {"schema_id": "kt.governance.signer_topology.v1", "status": "EXECUTED_RERATIFIED_3_OF_3"})
+    _write_json(
+        tmp_path / TRUST_ROOT,
+        {
+            "schema_id": "kt.governance.trust_root_policy.v1",
+            "status": "EXECUTED_RERATIFIED_3_OF_3",
+            "ratified_root_topology": {"target_trust_root_id": "KT_SOVEREIGN_ROOT_TARGET_20260317", "root_threshold": 3},
+            "verifier_acceptance_impact": {"post_pass_target_state": "THRESHOLD_ROOT_ACCEPTANCE_STILL_PENDING_LATER_EXPLICIT_BUNDLE"},
+        },
+    )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM/governance/kt_signer_topology.json",
+        {
+            "schema_id": "kt.governance.signer_topology.v1",
+            "status": "EXECUTED_RERATIFIED_3_OF_3",
+            "roles": [{"role_id": "verifier_acceptance", "threshold": 1, "signer_count": 2}],
+        },
+    )
     _write_json(tmp_path / RELEASE, {"schema_id": "kt.governance.release_ceremony.v1", "status": "ACTIVE_LOCKED_PENDING_EXECUTION_PREREQUISITES"})
     _write_json(tmp_path / "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json", {"schema_id": "kt.governance.determinism_envelope_policy.v1", "status": "ACTIVE"})
+    _write_json(
+        tmp_path / IDENTITY_MODEL,
+        {
+            "schema_id": "kt.governance.identity_model_policy.v1",
+            "principal_sets": {"verifier_acceptance_maintainers": ["KT_VERIFIER_ACCEPTANCE_A", "KT_VERIFIER_ACCEPTANCE_B"]},
+            "current_overlap_scan": [
+                {"constraint_id": "root_verifier_acceptance_overlap_forbidden", "status": "PASS"},
+                {"constraint_id": "release_verifier_acceptance_overlap_forbidden", "status": "PASS"},
+                {"constraint_id": "verifier_acceptance_ci_keyless_overlap_forbidden", "status": "PASS"},
+                {"constraint_id": "operator_verifier_acceptance_overlap_forbidden", "status": "PASS"},
+            ],
+        },
+    )
+    _write_json(tmp_path / TUF_ROOT_INIT, {"schema_id": "kt.operator.tuf_root_initialization.v1", "status": "PASS", "trust_root_id": "KT_TUF_ROOT_BOOTSTRAP_20260314"})
     _write_json(tmp_path / WS11, {"schema_id": "seed", "status": "PASS"})
+    _write_json(tmp_path / WS12, {"schema_id": "seed", "status": "PASS"})
+    _write_json(tmp_path / WS14, {"schema_id": "seed", "status": "PASS"})
     _write_json(tmp_path / WS17A, {"schema_id": "seed", "status": "PASS"})
     _write_json(tmp_path / WS17B, {"schema_id": "seed", "status": "PASS"})
+    _write_json(tmp_path / WS19_DETACHED, {"schema_id": "seed", "status": "PASS"})
+    _write_json(tmp_path / LOG_MONITOR, {"schema_id": "seed", "status": "PASS"})
+    _write_json(tmp_path / "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json", {"schema_id": "seed", "status": "ACTIVE"})
+    _write_json(tmp_path / STATIC_BUNDLE_MANIFEST, {"schema_id": "seed", "status": "PASS"})
+    _write_json(tmp_path / STATIC_BUNDLE_SBOM, {"schema_id": "seed", "status": "PASS"})
+    _write_json(tmp_path / STATIC_BUNDLE_ATTESTATION, {"schema_id": "seed", "status": "PASS"})
+    _write_json(tmp_path / "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json", {"schema_id": "seed", "status": "PASS"})
+    _write_json(tmp_path / "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json", {"schema_id": "seed", "status": "PASS"})
     return _commit_all(tmp_path, "seed repo")
 
 
 def test_child_campaign_bootstrap_and_runtime_baseline(tmp_path: Path) -> None:
     head = _seed_repo(tmp_path)
     summary = emit_follow_on_campaign_v16(tmp_path)
-    assert summary["status"] == "PARTIAL_SUCCESS"
+    assert summary["status"] == "ACTIVE"
     assert summary["current_repo_head"] == head
     assert summary["phase_results"][PHASE_RUNTIME] == "PASS"
-    assert summary["phase_results"][PHASE_TRUST] == "BLOCKED"
+    assert summary["phase_results"][PHASE_TRUST] == "PASS"
+    assert summary["next_lawful_phase"] == PHASE_F03
 
     runtime = json.loads((tmp_path / RUNTIME_RECEIPT).read_text(encoding="utf-8"))
     trust = json.loads((tmp_path / TRUST_RECEIPT).read_text(encoding="utf-8"))
     bench = json.loads((tmp_path / BENCHMARK_MATRIX).read_text(encoding="utf-8"))
     state = json.loads((tmp_path / STATE_V2).read_text(encoding="utf-8"))
     assert runtime["status"] == "PASS"
-    assert trust["status"] == "BLOCKED"
+    assert trust["status"] == "PASS"
     assert bench["coverage_percent"] >= 50.0
-    assert state["next_lawful_transition"] == PHASE_TRUST
+    assert state["next_lawful_transition"] == PHASE_F03
+    assert "threshold_root_verifier_acceptance_inactive" not in state["open_blockers"]
+    assert "verifier_coverage_not_widened_beyond_bounded_surfaces" not in state["open_blockers"]
 
-    for rel in [CHILD_DAG, SINGLE_REALITY, PROOF_V2, BLOCKERS_V2, RUNTIME_MATRIX, THEATER_MATRIX, STATE_STALE, STATE_SUPERSEDE, PROOF_SUPERSEDE, BOOTSTRAP_RECEIPT]:
+    for rel in [CHILD_DAG, SINGLE_REALITY, PROOF_V2, THRESHOLD_POLICY, TUF_POLICY, BLOCKERS_V2, RUNTIME_MATRIX, THEATER_MATRIX, STATE_STALE, STATE_SUPERSEDE, PROOF_SUPERSEDE, BOOTSTRAP_RECEIPT]:
         assert (tmp_path / rel).exists()
+
+
+def test_child_campaign_f02b_blocks_if_threshold_root_target_missing(tmp_path: Path) -> None:
+    _seed_repo(tmp_path)
+    broken = json.loads((tmp_path / TRUST_ROOT).read_text(encoding="utf-8"))
+    broken["ratified_root_topology"] = {"target_trust_root_id": "", "root_threshold": 0}
+    _write_json(tmp_path / TRUST_ROOT, broken)
+    _commit_all(tmp_path, "break threshold root target")
+
+    summary = emit_follow_on_campaign_v16(tmp_path)
+    trust = json.loads((tmp_path / TRUST_RECEIPT).read_text(encoding="utf-8"))
+    assert summary["status"] == "PARTIAL_SUCCESS"
+    assert summary["phase_results"][PHASE_TRUST] == "BLOCKED"
+    assert trust["status"] == "BLOCKED"
+    assert "threshold_root_verifier_acceptance_inactive" in trust["blocked_by"]
 
 
 def test_child_campaign_fails_if_parent_has_illegal_next_workstream(tmp_path: Path) -> None:

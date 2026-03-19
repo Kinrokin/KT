@@ -1,0 +1,84 @@
+{
+  "accepted_primary_trust_root": {
+    "acceptance_state": "ACTIVE_THRESHOLD_ACCEPTED_CHILD_SCOPED",
+    "root_threshold": 3,
+    "source_refs": [
+      "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+      "KT_PROD_CLEANROOM/governance/kt_signer_topology.json",
+      "KT_PROD_CLEANROOM/governance/kt_identity_model_policy.json"
+    ],
+    "trust_root_id": "KT_SOVEREIGN_ROOT_TARGET_20260317"
+  },
+  "accepted_verifier_surfaces": [
+    {
+      "primary_manifest_ref": "KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json",
+      "primary_manifest_sha256": "27bcab29467f34bcd21774df0601606f3aebe27ee55f37aeafa671c9fbe6851a",
+      "scope": "BOUNDED_IMPORTED_CURRENT_HEAD_STATIC_VERIFIER_RELEASE_ONLY",
+      "source_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json",
+      "supporting_artifacts": [
+        {
+          "artifact_ref": "KT_PROD_CLEANROOM/reports/kt_static_verifier_sbom.json",
+          "sha256": "54ed535585028029d2458385526344cc279de8cadd6818d6aa553ce7f7754d54"
+        },
+        {
+          "artifact_ref": "KT_PROD_CLEANROOM/reports/kt_static_verifier_attestation.json",
+          "sha256": "f582a1eda3ff3e2e43b0c1acc59cc14120e09d2fb209272b8d06e727b402ea7a"
+        }
+      ],
+      "surface_id": "WS14_STATIC_VERIFIER_RELEASE_BUNDLE"
+    },
+    {
+      "primary_manifest_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+      "primary_manifest_sha256": "826fcec39dcb66a2bafce08f3d9184cd0297b2778becd768cfa556aabf73849d",
+      "scope": "HISTORICAL_GOVERNANCE_ONLY_DETACHED_VERIFIER_PACKAGE",
+      "source_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+      "supporting_artifacts": [
+        {
+          "artifact_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json",
+          "sha256": "6b68c2805382c502ae199dab501755551d0a1c02670d909ad59c2443493e3327"
+        },
+        {
+          "artifact_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+          "sha256": "19e55b3c3d5dbb48bf0226247688262d48c632331885fd3a905fdfaf8ac8e845"
+        }
+      ],
+      "surface_id": "WS19_DETACHED_PUBLIC_VERIFIER_PACKAGE"
+    }
+  ],
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "coverage_mode": "MINIMAL_F02B_CLEARANCE_ONLY",
+  "current_repo_head": "de024c2e0d662c8f42894cea2d4f9cc7fdef8cc9",
+  "historical_predecessor_root": {
+    "acceptance_state": "HISTORICAL_REPLAY_ONLY",
+    "source_ref": "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json",
+    "trust_root_id": "KT_TUF_ROOT_BOOTSTRAP_20260314"
+  },
+  "limitations": [
+    "This activation is child-scoped to verifier distribution surfaces only.",
+    "This activation does not prove release readiness, release ceremony execution, or release activation.",
+    "This activation does not upgrade historical capability proof into current-head capability truth."
+  ],
+  "monitoring_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_sigstore_integration_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_log_monitor_plane_receipt.json",
+    "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json"
+  ],
+  "phase_id": "F02B_TRUST_ROOT_TRANSPARENCY_AND_TUF_ACTIVATION",
+  "policy_id": "KT_CHILD_THRESHOLD_ROOT_ACCEPTANCE_POLICY_V1_6",
+  "schema_id": "kt.child_campaign.threshold_root_acceptance_policy.v1",
+  "status": "ACTIVE",
+  "stronger_claim_not_made": [
+    "All verifier surfaces are threshold-root accepted",
+    "Current-head external capability is confirmed",
+    "Release readiness is proven"
+  ],
+  "verifier_acceptance_role": {
+    "maintainers": [
+      "KT_VERIFIER_ACCEPTANCE_A",
+      "KT_VERIFIER_ACCEPTANCE_B"
+    ],
+    "role_id": "verifier_acceptance",
+    "signer_count": 2,
+    "threshold": 1
+  }
+}
