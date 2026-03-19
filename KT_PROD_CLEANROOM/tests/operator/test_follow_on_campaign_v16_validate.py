@@ -20,6 +20,9 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     CROSS_HOST_RECEIPT,
     DEPENDENCY_VALIDATION,
     DRIFT_RECEIPT,
+    FINAL_BLOCKER_MATRIX,
+    FINAL_CLAIM_CEILING,
+    FINAL_CURRENT_HEAD_READJUDICATION,
     IDENTITY_MODEL,
     LOG_MONITOR,
     OLD_PROOF,
@@ -28,6 +31,7 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     PARENT_FINAL,
     PARENT_PRODUCT,
     PHASE_F06,
+    PHASE_F07,
     PHASE_F03,
     PHASE_F04,
     PHASE_F05,
@@ -45,6 +49,7 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     REGRESSION_MATRIX,
     RUNTIME_MATRIX,
     RUNTIME_RECEIPT,
+    RUNTIME_EXTERNAL_CONFIRMATION,
     SINGLE_REALITY,
     STATE_STALE,
     STATE_SUPERSEDE,
@@ -61,6 +66,7 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     TOOL_REL,
     TRUST_RECEIPT,
     TRUST_ROOT,
+    VERIFIER_EXTERNAL_CONFIRMATION,
     WS11,
     WS12,
     WS13,
@@ -100,13 +106,19 @@ def _init_git_repo(tmp_path: Path) -> None:
     _git(tmp_path, "config", "user.name", "Test User")
 
 
-def _seed_runtime(tmp_path: Path) -> None:
+def _copy_real_source_file(source_root: Path, tmp_path: Path, rel: str) -> None:
+    source = source_root / Path(rel.replace("KT_PROD_CLEANROOM/", "", 1))
+    target = tmp_path / rel
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(source.read_text(encoding="utf-8"), encoding="utf-8", newline="\n")
+
+
+def _seed_runtime(tmp_path: Path, source_root: Path) -> None:
     for rel in [
         "KT_PROD_CLEANROOM/tools/router/run_router_hat_demo.py",
         "KT_PROD_CLEANROOM/tests/fl3/test_epic19_router_hat_demo.py",
         "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/cognitive_engine.py",
         "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/tests/test_cognitive_engine.py",
-        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
         "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/tests/test_paradox_engine.py",
         "KT_PROD_CLEANROOM/tests/operator/test_paradox_verification_compile.py",
         "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/temporal_engine.py",
@@ -119,6 +131,15 @@ def _seed_runtime(tmp_path: Path) -> None:
         "KT_PROD_CLEANROOM/tests/fl3/test_fl4_promotion_atomic.py",
     ]:
         _touch(tmp_path / rel)
+    for rel in [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/__init__.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_schemas.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/schemas/__init__.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/schemas/base_schema.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/schemas/schema_hash.py",
+    ]:
+        _copy_real_source_file(source_root, tmp_path, rel)
     _write_json(tmp_path / "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json", {"schema_id": "kt.runtime_registry.v1", "adapters": {"entries": []}})
     _write_json(tmp_path / "KT_PROD_CLEANROOM/governance/adapter_registry.json", {"schema_id": "kt.adapter_registry.v1"})
     _write_json(tmp_path / "KT_PROD_CLEANROOM/governance/router_policy_registry.json", {"schema_id": "kt.router_policy_registry.v1"})
@@ -148,7 +169,7 @@ def _seed_repo(tmp_path: Path) -> str:
     (tmp_path / TEST_REL).write_text("seed\n", encoding="utf-8", newline="\n")
     (tmp_path / OUTSIDER_TEST_REL).parent.mkdir(parents=True, exist_ok=True)
     (tmp_path / OUTSIDER_TEST_REL).write_text("seed\n", encoding="utf-8", newline="\n")
-    _seed_runtime(tmp_path)
+    _seed_runtime(tmp_path, source_root)
     _write_json(tmp_path / PARENT_DAG, {"schema_id": "kt.governance.execution_dag.v1", "status": "ACTIVE", "campaign_completion_status": "STILL_BLOCKED", "next_lawful_workstream": None})
     _write_json(tmp_path / PARENT_FINAL, {"schema_id": "kt.operator.ws18.final_readjudication_receipt.v1", "status": "PASS", "final_verdict": {"current_head_capability_status": "NOT_EXTERNALLY_CONFIRMED", "release_eligibility": "NOT_ELIGIBLE"}})
     _write_json(tmp_path / PARENT_PRODUCT, {"schema_id": "kt.operator.ws19.product_surface_receipt.v1", "status": "PASS", "campaign_completion_status": "STILL_BLOCKED", "next_lawful_workstream": None})
@@ -313,7 +334,7 @@ def _seed_repo(tmp_path: Path) -> str:
     return _commit_all(tmp_path, "seed repo evidence")
 
 
-def test_child_campaign_f05_passes_with_bounded_runtime_truth_and_promotion_matrix(tmp_path: Path) -> None:
+def test_child_campaign_f06_passes_with_bounded_outsider_confirmation_and_readjudication(tmp_path: Path) -> None:
     head = _seed_repo(tmp_path)
     summary = emit_follow_on_campaign_v16(tmp_path)
     assert summary["status"] == "ACTIVE"
@@ -323,7 +344,8 @@ def test_child_campaign_f05_passes_with_bounded_runtime_truth_and_promotion_matr
     assert summary["phase_results"][PHASE_F03] == "PASS"
     assert summary["phase_results"][PHASE_F04] == "PASS"
     assert summary["phase_results"][PHASE_F05] == "PASS"
-    assert summary["next_lawful_phase"] == PHASE_F06
+    assert summary["phase_results"][PHASE_F06] == "PASS"
+    assert summary["next_lawful_phase"] == PHASE_F07
 
     runtime = json.loads((tmp_path / RUNTIME_RECEIPT).read_text(encoding="utf-8"))
     trust = json.loads((tmp_path / TRUST_RECEIPT).read_text(encoding="utf-8"))
@@ -341,6 +363,11 @@ def test_child_campaign_f05_passes_with_bounded_runtime_truth_and_promotion_matr
     promotion_matrix = json.loads((tmp_path / ORGAN_PROMOTION_MATRIX).read_text(encoding="utf-8"))
     elevation = json.loads((tmp_path / ORGAN_ELEVATION_RECEIPT).read_text(encoding="utf-8"))
     regression = json.loads((tmp_path / REGRESSION_MATRIX).read_text(encoding="utf-8"))
+    verifier_external = json.loads((tmp_path / VERIFIER_EXTERNAL_CONFIRMATION).read_text(encoding="utf-8"))
+    runtime_external = json.loads((tmp_path / RUNTIME_EXTERNAL_CONFIRMATION).read_text(encoding="utf-8"))
+    final_readjudication = json.loads((tmp_path / FINAL_CURRENT_HEAD_READJUDICATION).read_text(encoding="utf-8"))
+    final_claim = json.loads((tmp_path / FINAL_CLAIM_CEILING).read_text(encoding="utf-8"))
+    final_blockers = json.loads((tmp_path / FINAL_BLOCKER_MATRIX).read_text(encoding="utf-8"))
     assert runtime["status"] == "PASS"
     assert trust["status"] == "PASS"
     assert pipeline["status"] == "PASS"
@@ -355,12 +382,21 @@ def test_child_campaign_f05_passes_with_bounded_runtime_truth_and_promotion_matr
     assert promotion_matrix["status"] == "PASS"
     assert elevation["status"] == "PASS"
     assert regression["status"] == "PASS"
+    assert verifier_external["status"] == "PASS"
+    assert runtime_external["status"] == "PASS"
+    assert final_readjudication["status"] == "PASS"
+    assert final_claim["status"] == "PASS"
+    assert final_blockers["status"] == "PASS"
     assert bench["coverage_percent"] >= 50.0
-    assert state["next_lawful_transition"] == PHASE_F06
+    assert state["next_lawful_transition"] == PHASE_F07
     assert "threshold_root_verifier_acceptance_inactive" not in state["open_blockers"]
     assert "verifier_coverage_not_widened_beyond_bounded_surfaces" not in state["open_blockers"]
     assert state["reproducibility_status"].startswith("DECLARED_CLASS_A_CARRY_FORWARD_CROSS_HOST_PROVEN")
     assert state["current_head_receipt_or_blocker_coverage_percent"] == 100.0
+    assert state["external_confirmation_status"] == "CURRENT_HEAD_VERIFIER_AND_SELECTED_RUNTIME_SURFACE_OUTSIDER_REPLAY_CONFIRMED_ONLY"
+    assert final_readjudication["selected_runtime_surface"] == "paradox"
+    assert final_readjudication["current_head_capability_status"] == "SELECTED_RUNTIME_SURFACE_ONLY_OUTSIDER_REPLAY_CONFIRMED"
+    assert "current_head_external_capability_not_confirmed" in final_blockers["open_blockers"]
     assert any(row["surface_id"] == "openclaw_labor_organ" and row["current_head_receipt_status"] == "BLOCKED" for row in capability_matrix["rows"])
     assert any(row["surface_id"] == "adapter_layer" and "STUBBED_SURFACE" in row["promotion_blockers"] for row in promotion_matrix["rows"])
 
@@ -387,6 +423,11 @@ def test_child_campaign_f05_passes_with_bounded_runtime_truth_and_promotion_matr
         ORGAN_PROMOTION_MATRIX,
         ORGAN_ELEVATION_RECEIPT,
         REGRESSION_MATRIX,
+        VERIFIER_EXTERNAL_CONFIRMATION,
+        RUNTIME_EXTERNAL_CONFIRMATION,
+        FINAL_CURRENT_HEAD_READJUDICATION,
+        FINAL_CLAIM_CEILING,
+        FINAL_BLOCKER_MATRIX,
     ]:
         assert (tmp_path / rel).exists()
 
@@ -463,3 +504,18 @@ def test_child_campaign_f05_blocks_if_bounded_runtime_receipt_disappears(tmp_pat
     assert summary["next_lawful_phase"] == PHASE_F05
     assert elevation["status"] == "BLOCKED"
     assert "NO_CURRENT_HEAD_RECEIPT_BACKING" in paradox_row["promotion_blockers"]
+
+
+def test_child_campaign_f06_blocks_if_selected_runtime_surface_bundle_missing(tmp_path: Path) -> None:
+    _seed_repo(tmp_path)
+    (tmp_path / "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_schemas.py").unlink()
+    _commit_all(tmp_path, "remove paradox schema dependency")
+
+    summary = emit_follow_on_campaign_v16(tmp_path)
+    runtime_external = json.loads((tmp_path / RUNTIME_EXTERNAL_CONFIRMATION).read_text(encoding="utf-8"))
+    final_readjudication = json.loads((tmp_path / FINAL_CURRENT_HEAD_READJUDICATION).read_text(encoding="utf-8"))
+    assert summary["phase_results"][PHASE_F05] == "PASS"
+    assert summary["phase_results"][PHASE_F06] == "BLOCKED"
+    assert summary["next_lawful_phase"] == PHASE_F06
+    assert runtime_external["status"] == "BLOCKED"
+    assert "selected_runtime_surface_bundle_present" in final_readjudication["blocked_by"]

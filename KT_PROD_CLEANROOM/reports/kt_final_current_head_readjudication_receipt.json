@@ -1,0 +1,91 @@
+{
+  "blocked_by": [],
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "verifier_outsider_replay_confirmed",
+      "detail": "Current-head child verifier v2 must replay deterministically in two detached environments.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_verifier_confirmation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_outsider_path_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "selected_runtime_surface_bundle_present",
+      "detail": "The selected runtime surface bundle must be present for current-head outsider replay.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_runtime_confirmation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_current_head_capability_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_organ_promotion_matrix.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "selected_runtime_surface_outsider_replay_confirmed",
+      "detail": "The selected current-head runtime surface must replay deterministically in two detached environments.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_runtime_confirmation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "selected_runtime_surface_current_head_only_no_historical_laundering",
+      "detail": "The selected runtime surface must remain current-head-only and must not borrow historical-only capability proof.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_current_head_capability_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_capability_confirmation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "final_readjudication_current_head_bound",
+      "detail": "Final readjudication must remain bound to the current child head.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_state_vector_v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_current_head_capability_matrix.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "no_unrelated_claim_widening",
+      "detail": "F06 may not widen release, product, or commercial verdicts while recomputing readjudication.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_blocker_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_final_claim_ceiling_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_state_vector_v2.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_head_capability_status": "SELECTED_RUNTIME_SURFACE_ONLY_OUTSIDER_REPLAY_CONFIRMED",
+  "current_repo_head": "1c9dc4431b678f80e365f91dda696b8d3ce24b32",
+  "current_strongest_claim": "F06 recomputes final current-head readjudication with bounded outsider confirmation for the verifier and the selected runtime surface only.",
+  "evidence_head_commit": "1c9dc4431b678f80e365f91dda696b8d3ce24b32",
+  "external_confirmation_status": "CURRENT_HEAD_VERIFIER_AND_SELECTED_RUNTIME_SURFACE_OUTSIDER_REPLAY_CONFIRMED_ONLY",
+  "generated_utc": "2026-03-19T18:59:29Z",
+  "next_lawful_phase": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION",
+  "open_blockers": [
+    "current_head_external_capability_not_confirmed",
+    "release_readiness_not_proven",
+    "release_ceremony_not_executed",
+    "release_activation_not_executed",
+    "repo_root_import_fragility_visible_and_unfixed"
+  ],
+  "pass_verdict": "CURRENT_HEAD_SELECTED_OUTSIDER_CONFIRMATIONS_AND_FINAL_READJUDICATION_LOCKED",
+  "phase_id": "F06_EXTERNAL_CONFIRMATION_AND_FINAL_CURRENT_HEAD_READJUDICATION",
+  "release_activation_status": "NON_EXECUTED",
+  "release_ceremony_status": "NON_EXECUTED_BLOCKED_BY_PREREQUISITES",
+  "release_eligibility_status": "NOT_ELIGIBLE",
+  "release_readiness_status": "NOT_PROVEN",
+  "schema_id": "kt.child_campaign.final_current_head_readjudication_receipt.v1",
+  "selected_runtime_surface": "paradox",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "Whole-system current-head capability is externally confirmed",
+    "Release readiness is proven",
+    "Release ceremony or release activation is executed",
+    "Product or commercial readiness is proven"
+  ],
+  "subject_head_commit": "1c9dc4431b678f80e365f91dda696b8d3ce24b32"
+}

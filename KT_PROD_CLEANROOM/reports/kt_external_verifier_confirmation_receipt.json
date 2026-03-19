@@ -1,0 +1,311 @@
+{
+  "blocked_by": [],
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "confirmation_class": "OUTSIDER_REPLAY_TWO_DETACHED_ENVIRONMENTS_SAME_HOST",
+  "current_repo_head": "1c9dc4431b678f80e365f91dda696b8d3ce24b32",
+  "current_strongest_claim": "F06 confirms the child verifier v2 package can be replayed from two detached current-head environments with no hidden secret dependency.",
+  "evidence_head_commit": "1c9dc4431b678f80e365f91dda696b8d3ce24b32",
+  "generated_utc": "2026-03-19T18:59:29Z",
+  "human_summary_sha256": "74b3d8c40dbe179da59188e9acbd6dee6f9240d7b824b919c03af44533942f4b",
+  "machine_result": {
+    "allowed_claims": [
+      "claims_emitted_only_from_child_adjudication_outputs_for_declared_f04_verifier_surfaces_only",
+      "secret_free_one_command_outsider_verifier_v2_active_for_declared_child_verifier_surfaces_only",
+      "current_head_child_verifier_assurance_surfaces_adjudicated_authentic_complete_and_fresh_only"
+    ],
+    "bounded_scope": "CURRENT_HEAD_ASSURANCE_ONLY_DECLARED_CHILD_VERIFIER_SURFACES",
+    "checks": [
+      {
+        "check": "detached_pack_without_git",
+        "detail": "Detached outsider pack must run without a git checkout.",
+        "refs": [],
+        "status": "PASS"
+      },
+      {
+        "check": "manifest_declares_secret_free_runtime",
+        "detail": "Manifest must require no secret material or hidden environment keys.",
+        "refs": [
+          "kt_public_verifier_release_manifest_v2.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "packaged_entries_hash_bound",
+        "detail": "All packaged files must be hash-bound and present.",
+        "refs": [
+          "kt_public_verifier_release_manifest_v2.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "threshold_policy_binds_manifest_hash",
+        "detail": "Threshold acceptance policy must bind the outsider verifier manifest hash.",
+        "refs": [
+          "data/KT_PROD_CLEANROOM/governance/kt_threshold_root_acceptance_policy.json",
+          "kt_public_verifier_release_manifest_v2.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "tuf_policy_binds_manifest_hash",
+        "detail": "TUF distribution policy must bind the outsider verifier manifest hash.",
+        "refs": [
+          "data/KT_PROD_CLEANROOM/governance/kt_tuf_distribution_policy.json",
+          "kt_public_verifier_release_manifest_v2.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "adjudication_packet_pass",
+        "detail": "Adjudication packet must already have bounded PASS status.",
+        "refs": [
+          "kt_child_adjudication_packet.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "vsa_pass",
+        "detail": "Verifier summary attestation must already have bounded PASS status.",
+        "refs": [
+          "kt_public_verifier_vsa.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "claims_align_to_adjudication",
+        "detail": "Allowed and forbidden claims must align across adjudication, VSA, and manifest.",
+        "refs": [
+          "kt_child_adjudication_packet.json",
+          "kt_public_verifier_vsa.json",
+          "kt_public_verifier_release_manifest_v2.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "remaining_open_blockers_preserved",
+        "detail": "Outsider verifier must preserve the bounded blocker set and may not erase it.",
+        "refs": [
+          "kt_child_adjudication_packet.json",
+          "kt_public_verifier_vsa.json",
+          "kt_public_verifier_release_manifest_v2.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "current_head_binding_consistent",
+        "detail": "Manifest, VSA, and adjudication packet must bind to the same current head.",
+        "refs": [
+          "kt_child_adjudication_packet.json",
+          "kt_public_verifier_vsa.json",
+          "kt_public_verifier_release_manifest_v2.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "claims_compile_from_adjudication_outputs_only",
+        "detail": "Manifest and VSA must explicitly chain claims through the adjudication packet.",
+        "refs": [
+          "kt_child_adjudication_packet.json",
+          "kt_public_verifier_vsa.json",
+          "kt_public_verifier_release_manifest_v2.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "hash::data/KT_PROD_CLEANROOM/governance/kt_claim_proof_ceiling_compiler_policy_v2.json",
+        "detail": "Every packaged file must exist and match the manifest hash.",
+        "refs": [
+          "data/KT_PROD_CLEANROOM/governance/kt_claim_proof_ceiling_compiler_policy_v2.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "hash::data/KT_PROD_CLEANROOM/reports/kt_state_vector_v2.json",
+        "detail": "Every packaged file must exist and match the manifest hash.",
+        "refs": [
+          "data/KT_PROD_CLEANROOM/reports/kt_state_vector_v2.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "hash::data/KT_PROD_CLEANROOM/reports/kt_blocker_matrix_v2.json",
+        "detail": "Every packaged file must exist and match the manifest hash.",
+        "refs": [
+          "data/KT_PROD_CLEANROOM/reports/kt_blocker_matrix_v2.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "hash::data/KT_PROD_CLEANROOM/reports/kt_pipeline_attestations_receipt.json",
+        "detail": "Every packaged file must exist and match the manifest hash.",
+        "refs": [
+          "data/KT_PROD_CLEANROOM/reports/kt_pipeline_attestations_receipt.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "hash::data/KT_PROD_CLEANROOM/reports/kt_slsa_provenance_receipt.json",
+        "detail": "Every packaged file must exist and match the manifest hash.",
+        "refs": [
+          "data/KT_PROD_CLEANROOM/reports/kt_slsa_provenance_receipt.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "hash::data/KT_PROD_CLEANROOM/reports/kt_cross_host_repro_receipt.json",
+        "detail": "Every packaged file must exist and match the manifest hash.",
+        "refs": [
+          "data/KT_PROD_CLEANROOM/reports/kt_cross_host_repro_receipt.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "hash::data/KT_PROD_CLEANROOM/reports/kt_dependency_airlock_receipt.json",
+        "detail": "Every packaged file must exist and match the manifest hash.",
+        "refs": [
+          "data/KT_PROD_CLEANROOM/reports/kt_dependency_airlock_receipt.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "hash::data/KT_PROD_CLEANROOM/reports/kt_drift_and_semantic_stability_receipt.json",
+        "detail": "Every packaged file must exist and match the manifest hash.",
+        "refs": [
+          "data/KT_PROD_CLEANROOM/reports/kt_drift_and_semantic_stability_receipt.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "hash::data/KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json",
+        "detail": "Every packaged file must exist and match the manifest hash.",
+        "refs": [
+          "data/KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "hash::data/KT_PROD_CLEANROOM/reports/kt_static_verifier_sbom.json",
+        "detail": "Every packaged file must exist and match the manifest hash.",
+        "refs": [
+          "data/KT_PROD_CLEANROOM/reports/kt_static_verifier_sbom.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "hash::data/KT_PROD_CLEANROOM/reports/kt_static_verifier_attestation.json",
+        "detail": "Every packaged file must exist and match the manifest hash.",
+        "refs": [
+          "data/KT_PROD_CLEANROOM/reports/kt_static_verifier_attestation.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "hash::data/KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+        "detail": "Every packaged file must exist and match the manifest hash.",
+        "refs": [
+          "data/KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "hash::data/KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json",
+        "detail": "Every packaged file must exist and match the manifest hash.",
+        "refs": [
+          "data/KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "hash::data/KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "detail": "Every packaged file must exist and match the manifest hash.",
+        "refs": [
+          "data/KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "hash::kt_child_adjudication_packet.json",
+        "detail": "Every packaged file must exist and match the manifest hash.",
+        "refs": [
+          "kt_child_adjudication_packet.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "hash::kt_public_verifier_vsa.json",
+        "detail": "Every packaged file must exist and match the manifest hash.",
+        "refs": [
+          "kt_public_verifier_vsa.json"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "hash::run_verifier_v2.py",
+        "detail": "Every packaged file must exist and match the manifest hash.",
+        "refs": [
+          "run_verifier_v2.py"
+        ],
+        "status": "PASS"
+      }
+    ],
+    "compiled_head_commit": "1c9dc4431b678f80e365f91dda696b8d3ce24b32",
+    "forbidden_claims": [
+      "f04_proves_current_head_external_capability",
+      "f04_proves_release_readiness",
+      "f04_proves_release_activation",
+      "f04_widens_product_or_commercial_claims"
+    ],
+    "output_contract": {
+      "exit_codes": {
+        "0_PASS": "bounded pass",
+        "1_BOUNDED_FAIL": "bounded fail",
+        "2_INPUT_OR_ENV_INVALID": "input or pack invalid",
+        "3_TRUST_OR_FRESHNESS_FAIL": "trust or freshness fail"
+      },
+      "human_readable_summary": "outputs/outsider_summary.txt",
+      "machine_readable_json": "outputs/outsider_result.json"
+    },
+    "pass_verdict": "SECRET_FREE_OUTSIDER_VERIFIER_V2_CONFIRMS_BOUNDED_CHILD_ASSURANCE_SURFACES",
+    "remaining_open_blockers": [
+      "current_head_external_capability_not_confirmed",
+      "release_readiness_not_proven",
+      "release_ceremony_not_executed",
+      "release_activation_not_executed",
+      "repo_root_import_fragility_visible_and_unfixed"
+    ],
+    "schema_id": "kt.child_campaign.outsider_verifier_v2_result.v1",
+    "status": "PASS"
+  },
+  "next_lawful_phase": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION",
+  "package_root_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F04_public_verifier_v2_package",
+  "pass_verdict": "CURRENT_HEAD_CHILD_VERIFIER_V2_OUTSIDER_REPLAY_CONFIRMED",
+  "phase_id": "F06_EXTERNAL_CONFIRMATION_AND_FINAL_CURRENT_HEAD_READJUDICATION",
+  "runtime_invocations": [
+    {
+      "cwd": "C:/Users/rober/AppData/Local/Temp/kt_f06_verifier_1_jfyxpwcf/package",
+      "detached_root_detected": true,
+      "environment_id": "env_a",
+      "human_output_sha256": "d5a3d4525ff159939ff79accc50f8d356921965bbf4073284d1db2ccd02b7d7c",
+      "machine_output_sha256": "de2c0547a21688205ff5e4382078b734579eafeaaea3e7127f38402d7ffdee20",
+      "package_root_inside_repo_root": false,
+      "returncode": 0
+    },
+    {
+      "cwd": "C:/Users/rober/AppData/Local/Temp/kt_f06_verifier_2_m301yszn/package",
+      "detached_root_detected": true,
+      "environment_id": "env_b",
+      "human_output_sha256": "d5a3d4525ff159939ff79accc50f8d356921965bbf4073284d1db2ccd02b7d7c",
+      "machine_output_sha256": "de2c0547a21688205ff5e4382078b734579eafeaaea3e7127f38402d7ffdee20",
+      "package_root_inside_repo_root": false,
+      "returncode": 0
+    }
+  ],
+  "schema_id": "kt.child_campaign.external_verifier_confirmation_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "This verifier confirmation is an independent third-party or hostile external audit",
+    "This verifier confirmation proves current-head runtime superiority",
+    "This verifier confirmation proves release readiness or release activation"
+  ],
+  "subject_head_commit": "1c9dc4431b678f80e365f91dda696b8d3ce24b32"
+}

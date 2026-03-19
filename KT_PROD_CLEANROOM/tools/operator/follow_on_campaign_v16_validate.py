@@ -24,6 +24,7 @@ PHASE_F03 = "F03_PROOF_REPRO_HARDENING_AND_STABILITY"
 PHASE_F04 = "F04_ADJUDICATION_VERIFIER_V2_AND_OUTSIDER_PATH"
 PHASE_F05 = "F05_ORGAN_ELEVATION_AND_RUNTIME_PROMOTION"
 PHASE_F06 = "F06_EXTERNAL_CONFIRMATION_AND_FINAL_CURRENT_HEAD_READJUDICATION"
+PHASE_F07 = "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION"
 BLOCKED_VERDICT_TRUST = "TRUST_ACTIVATION_BLOCKED_BY_PRESERVED_PARENT_GAPS"
 PASS_VERDICT_TRUST = "THRESHOLD_ROOT_ACCEPTANCE_AND_CHILD_TUF_DISTRIBUTION_ACTIVE"
 BLOCKED_VERDICT_F03 = "PROOF_INTEGRITY_HARDENING_BLOCKED_OR_INCOMPLETE"
@@ -32,6 +33,8 @@ BLOCKED_VERDICT_F04 = "ADJUDICATION_SPLIT_OR_OUTSIDER_VERIFIER_V2_BLOCKED"
 PASS_VERDICT_F04 = "ADJUDICATION_SPLIT_AND_SECRET_FREE_OUTSIDER_VERIFIER_V2_ACTIVE"
 BLOCKED_VERDICT_F05 = "RUNTIME_ORGAN_PROMOTION_MATRIX_BLOCKED"
 PASS_VERDICT_F05 = "CURRENT_HEAD_RUNTIME_ORGANS_ACCOUNTED_AND_BOUNDED_PROMOTION_MATRIX_LOCKED"
+BLOCKED_VERDICT_F06 = "CURRENT_HEAD_EXTERNAL_CONFIRMATION_OR_FINAL_READJUDICATION_BLOCKED"
+PASS_VERDICT_F06 = "CURRENT_HEAD_SELECTED_OUTSIDER_CONFIRMATIONS_AND_FINAL_READJUDICATION_LOCKED"
 
 REPORT = "KT_PROD_CLEANROOM/reports"
 GOV = "KT_PROD_CLEANROOM/governance"
@@ -89,12 +92,21 @@ CURRENT_HEAD_CAPABILITY_MATRIX = f"{REPORT}/kt_current_head_capability_matrix.js
 ORGAN_PROMOTION_MATRIX = f"{REPORT}/kt_organ_promotion_matrix.json"
 ORGAN_ELEVATION_RECEIPT = f"{REPORT}/kt_organ_elevation_receipt.json"
 REGRESSION_MATRIX = f"{REPORT}/kt_regression_matrix.json"
+VERIFIER_EXTERNAL_CONFIRMATION = f"{REPORT}/kt_external_verifier_confirmation_receipt.json"
+RUNTIME_EXTERNAL_CONFIRMATION = f"{REPORT}/kt_external_runtime_confirmation_receipt.json"
+FINAL_CURRENT_HEAD_READJUDICATION = f"{REPORT}/kt_final_current_head_readjudication_receipt.json"
+FINAL_CLAIM_CEILING = f"{REPORT}/kt_final_claim_ceiling_receipt.json"
+FINAL_BLOCKER_MATRIX = f"{REPORT}/kt_final_blocker_matrix.json"
 OUTSIDER_PACKAGE_ROOT = "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F04_public_verifier_v2_package"
+F06_RUNTIME_PACKAGE_ROOT = "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F06_paradox_external_confirmation_package"
 POLICY_C_DRIFT = "KT_PROD_CLEANROOM/policy_c/drift_guard.py"
 POLICY_C_DRIFT_SCHEMA = "KT_PROD_CLEANROOM/policy_c/schemas/policy_c_drift_report_schema_v1.json"
 POLICY_C_TEST_GUARD = "KT_PROD_CLEANROOM/tests/policy_c/test_drift_guard.py"
 POLICY_C_TEST_GATE = "KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_drift_gate.py"
 POLICY_C_TEST_SCHEMA = "KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_drift_schema.py"
+F06_SELECTED_RUNTIME_SURFACE = "paradox"
+F06_RUNTIME_RUNNER_NAME = "run_runtime_surface.py"
+F06_RUNTIME_MANIFEST_NAME = "kt_runtime_surface_external_manifest.json"
 
 CHILD_DAG = f"{GOV}/kt_follow_on_execution_dag_v1_6.json"
 SINGLE_REALITY = f"{GOV}/kt_single_reality_law.json"
@@ -156,7 +168,13 @@ PLANNED = {
     ORGAN_PROMOTION_MATRIX,
     ORGAN_ELEVATION_RECEIPT,
     REGRESSION_MATRIX,
+    VERIFIER_EXTERNAL_CONFIRMATION,
+    RUNTIME_EXTERNAL_CONFIRMATION,
+    FINAL_CURRENT_HEAD_READJUDICATION,
+    FINAL_CLAIM_CEILING,
+    FINAL_BLOCKER_MATRIX,
     OUTSIDER_PACKAGE_ROOT,
+    F06_RUNTIME_PACKAGE_ROOT,
     STATE_STALE,
     STATE_SUPERSEDE,
     PROOF_SUPERSEDE,
@@ -377,6 +395,237 @@ def _copy_into_package(root: Path, package_root: Path, rel: str) -> str:
     target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(source, target)
     return target.relative_to(package_root).as_posix()
+
+
+def _build_f06_runtime_runner_text() -> str:
+    return """from __future__ import annotations
+
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+
+EXIT_PASS = 0
+EXIT_BOUNDED_FAIL = 1
+EXIT_INPUT_OR_ENV_INVALID = 2
+EXIT_TRUST_OR_FRESHNESS_FAIL = 3
+
+MANIFEST_NAME = "kt_runtime_surface_external_manifest.json"
+
+
+def _load_json(path: Path) -> dict:
+    if not path.exists():
+        raise RuntimeError(f"missing required pack artifact: {path.name}")
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise RuntimeError(f"expected object json in {path.name}")
+    return data
+
+
+def _sha256_bytes(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def _sha256_file(path: Path) -> str:
+    return _sha256_bytes(path.read_bytes())
+
+
+def _write_text(path: Path, text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8", newline="\\n")
+
+
+def _write_json(path: Path, payload: dict) -> None:
+    _write_text(path, json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=True) + "\\n")
+
+
+def main() -> int:
+    pack_root = Path(__file__).resolve().parent
+    machine_output = pack_root / "outputs" / "runtime_result.json"
+    human_output = pack_root / "outputs" / "runtime_summary.txt"
+    try:
+        manifest = _load_json(pack_root / MANIFEST_NAME)
+        package_entries = manifest.get("package_entries", [])
+        if not isinstance(package_entries, list):
+            raise RuntimeError("manifest package_entries must be a list")
+
+        entry_checks = []
+        package_entries_ok = True
+        for row in package_entries:
+            if not isinstance(row, dict):
+                package_entries_ok = False
+                entry_checks.append({"check": "package_entry_malformed", "status": "FAIL"})
+                continue
+            package_path = str(row.get("package_path", "")).strip()
+            expected_sha = str(row.get("sha256", "")).strip()
+            full_path = (pack_root / package_path).resolve()
+            ok = bool(package_path) and len(expected_sha) == 64 and full_path.exists() and _sha256_file(full_path) == expected_sha
+            entry_checks.append({"check": f"hash::{package_path or 'missing'}", "status": "PASS" if ok else "FAIL"})
+            if not ok:
+                package_entries_ok = False
+
+        src_root = (pack_root / str(manifest.get("src_root_path", "")).strip()).resolve()
+        bounded_receipt = _load_json((pack_root / str(manifest.get("bounded_receipt_path", "")).strip()).resolve())
+        capability_matrix = _load_json((pack_root / str(manifest.get("capability_matrix_path", "")).strip()).resolve())
+        promotion_matrix = _load_json((pack_root / str(manifest.get("promotion_matrix_path", "")).strip()).resolve())
+
+        sys.path.insert(0, str(src_root))
+        from paradox.paradox_engine import ParadoxEngine  # type: ignore
+        from paradox.paradox_schemas import ParadoxTriggerSchema  # type: ignore
+
+        trigger_payload = {
+            "schema_id": ParadoxTriggerSchema.SCHEMA_ID,
+            "schema_version_hash": ParadoxTriggerSchema.SCHEMA_VERSION_HASH,
+            "trigger_type": "PARADOX_SIGNAL",
+            "condition": "self_reference",
+            "severity": 5,
+            "confidence": 50,
+            "subject_hash": _sha256_bytes(b"kt_f06_current_head_subject"),
+            "signal_hash": _sha256_bytes(b"kt_f06_current_head_signal"),
+        }
+        trigger = ParadoxTriggerSchema.from_dict(trigger_payload)
+        result = ParadoxEngine.run(context={"campaign_id": manifest.get("campaign_id"), "surface_id": manifest.get("surface_id")}, trigger=trigger).to_dict()
+
+        surface_id = str(manifest.get("surface_id", "")).strip()
+        capability_row = next((row for row in capability_matrix.get("rows", []) if isinstance(row, dict) and str(row.get("surface_id", "")).strip() == surface_id), None)
+        promotion_row = next((row for row in promotion_matrix.get("rows", []) if isinstance(row, dict) and str(row.get("surface_id", "")).strip() == surface_id), None)
+        if not isinstance(capability_row, dict) or not isinstance(promotion_row, dict):
+            raise RuntimeError("missing selected surface rows in packaged matrices")
+
+        bounded_receipt_ok = str(bounded_receipt.get("status", "")).strip() == "PASS"
+        capability_matrix_ok = (
+            str(capability_row.get("current_head_receipt_status", "")).strip() == "PASS"
+            and str(capability_row.get("capability_label", "")).strip() == "current_head_only"
+            and not capability_row.get("uses_historical_only_evidence", False)
+        )
+        promotion_matrix_ok = (
+            str(promotion_row.get("promotion_action", "")).strip() == "RETAIN_CURRENT_LEVEL"
+            and str(promotion_row.get("promotion_target_class", "")).strip() == str(capability_row.get("current_maturity_class", "")).strip()
+        )
+        runtime_result_ok = bool(result.get("eligible") is True and str(result.get("status", "")).strip() == "INJECTED")
+
+        trust_fail = not package_entries_ok
+        status = "PASS" if package_entries_ok and bounded_receipt_ok and capability_matrix_ok and promotion_matrix_ok and runtime_result_ok else "BLOCKED"
+        exit_code = EXIT_PASS if status == "PASS" else (EXIT_TRUST_OR_FRESHNESS_FAIL if trust_fail else EXIT_BOUNDED_FAIL)
+        report = {
+            "schema_id": "kt.child_campaign.runtime_surface_external_result.v1",
+            "status": status,
+            "surface_id": surface_id,
+            "compiled_head_commit": str(manifest.get("compiled_head_commit", "")).strip(),
+            "bounded_scope": str(manifest.get("bounded_scope", "")).strip(),
+            "bounded_receipt_ok": bounded_receipt_ok,
+            "capability_matrix_ok": capability_matrix_ok,
+            "promotion_matrix_ok": promotion_matrix_ok,
+            "runtime_result_ok": runtime_result_ok,
+            "result": result,
+            "checks": entry_checks
+            + [
+                {"check": "bounded_receipt_pass", "status": "PASS" if bounded_receipt_ok else "FAIL"},
+                {"check": "capability_matrix_bindings_pass", "status": "PASS" if capability_matrix_ok else "FAIL"},
+                {"check": "promotion_matrix_bindings_pass", "status": "PASS" if promotion_matrix_ok else "FAIL"},
+                {"check": "runtime_execution_pass", "status": "PASS" if runtime_result_ok else "FAIL"},
+            ],
+        }
+        summary = (
+            f"status: {status}\\n"
+            f"surface_id: {surface_id}\\n"
+            f"compiled_head_commit: {report['compiled_head_commit']}\\n"
+            f"bounded_scope: {report['bounded_scope']}\\n"
+            f"runtime_result_status: {result.get('status')}\\n"
+        )
+    except Exception as exc:
+        report = {
+            "schema_id": "kt.child_campaign.runtime_surface_external_result.v1",
+            "status": "INPUT_OR_ENV_INVALID",
+            "error": str(exc),
+        }
+        summary = f"status: INPUT_OR_ENV_INVALID\\nerror: {exc}\\n"
+        exit_code = EXIT_INPUT_OR_ENV_INVALID
+
+    _write_json(machine_output, report)
+    _write_text(human_output, summary)
+    sys.stdout.write(summary)
+    return exit_code
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+"""
+
+
+def _run_detached_package_twice(
+    *,
+    package_root: Path,
+    run_cmd: Sequence[str],
+    machine_output_rel: str,
+    human_output_rel: str,
+    env: Dict[str, str],
+    prefix: str,
+) -> Dict[str, Any]:
+    runs: List[Dict[str, Any]] = []
+    machine_reports: List[Dict[str, Any]] = []
+    human_reports: List[str] = []
+
+    if not package_root.exists():
+        return {
+            "runs": [],
+            "machine_reports": [],
+            "human_reports": [],
+            "parity_ok": False,
+            "package_root_present": False,
+        }
+
+    for index, env_id in enumerate(("env_a", "env_b"), start=1):
+        with tempfile.TemporaryDirectory(prefix=f"{prefix}_{index}_") as temp_dir:
+            detached_root = Path(temp_dir).resolve() / "package"
+            shutil.copytree(package_root, detached_root)
+            completed = subprocess.run(
+                list(run_cmd),
+                cwd=detached_root,
+                check=False,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                env=env,
+            )
+            machine_path = (detached_root / machine_output_rel).resolve()
+            human_path = (detached_root / human_output_rel).resolve()
+            machine = load_json(machine_path) if machine_path.exists() else {"status": "INPUT_OR_ENV_INVALID", "error": "missing machine output"}
+            human = human_path.read_text(encoding="utf-8") if human_path.exists() else "status: INPUT_OR_ENV_INVALID\nerror: missing human output\n"
+            runs.append(
+                {
+                    "environment_id": env_id,
+                    "cwd": detached_root.as_posix(),
+                    "detached_root_detected": not (detached_root / ".git").exists(),
+                    "package_root_inside_repo_root": False,
+                    "returncode": completed.returncode,
+                    "machine_output_sha256": file_sha256(machine_path) if machine_path.exists() else _json_sha256(machine),
+                    "human_output_sha256": file_sha256(human_path) if human_path.exists() else _json_sha256({"summary": human}),
+                }
+            )
+            machine_reports.append(machine)
+            human_reports.append(human)
+            if index == 1:
+                (package_root / Path(machine_output_rel).parent).resolve().mkdir(parents=True, exist_ok=True)
+                if machine_path.exists():
+                    shutil.copy2(machine_path, (package_root / machine_output_rel).resolve())
+                if human_path.exists():
+                    shutil.copy2(human_path, (package_root / human_output_rel).resolve())
+
+    parity_ok = (
+        len(machine_reports) == 2
+        and len(human_reports) == 2
+        and machine_reports[0] == machine_reports[1]
+        and human_reports[0] == human_reports[1]
+    )
+    return {
+        "runs": runs,
+        "machine_reports": machine_reports,
+        "human_reports": human_reports,
+        "parity_ok": parity_ok,
+        "package_root_present": True,
+    }
 
 
 def _runtime_rows(root: Path) -> List[Dict[str, Any]]:
@@ -752,6 +1001,19 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
     f05_status = "BLOCKED_UPSTREAM"
     f05_next_phase = f04_next_phase
     f05_allowed_claims: List[str] = []
+    f06_checks: Dict[str, bool] = {
+        "verifier_current_head_outsider_replay_pass": False,
+        "selected_runtime_surface_bundle_present": False,
+        "selected_runtime_surface_outsider_replay_pass": False,
+        "selected_runtime_surface_current_head_only_no_historical_laundering": False,
+        "final_readjudication_current_head_bound": False,
+        "no_unrelated_claim_widening": False,
+    }
+    f06_blocked_by: List[str] = []
+    f06_pass = False
+    f06_status = "BLOCKED_UPSTREAM"
+    f06_next_phase = f05_next_phase
+    f06_allowed_claims: List[str] = []
 
     outputs = {
         CHILD_DAG: {
@@ -768,9 +1030,9 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
                 {"id": PHASE_TRUST, "status": "PASS" if f02b_pass else "BLOCKED"},
                 {"id": PHASE_F03, "status": "PASS" if f03_pass else ("BLOCKED" if f02b_pass else "BLOCKED_UPSTREAM")},
                 {"id": PHASE_F04, "status": "READY" if f03_pass else "BLOCKED_UPSTREAM"},
-                {"id": "F05_ORGAN_ELEVATION_AND_RUNTIME_PROMOTION", "status": "BLOCKED_UPSTREAM"},
-                {"id": "F06_EXTERNAL_CONFIRMATION_AND_FINAL_CURRENT_HEAD_READJUDICATION", "status": "BLOCKED_UPSTREAM"},
-                {"id": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION", "status": "BLOCKED_UPSTREAM"},
+                {"id": PHASE_F05, "status": "BLOCKED_UPSTREAM"},
+                {"id": PHASE_F06, "status": "BLOCKED_UPSTREAM"},
+                {"id": PHASE_F07, "status": "BLOCKED_UPSTREAM"},
                 {"id": "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY", "status": "BLOCKED_UPSTREAM"},
                 {"id": "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS", "status": "BLOCKED_UPSTREAM"},
             ],
@@ -1780,6 +2042,345 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
         outputs[STATE_V2]["regression_matrix"] = REGRESSION_MATRIX
         outputs[STATE_V2]["current_head_receipt_or_blocker_coverage_percent"] = accounted_percent
 
+    f06_next_phase = f05_next_phase
+
+    if f05_pass:
+        selected_runtime_row = next(
+            (row for row in outputs[CURRENT_HEAD_CAPABILITY_MATRIX]["rows"] if str(row.get("surface_id", "")).strip() == F06_SELECTED_RUNTIME_SURFACE),
+            {},
+        )
+        selected_promotion_row = next(
+            (row for row in outputs[ORGAN_PROMOTION_MATRIX]["rows"] if str(row.get("surface_id", "")).strip() == F06_SELECTED_RUNTIME_SURFACE),
+            {},
+        )
+        verifier_package_root = (root / OUTSIDER_PACKAGE_ROOT).resolve()
+        runtime_package_root = (root / F06_RUNTIME_PACKAGE_ROOT).resolve()
+        runtime_source_refs = [
+            "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/__init__.py",
+            "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
+            "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_schemas.py",
+            "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/schemas/__init__.py",
+            "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/schemas/base_schema.py",
+            "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/schemas/schema_hash.py",
+        ]
+        runtime_bundle_ready = all(_exists(root, rel) for rel in runtime_source_refs) and bool(selected_runtime_row)
+
+        env = dict(os.environ)
+        env.pop("KT_HMAC_KEY_SIGNER_A", None)
+        env.pop("KT_HMAC_KEY_SIGNER_B", None)
+
+        verifier_replay = _run_detached_package_twice(
+            package_root=verifier_package_root,
+            run_cmd=[sys.executable, "run_verifier_v2.py"],
+            machine_output_rel="outputs/outsider_result.json",
+            human_output_rel="outputs/outsider_summary.txt",
+            env=env,
+            prefix="kt_f06_verifier",
+        )
+        verifier_machine = verifier_replay["machine_reports"][0] if verifier_replay["machine_reports"] else {"status": "INPUT_OR_ENV_INVALID", "error": "missing verifier replay output"}
+        verifier_human = verifier_replay["human_reports"][0] if verifier_replay["human_reports"] else "status: INPUT_OR_ENV_INVALID\nerror: missing verifier replay output\n"
+
+        if runtime_package_root.exists():
+            shutil.rmtree(runtime_package_root)
+        runtime_package_root.mkdir(parents=True, exist_ok=True)
+        runtime_runner_path = (runtime_package_root / F06_RUNTIME_RUNNER_NAME).resolve()
+        runtime_manifest_path = (runtime_package_root / F06_RUNTIME_MANIFEST_NAME).resolve()
+
+        runtime_package_entries: List[Dict[str, Any]] = []
+        if runtime_bundle_ready:
+            for rel in runtime_source_refs:
+                package_path = _copy_into_package(root, runtime_package_root, rel)
+                runtime_package_entries.append(
+                    {
+                        "authoritative_ref": rel,
+                        "package_path": package_path,
+                        "sha256": file_sha256((runtime_package_root / package_path).resolve()),
+                    }
+                )
+            for rel in (CURRENT_HEAD_CAPABILITY_MATRIX, ORGAN_PROMOTION_MATRIX, ORGAN_ELEVATION_RECEIPT, "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json"):
+                package_path = _package_rel_for_repo_ref(rel)
+                write_json_stable((runtime_package_root / package_path).resolve(), outputs[rel] if rel in outputs else _j(root, rel), volatile_keys=())
+                runtime_package_entries.append(
+                    {
+                        "authoritative_ref": rel,
+                        "package_path": package_path,
+                        "sha256": file_sha256((runtime_package_root / package_path).resolve()),
+                    }
+                )
+
+        runtime_manifest = {
+            "schema_id": "kt.child_campaign.runtime_surface_external_manifest.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F06,
+            "status": "PASS" if runtime_bundle_ready else "BLOCKED",
+            "compiled_head_commit": head,
+            "surface_id": F06_SELECTED_RUNTIME_SURFACE,
+            "bounded_scope": "CURRENT_HEAD_SELECTED_RUNTIME_SURFACE_ONLY",
+            "entrypoint_command": f"python {F06_RUNTIME_RUNNER_NAME}",
+            "src_root_path": _package_rel_for_repo_ref("KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src"),
+            "bounded_receipt_path": _package_rel_for_repo_ref("KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json"),
+            "capability_matrix_path": _package_rel_for_repo_ref(CURRENT_HEAD_CAPABILITY_MATRIX),
+            "promotion_matrix_path": _package_rel_for_repo_ref(ORGAN_PROMOTION_MATRIX),
+            "package_entries": runtime_package_entries,
+            "limitations": [
+                "This pack confirms only the selected current-head runtime surface.",
+                "This pack does not prove whole-system current-head capability.",
+                "This pack does not prove release readiness, release ceremony execution, or release activation.",
+            ],
+        }
+        runtime_runner_text = _build_f06_runtime_runner_text()
+        runtime_runner_path.write_text(runtime_runner_text, encoding="utf-8", newline="\n")
+        runtime_manifest["package_entries"].append(
+            {
+                "authoritative_ref": F06_RUNTIME_RUNNER_NAME,
+                "package_path": F06_RUNTIME_RUNNER_NAME,
+                "sha256": file_sha256(runtime_runner_path),
+            }
+        )
+        write_json_stable(runtime_manifest_path, runtime_manifest, volatile_keys=())
+
+        runtime_replay = _run_detached_package_twice(
+            package_root=runtime_package_root,
+            run_cmd=[sys.executable, F06_RUNTIME_RUNNER_NAME],
+            machine_output_rel="outputs/runtime_result.json",
+            human_output_rel="outputs/runtime_summary.txt",
+            env=env,
+            prefix="kt_f06_runtime",
+        ) if runtime_bundle_ready else {
+            "runs": [],
+            "machine_reports": [],
+            "human_reports": [],
+            "parity_ok": False,
+            "package_root_present": False,
+        }
+        runtime_machine = runtime_replay["machine_reports"][0] if runtime_replay["machine_reports"] else {"status": "INPUT_OR_ENV_INVALID", "error": "missing runtime replay output"}
+        runtime_human = runtime_replay["human_reports"][0] if runtime_replay["human_reports"] else "status: INPUT_OR_ENV_INVALID\nerror: missing runtime replay output\n"
+
+        final_open_blockers = list(outputs[BLOCKERS_V2]["open_blockers"])
+        release_and_product_unchanged = all(
+            [
+                str(outputs[STATE_V2]["release_readiness_status"]).strip() == "NOT_PROVEN",
+                str(outputs[STATE_V2]["release_eligibility_status"]).strip() == "NOT_ELIGIBLE",
+                str(outputs[STATE_V2]["release_ceremony_status"]).strip() == "NON_EXECUTED_BLOCKED_BY_PREREQUISITES",
+                str(outputs[STATE_V2]["release_activation_status"]).strip() == "NON_EXECUTED",
+                str(outputs[STATE_V2]["product_surface_status"]).strip() == "DOCUMENTARY_PRE_RELEASE_NON_RELEASE_ELIGIBLE",
+            ]
+        )
+
+        f06_checks["verifier_current_head_outsider_replay_pass"] = (
+            verifier_replay["package_root_present"]
+            and verifier_replay["parity_ok"]
+            and len(verifier_replay["runs"]) == 2
+            and all(row["returncode"] == 0 and row["detached_root_detected"] for row in verifier_replay["runs"])
+            and str(verifier_machine.get("status", "")).strip() == "PASS"
+        )
+        f06_checks["selected_runtime_surface_bundle_present"] = runtime_bundle_ready
+        f06_checks["selected_runtime_surface_outsider_replay_pass"] = (
+            runtime_bundle_ready
+            and runtime_replay["parity_ok"]
+            and len(runtime_replay["runs"]) == 2
+            and all(row["returncode"] == 0 and row["detached_root_detected"] for row in runtime_replay["runs"])
+            and str(runtime_machine.get("status", "")).strip() == "PASS"
+        )
+        f06_checks["selected_runtime_surface_current_head_only_no_historical_laundering"] = bool(selected_runtime_row) and (
+            str(selected_runtime_row.get("current_head_receipt_status", "")).strip() == "PASS"
+            and str(selected_runtime_row.get("capability_label", "")).strip() == "current_head_only"
+            and not bool(selected_runtime_row.get("uses_historical_only_evidence"))
+        )
+        f06_checks["final_readjudication_current_head_bound"] = all(
+            [
+                str(outputs[STATE_V2]["subject_head_commit"]).strip() == head,
+                str(outputs[STATE_V2]["current_repo_head"]).strip() == head,
+                str(outputs[CURRENT_HEAD_CAPABILITY_MATRIX]["current_repo_head"]).strip() == head,
+            ]
+        )
+        f06_checks["no_unrelated_claim_widening"] = release_and_product_unchanged and final_open_blockers == list(outputs[BLOCKERS_V2]["open_blockers"])
+        for check_id, ok in f06_checks.items():
+            if not ok:
+                f06_blocked_by.append(check_id)
+        f06_pass = all(f06_checks.values())
+        f06_status = "PASS" if f06_pass else "BLOCKED"
+        f06_next_phase = PHASE_F07 if f06_pass else PHASE_F06
+        f06_allowed_claims = [
+            "current_head_child_verifier_v2_outsider_replay_confirmed_in_two_detached_environments_only",
+            "current_head_selected_runtime_surface_paradox_outsider_replay_confirmed_in_two_detached_environments_only",
+            "final_current_head_readjudication_recomputed_without_release_or_product_widening",
+        ] if f06_pass else []
+
+        outputs[VERIFIER_EXTERNAL_CONFIRMATION] = {
+            "schema_id": "kt.child_campaign.external_verifier_confirmation_receipt.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F06,
+            "status": "PASS" if f06_checks["verifier_current_head_outsider_replay_pass"] else "BLOCKED",
+            "pass_verdict": "CURRENT_HEAD_CHILD_VERIFIER_V2_OUTSIDER_REPLAY_CONFIRMED" if f06_checks["verifier_current_head_outsider_replay_pass"] else BLOCKED_VERDICT_F06,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "generated_utc": utc_now_iso_z(),
+            "confirmation_class": "OUTSIDER_REPLAY_TWO_DETACHED_ENVIRONMENTS_SAME_HOST",
+            "package_root_ref": OUTSIDER_PACKAGE_ROOT,
+            "runtime_invocations": verifier_replay["runs"],
+            "machine_result": verifier_machine,
+            "human_summary_sha256": _json_sha256({"summary": verifier_human}),
+            "blocked_by": [] if f06_checks["verifier_current_head_outsider_replay_pass"] else ["verifier_current_head_outsider_replay_pass"],
+            "current_strongest_claim": "F06 confirms the child verifier v2 package can be replayed from two detached current-head environments with no hidden secret dependency." if f06_checks["verifier_current_head_outsider_replay_pass"] else "F06 does not yet confirm the child verifier v2 package from detached current-head environments.",
+            "stronger_claim_not_made": [
+                "This verifier confirmation is an independent third-party or hostile external audit",
+                "This verifier confirmation proves current-head runtime superiority",
+                "This verifier confirmation proves release readiness or release activation",
+            ],
+            "next_lawful_phase": f06_next_phase,
+        }
+
+        outputs[RUNTIME_EXTERNAL_CONFIRMATION] = {
+            "schema_id": "kt.child_campaign.external_runtime_confirmation_receipt.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F06,
+            "status": "PASS" if f06_checks["selected_runtime_surface_outsider_replay_pass"] else "BLOCKED",
+            "pass_verdict": "CURRENT_HEAD_SELECTED_RUNTIME_SURFACE_OUTSIDER_REPLAY_CONFIRMED" if f06_checks["selected_runtime_surface_outsider_replay_pass"] else BLOCKED_VERDICT_F06,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "generated_utc": utc_now_iso_z(),
+            "confirmation_class": "OUTSIDER_REPLAY_TWO_DETACHED_ENVIRONMENTS_SAME_HOST",
+            "selected_runtime_surface": F06_SELECTED_RUNTIME_SURFACE,
+            "package_root_ref": F06_RUNTIME_PACKAGE_ROOT,
+            "runtime_invocations": runtime_replay["runs"],
+            "machine_result": runtime_machine,
+            "human_summary_sha256": _json_sha256({"summary": runtime_human}),
+            "blocked_by": [
+                check_id
+                for check_id in (
+                    "selected_runtime_surface_bundle_present",
+                    "selected_runtime_surface_outsider_replay_pass",
+                    "selected_runtime_surface_current_head_only_no_historical_laundering",
+                )
+                if not f06_checks[check_id]
+            ],
+            "current_strongest_claim": "F06 confirms the selected current-head runtime surface paradox by detached two-environment outsider replay only." if f06_checks["selected_runtime_surface_outsider_replay_pass"] else "F06 does not yet confirm the selected current-head runtime surface by detached outsider replay.",
+            "stronger_claim_not_made": [
+                "This confirms whole-system current-head capability",
+                "This upgrades KT into runtime world-class standing",
+                "This proves release readiness or product readiness",
+            ],
+            "next_lawful_phase": f06_next_phase,
+        }
+
+        outputs[FINAL_BLOCKER_MATRIX] = {
+            "schema_id": "kt.child_campaign.final_blocker_matrix.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F06,
+            "status": f06_status,
+            "current_repo_head": head,
+            "selected_runtime_surface": F06_SELECTED_RUNTIME_SURFACE,
+            "open_blockers": final_open_blockers,
+            "cleared_by_f06": [],
+            "bounded_confirmations": [
+                VERIFIER_EXTERNAL_CONFIRMATION,
+                RUNTIME_EXTERNAL_CONFIRMATION,
+            ] if f06_pass else [],
+        }
+
+        final_claim_ceiling = (
+            "PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_F06_VERIFIER_AND_SELECTED_RUNTIME_OUTSIDER_REPLAY_CONFIRMED_ONLY"
+            if f06_pass
+            else outputs[STATE_V2]["computed_claim_ceiling"]
+        )
+        outputs[FINAL_CLAIM_CEILING] = {
+            "schema_id": "kt.child_campaign.final_claim_ceiling_receipt.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F06,
+            "status": f06_status,
+            "pass_verdict": PASS_VERDICT_F06 if f06_pass else BLOCKED_VERDICT_F06,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "generated_utc": utc_now_iso_z(),
+            "computed_claim_ceiling": final_claim_ceiling,
+            "allowed_public_claims": f06_allowed_claims,
+            "forbidden_public_claims": [
+                "f06_proves_whole_system_current_head_capability",
+                "f06_proves_release_readiness",
+                "f06_executes_release_ceremony_or_release_activation",
+                "f06_widens_product_or_commercial_claims",
+            ],
+            "next_lawful_phase": f06_next_phase,
+        }
+
+        outputs[FINAL_CURRENT_HEAD_READJUDICATION] = {
+            "schema_id": "kt.child_campaign.final_current_head_readjudication_receipt.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F06,
+            "status": f06_status,
+            "pass_verdict": PASS_VERDICT_F06 if f06_pass else BLOCKED_VERDICT_F06,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "generated_utc": utc_now_iso_z(),
+            "checks": [
+                _check(f06_checks["verifier_current_head_outsider_replay_pass"], "verifier_outsider_replay_confirmed", "Current-head child verifier v2 must replay deterministically in two detached environments.", [VERIFIER_EXTERNAL_CONFIRMATION, OUTSIDER_PATH_RECEIPT]),
+                _check(f06_checks["selected_runtime_surface_bundle_present"], "selected_runtime_surface_bundle_present", "The selected runtime surface bundle must be present for current-head outsider replay.", [RUNTIME_EXTERNAL_CONFIRMATION, CURRENT_HEAD_CAPABILITY_MATRIX, ORGAN_PROMOTION_MATRIX]),
+                _check(f06_checks["selected_runtime_surface_outsider_replay_pass"], "selected_runtime_surface_outsider_replay_confirmed", "The selected current-head runtime surface must replay deterministically in two detached environments.", [RUNTIME_EXTERNAL_CONFIRMATION]),
+                _check(f06_checks["selected_runtime_surface_current_head_only_no_historical_laundering"], "selected_runtime_surface_current_head_only_no_historical_laundering", "The selected runtime surface must remain current-head-only and must not borrow historical-only capability proof.", [CURRENT_HEAD_CAPABILITY_MATRIX, WS17B]),
+                _check(f06_checks["final_readjudication_current_head_bound"], "final_readjudication_current_head_bound", "Final readjudication must remain bound to the current child head.", [STATE_V2, CURRENT_HEAD_CAPABILITY_MATRIX]),
+                _check(f06_checks["no_unrelated_claim_widening"], "no_unrelated_claim_widening", "F06 may not widen release, product, or commercial verdicts while recomputing readjudication.", [FINAL_BLOCKER_MATRIX, FINAL_CLAIM_CEILING, STATE_V2]),
+            ],
+            "blocked_by": f06_blocked_by,
+            "selected_runtime_surface": F06_SELECTED_RUNTIME_SURFACE,
+            "current_head_capability_status": "SELECTED_RUNTIME_SURFACE_ONLY_OUTSIDER_REPLAY_CONFIRMED" if f06_pass else "NOT_EXTERNALLY_CONFIRMED",
+            "external_confirmation_status": "CURRENT_HEAD_VERIFIER_AND_SELECTED_RUNTIME_SURFACE_OUTSIDER_REPLAY_CONFIRMED_ONLY" if f06_pass else outputs[STATE_V2]["external_confirmation_status"],
+            "release_readiness_status": outputs[STATE_V2]["release_readiness_status"],
+            "release_eligibility_status": outputs[STATE_V2]["release_eligibility_status"],
+            "release_ceremony_status": outputs[STATE_V2]["release_ceremony_status"],
+            "release_activation_status": outputs[STATE_V2]["release_activation_status"],
+            "open_blockers": final_open_blockers,
+            "current_strongest_claim": "F06 recomputes final current-head readjudication with bounded outsider confirmation for the verifier and the selected runtime surface only." if f06_pass else "F06 does not yet recompute final current-head readjudication with bounded outsider confirmation.",
+            "stronger_claim_not_made": [
+                "Whole-system current-head capability is externally confirmed",
+                "Release readiness is proven",
+                "Release ceremony or release activation is executed",
+                "Product or commercial readiness is proven",
+            ],
+            "next_lawful_phase": f06_next_phase,
+        }
+
+        outputs[PROOF_V2]["inputs"] = [*outputs[PROOF_V2]["inputs"], VERIFIER_EXTERNAL_CONFIRMATION, RUNTIME_EXTERNAL_CONFIRMATION, FINAL_CLAIM_CEILING, FINAL_BLOCKER_MATRIX, FINAL_CURRENT_HEAD_READJUDICATION]
+        outputs[PROOF_V2]["allowed_public_claims"] = [*outputs[PROOF_V2]["allowed_public_claims"], *f06_allowed_claims]
+        outputs[PROOF_V2]["forbidden_public_claims"] = [
+            *outputs[PROOF_V2]["forbidden_public_claims"],
+            "f06_proves_whole_system_current_head_capability",
+            "f06_proves_release_readiness",
+            "f06_executes_release_ceremony_or_activation",
+            "f06_widens_product_or_commercial_claims",
+        ]
+        outputs[CHILD_DAG]["current_node"] = PHASE_F07 if f06_pass else PHASE_F06
+        outputs[CHILD_DAG]["next_lawful_phase"] = f06_next_phase
+        outputs[CHILD_DAG]["nodes"] = [
+            {"id": PHASE_BOOTSTRAP, "status": "PASS"},
+            {"id": PHASE_RUNTIME, "status": "PASS" if cap_cov >= 60.0 and bench_cov >= 50.0 else "BLOCKED"},
+            {"id": PHASE_TRUST, "status": "PASS" if f02b_pass else "BLOCKED"},
+            {"id": PHASE_F03, "status": "PASS" if f03_pass else ("BLOCKED" if f02b_pass else "BLOCKED_UPSTREAM")},
+            {"id": PHASE_F04, "status": f04_status if f03_pass else "BLOCKED_UPSTREAM"},
+            {"id": PHASE_F05, "status": f05_status if f04_pass else "BLOCKED_UPSTREAM"},
+            {"id": PHASE_F06, "status": f06_status if f05_pass else "BLOCKED_UPSTREAM"},
+            {"id": PHASE_F07, "status": "READY" if f06_pass else "BLOCKED_UPSTREAM"},
+            {"id": "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY", "status": "BLOCKED_UPSTREAM"},
+            {"id": "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS", "status": "BLOCKED_UPSTREAM"},
+        ]
+        outputs[STATE_V2]["computed_claim_ceiling"] = final_claim_ceiling
+        outputs[STATE_V2]["blocker_matrix"] = FINAL_BLOCKER_MATRIX
+        outputs[STATE_V2]["external_confirmation_status"] = (
+            "CURRENT_HEAD_VERIFIER_AND_SELECTED_RUNTIME_SURFACE_OUTSIDER_REPLAY_CONFIRMED_ONLY"
+            if f06_pass
+            else outputs[STATE_V2]["external_confirmation_status"]
+        )
+        outputs[STATE_V2]["next_lawful_transition"] = f06_next_phase
+        outputs[STATE_V2]["open_blockers"] = final_open_blockers
+        outputs[STATE_V2]["external_verifier_confirmation_receipt"] = VERIFIER_EXTERNAL_CONFIRMATION
+        outputs[STATE_V2]["external_runtime_confirmation_receipt"] = RUNTIME_EXTERNAL_CONFIRMATION
+        outputs[STATE_V2]["selected_externally_confirmed_runtime_surfaces"] = [F06_SELECTED_RUNTIME_SURFACE] if f06_pass else []
+        outputs[STATE_V2]["final_current_head_readjudication_receipt"] = FINAL_CURRENT_HEAD_READJUDICATION
+
     for rel, payload in outputs.items():
         _w(root, rel, payload)
 
@@ -1798,9 +2399,10 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             PHASE_F03: f03_status,
             PHASE_F04: f04_status,
             PHASE_F05: f05_status,
+            PHASE_F06: f06_status,
         },
-        "next_lawful_phase": f05_next_phase,
-        "open_blockers": active_blockers,
+        "next_lawful_phase": f06_next_phase,
+        "open_blockers": outputs[STATE_V2]["open_blockers"],
     }
 
 
