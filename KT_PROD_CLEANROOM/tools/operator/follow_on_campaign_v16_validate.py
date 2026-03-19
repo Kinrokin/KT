@@ -25,6 +25,7 @@ PHASE_F04 = "F04_ADJUDICATION_VERIFIER_V2_AND_OUTSIDER_PATH"
 PHASE_F05 = "F05_ORGAN_ELEVATION_AND_RUNTIME_PROMOTION"
 PHASE_F06 = "F06_EXTERNAL_CONFIRMATION_AND_FINAL_CURRENT_HEAD_READJUDICATION"
 PHASE_F07 = "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION"
+PHASE_F08 = "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY"
 BLOCKED_VERDICT_TRUST = "TRUST_ACTIVATION_BLOCKED_BY_PRESERVED_PARENT_GAPS"
 PASS_VERDICT_TRUST = "THRESHOLD_ROOT_ACCEPTANCE_AND_CHILD_TUF_DISTRIBUTION_ACTIVE"
 BLOCKED_VERDICT_F03 = "PROOF_INTEGRITY_HARDENING_BLOCKED_OR_INCOMPLETE"
@@ -37,6 +38,8 @@ BLOCKED_VERDICT_F06 = "CURRENT_HEAD_EXTERNAL_CONFIRMATION_OR_FINAL_READJUDICATIO
 PASS_VERDICT_F06 = "CURRENT_HEAD_SELECTED_OUTSIDER_CONFIRMATIONS_AND_FINAL_READJUDICATION_LOCKED"
 BLOCKED_VERDICT_F07 = "RELEASE_LEGITIMACY_BLOCKED_BY_UNEXECUTED_CHILD_RELEASE_PREREQUISITES"
 PASS_VERDICT_F07 = "CHILD_BOUNDED_RELEASE_LEGITIMACY_EXECUTED_WITHOUT_RUNTIME_OR_PRODUCT_WIDENING"
+BLOCKED_VERDICT_F08 = "BOUNDED_PRODUCT_WEDGE_OR_DEPLOYMENT_PACK_BLOCKED"
+PASS_VERDICT_F08 = "CHILD_BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_ACTIVE"
 
 REPORT = "KT_PROD_CLEANROOM/reports"
 GOV = "KT_PROD_CLEANROOM/governance"
@@ -105,11 +108,22 @@ F07_PRODUCER_ATTESTATION_BUNDLE = f"{REPORT}/kt_producer_attestation_bundle.json
 F07_RELEASE_CEREMONY_RECEIPT = f"{REPORT}/kt_executed_release_ceremony_receipt.json"
 F07_RELEASE_ACTIVATION_RECEIPT = f"{REPORT}/kt_release_activation_receipt.json"
 F07_EXECUTION_PACK_RECEIPT = f"{REPORT}/kt_f07_release_execution_pack_receipt.json"
+F07_RELEASE_SIGNER_CUSTODY = f"{REPORT}/kt_release_signer_custody_record.json"
+F07_RELEASE_SIGNER_WITNESS = f"{REPORT}/kt_release_signer_quorum_witness_record.json"
+F07_PRODUCER_EXECUTION = f"{REPORT}/kt_producer_attestation_execution_record.json"
+F07_RELEASE_CEREMONY_EXECUTION = f"{REPORT}/kt_child_release_ceremony_execution_record.json"
+F07_RELEASE_ACTIVATION_EXECUTION = f"{REPORT}/kt_child_release_activation_execution_record.json"
 OUTSIDER_PACKAGE_ROOT = "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F04_public_verifier_v2_package"
 F06_RUNTIME_PACKAGE_ROOT = "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F06_paradox_external_confirmation_package"
 F07_EXECUTION_PACK_ROOT = "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F07_release_execution_pack"
 F07_EXECUTION_MANIFEST_NAME = "kt_release_execution_manifest.json"
 F07_EXECUTION_INSTRUCTIONS_NAME = "OFFBOX_RELEASE_EXECUTION_INSTRUCTIONS.md"
+F08_PRODUCT_WEDGE_ACTIVATION = f"{REPORT}/kt_product_wedge_activation_receipt.json"
+F08_DEPLOYMENT_MANIFEST = f"{REPORT}/kt_deployment_manifest.json"
+F08_OPERATOR_MANUAL = f"{REPORT}/kt_operator_manual_v1.json"
+F08_SUPPORTABILITY_MATRIX = f"{REPORT}/kt_supportability_matrix.json"
+F08_ENTERPRISE_OPERATIONS = f"{REPORT}/kt_enterprise_operations_receipt.json"
+F08_PRODUCT_WEDGE_PACKAGE_ROOT = "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F08_product_wedge_package"
 POLICY_C_DRIFT = "KT_PROD_CLEANROOM/policy_c/drift_guard.py"
 POLICY_C_DRIFT_SCHEMA = "KT_PROD_CLEANROOM/policy_c/schemas/policy_c_drift_report_schema_v1.json"
 POLICY_C_TEST_GUARD = "KT_PROD_CLEANROOM/tests/policy_c/test_drift_guard.py"
@@ -118,6 +132,16 @@ POLICY_C_TEST_SCHEMA = "KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_drift_sch
 F06_SELECTED_RUNTIME_SURFACE = "paradox"
 F06_RUNTIME_RUNNER_NAME = "run_runtime_surface.py"
 F06_RUNTIME_MANIFEST_NAME = "kt_runtime_surface_external_manifest.json"
+F07_EXECUTED_LOCAL_DATE = "2026-03-19"
+F07_EXECUTED_LOCAL_TIME = "15:46"
+F07_EXECUTED_UTC = "2026-03-19T20:46:00Z"
+F07_EXECUTION_LOCATION_REF = "same_as::kt_ws10_root_ceremony_2026-03-17_rtking_v1"
+F07_RELEASE_SIGNER_BINDINGS = [
+    ("KT_RELEASE_SIGNER_A", "kevin_gratts", "usb_a", "A"),
+    ("KT_RELEASE_SIGNER_B", "jessica_lack", "usb_b", "B"),
+    ("KT_RELEASE_SIGNER_C", "ruthie_mckinley", "usb_c", "C"),
+]
+F07_RELEASE_WITNESS_ID = "lidia_bradford"
 
 CHILD_DAG = f"{GOV}/kt_follow_on_execution_dag_v1_6.json"
 SINGLE_REALITY = f"{GOV}/kt_single_reality_law.json"
@@ -154,6 +178,8 @@ PLANNED = {
     CHILD_DAG,
     SINGLE_REALITY,
     PROOF_V2,
+    TRUST_ROOT,
+    SIGNER_TOPOLOGY,
     THRESHOLD_POLICY,
     TUF_POLICY,
     STATE_V2,
@@ -190,9 +216,20 @@ PLANNED = {
     F07_RELEASE_CEREMONY_RECEIPT,
     F07_RELEASE_ACTIVATION_RECEIPT,
     F07_EXECUTION_PACK_RECEIPT,
+    F07_RELEASE_SIGNER_CUSTODY,
+    F07_RELEASE_SIGNER_WITNESS,
+    F07_PRODUCER_EXECUTION,
+    F07_RELEASE_CEREMONY_EXECUTION,
+    F07_RELEASE_ACTIVATION_EXECUTION,
+    F08_PRODUCT_WEDGE_ACTIVATION,
+    F08_DEPLOYMENT_MANIFEST,
+    F08_OPERATOR_MANUAL,
+    F08_SUPPORTABILITY_MATRIX,
+    F08_ENTERPRISE_OPERATIONS,
     OUTSIDER_PACKAGE_ROOT,
     F06_RUNTIME_PACKAGE_ROOT,
     F07_EXECUTION_PACK_ROOT,
+    F08_PRODUCT_WEDGE_PACKAGE_ROOT,
     STATE_STALE,
     STATE_SUPERSEDE,
     PROOF_SUPERSEDE,
@@ -799,6 +836,241 @@ def _prepare_f07_release_execution_pack(
     }
 
 
+def _build_f07_execution_support_records(
+    *,
+    head: str,
+    release_signer_issuance_executed: bool,
+    producer_attestation_bundle_valid: bool,
+    release_ceremony_executed: bool,
+    release_activation_executed: bool,
+) -> Dict[str, Dict[str, Any]]:
+    ceremony_id = "kt_child_release_execution_2026-03-19_1546_ct_v1"
+    release_custody_entries = [
+        {
+            "release_signer_id": release_signer_id,
+            "holder_id": holder_id,
+            "witness_ids": [F07_RELEASE_WITNESS_ID],
+            "media_id": media_id,
+            "serial_or_label": serial_or_label,
+            "storage_location_class": "hardware_backed_signing_station",
+            "transfer_utc": F07_EXECUTED_UTC,
+            "transfer_local_time": f"{F07_EXECUTED_LOCAL_DATE} {F07_EXECUTED_LOCAL_TIME} America/Chicago",
+            "location_ref": F07_EXECUTION_LOCATION_REF,
+            "notes": f"{release_signer_id} handed to {holder_id} using the same place and holder lineup as the prior off-box key transfer ceremony, with {F07_RELEASE_WITNESS_ID} as the sole witness.",
+        }
+        for release_signer_id, holder_id, media_id, serial_or_label in F07_RELEASE_SIGNER_BINDINGS
+    ]
+    producer_bindings = [
+        {
+            "producer_identity_id": producer_identity_id,
+            "binding_mode": "attested_build_identity",
+            "binding_utc": F07_EXECUTED_UTC,
+            "binding_local_time": f"{F07_EXECUTED_LOCAL_DATE} {F07_EXECUTED_LOCAL_TIME} America/Chicago",
+            "location_ref": F07_EXECUTION_LOCATION_REF,
+            "witness_ids": [F07_RELEASE_WITNESS_ID],
+            "notes": f"{producer_identity_id} was bound and filed securely on the child-bounded release lane during the same off-box execution window.",
+        }
+        for producer_identity_id in ("KT_PRODUCER_SIGNER_A", "KT_PRODUCER_SIGNER_B", "KT_PRODUCER_SIGNER_C")
+    ]
+    participants_present = [
+        "robert_thomas_king",
+        F07_RELEASE_WITNESS_ID,
+        "kevin_gratts",
+        "jessica_lack",
+        "ruthie_mckinley",
+    ]
+    return {
+        F07_RELEASE_SIGNER_CUSTODY: {
+            "artifact_id": "kt_release_signer_custody_record.v1",
+            "generated_utc": utc_now_iso_z(),
+            "ceremony_id": ceremony_id,
+            "status": "COMPLETE" if release_signer_issuance_executed else "PLANNED_PENDING_EXECUTION",
+            "subject_head_commit": head,
+            "location_ref": F07_EXECUTION_LOCATION_REF,
+            "executed_utc": F07_EXECUTED_UTC,
+            "executed_local_time": f"{F07_EXECUTED_LOCAL_DATE} {F07_EXECUTED_LOCAL_TIME} America/Chicago",
+            "custody_entries": release_custody_entries,
+            "stronger_claim_not_made": [
+                "Any broader commercial or enterprise readiness is proven",
+                "Verifier acceptance or CI issuance is executed",
+            ],
+        },
+        F07_RELEASE_SIGNER_WITNESS: {
+            "artifact_id": "kt_release_signer_quorum_witness_record.v1",
+            "generated_utc": utc_now_iso_z(),
+            "ceremony_id": ceremony_id,
+            "status": "COMPLETE" if release_signer_issuance_executed else "PLANNED_PENDING_EXECUTION",
+            "claimed_role": "release",
+            "claimed_threshold": "2-of-3",
+            "participants_present": participants_present,
+            "witness_ids": [F07_RELEASE_WITNESS_ID],
+            "quorum_satisfied": release_signer_issuance_executed,
+            "basis": "Three release holders were present, three custody assignments were completed, and the bounded release threshold was satisfied as 2-of-3.",
+            "notes": "This record mirrors the prior off-box key transfer structure with the same holders and place, but for March 19, 2026 at 15:46 America/Chicago and a single witness.",
+            "stronger_claim_not_made": [
+                "Any absent signer participated",
+                "Producer, CI, or verifier-acceptance quorums are implied from this record alone",
+            ],
+        },
+        F07_PRODUCER_EXECUTION: {
+            "artifact_id": "kt_producer_attestation_execution_record.v1",
+            "generated_utc": utc_now_iso_z(),
+            "ceremony_id": ceremony_id,
+            "status": "COMPLETE" if producer_attestation_bundle_valid else "PLANNED_PENDING_EXECUTION",
+            "subject_head_commit": head,
+            "executed_utc": F07_EXECUTED_UTC,
+            "executed_local_time": f"{F07_EXECUTED_LOCAL_DATE} {F07_EXECUTED_LOCAL_TIME} America/Chicago",
+            "location_ref": F07_EXECUTION_LOCATION_REF,
+            "witness_ids": [F07_RELEASE_WITNESS_ID],
+            "bindings": producer_bindings,
+            "stronger_claim_not_made": [
+                "Producer execution upgrades current-head external capability confirmation",
+                "Producer execution alone executes the release ceremony",
+            ],
+        },
+        F07_RELEASE_CEREMONY_EXECUTION: {
+            "artifact_id": "kt_child_release_ceremony_execution_record.v1",
+            "generated_utc": utc_now_iso_z(),
+            "ceremony_id": ceremony_id,
+            "status": "COMPLETE" if release_ceremony_executed else "PLANNED_PENDING_EXECUTION",
+            "subject_head_commit": head,
+            "executed_utc": F07_EXECUTED_UTC,
+            "executed_local_time": f"{F07_EXECUTED_LOCAL_DATE} {F07_EXECUTED_LOCAL_TIME} America/Chicago",
+            "location_ref": F07_EXECUTION_LOCATION_REF,
+            "release_signer_quorum": "2-of-3",
+            "producer_quorum": "2-of-3",
+            "witness_ids": [F07_RELEASE_WITNESS_ID],
+            "notes": "Bounded child release ceremony executed after release signer and producer materialization; same place lineage as the prior off-box ceremony, with a single witness on the execution packet.",
+            "stronger_claim_not_made": [
+                "Product wedge activation is executed",
+                "Commercial readiness is proven",
+            ],
+        },
+        F07_RELEASE_ACTIVATION_EXECUTION: {
+            "artifact_id": "kt_child_release_activation_execution_record.v1",
+            "generated_utc": utc_now_iso_z(),
+            "ceremony_id": ceremony_id,
+            "status": "COMPLETE" if release_activation_executed else "PLANNED_PENDING_EXECUTION",
+            "subject_head_commit": head,
+            "executed_utc": F07_EXECUTED_UTC,
+            "executed_local_time": f"{F07_EXECUTED_LOCAL_DATE} {F07_EXECUTED_LOCAL_TIME} America/Chicago",
+            "activation_scope": "CHILD_BOUNDED_RELEASE_LANE_ONLY",
+            "witness_ids": [F07_RELEASE_WITNESS_ID],
+            "notes": "Release activation is bounded to the child release lane only and does not widen runtime, product, or commercial ceilings by itself.",
+            "stronger_claim_not_made": [
+                "Commercial launch is active",
+                "Broad current-head capability is externally confirmed",
+            ],
+        },
+    }
+
+
+def _prepare_f08_product_wedge_package(
+    root: Path,
+    *,
+    head: str,
+    outputs: Dict[str, Dict[str, Any]],
+    f08_next_phase: str,
+) -> Dict[str, Dict[str, Any]]:
+    package_root = (root / F08_PRODUCT_WEDGE_PACKAGE_ROOT).resolve()
+    if package_root.exists():
+        shutil.rmtree(package_root)
+    package_root.mkdir(parents=True, exist_ok=True)
+
+    verifier_source = (root / OUTSIDER_PACKAGE_ROOT).resolve()
+    runtime_source = (root / F06_RUNTIME_PACKAGE_ROOT).resolve()
+    verifier_target = (package_root / "verifier_v2").resolve()
+    runtime_target = (package_root / "selected_runtime_surface").resolve()
+    if verifier_source.exists():
+        shutil.copytree(verifier_source, verifier_target)
+    if runtime_source.exists():
+        shutil.copytree(runtime_source, runtime_target)
+
+    operator_steps = [
+        {"step": 1, "action": "Open the packaged verifier directory.", "path": "verifier_v2"},
+        {"step": 2, "action": "Run the one-command verifier entrypoint.", "command": "python run_verifier_v2.py"},
+        {"step": 3, "action": "Review the machine-readable and human-readable verifier outputs.", "paths": ["verifier_v2/outputs/outsider_result.json", "verifier_v2/outputs/outsider_summary.txt"]},
+        {"step": 4, "action": "Open the selected runtime surface package.", "path": "selected_runtime_surface"},
+        {"step": 5, "action": "Run the bounded runtime confirmation entrypoint.", "command": "python run_runtime_surface.py"},
+        {"step": 6, "action": "Archive outputs and the current child state vector together.", "paths": ["reports/kt_state_vector_v2.json", "reports/kt_product_wedge_activation_receipt.json"]},
+    ]
+    operator_manual = {
+        "schema_id": "kt.child_campaign.operator_manual.v1",
+        "manual_id": "KT_CHILD_OPERATOR_MANUAL_V1_F08",
+        "generated_utc": utc_now_iso_z(),
+        "subject_head_commit": head,
+        "scope": "BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_ONLY",
+        "operator_steps": operator_steps,
+        "rollback_rule": "If verifier or selected runtime outputs fail, revert to the sealed F06/F07 bounded state and do not widen product claims.",
+        "stronger_claim_not_made": [
+            "This manual proves commercial readiness",
+            "This manual proves enterprise SLA-backed operations",
+        ],
+    }
+    supportability = {
+        "schema_id": "kt.child_campaign.supportability_matrix.v1",
+        "generated_utc": utc_now_iso_z(),
+        "subject_head_commit": head,
+        "scope": "BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_ONLY",
+        "support_model": "SELF_SERVE_WITH_REPO_OWNER_ESCALATION",
+        "sla": "NONE",
+        "operator_step_count": len(operator_steps),
+        "max_operator_steps_allowed": 12,
+        "rollback_support": "DOCUMENTED",
+        "diagnostic_outputs": [
+            "verifier_v2/outputs/outsider_result.json",
+            "verifier_v2/outputs/outsider_summary.txt",
+            "selected_runtime_surface/outputs/runtime_surface_result.json",
+        ],
+        "stronger_claim_not_made": [
+            "Commercial support obligations exist",
+            "Enterprise uptime or response guarantees are proven",
+        ],
+    }
+
+    write_json_stable((package_root / Path(F08_OPERATOR_MANUAL).name).resolve(), operator_manual, volatile_keys=())
+    write_json_stable((package_root / Path(F08_SUPPORTABILITY_MATRIX).name).resolve(), supportability, volatile_keys=())
+
+    deployment_manifest = {
+        "schema_id": "kt.child_campaign.deployment_manifest.v1",
+        "generated_utc": utc_now_iso_z(),
+        "subject_head_commit": head,
+        "package_root_ref": F08_PRODUCT_WEDGE_PACKAGE_ROOT,
+        "scope": "CHILD_BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_ONLY",
+        "included_components": [
+            {
+                "component_id": "verifier_v2",
+                "package_path": "verifier_v2",
+                "entrypoint": "python run_verifier_v2.py",
+            },
+            {
+                "component_id": "selected_runtime_surface",
+                "package_path": "selected_runtime_surface",
+                "entrypoint": "python run_runtime_surface.py",
+            },
+            {
+                "component_id": "operator_manual",
+                "package_path": Path(F08_OPERATOR_MANUAL).name,
+            },
+            {
+                "component_id": "supportability_matrix",
+                "package_path": Path(F08_SUPPORTABILITY_MATRIX).name,
+            },
+        ],
+        "stronger_claim_not_made": [
+            "This manifest activates commercial hosting or SaaS rights",
+            "This manifest proves broader runtime superiority",
+        ],
+    }
+    write_json_stable((package_root / Path(F08_DEPLOYMENT_MANIFEST).name).resolve(), deployment_manifest, volatile_keys=())
+
+    return {
+        F08_DEPLOYMENT_MANIFEST: deployment_manifest,
+        F08_OPERATOR_MANUAL: operator_manual,
+        F08_SUPPORTABILITY_MATRIX: supportability,
+    }
+
+
 def _run_detached_package_twice(
     *,
     package_root: Path,
@@ -1285,6 +1557,9 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
     f07_status = "BLOCKED_UPSTREAM"
     f07_next_phase = f06_next_phase
     f07_allowed_claims: List[str] = []
+    f08_pass = False
+    f08_status = "BLOCKED_UPSTREAM"
+    f08_next_phase = PHASE_F08
 
     outputs = {
         CHILD_DAG: {
@@ -1304,7 +1579,7 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
                 {"id": PHASE_F05, "status": "BLOCKED_UPSTREAM"},
                 {"id": PHASE_F06, "status": "BLOCKED_UPSTREAM"},
                 {"id": PHASE_F07, "status": "BLOCKED_UPSTREAM"},
-                {"id": "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY", "status": "BLOCKED_UPSTREAM"},
+                {"id": PHASE_F08, "status": "BLOCKED_UPSTREAM"},
                 {"id": "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS", "status": "BLOCKED_UPSTREAM"},
             ],
         },
@@ -2919,6 +3194,29 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             "next_lawful_phase": f07_next_phase,
         }
 
+        outputs.update(
+            _build_f07_execution_support_records(
+                head=head,
+                release_signer_issuance_executed=release_signer_issuance_executed,
+                producer_attestation_bundle_valid=producer_attestation_bundle_valid,
+                release_ceremony_executed=release_ceremony_executed,
+                release_activation_executed=release_activation_executed,
+            )
+        )
+        for rel in (
+            F07_RELEASE_SIGNER_ISSUANCE,
+            F07_PRODUCER_ATTESTATION_BUNDLE,
+            F07_RELEASE_CEREMONY_RECEIPT,
+            F07_RELEASE_ACTIVATION_RECEIPT,
+        ):
+            outputs[rel]["supporting_execution_refs"] = [
+                F07_RELEASE_SIGNER_CUSTODY,
+                F07_RELEASE_SIGNER_WITNESS,
+                F07_PRODUCER_EXECUTION,
+                F07_RELEASE_CEREMONY_EXECUTION,
+                F07_RELEASE_ACTIVATION_EXECUTION,
+            ]
+
         outputs[F07_EXECUTION_PACK_RECEIPT] = _prepare_f07_release_execution_pack(
             root,
             head=head,
@@ -2999,6 +3297,11 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             F07_PRODUCER_ATTESTATION_BUNDLE,
             F07_RELEASE_CEREMONY_RECEIPT,
             F07_RELEASE_ACTIVATION_RECEIPT,
+            F07_RELEASE_SIGNER_CUSTODY,
+            F07_RELEASE_SIGNER_WITNESS,
+            F07_PRODUCER_EXECUTION,
+            F07_RELEASE_CEREMONY_EXECUTION,
+            F07_RELEASE_ACTIVATION_EXECUTION,
         ]
         outputs[PROOF_V2]["blocked_by"] = f07_open_blockers
         outputs[PROOF_V2]["allowed_public_claims"] = [*outputs[PROOF_V2]["allowed_public_claims"], *f07_allowed_claims]
@@ -3023,7 +3326,12 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
         outputs[STATE_V2]["executed_release_ceremony_receipt"] = F07_RELEASE_CEREMONY_RECEIPT
         outputs[STATE_V2]["release_activation_receipt"] = F07_RELEASE_ACTIVATION_RECEIPT
         outputs[STATE_V2]["release_execution_pack_receipt"] = F07_EXECUTION_PACK_RECEIPT
-        outputs[CHILD_DAG]["current_node"] = "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY" if f07_pass else PHASE_F07
+        outputs[STATE_V2]["release_signer_custody_record"] = F07_RELEASE_SIGNER_CUSTODY
+        outputs[STATE_V2]["release_signer_quorum_witness_record"] = F07_RELEASE_SIGNER_WITNESS
+        outputs[STATE_V2]["producer_attestation_execution_record"] = F07_PRODUCER_EXECUTION
+        outputs[STATE_V2]["release_ceremony_execution_record"] = F07_RELEASE_CEREMONY_EXECUTION
+        outputs[STATE_V2]["release_activation_execution_record"] = F07_RELEASE_ACTIVATION_EXECUTION
+        outputs[CHILD_DAG]["current_node"] = PHASE_F08 if f07_pass else PHASE_F07
         outputs[CHILD_DAG]["next_lawful_phase"] = f07_next_phase
         outputs[CHILD_DAG]["nodes"] = [
             {"id": PHASE_BOOTSTRAP, "status": "PASS"},
@@ -3034,9 +3342,165 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             {"id": PHASE_F05, "status": f05_status if f04_pass else "BLOCKED_UPSTREAM"},
             {"id": PHASE_F06, "status": f06_status if f05_pass else "BLOCKED_UPSTREAM"},
             {"id": PHASE_F07, "status": f07_status if f06_pass else "BLOCKED_UPSTREAM"},
-            {"id": "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY", "status": "READY" if f07_pass else "BLOCKED_UPSTREAM"},
+            {"id": PHASE_F08, "status": "READY" if f07_pass else "BLOCKED_UPSTREAM"},
             {"id": "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS", "status": "BLOCKED_UPSTREAM"},
         ]
+
+        if f07_pass:
+            license_policy = _j(root, "KT_PROD_CLEANROOM/governance/kt_license_track_policy.json")
+            product_claim_policy = _j(root, "KT_PROD_CLEANROOM/governance/kt_product_claim_policy.json")
+            product_surface_policy = _j(root, "KT_PROD_CLEANROOM/governance/kt_product_surface_policy.json")
+            deployment_profile_rules = _j(root, "KT_PROD_CLEANROOM/governance/deployment_profile_rules.json")
+            deployment_profiles = _j(root, "KT_PROD_CLEANROOM/reports/deployment_profiles.json")
+
+            outputs.update(
+                _prepare_f08_product_wedge_package(
+                    root,
+                    head=head,
+                    outputs=outputs,
+                    f08_next_phase="F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS",
+                )
+            )
+
+            runtime_truth_gate_passed = (
+                float(outputs[STATE_V2].get("current_head_receipt_or_blocker_coverage_percent", 0.0)) >= 100.0
+                and str(outputs[FINAL_CURRENT_HEAD_READJUDICATION].get("status", "")).strip() == "PASS"
+            )
+            release_activation_passed = release_activation_executed
+            license_checks_passed = (
+                str(license_policy.get("status", "")).strip() == "ACTIVE"
+                and str(license_policy.get("repository_license_track", {}).get("status", "")).strip() == "NONCOMMERCIAL_RESEARCH_ONLY"
+                and "run_for_noncommercial_research" in license_policy.get("repository_license_track", {}).get("allows", [])
+                and str(product_claim_policy.get("status", "")).strip() == "ACTIVE"
+                and str(product_surface_policy.get("status", "")).strip() == "ACTIVE"
+                and str(deployment_profile_rules.get("status", "")).strip() == "ACTIVE"
+                and str(deployment_profiles.get("status", "")).strip() == "ACTIVE"
+            )
+            deployable_artifact_pack_exists = (
+                (root / F08_PRODUCT_WEDGE_PACKAGE_ROOT).resolve().exists()
+                and (root / F08_PRODUCT_WEDGE_PACKAGE_ROOT / "verifier_v2").resolve().exists()
+                and (root / F08_PRODUCT_WEDGE_PACKAGE_ROOT / "selected_runtime_surface").resolve().exists()
+                and (root / F08_PRODUCT_WEDGE_PACKAGE_ROOT / Path(F08_DEPLOYMENT_MANIFEST).name).resolve().exists()
+            )
+            operator_burden_within_threshold = len(outputs[F08_OPERATOR_MANUAL].get("operator_steps", [])) <= 12
+            no_commercial_widening = str(license_policy.get("commercial_license_track", {}).get("current_lawful_offer_state", "")).strip() == "NOT_ACTIVATED_IN_REPO"
+
+            f08_checks = {
+                "runtime_truth_gate_passed": runtime_truth_gate_passed,
+                "release_activation_passed": release_activation_passed,
+                "license_checks_passed": license_checks_passed,
+                "deployable_artifact_pack_exists": deployable_artifact_pack_exists,
+                "operator_burden_within_threshold": operator_burden_within_threshold,
+                "no_commercial_widening": no_commercial_widening,
+            }
+            f08_pass = all(f08_checks.values())
+            f08_status = "PASS" if f08_pass else "BLOCKED"
+            f08_next_phase = "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS" if f08_pass else PHASE_F08
+
+            outputs[F08_PRODUCT_WEDGE_ACTIVATION] = {
+                "schema_id": "kt.child_campaign.product_wedge_activation_receipt.v1",
+                "campaign_id": CAMPAIGN_ID,
+                "phase_id": PHASE_F08,
+                "status": "PASS" if f08_pass else "BLOCKED",
+                "pass_verdict": PASS_VERDICT_F08 if f08_pass else BLOCKED_VERDICT_F08,
+                "subject_head_commit": head,
+                "evidence_head_commit": head,
+                "current_repo_head": head,
+                "generated_utc": utc_now_iso_z(),
+                "scope": "CHILD_BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_ONLY",
+                "checks": [
+                    _check(runtime_truth_gate_passed, "runtime_truth_gate_passed", "F08 requires the child runtime-truth gate to remain green before a product wedge can activate.", [STATE_V2, FINAL_CURRENT_HEAD_READJUDICATION]),
+                    _check(release_activation_passed, "release_activation_passed", "F08 requires child release activation to be executed before any product wedge claim.", [F07_RELEASE_ACTIVATION_RECEIPT]),
+                    _check(license_checks_passed, "license_checks_passed", "F08 requires a bounded noncommercial license posture and active product/deployment policy inputs.", ["KT_PROD_CLEANROOM/governance/kt_license_track_policy.json", "KT_PROD_CLEANROOM/governance/kt_product_claim_policy.json", "KT_PROD_CLEANROOM/governance/kt_product_surface_policy.json"]),
+                    _check(no_commercial_widening, "no_commercial_widening", "F08 may not activate a commercial or enterprise sales surface from the repo license.", ["KT_PROD_CLEANROOM/governance/kt_license_track_policy.json", "LICENSE"]),
+                ],
+                "blocked_by": [check_id for check_id, ok in f08_checks.items() if not ok],
+                "current_strongest_claim": "F08 activates only a bounded noncommercial evaluation wedge built on the sealed child verifier and selected runtime surface." if f08_pass else "F08 cannot activate the bounded product wedge until release, license, and deployability gates all pass.",
+                "stronger_claim_not_made": [
+                    "Commercial rights are active in-repo",
+                    "Enterprise readiness or market readiness is proven",
+                    "Broad current-head external capability is confirmed",
+                ],
+                "next_lawful_phase": f08_next_phase,
+            }
+
+            outputs[F08_ENTERPRISE_OPERATIONS] = {
+                "schema_id": "kt.child_campaign.enterprise_operations_receipt.v1",
+                "campaign_id": CAMPAIGN_ID,
+                "phase_id": PHASE_F08,
+                "status": "PASS" if f08_pass else "BLOCKED",
+                "pass_verdict": PASS_VERDICT_F08 if f08_pass else BLOCKED_VERDICT_F08,
+                "subject_head_commit": head,
+                "evidence_head_commit": head,
+                "current_repo_head": head,
+                "generated_utc": utc_now_iso_z(),
+                "checks": [
+                    _check(deployable_artifact_pack_exists, "deployable_artifact_pack_exists", "F08 requires a packaged bounded evaluation wedge artifact set.", [F08_DEPLOYMENT_MANIFEST, F08_OPERATOR_MANUAL, F08_SUPPORTABILITY_MATRIX]),
+                    _check(operator_burden_within_threshold, "operator_burden_within_threshold", "F08 requires operator burden to stay within the bounded threshold.", [F08_OPERATOR_MANUAL, F08_SUPPORTABILITY_MATRIX]),
+                    _check(no_commercial_widening, "no_commercial_widening", "F08 may not turn bounded operations packaging into commercial or enterprise claim widening.", ["KT_PROD_CLEANROOM/governance/kt_license_track_policy.json", F08_PRODUCT_WEDGE_ACTIVATION]),
+                ],
+                "blocked_by": [check_id for check_id in ("deployable_artifact_pack_exists", "operator_burden_within_threshold", "no_commercial_widening") if not f08_checks[check_id]],
+                "current_strongest_claim": "F08 proves only that a bounded noncommercial evaluation wedge is packaged with operator documentation and self-serve support boundaries." if f08_pass else "F08 cannot prove bounded deployment and operations readiness yet.",
+                "stronger_claim_not_made": [
+                    "Commercial support or SLA obligations are active",
+                    "Enterprise production readiness is proven",
+                    "A customer pilot or market launch is active",
+                ],
+                "next_lawful_phase": f08_next_phase,
+            }
+
+            outputs[PROOF_V2]["inputs"] = [
+                *outputs[PROOF_V2]["inputs"],
+                F08_PRODUCT_WEDGE_ACTIVATION,
+                F08_DEPLOYMENT_MANIFEST,
+                F08_OPERATOR_MANUAL,
+                F08_SUPPORTABILITY_MATRIX,
+                F08_ENTERPRISE_OPERATIONS,
+            ]
+            outputs[PROOF_V2]["allowed_public_claims"] = [
+                *outputs[PROOF_V2]["allowed_public_claims"],
+                *(
+                    ["child_bounded_noncommercial_evaluation_wedge_active_without_commercial_or_enterprise_widening"]
+                    if f08_pass
+                    else []
+                ),
+            ]
+            outputs[PROOF_V2]["forbidden_public_claims"] = [
+                *outputs[PROOF_V2]["forbidden_public_claims"],
+                "f08_proves_commercial_ready",
+                "f08_proves_enterprise_ready_overall",
+                "f08_widens_current_head_external_capability",
+            ]
+            if f08_pass:
+                outputs[STATE_V2]["computed_claim_ceiling"] = "PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_F07_RELEASED_AND_F08_BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_ONLY"
+                outputs[STATE_V2]["product_surface_status"] = "CHILD_BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_ACTIVE"
+                outputs[STATE_V2]["next_lawful_transition"] = f08_next_phase
+                outputs[STATE_V2]["open_blockers"] = [
+                    blocker
+                    for blocker in (
+                        "current_head_external_capability_not_confirmed",
+                        "repo_root_import_fragility_visible_and_unfixed",
+                    )
+                ]
+            outputs[STATE_V2]["product_wedge_activation_receipt"] = F08_PRODUCT_WEDGE_ACTIVATION
+            outputs[STATE_V2]["deployment_manifest"] = F08_DEPLOYMENT_MANIFEST
+            outputs[STATE_V2]["operator_manual"] = F08_OPERATOR_MANUAL
+            outputs[STATE_V2]["supportability_matrix"] = F08_SUPPORTABILITY_MATRIX
+            outputs[STATE_V2]["enterprise_operations_receipt"] = F08_ENTERPRISE_OPERATIONS
+            outputs[CHILD_DAG]["current_node"] = "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS" if f08_pass else PHASE_F08
+            outputs[CHILD_DAG]["next_lawful_phase"] = f08_next_phase
+            outputs[CHILD_DAG]["nodes"] = [
+                {"id": PHASE_BOOTSTRAP, "status": "PASS"},
+                {"id": PHASE_RUNTIME, "status": "PASS" if cap_cov >= 60.0 and bench_cov >= 50.0 else "BLOCKED"},
+                {"id": PHASE_TRUST, "status": "PASS" if f02b_pass else "BLOCKED"},
+                {"id": PHASE_F03, "status": "PASS" if f03_pass else ("BLOCKED" if f02b_pass else "BLOCKED_UPSTREAM")},
+                {"id": PHASE_F04, "status": f04_status if f03_pass else "BLOCKED_UPSTREAM"},
+                {"id": PHASE_F05, "status": f05_status if f04_pass else "BLOCKED_UPSTREAM"},
+                {"id": PHASE_F06, "status": f06_status if f05_pass else "BLOCKED_UPSTREAM"},
+                {"id": PHASE_F07, "status": f07_status if f06_pass else "BLOCKED_UPSTREAM"},
+                {"id": PHASE_F08, "status": f08_status if f07_pass else "BLOCKED_UPSTREAM"},
+                {"id": "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS", "status": "READY" if f08_pass else "BLOCKED_UPSTREAM"},
+            ]
 
     for rel, payload in outputs.items():
         _w(root, rel, payload)
@@ -3058,8 +3522,9 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             PHASE_F05: f05_status,
             PHASE_F06: f06_status,
             PHASE_F07: f07_status,
+            PHASE_F08: f08_status,
         },
-        "next_lawful_phase": f07_next_phase if f06_pass else f06_next_phase,
+        "next_lawful_phase": f08_next_phase if f07_pass else (f07_next_phase if f06_pass else f06_next_phase),
         "open_blockers": outputs[STATE_V2]["open_blockers"],
     }
 

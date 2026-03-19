@@ -27,11 +27,21 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     F07_EXECUTION_INSTRUCTIONS_NAME,
     F07_EXECUTION_MANIFEST_NAME,
     F07_EXECUTION_PACK_ROOT,
+    F07_PRODUCER_EXECUTION,
     F07_PRODUCER_ATTESTATION_BUNDLE,
+    F07_RELEASE_ACTIVATION_EXECUTION,
     F07_RELEASE_ACTIVATION_RECEIPT,
+    F07_RELEASE_CEREMONY_EXECUTION,
     F07_RELEASE_CEREMONY_RECEIPT,
+    F07_RELEASE_SIGNER_CUSTODY,
     F07_RELEASE_SIGNER_ISSUANCE,
+    F07_RELEASE_SIGNER_WITNESS,
     F07_THRESHOLD_RECEIPT,
+    F08_DEPLOYMENT_MANIFEST,
+    F08_ENTERPRISE_OPERATIONS,
+    F08_OPERATOR_MANUAL,
+    F08_PRODUCT_WEDGE_ACTIVATION,
+    F08_SUPPORTABILITY_MATRIX,
     IDENTITY_MODEL,
     LOG_MONITOR,
     OLD_PROOF,
@@ -41,6 +51,7 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     PARENT_PRODUCT,
     PHASE_F06,
     PHASE_F07,
+    PHASE_F08,
     PHASE_F03,
     PHASE_F04,
     PHASE_F05,
@@ -59,6 +70,7 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     RUNTIME_MATRIX,
     RUNTIME_RECEIPT,
     RUNTIME_EXTERNAL_CONFIRMATION,
+    SIGNER_TOPOLOGY,
     SINGLE_REALITY,
     STATE_STALE,
     STATE_SUPERSEDE,
@@ -472,6 +484,95 @@ def test_child_campaign_f07_blocks_honestly_when_release_prerequisites_remain_pl
         F07_EXECUTION_PACK_RECEIPT,
     ]:
         assert (tmp_path / rel).exists()
+
+
+def test_child_campaign_f07_and_f08_pass_with_imported_offbox_execution_and_bounded_noncommercial_wedge(tmp_path: Path) -> None:
+    _seed_repo(tmp_path)
+
+    signer_topology = json.loads((tmp_path / SIGNER_TOPOLOGY).read_text(encoding="utf-8"))
+    signer_topology["roles"] = [
+        {"role_id": "verifier_acceptance", "threshold": 1, "signer_count": 2, "planned_identity_ids": ["KT_VERIFIER_ACCEPTANCE_A", "KT_VERIFIER_ACCEPTANCE_B"], "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY"},
+        {"role_id": "release", "threshold": 2, "signer_count": 3, "planned_identity_ids": ["KT_RELEASE_SIGNER_A", "KT_RELEASE_SIGNER_B", "KT_RELEASE_SIGNER_C"], "issuance_state": "EXECUTED_OFFBOX_2026_03_19_1546_CT"},
+        {"role_id": "producer", "threshold": 2, "signer_count": 3, "planned_identity_ids": ["KT_PRODUCER_SIGNER_A", "KT_PRODUCER_SIGNER_B", "KT_PRODUCER_SIGNER_C"], "issuance_state": "EXECUTED_OFFBOX_2026_03_19_1546_CT"},
+    ]
+    _write_json(tmp_path / SIGNER_TOPOLOGY, signer_topology)
+
+    trust_root = json.loads((tmp_path / TRUST_ROOT).read_text(encoding="utf-8"))
+    trust_root.setdefault("semantic_boundary", {})
+    trust_root["semantic_boundary"]["release_signer_material_present"] = True
+    _write_json(tmp_path / TRUST_ROOT, trust_root)
+
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM/governance/kt_license_track_policy.json",
+        {
+            "schema_id": "kt.governance.license_track_policy.v1",
+            "status": "ACTIVE",
+            "repository_license_track": {
+                "status": "NONCOMMERCIAL_RESEARCH_ONLY",
+                "allows": ["run_for_noncommercial_research", "run_for_personal_evaluation"],
+            },
+            "commercial_license_track": {
+                "current_lawful_offer_state": "NOT_ACTIVATED_IN_REPO",
+            },
+        },
+    )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM/governance/kt_product_claim_policy.json",
+        {"schema_id": "kt.governance.product_claim_policy.v1", "status": "ACTIVE"},
+    )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM/governance/kt_product_surface_policy.json",
+        {"schema_id": "kt.governance.product_surface_policy.v1", "status": "ACTIVE"},
+    )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM/governance/deployment_profile_rules.json",
+        {"schema_id": "kt.governance.deployment_profile_rules.v1", "status": "ACTIVE"},
+    )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM/reports/deployment_profiles.json",
+        {"schema_id": "kt.deployment_profiles.v1", "status": "ACTIVE"},
+    )
+    (tmp_path / "LICENSE").write_text("bounded noncommercial seed\n", encoding="utf-8", newline="\n")
+    _commit_all(tmp_path, "import f07 execution and bounded f08 inputs")
+
+    summary = emit_follow_on_campaign_v16(tmp_path)
+    state = json.loads((tmp_path / STATE_V2).read_text(encoding="utf-8"))
+    f07_release_signers = json.loads((tmp_path / F07_RELEASE_SIGNER_ISSUANCE).read_text(encoding="utf-8"))
+    f07_producer = json.loads((tmp_path / F07_PRODUCER_ATTESTATION_BUNDLE).read_text(encoding="utf-8"))
+    f07_ceremony = json.loads((tmp_path / F07_RELEASE_CEREMONY_RECEIPT).read_text(encoding="utf-8"))
+    f07_activation = json.loads((tmp_path / F07_RELEASE_ACTIVATION_RECEIPT).read_text(encoding="utf-8"))
+    f08_wedge = json.loads((tmp_path / F08_PRODUCT_WEDGE_ACTIVATION).read_text(encoding="utf-8"))
+    f08_ops = json.loads((tmp_path / F08_ENTERPRISE_OPERATIONS).read_text(encoding="utf-8"))
+
+    assert summary["phase_results"][PHASE_F07] == "PASS"
+    assert summary["phase_results"][PHASE_F08] == "PASS"
+    assert summary["next_lawful_phase"] == "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS"
+    assert f07_release_signers["status"] == "PASS"
+    assert f07_producer["status"] == "PASS"
+    assert f07_ceremony["status"] == "PASS"
+    assert f07_activation["status"] == "PASS"
+    assert f08_wedge["status"] == "PASS"
+    assert f08_ops["status"] == "PASS"
+    assert state["release_readiness_status"] == "PROVEN_CHILD_BOUNDED_RELEASE_ONLY"
+    assert state["release_eligibility_status"] == "ELIGIBLE_CHILD_BOUNDED_RELEASE_ONLY"
+    assert state["release_ceremony_status"] == "EXECUTED_CHILD_BOUNDED_RELEASE_ONLY"
+    assert state["release_activation_status"] == "EXECUTED_CHILD_BOUNDED_RELEASE_ONLY"
+    assert state["product_surface_status"] == "CHILD_BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_ACTIVE"
+    assert state["next_lawful_transition"] == "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS"
+    assert state["open_blockers"] == [
+        "current_head_external_capability_not_confirmed",
+        "repo_root_import_fragility_visible_and_unfixed",
+    ]
+    assert (tmp_path / F07_RELEASE_SIGNER_CUSTODY).exists()
+    assert (tmp_path / F07_RELEASE_SIGNER_WITNESS).exists()
+    assert (tmp_path / F07_PRODUCER_EXECUTION).exists()
+    assert (tmp_path / F07_RELEASE_CEREMONY_EXECUTION).exists()
+    assert (tmp_path / F07_RELEASE_ACTIVATION_EXECUTION).exists()
+    assert (tmp_path / F08_DEPLOYMENT_MANIFEST).exists()
+    assert (tmp_path / F08_OPERATOR_MANUAL).exists()
+    assert (tmp_path / F08_SUPPORTABILITY_MATRIX).exists()
+    assert any("lidia_bradford" in row["witness_ids"] for row in json.loads((tmp_path / F07_RELEASE_SIGNER_CUSTODY).read_text(encoding="utf-8"))["custody_entries"])
+    assert json.loads((tmp_path / F08_OPERATOR_MANUAL).read_text(encoding="utf-8"))["operator_steps"][0]["step"] == 1
 
 
 def test_child_campaign_f02b_blocks_if_threshold_root_target_missing(tmp_path: Path) -> None:

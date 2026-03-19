@@ -1,0 +1,50 @@
+{
+  "generated_utc": "2026-03-19T21:44:29Z",
+  "manual_id": "KT_CHILD_OPERATOR_MANUAL_V1_F08",
+  "operator_steps": [
+    {
+      "action": "Open the packaged verifier directory.",
+      "path": "verifier_v2",
+      "step": 1
+    },
+    {
+      "action": "Run the one-command verifier entrypoint.",
+      "command": "python run_verifier_v2.py",
+      "step": 2
+    },
+    {
+      "action": "Review the machine-readable and human-readable verifier outputs.",
+      "paths": [
+        "verifier_v2/outputs/outsider_result.json",
+        "verifier_v2/outputs/outsider_summary.txt"
+      ],
+      "step": 3
+    },
+    {
+      "action": "Open the selected runtime surface package.",
+      "path": "selected_runtime_surface",
+      "step": 4
+    },
+    {
+      "action": "Run the bounded runtime confirmation entrypoint.",
+      "command": "python run_runtime_surface.py",
+      "step": 5
+    },
+    {
+      "action": "Archive outputs and the current child state vector together.",
+      "paths": [
+        "reports/kt_state_vector_v2.json",
+        "reports/kt_product_wedge_activation_receipt.json"
+      ],
+      "step": 6
+    }
+  ],
+  "rollback_rule": "If verifier or selected runtime outputs fail, revert to the sealed F06/F07 bounded state and do not widen product claims.",
+  "schema_id": "kt.child_campaign.operator_manual.v1",
+  "scope": "BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_ONLY",
+  "stronger_claim_not_made": [
+    "This manual proves commercial readiness",
+    "This manual proves enterprise SLA-backed operations"
+  ],
+  "subject_head_commit": "b5c3b665da63c8dc5de808cb59fe5c8fe99d5351"
+}

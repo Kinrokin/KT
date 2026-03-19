@@ -1,0 +1,58 @@
+{
+  "blocked_by": [],
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "runtime_truth_gate_passed",
+      "detail": "F08 requires the child runtime-truth gate to remain green before a product wedge can activate.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_state_vector_v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_final_current_head_readjudication_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "release_activation_passed",
+      "detail": "F08 requires child release activation to be executed before any product wedge claim.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_release_activation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "license_checks_passed",
+      "detail": "F08 requires a bounded noncommercial license posture and active product/deployment policy inputs.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_license_track_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_product_claim_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_product_surface_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "no_commercial_widening",
+      "detail": "F08 may not activate a commercial or enterprise sales surface from the repo license.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_license_track_policy.json",
+        "LICENSE"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "b5c3b665da63c8dc5de808cb59fe5c8fe99d5351",
+  "current_strongest_claim": "F08 activates only a bounded noncommercial evaluation wedge built on the sealed child verifier and selected runtime surface.",
+  "evidence_head_commit": "b5c3b665da63c8dc5de808cb59fe5c8fe99d5351",
+  "generated_utc": "2026-03-19T21:44:29Z",
+  "next_lawful_phase": "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS",
+  "pass_verdict": "CHILD_BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_ACTIVE",
+  "phase_id": "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY",
+  "schema_id": "kt.child_campaign.product_wedge_activation_receipt.v1",
+  "scope": "CHILD_BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_ONLY",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "Commercial rights are active in-repo",
+    "Enterprise readiness or market readiness is proven",
+    "Broad current-head external capability is confirmed"
+  ],
+  "subject_head_commit": "b5c3b665da63c8dc5de808cb59fe5c8fe99d5351"
+}

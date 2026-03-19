@@ -1,5 +1,5 @@
 {
-  "current_repo_head": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+  "current_repo_head": "b5c3b665da63c8dc5de808cb59fe5c8fe99d5351",
   "custody_and_storage_rules": {
     "ci": "Short-lived OIDC or equivalent attestable identities only after WS11.",
     "producer": "Ephemeral identities bound to attested build systems only after later activation.",
@@ -19,11 +19,16 @@
   "evidence_import_refs": [
     "KT_PROD_CLEANROOM/reports/kt_root_shard_custody_record.json",
     "KT_PROD_CLEANROOM/reports/kt_root_quorum_witness_record.json",
-    "KT_PROD_CLEANROOM/reports/kt_ceremony_import_manifest.json"
+    "KT_PROD_CLEANROOM/reports/kt_ceremony_import_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_release_signer_custody_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_release_signer_quorum_witness_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_producer_attestation_execution_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_child_release_ceremony_execution_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_child_release_activation_execution_record.json"
   ],
   "execution_dag_ref": "KT_PROD_CLEANROOM/governance/kt_execution_dag.json",
   "failure_mode_register_ref": "KT_PROD_CLEANROOM/governance/kt_failure_mode_register.json",
-  "generated_utc": "2026-03-18T05:09:13Z",
+  "generated_utc": "2026-03-19T20:46:00Z",
   "quorum_rules": [
     {
       "quorum_statement": "3 of 3 offline root shard custodians are required and were witnessed for the reratified WS10 boundary.",
@@ -76,42 +81,75 @@
     {
       "custody_class": "hardware_backed_signing_station",
       "identity_id": "KT_RELEASE_SIGNER_A",
-      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "holder_id": "kevin_gratts",
+      "issuance_state": "EXECUTED_OFFBOX_2026_03_19_1546_CT",
+      "issued_utc": "2026-03-19T20:46:00Z",
+      "location_ref": "same_as::kt_ws10_root_ceremony_2026-03-17_rtking_v1",
+      "witness_ids": [
+        "lidia_bradford"
+      ],
       "role_id": "release",
       "storage_rule": "release_offline_when_idle"
     },
     {
       "custody_class": "hardware_backed_signing_station",
       "identity_id": "KT_RELEASE_SIGNER_B",
-      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "holder_id": "jessica_lack",
+      "issuance_state": "EXECUTED_OFFBOX_2026_03_19_1546_CT",
+      "issued_utc": "2026-03-19T20:46:00Z",
+      "location_ref": "same_as::kt_ws10_root_ceremony_2026-03-17_rtking_v1",
+      "witness_ids": [
+        "lidia_bradford"
+      ],
       "role_id": "release",
       "storage_rule": "release_offline_when_idle"
     },
     {
       "custody_class": "hardware_backed_signing_station",
       "identity_id": "KT_RELEASE_SIGNER_C",
-      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "holder_id": "ruthie_mckinley",
+      "issuance_state": "EXECUTED_OFFBOX_2026_03_19_1546_CT",
+      "issued_utc": "2026-03-19T20:46:00Z",
+      "location_ref": "same_as::kt_ws10_root_ceremony_2026-03-17_rtking_v1",
+      "witness_ids": [
+        "lidia_bradford"
+      ],
       "role_id": "release",
       "storage_rule": "release_offline_when_idle"
     },
     {
       "custody_class": "attested_build_identity",
       "identity_id": "KT_PRODUCER_SIGNER_A",
-      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "issuance_state": "EXECUTED_OFFBOX_2026_03_19_1546_CT",
+      "issued_utc": "2026-03-19T20:46:00Z",
+      "location_ref": "same_as::kt_ws10_root_ceremony_2026-03-17_rtking_v1",
+      "witness_ids": [
+        "lidia_bradford"
+      ],
       "role_id": "producer",
       "storage_rule": "ephemeral_bound_to_attested_runner"
     },
     {
       "custody_class": "attested_build_identity",
       "identity_id": "KT_PRODUCER_SIGNER_B",
-      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "issuance_state": "EXECUTED_OFFBOX_2026_03_19_1546_CT",
+      "issued_utc": "2026-03-19T20:46:00Z",
+      "location_ref": "same_as::kt_ws10_root_ceremony_2026-03-17_rtking_v1",
+      "witness_ids": [
+        "lidia_bradford"
+      ],
       "role_id": "producer",
       "storage_rule": "ephemeral_bound_to_attested_runner"
     },
     {
       "custody_class": "attested_build_identity",
       "identity_id": "KT_PRODUCER_SIGNER_C",
-      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "issuance_state": "EXECUTED_OFFBOX_2026_03_19_1546_CT",
+      "issued_utc": "2026-03-19T20:46:00Z",
+      "location_ref": "same_as::kt_ws10_root_ceremony_2026-03-17_rtking_v1",
+      "witness_ids": [
+        "lidia_bradford"
+      ],
       "role_id": "producer",
       "storage_rule": "ephemeral_bound_to_attested_runner"
     },
@@ -158,7 +196,7 @@
       "threshold": 3
     },
     {
-      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "issuance_state": "EXECUTED_OFFBOX_2026_03_19_1546_CT",
       "planned_identity_ids": [
         "KT_RELEASE_SIGNER_A",
         "KT_RELEASE_SIGNER_B",
@@ -170,7 +208,7 @@
       "threshold": 2
     },
     {
-      "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+      "issuance_state": "EXECUTED_OFFBOX_2026_03_19_1546_CT",
       "planned_identity_ids": [
         "KT_PRODUCER_SIGNER_A",
         "KT_PRODUCER_SIGNER_B",
@@ -208,8 +246,8 @@
   "schema_id": "kt.governance.signer_topology.v1",
   "semantic_boundary": {
     "identities_are_logical_only": false,
-    "lawful_current_claim": "Root signer topology remains executed and reratified as 3-of-3 only. WS14 adds bounded static verifier packaging and bootstrap-root-only acceptance policy without widening non-root signer issuance.",
-    "non_root_roles_remain_planned": true,
+    "lawful_current_claim": "Root signer topology remains executed and reratified as 3-of-3 only. Child-bounded release signer issuance and producer attestation execution were completed off-box on March 19, 2026 at 15:46 America/Chicago using the same place lineage as the earlier ceremony. CI and verifier-acceptance roles remain planned.",
+    "non_root_roles_remain_planned": false,
     "offline_root_issuance_complete": true,
     "quorum_witnessed": true
   },

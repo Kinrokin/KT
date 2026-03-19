@@ -1,0 +1,31 @@
+{
+  "generated_utc": "2026-03-19T21:44:29Z",
+  "included_components": [
+    {
+      "component_id": "verifier_v2",
+      "entrypoint": "python run_verifier_v2.py",
+      "package_path": "verifier_v2"
+    },
+    {
+      "component_id": "selected_runtime_surface",
+      "entrypoint": "python run_runtime_surface.py",
+      "package_path": "selected_runtime_surface"
+    },
+    {
+      "component_id": "operator_manual",
+      "package_path": "kt_operator_manual_v1.json"
+    },
+    {
+      "component_id": "supportability_matrix",
+      "package_path": "kt_supportability_matrix.json"
+    }
+  ],
+  "package_root_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F08_product_wedge_package",
+  "schema_id": "kt.child_campaign.deployment_manifest.v1",
+  "scope": "CHILD_BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_ONLY",
+  "stronger_claim_not_made": [
+    "This manifest activates commercial hosting or SaaS rights",
+    "This manifest proves broader runtime superiority"
+  ],
+  "subject_head_commit": "b5c3b665da63c8dc5de808cb59fe5c8fe99d5351"
+}

@@ -4,7 +4,7 @@
     "preparatory_only": false,
     "requires_offbox_execution_for_pass": false
   },
-  "current_repo_head": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+  "current_repo_head": "b5c3b665da63c8dc5de808cb59fe5c8fe99d5351",
   "custody_and_storage_rules": {
     "release_and_verifier_material": [
       "Keep release and verifier acceptance material offline when later minted.",
@@ -45,7 +45,7 @@
     "quorum_claim_without_witnessed_offline_signers",
     "ws11_transparency_claim_before_activation"
   ],
-  "generated_utc": "2026-03-18T05:09:13Z",
+  "generated_utc": "2026-03-19T20:46:00Z",
   "inheritance": {
     "evidence_head_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
     "foundation_bootstrap_state": "BOOTSTRAP_THRESHOLD_1_OF_1",
@@ -69,13 +69,13 @@
       "threshold": 3
     },
     {
-      "claim_boundary": "Release signing remains planned and unexecuted.",
+      "claim_boundary": "Child-bounded release signing is now executed off-box for the March 19, 2026 bounded release lane only.",
       "role_id": "release",
       "signer_count": 3,
       "threshold": 2
     },
     {
-      "claim_boundary": "Producer attestations remain planned and unexecuted.",
+      "claim_boundary": "Child-bounded producer attestations are now executed off-box for the March 19, 2026 bounded release lane only.",
       "role_id": "producer",
       "signer_count": 3,
       "threshold": 2
@@ -165,9 +165,9 @@
   "schema_id": "kt.governance.trust_root_policy.v1",
   "semantic_boundary": {
     "air_gapped_ceremony_executed": true,
-    "lawful_current_claim": "WS10 remains executed under the reratified 3-of-3 root boundary only. WS11, WS12, and WS13 remain bounded. WS14 now publishes bootstrap-root-only verifier acceptance and bounded static verifier release packaging without widening threshold-root acceptance.",
+    "lawful_current_claim": "WS10 remains executed under the reratified 3-of-3 root boundary only. Child-bounded release signer material and producer attestation material were executed off-box on March 19, 2026 at 15:46 America/Chicago for the release lane only. WS14 threshold-root acceptance remains bounded and this file still does not widen commercial or whole-system capability claims.",
     "offline_root_material_present": true,
-    "release_signer_material_present": false,
+    "release_signer_material_present": true,
     "verifier_acceptance_upgraded": false
   },
   "status": "EXECUTED_RERATIFIED_3_OF_3",

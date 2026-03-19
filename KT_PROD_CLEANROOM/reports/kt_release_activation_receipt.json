@@ -1,8 +1,5 @@
 {
-  "blocked_by": [
-    "release_ceremony_executed",
-    "release_activation_executed"
-  ],
+  "blocked_by": [],
   "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
   "checks": [
     {
@@ -11,7 +8,7 @@
       "refs": [
         "KT_PROD_CLEANROOM/reports/kt_executed_release_ceremony_receipt.json"
       ],
-      "status": "FAIL"
+      "status": "PASS"
     },
     {
       "check": "release_activation_executed",
@@ -21,7 +18,7 @@
         "KT_PROD_CLEANROOM/reports/kt_release_signer_issuance_receipt.json",
         "KT_PROD_CLEANROOM/reports/kt_producer_attestation_bundle.json"
       ],
-      "status": "FAIL"
+      "status": "PASS"
     },
     {
       "check": "product_surface_unchanged",
@@ -32,22 +29,29 @@
       "status": "PASS"
     }
   ],
-  "current_repo_head": "27889216e5980d53c20b13e58aa118b0b4e3232f",
-  "current_strongest_claim": "F07 keeps release activation explicitly non-executed while prerequisite release legitimacy remains incomplete.",
-  "evidence_head_commit": "27889216e5980d53c20b13e58aa118b0b4e3232f",
-  "generated_utc": "2026-03-19T20:52:58Z",
-  "next_lawful_phase": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION",
+  "current_repo_head": "b5c3b665da63c8dc5de808cb59fe5c8fe99d5351",
+  "current_strongest_claim": "F07 executes bounded release activation without widening runtime, product, or commercial claims.",
+  "evidence_head_commit": "b5c3b665da63c8dc5de808cb59fe5c8fe99d5351",
+  "generated_utc": "2026-03-19T21:44:29Z",
+  "next_lawful_phase": "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY",
   "offbox_execution_pack_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_f07_release_execution_pack_receipt.json",
   "offbox_execution_pack_root_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F07_release_execution_pack",
-  "pass_verdict": "RELEASE_LEGITIMACY_BLOCKED_BY_UNEXECUTED_CHILD_RELEASE_PREREQUISITES",
+  "pass_verdict": "CHILD_BOUNDED_RELEASE_ACTIVATION_EXECUTED",
   "phase_id": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION",
-  "release_activation_status": "NON_EXECUTED",
+  "release_activation_status": "EXECUTED_CHILD_BOUNDED_RELEASE_ONLY",
   "schema_id": "kt.child_campaign.release_activation_receipt.v1",
-  "status": "BLOCKED",
+  "status": "PASS",
   "stronger_claim_not_made": [
     "Product wedge activation is executed",
     "Commercial or enterprise readiness is proven",
     "Current-head external capability is broadly confirmed"
   ],
-  "subject_head_commit": "27889216e5980d53c20b13e58aa118b0b4e3232f"
+  "subject_head_commit": "b5c3b665da63c8dc5de808cb59fe5c8fe99d5351",
+  "supporting_execution_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_release_signer_custody_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_release_signer_quorum_witness_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_producer_attestation_execution_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_child_release_ceremony_execution_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_child_release_activation_execution_record.json"
+  ]
 }
