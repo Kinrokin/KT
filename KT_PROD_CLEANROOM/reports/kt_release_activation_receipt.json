@@ -1,0 +1,51 @@
+{
+  "blocked_by": [
+    "release_ceremony_executed",
+    "release_activation_executed"
+  ],
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "release_ceremony_executed",
+      "detail": "Release activation requires an executed child release ceremony.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_executed_release_ceremony_receipt.json"
+      ],
+      "status": "FAIL"
+    },
+    {
+      "check": "release_activation_executed",
+      "detail": "Release activation may not be implied; it must execute on the bounded child release lane.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_executed_release_ceremony_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_signer_issuance_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_producer_attestation_bundle.json"
+      ],
+      "status": "FAIL"
+    },
+    {
+      "check": "product_surface_unchanged",
+      "detail": "F07 must not widen product state while changing only release legitimacy.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_state_vector_v2.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "51336dc2e0202de2c197718abd3bd723b4517c8d",
+  "current_strongest_claim": "F07 keeps release activation explicitly non-executed while prerequisite release legitimacy remains incomplete.",
+  "evidence_head_commit": "51336dc2e0202de2c197718abd3bd723b4517c8d",
+  "generated_utc": "2026-03-19T19:21:41Z",
+  "next_lawful_phase": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION",
+  "pass_verdict": "RELEASE_LEGITIMACY_BLOCKED_BY_UNEXECUTED_CHILD_RELEASE_PREREQUISITES",
+  "phase_id": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION",
+  "release_activation_status": "NON_EXECUTED",
+  "schema_id": "kt.child_campaign.release_activation_receipt.v1",
+  "status": "BLOCKED",
+  "stronger_claim_not_made": [
+    "Product wedge activation is executed",
+    "Commercial or enterprise readiness is proven",
+    "Current-head external capability is broadly confirmed"
+  ],
+  "subject_head_commit": "51336dc2e0202de2c197718abd3bd723b4517c8d"
+}

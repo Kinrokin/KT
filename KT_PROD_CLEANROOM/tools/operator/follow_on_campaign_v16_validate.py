@@ -35,6 +35,8 @@ BLOCKED_VERDICT_F05 = "RUNTIME_ORGAN_PROMOTION_MATRIX_BLOCKED"
 PASS_VERDICT_F05 = "CURRENT_HEAD_RUNTIME_ORGANS_ACCOUNTED_AND_BOUNDED_PROMOTION_MATRIX_LOCKED"
 BLOCKED_VERDICT_F06 = "CURRENT_HEAD_EXTERNAL_CONFIRMATION_OR_FINAL_READJUDICATION_BLOCKED"
 PASS_VERDICT_F06 = "CURRENT_HEAD_SELECTED_OUTSIDER_CONFIRMATIONS_AND_FINAL_READJUDICATION_LOCKED"
+BLOCKED_VERDICT_F07 = "RELEASE_LEGITIMACY_BLOCKED_BY_UNEXECUTED_CHILD_RELEASE_PREREQUISITES"
+PASS_VERDICT_F07 = "CHILD_BOUNDED_RELEASE_LEGITIMACY_EXECUTED_WITHOUT_RUNTIME_OR_PRODUCT_WIDENING"
 
 REPORT = "KT_PROD_CLEANROOM/reports"
 GOV = "KT_PROD_CLEANROOM/governance"
@@ -97,6 +99,11 @@ RUNTIME_EXTERNAL_CONFIRMATION = f"{REPORT}/kt_external_runtime_confirmation_rece
 FINAL_CURRENT_HEAD_READJUDICATION = f"{REPORT}/kt_final_current_head_readjudication_receipt.json"
 FINAL_CLAIM_CEILING = f"{REPORT}/kt_final_claim_ceiling_receipt.json"
 FINAL_BLOCKER_MATRIX = f"{REPORT}/kt_final_blocker_matrix.json"
+F07_THRESHOLD_RECEIPT = f"{REPORT}/kt_threshold_root_acceptance_receipt.json"
+F07_RELEASE_SIGNER_ISSUANCE = f"{REPORT}/kt_release_signer_issuance_receipt.json"
+F07_PRODUCER_ATTESTATION_BUNDLE = f"{REPORT}/kt_producer_attestation_bundle.json"
+F07_RELEASE_CEREMONY_RECEIPT = f"{REPORT}/kt_executed_release_ceremony_receipt.json"
+F07_RELEASE_ACTIVATION_RECEIPT = f"{REPORT}/kt_release_activation_receipt.json"
 OUTSIDER_PACKAGE_ROOT = "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F04_public_verifier_v2_package"
 F06_RUNTIME_PACKAGE_ROOT = "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F06_paradox_external_confirmation_package"
 POLICY_C_DRIFT = "KT_PROD_CLEANROOM/policy_c/drift_guard.py"
@@ -173,6 +180,11 @@ PLANNED = {
     FINAL_CURRENT_HEAD_READJUDICATION,
     FINAL_CLAIM_CEILING,
     FINAL_BLOCKER_MATRIX,
+    F07_THRESHOLD_RECEIPT,
+    F07_RELEASE_SIGNER_ISSUANCE,
+    F07_PRODUCER_ATTESTATION_BUNDLE,
+    F07_RELEASE_CEREMONY_RECEIPT,
+    F07_RELEASE_ACTIVATION_RECEIPT,
     OUTSIDER_PACKAGE_ROOT,
     F06_RUNTIME_PACKAGE_ROOT,
     STATE_STALE,
@@ -701,6 +713,16 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
     verifier_threshold = int(verifier_role.get("threshold", 0) or 0)
     verifier_signer_count = int(verifier_role.get("signer_count", 0) or 0)
     verifier_maintainers = list(identity_model.get("principal_sets", {}).get("verifier_acceptance_maintainers", [])) if isinstance(identity_model.get("principal_sets"), dict) else []
+    release_role = _role_row(signer_topology, "release")
+    release_threshold = int(release_role.get("threshold", 0) or 0)
+    release_signer_count = int(release_role.get("signer_count", 0) or 0)
+    release_role_state = str(release_role.get("issuance_state", "")).strip()
+    release_role_identities = [str(item).strip() for item in release_role.get("planned_identity_ids", []) if str(item).strip()]
+    producer_role = _role_row(signer_topology, "producer")
+    producer_threshold = int(producer_role.get("threshold", 0) or 0)
+    producer_signer_count = int(producer_role.get("signer_count", 0) or 0)
+    producer_role_state = str(producer_role.get("issuance_state", "")).strip()
+    producer_role_identities = [str(item).strip() for item in producer_role.get("planned_identity_ids", []) if str(item).strip()]
 
     threshold_ready = (
         str(trust_root.get("status", "")).strip() == "EXECUTED_RERATIFIED_3_OF_3"
@@ -1014,6 +1036,22 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
     f06_status = "BLOCKED_UPSTREAM"
     f06_next_phase = f05_next_phase
     f06_allowed_claims: List[str] = []
+    f07_checks: Dict[str, bool] = {
+        "threshold_root_acceptance_still_active": False,
+        "release_signer_topology_declared": False,
+        "release_signer_issuance_executed": False,
+        "producer_attestation_bundle_valid": False,
+        "release_readiness_proven": False,
+        "release_eligibility_proven": False,
+        "release_ceremony_executed": False,
+        "release_activation_executed": False,
+        "no_unrelated_claim_widening": False,
+    }
+    f07_blocked_by: List[str] = []
+    f07_pass = False
+    f07_status = "BLOCKED_UPSTREAM"
+    f07_next_phase = f06_next_phase
+    f07_allowed_claims: List[str] = []
 
     outputs = {
         CHILD_DAG: {
@@ -2381,6 +2419,365 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
         outputs[STATE_V2]["selected_externally_confirmed_runtime_surfaces"] = [F06_SELECTED_RUNTIME_SURFACE] if f06_pass else []
         outputs[STATE_V2]["final_current_head_readjudication_receipt"] = FINAL_CURRENT_HEAD_READJUDICATION
 
+    if f06_pass:
+        threshold_root_active = (
+            str(outputs[THRESHOLD_POLICY].get("status", "")).strip() == "ACTIVE"
+            and str(outputs[THRESHOLD_POLICY].get("accepted_primary_trust_root", {}).get("acceptance_state", "")).strip()
+            == "ACTIVE_THRESHOLD_ACCEPTED_CHILD_SCOPED"
+        )
+        release_signer_topology_declared = (
+            release_threshold >= 2
+            and release_signer_count >= release_threshold
+            and len(release_role_identities) >= release_threshold
+        )
+        producer_attestation_role_declared = (
+            producer_threshold >= 2
+            and producer_signer_count >= producer_threshold
+            and len(producer_role_identities) >= producer_threshold
+        )
+        release_overlap_constraints_ok = all(
+            constraint_statuses.get(cid) == "PASS"
+            for cid in (
+                "root_release_overlap_forbidden",
+                "root_producer_overlap_forbidden",
+                "release_verifier_acceptance_overlap_forbidden",
+                "operator_release_overlap_forbidden",
+            )
+            if cid in constraint_statuses
+        )
+        release_signer_issuance_executed = release_signer_topology_declared and release_role_state.startswith("EXECUTED")
+        producer_attestation_bundle_valid = producer_attestation_role_declared and producer_role_state.startswith("EXECUTED")
+        release_readiness_proven = all(
+            [
+                threshold_root_active,
+                release_signer_topology_declared,
+                release_signer_issuance_executed,
+                producer_attestation_role_declared,
+                producer_attestation_bundle_valid,
+                release_overlap_constraints_ok,
+                str(outputs[FINAL_CURRENT_HEAD_READJUDICATION].get("status", "")).strip() == "PASS",
+            ]
+        )
+        release_eligibility_proven = release_readiness_proven
+        release_ceremony_executed = release_eligibility_proven and release_signer_issuance_executed and producer_attestation_bundle_valid
+        release_activation_executed = release_ceremony_executed
+        product_surface_unchanged = str(outputs[STATE_V2].get("product_surface_status", "")).strip() == "DOCUMENTARY_PRE_RELEASE_NON_RELEASE_ELIGIBLE"
+        runtime_truth_unchanged = (
+            str(outputs[FINAL_CURRENT_HEAD_READJUDICATION].get("current_head_capability_status", "")).strip()
+            == "SELECTED_RUNTIME_SURFACE_ONLY_OUTSIDER_REPLAY_CONFIRMED"
+        )
+
+        f07_checks["threshold_root_acceptance_still_active"] = threshold_root_active
+        f07_checks["release_signer_topology_declared"] = release_signer_topology_declared and producer_attestation_role_declared and release_overlap_constraints_ok
+        f07_checks["release_signer_issuance_executed"] = release_signer_issuance_executed
+        f07_checks["producer_attestation_bundle_valid"] = producer_attestation_bundle_valid
+        f07_checks["release_readiness_proven"] = release_readiness_proven
+        f07_checks["release_eligibility_proven"] = release_eligibility_proven
+        f07_checks["release_ceremony_executed"] = release_ceremony_executed
+        f07_checks["release_activation_executed"] = release_activation_executed
+        f07_checks["no_unrelated_claim_widening"] = product_surface_unchanged and runtime_truth_unchanged
+        for check_id, ok in f07_checks.items():
+            if not ok:
+                f07_blocked_by.append(check_id)
+        f07_pass = all(f07_checks.values())
+        f07_status = "PASS" if f07_pass else "BLOCKED"
+        f07_next_phase = "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY" if f07_pass else PHASE_F07
+        f07_allowed_claims = [
+            "child_bounded_release_readiness_proven_without_runtime_or_product_widening",
+            "child_bounded_release_eligibility_proven_without_runtime_or_product_widening",
+            "child_bounded_release_ceremony_and_activation_executed_without_product_activation",
+        ] if f07_pass else []
+        f07_open_blockers = [
+            blocker
+            for blocker, ok in (
+                ("current_head_external_capability_not_confirmed", False),
+                ("release_readiness_not_proven", f07_checks["release_readiness_proven"]),
+                ("release_ceremony_not_executed", f07_checks["release_ceremony_executed"]),
+                ("release_activation_not_executed", f07_checks["release_activation_executed"]),
+                ("repo_root_import_fragility_visible_and_unfixed", False),
+            )
+            if not ok
+        ]
+
+        outputs[F07_THRESHOLD_RECEIPT] = {
+            "schema_id": "kt.child_campaign.threshold_root_acceptance_receipt.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F07,
+            "status": "PASS" if threshold_root_active else "BLOCKED",
+            "pass_verdict": "CHILD_THRESHOLD_ROOT_ACCEPTANCE_RECONFIRMED_FOR_RELEASE_PRECONDITIONS" if threshold_root_active else BLOCKED_VERDICT_F07,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "generated_utc": utc_now_iso_z(),
+            "checks": [
+                _check(threshold_root_active, "child_threshold_root_acceptance_active", "F07 requires the child threshold-root acceptance state to remain active before any release legitimacy step can proceed.", [THRESHOLD_POLICY, TRUST_ROOT, SIGNER_TOPOLOGY]),
+            ],
+            "blocked_by": [] if threshold_root_active else ["threshold_root_acceptance_still_active"],
+            "current_strongest_claim": "F07 reconfirms child threshold-root acceptance as an active release precondition only." if threshold_root_active else "F07 cannot treat threshold-root acceptance as an active release precondition.",
+            "stronger_claim_not_made": [
+                "This receipt proves release readiness by itself",
+                "This receipt proves release ceremony execution by itself",
+                "This receipt widens runtime, product, or commercial claims",
+            ],
+            "next_lawful_phase": f07_next_phase,
+        }
+
+        outputs[F07_RELEASE_SIGNER_ISSUANCE] = {
+            "schema_id": "kt.child_campaign.release_signer_issuance_receipt.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F07,
+            "status": "PASS" if release_signer_issuance_executed else "BLOCKED",
+            "pass_verdict": "CHILD_RELEASE_SIGNER_ISSUANCE_EXECUTED" if release_signer_issuance_executed else BLOCKED_VERDICT_F07,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "generated_utc": utc_now_iso_z(),
+            "release_role": {
+                "role_id": "release",
+                "threshold": release_threshold,
+                "signer_count": release_signer_count,
+                "planned_identity_ids": release_role_identities,
+                "issuance_state": release_role_state,
+            },
+            "checks": [
+                _check(release_signer_topology_declared, "release_signer_topology_declared", "F07 requires a declared child release signer topology with a truthful threshold and signer count.", [SIGNER_TOPOLOGY]),
+                _check(release_overlap_constraints_ok, "release_signer_overlap_constraints_pass", "Release signer issuance may not violate root, producer, verifier-acceptance, or operator overlap constraints.", [IDENTITY_MODEL]),
+                _check(release_signer_issuance_executed, "release_signer_issuance_executed", "Release signer issuance must move beyond planned-only state before release legitimacy can pass.", [SIGNER_TOPOLOGY, TRUST_ROOT]),
+            ],
+            "blocked_by": [
+                check_id
+                for check_id in ("release_signer_topology_declared", "release_signer_issuance_executed")
+                if not (
+                    release_signer_topology_declared
+                    if check_id == "release_signer_topology_declared"
+                    else release_signer_issuance_executed
+                )
+            ],
+            "current_strongest_claim": "F07 proves only that the child release signer lane is declared and remains planned-only pending executed issuance." if not release_signer_issuance_executed else "F07 proves child release signer issuance is executed on the bounded release lane.",
+            "stronger_claim_not_made": [
+                "Release readiness is proven by signer issuance alone",
+                "Release ceremony is executed by signer issuance alone",
+                "Product activation is implied by signer issuance",
+            ],
+            "next_lawful_phase": f07_next_phase,
+        }
+
+        outputs[F07_PRODUCER_ATTESTATION_BUNDLE] = {
+            "schema_id": "kt.child_campaign.producer_attestation_bundle.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F07,
+            "status": "PASS" if producer_attestation_bundle_valid else "BLOCKED",
+            "pass_verdict": "CHILD_PRODUCER_ATTESTATION_BUNDLE_ACTIVE" if producer_attestation_bundle_valid else BLOCKED_VERDICT_F07,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "generated_utc": utc_now_iso_z(),
+            "producer_role": {
+                "role_id": "producer",
+                "threshold": producer_threshold,
+                "signer_count": producer_signer_count,
+                "planned_identity_ids": producer_role_identities,
+                "issuance_state": producer_role_state,
+            },
+            "bundle_scope": "CHILD_RELEASE_PREREQUISITE_ATTESTATION_SET_ONLY",
+            "planned_attested_refs": [
+                THRESHOLD_POLICY,
+                TUF_POLICY,
+                PIPELINE_RECEIPT,
+                SLSA_RECEIPT,
+                CROSS_HOST_RECEIPT,
+                OUTSIDER_PATH_RECEIPT,
+                FINAL_CURRENT_HEAD_READJUDICATION,
+            ],
+            "checks": [
+                _check(producer_attestation_role_declared, "producer_role_declared", "F07 requires a declared producer-attestation role with a truthful threshold and signer count.", [SIGNER_TOPOLOGY]),
+                _check(producer_attestation_bundle_valid, "producer_attestation_bundle_valid", "Producer attestation may not be treated as active while the producer role remains planned-only.", [SIGNER_TOPOLOGY, TRUST_ROOT]),
+            ],
+            "blocked_by": [
+                check_id
+                for check_id in ("release_signer_topology_declared", "producer_attestation_bundle_valid")
+                if not (
+                    f07_checks["release_signer_topology_declared"]
+                    if check_id == "release_signer_topology_declared"
+                    else producer_attestation_bundle_valid
+                )
+            ],
+            "current_strongest_claim": "F07 assembles the bounded producer-attestation bundle shape but does not treat it as active while producer issuance remains planned-only." if not producer_attestation_bundle_valid else "F07 proves the bounded producer-attestation bundle is active for the child release lane.",
+            "stronger_claim_not_made": [
+                "Producer attestation upgrades current-head capability truth",
+                "Producer attestation proves product or commercial readiness",
+                "Producer attestation alone executes the release ceremony",
+            ],
+            "next_lawful_phase": f07_next_phase,
+        }
+
+        release_readiness_status = "PROVEN_CHILD_BOUNDED_RELEASE_ONLY" if release_readiness_proven else "NOT_PROVEN"
+        release_eligibility_status = "ELIGIBLE_CHILD_BOUNDED_RELEASE_ONLY" if release_eligibility_proven else "NOT_ELIGIBLE"
+        release_ceremony_status = "EXECUTED_CHILD_BOUNDED_RELEASE_ONLY" if release_ceremony_executed else "NON_EXECUTED_BLOCKED_BY_PREREQUISITES"
+        release_activation_status = "EXECUTED_CHILD_BOUNDED_RELEASE_ONLY" if release_activation_executed else "NON_EXECUTED"
+
+        outputs[F07_RELEASE_CEREMONY_RECEIPT] = {
+            "schema_id": "kt.child_campaign.executed_release_ceremony_receipt.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F07,
+            "status": "PASS" if release_ceremony_executed else "BLOCKED",
+            "pass_verdict": "CHILD_BOUNDED_RELEASE_CEREMONY_EXECUTED" if release_ceremony_executed else BLOCKED_VERDICT_F07,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "generated_utc": utc_now_iso_z(),
+            "release_readiness_status": release_readiness_status,
+            "release_eligibility_status": release_eligibility_status,
+            "release_ceremony_status": release_ceremony_status,
+            "checks": [
+                _check(threshold_root_active, "threshold_root_active_for_release", "Release ceremony execution requires active child threshold-root acceptance.", [F07_THRESHOLD_RECEIPT]),
+                _check(release_signer_issuance_executed, "release_signer_issuance_executed", "Release ceremony execution requires executed child release signer issuance.", [F07_RELEASE_SIGNER_ISSUANCE]),
+                _check(producer_attestation_bundle_valid, "producer_attestation_bundle_valid", "Release ceremony execution requires a valid child producer attestation bundle.", [F07_PRODUCER_ATTESTATION_BUNDLE]),
+                _check(release_readiness_proven, "release_readiness_proven", "Release readiness and eligibility must be proven before the child release ceremony can execute.", [FINAL_CURRENT_HEAD_READJUDICATION, F07_RELEASE_SIGNER_ISSUANCE, F07_PRODUCER_ATTESTATION_BUNDLE]),
+                _check(release_ceremony_executed, "release_ceremony_executed", "The child release ceremony must actually execute rather than remain non-executed by prerequisite gap.", [F07_RELEASE_SIGNER_ISSUANCE, F07_PRODUCER_ATTESTATION_BUNDLE]),
+            ],
+            "blocked_by": [
+                check_id
+                for check_id in (
+                    "threshold_root_acceptance_still_active",
+                    "release_signer_issuance_executed",
+                    "producer_attestation_bundle_valid",
+                    "release_readiness_proven",
+                    "release_ceremony_executed",
+                )
+                if not f07_checks[check_id]
+            ],
+            "current_strongest_claim": "F07 recomputes child release readiness and eligibility and keeps release ceremony execution blocked until signer issuance and producer attestation are actually executed." if not release_ceremony_executed else "F07 executes the child-bounded release ceremony without widening runtime or product claims.",
+            "stronger_claim_not_made": [
+                "Whole-system current-head capability is externally confirmed",
+                "Product activation is executed",
+                "Commercial readiness is proven",
+            ],
+            "next_lawful_phase": f07_next_phase,
+        }
+
+        outputs[F07_RELEASE_ACTIVATION_RECEIPT] = {
+            "schema_id": "kt.child_campaign.release_activation_receipt.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F07,
+            "status": "PASS" if release_activation_executed else "BLOCKED",
+            "pass_verdict": "CHILD_BOUNDED_RELEASE_ACTIVATION_EXECUTED" if release_activation_executed else BLOCKED_VERDICT_F07,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "generated_utc": utc_now_iso_z(),
+            "release_activation_status": release_activation_status,
+            "checks": [
+                _check(release_ceremony_executed, "release_ceremony_executed", "Release activation requires an executed child release ceremony.", [F07_RELEASE_CEREMONY_RECEIPT]),
+                _check(release_activation_executed, "release_activation_executed", "Release activation may not be implied; it must execute on the bounded child release lane.", [F07_RELEASE_CEREMONY_RECEIPT, F07_RELEASE_SIGNER_ISSUANCE, F07_PRODUCER_ATTESTATION_BUNDLE]),
+                _check(product_surface_unchanged, "product_surface_unchanged", "F07 must not widen product state while changing only release legitimacy.", [STATE_V2]),
+            ],
+            "blocked_by": [
+                check_id
+                for check_id in ("release_ceremony_executed", "release_activation_executed")
+                if not f07_checks[check_id]
+            ],
+            "current_strongest_claim": "F07 keeps release activation explicitly non-executed while prerequisite release legitimacy remains incomplete." if not release_activation_executed else "F07 executes bounded release activation without widening runtime, product, or commercial claims.",
+            "stronger_claim_not_made": [
+                "Product wedge activation is executed",
+                "Commercial or enterprise readiness is proven",
+                "Current-head external capability is broadly confirmed",
+            ],
+            "next_lawful_phase": f07_next_phase,
+        }
+
+        outputs[BLOCKERS_V2]["current_repo_head"] = head
+        outputs[BLOCKERS_V2]["open_blockers"] = f07_open_blockers
+        outputs[BLOCKERS_V2]["rows"] = [
+            {
+                "blocker_id": "threshold_root_verifier_acceptance_inactive",
+                "status": "CLEARED_BY_F02B",
+                "evidence_refs": [THRESHOLD_POLICY, F07_THRESHOLD_RECEIPT],
+                "rationale": "Child threshold-root acceptance remains active.",
+            },
+            {
+                "blocker_id": "current_head_external_capability_not_confirmed",
+                "status": "OPEN",
+                "evidence_refs": [FINAL_CURRENT_HEAD_READJUDICATION],
+                "rationale": "F07 does not widen selected-surface outsider replay into broad current-head external capability confirmation.",
+            },
+            {
+                "blocker_id": "release_readiness_not_proven",
+                "status": "CLEARED_BY_F07" if f07_checks["release_readiness_proven"] else "OPEN",
+                "evidence_refs": [F07_RELEASE_SIGNER_ISSUANCE, F07_PRODUCER_ATTESTATION_BUNDLE, F07_RELEASE_CEREMONY_RECEIPT],
+                "rationale": "Release readiness remains blocked until release signer issuance and producer attestation move beyond planned-only state.",
+            },
+            {
+                "blocker_id": "release_ceremony_not_executed",
+                "status": "CLEARED_BY_F07" if f07_checks["release_ceremony_executed"] else "OPEN",
+                "evidence_refs": [F07_RELEASE_CEREMONY_RECEIPT],
+                "rationale": "Release ceremony execution remains explicit and must not be implied from trust or verifier state.",
+            },
+            {
+                "blocker_id": "release_activation_not_executed",
+                "status": "CLEARED_BY_F07" if f07_checks["release_activation_executed"] else "OPEN",
+                "evidence_refs": [F07_RELEASE_ACTIVATION_RECEIPT],
+                "rationale": "Release activation remains explicit and must not be implied from readiness or ceremony status.",
+            },
+            {
+                "blocker_id": "verifier_coverage_not_widened_beyond_bounded_surfaces",
+                "status": "CLEARED_BY_F02B",
+                "evidence_refs": [THRESHOLD_POLICY, TUF_POLICY],
+                "rationale": "Minimal child verifier coverage widening remains active from F02B.",
+            },
+            {
+                "blocker_id": "repo_root_import_fragility_visible_and_unfixed",
+                "status": "OPEN",
+                "evidence_refs": [OUTSIDER_PATH_RECEIPT, CROSS_HOST_RECEIPT],
+                "rationale": "Repo-root invocation remains visibly fragile and is not a release-legitimacy fix in F07.",
+            },
+        ]
+
+        outputs[PROOF_V2]["inputs"] = [
+            *outputs[PROOF_V2]["inputs"],
+            F07_THRESHOLD_RECEIPT,
+            F07_RELEASE_SIGNER_ISSUANCE,
+            F07_PRODUCER_ATTESTATION_BUNDLE,
+            F07_RELEASE_CEREMONY_RECEIPT,
+            F07_RELEASE_ACTIVATION_RECEIPT,
+        ]
+        outputs[PROOF_V2]["blocked_by"] = f07_open_blockers
+        outputs[PROOF_V2]["allowed_public_claims"] = [*outputs[PROOF_V2]["allowed_public_claims"], *f07_allowed_claims]
+        outputs[PROOF_V2]["forbidden_public_claims"] = [
+            *outputs[PROOF_V2]["forbidden_public_claims"],
+            "f07_proves_whole_system_current_head_capability",
+            "f07_widens_runtime_truth_class",
+            "f07_widens_product_or_commercial_claims",
+        ]
+        if f07_pass:
+            outputs[STATE_V2]["computed_claim_ceiling"] = "PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_F07_BOUNDED_RELEASE_LEGITIMACY_ONLY"
+        outputs[STATE_V2]["blocker_matrix"] = BLOCKERS_V2
+        outputs[STATE_V2]["release_readiness_status"] = release_readiness_status
+        outputs[STATE_V2]["release_eligibility_status"] = release_eligibility_status
+        outputs[STATE_V2]["release_ceremony_status"] = release_ceremony_status
+        outputs[STATE_V2]["release_activation_status"] = release_activation_status
+        outputs[STATE_V2]["next_lawful_transition"] = f07_next_phase
+        outputs[STATE_V2]["open_blockers"] = f07_open_blockers
+        outputs[STATE_V2]["release_threshold_root_acceptance_receipt"] = F07_THRESHOLD_RECEIPT
+        outputs[STATE_V2]["release_signer_issuance_receipt"] = F07_RELEASE_SIGNER_ISSUANCE
+        outputs[STATE_V2]["producer_attestation_bundle"] = F07_PRODUCER_ATTESTATION_BUNDLE
+        outputs[STATE_V2]["executed_release_ceremony_receipt"] = F07_RELEASE_CEREMONY_RECEIPT
+        outputs[STATE_V2]["release_activation_receipt"] = F07_RELEASE_ACTIVATION_RECEIPT
+        outputs[CHILD_DAG]["current_node"] = "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY" if f07_pass else PHASE_F07
+        outputs[CHILD_DAG]["next_lawful_phase"] = f07_next_phase
+        outputs[CHILD_DAG]["nodes"] = [
+            {"id": PHASE_BOOTSTRAP, "status": "PASS"},
+            {"id": PHASE_RUNTIME, "status": "PASS" if cap_cov >= 60.0 and bench_cov >= 50.0 else "BLOCKED"},
+            {"id": PHASE_TRUST, "status": "PASS" if f02b_pass else "BLOCKED"},
+            {"id": PHASE_F03, "status": "PASS" if f03_pass else ("BLOCKED" if f02b_pass else "BLOCKED_UPSTREAM")},
+            {"id": PHASE_F04, "status": f04_status if f03_pass else "BLOCKED_UPSTREAM"},
+            {"id": PHASE_F05, "status": f05_status if f04_pass else "BLOCKED_UPSTREAM"},
+            {"id": PHASE_F06, "status": f06_status if f05_pass else "BLOCKED_UPSTREAM"},
+            {"id": PHASE_F07, "status": f07_status if f06_pass else "BLOCKED_UPSTREAM"},
+            {"id": "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY", "status": "READY" if f07_pass else "BLOCKED_UPSTREAM"},
+            {"id": "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS", "status": "BLOCKED_UPSTREAM"},
+        ]
+
     for rel, payload in outputs.items():
         _w(root, rel, payload)
 
@@ -2400,8 +2797,9 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             PHASE_F04: f04_status,
             PHASE_F05: f05_status,
             PHASE_F06: f06_status,
+            PHASE_F07: f07_status,
         },
-        "next_lawful_phase": f06_next_phase,
+        "next_lawful_phase": f07_next_phase if f06_pass else f06_next_phase,
         "open_blockers": outputs[STATE_V2]["open_blockers"],
     }
 

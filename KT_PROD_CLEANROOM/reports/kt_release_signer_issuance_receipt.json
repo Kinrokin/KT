@@ -1,0 +1,59 @@
+{
+  "blocked_by": [
+    "release_signer_issuance_executed"
+  ],
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "release_signer_topology_declared",
+      "detail": "F07 requires a declared child release signer topology with a truthful threshold and signer count.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_signer_topology.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "release_signer_overlap_constraints_pass",
+      "detail": "Release signer issuance may not violate root, producer, verifier-acceptance, or operator overlap constraints.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_identity_model_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "release_signer_issuance_executed",
+      "detail": "Release signer issuance must move beyond planned-only state before release legitimacy can pass.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_signer_topology.json",
+        "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json"
+      ],
+      "status": "FAIL"
+    }
+  ],
+  "current_repo_head": "51336dc2e0202de2c197718abd3bd723b4517c8d",
+  "current_strongest_claim": "F07 proves only that the child release signer lane is declared and remains planned-only pending executed issuance.",
+  "evidence_head_commit": "51336dc2e0202de2c197718abd3bd723b4517c8d",
+  "generated_utc": "2026-03-19T19:21:41Z",
+  "next_lawful_phase": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION",
+  "pass_verdict": "RELEASE_LEGITIMACY_BLOCKED_BY_UNEXECUTED_CHILD_RELEASE_PREREQUISITES",
+  "phase_id": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION",
+  "release_role": {
+    "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+    "planned_identity_ids": [
+      "KT_RELEASE_SIGNER_A",
+      "KT_RELEASE_SIGNER_B",
+      "KT_RELEASE_SIGNER_C"
+    ],
+    "role_id": "release",
+    "signer_count": 3,
+    "threshold": 2
+  },
+  "schema_id": "kt.child_campaign.release_signer_issuance_receipt.v1",
+  "status": "BLOCKED",
+  "stronger_claim_not_made": [
+    "Release readiness is proven by signer issuance alone",
+    "Release ceremony is executed by signer issuance alone",
+    "Product activation is implied by signer issuance"
+  ],
+  "subject_head_commit": "51336dc2e0202de2c197718abd3bd723b4517c8d"
+}

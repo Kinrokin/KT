@@ -23,6 +23,11 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     FINAL_BLOCKER_MATRIX,
     FINAL_CLAIM_CEILING,
     FINAL_CURRENT_HEAD_READJUDICATION,
+    F07_PRODUCER_ATTESTATION_BUNDLE,
+    F07_RELEASE_ACTIVATION_RECEIPT,
+    F07_RELEASE_CEREMONY_RECEIPT,
+    F07_RELEASE_SIGNER_ISSUANCE,
+    F07_THRESHOLD_RECEIPT,
     IDENTITY_MODEL,
     LOG_MONITOR,
     OLD_PROOF,
@@ -334,7 +339,7 @@ def _seed_repo(tmp_path: Path) -> str:
     return _commit_all(tmp_path, "seed repo evidence")
 
 
-def test_child_campaign_f06_passes_with_bounded_outsider_confirmation_and_readjudication(tmp_path: Path) -> None:
+def test_child_campaign_f07_blocks_honestly_when_release_prerequisites_remain_planned_only(tmp_path: Path) -> None:
     head = _seed_repo(tmp_path)
     summary = emit_follow_on_campaign_v16(tmp_path)
     assert summary["status"] == "ACTIVE"
@@ -345,6 +350,7 @@ def test_child_campaign_f06_passes_with_bounded_outsider_confirmation_and_readju
     assert summary["phase_results"][PHASE_F04] == "PASS"
     assert summary["phase_results"][PHASE_F05] == "PASS"
     assert summary["phase_results"][PHASE_F06] == "PASS"
+    assert summary["phase_results"][PHASE_F07] == "BLOCKED"
     assert summary["next_lawful_phase"] == PHASE_F07
 
     runtime = json.loads((tmp_path / RUNTIME_RECEIPT).read_text(encoding="utf-8"))
@@ -368,6 +374,11 @@ def test_child_campaign_f06_passes_with_bounded_outsider_confirmation_and_readju
     final_readjudication = json.loads((tmp_path / FINAL_CURRENT_HEAD_READJUDICATION).read_text(encoding="utf-8"))
     final_claim = json.loads((tmp_path / FINAL_CLAIM_CEILING).read_text(encoding="utf-8"))
     final_blockers = json.loads((tmp_path / FINAL_BLOCKER_MATRIX).read_text(encoding="utf-8"))
+    f07_threshold = json.loads((tmp_path / F07_THRESHOLD_RECEIPT).read_text(encoding="utf-8"))
+    f07_release_signers = json.loads((tmp_path / F07_RELEASE_SIGNER_ISSUANCE).read_text(encoding="utf-8"))
+    f07_producer = json.loads((tmp_path / F07_PRODUCER_ATTESTATION_BUNDLE).read_text(encoding="utf-8"))
+    f07_ceremony = json.loads((tmp_path / F07_RELEASE_CEREMONY_RECEIPT).read_text(encoding="utf-8"))
+    f07_activation = json.loads((tmp_path / F07_RELEASE_ACTIVATION_RECEIPT).read_text(encoding="utf-8"))
     assert runtime["status"] == "PASS"
     assert trust["status"] == "PASS"
     assert pipeline["status"] == "PASS"
@@ -387,6 +398,11 @@ def test_child_campaign_f06_passes_with_bounded_outsider_confirmation_and_readju
     assert final_readjudication["status"] == "PASS"
     assert final_claim["status"] == "PASS"
     assert final_blockers["status"] == "PASS"
+    assert f07_threshold["status"] == "PASS"
+    assert f07_release_signers["status"] == "BLOCKED"
+    assert f07_producer["status"] == "BLOCKED"
+    assert f07_ceremony["status"] == "BLOCKED"
+    assert f07_activation["status"] == "BLOCKED"
     assert bench["coverage_percent"] >= 50.0
     assert state["next_lawful_transition"] == PHASE_F07
     assert "threshold_root_verifier_acceptance_inactive" not in state["open_blockers"]
@@ -394,6 +410,10 @@ def test_child_campaign_f06_passes_with_bounded_outsider_confirmation_and_readju
     assert state["reproducibility_status"].startswith("DECLARED_CLASS_A_CARRY_FORWARD_CROSS_HOST_PROVEN")
     assert state["current_head_receipt_or_blocker_coverage_percent"] == 100.0
     assert state["external_confirmation_status"] == "CURRENT_HEAD_VERIFIER_AND_SELECTED_RUNTIME_SURFACE_OUTSIDER_REPLAY_CONFIRMED_ONLY"
+    assert state["release_readiness_status"] == "NOT_PROVEN"
+    assert state["release_eligibility_status"] == "NOT_ELIGIBLE"
+    assert state["release_ceremony_status"] == "NON_EXECUTED_BLOCKED_BY_PREREQUISITES"
+    assert state["release_activation_status"] == "NON_EXECUTED"
     assert final_readjudication["selected_runtime_surface"] == "paradox"
     assert final_readjudication["current_head_capability_status"] == "SELECTED_RUNTIME_SURFACE_ONLY_OUTSIDER_REPLAY_CONFIRMED"
     assert "current_head_external_capability_not_confirmed" in final_blockers["open_blockers"]
@@ -428,6 +448,11 @@ def test_child_campaign_f06_passes_with_bounded_outsider_confirmation_and_readju
         FINAL_CURRENT_HEAD_READJUDICATION,
         FINAL_CLAIM_CEILING,
         FINAL_BLOCKER_MATRIX,
+        F07_THRESHOLD_RECEIPT,
+        F07_RELEASE_SIGNER_ISSUANCE,
+        F07_PRODUCER_ATTESTATION_BUNDLE,
+        F07_RELEASE_CEREMONY_RECEIPT,
+        F07_RELEASE_ACTIVATION_RECEIPT,
     ]:
         assert (tmp_path / rel).exists()
 

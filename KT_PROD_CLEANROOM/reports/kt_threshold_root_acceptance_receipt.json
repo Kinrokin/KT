@@ -1,0 +1,31 @@
+{
+  "blocked_by": [],
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "child_threshold_root_acceptance_active",
+      "detail": "F07 requires the child threshold-root acceptance state to remain active before any release legitimacy step can proceed.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_threshold_root_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_signer_topology.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "51336dc2e0202de2c197718abd3bd723b4517c8d",
+  "current_strongest_claim": "F07 reconfirms child threshold-root acceptance as an active release precondition only.",
+  "evidence_head_commit": "51336dc2e0202de2c197718abd3bd723b4517c8d",
+  "generated_utc": "2026-03-19T19:21:41Z",
+  "next_lawful_phase": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION",
+  "pass_verdict": "CHILD_THRESHOLD_ROOT_ACCEPTANCE_RECONFIRMED_FOR_RELEASE_PRECONDITIONS",
+  "phase_id": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION",
+  "schema_id": "kt.child_campaign.threshold_root_acceptance_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "This receipt proves release readiness by itself",
+    "This receipt proves release ceremony execution by itself",
+    "This receipt widens runtime, product, or commercial claims"
+  ],
+  "subject_head_commit": "51336dc2e0202de2c197718abd3bd723b4517c8d"
+}

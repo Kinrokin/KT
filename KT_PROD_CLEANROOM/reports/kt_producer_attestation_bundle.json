@@ -1,0 +1,61 @@
+{
+  "blocked_by": [
+    "producer_attestation_bundle_valid"
+  ],
+  "bundle_scope": "CHILD_RELEASE_PREREQUISITE_ATTESTATION_SET_ONLY",
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "producer_role_declared",
+      "detail": "F07 requires a declared producer-attestation role with a truthful threshold and signer count.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_signer_topology.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "producer_attestation_bundle_valid",
+      "detail": "Producer attestation may not be treated as active while the producer role remains planned-only.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_signer_topology.json",
+        "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json"
+      ],
+      "status": "FAIL"
+    }
+  ],
+  "current_repo_head": "51336dc2e0202de2c197718abd3bd723b4517c8d",
+  "current_strongest_claim": "F07 assembles the bounded producer-attestation bundle shape but does not treat it as active while producer issuance remains planned-only.",
+  "evidence_head_commit": "51336dc2e0202de2c197718abd3bd723b4517c8d",
+  "generated_utc": "2026-03-19T19:21:41Z",
+  "next_lawful_phase": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION",
+  "pass_verdict": "RELEASE_LEGITIMACY_BLOCKED_BY_UNEXECUTED_CHILD_RELEASE_PREREQUISITES",
+  "phase_id": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION",
+  "planned_attested_refs": [
+    "KT_PROD_CLEANROOM/governance/kt_threshold_root_acceptance_policy.json",
+    "KT_PROD_CLEANROOM/governance/kt_tuf_distribution_policy.json",
+    "KT_PROD_CLEANROOM/reports/kt_pipeline_attestations_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_slsa_provenance_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_cross_host_repro_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_outsider_path_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_final_current_head_readjudication_receipt.json"
+  ],
+  "producer_role": {
+    "issuance_state": "PLANNED_PENDING_OFFBOX_CEREMONY",
+    "planned_identity_ids": [
+      "KT_PRODUCER_SIGNER_A",
+      "KT_PRODUCER_SIGNER_B",
+      "KT_PRODUCER_SIGNER_C"
+    ],
+    "role_id": "producer",
+    "signer_count": 3,
+    "threshold": 2
+  },
+  "schema_id": "kt.child_campaign.producer_attestation_bundle.v1",
+  "status": "BLOCKED",
+  "stronger_claim_not_made": [
+    "Producer attestation upgrades current-head capability truth",
+    "Producer attestation proves product or commercial readiness",
+    "Producer attestation alone executes the release ceremony"
+  ],
+  "subject_head_commit": "51336dc2e0202de2c197718abd3bd723b4517c8d"
+}

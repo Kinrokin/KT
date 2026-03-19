@@ -1,0 +1,72 @@
+{
+  "blocked_by": [
+    "release_signer_issuance_executed",
+    "producer_attestation_bundle_valid",
+    "release_readiness_proven",
+    "release_ceremony_executed"
+  ],
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "threshold_root_active_for_release",
+      "detail": "Release ceremony execution requires active child threshold-root acceptance.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_threshold_root_acceptance_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "release_signer_issuance_executed",
+      "detail": "Release ceremony execution requires executed child release signer issuance.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_release_signer_issuance_receipt.json"
+      ],
+      "status": "FAIL"
+    },
+    {
+      "check": "producer_attestation_bundle_valid",
+      "detail": "Release ceremony execution requires a valid child producer attestation bundle.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_producer_attestation_bundle.json"
+      ],
+      "status": "FAIL"
+    },
+    {
+      "check": "release_readiness_proven",
+      "detail": "Release readiness and eligibility must be proven before the child release ceremony can execute.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_current_head_readjudication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_signer_issuance_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_producer_attestation_bundle.json"
+      ],
+      "status": "FAIL"
+    },
+    {
+      "check": "release_ceremony_executed",
+      "detail": "The child release ceremony must actually execute rather than remain non-executed by prerequisite gap.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_release_signer_issuance_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_producer_attestation_bundle.json"
+      ],
+      "status": "FAIL"
+    }
+  ],
+  "current_repo_head": "51336dc2e0202de2c197718abd3bd723b4517c8d",
+  "current_strongest_claim": "F07 recomputes child release readiness and eligibility and keeps release ceremony execution blocked until signer issuance and producer attestation are actually executed.",
+  "evidence_head_commit": "51336dc2e0202de2c197718abd3bd723b4517c8d",
+  "generated_utc": "2026-03-19T19:21:41Z",
+  "next_lawful_phase": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION",
+  "pass_verdict": "RELEASE_LEGITIMACY_BLOCKED_BY_UNEXECUTED_CHILD_RELEASE_PREREQUISITES",
+  "phase_id": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION",
+  "release_ceremony_status": "NON_EXECUTED_BLOCKED_BY_PREREQUISITES",
+  "release_eligibility_status": "NOT_ELIGIBLE",
+  "release_readiness_status": "NOT_PROVEN",
+  "schema_id": "kt.child_campaign.executed_release_ceremony_receipt.v1",
+  "status": "BLOCKED",
+  "stronger_claim_not_made": [
+    "Whole-system current-head capability is externally confirmed",
+    "Product activation is executed",
+    "Commercial readiness is proven"
+  ],
+  "subject_head_commit": "51336dc2e0202de2c197718abd3bd723b4517c8d"
+}
