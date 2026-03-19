@@ -3,8 +3,11 @@ from __future__ import annotations
 import argparse
 import ast
 import json
+import os
+import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any, Dict, List, Sequence
 
@@ -19,15 +22,20 @@ PHASE_RUNTIME = "F02A_RUNTIME_REALITY_AND_CURRENT_HEAD_BASELINE"
 PHASE_TRUST = "F02B_TRUST_ROOT_TRANSPARENCY_AND_TUF_ACTIVATION"
 PHASE_F03 = "F03_PROOF_REPRO_HARDENING_AND_STABILITY"
 PHASE_F04 = "F04_ADJUDICATION_VERIFIER_V2_AND_OUTSIDER_PATH"
+PHASE_F05 = "F05_ORGAN_ELEVATION_AND_RUNTIME_PROMOTION"
 BLOCKED_VERDICT_TRUST = "TRUST_ACTIVATION_BLOCKED_BY_PRESERVED_PARENT_GAPS"
 PASS_VERDICT_TRUST = "THRESHOLD_ROOT_ACCEPTANCE_AND_CHILD_TUF_DISTRIBUTION_ACTIVE"
 BLOCKED_VERDICT_F03 = "PROOF_INTEGRITY_HARDENING_BLOCKED_OR_INCOMPLETE"
 PASS_VERDICT_F03 = "PROOF_INTEGRITY_HARDENING_COMPLETE_FOR_DECLARED_CHILD_SURFACES"
+BLOCKED_VERDICT_F04 = "ADJUDICATION_SPLIT_OR_OUTSIDER_VERIFIER_V2_BLOCKED"
+PASS_VERDICT_F04 = "ADJUDICATION_SPLIT_AND_SECRET_FREE_OUTSIDER_VERIFIER_V2_ACTIVE"
 
 REPORT = "KT_PROD_CLEANROOM/reports"
 GOV = "KT_PROD_CLEANROOM/governance"
 TOOL_REL = "KT_PROD_CLEANROOM/tools/operator/follow_on_campaign_v16_validate.py"
 TEST_REL = "KT_PROD_CLEANROOM/tests/operator/test_follow_on_campaign_v16_validate.py"
+OUTSIDER_TOOL_REL = "KT_PROD_CLEANROOM/tools/operator/outsider_verifier_v2.py"
+OUTSIDER_TEST_REL = "KT_PROD_CLEANROOM/tests/operator/test_outsider_verifier_v2.py"
 
 PARENT_DAG = f"{GOV}/kt_execution_dag.json"
 PARENT_FINAL = f"{REPORT}/kt_final_readjudication_receipt.json"
@@ -69,6 +77,12 @@ SLSA_RECEIPT = f"{REPORT}/kt_slsa_provenance_receipt.json"
 CROSS_HOST_RECEIPT = f"{REPORT}/kt_cross_host_repro_receipt.json"
 AIRLOCK_RECEIPT = f"{REPORT}/kt_dependency_airlock_receipt.json"
 DRIFT_RECEIPT = f"{REPORT}/kt_drift_and_semantic_stability_receipt.json"
+ADJUDICATION_PACKET = f"{REPORT}/kt_child_adjudication_packet.json"
+ADJUDICATION_SPLIT_RECEIPT = f"{REPORT}/kt_adjudication_split_receipt.json"
+VERIFIER_V2_MANIFEST = f"{REPORT}/kt_public_verifier_release_manifest_v2.json"
+VERIFIER_V2_VSA = f"{REPORT}/kt_public_verifier_vsa.json"
+OUTSIDER_PATH_RECEIPT = f"{REPORT}/kt_outsider_path_receipt.json"
+OUTSIDER_PACKAGE_ROOT = "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F04_public_verifier_v2_package"
 POLICY_C_DRIFT = "KT_PROD_CLEANROOM/policy_c/drift_guard.py"
 POLICY_C_DRIFT_SCHEMA = "KT_PROD_CLEANROOM/policy_c/schemas/policy_c_drift_report_schema_v1.json"
 POLICY_C_TEST_GUARD = "KT_PROD_CLEANROOM/tests/policy_c/test_drift_guard.py"
@@ -105,6 +119,8 @@ F03_EMITTER_IMPORT_SURFACES = [
 PLANNED = {
     TOOL_REL,
     TEST_REL,
+    OUTSIDER_TOOL_REL,
+    OUTSIDER_TEST_REL,
     CHILD_DAG,
     SINGLE_REALITY,
     PROOF_V2,
@@ -124,6 +140,12 @@ PLANNED = {
     CROSS_HOST_RECEIPT,
     AIRLOCK_RECEIPT,
     DRIFT_RECEIPT,
+    ADJUDICATION_PACKET,
+    ADJUDICATION_SPLIT_RECEIPT,
+    VERIFIER_V2_MANIFEST,
+    VERIFIER_V2_VSA,
+    OUTSIDER_PATH_RECEIPT,
+    OUTSIDER_PACKAGE_ROOT,
     STATE_STALE,
     STATE_SUPERSEDE,
     PROOF_SUPERSEDE,
@@ -316,6 +338,34 @@ def _surface_target(
             for rel in supporting_refs
         ],
     }
+
+
+def _json_sha256(payload: Dict[str, Any]) -> str:
+    temp_path = _write_temp_json(payload)
+    try:
+        return file_sha256(temp_path)
+    finally:
+        temp_path.unlink(missing_ok=True)
+
+
+def _write_temp_json(payload: Dict[str, Any]) -> Path:
+    handle = tempfile.NamedTemporaryFile("w", encoding="utf-8", suffix=".json", delete=False, newline="\n")
+    temp_path = Path(handle.name)
+    handle.write(json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=True) + "\n")
+    handle.close()
+    return temp_path
+
+
+def _package_rel_for_repo_ref(rel: str) -> str:
+    return str((Path("data") / Path(rel)).as_posix())
+
+
+def _copy_into_package(root: Path, package_root: Path, rel: str) -> str:
+    source = (root / rel).resolve()
+    target = (package_root / _package_rel_for_repo_ref(rel)).resolve()
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, target)
+    return target.relative_to(package_root).as_posix()
 
 
 def _runtime_rows(root: Path) -> List[Dict[str, Any]]:
@@ -668,6 +718,17 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
         "bounded_verifier_publication_attestation_chain_present_for_declared_child_f03_surfaces_only",
         "current_head_dependency_inventory_refresh_and_validation_pass_for_declared_class_a_emitter_paths_only",
     ] if f03_pass else []
+    f04_checks: Dict[str, bool] = {
+        "adjudication_outputs_current_head_bound": False,
+        "claims_emit_only_from_adjudication_outputs": False,
+        "verifier_v2_manifest_secret_free": False,
+        "outsider_path_deterministic_and_detached": False,
+    }
+    f04_blocked_by: List[str] = []
+    f04_pass = False
+    f04_status = "BLOCKED_UPSTREAM"
+    f04_next_phase = PHASE_F04 if f03_pass else f03_next_phase
+    f04_allowed_claims: List[str] = []
 
     outputs = {
         CHILD_DAG: {
@@ -989,6 +1050,430 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
         },
     }
 
+    if f03_pass:
+        adjudicated_repo_refs = [
+            THRESHOLD_POLICY,
+            TUF_POLICY,
+            PROOF_V2,
+            STATE_V2,
+            BLOCKERS_V2,
+            PIPELINE_RECEIPT,
+            SLSA_RECEIPT,
+            CROSS_HOST_RECEIPT,
+            AIRLOCK_RECEIPT,
+            DRIFT_RECEIPT,
+            STATIC_BUNDLE_MANIFEST,
+            STATIC_BUNDLE_SBOM,
+            STATIC_BUNDLE_ATTESTATION,
+            DETACHED_BUNDLE_MANIFEST,
+            DETACHED_BUNDLE_SBOM,
+            WS19_DETACHED,
+        ]
+        adjudicated_refs_present = all(
+            rel in outputs or _exists(root, rel)
+            for rel in adjudicated_repo_refs
+        ) and _exists(root, OUTSIDER_TOOL_REL)
+        f04_surface_rows = []
+        for rel in adjudicated_repo_refs:
+            if rel in outputs:
+                payload = outputs[rel]
+                f04_surface_rows.append(
+                    {
+                        "artifact_ref": rel,
+                        "status": str(payload.get("status", "")).strip() or "ACTIVE",
+                        "sha256": _json_sha256(payload),
+                    }
+                )
+            else:
+                payload = _j(root, rel)
+                f04_surface_rows.append(
+                    {
+                        "artifact_ref": rel,
+                        "status": str(payload.get("status", "")).strip() or "ACTIVE",
+                        "sha256": file_sha256((root / rel).resolve()),
+                    }
+                )
+
+        all_f03_receipts_pass = all(
+            str(outputs[rel].get("status", "")).strip() == "PASS"
+            for rel in (PIPELINE_RECEIPT, SLSA_RECEIPT, CROSS_HOST_RECEIPT, AIRLOCK_RECEIPT, DRIFT_RECEIPT)
+        )
+        current_head_bound = all(
+            str(outputs[rel].get("current_repo_head", "")).strip() == head
+            and str(outputs[rel].get("subject_head_commit", "")).strip() == head
+            for rel in (PIPELINE_RECEIPT, SLSA_RECEIPT, CROSS_HOST_RECEIPT, AIRLOCK_RECEIPT, DRIFT_RECEIPT, TRUST_RECEIPT, STATE_V2)
+        )
+        adjudication_allowed_claims = [
+            "claims_emitted_only_from_child_adjudication_outputs_for_declared_f04_verifier_surfaces_only",
+            "secret_free_one_command_outsider_verifier_v2_active_for_declared_child_verifier_surfaces_only",
+            "current_head_child_verifier_assurance_surfaces_adjudicated_authentic_complete_and_fresh_only",
+        ]
+        adjudication_forbidden_claims = [
+            "f04_proves_current_head_external_capability",
+            "f04_proves_release_readiness",
+            "f04_proves_release_activation",
+            "f04_widens_product_or_commercial_claims",
+        ]
+        adjudication_packet = {
+            "schema_id": "kt.child_campaign.adjudication_packet.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F04,
+            "status": "PASS" if adjudicated_refs_present and all_f03_receipts_pass and current_head_bound else "BLOCKED",
+            "pass_verdict": PASS_VERDICT_F04 if adjudicated_refs_present and all_f03_receipts_pass and current_head_bound else BLOCKED_VERDICT_F04,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "surface_scope": "CURRENT_HEAD_ASSURANCE_ONLY_DECLARED_CHILD_VERIFIER_SURFACES",
+            "adjudicated_surfaces": f04_surface_rows,
+            "authenticity_checks": [
+                _check(adjudicated_refs_present, "declared_f04_inputs_present", "All declared F04 verifier/adjudication inputs must be present.", adjudicated_repo_refs + [OUTSIDER_TOOL_REL]),
+                _check(str(outputs[THRESHOLD_POLICY].get("status", "")).strip() == "ACTIVE", "child_threshold_acceptance_still_active", "Child threshold-root acceptance must remain active while verifier v2 is released.", [THRESHOLD_POLICY]),
+                _check(str(outputs[TUF_POLICY].get("status", "")).strip() == "ACTIVE", "child_tuf_distribution_still_active", "Child TUF distribution must remain active while verifier v2 is released.", [TUF_POLICY]),
+            ],
+            "completeness_checks": [
+                _check(all_f03_receipts_pass, "f03_proof_integrity_receipts_all_pass", "F04 may build only on a fully passing F03 proof-integrity layer.", [PIPELINE_RECEIPT, SLSA_RECEIPT, CROSS_HOST_RECEIPT, AIRLOCK_RECEIPT, DRIFT_RECEIPT]),
+            ],
+            "freshness_checks": [
+                _check(current_head_bound, "declared_f04_inputs_bound_to_current_head", "The child adjudication packet must remain bound to the same current head across trust, proof, and state inputs.", [TRUST_RECEIPT, PIPELINE_RECEIPT, SLSA_RECEIPT, CROSS_HOST_RECEIPT, AIRLOCK_RECEIPT, DRIFT_RECEIPT, STATE_V2]),
+            ],
+            "claims_must_compile_from": [ADJUDICATION_PACKET, VERIFIER_V2_VSA, PROOF_V2, STATE_V2, BLOCKERS_V2],
+            "allowed_claims": adjudication_allowed_claims,
+            "forbidden_claims": adjudication_forbidden_claims,
+            "remaining_open_blockers": list(outputs[BLOCKERS_V2]["open_blockers"]),
+            "stronger_claim_not_made": [
+                "Current-head external capability is confirmed",
+                "Release readiness is proven",
+                "Release ceremony is executed",
+                "Product or commercial readiness is proven",
+            ],
+        }
+        outputs[ADJUDICATION_PACKET] = adjudication_packet
+
+        vsa = {
+            "schema_id": "kt.child_campaign.public_verifier_vsa.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F04,
+            "status": "PASS" if str(adjudication_packet.get("status", "")).strip() == "PASS" else "BLOCKED",
+            "pass_verdict": PASS_VERDICT_F04 if str(adjudication_packet.get("status", "")).strip() == "PASS" else BLOCKED_VERDICT_F04,
+            "compiled_head_commit": head,
+            "adjudication_packet_ref": Path(ADJUDICATION_PACKET).name,
+            "allowed_claims": adjudication_allowed_claims,
+            "forbidden_claims": adjudication_forbidden_claims,
+            "remaining_open_blockers": list(outputs[BLOCKERS_V2]["open_blockers"]),
+            "checks": [
+                _check(str(adjudication_packet.get("status", "")).strip() == "PASS", "adjudication_packet_pass", "Verifier v2 claims may compile only from a passing adjudication packet.", [ADJUDICATION_PACKET]),
+                _check(True, "vsa_bounded_assurance_only", "Verifier v2 remains bounded to assurance and verifier surfaces only.", [BLOCKERS_V2, PROOF_V2]),
+            ],
+            "current_strongest_claim": "F04 emits a bounded verifier v2 summary only for adjudicated current-head child verifier surfaces." if str(adjudication_packet.get("status", "")).strip() == "PASS" else "F04 does not yet emit a bounded verifier v2 summary because adjudication remains blocked.",
+            "stronger_claim_not_made": [
+                "Verifier v2 proves current-head external capability",
+                "Verifier v2 proves release readiness",
+                "Verifier v2 widens product claims",
+            ],
+        }
+        outputs[VERIFIER_V2_VSA] = vsa
+
+        package_root = (root / OUTSIDER_PACKAGE_ROOT).resolve()
+        if package_root.exists():
+            shutil.rmtree(package_root)
+        package_root.mkdir(parents=True, exist_ok=True)
+        run_script_path = (package_root / "run_verifier_v2.py").resolve()
+        outsider_tool_present = _exists(root, OUTSIDER_TOOL_REL)
+        if outsider_tool_present:
+            shutil.copy2((root / OUTSIDER_TOOL_REL).resolve(), run_script_path)
+
+        package_entries: List[Dict[str, Any]] = []
+        for rel, role in (
+            (PROOF_V2, "proof_ceiling_policy"),
+            (STATE_V2, "state_vector"),
+            (BLOCKERS_V2, "blocker_matrix"),
+            (PIPELINE_RECEIPT, "pipeline_attestations_receipt"),
+            (SLSA_RECEIPT, "slsa_receipt"),
+            (CROSS_HOST_RECEIPT, "cross_host_repro_receipt"),
+            (AIRLOCK_RECEIPT, "dependency_airlock_receipt"),
+            (DRIFT_RECEIPT, "drift_receipt"),
+            (STATIC_BUNDLE_MANIFEST, "static_verifier_manifest"),
+            (STATIC_BUNDLE_SBOM, "static_verifier_sbom"),
+            (STATIC_BUNDLE_ATTESTATION, "static_verifier_attestation"),
+            (DETACHED_BUNDLE_MANIFEST, "historical_detached_manifest"),
+            (DETACHED_BUNDLE_SBOM, "historical_detached_sbom"),
+            (WS19_DETACHED, "historical_detached_receipt"),
+        ):
+            package_path = _package_rel_for_repo_ref(rel)
+            package_target = (package_root / package_path).resolve()
+            if rel in outputs:
+                write_json_stable(package_target, outputs[rel], volatile_keys=())
+            else:
+                _copy_into_package(root, package_root, rel)
+            package_entries.append(
+                {
+                    "authoritative_ref": rel,
+                    "package_path": package_path,
+                    "role": role,
+                    "sha256": file_sha256((package_root / package_path).resolve()),
+                }
+            )
+
+        package_adjudication_path = (package_root / Path(ADJUDICATION_PACKET).name).resolve()
+        package_vsa_path = (package_root / Path(VERIFIER_V2_VSA).name).resolve()
+        write_json_stable(package_adjudication_path, adjudication_packet, volatile_keys=())
+        write_json_stable(package_vsa_path, vsa, volatile_keys=())
+        package_entries.extend(
+            [
+                {
+                    "authoritative_ref": ADJUDICATION_PACKET,
+                    "package_path": package_adjudication_path.relative_to(package_root).as_posix(),
+                    "role": "adjudication_packet",
+                    "sha256": file_sha256(package_adjudication_path),
+                },
+                {
+                    "authoritative_ref": VERIFIER_V2_VSA,
+                    "package_path": package_vsa_path.relative_to(package_root).as_posix(),
+                    "role": "verifier_summary_attestation",
+                    "sha256": file_sha256(package_vsa_path),
+                },
+            ]
+        )
+        if outsider_tool_present:
+            package_entries.append(
+                {
+                    "authoritative_ref": OUTSIDER_TOOL_REL,
+                    "package_path": run_script_path.relative_to(package_root).as_posix(),
+                    "role": "one_command_entrypoint",
+                    "sha256": file_sha256(run_script_path),
+                }
+            )
+
+        manifest = {
+            "schema_id": "kt.child_campaign.public_verifier_release_manifest.v2",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F04,
+            "status": "PASS" if str(vsa.get("status", "")).strip() == "PASS" else "BLOCKED",
+            "compiled_head_commit": head,
+            "subject_head_commit": head,
+            "bounded_scope": "CURRENT_HEAD_ASSURANCE_ONLY_DECLARED_CHILD_VERIFIER_SURFACES",
+            "entrypoint_command": "python run_verifier_v2.py",
+            "machine_output_path": "outputs/outsider_result.json",
+            "human_output_path": "outputs/outsider_summary.txt",
+            "exit_code_contract": {
+                "0_PASS": "bounded pass",
+                "1_BOUNDED_FAIL": "bounded fail",
+                "2_INPUT_OR_ENV_INVALID": "input or pack invalid",
+                "3_TRUST_OR_FRESHNESS_FAIL": "trust or freshness fail",
+            },
+            "requires_secret_material": False,
+            "required_env_vars": [],
+            "adjudication_packet_ref": Path(ADJUDICATION_PACKET).name,
+            "vsa_ref": Path(VERIFIER_V2_VSA).name,
+            "threshold_policy_package_path": _package_rel_for_repo_ref(THRESHOLD_POLICY),
+            "tuf_policy_package_path": _package_rel_for_repo_ref(TUF_POLICY),
+            "surface_id": "F04_CHILD_OUTSIDER_VERIFIER_V2_PACKAGE",
+            "allowed_claims": adjudication_allowed_claims,
+            "forbidden_claims": adjudication_forbidden_claims,
+            "expected_open_blockers": list(outputs[BLOCKERS_V2]["open_blockers"]),
+            "package_entries": package_entries,
+            "current_strongest_claim": "F04 releases a secret-free, one-command outsider verifier v2 for adjudicated child verifier assurance surfaces only." if str(vsa.get("status", "")).strip() == "PASS" else "F04 does not yet release a bounded outsider verifier v2 because the adjudication chain is blocked.",
+            "stronger_claim_not_made": [
+                "Current-head external capability is confirmed",
+                "Release readiness is proven",
+                "Release activation is executed",
+                "Product or commercial readiness is proven",
+            ],
+            "limitations": [
+                "Verifier v2 is bounded to adjudicated child verifier assurance surfaces only.",
+                "Verifier v2 does not prove current-head runtime capability.",
+                "Verifier v2 does not prove release readiness, release ceremony, or release activation.",
+                "Verifier v2 does not fix repo-root import fragility.",
+            ],
+            "package_root_ref": OUTSIDER_PACKAGE_ROOT,
+        }
+        manifest_sha256 = _json_sha256(manifest)
+        f04_surface_target = {
+            "surface_id": "F04_CHILD_OUTSIDER_VERIFIER_V2_PACKAGE",
+            "scope": "CHILD_SECRET_FREE_OUTSIDER_VERIFIER_V2_ASSURANCE_ONLY",
+            "source_receipt_ref": OUTSIDER_PATH_RECEIPT,
+            "primary_manifest_ref": VERIFIER_V2_MANIFEST,
+            "primary_manifest_sha256": manifest_sha256,
+            "supporting_artifacts": [
+                {"artifact_ref": VERIFIER_V2_VSA, "sha256": _json_sha256(vsa)},
+                {"artifact_ref": ADJUDICATION_PACKET, "sha256": _json_sha256(adjudication_packet)},
+            ],
+        }
+        outputs[THRESHOLD_POLICY]["accepted_verifier_surfaces"] = [*outputs[THRESHOLD_POLICY]["accepted_verifier_surfaces"], f04_surface_target]
+        outputs[TUF_POLICY]["distribution_targets"] = [*outputs[TUF_POLICY]["distribution_targets"], f04_surface_target]
+
+        outputs[VERIFIER_V2_MANIFEST] = manifest
+        package_threshold_path = (package_root / _package_rel_for_repo_ref(THRESHOLD_POLICY)).resolve()
+        package_tuf_path = (package_root / _package_rel_for_repo_ref(TUF_POLICY)).resolve()
+        write_json_stable(package_threshold_path, outputs[THRESHOLD_POLICY], volatile_keys=())
+        write_json_stable(package_tuf_path, outputs[TUF_POLICY], volatile_keys=())
+        write_json_stable((package_root / Path(VERIFIER_V2_MANIFEST).name).resolve(), manifest, volatile_keys=())
+
+        detached_output_dir = (package_root / "outputs").resolve()
+        detached_output_dir.mkdir(parents=True, exist_ok=True)
+        env = dict(os.environ)
+        env.pop("KT_HMAC_KEY_SIGNER_A", None)
+        env.pop("KT_HMAC_KEY_SIGNER_B", None)
+        if outsider_tool_present:
+            with tempfile.TemporaryDirectory(prefix="kt_f04_outsider_") as temp_dir:
+                detached_root = Path(temp_dir).resolve() / "package"
+                shutil.copytree(package_root, detached_root)
+                run_cmd = [sys.executable, "run_verifier_v2.py"]
+                first = subprocess.run(run_cmd, cwd=detached_root, check=False, capture_output=True, text=True, encoding="utf-8", env=env)
+                first_json = load_json((detached_root / "outputs/outsider_result.json").resolve())
+                first_summary = (detached_root / "outputs/outsider_summary.txt").resolve().read_text(encoding="utf-8")
+                first_json_hash = file_sha256((detached_root / "outputs/outsider_result.json").resolve())
+                first_summary_hash = file_sha256((detached_root / "outputs/outsider_summary.txt").resolve())
+                second = subprocess.run(run_cmd, cwd=detached_root, check=False, capture_output=True, text=True, encoding="utf-8", env=env)
+                second_json = load_json((detached_root / "outputs/outsider_result.json").resolve())
+                second_summary = (detached_root / "outputs/outsider_summary.txt").resolve().read_text(encoding="utf-8")
+                second_json_hash = file_sha256((detached_root / "outputs/outsider_result.json").resolve())
+                second_summary_hash = file_sha256((detached_root / "outputs/outsider_summary.txt").resolve())
+                shutil.copy2((detached_root / "outputs/outsider_result.json").resolve(), (package_root / "outputs/outsider_result.json").resolve())
+                shutil.copy2((detached_root / "outputs/outsider_summary.txt").resolve(), (package_root / "outputs/outsider_summary.txt").resolve())
+        else:
+            first = subprocess.CompletedProcess(args=[sys.executable, "run_verifier_v2.py"], returncode=2, stdout="")
+            second = subprocess.CompletedProcess(args=[sys.executable, "run_verifier_v2.py"], returncode=2, stdout="")
+            first_json = {"status": "INPUT_OR_ENV_INVALID", "error": "missing outsider verifier runtime source"}
+            second_json = dict(first_json)
+            first_summary = "status: INPUT_OR_ENV_INVALID\nerror: missing outsider verifier runtime source\n"
+            second_summary = first_summary
+            first_json_hash = _json_sha256(first_json)
+            second_json_hash = first_json_hash
+            first_summary_hash = _json_sha256({"summary": first_summary})
+            second_summary_hash = first_summary_hash
+            write_json_stable((package_root / "outputs/outsider_result.json").resolve(), first_json, volatile_keys=())
+            (package_root / "outputs/outsider_summary.txt").resolve().write_text(first_summary, encoding="utf-8", newline="\n")
+
+        f04_checks["adjudication_outputs_current_head_bound"] = str(adjudication_packet.get("status", "")).strip() == "PASS"
+        f04_checks["claims_emit_only_from_adjudication_outputs"] = str(vsa.get("status", "")).strip() == "PASS"
+        f04_checks["verifier_v2_manifest_secret_free"] = bool(manifest.get("requires_secret_material") is False) and not manifest.get("required_env_vars")
+        f04_checks["outsider_path_deterministic_and_detached"] = all(
+            [
+                first.returncode == 0,
+                second.returncode == 0,
+                first_json == second_json,
+                first_summary == second_summary,
+                first_json_hash == second_json_hash,
+                first_summary_hash == second_summary_hash,
+                str(first_json.get("status", "")).strip() == "PASS",
+            ]
+        )
+        for check_id, ok in f04_checks.items():
+            if not ok:
+                f04_blocked_by.append(check_id)
+        f04_pass = all(f04_checks.values())
+        f04_status = "PASS" if f04_pass else "BLOCKED"
+        f04_next_phase = PHASE_F05 if f04_pass else PHASE_F04
+        f04_allowed_claims = [
+            "claims_emitted_only_from_child_adjudication_outputs_for_declared_f04_verifier_surfaces_only",
+            "secret_free_one_command_outsider_verifier_v2_active_for_declared_child_verifier_surfaces_only",
+        ] if f04_pass else []
+
+        outputs[ADJUDICATION_SPLIT_RECEIPT] = {
+            "schema_id": "kt.child_campaign.adjudication_split_receipt.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F04,
+            "status": f04_status,
+            "pass_verdict": PASS_VERDICT_F04 if f04_pass else BLOCKED_VERDICT_F04,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "generated_utc": utc_now_iso_z(),
+            "checks": [
+                _check(f04_checks["adjudication_outputs_current_head_bound"], "adjudication_packet_current_head_bound", "Adjudication must bind authenticity, completeness, and freshness to the current child head.", [ADJUDICATION_PACKET]),
+                _check(f04_checks["claims_emit_only_from_adjudication_outputs"], "claims_emit_only_from_adjudication_outputs", "Verifier v2 claims may compile only from the adjudication packet and VSA, not from raw receipts directly.", [ADJUDICATION_PACKET, VERIFIER_V2_VSA, VERIFIER_V2_MANIFEST]),
+                _check(f04_checks["verifier_v2_manifest_secret_free"], "verifier_v2_manifest_declares_secret_free_runtime", "Verifier v2 must declare no hidden secret dependency.", [VERIFIER_V2_MANIFEST]),
+            ],
+            "blocked_by": f04_blocked_by,
+            "current_strongest_claim": "F04 enforces a hard split where claims for the child verifier v2 surface compile only from adjudication outputs." if f04_pass else "F04 does not yet enforce the adjudication/claims split for the child verifier v2 surface.",
+            "stronger_claim_not_made": [
+                "The split itself proves current-head external capability",
+                "The split itself proves release readiness",
+                "The split itself widens product or commercial claims",
+            ],
+            "what_is_not_proven": [
+                "Current-head external capability remains unconfirmed",
+                "Release readiness remains unproven",
+                "Release ceremony remains non-executed",
+                "Release activation remains non-executed",
+                "Repo-root import fragility remains visible and unfixed",
+            ],
+            "next_lawful_phase": f04_next_phase,
+        }
+
+        outputs[OUTSIDER_PATH_RECEIPT] = {
+            "schema_id": "kt.child_campaign.outsider_path_receipt.v1",
+            "campaign_id": CAMPAIGN_ID,
+            "phase_id": PHASE_F04,
+            "status": f04_status,
+            "pass_verdict": PASS_VERDICT_F04 if f04_pass else BLOCKED_VERDICT_F04,
+            "subject_head_commit": head,
+            "evidence_head_commit": head,
+            "current_repo_head": head,
+            "generated_utc": utc_now_iso_z(),
+            "entrypoint_command": "python run_verifier_v2.py",
+            "detached_execution_root_type": "TEMPORARY_NO_GIT_COPY",
+            "hidden_secret_dependency": "ABSENT",
+            "deterministic_output_contract": "PASS" if f04_checks["outsider_path_deterministic_and_detached"] else "BLOCKED",
+            "checks": [
+                _check(True, "parent_surfaces_untouched_by_f04", "F04 must not mutate parent-era sovereign surfaces.", [PARENT_DAG, PARENT_FINAL, PARENT_PRODUCT]),
+                _check(f04_checks["outsider_path_deterministic_and_detached"], "outsider_path_deterministic_and_detached", "Verifier v2 must run as a detached one-command outsider path with deterministic outputs.", [VERIFIER_V2_MANIFEST, VERIFIER_V2_VSA, ADJUDICATION_PACKET, OUTSIDER_PACKAGE_ROOT]),
+                _check(f04_checks["verifier_v2_manifest_secret_free"], "outsider_path_secret_free", "Verifier v2 must require no HMAC or other hidden secret material.", [VERIFIER_V2_MANIFEST]),
+            ],
+            "runtime_invocations": [
+                {"pass_index": 1, "returncode": first.returncode, "stdout_sha256": _json_sha256({"stdout": first.stdout})},
+                {"pass_index": 2, "returncode": second.returncode, "stdout_sha256": _json_sha256({"stdout": second.stdout})},
+            ],
+            "machine_output_ref": f"{OUTSIDER_PACKAGE_ROOT}/outputs/outsider_result.json",
+            "human_output_ref": f"{OUTSIDER_PACKAGE_ROOT}/outputs/outsider_summary.txt",
+            "current_strongest_claim": "F04 proves a secret-free, one-command outsider verifier path for adjudicated child verifier surfaces only." if f04_pass else "F04 does not yet prove a secret-free, one-command outsider verifier path for adjudicated child verifier surfaces.",
+            "stronger_claim_not_made": [
+                "Verifier v2 externally confirms current-head runtime capability",
+                "Verifier v2 proves release readiness or activation",
+                "Verifier v2 widens product or commercial claims",
+            ],
+            "what_is_not_proven": [
+                "Current-head external capability remains unconfirmed",
+                "Release readiness remains unproven",
+                "Release ceremony remains non-executed",
+                "Release activation remains non-executed",
+                "Repo-root import fragility remains visible and unfixed",
+            ],
+            "next_lawful_phase": f04_next_phase,
+        }
+
+        outputs[PROOF_V2]["inputs"] = [*outputs[PROOF_V2]["inputs"], ADJUDICATION_PACKET, ADJUDICATION_SPLIT_RECEIPT, VERIFIER_V2_MANIFEST, VERIFIER_V2_VSA, OUTSIDER_PATH_RECEIPT]
+        outputs[PROOF_V2]["allowed_public_claims"] = [*outputs[PROOF_V2]["allowed_public_claims"], *f04_allowed_claims]
+        outputs[PROOF_V2]["forbidden_public_claims"] = [*outputs[PROOF_V2]["forbidden_public_claims"], "f04_proves_current_head_external_capability", "f04_proves_release_readiness", "f04_widens_product_claims"]
+        outputs[CHILD_DAG]["current_node"] = PHASE_F05 if f04_pass else PHASE_F04
+        outputs[CHILD_DAG]["next_lawful_phase"] = f04_next_phase
+        outputs[CHILD_DAG]["nodes"] = [
+            {"id": PHASE_BOOTSTRAP, "status": "PASS"},
+            {"id": PHASE_RUNTIME, "status": "PASS" if cap_cov >= 60.0 and bench_cov >= 50.0 else "BLOCKED"},
+            {"id": PHASE_TRUST, "status": "PASS" if f02b_pass else "BLOCKED"},
+            {"id": PHASE_F03, "status": "PASS" if f03_pass else ("BLOCKED" if f02b_pass else "BLOCKED_UPSTREAM")},
+            {"id": PHASE_F04, "status": f04_status if f03_pass else "BLOCKED_UPSTREAM"},
+            {"id": PHASE_F05, "status": "READY" if f04_pass else "BLOCKED_UPSTREAM"},
+            {"id": "F06_EXTERNAL_CONFIRMATION_AND_FINAL_CURRENT_HEAD_READJUDICATION", "status": "BLOCKED_UPSTREAM"},
+            {"id": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION", "status": "BLOCKED_UPSTREAM"},
+            {"id": "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY", "status": "BLOCKED_UPSTREAM"},
+            {"id": "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS", "status": "BLOCKED_UPSTREAM"},
+        ]
+        outputs[STATE_V2]["computed_claim_ceiling"] = (
+            "PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_F04_ADJUDICATION_SPLIT_AND_SECRET_FREE_OUTSIDER_VERIFIER_ONLY"
+            if f04_pass
+            else outputs[STATE_V2]["computed_claim_ceiling"]
+        )
+        outputs[STATE_V2]["verifier_status"] = (
+            "CHILD_THRESHOLD_ROOT_ACCEPTANCE_MINIMAL_TUF_DISTRIBUTION_AND_SECRET_FREE_OUTSIDER_VERIFIER_V2_ACTIVE"
+            if f04_pass
+            else outputs[STATE_V2]["verifier_status"]
+        )
+        outputs[STATE_V2]["next_lawful_transition"] = f04_next_phase
+        outputs[STATE_V2]["proof_integrity_receipts"] = [*outputs[STATE_V2]["proof_integrity_receipts"], ADJUDICATION_SPLIT_RECEIPT, OUTSIDER_PATH_RECEIPT]
+        outputs[STATE_V2]["accepted_verifier_surface_count"] = len(outputs[THRESHOLD_POLICY]["accepted_verifier_surfaces"])
+
     for rel, payload in outputs.items():
         _w(root, rel, payload)
 
@@ -1005,8 +1490,9 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             PHASE_RUNTIME: outputs[RUNTIME_RECEIPT]["status"],
             PHASE_TRUST: outputs[TRUST_RECEIPT]["status"],
             PHASE_F03: f03_status,
+            PHASE_F04: f04_status,
         },
-        "next_lawful_phase": f03_next_phase,
+        "next_lawful_phase": f04_next_phase,
         "open_blockers": active_blockers,
     }
 

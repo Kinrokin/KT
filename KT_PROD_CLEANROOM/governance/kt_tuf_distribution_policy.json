@@ -5,7 +5,7 @@
     "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json"
   ],
   "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
-  "current_repo_head": "8bcd82e6a61a121f78c3c39e22f4092c533dbb3a",
+  "current_repo_head": "05af06fdc832374352bbf612a4920d333c97faeb",
   "delivery_modes": [
     "repo_snapshot_with_hash_bound_release_manifest",
     "static_zip_or_directory_bundle_with_packaged_public_evidence",
@@ -45,6 +45,23 @@
         }
       ],
       "surface_id": "WS19_DETACHED_PUBLIC_VERIFIER_PACKAGE"
+    },
+    {
+      "primary_manifest_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_manifest_v2.json",
+      "primary_manifest_sha256": "9a5cc3363b5fce4494366dcc434377133eeb6653dbc64d47dbecf3f7433536f2",
+      "scope": "CHILD_SECRET_FREE_OUTSIDER_VERIFIER_V2_ASSURANCE_ONLY",
+      "source_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_outsider_path_receipt.json",
+      "supporting_artifacts": [
+        {
+          "artifact_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_vsa.json",
+          "sha256": "fb03f036aaf8052d166413d909afd5341e76a473fce9f013ddf737fa3afedd6f"
+        },
+        {
+          "artifact_ref": "KT_PROD_CLEANROOM/reports/kt_child_adjudication_packet.json",
+          "sha256": "6f01c8e7900f492469caf5bdd648166a2eaf0775051553bc116ec8fe2569c270"
+        }
+      ],
+      "surface_id": "F04_CHILD_OUTSIDER_VERIFIER_V2_PACKAGE"
     }
   ],
   "limitations": [

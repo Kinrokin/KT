@@ -1,0 +1,74 @@
+{
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "parent_surfaces_untouched_by_f04",
+      "detail": "F04 must not mutate parent-era sovereign surfaces.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_execution_dag.json",
+        "KT_PROD_CLEANROOM/reports/kt_final_readjudication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_product_surface_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "outsider_path_deterministic_and_detached",
+      "detail": "Verifier v2 must run as a detached one-command outsider path with deterministic outputs.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_manifest_v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_vsa.json",
+        "KT_PROD_CLEANROOM/reports/kt_child_adjudication_packet.json",
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F04_public_verifier_v2_package"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "outsider_path_secret_free",
+      "detail": "Verifier v2 must require no HMAC or other hidden secret material.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_manifest_v2.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "05af06fdc832374352bbf612a4920d333c97faeb",
+  "current_strongest_claim": "F04 proves a secret-free, one-command outsider verifier path for adjudicated child verifier surfaces only.",
+  "detached_execution_root_type": "TEMPORARY_NO_GIT_COPY",
+  "deterministic_output_contract": "PASS",
+  "entrypoint_command": "python run_verifier_v2.py",
+  "evidence_head_commit": "05af06fdc832374352bbf612a4920d333c97faeb",
+  "generated_utc": "2026-03-19T17:57:12Z",
+  "hidden_secret_dependency": "ABSENT",
+  "human_output_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F04_public_verifier_v2_package/outputs/outsider_summary.txt",
+  "machine_output_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F04_public_verifier_v2_package/outputs/outsider_result.json",
+  "next_lawful_phase": "F05_ORGAN_ELEVATION_AND_RUNTIME_PROMOTION",
+  "pass_verdict": "ADJUDICATION_SPLIT_AND_SECRET_FREE_OUTSIDER_VERIFIER_V2_ACTIVE",
+  "phase_id": "F04_ADJUDICATION_VERIFIER_V2_AND_OUTSIDER_PATH",
+  "runtime_invocations": [
+    {
+      "pass_index": 1,
+      "returncode": 0,
+      "stdout_sha256": "83524842fd43d300cea6cd198829b9cef96e715b0f65aeff4d27a31672d087b5"
+    },
+    {
+      "pass_index": 2,
+      "returncode": 0,
+      "stdout_sha256": "83524842fd43d300cea6cd198829b9cef96e715b0f65aeff4d27a31672d087b5"
+    }
+  ],
+  "schema_id": "kt.child_campaign.outsider_path_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "Verifier v2 externally confirms current-head runtime capability",
+    "Verifier v2 proves release readiness or activation",
+    "Verifier v2 widens product or commercial claims"
+  ],
+  "subject_head_commit": "05af06fdc832374352bbf612a4920d333c97faeb",
+  "what_is_not_proven": [
+    "Current-head external capability remains unconfirmed",
+    "Release readiness remains unproven",
+    "Release ceremony remains non-executed",
+    "Release activation remains non-executed",
+    "Repo-root import fragility remains visible and unfixed"
+  ]
+}

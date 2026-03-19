@@ -8,6 +8,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
+    ADJUDICATION_PACKET,
+    ADJUDICATION_SPLIT_RECEIPT,
     AIRLOCK_RECEIPT,
     ARTIFACT_CLASS,
     BENCHMARK_MATRIX,
@@ -26,8 +28,12 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     PARENT_PRODUCT,
     PHASE_F03,
     PHASE_F04,
+    PHASE_F05,
     PHASE_RUNTIME,
     PHASE_TRUST,
+    OUTSIDER_PATH_RECEIPT,
+    OUTSIDER_TEST_REL,
+    OUTSIDER_TOOL_REL,
     PIPELINE_RECEIPT,
     PROOF_SUPERSEDE,
     PROOF_V2,
@@ -57,6 +63,8 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     WS17A,
     WS17B,
     WS19_DETACHED,
+    VERIFIER_V2_MANIFEST,
+    VERIFIER_V2_VSA,
     emit_follow_on_campaign_v16,
 )
 
@@ -121,6 +129,7 @@ def _seed_repo(tmp_path: Path) -> str:
     source_root = Path(__file__).resolve().parents[2]
     for rel in [
         TOOL_REL,
+        OUTSIDER_TOOL_REL,
         "KT_PROD_CLEANROOM/tools/operator/dependency_inventory_emit.py",
         "KT_PROD_CLEANROOM/tools/operator/dependency_inventory_validate.py",
         "KT_PROD_CLEANROOM/tools/operator/titanium_common.py",
@@ -132,6 +141,8 @@ def _seed_repo(tmp_path: Path) -> str:
         (tmp_path / rel).write_text(source.read_text(encoding="utf-8"), encoding="utf-8", newline="\n")
     (tmp_path / TEST_REL).parent.mkdir(parents=True, exist_ok=True)
     (tmp_path / TEST_REL).write_text("seed\n", encoding="utf-8", newline="\n")
+    (tmp_path / OUTSIDER_TEST_REL).parent.mkdir(parents=True, exist_ok=True)
+    (tmp_path / OUTSIDER_TEST_REL).write_text("seed\n", encoding="utf-8", newline="\n")
     _seed_runtime(tmp_path)
     _write_json(tmp_path / PARENT_DAG, {"schema_id": "kt.governance.execution_dag.v1", "status": "ACTIVE", "campaign_completion_status": "STILL_BLOCKED", "next_lawful_workstream": None})
     _write_json(tmp_path / PARENT_FINAL, {"schema_id": "kt.operator.ws18.final_readjudication_receipt.v1", "status": "PASS", "final_verdict": {"current_head_capability_status": "NOT_EXTERNALLY_CONFIRMED", "release_eligibility": "NOT_ELIGIBLE"}})
@@ -305,7 +316,8 @@ def test_child_campaign_f03_passes_with_declared_proof_surfaces(tmp_path: Path) 
     assert summary["phase_results"][PHASE_RUNTIME] == "PASS"
     assert summary["phase_results"][PHASE_TRUST] == "PASS"
     assert summary["phase_results"][PHASE_F03] == "PASS"
-    assert summary["next_lawful_phase"] == PHASE_F04
+    assert summary["phase_results"][PHASE_F04] == "PASS"
+    assert summary["next_lawful_phase"] == PHASE_F05
 
     runtime = json.loads((tmp_path / RUNTIME_RECEIPT).read_text(encoding="utf-8"))
     trust = json.loads((tmp_path / TRUST_RECEIPT).read_text(encoding="utf-8"))
@@ -316,6 +328,9 @@ def test_child_campaign_f03_passes_with_declared_proof_surfaces(tmp_path: Path) 
     repro = json.loads((tmp_path / CROSS_HOST_RECEIPT).read_text(encoding="utf-8"))
     airlock = json.loads((tmp_path / AIRLOCK_RECEIPT).read_text(encoding="utf-8"))
     drift = json.loads((tmp_path / DRIFT_RECEIPT).read_text(encoding="utf-8"))
+    adjudication = json.loads((tmp_path / ADJUDICATION_PACKET).read_text(encoding="utf-8"))
+    split = json.loads((tmp_path / ADJUDICATION_SPLIT_RECEIPT).read_text(encoding="utf-8"))
+    outsider = json.loads((tmp_path / OUTSIDER_PATH_RECEIPT).read_text(encoding="utf-8"))
     assert runtime["status"] == "PASS"
     assert trust["status"] == "PASS"
     assert pipeline["status"] == "PASS"
@@ -323,13 +338,35 @@ def test_child_campaign_f03_passes_with_declared_proof_surfaces(tmp_path: Path) 
     assert repro["status"] == "PASS"
     assert airlock["status"] == "PASS"
     assert drift["status"] == "PASS"
+    assert adjudication["status"] == "PASS"
+    assert split["status"] == "PASS"
+    assert outsider["status"] == "PASS"
     assert bench["coverage_percent"] >= 50.0
-    assert state["next_lawful_transition"] == PHASE_F04
+    assert state["next_lawful_transition"] == PHASE_F05
     assert "threshold_root_verifier_acceptance_inactive" not in state["open_blockers"]
     assert "verifier_coverage_not_widened_beyond_bounded_surfaces" not in state["open_blockers"]
     assert state["reproducibility_status"].startswith("DECLARED_CLASS_A_CARRY_FORWARD_CROSS_HOST_PROVEN")
 
-    for rel in [CHILD_DAG, SINGLE_REALITY, PROOF_V2, THRESHOLD_POLICY, TUF_POLICY, BLOCKERS_V2, RUNTIME_MATRIX, THEATER_MATRIX, STATE_STALE, STATE_SUPERSEDE, PROOF_SUPERSEDE, BOOTSTRAP_RECEIPT, DEPENDENCY_VALIDATION]:
+    for rel in [
+        CHILD_DAG,
+        SINGLE_REALITY,
+        PROOF_V2,
+        THRESHOLD_POLICY,
+        TUF_POLICY,
+        BLOCKERS_V2,
+        RUNTIME_MATRIX,
+        THEATER_MATRIX,
+        STATE_STALE,
+        STATE_SUPERSEDE,
+        PROOF_SUPERSEDE,
+        BOOTSTRAP_RECEIPT,
+        DEPENDENCY_VALIDATION,
+        ADJUDICATION_PACKET,
+        ADJUDICATION_SPLIT_RECEIPT,
+        VERIFIER_V2_MANIFEST,
+        VERIFIER_V2_VSA,
+        OUTSIDER_PATH_RECEIPT,
+    ]:
         assert (tmp_path / rel).exists()
 
 
@@ -376,3 +413,16 @@ def test_child_campaign_f03_blocks_if_class_a_surfaces_drift(tmp_path: Path) -> 
     assert summary["next_lawful_phase"] == PHASE_F03
     assert repro["status"] == "BLOCKED"
     assert repro["class_a_drift_paths"] == [ARTIFACT_CLASS]
+
+
+def test_child_campaign_f04_blocks_if_outsider_runtime_source_missing(tmp_path: Path) -> None:
+    _seed_repo(tmp_path)
+    (tmp_path / OUTSIDER_TOOL_REL).unlink()
+    _commit_all(tmp_path, "remove outsider verifier source")
+
+    summary = emit_follow_on_campaign_v16(tmp_path)
+    split = json.loads((tmp_path / ADJUDICATION_SPLIT_RECEIPT).read_text(encoding="utf-8"))
+    assert summary["phase_results"][PHASE_F03] == "PASS"
+    assert summary["phase_results"][PHASE_F04] == "BLOCKED"
+    assert summary["next_lawful_phase"] == PHASE_F04
+    assert split["status"] == "BLOCKED"

@@ -1,0 +1,54 @@
+{
+  "blocked_by": [],
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "adjudication_packet_current_head_bound",
+      "detail": "Adjudication must bind authenticity, completeness, and freshness to the current child head.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_child_adjudication_packet.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "claims_emit_only_from_adjudication_outputs",
+      "detail": "Verifier v2 claims may compile only from the adjudication packet and VSA, not from raw receipts directly.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_child_adjudication_packet.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_vsa.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_manifest_v2.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "verifier_v2_manifest_declares_secret_free_runtime",
+      "detail": "Verifier v2 must declare no hidden secret dependency.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_manifest_v2.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "05af06fdc832374352bbf612a4920d333c97faeb",
+  "current_strongest_claim": "F04 enforces a hard split where claims for the child verifier v2 surface compile only from adjudication outputs.",
+  "evidence_head_commit": "05af06fdc832374352bbf612a4920d333c97faeb",
+  "generated_utc": "2026-03-19T17:57:12Z",
+  "next_lawful_phase": "F05_ORGAN_ELEVATION_AND_RUNTIME_PROMOTION",
+  "pass_verdict": "ADJUDICATION_SPLIT_AND_SECRET_FREE_OUTSIDER_VERIFIER_V2_ACTIVE",
+  "phase_id": "F04_ADJUDICATION_VERIFIER_V2_AND_OUTSIDER_PATH",
+  "schema_id": "kt.child_campaign.adjudication_split_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "The split itself proves current-head external capability",
+    "The split itself proves release readiness",
+    "The split itself widens product or commercial claims"
+  ],
+  "subject_head_commit": "05af06fdc832374352bbf612a4920d333c97faeb",
+  "what_is_not_proven": [
+    "Current-head external capability remains unconfirmed",
+    "Release readiness remains unproven",
+    "Release ceremony remains non-executed",
+    "Release activation remains non-executed",
+    "Repo-root import fragility remains visible and unfixed"
+  ]
+}
