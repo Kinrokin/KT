@@ -1,0 +1,47 @@
+{
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "parent_campaign_still_terminal_blocked",
+      "detail": "The sealed parent must remain closed before the child campaign may bootstrap.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_execution_dag.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "parent_campaign_has_no_next_workstream",
+      "detail": "The child campaign may not append work inside the parent DAG.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_execution_dag.json",
+        "KT_PROD_CLEANROOM/reports/kt_product_surface_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "carry_forward_current_head_capability_blocker",
+      "detail": "Current-head capability must remain explicitly unconfirmed at child-campaign bootstrap.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_readjudication_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "legacy_state_vector_is_stale",
+      "detail": "The old state vector must be treated as stale and superseded for child-campaign use.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_state_vector.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "17cd0c3998e0843187a802fa11db8f590ae3ee45",
+  "evidence_head_commit": "17cd0c3998e0843187a802fa11db8f590ae3ee45",
+  "generated_utc": "2026-03-19T05:00:40Z",
+  "next_lawful_phase": "F02A_RUNTIME_REALITY_AND_CURRENT_HEAD_BASELINE",
+  "pass_verdict": "CHILD_CAMPAIGN_BOOTSTRAPPED_WITH_SINGLE_REALITY_STATE_CORE_V2",
+  "phase_id": "F01_LINEAGE_LAW_AND_SUPERSESSION_REPAIR",
+  "schema_id": "kt.child_campaign.bootstrap_receipt.v1",
+  "status": "PASS",
+  "subject_head_commit": "17cd0c3998e0843187a802fa11db8f590ae3ee45"
+}

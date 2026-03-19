@@ -1,0 +1,30 @@
+{
+  "blocked_by": [
+    "threshold_root_verifier_acceptance_inactive",
+    "current_head_external_capability_not_confirmed",
+    "release_readiness_not_proven",
+    "release_ceremony_not_executed",
+    "release_activation_not_executed",
+    "verifier_coverage_not_widened_beyond_bounded_surfaces",
+    "repo_root_import_fragility_visible_and_unfixed"
+  ],
+  "current_repo_head": "17cd0c3998e0843187a802fa11db8f590ae3ee45",
+  "forbidden_public_claims": [
+    "current_head_external_capability_world_class",
+    "threshold_root_verifier_acceptance_active",
+    "release_readiness_proven",
+    "release_activation_executed",
+    "campaign_completion_proven"
+  ],
+  "inputs": [
+    "KT_PROD_CLEANROOM/reports/kt_state_vector_v2.json",
+    "KT_PROD_CLEANROOM/reports/kt_blocker_matrix_v2.json",
+    "KT_PROD_CLEANROOM/reports/kt_final_readjudication_receipt.json",
+    "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+    "KT_PROD_CLEANROOM/governance/kt_release_ceremony.json"
+  ],
+  "policy_id": "KT_CHILD_CLAIM_PROOF_CEILING_POLICY_V2_20260318",
+  "schema_id": "kt.child_campaign.claim_proof_ceiling_compiler_policy.v2",
+  "slsa_version_normalized": "v1.2",
+  "status": "ACTIVE"
+}

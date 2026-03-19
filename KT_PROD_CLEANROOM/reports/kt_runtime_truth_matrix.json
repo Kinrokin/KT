@@ -1,0 +1,120 @@
+{
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "current_repo_head": "17cd0c3998e0843187a802fa11db8f590ae3ee45",
+  "schema_id": "kt.child_campaign.runtime_truth_matrix.v1",
+  "status": "ACTIVE",
+  "surface_rows": [
+    {
+      "benchmark_status": "DEMO_AND_TEST_EVIDENCE",
+      "blockers": [],
+      "capability_label": "current_head_only",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/tools/router/run_router_hat_demo.py",
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/tests/fl3/test_epic19_router_hat_demo.py"
+      ],
+      "inventory_class": "live_benchmarked",
+      "maturity_class": "O2_HARDENED",
+      "operational_reality_class": "LIVE_BOUNDED",
+      "surface_id": "router"
+    },
+    {
+      "benchmark_status": "TEST_ONLY",
+      "blockers": [],
+      "capability_label": "current_head_only",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/cognitive_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/tests/test_cognitive_engine.py"
+      ],
+      "inventory_class": "live_unbenchmarked",
+      "maturity_class": "O1_IMPLEMENTED",
+      "operational_reality_class": "LIVE_UNPROVEN",
+      "surface_id": "cognition"
+    },
+    {
+      "benchmark_status": "BOUNDED_RECEIPT_AND_TEST_EVIDENCE",
+      "blockers": [],
+      "capability_label": "current_head_only",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_invariants.json",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/tests/test_paradox_engine.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_paradox_verification_compile.py",
+        "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json"
+      ],
+      "inventory_class": "live_benchmarked",
+      "maturity_class": "O2_HARDENED",
+      "operational_reality_class": "LIVE_BOUNDED",
+      "surface_id": "paradox"
+    },
+    {
+      "benchmark_status": "TEST_ONLY",
+      "blockers": [],
+      "capability_label": "current_head_only",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/temporal_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/tests/test_temporal_engine.py"
+      ],
+      "inventory_class": "live_unbenchmarked",
+      "maturity_class": "O1_IMPLEMENTED",
+      "operational_reality_class": "LIVE_UNPROVEN",
+      "surface_id": "temporal"
+    },
+    {
+      "benchmark_status": "TEST_ONLY",
+      "blockers": [],
+      "capability_label": "current_head_only",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/multiverse/multiverse_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/multiverse/tests/test_multiverse_engine.py"
+      ],
+      "inventory_class": "live_unbenchmarked",
+      "maturity_class": "O1_IMPLEMENTED",
+      "operational_reality_class": "LIVE_UNPROVEN",
+      "surface_id": "multiverse"
+    },
+    {
+      "benchmark_status": "ADAPTER_TEST_GATE_ONLY",
+      "blockers": [
+        "NO_ACTIVE_RUNTIME_ADAPTER_ENTRIES"
+      ],
+      "capability_label": "current_head_and_historical_consistent",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_provider_adapters.py",
+        "KT_PROD_CLEANROOM/reports/kt_adapter_testing_gate_receipt.json"
+      ],
+      "inventory_class": "stubbed",
+      "maturity_class": "O1_IMPLEMENTED",
+      "operational_reality_class": "STUBBED",
+      "surface_id": "adapter_layer"
+    },
+    {
+      "benchmark_status": "READINESS_RECEIPT_AND_TEST_EVIDENCE",
+      "blockers": [],
+      "capability_label": "current_head_and_historical_consistent",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/tools/tournament/run_tournament.py",
+        "KT_PROD_CLEANROOM/governance/tournament_law.json",
+        "KT_PROD_CLEANROOM/tests/fl3/test_epic15_tournament_runner.py",
+        "KT_PROD_CLEANROOM/tests/fl3/test_fl4_promotion_atomic.py",
+        "KT_PROD_CLEANROOM/reports/kt_tournament_readiness_receipt.json"
+      ],
+      "inventory_class": "live_benchmarked",
+      "maturity_class": "O2_HARDENED",
+      "operational_reality_class": "LIVE_BOUNDED",
+      "surface_id": "tournament_promotion"
+    },
+    {
+      "benchmark_status": "NONE",
+      "blockers": [],
+      "capability_label": "current_head_only",
+      "evidence_refs": [],
+      "inventory_class": "doctrinal_only",
+      "maturity_class": "O0_CONCEPTUAL",
+      "operational_reality_class": "DOC_ONLY",
+      "surface_id": "openclaw_labor_organ"
+    }
+  ]
+}

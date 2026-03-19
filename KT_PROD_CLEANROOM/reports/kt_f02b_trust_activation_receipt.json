@@ -1,0 +1,51 @@
+{
+  "blocked_by": [
+    "threshold_root_verifier_acceptance_inactive",
+    "release_readiness_not_proven",
+    "verifier_coverage_not_widened_beyond_bounded_surfaces"
+  ],
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "sigstore_and_rekor_path_active",
+      "detail": "The bounded WS11 path remains active.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_sigstore_integration_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "outsider_secret_free_assurance_exists",
+      "detail": "A secret-free outsider assurance replay exists.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_assurance_confirmation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "threshold_root_acceptance_active",
+      "detail": "F02B requires threshold-root acceptance to be active.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json"
+      ],
+      "status": "FAIL"
+    },
+    {
+      "check": "tuf_distribution_scope_active",
+      "detail": "F02B requires an explicit TUF distribution policy.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance"
+      ],
+      "status": "FAIL"
+    }
+  ],
+  "current_repo_head": "17cd0c3998e0843187a802fa11db8f590ae3ee45",
+  "evidence_head_commit": "17cd0c3998e0843187a802fa11db8f590ae3ee45",
+  "generated_utc": "2026-03-19T05:00:40Z",
+  "next_lawful_phase": "F02B_TRUST_ROOT_TRANSPARENCY_AND_TUF_ACTIVATION",
+  "pass_verdict": "TRUST_ACTIVATION_BLOCKED_BY_PRESERVED_PARENT_GAPS",
+  "phase_id": "F02B_TRUST_ROOT_TRANSPARENCY_AND_TUF_ACTIVATION",
+  "schema_id": "kt.child_campaign.f02b_trust_activation_receipt.v1",
+  "status": "BLOCKED",
+  "subject_head_commit": "17cd0c3998e0843187a802fa11db8f590ae3ee45"
+}
