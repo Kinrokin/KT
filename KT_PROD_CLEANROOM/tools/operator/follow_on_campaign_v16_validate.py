@@ -26,6 +26,7 @@ PHASE_F05 = "F05_ORGAN_ELEVATION_AND_RUNTIME_PROMOTION"
 PHASE_F06 = "F06_EXTERNAL_CONFIRMATION_AND_FINAL_CURRENT_HEAD_READJUDICATION"
 PHASE_F07 = "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION"
 PHASE_F08 = "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY"
+PHASE_F09 = "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS"
 BLOCKED_VERDICT_TRUST = "TRUST_ACTIVATION_BLOCKED_BY_PRESERVED_PARENT_GAPS"
 PASS_VERDICT_TRUST = "THRESHOLD_ROOT_ACCEPTANCE_AND_CHILD_TUF_DISTRIBUTION_ACTIVE"
 BLOCKED_VERDICT_F03 = "PROOF_INTEGRITY_HARDENING_BLOCKED_OR_INCOMPLETE"
@@ -40,6 +41,8 @@ BLOCKED_VERDICT_F07 = "RELEASE_LEGITIMACY_BLOCKED_BY_UNEXECUTED_CHILD_RELEASE_PR
 PASS_VERDICT_F07 = "CHILD_BOUNDED_RELEASE_LEGITIMACY_EXECUTED_WITHOUT_RUNTIME_OR_PRODUCT_WIDENING"
 BLOCKED_VERDICT_F08 = "BOUNDED_PRODUCT_WEDGE_OR_DEPLOYMENT_PACK_BLOCKED"
 PASS_VERDICT_F08 = "CHILD_BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_ACTIVE"
+BLOCKED_VERDICT_F09 = "BOUNDED_RESEARCH_VALIDATION_OR_COMPANY_DILIGENCE_BLOCKED"
+PASS_VERDICT_F09 = "BOUNDED_RESEARCH_VALIDATION_AND_COMPANY_DILIGENCE_COMPLETE_WITHOUT_CAPABILITY_WIDENING"
 
 REPORT = "KT_PROD_CLEANROOM/reports"
 GOV = "KT_PROD_CLEANROOM/governance"
@@ -124,6 +127,10 @@ F08_OPERATOR_MANUAL = f"{REPORT}/kt_operator_manual_v1.json"
 F08_SUPPORTABILITY_MATRIX = f"{REPORT}/kt_supportability_matrix.json"
 F08_ENTERPRISE_OPERATIONS = f"{REPORT}/kt_enterprise_operations_receipt.json"
 F08_PRODUCT_WEDGE_PACKAGE_ROOT = "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F08_product_wedge_package"
+F09_RESEARCH_VALIDATION = f"{REPORT}/kt_research_validation_receipt.json"
+F09_EXTERNAL_TECHNICAL_VALIDATION = f"{REPORT}/kt_external_audit_or_peer_review_receipt.json"
+F09_PUBLICATION_MANIFEST = f"{REPORT}/kt_publication_or_submission_manifest.json"
+F09_COMPANY_READINESS = f"{REPORT}/kt_company_readiness_receipt.json"
 POLICY_C_DRIFT = "KT_PROD_CLEANROOM/policy_c/drift_guard.py"
 POLICY_C_DRIFT_SCHEMA = "KT_PROD_CLEANROOM/policy_c/schemas/policy_c_drift_report_schema_v1.json"
 POLICY_C_TEST_GUARD = "KT_PROD_CLEANROOM/tests/policy_c/test_drift_guard.py"
@@ -226,6 +233,10 @@ PLANNED = {
     F08_OPERATOR_MANUAL,
     F08_SUPPORTABILITY_MATRIX,
     F08_ENTERPRISE_OPERATIONS,
+    F09_RESEARCH_VALIDATION,
+    F09_EXTERNAL_TECHNICAL_VALIDATION,
+    F09_PUBLICATION_MANIFEST,
+    F09_COMPANY_READINESS,
     OUTSIDER_PACKAGE_ROOT,
     F06_RUNTIME_PACKAGE_ROOT,
     F07_EXECUTION_PACK_ROOT,
@@ -1071,6 +1082,53 @@ def _prepare_f08_product_wedge_package(
     }
 
 
+def _prepare_f09_publication_or_submission_manifest(
+    *,
+    head: str,
+    outputs: Dict[str, Dict[str, Any]],
+) -> Dict[str, Any]:
+    included_artifact_refs = [
+        VERIFIER_EXTERNAL_CONFIRMATION,
+        RUNTIME_EXTERNAL_CONFIRMATION,
+        FINAL_CURRENT_HEAD_READJUDICATION,
+        FINAL_CLAIM_CEILING,
+        STATE_V2,
+        BLOCKERS_V2,
+        CURRENT_HEAD_CAPABILITY_MATRIX,
+        ORGAN_PROMOTION_MATRIX,
+        F08_PRODUCT_WEDGE_ACTIVATION,
+        F08_DEPLOYMENT_MANIFEST,
+        F08_OPERATOR_MANUAL,
+        F08_SUPPORTABILITY_MATRIX,
+        F08_ENTERPRISE_OPERATIONS,
+    ]
+    return {
+        "schema_id": "kt.child_campaign.publication_or_submission_manifest.v1",
+        "manifest_id": "KT_CHILD_F09_RESEARCH_VALIDATION_PACKET_V1",
+        "generated_utc": utc_now_iso_z(),
+        "subject_head_commit": head,
+        "current_repo_head": head,
+        "scope": "CURRENT_HEAD_CHILD_RESEARCH_AND_REVIEW_PACKET_FOR_VERIFIER_AND_SELECTED_RUNTIME_SURFACE_ONLY",
+        "included_artifact_refs": included_artifact_refs,
+        "selected_runtime_surface": F06_SELECTED_RUNTIME_SURFACE,
+        "current_head_capability_status": outputs[FINAL_CURRENT_HEAD_READJUDICATION]["current_head_capability_status"],
+        "external_confirmation_status": outputs[STATE_V2]["external_confirmation_status"],
+        "open_blockers": list(outputs[STATE_V2]["open_blockers"]),
+        "forbidden_claims": [
+            "whole_system_current_head_capability_externally_confirmed",
+            "additional_runtime_surfaces_externally_confirmed",
+            "commercial_ready",
+            "enterprise_ready_overall",
+            "publication_peer_review_proven_for_all_of_kt",
+        ],
+        "stronger_claim_not_made": [
+            "This manifest upgrades KT beyond verifier plus selected-runtime-surface current-head confirmation.",
+            "This manifest proves broad current-head runtime superiority or whole-system external capability confirmation.",
+            "This manifest proves commercial or market readiness.",
+        ],
+    }
+
+
 def _run_detached_package_twice(
     *,
     package_root: Path,
@@ -1560,6 +1618,9 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
     f08_pass = False
     f08_status = "BLOCKED_UPSTREAM"
     f08_next_phase = PHASE_F08
+    f09_pass = False
+    f09_status = "BLOCKED_UPSTREAM"
+    f09_next_phase: str | None = PHASE_F09
 
     outputs = {
         CHILD_DAG: {
@@ -1580,7 +1641,7 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
                 {"id": PHASE_F06, "status": "BLOCKED_UPSTREAM"},
                 {"id": PHASE_F07, "status": "BLOCKED_UPSTREAM"},
                 {"id": PHASE_F08, "status": "BLOCKED_UPSTREAM"},
-                {"id": "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS", "status": "BLOCKED_UPSTREAM"},
+                {"id": PHASE_F09, "status": "BLOCKED_UPSTREAM"},
             ],
         },
         SINGLE_REALITY: {
@@ -2289,7 +2350,7 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             {"id": "F06_EXTERNAL_CONFIRMATION_AND_FINAL_CURRENT_HEAD_READJUDICATION", "status": "BLOCKED_UPSTREAM"},
             {"id": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION", "status": "BLOCKED_UPSTREAM"},
             {"id": "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY", "status": "BLOCKED_UPSTREAM"},
-            {"id": "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS", "status": "BLOCKED_UPSTREAM"},
+            {"id": PHASE_F09, "status": "BLOCKED_UPSTREAM"},
         ]
         outputs[STATE_V2]["computed_claim_ceiling"] = (
             "PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_F04_ADJUDICATION_SPLIT_AND_SECRET_FREE_OUTSIDER_VERIFIER_ONLY"
@@ -2574,7 +2635,7 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             {"id": PHASE_F06, "status": "READY" if f05_pass else "BLOCKED_UPSTREAM"},
             {"id": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION", "status": "BLOCKED_UPSTREAM"},
             {"id": "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY", "status": "BLOCKED_UPSTREAM"},
-            {"id": "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS", "status": "BLOCKED_UPSTREAM"},
+            {"id": PHASE_F09, "status": "BLOCKED_UPSTREAM"},
         ]
         outputs[STATE_V2]["computed_claim_ceiling"] = (
             "PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_F05_RUNTIME_TRUTH_AND_BOUNDED_RETENTION_ONLY"
@@ -2911,7 +2972,7 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             {"id": PHASE_F06, "status": f06_status if f05_pass else "BLOCKED_UPSTREAM"},
             {"id": PHASE_F07, "status": "READY" if f06_pass else "BLOCKED_UPSTREAM"},
             {"id": "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY", "status": "BLOCKED_UPSTREAM"},
-            {"id": "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS", "status": "BLOCKED_UPSTREAM"},
+            {"id": PHASE_F09, "status": "BLOCKED_UPSTREAM"},
         ]
         outputs[STATE_V2]["computed_claim_ceiling"] = final_claim_ceiling
         outputs[STATE_V2]["blocker_matrix"] = FINAL_BLOCKER_MATRIX
@@ -3343,7 +3404,7 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             {"id": PHASE_F06, "status": f06_status if f05_pass else "BLOCKED_UPSTREAM"},
             {"id": PHASE_F07, "status": f07_status if f06_pass else "BLOCKED_UPSTREAM"},
             {"id": PHASE_F08, "status": "READY" if f07_pass else "BLOCKED_UPSTREAM"},
-            {"id": "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS", "status": "BLOCKED_UPSTREAM"},
+            {"id": PHASE_F09, "status": "BLOCKED_UPSTREAM"},
         ]
 
         if f07_pass:
@@ -3358,7 +3419,7 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
                     root,
                     head=head,
                     outputs=outputs,
-                    f08_next_phase="F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS",
+                    f08_next_phase=PHASE_F09,
                 )
             )
 
@@ -3395,7 +3456,7 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             }
             f08_pass = all(f08_checks.values())
             f08_status = "PASS" if f08_pass else "BLOCKED"
-            f08_next_phase = "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS" if f08_pass else PHASE_F08
+            f08_next_phase = PHASE_F09 if f08_pass else PHASE_F08
 
             outputs[F08_PRODUCT_WEDGE_ACTIVATION] = {
                 "schema_id": "kt.child_campaign.product_wedge_activation_receipt.v1",
@@ -3487,7 +3548,7 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             outputs[STATE_V2]["operator_manual"] = F08_OPERATOR_MANUAL
             outputs[STATE_V2]["supportability_matrix"] = F08_SUPPORTABILITY_MATRIX
             outputs[STATE_V2]["enterprise_operations_receipt"] = F08_ENTERPRISE_OPERATIONS
-            outputs[CHILD_DAG]["current_node"] = "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS" if f08_pass else PHASE_F08
+            outputs[CHILD_DAG]["current_node"] = PHASE_F09 if f08_pass else PHASE_F08
             outputs[CHILD_DAG]["next_lawful_phase"] = f08_next_phase
             outputs[CHILD_DAG]["nodes"] = [
                 {"id": PHASE_BOOTSTRAP, "status": "PASS"},
@@ -3499,8 +3560,194 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
                 {"id": PHASE_F06, "status": f06_status if f05_pass else "BLOCKED_UPSTREAM"},
                 {"id": PHASE_F07, "status": f07_status if f06_pass else "BLOCKED_UPSTREAM"},
                 {"id": PHASE_F08, "status": f08_status if f07_pass else "BLOCKED_UPSTREAM"},
-                {"id": "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS", "status": "READY" if f08_pass else "BLOCKED_UPSTREAM"},
+                {"id": PHASE_F09, "status": "READY" if f08_pass else "BLOCKED_UPSTREAM"},
             ]
+
+            if f08_pass:
+                publication_manifest = _prepare_f09_publication_or_submission_manifest(head=head, outputs=outputs)
+                outputs[F09_PUBLICATION_MANIFEST] = publication_manifest
+
+                research_checks = {
+                    "verifier_external_confirmation_present": str(outputs[VERIFIER_EXTERNAL_CONFIRMATION].get("status", "")).strip() == "PASS",
+                    "selected_runtime_external_confirmation_present": str(outputs[RUNTIME_EXTERNAL_CONFIRMATION].get("status", "")).strip() == "PASS",
+                    "current_head_readjudication_present": str(outputs[FINAL_CURRENT_HEAD_READJUDICATION].get("status", "")).strip() == "PASS",
+                    "submission_manifest_generated": True,
+                    "capability_ceiling_preserved": (
+                        str(outputs[FINAL_CURRENT_HEAD_READJUDICATION].get("current_head_capability_status", "")).strip()
+                        == "SELECTED_RUNTIME_SURFACE_ONLY_OUTSIDER_REPLAY_CONFIRMED"
+                        and "current_head_external_capability_not_confirmed" in outputs[STATE_V2].get("open_blockers", [])
+                    ),
+                }
+                external_validation_checks = {
+                    "verifier_confirmation_current_head_bound": (
+                        str(outputs[VERIFIER_EXTERNAL_CONFIRMATION].get("status", "")).strip() == "PASS"
+                        and str(outputs[VERIFIER_EXTERNAL_CONFIRMATION].get("subject_head_commit", "")).strip() == head
+                    ),
+                    "selected_runtime_confirmation_current_head_bound": (
+                        str(outputs[RUNTIME_EXTERNAL_CONFIRMATION].get("status", "")).strip() == "PASS"
+                        and str(outputs[RUNTIME_EXTERNAL_CONFIRMATION].get("subject_head_commit", "")).strip() == head
+                        and str(outputs[RUNTIME_EXTERNAL_CONFIRMATION].get("selected_runtime_surface", "")).strip() == F06_SELECTED_RUNTIME_SURFACE
+                    ),
+                    "confirmation_scope_remains_bounded": (
+                        str(outputs[STATE_V2].get("external_confirmation_status", "")).strip()
+                        == "CURRENT_HEAD_VERIFIER_AND_SELECTED_RUNTIME_SURFACE_OUTSIDER_REPLAY_CONFIRMED_ONLY"
+                    ),
+                }
+                company_checks = {
+                    "bounded_release_lane_executed": str(outputs[STATE_V2].get("release_activation_status", "")).strip() == "EXECUTED_CHILD_BOUNDED_RELEASE_ONLY",
+                    "bounded_product_wedge_active": str(outputs[STATE_V2].get("product_surface_status", "")).strip() == "CHILD_BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_ACTIVE",
+                    "operator_and_support_surfaces_present": all(rel in outputs or _exists(root, rel) for rel in (F08_DEPLOYMENT_MANIFEST, F08_OPERATOR_MANUAL, F08_SUPPORTABILITY_MATRIX)),
+                    "noncommercial_license_ceiling_preserved": (
+                        str(license_policy.get("repository_license_track", {}).get("status", "")).strip() == "NONCOMMERCIAL_RESEARCH_ONLY"
+                        and str(license_policy.get("commercial_license_track", {}).get("current_lawful_offer_state", "")).strip() == "NOT_ACTIVATED_IN_REPO"
+                    ),
+                    "capability_and_market_claims_not_widened": (
+                        "current_head_external_capability_not_confirmed" in outputs[STATE_V2].get("open_blockers", [])
+                        and str(outputs[FINAL_CURRENT_HEAD_READJUDICATION].get("current_head_capability_status", "")).strip()
+                        == "SELECTED_RUNTIME_SURFACE_ONLY_OUTSIDER_REPLAY_CONFIRMED"
+                    ),
+                }
+
+                research_pass = all(research_checks.values())
+                external_validation_pass = all(external_validation_checks.values())
+                company_pass = all(company_checks.values())
+                f09_pass = research_pass and external_validation_pass and company_pass
+                f09_status = "PASS" if f09_pass else "BLOCKED"
+                f09_next_phase = None if f09_pass else PHASE_F09
+
+                outputs[F09_RESEARCH_VALIDATION] = {
+                    "schema_id": "kt.child_campaign.research_validation_receipt.v1",
+                    "campaign_id": CAMPAIGN_ID,
+                    "phase_id": PHASE_F09,
+                    "status": "PASS" if research_pass else "BLOCKED",
+                    "pass_verdict": PASS_VERDICT_F09 if research_pass else BLOCKED_VERDICT_F09,
+                    "subject_head_commit": head,
+                    "evidence_head_commit": head,
+                    "current_repo_head": head,
+                    "generated_utc": utc_now_iso_z(),
+                    "checks": [
+                        _check(research_checks["verifier_external_confirmation_present"], "verifier_external_confirmation_present", "F09 requires current-head external verification evidence for the child verifier path.", [VERIFIER_EXTERNAL_CONFIRMATION]),
+                        _check(research_checks["selected_runtime_external_confirmation_present"], "selected_runtime_external_confirmation_present", "F09 requires current-head external verification evidence for exactly one selected runtime surface.", [RUNTIME_EXTERNAL_CONFIRMATION]),
+                        _check(research_checks["current_head_readjudication_present"], "current_head_readjudication_present", "F09 requires the bounded final current-head readjudication receipt to be present.", [FINAL_CURRENT_HEAD_READJUDICATION]),
+                        _check(research_checks["submission_manifest_generated"], "submission_manifest_generated", "F09 requires a current-head research and review packet manifest.", [F09_PUBLICATION_MANIFEST]),
+                        _check(research_checks["capability_ceiling_preserved"], "capability_ceiling_preserved", "F09 must preserve the open blocker for broad current-head external capability and may not widen beyond selected-surface confirmation.", [STATE_V2, FINAL_CURRENT_HEAD_READJUDICATION]),
+                    ],
+                    "blocked_by": [check_id for check_id, ok in research_checks.items() if not ok],
+                    "current_strongest_claim": "F09 assembles a bounded current-head research-validation packet backed by verifier replay and one selected runtime-surface replay only." if research_pass else "F09 cannot prove bounded research validation while required current-head bounded evidence is incomplete.",
+                    "stronger_claim_not_made": [
+                        "Whole-system current-head capability is externally confirmed",
+                        "Additional runtime surfaces are externally confirmed",
+                        "This receipt proves market or commercial readiness",
+                    ],
+                    "next_lawful_phase": f09_next_phase,
+                }
+
+                outputs[F09_EXTERNAL_TECHNICAL_VALIDATION] = {
+                    "schema_id": "kt.child_campaign.external_audit_or_peer_review_receipt.v1",
+                    "campaign_id": CAMPAIGN_ID,
+                    "phase_id": PHASE_F09,
+                    "status": "PASS" if external_validation_pass else "BLOCKED",
+                    "pass_verdict": PASS_VERDICT_F09 if external_validation_pass else BLOCKED_VERDICT_F09,
+                    "subject_head_commit": head,
+                    "evidence_head_commit": head,
+                    "current_repo_head": head,
+                    "generated_utc": utc_now_iso_z(),
+                    "validation_scope": "CURRENT_HEAD_VERIFIER_AND_SELECTED_RUNTIME_SURFACE_ONLY",
+                    "checks": [
+                        _check(external_validation_checks["verifier_confirmation_current_head_bound"], "verifier_confirmation_current_head_bound", "Current-head verifier external confirmation must bind to the same child head.", [VERIFIER_EXTERNAL_CONFIRMATION]),
+                        _check(external_validation_checks["selected_runtime_confirmation_current_head_bound"], "selected_runtime_confirmation_current_head_bound", "Current-head selected runtime-surface confirmation must bind to the same child head.", [RUNTIME_EXTERNAL_CONFIRMATION]),
+                        _check(external_validation_checks["confirmation_scope_remains_bounded"], "confirmation_scope_remains_bounded", "F09 must preserve bounded external-validation scope and must not imply broader capability confirmation.", [STATE_V2, FINAL_CURRENT_HEAD_READJUDICATION]),
+                    ],
+                    "blocked_by": [check_id for check_id, ok in external_validation_checks.items() if not ok],
+                    "current_strongest_claim": "F09 records bounded external technical validation for the verifier and the selected runtime surface only." if external_validation_pass else "F09 cannot claim bounded external technical validation because one or more current-head bindings failed.",
+                    "stronger_claim_not_made": [
+                        "This is a broad whole-system hostile audit",
+                        "This confirms more than the verifier and the selected runtime surface",
+                        "This upgrades KT into broad current-head capability confirmation",
+                    ],
+                    "next_lawful_phase": f09_next_phase,
+                }
+
+                outputs[F09_COMPANY_READINESS] = {
+                    "schema_id": "kt.child_campaign.company_readiness_receipt.v1",
+                    "campaign_id": CAMPAIGN_ID,
+                    "phase_id": PHASE_F09,
+                    "status": "PASS" if company_pass else "BLOCKED",
+                    "pass_verdict": PASS_VERDICT_F09 if company_pass else BLOCKED_VERDICT_F09,
+                    "subject_head_commit": head,
+                    "evidence_head_commit": head,
+                    "current_repo_head": head,
+                    "generated_utc": utc_now_iso_z(),
+                    "checks": [
+                        _check(company_checks["bounded_release_lane_executed"], "bounded_release_lane_executed", "F09 requires the child-bounded release lane to be executed before bounded company diligence can close.", [F07_RELEASE_ACTIVATION_RECEIPT]),
+                        _check(company_checks["bounded_product_wedge_active"], "bounded_product_wedge_active", "F09 requires the bounded noncommercial evaluation wedge to stay active.", [F08_PRODUCT_WEDGE_ACTIVATION, STATE_V2]),
+                        _check(company_checks["operator_and_support_surfaces_present"], "operator_and_support_surfaces_present", "F09 requires deployment, operator, and supportability surfaces to remain present.", [F08_DEPLOYMENT_MANIFEST, F08_OPERATOR_MANUAL, F08_SUPPORTABILITY_MATRIX]),
+                        _check(company_checks["noncommercial_license_ceiling_preserved"], "noncommercial_license_ceiling_preserved", "F09 must preserve the noncommercial-only license ceiling and inactive in-repo commercial track.", ["KT_PROD_CLEANROOM/governance/kt_license_track_policy.json", "LICENSE"]),
+                        _check(company_checks["capability_and_market_claims_not_widened"], "capability_and_market_claims_not_widened", "F09 may not widen runtime capability or market claims beyond the bounded current-head evidence.", [STATE_V2, FINAL_CURRENT_HEAD_READJUDICATION]),
+                    ],
+                    "blocked_by": [check_id for check_id, ok in company_checks.items() if not ok],
+                    "current_strongest_claim": "F09 proves only bounded noncommercial company-diligence readiness for research and evaluation conversations within the existing technical claim ceiling." if company_pass else "F09 cannot prove bounded company-diligence readiness because required bounded release, product, or licensing conditions are incomplete.",
+                    "stronger_claim_not_made": [
+                        "Commercial readiness is proven",
+                        "Enterprise production readiness is proven",
+                        "Broad current-head runtime superiority is proven",
+                    ],
+                    "next_lawful_phase": f09_next_phase,
+                }
+
+                outputs[PROOF_V2]["inputs"] = [
+                    *outputs[PROOF_V2]["inputs"],
+                    F09_RESEARCH_VALIDATION,
+                    F09_EXTERNAL_TECHNICAL_VALIDATION,
+                    F09_PUBLICATION_MANIFEST,
+                    F09_COMPANY_READINESS,
+                ]
+                outputs[PROOF_V2]["allowed_public_claims"] = [
+                    *outputs[PROOF_V2]["allowed_public_claims"],
+                    *(
+                        ["bounded_research_validation_and_company_diligence_complete_without_current_head_capability_widening"]
+                        if f09_pass
+                        else []
+                    ),
+                ]
+                outputs[PROOF_V2]["forbidden_public_claims"] = [
+                    *outputs[PROOF_V2]["forbidden_public_claims"],
+                    "f09_proves_whole_system_current_head_capability",
+                    "f09_proves_additional_runtime_surface_confirmation",
+                    "f09_proves_commercial_ready",
+                    "f09_proves_enterprise_ready_overall",
+                ]
+
+                if f09_pass:
+                    outputs[STATE_V2]["computed_claim_ceiling"] = "PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_F07_RELEASED_F08_BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_AND_F09_BOUNDED_RESEARCH_AND_COMPANY_DILIGENCE_ONLY"
+                    outputs[STATE_V2]["next_lawful_transition"] = None
+                    outputs[STATE_V2]["open_blockers"] = [
+                        "current_head_external_capability_not_confirmed",
+                        "repo_root_import_fragility_visible_and_unfixed",
+                    ]
+                outputs[STATE_V2]["research_validation_receipt"] = F09_RESEARCH_VALIDATION
+                outputs[STATE_V2]["external_technical_validation_receipt"] = F09_EXTERNAL_TECHNICAL_VALIDATION
+                outputs[STATE_V2]["publication_or_submission_manifest"] = F09_PUBLICATION_MANIFEST
+                outputs[STATE_V2]["company_readiness_receipt"] = F09_COMPANY_READINESS
+
+                outputs[CHILD_DAG]["current_node"] = PHASE_F09
+                outputs[CHILD_DAG]["next_lawful_phase"] = f09_next_phase
+                outputs[CHILD_DAG]["campaign_execution_state"] = (
+                    "PARTIAL_SUCCESS" if f09_pass and outputs[STATE_V2]["open_blockers"] else ("ACTIVE" if f09_pass else "ACTIVE")
+                )
+                outputs[CHILD_DAG]["status"] = outputs[CHILD_DAG]["campaign_execution_state"]
+                outputs[CHILD_DAG]["nodes"] = [
+                    {"id": PHASE_BOOTSTRAP, "status": "PASS"},
+                    {"id": PHASE_RUNTIME, "status": "PASS" if cap_cov >= 60.0 and bench_cov >= 50.0 else "BLOCKED"},
+                    {"id": PHASE_TRUST, "status": "PASS" if f02b_pass else "BLOCKED"},
+                    {"id": PHASE_F03, "status": "PASS" if f03_pass else ("BLOCKED" if f02b_pass else "BLOCKED_UPSTREAM")},
+                    {"id": PHASE_F04, "status": f04_status if f03_pass else "BLOCKED_UPSTREAM"},
+                    {"id": PHASE_F05, "status": f05_status if f04_pass else "BLOCKED_UPSTREAM"},
+                    {"id": PHASE_F06, "status": f06_status if f05_pass else "BLOCKED_UPSTREAM"},
+                    {"id": PHASE_F07, "status": f07_status if f06_pass else "BLOCKED_UPSTREAM"},
+                    {"id": PHASE_F08, "status": f08_status if f07_pass else "BLOCKED_UPSTREAM"},
+                    {"id": PHASE_F09, "status": f09_status if f08_pass else "BLOCKED_UPSTREAM"},
+                ]
 
     for rel, payload in outputs.items():
         _w(root, rel, payload)
@@ -3510,7 +3757,11 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
         raise RuntimeError(f"FAIL_CLOSED: child campaign touched out-of-scope paths: {unexpected}")
 
     return {
-        "status": "ACTIVE" if f02b_pass else "PARTIAL_SUCCESS",
+        "status": (
+            "PARTIAL_SUCCESS"
+            if f09_pass and outputs[STATE_V2]["open_blockers"]
+            else ("TERMINAL_SUCCESS" if f09_pass else ("ACTIVE" if f02b_pass else "PARTIAL_SUCCESS"))
+        ),
         "campaign_id": CAMPAIGN_ID,
         "current_repo_head": head,
         "phase_results": {
@@ -3523,8 +3774,13 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             PHASE_F06: f06_status,
             PHASE_F07: f07_status,
             PHASE_F08: f08_status,
+            PHASE_F09: f09_status,
         },
-        "next_lawful_phase": f08_next_phase if f07_pass else (f07_next_phase if f06_pass else f06_next_phase),
+        "next_lawful_phase": (
+            f09_next_phase
+            if f08_pass
+            else (f08_next_phase if f07_pass else (f07_next_phase if f06_pass else f06_next_phase))
+        ),
         "open_blockers": outputs[STATE_V2]["open_blockers"],
     }
 

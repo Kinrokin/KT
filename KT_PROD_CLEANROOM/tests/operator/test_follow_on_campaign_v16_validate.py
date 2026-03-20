@@ -42,6 +42,10 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     F08_OPERATOR_MANUAL,
     F08_PRODUCT_WEDGE_ACTIVATION,
     F08_SUPPORTABILITY_MATRIX,
+    F09_COMPANY_READINESS,
+    F09_EXTERNAL_TECHNICAL_VALIDATION,
+    F09_PUBLICATION_MANIFEST,
+    F09_RESEARCH_VALIDATION,
     IDENTITY_MODEL,
     LOG_MONITOR,
     OLD_PROOF,
@@ -52,6 +56,7 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     PHASE_F06,
     PHASE_F07,
     PHASE_F08,
+    PHASE_F09,
     PHASE_F03,
     PHASE_F04,
     PHASE_F05,
@@ -543,22 +548,32 @@ def test_child_campaign_f07_and_f08_pass_with_imported_offbox_execution_and_boun
     f07_activation = json.loads((tmp_path / F07_RELEASE_ACTIVATION_RECEIPT).read_text(encoding="utf-8"))
     f08_wedge = json.loads((tmp_path / F08_PRODUCT_WEDGE_ACTIVATION).read_text(encoding="utf-8"))
     f08_ops = json.loads((tmp_path / F08_ENTERPRISE_OPERATIONS).read_text(encoding="utf-8"))
+    f09_research = json.loads((tmp_path / F09_RESEARCH_VALIDATION).read_text(encoding="utf-8"))
+    f09_external = json.loads((tmp_path / F09_EXTERNAL_TECHNICAL_VALIDATION).read_text(encoding="utf-8"))
+    f09_company = json.loads((tmp_path / F09_COMPANY_READINESS).read_text(encoding="utf-8"))
+    f09_manifest = json.loads((tmp_path / F09_PUBLICATION_MANIFEST).read_text(encoding="utf-8"))
 
     assert summary["phase_results"][PHASE_F07] == "PASS"
     assert summary["phase_results"][PHASE_F08] == "PASS"
-    assert summary["next_lawful_phase"] == "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS"
+    assert summary["phase_results"][PHASE_F09] == "PASS"
+    assert summary["status"] == "PARTIAL_SUCCESS"
+    assert summary["next_lawful_phase"] is None
     assert f07_release_signers["status"] == "PASS"
     assert f07_producer["status"] == "PASS"
     assert f07_ceremony["status"] == "PASS"
     assert f07_activation["status"] == "PASS"
     assert f08_wedge["status"] == "PASS"
     assert f08_ops["status"] == "PASS"
+    assert f09_research["status"] == "PASS"
+    assert f09_external["status"] == "PASS"
+    assert f09_company["status"] == "PASS"
+    assert f09_manifest["selected_runtime_surface"] == "paradox"
     assert state["release_readiness_status"] == "PROVEN_CHILD_BOUNDED_RELEASE_ONLY"
     assert state["release_eligibility_status"] == "ELIGIBLE_CHILD_BOUNDED_RELEASE_ONLY"
     assert state["release_ceremony_status"] == "EXECUTED_CHILD_BOUNDED_RELEASE_ONLY"
     assert state["release_activation_status"] == "EXECUTED_CHILD_BOUNDED_RELEASE_ONLY"
     assert state["product_surface_status"] == "CHILD_BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_ACTIVE"
-    assert state["next_lawful_transition"] == "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS"
+    assert state["next_lawful_transition"] is None
     assert state["open_blockers"] == [
         "current_head_external_capability_not_confirmed",
         "repo_root_import_fragility_visible_and_unfixed",
@@ -571,8 +586,13 @@ def test_child_campaign_f07_and_f08_pass_with_imported_offbox_execution_and_boun
     assert (tmp_path / F08_DEPLOYMENT_MANIFEST).exists()
     assert (tmp_path / F08_OPERATOR_MANUAL).exists()
     assert (tmp_path / F08_SUPPORTABILITY_MATRIX).exists()
+    assert (tmp_path / F09_RESEARCH_VALIDATION).exists()
+    assert (tmp_path / F09_EXTERNAL_TECHNICAL_VALIDATION).exists()
+    assert (tmp_path / F09_PUBLICATION_MANIFEST).exists()
+    assert (tmp_path / F09_COMPANY_READINESS).exists()
     assert any("lidia_bradford" in row["witness_ids"] for row in json.loads((tmp_path / F07_RELEASE_SIGNER_CUSTODY).read_text(encoding="utf-8"))["custody_entries"])
     assert json.loads((tmp_path / F08_OPERATOR_MANUAL).read_text(encoding="utf-8"))["operator_steps"][0]["step"] == 1
+    assert "current_head_external_capability_not_confirmed" in f09_manifest["open_blockers"]
 
 
 def test_child_campaign_f02b_blocks_if_threshold_root_target_missing(tmp_path: Path) -> None:

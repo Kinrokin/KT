@@ -1,0 +1,66 @@
+{
+  "blocked_by": [],
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "bounded_release_lane_executed",
+      "detail": "F09 requires the child-bounded release lane to be executed before bounded company diligence can close.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_release_activation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "bounded_product_wedge_active",
+      "detail": "F09 requires the bounded noncommercial evaluation wedge to stay active.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_product_wedge_activation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_state_vector_v2.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "operator_and_support_surfaces_present",
+      "detail": "F09 requires deployment, operator, and supportability surfaces to remain present.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_deployment_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_operator_manual_v1.json",
+        "KT_PROD_CLEANROOM/reports/kt_supportability_matrix.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "noncommercial_license_ceiling_preserved",
+      "detail": "F09 must preserve the noncommercial-only license ceiling and inactive in-repo commercial track.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_license_track_policy.json",
+        "LICENSE"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "capability_and_market_claims_not_widened",
+      "detail": "F09 may not widen runtime capability or market claims beyond the bounded current-head evidence.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_state_vector_v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_final_current_head_readjudication_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "current_strongest_claim": "F09 proves only bounded noncommercial company-diligence readiness for research and evaluation conversations within the existing technical claim ceiling.",
+  "evidence_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "generated_utc": "2026-03-20T01:41:59Z",
+  "next_lawful_phase": null,
+  "pass_verdict": "BOUNDED_RESEARCH_VALIDATION_AND_COMPANY_DILIGENCE_COMPLETE_WITHOUT_CAPABILITY_WIDENING",
+  "phase_id": "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS",
+  "schema_id": "kt.child_campaign.company_readiness_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "Commercial readiness is proven",
+    "Enterprise production readiness is proven",
+    "Broad current-head runtime superiority is proven"
+  ],
+  "subject_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058"
+}
