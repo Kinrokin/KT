@@ -3,9 +3,10 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Iterator, Optional
 
 from schemas.base_schema import SchemaRegistryError, SchemaValidationError
 from schemas.schema_registry import validate_object_with_binding
@@ -123,6 +124,50 @@ def _write_all(fd: int, data: bytes) -> None:
         written += n
 
 
+def _lock_path(path: Path) -> Path:
+    return path.with_name(path.name + ".lock")
+
+
+class _AppendLock:
+    _TIMEOUT_SECONDS = 5.0
+    _POLL_SECONDS = 0.05
+
+    def __init__(self, path: Path) -> None:
+        self._path = path
+        self._fd: Optional[int] = None
+
+    def __enter__(self) -> "_AppendLock":
+        payload = _canonical_json({"created_at": utc_now_iso_z(), "pid": os.getpid()}).encode("utf-8")
+        deadline = time.monotonic() + self._TIMEOUT_SECONDS
+        while True:
+            try:
+                self._fd = os.open(str(self._path), os.O_WRONLY | os.O_CREAT | os.O_EXCL)
+                _write_all(self._fd, payload)
+                os.fsync(self._fd)
+                return self
+            except FileExistsError:
+                if time.monotonic() >= deadline:
+                    raise StateVaultWriteError("State vault append lock busy (fail-closed)")
+                time.sleep(self._POLL_SECONDS)
+            except Exception as exc:
+                raise StateVaultWriteError(f"Unable to acquire state vault append lock: {exc.__class__.__name__}")
+
+    def __exit__(self, exc_type: object, exc: object, tb: object) -> None:
+        if self._fd is not None:
+            try:
+                os.close(self._fd)
+            except Exception:
+                pass
+            self._fd = None
+        try:
+            self._path.unlink()
+        except FileNotFoundError:
+            return
+        except Exception:
+            # Fail closed on the next append if a stale lock survives.
+            return
+
+
 class StateVault:
     def __init__(self, *, path: Optional[Path] = None) -> None:
         self._path = path.resolve() if isinstance(path, Path) else (resolve_state_vault_path() if path is None else Path(path).resolve())
@@ -162,75 +207,78 @@ class StateVault:
         energy_source: Optional[str] = None,
         crisis_mode: Optional[str] = None,
     ) -> AppendResult:
-        # Defensive: ensure the on-disk head matches our in-memory head.
-        if self._record_count:
-            disk_head = _read_last_event_hash(self._path)
-            if disk_head != self._head_hash:
+        self._path.parent.mkdir(parents=True, exist_ok=True)
+        with _AppendLock(_lock_path(self._path)):
+            if self._path.exists():
+                _assert_file_ends_with_newline(self._path)
+                try:
+                    disk_state = validate_state_vault_chain(self._path)
+                except StateVaultReplayError as exc:
+                    raise StateVaultCorruptionError(str(exc))
+            else:
+                disk_state = AppendResult(record={}, head_hash=GENESIS_PARENT_HASH, record_count=0)
+
+            if disk_state.head_hash != self._head_hash or int(disk_state.record_count) != int(self._record_count):
                 raise StateVaultCorruptionError("State vault head mismatch; external mutation suspected (fail-closed)")
 
-        created_at = utc_now_iso_z()
-        constitution_version_hash = get_constitution_version_hash()
-        try:
-            validate_constitution_version_hash(constitution_version_hash)
-        except ConstitutionVersionError as exc:
-            raise StateVaultWriteError(str(exc))
-
-        seq = self._record_count + 1
-
-        # Deterministic receipt_id material (hash-only; no raw payload content).
-        receipt_id = _sha256_text(
-            _canonical_json(
-                {
-                    "created_at": created_at,
-                    "event_type": event_type,
-                    "organ_id": organ_id,
-                    "parent_hash": self._head_hash,
-                    "constitution_version_hash": constitution_version_hash,
-                }
-            )
-        )
-
-        record = build_state_vault_record(
-            seq=seq,
-            receipt_id=receipt_id,
-            created_at=created_at,
-            event_type=event_type,
-            organ_id=organ_id,
-            parent_hash=self._head_hash,
-            constitution_version_hash=constitution_version_hash,
-            inputs_hash=inputs_hash,
-            outputs_hash=outputs_hash,
-            energy_cost=energy_cost,
-            energy_source=energy_source,
-            crisis_mode=crisis_mode,
-        )
-
-        # C002 enforcement: registry-bound schema validation, fail-closed.
-        try:
-            validate_object_with_binding(record)
-        except (SchemaRegistryError, SchemaValidationError) as exc:
-            raise StateVaultWriteError(str(exc))
-
-        # Persist append-only (no rewrite).
-        self._path.parent.mkdir(parents=True, exist_ok=True)
-        line = (_canonical_json(record) + "\n").encode("utf-8")
-
-        try:
-            fd = os.open(str(self._path), os.O_WRONLY | os.O_APPEND | os.O_CREAT)
-        except Exception as exc:
-            raise StateVaultWriteError(f"Unable to open state vault for append: {exc.__class__.__name__}")
-
-        try:
-            _write_all(fd, line)
-            os.fsync(fd)
-        except Exception as exc:
-            raise StateVaultWriteError(f"State vault append failed: {exc.__class__.__name__}")
-        finally:
+            created_at = utc_now_iso_z()
+            constitution_version_hash = get_constitution_version_hash()
             try:
-                os.close(fd)
-            except Exception:
-                pass
+                validate_constitution_version_hash(constitution_version_hash)
+            except ConstitutionVersionError as exc:
+                raise StateVaultWriteError(str(exc))
 
-        self._head_hash = record["event_hash"]
-        self._record_count += 1
-        return AppendResult(record=record, head_hash=self._head_hash, record_count=self._record_count)
+            seq = int(disk_state.record_count) + 1
+
+            receipt_id = _sha256_text(
+                _canonical_json(
+                    {
+                        "created_at": created_at,
+                        "event_type": event_type,
+                        "organ_id": organ_id,
+                        "parent_hash": disk_state.head_hash,
+                        "constitution_version_hash": constitution_version_hash,
+                    }
+                )
+            )
+
+            record = build_state_vault_record(
+                seq=seq,
+                receipt_id=receipt_id,
+                created_at=created_at,
+                event_type=event_type,
+                organ_id=organ_id,
+                parent_hash=disk_state.head_hash,
+                constitution_version_hash=constitution_version_hash,
+                inputs_hash=inputs_hash,
+                outputs_hash=outputs_hash,
+                energy_cost=energy_cost,
+                energy_source=energy_source,
+                crisis_mode=crisis_mode,
+            )
+
+            try:
+                validate_object_with_binding(record)
+            except (SchemaRegistryError, SchemaValidationError) as exc:
+                raise StateVaultWriteError(str(exc))
+
+            line = (_canonical_json(record) + "\n").encode("utf-8")
+            try:
+                fd = os.open(str(self._path), os.O_WRONLY | os.O_APPEND | os.O_CREAT)
+            except Exception as exc:
+                raise StateVaultWriteError(f"Unable to open state vault for append: {exc.__class__.__name__}")
+
+            try:
+                _write_all(fd, line)
+                os.fsync(fd)
+            except Exception as exc:
+                raise StateVaultWriteError(f"State vault append failed: {exc.__class__.__name__}")
+            finally:
+                try:
+                    os.close(fd)
+                except Exception:
+                    pass
+
+            self._head_hash = record["event_hash"]
+            self._record_count = seq
+            return AppendResult(record=record, head_hash=self._head_hash, record_count=self._record_count)

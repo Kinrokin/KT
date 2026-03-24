@@ -133,7 +133,30 @@ class TestStateVaultC008(unittest.TestCase):
             with self.assertRaises(StateVaultReplayError):
                 validate_state_vault_chain(path)
 
+    def test_adjacent_duplicate_record_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "state_vault.jsonl"
+            vault = StateVault(path=path)
+            vault.append(event_type="E1", organ_id="Spine")
+            vault.append(event_type="E2", organ_id="Spine")
+
+            lines = _read_lines(path)
+            _write_lines(path, [lines[0], lines[1], lines[1]])
+
+            with self.assertRaises(StateVaultReplayError):
+                validate_state_vault_chain(path)
+
+    def test_stale_writer_fails_closed_after_external_append(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "state_vault.jsonl"
+            first = StateVault(path=path)
+            second = StateVault(path=path)
+
+            first.append(event_type="E1", organ_id="Spine")
+
+            with self.assertRaises(StateVaultCorruptionError):
+                second.append(event_type="E2", organ_id="Spine")
+
 
 if __name__ == "__main__":
     raise SystemExit(unittest.main())
-

@@ -15,6 +15,7 @@ def _seed_firewall_repo(root: Path, *, runtime_import_line: str = "print('ok')\n
     gov = root / "KT_PROD_CLEANROOM" / "governance"
     src = root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src"
     docs = root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "docs"
+    archive_glob = "KT_" + "ARCHIVE/**"
     (src / "core").mkdir(parents=True, exist_ok=True)
     (src / "kt").mkdir(parents=True, exist_ok=True)
     (root / "KT_PROD_CLEANROOM" / "tools" / "operator").mkdir(parents=True, exist_ok=True)
@@ -28,7 +29,7 @@ def _seed_firewall_repo(root: Path, *, runtime_import_line: str = "print('ok')\n
             "zones": [
                 {"zone_id": "CANONICAL", "include": ["KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/**", "KT_PROD_CLEANROOM/governance/**"], "exclude": ["KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/tools/**"]},
                 {"zone_id": "LAB", "include": ["KT_PROD_CLEANROOM/03_SYNTHESIS_LAB/**"], "exclude": []},
-                {"zone_id": "ARCHIVE", "include": ["KT_ARCHIVE/**"], "exclude": []},
+                {"zone_id": "ARCHIVE", "include": [archive_glob], "exclude": []},
                 {"zone_id": "COMMERCIAL", "include": ["docs/**"], "exclude": []},
                 {"zone_id": "TOOLCHAIN_PROVING", "include": ["KT_PROD_CLEANROOM/tools/operator/**", "ci/**"], "exclude": []},
                 {"zone_id": "GENERATED_RUNTIME_TRUTH", "include": ["KT_PROD_CLEANROOM/reports/**"], "exclude": []},

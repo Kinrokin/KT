@@ -12,7 +12,7 @@ from tools.operator.authority_convergence_validate import build_authority_conver
 from tools.operator.dependency_inventory_validate import build_dependency_inventory_validation_report
 from tools.operator.documentary_truth_validate import build_documentary_truth_report
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
-from tools.operator.truth_authority import build_settled_truth_source_receipt, build_truth_supersession_receipt, path_ref
+from tools.operator.truth_authority import active_truth_source_ref, build_settled_truth_source_receipt, build_truth_supersession_receipt, path_ref
 from tools.operator.truth_publication import (
     CURRENT_POINTER_REL,
     TRUTH_PUBLICATION_REQUIRED_ARTIFACTS,
@@ -780,6 +780,10 @@ def _sync_secondary_surfaces(
     convergence_status: str,
     convergence_failures: Sequence[str],
 ) -> None:
+    try:
+        authoritative_truth_source = str(active_truth_source_ref(root=root)).strip() or truth_source_ref
+    except Exception:  # noqa: BLE001
+        authoritative_truth_source = truth_source_ref
     readiness_scope = _load_required(root / "KT_PROD_CLEANROOM" / "governance" / "readiness_scope_manifest.json")
     blockers: List[str] = []
     if posture_state == "TRUTH_DEFECTS_PRESENT":
@@ -797,7 +801,7 @@ def _sync_secondary_surfaces(
         seen.add(blocker)
         deduped_blockers.append(blocker)
     readiness_scope["current_authority_mode"] = authority_mode
-    readiness_scope["authoritative_truth_source"] = truth_source_ref
+    readiness_scope["authoritative_truth_source"] = authoritative_truth_source
     readiness_scope["current_blockers"] = deduped_blockers
     _write_json(root / "KT_PROD_CLEANROOM" / "governance" / "readiness_scope_manifest.json", readiness_scope)
 
@@ -822,7 +826,7 @@ def _sync_secondary_surfaces(
     execution_board["last_synced_head_sha"] = live_head
     execution_board["current_posture_state"] = posture_state
     execution_board["authority_mode"] = authority_mode
-    execution_board["authoritative_current_head_truth_source"] = truth_source_ref
+    execution_board["authoritative_current_head_truth_source"] = authoritative_truth_source
     execution_board["open_blockers"] = deduped_blockers
     freeze_policy = _load_required(root / "KT_PROD_CLEANROOM" / "governance" / "h0_freeze_policy.json")
     freeze_policy["activation_state"] = "ELIGIBLE_FOR_FREEZE" if posture_state == TRUTHFUL_GREEN else "PENDING_TRUTHFUL_GREEN"
@@ -856,7 +860,7 @@ def _sync_secondary_surfaces(
         _public_verifier_manifest_payload(
             root=root,
             live_head=live_head,
-            truth_source_ref=truth_source_ref,
+            truth_source_ref=authoritative_truth_source,
             authority_mode=authority_mode,
             convergence_status=convergence_status,
             report_root_rel=DEFAULT_REPORT_ROOT_REL,
@@ -889,7 +893,7 @@ def _sync_secondary_surfaces(
         _public_verifier_manifest_payload(
             root=root,
             live_head=live_head,
-            truth_source_ref=truth_source_ref,
+            truth_source_ref=authoritative_truth_source,
             authority_mode=authority_mode,
             convergence_status=convergence_status,
             report_root_rel=DEFAULT_REPORT_ROOT_REL,
