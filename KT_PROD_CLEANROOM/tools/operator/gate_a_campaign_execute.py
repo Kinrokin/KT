@@ -392,26 +392,18 @@ def run_gate_a_campaign(*, root: Path) -> Dict[str, Dict[str, Any]]:
     _write(root, REPO_HYGIENE_CLEAN_STATE_RECEIPT_REL, repo_hygiene_outputs["clean_state"])
     _write(root, REPO_HYGIENE_RECEIPT_REL, repo_hygiene_outputs["hygiene"])
 
-    authority_resolution_index = build_authority_resolution_index(root=root)
     historical_claim_firewall = build_historical_claim_firewall(root=root)
     tools_runtime_boundary_rule = build_tools_runtime_boundary_rule(root=root)
     current_head_truth_lock = build_current_head_truth_lock(root=root)
+    authority_resolution_index = build_authority_resolution_index(root=root, truth_lock=current_head_truth_lock)
     report_authority_index = build_report_authority_index(root=root)
     authority_supersession_map = build_authority_supersession_map(root=root)
     authority_supersession_registry = build_authority_supersession_registry(root=root)
     canonical_delta = build_canonical_delta_w0(root=root)
     advancement_delta = build_advancement_delta_w0(root=root)
-    omega_gate_receipt = build_omega_gate_receipt(root=root)
 
     authority_resolution_receipt = build_authority_resolution_receipt(root=root, authority_resolution_index=authority_resolution_index)
     historical_claim_firewall_receipt = build_historical_claim_firewall_receipt(root=root, historical_claim_firewall=historical_claim_firewall)
-    present_head_authority_seal_receipt = build_present_head_authority_seal_receipt(
-        root=root,
-        current_head_truth_lock=current_head_truth_lock,
-        authority_resolution_receipt=authority_resolution_receipt,
-        historical_claim_firewall_receipt=historical_claim_firewall_receipt,
-    )
-    authority_convergence_pass_current_head = build_authority_convergence_pass_current_head(root=root)
 
     _write(root, DEFAULT_AUTHORITY_RESOLUTION_INDEX_REL, authority_resolution_index)
     _write(root, DEFAULT_HISTORICAL_CLAIM_FIREWALL_REL, historical_claim_firewall)
@@ -422,6 +414,16 @@ def run_gate_a_campaign(*, root: Path) -> Dict[str, Dict[str, Any]]:
     _write(root, GOVERNANCE_AUTHORITY_SUPERSESSION_REGISTRY_REL, authority_supersession_registry)
     _write(root, DEFAULT_CANONICAL_DELTA_REL, canonical_delta)
     _write(root, DEFAULT_ADVANCEMENT_DELTA_REL, advancement_delta)
+
+    omega_gate_receipt = build_omega_gate_receipt(root=root)
+    present_head_authority_seal_receipt = build_present_head_authority_seal_receipt(
+        root=root,
+        current_head_truth_lock=current_head_truth_lock,
+        authority_resolution_receipt=authority_resolution_receipt,
+        historical_claim_firewall_receipt=historical_claim_firewall_receipt,
+    )
+    authority_convergence_pass_current_head = build_authority_convergence_pass_current_head(root=root)
+
     _write(root, DEFAULT_OMEGA_GATE_RECEIPT_REL, omega_gate_receipt)
     _write(root, DEFAULT_AUTHORITY_RESOLUTION_RECEIPT_REL, authority_resolution_receipt)
     _write(root, DEFAULT_HISTORICAL_CLAIM_FIREWALL_RECEIPT_REL, historical_claim_firewall_receipt)

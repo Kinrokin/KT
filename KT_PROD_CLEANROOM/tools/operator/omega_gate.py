@@ -248,8 +248,13 @@ def _active_blocker_rows(root: Path, blocker_ref: str) -> Tuple[List[str], int]:
     return [], open_count
 
 
-def build_authority_resolution_index(*, root: Path) -> Dict[str, Any]:
-    truth_lock = _load_optional(root, DEFAULT_LOCK_REL)
+def build_authority_resolution_index(
+    *,
+    root: Path,
+    truth_lock: Optional[Dict[str, Any]] = None,
+    family: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    truth_lock_payload = truth_lock if truth_lock is not None else _load_optional(root, DEFAULT_LOCK_REL)
     active_source_ref = active_truth_source_ref(root=root)
     active_source_payload = load_json_ref(root=root, ref=active_source_ref)
     documentary_payload = _load_optional(root, DOCUMENTARY_POINTER_REL)
@@ -259,7 +264,7 @@ def build_authority_resolution_index(*, root: Path) -> Dict[str, Any]:
         payload=documentary_payload,
         documentary_refs=[DOCUMENTARY_POINTER_REL],
     )
-    family = _selected_family(root)
+    selected_family = family or _selected_family(root)
 
     branch_name = ""
     branch_path = ""
@@ -276,7 +281,7 @@ def build_authority_resolution_index(*, root: Path) -> Dict[str, Any]:
         failures.append("documentary_compatibility_pointer_missing")
     elif not compatibility_pointer_ok:
         failures.append("documentary_compatibility_pointer_not_documentary_only")
-    if truth_lock and str(truth_lock.get("active_blocker_matrix_ref", "")).strip() != family["blocker_ref"]:
+    if truth_lock_payload and str(truth_lock_payload.get("active_blocker_matrix_ref", "")).strip() != selected_family["blocker_ref"]:
         failures.append("current_head_truth_lock_not_bound_to_selected_blocker_family")
 
     return {
@@ -291,8 +296,8 @@ def build_authority_resolution_index(*, root: Path) -> Dict[str, Any]:
             "claim_scope": "CURRENT_HEAD_WORKTREE_SCOPE_ONLY",
             "status": "ACTIVE",
         },
-        "active_current_head_blocker_family_ref": family["blocker_ref"],
-        "active_current_head_claim_ceiling_ref": family["claim_ceiling_ref"],
+        "active_current_head_blocker_family_ref": selected_family["blocker_ref"],
+        "active_current_head_claim_ceiling_ref": selected_family["claim_ceiling_ref"],
         "resolved_sources": [
             {
                 "surface_id": "active_publication_truth_source",
@@ -400,13 +405,17 @@ def build_current_head_truth_lock(*, root: Path) -> Dict[str, Any]:
     authority_report = build_authority_convergence_report(root=root)
     toolchain_receipt = build_toolchain_runtime_firewall_receipt(root=root)
     trust_zone_receipt = validate_trust_zones(root=root)
-    authority_resolution = build_authority_resolution_index(root=root)
-    historical_firewall = build_historical_claim_firewall(root=root)
     active_source_ref = active_truth_source_ref(root=root)
     active_source_payload = load_json_ref(root=root, ref=active_source_ref)
     current_head = _git_head(root)
     worktree = _worktree_summary(root)
     family = _selected_family(root)
+    authority_resolution = build_authority_resolution_index(
+        root=root,
+        truth_lock={"active_blocker_matrix_ref": family["blocker_ref"]},
+        family=family,
+    )
+    historical_firewall = build_historical_claim_firewall(root=root)
     blocker_ids, blocker_count = _active_blocker_rows(root, family["blocker_ref"])
     deferred_c006 = _active_deferred_c006(root)
     deferred_machine_state = dict(deferred_c006.get("machine_effective_state", {})) if deferred_c006 else {}
@@ -837,10 +846,14 @@ def build_omega_gate_receipt(*, root: Path) -> Dict[str, Any]:
     authority_report = build_authority_convergence_report(root=root)
     toolchain_receipt = build_toolchain_runtime_firewall_receipt(root=root)
     trust_zone_receipt = validate_trust_zones(root=root)
-    authority_resolution = build_authority_resolution_index(root=root)
+    family = _selected_family(root)
+    authority_resolution = build_authority_resolution_index(
+        root=root,
+        truth_lock={"active_blocker_matrix_ref": family["blocker_ref"]},
+        family=family,
+    )
     historical_firewall = build_historical_claim_firewall(root=root)
     current_head_lock = build_current_head_truth_lock(root=root)
-    family = _selected_family(root)
     blocker_ids, blocker_count = _active_blocker_rows(root, family["blocker_ref"])
     deferred_c006 = _active_deferred_c006(root)
     deferred_machine_state = dict(deferred_c006.get("machine_effective_state", {})) if deferred_c006 else {}

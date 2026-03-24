@@ -1,14 +1,14 @@
 {
   "active_current_head_family": "WAVE5_CURRENT_HEAD_WORKTREE_FAMILY",
   "claim_boundary": "This family is the active current-head workspace family for canonical posture inside the sealed W0 scope. It is not automatically public-release admissible while the broader worktree remains dirty and the transparency-verified subject commit differs from HEAD.",
-  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "current_repo_head": "c3930521e2c932b811a152a406e83790a6cabdd9",
   "current_worktree_state": {
     "dirty": true,
-    "entry_count": 444,
-    "modified_or_staged_count": 133,
-    "untracked_count": 311
+    "entry_count": 58,
+    "modified_or_staged_count": 58,
+    "untracked_count": 0
   },
-  "generated_utc": "2026-03-24T17:49:08Z",
+  "generated_utc": "2026-03-24T19:28:30Z",
   "rows": [
     {
       "authority_status": "ACTIVE_CURRENT_HEAD_LOCK",
@@ -24,7 +24,7 @@
       "function_id": "execution_board",
       "note": "Coordinates waves and scope, but live truth resolves through the truth source and current-head truth lock.",
       "ref": "KT_PROD_CLEANROOM/governance/execution_board.json",
-      "tracking_state": "TRACKED_DIRTY"
+      "tracking_state": "TRACKED_CLEAN"
     },
     {
       "authority_status": "ACTIVE_GOVERNANCE_CONTRACT",
@@ -40,7 +40,7 @@
       "function_id": "authority_resolution_index",
       "note": "Explicitly resolves current-head scope authority, supporting publication truth, and documentary compatibility mirrors.",
       "ref": "KT_PROD_CLEANROOM/governance/authority_resolution_index.json",
-      "tracking_state": "UNTRACKED_WORKTREE"
+      "tracking_state": "TRACKED_DIRTY"
     },
     {
       "authority_status": "ACTIVE_GOVERNANCE_FIREWALL",
@@ -48,7 +48,7 @@
       "function_id": "historical_claim_firewall",
       "note": "Prevents historical bounded packets from silently uplifting current-head truth.",
       "ref": "KT_PROD_CLEANROOM/governance/historical_claim_firewall.json",
-      "tracking_state": "UNTRACKED_WORKTREE"
+      "tracking_state": "TRACKED_DIRTY"
     },
     {
       "authority_status": "ACTIVE_GOVERNANCE_CONTRACT",
@@ -56,7 +56,7 @@
       "function_id": "trust_zones",
       "note": "Authoritative zone registry.",
       "ref": "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
-      "tracking_state": "TRACKED_DIRTY"
+      "tracking_state": "TRACKED_CLEAN"
     },
     {
       "authority_status": "ACTIVE_GOVERNANCE_CONTRACT",
@@ -64,7 +64,7 @@
       "function_id": "runtime_boundary",
       "note": "Authoritative runtime boundary contract.",
       "ref": "KT_PROD_CLEANROOM/governance/runtime_boundary_contract.json",
-      "tracking_state": "TRACKED_DIRTY"
+      "tracking_state": "TRACKED_CLEAN"
     },
     {
       "authority_status": "ACTIVE_GOVERNANCE_RULE",
@@ -72,7 +72,7 @@
       "function_id": "tools_runtime_boundary_rule",
       "note": "Explicit W0 anti-leak rule.",
       "ref": "KT_PROD_CLEANROOM/governance/tools_runtime_boundary_rule.json",
-      "tracking_state": "UNTRACKED_WORKTREE"
+      "tracking_state": "TRACKED_CLEAN"
     },
     {
       "authority_status": "ACTIVE_CURRENT_HEAD_WORKTREE_FAMILY",
@@ -80,7 +80,7 @@
       "function_id": "blocker_matrix",
       "note": "Selected active blocker family with 1 open blockers: C006_EXTERNALITY_CEILING_REMAINS_BOUNDED.",
       "ref": "KT_PROD_CLEANROOM/reports/kt_wave5_blocker_matrix.json",
-      "tracking_state": "UNTRACKED_WORKTREE"
+      "tracking_state": "TRACKED_DIRTY"
     },
     {
       "authority_status": "ACTIVE_CURRENT_HEAD_SUPPORT_REGISTER",
@@ -88,7 +88,7 @@
       "function_id": "deferred_blocker_register",
       "note": "C006 remains open under resource-constrained deferral; E1 ceilings stay enforced until second-host return plus validator pass.",
       "ref": "KT_PROD_CLEANROOM/reports/deferred_blockers.json",
-      "tracking_state": "UNTRACKED_WORKTREE"
+      "tracking_state": "TRACKED_CLEAN"
     },
     {
       "authority_status": "CARRIED_FORWARD_RELEASE_FAMILY",
@@ -96,7 +96,7 @@
       "function_id": "blocker_matrix_legacy",
       "note": "Must not silently override the active current-head blocker family.",
       "ref": "KT_PROD_CLEANROOM/reports/kt_final_blocker_matrix.json",
-      "tracking_state": "TRACKED_DIRTY"
+      "tracking_state": "TRACKED_CLEAN"
     },
     {
       "authority_status": "ACTIVE_CURRENT_HEAD_WORKTREE_FAMILY",
@@ -104,7 +104,7 @@
       "function_id": "claim_ceiling",
       "note": "Active claim ceiling family for current-head posture.",
       "ref": "KT_PROD_CLEANROOM/reports/kt_wave5_final_tier_ruling.json",
-      "tracking_state": "UNTRACKED_WORKTREE"
+      "tracking_state": "TRACKED_DIRTY"
     },
     {
       "authority_status": "ACTIVE_CURRENT_HEAD_WORKTREE_FAMILY",
@@ -112,7 +112,7 @@
       "function_id": "readjudication",
       "note": "Active readjudication family for current-head posture.",
       "ref": "KT_PROD_CLEANROOM/reports/kt_wave5_final_readjudication_receipt.json",
-      "tracking_state": "UNTRACKED_WORKTREE"
+      "tracking_state": "TRACKED_DIRTY"
     },
     {
       "authority_status": "ACTIVE_CURRENT_HEAD_SUPPORTING_REGISTER",
@@ -120,7 +120,7 @@
       "function_id": "organ_disposition",
       "note": "Authoritative organ disposition family retained for W1 extension.",
       "ref": "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_disposition_register.json",
-      "tracking_state": "UNTRACKED_WORKTREE"
+      "tracking_state": "TRACKED_DIRTY"
     },
     {
       "authority_status": "ACTIVE_BLOCKER_DELTA_SUPPORT",
@@ -128,7 +128,7 @@
       "function_id": "c006_second_host_status",
       "note": "Current-head C006 execution status support surface.",
       "ref": "KT_PROD_CLEANROOM/reports/post_wave5_c006_second_host_execution_receipt.json",
-      "tracking_state": "UNTRACKED_WORKTREE"
+      "tracking_state": "TRACKED_CLEAN"
     },
     {
       "authority_status": "ACTIVE_BLOCKER_HEARTBEAT",
@@ -136,7 +136,7 @@
       "function_id": "c006_deferral_heartbeat",
       "note": "Recurring machine reminder that C006 is deferred, open, and still ceiling-enforcing.",
       "ref": "KT_PROD_CLEANROOM/reports/c006_deferral_heartbeat.json",
-      "tracking_state": "UNTRACKED_WORKTREE"
+      "tracking_state": "TRACKED_CLEAN"
     },
     {
       "authority_status": "ACTIVE_DOCUMENTARY_ANCHOR",
@@ -144,7 +144,7 @@
       "function_id": "work_order_anchor",
       "note": "Anchor surface for the present-standing convergence family.",
       "ref": "KT_PROD_CLEANROOM/governance/kt_unified_convergence_max_power_campaign_v2_1_1_anchor.json",
-      "tracking_state": "UNTRACKED_WORKTREE"
+      "tracking_state": "TRACKED_CLEAN"
     }
   ],
   "schema_id": "kt.operator.report_authority_index.v1",
