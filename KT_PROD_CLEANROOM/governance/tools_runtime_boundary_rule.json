@@ -1,0 +1,19 @@
+{
+  "authoritative_contract_refs": [
+    "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+    "KT_PROD_CLEANROOM/governance/runtime_boundary_contract.json",
+    "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json"
+  ],
+  "claim_boundary": "This rule blocks toolchain/runtime leakage as a truth vector only. It does not upgrade capability, externality, release readiness, or commercial scope.",
+  "prohibited_truth_vectors": [
+    "tool-only execution paths counted as canonical runtime truth",
+    "toolchain proving outputs counted as runtime capability proof",
+    "commercial or documentary surfaces counted as runtime readiness",
+    "generated receipts counted as governance law without source contract coverage"
+  ],
+  "receipt_ref": "KT_PROD_CLEANROOM/reports/kt_wave0_5_toolchain_runtime_firewall_receipt.json",
+  "rule_id": "TOOLS_RUNTIME_BOUNDARY_RULE_V1_20260322",
+  "schema_id": "kt.governance.tools_runtime_boundary_rule.v1",
+  "status": "ACTIVE",
+  "validator_command": "python -m tools.operator.toolchain_runtime_firewall_validate"
+}

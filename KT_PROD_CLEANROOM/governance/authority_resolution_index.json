@@ -1,0 +1,63 @@
+{
+  "active_current_head_blocker_family_ref": "KT_PROD_CLEANROOM/reports/kt_wave5_blocker_matrix.json",
+  "active_current_head_claim_ceiling_ref": "KT_PROD_CLEANROOM/reports/kt_wave5_final_tier_ruling.json",
+  "active_current_head_scope": {
+    "authority_class": "ACTIVE_CURRENT_HEAD_SCOPE_AUTHORITY",
+    "claim_scope": "CURRENT_HEAD_WORKTREE_SCOPE_ONLY",
+    "ref": "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json",
+    "status": "ACTIVE"
+  },
+  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "failures": [],
+  "generated_utc": "2026-03-24T17:49:04Z",
+  "historical_only_refs": [
+    {
+      "ref": "KT_PROD_CLEANROOM/reports/kt_frontier_rerun_scorecard.json",
+      "role": "HISTORICAL_BOUNDED_FRONTIER_ARCHIVE_ONLY"
+    },
+    {
+      "ref": "KT_PROD_CLEANROOM/reports/kt_frontier_audit_packet.json",
+      "role": "HISTORICAL_BOUNDED_FRONTIER_ARCHIVE_ONLY"
+    },
+    {
+      "ref": "KT_PROD_CLEANROOM/reports/kt_final_blocker_matrix.json",
+      "role": "CARRIED_FORWARD_LEGACY_RELEASE_ONLY"
+    },
+    {
+      "ref": "KT_PROD_CLEANROOM/reports/kt_final_current_head_readjudication_receipt.json",
+      "role": "CARRIED_FORWARD_LEGACY_RELEASE_ONLY"
+    },
+    {
+      "ref": "KT_PROD_CLEANROOM/reports/kt_final_claim_ceiling_receipt.json",
+      "role": "CARRIED_FORWARD_LEGACY_RELEASE_ONLY"
+    }
+  ],
+  "resolved_sources": [
+    {
+      "authority_level": "SETTLED_AUTHORITATIVE",
+      "claim_boundary": "Supports publication lineage and historical transparency. It does not by itself uplift current-head scope, runtime, externality, product, or tier claims.",
+      "documentary_only": false,
+      "ref": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "resolution_class": "PUBLISHED_LEDGER_BRANCH_REF",
+      "resolved_branch": "kt_truth_ledger",
+      "resolved_branch_head_sha": "03e9d79a97ca6849535ac05d0c31d924716e87bb",
+      "resolved_relpath": "ledger/current/current_pointer.json",
+      "resolved_truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "role": "SUPPORTING_PUBLICATION_TRUTH_SOURCE",
+      "surface_id": "active_publication_truth_source"
+    },
+    {
+      "authority_level": "TRANSITIONAL_AUTHORITATIVE",
+      "claim_boundary": "Compatibility mirror only. Never active authority.",
+      "documentary_only": true,
+      "ref": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "resolution_class": "DOCUMENTARY_COMPATIBILITY_POINTER",
+      "resolved_truth_subject_commit": "494cd490a6512b9bfa937c82886db625143d38ae",
+      "role": "DOCUMENTARY_ONLY",
+      "surface_id": "documentary_compatibility_pointer"
+    }
+  ],
+  "schema_id": "kt.governance.authority_resolution_index.v1",
+  "single_active_authority_rule": "One active current-head scope authority family only; publication and historical sources may inform lineage but may not silently uplift current-head claims.",
+  "status": "PASS"
+}

@@ -5,11 +5,16 @@
     "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/**",
     "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/**",
     "KT_PROD_CLEANROOM/governance/**",
-    "KT_PROD_CLEANROOM/AUDITS/**",
+    "KT_PROD_CLEANROOM/AUDITS/**"
+  ],
+  "toolchain_proving_surfaces": [
     "KT_PROD_CLEANROOM/tools/operator/**",
     "KT_PROD_CLEANROOM/tools/verification/**",
     "KT_PROD_CLEANROOM/tools/delivery/**",
-    "KT_PROD_CLEANROOM/tools/security/**"
+    "KT_PROD_CLEANROOM/tools/security/**",
+    ".github/**",
+    "ci/**",
+    ".devcontainer/**"
   ],
   "generated_truth_surfaces": [
     "kt_truth_ledger:ledger/current/current_pointer.json",
@@ -67,10 +72,17 @@
     "KT_PROD_CLEANROOM/exports/_truth/**",
     "KT_PROD_CLEANROOM/03_SYNTHESIS_LAB/**",
     "KT_PROD_CLEANROOM/05_QUARANTINE/**",
+    "KT_PROD_CLEANROOM/tools/operator/**",
+    "KT_PROD_CLEANROOM/tools/verification/**",
+    "KT_PROD_CLEANROOM/tools/delivery/**",
+    "KT_PROD_CLEANROOM/tools/security/**",
     "KT_ARCHIVE/**",
     "KT-Codex/**",
     "docs/**",
-    "KT_PROD_CLEANROOM/docs/commercial/**"
+    "KT_PROD_CLEANROOM/docs/commercial/**",
+    ".github/**",
+    "ci/**",
+    ".devcontainer/**"
   ],
   "quarantined_from_canonical_truth": [
     "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/tools/**",
@@ -88,5 +100,20 @@
     "KT_PROD_CLEANROOM/governance/truth_pointer_rules.json",
     "KT_PROD_CLEANROOM/governance/current_pointer_transition_rules.json"
   ],
+  "claim_bearing_runtime_path": [
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py::invoke",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py::run"
+  ],
+  "claim_bearing_runtime_support_refs": [
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+    "KT_PROD_CLEANROOM/tools/operator/wave3_canonical_entry_probe.py"
+  ],
+  "forbidden_live_side_paths": [
+    "KT_PROD_CLEANROOM/tools/operator/**",
+    "KT_PROD_CLEANROOM/tools/verification/**",
+    "KT_PROD_CLEANROOM/tools/delivery/**",
+    "KT_PROD_CLEANROOM/tools/security/**"
+  ],
+  "single_spine_runtime_rule": "Only kt.entrypoint.invoke may carry claim-bearing runtime requests into core.spine.run. Toolchain probes may observe this path but may never become runtime truth surfaces.",
   "status": "ACTIVE"
 }

@@ -1,0 +1,92 @@
+{
+  "canonical_router_status": "STATIC_CANONICAL_BASELINE_ONLY",
+  "checks": [
+    {
+      "check_id": "static_baseline_ratified",
+      "pass": true
+    },
+    {
+      "check_id": "shadow_eval_frozen",
+      "pass": true
+    },
+    {
+      "check_id": "best_static_comparator_control_explicit",
+      "pass": true
+    },
+    {
+      "check_id": "route_quality_cost_latency_matrix_present",
+      "pass": true
+    },
+    {
+      "check_id": "no_regression_rule_enforced",
+      "pass": true
+    },
+    {
+      "check_id": "learned_router_cutover_blocked_without_clean_win",
+      "pass": true
+    },
+    {
+      "check_id": "multi_lobe_promotion_blocked_without_router_win",
+      "pass": true
+    },
+    {
+      "check_id": "claim_ceiling_preserved",
+      "pass": true
+    },
+    {
+      "check_id": "router_and_lobe_laws_active",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "W5 proves router/lobe honesty only. The static baseline remains canonical, no learned-router cutover is earned, and multi-lobe orchestration remains blocked.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "exact_superiority_outcome": "NOT_EARNED_STATIC_BASELINE_RETAINS_CANONICAL_STATUS",
+  "generated_utc": "2026-03-23T19:18:33Z",
+  "learned_router_cutover_allowed": false,
+  "multi_lobe_promotion_allowed": false,
+  "ordered_proof_chain": [
+    {
+      "required_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json",
+      "stage_id": "static_baseline_ratified"
+    },
+    {
+      "required_ref": "KT_PROD_CLEANROOM/reports/kt_wave2b_router_shadow_eval_matrix.json",
+      "stage_id": "shadow_eval_frozen"
+    },
+    {
+      "required_ref": "KT_PROD_CLEANROOM/reports/kt_wave2b_router_selection_receipt.json",
+      "stage_id": "best_static_comparator_explicit"
+    },
+    {
+      "required_ref": "KT_PROD_CLEANROOM/reports/route_distribution_health.json",
+      "stage_id": "route_quality_cost_latency_matrix"
+    },
+    {
+      "required_ref": "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
+      "stage_id": "learned_router_cutover_gate"
+    },
+    {
+      "required_ref": "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json",
+      "stage_id": "multi_lobe_promotion_gate"
+    }
+  ],
+  "ordered_proof_outcome": "PASS_HOLD_STATIC_CANONICAL_BASELINE",
+  "schema_id": "kt.w5.router_ordered_proof_receipt.v1",
+  "source_refs": [
+    "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+    "KT_PROD_CLEANROOM/governance/router_promotion_law.json",
+    "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+    "KT_PROD_CLEANROOM/governance/lobe_promotion_law.json",
+    "KT_PROD_CLEANROOM/reports/router_shadow_eval_matrix.json",
+    "KT_PROD_CLEANROOM/reports/route_distribution_health.json",
+    "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
+    "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json"
+  ],
+  "status": "PASS",
+  "stronger_claims_not_made": [
+    "learned_router_cutover_occurred",
+    "learned_router_superiority_earned",
+    "multi_lobe_orchestration_unblocked",
+    "comparative_widening_unlocked"
+  ]
+}

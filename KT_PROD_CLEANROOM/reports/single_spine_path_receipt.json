@@ -1,0 +1,69 @@
+{
+  "authority_refs": [
+    "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+    "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+    "KT_PROD_CLEANROOM/governance/runtime_boundary_contract.json",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+    "KT_PROD_CLEANROOM/tools/operator/wave3_canonical_entry_probe.py"
+  ],
+  "canonical_entry_callable": "kt.entrypoint.invoke",
+  "canonical_scope_manifest_receipt_ref": "KT_PROD_CLEANROOM/reports/canonical_scope_manifest_receipt.json",
+  "canonical_spine_callable": "core.spine.run",
+  "claim_boundary": "The only claim-bearing live execution lane is kt.entrypoint.invoke -> core.spine.run. Toolchain probes may observe and package this lane but may never become runtime truth surfaces.",
+  "failures": [],
+  "generated_utc": "2026-03-23T18:16:29Z",
+  "next_lawful_move": "W2_RUNTIME_ORGAN_REALIZATION_AND_MVCR",
+  "probe_matrix": [
+    {
+      "artifact_root": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/exports/w1_single_spine/cognition_request/artifacts",
+      "entry_result_status": "OK",
+      "head_hash": "b3392818118c477518c4a21b0b9864aa784b5914a77ff5354e599eeebd04cd44",
+      "observed_summary": {
+        "mode": "DRY_RUN",
+        "plan_hash": "f9730a438e6457ee53ccb447cd94dd61040f639e6dbd35d603a3e72fc850b6ae",
+        "refusal_code": null,
+        "request_hash": "97bdbf16cf7130f3d604515dcaca7128dd530cb5df03f31e05725b3f4a3624c1",
+        "status": "OK",
+        "steps": 3
+      },
+      "organ_key": "cognition",
+      "organ_status": "OK",
+      "probe_id": "cognition_request",
+      "record_count": 3183,
+      "status": "PASS"
+    },
+    {
+      "artifact_root": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/exports/w1_single_spine/council_request/artifacts",
+      "entry_result_status": "OK",
+      "head_hash": "ccc304946d69f02228c04edab4557bc0a9985dd929131d4d82a50bc1c9e788c4",
+      "observed_summary": {
+        "mode": "DRY_RUN",
+        "plan_hash": "3100dd4730e7227a42e0f7095cda4c2b16aa0caa7021ff1313c67c4769735573",
+        "providers": [],
+        "refusal_code": null,
+        "request_hash": "f06462502362afebb2f64b0c00c56b85fef4f746766d249aa4a74d8c502c8a74",
+        "routing_record_hash": "2ac70f6a3db5faa93389f1760a42073c54fdaad9c853bf50cb9446e1e4b969d4",
+        "status": "OK"
+      },
+      "organ_key": "council",
+      "organ_status": "OK",
+      "probe_id": "council_request",
+      "record_count": 3187,
+      "status": "PASS"
+    }
+  ],
+  "remaining_forbidden_claims": [
+    "E2_or_higher_externality",
+    "cross_host_replay",
+    "hostile_or_independent_verification",
+    "router_superiority",
+    "multi_lobe_execution",
+    "frontier_or_sota_language"
+  ],
+  "runtime_boundary_receipt_ref": "KT_PROD_CLEANROOM/reports/runtime_boundary_receipt.json",
+  "schema_id": "kt.operator.single_spine_path_receipt.v1",
+  "status": "PASS",
+  "trust_zone_failures": [],
+  "trust_zone_validation_status": "PASS",
+  "validated_head_sha": "494cd490a6512b9bfa937c82886db625143d38ae"
+}

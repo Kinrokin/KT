@@ -1,0 +1,65 @@
+{
+  "checks": [
+    {
+      "check_id": "blind_pack_emitted",
+      "pass": true
+    },
+    {
+      "check_id": "reveal_mapping_sealed_then_unsealed",
+      "pass": true
+    },
+    {
+      "check_id": "tournament_manifest_present",
+      "pass": true
+    },
+    {
+      "check_id": "promotion_decision_promote",
+      "pass": true
+    },
+    {
+      "check_id": "promotion_rationale_present",
+      "pass": true
+    },
+    {
+      "check_id": "rollback_receipt_passes",
+      "pass": true
+    },
+    {
+      "check_id": "learning_response_receipt_passes",
+      "pass": true
+    }
+  ],
+  "civilization_loop_status": "PASS",
+  "claim_boundary": "W3 proves one bounded current-head tournament, promotion-decision, rollback, and learning-response loop. It does not prove automatic runtime cutover, benchmark superiority, cross-host replay, or public competition readiness.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "exact_loop": [
+    "candidate_generation",
+    "blind_tournament_pack",
+    "judgement",
+    "train_manifest",
+    "eval_report",
+    "signal_quality",
+    "fitness_region",
+    "promotion_decision",
+    "promotion_rationale",
+    "rollback_drill",
+    "learning_response_receipt"
+  ],
+  "forbidden_claims_not_made": [
+    "automatic_runtime_cutover_completed",
+    "externality_widened_above_E1",
+    "public_tournament_readiness_unblocked",
+    "router_or_lobe_superiority_earned"
+  ],
+  "generated_utc": "2026-03-23T18:44:26Z",
+  "job_dir_ref": "KT_PROD_CLEANROOM/exports/adapters_shadow/_w3_civilization/aa18410a2a68ac67e9fde1e692661f6dbdefa11804a79a3a6cf2d04b8250da72",
+  "promotion_decision": "PROMOTE",
+  "rollback_bound": true,
+  "schema_id": "kt.w3.civilization_loop_receipt.v1",
+  "source_refs": [
+    "KT_PROD_CLEANROOM/governance/civilization_loop_contract.json",
+    "KT_PROD_CLEANROOM/governance/kt_adapter_abi_v2.json",
+    "KT_PROD_CLEANROOM/exports/adapters_shadow/_w3_civilization/aa18410a2a68ac67e9fde1e692661f6dbdefa11804a79a3a6cf2d04b8250da72"
+  ],
+  "status": "PASS"
+}

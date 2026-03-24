@@ -1,0 +1,77 @@
+{
+  "checks": [
+    {
+      "check_id": "claim_compiler_monotonicity",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_wave3_claim_compiler_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_wave3_bounded_output.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check_id": "externality_class_consistency",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_wave3_claim_class_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_wave3_bounded_output.json",
+        "KT_PROD_CLEANROOM/reports/kt_wave3_detached_verifier_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check_id": "challenge_channel_does_not_self_upgrade_externality",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_wave4_challenge_protocol.json",
+        "KT_PROD_CLEANROOM/reports/kt_wave4_public_challenge_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_wave4_externality_class_matrix.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check_id": "toolchain_runtime_firewall_preserved",
+      "refs": [
+        "KT_PROD_CLEANROOM/tools/operator/trust_zone_validate.py",
+        "KT_PROD_CLEANROOM/tools/operator/toolchain_runtime_firewall_validate.py"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check_id": "state_vault_chain_valid_after_chaos",
+      "refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/_runtime_artifacts/state_vault.jsonl"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "generated_utc": "2026-03-24T18:34:23Z",
+  "schema_id": "kt.wave4.formal_invariant_artifacts.v1",
+  "state_vault_after_chaos": {
+    "head_hash": "89a67056f65fc4f310bacaaccc546432f58ce334e4fdfb12fb2b7f54521058d1",
+    "record_count": 4378
+  },
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "full_unbounded_formal_proof_claimed",
+    "independent_hostile_replay_claimed",
+    "public_challenge_survival_claimed"
+  ],
+  "validator_runs": [
+    {
+      "command": "python -m tools.operator.trust_zone_validate",
+      "observed": "{\"checks\": [{\"check\": \"required_zones_present\", \"missing\": [], \"status\": \"PASS\"}, {\"check\": \"readiness_zones_declared_in_registry\", \"excludes\": [\"LAB\", \"ARCHIVE\", \"COMMERCIAL\", \"GENERATED_RUNTIME_TRUTH\", \"QUARANTINED\", \"TOOLCHAIN_PROVING\"], \"includes\": [\"CANONICAL\"], \"status\": \"PASS\"}, {\"check\": \"canonical_primary_surfaces_in_canonical_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"toolchain_proving_surfaces_declared\", \"count\": 7, \"status\": \"PASS\"}, {\"check\": \"toolchain_proving_surfaces_in_toolchain_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"toolchain_proving_surfaces_not_in_canonical_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"generated_truth_surfaces_in_generated_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"documentary_only_surfaces_in_commercial_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"quarantine_patterns_excluded_from_canonical_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"quarantine_patterns_in_quarantined_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"runtime_boundary_excludes_reflected_in_canonical_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"readiness_scoped_to_canonical_only\", \"status\": \"PASS\"}, {\"actual\": [\"ARCHIVE\", \"COMMERCIAL\", \"GENERATED_RUNTIME_TRUTH\", \"LAB\", \"QUARANTINED\", \"TOOLCHAIN_PROVING\"], \"check\": \"readiness_excludes_all_noncanonical_zones\", \"expected\": [\"ARCHIVE\", \"COMMERCIAL\", \"GENERATED_RUNTIME_TRUTH\", \"LAB\", \"QUARANTINED\", \"TOOLCHAIN_PROVING\"], \"status\": \"PASS\"}, {\"check\": \"frozen_surfaces_live_in_canonical_or_toolchain_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"frozen_surfaces_covered_by_amendment_scope\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"settled_truth_root_in_generated_zone\", \"status\": \"PASS\", \"truth_root\": \"kt_truth_ledger:ledger/current/current_pointer.json\"}, {\"check\": \"execution_board_truth_source_in_generated_zone\", \"status\": \"PASS\", \"truth_source\": \"KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json\"}, {\"actual\": [\"cognition\", \"core\", \"council\", \"curriculum\", \"governance\", \"kt\", \"memory\", \"multiverse\", \"paradox\", \"schemas\", \"temporal\", \"thermodynamics\", \"versioning\"], \"check\": \"runtime_registry_canonical_roots_match_contract\", \"expected\": [\"cognition\", \"core\", \"council\", \"curriculum\", \"governance\", \"kt\", \"memory\", \"multiverse\", \"paradox\", \"schemas\", \"temporal\", \"thermodynamics\", \"versioning\"], \"status\": \"PASS\"}, {\"actual\": [], \"check\": \"runtime_registry_compatibility_roots_match_contract\", \"expected\": [], \"status\": \"PASS\"}, {\"check\": \"compatibility_roots_not_canonical\", \"overlap\": [], \"status\": \"PASS\"}, {\"check\": \"compatibility_roots_quarantined_in_scope_manifest\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"compatibility_roots_excluded_by_runtime_boundary_contract\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"compatibility_roots_excluded_from_canonical_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"compatibility_roots_present_in_quarantined_zone\", \"mismatches\": [], \"status\": \"PASS\"}], \"failures\": [], \"schema_id\": \"kt.operator.trust_zone_validation_receipt.v2\", \"status\": \"PASS\"}",
+      "output_tail": [
+        "{\"checks\": [{\"check\": \"required_zones_present\", \"missing\": [], \"status\": \"PASS\"}, {\"check\": \"readiness_zones_declared_in_registry\", \"excludes\": [\"LAB\", \"ARCHIVE\", \"COMMERCIAL\", \"GENERATED_RUNTIME_TRUTH\", \"QUARANTINED\", \"TOOLCHAIN_PROVING\"], \"includes\": [\"CANONICAL\"], \"status\": \"PASS\"}, {\"check\": \"canonical_primary_surfaces_in_canonical_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"toolchain_proving_surfaces_declared\", \"count\": 7, \"status\": \"PASS\"}, {\"check\": \"toolchain_proving_surfaces_in_toolchain_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"toolchain_proving_surfaces_not_in_canonical_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"generated_truth_surfaces_in_generated_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"documentary_only_surfaces_in_commercial_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"quarantine_patterns_excluded_from_canonical_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"quarantine_patterns_in_quarantined_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"runtime_boundary_excludes_reflected_in_canonical_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"readiness_scoped_to_canonical_only\", \"status\": \"PASS\"}, {\"actual\": [\"ARCHIVE\", \"COMMERCIAL\", \"GENERATED_RUNTIME_TRUTH\", \"LAB\", \"QUARANTINED\", \"TOOLCHAIN_PROVING\"], \"check\": \"readiness_excludes_all_noncanonical_zones\", \"expected\": [\"ARCHIVE\", \"COMMERCIAL\", \"GENERATED_RUNTIME_TRUTH\", \"LAB\", \"QUARANTINED\", \"TOOLCHAIN_PROVING\"], \"status\": \"PASS\"}, {\"check\": \"frozen_surfaces_live_in_canonical_or_toolchain_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"frozen_surfaces_covered_by_amendment_scope\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"settled_truth_root_in_generated_zone\", \"status\": \"PASS\", \"truth_root\": \"kt_truth_ledger:ledger/current/current_pointer.json\"}, {\"check\": \"execution_board_truth_source_in_generated_zone\", \"status\": \"PASS\", \"truth_source\": \"KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json\"}, {\"actual\": [\"cognition\", \"core\", \"council\", \"curriculum\", \"governance\", \"kt\", \"memory\", \"multiverse\", \"paradox\", \"schemas\", \"temporal\", \"thermodynamics\", \"versioning\"], \"check\": \"runtime_registry_canonical_roots_match_contract\", \"expected\": [\"cognition\", \"core\", \"council\", \"curriculum\", \"governance\", \"kt\", \"memory\", \"multiverse\", \"paradox\", \"schemas\", \"temporal\", \"thermodynamics\", \"versioning\"], \"status\": \"PASS\"}, {\"actual\": [], \"check\": \"runtime_registry_compatibility_roots_match_contract\", \"expected\": [], \"status\": \"PASS\"}, {\"check\": \"compatibility_roots_not_canonical\", \"overlap\": [], \"status\": \"PASS\"}, {\"check\": \"compatibility_roots_quarantined_in_scope_manifest\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"compatibility_roots_excluded_by_runtime_boundary_contract\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"compatibility_roots_excluded_from_canonical_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"compatibility_roots_present_in_quarantined_zone\", \"mismatches\": [], \"status\": \"PASS\"}], \"failures\": [], \"schema_id\": \"kt.operator.trust_zone_validation_receipt.v2\", \"status\": \"PASS\"}"
+      ],
+      "rc": 0,
+      "status": "PASS"
+    },
+    {
+      "command": "python -m tools.operator.toolchain_runtime_firewall_validate",
+      "observed": "{\"checks\": [{\"check\": \"toolchain_proving_zone_present\", \"status\": \"PASS\"}, {\"check\": \"toolchain_proving_surfaces_in_toolchain_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"toolchain_proving_surfaces_not_in_canonical_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"broad_tools_allowlist_removed\", \"compatibility_allowlist_roots\": [], \"status\": \"PASS\"}, {\"check\": \"runtime_boundary_negative_space_exception_narrowed\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"canonical_runtime_does_not_import_toolchain_proving_modules\", \"status\": \"PASS\", \"violations\": []}], \"claim_boundary\": \"This receipt proves the TOOLCHAIN_PROVING split and runtime import firewall on declared canonical paths only. It does not upgrade runtime capability or externality.\", \"failures\": [], \"generated_utc\": \"2026-03-24T18:34:23Z\", \"illegal_crossings_checked\": [\"tooling_generated_state_treated_as_runtime_truth_without_receipt\", \"builder_behavior_used_as_runtime_behavior\", \"verifier_helpers_imported_as_runtime_organs\", \"tools_directory_allowlisted_as_runtime_root_without_explicit_contract\"], \"schema_id\": \"kt.operator.toolchain_runtime_firewall_receipt.v1\", \"status\": \"PASS\", \"stronger_claim_not_made\": [\"adapter_activation_started\", \"router_elevation_started\", \"runtime_capability_upgraded_by_toolchain_firewalling\"], \"toolchain_surface_refs\": [\"KT_PROD_CLEANROOM/tools/operator/**\", \"KT_PROD_CLEANROOM/tools/verification/**\", \"KT_PROD_CLEANROOM/tools/delivery/**\", \"KT_PROD_CLEANROOM/tools/security/**\", \".github/**\", \"ci/**\", \".devcontainer/**\"], \"validated_head_sha\": \"494cd490a6512b9bfa937c82886db625143d38ae\"}",
+      "output_tail": [
+        "{\"checks\": [{\"check\": \"toolchain_proving_zone_present\", \"status\": \"PASS\"}, {\"check\": \"toolchain_proving_surfaces_in_toolchain_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"toolchain_proving_surfaces_not_in_canonical_zone\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"broad_tools_allowlist_removed\", \"compatibility_allowlist_roots\": [], \"status\": \"PASS\"}, {\"check\": \"runtime_boundary_negative_space_exception_narrowed\", \"mismatches\": [], \"status\": \"PASS\"}, {\"check\": \"canonical_runtime_does_not_import_toolchain_proving_modules\", \"status\": \"PASS\", \"violations\": []}], \"claim_boundary\": \"This receipt proves the TOOLCHAIN_PROVING split and runtime import firewall on declared canonical paths only. It does not upgrade runtime capability or externality.\", \"failures\": [], \"generated_utc\": \"2026-03-24T18:34:23Z\", \"illegal_crossings_checked\": [\"tooling_generated_state_treated_as_runtime_truth_without_receipt\", \"builder_behavior_used_as_runtime_behavior\", \"verifier_helpers_imported_as_runtime_organs\", \"tools_directory_allowlisted_as_runtime_root_without_explicit_contract\"], \"schema_id\": \"kt.operator.toolchain_runtime_firewall_receipt.v1\", \"status\": \"PASS\", \"stronger_claim_not_made\": [\"adapter_activation_started\", \"router_elevation_started\", \"runtime_capability_upgraded_by_toolchain_firewalling\"], \"toolchain_surface_refs\": [\"KT_PROD_CLEANROOM/tools/operator/**\", \"KT_PROD_CLEANROOM/tools/verification/**\", \"KT_PROD_CLEANROOM/tools/delivery/**\", \"KT_PROD_CLEANROOM/tools/security/**\", \".github/**\", \"ci/**\", \".devcontainer/**\"], \"validated_head_sha\": \"494cd490a6512b9bfa937c82886db625143d38ae\"}"
+      ],
+      "rc": 0,
+      "status": "PASS"
+    }
+  ]
+}

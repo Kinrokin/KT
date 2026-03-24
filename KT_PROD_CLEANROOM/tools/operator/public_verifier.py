@@ -6,6 +6,7 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
+from tools.operator.observability import emit_toolchain_telemetry, telemetry_now_ms
 from tools.operator.platform_governance_finalize import build_platform_governance_final_claims
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
 
@@ -48,6 +49,13 @@ def _git_last_commit_for_paths(root: Path, paths: Sequence[str]) -> str:
         return _git(root, "log", "-1", "--format=%H", "--", *existing)
     except Exception:  # noqa: BLE001
         return ""
+
+
+def manifest_supports_bounded_e1_verifier(manifest: Dict[str, Any]) -> bool:
+    status = str(manifest.get("status", "")).strip().upper()
+    publication_receipt_status = str(manifest.get("publication_receipt_status", "")).strip().upper()
+    subject_verdict = str(manifest.get("subject_verdict", "")).strip()
+    return status in {"PASS", "HOLD"} and publication_receipt_status == "PASS" and subject_verdict == SUBJECT_VERDICT_PROVEN
 
 
 def build_public_verifier_claims(*, root: Path, live_head: str, report_root_rel: str = DEFAULT_REPORT_ROOT_REL) -> Dict[str, Any]:
@@ -95,7 +103,13 @@ def build_public_verifier_claims(*, root: Path, live_head: str, report_root_rel:
     }
 
 
-def build_public_verifier_report(*, root: Path, report_root_rel: str = DEFAULT_REPORT_ROOT_REL) -> Dict[str, Any]:
+def build_public_verifier_report(
+    *,
+    root: Path,
+    report_root_rel: str = DEFAULT_REPORT_ROOT_REL,
+    telemetry_path: Optional[str | Path] = None,
+) -> Dict[str, Any]:
+    started_ms = telemetry_now_ms()
     report_root = (root / Path(report_root_rel)).resolve()
     manifest_path = report_root / "public_verifier_manifest.json"
     current_head_commit = _git_head(root)
@@ -160,7 +174,7 @@ def build_public_verifier_report(*, root: Path, report_root_rel: str = DEFAULT_R
         platform_governance_head_claim_verdict = GOVERNANCE_HEAD_VERDICT_UNPROVEN
         platform_governance_head_claim_boundary = "Current HEAD has no proven platform-governance claim boundary."
 
-    return {
+    report = {
         "schema_id": "kt.operator.public_verifier_receipt.v1",
         "generated_utc": utc_now_iso_z(),
         "status": status,
@@ -189,6 +203,19 @@ def build_public_verifier_report(*, root: Path, report_root_rel: str = DEFAULT_R
         "platform_governance_head_claim_verdict": platform_governance_head_claim_verdict,
         "platform_governance_head_claim_boundary": platform_governance_head_claim_boundary,
     }
+    emit_toolchain_telemetry(
+        surface_id="tools.operator.public_verifier.build_public_verifier_report",
+        zone="TOOLCHAIN_PROVING",
+        event_type="public_verifier.report",
+        start_ts=started_ms,
+        end_ts=telemetry_now_ms(),
+        result_status=str(report["status"]),
+        policy_applied="wave1_public_verifier_observability",
+        receipt_ref=PUBLIC_VERIFIER_MANIFEST_REL,
+        request_id=current_head_commit,
+        path=telemetry_path,
+    )
+    return report
 
 
 def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:

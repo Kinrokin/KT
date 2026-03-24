@@ -1,0 +1,27 @@
+{
+  "checks": [
+    {
+      "check": "historical_claim_firewall_active",
+      "ref": "KT_PROD_CLEANROOM/governance/historical_claim_firewall.json",
+      "status": "PASS"
+    },
+    {
+      "check": "archive_only_refs_present",
+      "status": "PASS"
+    },
+    {
+      "check": "blocked_current_head_uplifts_declared",
+      "status": "PASS"
+    },
+    {
+      "check": "active_current_head_refs_present",
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "failures": [],
+  "generated_utc": "2026-03-23T17:16:57Z",
+  "historical_claim_firewall_ref": "KT_PROD_CLEANROOM/governance/historical_claim_firewall.json",
+  "schema_id": "kt.operator.historical_claim_firewall_receipt.v1",
+  "status": "PASS"
+}

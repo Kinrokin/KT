@@ -5,7 +5,7 @@
   "evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
   "evidence_contains_subject": true,
   "evidence_equals_subject": false,
-  "generated_utc": "2026-03-15T12:29:59Z",
+  "generated_utc": "2026-03-24T17:07:43Z",
   "integrity_supporting_artifacts": [
     "KT_PROD_CLEANROOM/reports/dependency_inventory.json",
     "KT_PROD_CLEANROOM/reports/python_environment_manifest.json",
@@ -19,10 +19,7 @@
   "platform_governance_claim_boundary": "Current-head workflow governance is fresh, but GitHub branch-protection / ruleset enforcement is not proven on main. Do not claim platform-enforced governance while main_branch_protection_receipt is not PASS.",
   "platform_governance_receipt_refs": [
     "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json",
-    "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
-    "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
-    "KT_PROD_CLEANROOM/reports/kt_platform_governance_lawful_narrowing_receipt.json",
-    "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json"
+    "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json"
   ],
   "platform_governance_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
   "platform_governance_verdict": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED",
@@ -34,18 +31,18 @@
   "schema_id": "kt.public_verifier_manifest.v4",
   "state_receipts": [
     "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
-    "KT_PROD_CLEANROOM/reports/kt_truth_publication_stabilization_receipt.json",
+    "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json",
     "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
     "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
     "KT_PROD_CLEANROOM/reports/authority_convergence_receipt.json",
     "KT_PROD_CLEANROOM/reports/documentary_truth_validation_receipt.json",
-    "KT_PROD_CLEANROOM/reports/dependency_inventory_validation_receipt.json",
-    "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json"
+    "KT_PROD_CLEANROOM/reports/dependency_inventory_validation_receipt.json"
   ],
-  "status": "PASS",
+  "status": "HOLD",
   "subject_verdict": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
-  "truth_pointer_ref": "kt_truth_ledger:ledger/current/current_pointer.json",
+  "truth_pointer_ref": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
   "truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
-  "validated_head_sha": "ea6b3759f487f9d034ea2410392a9c340a91f372",
+  "validated_head_sha": "494cd490a6512b9bfa937c82886db625143d38ae",
   "workflow_governance_status": "PASS_WITH_PLATFORM_BLOCK"
 }

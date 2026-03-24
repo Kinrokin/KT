@@ -1,0 +1,38 @@
+{
+  "checks": [
+    {
+      "check_id": "atlas_schema_id_current",
+      "pass": true
+    },
+    {
+      "check_id": "atlas_has_topology_rows",
+      "pass": true
+    },
+    {
+      "check_id": "all_rows_have_path_law_evidence_challenge_benchmark_claim_mapping",
+      "pass": true
+    },
+    {
+      "check_id": "all_referenced_support_paths_exist",
+      "pass": true
+    },
+    {
+      "check_id": "atlas_evidence_binds_w4_surfaces",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "W4 makes the capability atlas answer hostile questions per surface: execution path, law, evidence, challenge pack, benchmark pack, and claim ceiling. It does not by itself unlock comparative widening.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "generated_utc": "2026-03-23T19:06:06Z",
+  "missing_refs": [],
+  "missing_rows": [],
+  "schema_id": "kt.w4.capability_atlas_receipt.v1",
+  "source_refs": [
+    "KT_PROD_CLEANROOM/reports/capability_atlas.json",
+    "KT_PROD_CLEANROOM/governance/capability_atlas_contract.json",
+    "KT_PROD_CLEANROOM/reports/benchmark_negative_result_ledger.json",
+    "KT_PROD_CLEANROOM/reports/e2_cross_host_replay_receipt.json"
+  ],
+  "status": "PASS",
+  "surface_count": 14
+}

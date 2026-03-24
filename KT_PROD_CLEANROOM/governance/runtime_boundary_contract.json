@@ -1,6 +1,10 @@
 {
   "schema_id": "kt.governance.runtime_boundary_contract.v1",
   "contract_id": "RUNTIME_BOUNDARY_CONTRACT_V1_20260309",
+  "canonical_entry_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
+  "canonical_entry_callable": "kt.entrypoint.invoke",
+  "canonical_spine_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+  "canonical_spine_callable": "core.spine.run",
   "canonical_runtime_roots": [
     "cognition",
     "core",
@@ -16,14 +20,19 @@
     "thermodynamics",
     "versioning"
   ],
-  "compatibility_allowlist_roots": [
-    "tools"
-  ],
+  "compatibility_allowlist_roots": [],
   "canonical_runtime_excludes": [
     "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/tools/**"
   ],
+  "forbidden_noncanonical_live_execution_globs": [
+    "KT_PROD_CLEANROOM/tools/operator/**",
+    "KT_PROD_CLEANROOM/tools/verification/**",
+    "KT_PROD_CLEANROOM/tools/delivery/**",
+    "KT_PROD_CLEANROOM/tools/security/**"
+  ],
+  "claim_bearing_runtime_rule": "Only the canonical entrypoint may invoke the canonical spine for claim-bearing live runtime truth. Direct toolchain execution may probe but may never widen runtime claims.",
   "negative_space_exceptions": [
-    "repo-level KT_PROD_CLEANROOM/tools/** package imports are not runtime namespace violations"
+    "repo-level KT_PROD_CLEANROOM/tools/** imports are TOOLCHAIN_PROVING-only and must never be treated as canonical runtime imports or runtime truth"
   ],
   "status": "ACTIVE"
 }

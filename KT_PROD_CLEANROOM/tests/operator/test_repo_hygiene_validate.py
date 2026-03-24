@@ -165,3 +165,22 @@ def test_repo_hygiene_validate_fails_when_root_residue_remains(tmp_path: Path) -
     assert "exports" in outputs["inventory"]["local_root_residue_present"]
     assert outputs["clean_state"]["status"] == "FAIL_CLOSED"
     assert outputs["hygiene"]["status"] == "FAIL_CLOSED"
+
+
+def test_repo_hygiene_validate_allows_advisory_local_residue(tmp_path: Path) -> None:
+    _init_repo(tmp_path)
+    _seed_required_tree(tmp_path)
+    (tmp_path / ".coverage").write_text("cov\n", encoding="utf-8", newline="\n")
+    (tmp_path / ".pytest_wave2a").mkdir(parents=True, exist_ok=True)
+    (tmp_path / ".vscode").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "tmp").mkdir(parents=True, exist_ok=True)
+
+    outputs = build_ws13_outputs(tmp_path)
+
+    assert outputs["inventory"]["blocking_local_root_residue_present"] == []
+    assert ".coverage" in outputs["inventory"]["advisory_local_root_residue_present"]
+    assert ".pytest_wave2a" in outputs["inventory"]["advisory_local_root_residue_present"]
+    assert outputs["inventory"]["effective_root_entries_match_canonical_keep_set"] is True
+    assert outputs["clean_state"]["status"] == "PASS"
+    assert outputs["clean_state"]["git_status_clean"] is False
+    assert outputs["hygiene"]["status"] == "PASS"

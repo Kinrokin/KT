@@ -1,0 +1,81 @@
+{
+  "checks": [
+    {
+      "check_id": "live_current_head_sources_pass",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json"
+    },
+    {
+      "check_id": "historical_uplift_firewall_active",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/historical_claim_firewall.json"
+    },
+    {
+      "check_id": "current_head_blocker_count_is_one",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/final_blocker_matrix.json"
+    },
+    {
+      "check_id": "comparative_and_product_widening_stay_blocked",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/final_claim_class_outcome.json"
+    },
+    {
+      "check_id": "router_and_lobe_promotions_remain_unearned",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json"
+    },
+    {
+      "check_id": "final_tier_output_is_compiled_without_prestige_inflation",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/final_tier_ruling.json"
+    },
+    {
+      "check_id": "final_product_truth_boundary_stays_bounded",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/product/final_product_truth_boundary.json"
+    }
+  ],
+  "claim_boundary": "This receipt is the final current-head adjudication compiled from live W0-W7 evidence only. It does not use historical uplift or documentary substitution to widen current-head truth.",
+  "compiled_from_refs": [
+    "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json",
+    "KT_PROD_CLEANROOM/governance/historical_claim_firewall.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave5_blocker_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave5_final_tier_ruling.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave5_final_readjudication_receipt.json",
+    "KT_PROD_CLEANROOM/reports/c006_deferral_status_receipt.json",
+    "KT_PROD_CLEANROOM/reports/c006_deferral_heartbeat.json",
+    "KT_PROD_CLEANROOM/reports/commercial_truth_packet.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+    "KT_PROD_CLEANROOM/reports/c006_second_host_kit.json",
+    "KT_PROD_CLEANROOM/reports/product_install_15m_receipt.json",
+    "KT_PROD_CLEANROOM/reports/operator_handoff_receipt.json",
+    "KT_PROD_CLEANROOM/reports/standards_mapping_receipt.json",
+    "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json",
+    "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
+    "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
+    "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+    "KT_PROD_CLEANROOM/reports/e1_bounded_campaign_receipt.json"
+  ],
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "exact_current_head_standing": {
+    "current_head_claim_class": "SCOPED_TIER_BOUNDED_CURRENT_HEAD_ORGANISM_E1",
+    "externality_class_max": "E1_SAME_HOST_DETACHED_REPLAY",
+    "highest_truthful_tier_output": "NOT_FRONTIER",
+    "open_current_head_claim_blocker_ids": [
+      "C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"
+    ],
+    "product_truth_class": "BOUNDED_E1_BUYER_SIMPLE_PRODUCT_PLANE",
+    "router_status": "STATIC_CANONICAL_BASELINE_ONLY"
+  },
+  "final_blocker_matrix_ref": "KT_PROD_CLEANROOM/governance/final_blocker_matrix.json",
+  "final_claim_class_outcome_ref": "KT_PROD_CLEANROOM/governance/final_claim_class_outcome.json",
+  "final_forbidden_claims_list_ref": "KT_PROD_CLEANROOM/governance/final_forbidden_claims_list.json",
+  "final_product_truth_boundary_ref": "KT_PROD_CLEANROOM/product/final_product_truth_boundary.json",
+  "final_tier_ruling_ref": "KT_PROD_CLEANROOM/governance/final_tier_ruling.json",
+  "forbidden_claim_count": 9,
+  "generated_utc": "2026-03-23T20:43:40Z",
+  "next_lawful_move": "Continue bounded E1 delivery, operator flow, and buyer-safe packaging. Execute W6B immediately if second-host hardware appears.",
+  "schema_id": "kt.final_current_head.adjudication_receipt.v1",
+  "status": "PASS"
+}

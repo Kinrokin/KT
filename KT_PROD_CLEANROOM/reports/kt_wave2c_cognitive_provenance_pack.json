@@ -1,0 +1,79 @@
+{
+  "benchmark_rows": [
+    {
+      "benchmark_id": "deterministic_plan_hash",
+      "observed": "07f2a857ddede7f4889bd938ea3d28d7032af891548782adc4445c57927aac4c",
+      "pass": true
+    },
+    {
+      "benchmark_id": "deterministic_result_hash",
+      "observed": "7c816546857c0f2b0dd6d5cf4cd1367c95f6cf5020f538c48b6db8f3b97aff8d",
+      "pass": true
+    }
+  ],
+  "bounded_summary": "Cognition is now bounded truthfully as a deterministic hash-only planner/executor with explicit refusal paths. Direct proof is real; canonical spine carriage remains blocked where the runtime-context envelope cannot lawfully carry full cognition payloads.",
+  "canonical_entrypoint": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/cognitive_engine.py",
+  "challenge_rows": [
+    {
+      "challenge_id": "live_requested_refusal",
+      "pass": true,
+      "refusal_code": "REFUSE_EXTERNAL_UNAVAILABLE"
+    },
+    {
+      "challenge_id": "illegal_reference_refusal",
+      "pass": true,
+      "refusal_code": "REFUSE_ILLEGAL_REFERENCE"
+    }
+  ],
+  "disposition": "REALIZED_BOUNDED_KEEP_CANONICAL",
+  "externality_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+  "failure_artifact_refs": [
+    "KT_PROD_CLEANROOM/exports/wave2c_organ_realization/cognition/failure_artifacts/d589abc1fa65daf2469e4408f41a9398bafa4900127cf2b2b98710ebb1784f0f.json",
+    "KT_PROD_CLEANROOM/exports/wave2c_organ_realization/cognition/failure_artifacts/6407272ff9b5ca828f135aa82d89d7134ecfe97445b0f8f7856c87b4c5b8c805.json"
+  ],
+  "generated_utc": "2026-03-24T16:53:57Z",
+  "maturity_class": "O2_HARDENED",
+  "organ_id": "cognition",
+  "proof_contracts": {
+    "benchmark_pack_present": true,
+    "canonical_kernel_integration_present": false,
+    "challenge_pack_present": true,
+    "deterministic_suite_present": true,
+    "failure_artifact_present": true,
+    "provenance_present": true,
+    "telemetry_present": true
+  },
+  "provenance": {
+    "plan_hash": "07f2a857ddede7f4889bd938ea3d28d7032af891548782adc4445c57927aac4c",
+    "request_hash": "11b2c00e8dd1074c068e0c79dc4480c8538552cb539162202059cca51d8101ce",
+    "result_hash": "7c816546857c0f2b0dd6d5cf4cd1367c95f6cf5020f538c48b6db8f3b97aff8d",
+    "runtime_registry_hash": "527cc422264042df7df8a620b1c7eb8151a0940eab78abe2fe5a5055e848ffbe",
+    "step_result_hashes": [
+      "7f41ba0a3dfe75622f52501a3902bcd1396f83fec15c0ddb7c6301d5293cc20e",
+      "8a8ad3e34212c20cf3429cdf726e7bb0c9cdd0bb26037c55162cd79be3379cdf",
+      "8a6c5cc0fba94e4bf672ee7eb2b3f963ac4fa2dfc30fbe9fc67c63685bbef142",
+      "f2c2544511e876dfca37f072e28c67628a362bf4a40b33f2f067c9daafc85658"
+    ]
+  },
+  "reality_class": "LIVE_BOUNDED",
+  "schema_id": "kt.wave2c.cognition_pack.v1",
+  "spine_integration": {
+    "blocked_reason": "runtime_context_input_string_exceeds_max_string_len",
+    "execute_probe_ref": "KT_PROD_CLEANROOM/exports/wave2c_organ_realization/cognition/spine/cognition_execute/spine_blocked.json",
+    "execute_status": "BLOCKED_BY_RUNTIME_CONTEXT_INPUT_LIMIT",
+    "plan_probe_ref": "KT_PROD_CLEANROOM/exports/wave2c_organ_realization/cognition/spine/cognition_plan/spine_blocked.json",
+    "plan_status": "BLOCKED_BY_RUNTIME_CONTEXT_INPUT_LIMIT",
+    "runtime_telemetry_refs": [],
+    "status": "BLOCKED"
+  },
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "live_cognition_enabled",
+    "model_based_reasoning_superiority_claimed",
+    "chain_of_thought_exposed",
+    "canonical_spine_carriage_claimed_despite_input_limit"
+  ],
+  "telemetry_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_telemetry.jsonl"
+  ]
+}

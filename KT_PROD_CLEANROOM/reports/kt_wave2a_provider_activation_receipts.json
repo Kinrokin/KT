@@ -1,0 +1,105 @@
+{
+  "abi_mismatch_probe": {
+    "adapter_id": "council.openai.live_hashed.v1",
+    "error": "provider_id does not match adapter manifest binding (fail-closed)",
+    "failure_artifact_exists": true,
+    "failure_artifact_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/exports/wave2a_adapter_activation/failure_artifacts/81a58fed8ef1c4fd075548b50bcac5e0dce595ce24edcedb259a68589bf35e8a.json",
+    "failure_error_class": "AdapterAbiError",
+    "failure_id": "81a58fed8ef1c4fd075548b50bcac5e0dce595ce24edcedb259a68589bf35e8a",
+    "failure_rel": "KT_PROD_CLEANROOM/exports/wave2a_adapter_activation/failure_artifacts/81a58fed8ef1c4fd075548b50bcac5e0dce595ce24edcedb259a68589bf35e8a.json",
+    "provider_id": "not_allowed",
+    "receipt_ref": "",
+    "request_type": "healthcheck",
+    "status": "FAIL_CLOSED"
+  },
+  "active_manifest_ids": [
+    "council.openai.live_hashed.v1",
+    "council.openrouter.live_hashed.v1"
+  ],
+  "active_runtime_registry_ids": [
+    "council.openai.live_hashed.v1",
+    "council.openrouter.live_hashed.v1"
+  ],
+  "boundary_holds": [
+    "REMOTE_PROVIDER_AUTH_DID_NOT_YIELD_SUCCESSFUL_CURRENT_HEAD_INFERENCE",
+    "REMOTE_PROVIDER_HTTP_401_VISIBLE_AND_NOT_OVERCLAIMED_AWAY"
+  ],
+  "coverage": {
+    "adversarial_probe_coverage": [
+      "adapter_provider_mismatch_fail_closed"
+    ],
+    "declared_task_family_coverage": [
+      "analysis",
+      "healthcheck"
+    ],
+    "failure_class_coverage": [
+      "AdapterAbiError",
+      "ProviderVerdictFailClosed"
+    ],
+    "latency_class_coverage": [
+      "sub_500ms"
+    ],
+    "replayability_class_coverage": [
+      "E1_SAME_HOST_DETACHED_REPLAY"
+    ]
+  },
+  "export_root_ref": "KT_PROD_CLEANROOM/exports/wave2a_adapter_activation",
+  "failures": [],
+  "generated_utc": "2026-03-24T18:34:52Z",
+  "provider_rows": [
+    {
+      "adapter_id": "council.openai.live_hashed.v1",
+      "error": "http_status=401",
+      "failure_artifact_exists": true,
+      "failure_artifact_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/exports/wave2a_adapter_activation/failure_artifacts/e0557d120598347ab1cc021ef7b03c44261b03466dca9265f93c693dcee52801.json",
+      "failure_error_class": "ProviderVerdictFailClosed",
+      "failure_id": "e0557d120598347ab1cc021ef7b03c44261b03466dca9265f93c693dcee52801",
+      "failure_rel": "KT_PROD_CLEANROOM/exports/wave2a_adapter_activation/failure_artifacts/e0557d120598347ab1cc021ef7b03c44261b03466dca9265f93c693dcee52801.json",
+      "http_status": 401,
+      "latency_class": "sub_500ms",
+      "latency_ms": 388,
+      "provider_id": "openai",
+      "receipt_exists": true,
+      "receipt_hash": "3993206ebd78d10fc8f8a8edfa9823b1f017c067b857c0ca932cca24c17044b7",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/exports/wave2a_adapter_activation/provider_receipts/3993206ebd78d10fc8f8a8edfa9823b1f017c067b857c0ca932cca24c17044b7.json",
+      "receipt_rel": "KT_PROD_CLEANROOM/exports/wave2a_adapter_activation/provider_receipts/3993206ebd78d10fc8f8a8edfa9823b1f017c067b857c0ca932cca24c17044b7.json",
+      "replayability_class": "LIVE_HASHED",
+      "request_type": "healthcheck",
+      "status": "FAIL_CLOSED",
+      "verdict_pass": false
+    },
+    {
+      "adapter_id": "council.openrouter.live_hashed.v1",
+      "error": "http_status=401",
+      "failure_artifact_exists": true,
+      "failure_artifact_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/exports/wave2a_adapter_activation/failure_artifacts/ec1b03685c1f5664a0336fa72cc1daefc48caa5104cdb0552b6d3812a3e9ee1b.json",
+      "failure_error_class": "ProviderVerdictFailClosed",
+      "failure_id": "ec1b03685c1f5664a0336fa72cc1daefc48caa5104cdb0552b6d3812a3e9ee1b",
+      "failure_rel": "KT_PROD_CLEANROOM/exports/wave2a_adapter_activation/failure_artifacts/ec1b03685c1f5664a0336fa72cc1daefc48caa5104cdb0552b6d3812a3e9ee1b.json",
+      "http_status": 401,
+      "latency_class": "sub_500ms",
+      "latency_ms": 162,
+      "provider_id": "openrouter",
+      "receipt_exists": true,
+      "receipt_hash": "c8846a06355be7abd93aa3700c12408513e055c498b3066f03635c4837d0acc6",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/exports/wave2a_adapter_activation/provider_receipts/c8846a06355be7abd93aa3700c12408513e055c498b3066f03635c4837d0acc6.json",
+      "receipt_rel": "KT_PROD_CLEANROOM/exports/wave2a_adapter_activation/provider_receipts/c8846a06355be7abd93aa3700c12408513e055c498b3066f03635c4837d0acc6.json",
+      "replayability_class": "LIVE_HASHED",
+      "request_type": "analysis",
+      "status": "FAIL_CLOSED",
+      "verdict_pass": false
+    }
+  ],
+  "runtime_telemetry_ref": "KT_PROD_CLEANROOM/reports/kt_wave2a_runtime_telemetry.jsonl",
+  "schema_id": "kt.wave2a.provider_activation_receipts.v1",
+  "scope_boundary": "Wave 2A proves a narrow live provider-backed adapter lane with ABI-bound receipts and deterministic failure artifacts only.",
+  "second_provider_rule": "ADDED_AFTER_FIRST_LANE_PROVED_RECEIPT_AND_BOUNDED_OUTCOME",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "semantic_router_opened",
+    "organ_realization_opened",
+    "product_or_commercial_language_widened",
+    "broad_externality_widened",
+    "successful_remote_inference_claimed_without_evidence"
+  ]
+}

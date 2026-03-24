@@ -1,0 +1,299 @@
+{
+  "boundary_holds": [],
+  "c016a_precondition_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c016a_success_matrix.json",
+  "c016a_precondition_status": "PASS",
+  "c016a_successful_provider_ids": [
+    "openai",
+    "openrouter"
+  ],
+  "c016b_delta": "C016B_CLOSED_FOR_CANONICAL_LIVE_HASHED_RESILIENCE_PATH",
+  "environment_presence": {
+    "KT_HMAC_KEY_SIGNER_A": true,
+    "KT_HMAC_KEY_SIGNER_B": true,
+    "OPENAI_API_KEY": true,
+    "OPENROUTER_API_KEY": true
+  },
+  "exact_remaining_forbidden_claims": [
+    "Do not claim C016B closed unless all declared fault scenarios pass in repeatable LIVE_HASHED runs.",
+    "Do not raise C006 or externality class from same-host fault injection evidence.",
+    "Do not claim fleet-wide resilience beyond the canonical openai/openrouter LIVE_HASHED adapters exercised here.",
+    "Do not widen into router, product, or comparative proof from this receipt."
+  ],
+  "export_root_ref": "KT_PROD_CLEANROOM/exports/post_wave5_c016b_live_provider_resilience",
+  "generated_utc": "2026-03-22T00:44:21Z",
+  "payload_hash": "1588da5f11bfd21d00058da5f3a870af55a84bce80e6f59f602e9ab94ae4843d",
+  "repeatability_reference": [
+    {
+      "observed_backoff_ms": [
+        15
+      ],
+      "provider_invocations": 2,
+      "scenario_id": "transient_timeout_retry_backoff_to_success",
+      "status": "PASS",
+      "terminal_error": "",
+      "terminal_http_status": 200,
+      "terminal_status": "OK",
+      "terminal_verdict_pass": true
+    },
+    {
+      "first_error": "TIMEOUT (fail-closed)",
+      "first_failure_error_class": "RuntimeError",
+      "first_status": "FAIL_CLOSED",
+      "provider_invocations": 1,
+      "scenario_id": "persistent_timeout_opens_circuit",
+      "second_error": "CIRCUIT_OPEN (fail-closed)",
+      "second_failure_error_class": "RuntimeError",
+      "second_status": "FAIL_CLOSED",
+      "status": "PASS"
+    },
+    {
+      "first_status": "OK",
+      "provider_invocations": 1,
+      "scenario_id": "rate_limit_preflight_blocks_second_call",
+      "second_error": "RATE_LIMITED (fail-closed)",
+      "second_failure_error_class": "RuntimeError",
+      "second_status": "FAIL_CLOSED",
+      "status": "PASS"
+    },
+    {
+      "first_status": "OK",
+      "provider_invocations": 1,
+      "scenario_id": "quota_preflight_blocks_second_call",
+      "second_error": "QUOTA_EXCEEDED (fail-closed)",
+      "second_failure_error_class": "RuntimeError",
+      "second_status": "FAIL_CLOSED",
+      "status": "PASS"
+    },
+    {
+      "provider_invocations": 1,
+      "scenario_id": "malformed_response_fail_closes",
+      "status": "PASS",
+      "terminal_error": "PROVIDER_ERROR (fail-closed)",
+      "terminal_failure_error_class": "RuntimeError",
+      "terminal_status": "FAIL_CLOSED"
+    },
+    {
+      "observed_backoff_ms": [
+        11
+      ],
+      "provider_invocations": 2,
+      "scenario_id": "network_failure_retries_then_fail_closes",
+      "status": "PASS",
+      "terminal_error": "NETWORK_ERROR (fail-closed)",
+      "terminal_failure_error_class": "RuntimeError",
+      "terminal_status": "FAIL_CLOSED"
+    },
+    {
+      "failure_artifact_preserved": true,
+      "provider_invocations": 1,
+      "receipt_preserved": true,
+      "scenario_id": "verdict_fail_closed_preserves_receipt_and_failure_artifact",
+      "status": "PASS",
+      "terminal_error": "http_status=429",
+      "terminal_http_status": 429,
+      "terminal_status": "FAIL_CLOSED",
+      "terminal_verdict_pass": false,
+      "verdict_fail_reason": "http_status=429"
+    }
+  ],
+  "repeatability_status": "PASS",
+  "runs": [
+    {
+      "run_id": "run_a",
+      "scenarios": [
+        {
+          "observed_backoff_ms": [
+            15
+          ],
+          "provider_id": "openai",
+          "provider_invocations": 2,
+          "receipt_rel": "KT_PROD_CLEANROOM/exports/post_wave5_c016b_live_provider_resilience/run_a/transient_timeout_retry_backoff_to_success/provider_receipts/44ec44838526c7fd02e3135ac0a2d20ab1b041abf51b1dca7a5e4ccb5607c589.json",
+          "scenario_id": "transient_timeout_retry_backoff_to_success",
+          "status": "PASS",
+          "terminal_error": "",
+          "terminal_http_status": 200,
+          "terminal_status": "OK",
+          "terminal_verdict_pass": true
+        },
+        {
+          "first_error": "TIMEOUT (fail-closed)",
+          "first_failure_error_class": "RuntimeError",
+          "first_status": "FAIL_CLOSED",
+          "provider_id": "openai",
+          "provider_invocations": 1,
+          "scenario_id": "persistent_timeout_opens_circuit",
+          "second_error": "CIRCUIT_OPEN (fail-closed)",
+          "second_failure_error_class": "RuntimeError",
+          "second_status": "FAIL_CLOSED",
+          "status": "PASS"
+        },
+        {
+          "first_status": "OK",
+          "provider_id": "openrouter",
+          "provider_invocations": 1,
+          "scenario_id": "rate_limit_preflight_blocks_second_call",
+          "second_error": "RATE_LIMITED (fail-closed)",
+          "second_failure_error_class": "RuntimeError",
+          "second_status": "FAIL_CLOSED",
+          "status": "PASS"
+        },
+        {
+          "first_status": "OK",
+          "provider_id": "openrouter",
+          "provider_invocations": 1,
+          "scenario_id": "quota_preflight_blocks_second_call",
+          "second_error": "QUOTA_EXCEEDED (fail-closed)",
+          "second_failure_error_class": "RuntimeError",
+          "second_status": "FAIL_CLOSED",
+          "status": "PASS"
+        },
+        {
+          "provider_id": "openai",
+          "provider_invocations": 1,
+          "scenario_id": "malformed_response_fail_closes",
+          "status": "PASS",
+          "terminal_error": "PROVIDER_ERROR (fail-closed)",
+          "terminal_failure_error_class": "RuntimeError",
+          "terminal_status": "FAIL_CLOSED"
+        },
+        {
+          "observed_backoff_ms": [
+            11
+          ],
+          "provider_id": "openrouter",
+          "provider_invocations": 2,
+          "scenario_id": "network_failure_retries_then_fail_closes",
+          "status": "PASS",
+          "terminal_error": "NETWORK_ERROR (fail-closed)",
+          "terminal_failure_error_class": "RuntimeError",
+          "terminal_status": "FAIL_CLOSED"
+        },
+        {
+          "failure_artifact_preserved": true,
+          "provider_id": "openai",
+          "provider_invocations": 1,
+          "receipt_preserved": true,
+          "scenario_id": "verdict_fail_closed_preserves_receipt_and_failure_artifact",
+          "status": "PASS",
+          "terminal_error": "http_status=429",
+          "terminal_http_status": 429,
+          "terminal_status": "FAIL_CLOSED",
+          "terminal_verdict_pass": false,
+          "verdict_fail_reason": "http_status=429"
+        }
+      ]
+    },
+    {
+      "run_id": "run_b",
+      "scenarios": [
+        {
+          "observed_backoff_ms": [
+            15
+          ],
+          "provider_id": "openai",
+          "provider_invocations": 2,
+          "receipt_rel": "KT_PROD_CLEANROOM/exports/post_wave5_c016b_live_provider_resilience/run_b/transient_timeout_retry_backoff_to_success/provider_receipts/2334ceb2edfb3186c428c6af792fca741da2359a059369e0046001f08cb055d1.json",
+          "scenario_id": "transient_timeout_retry_backoff_to_success",
+          "status": "PASS",
+          "terminal_error": "",
+          "terminal_http_status": 200,
+          "terminal_status": "OK",
+          "terminal_verdict_pass": true
+        },
+        {
+          "first_error": "TIMEOUT (fail-closed)",
+          "first_failure_error_class": "RuntimeError",
+          "first_status": "FAIL_CLOSED",
+          "provider_id": "openai",
+          "provider_invocations": 1,
+          "scenario_id": "persistent_timeout_opens_circuit",
+          "second_error": "CIRCUIT_OPEN (fail-closed)",
+          "second_failure_error_class": "RuntimeError",
+          "second_status": "FAIL_CLOSED",
+          "status": "PASS"
+        },
+        {
+          "first_status": "OK",
+          "provider_id": "openrouter",
+          "provider_invocations": 1,
+          "scenario_id": "rate_limit_preflight_blocks_second_call",
+          "second_error": "RATE_LIMITED (fail-closed)",
+          "second_failure_error_class": "RuntimeError",
+          "second_status": "FAIL_CLOSED",
+          "status": "PASS"
+        },
+        {
+          "first_status": "OK",
+          "provider_id": "openrouter",
+          "provider_invocations": 1,
+          "scenario_id": "quota_preflight_blocks_second_call",
+          "second_error": "QUOTA_EXCEEDED (fail-closed)",
+          "second_failure_error_class": "RuntimeError",
+          "second_status": "FAIL_CLOSED",
+          "status": "PASS"
+        },
+        {
+          "provider_id": "openai",
+          "provider_invocations": 1,
+          "scenario_id": "malformed_response_fail_closes",
+          "status": "PASS",
+          "terminal_error": "PROVIDER_ERROR (fail-closed)",
+          "terminal_failure_error_class": "RuntimeError",
+          "terminal_status": "FAIL_CLOSED"
+        },
+        {
+          "observed_backoff_ms": [
+            11
+          ],
+          "provider_id": "openrouter",
+          "provider_invocations": 2,
+          "scenario_id": "network_failure_retries_then_fail_closes",
+          "status": "PASS",
+          "terminal_error": "NETWORK_ERROR (fail-closed)",
+          "terminal_failure_error_class": "RuntimeError",
+          "terminal_status": "FAIL_CLOSED"
+        },
+        {
+          "failure_artifact_preserved": true,
+          "provider_id": "openai",
+          "provider_invocations": 1,
+          "receipt_preserved": true,
+          "scenario_id": "verdict_fail_closed_preserves_receipt_and_failure_artifact",
+          "status": "PASS",
+          "terminal_error": "http_status=429",
+          "terminal_http_status": 429,
+          "terminal_status": "FAIL_CLOSED",
+          "terminal_verdict_pass": false,
+          "verdict_fail_reason": "http_status=429"
+        }
+      ]
+    }
+  ],
+  "runtime_telemetry_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c016b_runtime_telemetry.jsonl",
+  "scenario_failures": [],
+  "schema_id": "kt.operator.c016b_live_provider_resilience_receipt.v1",
+  "scope_boundary": "C016B proves bounded timeout/backoff, circuit-breaker, rate-limit, quota, network-failure, malformed-response fail-closure, and verdict-failure truth separation on the canonical LIVE_HASHED lane only.",
+  "signoffs": [
+    {
+      "attestation_mode": "HMAC",
+      "hmac_key_fingerprint": "8314445172df00a0444b2c2a4f730271eb2b0be98857b85d028b13f2ba59306c",
+      "hmac_signature": "1e4fd84e84ccc781e7f0fdb984ee98b12c34ee9de87c7cc85fc50f1ae3f105ba",
+      "key_id": "SIGNER_A",
+      "payload_hash": "1588da5f11bfd21d00058da5f3a870af55a84bce80e6f59f602e9ab94ae4843d"
+    },
+    {
+      "attestation_mode": "HMAC",
+      "hmac_key_fingerprint": "99c997e62fa05d0cb831070175b5bad86d31c94fd52570992f0f960f057990a6",
+      "hmac_signature": "249e2c7d68fb4655b04b69bce6432c86b59e4a2fe8cb73b08d52f29161f456eb",
+      "key_id": "SIGNER_B",
+      "payload_hash": "1588da5f11bfd21d00058da5f3a870af55a84bce80e6f59f602e9ab94ae4843d"
+    }
+  ],
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "externality_upgraded",
+    "cross_host_resilience_proven",
+    "router_elevated",
+    "product_truth_widened"
+  ]
+}

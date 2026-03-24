@@ -1,0 +1,63 @@
+{
+  "claim_boundary": "This matrix is informative only. It is a bounded thematic mapping for the current E1 product wedge, not a certification or compliance determination.",
+  "current_claim_ceiling": "E1_SAME_HOST_DETACHED_REPLAY",
+  "framework_label": "NIST AI RMF bounded thematic mapping",
+  "informative_only": true,
+  "mapped_domains": [
+    {
+      "alignment_status": "BOUNDED_PRESENT",
+      "domain_id": "govern",
+      "kt_surface_refs": [
+        "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json",
+        "KT_PROD_CLEANROOM/reports/c006_deferral_heartbeat.json",
+        "KT_PROD_CLEANROOM/product/support_boundary.json"
+      ],
+      "out_of_scope": [
+        "broad_enterprise_governance_programs",
+        "organization_wide_ai_portfolio_controls"
+      ]
+    },
+    {
+      "alignment_status": "BOUNDED_PRESENT",
+      "domain_id": "map",
+      "kt_surface_refs": [
+        "KT_PROD_CLEANROOM/product/one_page_product_truth_surface.md",
+        "KT_PROD_CLEANROOM/product/deployment_profiles.json",
+        "KT_PROD_CLEANROOM/reports/commercial_truth_packet.json"
+      ],
+      "out_of_scope": [
+        "cross_host_risk_mapping",
+        "enterprise_scale_use_case_mapping"
+      ]
+    },
+    {
+      "alignment_status": "BOUNDED_PRESENT",
+      "domain_id": "measure",
+      "kt_surface_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json"
+      ],
+      "out_of_scope": [
+        "independent_hostile_measurement",
+        "cross_host_measurement"
+      ]
+    },
+    {
+      "alignment_status": "BOUNDED_PRESENT",
+      "domain_id": "manage",
+      "kt_surface_refs": [
+        "KT_PROD_CLEANROOM/product/operator_runbook_v2.md",
+        "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+        "KT_PROD_CLEANROOM/reports/c006_second_host_kit.json"
+      ],
+      "out_of_scope": [
+        "full_incident_management_program",
+        "broad_enterprise_change_management"
+      ]
+    }
+  ],
+  "not_certification_or_legal_determination": true,
+  "schema_id": "kt.product.nist_mapping_matrix.v1",
+  "status": "ACTIVE"
+}

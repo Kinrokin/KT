@@ -94,6 +94,8 @@ DOCUMENTARY_ALLOWED_PATTERNS = [
     "KT_PROD_CLEANROOM/tools/operator/claim_compiler.py",
     "KT_PROD_CLEANROOM/tools/operator/constitutional_completion_emit.py",
     "KT_PROD_CLEANROOM/tools/operator/constitutional_spine_ratify.py",
+    # WS14 carries explicit archive denylist strings as validator policy, not as a live archive dependency.
+    "KT_PROD_CLEANROOM/tools/operator/ws14_static_verifier_release_validate.py",
     TOOL_REL,
     "KT_PROD_CLEANROOM/exports/law/kt.constitution_pointer.v1.json",
 ]

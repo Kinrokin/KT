@@ -10,7 +10,7 @@ from tools.operator.titanium_common import load_json, make_run_dir, repo_root, w
 from tools.operator.truth_authority import expected_readiness_excludes, frozen_surface_coverage
 
 
-REQUIRED_ZONES = ("CANONICAL", "LAB", "ARCHIVE", "COMMERCIAL", "GENERATED_RUNTIME_TRUTH", "QUARANTINED")
+REQUIRED_ZONES = ("CANONICAL", "LAB", "ARCHIVE", "COMMERCIAL", "TOOLCHAIN_PROVING", "GENERATED_RUNTIME_TRUTH", "QUARANTINED")
 
 
 def _resolve(root: Path, rel: str) -> Path:
@@ -69,6 +69,10 @@ def _generated_truth_surfaces(canonical_scope: Dict[str, Any]) -> List[str]:
     return [item for item in authoritative if item.startswith("KT_PROD_CLEANROOM/reports/")]
 
 
+def _toolchain_proving_surfaces(canonical_scope: Dict[str, Any]) -> List[str]:
+    return _list(canonical_scope, "toolchain_proving_surfaces")
+
+
 def validate_trust_zones(*, root: Path) -> Dict[str, Any]:
     registry = load_json(_resolve(root, "KT_PROD_CLEANROOM/governance/trust_zone_registry.json"))
     canonical_scope = load_json(_resolve(root, "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json"))
@@ -104,6 +108,7 @@ def validate_trust_zones(*, root: Path) -> Dict[str, Any]:
 
     canonical_include = _list(zones.get("CANONICAL", {}), "include")
     canonical_exclude = _list(zones.get("CANONICAL", {}), "exclude")
+    toolchain_include = _list(zones.get("TOOLCHAIN_PROVING", {}), "include")
     generated_include = _list(zones.get("GENERATED_RUNTIME_TRUTH", {}), "include")
     quarantine_include = _list(zones.get("QUARANTINED", {}), "include")
     commercial_include = _list(zones.get("COMMERCIAL", {}), "include")
@@ -119,6 +124,38 @@ def validate_trust_zones(*, root: Path) -> Dict[str, Any]:
     )
     if primary_mismatches:
         failures.append("canonical_primary_surfaces_outside_canonical_zone")
+
+    toolchain_surfaces = _toolchain_proving_surfaces(canonical_scope)
+    toolchain_declared = bool(toolchain_surfaces)
+    toolchain_mismatches = [pattern for pattern in toolchain_surfaces if not _matches_any(pattern, toolchain_include)]
+    toolchain_canonical_overlap = [pattern for pattern in toolchain_surfaces if _matches_any(pattern, canonical_include)]
+    checks.append(
+        {
+            "check": "toolchain_proving_surfaces_declared",
+            "status": "PASS" if toolchain_declared else "FAIL",
+            "count": len(toolchain_surfaces),
+        }
+    )
+    checks.append(
+        {
+            "check": "toolchain_proving_surfaces_in_toolchain_zone",
+            "status": "PASS" if not toolchain_mismatches else "FAIL",
+            "mismatches": toolchain_mismatches,
+        }
+    )
+    checks.append(
+        {
+            "check": "toolchain_proving_surfaces_not_in_canonical_zone",
+            "status": "PASS" if not toolchain_canonical_overlap else "FAIL",
+            "mismatches": toolchain_canonical_overlap,
+        }
+    )
+    if not toolchain_declared:
+        failures.append("toolchain_proving_surfaces_missing")
+    if toolchain_mismatches:
+        failures.append("toolchain_proving_surfaces_outside_toolchain_zone")
+    if toolchain_canonical_overlap:
+        failures.append("toolchain_proving_surfaces_still_canonical")
 
     generated_truth_surfaces = _generated_truth_surfaces(canonical_scope)
     generated_mismatches = [pattern for pattern in generated_truth_surfaces if not _matches_any(pattern, generated_include)]
@@ -196,16 +233,17 @@ def validate_trust_zones(*, root: Path) -> Dict[str, Any]:
         failures.append("readiness_excludes_incomplete")
 
     frozen_surfaces = _list(freeze_manifest, "frozen_surfaces")
-    frozen_outside_canonical = [pattern for pattern in frozen_surfaces if not _matches_any(pattern, canonical_include)]
+    frozen_allowed_zone_patterns = [*canonical_include, *toolchain_include]
+    frozen_outside_allowed_zones = [pattern for pattern in frozen_surfaces if not _matches_any(pattern, frozen_allowed_zone_patterns)]
     missing_protection = frozen_surface_coverage(
         frozen_surfaces=frozen_surfaces,
         protected_surfaces=_list(amendment_scope, "protected_surfaces"),
     )
     checks.append(
         {
-            "check": "frozen_surfaces_live_in_canonical_zone",
-            "status": "PASS" if not frozen_outside_canonical else "FAIL",
-            "mismatches": frozen_outside_canonical,
+            "check": "frozen_surfaces_live_in_canonical_or_toolchain_zone",
+            "status": "PASS" if not frozen_outside_allowed_zones else "FAIL",
+            "mismatches": frozen_outside_allowed_zones,
         }
     )
     checks.append(
@@ -215,8 +253,8 @@ def validate_trust_zones(*, root: Path) -> Dict[str, Any]:
             "mismatches": missing_protection,
         }
     )
-    if frozen_outside_canonical:
-        failures.append("frozen_surfaces_outside_canonical")
+    if frozen_outside_allowed_zones:
+        failures.append("frozen_surfaces_outside_authoritative_or_toolchain_zone")
     if missing_protection:
         failures.append("frozen_surfaces_missing_amendment_protection")
 
@@ -264,7 +302,7 @@ def validate_trust_zones(*, root: Path) -> Dict[str, Any]:
 
 
 def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
-    ap = argparse.ArgumentParser(description="Validate six-zone law, readiness scope, truth authority, and sacred-surface boundaries.")
+    ap = argparse.ArgumentParser(description="Validate seven-zone law, readiness scope, truth authority, and sacred-surface boundaries.")
     ap.add_argument("--run-root", default="")
     return ap.parse_args(argv)
 

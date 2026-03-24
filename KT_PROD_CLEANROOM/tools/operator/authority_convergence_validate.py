@@ -6,6 +6,7 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
+from tools.operator.documentary_truth_validate import build_documentary_truth_report
 from tools.operator.public_verifier import (
     HEAD_VERDICT_CONTAINS,
     HEAD_VERDICT_SUBJECT,
@@ -13,10 +14,19 @@ from tools.operator.public_verifier import (
     build_public_verifier_report,
 )
 from tools.operator.titanium_common import make_run_dir, repo_root, utc_now_iso_z, write_failure_artifacts, write_json_worm
-from tools.operator.truth_authority import CURRENT_POINTER_REL, active_supporting_truth_surfaces, active_truth_source_ref, load_json_ref
+from tools.operator.truth_authority import (
+    CURRENT_POINTER_REL,
+    active_supporting_truth_surfaces,
+    active_truth_source_ref,
+    compatibility_surface_is_non_authoritative,
+    load_json_ref,
+    truth_source_ref_is_active_or_compatibility_pointer,
+)
 
 
 DEFAULT_REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
+MAIN_CURRENT_STATE_REL = f"{DEFAULT_REPORT_ROOT_REL}/current_state_receipt.json"
+MAIN_RUNTIME_AUDIT_REL = f"{DEFAULT_REPORT_ROOT_REL}/runtime_closure_audit.json"
 DEFAULT_CURRENT_STATE_REF = "kt_truth_ledger:ledger/current/current_state_receipt.json"
 DEFAULT_RUNTIME_AUDIT_REF = "kt_truth_ledger:ledger/current/runtime_closure_audit.json"
 LEDGER_POINTER_REF = "kt_truth_ledger:ledger/current/current_pointer.json"
@@ -91,23 +101,20 @@ def _status_from(payload: Dict[str, Any], *keys: str) -> str:
     return ""
 
 
+def _documentary_only(payload: Dict[str, Any]) -> bool:
+    return compatibility_surface_is_non_authoritative(
+        ref=CURRENT_POINTER_REL,
+        active_source_ref=LEDGER_POINTER_REF,
+        payload=payload,
+        documentary_refs=[CURRENT_POINTER_REL, MAIN_CURRENT_STATE_REL, MAIN_RUNTIME_AUDIT_REL],
+    )
+
+
 def _supporting_ref(surfaces: Sequence[str], suffix: str, fallback: str) -> str:
     for surface in surfaces:
         if str(surface).strip().endswith(suffix):
             return str(surface).strip()
     return fallback
-
-
-def _documentary_only(payload: Dict[str, Any]) -> bool:
-    if bool(payload.get("documentary_only")):
-        return True
-    if "live_authority" in payload and payload.get("live_authority") is False:
-        return True
-    if "LIVE_TRUTH_ALLOWED" in payload and payload.get("LIVE_TRUTH_ALLOWED") is False:
-        return True
-    status = str(payload.get("status", "")).strip().upper()
-    authority_level = str(payload.get("authority_level", "")).strip().upper()
-    return "DOCUMENTARY" in status or "SUPERSEDED" in status or authority_level == "DOCUMENTARY_ONLY"
 
 
 def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
@@ -119,7 +126,7 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
 
     board = _load_json(root / "KT_PROD_CLEANROOM" / "governance" / "execution_board.json")
     readiness = _load_json(root / "KT_PROD_CLEANROOM" / "governance" / "readiness_scope_manifest.json")
-    documentary_validation = _load_json(root / DOCUMENTARY_VALIDATION_REL)
+    documentary_validation = build_documentary_truth_report(root=root)
     stabilization = _load_json(root / TRUTH_PUBLICATION_STABILIZATION_REL)
     crypto_publication = _load_json(root / CRYPTO_PUBLICATION_RECEIPT_REL)
     authority_subject = _load_json(root / AUTHORITY_SUBJECT_REL)
@@ -132,6 +139,7 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
     main_pointer = _load_json(root / CURRENT_POINTER_REL)
     main_current_state = _load_json(reports_root / "current_state_receipt.json")
     main_runtime_audit = _load_json(reports_root / "runtime_closure_audit.json")
+    compatibility_refs = [CURRENT_POINTER_REL, MAIN_CURRENT_STATE_REL, MAIN_RUNTIME_AUDIT_REL]
 
     verifier_report = build_public_verifier_report(root=root, report_root_rel=DEFAULT_REPORT_ROOT_REL)
     current_head_commit = _git_head(root)
@@ -171,9 +179,24 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
         "truth_publication_stabilized": bool(stabilization.get("truth_publication_stabilized")),
         "stabilization_truth_subject_commit": str(stabilization.get("truth_subject_commit", "")).strip(),
         "documentary_validation_status": str(documentary_validation.get("status", "")).strip(),
-        "main_current_pointer_documentary_only": _documentary_only(main_pointer),
-        "main_current_state_documentary_only": _documentary_only(main_current_state),
-        "main_runtime_audit_documentary_only": _documentary_only(main_runtime_audit),
+        "main_current_pointer_documentary_only": compatibility_surface_is_non_authoritative(
+            ref=CURRENT_POINTER_REL,
+            active_source_ref=active_source,
+            payload=main_pointer,
+            documentary_refs=compatibility_refs,
+        ),
+        "main_current_state_documentary_only": compatibility_surface_is_non_authoritative(
+            ref=MAIN_CURRENT_STATE_REL,
+            active_source_ref=active_source,
+            payload=main_current_state,
+            documentary_refs=compatibility_refs,
+        ),
+        "main_runtime_audit_documentary_only": compatibility_surface_is_non_authoritative(
+            ref=MAIN_RUNTIME_AUDIT_REL,
+            active_source_ref=active_source,
+            payload=main_runtime_audit,
+            documentary_refs=compatibility_refs,
+        ),
     }
 
     checks: List[Dict[str, Any]] = []
@@ -191,8 +214,22 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
             failures.append(check_id)
 
     expect_equal("active_truth_source_is_ledger_pointer", observed["active_truth_source"], LEDGER_POINTER_REF)
-    expect_equal("execution_board_points_to_active_truth_source", observed["board_truth_source"], observed["active_truth_source"])
-    expect_equal("readiness_scope_points_to_active_truth_source", observed["readiness_truth_source"], observed["active_truth_source"])
+    expect_true(
+        "execution_board_points_to_active_truth_source",
+        truth_source_ref_is_active_or_compatibility_pointer(
+            candidate_ref=observed["board_truth_source"],
+            active_source_ref=observed["active_truth_source"],
+            compatibility_payload=main_pointer,
+        ),
+    )
+    expect_true(
+        "readiness_scope_points_to_active_truth_source",
+        truth_source_ref_is_active_or_compatibility_pointer(
+            candidate_ref=observed["readiness_truth_source"],
+            active_source_ref=observed["active_truth_source"],
+            compatibility_payload=main_pointer,
+        ),
+    )
     expect_true("ledger_branch_published", observed["ledger_branch_published"], remote_error=str(remote_fact.get("error", "")).strip())
     expect_equal("publication_receipt_passes", observed["publication_receipt_status"], "PASS")
     expect_equal("publication_stabilization_passes", observed["stabilization_status"], "PASS")

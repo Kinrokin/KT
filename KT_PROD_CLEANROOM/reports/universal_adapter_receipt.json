@@ -1,0 +1,123 @@
+{
+  "checks": [
+    {
+      "check_id": "live_adapter_rows_meet_universal_contract",
+      "pass": true
+    },
+    {
+      "check_id": "runtime_registry_artifact_hashes_match_live_manifests",
+      "pass": true
+    },
+    {
+      "check_id": "generated_candidate_meets_universal_contract",
+      "missing_fields": [],
+      "pass": true
+    },
+    {
+      "check_id": "generated_candidate_is_promotion_receipted",
+      "job_dir_ref": "KT_PROD_CLEANROOM/exports/adapters_shadow/_w3_civilization/aa18410a2a68ac67e9fde1e692661f6dbdefa11804a79a3a6cf2d04b8250da72",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "W3 proves one universal adapter contract is executable across the two active live adapters and one bounded factory-generated candidate. It does not claim broad live adapter activation or runtime cutover.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "forbidden_claims_not_made": [
+    "all_inventory_adapters_are_active_runtime",
+    "generated_candidate_is_a_live_runtime_adapter",
+    "adapter_contract_proves_externality_above_E1"
+  ],
+  "generated_candidate": {
+    "adapter_class": "GENERATED_MUTATION_CANDIDATE",
+    "adapter_id": "lobe.architect.v1",
+    "adapter_kind": "GENERATED_TOURNAMENT_CANDIDATE",
+    "admission_receipt_ref": "KT_PROD_CLEANROOM/exports/adapters_shadow/_w3_civilization/aa18410a2a68ac67e9fde1e692661f6dbdefa11804a79a3a6cf2d04b8250da72/training_admission_receipt.json",
+    "budget_profile": "kt.global_budget_state.v1",
+    "challenge_hooks": [
+      "tournament",
+      "promotion_decision",
+      "rollback_drill",
+      "learning_response"
+    ],
+    "circuit_breaker_policy": {
+      "cooldown_ms": 0,
+      "threshold": 1
+    },
+    "eval_report_ref": "KT_PROD_CLEANROOM/exports/adapters_shadow/_w3_civilization/aa18410a2a68ac67e9fde1e692661f6dbdefa11804a79a3a6cf2d04b8250da72/eval_report.json",
+    "execution_mode": "GENERATED_TOURNAMENT",
+    "fitness_region_ref": "KT_PROD_CLEANROOM/exports/adapters_shadow/_w3_civilization/aa18410a2a68ac67e9fde1e692661f6dbdefa11804a79a3a6cf2d04b8250da72/fitness_region.json",
+    "hash_manifest_ref": "KT_PROD_CLEANROOM/exports/adapters_shadow/_w3_civilization/aa18410a2a68ac67e9fde1e692661f6dbdefa11804a79a3a6cf2d04b8250da72/hash_manifest.json",
+    "io_schema_ref": "kt.factory.job_dir_manifest.v1",
+    "job_dir_manifest_ref": "KT_PROD_CLEANROOM/exports/adapters_shadow/_w3_civilization/aa18410a2a68ac67e9fde1e692661f6dbdefa11804a79a3a6cf2d04b8250da72/job_dir_manifest.json",
+    "phase_trace_ref": "KT_PROD_CLEANROOM/exports/adapters_shadow/_w3_civilization/aa18410a2a68ac67e9fde1e692661f6dbdefa11804a79a3a6cf2d04b8250da72/phase_trace.json",
+    "policy_profile": "w3.current_head.civilization_loop",
+    "promotion_ref": "KT_PROD_CLEANROOM/exports/adapters_shadow/_w3_civilization/aa18410a2a68ac67e9fde1e692661f6dbdefa11804a79a3a6cf2d04b8250da72/promotion.json",
+    "provenance_requirements": [
+      "training_admission_receipt",
+      "reasoning_trace",
+      "eval_report",
+      "signal_quality",
+      "fitness_region",
+      "promotion_receipt",
+      "rollback_drill"
+    ],
+    "provider_id": "generated.fl3_factory",
+    "rate_limit_profile": {
+      "max_calls_per_window": 1,
+      "quota_cap": 1,
+      "window_ms": 60000
+    },
+    "replayability_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+    "request_type_allowlist": [
+      "evaluation",
+      "mutation",
+      "tournament"
+    ],
+    "retry_policy": {
+      "max_attempts": 0
+    },
+    "signal_quality_ref": "KT_PROD_CLEANROOM/exports/adapters_shadow/_w3_civilization/aa18410a2a68ac67e9fde1e692661f6dbdefa11804a79a3a6cf2d04b8250da72/signal_quality.json",
+    "status": "GENERATED_PROMOTABLE_CANDIDATE",
+    "timeout_ms": 20000,
+    "version": "w3_494cd490a651"
+  },
+  "generated_candidate_job_dir_ref": "KT_PROD_CLEANROOM/exports/adapters_shadow/_w3_civilization/aa18410a2a68ac67e9fde1e692661f6dbdefa11804a79a3a6cf2d04b8250da72",
+  "generated_utc": "2026-03-23T18:44:26Z",
+  "live_adapter_count": 2,
+  "live_adapter_rows": [
+    {
+      "adapter_class": "LIVE_RUNTIME_PROVIDER",
+      "adapter_id": "council.openai.live_hashed.v1",
+      "manifest_path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/exports/adapters/council_openai_live_hashed/v1/adapter_manifest.json",
+      "missing_fields": [],
+      "pass": true
+    },
+    {
+      "adapter_class": "LIVE_RUNTIME_PROVIDER",
+      "adapter_id": "council.openrouter.live_hashed.v1",
+      "manifest_path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/exports/adapters/council_openrouter_live_hashed/v1/adapter_manifest.json",
+      "missing_fields": [],
+      "pass": true
+    }
+  ],
+  "runtime_registry_hash_rows": [
+    {
+      "adapter_id": "council.openai.live_hashed.v1",
+      "artifact_hash_matches": true,
+      "artifact_path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/exports/adapters/council_openai_live_hashed/v1/adapter_manifest.json"
+    },
+    {
+      "adapter_id": "council.openrouter.live_hashed.v1",
+      "artifact_hash_matches": true,
+      "artifact_path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/exports/adapters/council_openrouter_live_hashed/v1/adapter_manifest.json"
+    }
+  ],
+  "schema_id": "kt.w3.universal_adapter_receipt.v1",
+  "source_refs": [
+    "KT_PROD_CLEANROOM/governance/kt_adapter_abi_v2.json",
+    "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+    "KT_PROD_CLEANROOM/exports/adapters_shadow/_w3_civilization/aa18410a2a68ac67e9fde1e692661f6dbdefa11804a79a3a6cf2d04b8250da72",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json"
+  ],
+  "status": "PASS",
+  "universal_adapter_abi_ref": "KT_PROD_CLEANROOM/governance/kt_adapter_abi_v2.json"
+}

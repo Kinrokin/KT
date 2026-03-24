@@ -10,14 +10,16 @@
   "branch_ref": "main",
   "conflict_status": "PASS",
   "current_head_truth_source": "KT_PROD_CLEANROOM/reports/live_validation_index.json",
-  "derived_posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+  "derived_posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
   "enforcement_status": "PASS",
-  "generated_utc": "2026-03-14T12:14:07Z",
-  "open_blockers": [],
+  "generated_utc": "2026-03-24T17:37:27Z",
+  "open_blockers": [
+    "WORKTREE_DIRTY"
+  ],
   "operator_clean_clone_status": "PASS",
-  "pinned_head_sha": "7bd610b507328eb72622ce24678620f5469f3848",
+  "pinned_head_sha": "494cd490a6512b9bfa937c82886db625143d38ae",
   "schema_id": "kt.operator.settled_truth_source_receipt.v1",
-  "status": "SETTLED_AUTHORITATIVE",
+  "status": "TRANSITIONAL_AUTHORITATIVE",
   "supersedes_if_current_head_changes": [
     "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
     "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
@@ -34,10 +36,10 @@
     "KT_PROD_CLEANROOM/governance/tracked_vs_generated_truth_boundary.json"
   ],
   "tracked_truth_heads": {
-    "current_state_receipt": "7bd610b507328eb72622ce24678620f5469f3848",
-    "live_validation_index": "7bd610b507328eb72622ce24678620f5469f3848",
-    "posture_consistency_receipt": "7bd610b507328eb72622ce24678620f5469f3848",
-    "runtime_closure_audit": "7bd610b507328eb72622ce24678620f5469f3848"
+    "current_state_receipt": "494cd490a6512b9bfa937c82886db625143d38ae",
+    "live_validation_index": "494cd490a6512b9bfa937c82886db625143d38ae",
+    "posture_consistency_receipt": "494cd490a6512b9bfa937c82886db625143d38ae",
+    "runtime_closure_audit": "494cd490a6512b9bfa937c82886db625143d38ae"
   },
-  "worktree_dirty": false
+  "worktree_dirty": true
 }

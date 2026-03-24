@@ -1,0 +1,77 @@
+{
+  "detached_checks_ok": true,
+  "detached_runtime_receipt_ref": "KT_PROD_CLEANROOM/exports/wave3_minimum_viable_civilization/detached_verifier/reports/detached_runtime_receipt.json",
+  "detached_runtime_report_ref": "KT_PROD_CLEANROOM/exports/wave3_minimum_viable_civilization/detached_verifier/reports/detached_public_verifier_report.json",
+  "detached_vs_repo_local_conclusion_parity": {
+    "claim_boundary": {
+      "detached": "evidence_commit identifies the commit that last changed the cryptographic publication evidence; truth_subject_commit identifies the transparency-verified subject commit. Consumers must not equate them unless evidence_equals_subject is true.",
+      "match": true,
+      "repo_local": "evidence_commit identifies the commit that last changed the cryptographic publication evidence; truth_subject_commit identifies the transparency-verified subject commit. Consumers must not equate them unless evidence_equals_subject is true."
+    },
+    "enterprise_legitimacy_ceiling": {
+      "detached": "WORKFLOW_GOVERNANCE_ONLY",
+      "match": true,
+      "repo_local": "WORKFLOW_GOVERNANCE_ONLY"
+    },
+    "head_claim_boundary": {
+      "detached": "Current HEAD contains transparency-verified evidence for truth_subject_commit; HEAD is not itself the verified subject.",
+      "match": true,
+      "repo_local": "Current HEAD contains transparency-verified evidence for truth_subject_commit; HEAD is not itself the verified subject."
+    },
+    "head_claim_verdict": {
+      "detached": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+      "match": true,
+      "repo_local": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE"
+    },
+    "platform_governance_claim_boundary": {
+      "detached": "Current-head workflow governance is fresh, but GitHub branch-protection / ruleset enforcement is not proven on main. Do not claim platform-enforced governance while main_branch_protection_receipt is not PASS.",
+      "match": true,
+      "repo_local": "Current-head workflow governance is fresh, but GitHub branch-protection / ruleset enforcement is not proven on main. Do not claim platform-enforced governance while main_branch_protection_receipt is not PASS."
+    },
+    "platform_governance_head_claim_boundary": {
+      "detached": "Current HEAD contains workflow-governance-only evidence for platform_governance_subject_commit; it is not itself freshly governance-proven.",
+      "match": true,
+      "repo_local": "Current HEAD contains workflow-governance-only evidence for platform_governance_subject_commit; it is not itself freshly governance-proven."
+    },
+    "platform_governance_head_claim_verdict": {
+      "detached": "HEAD_CONTAINS_WORKFLOW_GOVERNANCE_ONLY_EVIDENCE_FOR_SUBJECT",
+      "match": true,
+      "repo_local": "HEAD_CONTAINS_WORKFLOW_GOVERNANCE_ONLY_EVIDENCE_FOR_SUBJECT"
+    },
+    "platform_governance_verdict": {
+      "detached": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED",
+      "match": true,
+      "repo_local": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED"
+    },
+    "publication_receipt_status": {
+      "detached": "PASS",
+      "match": true,
+      "repo_local": "PASS"
+    },
+    "status": {
+      "detached": "PASS",
+      "match": true,
+      "repo_local": "PASS"
+    },
+    "subject_verdict": {
+      "detached": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
+      "match": true,
+      "repo_local": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED"
+    }
+  },
+  "externality_class": "E1_SAME_HOST_DETACHED_REPLAY",
+  "generated_utc": "2026-03-21T03:59:29Z",
+  "package_manifest_ref": "KT_PROD_CLEANROOM/exports/wave3_minimum_viable_civilization/detached_verifier/reports/wave3_detached_verifier_package_manifest.json",
+  "package_root_sha256": "12849e09b08d2c4367776d7774e84d55cbd3d21036902b2795a8ed3f803e7994",
+  "package_sbom_ref": "KT_PROD_CLEANROOM/exports/wave3_minimum_viable_civilization/detached_verifier/reports/wave3_detached_verifier_package_sbom.json",
+  "packaged_file_count": 41,
+  "schema_id": "kt.wave3.detached_verifier_receipt.v1",
+  "signoffs_verified": true,
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "independent_hostile_replay_confirmed",
+    "public_challenge_survival_confirmed",
+    "externality_class_above_E1_claimed"
+  ],
+  "verifier_boundary": "Wave 3 detached verifier proves same-host packaged detached replay only. It does not claim independent hostile replay, public challenge survival, or external confirmation above E1."
+}

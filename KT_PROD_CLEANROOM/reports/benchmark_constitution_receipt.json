@@ -1,0 +1,84 @@
+{
+  "actual_category": "GOVERNED_RECEIPT_BACKED_FAIL_CLOSED_AI_EXECUTION_WITH_ADAPTIVE_IMPROVEMENT_UNDER_LAW",
+  "checks": [
+    {
+      "check_id": "constitution_field_dataset_registry",
+      "pass": true
+    },
+    {
+      "check_id": "constitution_field_holdout_policy",
+      "pass": true
+    },
+    {
+      "check_id": "constitution_field_comparator_policy",
+      "pass": true
+    },
+    {
+      "check_id": "constitution_field_contamination_policy",
+      "pass": true
+    },
+    {
+      "check_id": "constitution_field_cost_accounting_rule",
+      "pass": true
+    },
+    {
+      "check_id": "constitution_field_latency_accounting_rule",
+      "pass": true
+    },
+    {
+      "check_id": "constitution_field_failure_row_retention_rule",
+      "pass": true
+    },
+    {
+      "check_id": "constitution_field_replayability_coverage_rule",
+      "pass": true
+    },
+    {
+      "check_id": "constitution_field_adversarial_probe_coverage_rule",
+      "pass": true
+    },
+    {
+      "check_id": "constitution_status_frozen_for_current_head",
+      "pass": true
+    },
+    {
+      "check_id": "constitution_head_matches_truth_lock",
+      "pass": true
+    },
+    {
+      "check_id": "constitution_category_matches_actual_category",
+      "pass": true
+    },
+    {
+      "check_id": "comparator_registry_active",
+      "pass": true
+    },
+    {
+      "check_id": "useful_output_benchmark_passes",
+      "pass": true
+    },
+    {
+      "check_id": "negative_result_ledger_present",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "W4 freezes benchmark law, preserves negative rows, and binds the actual category to current-head truth. It does not unlock comparative widening or superiority language.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "generated_utc": "2026-03-23T19:08:48Z",
+  "negative_result_row_count": 7,
+  "schema_id": "kt.w4.benchmark_constitution_receipt.v1",
+  "source_refs": [
+    "KT_PROD_CLEANROOM/governance/kt_benchmark_constitution_v1.json",
+    "KT_PROD_CLEANROOM/governance/kt_comparator_registry.json",
+    "KT_PROD_CLEANROOM/reports/useful_output_benchmark.json",
+    "KT_PROD_CLEANROOM/reports/benchmark_negative_result_ledger.json",
+    "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json"
+  ],
+  "status": "PASS",
+  "stronger_claims_not_made": [
+    "category_leadership_earned",
+    "router_superiority_earned",
+    "c006_closed",
+    "commercial_widening_unlocked"
+  ]
+}

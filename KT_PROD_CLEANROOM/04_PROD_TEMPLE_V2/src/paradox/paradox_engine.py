@@ -23,6 +23,27 @@ class ParadoxEngine:
     _ELIGIBLE_CONDITIONS = {"contradiction", "self_reference", "infinite_loop"}
 
     @staticmethod
+    def _context_input(context: RuntimeContext) -> str:
+        envelope = context.get("envelope")
+        if not isinstance(envelope, dict):
+            return ""
+        value = envelope.get("input")
+        return value if isinstance(value, str) else ""
+
+    @staticmethod
+    def _task_type(*, condition: str, context_input: str) -> str:
+        lowered = context_input.lower()
+        if "policy" in lowered and "evidence" in lowered:
+            return "POLICY_EVIDENCE_CONFLICT_V1"
+        if "request" in lowered and "output" in lowered:
+            return "REQUEST_OUTPUT_CONFLICT_V1"
+        if condition == "self_reference":
+            return "SELF_REFERENCE_GUARD_V1"
+        if condition == "infinite_loop":
+            return "LOOP_BUDGET_GUARD_V1"
+        return "CONTRADICTION_RESOLVE_V1"
+
+    @staticmethod
     def run(*, context: RuntimeContext, trigger: ParadoxTriggerSchema) -> ParadoxResultSchema:
         if not isinstance(context, dict):
             raise ParadoxEngineError("context must be a dict (fail-closed)")
@@ -58,7 +79,10 @@ class ParadoxEngine:
                 }
             )
 
-        task_type = "PARADOX_INJECTION_V1"
+        task_type = ParadoxEngine._task_type(
+            condition=str(trigger_payload["condition"]),
+            context_input=ParadoxEngine._context_input(context),
+        )
         task_hash = sha256_json({"trigger_hash": trigger_hash, "task_type": task_type})
         task = ParadoxTaskSchema.from_dict(
             {
@@ -88,4 +112,3 @@ class ParadoxEngine:
                 "result_hash": result_hash,
             }
         )
-

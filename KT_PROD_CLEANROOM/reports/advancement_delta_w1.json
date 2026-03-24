@@ -1,0 +1,43 @@
+{
+  "advancement_outputs": [
+    "KT_PROD_CLEANROOM/reports/useful_output_benchmark.json",
+    "KT_PROD_CLEANROOM/reports/provider_path_integrity_receipt.json",
+    "KT_PROD_CLEANROOM/reports/advancement_delta_w1.json"
+  ],
+  "blocked_advancement_claims": [
+    "learned_router_superiority",
+    "multi_lobe_orchestration_superiority",
+    "civilization_scale_runtime_superiority"
+  ],
+  "generated_utc": "2026-03-22T16:27:18Z",
+  "glamour_unlock": false,
+  "next_lawful_move": "Keep router/lobe/civilization superiority locked; only comparator-earned W2/W3 work may attempt widening later.",
+  "runtime_realism_threshold": {
+    "blocked_claims": [
+      "learned_router_superiority",
+      "multi_lobe_orchestration_superiority",
+      "civilization_scale_runtime_superiority"
+    ],
+    "checks": [
+      {
+        "check_id": "useful_output_evidence_stronger_than_ceremonial_path_evidence",
+        "pass": true
+      },
+      {
+        "check_id": "same_host_live_hashed_provider_witness_present",
+        "pass": true
+      },
+      {
+        "check_id": "scaffolded_runtime_risk_explicitly_bounded_or_quarantined",
+        "pass": true
+      }
+    ],
+    "enforcement_mode": "BLOCK_SUPERIORITY_CLAIMS_UNTIL_UNLOCK_ALLOWED",
+    "glamour_unlock": false,
+    "status": "PASS",
+    "summary": "W1 establishes the runtime realism threshold and keeps router/lobe/civilization glamour locked."
+  },
+  "schema_id": "kt.operator.advancement_delta_w1.v1",
+  "status": "PASS",
+  "wave_id": "W1_RUNTIME_REALIZATION"
+}

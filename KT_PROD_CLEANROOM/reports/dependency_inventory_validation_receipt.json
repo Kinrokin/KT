@@ -2,18 +2,22 @@
   "checks": [
     {
       "check": "dependency_inventory_matches",
-      "status": "PASS"
+      "status": "FAIL"
     },
     {
       "check": "python_environment_manifest_matches",
-      "status": "PASS"
+      "status": "FAIL"
     },
     {
       "check": "sbom_cyclonedx_matches",
-      "status": "PASS"
+      "status": "FAIL"
     }
   ],
-  "failures": [],
+  "failures": [
+    "dependency_inventory_matches",
+    "python_environment_manifest_matches",
+    "sbom_cyclonedx_matches"
+  ],
   "schema_id": "kt.operator.dependency_inventory_validation_receipt.v1",
-  "status": "PASS"
+  "status": "FAIL"
 }

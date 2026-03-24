@@ -145,3 +145,21 @@ class TestMultiverseEngineC013(unittest.TestCase):
             MultiverseEngine.evaluate(context=_valid_context(), request=req)
         finally:
             builtins.__import__ = original_import  # type: ignore[assignment]
+
+    def test_coherence_changes_with_candidate_spread(self) -> None:
+        close_candidates = [
+            _candidate(candidate_id="a", token_count=1, metrics={"m1": 0.51}),
+            _candidate(candidate_id="b", token_count=1, metrics={"m1": 0.49}),
+        ]
+        wide_candidates = [
+            _candidate(candidate_id="a", token_count=1, metrics={"m1": 0.95}),
+            _candidate(candidate_id="b", token_count=1, metrics={"m1": 0.05}),
+        ]
+        close_req = MultiverseEvaluationRequestSchema.from_dict(_request(candidates=close_candidates, metric_names=["m1"]))
+        wide_req = MultiverseEvaluationRequestSchema.from_dict(_request(candidates=wide_candidates, metric_names=["m1"]))
+
+        close_result = MultiverseEngine.evaluate(context=_valid_context(), request=close_req).to_dict()
+        wide_result = MultiverseEngine.evaluate(context=_valid_context(), request=wide_req).to_dict()
+
+        self.assertNotEqual(close_result["coherence_score"], wide_result["coherence_score"])
+        self.assertGreater(close_result["coherence_score"], wide_result["coherence_score"])

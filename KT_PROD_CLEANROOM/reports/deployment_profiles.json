@@ -1,6 +1,8 @@
 {
-  "generated_utc": "2026-03-10T13:29:07Z",
-  "profiles": [
+  "claim_boundary": "These deployment profiles describe the bounded E1 product wedge only. They do not widen runtime, externality, or enterprise claims.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "generated_utc": "2026-03-23T20:03:03Z",
+  "legacy_operator_profiles": [
     {
       "implementation_path": "KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
       "profile_id": "canonical_operator_safe_run",
@@ -17,6 +19,133 @@
       "program_id": "program.delivery.contract.validate"
     }
   ],
-  "schema_id": "kt.deployment_profiles.v1",
+  "product_profile_count": 3,
+  "product_profiles": [
+    {
+      "additional_review_minutes": 0,
+      "entrypoint_ids": [
+        "verify_packet",
+        "detached_pass_fail"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_truth_packet.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+        "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json"
+      ],
+      "install_to_pass_fail_minutes": 15,
+      "max_externality_class": "E1_SAME_HOST_DETACHED_REPLAY",
+      "profile_id": "local_verifier_mode",
+      "profile_label": "Local Verifier",
+      "summary": "Single-operator bounded verifier handoff on the same host with clear PASS/FAIL output.",
+      "support_boundary_ref": "KT_PROD_CLEANROOM/product/support_boundary.json"
+    },
+    {
+      "additional_review_minutes": 15,
+      "entrypoint_ids": [
+        "verify_packet",
+        "detached_pass_fail"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_truth_packet.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+        "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+        "KT_PROD_CLEANROOM/product/one_page_product_truth_surface.md"
+      ],
+      "install_to_pass_fail_minutes": 15,
+      "max_externality_class": "E1_SAME_HOST_DETACHED_REPLAY",
+      "profile_id": "team_pilot_mode",
+      "profile_label": "Team Pilot",
+      "summary": "Small-team verifier pilot with bounded same-host proof, packet review, and explicit non-claims.",
+      "support_boundary_ref": "KT_PROD_CLEANROOM/product/support_boundary.json"
+    },
+    {
+      "additional_review_minutes": 30,
+      "entrypoint_ids": [
+        "verify_packet",
+        "detached_pass_fail"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_truth_packet.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+        "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+        "KT_PROD_CLEANROOM/product/nist_mapping_matrix.json",
+        "KT_PROD_CLEANROOM/product/iso_42001_mapping_matrix.json",
+        "KT_PROD_CLEANROOM/product/eu_ai_act_alignment_matrix.json"
+      ],
+      "install_to_pass_fail_minutes": 15,
+      "max_externality_class": "E1_SAME_HOST_DETACHED_REPLAY",
+      "profile_id": "regulated_workflow_mode",
+      "profile_label": "Regulated Workflow",
+      "summary": "Same-host verifier workflow packaged with informative standards-legibility mappings and explicit bounded support.",
+      "support_boundary_ref": "KT_PROD_CLEANROOM/product/support_boundary.json"
+    }
+  ],
+  "profile_order": [
+    "local_verifier_mode",
+    "team_pilot_mode",
+    "regulated_workflow_mode"
+  ],
+  "profiles": [
+    {
+      "additional_review_minutes": 0,
+      "entrypoint_ids": [
+        "verify_packet",
+        "detached_pass_fail"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_truth_packet.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+        "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json"
+      ],
+      "install_to_pass_fail_minutes": 15,
+      "max_externality_class": "E1_SAME_HOST_DETACHED_REPLAY",
+      "profile_id": "local_verifier_mode",
+      "profile_label": "Local Verifier",
+      "summary": "Single-operator bounded verifier handoff on the same host with clear PASS/FAIL output.",
+      "support_boundary_ref": "KT_PROD_CLEANROOM/product/support_boundary.json"
+    },
+    {
+      "additional_review_minutes": 15,
+      "entrypoint_ids": [
+        "verify_packet",
+        "detached_pass_fail"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_truth_packet.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+        "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+        "KT_PROD_CLEANROOM/product/one_page_product_truth_surface.md"
+      ],
+      "install_to_pass_fail_minutes": 15,
+      "max_externality_class": "E1_SAME_HOST_DETACHED_REPLAY",
+      "profile_id": "team_pilot_mode",
+      "profile_label": "Team Pilot",
+      "summary": "Small-team verifier pilot with bounded same-host proof, packet review, and explicit non-claims.",
+      "support_boundary_ref": "KT_PROD_CLEANROOM/product/support_boundary.json"
+    },
+    {
+      "additional_review_minutes": 30,
+      "entrypoint_ids": [
+        "verify_packet",
+        "detached_pass_fail"
+      ],
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/commercial_truth_packet.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+        "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+        "KT_PROD_CLEANROOM/product/nist_mapping_matrix.json",
+        "KT_PROD_CLEANROOM/product/iso_42001_mapping_matrix.json",
+        "KT_PROD_CLEANROOM/product/eu_ai_act_alignment_matrix.json"
+      ],
+      "install_to_pass_fail_minutes": 15,
+      "max_externality_class": "E1_SAME_HOST_DETACHED_REPLAY",
+      "profile_id": "regulated_workflow_mode",
+      "profile_label": "Regulated Workflow",
+      "summary": "Same-host verifier workflow packaged with informative standards-legibility mappings and explicit bounded support.",
+      "support_boundary_ref": "KT_PROD_CLEANROOM/product/support_boundary.json"
+    }
+  ],
+  "schema_id": "kt.deployment_profiles.v2",
+  "source_ref": "KT_PROD_CLEANROOM/product/deployment_profiles.json",
   "status": "ACTIVE"
 }

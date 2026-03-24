@@ -5,6 +5,43 @@
   ],
   "demo_suite_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
   "generated_utc": "2026-03-10T13:29:07Z",
+  "learned_router_candidate_policy": {
+    "current_status": "BLOCKED_PENDING_ELIGIBLE_CANDIDATE_AND_CLEAN_WIN",
+    "eligibility_rule": "A learned router candidate exists only if it is distinct from the shadow comparator, beats the best static baseline on the frozen suite, preserves fallback behavior, and passes no-regression law.",
+    "superiority_scorecard_ref": "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json"
+  },
+  "multi_lobe_orchestration_policy": {
+    "current_status": "BLOCKED_PENDING_LEARNED_ROUTER_WIN",
+    "unlock_rule": "Multi-lobe orchestration may not promote before a learned router win is earned under the ordered proof chain.",
+    "w5_receipt_ref": "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json"
+  },
+  "no_regression_rule": "Any router candidate must preserve or improve every frozen case against the static baseline, preserve fallback coverage, preserve route distribution, and preserve current claim ceiling and externality boundaries.",
+  "ordered_proof_chain": [
+    {
+      "required_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json",
+      "stage_id": "static_baseline_ratified"
+    },
+    {
+      "required_ref": "KT_PROD_CLEANROOM/reports/kt_wave2b_router_shadow_eval_matrix.json",
+      "stage_id": "shadow_eval_frozen"
+    },
+    {
+      "required_ref": "KT_PROD_CLEANROOM/reports/kt_wave2b_router_selection_receipt.json",
+      "stage_id": "best_static_comparator_explicit"
+    },
+    {
+      "required_ref": "KT_PROD_CLEANROOM/reports/route_distribution_health.json",
+      "stage_id": "route_quality_cost_latency_matrix"
+    },
+    {
+      "required_ref": "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
+      "stage_id": "learned_router_cutover_gate"
+    },
+    {
+      "required_ref": "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json",
+      "stage_id": "multi_lobe_promotion_gate"
+    }
+  ],
   "ratification_scope": "STATIC_ROUTER_BASELINE_ONLY",
   "registry_id": "ROUTER_POLICY_REGISTRY_V1_20260310",
   "routes": [
@@ -56,5 +93,6 @@
     }
   ],
   "schema_id": "kt.governance.router_policy_registry.v1",
-  "status": "ACTIVE"
+  "status": "ACTIVE",
+  "w5_ordered_proof_status": "ACTIVE_STATIC_HOLD_UNTIL_EARNED"
 }

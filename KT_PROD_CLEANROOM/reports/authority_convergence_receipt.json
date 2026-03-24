@@ -7,15 +7,13 @@
       "status": "PASS"
     },
     {
-      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "actual": true,
       "check": "execution_board_points_to_active_truth_source",
-      "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
       "status": "PASS"
     },
     {
-      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "actual": true,
       "check": "readiness_scope_points_to_active_truth_source",
-      "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
       "status": "PASS"
     },
     {
@@ -125,13 +123,13 @@
   ],
   "current_head_authority_claimed": false,
   "failures": [],
-  "generated_utc": "2026-03-15T12:16:05Z",
+  "generated_utc": "2026-03-24T17:49:47Z",
   "h1_admissible": false,
   "observed": {
     "active_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
     "board_authority_mode": "TRANSITIONAL_AUTHORITATIVE",
-    "board_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
-    "current_head_commit": "c1d9fda4fe59b988df4940aaca75c80fe04f5c66",
+    "board_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+    "current_head_commit": "494cd490a6512b9bfa937c82886db625143d38ae",
     "current_head_equals_truth_subject": false,
     "documentary_validation_status": "PASS",
     "evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
@@ -150,7 +148,7 @@
     "main_current_state_documentary_only": true,
     "main_runtime_audit_documentary_only": true,
     "publication_receipt_status": "PASS",
-    "readiness_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
+    "readiness_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
     "stabilization_status": "PASS",
     "stabilization_truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
     "truth_publication_stabilized": true,

@@ -1,0 +1,330 @@
+{
+  "comparison_rule": "Shadow routing is compared against the current best static adapter path and the static router remains canonical until later ratification.",
+  "coverage": {
+    "adversarial_probe_coverage": [
+      "zero_score_or_tie_fallback_to_static_baseline"
+    ],
+    "declared_task_family_coverage": [
+      "default",
+      "governance",
+      "math",
+      "poetry"
+    ],
+    "failure_class_coverage": [
+      "fallback_to_audited_static_baseline"
+    ],
+    "latency_class_coverage": [
+      "toolchain_local_sub_500ms"
+    ],
+    "replayability_class_coverage": [
+      "E0_INTERNAL_SELF_ISSUED_ONLY"
+    ]
+  },
+  "failures": [],
+  "generated_utc": "2026-03-22T01:36:02Z",
+  "promotion_decision": {
+    "canonical_router_unchanged": true,
+    "learned_router_cutover_allowed": false,
+    "provider_underlay_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c016a_success_matrix.json",
+    "provider_underlay_same_host_success_proven": true,
+    "reasons": [
+      "wave2b_scope_is_shadow_only",
+      "best_static_comparator_remains_control",
+      "comparison_artifacts_exist_but_no_cutover_authority_was_granted",
+      "learned_router_cutover_not_earned",
+      "externality_class_remains_bounded"
+    ],
+    "shadow_promotable": false
+  },
+  "rows": [
+    {
+      "baseline_adapter_ids": [
+        "lobe.censor.v1",
+        "lobe.quant.v1"
+      ],
+      "baseline_domain_tag": "math",
+      "best_static_provider_adapter_id": "council.openrouter.live_hashed.v1",
+      "case_id": "R01",
+      "confidence": 1.0,
+      "exact_path_match": true,
+      "fallback_engaged": false,
+      "shadow_adapter_ids": [
+        "lobe.censor.v1",
+        "lobe.quant.v1"
+      ],
+      "shadow_domain_tag": "math",
+      "top_shadow_candidates": [
+        {
+          "adapter_ids": [
+            "lobe.censor.v1",
+            "lobe.quant.v1"
+          ],
+          "domain_tag": "math",
+          "matched_keywords": [
+            "equation"
+          ],
+          "reason": "deterministic_keyword_signal_shadow_v1",
+          "required_adapter_ids": [
+            "lobe.censor.v1"
+          ],
+          "score": 101,
+          "score_components": {
+            "substring_hits": 1,
+            "token_overlap": 1
+          },
+          "token_overlap_terms": [
+            "equation"
+          ]
+        },
+        {
+          "adapter_ids": [
+            "lobe.strategist.v1"
+          ],
+          "domain_tag": "default",
+          "matched_keywords": [],
+          "reason": "default_path_candidate_only",
+          "required_adapter_ids": [],
+          "score": 0,
+          "score_components": {
+            "substring_hits": 0,
+            "token_overlap": 0
+          },
+          "token_overlap_terms": []
+        },
+        {
+          "adapter_ids": [
+            "lobe.auditor.v1",
+            "lobe.censor.v1"
+          ],
+          "domain_tag": "governance",
+          "matched_keywords": [],
+          "reason": "deterministic_keyword_signal_shadow_v1",
+          "required_adapter_ids": [
+            "lobe.censor.v1"
+          ],
+          "score": 0,
+          "score_components": {
+            "substring_hits": 0,
+            "token_overlap": 0
+          },
+          "token_overlap_terms": []
+        }
+      ]
+    },
+    {
+      "baseline_adapter_ids": [
+        "lobe.muse.v1"
+      ],
+      "baseline_domain_tag": "poetry",
+      "best_static_provider_adapter_id": "council.openrouter.live_hashed.v1",
+      "case_id": "R02",
+      "confidence": 1.0,
+      "exact_path_match": true,
+      "fallback_engaged": false,
+      "shadow_adapter_ids": [
+        "lobe.muse.v1"
+      ],
+      "shadow_domain_tag": "poetry",
+      "top_shadow_candidates": [
+        {
+          "adapter_ids": [
+            "lobe.muse.v1"
+          ],
+          "domain_tag": "poetry",
+          "matched_keywords": [
+            "haiku"
+          ],
+          "reason": "deterministic_keyword_signal_shadow_v1",
+          "required_adapter_ids": [],
+          "score": 101,
+          "score_components": {
+            "substring_hits": 1,
+            "token_overlap": 1
+          },
+          "token_overlap_terms": [
+            "haiku"
+          ]
+        },
+        {
+          "adapter_ids": [
+            "lobe.strategist.v1"
+          ],
+          "domain_tag": "default",
+          "matched_keywords": [],
+          "reason": "default_path_candidate_only",
+          "required_adapter_ids": [],
+          "score": 0,
+          "score_components": {
+            "substring_hits": 0,
+            "token_overlap": 0
+          },
+          "token_overlap_terms": []
+        },
+        {
+          "adapter_ids": [
+            "lobe.auditor.v1",
+            "lobe.censor.v1"
+          ],
+          "domain_tag": "governance",
+          "matched_keywords": [],
+          "reason": "deterministic_keyword_signal_shadow_v1",
+          "required_adapter_ids": [
+            "lobe.censor.v1"
+          ],
+          "score": 0,
+          "score_components": {
+            "substring_hits": 0,
+            "token_overlap": 0
+          },
+          "token_overlap_terms": []
+        }
+      ]
+    },
+    {
+      "baseline_adapter_ids": [
+        "lobe.auditor.v1",
+        "lobe.censor.v1"
+      ],
+      "baseline_domain_tag": "governance",
+      "best_static_provider_adapter_id": "council.openrouter.live_hashed.v1",
+      "case_id": "R03",
+      "confidence": 1.0,
+      "exact_path_match": true,
+      "fallback_engaged": false,
+      "shadow_adapter_ids": [
+        "lobe.auditor.v1",
+        "lobe.censor.v1"
+      ],
+      "shadow_domain_tag": "governance",
+      "top_shadow_candidates": [
+        {
+          "adapter_ids": [
+            "lobe.auditor.v1",
+            "lobe.censor.v1"
+          ],
+          "domain_tag": "governance",
+          "matched_keywords": [
+            "fail-closed",
+            "receipt"
+          ],
+          "reason": "deterministic_keyword_signal_shadow_v1",
+          "required_adapter_ids": [
+            "lobe.censor.v1"
+          ],
+          "score": 202,
+          "score_components": {
+            "substring_hits": 2,
+            "token_overlap": 2
+          },
+          "token_overlap_terms": [
+            "closed",
+            "fail"
+          ]
+        },
+        {
+          "adapter_ids": [
+            "lobe.strategist.v1"
+          ],
+          "domain_tag": "default",
+          "matched_keywords": [],
+          "reason": "default_path_candidate_only",
+          "required_adapter_ids": [],
+          "score": 0,
+          "score_components": {
+            "substring_hits": 0,
+            "token_overlap": 0
+          },
+          "token_overlap_terms": []
+        },
+        {
+          "adapter_ids": [
+            "lobe.censor.v1",
+            "lobe.quant.v1"
+          ],
+          "domain_tag": "math",
+          "matched_keywords": [],
+          "reason": "deterministic_keyword_signal_shadow_v1",
+          "required_adapter_ids": [
+            "lobe.censor.v1"
+          ],
+          "score": 0,
+          "score_components": {
+            "substring_hits": 0,
+            "token_overlap": 0
+          },
+          "token_overlap_terms": []
+        }
+      ]
+    },
+    {
+      "baseline_adapter_ids": [
+        "lobe.strategist.v1"
+      ],
+      "baseline_domain_tag": "default",
+      "best_static_provider_adapter_id": "council.openrouter.live_hashed.v1",
+      "case_id": "R04",
+      "confidence": 0.0,
+      "exact_path_match": true,
+      "fallback_engaged": true,
+      "shadow_adapter_ids": [
+        "lobe.strategist.v1"
+      ],
+      "shadow_domain_tag": "default",
+      "top_shadow_candidates": [
+        {
+          "adapter_ids": [
+            "lobe.strategist.v1"
+          ],
+          "domain_tag": "default",
+          "matched_keywords": [],
+          "reason": "default_path_candidate_only",
+          "required_adapter_ids": [],
+          "score": 0,
+          "score_components": {
+            "substring_hits": 0,
+            "token_overlap": 0
+          },
+          "token_overlap_terms": []
+        },
+        {
+          "adapter_ids": [
+            "lobe.auditor.v1",
+            "lobe.censor.v1"
+          ],
+          "domain_tag": "governance",
+          "matched_keywords": [],
+          "reason": "deterministic_keyword_signal_shadow_v1",
+          "required_adapter_ids": [
+            "lobe.censor.v1"
+          ],
+          "score": 0,
+          "score_components": {
+            "substring_hits": 0,
+            "token_overlap": 0
+          },
+          "token_overlap_terms": []
+        },
+        {
+          "adapter_ids": [
+            "lobe.censor.v1",
+            "lobe.quant.v1"
+          ],
+          "domain_tag": "math",
+          "matched_keywords": [],
+          "reason": "deterministic_keyword_signal_shadow_v1",
+          "required_adapter_ids": [
+            "lobe.censor.v1"
+          ],
+          "score": 0,
+          "score_components": {
+            "substring_hits": 0,
+            "token_overlap": 0
+          },
+          "token_overlap_terms": []
+        }
+      ]
+    }
+  ],
+  "schema_id": "kt.wave2b.router_shadow_eval_matrix.v1",
+  "status": "PASS"
+}

@@ -1,0 +1,52 @@
+{
+  "best_static_baseline": {
+    "provider_underlay": {
+      "adapter_id": "council.openrouter.live_hashed.v1",
+      "boundary_hold_present": false,
+      "http_status": 200,
+      "latency_ms": 1063,
+      "provider_id": "openrouter",
+      "ranking_rule": [
+        "successful_live_count_desc",
+        "live_receipt_count_desc",
+        "latency_ms_asc",
+        "adapter_id_asc"
+      ],
+      "status": "OK"
+    },
+    "ratification_decision": "HOLD_STATIC_CANONICAL_BASELINE",
+    "source_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json"
+  },
+  "case_count": 4,
+  "claim_boundary": "W5 scores router superiority honestly. Static remains canonical because no clean learned-router win exists, and multi-lobe promotion remains blocked.",
+  "comparative_widening": "FORBIDDEN",
+  "cost_win_status": "NOT_EARNED_NO_ROUTE_COST_ADVANTAGE_DEMONSTRATED",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "generated_utc": "2026-03-23T19:18:33Z",
+  "latency_win_status": "NOT_EARNED_NO_ROUTE_LATENCY_ADVANTAGE_DEMONSTRATED",
+  "learned_router_candidate": {
+    "candidate_id": "",
+    "candidate_status": "NO_ELIGIBLE_LEARNED_ROUTER_CANDIDATE_PRESENT",
+    "eligibility_reason": "Current-head evidence contains only a shadow comparator that matched the static baseline and did not earn cutover.",
+    "promotion_allowed": false
+  },
+  "multi_lobe_promotion_status": "BLOCKED_PENDING_LEARNED_ROUTER_WIN",
+  "no_regression_status": "PASS",
+  "overall_outcome": "HOLD_STATIC_CANONICAL_BASELINE",
+  "route_quality_win_status": "NOT_EARNED_SHADOW_MATCH_ONLY",
+  "schema_id": "kt.w5.router_superiority_scorecard.v1",
+  "source_refs": [
+    "KT_PROD_CLEANROOM/reports/route_distribution_health.json",
+    "KT_PROD_CLEANROOM/reports/router_shadow_eval_matrix.json",
+    "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json",
+    "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json"
+  ],
+  "status": "PASS",
+  "stronger_claims_not_made": [
+    "learned_router_superiority_earned",
+    "multi_lobe_orchestration_ready",
+    "comparative_widening_unlocked",
+    "frontier_router_language_unlocked"
+  ],
+  "superiority_earned": false
+}

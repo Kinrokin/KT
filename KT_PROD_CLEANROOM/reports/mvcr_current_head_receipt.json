@@ -1,0 +1,255 @@
+{
+  "bounded_output": {
+    "allowed_current_claims": [
+      "One bounded canonical organism path executes through kt.entrypoint.invoke -> core.spine.run on current head.",
+      "One bounded useful-output witness exists on the same-host LIVE_HASHED lane for openai, openrouter only.",
+      "Detached verifier truth remains bounded at E1_SAME_HOST_DETACHED_REPLAY and must not be read above that class.",
+      "Current runtime language remains bounded by SCOPED_TIER_BOUNDED_CURRENT_HEAD_ORGANISM_E1 and the active blocker family C006_EXTERNALITY_CEILING_REMAINS_BOUNDED.",
+      "C006 remains open and deferred under resource constraint; bounded runtime, lab, packaging, and buyer-safe E1 work may continue without implying E2 or higher."
+    ],
+    "status": "PASS",
+    "summary": "One bounded sacred path now executes on current head with state-vault receipts, bounded verifier support, and bounded claim compilation."
+  },
+  "canonical_run_status": "PASS",
+  "claim_boundary": "W2 MVCR proves one bounded current-head sacred path only. It does not widen externality, comparative, commercial, router, or prestige claims.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "exact_end_to_end_path_exercised": [
+    {
+      "mode": "CANONICAL",
+      "path_role": "ingress",
+      "surface": "kt.entrypoint.invoke"
+    },
+    {
+      "mode": "BOUNDED_CANONICAL",
+      "path_role": "planner",
+      "surface": "core.spine.run -> cognition.request -> cognition.plan"
+    },
+    {
+      "mode": "STATIC_CANONICAL_BASELINE",
+      "path_role": "router",
+      "surface": "core.spine.run -> council.request -> council.plan"
+    },
+    {
+      "mode": "DRY_RUN_CANONICAL_ADAPTER_INVOCATION",
+      "path_role": "adapter_or_provider",
+      "surface": "core.spine.run -> council.plan -> council.execute"
+    },
+    {
+      "mode": "BOUNDED_CANONICAL",
+      "path_role": "organ_stack",
+      "surface": "core.spine.run -> cognition.plan -> cognition.execute"
+    },
+    {
+      "mode": "CANONICAL",
+      "path_role": "memory_or_state_vault",
+      "surface": "memory.replay.validate_state_vault_chain"
+    },
+    {
+      "mode": "BOUNDED_E1_READY",
+      "path_role": "verifier_pack",
+      "surface": "KT_PROD_CLEANROOM/reports/public_verifier_kit.json"
+    },
+    {
+      "mode": "BOUNDED_RUNTIME_VOCABULARY_GATE",
+      "path_role": "claim_compiler",
+      "surface": "core.claim_compiler.compile_runtime_claims"
+    },
+    {
+      "mode": "BOUNDED_CURRENT_HEAD_RECEIPT",
+      "path_role": "bounded_output",
+      "surface": "KT_PROD_CLEANROOM/reports/mvcr_current_head_receipt.json"
+    }
+  ],
+  "generated_utc": "2026-03-23T18:15:35Z",
+  "next_lawful_move": "W3_UNIVERSAL_ADAPTER_AND_CIVILIZATION_LOOP",
+  "probe_matrix": [
+    {
+      "artifact_refs": {
+        "artifact_root_ref": "KT_PROD_CLEANROOM/exports/w2_mvcr/canonical_run/planner/artifacts",
+        "entry_result_ref": "KT_PROD_CLEANROOM/exports/w2_mvcr/canonical_run/planner/entry_result.json",
+        "payload_ref": "KT_PROD_CLEANROOM/exports/w2_mvcr/canonical_run/planner/payload.json",
+        "runtime_telemetry_ref": "KT_PROD_CLEANROOM/exports/w2_mvcr/canonical_run/planner/runtime_telemetry.jsonl"
+      },
+      "comparison": {
+        "plan_hash": true,
+        "request_hash": true,
+        "status": true,
+        "steps": true
+      },
+      "entry_result_status": "OK",
+      "path_role": "planner",
+      "result_head_hash": "ad630a1897da0887aa448a31d07ee1b07272b5d340c654e7a5b510be02b8c4a1",
+      "result_record_count": 3158,
+      "status": "PASS",
+      "step_id": "planner"
+    },
+    {
+      "artifact_refs": {
+        "artifact_root_ref": "KT_PROD_CLEANROOM/exports/w2_mvcr/canonical_run/router/artifacts",
+        "entry_result_ref": "KT_PROD_CLEANROOM/exports/w2_mvcr/canonical_run/router/entry_result.json",
+        "payload_ref": "KT_PROD_CLEANROOM/exports/w2_mvcr/canonical_run/router/payload.json",
+        "runtime_telemetry_ref": "KT_PROD_CLEANROOM/exports/w2_mvcr/canonical_run/router/runtime_telemetry.jsonl"
+      },
+      "comparison": {
+        "plan_hash": true,
+        "request_hash": true,
+        "status": true
+      },
+      "entry_result_status": "OK",
+      "path_role": "router",
+      "result_head_hash": "9e6fef55e228c0b0b14478efeb9dc7d167fa244de00387a0c4b08e3b962c5db6",
+      "result_record_count": 3162,
+      "status": "PASS",
+      "step_id": "router"
+    },
+    {
+      "artifact_refs": {
+        "artifact_root_ref": "KT_PROD_CLEANROOM/exports/w2_mvcr/canonical_run/adapter_or_provider/artifacts",
+        "entry_result_ref": "KT_PROD_CLEANROOM/exports/w2_mvcr/canonical_run/adapter_or_provider/entry_result.json",
+        "payload_ref": "KT_PROD_CLEANROOM/exports/w2_mvcr/canonical_run/adapter_or_provider/payload.json",
+        "runtime_telemetry_ref": "KT_PROD_CLEANROOM/exports/w2_mvcr/canonical_run/adapter_or_provider/runtime_telemetry.jsonl"
+      },
+      "comparison": {
+        "plan_hash": true,
+        "result_hash": true,
+        "status": true
+      },
+      "entry_result_status": "OK",
+      "path_role": "adapter_or_provider",
+      "result_head_hash": "0f1e3db8202b5500cda5572aad0c5cc0268e65615e142170628ac4436571f3dc",
+      "result_record_count": 3167,
+      "status": "PASS",
+      "step_id": "adapter_or_provider"
+    },
+    {
+      "artifact_refs": {
+        "artifact_root_ref": "KT_PROD_CLEANROOM/exports/w2_mvcr/canonical_run/organ_stack/artifacts",
+        "entry_result_ref": "KT_PROD_CLEANROOM/exports/w2_mvcr/canonical_run/organ_stack/entry_result.json",
+        "payload_ref": "KT_PROD_CLEANROOM/exports/w2_mvcr/canonical_run/organ_stack/payload.json",
+        "runtime_telemetry_ref": "KT_PROD_CLEANROOM/exports/w2_mvcr/canonical_run/organ_stack/runtime_telemetry.jsonl"
+      },
+      "comparison": {
+        "plan_hash": true,
+        "result_hash": true,
+        "status": true,
+        "steps": true
+      },
+      "entry_result_status": "OK",
+      "path_role": "organ_stack",
+      "result_head_hash": "c25ebf92361f75b4b0802f63513bc38c7e93edee60040ef420cb88c6890e625e",
+      "result_record_count": 3170,
+      "status": "PASS",
+      "step_id": "organ_stack"
+    }
+  ],
+  "remaining_forbidden_claims": [
+    "Do not claim E2 cross-host friendly replay.",
+    "Do not claim E3 independent hostile replay.",
+    "Do not claim E4 public challenge survival.",
+    "Do not claim learned-router superiority or cutover.",
+    "Do not claim cross-host or outsider-verified live-provider capability.",
+    "Do not claim commercial or enterprise readiness.",
+    "Do not claim SOTA, frontier, or beyond-SOTA standing.",
+    "Do not claim HEAD itself is the transparency-verified subject commit.",
+    "Do not claim The historical or publication truth source silently upgrades current-head runtime or tier truth.",
+    "Do not claim Current-head blocker closure is public-release admissible outside the sealed W0 scope.",
+    "Do not claim Externality above E1 is earned.",
+    "Do not claim Release readiness is proven.",
+    "Do not claim Commercial readiness is proven.",
+    "Do not claim Comparative widening is lawful while C006 remains deferred and open.",
+    "Do not narrate same-host LIVE_HASHED provider success as a C006 or externality upgrade.",
+    "Do not narrate bounded cognition execution as router, lobe, or civilization superiority.",
+    "Do not widen commercial or enterprise language from runtime claim compilation.",
+    "Do not Claim E2, E3, or E4 externality.",
+    "Do not Claim cross-host reproducibility.",
+    "Do not Claim independent or hostile verification.",
+    "Do not Claim commercial externality or enterprise readiness.",
+    "Do not Widen comparative superiority language.",
+    "Do not Narrate same-host replay as outsider trust.",
+    "Do not Publish press-ready or product-launch materials above E1 ceiling.",
+    "Do not claim router superiority.",
+    "Do not claim multi-lobe execution.",
+    "Do not claim frontier, SOTA, or beyond-SOTA standing."
+  ],
+  "runtime_claim_compilation": {
+    "active_open_blocker_ids": [
+      "C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"
+    ],
+    "allowed_current_claims": [
+      "One bounded canonical organism path executes through kt.entrypoint.invoke -> core.spine.run on current head.",
+      "One bounded useful-output witness exists on the same-host LIVE_HASHED lane for openai, openrouter only.",
+      "Detached verifier truth remains bounded at E1_SAME_HOST_DETACHED_REPLAY and must not be read above that class.",
+      "Current runtime language remains bounded by SCOPED_TIER_BOUNDED_CURRENT_HEAD_ORGANISM_E1 and the active blocker family C006_EXTERNALITY_CEILING_REMAINS_BOUNDED.",
+      "C006 remains open and deferred under resource constraint; bounded runtime, lab, packaging, and buyer-safe E1 work may continue without implying E2 or higher."
+    ],
+    "claim_boundary": "Runtime claim compilation is bounded to current-head runtime, verifier, and tier surfaces plus the declared useful-output and provider-path receipts. It is not a router-promotion, externality-upgrade, or commercial-widening surface.",
+    "commercial_widening": "FORBIDDEN",
+    "comparative_widening": "FORBIDDEN",
+    "compiled_head_commit": "494cd490a6512b9bfa937c82886db625143d38ae",
+    "deferred_blocker_ids": [
+      "C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"
+    ],
+    "deferred_reentry_condition": "SECOND_HOST_RETURN_FILE_PLUS_VALIDATOR_PASS",
+    "externality_class": "E1_SAME_HOST_DETACHED_REPLAY",
+    "externality_class_max": "E1_SAME_HOST_DETACHED_REPLAY",
+    "forbidden_current_claims": [
+      "Do not claim E2 cross-host friendly replay.",
+      "Do not claim E3 independent hostile replay.",
+      "Do not claim E4 public challenge survival.",
+      "Do not claim learned-router superiority or cutover.",
+      "Do not claim cross-host or outsider-verified live-provider capability.",
+      "Do not claim commercial or enterprise readiness.",
+      "Do not claim SOTA, frontier, or beyond-SOTA standing.",
+      "Do not claim HEAD itself is the transparency-verified subject commit.",
+      "Do not claim The historical or publication truth source silently upgrades current-head runtime or tier truth.",
+      "Do not claim Current-head blocker closure is public-release admissible outside the sealed W0 scope.",
+      "Do not claim Externality above E1 is earned.",
+      "Do not claim Release readiness is proven.",
+      "Do not claim Commercial readiness is proven.",
+      "Do not claim Comparative widening is lawful while C006 remains deferred and open.",
+      "Do not narrate same-host LIVE_HASHED provider success as a C006 or externality upgrade.",
+      "Do not narrate bounded cognition execution as router, lobe, or civilization superiority.",
+      "Do not widen commercial or enterprise language from runtime claim compilation.",
+      "Do not Claim E2, E3, or E4 externality.",
+      "Do not Claim cross-host reproducibility.",
+      "Do not Claim independent or hostile verification.",
+      "Do not Claim commercial externality or enterprise readiness.",
+      "Do not Widen comparative superiority language.",
+      "Do not Narrate same-host replay as outsider trust.",
+      "Do not Publish press-ready or product-launch materials above E1 ceiling."
+    ],
+    "input_refs": [
+      "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_runtime_truth_surface.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_final_tier_ruling.json",
+      "KT_PROD_CLEANROOM/reports/deferred_blockers.json",
+      "KT_PROD_CLEANROOM/reports/post_wave5_c016a_success_matrix.json",
+      "KT_PROD_CLEANROOM/reports/post_wave5_c016b_resilience_pack.json"
+    ],
+    "runtime_claim_ceiling": "SCOPED_TIER_BOUNDED_CURRENT_HEAD_ORGANISM_E1",
+    "runtime_truth_class": "CURRENT_HEAD_PARTIALLY_PROVEN_MINIMUM_VIABLE_ORGANISM_RUN",
+    "same_host_live_hashed_provider_ids": [
+      "openai",
+      "openrouter"
+    ],
+    "schema_id": "kt.runtime.claim_compilation.v1",
+    "status": "PASS",
+    "verifier_truth_class": "CURRENT_HEAD_PROVEN_DETACHED_SAME_HOST_PACKAGED"
+  },
+  "schema_id": "kt.w2.mvcr_current_head_receipt.v1",
+  "state_vault_after": {
+    "head_hash": "c25ebf92361f75b4b0802f63513bc38c7e93edee60040ef420cb88c6890e625e",
+    "record_count": 3170
+  },
+  "state_vault_before": {
+    "head_hash": "820313a8325acc9d8d288fabbbb814d9a43688efcc4784b63040abc5d1d8c4c7",
+    "record_count": 3155
+  },
+  "state_vault_delta_records": 15,
+  "state_vault_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/_runtime_artifacts/state_vault.jsonl",
+  "status": "PASS",
+  "verifier_pack_boundary": "The verifier kit is real and usable, but bounded at E1 while C006 remains deferred and open.",
+  "verifier_pack_ref": "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+  "verifier_pack_status": "PASS"
+}

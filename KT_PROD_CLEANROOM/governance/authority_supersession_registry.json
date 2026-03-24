@@ -1,0 +1,124 @@
+{
+  "action_priority": [
+    "VALIDATE_EXISTING",
+    "UPGRADE_EXISTING",
+    "CREATE_NEW_IF_ABSENT"
+  ],
+  "claim_boundary": "Governance mirror of the active authority supersession plan. It does not independently upgrade claims.",
+  "generated_utc": "2026-03-24T16:05:51Z",
+  "law": "For each function, KT must bind, supersede, or create exactly one authoritative surface.",
+  "report_mirror_ref": "KT_PROD_CLEANROOM/reports/authority_supersession_map.json",
+  "rows": [
+    {
+      "action": "UPGRADE_EXISTING",
+      "authoritative_ref": "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json",
+      "function_id": "truth_source",
+      "sibling_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_current_head_truth_source.json",
+        "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json"
+      ],
+      "supporting_refs": [
+        "KT_PROD_CLEANROOM/governance/authority_resolution_index.json",
+        "KT_PROD_CLEANROOM/governance/historical_claim_firewall.json",
+        "KT_PROD_CLEANROOM/governance/execution_board.json",
+        "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
+        "KT_PROD_CLEANROOM/governance/truth_engine_contract.json"
+      ]
+    },
+    {
+      "action": "VALIDATE_EXISTING",
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_wave5_blocker_matrix.json",
+      "function_id": "blocker_matrix",
+      "sibling_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_blocker_matrix.json"
+      ],
+      "supporting_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_wave5_final_readjudication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_wave5_final_tier_ruling.json"
+      ]
+    },
+    {
+      "action": "VALIDATE_EXISTING",
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_wave5_final_tier_ruling.json",
+      "function_id": "claim_ceiling",
+      "sibling_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_claim_ceiling_receipt.json"
+      ],
+      "supporting_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_wave5_final_claim_class_matrix.json"
+      ]
+    },
+    {
+      "action": "UPGRADE_EXISTING",
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_disposition_register.json",
+      "function_id": "organ_disposition",
+      "sibling_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_unified_convergence_named_organ_disposition_register.json"
+      ],
+      "supporting_refs": [
+        "KT_PROD_CLEANROOM/reports/post_wave5_runtime_organ_terminal_state_register.json"
+      ]
+    },
+    {
+      "action": "VALIDATE_EXISTING",
+      "authoritative_ref": "KT_PROD_CLEANROOM/governance/kt_adapter_abi_v1.json",
+      "function_id": "adapter_abi",
+      "sibling_refs": [],
+      "supporting_refs": []
+    },
+    {
+      "action": "VALIDATE_EXISTING",
+      "authoritative_ref": "KT_PROD_CLEANROOM/governance/kt_benchmark_constitution_v1.json",
+      "function_id": "benchmark_constitution",
+      "sibling_refs": [],
+      "supporting_refs": [
+        "KT_PROD_CLEANROOM/governance/capability_atlas_contract.json"
+      ]
+    },
+    {
+      "action": "VALIDATE_EXISTING",
+      "authoritative_ref": "KT_PROD_CLEANROOM/governance/kt_externality_class_matrix_v1.json",
+      "function_id": "externality_ladder",
+      "sibling_refs": [],
+      "supporting_refs": [
+        "KT_PROD_CLEANROOM/reports/post_wave5_c006_second_host_execution_receipt.json"
+      ]
+    },
+    {
+      "action": "VALIDATE_EXISTING",
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/deferred_blockers.json",
+      "function_id": "deferred_blocker_register",
+      "sibling_refs": [],
+      "supporting_refs": [
+        "KT_PROD_CLEANROOM/reports/post_wave5_c006_second_host_execution_receipt.json",
+        "KT_PROD_CLEANROOM/reports/c006_deferral_heartbeat.json"
+      ]
+    },
+    {
+      "action": "CREATE_NEW_IF_ABSENT",
+      "authoritative_ref": "KT_PROD_CLEANROOM/governance/tools_runtime_boundary_rule.json",
+      "function_id": "tools_runtime_boundary",
+      "sibling_refs": [],
+      "supporting_refs": [
+        "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+        "KT_PROD_CLEANROOM/governance/runtime_boundary_contract.json",
+        "KT_PROD_CLEANROOM/reports/kt_wave0_5_toolchain_runtime_firewall_receipt.json"
+      ]
+    },
+    {
+      "action": "CREATE_NEW_IF_ABSENT",
+      "authoritative_ref": "KT_PROD_CLEANROOM/governance/historical_claim_firewall.json",
+      "function_id": "historical_claim_firewall",
+      "sibling_refs": [],
+      "supporting_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_frontier_rerun_scorecard.json",
+        "KT_PROD_CLEANROOM/reports/kt_frontier_audit_packet.json",
+        "KT_PROD_CLEANROOM/reports/kt_final_blocker_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_final_current_head_readjudication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_final_claim_ceiling_receipt.json"
+      ]
+    }
+  ],
+  "schema_id": "kt.governance.authority_supersession_registry.v1",
+  "status": "PASS"
+}

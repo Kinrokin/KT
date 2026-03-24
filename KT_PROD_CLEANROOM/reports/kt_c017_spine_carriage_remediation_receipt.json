@@ -1,0 +1,356 @@
+{
+  "carriage_matrix": [
+    {
+      "artifact_refs": {
+        "artifact_root_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/paradox_trigger/artifacts",
+        "governance_verdict_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/paradox_trigger/artifacts/governance_verdict.json",
+        "payload_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/paradox_trigger/payload.json",
+        "runtime_telemetry_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/paradox_trigger/runtime_telemetry.jsonl",
+        "spine_result_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/paradox_trigger/spine_result.json"
+      },
+      "comparison": {
+        "eligible": true,
+        "status": true,
+        "task_hash": true,
+        "trigger_hash": true
+      },
+      "comparison_pass": true,
+      "current_input_byte_ceiling": 65536,
+      "expected_fields": {
+        "eligible": true,
+        "status": "INJECTED",
+        "task_hash": "c4b83d6cfa6caefd9f51fc231636b59742d666fe3dccbefe1f803cb1892ca786",
+        "trigger_hash": "b74f4a12eb1870089d3d1da3e0464363d84b2a0cca03e881af07aa19cee0271f"
+      },
+      "input_string_length": 372,
+      "input_utf8_bytes": 372,
+      "legacy_string_ceiling": 256,
+      "observed_fields": {
+        "eligible": true,
+        "status": "INJECTED",
+        "task_hash": "c4b83d6cfa6caefd9f51fc231636b59742d666fe3dccbefe1f803cb1892ca786",
+        "trigger_hash": "b74f4a12eb1870089d3d1da3e0464363d84b2a0cca03e881af07aa19cee0271f"
+      },
+      "payload_schema_id": "paradox.trigger",
+      "probe_id": "paradox_trigger",
+      "status": "PASS"
+    },
+    {
+      "artifact_refs": {
+        "artifact_root_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/temporal_fork/artifacts",
+        "governance_verdict_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/temporal_fork/artifacts/governance_verdict.json",
+        "payload_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/temporal_fork/payload.json",
+        "runtime_telemetry_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/temporal_fork/runtime_telemetry.jsonl",
+        "spine_result_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/temporal_fork/spine_result.json"
+      },
+      "comparison": {
+        "fork_hash": true,
+        "mode": true,
+        "request_hash": true,
+        "status": true
+      },
+      "comparison_pass": true,
+      "current_input_byte_ceiling": 65536,
+      "expected_fields": {
+        "fork_hash": "12d9850a9317ee1791340556ac520184afebf37ba3ae649b8405b44d2c48a7e3",
+        "mode": "FORK",
+        "request_hash": "0b30dddb2c9860fff99f3eb11dbf30fb85106d9a6f6ae01180cf54afe397b497",
+        "status": "OK"
+      },
+      "input_string_length": 388,
+      "input_utf8_bytes": 388,
+      "legacy_string_ceiling": 256,
+      "observed_fields": {
+        "fork_hash": "12d9850a9317ee1791340556ac520184afebf37ba3ae649b8405b44d2c48a7e3",
+        "mode": "FORK",
+        "request_hash": "0b30dddb2c9860fff99f3eb11dbf30fb85106d9a6f6ae01180cf54afe397b497",
+        "status": "OK"
+      },
+      "payload_schema_id": "temporal.fork.request",
+      "probe_id": "temporal_fork",
+      "status": "PASS"
+    },
+    {
+      "artifact_refs": {
+        "artifact_root_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/temporal_replay/artifacts",
+        "governance_verdict_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/temporal_replay/artifacts/governance_verdict.json",
+        "payload_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/temporal_replay/payload.json",
+        "runtime_telemetry_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/temporal_replay/runtime_telemetry.jsonl",
+        "spine_result_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/temporal_replay/spine_result.json"
+      },
+      "comparison": {
+        "mode": true,
+        "outcome_hash": true,
+        "replay_hash": true,
+        "status": true,
+        "steps_executed": true
+      },
+      "comparison_pass": true,
+      "current_input_byte_ceiling": 65536,
+      "expected_fields": {
+        "mode": "REPLAY",
+        "outcome_hash": "b519e13cf14da2911ab86485f61c3e157c4abff93fe03da57dc17ad916d3d05b",
+        "replay_hash": "9e1867b5129f3a58322354f0837fa89814a3a28856898fff6f9c50feb93685f1",
+        "status": "OK",
+        "steps_executed": 0
+      },
+      "input_string_length": 897,
+      "input_utf8_bytes": 897,
+      "legacy_string_ceiling": 256,
+      "observed_fields": {
+        "mode": "REPLAY",
+        "outcome_hash": "b519e13cf14da2911ab86485f61c3e157c4abff93fe03da57dc17ad916d3d05b",
+        "replay_hash": "9e1867b5129f3a58322354f0837fa89814a3a28856898fff6f9c50feb93685f1",
+        "status": "OK",
+        "steps_executed": 0
+      },
+      "payload_schema_id": "temporal.replay.request",
+      "probe_id": "temporal_replay",
+      "status": "PASS"
+    },
+    {
+      "artifact_refs": {
+        "artifact_root_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/multiverse_evaluation/artifacts",
+        "governance_verdict_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/multiverse_evaluation/artifacts/governance_verdict.json",
+        "payload_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/multiverse_evaluation/payload.json",
+        "runtime_telemetry_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/multiverse_evaluation/runtime_telemetry.jsonl",
+        "spine_result_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/multiverse_evaluation/spine_result.json"
+      },
+      "comparison": {
+        "ranking": true,
+        "result_hash": true,
+        "status": true
+      },
+      "comparison_pass": true,
+      "current_input_byte_ceiling": 65536,
+      "expected_fields": {
+        "ranking": [
+          "alpha",
+          "beta"
+        ],
+        "result_hash": "602af30ddfbd87042e0940ba40b5cec008b4077ec540067327d0030870d33095",
+        "status": "OK"
+      },
+      "input_string_length": 689,
+      "input_utf8_bytes": 689,
+      "legacy_string_ceiling": 256,
+      "observed_fields": {
+        "ranking": [
+          "alpha",
+          "beta"
+        ],
+        "result_hash": "602af30ddfbd87042e0940ba40b5cec008b4077ec540067327d0030870d33095",
+        "status": "OK"
+      },
+      "payload_schema_id": "multiverse.eval_request",
+      "probe_id": "multiverse_evaluation",
+      "status": "PASS"
+    },
+    {
+      "artifact_refs": {
+        "artifact_root_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/cognition_request/artifacts",
+        "governance_verdict_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/cognition_request/artifacts/governance_verdict.json",
+        "payload_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/cognition_request/payload.json",
+        "runtime_telemetry_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/cognition_request/runtime_telemetry.jsonl",
+        "spine_result_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/cognition_request/spine_result.json"
+      },
+      "comparison": {
+        "plan_hash": true,
+        "request_hash": true,
+        "status": true,
+        "steps": true
+      },
+      "comparison_pass": true,
+      "current_input_byte_ceiling": 65536,
+      "expected_fields": {
+        "plan_hash": "51521122b42211a91d3059a7b82f4689fa5c46a4d11167258d3a91724dc66d50",
+        "request_hash": "9984f74369ff27ca3957b52143b938fa96b22fb274f20627b81b55a3151a09f8",
+        "status": "OK",
+        "steps": 4
+      },
+      "input_string_length": 529,
+      "input_utf8_bytes": 529,
+      "legacy_string_ceiling": 256,
+      "observed_fields": {
+        "plan_hash": "51521122b42211a91d3059a7b82f4689fa5c46a4d11167258d3a91724dc66d50",
+        "request_hash": "9984f74369ff27ca3957b52143b938fa96b22fb274f20627b81b55a3151a09f8",
+        "status": "OK",
+        "steps": 4
+      },
+      "payload_schema_id": "cognition.request",
+      "probe_id": "cognition_request",
+      "status": "PASS"
+    },
+    {
+      "artifact_refs": {
+        "artifact_root_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/cognition_plan/artifacts",
+        "governance_verdict_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/cognition_plan/artifacts/governance_verdict.json",
+        "payload_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/cognition_plan/payload.json",
+        "runtime_telemetry_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/cognition_plan/runtime_telemetry.jsonl",
+        "spine_result_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/cognition_plan/spine_result.json"
+      },
+      "comparison": {
+        "plan_hash": true,
+        "result_hash": true,
+        "status": true,
+        "steps": true
+      },
+      "comparison_pass": true,
+      "current_input_byte_ceiling": 65536,
+      "expected_fields": {
+        "plan_hash": "51521122b42211a91d3059a7b82f4689fa5c46a4d11167258d3a91724dc66d50",
+        "result_hash": "ad3c6e7b8faa97d25ccea5530c142b5cfba6c5de3c2bfe7acde5839c8e67dc48",
+        "status": "OK",
+        "steps": 4
+      },
+      "input_string_length": 952,
+      "input_utf8_bytes": 952,
+      "legacy_string_ceiling": 256,
+      "observed_fields": {
+        "plan_hash": "51521122b42211a91d3059a7b82f4689fa5c46a4d11167258d3a91724dc66d50",
+        "result_hash": "ad3c6e7b8faa97d25ccea5530c142b5cfba6c5de3c2bfe7acde5839c8e67dc48",
+        "status": "OK",
+        "steps": 4
+      },
+      "payload_schema_id": "cognition.plan",
+      "probe_id": "cognition_plan",
+      "status": "PASS"
+    },
+    {
+      "artifact_refs": {
+        "artifact_root_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/council_request/artifacts",
+        "governance_verdict_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/council_request/artifacts/governance_verdict.json",
+        "payload_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/council_request/payload.json",
+        "runtime_telemetry_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/council_request/runtime_telemetry.jsonl",
+        "spine_result_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/council_request/spine_result.json"
+      },
+      "comparison": {
+        "plan_hash": true,
+        "request_hash": true,
+        "status": true
+      },
+      "comparison_pass": true,
+      "current_input_byte_ceiling": 65536,
+      "expected_fields": {
+        "plan_hash": "f89861e2f5ff0820ed6fe5095c691b3d382ab33f23c2a796b1c6b8e181fb8094",
+        "request_hash": "a5bbd89f67e205c48140384a7fabf631991e7c904b19698b79cc25b4653591ac",
+        "status": "OK"
+      },
+      "input_string_length": 434,
+      "input_utf8_bytes": 434,
+      "legacy_string_ceiling": 256,
+      "observed_fields": {
+        "plan_hash": "f89861e2f5ff0820ed6fe5095c691b3d382ab33f23c2a796b1c6b8e181fb8094",
+        "request_hash": "a5bbd89f67e205c48140384a7fabf631991e7c904b19698b79cc25b4653591ac",
+        "status": "OK"
+      },
+      "payload_schema_id": "council.request",
+      "probe_id": "council_request",
+      "status": "PASS"
+    },
+    {
+      "artifact_refs": {
+        "artifact_root_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/council_plan/artifacts",
+        "governance_verdict_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/council_plan/artifacts/governance_verdict.json",
+        "payload_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/council_plan/payload.json",
+        "runtime_telemetry_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/council_plan/runtime_telemetry.jsonl",
+        "spine_result_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/council_plan/spine_result.json"
+      },
+      "comparison": {
+        "plan_hash": true,
+        "result_hash": true,
+        "status": true
+      },
+      "comparison_pass": true,
+      "current_input_byte_ceiling": 65536,
+      "expected_fields": {
+        "plan_hash": "f89861e2f5ff0820ed6fe5095c691b3d382ab33f23c2a796b1c6b8e181fb8094",
+        "result_hash": "add2044077f5ed93c9e51f03b6e65e0d1398bd495d33063d1089fe3c55459eca",
+        "status": "DRY_RUN"
+      },
+      "input_string_length": 468,
+      "input_utf8_bytes": 468,
+      "legacy_string_ceiling": 256,
+      "observed_fields": {
+        "plan_hash": "f89861e2f5ff0820ed6fe5095c691b3d382ab33f23c2a796b1c6b8e181fb8094",
+        "result_hash": "add2044077f5ed93c9e51f03b6e65e0d1398bd495d33063d1089fe3c55459eca",
+        "status": "DRY_RUN"
+      },
+      "payload_schema_id": "council.plan",
+      "probe_id": "council_plan",
+      "status": "PASS"
+    }
+  ],
+  "exact_ceiling": {
+    "contradiction_id": "C017_CANONICAL_SPINE_INPUT_CEILING_BLOCKS_FULL_ORGAN_PAYLOAD_CARRIAGE",
+    "input_byte_ceiling": 65536,
+    "largest_bounded_payload_len_proven": 952,
+    "law_surface": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/schemas/runtime_context_schema.py",
+    "legacy_general_string_limit": 256,
+    "mechanism": "validate_runtime_context applied validate_bounded_json_value to the whole runtime context, so envelope.input was constrained by the generic 256-char string limit even though it already had its own max_input_bytes ceiling.",
+    "smallest_pre_fix_blocked_payload_len": 372,
+    "spine_dependency": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py parses candidate payloads only from context.envelope.input."
+  },
+  "generated_utc": "2026-03-24T18:33:42Z",
+  "minimal_fix": {
+    "files_changed": [
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/schemas/runtime_context_schema.py"
+    ],
+    "parallel_runtime_created": false,
+    "spine_rewrite_performed": false,
+    "status": "IMPLEMENTED",
+    "strategy": "Keep the generic runtime-context short-string ceiling intact everywhere except envelope.input, which remains explicitly bounded by max_input_bytes and max_context_bytes.",
+    "zone_boundary_change": "NONE"
+  },
+  "oversize_guard": {
+    "error_class": "ContractViolationError",
+    "error_message": "Traceback (most recent call last):\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\04_PROD_TEMPLE_V2\\src\\core\\invariants_gate.py\", line 144, in _assert_schema_contract\n    validate_runtime_context(context)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\04_PROD_TEMPLE_V2\\src\\schemas\\runtime_context_schema.py\", line 102, in validate_runtime_context\n    raise SchemaValidationError(\"envelope.input exceeds max_input_bytes (fail-closed)\")\nschemas.base_schema.SchemaValidationError: envelope.input exceeds max_input_bytes (fail-closed)\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\rober\\AppData\\Local\\Programs\\Python\\Python310\\lib\\runpy.py\", line 196, in _run_module_as_main\n    return _run_code(code, main_globals, None,\n  File \"C:\\Users\\rober\\AppData\\Local\\Programs\\Python\\Python310\\lib\\runpy.py\", line 86, in _run_code\n    exec(code, run_globals)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\tools\\operator\\wave2c_spine_probe.py\", line 85, in <module>\n    raise SystemExit(main())\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\tools\\operator\\wave2c_spine_probe.py\", line 78, in main\n    result = run_probe(payload=payload, artifact_root=artifact_root)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\tools\\operator\\wave2c_spine_probe.py\", line 39, in run_probe\n    result = spine_run(context)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\04_PROD_TEMPLE_V2\\src\\core\\spine.py\", line 103, in run\n    InvariantsGate.assert_runtime_invariants(context)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\04_PROD_TEMPLE_V2\\src\\core\\invariants_gate.py\", line 130, in assert_runtime_invariants\n    InvariantsGate._assert_schema_contract(context)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\04_PROD_TEMPLE_V2\\src\\core\\invariants_gate.py\", line 148, in _assert_schema_contract\n    raise ContractViolationError(str(exc))\ncore.invariants_gate.ContractViolationError: envelope.input exceeds max_input_bytes (fail-closed)",
+    "expected_error_message": "envelope.input exceeds max_input_bytes (fail-closed)",
+    "failure_artifact_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/oversize_guard/failure_artifacts/5f36adff28f54827193e8a5452044bd421a3a5ce67d0acc42771d97fd74fa87b.json",
+    "input_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/oversize_guard/oversize_payload.json",
+    "input_utf8_bytes": 65678,
+    "max_input_bytes": 65536,
+    "message_match": true,
+    "probe_id": "oversize_guard",
+    "status": "PASS",
+    "telemetry_ref": ""
+  },
+  "remaining_open_truths": [
+    "C005_ROUTER_AMBITION_EXCEEDS_IMPLEMENTATION",
+    "C006_EXTERNALITY_CEILING_REMAINS_BOUNDED",
+    "C007_REPO_ROOT_IMPORT_FRAGILITY_VISIBLE_AND_UNFIXED",
+    "C016_REMOTE_PROVIDER_AUTH_ONLY_FAIL_CLOSED_OUTCOMES_VISIBLE"
+  ],
+  "runtime_truth_preservation": {
+    "canonical_kernel_unchanged": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+    "learned_router_cutover_allowed": false,
+    "router_status": "STATIC_CANONICAL_BASELINE_UNCHANGED",
+    "state_vault_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/_runtime_artifacts/state_vault.jsonl",
+    "telemetry_path_ref": "KT_PROD_CLEANROOM/reports/kt_c017_spine_carriage_telemetry.jsonl",
+    "toolchain_runtime_firewall_crossing_created": false
+  },
+  "schema_id": "kt.c017.spine_carriage_remediation_receipt.v1",
+  "scope_boundary": "C017 canonical spine carriage remediation only. No Wave 3 execution, no router promotion, no tournament/product/externality widening.",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "minimum_viable_civilization_run_executed",
+    "learned_router_cutover_occurred",
+    "tournament_promoted_to_canonical_runtime",
+    "product_language_widened",
+    "externality_class_widened",
+    "broad_current_head_external_runtime_capability_confirmed"
+  ],
+  "timing_ms": {
+    "end_ts": 1774377222508,
+    "latency_ms": 13251,
+    "start_ts": 1774377209257
+  },
+  "wave3_unlock_assessment": {
+    "c017_closed": true,
+    "reason": "C017 no longer blocks Wave 3 entry because full bounded organ payloads now ride through the canonical spine with deterministic over-limit failure.",
+    "wave3_auto_opened": false,
+    "wave3_unlocked": true
+  },
+  "wave_or_tranche_id": "C017_CANONICAL_SPINE_CARRIAGE_REMEDIATION_ONLY",
+  "work_order_id": "KT_UNIFIED_CONVERGENCE_MAX_POWER_CAMPAIGN_V2_1_1_FINAL"
+}

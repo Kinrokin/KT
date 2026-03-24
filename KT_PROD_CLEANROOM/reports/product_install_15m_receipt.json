@@ -1,0 +1,64 @@
+{
+  "checks": [
+    {
+      "check_id": "current_head_ceiling_preserved",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json"
+    },
+    {
+      "check_id": "three_buyer_profiles_declared",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/product/deployment_profiles.json"
+    },
+    {
+      "check_id": "local_profile_install_budget_under_15_minutes",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/product/deployment_profiles.json"
+    },
+    {
+      "check_id": "wrapper_entrypoints_match_verifier_kit",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/product/client_wrapper_spec.json"
+    },
+    {
+      "check_id": "runbook_and_truth_surface_restate_bounded_e1_only",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/product/one_page_product_truth_surface.md"
+    },
+    {
+      "check_id": "support_boundary_stays_no_training_and_no_cutover",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/product/support_boundary.json"
+    },
+    {
+      "check_id": "bounded_pack_stays_green",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/commercial_truth_packet.json"
+    }
+  ],
+  "claim_boundary": "This receipt proves only that the bounded E1 wedge is packaged into a buyer-simple install-to-pass/fail flow. It does not widen externality or commercial claims.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "generated_utc": "2026-03-23T20:03:03Z",
+  "installation_entrypoints": [
+    "python -m tools.operator.public_verifier",
+    "python -m tools.operator.public_verifier_detached_validate"
+  ],
+  "local_profile_id": "local_verifier_mode",
+  "local_profile_install_to_pass_fail_minutes": 15,
+  "pass_fail_surface_refs": [
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json"
+  ],
+  "schema_id": "kt.product.install_15m_receipt.v1",
+  "source_refs": [
+    "KT_PROD_CLEANROOM/product/deployment_profiles.json",
+    "KT_PROD_CLEANROOM/product/client_wrapper_spec.json",
+    "KT_PROD_CLEANROOM/product/support_boundary.json",
+    "KT_PROD_CLEANROOM/product/one_page_product_truth_surface.md",
+    "KT_PROD_CLEANROOM/product/operator_runbook_v2.md",
+    "KT_PROD_CLEANROOM/reports/commercial_truth_packet.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+    "KT_PROD_CLEANROOM/reports/c006_second_host_kit.json"
+  ],
+  "status": "PASS"
+}

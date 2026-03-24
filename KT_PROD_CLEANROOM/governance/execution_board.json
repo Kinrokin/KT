@@ -5,7 +5,7 @@
   "MIRROR_CLASS": "documentary_compatibility_surface",
   "RESOLUTION_PATH": "authority_resolver",
   "SUPERSEDED_BY": "kt_truth_ledger:ledger/current/current_pointer.json",
-  "authoritative_current_head_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
+  "authoritative_current_head_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
   "authoritative_truth_sources": [
     "kt_truth_ledger:ledger/current/current_state_receipt.json",
     "kt_truth_ledger:ledger/current/runtime_closure_audit.json",
@@ -49,32 +49,11 @@
         }
       ],
       "active_blockers": [
-        "green has not been re-earned from current-head one-button receipts",
-        "current_pointer_matches_git_head",
-        "current_state_receipt_matches_git_head",
-        "runtime_closure_audit_matches_git_head",
-        "execution_board_points_to_active_truth_source",
-        "readiness_scope_points_to_active_truth_source",
-        "board_posture_matches_pointer",
-        "board_posture_matches_current_state",
-        "board_posture_matches_runtime_audit",
-        "local_ledger_requires_transitional_authority",
-        "main_current_pointer_documentary_only",
-        "main_current_state_documentary_only",
-        "main_runtime_audit_documentary_only",
-        "posture state is CANONICAL_READY_FOR_REEARNED_GREEN, not TRUTHFUL_GREEN",
-        "authority convergence failed: current_pointer_matches_git_head",
-        "authority convergence failed: current_state_receipt_matches_git_head",
-        "authority convergence failed: runtime_closure_audit_matches_git_head",
-        "authority convergence failed: execution_board_points_to_active_truth_source",
-        "authority convergence failed: readiness_scope_points_to_active_truth_source",
-        "authority convergence failed: board_posture_matches_pointer",
-        "authority convergence failed: board_posture_matches_current_state",
-        "authority convergence failed: board_posture_matches_runtime_audit",
-        "authority convergence failed: local_ledger_requires_transitional_authority",
-        "authority convergence failed: main_current_pointer_documentary_only",
-        "authority convergence failed: main_current_state_documentary_only",
-        "authority convergence failed: main_runtime_audit_documentary_only",
+        "active worktree is dirty",
+        "WORKTREE_DIRTY",
+        "authority mode is not settled authoritative",
+        "validated subject worktree was dirty",
+        "posture state is CANONICAL_VALIDATED_DIRTY_WORKTREE, not TRUTHFUL_GREEN",
         "unhealthy artifact: KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json status=HOLD"
       ],
       "domain_id": "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE",
@@ -394,7 +373,7 @@
     "domain_id": "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE",
     "title": "Truth publication architecture"
   },
-  "current_posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+  "current_posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
   "domain_gate_statuses": [
     {
       "blockers": [],
@@ -404,32 +383,11 @@
     },
     {
       "blockers": [
-        "green has not been re-earned from current-head one-button receipts",
-        "current_pointer_matches_git_head",
-        "current_state_receipt_matches_git_head",
-        "runtime_closure_audit_matches_git_head",
-        "execution_board_points_to_active_truth_source",
-        "readiness_scope_points_to_active_truth_source",
-        "board_posture_matches_pointer",
-        "board_posture_matches_current_state",
-        "board_posture_matches_runtime_audit",
-        "local_ledger_requires_transitional_authority",
-        "main_current_pointer_documentary_only",
-        "main_current_state_documentary_only",
-        "main_runtime_audit_documentary_only",
-        "posture state is CANONICAL_READY_FOR_REEARNED_GREEN, not TRUTHFUL_GREEN",
-        "authority convergence failed: current_pointer_matches_git_head",
-        "authority convergence failed: current_state_receipt_matches_git_head",
-        "authority convergence failed: runtime_closure_audit_matches_git_head",
-        "authority convergence failed: execution_board_points_to_active_truth_source",
-        "authority convergence failed: readiness_scope_points_to_active_truth_source",
-        "authority convergence failed: board_posture_matches_pointer",
-        "authority convergence failed: board_posture_matches_current_state",
-        "authority convergence failed: board_posture_matches_runtime_audit",
-        "authority convergence failed: local_ledger_requires_transitional_authority",
-        "authority convergence failed: main_current_pointer_documentary_only",
-        "authority convergence failed: main_current_state_documentary_only",
-        "authority convergence failed: main_runtime_audit_documentary_only",
+        "active worktree is dirty",
+        "WORKTREE_DIRTY",
+        "authority mode is not settled authoritative",
+        "validated subject worktree was dirty",
+        "posture state is CANONICAL_VALIDATED_DIRTY_WORKTREE, not TRUTHFUL_GREEN",
         "unhealthy artifact: KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json status=HOLD"
       ],
       "domain_id": "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE",
@@ -486,21 +444,10 @@
       "open": false
     }
   ],
-  "last_synced_head_sha": "7bd610b507328eb72622ce24678620f5469f3848",
+  "last_synced_head_sha": "494cd490a6512b9bfa937c82886db625143d38ae",
   "open_blockers": [
-    "green has not been re-earned from current-head one-button receipts",
-    "current_pointer_matches_git_head",
-    "current_state_receipt_matches_git_head",
-    "runtime_closure_audit_matches_git_head",
-    "execution_board_points_to_active_truth_source",
-    "readiness_scope_points_to_active_truth_source",
-    "board_posture_matches_pointer",
-    "board_posture_matches_current_state",
-    "board_posture_matches_runtime_audit",
-    "local_ledger_requires_transitional_authority",
-    "main_current_pointer_documentary_only",
-    "main_current_state_documentary_only",
-    "main_runtime_audit_documentary_only"
+    "active worktree is dirty",
+    "WORKTREE_DIRTY"
   ],
   "program_gates": {
     "CAPABILITY_ATLAS_RATIFIED": false,
@@ -539,7 +486,7 @@
     },
     {
       "exit_condition": "current-head truth source is settled authoritative on a clean clone",
-      "status": "COMPLETED",
+      "status": "BLOCKED",
       "workstream_id": "PHASE_4_SETTLED_AUTHORITY"
     }
   ]

@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kt-prod-cleanroom"
+version = "0.0.0"
+description = "Wave 0 package baseline for KT unified convergence remediation."
+requires-python = ">=3.10,<3.11"
+dependencies = [
+  "jsonschema==4.25.1",
+  "PyYAML==6.0.3",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest==9.0.2",
+  "pytest-cov==7.0.0",
+]
+
+[tool.setuptools]
+package-dir = {"" = "04_PROD_TEMPLE_V2/src"}
+
+[tool.setuptools.packages.find]
+where = ["04_PROD_TEMPLE_V2/src"]
+include = [
+  "cognition*",
+  "core*",
+  "council*",
+  "curriculum*",
+  "governance*",
+  "kt*",
+  "memory*",
+  "multiverse*",
+  "paradox*",
+  "schemas*",
+  "temporal*",
+  "thermodynamics*",
+  "versioning*",
+]
+exclude = [
+  "tools*",
+]

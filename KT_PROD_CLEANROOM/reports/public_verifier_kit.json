@@ -1,0 +1,26 @@
+{
+  "claim_boundary": "The verifier kit is real and usable, but bounded at E1 while C006 remains deferred and open.",
+  "client_wrapper_spec_ref": "KT_PROD_CLEANROOM/product/client_wrapper_spec.json",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "deployment_profiles_ref": "KT_PROD_CLEANROOM/reports/deployment_profiles.json",
+  "detached_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+  "entrypoints": [
+    "python -m tools.operator.public_verifier",
+    "python -m tools.operator.public_verifier_detached_validate"
+  ],
+  "expected_operator_time_budget_minutes": 15,
+  "externality_class_max": "E1_SAME_HOST_DETACHED_REPLAY",
+  "forbidden_claims": [
+    "Do not claim the verifier kit proves cross-host runtime capability.",
+    "Do not claim the verifier kit alone closes C006."
+  ],
+  "generated_utc": "2026-03-23T20:03:11Z",
+  "kit_status": "BOUNDED_E1_READY",
+  "manifest_ref": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+  "operator_quickstart_ref": "KT_PROD_CLEANROOM/docs/operator/RUN_KT_IN_30_MINUTES.md",
+  "pass_fail_surface": "CLEAR_PASS_FAIL_BOUNDARY",
+  "replay_recipe_ref": "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+  "schema_id": "kt.e1.public_verifier_kit.v1",
+  "status": "PASS",
+  "support_boundary_ref": "KT_PROD_CLEANROOM/product/support_boundary.json"
+}

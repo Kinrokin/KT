@@ -1,0 +1,59 @@
+{
+  "checks": [
+    {
+      "check": "toolchain_proving_zone_present",
+      "status": "PASS"
+    },
+    {
+      "check": "toolchain_proving_surfaces_in_toolchain_zone",
+      "mismatches": [],
+      "status": "PASS"
+    },
+    {
+      "check": "toolchain_proving_surfaces_not_in_canonical_zone",
+      "mismatches": [],
+      "status": "PASS"
+    },
+    {
+      "check": "broad_tools_allowlist_removed",
+      "compatibility_allowlist_roots": [],
+      "status": "PASS"
+    },
+    {
+      "check": "runtime_boundary_negative_space_exception_narrowed",
+      "mismatches": [],
+      "status": "PASS"
+    },
+    {
+      "check": "canonical_runtime_does_not_import_toolchain_proving_modules",
+      "status": "PASS",
+      "violations": []
+    }
+  ],
+  "claim_boundary": "This receipt proves the TOOLCHAIN_PROVING split and runtime import firewall on declared canonical paths only. It does not upgrade runtime capability or externality.",
+  "failures": [],
+  "generated_utc": "2026-03-20T22:19:27Z",
+  "illegal_crossings_checked": [
+    "tooling_generated_state_treated_as_runtime_truth_without_receipt",
+    "builder_behavior_used_as_runtime_behavior",
+    "verifier_helpers_imported_as_runtime_organs",
+    "tools_directory_allowlisted_as_runtime_root_without_explicit_contract"
+  ],
+  "schema_id": "kt.operator.toolchain_runtime_firewall_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "adapter_activation_started",
+    "router_elevation_started",
+    "runtime_capability_upgraded_by_toolchain_firewalling"
+  ],
+  "toolchain_surface_refs": [
+    "KT_PROD_CLEANROOM/tools/operator/**",
+    "KT_PROD_CLEANROOM/tools/verification/**",
+    "KT_PROD_CLEANROOM/tools/delivery/**",
+    "KT_PROD_CLEANROOM/tools/security/**",
+    ".github/**",
+    "ci/**",
+    ".devcontainer/**"
+  ],
+  "validated_head_sha": "494cd490a6512b9bfa937c82886db625143d38ae"
+}

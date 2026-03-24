@@ -1,0 +1,66 @@
+{
+  "benchmark_rows": [
+    {
+      "benchmark_id": "deterministic_fork_hash",
+      "observed": "ef2ebf268460383a611007a8dec504c1929ec8321cc8d80e417776d78c152fb0",
+      "pass": true
+    },
+    {
+      "benchmark_id": "deterministic_replay_hash",
+      "observed": "88ea506b5dc5ea30e19e8e0edff5ff021e0049b90bbacccfcef1639fd6d2eca7",
+      "pass": true
+    }
+  ],
+  "bounded_summary": "Temporal is realized as a bounded fork-and-replay identity surface with deterministic rejection codes. Direct proof is real; canonical spine carriage remains blocked where the runtime-context envelope cannot lawfully carry full temporal payloads.",
+  "canonical_entrypoint": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/temporal_engine.py",
+  "challenge_rows": [
+    {
+      "challenge_id": "registry_hash_mismatch_rejected",
+      "pass": true,
+      "rejection_code": "REGISTRY_HASH_MISMATCH"
+    }
+  ],
+  "disposition": "REALIZED_BOUNDED_KEEP_CANONICAL",
+  "externality_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+  "failure_artifact_refs": [
+    "KT_PROD_CLEANROOM/exports/wave2c_organ_realization/temporal/failure_artifacts/8af16476bb952832d4034027f5027adaf86742988d495399358322a163009371.json"
+  ],
+  "generated_utc": "2026-03-24T16:53:57Z",
+  "maturity_class": "O2_HARDENED",
+  "organ_id": "temporal",
+  "proof_contracts": {
+    "benchmark_pack_present": true,
+    "canonical_kernel_integration_present": false,
+    "challenge_pack_present": true,
+    "deterministic_suite_present": true,
+    "failure_artifact_present": true,
+    "provenance_present": true,
+    "telemetry_present": true
+  },
+  "provenance": {
+    "fork_hash": "ef2ebf268460383a611007a8dec504c1929ec8321cc8d80e417776d78c152fb0",
+    "outcome_hash": "829b7f14b702831d2b753d2624ba3d7105143483a2a8b03fe3bbce40e184ee20",
+    "replay_hash": "88ea506b5dc5ea30e19e8e0edff5ff021e0049b90bbacccfcef1639fd6d2eca7",
+    "runtime_registry_hash": "527cc422264042df7df8a620b1c7eb8151a0940eab78abe2fe5a5055e848ffbe"
+  },
+  "reality_class": "LIVE_BOUNDED",
+  "schema_id": "kt.wave2c.temporal_pack.v1",
+  "spine_integration": {
+    "blocked_reason": "runtime_context_input_string_exceeds_max_string_len",
+    "fork_probe_ref": "KT_PROD_CLEANROOM/exports/wave2c_organ_realization/temporal/spine/temporal_fork/spine_blocked.json",
+    "fork_status": "BLOCKED_BY_RUNTIME_CONTEXT_INPUT_LIMIT",
+    "replay_probe_ref": "KT_PROD_CLEANROOM/exports/wave2c_organ_realization/temporal/spine/temporal_replay/spine_blocked.json",
+    "replay_status": "BLOCKED_BY_RUNTIME_CONTEXT_INPUT_LIMIT",
+    "runtime_telemetry_refs": [],
+    "status": "BLOCKED"
+  },
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "full_temporal_execution_claimed",
+    "cross_host_temporal_replay_claimed",
+    "canonical_spine_carriage_claimed_despite_input_limit"
+  ],
+  "telemetry_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_telemetry.jsonl"
+  ]
+}

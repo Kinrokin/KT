@@ -15,10 +15,12 @@
   ],
   "rules": [
     "Static router baseline is ratified from the demo suite and policy contract only.",
-    "Shadow and learned router upgrades remain gated by later ratification order."
+    "Shadow and learned router upgrades remain gated by later ratification order.",
+    "No learned-router cutover is admissible unless the frozen comparator suite shows a clean win over the best static baseline with no regression.",
+    "Multi-lobe orchestration remains blocked until learned-router superiority is actually earned."
   ],
   "schema_id": "kt.governance.router_promotion_law.v1",
   "status": "ACTIVE",
-  "summary": "Router promotion is limited to deterministic policy and receipted demo-suite behavior until further ratification.",
+  "summary": "Router promotion is limited to deterministic policy and receipted demo-suite behavior until further ratification; W5 keeps the static baseline canonical unless a no-regression superiority win is earned.",
   "supersedes": []
 }

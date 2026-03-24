@@ -1,0 +1,61 @@
+{
+  "blocker_delta": "C006_EXECUTION_ATTEMPTED_AWAITING_SECOND_HOST_RETURN",
+  "c006_status": "OPEN_SECOND_HOST_EXECUTION_PENDING",
+  "checks": [
+    {
+      "check": "anchor_limits_authoritative_scope_to_c006",
+      "detail": "The active anchor must keep the canonical lane narrowed to C006 only.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_unified_convergence_max_power_campaign_v2_1_1_anchor.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "handoff_pack_is_pass_and_e1_only",
+      "detail": "The handoff pack must remain PASS while keeping the current ceiling at E1.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/post_wave5_c006_friendly_host_handoff_pack.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "wave5_verifier_truth_remains_current_head_e1",
+      "detail": "Current-head verifier truth must remain explicitly bounded at E1 before second-host promotion.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "second_host_return_present",
+      "detail": "A fresh second-host return receipt must be imported before E2 can be earned.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/imports/post_wave5_c006_second_host_return.json"
+      ],
+      "status": "FAIL"
+    }
+  ],
+  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "environment_declaration": {
+    "local_execution_host_fingerprint": "{\"machine\": \"AMD64\", \"node\": \"LAPTOP-4OTV0E53\", \"platform\": \"Windows-10-10.0.26200-SP0\", \"python\": \"3.10.11\", \"system\": \"Windows\"}",
+    "required_second_host_environment_class": "E_CROSS_HOST_FRIENDLY",
+    "second_host_return_present": false,
+    "second_host_return_rel": "KT_PROD_CLEANROOM/reports/imports/post_wave5_c006_second_host_return.json"
+  },
+  "exact_externality_class_earned": "NOT_EARNED",
+  "exact_remaining_forbidden_claims": [
+    "Do not claim E2 unless a fresh current-head second-host verifier return is imported and all typed checks pass.",
+    "Do not narrate verifier-only second-host success as broad current-head runtime proof.",
+    "Do not narrate friendly-host replay as independent hostile replay or public challenge survival.",
+    "Do not widen router, product, procurement, or comparative-proof claims from this tranche."
+  ],
+  "generated_utc": "2026-03-22T07:01:13Z",
+  "next_lawful_move": "Import a fresh second-host return receipt that binds to the current-head handoff pack.",
+  "schema_id": "kt.operator.post_wave5.c006_second_host_execution_receipt.v1",
+  "second_host_return_summary": {
+    "claim_effect": "NO_EXTERNALITY_PROMOTION",
+    "status": "MISSING"
+  },
+  "status": "PASS",
+  "submission_template_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c006_second_host_submission_template.json"
+}

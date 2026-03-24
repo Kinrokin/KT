@@ -1,0 +1,38 @@
+{
+  "b01_checks": [
+    {
+      "check": "repo_hygiene_validate",
+      "status": "PASS"
+    },
+    {
+      "check": "authority_convergence_pass_current_head",
+      "status": "PASS"
+    },
+    {
+      "check": "truth_lock_freshness_receipt",
+      "status": "PASS"
+    },
+    {
+      "check": "bundle_self_validation_receipt",
+      "status": "PASS"
+    },
+    {
+      "check": "present_head_authority_seal_receipt",
+      "status": "PASS"
+    },
+    {
+      "check": "clean_current_head_receipt",
+      "status": "PASS"
+    }
+  ],
+  "b01_failures": [],
+  "batch_statuses": {
+    "B00_EXECUTIONIZE_V9": "PASS",
+    "B01_GATE_A_AUTHORITY_SEAL": "PASS"
+  },
+  "claim_boundary": "This batch receipt reports executionization plus Gate A authority restoration only. It does not widen runtime, externality, or product claims.",
+  "generated_utc": "2026-03-24T16:40:38Z",
+  "next_lawful_move": "Gate A complete; next add one truth engine and contradiction validator.",
+  "schema_id": "kt.operator.v11_gate_a_campaign_receipt.v1",
+  "status": "PASS"
+}

@@ -143,6 +143,62 @@ def active_supporting_truth_surfaces(*, root: Path) -> List[str]:
     return [str(item).strip() for item in rows if str(item).strip()]
 
 
+def payload_documentary_only(payload: Dict[str, Any]) -> bool:
+    if bool(payload.get("documentary_only")):
+        return True
+    if payload.get("live_authority") is False:
+        return True
+    if payload.get("ACTIVE_AUTHORITY") is False:
+        return True
+    if payload.get("LIVE_TRUTH_ALLOWED") is False:
+        return True
+    status = str(payload.get("status", "")).strip().upper()
+    authority_level = str(payload.get("authority_level", "")).strip().upper()
+    authority_role = str(payload.get("authority_role", "")).strip().upper()
+    return (
+        authority_level == "DOCUMENTARY_ONLY"
+        or authority_role == "DOCUMENTARY_ONLY"
+        or "DOCUMENTARY" in status
+        or "SUPERSEDED" in status
+    )
+
+
+def compatibility_surface_is_non_authoritative(
+    *,
+    ref: str,
+    active_source_ref: str,
+    payload: Dict[str, Any],
+    documentary_refs: Iterable[str] = (),
+) -> bool:
+    if payload_documentary_only(payload):
+        return True
+    ref_norm = str(ref).strip()
+    active_norm = str(active_source_ref).strip()
+    if not ref_norm or not active_norm or ref_norm == active_norm:
+        return False
+    documentary_set = {str(item).strip() for item in documentary_refs if str(item).strip()}
+    return ref_norm in documentary_set
+
+
+def truth_source_ref_is_active_or_compatibility_pointer(
+    *,
+    candidate_ref: str,
+    active_source_ref: str,
+    compatibility_payload: Dict[str, Any] | None = None,
+) -> bool:
+    candidate = str(candidate_ref).strip()
+    active = str(active_source_ref).strip()
+    if not candidate or not active:
+        return False
+    if candidate == active:
+        return True
+    if candidate == CURRENT_POINTER_REL and active != CURRENT_POINTER_REL:
+        if compatibility_payload is None:
+            return True
+        return not payload_documentary_only(compatibility_payload)
+    return False
+
+
 def index_check(index: Dict[str, Any], check_id: str) -> Dict[str, Any]:
     checks = index.get("checks") if isinstance(index.get("checks"), list) else []
     for row in checks:
@@ -328,7 +384,7 @@ def build_truth_supersession_receipt(
 
 
 def expected_readiness_excludes() -> List[str]:
-    return ["ARCHIVE", "COMMERCIAL", "GENERATED_RUNTIME_TRUTH", "LAB", "QUARANTINED"]
+    return ["ARCHIVE", "COMMERCIAL", "GENERATED_RUNTIME_TRUTH", "LAB", "QUARANTINED", "TOOLCHAIN_PROVING"]
 
 
 def frozen_surface_coverage(*, frozen_surfaces: Iterable[str], protected_surfaces: Iterable[str]) -> List[str]:

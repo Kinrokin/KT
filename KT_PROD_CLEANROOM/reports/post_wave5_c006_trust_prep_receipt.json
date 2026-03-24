@@ -1,0 +1,107 @@
+{
+  "blocker_delta": "C006_PREPARED_FOR_FRIENDLY_CROSS_HOST_PROOF_PATH_BUT_NOT_PROMOTED",
+  "c006_status": "OPEN_PREPARED_NOT_PROMOTED",
+  "checks": [
+    {
+      "check": "wave3_detached_verifier_boundary_still_e1",
+      "detail": "Wave 3 detached verifier must remain a same-host packaged detached replay proof only.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_wave3_detached_verifier_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws19_detached_package_parity_still_pass",
+      "detail": "WS19 detached verifier packaging must remain PASS for the bounded trust substrate.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws20_same_host_independent_replay_still_pass",
+      "detail": "WS20 same-host independent clean-environment replay must remain PASS.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "outsider_secret_free_path_still_pass",
+      "detail": "The bounded outsider verifier path must remain deterministic, detached, and secret-free.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_outsider_path_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "wave4_externality_matrix_preserves_e1_ceiling",
+      "detail": "Wave 4 externality matrix must still preserve E1 as the ceiling and leave E2+ unearned.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_wave4_externality_class_matrix.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "wave5_verifier_truth_surface_binds_current_head_to_e1",
+      "detail": "Wave 5 verifier truth surface must bind current-head verifier truth to E1 only.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "same_host_live_provider_success_does_not_raise_externality",
+      "detail": "The post-Wave5 same-host LIVE_HASHED provider lane is proven, but it does not upgrade C006.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/post_wave5_c016a_success_matrix.json",
+        "KT_PROD_CLEANROOM/reports/post_wave5_c016b_resilience_pack.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "trust_zone_boundaries_still_pass",
+      "detail": "Trust-zone and canonical/generated/toolchain boundaries must remain intact while C006 stays open.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+        "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_externality_ceiling": "E1_SAME_HOST_DETACHED_REPLAY",
+  "exact_remaining_forbidden_claims": [
+    "Do not claim C006 closed or upgraded above E1 from same-host trust or live-provider evidence.",
+    "Do not claim cross-host friendly replay until a fresh current-head verifier or selected runtime surface is replayed on a different host.",
+    "Do not claim outsider or public confirmation of runtime capability from bounded verifier-only outsider tooling.",
+    "Do not widen into procurement, product, or router superiority claims from this prep receipt."
+  ],
+  "failures": [],
+  "generated_utc": "2026-03-22T01:36:02Z",
+  "not_yet_earned": [
+    "E2_CROSS_HOST_FRIENDLY_REPLAY",
+    "E3_INDEPENDENT_HOSTILE_REPLAY",
+    "E4_PUBLIC_CHALLENGE_SURVIVAL"
+  ],
+  "prepared_surface_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_wave3_detached_verifier_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_outsider_path_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave4_externality_class_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json"
+  ],
+  "ready_inputs_for_future_c006_work": [
+    "same_host_packaged_detached_verifier_parity",
+    "same_host_independent_clean_environment_replay",
+    "secret_free_outsider_verifier_path_for_bounded_verifier_surfaces",
+    "current_head_verifier_truth_surface_bound_to_E1"
+  ],
+  "same_host_live_provider_boundary": "Canonical same-host LIVE_HASHED OpenAI/OpenRouter success and resilience are proven, but they do not raise externality above E1.",
+  "same_host_live_provider_refs": [
+    "KT_PROD_CLEANROOM/reports/post_wave5_c016a_success_matrix.json",
+    "KT_PROD_CLEANROOM/reports/post_wave5_c016b_resilience_pack.json"
+  ],
+  "schema_id": "kt.operator.post_wave5.c006_trust_prep_receipt.v1",
+  "status": "PASS"
+}

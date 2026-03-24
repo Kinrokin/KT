@@ -28,6 +28,20 @@ def _run(*, root: Path, cmd: Sequence[str], env: Dict[str, str]) -> Tuple[int, s
     return int(proc.returncode), proc.stdout or ""
 
 
+def _pytest_cmd(*args: str) -> List[str]:
+    return ["python", "-m", "pytest", "-p", "pytest_cov", *args]
+
+
+def _live_provider_env_present() -> bool:
+    names = (
+        "OPENAI_API_KEY",
+        "OPENAI_API_KEYS",
+        "OPENROUTER_API_KEY",
+        "OPENROUTER_API_KEYS",
+    )
+    return any(str(os.environ.get(name, "")).strip() for name in names)
+
+
 def _record(
     *,
     out: List[Dict[str, Any]],
@@ -64,17 +78,17 @@ def _clean_clone_operator_smoke(*, root: Path) -> Dict[str, Any]:
         clone_dir = tmp_dir / "repo"
         subprocess.check_call(["git", "clone", str(root), str(clone_dir)], cwd=str(tmp_dir))
         env = _env(root=clone_dir)
+        coverage_dir = tmp_dir / "coverage"
+        coverage_dir.mkdir(parents=True, exist_ok=True)
+        env["COVERAGE_FILE"] = str((coverage_dir / "operator_clean_clone_smoke.coverage").resolve())
         head = _git(root=clone_dir, args=["rev-parse", "HEAD"])
         rc, out = _run(
             root=clone_dir,
-            cmd=[
-                "python",
-                "-m",
-                "pytest",
+            cmd=_pytest_cmd(
                 "-q",
                 "KT_PROD_CLEANROOM/tests/fl3/test_hat_demo_guardrails.py",
                 "KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py",
-            ],
+            ),
             env=env,
         )
         return {"rc": rc, "output": out, "head_sha": head}
@@ -82,10 +96,12 @@ def _clean_clone_operator_smoke(*, root: Path) -> Dict[str, Any]:
         shutil.rmtree(tmp_dir, ignore_errors=True)
 
 
-def build_live_validation_index(*, root: Path, skip_clean_clone: bool) -> Dict[str, Any]:
+def build_live_validation_index(*, root: Path, skip_clean_clone: bool, skip_dirty_sensitive: bool) -> Dict[str, Any]:
     env = _env(root=root)
     checks: List[Dict[str, Any]] = []
     constitution_report = str((Path(tempfile.gettempdir()) / "kt_constitution_guard_report.md").resolve())
+    coverage_dir = (root / "KT_PROD_CLEANROOM" / "reports" / ".wave_coverage").resolve()
+    coverage_dir.mkdir(parents=True, exist_ok=True)
 
     commands = [
         (
@@ -101,7 +117,7 @@ def build_live_validation_index(*, root: Path, skip_clean_clone: bool) -> Dict[s
             "canonical_runtime",
             True,
             False,
-            ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests"],
+            _pytest_cmd("-q", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests"),
             "runtime suite passed",
         ),
         (
@@ -109,16 +125,13 @@ def build_live_validation_index(*, root: Path, skip_clean_clone: bool) -> Dict[s
             "core_truth_repair",
             True,
             False,
-            [
-                "python",
-                "-m",
-                "pytest",
+            _pytest_cmd(
                 "-q",
                 "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_invariants_gate.py",
                 "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_no_network_dry_run.py",
                 "KT_PROD_CLEANROOM/tests/fl3/test_fl3_meta_evaluator.py",
                 "KT_PROD_CLEANROOM/tools/verification/tests/test_reconcile_and_schemas.py",
-            ],
+            ),
             "critical regression suite passed",
         ),
         (
@@ -126,15 +139,12 @@ def build_live_validation_index(*, root: Path, skip_clean_clone: bool) -> Dict[s
             "governance_lanes",
             True,
             False,
-            [
-                "python",
-                "-m",
-                "pytest",
+            _pytest_cmd(
                 "-q",
                 "KT_PROD_CLEANROOM/tests/fl3/test_epic16_admission_gates.py",
                 "KT_PROD_CLEANROOM/tests/fl3/test_epic15_tournament_runner.py",
                 "KT_PROD_CLEANROOM/tests/fl3/test_epic15_merge_evaluator.py",
-            ],
+            ),
             "lane-aware governance gate suite passed",
         ),
         (
@@ -142,14 +152,11 @@ def build_live_validation_index(*, root: Path, skip_clean_clone: bool) -> Dict[s
             "law_surface",
             True,
             False,
-            [
-                "python",
-                "-m",
-                "pytest",
+            _pytest_cmd(
                 "-q",
                 "KT_PROD_CLEANROOM/tests/fl3/test_fl3_law_bundle_integrity.py",
                 "KT_PROD_CLEANROOM/tests/fl3/test_fl3_meta_evaluator.py",
-            ],
+            ),
             "law bundle integrity suite passed",
         ),
         (
@@ -161,17 +168,263 @@ def build_live_validation_index(*, root: Path, skip_clean_clone: bool) -> Dict[s
             "trust-zone validator passed",
         ),
         (
+            "package_import_canon",
+            "boundary_purification",
+            True,
+            False,
+            ["python", "-m", "tools.operator.package_import_canon"],
+            "package/import canon validator passed",
+        ),
+        (
+            "toolchain_runtime_firewall",
+            "boundary_purification",
+            True,
+            False,
+            ["python", "-m", "tools.operator.toolchain_runtime_firewall_validate"],
+            "toolchain/runtime firewall validator passed",
+        ),
+        (
+            "interface_freeze_validator",
+            "boundary_purification",
+            True,
+            False,
+            ["python", "-m", "tools.operator.interface_freeze_validate"],
+            "interface freeze validator passed",
+        ),
+        (
+            "claim_compiler_boundary_suite",
+            "claim_surface",
+            True,
+            False,
+            _pytest_cmd("-q", "KT_PROD_CLEANROOM/tests/operator/test_claim_compiler.py"),
+            "claim compiler boundary suite passed",
+        ),
+        (
+            "wave1_trust_surface_matrix",
+            "trust_stack_generalization",
+            True,
+            False,
+            ["python", "-m", "tools.operator.wave1_trust_surface_matrix"],
+            "wave1 trust surface matrix passed",
+        ),
+        (
+            "wave1_observability_validate",
+            "trust_stack_generalization",
+            True,
+            False,
+            ["python", "-m", "tools.operator.wave1_observability_validate"],
+            "wave1 observability validation passed",
+        ),
+        (
+            "wave1_provider_resilience_validate",
+            "trust_stack_generalization",
+            True,
+            False,
+            ["python", "-m", "tools.operator.wave1_provider_resilience_validate"],
+            "wave1 provider resilience validation passed",
+        ),
+        (
+            "wave1_ci_repro_strategy",
+            "trust_stack_generalization",
+            True,
+            False,
+            ["python", "-m", "tools.operator.wave1_ci_reproducibility_strategy"],
+            "wave1 ci/local reproducibility strategy passed",
+        ),
+        (
+            "wave1_targeted_suite",
+            "trust_stack_generalization",
+            True,
+            False,
+            _pytest_cmd(
+                "-q",
+                "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_provider_resilience.py",
+                "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_runtime_observability.py",
+                "KT_PROD_CLEANROOM/tests/operator/test_wave1_toolchain_observability.py",
+                "KT_PROD_CLEANROOM/tests/operator/test_wave1_trust_and_repro.py",
+            ),
+            "wave1 targeted suite passed",
+        ),
+        (
+            "wave2b_router_shadow_validate",
+            "router_shadow",
+            True,
+            False,
+            ["python", "-m", "tools.operator.wave2b_router_shadow_validate"],
+            "wave2b router shadow validation passed",
+        ),
+        (
+            "wave2b_targeted_suite",
+            "router_shadow",
+            True,
+            False,
+            _pytest_cmd(
+                "-q",
+                "KT_PROD_CLEANROOM/tests/operator/test_wave2b_router_shadow.py",
+                "KT_PROD_CLEANROOM/tests/fl3/test_epic19_router_hat_demo.py",
+            ),
+            "wave2b targeted suite passed",
+        ),
+        (
+            "wave2c_organ_contract_suite",
+            "organ_realization",
+            True,
+            False,
+            ["python", "-m", "tools.operator.wave2c_organ_contract_suite"],
+            "wave2c organ contract suite passed",
+        ),
+        (
+            "wave2c_organ_realization_validate",
+            "organ_realization",
+            True,
+            False,
+            ["python", "-m", "tools.operator.wave2c_organ_realization_validate"],
+            "wave2c organ realization validation passed",
+        ),
+        (
+            "wave2c_targeted_suite",
+            "organ_realization",
+            True,
+            False,
+            _pytest_cmd(
+                "-q",
+                "KT_PROD_CLEANROOM/tests/operator/test_wave2c_organ_realization.py",
+            ),
+            "wave2c targeted suite passed",
+        ),
+        (
+            "c017_spine_carriage_validate",
+            "spine_carriage_remediation",
+            True,
+            False,
+            ["python", "-m", "tools.operator.c017_spine_carriage_validate"],
+            "c017 spine carriage remediation validation passed",
+        ),
+        (
+            "c017_targeted_suite",
+            "spine_carriage_remediation",
+            True,
+            False,
+            _pytest_cmd(
+                "-q",
+                "KT_PROD_CLEANROOM/tests/operator/test_c017_spine_carriage_remediation.py",
+            ),
+            "c017 targeted suite passed",
+        ),
+        (
+            "wave4_chaos_and_external_challenge_validate",
+            "chaos_and_external_challenge",
+            True,
+            False,
+            ["python", "-m", "tools.operator.wave4_chaos_and_external_challenge_validate"],
+            "wave4 chaos and external challenge validation passed",
+        ),
+        (
+            "wave4_targeted_suite",
+            "chaos_and_external_challenge",
+            True,
+            False,
+            _pytest_cmd(
+                "-q",
+                "KT_PROD_CLEANROOM/tests/operator/test_wave4_chaos_and_external_challenge.py",
+            ),
+            "wave4 targeted suite passed",
+        ),
+        (
+            "wave5_final_readjudication_validate",
+            "final_readjudication",
+            True,
+            False,
+            ["python", "-m", "tools.operator.wave5_final_readjudication_and_tier_ruling_validate"],
+            "wave5 final readjudication validation passed",
+        ),
+        (
+            "wave5_targeted_suite",
+            "final_readjudication",
+            True,
+            False,
+            _pytest_cmd(
+                "-q",
+                "KT_PROD_CLEANROOM/tests/operator/test_wave5_final_readjudication_and_tier_ruling.py",
+            ),
+            "wave5 targeted suite passed",
+        ),
+    ]
+
+    if _live_provider_env_present():
+        commands.extend(
+            [
+                (
+                    "wave2a_provider_contract_suite",
+                    "adapter_activation",
+                    True,
+                    False,
+                    ["python", "-m", "tools.operator.wave2a_provider_contract_suite"],
+                    "wave2a provider contract suite passed",
+                ),
+                (
+                    "wave2a_adapter_activation_validate",
+                    "adapter_activation",
+                    True,
+                    False,
+                    ["python", "-m", "tools.operator.wave2a_adapter_activation_validate"],
+                    "wave2a adapter activation validation passed",
+                ),
+            ]
+        )
+    else:
+        checks.append(
+            {
+                "check_id": "wave2a_provider_contract_suite",
+                "scope": "adapter_activation",
+                "critical": True,
+                "dirty_sensitive": False,
+                "status": "SKIP",
+                "summary": "wave2a provider contract suite skipped because live provider credentials are absent",
+                "command": "python -m tools.operator.wave2a_provider_contract_suite",
+            }
+        )
+        checks.append(
+            {
+                "check_id": "wave2a_adapter_activation_validate",
+                "scope": "adapter_activation",
+                "critical": True,
+                "dirty_sensitive": False,
+                "status": "SKIP",
+                "summary": "wave2a adapter activation validation skipped because live provider credentials are absent",
+                "command": "python -m tools.operator.wave2a_adapter_activation_validate",
+            }
+        )
+
+    commands.append(
+        (
             "current_worktree_cleanroom_suite",
             "active_repo_validation",
             True,
             True,
-            ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/tests", "-q", "-ra", "--maxfail=100"],
+            _pytest_cmd("-q", "KT_PROD_CLEANROOM/tests", "-q", "-ra", "--maxfail=100"),
             "current-worktree cleanroom suite passed",
-        ),
-    ]
+        )
+    )
 
     for check_id, scope, critical, dirty_sensitive, cmd, success_summary in commands:
-        rc, out = _run(root=root, cmd=cmd, env=env)
+        if skip_dirty_sensitive and dirty_sensitive:
+            checks.append(
+                {
+                    "check_id": check_id,
+                    "scope": scope,
+                    "critical": critical,
+                    "dirty_sensitive": dirty_sensitive,
+                    "status": "SKIP",
+                    "summary": "dirty-sensitive check skipped by request",
+                    "command": " ".join(cmd),
+                }
+            )
+            continue
+        check_env = dict(env)
+        if list(cmd[:4]) == ["python", "-m", "pytest", "-p"]:
+            check_env["COVERAGE_FILE"] = str((coverage_dir / f"{check_id}.coverage").resolve())
+        rc, out = _run(root=root, cmd=cmd, env=check_env)
         _record(
             out=checks,
             check_id=check_id,
@@ -230,6 +483,7 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Run the canonical truth matrix and write a live validation index.")
     ap.add_argument("--out", default="KT_PROD_CLEANROOM/reports/live_validation_index.json")
     ap.add_argument("--skip-clean-clone", action="store_true")
+    ap.add_argument("--skip-dirty-sensitive", action="store_true")
     return ap.parse_args(argv)
 
 
@@ -239,7 +493,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     out_path = Path(str(args.out)).expanduser()
     if not out_path.is_absolute():
         out_path = (root / out_path).resolve()
-    index = build_live_validation_index(root=root, skip_clean_clone=bool(args.skip_clean_clone))
+    index = build_live_validation_index(
+        root=root,
+        skip_clean_clone=bool(args.skip_clean_clone),
+        skip_dirty_sensitive=bool(args.skip_dirty_sensitive),
+    )
     write_json_stable(out_path, index)
     critical_fails = [
         row

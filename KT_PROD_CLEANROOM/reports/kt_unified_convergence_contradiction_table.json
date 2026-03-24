@@ -1,0 +1,160 @@
+{
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "generated_utc": "2026-03-22T04:00:36Z",
+  "rows": [
+    {
+      "contradiction_id": "C001_STALE_CURRENT_HEAD_BINDING",
+      "resolution_receipt": "KT_PROD_CLEANROOM/reports/kt_wave0_head_rebinding_receipt.json",
+      "severity": "HIGH",
+      "state": "RESOLVED_WAVE_0",
+      "summary": "Active child current_repo_head bindings were stale and are now rebound to the actual git HEAD without rewriting historical subject/evidence commits."
+    },
+    {
+      "contradiction_id": "C002_TOOLS_LEAK_IN_RUNTIME_REGISTRY",
+      "resolution_receipt": "KT_PROD_CLEANROOM/reports/kt_tools_leak_remediation_receipt.json",
+      "severity": "HIGH",
+      "state": "RESOLVED_WAVE_0",
+      "summary": "Broad tools compatibility inheritance was removed from active runtime authority surfaces."
+    },
+    {
+      "contradiction_id": "C003_ADAPTER_CIVILIZATION_WITH_ZERO_ADAPTERS",
+      "evidence_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+      "resolution_receipts": [
+        "KT_PROD_CLEANROOM/reports/kt_wave2a_provider_activation_receipts.json",
+        "KT_PROD_CLEANROOM/reports/kt_wave2a_adapter_activation_receipt.json"
+      ],
+      "severity": "HIGH",
+      "state": "RESOLVED_WAVE_2A_NARROW_LIVE_LANES_ONLY",
+      "summary": "Wave 2A clears the zero-adapter contradiction narrowly: two active live-hashed adapters are now registered and exercised through the frozen Adapter ABI with bounded receipts and deterministic fail-closed artifacts."
+    },
+    {
+      "contradiction_id": "C004_PACKAGE_AND_TEST_CANON_ABSENT",
+      "resolution_refs": [
+        "KT_PROD_CLEANROOM/pyproject.toml",
+        "KT_PROD_CLEANROOM/requirements-wave0.lock.txt",
+        "KT_PROD_CLEANROOM/pytest.ini",
+        "KT_PROD_CLEANROOM/reports/kt_wave0_quarantine_receipts.json"
+      ],
+      "severity": "HIGH",
+      "state": "RESOLVED_WAVE_0",
+      "summary": "KT_PROD_CLEANROOM now has a canonical package manifest, exact hashed lockfile, pytest baseline, and quarantine receipt bundle."
+    },
+    {
+      "contradiction_id": "C005_ROUTER_AMBITION_EXCEEDS_IMPLEMENTATION",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_wave2b_router_selection_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_wave2b_router_shadow_eval_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_wave2b_route_distribution_health.json",
+        "KT_PROD_CLEANROOM/reports/post_wave5_c016a_success_matrix.json",
+        "KT_PROD_CLEANROOM/reports/post_wave5_c016b_resilience_pack.json"
+      ],
+      "severity": "MEDIUM",
+      "state": "RESOLVED_POST_WAVE5_STATIC_BASELINE_RATIFIED_HOLD",
+      "summary": "C005 is closed by honest router ratification: the audited static router is now explicitly ratified as canonical current-head control, shadow evidence reproduces the fenced static baseline exactly, fallback evidence is preserved, best-static comparator control remains explicit, and learned routing plus multi-lobe promotion stay blocked until new superiority evidence is earned."
+    },
+    {
+      "contradiction_id": "C006_EXTERNALITY_CEILING_REMAINS_BOUNDED",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/post_wave5_c006_trust_prep_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_wave3_detached_verifier_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_outsider_path_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_wave4_externality_class_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json"
+      ],
+      "severity": "MEDIUM",
+      "state": "OPEN_PREPARED_POST_WAVE5_E1_CEILING_ONLY",
+      "summary": "C006 is now prep-ready but not promoted: same-host detached verifier parity, same-host independent clean-environment replay, secret-free outsider verifier tooling, trust-zone boundaries, and the Wave 5 verifier truth surface are all present, while externality remains bounded at E1 until fresh cross-host proof is earned."
+    },
+    {
+      "contradiction_id": "C007_REPO_ROOT_IMPORT_FRAGILITY_VISIBLE_AND_UNFIXED",
+      "resolution_receipt": "KT_PROD_CLEANROOM/reports/kt_wave0_5_package_import_canon_receipt.json",
+      "severity": "HIGH",
+      "state": "RESOLVED_POST_WAVE5_CANONICAL_RUNTIME_INSTALL_LANE",
+      "summary": "Canonical runtime package/import parity is now proven for repo-root, cleanroom-root, and isolated editable-install execution. Stronger wheel/sdist, hermetic, and detached source-independent packaging claims remain unearned."
+    },
+    {
+      "contradiction_id": "C008_PACKAGE_IMPORT_CANON_NOT_VALIDATOR_ENFORCED",
+      "resolution_receipt": "KT_PROD_CLEANROOM/reports/kt_wave0_5_package_import_canon_receipt.json",
+      "severity": "HIGH",
+      "state": "RESOLVED_WAVE_0_5",
+      "summary": "Package-root and repo-root parity is now validator-backed for the declared canonical runtime lane without overclaiming repo-wide import cleanliness."
+    },
+    {
+      "contradiction_id": "C009_TOOLCHAIN_RUNTIME_FIREWALL_NOT_MACHINE_ENFORCED",
+      "resolution_receipt": "KT_PROD_CLEANROOM/reports/kt_wave0_5_toolchain_runtime_firewall_receipt.json",
+      "severity": "HIGH",
+      "state": "RESOLVED_WAVE_0_5",
+      "summary": "TOOLCHAIN_PROVING is now separated from CANONICAL runtime by zone law, runtime-import scanning, and explicit tools-leak checks."
+    },
+    {
+      "contradiction_id": "C010_INTERFACE_FREEZE_ABSENT",
+      "resolution_receipt": "KT_PROD_CLEANROOM/reports/kt_wave0_5_interface_freeze_receipt.json",
+      "severity": "HIGH",
+      "state": "RESOLVED_WAVE_0_5",
+      "summary": "Wave 0.5 now has frozen OrganContract, Adapter ABI, Failure Artifact, Telemetry, Mutation Authority, Challenge Pack, Deletion Law, Benchmark Constitution, Externality Matrix, and Minimum Viable Civilization Run contracts."
+    },
+    {
+      "contradiction_id": "C011_TRUTH_BARRIER_V2_1_1_NOT_ENFORCED",
+      "resolution_receipt": "KT_PROD_CLEANROOM/reports/kt_wave0_5_truth_barrier_v2_1_1_receipt.json",
+      "severity": "MEDIUM",
+      "state": "RESOLVED_WAVE_0_5_WITH_DIRTY_SENSITIVE_HOLD",
+      "summary": "Truth barrier v2.1.1 now enforces the Wave 0.5 laws. The only remaining live-validation failure is the dirty-sensitive broad current-worktree suite, which sits outside the narrow Wave 0.5 gate."
+    },
+    {
+      "contradiction_id": "C012_DECLARED_TRUST_SURFACES_NOT_MACHINE_BOUND_TO_EXACT_TARGETS",
+      "resolution_receipt": "KT_PROD_CLEANROOM/reports/kt_wave1_trust_stack_surface_matrix.json",
+      "severity": "HIGH",
+      "state": "RESOLVED_WAVE_1",
+      "summary": "Wave 1 now binds declared Sigstore/Rekor, in-toto/SLSA, TUF, and determinism surfaces to exact KT targets in a machine-readable matrix without widening runtime or externality claims."
+    },
+    {
+      "contradiction_id": "C013_CANONICAL_PATH_OBSERVABILITY_ABSENT",
+      "resolution_receipt": "KT_PROD_CLEANROOM/reports/kt_wave1_observability_schema_and_receipts.json",
+      "severity": "HIGH",
+      "state": "RESOLVED_WAVE_1",
+      "summary": "Wave 1 adds structured telemetry to declared canonical runtime and toolchain proving paths and validates the emitted envelopes instead of treating logging as decorative."
+    },
+    {
+      "contradiction_id": "C014_PROVIDER_FAILURE_BEHAVIOR_NOT_BOUNDED_OR_RECEIPTED",
+      "resolution_receipt": "KT_PROD_CLEANROOM/reports/kt_wave1_provider_resilience_base.json",
+      "severity": "HIGH",
+      "state": "RESOLVED_WAVE_1",
+      "summary": "Provider failure behavior is now bounded by timeout, retry, backoff, circuit-breaker, rate-limit, and quota primitives with fail-closed outcomes on the declared provider seam."
+    },
+    {
+      "contradiction_id": "C015_CI_LOCAL_REPRO_STRATEGY_UNSCOPED",
+      "resolution_receipt": "KT_PROD_CLEANROOM/reports/kt_wave1_ci_reproducibility_strategy_receipt.json",
+      "severity": "MEDIUM",
+      "state": "RESOLVED_WAVE_1",
+      "summary": "Wave 1 now fixes the local/CI reproducibility stance to a narrow, hash-locked strategy without introducing Bazel, new-language bootstrap, or active Nix sprawl."
+    },
+    {
+      "contradiction_id": "C016_REMOTE_PROVIDER_AUTH_ONLY_FAIL_CLOSED_OUTCOMES_VISIBLE",
+      "resolution_receipts": [
+        "KT_PROD_CLEANROOM/reports/post_wave5_c016a_success_matrix.json",
+        "KT_PROD_CLEANROOM/reports/post_wave5_c016b_resilience_pack.json"
+      ],
+      "severity": "MEDIUM",
+      "state": "RESOLVED_POST_WAVE5_CANONICAL_SAME_HOST_LIVE_HASHED",
+      "summary": "Successful authenticated live-provider execution and same-host resilience are proven for the canonical LIVE_HASHED OpenAI/OpenRouter lane with signed receipts. This does not raise externality above E1 or prove broader provider coverage."
+    },
+    {
+      "contradiction_id": "C017_CANONICAL_SPINE_INPUT_CEILING_BLOCKS_FULL_ORGAN_PAYLOAD_CARRIAGE",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_maturity_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_wave2c_cognitive_provenance_pack.json",
+        "KT_PROD_CLEANROOM/reports/kt_wave2c_council_kernel_binding_pack.json",
+        "KT_PROD_CLEANROOM/governance/kt_minimum_viable_civilization_run_v1.json"
+      ],
+      "resolution_receipt": "KT_PROD_CLEANROOM/reports/kt_c017_spine_carriage_remediation_receipt.json",
+      "severity": "MEDIUM",
+      "state": "RESOLVED_C017_REMEDIATION_ONLY",
+      "summary": "The exact carriage ceiling was the generic 256-char runtime-context short-string rule being re-applied to envelope.input despite that field already having its own bounded byte ceiling. C017 remediation now preserves the general short-string law, proves full bounded organ payload carriage through core.spine.run, and keeps oversize payloads fail-closed with deterministic artifacts."
+    }
+  ],
+  "schema_id": "kt.unified_convergence.contradiction_table.v1",
+  "work_order_id": "KT_UNIFIED_CONVERGENCE_MAX_POWER_CAMPAIGN_V2_1_1_FINAL"
+}

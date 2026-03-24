@@ -14,6 +14,7 @@ from tools.operator.public_verifier import (
     HEAD_VERDICT_UNPROVEN,
     SUBJECT_VERDICT_PROVEN,
     build_public_verifier_report,
+    manifest_supports_bounded_e1_verifier,
 )
 from tools.operator.titanium_common import load_json, repo_root, write_json_stable
 from tools.verification.attestation_hmac import env_key_name_for_key_id, hmac_key_fingerprint_hex, verify_hmac_signoff
@@ -238,7 +239,7 @@ def build_detached_public_verifier_runtime_receipt(*, root: Path) -> Dict[str, A
     )
 
     authority_state_ok = (
-        str(public_verifier_manifest.get("status", "")).strip() == "PASS"
+        manifest_supports_bounded_e1_verifier(public_verifier_manifest)
         and str(cryptographic_publication_receipt.get("status", "")).strip() == "PASS"
         and str(governance_final_receipt.get("status", "")).strip() == "PASS"
         and _ref_exists(root, CRYPTO_PUBLICATION_SUBJECT_REL)

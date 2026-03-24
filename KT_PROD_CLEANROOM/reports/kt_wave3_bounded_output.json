@@ -1,0 +1,27 @@
+{
+  "allowed_current_claims": [
+    "Compiled head 494cd490a6512b9bfa937c82886db625143d38ae contains transparency-verified evidence for subject commit d56de5c40345c0c187f6ebca1b0727ff0f5cefd7.",
+    "Compiled head 494cd490a6512b9bfa937c82886db625143d38ae contains workflow-governance-only evidence for subject commit 7bd610b507328eb72622ce24678620f5469f3848.",
+    "Compiled head 494cd490a6512b9bfa937c82886db625143d38ae contains runtime-boundary evidence for subject commit 16fa01fce86c7df9d9ce7f4730fd9b7725b3d834.",
+    "Active truth source is kt_truth_ledger:ledger/current/current_pointer.json; KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json is a documentary compatibility mirror only."
+  ],
+  "bounded_summary": "Wave 3 proves one bounded minimum viable organism run on the canonical runtime path plus one packaged detached verifier path on the same host. It does not prove broader externality, successful authenticated remote inference, or learned-router superiority.",
+  "compiled_head_commit": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "externality_class": "E1_SAME_HOST_DETACHED_REPLAY",
+  "forbidden_current_claims": [
+    "Do not claim current HEAD itself is the transparency-verified subject when head_equals_subject is false.",
+    "Do not claim platform-enforced governance on main while branch_protection_status is not PASS.",
+    "Do not claim current HEAD itself has fresh runtime-boundary proof when runtime_boundary_head_equals_subject is false.",
+    "Do not read this receipt as a claim about a later evidence head when compiled_head_commit differs from live HEAD.",
+    "Do not claim KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json is the active truth source.",
+    "Do not claim src/tools is canonical runtime.",
+    "Do not claim H1 is allowed.",
+    "Do not claim independent hostile replay.",
+    "Do not claim public challenge survival.",
+    "Do not claim successful authenticated live provider inference on current head.",
+    "Do not claim learned-router cutover or superiority."
+  ],
+  "generated_utc": "2026-03-21T03:59:30Z",
+  "schema_id": "kt.wave3.bounded_output.v1",
+  "status": "PASS"
+}

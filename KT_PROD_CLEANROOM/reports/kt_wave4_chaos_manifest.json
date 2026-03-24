@@ -1,0 +1,132 @@
+{
+  "evidence_refs": [
+    "KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/oversize_input_fail_closed/payload.json",
+    "KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/council_live_requested_refusal/payload.json",
+    "KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/cognition_live_requested_refusal/payload.json",
+    "KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/remote_provider_auth/provider_receipts/e36b2f49d19bd6054cccd8b6de219f2caba32f150d50c41d65c677b14608c4c1.json"
+  ],
+  "generated_utc": "2026-03-24T18:34:22Z",
+  "probe_classes_run": [
+    "OVERSIZE_RUNTIME_CONTEXT",
+    "COUNCIL_LIVE_REQUEST_REFUSAL",
+    "COGNITION_LIVE_REQUEST_REFUSAL",
+    "REMOTE_PROVIDER_AUTH_BOUNDARY"
+  ],
+  "probe_rows": [
+    {
+      "details": {
+        "entry_error": "envelope.input exceeds max_input_bytes (fail-closed)",
+        "entry_status": "FAIL",
+        "max_input_bytes": 65536,
+        "stdout_tail": [
+          "{\"artifact_root\": \"D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/oversize_input_fail_closed/artifacts\", \"status\": \"PASS\"}"
+        ]
+      },
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/oversize_input_fail_closed/payload.json",
+        "KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/oversize_input_fail_closed/entry_result.json"
+      ],
+      "expected_behavior": "fail_closed_rejection_before_schema_laundering",
+      "externality_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+      "finding_status": "BOUNDARY_HELD",
+      "observed_status": "FAIL_CLOSED",
+      "pass": true,
+      "probe_class": "OVERSIZE_RUNTIME_CONTEXT",
+      "probe_id": "oversize_input_fail_closed",
+      "regression_binding_refs": [
+        "KT_PROD_CLEANROOM/tests/operator/test_c017_spine_carriage_remediation.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_wave4_chaos_and_external_challenge.py"
+      ],
+      "surface": "kt.entrypoint.invoke -> core.spine.run"
+    },
+    {
+      "details": {
+        "entry_status": "OK",
+        "refusal_code": "LIVE_NOT_AVAILABLE",
+        "stdout_tail": [
+          "{\"artifact_root\": \"D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/council_live_requested_refusal/artifacts\", \"status\": \"PASS\"}"
+        ]
+      },
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/council_live_requested_refusal/payload.json",
+        "KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/council_live_requested_refusal/entry_result.json",
+        "KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/council_live_requested_refusal/runtime_telemetry.jsonl"
+      ],
+      "expected_behavior": "governed_refusal_without_silent_live_enablement",
+      "externality_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+      "finding_status": "BOUNDARY_HELD",
+      "observed_status": "REFUSED",
+      "pass": true,
+      "probe_class": "COUNCIL_LIVE_REQUEST_REFUSAL",
+      "probe_id": "council_live_requested_refusal",
+      "regression_binding_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/council/tests/test_council_router.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_wave4_chaos_and_external_challenge.py"
+      ],
+      "surface": "kt.entrypoint.invoke -> core.spine.run -> council.request"
+    },
+    {
+      "details": {
+        "entry_status": "OK",
+        "refusal_code": "REFUSE_EXTERNAL_UNAVAILABLE",
+        "stdout_tail": [
+          "{\"artifact_root\": \"D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/cognition_live_requested_refusal/artifacts\", \"status\": \"PASS\"}"
+        ]
+      },
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/cognition_live_requested_refusal/payload.json",
+        "KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/cognition_live_requested_refusal/entry_result.json",
+        "KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/cognition_live_requested_refusal/runtime_telemetry.jsonl"
+      ],
+      "expected_behavior": "governed_refusal_without_silent_live_enablement",
+      "externality_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+      "finding_status": "BOUNDARY_HELD",
+      "observed_status": "REFUSED",
+      "pass": true,
+      "probe_class": "COGNITION_LIVE_REQUEST_REFUSAL",
+      "probe_id": "cognition_live_requested_refusal",
+      "regression_binding_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/tests/test_cognitive_engine.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_wave4_chaos_and_external_challenge.py"
+      ],
+      "surface": "kt.entrypoint.invoke -> core.spine.run -> cognition.request"
+    },
+    {
+      "details": {
+        "adapter_id": "council.openrouter.live_hashed.v1",
+        "contradiction_effect": "C016_REMAINS_OPEN",
+        "error": "http_status=401",
+        "http_status": 401,
+        "receipt_hash": "e36b2f49d19bd6054cccd8b6de219f2caba32f150d50c41d65c677b14608c4c1"
+      },
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/remote_provider_auth/provider_receipts/e36b2f49d19bd6054cccd8b6de219f2caba32f150d50c41d65c677b14608c4c1.json",
+        "KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/remote_provider_auth/failure_artifacts/d48b7b2f6c4aa4fd18030db21fc40fcc986d19ce81c1e2bc77c848e84c7bf163.json",
+        "KT_PROD_CLEANROOM/exports/wave4_chaos_and_external_challenge/remote_provider_auth/runtime_telemetry.jsonl"
+      ],
+      "expected_behavior": "successful_authenticated_inference_or_fail_closed_auth_boundary",
+      "externality_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+      "finding_status": "BOUNDARY_HELD",
+      "observed_status": "FAIL_CLOSED",
+      "pass": true,
+      "probe_class": "REMOTE_PROVIDER_AUTH_BOUNDARY",
+      "probe_id": "remote_provider_auth_boundary",
+      "regression_binding_refs": [
+        "KT_PROD_CLEANROOM/tools/operator/wave2a_adapter_activation_validate.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_wave4_chaos_and_external_challenge.py"
+      ],
+      "surface": "council.council_router.execute_council_request"
+    }
+  ],
+  "schema_id": "kt.wave4.chaos_manifest.v1",
+  "scope_boundary": "Wave 4 chaos probes current-head organism boundaries without router cutover, product widening, or externality escalation.",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "broad_external_capability_confirmed",
+    "learned_router_superiority_claimed",
+    "product_or_commercial_language_widened",
+    "externality_class_above_E1_claimed"
+  ],
+  "successful_finding_ids": [],
+  "successful_findings_count": 0
+}

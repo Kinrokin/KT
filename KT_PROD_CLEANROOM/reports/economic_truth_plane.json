@@ -1,0 +1,112 @@
+{
+  "profiles": [
+    {
+      "applies_to_surface_ids": [
+        "router",
+        "council",
+        "cognition",
+        "paradox",
+        "temporal",
+        "multiverse",
+        "memory",
+        "toolchain_only_orchestrators",
+        "claim_compiler"
+      ],
+      "claim_boundary": "This lane is economically acceptable only while claims remain bounded at same-host canonical runtime reality.",
+      "compute_cost_units": 3,
+      "escalation_triggers": [
+        "provider_path_ambiguity",
+        "runtime_claim_boundary_conflict",
+        "unexpected_fail_closed_transition"
+      ],
+      "fallback_action": "hold_same_host_runtime_lane_and_narrow_claims",
+      "profile_id": "canonical_same_host_runtime_lane",
+      "remediation_burden_minutes": 30,
+      "review_burden_minutes": 10,
+      "route_mode": "CANONICAL_SAME_HOST_RUNTIME",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/economic_truth_plane_contract.json",
+        "KT_PROD_CLEANROOM/reports/deployment_profiles.json",
+        "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json"
+      ],
+      "supportability_class": "BOUNDED_OPERATOR_MANAGED",
+      "uncertainty_cost_index": 8
+    },
+    {
+      "applies_to_surface_ids": [
+        "detached_verifier"
+      ],
+      "claim_boundary": "Verifier economics are favorable only for the bounded E1 trust wedge and do not justify commercial widening.",
+      "compute_cost_units": 2,
+      "escalation_triggers": [
+        "verifier_manifest_drift",
+        "buyer_requests_cross_host_claims"
+      ],
+      "fallback_action": "retain_e1_trust_wedge_only",
+      "profile_id": "bounded_verifier_handoff_lane",
+      "remediation_burden_minutes": 20,
+      "review_burden_minutes": 15,
+      "route_mode": "BOUNDED_VERIFIER_HANDOFF",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/economic_truth_plane_contract.json",
+        "KT_PROD_CLEANROOM/reports/deployment_profiles.json",
+        "KT_PROD_CLEANROOM/reports/e2_cross_host_replay_receipt.json"
+      ],
+      "supportability_class": "BUYER_SAFE_E1_WEDGE",
+      "uncertainty_cost_index": 6
+    },
+    {
+      "applies_to_surface_ids": [
+        "adapter_layer",
+        "tournament_promotion",
+        "teacher_growth_surfaces"
+      ],
+      "claim_boundary": "Mutation economics are acceptable only for bounded internal improvement; they do not justify live runtime cutover or product widening.",
+      "compute_cost_units": 6,
+      "escalation_triggers": [
+        "generated_candidate_requests_cutover",
+        "promotion_decision_conflicts_with_rollback_law",
+        "learning_response_shows_regression"
+      ],
+      "fallback_action": "reject_or_rollback_mutation_and_preserve_active_runtime",
+      "profile_id": "bounded_mutation_civilization_lane",
+      "remediation_burden_minutes": 60,
+      "review_burden_minutes": 35,
+      "route_mode": "INTERNAL_CIVILIZATION_MUTATION",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/economic_truth_plane_contract.json",
+        "KT_PROD_CLEANROOM/reports/civilization_loop_receipt.json",
+        "KT_PROD_CLEANROOM/reports/rollback_drill_receipt.json",
+        "KT_PROD_CLEANROOM/reports/learning_response_receipt.json"
+      ],
+      "supportability_class": "INTERNAL_RESEARCH_ONLY",
+      "uncertainty_cost_index": 9
+    },
+    {
+      "applies_to_surface_ids": [
+        "detached_verifier_externality_lane"
+      ],
+      "claim_boundary": "Externality economics become acceptable only after fresh second-host proof; until then the cost of uncertainty is maximal.",
+      "compute_cost_units": 4,
+      "escalation_triggers": [
+        "second_host_hardware_missing",
+        "return_file_mismatch",
+        "cross_host_replay_fails"
+      ],
+      "fallback_action": "keep_C006_deferred_visible_and_hold_claims_at_E1",
+      "profile_id": "c006_cross_host_reentry_lane",
+      "remediation_burden_minutes": 90,
+      "review_burden_minutes": 45,
+      "route_mode": "SECOND_HOST_REENTRY_AND_EXTERNALITY",
+      "source_refs": [
+        "KT_PROD_CLEANROOM/governance/economic_truth_plane_contract.json",
+        "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json",
+        "KT_PROD_CLEANROOM/reports/e2_cross_host_replay_receipt.json"
+      ],
+      "supportability_class": "HARDWARE_BLOCKED_REENTRY",
+      "uncertainty_cost_index": 10
+    }
+  ],
+  "schema_id": "kt.economic_truth_plane.v1",
+  "status": "PASS"
+}

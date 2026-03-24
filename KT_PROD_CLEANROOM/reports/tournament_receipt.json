@@ -1,0 +1,69 @@
+{
+  "canonical_influence_status": "BLOCKED_UNLESS_PROMOTION_RECEIPT_AND_ROLLBACK_PASS",
+  "checks": [
+    {
+      "check_id": "tournament_law_active",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/tournament_law.json"
+    },
+    {
+      "check_id": "promotion_engine_law_active",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/promotion_engine_law.json"
+    },
+    {
+      "check_id": "rollback_law_active",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/rollback_law.json"
+    },
+    {
+      "check_id": "crucible_registry_active",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/crucible_registry.json"
+    },
+    {
+      "check_id": "crucible_lifecycle_law_active",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/crucible_lifecycle_law.json"
+    },
+    {
+      "check_id": "historical_promotion_receipt_present",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/promotion_receipt.json"
+    },
+    {
+      "check_id": "tournament_organ_remains_lab_governed",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_disposition_register.json"
+    },
+    {
+      "check_id": "tournament_requires_promotion_and_rollback",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_disposition_register.json"
+    }
+  ],
+  "claim_boundary": "W2 proves tournament and promotion discipline are governed and rollback-bound. It does not promote tournament civilization into canonical runtime or unlock public tournament showability.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "generated_utc": "2026-03-22T16:44:17Z",
+  "historical_readiness_ref": "KT_PROD_CLEANROOM/reports/kt_tournament_readiness_receipt.json",
+  "promotion_civilization_status": "LAB_GOVERNED_ONLY",
+  "promotion_receipt_ref": "KT_PROD_CLEANROOM/reports/promotion_receipt.json",
+  "public_showability_status": "BLOCKED",
+  "schema_id": "kt.w2.tournament_receipt.v1",
+  "source_refs": [
+    "KT_PROD_CLEANROOM/governance/tournament_law.json",
+    "KT_PROD_CLEANROOM/governance/promotion_engine_law.json",
+    "KT_PROD_CLEANROOM/governance/rollback_law.json",
+    "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+    "KT_PROD_CLEANROOM/governance/crucible_lifecycle_law.json",
+    "KT_PROD_CLEANROOM/reports/promotion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_tournament_readiness_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_disposition_register.json"
+  ],
+  "status": "PASS",
+  "stronger_claims_not_made": [
+    "tournament_promoted_to_canonical_runtime",
+    "public_tournament_readiness_unblocked",
+    "growth_stack_now_controls_current_head_runtime"
+  ]
+}

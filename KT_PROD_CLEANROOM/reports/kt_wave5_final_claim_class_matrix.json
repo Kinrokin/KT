@@ -1,0 +1,53 @@
+{
+  "compiled_head_commit": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "dimensions": [
+    {
+      "claim_class": "CURRENT_HEAD_PROVEN",
+      "dimension": "control_plane_truth"
+    },
+    {
+      "claim_class": "CURRENT_HEAD_PARTIALLY_PROVEN_MINIMUM_VIABLE_ORGANISM_RUN",
+      "dimension": "runtime_truth"
+    },
+    {
+      "claim_class": "CURRENT_HEAD_PROVEN_DETACHED_SAME_HOST_PACKAGED",
+      "dimension": "verifier_truth"
+    },
+    {
+      "claim_class": "BOUNDED_INTERNAL_HOSTILE_PROBES_AND_TYPED_CHALLENGE_CHANNEL_ONLY",
+      "dimension": "challenge_survival"
+    },
+    {
+      "claim_class": "E1_SAME_HOST_DETACHED_REPLAY",
+      "dimension": "replayability"
+    },
+    {
+      "claim_class": "CARRIED_FORWARD_BOUNDED_RELEASE_SURFACE_PRESENT_ON_CURRENT_HEAD",
+      "dimension": "release_truth"
+    },
+    {
+      "claim_class": "CARRIED_FORWARD_BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_PRESENT_ON_CURRENT_HEAD",
+      "dimension": "product_truth"
+    },
+    {
+      "claim_class": "E1_SAME_HOST_DETACHED_REPLAY",
+      "dimension": "external_confirmation"
+    }
+  ],
+  "forbidden_escalations": [
+    "Do not narrate same-host detached replay as E2, E3, or E4 externality.",
+    "Do not narrate live-provider success beyond the canonical same-host LIVE_HASHED OpenAI/OpenRouter lane.",
+    "Do not narrate learned-router cutover or superiority.",
+    "Do not narrate commercial or enterprise readiness.",
+    "Do not narrate SOTA, frontier, or beyond-SOTA status."
+  ],
+  "generated_utc": "2026-03-24T16:56:42Z",
+  "schema_id": "kt.wave5.final_claim_class_matrix.v1",
+  "source_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_wave3_claim_class_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave4_externality_class_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave5_release_truth_surface.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave5_product_truth_surface.json"
+  ],
+  "status": "PASS"
+}

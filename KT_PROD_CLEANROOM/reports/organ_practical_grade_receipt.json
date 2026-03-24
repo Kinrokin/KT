@@ -1,0 +1,37 @@
+{
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "generated_utc": "2026-03-23T18:15:23Z",
+  "grade_law": "Practical grades are behavior-backed and do not inherit maturity from the rest of KT.",
+  "rows": [
+    {
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_wave2c_cognitive_provenance_pack.json",
+      "organ_id": "cognition",
+      "practical_delta": "Replaced hash-prefix scoring with typed semantic planning and structural scoring on the active path.",
+      "practical_grade": "O2_BOUNDED_SEMANTIC_PLANNER",
+      "status": "PASS"
+    },
+    {
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_wave2c_paradox_engine_pack.json",
+      "organ_id": "paradox",
+      "practical_delta": "Replaced one generic task type with context- and condition-sensitive contradiction classification.",
+      "practical_grade": "O1_CONTEXT_AWARE_CONFLICT_GATE",
+      "status": "PASS"
+    },
+    {
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_wave2c_temporal_engine_pack.json",
+      "organ_id": "temporal",
+      "practical_delta": "Positive replay budgets now produce bounded nonzero executed-step counts.",
+      "practical_grade": "O1_NONZERO_REPLAY_ACCOUNTING",
+      "status": "PASS"
+    },
+    {
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_wave2c_multiverse_engine_pack.json",
+      "organ_id": "multiverse",
+      "practical_delta": "Coherence now varies with candidate spread instead of remaining constant.",
+      "practical_grade": "O1_TASK_DEPENDENT_ARBITRATION",
+      "status": "PASS"
+    }
+  ],
+  "schema_id": "kt.w2.organ_practical_grade_receipt.v1",
+  "status": "PASS"
+}

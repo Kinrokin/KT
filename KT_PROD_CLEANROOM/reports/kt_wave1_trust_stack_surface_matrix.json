@@ -1,0 +1,136 @@
+{
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "generated_utc": "2026-03-20T22:50:07Z",
+  "open_holds_preserved": [
+    "C003_ADAPTER_CIVILIZATION_WITH_ZERO_ADAPTERS",
+    "C005_ROUTER_AMBITION_EXCEEDS_IMPLEMENTATION",
+    "C006_EXTERNALITY_CEILING_REMAINS_BOUNDED",
+    "C007_REPO_ROOT_IMPORT_FRAGILITY_VISIBLE_AND_UNFIXED"
+  ],
+  "rows": [
+    {
+      "exact_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_sigstore_keyless_status.json",
+        "KT_PROD_CLEANROOM/reports/kt_sigstore_integration_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json"
+      ],
+      "execution_state": "EXECUTED_BOUNDED_DECLARED_SURFACES_ONLY",
+      "head_binding_state": "STALE_HEAD_BINDING_VISIBLE",
+      "mechanism_id": "sigstore_rekor_keyless",
+      "notes": [
+        "Wave 1 treats the bounded keyless path as real only on its declared surfaces.",
+        "Same-host and broader externality ceilings remain unchanged by this matrix."
+      ],
+      "status": "PASS",
+      "stronger_claims_forbidden": [
+        "A keyless signer is active when blocker(s) remain",
+        "The current public bundle proves keyless signing when signer_id remains keypair-based",
+        "WS11 PASS is earned while keyless blockers remain"
+      ],
+      "target_scope": "sigstore_keyless_with_rekor_and_identity_constraints",
+      "target_surfaces": [
+        "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_attestation.json",
+        "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json"
+      ]
+    },
+    {
+      "exact_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_supply_chain_policy_receipt.json",
+        "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json",
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json",
+        "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+        "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse",
+        "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json",
+        "KT_PROD_CLEANROOM/governance/supply_chain_layout.json"
+      ],
+      "execution_state": "EXECUTED_BOUNDED_VERIFIER_PUBLICATION_CHAIN_ONLY",
+      "head_binding_state": "STALE_HEAD_BINDING_VISIBLE",
+      "mechanism_id": "in_toto_slsa_lineage",
+      "notes": [
+        "The bounded in-toto/SLSA surface is executed for the declared verifier/publication chain.",
+        "Wave 1 does not widen this into product or runtime capability proof."
+      ],
+      "status": "PASS",
+      "stronger_claims_forbidden": [
+        "The earlier planned 3-of-5 root topology was proven",
+        "WS12 proves active public updater deployment",
+        "Release readiness is proven",
+        "Enterprise or product readiness is proven"
+      ],
+      "target_scope": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "target_surfaces": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ]
+    },
+    {
+      "exact_refs": [
+        "KT_PROD_CLEANROOM/governance/kt_tuf_distribution_policy.json"
+      ],
+      "execution_state": "ACTIVE_BOUNDED_CHILD_VERIFIER_DISTRIBUTION_ONLY",
+      "head_binding_state": "CURRENT_HEAD_MATCH",
+      "mechanism_id": "tuf_distribution",
+      "notes": [
+        "The active TUF surface remains distribution-only for verifier bundles.",
+        "Wave 1 does not narrate this as a deployed updater fleet."
+      ],
+      "status": "PASS",
+      "stronger_claims_forbidden": [
+        "TUF distribution is active for release activation",
+        "Product delivery is now active",
+        "Verifier coverage is globally widened across all KT surfaces"
+      ],
+      "target_scope": "CHILD_VERIFIER_DISTRIBUTION_ONLY",
+      "target_surfaces": [
+        "KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_manifest_v2.json"
+      ]
+    },
+    {
+      "exact_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json",
+        "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_artifact_class_policy.json"
+      ],
+      "execution_state": "EXECUTED_BOUNDED_CLASS_A_B_C_WITH_CLASS_C_CARRY_FORWARD",
+      "head_binding_state": "STALE_HEAD_BINDING_VISIBLE",
+      "mechanism_id": "determinism_envelope",
+      "notes": [
+        "The determinism envelope is real for its declared classes.",
+        "Repo-root import fragility remains explicitly visible and unresolved."
+      ],
+      "status": "PASS",
+      "stronger_claims_forbidden": [
+        "repo_root_import_fragility_closed",
+        "global_cross_environment_runtime_reproducibility_proven",
+        "runtime_capability_upgraded_by_determinism_envelope"
+      ],
+      "target_scope": "DECLARED_CLASS_A_CLASS_B_AND_BOUNDED_CLASS_C_SURFACES_ONLY",
+      "target_surfaces": [
+        "KT_PROD_CLEANROOM/governance/kt_artifact_class_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/local/live_validation_index.local.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/live_validation_index.ci.json"
+      ]
+    }
+  ],
+  "schema_id": "kt.wave1.trust_stack_surface_matrix.v1",
+  "scope_boundary": "Wave 1 binds existing trust mechanisms to exact KT surfaces without widening runtime capability or externality claims.",
+  "stale_head_binding_visible_for": [
+    "sigstore_rekor_keyless",
+    "in_toto_slsa_lineage",
+    "determinism_envelope"
+  ],
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "current_head_external_runtime_capability_confirmed",
+    "product_or_release_readiness_upgraded",
+    "broad_externality_widened",
+    "router_or_adapter_scope_opened"
+  ]
+}

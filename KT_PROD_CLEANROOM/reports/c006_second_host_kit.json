@@ -1,0 +1,35 @@
+{
+  "bundle_builder_command": "python -m tools.operator.build_c006_second_host_bundle",
+  "bundle_manifest_ref": "KT_PROD_CLEANROOM/exports/c006_second_host_kit/current_head_bundle/KT_PROD_CLEANROOM/reports/c006_second_host_bundle_manifest.json",
+  "bundle_output_dir_hint": "KT_PROD_CLEANROOM/exports/c006_second_host_kit/current_head_bundle",
+  "claim_boundary": "This kit is preparation only. It keeps C006 reentry instant when hardware appears, but does not earn E2 by itself.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "deferral_status_receipt_ref": "KT_PROD_CLEANROOM/reports/c006_deferral_status_receipt.json",
+  "generated_utc": "2026-03-23T19:46:41Z",
+  "input_refs": [
+    "KT_PROD_CLEANROOM/reports/post_wave5_c006_friendly_host_handoff_pack.json",
+    "KT_PROD_CLEANROOM/reports/post_wave5_c006_second_host_submission_template.json",
+    "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+    "KT_PROD_CLEANROOM/reports/deferred_blockers.json",
+    "KT_PROD_CLEANROOM/reports/c006_deferral_heartbeat.json",
+    "KT_PROD_CLEANROOM/reports/c006_deferral_status_receipt.json",
+    "KT_PROD_CLEANROOM/reports/second_host_kit_hardening_receipt.json"
+  ],
+  "kit_status": "READY_STAGED_PENDING_HARDWARE",
+  "return_import_path": "KT_PROD_CLEANROOM/reports/imports/post_wave5_c006_second_host_return.json",
+  "runbook_refs": [
+    "KT_PROD_CLEANROOM/docs/operator/C006_SECOND_HOST_RUNBOOK.md",
+    "KT_PROD_CLEANROOM/docs/operator/C006_IMPORT_CHECKLIST.md",
+    "KT_PROD_CLEANROOM/docs/operator/C006_VALIDATOR_RERUN_CHECKLIST.md",
+    "KT_PROD_CLEANROOM/docs/operator/C006_RETURN_FILE_PLACEMENT_CHECKLIST.md"
+  ],
+  "schema_id": "kt.c006.second_host_kit.v1",
+  "second_host_kit_hardening_receipt_ref": "KT_PROD_CLEANROOM/reports/second_host_kit_hardening_receipt.json",
+  "status": "PASS",
+  "validator_commands": [
+    "python -m tools.operator.post_wave5_c006_second_host_execute_validate",
+    "python -m tools.operator.w3_externality_and_comparative_proof_validate",
+    "python -m tools.operator.c006_deferral_law_validate",
+    "python -m tools.operator.omega_gate"
+  ]
+}

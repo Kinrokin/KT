@@ -6,10 +6,10 @@
     "truthful posture sealing"
   ],
   "blocking_groups": [
-    "GREEN_NOT_REEARNED"
+    "DIRTY_WORKTREE"
   ],
   "branch_ref": "main",
-  "current_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+  "current_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
   "evidence_plane_targets_checked": [
     "delivery/delivery_manifest.json",
     "evidence/constitutional_snapshot.json",
@@ -19,31 +19,23 @@
     "evidence/secret_scan_report.json",
     "reports/bindingloop_check.json"
   ],
-  "documentary_only": true,
-  "generated_utc": "2026-03-14T12:14:07Z",
-  "live_authority": false,
-  "mirror_class": "documentary_compatibility_surface",
+  "generated_utc": "2026-03-24T17:37:27Z",
   "notes": [
-    "Documentary-only mirror. Live authority resolves from kt_truth_ledger:ledger/current/current_pointer.json.",
-    "Posture synchronized from live validation state CANONICAL_READY_FOR_REEARNED_GREEN.",
+    "Posture synchronized from live validation state CANONICAL_VALIDATED_DIRTY_WORKTREE.",
     "Only truth-engine-aligned receipts remain active truth surfaces."
   ],
   "overall_verdict": "PASS",
-  "posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+  "posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
   "real_path_targets_checked": [
     "program.certify.canonical_hmac",
     "program.hat_demo",
     "program.red_assault.serious_v1",
     "safe-run:program.certify.canonical_hmac"
   ],
-  "release_decision": "HOLD_CANONICAL_READY_FOR_REEARNED_GREEN",
-  "repo_hygiene_status": "PASS",
+  "release_decision": "HOLD_DIRTY_WORKTREE",
+  "repo_hygiene_status": "HOLD",
   "schema_id": "kt.operator.runtime_closure_audit.v3",
   "status": "PASS",
-  "superseded_by": [
-    "kt_truth_ledger:ledger/current/current_pointer.json",
-    "kt_truth_ledger:ledger/current/runtime_closure_audit.json"
-  ],
-  "validated_head_sha": "7bd610b507328eb72622ce24678620f5469f3848",
+  "validated_head_sha": "494cd490a6512b9bfa937c82886db625143d38ae",
   "validator_substance_checked": true
 }

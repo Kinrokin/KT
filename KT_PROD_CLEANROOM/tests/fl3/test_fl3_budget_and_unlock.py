@@ -25,21 +25,21 @@ def _write_json(p: Path, obj: dict) -> None:
     p.write_text(json.dumps(obj, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
 
 
-def _hold_lock(lock_path: str, hold_s: float) -> None:
+def _hold_lock(lock_path: str, hold_s: float, ready: mp.synchronize.Event) -> None:
     with exclusive_lock(Path(lock_path), timeout_s=2.0):
+        ready.set()
         time.sleep(hold_s)
 
 
 def test_fl3_budget_lock_contention(tmp_path: Path) -> None:
     lock_path = tmp_path / "x.lock"
-    p = mp.Process(target=_hold_lock, args=(str(lock_path), 0.75))
+    ready = mp.Event()
+    p = mp.Process(target=_hold_lock, args=(str(lock_path), 0.75, ready))
     p.start()
     try:
-        # Wait until the child has created the lock file (fail-closed if it never appears).
-        # Windows CI / constrained environments can be slow to spawn; keep this deterministic but non-flaky.
-        deadline = time.time() + 3.0
-        while not lock_path.exists() and time.time() < deadline:
-            time.sleep(0.01)
+        # Windows full-suite runs can take several seconds to spawn the child.
+        # Wait for an explicit acquisition signal instead of guessing from startup timing.
+        assert ready.wait(timeout=10.0)
         assert lock_path.exists()
 
         with pytest.raises(Exception):

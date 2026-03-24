@@ -1,0 +1,51 @@
+{
+  "checks": [
+    {
+      "check": "pyproject_manifest_present",
+      "ref": "KT_PROD_CLEANROOM/pyproject.toml",
+      "status": "PASS"
+    },
+    {
+      "check": "hashed_lockfile_present",
+      "ref": "KT_PROD_CLEANROOM/requirements-wave0.lock.txt",
+      "status": "PASS"
+    },
+    {
+      "check": "pytest_baseline_present",
+      "ref": "KT_PROD_CLEANROOM/pytest.ini",
+      "status": "PASS"
+    },
+    {
+      "check": "ci_uses_require_hashes_lockfile",
+      "ref": ".github/workflows/ci_truth_barrier.yml",
+      "status": "PASS"
+    },
+    {
+      "check": "no_bazel_primary_bootstrap",
+      "ref": ".",
+      "status": "PASS"
+    },
+    {
+      "check": "no_nix_primary_bootstrap",
+      "ref": ".",
+      "status": "PASS"
+    },
+    {
+      "check": "no_new_language_build_bootstrap",
+      "ref": ".github/workflows/ci_truth_barrier.yml",
+      "status": "PASS"
+    }
+  ],
+  "ci_strategy": "lockfile_require_hashes_with_optional_future_nix_not_active_now",
+  "failures": [],
+  "generated_utc": "2026-03-20T22:50:07Z",
+  "hash_line_count": 367,
+  "local_dev_primary": "pip_compile_exact_hash_lockfile",
+  "schema_id": "kt.wave1.ci_reproducibility_strategy_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "repo_root_import_fragility_closed",
+    "cross_environment_runtime_reproducibility_widened_by_wave1",
+    "bazel_or_new_language_bootstrap_required"
+  ]
+}

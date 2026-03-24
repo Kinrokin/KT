@@ -19,10 +19,13 @@ from council.council_schemas import (
     RESULT_STATUS_DRY_RUN,
     RESULT_STATUS_REFUSED,
 )
-from council.providers.provider_schemas import MODE_DRY_RUN, ProviderRequestSchema, ProviderResponseSchema
+from council.providers.adapter_abi_runtime import AdapterAbiError, derive_legacy_adapter_id, resolve_live_adapter
+from council.providers.failure_artifacts import write_failure_artifact
+from council.providers.provider_schemas import ProviderRequestSchema, ProviderResponseSchema
 from council.providers.provider_registry import ProviderRegistry
 from council.providers.provider_schemas import ProviderCallReceipt
 from schemas.schema_hash import sha256_text, sha256_json
+from schemas.telemetry_runtime import emit_runtime_telemetry, telemetry_now_ms
 
 
 class CouncilError(RuntimeError):
@@ -32,16 +35,43 @@ class CouncilError(RuntimeError):
 class ConstitutionalViolationError(RuntimeError):
     pass
 
-_ALLOWED_LIVE_HASHED_PROVIDERS = {"openai"}
-_ALLOWED_LIVE_HASHED_REQUEST_TYPES = {"healthcheck", "analysis"}
-
 def _require_live_hashed_env() -> None:
     if os.getenv("KT_PROVIDERS_ENABLED") != "1":
         raise CouncilError("KT_PROVIDERS_ENABLED=1 required (fail-closed).")
     if os.getenv("KT_EXECUTION_LANE") != "LIVE_HASHED":
         raise CouncilError("KT_EXECUTION_LANE=LIVE_HASHED required (fail-closed).")
 
+
+def _export_root_from_request(req: Mapping[str, Any]) -> Path:
+    raw = str(req.get("export_root", "")).strip()
+    if raw:
+        return Path(raw).expanduser().resolve()
+    return _trace_export_root()
+
+
+def _write_provider_receipt(*, export_root: Path, receipt: Dict[str, Any]) -> str:
+    receipt_hash = str(receipt.get("receipt_hash", "")).strip()
+    if not receipt_hash:
+        raise CouncilError("provider receipt hash missing (fail-closed)")
+    out_dir = export_root / "provider_receipts"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / f"{receipt_hash}.json"
+    path.write_text(json.dumps(receipt, sort_keys=True, separators=(",", ":"), ensure_ascii=True), encoding="utf-8")
+    return path.as_posix()
+
+
+def _context_hash(*, adapter_id: str, provider_id: str, request_type: str, model: str) -> str:
+    return sha256_json(
+        {
+            "adapter_id": adapter_id,
+            "provider_id": provider_id,
+            "request_type": request_type,
+            "model": model,
+        }
+    )
+
 def execute_council_request(req: Dict[str, Any]) -> Dict[str, Any]:
+    started_ms = telemetry_now_ms()
     mode = str(req.get("mode", "DRY_RUN"))
     request_type = str(req.get("request_type", "")).strip()
 
@@ -49,13 +79,8 @@ def execute_council_request(req: Dict[str, Any]) -> Dict[str, Any]:
         raise CouncilError("Only LIVE_HASHED mode is supported in this path (fail-closed).")
 
     _require_live_hashed_env()
-
-    if request_type not in _ALLOWED_LIVE_HASHED_REQUEST_TYPES:
-        raise CouncilError(f"request_type not allowlisted for LIVE_HASHED (fail-closed): {request_type!r}")
-
     provider_id = str(req.get("provider_id", "")).strip()
-    if provider_id not in _ALLOWED_LIVE_HASHED_PROVIDERS:
-        raise CouncilError(f"provider_id not allowlisted for LIVE_HASHED (fail-closed): {provider_id!r}")
+    adapter_id = str(req.get("adapter_id", "")).strip()
 
     model = str(req.get("model", "")).strip()
     if not model:
@@ -65,29 +90,147 @@ def execute_council_request(req: Dict[str, Any]) -> Dict[str, Any]:
     if not prompt:
         raise CouncilError("Missing prompt (fail-closed).")
 
-    timeout_ms = int(req.get("timeout_ms", 20_000))
     temperature = float(req.get("temperature", 0.0))
     kt_node_id = str(req.get("kt_node_id", os.getenv("KT_NODE_ID", "")))
+    export_root = _export_root_from_request(req)
+    input_hash = sha256_text(prompt)
 
-    registry = ProviderRegistry.build_default()
+    try:
+        if not adapter_id:
+            adapter_id = derive_legacy_adapter_id(provider_id=provider_id)
+        manifest = resolve_live_adapter(adapter_id=adapter_id, request_type=request_type, provider_id=provider_id)
+        provider_id = manifest.provider_id
+        timeout_ms = min(int(req.get("timeout_ms", manifest.timeout_ms)), int(manifest.timeout_ms))
+        registry = ProviderRegistry.build_default()
+        receipt_obj: ProviderCallReceipt = registry.invoke_live_hashed(
+            provider_id=provider_id,
+            model=model,
+            prompt=prompt,
+            timeout_ms=timeout_ms,
+            temperature=temperature,
+            kt_node_id=kt_node_id,
+            trace_id=str(req.get("trace_id", "")).strip() or None,
+        )
+    except (AdapterAbiError, RuntimeError) as exc:
+        failure = write_failure_artifact(
+            export_root=export_root,
+            surface_id="council.council_router.execute_council_request",
+            error_class=exc.__class__.__name__,
+            bounded_reason=str(exc),
+            input_hash=input_hash,
+            context_hash=_context_hash(
+                adapter_id=adapter_id,
+                provider_id=provider_id,
+                request_type=request_type,
+                model=model,
+            ),
+            policy_profile="wave2a.live_hashed.fail_closed",
+            budget_profile="wave2a.live_hashed.timeout_bound",
+            replay_pack_ref="same_host_live_hashed_only",
+            severity="HIGH",
+        )
+        emit_runtime_telemetry(
+            surface_id="council.council_router.execute_council_request",
+            zone="CANONICAL",
+            event_type="adapter.execute_live_hashed",
+            start_ts=started_ms,
+            end_ts=telemetry_now_ms(),
+            result_status="FAIL_CLOSED",
+            provider_id=provider_id,
+            policy_applied="wave2a.adapter_abi_live_hashed",
+            failure_artifact_ref=failure.artifact_ref,
+            trace_id=str(req.get("trace_id", "")).strip(),
+            request_id=input_hash,
+        )
+        return {
+            "status": "FAIL_CLOSED",
+            "mode": "LIVE_HASHED",
+            "adapter_id": adapter_id,
+            "failure_artifact_ref": failure.artifact_ref,
+            "provider_id": provider_id,
+            "model": model,
+            "error": str(exc),
+        }
 
-    receipt: ProviderCallReceipt = registry.invoke_live_hashed(
+    receipt = receipt_obj.to_dict() if hasattr(receipt_obj, "to_dict") else dict(receipt_obj)
+    receipt_ref = _write_provider_receipt(export_root=export_root, receipt=receipt)
+    verdict = receipt.get("verdict", {})
+    verdict_pass = isinstance(verdict, dict) and verdict.get("pass") is True
+    if not verdict_pass:
+        failure_reason = ""
+        if isinstance(verdict, dict):
+            failure_reason = str(verdict.get("fail_reason", "")).strip()
+        if not failure_reason:
+            failure_reason = "provider_verdict_fail_closed"
+        failure = write_failure_artifact(
+            export_root=export_root,
+            surface_id="council.council_router.execute_council_request",
+            error_class="ProviderVerdictFailClosed",
+            bounded_reason=failure_reason,
+            input_hash=input_hash,
+            context_hash=_context_hash(
+                adapter_id=adapter_id,
+                provider_id=provider_id,
+                request_type=request_type,
+                model=model,
+            ),
+            policy_profile=manifest.policy_profile,
+            budget_profile=manifest.budget_profile,
+            replay_pack_ref=manifest.replayability_class,
+            severity="HIGH",
+            signature_or_receipt_ref=receipt_ref,
+        )
+        emit_runtime_telemetry(
+            surface_id="council.council_router.execute_council_request",
+            zone="CANONICAL",
+            event_type="adapter.execute_live_hashed",
+            start_ts=started_ms,
+            end_ts=telemetry_now_ms(),
+            result_status="FAIL_CLOSED",
+            provider_id=provider_id,
+            policy_applied="wave2a.adapter_abi_live_hashed",
+            receipt_ref=receipt_ref,
+            failure_artifact_ref=failure.artifact_ref,
+            trace_id=str(req.get("trace_id", "")).strip() or str(receipt.get("trace_id", "")),
+            request_id=input_hash,
+        )
+        return {
+            "status": "FAIL_CLOSED",
+            "mode": "LIVE_HASHED",
+            "adapter_id": adapter_id,
+            "adapter_version": manifest.version,
+            "provider_id": provider_id,
+            "model": receipt.get("model"),
+            "receipt": receipt,
+            "receipt_hash": receipt.get("receipt_hash"),
+            "receipt_ref": receipt_ref,
+            "failure_artifact_ref": failure.artifact_ref,
+            "error": failure_reason,
+        }
+    emit_runtime_telemetry(
+        surface_id="council.council_router.execute_council_request",
+        zone="CANONICAL",
+        event_type="adapter.execute_live_hashed",
+        start_ts=started_ms,
+        end_ts=telemetry_now_ms(),
+        result_status="OK",
         provider_id=provider_id,
-        model=model,
-        prompt=prompt,
-        timeout_ms=timeout_ms,
-        temperature=temperature,
-        kt_node_id=kt_node_id,
-        trace_id=str(req.get("trace_id", "")).strip() or None,
+        policy_applied="wave2a.adapter_abi_live_hashed",
+        receipt_ref=receipt_ref,
+        trace_id=str(req.get("trace_id", "")).strip() or str(receipt.get("trace_id", "")),
+        request_id=input_hash,
     )
 
     out = {
         "status": "OK",
         "mode": "LIVE_HASHED",
+        "adapter_id": adapter_id,
+        "adapter_version": manifest.version,
         "provider_id": provider_id,
-        "model": receipt.to_dict().get("model"),
-        "receipt": receipt.to_dict(),
-        "receipt_hash": receipt.to_dict().get("receipt_hash"),
+        "model": receipt.get("model"),
+        "receipt": receipt,
+        "receipt_hash": receipt.get("receipt_hash"),
+        "receipt_ref": receipt_ref,
     }
     return out
 

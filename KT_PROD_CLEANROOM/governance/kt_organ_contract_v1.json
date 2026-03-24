@@ -1,0 +1,34 @@
+{
+  "claim_boundary": "Freezes the canonical organ interface for later realization work. This contract does not itself prove organ maturity or runtime superiority.",
+  "contract_id": "KT_ORGAN_CONTRACT_V1",
+  "required_behaviors": [
+    "deterministic_failure_artifact_on_error",
+    "fail_closed_if_preconditions_unmet",
+    "telemetry_emission",
+    "provenance_emission",
+    "benchmarkability_declaration",
+    "challengeability_declaration",
+    "rollbackability_declaration"
+  ],
+  "required_fields": [
+    "organ_id",
+    "zone",
+    "canonical_entrypoint",
+    "invocation_contract",
+    "preconditions",
+    "telemetry_envelope_ref",
+    "provenance_requirements",
+    "failure_artifact_ref",
+    "replay_pack_ref",
+    "benchmark_pack_ref",
+    "challenge_pack_ref",
+    "promotion_gate",
+    "rollback_semantics",
+    "mutation_authority_ref",
+    "status",
+    "maturity_class"
+  ],
+  "schema_id": "kt.governance.organ_contract.v1",
+  "status": "FROZEN_WAVE_0_5",
+  "wave_frozen": "WAVE_0_5_PACKAGE_IMPORT_CANON_AND_INTERFACE_FREEZE"
+}

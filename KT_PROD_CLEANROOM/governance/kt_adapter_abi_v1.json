@@ -1,0 +1,35 @@
+{
+  "claim_boundary": "Freezes the universal adapter ABI for later provider and adapter activation. This contract does not itself activate adapters.",
+  "contract_id": "KT_ADAPTER_ABI_V1",
+  "execution_modes": [
+    "DRY_RUN",
+    "SHADOW",
+    "LIVE",
+    "ADVERSARIAL"
+  ],
+  "hard_rules": [
+    "all_external_providers_and_internal_plugin_style_integrations_must_speak_one_abi",
+    "all_adapter_failures_must_emit_FailureArtifactV1"
+  ],
+  "required_fields": [
+    "adapter_id",
+    "adapter_kind",
+    "version",
+    "execution_mode",
+    "policy_profile",
+    "budget_profile",
+    "provenance_requirements",
+    "challenge_hooks",
+    "provider_id",
+    "timeout_ms",
+    "retry_policy",
+    "circuit_breaker_policy",
+    "rate_limit_profile",
+    "replayability_class",
+    "status",
+    "io_schema_ref"
+  ],
+  "schema_id": "kt.governance.adapter_abi.v1",
+  "status": "FROZEN_WAVE_0_5",
+  "wave_frozen": "WAVE_0_5_PACKAGE_IMPORT_CANON_AND_INTERFACE_FREEZE"
+}

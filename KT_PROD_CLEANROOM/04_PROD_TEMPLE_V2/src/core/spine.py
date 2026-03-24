@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import hashlib
 import json
+import time
 from dataclasses import dataclass
 from typing import Any, Dict
 
 from core.import_truth_guard import ImportTruthGuard
 from core.invariants_gate import InvariantsGate
 from core.runtime_registry import RuntimeRegistryError, load_runtime_registry
+from schemas.telemetry_runtime import emit_runtime_telemetry, telemetry_now_ms
 
 
 @dataclass(frozen=True)
@@ -88,6 +90,7 @@ def _runtime_registry_hash(registry: Any) -> str:
 
 
 def run(context: Dict[str, Any]) -> Dict[str, Any]:
+    started_ms = telemetry_now_ms()
     try:
         registry = load_runtime_registry()
     except RuntimeRegistryError as exc:
@@ -668,6 +671,26 @@ def run(context: Dict[str, Any]) -> Dict[str, Any]:
         artifact_dir=artifact_root,
         verdict=verdict,
         rationale=rationale,
+    )
+
+    completed_ms = int(time.time() * 1000)
+    emit_runtime_telemetry(
+        surface_id="core.spine.run",
+        zone="CANONICAL",
+        event_type="spine.run",
+        start_ts=started_ms,
+        end_ts=completed_ms,
+        result_status="OK",
+        policy_applied="runtime_spine_canonical_lane",
+        budget_consumed={
+            "tokens_used": tokens_used,
+            "steps_used": steps_used,
+            "branches_used": branches_used,
+            "memory_bytes_used": memory_bytes_used,
+            "duration_millis_used": duration_millis_used,
+        },
+        receipt_ref=str(vault_path),
+        request_id=_sha256_text(_canonical_json(context)),
     )
 
     return {

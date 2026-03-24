@@ -1,0 +1,45 @@
+{
+  "compiled_head_commit": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "dimensions": [
+    {
+      "claim_class": "CURRENT_HEAD_PROVEN",
+      "dimension": "control_plane_truth"
+    },
+    {
+      "claim_class": "CURRENT_HEAD_PARTIALLY_PROVEN_MINIMUM_VIABLE_ORGANISM_RUN",
+      "dimension": "runtime_truth"
+    },
+    {
+      "claim_class": "CURRENT_HEAD_PROVEN_DETACHED_SAME_HOST_PACKAGED",
+      "dimension": "verifier_truth"
+    },
+    {
+      "claim_class": "NOT_EARNED",
+      "dimension": "challenge_survival"
+    },
+    {
+      "claim_class": "E1_SAME_HOST_DETACHED_REPLAY",
+      "dimension": "replayability"
+    },
+    {
+      "claim_class": "BOUNDED_CURRENT_HEAD_RELEASE_SURFACE",
+      "dimension": "release_truth"
+    },
+    {
+      "claim_class": "UNCHANGED_BOUNDED_PRODUCT_SURFACE",
+      "dimension": "product_truth"
+    },
+    {
+      "claim_class": "E1_SAME_HOST_DETACHED_REPLAY",
+      "dimension": "external_confirmation"
+    }
+  ],
+  "forbidden_escalations": [
+    "Do not narrate the detached verifier as E2, E3, or E4 externality.",
+    "Do not narrate successful authenticated live provider inference.",
+    "Do not narrate learned-router superiority or cutover."
+  ],
+  "generated_utc": "2026-03-21T03:59:30Z",
+  "schema_id": "kt.wave3.claim_class_matrix.v1",
+  "status": "PASS"
+}

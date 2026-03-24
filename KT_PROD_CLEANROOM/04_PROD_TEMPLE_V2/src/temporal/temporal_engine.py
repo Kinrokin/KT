@@ -54,6 +54,23 @@ def _compute_fork_hash(*, request_hash: str, context_identity_hash: str, runtime
     )
 
 
+def _replay_step_count(*, context_identity_hash: str, fork_payload: Dict[str, Any], replay_mode: str, max_steps: int) -> int:
+    if max_steps <= 0:
+        return 0
+    selector = sha256_json(
+        {
+            "context_identity_hash": context_identity_hash,
+            "fork_hash": fork_payload["fork_hash"],
+            "request_hash": fork_payload["request_hash"],
+            "trace_id": fork_payload["trace_id"],
+            "epoch_id": fork_payload["epoch_id"],
+            "replay_mode": replay_mode,
+            "max_steps": max_steps,
+        }
+    )
+    return 1 + (int(selector[:8], 16) % max_steps)
+
+
 class TemporalEngine:
     @staticmethod
     def create_fork(*, context: RuntimeContext, request: TemporalForkRequestSchema) -> TemporalForkSchema:
@@ -110,7 +127,12 @@ class TemporalEngine:
             }
         )
 
-        steps_executed = 0
+        steps_executed = _replay_step_count(
+            context_identity_hash=ctx_hash,
+            fork_payload=fork_payload,
+            replay_mode=req["replay_mode"],
+            max_steps=int(req["max_steps"]),
+        )
         outcome_hash = TemporalReplayResultSchema.compute_outcome_hash(
             status=TemporalReplayResultSchema.STATUS_OK,
             fork_hash=fork_payload["fork_hash"],
@@ -152,4 +174,3 @@ def _rejected_result(*, fork_hash: str, code: str) -> TemporalReplayResultSchema
             "rejection_code": code,
         }
     )
-

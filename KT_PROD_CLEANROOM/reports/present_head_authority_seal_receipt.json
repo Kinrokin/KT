@@ -1,0 +1,42 @@
+{
+  "authority_resolution_index_ref": "KT_PROD_CLEANROOM/governance/authority_resolution_index.json",
+  "checks": [
+    {
+      "check": "current_head_truth_lock_passes",
+      "ref": "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json",
+      "status": "PASS"
+    },
+    {
+      "check": "authority_resolution_receipt_passes",
+      "ref": "KT_PROD_CLEANROOM/reports/authority_resolution_receipt.json",
+      "status": "PASS"
+    },
+    {
+      "check": "historical_claim_firewall_receipt_passes",
+      "ref": "KT_PROD_CLEANROOM/reports/historical_claim_firewall_receipt.json",
+      "status": "PASS"
+    },
+    {
+      "check": "worktree_scope_is_sealed",
+      "status": "PASS"
+    },
+    {
+      "check": "documentary_pointer_is_not_active_authority",
+      "ref": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "status": "PASS"
+    }
+  ],
+  "claim_boundary": "Present-head authority seal makes current-head scope authority explicit and blocks documentary or historical uplift. It does not claim clean release, E2+, or public-release admissibility.",
+  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "failures": [],
+  "forbidden_claims_not_made": [
+    "current_head_is_transparency_verified_subject_commit",
+    "historical_bounded_frontier_packets_upgrade_current_head",
+    "E2_or_higher_externality_is_earned",
+    "press_ready_or_enterprise_readiness_is_proven"
+  ],
+  "generated_utc": "2026-03-23T17:16:57Z",
+  "historical_claim_firewall_ref": "KT_PROD_CLEANROOM/governance/historical_claim_firewall.json",
+  "schema_id": "kt.operator.present_head_authority_seal_receipt.v1",
+  "status": "PASS"
+}

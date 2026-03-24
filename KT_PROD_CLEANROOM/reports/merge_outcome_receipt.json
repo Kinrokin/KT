@@ -1,0 +1,50 @@
+{
+  "checks": [
+    {
+      "check_id": "merge_law_active",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/merge_law.json"
+    },
+    {
+      "check_id": "rollback_law_active",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/rollback_law.json"
+    },
+    {
+      "check_id": "promotion_engine_law_active",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/promotion_engine_law.json"
+    },
+    {
+      "check_id": "historical_merge_receipt_pass",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/main_merge_receipt.json"
+    },
+    {
+      "check_id": "historical_promotion_receipt_pass",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/promotion_receipt.json"
+    }
+  ],
+  "claim_boundary": "W2 proves merge discipline exists as a governed rollback-bound family. It does not claim current-head canonical promotion, superiority, or externality elevation.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "generated_utc": "2026-03-22T16:44:17Z",
+  "historical_merge_method": "merge_commit",
+  "historical_merge_ref": "KT_PROD_CLEANROOM/reports/main_merge_receipt.json",
+  "merge_admissibility_status": "ROLLBACK_BOUND_AND_RECEIPTED",
+  "merge_interference_ref": "KT_PROD_CLEANROOM/reports/merge_interference_index.json",
+  "rollback_bound": true,
+  "schema_id": "kt.w2.merge_outcome_receipt.v1",
+  "source_refs": [
+    "KT_PROD_CLEANROOM/governance/merge_law.json",
+    "KT_PROD_CLEANROOM/governance/rollback_law.json",
+    "KT_PROD_CLEANROOM/governance/promotion_engine_law.json",
+    "KT_PROD_CLEANROOM/reports/main_merge_receipt.json",
+    "KT_PROD_CLEANROOM/reports/promotion_receipt.json"
+  ],
+  "status": "PASS",
+  "stronger_claims_not_made": [
+    "merge_civilization_now_controls_canonical_runtime",
+    "historical_merge_receipt_upgrades_current_head_capability"
+  ]
+}

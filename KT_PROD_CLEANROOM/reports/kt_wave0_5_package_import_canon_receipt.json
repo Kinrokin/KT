@@ -1,0 +1,98 @@
+{
+  "checks": [
+    {
+      "check": "canonical_contexts_captured",
+      "contexts": [
+        "repo_root",
+        "cleanroom_root",
+        "editable_install"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "editable_install_uses_no_pythonpath_override",
+      "observed_pythonpath": "",
+      "status": "PASS"
+    },
+    {
+      "check": "declared_canonical_import_lane_parity",
+      "compared_keys": [
+        "canonical_entry",
+        "canonical_spine",
+        "entrypoint_module_file",
+        "runtime_registry_path",
+        "spine_module_file",
+        "state_vault_path"
+      ],
+      "mismatches": [],
+      "status": "PASS"
+    }
+  ],
+  "claim_boundary": "This receipt proves parity for the declared canonical runtime import lane across repo-root, cleanroom-root, and isolated editable-install contexts only. The editable-install proof uses local host build tooling without a PYTHONPATH override, closes the 'folder not package' attack for the canonical runtime lane, and does not prove wheel/sdist distribution, hermetic packaging, or repo-wide import cleanliness.",
+  "closed_or_narrowed_blockers": [
+    "C007_REPO_ROOT_IMPORT_FRAGILITY_VISIBLE_AND_UNFIXED"
+  ],
+  "contexts": {
+    "cleanroom_root": {
+      "canonical_entry": {
+        "callable": "invoke",
+        "module": "kt.entrypoint"
+      },
+      "canonical_spine": {
+        "callable": "run",
+        "module": "core.spine"
+      },
+      "context_cwd": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
+      "context_id": "cleanroom_root",
+      "context_pythonpath": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src;D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
+      "entrypoint_module_file": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
+      "runtime_registry_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+      "spine_module_file": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+      "state_vault_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/_runtime_artifacts/state_vault.jsonl"
+    },
+    "editable_install": {
+      "canonical_entry": {
+        "callable": "invoke",
+        "module": "kt.entrypoint"
+      },
+      "canonical_spine": {
+        "callable": "run",
+        "module": "core.spine"
+      },
+      "context_cwd": "C:/Users/rober/AppData/Local/Temp/kt_pkg_canon_ozgsl38d/probe",
+      "context_id": "editable_install",
+      "context_pythonpath": "",
+      "entrypoint_module_file": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
+      "runtime_registry_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+      "spine_module_file": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+      "state_vault_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/_runtime_artifacts/state_vault.jsonl"
+    },
+    "repo_root": {
+      "canonical_entry": {
+        "callable": "invoke",
+        "module": "kt.entrypoint"
+      },
+      "canonical_spine": {
+        "callable": "run",
+        "module": "core.spine"
+      },
+      "context_cwd": "D:/user/rober/OneDrive/Kings_Theorem_Active",
+      "context_id": "repo_root",
+      "context_pythonpath": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src;D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
+      "entrypoint_module_file": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
+      "runtime_registry_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+      "spine_module_file": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+      "state_vault_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/_runtime_artifacts/state_vault.jsonl"
+    }
+  },
+  "generated_utc": "2026-03-24T18:32:16Z",
+  "open_blockers_preserved": [],
+  "schema_id": "kt.operator.package_import_canon_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "wheel_or_sdist_distribution_proven",
+    "all_tests_and_tools_use_the_package_canon",
+    "runtime_capability_or_externality_upgraded_by_package_canon"
+  ],
+  "validated_head_sha": "494cd490a6512b9bfa937c82886db625143d38ae"
+}

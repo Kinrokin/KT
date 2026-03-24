@@ -1,0 +1,53 @@
+{
+  "canonical_entrypoint_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
+  "canonical_spine_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "generated_utc": "2026-03-22T16:27:18Z",
+  "rows": [
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/exports/w1_runtime_realization/canonical_run/council_plan/entry_result.json",
+      "benchmark_id": "canonical_council_plan_probe",
+      "pass": true
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/exports/w1_runtime_realization/canonical_run/cognition_plan/entry_result.json",
+      "benchmark_id": "canonical_cognition_plan_probe",
+      "pass": true
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/exports/w1_runtime_realization/canonical_run/cognition_execute/entry_result.json",
+      "benchmark_id": "canonical_cognition_execute_probe",
+      "pass": true
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c016a_success_matrix.json",
+      "benchmark_id": "same_host_live_hashed_success_witness_present",
+      "pass": true
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c016b_resilience_pack.json",
+      "benchmark_id": "same_host_live_hashed_resilience_witness_present",
+      "pass": true
+    },
+    {
+      "artifact_refs": [
+        "KT_PROD_CLEANROOM/exports/w1_runtime_realization/canonical_run/cognition_execute/entry_result.json",
+        "KT_PROD_CLEANROOM/reports/post_wave5_c016a_success_matrix.json"
+      ],
+      "benchmark_id": "useful_output_evidence_stronger_than_ceremonial_path_evidence",
+      "pass": true
+    }
+  ],
+  "schema_id": "kt.w1.useful_output_benchmark.v1",
+  "scope_boundary": "W1 useful-output benchmarking stays bounded to canonical entrypoint probes plus same-host LIVE_HASHED provider witnesses only.",
+  "source_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_wave3_minimum_viable_civilization_run_pack.json",
+    "KT_PROD_CLEANROOM/reports/post_wave5_c016a_success_matrix.json",
+    "KT_PROD_CLEANROOM/reports/post_wave5_c016b_resilience_pack.json"
+  ],
+  "status": "PASS",
+  "successful_provider_ids": [
+    "openai",
+    "openrouter"
+  ]
+}
