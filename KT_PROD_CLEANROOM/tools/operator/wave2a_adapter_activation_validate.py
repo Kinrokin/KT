@@ -4,8 +4,15 @@ import argparse
 import json
 import os
 import shutil
+import sys
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
+
+_CLEANROOM_ROOT = Path(__file__).resolve().parents[2]
+_SRC_ROOT = _CLEANROOM_ROOT / "04_PROD_TEMPLE_V2" / "src"
+for _path in (str(_CLEANROOM_ROOT), str(_SRC_ROOT)):
+    if _path not in sys.path:
+        sys.path.insert(0, _path)
 
 from tools.operator.titanium_common import repo_root, utc_now_iso_z, write_json_stable
 
