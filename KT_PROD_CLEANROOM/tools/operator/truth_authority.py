@@ -13,6 +13,15 @@ TRANSITIONAL_AUTHORITATIVE = "TRANSITIONAL_AUTHORITATIVE"
 CURRENT_POINTER_REL = "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
 LEDGER_CURRENT_POINTER_REF = "kt_truth_ledger:ledger/current/current_pointer.json"
 DOCUMENTARY_TRUTH_POLICY_REL = "KT_PROD_CLEANROOM/governance/documentary_truth_policy.json"
+TRUTH_PUBLICATION_CLEANLINESS_RULES_REL = "KT_PROD_CLEANROOM/governance/truth_publication_cleanliness_rules.json"
+
+DEFAULT_PUBLICATION_CARRIER_SURFACE_PATTERNS = [
+    "KT_PROD_CLEANROOM/reports/**",
+    "KT_PROD_CLEANROOM/exports/_truth/current/**",
+    "KT_PROD_CLEANROOM/governance/execution_board.json",
+    "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
+    "KT_PROD_CLEANROOM/governance/h0_freeze_policy.json",
+]
 
 
 def path_ref(*, root: Path, path: Path) -> str:
@@ -22,6 +31,128 @@ def path_ref(*, root: Path, path: Path) -> str:
         return path_resolved.relative_to(root_resolved).as_posix()
     except ValueError:
         return path_resolved.as_posix()
+
+
+def _head_from_payload(payload: Dict[str, Any]) -> str:
+    for key in ("truth_subject_commit", "validated_head_sha", "pinned_head_sha", "head_sha", "head"):
+        value = str(payload.get(key, "")).strip()
+        if value:
+            return value
+    worktree = payload.get("worktree")
+    if isinstance(worktree, dict):
+        value = str(worktree.get("head_sha", "")).strip()
+        if value:
+            return value
+    return ""
+
+
+def _normalize_git_status_path(raw: str) -> str:
+    value = str(raw).strip()
+    if not value:
+        return ""
+    if len(value) > 3 and value[1] in {" ", "M", "A", "D", "R", "C", "U", "?"} and value[2] == " ":
+        value = value[3:]
+    if " -> " in value:
+        value = value.split(" -> ", 1)[1]
+    return value.replace("\\", "/").strip()
+
+
+def _load_publication_carrier_surface_patterns(*, root: Path) -> List[str]:
+    path = root / TRUTH_PUBLICATION_CLEANLINESS_RULES_REL
+    if not path.exists():
+        return list(DEFAULT_PUBLICATION_CARRIER_SURFACE_PATTERNS)
+    payload = json.loads(path.read_text(encoding="utf-8-sig"))
+    rows = payload.get("allowed_publication_carrier_surfaces")
+    if not isinstance(rows, list) or not rows:
+        return list(DEFAULT_PUBLICATION_CARRIER_SURFACE_PATTERNS)
+    out = [str(item).replace("\\", "/").strip() for item in rows if str(item).strip()]
+    return out or list(DEFAULT_PUBLICATION_CARRIER_SURFACE_PATTERNS)
+
+
+def _matches_any_pattern(path: str, patterns: Iterable[str]) -> bool:
+    normalized = str(path).replace("\\", "/").strip()
+    if not normalized:
+        return False
+    path_obj = Path(normalized)
+    for pattern in patterns:
+        candidate = str(pattern).replace("\\", "/").strip()
+        if not candidate:
+            continue
+        if path_obj.match(candidate):
+            return True
+    return False
+
+
+def split_publication_carrier_dirty_paths(*, root: Path, dirty_lines: Iterable[str]) -> Dict[str, Any]:
+    patterns = _load_publication_carrier_surface_patterns(root=root)
+    normalized_paths = [
+        _normalize_git_status_path(line)
+        for line in dirty_lines
+        if _normalize_git_status_path(line)
+    ]
+    carrier_dirty = [path for path in normalized_paths if _matches_any_pattern(path, patterns)]
+    subject_dirty = [path for path in normalized_paths if path not in carrier_dirty]
+    return {
+        "all_dirty_paths": normalized_paths,
+        "publication_carrier_surface_patterns": patterns,
+        "publication_carrier_dirty_files": carrier_dirty,
+        "subject_dirty_files": subject_dirty,
+        "publication_carrier_only_dirty": bool(carrier_dirty) and not subject_dirty,
+        "subject_git_dirty": bool(subject_dirty),
+    }
+
+
+def _git_changed_paths_between(*, root: Path, base_ref: str, head_ref: str) -> List[str]:
+    try:
+        out = subprocess.check_output(
+            ["git", "-C", str(root), "diff", "--name-only", str(base_ref).strip(), str(head_ref).strip()],
+            text=True,
+            encoding="utf-8",
+        )
+    except Exception:  # noqa: BLE001
+        return []
+    return [line.strip().replace("\\", "/") for line in out.splitlines() if line.strip()]
+
+
+def resolve_truth_head_context(*, root: Path, live_head: str, dirty_lines: Iterable[str] = ()) -> Dict[str, Any]:
+    live = str(live_head).strip()
+    dirty_split = split_publication_carrier_dirty_paths(root=root, dirty_lines=dirty_lines)
+    active_source = active_truth_source_ref(root=root)
+    active_subject = ""
+    try:
+        active_payload = load_json_ref(root=root, ref=active_source)
+        active_subject = _head_from_payload(active_payload)
+    except Exception:  # noqa: BLE001
+        active_subject = ""
+
+    relation = "HEAD_IS_SUBJECT"
+    validated_subject = live
+    carrier_commit = ""
+    carrier_delta_files: List[str] = []
+    if active_subject and live and active_subject != live:
+        candidate_delta_files = _git_changed_paths_between(root=root, base_ref=active_subject, head_ref=live)
+        if candidate_delta_files and all(
+            _matches_any_pattern(path, dirty_split["publication_carrier_surface_patterns"]) for path in candidate_delta_files
+        ):
+            validated_subject = active_subject
+            carrier_commit = live
+            carrier_delta_files = candidate_delta_files
+            relation = "PUBLICATION_CARRIER_OF_VALIDATED_SUBJECT"
+        else:
+            relation = "HEAD_DIVERGED_FROM_ACTIVE_SUBJECT"
+
+    if relation == "HEAD_IS_SUBJECT":
+        carrier_commit = ""
+
+    return {
+        "validated_subject_head_sha": validated_subject,
+        "publication_carrier_head_sha": carrier_commit,
+        "head_relation": relation,
+        "active_truth_source_ref": active_source,
+        "active_truth_subject_head_sha": active_subject,
+        "publication_carrier_delta_files": carrier_delta_files,
+        **dirty_split,
+    }
 
 
 def is_branch_ref(ref: str) -> bool:
@@ -214,7 +345,8 @@ def authority_status(*, index: Dict[str, Any], enforcement: Dict[str, Any], conf
     clean_clone_status = str(index_check(index, "operator_clean_clone_smoke").get("status", "")).strip().upper()
     enforcement_status = str(enforcement.get("status", "")).strip().upper()
     conflicts_status = str(conflicts.get("status", "")).strip().upper()
-    if bool(worktree.get("git_dirty")):
+    subject_dirty = bool(worktree.get("subject_git_dirty")) if "subject_git_dirty" in worktree else bool(worktree.get("git_dirty"))
+    if subject_dirty:
         return TRANSITIONAL_AUTHORITATIVE
     if clean_clone_status != "PASS":
         return TRANSITIONAL_AUTHORITATIVE
@@ -228,7 +360,8 @@ def authority_status(*, index: Dict[str, Any], enforcement: Dict[str, Any], conf
 def open_blockers(*, index: Dict[str, Any], enforcement: Dict[str, Any], conflicts: Dict[str, Any]) -> List[str]:
     worktree = index.get("worktree") if isinstance(index.get("worktree"), dict) else {}
     blockers: List[str] = []
-    if bool(worktree.get("git_dirty")):
+    subject_dirty = bool(worktree.get("subject_git_dirty")) if "subject_git_dirty" in worktree else bool(worktree.get("git_dirty"))
+    if subject_dirty:
         blockers.append("WORKTREE_DIRTY")
 
     clean_clone_status = str(index_check(index, "operator_clean_clone_smoke").get("status", "")).strip().upper()
@@ -286,6 +419,8 @@ def build_settled_truth_source_receipt(
 ) -> Dict[str, Any]:
     worktree = index.get("worktree") if isinstance(index.get("worktree"), dict) else {}
     live_head = str(worktree.get("head_sha", "")).strip()
+    validated_subject_head = str(worktree.get("validated_subject_head_sha", "")).strip() or live_head
+    publication_carrier_head = str(worktree.get("publication_carrier_head_sha", "")).strip()
     branch_ref = str(index.get("branch_ref", "")).strip()
     status = authority_status(index=index, enforcement=enforcement, conflicts=conflicts)
     blockers = open_blockers(index=index, enforcement=enforcement, conflicts=conflicts)
@@ -303,11 +438,14 @@ def build_settled_truth_source_receipt(
         "generated_utc": generated_utc,
         "status": status,
         "branch_ref": branch_ref,
-        "pinned_head_sha": live_head,
+        "pinned_head_sha": validated_subject_head,
+        "publication_carrier_head_sha": publication_carrier_head,
+        "head_relation": str(worktree.get("head_relation", "")).strip() or "HEAD_IS_SUBJECT",
         "authoritative_current_pointer_ref": active_truth_ref,
         "current_head_truth_source": path_ref(root=root, path=live_validation_index_path),
         "derived_posture_state": str(enforcement.get("derived_state", "")).strip(),
-        "worktree_dirty": bool(worktree.get("git_dirty")),
+        "worktree_dirty": bool(worktree.get("subject_git_dirty")) if "subject_git_dirty" in worktree else bool(worktree.get("git_dirty")),
+        "publisher_worktree_dirty": bool(worktree.get("git_dirty")),
         "operator_clean_clone_status": str(index_check(index, "operator_clean_clone_smoke").get("status", "")).strip().upper() or "UNKNOWN",
         "enforcement_status": str(enforcement.get("status", "")).strip().upper() or "UNKNOWN",
         "conflict_status": str(conflicts.get("status", "")).strip().upper() or "UNKNOWN",
@@ -343,7 +481,8 @@ def build_truth_supersession_receipt(
     enforcement: Dict[str, Any],
     conflicts: Dict[str, Any],
 ) -> Dict[str, Any]:
-    live_head = _head_from(index)
+    worktree = index.get("worktree") if isinstance(index.get("worktree"), dict) else {}
+    live_head = str(worktree.get("validated_subject_head_sha", "")).strip() or _head_from(index)
     active_truth_root = active_truth_source_ref(root=root)
     generated_utc = str(index.get("generated_utc", "")).strip() or utc_now_iso_z()
     superseded: List[Dict[str, Any]] = []

@@ -19,11 +19,12 @@
     "SETTLED_AUTHORITATIVE"
   ],
   "settlement_requirements": [
-    "live_validation_index.worktree.git_dirty == false",
+    "live_validation_index.worktree.subject_git_dirty == false",
     "operator_clean_clone_smoke status == PASS",
     "posture_consistency_enforcement_receipt status == PASS",
     "posture_conflict_receipt status == PASS",
-    "execution_board.authoritative_current_head_truth_source == current_head_truth_root"
+    "execution_board.authoritative_current_head_truth_source == current_head_truth_root",
+    "If publication_carrier_head_sha differs from pinned_head_sha, the delta must be publication-carrier-only under truth publication cleanliness rules"
   ],
   "must_not_define_current_truth": [
     "docs/**",

@@ -2,7 +2,7 @@
   "schema_id": "kt.governance.truth_supersession_rules.v1",
   "rules_id": "TRUTH_SUPERSESSION_RULES_V1_20260309",
   "supersede_when": [
-    "tracked truth surface validated_head_sha != current head",
+    "tracked truth surface validated_head_sha != validated subject head unless live HEAD is only a documentary publication carrier for that subject",
     "tracked truth surface branch_ref != live branch",
     "posture_consistency_receipt status != PASS",
     "tracked truth claims stronger posture than settled truth source"

@@ -542,11 +542,12 @@ def _build_constitutional_board_state(
     }
 
 
-def _finish_line_predicates(*, posture_state: str, worktree_dirty: bool, one_button_status: bool) -> Dict[str, bool]:
+def _finish_line_predicates(*, posture_state: str, worktree_dirty: bool, publisher_worktree_dirty: bool, one_button_status: bool) -> Dict[str, bool]:
     return {
         "constitutional_truth_live": posture_state != "TRUTH_DEFECTS_PRESENT",
         "canonical_scope_enforced": True,
         "current_worktree_clean": not worktree_dirty,
+        "publication_carrier_worktree_clean": not publisher_worktree_dirty,
         "one_button_current_head_pass": bool(one_button_status),
         "posture_receipts_synchronized": True,
         "truth_engine_authoritative": True,
@@ -616,8 +617,12 @@ def _truthful_green_supported(*, root: Path, report_root: Path, live_head: str, 
 
 def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, live_validation_index_ref: str) -> Dict[str, Dict[str, Any]]:
     live_head = str((index.get("worktree") or {}).get("head_sha", "")).strip()
+    validated_subject_head = str((index.get("worktree") or {}).get("validated_subject_head_sha", "")).strip() or live_head
+    publication_carrier_head = str((index.get("worktree") or {}).get("publication_carrier_head_sha", "")).strip()
+    head_relation = str((index.get("worktree") or {}).get("head_relation", "")).strip() or "HEAD_IS_SUBJECT"
     branch_ref = str(index.get("branch_ref", "")).strip()
-    worktree_dirty = bool((index.get("worktree") or {}).get("git_dirty"))
+    publisher_worktree_dirty = bool((index.get("worktree") or {}).get("git_dirty"))
+    worktree_dirty = bool((index.get("worktree") or {}).get("subject_git_dirty")) if "subject_git_dirty" in (index.get("worktree") or {}) else publisher_worktree_dirty
     checks = index.get("checks") if isinstance(index.get("checks"), list) else []
     live_state = derive_live_validation_state(index)
     posture_state = live_state
@@ -636,6 +641,7 @@ def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, l
     finish_line = _finish_line_predicates(
         posture_state=posture_state,
         worktree_dirty=worktree_dirty,
+        publisher_worktree_dirty=publisher_worktree_dirty,
         one_button_status=posture_state == TRUTHFUL_GREEN,
     )
 
@@ -646,7 +652,9 @@ def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, l
         "posture_state": posture_state,
         "current_p0_state": posture_state,
         "branch_ref": branch_ref,
-        "validated_head_sha": live_head,
+        "validated_head_sha": validated_subject_head,
+        "publication_carrier_head_sha": publication_carrier_head,
+        "head_relation": head_relation,
         "truth_sources": _truth_sources(report_root_rel),
         "validation_index_ref": live_validation_index_ref,
         "active_stop_gates": stop_gates,
@@ -672,10 +680,13 @@ def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, l
         "posture_state": posture_state,
         "current_state": posture_state,
         "branch_ref": branch_ref,
-        "validated_head_sha": live_head,
+        "validated_head_sha": validated_subject_head,
+        "publication_carrier_head_sha": publication_carrier_head,
+        "head_relation": head_relation,
         "blocking_groups": stop_gates,
         "release_decision": release_decision,
         "repo_hygiene_status": "PASS" if not worktree_dirty else "HOLD",
+        "publisher_hygiene_status": "PASS" if not publisher_worktree_dirty else "DIRTY_DOCUMENTARY_CARRIER_ONLY",
         "validator_substance_checked": True,
         "audit_scope": [
             "live truth reconciliation",
@@ -712,8 +723,9 @@ def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, l
             "claim": TRUTHFUL_GREEN,
             "claim_admissible": True,
             "lawful_green_claim_admissible": True,
-            "head_sha": live_head,
-            "validated_head_sha": live_head,
+            "head_sha": validated_subject_head,
+            "validated_head_sha": validated_subject_head,
+            "publication_carrier_head_sha": publication_carrier_head,
             "branch_ref": branch_ref,
             "may_claim_now": [
                 "truthful green active on current head",
@@ -746,7 +758,8 @@ def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, l
             "claim": TRUTHFUL_GREEN,
             "claim_admissible": False,
             "current_truthful_state": posture_state,
-            "validated_head_sha": live_head,
+            "validated_head_sha": validated_subject_head,
+            "publication_carrier_head_sha": publication_carrier_head,
             "blockers": stop_gates,
             "superseded_by": _truth_sources(report_root_rel),
         }
@@ -913,11 +926,13 @@ def _reconciliation_report(*, report_root: Path, report_root_rel: str, derived_s
             "current_state_receipt": {
                 "posture_state": str(current_state.get("posture_state", "")).strip(),
                 "validated_head_sha": str(current_state.get("validated_head_sha", "")).strip(),
+                "publication_carrier_head_sha": str(current_state.get("publication_carrier_head_sha", "")).strip(),
                 "status": str(current_state.get("status", "")).strip(),
             },
             "runtime_closure_audit": {
                 "posture_state": str(runtime_audit.get("posture_state", "")).strip(),
                 "validated_head_sha": str(runtime_audit.get("validated_head_sha", "")).strip(),
+                "publication_carrier_head_sha": str(runtime_audit.get("publication_carrier_head_sha", "")).strip(),
                 "status": str(runtime_audit.get("status", "")).strip(),
             },
             "posture_consistency_receipt": {

@@ -17,7 +17,7 @@
     "truth_ledger_current_manifest_ref":  "kt_truth_ledger:ledger/current/current_bundle_manifest.json",
     "truth_ledger_bundle_root":  "kt_truth_ledger:ledger/bundles",
     "transition_state":  "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY_PENDING_PUBLICATION",
-    "transition_note":  "Action 12 promotes the local truth ledger as the active current-head witness and purges main-bound live-truth responsibility. Published-head self-convergence remains unresolved until the ledger becomes an admissible published authority plane.",
+    "transition_note":  "Action 12 promotes the local truth ledger as the active current-head witness and purges main-bound live-truth responsibility. Published-head self-convergence remains unresolved until the ledger becomes an admissible published authority plane. During this transition, truth_subject_commit may remain anchored to the last validated subject while a later main commit acts only as documentary publication carrier.",
     "tracked_documentary_indexes":  [
                                         "KT_PROD_CLEANROOM/reports/truth_bundle.schema.json",
                                         "KT_PROD_CLEANROOM/reports/truth_bundle_catalog.json",

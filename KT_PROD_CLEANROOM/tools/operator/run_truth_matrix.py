@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from tools.operator.titanium_common import repo_root, utc_now_iso_z, write_json_stable
+from tools.operator.truth_authority import resolve_truth_head_context
 
 
 def _git(*, root: Path, args: Sequence[str]) -> str:
@@ -466,14 +467,24 @@ def build_live_validation_index(*, root: Path, skip_clean_clone: bool, skip_dirt
         )
 
     dirty_lines = subprocess.check_output(["git", "status", "--short"], cwd=str(root), text=True).splitlines()
+    head_sha = _git(root=root, args=["rev-parse", "HEAD"])
+    truth_head_context = resolve_truth_head_context(root=root, live_head=head_sha, dirty_lines=dirty_lines)
     return {
         "schema_id": "kt.operator.live_validation_index.v1",
         "generated_utc": utc_now_iso_z(),
         "branch_ref": _git(root=root, args=["rev-parse", "--abbrev-ref", "HEAD"]),
         "worktree": {
             "git_dirty": bool(dirty_lines),
-            "head_sha": _git(root=root, args=["rev-parse", "HEAD"]),
+            "head_sha": head_sha,
+            "validated_subject_head_sha": str(truth_head_context.get("validated_subject_head_sha", "")).strip() or head_sha,
+            "publication_carrier_head_sha": str(truth_head_context.get("publication_carrier_head_sha", "")).strip(),
+            "head_relation": str(truth_head_context.get("head_relation", "")).strip() or "HEAD_IS_SUBJECT",
+            "subject_git_dirty": bool(truth_head_context.get("subject_git_dirty")),
+            "publication_carrier_dirty": bool(truth_head_context.get("publication_carrier_only_dirty")),
             "dirty_files": [line.strip() for line in dirty_lines if line.strip()],
+            "subject_dirty_files": list(truth_head_context.get("subject_dirty_files", [])),
+            "publication_carrier_dirty_files": list(truth_head_context.get("publication_carrier_dirty_files", [])),
+            "publication_carrier_delta_files": list(truth_head_context.get("publication_carrier_delta_files", [])),
         },
         "checks": checks,
     }
