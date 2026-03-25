@@ -611,10 +611,14 @@ def build_ws2_receipt(root: Path) -> Dict[str, Any]:
     ]
     subject_head = _git_last_commit_for_paths(root, subject_refs) or current_head
     dirty_paths = _status_paths(root)
+    existing_subject_refs = [str(Path(path).as_posix()) for path in subject_refs if (root / Path(path)).exists()]
     if any(path != RECEIPT_REL for path in dirty_paths):
         touched = sorted(set(dirty_paths + [RECEIPT_REL]), key=str.lower)
     else:
-        touched = sorted(set(_git_changed_files(root, subject_head) + dirty_paths + [RECEIPT_REL]), key=str.lower)
+        # On a clean worktree, WS2 determinism is about the declared subject/write-set
+        # itself, not every collateral file that happened to be part of an older commit
+        # touching the WS2 tool or test.
+        touched = sorted(set(existing_subject_refs + dirty_paths + [RECEIPT_REL]), key=str.lower)
     unexpected = _unexpected_touches(touched)
     protected = _protected_touch_violations(touched)
     if unexpected:
