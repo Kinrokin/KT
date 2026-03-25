@@ -1,31 +1,28 @@
 {
   "allowed_current_claims": [
-    "fail-closed workflow governance is live on the current head",
-    "the desired GitHub ruleset is committed in-repo",
-    "platform block or missing branch-protection proof is explicit"
+    "governance subject mismatch is explicit"
   ],
   "branch_protection_status": "BLOCKED",
   "branch_ref": "main",
-  "enterprise_legitimacy_ceiling": "WORKFLOW_GOVERNANCE_ONLY",
+  "enterprise_legitimacy_ceiling": "NO_GOVERNANCE_UPGRADE",
   "forbidden_current_claims": [
     "platform-enforced governance proven on main",
-    "fresh active branch-protection / ruleset enforcement on main",
-    "higher enterprise legitimacy from platform enforcement"
+    "workflow governance proven on the current head"
   ],
-  "generated_utc": "2026-03-25T19:04:20Z",
+  "generated_utc": "2026-03-25T21:27:10Z",
   "platform_block": {
     "http_status": 403,
     "message": "Upgrade to GitHub Pro or make this repository public to enable this feature."
   },
   "platform_governance_claim_admissible": false,
-  "platform_governance_claim_boundary": "Current-head workflow governance is fresh, but GitHub branch-protection / ruleset enforcement is not proven on main. Do not claim platform-enforced governance while main_branch_protection_receipt is not PASS.",
+  "platform_governance_claim_boundary": "Branch-protection and workflow-governance receipts disagree on the governed subject head; no governance upgrade is admissible.",
   "platform_governance_receipt_refs": [
     "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json",
     "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json"
   ],
   "platform_governance_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
-  "platform_governance_verdict": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED",
+  "platform_governance_verdict": "PLATFORM_GOVERNANCE_NOT_PROVEN",
   "schema_id": "kt.operator.platform_governance_narrowing_receipt.v1",
-  "validated_head_sha": "b120b6283b096f27162632d629c8e12e5525e029",
+  "validated_head_sha": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
   "workflow_governance_status": "PASS_WITH_PLATFORM_BLOCK"
 }

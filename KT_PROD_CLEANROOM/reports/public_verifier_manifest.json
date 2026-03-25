@@ -1,11 +1,11 @@
 {
   "branch_protection_status": "BLOCKED",
   "claim_boundary": "evidence_commit identifies the commit that last changed the cryptographic publication evidence; truth_subject_commit identifies the transparency-verified subject commit. Consumers must not equate them unless evidence_equals_subject is true.",
-  "enterprise_legitimacy_ceiling": "WORKFLOW_GOVERNANCE_ONLY",
+  "enterprise_legitimacy_ceiling": "NO_GOVERNANCE_UPGRADE",
   "evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
   "evidence_contains_subject": true,
   "evidence_equals_subject": false,
-  "generated_utc": "2026-03-25T19:04:24Z",
+  "generated_utc": "2026-03-25T21:27:14Z",
   "integrity_supporting_artifacts": [
     "KT_PROD_CLEANROOM/reports/dependency_inventory.json",
     "KT_PROD_CLEANROOM/reports/python_environment_manifest.json",
@@ -16,13 +16,13 @@
     "message": "Upgrade to GitHub Pro or make this repository public to enable this feature."
   },
   "platform_governance_claim_admissible": false,
-  "platform_governance_claim_boundary": "Current-head workflow governance is fresh, but GitHub branch-protection / ruleset enforcement is not proven on main. Do not claim platform-enforced governance while main_branch_protection_receipt is not PASS.",
+  "platform_governance_claim_boundary": "Branch-protection and workflow-governance receipts disagree on the governed subject head; no governance upgrade is admissible.",
   "platform_governance_receipt_refs": [
     "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json",
     "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json"
   ],
   "platform_governance_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
-  "platform_governance_verdict": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED",
+  "platform_governance_verdict": "PLATFORM_GOVERNANCE_NOT_PROVEN",
   "publication_evidence_refs": [
     "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
     "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_subject.json"
@@ -43,6 +43,6 @@
   "subject_verdict": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
   "truth_pointer_ref": "kt_truth_ledger:ledger/current/current_pointer.json",
   "truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
-  "validated_head_sha": "b120b6283b096f27162632d629c8e12e5525e029",
+  "validated_head_sha": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
   "workflow_governance_status": "PASS_WITH_PLATFORM_BLOCK"
 }
