@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
+from tools.operator.truth_authority import resolve_truth_head_context
 
 
 REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
@@ -27,6 +28,11 @@ def _git(root: Path, *args: str) -> str:
 
 def _git_head(root: Path) -> str:
     return _git(root, "rev-parse", "HEAD")
+
+
+def _git_status_lines(root: Path) -> list[str]:
+    output = subprocess.check_output(["git", "-C", str(root), "status", "--porcelain=v1"], text=True)
+    return [line.rstrip("\n") for line in output.splitlines() if line.strip()]
 
 
 def _check(check_id: str, ok: bool, detail: str, refs: Sequence[str]) -> Dict[str, Any]:
@@ -74,6 +80,10 @@ def _binding_row(*, surface_id: str, rel: str, payload: Dict[str, Any], current_
 
 def build_post_wave5_c006_friendly_host_handoff_pack(*, root: Path) -> Dict[str, Any]:
     current_head = _git_head(root)
+    head_context = resolve_truth_head_context(root=root, live_head=current_head, dirty_lines=_git_status_lines(root))
+    validated_subject_head = str(head_context.get("validated_subject_head_sha", "")).strip() or current_head
+    publication_carrier_head = str(head_context.get("publication_carrier_head_sha", "")).strip()
+    head_relation = str(head_context.get("head_relation", "")).strip() or "HEAD_IS_SUBJECT"
     anchor = _load_required(root, ANCHOR_REL)
     prep = _load_required(root, PREP_REL)
     verifier_truth = _load_required(root, VERIFIER_TRUTH_REL)
@@ -95,7 +105,7 @@ def build_post_wave5_c006_friendly_host_handoff_pack(*, root: Path) -> Dict[str,
             "ref": VERIFIER_TRUTH_REL,
             "subject_head_commit": str(verifier_truth.get("compiled_head_commit", "")).strip(),
             "head_binding_status": "CURRENT_HEAD_BOUND"
-            if str(verifier_truth.get("compiled_head_commit", "")).strip() == current_head
+            if str(verifier_truth.get("compiled_head_commit", "")).strip() == validated_subject_head
             else "CARRIED_FORWARD_PREP_ONLY",
         },
         _binding_row(
@@ -164,6 +174,9 @@ def build_post_wave5_c006_friendly_host_handoff_pack(*, root: Path) -> Dict[str,
         "generated_utc": utc_now_iso_z(),
         "status": status,
         "current_repo_head": current_head,
+        "validated_subject_head_sha": validated_subject_head,
+        "publication_carrier_head_sha": publication_carrier_head,
+        "head_relation": head_relation,
         "c006_status": "OPEN_READY_FOR_E2_FRIENDLY_HOST_HANDOFF_NOT_PROMOTED" if status == "PASS" else "BLOCKED",
         "blocker_delta": "C006_NARROWED_TO_EXPLICIT_E2_FRIENDLY_HOST_HANDOFF_AWAITING_SECOND_HOST"
         if status == "PASS"

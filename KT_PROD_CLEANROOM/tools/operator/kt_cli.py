@@ -69,10 +69,10 @@ V1 = V1Profile(
     name="v1",
     sealed_commit="7b7f6e71d43c0aa60d4bc91be47e679491883871",
     sealed_tag="KT_V1_SEALED_20260217",
-    law_bundle_hash="9c800fe888fa904830ea3149558f54a4a97efa944c07c48bc2869fc394d266e8",
+    law_bundle_hash="356da2f1bee6dd87d381aa8221dbe524658fd301d040e29e7bfcc3178141602e",
     suite_registry_id="a1d21d415568931778b718827c278918529af8490a1b456ba97f27a9a18be8fc",
     determinism_expected_root_hash="c574cd28deba7020b1ff41f249c02f403cbe8e045cb961222183880977bdb10e",
-    authoritative_reseal_receipt=("KT_PROD_CLEANROOM/reports/kt_archive_manifest.json#vault_receipt_epic_hmac_reseal_v1_post_20260301t145027z"),
+    authoritative_reseal_receipt=("KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260325T203405Z.json"),
     router_policy_ref="KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
     router_demo_suite_ref="KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
 )

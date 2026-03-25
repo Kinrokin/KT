@@ -47,6 +47,9 @@ def mint_one_button_receipts(*, safe_run_root: Path, live_validation_index: Dict
     nested_run_head = _read_required_text(program_run / "git_head.txt")
 
     live_head = str((live_validation_index.get("worktree") or {}).get("head_sha", "")).strip()
+    validated_subject_head = str((live_validation_index.get("worktree") or {}).get("validated_subject_head_sha", "")).strip() or live_head
+    publication_carrier_head = str((live_validation_index.get("worktree") or {}).get("publication_carrier_head_sha", "")).strip()
+    head_relation = str((live_validation_index.get("worktree") or {}).get("head_relation", "")).strip() or "HEAD_IS_SUBJECT"
     branch_ref = str(live_validation_index.get("branch_ref", "")).strip()
     generated_utc = str(live_validation_index.get("generated_utc", "")).strip() or utc_now_iso_z()
     suite_rows = live_validation_index.get("checks") if isinstance(live_validation_index.get("checks"), list) else []
@@ -77,7 +80,9 @@ def mint_one_button_receipts(*, safe_run_root: Path, live_validation_index: Dict
         "schema_id": "kt.one_button_preflight_receipt.v2",
         "created_utc": generated_utc,
         "status": "PASS" if safe_run_ok and suite_status == "PASS" and head_lineage_match else "FAIL",
-        "validated_head_sha": live_head,
+        "validated_head_sha": validated_subject_head,
+        "publication_carrier_head_sha": publication_carrier_head,
+        "head_relation": head_relation,
         "branch_ref": branch_ref,
         "canonical_candidate_run_root": safe_run_root.as_posix(),
         "canonical_candidate_program_run_root": program_run.as_posix(),
@@ -100,7 +105,9 @@ def mint_one_button_receipts(*, safe_run_root: Path, live_validation_index: Dict
         "schema_id": "kt.one_button_production_receipt.v2",
         "created_utc": generated_utc,
         "status": "PASS" if safe_run_ok and nested_ok and head_lineage_match else "FAIL",
-        "validated_head_sha": live_head,
+        "validated_head_sha": validated_subject_head,
+        "publication_carrier_head_sha": publication_carrier_head,
+        "head_relation": head_relation,
         "branch_ref": branch_ref,
         "frozen_command": "python -m tools.operator.kt_cli --profile v1 safe-run --assurance-mode production --program program.certify.canonical_hmac --config {}",
         "production_run": {

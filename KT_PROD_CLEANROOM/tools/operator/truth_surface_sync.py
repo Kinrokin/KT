@@ -593,7 +593,7 @@ def _stop_gates(posture_state: str, live_checks: List[Dict[str, Any]]) -> List[s
     return gates
 
 
-def _truthful_green_supported(*, root: Path, report_root: Path, live_head: str, branch_ref: str) -> bool:
+def _truthful_green_supported(*, root: Path, report_root: Path, validated_subject_head: str, branch_ref: str) -> bool:
     preflight = _load_required(report_root / "one_button_preflight_receipt.json")
     production = _load_required(report_root / "one_button_production_receipt.json")
     branch = _load_required(root / DEFAULT_REPORT_ROOT_REL / "main_branch_protection_receipt.json")
@@ -602,9 +602,9 @@ def _truthful_green_supported(*, root: Path, report_root: Path, live_head: str, 
         return False
     if str(production.get("status", "")).strip() != "PASS":
         return False
-    if str(preflight.get("validated_head_sha", "")).strip() != live_head:
+    if str(preflight.get("validated_head_sha", "")).strip() != validated_subject_head:
         return False
-    if str(production.get("validated_head_sha", "")).strip() != live_head:
+    if str(production.get("validated_head_sha", "")).strip() != validated_subject_head:
         return False
     if str(preflight.get("branch_ref", "")).strip() != branch_ref:
         return False
@@ -631,7 +631,7 @@ def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, l
     if live_state == CANONICAL_READY_FOR_REEARNED_GREEN and _truthful_green_supported(
         root=root,
         report_root=report_root,
-        live_head=live_head,
+        validated_subject_head=validated_subject_head,
         branch_ref=branch_ref,
     ):
         posture_state = TRUTHFUL_GREEN

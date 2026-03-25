@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from tools.operator import omega_gate
 from tools.operator.omega_gate import (
     build_authority_supersession_map,
     build_current_head_truth_lock,
@@ -46,3 +47,30 @@ def test_omega_gate_receipt_and_supersession_map_compile() -> None:
     assert supersession["status"] == "PASS"
     assert any(row["function_id"] == "blocker_matrix" for row in supersession["rows"])
     assert any(row["function_id"] == "historical_claim_firewall" for row in supersession["rows"])
+
+
+def test_selected_family_accepts_publication_carrier_of_validated_subject(monkeypatch, tmp_path) -> None:
+    monkeypatch.setattr(omega_gate, "_git_head", lambda root: "carrier456")
+    monkeypatch.setattr(
+        omega_gate,
+        "_current_truth_head_context",
+        lambda root: {
+            "validated_subject_head_sha": "subject123",
+            "publication_carrier_head_sha": "carrier456",
+            "head_relation": "PUBLICATION_CARRIER_OF_VALIDATED_SUBJECT",
+        },
+    )
+
+    def fake_load_optional(root, rel):
+        if rel == omega_gate.WAVE5_READJUDICATION_REL:
+            return {"status": "PASS", "compiled_head_commit": "subject123"}
+        if rel == omega_gate.WAVE5_BLOCKER_REL:
+            return {"status": "PASS"}
+        return {}
+
+    monkeypatch.setattr(omega_gate, "_load_optional", fake_load_optional)
+    family = omega_gate._selected_family(tmp_path)
+
+    assert family["family_id"] == "WAVE5_CURRENT_HEAD_WORKTREE_FAMILY"
+    assert family["validated_subject_head_sha"] == "subject123"
+    assert family["publication_carrier_head_sha"] == "carrier456"

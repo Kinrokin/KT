@@ -15,6 +15,7 @@ from tools.operator.truth_authority import (
     compatibility_surface_is_non_authoritative,
     load_json_ref,
     payload_documentary_only,
+    resolve_truth_head_context,
 )
 from tools.operator.trust_zone_validate import validate_trust_zones
 
@@ -165,6 +166,11 @@ def _worktree_summary(root: Path) -> Dict[str, Any]:
     }
 
 
+def _current_truth_head_context(root: Path) -> Dict[str, Any]:
+    current_head = _git_head(root)
+    return resolve_truth_head_context(root=root, live_head=current_head, dirty_lines=_git_status_lines(root))
+
+
 def _active_deferred_c006(root: Path) -> Dict[str, Any]:
     payload = _load_optional(root, DEFAULT_DEFERRED_BLOCKERS_REL)
     rows = payload.get("deferred", [])
@@ -193,11 +199,15 @@ def _selected_family(root: Path) -> Dict[str, Any]:
     wave5_readjudication = _load_optional(root, WAVE5_READJUDICATION_REL)
     wave5_blocker = _load_optional(root, WAVE5_BLOCKER_REL)
     current_head = _git_head(root)
+    head_context = _current_truth_head_context(root)
+    validated_subject_head = str(head_context.get("validated_subject_head_sha", "")).strip() or current_head
+    publication_carrier_head = str(head_context.get("publication_carrier_head_sha", "")).strip()
+    head_relation = str(head_context.get("head_relation", "")).strip() or "HEAD_IS_SUBJECT"
     if (
         wave5_readjudication
         and wave5_blocker
         and str(wave5_readjudication.get("status", "")).strip() == "PASS"
-        and str(wave5_readjudication.get("compiled_head_commit", "")).strip() == current_head
+        and str(wave5_readjudication.get("compiled_head_commit", "")).strip() == validated_subject_head
     ):
         return {
             "family_id": "WAVE5_CURRENT_HEAD_WORKTREE_FAMILY",
@@ -211,6 +221,9 @@ def _selected_family(root: Path) -> Dict[str, Any]:
                 POST_WAVE5_TERMINAL_STATES_REL,
                 POST_WAVE5_C006_REL,
             ],
+            "validated_subject_head_sha": validated_subject_head,
+            "publication_carrier_head_sha": publication_carrier_head,
+            "head_relation": head_relation,
             "claim_boundary": (
                 "This family is the active current-head workspace family for canonical posture inside the sealed W0 scope. "
                 "It is not automatically public-release admissible while the broader worktree remains dirty and the transparency-verified subject commit differs from HEAD."
@@ -225,6 +238,9 @@ def _selected_family(root: Path) -> Dict[str, Any]:
         "claim_matrix_ref": FINAL_CLAIM_CEILING_REL,
         "organ_disposition_ref": WAVE5_ORGAN_DISPOSITION_REL,
         "supporting_refs": [],
+        "validated_subject_head_sha": validated_subject_head,
+        "publication_carrier_head_sha": publication_carrier_head,
+        "head_relation": head_relation,
         "claim_boundary": "The legacy sealed release family remains active because no current-head worktree family is validated at HEAD.",
     }
 
