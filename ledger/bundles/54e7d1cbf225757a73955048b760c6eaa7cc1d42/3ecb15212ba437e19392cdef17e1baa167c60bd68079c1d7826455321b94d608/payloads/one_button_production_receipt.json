@@ -1,0 +1,24 @@
+{
+  "branch_ref": "main",
+  "created_utc": "2026-03-11T02:24:17Z",
+  "frozen_command": "python -m tools.operator.kt_cli --profile v1 safe-run --assurance-mode production --program program.certify.canonical_hmac --config {}",
+  "next_action": "truth surfaces may claim production eligible on this head",
+  "production_run": {
+    "delivery_manifest": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260311T023000000Z_safe-run_hardening/program_run/delivery/delivery_manifest.json",
+    "delivery_zip_path": "",
+    "delivery_zip_sha256": "",
+    "head_lineage_match": true,
+    "nested_run_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "nested_run_root": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260311T023000000Z_safe-run_hardening/program_run",
+    "nested_verdict": "KT_CERTIFY_PASS cmd=certify lane=canonical_hmac profile=v1 allow_dirty=0 head=60b05c4be50c07deac6fc01a471c94e77877dec7 law=bf6bf5f4849cc5c4307c85603123b24b253f77512e5532a3b1022ab1aff4a89a suite=a1d21d415568931778b718827c278918529af8490a1b456ba97f27a9a18be8fc sweep_sha256=10e24e4e1010e05c8b19da77f7a6336eb717ed8b88ff05d001e194ddcac378c1",
+    "nested_verdict_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "program_id": "program.certify.canonical_hmac",
+    "safe_run_enforced": true,
+    "safe_run_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7",
+    "safe_run_root": "D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260311T023000000Z_safe-run_hardening",
+    "safe_run_verdict": "KT_SAFE_RUN_PASS cmd=safe-run profile=v1 assurance_mode=production program_id=program.certify.canonical_hmac nested_run=D:/user/rober/OneDrive/KingsTheorem_Archive/KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/20260311T023000000Z_safe-run_hardening/program_run"
+  },
+  "schema_id": "kt.one_button_production_receipt.v2",
+  "status": "PASS",
+  "validated_head_sha": "60b05c4be50c07deac6fc01a471c94e77877dec7"
+}

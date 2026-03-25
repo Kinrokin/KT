@@ -1,0 +1,46 @@
+{
+  "active_tracked_truth_surfaces": [
+    "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+    "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
+    "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
+    "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json"
+  ],
+  "authoritative_current_pointer_ref": "kt_truth_ledger:ledger/current/current_pointer.json",
+  "branch_ref": "main",
+  "conflict_status": "PASS",
+  "current_head_truth_source": "KT_PROD_CLEANROOM/reports/live_validation_index.json",
+  "derived_posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+  "enforcement_status": "PASS",
+  "generated_utc": "2026-03-25T21:17:19Z",
+  "head_relation": "HEAD_DIVERGED_FROM_ACTIVE_SUBJECT",
+  "open_blockers": [],
+  "operator_clean_clone_status": "PASS",
+  "pinned_head_sha": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+  "publication_carrier_head_sha": "",
+  "publisher_worktree_dirty": true,
+  "schema_id": "kt.operator.settled_truth_source_receipt.v1",
+  "status": "SETTLED_AUTHORITATIVE",
+  "supersedes_if_current_head_changes": [
+    "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+    "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
+    "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
+    "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json"
+  ],
+  "supporting_contracts": [
+    "KT_PROD_CLEANROOM/governance/settled_truth_source_contract.json",
+    "KT_PROD_CLEANROOM/governance/truth_supersession_rules.json",
+    "KT_PROD_CLEANROOM/governance/truth_freshness_windows.json",
+    "KT_PROD_CLEANROOM/governance/truth_invalidation_rules.json",
+    "KT_PROD_CLEANROOM/governance/truth_publication_contract.json",
+    "KT_PROD_CLEANROOM/governance/tracked_vs_generated_truth_boundary.json"
+  ],
+  "tracked_truth_heads": {
+    "current_state_receipt": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+    "live_validation_index": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+    "posture_consistency_receipt": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+    "runtime_closure_audit": "54e7d1cbf225757a73955048b760c6eaa7cc1d42"
+  },
+  "worktree_dirty": false
+}

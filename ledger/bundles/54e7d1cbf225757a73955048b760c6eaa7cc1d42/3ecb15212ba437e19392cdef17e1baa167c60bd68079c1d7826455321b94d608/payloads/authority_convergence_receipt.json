@@ -1,0 +1,166 @@
+{
+  "checks": [
+    {
+      "actual": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "check": "active_truth_source_is_ledger_pointer",
+      "expected": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "check": "execution_board_points_to_active_truth_source",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "check": "readiness_scope_points_to_active_truth_source",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "check": "ledger_branch_published",
+      "remote_error": "",
+      "status": "PASS"
+    },
+    {
+      "actual": "PASS",
+      "check": "publication_receipt_passes",
+      "expected": "PASS",
+      "status": "PASS"
+    },
+    {
+      "actual": "PASS",
+      "check": "publication_stabilization_passes",
+      "expected": "PASS",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "check": "truth_publication_stabilized",
+      "status": "PASS"
+    },
+    {
+      "actual": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "check": "authority_subject_matches_stabilization_subject",
+      "expected": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "status": "PASS"
+    },
+    {
+      "actual": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "check": "authority_subject_matches_verifier_subject",
+      "expected": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "status": "PASS"
+    },
+    {
+      "actual": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
+      "check": "verifier_subject_verdict_proven",
+      "expected": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
+      "status": "PASS"
+    },
+    {
+      "actual": "PASS",
+      "check": "verifier_publication_receipt_passes",
+      "expected": "PASS",
+      "status": "PASS"
+    },
+    {
+      "actual": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "check": "ledger_pointer_matches_truth_subject",
+      "expected": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "status": "PASS"
+    },
+    {
+      "actual": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "check": "ledger_current_state_matches_truth_subject",
+      "expected": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "status": "PASS"
+    },
+    {
+      "actual": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "check": "ledger_runtime_audit_matches_truth_subject",
+      "expected": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "status": "PASS"
+    },
+    {
+      "actual": "TRUTHFUL_GREEN",
+      "check": "ledger_current_state_posture_matches_pointer",
+      "expected": "TRUTHFUL_GREEN",
+      "status": "PASS"
+    },
+    {
+      "actual": "TRUTHFUL_GREEN",
+      "check": "ledger_runtime_audit_posture_matches_pointer",
+      "expected": "TRUTHFUL_GREEN",
+      "status": "PASS"
+    },
+    {
+      "actual": "PASS",
+      "check": "documentary_truth_validation_passes",
+      "expected": "PASS",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "check": "main_current_pointer_documentary_only",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "check": "main_current_state_documentary_only",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "check": "main_runtime_audit_documentary_only",
+      "status": "PASS"
+    },
+    {
+      "actual": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+      "check": "current_head_claim_boundary_preserved",
+      "expected": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+      "status": "PASS"
+    }
+  ],
+  "current_head_authority_claimed": false,
+  "failures": [],
+  "generated_utc": "2026-03-25T21:27:15Z",
+  "h1_admissible": false,
+  "observed": {
+    "active_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
+    "board_authority_mode": "SETTLED_AUTHORITATIVE",
+    "board_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
+    "current_head_commit": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+    "current_head_equals_truth_subject": false,
+    "documentary_validation_status": "PASS",
+    "evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
+    "ledger_branch": "kt_truth_ledger",
+    "ledger_branch_head_sha": "03e9d79a97ca6849535ac05d0c31d924716e87bb",
+    "ledger_branch_published": true,
+    "ledger_branch_reachable": true,
+    "ledger_branch_remote": "origin",
+    "ledger_current_state_head": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+    "ledger_current_state_posture": "TRUTHFUL_GREEN",
+    "ledger_pointer_head": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+    "ledger_pointer_posture": "TRUTHFUL_GREEN",
+    "ledger_runtime_audit_head": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+    "ledger_runtime_audit_posture": "TRUTHFUL_GREEN",
+    "main_current_pointer_documentary_only": true,
+    "main_current_state_documentary_only": true,
+    "main_runtime_audit_documentary_only": true,
+    "publication_receipt_status": "PASS",
+    "readiness_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
+    "stabilization_status": "PASS",
+    "stabilization_truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+    "truth_publication_stabilized": true,
+    "truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+    "verifier_evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
+    "verifier_head_claim_verdict": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+    "verifier_publication_receipt_status": "PASS",
+    "verifier_subject_verdict": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
+    "verifier_truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7"
+  },
+  "proof_class": "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
+  "published_head_authority_claimed": true,
+  "schema_id": "kt.operator.authority_convergence_receipt.v2",
+  "status": "PASS"
+}
