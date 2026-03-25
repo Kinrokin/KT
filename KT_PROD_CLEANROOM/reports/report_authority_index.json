@@ -1,14 +1,14 @@
 {
   "active_current_head_family": "LEGACY_RELEASE_FAMILY",
   "claim_boundary": "The legacy sealed release family remains active because no current-head worktree family is validated at HEAD.",
-  "current_repo_head": "0f8e1aa89f8b7094360c94e64a25cef728c6b2bd",
+  "current_repo_head": "9cba8edfb3ed91501186c7193a619303157f927e",
   "current_worktree_state": {
     "dirty": true,
-    "entry_count": 8,
-    "modified_or_staged_count": 8,
+    "entry_count": 42,
+    "modified_or_staged_count": 42,
     "untracked_count": 0
   },
-  "generated_utc": "2026-03-25T22:22:25Z",
+  "generated_utc": "2026-03-25T23:13:42Z",
   "rows": [
     {
       "authority_status": "ACTIVE_CURRENT_HEAD_LOCK",
@@ -40,7 +40,7 @@
       "function_id": "authority_resolution_index",
       "note": "Explicitly resolves current-head scope authority, supporting publication truth, and documentary compatibility mirrors.",
       "ref": "KT_PROD_CLEANROOM/governance/authority_resolution_index.json",
-      "tracking_state": "TRACKED_CLEAN"
+      "tracking_state": "TRACKED_DIRTY"
     },
     {
       "authority_status": "ACTIVE_GOVERNANCE_FIREWALL",
@@ -48,7 +48,7 @@
       "function_id": "historical_claim_firewall",
       "note": "Prevents historical bounded packets from silently uplifting current-head truth.",
       "ref": "KT_PROD_CLEANROOM/governance/historical_claim_firewall.json",
-      "tracking_state": "TRACKED_CLEAN"
+      "tracking_state": "TRACKED_DIRTY"
     },
     {
       "authority_status": "ACTIVE_GOVERNANCE_CONTRACT",
@@ -120,7 +120,7 @@
       "function_id": "organ_disposition",
       "note": "Authoritative organ disposition family retained for W1 extension.",
       "ref": "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_disposition_register.json",
-      "tracking_state": "TRACKED_CLEAN"
+      "tracking_state": "TRACKED_DIRTY"
     },
     {
       "authority_status": "ACTIVE_BLOCKER_DELTA_SUPPORT",

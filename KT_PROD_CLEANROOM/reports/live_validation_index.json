@@ -286,26 +286,48 @@
       "command": "python -m pytest -p pytest_cov -q KT_PROD_CLEANROOM/tests -q -ra --maxfail=100",
       "critical": true,
       "dirty_sensitive": true,
-      "observed": "current-worktree cleanroom suite passed",
+      "observed": "!!!!!!!!!!!!!!!!!!! Interrupted: 3 errors during collection !!!!!!!!!!!!!!!!!!!",
+      "output_tail": [
+        "    from tools.operator.reporting_integrity import verify_reporting_integrity",
+        "KT_PROD_CLEANROOM\\tools\\operator\\reporting_integrity.py:9: in <module>",
+        "    from tools.operator.authority_convergence_validate import (",
+        "E   ImportError: cannot import name 'TRUTH_PUBLICATION_STABILIZATION_REL' from 'tools.operator.authority_convergence_validate' (D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\tools\\operator\\authority_convergence_validate.py)",
+        "_________ ERROR collecting tests/operator/test_reporting_integrity.py _________",
+        "ImportError while importing test module 'D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\tests\\operator\\test_reporting_integrity.py'.",
+        "Hint: make sure your test modules/packages have valid Python names.",
+        "Traceback:",
+        "C:\\Users\\rober\\AppData\\Local\\Programs\\Python\\Python310\\lib\\importlib\\__init__.py:126: in import_module",
+        "    return _bootstrap._gcd_import(name[level:], package, level)",
+        "D:\\user\\rober\\OneDrive\\KingsTheorem_Archive\\KT_PROD_CLEANROOM\\tests\\operator\\test_reporting_integrity.py:7: in <module>",
+        "    ???",
+        "KT_PROD_CLEANROOM\\tools\\operator\\reporting_integrity.py:9: in <module>",
+        "    from tools.operator.authority_convergence_validate import (",
+        "E   ImportError: cannot import name 'TRUTH_PUBLICATION_STABILIZATION_REL' from 'tools.operator.authority_convergence_validate' (D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\tools\\operator\\authority_convergence_validate.py)",
+        "=========================== short test summary info ===========================",
+        "ERROR KT_PROD_CLEANROOM\\tests\\operator\\test_authority_convergence_closeout.py",
+        "ERROR KT_PROD_CLEANROOM\\tests\\operator\\test_gate_a_campaign_execute.py",
+        "ERROR KT_PROD_CLEANROOM\\tests\\operator\\test_reporting_integrity.py",
+        "!!!!!!!!!!!!!!!!!!! Interrupted: 3 errors during collection !!!!!!!!!!!!!!!!!!!"
+      ],
       "scope": "active_repo_validation",
-      "status": "PASS",
-      "summary": "current-worktree cleanroom suite passed"
+      "status": "FAIL",
+      "summary": "current-worktree cleanroom suite failed"
     },
     {
       "check_id": "operator_clean_clone_smoke",
       "command": "git clone <repo> <tmp> && python -m pytest -q KT_PROD_CLEANROOM/tests/fl3/test_hat_demo_guardrails.py KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py",
       "context": {
-        "clean_clone_head_sha": "54e7d1cbf225757a73955048b760c6eaa7cc1d42"
+        "clean_clone_head_sha": "947642fbdea7cffa19bd65da70d03d482d55826b"
       },
       "critical": true,
       "dirty_sensitive": false,
-      "observed": "6 passed in 16.85s",
+      "observed": "6 passed in 20.50s",
       "scope": "clean_clone_validation",
       "status": "PASS",
       "summary": "operator clean-clone smoke passed"
     }
   ],
-  "generated_utc": "2026-03-25T21:17:19Z",
+  "generated_utc": "2026-03-25T22:48:12Z",
   "schema_id": "kt.operator.live_validation_index.v1",
   "worktree": {
     "dirty_files": [
@@ -341,12 +363,11 @@
       "M KT_PROD_CLEANROOM/reports/kt_wave5_runtime_truth_surface.json",
       "M KT_PROD_CLEANROOM/reports/kt_wave5_state_core.json",
       "M KT_PROD_CLEANROOM/reports/kt_wave5_updated_surface_disposition_register.json",
-      "M KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json",
-      "M KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json"
+      "M KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json"
     ],
     "git_dirty": true,
     "head_relation": "HEAD_DIVERGED_FROM_ACTIVE_SUBJECT",
-    "head_sha": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+    "head_sha": "947642fbdea7cffa19bd65da70d03d482d55826b",
     "publication_carrier_delta_files": [],
     "publication_carrier_dirty": true,
     "publication_carrier_dirty_files": [
@@ -382,12 +403,11 @@
       "KT_PROD_CLEANROOM/reports/kt_wave5_runtime_truth_surface.json",
       "KT_PROD_CLEANROOM/reports/kt_wave5_state_core.json",
       "KT_PROD_CLEANROOM/reports/kt_wave5_updated_surface_disposition_register.json",
-      "KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json",
-      "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json"
+      "KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json"
     ],
     "publication_carrier_head_sha": "",
     "subject_dirty_files": [],
     "subject_git_dirty": false,
-    "validated_subject_head_sha": "54e7d1cbf225757a73955048b760c6eaa7cc1d42"
+    "validated_subject_head_sha": "947642fbdea7cffa19bd65da70d03d482d55826b"
   }
 }

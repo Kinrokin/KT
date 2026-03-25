@@ -291,7 +291,7 @@
     "smallest_pre_fix_blocked_payload_len": 372,
     "spine_dependency": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py parses candidate payloads only from context.envelope.input."
   },
-  "generated_utc": "2026-03-25T21:08:45Z",
+  "generated_utc": "2026-03-25T22:45:38Z",
   "minimal_fix": {
     "files_changed": [
       "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/schemas/runtime_context_schema.py"
@@ -304,9 +304,9 @@
   },
   "oversize_guard": {
     "error_class": "ContractViolationError",
-    "error_message": "Traceback (most recent call last):\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\tmp\\reenable_green_subject_20260325_2053\\KT_PROD_CLEANROOM\\04_PROD_TEMPLE_V2\\src\\core\\invariants_gate.py\", line 144, in _assert_schema_contract\n    validate_runtime_context(context)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\tmp\\reenable_green_subject_20260325_2053\\KT_PROD_CLEANROOM\\04_PROD_TEMPLE_V2\\src\\schemas\\runtime_context_schema.py\", line 102, in validate_runtime_context\n    raise SchemaValidationError(\"envelope.input exceeds max_input_bytes (fail-closed)\")\nschemas.base_schema.SchemaValidationError: envelope.input exceeds max_input_bytes (fail-closed)\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\rober\\AppData\\Local\\Programs\\Python\\Python310\\lib\\runpy.py\", line 196, in _run_module_as_main\n    return _run_code(code, main_globals, None,\n  File \"C:\\Users\\rober\\AppData\\Local\\Programs\\Python\\Python310\\lib\\runpy.py\", line 86, in _run_code\n    exec(code, run_globals)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\tmp\\reenable_green_subject_20260325_2053\\KT_PROD_CLEANROOM\\tools\\operator\\wave2c_spine_probe.py\", line 85, in <module>\n    raise SystemExit(main())\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\tmp\\reenable_green_subject_20260325_2053\\KT_PROD_CLEANROOM\\tools\\operator\\wave2c_spine_probe.py\", line 78, in main\n    result = run_probe(payload=payload, artifact_root=artifact_root)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\tmp\\reenable_green_subject_20260325_2053\\KT_PROD_CLEANROOM\\tools\\operator\\wave2c_spine_probe.py\", line 39, in run_probe\n    result = spine_run(context)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\tmp\\reenable_green_subject_20260325_2053\\KT_PROD_CLEANROOM\\04_PROD_TEMPLE_V2\\src\\core\\spine.py\", line 103, in run\n    InvariantsGate.assert_runtime_invariants(context)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\tmp\\reenable_green_subject_20260325_2053\\KT_PROD_CLEANROOM\\04_PROD_TEMPLE_V2\\src\\core\\invariants_gate.py\", line 130, in assert_runtime_invariants\n    InvariantsGate._assert_schema_contract(context)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\tmp\\reenable_green_subject_20260325_2053\\KT_PROD_CLEANROOM\\04_PROD_TEMPLE_V2\\src\\core\\invariants_gate.py\", line 148, in _assert_schema_contract\n    raise ContractViolationError(str(exc))\ncore.invariants_gate.ContractViolationError: envelope.input exceeds max_input_bytes (fail-closed)",
+    "error_message": "Traceback (most recent call last):\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\04_PROD_TEMPLE_V2\\src\\core\\invariants_gate.py\", line 144, in _assert_schema_contract\n    validate_runtime_context(context)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\04_PROD_TEMPLE_V2\\src\\schemas\\runtime_context_schema.py\", line 102, in validate_runtime_context\n    raise SchemaValidationError(\"envelope.input exceeds max_input_bytes (fail-closed)\")\nschemas.base_schema.SchemaValidationError: envelope.input exceeds max_input_bytes (fail-closed)\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\rober\\AppData\\Local\\Programs\\Python\\Python310\\lib\\runpy.py\", line 196, in _run_module_as_main\n    return _run_code(code, main_globals, None,\n  File \"C:\\Users\\rober\\AppData\\Local\\Programs\\Python\\Python310\\lib\\runpy.py\", line 86, in _run_code\n    exec(code, run_globals)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\tools\\operator\\wave2c_spine_probe.py\", line 85, in <module>\n    raise SystemExit(main())\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\tools\\operator\\wave2c_spine_probe.py\", line 78, in main\n    result = run_probe(payload=payload, artifact_root=artifact_root)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\tools\\operator\\wave2c_spine_probe.py\", line 39, in run_probe\n    result = spine_run(context)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\04_PROD_TEMPLE_V2\\src\\core\\spine.py\", line 103, in run\n    InvariantsGate.assert_runtime_invariants(context)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\04_PROD_TEMPLE_V2\\src\\core\\invariants_gate.py\", line 130, in assert_runtime_invariants\n    InvariantsGate._assert_schema_contract(context)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\04_PROD_TEMPLE_V2\\src\\core\\invariants_gate.py\", line 148, in _assert_schema_contract\n    raise ContractViolationError(str(exc))\ncore.invariants_gate.ContractViolationError: envelope.input exceeds max_input_bytes (fail-closed)",
     "expected_error_message": "envelope.input exceeds max_input_bytes (fail-closed)",
-    "failure_artifact_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/oversize_guard/failure_artifacts/ee8d551fc348a2c84d7e0f3569d891ff655e351e6c6b3abaa1eb68accb038c04.json",
+    "failure_artifact_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/oversize_guard/failure_artifacts/5f36adff28f54827193e8a5452044bd421a3a5ce67d0acc42771d97fd74fa87b.json",
     "input_ref": "KT_PROD_CLEANROOM/exports/c017_spine_carriage_remediation/oversize_guard/oversize_payload.json",
     "input_utf8_bytes": 65678,
     "max_input_bytes": 65536,
@@ -341,9 +341,9 @@
     "broad_current_head_external_runtime_capability_confirmed"
   ],
   "timing_ms": {
-    "end_ts": 1774472925916,
-    "latency_ms": 11050,
-    "start_ts": 1774472914866
+    "end_ts": 1774478738913,
+    "latency_ms": 33457,
+    "start_ts": 1774478705456
   },
   "wave3_unlock_assessment": {
     "c017_closed": true,
