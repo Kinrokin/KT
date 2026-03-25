@@ -29,7 +29,15 @@ def _normalized_text_sha256(text: str) -> str:
     return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
 
 
-def _seed_ws7_publication_repo(root: Path, *, compiled_head_commit: str) -> None:
+def _seed_ws7_publication_repo(
+    root: Path,
+    *,
+    compiled_head_commit: str,
+    truth_subject_commit: str = "",
+    truth_produced_at_commit: str = "",
+) -> None:
+    subject_commit = str(truth_subject_commit).strip() or compiled_head_commit
+    produced_commit = str(truth_produced_at_commit).strip() or compiled_head_commit
     pubkey_text = "-----BEGIN PUBLIC KEY-----\nTESTKEY\n-----END PUBLIC KEY-----\n"
     pubkey_sha = _normalized_text_sha256(pubkey_text)
     _write_text(root / "KT_PROD_CLEANROOM/governance/signers/kt_op1_cosign.pub", pubkey_text)
@@ -77,8 +85,8 @@ def _seed_ws7_publication_repo(root: Path, *, compiled_head_commit: str) -> None
     )
     subject = {
         "schema_id": "kt.authority.subject.v1",
-        "truth_subject_commit": compiled_head_commit,
-        "truth_produced_at_commit": compiled_head_commit,
+        "truth_subject_commit": subject_commit,
+        "truth_produced_at_commit": produced_commit,
         "law_surface_hashes": {"a": "b" * 64},
         "supersedes_subject_sha256": "",
         "evidence": [{"name": "proof", "ref": "x", "sha256": "c" * 64}],
@@ -164,3 +172,33 @@ def test_build_publication_attestation_outputs_fails_on_root_key_mismatch(tmp_pa
             compiled_head_commit=compiled_head_commit,
             generated_utc="2026-03-15T00:00:00Z",
         )
+
+
+def test_build_publication_attestation_outputs_supports_validated_subject_and_carrier_split(tmp_path: Path) -> None:
+    subject_commit = "c" * 40
+    carrier_commit = "d" * 40
+    _seed_ws7_publication_repo(
+        tmp_path,
+        compiled_head_commit=carrier_commit,
+        truth_subject_commit=subject_commit,
+        truth_produced_at_commit=carrier_commit,
+    )
+
+    _, _, _, sigstore_bundle, _, stabilization = build_publication_attestation_outputs(
+        root=tmp_path,
+        compiled_head_commit=carrier_commit,
+        generated_utc="2026-03-15T00:00:00Z",
+        truth_subject_commit=subject_commit,
+        truth_produced_at_commit=carrier_commit,
+        publication_carrier_head_sha=carrier_commit,
+        head_relation="PUBLICATION_CARRIER_OF_VALIDATED_SUBJECT",
+    )
+
+    assert sigstore_bundle["truth_subject_commit"] == subject_commit
+    assert sigstore_bundle["truth_produced_at_commit"] == carrier_commit
+    assert sigstore_bundle["publication_carrier_head_sha"] == carrier_commit
+    assert sigstore_bundle["head_relation"] == "PUBLICATION_CARRIER_OF_VALIDATED_SUBJECT"
+    assert stabilization["status"] == "PASS"
+    assert stabilization["truth_subject_commit"] == subject_commit
+    assert stabilization["truth_produced_at_commit"] == carrier_commit
+    assert stabilization["publication_carrier_head_sha"] == carrier_commit
