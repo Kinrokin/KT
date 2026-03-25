@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 from pathlib import Path
 from typing import Any, Dict, Iterable, List
@@ -50,8 +51,7 @@ def _normalize_git_status_path(raw: str) -> str:
     value = str(raw).strip()
     if not value:
         return ""
-    if len(value) > 3 and value[1] in {" ", "M", "A", "D", "R", "C", "U", "?"} and value[2] == " ":
-        value = value[3:]
+    value = re.sub(r"^(?:[ MADRCU?!]{1,2})\s+", "", value, count=1)
     if " -> " in value:
         value = value.split(" -> ", 1)[1]
     return value.replace("\\", "/").strip()

@@ -4,7 +4,11 @@ import json
 import subprocess
 from pathlib import Path
 
-from tools.operator.truth_authority import build_settled_truth_source_receipt, resolve_truth_head_context
+from tools.operator.truth_authority import (
+    build_settled_truth_source_receipt,
+    resolve_truth_head_context,
+    split_publication_carrier_dirty_paths,
+)
 from tools.operator.truth_engine import build_truth_receipts
 
 
@@ -279,3 +283,33 @@ def test_resolve_truth_head_context_preserves_prior_subject_for_carrier_only_com
     assert context["validated_subject_head_sha"] == subject_head
     assert context["publication_carrier_head_sha"] == carrier_head
     assert context["head_relation"] == "PUBLICATION_CARRIER_OF_VALIDATED_SUBJECT"
+
+
+def test_split_publication_carrier_dirty_paths_normalizes_short_status_prefixes(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    _write_json(
+        root / "KT_PROD_CLEANROOM" / "governance" / "truth_publication_cleanliness_rules.json",
+        {
+            "schema_id": "kt.governance.truth_publication_cleanliness_rules.v1",
+            "allowed_publication_carrier_surfaces": [
+                "KT_PROD_CLEANROOM/reports/**",
+                "KT_PROD_CLEANROOM/exports/_truth/current/**",
+            ],
+        },
+    )
+
+    split = split_publication_carrier_dirty_paths(
+        root=root,
+        dirty_lines=[
+            "M KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+            " M KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+        ],
+    )
+
+    assert split["subject_git_dirty"] is False
+    assert split["publication_carrier_only_dirty"] is True
+    assert split["subject_dirty_files"] == []
+    assert split["publication_carrier_dirty_files"] == [
+        "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+        "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+    ]
