@@ -6,10 +6,10 @@
     "truthful posture sealing"
   ],
   "blocking_groups": [
-    "DIRTY_WORKTREE"
+    "GREEN_NOT_REEARNED"
   ],
   "branch_ref": "main",
-  "current_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+  "current_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
   "evidence_plane_targets_checked": [
     "delivery/delivery_manifest.json",
     "evidence/constitutional_snapshot.json",
@@ -19,23 +19,26 @@
     "evidence/secret_scan_report.json",
     "reports/bindingloop_check.json"
   ],
-  "generated_utc": "2026-03-24T23:04:35Z",
+  "generated_utc": "2026-03-25T19:04:03Z",
+  "head_relation": "HEAD_DIVERGED_FROM_ACTIVE_SUBJECT",
   "notes": [
-    "Posture synchronized from live validation state CANONICAL_VALIDATED_DIRTY_WORKTREE.",
+    "Posture synchronized from live validation state CANONICAL_READY_FOR_REEARNED_GREEN.",
     "Only truth-engine-aligned receipts remain active truth surfaces."
   ],
   "overall_verdict": "PASS",
-  "posture_state": "CANONICAL_VALIDATED_DIRTY_WORKTREE",
+  "posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+  "publication_carrier_head_sha": "",
+  "publisher_hygiene_status": "DIRTY_DOCUMENTARY_CARRIER_ONLY",
   "real_path_targets_checked": [
     "program.certify.canonical_hmac",
     "program.hat_demo",
     "program.red_assault.serious_v1",
     "safe-run:program.certify.canonical_hmac"
   ],
-  "release_decision": "HOLD_DIRTY_WORKTREE",
-  "repo_hygiene_status": "HOLD",
+  "release_decision": "HOLD_CANONICAL_READY_FOR_REEARNED_GREEN",
+  "repo_hygiene_status": "PASS",
   "schema_id": "kt.operator.runtime_closure_audit.v3",
   "status": "PASS",
-  "validated_head_sha": "608c93f3a9a4e1c9fb897b2071e62c611c3b398d",
+  "validated_head_sha": "b120b6283b096f27162632d629c8e12e5525e029",
   "validator_substance_checked": true
 }

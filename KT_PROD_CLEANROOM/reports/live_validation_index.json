@@ -286,26 +286,48 @@
       "command": "python -m pytest -p pytest_cov -q KT_PROD_CLEANROOM/tests -q -ra --maxfail=100",
       "critical": true,
       "dirty_sensitive": true,
-      "observed": "current-worktree cleanroom suite passed",
+      "observed": "FAILED KT_PROD_CLEANROOM\\tests\\operator\\test_titanium_substrate.py::test_hashpin_reports_are_head_stamped_and_candidate_scoped",
+      "output_tail": [
+        "KT_PROD_CLEANROOM\\tools\\verification\\fl4_seal_verify.py                                        206     84    59%   21-22, 24, 35, 40, 45, 49, 53-54, 56, 71, 75, 81, 84, 112, 114, 117, 119, 125, 134, 136, 142, 144, 146, 148, 157, 164, 167, 171, 173, 175, 180-207, 215, 217, 219, 221, 224, 226, 246-249, 253-265, 269-272",
+        "KT_PROD_CLEANROOM\\tools\\verification\\generate_audit_eval_report.py                             209     45    78%   31-32, 34, 61, 63, 65, 113, 119, 125, 127, 130, 134, 144, 147, 149, 162, 165, 167, 174, 177, 179, 182, 192, 195, 198, 204, 208, 212, 216, 235, 254, 307-324, 328-331",
+        "KT_PROD_CLEANROOM\\tools\\verification\\growth_e2e_gate.py                                         29     19    34%   14-49, 53-75, 79",
+        "KT_PROD_CLEANROOM\\tools\\verification\\io_guard.py                                               159     36    77%   38-39, 44, 46, 119, 124-134, 140, 149, 151, 165, 171, 215-239",
+        "KT_PROD_CLEANROOM\\tools\\verification\\mk_min_organ_contract.py                                   33      4    88%   89-92",
+        "KT_PROD_CLEANROOM\\tools\\verification\\phase1c_execute.py                                        233     39    83%   28, 39, 60, 99-118, 198-200, 246, 380-381, 383-384, 449, 451, 471, 491, 501, 508, 538-541, 545-548, 552-555",
+        "KT_PROD_CLEANROOM\\tools\\verification\\phase2_execute.py                                         185     26    86%   23, 35, 95-99, 117, 124, 131, 133, 138, 149, 151, 153, 177, 181, 184, 205, 210, 214, 275, 278, 281, 285, 328",
+        "KT_PROD_CLEANROOM\\tools\\verification\\preflight_fl4.py                                          427    330    23%   32, 36, 40-46, 51-61, 65-68, 72-77, 81-83, 87-91, 147, 151, 158, 181, 185, 187, 192, 203, 206-207, 209, 224, 241-242, 250-274, 278-321, 325-342, 346-353, 357-371, 375-378, 382-976, 980",
+        "KT_PROD_CLEANROOM\\tools\\verification\\replay_script_generator.py                                 57      3    95%   23, 38, 80",
+        "KT_PROD_CLEANROOM\\tools\\verification\\run_discovery_battery.py                                  204     64    69%   68, 78-103, 126, 128, 132, 175, 178, 194, 199, 210, 215, 218, 223, 225, 248, 250, 252, 256, 259, 303-345, 349",
+        "KT_PROD_CLEANROOM\\tools\\verification\\run_protocol_generator.py                                 175     31    82%   25, 29, 33, 40, 49, 53, 57, 66, 123, 141, 146, 166, 182-183, 185, 191, 193, 198-201, 205-213, 217",
+        "KT_PROD_CLEANROOM\\tools\\verification\\seal_mode_test_roots.py                                    17      1    94%   15",
+        "KT_PROD_CLEANROOM\\tools\\verification\\strict_json.py                                             17      0   100%",
+        "KT_PROD_CLEANROOM\\tools\\verification\\watcher_spc_validators.py                                 131     45    66%   15-16, 20-31, 44, 53-58, 86, 91, 95, 99, 101, 104, 109, 112, 118, 120, 122, 124, 128-129, 131, 138-139, 148, 151, 153, 161, 194, 196-197",
+        "KT_PROD_CLEANROOM\\tools\\verification\\worm_write.py                                              31     10    68%   16-18, 39-43, 55-56",
+        "--------------------------------------------------------------------------------------------------------------------------",
+        "TOTAL                                                                                        68225  28049    59%",
+        "=========================== short test summary info ===========================",
+        "SKIPPED [1] KT_PROD_CLEANROOM\\tests\\operator\\test_canonical_tree_execute.py:62: WS2 receipt determinism requires a clean worktree; current repo is already dirty outside this validator's write-set.",
+        "FAILED KT_PROD_CLEANROOM\\tests\\operator\\test_titanium_substrate.py::test_hashpin_reports_are_head_stamped_and_candidate_scoped"
+      ],
       "scope": "active_repo_validation",
-      "status": "PASS",
-      "summary": "current-worktree cleanroom suite passed"
+      "status": "FAIL",
+      "summary": "current-worktree cleanroom suite failed"
     },
     {
       "check_id": "operator_clean_clone_smoke",
       "command": "git clone <repo> <tmp> && python -m pytest -q KT_PROD_CLEANROOM/tests/fl3/test_hat_demo_guardrails.py KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py",
       "context": {
-        "clean_clone_head_sha": "608c93f3a9a4e1c9fb897b2071e62c611c3b398d"
+        "clean_clone_head_sha": "b120b6283b096f27162632d629c8e12e5525e029"
       },
       "critical": true,
       "dirty_sensitive": false,
-      "observed": "6 passed in 17.27s",
+      "observed": "6 passed in 17.15s",
       "scope": "clean_clone_validation",
       "status": "PASS",
       "summary": "operator clean-clone smoke passed"
     }
   ],
-  "generated_utc": "2026-03-24T23:04:35Z",
+  "generated_utc": "2026-03-25T19:04:03Z",
   "schema_id": "kt.operator.live_validation_index.v1",
   "worktree": {
     "dirty_files": [
@@ -341,9 +363,53 @@
       "M KT_PROD_CLEANROOM/reports/kt_wave5_runtime_truth_surface.json",
       "M KT_PROD_CLEANROOM/reports/kt_wave5_state_core.json",
       "M KT_PROD_CLEANROOM/reports/kt_wave5_updated_surface_disposition_register.json",
-      "M KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json"
+      "M KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json",
+      "M KT_PROD_CLEANROOM/reports/live_validation_index.json"
     ],
     "git_dirty": true,
-    "head_sha": "608c93f3a9a4e1c9fb897b2071e62c611c3b398d"
+    "head_relation": "HEAD_DIVERGED_FROM_ACTIVE_SUBJECT",
+    "head_sha": "b120b6283b096f27162632d629c8e12e5525e029",
+    "publication_carrier_delta_files": [],
+    "publication_carrier_dirty": true,
+    "publication_carrier_dirty_files": [
+      "KT_PROD_CLEANROOM/reports/kt_c017_spine_carriage_remediation_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_c017_spine_carriage_telemetry.jsonl",
+      "KT_PROD_CLEANROOM/reports/kt_wave0_5_interface_freeze_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave0_5_package_import_canon_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave0_5_toolchain_runtime_firewall_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave1_runtime_observability.jsonl",
+      "KT_PROD_CLEANROOM/reports/kt_wave1_toolchain_observability.jsonl",
+      "KT_PROD_CLEANROOM/reports/kt_wave1_trust_stack_surface_matrix.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave2a_provider_activation_receipts.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave2a_provider_contract_test_suite.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave2a_runtime_telemetry.jsonl",
+      "KT_PROD_CLEANROOM/reports/kt_wave2b_router_shadow_telemetry.jsonl",
+      "KT_PROD_CLEANROOM/reports/kt_wave2c_independent_organ_test_suites.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_disposition_register.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_telemetry.jsonl",
+      "KT_PROD_CLEANROOM/reports/kt_wave4_challenge_dispositions.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave4_challenge_protocol.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave4_chaos_and_external_challenge_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave4_chaos_manifest.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave4_chaos_telemetry.jsonl",
+      "KT_PROD_CLEANROOM/reports/kt_wave4_formal_invariant_artifacts.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave4_public_challenge_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_blocker_matrix.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_final_claim_class_matrix.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_final_readjudication_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_final_tier_ruling.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_product_truth_surface.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_readjudication_telemetry.jsonl",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_release_truth_surface.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_runtime_truth_surface.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_state_core.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_updated_surface_disposition_register.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json",
+      "KT_PROD_CLEANROOM/reports/live_validation_index.json"
+    ],
+    "publication_carrier_head_sha": "",
+    "subject_dirty_files": [],
+    "subject_git_dirty": false,
+    "validated_subject_head_sha": "b120b6283b096f27162632d629c8e12e5525e029"
   }
 }
