@@ -107,6 +107,18 @@ def _seed_ws9_surfaces(tmp_path: Path, *, head: str) -> None:
             "truth_subject_commit": head,
         },
     )
+    _write_json(
+        reports / "truth_publication_stabilization_receipt.json",
+        {
+            "schema_id": "kt.operator.truth_publication_stabilization_receipt.v1",
+            "status": "PASS",
+            "authority_mode": "SETTLED_AUTHORITATIVE",
+            "posture_state": "TRUTHFUL_GREEN",
+            "board_transition_ready": True,
+            "truth_subject_commit": head,
+            "truth_produced_at_commit": head,
+        },
+    )
     _write_json(reports / "documentary_truth_validation_receipt.json", {"schema_id": "kt.operator.documentary_truth_validation_receipt.v1", "status": "PASS"})
     _write_json(
         reports / "public_verifier_manifest.json",

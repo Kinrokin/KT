@@ -42,6 +42,9 @@ DOCUMENTARY_VALIDATION_REL = "KT_PROD_CLEANROOM/reports/documentary_truth_valida
 PUBLIC_VERIFIER_MANIFEST_REL = "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
 LEGACY_TRUTH_PUBLICATION_STABILIZATION_REL = "KT_PROD_CLEANROOM/reports/kt_truth_publication_stabilization_receipt.json"
 TRACKED_TRUTH_PUBLICATION_STABILIZATION_REL = "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json"
+# Backward-compatible alias for older reporting surfaces that still target the
+# published-head stabilization receipt specifically.
+TRUTH_PUBLICATION_STABILIZATION_REL = LEGACY_TRUTH_PUBLICATION_STABILIZATION_REL
 
 
 def _load_json(path: Path) -> Dict[str, Any]:
