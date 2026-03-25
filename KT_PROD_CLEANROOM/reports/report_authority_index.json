@@ -1,14 +1,14 @@
 {
-  "active_current_head_family": "WAVE5_CURRENT_HEAD_WORKTREE_FAMILY",
-  "claim_boundary": "This family is the active current-head workspace family for canonical posture inside the sealed W0 scope. It is not automatically public-release admissible while the broader worktree remains dirty and the transparency-verified subject commit differs from HEAD.",
-  "current_repo_head": "c3930521e2c932b811a152a406e83790a6cabdd9",
+  "active_current_head_family": "LEGACY_RELEASE_FAMILY",
+  "claim_boundary": "The legacy sealed release family remains active because no current-head worktree family is validated at HEAD.",
+  "current_repo_head": "0f8e1aa89f8b7094360c94e64a25cef728c6b2bd",
   "current_worktree_state": {
     "dirty": true,
-    "entry_count": 58,
-    "modified_or_staged_count": 58,
+    "entry_count": 8,
+    "modified_or_staged_count": 8,
     "untracked_count": 0
   },
-  "generated_utc": "2026-03-24T19:28:30Z",
+  "generated_utc": "2026-03-25T22:22:25Z",
   "rows": [
     {
       "authority_status": "ACTIVE_CURRENT_HEAD_LOCK",
@@ -40,7 +40,7 @@
       "function_id": "authority_resolution_index",
       "note": "Explicitly resolves current-head scope authority, supporting publication truth, and documentary compatibility mirrors.",
       "ref": "KT_PROD_CLEANROOM/governance/authority_resolution_index.json",
-      "tracking_state": "TRACKED_DIRTY"
+      "tracking_state": "TRACKED_CLEAN"
     },
     {
       "authority_status": "ACTIVE_GOVERNANCE_FIREWALL",
@@ -48,7 +48,7 @@
       "function_id": "historical_claim_firewall",
       "note": "Prevents historical bounded packets from silently uplifting current-head truth.",
       "ref": "KT_PROD_CLEANROOM/governance/historical_claim_firewall.json",
-      "tracking_state": "TRACKED_DIRTY"
+      "tracking_state": "TRACKED_CLEAN"
     },
     {
       "authority_status": "ACTIVE_GOVERNANCE_CONTRACT",
@@ -75,12 +75,12 @@
       "tracking_state": "TRACKED_CLEAN"
     },
     {
-      "authority_status": "ACTIVE_CURRENT_HEAD_WORKTREE_FAMILY",
+      "authority_status": "ACTIVE_SEALED_RELEASE_FAMILY",
       "claim_scope": "CURRENT_HEAD_BLOCKER_MAP",
       "function_id": "blocker_matrix",
-      "note": "Selected active blocker family with 1 open blockers: C006_EXTERNALITY_CEILING_REMAINS_BOUNDED.",
-      "ref": "KT_PROD_CLEANROOM/reports/kt_wave5_blocker_matrix.json",
-      "tracking_state": "TRACKED_DIRTY"
+      "note": "Selected active blocker family with 5 open blockers: current_head_external_capability_not_confirmed, release_readiness_not_proven, release_ceremony_not_executed, release_activation_not_executed, repo_root_import_fragility_visible_and_unfixed.",
+      "ref": "KT_PROD_CLEANROOM/reports/kt_final_blocker_matrix.json",
+      "tracking_state": "TRACKED_CLEAN"
     },
     {
       "authority_status": "ACTIVE_CURRENT_HEAD_SUPPORT_REGISTER",
@@ -99,20 +99,20 @@
       "tracking_state": "TRACKED_CLEAN"
     },
     {
-      "authority_status": "ACTIVE_CURRENT_HEAD_WORKTREE_FAMILY",
+      "authority_status": "ACTIVE_SEALED_RELEASE_FAMILY",
       "claim_scope": "CURRENT_HEAD_CLAIM_CEILING",
       "function_id": "claim_ceiling",
       "note": "Active claim ceiling family for current-head posture.",
-      "ref": "KT_PROD_CLEANROOM/reports/kt_wave5_final_tier_ruling.json",
-      "tracking_state": "TRACKED_DIRTY"
+      "ref": "KT_PROD_CLEANROOM/reports/kt_final_claim_ceiling_receipt.json",
+      "tracking_state": "TRACKED_CLEAN"
     },
     {
-      "authority_status": "ACTIVE_CURRENT_HEAD_WORKTREE_FAMILY",
+      "authority_status": "ACTIVE_SEALED_RELEASE_FAMILY",
       "claim_scope": "CURRENT_HEAD_READJUDICATION",
       "function_id": "readjudication",
       "note": "Active readjudication family for current-head posture.",
-      "ref": "KT_PROD_CLEANROOM/reports/kt_wave5_final_readjudication_receipt.json",
-      "tracking_state": "TRACKED_DIRTY"
+      "ref": "KT_PROD_CLEANROOM/reports/kt_final_current_head_readjudication_receipt.json",
+      "tracking_state": "TRACKED_CLEAN"
     },
     {
       "authority_status": "ACTIVE_CURRENT_HEAD_SUPPORTING_REGISTER",
@@ -120,7 +120,7 @@
       "function_id": "organ_disposition",
       "note": "Authoritative organ disposition family retained for W1 extension.",
       "ref": "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_disposition_register.json",
-      "tracking_state": "TRACKED_DIRTY"
+      "tracking_state": "TRACKED_CLEAN"
     },
     {
       "authority_status": "ACTIVE_BLOCKER_DELTA_SUPPORT",

@@ -1,10 +1,14 @@
 {
   "blocker_delta": {
-    "active_blocker_family": "WAVE5_CURRENT_HEAD_WORKTREE_FAMILY",
-    "active_blocker_matrix_ref": "KT_PROD_CLEANROOM/reports/kt_wave5_blocker_matrix.json",
-    "open_blocker_count": 1,
+    "active_blocker_family": "LEGACY_RELEASE_FAMILY",
+    "active_blocker_matrix_ref": "KT_PROD_CLEANROOM/reports/kt_final_blocker_matrix.json",
+    "open_blocker_count": 5,
     "open_blocker_ids": [
-      "C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"
+      "current_head_external_capability_not_confirmed",
+      "release_readiness_not_proven",
+      "release_ceremony_not_executed",
+      "release_activation_not_executed",
+      "repo_root_import_fragility_visible_and_unfixed"
     ]
   },
   "canonical_outputs": [
@@ -17,7 +21,7 @@
     "KT_PROD_CLEANROOM/reports/omega_gate_receipt.json"
   ],
   "claim_boundary_delta": "Current-head blocker and claim-ceiling selection is now explicit, typed, and sealed to a W0 scope.",
-  "generated_utc": "2026-03-24T19:28:30Z",
+  "generated_utc": "2026-03-25T22:22:26Z",
   "schema_id": "kt.operator.canonical_delta_w0.v1",
   "status": "PASS",
   "stronger_claims_not_made": [

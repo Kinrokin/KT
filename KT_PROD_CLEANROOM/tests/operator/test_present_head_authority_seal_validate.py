@@ -11,9 +11,9 @@ from tools.operator.titanium_common import repo_root
 
 def test_present_head_authority_seal_surfaces_compile() -> None:
     root = repo_root()
-    authority_resolution = build_authority_resolution_index(root=root)
-    historical_firewall = build_historical_claim_firewall(root=root)
     truth_lock = build_current_head_truth_lock(root=root)
+    authority_resolution = build_authority_resolution_index(root=root, truth_lock=truth_lock)
+    historical_firewall = build_historical_claim_firewall(root=root)
 
     authority_resolution_receipt = build_authority_resolution_receipt(root=root, authority_resolution_index=authority_resolution)
     historical_firewall_receipt = build_historical_claim_firewall_receipt(root=root, historical_claim_firewall=historical_firewall)
@@ -30,5 +30,6 @@ def test_present_head_authority_seal_surfaces_compile() -> None:
     assert historical_firewall_receipt["status"] == "PASS"
     assert seal_receipt["status"] == "PASS"
     assert authority_resolution_receipt["documentary_compatibility_pointer_documentary_only"] is True
+    assert truth_lock["active_family_id"] == "LEGACY_RELEASE_FAMILY"
     assert truth_lock["authority_resolution_index_ref"].endswith("authority_resolution_index.json")
     assert truth_lock["historical_claim_firewall_ref"].endswith("historical_claim_firewall.json")

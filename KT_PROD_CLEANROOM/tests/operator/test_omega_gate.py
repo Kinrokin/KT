@@ -13,10 +13,13 @@ from tools.operator.titanium_common import repo_root
 def test_current_head_truth_lock_builds_against_live_repo() -> None:
     lock = build_current_head_truth_lock(root=repo_root())
     assert lock["status"] == "PASS"
-    assert lock["active_blocker_matrix_ref"].endswith("kt_wave5_blocker_matrix.json")
-    assert "C006_EXTERNALITY_CEILING_REMAINS_BOUNDED" in lock["active_open_blocker_ids"]
+    assert lock["active_family_id"] == "LEGACY_RELEASE_FAMILY"
+    assert lock["active_family_class"] == "ACTIVE_SEALED_RELEASE_FAMILY"
+    assert lock["active_blocker_matrix_ref"].endswith("kt_final_blocker_matrix.json")
+    assert "release_readiness_not_proven" in lock["active_open_blocker_ids"]
     assert lock["active_deferred_blocker_ids"] == ["C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"]
     assert lock["deferred_blocker_alignment_status"] == "PASS"
+    assert lock["authority_convergence_claim_boundary"] == "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY"
     assert lock["claim_ceiling_enforcements"]["externality_class_max"] == "E1_SAME_HOST_DETACHED_REPLAY"
     assert lock["claim_ceiling_enforcements"]["comparative_widening"] == "FORBIDDEN"
     assert lock["claim_ceiling_enforcements"]["commercial_widening"] == "FORBIDDEN"
@@ -31,7 +34,7 @@ def test_report_authority_index_has_one_active_blocker_family() -> None:
     index = build_report_authority_index(root=repo_root())
     blocker_rows = [row for row in index["rows"] if row["function_id"] == "blocker_matrix"]
     assert len(blocker_rows) == 1
-    assert blocker_rows[0]["authority_status"] == "ACTIVE_CURRENT_HEAD_WORKTREE_FAMILY"
+    assert blocker_rows[0]["authority_status"] == "ACTIVE_SEALED_RELEASE_FAMILY"
     deferred_rows = [row for row in index["rows"] if row["function_id"] == "deferred_blocker_register"]
     assert len(deferred_rows) == 1
     assert deferred_rows[0]["authority_status"] == "ACTIVE_CURRENT_HEAD_SUPPORT_REGISTER"
@@ -41,7 +44,7 @@ def test_omega_gate_receipt_and_supersession_map_compile() -> None:
     gate = build_omega_gate_receipt(root=repo_root())
     supersession = build_authority_supersession_map(root=repo_root())
     assert gate["status"] == "PASS"
-    assert gate["active_blocker_family"] == "WAVE5_CURRENT_HEAD_WORKTREE_FAMILY"
+    assert gate["active_blocker_family"] == "LEGACY_RELEASE_FAMILY"
     assert gate["authority_resolution_index_ref"].endswith("authority_resolution_index.json")
     assert gate["historical_claim_firewall_ref"].endswith("historical_claim_firewall.json")
     assert supersession["status"] == "PASS"

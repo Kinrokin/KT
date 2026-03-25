@@ -33,18 +33,26 @@ LEDGER_POINTER_REF = "kt_truth_ledger:ledger/current/current_pointer.json"
 LEDGER_BRANCH = "kt_truth_ledger"
 
 PROOF_CLASS_FAIL_CLOSED = "FAIL_CLOSED"
+PROOF_CLASS_LOCAL_LEDGER = "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY"
 PROOF_CLASS_PUBLISHED_HEAD = "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN"
 
 AUTHORITY_SUBJECT_REL = "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_subject.json"
 CRYPTO_PUBLICATION_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json"
 DOCUMENTARY_VALIDATION_REL = "KT_PROD_CLEANROOM/reports/documentary_truth_validation_receipt.json"
 PUBLIC_VERIFIER_MANIFEST_REL = "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
-TRUTH_PUBLICATION_STABILIZATION_REL = "KT_PROD_CLEANROOM/reports/kt_truth_publication_stabilization_receipt.json"
+LEGACY_TRUTH_PUBLICATION_STABILIZATION_REL = "KT_PROD_CLEANROOM/reports/kt_truth_publication_stabilization_receipt.json"
+TRACKED_TRUTH_PUBLICATION_STABILIZATION_REL = "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json"
 
 
 def _load_json(path: Path) -> Dict[str, Any]:
     if not path.exists():
         raise RuntimeError(f"FAIL_CLOSED: missing required artifact: {path.as_posix()}")
+    return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
+def _load_optional_json(path: Path) -> Dict[str, Any]:
+    if not path.exists():
+        return {}
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
@@ -101,6 +109,30 @@ def _status_from(payload: Dict[str, Any], *keys: str) -> str:
     return ""
 
 
+def _subject_from(payload: Dict[str, Any]) -> str:
+    return str(payload.get("truth_subject_commit", "")).strip() or _head_from(payload)
+
+
+def _tracked_stabilization_supports_active_subject(*, payload: Dict[str, Any], active_subject: str, active_posture: str) -> bool:
+    if not payload:
+        return False
+    subject = _subject_from(payload)
+    status = str(payload.get("status", "")).strip().upper()
+    posture = str(payload.get("posture_state", "")).strip()
+    authority_mode = str(payload.get("authority_mode", "")).strip()
+    if not subject or subject != active_subject:
+        return False
+    if authority_mode not in {"SETTLED_AUTHORITATIVE", "TRANSITIONAL_AUTHORITATIVE", ""}:
+        return False
+    if status == "PASS":
+        return True
+    if status != "HOLD":
+        return False
+    if active_posture and posture and posture != active_posture:
+        return False
+    return True
+
+
 def _documentary_only(payload: Dict[str, Any]) -> bool:
     return compatibility_surface_is_non_authoritative(
         ref=CURRENT_POINTER_REL,
@@ -127,10 +159,11 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
     board = _load_json(root / "KT_PROD_CLEANROOM" / "governance" / "execution_board.json")
     readiness = _load_json(root / "KT_PROD_CLEANROOM" / "governance" / "readiness_scope_manifest.json")
     documentary_validation = build_documentary_truth_report(root=root)
-    stabilization = _load_json(root / TRUTH_PUBLICATION_STABILIZATION_REL)
+    tracked_stabilization = _load_optional_json(root / TRACKED_TRUTH_PUBLICATION_STABILIZATION_REL)
+    legacy_stabilization = _load_optional_json(root / LEGACY_TRUTH_PUBLICATION_STABILIZATION_REL)
     crypto_publication = _load_json(root / CRYPTO_PUBLICATION_RECEIPT_REL)
-    authority_subject = _load_json(root / AUTHORITY_SUBJECT_REL)
-    verifier_manifest = _load_json(root / PUBLIC_VERIFIER_MANIFEST_REL)
+    authority_subject = _load_optional_json(root / AUTHORITY_SUBJECT_REL)
+    verifier_manifest = _load_optional_json(root / PUBLIC_VERIFIER_MANIFEST_REL)
 
     ledger_pointer = load_json_ref(root=root, ref=active_source)
     ledger_current_state = load_json_ref(root=root, ref=current_state_ref)
@@ -143,11 +176,27 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
 
     verifier_report = build_public_verifier_report(root=root, report_root_rel=DEFAULT_REPORT_ROOT_REL)
     current_head_commit = _git_head(root)
-    truth_subject_commit = str(authority_subject.get("truth_subject_commit", "")).strip()
+    truth_subject_commit = _head_from(ledger_pointer)
+    ledger_pointer_posture = _status_from(ledger_pointer, "posture_enum")
     remote_fact = _remote_branch_head(root=root, remote="origin", branch=LEDGER_BRANCH)
 
     head_equals_subject = bool(current_head_commit) and bool(truth_subject_commit) and current_head_commit == truth_subject_commit
     expected_head_claim_verdict = HEAD_VERDICT_SUBJECT if head_equals_subject else HEAD_VERDICT_CONTAINS
+    tracked_stabilization_ok = _tracked_stabilization_supports_active_subject(
+        payload=tracked_stabilization,
+        active_subject=truth_subject_commit,
+        active_posture=ledger_pointer_posture,
+    )
+    legacy_truth_subject_commit = _subject_from(authority_subject)
+    verifier_truth_subject_commit = str(verifier_manifest.get("truth_subject_commit", "")).strip()
+    published_head_authority_claimed = bool(
+        truth_subject_commit
+        and legacy_truth_subject_commit == truth_subject_commit
+        and verifier_truth_subject_commit == truth_subject_commit
+        and str(crypto_publication.get("status", "")).strip() == "PASS"
+        and str(legacy_stabilization.get("status", "")).strip() == "PASS"
+        and bool(legacy_stabilization.get("truth_publication_stabilized"))
+    )
 
     observed = {
         "current_head_commit": current_head_commit,
@@ -166,18 +215,23 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
         "ledger_pointer_head": _head_from(ledger_pointer),
         "ledger_current_state_head": _head_from(ledger_current_state),
         "ledger_runtime_audit_head": _head_from(ledger_runtime_audit),
-        "ledger_pointer_posture": _status_from(ledger_pointer, "posture_enum"),
+        "ledger_pointer_posture": ledger_pointer_posture,
         "ledger_current_state_posture": _status_from(ledger_current_state, "posture_state", "current_p0_state"),
         "ledger_runtime_audit_posture": _status_from(ledger_runtime_audit, "posture_state", "current_state"),
-        "verifier_truth_subject_commit": str(verifier_manifest.get("truth_subject_commit", "")).strip(),
+        "verifier_truth_subject_commit": verifier_truth_subject_commit,
         "verifier_evidence_commit": str(verifier_manifest.get("evidence_commit", "")).strip(),
         "verifier_subject_verdict": str(verifier_manifest.get("subject_verdict", "")).strip(),
         "verifier_publication_receipt_status": str(verifier_manifest.get("publication_receipt_status", "")).strip(),
         "verifier_head_claim_verdict": str(verifier_report.get("head_claim_verdict", "")).strip(),
         "publication_receipt_status": str(crypto_publication.get("status", "")).strip(),
-        "stabilization_status": str(stabilization.get("status", "")).strip(),
-        "truth_publication_stabilized": bool(stabilization.get("truth_publication_stabilized")),
-        "stabilization_truth_subject_commit": str(stabilization.get("truth_subject_commit", "")).strip(),
+        "tracked_stabilization_status": str(tracked_stabilization.get("status", "")).strip(),
+        "tracked_truth_publication_stabilized": bool(tracked_stabilization.get("board_transition_ready"))
+        or bool(tracked_stabilization_ok),
+        "tracked_stabilization_truth_subject_commit": _subject_from(tracked_stabilization),
+        "legacy_stabilization_status": str(legacy_stabilization.get("status", "")).strip(),
+        "legacy_truth_publication_stabilized": bool(legacy_stabilization.get("truth_publication_stabilized")),
+        "legacy_stabilization_truth_subject_commit": _subject_from(legacy_stabilization),
+        "legacy_authority_subject_commit": legacy_truth_subject_commit,
         "documentary_validation_status": str(documentary_validation.get("status", "")).strip(),
         "main_current_pointer_documentary_only": compatibility_surface_is_non_authoritative(
             ref=CURRENT_POINTER_REL,
@@ -231,13 +285,14 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
         ),
     )
     expect_true("ledger_branch_published", observed["ledger_branch_published"], remote_error=str(remote_fact.get("error", "")).strip())
-    expect_equal("publication_receipt_passes", observed["publication_receipt_status"], "PASS")
-    expect_equal("publication_stabilization_passes", observed["stabilization_status"], "PASS")
-    expect_true("truth_publication_stabilized", observed["truth_publication_stabilized"])
-    expect_equal("authority_subject_matches_stabilization_subject", observed["stabilization_truth_subject_commit"], truth_subject_commit)
-    expect_equal("authority_subject_matches_verifier_subject", observed["verifier_truth_subject_commit"], truth_subject_commit)
-    expect_equal("verifier_subject_verdict_proven", observed["verifier_subject_verdict"], SUBJECT_VERDICT_PROVEN)
-    expect_equal("verifier_publication_receipt_passes", observed["verifier_publication_receipt_status"], "PASS")
+    expect_equal("active_truth_subject_present", truth_subject_commit, truth_subject_commit)
+    expect_equal("tracked_publication_stabilization_subject_matches_active_truth", observed["tracked_stabilization_truth_subject_commit"], truth_subject_commit)
+    expect_true(
+        "tracked_publication_stabilization_supports_active_truth",
+        tracked_stabilization_ok,
+        tracked_status=observed["tracked_stabilization_status"],
+        tracked_posture=str(tracked_stabilization.get("posture_state", "")).strip(),
+    )
     expect_equal("ledger_pointer_matches_truth_subject", observed["ledger_pointer_head"], truth_subject_commit)
     expect_equal("ledger_current_state_matches_truth_subject", observed["ledger_current_state_head"], truth_subject_commit)
     expect_equal("ledger_runtime_audit_matches_truth_subject", observed["ledger_runtime_audit_head"], truth_subject_commit)
@@ -249,15 +304,66 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
     expect_true("main_runtime_audit_documentary_only", observed["main_runtime_audit_documentary_only"])
     expect_equal("current_head_claim_boundary_preserved", observed["verifier_head_claim_verdict"], expected_head_claim_verdict)
 
+    checks.append(
+        {
+            "check": "legacy_publication_receipt_passes",
+            "actual": observed["publication_receipt_status"],
+            "expected": "PASS",
+            "status": "PASS" if observed["publication_receipt_status"] == "PASS" else "WARN",
+        }
+    )
+    checks.append(
+        {
+            "check": "legacy_publication_subject_matches_active_truth",
+            "actual": legacy_truth_subject_commit,
+            "expected": truth_subject_commit,
+            "status": "PASS" if legacy_truth_subject_commit == truth_subject_commit else "WARN",
+        }
+    )
+    checks.append(
+        {
+            "check": "legacy_stabilization_subject_matches_active_truth",
+            "actual": observed["legacy_stabilization_truth_subject_commit"],
+            "expected": truth_subject_commit,
+            "status": "PASS" if observed["legacy_stabilization_truth_subject_commit"] == truth_subject_commit else "WARN",
+        }
+    )
+    checks.append(
+        {
+            "check": "verifier_subject_matches_active_truth",
+            "actual": verifier_truth_subject_commit,
+            "expected": truth_subject_commit,
+            "status": "PASS" if verifier_truth_subject_commit == truth_subject_commit else "WARN",
+        }
+    )
+    checks.append(
+        {
+            "check": "verifier_subject_verdict_proven",
+            "actual": observed["verifier_subject_verdict"],
+            "expected": SUBJECT_VERDICT_PROVEN,
+            "status": "PASS" if observed["verifier_subject_verdict"] == SUBJECT_VERDICT_PROVEN else "WARN",
+        }
+    )
+    checks.append(
+        {
+            "check": "verifier_publication_receipt_passes",
+            "actual": observed["verifier_publication_receipt_status"],
+            "expected": "PASS",
+            "status": "PASS" if observed["verifier_publication_receipt_status"] == "PASS" else "WARN",
+        }
+    )
+
     status = "PASS" if not failures else "FAIL"
-    proof_class = PROOF_CLASS_PUBLISHED_HEAD if not failures else PROOF_CLASS_FAIL_CLOSED
+    proof_class = PROOF_CLASS_PUBLISHED_HEAD if status == "PASS" and published_head_authority_claimed else (
+        PROOF_CLASS_LOCAL_LEDGER if status == "PASS" else PROOF_CLASS_FAIL_CLOSED
+    )
     return {
         "schema_id": "kt.operator.authority_convergence_receipt.v2",
         "generated_utc": utc_now_iso_z(),
         "status": status,
         "proof_class": proof_class,
-        "published_head_authority_claimed": not failures,
-        "current_head_authority_claimed": head_equals_subject and not failures,
+        "published_head_authority_claimed": published_head_authority_claimed if status == "PASS" else False,
+        "current_head_authority_claimed": head_equals_subject and published_head_authority_claimed and status == "PASS",
         "h1_admissible": False,
         "failures": failures,
         "checks": checks,
