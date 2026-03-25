@@ -89,6 +89,10 @@ def _validate_receipts_cmd(*, out_dir: Path) -> List[str]:
     ]
 
 
+def _pytest_cmd(*args: str) -> List[str]:
+    return ["python", "-m", "pytest", "-p", "pytest_cov", *args]
+
+
 def main(argv: Optional[Sequence[str]] = None) -> int:
     args = _parse_args(argv)
     repo_root = repo_root_from(Path(__file__))
@@ -129,11 +133,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     pytest_env = dict(base_env)
     pytest_env.pop("KT_CANONICAL_LANE", None)
     pytest_env.pop("KT_ATTESTATION_MODE", None)
-    run_step("pytest_cleanroom", ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/tests"], env=pytest_env)
-    run_step("pytest_temple", ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests"], env=pytest_env)
+    run_step("pytest_cleanroom", _pytest_cmd("-q", "KT_PROD_CLEANROOM/tests"), env=pytest_env)
+    run_step("pytest_temple", _pytest_cmd("-q", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests"), env=pytest_env)
     run_step(
         "pytest_verification",
-        ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/tools/verification/tests"],
+        _pytest_cmd("-q", "KT_PROD_CLEANROOM/tools/verification/tests"),
         env=pytest_env,
     )
 
