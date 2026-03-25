@@ -273,6 +273,7 @@ def build_heartbeat(
     second_host_execution = load_json(root / SECOND_HOST_EXECUTION_REL)
     truth_lock = load_json(root / TRUTH_LOCK_REL)
     open_blockers = [str(item).strip() for item in truth_lock.get("active_open_blocker_ids", []) if str(item).strip()]
+    deferred_blockers = [str(item).strip() for item in truth_lock.get("active_deferred_blocker_ids", []) if str(item).strip()]
     second_host_return_present = bool(second_host_execution.get("environment_declaration", {}).get("second_host_return_present"))
 
     blocker_rows = blocker_matrix.get("open_blockers", [])
@@ -299,8 +300,8 @@ def build_heartbeat(
 
     checks = [
         {
-            "check_id": "active_truth_lock_still_carries_c006_only",
-            "pass": open_blockers == ["C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"],
+            "check_id": "active_truth_lock_carries_c006_as_only_deferred_blocker",
+            "pass": deferred_blockers == ["C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"],
             "ref": TRUTH_LOCK_REL,
         },
         {
