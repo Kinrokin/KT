@@ -51,6 +51,7 @@ def test_w3_externality_and_comparative_proof_cli_emits_bounded_outputs(tmp_path
     payload = json.loads(proc.stdout.strip().splitlines()[-1])
     assert payload["status"] == "PASS"
     assert payload["active_open_blocker_ids"] == ["C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"]
+    assert "release_readiness_not_proven" in payload["current_truth_posture_open_blocker_ids"]
     assert payload["e2_outcome"] == "NOT_EARNED_PENDING_SECOND_HOST_RETURN"
     assert payload["comparative_widening_unlock"] is False
     assert payload["commercial_widening_unlock"] is False
@@ -77,6 +78,7 @@ def test_w3_externality_and_comparative_proof_cli_emits_bounded_outputs(tmp_path
 
     assert canonical_delta["status"] == "PASS"
     assert canonical_delta["blocker_delta"]["active_open_blocker_ids"] == ["C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"]
+    assert "release_activation_not_executed" in canonical_delta["blocker_delta"]["current_truth_posture_open_blocker_ids"]
     assert canonical_delta["blocker_delta"]["change"] == "NONE_C006_STILL_OPEN_PENDING_FRESH_SECOND_HOST_RETURN"
 
     assert advancement_delta["status"] == "PASS"

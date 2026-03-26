@@ -50,6 +50,9 @@ def _truth_lock(root: Path) -> Dict[str, Any]:
 
 def _active_blockers(root: Path) -> List[str]:
     lock = _truth_lock(root)
+    blocker_ids = [str(item).strip() for item in lock.get("active_deferred_blocker_ids", []) if str(item).strip()]
+    if blocker_ids:
+        return blocker_ids
     blocker_ids = [str(item).strip() for item in lock.get("active_open_blocker_ids", []) if str(item).strip()]
     if blocker_ids:
         return blocker_ids
@@ -70,6 +73,11 @@ def _active_blockers(root: Path) -> List[str]:
                 if blocker_id:
                     out.append(blocker_id)
     return out
+
+
+def _current_truth_posture_blockers(root: Path) -> List[str]:
+    lock = _truth_lock(root)
+    return [str(item).strip() for item in lock.get("active_open_blocker_ids", []) if str(item).strip()]
 
 
 def build_e2_cross_host_replay_receipt(*, root: Path) -> Dict[str, Any]:
@@ -177,6 +185,7 @@ def build_canonical_delta(*, root: Path, e2_receipt: Mapping[str, Any], capabili
         "blocker_delta": {
             "change": "NONE_C006_STILL_OPEN_PENDING_FRESH_SECOND_HOST_RETURN",
             "active_open_blocker_ids": _active_blockers(root),
+            "current_truth_posture_open_blocker_ids": _current_truth_posture_blockers(root),
         },
         "ambiguity_reduced": [
             "e2_cross_host_replay_is_now_machine_typed_as_not_earned_pending_fresh_second_host_return",
@@ -253,6 +262,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         if all(str(item.get("status", "")).strip() == "PASS" for item in (e2_receipt, capability_atlas, competitive_scorecard, canonical_delta, advancement_delta))
         else "FAIL",
         "active_open_blocker_ids": _active_blockers(root),
+        "current_truth_posture_open_blocker_ids": _current_truth_posture_blockers(root),
         "e2_outcome": str(e2_receipt.get("e2_outcome", "")).strip(),
         "comparative_widening_unlock": False,
         "commercial_widening_unlock": False,
