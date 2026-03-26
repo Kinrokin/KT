@@ -20,6 +20,8 @@ EXTERNAL_REPRO_RECEIPT_REL = f"{REPORT_ROOT_REL}/kt_external_reproduction_receip
 EXTERNAL_REPRO_MATRIX_REL = f"{REPORT_ROOT_REL}/kt_external_reproduction_matrix.json"
 OUTSIDER_PATH_REL = f"{REPORT_ROOT_REL}/kt_outsider_path_receipt.json"
 REPLAY_RECIPE_REL = f"{REPORT_ROOT_REL}/kt_independent_replay_recipe.md"
+CANONICAL_SCOPE_MANIFEST_REL = f"{GOVERNANCE_ROOT_REL}/canonical_scope_manifest.json"
+DEPENDENCY_INTEGRITY_CONTRACT_REL = f"{GOVERNANCE_ROOT_REL}/dependency_integrity_contract.json"
 
 
 def _git(root: Path, *args: str) -> str:
@@ -85,6 +87,23 @@ def _publication_carrier_only_delta(*, root: Path, base_head: str, carrier_head:
         return False
     head_context = resolve_truth_head_context(root=root, live_head=carrier, dirty_lines=[])
     patterns = [str(item).strip() for item in head_context.get("publication_carrier_surface_patterns", []) if str(item).strip()]
+    canonical_scope_path = (root / CANONICAL_SCOPE_MANIFEST_REL).resolve()
+    if canonical_scope_path.exists():
+        canonical_scope = load_json(canonical_scope_path)
+        patterns.extend(
+            str(item).strip()
+            for item in canonical_scope.get("toolchain_proving_surfaces", [])
+            if str(item).strip()
+        )
+    dependency_contract_path = (root / DEPENDENCY_INTEGRITY_CONTRACT_REL).resolve()
+    if dependency_contract_path.exists():
+        dependency_contract = load_json(dependency_contract_path)
+        for item in dependency_contract.get("scope_roots", []):
+            normalized = str(item).strip().replace("\\", "/")
+            if not normalized.startswith("KT_PROD_CLEANROOM/tests/operator"):
+                continue
+            patterns.append(f"{normalized.rstrip('/')}/**")
+    patterns = list(dict.fromkeys(patterns))
     if not patterns:
         return False
     changed = _git(root, "diff", "--name-only", base, carrier)
