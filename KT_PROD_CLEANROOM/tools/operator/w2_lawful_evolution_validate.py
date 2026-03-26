@@ -42,6 +42,8 @@ ROUTER_SELECTION_REL = f"{REPORT_ROOT_REL}/kt_wave2b_router_selection_receipt.js
 ROUTER_SHADOW_REL = f"{REPORT_ROOT_REL}/kt_wave2b_router_shadow_eval_matrix.json"
 ROUTE_HEALTH_REL = f"{REPORT_ROOT_REL}/kt_wave2b_route_distribution_health.json"
 POST_WAVE5_C005_REL = f"{REPORT_ROOT_REL}/post_wave5_c005_router_ratification_receipt.json"
+UNIVERSAL_ADAPTER_RECEIPT_REL = f"{REPORT_ROOT_REL}/universal_adapter_receipt.json"
+CIVILIZATION_LOOP_RECEIPT_REL = f"{REPORT_ROOT_REL}/civilization_loop_receipt.json"
 
 
 def _resolve(root: Path, value: str) -> Path:
@@ -65,6 +67,9 @@ def _truth_lock(root: Path) -> Dict[str, Any]:
 
 def _active_blockers(root: Path) -> List[str]:
     lock = _truth_lock(root)
+    deferred = [str(item).strip() for item in lock.get("active_deferred_blocker_ids", []) if str(item).strip()]
+    if deferred:
+        return deferred
     blocker_ref = str(lock.get("active_blocker_matrix_ref", "")).strip()
     if not blocker_ref:
         raise RuntimeError("FAIL_CLOSED: current_head_truth_lock missing active blocker matrix ref")
@@ -84,6 +89,11 @@ def _active_blockers(root: Path) -> List[str]:
     if not blocker_ids:
         blocker_ids = [str(item).strip() for item in lock.get("active_open_blocker_ids", []) if str(item).strip()]
     return blocker_ids
+
+
+def _current_truth_posture_blockers(root: Path) -> List[str]:
+    lock = _truth_lock(root)
+    return [str(item).strip() for item in lock.get("active_open_blocker_ids", []) if str(item).strip()]
 
 
 def _organ_row(root: Path, organ_id: str) -> Dict[str, Any]:
@@ -110,6 +120,21 @@ def build_tournament_receipt(*, root: Path) -> Dict[str, Any]:
     promotion_receipt = load_json(root / PROMOTION_RECEIPT_REL)
     readiness_receipt = load_json(root / TOURNAMENT_READINESS_REL)
     organ_row = _organ_row(root, "tournament_promotion")
+    organ_disposition = str(organ_row.get("disposition", "")).strip()
+    organ_evidence_ref = str(organ_row.get("evidence_ref", "")).strip()
+    organ_reality_class = str(organ_row.get("reality_class", "")).strip()
+    bounded_tournament_state = (
+        (
+            organ_disposition == "LAB_ONLY_UNTIL_RUNTIME_REAL"
+            and organ_evidence_ref == TOURNAMENT_READINESS_REL
+            and organ_reality_class in {"LIVE_BOUNDED", "SCAFFOLDED"}
+        )
+        or (
+            organ_disposition == "REALIZED_BOUNDED_INTERNAL_CIVILIZATION_LOOP"
+            and organ_evidence_ref == CIVILIZATION_LOOP_RECEIPT_REL
+            and organ_reality_class == "LIVE_BOUNDED"
+        )
+    )
 
     checks = [
         {"check_id": "tournament_law_active", "pass": _status_is(tournament_law.get("status"), "ACTIVE"), "ref": TOURNAMENT_LAW_REL},
@@ -119,15 +144,13 @@ def build_tournament_receipt(*, root: Path) -> Dict[str, Any]:
         {"check_id": "crucible_lifecycle_law_active", "pass": _status_is(crucible_lifecycle.get("status"), "ACTIVE"), "ref": CRUCIBLE_LIFECYCLE_REL},
         {"check_id": "historical_promotion_receipt_present", "pass": _status_is(promotion_receipt.get("status"), "PASS"), "ref": PROMOTION_RECEIPT_REL},
         {
-            "check_id": "tournament_organ_remains_lab_governed",
-            "pass": str(organ_row.get("disposition", "")).strip() == "LAB_ONLY_UNTIL_RUNTIME_REAL"
-            and str(organ_row.get("evidence_ref", "")).strip() == TOURNAMENT_READINESS_REL
-            and str(organ_row.get("reality_class", "")).strip() in {"LIVE_BOUNDED", "SCAFFOLDED"},
+            "check_id": "tournament_organ_remains_bounded_and_noncanonical",
+            "pass": bounded_tournament_state,
             "ref": ORGAN_REGISTER_REL,
         },
         {
             "check_id": "tournament_requires_promotion_and_rollback",
-            "pass": str(organ_row.get("disposition", "")).strip() == "LAB_ONLY_UNTIL_RUNTIME_REAL"
+            "pass": bounded_tournament_state
             and _status_is(promotion_receipt.get("status"), "PASS")
             and _status_is(rollback_law.get("status"), "ACTIVE")
             and str(readiness_receipt.get("tournament_gate_status", readiness_receipt.get("status", ""))).strip().upper() == "BLOCKED",
@@ -225,6 +248,21 @@ def _adapter_family_status(root: Path) -> Dict[str, Any]:
     provider_path = load_json(root / W1_PROVIDER_PATH_REL)
     testing_gate = load_json(root / ADAPTER_TESTING_GATE_REL)
     organ_row = _organ_row(root, "adapter_layer")
+    organ_disposition = str(organ_row.get("disposition", "")).strip()
+    organ_evidence_ref = str(organ_row.get("evidence_ref", "")).strip()
+    organ_reality_class = str(organ_row.get("reality_class", "")).strip()
+    bounded_adapter_state = (
+        (
+            organ_disposition == "KEEP_BOUNDED_WAVE2A"
+            and organ_evidence_ref == WAVE2A_ADAPTER_RECEIPT_REL
+            and organ_reality_class == "LIVE_BOUNDED"
+        )
+        or (
+            organ_disposition == "REALIZED_BOUNDED_UNIVERSAL_CONTRACT"
+            and organ_evidence_ref == UNIVERSAL_ADAPTER_RECEIPT_REL
+            and organ_reality_class == "LIVE_BOUNDED"
+        )
+    )
 
     checks = [
         {"check_id": "adapter_abi_frozen_or_active", "pass": str(abi.get("status", "")).strip() in {"FROZEN_WAVE_0_5", "ACTIVE"}, "ref": ADAPTER_ABI_REL},
@@ -235,9 +273,7 @@ def _adapter_family_status(root: Path) -> Dict[str, Any]:
         {"check_id": "adapter_testing_gate_is_open_or_pass", "pass": str(testing_gate.get("adapter_testing_gate_status", "")).strip().upper() in {"OPEN", "PASS"}, "ref": ADAPTER_TESTING_GATE_REL},
         {
             "check_id": "adapter_layer_row_stays_canonical_bounded",
-            "pass": str(organ_row.get("disposition", "")).strip() == "KEEP_BOUNDED_WAVE2A"
-            and str(organ_row.get("evidence_ref", "")).strip() == WAVE2A_ADAPTER_RECEIPT_REL
-            and str(organ_row.get("reality_class", "")).strip() == "LIVE_BOUNDED",
+            "pass": bounded_adapter_state,
             "ref": ORGAN_REGISTER_REL,
         },
     ]
@@ -341,6 +377,7 @@ def build_canonical_delta(
         "blocker_delta": {
             "change": "NONE_C006_STILL_ONLY_ACTIVE_CURRENT_HEAD_CANONICAL_BLOCKER",
             "active_open_blocker_ids": blockers,
+            "current_truth_posture_open_blocker_ids": _current_truth_posture_blockers(root),
         },
         "ambiguity_reduced": [
             "adapter_promotion_family_is_now_current_head_typed_against_live_runtime_and_w1_register",
@@ -462,6 +499,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         )
         else "FAIL",
         "active_open_blocker_ids": _active_blockers(root),
+        "current_truth_posture_open_blocker_ids": _current_truth_posture_blockers(root),
         "router_superiority_unlock": False,
         "multilobe_unlock": False,
         "net_elevation_status": str(net_elevation.get("status", "")).strip(),
