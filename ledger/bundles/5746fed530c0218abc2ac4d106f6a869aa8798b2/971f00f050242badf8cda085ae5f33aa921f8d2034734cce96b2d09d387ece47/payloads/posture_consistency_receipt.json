@@ -9,13 +9,21 @@
   "one_button_state": {
     "checks": [
       {
+        "artifact": "one_button_preflight_receipt.json",
+        "status": "PASS"
+      },
+      {
+        "artifact": "one_button_production_receipt.json",
+        "status": "PASS"
+      },
+      {
         "artifact": "main_branch_protection_receipt.json",
-        "status": "BLOCKED"
+        "status": "PASS"
       }
     ],
     "status": "PASS"
   },
-  "posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+  "posture_state": "TRUTHFUL_GREEN",
   "preserved_branch_closure": {
     "checks": [
       {
@@ -71,5 +79,5 @@
   },
   "schema_id": "kt.operator.posture_consistency_receipt.v1",
   "status": "PASS",
-  "validated_head_sha": "54e7d1cbf225757a73955048b760c6eaa7cc1d42"
+  "validated_head_sha": "5746fed530c0218abc2ac4d106f6a869aa8798b2"
 }

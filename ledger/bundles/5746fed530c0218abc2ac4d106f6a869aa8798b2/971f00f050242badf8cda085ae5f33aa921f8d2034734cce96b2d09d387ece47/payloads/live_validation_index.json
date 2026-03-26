@@ -286,26 +286,48 @@
       "command": "python -m pytest -p pytest_cov -q KT_PROD_CLEANROOM/tests -q -ra --maxfail=100",
       "critical": true,
       "dirty_sensitive": true,
-      "observed": "current-worktree cleanroom suite passed",
+      "observed": "FAILED KT_PROD_CLEANROOM\\tests\\operator\\test_present_head_authority_seal_validate.py::test_present_head_authority_seal_surfaces_compile",
+      "output_tail": [
+        "KT_PROD_CLEANROOM\\tools\\verification\\io_guard.py                                               159     36    77%   38-39, 44, 46, 119, 124-134, 140, 149, 151, 165, 171, 215-239",
+        "KT_PROD_CLEANROOM\\tools\\verification\\mk_min_organ_contract.py                                   33      4    88%   89-92",
+        "KT_PROD_CLEANROOM\\tools\\verification\\phase1c_execute.py                                        233     39    83%   28, 39, 60, 99-118, 198-200, 246, 380-381, 383-384, 449, 451, 471, 491, 501, 508, 538-541, 545-548, 552-555",
+        "KT_PROD_CLEANROOM\\tools\\verification\\phase2_execute.py                                         185     26    86%   23, 35, 95-99, 117, 124, 131, 133, 138, 149, 151, 153, 177, 181, 184, 205, 210, 214, 275, 278, 281, 285, 328",
+        "KT_PROD_CLEANROOM\\tools\\verification\\preflight_fl4.py                                          427    330    23%   32, 36, 40-46, 51-61, 65-68, 72-77, 81-83, 87-91, 147, 151, 158, 181, 185, 187, 192, 203, 206-207, 209, 224, 241-242, 250-274, 278-321, 325-342, 346-353, 357-371, 375-378, 382-976, 980",
+        "KT_PROD_CLEANROOM\\tools\\verification\\replay_script_generator.py                                 57      3    95%   23, 38, 80",
+        "KT_PROD_CLEANROOM\\tools\\verification\\run_discovery_battery.py                                  204     64    69%   68, 78-103, 126, 128, 132, 175, 178, 194, 199, 210, 215, 218, 223, 225, 248, 250, 252, 256, 259, 303-345, 349",
+        "KT_PROD_CLEANROOM\\tools\\verification\\run_protocol_generator.py                                 175     31    82%   25, 29, 33, 40, 49, 53, 57, 66, 123, 141, 146, 166, 182-183, 185, 191, 193, 198-201, 205-213, 217",
+        "KT_PROD_CLEANROOM\\tools\\verification\\seal_mode_test_roots.py                                    17      1    94%   15",
+        "KT_PROD_CLEANROOM\\tools\\verification\\strict_json.py                                             17      0   100%",
+        "KT_PROD_CLEANROOM\\tools\\verification\\watcher_spc_validators.py                                 131     45    66%   15-16, 20-31, 44, 53-58, 86, 91, 95, 99, 101, 104, 109, 112, 118, 120, 122, 124, 128-129, 131, 138-139, 148, 151, 153, 161, 194, 196-197",
+        "KT_PROD_CLEANROOM\\tools\\verification\\worm_write.py                                              31     10    68%   16-18, 39-43, 55-56",
+        "--------------------------------------------------------------------------------------------------------------------------",
+        "TOTAL                                                                                        68541  28085    59%",
+        "=========================== short test summary info ===========================",
+        "SKIPPED [1] KT_PROD_CLEANROOM\\tests\\operator\\test_canonical_tree_execute.py:62: WS2 receipt determinism requires a clean worktree; current repo is already dirty outside this validator's write-set.",
+        "FAILED KT_PROD_CLEANROOM\\tests\\operator\\test_omega_gate.py::test_current_head_truth_lock_builds_against_live_repo",
+        "FAILED KT_PROD_CLEANROOM\\tests\\operator\\test_omega_gate.py::test_report_authority_index_has_one_active_blocker_family",
+        "FAILED KT_PROD_CLEANROOM\\tests\\operator\\test_omega_gate.py::test_omega_gate_receipt_and_supersession_map_compile",
+        "FAILED KT_PROD_CLEANROOM\\tests\\operator\\test_present_head_authority_seal_validate.py::test_present_head_authority_seal_surfaces_compile"
+      ],
       "scope": "active_repo_validation",
-      "status": "PASS",
-      "summary": "current-worktree cleanroom suite passed"
+      "status": "FAIL",
+      "summary": "current-worktree cleanroom suite failed"
     },
     {
       "check_id": "operator_clean_clone_smoke",
       "command": "git clone <repo> <tmp> && python -m pytest -q KT_PROD_CLEANROOM/tests/fl3/test_hat_demo_guardrails.py KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py",
       "context": {
-        "clean_clone_head_sha": "54e7d1cbf225757a73955048b760c6eaa7cc1d42"
+        "clean_clone_head_sha": "5746fed530c0218abc2ac4d106f6a869aa8798b2"
       },
       "critical": true,
       "dirty_sensitive": false,
-      "observed": "6 passed in 16.85s",
+      "observed": "6 passed in 14.79s",
       "scope": "clean_clone_validation",
       "status": "PASS",
       "summary": "operator clean-clone smoke passed"
     }
   ],
-  "generated_utc": "2026-03-25T21:17:19Z",
+  "generated_utc": "2026-03-26T05:35:42Z",
   "schema_id": "kt.operator.live_validation_index.v1",
   "worktree": {
     "dirty_files": [
@@ -346,7 +368,7 @@
     ],
     "git_dirty": true,
     "head_relation": "HEAD_DIVERGED_FROM_ACTIVE_SUBJECT",
-    "head_sha": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+    "head_sha": "5746fed530c0218abc2ac4d106f6a869aa8798b2",
     "publication_carrier_delta_files": [],
     "publication_carrier_dirty": true,
     "publication_carrier_dirty_files": [
@@ -388,6 +410,6 @@
     "publication_carrier_head_sha": "",
     "subject_dirty_files": [],
     "subject_git_dirty": false,
-    "validated_subject_head_sha": "54e7d1cbf225757a73955048b760c6eaa7cc1d42"
+    "validated_subject_head_sha": "5746fed530c0218abc2ac4d106f6a869aa8798b2"
   }
 }
