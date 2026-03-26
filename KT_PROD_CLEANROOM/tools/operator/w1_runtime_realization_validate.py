@@ -566,7 +566,8 @@ def build_mvcr_live_execution_receipt(*, root: Path, useful_output_benchmark: Ma
         "runtime_claim_compilation": runtime_claim_compilation,
         "runtime_realism_threshold": dict(runtime_realism_threshold),
         "active_current_head_blocker_ref": truth_lock.get("active_blocker_matrix_ref", ""),
-        "active_open_blocker_ids": list(truth_lock.get("active_open_blocker_ids", [])),
+        "active_open_blocker_ids": list(truth_lock.get("active_deferred_blocker_ids", [])),
+        "current_truth_posture_open_blocker_ids": list(truth_lock.get("active_open_blocker_ids", [])),
         "legacy_release_blocker_ref": FINAL_BLOCKER_REL,
         "forbidden_current_claims": forbidden_current_claims,
         "next_lawful_move": "C006 remains open on the canonical lane; W2 lawful-evolution work may not widen claims beyond this bounded runtime realization.",
@@ -583,7 +584,8 @@ def build_canonical_delta_w1(*, root: Path, mvcr_receipt: Mapping[str, Any], org
         "canonical_outputs": [MVCR_OUTPUT_REL, USEFUL_OUTPUT_REL, PROVIDER_PATH_REL, ORGAN_REGISTER_REL, ORGAN_DEPENDENCY_REL, CANONICAL_DELTA_REL],
         "blocker_delta": {
             "active_current_head_blocker_ref": truth_lock.get("active_blocker_matrix_ref", ""),
-            "active_open_blocker_ids": list(truth_lock.get("active_open_blocker_ids", [])),
+            "active_open_blocker_ids": list(truth_lock.get("active_deferred_blocker_ids", [])),
+            "current_truth_posture_open_blocker_ids": list(truth_lock.get("active_open_blocker_ids", [])),
             "canonical_blocker_change": "NONE_C006_STILL_OPEN_WITHIN_W0_CURRENT_HEAD_SCOPE",
         },
         "ambiguity_reduced": [

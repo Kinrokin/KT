@@ -84,6 +84,7 @@ def test_w1_runtime_realization_cli_emits_bounded_outputs(tmp_path: Path) -> Non
     assert mvcr["runtime_claim_compilation"]["comparative_widening"] == "FORBIDDEN"
     assert mvcr["runtime_claim_compilation"]["commercial_widening"] == "FORBIDDEN"
     assert "SECOND_HOST_RETURN_FILE_PLUS_VALIDATOR_PASS" in mvcr["runtime_claim_compilation"]["deferred_reentry_condition"]
+    assert "release_readiness_not_proven" in mvcr["current_truth_posture_open_blocker_ids"]
 
     assert useful_output["status"] == "PASS"
     assert any(row["benchmark_id"] == "useful_output_evidence_stronger_than_ceremonial_path_evidence" and row["pass"] for row in useful_output["rows"])
@@ -114,6 +115,7 @@ def test_w1_runtime_realization_cli_emits_bounded_outputs(tmp_path: Path) -> Non
 
     assert canonical_delta["status"] == "PASS"
     assert canonical_delta["blocker_delta"]["active_open_blocker_ids"] == ["C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"]
+    assert "release_activation_not_executed" in canonical_delta["blocker_delta"]["current_truth_posture_open_blocker_ids"]
 
     assert advancement_delta["status"] == "PASS"
     assert advancement_delta["glamour_unlock"] is False
