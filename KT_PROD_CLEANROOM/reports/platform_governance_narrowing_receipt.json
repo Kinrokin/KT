@@ -2,18 +2,15 @@
   "allowed_current_claims": [
     "governance subject mismatch is explicit"
   ],
-  "branch_protection_status": "BLOCKED",
+  "branch_protection_status": "PASS",
   "branch_ref": "main",
   "enterprise_legitimacy_ceiling": "NO_GOVERNANCE_UPGRADE",
   "forbidden_current_claims": [
     "platform-enforced governance proven on main",
     "workflow governance proven on the current head"
   ],
-  "generated_utc": "2026-03-26T05:36:44Z",
-  "platform_block": {
-    "http_status": 403,
-    "message": "Upgrade to GitHub Pro or make this repository public to enable this feature."
-  },
+  "generated_utc": "2026-03-26T23:36:04Z",
+  "platform_block": null,
   "platform_governance_claim_admissible": false,
   "platform_governance_claim_boundary": "Branch-protection and workflow-governance receipts disagree on the governed subject head; no governance upgrade is admissible.",
   "platform_governance_receipt_refs": [
@@ -23,6 +20,6 @@
   "platform_governance_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
   "platform_governance_verdict": "PLATFORM_GOVERNANCE_NOT_PROVEN",
   "schema_id": "kt.operator.platform_governance_narrowing_receipt.v1",
-  "validated_head_sha": "5746fed530c0218abc2ac4d106f6a869aa8798b2",
+  "validated_head_sha": "88f21c033a5261f143f32d52c91347373bdff8ea",
   "workflow_governance_status": "PASS_WITH_PLATFORM_BLOCK"
 }

@@ -9,13 +9,21 @@
   "one_button_state": {
     "checks": [
       {
+        "artifact": "one_button_preflight_receipt.json",
+        "status": "PASS"
+      },
+      {
+        "artifact": "one_button_production_receipt.json",
+        "status": "PASS"
+      },
+      {
         "artifact": "main_branch_protection_receipt.json",
-        "status": "BLOCKED"
+        "status": "PASS"
       }
     ],
     "status": "PASS"
   },
-  "posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+  "posture_state": "TRUTHFUL_GREEN",
   "preserved_branch_closure": {
     "checks": [
       {
