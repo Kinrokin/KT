@@ -23,74 +23,52 @@
       "status": "PASS"
     },
     {
-      "actual": "PASS",
-      "check": "publication_receipt_passes",
-      "expected": "PASS",
+      "actual": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+      "check": "active_truth_subject_present",
+      "expected": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
       "status": "PASS"
     },
     {
-      "actual": "PASS",
-      "check": "publication_stabilization_passes",
-      "expected": "PASS",
-      "status": "PASS"
+      "actual": "5746fed530c0218abc2ac4d106f6a869aa8798b2",
+      "check": "tracked_publication_stabilization_subject_matches_active_truth",
+      "expected": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+      "status": "FAIL"
     },
     {
-      "actual": true,
-      "check": "truth_publication_stabilized",
-      "status": "PASS"
+      "actual": false,
+      "check": "tracked_publication_stabilization_supports_active_truth",
+      "status": "FAIL",
+      "tracked_posture": "CANONICAL_READY_FOR_REEARNED_GREEN",
+      "tracked_status": "HOLD"
     },
     {
-      "actual": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
-      "check": "authority_subject_matches_stabilization_subject",
-      "expected": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
-      "status": "PASS"
-    },
-    {
-      "actual": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
-      "check": "authority_subject_matches_verifier_subject",
-      "expected": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
-      "status": "PASS"
-    },
-    {
-      "actual": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
-      "check": "verifier_subject_verdict_proven",
-      "expected": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
-      "status": "PASS"
-    },
-    {
-      "actual": "PASS",
-      "check": "verifier_publication_receipt_passes",
-      "expected": "PASS",
-      "status": "PASS"
-    },
-    {
-      "actual": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "actual": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
       "check": "ledger_pointer_matches_truth_subject",
-      "expected": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "expected": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
       "status": "PASS"
     },
     {
-      "actual": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "actual": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
       "check": "ledger_current_state_matches_truth_subject",
-      "expected": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "expected": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
       "status": "PASS"
     },
     {
-      "actual": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "actual": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
       "check": "ledger_runtime_audit_matches_truth_subject",
-      "expected": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "expected": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
       "status": "PASS"
     },
     {
-      "actual": "TRUTHFUL_GREEN",
+      "actual": "CANONICAL_READY_FOR_REEARNED_GREEN",
       "check": "ledger_current_state_posture_matches_pointer",
-      "expected": "TRUTHFUL_GREEN",
+      "expected": "CANONICAL_READY_FOR_REEARNED_GREEN",
       "status": "PASS"
     },
     {
-      "actual": "TRUTHFUL_GREEN",
+      "actual": "CANONICAL_READY_FOR_REEARNED_GREEN",
       "check": "ledger_runtime_audit_posture_matches_pointer",
-      "expected": "TRUTHFUL_GREEN",
+      "expected": "CANONICAL_READY_FOR_REEARNED_GREEN",
       "status": "PASS"
     },
     {
@@ -119,48 +97,91 @@
       "check": "current_head_claim_boundary_preserved",
       "expected": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
       "status": "PASS"
+    },
+    {
+      "actual": "PASS",
+      "check": "legacy_publication_receipt_passes",
+      "expected": "PASS",
+      "status": "PASS"
+    },
+    {
+      "actual": "0f8e1aa89f8b7094360c94e64a25cef728c6b2bd",
+      "check": "legacy_publication_subject_matches_active_truth",
+      "expected": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+      "status": "WARN"
+    },
+    {
+      "actual": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+      "check": "legacy_stabilization_subject_matches_active_truth",
+      "expected": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+      "status": "WARN"
+    },
+    {
+      "actual": "0f8e1aa89f8b7094360c94e64a25cef728c6b2bd",
+      "check": "verifier_subject_matches_active_truth",
+      "expected": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+      "status": "WARN"
+    },
+    {
+      "actual": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
+      "check": "verifier_subject_verdict_proven",
+      "expected": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
+      "status": "PASS"
+    },
+    {
+      "actual": "PASS",
+      "check": "verifier_publication_receipt_passes",
+      "expected": "PASS",
+      "status": "PASS"
     }
   ],
   "current_head_authority_claimed": false,
-  "failures": [],
-  "generated_utc": "2026-03-25T21:27:15Z",
+  "failures": [
+    "tracked_publication_stabilization_subject_matches_active_truth",
+    "tracked_publication_stabilization_supports_active_truth"
+  ],
+  "generated_utc": "2026-03-26T05:36:54Z",
   "h1_admissible": false,
   "observed": {
     "active_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
     "board_authority_mode": "SETTLED_AUTHORITATIVE",
     "board_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
-    "current_head_commit": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+    "current_head_commit": "5746fed530c0218abc2ac4d106f6a869aa8798b2",
     "current_head_equals_truth_subject": false,
     "documentary_validation_status": "PASS",
-    "evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
+    "evidence_commit": "947642fbdea7cffa19bd65da70d03d482d55826b",
     "ledger_branch": "kt_truth_ledger",
     "ledger_branch_head_sha": "03e9d79a97ca6849535ac05d0c31d924716e87bb",
     "ledger_branch_published": true,
     "ledger_branch_reachable": true,
     "ledger_branch_remote": "origin",
-    "ledger_current_state_head": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
-    "ledger_current_state_posture": "TRUTHFUL_GREEN",
-    "ledger_pointer_head": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
-    "ledger_pointer_posture": "TRUTHFUL_GREEN",
-    "ledger_runtime_audit_head": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
-    "ledger_runtime_audit_posture": "TRUTHFUL_GREEN",
+    "ledger_current_state_head": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+    "ledger_current_state_posture": "CANONICAL_READY_FOR_REEARNED_GREEN",
+    "ledger_pointer_head": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+    "ledger_pointer_posture": "CANONICAL_READY_FOR_REEARNED_GREEN",
+    "ledger_runtime_audit_head": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+    "ledger_runtime_audit_posture": "CANONICAL_READY_FOR_REEARNED_GREEN",
+    "legacy_authority_subject_commit": "0f8e1aa89f8b7094360c94e64a25cef728c6b2bd",
+    "legacy_stabilization_status": "PASS",
+    "legacy_stabilization_truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
+    "legacy_truth_publication_stabilized": true,
     "main_current_pointer_documentary_only": true,
     "main_current_state_documentary_only": true,
     "main_runtime_audit_documentary_only": true,
     "publication_receipt_status": "PASS",
     "readiness_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
-    "stabilization_status": "PASS",
-    "stabilization_truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
-    "truth_publication_stabilized": true,
-    "truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7",
-    "verifier_evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
+    "tracked_stabilization_status": "HOLD",
+    "tracked_stabilization_truth_subject_commit": "5746fed530c0218abc2ac4d106f6a869aa8798b2",
+    "tracked_truth_publication_stabilized": false,
+    "truth_subject_commit": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+    "verifier_evidence_commit": "947642fbdea7cffa19bd65da70d03d482d55826b",
     "verifier_head_claim_verdict": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
     "verifier_publication_receipt_status": "PASS",
     "verifier_subject_verdict": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
-    "verifier_truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7"
+    "verifier_truth_subject_commit": "0f8e1aa89f8b7094360c94e64a25cef728c6b2bd"
   },
-  "proof_class": "PUBLISHED_HEAD_SELF_CONVERGENCE_PROVEN",
-  "published_head_authority_claimed": true,
+  "proof_class": "FAIL_CLOSED",
+  "published_head_authority_claimed": false,
   "schema_id": "kt.operator.authority_convergence_receipt.v2",
-  "status": "PASS"
+  "status": "FAIL"
 }

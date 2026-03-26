@@ -50,7 +50,11 @@
       ],
       "active_blockers": [
         "green has not been re-earned from current-head one-button receipts",
+        "tracked_publication_stabilization_subject_matches_active_truth",
+        "tracked_publication_stabilization_supports_active_truth",
         "posture state is CANONICAL_READY_FOR_REEARNED_GREEN, not TRUTHFUL_GREEN",
+        "authority convergence failed: tracked_publication_stabilization_subject_matches_active_truth",
+        "authority convergence failed: tracked_publication_stabilization_supports_active_truth",
         "unhealthy artifact: KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json status=HOLD"
       ],
       "domain_id": "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE",
@@ -331,19 +335,22 @@
           "status": "PASS"
         },
         {
-          "failures": [],
+          "failures": [
+            "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json status=HOLD"
+          ],
           "rule": "required_artifacts_healthy",
-          "status": "PASS"
+          "status": "FAIL"
         }
       ],
       "active_blockers": [
-        "entry gate closed: ECONOMIC_TRUTH_PLANE_RATIFIED"
+        "entry gate closed: ECONOMIC_TRUTH_PLANE_RATIFIED",
+        "unhealthy artifact: KT_PROD_CLEANROOM/reports/public_verifier_manifest.json status=HOLD"
       ],
       "domain_id": "DOMAIN_6_EXTERNAL_LEGIBILITY",
       "entry_gate": "ECONOMIC_TRUTH_PLANE_RATIFIED",
       "exit_gate": "EXTERNAL_LEGIBILITY_RATIFIED",
       "gate_state": "LOCKED",
-      "maturity_state": "MATERIALIZED",
+      "maturity_state": "SPECIFIED",
       "required_artifacts": [
         "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
         "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
@@ -359,7 +366,7 @@
         "KT_PROD_CLEANROOM/governance/documentary_authority_label_rules.json",
         "KT_PROD_CLEANROOM/governance/external_packet_sanitization_rules.json"
       ],
-      "status": "MATERIALIZED",
+      "status": "SPECIFIED",
       "title": "External legibility"
     }
   ],
@@ -378,7 +385,11 @@
     {
       "blockers": [
         "green has not been re-earned from current-head one-button receipts",
+        "tracked_publication_stabilization_subject_matches_active_truth",
+        "tracked_publication_stabilization_supports_active_truth",
         "posture state is CANONICAL_READY_FOR_REEARNED_GREEN, not TRUTHFUL_GREEN",
+        "authority convergence failed: tracked_publication_stabilization_subject_matches_active_truth",
+        "authority convergence failed: tracked_publication_stabilization_supports_active_truth",
         "unhealthy artifact: KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json status=HOLD"
       ],
       "domain_id": "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE",
@@ -427,16 +438,19 @@
     },
     {
       "blockers": [
-        "entry gate closed: ECONOMIC_TRUTH_PLANE_RATIFIED"
+        "entry gate closed: ECONOMIC_TRUTH_PLANE_RATIFIED",
+        "unhealthy artifact: KT_PROD_CLEANROOM/reports/public_verifier_manifest.json status=HOLD"
       ],
       "domain_id": "DOMAIN_6_EXTERNAL_LEGIBILITY",
       "gate_id": "EXTERNAL_LEGIBILITY_RATIFIED",
       "open": false
     }
   ],
-  "last_synced_head_sha": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+  "last_synced_head_sha": "5746fed530c0218abc2ac4d106f6a869aa8798b2",
   "open_blockers": [
-    "green has not been re-earned from current-head one-button receipts"
+    "green has not been re-earned from current-head one-button receipts",
+    "tracked_publication_stabilization_subject_matches_active_truth",
+    "tracked_publication_stabilization_supports_active_truth"
   ],
   "program_gates": {
     "CAPABILITY_ATLAS_RATIFIED": false,
