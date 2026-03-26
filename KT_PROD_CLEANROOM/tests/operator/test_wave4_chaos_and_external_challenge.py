@@ -12,6 +12,8 @@ def test_wave4_validator_runs_and_stays_bounded(tmp_path: Path) -> None:
     env = dict(os.environ)
     env["PYTHONPATH"] = str(root) + os.pathsep + str(root / "04_PROD_TEMPLE_V2" / "src")
     env["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
+    tracked_firewall_receipt = root / "reports" / "kt_wave0_5_toolchain_runtime_firewall_receipt.json"
+    tracked_before = tracked_firewall_receipt.read_text(encoding="utf-8")
 
     receipt = tmp_path / "wave4_receipt.json"
     chaos = tmp_path / "wave4_chaos.json"
@@ -85,3 +87,4 @@ def test_wave4_validator_runs_and_stays_bounded(tmp_path: Path) -> None:
     check_ids = {row["check_id"] for row in formal_payload["checks"]}
     assert "claim_compiler_monotonicity" in check_ids
     assert "externality_class_consistency" in check_ids
+    assert tracked_firewall_receipt.read_text(encoding="utf-8") == tracked_before

@@ -483,6 +483,7 @@ def _build_dispositions(*, chaos_manifest: Dict[str, Any], protocol: Dict[str, A
 def _build_formal_invariants(
     *,
     root: Path,
+    export_root: Path,
     wave3_claim_matrix: Dict[str, Any],
     wave3_bounded_output: Dict[str, Any],
     wave3_detached: Dict[str, Any],
@@ -490,7 +491,19 @@ def _build_formal_invariants(
     public_challenge_receipt: Dict[str, Any],
 ) -> Dict[str, Any]:
     trust_zone = _run_command(root=root, cmd=["python", "-m", "tools.operator.trust_zone_validate"])
-    firewall = _run_command(root=root, cmd=["python", "-m", "tools.operator.toolchain_runtime_firewall_validate"])
+    formal_root = (export_root / "_formal_invariants").resolve()
+    formal_root.mkdir(parents=True, exist_ok=True)
+    firewall_output = (formal_root / "toolchain_runtime_firewall_receipt.json").resolve()
+    firewall = _run_command(
+        root=root,
+        cmd=[
+            "python",
+            "-m",
+            "tools.operator.toolchain_runtime_firewall_validate",
+            "--output",
+            str(firewall_output),
+        ],
+    )
     state_vault = validate_state_vault_chain(load_runtime_registry().resolve_state_vault_jsonl_path())
     dimensions = {
         str(row.get("dimension", "")).strip(): str(row.get("claim_class", "")).strip()
@@ -647,6 +660,7 @@ def build_wave4_outputs(*, root: Path, export_root: Path, telemetry_path: Path) 
     }
     formal_invariants = _build_formal_invariants(
         root=root,
+        export_root=export_root,
         wave3_claim_matrix=wave3_claim_matrix,
         wave3_bounded_output=wave3_bounded_output,
         wave3_detached=wave3_detached,
