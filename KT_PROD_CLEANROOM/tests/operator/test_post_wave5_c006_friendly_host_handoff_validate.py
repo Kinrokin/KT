@@ -100,3 +100,55 @@ def test_post_wave5_c006_handoff_pack_binds_verifier_truth_to_validated_subject(
     assert pack["validated_subject_head_sha"] == "subject123"
     assert pack["publication_carrier_head_sha"] == "carrier456"
     assert rows["wave5_verifier_truth"]["head_binding_status"] == "CURRENT_HEAD_BOUND"
+    assert rows["wave5_verifier_truth"]["head_binding_mode"] == "VALIDATED_SUBJECT_EXACT"
+
+
+def test_post_wave5_c006_handoff_pack_accepts_publication_only_carrier_delta(monkeypatch, tmp_path: Path) -> None:
+    monkeypatch.setattr(handoff_mod, "_git_head", lambda root: "carrier456")
+    monkeypatch.setattr(
+        handoff_mod,
+        "resolve_truth_head_context",
+        lambda root, live_head, dirty_lines: {
+            "validated_subject_head_sha": "carrier456",
+            "publication_carrier_head_sha": "",
+            "head_relation": "HEAD_DIVERGED_FROM_ACTIVE_SUBJECT",
+            "publication_carrier_surface_patterns": ["KT_PROD_CLEANROOM/reports/**"],
+        },
+    )
+    monkeypatch.setattr(handoff_mod, "_git_status_lines", lambda root: [])
+    monkeypatch.setattr(
+        handoff_mod,
+        "_git",
+        lambda root, *args: "KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json\n"
+        if args == ("diff", "--name-only", "subject123", "carrier456")
+        else "carrier456",
+    )
+
+    payloads = {
+        handoff_mod.ANCHOR_REL: {"current_authorized_scope": {"authoritative_track": "C006 only"}},
+        handoff_mod.PREP_REL: {"status": "PASS", "current_externality_ceiling": "E1_SAME_HOST_DETACHED_REPLAY"},
+        handoff_mod.VERIFIER_TRUTH_REL: {
+            "status": "PASS",
+            "externality_class": "E1_SAME_HOST_DETACHED_REPLAY",
+            "compiled_head_commit": "subject123",
+        },
+        handoff_mod.EXTERNAL_REPRO_RECEIPT_REL: {
+            "status": "PASS",
+            "summary": {"stronger_claim_not_made": "does not claim cross-host"},
+            "compiled_head_commit": "olderprep",
+        },
+        handoff_mod.OUTSIDER_PATH_REL: {"status": "PASS", "hidden_secret_dependency": "ABSENT", "compiled_head_commit": "olderprep"},
+    }
+    monkeypatch.setattr(handoff_mod, "_load_required", lambda root, rel: payloads[rel])
+
+    replay_recipe = tmp_path / "KT_PROD_CLEANROOM" / "reports" / "kt_independent_replay_recipe.md"
+    external_matrix = tmp_path / "KT_PROD_CLEANROOM" / "reports" / "kt_external_reproduction_matrix.json"
+    replay_recipe.parent.mkdir(parents=True, exist_ok=True)
+    replay_recipe.write_text("recipe\n", encoding="utf-8")
+    external_matrix.write_text("{}\n", encoding="utf-8")
+
+    pack = build_post_wave5_c006_friendly_host_handoff_pack(root=tmp_path)
+    rows = {row["surface_id"]: row for row in pack["support_surface_bindings"]}
+
+    assert rows["wave5_verifier_truth"]["head_binding_status"] == "CURRENT_HEAD_BOUND"
+    assert rows["wave5_verifier_truth"]["head_binding_mode"] == "PUBLICATION_CARRIER_ONLY_DELTA"

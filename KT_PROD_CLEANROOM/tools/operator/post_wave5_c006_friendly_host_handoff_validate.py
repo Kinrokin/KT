@@ -78,6 +78,58 @@ def _binding_row(*, surface_id: str, rel: str, payload: Dict[str, Any], current_
     }
 
 
+def _publication_carrier_only_delta(*, root: Path, base_head: str, carrier_head: str) -> bool:
+    base = str(base_head).strip()
+    carrier = str(carrier_head).strip()
+    if not base or not carrier or base == carrier:
+        return False
+    head_context = resolve_truth_head_context(root=root, live_head=carrier, dirty_lines=[])
+    patterns = [str(item).strip() for item in head_context.get("publication_carrier_surface_patterns", []) if str(item).strip()]
+    if not patterns:
+        return False
+    changed = _git(root, "diff", "--name-only", base, carrier)
+    changed_paths = [line.strip().replace("\\", "/") for line in changed.splitlines() if line.strip()]
+    if not changed_paths:
+        return False
+    return all(any(Path(path).match(pattern) for pattern in patterns) for path in changed_paths)
+
+
+def _current_head_binding_status(
+    *,
+    root: Path,
+    subject_head: str,
+    validated_subject_head: str,
+    current_head: str,
+) -> Dict[str, str]:
+    subject = str(subject_head).strip()
+    validated = str(validated_subject_head).strip()
+    current = str(current_head).strip()
+    if not subject:
+        return {
+            "head_binding_status": "HEAD_UNDECLARED_PREP_ONLY",
+            "head_binding_mode": "HEAD_UNDECLARED",
+        }
+    if subject == validated:
+        return {
+            "head_binding_status": "CURRENT_HEAD_BOUND",
+            "head_binding_mode": "VALIDATED_SUBJECT_EXACT",
+        }
+    if subject == current:
+        return {
+            "head_binding_status": "CURRENT_HEAD_BOUND",
+            "head_binding_mode": "CURRENT_HEAD_EXACT",
+        }
+    if _publication_carrier_only_delta(root=root, base_head=subject, carrier_head=current):
+        return {
+            "head_binding_status": "CURRENT_HEAD_BOUND",
+            "head_binding_mode": "PUBLICATION_CARRIER_ONLY_DELTA",
+        }
+    return {
+        "head_binding_status": "CARRIED_FORWARD_PREP_ONLY",
+        "head_binding_mode": "CARRIED_FORWARD_PREP_ONLY",
+    }
+
+
 def build_post_wave5_c006_friendly_host_handoff_pack(*, root: Path) -> Dict[str, Any]:
     current_head = _git_head(root)
     head_context = resolve_truth_head_context(root=root, live_head=current_head, dirty_lines=_git_status_lines(root))
@@ -89,6 +141,12 @@ def build_post_wave5_c006_friendly_host_handoff_pack(*, root: Path) -> Dict[str,
     verifier_truth = _load_required(root, VERIFIER_TRUTH_REL)
     external_repro = _load_required(root, EXTERNAL_REPRO_RECEIPT_REL)
     outsider_path = _load_required(root, OUTSIDER_PATH_REL)
+    verifier_truth_binding = _current_head_binding_status(
+        root=root,
+        subject_head=str(verifier_truth.get("compiled_head_commit", "")).strip(),
+        validated_subject_head=validated_subject_head,
+        current_head=current_head,
+    )
 
     replay_recipe_path = (root / REPLAY_RECIPE_REL).resolve()
     external_matrix_path = (root / EXTERNAL_REPRO_MATRIX_REL).resolve()
@@ -104,9 +162,8 @@ def build_post_wave5_c006_friendly_host_handoff_pack(*, root: Path) -> Dict[str,
             "surface_id": "wave5_verifier_truth",
             "ref": VERIFIER_TRUTH_REL,
             "subject_head_commit": str(verifier_truth.get("compiled_head_commit", "")).strip(),
-            "head_binding_status": "CURRENT_HEAD_BOUND"
-            if str(verifier_truth.get("compiled_head_commit", "")).strip() == validated_subject_head
-            else "CARRIED_FORWARD_PREP_ONLY",
+            "head_binding_status": verifier_truth_binding["head_binding_status"],
+            "head_binding_mode": verifier_truth_binding["head_binding_mode"],
         },
         _binding_row(
             surface_id="external_reproduction_receipt",
