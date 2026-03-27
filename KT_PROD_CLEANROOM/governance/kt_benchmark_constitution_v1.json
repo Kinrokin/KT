@@ -9,6 +9,12 @@
     ],
     "rule": "No benchmark pack is admissible unless it preserves blocked, failed, and challenge rows alongside positive bounded rows."
   },
+  "canonical_receipt_binding": {
+    "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+    "comparator_replay_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
+    "frozen_eval_scorecard_bundle_ref": "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json"
+  },
+  "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "claim_boundary": "W4 freezes benchmark law for KT's actual category and preserves negative-result visibility. This constitution does not by itself earn comparative widening, superiority, or prestige language.",
   "comparator_policy": {
     "actual_category": "GOVERNED_RECEIPT_BACKED_FAIL_CLOSED_AI_EXECUTION_WITH_ADAPTIVE_IMPROVEMENT_UNDER_LAW",
@@ -37,7 +43,7 @@
     ],
     "rule": "Benchmark interpretation must preserve route economics and cost-of-uncertainty rather than reporting wins without operational cost context."
   },
-  "current_git_head": "9cba8edfb3ed91501186c7193a619303157f927e",
+  "current_git_head": "b1fbd35baec8232916d853f2e2e0e9ceed2a5e4d",
   "dataset_registry": [
     {
       "artifact_ref": "KT_PROD_CLEANROOM/reports/useful_output_benchmark.json",
@@ -60,10 +66,14 @@
       "scope": "blocked, failed, or not-yet-earned rows that must remain machine-visible"
     }
   ],
+  "documentary_aliases_retired": [
+    "KT_PROD_CLEANROOM/reports/competitive_scorecard.json"
+  ],
   "failure_row_retention_rule": {
     "negative_result_ledger_ref": "KT_PROD_CLEANROOM/reports/benchmark_negative_result_ledger.json",
     "rule": "All blocked, failed, or not-yet-earned rows remain published in the negative-result ledger. Suppression invalidates the scorecard."
   },
+  "generated_utc": "2026-03-27T03:57:00Z",
   "hard_rule": "No benchmark-backed language may be used unless the benchmark pack is governed by this constitution and its negative rows remain visible.",
   "holdout_policy": {
     "freeze_scope": "CURRENT_HEAD_ONLY",
@@ -72,6 +82,11 @@
   "latency_accounting_rule": {
     "required_measurement": "bounded operator-visible latency and replay burden per benchmark pack",
     "rule": "Latency may be bounded and same-host scoped, but it must be surfaced whenever benchmark-backed language is used."
+  },
+  "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+  "replayability_coverage_rule": {
+    "minimum_class": "E1_SAME_HOST_DETACHED_REPLAY",
+    "rule": "No benchmark row may be narrated above the highest earned replayability class for the exact surface."
   },
   "required_fields": [
     "dataset_registry",
@@ -84,11 +99,8 @@
     "replayability_coverage_rule",
     "adversarial_probe_coverage_rule"
   ],
-  "replayability_coverage_rule": {
-    "minimum_class": "E1_SAME_HOST_DETACHED_REPLAY",
-    "rule": "No benchmark row may be narrated above the highest earned replayability class for the exact surface."
-  },
   "schema_id": "kt.governance.benchmark_constitution.v1",
+  "scope_boundary": "Current-head-bound benchmark law anchored to one canonical Gate C scorecard only.",
   "status": "FROZEN_W4_CURRENT_HEAD",
   "stronger_claims_not_made": [
     "category_leadership_earned",

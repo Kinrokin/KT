@@ -6,12 +6,10 @@
     "frozen_eval_scorecard_bundle_ref": "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json"
   },
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
-  "claim_boundary": "This is the one canonical baseline-vs-live scorecard for Gate C tranche 1. It only proves that the bounded useful-output live lane remains stronger than the fail-closed nonoutput baseline under frozen comparator law.",
-  "comparator_registry_status": "ACTIVE",
+  "claim_boundary": "One canonical baseline-vs-live scorecard only.",
   "comparison_rows": [
     {
       "baseline_id": "FAIL_CLOSED_NONOUTPUT_BASELINE_V1",
-      "baseline_surface_class": "FAIL_CLOSED_CEREMONIAL_OR_NONOUTPUT_ONLY",
       "evidence_row_id": "useful_output_evidence_stronger_than_ceremonial_path_evidence",
       "live_row_pass": true,
       "live_row_present": true,
@@ -20,8 +18,7 @@
       "row_id": "canonical_useful_output_vs_fail_closed_baseline"
     }
   ],
-  "contamination_safe": true,
-  "current_git_head": "1c4ec6813f289de3f8e4c2a2ec2d55d7ea5270fe",
+  "current_git_head": "b1fbd35baec8232916d853f2e2e0e9ceed2a5e4d",
   "forbidden_claims_not_made": [
     "planner_superiority_earned",
     "paradox_superiority_earned",
@@ -29,7 +26,7 @@
     "router_superiority_earned",
     "civilization_ratified"
   ],
-  "generated_utc": "2026-03-27T03:37:15Z",
+  "generated_utc": "2026-03-27T03:57:00Z",
   "measurement_scope": {
     "allowed_measured_surfaces": [
       "KT_PROD_CLEANROOM/governance/kt_benchmark_constitution_v1.json",
@@ -40,7 +37,10 @@
       "KT_PROD_CLEANROOM/governance/scorer_registry.json",
       "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
       "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
-      "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json"
+      "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
+      "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
+      "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
+      "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json"
     ],
     "forbidden_measured_surfaces": [
       "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/cognitive_engine.py",
@@ -54,18 +54,6 @@
   "negative_result_visibility_preserved": true,
   "schema_id": "kt.gate_c_t1.baseline_vs_live_scorecard.v1",
   "scorer_registry_ref": "KT_PROD_CLEANROOM/governance/scorer_registry.json",
-  "source_refs": [
-    "KT_PROD_CLEANROOM/governance/benchmark_manifest.json",
-    "KT_PROD_CLEANROOM/governance/scorer_registry.json",
-    "KT_PROD_CLEANROOM/governance/kt_benchmark_constitution_v1.json",
-    "KT_PROD_CLEANROOM/governance/kt_comparator_registry.json",
-    "KT_PROD_CLEANROOM/reports/useful_output_benchmark.json",
-    "KT_PROD_CLEANROOM/reports/benchmark_negative_result_ledger.json"
-  ],
   "status": "PASS",
-  "supporting_refs": {
-    "manifest_status": "ACTIVE",
-    "scorer_registry_status": "ACTIVE"
-  },
-  "tranche_id": "B03_T1_FROZEN_COMPARATOR_CONSTITUTION"
+  "tranche_id": "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT"
 }

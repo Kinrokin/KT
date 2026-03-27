@@ -48,11 +48,15 @@
       "pass": true
     },
     {
-      "check_id": "constitution_category_matches_actual_category",
+      "check_id": "constitution_current_head_bound",
       "pass": true
     },
     {
       "check_id": "comparator_registry_active",
+      "pass": true
+    },
+    {
+      "check_id": "comparator_registry_current_head_bound",
       "pass": true
     },
     {
@@ -76,27 +80,31 @@
       "pass": true
     },
     {
+      "check_id": "bundle_passes",
+      "pass": true
+    },
+    {
       "check_id": "comparator_replay_passes",
+      "pass": true
+    },
+    {
+      "check_id": "binding_receipt_passes",
+      "pass": true
+    },
+    {
+      "check_id": "alias_retirement_receipt_passes",
       "pass": true
     },
     {
       "check_id": "canonical_scorecard_id_consistent",
       "pass": true
-    },
-    {
-      "check_id": "canonical_receipt_binding_consistent",
-      "pass": true
-    },
-    {
-      "check_id": "measurement_scope_limited",
-      "pass": true
     }
   ],
-  "claim_boundary": "B03 tranche 1 freezes comparator constitution and one canonical baseline-vs-live scorecard only. It does not unlock planner, paradox, temporal, multiverse, router, civilization, externality, or product widening.",
-  "current_git_head": "1c4ec6813f289de3f8e4c2a2ec2d55d7ea5270fe",
-  "generated_utc": "2026-03-27T03:37:15Z",
+  "claim_boundary": "B03 tranche 2 binds comparator constitution surfaces to current head and retires duplicate comparator aliases only.",
+  "current_git_head": "b1fbd35baec8232916d853f2e2e0e9ceed2a5e4d",
+  "generated_utc": "2026-03-27T03:57:00Z",
   "negative_result_row_count": 7,
-  "schema_id": "kt.gate_c_t1.benchmark_constitution_receipt.v2",
+  "schema_id": "kt.gate_c_t2.benchmark_constitution_receipt.v3",
   "source_refs": [
     "KT_PROD_CLEANROOM/governance/kt_benchmark_constitution_v1.json",
     "KT_PROD_CLEANROOM/governance/kt_comparator_registry.json",
@@ -106,7 +114,10 @@
     "KT_PROD_CLEANROOM/governance/scorer_registry.json",
     "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
     "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
-    "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json"
+    "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
+    "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
+    "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
+    "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json"
   ],
   "status": "PASS",
   "stronger_claims_not_made": [
@@ -114,10 +125,10 @@
     "paradox_superiority_earned",
     "multiverse_superiority_earned",
     "router_superiority_earned",
-    "capability_atlas_ratifed",
+    "capability_atlas_ratified",
     "promotion_civilization_ratified",
     "c006_closed",
     "commercial_widening_unlocked"
   ],
-  "tranche_id": "B03_T1_FROZEN_COMPARATOR_CONSTITUTION"
+  "tranche_id": "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT"
 }
