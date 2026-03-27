@@ -1,52 +1,44 @@
 {
   "schema_id": "kt.resume_blockers_receipt.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-27T03:43:59.4553170Z",
+  "generated_utc": "2026-03-27T04:12:00Z",
   "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "f84d9ec93ef3b62d680608f4dc39d3e0c77cd628",
+  "current_git_head": "87b825405b0d5f13623581b1be5b746279b72073",
   "worktree_cleanliness": "CLEAN_PRE_EMIT",
   "repo_state_executable_now": true,
   "blocking_state": "NONE",
   "blocking_reasons": [],
   "nonblocking_conflicts": [
     {
-      "conflict_id": "DOCUMENTARY_SURFACE_ACTIVE_SUBJECT_STALE",
-      "class": "DOCUMENTARY_ONLY",
+      "conflict_id": "COMPETITIVE_SCORECARD_VALIDATOR_DEPENDENCY_REMAINS",
+      "class": "COUNTED_GATE_C_NARROW_RISK",
       "evidence": [
-        "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json truth_subject_commit=5746fed530c0218abc2ac4d106f6a869aa8798b2",
-        "KT_PROD_CLEANROOM/reports/current_state_receipt.json head_relation=HEAD_DIVERGED_FROM_ACTIVE_SUBJECT",
-        "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t1_verify_20260327_0344b/KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json status=PASS"
+        "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py references KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
+        "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py references KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
+        "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py references KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
+        "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py references KT_PROD_CLEANROOM/reports/competitive_scorecard.json"
       ],
-      "resolution_rule": "Latest sealed receipts win for CURRENT STATE in this re-entry pass."
-    },
-    {
-      "conflict_id": "LEGACY_COMPARATOR_ALIAS_DRIFT",
-      "class": "DOCUMENTARY_COMPATIBILITY_SURFACE",
-      "evidence": [
-        "KT_PROD_CLEANROOM/governance/kt_benchmark_constitution_v1.json current_git_head=9cba8edfb3ed91501186c7193a619303157f927e",
-        "KT_PROD_CLEANROOM/reports/competitive_scorecard.json current_git_head=494cd490a6512b9bfa937c82886db625143d38ae",
-        "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json current_git_head=f84d9ec93ef3b62d680608f4dc39d3e0c77cd628"
-      ],
-      "resolution_rule": "Next counted workstream is B03_T2 current-head binding plus alias retirement only. This drift does not reopen lower gates and does not authorize widening."
+      "resolution_rule": "Next counted workstream is B03_T3 validator detachment only. This risk does not reopen lower gates and does not authorize widening."
     }
   ],
   "current_lawful_gate_standing": {
     "b02_runtime_unification": "EXITED",
-    "gate_c": "OPEN_TRANCHE_1_COMPLETE_NOT_EXITED",
+    "gate_c": "OPEN_TRANCHES_1_2_COMPLETE_NOT_EXITED",
     "gate_d": "NOT_AUTHORIZED"
   },
-  "exact_next_counted_workstream_id": "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT",
+  "exact_next_counted_workstream_id": "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT",
   "explicit_non_go_areas": [
     "Do not restart B00, B01, or B02 without regression proof.",
     "Do not count Gate D toward Gate C.",
-    "Do not widen planner, paradox, multiverse, or router claim surfaces in Gate C tranche 2.",
-    "Do not add new comparator rows in Gate C tranche 2.",
+    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 3.",
+    "Do not add new comparator rows in Gate C tranche 3.",
     "Do not widen civilization, externality, or product claims.",
-    "Do not use buyer-language beyond the narrowest validated wedge."
+    "Do not use buyer-language beyond the narrowest validated wedge.",
+    "Do not attempt Gate C exit in this launch-surface pass."
   ],
-  "why_executable_now": "The repo is clean, B03 tranche 1 is sealed and verified, and the remaining Gate C ambiguity is narrow documentary alias drift that can be compressed without any capability widening."
+  "why_executable_now": "The repo is clean, B03 tranche 2 is sealed and verified, and the remaining Gate C risk is narrow validator-path alias dependence that can be compressed without any comparator or capability widening."
 }

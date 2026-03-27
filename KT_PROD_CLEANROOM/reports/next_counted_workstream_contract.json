@@ -1,80 +1,87 @@
 {
   "schema_id": "kt.next_counted_workstream_contract.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-27T03:43:59.4553170Z",
+  "generated_utc": "2026-03-27T04:12:00Z",
   "source_workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "current_counted_gate": "Gate C",
   "parent_batch_id": "B03_GATE_C_CAPABILITY_FORCING",
-  "exact_next_counted_workstream_id": "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT",
+  "exact_next_counted_workstream_id": "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
-  "workstream_objective": "Bind the frozen comparator constitution to the current head and retire legacy comparator-scorecard alias drift. Earn no new comparator rows and no capability widening in tranche 2.",
+  "workstream_objective": "Detach competitive_scorecard.json from validator and counted comparator-law consumer paths so the canonical baseline-vs-live scorecard remains the only comparator truth. Earn no new comparator rows, no Gate C exit, and no capability widening in tranche 3.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "canonical_receipt_binding": {
     "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
     "frozen_eval_scorecard_bundle_ref": "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
-    "comparator_replay_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json"
+    "comparator_replay_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
+    "alias_retirement_receipt_ref": "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json"
   },
   "gate_domain_product_split": {
     "gate": "Gate C frozen capability forcing under comparator law",
-    "domain_surface": "DOMAIN_3_CAPABILITY_ATLAS is downstream domain standing and does not authorize Gate D counting in this workstream.",
+    "domain_surface": "DOMAIN_3_CAPABILITY_ATLAS remains downstream domain standing and does not authorize Gate D counting in this workstream.",
     "product_surface": "NONE_COUNTING"
   },
   "prerequisite_read": {
-    "b03_t1_authority": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t1_verify_20260327_0344b/KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
-    "b03_t1_scorecard": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t1_verify_20260327_0344b/KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+    "b03_t2_authority": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t2_verify_20260327_0410/KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
+    "b03_t2_binding": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t2_verify_20260327_0410/KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
+    "b03_t2_alias_retirement": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t2_verify_20260327_0410/KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
     "omega_batch_definition": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json",
     "v11_closure_map": "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.json"
   },
   "expected_mutate_paths": [
     "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
     "KT_PROD_CLEANROOM/tests/operator/test_benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_e1_bounded_campaign_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_final_current_head_adjudication_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_w3_externality_and_comparative_proof_validate.py",
     "KT_PROD_CLEANROOM/governance/kt_benchmark_constitution_v1.json",
     "KT_PROD_CLEANROOM/governance/kt_comparator_registry.json",
     "KT_PROD_CLEANROOM/governance/benchmark_manifest.json",
     "KT_PROD_CLEANROOM/governance/scorer_registry.json",
-    "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
     "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+    "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
     "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
     "KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
-    "KT_PROD_CLEANROOM/reports/benchmark_negative_result_ledger.json",
-    "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
     "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
-    "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json"
+    "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
+    "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
   ],
   "expected_create_if_absent_targets": [
-    "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
-    "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json"
+    "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
   ],
   "expected_receipts": [
-    "KT_PROD_CLEANROOM/governance/kt_benchmark_constitution_v1.json",
-    "KT_PROD_CLEANROOM/governance/kt_comparator_registry.json",
-    "KT_PROD_CLEANROOM/governance/benchmark_manifest.json",
-    "KT_PROD_CLEANROOM/governance/scorer_registry.json",
-    "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
     "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+    "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
     "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
     "KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
-    "KT_PROD_CLEANROOM/reports/benchmark_negative_result_ledger.json",
-    "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
     "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
-    "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json"
+    "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
+    "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
   ],
   "rollback_artifacts": {
-    "pre_mutation_patch_ref": "tmp/worktree_snapshots/b03_t2_pre_mutation.patch",
-    "pre_mutation_status_ref": "tmp/worktree_snapshots/b03_t2_pre_mutation.status.txt",
-    "pre_mutation_contract_snapshot_dir": "tmp/worktree_snapshots/b03_t2_contract_snapshot",
+    "pre_mutation_patch_ref": "tmp/worktree_snapshots/b03_t3_pre_mutation.patch",
+    "pre_mutation_status_ref": "tmp/worktree_snapshots/b03_t3_pre_mutation.status.txt",
+    "pre_mutation_contract_snapshot_dir": "tmp/worktree_snapshots/b03_t3_contract_snapshot",
     "tracked_restore_refs": [
+      "HEAD:KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+      "HEAD:KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
+      "HEAD:KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+      "HEAD:KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
       "HEAD:KT_PROD_CLEANROOM/governance/kt_benchmark_constitution_v1.json",
       "HEAD:KT_PROD_CLEANROOM/governance/kt_comparator_registry.json",
-      "HEAD:KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
-      "HEAD:KT_PROD_CLEANROOM/tests/operator/test_benchmark_constitution_validate.py",
-      "HEAD:KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
+      "HEAD:KT_PROD_CLEANROOM/governance/benchmark_manifest.json",
+      "HEAD:KT_PROD_CLEANROOM/governance/scorer_registry.json",
+      "HEAD:KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+      "HEAD:KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
+      "HEAD:KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
       "HEAD:KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
-      "HEAD:KT_PROD_CLEANROOM/reports/benchmark_negative_result_ledger.json"
+      "HEAD:KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
+      "HEAD:KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json"
     ],
     "remove_if_created": [
-      "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
-      "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json"
+      "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
     ]
   },
   "measurement_scope": {
@@ -87,11 +94,13 @@
       "KT_PROD_CLEANROOM/reports/benchmark_negative_result_ledger.json",
       "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
       "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
-      "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
+      "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
       "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
-      "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json"
+      "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
+      "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
     ],
     "forbidden_measured_surfaces": [
+      "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
       "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/cognitive_engine.py",
       "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
       "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/temporal_engine.py",
@@ -99,51 +108,60 @@
       "KT_PROD_CLEANROOM/reports/router_shadow_eval_matrix.json",
       "KT_PROD_CLEANROOM/reports/live_cognition_receipt.json"
     ],
-    "rule": "Tranche 2 may only reconcile current-head binding and retire legacy alias drift across comparator-law surfaces. No new comparator rows or broader organ scoring are allowed."
+    "rule": "Tranche 3 may only detach validator-path and counted comparator-law dependence on competitive_scorecard.json. No new comparator rows, no Gate C exit, and no broader organ scoring are allowed."
   },
   "validators_and_tests": {
     "validators": [
-      "python -m tools.operator.benchmark_constitution_validate"
+      "python -m tools.operator.benchmark_constitution_validate",
+      "python -m tools.operator.e1_bounded_campaign_validate",
+      "python -m tools.operator.final_current_head_adjudication_validate",
+      "python -m tools.operator.w3_externality_and_comparative_proof_validate"
     ],
     "tests": [
-      "python -m pytest -o addopts='' tests/operator/test_benchmark_constitution_validate.py -q"
+      "python -m pytest -o addopts='' tests/operator/test_benchmark_constitution_validate.py -q",
+      "python -m pytest -o addopts='' tests/operator/test_e1_bounded_campaign_validate.py -q",
+      "python -m pytest -o addopts='' tests/operator/test_final_current_head_adjudication_validate.py -q",
+      "python -m pytest -o addopts='' tests/operator/test_w3_externality_and_comparative_proof_validate.py -q"
     ]
   },
   "stop_conditions": [
     "Any mutate path outside expected_mutate_paths fails tranche authorization.",
-    "Legacy benchmark constitution or comparator registry remains stale against current head after tranche exit.",
-    "Competitive scorecard remains claim-equivalent to the canonical baseline-vs-live scorecard without an explicit documentary-only alias-retired boundary.",
-    "A second canonical scorecard id appears.",
-    "Comparator replay is absent or non-deterministic.",
-    "Planner, paradox, multiverse, router, memory, or new comparator-row widening enters tranche 2 counted scope."
+    "Any validator path or counted comparator-law consumer still reads competitive_scorecard.json after tranche completion.",
+    "Any second canonical scorecard id appears.",
+    "Any new comparator row is introduced.",
+    "Any planner, paradox, multiverse, router, memory, civilization, externality, or product widening enters counted scope.",
+    "Any attempt is made to claim Gate C exit from tranche 3.",
+    "Any Gate D promotion packet is counted toward Gate C."
   ],
   "pass_fail_criteria": {
     "pass": [
-      "Frozen comparator suite remains pinned.",
-      "Legacy benchmark constitution and comparator registry are rebound to current head or explicitly superseded by current-head-bound law.",
-      "One canonical baseline-vs-live scorecard exists and legacy competitive scorecard surfaces are explicitly noncanonical."
+      "baseline_vs_live_scorecard.json remains the sole canonical Gate C comparator truth.",
+      "competitive_scorecard.json is absent from validator paths and counted comparator-law measured surfaces.",
+      "documentary compatibility, if still needed, is carried only by scorecard_alias_retirement_receipt.json and the explicit detachment receipt."
     ],
     "fail": [
-      "Any Gate D promotion-civilization packet is counted toward Gate C.",
-      "Any externality, product, or market widening enters the counted scope.",
-      "Any planner, paradox, multiverse, or router widening is counted in tranche 2.",
-      "Any new comparator row is introduced in tranche 2.",
-      "Any comparator-law surface is replaced by design rhetoric."
+      "Any validator path still depends on competitive_scorecard.json as a counted input.",
+      "Any new comparator truth is introduced.",
+      "Any planner, paradox, multiverse, router, or other capability widening is counted in tranche 3.",
+      "Any Gate C exit or Gate D counting claim is made."
     ]
   },
   "explicit_non_go_areas": [
+    "Gate C exit",
     "Gate D counting",
-    "promotion civilization as Gate C counting work",
+    "promotion civilization as Gate C work",
     "new comparator rows",
     "planner widening",
     "paradox widening",
     "multiverse widening",
     "router widening",
+    "memory widening",
+    "civilization widening",
     "externality widening",
     "product widening",
     "market claims",
     "new canonical concepts without schema plus validator plus receipt plus rollback plus claim ceiling plus terminal state"
   ],
   "repo_state_executable_now": true,
-  "execution_readiness": "READY_FOR_EXPLICIT_B03_T2_AUTHORIZATION_ONLY"
+  "execution_readiness": "READY_FOR_EXPLICIT_B03_T3_AUTHORIZATION_ONLY"
 }
