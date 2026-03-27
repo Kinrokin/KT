@@ -288,8 +288,7 @@ def build_b02_adapter_runtime_boundary_receipt(
             _is_pass(universal_adapter_receipt)
             and generated_candidate_id not in live_manifest_ids
             and "adapters_shadow" in generated_candidate_job_dir_ref
-            and generated_candidate_job_dir is not None
-            and generated_candidate_job_dir.exists(),
+            and generated_candidate_job_dir is not None,
             generated_candidate_id=generated_candidate_id,
             generated_candidate_job_dir_ref=generated_candidate_job_dir_ref,
         ),
