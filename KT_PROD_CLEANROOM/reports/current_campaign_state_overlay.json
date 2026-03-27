@@ -1,7 +1,7 @@
 {
   "schema_id": "kt.current_campaign_state_overlay.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-27T04:12:00Z",
+  "generated_utc": "2026-03-27T04:38:00Z",
   "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "authority_stack": {
@@ -16,9 +16,10 @@
       "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.md"
     ],
     "current_state_authority": [
-      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t2_verify_20260327_0410/KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
-      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t2_verify_20260327_0410/KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
-      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t2_verify_20260327_0410/KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json"
+      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t3_verify_20260327_0435/KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
+      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t3_verify_20260327_0435/KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
+      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t3_verify_20260327_0435/KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
+      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t3_verify_20260327_0435/KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json"
     ],
     "documentary_surfaces": [
       "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
@@ -35,7 +36,7 @@
   "repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "87b825405b0d5f13623581b1be5b746279b72073",
+    "current_git_head": "9b7e47b8521d946ac449b2d33fd98c9368721a08",
     "worktree_cleanliness": "CLEAN_PRE_EMIT"
   },
   "omega_batch_status": {
@@ -57,37 +58,39 @@
     "current_counted_batch": "B03_GATE_C_CAPABILITY_FORCING",
     "completed_tranches": [
       "B03_T1_FROZEN_COMPARATOR_CONSTITUTION",
-      "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT"
+      "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT",
+      "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT"
     ],
-    "next_counted_tranche": "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT",
+    "next_counted_tranche": "B03_T4_VALIDATOR_WRITE_SCOPE_ENFORCEMENT",
     "b02_runtime_unification": "EXITED",
-    "gate_c_status": "OPEN_TRANCHES_1_2_COMPLETE_NOT_EXITED",
+    "gate_c_status": "OPEN_TRANCHES_1_2_3_COMPLETE_NOT_EXITED",
     "gate_d_status": "NOT_AUTHORIZED",
     "authoritative_basis": [
-      "benchmark_constitution_receipt.status = PASS on sealed head 87b825405b0d5f13623581b1be5b746279b72073",
-      "canonical_scorecard_binding_receipt.status = PASS on sealed head 87b825405b0d5f13623581b1be5b746279b72073",
-      "scorecard_alias_retirement_receipt.status = PASS on sealed head 87b825405b0d5f13623581b1be5b746279b72073",
-      "Gate C is open with tranches 1 and 2 complete and not exited"
+      "benchmark_constitution_receipt.status = PASS on sealed head 9b7e47b8521d946ac449b2d33fd98c9368721a08",
+      "canonical_scorecard_binding_receipt.status = PASS on sealed head 9b7e47b8521d946ac449b2d33fd98c9368721a08",
+      "competitive_scorecard_validator_detachment_receipt.status = PASS on sealed head 9b7e47b8521d946ac449b2d33fd98c9368721a08",
+      "Gate C is open with tranches 1, 2, and 3 complete and not exited"
     ]
   },
   "state_reconciliation": {
-    "latest_sealed_receipts_current_state": "B03 tranche 2 earned current-head binding plus duplicate-comparator alias retirement on sealed head 87b825405b0d5f13623581b1be5b746279b72073.",
-    "documentary_surface_state_on_main": "Competitive scorecard remains documentary-only after alias retirement, but validator-path references to that file still exist and must be detached before wider Gate C forcing.",
-    "reanchor_decision": "Use sealed B03 tranche-2 receipts for current standing, then narrow the next counted tranche to validator-path detachment of competitive_scorecard.json only."
+    "latest_sealed_receipts_current_state": "B03 tranche 3 earned counted-path detachment of competitive_scorecard.json on sealed head 9b7e47b8521d946ac449b2d33fd98c9368721a08.",
+    "documentary_surface_state_on_main": "The canonical comparator truth is singular, but validator write-scope enforcement is not yet encoded as a fail-closed test contract.",
+    "reanchor_decision": "Use sealed B03 tranche-3 receipts for current standing, then narrow the next counted tranche to validator write-scope enforcement only."
   },
-  "next_counted_workstream_id": "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT",
-  "next_counted_workstream_scope": "Detach competitive_scorecard.json from validator and counted comparator-law consumers so the canonical baseline-vs-live scorecard remains the sole comparator truth. No new comparator rows and no capability-surface widening are counted in tranche 3.",
+  "next_counted_workstream_id": "B03_T4_VALIDATOR_WRITE_SCOPE_ENFORCEMENT",
+  "next_counted_workstream_scope": "Add fail-closed write-scope enforcement for the comparator-law validator family so validator runs cannot write tracked files outside declared output paths. No new comparator rows, no comparator-semantic rewrites, and no capability-surface widening are counted in tranche 4.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "explicit_non_go_areas": [
     "Do not reopen B00, B01, or B02 without a current regression receipt.",
     "Do not treat promotion civilization as current Gate C counting work.",
     "Do not count Gate D work toward Gate C.",
-    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 3.",
-    "Do not add new comparator rows in Gate C tranche 3.",
+    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 4.",
+    "Do not add new comparator rows in Gate C tranche 4.",
+    "Do not rewrite comparator semantics under a write-scope label.",
     "Do not widen civilization, externality, or product claims.",
     "Do not use buyer-language or market claims beyond the narrowest validated wedge.",
     "Do not attempt Gate C exit in this launch-surface pass."
   ],
   "repo_state_executable_now": true,
-  "executable_now_why": "Repo is clean on main, B03 tranche 2 is sealed and verified on 87b825405b0d5f13623581b1be5b746279b72073, and the next lawful move is a narrow Gate C tranche-3 validator-detachment contract."
+  "executable_now_why": "Repo is clean on main, B03 tranche 3 is sealed and verified on 9b7e47b8521d946ac449b2d33fd98c9368721a08, and the next lawful move is a narrow Gate C tranche-4 write-scope-enforcement contract."
 }

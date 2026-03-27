@@ -1,19 +1,20 @@
 {
   "schema_id": "kt.next_counted_workstream_contract.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-27T04:12:00Z",
+  "generated_utc": "2026-03-27T04:38:00Z",
   "source_workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "current_counted_gate": "Gate C",
   "parent_batch_id": "B03_GATE_C_CAPABILITY_FORCING",
-  "exact_next_counted_workstream_id": "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT",
+  "exact_next_counted_workstream_id": "B03_T4_VALIDATOR_WRITE_SCOPE_ENFORCEMENT",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
-  "workstream_objective": "Detach competitive_scorecard.json from validator and counted comparator-law consumer paths so the canonical baseline-vs-live scorecard remains the only comparator truth. Earn no new comparator rows, no Gate C exit, and no capability widening in tranche 3.",
+  "workstream_objective": "Enforce fail-closed write-scope law for the comparator-law validator family so validator runs cannot mutate tracked files outside declared tranche outputs. Earn no new comparator rows, no comparator-semantic changes, no Gate C exit, and no capability widening in tranche 4.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "canonical_receipt_binding": {
     "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
     "frozen_eval_scorecard_bundle_ref": "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
     "comparator_replay_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
-    "alias_retirement_receipt_ref": "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json"
+    "alias_retirement_receipt_ref": "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
+    "detachment_receipt_ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
   },
   "gate_domain_product_split": {
     "gate": "Gate C frozen capability forcing under comparator law",
@@ -21,94 +22,78 @@
     "product_surface": "NONE_COUNTING"
   },
   "prerequisite_read": {
-    "b03_t2_authority": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t2_verify_20260327_0410/KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
-    "b03_t2_binding": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t2_verify_20260327_0410/KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
-    "b03_t2_alias_retirement": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t2_verify_20260327_0410/KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
+    "b03_t3_authority": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t3_verify_20260327_0435/KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
+    "b03_t3_binding": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t3_verify_20260327_0435/KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
+    "b03_t3_detachment": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t3_verify_20260327_0435/KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
     "omega_batch_definition": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json",
     "v11_closure_map": "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.json"
   },
   "expected_mutate_paths": [
     "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
-    "KT_PROD_CLEANROOM/tests/operator/test_benchmark_constitution_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
-    "KT_PROD_CLEANROOM/tests/operator/test_e1_bounded_campaign_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
-    "KT_PROD_CLEANROOM/tests/operator/test_final_current_head_adjudication_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_e1_bounded_campaign_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_final_current_head_adjudication_validate.py",
     "KT_PROD_CLEANROOM/tests/operator/test_w3_externality_and_comparative_proof_validate.py",
-    "KT_PROD_CLEANROOM/governance/kt_benchmark_constitution_v1.json",
-    "KT_PROD_CLEANROOM/governance/kt_comparator_registry.json",
-    "KT_PROD_CLEANROOM/governance/benchmark_manifest.json",
-    "KT_PROD_CLEANROOM/governance/scorer_registry.json",
-    "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
-    "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
-    "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
-    "KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
-    "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
-    "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
-    "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_validator_write_scope_enforcement.py",
+    "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json"
   ],
   "expected_create_if_absent_targets": [
-    "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_validator_write_scope_enforcement.py",
+    "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json"
   ],
   "expected_receipts": [
-    "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
-    "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
-    "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
-    "KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
-    "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
-    "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
-    "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
+    "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
+    "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json"
   ],
   "rollback_artifacts": {
-    "pre_mutation_patch_ref": "tmp/worktree_snapshots/b03_t3_pre_mutation.patch",
-    "pre_mutation_status_ref": "tmp/worktree_snapshots/b03_t3_pre_mutation.status.txt",
-    "pre_mutation_contract_snapshot_dir": "tmp/worktree_snapshots/b03_t3_contract_snapshot",
+    "pre_mutation_patch_ref": "tmp/worktree_snapshots/b03_t4_pre_mutation.patch",
+    "pre_mutation_status_ref": "tmp/worktree_snapshots/b03_t4_pre_mutation.status.txt",
+    "pre_mutation_contract_snapshot_dir": "tmp/worktree_snapshots/b03_t4_contract_snapshot",
     "tracked_restore_refs": [
       "HEAD:KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
       "HEAD:KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
       "HEAD:KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
       "HEAD:KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
-      "HEAD:KT_PROD_CLEANROOM/governance/kt_benchmark_constitution_v1.json",
-      "HEAD:KT_PROD_CLEANROOM/governance/kt_comparator_registry.json",
-      "HEAD:KT_PROD_CLEANROOM/governance/benchmark_manifest.json",
-      "HEAD:KT_PROD_CLEANROOM/governance/scorer_registry.json",
-      "HEAD:KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
-      "HEAD:KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
-      "HEAD:KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
-      "HEAD:KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
-      "HEAD:KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
-      "HEAD:KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json"
+      "HEAD:KT_PROD_CLEANROOM/tests/operator/test_benchmark_constitution_validate.py",
+      "HEAD:KT_PROD_CLEANROOM/tests/operator/test_e1_bounded_campaign_validate.py",
+      "HEAD:KT_PROD_CLEANROOM/tests/operator/test_final_current_head_adjudication_validate.py",
+      "HEAD:KT_PROD_CLEANROOM/tests/operator/test_w3_externality_and_comparative_proof_validate.py"
     ],
     "remove_if_created": [
-      "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
+      "KT_PROD_CLEANROOM/tests/operator/test_b03_validator_write_scope_enforcement.py",
+      "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json"
     ]
   },
   "measurement_scope": {
     "allowed_measured_surfaces": [
-      "KT_PROD_CLEANROOM/governance/kt_benchmark_constitution_v1.json",
-      "KT_PROD_CLEANROOM/governance/kt_comparator_registry.json",
-      "KT_PROD_CLEANROOM/governance/benchmark_manifest.json",
-      "KT_PROD_CLEANROOM/governance/scorer_registry.json",
-      "KT_PROD_CLEANROOM/reports/useful_output_benchmark.json",
-      "KT_PROD_CLEANROOM/reports/benchmark_negative_result_ledger.json",
       "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
-      "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
       "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
-      "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
+      "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
       "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
-      "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
+      "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
+      "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json"
     ],
     "forbidden_measured_surfaces": [
       "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
-      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/cognitive_engine.py",
-      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
-      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/temporal_engine.py",
-      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/multiverse/multiverse_engine.py",
-      "KT_PROD_CLEANROOM/reports/router_shadow_eval_matrix.json",
-      "KT_PROD_CLEANROOM/reports/live_cognition_receipt.json"
+      "KT_PROD_CLEANROOM/governance/final_blocker_matrix.json",
+      "KT_PROD_CLEANROOM/governance/final_claim_class_outcome.json",
+      "KT_PROD_CLEANROOM/governance/final_forbidden_claims_list.json",
+      "KT_PROD_CLEANROOM/governance/final_tier_ruling.json",
+      "KT_PROD_CLEANROOM/product/final_product_truth_boundary.json",
+      "KT_PROD_CLEANROOM/reports/advancement_delta_w3.json",
+      "KT_PROD_CLEANROOM/reports/c006_second_host_kit.json",
+      "KT_PROD_CLEANROOM/reports/canonical_delta_w3.json",
+      "KT_PROD_CLEANROOM/reports/commercial_truth_packet.json",
+      "KT_PROD_CLEANROOM/reports/e1_bounded_campaign_receipt.json",
+      "KT_PROD_CLEANROOM/reports/e2_cross_host_replay_receipt.json",
+      "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+      "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
+      "KT_PROD_CLEANROOM/reports/public_verifier_kit.json"
     ],
-    "rule": "Tranche 3 may only detach validator-path and counted comparator-law dependence on competitive_scorecard.json. No new comparator rows, no Gate C exit, and no broader organ scoring are allowed."
+    "rule": "Tranche 4 may only enforce validator write-scope containment for the already-authorized comparator-law validator family. It may not alter comparator semantics or broaden measured surfaces."
   },
   "validators_and_tests": {
     "validators": [
@@ -121,28 +106,28 @@
       "python -m pytest -o addopts='' tests/operator/test_benchmark_constitution_validate.py -q",
       "python -m pytest -o addopts='' tests/operator/test_e1_bounded_campaign_validate.py -q",
       "python -m pytest -o addopts='' tests/operator/test_final_current_head_adjudication_validate.py -q",
-      "python -m pytest -o addopts='' tests/operator/test_w3_externality_and_comparative_proof_validate.py -q"
+      "python -m pytest -o addopts='' tests/operator/test_w3_externality_and_comparative_proof_validate.py -q",
+      "python -m pytest -o addopts='' tests/operator/test_b03_validator_write_scope_enforcement.py -q"
     ]
   },
   "stop_conditions": [
     "Any mutate path outside expected_mutate_paths fails tranche authorization.",
-    "Any validator path or counted comparator-law consumer still reads competitive_scorecard.json after tranche completion.",
-    "Any second canonical scorecard id appears.",
+    "Any validator run writes a tracked file outside the tranche-declared output set under the write-scope test.",
     "Any new comparator row is introduced.",
+    "Any comparator semantics are rewritten under the write-scope label.",
     "Any planner, paradox, multiverse, router, memory, civilization, externality, or product widening enters counted scope.",
-    "Any attempt is made to claim Gate C exit from tranche 3.",
+    "Any attempt is made to claim Gate C exit from tranche 4.",
     "Any Gate D promotion packet is counted toward Gate C."
   ],
   "pass_fail_criteria": {
     "pass": [
+      "A fail-closed test proves the comparator-law validator family does not write tracked files outside tranche-declared outputs.",
       "baseline_vs_live_scorecard.json remains the sole canonical Gate C comparator truth.",
-      "competitive_scorecard.json is absent from validator paths and counted comparator-law measured surfaces.",
-      "documentary compatibility, if still needed, is carried only by scorecard_alias_retirement_receipt.json and the explicit detachment receipt."
+      "competitive_scorecard.json remains documentary-only and non-consumable by validator or counted paths."
     ],
     "fail": [
-      "Any validator path still depends on competitive_scorecard.json as a counted input.",
-      "Any new comparator truth is introduced.",
-      "Any planner, paradox, multiverse, router, or other capability widening is counted in tranche 3.",
+      "Any validator writes tracked files outside the declared output set.",
+      "Any comparator semantics or row set changes under the write-scope tranche.",
       "Any Gate C exit or Gate D counting claim is made."
     ]
   },
@@ -151,6 +136,7 @@
     "Gate D counting",
     "promotion civilization as Gate C work",
     "new comparator rows",
+    "comparator-semantic rewrite",
     "planner widening",
     "paradox widening",
     "multiverse widening",
@@ -163,5 +149,5 @@
     "new canonical concepts without schema plus validator plus receipt plus rollback plus claim ceiling plus terminal state"
   ],
   "repo_state_executable_now": true,
-  "execution_readiness": "READY_FOR_EXPLICIT_B03_T3_AUTHORIZATION_ONLY"
+  "execution_readiness": "READY_FOR_EXPLICIT_B03_T4_AUTHORIZATION_ONLY"
 }
