@@ -1,0 +1,23 @@
+{
+  "schema_id": "kt.gate_c.counted_consumer_allowlist_contract.v1",
+  "classification_tag": "COUNTING_CLOSURE",
+  "contract_id": "KT_GATE_C_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_V1",
+  "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+  "shared_guard_helper_ref": "tools.operator.benchmark_constitution_validate.evaluate_documentary_carrier_fail_closed_consumer_guard",
+  "shared_guard_helper_owner_ref": "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+  "sanctioned_counted_consumer_refs": [
+    "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py"
+  ],
+  "allowed_noncounting_owner_refs": [
+    "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py"
+  ],
+  "bypass_signatures": [
+    "t10_receipt_final_head_authority_alignment_receipt.json",
+    "tracked_t10_authority_class",
+    "evaluate_documentary_carrier_fail_closed_consumer_guard("
+  ],
+  "contract_update_rule": "If the sanctioned counted-consumer set changes, this contract must change in the same counted tranche or validation fails closed.",
+  "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+  "claim_boundary": "This contract binds counted-consumer ownership only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit."
+}

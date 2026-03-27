@@ -38,53 +38,51 @@ def _clean_clone(tmp_path: Path) -> Path:
     return clone_root
 
 
-def test_shared_guard_single_path_barrier_passes_on_current_repo() -> None:
+def test_counted_consumer_allowlist_contract_binding_passes_on_current_repo() -> None:
     root = _repo_root()
     barrier = benchmark.build_documentary_carrier_guard_single_path_barrier(root=root)
-    receipt = w3.build_shared_guard_single_path_enforcement_receipt(root=root)
+    receipt = w3.build_counted_consumer_allowlist_contract_binding_receipt(root=root)
 
     assert barrier["status"] == "PASS"
-    assert barrier["allowed_consumer_refs"] == [
-        "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
-        "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
-    ]
-    assert barrier["allowed_noncounting_owner_refs"] == [
-        "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
-    ]
-    assert barrier["unexpected_owner_hits"] == []
+    assert barrier["counted_consumer_allowlist_contract_ref"] == "KT_PROD_CLEANROOM/governance/counted_consumer_allowlist_contract.json"
+    assert barrier["allowed_consumer_refs"] == barrier["detected_counted_consumer_refs"]
     assert receipt["status"] == "PASS"
-    assert receipt["single_path_barrier"]["status"] == "PASS"
+    assert receipt["receipt_role"] == "COUNTED_T15_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_BINDING_ARTIFACT_ONLY"
+    assert receipt["counted_consumer_allowlist_contract_ref"] == "KT_PROD_CLEANROOM/governance/counted_consumer_allowlist_contract.json"
+    assert receipt["allowlist_contract"]["sanctioned_counted_consumer_refs"] == barrier["detected_counted_consumer_refs"]
 
 
-def test_unsanctioned_operator_owner_fails_single_path_barrier(tmp_path: Path) -> None:
+def test_uncontracted_new_counted_consumer_fails_binding(tmp_path: Path) -> None:
     root = _clean_clone(tmp_path)
-    rogue = root / "KT_PROD_CLEANROOM/tools/operator/rogue_documentary_consumer.py"
+    rogue = root / "KT_PROD_CLEANROOM/tools/operator/rogue_counted_consumer.py"
     rogue.write_text(
         "\n".join(
             [
-                "T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT = 'KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json'",
-                "tracked_t10_authority_class = 'DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH'",
+                "from tools.operator.benchmark_constitution_validate import evaluate_documentary_carrier_fail_closed_consumer_guard",
+                "",
+                "def run(root):",
+                "    return evaluate_documentary_carrier_fail_closed_consumer_guard(",
+                "        root=root,",
+                "        consumer_id='rogue_counted_consumer',",
+                "    )",
+                "",
             ]
-        )
-        + "\n",
+        ),
         encoding="utf-8",
     )
 
     barrier = benchmark.build_documentary_carrier_guard_single_path_barrier(root=root)
 
     assert barrier["status"] == "FAIL"
-    assert barrier["unexpected_owner_hits"] == [
-        {
-            "owner_ref": "KT_PROD_CLEANROOM/tools/operator/rogue_documentary_consumer.py",
-            "matched_tokens": [
-                "t10_receipt_final_head_authority_alignment_receipt.json",
-                "tracked_t10_authority_class",
-            ],
-        }
-    ]
+    assert "KT_PROD_CLEANROOM/tools/operator/rogue_counted_consumer.py" in barrier["detected_counted_consumer_refs"]
+    assert "KT_PROD_CLEANROOM/tools/operator/rogue_counted_consumer.py" not in barrier["allowed_consumer_refs"]
+    assert any(
+        check["check_id"] == "counted_consumer_allowlist_matches_detected_runtime_owner_set" and not check["pass"]
+        for check in barrier["checks"]
+    )
 
 
-def test_w3_cli_emits_t14_receipt_with_explicit_opt_in_only(tmp_path: Path) -> None:
+def test_w3_cli_emits_t15_receipt_with_explicit_opt_in_only(tmp_path: Path) -> None:
     root = _clean_clone(tmp_path)
     env = dict(os.environ)
     env["PYTHONPATH"] = str(root / "KT_PROD_CLEANROOM") + os.pathsep + str(root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src")
@@ -94,7 +92,7 @@ def test_w3_cli_emits_t14_receipt_with_explicit_opt_in_only(tmp_path: Path) -> N
     atlas_path = tmp_path / "atlas.json"
     canonical_delta_path = tmp_path / "canonical_delta.json"
     advancement_delta_path = tmp_path / "advancement_delta.json"
-    t14_receipt_path = tmp_path / "shared_guard_single_path_enforcement_receipt.json"
+    t15_receipt_path = tmp_path / "counted_consumer_allowlist_contract_binding_receipt.json"
 
     proc = subprocess.run(
         [
@@ -109,9 +107,9 @@ def test_w3_cli_emits_t14_receipt_with_explicit_opt_in_only(tmp_path: Path) -> N
             str(canonical_delta_path),
             "--advancement-delta-output",
             str(advancement_delta_path),
-            "--emit-shared-guard-single-path-enforcement-receipt",
-            "--shared-guard-single-path-enforcement-output",
-            str(t14_receipt_path),
+            "--emit-counted-consumer-allowlist-contract-binding-receipt",
+            "--counted-consumer-allowlist-contract-binding-output",
+            str(t15_receipt_path),
         ],
         cwd=str(root),
         env=env,
@@ -126,8 +124,8 @@ def test_w3_cli_emits_t14_receipt_with_explicit_opt_in_only(tmp_path: Path) -> N
     assert payload["status"] == "PASS"
     assert payload["documentary_carrier_consumer_status"] == "PASS"
 
-    receipt = json.loads(t14_receipt_path.read_text(encoding="utf-8"))
+    receipt = json.loads(t15_receipt_path.read_text(encoding="utf-8"))
     assert receipt["status"] == "PASS"
-    assert receipt["receipt_role"] == "COUNTED_T14_SHARED_GUARD_SINGLE_PATH_ENFORCEMENT_ARTIFACT_ONLY"
+    assert receipt["receipt_role"] == "COUNTED_T15_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_BINDING_ARTIFACT_ONLY"
+    assert receipt["counted_consumer_allowlist_contract_ref"] == "KT_PROD_CLEANROOM/governance/counted_consumer_allowlist_contract.json"
     assert receipt["single_path_barrier"]["status"] == "PASS"
-    assert receipt["single_path_barrier"]["unexpected_owner_hits"] == []

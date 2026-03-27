@@ -22,6 +22,7 @@ from tools.operator.benchmark_constitution_validate import (
     _maybe_write_json_output,
     _payloads,
     build_documentary_carrier_guard_single_path_barrier,
+    load_counted_consumer_allowlist_contract,
     build_receipt as build_benchmark_receipt,
     evaluate_documentary_carrier_fail_closed_consumer_guard as evaluate_shared_documentary_carrier_fail_closed_consumer_guard,
 )
@@ -58,6 +59,9 @@ T13_RECEIPT_ROLE = "COUNTED_T13_DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION_ARTIFAC
 SHARED_GUARD_SINGLE_PATH_ENFORCEMENT_RECEIPT_REL = f"{REPORT_ROOT_REL}/shared_guard_single_path_enforcement_receipt.json"
 T14_TRANCHE_ID = "B03_T14_SHARED_GUARD_SINGLE_PATH_ENFORCEMENT"
 T14_RECEIPT_ROLE = "COUNTED_T14_SHARED_GUARD_SINGLE_PATH_ENFORCEMENT_ARTIFACT_ONLY"
+COUNTED_CONSUMER_ALLOWLIST_CONTRACT_BINDING_RECEIPT_REL = f"{REPORT_ROOT_REL}/counted_consumer_allowlist_contract_binding_receipt.json"
+T15_TRANCHE_ID = "B03_T15_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_BINDING"
+T15_RECEIPT_ROLE = "COUNTED_T15_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_BINDING_ARTIFACT_ONLY"
 ROLE_ALIAS_RETIREMENT = "ALIAS_RETIREMENT_PROOF"
 ROLE_VALIDATOR_ALIAS_DETACHMENT = "VALIDATOR_ALIAS_DETACHMENT_PROOF"
 
@@ -422,6 +426,75 @@ def build_shared_guard_single_path_enforcement_receipt(*, root: Path) -> Dict[st
     }
 
 
+def build_counted_consumer_allowlist_contract_binding_receipt(*, root: Path) -> Dict[str, Any]:
+    from tools.operator.final_current_head_adjudication_validate import (
+        evaluate_documentary_carrier_fail_closed_consumer_guard as evaluate_final_guard,
+    )
+
+    current_head = _git_head(root)
+    baseline_scorecard = _payloads(root, utc_now_iso_z())["scorecard"]
+    allowlist_contract = load_counted_consumer_allowlist_contract(root=root)
+    final_guard = evaluate_final_guard(root=root)
+    w3_guard = evaluate_documentary_carrier_fail_closed_consumer_guard(root=root)
+    source_checks = _consumer_guard_source_checks()
+    single_path_barrier = build_documentary_carrier_guard_single_path_barrier(root=root)
+    checks = [
+        {"check_id": "final_current_head_consumer_guard_passes", "pass": final_guard["status"] == "PASS"},
+        {"check_id": "w3_consumer_guard_passes", "pass": w3_guard["status"] == "PASS"},
+        {
+            "check_id": "allowlist_contract_ref_is_bound",
+            "pass": allowlist_contract["contract_ref"] == "KT_PROD_CLEANROOM/governance/counted_consumer_allowlist_contract.json",
+        },
+        {
+            "check_id": "allowlist_contract_matches_detected_runtime_owner_set",
+            "pass": single_path_barrier["status"] == "PASS"
+            and allowlist_contract["sanctioned_counted_consumer_refs"] == single_path_barrier["detected_counted_consumer_refs"],
+        },
+        {
+            "check_id": "counted_consumers_point_to_bound_contract_ref",
+            "pass": final_guard.get("counted_consumer_allowlist_contract_ref") == allowlist_contract["contract_ref"]
+            and w3_guard.get("counted_consumer_allowlist_contract_ref") == allowlist_contract["contract_ref"],
+        },
+        {
+            "check_id": "documentary_carrier_mismatch_still_fails_closed",
+            "pass": final_guard["documentary_carrier_attempt"]["failure_reason"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
+            and w3_guard["documentary_carrier_attempt"]["failure_reason"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH,
+        },
+        {
+            "check_id": "baseline_scorecard_remains_canonical_truth",
+            "pass": str(baseline_scorecard.get("canonical_scorecard_id", "")).strip() == "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        },
+        {
+            "check_id": "consumer_wrappers_use_shared_guard_only",
+            "pass": all(bool(check["pass"]) for check in source_checks),
+        },
+    ]
+    return {
+        "schema_id": "kt.gate_c_t15.counted_consumer_allowlist_contract_binding_receipt.v1",
+        "generated_utc": utc_now_iso_z(),
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": T15_RECEIPT_ROLE,
+        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "tranche_id": T15_TRANCHE_ID,
+        "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        "canonical_receipt_binding": {
+            "baseline_vs_live_scorecard_ref": BASELINE_SCORECARD_REL,
+            "shared_guard_single_path_enforcement_receipt_ref": SHARED_GUARD_SINGLE_PATH_ENFORCEMENT_RECEIPT_REL,
+            "counted_consumer_allowlist_contract_ref": allowlist_contract["contract_ref"],
+        },
+        "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+        "counted_consumer_allowlist_contract_ref": allowlist_contract["contract_ref"],
+        "allowlist_contract": allowlist_contract["payload"],
+        "single_path_barrier": single_path_barrier,
+        "final_current_head_consumer_guard": final_guard,
+        "w3_consumer_guard": w3_guard,
+        "source_checks": source_checks,
+        "checks": checks,
+        "claim_boundary": "T15 binds the sanctioned counted-consumer allowlist into an explicit contract surface only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
+    }
+
+
 def build_e2_cross_host_replay_receipt(*, root: Path) -> Dict[str, Any]:
     truth_lock = _truth_lock(root)
     externality_matrix = load_json(root / EXTERNALITY_MATRIX_REL)
@@ -582,6 +655,8 @@ def _build_argument_parser() -> argparse.ArgumentParser:
     parser.add_argument("--documentary-carrier-guard-centralization-output", default=DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION_RECEIPT_REL)
     parser.add_argument("--emit-shared-guard-single-path-enforcement-receipt", action="store_true")
     parser.add_argument("--shared-guard-single-path-enforcement-output", default=SHARED_GUARD_SINGLE_PATH_ENFORCEMENT_RECEIPT_REL)
+    parser.add_argument("--emit-counted-consumer-allowlist-contract-binding-receipt", action="store_true")
+    parser.add_argument("--counted-consumer-allowlist-contract-binding-output", default=COUNTED_CONSUMER_ALLOWLIST_CONTRACT_BINDING_RECEIPT_REL)
     return parser
 
 
@@ -670,6 +745,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             target=_resolve(root, str(args.shared_guard_single_path_enforcement_output)),
             payload=single_path_receipt,
             default_rel=SHARED_GUARD_SINGLE_PATH_ENFORCEMENT_RECEIPT_REL,
+            allow_default_repo_write=args.allow_tracked_output_refresh,
+        )
+        if written:
+            allowed_repo_writes.append(written)
+    if args.emit_counted_consumer_allowlist_contract_binding_receipt:
+        allowlist_binding_receipt = build_counted_consumer_allowlist_contract_binding_receipt(root=root)
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.counted_consumer_allowlist_contract_binding_output)),
+            payload=allowlist_binding_receipt,
+            default_rel=COUNTED_CONSUMER_ALLOWLIST_CONTRACT_BINDING_RECEIPT_REL,
             allow_default_repo_write=args.allow_tracked_output_refresh,
         )
         if written:

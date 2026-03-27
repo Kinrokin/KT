@@ -1,5 +1,5 @@
 from __future__ import annotations
-
+import ast
 import argparse
 import json
 import subprocess
@@ -32,6 +32,7 @@ DEFAULT_WRITE_SCOPE_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/validator_write_sco
 DEFAULT_SUBJECT_BOUNDARY_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/comparator_receipt_subject_boundary_receipt.json"
 DEFAULT_CONTRACT_ENFORCEMENT_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/comparator_receipt_contract_enforcement_receipt.json"
 DEFAULT_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json"
+DEFAULT_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_REL = "KT_PROD_CLEANROOM/governance/counted_consumer_allowlist_contract.json"
 DEFAULT_BENCHMARK_CONSTITUTION_OUTPUT_REL = BENCHMARK_CONSTITUTION_REL
 DEFAULT_COMPARATOR_REGISTRY_OUTPUT_REL = COMPARATOR_REGISTRY_REL
 
@@ -59,11 +60,6 @@ DOCUMENTARY_CARRIER_GUARD_ALLOWED_CONSUMER_REFS = [
 ]
 DOCUMENTARY_CARRIER_GUARD_ALLOWED_NONCOUNTING_OWNER_REFS = [
     "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
-]
-DOCUMENTARY_CARRIER_GUARD_ALLOWED_OWNER_REFS = [
-    DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF,
-    *DOCUMENTARY_CARRIER_GUARD_ALLOWED_CONSUMER_REFS,
-    *DOCUMENTARY_CARRIER_GUARD_ALLOWED_NONCOUNTING_OWNER_REFS,
 ]
 DOCUMENTARY_CARRIER_GUARD_BYPASS_SIGNATURES = [
     "t10_receipt_final_head_authority_alignment_receipt.json",
@@ -103,7 +99,15 @@ T6_EXPECTED_MUTATE_PATHS = [
 ]
 ALLOWED_PREWRITE_DIRTY = {
     path
-    for path in [*T4_EXPECTED_MUTATE_PATHS, *T5_EXPECTED_MUTATE_PATHS, *T6_EXPECTED_MUTATE_PATHS]
+    for path in [
+        *T4_EXPECTED_MUTATE_PATHS,
+        *T5_EXPECTED_MUTATE_PATHS,
+        *T6_EXPECTED_MUTATE_PATHS,
+        DEFAULT_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_REL,
+        "KT_PROD_CLEANROOM/tests/operator/test_b03_documentary_carrier_guard_centralization.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_b03_shared_guard_single_path_enforcement.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_b03_counted_consumer_allowlist_contract_binding.py",
+    ]
     if path != DEFAULT_WRITE_SCOPE_RECEIPT_REL
 }
 DETACHED_VALIDATOR_REFS = [
@@ -262,6 +266,65 @@ def _hash(payload: Any) -> str:
     return sha256_hex(canonicalize_bytes(payload))
 
 
+def _string_list(values: Any) -> list[str]:
+    if not isinstance(values, list):
+        return []
+    out: list[str] = []
+    for value in values:
+        if isinstance(value, str) and value.strip():
+            out.append(value.strip())
+    return out
+
+
+def load_counted_consumer_allowlist_contract(*, root: Path) -> Dict[str, Any]:
+    payload = load_json(root / DEFAULT_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_REL)
+    return {
+        "payload": payload,
+        "contract_ref": DEFAULT_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_REL,
+        "shared_guard_helper_ref": str(payload.get("shared_guard_helper_ref", "")).strip(),
+        "shared_guard_helper_owner_ref": str(payload.get("shared_guard_helper_owner_ref", "")).strip(),
+        "sanctioned_counted_consumer_refs": _string_list(payload.get("sanctioned_counted_consumer_refs")),
+        "allowed_noncounting_owner_refs": _string_list(payload.get("allowed_noncounting_owner_refs")),
+        "canonical_scorecard_id": str(payload.get("canonical_scorecard_id", "")).strip(),
+    }
+
+
+def _detect_documentary_guard_consumers(*, root: Path) -> list[str]:
+    operator_root = root / "KT_PROD_CLEANROOM/tools/operator"
+    detected: list[str] = []
+    for path in sorted(operator_root.rglob("*.py")):
+        owner_ref = path.resolve().relative_to(root.resolve()).as_posix()
+        if owner_ref == DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF:
+            continue
+        tree = ast.parse(path.read_text(encoding="utf-8"), filename=owner_ref)
+        imported_helper_aliases: set[str] = set()
+        module_aliases: set[str] = set()
+        uses_helper = False
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ImportFrom) and node.module == "tools.operator.benchmark_constitution_validate":
+                for alias in node.names:
+                    if alias.name == "evaluate_documentary_carrier_fail_closed_consumer_guard":
+                        imported_helper_aliases.add(alias.asname or alias.name)
+            elif isinstance(node, ast.Import):
+                for alias in node.names:
+                    if alias.name == "tools.operator.benchmark_constitution_validate":
+                        module_aliases.add(alias.asname or alias.name.split(".")[-1])
+            elif isinstance(node, ast.Call):
+                func = node.func
+                if isinstance(func, ast.Name) and func.id in imported_helper_aliases:
+                    uses_helper = True
+                elif (
+                    isinstance(func, ast.Attribute)
+                    and isinstance(func.value, ast.Name)
+                    and func.value.id in module_aliases
+                    and func.attr == "evaluate_documentary_carrier_fail_closed_consumer_guard"
+                ):
+                    uses_helper = True
+        if uses_helper:
+            detected.append(owner_ref)
+    return detected
+
+
 def _field_present(value: Any) -> bool:
     if value is None:
         return False
@@ -388,6 +451,9 @@ def evaluate_documentary_carrier_fail_closed_consumer_guard(
     allowed_roles: Sequence[str] = (ROLE_T11_FINAL_HEAD_AUTHORITY_ALIGNMENT,),
 ) -> Dict[str, Any]:
     current_head = _git_head(root)
+    allowlist_contract = load_counted_consumer_allowlist_contract(root=root)
+    detected_consumer_refs = _detect_documentary_guard_consumers(root=root)
+    detected_owner_ref = next((ref for ref in detected_consumer_refs if ref.endswith(f"{consumer_id}.py")), None)
     tracked_t11_receipt = load_json(root / tracked_receipt_ref)
     tracked_t11_contract = _consume_emitted_receipt_contract(
         receipt_ref=tracked_receipt_ref,
@@ -435,6 +501,11 @@ def evaluate_documentary_carrier_fail_closed_consumer_guard(
             "pass": tracked_t11_contract.get("blocked") is True
             and tracked_t11_contract.get("failure_reason") == "SUBJECT_HEAD_MISMATCH",
         },
+        {
+            "check_id": "consumer_owner_is_allowlisted_in_contract",
+            "pass": bool(detected_owner_ref)
+            and detected_owner_ref in allowlist_contract["sanctioned_counted_consumer_refs"],
+        },
     ]
     return {
         "consumer_id": consumer_id,
@@ -446,15 +517,25 @@ def evaluate_documentary_carrier_fail_closed_consumer_guard(
         "checks": checks,
         "shared_guard_helper_ref": DOCUMENTARY_CARRIER_GUARD_HELPER_REF,
         "shared_guard_helper_owner_ref": DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF,
+        "counted_consumer_allowlist_contract_ref": allowlist_contract["contract_ref"],
+        "detected_consumer_owner_ref": detected_owner_ref,
     }
 
 
 def build_documentary_carrier_guard_single_path_barrier(*, root: Path) -> Dict[str, Any]:
+    allowlist_contract = load_counted_consumer_allowlist_contract(root=root)
+    sanctioned_counted_consumer_refs = allowlist_contract["sanctioned_counted_consumer_refs"]
+    allowed_noncounting_owner_refs = allowlist_contract["allowed_noncounting_owner_refs"]
+    allowed_owner_refs = [
+        DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF,
+        *sanctioned_counted_consumer_refs,
+        *allowed_noncounting_owner_refs,
+    ]
     operator_root = root / "KT_PROD_CLEANROOM/tools/operator"
     unexpected_owner_hits: list[Dict[str, Any]] = []
     for path in sorted(operator_root.rglob("*.py")):
         owner_ref = path.resolve().relative_to(root.resolve()).as_posix()
-        if owner_ref in DOCUMENTARY_CARRIER_GUARD_ALLOWED_OWNER_REFS:
+        if owner_ref in allowed_owner_refs:
             continue
         text = path.read_text(encoding="utf-8")
         matched_tokens = [token for token in DOCUMENTARY_CARRIER_GUARD_BYPASS_SIGNATURES if token in text]
@@ -465,19 +546,23 @@ def build_documentary_carrier_guard_single_path_barrier(*, root: Path) -> Dict[s
                     "matched_tokens": matched_tokens,
                 }
             )
+    detected_counted_consumer_refs = _detect_documentary_guard_consumers(root=root)
     checks = [
         {
-            "check_id": "allowed_consumer_refs_match_current_counted_set",
-            "pass": DOCUMENTARY_CARRIER_GUARD_ALLOWED_CONSUMER_REFS
-            == [
-                "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
-                "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
-            ],
+            "check_id": "allowlist_contract_declares_shared_guard_helper_ref",
+            "pass": allowlist_contract["shared_guard_helper_ref"] == DOCUMENTARY_CARRIER_GUARD_HELPER_REF,
         },
         {
-            "check_id": "allowed_noncounting_owner_refs_match_current_documentary_scope",
-            "pass": DOCUMENTARY_CARRIER_GUARD_ALLOWED_NONCOUNTING_OWNER_REFS
-            == ["KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py"],
+            "check_id": "allowlist_contract_declares_shared_guard_helper_owner_ref",
+            "pass": allowlist_contract["shared_guard_helper_owner_ref"] == DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF,
+        },
+        {
+            "check_id": "allowlist_contract_declares_expected_canonical_scorecard_id",
+            "pass": allowlist_contract["canonical_scorecard_id"] == CANONICAL_SCORECARD_ID,
+        },
+        {
+            "check_id": "counted_consumer_allowlist_matches_detected_runtime_owner_set",
+            "pass": sanctioned_counted_consumer_refs == detected_counted_consumer_refs,
         },
         {
             "check_id": "no_unsanctioned_operator_owner_references_documentary_carrier_guard_tokens",
@@ -486,11 +571,13 @@ def build_documentary_carrier_guard_single_path_barrier(*, root: Path) -> Dict[s
     ]
     return {
         "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "counted_consumer_allowlist_contract_ref": allowlist_contract["contract_ref"],
         "shared_guard_helper_ref": DOCUMENTARY_CARRIER_GUARD_HELPER_REF,
         "shared_guard_helper_owner_ref": DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF,
-        "allowed_consumer_refs": DOCUMENTARY_CARRIER_GUARD_ALLOWED_CONSUMER_REFS,
-        "allowed_noncounting_owner_refs": DOCUMENTARY_CARRIER_GUARD_ALLOWED_NONCOUNTING_OWNER_REFS,
-        "allowed_owner_refs": DOCUMENTARY_CARRIER_GUARD_ALLOWED_OWNER_REFS,
+        "allowed_consumer_refs": sanctioned_counted_consumer_refs,
+        "allowed_noncounting_owner_refs": allowed_noncounting_owner_refs,
+        "allowed_owner_refs": allowed_owner_refs,
+        "detected_counted_consumer_refs": detected_counted_consumer_refs,
         "bypass_signatures": DOCUMENTARY_CARRIER_GUARD_BYPASS_SIGNATURES,
         "unexpected_owner_hits": unexpected_owner_hits,
         "checks": checks,
