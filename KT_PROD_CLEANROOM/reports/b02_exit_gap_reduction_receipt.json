@@ -1,0 +1,62 @@
+{
+  "checks": [
+    {
+      "check_id": "t3_exit_gap_receipt_remains_pass",
+      "pass": true
+    },
+    {
+      "check_id": "adapter_router_and_promotion_boundaries_are_all_explicit_and_pass",
+      "pass": true
+    },
+    {
+      "check_id": "remaining_exit_blocker_count_reduced_to_one",
+      "pass": true,
+      "reclassified_boundary_count": 4,
+      "remaining_exit_blocker_count": 1
+    },
+    {
+      "check_id": "remaining_exit_blocker_is_only_promotion_civilization_ratified_false",
+      "pass": true
+    }
+  ],
+  "current_git_head": "d0d12edcda0687e0fea971eaea058e90656dd8ab",
+  "exit_ready": false,
+  "generated_utc": "2026-03-27T01:23:01Z",
+  "reclassified_boundaries": [
+    {
+      "boundary_id": "ROUTER_STATIC_CANONICAL_BASELINE_ONLY",
+      "class": "BOUNDARY_RATIFIED_NOT_EXIT_BLOCKING",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/b02_router_boundary_truth_receipt.json",
+      "why": "Router status is now explicit runtime boundary truth, not a runtime-lane ambiguity."
+    },
+    {
+      "boundary_id": "ADAPTER_LAYER_BREADTH_AND_CUTOVER_REMAIN_BOUNDED",
+      "class": "BOUNDARY_RATIFIED_NOT_EXIT_BLOCKING",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/b02_adapter_runtime_boundary_receipt.json",
+      "why": "Adapter layer is now explicit runtime-admissibility truth: two live hashed manifests only, generated candidates excluded."
+    },
+    {
+      "boundary_id": "TOURNAMENT_PROMOTION_NOT_CANONICAL_RUNTIME_CUTOVER",
+      "class": "BOUNDARY_RATIFIED_NOT_EXIT_BLOCKING",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/b02_promotion_boundary_truth_receipt.json",
+      "why": "Tournament/promotion loop is explicit bounded evidence only and remains separately gated from canonical runtime cutover."
+    },
+    {
+      "boundary_id": "TEACHER_GROWTH_SURFACES_LAB_ONLY",
+      "class": "BOUNDARY_RATIFIED_NOT_EXIT_BLOCKING",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/b02_promotion_boundary_truth_receipt.json",
+      "why": "Teacher/growth surfaces remain lab-only and are no longer treated as runtime-lane ambiguity."
+    }
+  ],
+  "remaining_exit_blockers": [
+    {
+      "blocker_id": "PROMOTION_CIVILIZATION_RATIFIED_FALSE",
+      "class": "EXIT_GATE_BLOCKER",
+      "evidence_ref": "KT_PROD_CLEANROOM/governance/execution_board.json",
+      "why": "Gate B exit remains closed until promotion civilization is formally ratified on the execution board."
+    }
+  ],
+  "schema_id": "kt.b02.exit_gap_reduction_receipt.v1",
+  "scope_boundary": "B02 tranche 4 reclassifies upper-stack runtime surfaces from exit blockers into explicit bounded boundaries, leaving only promotion-civilization ratification as the remaining B02 exit blocker.",
+  "status": "PASS"
+}

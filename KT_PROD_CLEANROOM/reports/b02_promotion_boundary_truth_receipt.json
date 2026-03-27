@@ -1,0 +1,116 @@
+{
+  "checks": [
+    {
+      "check_id": "civilization_loop_contract_keeps_runtime_cutover_separately_gated",
+      "pass": true
+    },
+    {
+      "check_id": "civilization_loop_receipt_stays_pass_but_forbids_automatic_runtime_cutover",
+      "pass": true
+    },
+    {
+      "check_id": "learning_response_receipt_stays_bounded_and_forbids_autonomous_runtime_self_modification",
+      "pass": true
+    },
+    {
+      "check_id": "tournament_and_teacher_surfaces_remain_bounded_non_cutover_runtime_boundaries",
+      "pass": true
+    },
+    {
+      "check_id": "execution_board_exit_gate_remains_false_and_is_the_actual_remaining_gate",
+      "pass": true
+    },
+    {
+      "check_id": "claim_bearing_runtime_modules_have_no_training_or_tools_import_influence",
+      "import_scan_rows": [
+        {
+          "import_roots": [
+            "__future__",
+            "core",
+            "dataclasses",
+            "importlib",
+            "typing"
+          ],
+          "path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py"
+        },
+        {
+          "import_roots": [
+            "__future__",
+            "cognition",
+            "core",
+            "council",
+            "curriculum",
+            "dataclasses",
+            "governance",
+            "hashlib",
+            "json",
+            "memory",
+            "multiverse",
+            "paradox",
+            "pathlib",
+            "schemas",
+            "temporal",
+            "thermodynamics",
+            "time",
+            "typing"
+          ],
+          "path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
+        },
+        {
+          "import_roots": [
+            "__future__",
+            "copy",
+            "council",
+            "datetime",
+            "json",
+            "os",
+            "pathlib",
+            "schemas",
+            "typing"
+          ],
+          "path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/council/council_router.py"
+        },
+        {
+          "import_roots": [
+            "__future__",
+            "dataclasses",
+            "hashlib",
+            "json",
+            "memory",
+            "os",
+            "pathlib",
+            "schemas",
+            "time",
+            "typing",
+            "versioning"
+          ],
+          "path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/memory/state_vault.py"
+        },
+        {
+          "import_roots": [
+            "__future__",
+            "dataclasses",
+            "json",
+            "os",
+            "pathlib",
+            "schemas",
+            "typing",
+            "versioning"
+          ],
+          "path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/memory/replay.py"
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "current_git_head": "d0d12edcda0687e0fea971eaea058e90656dd8ab",
+  "forbidden_claims_remaining": [
+    "Do not claim canonical runtime cutover from tournament evidence.",
+    "Do not claim autonomous runtime self-modification.",
+    "Do not claim teacher or growth surfaces are canonical runtime."
+  ],
+  "generated_utc": "2026-03-27T01:23:01Z",
+  "schema_id": "kt.b02.promotion_boundary_truth_receipt.v1",
+  "scope_boundary": "B02 tranche 4 proves tournament, learning-response, and teacher/growth surfaces remain bounded evidence or lab-only boundaries and do not yet influence canonical runtime cutover.",
+  "status": "PASS"
+}

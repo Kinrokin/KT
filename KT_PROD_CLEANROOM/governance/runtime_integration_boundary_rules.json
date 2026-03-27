@@ -1,0 +1,35 @@
+{
+  "canonical_runtime_lane": "kt.entrypoint.invoke -> core.spine.run",
+  "contract_id": "KT_RUNTIME_INTEGRATION_BOUNDARY_RULES_B02_T4",
+  "non_runtime_inventory_ref": "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+  "promotion_boundary": {
+    "canonical_runtime_cutover_allowed": false,
+    "generated_candidate_runtime_admissible": false,
+    "internal_promotion_evidence_allowed": true,
+    "teacher_growth_runtime_influence_allowed": false
+  },
+  "remaining_b02_exit_blocker_id": "PROMOTION_CIVILIZATION_RATIFIED_FALSE",
+  "required_refs": [
+    "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+    "KT_PROD_CLEANROOM/governance/civilization_loop_contract.json",
+    "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+    "KT_PROD_CLEANROOM/reports/civilization_loop_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave0_quarantine_receipts.json",
+    "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json",
+    "KT_PROD_CLEANROOM/reports/universal_adapter_receipt.json"
+  ],
+  "router_boundary": {
+    "canonical_status": "STATIC_CANONICAL_BASELINE_ONLY",
+    "learned_router_cutover_allowed": false,
+    "multi_lobe_promotion_allowed": false
+  },
+  "runtime_admissible_adapter_root": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/exports/adapters",
+  "runtime_admissible_provider_ids": [
+    "openai",
+    "openrouter"
+  ],
+  "schema_id": "kt.governance.runtime_integration_boundary_rules.v1",
+  "scope_boundary": "B02 tranche 4 codifies canonical runtime integration boundaries on current head. It does not ratify promotion civilization or open Gate C.",
+  "shadow_candidate_root": "KT_PROD_CLEANROOM/exports/adapters_shadow",
+  "status": "ACTIVE"
+}

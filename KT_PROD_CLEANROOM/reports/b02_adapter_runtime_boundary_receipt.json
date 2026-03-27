@@ -1,0 +1,121 @@
+{
+  "checks": [
+    {
+      "check_id": "boundary_rules_active_and_exact",
+      "pass": true
+    },
+    {
+      "check_id": "runtime_active_entries_match_live_manifests_and_provider_path",
+      "live_manifest_ids": [
+        "council.openai.live_hashed.v1",
+        "council.openrouter.live_hashed.v1"
+      ],
+      "pass": true,
+      "provider_path_adapter_ids": [
+        "council.openai.live_hashed.v1",
+        "council.openrouter.live_hashed.v1"
+      ],
+      "runtime_active_ids": [
+        "council.openai.live_hashed.v1",
+        "council.openrouter.live_hashed.v1"
+      ]
+    },
+    {
+      "check_id": "runtime_admissible_live_manifests_stay_under_runtime_adapter_root_only",
+      "pass": true
+    },
+    {
+      "check_id": "governance_lobe_inventory_does_not_launder_into_live_runtime_manifests",
+      "overlap": [],
+      "pass": true
+    },
+    {
+      "check_id": "generated_candidate_remains_shadow_only_and_non_runtime",
+      "generated_candidate_id": "lobe.architect.v1",
+      "generated_candidate_job_dir_ref": "KT_PROD_CLEANROOM/exports/adapters_shadow/_w3_civilization/aa18410a2a68ac67e9fde1e692661f6dbdefa11804a79a3a6cf2d04b8250da72",
+      "pass": true
+    },
+    {
+      "check_id": "council_live_path_resolves_live_adapter_then_invokes_live_hashed_provider_registry",
+      "observed_calls": [
+        "CouncilError",
+        "ProviderRegistry.build_default",
+        "_context_hash",
+        "_export_root_from_request",
+        "_require_live_hashed_env",
+        "_write_provider_receipt",
+        "derive_legacy_adapter_id",
+        "dict",
+        "emit_runtime_telemetry",
+        "float",
+        "hasattr",
+        "int",
+        "isinstance",
+        "min",
+        "os.getenv",
+        "receipt.get",
+        "receipt_obj.to_dict",
+        "registry.invoke_live_hashed",
+        "req.get",
+        "resolve_live_adapter",
+        "sha256_text",
+        "str",
+        "strip",
+        "telemetry_now_ms",
+        "verdict.get",
+        "write_failure_artifact"
+      ],
+      "pass": true
+    }
+  ],
+  "current_git_head": "d0d12edcda0687e0fea971eaea058e90656dd8ab",
+  "forbidden_claims_remaining": [
+    "Do not claim all adapter inventory is runtime-admissible.",
+    "Do not claim generated candidates are live runtime adapters.",
+    "Do not widen externality or civilization claims from adapter admissibility alone."
+  ],
+  "generated_utc": "2026-03-27T01:23:01Z",
+  "manifest_rows": [
+    {
+      "adapter_id": "council.openai.live_hashed.v1",
+      "manifest_path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/exports/adapters/council_openai_live_hashed/v1/adapter_manifest.json",
+      "provider_id": "openai",
+      "under_runtime_root": true,
+      "under_shadow_root": false
+    },
+    {
+      "adapter_id": "council.openrouter.live_hashed.v1",
+      "manifest_path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/exports/adapters/council_openrouter_live_hashed/v1/adapter_manifest.json",
+      "provider_id": "openrouter",
+      "under_runtime_root": true,
+      "under_shadow_root": false
+    }
+  ],
+  "resolved_runtime_rows": [
+    {
+      "adapter_id": "council.openai.live_hashed.v1",
+      "manifest_path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/exports/adapters/council_openai_live_hashed/v1/adapter_manifest.json",
+      "provider_id": "openai",
+      "request_type_allowlist": [
+        "analysis",
+        "healthcheck"
+      ]
+    },
+    {
+      "adapter_id": "council.openrouter.live_hashed.v1",
+      "manifest_path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/exports/adapters/council_openrouter_live_hashed/v1/adapter_manifest.json",
+      "provider_id": "openrouter",
+      "request_type_allowlist": [
+        "analysis",
+        "healthcheck"
+      ]
+    }
+  ],
+  "runtime_admissible_adapter_ids": [
+    "council.openai.live_hashed.v1",
+    "council.openrouter.live_hashed.v1"
+  ],
+  "schema_id": "kt.b02.adapter_runtime_boundary_receipt.v1",
+  "scope_boundary": "B02 tranche 4 proves adapter runtime admissibility stays narrow on the canonical path. It does not widen adapter breadth or permit generated runtime cutover.",
+  "status": "PASS"
+}
