@@ -1,0 +1,128 @@
+{
+  "canonical_receipt_binding": {
+    "alias_retirement_receipt_ref": "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
+    "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+    "comparator_replay_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
+    "detachment_receipt_ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
+    "frozen_eval_scorecard_bundle_ref": "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
+    "subject_boundary_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_receipt_subject_boundary_receipt.json",
+    "write_scope_enforcement_receipt_ref": "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json"
+  },
+  "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+  "checks": [
+    {
+      "check_id": "baseline_scorecard_subject_head_declared",
+      "pass": true
+    },
+    {
+      "check_id": "benchmark_constitution_receipt_subject_head_declared",
+      "pass": true
+    },
+    {
+      "check_id": "validator_write_scope_receipt_subject_head_declared",
+      "pass": true
+    },
+    {
+      "check_id": "baseline_scorecard_is_sole_canonical_comparator_truth",
+      "pass": true
+    },
+    {
+      "check_id": "retained_t3_receipt_role_bound",
+      "pass": true
+    },
+    {
+      "check_id": "retained_t4_receipt_role_bound",
+      "pass": true
+    },
+    {
+      "check_id": "t3_misread_as_current_head_proof_blocked",
+      "pass": true
+    },
+    {
+      "check_id": "t4_misread_as_current_head_proof_blocked",
+      "pass": true
+    },
+    {
+      "check_id": "baseline_misread_as_current_head_proof_blocked",
+      "pass": true
+    },
+    {
+      "check_id": "t4_counted_artifact_preserved",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "T5 binds comparator receipt roles and subject heads only. It does not refresh comparator truth, rewrite comparator semantics, add rows, or claim Gate C exit.",
+  "counted_artifact_boundary": {
+    "t3_retained_subject_proof_ref": "KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
+    "t4_counted_hardening_ref": "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json",
+    "t5_counted_subject_boundary_ref": "KT_PROD_CLEANROOM/reports/comparator_receipt_subject_boundary_receipt.json"
+  },
+  "current_git_head": "c2e93f0f4eb33c46a7c1391ac0ba41c471f6760a",
+  "generated_utc": "2026-03-27T12:56:10Z",
+  "misread_attempts": [
+    {
+      "attempt_id": "baseline_scorecard_as_current_head_capability_proof",
+      "blocked": true,
+      "failure_reason": "SUBJECT_HEAD_MISMATCH",
+      "interpreted_as": "CURRENT_HEAD_CAPABILITY_PROOF",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+      "receipt_role": "SOLE_CANONICAL_COMPARATOR_TRUTH",
+      "requested_head": "c2e93f0f4eb33c46a7c1391ac0ba41c471f6760a",
+      "subject_head": "438d9de1948615d917b0beef4709fcc9e891b6e1",
+      "subject_head_source_field": "current_git_head"
+    },
+    {
+      "attempt_id": "t3_benchmark_receipt_as_current_head_capability_proof",
+      "blocked": true,
+      "failure_reason": "SUBJECT_HEAD_MISMATCH",
+      "interpreted_as": "CURRENT_HEAD_CAPABILITY_PROOF",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
+      "receipt_role": "RETAINED_T3_SUBJECT_PROOF_ONLY",
+      "requested_head": "c2e93f0f4eb33c46a7c1391ac0ba41c471f6760a",
+      "subject_head": "438d9de1948615d917b0beef4709fcc9e891b6e1",
+      "subject_head_source_field": "current_git_head"
+    },
+    {
+      "attempt_id": "t4_write_scope_receipt_as_current_head_capability_proof",
+      "blocked": true,
+      "failure_reason": "RECEIPT_ROLE_MISMATCH",
+      "interpreted_as": "CURRENT_HEAD_CAPABILITY_PROOF",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json",
+      "receipt_role": "COUNTED_T4_HARDENING_ARTIFACT_ONLY",
+      "requested_head": "c2e93f0f4eb33c46a7c1391ac0ba41c471f6760a",
+      "subject_head": "380e68f3b62feab4814b957cd4f5762928d13c99",
+      "subject_head_source_field": "current_git_head"
+    }
+  ],
+  "receipt_role_bindings": [
+    {
+      "interpretation_rule": "valid_only_for_exact_subject_head",
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+      "receipt_role": "SOLE_CANONICAL_COMPARATOR_TRUTH",
+      "subject_head": "438d9de1948615d917b0beef4709fcc9e891b6e1",
+      "subject_head_source_field": "current_git_head"
+    },
+    {
+      "interpretation_rule": "retained_subject_proof_only__not_current_head_refresh",
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
+      "receipt_role": "RETAINED_T3_SUBJECT_PROOF_ONLY",
+      "subject_head": "438d9de1948615d917b0beef4709fcc9e891b6e1",
+      "subject_head_source_field": "current_git_head"
+    },
+    {
+      "interpretation_rule": "write_scope_hardening_only__not_capability_proof",
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json",
+      "receipt_role": "COUNTED_T4_HARDENING_ARTIFACT_ONLY",
+      "subject_head": "380e68f3b62feab4814b957cd4f5762928d13c99",
+      "subject_head_source_field": "current_git_head"
+    }
+  ],
+  "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+  "schema_id": "kt.gate_c_t5.comparator_receipt_subject_boundary_receipt.v1",
+  "status": "PASS",
+  "subject_head": "c2e93f0f4eb33c46a7c1391ac0ba41c471f6760a",
+  "tranche_id": "B03_T5_COMPARATOR_RECEIPT_SUBJECT_BOUNDARY"
+}
