@@ -1,13 +1,13 @@
 {
   "schema_id": "kt.next_counted_workstream_contract.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-27T14:28:00Z",
+  "generated_utc": "2026-03-27T09:52:28Z",
   "source_workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "current_counted_gate": "Gate C",
   "parent_batch_id": "B03_GATE_C_CAPABILITY_FORCING",
-  "exact_next_counted_workstream_id": "B03_T7_COMPARATOR_SIDE_READER_CONTRACT_ADOPTION",
+  "exact_next_counted_workstream_id": "B03_T8_SIDE_READER_RECEIPT_REFRESH_SCOPE_HARDENING",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
-  "workstream_objective": "Adopt the sealed T6 comparator receipt contract in the current side-reader validator family so comparator receipt reads fail closed on missing, malformed, or mismatched receipt_role and subject_head. Earn no new comparator rows, no comparator-semantic changes, no benchmark receipt subject-head refresh claims, no capability widening, and no Gate C exit in tranche 7.",
+  "workstream_objective": "Constrain comparator_side_reader_contract_adoption_receipt refresh to explicit verification-only execution so normal validator operation cannot casually mint or rewrite the counted T7 receipt. Earn no comparator-semantic changes, no comparator row changes, no benchmark receipt subject-head refresh claims, no capability widening, and no Gate C exit in tranche 8.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "canonical_receipt_binding": {
     "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
@@ -17,7 +17,8 @@
     "detachment_receipt_ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
     "write_scope_enforcement_receipt_ref": "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json",
     "subject_boundary_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_receipt_subject_boundary_receipt.json",
-    "contract_enforcement_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_receipt_contract_enforcement_receipt.json"
+    "contract_enforcement_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_receipt_contract_enforcement_receipt.json",
+    "side_reader_contract_adoption_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_side_reader_contract_adoption_receipt.json"
   },
   "gate_domain_product_split": {
     "gate": "Gate C frozen capability forcing under comparator law",
@@ -31,41 +32,36 @@
     "b03_t4_write_scope": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t4_verify_20260327_0505/KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json",
     "b03_t5_subject_boundary": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t5_verify_20260327_1310/KT_PROD_CLEANROOM/reports/comparator_receipt_subject_boundary_receipt.json",
     "b03_t6_contract_enforcement": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t6_verify_20260327_1425/KT_PROD_CLEANROOM/reports/comparator_receipt_contract_enforcement_receipt.json",
+    "b03_t7_side_reader_adoption": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t7_verify_20260327_094600/KT_PROD_CLEANROOM/reports/comparator_side_reader_contract_adoption_receipt.json",
     "omega_batch_definition": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json",
     "v11_closure_map": "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.json"
   },
   "expected_mutate_paths": [
     "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
-    "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
-    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
     "KT_PROD_CLEANROOM/tests/operator/test_e1_bounded_campaign_validate.py",
-    "KT_PROD_CLEANROOM/tests/operator/test_final_current_head_adjudication_validate.py",
-    "KT_PROD_CLEANROOM/tests/operator/test_w3_externality_and_comparative_proof_validate.py",
     "KT_PROD_CLEANROOM/tests/operator/test_b03_comparator_side_reader_contract_adoption.py",
-    "KT_PROD_CLEANROOM/reports/comparator_side_reader_contract_adoption_receipt.json"
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_side_reader_receipt_refresh_scope.py",
+    "KT_PROD_CLEANROOM/reports/side_reader_receipt_refresh_scope_receipt.json"
   ],
   "expected_create_if_absent_targets": [
-    "KT_PROD_CLEANROOM/tests/operator/test_b03_comparator_side_reader_contract_adoption.py",
-    "KT_PROD_CLEANROOM/reports/comparator_side_reader_contract_adoption_receipt.json"
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_side_reader_receipt_refresh_scope.py",
+    "KT_PROD_CLEANROOM/reports/side_reader_receipt_refresh_scope_receipt.json"
   ],
   "expected_receipts": [
-    "KT_PROD_CLEANROOM/reports/comparator_side_reader_contract_adoption_receipt.json"
+    "KT_PROD_CLEANROOM/reports/side_reader_receipt_refresh_scope_receipt.json"
   ],
   "rollback_artifacts": {
-    "pre_mutation_patch_ref": "tmp/worktree_snapshots/b03_t7_pre_mutation.patch",
-    "pre_mutation_status_ref": "tmp/worktree_snapshots/b03_t7_pre_mutation.status.txt",
-    "pre_mutation_contract_snapshot_dir": "tmp/worktree_snapshots/b03_t7_contract_snapshot",
+    "pre_mutation_patch_ref": "tmp/worktree_snapshots/b03_t8_pre_mutation.patch",
+    "pre_mutation_status_ref": "tmp/worktree_snapshots/b03_t8_pre_mutation.status.txt",
+    "pre_mutation_contract_snapshot_dir": "tmp/worktree_snapshots/b03_t8_contract_snapshot",
     "tracked_restore_refs": [
       "HEAD:KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
-      "HEAD:KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
-      "HEAD:KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
       "HEAD:KT_PROD_CLEANROOM/tests/operator/test_e1_bounded_campaign_validate.py",
-      "HEAD:KT_PROD_CLEANROOM/tests/operator/test_final_current_head_adjudication_validate.py",
-      "HEAD:KT_PROD_CLEANROOM/tests/operator/test_w3_externality_and_comparative_proof_validate.py"
+      "HEAD:KT_PROD_CLEANROOM/tests/operator/test_b03_comparator_side_reader_contract_adoption.py"
     ],
     "remove_if_created": [
-      "KT_PROD_CLEANROOM/tests/operator/test_b03_comparator_side_reader_contract_adoption.py",
-      "KT_PROD_CLEANROOM/reports/comparator_side_reader_contract_adoption_receipt.json"
+      "KT_PROD_CLEANROOM/tests/operator/test_b03_side_reader_receipt_refresh_scope.py",
+      "KT_PROD_CLEANROOM/reports/side_reader_receipt_refresh_scope_receipt.json"
     ]
   },
   "measurement_scope": {
@@ -78,7 +74,8 @@
       "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json",
       "KT_PROD_CLEANROOM/reports/comparator_receipt_subject_boundary_receipt.json",
       "KT_PROD_CLEANROOM/reports/comparator_receipt_contract_enforcement_receipt.json",
-      "KT_PROD_CLEANROOM/reports/comparator_side_reader_contract_adoption_receipt.json"
+      "KT_PROD_CLEANROOM/reports/comparator_side_reader_contract_adoption_receipt.json",
+      "KT_PROD_CLEANROOM/reports/side_reader_receipt_refresh_scope_receipt.json"
     ],
     "forbidden_measured_surfaces": [
       "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
@@ -97,43 +94,43 @@
       "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
       "KT_PROD_CLEANROOM/reports/public_verifier_kit.json"
     ],
-    "rule": "Tranche 7 may only adopt the sealed T6 receipt_role plus subject_head contract in current comparator side-reader validators. It may not alter comparator semantics, row sets, or broaden measured surfaces."
+    "rule": "Tranche 8 may only harden the refresh scope of comparator_side_reader_contract_adoption_receipt so its tracked write path is explicit verification-only. It may not alter comparator semantics, row sets, canonical receipts, or broaden measured surfaces."
   },
   "validators_and_tests": {
     "validators": [
       "python -m tools.operator.e1_bounded_campaign_validate",
-      "python -m tools.operator.final_current_head_adjudication_validate",
-      "python -m tools.operator.w3_externality_and_comparative_proof_validate"
+      "python -m tools.operator.e1_bounded_campaign_validate --allow-side-reader-contract-receipt-refresh --verification-only-side-reader-receipt-refresh"
     ],
     "tests": [
       "python -m pytest -o addopts='' tests/operator/test_e1_bounded_campaign_validate.py -q",
-      "python -m pytest -o addopts='' tests/operator/test_final_current_head_adjudication_validate.py -q",
-      "python -m pytest -o addopts='' tests/operator/test_w3_externality_and_comparative_proof_validate.py -q",
-      "python -m pytest -o addopts='' tests/operator/test_b03_comparator_side_reader_contract_adoption.py -q"
+      "python -m pytest -o addopts='' tests/operator/test_b03_comparator_side_reader_contract_adoption.py -q",
+      "python -m pytest -o addopts='' tests/operator/test_b03_side_reader_receipt_refresh_scope.py -q"
     ]
   },
   "stop_conditions": [
     "Any mutate path outside expected_mutate_paths fails tranche authorization.",
-    "Any tracked comparator receipt other than comparator_side_reader_contract_adoption_receipt.json is rewritten under tranche 7.",
+    "Any tracked comparator receipt other than side_reader_receipt_refresh_scope_receipt.json is rewritten under tranche 8.",
     "Any new comparator row is introduced.",
-    "Any comparator semantics are rewritten under the side-reader contract adoption label.",
-    "Any side-reader validator accepts a comparator-related receipt without receipt_role or subject_head.",
-    "Any side-reader validator accepts a comparator-related receipt as current-head proof when its subject_head differs from the requested head or its receipt_role forbids that interpretation.",
-    "Any benchmark_constitution_receipt.json, validator_write_scope_enforcement_receipt.json, or comparator_receipt_subject_boundary_receipt.json is rewritten and then narrated as refreshed comparator truth.",
+    "Any comparator semantics are rewritten under the receipt-refresh hardening label.",
+    "Normal validator invocation can rewrite comparator_side_reader_contract_adoption_receipt.json.",
+    "The refresh path can be invoked without an explicit verification-only mode switch.",
+    "Any refresh path bypasses the already-earned receipt_role plus subject_head contract.",
+    "Any benchmark_constitution_receipt.json, validator_write_scope_enforcement_receipt.json, comparator_receipt_subject_boundary_receipt.json, or comparator_side_reader_contract_adoption_receipt.json is rewritten and then narrated as refreshed comparator truth.",
     "Any planner, paradox, multiverse, router, memory, civilization, externality, or product widening enters counted scope.",
-    "Any attempt is made to claim Gate C exit from tranche 7.",
+    "Any attempt is made to claim Gate C exit from tranche 8.",
     "Any Gate D promotion packet is counted toward Gate C."
   ],
   "pass_fail_criteria": {
     "pass": [
-      "A machine-readable receipt proves current comparator side-reader validators reuse the sealed T6 receipt_role plus subject_head contract and fail closed when either field is missing, malformed, or mismatched.",
+      "A machine-readable receipt proves normal validator execution does not write comparator_side_reader_contract_adoption_receipt.json.",
+      "A machine-readable receipt proves comparator_side_reader_contract_adoption_receipt.json can be refreshed only under explicit verification-only execution.",
+      "A machine-readable receipt proves the verification-only refresh path still honors the sealed T6 receipt_role plus subject_head contract.",
       "baseline_vs_live_scorecard.json remains the sole canonical Gate C comparator truth.",
-      "competitive_scorecard.json remains documentary-only and non-consumable by validator or counted paths.",
-      "T3, T4, T5, and T6 are not bypassed by a side-reader path."
+      "competitive_scorecard.json remains documentary-only and non-consumable by validator or counted paths."
     ],
     "fail": [
-      "Any comparator side-reader path remains outside the sealed T6 contract.",
-      "Any comparator semantics or row set changes under the side-reader adoption tranche.",
+      "Any default validator path can casually mint or rewrite the T7 counted receipt.",
+      "Any comparator semantics or row set changes under the receipt-refresh hardening tranche.",
       "Any Gate C exit or Gate D counting claim is made."
     ]
   },
@@ -146,6 +143,7 @@
     "benchmark constitution receipt subject-head refresh claims",
     "any comparator-related receipt without mandatory receipt_role and subject_head fields",
     "any comparator side-reader path that bypasses receipt_role plus subject_head validation",
+    "casual use of --allow-side-reader-contract-receipt-refresh in normal validator operation",
     "planner widening",
     "paradox widening",
     "multiverse widening",
@@ -158,5 +156,5 @@
     "new canonical concepts without schema plus validator plus receipt plus rollback plus claim ceiling plus terminal state"
   ],
   "repo_state_executable_now": true,
-  "execution_readiness": "READY_FOR_EXPLICIT_B03_T7_AUTHORIZATION_ONLY"
+  "execution_readiness": "READY_FOR_EXPLICIT_B03_T8_AUTHORIZATION_ONLY"
 }

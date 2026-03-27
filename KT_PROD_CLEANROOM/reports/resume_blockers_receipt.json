@@ -1,47 +1,49 @@
 {
   "schema_id": "kt.resume_blockers_receipt.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-27T14:28:00Z",
+  "generated_utc": "2026-03-27T09:52:28Z",
   "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "d70a77beb032892412e0f6bea06a73874768693c",
+  "current_git_head": "17af4264c1aca431cb95f332f1798042f180c160",
   "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
   "repo_state_executable_now": true,
   "blocking_state": "NONE",
   "blocking_reasons": [],
   "nonblocking_conflicts": [
     {
-      "conflict_id": "COMPARATOR_SIDE_READER_CONTRACT_ADOPTION_GAP",
+      "conflict_id": "SIDE_READER_RECEIPT_REFRESH_SCOPE_GAP",
       "class": "COUNTED_GATE_C_NARROW_RISK",
       "evidence": [
-        "B03 T6 earned machine-enforced receipt_role plus subject_head contract control on sealed head d70a77beb032892412e0f6bea06a73874768693c.",
-        "That contract is now enforced in comparator receipt generation and benchmark-path consumption.",
-        "Current side-reader validators e1_bounded_campaign_validate.py, final_current_head_adjudication_validate.py, and w3_externality_and_comparative_proof_validate.py still need to adopt the same read-side contract or comparator drift can re-enter through those paths."
+        "B03 T7 earned comparator side-reader contract adoption on sealed head 17af4264c1aca431cb95f332f1798042f180c160.",
+        "That contract is now enforced in the benchmark path and the real side-reader validator family.",
+        "The remaining narrow Gate C risk is that --allow-side-reader-contract-receipt-refresh is currently the path used to emit the T7 counted receipt during verification.",
+        "That refresh path must now be constrained so normal validator operation cannot casually mint or rewrite the counted T7 receipt."
       ],
-      "resolution_rule": "Next counted workstream is B03_T7 comparator side-reader contract adoption only. This risk does not reopen lower gates and does not authorize comparator widening, Gate C exit, or any Gate D work."
+      "resolution_rule": "Next counted workstream is B03_T8 side-reader receipt refresh scope hardening only. This risk does not reopen lower gates and does not authorize comparator widening, Gate C exit, or any Gate D work."
     }
   ],
   "current_lawful_gate_standing": {
     "b02_runtime_unification": "EXITED",
-    "gate_c": "OPEN_TRANCHES_1_2_3_4_5_6_COMPLETE_NOT_EXITED",
+    "gate_c": "OPEN_TRANCHES_1_2_3_4_5_6_7_COMPLETE_NOT_EXITED",
     "gate_d": "NOT_AUTHORIZED"
   },
-  "exact_next_counted_workstream_id": "B03_T7_COMPARATOR_SIDE_READER_CONTRACT_ADOPTION",
+  "exact_next_counted_workstream_id": "B03_T8_SIDE_READER_RECEIPT_REFRESH_SCOPE_HARDENING",
   "explicit_non_go_areas": [
     "Do not restart B00, B01, or B02 without regression proof.",
     "Do not count Gate D toward Gate C.",
-    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 7.",
-    "Do not add new comparator rows in Gate C tranche 7.",
-    "Do not rewrite comparator semantics under the side-reader contract adoption tranche.",
-    "Do not narrate the retained T3 benchmark_constitution_receipt.json as refreshed T4, T5, or T6 comparator truth.",
+    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 8.",
+    "Do not add new comparator rows in Gate C tranche 8.",
+    "Do not rewrite comparator semantics under the receipt-refresh hardening tranche.",
+    "Do not narrate the retained T3 benchmark_constitution_receipt.json as refreshed T4, T5, T6, or T7 comparator truth.",
     "Do not allow comparator-related receipts to omit receipt_role or subject_head.",
     "Do not let comparator side readers bypass the sealed T6 contract.",
+    "Do not let --allow-side-reader-contract-receipt-refresh become a casual bypass path in normal validator operation.",
     "Do not widen civilization, externality, or product claims.",
     "Do not use buyer-language beyond the narrowest validated wedge.",
     "Do not attempt Gate C exit in this launch-surface pass."
   ],
-  "why_executable_now": "The repo is clean, B03 tranche 6 is sealed and verified, and the remaining Gate C risk is narrow comparator contract reuse drift in current side-reader validators that can be closed without any comparator or capability widening."
+  "why_executable_now": "The repo is clean, B03 tranche 7 is sealed and verified, and the remaining Gate C risk is a narrow refresh-scope hardening task around the T7 counted receipt path that can be closed without any comparator or capability widening."
 }

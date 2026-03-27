@@ -1,7 +1,7 @@
 {
   "schema_id": "kt.current_campaign_state_overlay.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-27T14:28:00Z",
+  "generated_utc": "2026-03-27T09:52:28Z",
   "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "authority_stack": {
@@ -16,6 +16,7 @@
       "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.md"
     ],
     "current_state_authority": [
+      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t7_verify_20260327_094600/KT_PROD_CLEANROOM/reports/comparator_side_reader_contract_adoption_receipt.json",
       "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t6_verify_20260327_1425/KT_PROD_CLEANROOM/reports/comparator_receipt_contract_enforcement_receipt.json",
       "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t5_verify_20260327_1310/KT_PROD_CLEANROOM/reports/comparator_receipt_subject_boundary_receipt.json",
       "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t4_verify_20260327_0505/KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json",
@@ -39,7 +40,7 @@
   "repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "d70a77beb032892412e0f6bea06a73874768693c",
+    "current_git_head": "17af4264c1aca431cb95f332f1798042f180c160",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "omega_batch_status": {
@@ -65,44 +66,48 @@
       "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT",
       "B03_T4_VALIDATOR_WRITE_SCOPE_ENFORCEMENT",
       "B03_T5_COMPARATOR_RECEIPT_SUBJECT_BOUNDARY",
-      "B03_T6_COMPARATOR_RECEIPT_CONTRACT_ENFORCEMENT"
+      "B03_T6_COMPARATOR_RECEIPT_CONTRACT_ENFORCEMENT",
+      "B03_T7_COMPARATOR_SIDE_READER_CONTRACT_ADOPTION"
     ],
-    "next_counted_tranche": "B03_T7_COMPARATOR_SIDE_READER_CONTRACT_ADOPTION",
+    "next_counted_tranche": "B03_T8_SIDE_READER_RECEIPT_REFRESH_SCOPE_HARDENING",
     "b02_runtime_unification": "EXITED",
-    "gate_c_status": "OPEN_TRANCHES_1_2_3_4_5_6_COMPLETE_NOT_EXITED",
+    "gate_c_status": "OPEN_TRANCHES_1_2_3_4_5_6_7_COMPLETE_NOT_EXITED",
     "gate_d_status": "NOT_AUTHORIZED",
     "authoritative_basis": [
+      "comparator_side_reader_contract_adoption_receipt.status = PASS on sealed head 17af4264c1aca431cb95f332f1798042f180c160",
       "comparator_receipt_contract_enforcement_receipt.status = PASS on sealed head d70a77beb032892412e0f6bea06a73874768693c",
       "comparator_receipt_subject_boundary_receipt.status = PASS on sealed head c8dfae93fbbda4731ab6779655bff02ba0e95135",
       "validator_write_scope_enforcement_receipt.status = PASS on sealed head 322f188b355828c70cc86e3a6aa7516cdb0092b4",
       "benchmark_constitution_receipt.status = PASS on retained T3 sealed subject 9b7e47b8521d946ac449b2d33fd98c9368721a08",
       "canonical_scorecard_binding_receipt.status = PASS on sealed head 9b7e47b8521d946ac449b2d33fd98c9368721a08",
       "competitive_scorecard_validator_detachment_receipt.status = PASS on sealed head 9b7e47b8521d946ac449b2d33fd98c9368721a08",
-      "Gate C is open with tranches 1, 2, 3, 4, 5, and 6 complete and not exited"
+      "Gate C is open with tranches 1, 2, 3, 4, 5, 6, and 7 complete and not exited"
     ]
   },
   "state_reconciliation": {
-    "latest_sealed_receipts_current_state": "B03 tranche 6 earned mandatory receipt_role plus subject_head contract enforcement on comparator receipt generation and benchmark-path consumption on sealed head d70a77beb032892412e0f6bea06a73874768693c without refreshing comparator truth or widening Gate C scope.",
-    "documentary_surface_state_on_main": "Canonical comparator truth remains singular and benchmark-path comparator contract drift is now fail-closed, but side readers can still reintroduce ambiguity if they consume comparator receipts without reusing the same receipt_role plus subject_head enforcement path.",
-    "reanchor_decision": "Use sealed T6 comparator receipt contract enforcement as the newest counted Gate C artifact, preserve baseline_vs_live_scorecard.json as sole canonical comparator truth, preserve benchmark_constitution_receipt.json as retained T3 subject proof, preserve validator_write_scope_enforcement_receipt.json as retained T4 hardening proof, preserve comparator_receipt_subject_boundary_receipt.json as retained T5 boundary proof, and narrow the next counted tranche to side-reader contract adoption only."
+    "latest_sealed_receipts_current_state": "B03 tranche 7 earned side-reader adoption of the sealed T6 comparator receipt contract on sealed head 17af4264c1aca431cb95f332f1798042f180c160, removing legacy comparator parsing from the real side-reader validator family without refreshing comparator truth or widening Gate C scope.",
+    "documentary_surface_state_on_main": "Canonical comparator truth remains singular, benchmark and side-reader contract drift are now fail-closed, and the remaining narrow Gate C risk is that the e1 verification flag used to emit the T7 counted receipt could be overused unless its refresh path is explicitly verification-only and non-casual.",
+    "reanchor_decision": "Use sealed T7 side-reader contract adoption as the newest counted Gate C artifact, preserve baseline_vs_live_scorecard.json as sole canonical comparator truth, preserve benchmark_constitution_receipt.json as retained T3 subject proof, preserve validator_write_scope_enforcement_receipt.json as retained T4 hardening proof, preserve comparator_receipt_subject_boundary_receipt.json as retained T5 boundary proof, preserve comparator_receipt_contract_enforcement_receipt.json as retained T6 contract proof, and narrow the next counted tranche to verification-only refresh-scope hardening for the T7 counted receipt path."
   },
-  "next_counted_workstream_id": "B03_T7_COMPARATOR_SIDE_READER_CONTRACT_ADOPTION",
-  "next_counted_workstream_scope": "Adopt the sealed T6 comparator receipt contract in all current side-reader validator paths that consume comparator receipts, so they fail closed on missing, malformed, or mismatched receipt_role and subject_head without changing comparator semantics, row sets, or Gate C standing.",
+  "next_counted_workstream_id": "B03_T8_SIDE_READER_RECEIPT_REFRESH_SCOPE_HARDENING",
+  "next_counted_workstream_scope": "Constrain comparator_side_reader_contract_adoption_receipt refresh to explicit verification-only execution so normal validator operation cannot casually mint or rewrite the counted T7 receipt while keeping comparator truth singular and Gate C scope unchanged.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "explicit_non_go_areas": [
     "Do not reopen B00, B01, or B02 without a current regression receipt.",
     "Do not treat promotion civilization as current Gate C counting work.",
     "Do not count Gate D work toward Gate C.",
-    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 7.",
-    "Do not add new comparator rows in Gate C tranche 7.",
-    "Do not rewrite comparator semantics under a side-reader contract adoption label.",
+    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 8.",
+    "Do not add new comparator rows in Gate C tranche 8.",
+    "Do not rewrite comparator semantics under a receipt-refresh hardening label.",
     "Do not widen civilization, externality, or product claims.",
     "Do not use buyer-language or market claims beyond the narrowest validated wedge.",
     "Do not attempt Gate C exit in this launch-surface pass.",
     "Do not treat the retained T3 benchmark_constitution_receipt.json subject head as refreshed T4 comparator truth.",
     "Do not allow any future comparator-related receipt to omit receipt_role or subject_head.",
-    "Do not leave any current side-reader validator on a comparator receipt path that bypasses the T6 contract."
+    "Do not leave any current side-reader validator on a comparator receipt path that bypasses the T6 contract.",
+    "Do not allow --allow-side-reader-contract-receipt-refresh to become a casual default-path bypass for normal validator operation.",
+    "Do not let tranche 8 refresh the T7 receipt outside explicit verification-only execution."
   ],
   "repo_state_executable_now": true,
-  "executable_now_why": "Repo is clean on main, B03 tranche 6 is sealed and verified on d70a77beb032892412e0f6bea06a73874768693c, and the next lawful move is a narrow Gate C tranche-7 side-reader contract adoption pass."
+  "executable_now_why": "Repo is clean on main, B03 tranche 7 is sealed and verified on 17af4264c1aca431cb95f332f1798042f180c160, and the next lawful move is a narrow Gate C tranche-8 verification-only receipt-refresh hardening pass."
 }
