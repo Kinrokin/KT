@@ -107,6 +107,8 @@ def test_dual_opt_in_can_emit_t11_receipt_when_explicitly_requested(tmp_path: Pa
     root = _repo_root()
     e1 = _load_e1(root)
     _patch_write_scope(monkeypatch, e1)
+    t7_receipt = tmp_path / "comparator_side_reader_contract_adoption_receipt.json"
+    t8_receipt = tmp_path / "side_reader_receipt_refresh_scope_receipt.json"
     t11_receipt = tmp_path / "t10_receipt_final_head_authority_alignment_receipt.json"
 
     result = e1.main(
@@ -114,6 +116,10 @@ def test_dual_opt_in_can_emit_t11_receipt_when_explicitly_requested(tmp_path: Pa
             *_common_args(tmp_path),
             "--allow-side-reader-contract-receipt-refresh",
             "--verification-only-side-reader-receipt-refresh",
+            "--side-reader-contract-receipt-output",
+            str(t7_receipt),
+            "--side-reader-refresh-scope-receipt-output",
+            str(t8_receipt),
             "--t10-receipt-final-head-authority-alignment-output",
             str(t11_receipt),
         ]
