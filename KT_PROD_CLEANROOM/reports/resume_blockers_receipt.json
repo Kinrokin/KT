@@ -1,50 +1,48 @@
 {
   "schema_id": "kt.resume_blockers_receipt.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-27T18:38:43Z",
+  "generated_utc": "2026-03-27T19:03:35Z",
   "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "77eb3c63675ce7651f2f7cffba01711c13dd5d11",
+  "current_git_head": "cb8a1cc0583a5d46a9d45497e70d1818ffed145a",
   "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
   "repo_state_executable_now": true,
   "blocking_state": "NONE",
   "blocking_reasons": [],
   "nonblocking_conflicts": [
     {
-      "conflict_id": "T10_RECEIPT_FINAL_HEAD_AUTHORITY_GAP",
+      "conflict_id": "DOCUMENTARY_CARRIER_FAIL_CLOSED_CONSUMER_GAP",
       "class": "COUNTED_GATE_C_NARROW_RISK",
       "evidence": [
-        "B03 T10 earned an authoritative clean-clone indirection-barrier receipt on sealed head 77eb3c63675ce7651f2f7cffba01711c13dd5d11.",
-        "The tracked T10 receipt on main remains a documentary carrier on prior subject 777ef52b476b42d10e9654cb43e4355d82df46cb.",
-        "The remaining narrow Gate C risk is authority ambiguity: without a machine-bound carrier-versus-authoritative relation, the tracked T10 receipt on main could be overread as final-head proof.",
-        "That risk can be closed without widening comparator truth or attempting Gate C exit."
+        "B03 T11 earned an authoritative clean-clone receipt on sealed head cb8a1cc0583a5d46a9d45497e70d1818ffed145a proving the tracked T10 receipt on main is DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH.",
+        "T11 proved overread of the tracked T10 receipt as final-head proof fails closed when subject_head differs from the authoritative sealed verification head.",
+        "The remaining narrow Gate C risk is downstream consumer behavior: any consumer path that encounters DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH must fail closed instead of degrading to warning-only documentary acceptance.",
+        "That risk can be closed without widening comparator truth, refreshing comparator receipts, or attempting Gate C exit."
       ],
-      "resolution_rule": "Next counted workstream is B03_T11 T10 receipt final-head authority alignment only. This risk does not reopen lower gates and does not authorize comparator widening, Gate C exit, or any Gate D work."
+      "resolution_rule": "Next counted workstream is B03_T12_DOCUMENTARY_CARRIER_FAIL_CLOSED_CONSUMER_ENFORCEMENT only. This risk does not reopen lower gates and does not authorize comparator widening, Gate C exit, or any Gate D work."
     }
   ],
   "current_lawful_gate_standing": {
     "b02_runtime_unification": "EXITED",
-    "gate_c": "OPEN_TRANCHES_1_2_3_4_5_6_7_8_9_10_COMPLETE_NOT_EXITED",
+    "gate_c": "OPEN_TRANCHES_1_2_3_4_5_6_7_8_9_10_11_COMPLETE_NOT_EXITED",
     "gate_d": "NOT_AUTHORIZED"
   },
-  "exact_next_counted_workstream_id": "B03_T11_T10_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT",
+  "exact_next_counted_workstream_id": "B03_T12_DOCUMENTARY_CARRIER_FAIL_CLOSED_CONSUMER_ENFORCEMENT",
   "explicit_non_go_areas": [
     "Do not restart B00, B01, or B02 without regression proof.",
     "Do not count Gate D toward Gate C.",
-    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 11.",
-    "Do not add new comparator rows in Gate C tranche 11.",
-    "Do not rewrite comparator semantics under the final-head authority-alignment tranche.",
-    "Do not narrate retained earlier comparator receipts as refreshed current-head comparator truth.",
-    "Do not allow comparator-related receipts to omit receipt_role or subject_head.",
-    "Do not let comparator side readers bypass the sealed T6 contract.",
-    "Do not overread the tracked T10 receipt on main as final-head proof while its subject_head remains 777ef52b476b42d10e9654cb43e4355d82df46cb.",
-    "Do not let any T10-era receipt be narrated as authoritative without a machine-bound final-head proof relation.",
+    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 12.",
+    "Do not add new comparator rows in Gate C tranche 12.",
+    "Do not rewrite comparator semantics under the documentary-carrier consumer-enforcement tranche.",
+    "Do not refresh T10 or T11 comparator truth under tranche 12.",
+    "Do not allow DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH to degrade into warning-only consumer behavior.",
+    "Do not narrate documentary carrier receipts as authoritative current-head proof when subject_head differs.",
     "Do not widen civilization, externality, or product claims.",
     "Do not use buyer-language beyond the narrowest validated wedge.",
     "Do not attempt Gate C exit in this launch-surface pass."
   ],
-  "why_executable_now": "The repo is clean, B03 tranche 10 is sealed and verified, and the remaining Gate C risk is a narrow authority-alignment task around the tracked T10 receipt versus the authoritative final-head clean-clone proof that can be closed without any comparator or capability widening."
+  "why_executable_now": "The repo is clean, B03 tranche 11 is sealed and verified, and the remaining Gate C risk is a narrow downstream-consumer fail-closed adoption task around DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH that can be closed without comparator or capability widening."
 }
