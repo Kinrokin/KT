@@ -89,6 +89,9 @@ T9_RECEIPT_ROLE = "COUNTED_T9_REFRESH_CALLER_ISOLATION_ARTIFACT_ONLY"
 SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL = f"{REPORT_ROOT_REL}/side_reader_refresh_indirection_barrier_receipt.json"
 T10_TRANCHE_ID = "B03_T10_SIDE_READER_REFRESH_INDIRECTION_BARRIER"
 T10_RECEIPT_ROLE = "COUNTED_T10_REFRESH_INDIRECTION_BARRIER_ARTIFACT_ONLY"
+T10_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL = f"{REPORT_ROOT_REL}/t10_receipt_final_head_authority_alignment_receipt.json"
+T11_TRANCHE_ID = "B03_T11_T10_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT"
+T11_RECEIPT_ROLE = "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"
 ALLOWED_SIDE_READER_REFRESH_OWNER_REL = "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py"
 SIDE_READER_REFRESH_OWNERSHIP_TOKENS = {
     "allow_flag": "--allow-side-reader-contract-receipt-refresh",
@@ -796,6 +799,120 @@ def build_side_reader_refresh_indirection_barrier_receipt(
     }
 
 
+def build_t10_receipt_final_head_authority_alignment_receipt(
+    *,
+    root: Path,
+    generated_utc: str,
+    side_reader_contract_receipt: Dict[str, Any],
+    side_reader_refresh_scope_receipt: Dict[str, Any],
+    side_reader_refresh_caller_isolation_receipt: Dict[str, Any],
+    side_reader_refresh_indirection_barrier_receipt: Dict[str, Any],
+) -> Dict[str, Any]:
+    current_head = _git_head(root)
+    tracked_t10_receipt = load_json(root / SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL)
+    tracked_t10_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL,
+        payload=tracked_t10_receipt,
+        allowed_roles=[T10_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    current_head_t10_contract = _consume_emitted_receipt_contract(
+        receipt_ref="IN_MEMORY_CURRENT_HEAD_T10_CANDIDATE",
+        payload=side_reader_refresh_indirection_barrier_receipt,
+        allowed_roles=[T10_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    tracked_subject_head = str(tracked_t10_receipt.get("subject_head", "")).strip()
+    tracked_authority_class = (
+        "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
+        if tracked_t10_contract.get("blocked") is True and tracked_t10_contract.get("failure_reason") == "SUBJECT_HEAD_MISMATCH"
+        else "AUTHORITATIVE_ON_REQUESTED_HEAD"
+        if tracked_t10_contract.get("pass") is True
+        else "NONAUTHORITATIVE_INVALID_TRACKED_RECEIPT"
+    )
+    t10_checks = {
+        str(check["check_id"]): bool(check["pass"])
+        for check in side_reader_refresh_indirection_barrier_receipt.get("checks", [])
+        if isinstance(check, dict) and "check_id" in check
+    }
+    t7_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_CONTRACT_RECEIPT_REL,
+        payload=side_reader_contract_receipt,
+        allowed_roles=[T7_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    t8_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_REFRESH_SCOPE_RECEIPT_REL,
+        payload=side_reader_refresh_scope_receipt,
+        allowed_roles=[T8_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    t9_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL,
+        payload=side_reader_refresh_caller_isolation_receipt,
+        allowed_roles=[T9_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    checks = [
+        {
+            "check_id": "tracked_t10_overread_fails_closed",
+            "pass": tracked_t10_contract.get("blocked") is True and tracked_t10_contract.get("failure_reason") == "SUBJECT_HEAD_MISMATCH",
+        },
+        {
+            "check_id": "tracked_t10_classified_documentary_carrier_only",
+            "pass": tracked_authority_class == "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH" and tracked_subject_head != current_head,
+        },
+        {
+            "check_id": "authoritative_final_head_requires_matching_subject_head",
+            "pass": current_head_t10_contract.get("pass") is True and str(current_head_t10_contract.get("subject_head", "")).strip() == current_head,
+        },
+        {
+            "check_id": "t10_indirection_barrier_preserved",
+            "pass": side_reader_refresh_indirection_barrier_receipt.get("status") == "PASS" and t10_checks.get("indirection_barrier_passes", False),
+        },
+        {
+            "check_id": "default_refresh_stays_disabled_by_default",
+            "pass": t10_checks.get("default_refresh_stays_disabled_by_default", False),
+        },
+        {
+            "check_id": "dual_opt_in_refresh_stays_functional",
+            "pass": t10_checks.get("dual_opt_in_refresh_stays_functional", False),
+        },
+        {
+            "check_id": "t7_t8_t9_contracts_preserved",
+            "pass": t7_contract.get("pass") is True and t8_contract.get("pass") is True and t9_contract.get("pass") is True,
+        },
+    ]
+    status = "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL"
+    return {
+        "schema_id": "kt.gate_c_t11.t10_receipt_final_head_authority_alignment_receipt.v1",
+        "generated_utc": generated_utc,
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": T11_RECEIPT_ROLE,
+        "status": status,
+        "tranche_id": T11_TRANCHE_ID,
+        "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        "canonical_receipt_binding": {
+            "baseline_vs_live_scorecard_ref": BASELINE_SCORECARD_REL,
+            "side_reader_contract_adoption_receipt_ref": SIDE_READER_CONTRACT_RECEIPT_REL,
+            "side_reader_refresh_scope_receipt_ref": SIDE_READER_REFRESH_SCOPE_RECEIPT_REL,
+            "side_reader_refresh_caller_isolation_receipt_ref": SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL,
+            "side_reader_refresh_indirection_barrier_receipt_ref": SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL,
+        },
+        "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+        "tracked_t10_receipt_ref": SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL,
+        "tracked_t10_receipt_subject_head": tracked_subject_head,
+        "tracked_t10_receipt_current_git_head": str(tracked_t10_receipt.get("current_git_head", "")).strip(),
+        "tracked_t10_authority_class": tracked_authority_class,
+        "tracked_t10_contract": tracked_t10_contract,
+        "authoritative_current_head_t10_candidate_contract": current_head_t10_contract,
+        "authoritative_final_head_rule": "Authoritative final-head proof for the T10 era requires a T10 receipt whose subject_head matches the sealed verification head. When tracked subject_head differs, the tracked receipt is documentary carrier only.",
+        "checks": checks,
+        "claim_boundary": "T11 aligns authority semantics for the retained T10 receipt only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
+    }
+
+
 def build_comparator_side_reader_contract_adoption_receipt(*, root: Path) -> Dict[str, Any]:
     from tools.operator.final_current_head_adjudication_validate import evaluate_comparator_side_reader_contract as evaluate_final_contract
     from tools.operator.w3_externality_and_comparative_proof_validate import evaluate_comparator_side_reader_contract as evaluate_w3_contract
@@ -1139,6 +1256,7 @@ def _build_argument_parser() -> argparse.ArgumentParser:
     parser.add_argument("--side-reader-refresh-scope-receipt-output", default=SIDE_READER_REFRESH_SCOPE_RECEIPT_REL)
     parser.add_argument("--side-reader-refresh-caller-isolation-receipt-output", default=SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL)
     parser.add_argument("--side-reader-refresh-indirection-barrier-receipt-output", default=SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL)
+    parser.add_argument("--t10-receipt-final-head-authority-alignment-output", default=T10_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL)
     return parser
 
 
@@ -1197,8 +1315,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         side_reader_refresh_scope_receipt=side_reader_refresh_scope_receipt,
         side_reader_refresh_caller_isolation_receipt=side_reader_refresh_caller_isolation_receipt,
     )
+    t10_receipt_final_head_authority_alignment_receipt = build_t10_receipt_final_head_authority_alignment_receipt(
+        root=root,
+        generated_utc=utc_now_iso_z(),
+        side_reader_contract_receipt=side_reader_contract_receipt,
+        side_reader_refresh_scope_receipt=side_reader_refresh_scope_receipt,
+        side_reader_refresh_caller_isolation_receipt=side_reader_refresh_caller_isolation_receipt,
+        side_reader_refresh_indirection_barrier_receipt=side_reader_refresh_indirection_barrier_receipt,
+    )
     caller_isolation_receipt_requested = "--side-reader-refresh-caller-isolation-receipt-output" in raw_argv
     indirection_barrier_receipt_requested = "--side-reader-refresh-indirection-barrier-receipt-output" in raw_argv
+    t11_authority_alignment_receipt_requested = "--t10-receipt-final-head-authority-alignment-output" in raw_argv
     if caller_isolation_receipt_requested and not bool(refresh_policy["refresh_enabled"]):
         raise RuntimeError(
             "FAIL_CLOSED: side-reader refresh caller isolation receipt requires explicit "
@@ -1207,6 +1334,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if indirection_barrier_receipt_requested and not bool(refresh_policy["refresh_enabled"]):
         raise RuntimeError(
             "FAIL_CLOSED: side-reader refresh indirection barrier receipt requires explicit "
+            "dual-opt-in verification-only refresh"
+        )
+    if t11_authority_alignment_receipt_requested and not bool(refresh_policy["refresh_enabled"]):
+        raise RuntimeError(
+            "FAIL_CLOSED: T11 final-head authority alignment receipt requires explicit "
             "dual-opt-in verification-only refresh"
         )
 
@@ -1266,6 +1398,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         )
         if written:
             allowed_repo_writes.append(written)
+    if t11_authority_alignment_receipt_requested:
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.t10_receipt_final_head_authority_alignment_output)),
+            payload=t10_receipt_final_head_authority_alignment_receipt,
+            default_rel=T10_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
+            allow_default_repo_write=bool(refresh_policy["refresh_enabled"]),
+        )
+        if written:
+            allowed_repo_writes.append(written)
     _enforce_write_scope_post(root, prewrite_dirty=prewrite_dirty, allowed_repo_writes=allowed_repo_writes)
 
     summary = {
@@ -1279,6 +1421,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "side_reader_receipt_refresh_enabled": bool(refresh_policy["refresh_enabled"]),
         "side_reader_refresh_caller_isolation_status": side_reader_refresh_caller_isolation_receipt["status"],
         "side_reader_refresh_indirection_barrier_status": side_reader_refresh_indirection_barrier_receipt["status"],
+        "t10_receipt_final_head_authority_alignment_status": t10_receipt_final_head_authority_alignment_receipt["status"],
     }
     print(json.dumps(summary, sort_keys=True))
     return 0 if summary["status"] == "PASS" else 1

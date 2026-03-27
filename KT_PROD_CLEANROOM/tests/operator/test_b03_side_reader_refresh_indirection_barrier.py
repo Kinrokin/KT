@@ -150,6 +150,7 @@ def test_dual_opt_in_can_emit_t10_receipt_when_explicitly_requested(tmp_path: Pa
     receipt = json.loads(t10_receipt.read_text(encoding="utf-8"))
     assert receipt["status"] == "PASS"
     assert receipt["receipt_role"] == "COUNTED_T10_REFRESH_INDIRECTION_BARRIER_ARTIFACT_ONLY"
+    assert receipt["subject_head"] == receipt["current_git_head"]
     checks = {check["check_id"]: check["pass"] for check in receipt["checks"]}
     assert checks["indirection_barrier_passes"] is True
     assert checks["t7_contract_preserved"] is True
