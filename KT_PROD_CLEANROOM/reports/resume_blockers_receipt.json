@@ -1,44 +1,45 @@
 {
   "schema_id": "kt.resume_blockers_receipt.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-27T04:38:00Z",
+  "generated_utc": "2026-03-27T05:16:00Z",
   "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "9b7e47b8521d946ac449b2d33fd98c9368721a08",
-  "worktree_cleanliness": "CLEAN_PRE_EMIT",
+  "current_git_head": "322f188b355828c70cc86e3a6aa7516cdb0092b4",
+  "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
   "repo_state_executable_now": true,
   "blocking_state": "NONE",
   "blocking_reasons": [],
   "nonblocking_conflicts": [
     {
-      "conflict_id": "VALIDATOR_WRITE_SCOPE_NOT_FAIL_CLOSED",
+      "conflict_id": "COMPARATOR_RECEIPT_SUBJECT_ROLE_AMBIGUITY",
       "class": "COUNTED_GATE_C_NARROW_RISK",
       "evidence": [
-        "B03 T3 initially rewrote out-of-scope tracked files before restore and reseal.",
-        "The current validator family still lacks a dedicated fail-closed write-scope test.",
-        "Comparator-law truth is singular, but write containment is not yet enforced as a counted receipt."
+        "B03 T4 earned fail-closed write-scope enforcement as the counted hardening artifact on sealed head 322f188b355828c70cc86e3a6aa7516cdb0092b4.",
+        "benchmark_constitution_receipt.json remains the retained T3 comparator-law subject proof on sealed head 9b7e47b8521d946ac449b2d33fd98c9368721a08.",
+        "Without explicit receipt-role binding, later readers can overread the older benchmark receipt as if T4 refreshed comparator truth."
       ],
-      "resolution_rule": "Next counted workstream is B03_T4 validator write-scope enforcement only. This risk does not reopen lower gates and does not authorize widening."
+      "resolution_rule": "Next counted workstream is B03_T5 comparator receipt subject-boundary binding only. This risk does not reopen lower gates and does not authorize widening."
     }
   ],
   "current_lawful_gate_standing": {
     "b02_runtime_unification": "EXITED",
-    "gate_c": "OPEN_TRANCHES_1_2_3_COMPLETE_NOT_EXITED",
+    "gate_c": "OPEN_TRANCHES_1_2_3_4_COMPLETE_NOT_EXITED",
     "gate_d": "NOT_AUTHORIZED"
   },
-  "exact_next_counted_workstream_id": "B03_T4_VALIDATOR_WRITE_SCOPE_ENFORCEMENT",
+  "exact_next_counted_workstream_id": "B03_T5_COMPARATOR_RECEIPT_SUBJECT_BOUNDARY",
   "explicit_non_go_areas": [
     "Do not restart B00, B01, or B02 without regression proof.",
     "Do not count Gate D toward Gate C.",
-    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 4.",
-    "Do not add new comparator rows in Gate C tranche 4.",
-    "Do not rewrite comparator semantics under the write-scope tranche.",
+    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 5.",
+    "Do not add new comparator rows in Gate C tranche 5.",
+    "Do not rewrite comparator semantics under the subject-boundary tranche.",
+    "Do not narrate the retained T3 benchmark_constitution_receipt.json as refreshed T4 comparator truth.",
     "Do not widen civilization, externality, or product claims.",
     "Do not use buyer-language beyond the narrowest validated wedge.",
     "Do not attempt Gate C exit in this launch-surface pass."
   ],
-  "why_executable_now": "The repo is clean, B03 tranche 3 is sealed and verified, and the remaining Gate C risk is narrow validator write-scope enforcement that can be closed without any comparator or capability widening."
+  "why_executable_now": "The repo is clean, B03 tranche 4 is sealed and verified, and the remaining Gate C risk is narrow comparator-receipt subject-role ambiguity that can be closed without any comparator or capability widening."
 }
