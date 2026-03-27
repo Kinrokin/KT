@@ -35,7 +35,9 @@ def test_e1_bounded_campaign_cli_compiles_bounded_pack(tmp_path: Path, monkeypat
     external_audit_path = tmp_path / "external_audit_packet.json"
     receipt_path = tmp_path / "receipt.json"
     tracked_t7_receipt = root / "KT_PROD_CLEANROOM" / "reports" / "comparator_side_reader_contract_adoption_receipt.json"
+    tracked_t9_receipt = root / "KT_PROD_CLEANROOM" / "reports" / "side_reader_refresh_caller_isolation_receipt.json"
     tracked_t7_before = tracked_t7_receipt.read_text(encoding="utf-8") if tracked_t7_receipt.exists() else None
+    tracked_t9_before = tracked_t9_receipt.read_text(encoding="utf-8") if tracked_t9_receipt.exists() else None
 
     result = e1.main(
         [
@@ -62,10 +64,15 @@ def test_e1_bounded_campaign_cli_compiles_bounded_pack(tmp_path: Path, monkeypat
     assert payload["comparator_contract_status"] == "PASS"
     assert payload["side_reader_receipt_refresh_scope_status"] == "PASS"
     assert payload["side_reader_receipt_refresh_enabled"] is False
+    assert payload["side_reader_refresh_caller_isolation_status"] == "PASS"
     if tracked_t7_before is None:
         assert tracked_t7_receipt.exists() is False
     else:
         assert tracked_t7_receipt.read_text(encoding="utf-8") == tracked_t7_before
+    if tracked_t9_before is None:
+        assert tracked_t9_receipt.exists() is False
+    else:
+        assert tracked_t9_receipt.read_text(encoding="utf-8") == tracked_t9_before
 
     commercial_truth = json.loads(commercial_truth_path.read_text(encoding="utf-8"))
     verifier_kit = json.loads(verifier_kit_path.read_text(encoding="utf-8"))

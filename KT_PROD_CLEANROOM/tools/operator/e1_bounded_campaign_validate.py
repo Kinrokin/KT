@@ -4,6 +4,7 @@ import argparse
 import json
 import re
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
@@ -81,6 +82,23 @@ T7_RECEIPT_ROLE = "COUNTED_T7_SIDE_READER_CONTRACT_ADOPTION_ARTIFACT_ONLY"
 SIDE_READER_REFRESH_SCOPE_RECEIPT_REL = f"{REPORT_ROOT_REL}/side_reader_receipt_refresh_scope_receipt.json"
 T8_TRANCHE_ID = "B03_T8_SIDE_READER_RECEIPT_REFRESH_SCOPE_HARDENING"
 T8_RECEIPT_ROLE = "COUNTED_T8_REFRESH_SCOPE_HARDENING_ARTIFACT_ONLY"
+SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL = f"{REPORT_ROOT_REL}/side_reader_refresh_caller_isolation_receipt.json"
+T9_TRANCHE_ID = "B03_T9_SIDE_READER_REFRESH_CALLER_ISOLATION"
+T9_RECEIPT_ROLE = "COUNTED_T9_REFRESH_CALLER_ISOLATION_ARTIFACT_ONLY"
+ALLOWED_SIDE_READER_REFRESH_OWNER_REL = "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py"
+SIDE_READER_REFRESH_OWNERSHIP_TOKENS = {
+    "allow_flag": "--allow-side-reader-contract-receipt-refresh",
+    "verification_only_flag": "--verification-only-side-reader-receipt-refresh",
+    "contract_output_flag": "--side-reader-contract-receipt-output",
+    "scope_output_flag": "--side-reader-refresh-scope-receipt-output",
+    "caller_isolation_output_flag": "--side-reader-refresh-caller-isolation-receipt-output",
+    "contract_receipt_rel": "comparator_side_reader_contract_adoption_receipt.json",
+    "scope_receipt_rel": "side_reader_receipt_refresh_scope_receipt.json",
+    "caller_isolation_receipt_rel": "side_reader_refresh_caller_isolation_receipt.json",
+    "contract_builder": "build_comparator_side_reader_contract_adoption_receipt(",
+    "scope_builder": "build_side_reader_receipt_refresh_scope_receipt(",
+    "caller_isolation_builder": "build_side_reader_refresh_caller_isolation_receipt(",
+}
 ROLE_ALIAS_RETIREMENT = "ALIAS_RETIREMENT_PROOF"
 ROLE_VALIDATOR_ALIAS_DETACHMENT = "VALIDATOR_ALIAS_DETACHMENT_PROOF"
 
@@ -211,10 +229,15 @@ def evaluate_side_reader_receipt_refresh_policy(
     allow_refresh: bool,
     verification_only_refresh: bool,
     output_target: Path,
+    refresh_scope_output_target: Path | None = None,
 ) -> Dict[str, Any]:
     default_target = (root / SIDE_READER_CONTRACT_RECEIPT_REL).resolve()
+    default_scope_target = (root / SIDE_READER_REFRESH_SCOPE_RECEIPT_REL).resolve()
     output_target = output_target.resolve()
-    custom_target_requested = output_target != default_target
+    refresh_scope_output_target = (
+        refresh_scope_output_target.resolve() if refresh_scope_output_target is not None else default_scope_target
+    )
+    custom_target_requested = output_target != default_target or refresh_scope_output_target != default_scope_target
     refresh_requested = allow_refresh or verification_only_refresh or custom_target_requested
     dual_opt_in = allow_refresh and verification_only_refresh
     failure_reason = None
@@ -222,7 +245,9 @@ def evaluate_side_reader_receipt_refresh_policy(
         failure_reason = "DUAL_OPT_IN_REQUIRED"
     return {
         "default_target": default_target.as_posix(),
+        "default_scope_target": default_scope_target.as_posix(),
         "output_target": output_target.as_posix(),
+        "refresh_scope_output_target": refresh_scope_output_target.as_posix(),
         "custom_target_requested": custom_target_requested,
         "refresh_requested": refresh_requested,
         "allow_refresh": allow_refresh,
@@ -230,6 +255,70 @@ def evaluate_side_reader_receipt_refresh_policy(
         "dual_opt_in": dual_opt_in,
         "refresh_enabled": refresh_requested and dual_opt_in,
         "failure_reason": failure_reason,
+    }
+
+
+def _non_test_operator_python_refs(root: Path) -> List[str]:
+    operator_root = root / "KT_PROD_CLEANROOM" / "tools" / "operator"
+    refs: List[str] = []
+    for path in operator_root.rglob("*.py"):
+        if path.name == "__init__.py":
+            continue
+        refs.append(path.resolve().relative_to(root.resolve()).as_posix())
+    return sorted(refs)
+
+
+def evaluate_side_reader_refresh_caller_isolation(
+    *,
+    root: Path,
+    candidate_operator_refs: Optional[Sequence[str]] = None,
+    text_overrides: Optional[Dict[str, str]] = None,
+) -> Dict[str, Any]:
+    refs = list(candidate_operator_refs) if candidate_operator_refs is not None else _non_test_operator_python_refs(root)
+    overrides = text_overrides or {}
+    allowed_owner_hits: List[str] = []
+    unexpected_owner_refs: List[Dict[str, Any]] = []
+
+    for ref in refs:
+        text = overrides.get(ref)
+        if text is None:
+            text = (root / ref).read_text(encoding="utf-8")
+        token_hits = [token_id for token_id, token in SIDE_READER_REFRESH_OWNERSHIP_TOKENS.items() if token in text]
+        if not token_hits:
+            continue
+        if ref == ALLOWED_SIDE_READER_REFRESH_OWNER_REL:
+            allowed_owner_hits = sorted(set(token_hits))
+            continue
+        unexpected_owner_refs.append(
+            {
+                "operator_ref": ref,
+                "token_hits": token_hits,
+            }
+        )
+
+    required_owner_tokens = sorted(SIDE_READER_REFRESH_OWNERSHIP_TOKENS.keys())
+    checks = [
+        {
+            "check_id": "allowed_owner_declares_all_refresh_tokens",
+            "pass": sorted(allowed_owner_hits) == required_owner_tokens,
+        },
+        {
+            "check_id": "no_non_e1_operator_owner_refs",
+            "pass": not unexpected_owner_refs,
+        },
+        {
+            "check_id": "refresh_path_owned_only_by_e1_operator_cli",
+            "pass": not unexpected_owner_refs and sorted(allowed_owner_hits) == required_owner_tokens,
+        },
+    ]
+    return {
+        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "allowed_owner_ref": ALLOWED_SIDE_READER_REFRESH_OWNER_REL,
+        "allowed_owner_token_hits": allowed_owner_hits,
+        "required_owner_tokens": required_owner_tokens,
+        "unexpected_owner_refs": unexpected_owner_refs,
+        "operator_refs_scanned": refs,
+        "checks": checks,
     }
 
 
@@ -250,6 +339,7 @@ def build_side_reader_receipt_refresh_scope_receipt(
                 allow_refresh=False,
                 verification_only_refresh=False,
                 output_target=default_target,
+                refresh_scope_output_target=default_target.with_name("side_reader_receipt_refresh_scope_receipt.json"),
             ),
         },
         {
@@ -259,6 +349,7 @@ def build_side_reader_receipt_refresh_scope_receipt(
                 allow_refresh=True,
                 verification_only_refresh=False,
                 output_target=default_target,
+                refresh_scope_output_target=default_target.with_name("side_reader_receipt_refresh_scope_receipt.json"),
             ),
         },
         {
@@ -268,6 +359,7 @@ def build_side_reader_receipt_refresh_scope_receipt(
                 allow_refresh=False,
                 verification_only_refresh=True,
                 output_target=default_target,
+                refresh_scope_output_target=default_target.with_name("side_reader_receipt_refresh_scope_receipt.json"),
             ),
         },
         {
@@ -277,6 +369,7 @@ def build_side_reader_receipt_refresh_scope_receipt(
                 allow_refresh=False,
                 verification_only_refresh=False,
                 output_target=tmp_target,
+                refresh_scope_output_target=tmp_target.with_name("t8_side_reader_refresh_scope_receipt.json"),
             ),
         },
         {
@@ -286,6 +379,7 @@ def build_side_reader_receipt_refresh_scope_receipt(
                 allow_refresh=True,
                 verification_only_refresh=True,
                 output_target=default_target,
+                refresh_scope_output_target=default_target.with_name("side_reader_receipt_refresh_scope_receipt.json"),
             ),
         },
         {
@@ -295,6 +389,7 @@ def build_side_reader_receipt_refresh_scope_receipt(
                 allow_refresh=True,
                 verification_only_refresh=True,
                 output_target=tmp_target,
+                refresh_scope_output_target=tmp_target.with_name("t8_side_reader_refresh_scope_receipt.json"),
             ),
         },
     ]
@@ -353,6 +448,63 @@ def build_side_reader_receipt_refresh_scope_receipt(
         "emitted_receipt_contract": emitted_contract,
         "checks": checks,
         "claim_boundary": "T8 hardens side-reader comparator receipt refresh scope only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
+    }
+
+
+def build_side_reader_refresh_caller_isolation_receipt(
+    *,
+    root: Path,
+    generated_utc: str,
+    side_reader_contract_receipt: Dict[str, Any],
+    side_reader_refresh_scope_receipt: Dict[str, Any],
+) -> Dict[str, Any]:
+    current_head = _git_head(root)
+    caller_isolation = evaluate_side_reader_refresh_caller_isolation(root=root)
+    t7_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_CONTRACT_RECEIPT_REL,
+        payload=side_reader_contract_receipt,
+        allowed_roles=[T7_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    t8_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_REFRESH_SCOPE_RECEIPT_REL,
+        payload=side_reader_refresh_scope_receipt,
+        allowed_roles=[T8_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    t8_checks = {
+        str(check["check_id"]): bool(check["pass"])
+        for check in side_reader_refresh_scope_receipt.get("checks", [])
+        if isinstance(check, dict) and "check_id" in check
+    }
+    checks = [
+        {"check_id": "caller_isolation_passes", "pass": caller_isolation["status"] == "PASS"},
+        {"check_id": "t7_contract_preserved", "pass": t7_contract["pass"] is True},
+        {"check_id": "t8_contract_preserved", "pass": t8_contract["pass"] is True},
+        {"check_id": "default_refresh_stays_disabled_by_default", "pass": t8_checks.get("default_path_does_not_enable_refresh", False)},
+        {"check_id": "dual_opt_in_refresh_stays_functional", "pass": t8_checks.get("dual_opt_in_default_target_enables_refresh", False)},
+    ]
+    status = "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL"
+    return {
+        "schema_id": "kt.gate_c_t9.side_reader_refresh_caller_isolation_receipt.v1",
+        "generated_utc": generated_utc,
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": T9_RECEIPT_ROLE,
+        "status": status,
+        "tranche_id": T9_TRANCHE_ID,
+        "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        "canonical_receipt_binding": {
+            "baseline_vs_live_scorecard_ref": BASELINE_SCORECARD_REL,
+            "side_reader_contract_adoption_receipt_ref": SIDE_READER_CONTRACT_RECEIPT_REL,
+            "side_reader_refresh_scope_receipt_ref": SIDE_READER_REFRESH_SCOPE_RECEIPT_REL,
+        },
+        "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+        "caller_isolation": caller_isolation,
+        "t7_contract": t7_contract,
+        "t8_contract": t8_contract,
+        "checks": checks,
+        "claim_boundary": "T9 hardens caller isolation for the already-earned verification-only side-reader refresh path only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
     }
 
 
@@ -697,10 +849,12 @@ def _build_argument_parser() -> argparse.ArgumentParser:
     parser.add_argument("--receipt-output", default=E1_CAMPAIGN_RECEIPT_REL)
     parser.add_argument("--side-reader-contract-receipt-output", default=SIDE_READER_CONTRACT_RECEIPT_REL)
     parser.add_argument("--side-reader-refresh-scope-receipt-output", default=SIDE_READER_REFRESH_SCOPE_RECEIPT_REL)
+    parser.add_argument("--side-reader-refresh-caller-isolation-receipt-output", default=SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL)
     return parser
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
+    raw_argv = list(argv) if argv is not None else sys.argv[1:]
     parser = _build_argument_parser()
     args = parser.parse_args(argv)
 
@@ -728,6 +882,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         allow_refresh=args.allow_side_reader_contract_receipt_refresh,
         verification_only_refresh=args.verification_only_side_reader_receipt_refresh,
         output_target=_resolve(root, str(args.side_reader_contract_receipt_output)),
+        refresh_scope_output_target=_resolve(root, str(args.side_reader_refresh_scope_receipt_output)),
     )
     if refresh_policy["failure_reason"] is not None:
         raise RuntimeError(
@@ -740,6 +895,18 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         generated_utc=utc_now_iso_z(),
         side_reader_contract_receipt=side_reader_contract_receipt,
     )
+    side_reader_refresh_caller_isolation_receipt = build_side_reader_refresh_caller_isolation_receipt(
+        root=root,
+        generated_utc=utc_now_iso_z(),
+        side_reader_contract_receipt=side_reader_contract_receipt,
+        side_reader_refresh_scope_receipt=side_reader_refresh_scope_receipt,
+    )
+    caller_isolation_receipt_requested = "--side-reader-refresh-caller-isolation-receipt-output" in raw_argv
+    if caller_isolation_receipt_requested and not bool(refresh_policy["refresh_enabled"]):
+        raise RuntimeError(
+            "FAIL_CLOSED: side-reader refresh caller isolation receipt requires explicit "
+            "dual-opt-in verification-only refresh"
+        )
 
     allowed_repo_writes: list[str] = []
     for target, payload, default_rel in [
@@ -758,24 +925,35 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         )
         if written:
             allowed_repo_writes.append(written)
-    written = _maybe_write_json_output(
-        root=root,
-        target=_resolve(root, str(args.side_reader_contract_receipt_output)),
-        payload=side_reader_contract_receipt,
-        default_rel=SIDE_READER_CONTRACT_RECEIPT_REL,
-        allow_default_repo_write=bool(refresh_policy["refresh_enabled"]),
-    )
-    if written:
-        allowed_repo_writes.append(written)
-    written = _maybe_write_json_output(
-        root=root,
-        target=_resolve(root, str(args.side_reader_refresh_scope_receipt_output)),
-        payload=side_reader_refresh_scope_receipt,
-        default_rel=SIDE_READER_REFRESH_SCOPE_RECEIPT_REL,
-        allow_default_repo_write=bool(refresh_policy["refresh_enabled"]),
-    )
-    if written:
-        allowed_repo_writes.append(written)
+    if bool(refresh_policy["refresh_enabled"]):
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.side_reader_contract_receipt_output)),
+            payload=side_reader_contract_receipt,
+            default_rel=SIDE_READER_CONTRACT_RECEIPT_REL,
+            allow_default_repo_write=True,
+        )
+        if written:
+            allowed_repo_writes.append(written)
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.side_reader_refresh_scope_receipt_output)),
+            payload=side_reader_refresh_scope_receipt,
+            default_rel=SIDE_READER_REFRESH_SCOPE_RECEIPT_REL,
+            allow_default_repo_write=True,
+        )
+        if written:
+            allowed_repo_writes.append(written)
+    if caller_isolation_receipt_requested:
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.side_reader_refresh_caller_isolation_receipt_output)),
+            payload=side_reader_refresh_caller_isolation_receipt,
+            default_rel=SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL,
+            allow_default_repo_write=bool(refresh_policy["refresh_enabled"]),
+        )
+        if written:
+            allowed_repo_writes.append(written)
     _enforce_write_scope_post(root, prewrite_dirty=prewrite_dirty, allowed_repo_writes=allowed_repo_writes)
 
     summary = {
@@ -787,6 +965,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "comparator_contract_status": side_reader_contract_receipt["status"],
         "side_reader_receipt_refresh_scope_status": side_reader_refresh_scope_receipt["status"],
         "side_reader_receipt_refresh_enabled": bool(refresh_policy["refresh_enabled"]),
+        "side_reader_refresh_caller_isolation_status": side_reader_refresh_caller_isolation_receipt["status"],
     }
     print(json.dumps(summary, sort_keys=True))
     return 0 if summary["status"] == "PASS" else 1
