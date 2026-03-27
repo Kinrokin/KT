@@ -1,13 +1,13 @@
 {
   "schema_id": "kt.next_counted_workstream_contract.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-27T19:22:31Z",
+  "generated_utc": "2026-03-27T20:27:26Z",
   "source_workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "current_counted_gate": "Gate C",
   "parent_batch_id": "B03_GATE_C_CAPABILITY_FORCING",
-  "exact_next_counted_workstream_id": "B03_T13_DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION",
+  "exact_next_counted_workstream_id": "B03_T14_SHARED_GUARD_SINGLE_PATH_ENFORCEMENT",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
-  "workstream_objective": "Centralize documentary-carrier fail-closed consumer enforcement into one shared comparator-law helper so downstream consumers cannot drift back into bespoke receipt parsing or warning-only mismatch handling. Earn no comparator-semantic changes, no comparator row changes, no receipt refresh, no capability widening, and no Gate C exit in tranche 13.",
+  "workstream_objective": "Make the shared documentary-carrier fail-closed consumer guard the only sanctioned counted-consumer path so any future wrapper or validator that bypasses it fails tests immediately. Earn no comparator-semantic changes, no comparator row changes, no receipt refresh, no capability widening, and no Gate C exit in tranche 14.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "canonical_receipt_binding": {
     "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
@@ -23,7 +23,8 @@
     "side_reader_refresh_caller_isolation_receipt_ref": "KT_PROD_CLEANROOM/reports/side_reader_refresh_caller_isolation_receipt.json",
     "side_reader_refresh_indirection_barrier_receipt_ref": "KT_PROD_CLEANROOM/reports/side_reader_refresh_indirection_barrier_receipt.json",
     "t10_final_head_authority_alignment_receipt_ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json",
-    "documentary_carrier_fail_closed_consumer_enforcement_receipt_ref": "KT_PROD_CLEANROOM/reports/documentary_carrier_fail_closed_consumer_enforcement_receipt.json"
+    "documentary_carrier_fail_closed_consumer_enforcement_receipt_ref": "KT_PROD_CLEANROOM/reports/documentary_carrier_fail_closed_consumer_enforcement_receipt.json",
+    "documentary_carrier_guard_centralization_receipt_ref": "KT_PROD_CLEANROOM/reports/documentary_carrier_guard_centralization_receipt.json"
   },
   "gate_domain_product_split": {
     "gate": "Gate C frozen capability forcing under comparator law",
@@ -31,6 +32,7 @@
     "product_surface": "NONE_COUNTING"
   },
   "prerequisite_read": {
+    "b03_t13_guard_centralization": "C:/Users/rober/AppData/Local/Temp/b03_t13_verify_20260327_2022/documentary_carrier_guard_centralization_receipt.json",
     "b03_t12_consumer_enforcement": "C:/Users/rober/AppData/Local/Temp/b03_t12_verify_20260327_193901/KT_PROD_CLEANROOM/reports/documentary_carrier_fail_closed_consumer_enforcement_receipt.json",
     "b03_t11_authority_alignment": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t11_verify_20260327_1902/KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json",
     "b03_t10_indirection_barrier": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t10_verify_20260327_1810/KT_PROD_CLEANROOM/reports/side_reader_refresh_indirection_barrier_receipt.json",
@@ -46,32 +48,32 @@
     "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
     "KT_PROD_CLEANROOM/tests/operator/test_final_current_head_adjudication_validate.py",
     "KT_PROD_CLEANROOM/tests/operator/test_w3_externality_and_comparative_proof_validate.py",
-    "KT_PROD_CLEANROOM/tests/operator/test_b03_documentary_carrier_fail_closed_consumer_enforcement.py",
     "KT_PROD_CLEANROOM/tests/operator/test_b03_documentary_carrier_guard_centralization.py",
-    "KT_PROD_CLEANROOM/reports/documentary_carrier_guard_centralization_receipt.json"
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_shared_guard_single_path_enforcement.py",
+    "KT_PROD_CLEANROOM/reports/shared_guard_single_path_enforcement_receipt.json"
   ],
   "expected_create_if_absent_targets": [
-    "KT_PROD_CLEANROOM/tests/operator/test_b03_documentary_carrier_guard_centralization.py",
-    "KT_PROD_CLEANROOM/reports/documentary_carrier_guard_centralization_receipt.json"
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_shared_guard_single_path_enforcement.py",
+    "KT_PROD_CLEANROOM/reports/shared_guard_single_path_enforcement_receipt.json"
   ],
   "expected_receipts": [
-    "KT_PROD_CLEANROOM/reports/documentary_carrier_guard_centralization_receipt.json"
+    "KT_PROD_CLEANROOM/reports/shared_guard_single_path_enforcement_receipt.json"
   ],
   "rollback_artifacts": {
-    "pre_mutation_patch_ref": "tmp/worktree_snapshots/b03_t13_pre_mutation.patch",
-    "pre_mutation_status_ref": "tmp/worktree_snapshots/b03_t13_pre_mutation.status.txt",
-    "pre_mutation_contract_snapshot_dir": "tmp/worktree_snapshots/b03_t13_contract_snapshot",
+    "pre_mutation_patch_ref": "tmp/worktree_snapshots/b03_t14_pre_mutation.patch",
+    "pre_mutation_status_ref": "tmp/worktree_snapshots/b03_t14_pre_mutation.status.txt",
+    "pre_mutation_contract_snapshot_dir": "tmp/worktree_snapshots/b03_t14_contract_snapshot",
     "tracked_restore_refs": [
       "HEAD:KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
       "HEAD:KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
       "HEAD:KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
       "HEAD:KT_PROD_CLEANROOM/tests/operator/test_final_current_head_adjudication_validate.py",
       "HEAD:KT_PROD_CLEANROOM/tests/operator/test_w3_externality_and_comparative_proof_validate.py",
-      "HEAD:KT_PROD_CLEANROOM/tests/operator/test_b03_documentary_carrier_fail_closed_consumer_enforcement.py"
+      "HEAD:KT_PROD_CLEANROOM/tests/operator/test_b03_documentary_carrier_guard_centralization.py"
     ],
     "remove_if_created": [
-      "KT_PROD_CLEANROOM/tests/operator/test_b03_documentary_carrier_guard_centralization.py",
-      "KT_PROD_CLEANROOM/reports/documentary_carrier_guard_centralization_receipt.json"
+      "KT_PROD_CLEANROOM/tests/operator/test_b03_shared_guard_single_path_enforcement.py",
+      "KT_PROD_CLEANROOM/reports/shared_guard_single_path_enforcement_receipt.json"
     ]
   },
   "measurement_scope": {
@@ -90,7 +92,8 @@
       "KT_PROD_CLEANROOM/reports/side_reader_refresh_indirection_barrier_receipt.json",
       "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json",
       "KT_PROD_CLEANROOM/reports/documentary_carrier_fail_closed_consumer_enforcement_receipt.json",
-      "KT_PROD_CLEANROOM/reports/documentary_carrier_guard_centralization_receipt.json"
+      "KT_PROD_CLEANROOM/reports/documentary_carrier_guard_centralization_receipt.json",
+      "KT_PROD_CLEANROOM/reports/shared_guard_single_path_enforcement_receipt.json"
     ],
     "forbidden_measured_surfaces": [
       "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
@@ -104,7 +107,7 @@
       "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
       "KT_PROD_CLEANROOM/reports/public_verifier_kit.json"
     ],
-    "rule": "Tranche 13 may only centralize documentary-carrier fail-closed consumer logic into shared comparator-law helper code. It may not alter comparator semantics, row sets, canonical receipts, or broaden measured surfaces."
+    "rule": "Tranche 14 may only enforce the shared documentary-carrier guard as the single sanctioned counted-consumer path. It may not alter comparator semantics, row sets, canonical receipts, or broaden measured surfaces."
   },
   "validators_and_tests": {
     "validators": [
@@ -114,33 +117,32 @@
     "tests": [
       "python -m pytest -o addopts='' tests/operator/test_final_current_head_adjudication_validate.py -q",
       "python -m pytest -o addopts='' tests/operator/test_w3_externality_and_comparative_proof_validate.py -q",
-      "python -m pytest -o addopts='' tests/operator/test_b03_documentary_carrier_fail_closed_consumer_enforcement.py -q",
-      "python -m pytest -o addopts='' tests/operator/test_b03_documentary_carrier_guard_centralization.py -q"
+      "python -m pytest -o addopts='' tests/operator/test_b03_documentary_carrier_guard_centralization.py -q",
+      "python -m pytest -o addopts='' tests/operator/test_b03_shared_guard_single_path_enforcement.py -q"
     ]
   },
   "stop_conditions": [
     "Any mutate path outside expected_mutate_paths fails tranche authorization.",
-    "Any downstream consumer retains bespoke documentary-carrier mismatch logic instead of reusing the shared helper after tranche 13.",
+    "Any counted consumer, wrapper, or validator can bypass the shared documentary-carrier guard and still pass tests after tranche 14.",
     "Any consumer path that encounters DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH can still degrade to warning-only or documentary-only acceptance.",
-    "Any future consumer can bypass the shared helper and still pass counted validation.",
-    "Any tracked comparator receipt other than documentary_carrier_guard_centralization_receipt.json is rewritten under tranche 13.",
-    "Any comparator semantics are rewritten under a guard-centralization label.",
+    "Any tracked comparator receipt other than shared_guard_single_path_enforcement_receipt.json is rewritten under tranche 14.",
+    "Any comparator semantics are rewritten under a single-path-enforcement label.",
     "Any new comparator row is introduced.",
     "Any planner, paradox, multiverse, router, memory, civilization, externality, or product widening enters counted scope.",
-    "Any attempt is made to claim Gate C exit from tranche 13.",
+    "Any attempt is made to claim Gate C exit from tranche 14.",
     "Any Gate D promotion packet is counted toward Gate C."
   ],
   "pass_fail_criteria": {
     "pass": [
-      "A machine-readable receipt proves both downstream consumers reuse one shared documentary-carrier fail-closed helper.",
-      "A machine-readable receipt proves documentary-carrier mismatch still fails closed with no warning-only fallback in every adopted consumer path.",
+      "A machine-readable receipt proves every sanctioned counted consumer path routes through the shared documentary-carrier guard and no bypass path remains.",
+      "A machine-readable receipt proves documentary-carrier mismatch still fails closed with no warning-only fallback in every sanctioned counted consumer path.",
       "A machine-readable receipt proves baseline_vs_live_scorecard.json remains the sole canonical Gate C comparator truth.",
       "A machine-readable receipt proves no comparator semantic widening or Gate C exit claim occurred."
     ],
     "fail": [
-      "Any consumer retains separate documentary-carrier mismatch logic.",
+      "Any counted consumer path bypasses the shared documentary-carrier guard.",
       "Any consumer path silently falls back to legacy acceptance of mismatched receipts.",
-      "Any comparator semantics or row set changes under the tranche-13 label.",
+      "Any comparator semantics or row set changes under the tranche-14 label.",
       "Any Gate C exit or Gate D counting claim is made."
     ]
   },
@@ -150,7 +152,7 @@
     "promotion civilization as Gate C work",
     "new comparator rows",
     "comparator-semantic rewrite",
-    "receipt refresh of T10, T11, or T12 artifacts",
+    "receipt refresh of T10, T11, T12, or T13 artifacts",
     "warning-only treatment of DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
     "planner widening",
     "paradox widening",
@@ -164,5 +166,5 @@
     "new canonical concepts without schema plus validator plus receipt plus rollback plus claim ceiling plus terminal state"
   ],
   "repo_state_executable_now": true,
-  "execution_readiness": "READY_FOR_EXPLICIT_B03_T13_AUTHORIZATION_ONLY"
+  "execution_readiness": "READY_FOR_EXPLICIT_B03_T14_AUTHORIZATION_ONLY"
 }

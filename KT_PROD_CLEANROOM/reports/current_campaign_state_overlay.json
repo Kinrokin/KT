@@ -1,7 +1,7 @@
 {
   "schema_id": "kt.current_campaign_state_overlay.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-27T19:22:31Z",
+  "generated_utc": "2026-03-27T20:27:26Z",
   "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "authority_stack": {
@@ -16,6 +16,7 @@
       "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.md"
     ],
     "current_state_authority": [
+      "C:/Users/rober/AppData/Local/Temp/b03_t13_verify_20260327_2022/documentary_carrier_guard_centralization_receipt.json",
       "C:/Users/rober/AppData/Local/Temp/b03_t12_verify_20260327_193901/KT_PROD_CLEANROOM/reports/documentary_carrier_fail_closed_consumer_enforcement_receipt.json",
       "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t11_verify_20260327_1902/KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json",
       "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t10_verify_20260327_1810/KT_PROD_CLEANROOM/reports/side_reader_refresh_indirection_barrier_receipt.json",
@@ -34,6 +35,7 @@
       "KT_PROD_CLEANROOM/reports/b02_runtime_unify_t5_receipt.json",
       "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json",
       "KT_PROD_CLEANROOM/reports/documentary_carrier_fail_closed_consumer_enforcement_receipt.json",
+      "KT_PROD_CLEANROOM/reports/documentary_carrier_guard_centralization_receipt.json",
       "KT_PROD_CLEANROOM/governance/execution_board.json",
       "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
     ]
@@ -45,7 +47,7 @@
   "repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "a51ccb987a1c47b17b4923b69fd3b3023ecc93d0",
+    "current_git_head": "c19240f6af223a6d30dbfb2705ddade4ab70be76",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "omega_batch_status": {
@@ -77,41 +79,42 @@
       "B03_T9_SIDE_READER_REFRESH_CALLER_ISOLATION",
       "B03_T10_SIDE_READER_REFRESH_INDIRECTION_BARRIER",
       "B03_T11_T10_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT",
-      "B03_T12_DOCUMENTARY_CARRIER_FAIL_CLOSED_CONSUMER_ENFORCEMENT"
+      "B03_T12_DOCUMENTARY_CARRIER_FAIL_CLOSED_CONSUMER_ENFORCEMENT",
+      "B03_T13_DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION"
     ],
-    "next_counted_tranche": "B03_T13_DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION",
+    "next_counted_tranche": "B03_T14_SHARED_GUARD_SINGLE_PATH_ENFORCEMENT",
     "b02_runtime_unification": "EXITED",
-    "gate_c_status": "OPEN_TRANCHES_1_2_3_4_5_6_7_8_9_10_11_12_COMPLETE_NOT_EXITED",
+    "gate_c_status": "OPEN_TRANCHES_1_2_3_4_5_6_7_8_9_10_11_12_13_COMPLETE_NOT_EXITED",
     "gate_d_status": "NOT_AUTHORIZED",
     "authoritative_basis": [
+      "documentary_carrier_guard_centralization_receipt.status = PASS on authoritative clean-clone sealed head c19240f6af223a6d30dbfb2705ddade4ab70be76",
+      "Both counted consumers reuse the shared documentary-carrier fail-closed guard in benchmark_constitution_validate.py on authoritative sealed head c19240f6af223a6d30dbfb2705ddade4ab70be76",
       "documentary_carrier_fail_closed_consumer_enforcement_receipt.status = PASS on authoritative clean-clone sealed head a51ccb987a1c47b17b4923b69fd3b3023ecc93d0",
-      "Both downstream consumer validators reject documentary-carrier mismatch with failure_reason = DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH on authoritative sealed head a51ccb987a1c47b17b4923b69fd3b3023ecc93d0",
-      "Tracked T12 receipt on main remains a retained carrier on prior subject cb25597b70c076841ed6df5f1ed04b72b4adab6b and is not authoritative final-head proof",
       "t10_receipt_final_head_authority_alignment_receipt.status = PASS on authoritative clean-clone sealed head cb8a1cc0583a5d46a9d45497e70d1818ffed145a",
       "baseline_vs_live_scorecard.json remains the sole canonical Gate C comparator truth"
     ]
   },
   "state_reconciliation": {
-    "latest_sealed_receipts_current_state": "B03 tranche 12 enforced fail-closed downstream consumer handling for documentary-carrier mismatch on sealed head a51ccb987a1c47b17b4923b69fd3b3023ecc93d0 without widening comparator truth or capability claims.",
-    "documentary_surface_state_on_main": "Canonical comparator truth remains singular and authoritative clean-clone proof remains controlling, but the T12 documentary-carrier guard is still duplicated across downstream consumers and could drift if future readers reimplement receipt handling separately.",
-    "reanchor_decision": "Preserve the authoritative clean-clone T12 receipt as the newest counted Gate C artifact, keep baseline_vs_live_scorecard.json as sole canonical comparator truth, keep T3-T12 hardening receipts as retained prior proof, and narrow the next counted tranche to shared-guard centralization for documentary-carrier fail-closed consumer enforcement only."
+    "latest_sealed_receipts_current_state": "B03 tranche 13 centralized the documentary-carrier fail-closed consumer guard on sealed head c19240f6af223a6d30dbfb2705ddade4ab70be76 without widening comparator truth or capability claims.",
+    "documentary_surface_state_on_main": "Canonical comparator truth remains singular and authoritative clean-clone proof remains controlling, but the remaining narrow Gate C risk is future bypass of the shared guard by a new counted consumer, wrapper, or validator path.",
+    "reanchor_decision": "Preserve the authoritative clean-clone T13 receipt as the newest counted Gate C artifact, keep baseline_vs_live_scorecard.json as sole canonical comparator truth, keep T3-T13 hardening receipts as retained prior proof, and narrow the next counted tranche to single-path enforcement so every counted consumer must route through the shared documentary-carrier guard."
   },
-  "next_counted_workstream_id": "B03_T13_DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION",
-  "next_counted_workstream_scope": "Centralize the documentary-carrier fail-closed consumer guard into shared comparator-law helper logic and force downstream consumers to reuse it. Earn no comparator-semantic changes, no new comparator rows, no receipt refresh, no capability widening, and no Gate C exit in tranche 13.",
+  "next_counted_workstream_id": "B03_T14_SHARED_GUARD_SINGLE_PATH_ENFORCEMENT",
+  "next_counted_workstream_scope": "Make the shared documentary-carrier guard the only sanctioned counted-consumer path, and fail tests immediately if any counted wrapper or validator bypasses it. Earn no comparator-semantic changes, no new comparator rows, no receipt refresh, no capability widening, and no Gate C exit in tranche 14.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "explicit_non_go_areas": [
     "Do not reopen B00, B01, or B02 without a current regression receipt.",
     "Do not treat promotion civilization as current Gate C counting work.",
     "Do not count Gate D work toward Gate C.",
-    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 13.",
-    "Do not add new comparator rows in Gate C tranche 13.",
-    "Do not rewrite comparator semantics under a guard-centralization label.",
-    "Do not refresh T10, T11, or T12 comparator truth under tranche 13.",
-    "Do not allow documentary-carrier mismatch handling to remain duplicated in bespoke consumer logic after tranche 13.",
+    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 14.",
+    "Do not add new comparator rows in Gate C tranche 14.",
+    "Do not rewrite comparator semantics under a single-path-enforcement label.",
+    "Do not refresh T10, T11, T12, or T13 comparator truth under tranche 14.",
+    "Do not allow any counted consumer, wrapper, or validator to bypass the shared documentary-carrier guard after tranche 14.",
     "Do not widen civilization, externality, or product claims.",
     "Do not use buyer-language or market claims beyond the narrowest validated wedge.",
     "Do not attempt Gate C exit in this launch-surface pass."
   ],
   "repo_state_executable_now": true,
-  "executable_now_why": "Repo is clean on main, B03 tranche 12 is sealed, and the next lawful move is a narrow Gate C tranche-13 shared-guard centralization pass that prevents future consumer drift without comparator or capability widening."
+  "executable_now_why": "Repo is clean on main, B03 tranche 13 is sealed, and the next lawful move is a narrow Gate C tranche-14 single-path enforcement pass that prevents future counted-consumer bypass of the shared guard without comparator or capability widening."
 }

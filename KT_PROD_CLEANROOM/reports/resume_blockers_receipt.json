@@ -1,47 +1,46 @@
 {
   "schema_id": "kt.resume_blockers_receipt.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-27T19:22:31Z",
+  "generated_utc": "2026-03-27T20:27:26Z",
   "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "a51ccb987a1c47b17b4923b69fd3b3023ecc93d0",
+  "current_git_head": "c19240f6af223a6d30dbfb2705ddade4ab70be76",
   "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
   "repo_state_executable_now": true,
   "blocking_state": "NONE",
   "blocking_reasons": [],
   "nonblocking_conflicts": [
     {
-      "conflict_id": "DOCUMENTARY_CARRIER_GUARD_DUPLICATION_RISK",
+      "conflict_id": "SHARED_GUARD_BYPASS_REGRESSION_RISK",
       "class": "COUNTED_GATE_C_NARROW_RISK",
       "evidence": [
-        "B03 T12 earned an authoritative clean-clone receipt on sealed head a51ccb987a1c47b17b4923b69fd3b3023ecc93d0 proving both downstream consumers fail closed on DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH.",
-        "The fail-closed rule is currently duplicated across final_current_head_adjudication_validate.py and w3_externality_and_comparative_proof_validate.py.",
-        "That duplication leaves a real future drift path: a new or refactored consumer can reimplement receipt handling separately and quietly reintroduce warning-only or partial-documentary behavior.",
-        "This risk can be closed without widening comparator truth, refreshing comparator receipts, or attempting Gate C exit."
+        "B03 T13 earned an authoritative clean-clone receipt on sealed head c19240f6af223a6d30dbfb2705ddade4ab70be76 proving both counted consumers reuse the shared documentary-carrier fail-closed guard in benchmark_constitution_validate.py.",
+        "The remaining risk is future bypass: a new or refactored counted consumer, wrapper, or validator can still evade the shared guard unless single-path enforcement is hardened explicitly.",
+        "That bypass risk can be closed without widening comparator truth, refreshing comparator receipts, or attempting Gate C exit."
       ],
-      "resolution_rule": "Next counted workstream is B03_T13_DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION only. This risk does not reopen lower gates and does not authorize comparator widening, Gate C exit, or any Gate D work."
+      "resolution_rule": "Next counted workstream is B03_T14_SHARED_GUARD_SINGLE_PATH_ENFORCEMENT only. This risk does not reopen lower gates and does not authorize comparator widening, Gate C exit, or any Gate D work."
     }
   ],
   "current_lawful_gate_standing": {
     "b02_runtime_unification": "EXITED",
-    "gate_c": "OPEN_TRANCHES_1_2_3_4_5_6_7_8_9_10_11_12_COMPLETE_NOT_EXITED",
+    "gate_c": "OPEN_TRANCHES_1_2_3_4_5_6_7_8_9_10_11_12_13_COMPLETE_NOT_EXITED",
     "gate_d": "NOT_AUTHORIZED"
   },
-  "exact_next_counted_workstream_id": "B03_T13_DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION",
+  "exact_next_counted_workstream_id": "B03_T14_SHARED_GUARD_SINGLE_PATH_ENFORCEMENT",
   "explicit_non_go_areas": [
     "Do not restart B00, B01, or B02 without regression proof.",
     "Do not count Gate D toward Gate C.",
-    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 13.",
-    "Do not add new comparator rows in Gate C tranche 13.",
-    "Do not rewrite comparator semantics under the guard-centralization tranche.",
-    "Do not refresh T10, T11, or T12 comparator truth under tranche 13.",
-    "Do not leave documentary-carrier mismatch handling duplicated in bespoke consumer code after tranche 13.",
+    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 14.",
+    "Do not add new comparator rows in Gate C tranche 14.",
+    "Do not rewrite comparator semantics under the single-path-enforcement tranche.",
+    "Do not refresh T10, T11, T12, or T13 comparator truth under tranche 14.",
+    "Do not allow any counted consumer, wrapper, or validator to bypass the shared documentary-carrier guard after tranche 14.",
     "Do not widen civilization, externality, or product claims.",
     "Do not use buyer-language beyond the narrowest validated wedge.",
     "Do not attempt Gate C exit in this launch-surface pass."
   ],
-  "why_executable_now": "The repo is clean, B03 tranche 12 is sealed and verified, and the remaining Gate C risk is a narrow shared-guard centralization task around documentary-carrier mismatch handling that can be closed without comparator or capability widening."
+  "why_executable_now": "The repo is clean, B03 tranche 13 is sealed and verified, and the remaining Gate C risk is a narrow shared-guard single-path enforcement task that can be closed without comparator or capability widening."
 }
