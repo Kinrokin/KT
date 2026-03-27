@@ -1,7 +1,7 @@
 {
   "schema_id": "kt.current_campaign_state_overlay.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-27T17:51:10Z",
+  "generated_utc": "2026-03-27T18:38:43Z",
   "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "authority_stack": {
@@ -16,6 +16,7 @@
       "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.md"
     ],
     "current_state_authority": [
+      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t10_verify_20260327_1810/KT_PROD_CLEANROOM/reports/side_reader_refresh_indirection_barrier_receipt.json",
       "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t9_verify_20260327_124752/KT_PROD_CLEANROOM/reports/side_reader_refresh_caller_isolation_receipt.json",
       "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t8_verify_20260327_100927/KT_PROD_CLEANROOM/reports/side_reader_receipt_refresh_scope_receipt.json",
       "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t7_verify_20260327_094600/KT_PROD_CLEANROOM/reports/comparator_side_reader_contract_adoption_receipt.json",
@@ -42,7 +43,7 @@
   "repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "c739a7b14c1a3945d368cd0bf98c07dea386b0da",
+    "current_git_head": "77eb3c63675ce7651f2f7cffba01711c13dd5d11",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "omega_batch_status": {
@@ -71,13 +72,15 @@
       "B03_T6_COMPARATOR_RECEIPT_CONTRACT_ENFORCEMENT",
       "B03_T7_COMPARATOR_SIDE_READER_CONTRACT_ADOPTION",
       "B03_T8_SIDE_READER_RECEIPT_REFRESH_SCOPE_HARDENING",
-      "B03_T9_SIDE_READER_REFRESH_CALLER_ISOLATION"
+      "B03_T9_SIDE_READER_REFRESH_CALLER_ISOLATION",
+      "B03_T10_SIDE_READER_REFRESH_INDIRECTION_BARRIER"
     ],
-    "next_counted_tranche": "B03_T10_SIDE_READER_REFRESH_INDIRECTION_BARRIER",
+    "next_counted_tranche": "B03_T11_T10_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT",
     "b02_runtime_unification": "EXITED",
-    "gate_c_status": "OPEN_TRANCHES_1_2_3_4_5_6_7_8_9_COMPLETE_NOT_EXITED",
+    "gate_c_status": "OPEN_TRANCHES_1_2_3_4_5_6_7_8_9_10_COMPLETE_NOT_EXITED",
     "gate_d_status": "NOT_AUTHORIZED",
     "authoritative_basis": [
+      "side_reader_refresh_indirection_barrier_receipt.status = PASS on authoritative clean-clone sealed head 77eb3c63675ce7651f2f7cffba01711c13dd5d11",
       "side_reader_refresh_caller_isolation_receipt.status = PASS on sealed head c739a7b14c1a3945d368cd0bf98c07dea386b0da",
       "side_reader_receipt_refresh_scope_receipt.status = PASS on sealed head 3e243841bf7495e21ebfe1a923625b25ef8ed644",
       "comparator_side_reader_contract_adoption_receipt.status = PASS on sealed head 17af4264c1aca431cb95f332f1798042f180c160",
@@ -87,32 +90,32 @@
       "benchmark_constitution_receipt.status = PASS on retained T3 sealed subject 9b7e47b8521d946ac449b2d33fd98c9368721a08",
       "canonical_scorecard_binding_receipt.status = PASS on sealed head 9b7e47b8521d946ac449b2d33fd98c9368721a08",
       "competitive_scorecard_validator_detachment_receipt.status = PASS on sealed head 9b7e47b8521d946ac449b2d33fd98c9368721a08",
-      "Gate C is open with tranches 1, 2, 3, 4, 5, 6, 7, 8, and 9 complete and not exited"
+      "Gate C is open with tranches 1, 2, 3, 4, 5, 6, 7, 8, 9, and 10 complete and not exited"
     ]
   },
   "state_reconciliation": {
-    "latest_sealed_receipts_current_state": "B03 tranche 9 earned caller isolation for the already-earned verification-only side-reader refresh path on sealed head c739a7b14c1a3945d368cd0bf98c07dea386b0da, keeping default e1 clean and proving e1 is the only non-test operator owner without widening Gate C scope.",
-    "documentary_surface_state_on_main": "Canonical comparator truth remains singular, receipt role and subject-head contract law remain fail-closed, direct owner isolation is now sealed, and the remaining narrow Gate C risk is indirection: future imports, shared option builders, wrappers, or refactors could move refresh behavior without recreating the literal owner tokens T9 scans today.",
-    "reanchor_decision": "Use sealed T9 caller isolation as the newest counted Gate C artifact, preserve baseline_vs_live_scorecard.json as sole canonical comparator truth, preserve benchmark_constitution_receipt.json as retained T3 subject proof, preserve validator_write_scope_enforcement_receipt.json as retained T4 hardening proof, preserve comparator_receipt_subject_boundary_receipt.json as retained T5 boundary proof, preserve comparator_receipt_contract_enforcement_receipt.json as retained T6 contract proof, preserve comparator_side_reader_contract_adoption_receipt.json as retained T7 side-reader proof, preserve side_reader_receipt_refresh_scope_receipt.json as retained T8 refresh-scope proof, and narrow the next counted tranche to indirection barriers around the already-earned T9 owner set."
+    "latest_sealed_receipts_current_state": "B03 tranche 10 earned an indirection barrier around the already-earned verification-only side-reader refresh path on authoritative clean-clone sealed head 77eb3c63675ce7651f2f7cffba01711c13dd5d11, preserving default e1 cleanliness and dual-opt-in verification without widening Gate C scope.",
+    "documentary_surface_state_on_main": "Canonical comparator truth remains singular, receipt role and subject-head contract law remain fail-closed, T10 indirection hardening is now sealed, and the remaining narrow Gate C risk is authority alignment: the tracked T10 receipt on main remains a documentary carrier on prior subject 777ef52b476b42d10e9654cb43e4355d82df46cb while authoritative final-head proof lives in the clean-clone receipt on 77eb3c63675ce7651f2f7cffba01711c13dd5d11.",
+    "reanchor_decision": "Use the authoritative clean-clone T10 receipt as the newest counted Gate C artifact, preserve baseline_vs_live_scorecard.json as sole canonical comparator truth, preserve benchmark_constitution_receipt.json as retained T3 subject proof, preserve validator_write_scope_enforcement_receipt.json as retained T4 hardening proof, preserve comparator_receipt_subject_boundary_receipt.json as retained T5 boundary proof, preserve comparator_receipt_contract_enforcement_receipt.json as retained T6 contract proof, preserve comparator_side_reader_contract_adoption_receipt.json as retained T7 side-reader proof, preserve side_reader_receipt_refresh_scope_receipt.json as retained T8 refresh-scope proof, preserve side_reader_refresh_caller_isolation_receipt.json as retained T9 caller-isolation proof, preserve side_reader_refresh_indirection_barrier_receipt.json as retained T10 indirection-barrier proof, and narrow the next counted tranche to final-head authority alignment for T10-era receipts only."
   },
-  "next_counted_workstream_id": "B03_T10_SIDE_READER_REFRESH_INDIRECTION_BARRIER",
-  "next_counted_workstream_scope": "Harden the already-earned T9 owner scan so non-test operator code cannot indirectly expose the side-reader refresh path through imports, re-exports, shared option builders, wrapper plumbing, or refactors that move refresh behavior without preserving the literal T9 owner tokens. Earn no comparator-semantic changes, no new comparator rows, no capability widening, and no Gate C exit in tranche 10.",
+  "next_counted_workstream_id": "B03_T11_T10_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT",
+  "next_counted_workstream_scope": "Eliminate the remaining T10-era subject-head ambiguity so the tracked T10 receipt on main cannot be overread as final-head proof and the authoritative final-head proof relation is machine-bound. Earn no comparator-semantic changes, no new comparator rows, no capability widening, and no Gate C exit in tranche 11.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "explicit_non_go_areas": [
     "Do not reopen B00, B01, or B02 without a current regression receipt.",
     "Do not treat promotion civilization as current Gate C counting work.",
     "Do not count Gate D work toward Gate C.",
-    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 10.",
-    "Do not add new comparator rows in Gate C tranche 10.",
-    "Do not rewrite comparator semantics under an indirection-barrier hardening label.",
+    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 11.",
+    "Do not add new comparator rows in Gate C tranche 11.",
+    "Do not rewrite comparator semantics under a final-head authority-alignment label.",
     "Do not widen civilization, externality, or product claims.",
     "Do not use buyer-language or market claims beyond the narrowest validated wedge.",
     "Do not attempt Gate C exit in this launch-surface pass.",
     "Do not treat retained earlier comparator receipts as refreshed current-head comparator truth.",
+    "Do not overread the tracked T10 receipt on main as final-head proof while its subject_head remains 777ef52b476b42d10e9654cb43e4355d82df46cb.",
     "Do not allow any future comparator-related receipt to omit receipt_role or subject_head.",
-    "Do not let non-test operator code import, re-export, wrap, or plumb the side-reader refresh owner functions or receipt outputs outside e1 direct CLI.",
-    "Do not let shared helper drift recreate a casual receipt-mint path without recreating the literal T9 owner tokens."
+    "Do not let any T10-era receipt be narrated as authoritative final-head proof without a matching subject_head on the authoritative verification head."
   ],
   "repo_state_executable_now": true,
-  "executable_now_why": "Repo is clean on main, B03 tranche 9 is sealed and verified on c739a7b14c1a3945d368cd0bf98c07dea386b0da, and the next lawful move is a narrow Gate C tranche-10 indirection-barrier hardening pass around the already-earned side-reader refresh owner set."
+  "executable_now_why": "Repo is clean on main, B03 tranche 10 is sealed, and the next lawful move is a narrow Gate C tranche-11 authority-alignment pass to bind the tracked T10 carrier receipt against the authoritative final-head clean-clone proof without comparator or capability widening."
 }
