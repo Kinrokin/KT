@@ -1,7 +1,7 @@
 {
   "schema_id": "kt.current_campaign_state_overlay.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-27T05:16:00Z",
+  "generated_utc": "2026-03-27T13:12:00Z",
   "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "authority_stack": {
@@ -16,6 +16,7 @@
       "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.md"
     ],
     "current_state_authority": [
+      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t5_verify_20260327_1310/KT_PROD_CLEANROOM/reports/comparator_receipt_subject_boundary_receipt.json",
       "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t4_verify_20260327_0505/KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json",
       "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t3_verify_20260327_0435/KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
       "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t3_verify_20260327_0435/KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
@@ -37,7 +38,7 @@
   "repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "322f188b355828c70cc86e3a6aa7516cdb0092b4",
+    "current_git_head": "c8dfae93fbbda4731ab6779655bff02ba0e95135",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "omega_batch_status": {
@@ -61,40 +62,43 @@
       "B03_T1_FROZEN_COMPARATOR_CONSTITUTION",
       "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT",
       "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT",
-      "B03_T4_VALIDATOR_WRITE_SCOPE_ENFORCEMENT"
+      "B03_T4_VALIDATOR_WRITE_SCOPE_ENFORCEMENT",
+      "B03_T5_COMPARATOR_RECEIPT_SUBJECT_BOUNDARY"
     ],
-    "next_counted_tranche": "B03_T5_COMPARATOR_RECEIPT_SUBJECT_BOUNDARY",
+    "next_counted_tranche": "B03_T6_COMPARATOR_RECEIPT_CONTRACT_ENFORCEMENT",
     "b02_runtime_unification": "EXITED",
-    "gate_c_status": "OPEN_TRANCHES_1_2_3_4_COMPLETE_NOT_EXITED",
+    "gate_c_status": "OPEN_TRANCHES_1_2_3_4_5_COMPLETE_NOT_EXITED",
     "gate_d_status": "NOT_AUTHORIZED",
     "authoritative_basis": [
+      "comparator_receipt_subject_boundary_receipt.status = PASS on sealed head c8dfae93fbbda4731ab6779655bff02ba0e95135",
       "validator_write_scope_enforcement_receipt.status = PASS on sealed head 322f188b355828c70cc86e3a6aa7516cdb0092b4",
       "benchmark_constitution_receipt.status = PASS on retained T3 sealed subject 9b7e47b8521d946ac449b2d33fd98c9368721a08",
       "canonical_scorecard_binding_receipt.status = PASS on sealed head 9b7e47b8521d946ac449b2d33fd98c9368721a08",
       "competitive_scorecard_validator_detachment_receipt.status = PASS on sealed head 9b7e47b8521d946ac449b2d33fd98c9368721a08",
-      "Gate C is open with tranches 1, 2, 3, and 4 complete and not exited"
+      "Gate C is open with tranches 1, 2, 3, 4, and 5 complete and not exited"
     ]
   },
   "state_reconciliation": {
-    "latest_sealed_receipts_current_state": "B03 tranche 4 earned fail-closed validator write-scope enforcement on sealed head 322f188b355828c70cc86e3a6aa7516cdb0092b4 without refreshing comparator-law subject truth.",
-    "documentary_surface_state_on_main": "The canonical comparator truth is still singular, but the retained T3 benchmark constitution receipt can still be overread as if T4 refreshed current-head comparator truth unless receipt-role binding is made machine-explicit.",
-    "reanchor_decision": "Use sealed T4 write-scope enforcement as the newest counted Gate C artifact, keep the retained T3 benchmark receipt classified as earlier comparator-law subject proof, and narrow the next counted tranche to receipt-role and subject-boundary binding only."
+    "latest_sealed_receipts_current_state": "B03 tranche 5 earned machine-enforced comparator receipt role and subject-head boundary control on sealed head c8dfae93fbbda4731ab6779655bff02ba0e95135 without refreshing comparator truth or widening Gate C scope.",
+    "documentary_surface_state_on_main": "Canonical comparator truth remains singular and cross-head receipt misread is now blocked for the retained T3 benchmark receipt and the T4 write-scope receipt, but future comparator receipts still need mandatory role plus subject-head contract enforcement to keep the ambiguity from reappearing under new filenames.",
+    "reanchor_decision": "Use sealed T5 subject-boundary enforcement as the newest counted Gate C artifact, preserve baseline_vs_live_scorecard.json as sole canonical comparator truth, preserve benchmark_constitution_receipt.json as retained T3 subject proof, preserve validator_write_scope_enforcement_receipt.json as retained T4 hardening proof, and narrow the next counted tranche to mandatory comparator receipt contract enforcement only."
   },
-  "next_counted_workstream_id": "B03_T5_COMPARATOR_RECEIPT_SUBJECT_BOUNDARY",
-  "next_counted_workstream_scope": "Bind comparator-law receipt roles so the retained T3 benchmark constitution receipt cannot be misread as refreshed T4 current-head comparator truth. Keep baseline_vs_live_scorecard.json as the sole canonical comparator truth, classify validator_write_scope_enforcement_receipt.json as the T4 counted hardening artifact, and earn no comparator refresh, no new rows, and no Gate C exit in tranche 5.",
+  "next_counted_workstream_id": "B03_T6_COMPARATOR_RECEIPT_CONTRACT_ENFORCEMENT",
+  "next_counted_workstream_scope": "Enforce a mandatory comparator receipt contract so any comparator-related receipt emitted by the Gate C validator family must declare both receipt_role and subject_head and fail closed if either is missing or misused. Keep baseline_vs_live_scorecard.json as the sole canonical comparator truth, earn no new comparator rows, no semantic rewrite, no capability widening, and no Gate C exit in tranche 6.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "explicit_non_go_areas": [
     "Do not reopen B00, B01, or B02 without a current regression receipt.",
     "Do not treat promotion civilization as current Gate C counting work.",
     "Do not count Gate D work toward Gate C.",
-    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 5.",
-    "Do not add new comparator rows in Gate C tranche 5.",
-    "Do not rewrite comparator semantics under a subject-boundary label.",
+    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 6.",
+    "Do not add new comparator rows in Gate C tranche 6.",
+    "Do not rewrite comparator semantics under a comparator-receipt contract label.",
     "Do not widen civilization, externality, or product claims.",
     "Do not use buyer-language or market claims beyond the narrowest validated wedge.",
     "Do not attempt Gate C exit in this launch-surface pass.",
-    "Do not treat the retained T3 benchmark_constitution_receipt.json subject head as refreshed T4 comparator truth."
+    "Do not treat the retained T3 benchmark_constitution_receipt.json subject head as refreshed T4 comparator truth.",
+    "Do not allow any future comparator-related receipt to omit receipt_role or subject_head."
   ],
   "repo_state_executable_now": true,
-  "executable_now_why": "Repo is clean on main, B03 tranche 4 is sealed and verified on 322f188b355828c70cc86e3a6aa7516cdb0092b4, and the next lawful move is a narrow Gate C tranche-5 receipt-role binding contract."
+  "executable_now_why": "Repo is clean on main, B03 tranche 5 is sealed and verified on c8dfae93fbbda4731ab6779655bff02ba0e95135, and the next lawful move is a narrow Gate C tranche-6 comparator receipt contract enforcement pass."
 }

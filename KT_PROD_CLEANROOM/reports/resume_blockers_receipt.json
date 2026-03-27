@@ -1,45 +1,46 @@
 {
   "schema_id": "kt.resume_blockers_receipt.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-27T05:16:00Z",
+  "generated_utc": "2026-03-27T13:12:00Z",
   "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "322f188b355828c70cc86e3a6aa7516cdb0092b4",
+  "current_git_head": "c8dfae93fbbda4731ab6779655bff02ba0e95135",
   "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
   "repo_state_executable_now": true,
   "blocking_state": "NONE",
   "blocking_reasons": [],
   "nonblocking_conflicts": [
     {
-      "conflict_id": "COMPARATOR_RECEIPT_SUBJECT_ROLE_AMBIGUITY",
+      "conflict_id": "COMPARATOR_RECEIPT_CONTRACT_FUTURE_EMISSION_GAP",
       "class": "COUNTED_GATE_C_NARROW_RISK",
       "evidence": [
-        "B03 T4 earned fail-closed write-scope enforcement as the counted hardening artifact on sealed head 322f188b355828c70cc86e3a6aa7516cdb0092b4.",
-        "benchmark_constitution_receipt.json remains the retained T3 comparator-law subject proof on sealed head 9b7e47b8521d946ac449b2d33fd98c9368721a08.",
-        "Without explicit receipt-role binding, later readers can overread the older benchmark receipt as if T4 refreshed comparator truth."
+        "B03 T5 earned machine-enforced subject and role boundary control on sealed head c8dfae93fbbda4731ab6779655bff02ba0e95135.",
+        "That boundary is now correct for the retained T3 benchmark receipt, the T4 write-scope receipt, and the canonical baseline-vs-live scorecard.",
+        "Future comparator-related receipts can still reintroduce ambiguity if receipt_role and subject_head are not made mandatory and validator-enforced for every new comparator receipt emission path."
       ],
-      "resolution_rule": "Next counted workstream is B03_T5 comparator receipt subject-boundary binding only. This risk does not reopen lower gates and does not authorize widening."
+      "resolution_rule": "Next counted workstream is B03_T6 comparator receipt contract enforcement only. This risk does not reopen lower gates and does not authorize comparator widening, Gate C exit, or any Gate D work."
     }
   ],
   "current_lawful_gate_standing": {
     "b02_runtime_unification": "EXITED",
-    "gate_c": "OPEN_TRANCHES_1_2_3_4_COMPLETE_NOT_EXITED",
+    "gate_c": "OPEN_TRANCHES_1_2_3_4_5_COMPLETE_NOT_EXITED",
     "gate_d": "NOT_AUTHORIZED"
   },
-  "exact_next_counted_workstream_id": "B03_T5_COMPARATOR_RECEIPT_SUBJECT_BOUNDARY",
+  "exact_next_counted_workstream_id": "B03_T6_COMPARATOR_RECEIPT_CONTRACT_ENFORCEMENT",
   "explicit_non_go_areas": [
     "Do not restart B00, B01, or B02 without regression proof.",
     "Do not count Gate D toward Gate C.",
-    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 5.",
-    "Do not add new comparator rows in Gate C tranche 5.",
-    "Do not rewrite comparator semantics under the subject-boundary tranche.",
-    "Do not narrate the retained T3 benchmark_constitution_receipt.json as refreshed T4 comparator truth.",
+    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 6.",
+    "Do not add new comparator rows in Gate C tranche 6.",
+    "Do not rewrite comparator semantics under the comparator-receipt contract tranche.",
+    "Do not narrate the retained T3 benchmark_constitution_receipt.json as refreshed T4 or T5 comparator truth.",
+    "Do not allow comparator-related receipts to omit receipt_role or subject_head.",
     "Do not widen civilization, externality, or product claims.",
     "Do not use buyer-language beyond the narrowest validated wedge.",
     "Do not attempt Gate C exit in this launch-surface pass."
   ],
-  "why_executable_now": "The repo is clean, B03 tranche 4 is sealed and verified, and the remaining Gate C risk is narrow comparator-receipt subject-role ambiguity that can be closed without any comparator or capability widening."
+  "why_executable_now": "The repo is clean, B03 tranche 5 is sealed and verified, and the remaining Gate C risk is narrow comparator-receipt contract drift on future emissions that can be closed without any comparator or capability widening."
 }
