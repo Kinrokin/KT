@@ -1,13 +1,13 @@
 {
   "schema_id": "kt.next_counted_workstream_contract.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-27T09:52:28Z",
+  "generated_utc": "2026-03-27T17:34:00Z",
   "source_workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "current_counted_gate": "Gate C",
   "parent_batch_id": "B03_GATE_C_CAPABILITY_FORCING",
-  "exact_next_counted_workstream_id": "B03_T8_SIDE_READER_RECEIPT_REFRESH_SCOPE_HARDENING",
+  "exact_next_counted_workstream_id": "B03_T9_SIDE_READER_REFRESH_CALLER_ISOLATION",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
-  "workstream_objective": "Constrain comparator_side_reader_contract_adoption_receipt refresh to explicit verification-only execution so normal validator operation cannot casually mint or rewrite the counted T7 receipt. Earn no comparator-semantic changes, no comparator row changes, no benchmark receipt subject-head refresh claims, no capability widening, and no Gate C exit in tranche 8.",
+  "workstream_objective": "Isolate the already-earned dual-opt-in plus verification-only side-reader receipt refresh path so only tools.operator.e1_bounded_campaign_validate.py can own it in non-test operator code. Earn no comparator-semantic changes, no comparator row changes, no benchmark receipt subject-head refresh claims, no capability widening, and no Gate C exit in tranche 9.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "canonical_receipt_binding": {
     "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
@@ -18,7 +18,8 @@
     "write_scope_enforcement_receipt_ref": "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json",
     "subject_boundary_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_receipt_subject_boundary_receipt.json",
     "contract_enforcement_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_receipt_contract_enforcement_receipt.json",
-    "side_reader_contract_adoption_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_side_reader_contract_adoption_receipt.json"
+    "side_reader_contract_adoption_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_side_reader_contract_adoption_receipt.json",
+    "side_reader_refresh_scope_receipt_ref": "KT_PROD_CLEANROOM/reports/side_reader_receipt_refresh_scope_receipt.json"
   },
   "gate_domain_product_split": {
     "gate": "Gate C frozen capability forcing under comparator law",
@@ -33,35 +34,36 @@
     "b03_t5_subject_boundary": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t5_verify_20260327_1310/KT_PROD_CLEANROOM/reports/comparator_receipt_subject_boundary_receipt.json",
     "b03_t6_contract_enforcement": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t6_verify_20260327_1425/KT_PROD_CLEANROOM/reports/comparator_receipt_contract_enforcement_receipt.json",
     "b03_t7_side_reader_adoption": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t7_verify_20260327_094600/KT_PROD_CLEANROOM/reports/comparator_side_reader_contract_adoption_receipt.json",
+    "b03_t8_refresh_scope": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t8_verify_20260327_100927/KT_PROD_CLEANROOM/reports/side_reader_receipt_refresh_scope_receipt.json",
     "omega_batch_definition": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json",
     "v11_closure_map": "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.json"
   },
   "expected_mutate_paths": [
     "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
     "KT_PROD_CLEANROOM/tests/operator/test_e1_bounded_campaign_validate.py",
-    "KT_PROD_CLEANROOM/tests/operator/test_b03_comparator_side_reader_contract_adoption.py",
     "KT_PROD_CLEANROOM/tests/operator/test_b03_side_reader_receipt_refresh_scope.py",
-    "KT_PROD_CLEANROOM/reports/side_reader_receipt_refresh_scope_receipt.json"
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_side_reader_refresh_caller_isolation.py",
+    "KT_PROD_CLEANROOM/reports/side_reader_refresh_caller_isolation_receipt.json"
   ],
   "expected_create_if_absent_targets": [
-    "KT_PROD_CLEANROOM/tests/operator/test_b03_side_reader_receipt_refresh_scope.py",
-    "KT_PROD_CLEANROOM/reports/side_reader_receipt_refresh_scope_receipt.json"
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_side_reader_refresh_caller_isolation.py",
+    "KT_PROD_CLEANROOM/reports/side_reader_refresh_caller_isolation_receipt.json"
   ],
   "expected_receipts": [
-    "KT_PROD_CLEANROOM/reports/side_reader_receipt_refresh_scope_receipt.json"
+    "KT_PROD_CLEANROOM/reports/side_reader_refresh_caller_isolation_receipt.json"
   ],
   "rollback_artifacts": {
-    "pre_mutation_patch_ref": "tmp/worktree_snapshots/b03_t8_pre_mutation.patch",
-    "pre_mutation_status_ref": "tmp/worktree_snapshots/b03_t8_pre_mutation.status.txt",
-    "pre_mutation_contract_snapshot_dir": "tmp/worktree_snapshots/b03_t8_contract_snapshot",
+    "pre_mutation_patch_ref": "tmp/worktree_snapshots/b03_t9_pre_mutation.patch",
+    "pre_mutation_status_ref": "tmp/worktree_snapshots/b03_t9_pre_mutation.status.txt",
+    "pre_mutation_contract_snapshot_dir": "tmp/worktree_snapshots/b03_t9_contract_snapshot",
     "tracked_restore_refs": [
       "HEAD:KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
       "HEAD:KT_PROD_CLEANROOM/tests/operator/test_e1_bounded_campaign_validate.py",
-      "HEAD:KT_PROD_CLEANROOM/tests/operator/test_b03_comparator_side_reader_contract_adoption.py"
+      "HEAD:KT_PROD_CLEANROOM/tests/operator/test_b03_side_reader_receipt_refresh_scope.py"
     ],
     "remove_if_created": [
-      "KT_PROD_CLEANROOM/tests/operator/test_b03_side_reader_receipt_refresh_scope.py",
-      "KT_PROD_CLEANROOM/reports/side_reader_receipt_refresh_scope_receipt.json"
+      "KT_PROD_CLEANROOM/tests/operator/test_b03_side_reader_refresh_caller_isolation.py",
+      "KT_PROD_CLEANROOM/reports/side_reader_refresh_caller_isolation_receipt.json"
     ]
   },
   "measurement_scope": {
@@ -75,7 +77,8 @@
       "KT_PROD_CLEANROOM/reports/comparator_receipt_subject_boundary_receipt.json",
       "KT_PROD_CLEANROOM/reports/comparator_receipt_contract_enforcement_receipt.json",
       "KT_PROD_CLEANROOM/reports/comparator_side_reader_contract_adoption_receipt.json",
-      "KT_PROD_CLEANROOM/reports/side_reader_receipt_refresh_scope_receipt.json"
+      "KT_PROD_CLEANROOM/reports/side_reader_receipt_refresh_scope_receipt.json",
+      "KT_PROD_CLEANROOM/reports/side_reader_refresh_caller_isolation_receipt.json"
     ],
     "forbidden_measured_surfaces": [
       "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
@@ -94,7 +97,7 @@
       "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
       "KT_PROD_CLEANROOM/reports/public_verifier_kit.json"
     ],
-    "rule": "Tranche 8 may only harden the refresh scope of comparator_side_reader_contract_adoption_receipt so its tracked write path is explicit verification-only. It may not alter comparator semantics, row sets, canonical receipts, or broaden measured surfaces."
+    "rule": "Tranche 9 may only harden caller isolation around the already-earned T8 verification-only side-reader receipt refresh path. It may not alter comparator semantics, row sets, canonical receipts, or broaden measured surfaces."
   },
   "validators_and_tests": {
     "validators": [
@@ -103,34 +106,33 @@
     ],
     "tests": [
       "python -m pytest -o addopts='' tests/operator/test_e1_bounded_campaign_validate.py -q",
-      "python -m pytest -o addopts='' tests/operator/test_b03_comparator_side_reader_contract_adoption.py -q",
-      "python -m pytest -o addopts='' tests/operator/test_b03_side_reader_receipt_refresh_scope.py -q"
+      "python -m pytest -o addopts='' tests/operator/test_b03_side_reader_receipt_refresh_scope.py -q",
+      "python -m pytest -o addopts='' tests/operator/test_b03_side_reader_refresh_caller_isolation.py -q"
     ]
   },
   "stop_conditions": [
     "Any mutate path outside expected_mutate_paths fails tranche authorization.",
-    "Any tracked comparator receipt other than side_reader_receipt_refresh_scope_receipt.json is rewritten under tranche 8.",
+    "Any non-test operator path other than tools.operator.e1_bounded_campaign_validate.py references --allow-side-reader-contract-receipt-refresh, --verification-only-side-reader-receipt-refresh, or side-reader receipt output surfaces.",
+    "Any helper or wrapper can expose or invoke the side-reader receipt refresh path outside direct e1 CLI dual opt-in.",
+    "Any tracked comparator receipt other than side_reader_refresh_caller_isolation_receipt.json is rewritten under tranche 9.",
     "Any new comparator row is introduced.",
-    "Any comparator semantics are rewritten under the receipt-refresh hardening label.",
-    "Normal validator invocation can rewrite comparator_side_reader_contract_adoption_receipt.json.",
-    "The refresh path can be invoked without an explicit verification-only mode switch.",
+    "Any comparator semantics are rewritten under the caller-isolation hardening label.",
     "Any refresh path bypasses the already-earned receipt_role plus subject_head contract.",
-    "Any benchmark_constitution_receipt.json, validator_write_scope_enforcement_receipt.json, comparator_receipt_subject_boundary_receipt.json, or comparator_side_reader_contract_adoption_receipt.json is rewritten and then narrated as refreshed comparator truth.",
     "Any planner, paradox, multiverse, router, memory, civilization, externality, or product widening enters counted scope.",
-    "Any attempt is made to claim Gate C exit from tranche 8.",
+    "Any attempt is made to claim Gate C exit from tranche 9.",
     "Any Gate D promotion packet is counted toward Gate C."
   ],
   "pass_fail_criteria": {
     "pass": [
-      "A machine-readable receipt proves normal validator execution does not write comparator_side_reader_contract_adoption_receipt.json.",
-      "A machine-readable receipt proves comparator_side_reader_contract_adoption_receipt.json can be refreshed only under explicit verification-only execution.",
-      "A machine-readable receipt proves the verification-only refresh path still honors the sealed T6 receipt_role plus subject_head contract.",
-      "baseline_vs_live_scorecard.json remains the sole canonical Gate C comparator truth.",
-      "competitive_scorecard.json remains documentary-only and non-consumable by validator or counted paths."
+      "A machine-readable receipt proves only tools.operator.e1_bounded_campaign_validate.py owns the dual-opt-in verification-only side-reader refresh path in non-test operator code.",
+      "A machine-readable receipt proves no wrapper, helper, or non-e1 validator path can mint or rewrite the T7 or T8 receipt surfaces.",
+      "A machine-readable receipt proves default e1 execution remains clean.",
+      "A machine-readable receipt proves explicit dual-opt-in e1 verification still works and preserves receipt_role plus subject_head contract.",
+      "baseline_vs_live_scorecard.json remains the sole canonical Gate C comparator truth."
     ],
     "fail": [
-      "Any default validator path can casually mint or rewrite the T7 counted receipt.",
-      "Any comparator semantics or row set changes under the receipt-refresh hardening tranche.",
+      "Any non-e1 operator path can casually recreate a receipt-mint path.",
+      "Any comparator semantics or row set changes under the caller-isolation tranche.",
       "Any Gate C exit or Gate D counting claim is made."
     ]
   },
@@ -143,7 +145,7 @@
     "benchmark constitution receipt subject-head refresh claims",
     "any comparator-related receipt without mandatory receipt_role and subject_head fields",
     "any comparator side-reader path that bypasses receipt_role plus subject_head validation",
-    "casual use of --allow-side-reader-contract-receipt-refresh in normal validator operation",
+    "any non-e1 operator path that exposes verification-only side-reader refresh flags or outputs",
     "planner widening",
     "paradox widening",
     "multiverse widening",
@@ -156,5 +158,5 @@
     "new canonical concepts without schema plus validator plus receipt plus rollback plus claim ceiling plus terminal state"
   ],
   "repo_state_executable_now": true,
-  "execution_readiness": "READY_FOR_EXPLICIT_B03_T8_AUTHORIZATION_ONLY"
+  "execution_readiness": "READY_FOR_EXPLICIT_B03_T9_AUTHORIZATION_ONLY"
 }
