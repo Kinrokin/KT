@@ -54,6 +54,7 @@ def test_e1_bounded_campaign_cli_compiles_bounded_pack(tmp_path: Path) -> None:
     assert payload["comparative_widening"] == "FORBIDDEN"
     assert payload["commercial_widening"] == "FORBIDDEN"
     assert payload["second_host_kit_status"] in {"READY_PENDING_HARDWARE", "READY_STAGED_PENDING_HARDWARE"}
+    assert payload["comparator_contract_status"] == "PASS"
 
     commercial_truth = json.loads(commercial_truth_path.read_text(encoding="utf-8"))
     verifier_kit = json.loads(verifier_kit_path.read_text(encoding="utf-8"))

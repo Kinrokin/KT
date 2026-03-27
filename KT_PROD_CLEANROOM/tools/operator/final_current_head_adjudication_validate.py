@@ -2,11 +2,21 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
-from tools.operator.benchmark_constitution_validate import _enforce_write_scope_post, _enforce_write_scope_pre, _maybe_write_json_output
+from tools.operator.benchmark_constitution_validate import (
+    ROLE_BASELINE_SCORECARD,
+    ROLE_BENCHMARK_RECEIPT,
+    _consume_emitted_receipt_contract,
+    _enforce_write_scope_post,
+    _enforce_write_scope_pre,
+    _maybe_write_json_output,
+    _payloads,
+    build_receipt as build_benchmark_receipt,
+)
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z
 
 
@@ -53,6 +63,8 @@ OUT_FORBIDDEN = f"{GOV}/final_forbidden_claims_list.json"
 OUT_TIER = f"{GOV}/final_tier_ruling.json"
 OUT_PRODUCT = f"{PROD}/final_product_truth_boundary.json"
 OUT_RECEIPT = f"{REP}/final_current_head_adjudication_receipt.json"
+ROLE_ALIAS_RETIREMENT = "ALIAS_RETIREMENT_PROOF"
+ROLE_VALIDATOR_ALIAS_DETACHMENT = "VALIDATOR_ALIAS_DETACHMENT_PROOF"
 
 
 def _resolve(root: Path, value: str) -> Path:
@@ -84,6 +96,101 @@ def _txt(root: Path, rel: str) -> str:
 def _all(text: str, needles: Sequence[str]) -> bool:
     lowered = text.lower()
     return all(str(needle).lower() in lowered for needle in needles)
+
+
+def evaluate_comparator_side_reader_contract(*, root: Path) -> Dict[str, Any]:
+    generated_utc = utc_now_iso_z()
+    payloads = _payloads(root, generated_utc)
+    current_head = str(payloads["current_head"]).strip()
+    benchmark_receipt = build_benchmark_receipt(payloads, generated_utc)
+    generated_receipts = [
+        (BASELINE_SCORECARD, payloads["scorecard"], [ROLE_BASELINE_SCORECARD]),
+        (BENCHMARK_RECEIPT, benchmark_receipt, [ROLE_BENCHMARK_RECEIPT]),
+        (ALIAS_RETIREMENT, payloads["alias_receipt"], [ROLE_ALIAS_RETIREMENT]),
+        (DETACHMENT_RECEIPT, payloads["detachment_receipt"], [ROLE_VALIDATOR_ALIAS_DETACHMENT]),
+    ]
+    generated_checks = []
+    for ref, payload, allowed_roles in generated_receipts:
+        result = _consume_emitted_receipt_contract(
+            receipt_ref=ref,
+            payload=payload,
+            allowed_roles=allowed_roles,
+            requested_head=current_head,
+        )
+        generated_checks.append({"check_id": f"generated_contract::{Path(ref).name}", "receipt_ref": ref, **result})
+    baseline_scorecard = payloads["scorecard"]
+    malformed_attempts = [
+        {
+            "attempt_id": "missing_receipt_role",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=BASELINE_SCORECARD,
+                payload={k: v for k, v in baseline_scorecard.items() if k != "receipt_role"},
+                allowed_roles=[ROLE_BASELINE_SCORECARD],
+                requested_head=current_head,
+            ),
+        },
+        {
+            "attempt_id": "missing_subject_head",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=BASELINE_SCORECARD,
+                payload={k: v for k, v in baseline_scorecard.items() if k != "subject_head"},
+                allowed_roles=[ROLE_BASELINE_SCORECARD],
+                requested_head=current_head,
+            ),
+        },
+        {
+            "attempt_id": "wrong_receipt_role",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=BASELINE_SCORECARD,
+                payload={**baseline_scorecard, "receipt_role": "COUNTED_T7_SIDE_READER_CONTRACT_ADOPTION_ARTIFACT_ONLY"},
+                allowed_roles=[ROLE_BASELINE_SCORECARD],
+                requested_head=current_head,
+            ),
+        },
+        {
+            "attempt_id": "wrong_subject_head",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=BASELINE_SCORECARD,
+                payload={**baseline_scorecard, "subject_head": "0000000000000000000000000000000000000000"},
+                allowed_roles=[ROLE_BASELINE_SCORECARD],
+                requested_head=current_head,
+            ),
+        },
+    ]
+    source_text = Path(__file__).read_text(encoding="utf-8")
+    legacy_parse_removed = (
+        re.search(
+            r"load_json\(\s*root\s*/\s*(BASELINE_SCORECARD|BENCHMARK_RECEIPT|ALIAS_RETIREMENT|DETACHMENT_RECEIPT)\s*\)",
+            source_text,
+        )
+        is None
+    )
+    status = (
+        "PASS"
+        if all(bool(check["pass"]) for check in generated_checks)
+        and malformed_attempts[0]["blocked"]
+        and malformed_attempts[0]["failure_reason"] == "RECEIPT_ROLE_MISSING"
+        and malformed_attempts[1]["blocked"]
+        and malformed_attempts[1]["failure_reason"] == "SUBJECT_HEAD_MISSING"
+        and malformed_attempts[2]["blocked"]
+        and malformed_attempts[2]["failure_reason"] == "RECEIPT_ROLE_MISMATCH"
+        and malformed_attempts[3]["blocked"]
+        and malformed_attempts[3]["failure_reason"] == "SUBJECT_HEAD_MISMATCH"
+        and legacy_parse_removed
+        else "FAIL"
+    )
+    return {
+        "reader_id": "final_current_head_adjudication_validate",
+        "status": status,
+        "requested_head": current_head,
+        "baseline_scorecard": payloads["scorecard"],
+        "benchmark_receipt": benchmark_receipt,
+        "alias_retirement_receipt": payloads["alias_receipt"],
+        "detachment_receipt": payloads["detachment_receipt"],
+        "generated_contract_checks": generated_checks,
+        "malformed_attempts": malformed_attempts,
+        "legacy_parse_removed": legacy_parse_removed,
+    }
 
 
 def build_final_blocker_matrix(*, root: Path) -> Dict[str, Any]:
@@ -161,10 +268,13 @@ def build_final_claim_class_outcome(*, root: Path, final_blockers: Dict[str, Any
     product_install = _j(root, PRODUCT_INSTALL)
     operator_handoff = _j(root, OPERATOR_HANDOFF)
     standards = _j(root, STANDARDS)
-    baseline_scorecard = _j(root, BASELINE_SCORECARD)
-    benchmark_receipt = _j(root, BENCHMARK_RECEIPT)
-    alias_retirement = _j(root, ALIAS_RETIREMENT)
-    detachment_receipt = _j(root, DETACHMENT_RECEIPT)
+    comparator_contract = evaluate_comparator_side_reader_contract(root=root)
+    if comparator_contract["status"] != "PASS":
+        raise RuntimeError("FAIL_CLOSED: final current-head comparator side-reader contract adoption failed")
+    baseline_scorecard = comparator_contract["baseline_scorecard"]
+    benchmark_receipt = comparator_contract["benchmark_receipt"]
+    alias_retirement = comparator_contract["alias_retirement_receipt"]
+    detachment_receipt = comparator_contract["detachment_receipt"]
     e2_receipt = _j(root, E2_RECEIPT)
     return {
         "schema_id": "kt.final_current_head.claim_class_outcome.v1",
@@ -196,6 +306,7 @@ def build_final_claim_class_outcome(*, root: Path, final_blockers: Dict[str, Any
         "operator_install_profile_status": str(product_install.get("status", "")).strip(),
         "operator_handoff_status": str(operator_handoff.get("status", "")).strip(),
         "standards_legibility_status": str(standards.get("status", "")).strip(),
+        "comparator_contract_status": comparator_contract["status"],
         "source_refs": [TRUTH_LOCK, W5_TIER, ROUTER_ORDERED, ROUTER_SCORE, PRODUCT_INSTALL, OPERATOR_HANDOFF, STANDARDS, BASELINE_SCORECARD, BENCHMARK_RECEIPT, ALIAS_RETIREMENT, DETACHMENT_RECEIPT, E2_RECEIPT, OUT_BLOCKERS],
     }
 
@@ -328,9 +439,12 @@ def build_receipt(*, root: Path, blockers: Dict[str, Any], claims: Dict[str, Any
     truth_lock = _j(root, TRUTH_LOCK)
     firewall = _j(root, HIST_FIREWALL)
     wave5_readj = _j(root, W5_READJ)
-    baseline_scorecard = _j(root, BASELINE_SCORECARD)
-    benchmark_receipt = _j(root, BENCHMARK_RECEIPT)
-    detachment_receipt = _j(root, DETACHMENT_RECEIPT)
+    comparator_contract = evaluate_comparator_side_reader_contract(root=root)
+    if comparator_contract["status"] != "PASS":
+        raise RuntimeError("FAIL_CLOSED: final receipt comparator side-reader contract adoption failed")
+    baseline_scorecard = comparator_contract["baseline_scorecard"]
+    benchmark_receipt = comparator_contract["benchmark_receipt"]
+    detachment_receipt = comparator_contract["detachment_receipt"]
     router_ordered = _j(root, ROUTER_ORDERED)
     commercial = _j(root, COMMERCIAL)
     verifier = _j(root, VERIFIER)
@@ -342,6 +456,7 @@ def build_receipt(*, root: Path, blockers: Dict[str, Any], claims: Dict[str, Any
         {"check_id": "comparative_and_product_widening_stay_blocked", "pass": str(claims.get("comparative_widening", "")).strip() == "FORBIDDEN" and str(claims.get("commercial_widening", "")).strip() == "FORBIDDEN", "ref": OUT_CLAIMS},
         {"check_id": "canonical_baseline_scorecard_still_passes", "pass": str(baseline_scorecard.get("status", "")).strip() == "PASS" and str(benchmark_receipt.get("status", "")).strip() == "PASS", "ref": BASELINE_SCORECARD},
         {"check_id": "competitive_alias_detachment_still_passes", "pass": str(detachment_receipt.get("status", "")).strip() == "PASS", "ref": DETACHMENT_RECEIPT},
+        {"check_id": "side_reader_contract_adoption_still_passes", "pass": comparator_contract["status"] == "PASS", "ref": BASELINE_SCORECARD},
         {"check_id": "router_and_lobe_promotions_remain_unearned", "pass": bool(claims.get("router_superiority_earned")) is False and bool(router_ordered.get("multi_lobe_promotion_allowed")) is False, "ref": ROUTER_ORDERED},
         {"check_id": "final_tier_output_is_compiled_without_prestige_inflation", "pass": str(tier.get("highest_truthful_tier_output", "")).strip() == "NOT_FRONTIER", "ref": OUT_TIER},
         {"check_id": "final_product_truth_boundary_stays_bounded", "pass": str(product_boundary.get("status", "")).strip() == "PASS" and str(product_boundary.get("max_externality_class", "")).strip() == "E1_SAME_HOST_DETACHED_REPLAY", "ref": OUT_PRODUCT},
@@ -420,6 +535,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "open_current_head_claim_blocker_ids": blockers["active_current_head_claim_blocker_ids"],
         "highest_truthful_tier_output": tier["highest_truthful_tier_output"],
         "product_truth_class": product_boundary["product_truth_class"],
+        "comparator_contract_status": claims["comparator_contract_status"],
     }
     print(json.dumps(summary, sort_keys=True))
     return 0 if summary["status"] == "PASS" else 1

@@ -56,6 +56,7 @@ def test_final_current_head_adjudication_cli_compiles_bounded_final_verdict(tmp_
     assert payload["highest_truthful_tier_output"] == "NOT_FRONTIER"
     assert payload["open_current_head_claim_blocker_ids"] == ["C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"]
     assert payload["product_truth_class"] == "BOUNDED_E1_BUYER_SIMPLE_PRODUCT_PLANE"
+    assert payload["comparator_contract_status"] == "PASS"
 
     final_blocker_matrix = json.loads(final_blocker_matrix_path.read_text(encoding="utf-8"))
     final_claim_class = json.loads(final_claim_class_path.read_text(encoding="utf-8"))

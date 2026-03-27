@@ -52,6 +52,7 @@ def test_w3_externality_and_comparative_proof_cli_emits_bounded_outputs(tmp_path
     assert payload["e2_outcome"] == "NOT_EARNED_PENDING_SECOND_HOST_RETURN"
     assert payload["comparative_widening_unlock"] is False
     assert payload["commercial_widening_unlock"] is False
+    assert payload["comparator_contract_status"] == "PASS"
 
     e2_receipt = json.loads(e2_path.read_text(encoding="utf-8"))
     capability_atlas = json.loads(atlas_path.read_text(encoding="utf-8"))

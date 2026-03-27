@@ -2,11 +2,21 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Sequence
 
-from tools.operator.benchmark_constitution_validate import _enforce_write_scope_post, _enforce_write_scope_pre, _maybe_write_json_output
+from tools.operator.benchmark_constitution_validate import (
+    ROLE_BASELINE_SCORECARD,
+    ROLE_BENCHMARK_RECEIPT,
+    _consume_emitted_receipt_contract,
+    _enforce_write_scope_post,
+    _enforce_write_scope_pre,
+    _maybe_write_json_output,
+    _payloads,
+    build_receipt as build_benchmark_receipt,
+)
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z
 from tools.operator.w4_truth_common import build_capability_atlas
 
@@ -31,6 +41,8 @@ BASELINE_SCORECARD_REL = f"{REPORT_ROOT_REL}/baseline_vs_live_scorecard.json"
 BENCHMARK_RECEIPT_REL = f"{REPORT_ROOT_REL}/benchmark_constitution_receipt.json"
 ALIAS_RETIREMENT_REL = f"{REPORT_ROOT_REL}/scorecard_alias_retirement_receipt.json"
 DETACHMENT_RECEIPT_REL = f"{REPORT_ROOT_REL}/competitive_scorecard_validator_detachment_receipt.json"
+ROLE_ALIAS_RETIREMENT = "ALIAS_RETIREMENT_PROOF"
+ROLE_VALIDATOR_ALIAS_DETACHMENT = "VALIDATOR_ALIAS_DETACHMENT_PROOF"
 
 
 def _resolve(root: Path, value: str) -> Path:
@@ -82,6 +94,101 @@ def _active_blockers(root: Path) -> List[str]:
 def _current_truth_posture_blockers(root: Path) -> List[str]:
     lock = _truth_lock(root)
     return [str(item).strip() for item in lock.get("active_open_blocker_ids", []) if str(item).strip()]
+
+
+def evaluate_comparator_side_reader_contract(*, root: Path) -> Dict[str, Any]:
+    generated_utc = utc_now_iso_z()
+    payloads = _payloads(root, generated_utc)
+    current_head = str(payloads["current_head"]).strip()
+    benchmark_receipt = build_benchmark_receipt(payloads, generated_utc)
+    generated_receipts = [
+        (BASELINE_SCORECARD_REL, payloads["scorecard"], [ROLE_BASELINE_SCORECARD]),
+        (BENCHMARK_RECEIPT_REL, benchmark_receipt, [ROLE_BENCHMARK_RECEIPT]),
+        (ALIAS_RETIREMENT_REL, payloads["alias_receipt"], [ROLE_ALIAS_RETIREMENT]),
+        (DETACHMENT_RECEIPT_REL, payloads["detachment_receipt"], [ROLE_VALIDATOR_ALIAS_DETACHMENT]),
+    ]
+    generated_checks = []
+    for ref, payload, allowed_roles in generated_receipts:
+        result = _consume_emitted_receipt_contract(
+            receipt_ref=ref,
+            payload=payload,
+            allowed_roles=allowed_roles,
+            requested_head=current_head,
+        )
+        generated_checks.append({"check_id": f"generated_contract::{Path(ref).name}", "receipt_ref": ref, **result})
+    baseline_scorecard = payloads["scorecard"]
+    malformed_attempts = [
+        {
+            "attempt_id": "missing_receipt_role",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=BASELINE_SCORECARD_REL,
+                payload={k: v for k, v in baseline_scorecard.items() if k != "receipt_role"},
+                allowed_roles=[ROLE_BASELINE_SCORECARD],
+                requested_head=current_head,
+            ),
+        },
+        {
+            "attempt_id": "missing_subject_head",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=BASELINE_SCORECARD_REL,
+                payload={k: v for k, v in baseline_scorecard.items() if k != "subject_head"},
+                allowed_roles=[ROLE_BASELINE_SCORECARD],
+                requested_head=current_head,
+            ),
+        },
+        {
+            "attempt_id": "wrong_receipt_role",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=BASELINE_SCORECARD_REL,
+                payload={**baseline_scorecard, "receipt_role": "COUNTED_T7_SIDE_READER_CONTRACT_ADOPTION_ARTIFACT_ONLY"},
+                allowed_roles=[ROLE_BASELINE_SCORECARD],
+                requested_head=current_head,
+            ),
+        },
+        {
+            "attempt_id": "wrong_subject_head",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=BASELINE_SCORECARD_REL,
+                payload={**baseline_scorecard, "subject_head": "0000000000000000000000000000000000000000"},
+                allowed_roles=[ROLE_BASELINE_SCORECARD],
+                requested_head=current_head,
+            ),
+        },
+    ]
+    source_text = Path(__file__).read_text(encoding="utf-8")
+    legacy_parse_removed = (
+        re.search(
+            r"load_json\(\s*root\s*/\s*(BASELINE_SCORECARD_REL|BENCHMARK_RECEIPT_REL|ALIAS_RETIREMENT_REL|DETACHMENT_RECEIPT_REL)\s*\)",
+            source_text,
+        )
+        is None
+    )
+    status = (
+        "PASS"
+        if all(bool(check["pass"]) for check in generated_checks)
+        and malformed_attempts[0]["blocked"]
+        and malformed_attempts[0]["failure_reason"] == "RECEIPT_ROLE_MISSING"
+        and malformed_attempts[1]["blocked"]
+        and malformed_attempts[1]["failure_reason"] == "SUBJECT_HEAD_MISSING"
+        and malformed_attempts[2]["blocked"]
+        and malformed_attempts[2]["failure_reason"] == "RECEIPT_ROLE_MISMATCH"
+        and malformed_attempts[3]["blocked"]
+        and malformed_attempts[3]["failure_reason"] == "SUBJECT_HEAD_MISMATCH"
+        and legacy_parse_removed
+        else "FAIL"
+    )
+    return {
+        "reader_id": "w3_externality_and_comparative_proof_validate",
+        "status": status,
+        "requested_head": current_head,
+        "baseline_scorecard": payloads["scorecard"],
+        "benchmark_receipt": benchmark_receipt,
+        "alias_retirement_receipt": payloads["alias_receipt"],
+        "detachment_receipt": payloads["detachment_receipt"],
+        "generated_contract_checks": generated_checks,
+        "malformed_attempts": malformed_attempts,
+        "legacy_parse_removed": legacy_parse_removed,
+    }
 
 
 def build_e2_cross_host_replay_receipt(*, root: Path) -> Dict[str, Any]:
@@ -254,10 +361,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     e2_receipt = build_e2_cross_host_replay_receipt(root=root)
     capability_atlas = build_capability_atlas(root=root, e2_receipt=e2_receipt)
-    baseline_scorecard = load_json(root / BASELINE_SCORECARD_REL)
-    benchmark_receipt = load_json(root / BENCHMARK_RECEIPT_REL)
-    alias_retirement_receipt = load_json(root / ALIAS_RETIREMENT_REL)
-    detachment_receipt = load_json(root / DETACHMENT_RECEIPT_REL)
+    comparator_contract = evaluate_comparator_side_reader_contract(root=root)
+    if comparator_contract["status"] != "PASS":
+        raise RuntimeError("FAIL_CLOSED: W3 comparator side-reader contract adoption failed")
+    baseline_scorecard = comparator_contract["baseline_scorecard"]
+    benchmark_receipt = comparator_contract["benchmark_receipt"]
+    alias_retirement_receipt = comparator_contract["alias_retirement_receipt"]
+    detachment_receipt = comparator_contract["detachment_receipt"]
     canonical_delta = build_canonical_delta(
         root=root,
         e2_receipt=e2_receipt,
@@ -302,6 +412,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "e2_outcome": str(e2_receipt.get("e2_outcome", "")).strip(),
         "comparative_widening_unlock": False,
         "commercial_widening_unlock": False,
+        "comparator_contract_status": comparator_contract["status"],
     }
     print(json.dumps(result, sort_keys=True))
     return 0 if result["status"] == "PASS" else 1
