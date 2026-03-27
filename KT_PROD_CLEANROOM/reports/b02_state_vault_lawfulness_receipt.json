@@ -1,0 +1,40 @@
+{
+  "canonical_state_vault_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/_runtime_artifacts/state_vault.jsonl",
+  "checks": [
+    {
+      "check_id": "state_vault_contract_declares_sequential_only_shared_append_log",
+      "pass": true
+    },
+    {
+      "check_id": "state_vault_default_path_matches_runtime_registry",
+      "default_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/_runtime_artifacts/state_vault.jsonl",
+      "pass": true,
+      "registry_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/_runtime_artifacts/state_vault.jsonl"
+    },
+    {
+      "check_id": "shared_state_vault_sequential_append_and_replay_pass",
+      "pass": true,
+      "record_count": 2
+    },
+    {
+      "check_id": "stale_writer_fails_closed_on_head_mismatch",
+      "message": "State vault head mismatch; external mutation suspected (fail-closed)",
+      "pass": true
+    },
+    {
+      "check_id": "busy_append_lock_fails_closed",
+      "message": "State vault append lock busy (fail-closed)",
+      "pass": true
+    }
+  ],
+  "contract_ref": "KT_PROD_CLEANROOM/governance/state_vault_mutation_discipline.json",
+  "current_git_head": "c37dac3ee4184ff71fc658eacdd2f228a1a9e725",
+  "forbidden_claims_remaining": [
+    "Do not claim parallel shared-vault execution is admissible.",
+    "Do not claim isolated snapshot replay has been promoted into canonical runtime."
+  ],
+  "generated_utc": "2026-03-27T00:43:25Z",
+  "schema_id": "kt.b02.state_vault_lawfulness_receipt.v1",
+  "scope_boundary": "B02 tranche 3 codifies sequential-only shared canonical state-vault discipline and verifies fail-closed lock and stale-writer behavior. It does not widen runtime capability claims.",
+  "status": "PASS"
+}

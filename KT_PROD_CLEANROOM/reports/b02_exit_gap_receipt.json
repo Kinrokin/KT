@@ -1,0 +1,71 @@
+{
+  "checks": [
+    {
+      "check_id": "t2_runtime_unification_receipt_remains_pass",
+      "pass": true
+    },
+    {
+      "check_id": "state_vault_lawfulness_is_now_explicit_and_pass",
+      "pass": true
+    },
+    {
+      "check_id": "residual_organ_truth_is_explicit_and_pass",
+      "pass": true
+    },
+    {
+      "check_id": "entry_gate_open_but_exit_gate_not_yet_earned",
+      "pass": true
+    },
+    {
+      "blocker_count": 5,
+      "check_id": "remaining_exit_blockers_are_machine_enumerated",
+      "pass": true
+    }
+  ],
+  "closed_ambiguities": [
+    "Shared canonical state-vault mutation discipline is explicit and fail-closed.",
+    "Temporal/paradox/multiverse/memory bounded summaries now align with observed current-head behavior.",
+    "Ingress, dependency truth, and multi-organ path agreement are already receipted on the canonical runtime lane."
+  ],
+  "current_git_head": "c37dac3ee4184ff71fc658eacdd2f228a1a9e725",
+  "exit_ready": false,
+  "generated_utc": "2026-03-27T00:43:25Z",
+  "remaining_exit_blockers": [
+    {
+      "blocker_id": "PROMOTION_CIVILIZATION_RATIFIED_FALSE",
+      "evidence_ref": "KT_PROD_CLEANROOM/governance/execution_board.json",
+      "why": "Domain 2 exit gate remains false on the execution board."
+    },
+    {
+      "blocker_id": "ROUTER_STATIC_CANONICAL_BASELINE_ONLY",
+      "claim_ceiling": "STATIC_CANONICAL_BASELINE_ONLY",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json",
+      "organ_id": "router",
+      "why": "Router remains static canonical baseline only; learned superiority is not earned."
+    },
+    {
+      "blocker_id": "ADAPTER_LAYER_BREADTH_AND_CUTOVER_REMAIN_BOUNDED",
+      "claim_ceiling": "CURRENT_HEAD_BOUNDED_UNIVERSAL_ADAPTER_CONTRACT_ONLY",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/universal_adapter_receipt.json",
+      "organ_id": "adapter_layer",
+      "why": "Adapter layer is still bounded to the universal contract over narrow live breadth."
+    },
+    {
+      "blocker_id": "TOURNAMENT_PROMOTION_NOT_CANONICAL_RUNTIME_CUTOVER",
+      "claim_ceiling": "CURRENT_HEAD_BOUNDED_INTERNAL_CIVILIZATION_LOOP_ONLY",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/civilization_loop_receipt.json",
+      "organ_id": "tournament_promotion",
+      "why": "Promotion loop is real but runtime cutover remains separately gated and unearned."
+    },
+    {
+      "blocker_id": "TEACHER_GROWTH_SURFACES_LAB_ONLY",
+      "claim_ceiling": "LAB_GOVERNED_ONLY",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_wave0_quarantine_receipts.json",
+      "organ_id": "teacher_growth_surfaces",
+      "why": "Teacher/growth surfaces remain lab-only and cannot count as canonical runtime."
+    }
+  ],
+  "schema_id": "kt.b02.exit_gap_receipt.v1",
+  "scope_boundary": "B02 tranche 3 enumerates remaining runtime-unification exit blockers on current head. It does not open Gate C.",
+  "status": "PASS"
+}

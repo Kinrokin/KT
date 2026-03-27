@@ -19,7 +19,9 @@ def _add_src_to_syspath() -> None:
 _add_src_to_syspath()
 
 from memory.replay import StateVaultReplayError, validate_state_vault_chain  # noqa: E402
-from memory.state_vault import StateVault, StateVaultCorruptionError  # noqa: E402
+import memory.state_vault as state_vault_module  # noqa: E402
+from core.runtime_registry import load_runtime_registry  # noqa: E402
+from memory.state_vault import StateVault, StateVaultCorruptionError, StateVaultWriteError, resolve_state_vault_path  # noqa: E402
 
 
 def _read_lines(path: Path) -> List[str]:
@@ -31,6 +33,10 @@ def _write_lines(path: Path, lines: List[str]) -> None:
 
 
 class TestStateVaultC008(unittest.TestCase):
+    def test_default_path_matches_runtime_registry(self) -> None:
+        registry = load_runtime_registry()
+        self.assertEqual(resolve_state_vault_path(), registry.resolve_state_vault_jsonl_path())
+
     def test_append_and_replay_passes(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             path = Path(td) / "state_vault.jsonl"
@@ -156,6 +162,26 @@ class TestStateVaultC008(unittest.TestCase):
 
             with self.assertRaises(StateVaultCorruptionError):
                 second.append(event_type="E2", organ_id="Spine")
+
+    def test_busy_append_lock_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "state_vault.jsonl"
+            vault = StateVault(path=path)
+            lock_path = path.with_name(path.name + ".lock")
+            lock_path.write_text("busy", encoding="utf-8")
+
+            original_timeout = state_vault_module._AppendLock._TIMEOUT_SECONDS
+            original_poll = state_vault_module._AppendLock._POLL_SECONDS
+            state_vault_module._AppendLock._TIMEOUT_SECONDS = 0.01
+            state_vault_module._AppendLock._POLL_SECONDS = 0.001
+            try:
+                with self.assertRaises(StateVaultWriteError):
+                    vault.append(event_type="E1", organ_id="Spine")
+            finally:
+                state_vault_module._AppendLock._TIMEOUT_SECONDS = original_timeout
+                state_vault_module._AppendLock._POLL_SECONDS = original_poll
+                if lock_path.exists():
+                    lock_path.unlink()
 
 
 if __name__ == "__main__":

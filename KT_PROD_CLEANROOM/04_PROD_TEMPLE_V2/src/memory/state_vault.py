@@ -36,9 +36,9 @@ class AppendResult:
 
 
 def resolve_state_vault_path() -> Path:
-    # .../04_PROD_TEMPLE_V2/src/memory/state_vault.py -> .../src
-    src_root = Path(__file__).resolve().parents[1]
-    return src_root / "_state_vault" / "state_vault.jsonl"
+    # .../04_PROD_TEMPLE_V2/src/memory/state_vault.py -> .../04_PROD_TEMPLE_V2
+    v2_root = Path(__file__).resolve().parents[2]
+    return v2_root / "_runtime_artifacts" / "state_vault.jsonl"
 
 
 def _canonical_json(obj: Any) -> str:

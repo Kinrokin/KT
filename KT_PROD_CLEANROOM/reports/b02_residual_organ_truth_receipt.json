@@ -1,0 +1,57 @@
+{
+  "checks": [
+    {
+      "check_id": "temporal_pack_passes_and_register_stays_bounded",
+      "pass": true
+    },
+    {
+      "check_id": "paradox_pack_passes_and_register_stays_bounded_gate_only",
+      "pass": true
+    },
+    {
+      "check_id": "multiverse_pack_passes_and_register_stays_bounded_ranker_only",
+      "pass": true
+    },
+    {
+      "check_id": "memory_register_matches_append_only_replay_truth",
+      "pass": true
+    }
+  ],
+  "current_git_head": "c37dac3ee4184ff71fc658eacdd2f228a1a9e725",
+  "forbidden_claims_remaining": [
+    "Do not claim full temporal execution history.",
+    "Do not claim broad paradox metabolism.",
+    "Do not claim broad multiverse search or superiority.",
+    "Do not claim memory supports parallel shared canonical mutation."
+  ],
+  "generated_utc": "2026-03-27T00:43:25Z",
+  "observed_organ_truth": [
+    {
+      "observed_summary": "Temporal now records bounded nonzero replay work when replay budget is positive and preserves zero-step behavior only for zero budget.",
+      "organ_id": "temporal",
+      "register_summary": "Temporal is now a bounded fork-and-replay identity surface with nonzero step accounting when replay budget is positive.",
+      "status": "PASS"
+    },
+    {
+      "observed_summary": "Paradox now classifies contradiction types from context and condition instead of always emitting one generic injection task.",
+      "organ_id": "paradox",
+      "register_summary": "Paradox is now a bounded context-aware contradiction classification gate, not a broad debate engine.",
+      "status": "PASS"
+    },
+    {
+      "observed_summary": "Multiverse now computes task-dependent coherence scores from candidate spread instead of returning a constant 1.0.",
+      "organ_id": "multiverse",
+      "register_summary": "Multiverse is now a bounded candidate-ranking surface with task-dependent coherence instead of constant coherence.",
+      "status": "PASS"
+    },
+    {
+      "observed_summary": "Memory remains append-only state-vault plus replay-chain validation under explicit sequential shared-vault discipline.",
+      "organ_id": "memory",
+      "register_summary": "Memory is realized as append-only state-vault plus replay-chain validation on the canonical organism path.",
+      "status": "PASS"
+    }
+  ],
+  "schema_id": "kt.b02.residual_organ_truth_receipt.v1",
+  "scope_boundary": "B02 tranche 3 tightens residual temporal/paradox/multiverse/memory truth against live bounded code behavior without promoting those organs above their current ceilings.",
+  "status": "PASS"
+}
