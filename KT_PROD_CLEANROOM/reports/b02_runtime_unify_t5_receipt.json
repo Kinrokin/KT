@@ -1,0 +1,45 @@
+{
+  "carried_forward_blockers": [
+    {
+      "blocker_id": "PROMOTION_CIVILIZATION_RATIFIED_FALSE",
+      "class": "LATER_GATE_AUTHORITATIVE_SUBJECT_BLOCKER",
+      "why": "Execution board ratification remains pinned to the older authoritative truth subject even though current-head bounded runtime ratification now passes."
+    }
+  ],
+  "component_refs": [
+    "KT_PROD_CLEANROOM/reports/b02_runtime_unify_t4_receipt.json",
+    "KT_PROD_CLEANROOM/reports/promotion_civilization_ratification_receipt.json",
+    "KT_PROD_CLEANROOM/governance/execution_board.json"
+  ],
+  "current_git_head": "d6385865b49cd2ed66fc8edb731003b96f8f5eb5",
+  "domain2_active_blockers": [
+    "KT_PROD_CLEANROOM/reports/promotion_civilization_ratification_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+    "KT_PROD_CLEANROOM/reports/promotion_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+    "KT_PROD_CLEANROOM/reports/rollback_plan_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+    "KT_PROD_CLEANROOM/reports/risk_ledger_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+    "KT_PROD_CLEANROOM/reports/revalidation_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+    "KT_PROD_CLEANROOM/reports/zone_crossing_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2"
+  ],
+  "earned_current_head_claims": [
+    "Promotion civilization ratification is now bound to current-head bounded runtime admissibility receipts instead of remaining false by default.",
+    "Current-head promotion, rollback, risk, revalidation, and zone-crossing receipts are refreshed to the runtime-unified sealed head.",
+    "B02 exit is now earned on runtime-unification truth alone; PROMOTION_CIVILIZATION_RATIFIED_FALSE is carried forward as a later-gate authoritative-subject blocker and Gate C remains closed."
+  ],
+  "entry_gate_status": true,
+  "execution_board_gate_status": false,
+  "exit_gate_status": true,
+  "forbidden_claims_remaining": [
+    "Do not claim Gate C is complete merely because B02 exits.",
+    "Do not claim learned-router or lobe superiority.",
+    "Do not claim automatic runtime cutover from tournament evidence.",
+    "Do not widen externality, product, or prestige language."
+  ],
+  "gate_c_authorized": false,
+  "generated_utc": "2026-03-27T02:29:50Z",
+  "next_lawful_move": "HOLD_GATE_C_CLOSED_CARRY_PROMOTION_CIVILIZATION_RATIFICATION_FORWARD",
+  "resolution_path": "PATH_B_RECLASSIFY_OUT_OF_B02",
+  "schema_id": "kt.b02.runtime_unify_t5_receipt.v1",
+  "scope_boundary": "Fifth counted B02 tranche only. This tranche resolves whether PROMOTION_CIVILIZATION_RATIFIED_FALSE is a true B02 exit prerequisite. It binds Domain 2 ratification to current-head bounded runtime admissibility only and does not itself perform civilization widening.",
+  "status": "PASS",
+  "tranche_id": "B02_GATE_B_RUNTIME_UNIFY_T5"
+}

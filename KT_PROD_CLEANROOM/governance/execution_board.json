@@ -102,9 +102,28 @@
           "failures": [],
           "rule": "required_artifacts_healthy",
           "status": "PASS"
+        },
+        {
+          "failures": [
+            "KT_PROD_CLEANROOM/reports/promotion_civilization_ratification_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+            "KT_PROD_CLEANROOM/reports/promotion_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+            "KT_PROD_CLEANROOM/reports/rollback_plan_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+            "KT_PROD_CLEANROOM/reports/risk_ledger_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+            "KT_PROD_CLEANROOM/reports/revalidation_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+            "KT_PROD_CLEANROOM/reports/zone_crossing_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2"
+          ],
+          "rule": "current_head_promotion_civilization_ratified",
+          "status": "FAIL"
         }
       ],
-      "active_blockers": [],
+      "active_blockers": [
+        "KT_PROD_CLEANROOM/reports/promotion_civilization_ratification_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+        "KT_PROD_CLEANROOM/reports/promotion_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+        "KT_PROD_CLEANROOM/reports/rollback_plan_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+        "KT_PROD_CLEANROOM/reports/risk_ledger_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+        "KT_PROD_CLEANROOM/reports/revalidation_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+        "KT_PROD_CLEANROOM/reports/zone_crossing_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2"
+      ],
       "domain_id": "DOMAIN_2_PROMOTION_CIVILIZATION",
       "entry_gate": "H1_ACTIVATION_ALLOWED",
       "exit_gate": "PROMOTION_CIVILIZATION_RATIFIED",
@@ -119,7 +138,8 @@
         "KT_PROD_CLEANROOM/reports/rollback_plan_receipt.json",
         "KT_PROD_CLEANROOM/reports/risk_ledger_receipt.json",
         "KT_PROD_CLEANROOM/reports/revalidation_receipt.json",
-        "KT_PROD_CLEANROOM/reports/zone_crossing_receipt.json"
+        "KT_PROD_CLEANROOM/reports/zone_crossing_receipt.json",
+        "KT_PROD_CLEANROOM/reports/promotion_civilization_ratification_receipt.json"
       ],
       "required_law_surfaces": [
         "KT_PROD_CLEANROOM/governance/promotion_engine_law.json",
@@ -380,7 +400,14 @@
       "open": true
     },
     {
-      "blockers": [],
+      "blockers": [
+        "KT_PROD_CLEANROOM/reports/promotion_civilization_ratification_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+        "KT_PROD_CLEANROOM/reports/promotion_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+        "KT_PROD_CLEANROOM/reports/rollback_plan_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+        "KT_PROD_CLEANROOM/reports/risk_ledger_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+        "KT_PROD_CLEANROOM/reports/revalidation_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2",
+        "KT_PROD_CLEANROOM/reports/zone_crossing_receipt.json validated_head_sha=d6385865b49cd2ed66fc8edb731003b96f8f5eb5 != 5746fed530c0218abc2ac4d106f6a869aa8798b2"
+      ],
       "domain_id": "DOMAIN_2_PROMOTION_CIVILIZATION",
       "gate_id": "PROMOTION_CIVILIZATION_RATIFIED",
       "open": false

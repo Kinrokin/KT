@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Sequence
+from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 from tools.operator.platform_governance_narrowing import build_platform_governance_claims, build_platform_governance_narrowing_receipt
 from tools.operator.public_verifier import build_public_verifier_claims
@@ -32,6 +32,7 @@ DEFAULT_REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
 COMPLETION_PROGRAM_REF = "KT_PROD_CLEANROOM/docs/operator/KT_CONSTITUTIONAL_COMPLETION_PROGRAM.md"
 STATUS_TAXONOMY_REF = "KT_PROD_CLEANROOM/governance/status_taxonomy.json"
 AUTHORITY_CONVERGENCE_RECEIPT_REF = f"{DEFAULT_REPORT_ROOT_REL}/authority_convergence_receipt.json"
+PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF = f"{DEFAULT_REPORT_ROOT_REL}/promotion_civilization_ratification_receipt.json"
 
 PLANNED = "PLANNED"
 SPECIFIED = "SPECIFIED"
@@ -77,6 +78,7 @@ CONSTITUTIONAL_DOMAINS: List[Dict[str, Any]] = [
             "KT_PROD_CLEANROOM/reports/risk_ledger_receipt.json",
             "KT_PROD_CLEANROOM/reports/revalidation_receipt.json",
             "KT_PROD_CLEANROOM/reports/zone_crossing_receipt.json",
+            PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF,
         ],
     },
     {
@@ -232,6 +234,7 @@ def _domain_maturity_state(
     unhealthy_law_surfaces: Sequence[str],
     unhealthy_artifacts: Sequence[str],
     convergence_status: str,
+    promotion_civilization_ratified: bool = False,
 ) -> str:
     all_present = not missing_law_surfaces and not missing_artifacts and not unhealthy_law_surfaces and not unhealthy_artifacts
     any_present = not (len(missing_law_surfaces) > 0 and len(missing_artifacts) > 0)
@@ -244,6 +247,8 @@ def _domain_maturity_state(
             return TESTED
         return MATERIALIZED if any_present else SPECIFIED
     if domain_id == "DOMAIN_2_PROMOTION_CIVILIZATION":
+        if promotion_civilization_ratified and all_present:
+            return PROVEN_ON_CURRENT_HEAD
         if entry_gate_open and all_present:
             return TESTED
         return MATERIALIZED if any_present else SPECIFIED
@@ -262,6 +267,64 @@ def _domain_gate_state(*, entry_gate_open: bool, exit_gate_open: bool) -> str:
 
 def _maturity_claim_open(maturity_state: str) -> bool:
     return maturity_state in {PROVEN_ON_CURRENT_HEAD, ACTIVE_AUTHORITY, EXTERNALLY_ADMISSIBLE}
+
+
+def _validated_head(payload: Mapping[str, Any]) -> str:
+    for key in ("validated_head_sha", "head_sha", "current_git_head"):
+        value = str(payload.get(key, "")).strip()
+        if value:
+            return value
+    return ""
+
+
+def _domain2_promotion_civilization_ratification_state(*, root: Path, live_head: str) -> Dict[str, Any]:
+    failures: List[str] = []
+    ratification_path = root / Path(PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF)
+    if not ratification_path.exists():
+        failures.append(f"missing required artifact: {PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF}")
+        return {"open": False, "failures": failures}
+
+    try:
+        ratification = load_json(ratification_path)
+    except Exception as exc:  # noqa: BLE001
+        failures.append(f"{PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF} unreadable: {exc}")
+        return {"open": False, "failures": failures}
+
+    if str(ratification.get("status", "")).strip().upper() != "PASS":
+        failures.append(f"{PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF} status={ratification.get('status', '')}")
+    if _validated_head(ratification) != live_head:
+        failures.append(
+            f"{PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF} validated_head_sha={_validated_head(ratification) or 'MISSING'} != {live_head}"
+        )
+    if str(ratification.get("ratification_scope_class", "")).strip() != "CURRENT_HEAD_BOUNDED_RUNTIME_ADMISSIBILITY_ONLY":
+        failures.append(f"{PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF} ratification_scope_class invalid")
+    if ratification.get("claim_widening_allowed") is not False:
+        failures.append(f"{PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF} claim_widening_allowed must be false")
+    if str(ratification.get("gate_effect", "")).strip() != "SATISFIES_DOMAIN_2_EXIT_PREREQUISITE_ONLY":
+        failures.append(f"{PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF} gate_effect invalid")
+
+    for rel in (
+        "KT_PROD_CLEANROOM/reports/promotion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/rollback_plan_receipt.json",
+        "KT_PROD_CLEANROOM/reports/risk_ledger_receipt.json",
+        "KT_PROD_CLEANROOM/reports/revalidation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/zone_crossing_receipt.json",
+    ):
+        path = root / Path(rel)
+        if not path.exists():
+            failures.append(f"missing required artifact: {rel}")
+            continue
+        try:
+            payload = load_json(path)
+        except Exception as exc:  # noqa: BLE001
+            failures.append(f"{rel} unreadable: {exc}")
+            continue
+        if str(payload.get("status", "")).strip().upper() != "PASS":
+            failures.append(f"{rel} status={payload.get('status', '')}")
+        if _validated_head(payload) != live_head:
+            failures.append(f"{rel} validated_head_sha={_validated_head(payload) or 'MISSING'} != {live_head}")
+
+    return {"open": not failures, "failures": failures}
 
 
 def _domain_maturity_matrix_payload(*, board: Dict[str, Any]) -> Dict[str, Any]:
@@ -360,6 +423,7 @@ def _external_audit_packet_manifest_payload(*, live_head: str) -> Dict[str, Any]
 def _build_constitutional_board_state(
     *,
     root: Path,
+    live_head: str,
     authority_mode: str,
     posture_state: str,
     open_blockers: Sequence[str],
@@ -380,6 +444,7 @@ def _build_constitutional_board_state(
         "TRUTH_PUBLICATION_STABILIZED": truth_publication_stabilized,
         "H1_ACTIVATION_ALLOWED": truth_publication_stabilized,
     }
+    promotion_civilization_state = _domain2_promotion_civilization_ratification_state(root=root, live_head=live_head)
     gate_status_map: Dict[str, Dict[str, Any]] = {}
     constitutional_domains: List[Dict[str, Any]] = []
 
@@ -434,6 +499,14 @@ def _build_constitutional_board_state(
                 "failures": unhealthy_artifacts,
             },
         ]
+        if domain_id == "DOMAIN_2_PROMOTION_CIVILIZATION":
+            activation_rules.append(
+                {
+                    "rule": "current_head_promotion_civilization_ratified",
+                    "status": "PASS" if promotion_civilization_state["open"] else "FAIL",
+                    "failures": list(promotion_civilization_state["failures"]),
+                }
+            )
 
         domain_blockers: List[str] = []
         if domain_id == "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE":
@@ -450,6 +523,8 @@ def _build_constitutional_board_state(
         else:
             if not entry_gate_open:
                 domain_blockers.append(f"entry gate closed: {entry_gate}")
+        if domain_id == "DOMAIN_2_PROMOTION_CIVILIZATION":
+            domain_blockers.extend(str(item) for item in promotion_civilization_state["failures"])
         domain_blockers.extend(f"missing required law surface: {path}" for path in missing_law_surfaces)
         domain_blockers.extend(f"missing required artifact: {path}" for path in missing_artifacts)
         domain_blockers.extend(f"unhealthy law surface: {item}" for item in unhealthy_law_surfaces)
@@ -474,6 +549,7 @@ def _build_constitutional_board_state(
             unhealthy_law_surfaces=unhealthy_law_surfaces,
             unhealthy_artifacts=unhealthy_artifacts,
             convergence_status=convergence_status,
+            promotion_civilization_ratified=bool(promotion_civilization_state["open"]),
         )
         if domain_id == "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE":
             exit_gate_open = truth_publication_stabilized
@@ -885,6 +961,7 @@ def _sync_secondary_surfaces(
     )
     board_state = _build_constitutional_board_state(
         root=root,
+        live_head=live_head,
         authority_mode=authority_mode,
         posture_state=posture_state,
         open_blockers=deduped_blockers,

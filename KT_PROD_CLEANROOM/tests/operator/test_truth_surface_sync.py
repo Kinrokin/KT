@@ -4,7 +4,13 @@ import json
 from pathlib import Path
 
 from tools.operator.dependency_inventory_emit import build_dependency_reports
-from tools.operator.truth_surface_sync import _sync_secondary_surfaces, build_receipts
+from tools.operator.truth_surface_sync import (
+    CONSTITUTIONAL_DOMAINS,
+    PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF,
+    _build_constitutional_board_state,
+    _sync_secondary_surfaces,
+    build_receipts,
+)
 
 
 def _write_json(path: Path, payload: dict) -> None:
@@ -296,3 +302,61 @@ def test_build_receipts_promotes_truthful_green_from_validated_subject_not_carri
     assert receipts["current_state"]["posture_state"] == "TRUTHFUL_GREEN"
     assert receipts["current_state"]["validated_head_sha"] == "subject123"
     assert receipts["current_state"]["publication_carrier_head_sha"] == "carrier456"
+    assert receipts["runtime_audit"]["posture_state"] == "TRUTHFUL_GREEN"
+    assert receipts["p0_green"]["status"] == "PASS"
+    assert receipts["final_green"]["status"] == "PASS"
+
+
+def test_build_constitutional_board_state_opens_domain2_exit_from_current_head_ratification(tmp_path: Path) -> None:
+    reports = tmp_path / "KT_PROD_CLEANROOM" / "reports"
+    live_head = "head123"
+
+    _write_json(
+        reports / "truth_publication_stabilization_receipt.json",
+        {
+            "status": "PASS",
+            "board_transition_ready": True,
+            "blockers": [],
+        },
+    )
+
+    for domain in CONSTITUTIONAL_DOMAINS:
+        for rel in domain["required_law_surfaces"]:
+            _write_json(tmp_path / Path(rel), {"status": "ACTIVE"})
+        for rel in domain["required_artifacts"]:
+            payload = {"status": "PASS"}
+            if rel.startswith("KT_PROD_CLEANROOM/reports/"):
+                payload["validated_head_sha"] = live_head
+            if rel.endswith("truth_publication_stabilization_receipt.json"):
+                payload["board_transition_ready"] = True
+                payload["blockers"] = []
+            _write_json(tmp_path / Path(rel), payload)
+
+    _write_json(
+        tmp_path / Path(PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF),
+        {
+            "status": "PASS",
+            "validated_head_sha": live_head,
+            "ratification_scope_class": "CURRENT_HEAD_BOUNDED_RUNTIME_ADMISSIBILITY_ONLY",
+            "claim_widening_allowed": False,
+            "gate_effect": "SATISFIES_DOMAIN_2_EXIT_PREREQUISITE_ONLY",
+        },
+    )
+
+    board_state = _build_constitutional_board_state(
+        root=tmp_path,
+        live_head=live_head,
+        authority_mode="SETTLED_AUTHORITATIVE",
+        posture_state="TRUTHFUL_GREEN",
+        open_blockers=[],
+        convergence_status="PASS",
+        convergence_failures=[],
+    )
+
+    assert board_state["program_gates"]["TRUTH_PUBLICATION_STABILIZED"] is True
+    assert board_state["program_gates"]["H1_ACTIVATION_ALLOWED"] is True
+    assert board_state["program_gates"]["PROMOTION_CIVILIZATION_RATIFIED"] is True
+    domain2 = next(row for row in board_state["constitutional_domains"] if row["domain_id"] == "DOMAIN_2_PROMOTION_CIVILIZATION")
+    assert domain2["maturity_state"] == "PROVEN_ON_CURRENT_HEAD"
+    assert domain2["gate_state"] == "OPEN"
+    assert domain2["active_blockers"] == []
