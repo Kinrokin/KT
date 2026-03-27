@@ -30,17 +30,24 @@ DEFAULT_ALIAS_RETIREMENT_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/scorecard_alia
 DEFAULT_DETACHMENT_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
 DEFAULT_WRITE_SCOPE_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json"
 DEFAULT_SUBJECT_BOUNDARY_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/comparator_receipt_subject_boundary_receipt.json"
+DEFAULT_CONTRACT_ENFORCEMENT_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/comparator_receipt_contract_enforcement_receipt.json"
 DEFAULT_BENCHMARK_CONSTITUTION_OUTPUT_REL = BENCHMARK_CONSTITUTION_REL
 DEFAULT_COMPARATOR_REGISTRY_OUTPUT_REL = COMPARATOR_REGISTRY_REL
 
 TRANCHE_ID = "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT"
 WRITE_SCOPE_TRANCHE_ID = "B03_T4_VALIDATOR_WRITE_SCOPE_ENFORCEMENT"
 SUBJECT_BOUNDARY_TRANCHE_ID = "B03_T5_COMPARATOR_RECEIPT_SUBJECT_BOUNDARY"
+CONTRACT_ENFORCEMENT_TRANCHE_ID = "B03_T6_COMPARATOR_RECEIPT_CONTRACT_ENFORCEMENT"
 CANONICAL_SCORECARD_ID = "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL"
 REOPEN_RULE = "Satisfied lower gates may only be reopened by current regression receipt."
 BASELINE_ROW_ID = "useful_output_evidence_stronger_than_ceremonial_path_evidence"
 BASELINE_ID = "FAIL_CLOSED_NONOUTPUT_BASELINE_V1"
 DOCUMENTARY_ALIAS_REF = "KT_PROD_CLEANROOM/reports/competitive_scorecard.json"
+ROLE_BASELINE_SCORECARD = "SOLE_CANONICAL_COMPARATOR_TRUTH"
+ROLE_BENCHMARK_RECEIPT = "BENCHMARK_CONSTITUTION_VALIDATION_PROOF"
+ROLE_WRITE_SCOPE = "COUNTED_T4_HARDENING_ARTIFACT_ONLY"
+ROLE_SUBJECT_BOUNDARY = "COUNTED_T5_SUBJECT_BOUNDARY_ARTIFACT_ONLY"
+ROLE_CONTRACT_ENFORCEMENT = "COUNTED_T6_CONTRACT_ENFORCEMENT_ARTIFACT_ONLY"
 VALIDATOR_REFS = [
     "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
@@ -65,9 +72,16 @@ T5_EXPECTED_MUTATE_PATHS = [
     "KT_PROD_CLEANROOM/tests/operator/test_b03_comparator_receipt_subject_boundary.py",
     DEFAULT_SUBJECT_BOUNDARY_RECEIPT_REL,
 ]
+T6_EXPECTED_MUTATE_PATHS = [
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_comparator_receipt_subject_boundary.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_comparator_receipt_contract_enforcement.py",
+    DEFAULT_CONTRACT_ENFORCEMENT_RECEIPT_REL,
+]
 ALLOWED_PREWRITE_DIRTY = {
     path
-    for path in [*T4_EXPECTED_MUTATE_PATHS, *T5_EXPECTED_MUTATE_PATHS]
+    for path in [*T4_EXPECTED_MUTATE_PATHS, *T5_EXPECTED_MUTATE_PATHS, *T6_EXPECTED_MUTATE_PATHS]
     if path != DEFAULT_WRITE_SCOPE_RECEIPT_REL
 }
 DETACHED_VALIDATOR_REFS = [
@@ -98,6 +112,18 @@ FORBIDDEN_MEASURED_SURFACES = [
     "KT_PROD_CLEANROOM/reports/router_shadow_eval_matrix.json",
     "KT_PROD_CLEANROOM/reports/live_cognition_receipt.json",
 ]
+GENERATED_RECEIPT_ROLE_MAP = {
+    "constitution": "COMPARATOR_CONSTITUTION_DOCUMENT",
+    "comparator_registry": "COMPARATOR_REGISTRY_DOCUMENT",
+    "manifest": "COMPARATOR_MANIFEST",
+    "scorer_registry": "COMPARATOR_SCORER_REGISTRY",
+    "scorecard": ROLE_BASELINE_SCORECARD,
+    "bundle": "FROZEN_EVAL_BUNDLE",
+    "binding_receipt": "CANONICAL_BINDING_PROOF",
+    "alias_receipt": "ALIAS_RETIREMENT_PROOF",
+    "detachment_receipt": "VALIDATOR_ALIAS_DETACHMENT_PROOF",
+    "replay": "COMPARATOR_REPLAY_PROOF",
+}
 
 
 def _resolve(root: Path, value: str) -> Path:
@@ -250,6 +276,56 @@ def _extract_subject_head(payload: Dict[str, Any]) -> tuple[str | None, str | No
     return None, None
 
 
+def _mandatory_receipt_role(payload: Dict[str, Any]) -> str | None:
+    value = payload.get("receipt_role")
+    if isinstance(value, str) and value.strip():
+        return value.strip()
+    return None
+
+
+def _mandatory_subject_head(payload: Dict[str, Any]) -> str | None:
+    value = payload.get("subject_head")
+    if isinstance(value, str) and value.strip():
+        return value.strip()
+    return None
+
+
+def _consume_emitted_receipt_contract(
+    *,
+    receipt_ref: str,
+    payload: Dict[str, Any],
+    allowed_roles: Sequence[str],
+    requested_head: str,
+) -> Dict[str, Any]:
+    receipt_role = _mandatory_receipt_role(payload)
+    subject_head = _mandatory_subject_head(payload)
+    result: Dict[str, Any] = {
+        "receipt_ref": receipt_ref,
+        "requested_head": requested_head,
+        "allowed_roles": list(allowed_roles),
+        "receipt_role": receipt_role,
+        "subject_head": subject_head,
+        "pass": False,
+        "blocked": True,
+        "failure_reason": None,
+    }
+    if not receipt_role:
+        result["failure_reason"] = "RECEIPT_ROLE_MISSING"
+        return result
+    if receipt_role not in allowed_roles:
+        result["failure_reason"] = "RECEIPT_ROLE_MISMATCH"
+        return result
+    if not subject_head:
+        result["failure_reason"] = "SUBJECT_HEAD_MISSING"
+        return result
+    if subject_head != requested_head:
+        result["failure_reason"] = "SUBJECT_HEAD_MISMATCH"
+        return result
+    result["pass"] = True
+    result["blocked"] = False
+    return result
+
+
 def _interpret_receipt_for_current_head(
     *,
     receipt_ref: str,
@@ -369,6 +445,7 @@ def build_subject_boundary_receipt(
         "generated_utc": generated_utc,
         "current_git_head": current_head,
         "subject_head": current_head,
+        "receipt_role": ROLE_SUBJECT_BOUNDARY,
         "status": status,
         "tranche_id": SUBJECT_BOUNDARY_TRANCHE_ID,
         "canonical_scorecard_id": CANONICAL_SCORECARD_ID,
@@ -630,6 +707,11 @@ def _payloads(root: Path, generated_utc: str) -> Dict[str, Any]:
         ],
     }
 
+    for payload_key, role in GENERATED_RECEIPT_ROLE_MAP.items():
+        payload = locals()[payload_key]
+        payload["receipt_role"] = role
+        payload.setdefault("subject_head", current_head)
+
     return {
         "current_head": current_head,
         "negative": negative,
@@ -688,6 +770,7 @@ def build_receipt(payloads: Dict[str, Any], generated_utc: str) -> Dict[str, Any
         "generated_utc": generated_utc,
         "current_git_head": current_head,
         "subject_head": current_head,
+        "receipt_role": ROLE_BENCHMARK_RECEIPT,
         "status": status,
         "tranche_id": TRANCHE_ID,
         "actual_category": ACTUAL_CATEGORY,
@@ -755,6 +838,7 @@ def build_write_scope_receipt(
         "generated_utc": generated_utc,
         "current_git_head": _git_head(root),
         "subject_head": _git_head(root),
+        "receipt_role": ROLE_WRITE_SCOPE,
         "status": status,
         "tranche_id": WRITE_SCOPE_TRANCHE_ID,
         "canonical_scorecard_id": CANONICAL_SCORECARD_ID,
@@ -770,10 +854,151 @@ def build_write_scope_receipt(
     }
 
 
+def build_contract_enforcement_receipt(
+    *,
+    payloads: Dict[str, Any],
+    benchmark_receipt: Dict[str, Any],
+    write_scope_receipt: Dict[str, Any],
+    subject_boundary_receipt: Dict[str, Any],
+    generated_utc: str,
+) -> Dict[str, Any]:
+    current_head = payloads["current_head"]
+    scorecard = payloads["scorecard"]
+
+    well_formed_consumption = [
+        {
+            "check_id": "generated_baseline_scorecard_consumes_with_contract",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=DEFAULT_BASELINE_SCORECARD_REL,
+                payload=scorecard,
+                allowed_roles=[ROLE_BASELINE_SCORECARD],
+                requested_head=current_head,
+            ),
+        },
+        {
+            "check_id": "generated_benchmark_receipt_consumes_with_contract",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=DEFAULT_RECEIPT_REL,
+                payload=benchmark_receipt,
+                allowed_roles=[ROLE_BENCHMARK_RECEIPT],
+                requested_head=current_head,
+            ),
+        },
+        {
+            "check_id": "generated_write_scope_receipt_consumes_with_contract",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=DEFAULT_WRITE_SCOPE_RECEIPT_REL,
+                payload=write_scope_receipt,
+                allowed_roles=[ROLE_WRITE_SCOPE],
+                requested_head=current_head,
+            ),
+        },
+        {
+            "check_id": "generated_subject_boundary_receipt_consumes_with_contract",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=DEFAULT_SUBJECT_BOUNDARY_RECEIPT_REL,
+                payload=subject_boundary_receipt,
+                allowed_roles=[ROLE_SUBJECT_BOUNDARY],
+                requested_head=current_head,
+            ),
+        },
+    ]
+
+    malformed_attempts = [
+        {
+            "attempt_id": "missing_receipt_role_rejected",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=DEFAULT_BASELINE_SCORECARD_REL,
+                payload={k: v for k, v in scorecard.items() if k != "receipt_role"},
+                allowed_roles=[ROLE_BASELINE_SCORECARD],
+                requested_head=current_head,
+            ),
+        },
+        {
+            "attempt_id": "missing_subject_head_rejected",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=DEFAULT_BASELINE_SCORECARD_REL,
+                payload={k: v for k, v in scorecard.items() if k != "subject_head"},
+                allowed_roles=[ROLE_BASELINE_SCORECARD],
+                requested_head=current_head,
+            ),
+        },
+        {
+            "attempt_id": "wrong_receipt_role_rejected",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=DEFAULT_BASELINE_SCORECARD_REL,
+                payload={**scorecard, "receipt_role": ROLE_WRITE_SCOPE},
+                allowed_roles=[ROLE_BASELINE_SCORECARD],
+                requested_head=current_head,
+            ),
+        },
+        {
+            "attempt_id": "wrong_subject_head_rejected",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=DEFAULT_BASELINE_SCORECARD_REL,
+                payload={**scorecard, "subject_head": "0000000000000000000000000000000000000000"},
+                allowed_roles=[ROLE_BASELINE_SCORECARD],
+                requested_head=current_head,
+            ),
+        },
+        {
+            "attempt_id": "subject_boundary_missing_role_rejected",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=DEFAULT_SUBJECT_BOUNDARY_RECEIPT_REL,
+                payload={k: v for k, v in subject_boundary_receipt.items() if k != "receipt_role"},
+                allowed_roles=[ROLE_SUBJECT_BOUNDARY],
+                requested_head=current_head,
+            ),
+        },
+    ]
+
+    checks = [
+        {"check_id": "generated_baseline_scorecard_declares_receipt_role", "pass": bool(_mandatory_receipt_role(scorecard))},
+        {"check_id": "generated_baseline_scorecard_declares_subject_head", "pass": bool(_mandatory_subject_head(scorecard))},
+        {"check_id": "generated_benchmark_receipt_declares_receipt_role", "pass": bool(_mandatory_receipt_role(benchmark_receipt))},
+        {"check_id": "generated_benchmark_receipt_declares_subject_head", "pass": bool(_mandatory_subject_head(benchmark_receipt))},
+        {"check_id": "generated_write_scope_receipt_declares_receipt_role", "pass": bool(_mandatory_receipt_role(write_scope_receipt))},
+        {"check_id": "generated_write_scope_receipt_declares_subject_head", "pass": bool(_mandatory_subject_head(write_scope_receipt))},
+        {"check_id": "generated_subject_boundary_receipt_declares_receipt_role", "pass": bool(_mandatory_receipt_role(subject_boundary_receipt))},
+        {"check_id": "generated_subject_boundary_receipt_declares_subject_head", "pass": bool(_mandatory_subject_head(subject_boundary_receipt))},
+        {"check_id": "well_formed_generated_receipts_consume_successfully", "pass": all(item["pass"] for item in well_formed_consumption)},
+        {"check_id": "missing_receipt_role_fails_closed", "pass": malformed_attempts[0]["blocked"] and malformed_attempts[0]["failure_reason"] == "RECEIPT_ROLE_MISSING"},
+        {"check_id": "missing_subject_head_fails_closed", "pass": malformed_attempts[1]["blocked"] and malformed_attempts[1]["failure_reason"] == "SUBJECT_HEAD_MISSING"},
+        {"check_id": "wrong_receipt_role_fails_closed", "pass": malformed_attempts[2]["blocked"] and malformed_attempts[2]["failure_reason"] == "RECEIPT_ROLE_MISMATCH"},
+        {"check_id": "wrong_subject_head_fails_closed", "pass": malformed_attempts[3]["blocked"] and malformed_attempts[3]["failure_reason"] == "SUBJECT_HEAD_MISMATCH"},
+        {"check_id": "subject_boundary_missing_role_fails_closed", "pass": malformed_attempts[4]["blocked"] and malformed_attempts[4]["failure_reason"] == "RECEIPT_ROLE_MISSING"},
+        {"check_id": "baseline_scorecard_remains_sole_canonical_comparator_truth", "pass": scorecard.get("receipt_role") == ROLE_BASELINE_SCORECARD},
+    ]
+    status = "PASS" if all(check["pass"] for check in checks) else "FAIL"
+    return {
+        "schema_id": "kt.gate_c_t6.comparator_receipt_contract_enforcement_receipt.v1",
+        "generated_utc": generated_utc,
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": ROLE_CONTRACT_ENFORCEMENT,
+        "status": status,
+        "tranche_id": CONTRACT_ENFORCEMENT_TRANCHE_ID,
+        "canonical_scorecard_id": CANONICAL_SCORECARD_ID,
+        "canonical_receipt_binding": _canonical_binding(),
+        "reopen_rule": REOPEN_RULE,
+        "generated_receipt_contracts": [
+            {"receipt_ref": DEFAULT_BASELINE_SCORECARD_REL, "receipt_role": scorecard.get("receipt_role"), "subject_head": scorecard.get("subject_head")},
+            {"receipt_ref": DEFAULT_RECEIPT_REL, "receipt_role": benchmark_receipt.get("receipt_role"), "subject_head": benchmark_receipt.get("subject_head")},
+            {"receipt_ref": DEFAULT_WRITE_SCOPE_RECEIPT_REL, "receipt_role": write_scope_receipt.get("receipt_role"), "subject_head": write_scope_receipt.get("subject_head")},
+            {"receipt_ref": DEFAULT_SUBJECT_BOUNDARY_RECEIPT_REL, "receipt_role": subject_boundary_receipt.get("receipt_role"), "subject_head": subject_boundary_receipt.get("subject_head")},
+        ],
+        "well_formed_consumption": well_formed_consumption,
+        "malformed_consumption_attempts": malformed_attempts,
+        "checks": checks,
+        "claim_boundary": "T6 enforces mandatory receipt_role and subject_head contract law for comparator-related receipts only. It does not refresh comparator truth, alter comparator semantics, add rows, or claim Gate C exit.",
+    }
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Detach documentary comparator alias consumption from validator/counting paths while preserving one canonical Gate C scorecard.")
     parser.add_argument("--allow-tracked-output-refresh", action="store_true")
     parser.add_argument("--allow-write-scope-receipt-refresh", action="store_true")
+    parser.add_argument("--allow-subject-boundary-receipt-refresh", action="store_true")
     parser.add_argument("--negative-ledger-output", default=NEGATIVE_LEDGER_REL)
     parser.add_argument("--receipt-output", default=DEFAULT_RECEIPT_REL)
     parser.add_argument("--benchmark-constitution-output", default=DEFAULT_BENCHMARK_CONSTITUTION_OUTPUT_REL)
@@ -788,6 +1013,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--detachment-receipt-output", default=DEFAULT_DETACHMENT_RECEIPT_REL)
     parser.add_argument("--write-scope-receipt-output", default=DEFAULT_WRITE_SCOPE_RECEIPT_REL)
     parser.add_argument("--subject-boundary-receipt-output", default=DEFAULT_SUBJECT_BOUNDARY_RECEIPT_REL)
+    parser.add_argument("--contract-enforcement-receipt-output", default=DEFAULT_CONTRACT_ENFORCEMENT_RECEIPT_REL)
     return parser
 
 
@@ -857,6 +1083,24 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         target=subject_boundary_receipt_path,
         payload=subject_boundary_receipt,
         default_rel=DEFAULT_SUBJECT_BOUNDARY_RECEIPT_REL,
+        allow_default_repo_write=args.allow_subject_boundary_receipt_refresh,
+    )
+    if written:
+        allowed_repo_writes.append(written)
+
+    contract_enforcement_receipt_path = _resolve(root, args.contract_enforcement_receipt_output)
+    contract_enforcement_receipt = build_contract_enforcement_receipt(
+        payloads=payloads,
+        benchmark_receipt=receipt,
+        write_scope_receipt=write_scope_receipt,
+        subject_boundary_receipt=subject_boundary_receipt,
+        generated_utc=generated_utc,
+    )
+    written = _maybe_write_json_output(
+        root=root,
+        target=contract_enforcement_receipt_path,
+        payload=contract_enforcement_receipt,
+        default_rel=DEFAULT_CONTRACT_ENFORCEMENT_RECEIPT_REL,
         allow_default_repo_write=True,
     )
     if written:
@@ -886,6 +1130,20 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         target=subject_boundary_receipt_path,
         payload=subject_boundary_receipt,
         default_rel=DEFAULT_SUBJECT_BOUNDARY_RECEIPT_REL,
+        allow_default_repo_write=args.allow_subject_boundary_receipt_refresh,
+    )
+    contract_enforcement_receipt = build_contract_enforcement_receipt(
+        payloads=payloads,
+        benchmark_receipt=receipt,
+        write_scope_receipt=write_scope_receipt,
+        subject_boundary_receipt=subject_boundary_receipt,
+        generated_utc=generated_utc,
+    )
+    _maybe_write_json_output(
+        root=root,
+        target=contract_enforcement_receipt_path,
+        payload=contract_enforcement_receipt,
+        default_rel=DEFAULT_CONTRACT_ENFORCEMENT_RECEIPT_REL,
         allow_default_repo_write=True,
     )
 
@@ -894,6 +1152,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         if receipt["status"] == "PASS"
         and write_scope_receipt["status"] == "PASS"
         and subject_boundary_receipt["status"] == "PASS"
+        and contract_enforcement_receipt["status"] == "PASS"
         else "FAIL"
     )
     print(
@@ -901,11 +1160,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             {
                 "canonical_scorecard_id": CANONICAL_SCORECARD_ID,
                 "status": status,
-                "tranche_id": SUBJECT_BOUNDARY_TRANCHE_ID,
+                "tranche_id": CONTRACT_ENFORCEMENT_TRANCHE_ID,
                 "retained_benchmark_tranche_id": TRANCHE_ID,
                 "write_scope_tranche_id": WRITE_SCOPE_TRANCHE_ID,
                 "write_scope_status": write_scope_receipt["status"],
                 "subject_boundary_status": subject_boundary_receipt["status"],
+                "contract_enforcement_status": contract_enforcement_receipt["status"],
             },
             sort_keys=True,
         )

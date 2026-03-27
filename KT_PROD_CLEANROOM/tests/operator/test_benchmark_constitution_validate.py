@@ -31,6 +31,7 @@ def test_benchmark_constitution_cli_emits_canonical_comparator_bundle(tmp_path: 
     detachment_path = tmp_path / "competitive_scorecard_validator_detachment_receipt.json"
     write_scope_path = tmp_path / "validator_write_scope_enforcement_receipt.json"
     subject_boundary_path = tmp_path / "comparator_receipt_subject_boundary_receipt.json"
+    contract_enforcement_path = tmp_path / "comparator_receipt_contract_enforcement_receipt.json"
 
     proc = subprocess.run(
         [
@@ -65,6 +66,8 @@ def test_benchmark_constitution_cli_emits_canonical_comparator_bundle(tmp_path: 
             str(write_scope_path),
             "--subject-boundary-receipt-output",
             str(subject_boundary_path),
+            "--contract-enforcement-receipt-output",
+            str(contract_enforcement_path),
         ],
         cwd=str(root),
         env=env,
@@ -77,10 +80,11 @@ def test_benchmark_constitution_cli_emits_canonical_comparator_bundle(tmp_path: 
     assert proc.returncode == 0, proc.stdout
     payload = json.loads(proc.stdout.strip().splitlines()[-1])
     assert payload["status"] == "PASS"
-    assert payload["tranche_id"] == "B03_T5_COMPARATOR_RECEIPT_SUBJECT_BOUNDARY"
+    assert payload["tranche_id"] == "B03_T6_COMPARATOR_RECEIPT_CONTRACT_ENFORCEMENT"
     assert payload["retained_benchmark_tranche_id"] == "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT"
     assert payload["canonical_scorecard_id"] == "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL"
     assert payload["subject_boundary_status"] == "PASS"
+    assert payload["contract_enforcement_status"] == "PASS"
 
     negative = json.loads(negative_path.read_text(encoding="utf-8"))
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
@@ -96,6 +100,7 @@ def test_benchmark_constitution_cli_emits_canonical_comparator_bundle(tmp_path: 
     detachment = json.loads(detachment_path.read_text(encoding="utf-8"))
     write_scope = json.loads(write_scope_path.read_text(encoding="utf-8"))
     subject_boundary = json.loads(subject_boundary_path.read_text(encoding="utf-8"))
+    contract_enforcement = json.loads(contract_enforcement_path.read_text(encoding="utf-8"))
 
     assert negative["status"] == "PASS"
     assert len(negative["rows"]) >= 5
@@ -112,6 +117,7 @@ def test_benchmark_constitution_cli_emits_canonical_comparator_bundle(tmp_path: 
     assert detachment["status"] == "PASS"
     assert write_scope["status"] == "PASS"
     assert subject_boundary["status"] == "PASS"
+    assert contract_enforcement["status"] == "PASS"
     assert scorecard["canonical_scorecard_id"] == "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL"
     assert scorecard["canonical_receipt_binding"]["baseline_vs_live_scorecard_ref"].endswith("baseline_vs_live_scorecard.json")
     assert receipt["canonical_scorecard_id"] == "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL"
@@ -123,3 +129,4 @@ def test_benchmark_constitution_cli_emits_canonical_comparator_bundle(tmp_path: 
     assert "KT_PROD_CLEANROOM/reports/competitive_scorecard.json" in scorecard["measurement_scope"]["forbidden_measured_surfaces"]
     assert "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/cognitive_engine.py" in scorecard["measurement_scope"]["forbidden_measured_surfaces"]
     assert subject_boundary["counted_artifact_boundary"]["t5_counted_subject_boundary_ref"].endswith("comparator_receipt_subject_boundary_receipt.json")
+    assert contract_enforcement["receipt_role"] == "COUNTED_T6_CONTRACT_ENFORCEMENT_ARTIFACT_ONLY"

@@ -1,0 +1,226 @@
+{
+  "canonical_receipt_binding": {
+    "alias_retirement_receipt_ref": "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
+    "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+    "comparator_replay_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
+    "detachment_receipt_ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
+    "frozen_eval_scorecard_bundle_ref": "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
+    "subject_boundary_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_receipt_subject_boundary_receipt.json",
+    "write_scope_enforcement_receipt_ref": "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json"
+  },
+  "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+  "checks": [
+    {
+      "check_id": "generated_baseline_scorecard_declares_receipt_role",
+      "pass": true
+    },
+    {
+      "check_id": "generated_baseline_scorecard_declares_subject_head",
+      "pass": true
+    },
+    {
+      "check_id": "generated_benchmark_receipt_declares_receipt_role",
+      "pass": true
+    },
+    {
+      "check_id": "generated_benchmark_receipt_declares_subject_head",
+      "pass": true
+    },
+    {
+      "check_id": "generated_write_scope_receipt_declares_receipt_role",
+      "pass": true
+    },
+    {
+      "check_id": "generated_write_scope_receipt_declares_subject_head",
+      "pass": true
+    },
+    {
+      "check_id": "generated_subject_boundary_receipt_declares_receipt_role",
+      "pass": true
+    },
+    {
+      "check_id": "generated_subject_boundary_receipt_declares_subject_head",
+      "pass": true
+    },
+    {
+      "check_id": "well_formed_generated_receipts_consume_successfully",
+      "pass": true
+    },
+    {
+      "check_id": "missing_receipt_role_fails_closed",
+      "pass": true
+    },
+    {
+      "check_id": "missing_subject_head_fails_closed",
+      "pass": true
+    },
+    {
+      "check_id": "wrong_receipt_role_fails_closed",
+      "pass": true
+    },
+    {
+      "check_id": "wrong_subject_head_fails_closed",
+      "pass": true
+    },
+    {
+      "check_id": "subject_boundary_missing_role_fails_closed",
+      "pass": true
+    },
+    {
+      "check_id": "baseline_scorecard_remains_sole_canonical_comparator_truth",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "T6 enforces mandatory receipt_role and subject_head contract law for comparator-related receipts only. It does not refresh comparator truth, alter comparator semantics, add rows, or claim Gate C exit.",
+  "current_git_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600",
+  "generated_receipt_contracts": [
+    {
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+      "receipt_role": "SOLE_CANONICAL_COMPARATOR_TRUTH",
+      "subject_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600"
+    },
+    {
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
+      "receipt_role": "BENCHMARK_CONSTITUTION_VALIDATION_PROOF",
+      "subject_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600"
+    },
+    {
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json",
+      "receipt_role": "COUNTED_T4_HARDENING_ARTIFACT_ONLY",
+      "subject_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600"
+    },
+    {
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_receipt_subject_boundary_receipt.json",
+      "receipt_role": "COUNTED_T5_SUBJECT_BOUNDARY_ARTIFACT_ONLY",
+      "subject_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600"
+    }
+  ],
+  "generated_utc": "2026-03-27T14:18:51Z",
+  "malformed_consumption_attempts": [
+    {
+      "allowed_roles": [
+        "SOLE_CANONICAL_COMPARATOR_TRUTH"
+      ],
+      "attempt_id": "missing_receipt_role_rejected",
+      "blocked": true,
+      "failure_reason": "RECEIPT_ROLE_MISSING",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+      "receipt_role": null,
+      "requested_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600",
+      "subject_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600"
+    },
+    {
+      "allowed_roles": [
+        "SOLE_CANONICAL_COMPARATOR_TRUTH"
+      ],
+      "attempt_id": "missing_subject_head_rejected",
+      "blocked": true,
+      "failure_reason": "SUBJECT_HEAD_MISSING",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+      "receipt_role": "SOLE_CANONICAL_COMPARATOR_TRUTH",
+      "requested_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600",
+      "subject_head": null
+    },
+    {
+      "allowed_roles": [
+        "SOLE_CANONICAL_COMPARATOR_TRUTH"
+      ],
+      "attempt_id": "wrong_receipt_role_rejected",
+      "blocked": true,
+      "failure_reason": "RECEIPT_ROLE_MISMATCH",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+      "receipt_role": "COUNTED_T4_HARDENING_ARTIFACT_ONLY",
+      "requested_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600",
+      "subject_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600"
+    },
+    {
+      "allowed_roles": [
+        "SOLE_CANONICAL_COMPARATOR_TRUTH"
+      ],
+      "attempt_id": "wrong_subject_head_rejected",
+      "blocked": true,
+      "failure_reason": "SUBJECT_HEAD_MISMATCH",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+      "receipt_role": "SOLE_CANONICAL_COMPARATOR_TRUTH",
+      "requested_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600",
+      "subject_head": "0000000000000000000000000000000000000000"
+    },
+    {
+      "allowed_roles": [
+        "COUNTED_T5_SUBJECT_BOUNDARY_ARTIFACT_ONLY"
+      ],
+      "attempt_id": "subject_boundary_missing_role_rejected",
+      "blocked": true,
+      "failure_reason": "RECEIPT_ROLE_MISSING",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_receipt_subject_boundary_receipt.json",
+      "receipt_role": null,
+      "requested_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600",
+      "subject_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600"
+    }
+  ],
+  "receipt_role": "COUNTED_T6_CONTRACT_ENFORCEMENT_ARTIFACT_ONLY",
+  "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+  "schema_id": "kt.gate_c_t6.comparator_receipt_contract_enforcement_receipt.v1",
+  "status": "PASS",
+  "subject_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600",
+  "tranche_id": "B03_T6_COMPARATOR_RECEIPT_CONTRACT_ENFORCEMENT",
+  "well_formed_consumption": [
+    {
+      "allowed_roles": [
+        "SOLE_CANONICAL_COMPARATOR_TRUTH"
+      ],
+      "blocked": false,
+      "check_id": "generated_baseline_scorecard_consumes_with_contract",
+      "failure_reason": null,
+      "pass": true,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+      "receipt_role": "SOLE_CANONICAL_COMPARATOR_TRUTH",
+      "requested_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600",
+      "subject_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600"
+    },
+    {
+      "allowed_roles": [
+        "BENCHMARK_CONSTITUTION_VALIDATION_PROOF"
+      ],
+      "blocked": false,
+      "check_id": "generated_benchmark_receipt_consumes_with_contract",
+      "failure_reason": null,
+      "pass": true,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
+      "receipt_role": "BENCHMARK_CONSTITUTION_VALIDATION_PROOF",
+      "requested_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600",
+      "subject_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600"
+    },
+    {
+      "allowed_roles": [
+        "COUNTED_T4_HARDENING_ARTIFACT_ONLY"
+      ],
+      "blocked": false,
+      "check_id": "generated_write_scope_receipt_consumes_with_contract",
+      "failure_reason": null,
+      "pass": true,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json",
+      "receipt_role": "COUNTED_T4_HARDENING_ARTIFACT_ONLY",
+      "requested_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600",
+      "subject_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600"
+    },
+    {
+      "allowed_roles": [
+        "COUNTED_T5_SUBJECT_BOUNDARY_ARTIFACT_ONLY"
+      ],
+      "blocked": false,
+      "check_id": "generated_subject_boundary_receipt_consumes_with_contract",
+      "failure_reason": null,
+      "pass": true,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_receipt_subject_boundary_receipt.json",
+      "receipt_role": "COUNTED_T5_SUBJECT_BOUNDARY_ARTIFACT_ONLY",
+      "requested_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600",
+      "subject_head": "e5baf15b789fdcc419aa92f0718e6bd51a3ef600"
+    }
+  ]
+}

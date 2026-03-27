@@ -19,6 +19,7 @@ def test_subject_boundary_receipt_blocks_stale_receipt_misread(tmp_path: Path) -
 
     subject_boundary_path = tmp_path / "comparator_receipt_subject_boundary_receipt.json"
     write_scope_path = tmp_path / "validator_write_scope_enforcement_receipt.json"
+    contract_enforcement_path = tmp_path / "comparator_receipt_contract_enforcement_receipt.json"
 
     proc = subprocess.run(
         [
@@ -29,6 +30,8 @@ def test_subject_boundary_receipt_blocks_stale_receipt_misread(tmp_path: Path) -
             str(write_scope_path),
             "--subject-boundary-receipt-output",
             str(subject_boundary_path),
+            "--contract-enforcement-receipt-output",
+            str(contract_enforcement_path),
         ],
         cwd=str(root),
         env=env,
