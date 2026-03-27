@@ -1,7 +1,7 @@
 {
   "schema_id": "kt.current_campaign_state_overlay.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-27T03:23:09.3923269Z",
+  "generated_utc": "2026-03-27T03:43:59.4553170Z",
   "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "authority_stack": {
@@ -16,8 +16,9 @@
       "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.md"
     ],
     "current_state_authority": [
-      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b02_t5_verify_20260327_0244b/KT_PROD_CLEANROOM/reports/b02_runtime_unify_t5_receipt.json",
-      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b02_t5_verify_20260327_0244b/KT_PROD_CLEANROOM/governance/execution_board.json"
+      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t1_verify_20260327_0344b/KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
+      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t1_verify_20260327_0344b/KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t1_verify_20260327_0344b/KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json"
     ],
     "documentary_surfaces": [
       "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
@@ -34,7 +35,7 @@
   "repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "1c4ec6813f289de3f8e4c2a2ec2d55d7ea5270fe",
+    "current_git_head": "f84d9ec93ef3b62d680608f4dc39d3e0c77cd628",
     "worktree_cleanliness": "CLEAN_PRE_EMIT"
   },
   "omega_batch_status": {
@@ -54,33 +55,37 @@
   "current_lawful_gate_standing": {
     "current_counted_gate": "Gate C",
     "current_counted_batch": "B03_GATE_C_CAPABILITY_FORCING",
-    "next_counted_tranche": "B03_T1_FROZEN_COMPARATOR_CONSTITUTION",
+    "completed_tranches": [
+      "B03_T1_FROZEN_COMPARATOR_CONSTITUTION"
+    ],
+    "next_counted_tranche": "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT",
     "b02_runtime_unification": "EXITED",
-    "gate_c_status": "CLOSED_NOT_YET_COUNTED",
+    "gate_c_status": "OPEN_TRANCHE_1_COMPLETE_NOT_EXITED",
     "gate_d_status": "NOT_AUTHORIZED",
     "authoritative_basis": [
-      "b02_runtime_unify_t5_receipt.status = PASS",
-      "b02_runtime_unify_t5_receipt.exit_gate_status = true",
-      "b02_runtime_unify_t5_receipt.gate_c_authorized = false",
-      "execution_order_next_batch = B03_GATE_C_CAPABILITY_FORCING"
+      "benchmark_constitution_receipt.status = PASS on sealed head f84d9ec93ef3b62d680608f4dc39d3e0c77cd628",
+      "baseline_vs_live_scorecard.status = PASS on sealed head f84d9ec93ef3b62d680608f4dc39d3e0c77cd628",
+      "comparator_replay_receipt.status = PASS on sealed head f84d9ec93ef3b62d680608f4dc39d3e0c77cd628",
+      "Gate C is open with tranche 1 complete and not exited"
     ]
   },
   "state_reconciliation": {
-    "latest_sealed_receipts_current_state": "B02 exit earned on runtime-unification truth alone; promotion civilization carried forward as later-gate blocker; Gate C remains closed.",
-    "documentary_surface_state_on_main": "TRUTHFUL_GREEN documentary surfaces remain pinned to active truth subject 5746fed530c0218abc2ac4d106f6a869aa8798b2 and documentary execution-board Domain 2 blockers.",
-    "reanchor_decision": "Use sealed B02 tranche-5 receipts for current campaign standing and Omega v10 for next counted execution order."
+    "latest_sealed_receipts_current_state": "B03 tranche 1 earned one pinned, replayable, contamination-safe canonical baseline-vs-live scorecard on sealed head f84d9ec93ef3b62d680608f4dc39d3e0c77cd628.",
+    "documentary_surface_state_on_main": "Legacy comparator constitution and legacy scorecard surfaces still carry stale head bindings and documentary blocker semantics.",
+    "reanchor_decision": "Use sealed B03 tranche-1 receipts for current standing, then narrow the next counted tranche to current-head binding plus alias retirement only."
   },
-  "next_counted_workstream_id": "B03_T1_FROZEN_COMPARATOR_CONSTITUTION",
-  "next_counted_workstream_scope": "Frozen comparator constitution first. No capability-surface widening is counted until one canonical baseline-vs-live scorecard exists, is pinned, replayable, and contamination-safe.",
+  "next_counted_workstream_id": "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT",
+  "next_counted_workstream_scope": "Bind the frozen comparator constitution surfaces to current head and retire legacy scorecard alias drift. No new comparator rows and no capability-surface widening are counted in tranche 2.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "explicit_non_go_areas": [
     "Do not reopen B00, B01, or B02 without a current regression receipt.",
     "Do not treat promotion civilization as current Gate C counting work.",
     "Do not count Gate D work toward Gate C.",
-    "Do not widen planner, paradox, multiverse, or router claim surfaces in Gate C tranche 1.",
+    "Do not widen planner, paradox, multiverse, or router claim surfaces in Gate C tranche 2.",
+    "Do not add new comparator rows in Gate C tranche 2.",
     "Do not widen civilization, externality, or product claims.",
     "Do not use buyer-language or market claims beyond the narrowest validated wedge."
   ],
   "repo_state_executable_now": true,
-  "executable_now_why": "Repo is clean on main, B02 exit is sealed in the latest authoritative receipt set, and Omega v10 already defines B03 as the next counted batch."
+  "executable_now_why": "Repo is clean on main, B03 tranche 1 is sealed and verified on f84d9ec93ef3b62d680608f4dc39d3e0c77cd628, and the next lawful move is a narrow Gate C tranche-2 contract."
 }
