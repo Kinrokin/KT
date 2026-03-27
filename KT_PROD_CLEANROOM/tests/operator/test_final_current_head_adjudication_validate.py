@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 OVERLAY_REFS = [
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
 ]
@@ -116,5 +117,7 @@ def test_final_current_head_adjudication_cli_compiles_bounded_final_verdict(tmp_
     assert receipt["status"] == "PASS"
     assert receipt["documentary_carrier_consumer_guard"]["status"] == "PASS"
     assert receipt["documentary_carrier_consumer_guard"]["documentary_carrier_attempt"]["failure_reason"] == "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
+    assert receipt["documentary_carrier_consumer_guard"]["shared_guard_helper_ref"] == "tools.operator.benchmark_constitution_validate.evaluate_documentary_carrier_fail_closed_consumer_guard"
+    assert receipt["documentary_carrier_consumer_guard"]["shared_guard_helper_owner_ref"] == "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py"
     assert receipt["exact_current_head_standing"]["open_current_head_claim_blocker_ids"] == ["C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"]
     assert receipt["exact_current_head_standing"]["highest_truthful_tier_output"] == "NOT_FRONTIER"

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import inspect
 import json
 import re
 import subprocess
@@ -8,14 +9,20 @@ from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 from tools.operator.benchmark_constitution_validate import (
+    DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF,
+    DOCUMENTARY_CARRIER_GUARD_HELPER_REF,
+    DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH,
     ROLE_BASELINE_SCORECARD,
     ROLE_BENCHMARK_RECEIPT,
+    ROLE_T11_FINAL_HEAD_AUTHORITY_ALIGNMENT as T11_RECEIPT_ROLE,
+    DEFAULT_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL as T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
     _consume_emitted_receipt_contract,
     _enforce_write_scope_post,
     _enforce_write_scope_pre,
     _maybe_write_json_output,
     _payloads,
     build_receipt as build_benchmark_receipt,
+    evaluate_documentary_carrier_fail_closed_consumer_guard as evaluate_shared_documentary_carrier_fail_closed_consumer_guard,
 )
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z
 from tools.operator.w4_truth_common import build_capability_atlas
@@ -41,11 +48,12 @@ BASELINE_SCORECARD_REL = f"{REPORT_ROOT_REL}/baseline_vs_live_scorecard.json"
 BENCHMARK_RECEIPT_REL = f"{REPORT_ROOT_REL}/benchmark_constitution_receipt.json"
 ALIAS_RETIREMENT_REL = f"{REPORT_ROOT_REL}/scorecard_alias_retirement_receipt.json"
 DETACHMENT_RECEIPT_REL = f"{REPORT_ROOT_REL}/competitive_scorecard_validator_detachment_receipt.json"
-T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL = f"{REPORT_ROOT_REL}/t10_receipt_final_head_authority_alignment_receipt.json"
 DOCUMENTARY_CARRIER_FAIL_CLOSED_CONSUMER_ENFORCEMENT_RECEIPT_REL = f"{REPORT_ROOT_REL}/documentary_carrier_fail_closed_consumer_enforcement_receipt.json"
-T11_RECEIPT_ROLE = "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"
 T12_TRANCHE_ID = "B03_T12_DOCUMENTARY_CARRIER_FAIL_CLOSED_CONSUMER_ENFORCEMENT"
 T12_RECEIPT_ROLE = "COUNTED_T12_DOCUMENTARY_CARRIER_FAIL_CLOSED_CONSUMER_ENFORCEMENT_ARTIFACT_ONLY"
+DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION_RECEIPT_REL = f"{REPORT_ROOT_REL}/documentary_carrier_guard_centralization_receipt.json"
+T13_TRANCHE_ID = "B03_T13_DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION"
+T13_RECEIPT_ROLE = "COUNTED_T13_DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION_ARTIFACT_ONLY"
 ROLE_ALIAS_RETIREMENT = "ALIAS_RETIREMENT_PROOF"
 ROLE_VALIDATOR_ALIAS_DETACHMENT = "VALIDATOR_ALIAS_DETACHMENT_PROOF"
 
@@ -197,64 +205,43 @@ def evaluate_comparator_side_reader_contract(*, root: Path) -> Dict[str, Any]:
 
 
 def evaluate_documentary_carrier_fail_closed_consumer_guard(*, root: Path) -> Dict[str, Any]:
-    current_head = _git_head(root)
-    tracked_t11_receipt = load_json(root / T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL)
-    tracked_t11_contract = _consume_emitted_receipt_contract(
-        receipt_ref=T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
-        payload=tracked_t11_receipt,
+    return evaluate_shared_documentary_carrier_fail_closed_consumer_guard(
+        root=root,
+        consumer_id="w3_externality_and_comparative_proof_validate",
+        tracked_receipt_ref=T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
         allowed_roles=[T11_RECEIPT_ROLE],
-        requested_head=current_head,
     )
-    tracked_authority_class = str(tracked_t11_receipt.get("tracked_t10_authority_class", "")).strip()
-    documentary_attempt = {
-        "receipt_ref": T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
-        "requested_head": current_head,
-        "subject_head": str(tracked_t11_receipt.get("subject_head", "")).strip(),
-        "receipt_role": str(tracked_t11_receipt.get("receipt_role", "")).strip(),
-        "tracked_t10_authority_class": tracked_authority_class,
-        "pass": False,
-        "blocked": True,
-        "failure_reason": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
-        if tracked_authority_class == "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
-        else tracked_t11_contract.get("failure_reason"),
-    }
-    checks = [
+
+
+def _consumer_guard_source_checks() -> list[Dict[str, Any]]:
+    from tools.operator import final_current_head_adjudication_validate as final_current
+
+    forbidden_tokens = (
+        "tracked_t11_receipt",
+        "tracked_t11_contract",
+        "documentary_attempt",
+        "tracked_authority_class",
+    )
+    final_source = inspect.getsource(final_current.evaluate_documentary_carrier_fail_closed_consumer_guard)
+    w3_source = inspect.getsource(evaluate_documentary_carrier_fail_closed_consumer_guard)
+    return [
         {
-            "check_id": "tracked_t11_receipt_declares_expected_role",
-            "pass": documentary_attempt["receipt_role"] == T11_RECEIPT_ROLE,
+            "check_id": "final_current_wrapper_calls_shared_guard_helper",
+            "pass": "evaluate_shared_documentary_carrier_fail_closed_consumer_guard(" in final_source,
         },
         {
-            "check_id": "tracked_t11_receipt_declares_subject_head",
-            "pass": bool(documentary_attempt["subject_head"]),
+            "check_id": "w3_wrapper_calls_shared_guard_helper",
+            "pass": "evaluate_shared_documentary_carrier_fail_closed_consumer_guard(" in w3_source,
         },
         {
-            "check_id": "documentary_carrier_mismatch_status_present",
-            "pass": tracked_authority_class == "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+            "check_id": "final_current_wrapper_has_no_local_guard_reimplementation",
+            "pass": not any(token in final_source for token in forbidden_tokens),
         },
         {
-            "check_id": "documentary_carrier_overread_fails_closed",
-            "pass": documentary_attempt["blocked"] is True
-            and documentary_attempt["failure_reason"] == "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
-        },
-        {
-            "check_id": "warning_only_fallback_not_allowed",
-            "pass": documentary_attempt["pass"] is False and documentary_attempt["blocked"] is True,
-        },
-        {
-            "check_id": "tracked_t11_contract_stays_non_authoritative_on_current_head",
-            "pass": tracked_t11_contract.get("blocked") is True
-            and tracked_t11_contract.get("failure_reason") == "SUBJECT_HEAD_MISMATCH",
+            "check_id": "w3_wrapper_has_no_local_guard_reimplementation",
+            "pass": not any(token in w3_source for token in forbidden_tokens),
         },
     ]
-    return {
-        "consumer_id": "w3_externality_and_comparative_proof_validate",
-        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
-        "current_git_head": current_head,
-        "tracked_t11_receipt_ref": T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
-        "tracked_t11_contract": tracked_t11_contract,
-        "documentary_carrier_attempt": documentary_attempt,
-        "checks": checks,
-    }
 
 
 def build_documentary_carrier_fail_closed_consumer_enforcement_receipt(*, root: Path) -> Dict[str, Any]:
@@ -300,6 +287,67 @@ def build_documentary_carrier_fail_closed_consumer_enforcement_receipt(*, root: 
         "w3_consumer_guard": w3_guard,
         "checks": checks,
         "claim_boundary": "T12 enforces fail-closed downstream consumer handling for documentary carrier mismatch only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit."
+    }
+
+
+def build_documentary_carrier_guard_centralization_receipt(*, root: Path) -> Dict[str, Any]:
+    from tools.operator.final_current_head_adjudication_validate import (
+        evaluate_documentary_carrier_fail_closed_consumer_guard as evaluate_final_guard,
+    )
+
+    current_head = _git_head(root)
+    baseline_scorecard = _payloads(root, utc_now_iso_z())["scorecard"]
+    final_guard = evaluate_final_guard(root=root)
+    w3_guard = evaluate_documentary_carrier_fail_closed_consumer_guard(root=root)
+    source_checks = _consumer_guard_source_checks()
+    checks = [
+        {"check_id": "final_current_head_consumer_guard_passes", "pass": final_guard["status"] == "PASS"},
+        {"check_id": "w3_consumer_guard_passes", "pass": w3_guard["status"] == "PASS"},
+        {
+            "check_id": "shared_guard_helper_ref_matches_benchmark_helper",
+            "pass": final_guard.get("shared_guard_helper_ref") == DOCUMENTARY_CARRIER_GUARD_HELPER_REF
+            and w3_guard.get("shared_guard_helper_ref") == DOCUMENTARY_CARRIER_GUARD_HELPER_REF,
+        },
+        {
+            "check_id": "shared_guard_helper_owner_ref_matches_benchmark_file",
+            "pass": final_guard.get("shared_guard_helper_owner_ref") == DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF
+            and w3_guard.get("shared_guard_helper_owner_ref") == DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF,
+        },
+        {
+            "check_id": "documentary_carrier_mismatch_still_fails_closed",
+            "pass": final_guard["documentary_carrier_attempt"]["failure_reason"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
+            and w3_guard["documentary_carrier_attempt"]["failure_reason"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH,
+        },
+        {
+            "check_id": "baseline_scorecard_remains_canonical_truth",
+            "pass": str(baseline_scorecard.get("canonical_scorecard_id", "")).strip() == "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        },
+        {
+            "check_id": "consumer_wrappers_use_shared_guard_only",
+            "pass": all(bool(check["pass"]) for check in source_checks),
+        },
+    ]
+    return {
+        "schema_id": "kt.gate_c_t13.documentary_carrier_guard_centralization_receipt.v1",
+        "generated_utc": utc_now_iso_z(),
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": T13_RECEIPT_ROLE,
+        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "tranche_id": T13_TRANCHE_ID,
+        "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        "canonical_receipt_binding": {
+            "baseline_vs_live_scorecard_ref": BASELINE_SCORECARD_REL,
+            "documentary_carrier_fail_closed_consumer_enforcement_receipt_ref": DOCUMENTARY_CARRIER_FAIL_CLOSED_CONSUMER_ENFORCEMENT_RECEIPT_REL,
+        },
+        "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+        "shared_guard_helper_ref": DOCUMENTARY_CARRIER_GUARD_HELPER_REF,
+        "shared_guard_helper_owner_ref": DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF,
+        "final_current_head_consumer_guard": final_guard,
+        "w3_consumer_guard": w3_guard,
+        "source_checks": source_checks,
+        "checks": checks,
+        "claim_boundary": "T13 centralizes the documentary-carrier fail-closed consumer guard only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
     }
 
 
@@ -459,6 +507,8 @@ def _build_argument_parser() -> argparse.ArgumentParser:
     parser.add_argument("--advancement-delta-output", default=DEFAULT_ADVANCEMENT_DELTA_REL)
     parser.add_argument("--emit-documentary-carrier-fail-closed-consumer-enforcement-receipt", action="store_true")
     parser.add_argument("--documentary-carrier-fail-closed-consumer-enforcement-output", default=DOCUMENTARY_CARRIER_FAIL_CLOSED_CONSUMER_ENFORCEMENT_RECEIPT_REL)
+    parser.add_argument("--emit-documentary-carrier-guard-centralization-receipt", action="store_true")
+    parser.add_argument("--documentary-carrier-guard-centralization-output", default=DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION_RECEIPT_REL)
     return parser
 
 
@@ -525,6 +575,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             target=_resolve(root, str(args.documentary_carrier_fail_closed_consumer_enforcement_output)),
             payload=documentary_receipt,
             default_rel=DOCUMENTARY_CARRIER_FAIL_CLOSED_CONSUMER_ENFORCEMENT_RECEIPT_REL,
+            allow_default_repo_write=args.allow_tracked_output_refresh,
+        )
+        if written:
+            allowed_repo_writes.append(written)
+    if args.emit_documentary_carrier_guard_centralization_receipt:
+        documentary_centralization_receipt = build_documentary_carrier_guard_centralization_receipt(root=root)
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.documentary_carrier_guard_centralization_output)),
+            payload=documentary_centralization_receipt,
+            default_rel=DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION_RECEIPT_REL,
             allow_default_repo_write=args.allow_tracked_output_refresh,
         )
         if written:

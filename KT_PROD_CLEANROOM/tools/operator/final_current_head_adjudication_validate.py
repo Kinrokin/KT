@@ -10,12 +10,15 @@ from typing import Any, Dict, Optional, Sequence
 from tools.operator.benchmark_constitution_validate import (
     ROLE_BASELINE_SCORECARD,
     ROLE_BENCHMARK_RECEIPT,
+    ROLE_T11_FINAL_HEAD_AUTHORITY_ALIGNMENT as T11_RECEIPT_ROLE,
+    DEFAULT_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL as T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT,
     _consume_emitted_receipt_contract,
     _enforce_write_scope_post,
     _enforce_write_scope_pre,
     _maybe_write_json_output,
     _payloads,
     build_receipt as build_benchmark_receipt,
+    evaluate_documentary_carrier_fail_closed_consumer_guard as evaluate_shared_documentary_carrier_fail_closed_consumer_guard,
 )
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z
 
@@ -47,9 +50,6 @@ DETACHMENT_RECEIPT = f"{REP}/competitive_scorecard_validator_detachment_receipt.
 E2_RECEIPT = f"{REP}/e2_cross_host_replay_receipt.json"
 AUDIT_PACKET = f"{REP}/external_audit_packet_manifest.json"
 E1_RECEIPT = f"{REP}/e1_bounded_campaign_receipt.json"
-T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT = f"{REP}/t10_receipt_final_head_authority_alignment_receipt.json"
-T11_RECEIPT_ROLE = "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"
-
 PROD_DEPLOY = f"{PROD}/deployment_profiles.json"
 WRAPPER = f"{PROD}/client_wrapper_spec.json"
 SUPPORT = f"{PROD}/support_boundary.json"
@@ -196,64 +196,12 @@ def evaluate_comparator_side_reader_contract(*, root: Path) -> Dict[str, Any]:
 
 
 def evaluate_documentary_carrier_fail_closed_consumer_guard(*, root: Path) -> Dict[str, Any]:
-    current_head = _git_head(root)
-    tracked_t11_receipt = _j(root, T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT)
-    tracked_t11_contract = _consume_emitted_receipt_contract(
-        receipt_ref=T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT,
-        payload=tracked_t11_receipt,
+    return evaluate_shared_documentary_carrier_fail_closed_consumer_guard(
+        root=root,
+        consumer_id="final_current_head_adjudication_validate",
+        tracked_receipt_ref=T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT,
         allowed_roles=[T11_RECEIPT_ROLE],
-        requested_head=current_head,
     )
-    tracked_authority_class = str(tracked_t11_receipt.get("tracked_t10_authority_class", "")).strip()
-    documentary_attempt = {
-        "receipt_ref": T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT,
-        "requested_head": current_head,
-        "subject_head": str(tracked_t11_receipt.get("subject_head", "")).strip(),
-        "receipt_role": str(tracked_t11_receipt.get("receipt_role", "")).strip(),
-        "tracked_t10_authority_class": tracked_authority_class,
-        "pass": False,
-        "blocked": True,
-        "failure_reason": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
-        if tracked_authority_class == "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
-        else tracked_t11_contract.get("failure_reason"),
-    }
-    checks = [
-        {
-            "check_id": "tracked_t11_receipt_declares_expected_role",
-            "pass": documentary_attempt["receipt_role"] == T11_RECEIPT_ROLE,
-        },
-        {
-            "check_id": "tracked_t11_receipt_declares_subject_head",
-            "pass": bool(documentary_attempt["subject_head"]),
-        },
-        {
-            "check_id": "documentary_carrier_mismatch_status_present",
-            "pass": tracked_authority_class == "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
-        },
-        {
-            "check_id": "documentary_carrier_overread_fails_closed",
-            "pass": documentary_attempt["blocked"] is True
-            and documentary_attempt["failure_reason"] == "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
-        },
-        {
-            "check_id": "warning_only_fallback_not_allowed",
-            "pass": documentary_attempt["pass"] is False and documentary_attempt["blocked"] is True,
-        },
-        {
-            "check_id": "tracked_t11_contract_stays_non_authoritative_on_current_head",
-            "pass": tracked_t11_contract.get("blocked") is True
-            and tracked_t11_contract.get("failure_reason") == "SUBJECT_HEAD_MISMATCH",
-        },
-    ]
-    return {
-        "consumer_id": "final_current_head_adjudication_validate",
-        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
-        "current_git_head": current_head,
-        "tracked_t11_receipt_ref": T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT,
-        "tracked_t11_contract": tracked_t11_contract,
-        "documentary_carrier_attempt": documentary_attempt,
-        "checks": checks,
-    }
 
 
 def build_final_blocker_matrix(*, root: Path) -> Dict[str, Any]:

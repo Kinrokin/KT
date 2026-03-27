@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 OVERLAY_REFS = [
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
 ]

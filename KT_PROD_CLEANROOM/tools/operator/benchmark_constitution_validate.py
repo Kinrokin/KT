@@ -31,6 +31,7 @@ DEFAULT_DETACHMENT_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/competitive_scorecar
 DEFAULT_WRITE_SCOPE_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json"
 DEFAULT_SUBJECT_BOUNDARY_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/comparator_receipt_subject_boundary_receipt.json"
 DEFAULT_CONTRACT_ENFORCEMENT_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/comparator_receipt_contract_enforcement_receipt.json"
+DEFAULT_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json"
 DEFAULT_BENCHMARK_CONSTITUTION_OUTPUT_REL = BENCHMARK_CONSTITUTION_REL
 DEFAULT_COMPARATOR_REGISTRY_OUTPUT_REL = COMPARATOR_REGISTRY_REL
 
@@ -48,6 +49,10 @@ ROLE_BENCHMARK_RECEIPT = "BENCHMARK_CONSTITUTION_VALIDATION_PROOF"
 ROLE_WRITE_SCOPE = "COUNTED_T4_HARDENING_ARTIFACT_ONLY"
 ROLE_SUBJECT_BOUNDARY = "COUNTED_T5_SUBJECT_BOUNDARY_ARTIFACT_ONLY"
 ROLE_CONTRACT_ENFORCEMENT = "COUNTED_T6_CONTRACT_ENFORCEMENT_ARTIFACT_ONLY"
+ROLE_T11_FINAL_HEAD_AUTHORITY_ALIGNMENT = "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"
+DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH = "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
+DOCUMENTARY_CARRIER_GUARD_HELPER_REF = "tools.operator.benchmark_constitution_validate.evaluate_documentary_carrier_fail_closed_consumer_guard"
+DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF = "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py"
 VALIDATOR_REFS = [
     "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
@@ -356,6 +361,75 @@ def _interpret_receipt_for_current_head(
     result["pass"] = True
     result["blocked"] = False
     return result
+
+
+def evaluate_documentary_carrier_fail_closed_consumer_guard(
+    *,
+    root: Path,
+    consumer_id: str,
+    tracked_receipt_ref: str = DEFAULT_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
+    allowed_roles: Sequence[str] = (ROLE_T11_FINAL_HEAD_AUTHORITY_ALIGNMENT,),
+) -> Dict[str, Any]:
+    current_head = _git_head(root)
+    tracked_t11_receipt = load_json(root / tracked_receipt_ref)
+    tracked_t11_contract = _consume_emitted_receipt_contract(
+        receipt_ref=tracked_receipt_ref,
+        payload=tracked_t11_receipt,
+        allowed_roles=list(allowed_roles),
+        requested_head=current_head,
+    )
+    tracked_authority_class = str(tracked_t11_receipt.get("tracked_t10_authority_class", "")).strip()
+    documentary_attempt = {
+        "receipt_ref": tracked_receipt_ref,
+        "requested_head": current_head,
+        "subject_head": str(tracked_t11_receipt.get("subject_head", "")).strip(),
+        "receipt_role": str(tracked_t11_receipt.get("receipt_role", "")).strip(),
+        "tracked_t10_authority_class": tracked_authority_class,
+        "pass": False,
+        "blocked": True,
+        "failure_reason": DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
+        if tracked_authority_class == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
+        else tracked_t11_contract.get("failure_reason"),
+    }
+    checks = [
+        {
+            "check_id": "tracked_t11_receipt_declares_expected_role",
+            "pass": documentary_attempt["receipt_role"] in allowed_roles,
+        },
+        {
+            "check_id": "tracked_t11_receipt_declares_subject_head",
+            "pass": bool(documentary_attempt["subject_head"]),
+        },
+        {
+            "check_id": "documentary_carrier_mismatch_status_present",
+            "pass": tracked_authority_class == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH,
+        },
+        {
+            "check_id": "documentary_carrier_overread_fails_closed",
+            "pass": documentary_attempt["blocked"] is True
+            and documentary_attempt["failure_reason"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH,
+        },
+        {
+            "check_id": "warning_only_fallback_not_allowed",
+            "pass": documentary_attempt["pass"] is False and documentary_attempt["blocked"] is True,
+        },
+        {
+            "check_id": "tracked_t11_contract_stays_non_authoritative_on_current_head",
+            "pass": tracked_t11_contract.get("blocked") is True
+            and tracked_t11_contract.get("failure_reason") == "SUBJECT_HEAD_MISMATCH",
+        },
+    ]
+    return {
+        "consumer_id": consumer_id,
+        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "current_git_head": current_head,
+        "tracked_t11_receipt_ref": tracked_receipt_ref,
+        "tracked_t11_contract": tracked_t11_contract,
+        "documentary_carrier_attempt": documentary_attempt,
+        "checks": checks,
+        "shared_guard_helper_ref": DOCUMENTARY_CARRIER_GUARD_HELPER_REF,
+        "shared_guard_helper_owner_ref": DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF,
+    }
 
 
 def build_subject_boundary_receipt(
