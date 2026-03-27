@@ -28,15 +28,36 @@ DEFAULT_COMPARATOR_REPLAY_REL = "KT_PROD_CLEANROOM/reports/comparator_replay_rec
 DEFAULT_CANONICAL_BINDING_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json"
 DEFAULT_ALIAS_RETIREMENT_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json"
 DEFAULT_DETACHMENT_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
+DEFAULT_WRITE_SCOPE_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json"
 DEFAULT_BENCHMARK_CONSTITUTION_OUTPUT_REL = BENCHMARK_CONSTITUTION_REL
 DEFAULT_COMPARATOR_REGISTRY_OUTPUT_REL = COMPARATOR_REGISTRY_REL
 
 TRANCHE_ID = "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT"
+WRITE_SCOPE_TRANCHE_ID = "B03_T4_VALIDATOR_WRITE_SCOPE_ENFORCEMENT"
 CANONICAL_SCORECARD_ID = "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL"
 REOPEN_RULE = "Satisfied lower gates may only be reopened by current regression receipt."
 BASELINE_ROW_ID = "useful_output_evidence_stronger_than_ceremonial_path_evidence"
 BASELINE_ID = "FAIL_CLOSED_NONOUTPUT_BASELINE_V1"
 DOCUMENTARY_ALIAS_REF = "KT_PROD_CLEANROOM/reports/competitive_scorecard.json"
+VALIDATOR_REFS = [
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+]
+T4_EXPECTED_MUTATE_PATHS = [
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_e1_bounded_campaign_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_final_current_head_adjudication_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_w3_externality_and_comparative_proof_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_validator_write_scope_enforcement.py",
+    DEFAULT_WRITE_SCOPE_RECEIPT_REL,
+]
+T4_ALLOWED_PREWRITE_DIRTY = {path for path in T4_EXPECTED_MUTATE_PATHS if path != DEFAULT_WRITE_SCOPE_RECEIPT_REL}
 DETACHED_VALIDATOR_REFS = [
     "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
@@ -76,6 +97,105 @@ def _resolve(root: Path, value: str) -> Path:
 
 def _git_head(root: Path) -> str:
     return subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
+
+
+def _git_status_lines(root: Path) -> list[str]:
+    result = subprocess.run(
+        ["git", "-C", str(root), "status", "--porcelain=v1"],
+        check=True,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    return [line.rstrip("\n") for line in result.stdout.splitlines() if line.strip()]
+
+
+def _dirty_relpaths(root: Path, status_lines: Sequence[str]) -> list[str]:
+    rows: list[str] = []
+    for line in status_lines:
+        rel = line[3:].strip()
+        if not rel:
+            continue
+        path = (root / Path(rel)).resolve()
+        if path.exists() and path.is_dir():
+            rows.extend(child.resolve().relative_to(root.resolve()).as_posix() for child in path.rglob("*") if child.is_file())
+        else:
+            rows.append(Path(rel).as_posix())
+    return sorted(set(rows))
+
+
+def _repo_relpath(root: Path, path: Path) -> str | None:
+    try:
+        return path.resolve().relative_to(root.resolve()).as_posix()
+    except ValueError:
+        return None
+
+
+def _enforce_write_scope_pre(root: Path) -> list[str]:
+    dirty = _dirty_relpaths(root, _git_status_lines(root))
+    unexpected = [path for path in dirty if path not in T4_ALLOWED_PREWRITE_DIRTY]
+    if unexpected:
+        raise RuntimeError("FAIL_CLOSED: prewrite dirty paths outside T4 mutate scope: " + ", ".join(unexpected))
+    return dirty
+
+
+def _enforce_write_scope_post(root: Path, *, prewrite_dirty: Sequence[str], allowed_repo_writes: Sequence[str]) -> Dict[str, Any]:
+    pre = sorted(set(str(path).replace("\\", "/") for path in prewrite_dirty))
+    allowed = sorted(set(str(path).replace("\\", "/") for path in allowed_repo_writes))
+    post = _dirty_relpaths(root, _git_status_lines(root))
+    allowed_post = sorted(set([*pre, *allowed]))
+    unexpected = [path for path in post if path not in allowed_post]
+    undeclared_created = [path for path in post if path not in pre and path not in allowed]
+    if unexpected or undeclared_created:
+        details = []
+        if unexpected:
+            details.append("unexpected=" + ",".join(unexpected))
+        if undeclared_created:
+            details.append("undeclared_created=" + ",".join(undeclared_created))
+        raise RuntimeError("FAIL_CLOSED: validator write scope breach: " + "; ".join(details))
+    return {
+        "prewrite_dirty_paths": pre,
+        "postwrite_dirty_paths": post,
+        "allowed_repo_writes": allowed,
+        "unexpected_postwrite_paths": unexpected,
+        "undeclared_created_paths": undeclared_created,
+    }
+
+
+def _maybe_write_json_output(
+    *,
+    root: Path,
+    target: Path,
+    payload: Any,
+    default_rel: str,
+    allow_default_repo_write: bool,
+) -> str | None:
+    repo_rel = _repo_relpath(root, target)
+    default_target = (root / default_rel).resolve()
+    if repo_rel is None:
+        write_json_stable(target, payload)
+        return None
+    if target.resolve() != default_target:
+        raise RuntimeError(f"FAIL_CLOSED: tracked output outside allowed scope: {repo_rel}")
+    if not allow_default_repo_write:
+        return None
+    write_json_stable(target, payload)
+    return repo_rel
+
+
+def _write_scope_source_checks(root: Path) -> list[Dict[str, Any]]:
+    checks: list[Dict[str, Any]] = []
+    required_tokens = ("_enforce_write_scope_pre", "_enforce_write_scope_post", "_maybe_write_json_output")
+    for ref in VALIDATOR_REFS:
+        text = (root / ref).read_text(encoding="utf-8")
+        checks.append(
+            {
+                "check_id": f"source_enforces_write_scope::{Path(ref).name}",
+                "validator_ref": ref,
+                "pass": all(token in text for token in required_tokens),
+            }
+        )
+    return checks
 
 
 def _hash(payload: Any) -> str:
@@ -407,8 +527,54 @@ def build_receipt(payloads: Dict[str, Any], generated_utc: str) -> Dict[str, Any
     }
 
 
+def build_write_scope_receipt(
+    *,
+    root: Path,
+    generated_utc: str,
+    postwrite_scope: Dict[str, Any],
+    runtime_validator_checks: list[Dict[str, Any]],
+) -> Dict[str, Any]:
+    checks = runtime_validator_checks + [
+        {
+            "check_id": "prewrite_scope_within_expected_mutate_paths",
+            "pass": True,
+        },
+        {
+            "check_id": "postwrite_scope_within_expected_mutate_paths",
+            "pass": not postwrite_scope["unexpected_postwrite_paths"],
+        },
+        {
+            "check_id": "no_undeclared_tracked_surface_created",
+            "pass": not postwrite_scope["undeclared_created_paths"],
+        },
+        {
+            "check_id": "competitive_scorecard_remains_documentary_only",
+            "pass": DOCUMENTARY_ALIAS_REF in FORBIDDEN_MEASURED_SURFACES and DOCUMENTARY_ALIAS_REF not in ALLOWED_MEASURED_SURFACES,
+        },
+    ]
+    status = "PASS" if all(check["pass"] for check in checks) else "FAIL"
+    return {
+        "schema_id": "kt.gate_c_t4.validator_write_scope_enforcement_receipt.v1",
+        "generated_utc": generated_utc,
+        "current_git_head": _git_head(root),
+        "status": status,
+        "tranche_id": WRITE_SCOPE_TRANCHE_ID,
+        "canonical_scorecard_id": CANONICAL_SCORECARD_ID,
+        "reopen_rule": REOPEN_RULE,
+        "expected_mutate_paths": T4_EXPECTED_MUTATE_PATHS,
+        "prewrite_dirty_paths": postwrite_scope["prewrite_dirty_paths"],
+        "postwrite_dirty_paths": postwrite_scope["postwrite_dirty_paths"],
+        "allowed_repo_writes": postwrite_scope["allowed_repo_writes"],
+        "unexpected_postwrite_paths": postwrite_scope["unexpected_postwrite_paths"],
+        "undeclared_created_paths": postwrite_scope["undeclared_created_paths"],
+        "checks": checks,
+        "claim_boundary": "T4 enforces validator write containment only. It does not change comparator semantics, row set, or Gate C exit standing.",
+    }
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Detach documentary comparator alias consumption from validator/counting paths while preserving one canonical Gate C scorecard.")
+    parser.add_argument("--allow-tracked-output-refresh", action="store_true")
     parser.add_argument("--negative-ledger-output", default=NEGATIVE_LEDGER_REL)
     parser.add_argument("--receipt-output", default=DEFAULT_RECEIPT_REL)
     parser.add_argument("--benchmark-constitution-output", default=DEFAULT_BENCHMARK_CONSTITUTION_OUTPUT_REL)
@@ -421,6 +587,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--canonical-binding-receipt-output", default=DEFAULT_CANONICAL_BINDING_RECEIPT_REL)
     parser.add_argument("--alias-retirement-receipt-output", default=DEFAULT_ALIAS_RETIREMENT_RECEIPT_REL)
     parser.add_argument("--detachment-receipt-output", default=DEFAULT_DETACHMENT_RECEIPT_REL)
+    parser.add_argument("--write-scope-receipt-output", default=DEFAULT_WRITE_SCOPE_RECEIPT_REL)
     return parser
 
 
@@ -429,25 +596,84 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     args = parser.parse_args(argv)
     root = repo_root()
     generated_utc = utc_now_iso_z()
+    prewrite_dirty = _enforce_write_scope_pre(root)
 
     payloads = _payloads(root, generated_utc)
     receipt = build_receipt(payloads, generated_utc)
 
-    write_json_stable(_resolve(root, args.negative_ledger_output), payloads["negative"])
-    write_json_stable(_resolve(root, args.benchmark_constitution_output), payloads["constitution"])
-    write_json_stable(_resolve(root, args.comparator_registry_output), payloads["comparator_registry"])
-    write_json_stable(_resolve(root, args.benchmark_manifest_output), payloads["manifest"])
-    write_json_stable(_resolve(root, args.scorer_registry_output), payloads["scorer_registry"])
-    write_json_stable(_resolve(root, args.baseline_scorecard_output), payloads["scorecard"])
-    write_json_stable(_resolve(root, args.frozen_eval_bundle_output), payloads["bundle"])
-    write_json_stable(_resolve(root, args.comparator_replay_output), payloads["replay"])
-    write_json_stable(_resolve(root, args.canonical_binding_receipt_output), payloads["binding_receipt"])
-    write_json_stable(_resolve(root, args.alias_retirement_receipt_output), payloads["alias_receipt"])
-    write_json_stable(_resolve(root, args.detachment_receipt_output), payloads["detachment_receipt"])
-    write_json_stable(_resolve(root, args.receipt_output), receipt)
+    allowed_repo_writes: list[str] = []
+    output_specs = [
+        (_resolve(root, args.negative_ledger_output), payloads["negative"], NEGATIVE_LEDGER_REL),
+        (_resolve(root, args.benchmark_constitution_output), payloads["constitution"], DEFAULT_BENCHMARK_CONSTITUTION_OUTPUT_REL),
+        (_resolve(root, args.comparator_registry_output), payloads["comparator_registry"], DEFAULT_COMPARATOR_REGISTRY_OUTPUT_REL),
+        (_resolve(root, args.benchmark_manifest_output), payloads["manifest"], DEFAULT_MANIFEST_REL),
+        (_resolve(root, args.scorer_registry_output), payloads["scorer_registry"], DEFAULT_SCORER_REGISTRY_REL),
+        (_resolve(root, args.baseline_scorecard_output), payloads["scorecard"], DEFAULT_BASELINE_SCORECARD_REL),
+        (_resolve(root, args.frozen_eval_bundle_output), payloads["bundle"], DEFAULT_FROZEN_EVAL_BUNDLE_REL),
+        (_resolve(root, args.comparator_replay_output), payloads["replay"], DEFAULT_COMPARATOR_REPLAY_REL),
+        (_resolve(root, args.canonical_binding_receipt_output), payloads["binding_receipt"], DEFAULT_CANONICAL_BINDING_RECEIPT_REL),
+        (_resolve(root, args.alias_retirement_receipt_output), payloads["alias_receipt"], DEFAULT_ALIAS_RETIREMENT_RECEIPT_REL),
+        (_resolve(root, args.detachment_receipt_output), payloads["detachment_receipt"], DEFAULT_DETACHMENT_RECEIPT_REL),
+        (_resolve(root, args.receipt_output), receipt, DEFAULT_RECEIPT_REL),
+    ]
+    for target, payload, default_rel in output_specs:
+        written = _maybe_write_json_output(
+            root=root,
+            target=target,
+            payload=payload,
+            default_rel=default_rel,
+            allow_default_repo_write=args.allow_tracked_output_refresh,
+        )
+        if written:
+            allowed_repo_writes.append(written)
 
-    print(json.dumps({"canonical_scorecard_id": CANONICAL_SCORECARD_ID, "status": receipt["status"], "tranche_id": TRANCHE_ID}, sort_keys=True))
-    return 0 if receipt["status"] == "PASS" else 1
+    write_scope_receipt_path = _resolve(root, args.write_scope_receipt_output)
+    draft_scope = _enforce_write_scope_post(root, prewrite_dirty=prewrite_dirty, allowed_repo_writes=allowed_repo_writes)
+    runtime_checks = _write_scope_source_checks(root)
+    write_scope_receipt = build_write_scope_receipt(
+        root=root,
+        generated_utc=generated_utc,
+        postwrite_scope=draft_scope,
+        runtime_validator_checks=runtime_checks,
+    )
+    written = _maybe_write_json_output(
+        root=root,
+        target=write_scope_receipt_path,
+        payload=write_scope_receipt,
+        default_rel=DEFAULT_WRITE_SCOPE_RECEIPT_REL,
+        allow_default_repo_write=True,
+    )
+    if written:
+        allowed_repo_writes.append(written)
+    final_scope = _enforce_write_scope_post(root, prewrite_dirty=prewrite_dirty, allowed_repo_writes=allowed_repo_writes)
+    write_scope_receipt = build_write_scope_receipt(
+        root=root,
+        generated_utc=generated_utc,
+        postwrite_scope=final_scope,
+        runtime_validator_checks=runtime_checks,
+    )
+    _maybe_write_json_output(
+        root=root,
+        target=write_scope_receipt_path,
+        payload=write_scope_receipt,
+        default_rel=DEFAULT_WRITE_SCOPE_RECEIPT_REL,
+        allow_default_repo_write=True,
+    )
+
+    status = "PASS" if receipt["status"] == "PASS" and write_scope_receipt["status"] == "PASS" else "FAIL"
+    print(
+        json.dumps(
+            {
+                "canonical_scorecard_id": CANONICAL_SCORECARD_ID,
+                "status": status,
+                "tranche_id": TRANCHE_ID,
+                "write_scope_tranche_id": WRITE_SCOPE_TRANCHE_ID,
+                "write_scope_status": write_scope_receipt["status"],
+            },
+            sort_keys=True,
+        )
+    )
+    return 0 if status == "PASS" else 1
 
 
 if __name__ == "__main__":

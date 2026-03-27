@@ -6,7 +6,8 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
-from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
+from tools.operator.benchmark_constitution_validate import _enforce_write_scope_post, _enforce_write_scope_pre, _maybe_write_json_output
+from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z
 
 
 GOV = "KT_PROD_CLEANROOM/governance"
@@ -373,6 +374,7 @@ def build_receipt(*, root: Path, blockers: Dict[str, Any], claims: Dict[str, Any
 
 def _parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="Compile the final current-head adjudication from live W0-W7 evidence only.")
+    p.add_argument("--allow-tracked-output-refresh", action="store_true")
     p.add_argument("--final-blocker-matrix-output", default=OUT_BLOCKERS)
     p.add_argument("--final-claim-class-output", default=OUT_CLAIMS)
     p.add_argument("--final-forbidden-claims-output", default=OUT_FORBIDDEN)
@@ -385,6 +387,7 @@ def _parser() -> argparse.ArgumentParser:
 def main(argv: Optional[Sequence[str]] = None) -> int:
     args = _parser().parse_args(argv)
     root = repo_root()
+    prewrite_dirty = _enforce_write_scope_pre(root)
     blockers = build_final_blocker_matrix(root=root)
     claims = build_final_claim_class_outcome(root=root, final_blockers=blockers)
     forbidden = build_final_forbidden_claims(root=root, claims=claims)
@@ -392,12 +395,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     tier = build_final_tier_ruling(root=root, claims=claims, product_boundary=product_boundary)
     receipt = build_receipt(root=root, blockers=blockers, claims=claims, forbidden=forbidden, product_boundary=product_boundary, tier=tier)
 
-    write_json_stable(_resolve(root, str(args.final_blocker_matrix_output)), blockers)
-    write_json_stable(_resolve(root, str(args.final_claim_class_output)), claims)
-    write_json_stable(_resolve(root, str(args.final_forbidden_claims_output)), forbidden)
-    write_json_stable(_resolve(root, str(args.final_product_truth_output)), product_boundary)
-    write_json_stable(_resolve(root, str(args.final_tier_ruling_output)), tier)
-    write_json_stable(_resolve(root, str(args.receipt_output)), receipt)
+    allowed_repo_writes: list[str] = []
+    for target, payload, default_rel in [
+        (_resolve(root, str(args.final_blocker_matrix_output)), blockers, OUT_BLOCKERS),
+        (_resolve(root, str(args.final_claim_class_output)), claims, OUT_CLAIMS),
+        (_resolve(root, str(args.final_forbidden_claims_output)), forbidden, OUT_FORBIDDEN),
+        (_resolve(root, str(args.final_product_truth_output)), product_boundary, OUT_PRODUCT),
+        (_resolve(root, str(args.final_tier_ruling_output)), tier, OUT_TIER),
+        (_resolve(root, str(args.receipt_output)), receipt, OUT_RECEIPT),
+    ]:
+        written = _maybe_write_json_output(
+            root=root,
+            target=target,
+            payload=payload,
+            default_rel=default_rel,
+            allow_default_repo_write=args.allow_tracked_output_refresh,
+        )
+        if written:
+            allowed_repo_writes.append(written)
+    _enforce_write_scope_post(root, prewrite_dirty=prewrite_dirty, allowed_repo_writes=allowed_repo_writes)
 
     summary = {
         "status": receipt["status"],

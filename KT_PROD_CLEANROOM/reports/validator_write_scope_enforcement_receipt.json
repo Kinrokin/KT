@@ -1,0 +1,82 @@
+{
+  "allowed_repo_writes": [
+    "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json"
+  ],
+  "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+  "checks": [
+    {
+      "check_id": "source_enforces_write_scope::benchmark_constitution_validate.py",
+      "pass": true,
+      "validator_ref": "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py"
+    },
+    {
+      "check_id": "source_enforces_write_scope::e1_bounded_campaign_validate.py",
+      "pass": true,
+      "validator_ref": "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py"
+    },
+    {
+      "check_id": "source_enforces_write_scope::final_current_head_adjudication_validate.py",
+      "pass": true,
+      "validator_ref": "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py"
+    },
+    {
+      "check_id": "source_enforces_write_scope::w3_externality_and_comparative_proof_validate.py",
+      "pass": true,
+      "validator_ref": "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py"
+    },
+    {
+      "check_id": "prewrite_scope_within_expected_mutate_paths",
+      "pass": true
+    },
+    {
+      "check_id": "postwrite_scope_within_expected_mutate_paths",
+      "pass": true
+    },
+    {
+      "check_id": "no_undeclared_tracked_surface_created",
+      "pass": true
+    },
+    {
+      "check_id": "competitive_scorecard_remains_documentary_only",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "T4 enforces validator write containment only. It does not change comparator semantics, row set, or Gate C exit standing.",
+  "current_git_head": "380e68f3b62feab4814b957cd4f5762928d13c99",
+  "expected_mutate_paths": [
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_e1_bounded_campaign_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_final_current_head_adjudication_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_w3_externality_and_comparative_proof_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_validator_write_scope_enforcement.py",
+    "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json"
+  ],
+  "generated_utc": "2026-03-27T04:48:43Z",
+  "postwrite_dirty_paths": [
+    "KT_PROD_CLEANROOM/reports/validator_write_scope_enforcement_receipt.json",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_validator_write_scope_enforcement.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py"
+  ],
+  "prewrite_dirty_paths": [
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_validator_write_scope_enforcement.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py"
+  ],
+  "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+  "schema_id": "kt.gate_c_t4.validator_write_scope_enforcement_receipt.v1",
+  "status": "PASS",
+  "tranche_id": "B03_T4_VALIDATOR_WRITE_SCOPE_ENFORCEMENT",
+  "undeclared_created_paths": [],
+  "unexpected_postwrite_paths": []
+}

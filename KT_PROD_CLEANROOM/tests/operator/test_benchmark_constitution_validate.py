@@ -29,6 +29,7 @@ def test_benchmark_constitution_cli_emits_canonical_comparator_bundle(tmp_path: 
     binding_path = tmp_path / "canonical_scorecard_binding_receipt.json"
     alias_path = tmp_path / "scorecard_alias_retirement_receipt.json"
     detachment_path = tmp_path / "competitive_scorecard_validator_detachment_receipt.json"
+    write_scope_path = tmp_path / "validator_write_scope_enforcement_receipt.json"
 
     proc = subprocess.run(
         [
@@ -59,6 +60,8 @@ def test_benchmark_constitution_cli_emits_canonical_comparator_bundle(tmp_path: 
             str(alias_path),
             "--detachment-receipt-output",
             str(detachment_path),
+            "--write-scope-receipt-output",
+            str(write_scope_path),
         ],
         cwd=str(root),
         env=env,
@@ -86,6 +89,7 @@ def test_benchmark_constitution_cli_emits_canonical_comparator_bundle(tmp_path: 
     binding = json.loads(binding_path.read_text(encoding="utf-8"))
     alias = json.loads(alias_path.read_text(encoding="utf-8"))
     detachment = json.loads(detachment_path.read_text(encoding="utf-8"))
+    write_scope = json.loads(write_scope_path.read_text(encoding="utf-8"))
 
     assert negative["status"] == "PASS"
     assert len(negative["rows"]) >= 5
@@ -100,6 +104,7 @@ def test_benchmark_constitution_cli_emits_canonical_comparator_bundle(tmp_path: 
     assert binding["status"] == "PASS"
     assert alias["status"] == "PASS"
     assert detachment["status"] == "PASS"
+    assert write_scope["status"] == "PASS"
     assert scorecard["canonical_scorecard_id"] == "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL"
     assert scorecard["canonical_receipt_binding"]["baseline_vs_live_scorecard_ref"].endswith("baseline_vs_live_scorecard.json")
     assert receipt["canonical_scorecard_id"] == "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL"

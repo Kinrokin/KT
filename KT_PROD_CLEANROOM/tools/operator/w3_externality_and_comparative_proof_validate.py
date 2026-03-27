@@ -6,7 +6,8 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Sequence
 
-from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
+from tools.operator.benchmark_constitution_validate import _enforce_write_scope_post, _enforce_write_scope_pre, _maybe_write_json_output
+from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z
 from tools.operator.w4_truth_common import build_capability_atlas
 
 
@@ -232,6 +233,7 @@ def build_advancement_delta(*, root: Path, e2_receipt: Mapping[str, Any], baseli
 
 def _build_argument_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Validate bounded W3 externality and comparative-proof posture.")
+    parser.add_argument("--allow-tracked-output-refresh", action="store_true")
     parser.add_argument("--e2-output", default=DEFAULT_E2_OUTPUT_REL)
     parser.add_argument("--capability-atlas-output", default=DEFAULT_CAPABILITY_ATLAS_REL)
     parser.add_argument("--canonical-delta-output", default=DEFAULT_CANONICAL_DELTA_REL)
@@ -244,6 +246,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     args = parser.parse_args(argv)
 
     root = repo_root()
+    prewrite_dirty = _enforce_write_scope_pre(root)
     e2_output = _resolve(root, args.e2_output)
     capability_output = _resolve(root, args.capability_atlas_output)
     canonical_output = _resolve(root, args.canonical_delta_output)
@@ -272,10 +275,23 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         detachment_receipt=detachment_receipt,
     )
 
-    write_json_stable(e2_output, e2_receipt)
-    write_json_stable(capability_output, capability_atlas)
-    write_json_stable(canonical_output, canonical_delta)
-    write_json_stable(advancement_output, advancement_delta)
+    allowed_repo_writes: list[str] = []
+    for target, payload, default_rel in [
+        (e2_output, e2_receipt, DEFAULT_E2_OUTPUT_REL),
+        (capability_output, capability_atlas, DEFAULT_CAPABILITY_ATLAS_REL),
+        (canonical_output, canonical_delta, DEFAULT_CANONICAL_DELTA_REL),
+        (advancement_output, advancement_delta, DEFAULT_ADVANCEMENT_DELTA_REL),
+    ]:
+        written = _maybe_write_json_output(
+            root=root,
+            target=target,
+            payload=payload,
+            default_rel=default_rel,
+            allow_default_repo_write=args.allow_tracked_output_refresh,
+        )
+        if written:
+            allowed_repo_writes.append(written)
+    _enforce_write_scope_post(root, prewrite_dirty=prewrite_dirty, allowed_repo_writes=allowed_repo_writes)
 
     result = {
         "status": "PASS"

@@ -6,8 +6,9 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
+from tools.operator.benchmark_constitution_validate import _enforce_write_scope_post, _enforce_write_scope_pre, _maybe_write_json_output
 from tools.operator.public_verifier import manifest_supports_bounded_e1_verifier
-from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
+from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z
 
 
 REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
@@ -379,6 +380,7 @@ def build_e1_campaign_receipt(
 
 def _build_argument_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Compile the bounded E1 campaign-completion pack without widening claims.")
+    parser.add_argument("--allow-tracked-output-refresh", action="store_true")
     parser.add_argument("--commercial-truth-output", default=COMMERCIAL_TRUTH_PACKET_REL)
     parser.add_argument("--public-verifier-kit-output", default=PUBLIC_VERIFIER_KIT_REL)
     parser.add_argument("--second-host-kit-output", default=C006_SECOND_HOST_KIT_REL)
@@ -392,6 +394,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     args = parser.parse_args(argv)
 
     root = repo_root()
+    prewrite_dirty = _enforce_write_scope_pre(root)
     commercial_truth_packet = build_commercial_truth_packet(root=root)
     public_verifier_kit = build_public_verifier_kit(root=root)
     c006_second_host_kit = build_c006_second_host_kit(root=root)
@@ -409,11 +412,24 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         external_audit_packet=external_audit_packet,
     )
 
-    write_json_stable(_resolve(root, str(args.commercial_truth_output)), commercial_truth_packet)
-    write_json_stable(_resolve(root, str(args.public_verifier_kit_output)), public_verifier_kit)
-    write_json_stable(_resolve(root, str(args.second_host_kit_output)), c006_second_host_kit)
-    write_json_stable(_resolve(root, str(args.external_audit_output)), external_audit_packet)
-    write_json_stable(_resolve(root, str(args.receipt_output)), receipt)
+    allowed_repo_writes: list[str] = []
+    for target, payload, default_rel in [
+        (_resolve(root, str(args.commercial_truth_output)), commercial_truth_packet, COMMERCIAL_TRUTH_PACKET_REL),
+        (_resolve(root, str(args.public_verifier_kit_output)), public_verifier_kit, PUBLIC_VERIFIER_KIT_REL),
+        (_resolve(root, str(args.second_host_kit_output)), c006_second_host_kit, C006_SECOND_HOST_KIT_REL),
+        (_resolve(root, str(args.external_audit_output)), external_audit_packet, EXTERNAL_AUDIT_PACKET_REL),
+        (_resolve(root, str(args.receipt_output)), receipt, E1_CAMPAIGN_RECEIPT_REL),
+    ]:
+        written = _maybe_write_json_output(
+            root=root,
+            target=target,
+            payload=payload,
+            default_rel=default_rel,
+            allow_default_repo_write=args.allow_tracked_output_refresh,
+        )
+        if written:
+            allowed_repo_writes.append(written)
+    _enforce_write_scope_post(root, prewrite_dirty=prewrite_dirty, allowed_repo_writes=allowed_repo_writes)
 
     summary = {
         "status": receipt["status"],
