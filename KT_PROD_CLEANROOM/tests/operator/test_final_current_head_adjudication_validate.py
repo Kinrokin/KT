@@ -2,17 +2,39 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
+
+OVERLAY_REFS = [
+    "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+]
 
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[3]
 
 
-def test_final_current_head_adjudication_cli_compiles_bounded_final_verdict(tmp_path: Path) -> None:
+def _clean_clone(tmp_path: Path) -> Path:
     root = _repo_root()
+    clone_root = tmp_path / "repo"
+    subprocess.run(
+        ["git", "clone", "--quiet", str(root), str(clone_root)],
+        cwd=str(tmp_path),
+        check=True,
+    )
+    for ref in OVERLAY_REFS:
+        src = root / ref
+        dst = clone_root / ref
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src, dst)
+    return clone_root
+
+
+def test_final_current_head_adjudication_cli_compiles_bounded_final_verdict(tmp_path: Path) -> None:
+    root = _clean_clone(tmp_path)
     env = dict(os.environ)
     env["PYTHONPATH"] = str(root / "KT_PROD_CLEANROOM") + os.pathsep + str(root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src")
     env["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
@@ -57,6 +79,7 @@ def test_final_current_head_adjudication_cli_compiles_bounded_final_verdict(tmp_
     assert payload["open_current_head_claim_blocker_ids"] == ["C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"]
     assert payload["product_truth_class"] == "BOUNDED_E1_BUYER_SIMPLE_PRODUCT_PLANE"
     assert payload["comparator_contract_status"] == "PASS"
+    assert payload["documentary_carrier_consumer_status"] == "PASS"
 
     final_blocker_matrix = json.loads(final_blocker_matrix_path.read_text(encoding="utf-8"))
     final_claim_class = json.loads(final_claim_class_path.read_text(encoding="utf-8"))
@@ -91,5 +114,7 @@ def test_final_current_head_adjudication_cli_compiles_bounded_final_verdict(tmp_
     assert final_tier_ruling["current_head_tier_id"] == "SCOPED_TIER_BOUNDED_CURRENT_HEAD_ORGANISM_E1"
 
     assert receipt["status"] == "PASS"
+    assert receipt["documentary_carrier_consumer_guard"]["status"] == "PASS"
+    assert receipt["documentary_carrier_consumer_guard"]["documentary_carrier_attempt"]["failure_reason"] == "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
     assert receipt["exact_current_head_standing"]["open_current_head_claim_blocker_ids"] == ["C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"]
     assert receipt["exact_current_head_standing"]["highest_truthful_tier_output"] == "NOT_FRONTIER"

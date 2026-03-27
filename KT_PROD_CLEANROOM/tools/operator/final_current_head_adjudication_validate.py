@@ -47,6 +47,8 @@ DETACHMENT_RECEIPT = f"{REP}/competitive_scorecard_validator_detachment_receipt.
 E2_RECEIPT = f"{REP}/e2_cross_host_replay_receipt.json"
 AUDIT_PACKET = f"{REP}/external_audit_packet_manifest.json"
 E1_RECEIPT = f"{REP}/e1_bounded_campaign_receipt.json"
+T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT = f"{REP}/t10_receipt_final_head_authority_alignment_receipt.json"
+T11_RECEIPT_ROLE = "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"
 
 PROD_DEPLOY = f"{PROD}/deployment_profiles.json"
 WRAPPER = f"{PROD}/client_wrapper_spec.json"
@@ -190,6 +192,67 @@ def evaluate_comparator_side_reader_contract(*, root: Path) -> Dict[str, Any]:
         "generated_contract_checks": generated_checks,
         "malformed_attempts": malformed_attempts,
         "legacy_parse_removed": legacy_parse_removed,
+    }
+
+
+def evaluate_documentary_carrier_fail_closed_consumer_guard(*, root: Path) -> Dict[str, Any]:
+    current_head = _git_head(root)
+    tracked_t11_receipt = _j(root, T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT)
+    tracked_t11_contract = _consume_emitted_receipt_contract(
+        receipt_ref=T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT,
+        payload=tracked_t11_receipt,
+        allowed_roles=[T11_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    tracked_authority_class = str(tracked_t11_receipt.get("tracked_t10_authority_class", "")).strip()
+    documentary_attempt = {
+        "receipt_ref": T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT,
+        "requested_head": current_head,
+        "subject_head": str(tracked_t11_receipt.get("subject_head", "")).strip(),
+        "receipt_role": str(tracked_t11_receipt.get("receipt_role", "")).strip(),
+        "tracked_t10_authority_class": tracked_authority_class,
+        "pass": False,
+        "blocked": True,
+        "failure_reason": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
+        if tracked_authority_class == "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
+        else tracked_t11_contract.get("failure_reason"),
+    }
+    checks = [
+        {
+            "check_id": "tracked_t11_receipt_declares_expected_role",
+            "pass": documentary_attempt["receipt_role"] == T11_RECEIPT_ROLE,
+        },
+        {
+            "check_id": "tracked_t11_receipt_declares_subject_head",
+            "pass": bool(documentary_attempt["subject_head"]),
+        },
+        {
+            "check_id": "documentary_carrier_mismatch_status_present",
+            "pass": tracked_authority_class == "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+        },
+        {
+            "check_id": "documentary_carrier_overread_fails_closed",
+            "pass": documentary_attempt["blocked"] is True
+            and documentary_attempt["failure_reason"] == "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+        },
+        {
+            "check_id": "warning_only_fallback_not_allowed",
+            "pass": documentary_attempt["pass"] is False and documentary_attempt["blocked"] is True,
+        },
+        {
+            "check_id": "tracked_t11_contract_stays_non_authoritative_on_current_head",
+            "pass": tracked_t11_contract.get("blocked") is True
+            and tracked_t11_contract.get("failure_reason") == "SUBJECT_HEAD_MISMATCH",
+        },
+    ]
+    return {
+        "consumer_id": "final_current_head_adjudication_validate",
+        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "current_git_head": current_head,
+        "tracked_t11_receipt_ref": T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT,
+        "tracked_t11_contract": tracked_t11_contract,
+        "documentary_carrier_attempt": documentary_attempt,
+        "checks": checks,
     }
 
 
@@ -445,6 +508,7 @@ def build_receipt(*, root: Path, blockers: Dict[str, Any], claims: Dict[str, Any
     baseline_scorecard = comparator_contract["baseline_scorecard"]
     benchmark_receipt = comparator_contract["benchmark_receipt"]
     detachment_receipt = comparator_contract["detachment_receipt"]
+    documentary_guard = evaluate_documentary_carrier_fail_closed_consumer_guard(root=root)
     router_ordered = _j(root, ROUTER_ORDERED)
     commercial = _j(root, COMMERCIAL)
     verifier = _j(root, VERIFIER)
@@ -457,6 +521,7 @@ def build_receipt(*, root: Path, blockers: Dict[str, Any], claims: Dict[str, Any
         {"check_id": "canonical_baseline_scorecard_still_passes", "pass": str(baseline_scorecard.get("status", "")).strip() == "PASS" and str(benchmark_receipt.get("status", "")).strip() == "PASS", "ref": BASELINE_SCORECARD},
         {"check_id": "competitive_alias_detachment_still_passes", "pass": str(detachment_receipt.get("status", "")).strip() == "PASS", "ref": DETACHMENT_RECEIPT},
         {"check_id": "side_reader_contract_adoption_still_passes", "pass": comparator_contract["status"] == "PASS", "ref": BASELINE_SCORECARD},
+        {"check_id": "documentary_carrier_mismatch_fails_closed_in_consumer_path", "pass": documentary_guard["status"] == "PASS", "ref": T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT},
         {"check_id": "router_and_lobe_promotions_remain_unearned", "pass": bool(claims.get("router_superiority_earned")) is False and bool(router_ordered.get("multi_lobe_promotion_allowed")) is False, "ref": ROUTER_ORDERED},
         {"check_id": "final_tier_output_is_compiled_without_prestige_inflation", "pass": str(tier.get("highest_truthful_tier_output", "")).strip() == "NOT_FRONTIER", "ref": OUT_TIER},
         {"check_id": "final_product_truth_boundary_stays_bounded", "pass": str(product_boundary.get("status", "")).strip() == "PASS" and str(product_boundary.get("max_externality_class", "")).strip() == "E1_SAME_HOST_DETACHED_REPLAY", "ref": OUT_PRODUCT},
@@ -473,6 +538,7 @@ def build_receipt(*, root: Path, blockers: Dict[str, Any], claims: Dict[str, Any
         "final_forbidden_claims_list_ref": OUT_FORBIDDEN,
         "final_product_truth_boundary_ref": OUT_PRODUCT,
         "final_tier_ruling_ref": OUT_TIER,
+        "documentary_carrier_consumer_guard": documentary_guard,
         "forbidden_claim_count": int(forbidden.get("forbidden_claim_count", 0) or 0),
         "exact_current_head_standing": {
             "open_current_head_claim_blocker_ids": list(blockers.get("active_current_head_claim_blocker_ids", [])),
@@ -536,6 +602,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "highest_truthful_tier_output": tier["highest_truthful_tier_output"],
         "product_truth_class": product_boundary["product_truth_class"],
         "comparator_contract_status": claims["comparator_contract_status"],
+        "documentary_carrier_consumer_status": receipt["documentary_carrier_consumer_guard"]["status"],
     }
     print(json.dumps(summary, sort_keys=True))
     return 0 if summary["status"] == "PASS" else 1
