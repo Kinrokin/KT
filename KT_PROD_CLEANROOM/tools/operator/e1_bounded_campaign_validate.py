@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import re
 import subprocess
@@ -85,6 +86,9 @@ T8_RECEIPT_ROLE = "COUNTED_T8_REFRESH_SCOPE_HARDENING_ARTIFACT_ONLY"
 SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL = f"{REPORT_ROOT_REL}/side_reader_refresh_caller_isolation_receipt.json"
 T9_TRANCHE_ID = "B03_T9_SIDE_READER_REFRESH_CALLER_ISOLATION"
 T9_RECEIPT_ROLE = "COUNTED_T9_REFRESH_CALLER_ISOLATION_ARTIFACT_ONLY"
+SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL = f"{REPORT_ROOT_REL}/side_reader_refresh_indirection_barrier_receipt.json"
+T10_TRANCHE_ID = "B03_T10_SIDE_READER_REFRESH_INDIRECTION_BARRIER"
+T10_RECEIPT_ROLE = "COUNTED_T10_REFRESH_INDIRECTION_BARRIER_ARTIFACT_ONLY"
 ALLOWED_SIDE_READER_REFRESH_OWNER_REL = "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py"
 SIDE_READER_REFRESH_OWNERSHIP_TOKENS = {
     "allow_flag": "--allow-side-reader-contract-receipt-refresh",
@@ -98,6 +102,38 @@ SIDE_READER_REFRESH_OWNERSHIP_TOKENS = {
     "contract_builder": "build_comparator_side_reader_contract_adoption_receipt(",
     "scope_builder": "build_side_reader_receipt_refresh_scope_receipt(",
     "caller_isolation_builder": "build_side_reader_refresh_caller_isolation_receipt(",
+}
+SIDE_READER_REFRESH_PROTECTED_PARAMETER_NAMES = {
+    "allow_side_reader_contract_receipt_refresh",
+    "verification_only_side_reader_receipt_refresh",
+    "side_reader_contract_receipt_output",
+    "side_reader_refresh_scope_receipt_output",
+    "side_reader_refresh_caller_isolation_receipt_output",
+    "side_reader_refresh_indirection_barrier_receipt_output",
+}
+SIDE_READER_REFRESH_PROTECTED_SYMBOL_NAMES = {
+    "ALLOWED_SIDE_READER_REFRESH_OWNER_REL",
+    "SIDE_READER_CONTRACT_RECEIPT_REL",
+    "SIDE_READER_REFRESH_SCOPE_RECEIPT_REL",
+    "SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL",
+    "SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL",
+    "SIDE_READER_REFRESH_OWNERSHIP_TOKENS",
+    "build_comparator_side_reader_contract_adoption_receipt",
+    "build_side_reader_receipt_refresh_scope_receipt",
+    "build_side_reader_refresh_caller_isolation_receipt",
+    "build_side_reader_refresh_indirection_barrier_receipt",
+    "evaluate_side_reader_refresh_policy",
+    "evaluate_side_reader_refresh_caller_isolation",
+    "evaluate_side_reader_refresh_indirection_barrier",
+}
+SIDE_READER_REFRESH_SENSITIVE_LITERALS = set(SIDE_READER_REFRESH_OWNERSHIP_TOKENS.values()) | {
+    "--side-reader-refresh-indirection-barrier-receipt-output",
+    "side_reader_refresh_indirection_barrier_receipt.json",
+    SIDE_READER_CONTRACT_RECEIPT_REL,
+    SIDE_READER_REFRESH_SCOPE_RECEIPT_REL,
+    SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL,
+    SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL,
+    "tools.operator.e1_bounded_campaign_validate",
 }
 ROLE_ALIAS_RETIREMENT = "ALIAS_RETIREMENT_PROOF"
 ROLE_VALIDATOR_ALIAS_DETACHMENT = "VALIDATOR_ALIAS_DETACHMENT_PROOF"
@@ -266,6 +302,185 @@ def _non_test_operator_python_refs(root: Path) -> List[str]:
             continue
         refs.append(path.resolve().relative_to(root.resolve()).as_posix())
     return sorted(refs)
+
+
+def _is_e1_module_ref(value: str | None) -> bool:
+    text = str(value or "").strip()
+    return text == "tools.operator.e1_bounded_campaign_validate" or text.endswith(".e1_bounded_campaign_validate")
+
+
+def _side_reader_refresh_parameter_names(node: ast.AST) -> List[str]:
+    if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)):
+        return []
+    args = node.args
+    names: List[str] = []
+    for arg in [*args.posonlyargs, *args.args, *args.kwonlyargs]:
+        names.append(str(arg.arg))
+    if args.vararg is not None:
+        names.append(str(args.vararg.arg))
+    if args.kwarg is not None:
+        names.append(str(args.kwarg.arg))
+    return names
+
+
+def _side_reader_sensitive_literal_hits(text: str) -> List[str]:
+    hits: List[str] = []
+    for value in sorted(SIDE_READER_REFRESH_SENSITIVE_LITERALS):
+        if value and value in text:
+            hits.append(value)
+    return hits
+
+
+def evaluate_side_reader_refresh_indirection_barrier(
+    *,
+    root: Path,
+    candidate_operator_refs: Optional[Sequence[str]] = None,
+    text_overrides: Optional[Dict[str, str]] = None,
+) -> Dict[str, Any]:
+    refs = list(candidate_operator_refs) if candidate_operator_refs is not None else _non_test_operator_python_refs(root)
+    overrides = text_overrides or {}
+    violations: List[Dict[str, Any]] = []
+
+    for ref in refs:
+        if ref == ALLOWED_SIDE_READER_REFRESH_OWNER_REL:
+            continue
+        text = overrides.get(ref)
+        if text is None:
+            text = (root / ref).read_text(encoding="utf-8")
+        tree = ast.parse(text, filename=ref)
+
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    if _is_e1_module_ref(alias.name):
+                        violations.append(
+                            {
+                                "operator_ref": ref,
+                                "violation_type": "E1_MODULE_IMPORT",
+                                "line": int(getattr(node, "lineno", 0)),
+                                "col": int(getattr(node, "col_offset", 0)),
+                                "detail": alias.name,
+                            }
+                        )
+            elif isinstance(node, ast.ImportFrom):
+                module = str(node.module or "").strip()
+                if _is_e1_module_ref(module):
+                    for alias in node.names:
+                        if alias.name == "*":
+                            violations.append(
+                                {
+                                    "operator_ref": ref,
+                                    "violation_type": "E1_STAR_IMPORT",
+                                    "line": int(getattr(node, "lineno", 0)),
+                                    "col": int(getattr(node, "col_offset", 0)),
+                                    "detail": module,
+                                }
+                            )
+                            continue
+                        if alias.name in SIDE_READER_REFRESH_PROTECTED_SYMBOL_NAMES or alias.name == "main":
+                            violations.append(
+                                {
+                                    "operator_ref": ref,
+                                    "violation_type": "PROTECTED_SYMBOL_IMPORT",
+                                    "line": int(getattr(node, "lineno", 0)),
+                                    "col": int(getattr(node, "col_offset", 0)),
+                                    "detail": f"{module}:{alias.name}",
+                                }
+                            )
+                elif module == "tools.operator":
+                    for alias in node.names:
+                        if alias.name == "e1_bounded_campaign_validate":
+                            violations.append(
+                                {
+                                    "operator_ref": ref,
+                                    "violation_type": "E1_MODULE_REEXPORT",
+                                    "line": int(getattr(node, "lineno", 0)),
+                                    "col": int(getattr(node, "col_offset", 0)),
+                                    "detail": f"{module}:{alias.name}",
+                                }
+                            )
+            elif isinstance(node, ast.Call):
+                if isinstance(node.func, ast.Attribute) and str(node.func.attr) == "add_argument":
+                    flag_literals: List[str] = []
+                    for arg in node.args:
+                        if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
+                            if arg.value in SIDE_READER_REFRESH_SENSITIVE_LITERALS:
+                                flag_literals.append(arg.value)
+                    if flag_literals:
+                        violations.append(
+                            {
+                                "operator_ref": ref,
+                                "violation_type": "ARGPARSE_FLAG_EXPOSURE",
+                                "line": int(getattr(node, "lineno", 0)),
+                                "col": int(getattr(node, "col_offset", 0)),
+                                "detail": sorted(set(flag_literals)),
+                            }
+                        )
+                keyword_hits = [keyword.arg for keyword in node.keywords if keyword.arg in SIDE_READER_REFRESH_PROTECTED_PARAMETER_NAMES]
+                if keyword_hits:
+                    violations.append(
+                        {
+                            "operator_ref": ref,
+                            "violation_type": "REFRESH_KEYWORD_PLUMBING",
+                            "line": int(getattr(node, "lineno", 0)),
+                            "col": int(getattr(node, "col_offset", 0)),
+                            "detail": sorted(keyword_hits),
+                        }
+                    )
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)):
+                parameter_hits = sorted(
+                    {
+                        name
+                        for name in _side_reader_refresh_parameter_names(node)
+                        if name in SIDE_READER_REFRESH_PROTECTED_PARAMETER_NAMES
+                    }
+                )
+                if parameter_hits:
+                    violations.append(
+                        {
+                            "operator_ref": ref,
+                            "violation_type": "REFRESH_PARAMETER_EXPOSURE",
+                            "line": int(getattr(node, "lineno", 0)),
+                            "col": int(getattr(node, "col_offset", 0)),
+                            "detail": parameter_hits,
+                        }
+                    )
+            elif isinstance(node, ast.Constant) and isinstance(node.value, str):
+                literal_hits = _side_reader_sensitive_literal_hits(node.value)
+                if literal_hits:
+                    violations.append(
+                        {
+                            "operator_ref": ref,
+                            "violation_type": "SENSITIVE_LITERAL_EXPOSURE",
+                            "line": int(getattr(node, "lineno", 0)),
+                            "col": int(getattr(node, "col_offset", 0)),
+                            "detail": literal_hits,
+                        }
+                    )
+
+    caller_isolation = evaluate_side_reader_refresh_caller_isolation(
+        root=root,
+        candidate_operator_refs=refs,
+        text_overrides=text_overrides,
+    )
+    violation_types = sorted({str(item["violation_type"]) for item in violations})
+    checks = [
+        {"check_id": "t9_direct_owner_scan_still_passes", "pass": caller_isolation["status"] == "PASS"},
+        {"check_id": "no_e1_module_import_indirection", "pass": "E1_MODULE_IMPORT" not in violation_types and "E1_MODULE_REEXPORT" not in violation_types and "E1_STAR_IMPORT" not in violation_types},
+        {"check_id": "no_protected_symbol_import_indirection", "pass": "PROTECTED_SYMBOL_IMPORT" not in violation_types},
+        {"check_id": "no_shared_argparse_builder_exposure", "pass": "ARGPARSE_FLAG_EXPOSURE" not in violation_types},
+        {"check_id": "no_refresh_parameter_plumbing", "pass": "REFRESH_PARAMETER_EXPOSURE" not in violation_types and "REFRESH_KEYWORD_PLUMBING" not in violation_types},
+        {"check_id": "no_sensitive_literal_wrapper_exposure", "pass": "SENSITIVE_LITERAL_EXPOSURE" not in violation_types},
+    ]
+    return {
+        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "allowed_owner_ref": ALLOWED_SIDE_READER_REFRESH_OWNER_REL,
+        "operator_refs_scanned": refs,
+        "caller_isolation": caller_isolation,
+        "violations": violations,
+        "violation_types": violation_types,
+        "checks": checks,
+    }
 
 
 def evaluate_side_reader_refresh_caller_isolation(
@@ -505,6 +720,79 @@ def build_side_reader_refresh_caller_isolation_receipt(
         "t8_contract": t8_contract,
         "checks": checks,
         "claim_boundary": "T9 hardens caller isolation for the already-earned verification-only side-reader refresh path only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
+    }
+
+
+def build_side_reader_refresh_indirection_barrier_receipt(
+    *,
+    root: Path,
+    generated_utc: str,
+    side_reader_contract_receipt: Dict[str, Any],
+    side_reader_refresh_scope_receipt: Dict[str, Any],
+    side_reader_refresh_caller_isolation_receipt: Dict[str, Any],
+) -> Dict[str, Any]:
+    current_head = _git_head(root)
+    indirection_barrier = evaluate_side_reader_refresh_indirection_barrier(root=root)
+    t7_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_CONTRACT_RECEIPT_REL,
+        payload=side_reader_contract_receipt,
+        allowed_roles=[T7_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    t8_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_REFRESH_SCOPE_RECEIPT_REL,
+        payload=side_reader_refresh_scope_receipt,
+        allowed_roles=[T8_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    t9_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL,
+        payload=side_reader_refresh_caller_isolation_receipt,
+        allowed_roles=[T9_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    t8_checks = {
+        str(check["check_id"]): bool(check["pass"])
+        for check in side_reader_refresh_scope_receipt.get("checks", [])
+        if isinstance(check, dict) and "check_id" in check
+    }
+    t9_checks = {
+        str(check["check_id"]): bool(check["pass"])
+        for check in side_reader_refresh_caller_isolation_receipt.get("checks", [])
+        if isinstance(check, dict) and "check_id" in check
+    }
+    checks = [
+        {"check_id": "indirection_barrier_passes", "pass": indirection_barrier["status"] == "PASS"},
+        {"check_id": "t7_contract_preserved", "pass": t7_contract["pass"] is True},
+        {"check_id": "t8_contract_preserved", "pass": t8_contract["pass"] is True},
+        {"check_id": "t9_contract_preserved", "pass": t9_contract["pass"] is True},
+        {"check_id": "default_refresh_stays_disabled_by_default", "pass": t8_checks.get("default_path_does_not_enable_refresh", False)},
+        {"check_id": "dual_opt_in_refresh_stays_functional", "pass": t8_checks.get("dual_opt_in_default_target_enables_refresh", False)},
+        {"check_id": "t9_direct_owner_scan_stays_enforced", "pass": t9_checks.get("caller_isolation_passes", False)},
+    ]
+    status = "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL"
+    return {
+        "schema_id": "kt.gate_c_t10.side_reader_refresh_indirection_barrier_receipt.v1",
+        "generated_utc": generated_utc,
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": T10_RECEIPT_ROLE,
+        "status": status,
+        "tranche_id": T10_TRANCHE_ID,
+        "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        "canonical_receipt_binding": {
+            "baseline_vs_live_scorecard_ref": BASELINE_SCORECARD_REL,
+            "side_reader_contract_adoption_receipt_ref": SIDE_READER_CONTRACT_RECEIPT_REL,
+            "side_reader_refresh_scope_receipt_ref": SIDE_READER_REFRESH_SCOPE_RECEIPT_REL,
+            "side_reader_refresh_caller_isolation_receipt_ref": SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL,
+        },
+        "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+        "indirection_barrier": indirection_barrier,
+        "t7_contract": t7_contract,
+        "t8_contract": t8_contract,
+        "t9_contract": t9_contract,
+        "checks": checks,
+        "claim_boundary": "T10 hardens indirect exposure barriers around the already-earned verification-only side-reader refresh path only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
     }
 
 
@@ -850,6 +1138,7 @@ def _build_argument_parser() -> argparse.ArgumentParser:
     parser.add_argument("--side-reader-contract-receipt-output", default=SIDE_READER_CONTRACT_RECEIPT_REL)
     parser.add_argument("--side-reader-refresh-scope-receipt-output", default=SIDE_READER_REFRESH_SCOPE_RECEIPT_REL)
     parser.add_argument("--side-reader-refresh-caller-isolation-receipt-output", default=SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL)
+    parser.add_argument("--side-reader-refresh-indirection-barrier-receipt-output", default=SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL)
     return parser
 
 
@@ -901,10 +1190,23 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         side_reader_contract_receipt=side_reader_contract_receipt,
         side_reader_refresh_scope_receipt=side_reader_refresh_scope_receipt,
     )
+    side_reader_refresh_indirection_barrier_receipt = build_side_reader_refresh_indirection_barrier_receipt(
+        root=root,
+        generated_utc=utc_now_iso_z(),
+        side_reader_contract_receipt=side_reader_contract_receipt,
+        side_reader_refresh_scope_receipt=side_reader_refresh_scope_receipt,
+        side_reader_refresh_caller_isolation_receipt=side_reader_refresh_caller_isolation_receipt,
+    )
     caller_isolation_receipt_requested = "--side-reader-refresh-caller-isolation-receipt-output" in raw_argv
+    indirection_barrier_receipt_requested = "--side-reader-refresh-indirection-barrier-receipt-output" in raw_argv
     if caller_isolation_receipt_requested and not bool(refresh_policy["refresh_enabled"]):
         raise RuntimeError(
             "FAIL_CLOSED: side-reader refresh caller isolation receipt requires explicit "
+            "dual-opt-in verification-only refresh"
+        )
+    if indirection_barrier_receipt_requested and not bool(refresh_policy["refresh_enabled"]):
+        raise RuntimeError(
+            "FAIL_CLOSED: side-reader refresh indirection barrier receipt requires explicit "
             "dual-opt-in verification-only refresh"
         )
 
@@ -954,6 +1256,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         )
         if written:
             allowed_repo_writes.append(written)
+    if indirection_barrier_receipt_requested:
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.side_reader_refresh_indirection_barrier_receipt_output)),
+            payload=side_reader_refresh_indirection_barrier_receipt,
+            default_rel=SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL,
+            allow_default_repo_write=bool(refresh_policy["refresh_enabled"]),
+        )
+        if written:
+            allowed_repo_writes.append(written)
     _enforce_write_scope_post(root, prewrite_dirty=prewrite_dirty, allowed_repo_writes=allowed_repo_writes)
 
     summary = {
@@ -966,6 +1278,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "side_reader_receipt_refresh_scope_status": side_reader_refresh_scope_receipt["status"],
         "side_reader_receipt_refresh_enabled": bool(refresh_policy["refresh_enabled"]),
         "side_reader_refresh_caller_isolation_status": side_reader_refresh_caller_isolation_receipt["status"],
+        "side_reader_refresh_indirection_barrier_status": side_reader_refresh_indirection_barrier_receipt["status"],
     }
     print(json.dumps(summary, sort_keys=True))
     return 0 if summary["status"] == "PASS" else 1
