@@ -19,7 +19,6 @@ def test_w3_externality_and_comparative_proof_cli_emits_bounded_outputs(tmp_path
 
     e2_path = tmp_path / "e2.json"
     atlas_path = tmp_path / "atlas.json"
-    scorecard_path = tmp_path / "scorecard.json"
     canonical_delta_path = tmp_path / "canonical_delta.json"
     advancement_delta_path = tmp_path / "advancement_delta.json"
 
@@ -32,8 +31,6 @@ def test_w3_externality_and_comparative_proof_cli_emits_bounded_outputs(tmp_path
             str(e2_path),
             "--capability-atlas-output",
             str(atlas_path),
-            "--competitive-scorecard-output",
-            str(scorecard_path),
             "--canonical-delta-output",
             str(canonical_delta_path),
             "--advancement-delta-output",
@@ -58,7 +55,6 @@ def test_w3_externality_and_comparative_proof_cli_emits_bounded_outputs(tmp_path
 
     e2_receipt = json.loads(e2_path.read_text(encoding="utf-8"))
     capability_atlas = json.loads(atlas_path.read_text(encoding="utf-8"))
-    scorecard = json.loads(scorecard_path.read_text(encoding="utf-8"))
     canonical_delta = json.loads(canonical_delta_path.read_text(encoding="utf-8"))
     advancement_delta = json.loads(advancement_delta_path.read_text(encoding="utf-8"))
 
@@ -72,17 +68,17 @@ def test_w3_externality_and_comparative_proof_cli_emits_bounded_outputs(tmp_path
     assert any(row["surface_id"] == "router" for row in capability_atlas["topology"])
     assert any(row["surface_id"] == "detached_verifier_externality_lane" for row in capability_atlas["topology"])
 
-    assert scorecard["status"] == "PASS"
-    assert scorecard["comparative_widening_status"] == "BLOCKED_PENDING_C006_AND_E2"
-    assert scorecard["comparative_widening_unlock"] is False
-
     assert canonical_delta["status"] == "PASS"
     assert canonical_delta["blocker_delta"]["active_open_blocker_ids"] == ["C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"]
     assert "release_activation_not_executed" in canonical_delta["blocker_delta"]["current_truth_posture_open_blocker_ids"]
     assert canonical_delta["blocker_delta"]["change"] == "NONE_C006_STILL_OPEN_PENDING_FRESH_SECOND_HOST_RETURN"
+    assert "baseline_vs_live_scorecard_remains_the_only_canonical_gate_c_comparator_truth" in canonical_delta["ambiguity_reduced"]
+    assert "competitive_scorecard_is_detached_from_validator_and_counted_paths" in canonical_delta["ambiguity_reduced"]
 
     assert advancement_delta["status"] == "PASS"
     assert advancement_delta["detached_verifier_outsider_usability_status"] == "PASS_BOUNDED_E1_ONLY"
     assert advancement_delta["e2_outcome"] == "NOT_EARNED_PENDING_SECOND_HOST_RETURN"
     assert advancement_delta["comparative_widening_unlock"] is False
     assert advancement_delta["commercial_widening_unlock"] is False
+    assert advancement_delta["canonical_scorecard_id"] == "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL"
+    assert advancement_delta["validator_detachment_status"] == "PASS"

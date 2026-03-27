@@ -1,0 +1,31 @@
+{
+  "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+  "checks": [
+    {
+      "check_id": "detached::e1_bounded_campaign_validate.py",
+      "pass": true,
+      "validator_ref": "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py"
+    },
+    {
+      "check_id": "detached::final_current_head_adjudication_validate.py",
+      "pass": true,
+      "validator_ref": "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py"
+    },
+    {
+      "check_id": "detached::w3_externality_and_comparative_proof_validate.py",
+      "pass": true,
+      "validator_ref": "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py"
+    },
+    {
+      "check_id": "competitive_scorecard_forbidden_from_measured_surfaces",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "This receipt proves validator/counting detachment only. It does not change comparator semantics or add new measured surfaces.",
+  "current_git_head": "438d9de1948615d917b0beef4709fcc9e891b6e1",
+  "generated_utc": "2026-03-27T04:24:46Z",
+  "retired_alias_ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
+  "schema_id": "kt.gate_c_t3.competitive_scorecard_validator_detachment_receipt.v1",
+  "status": "PASS",
+  "tranche_id": "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT"
+}

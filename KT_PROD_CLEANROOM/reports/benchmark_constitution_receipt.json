@@ -1,8 +1,10 @@
 {
   "actual_category": "GOVERNED_RECEIPT_BACKED_FAIL_CLOSED_AI_EXECUTION_WITH_ADAPTIVE_IMPROVEMENT_UNDER_LAW",
   "canonical_receipt_binding": {
+    "alias_retirement_receipt_ref": "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
     "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
     "comparator_replay_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
+    "detachment_receipt_ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
     "frozen_eval_scorecard_bundle_ref": "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json"
   },
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
@@ -96,15 +98,19 @@
       "pass": true
     },
     {
+      "check_id": "detachment_receipt_passes",
+      "pass": true
+    },
+    {
       "check_id": "canonical_scorecard_id_consistent",
       "pass": true
     }
   ],
-  "claim_boundary": "B03 tranche 2 binds comparator constitution surfaces to current head and retires duplicate comparator aliases only.",
-  "current_git_head": "b1fbd35baec8232916d853f2e2e0e9ceed2a5e4d",
-  "generated_utc": "2026-03-27T03:57:00Z",
+  "claim_boundary": "B03 tranche 3 detaches documentary alias consumption from validator/counting paths only.",
+  "current_git_head": "438d9de1948615d917b0beef4709fcc9e891b6e1",
+  "generated_utc": "2026-03-27T04:24:46Z",
   "negative_result_row_count": 7,
-  "schema_id": "kt.gate_c_t2.benchmark_constitution_receipt.v3",
+  "schema_id": "kt.gate_c_t3.benchmark_constitution_receipt.v4",
   "source_refs": [
     "KT_PROD_CLEANROOM/governance/kt_benchmark_constitution_v1.json",
     "KT_PROD_CLEANROOM/governance/kt_comparator_registry.json",
@@ -115,9 +121,9 @@
     "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
     "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
     "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
-    "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
     "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
-    "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json"
+    "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
+    "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
   ],
   "status": "PASS",
   "stronger_claims_not_made": [
@@ -128,7 +134,8 @@
     "capability_atlas_ratified",
     "promotion_civilization_ratified",
     "c006_closed",
-    "commercial_widening_unlocked"
+    "commercial_widening_unlocked",
+    "gate_c_exited"
   ],
-  "tranche_id": "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT"
+  "tranche_id": "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT"
 }

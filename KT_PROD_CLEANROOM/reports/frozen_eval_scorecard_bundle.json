@@ -2,29 +2,35 @@
   "bundle_members": [
     {
       "artifact_ref": "KT_PROD_CLEANROOM/governance/benchmark_manifest.json",
-      "canonical_sha256": "b06cb085ac535ebdd00def072f3dc89a4033e9d0cba746afce5d20114be4ce39"
+      "canonical_sha256": "70754117d106687be98e1ce945ca8fc39996b1ca56a8b13ad5ff4bc728d36f7f"
     },
     {
       "artifact_ref": "KT_PROD_CLEANROOM/governance/scorer_registry.json",
-      "canonical_sha256": "557d59d955375d4f6393cb39bca05d6592af20b09dbaa79960b92f4e6b45a95d"
+      "canonical_sha256": "c2c7648eea246a5a97b6b300ad24f434f9b6869faa7881e1fff130f8c8da86f4"
     },
     {
       "artifact_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
-      "canonical_sha256": "939543072d43cf2f7037bda061f61263d455e32b46fed6efc379653a9c1f5061"
+      "canonical_sha256": "6a5f016a6a2f31fa42a42c7c635a8ed3965cc56ea67436238e2421c0bbb0c1ae"
     },
     {
       "artifact_ref": "KT_PROD_CLEANROOM/reports/benchmark_negative_result_ledger.json",
-      "canonical_sha256": "37766497c41c3df9df4fa9d5708c62b14f07d89a7b89754160c80d26ab0b61d1"
+      "canonical_sha256": "9726aeec003d55dbafe19ad4ef05f232733d6b5466ea57330c9039d330e872b7"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
+      "canonical_sha256": "6512009a0dd3b7c12927993519cc7c86e3cd3262c1a3b69b48094a28133440ac"
     }
   ],
   "canonical_receipt_binding": {
+    "alias_retirement_receipt_ref": "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
     "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
     "comparator_replay_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
+    "detachment_receipt_ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
     "frozen_eval_scorecard_bundle_ref": "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json"
   },
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
-  "generated_utc": "2026-03-27T03:57:00Z",
+  "generated_utc": "2026-03-27T04:24:46Z",
   "schema_id": "kt.gate_c_t1.frozen_eval_scorecard_bundle.v1",
   "status": "PASS",
-  "tranche_id": "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT"
+  "tranche_id": "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT"
 }

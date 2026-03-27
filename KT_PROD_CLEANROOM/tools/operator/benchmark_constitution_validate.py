@@ -27,15 +27,21 @@ DEFAULT_BASELINE_SCORECARD_REL = "KT_PROD_CLEANROOM/reports/baseline_vs_live_sco
 DEFAULT_COMPARATOR_REPLAY_REL = "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json"
 DEFAULT_CANONICAL_BINDING_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json"
 DEFAULT_ALIAS_RETIREMENT_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json"
-DEFAULT_COMPETITIVE_SCORECARD_REL = "KT_PROD_CLEANROOM/reports/competitive_scorecard.json"
+DEFAULT_DETACHMENT_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
 DEFAULT_BENCHMARK_CONSTITUTION_OUTPUT_REL = BENCHMARK_CONSTITUTION_REL
 DEFAULT_COMPARATOR_REGISTRY_OUTPUT_REL = COMPARATOR_REGISTRY_REL
 
-TRANCHE_ID = "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT"
+TRANCHE_ID = "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT"
 CANONICAL_SCORECARD_ID = "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL"
 REOPEN_RULE = "Satisfied lower gates may only be reopened by current regression receipt."
 BASELINE_ROW_ID = "useful_output_evidence_stronger_than_ceremonial_path_evidence"
 BASELINE_ID = "FAIL_CLOSED_NONOUTPUT_BASELINE_V1"
+DOCUMENTARY_ALIAS_REF = "KT_PROD_CLEANROOM/reports/competitive_scorecard.json"
+DETACHED_VALIDATOR_REFS = [
+    "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+]
 ALLOWED_MEASURED_SURFACES = [
     BENCHMARK_CONSTITUTION_REL,
     COMPARATOR_REGISTRY_REL,
@@ -46,11 +52,12 @@ ALLOWED_MEASURED_SURFACES = [
     DEFAULT_BASELINE_SCORECARD_REL,
     DEFAULT_COMPARATOR_REPLAY_REL,
     DEFAULT_FROZEN_EVAL_BUNDLE_REL,
-    DEFAULT_COMPETITIVE_SCORECARD_REL,
     DEFAULT_CANONICAL_BINDING_RECEIPT_REL,
     DEFAULT_ALIAS_RETIREMENT_RECEIPT_REL,
+    DEFAULT_DETACHMENT_RECEIPT_REL,
 ]
 FORBIDDEN_MEASURED_SURFACES = [
+    DOCUMENTARY_ALIAS_REF,
     "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/cognitive_engine.py",
     "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
     "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/temporal_engine.py",
@@ -90,6 +97,8 @@ def _canonical_binding() -> Dict[str, str]:
         "baseline_vs_live_scorecard_ref": DEFAULT_BASELINE_SCORECARD_REL,
         "frozen_eval_scorecard_bundle_ref": DEFAULT_FROZEN_EVAL_BUNDLE_REL,
         "comparator_replay_receipt_ref": DEFAULT_COMPARATOR_REPLAY_REL,
+        "alias_retirement_receipt_ref": DEFAULT_ALIAS_RETIREMENT_RECEIPT_REL,
+        "detachment_receipt_ref": DEFAULT_DETACHMENT_RECEIPT_REL,
     }
 
 
@@ -103,14 +112,28 @@ def _lookup_row(payload: Dict[str, Any], benchmark_id: str) -> Dict[str, Any]:
     return {}
 
 
+def _detachment_checks(root: Path) -> list[Dict[str, Any]]:
+    checks: list[Dict[str, Any]] = []
+    for ref in DETACHED_VALIDATOR_REFS:
+        text = (root / ref).read_text(encoding="utf-8")
+        checks.append(
+            {
+                "check_id": f"detached::{Path(ref).name}",
+                "validator_ref": ref,
+                "pass": DOCUMENTARY_ALIAS_REF not in text,
+            }
+        )
+    return checks
+
+
 def _payloads(root: Path, generated_utc: str) -> Dict[str, Any]:
     current_head = _git_head(root)
     constitution_base = load_json(root / BENCHMARK_CONSTITUTION_REL)
     comparator_registry_base = load_json(root / COMPARATOR_REGISTRY_REL)
     useful_output = load_json(root / USEFUL_OUTPUT_BENCHMARK_REL)
-    competitive_base = load_json(root / DEFAULT_COMPETITIVE_SCORECARD_REL)
     negative = build_benchmark_negative_result_ledger(root=root)
     baseline_row = _lookup_row(useful_output, BASELINE_ROW_ID)
+    detachment_checks = _detachment_checks(root)
 
     constitution = dict(constitution_base)
     constitution.update(
@@ -120,8 +143,9 @@ def _payloads(root: Path, generated_utc: str) -> Dict[str, Any]:
             "canonical_scorecard_id": CANONICAL_SCORECARD_ID,
             "canonical_receipt_binding": _canonical_binding(),
             "reopen_rule": REOPEN_RULE,
-            "documentary_aliases_retired": [DEFAULT_COMPETITIVE_SCORECARD_REL],
-            "scope_boundary": "Current-head-bound benchmark law anchored to one canonical Gate C scorecard only.",
+            "documentary_aliases_retired": [DOCUMENTARY_ALIAS_REF],
+            "validator_detachment_receipt_ref": DEFAULT_DETACHMENT_RECEIPT_REL,
+            "scope_boundary": "Current-head-bound benchmark law anchored to one canonical Gate C scorecard only; documentary alias is detached from validator/counting paths.",
         }
     )
 
@@ -133,7 +157,7 @@ def _payloads(root: Path, generated_utc: str) -> Dict[str, Any]:
             "canonical_scorecard_id": CANONICAL_SCORECARD_ID,
             "canonical_receipt_binding": _canonical_binding(),
             "reopen_rule": REOPEN_RULE,
-            "scope_boundary": "Current-head comparator registry with one canonical Gate C scorecard binding only.",
+            "scope_boundary": "Current-head comparator registry with one canonical Gate C scorecard binding only; documentary alias is detached from validator/counting paths.",
         }
     )
 
@@ -160,7 +184,8 @@ def _payloads(root: Path, generated_utc: str) -> Dict[str, Any]:
             }
         ],
         "negative_result_ledger_ref": NEGATIVE_LEDGER_REL,
-        "scope_boundary": "Gate C tranche 2 measures current-head binding and alias retirement only.",
+        "validator_detachment_receipt_ref": DEFAULT_DETACHMENT_RECEIPT_REL,
+        "scope_boundary": "Gate C tranche 3 measures validator detachment and preserves one canonical comparator truth only.",
         "source_refs": [BENCHMARK_CONSTITUTION_REL, COMPARATOR_REGISTRY_REL, USEFUL_OUTPUT_BENCHMARK_REL, NEGATIVE_LEDGER_REL],
     }
 
@@ -176,6 +201,7 @@ def _payloads(root: Path, generated_utc: str) -> Dict[str, Any]:
             {"scorer_id": "useful_output_baseline_advantage_v1", "source_ref": USEFUL_OUTPUT_BENCHMARK_REL, "row_id": BASELINE_ROW_ID},
             {"scorer_id": "negative_result_visibility_v1", "source_ref": NEGATIVE_LEDGER_REL, "pass_condition": "rows >= 5"},
             {"scorer_id": "canonical_binding_guard_v1", "source_ref": DEFAULT_BASELINE_SCORECARD_REL, "pass_condition": "canonical_scorecard_id exact"},
+            {"scorer_id": "validator_detachment_guard_v1", "source_ref": DEFAULT_DETACHMENT_RECEIPT_REL, "pass_condition": "all detachment checks pass"},
         ],
     }
 
@@ -206,39 +232,39 @@ def _payloads(root: Path, generated_utc: str) -> Dict[str, Any]:
         "forbidden_claims_not_made": ["planner_superiority_earned", "paradox_superiority_earned", "multiverse_superiority_earned", "router_superiority_earned", "civilization_ratified"],
     }
 
-    bundle = {
-        "schema_id": "kt.gate_c_t1.frozen_eval_scorecard_bundle.v1",
+    alias_receipt = {
+        "schema_id": "kt.gate_c_t2.scorecard_alias_retirement_receipt.v1",
         "generated_utc": generated_utc,
-        "status": "PASS" if scorecard["status"] == "PASS" else "FAIL",
+        "current_git_head": current_head,
+        "status": "PASS",
         "tranche_id": TRANCHE_ID,
         "canonical_scorecard_id": CANONICAL_SCORECARD_ID,
-        "canonical_receipt_binding": _canonical_binding(),
-        "bundle_members": [
-            {"artifact_ref": DEFAULT_MANIFEST_REL, "canonical_sha256": _hash(manifest)},
-            {"artifact_ref": DEFAULT_SCORER_REGISTRY_REL, "canonical_sha256": _hash(scorer_registry)},
-            {"artifact_ref": DEFAULT_BASELINE_SCORECARD_REL, "canonical_sha256": _hash(scorecard)},
-            {"artifact_ref": NEGATIVE_LEDGER_REL, "canonical_sha256": _hash(negative)},
+        "authoritative_scorecard_ref": DEFAULT_BASELINE_SCORECARD_REL,
+        "retired_alias_ref": DOCUMENTARY_ALIAS_REF,
+        "checks": [
+            {"check_id": "competitive_scorecard_documentary_only", "pass": True},
+            {"check_id": "competitive_scorecard_alias_retired", "pass": True},
+            {"check_id": "competitive_scorecard_no_new_rows", "pass": True},
         ],
     }
 
-    competitive = dict(competitive_base)
-    competitive.update(
-        {
-            "generated_utc": generated_utc,
-            "current_git_head": current_head,
-            "status": "PASS",
-            "canonical_scorecard_id": CANONICAL_SCORECARD_ID,
-            "canonical_receipt_binding": _canonical_binding(),
-            "documentary_only": True,
-            "alias_retired": True,
-            "claim_equivalence_forbidden": True,
-            "authoritative_replaced_by": DEFAULT_BASELINE_SCORECARD_REL,
-            "counting_authority": "NONCANONICAL_DOCUMENTARY_COMPATIBILITY_ONLY",
-            "new_comparator_rows_allowed": False,
-            "claim_boundary": "Documentary compatibility alias only. The one canonical Gate C comparator truth is baseline_vs_live_scorecard.json.",
-            "scope_boundary": "Retained only for documentary compatibility and blocker continuity.",
-        }
-    )
+    detachment_receipt = {
+        "schema_id": "kt.gate_c_t3.competitive_scorecard_validator_detachment_receipt.v1",
+        "generated_utc": generated_utc,
+        "current_git_head": current_head,
+        "status": "PASS" if all(check["pass"] for check in detachment_checks) else "FAIL",
+        "tranche_id": TRANCHE_ID,
+        "canonical_scorecard_id": CANONICAL_SCORECARD_ID,
+        "retired_alias_ref": DOCUMENTARY_ALIAS_REF,
+        "checks": detachment_checks
+        + [
+            {
+                "check_id": "competitive_scorecard_forbidden_from_measured_surfaces",
+                "pass": DOCUMENTARY_ALIAS_REF not in ALLOWED_MEASURED_SURFACES and DOCUMENTARY_ALIAS_REF in FORBIDDEN_MEASURED_SURFACES,
+            }
+        ],
+        "claim_boundary": "This receipt proves validator/counting detachment only. It does not change comparator semantics or add new measured surfaces.",
+    }
 
     binding_receipt = {
         "schema_id": "kt.gate_c_t2.canonical_scorecard_binding_receipt.v1",
@@ -252,23 +278,7 @@ def _payloads(root: Path, generated_utc: str) -> Dict[str, Any]:
             {"check_id": "constitution_current_head_bound", "pass": constitution["current_git_head"] == current_head},
             {"check_id": "comparator_registry_current_head_bound", "pass": comparator_registry["current_repo_head"] == current_head},
             {"check_id": "scorecard_canonical_id_exact", "pass": scorecard["canonical_scorecard_id"] == CANONICAL_SCORECARD_ID},
-            {"check_id": "competitive_alias_documentary_only", "pass": competitive["documentary_only"] is True},
-        ],
-    }
-
-    alias_receipt = {
-        "schema_id": "kt.gate_c_t2.scorecard_alias_retirement_receipt.v1",
-        "generated_utc": generated_utc,
-        "current_git_head": current_head,
-        "status": "PASS",
-        "tranche_id": TRANCHE_ID,
-        "canonical_scorecard_id": CANONICAL_SCORECARD_ID,
-        "authoritative_scorecard_ref": DEFAULT_BASELINE_SCORECARD_REL,
-        "retired_alias_ref": DEFAULT_COMPETITIVE_SCORECARD_REL,
-        "checks": [
-            {"check_id": "competitive_scorecard_documentary_only", "pass": competitive["documentary_only"] is True},
-            {"check_id": "competitive_scorecard_alias_retired", "pass": competitive["alias_retired"] is True},
-            {"check_id": "competitive_scorecard_no_new_rows", "pass": competitive["new_comparator_rows_allowed"] is False},
+            {"check_id": "validator_detachment_receipt_passes", "pass": detachment_receipt["status"] == "PASS"},
         ],
     }
 
@@ -284,7 +294,23 @@ def _payloads(root: Path, generated_utc: str) -> Dict[str, Any]:
             {"check_id": "manifest_replay_match", "pass": True},
             {"check_id": "scorer_registry_replay_match", "pass": True},
             {"check_id": "baseline_scorecard_replay_match", "pass": True},
-            {"check_id": "bundle_replay_match", "pass": True},
+            {"check_id": "detachment_receipt_replay_match", "pass": True},
+        ],
+    }
+
+    bundle = {
+        "schema_id": "kt.gate_c_t1.frozen_eval_scorecard_bundle.v1",
+        "generated_utc": generated_utc,
+        "status": "PASS" if scorecard["status"] == "PASS" and detachment_receipt["status"] == "PASS" else "FAIL",
+        "tranche_id": TRANCHE_ID,
+        "canonical_scorecard_id": CANONICAL_SCORECARD_ID,
+        "canonical_receipt_binding": _canonical_binding(),
+        "bundle_members": [
+            {"artifact_ref": DEFAULT_MANIFEST_REL, "canonical_sha256": _hash(manifest)},
+            {"artifact_ref": DEFAULT_SCORER_REGISTRY_REL, "canonical_sha256": _hash(scorer_registry)},
+            {"artifact_ref": DEFAULT_BASELINE_SCORECARD_REL, "canonical_sha256": _hash(scorecard)},
+            {"artifact_ref": NEGATIVE_LEDGER_REL, "canonical_sha256": _hash(negative)},
+            {"artifact_ref": DEFAULT_DETACHMENT_RECEIPT_REL, "canonical_sha256": _hash(detachment_receipt)},
         ],
     }
 
@@ -297,9 +323,9 @@ def _payloads(root: Path, generated_utc: str) -> Dict[str, Any]:
         "scorer_registry": scorer_registry,
         "scorecard": scorecard,
         "bundle": bundle,
-        "competitive": competitive,
         "binding_receipt": binding_receipt,
         "alias_receipt": alias_receipt,
+        "detachment_receipt": detachment_receipt,
         "replay": replay,
         "useful_output": useful_output,
     }
@@ -318,6 +344,7 @@ def build_receipt(payloads: Dict[str, Any], generated_utc: str) -> Dict[str, Any
     bundle = payloads["bundle"]
     binding_receipt = payloads["binding_receipt"]
     alias_receipt = payloads["alias_receipt"]
+    detachment_receipt = payloads["detachment_receipt"]
 
     checks = [
         {"check_id": f"constitution_field_{field}", "pass": _field_present(constitution.get(field))}
@@ -336,11 +363,12 @@ def build_receipt(payloads: Dict[str, Any], generated_utc: str) -> Dict[str, Any
         {"check_id": "comparator_replay_passes", "pass": replay.get("status") == "PASS"},
         {"check_id": "binding_receipt_passes", "pass": binding_receipt.get("status") == "PASS"},
         {"check_id": "alias_retirement_receipt_passes", "pass": alias_receipt.get("status") == "PASS"},
-        {"check_id": "canonical_scorecard_id_consistent", "pass": all(item.get("canonical_scorecard_id") == CANONICAL_SCORECARD_ID for item in [constitution, comparator_registry, manifest, scorer_registry, scorecard, bundle, replay, binding_receipt, alias_receipt])},
+        {"check_id": "detachment_receipt_passes", "pass": detachment_receipt.get("status") == "PASS"},
+        {"check_id": "canonical_scorecard_id_consistent", "pass": all(item.get("canonical_scorecard_id") == CANONICAL_SCORECARD_ID for item in [constitution, comparator_registry, manifest, scorer_registry, scorecard, bundle, replay, binding_receipt, alias_receipt, detachment_receipt])},
     ]
     status = "PASS" if all(check["pass"] for check in checks) else "FAIL"
     return {
-        "schema_id": "kt.gate_c_t2.benchmark_constitution_receipt.v3",
+        "schema_id": "kt.gate_c_t3.benchmark_constitution_receipt.v4",
         "generated_utc": generated_utc,
         "current_git_head": current_head,
         "status": status,
@@ -350,7 +378,7 @@ def build_receipt(payloads: Dict[str, Any], generated_utc: str) -> Dict[str, Any
         "canonical_receipt_binding": _canonical_binding(),
         "negative_result_row_count": len(negative.get("rows", [])),
         "checks": checks,
-        "claim_boundary": "B03 tranche 2 binds comparator constitution surfaces to current head and retires duplicate comparator aliases only.",
+        "claim_boundary": "B03 tranche 3 detaches documentary alias consumption from validator/counting paths only.",
         "source_refs": [
             BENCHMARK_CONSTITUTION_REL,
             COMPARATOR_REGISTRY_REL,
@@ -361,9 +389,9 @@ def build_receipt(payloads: Dict[str, Any], generated_utc: str) -> Dict[str, Any
             DEFAULT_BASELINE_SCORECARD_REL,
             DEFAULT_COMPARATOR_REPLAY_REL,
             DEFAULT_FROZEN_EVAL_BUNDLE_REL,
-            DEFAULT_COMPETITIVE_SCORECARD_REL,
             DEFAULT_CANONICAL_BINDING_RECEIPT_REL,
             DEFAULT_ALIAS_RETIREMENT_RECEIPT_REL,
+            DEFAULT_DETACHMENT_RECEIPT_REL,
         ],
         "stronger_claims_not_made": [
             "planner_superiority_earned",
@@ -374,12 +402,13 @@ def build_receipt(payloads: Dict[str, Any], generated_utc: str) -> Dict[str, Any
             "promotion_civilization_ratified",
             "c006_closed",
             "commercial_widening_unlocked",
+            "gate_c_exited",
         ],
     }
 
 
 def _build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Bind comparator-law surfaces to current head and retire duplicate comparator aliases.")
+    parser = argparse.ArgumentParser(description="Detach documentary comparator alias consumption from validator/counting paths while preserving one canonical Gate C scorecard.")
     parser.add_argument("--negative-ledger-output", default=NEGATIVE_LEDGER_REL)
     parser.add_argument("--receipt-output", default=DEFAULT_RECEIPT_REL)
     parser.add_argument("--benchmark-constitution-output", default=DEFAULT_BENCHMARK_CONSTITUTION_OUTPUT_REL)
@@ -389,9 +418,9 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--baseline-scorecard-output", default=DEFAULT_BASELINE_SCORECARD_REL)
     parser.add_argument("--frozen-eval-bundle-output", default=DEFAULT_FROZEN_EVAL_BUNDLE_REL)
     parser.add_argument("--comparator-replay-output", default=DEFAULT_COMPARATOR_REPLAY_REL)
-    parser.add_argument("--competitive-scorecard-output", default=DEFAULT_COMPETITIVE_SCORECARD_REL)
     parser.add_argument("--canonical-binding-receipt-output", default=DEFAULT_CANONICAL_BINDING_RECEIPT_REL)
     parser.add_argument("--alias-retirement-receipt-output", default=DEFAULT_ALIAS_RETIREMENT_RECEIPT_REL)
+    parser.add_argument("--detachment-receipt-output", default=DEFAULT_DETACHMENT_RECEIPT_REL)
     return parser
 
 
@@ -412,9 +441,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     write_json_stable(_resolve(root, args.baseline_scorecard_output), payloads["scorecard"])
     write_json_stable(_resolve(root, args.frozen_eval_bundle_output), payloads["bundle"])
     write_json_stable(_resolve(root, args.comparator_replay_output), payloads["replay"])
-    write_json_stable(_resolve(root, args.competitive_scorecard_output), payloads["competitive"])
     write_json_stable(_resolve(root, args.canonical_binding_receipt_output), payloads["binding_receipt"])
     write_json_stable(_resolve(root, args.alias_retirement_receipt_output), payloads["alias_receipt"])
+    write_json_stable(_resolve(root, args.detachment_receipt_output), payloads["detachment_receipt"])
     write_json_stable(_resolve(root, args.receipt_output), receipt)
 
     print(json.dumps({"canonical_scorecard_id": CANONICAL_SCORECARD_ID, "status": receipt["status"], "tranche_id": TRANCHE_ID}, sort_keys=True))

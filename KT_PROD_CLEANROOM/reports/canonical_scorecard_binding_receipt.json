@@ -1,7 +1,9 @@
 {
   "canonical_receipt_binding": {
+    "alias_retirement_receipt_ref": "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
     "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
     "comparator_replay_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
+    "detachment_receipt_ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
     "frozen_eval_scorecard_bundle_ref": "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json"
   },
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
@@ -19,13 +21,13 @@
       "pass": true
     },
     {
-      "check_id": "competitive_alias_documentary_only",
+      "check_id": "validator_detachment_receipt_passes",
       "pass": true
     }
   ],
-  "current_git_head": "b1fbd35baec8232916d853f2e2e0e9ceed2a5e4d",
-  "generated_utc": "2026-03-27T03:57:00Z",
+  "current_git_head": "438d9de1948615d917b0beef4709fcc9e891b6e1",
+  "generated_utc": "2026-03-27T04:24:46Z",
   "schema_id": "kt.gate_c_t2.canonical_scorecard_binding_receipt.v1",
   "status": "PASS",
-  "tranche_id": "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT"
+  "tranche_id": "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT"
 }

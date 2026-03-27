@@ -29,7 +29,11 @@ STANDARDS = f"{REP}/standards_mapping_receipt.json"
 DEPLOY_REPORT = f"{REP}/deployment_profiles.json"
 ROUTER_ORDERED = f"{REP}/router_ordered_proof_receipt.json"
 ROUTER_SCORE = f"{REP}/router_superiority_scorecard.json"
-COMPETITIVE = f"{REP}/competitive_scorecard.json"
+BASELINE_SCORECARD = f"{REP}/baseline_vs_live_scorecard.json"
+BENCHMARK_RECEIPT = f"{REP}/benchmark_constitution_receipt.json"
+ALIAS_RETIREMENT = f"{REP}/scorecard_alias_retirement_receipt.json"
+DETACHMENT_RECEIPT = f"{REP}/competitive_scorecard_validator_detachment_receipt.json"
+E2_RECEIPT = f"{REP}/e2_cross_host_replay_receipt.json"
 AUDIT_PACKET = f"{REP}/external_audit_packet_manifest.json"
 E1_RECEIPT = f"{REP}/e1_bounded_campaign_receipt.json"
 
@@ -88,7 +92,6 @@ def build_final_blocker_matrix(*, root: Path) -> Dict[str, Any]:
     heartbeat = _j(root, HEARTBEAT)
     router_ordered = _j(root, ROUTER_ORDERED)
     router_score = _j(root, ROUTER_SCORE)
-    competitive = _j(root, COMPETITIVE)
 
     active = []
     for row in blockers.get("open_blockers", []):
@@ -119,8 +122,8 @@ def build_final_blocker_matrix(*, root: Path) -> Dict[str, Any]:
         },
         {
             "blocker_id": "COMPARATIVE_WIDENING_NOT_LAWFUL",
-            "status": "OPEN" if str(competitive.get("comparative_widening_status", "")).strip() != "UNLOCKED" else "CLOSED",
-            "ref": COMPETITIVE,
+            "status": "OPEN" if str(truth_lock.get("claim_ceiling_enforcements", {}).get("comparative_widening", "")).strip() == "FORBIDDEN" else "CLOSED",
+            "ref": TRUTH_LOCK,
         },
         {
             "blocker_id": "BROAD_PRODUCT_READINESS_NOT_EARNED",
@@ -145,7 +148,7 @@ def build_final_blocker_matrix(*, root: Path) -> Dict[str, Any]:
         "active_current_head_claim_blocker_ids": [row["blocker_id"] for row in active],
         "open_current_head_claim_blockers": active,
         "elevation_blockers": elevation,
-        "source_refs": [TRUTH_LOCK, W5_BLOCKERS, C006_STATUS, HEARTBEAT, ROUTER_ORDERED, ROUTER_SCORE, COMPETITIVE],
+        "source_refs": [TRUTH_LOCK, W5_BLOCKERS, C006_STATUS, HEARTBEAT, ROUTER_ORDERED, ROUTER_SCORE],
     }
 
 
@@ -157,7 +160,11 @@ def build_final_claim_class_outcome(*, root: Path, final_blockers: Dict[str, Any
     product_install = _j(root, PRODUCT_INSTALL)
     operator_handoff = _j(root, OPERATOR_HANDOFF)
     standards = _j(root, STANDARDS)
-    competitive = _j(root, COMPETITIVE)
+    baseline_scorecard = _j(root, BASELINE_SCORECARD)
+    benchmark_receipt = _j(root, BENCHMARK_RECEIPT)
+    alias_retirement = _j(root, ALIAS_RETIREMENT)
+    detachment_receipt = _j(root, DETACHMENT_RECEIPT)
+    e2_receipt = _j(root, E2_RECEIPT)
     return {
         "schema_id": "kt.final_current_head.claim_class_outcome.v1",
         "generated_utc": utc_now_iso_z(),
@@ -168,6 +175,10 @@ def build_final_claim_class_outcome(*, root: Path, final_blockers: Dict[str, Any
         and str(product_install.get("status", "")).strip() == "PASS"
         and str(operator_handoff.get("status", "")).strip() == "PASS"
         and str(standards.get("status", "")).strip() == "PASS"
+        and str(baseline_scorecard.get("status", "")).strip() == "PASS"
+        and str(benchmark_receipt.get("status", "")).strip() == "PASS"
+        and str(alias_retirement.get("status", "")).strip() == "PASS"
+        and str(detachment_receipt.get("status", "")).strip() == "PASS"
         else "FAIL",
         "claim_boundary": "This outcome compiles current-head claim truth from live W0-W7 surfaces only. It does not import historical bounded packets into current-head standing.",
         "externality_class_max": str(truth_lock.get("claim_ceiling_enforcements", {}).get("externality_class_max", "")).strip(),
@@ -180,11 +191,11 @@ def build_final_claim_class_outcome(*, root: Path, final_blockers: Dict[str, Any
         "router_superiority_earned": bool(router_score.get("superiority_earned")),
         "learned_router_cutover_allowed": bool(router_ordered.get("learned_router_cutover_allowed")),
         "multi_lobe_promotion_allowed": bool(router_ordered.get("multi_lobe_promotion_allowed")),
-        "e2_outcome": str(competitive.get("e2_outcome", "")).strip(),
+        "e2_outcome": str(e2_receipt.get("e2_outcome", "")).strip(),
         "operator_install_profile_status": str(product_install.get("status", "")).strip(),
         "operator_handoff_status": str(operator_handoff.get("status", "")).strip(),
         "standards_legibility_status": str(standards.get("status", "")).strip(),
-        "source_refs": [TRUTH_LOCK, W5_TIER, ROUTER_ORDERED, ROUTER_SCORE, PRODUCT_INSTALL, OPERATOR_HANDOFF, STANDARDS, COMPETITIVE, OUT_BLOCKERS],
+        "source_refs": [TRUTH_LOCK, W5_TIER, ROUTER_ORDERED, ROUTER_SCORE, PRODUCT_INSTALL, OPERATOR_HANDOFF, STANDARDS, BASELINE_SCORECARD, BENCHMARK_RECEIPT, ALIAS_RETIREMENT, DETACHMENT_RECEIPT, E2_RECEIPT, OUT_BLOCKERS],
     }
 
 
@@ -209,7 +220,7 @@ def build_final_forbidden_claims(*, root: Path, claims: Dict[str, Any]) -> Dict[
         "externality_class_max": str(claims.get("externality_class_max", "")).strip(),
         "forbidden_claim_count": len(rows),
         "forbidden_claims_remaining": rows,
-        "source_refs": [TRUTH_LOCK, ROUTER_ORDERED, ROUTER_SCORE, COMPETITIVE, PRODUCT_INSTALL, C006_STATUS],
+        "source_refs": [TRUTH_LOCK, ROUTER_ORDERED, ROUTER_SCORE, BASELINE_SCORECARD, ALIAS_RETIREMENT, DETACHMENT_RECEIPT, PRODUCT_INSTALL, C006_STATUS],
     }
 
 
@@ -271,14 +282,13 @@ def build_final_product_truth_boundary(*, root: Path, claims: Dict[str, Any]) ->
 
 
 def build_final_tier_ruling(*, root: Path, claims: Dict[str, Any], product_boundary: Dict[str, Any]) -> Dict[str, Any]:
-    competitive = _j(root, COMPETITIVE)
     wave5_tier = _j(root, W5_TIER)
     frontier = (
         str(claims.get("externality_class_max", "")).strip() != "E1_SAME_HOST_DETACHED_REPLAY"
         and str(claims.get("comparative_widening", "")).strip() != "FORBIDDEN"
         and bool(claims.get("router_superiority_earned"))
     )
-    category = frontier and str(competitive.get("comparative_widening_status", "")).strip() == "UNLOCKED"
+    category = frontier and str(claims.get("e2_outcome", "")).strip().startswith("E2")
     sota = category and str(claims.get("e2_outcome", "")).strip().startswith("E3")
     if sota:
         highest = "SOTA_CANDIDATE"
@@ -309,7 +319,7 @@ def build_final_tier_ruling(*, root: Path, claims: Dict[str, Any], product_bound
             "Multi-lobe orchestration remains blocked.",
             "The product plane is buyer-simple but still bounded and non-enterprise.",
         ],
-        "source_refs": [OUT_CLAIMS, OUT_PRODUCT, COMPETITIVE, W5_TIER],
+        "source_refs": [OUT_CLAIMS, OUT_PRODUCT, BASELINE_SCORECARD, BENCHMARK_RECEIPT, DETACHMENT_RECEIPT, E2_RECEIPT, W5_TIER],
     }
 
 
@@ -317,7 +327,9 @@ def build_receipt(*, root: Path, blockers: Dict[str, Any], claims: Dict[str, Any
     truth_lock = _j(root, TRUTH_LOCK)
     firewall = _j(root, HIST_FIREWALL)
     wave5_readj = _j(root, W5_READJ)
-    competitive = _j(root, COMPETITIVE)
+    baseline_scorecard = _j(root, BASELINE_SCORECARD)
+    benchmark_receipt = _j(root, BENCHMARK_RECEIPT)
+    detachment_receipt = _j(root, DETACHMENT_RECEIPT)
     router_ordered = _j(root, ROUTER_ORDERED)
     commercial = _j(root, COMMERCIAL)
     verifier = _j(root, VERIFIER)
@@ -326,7 +338,9 @@ def build_receipt(*, root: Path, blockers: Dict[str, Any], claims: Dict[str, Any
         {"check_id": "live_current_head_sources_pass", "pass": all(str(obj.get("status", "")).strip() == "PASS" for obj in (truth_lock, wave5_readj, commercial, verifier, e1)), "ref": TRUTH_LOCK},
         {"check_id": "historical_uplift_firewall_active", "pass": str(truth_lock.get("historical_claim_firewall_status", "")).strip() == "ACTIVE" and str(firewall.get("status", "")).strip() == "ACTIVE", "ref": HIST_FIREWALL},
         {"check_id": "current_head_blocker_count_is_one", "pass": blockers.get("active_current_head_claim_blocker_ids", []) == ["C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"], "ref": OUT_BLOCKERS},
-        {"check_id": "comparative_and_product_widening_stay_blocked", "pass": str(claims.get("comparative_widening", "")).strip() == "FORBIDDEN" and str(claims.get("commercial_widening", "")).strip() == "FORBIDDEN" and str(competitive.get("comparative_widening_status", "")).strip() == "BLOCKED_PENDING_C006_AND_E2", "ref": OUT_CLAIMS},
+        {"check_id": "comparative_and_product_widening_stay_blocked", "pass": str(claims.get("comparative_widening", "")).strip() == "FORBIDDEN" and str(claims.get("commercial_widening", "")).strip() == "FORBIDDEN", "ref": OUT_CLAIMS},
+        {"check_id": "canonical_baseline_scorecard_still_passes", "pass": str(baseline_scorecard.get("status", "")).strip() == "PASS" and str(benchmark_receipt.get("status", "")).strip() == "PASS", "ref": BASELINE_SCORECARD},
+        {"check_id": "competitive_alias_detachment_still_passes", "pass": str(detachment_receipt.get("status", "")).strip() == "PASS", "ref": DETACHMENT_RECEIPT},
         {"check_id": "router_and_lobe_promotions_remain_unearned", "pass": bool(claims.get("router_superiority_earned")) is False and bool(router_ordered.get("multi_lobe_promotion_allowed")) is False, "ref": ROUTER_ORDERED},
         {"check_id": "final_tier_output_is_compiled_without_prestige_inflation", "pass": str(tier.get("highest_truthful_tier_output", "")).strip() == "NOT_FRONTIER", "ref": OUT_TIER},
         {"check_id": "final_product_truth_boundary_stays_bounded", "pass": str(product_boundary.get("status", "")).strip() == "PASS" and str(product_boundary.get("max_externality_class", "")).strip() == "E1_SAME_HOST_DETACHED_REPLAY", "ref": OUT_PRODUCT},
@@ -337,7 +351,7 @@ def build_receipt(*, root: Path, blockers: Dict[str, Any], claims: Dict[str, Any
         "current_git_head": _git_head(root),
         "status": "PASS" if all(bool(item["pass"]) for item in checks) else "FAIL",
         "claim_boundary": "This receipt is the final current-head adjudication compiled from live W0-W7 evidence only. It does not use historical uplift or documentary substitution to widen current-head truth.",
-        "compiled_from_refs": [TRUTH_LOCK, HIST_FIREWALL, W5_BLOCKERS, W5_TIER, W5_READJ, C006_STATUS, HEARTBEAT, COMMERCIAL, VERIFIER, C006_KIT, PRODUCT_INSTALL, OPERATOR_HANDOFF, STANDARDS, ROUTER_ORDERED, ROUTER_SCORE, COMPETITIVE, AUDIT_PACKET, E1_RECEIPT],
+        "compiled_from_refs": [TRUTH_LOCK, HIST_FIREWALL, W5_BLOCKERS, W5_TIER, W5_READJ, C006_STATUS, HEARTBEAT, COMMERCIAL, VERIFIER, C006_KIT, PRODUCT_INSTALL, OPERATOR_HANDOFF, STANDARDS, ROUTER_ORDERED, ROUTER_SCORE, BASELINE_SCORECARD, BENCHMARK_RECEIPT, ALIAS_RETIREMENT, DETACHMENT_RECEIPT, E2_RECEIPT, AUDIT_PACKET, E1_RECEIPT],
         "final_blocker_matrix_ref": OUT_BLOCKERS,
         "final_claim_class_outcome_ref": OUT_CLAIMS,
         "final_forbidden_claims_list_ref": OUT_FORBIDDEN,

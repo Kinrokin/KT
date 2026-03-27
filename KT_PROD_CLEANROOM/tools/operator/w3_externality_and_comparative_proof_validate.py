@@ -7,13 +7,12 @@ from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
-from tools.operator.w4_truth_common import build_capability_atlas, build_competitive_scorecard
+from tools.operator.w4_truth_common import build_capability_atlas
 
 
 REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
 DEFAULT_E2_OUTPUT_REL = f"{REPORT_ROOT_REL}/e2_cross_host_replay_receipt.json"
 DEFAULT_CAPABILITY_ATLAS_REL = f"{REPORT_ROOT_REL}/capability_atlas.json"
-DEFAULT_COMPETITIVE_SCORECARD_REL = f"{REPORT_ROOT_REL}/competitive_scorecard.json"
 DEFAULT_CANONICAL_DELTA_REL = f"{REPORT_ROOT_REL}/canonical_delta_w3.json"
 DEFAULT_ADVANCEMENT_DELTA_REL = f"{REPORT_ROOT_REL}/advancement_delta_w3.json"
 
@@ -27,6 +26,10 @@ PUBLIC_VERIFIER_DETACHED_REL = f"{REPORT_ROOT_REL}/kt_public_verifier_detached_r
 POST_WAVE5_C006_PREP_REL = f"{REPORT_ROOT_REL}/post_wave5_c006_trust_prep_receipt.json"
 POST_WAVE5_C006_E2_REL = f"{REPORT_ROOT_REL}/post_wave5_c006_second_host_execution_receipt.json"
 EXTERNAL_CHALLENGE_PROTOCOL_REL = f"{REPORT_ROOT_REL}/kt_external_challenge_protocol.json"
+BASELINE_SCORECARD_REL = f"{REPORT_ROOT_REL}/baseline_vs_live_scorecard.json"
+BENCHMARK_RECEIPT_REL = f"{REPORT_ROOT_REL}/benchmark_constitution_receipt.json"
+ALIAS_RETIREMENT_REL = f"{REPORT_ROOT_REL}/scorecard_alias_retirement_receipt.json"
+DETACHMENT_RECEIPT_REL = f"{REPORT_ROOT_REL}/competitive_scorecard_validator_detachment_receipt.json"
 
 
 def _resolve(root: Path, value: str) -> Path:
@@ -174,13 +177,13 @@ def build_e2_cross_host_replay_receipt(*, root: Path) -> Dict[str, Any]:
     }
 
 
-def build_canonical_delta(*, root: Path, e2_receipt: Mapping[str, Any], capability_atlas: Mapping[str, Any], competitive_scorecard: Mapping[str, Any]) -> Dict[str, Any]:
+def build_canonical_delta(*, root: Path, e2_receipt: Mapping[str, Any], capability_atlas: Mapping[str, Any], baseline_scorecard: Mapping[str, Any], benchmark_receipt: Mapping[str, Any], detachment_receipt: Mapping[str, Any]) -> Dict[str, Any]:
     return {
         "schema_id": "kt.w3.canonical_delta.v1",
         "generated_utc": utc_now_iso_z(),
         "current_git_head": _git_head(root),
         "status": "PASS"
-        if all(str(item.get("status", "")).strip() == "PASS" for item in (e2_receipt, capability_atlas, competitive_scorecard))
+        if all(str(item.get("status", "")).strip() == "PASS" for item in (e2_receipt, capability_atlas, baseline_scorecard, benchmark_receipt, detachment_receipt))
         else "FAIL",
         "blocker_delta": {
             "change": "NONE_C006_STILL_OPEN_PENDING_FRESH_SECOND_HOST_RETURN",
@@ -191,25 +194,28 @@ def build_canonical_delta(*, root: Path, e2_receipt: Mapping[str, Any], capabili
             "e2_cross_host_replay_is_now_machine_typed_as_not_earned_pending_fresh_second_host_return",
             "detached_verifier_outsider_usability_is_now_machine_typed_as_bounded_e1_only",
             "current_head_capability_atlas_now_compiles_from_the_live_organ_register",
-            "comparative_widening_is_now_machine_blocked_while_c006_remains_open",
+            "baseline_vs_live_scorecard_remains_the_only_canonical_gate_c_comparator_truth",
+            "competitive_scorecard_is_detached_from_validator_and_counted_paths",
         ],
         "claim_boundary": "W3 core reduces proof and comparative ambiguity only. It does not close C006 or widen product/commercial truth.",
     }
 
 
-def build_advancement_delta(*, root: Path, e2_receipt: Mapping[str, Any], competitive_scorecard: Mapping[str, Any]) -> Dict[str, Any]:
+def build_advancement_delta(*, root: Path, e2_receipt: Mapping[str, Any], baseline_scorecard: Mapping[str, Any], benchmark_receipt: Mapping[str, Any], alias_retirement_receipt: Mapping[str, Any], detachment_receipt: Mapping[str, Any]) -> Dict[str, Any]:
     return {
         "schema_id": "kt.w3.advancement_delta.v1",
         "generated_utc": utc_now_iso_z(),
         "current_git_head": _git_head(root),
         "status": "PASS"
-        if all(str(item.get("status", "")).strip() == "PASS" for item in (e2_receipt, competitive_scorecard))
+        if all(str(item.get("status", "")).strip() == "PASS" for item in (e2_receipt, baseline_scorecard, benchmark_receipt, alias_retirement_receipt, detachment_receipt))
         else "FAIL",
         "detached_verifier_outsider_usability_status": str(e2_receipt.get("detached_verifier_outsider_usability_status", "")).strip(),
         "e2_outcome": str(e2_receipt.get("e2_outcome", "")).strip(),
         "comparative_widening_unlock": False,
         "commercial_widening_unlock": False,
         "public_challenge_protocol_ref": EXTERNAL_CHALLENGE_PROTOCOL_REL,
+        "canonical_scorecard_id": str(baseline_scorecard.get("canonical_scorecard_id", "")).strip(),
+        "validator_detachment_status": str(detachment_receipt.get("status", "")).strip(),
         "stronger_claims_not_made": [
             "E2_has_been_earned_when_it_has_not",
             "independent_hostile_replay_has_been_earned",
@@ -228,7 +234,6 @@ def _build_argument_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Validate bounded W3 externality and comparative-proof posture.")
     parser.add_argument("--e2-output", default=DEFAULT_E2_OUTPUT_REL)
     parser.add_argument("--capability-atlas-output", default=DEFAULT_CAPABILITY_ATLAS_REL)
-    parser.add_argument("--competitive-scorecard-output", default=DEFAULT_COMPETITIVE_SCORECARD_REL)
     parser.add_argument("--canonical-delta-output", default=DEFAULT_CANONICAL_DELTA_REL)
     parser.add_argument("--advancement-delta-output", default=DEFAULT_ADVANCEMENT_DELTA_REL)
     return parser
@@ -241,25 +246,40 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     root = repo_root()
     e2_output = _resolve(root, args.e2_output)
     capability_output = _resolve(root, args.capability_atlas_output)
-    competitive_output = _resolve(root, args.competitive_scorecard_output)
     canonical_output = _resolve(root, args.canonical_delta_output)
     advancement_output = _resolve(root, args.advancement_delta_output)
 
     e2_receipt = build_e2_cross_host_replay_receipt(root=root)
     capability_atlas = build_capability_atlas(root=root, e2_receipt=e2_receipt)
-    competitive_scorecard = build_competitive_scorecard(root=root, e2_receipt=e2_receipt)
-    canonical_delta = build_canonical_delta(root=root, e2_receipt=e2_receipt, capability_atlas=capability_atlas, competitive_scorecard=competitive_scorecard)
-    advancement_delta = build_advancement_delta(root=root, e2_receipt=e2_receipt, competitive_scorecard=competitive_scorecard)
+    baseline_scorecard = load_json(root / BASELINE_SCORECARD_REL)
+    benchmark_receipt = load_json(root / BENCHMARK_RECEIPT_REL)
+    alias_retirement_receipt = load_json(root / ALIAS_RETIREMENT_REL)
+    detachment_receipt = load_json(root / DETACHMENT_RECEIPT_REL)
+    canonical_delta = build_canonical_delta(
+        root=root,
+        e2_receipt=e2_receipt,
+        capability_atlas=capability_atlas,
+        baseline_scorecard=baseline_scorecard,
+        benchmark_receipt=benchmark_receipt,
+        detachment_receipt=detachment_receipt,
+    )
+    advancement_delta = build_advancement_delta(
+        root=root,
+        e2_receipt=e2_receipt,
+        baseline_scorecard=baseline_scorecard,
+        benchmark_receipt=benchmark_receipt,
+        alias_retirement_receipt=alias_retirement_receipt,
+        detachment_receipt=detachment_receipt,
+    )
 
     write_json_stable(e2_output, e2_receipt)
     write_json_stable(capability_output, capability_atlas)
-    write_json_stable(competitive_output, competitive_scorecard)
     write_json_stable(canonical_output, canonical_delta)
     write_json_stable(advancement_output, advancement_delta)
 
     result = {
         "status": "PASS"
-        if all(str(item.get("status", "")).strip() == "PASS" for item in (e2_receipt, capability_atlas, competitive_scorecard, canonical_delta, advancement_delta))
+        if all(str(item.get("status", "")).strip() == "PASS" for item in (e2_receipt, capability_atlas, baseline_scorecard, benchmark_receipt, alias_retirement_receipt, detachment_receipt, canonical_delta, advancement_delta))
         else "FAIL",
         "active_open_blocker_ids": _active_blockers(root),
         "current_truth_posture_open_blocker_ids": _current_truth_posture_blockers(root),

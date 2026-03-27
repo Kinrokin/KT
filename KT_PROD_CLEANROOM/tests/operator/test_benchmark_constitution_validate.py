@@ -26,9 +26,9 @@ def test_benchmark_constitution_cli_emits_canonical_comparator_bundle(tmp_path: 
     scorecard_path = tmp_path / "baseline_vs_live_scorecard.json"
     bundle_path = tmp_path / "frozen_eval_scorecard_bundle.json"
     replay_path = tmp_path / "comparator_replay_receipt.json"
-    competitive_path = tmp_path / "competitive_scorecard.json"
     binding_path = tmp_path / "canonical_scorecard_binding_receipt.json"
     alias_path = tmp_path / "scorecard_alias_retirement_receipt.json"
+    detachment_path = tmp_path / "competitive_scorecard_validator_detachment_receipt.json"
 
     proc = subprocess.run(
         [
@@ -53,12 +53,12 @@ def test_benchmark_constitution_cli_emits_canonical_comparator_bundle(tmp_path: 
             str(bundle_path),
             "--comparator-replay-output",
             str(replay_path),
-            "--competitive-scorecard-output",
-            str(competitive_path),
             "--canonical-binding-receipt-output",
             str(binding_path),
             "--alias-retirement-receipt-output",
             str(alias_path),
+            "--detachment-receipt-output",
+            str(detachment_path),
         ],
         cwd=str(root),
         env=env,
@@ -71,7 +71,7 @@ def test_benchmark_constitution_cli_emits_canonical_comparator_bundle(tmp_path: 
     assert proc.returncode == 0, proc.stdout
     payload = json.loads(proc.stdout.strip().splitlines()[-1])
     assert payload["status"] == "PASS"
-    assert payload["tranche_id"] == "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT"
+    assert payload["tranche_id"] == "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT"
     assert payload["canonical_scorecard_id"] == "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL"
 
     negative = json.loads(negative_path.read_text(encoding="utf-8"))
@@ -83,9 +83,9 @@ def test_benchmark_constitution_cli_emits_canonical_comparator_bundle(tmp_path: 
     scorecard = json.loads(scorecard_path.read_text(encoding="utf-8"))
     bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
     replay = json.loads(replay_path.read_text(encoding="utf-8"))
-    competitive = json.loads(competitive_path.read_text(encoding="utf-8"))
     binding = json.loads(binding_path.read_text(encoding="utf-8"))
     alias = json.loads(alias_path.read_text(encoding="utf-8"))
+    detachment = json.loads(detachment_path.read_text(encoding="utf-8"))
 
     assert negative["status"] == "PASS"
     assert len(negative["rows"]) >= 5
@@ -99,14 +99,14 @@ def test_benchmark_constitution_cli_emits_canonical_comparator_bundle(tmp_path: 
     assert replay["status"] == "PASS"
     assert binding["status"] == "PASS"
     assert alias["status"] == "PASS"
+    assert detachment["status"] == "PASS"
     assert scorecard["canonical_scorecard_id"] == "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL"
     assert scorecard["canonical_receipt_binding"]["baseline_vs_live_scorecard_ref"].endswith("baseline_vs_live_scorecard.json")
     assert receipt["canonical_scorecard_id"] == "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL"
     assert binding["canonical_scorecard_id"] == "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL"
     assert alias["authoritative_scorecard_ref"].endswith("baseline_vs_live_scorecard.json")
-    assert competitive["documentary_only"] is True
-    assert competitive["alias_retired"] is True
-    assert competitive["authoritative_replaced_by"].endswith("baseline_vs_live_scorecard.json")
-    assert competitive["new_comparator_rows_allowed"] is False
-    assert competitive["counting_authority"] == "NONCANONICAL_DOCUMENTARY_COMPATIBILITY_ONLY"
+    assert detachment["retired_alias_ref"].endswith("competitive_scorecard.json")
+    assert all(row["pass"] for row in detachment["checks"])
+    assert "KT_PROD_CLEANROOM/reports/competitive_scorecard.json" not in scorecard["measurement_scope"]["allowed_measured_surfaces"]
+    assert "KT_PROD_CLEANROOM/reports/competitive_scorecard.json" in scorecard["measurement_scope"]["forbidden_measured_surfaces"]
     assert "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/cognitive_engine.py" in scorecard["measurement_scope"]["forbidden_measured_surfaces"]

@@ -32,7 +32,10 @@ PRODUCT_TRUTH_REL = f"{REPORT_ROOT_REL}/kt_wave5_product_truth_surface.json"
 RELEASE_TRUTH_REL = f"{REPORT_ROOT_REL}/kt_wave5_release_truth_surface.json"
 DEPLOYMENT_PROFILES_REL = f"{REPORT_ROOT_REL}/deployment_profiles.json"
 CAPABILITY_ATLAS_REL = f"{REPORT_ROOT_REL}/capability_atlas.json"
-COMPETITIVE_SCORECARD_REL = f"{REPORT_ROOT_REL}/competitive_scorecard.json"
+BASELINE_SCORECARD_REL = f"{REPORT_ROOT_REL}/baseline_vs_live_scorecard.json"
+BENCHMARK_CONSTITUTION_RECEIPT_REL = f"{REPORT_ROOT_REL}/benchmark_constitution_receipt.json"
+ALIAS_RETIREMENT_RECEIPT_REL = f"{REPORT_ROOT_REL}/scorecard_alias_retirement_receipt.json"
+DETACHMENT_RECEIPT_REL = f"{REPORT_ROOT_REL}/competitive_scorecard_validator_detachment_receipt.json"
 PUBLIC_VERIFIER_MANIFEST_REL = f"{REPORT_ROOT_REL}/public_verifier_manifest.json"
 DETACHED_VERIFIER_RECEIPT_REL = f"{REPORT_ROOT_REL}/kt_public_verifier_detached_receipt.json"
 DEFERRED_BLOCKERS_REL = f"{REPORT_ROOT_REL}/deferred_blockers.json"
@@ -89,7 +92,10 @@ def build_commercial_truth_packet(*, root: Path) -> Dict[str, Any]:
     release_truth = load_json(root / RELEASE_TRUTH_REL)
     deployment_profiles = load_json(root / DEPLOYMENT_PROFILES_REL)
     capability_atlas = load_json(root / CAPABILITY_ATLAS_REL)
-    competitive_scorecard = load_json(root / COMPETITIVE_SCORECARD_REL)
+    baseline_scorecard = load_json(root / BASELINE_SCORECARD_REL)
+    benchmark_constitution_receipt = load_json(root / BENCHMARK_CONSTITUTION_RECEIPT_REL)
+    alias_retirement_receipt = load_json(root / ALIAS_RETIREMENT_RECEIPT_REL)
+    detachment_receipt = load_json(root / DETACHMENT_RECEIPT_REL)
     product_install_receipt = load_json(root / PRODUCT_INSTALL_RECEIPT_REL)
     operator_handoff_receipt = load_json(root / OPERATOR_HANDOFF_RECEIPT_REL)
     standards_mapping_receipt = load_json(root / STANDARDS_MAPPING_RECEIPT_REL)
@@ -112,11 +118,14 @@ def build_commercial_truth_packet(*, root: Path) -> Dict[str, Any]:
         and _status_is(release_truth.get("status"), "PASS")
         and _status_is(deployment_profiles.get("status"), "ACTIVE")
         and _status_is(capability_atlas.get("status"), "PASS")
-        and _status_is(competitive_scorecard.get("status"), "PASS")
+        and _status_is(baseline_scorecard.get("status"), "PASS")
+        and _status_is(benchmark_constitution_receipt.get("status"), "PASS")
+        and _status_is(alias_retirement_receipt.get("status"), "PASS")
+        and _status_is(detachment_receipt.get("status"), "PASS")
         and _status_is(product_install_receipt.get("status"), "PASS")
         and _status_is(operator_handoff_receipt.get("status"), "PASS")
         and _status_is(standards_mapping_receipt.get("status"), "PASS")
-        and competitive_scorecard.get("comparative_widening_unlock") is False
+        and baseline_scorecard.get("canonical_scorecard_id") == "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL"
         and all(_exists(root, ref) for ref in required_docs)
         else "FAIL"
     )
@@ -162,7 +171,10 @@ def build_commercial_truth_packet(*, root: Path) -> Dict[str, Any]:
             RELEASE_TRUTH_REL,
             DEPLOYMENT_PROFILES_REL,
             CAPABILITY_ATLAS_REL,
-            COMPETITIVE_SCORECARD_REL,
+            BASELINE_SCORECARD_REL,
+            BENCHMARK_CONSTITUTION_RECEIPT_REL,
+            ALIAS_RETIREMENT_RECEIPT_REL,
+            DETACHMENT_RECEIPT_REL,
             PRODUCT_INSTALL_RECEIPT_REL,
             OPERATOR_HANDOFF_RECEIPT_REL,
             STANDARDS_MAPPING_RECEIPT_REL,

@@ -10,8 +10,10 @@
     "rule": "No benchmark pack is admissible unless it preserves blocked, failed, and challenge rows alongside positive bounded rows."
   },
   "canonical_receipt_binding": {
+    "alias_retirement_receipt_ref": "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
     "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
     "comparator_replay_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
+    "detachment_receipt_ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
     "frozen_eval_scorecard_bundle_ref": "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json"
   },
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
@@ -43,7 +45,7 @@
     ],
     "rule": "Benchmark interpretation must preserve route economics and cost-of-uncertainty rather than reporting wins without operational cost context."
   },
-  "current_git_head": "b1fbd35baec8232916d853f2e2e0e9ceed2a5e4d",
+  "current_git_head": "438d9de1948615d917b0beef4709fcc9e891b6e1",
   "dataset_registry": [
     {
       "artifact_ref": "KT_PROD_CLEANROOM/reports/useful_output_benchmark.json",
@@ -73,7 +75,7 @@
     "negative_result_ledger_ref": "KT_PROD_CLEANROOM/reports/benchmark_negative_result_ledger.json",
     "rule": "All blocked, failed, or not-yet-earned rows remain published in the negative-result ledger. Suppression invalidates the scorecard."
   },
-  "generated_utc": "2026-03-27T03:57:00Z",
+  "generated_utc": "2026-03-27T04:24:46Z",
   "hard_rule": "No benchmark-backed language may be used unless the benchmark pack is governed by this constitution and its negative rows remain visible.",
   "holdout_policy": {
     "freeze_scope": "CURRENT_HEAD_ONLY",
@@ -100,7 +102,7 @@
     "adversarial_probe_coverage_rule"
   ],
   "schema_id": "kt.governance.benchmark_constitution.v1",
-  "scope_boundary": "Current-head-bound benchmark law anchored to one canonical Gate C scorecard only.",
+  "scope_boundary": "Current-head-bound benchmark law anchored to one canonical Gate C scorecard only; documentary alias is detached from validator/counting paths.",
   "status": "FROZEN_W4_CURRENT_HEAD",
   "stronger_claims_not_made": [
     "category_leadership_earned",
@@ -108,5 +110,6 @@
     "frontier_or_beyond_sota_unlocked",
     "router_superiority_earned"
   ],
+  "validator_detachment_receipt_ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
   "wave_frozen": "W4_BENCHMARK_CONSTITUTION_CAPABILITY_ATLAS_ECONOMIC_TRUTH"
 }

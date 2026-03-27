@@ -1,7 +1,7 @@
 {
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
-  "current_git_head": "b1fbd35baec8232916d853f2e2e0e9ceed2a5e4d",
-  "generated_utc": "2026-03-27T03:57:00Z",
+  "current_git_head": "438d9de1948615d917b0beef4709fcc9e891b6e1",
+  "generated_utc": "2026-03-27T04:24:46Z",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "schema_id": "kt.governance.scorer_registry.v1",
   "scorers": [
@@ -19,8 +19,13 @@
       "pass_condition": "canonical_scorecard_id exact",
       "scorer_id": "canonical_binding_guard_v1",
       "source_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json"
+    },
+    {
+      "pass_condition": "all detachment checks pass",
+      "scorer_id": "validator_detachment_guard_v1",
+      "source_ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
     }
   ],
   "status": "ACTIVE",
-  "tranche_id": "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT"
+  "tranche_id": "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT"
 }
