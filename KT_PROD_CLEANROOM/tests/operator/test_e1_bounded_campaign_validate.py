@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import os
-import subprocess
 import sys
 from pathlib import Path
 
@@ -11,23 +10,35 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parents[3]
 
 
-def test_e1_bounded_campaign_cli_compiles_bounded_pack(tmp_path: Path) -> None:
+def test_e1_bounded_campaign_cli_compiles_bounded_pack(tmp_path: Path, monkeypatch, capsys) -> None:
     root = _repo_root()
-    env = dict(os.environ)
-    env["PYTHONPATH"] = str(root / "KT_PROD_CLEANROOM") + os.pathsep + str(root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src")
-    env["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
+    sys.path.insert(0, str(root / "KT_PROD_CLEANROOM"))
+    sys.path.insert(0, str(root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src"))
+    from tools.operator import e1_bounded_campaign_validate as e1
+
+    monkeypatch.setattr(e1, "_enforce_write_scope_pre", lambda _root: [])
+    monkeypatch.setattr(
+        e1,
+        "_enforce_write_scope_post",
+        lambda _root, *, prewrite_dirty, allowed_repo_writes: {
+            "prewrite_dirty_paths": list(prewrite_dirty),
+            "postwrite_dirty_paths": list(prewrite_dirty),
+            "allowed_repo_writes": list(allowed_repo_writes),
+            "unexpected_postwrite_paths": [],
+            "undeclared_created_paths": [],
+        },
+    )
 
     commercial_truth_path = tmp_path / "commercial_truth.json"
     verifier_kit_path = tmp_path / "public_verifier_kit.json"
     second_host_kit_path = tmp_path / "second_host_kit.json"
     external_audit_path = tmp_path / "external_audit_packet.json"
     receipt_path = tmp_path / "receipt.json"
+    tracked_t7_receipt = root / "KT_PROD_CLEANROOM" / "reports" / "comparator_side_reader_contract_adoption_receipt.json"
+    tracked_t7_before = tracked_t7_receipt.read_text(encoding="utf-8") if tracked_t7_receipt.exists() else None
 
-    proc = subprocess.run(
+    result = e1.main(
         [
-            sys.executable,
-            "-m",
-            "tools.operator.e1_bounded_campaign_validate",
             "--commercial-truth-output",
             str(commercial_truth_path),
             "--public-verifier-kit-output",
@@ -38,23 +49,23 @@ def test_e1_bounded_campaign_cli_compiles_bounded_pack(tmp_path: Path) -> None:
             str(external_audit_path),
             "--receipt-output",
             str(receipt_path),
-        ],
-        cwd=str(root),
-        env=env,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        check=False,
+        ]
     )
 
-    assert proc.returncode == 0, proc.stdout
-    payload = json.loads(proc.stdout.strip().splitlines()[-1])
+    assert result == 0
+    payload = json.loads(capsys.readouterr().out.strip().splitlines()[-1])
     assert payload["status"] == "PASS"
     assert payload["externality_class_max"] == "E1_SAME_HOST_DETACHED_REPLAY"
     assert payload["comparative_widening"] == "FORBIDDEN"
     assert payload["commercial_widening"] == "FORBIDDEN"
     assert payload["second_host_kit_status"] in {"READY_PENDING_HARDWARE", "READY_STAGED_PENDING_HARDWARE"}
     assert payload["comparator_contract_status"] == "PASS"
+    assert payload["side_reader_receipt_refresh_scope_status"] == "PASS"
+    assert payload["side_reader_receipt_refresh_enabled"] is False
+    if tracked_t7_before is None:
+        assert tracked_t7_receipt.exists() is False
+    else:
+        assert tracked_t7_receipt.read_text(encoding="utf-8") == tracked_t7_before
 
     commercial_truth = json.loads(commercial_truth_path.read_text(encoding="utf-8"))
     verifier_kit = json.loads(verifier_kit_path.read_text(encoding="utf-8"))

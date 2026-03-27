@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import json
-import os
-import subprocess
 import sys
 from pathlib import Path
 
@@ -35,11 +33,24 @@ def test_side_reader_contract_helpers_fail_closed_on_missing_and_mismatched_fiel
         assert attempts["wrong_subject_head"]["failure_reason"] == "SUBJECT_HEAD_MISMATCH"
 
 
-def test_e1_cli_emits_side_reader_contract_adoption_receipt(tmp_path: Path) -> None:
+def test_e1_cli_emits_side_reader_contract_adoption_receipt(tmp_path: Path, monkeypatch) -> None:
     root = _repo_root()
-    env = dict(os.environ)
-    env["PYTHONPATH"] = str(root / "KT_PROD_CLEANROOM") + os.pathsep + str(root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src")
-    env["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
+    sys.path.insert(0, str(root / "KT_PROD_CLEANROOM"))
+    sys.path.insert(0, str(root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src"))
+    from tools.operator import e1_bounded_campaign_validate as e1
+
+    monkeypatch.setattr(e1, "_enforce_write_scope_pre", lambda _root: [])
+    monkeypatch.setattr(
+        e1,
+        "_enforce_write_scope_post",
+        lambda _root, *, prewrite_dirty, allowed_repo_writes: {
+            "prewrite_dirty_paths": list(prewrite_dirty),
+            "postwrite_dirty_paths": list(prewrite_dirty),
+            "allowed_repo_writes": list(allowed_repo_writes),
+            "unexpected_postwrite_paths": [],
+            "undeclared_created_paths": [],
+        },
+    )
 
     commercial_truth_path = tmp_path / "commercial_truth.json"
     verifier_kit_path = tmp_path / "public_verifier_kit.json"
@@ -47,12 +58,10 @@ def test_e1_cli_emits_side_reader_contract_adoption_receipt(tmp_path: Path) -> N
     external_audit_path = tmp_path / "external_audit_packet.json"
     receipt_path = tmp_path / "receipt.json"
     side_reader_contract_receipt_path = tmp_path / "comparator_side_reader_contract_adoption_receipt.json"
+    side_reader_refresh_scope_receipt_path = tmp_path / "side_reader_receipt_refresh_scope_receipt.json"
 
-    proc = subprocess.run(
+    result = e1.main(
         [
-            sys.executable,
-            "-m",
-            "tools.operator.e1_bounded_campaign_validate",
             "--commercial-truth-output",
             str(commercial_truth_path),
             "--public-verifier-kit-output",
@@ -63,20 +72,21 @@ def test_e1_cli_emits_side_reader_contract_adoption_receipt(tmp_path: Path) -> N
             str(external_audit_path),
             "--receipt-output",
             str(receipt_path),
+            "--allow-side-reader-contract-receipt-refresh",
+            "--verification-only-side-reader-receipt-refresh",
             "--side-reader-contract-receipt-output",
             str(side_reader_contract_receipt_path),
-        ],
-        cwd=str(root),
-        env=env,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        check=False,
+            "--side-reader-refresh-scope-receipt-output",
+            str(side_reader_refresh_scope_receipt_path),
+        ]
     )
 
-    assert proc.returncode == 0, proc.stdout
+    assert result == 0
     receipt = json.loads(side_reader_contract_receipt_path.read_text(encoding="utf-8"))
     assert receipt["status"] == "PASS"
     assert receipt["receipt_role"] == "COUNTED_T7_SIDE_READER_CONTRACT_ADOPTION_ARTIFACT_ONLY"
     assert receipt["tranche_id"] == "B03_T7_COMPARATOR_SIDE_READER_CONTRACT_ADOPTION"
     assert all(result["status"] == "PASS" for result in receipt["reader_results"])
+    refresh_scope_receipt = json.loads(side_reader_refresh_scope_receipt_path.read_text(encoding="utf-8"))
+    assert refresh_scope_receipt["status"] == "PASS"
+    assert refresh_scope_receipt["receipt_role"] == "COUNTED_T8_REFRESH_SCOPE_HARDENING_ARTIFACT_ONLY"
