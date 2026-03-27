@@ -1,0 +1,51 @@
+{
+  "canonical_entry_module": "kt.entrypoint",
+  "canonical_spine_module": "core.spine",
+  "checks": [
+    {
+      "check_id": "canonical_entry_is_declared_and_exists",
+      "pass": true
+    },
+    {
+      "check_id": "no_non_entry_runtime_module_imports_spine_or_core_root",
+      "pass": true
+    },
+    {
+      "check_id": "only_entrypoint_is_expected_to_cross_into_spine_as_claim_ingress",
+      "pass": true
+    }
+  ],
+  "current_git_head": "ea24cac3a9cd5854e497e8553067436f60280318",
+  "forbidden_claims_remaining": [
+    "Do not claim promotion civilization is ratified.",
+    "Do not claim runtime unification is complete."
+  ],
+  "generated_utc": "2026-03-27T00:17:37Z",
+  "offending_runtime_modules": [],
+  "schema_id": "kt.b02.spine_exclusivity_receipt.v1",
+  "scope_boundary": "B02 tranche 2 proves runtime-root spine ingress exclusivity only. It does not ratify promotion civilization or widen runtime claims.",
+  "spine_import_rows": [
+    {
+      "allowed": true,
+      "imports_core_root": true,
+      "imports_spine_module": false,
+      "module": "core.import_truth_guard",
+      "path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/import_truth_guard.py"
+    },
+    {
+      "allowed": true,
+      "imports_core_root": true,
+      "imports_spine_module": false,
+      "module": "core.spine",
+      "path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
+    },
+    {
+      "allowed": true,
+      "imports_core_root": true,
+      "imports_spine_module": false,
+      "module": "kt.entrypoint",
+      "path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py"
+    }
+  ],
+  "status": "PASS"
+}
