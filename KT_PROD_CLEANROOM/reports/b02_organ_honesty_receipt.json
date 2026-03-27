@@ -1,7 +1,49 @@
 {
+  "checks": [
+    {
+      "check_id": "router_is_static_canonical_only",
+      "pass": true
+    },
+    {
+      "check_id": "toolchain_orchestrators_remain_quarantined",
+      "pass": true
+    },
+    {
+      "check_id": "teacher_growth_surfaces_remain_lab_only",
+      "pass": true
+    },
+    {
+      "check_id": "memory_is_explicitly_claim_bearing",
+      "pass": true
+    },
+    {
+      "check_id": "claim_compiler_is_explicitly_claim_bearing",
+      "pass": true
+    },
+    {
+      "check_id": "cognition_summary_stays_bounded",
+      "pass": true
+    },
+    {
+      "check_id": "council_summary_stays_same_host_bounded",
+      "pass": true
+    },
+    {
+      "check_id": "adapter_layer_does_not_launder_breadth",
+      "pass": true
+    },
+    {
+      "check_id": "tournament_promotion_is_not_claimed_as_canonical_cutover",
+      "pass": true
+    },
+    {
+      "check_id": "runtime_realism_threshold_keeps_glamour_locked",
+      "pass": true
+    }
+  ],
   "current_git_head": "6a693453f21afdbdcb869511765083e8d3b5e4a0",
-  "generated_utc": "2026-03-27T00:04:58Z",
-  "rows": [
+  "generated_utc": "2026-03-27T00:04:59Z",
+  "organ_rows": [
     {
       "bounded_summary": "Static router remains canonical; learned cutover stays blocked.",
       "claim_ceiling": "STATIC_CANONICAL_BASELINE_ONLY",
@@ -201,24 +243,6 @@
       "zone": "TOOLCHAIN_PROVING"
     },
     {
-      "bounded_summary": "Detached verifier remains current-head proven and awaits Wave 3.",
-      "claim_ceiling": "CURRENT_HEAD_PROVEN_DETACHED_SAME_HOST_PACKAGED",
-      "disposition": "KEEP_AND_HARDEN",
-      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_external_verifier_confirmation_receipt.json",
-      "externality_class": "E1_SAME_HOST_DETACHED_REPLAY",
-      "maturity_class": "UNRATED",
-      "organ_id": "detached_verifier",
-      "owner": "verifier_runtime",
-      "plane": "GENERATED_RUNTIME_TRUTH",
-      "promotion_rule": "higher_externality_class_requires_direct_earned_receipts",
-      "reality_class": "CURRENT_HEAD_PROVEN",
-      "receipt": "KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json",
-      "rollback_rule": "hold_at_E1_on_any_externality_ambiguity",
-      "status": "UNCHANGED",
-      "validator": "python -m tools.operator.post_wave5_c006_second_host_execute_validate",
-      "zone": "CANONICAL"
-    },
-    {
       "bounded_summary": "Claim compiler remains a bounded vocabulary gate awaiting Wave 3.",
       "claim_ceiling": "BOUNDED_RUNTIME_VOCABULARY_GATE_ONLY",
       "disposition": "KEEP_AND_ELEVATE_AS_VOCABULARY_GATE",
@@ -237,14 +261,13 @@
       "zone": "CANONICAL"
     }
   ],
-  "schema_id": "kt.wave2c.organ_disposition_register.v1",
-  "stronger_claim_not_made": [
-    "learned_router_cutover_occurred",
-    "tournament_promoted_to_canonical_runtime",
-    "product_language_widened",
-    "broad_live_runtime_success_claimed",
-    "router_or_lobe_superiority_claimed",
-    "same_host_live_hashed_success_narrated_as_externality_upgrade",
-    "runtime_claim_compiler_missing_from_canonical_code"
+  "schema_id": "kt.b02.organ_honesty_receipt.v1",
+  "scope_boundary": "B02 first tranche refreshes organ honesty against current code reality without promoting later adaptive surfaces.",
+  "status": "PASS",
+  "stronger_claims_not_made": [
+    "promotion civilization ratified",
+    "learned router cutover earned",
+    "multi-lobe execution earned",
+    "training or growth surfaces promoted into canonical runtime"
   ]
 }
