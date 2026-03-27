@@ -53,6 +53,23 @@ ROLE_T11_FINAL_HEAD_AUTHORITY_ALIGNMENT = "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_
 DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH = "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
 DOCUMENTARY_CARRIER_GUARD_HELPER_REF = "tools.operator.benchmark_constitution_validate.evaluate_documentary_carrier_fail_closed_consumer_guard"
 DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF = "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py"
+DOCUMENTARY_CARRIER_GUARD_ALLOWED_CONSUMER_REFS = [
+    "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+]
+DOCUMENTARY_CARRIER_GUARD_ALLOWED_NONCOUNTING_OWNER_REFS = [
+    "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
+]
+DOCUMENTARY_CARRIER_GUARD_ALLOWED_OWNER_REFS = [
+    DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF,
+    *DOCUMENTARY_CARRIER_GUARD_ALLOWED_CONSUMER_REFS,
+    *DOCUMENTARY_CARRIER_GUARD_ALLOWED_NONCOUNTING_OWNER_REFS,
+]
+DOCUMENTARY_CARRIER_GUARD_BYPASS_SIGNATURES = [
+    "t10_receipt_final_head_authority_alignment_receipt.json",
+    "tracked_t10_authority_class",
+    "evaluate_documentary_carrier_fail_closed_consumer_guard(",
+]
 VALIDATOR_REFS = [
     "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
@@ -429,6 +446,54 @@ def evaluate_documentary_carrier_fail_closed_consumer_guard(
         "checks": checks,
         "shared_guard_helper_ref": DOCUMENTARY_CARRIER_GUARD_HELPER_REF,
         "shared_guard_helper_owner_ref": DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF,
+    }
+
+
+def build_documentary_carrier_guard_single_path_barrier(*, root: Path) -> Dict[str, Any]:
+    operator_root = root / "KT_PROD_CLEANROOM/tools/operator"
+    unexpected_owner_hits: list[Dict[str, Any]] = []
+    for path in sorted(operator_root.rglob("*.py")):
+        owner_ref = path.resolve().relative_to(root.resolve()).as_posix()
+        if owner_ref in DOCUMENTARY_CARRIER_GUARD_ALLOWED_OWNER_REFS:
+            continue
+        text = path.read_text(encoding="utf-8")
+        matched_tokens = [token for token in DOCUMENTARY_CARRIER_GUARD_BYPASS_SIGNATURES if token in text]
+        if matched_tokens:
+            unexpected_owner_hits.append(
+                {
+                    "owner_ref": owner_ref,
+                    "matched_tokens": matched_tokens,
+                }
+            )
+    checks = [
+        {
+            "check_id": "allowed_consumer_refs_match_current_counted_set",
+            "pass": DOCUMENTARY_CARRIER_GUARD_ALLOWED_CONSUMER_REFS
+            == [
+                "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+                "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+            ],
+        },
+        {
+            "check_id": "allowed_noncounting_owner_refs_match_current_documentary_scope",
+            "pass": DOCUMENTARY_CARRIER_GUARD_ALLOWED_NONCOUNTING_OWNER_REFS
+            == ["KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py"],
+        },
+        {
+            "check_id": "no_unsanctioned_operator_owner_references_documentary_carrier_guard_tokens",
+            "pass": not unexpected_owner_hits,
+        },
+    ]
+    return {
+        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "shared_guard_helper_ref": DOCUMENTARY_CARRIER_GUARD_HELPER_REF,
+        "shared_guard_helper_owner_ref": DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF,
+        "allowed_consumer_refs": DOCUMENTARY_CARRIER_GUARD_ALLOWED_CONSUMER_REFS,
+        "allowed_noncounting_owner_refs": DOCUMENTARY_CARRIER_GUARD_ALLOWED_NONCOUNTING_OWNER_REFS,
+        "allowed_owner_refs": DOCUMENTARY_CARRIER_GUARD_ALLOWED_OWNER_REFS,
+        "bypass_signatures": DOCUMENTARY_CARRIER_GUARD_BYPASS_SIGNATURES,
+        "unexpected_owner_hits": unexpected_owner_hits,
+        "checks": checks,
     }
 
 

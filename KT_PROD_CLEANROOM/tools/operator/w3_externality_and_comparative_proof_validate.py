@@ -21,6 +21,7 @@ from tools.operator.benchmark_constitution_validate import (
     _enforce_write_scope_pre,
     _maybe_write_json_output,
     _payloads,
+    build_documentary_carrier_guard_single_path_barrier,
     build_receipt as build_benchmark_receipt,
     evaluate_documentary_carrier_fail_closed_consumer_guard as evaluate_shared_documentary_carrier_fail_closed_consumer_guard,
 )
@@ -54,6 +55,9 @@ T12_RECEIPT_ROLE = "COUNTED_T12_DOCUMENTARY_CARRIER_FAIL_CLOSED_CONSUMER_ENFORCE
 DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION_RECEIPT_REL = f"{REPORT_ROOT_REL}/documentary_carrier_guard_centralization_receipt.json"
 T13_TRANCHE_ID = "B03_T13_DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION"
 T13_RECEIPT_ROLE = "COUNTED_T13_DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION_ARTIFACT_ONLY"
+SHARED_GUARD_SINGLE_PATH_ENFORCEMENT_RECEIPT_REL = f"{REPORT_ROOT_REL}/shared_guard_single_path_enforcement_receipt.json"
+T14_TRANCHE_ID = "B03_T14_SHARED_GUARD_SINGLE_PATH_ENFORCEMENT"
+T14_RECEIPT_ROLE = "COUNTED_T14_SHARED_GUARD_SINGLE_PATH_ENFORCEMENT_ARTIFACT_ONLY"
 ROLE_ALIAS_RETIREMENT = "ALIAS_RETIREMENT_PROOF"
 ROLE_VALIDATOR_ALIAS_DETACHMENT = "VALIDATOR_ALIAS_DETACHMENT_PROOF"
 
@@ -351,6 +355,73 @@ def build_documentary_carrier_guard_centralization_receipt(*, root: Path) -> Dic
     }
 
 
+def build_shared_guard_single_path_enforcement_receipt(*, root: Path) -> Dict[str, Any]:
+    from tools.operator.final_current_head_adjudication_validate import (
+        evaluate_documentary_carrier_fail_closed_consumer_guard as evaluate_final_guard,
+    )
+
+    current_head = _git_head(root)
+    baseline_scorecard = _payloads(root, utc_now_iso_z())["scorecard"]
+    final_guard = evaluate_final_guard(root=root)
+    w3_guard = evaluate_documentary_carrier_fail_closed_consumer_guard(root=root)
+    source_checks = _consumer_guard_source_checks()
+    single_path_barrier = build_documentary_carrier_guard_single_path_barrier(root=root)
+    checks = [
+        {"check_id": "final_current_head_consumer_guard_passes", "pass": final_guard["status"] == "PASS"},
+        {"check_id": "w3_consumer_guard_passes", "pass": w3_guard["status"] == "PASS"},
+        {
+            "check_id": "shared_guard_helper_ref_matches_benchmark_helper",
+            "pass": final_guard.get("shared_guard_helper_ref") == DOCUMENTARY_CARRIER_GUARD_HELPER_REF
+            and w3_guard.get("shared_guard_helper_ref") == DOCUMENTARY_CARRIER_GUARD_HELPER_REF,
+        },
+        {
+            "check_id": "shared_guard_helper_owner_ref_matches_benchmark_file",
+            "pass": final_guard.get("shared_guard_helper_owner_ref") == DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF
+            and w3_guard.get("shared_guard_helper_owner_ref") == DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF,
+        },
+        {
+            "check_id": "documentary_carrier_mismatch_still_fails_closed",
+            "pass": final_guard["documentary_carrier_attempt"]["failure_reason"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
+            and w3_guard["documentary_carrier_attempt"]["failure_reason"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH,
+        },
+        {
+            "check_id": "baseline_scorecard_remains_canonical_truth",
+            "pass": str(baseline_scorecard.get("canonical_scorecard_id", "")).strip() == "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        },
+        {
+            "check_id": "consumer_wrappers_use_shared_guard_only",
+            "pass": all(bool(check["pass"]) for check in source_checks),
+        },
+        {
+            "check_id": "single_path_barrier_blocks_unsanctioned_owners",
+            "pass": single_path_barrier["status"] == "PASS",
+        },
+    ]
+    return {
+        "schema_id": "kt.gate_c_t14.shared_guard_single_path_enforcement_receipt.v1",
+        "generated_utc": utc_now_iso_z(),
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": T14_RECEIPT_ROLE,
+        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "tranche_id": T14_TRANCHE_ID,
+        "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        "canonical_receipt_binding": {
+            "baseline_vs_live_scorecard_ref": BASELINE_SCORECARD_REL,
+            "documentary_carrier_guard_centralization_receipt_ref": DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION_RECEIPT_REL,
+        },
+        "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+        "shared_guard_helper_ref": DOCUMENTARY_CARRIER_GUARD_HELPER_REF,
+        "shared_guard_helper_owner_ref": DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF,
+        "single_path_barrier": single_path_barrier,
+        "final_current_head_consumer_guard": final_guard,
+        "w3_consumer_guard": w3_guard,
+        "source_checks": source_checks,
+        "checks": checks,
+        "claim_boundary": "T14 enforces the shared documentary-carrier guard as the single sanctioned counted-consumer path only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
+    }
+
+
 def build_e2_cross_host_replay_receipt(*, root: Path) -> Dict[str, Any]:
     truth_lock = _truth_lock(root)
     externality_matrix = load_json(root / EXTERNALITY_MATRIX_REL)
@@ -509,6 +580,8 @@ def _build_argument_parser() -> argparse.ArgumentParser:
     parser.add_argument("--documentary-carrier-fail-closed-consumer-enforcement-output", default=DOCUMENTARY_CARRIER_FAIL_CLOSED_CONSUMER_ENFORCEMENT_RECEIPT_REL)
     parser.add_argument("--emit-documentary-carrier-guard-centralization-receipt", action="store_true")
     parser.add_argument("--documentary-carrier-guard-centralization-output", default=DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION_RECEIPT_REL)
+    parser.add_argument("--emit-shared-guard-single-path-enforcement-receipt", action="store_true")
+    parser.add_argument("--shared-guard-single-path-enforcement-output", default=SHARED_GUARD_SINGLE_PATH_ENFORCEMENT_RECEIPT_REL)
     return parser
 
 
@@ -586,6 +659,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             target=_resolve(root, str(args.documentary_carrier_guard_centralization_output)),
             payload=documentary_centralization_receipt,
             default_rel=DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION_RECEIPT_REL,
+            allow_default_repo_write=args.allow_tracked_output_refresh,
+        )
+        if written:
+            allowed_repo_writes.append(written)
+    if args.emit_shared_guard_single_path_enforcement_receipt:
+        single_path_receipt = build_shared_guard_single_path_enforcement_receipt(root=root)
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.shared_guard_single_path_enforcement_output)),
+            payload=single_path_receipt,
+            default_rel=SHARED_GUARD_SINGLE_PATH_ENFORCEMENT_RECEIPT_REL,
             allow_default_repo_write=args.allow_tracked_output_refresh,
         )
         if written:
