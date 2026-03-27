@@ -1,0 +1,51 @@
+{
+  "schema_id": "kt.resume_blockers_receipt.v1",
+  "classification_tag": "COUNTING_CLOSURE",
+  "generated_utc": "2026-03-27T03:23:09.3923269Z",
+  "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
+  "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+  "status": "PASS",
+  "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
+  "current_git_branch": "main",
+  "current_git_head": "1c4ec6813f289de3f8e4c2a2ec2d55d7ea5270fe",
+  "worktree_cleanliness": "CLEAN_PRE_EMIT",
+  "repo_state_executable_now": true,
+  "blocking_state": "NONE",
+  "blocking_reasons": [],
+  "nonblocking_conflicts": [
+    {
+      "conflict_id": "DOCUMENTARY_SURFACE_ACTIVE_SUBJECT_STALE",
+      "class": "DOCUMENTARY_ONLY",
+      "evidence": [
+        "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json truth_subject_commit=5746fed530c0218abc2ac4d106f6a869aa8798b2",
+        "KT_PROD_CLEANROOM/reports/current_state_receipt.json head_relation=HEAD_DIVERGED_FROM_ACTIVE_SUBJECT",
+        "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b02_t5_verify_20260327_0244b/KT_PROD_CLEANROOM/reports/b02_runtime_unify_t5_receipt.json exit_gate_status=true"
+      ],
+      "resolution_rule": "Latest sealed receipts win for CURRENT STATE in this re-entry pass."
+    },
+    {
+      "conflict_id": "EXECUTION_BOARD_DOCUMENTARY_DOMAIN2_DRIFT",
+      "class": "DOCUMENTARY_COMPATIBILITY_SURFACE",
+      "evidence": [
+        "KT_PROD_CLEANROOM/governance/execution_board.json ACTIVE_AUTHORITY=false",
+        "KT_PROD_CLEANROOM/governance/execution_board.json SUPERSEDED_BY=kt_truth_ledger:ledger/current/current_pointer.json",
+        "KT_PROD_CLEANROOM/governance/execution_board.json PROMOTION_CIVILIZATION_RATIFIED=false"
+      ],
+      "resolution_rule": "Omega v10 controls execution order and latest sealed B02 receipts control current standing; Domain 2 drift does not reopen B02."
+    }
+  ],
+  "current_lawful_gate_standing": {
+    "b02_runtime_unification": "EXITED",
+    "gate_c": "NEXT_COUNTED_GATE",
+    "gate_d": "NOT_AUTHORIZED"
+  },
+  "exact_next_counted_workstream_id": "B03_T1_FROZEN_COMPARATOR_CONSTITUTION",
+  "explicit_non_go_areas": [
+    "Do not restart B00, B01, or B02 without regression proof.",
+    "Do not count Gate D toward Gate C.",
+    "Do not widen planner, paradox, multiverse, or router claim surfaces in Gate C tranche 1.",
+    "Do not widen civilization, externality, or product claims.",
+    "Do not use buyer-language beyond the narrowest validated wedge."
+  ],
+  "why_executable_now": "The repo is clean, the latest sealed B02 receipt exits Gate B, and the only remaining discrepancies are documentary compatibility surfaces already superseded by the conflict rule."
+}

@@ -1,0 +1,56 @@
+{
+  "bundle_members": [
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/governance/benchmark_manifest.json",
+      "canonical_sha256": "bf7da2adc0c5ab027aadfc17c30cc11e0fcdc2ed374a80d3befe0fd183593540",
+      "role": "benchmark_manifest"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/governance/scorer_registry.json",
+      "canonical_sha256": "d179adc555d3b42a39d2aeef2018bb584def3009935c175fa8b31764c71b90dd",
+      "role": "scorer_registry"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+      "canonical_sha256": "8650433430a50f516c92ec9d83c353ef544567c5151f97a3ef16cea18b3041a8",
+      "role": "canonical_scorecard"
+    },
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/reports/benchmark_negative_result_ledger.json",
+      "canonical_sha256": "8d98745afa4cfce7e90e854ce114725bd3020e80259884fa2f4cc22caa136159",
+      "role": "negative_result_ledger"
+    }
+  ],
+  "canonical_receipt_binding": {
+    "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+    "comparator_replay_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
+    "frozen_eval_scorecard_bundle_ref": "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json"
+  },
+  "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+  "claim_boundary": "This bundle freezes comparator-law surfaces only. It does not certify broader cognition or routing capability.",
+  "generated_utc": "2026-03-27T03:37:15Z",
+  "measurement_scope": {
+    "allowed_measured_surfaces": [
+      "KT_PROD_CLEANROOM/governance/kt_benchmark_constitution_v1.json",
+      "KT_PROD_CLEANROOM/governance/kt_comparator_registry.json",
+      "KT_PROD_CLEANROOM/reports/useful_output_benchmark.json",
+      "KT_PROD_CLEANROOM/reports/benchmark_negative_result_ledger.json",
+      "KT_PROD_CLEANROOM/governance/benchmark_manifest.json",
+      "KT_PROD_CLEANROOM/governance/scorer_registry.json",
+      "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+      "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
+      "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json"
+    ],
+    "forbidden_measured_surfaces": [
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/cognitive_engine.py",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/temporal_engine.py",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/multiverse/multiverse_engine.py",
+      "KT_PROD_CLEANROOM/reports/router_shadow_eval_matrix.json",
+      "KT_PROD_CLEANROOM/reports/live_cognition_receipt.json"
+    ]
+  },
+  "schema_id": "kt.gate_c_t1.frozen_eval_scorecard_bundle.v1",
+  "status": "PASS",
+  "tranche_id": "B03_T1_FROZEN_COMPARATOR_CONSTITUTION"
+}

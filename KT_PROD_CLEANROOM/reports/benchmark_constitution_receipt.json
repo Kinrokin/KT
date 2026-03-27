@@ -1,5 +1,11 @@
 {
   "actual_category": "GOVERNED_RECEIPT_BACKED_FAIL_CLOSED_AI_EXECUTION_WITH_ADAPTIVE_IMPROVEMENT_UNDER_LAW",
+  "canonical_receipt_binding": {
+    "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+    "comparator_replay_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
+    "frozen_eval_scorecard_bundle_ref": "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json"
+  },
+  "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "checks": [
     {
       "check_id": "constitution_field_dataset_registry",
@@ -42,10 +48,6 @@
       "pass": true
     },
     {
-      "check_id": "constitution_head_matches_truth_lock",
-      "pass": true
-    },
-    {
       "check_id": "constitution_category_matches_actual_category",
       "pass": true
     },
@@ -60,25 +62,62 @@
     {
       "check_id": "negative_result_ledger_present",
       "pass": true
+    },
+    {
+      "check_id": "benchmark_manifest_active",
+      "pass": true
+    },
+    {
+      "check_id": "scorer_registry_active",
+      "pass": true
+    },
+    {
+      "check_id": "baseline_scorecard_passes",
+      "pass": true
+    },
+    {
+      "check_id": "comparator_replay_passes",
+      "pass": true
+    },
+    {
+      "check_id": "canonical_scorecard_id_consistent",
+      "pass": true
+    },
+    {
+      "check_id": "canonical_receipt_binding_consistent",
+      "pass": true
+    },
+    {
+      "check_id": "measurement_scope_limited",
+      "pass": true
     }
   ],
-  "claim_boundary": "W4 freezes benchmark law, preserves negative rows, and binds the actual category to current-head truth. It does not unlock comparative widening or superiority language.",
-  "current_git_head": "9cba8edfb3ed91501186c7193a619303157f927e",
-  "generated_utc": "2026-03-25T23:14:23Z",
+  "claim_boundary": "B03 tranche 1 freezes comparator constitution and one canonical baseline-vs-live scorecard only. It does not unlock planner, paradox, temporal, multiverse, router, civilization, externality, or product widening.",
+  "current_git_head": "1c4ec6813f289de3f8e4c2a2ec2d55d7ea5270fe",
+  "generated_utc": "2026-03-27T03:37:15Z",
   "negative_result_row_count": 7,
-  "schema_id": "kt.w4.benchmark_constitution_receipt.v1",
+  "schema_id": "kt.gate_c_t1.benchmark_constitution_receipt.v2",
   "source_refs": [
     "KT_PROD_CLEANROOM/governance/kt_benchmark_constitution_v1.json",
     "KT_PROD_CLEANROOM/governance/kt_comparator_registry.json",
     "KT_PROD_CLEANROOM/reports/useful_output_benchmark.json",
     "KT_PROD_CLEANROOM/reports/benchmark_negative_result_ledger.json",
-    "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json"
+    "KT_PROD_CLEANROOM/governance/benchmark_manifest.json",
+    "KT_PROD_CLEANROOM/governance/scorer_registry.json",
+    "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+    "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
+    "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json"
   ],
   "status": "PASS",
   "stronger_claims_not_made": [
-    "category_leadership_earned",
+    "planner_superiority_earned",
+    "paradox_superiority_earned",
+    "multiverse_superiority_earned",
     "router_superiority_earned",
+    "capability_atlas_ratifed",
+    "promotion_civilization_ratified",
     "c006_closed",
     "commercial_widening_unlocked"
-  ]
+  ],
+  "tranche_id": "B03_T1_FROZEN_COMPARATOR_CONSTITUTION"
 }

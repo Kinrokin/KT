@@ -1,0 +1,32 @@
+{
+  "canonical_receipt_binding": {
+    "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+    "comparator_replay_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
+    "frozen_eval_scorecard_bundle_ref": "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json"
+  },
+  "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+  "claim_boundary": "Replay receipt proves deterministic reconstruction of the comparator constitution bundle only.",
+  "current_git_head": "1c4ec6813f289de3f8e4c2a2ec2d55d7ea5270fe",
+  "generated_utc": "2026-03-27T03:37:15Z",
+  "replay_checks": [
+    {
+      "check_id": "manifest_replay_match",
+      "pass": true
+    },
+    {
+      "check_id": "scorer_registry_replay_match",
+      "pass": true
+    },
+    {
+      "check_id": "baseline_scorecard_replay_match",
+      "pass": true
+    },
+    {
+      "check_id": "bundle_replay_match",
+      "pass": true
+    }
+  ],
+  "schema_id": "kt.gate_c_t1.comparator_replay_receipt.v1",
+  "status": "PASS",
+  "tranche_id": "B03_T1_FROZEN_COMPARATOR_CONSTITUTION"
+}
