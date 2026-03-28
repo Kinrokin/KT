@@ -64,6 +64,31 @@ TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_REF = (
 TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF = (
     "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py"
 )
+TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_PROBE_BUNDLE_REF = (
+    "tools.operator.benchmark_constitution_validate.build_tracked_counted_receipt_carrier_overread_probe_bundle"
+)
+TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_PROBE_BUNDLE_OWNER_REF = (
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py"
+)
+TRACKED_COUNTED_RECEIPT_SINGLE_PATH_ALLOWED_WRAPPER_REFS = [
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+]
+TRACKED_COUNTED_RECEIPT_SINGLE_PATH_ALLOWED_OWNER_REFS = [
+    TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF,
+    *TRACKED_COUNTED_RECEIPT_SINGLE_PATH_ALLOWED_WRAPPER_REFS,
+]
+TRACKED_COUNTED_RECEIPT_SINGLE_PATH_PROTECTED_SYMBOL_NAMES = {
+    "evaluate_tracked_counted_receipt_carrier_overread",
+    "build_tracked_counted_receipt_carrier_overread_probe_bundle",
+}
+TRACKED_COUNTED_RECEIPT_SINGLE_PATH_SENSITIVE_LITERALS = {
+    "evaluate_tracked_counted_receipt_carrier_overread(",
+    "build_tracked_counted_receipt_carrier_overread_probe_bundle(",
+    "tracked_counted_receipt_carrier_overread_contract_ref",
+    "tracked_counted_receipt_carrier_overread_contract_owner_ref",
+    "tracked_receipt_family_probes",
+    "IN_MEMORY_SYNTHETIC_TRACKED_COUNTED_RECEIPT_CARRIER",
+}
 DOCUMENTARY_CARRIER_GUARD_HELPER_REF = "tools.operator.benchmark_constitution_validate.evaluate_documentary_carrier_fail_closed_consumer_guard"
 DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF = "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py"
 DOCUMENTARY_CARRIER_GUARD_ALLOWED_CONSUMER_REFS = [
@@ -129,6 +154,14 @@ T19_EXPECTED_MUTATE_PATHS = [
     "KT_PROD_CLEANROOM/tests/operator/test_b03_tracked_counted_receipt_carrier_overread_contract.py",
     "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_carrier_overread_contract_receipt.json",
 ]
+T20_EXPECTED_MUTATE_PATHS = [
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_tracked_counted_receipt_carrier_overread_contract.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_tracked_counted_receipt_single_path_enforcement.py",
+    "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_single_path_enforcement_receipt.json",
+]
 ALLOWED_PREWRITE_DIRTY = {
     path
     for path in [
@@ -138,6 +171,7 @@ ALLOWED_PREWRITE_DIRTY = {
         *T17_EXPECTED_MUTATE_PATHS,
         *T18_EXPECTED_MUTATE_PATHS,
         *T19_EXPECTED_MUTATE_PATHS,
+        *T20_EXPECTED_MUTATE_PATHS,
         DEFAULT_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_REL,
         "KT_PROD_CLEANROOM/tests/operator/test_b03_documentary_carrier_guard_centralization.py",
         "KT_PROD_CLEANROOM/tests/operator/test_b03_shared_guard_single_path_enforcement.py",
@@ -559,6 +593,220 @@ def evaluate_tracked_counted_receipt_carrier_overread(
             "Tracked counted receipts with subject_head different from the requested head are documentary carrier only "
             "and must fail closed on authority overread."
         ),
+    }
+
+
+def build_tracked_counted_receipt_carrier_overread_probe_bundle(*, root: Path) -> Dict[str, Any]:
+    current_head = _git_head(root)
+    baseline_scorecard = _payloads(root, utc_now_iso_z())["scorecard"]
+    tracked_t10_receipt = load_json(root / DEFAULT_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL)
+    tracked_t15_receipt = load_json(root / "KT_PROD_CLEANROOM/reports/t15_receipt_final_head_authority_alignment_receipt.json")
+    tracked_t17_receipt = load_json(root / "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json")
+
+    t10_probe = evaluate_tracked_counted_receipt_carrier_overread(
+        tracked_receipt_ref=DEFAULT_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
+        tracked_payload=tracked_t10_receipt,
+        allowed_roles=[ROLE_T11_FINAL_HEAD_AUTHORITY_ALIGNMENT],
+        current_head=current_head,
+    )
+    t15_probe = evaluate_tracked_counted_receipt_carrier_overread(
+        tracked_receipt_ref="KT_PROD_CLEANROOM/reports/t15_receipt_final_head_authority_alignment_receipt.json",
+        tracked_payload=tracked_t15_receipt,
+        allowed_roles=["COUNTED_T16_T15_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"],
+        current_head=current_head,
+    )
+    t17_probe = evaluate_tracked_counted_receipt_carrier_overread(
+        tracked_receipt_ref="KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json",
+        tracked_payload=tracked_t17_receipt,
+        allowed_roles=["COUNTED_T17_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_ARTIFACT_ONLY"],
+        current_head=current_head,
+    )
+    generic_probe_role = "COUNTED_GENERIC_TRACKED_RECEIPT_CARRIER_OVERREAD_SYNTHETIC_ROLE"
+    generic_probe = evaluate_tracked_counted_receipt_carrier_overread(
+        tracked_receipt_ref="IN_MEMORY_SYNTHETIC_TRACKED_COUNTED_RECEIPT_CARRIER",
+        tracked_payload={
+            "receipt_role": generic_probe_role,
+            "subject_head": "0000000000000000000000000000000000000000",
+            "current_git_head": "",
+        },
+        allowed_roles=[generic_probe_role],
+        current_head=current_head,
+    )
+    generic_same_head_candidate = _consume_emitted_receipt_contract(
+        receipt_ref="IN_MEMORY_CURRENT_HEAD_SYNTHETIC_TRACKED_COUNTED_RECEIPT_CARRIER_CANDIDATE",
+        payload={
+            "receipt_role": generic_probe_role,
+            "subject_head": current_head,
+        },
+        allowed_roles=[generic_probe_role],
+        requested_head=current_head,
+    )
+    probes = {
+        "t10_family": t10_probe,
+        "t15_family": t15_probe,
+        "t17_family": t17_probe,
+        "generic_future_family": generic_probe,
+    }
+    checks = [
+        {
+            "check_id": "t10_tracked_counted_receipt_carrier_overread_fails_closed",
+            "pass": t10_probe["tracked_authority_class"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
+            and t10_probe["tracked_contract"]["blocked"] is True
+            and t10_probe["tracked_contract"]["failure_reason"] == "SUBJECT_HEAD_MISMATCH",
+        },
+        {
+            "check_id": "t15_tracked_counted_receipt_carrier_overread_fails_closed",
+            "pass": t15_probe["tracked_authority_class"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
+            and t15_probe["tracked_contract"]["blocked"] is True
+            and t15_probe["tracked_contract"]["failure_reason"] == "SUBJECT_HEAD_MISMATCH",
+        },
+        {
+            "check_id": "t17_tracked_counted_receipt_carrier_overread_fails_closed",
+            "pass": t17_probe["tracked_authority_class"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
+            and t17_probe["tracked_contract"]["blocked"] is True
+            and t17_probe["tracked_contract"]["failure_reason"] == "SUBJECT_HEAD_MISMATCH",
+        },
+        {
+            "check_id": "generic_future_family_cross_head_receipt_is_carrier_only",
+            "pass": generic_probe["tracked_authority_class"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
+            and generic_probe["tracked_contract"]["blocked"] is True
+            and generic_probe["tracked_contract"]["failure_reason"] == "SUBJECT_HEAD_MISMATCH",
+        },
+        {
+            "check_id": "same_head_authority_remains_required_for_authority",
+            "pass": generic_same_head_candidate["pass"] is True
+            and generic_same_head_candidate["blocked"] is False
+            and str(generic_same_head_candidate["subject_head"]).strip() == current_head,
+        },
+        {
+            "check_id": "baseline_scorecard_remains_sole_canonical_comparator_truth",
+            "pass": str(baseline_scorecard.get("receipt_role", "")).strip() == ROLE_BASELINE_SCORECARD,
+        },
+    ]
+    return {
+        "tracked_counted_receipt_carrier_overread_probe_bundle_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_PROBE_BUNDLE_REF,
+        "tracked_counted_receipt_carrier_overread_probe_bundle_owner_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_PROBE_BUNDLE_OWNER_REF,
+        "tracked_counted_receipt_carrier_overread_contract_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_REF,
+        "tracked_counted_receipt_carrier_overread_contract_owner_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF,
+        "current_head": current_head,
+        "baseline_scorecard": baseline_scorecard,
+        "tracked_receipt_family_probes": probes,
+        "authoritative_current_head_generic_candidate_contract": generic_same_head_candidate,
+        "checks": checks,
+    }
+
+
+def build_tracked_counted_receipt_single_path_barrier(*, root: Path) -> Dict[str, Any]:
+    operator_root = root / "KT_PROD_CLEANROOM/tools/operator"
+    unexpected_owner_hits: list[Dict[str, Any]] = []
+    detected_wrapper_owner_refs: list[str] = []
+    direct_helper_owner_refs: list[str] = []
+
+    for path in sorted(operator_root.rglob("*.py")):
+        owner_ref = path.resolve().relative_to(root.resolve()).as_posix()
+        text = path.read_text(encoding="utf-8")
+        tree = ast.parse(text, filename=owner_ref)
+
+        imported_symbol_aliases: set[str] = set()
+        module_aliases: set[str] = set()
+        matched_tokens: list[str] = []
+        uses_direct_helper = False
+        uses_probe_bundle = False
+
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ImportFrom) and node.module == "tools.operator.benchmark_constitution_validate":
+                for alias in node.names:
+                    if alias.name in TRACKED_COUNTED_RECEIPT_SINGLE_PATH_PROTECTED_SYMBOL_NAMES:
+                        imported_symbol_aliases.add(alias.asname or alias.name)
+                        matched_tokens.append(alias.name)
+            elif isinstance(node, ast.Import):
+                for alias in node.names:
+                    if alias.name == "tools.operator.benchmark_constitution_validate":
+                        module_aliases.add(alias.asname or alias.name.split(".")[-1])
+            elif isinstance(node, ast.Call):
+                func = node.func
+                if isinstance(func, ast.Name) and func.id in imported_symbol_aliases:
+                    if func.id.endswith("evaluate_tracked_counted_receipt_carrier_overread"):
+                        uses_direct_helper = True
+                    if func.id.endswith("build_tracked_counted_receipt_carrier_overread_probe_bundle"):
+                        uses_probe_bundle = True
+                elif (
+                    isinstance(func, ast.Attribute)
+                    and isinstance(func.value, ast.Name)
+                    and func.value.id in module_aliases
+                    and func.attr in TRACKED_COUNTED_RECEIPT_SINGLE_PATH_PROTECTED_SYMBOL_NAMES
+                ):
+                    if func.attr == "evaluate_tracked_counted_receipt_carrier_overread":
+                        uses_direct_helper = True
+                    if func.attr == "build_tracked_counted_receipt_carrier_overread_probe_bundle":
+                        uses_probe_bundle = True
+
+        literal_hits = [value for value in sorted(TRACKED_COUNTED_RECEIPT_SINGLE_PATH_SENSITIVE_LITERALS) if value in text]
+        matched_tokens.extend(literal_hits)
+        if "evaluate_tracked_counted_receipt_carrier_overread" in matched_tokens:
+            matched_tokens = [
+                value for value in matched_tokens if value != "evaluate_tracked_counted_receipt_carrier_overread("
+            ]
+        if "build_tracked_counted_receipt_carrier_overread_probe_bundle" in matched_tokens:
+            matched_tokens = [
+                value for value in matched_tokens if value != "build_tracked_counted_receipt_carrier_overread_probe_bundle("
+            ]
+        matched_tokens = sorted(set(matched_tokens))
+
+        if owner_ref == TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF:
+            continue
+        if owner_ref in TRACKED_COUNTED_RECEIPT_SINGLE_PATH_ALLOWED_WRAPPER_REFS:
+            if uses_probe_bundle:
+                detected_wrapper_owner_refs.append(owner_ref)
+            if uses_direct_helper:
+                direct_helper_owner_refs.append(owner_ref)
+            continue
+        if uses_direct_helper or uses_probe_bundle or matched_tokens:
+            unexpected_owner_hits.append(
+                {
+                    "owner_ref": owner_ref,
+                    "matched_tokens": matched_tokens,
+                }
+            )
+    checks = [
+        {
+            "check_id": "shared_helper_owner_ref_matches_benchmark",
+            "pass": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF
+            == "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+        },
+        {
+            "check_id": "shared_probe_bundle_owner_ref_matches_benchmark",
+            "pass": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_PROBE_BUNDLE_OWNER_REF
+            == "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+        },
+        {
+            "check_id": "w3_routes_through_shared_probe_bundle",
+            "pass": detected_wrapper_owner_refs == TRACKED_COUNTED_RECEIPT_SINGLE_PATH_ALLOWED_WRAPPER_REFS
+            and not direct_helper_owner_refs,
+        },
+        {
+            "check_id": "detected_wrapper_owner_refs_match_expected",
+            "pass": detected_wrapper_owner_refs == TRACKED_COUNTED_RECEIPT_SINGLE_PATH_ALLOWED_WRAPPER_REFS,
+        },
+        {
+            "check_id": "no_unsanctioned_operator_owner_references_tracked_counted_single_path_tokens",
+            "pass": not unexpected_owner_hits,
+        },
+    ]
+    return {
+        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "tracked_counted_receipt_carrier_overread_contract_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_REF,
+        "tracked_counted_receipt_carrier_overread_contract_owner_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF,
+        "tracked_counted_receipt_carrier_overread_probe_bundle_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_PROBE_BUNDLE_REF,
+        "tracked_counted_receipt_carrier_overread_probe_bundle_owner_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_PROBE_BUNDLE_OWNER_REF,
+        "allowed_wrapper_refs": TRACKED_COUNTED_RECEIPT_SINGLE_PATH_ALLOWED_WRAPPER_REFS,
+        "allowed_owner_refs": TRACKED_COUNTED_RECEIPT_SINGLE_PATH_ALLOWED_OWNER_REFS,
+        "detected_wrapper_owner_refs": detected_wrapper_owner_refs,
+        "direct_helper_owner_refs": direct_helper_owner_refs,
+        "protected_symbol_names": sorted(TRACKED_COUNTED_RECEIPT_SINGLE_PATH_PROTECTED_SYMBOL_NAMES),
+        "sensitive_literals": sorted(TRACKED_COUNTED_RECEIPT_SINGLE_PATH_SENSITIVE_LITERALS),
+        "unexpected_owner_hits": unexpected_owner_hits,
+        "checks": checks,
     }
 
 

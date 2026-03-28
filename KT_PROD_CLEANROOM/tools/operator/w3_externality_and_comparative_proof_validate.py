@@ -26,8 +26,9 @@ from tools.operator.benchmark_constitution_validate import (
     _maybe_write_json_output,
     _payloads,
     build_documentary_carrier_guard_single_path_barrier,
+    build_tracked_counted_receipt_carrier_overread_probe_bundle,
+    build_tracked_counted_receipt_single_path_barrier,
     evaluate_counted_receipt_family_same_head_authority,
-    evaluate_tracked_counted_receipt_carrier_overread,
     load_counted_consumer_allowlist_contract,
     build_receipt as build_benchmark_receipt,
     evaluate_documentary_carrier_fail_closed_consumer_guard as evaluate_shared_documentary_carrier_fail_closed_consumer_guard,
@@ -86,6 +87,11 @@ TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_RECEIPT_REL = (
 )
 T19_TRANCHE_ID = "B03_T19_TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT"
 T19_RECEIPT_ROLE = "COUNTED_T19_TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_ARTIFACT_ONLY"
+TRACKED_COUNTED_RECEIPT_SINGLE_PATH_ENFORCEMENT_RECEIPT_REL = (
+    f"{REPORT_ROOT_REL}/tracked_counted_receipt_single_path_enforcement_receipt.json"
+)
+T20_TRANCHE_ID = "B03_T20_TRACKED_COUNTED_RECEIPT_SINGLE_PATH_ENFORCEMENT"
+T20_RECEIPT_ROLE = "COUNTED_T20_TRACKED_COUNTED_RECEIPT_SINGLE_PATH_ENFORCEMENT_ARTIFACT_ONLY"
 ROLE_ALIAS_RETIREMENT = "ALIAS_RETIREMENT_PROOF"
 ROLE_VALIDATOR_ALIAS_DETACHMENT = "VALIDATOR_ALIAS_DETACHMENT_PROOF"
 
@@ -797,57 +803,16 @@ def build_t17_receipt_final_head_authority_alignment_receipt(*, root: Path) -> D
 
 
 def build_tracked_counted_receipt_carrier_overread_contract_receipt(*, root: Path) -> Dict[str, Any]:
-    current_head = _git_head(root)
-    baseline_scorecard = _payloads(root, utc_now_iso_z())["scorecard"]
+    probe_bundle = build_tracked_counted_receipt_carrier_overread_probe_bundle(root=root)
+    current_head = str(probe_bundle["current_head"]).strip()
+    baseline_scorecard = probe_bundle["baseline_scorecard"]
     benchmark_source = inspect.getsource(evaluate_counted_receipt_family_same_head_authority)
-    tracked_t10_receipt = load_json(root / T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL)
-    tracked_t15_receipt = load_json(root / T15_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL)
-    tracked_t17_receipt = load_json(root / COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_RECEIPT_REL)
-
-    t10_probe = evaluate_tracked_counted_receipt_carrier_overread(
-        tracked_receipt_ref=T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
-        tracked_payload=tracked_t10_receipt,
-        allowed_roles=[T11_RECEIPT_ROLE],
-        current_head=current_head,
-    )
-    t15_probe = evaluate_tracked_counted_receipt_carrier_overread(
-        tracked_receipt_ref=T15_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
-        tracked_payload=tracked_t15_receipt,
-        allowed_roles=[T16_RECEIPT_ROLE],
-        current_head=current_head,
-    )
-    t17_probe = evaluate_tracked_counted_receipt_carrier_overread(
-        tracked_receipt_ref=COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_RECEIPT_REL,
-        tracked_payload=tracked_t17_receipt,
-        allowed_roles=[T17_RECEIPT_ROLE],
-        current_head=current_head,
-    )
-    generic_probe_role = "COUNTED_GENERIC_TRACKED_RECEIPT_CARRIER_OVERREAD_SYNTHETIC_ROLE"
-    generic_probe = evaluate_tracked_counted_receipt_carrier_overread(
-        tracked_receipt_ref="IN_MEMORY_SYNTHETIC_TRACKED_COUNTED_RECEIPT_CARRIER",
-        tracked_payload={
-            "receipt_role": generic_probe_role,
-            "subject_head": "0000000000000000000000000000000000000000",
-            "current_git_head": "",
-        },
-        allowed_roles=[generic_probe_role],
-        current_head=current_head,
-    )
-    generic_same_head_candidate = _consume_emitted_receipt_contract(
-        receipt_ref="IN_MEMORY_CURRENT_HEAD_SYNTHETIC_TRACKED_COUNTED_RECEIPT_CARRIER_CANDIDATE",
-        payload={
-            "receipt_role": generic_probe_role,
-            "subject_head": current_head,
-        },
-        allowed_roles=[generic_probe_role],
-        requested_head=current_head,
-    )
-    probes = {
-        "t10_family": t10_probe,
-        "t15_family": t15_probe,
-        "t17_family": t17_probe,
-        "generic_future_family": generic_probe,
-    }
+    probes = probe_bundle["tracked_receipt_family_probes"]
+    t10_probe = probes["t10_family"]
+    t15_probe = probes["t15_family"]
+    t17_probe = probes["t17_family"]
+    generic_probe = probes["generic_future_family"]
+    generic_same_head_candidate = probe_bundle["authoritative_current_head_generic_candidate_contract"]
     checks = [
         {
             "check_id": "shared_overread_helper_owner_ref_matches_benchmark",
@@ -918,6 +883,65 @@ def build_tracked_counted_receipt_carrier_overread_contract_receipt(*, root: Pat
         "authoritative_current_head_generic_candidate_contract": generic_same_head_candidate,
         "checks": checks,
         "claim_boundary": "T19 universalizes tracked counted receipt carrier overread handling only. It does not refresh comparator truth, widen comparator semantics, add comparator rows, or claim Gate C exit.",
+    }
+
+
+def build_tracked_counted_receipt_single_path_enforcement_receipt(*, root: Path) -> Dict[str, Any]:
+    current_head = _git_head(root)
+    baseline_scorecard = _payloads(root, utc_now_iso_z())["scorecard"]
+    t19_receipt = build_tracked_counted_receipt_carrier_overread_contract_receipt(root=root)
+    single_path_barrier = build_tracked_counted_receipt_single_path_barrier(root=root)
+    checks = [
+        {
+            "check_id": "single_path_barrier_passes",
+            "pass": single_path_barrier["status"] == "PASS",
+        },
+        {
+            "check_id": "t19_overread_contract_regression_still_passes",
+            "pass": t19_receipt["status"] == "PASS",
+        },
+        {
+            "check_id": "single_path_barrier_preserves_t19_helper_ref",
+            "pass": single_path_barrier["tracked_counted_receipt_carrier_overread_contract_ref"]
+            == TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_REF,
+        },
+        {
+            "check_id": "single_path_barrier_preserves_t19_helper_owner_ref",
+            "pass": single_path_barrier["tracked_counted_receipt_carrier_overread_contract_owner_ref"]
+            == TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF,
+        },
+        {
+            "check_id": "baseline_scorecard_remains_sole_canonical_comparator_truth",
+            "pass": str(baseline_scorecard.get("receipt_role", "")).strip() == ROLE_BASELINE_SCORECARD,
+        },
+    ]
+    return {
+        "schema_id": "kt.gate_c_t20.tracked_counted_receipt_single_path_enforcement_receipt.v1",
+        "generated_utc": utc_now_iso_z(),
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": T20_RECEIPT_ROLE,
+        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "tranche_id": T20_TRANCHE_ID,
+        "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        "canonical_receipt_binding": {
+            "baseline_vs_live_scorecard_ref": BASELINE_SCORECARD_REL,
+            "tracked_counted_receipt_carrier_overread_contract_receipt_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_RECEIPT_REL,
+        },
+        "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+        "tracked_counted_receipt_single_path_barrier": single_path_barrier,
+        "tracked_counted_receipt_carrier_overread_contract_regression": {
+            "status": t19_receipt["status"],
+            "receipt_role": t19_receipt["receipt_role"],
+            "tracked_counted_receipt_carrier_overread_contract_ref": t19_receipt[
+                "tracked_counted_receipt_carrier_overread_contract_ref"
+            ],
+            "tracked_counted_receipt_carrier_overread_contract_owner_ref": t19_receipt[
+                "tracked_counted_receipt_carrier_overread_contract_owner_ref"
+            ],
+        },
+        "checks": checks,
+        "claim_boundary": "T20 binds the tracked counted receipt overread helper as the single sanctioned path only. It does not refresh comparator truth, widen comparator semantics, add comparator rows, or claim Gate C exit.",
     }
 
 
@@ -1100,6 +1124,11 @@ def _build_argument_parser() -> argparse.ArgumentParser:
         "--tracked-counted-receipt-carrier-overread-contract-output",
         default=TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_RECEIPT_REL,
     )
+    parser.add_argument("--emit-tracked-counted-receipt-single-path-enforcement-receipt", action="store_true")
+    parser.add_argument(
+        "--tracked-counted-receipt-single-path-enforcement-output",
+        default=TRACKED_COUNTED_RECEIPT_SINGLE_PATH_ENFORCEMENT_RECEIPT_REL,
+    )
     return parser
 
 
@@ -1247,6 +1276,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         )
         if written:
             allowed_repo_writes.append(written)
+    if args.emit_tracked_counted_receipt_single_path_enforcement_receipt:
+        t20_receipt = build_tracked_counted_receipt_single_path_enforcement_receipt(root=root)
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.tracked_counted_receipt_single_path_enforcement_output)),
+            payload=t20_receipt,
+            default_rel=TRACKED_COUNTED_RECEIPT_SINGLE_PATH_ENFORCEMENT_RECEIPT_REL,
+            allow_default_repo_write=args.allow_tracked_output_refresh,
+        )
+        if written:
+            allowed_repo_writes.append(written)
     _enforce_write_scope_post(root, prewrite_dirty=prewrite_dirty, allowed_repo_writes=allowed_repo_writes)
 
     result = {
@@ -1269,6 +1309,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         result["t17_receipt_final_head_authority_alignment_status"] = t18_receipt["status"]
     if args.emit_tracked_counted_receipt_carrier_overread_contract_receipt:
         result["tracked_counted_receipt_carrier_overread_contract_status"] = t19_receipt["status"]
+    if args.emit_tracked_counted_receipt_single_path_enforcement_receipt:
+        result["tracked_counted_receipt_single_path_enforcement_status"] = t20_receipt["status"]
     print(json.dumps(result, sort_keys=True))
     return 0 if result["status"] == "PASS" else 1
 
