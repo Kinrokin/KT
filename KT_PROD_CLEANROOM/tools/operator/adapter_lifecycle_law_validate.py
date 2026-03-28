@@ -46,6 +46,13 @@ EXPECTED_STATE_IDS = [
     "MERGED",
 ]
 EXPECTED_EXECUTION_MODE = "CIVILIZATION_RATIFICATION_ORDER_LOCKED__THIRD_STEP_ONLY"
+EXPECTED_ALLOWED_FOLLOW_ON_STEPS = {
+    "B04_R3_TOURNAMENT_PROMOTION_MERGE_LAW_RATIFICATION",
+    "B04_R4_ROUTER_SHADOW_EVALUATION_RATIFICATION",
+    "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
+    "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
+    "B04_R7_LOBE_ARCHITECTURE_RATIFICATION",
+}
 
 
 def _resolve(root: Path, raw: str) -> Path:
@@ -71,6 +78,24 @@ def _write_receipt(
     if resolved_target == default_target and not allow_default_repo_write:
         raise RuntimeError("FAIL_CLOSED: tracked adapter-lifecycle receipt refresh requires --allow-tracked-output-refresh")
     write_json_stable(resolved_target, payload)
+
+
+def _order_locked_progress_after_r2(
+    *,
+    overlay: Dict[str, Any],
+    next_contract: Dict[str, Any],
+    resume: Dict[str, Any],
+    reanchor: Dict[str, Any],
+) -> bool:
+    next_step = str(next_contract.get("exact_next_counted_workstream_id", "")).strip()
+    return (
+        next_step in EXPECTED_ALLOWED_FOLLOW_ON_STEPS
+        and str(next_contract.get("execution_mode", "")).strip().startswith("CIVILIZATION_RATIFICATION_ORDER_LOCKED__")
+        and bool(next_contract.get("repo_state_executable_now")) is True
+        and str(overlay.get("next_counted_workstream_id", "")).strip() == next_step
+        and str(resume.get("exact_next_counted_workstream_id", "")).strip() == next_step
+        and str(reanchor.get("next_lawful_move", "")).strip() == next_step
+    )
 
 
 def build_adapter_lifecycle_law_receipt(*, root: Path) -> Dict[str, Any]:
@@ -175,12 +200,13 @@ def build_adapter_lifecycle_law_receipt(*, root: Path) -> Dict[str, Any]:
             and str(adapter_runtime_boundary.get("status", "")).strip() == "PASS",
         },
         {
-            "check_id": "control_surfaces_advance_only_to_r3",
-            "pass": str(next_contract.get("exact_next_counted_workstream_id", "")).strip() == EXPECTED_NEXT_STEP_ID
-            and str(next_contract.get("execution_mode", "")).strip() == EXPECTED_EXECUTION_MODE
-            and str(overlay.get("next_counted_workstream_id", "")).strip() == EXPECTED_NEXT_STEP_ID
-            and str(resume.get("exact_next_counted_workstream_id", "")).strip() == EXPECTED_NEXT_STEP_ID
-            and str(reanchor.get("next_lawful_move", "")).strip() == EXPECTED_NEXT_STEP_ID,
+            "check_id": "control_surfaces_remain_order_locked_after_r2",
+            "pass": _order_locked_progress_after_r2(
+                overlay=overlay,
+                next_contract=next_contract,
+                resume=resume,
+                reanchor=reanchor,
+            ),
         },
         {
             "check_id": "scope_remains_bounded_after_r2",

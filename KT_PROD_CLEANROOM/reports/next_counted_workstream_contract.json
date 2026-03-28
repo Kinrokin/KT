@@ -1,14 +1,14 @@
 {
   "schema_id": "kt.next_counted_workstream_contract.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T22:15:00Z",
-  "source_workstream_id": "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION",
+  "generated_utc": "2026-03-28T23:05:00Z",
+  "source_workstream_id": "B04_R3_TOURNAMENT_PROMOTION_MERGE_LAW_RATIFICATION",
   "current_counted_gate": "Gate D",
   "parent_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
-  "exact_next_counted_workstream_id": "B04_R3_TOURNAMENT_PROMOTION_MERGE_LAW_RATIFICATION",
+  "exact_next_counted_workstream_id": "B04_R4_ROUTER_SHADOW_EVALUATION_RATIFICATION",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
-  "execution_mode": "CIVILIZATION_RATIFICATION_ORDER_LOCKED__THIRD_STEP_ONLY",
-  "workstream_objective": "Ratify only tournament, promotion, and merge law as the bounded selection arena. Do not execute router, lobe, externality, comparative, or commercial widening in this step.",
+  "execution_mode": "CIVILIZATION_RATIFICATION_ORDER_LOCKED__FOURTH_STEP_ONLY",
+  "workstream_objective": "Ratify only router shadow evaluation against the bounded selection arena and the audited static router baseline. Do not execute learned-router cutover, router superiority proof, lobes, externality, comparative, or commercial widening in this step.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "canonical_receipt_binding": {
     "gate_c_exit_authoritative_receipt_path": "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_20260328_1029/gate_c_exit_adjudication_authoritative_receipt.json",
@@ -20,11 +20,13 @@
     "b04_r1_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_terminal_state.json",
     "b04_r2_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r2_adapter_lifecycle_law_contract.json",
     "b04_r2_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r2_adapter_lifecycle_terminal_state.json",
+    "b04_r3_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r3_tournament_promotion_merge_law_contract.json",
+    "b04_r3_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r3_tournament_promotion_merge_terminal_state.json",
     "omega_b04_definition_ref": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json"
   },
   "gate_domain_product_split": {
-    "gate": "Gate D third ordered ratification step only",
-    "domain_surface": "Gate D may ratify tournament, promotion, and merge law only after adapter lifecycle law is ratified.",
+    "gate": "Gate D fourth ordered ratification step only",
+    "domain_surface": "Gate D may ratify router shadow evaluation only after tournament, promotion, and merge law are ratified.",
     "product_surface": "NONE_COUNTING"
   },
   "selected_postures": {
@@ -35,52 +37,53 @@
     "D5_COMMERCIAL_ACTIVATION": "LAB_ONLY"
   },
   "prerequisite_read": {
-    "b04_r2_contract": "KT_PROD_CLEANROOM/governance/b04_r2_adapter_lifecycle_law_contract.json",
-    "b04_r2_terminal_state": "KT_PROD_CLEANROOM/governance/b04_r2_adapter_lifecycle_terminal_state.json",
-    "adapter_lifecycle_receipt": "KT_PROD_CLEANROOM/reports/adapter_lifecycle_law_ratification_receipt.json",
+    "b04_r3_contract": "KT_PROD_CLEANROOM/governance/b04_r3_tournament_promotion_merge_law_contract.json",
+    "b04_r3_terminal_state": "KT_PROD_CLEANROOM/governance/b04_r3_tournament_promotion_merge_terminal_state.json",
+    "tournament_promotion_merge_receipt": "KT_PROD_CLEANROOM/reports/tournament_promotion_merge_law_ratification_receipt.json",
     "gate_d_reanchor_packet": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
     "v11_closure_map": "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.json"
   },
   "expected_mutate_paths": [
-    "KT_PROD_CLEANROOM/governance/tournament_law.json",
-    "KT_PROD_CLEANROOM/governance/promotion_engine_law.json",
-    "KT_PROD_CLEANROOM/governance/merge_law.json",
-    "KT_PROD_CLEANROOM/tools/operator/tournament_promotion_merge_law_validate.py",
-    "KT_PROD_CLEANROOM/tests/operator/test_b04_r3_tournament_promotion_merge_law_validate.py",
+    "KT_PROD_CLEANROOM/governance/router_promotion_law.json",
+    "KT_PROD_CLEANROOM/tools/operator/wave2b_router_shadow_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_wave2b_router_shadow.py",
+    "KT_PROD_CLEANROOM/reports/kt_wave2b_router_selection_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave2b_router_shadow_eval_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave2b_route_distribution_health.json",
     "KT_PROD_CLEANROOM/reports"
   ],
   "expected_create_if_absent_targets": [
-    "KT_PROD_CLEANROOM/reports/tournament_promotion_merge_law_ratification_receipt.json"
+    "KT_PROD_CLEANROOM/reports/router_shadow_evaluation_ratification_receipt.json"
   ],
   "expected_receipts": [
-    "KT_PROD_CLEANROOM/reports/tournament_promotion_merge_law_ratification_receipt.json"
+    "KT_PROD_CLEANROOM/reports/router_shadow_evaluation_ratification_receipt.json"
   ],
   "validators_and_tests": {
     "validators": [
-      "python -m tools.operator.tournament_promotion_merge_law_validate"
+      "python -m tools.operator.wave2b_router_shadow_validate"
     ],
     "tests": [
-      "python -m pytest -o addopts='' tests/operator/test_b04_r3_tournament_promotion_merge_law_validate.py -q"
+      "python -m pytest -o addopts='' tests/operator/test_wave2b_router_shadow.py -q"
     ]
   },
   "stop_conditions": [
-    "Any router or lobe ratification is folded into the third step.",
-    "Any externality widening above E1 is folded into the third step.",
-    "Any external comparative claim or commercial activation is folded into the third step.",
-    "Any tournament, promotion, or merge claim bypasses adapter lifecycle receipts or the R1 crucible-pressure eligibility rule."
+    "Any learned-router cutover or router-superiority claim is folded into the fourth step.",
+    "Any lobe ratification is folded into the fourth step.",
+    "Any externality widening above E1, external comparative claim, or commercial activation is folded into the fourth step.",
+    "Any router-shadow claim bypasses tournament, promotion, merge, or the audited static router baseline."
   ],
   "pass_fail_criteria": {
     "pass": [
-      "Tournament, promotion, and merge law are ratified against adapter lifecycle states and R1 crucible-pressure eligibility.",
-      "Promotion and merge remain rollback-bound and lineage-bound.",
-      "All later router and lobe steps remain blocked by order."
+      "Router shadow evaluation remains bounded against the audited static router baseline and the post-R3 selection arena.",
+      "Canonical router authority remains unchanged while explainable shadow artifacts are replayable and receipted.",
+      "All learned-router, lobe, externality, comparative, and commercial steps remain blocked by order."
     ],
     "fail": [
-      "The third step widens Gate D beyond tournament, promotion, and merge law.",
-      "The third step bypasses adapter lifecycle or R1 pressure evidence.",
-      "The third step implies router, lobe, externality, product, or comparative widening."
+      "The fourth step widens Gate D beyond router shadow evaluation.",
+      "The fourth step bypasses tournament, promotion, merge, or the static router control baseline.",
+      "The fourth step implies learned-router cutover, lobe, externality, product, or comparative widening."
     ]
   },
   "repo_state_executable_now": true,
-  "execution_readiness": "THIRD_ORDERED_RATIFICATION_STEP_ONLY"
+  "execution_readiness": "FOURTH_ORDERED_RATIFICATION_STEP_ONLY"
 }

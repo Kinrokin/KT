@@ -1,29 +1,56 @@
 {
-  "authority_refs": [
-    "KT_PROD_CLEANROOM/tools/growth/crucibles/CRUCIBLE_REGISTRY.yaml",
-    "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
-    "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
-    "KT_PROD_CLEANROOM/tools/tournament/run_tournament.py",
-    "KT_PROD_CLEANROOM/tools/merge/merge_evaluator.py",
-    "KT_PROD_CLEANROOM/tools/verification/fl4_promote.py",
-    "KT_PROD_CLEANROOM/tools/verification/fl3_rollback_drill.py"
-  ],
-  "domain_id": "DOMAIN_2_PROMOTION_CIVILIZATION",
-  "effective_utc": "2026-03-10T00:00:00Z",
-  "expires_utc": "2026-09-10T00:00:00Z",
-  "law_id": "PROMOTION_ENGINE_LAW_V1_20260310",
-  "required_validators": [
-    "python -m pytest -q KT_PROD_CLEANROOM/tools/growth/crucibles/tests/test_crucible_registry.py KT_PROD_CLEANROOM/tools/growth/crucibles/tests/test_crucible_runner.py",
-    "python -m pytest -q KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_sweep_runner_integration.py KT_PROD_CLEANROOM/tests/policy_c/test_drift_guard.py",
-    "python -m pytest -q KT_PROD_CLEANROOM/tests/fl3/test_epic15_tournament_runner.py KT_PROD_CLEANROOM/tests/fl3/test_epic15_merge_evaluator.py KT_PROD_CLEANROOM/tests/fl3/test_epic19_router_hat_demo.py KT_PROD_CLEANROOM/tests/fl3/test_fl3_rollback_drill.py KT_PROD_CLEANROOM/tests/fl3/test_fl4_promotion_atomic.py"
-  ],
-  "rules": [
-    "Promotion requires PASS receipts for admission, evaluation, rollback, and risk accounting.",
-    "All promotion decisions must bind to a pinned head and deterministic evidence refs.",
-    "No promotion may bypass zone-crossing receipt emission."
-  ],
   "schema_id": "kt.governance.promotion_engine_law.v1",
+  "law_id": "PROMOTION_ENGINE_LAW_V2_20260328",
   "status": "ACTIVE",
-  "summary": "Promotion civilization is governed by receipts, rollback, revalidation, and risk accounting.",
-  "supersedes": []
+  "effective_utc": "2026-03-28T22:45:00Z",
+  "expires_utc": "2026-09-28T22:45:00Z",
+  "domain_id": "DOMAIN_2_PROMOTION_CIVILIZATION",
+  "summary": "Promotion civilization is governed by crucible eligibility, tournament evidence, rollback discipline, lineage replay, and explicit demotion rules. No manual path to router power exists.",
+  "authority_refs": [
+    "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_law_contract.json",
+    "KT_PROD_CLEANROOM/governance/b04_r2_adapter_lifecycle_law_contract.json",
+    "KT_PROD_CLEANROOM/governance/adapter_lifecycle_law.json",
+    "KT_PROD_CLEANROOM/governance/tournament_law.json",
+    "KT_PROD_CLEANROOM/governance/rollback_law.json",
+    "KT_PROD_CLEANROOM/reports/crucible_pressure_law_ratification_receipt.json",
+    "KT_PROD_CLEANROOM/reports/adapter_lifecycle_law_ratification_receipt.json",
+    "KT_PROD_CLEANROOM/reports/promotion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/rollback_plan_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_receipt_lineage_register.json"
+  ],
+  "required_validators": [
+    "python -m tools.operator.tournament_promotion_merge_law_validate",
+    "python -m tools.operator.w2_lawful_evolution_validate",
+    "python -m pytest -o addopts='' tests/operator/test_b04_r3_tournament_promotion_merge_law_validate.py -q"
+  ],
+  "promotion_criteria": [
+    "Adapter must be ELIGIBLE under the R2 lifecycle state machine.",
+    "Adapter must satisfy the R1 crucible-pressure eligibility rule under replayable receipt.",
+    "Adapter must pass required tournament classes: BASELINE_VS_ADAPTER, ADAPTER_VS_ADAPTER, STRESS_PRESSURE, REGRESSION_GUARD, and SAFETY_ADVERSARIAL.",
+    "Adapter must have rollback plan and rollback drill evidence where promotion claims are made.",
+    "Promotion decisions must bind to deterministic evidence refs and lineage entries on the current head."
+  ],
+  "demotion_criteria": [
+    "Regression tournament failure.",
+    "Safety or adversarial tournament failure.",
+    "Replay failure or evidence mismatch on a counted promotion path.",
+    "Rollback drill failure on the promoted path.",
+    "Repeated governed losses sufficient to void promotion standing under later tournament policy."
+  ],
+  "manual_override_rule": {
+    "manual_promotion_allowed": false,
+    "manual_demotion_allowed": false,
+    "rule_text": "No manual promotion or demotion may bypass receipt-backed tournament and rollback evidence."
+  },
+  "router_candidate_pool_entry_rule": {
+    "rule_id": "NO_ROUTER_CANDIDATE_POOL_ENTRY_WITHOUT_CRUCIBLES_AND_TOURNAMENTS",
+    "rule_text": "No adapter may enter the router candidate pool unless it has passed crucibles and tournaments under replayable receipt.",
+    "future_step_required": "B04_R4_ROUTER_SHADOW_EVALUATION_RATIFICATION",
+    "router_entry_authorized_now": false
+  },
+  "claim_ceiling": "R3 binds promotion and demotion law only. It does not itself authorize router candidate pool activation, router cutover, lobe authority, externality, comparative claims, or commercial activation.",
+  "terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r3_tournament_promotion_merge_terminal_state.json",
+  "supersedes": [
+    "PROMOTION_ENGINE_LAW_V1_20260310"
+  ]
 }
