@@ -1,0 +1,160 @@
+{
+  "canonical_receipt_binding": {
+    "gate_d_decision_law_ref": "KT_PROD_CLEANROOM/governance/gate_d_decision_law.json",
+    "gate_d_decision_reanchor_packet_ref": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
+    "omega_b04_definition_ref": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json"
+  },
+  "checks": [
+    {
+      "check_id": "decision_law_mode_is_definition_only",
+      "pass": true
+    },
+    {
+      "check_id": "decision_receipt_selects_all_required_domains",
+      "pass": true
+    },
+    {
+      "check_id": "selected_postures_are_allowed_by_law",
+      "pass": true
+    },
+    {
+      "check_id": "externality_stays_bounded_until_gate_e",
+      "pass": true
+    },
+    {
+      "check_id": "counted_domains_expand_only_into_one_governed_b04_lane",
+      "pass": true
+    },
+    {
+      "check_id": "adaptive_evolution_is_adapter_only_and_router_lobe_order_stays_bounded",
+      "pass": true
+    },
+    {
+      "check_id": "comparative_claims_remain_blocked_until_gate_f",
+      "pass": true
+    },
+    {
+      "check_id": "commercial_activation_remains_lab_only_until_gate_f",
+      "pass": true
+    },
+    {
+      "check_id": "decision_receipt_does_not_activate_b04",
+      "pass": true
+    },
+    {
+      "check_id": "reanchor_packet_agrees_gate_d_is_still_nonactivating",
+      "pass": true
+    },
+    {
+      "check_id": "next_contract_after_selection_requires_separate_b04_launch_surface",
+      "pass": true
+    },
+    {
+      "check_id": "receipt_is_same_head_selection_artifact",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "This receipt selects Gate D postures only. It does not execute B04 implementation, does not widen externality above E1, does not open external comparative claims, and does not activate commercial deployment.",
+  "current_git_head": "11878970c1836e7b6f6a32baf86ffae2099e819c",
+  "decision_law_head": "11878970c1836e7b6f6a32baf86ffae2099e819c",
+  "decision_mode": "POSTURE_SELECTION_ONLY_NO_IMPLEMENTATION",
+  "gate_c_exit_head": "71268f2f7489aadec338d5e71bb5b70f8a7fe9dc",
+  "generated_utc": "2026-03-28T18:30:40Z",
+  "implementation_activation": {
+    "activation_rule": "Gate D posture selection authorizes later bounded B04 launch planning only. It does not itself execute civilization activation.",
+    "authorized_next_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
+    "b04_activation_allowed": false,
+    "separate_launch_surface_required": true
+  },
+  "next_lawful_move": "B04_GATE_D_CIVILIZATION_ACTIVATE__SEPARATE_LAUNCH_SURFACE_REQUIRED",
+  "non_default_posture_bindings": [
+    {
+      "domain_id": "D2_NEW_COUNTED_DOMAINS",
+      "proof_required": [
+        "KT_PROD_CLEANROOM/reports/civilization_golden_run_receipt.json",
+        "KT_PROD_CLEANROOM/reports/domain_unlock_matrix_receipt.json",
+        "KT_PROD_CLEANROOM/reports/bounded_learning_receipt.json",
+        "KT_PROD_CLEANROOM/reports/promotion_binding_receipt.json",
+        "KT_PROD_CLEANROOM/reports/forge_generation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/runtime_cutover_receipt.json",
+        "KT_PROD_CLEANROOM/reports/chaos_lane_resilience_receipt.json",
+        "KT_PROD_CLEANROOM/reports/tournament_live_receipt.json",
+        "KT_PROD_CLEANROOM/reports/multi_lobe_execution_receipt.json",
+        "KT_PROD_CLEANROOM/reports/civilization_loop_receipt.json",
+        "KT_PROD_CLEANROOM/reports/learning_response_receipt.json",
+        "KT_PROD_CLEANROOM/reports/rollback_drill_receipt.json"
+      ],
+      "rollback_condition": "Any rollback_drill failure, runtime cutover that is not rollback-safe, router promotion before ordered proof, or tournament/lobe claim without traceable receipts fails closed and voids the activation attempt.",
+      "scope_boundary": "One governed and rollback-safe civilization lane only under Omega B04. Counted expansion is limited to bounded learning, promotion binding, runtime cutover, chaos resilience, tournament live, multi-lobe execution, civilization loop, learning response, and rollback drill receipts. No externality widening, comparator expansion, or commercial metrics are authorized here.",
+      "selected_posture": "COUNTED_DOMAINS_CONTROLLED_EXPANSION",
+      "validator_chain": [
+        "python -m tools.operator.universal_adapter_validate",
+        "python -m tools.operator.civilization_loop_validate",
+        "python -m tools.operator.router_ordered_proof_validate",
+        "python -m tools.operator.w2_lawful_evolution_validate"
+      ]
+    },
+    {
+      "domain_id": "D3_ADAPTIVE_EVOLUTION_AUTHORIZATION",
+      "proof_required": [
+        "KT_PROD_CLEANROOM/reports/bounded_learning_receipt.json",
+        "KT_PROD_CLEANROOM/reports/promotion_binding_receipt.json",
+        "KT_PROD_CLEANROOM/reports/forge_generation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/civilization_loop_receipt.json",
+        "KT_PROD_CLEANROOM/reports/learning_response_receipt.json",
+        "KT_PROD_CLEANROOM/reports/rollback_drill_receipt.json"
+      ],
+      "rollback_condition": "Any promotion regression, rollback drill failure, no-regression breach, or router/lobe ordered-proof violation forces hold or revoke and blocks activation.",
+      "scope_boundary": "Adaptive evolution is authorized for adapters inside one governed civilization lane only. Promotion, tournament, merge, and rollback remain receipted. Learned-router cutover and multi-lobe promotion remain blocked until the ordered proof chain is separately earned.",
+      "selected_posture": "ADAPTER_EVOLUTION_AUTHORIZED",
+      "validator_chain": [
+        "python -m tools.operator.universal_adapter_validate",
+        "python -m tools.operator.civilization_loop_validate",
+        "python -m tools.operator.router_ordered_proof_validate",
+        "python -m tools.operator.w2_lawful_evolution_validate"
+      ]
+    }
+  ],
+  "reanchor_head": "ee752460e34ad2411adc3d228704f20c421f33be",
+  "receipt_role": "COUNTED_GATE_D_POSTURE_SELECTION_ARTIFACT_ONLY",
+  "schema_id": "kt.gate_d.decision_receipt.v1",
+  "selected_postures": [
+    {
+      "deferred_to_gate": "B05_GATE_E_EXTERNALITY_AND_ASSURANCE",
+      "domain_id": "D1_EXTERNALITY_WIDENING",
+      "selected_is_default": true,
+      "selected_posture": "EXTERNALITY_BOUNDED",
+      "selected_posture_allowed_by_law": true
+    },
+    {
+      "deferred_to_gate": "",
+      "domain_id": "D2_NEW_COUNTED_DOMAINS",
+      "selected_is_default": false,
+      "selected_posture": "COUNTED_DOMAINS_CONTROLLED_EXPANSION",
+      "selected_posture_allowed_by_law": true
+    },
+    {
+      "deferred_to_gate": "",
+      "domain_id": "D3_ADAPTIVE_EVOLUTION_AUTHORIZATION",
+      "selected_is_default": false,
+      "selected_posture": "ADAPTER_EVOLUTION_AUTHORIZED",
+      "selected_posture_allowed_by_law": true
+    },
+    {
+      "deferred_to_gate": "B06_GATE_F_PRODUCT_WEDGE",
+      "domain_id": "D4_COMPARATIVE_COMPETITIVE_CLAIMS",
+      "selected_is_default": true,
+      "selected_posture": "NO_EXTERNAL_COMPARATIVE_CLAIMS",
+      "selected_posture_allowed_by_law": true
+    },
+    {
+      "deferred_to_gate": "B06_GATE_F_PRODUCT_WEDGE",
+      "domain_id": "D5_COMMERCIAL_ACTIVATION",
+      "selected_is_default": true,
+      "selected_posture": "LAB_ONLY",
+      "selected_posture_allowed_by_law": true
+    }
+  ],
+  "status": "PASS",
+  "subject_head": "11878970c1836e7b6f6a32baf86ffae2099e819c"
+}
