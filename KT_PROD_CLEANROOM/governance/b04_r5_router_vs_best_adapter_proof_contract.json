@@ -1,0 +1,51 @@
+{
+  "schema_id": "kt.b04.r5.router_vs_best_adapter_proof_contract.v1",
+  "generated_utc": "2026-03-29T01:05:00Z",
+  "workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
+  "parent_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
+  "ratification_mode": "RATIFICATION_ONLY_SAME_HEAD_ORDERED_PROOF_NO_CUTOVER_OR_LOBE_ADVANCE",
+  "prerequisite_refs": [
+    "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_law_contract.json",
+    "KT_PROD_CLEANROOM/governance/b04_r2_adapter_lifecycle_law_contract.json",
+    "KT_PROD_CLEANROOM/governance/b04_r3_tournament_promotion_merge_law_contract.json",
+    "KT_PROD_CLEANROOM/governance/b04_r4_router_shadow_evaluation_law_contract.json",
+    "KT_PROD_CLEANROOM/governance/b04_r4_router_shadow_terminal_state.json",
+    "KT_PROD_CLEANROOM/reports/crucible_pressure_law_ratification_receipt.json",
+    "KT_PROD_CLEANROOM/reports/adapter_lifecycle_law_ratification_receipt.json",
+    "KT_PROD_CLEANROOM/reports/tournament_promotion_merge_law_ratification_receipt.json",
+    "KT_PROD_CLEANROOM/reports/router_shadow_evaluation_ratification_receipt.json",
+    "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json"
+  ],
+  "ratified_surfaces": [
+    "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+    "KT_PROD_CLEANROOM/tools/operator/router_ordered_proof_validate.py",
+    "KT_PROD_CLEANROOM/reports/router_shadow_eval_matrix.json",
+    "KT_PROD_CLEANROOM/reports/route_distribution_health.json",
+    "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
+    "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json"
+  ],
+  "proof_requirements": [
+    "Router-versus-best-adapter proof must be regenerated on the current git HEAD and declare the same subject_head across all proof artifacts.",
+    "Proof must compare against the audited best static adapter control and may not rest on router shadow consistency alone.",
+    "Any non-earned superiority outcome must keep the static baseline canonical and keep learned-router cutover and lobe promotion blocked.",
+    "Any earned superiority outcome must still preserve no-regression, fallback behavior, and bounded signal classes."
+  ],
+  "pass_criteria": [
+    "Router ordered proof artifacts pass on the current head.",
+    "Router-versus-best-adapter outcome is stated honestly as either an earned superiority result or an explicit static hold.",
+    "Learned-router cutover and lobe promotion remain blocked unless superiority is actually earned on the same head.",
+    "Externality, comparative claims, and commercial activation remain blocked by order."
+  ],
+  "not_authorized": [
+    "Learned router authorization in R5 without earned proof",
+    "Live learned-router cutover in R5",
+    "Lobe ratification in R5",
+    "Externality widening above E1",
+    "External comparative claims",
+    "Commercial activation"
+  ],
+  "expected_receipt_path": "KT_PROD_CLEANROOM/reports/router_vs_best_adapter_proof_ratification_receipt.json",
+  "terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_terminal_state.json",
+  "next_lawful_move_if_earned": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
+  "next_lawful_move_if_not_earned": "HOLD_B04_R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF"
+}

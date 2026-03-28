@@ -4,11 +4,18 @@
     "lobe.strategist.v1"
   ],
   "demo_suite_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
-  "generated_utc": "2026-03-10T13:29:07Z",
+  "generated_utc": "2026-03-29T01:05:00Z",
   "learned_router_candidate_policy": {
     "current_status": "BLOCKED_PENDING_ELIGIBLE_CANDIDATE_AND_CLEAN_WIN",
     "eligibility_rule": "A learned router candidate exists only if it is distinct from the shadow comparator, beats the best static baseline on the frozen suite, preserves fallback behavior, and passes no-regression law.",
     "superiority_scorecard_ref": "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json"
+  },
+  "r5_same_head_proof_policy": {
+    "current_status": "STATIC_HOLD_UNTIL_SAME_HEAD_SUPERIORITY_EARNED",
+    "same_head_required": true,
+    "ordered_proof_receipt_ref": "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json",
+    "ratification_receipt_ref": "KT_PROD_CLEANROOM/reports/router_vs_best_adapter_proof_ratification_receipt.json",
+    "advance_rule": "B04_R6 remains blocked unless the same-head router superiority scorecard shows superiority_earned=true and the ordered proof receipt records a clean win with no regression."
   },
   "multi_lobe_orchestration_policy": {
     "current_status": "BLOCKED_PENDING_LEARNED_ROUTER_WIN",
@@ -94,5 +101,5 @@
   ],
   "schema_id": "kt.governance.router_policy_registry.v1",
   "status": "ACTIVE",
-  "w5_ordered_proof_status": "ACTIVE_STATIC_HOLD_UNTIL_EARNED"
+  "w5_ordered_proof_status": "ACTIVE_STATIC_HOLD_UNTIL_EARNED_SAME_HEAD_ONLY"
 }

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
@@ -46,7 +47,7 @@ def _status_is(value: Any, expected: str) -> bool:
 
 
 def _git_head(root: Path) -> str:
-    return load_json(root / TRUTH_LOCK_REL).get("current_repo_head", "")
+    return subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
 
 
 def _economic_profile(plane: Dict[str, Any], profile_id: str) -> Dict[str, Any]:
@@ -68,6 +69,7 @@ def _build_base_reports(*, root: Path) -> Dict[str, Dict[str, Any]]:
 
 
 def build_router_shadow_eval_matrix(*, root: Path, base: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
+    current_head = _git_head(root)
     selection = base["selection"]
     matrix = base["matrix"]
     c005 = base["c005"]
@@ -108,7 +110,8 @@ def build_router_shadow_eval_matrix(*, root: Path, base: Dict[str, Dict[str, Any
     return {
         "schema_id": "kt.w5.router_shadow_eval_matrix.v1",
         "generated_utc": utc_now_iso_z(),
-        "current_git_head": _git_head(root),
+        "current_git_head": current_head,
+        "subject_head": current_head,
         "status": "PASS" if _status_is(matrix.get("status"), "PASS") and _status_is(c005.get("status"), "PASS") else "FAIL",
         "comparison_rule": "W5 freezes the router comparator suite against the canonical static baseline and carries forward only shadow evidence, not cutover authority.",
         "best_static_baseline_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json",
@@ -126,6 +129,7 @@ def build_router_shadow_eval_matrix(*, root: Path, base: Dict[str, Dict[str, Any
 
 
 def build_route_distribution_health(*, root: Path, base: Dict[str, Dict[str, Any]], shadow_matrix: Dict[str, Any]) -> Dict[str, Any]:
+    current_head = _git_head(root)
     health = base["health"]
     c005 = base["c005"]
     economic_plane = load_json(root / ECONOMIC_TRUTH_PLANE_REL)
@@ -154,7 +158,8 @@ def build_route_distribution_health(*, root: Path, base: Dict[str, Dict[str, Any
     return {
         "schema_id": "kt.w5.route_distribution_health.v1",
         "generated_utc": utc_now_iso_z(),
-        "current_git_head": _git_head(root),
+        "current_git_head": current_head,
+        "subject_head": current_head,
         "status": "PASS" if _status_is(health.get("status"), "PASS") and no_regression_pass else "FAIL",
         "best_static_provider_adapter_id": str(c005.get("best_static_provider_adapter_underlay", {}).get("adapter_id", "")).strip(),
         "canonical_static_router_preserved": bool(health.get("canonical_static_router_preserved")),
@@ -175,6 +180,7 @@ def build_route_distribution_health(*, root: Path, base: Dict[str, Dict[str, Any
 
 
 def build_router_superiority_scorecard(*, root: Path, base: Dict[str, Dict[str, Any]], health_report: Dict[str, Any]) -> Dict[str, Any]:
+    current_head = _git_head(root)
     c005 = base["c005"]
     truth_lock = load_json(root / TRUTH_LOCK_REL)
     matrix_rows = health_report.get("route_quality_cost_latency_matrix", [])
@@ -184,7 +190,8 @@ def build_router_superiority_scorecard(*, root: Path, base: Dict[str, Dict[str, 
     return {
         "schema_id": "kt.w5.router_superiority_scorecard.v1",
         "generated_utc": utc_now_iso_z(),
-        "current_git_head": _git_head(root),
+        "current_git_head": current_head,
+        "subject_head": current_head,
         "status": "PASS",
         "best_static_baseline": {
             "provider_underlay": c005.get("best_static_provider_adapter_underlay", {}),
@@ -230,6 +237,7 @@ def build_router_ordered_proof_receipt(
     health_report: Dict[str, Any],
     scorecard: Dict[str, Any],
 ) -> Dict[str, Any]:
+    current_head = _git_head(root)
     registry = load_json(root / ROUTER_POLICY_REGISTRY_REL)
     router_law = load_json(root / ROUTER_PROMOTION_LAW_REL)
     lobe_registry = load_json(root / LOBE_ROLE_REGISTRY_REL)
@@ -280,7 +288,8 @@ def build_router_ordered_proof_receipt(
     return {
         "schema_id": "kt.w5.router_ordered_proof_receipt.v1",
         "generated_utc": utc_now_iso_z(),
-        "current_git_head": _git_head(root),
+        "current_git_head": current_head,
+        "subject_head": current_head,
         "status": status,
         "ordered_proof_outcome": "PASS_HOLD_STATIC_CANONICAL_BASELINE" if status == "PASS" else "FAIL_CLOSED",
         "canonical_router_status": "STATIC_CANONICAL_BASELINE_ONLY",
