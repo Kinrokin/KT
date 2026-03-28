@@ -1,0 +1,83 @@
+{
+  "bounded_evidence_summary": {
+    "merge_outcome_status": "PASS",
+    "promotion_receipt_status": "PASS",
+    "rollback_drill_status": "PASS",
+    "tournament_receipt_status": "PASS"
+  },
+  "checks": [
+    {
+      "check_id": "r3_contract_and_terminal_state_bind_only_selection_arena_ratification",
+      "pass": true
+    },
+    {
+      "check_id": "r3_consumes_r1_and_r2_authority_chain",
+      "pass": true
+    },
+    {
+      "check_id": "finite_tournament_registry_is_bound",
+      "pass": true
+    },
+    {
+      "check_id": "tournament_showability_remains_blocked_and_bounded",
+      "pass": true
+    },
+    {
+      "check_id": "promotion_and_demotion_rules_are_explicit_and_no_manual_bypass_exists",
+      "pass": true
+    },
+    {
+      "check_id": "router_candidate_pool_entry_remains_future_gated",
+      "pass": true
+    },
+    {
+      "check_id": "merge_rules_require_lineage_rollback_and_recrucible",
+      "pass": true
+    },
+    {
+      "check_id": "rollback_and_bounded_merge_receipts_exist",
+      "pass": true
+    },
+    {
+      "check_id": "control_surfaces_remain_order_locked_after_r3",
+      "pass": true
+    },
+    {
+      "check_id": "scope_remains_bounded_after_r3",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "This receipt proves only that the bounded tournament, promotion, and merge selection arena is ratified. It does not ratify router shadow, learned-router cutover, lobes, externality, comparative claims, or commercial widening.",
+  "current_git_head": "32191f589342619d9e9a23835ac60e14d73dd627",
+  "generated_utc": "2026-03-28T22:08:31Z",
+  "merge_rule_summary": {
+    "direct_router_admission_allowed": false,
+    "historical_merge_method": "merge_commit",
+    "merge_rule_count": 6,
+    "post_merge_rule_count": 3
+  },
+  "next_lawful_move": "B04_R4_ROUTER_SHADOW_EVALUATION_RATIFICATION",
+  "promotion_rule_summary": {
+    "demotion_criteria_count": 5,
+    "promotion_criteria_count": 5,
+    "router_candidate_pool_authorized_now": false,
+    "router_candidate_pool_rule": "No adapter may enter the router candidate pool unless it has passed crucibles and tournaments under replayable receipt."
+  },
+  "receipt_role": "COUNTED_B04_R3_TOURNAMENT_PROMOTION_MERGE_LAW_ARTIFACT_ONLY",
+  "schema_id": "kt.b04.r3.tournament_promotion_merge_law_ratification_receipt.v1",
+  "status": "PASS",
+  "subject_head": "32191f589342619d9e9a23835ac60e14d73dd627",
+  "tournament_class_summary": {
+    "class_count": 5,
+    "class_ids": [
+      "BASELINE_VS_ADAPTER",
+      "ADAPTER_VS_ADAPTER",
+      "STRESS_PRESSURE",
+      "REGRESSION_GUARD",
+      "SAFETY_ADVERSARIAL"
+    ],
+    "historical_readiness_status": "BLOCKED",
+    "public_showability_allowed": false
+  },
+  "workstream_id": "B04_R3_TOURNAMENT_PROMOTION_MERGE_LAW_RATIFICATION"
+}
