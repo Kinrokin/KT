@@ -1,8 +1,8 @@
 {
   "schema_id": "kt.current_campaign_state_overlay.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T18:05:00Z",
-  "workstream_id": "B04_GATE_D_POSTURE_SELECTION_ONLY",
+  "generated_utc": "2026-03-28T19:10:00Z",
+  "workstream_id": "B04_GATE_D_CIVILIZATION_ACTIVATE__SEPARATE_LAUNCH_SURFACE_REQUIRED",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "authority_stack": {
     "execution_order_authority": {
@@ -18,12 +18,14 @@
     "current_state_authority": [
       "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_emit_20260328_001/gate_c_exit_criteria_contract_receipt.json",
       "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_20260328_1029/gate_c_exit_adjudication_authoritative_receipt.json",
-      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b04_gate_d_decision_law_authoritative_receipt_20260328_1737.json"
+      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b04_gate_d_decision_law_authoritative_receipt_20260328_1737.json",
+      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b04_gate_d_decision_authoritative_receipt_20260328_1832.json"
     ],
     "documentary_surfaces": [
       "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
       "KT_PROD_CLEANROOM/reports/gate_c_exit_adjudication_receipt.json",
       "KT_PROD_CLEANROOM/reports/gate_d_decision_law_receipt.json",
+      "KT_PROD_CLEANROOM/reports/gate_d_decision_receipt.json",
       "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
       "KT_PROD_CLEANROOM/governance/execution_board.json",
       "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
@@ -36,7 +38,7 @@
   "repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "a993c4caf4265f2b4012be853f462177be43e8f2",
+    "current_git_head": "a903589d24e2fb8670e6625cf53d9ce8f174c552",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "omega_batch_status": {
@@ -54,9 +56,9 @@
     ]
   },
   "current_lawful_gate_standing": {
-    "inter_gate_state": "POST_GATE_C_EXIT_GATE_D_POSTURES_SELECTED",
+    "inter_gate_state": "GATE_D_CIVILIZATION_RATIFICATION_LAUNCH_BOUND",
     "current_counted_gate": "Gate D",
-    "current_counted_batch": "B04_GATE_D_POSTURE_SELECTION_ONLY",
+    "current_counted_batch": "B04_GATE_D_CIVILIZATION_ACTIVATE__SEPARATE_LAUNCH_SURFACE_REQUIRED",
     "completed_tranches": [
       "B03_T1_FROZEN_COMPARATOR_CONSTITUTION",
       "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT",
@@ -86,33 +88,36 @@
       "B03_GATE_C_EXIT_ADJUDICATION",
       "REANCHOR_CURRENT_STATE_FOR_GATE_D_DECISION",
       "B04_GATE_D_DECISION_LAW",
-      "B04_GATE_D_POSTURE_SELECTION_ONLY"
+      "B04_GATE_D_POSTURE_SELECTION_ONLY",
+      "B04_GATE_D_CIVILIZATION_ACTIVATE__SEPARATE_LAUNCH_SURFACE_REQUIRED"
     ],
     "gate_c_status": "EXITED_ON_SEALED_HEAD_71268f2f7489aadec338d5e71bb5b70f8a7fe9dc",
-    "gate_d_status": "POSTURES_SELECTED_IMPLEMENTATION_NOT_ACTIVATED",
+    "gate_d_status": "CIVILIZATION_RATIFICATION_LAUNCH_BOUND",
     "authoritative_basis": [
       "Gate C exit remains authoritative only on sealed head 71268f2f7489aadec338d5e71bb5b70f8a7fe9dc.",
       "Gate D decision law remains definition-only and non-activating.",
-      "Gate D posture selection chooses D1 bounded, D2 controlled counted-domain expansion, D3 adapter evolution authorized, D4 no external comparative claims, and D5 lab-only.",
-      "B04 implementation is still separately gated and not activated by posture selection."
+      "Gate D postures remain D1 bounded, D2 controlled counted-domain expansion, D3 adapter evolution authorized, D4 no external comparative claims, and D5 lab-only.",
+      "B04 launch surface now binds a lawful Gate D ratification lane only and opens only the first ordered ratification step.",
+      "Externality, commercial activation, and external comparative claims remain deferred."
     ]
   },
   "state_reconciliation": {
-    "latest_sealed_receipts_current_state": "Gate C is exited. Gate D posture selection is now chosen for a bounded civilization lane only, while externality, external comparative claims, and commercial activation remain deferred.",
-    "documentary_surface_state_on_main": "Tracked gate_c_exit_adjudication_receipt.json, gate_d_decision_law_receipt.json, and gate_d_decision_receipt.json remain non-authoritative carriers on main whenever subject_head differs from the requested head.",
-    "reanchor_decision": "Proceed only to a separate B04 launch surface that executes one governed civilization lane under the selected bounded postures. Do not auto-activate implementation."
+    "latest_sealed_receipts_current_state": "Gate C is exited. Gate D postures are selected and the B04 launch surface now opens only a bounded civilization ratification lane. Implementation remains step-ordered and does not widen externality, comparative claims, or commercial scope.",
+    "documentary_surface_state_on_main": "Tracked gate_c_exit_adjudication_receipt.json, gate_d_decision_law_receipt.json, gate_d_decision_receipt.json, and future tracked B04 launch receipts remain non-authoritative carriers on main whenever subject_head differs from the requested head.",
+    "reanchor_decision": "Proceed only to the first ordered Gate D ratification step after the launch surface is sealed. Do not treat activation as whole-stack implementation."
   },
-  "next_counted_workstream_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
-  "next_counted_workstream_scope": "Execute one governed and rollback-safe civilization lane only under the selected Gate D postures. Externality widening, external comparative claims, and commercial activation remain out of scope.",
+  "next_counted_workstream_id": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
+  "next_counted_workstream_scope": "Ratify only crucible lifecycle, crucible registry, and pressure taxonomy as the first ordered Gate D surface. All later adapter, tournament, router, and lobe work remains blocked by order.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "explicit_non_go_areas": [
     "Do not widen externality beyond E1.",
     "Do not open external comparative claims.",
     "Do not activate commercial deployment.",
     "Do not add comparator rows or rewrite comparator semantics.",
-    "Do not treat posture selection as automatic B04 implementation.",
-    "Do not let tracked carrier receipts stand in for current-head authority."
+    "Do not treat B04 launch activation as whole-stack implementation.",
+    "Do not let tracked carrier receipts stand in for current-head authority.",
+    "Do not ratify router or lobes before the ordered sequence permits them."
   ],
-  "repo_state_executable_now": false,
-  "executable_now_why": "Gate D posture selection is complete, but B04 still requires a separate launch surface before any implementation mutation is lawful."
+  "repo_state_executable_now": true,
+  "executable_now_why": "The B04 launch surface is now bound, the ratification order is locked, and only the first ordered Gate D step is executable."
 }

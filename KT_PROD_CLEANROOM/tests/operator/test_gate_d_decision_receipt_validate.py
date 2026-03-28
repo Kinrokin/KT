@@ -11,6 +11,7 @@ from tools.operator import gate_d_decision_receipt_validate as gate_d
 
 
 OVERLAY_REFS = [
+    "KT_PROD_CLEANROOM/governance/b04_civilization_activation_launch_contract.json",
     "KT_PROD_CLEANROOM/tools/operator/gate_d_decision_receipt_validate.py",
     "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
     "KT_PROD_CLEANROOM/reports/current_campaign_state_overlay.json",

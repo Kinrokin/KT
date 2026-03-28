@@ -1,25 +1,27 @@
 {
   "schema_id": "kt.next_counted_workstream_contract.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T18:05:00Z",
-  "source_workstream_id": "B04_GATE_D_POSTURE_SELECTION_ONLY",
+  "generated_utc": "2026-03-28T19:10:00Z",
+  "source_workstream_id": "B04_GATE_D_CIVILIZATION_ACTIVATE__SEPARATE_LAUNCH_SURFACE_REQUIRED",
   "current_counted_gate": "Gate D",
   "parent_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
-  "exact_next_counted_workstream_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
+  "exact_next_counted_workstream_id": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
-  "execution_mode": "POSTURES_SELECTED__SEPARATE_LAUNCH_SURFACE_REQUIRED",
-  "workstream_objective": "Execute one governed and rollback-safe civilization lane only under the selected Gate D postures. B04 implementation must stay within controlled counted-domain expansion and adapter evolution authorization only.",
+  "execution_mode": "CIVILIZATION_RATIFICATION_ORDER_LOCKED__FIRST_STEP_ONLY",
+  "workstream_objective": "Ratify only the first ordered Gate D civilization surface: crucible lifecycle, crucible registry, and pressure taxonomy. Do not implement adapters, tournament, router, lobes, externality, or product work in this step.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "canonical_receipt_binding": {
     "gate_c_exit_authoritative_receipt_path": "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_20260328_1029/gate_c_exit_adjudication_authoritative_receipt.json",
     "gate_d_decision_law_ref": "KT_PROD_CLEANROOM/governance/gate_d_decision_law.json",
     "gate_d_reanchor_packet_ref": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
     "gate_d_decision_receipt_ref": "KT_PROD_CLEANROOM/reports/gate_d_decision_receipt.json",
+    "b04_launch_contract_ref": "KT_PROD_CLEANROOM/governance/b04_civilization_activation_launch_contract.json",
+    "b04_launch_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_civilization_activation_terminal_state.json",
     "omega_b04_definition_ref": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json"
   },
   "gate_domain_product_split": {
-    "gate": "Gate D one governed civilization lane only",
-    "domain_surface": "B04 implementation may realize controlled counted-domain expansion and adapter evolution inside one bounded lane only.",
+    "gate": "Gate D first ordered ratification step only",
+    "domain_surface": "Gate D may ratify crucible and pressure governance inside the bounded civilization lane only.",
     "product_surface": "NONE_COUNTING"
   },
   "selected_postures": {
@@ -32,72 +34,51 @@
   "prerequisite_read": {
     "gate_d_decision_receipt": "KT_PROD_CLEANROOM/reports/gate_d_decision_receipt.json",
     "gate_d_reanchor_packet": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
+    "b04_launch_contract": "KT_PROD_CLEANROOM/governance/b04_civilization_activation_launch_contract.json",
+    "b04_launch_terminal_state": "KT_PROD_CLEANROOM/governance/b04_civilization_activation_terminal_state.json",
     "omega_batch_definition": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json",
     "v11_closure_map": "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.json"
   },
   "expected_mutate_paths": [
-    "KT_PROD_CLEANROOM/governance/civilization_loop_contract.json",
-    "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
-    "KT_PROD_CLEANROOM/governance/router_promotion_law.json",
-    "KT_PROD_CLEANROOM/governance/lobe_promotion_law.json",
+    "KT_PROD_CLEANROOM/governance/crucible_lifecycle_law.json",
+    "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+    "KT_PROD_CLEANROOM/governance/pressure_response_taxonomy.json",
+    "KT_PROD_CLEANROOM/tools/operator/crucible_pressure_law_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b04_r1_crucible_pressure_law_validate.py",
     "KT_PROD_CLEANROOM/reports"
   ],
   "expected_create_if_absent_targets": [
-    "KT_PROD_CLEANROOM/reports/civilization_golden_run_receipt.json",
-    "KT_PROD_CLEANROOM/reports/domain_unlock_matrix_receipt.json",
-    "KT_PROD_CLEANROOM/reports/bounded_learning_receipt.json",
-    "KT_PROD_CLEANROOM/reports/promotion_binding_receipt.json",
-    "KT_PROD_CLEANROOM/reports/forge_generation_receipt.json",
-    "KT_PROD_CLEANROOM/reports/runtime_cutover_receipt.json",
-    "KT_PROD_CLEANROOM/reports/chaos_lane_resilience_receipt.json",
-    "KT_PROD_CLEANROOM/reports/tournament_live_receipt.json",
-    "KT_PROD_CLEANROOM/reports/multi_lobe_execution_receipt.json"
+    "KT_PROD_CLEANROOM/reports/crucible_pressure_law_ratification_receipt.json"
   ],
   "expected_receipts": [
-    "KT_PROD_CLEANROOM/reports/civilization_golden_run_receipt.json",
-    "KT_PROD_CLEANROOM/reports/domain_unlock_matrix_receipt.json",
-    "KT_PROD_CLEANROOM/reports/bounded_learning_receipt.json",
-    "KT_PROD_CLEANROOM/reports/promotion_binding_receipt.json",
-    "KT_PROD_CLEANROOM/reports/forge_generation_receipt.json",
-    "KT_PROD_CLEANROOM/reports/runtime_cutover_receipt.json",
-    "KT_PROD_CLEANROOM/reports/chaos_lane_resilience_receipt.json",
-    "KT_PROD_CLEANROOM/reports/tournament_live_receipt.json",
-    "KT_PROD_CLEANROOM/reports/multi_lobe_execution_receipt.json",
-    "KT_PROD_CLEANROOM/reports/civilization_loop_receipt.json",
-    "KT_PROD_CLEANROOM/reports/learning_response_receipt.json",
-    "KT_PROD_CLEANROOM/reports/rollback_drill_receipt.json"
+    "KT_PROD_CLEANROOM/reports/crucible_pressure_law_ratification_receipt.json"
   ],
   "validators_and_tests": {
     "validators": [
-      "python -m tools.operator.universal_adapter_validate",
-      "python -m tools.operator.civilization_loop_validate",
-      "python -m tools.operator.router_ordered_proof_validate",
-      "python -m tools.operator.w2_lawful_evolution_validate"
+      "python -m tools.operator.crucible_pressure_law_validate"
     ],
     "tests": [
-      "python -m pytest -o addopts='' tests/operator/test_universal_adapter_validate.py tests/operator/test_civilization_loop_validate.py tests/operator/test_router_ordered_proof_validate.py tests/operator/test_w2_lawful_evolution_validate.py -q"
+      "python -m pytest -o addopts='' tests/operator/test_b04_r1_crucible_pressure_law_validate.py -q"
     ]
   },
   "stop_conditions": [
-    "Any externality widening above E1 is folded into B04.",
-    "Any external comparative claim or commercial activation is folded into B04.",
-    "Any router promotion occurs before ordered proof.",
-    "Any tournament or lobe claim activates without traceable receipts.",
-    "Any B04 activation proceeds without a separate launch surface."
+    "Any adapter, tournament, router, or lobe ratification is folded into the first step.",
+    "Any externality widening above E1 is folded into the first step.",
+    "Any external comparative claim or commercial activation is folded into the first step.",
+    "Any Gate D component enters Canonical without schema, validator, receipt, and rollback."
   ],
   "pass_fail_criteria": {
     "pass": [
-      "One governed civilization lane exists.",
-      "Learning, promotion, cutover, and rollback are traced.",
-      "Lobe activation remains bounded and ordered.",
-      "Externality, external comparative claims, and commercial activation remain deferred."
+      "Crucible lifecycle, crucible registry, and pressure taxonomy are ratified as the first ordered Gate D surface.",
+      "The first step emits only crucible/pressure authority artifacts.",
+      "All later Gate D ratification steps remain blocked by order."
     ],
     "fail": [
-      "B04 implementation widens externality or commercial scope.",
-      "Any learned-router or multi-lobe superiority is claimed before ordered proof is earned.",
-      "Any current-head authority is sourced from tracked carriers instead of same-head proof."
+      "The first step widens Gate D beyond crucible and pressure law.",
+      "The first step implies externality, product, or comparative widening.",
+      "The first step lets later router or lobe work bypass order."
     ]
   },
-  "repo_state_executable_now": false,
-  "execution_readiness": "SEPARATE_B04_LAUNCH_SURFACE_REQUIRED_BEFORE_IMPLEMENTATION"
+  "repo_state_executable_now": true,
+  "execution_readiness": "FIRST_ORDERED_RATIFICATION_STEP_ONLY"
 }

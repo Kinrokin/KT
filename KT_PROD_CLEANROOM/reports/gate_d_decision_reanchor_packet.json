@@ -1,14 +1,14 @@
 {
   "schema_id": "kt.gate_d.decision_reanchor_packet.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T18:05:00Z",
-  "workstream_id": "B04_GATE_D_POSTURE_SELECTION_ONLY",
+  "generated_utc": "2026-03-28T19:10:00Z",
+  "workstream_id": "B04_GATE_D_CIVILIZATION_ACTIVATE__SEPARATE_LAUNCH_SURFACE_REQUIRED",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "reanchor_head": "ee752460e34ad2411adc3d228704f20c421f33be",
   "current_repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "a993c4caf4265f2b4012be853f462177be43e8f2",
+    "current_git_head": "a903589d24e2fb8670e6625cf53d9ce8f174c552",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "authoritative_gate_c_exit": {
@@ -42,8 +42,8 @@
     "product_truth_class": "BOUNDED_E1_BUYER_SIMPLE_PRODUCT_PLANE",
     "router_status": "STATIC_CANONICAL_BASELINE_ONLY",
     "gate_d_decision_selected": true,
-    "gate_d_activation_authorized": false,
-    "note": "Gate D posture selection now authorizes only one future governed civilization lane under bounded postures. It still does not activate B04 implementation, widen externality above E1, open external comparative claims, or activate commercial deployment."
+    "gate_d_activation_authorized": true,
+    "note": "Gate D launch surface now opens only a lawful civilization ratification lane. It still does not widen externality above E1, open external comparative claims, activate commercial deployment, or allow router or lobe overclaim before ordered proof."
   },
   "explicit_not_authorized": [
     "frontier claim",
@@ -51,9 +51,10 @@
     "new comparator rows",
     "comparator-semantic rewrite",
     "product or market superiority widening",
-    "automatic B04 civilization activation",
     "external comparative claims",
     "commercial deployment activation",
+    "learned router in production",
+    "autonomous multi-lobe runtime",
     "router superiority claims before ordered proof",
     "multi-lobe superiority claims before ordered proof"
   ],
@@ -74,16 +75,20 @@
   },
   "gate_d_decision_scope": {
     "omega_next_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
-    "decision_mode": "POSTURES_SELECTED__SEPARATE_LAUNCH_SURFACE_REQUIRED_BEFORE_ANY_B04_COUNTING",
+    "decision_mode": "CIVILIZATION_RATIFICATION_LAUNCH_BOUND__FIRST_STEP_ONLY",
+    "activation_launch_contract_ref": "KT_PROD_CLEANROOM/governance/b04_civilization_activation_launch_contract.json",
+    "activation_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_civilization_activation_terminal_state.json",
+    "first_ratification_step_id": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
     "selected_scope_summary": [
       "D1 stays EXTERNALITY_BOUNDED until Gate E.",
-      "D2 allows one controlled counted-domain expansion into the Omega B04 civilization lane only.",
-      "D3 authorizes adapter evolution only inside that one governed lane.",
+      "D2 allows one controlled counted-domain expansion inside a single Gate D ratification lane only.",
+      "D3 authorizes adapter evolution only after the ordered ratification sequence reaches that step.",
       "D4 keeps external comparative claims blocked.",
-      "D5 keeps commercial activation LAB_ONLY."
+      "D5 keeps commercial activation LAB_ONLY.",
+      "B04 activation now binds only the lawful ratification container and opens only the first ordered step."
     ],
     "forbidden_prejudgments": [
-      "Treating posture selection as automatic B04 activation",
+      "Treating launch binding as whole-stack implementation",
       "Treating controlled counted-domain expansion as externality widening",
       "Treating adapter evolution authorization as learned-router or multi-lobe superiority",
       "Treating lab-only posture as commercial activation",
@@ -91,6 +96,6 @@
     ],
     "no_count_before_decision": false
   },
-  "next_lawful_move": "B04_GATE_D_CIVILIZATION_ACTIVATE__SEPARATE_LAUNCH_SURFACE_REQUIRED",
-  "claim_boundary": "This packet freezes the selected Gate D posture set only. It does not activate B04 implementation, does not widen externality above E1, does not open external comparative claims, and does not activate commercial deployment."
+  "next_lawful_move": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
+  "claim_boundary": "This packet now freezes the selected Gate D posture set together with the B04 launch surface. It opens only the lawful civilization ratification lane and the first ordered ratification step; it does not implement the civilization stack or widen externality, comparative claims, or commercial scope."
 }

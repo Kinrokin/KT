@@ -10,6 +10,7 @@ from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, 
 
 
 DEFAULT_GATE_D_DECISION_LAW_REL = "KT_PROD_CLEANROOM/governance/gate_d_decision_law.json"
+DEFAULT_B04_LAUNCH_CONTRACT_REL = "KT_PROD_CLEANROOM/governance/b04_civilization_activation_launch_contract.json"
 DEFAULT_GATE_D_DECISION_REANCHOR_PACKET_REL = "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json"
 DEFAULT_GATE_D_DECISION_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/gate_d_decision_receipt.json"
 DEFAULT_NEXT_WORKSTREAM_CONTRACT_REL = "KT_PROD_CLEANROOM/reports/next_counted_workstream_contract.json"
@@ -105,6 +106,21 @@ def _build_non_default_bindings() -> List[Dict[str, Any]]:
     ]
 
 
+def _launch_surface_allows_progress(root: Path, next_contract: Dict[str, Any]) -> bool:
+    contract_path = root / DEFAULT_B04_LAUNCH_CONTRACT_REL
+    if not contract_path.exists():
+        return False
+    launch_contract = load_json(contract_path)
+    return (
+        str(launch_contract.get("activation_mode", "")).strip() == "LAUNCH_SURFACE_ONLY_NO_IMPLEMENTATION"
+        and str(launch_contract.get("first_ratification_step_id", "")).strip() == "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION"
+        and str(launch_contract.get("next_lawful_move_after_launch", "")).strip() == "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION"
+        and str(next_contract.get("exact_next_counted_workstream_id", "")).strip() == "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION"
+        and str(next_contract.get("execution_mode", "")).strip() == "CIVILIZATION_RATIFICATION_ORDER_LOCKED__FIRST_STEP_ONLY"
+        and bool(next_contract.get("repo_state_executable_now")) is True
+    )
+
+
 def build_gate_d_decision_receipt(*, root: Path) -> Dict[str, Any]:
     current_head = _git_head(root)
     law = load_json(root / DEFAULT_GATE_D_DECISION_LAW_REL)
@@ -198,9 +214,12 @@ def build_gate_d_decision_receipt(*, root: Path) -> Dict[str, Any]:
         },
         {
             "check_id": "next_contract_after_selection_requires_separate_b04_launch_surface",
-            "pass": str(next_contract.get("exact_next_counted_workstream_id", "")).strip() == "B04_GATE_D_CIVILIZATION_ACTIVATE"
-            and str(next_contract.get("execution_mode", "")).strip() == "POSTURES_SELECTED__SEPARATE_LAUNCH_SURFACE_REQUIRED"
-            and bool(next_contract.get("repo_state_executable_now")) is False,
+            "pass": (
+                str(next_contract.get("exact_next_counted_workstream_id", "")).strip() == "B04_GATE_D_CIVILIZATION_ACTIVATE"
+                and str(next_contract.get("execution_mode", "")).strip() == "POSTURES_SELECTED__SEPARATE_LAUNCH_SURFACE_REQUIRED"
+                and bool(next_contract.get("repo_state_executable_now")) is False
+            )
+            or _launch_surface_allows_progress(root, next_contract),
         },
         {
             "check_id": "receipt_is_same_head_selection_artifact",
