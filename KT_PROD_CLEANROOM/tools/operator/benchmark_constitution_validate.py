@@ -111,6 +111,12 @@ T17_EXPECTED_MUTATE_PATHS = [
     "KT_PROD_CLEANROOM/tests/operator/test_b03_t15_receipt_final_head_authority_alignment.py",
     "KT_PROD_CLEANROOM/tests/operator/test_b03_counted_receipt_family_same_head_authority_contract.py",
 ]
+T18_EXPECTED_MUTATE_PATHS = [
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_counted_receipt_family_same_head_authority_contract.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_t17_receipt_final_head_authority_alignment.py",
+]
 ALLOWED_PREWRITE_DIRTY = {
     path
     for path in [
@@ -118,6 +124,7 @@ ALLOWED_PREWRITE_DIRTY = {
         *T5_EXPECTED_MUTATE_PATHS,
         *T6_EXPECTED_MUTATE_PATHS,
         *T17_EXPECTED_MUTATE_PATHS,
+        *T18_EXPECTED_MUTATE_PATHS,
         DEFAULT_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_REL,
         "KT_PROD_CLEANROOM/tests/operator/test_b03_documentary_carrier_guard_centralization.py",
         "KT_PROD_CLEANROOM/tests/operator/test_b03_shared_guard_single_path_enforcement.py",
