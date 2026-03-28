@@ -107,6 +107,7 @@ ALLOWED_PREWRITE_DIRTY = {
         "KT_PROD_CLEANROOM/tests/operator/test_b03_documentary_carrier_guard_centralization.py",
         "KT_PROD_CLEANROOM/tests/operator/test_b03_shared_guard_single_path_enforcement.py",
         "KT_PROD_CLEANROOM/tests/operator/test_b03_counted_consumer_allowlist_contract_binding.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_b03_t15_receipt_final_head_authority_alignment.py",
     ]
     if path != DEFAULT_WRITE_SCOPE_RECEIPT_REL
 }
