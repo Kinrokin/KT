@@ -201,6 +201,12 @@ T24_EXPECTED_MUTATE_PATHS = [
     DEFAULT_FINAL_CURRENT_HEAD_ADJUDICATION_RECEIPT_REL,
     "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_authority_binding_receipt.json",
 ]
+GATE_C_EXIT_ADJUDICATION_EXPECTED_MUTATE_PATHS = [
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_gate_c_exit_adjudication.py",
+    "KT_PROD_CLEANROOM/reports/gate_c_exit_adjudication_receipt.json",
+]
 ALLOWED_PREWRITE_DIRTY = {
     path
     for path in [
@@ -216,6 +222,7 @@ ALLOWED_PREWRITE_DIRTY = {
         *T23_EXPECTED_MUTATE_PATHS,
         *GATE_C_EXIT_CRITERIA_CONTRACT_EXPECTED_MUTATE_PATHS,
         *T24_EXPECTED_MUTATE_PATHS,
+        *GATE_C_EXIT_ADJUDICATION_EXPECTED_MUTATE_PATHS,
         DEFAULT_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_REL,
         "KT_PROD_CLEANROOM/tests/operator/test_b03_documentary_carrier_guard_centralization.py",
         "KT_PROD_CLEANROOM/tests/operator/test_b03_shared_guard_single_path_enforcement.py",
