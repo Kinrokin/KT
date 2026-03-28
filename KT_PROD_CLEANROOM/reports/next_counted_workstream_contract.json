@@ -1,13 +1,13 @@
 {
   "schema_id": "kt.next_counted_workstream_contract.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T02:50:02Z",
+  "generated_utc": "2026-03-28T03:15:26Z",
   "source_workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "current_counted_gate": "Gate C",
   "parent_batch_id": "B03_GATE_C_CAPABILITY_FORCING",
-  "exact_next_counted_workstream_id": "B03_T17_COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT",
+  "exact_next_counted_workstream_id": "B03_T18_T17_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
-  "workstream_objective": "Bind the same-head authority rule into a shared counted-receipt-family contract so future counted receipt families cannot skip subject_head-matched authority law. Earn no comparator refresh, no comparator-semantic changes, no new comparator rows, no capability widening, and no Gate C exit in tranche 17.",
+  "workstream_objective": "Align authority semantics for the retained T17 counted receipt so the tracked T17 carrier on main is non-authoritative on subject_head mismatch and only same-head T17 proof can control. Earn no comparator refresh, no comparator-semantic changes, no new comparator rows, no capability widening, and no Gate C exit in tranche 18.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "canonical_receipt_binding": {
     "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
@@ -27,7 +27,8 @@
     "documentary_carrier_guard_centralization_receipt_ref": "KT_PROD_CLEANROOM/reports/documentary_carrier_guard_centralization_receipt.json",
     "shared_guard_single_path_enforcement_receipt_ref": "KT_PROD_CLEANROOM/reports/shared_guard_single_path_enforcement_receipt.json",
     "counted_consumer_allowlist_contract_binding_receipt_ref": "KT_PROD_CLEANROOM/reports/counted_consumer_allowlist_contract_binding_receipt.json",
-    "t15_receipt_final_head_authority_alignment_receipt_ref": "KT_PROD_CLEANROOM/reports/t15_receipt_final_head_authority_alignment_receipt.json"
+    "t15_receipt_final_head_authority_alignment_receipt_ref": "KT_PROD_CLEANROOM/reports/t15_receipt_final_head_authority_alignment_receipt.json",
+    "counted_receipt_family_same_head_authority_contract_receipt_ref": "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json"
   },
   "gate_domain_product_split": {
     "gate": "Gate C frozen capability forcing under comparator law",
@@ -35,42 +36,38 @@
     "product_surface": "NONE_COUNTING"
   },
   "prerequisite_read": {
+    "b03_t17_same_head_authority_contract": "C:/Users/rober/AppData/Local/Temp/b03_t17_verify_20260327_221033/counted_receipt_family_same_head_authority_contract_receipt.json",
     "b03_t16_t15_authority_alignment": "C:/Users/rober/AppData/Local/Temp/b03_t16_verify_20260327_2147/t15_receipt_final_head_authority_alignment_receipt.json",
-    "b03_t15_allowlist_binding": "C:/Users/rober/AppData/Local/Temp/b03_t15_verify_20260327_2207/counted_consumer_allowlist_contract_binding_receipt.json",
     "b03_t11_t10_authority_alignment": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b03_t11_verify_20260327_1902/KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json",
     "omega_batch_definition": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json",
     "v11_closure_map": "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.json"
   },
   "expected_mutate_paths": [
     "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
-    "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
-    "KT_PROD_CLEANROOM/tests/operator/test_b03_t10_receipt_final_head_authority_alignment.py",
-    "KT_PROD_CLEANROOM/tests/operator/test_b03_t15_receipt_final_head_authority_alignment.py",
     "KT_PROD_CLEANROOM/tests/operator/test_b03_counted_receipt_family_same_head_authority_contract.py",
-    "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json"
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_t17_receipt_final_head_authority_alignment.py",
+    "KT_PROD_CLEANROOM/reports/t17_receipt_final_head_authority_alignment_receipt.json"
   ],
   "expected_create_if_absent_targets": [
-    "KT_PROD_CLEANROOM/tests/operator/test_b03_counted_receipt_family_same_head_authority_contract.py",
-    "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json"
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_t17_receipt_final_head_authority_alignment.py",
+    "KT_PROD_CLEANROOM/reports/t17_receipt_final_head_authority_alignment_receipt.json"
   ],
   "expected_receipts": [
-    "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json"
+    "KT_PROD_CLEANROOM/reports/t17_receipt_final_head_authority_alignment_receipt.json"
   ],
   "rollback_artifacts": {
-    "pre_mutation_patch_ref": "tmp/worktree_snapshots/b03_t17_pre_mutation.patch",
-    "pre_mutation_status_ref": "tmp/worktree_snapshots/b03_t17_pre_mutation.status.txt",
-    "pre_mutation_contract_snapshot_dir": "tmp/worktree_snapshots/b03_t17_contract_snapshot",
+    "pre_mutation_patch_ref": "tmp/worktree_snapshots/b03_t18_pre_mutation.patch",
+    "pre_mutation_status_ref": "tmp/worktree_snapshots/b03_t18_pre_mutation.status.txt",
+    "pre_mutation_contract_snapshot_dir": "tmp/worktree_snapshots/b03_t18_contract_snapshot",
     "tracked_restore_refs": [
       "HEAD:KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
-      "HEAD:KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
       "HEAD:KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
-      "HEAD:KT_PROD_CLEANROOM/tests/operator/test_b03_t10_receipt_final_head_authority_alignment.py",
-      "HEAD:KT_PROD_CLEANROOM/tests/operator/test_b03_t15_receipt_final_head_authority_alignment.py"
+      "HEAD:KT_PROD_CLEANROOM/tests/operator/test_b03_counted_receipt_family_same_head_authority_contract.py"
     ],
     "remove_if_created": [
-      "KT_PROD_CLEANROOM/tests/operator/test_b03_counted_receipt_family_same_head_authority_contract.py",
-      "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json"
+      "KT_PROD_CLEANROOM/tests/operator/test_b03_t17_receipt_final_head_authority_alignment.py",
+      "KT_PROD_CLEANROOM/reports/t17_receipt_final_head_authority_alignment_receipt.json"
     ]
   },
   "measurement_scope": {
@@ -93,7 +90,8 @@
       "KT_PROD_CLEANROOM/reports/shared_guard_single_path_enforcement_receipt.json",
       "KT_PROD_CLEANROOM/reports/counted_consumer_allowlist_contract_binding_receipt.json",
       "KT_PROD_CLEANROOM/reports/t15_receipt_final_head_authority_alignment_receipt.json",
-      "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json"
+      "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json",
+      "KT_PROD_CLEANROOM/reports/t17_receipt_final_head_authority_alignment_receipt.json"
     ],
     "forbidden_measured_surfaces": [
       "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
@@ -106,42 +104,40 @@
       "KT_PROD_CLEANROOM/governance/final_tier_ruling.json",
       "KT_PROD_CLEANROOM/product/final_product_truth_boundary.json"
     ],
-    "rule": "Tranche 17 may only bind same-head authority as shared contract law for counted receipt families and prove T10/T15 family adoption. It may not alter comparator semantics, canonical receipts, measured row sets, or Gate C standing."
+    "rule": "Tranche 18 may only align authority semantics for the retained T17 counted receipt and prove tracked T17 carrier overread fails closed on subject_head mismatch. It may not alter comparator semantics, canonical receipts, measured row sets, or Gate C standing."
   },
   "validators_and_tests": {
     "validators": [
-      "python -m tools.operator.e1_bounded_campaign_validate",
       "python -m tools.operator.w3_externality_and_comparative_proof_validate"
     ],
     "tests": [
-      "python -m pytest -o addopts='' tests/operator/test_b03_t10_receipt_final_head_authority_alignment.py -q",
-      "python -m pytest -o addopts='' tests/operator/test_b03_t15_receipt_final_head_authority_alignment.py -q",
-      "python -m pytest -o addopts='' tests/operator/test_b03_counted_receipt_family_same_head_authority_contract.py -q"
+      "python -m pytest -o addopts='' tests/operator/test_b03_counted_receipt_family_same_head_authority_contract.py -q",
+      "python -m pytest -o addopts='' tests/operator/test_b03_t17_receipt_final_head_authority_alignment.py -q"
     ]
   },
   "stop_conditions": [
     "Any mutate path outside expected_mutate_paths fails tranche authorization.",
-    "Any tracked comparator receipt other than counted_receipt_family_same_head_authority_contract_receipt.json is rewritten under tranche 17.",
-    "Any counted receipt family can still become authoritative across heads without matching subject_head after tranche 17.",
-    "Any attempt is made to refresh T10 or T15 comparator truth rather than bind shared authority law.",
-    "Any comparator semantics are rewritten under a receipt-family authority-contract label.",
+    "Any tracked comparator receipt other than t17_receipt_final_head_authority_alignment_receipt.json is rewritten under tranche 18.",
+    "Any consumer path can still overread the tracked T17 carrier receipt as authoritative final-head proof after tranche 18.",
+    "Any attempt is made to refresh T17 comparator truth rather than align T17 authority semantics only.",
+    "Any comparator semantics are rewritten under a T17 receipt authority-alignment label.",
     "Any new comparator row is introduced.",
     "Any planner, paradox, multiverse, router, memory, civilization, externality, or product widening enters counted scope.",
-    "Any attempt is made to claim Gate C exit from tranche 17.",
+    "Any attempt is made to claim Gate C exit from tranche 18.",
     "Any Gate D promotion packet is counted toward Gate C."
   ],
   "pass_fail_criteria": {
     "pass": [
-      "A machine-readable receipt proves same-head authority is contract-bound for counted receipt families rather than family-specific custom logic only.",
-      "A machine-readable receipt proves both T10 and T15 counted receipt families adopt the shared same-head authority rule.",
-      "A machine-readable receipt proves future counted receipt families cannot bypass subject_head-matched authority law without explicit contract adoption.",
+      "A machine-readable receipt proves the tracked T17 receipt is carrier-only when subject_head differs from the sealed verification head.",
+      "A machine-readable receipt proves overreading the tracked T17 carrier as final-head proof fails closed.",
+      "A machine-readable receipt proves authoritative T17 proof requires same-head subject binding on the sealed verification head.",
       "A machine-readable receipt proves baseline_vs_live_scorecard.json remains the sole canonical Gate C comparator truth.",
       "A machine-readable receipt proves no comparator semantic widening or Gate C exit claim occurred."
     ],
     "fail": [
-      "Any counted receipt family still accepts cross-head authority without matching subject_head.",
-      "Any new counted receipt family can ship without explicit same-head authority contract adoption.",
-      "Any comparator semantics or row set changes under the tranche-17 label.",
+      "Any consumer path still accepts tracked T17 carrier state as authoritative across heads.",
+      "Any T17 comparator truth is refreshed instead of authority semantics being aligned.",
+      "Any comparator semantics or row set changes under the tranche-18 label.",
       "Any Gate C exit or Gate D counting claim is made."
     ]
   },
@@ -151,7 +147,7 @@
     "promotion civilization as Gate C work",
     "new comparator rows",
     "comparator-semantic rewrite",
-    "refresh of T10 or T15 comparator truth",
+    "refresh of T17 comparator truth",
     "planner widening",
     "paradox widening",
     "multiverse widening",
@@ -164,5 +160,5 @@
     "new canonical concepts without schema plus validator plus receipt plus rollback plus claim ceiling plus terminal state"
   ],
   "repo_state_executable_now": true,
-  "execution_readiness": "READY_FOR_EXPLICIT_B03_T17_AUTHORIZATION_ONLY"
+  "execution_readiness": "READY_FOR_EXPLICIT_B03_T18_AUTHORIZATION_ONLY"
 }

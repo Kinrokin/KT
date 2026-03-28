@@ -1,46 +1,45 @@
 {
   "schema_id": "kt.resume_blockers_receipt.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T02:50:02Z",
+  "generated_utc": "2026-03-28T03:15:26Z",
   "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "c92c9492b67270def8282b3e038d2cba1bd8de99",
+  "current_git_head": "d3ed7831eadd75f310a460915ffec6b493dcfbcb",
   "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
   "repo_state_executable_now": true,
   "blocking_state": "NONE",
   "blocking_reasons": [],
   "nonblocking_conflicts": [
     {
-      "conflict_id": "COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_DRIFT_RISK",
+      "conflict_id": "T17_TRACKED_CARRIER_OVERREAD_RISK",
       "class": "COUNTED_GATE_C_NARROW_RISK",
       "evidence": [
-        "B03 T16 earned an authoritative clean-clone receipt on sealed head c92c9492b67270def8282b3e038d2cba1bd8de99 proving the tracked T15 carrier on main is documentary-only on subject_head mismatch.",
-        "B03 T11 already proved the same authority rule for the T10 receipt family.",
-        "The remaining narrow risk is family drift: future counted receipt families can reintroduce carrier-versus-authority ambiguity unless same-head authority becomes shared contract law."
+        "B03 T17 earned an authoritative clean-clone receipt on sealed head d3ed7831eadd75f310a460915ffec6b493dcfbcb proving same-head authority is shared counted-receipt-family contract law.",
+        "The tracked T17 receipt on main was sealed as a carrier artifact for pre-receipt head 4aa5c211b1c98e0424d5d2e078966fa604fafd0f.",
+        "The remaining narrow risk is overread: future consumers can misgrade the tracked T17 carrier as authoritative final-head proof unless T17 final-head authority alignment is made explicit and fail-closed."
       ],
-      "resolution_rule": "Next counted workstream is B03_T17_COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT only. This risk does not reopen lower gates and does not authorize comparator widening, Gate C exit, or any Gate D work."
+      "resolution_rule": "Next counted workstream is B03_T18_T17_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT only. This risk does not reopen lower gates and does not authorize comparator widening, Gate C exit, or any Gate D work."
     }
   ],
   "current_lawful_gate_standing": {
     "b02_runtime_unification": "EXITED",
-    "gate_c": "OPEN_TRANCHES_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_COMPLETE_NOT_EXITED",
+    "gate_c": "OPEN_TRANCHES_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_COMPLETE_NOT_EXITED",
     "gate_d": "NOT_AUTHORIZED"
   },
-  "exact_next_counted_workstream_id": "B03_T17_COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT",
+  "exact_next_counted_workstream_id": "B03_T18_T17_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT",
   "explicit_non_go_areas": [
     "Do not restart B00, B01, or B02 without regression proof.",
     "Do not count Gate D toward Gate C.",
-    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 17.",
-    "Do not add new comparator rows in Gate C tranche 17.",
-    "Do not rewrite comparator semantics under the receipt-family authority-contract tranche.",
-    "Do not refresh T10 or T15 comparator truth under tranche 17.",
-    "Do not allow future counted receipt families to bypass same-head authority law.",
+    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 18.",
+    "Do not add new comparator rows in Gate C tranche 18.",
+    "Do not rewrite comparator semantics under the T17 authority-alignment tranche.",
+    "Do not refresh T17 comparator truth under tranche 18.",
     "Do not widen civilization, externality, or product claims.",
     "Do not use buyer-language beyond the narrowest validated wedge.",
     "Do not attempt Gate C exit in this launch-surface pass."
   ],
-  "why_executable_now": "The repo is clean, B03 tranche 16 is sealed and verified, and the remaining Gate C risk is a narrow receipt-family authority-contract task that can be closed without comparator or capability widening."
+  "why_executable_now": "The repo is clean, B03 tranche 17 is sealed and verified, and the remaining Gate C risk is a narrow T17 receipt authority-alignment task that can be closed without comparator or capability widening."
 }
