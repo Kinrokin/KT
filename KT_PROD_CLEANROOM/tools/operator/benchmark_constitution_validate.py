@@ -58,6 +58,12 @@ COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF = (
 COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF = (
     "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py"
 )
+TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_REF = (
+    "tools.operator.benchmark_constitution_validate.evaluate_tracked_counted_receipt_carrier_overread"
+)
+TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF = (
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py"
+)
 DOCUMENTARY_CARRIER_GUARD_HELPER_REF = "tools.operator.benchmark_constitution_validate.evaluate_documentary_carrier_fail_closed_consumer_guard"
 DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF = "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py"
 DOCUMENTARY_CARRIER_GUARD_ALLOWED_CONSUMER_REFS = [
@@ -117,6 +123,12 @@ T18_EXPECTED_MUTATE_PATHS = [
     "KT_PROD_CLEANROOM/tests/operator/test_b03_counted_receipt_family_same_head_authority_contract.py",
     "KT_PROD_CLEANROOM/tests/operator/test_b03_t17_receipt_final_head_authority_alignment.py",
 ]
+T19_EXPECTED_MUTATE_PATHS = [
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_tracked_counted_receipt_carrier_overread_contract.py",
+    "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_carrier_overread_contract_receipt.json",
+]
 ALLOWED_PREWRITE_DIRTY = {
     path
     for path in [
@@ -125,6 +137,7 @@ ALLOWED_PREWRITE_DIRTY = {
         *T6_EXPECTED_MUTATE_PATHS,
         *T17_EXPECTED_MUTATE_PATHS,
         *T18_EXPECTED_MUTATE_PATHS,
+        *T19_EXPECTED_MUTATE_PATHS,
         DEFAULT_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_REL,
         "KT_PROD_CLEANROOM/tests/operator/test_b03_documentary_carrier_guard_centralization.py",
         "KT_PROD_CLEANROOM/tests/operator/test_b03_shared_guard_single_path_enforcement.py",
@@ -475,15 +488,52 @@ def evaluate_counted_receipt_family_same_head_authority(
     current_head: str,
     authoritative_current_head_payload: Dict[str, Any],
 ) -> Dict[str, Any]:
-    tracked_contract = _consume_emitted_receipt_contract(
-        receipt_ref=tracked_receipt_ref,
-        payload=tracked_payload,
+    tracked_overread_contract = evaluate_tracked_counted_receipt_carrier_overread(
+        tracked_receipt_ref=tracked_receipt_ref,
+        tracked_payload=tracked_payload,
         allowed_roles=list(allowed_roles),
-        requested_head=current_head,
+        current_head=current_head,
     )
     authoritative_current_head_candidate_contract = _consume_emitted_receipt_contract(
         receipt_ref=f"IN_MEMORY_CURRENT_HEAD_{receipt_family_id}_CANDIDATE",
         payload=authoritative_current_head_payload,
+        allowed_roles=list(allowed_roles),
+        requested_head=current_head,
+    )
+    return {
+        "receipt_family_id": receipt_family_id,
+        "same_head_authority_contract_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF,
+        "same_head_authority_contract_owner_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF,
+        "tracked_counted_receipt_carrier_overread_contract_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_REF,
+        "tracked_counted_receipt_carrier_overread_contract_owner_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF,
+        "allowed_roles": list(allowed_roles),
+        "requested_head": current_head,
+        "tracked_receipt_ref": tracked_receipt_ref,
+        "tracked_subject_head": tracked_overread_contract["tracked_subject_head"],
+        "tracked_current_git_head": tracked_overread_contract["tracked_current_git_head"],
+        "tracked_authority_class": tracked_overread_contract["tracked_authority_class"],
+        "tracked_contract": tracked_overread_contract["tracked_contract"],
+        "tracked_counted_receipt_carrier_overread_rule": tracked_overread_contract[
+            "tracked_counted_receipt_carrier_overread_rule"
+        ],
+        "authoritative_current_head_candidate_contract": authoritative_current_head_candidate_contract,
+        "authoritative_final_head_rule": (
+            "Only counted receipts whose subject_head matches the requested_head can be authoritative. "
+            "When subject_head differs, the tracked receipt is documentary carrier only."
+        ),
+    }
+
+
+def evaluate_tracked_counted_receipt_carrier_overread(
+    *,
+    tracked_receipt_ref: str,
+    tracked_payload: Dict[str, Any],
+    allowed_roles: Sequence[str],
+    current_head: str,
+) -> Dict[str, Any]:
+    tracked_contract = _consume_emitted_receipt_contract(
+        receipt_ref=tracked_receipt_ref,
+        payload=tracked_payload,
         allowed_roles=list(allowed_roles),
         requested_head=current_head,
     )
@@ -496,9 +546,8 @@ def evaluate_counted_receipt_family_same_head_authority(
         else "NONAUTHORITATIVE_INVALID_TRACKED_RECEIPT"
     )
     return {
-        "receipt_family_id": receipt_family_id,
-        "same_head_authority_contract_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF,
-        "same_head_authority_contract_owner_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF,
+        "tracked_counted_receipt_carrier_overread_contract_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_REF,
+        "tracked_counted_receipt_carrier_overread_contract_owner_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF,
         "allowed_roles": list(allowed_roles),
         "requested_head": current_head,
         "tracked_receipt_ref": tracked_receipt_ref,
@@ -506,10 +555,9 @@ def evaluate_counted_receipt_family_same_head_authority(
         "tracked_current_git_head": str(tracked_payload.get("current_git_head", "")).strip(),
         "tracked_authority_class": tracked_authority_class,
         "tracked_contract": tracked_contract,
-        "authoritative_current_head_candidate_contract": authoritative_current_head_candidate_contract,
-        "authoritative_final_head_rule": (
-            "Only counted receipts whose subject_head matches the requested_head can be authoritative. "
-            "When subject_head differs, the tracked receipt is documentary carrier only."
+        "tracked_counted_receipt_carrier_overread_rule": (
+            "Tracked counted receipts with subject_head different from the requested head are documentary carrier only "
+            "and must fail closed on authority overread."
         ),
     }
 

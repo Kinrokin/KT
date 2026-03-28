@@ -17,6 +17,8 @@ from tools.operator.benchmark_constitution_validate import (
     ROLE_BASELINE_SCORECARD,
     ROLE_BENCHMARK_RECEIPT,
     ROLE_T11_FINAL_HEAD_AUTHORITY_ALIGNMENT as T11_RECEIPT_ROLE,
+    TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF,
+    TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_REF,
     DEFAULT_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL as T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
     _consume_emitted_receipt_contract,
     _enforce_write_scope_post,
@@ -25,6 +27,7 @@ from tools.operator.benchmark_constitution_validate import (
     _payloads,
     build_documentary_carrier_guard_single_path_barrier,
     evaluate_counted_receipt_family_same_head_authority,
+    evaluate_tracked_counted_receipt_carrier_overread,
     load_counted_consumer_allowlist_contract,
     build_receipt as build_benchmark_receipt,
     evaluate_documentary_carrier_fail_closed_consumer_guard as evaluate_shared_documentary_carrier_fail_closed_consumer_guard,
@@ -78,6 +81,11 @@ T17_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL = (
 )
 T18_TRANCHE_ID = "B03_T18_T17_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT"
 T18_RECEIPT_ROLE = "COUNTED_T18_T17_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"
+TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_RECEIPT_REL = (
+    f"{REPORT_ROOT_REL}/tracked_counted_receipt_carrier_overread_contract_receipt.json"
+)
+T19_TRANCHE_ID = "B03_T19_TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT"
+T19_RECEIPT_ROLE = "COUNTED_T19_TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_ARTIFACT_ONLY"
 ROLE_ALIAS_RETIREMENT = "ALIAS_RETIREMENT_PROOF"
 ROLE_VALIDATOR_ALIAS_DETACHMENT = "VALIDATOR_ALIAS_DETACHMENT_PROOF"
 
@@ -788,6 +796,131 @@ def build_t17_receipt_final_head_authority_alignment_receipt(*, root: Path) -> D
     }
 
 
+def build_tracked_counted_receipt_carrier_overread_contract_receipt(*, root: Path) -> Dict[str, Any]:
+    current_head = _git_head(root)
+    baseline_scorecard = _payloads(root, utc_now_iso_z())["scorecard"]
+    benchmark_source = inspect.getsource(evaluate_counted_receipt_family_same_head_authority)
+    tracked_t10_receipt = load_json(root / T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL)
+    tracked_t15_receipt = load_json(root / T15_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL)
+    tracked_t17_receipt = load_json(root / COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_RECEIPT_REL)
+
+    t10_probe = evaluate_tracked_counted_receipt_carrier_overread(
+        tracked_receipt_ref=T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
+        tracked_payload=tracked_t10_receipt,
+        allowed_roles=[T11_RECEIPT_ROLE],
+        current_head=current_head,
+    )
+    t15_probe = evaluate_tracked_counted_receipt_carrier_overread(
+        tracked_receipt_ref=T15_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
+        tracked_payload=tracked_t15_receipt,
+        allowed_roles=[T16_RECEIPT_ROLE],
+        current_head=current_head,
+    )
+    t17_probe = evaluate_tracked_counted_receipt_carrier_overread(
+        tracked_receipt_ref=COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_RECEIPT_REL,
+        tracked_payload=tracked_t17_receipt,
+        allowed_roles=[T17_RECEIPT_ROLE],
+        current_head=current_head,
+    )
+    generic_probe_role = "COUNTED_GENERIC_TRACKED_RECEIPT_CARRIER_OVERREAD_SYNTHETIC_ROLE"
+    generic_probe = evaluate_tracked_counted_receipt_carrier_overread(
+        tracked_receipt_ref="IN_MEMORY_SYNTHETIC_TRACKED_COUNTED_RECEIPT_CARRIER",
+        tracked_payload={
+            "receipt_role": generic_probe_role,
+            "subject_head": "0000000000000000000000000000000000000000",
+            "current_git_head": "",
+        },
+        allowed_roles=[generic_probe_role],
+        current_head=current_head,
+    )
+    generic_same_head_candidate = _consume_emitted_receipt_contract(
+        receipt_ref="IN_MEMORY_CURRENT_HEAD_SYNTHETIC_TRACKED_COUNTED_RECEIPT_CARRIER_CANDIDATE",
+        payload={
+            "receipt_role": generic_probe_role,
+            "subject_head": current_head,
+        },
+        allowed_roles=[generic_probe_role],
+        requested_head=current_head,
+    )
+    probes = {
+        "t10_family": t10_probe,
+        "t15_family": t15_probe,
+        "t17_family": t17_probe,
+        "generic_future_family": generic_probe,
+    }
+    checks = [
+        {
+            "check_id": "shared_overread_helper_owner_ref_matches_benchmark",
+            "pass": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF
+            == "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+        },
+        {
+            "check_id": "same_head_authority_contract_uses_shared_overread_helper",
+            "pass": "evaluate_tracked_counted_receipt_carrier_overread(" in benchmark_source,
+        },
+        {
+            "check_id": "t10_tracked_counted_receipt_carrier_overread_fails_closed",
+            "pass": t10_probe["tracked_authority_class"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
+            and t10_probe["tracked_contract"]["blocked"] is True
+            and t10_probe["tracked_contract"]["failure_reason"] == "SUBJECT_HEAD_MISMATCH",
+        },
+        {
+            "check_id": "t15_tracked_counted_receipt_carrier_overread_fails_closed",
+            "pass": t15_probe["tracked_authority_class"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
+            and t15_probe["tracked_contract"]["blocked"] is True
+            and t15_probe["tracked_contract"]["failure_reason"] == "SUBJECT_HEAD_MISMATCH",
+        },
+        {
+            "check_id": "t17_tracked_counted_receipt_carrier_overread_fails_closed",
+            "pass": t17_probe["tracked_authority_class"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
+            and t17_probe["tracked_contract"]["blocked"] is True
+            and t17_probe["tracked_contract"]["failure_reason"] == "SUBJECT_HEAD_MISMATCH",
+        },
+        {
+            "check_id": "generic_future_family_cross_head_receipt_is_carrier_only",
+            "pass": generic_probe["tracked_authority_class"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
+            and generic_probe["tracked_contract"]["blocked"] is True
+            and generic_probe["tracked_contract"]["failure_reason"] == "SUBJECT_HEAD_MISMATCH",
+        },
+        {
+            "check_id": "same_head_authority_remains_required_for_authority",
+            "pass": generic_same_head_candidate["pass"] is True
+            and generic_same_head_candidate["blocked"] is False
+            and str(generic_same_head_candidate["subject_head"]).strip() == current_head,
+        },
+        {
+            "check_id": "baseline_scorecard_remains_sole_canonical_comparator_truth",
+            "pass": str(baseline_scorecard.get("receipt_role", "")).strip() == ROLE_BASELINE_SCORECARD,
+        },
+    ]
+    return {
+        "schema_id": "kt.gate_c_t19.tracked_counted_receipt_carrier_overread_contract_receipt.v1",
+        "generated_utc": utc_now_iso_z(),
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": T19_RECEIPT_ROLE,
+        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "tranche_id": T19_TRANCHE_ID,
+        "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        "canonical_receipt_binding": {
+            "baseline_vs_live_scorecard_ref": BASELINE_SCORECARD_REL,
+            "t10_final_head_authority_alignment_receipt_ref": T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
+            "t15_final_head_authority_alignment_receipt_ref": T15_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
+            "t17_final_head_authority_alignment_receipt_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_RECEIPT_REL,
+        },
+        "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+        "tracked_counted_receipt_carrier_overread_contract_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_REF,
+        "tracked_counted_receipt_carrier_overread_contract_owner_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF,
+        "tracked_counted_receipt_carrier_overread_rule": generic_probe[
+            "tracked_counted_receipt_carrier_overread_rule"
+        ],
+        "tracked_receipt_family_probes": probes,
+        "authoritative_current_head_generic_candidate_contract": generic_same_head_candidate,
+        "checks": checks,
+        "claim_boundary": "T19 universalizes tracked counted receipt carrier overread handling only. It does not refresh comparator truth, widen comparator semantics, add comparator rows, or claim Gate C exit.",
+    }
+
+
 def build_e2_cross_host_replay_receipt(*, root: Path) -> Dict[str, Any]:
     truth_lock = _truth_lock(root)
     externality_matrix = load_json(root / EXTERNALITY_MATRIX_REL)
@@ -962,6 +1095,11 @@ def _build_argument_parser() -> argparse.ArgumentParser:
         "--t17-receipt-final-head-authority-alignment-output",
         default=T17_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
     )
+    parser.add_argument("--emit-tracked-counted-receipt-carrier-overread-contract-receipt", action="store_true")
+    parser.add_argument(
+        "--tracked-counted-receipt-carrier-overread-contract-output",
+        default=TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_RECEIPT_REL,
+    )
     return parser
 
 
@@ -1098,6 +1236,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         )
         if written:
             allowed_repo_writes.append(written)
+    if args.emit_tracked_counted_receipt_carrier_overread_contract_receipt:
+        t19_receipt = build_tracked_counted_receipt_carrier_overread_contract_receipt(root=root)
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.tracked_counted_receipt_carrier_overread_contract_output)),
+            payload=t19_receipt,
+            default_rel=TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_RECEIPT_REL,
+            allow_default_repo_write=args.allow_tracked_output_refresh,
+        )
+        if written:
+            allowed_repo_writes.append(written)
     _enforce_write_scope_post(root, prewrite_dirty=prewrite_dirty, allowed_repo_writes=allowed_repo_writes)
 
     result = {
@@ -1118,6 +1267,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         result["counted_receipt_family_same_head_authority_contract_status"] = t17_receipt["status"]
     if args.emit_t17_receipt_final_head_authority_alignment_receipt:
         result["t17_receipt_final_head_authority_alignment_status"] = t18_receipt["status"]
+    if args.emit_tracked_counted_receipt_carrier_overread_contract_receipt:
+        result["tracked_counted_receipt_carrier_overread_contract_status"] = t19_receipt["status"]
     print(json.dumps(result, sort_keys=True))
     return 0 if result["status"] == "PASS" else 1
 
