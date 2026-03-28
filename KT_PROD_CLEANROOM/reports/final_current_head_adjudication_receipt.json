@@ -21,6 +21,26 @@
       "ref": "KT_PROD_CLEANROOM/governance/final_claim_class_outcome.json"
     },
     {
+      "check_id": "canonical_baseline_scorecard_still_passes",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json"
+    },
+    {
+      "check_id": "competitive_alias_detachment_still_passes",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
+    },
+    {
+      "check_id": "side_reader_contract_adoption_still_passes",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json"
+    },
+    {
+      "check_id": "documentary_carrier_mismatch_fails_closed_in_consumer_path",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json"
+    },
+    {
       "check_id": "router_and_lobe_promotions_remain_unearned",
       "pass": true,
       "ref": "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json"
@@ -34,6 +54,16 @@
       "check_id": "final_product_truth_boundary_stays_bounded",
       "pass": true,
       "ref": "KT_PROD_CLEANROOM/product/final_product_truth_boundary.json"
+    },
+    {
+      "check_id": "gate_c_exit_contract_remains_definition_only_and_nonadjudicated",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/gate_c_exit_criteria_contract.json"
+    },
+    {
+      "check_id": "exit_contract_future_adjudication_family_ref_matches_final_current_receipt",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/gate_c_exit_criteria_contract.json"
     }
   ],
   "claim_boundary": "This receipt is the final current-head adjudication compiled from live W0-W7 evidence only. It does not use historical uplift or documentary substitution to widen current-head truth.",
@@ -53,11 +83,77 @@
     "KT_PROD_CLEANROOM/reports/standards_mapping_receipt.json",
     "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json",
     "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
-    "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
+    "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+    "KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
+    "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
+    "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
+    "KT_PROD_CLEANROOM/reports/e2_cross_host_replay_receipt.json",
     "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
     "KT_PROD_CLEANROOM/reports/e1_bounded_campaign_receipt.json"
   ],
-  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "current_git_head": "bfdd0f3e8e40ff6ecb6fe50ce6590656d0ba3539",
+  "documentary_carrier_consumer_guard": {
+    "checks": [
+      {
+        "check_id": "tracked_t11_receipt_declares_expected_role",
+        "pass": true
+      },
+      {
+        "check_id": "tracked_t11_receipt_declares_subject_head",
+        "pass": true
+      },
+      {
+        "check_id": "documentary_carrier_mismatch_status_present",
+        "pass": true
+      },
+      {
+        "check_id": "documentary_carrier_overread_fails_closed",
+        "pass": true
+      },
+      {
+        "check_id": "warning_only_fallback_not_allowed",
+        "pass": true
+      },
+      {
+        "check_id": "tracked_t11_contract_stays_non_authoritative_on_current_head",
+        "pass": true
+      },
+      {
+        "check_id": "consumer_owner_is_allowlisted_in_contract",
+        "pass": true
+      }
+    ],
+    "consumer_id": "final_current_head_adjudication_validate",
+    "counted_consumer_allowlist_contract_ref": "KT_PROD_CLEANROOM/governance/counted_consumer_allowlist_contract.json",
+    "current_git_head": "bfdd0f3e8e40ff6ecb6fe50ce6590656d0ba3539",
+    "detected_consumer_owner_ref": "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+    "documentary_carrier_attempt": {
+      "blocked": true,
+      "failure_reason": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json",
+      "receipt_role": "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY",
+      "requested_head": "bfdd0f3e8e40ff6ecb6fe50ce6590656d0ba3539",
+      "subject_head": "e42b9f46ceeab90b8b2ed102f8aa9675d0c8f632",
+      "tracked_t10_authority_class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
+    },
+    "shared_guard_helper_owner_ref": "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "shared_guard_helper_ref": "tools.operator.benchmark_constitution_validate.evaluate_documentary_carrier_fail_closed_consumer_guard",
+    "status": "PASS",
+    "tracked_t11_contract": {
+      "allowed_roles": [
+        "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"
+      ],
+      "blocked": true,
+      "failure_reason": "SUBJECT_HEAD_MISMATCH",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json",
+      "receipt_role": "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY",
+      "requested_head": "bfdd0f3e8e40ff6ecb6fe50ce6590656d0ba3539",
+      "subject_head": "e42b9f46ceeab90b8b2ed102f8aa9675d0c8f632"
+    },
+    "tracked_t11_receipt_ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json"
+  },
   "exact_current_head_standing": {
     "current_head_claim_class": "SCOPED_TIER_BOUNDED_CURRENT_HEAD_ORGANISM_E1",
     "externality_class_max": "E1_SAME_HOST_DETACHED_REPLAY",
@@ -74,8 +170,32 @@
   "final_product_truth_boundary_ref": "KT_PROD_CLEANROOM/product/final_product_truth_boundary.json",
   "final_tier_ruling_ref": "KT_PROD_CLEANROOM/governance/final_tier_ruling.json",
   "forbidden_claim_count": 9,
-  "generated_utc": "2026-03-23T20:43:40Z",
-  "next_lawful_move": "Continue bounded E1 delivery, operator flow, and buyer-safe packaging. Execute W6B immediately if second-host hardware appears.",
+  "gate_c_exit_claim_allowed": false,
+  "gate_c_exit_criteria_contract_mode": "DEFINITION_ONLY_NO_OUTCOME_CLAIM",
+  "gate_c_exit_criteria_contract_ref": "KT_PROD_CLEANROOM/governance/gate_c_exit_criteria_contract.json",
+  "gate_c_exit_terminal_state_ref": "KT_PROD_CLEANROOM/governance/gate_c_exit_terminal_state.json",
+  "generated_utc": "2026-03-28T14:59:11Z",
+  "live_beats_baseline_claim_allowed": false,
+  "next_lawful_move": "Continue bounded E1 delivery, operator flow, and buyer-safe packaging. Do not claim Gate C exit or live-beats-baseline until a same-head authoritative exit adjudication chain is earned.",
+  "receipt_role": "FUTURE_GATE_C_EXIT_ADJUDICATION_AUTHORITY_FAMILY_CANDIDATE",
+  "required_future_exit_adjudication_family": {
+    "authority_role_rule": "A future Gate C exit adjudication may count only a same-head receipt family that declares both receipt_role and subject_head and remains bound to the shared T17 same-head authority contract and the T19 tracked-counted-receipt carrier-overread contract.",
+    "current_tracked_receipt_ref": "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
+    "current_tracked_surface_counts_as_authority": false,
+    "owner_ref": "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+    "required_receipt_fields": [
+      "receipt_role",
+      "subject_head",
+      "current_git_head",
+      "status"
+    ],
+    "same_head_required": true
+  },
+  "same_head_authority_contract_owner_ref": "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+  "same_head_authority_contract_ref": "tools.operator.benchmark_constitution_validate.evaluate_counted_receipt_family_same_head_authority",
   "schema_id": "kt.final_current_head.adjudication_receipt.v1",
-  "status": "PASS"
+  "status": "PASS",
+  "subject_head": "bfdd0f3e8e40ff6ecb6fe50ce6590656d0ba3539",
+  "tracked_counted_receipt_carrier_overread_contract_owner_ref": "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+  "tracked_counted_receipt_carrier_overread_contract_ref": "tools.operator.benchmark_constitution_validate.evaluate_tracked_counted_receipt_carrier_overread"
 }
