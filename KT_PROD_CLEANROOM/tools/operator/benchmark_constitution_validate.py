@@ -52,6 +52,12 @@ ROLE_SUBJECT_BOUNDARY = "COUNTED_T5_SUBJECT_BOUNDARY_ARTIFACT_ONLY"
 ROLE_CONTRACT_ENFORCEMENT = "COUNTED_T6_CONTRACT_ENFORCEMENT_ARTIFACT_ONLY"
 ROLE_T11_FINAL_HEAD_AUTHORITY_ALIGNMENT = "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"
 DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH = "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
+COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF = (
+    "tools.operator.benchmark_constitution_validate.evaluate_counted_receipt_family_same_head_authority"
+)
+COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF = (
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py"
+)
 DOCUMENTARY_CARRIER_GUARD_HELPER_REF = "tools.operator.benchmark_constitution_validate.evaluate_documentary_carrier_fail_closed_consumer_guard"
 DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF = "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py"
 DOCUMENTARY_CARRIER_GUARD_ALLOWED_CONSUMER_REFS = [
@@ -97,12 +103,21 @@ T6_EXPECTED_MUTATE_PATHS = [
     "KT_PROD_CLEANROOM/tests/operator/test_b03_comparator_receipt_contract_enforcement.py",
     DEFAULT_CONTRACT_ENFORCEMENT_RECEIPT_REL,
 ]
+T17_EXPECTED_MUTATE_PATHS = [
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_t10_receipt_final_head_authority_alignment.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_t15_receipt_final_head_authority_alignment.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_counted_receipt_family_same_head_authority_contract.py",
+]
 ALLOWED_PREWRITE_DIRTY = {
     path
     for path in [
         *T4_EXPECTED_MUTATE_PATHS,
         *T5_EXPECTED_MUTATE_PATHS,
         *T6_EXPECTED_MUTATE_PATHS,
+        *T17_EXPECTED_MUTATE_PATHS,
         DEFAULT_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_REL,
         "KT_PROD_CLEANROOM/tests/operator/test_b03_documentary_carrier_guard_centralization.py",
         "KT_PROD_CLEANROOM/tests/operator/test_b03_shared_guard_single_path_enforcement.py",
@@ -442,6 +457,54 @@ def _interpret_receipt_for_current_head(
     result["pass"] = True
     result["blocked"] = False
     return result
+
+
+def evaluate_counted_receipt_family_same_head_authority(
+    *,
+    receipt_family_id: str,
+    tracked_receipt_ref: str,
+    tracked_payload: Dict[str, Any],
+    allowed_roles: Sequence[str],
+    current_head: str,
+    authoritative_current_head_payload: Dict[str, Any],
+) -> Dict[str, Any]:
+    tracked_contract = _consume_emitted_receipt_contract(
+        receipt_ref=tracked_receipt_ref,
+        payload=tracked_payload,
+        allowed_roles=list(allowed_roles),
+        requested_head=current_head,
+    )
+    authoritative_current_head_candidate_contract = _consume_emitted_receipt_contract(
+        receipt_ref=f"IN_MEMORY_CURRENT_HEAD_{receipt_family_id}_CANDIDATE",
+        payload=authoritative_current_head_payload,
+        allowed_roles=list(allowed_roles),
+        requested_head=current_head,
+    )
+    tracked_subject_head = str(tracked_payload.get("subject_head", "")).strip()
+    tracked_authority_class = (
+        DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
+        if tracked_contract.get("blocked") is True and tracked_contract.get("failure_reason") == "SUBJECT_HEAD_MISMATCH"
+        else "AUTHORITATIVE_ON_REQUESTED_HEAD"
+        if tracked_contract.get("pass") is True
+        else "NONAUTHORITATIVE_INVALID_TRACKED_RECEIPT"
+    )
+    return {
+        "receipt_family_id": receipt_family_id,
+        "same_head_authority_contract_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF,
+        "same_head_authority_contract_owner_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF,
+        "allowed_roles": list(allowed_roles),
+        "requested_head": current_head,
+        "tracked_receipt_ref": tracked_receipt_ref,
+        "tracked_subject_head": tracked_subject_head,
+        "tracked_current_git_head": str(tracked_payload.get("current_git_head", "")).strip(),
+        "tracked_authority_class": tracked_authority_class,
+        "tracked_contract": tracked_contract,
+        "authoritative_current_head_candidate_contract": authoritative_current_head_candidate_contract,
+        "authoritative_final_head_rule": (
+            "Only counted receipts whose subject_head matches the requested_head can be authoritative. "
+            "When subject_head differs, the tracked receipt is documentary carrier only."
+        ),
+    }
 
 
 def evaluate_documentary_carrier_fail_closed_consumer_guard(

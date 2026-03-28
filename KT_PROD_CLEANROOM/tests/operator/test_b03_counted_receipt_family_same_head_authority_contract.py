@@ -8,12 +8,16 @@ import sys
 from pathlib import Path
 
 from tools.operator import w3_externality_and_comparative_proof_validate as w3
+from tools.operator.benchmark_constitution_validate import (
+    COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF,
+    COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF,
+    DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH,
+)
 
 OVERLAY_REFS = [
     "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
-    "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
-    "KT_PROD_CLEANROOM/governance/counted_consumer_allowlist_contract.json",
 ]
 
 
@@ -37,26 +41,26 @@ def _clean_clone(tmp_path: Path) -> Path:
     return clone_root
 
 
-def test_t15_receipt_final_head_authority_alignment_passes_on_current_repo() -> None:
+def test_t17_receipt_passes_on_current_repo() -> None:
     root = _repo_root()
-    from tools.operator.benchmark_constitution_validate import (
-        COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF,
-        COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF,
-    )
-
-    result = w3.build_t15_receipt_final_head_authority_alignment_receipt(root=root)
+    result = w3.build_counted_receipt_family_same_head_authority_contract_receipt(root=root)
 
     assert result["status"] == "PASS"
-    assert result["tracked_t15_authority_class"] == "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
-    assert result["tracked_t15_contract"]["blocked"] is True
-    assert result["tracked_t15_contract"]["failure_reason"] == "SUBJECT_HEAD_MISMATCH"
-    assert result["authoritative_current_head_t15_candidate_contract"]["pass"] is True
-    assert result["authoritative_current_head_t15_candidate_contract"]["subject_head"] == result["current_git_head"]
     assert result["same_head_authority_contract_ref"] == COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF
     assert result["same_head_authority_contract_owner_ref"] == COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF
 
+    checks = {check["check_id"]: check["pass"] for check in result["checks"]}
+    assert checks["t10_family_source_adopts_shared_same_head_authority_contract"] is True
+    assert checks["t15_family_source_adopts_shared_same_head_authority_contract"] is True
+    assert checks["generic_family_cross_head_receipt_is_carrier_only"] is True
+    assert checks["generic_family_same_head_candidate_is_authoritative"] is True
 
-def test_w3_cli_emits_t16_receipt_with_explicit_output(tmp_path: Path) -> None:
+    generic_probe = result["generic_same_head_authority_probe"]
+    assert generic_probe["tracked_authority_class"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
+    assert generic_probe["authoritative_current_head_candidate_contract"]["pass"] is True
+
+
+def test_w3_cli_emits_t17_receipt_with_explicit_output(tmp_path: Path) -> None:
     root = _clean_clone(tmp_path)
     env = dict(os.environ)
     env["PYTHONPATH"] = str(root / "KT_PROD_CLEANROOM") + os.pathsep + str(root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src")
@@ -66,7 +70,7 @@ def test_w3_cli_emits_t16_receipt_with_explicit_output(tmp_path: Path) -> None:
     atlas_path = tmp_path / "atlas.json"
     canonical_delta_path = tmp_path / "canonical_delta.json"
     advancement_delta_path = tmp_path / "advancement_delta.json"
-    t16_receipt_path = tmp_path / "t15_receipt_final_head_authority_alignment_receipt.json"
+    t17_receipt_path = tmp_path / "counted_receipt_family_same_head_authority_contract_receipt.json"
 
     proc = subprocess.run(
         [
@@ -81,9 +85,9 @@ def test_w3_cli_emits_t16_receipt_with_explicit_output(tmp_path: Path) -> None:
             str(canonical_delta_path),
             "--advancement-delta-output",
             str(advancement_delta_path),
-            "--emit-t15-receipt-final-head-authority-alignment-receipt",
-            "--t15-receipt-final-head-authority-alignment-output",
-            str(t16_receipt_path),
+            "--emit-counted-receipt-family-same-head-authority-contract-receipt",
+            "--counted-receipt-family-same-head-authority-contract-output",
+            str(t17_receipt_path),
         ],
         cwd=str(root),
         env=env,
@@ -96,13 +100,11 @@ def test_w3_cli_emits_t16_receipt_with_explicit_output(tmp_path: Path) -> None:
     assert proc.returncode == 0, proc.stdout
     payload = json.loads(proc.stdout.strip().splitlines()[-1])
     assert payload["status"] == "PASS"
-    assert payload["documentary_carrier_consumer_status"] == "PASS"
-    assert payload["t15_receipt_final_head_authority_alignment_status"] == "PASS"
+    assert payload["counted_receipt_family_same_head_authority_contract_status"] == "PASS"
 
-    receipt = json.loads(t16_receipt_path.read_text(encoding="utf-8"))
+    receipt = json.loads(t17_receipt_path.read_text(encoding="utf-8"))
     assert receipt["status"] == "PASS"
-    assert receipt["receipt_role"] == "COUNTED_T16_T15_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"
-    assert receipt["tracked_t15_authority_class"] == "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
-    assert receipt["tracked_t15_contract"]["blocked"] is True
-    assert receipt["tracked_t15_contract"]["failure_reason"] == "SUBJECT_HEAD_MISMATCH"
-    assert receipt["authoritative_current_head_t15_candidate_contract"]["pass"] is True
+    assert receipt["receipt_role"] == "COUNTED_T17_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_ARTIFACT_ONLY"
+    checks = {check["check_id"]: check["pass"] for check in receipt["checks"]}
+    assert checks["t10_family_source_adopts_shared_same_head_authority_contract"] is True
+    assert checks["t15_family_source_adopts_shared_same_head_authority_contract"] is True

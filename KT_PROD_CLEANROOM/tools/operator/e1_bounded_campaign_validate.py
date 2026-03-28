@@ -10,6 +10,8 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
 from tools.operator.benchmark_constitution_validate import (
+    COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF,
+    COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF,
     ROLE_BASELINE_SCORECARD,
     ROLE_BENCHMARK_RECEIPT,
     _consume_emitted_receipt_contract,
@@ -18,6 +20,7 @@ from tools.operator.benchmark_constitution_validate import (
     _maybe_write_json_output,
     _payloads,
     build_receipt as build_benchmark_receipt,
+    evaluate_counted_receipt_family_same_head_authority,
 )
 from tools.operator.public_verifier import manifest_supports_bounded_e1_verifier
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z
@@ -810,26 +813,18 @@ def build_t10_receipt_final_head_authority_alignment_receipt(
 ) -> Dict[str, Any]:
     current_head = _git_head(root)
     tracked_t10_receipt = load_json(root / SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL)
-    tracked_t10_contract = _consume_emitted_receipt_contract(
-        receipt_ref=SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL,
-        payload=tracked_t10_receipt,
+    same_head_authority = evaluate_counted_receipt_family_same_head_authority(
+        receipt_family_id="T10_FINAL_HEAD_AUTHORITY_ALIGNMENT",
+        tracked_receipt_ref=SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL,
+        tracked_payload=tracked_t10_receipt,
         allowed_roles=[T10_RECEIPT_ROLE],
-        requested_head=current_head,
+        current_head=current_head,
+        authoritative_current_head_payload=side_reader_refresh_indirection_barrier_receipt,
     )
-    current_head_t10_contract = _consume_emitted_receipt_contract(
-        receipt_ref="IN_MEMORY_CURRENT_HEAD_T10_CANDIDATE",
-        payload=side_reader_refresh_indirection_barrier_receipt,
-        allowed_roles=[T10_RECEIPT_ROLE],
-        requested_head=current_head,
-    )
-    tracked_subject_head = str(tracked_t10_receipt.get("subject_head", "")).strip()
-    tracked_authority_class = (
-        "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
-        if tracked_t10_contract.get("blocked") is True and tracked_t10_contract.get("failure_reason") == "SUBJECT_HEAD_MISMATCH"
-        else "AUTHORITATIVE_ON_REQUESTED_HEAD"
-        if tracked_t10_contract.get("pass") is True
-        else "NONAUTHORITATIVE_INVALID_TRACKED_RECEIPT"
-    )
+    tracked_t10_contract = same_head_authority["tracked_contract"]
+    current_head_t10_contract = same_head_authority["authoritative_current_head_candidate_contract"]
+    tracked_subject_head = same_head_authority["tracked_subject_head"]
+    tracked_authority_class = same_head_authority["tracked_authority_class"]
     t10_checks = {
         str(check["check_id"]): bool(check["pass"])
         for check in side_reader_refresh_indirection_barrier_receipt.get("checks", [])
@@ -907,7 +902,10 @@ def build_t10_receipt_final_head_authority_alignment_receipt(
         "tracked_t10_authority_class": tracked_authority_class,
         "tracked_t10_contract": tracked_t10_contract,
         "authoritative_current_head_t10_candidate_contract": current_head_t10_contract,
-        "authoritative_final_head_rule": "Authoritative final-head proof for the T10 era requires a T10 receipt whose subject_head matches the sealed verification head. When tracked subject_head differs, the tracked receipt is documentary carrier only.",
+        "same_head_authority_contract_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF,
+        "same_head_authority_contract_owner_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF,
+        "same_head_authority_contract_family_id": same_head_authority["receipt_family_id"],
+        "authoritative_final_head_rule": same_head_authority["authoritative_final_head_rule"],
         "checks": checks,
         "claim_boundary": "T11 aligns authority semantics for the retained T10 receipt only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
     }

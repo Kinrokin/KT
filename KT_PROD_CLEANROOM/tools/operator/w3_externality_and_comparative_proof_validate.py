@@ -9,6 +9,8 @@ from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 from tools.operator.benchmark_constitution_validate import (
+    COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF,
+    COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF,
     DOCUMENTARY_CARRIER_GUARD_HELPER_OWNER_REF,
     DOCUMENTARY_CARRIER_GUARD_HELPER_REF,
     DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH,
@@ -22,6 +24,7 @@ from tools.operator.benchmark_constitution_validate import (
     _maybe_write_json_output,
     _payloads,
     build_documentary_carrier_guard_single_path_barrier,
+    evaluate_counted_receipt_family_same_head_authority,
     load_counted_consumer_allowlist_contract,
     build_receipt as build_benchmark_receipt,
     evaluate_documentary_carrier_fail_closed_consumer_guard as evaluate_shared_documentary_carrier_fail_closed_consumer_guard,
@@ -65,6 +68,11 @@ T15_RECEIPT_ROLE = "COUNTED_T15_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_BINDING_ARTI
 T15_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL = f"{REPORT_ROOT_REL}/t15_receipt_final_head_authority_alignment_receipt.json"
 T16_TRANCHE_ID = "B03_T16_T15_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT"
 T16_RECEIPT_ROLE = "COUNTED_T16_T15_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"
+COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_RECEIPT_REL = (
+    f"{REPORT_ROOT_REL}/counted_receipt_family_same_head_authority_contract_receipt.json"
+)
+T17_TRANCHE_ID = "B03_T17_COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT"
+T17_RECEIPT_ROLE = "COUNTED_T17_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_ARTIFACT_ONLY"
 ROLE_ALIAS_RETIREMENT = "ALIAS_RETIREMENT_PROOF"
 ROLE_VALIDATOR_ALIAS_DETACHMENT = "VALIDATOR_ALIAS_DETACHMENT_PROOF"
 
@@ -501,27 +509,19 @@ def build_counted_consumer_allowlist_contract_binding_receipt(*, root: Path) -> 
 def build_t15_receipt_final_head_authority_alignment_receipt(*, root: Path) -> Dict[str, Any]:
     current_head = _git_head(root)
     tracked_t15_receipt = load_json(root / COUNTED_CONSUMER_ALLOWLIST_CONTRACT_BINDING_RECEIPT_REL)
-    tracked_t15_contract = _consume_emitted_receipt_contract(
-        receipt_ref=COUNTED_CONSUMER_ALLOWLIST_CONTRACT_BINDING_RECEIPT_REL,
-        payload=tracked_t15_receipt,
-        allowed_roles=[T15_RECEIPT_ROLE],
-        requested_head=current_head,
-    )
     current_head_t15_receipt = build_counted_consumer_allowlist_contract_binding_receipt(root=root)
-    current_head_t15_contract = _consume_emitted_receipt_contract(
-        receipt_ref="IN_MEMORY_CURRENT_HEAD_T15_CANDIDATE",
-        payload=current_head_t15_receipt,
+    same_head_authority = evaluate_counted_receipt_family_same_head_authority(
+        receipt_family_id="T15_FINAL_HEAD_AUTHORITY_ALIGNMENT",
+        tracked_receipt_ref=COUNTED_CONSUMER_ALLOWLIST_CONTRACT_BINDING_RECEIPT_REL,
+        tracked_payload=tracked_t15_receipt,
         allowed_roles=[T15_RECEIPT_ROLE],
-        requested_head=current_head,
+        current_head=current_head,
+        authoritative_current_head_payload=current_head_t15_receipt,
     )
-    tracked_subject_head = str(tracked_t15_receipt.get("subject_head", "")).strip()
-    tracked_authority_class = (
-        DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
-        if tracked_t15_contract.get("blocked") is True and tracked_t15_contract.get("failure_reason") == "SUBJECT_HEAD_MISMATCH"
-        else "AUTHORITATIVE_ON_REQUESTED_HEAD"
-        if tracked_t15_contract.get("pass") is True
-        else "NONAUTHORITATIVE_INVALID_TRACKED_RECEIPT"
-    )
+    tracked_t15_contract = same_head_authority["tracked_contract"]
+    current_head_t15_contract = same_head_authority["authoritative_current_head_candidate_contract"]
+    tracked_subject_head = same_head_authority["tracked_subject_head"]
+    tracked_authority_class = same_head_authority["tracked_authority_class"]
     current_head_t15_checks = {
         str(check["check_id"]): bool(check["pass"])
         for check in current_head_t15_receipt.get("checks", [])
@@ -575,9 +575,135 @@ def build_t15_receipt_final_head_authority_alignment_receipt(*, root: Path) -> D
         "tracked_t15_authority_class": tracked_authority_class,
         "tracked_t15_contract": tracked_t15_contract,
         "authoritative_current_head_t15_candidate_contract": current_head_t15_contract,
-        "authoritative_final_head_rule": "Authoritative final-head proof for the T15 era requires a T15 receipt whose subject_head matches the sealed verification head. When tracked subject_head differs, the tracked receipt is documentary carrier only.",
+        "same_head_authority_contract_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF,
+        "same_head_authority_contract_owner_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF,
+        "same_head_authority_contract_family_id": same_head_authority["receipt_family_id"],
+        "authoritative_final_head_rule": same_head_authority["authoritative_final_head_rule"],
         "checks": checks,
         "claim_boundary": "T16 aligns authority semantics for the retained T15 receipt only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
+    }
+
+
+def build_counted_receipt_family_same_head_authority_contract_receipt(*, root: Path) -> Dict[str, Any]:
+    current_head = _git_head(root)
+    generated_utc = utc_now_iso_z()
+    t10_family_source = (root / "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py").read_text(encoding="utf-8")
+    t15_family_source = Path(__file__).read_text(encoding="utf-8")
+    tracked_t10_receipt = load_json(root / T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL)
+    tracked_t15_receipt = load_json(root / T15_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL)
+    t10_family_contract = evaluate_counted_receipt_family_same_head_authority(
+        receipt_family_id="T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_FAMILY",
+        tracked_receipt_ref=T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
+        tracked_payload=tracked_t10_receipt,
+        allowed_roles=[T11_RECEIPT_ROLE],
+        current_head=current_head,
+        authoritative_current_head_payload={
+            "receipt_role": T11_RECEIPT_ROLE,
+            "subject_head": current_head,
+        },
+    )
+    t15_family_contract = evaluate_counted_receipt_family_same_head_authority(
+        receipt_family_id="T15_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_FAMILY",
+        tracked_receipt_ref=T15_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
+        tracked_payload=tracked_t15_receipt,
+        allowed_roles=[T16_RECEIPT_ROLE],
+        current_head=current_head,
+        authoritative_current_head_payload={
+            "receipt_role": T16_RECEIPT_ROLE,
+            "subject_head": current_head,
+        },
+    )
+    generic_probe = evaluate_counted_receipt_family_same_head_authority(
+        receipt_family_id="GENERIC_SYNTHETIC_AUTHORITY_PROBE",
+        tracked_receipt_ref="IN_MEMORY_SYNTHETIC_TRACKED_RECEIPT",
+        tracked_payload={
+            "receipt_role": "COUNTED_GENERIC_SAME_HEAD_AUTHORITY_SYNTHETIC_ROLE",
+            "subject_head": "0000000000000000000000000000000000000000",
+        },
+        allowed_roles=["COUNTED_GENERIC_SAME_HEAD_AUTHORITY_SYNTHETIC_ROLE"],
+        current_head=current_head,
+        authoritative_current_head_payload={
+            "receipt_role": "COUNTED_GENERIC_SAME_HEAD_AUTHORITY_SYNTHETIC_ROLE",
+            "subject_head": current_head,
+        },
+    )
+    baseline_scorecard = _payloads(root, generated_utc)["scorecard"]
+    checks = [
+        {
+            "check_id": "t10_family_source_adopts_shared_same_head_authority_contract",
+            "pass": "evaluate_counted_receipt_family_same_head_authority(" in t10_family_source
+            and "same_head_authority_contract_ref" in t10_family_source
+            and "same_head_authority_contract_owner_ref" in t10_family_source,
+        },
+        {
+            "check_id": "t15_family_source_adopts_shared_same_head_authority_contract",
+            "pass": "evaluate_counted_receipt_family_same_head_authority(" in t15_family_source
+            and "same_head_authority_contract_ref" in t15_family_source
+            and "same_head_authority_contract_owner_ref" in t15_family_source,
+        },
+        {
+            "check_id": "t10_counted_receipt_family_cross_head_is_carrier_only",
+            "pass": t10_family_contract.get("tracked_authority_class") == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH,
+        },
+        {
+            "check_id": "t15_counted_receipt_family_cross_head_is_carrier_only",
+            "pass": t15_family_contract.get("tracked_authority_class") == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH,
+        },
+        {
+            "check_id": "t10_counted_receipt_family_same_head_candidate_is_authoritative",
+            "pass": bool(t10_family_contract.get("authoritative_current_head_candidate_contract", {}).get("pass")),
+        },
+        {
+            "check_id": "t15_counted_receipt_family_same_head_candidate_is_authoritative",
+            "pass": bool(t15_family_contract.get("authoritative_current_head_candidate_contract", {}).get("pass")),
+        },
+        {
+            "check_id": "generic_family_cross_head_receipt_is_carrier_only",
+            "pass": generic_probe.get("tracked_authority_class") == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH,
+        },
+        {
+            "check_id": "generic_family_same_head_candidate_is_authoritative",
+            "pass": bool(generic_probe.get("authoritative_current_head_candidate_contract", {}).get("pass")),
+        },
+        {
+            "check_id": "baseline_scorecard_remains_sole_canonical_comparator_truth",
+            "pass": str(baseline_scorecard.get("receipt_role", "")).strip() == ROLE_BASELINE_SCORECARD,
+        },
+    ]
+    return {
+        "schema_id": "kt.gate_c_t17.counted_receipt_family_same_head_authority_contract_receipt.v1",
+        "generated_utc": generated_utc,
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": T17_RECEIPT_ROLE,
+        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "tranche_id": T17_TRANCHE_ID,
+        "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        "canonical_receipt_binding": {
+            "baseline_vs_live_scorecard_ref": BASELINE_SCORECARD_REL,
+            "t10_final_head_authority_alignment_receipt_ref": T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
+            "t15_final_head_authority_alignment_receipt_ref": T15_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
+        },
+        "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+        "same_head_authority_contract_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF,
+        "same_head_authority_contract_owner_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF,
+        "adopted_receipt_families": [
+            {
+                "receipt_family_id": t10_family_contract.get("receipt_family_id"),
+                "tracked_receipt_ref": t10_family_contract.get("tracked_receipt_ref"),
+                "tracked_authority_class": t10_family_contract.get("tracked_authority_class"),
+            },
+            {
+                "receipt_family_id": t15_family_contract.get("receipt_family_id"),
+                "tracked_receipt_ref": t15_family_contract.get("tracked_receipt_ref"),
+                "tracked_authority_class": t15_family_contract.get("tracked_authority_class"),
+            },
+        ],
+        "t10_family_contract": t10_family_contract,
+        "t15_family_contract": t15_family_contract,
+        "generic_same_head_authority_probe": generic_probe,
+        "checks": checks,
+        "claim_boundary": "T17 binds same-head authority as shared counted-receipt-family contract law only. It does not refresh comparator truth, widen comparator semantics, add comparator rows, or claim Gate C exit.",
     }
 
 
@@ -745,6 +871,11 @@ def _build_argument_parser() -> argparse.ArgumentParser:
     parser.add_argument("--counted-consumer-allowlist-contract-binding-output", default=COUNTED_CONSUMER_ALLOWLIST_CONTRACT_BINDING_RECEIPT_REL)
     parser.add_argument("--emit-t15-receipt-final-head-authority-alignment-receipt", action="store_true")
     parser.add_argument("--t15-receipt-final-head-authority-alignment-output", default=T15_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL)
+    parser.add_argument("--emit-counted-receipt-family-same-head-authority-contract-receipt", action="store_true")
+    parser.add_argument(
+        "--counted-receipt-family-same-head-authority-contract-output",
+        default=COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_RECEIPT_REL,
+    )
     return parser
 
 
@@ -859,6 +990,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         )
         if written:
             allowed_repo_writes.append(written)
+    if args.emit_counted_receipt_family_same_head_authority_contract_receipt:
+        t17_receipt = build_counted_receipt_family_same_head_authority_contract_receipt(root=root)
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.counted_receipt_family_same_head_authority_contract_output)),
+            payload=t17_receipt,
+            default_rel=COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_RECEIPT_REL,
+            allow_default_repo_write=args.allow_tracked_output_refresh,
+        )
+        if written:
+            allowed_repo_writes.append(written)
     _enforce_write_scope_post(root, prewrite_dirty=prewrite_dirty, allowed_repo_writes=allowed_repo_writes)
 
     result = {
@@ -875,6 +1017,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     }
     if args.emit_t15_receipt_final_head_authority_alignment_receipt:
         result["t15_receipt_final_head_authority_alignment_status"] = t16_receipt["status"]
+    if args.emit_counted_receipt_family_same_head_authority_contract_receipt:
+        result["counted_receipt_family_same_head_authority_contract_status"] = t17_receipt["status"]
     print(json.dumps(result, sort_keys=True))
     return 0 if result["status"] == "PASS" else 1
 

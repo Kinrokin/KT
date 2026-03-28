@@ -50,6 +50,11 @@ def _patch_write_scope(monkeypatch, e1) -> None:
 def test_t10_receipt_final_head_authority_alignment_passes_on_current_repo() -> None:
     root = _repo_root()
     e1 = _load_e1(root)
+    from tools.operator.benchmark_constitution_validate import (
+        COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF,
+        COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF,
+    )
+
     generated_utc = "2026-03-27T18:38:43Z"
     t7 = e1.build_comparator_side_reader_contract_adoption_receipt(root=root)
     t8 = e1.build_side_reader_receipt_refresh_scope_receipt(root=root, generated_utc=generated_utc, side_reader_contract_receipt=t7)
@@ -82,6 +87,8 @@ def test_t10_receipt_final_head_authority_alignment_passes_on_current_repo() -> 
     assert result["tracked_t10_contract"]["failure_reason"] == "SUBJECT_HEAD_MISMATCH"
     assert result["authoritative_current_head_t10_candidate_contract"]["pass"] is True
     assert result["authoritative_current_head_t10_candidate_contract"]["subject_head"] == result["current_git_head"]
+    assert result["same_head_authority_contract_ref"] == COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF
+    assert result["same_head_authority_contract_owner_ref"] == COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF
 
 
 def test_t11_receipt_requires_explicit_dual_opt_in(tmp_path: Path, monkeypatch) -> None:
