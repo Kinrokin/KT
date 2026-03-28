@@ -1,54 +1,45 @@
 {
   "schema_id": "kt.resume_blockers_receipt.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T19:10:00Z",
-  "workstream_id": "B04_GATE_D_CIVILIZATION_ACTIVATE__SEPARATE_LAUNCH_SURFACE_REQUIRED",
+  "generated_utc": "2026-03-28T20:55:00Z",
+  "workstream_id": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "a903589d24e2fb8670e6625cf53d9ce8f174c552",
+  "current_git_head": "16e1fbe1d7966f8434d1842e2ea358582195941d",
   "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
   "repo_state_executable_now": true,
-  "blocking_state": "BROADER_B04_BLOCKED__FIRST_RATIFICATION_STEP_ONLY",
+  "blocking_state": "BROADER_B04_BLOCKED__SECOND_RATIFICATION_STEP_ONLY",
   "blocking_reasons": [
-    "Only the first ordered Gate D ratification step is executable now; later adapter, tournament, router, and lobe work remains blocked by order.",
+    "Only the second ordered Gate D ratification step is executable now; tournament, router, and lobe work remain blocked by order.",
     "Externality widening, external comparative claims, and commercial activation remain deferred to later gates or later explicit authorization.",
     "Tracked carrier receipts on main remain non-authoritative and cannot stand in for Gate D or B04 authority."
   ],
   "nonblocking_conflicts": [
     {
-      "conflict_id": "TRACKED_GATE_D_DECISION_LAW_RECEIPT_IS_CARRIER_ONLY",
+      "conflict_id": "TRACKED_B04_LAUNCH_RECEIPT_IS_CARRIER_ONLY",
       "class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
       "evidence": [
-        "The authoritative Gate D decision-law proof is the clean-clone receipt on sealed head a993c4caf4265f2b4012be853f462177be43e8f2.",
-        "The tracked gate_d_decision_law_receipt.json on main was emitted on pre-receipt head dfa1a8dc4d1e2874f79ec9b81289cbbac521dcd3 and must remain carrier-only."
+        "The authoritative B04 launch proof is the clean-clone receipt on sealed head 16e1fbe1d7966f8434d1842e2ea358582195941d.",
+        "The tracked b04_civilization_activation_launch_receipt.json on main was emitted on pre-receipt head 40fa173cef4ed1891c55a7e676578a80433fada3 and must remain carrier-only."
       ],
-      "resolution_rule": "Use the clean-clone authoritative receipt as Gate D decision-law authority and do not overread the tracked carrier across heads."
-    },
-    {
-      "conflict_id": "TRACKED_GATE_D_DECISION_RECEIPT_IS_CARRIER_ONLY",
-      "class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
-      "evidence": [
-        "The authoritative Gate D posture-selection proof is the clean-clone receipt on sealed head a903589d24e2fb8670e6625cf53d9ce8f174c552.",
-        "The tracked gate_d_decision_receipt.json on main was emitted on pre-receipt head 11878970c1836e7b6f6a32baf86ffae2099e819c and must remain carrier-only."
-      ],
-      "resolution_rule": "Use the clean-clone authoritative receipt as Gate D posture-selection authority and do not overread the tracked carrier across heads."
+      "resolution_rule": "Use the clean-clone authoritative receipt as B04 launch authority and do not overread the tracked carrier across heads."
     }
   ],
   "current_lawful_gate_standing": {
-    "inter_gate_state": "GATE_D_CIVILIZATION_RATIFICATION_LAUNCH_BOUND",
+    "inter_gate_state": "GATE_D_R1_CRUCIBLE_PRESSURE_LAW_RATIFIED",
     "gate_c": "EXITED",
-    "gate_d": "CIVILIZATION_RATIFICATION_LAUNCH_BOUND"
+    "gate_d": "CRUCIBLE_PRESSURE_LAW_RATIFIED"
   },
-  "exact_next_counted_workstream_id": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
+  "exact_next_counted_workstream_id": "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION",
   "explicit_non_go_areas": [
     "Do not widen externality beyond E1.",
     "Do not open external comparative claims.",
     "Do not activate commercial deployment.",
-    "Do not treat B04 launch activation as whole-stack implementation.",
+    "Do not treat B04.R1 as later Gate D ratification steps.",
     "Do not treat tracked carrier receipts as current-head authority.",
     "Do not bypass the ordered Gate D ratification sequence."
   ],
-  "why_not_executable_now": "Not applicable for B04_R1: the first ordered ratification step is executable now, but the broader B04 batch remains order-locked."
+  "why_not_executable_now": "Not applicable for B04.R2: the second ordered ratification step is executable now, but broader B04 remains order-locked."
 }

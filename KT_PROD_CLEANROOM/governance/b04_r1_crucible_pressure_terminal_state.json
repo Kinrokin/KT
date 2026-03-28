@@ -1,0 +1,19 @@
+{
+  "schema_id": "kt.governance.b04_r1_crucible_pressure_terminal_state.v1",
+  "classification_tag": "COUNTING_CLOSURE",
+  "terminal_state_id": "KT_B04_R1_CRUCIBLE_PRESSURE_TERMINAL_STATE_V1",
+  "current_state": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFIED",
+  "crucible_pressure_law_ratified": true,
+  "adapter_lifecycle_ratified": false,
+  "router_or_lobe_progress_allowed": false,
+  "externality_widening_allowed": false,
+  "commercial_activation_allowed": false,
+  "next_lawful_move": "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION",
+  "fail_conditions": [
+    "B04_R1 is treated as adapter, tournament, router, or lobe ratification.",
+    "Unregistered crucible results count toward promotion eligibility.",
+    "Crucible pressure results count without required replay or receipt evidence.",
+    "Any Gate D widening above the selected bounded postures is implied by R1."
+  ],
+  "terminal_rule": "R1 completes only when crucible and pressure law are machine-ratified and later adapter promotion remains fail-closed until the next ordered ratification step."
+}

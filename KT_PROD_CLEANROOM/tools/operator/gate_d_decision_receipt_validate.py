@@ -52,6 +52,10 @@ EXPECTED_B04_EMIT_ARTIFACTS = [
     "KT_PROD_CLEANROOM/reports/rollback_drill_receipt.json",
 ]
 
+EXPECTED_B04_LAUNCH_STEP_ID = "B04_GATE_D_CIVILIZATION_ACTIVATE"
+EXPECTED_B04_R1_STEP_ID = "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION"
+EXPECTED_B04_R2_STEP_ID = "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION"
+
 
 def _resolve(root: Path, raw: str) -> Path:
     path = Path(str(raw)).expanduser()
@@ -118,6 +122,24 @@ def _launch_surface_allows_progress(root: Path, next_contract: Dict[str, Any]) -
         and str(next_contract.get("exact_next_counted_workstream_id", "")).strip() == "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION"
         and str(next_contract.get("execution_mode", "")).strip() == "CIVILIZATION_RATIFICATION_ORDER_LOCKED__FIRST_STEP_ONLY"
         and bool(next_contract.get("repo_state_executable_now")) is True
+    )
+
+
+def _gate_d_progress_is_order_locked(reanchor: Dict[str, Any], next_contract: Dict[str, Any]) -> bool:
+    next_step = str(next_contract.get("exact_next_counted_workstream_id", "")).strip()
+    execution_mode = str(next_contract.get("execution_mode", "")).strip()
+    repo_executable = bool(next_contract.get("repo_state_executable_now")) is True
+    if next_step == EXPECTED_B04_LAUNCH_STEP_ID:
+        return (
+            execution_mode == "POSTURES_SELECTED__SEPARATE_LAUNCH_SURFACE_REQUIRED"
+            and bool(next_contract.get("repo_state_executable_now")) is False
+            and str(reanchor.get("next_lawful_move", "")).strip() == EXPECTED_B04_LAUNCH_STEP_ID
+        )
+    return (
+        next_step in {EXPECTED_B04_R1_STEP_ID, EXPECTED_B04_R2_STEP_ID}
+        and execution_mode.startswith("CIVILIZATION_RATIFICATION_ORDER_LOCKED__")
+        and repo_executable
+        and str(reanchor.get("next_lawful_move", "")).strip() == next_step
     )
 
 
@@ -214,11 +236,7 @@ def build_gate_d_decision_receipt(*, root: Path) -> Dict[str, Any]:
         },
         {
             "check_id": "next_contract_after_selection_requires_separate_b04_launch_surface",
-            "pass": (
-                str(next_contract.get("exact_next_counted_workstream_id", "")).strip() == "B04_GATE_D_CIVILIZATION_ACTIVATE"
-                and str(next_contract.get("execution_mode", "")).strip() == "POSTURES_SELECTED__SEPARATE_LAUNCH_SURFACE_REQUIRED"
-                and bool(next_contract.get("repo_state_executable_now")) is False
-            )
+            "pass": _gate_d_progress_is_order_locked(reanchor, next_contract)
             or _launch_surface_allows_progress(root, next_contract),
         },
         {

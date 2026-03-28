@@ -88,6 +88,7 @@ EXPECTED_INVARIANTS = [
 ]
 
 EXPECTED_FIRST_STEP_ID = "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION"
+EXPECTED_SECOND_STEP_ID = "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION"
 
 
 def _resolve(root: Path, raw: str) -> Path:
@@ -122,6 +123,25 @@ def _load_active_status(root: Path, raw_ref: str) -> Dict[str, Any]:
         "exists": True,
         "status": str(payload.get("status", "")).strip(),
     }
+
+
+def _launch_progress_is_order_locked(
+    overlay: Dict[str, Any],
+    next_contract: Dict[str, Any],
+    reanchor: Dict[str, Any],
+    resume: Dict[str, Any],
+) -> bool:
+    next_step = str(next_contract.get("exact_next_counted_workstream_id", "")).strip()
+    return (
+        next_step in {EXPECTED_FIRST_STEP_ID, EXPECTED_SECOND_STEP_ID}
+        and str(next_contract.get("execution_mode", "")).strip().startswith("CIVILIZATION_RATIFICATION_ORDER_LOCKED__")
+        and bool(next_contract.get("repo_state_executable_now")) is True
+        and str(overlay.get("next_counted_workstream_id", "")).strip() == next_step
+        and bool(overlay.get("repo_state_executable_now")) is True
+        and str(reanchor.get("next_lawful_move", "")).strip() == next_step
+        and str(resume.get("exact_next_counted_workstream_id", "")).strip() == next_step
+        and bool(resume.get("repo_state_executable_now")) is True
+    )
 
 
 def build_b04_civilization_activation_launch_receipt(*, root: Path) -> Dict[str, Any]:
@@ -188,15 +208,13 @@ def build_b04_civilization_activation_launch_receipt(*, root: Path) -> Dict[str,
             and str(terminal.get("next_lawful_move", "")).strip() == EXPECTED_FIRST_STEP_ID,
         },
         {
-            "check_id": "control_surfaces_now_point_only_to_first_ratification_step",
-            "pass": str(next_contract.get("exact_next_counted_workstream_id", "")).strip() == EXPECTED_FIRST_STEP_ID
-            and str(next_contract.get("execution_mode", "")).strip() == "CIVILIZATION_RATIFICATION_ORDER_LOCKED__FIRST_STEP_ONLY"
-            and bool(next_contract.get("repo_state_executable_now")) is True
-            and str(overlay.get("next_counted_workstream_id", "")).strip() == EXPECTED_FIRST_STEP_ID
-            and bool(overlay.get("repo_state_executable_now")) is True
-            and str(reanchor.get("next_lawful_move", "")).strip() == EXPECTED_FIRST_STEP_ID
-            and str(resume.get("exact_next_counted_workstream_id", "")).strip() == EXPECTED_FIRST_STEP_ID
-            and bool(resume.get("repo_state_executable_now")) is True,
+            "check_id": "control_surfaces_preserve_order_locked_gate_d_progress",
+            "pass": _launch_progress_is_order_locked(
+                overlay=overlay,
+                next_contract=next_contract,
+                reanchor=reanchor,
+                resume=resume,
+            ),
         },
         {
             "check_id": "gate_d_scope_widening_remains_fail_closed",

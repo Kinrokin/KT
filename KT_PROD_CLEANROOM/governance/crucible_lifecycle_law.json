@@ -3,10 +3,15 @@
     "KT_PROD_CLEANROOM/tools/growth/crucibles/CRUCIBLE_REGISTRY.yaml",
     "KT_PROD_CLEANROOM/tools/growth/crucibles/crucible_runner.py"
   ],
+  "claim_ceiling": "Crucible law binds a replayable, receipt-backed forcing function only. It does not by itself ratify adapters, tournaments, router, lobes, externality, or product scope.",
+  "coverage_matrix_ref": "KT_PROD_CLEANROOM/reports/pressure_behavior_matrix.json",
+  "crucible_run_log_ref": "KT_PROD_CLEANROOM/reports/kt_crucible_run_log.json",
   "domain_id": "DOMAIN_2_PROMOTION_CIVILIZATION",
   "effective_utc": "2026-03-10T00:00:00Z",
   "expires_utc": "2026-09-10T00:00:00Z",
+  "fitness_pressure_register_ref": "KT_PROD_CLEANROOM/reports/kt_fitness_pressure_register.json",
   "law_id": "CRUCIBLE_LIFECYCLE_LAW_V1_20260310",
+  "promotion_eligibility_rule": "Later adapter promotion may only consume registered crucible results that are receipt-backed, replay-backed when required, outcome-matching, and governance-clean where the crucible spec requires governance enforcement.",
   "required_validators": [
     "python -m pytest -q KT_PROD_CLEANROOM/tools/growth/crucibles/tests/test_crucible_registry.py KT_PROD_CLEANROOM/tools/growth/crucibles/tests/test_crucible_runner.py",
     "python -m pytest -q KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_sweep_runner_integration.py KT_PROD_CLEANROOM/tests/policy_c/test_drift_guard.py",
@@ -14,10 +19,13 @@
   ],
   "rules": [
     "Registered crucibles must have immutable specs and remain in LAB until promotion receipts exist.",
-    "Crucible registry changes require revalidation against the registry and runner tests."
+    "Crucible registry changes require revalidation against the registry and runner tests.",
+    "Unregistered crucible observations are fail-closed and cannot contribute to promotion eligibility.",
+    "Required replay verification must pass before crucible results can count toward later adapter promotion."
   ],
   "schema_id": "kt.governance.crucible_lifecycle_law.v1",
   "status": "ACTIVE",
-  "summary": "Crucibles are governed as Lab-only challenge organs with explicit admission and promotion boundaries.",
-  "supersedes": []
+  "summary": "Crucibles are governed as Lab-only challenge organs with explicit admission, replay, and later promotion-evidence boundaries.",
+  "supersedes": [],
+  "terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_terminal_state.json"
 }

@@ -1,14 +1,14 @@
 {
   "schema_id": "kt.next_counted_workstream_contract.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T19:10:00Z",
-  "source_workstream_id": "B04_GATE_D_CIVILIZATION_ACTIVATE__SEPARATE_LAUNCH_SURFACE_REQUIRED",
+  "generated_utc": "2026-03-28T20:55:00Z",
+  "source_workstream_id": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
   "current_counted_gate": "Gate D",
   "parent_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
-  "exact_next_counted_workstream_id": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
+  "exact_next_counted_workstream_id": "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
-  "execution_mode": "CIVILIZATION_RATIFICATION_ORDER_LOCKED__FIRST_STEP_ONLY",
-  "workstream_objective": "Ratify only the first ordered Gate D civilization surface: crucible lifecycle, crucible registry, and pressure taxonomy. Do not implement adapters, tournament, router, lobes, externality, or product work in this step.",
+  "execution_mode": "CIVILIZATION_RATIFICATION_ORDER_LOCKED__SECOND_STEP_ONLY",
+  "workstream_objective": "Ratify only adapter lifecycle, registry, lineage, and promotion-eligibility consumption. Do not execute tournament, merge, router, lobe, externality, comparative, or commercial widening in this step.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "canonical_receipt_binding": {
     "gate_c_exit_authoritative_receipt_path": "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_20260328_1029/gate_c_exit_adjudication_authoritative_receipt.json",
@@ -16,12 +16,13 @@
     "gate_d_reanchor_packet_ref": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
     "gate_d_decision_receipt_ref": "KT_PROD_CLEANROOM/reports/gate_d_decision_receipt.json",
     "b04_launch_contract_ref": "KT_PROD_CLEANROOM/governance/b04_civilization_activation_launch_contract.json",
-    "b04_launch_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_civilization_activation_terminal_state.json",
+    "b04_r1_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_law_contract.json",
+    "b04_r1_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_terminal_state.json",
     "omega_b04_definition_ref": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json"
   },
   "gate_domain_product_split": {
-    "gate": "Gate D first ordered ratification step only",
-    "domain_surface": "Gate D may ratify crucible and pressure governance inside the bounded civilization lane only.",
+    "gate": "Gate D second ordered ratification step only",
+    "domain_surface": "Gate D may ratify adapter lifecycle and promotion eligibility consumption only after crucible and pressure law is ratified.",
     "product_surface": "NONE_COUNTING"
   },
   "selected_postures": {
@@ -32,53 +33,51 @@
     "D5_COMMERCIAL_ACTIVATION": "LAB_ONLY"
   },
   "prerequisite_read": {
-    "gate_d_decision_receipt": "KT_PROD_CLEANROOM/reports/gate_d_decision_receipt.json",
+    "b04_r1_contract": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_law_contract.json",
+    "b04_r1_terminal_state": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_terminal_state.json",
+    "crucible_pressure_receipt": "KT_PROD_CLEANROOM/reports/crucible_pressure_law_ratification_receipt.json",
     "gate_d_reanchor_packet": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
-    "b04_launch_contract": "KT_PROD_CLEANROOM/governance/b04_civilization_activation_launch_contract.json",
-    "b04_launch_terminal_state": "KT_PROD_CLEANROOM/governance/b04_civilization_activation_terminal_state.json",
-    "omega_batch_definition": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json",
     "v11_closure_map": "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.json"
   },
   "expected_mutate_paths": [
-    "KT_PROD_CLEANROOM/governance/crucible_lifecycle_law.json",
-    "KT_PROD_CLEANROOM/governance/crucible_registry.json",
-    "KT_PROD_CLEANROOM/governance/pressure_response_taxonomy.json",
-    "KT_PROD_CLEANROOM/tools/operator/crucible_pressure_law_validate.py",
-    "KT_PROD_CLEANROOM/tests/operator/test_b04_r1_crucible_pressure_law_validate.py",
+    "KT_PROD_CLEANROOM/governance/adapter_lifecycle_law.json",
+    "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+    "KT_PROD_CLEANROOM/tools/operator/adapter_lifecycle_law_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b04_r2_adapter_lifecycle_law_validate.py",
     "KT_PROD_CLEANROOM/reports"
   ],
   "expected_create_if_absent_targets": [
-    "KT_PROD_CLEANROOM/reports/crucible_pressure_law_ratification_receipt.json"
+    "KT_PROD_CLEANROOM/reports/adapter_lifecycle_law_ratification_receipt.json"
   ],
   "expected_receipts": [
-    "KT_PROD_CLEANROOM/reports/crucible_pressure_law_ratification_receipt.json"
+    "KT_PROD_CLEANROOM/reports/adapter_lifecycle_law_ratification_receipt.json"
   ],
   "validators_and_tests": {
     "validators": [
-      "python -m tools.operator.crucible_pressure_law_validate"
+      "python -m tools.operator.adapter_lifecycle_law_validate"
     ],
     "tests": [
-      "python -m pytest -o addopts='' tests/operator/test_b04_r1_crucible_pressure_law_validate.py -q"
+      "python -m pytest -o addopts='' tests/operator/test_b04_r2_adapter_lifecycle_law_validate.py -q"
     ]
   },
   "stop_conditions": [
-    "Any adapter, tournament, router, or lobe ratification is folded into the first step.",
-    "Any externality widening above E1 is folded into the first step.",
-    "Any external comparative claim or commercial activation is folded into the first step.",
-    "Any Gate D component enters Canonical without schema, validator, receipt, and rollback."
+    "Any tournament, merge, router, or lobe ratification is folded into the second step.",
+    "Any externality widening above E1 is folded into the second step.",
+    "Any external comparative claim or commercial activation is folded into the second step.",
+    "Any adapter status change is claimed without crucible-pressure eligibility evidence."
   ],
   "pass_fail_criteria": {
     "pass": [
-      "Crucible lifecycle, crucible registry, and pressure taxonomy are ratified as the first ordered Gate D surface.",
-      "The first step emits only crucible/pressure authority artifacts.",
+      "Adapter lifecycle and registry are ratified against the R1 crucible-pressure eligibility rule.",
+      "Promotion eligibility consumption remains fail-closed and evidence-bound.",
       "All later Gate D ratification steps remain blocked by order."
     ],
     "fail": [
-      "The first step widens Gate D beyond crucible and pressure law.",
-      "The first step implies externality, product, or comparative widening.",
-      "The first step lets later router or lobe work bypass order."
+      "The second step widens Gate D beyond adapter lifecycle law.",
+      "The second step bypasses R1 pressure evidence.",
+      "The second step implies router, lobe, externality, product, or comparative widening."
     ]
   },
   "repo_state_executable_now": true,
-  "execution_readiness": "FIRST_ORDERED_RATIFICATION_STEP_ONLY"
+  "execution_readiness": "SECOND_ORDERED_RATIFICATION_STEP_ONLY"
 }
