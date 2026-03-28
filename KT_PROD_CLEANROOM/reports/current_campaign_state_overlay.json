@@ -1,7 +1,7 @@
 {
   "schema_id": "kt.current_campaign_state_overlay.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T02:25:30Z",
+  "generated_utc": "2026-03-28T02:50:02Z",
   "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "authority_stack": {
@@ -16,6 +16,7 @@
       "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.md"
     ],
     "current_state_authority": [
+      "C:/Users/rober/AppData/Local/Temp/b03_t16_verify_20260327_2147/t15_receipt_final_head_authority_alignment_receipt.json",
       "C:/Users/rober/AppData/Local/Temp/b03_t15_verify_20260327_2207/counted_consumer_allowlist_contract_binding_receipt.json",
       "C:/Users/rober/AppData/Local/Temp/b03_t14_verify_20260327_2115/shared_guard_single_path_enforcement_receipt.json",
       "C:/Users/rober/AppData/Local/Temp/b03_t13_verify_20260327_2022/documentary_carrier_guard_centralization_receipt.json",
@@ -40,6 +41,7 @@
       "KT_PROD_CLEANROOM/reports/documentary_carrier_guard_centralization_receipt.json",
       "KT_PROD_CLEANROOM/reports/shared_guard_single_path_enforcement_receipt.json",
       "KT_PROD_CLEANROOM/reports/counted_consumer_allowlist_contract_binding_receipt.json",
+      "KT_PROD_CLEANROOM/reports/t15_receipt_final_head_authority_alignment_receipt.json",
       "KT_PROD_CLEANROOM/governance/execution_board.json",
       "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
     ]
@@ -51,7 +53,7 @@
   "repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "2f6ae150adcc22b19a5f5e31c7d145c79d080102",
+    "current_git_head": "c92c9492b67270def8282b3e038d2cba1bd8de99",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "omega_batch_status": {
@@ -86,44 +88,42 @@
       "B03_T12_DOCUMENTARY_CARRIER_FAIL_CLOSED_CONSUMER_ENFORCEMENT",
       "B03_T13_DOCUMENTARY_CARRIER_GUARD_CENTRALIZATION",
       "B03_T14_SHARED_GUARD_SINGLE_PATH_ENFORCEMENT",
-      "B03_T15_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_BINDING"
+      "B03_T15_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_BINDING",
+      "B03_T16_T15_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT"
     ],
-    "next_counted_tranche": "B03_T16_T15_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT",
+    "next_counted_tranche": "B03_T17_COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT",
     "b02_runtime_unification": "EXITED",
-    "gate_c_status": "OPEN_TRANCHES_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_COMPLETE_NOT_EXITED",
+    "gate_c_status": "OPEN_TRANCHES_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_COMPLETE_NOT_EXITED",
     "gate_d_status": "NOT_AUTHORIZED",
     "authoritative_basis": [
+      "t15_receipt_final_head_authority_alignment_receipt.status = PASS on authoritative clean-clone sealed head c92c9492b67270def8282b3e038d2cba1bd8de99",
       "counted_consumer_allowlist_contract_binding_receipt.status = PASS on authoritative clean-clone sealed head 2f6ae150adcc22b19a5f5e31c7d145c79d080102",
-      "The sanctioned counted-consumer allowlist is authoritative on sealed head 2f6ae150adcc22b19a5f5e31c7d145c79d080102 and matches the detected runtime owner set exactly.",
-      "The tracked T15 receipt on main is retained documentary carrier evidence and must not be treated as final-head proof when its subject_head differs from the current head.",
-      "shared_guard_single_path_enforcement_receipt.status = PASS on authoritative clean-clone sealed head 4e3972bb782a9cb3f9282d6ed27ddb53e7c6581e",
-      "documentary_carrier_guard_centralization_receipt.status = PASS on authoritative clean-clone sealed head c19240f6af223a6d30dbfb2705ddade4ab70be76",
-      "documentary_carrier_fail_closed_consumer_enforcement_receipt.status = PASS on authoritative clean-clone sealed head a51ccb987a1c47b17b4923b69fd3b3023ecc93d0",
-      "t10_receipt_final_head_authority_alignment_receipt.status = PASS on authoritative clean-clone sealed head cb8a1cc0583a5d46a9d45497e70d1818ffed145a",
+      "T10 and T15 receipt families now both prove tracked carrier receipts are non-authoritative on subject_head mismatch and require same-head proof to control.",
+      "The remaining narrow risk is family-by-family drift: future counted receipt families can reintroduce carrier-versus-authority ambiguity unless same-head authority becomes a shared contract requirement.",
       "baseline_vs_live_scorecard.json remains the sole canonical Gate C comparator truth"
     ]
   },
   "state_reconciliation": {
-    "latest_sealed_receipts_current_state": "B03 tranche 15 bound the sanctioned counted-consumer allowlist into an explicit contract surface on sealed head 2f6ae150adcc22b19a5f5e31c7d145c79d080102 without widening comparator truth or capability claims.",
-    "documentary_surface_state_on_main": "The tracked T15 receipt is now present on main as a documentary carrier surface, but its subject_head-proof semantics must still be aligned explicitly so it cannot be overread as final-head proof across heads.",
-    "reanchor_decision": "Preserve the authoritative clean-clone T15 receipt as the controlling proof surface, keep the tracked T15 receipt on main as carrier-only when subject_head differs, and narrow the next counted tranche to T15 final-head authority alignment only."
+    "latest_sealed_receipts_current_state": "B03 tranche 16 aligned authority semantics for the retained T15 receipt on sealed head c92c9492b67270def8282b3e038d2cba1bd8de99 without refreshing comparator truth or widening capability claims.",
+    "documentary_surface_state_on_main": "Tracked counted receipts on main are now explicitly carrier-only on subject_head mismatch for T10 and T15, but that rule is still family-specific instead of contract-bound for future counted receipt families.",
+    "reanchor_decision": "Preserve the authoritative clean-clone T16 receipt as controlling proof, keep tracked T10 and T15 counted receipts on main as carrier-only when subject_head differs, and narrow the next counted tranche to a shared same-head authority contract for counted receipt families only."
   },
-  "next_counted_workstream_id": "B03_T16_T15_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT",
-  "next_counted_workstream_scope": "Align authority semantics for the tracked T15 receipt only, so counted-consumer allowlist proof cannot be overread across heads. Earn no comparator refresh, no comparator-semantic changes, no new comparator rows, no capability widening, and no Gate C exit in tranche 16.",
+  "next_counted_workstream_id": "B03_T17_COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT",
+  "next_counted_workstream_scope": "Bind the same-head authority rule into a shared counted-receipt-family contract so future counted receipt families cannot skip subject_head-matched authority law. Earn no comparator refresh, no comparator-semantic changes, no new comparator rows, no capability widening, and no Gate C exit in tranche 17.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "explicit_non_go_areas": [
     "Do not reopen B00, B01, or B02 without a current regression receipt.",
     "Do not treat promotion civilization as current Gate C counting work.",
     "Do not count Gate D work toward Gate C.",
-    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 16.",
-    "Do not add new comparator rows in Gate C tranche 16.",
-    "Do not rewrite comparator semantics under a T15 authority-alignment label.",
-    "Do not refresh T15 comparator truth under tranche 16.",
-    "Do not allow the tracked T15 receipt on main to be overread as final-head proof when subject_head differs.",
+    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 17.",
+    "Do not add new comparator rows in Gate C tranche 17.",
+    "Do not rewrite comparator semantics under a receipt-family authority-contract label.",
+    "Do not refresh T10, T15, or any other counted comparator truth under tranche 17.",
+    "Do not allow future counted receipt families to bypass same-head authority law.",
     "Do not widen civilization, externality, or product claims.",
     "Do not use buyer-language or market claims beyond the narrowest validated wedge.",
     "Do not attempt Gate C exit in this launch-surface pass."
   ],
   "repo_state_executable_now": true,
-  "executable_now_why": "Repo is clean on main, B03 tranche 15 is sealed, and the next lawful move is a narrow Gate C tranche-16 authority-alignment pass that eliminates T15 cross-head overread risk without comparator or capability widening."
+  "executable_now_why": "Repo is clean on main, B03 tranche 16 is sealed, and the next lawful move is a narrow Gate C tranche-17 contract pass that turns same-head authority from a family-specific fix into shared receipt-family law without comparator or capability widening."
 }
