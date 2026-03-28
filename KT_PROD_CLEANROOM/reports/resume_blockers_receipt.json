@@ -1,47 +1,44 @@
 {
   "schema_id": "kt.resume_blockers_receipt.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T16:24:00Z",
-  "workstream_id": "B04_GATE_D_DECISION_LAW",
+  "generated_utc": "2026-03-28T18:05:00Z",
+  "workstream_id": "B04_GATE_D_POSTURE_SELECTION_ONLY",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "ee752460e34ad2411adc3d228704f20c421f33be",
+  "current_git_head": "a993c4caf4265f2b4012be853f462177be43e8f2",
   "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
   "repo_state_executable_now": false,
-  "blocking_state": "GATE_D_POSTURE_SELECTION_REQUIRED",
+  "blocking_state": "B04_LAUNCH_SURFACE_REQUIRED",
   "blocking_reasons": [
-    "Gate C is exited and Gate D decision law is now bound, but posture values for D1-D5 remain unselected.",
-    "B04 civilization activation remains fail-closed until a same-head Gate D decision receipt exists.",
+    "Gate D postures are selected, but B04 implementation remains separately gated and requires an explicit launch surface.",
+    "Externality widening, external comparative claims, and commercial activation remain deferred to later gates or later explicit authorization.",
     "Tracked carrier receipts on main remain non-authoritative and cannot stand in for Gate D authority."
   ],
   "nonblocking_conflicts": [
     {
-      "conflict_id": "TRACKED_GATE_C_EXIT_RECEIPT_IS_CARRIER_ONLY",
+      "conflict_id": "TRACKED_GATE_D_DECISION_LAW_RECEIPT_IS_CARRIER_ONLY",
       "class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
       "evidence": [
-        "The authoritative Gate C exit proof is the clean-clone receipt on sealed head 71268f2f7489aadec338d5e71bb5b70f8a7fe9dc.",
-        "The tracked gate_c_exit_adjudication_receipt.json on main was emitted on pre-receipt head c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7 and must remain carrier-only."
+        "The authoritative Gate D decision-law proof is the clean-clone receipt on sealed head a993c4caf4265f2b4012be853f462177be43e8f2.",
+        "The tracked gate_d_decision_law_receipt.json on main was emitted on pre-receipt head dfa1a8dc4d1e2874f79ec9b81289cbbac521dcd3 and must remain carrier-only."
       ],
-      "resolution_rule": "Use the clean-clone authoritative receipt as Gate C exit authority and do not overread the tracked carrier across heads."
+      "resolution_rule": "Use the clean-clone authoritative receipt as Gate D decision-law authority and do not overread the tracked carrier across heads."
     }
   ],
   "current_lawful_gate_standing": {
-    "inter_gate_state": "POST_GATE_C_EXIT_GATE_D_BALLOT_BOUND",
-    "b02_runtime_unification": "EXITED",
+    "inter_gate_state": "POST_GATE_C_EXIT_GATE_D_POSTURES_SELECTED",
     "gate_c": "EXITED",
-    "gate_d": "DECISION_LAW_BOUND_POSTURES_UNSELECTED"
+    "gate_d": "POSTURES_SELECTED_IMPLEMENTATION_NOT_ACTIVATED"
   },
-  "exact_next_counted_workstream_id": "B04_GATE_D_POSTURE_SELECTION_ONLY",
+  "exact_next_counted_workstream_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
   "explicit_non_go_areas": [
-    "Do not reopen Gate C unless adjudication regresses with current proof.",
-    "Do not activate B04 before a same-head Gate D decision receipt exists.",
-    "Do not widen externality beyond E1 by default.",
-    "Do not make frontier claims.",
-    "Do not add comparator rows or rewrite comparator semantics.",
-    "Do not widen product or market claims.",
+    "Do not widen externality beyond E1.",
+    "Do not open external comparative claims.",
+    "Do not activate commercial deployment.",
+    "Do not treat posture selection as automatic B04 implementation.",
     "Do not treat tracked carrier receipts as current-head authority."
   ],
-  "why_not_executable_now": "The Gate D ballot is bound definition-only, but explicit posture values have not been selected and B04 activation remains fail-closed until a future same-head decision receipt exists."
+  "why_not_executable_now": "Gate D posture selection is complete, but B04 implementation still requires a separate launch surface before any mutation is lawful."
 }

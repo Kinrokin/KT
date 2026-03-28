@@ -1,91 +1,103 @@
 {
   "schema_id": "kt.next_counted_workstream_contract.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T16:24:00Z",
-  "source_workstream_id": "B04_GATE_D_DECISION_LAW",
+  "generated_utc": "2026-03-28T18:05:00Z",
+  "source_workstream_id": "B04_GATE_D_POSTURE_SELECTION_ONLY",
   "current_counted_gate": "Gate D",
   "parent_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
-  "exact_next_counted_workstream_id": "B04_GATE_D_POSTURE_SELECTION_ONLY",
+  "exact_next_counted_workstream_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
-  "execution_mode": "DEFINITION_ONLY_BALLOT_BOUND__NO_IMPLEMENTATION_UNTIL_POSTURES_ARE_SELECTED",
-  "workstream_objective": "Select explicit posture values for D1 externality, D2 counted domains, D3 adaptive evolution, D4 comparative claims, and D5 commercial activation through one same-head Gate D decision receipt. Do not activate B04 implementation inside that decision step.",
+  "execution_mode": "POSTURES_SELECTED__SEPARATE_LAUNCH_SURFACE_REQUIRED",
+  "workstream_objective": "Execute one governed and rollback-safe civilization lane only under the selected Gate D postures. B04 implementation must stay within controlled counted-domain expansion and adapter evolution authorization only.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "canonical_receipt_binding": {
     "gate_c_exit_authoritative_receipt_path": "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_20260328_1029/gate_c_exit_adjudication_authoritative_receipt.json",
-    "gate_c_exit_tracked_carrier_ref": "KT_PROD_CLEANROOM/reports/gate_c_exit_adjudication_receipt.json",
-    "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
-    "gate_d_reanchor_packet_ref": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
     "gate_d_decision_law_ref": "KT_PROD_CLEANROOM/governance/gate_d_decision_law.json",
-    "gate_d_decision_terminal_state_ref": "KT_PROD_CLEANROOM/governance/gate_d_decision_terminal_state.json"
+    "gate_d_reanchor_packet_ref": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
+    "gate_d_decision_receipt_ref": "KT_PROD_CLEANROOM/reports/gate_d_decision_receipt.json",
+    "omega_b04_definition_ref": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json"
   },
   "gate_domain_product_split": {
-    "gate": "Gate D decision posture selection only",
-    "domain_surface": "The decision receipt may select postures for D1-D5 only. B04 civilization activation surfaces remain candidate implementation surfaces and do not count inside the decision step.",
+    "gate": "Gate D one governed civilization lane only",
+    "domain_surface": "B04 implementation may realize controlled counted-domain expansion and adapter evolution inside one bounded lane only.",
     "product_surface": "NONE_COUNTING"
   },
+  "selected_postures": {
+    "D1_EXTERNALITY_WIDENING": "EXTERNALITY_BOUNDED",
+    "D2_NEW_COUNTED_DOMAINS": "COUNTED_DOMAINS_CONTROLLED_EXPANSION",
+    "D3_ADAPTIVE_EVOLUTION_AUTHORIZATION": "ADAPTER_EVOLUTION_AUTHORIZED",
+    "D4_COMPARATIVE_COMPETITIVE_CLAIMS": "NO_EXTERNAL_COMPARATIVE_CLAIMS",
+    "D5_COMMERCIAL_ACTIVATION": "LAB_ONLY"
+  },
   "prerequisite_read": {
-    "gate_c_exit_authoritative_receipt": "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_20260328_1029/gate_c_exit_adjudication_authoritative_receipt.json",
+    "gate_d_decision_receipt": "KT_PROD_CLEANROOM/reports/gate_d_decision_receipt.json",
     "gate_d_reanchor_packet": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
-    "gate_d_decision_law": "KT_PROD_CLEANROOM/governance/gate_d_decision_law.json",
-    "gate_d_decision_terminal_state": "KT_PROD_CLEANROOM/governance/gate_d_decision_terminal_state.json",
+    "omega_batch_definition": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json",
     "v11_closure_map": "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.json"
   },
   "expected_mutate_paths": [
-    "KT_PROD_CLEANROOM/reports/gate_d_decision_receipt.json",
-    "KT_PROD_CLEANROOM/reports/current_campaign_state_overlay.json",
-    "KT_PROD_CLEANROOM/reports/next_counted_workstream_contract.json",
-    "KT_PROD_CLEANROOM/reports/resume_blockers_receipt.json",
-    "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json"
+    "KT_PROD_CLEANROOM/governance/civilization_loop_contract.json",
+    "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+    "KT_PROD_CLEANROOM/governance/router_promotion_law.json",
+    "KT_PROD_CLEANROOM/governance/lobe_promotion_law.json",
+    "KT_PROD_CLEANROOM/reports"
   ],
   "expected_create_if_absent_targets": [
-    "KT_PROD_CLEANROOM/reports/gate_d_decision_receipt.json"
+    "KT_PROD_CLEANROOM/reports/civilization_golden_run_receipt.json",
+    "KT_PROD_CLEANROOM/reports/domain_unlock_matrix_receipt.json",
+    "KT_PROD_CLEANROOM/reports/bounded_learning_receipt.json",
+    "KT_PROD_CLEANROOM/reports/promotion_binding_receipt.json",
+    "KT_PROD_CLEANROOM/reports/forge_generation_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_cutover_receipt.json",
+    "KT_PROD_CLEANROOM/reports/chaos_lane_resilience_receipt.json",
+    "KT_PROD_CLEANROOM/reports/tournament_live_receipt.json",
+    "KT_PROD_CLEANROOM/reports/multi_lobe_execution_receipt.json"
   ],
   "expected_receipts": [
-    "KT_PROD_CLEANROOM/reports/gate_d_decision_receipt.json"
-  ],
-  "decision_questions": [
-    "D1: Which explicit externality posture is selected?",
-    "D2: Which explicit counted-domain posture is selected?",
-    "D3: Which explicit adaptive-evolution posture is selected?",
-    "D4: Which explicit comparative-claims posture is selected?",
-    "D5: Which explicit commercial posture is selected?"
-  ],
-  "explicit_not_authorized_before_decision": [
-    "B04 civilization activation",
-    "automatic B04 execution after posture selection",
-    "externality widening by default",
-    "new comparator rows",
-    "frontier claims",
-    "product or market superiority widening",
-    "tracked carrier receipts standing in for same-head authority"
+    "KT_PROD_CLEANROOM/reports/civilization_golden_run_receipt.json",
+    "KT_PROD_CLEANROOM/reports/domain_unlock_matrix_receipt.json",
+    "KT_PROD_CLEANROOM/reports/bounded_learning_receipt.json",
+    "KT_PROD_CLEANROOM/reports/promotion_binding_receipt.json",
+    "KT_PROD_CLEANROOM/reports/forge_generation_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_cutover_receipt.json",
+    "KT_PROD_CLEANROOM/reports/chaos_lane_resilience_receipt.json",
+    "KT_PROD_CLEANROOM/reports/tournament_live_receipt.json",
+    "KT_PROD_CLEANROOM/reports/multi_lobe_execution_receipt.json",
+    "KT_PROD_CLEANROOM/reports/civilization_loop_receipt.json",
+    "KT_PROD_CLEANROOM/reports/learning_response_receipt.json",
+    "KT_PROD_CLEANROOM/reports/rollback_drill_receipt.json"
   ],
   "validators_and_tests": {
     "validators": [
-      "python -m tools.operator.gate_d_decision_law_validate"
+      "python -m tools.operator.universal_adapter_validate",
+      "python -m tools.operator.civilization_loop_validate",
+      "python -m tools.operator.router_ordered_proof_validate",
+      "python -m tools.operator.w2_lawful_evolution_validate"
     ],
     "tests": [
-      "python -m pytest -o addopts='' tests/operator/test_gate_d_decision_law_validate.py -q"
+      "python -m pytest -o addopts='' tests/operator/test_universal_adapter_validate.py tests/operator/test_civilization_loop_validate.py tests/operator/test_router_ordered_proof_validate.py tests/operator/test_w2_lawful_evolution_validate.py -q"
     ]
   },
   "stop_conditions": [
-    "Any posture value is silently selected outside an explicit same-head Gate D decision receipt.",
-    "Any B04 implementation mutation begins inside the posture-selection step.",
-    "Any externality widening, comparator expansion, product widening, or frontier claim is authorized by default.",
-    "Any tracked carrier or documentary surface is treated as Gate D authority.",
-    "Any mutate path falls outside expected_mutate_paths."
+    "Any externality widening above E1 is folded into B04.",
+    "Any external comparative claim or commercial activation is folded into B04.",
+    "Any router promotion occurs before ordered proof.",
+    "Any tournament or lobe claim activates without traceable receipts.",
+    "Any B04 activation proceeds without a separate launch surface."
   ],
   "pass_fail_criteria": {
     "pass": [
-      "The Gate D ballot remains definition-only until a same-head decision receipt selects all five required domain postures.",
-      "B04 activation remains fail-closed until after the decision receipt exists.",
-      "The next lawful move is posture selection only and not civilization activation."
+      "One governed civilization lane exists.",
+      "Learning, promotion, cutover, and rollback are traced.",
+      "Lobe activation remains bounded and ordered.",
+      "Externality, external comparative claims, and commercial activation remain deferred."
     ],
     "fail": [
-      "Any Gate D posture is implied rather than explicitly selected.",
-      "Any decision artifact activates B04 instead of only authorizing later implementation.",
+      "B04 implementation widens externality or commercial scope.",
+      "Any learned-router or multi-lobe superiority is claimed before ordered proof is earned.",
       "Any current-head authority is sourced from tracked carriers instead of same-head proof."
     ]
   },
   "repo_state_executable_now": false,
-  "execution_readiness": "GATE_D_POSTURE_SELECTION_MUST_BE_EXPLICITLY_DECIDED_BEFORE_ANY_B04_COUNTING"
+  "execution_readiness": "SEPARATE_B04_LAUNCH_SURFACE_REQUIRED_BEFORE_IMPLEMENTATION"
 }

@@ -1,14 +1,14 @@
 {
   "schema_id": "kt.gate_d.decision_reanchor_packet.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T16:24:00Z",
-  "workstream_id": "B04_GATE_D_DECISION_LAW",
+  "generated_utc": "2026-03-28T18:05:00Z",
+  "workstream_id": "B04_GATE_D_POSTURE_SELECTION_ONLY",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "reanchor_head": "ee752460e34ad2411adc3d228704f20c421f33be",
   "current_repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "ee752460e34ad2411adc3d228704f20c421f33be",
+    "current_git_head": "a993c4caf4265f2b4012be853f462177be43e8f2",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "authoritative_gate_c_exit": {
@@ -37,19 +37,13 @@
     "active_current_head_claim_blocker_ids": [
       "C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"
     ],
-    "current_truth_posture_open_blocker_ids": [
-      "current_head_external_capability_not_confirmed",
-      "release_readiness_not_proven",
-      "release_ceremony_not_executed",
-      "release_activation_not_executed",
-      "repo_root_import_fragility_visible_and_unfixed"
-    ],
     "externality_class_max": "E1_SAME_HOST_DETACHED_REPLAY",
     "highest_truthful_tier_output": "NOT_FRONTIER",
     "product_truth_class": "BOUNDED_E1_BUYER_SIMPLE_PRODUCT_PLANE",
     "router_status": "STATIC_CANONICAL_BASELINE_ONLY",
-    "gate_d_authorized": false,
-    "note": "Gate C exit proved live > baseline under bounded law. Gate D decision law now binds the ballot structure only. It does not select postures, authorize B04 activation, widen externality, widen counted domains, authorize competitive claims, or widen product scope."
+    "gate_d_decision_selected": true,
+    "gate_d_activation_authorized": false,
+    "note": "Gate D posture selection now authorizes only one future governed civilization lane under bounded postures. It still does not activate B04 implementation, widen externality above E1, open external comparative claims, or activate commercial deployment."
   },
   "explicit_not_authorized": [
     "frontier claim",
@@ -57,48 +51,46 @@
     "new comparator rows",
     "comparator-semantic rewrite",
     "product or market superiority widening",
-    "new counted domains without an explicit Gate D decision receipt",
-    "automatic Gate D activation",
     "automatic B04 civilization activation",
-    "tournament live activation",
-    "router or lobe prestige activation"
+    "external comparative claims",
+    "commercial deployment activation",
+    "router superiority claims before ordered proof",
+    "multi-lobe superiority claims before ordered proof"
   ],
   "gate_d_decision_law_state": {
     "law_ref": "KT_PROD_CLEANROOM/governance/gate_d_decision_law.json",
     "terminal_state_ref": "KT_PROD_CLEANROOM/governance/gate_d_decision_terminal_state.json",
     "law_type": "GATE_D_DECISION_BALLOT",
     "mode": "DEFINITION_ONLY_NO_POSTURE_SELECTED",
-    "postures_selected": false,
+    "postures_selected": true,
     "b04_activation_allowed": false,
-    "required_domain_ids": [
-      "D1_EXTERNALITY_WIDENING",
-      "D2_NEW_COUNTED_DOMAINS",
-      "D3_ADAPTIVE_EVOLUTION_AUTHORIZATION",
-      "D4_COMPARATIVE_COMPETITIVE_CLAIMS",
-      "D5_COMMERCIAL_ACTIVATION"
-    ]
+    "selected_postures": {
+      "D1_EXTERNALITY_WIDENING": "EXTERNALITY_BOUNDED",
+      "D2_NEW_COUNTED_DOMAINS": "COUNTED_DOMAINS_CONTROLLED_EXPANSION",
+      "D3_ADAPTIVE_EVOLUTION_AUTHORIZATION": "ADAPTER_EVOLUTION_AUTHORIZED",
+      "D4_COMPARATIVE_COMPETITIVE_CLAIMS": "NO_EXTERNAL_COMPARATIVE_CLAIMS",
+      "D5_COMMERCIAL_ACTIVATION": "LAB_ONLY"
+    }
   },
   "gate_d_decision_scope": {
     "omega_next_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
-    "decision_mode": "DEFINITION_ONLY_BALLOT_BOUND__POSTURE_SELECTION_REQUIRED_BEFORE_ANY_B04_COUNTING",
-    "omega_batch_objective": "Turn bounded learning, promotion, cutover, tournament, and lobes into one governed and rollback-safe civilization lane.",
-    "authorized_decision_questions": [
-      "D1: Does KT remain at EXTERNALITY_BOUNDED or is a stronger externality posture explicitly selected later?",
-      "D2: Do counted domains remain frozen or is controlled counted-domain expansion explicitly selected later?",
-      "D3: Does KT remain a static governed system or is adapter evolution explicitly selected later?",
-      "D4: Do external comparative claims remain blocked or is a bounded comparative posture explicitly selected later?",
-      "D5: Does KT remain lab-only or is a stronger commercial posture explicitly selected later?"
+    "decision_mode": "POSTURES_SELECTED__SEPARATE_LAUNCH_SURFACE_REQUIRED_BEFORE_ANY_B04_COUNTING",
+    "selected_scope_summary": [
+      "D1 stays EXTERNALITY_BOUNDED until Gate E.",
+      "D2 allows one controlled counted-domain expansion into the Omega B04 civilization lane only.",
+      "D3 authorizes adapter evolution only inside that one governed lane.",
+      "D4 keeps external comparative claims blocked.",
+      "D5 keeps commercial activation LAB_ONLY."
     ],
     "forbidden_prejudgments": [
-      "Treating Gate C exit as automatic Gate D authorization",
-      "Treating Gate D decision law as a posture selection",
-      "Treating Gate D decision law as automatic B04 activation",
-      "Treating Gate D as automatic externality widening",
-      "Treating Gate D as automatic commercialization authorization",
-      "Treating tracked carrier receipts as post-Gate-C or Gate D authority"
+      "Treating posture selection as automatic B04 activation",
+      "Treating controlled counted-domain expansion as externality widening",
+      "Treating adapter evolution authorization as learned-router or multi-lobe superiority",
+      "Treating lab-only posture as commercial activation",
+      "Treating tracked carrier receipts as Gate D authority"
     ],
-    "no_count_before_decision": true
+    "no_count_before_decision": false
   },
-  "next_lawful_move": "B04_GATE_D_POSTURE_SELECTION_ONLY",
-  "claim_boundary": "This packet freezes post-Gate-C reality and binds the Gate D ballot only. It does not select any posture, does not authorize B04 mutation, and does not widen externality, counted domains, adaptive evolution, comparative claims, or product scope."
+  "next_lawful_move": "B04_GATE_D_CIVILIZATION_ACTIVATE__SEPARATE_LAUNCH_SURFACE_REQUIRED",
+  "claim_boundary": "This packet freezes the selected Gate D posture set only. It does not activate B04 implementation, does not widen externality above E1, does not open external comparative claims, and does not activate commercial deployment."
 }
