@@ -1,0 +1,252 @@
+{
+  "canonical_receipt_binding": {
+    "counted_receipt_family_same_head_authority_contract_receipt_ref": "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json",
+    "final_current_head_adjudication_authority_binding_receipt_ref": "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_authority_binding_receipt.json",
+    "gate_c_exit_criteria_contract_ref": "KT_PROD_CLEANROOM/governance/gate_c_exit_criteria_contract.json",
+    "gate_c_exit_terminal_state_ref": "KT_PROD_CLEANROOM/governance/gate_c_exit_terminal_state.json",
+    "tracked_counted_receipt_carrier_overread_contract_receipt_ref": "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_carrier_overread_contract_receipt.json",
+    "tracked_counted_receipt_class_authority_closure_receipt_ref": "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_class_authority_closure_receipt.json"
+  },
+  "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+  "checks": [
+    {
+      "check_id": "exit_contract_still_definition_only_until_adjudication_receipt",
+      "pass": true
+    },
+    {
+      "check_id": "required_same_head_evidence_surface_refs_are_exact",
+      "pass": true
+    },
+    {
+      "check_id": "same_head_evidence_chain_passes",
+      "pass": true
+    },
+    {
+      "check_id": "same_head_authority_contract_chain_passes",
+      "pass": true
+    },
+    {
+      "check_id": "same_head_final_adjudication_family_binding_passes",
+      "pass": true
+    },
+    {
+      "check_id": "tracked_final_adjudication_family_carrier_fails_closed",
+      "pass": true
+    },
+    {
+      "check_id": "remaining_forbidden_surfaces_do_not_present_authority_shape",
+      "pass": true
+    },
+    {
+      "check_id": "live_beats_baseline_is_adjudicated_true_on_same_head",
+      "pass": true
+    },
+    {
+      "check_id": "gate_d_not_opened_automatically",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "This receipt adjudicates Gate C on the current sealed head only. It may earn Gate C exit if and only if the same-head evidence chain and same-head authority chain both pass without any carrier, cross-head, or documentary substitution. It does not open Gate D automatically or widen civilization, externality, or product scope.",
+  "current_git_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+  "final_current_head_adjudication_authority_binding_regression": {
+    "receipt_role": "COUNTED_T24_FINAL_CURRENT_HEAD_ADJUDICATION_AUTHORITY_BINDING_ARTIFACT_ONLY",
+    "status": "PASS"
+  },
+  "forbidden_surface_classification": [
+    {
+      "authority_shape_complete": true,
+      "has_receipt_role": true,
+      "has_subject_head": true,
+      "receipt_role": "FUTURE_GATE_C_EXIT_ADJUDICATION_AUTHORITY_FAMILY_CANDIDATE",
+      "schema_id": "kt.final_current_head.adjudication_receipt.v1",
+      "subject_head": "bfdd0f3e8e40ff6ecb6fe50ce6590656d0ba3539",
+      "subject_head_source_field": "subject_head",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
+      "tracked_authority_class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+      "tracked_contract": {
+        "allowed_roles": [
+          "FUTURE_GATE_C_EXIT_ADJUDICATION_AUTHORITY_FAMILY_CANDIDATE"
+        ],
+        "blocked": true,
+        "failure_reason": "SUBJECT_HEAD_MISMATCH",
+        "pass": false,
+        "receipt_ref": "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
+        "receipt_role": "FUTURE_GATE_C_EXIT_ADJUDICATION_AUTHORITY_FAMILY_CANDIDATE",
+        "requested_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+        "subject_head": "bfdd0f3e8e40ff6ecb6fe50ce6590656d0ba3539"
+      }
+    },
+    {
+      "authority_shape_complete": false,
+      "has_receipt_role": false,
+      "has_subject_head": true,
+      "receipt_role": "",
+      "schema_id": "kt.e1.bounded_campaign_receipt.v1",
+      "subject_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+      "subject_head_source_field": "current_git_head",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/e1_bounded_campaign_receipt.json"
+    },
+    {
+      "authority_shape_complete": false,
+      "has_receipt_role": false,
+      "has_subject_head": true,
+      "receipt_role": "",
+      "schema_id": "kt.w3.competitive_scorecard.v1",
+      "subject_head": "b1fbd35baec8232916d853f2e2e0e9ceed2a5e4d",
+      "subject_head_source_field": "current_git_head",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard.json"
+    },
+    {
+      "authority_shape_complete": false,
+      "has_receipt_role": false,
+      "has_subject_head": true,
+      "receipt_role": "",
+      "schema_id": "kt.e1.public_verifier_kit.v1",
+      "subject_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+      "subject_head_source_field": "current_git_head",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/public_verifier_kit.json"
+    }
+  ],
+  "gate_c_exit_earned": true,
+  "gate_d_authorized": false,
+  "generated_utc": "2026-03-28T15:25:09Z",
+  "live_beats_baseline_adjudicated": true,
+  "next_lawful_move": "REANCHOR_CURRENT_STATE_FOR_GATE_D_DECISION",
+  "receipt_role": "COUNTED_GATE_C_EXIT_ADJUDICATION_ARTIFACT_ONLY",
+  "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+  "same_head_authority_contract_receipts": [
+    {
+      "allowed_roles": [
+        "COUNTED_T17_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_ARTIFACT_ONLY"
+      ],
+      "blocked": false,
+      "failure_reason": null,
+      "pass": true,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json",
+      "receipt_role": "COUNTED_T17_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_ARTIFACT_ONLY",
+      "requested_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+      "subject_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7"
+    },
+    {
+      "allowed_roles": [
+        "COUNTED_T19_TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_ARTIFACT_ONLY"
+      ],
+      "blocked": false,
+      "failure_reason": null,
+      "pass": true,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_carrier_overread_contract_receipt.json",
+      "receipt_role": "COUNTED_T19_TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_ARTIFACT_ONLY",
+      "requested_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+      "subject_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7"
+    },
+    {
+      "allowed_roles": [
+        "COUNTED_T23_TRACKED_COUNTED_RECEIPT_CLASS_AUTHORITY_CLOSURE_ARTIFACT_ONLY"
+      ],
+      "blocked": false,
+      "failure_reason": null,
+      "pass": true,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_class_authority_closure_receipt.json",
+      "receipt_role": "COUNTED_T23_TRACKED_COUNTED_RECEIPT_CLASS_AUTHORITY_CLOSURE_ARTIFACT_ONLY",
+      "requested_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+      "subject_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7"
+    }
+  ],
+  "same_head_evidence_surface_contracts": [
+    {
+      "allowed_roles": [
+        "SOLE_CANONICAL_COMPARATOR_TRUTH"
+      ],
+      "blocked": false,
+      "failure_reason": null,
+      "pass": true,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+      "receipt_role": "SOLE_CANONICAL_COMPARATOR_TRUTH",
+      "requested_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+      "subject_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json"
+    },
+    {
+      "allowed_roles": [
+        "FROZEN_EVAL_BUNDLE"
+      ],
+      "blocked": false,
+      "failure_reason": null,
+      "pass": true,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
+      "receipt_role": "FROZEN_EVAL_BUNDLE",
+      "requested_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+      "subject_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json"
+    },
+    {
+      "allowed_roles": [
+        "COMPARATOR_REPLAY_PROOF"
+      ],
+      "blocked": false,
+      "failure_reason": null,
+      "pass": true,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
+      "receipt_role": "COMPARATOR_REPLAY_PROOF",
+      "requested_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+      "subject_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json"
+    },
+    {
+      "allowed_roles": [
+        "BENCHMARK_CONSTITUTION_VALIDATION_PROOF"
+      ],
+      "blocked": false,
+      "failure_reason": null,
+      "pass": true,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
+      "receipt_role": "BENCHMARK_CONSTITUTION_VALIDATION_PROOF",
+      "requested_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+      "subject_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json"
+    },
+    {
+      "allowed_roles": [
+        "CANONICAL_BINDING_PROOF"
+      ],
+      "blocked": false,
+      "failure_reason": null,
+      "pass": true,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
+      "receipt_role": "CANONICAL_BINDING_PROOF",
+      "requested_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+      "subject_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json"
+    },
+    {
+      "allowed_roles": [
+        "ALIAS_RETIREMENT_PROOF"
+      ],
+      "blocked": false,
+      "failure_reason": null,
+      "pass": true,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
+      "receipt_role": "ALIAS_RETIREMENT_PROOF",
+      "requested_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+      "subject_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json"
+    },
+    {
+      "allowed_roles": [
+        "VALIDATOR_ALIAS_DETACHMENT_PROOF"
+      ],
+      "blocked": false,
+      "failure_reason": null,
+      "pass": true,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
+      "receipt_role": "VALIDATOR_ALIAS_DETACHMENT_PROOF",
+      "requested_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+      "subject_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
+    }
+  ],
+  "schema_id": "kt.gate_c.exit_adjudication_receipt.v1",
+  "status": "PASS",
+  "subject_head": "c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7",
+  "tranche_id": "B03_GATE_C_EXIT_ADJUDICATION"
+}
