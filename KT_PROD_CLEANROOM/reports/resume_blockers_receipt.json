@@ -1,20 +1,20 @@
 {
   "schema_id": "kt.resume_blockers_receipt.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-29T00:15:00Z",
-  "workstream_id": "B04_R4_ROUTER_SHADOW_EVALUATION_RATIFICATION",
+  "generated_utc": "2026-03-28T23:29:22Z",
+  "workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "cd7329607021177bdb687173412d235ac07d807a",
+  "current_git_head": "26a58027b04ffc15e3cd44c6d54c708140fbf4dd",
   "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
-  "repo_state_executable_now": true,
-  "blocking_state": "BROADER_B04_BLOCKED__FIFTH_RATIFICATION_STEP_ONLY",
+  "repo_state_executable_now": false,
+  "blocking_state": "B04_R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY__ONLY_GOVERNED_NONCANONICAL_PREPARATION_OPEN",
   "blocking_reasons": [
-    "Only the fifth ordered Gate D ratification step is executable now; learned-router authorization and lobe work remain blocked by order.",
-    "Externality widening, external comparative claims, and commercial activation remain deferred to later gates or later explicit authorization.",
-    "Tracked carrier receipts on main remain non-authoritative and cannot stand in for Gate D or B04 authority."
+    "B04.R5 proved the router-versus-best-adapter surface on the current head but did not earn router superiority, so learned-router authorization remains blocked.",
+    "Lobe promotion, externality widening, external comparative claims, and commercial activation remain blocked by order.",
+    "Only governed noncanonical preparation across crucibles, adapters, tournaments, merge, and router-shadow refinement remains open."
   ],
   "nonblocking_conflicts": [
     {
@@ -52,21 +52,39 @@
         "The tracked tournament_promotion_merge_law_ratification_receipt.json on main was emitted on pre-receipt head 32191f589342619d9e9a23835ac60e14d73dd627 and must remain carrier-only."
       ],
       "resolution_rule": "Use the clean-clone authoritative receipt as R3 authority and do not overread the tracked carrier across heads."
+    },
+    {
+      "conflict_id": "TRACKED_R4_RECEIPT_IS_CARRIER_ONLY",
+      "class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+      "evidence": [
+        "The authoritative B04.R4 proof is the clean-clone receipt on sealed head 341e63d009c250b8257db89baecc10a5665f47a9.",
+        "The tracked router_shadow_evaluation_ratification_receipt.json on main was emitted on pre-receipt head 9c0023ea81d436dbd07a56a50fd1b1771a7cd8ce and must remain carrier-only."
+      ],
+      "resolution_rule": "Use the clean-clone authoritative receipt as R4 authority and do not overread the tracked carrier across heads."
+    },
+    {
+      "conflict_id": "TRACKED_R5_RECEIPT_IS_CARRIER_ONLY",
+      "class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+      "evidence": [
+        "The authoritative B04.R5 proof is the clean-clone receipt on sealed head 26a58027b04ffc15e3cd44c6d54c708140fbf4dd.",
+        "The tracked router_vs_best_adapter_proof_ratification_receipt.json on main was emitted on pre-receipt head e57271456c685cc30b6000d54878e5ad8a86185f and must remain carrier-only."
+      ],
+      "resolution_rule": "Use the clean-clone authoritative receipt as R5 authority and do not overread the tracked carrier across heads."
     }
   ],
   "current_lawful_gate_standing": {
-    "inter_gate_state": "GATE_D_R4_ROUTER_SHADOW_EVALUATION_RATIFIED",
+    "inter_gate_state": "GATE_D_R5_ROUTER_PROOF_RATIFIED_STATIC_HOLD",
     "gate_c": "EXITED",
-    "gate_d": "ROUTER_SHADOW_EVALUATION_RATIFIED"
+    "gate_d": "ROUTER_PROOF_RATIFIED_STATIC_HOLD__R6_BLOCKED"
   },
-  "exact_next_counted_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
+  "exact_next_counted_workstream_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
   "explicit_non_go_areas": [
     "Do not widen externality beyond E1.",
     "Do not open external comparative claims.",
     "Do not activate commercial deployment.",
-    "Do not treat B04.R4 as router superiority proof, learned-router authorization, or lobe ratification.",
+    "Do not treat B04.R5 as learned-router authorization or lobe ratification.",
     "Do not treat tracked carrier receipts as current-head authority.",
     "Do not bypass the ordered Gate D ratification sequence."
   ],
-  "why_not_executable_now": "Not applicable for B04.R5: the fifth ordered ratification step is executable now, but broader B04 remains order-locked."
+  "why_not_executable_now": "B04.R6 is not executable because router superiority was not earned on the same-head R5 proof. Continue only governed noncanonical preparation until a future R5 retry actually earns superiority."
 }

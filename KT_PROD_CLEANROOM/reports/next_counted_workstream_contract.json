@@ -1,14 +1,14 @@
 {
   "schema_id": "kt.next_counted_workstream_contract.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-29T00:15:00Z",
-  "source_workstream_id": "B04_R4_ROUTER_SHADOW_EVALUATION_RATIFICATION",
+  "generated_utc": "2026-03-28T23:29:22Z",
+  "source_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
   "current_counted_gate": "Gate D",
   "parent_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
-  "exact_next_counted_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
+  "exact_next_counted_workstream_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
-  "execution_mode": "CIVILIZATION_RATIFICATION_ORDER_LOCKED__FIFTH_STEP_ONLY",
-  "workstream_objective": "Ratify only router-versus-best-adapter ordered proof against the shadow-frozen router evidence and the audited static router baseline. Do not execute learned-router authorization, lobe ratification, externality, comparative, or commercial widening in this step.",
+  "execution_mode": "CIVILIZATION_RATIFICATION_ORDER_LOCKED__SIXTH_STEP_BLOCKED_PENDING_EARNED_R5_SUPERIORITY",
+  "workstream_objective": "No counted R6 work is executable until a future same-head router-versus-best-adapter proof actually earns router superiority. Until then, only governed noncanonical preparation may continue across crucibles, adapters, tournaments, merge, and router-shadow improvement without cutover, lobe promotion, externality, comparative, or commercial widening.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "canonical_receipt_binding": {
     "gate_c_exit_authoritative_receipt_path": "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_20260328_1029/gate_c_exit_adjudication_authoritative_receipt.json",
@@ -24,11 +24,13 @@
     "b04_r3_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r3_tournament_promotion_merge_terminal_state.json",
     "b04_r4_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r4_router_shadow_evaluation_law_contract.json",
     "b04_r4_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r4_router_shadow_terminal_state.json",
+    "b04_r5_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_proof_contract.json",
+    "b04_r5_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_terminal_state.json",
     "omega_b04_definition_ref": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json"
   },
   "gate_domain_product_split": {
-    "gate": "Gate D fifth ordered ratification step only",
-    "domain_surface": "Gate D may ratify router-versus-best-adapter proof only after router shadow evaluation is ratified.",
+    "gate": "Gate D sixth ordered ratification step remains blocked",
+    "domain_surface": "Gate D may discuss learned-router authorization only after router superiority is actually earned on a future same-head R5 proof chain.",
     "product_surface": "NONE_COUNTING"
   },
   "selected_postures": {
@@ -39,54 +41,43 @@
     "D5_COMMERCIAL_ACTIVATION": "LAB_ONLY"
   },
   "prerequisite_read": {
-    "b04_r4_contract": "KT_PROD_CLEANROOM/governance/b04_r4_router_shadow_evaluation_law_contract.json",
-    "b04_r4_terminal_state": "KT_PROD_CLEANROOM/governance/b04_r4_router_shadow_terminal_state.json",
-    "router_shadow_receipt": "KT_PROD_CLEANROOM/reports/router_shadow_evaluation_ratification_receipt.json",
+    "b04_r5_contract": "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_proof_contract.json",
+    "b04_r5_terminal_state": "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_terminal_state.json",
+    "router_vs_best_adapter_receipt": "KT_PROD_CLEANROOM/reports/router_vs_best_adapter_proof_ratification_receipt.json",
+    "router_ordered_proof_receipt": "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json",
     "gate_d_reanchor_packet": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
     "v11_closure_map": "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.json"
   },
-  "expected_mutate_paths": [
-    "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
-    "KT_PROD_CLEANROOM/tools/operator/router_ordered_proof_validate.py",
-    "KT_PROD_CLEANROOM/tests/operator/test_router_ordered_proof_validate.py",
-    "KT_PROD_CLEANROOM/reports/router_shadow_eval_matrix.json",
-    "KT_PROD_CLEANROOM/reports/route_distribution_health.json",
-    "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
-    "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json",
-    "KT_PROD_CLEANROOM/reports"
+  "allowed_noncanonical_parallelism": [
+    "crucible strengthening that does not widen externality or canonical authority",
+    "adapter, merge, and tournament improvement that remains inside Gate D lab scope",
+    "router shadow refinement that remains replayable, explainable, and cutover-blocked"
   ],
-  "expected_create_if_absent_targets": [
-    "KT_PROD_CLEANROOM/reports/router_vs_best_adapter_proof_ratification_receipt.json"
-  ],
-  "expected_receipts": [
-    "KT_PROD_CLEANROOM/reports/router_vs_best_adapter_proof_ratification_receipt.json"
-  ],
+  "expected_mutate_paths": [],
+  "expected_create_if_absent_targets": [],
+  "expected_receipts": [],
   "validators_and_tests": {
-    "validators": [
-      "python -m tools.operator.router_ordered_proof_validate"
-    ],
-    "tests": [
-      "python -m pytest -o addopts='' tests/operator/test_router_ordered_proof_validate.py -q"
-    ]
+    "validators": [],
+    "tests": []
   },
   "stop_conditions": [
-    "Any learned-router authorization or lobe ratification is folded into the fifth step.",
-    "Any externality widening above E1, external comparative claim, or commercial activation is folded into the fifth step.",
-    "Any router-versus-best-adapter proof bypasses the shadow-frozen router evidence or the audited static router baseline.",
-    "Any router superiority claim is made without the ordered proof chain holding no-regression and fallback boundaries."
+    "Any attempt to execute B04_R6_LEARNED_ROUTER_AUTHORIZATION while router superiority remains unearned.",
+    "Any claim that the R5 static hold authorizes learned-router cutover or lobe promotion.",
+    "Any externality widening above E1, external comparative claim, or commercial activation is folded into this blocked state.",
+    "Any broader lab improvement work is narrated as counted canonical advancement."
   ],
   "pass_fail_criteria": {
     "pass": [
-      "Router ordered proof remains bounded against the audited static router baseline and the shadow-frozen router evidence.",
-      "Static canonical router hold or any future superiority outcome is stated honestly under no-regression law.",
-      "All learned-router authorization, lobe, externality, comparative, and commercial steps remain blocked by order."
+      "R6 remains blocked until same-head router superiority is actually earned.",
+      "The static canonical router hold remains stated honestly with no learned-router cutover or lobe promotion.",
+      "Only governed noncanonical preparation remains open while externality, comparative, and commercial widening stay blocked."
     ],
     "fail": [
-      "The fifth step widens Gate D beyond router-versus-best-adapter proof.",
-      "The fifth step bypasses shadow-frozen router evidence or the static router control baseline.",
-      "The fifth step implies learned-router authorization, lobe, externality, product, or comparative widening."
+      "R6 is treated as executable without earned router superiority proof.",
+      "The post-R5 hold is narrated as learned-router authority or lobe readiness.",
+      "Broader lab work is counted as canonical Gate D advancement."
     ]
   },
-  "repo_state_executable_now": true,
-  "execution_readiness": "FIFTH_ORDERED_RATIFICATION_STEP_ONLY"
+  "repo_state_executable_now": false,
+  "execution_readiness": "SIXTH_ORDERED_RATIFICATION_STEP_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY"
 }

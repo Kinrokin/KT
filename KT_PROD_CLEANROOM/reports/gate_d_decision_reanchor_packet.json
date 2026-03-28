@@ -1,14 +1,14 @@
 {
   "schema_id": "kt.gate_d.decision_reanchor_packet.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-29T00:15:00Z",
-  "workstream_id": "B04_R4_ROUTER_SHADOW_EVALUATION_RATIFICATION",
+  "generated_utc": "2026-03-28T23:29:22Z",
+  "workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "reanchor_head": "ee752460e34ad2411adc3d228704f20c421f33be",
   "current_repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "cd7329607021177bdb687173412d235ac07d807a",
+    "current_git_head": "26a58027b04ffc15e3cd44c6d54c708140fbf4dd",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "authoritative_gate_c_exit": {
@@ -43,7 +43,7 @@
     "router_status": "STATIC_CANONICAL_BASELINE_ONLY",
     "gate_d_decision_selected": true,
     "gate_d_activation_authorized": true,
-    "note": "Gate D launch remains bounded. R1 ratified crucible and pressure law, R2 ratified adapter lifecycle and lineage handling, R3 ratified the bounded selection arena, and R4 now ratifies only explainable router shadow evaluation under static-baseline control. Router superiority proof, learned-router cutover, lobes, externality, comparative, and commercial widening remain separately gated."
+    "note": "Gate D launch remains bounded. R1 ratified crucible and pressure law, R2 ratified adapter lifecycle and lineage handling, R3 ratified the bounded selection arena, R4 ratified explainable router shadow evaluation, and R5 ratified the same-head router-versus-best-adapter proof surface with an honest static hold. Learned-router cutover, lobes, externality, comparative, and commercial widening remain separately gated."
   },
   "explicit_not_authorized": [
     "frontier claim",
@@ -53,8 +53,8 @@
     "product or market superiority widening",
     "external comparative claims",
     "commercial deployment activation",
-    "router shadow evaluation before ordered step 4",
     "learned router in production",
+    "learned router cutover without earned same-head superiority proof",
     "autonomous multi-lobe runtime"
   ],
   "gate_d_decision_law_state": {
@@ -74,7 +74,7 @@
   },
   "gate_d_decision_scope": {
     "omega_next_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
-    "decision_mode": "ROUTER_SHADOW_EVALUATION_RATIFIED__FIFTH_STEP_ONLY",
+    "decision_mode": "ROUTER_PROOF_RATIFIED_STATIC_HOLD__R6_BLOCKED_PENDING_EARNED_SUPERIORITY",
     "activation_launch_contract_ref": "KT_PROD_CLEANROOM/governance/b04_civilization_activation_launch_contract.json",
     "r1_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_law_contract.json",
     "r1_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_terminal_state.json",
@@ -84,13 +84,16 @@
     "r3_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r3_tournament_promotion_merge_terminal_state.json",
     "r4_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r4_router_shadow_evaluation_law_contract.json",
     "r4_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r4_router_shadow_terminal_state.json",
+    "r5_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_proof_contract.json",
+    "r5_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_terminal_state.json",
     "ratified_step_ids": [
       "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
       "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION",
       "B04_R3_TOURNAMENT_PROMOTION_MERGE_LAW_RATIFICATION",
-      "B04_R4_ROUTER_SHADOW_EVALUATION_RATIFICATION"
+      "B04_R4_ROUTER_SHADOW_EVALUATION_RATIFICATION",
+      "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF"
     ],
-    "next_step_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
+    "next_step_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
     "selected_scope_summary": [
       "D1 stays EXTERNALITY_BOUNDED until Gate E.",
       "D2 remains one controlled counted-domain expansion inside the single Gate D civilization lane only.",
@@ -99,16 +102,16 @@
       "D5 keeps commercial activation LAB_ONLY.",
       "R2 binds adapter lifecycle states, lineage consumption, and fail-closed promotion eligibility consumption against the R1 crucible-pressure spine.",
       "R3 binds finite tournament classes, explicit promotion and demotion rules, rollback-bound merge law, public showability blocked, and the rule that router candidate pool entry remains future-gated.",
-      "R4 now binds explainable, replayable shadow routing against the audited static router baseline while keeping canonical router authority unchanged and learned-router cutover blocked."
+      "R4 binds explainable, replayable shadow routing against the audited static router baseline while keeping canonical router authority unchanged and learned-router cutover blocked.",
+      "R5 binds same-head router-versus-best-adapter proof and honestly records a static hold because router superiority was not yet earned."
     ],
     "forbidden_prejudgments": [
-      "Treating R4 as router superiority proof, learned-router authorization, or lobe ratification",
-      "Treating router shadow evaluation ratification as externality widening",
-      "Treating live runtime provider adapters as governance inventory breadth",
+      "Treating R5 as learned-router authorization or lobe ratification",
+      "Treating broader lab improvement work as counted canonical advancement",
       "Treating tracked carrier receipts as Gate D authority"
     ],
     "no_count_before_decision": false
   },
-  "next_lawful_move": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
-  "claim_boundary": "This packet now freezes the selected Gate D posture set, the B04 launch surface, the R1 crucible-pressure ratification result, the R2 adapter lifecycle ratification result, the R3 bounded selection-arena ratification result, and the R4 router-shadow ratification result. It still does not ratify router superiority proof, learned-router cutover, lobes, externality, comparative claims, or commercial scope."
+  "next_lawful_move": "HOLD_B04_R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF",
+  "claim_boundary": "This packet now freezes the selected Gate D posture set, the B04 launch surface, the R1-R5 ratification results, and the honest R5 router static hold. It does not ratify learned-router cutover, lobes, externality, comparative claims, or commercial scope."
 }
