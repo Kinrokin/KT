@@ -1,8 +1,8 @@
 {
   "schema_id": "kt.current_campaign_state_overlay.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T15:50:50Z",
-  "workstream_id": "REANCHOR_CURRENT_STATE_FOR_GATE_D_DECISION",
+  "generated_utc": "2026-03-28T16:24:00Z",
+  "workstream_id": "B04_GATE_D_DECISION_LAW",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "authority_stack": {
     "execution_order_authority": {
@@ -39,7 +39,7 @@
   "repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "71268f2f7489aadec338d5e71bb5b70f8a7fe9dc",
+    "current_git_head": "ee752460e34ad2411adc3d228704f20c421f33be",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "omega_batch_status": {
@@ -57,9 +57,9 @@
     ]
   },
   "current_lawful_gate_standing": {
-    "inter_gate_state": "POST_GATE_C_EXIT_PRE_GATE_D_DECISION",
+    "inter_gate_state": "POST_GATE_C_EXIT_GATE_D_BALLOT_BOUND",
     "current_counted_gate": "Gate D",
-    "current_counted_batch": "B04_GATE_D_CIVILIZATION_ACTIVATE",
+    "current_counted_batch": "B04_GATE_D_DECISION_LAW",
     "completed_tranches": [
       "B03_T1_FROZEN_COMPARATOR_CONSTITUTION",
       "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT",
@@ -86,34 +86,38 @@
       "B03_T23_TRACKED_COUNTED_RECEIPT_CLASS_AUTHORITY_CLOSURE",
       "B03_GATE_C_EXIT_CRITERIA_CONTRACT",
       "B03_T24_FINAL_CURRENT_HEAD_ADJUDICATION_AUTHORITY_BINDING",
-      "B03_GATE_C_EXIT_ADJUDICATION"
+      "B03_GATE_C_EXIT_ADJUDICATION",
+      "REANCHOR_CURRENT_STATE_FOR_GATE_D_DECISION",
+      "B04_GATE_D_DECISION_LAW"
     ],
     "b02_runtime_unification": "EXITED",
     "gate_c_status": "EXITED_ON_SEALED_HEAD_71268f2f7489aadec338d5e71bb5b70f8a7fe9dc",
-    "gate_d_status": "CLOSED_DECISION_REQUIRED_BEFORE_COUNTING",
+    "gate_d_status": "DECISION_LAW_BOUND_POSTURES_UNSELECTED",
     "authoritative_basis": [
       "gate_c_exit_adjudication_authoritative_receipt.status = PASS on authoritative clean-clone sealed head 71268f2f7489aadec338d5e71bb5b70f8a7fe9dc",
       "gate_c_exit_earned = true and live_beats_baseline_adjudicated = true on that same head.",
       "The tracked gate_c_exit_adjudication_receipt.json on main is carrier-only and does not stand in for final-head authority.",
-      "Gate D was not opened automatically by Gate C exit adjudication."
+      "Gate D decision law is definition-only, postures remain unselected, and B04 activation remains fail-closed.",
+      "Gate D was not opened automatically by Gate C exit adjudication or by the Gate D ballot."
     ]
   },
   "state_reconciliation": {
-    "latest_sealed_receipts_current_state": "Gate C is lawfully exited on sealed head 71268f2f7489aadec338d5e71bb5b70f8a7fe9dc through a same-head evidence chain and same-head authority chain. The next ordered batch under Omega is B04, but it remains decision-gated.",
+    "latest_sealed_receipts_current_state": "Gate C is lawfully exited on sealed head 71268f2f7489aadec338d5e71bb5b70f8a7fe9dc through a same-head evidence chain and same-head authority chain. Gate D decision law now defines the ballot structure only, with no posture selection and no B04 activation.",
     "documentary_surface_state_on_main": "Tracked gate_c_exit_adjudication_receipt.json and final_current_head_adjudication_receipt.json remain non-authoritative carriers on main whenever subject_head differs from the requested head.",
-    "reanchor_decision": "Freeze current state for Gate D decision only. Do not begin B04 counted mutation, civilization activation, comparator expansion, externality widening, or product widening until Gate D is explicitly decided."
+    "reanchor_decision": "Freeze current state for Gate D posture selection only. Do not begin B04 counted mutation, civilization activation, comparator expansion, externality widening, comparative-claim widening, or product widening until a future same-head Gate D decision receipt selects explicit postures."
   },
-  "next_counted_workstream_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
-  "next_counted_workstream_scope": "Gate D is the next ordered batch, but it is not executable-by-default after Gate C exit. A Gate D decision must first freeze whether KT remains a bounded governed execution system or authorizes an ordered civilization-ratification attempt under B04.",
+  "next_counted_workstream_id": "B04_GATE_D_POSTURE_SELECTION_ONLY",
+  "next_counted_workstream_scope": "Select explicit posture values for D1-D5 through a future same-head Gate D decision receipt only. Do not activate B04 implementation inside the decision step.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "explicit_non_go_areas": [
-    "Do not count B04 before a Gate D decision is explicitly made.",
-    "Do not widen externality beyond E1.",
+    "Do not count B04 civilization activation before a same-head Gate D decision receipt exists.",
+    "Do not silently select any Gate D posture inside the definition-only law.",
+    "Do not widen externality beyond E1 by default.",
     "Do not make frontier claims.",
     "Do not add comparator rows or rewrite comparator semantics.",
     "Do not widen product or market superiority claims.",
     "Do not let tracked carrier receipts stand in for current-head authority."
   ],
   "repo_state_executable_now": false,
-  "executable_now_why": "The repo is clean and state is frozen, but the next ordered counted batch is Gate D and requires an explicit decision frame before any B04 mutation is lawful."
+  "executable_now_why": "The repo is clean and the Gate D ballot is now bound definition-only, but posture values are still unselected and B04 activation remains fail-closed until a future same-head decision receipt is emitted."
 }

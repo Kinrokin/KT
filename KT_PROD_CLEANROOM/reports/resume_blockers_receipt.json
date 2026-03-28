@@ -1,19 +1,20 @@
 {
   "schema_id": "kt.resume_blockers_receipt.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T15:50:50Z",
-  "workstream_id": "REANCHOR_CURRENT_STATE_FOR_GATE_D_DECISION",
+  "generated_utc": "2026-03-28T16:24:00Z",
+  "workstream_id": "B04_GATE_D_DECISION_LAW",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "71268f2f7489aadec338d5e71bb5b70f8a7fe9dc",
+  "current_git_head": "ee752460e34ad2411adc3d228704f20c421f33be",
   "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
   "repo_state_executable_now": false,
-  "blocking_state": "GATE_D_DECISION_REQUIRED",
+  "blocking_state": "GATE_D_POSTURE_SELECTION_REQUIRED",
   "blocking_reasons": [
-    "Gate C is exited, but the next ordered counted batch is B04 and may not begin until Gate D is explicitly decided.",
-    "The tracked gate_c_exit_adjudication_receipt.json on main remains carrier-only and cannot serve as the authority source for any post-Gate-C widening or Gate D activation."
+    "Gate C is exited and Gate D decision law is now bound, but posture values for D1-D5 remain unselected.",
+    "B04 civilization activation remains fail-closed until a same-head Gate D decision receipt exists.",
+    "Tracked carrier receipts on main remain non-authoritative and cannot stand in for Gate D authority."
   ],
   "nonblocking_conflicts": [
     {
@@ -27,20 +28,20 @@
     }
   ],
   "current_lawful_gate_standing": {
-    "inter_gate_state": "POST_GATE_C_EXIT_PRE_GATE_D_DECISION",
+    "inter_gate_state": "POST_GATE_C_EXIT_GATE_D_BALLOT_BOUND",
     "b02_runtime_unification": "EXITED",
     "gate_c": "EXITED",
-    "gate_d": "CLOSED_DECISION_REQUIRED"
+    "gate_d": "DECISION_LAW_BOUND_POSTURES_UNSELECTED"
   },
-  "exact_next_counted_workstream_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
+  "exact_next_counted_workstream_id": "B04_GATE_D_POSTURE_SELECTION_ONLY",
   "explicit_non_go_areas": [
     "Do not reopen Gate C unless adjudication regresses with current proof.",
-    "Do not begin B04 counted mutation before a Gate D decision.",
-    "Do not widen externality beyond E1.",
+    "Do not activate B04 before a same-head Gate D decision receipt exists.",
+    "Do not widen externality beyond E1 by default.",
     "Do not make frontier claims.",
     "Do not add comparator rows or rewrite comparator semantics.",
     "Do not widen product or market claims.",
     "Do not treat tracked carrier receipts as current-head authority."
   ],
-  "why_not_executable_now": "The repo is clean and Gate C is exited, but the next ordered counted batch is Gate D and requires an explicit decision frame before any B04 activation is lawful."
+  "why_not_executable_now": "The Gate D ballot is bound definition-only, but explicit posture values have not been selected and B04 activation remains fail-closed until a future same-head decision receipt exists."
 }
