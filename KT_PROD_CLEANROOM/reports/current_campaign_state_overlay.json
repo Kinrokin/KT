@@ -1,7 +1,7 @@
 {
   "schema_id": "kt.current_campaign_state_overlay.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T03:15:26Z",
+  "generated_utc": "2026-03-28T03:28:30Z",
   "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "authority_stack": {
@@ -16,6 +16,7 @@
       "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.md"
     ],
     "current_state_authority": [
+      "C:/Users/rober/AppData/Local/Temp/b03_t18_verify_20260327_222401/t17_receipt_final_head_authority_alignment_receipt.json",
       "C:/Users/rober/AppData/Local/Temp/b03_t17_verify_20260327_221033/counted_receipt_family_same_head_authority_contract_receipt.json",
       "C:/Users/rober/AppData/Local/Temp/b03_t16_verify_20260327_2147/t15_receipt_final_head_authority_alignment_receipt.json",
       "C:/Users/rober/AppData/Local/Temp/b03_t15_verify_20260327_2207/counted_consumer_allowlist_contract_binding_receipt.json",
@@ -44,6 +45,7 @@
       "KT_PROD_CLEANROOM/reports/counted_consumer_allowlist_contract_binding_receipt.json",
       "KT_PROD_CLEANROOM/reports/t15_receipt_final_head_authority_alignment_receipt.json",
       "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json",
+      "KT_PROD_CLEANROOM/reports/t17_receipt_final_head_authority_alignment_receipt.json",
       "KT_PROD_CLEANROOM/governance/execution_board.json",
       "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
     ]
@@ -55,7 +57,7 @@
   "repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "d3ed7831eadd75f310a460915ffec6b493dcfbcb",
+    "current_git_head": "3271c847893877cdc08ed1264397268d115ca0d6",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "omega_batch_status": {
@@ -92,39 +94,41 @@
       "B03_T14_SHARED_GUARD_SINGLE_PATH_ENFORCEMENT",
       "B03_T15_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_BINDING",
       "B03_T16_T15_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT",
-      "B03_T17_COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT"
+      "B03_T17_COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT",
+      "B03_T18_T17_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT"
     ],
-    "next_counted_tranche": "B03_T18_T17_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT",
+    "next_counted_tranche": "B03_T19_TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT",
     "b02_runtime_unification": "EXITED",
-    "gate_c_status": "OPEN_TRANCHES_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_COMPLETE_NOT_EXITED",
+    "gate_c_status": "OPEN_TRANCHES_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18_COMPLETE_NOT_EXITED",
     "gate_d_status": "NOT_AUTHORIZED",
     "authoritative_basis": [
-      "counted_receipt_family_same_head_authority_contract_receipt.status = PASS on authoritative clean-clone sealed head d3ed7831eadd75f310a460915ffec6b493dcfbcb",
-      "T17 generalized same-head authority into shared counted-receipt-family contract law while keeping mismatched subject_head receipts carrier-only.",
-      "The tracked T17 receipt on main is still a carrier artifact for pre-receipt head 4aa5c211b1c98e0424d5d2e078966fa604fafd0f and is not authoritative final-head proof for d3ed7831eadd75f310a460915ffec6b493dcfbcb.",
+      "t17_receipt_final_head_authority_alignment_receipt.status = PASS on authoritative clean-clone sealed head 3271c847893877cdc08ed1264397268d115ca0d6",
+      "T18 proved the tracked T17 receipt on main is carrier-only when subject_head differs and that overreading it as final-head proof fails closed with SUBJECT_HEAD_MISMATCH.",
+      "The tracked T17 receipt on main remains a carrier artifact for pre-receipt head 4aa5c211b1c98e0424d5d2e078966fa604fafd0f and is not authoritative proof for sealed head 3271c847893877cdc08ed1264397268d115ca0d6.",
+      "The remaining narrow Gate C risk is family-by-family recurrence unless tracked counted receipt carrier overread handling is bound as universal contract law.",
       "baseline_vs_live_scorecard.json remains the sole canonical Gate C comparator truth"
     ]
   },
   "state_reconciliation": {
-    "latest_sealed_receipts_current_state": "B03 tranche 17 bound same-head authority as shared counted-receipt-family contract law on sealed head d3ed7831eadd75f310a460915ffec6b493dcfbcb without refreshing comparator truth or widening capability claims.",
-    "documentary_surface_state_on_main": "The tracked tranche-17 receipt on main records a carrier snapshot for pre-receipt head 4aa5c21 and therefore must not be overread as authoritative proof for sealed head d3ed783.",
-    "reanchor_decision": "Preserve the authoritative clean-clone T17 receipt as controlling proof, keep the tracked T17 receipt carrier-only on subject_head mismatch, and narrow the next counted tranche to explicit T17 final-head authority alignment only."
+    "latest_sealed_receipts_current_state": "B03 tranche 18 closed the tracked T17 overread path on sealed head 3271c847893877cdc08ed1264397268d115ca0d6 without refreshing comparator truth or widening capability claims.",
+    "documentary_surface_state_on_main": "The tracked tranche-17 receipt on main still records a carrier snapshot for pre-receipt head 4aa5c211b1c98e0424d5d2e078966fa604fafd0f and therefore must not be overread as authority for sealed head 3271c847893877cdc08ed1264397268d115ca0d6.",
+    "reanchor_decision": "Preserve the authoritative clean-clone T18 receipt as controlling proof, keep tracked counted receipt carriers non-authoritative on subject_head mismatch, and narrow the next counted tranche to universal tracked counted receipt carrier overread contract law only."
   },
-  "next_counted_workstream_id": "B03_T18_T17_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT",
-  "next_counted_workstream_scope": "Align authority semantics for the retained T17 counted receipt so tracked T17 documentary carrier state on main fails closed on subject_head mismatch and only matching same-head T17 proof can control. Earn no comparator refresh, no comparator-semantic changes, no new comparator rows, no capability widening, and no Gate C exit in tranche 18.",
+  "next_counted_workstream_id": "B03_T19_TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT",
+  "next_counted_workstream_scope": "Bind tracked counted receipt carrier overread handling into shared Gate C contract law so any tracked counted receipt with subject_head mismatch is automatically carrier-only and cannot be overread as current-head authority. Earn no comparator refresh, no comparator-semantic changes, no new comparator rows, no capability widening, and no Gate C exit in tranche 19.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "explicit_non_go_areas": [
     "Do not reopen B00, B01, or B02 without a current regression receipt.",
     "Do not treat promotion civilization as current Gate C counting work.",
     "Do not count Gate D work toward Gate C.",
-    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 18.",
-    "Do not add new comparator rows in Gate C tranche 18.",
-    "Do not rewrite comparator semantics under a receipt-authority-alignment label.",
-    "Do not refresh T17 comparator truth under tranche 18.",
+    "Do not widen planner, paradox, multiverse, router, or memory claim surfaces in Gate C tranche 19.",
+    "Do not add new comparator rows in Gate C tranche 19.",
+    "Do not rewrite comparator semantics under a tracked-counted-receipt carrier-overread label.",
+    "Do not refresh comparator truth under tranche 19.",
     "Do not widen civilization, externality, or product claims.",
     "Do not use buyer-language or market claims beyond the narrowest validated wedge.",
     "Do not attempt Gate C exit in this launch-surface pass."
   ],
   "repo_state_executable_now": true,
-  "executable_now_why": "Repo is clean on main, B03 tranche 17 is sealed, and the next lawful move is a narrow Gate C tranche-18 contract pass that aligns T17 carrier-versus-authority semantics without comparator or capability widening."
+  "executable_now_why": "Repo is clean on main, B03 tranche 18 is sealed, and the next lawful move is a narrow Gate C tranche-19 contract pass that universalizes tracked counted receipt carrier overread handling without comparator or capability widening."
 }
