@@ -32,6 +32,14 @@ EXPECTED_NEXT_STEP_ID = "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION"
 EXPECTED_CURRENT_STEP_ID = "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION"
 EXPECTED_LAUNCH_STEP_ID = "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION"
 EXPECTED_TAXONOMY_LEVELS = ["governance", "math", "creative", "cross_domain"]
+EXPECTED_ALLOWED_FOLLOW_ON_STEPS = {
+    "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION",
+    "B04_R3_TOURNAMENT_PROMOTION_MERGE_LAW_RATIFICATION",
+    "B04_R4_ROUTER_SHADOW_EVALUATION_RATIFICATION",
+    "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
+    "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
+    "B04_R7_LOBE_ARCHITECTURE_RATIFICATION",
+}
 
 
 def _resolve(root: Path, raw: str) -> Path:
@@ -220,6 +228,24 @@ def _build_pressure_delta_summary(
     return rows
 
 
+def _order_locked_progress_after_r1(
+    *,
+    overlay: Dict[str, Any],
+    next_contract: Dict[str, Any],
+    resume: Dict[str, Any],
+    reanchor: Dict[str, Any],
+) -> bool:
+    next_step = str(next_contract.get("exact_next_counted_workstream_id", "")).strip()
+    return (
+        next_step in EXPECTED_ALLOWED_FOLLOW_ON_STEPS
+        and str(next_contract.get("execution_mode", "")).strip().startswith("CIVILIZATION_RATIFICATION_ORDER_LOCKED__")
+        and bool(next_contract.get("repo_state_executable_now")) is True
+        and str(overlay.get("next_counted_workstream_id", "")).strip() == next_step
+        and str(resume.get("exact_next_counted_workstream_id", "")).strip() == next_step
+        and str(reanchor.get("next_lawful_move", "")).strip() == next_step
+    )
+
+
 def build_crucible_pressure_law_receipt(*, root: Path) -> Dict[str, Any]:
     current_head = _git_head(root)
     r1_contract = load_json(root / DEFAULT_R1_CONTRACT_REL)
@@ -309,11 +335,12 @@ def build_crucible_pressure_law_receipt(*, root: Path) -> Dict[str, Any]:
         },
         {
             "check_id": "control_surfaces_advance_only_to_r2",
-            "pass": str(next_contract.get("exact_next_counted_workstream_id", "")).strip() == EXPECTED_NEXT_STEP_ID
-            and str(next_contract.get("execution_mode", "")).strip() == "CIVILIZATION_RATIFICATION_ORDER_LOCKED__SECOND_STEP_ONLY"
-            and str(overlay.get("next_counted_workstream_id", "")).strip() == EXPECTED_NEXT_STEP_ID
-            and str(resume.get("exact_next_counted_workstream_id", "")).strip() == EXPECTED_NEXT_STEP_ID
-            and str(reanchor.get("next_lawful_move", "")).strip() == EXPECTED_NEXT_STEP_ID,
+            "pass": _order_locked_progress_after_r1(
+                overlay=overlay,
+                next_contract=next_contract,
+                resume=resume,
+                reanchor=reanchor,
+            ),
         },
         {
             "check_id": "scope_remains_bounded_after_r1",

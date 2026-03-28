@@ -1,24 +1,274 @@
 {
-  "authority_refs": [
-    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json",
-    "KT_PROD_CLEANROOM/tools/verification/fl4_promote.py",
-    "KT_PROD_CLEANROOM/tools/training/stage6_promotion.py"
-  ],
-  "domain_id": "DOMAIN_2_PROMOTION_CIVILIZATION",
-  "effective_utc": "2026-03-10T00:00:00Z",
-  "expires_utc": "2026-09-10T00:00:00Z",
-  "law_id": "ADAPTER_LIFECYCLE_LAW_V1_20260310",
-  "required_validators": [
-    "python -m pytest -q KT_PROD_CLEANROOM/tools/growth/crucibles/tests/test_crucible_registry.py KT_PROD_CLEANROOM/tools/growth/crucibles/tests/test_crucible_runner.py",
-    "python -m pytest -q KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_sweep_runner_integration.py KT_PROD_CLEANROOM/tests/policy_c/test_drift_guard.py",
-    "python -m pytest -q KT_PROD_CLEANROOM/tests/fl3/test_epic15_tournament_runner.py KT_PROD_CLEANROOM/tests/fl3/test_epic15_merge_evaluator.py KT_PROD_CLEANROOM/tests/fl3/test_epic19_router_hat_demo.py KT_PROD_CLEANROOM/tests/fl3/test_fl3_rollback_drill.py KT_PROD_CLEANROOM/tests/fl3/test_fl4_promotion_atomic.py"
-  ],
-  "rules": [
-    "Adapter promotion must bind training receipts, evaluation receipts, and promoted manifest refs.",
-    "Experimental adapters remain non-canonical until promotion receipts and zone crossings pass."
-  ],
   "schema_id": "kt.governance.adapter_lifecycle_law.v1",
+  "law_id": "ADAPTER_LIFECYCLE_LAW_V2_20260328",
   "status": "ACTIVE",
-  "summary": "Adapters are governed as ratified, experimental, retired, or revoked subjects with explicit evidence binding.",
-  "supersedes": []
+  "effective_utc": "2026-03-28T21:30:00Z",
+  "expires_utc": "2026-09-28T21:30:00Z",
+  "domain_id": "DOMAIN_2_PROMOTION_CIVILIZATION",
+  "summary": "Adapters are governed as receipt-gated lifecycle subjects whose promotion power is bounded by the R1 crucible-pressure evidence spine, rollback discipline, and lineage replay.",
+  "authority_refs": [
+    "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_law_contract.json",
+    "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_terminal_state.json",
+    "KT_PROD_CLEANROOM/reports/crucible_pressure_law_ratification_receipt.json",
+    "KT_PROD_CLEANROOM/governance/promotion_engine_law.json",
+    "KT_PROD_CLEANROOM/governance/rollback_law.json",
+    "KT_PROD_CLEANROOM/governance/kt_adapter_abi_v2.json",
+    "KT_PROD_CLEANROOM/reports/kt_lineage_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_receipt_lineage_register.json",
+    "KT_PROD_CLEANROOM/reports/universal_adapter_receipt.json",
+    "KT_PROD_CLEANROOM/reports/b02_adapter_runtime_boundary_receipt.json"
+  ],
+  "required_validators": [
+    "python -m tools.operator.adapter_lifecycle_law_validate",
+    "python -m tools.operator.universal_adapter_validate",
+    "python -m pytest -o addopts='' tests/operator/test_b04_r2_adapter_lifecycle_law_validate.py -q"
+  ],
+  "lifecycle_state_model": {
+    "state_ids": [
+      "PROPOSED",
+      "REGISTERED",
+      "IN_CRUCIBLE",
+      "EVIDENCE_ACCUMULATING",
+      "ELIGIBLE",
+      "TOURNAMENT_READY",
+      "PROMOTED",
+      "SHADOW_ACTIVE",
+      "GOVERNED_ACTIVE",
+      "DEMOTED",
+      "RETIRED",
+      "MERGED"
+    ],
+    "state_definitions": [
+      {
+        "state_id": "PROPOSED",
+        "class": "LAB_ONLY",
+        "terminal": false,
+        "meaning": "Adapter idea exists but is not yet registered in governance."
+      },
+      {
+        "state_id": "REGISTERED",
+        "class": "GOVERNANCE_DECLARED",
+        "terminal": false,
+        "meaning": "Adapter is declared, versioned, and bounded but has no promotion power yet."
+      },
+      {
+        "state_id": "IN_CRUCIBLE",
+        "class": "PRESSURE_TESTING",
+        "terminal": false,
+        "meaning": "Adapter is under governed crucible pressure but not yet promotion-eligible."
+      },
+      {
+        "state_id": "EVIDENCE_ACCUMULATING",
+        "class": "RECEIPT_ACCUMULATION",
+        "terminal": false,
+        "meaning": "Adapter has begun accumulating crucible, training, and evaluation evidence."
+      },
+      {
+        "state_id": "ELIGIBLE",
+        "class": "PROMOTION_GATE_READY",
+        "terminal": false,
+        "meaning": "Adapter satisfies the R1 crucible-pressure eligibility rule and may later seek tournament entry."
+      },
+      {
+        "state_id": "TOURNAMENT_READY",
+        "class": "FUTURE_R3_ONLY",
+        "terminal": false,
+        "meaning": "Reserved for the later tournament ratification step."
+      },
+      {
+        "state_id": "PROMOTED",
+        "class": "PROMOTED_NOT_ROUTED",
+        "terminal": false,
+        "meaning": "Adapter has a governed promotion outcome but is still below router-shadow and governed-runtime authority."
+      },
+      {
+        "state_id": "SHADOW_ACTIVE",
+        "class": "FUTURE_R4_ONLY",
+        "terminal": false,
+        "meaning": "Reserved for router-shadow execution only after the ordered router step is ratified."
+      },
+      {
+        "state_id": "GOVERNED_ACTIVE",
+        "class": "FUTURE_R6_ONLY",
+        "terminal": false,
+        "meaning": "Reserved for later governed runtime authority after learned-router authorization."
+      },
+      {
+        "state_id": "DEMOTED",
+        "class": "TERMINAL_GOVERNED",
+        "terminal": true,
+        "meaning": "Adapter lost standing under governed evidence and may not route or promote further without re-entry."
+      },
+      {
+        "state_id": "RETIRED",
+        "class": "TERMINAL_GOVERNED",
+        "terminal": true,
+        "meaning": "Adapter is retired from governed use."
+      },
+      {
+        "state_id": "MERGED",
+        "class": "TERMINAL_GOVERNED",
+        "terminal": true,
+        "meaning": "Adapter lineage is merged into another adapter under later merge law."
+      }
+    ]
+  },
+  "transition_rules": [
+    {
+      "transition_id": "PROPOSED_TO_REGISTERED",
+      "from_state": "PROPOSED",
+      "to_state": "REGISTERED",
+      "transition_class": "RECEIPT_GATED",
+      "required_receipts": [
+        "governance_registry_row"
+      ],
+      "rule_text": "An adapter becomes REGISTERED only when it is explicitly declared in governance registry with authority refs and version identity."
+    },
+    {
+      "transition_id": "REGISTERED_TO_IN_CRUCIBLE",
+      "from_state": "REGISTERED",
+      "to_state": "IN_CRUCIBLE",
+      "transition_class": "RECEIPT_GATED",
+      "required_receipts": [
+        "training_admission_receipt",
+        "governed_experiment_registration"
+      ],
+      "rule_text": "Adapters enter crucible only through governed experiment admission."
+    },
+    {
+      "transition_id": "IN_CRUCIBLE_TO_EVIDENCE_ACCUMULATING",
+      "from_state": "IN_CRUCIBLE",
+      "to_state": "EVIDENCE_ACCUMULATING",
+      "transition_class": "RECEIPT_GATED",
+      "required_receipts": [
+        "crucible_execution_receipt",
+        "lineage_entry"
+      ],
+      "rule_text": "Crucible participation counts only when receipt-backed and lineage-tracked."
+    },
+    {
+      "transition_id": "EVIDENCE_ACCUMULATING_TO_ELIGIBLE",
+      "from_state": "EVIDENCE_ACCUMULATING",
+      "to_state": "ELIGIBLE",
+      "transition_class": "RECEIPT_GATED",
+      "required_receipts": [
+        "registered_crucible_receipts",
+        "replay_report_when_required",
+        "governance_verdict_when_required"
+      ],
+      "rule_text": "Eligibility requires the ratified R1 crucible-pressure rule: registered, receipt-backed, replay-backed when required, outcome-matching, and governance-clean where required."
+    },
+    {
+      "transition_id": "ELIGIBLE_TO_TOURNAMENT_READY",
+      "from_state": "ELIGIBLE",
+      "to_state": "TOURNAMENT_READY",
+      "transition_class": "FUTURE_STEP_GATED",
+      "required_future_step": "B04_R3_TOURNAMENT_PROMOTION_MERGE_LAW_RATIFICATION",
+      "required_receipts": [
+        "tournament_readiness_receipt",
+        "rollback_plan_receipt"
+      ],
+      "rule_text": "Tournament readiness is not authorized in R2 and remains blocked until R3."
+    },
+    {
+      "transition_id": "TOURNAMENT_READY_TO_PROMOTED",
+      "from_state": "TOURNAMENT_READY",
+      "to_state": "PROMOTED",
+      "transition_class": "FUTURE_STEP_GATED",
+      "required_future_step": "B04_R3_TOURNAMENT_PROMOTION_MERGE_LAW_RATIFICATION",
+      "required_receipts": [
+        "promotion_receipt",
+        "rollback_plan_receipt",
+        "lineage_replay_proof"
+      ],
+      "rule_text": "Promotion requires tournament, rollback, and lineage proof and cannot be manually asserted."
+    },
+    {
+      "transition_id": "PROMOTED_TO_SHADOW_ACTIVE",
+      "from_state": "PROMOTED",
+      "to_state": "SHADOW_ACTIVE",
+      "transition_class": "FUTURE_STEP_GATED",
+      "required_future_step": "B04_R4_ROUTER_SHADOW_EVALUATION_RATIFICATION",
+      "required_receipts": [
+        "router_shadow_evaluation_receipt"
+      ],
+      "rule_text": "Shadow activation is reserved for the ordered router-shadow step."
+    },
+    {
+      "transition_id": "SHADOW_ACTIVE_TO_GOVERNED_ACTIVE",
+      "from_state": "SHADOW_ACTIVE",
+      "to_state": "GOVERNED_ACTIVE",
+      "transition_class": "FUTURE_STEP_GATED",
+      "required_future_step": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
+      "required_receipts": [
+        "learned_router_authorization_receipt"
+      ],
+      "rule_text": "Governed-active status is unavailable until learned-router authorization is separately earned."
+    },
+    {
+      "transition_id": "PROMOTED_TO_DEMOTED",
+      "from_state": "PROMOTED",
+      "to_state": "DEMOTED",
+      "transition_class": "RECEIPT_GATED",
+      "required_receipts": [
+        "demotion_receipt",
+        "rollback_drill_receipt"
+      ],
+      "rule_text": "Demotion requires explicit governed evidence and rollback support."
+    },
+    {
+      "transition_id": "PROMOTED_TO_RETIRED",
+      "from_state": "PROMOTED",
+      "to_state": "RETIRED",
+      "transition_class": "RECEIPT_GATED",
+      "required_receipts": [
+        "retirement_receipt"
+      ],
+      "rule_text": "Retirement is explicit and receipted."
+    },
+    {
+      "transition_id": "PROMOTED_TO_MERGED",
+      "from_state": "PROMOTED",
+      "to_state": "MERGED",
+      "transition_class": "FUTURE_STEP_GATED",
+      "required_future_step": "B04_R3_TOURNAMENT_PROMOTION_MERGE_LAW_RATIFICATION",
+      "required_receipts": [
+        "merge_outcome_receipt",
+        "rollback_plan_receipt"
+      ],
+      "rule_text": "Merge remains gated with tournament and promotion law in R3."
+    }
+  ],
+  "promotion_gate_rule": {
+    "rule_id": "CRUCIBLE_PRESSURE_RESULTS_BIND_LATER_ADAPTER_PROMOTION_ELIGIBILITY",
+    "rule_ref": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_law_contract.json",
+    "receipt_ref": "KT_PROD_CLEANROOM/reports/crucible_pressure_law_ratification_receipt.json",
+    "rule_text": "No adapter may be promoted, routed, merged, or ratified without crucible evidence receipts produced under the ratified pressure taxonomy."
+  },
+  "state_ceiling": {
+    "max_authorized_state_after_r2": "PROMOTED",
+    "states_not_yet_authorized": [
+      "SHADOW_ACTIVE",
+      "GOVERNED_ACTIVE"
+    ],
+    "shadow_active_allowed": false,
+    "governed_active_allowed": false,
+    "runtime_widening_allowed": false,
+    "router_widening_allowed": false,
+    "lobe_widening_allowed": false
+  },
+  "required_evidence_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_adapter_registry.json",
+    "KT_PROD_CLEANROOM/reports/kt_lineage_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_receipt_lineage_register.json",
+    "KT_PROD_CLEANROOM/reports/universal_adapter_receipt.json",
+    "KT_PROD_CLEANROOM/reports/promotion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/rollback_plan_receipt.json",
+    "KT_PROD_CLEANROOM/reports/b02_adapter_runtime_boundary_receipt.json"
+  ],
+  "claim_ceiling": "R2 binds adapter lifecycle law, registry, lineage, and promotion-eligibility consumption only. It does not ratify tournament, merge, router, lobe, externality, comparative, or commercial widening.",
+  "terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r2_adapter_lifecycle_terminal_state.json",
+  "supersedes": [
+    "ADAPTER_LIFECYCLE_LAW_V1_20260310"
+  ]
 }

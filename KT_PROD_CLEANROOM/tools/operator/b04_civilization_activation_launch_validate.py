@@ -133,7 +133,7 @@ def _launch_progress_is_order_locked(
 ) -> bool:
     next_step = str(next_contract.get("exact_next_counted_workstream_id", "")).strip()
     return (
-        next_step in {EXPECTED_FIRST_STEP_ID, EXPECTED_SECOND_STEP_ID}
+        next_step in EXPECTED_RATIFICATION_ORDER
         and str(next_contract.get("execution_mode", "")).strip().startswith("CIVILIZATION_RATIFICATION_ORDER_LOCKED__")
         and bool(next_contract.get("repo_state_executable_now")) is True
         and str(overlay.get("next_counted_workstream_id", "")).strip() == next_step

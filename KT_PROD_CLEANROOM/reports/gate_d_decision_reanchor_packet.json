@@ -1,14 +1,14 @@
 {
   "schema_id": "kt.gate_d.decision_reanchor_packet.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T20:55:00Z",
-  "workstream_id": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
+  "generated_utc": "2026-03-28T22:15:00Z",
+  "workstream_id": "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "reanchor_head": "ee752460e34ad2411adc3d228704f20c421f33be",
   "current_repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "16e1fbe1d7966f8434d1842e2ea358582195941d",
+    "current_git_head": "7ee9a1298cb03e9a796e922c2f500f8b22e626f2",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "authoritative_gate_c_exit": {
@@ -43,7 +43,7 @@
     "router_status": "STATIC_CANONICAL_BASELINE_ONLY",
     "gate_d_decision_selected": true,
     "gate_d_activation_authorized": true,
-    "note": "Gate D launch remains bounded and R1 now ratifies only crucible and pressure law. Adapter lifecycle, tournament, router, lobes, externality, comparative, and commercial widening remain separately gated."
+    "note": "Gate D launch remains bounded. R1 ratified crucible and pressure law, and R2 now ratifies only adapter lifecycle, lineage, and promotion-eligibility consumption. Tournament, router, lobes, externality, comparative, and commercial widening remain separately gated."
   },
   "explicit_not_authorized": [
     "frontier claim",
@@ -74,30 +74,33 @@
   },
   "gate_d_decision_scope": {
     "omega_next_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
-    "decision_mode": "CRUCIBLE_PRESSURE_RATIFIED__SECOND_STEP_ONLY",
+    "decision_mode": "ADAPTER_LIFECYCLE_RATIFIED__THIRD_STEP_ONLY",
     "activation_launch_contract_ref": "KT_PROD_CLEANROOM/governance/b04_civilization_activation_launch_contract.json",
     "r1_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_law_contract.json",
     "r1_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_terminal_state.json",
+    "r2_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r2_adapter_lifecycle_law_contract.json",
+    "r2_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r2_adapter_lifecycle_terminal_state.json",
     "ratified_step_ids": [
-      "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION"
+      "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
+      "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION"
     ],
-    "next_step_id": "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION",
+    "next_step_id": "B04_R3_TOURNAMENT_PROMOTION_MERGE_LAW_RATIFICATION",
     "selected_scope_summary": [
       "D1 stays EXTERNALITY_BOUNDED until Gate E.",
       "D2 remains one controlled counted-domain expansion inside the single Gate D civilization lane only.",
-      "D3 remains adapter evolution only and now depends on the ratified crucible-pressure evidence spine.",
+      "D3 remains adapter evolution only and now binds a finite adapter lifecycle state machine.",
       "D4 keeps external comparative claims blocked.",
       "D5 keeps commercial activation LAB_ONLY.",
-      "R1 now binds crucible registry, pressure taxonomy, replayable run evidence, and fail-closed promotion eligibility preconditions."
+      "R2 now binds adapter lifecycle states, lineage consumption, and fail-closed promotion eligibility consumption against the R1 crucible-pressure spine."
     ],
     "forbidden_prejudgments": [
-      "Treating R1 as adapter lifecycle ratification",
-      "Treating crucible-pressure law as tournament, router, or lobe ratification",
-      "Treating controlled counted-domain expansion as externality widening",
+      "Treating R2 as tournament, merge, router, or lobe ratification",
+      "Treating adapter lifecycle ratification as externality widening",
+      "Treating live runtime provider adapters as governance inventory breadth",
       "Treating tracked carrier receipts as Gate D authority"
     ],
     "no_count_before_decision": false
   },
-  "next_lawful_move": "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION",
-  "claim_boundary": "This packet now freezes the selected Gate D posture set, the B04 launch surface, and the R1 crucible-pressure ratification result. It still does not widen externality, comparative claims, commercial scope, router proof, or lobe authority."
+  "next_lawful_move": "B04_R3_TOURNAMENT_PROMOTION_MERGE_LAW_RATIFICATION",
+  "claim_boundary": "This packet now freezes the selected Gate D posture set, the B04 launch surface, the R1 crucible-pressure ratification result, and the R2 adapter lifecycle ratification result. It still does not widen tournament execution into router authority, lobe authority, externality, comparative claims, or commercial scope."
 }

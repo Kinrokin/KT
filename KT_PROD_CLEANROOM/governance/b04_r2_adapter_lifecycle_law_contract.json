@@ -1,0 +1,58 @@
+{
+  "schema_id": "kt.b04.r2.adapter_lifecycle_law_contract.v1",
+  "generated_utc": "2026-03-28T21:30:00Z",
+  "workstream_id": "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION",
+  "parent_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
+  "ratification_mode": "RATIFICATION_ONLY_NO_TOURNAMENT_ROUTER_OR_LOBE_ADVANCE",
+  "prerequisite_refs": [
+    "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_law_contract.json",
+    "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_terminal_state.json",
+    "KT_PROD_CLEANROOM/reports/crucible_pressure_law_ratification_receipt.json",
+    "KT_PROD_CLEANROOM/governance/b04_civilization_activation_launch_contract.json",
+    "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json"
+  ],
+  "ratified_surfaces": [
+    "KT_PROD_CLEANROOM/governance/adapter_lifecycle_law.json",
+    "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+    "KT_PROD_CLEANROOM/reports/kt_adapter_registry.json",
+    "KT_PROD_CLEANROOM/reports/kt_lineage_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_receipt_lineage_register.json"
+  ],
+  "promotion_gate_rule": {
+    "rule_id": "R1_CRUCIBLE_PRESSURE_ELIGIBILITY_REQUIRED",
+    "rule_ref": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_law_contract.json",
+    "rule_text": "No adapter may be promoted, routed, merged, or ratified without crucible evidence receipts produced under the ratified pressure taxonomy."
+  },
+  "state_machine_requirements": [
+    "Lifecycle states must be finite and enumerated.",
+    "Transitions must be receipt-gated or explicitly future-step gated.",
+    "Current-head Gate D authority after R2 may not exceed PROMOTED.",
+    "Experimental adapters remain below promotion until R1 evidence is consumed.",
+    "Ratified baseline adapters remain below router-shadow and governed-active authority."
+  ],
+  "lineage_requirements": [
+    "Receipt lineage register must show governed adapter-promotion entries.",
+    "Admissible learning deltas must remain finite and governed.",
+    "Runtime-admissible live adapters remain bounded and separate from governance inventory breadth."
+  ],
+  "pass_criteria": [
+    "Adapter lifecycle law binds a finite receipt-gated state machine.",
+    "Adapter registry rows are finite, stateful, and bounded to R2 ceilings.",
+    "Promotion eligibility consumption is fail-closed on the R1 crucible-pressure rule.",
+    "Lineage and rollback evidence remain present and replay-aware.",
+    "Tournament, router, lobe, externality, comparative, and commercial widening remain blocked."
+  ],
+  "not_authorized": [
+    "Tournament ratification in R2",
+    "Merge ratification in R2",
+    "Router shadow evaluation in R2",
+    "Learned router authorization in R2",
+    "Lobe ratification in R2",
+    "Externality widening above E1",
+    "External comparative claims",
+    "Commercial activation"
+  ],
+  "expected_receipt_path": "KT_PROD_CLEANROOM/reports/adapter_lifecycle_law_ratification_receipt.json",
+  "terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r2_adapter_lifecycle_terminal_state.json",
+  "next_lawful_move": "B04_R3_TOURNAMENT_PROMOTION_MERGE_LAW_RATIFICATION"
+}
