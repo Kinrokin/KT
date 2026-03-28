@@ -35,6 +35,7 @@ DEFAULT_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL = "KT_PROD_CLEANROOM/repo
 DEFAULT_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_REL = "KT_PROD_CLEANROOM/governance/counted_consumer_allowlist_contract.json"
 DEFAULT_GATE_C_EXIT_CRITERIA_CONTRACT_REL = "KT_PROD_CLEANROOM/governance/gate_c_exit_criteria_contract.json"
 DEFAULT_GATE_C_EXIT_TERMINAL_STATE_REL = "KT_PROD_CLEANROOM/governance/gate_c_exit_terminal_state.json"
+DEFAULT_FINAL_CURRENT_HEAD_ADJUDICATION_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json"
 DEFAULT_BENCHMARK_CONSTITUTION_OUTPUT_REL = BENCHMARK_CONSTITUTION_REL
 DEFAULT_COMPARATOR_REGISTRY_OUTPUT_REL = COMPARATOR_REGISTRY_REL
 
@@ -53,6 +54,7 @@ ROLE_WRITE_SCOPE = "COUNTED_T4_HARDENING_ARTIFACT_ONLY"
 ROLE_SUBJECT_BOUNDARY = "COUNTED_T5_SUBJECT_BOUNDARY_ARTIFACT_ONLY"
 ROLE_CONTRACT_ENFORCEMENT = "COUNTED_T6_CONTRACT_ENFORCEMENT_ARTIFACT_ONLY"
 ROLE_T11_FINAL_HEAD_AUTHORITY_ALIGNMENT = "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"
+ROLE_FINAL_CURRENT_HEAD_ADJUDICATION_AUTHORITY_FAMILY = "FUTURE_GATE_C_EXIT_ADJUDICATION_AUTHORITY_FAMILY_CANDIDATE"
 DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH = "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
 COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF = (
     "tools.operator.benchmark_constitution_validate.evaluate_counted_receipt_family_same_head_authority"
@@ -190,6 +192,15 @@ GATE_C_EXIT_CRITERIA_CONTRACT_EXPECTED_MUTATE_PATHS = [
     "KT_PROD_CLEANROOM/tests/operator/test_b03_gate_c_exit_criteria_contract.py",
     "KT_PROD_CLEANROOM/reports/gate_c_exit_criteria_contract_receipt.json",
 ]
+T24_EXPECTED_MUTATE_PATHS = [
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_final_current_head_adjudication_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_final_current_head_adjudication_authority_binding.py",
+    DEFAULT_FINAL_CURRENT_HEAD_ADJUDICATION_RECEIPT_REL,
+    "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_authority_binding_receipt.json",
+]
 ALLOWED_PREWRITE_DIRTY = {
     path
     for path in [
@@ -204,6 +215,7 @@ ALLOWED_PREWRITE_DIRTY = {
         *T22_EXPECTED_MUTATE_PATHS,
         *T23_EXPECTED_MUTATE_PATHS,
         *GATE_C_EXIT_CRITERIA_CONTRACT_EXPECTED_MUTATE_PATHS,
+        *T24_EXPECTED_MUTATE_PATHS,
         DEFAULT_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_REL,
         "KT_PROD_CLEANROOM/tests/operator/test_b03_documentary_carrier_guard_centralization.py",
         "KT_PROD_CLEANROOM/tests/operator/test_b03_shared_guard_single_path_enforcement.py",

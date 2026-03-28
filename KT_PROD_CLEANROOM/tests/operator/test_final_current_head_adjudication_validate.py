@@ -115,9 +115,17 @@ def test_final_current_head_adjudication_cli_compiles_bounded_final_verdict(tmp_
     assert final_tier_ruling["current_head_tier_id"] == "SCOPED_TIER_BOUNDED_CURRENT_HEAD_ORGANISM_E1"
 
     assert receipt["status"] == "PASS"
+    assert receipt["receipt_role"] == "FUTURE_GATE_C_EXIT_ADJUDICATION_AUTHORITY_FAMILY_CANDIDATE"
+    assert receipt["subject_head"] == receipt["current_git_head"]
+    assert receipt["same_head_authority_contract_ref"] == "tools.operator.benchmark_constitution_validate.evaluate_counted_receipt_family_same_head_authority"
+    assert receipt["tracked_counted_receipt_carrier_overread_contract_ref"] == "tools.operator.benchmark_constitution_validate.evaluate_tracked_counted_receipt_carrier_overread"
+    assert receipt["gate_c_exit_criteria_contract_mode"] == "DEFINITION_ONLY_NO_OUTCOME_CLAIM"
+    assert receipt["gate_c_exit_claim_allowed"] is False
+    assert receipt["live_beats_baseline_claim_allowed"] is False
     assert receipt["documentary_carrier_consumer_guard"]["status"] == "PASS"
     assert receipt["documentary_carrier_consumer_guard"]["documentary_carrier_attempt"]["failure_reason"] == "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
     assert receipt["documentary_carrier_consumer_guard"]["shared_guard_helper_ref"] == "tools.operator.benchmark_constitution_validate.evaluate_documentary_carrier_fail_closed_consumer_guard"
     assert receipt["documentary_carrier_consumer_guard"]["shared_guard_helper_owner_ref"] == "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py"
     assert receipt["exact_current_head_standing"]["open_current_head_claim_blocker_ids"] == ["C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"]
     assert receipt["exact_current_head_standing"]["highest_truthful_tier_output"] == "NOT_FRONTIER"
+    assert receipt["required_future_exit_adjudication_family"]["current_tracked_receipt_ref"] == "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json"

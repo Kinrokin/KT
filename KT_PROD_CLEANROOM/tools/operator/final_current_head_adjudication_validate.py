@@ -8,10 +8,15 @@ from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
 from tools.operator.benchmark_constitution_validate import (
+    COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF,
+    COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF,
     ROLE_BASELINE_SCORECARD,
     ROLE_BENCHMARK_RECEIPT,
+    ROLE_FINAL_CURRENT_HEAD_ADJUDICATION_AUTHORITY_FAMILY,
     ROLE_T11_FINAL_HEAD_AUTHORITY_ALIGNMENT as T11_RECEIPT_ROLE,
     DEFAULT_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL as T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT,
+    TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF,
+    TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_REF,
     _consume_emitted_receipt_contract,
     _enforce_write_scope_post,
     _enforce_write_scope_pre,
@@ -19,6 +24,8 @@ from tools.operator.benchmark_constitution_validate import (
     _payloads,
     build_receipt as build_benchmark_receipt,
     evaluate_documentary_carrier_fail_closed_consumer_guard as evaluate_shared_documentary_carrier_fail_closed_consumer_guard,
+    load_gate_c_exit_criteria_contract,
+    load_gate_c_exit_terminal_state,
 )
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z
 
@@ -450,6 +457,7 @@ def build_receipt(*, root: Path, blockers: Dict[str, Any], claims: Dict[str, Any
     truth_lock = _j(root, TRUTH_LOCK)
     firewall = _j(root, HIST_FIREWALL)
     wave5_readj = _j(root, W5_READJ)
+    current_head = _git_head(root)
     comparator_contract = evaluate_comparator_side_reader_contract(root=root)
     if comparator_contract["status"] != "PASS":
         raise RuntimeError("FAIL_CLOSED: final receipt comparator side-reader contract adoption failed")
@@ -457,6 +465,8 @@ def build_receipt(*, root: Path, blockers: Dict[str, Any], claims: Dict[str, Any
     benchmark_receipt = comparator_contract["benchmark_receipt"]
     detachment_receipt = comparator_contract["detachment_receipt"]
     documentary_guard = evaluate_documentary_carrier_fail_closed_consumer_guard(root=root)
+    gate_c_exit_contract = load_gate_c_exit_criteria_contract(root=root)
+    gate_c_exit_terminal_state = load_gate_c_exit_terminal_state(root=root)
     router_ordered = _j(root, ROUTER_ORDERED)
     commercial = _j(root, COMMERCIAL)
     verifier = _j(root, VERIFIER)
@@ -473,11 +483,29 @@ def build_receipt(*, root: Path, blockers: Dict[str, Any], claims: Dict[str, Any
         {"check_id": "router_and_lobe_promotions_remain_unearned", "pass": bool(claims.get("router_superiority_earned")) is False and bool(router_ordered.get("multi_lobe_promotion_allowed")) is False, "ref": ROUTER_ORDERED},
         {"check_id": "final_tier_output_is_compiled_without_prestige_inflation", "pass": str(tier.get("highest_truthful_tier_output", "")).strip() == "NOT_FRONTIER", "ref": OUT_TIER},
         {"check_id": "final_product_truth_boundary_stays_bounded", "pass": str(product_boundary.get("status", "")).strip() == "PASS" and str(product_boundary.get("max_externality_class", "")).strip() == "E1_SAME_HOST_DETACHED_REPLAY", "ref": OUT_PRODUCT},
+        {
+            "check_id": "gate_c_exit_contract_remains_definition_only_and_nonadjudicated",
+            "pass": gate_c_exit_contract["contract_mode"] == "DEFINITION_ONLY_NO_OUTCOME_CLAIM"
+            and gate_c_exit_terminal_state["current_state"] == "EXIT_CRITERIA_BOUND_NOT_ADJUDICATED"
+            and gate_c_exit_terminal_state["gate_c_exit_claim_allowed"] is False
+            and gate_c_exit_terminal_state["live_beats_baseline_claim_allowed"] is False,
+            "ref": "KT_PROD_CLEANROOM/governance/gate_c_exit_criteria_contract.json",
+        },
+        {
+            "check_id": "exit_contract_future_adjudication_family_ref_matches_final_current_receipt",
+            "pass": str(gate_c_exit_contract["required_future_exit_adjudication_family"].get("owner_ref", "")).strip()
+            == "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py"
+            and str(gate_c_exit_contract["required_future_exit_adjudication_family"].get("current_tracked_receipt_ref", "")).strip()
+            == OUT_RECEIPT,
+            "ref": "KT_PROD_CLEANROOM/governance/gate_c_exit_criteria_contract.json",
+        },
     ]
     return {
         "schema_id": "kt.final_current_head.adjudication_receipt.v1",
         "generated_utc": utc_now_iso_z(),
-        "current_git_head": _git_head(root),
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": ROLE_FINAL_CURRENT_HEAD_ADJUDICATION_AUTHORITY_FAMILY,
         "status": "PASS" if all(bool(item["pass"]) for item in checks) else "FAIL",
         "claim_boundary": "This receipt is the final current-head adjudication compiled from live W0-W7 evidence only. It does not use historical uplift or documentary substitution to widen current-head truth.",
         "compiled_from_refs": [TRUTH_LOCK, HIST_FIREWALL, W5_BLOCKERS, W5_TIER, W5_READJ, C006_STATUS, HEARTBEAT, COMMERCIAL, VERIFIER, C006_KIT, PRODUCT_INSTALL, OPERATOR_HANDOFF, STANDARDS, ROUTER_ORDERED, ROUTER_SCORE, BASELINE_SCORECARD, BENCHMARK_RECEIPT, ALIAS_RETIREMENT, DETACHMENT_RECEIPT, E2_RECEIPT, AUDIT_PACKET, E1_RECEIPT],
@@ -486,6 +514,16 @@ def build_receipt(*, root: Path, blockers: Dict[str, Any], claims: Dict[str, Any
         "final_forbidden_claims_list_ref": OUT_FORBIDDEN,
         "final_product_truth_boundary_ref": OUT_PRODUCT,
         "final_tier_ruling_ref": OUT_TIER,
+        "same_head_authority_contract_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF,
+        "same_head_authority_contract_owner_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF,
+        "tracked_counted_receipt_carrier_overread_contract_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_REF,
+        "tracked_counted_receipt_carrier_overread_contract_owner_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF,
+        "gate_c_exit_criteria_contract_ref": gate_c_exit_contract["contract_ref"],
+        "gate_c_exit_criteria_contract_mode": gate_c_exit_contract["contract_mode"],
+        "gate_c_exit_terminal_state_ref": gate_c_exit_terminal_state["terminal_state_ref"],
+        "gate_c_exit_claim_allowed": gate_c_exit_terminal_state["gate_c_exit_claim_allowed"],
+        "live_beats_baseline_claim_allowed": gate_c_exit_terminal_state["live_beats_baseline_claim_allowed"],
+        "required_future_exit_adjudication_family": gate_c_exit_contract["required_future_exit_adjudication_family"],
         "documentary_carrier_consumer_guard": documentary_guard,
         "forbidden_claim_count": int(forbidden.get("forbidden_claim_count", 0) or 0),
         "exact_current_head_standing": {
@@ -497,7 +535,7 @@ def build_receipt(*, root: Path, blockers: Dict[str, Any], claims: Dict[str, Any
             "product_truth_class": str(product_boundary.get("product_truth_class", "")).strip(),
         },
         "checks": checks,
-        "next_lawful_move": "Continue bounded E1 delivery, operator flow, and buyer-safe packaging. Execute W6B immediately if second-host hardware appears.",
+        "next_lawful_move": "Continue bounded E1 delivery, operator flow, and buyer-safe packaging. Do not claim Gate C exit or live-beats-baseline until a same-head authoritative exit adjudication chain is earned.",
     }
 
 
@@ -551,6 +589,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "product_truth_class": product_boundary["product_truth_class"],
         "comparator_contract_status": claims["comparator_contract_status"],
         "documentary_carrier_consumer_status": receipt["documentary_carrier_consumer_guard"]["status"],
+        "receipt_role": receipt["receipt_role"],
+        "subject_head": receipt["subject_head"],
+        "gate_c_exit_claim_allowed": receipt["gate_c_exit_claim_allowed"],
+        "live_beats_baseline_claim_allowed": receipt["live_beats_baseline_claim_allowed"],
     }
     print(json.dumps(summary, sort_keys=True))
     return 0 if summary["status"] == "PASS" else 1
