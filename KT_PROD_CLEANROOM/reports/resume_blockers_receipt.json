@@ -1,44 +1,46 @@
 {
   "schema_id": "kt.resume_blockers_receipt.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T15:20:00Z",
-  "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
+  "generated_utc": "2026-03-28T15:50:50Z",
+  "workstream_id": "REANCHOR_CURRENT_STATE_FOR_GATE_D_DECISION",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "dfded98a5443632fbc58f525e9397cbb11260418",
+  "current_git_head": "71268f2f7489aadec338d5e71bb5b70f8a7fe9dc",
   "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
-  "repo_state_executable_now": true,
-  "blocking_state": "NONE",
-  "blocking_reasons": [],
+  "repo_state_executable_now": false,
+  "blocking_state": "GATE_D_DECISION_REQUIRED",
+  "blocking_reasons": [
+    "Gate C is exited, but the next ordered counted batch is B04 and may not begin until Gate D is explicitly decided.",
+    "The tracked gate_c_exit_adjudication_receipt.json on main remains carrier-only and cannot serve as the authority source for any post-Gate-C widening or Gate D activation."
+  ],
   "nonblocking_conflicts": [
     {
-      "conflict_id": "GATE_C_EXIT_NOT_YET_ADJUDICATED",
-      "class": "COUNTED_GATE_C_SAME_HEAD_EXIT_DECISION_PENDING",
+      "conflict_id": "TRACKED_GATE_C_EXIT_RECEIPT_IS_CARRIER_ONLY",
+      "class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
       "evidence": [
-        "B03_GATE_C_EXIT_CRITERIA_CONTRACT is sealed and definition-only on head 172f081f25374eaf07ce7d6fab56cd130021155f, with gate_c_exit_claim_allowed = false and live_beats_baseline_claim_allowed = false until a future same-head adjudication proves the full chain.",
-        "B03_T24_FINAL_CURRENT_HEAD_ADJUDICATION_AUTHORITY_BINDING is sealed and authoritative on head dfded98a5443632fbc58f525e9397cbb11260418, proving the final adjudication family is now bound into the shared T17/T19 authority path and the tracked adjudication-family carriers on main fail closed cross-head.",
-        "The remaining late-phase Gate C task is no longer containment. It is to adjudicate whether the current sealed head earns Gate C under the same-head evidence and authority law, or to fail honestly and name the missing prerequisite.",
-        "Tracked adjudication-family receipts on main remain carrier-only and cannot stand in for the adjudication result."
+        "The authoritative Gate C exit proof is the clean-clone receipt on sealed head 71268f2f7489aadec338d5e71bb5b70f8a7fe9dc.",
+        "The tracked gate_c_exit_adjudication_receipt.json on main was emitted on pre-receipt head c5cfe3c9b9b3f0f4c2d37aa3d3799ae0b82752a7 and must remain carrier-only."
       ],
-      "resolution_rule": "Next counted workstream is B03_GATE_C_EXIT_ADJUDICATION only. This may decide Gate C on the current sealed head, but it does not authorize Gate D counting, automatic Gate D opening, comparator widening, or any civilization/product/externality widening."
+      "resolution_rule": "Use the clean-clone authoritative receipt as Gate C exit authority and do not overread the tracked carrier across heads."
     }
   ],
   "current_lawful_gate_standing": {
+    "inter_gate_state": "POST_GATE_C_EXIT_PRE_GATE_D_DECISION",
     "b02_runtime_unification": "EXITED",
-    "gate_c": "OPEN_TRANCHES_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18_19_20_21_22_23_EXIT_CRITERIA_CONTRACT_AND_T24_COMPLETE_NOT_EXITED",
-    "gate_d": "NOT_AUTHORIZED"
+    "gate_c": "EXITED",
+    "gate_d": "CLOSED_DECISION_REQUIRED"
   },
-  "exact_next_counted_workstream_id": "B03_GATE_C_EXIT_ADJUDICATION",
+  "exact_next_counted_workstream_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
   "explicit_non_go_areas": [
-    "Do not restart B00, B01, or B02 without regression proof.",
-    "Do not count Gate D toward Gate C.",
-    "Do not open Gate D automatically from the exit adjudication pass.",
-    "Do not refresh comparator truth, change comparator rows, or rewrite comparator semantics under the exit adjudication label.",
-    "Do not let carrier receipts, cross-head receipts, documentary-only surfaces, alias scorecards, or competitive scorecards stand in for authority.",
-    "Do not widen civilization, externality, or product claims.",
-    "Do not use buyer-language beyond the narrowest validated wedge."
+    "Do not reopen Gate C unless adjudication regresses with current proof.",
+    "Do not begin B04 counted mutation before a Gate D decision.",
+    "Do not widen externality beyond E1.",
+    "Do not make frontier claims.",
+    "Do not add comparator rows or rewrite comparator semantics.",
+    "Do not widen product or market claims.",
+    "Do not treat tracked carrier receipts as current-head authority."
   ],
-  "why_executable_now": "The repo is clean, the Gate C exit law is sealed, the final adjudication family is now bound into same-head authority law on head dfded98a5443632fbc58f525e9397cbb11260418, and Gate C can now be adjudicated honestly on the current sealed head without opening another containment tranche first."
+  "why_not_executable_now": "The repo is clean and Gate C is exited, but the next ordered counted batch is Gate D and requires an explicit decision frame before any B04 activation is lawful."
 }

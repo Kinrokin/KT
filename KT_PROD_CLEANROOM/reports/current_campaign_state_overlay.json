@@ -1,8 +1,8 @@
 {
   "schema_id": "kt.current_campaign_state_overlay.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T15:20:00Z",
-  "workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
+  "generated_utc": "2026-03-28T15:50:50Z",
+  "workstream_id": "REANCHOR_CURRENT_STATE_FOR_GATE_D_DECISION",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "authority_stack": {
     "execution_order_authority": {
@@ -17,17 +17,17 @@
     ],
     "current_state_authority": [
       "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_emit_20260328_001/gate_c_exit_criteria_contract_receipt.json",
-      "C:/Users/rober/AppData/Local/Temp/b03_t23_verify_emit_20260328_002/tracked_counted_receipt_class_authority_closure_receipt.json",
       "C:/Users/rober/AppData/Local/Temp/b03_t17_verify_20260327_221033/counted_receipt_family_same_head_authority_contract_receipt.json",
       "C:/Users/rober/AppData/Local/Temp/b03_t19_verify_20260327_225226/tracked_counted_receipt_carrier_overread_contract_receipt.json",
-      "C:/Users/rober/AppData/Local/Temp/b03_t24_authoritative_receipt_20260328_100101.json"
+      "C:/Users/rober/AppData/Local/Temp/b03_t23_verify_emit_20260328_002/tracked_counted_receipt_class_authority_closure_receipt.json",
+      "C:/Users/rober/AppData/Local/Temp/b03_t24_authoritative_receipt_20260328_100101.json",
+      "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_20260328_1029/gate_c_exit_adjudication_authoritative_receipt.json"
     ],
     "documentary_surfaces": [
       "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
+      "KT_PROD_CLEANROOM/reports/gate_c_exit_adjudication_receipt.json",
       "KT_PROD_CLEANROOM/reports/e1_bounded_campaign_receipt.json",
       "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
-      "KT_PROD_CLEANROOM/reports/gate_c_exit_criteria_contract_receipt.json",
-      "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_class_authority_closure_receipt.json",
       "KT_PROD_CLEANROOM/governance/execution_board.json",
       "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
     ]
@@ -39,17 +39,17 @@
   "repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "dfded98a5443632fbc58f525e9397cbb11260418",
+    "current_git_head": "71268f2f7489aadec338d5e71bb5b70f8a7fe9dc",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "omega_batch_status": {
     "satisfied_batches": [
       "B00_EXECUTIONIZE_V9",
       "B01_GATE_A_AUTHORITY_SEAL",
-      "B02_GATE_B_RUNTIME_UNIFY"
+      "B02_GATE_B_RUNTIME_UNIFY",
+      "B03_GATE_C_CAPABILITY_FORCING"
     ],
     "pending_batches": [
-      "B03_GATE_C_CAPABILITY_FORCING",
       "B04_GATE_D_CIVILIZATION_ACTIVATE",
       "B05_GATE_E_EXTERNALITY_AND_ASSURANCE",
       "B06_GATE_F_PRODUCT_WEDGE",
@@ -57,8 +57,9 @@
     ]
   },
   "current_lawful_gate_standing": {
-    "current_counted_gate": "Gate C",
-    "current_counted_batch": "B03_GATE_C_CAPABILITY_FORCING",
+    "inter_gate_state": "POST_GATE_C_EXIT_PRE_GATE_D_DECISION",
+    "current_counted_gate": "Gate D",
+    "current_counted_batch": "B04_GATE_D_CIVILIZATION_ACTIVATE",
     "completed_tranches": [
       "B03_T1_FROZEN_COMPARATOR_CONSTITUTION",
       "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT",
@@ -84,33 +85,35 @@
       "B03_T22_T21_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT",
       "B03_T23_TRACKED_COUNTED_RECEIPT_CLASS_AUTHORITY_CLOSURE",
       "B03_GATE_C_EXIT_CRITERIA_CONTRACT",
-      "B03_T24_FINAL_CURRENT_HEAD_ADJUDICATION_AUTHORITY_BINDING"
+      "B03_T24_FINAL_CURRENT_HEAD_ADJUDICATION_AUTHORITY_BINDING",
+      "B03_GATE_C_EXIT_ADJUDICATION"
     ],
-    "next_counted_tranche": "B03_GATE_C_EXIT_ADJUDICATION",
     "b02_runtime_unification": "EXITED",
-    "gate_c_status": "OPEN_TRANCHES_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18_19_20_21_22_23_AND_EXIT_CRITERIA_CONTRACT_COMPLETE_NOT_EXITED",
-    "gate_d_status": "NOT_AUTHORIZED",
+    "gate_c_status": "EXITED_ON_SEALED_HEAD_71268f2f7489aadec338d5e71bb5b70f8a7fe9dc",
+    "gate_d_status": "CLOSED_DECISION_REQUIRED_BEFORE_COUNTING",
     "authoritative_basis": [
-      "gate_c_exit_criteria_contract_receipt.status = PASS on authoritative clean-clone sealed head 172f081f25374eaf07ce7d6fab56cd130021155f",
-      "final_current_head_adjudication_authority_binding_receipt.status = PASS on authoritative clean-clone sealed head dfded98a5443632fbc58f525e9397cbb11260418",
-      "The final adjudication family is now bound into the shared T17/T19 same-head authority path and its tracked carrier on main fails closed cross-head.",
-      "The next lawful move is no longer another containment tranche. It is Gate C exit adjudication against the same-head evidence and authority chain only."
+      "gate_c_exit_adjudication_authoritative_receipt.status = PASS on authoritative clean-clone sealed head 71268f2f7489aadec338d5e71bb5b70f8a7fe9dc",
+      "gate_c_exit_earned = true and live_beats_baseline_adjudicated = true on that same head.",
+      "The tracked gate_c_exit_adjudication_receipt.json on main is carrier-only and does not stand in for final-head authority.",
+      "Gate D was not opened automatically by Gate C exit adjudication."
     ]
   },
   "state_reconciliation": {
-    "latest_sealed_receipts_current_state": "Gate C exit law is bound and the final current-head adjudication family is now a same-head authority candidate on sealed head dfded98a5443632fbc58f525e9397cbb11260418, while the tracked adjudication-family receipts on main remain carrier-only when subject_head differs.",
-    "documentary_surface_state_on_main": "Tracked final_current_head_adjudication_receipt.json and final_current_head_adjudication_authority_binding_receipt.json remain non-authoritative carriers on main unless subject_head matches the requested head. e1_bounded_campaign_receipt.json and competitive_scorecard.json remain forbidden from counting as authority.",
-    "reanchor_decision": "Open Gate C exit adjudication only. Do not open any new containment tranche unless the adjudication receipt names a real missing same-head prerequisite."
+    "latest_sealed_receipts_current_state": "Gate C is lawfully exited on sealed head 71268f2f7489aadec338d5e71bb5b70f8a7fe9dc through a same-head evidence chain and same-head authority chain. The next ordered batch under Omega is B04, but it remains decision-gated.",
+    "documentary_surface_state_on_main": "Tracked gate_c_exit_adjudication_receipt.json and final_current_head_adjudication_receipt.json remain non-authoritative carriers on main whenever subject_head differs from the requested head.",
+    "reanchor_decision": "Freeze current state for Gate D decision only. Do not begin B04 counted mutation, civilization activation, comparator expansion, externality widening, or product widening until Gate D is explicitly decided."
   },
-  "next_counted_workstream_id": "B03_GATE_C_EXIT_ADJUDICATION",
-  "next_counted_workstream_scope": "Adjudicate Gate C on the current sealed head only by checking the same-head comparator evidence chain, the same-head authority-contract chain, the bound final adjudication family, and the live-vs-baseline claim under the frozen constitution. Do not let tracked carriers, cross-head proof, or documentary-only surfaces stand in for authority. Do not open Gate D automatically.",
+  "next_counted_workstream_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
+  "next_counted_workstream_scope": "Gate D is the next ordered batch, but it is not executable-by-default after Gate C exit. A Gate D decision must first freeze whether KT remains a bounded governed execution system or authorizes an ordered civilization-ratification attempt under B04.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "explicit_non_go_areas": [
-    "Do not let carrier receipts, cross-head receipts, or documentary-only surfaces stand in for authority.",
-    "Do not refresh comparator truth, add comparator rows, or rewrite comparator semantics.",
-    "Do not open Gate D automatically from the adjudication pass.",
-    "Do not widen civilization, externality, product, or market scope."
+    "Do not count B04 before a Gate D decision is explicitly made.",
+    "Do not widen externality beyond E1.",
+    "Do not make frontier claims.",
+    "Do not add comparator rows or rewrite comparator semantics.",
+    "Do not widen product or market superiority claims.",
+    "Do not let tracked carrier receipts stand in for current-head authority."
   ],
-  "repo_state_executable_now": true,
-  "executable_now_why": "The repo is clean, the exit law is sealed, the final adjudication family is now bound into same-head authority law, and Gate C exit adjudication can now be attempted honestly on the sealed head without opening a new containment tranche first."
+  "repo_state_executable_now": false,
+  "executable_now_why": "The repo is clean and state is frozen, but the next ordered counted batch is Gate D and requires an explicit decision frame before any B04 mutation is lawful."
 }

@@ -1,126 +1,111 @@
 {
   "schema_id": "kt.next_counted_workstream_contract.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T15:20:00Z",
-  "source_workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
-  "current_counted_gate": "Gate C",
-  "parent_batch_id": "B03_GATE_C_CAPABILITY_FORCING",
-  "exact_next_counted_workstream_id": "B03_GATE_C_EXIT_ADJUDICATION",
+  "generated_utc": "2026-03-28T15:50:50Z",
+  "source_workstream_id": "REANCHOR_CURRENT_STATE_FOR_GATE_D_DECISION",
+  "current_counted_gate": "Gate D",
+  "parent_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
+  "exact_next_counted_workstream_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
-  "workstream_objective": "Adjudicate whether Gate C is earned on the current sealed head by proving the same-head comparator evidence chain passes, the same-head authority-contract chain passes, the bound final current-head adjudication family passes, tracked adjudication-family carriers fail closed, and the live-vs-baseline claim is supported under the frozen constitution without opening Gate D automatically.",
+  "execution_mode": "HOLD_UNTIL_GATE_D_DECISION",
+  "workstream_objective": "Freeze the post-Gate-C reality so a Gate D decision can be made without ambiguity. Do not execute B04 civilization activation yet. First decide, under v11 and Omega order, whether KT remains bounded at Gate C-exit posture or authorizes a bounded B04 civilization-ratification attempt.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "canonical_receipt_binding": {
+    "gate_c_exit_authoritative_receipt_path": "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_20260328_1029/gate_c_exit_adjudication_authoritative_receipt.json",
+    "gate_c_exit_tracked_carrier_ref": "KT_PROD_CLEANROOM/reports/gate_c_exit_adjudication_receipt.json",
     "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
-    "gate_c_exit_criteria_contract_ref": "KT_PROD_CLEANROOM/governance/gate_c_exit_criteria_contract.json",
-    "gate_c_exit_criteria_contract_receipt_ref": "KT_PROD_CLEANROOM/reports/gate_c_exit_criteria_contract_receipt.json",
-    "counted_receipt_family_same_head_authority_contract_receipt_ref": "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json",
-    "tracked_counted_receipt_carrier_overread_contract_receipt_ref": "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_carrier_overread_contract_receipt.json",
-    "tracked_counted_receipt_class_authority_closure_receipt_ref": "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_class_authority_closure_receipt.json",
-    "final_current_head_adjudication_receipt_ref": "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
-    "final_current_head_adjudication_authority_binding_receipt_ref": "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_authority_binding_receipt.json"
+    "gate_d_reanchor_packet_ref": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
+    "omega_b04_definition_ref": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json"
   },
   "gate_domain_product_split": {
-    "gate": "Gate C frozen capability forcing under comparator law",
-    "domain_surface": "DOMAIN_3_CAPABILITY_ATLAS remains downstream domain standing and does not authorize Gate D counting in this workstream.",
+    "gate": "Gate D ordered civilization ratification decision phase only",
+    "domain_surface": "B04 civilization surfaces are candidate activation surfaces only and do not count until Gate D is explicitly authorized.",
     "product_surface": "NONE_COUNTING"
   },
   "prerequisite_read": {
-    "b03_gate_c_exit_criteria_contract": "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_emit_20260328_001/gate_c_exit_criteria_contract_receipt.json",
-    "b03_t23_class_authority_closure": "C:/Users/rober/AppData/Local/Temp/b03_t23_verify_emit_20260328_002/tracked_counted_receipt_class_authority_closure_receipt.json",
-    "b03_t19_tracked_carrier_overread_contract": "C:/Users/rober/AppData/Local/Temp/b03_t19_verify_20260327_225226/tracked_counted_receipt_carrier_overread_contract_receipt.json",
-    "b03_t17_same_head_authority_contract": "C:/Users/rober/AppData/Local/Temp/b03_t17_verify_20260327_221033/counted_receipt_family_same_head_authority_contract_receipt.json",
-    "b03_t24_final_adjudication_authority_binding": "C:/Users/rober/AppData/Local/Temp/b03_t24_authoritative_receipt_20260328_100101.json",
+    "gate_c_exit_authoritative_receipt": "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_20260328_1029/gate_c_exit_adjudication_authoritative_receipt.json",
+    "gate_d_reanchor_packet": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
     "omega_batch_definition": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json",
     "v11_closure_map": "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.json"
   },
   "expected_mutate_paths": [
-    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
-    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
-    "KT_PROD_CLEANROOM/tests/operator/test_b03_gate_c_exit_adjudication.py",
-    "KT_PROD_CLEANROOM/reports/gate_c_exit_adjudication_receipt.json"
+    "KT_PROD_CLEANROOM/governance/civilization_loop_contract.json",
+    "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+    "KT_PROD_CLEANROOM/governance/router_promotion_law.json",
+    "KT_PROD_CLEANROOM/governance/lobe_promotion_law.json",
+    "KT_PROD_CLEANROOM/reports"
   ],
   "expected_create_if_absent_targets": [
-    "KT_PROD_CLEANROOM/tests/operator/test_b03_gate_c_exit_adjudication.py",
-    "KT_PROD_CLEANROOM/reports/gate_c_exit_adjudication_receipt.json"
+    "KT_PROD_CLEANROOM/reports/civilization_golden_run_receipt.json",
+    "KT_PROD_CLEANROOM/reports/domain_unlock_matrix_receipt.json",
+    "KT_PROD_CLEANROOM/reports/bounded_learning_receipt.json",
+    "KT_PROD_CLEANROOM/reports/promotion_binding_receipt.json",
+    "KT_PROD_CLEANROOM/reports/forge_generation_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_cutover_receipt.json",
+    "KT_PROD_CLEANROOM/reports/chaos_lane_resilience_receipt.json",
+    "KT_PROD_CLEANROOM/reports/tournament_live_receipt.json",
+    "KT_PROD_CLEANROOM/reports/multi_lobe_execution_receipt.json"
   ],
   "expected_receipts": [
-    "KT_PROD_CLEANROOM/reports/gate_c_exit_adjudication_receipt.json"
+    "KT_PROD_CLEANROOM/reports/civilization_golden_run_receipt.json",
+    "KT_PROD_CLEANROOM/reports/domain_unlock_matrix_receipt.json",
+    "KT_PROD_CLEANROOM/reports/bounded_learning_receipt.json",
+    "KT_PROD_CLEANROOM/reports/promotion_binding_receipt.json",
+    "KT_PROD_CLEANROOM/reports/forge_generation_receipt.json",
+    "KT_PROD_CLEANROOM/reports/runtime_cutover_receipt.json",
+    "KT_PROD_CLEANROOM/reports/chaos_lane_resilience_receipt.json",
+    "KT_PROD_CLEANROOM/reports/tournament_live_receipt.json",
+    "KT_PROD_CLEANROOM/reports/multi_lobe_execution_receipt.json",
+    "KT_PROD_CLEANROOM/reports/civilization_loop_receipt.json",
+    "KT_PROD_CLEANROOM/reports/learning_response_receipt.json",
+    "KT_PROD_CLEANROOM/reports/rollback_drill_receipt.json"
   ],
-  "rollback_artifacts": {
-    "pre_mutation_patch_ref": "tmp/worktree_snapshots/b03_gate_c_exit_adjudication.patch",
-    "pre_mutation_status_ref": "tmp/worktree_snapshots/b03_gate_c_exit_adjudication.status.txt",
-    "pre_mutation_contract_snapshot_dir": "tmp/worktree_snapshots/b03_gate_c_exit_adjudication_snapshot",
-    "tracked_restore_refs": [
-      "HEAD:KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
-      "HEAD:KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py"
-    ],
-    "remove_if_created": [
-      "KT_PROD_CLEANROOM/tests/operator/test_b03_gate_c_exit_adjudication.py",
-      "KT_PROD_CLEANROOM/reports/gate_c_exit_adjudication_receipt.json"
-    ]
-  },
-  "measurement_scope": {
-    "allowed_measured_surfaces": [
-      "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
-      "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
-      "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
-      "KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
-      "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
-      "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
-      "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
-      "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
-      "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_authority_binding_receipt.json",
-      "KT_PROD_CLEANROOM/reports/gate_c_exit_adjudication_receipt.json"
-    ],
-    "forbidden_measured_surfaces": [
-      "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
-      "KT_PROD_CLEANROOM/reports/e1_bounded_campaign_receipt.json",
-      "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
-      "KT_PROD_CLEANROOM/governance/final_blocker_matrix.json",
-      "KT_PROD_CLEANROOM/product/final_product_truth_boundary.json"
-    ],
-    "rule": "Gate C exit adjudication may only use the current-head generated comparator evidence chain, the shared same-head authority contracts, and the bound final current-head adjudication family. Tracked carrier receipts, cross-head proof, documentary-only surfaces, alias scorecards, and competitive scorecards may not stand in for authority."
-  },
+  "decision_questions": [
+    "Does KT remain a bounded governed execution system at the post-Gate-C posture, or is a bounded B04 civilization-ratification attempt authorized?",
+    "Is any future civilization activation limited to one governed and rollback-safe lane only, exactly as Omega B04 states?",
+    "Is externality widening still deferred to Gate E rather than smuggled into Gate D?",
+    "Are comparator expansion, frontier claims, and commercialization claims still blocked pending later gates?",
+    "Are new counting domains beyond Omega B04 still forbidden unless explicitly authorized by later ordered gates?"
+  ],
+  "explicit_not_authorized_before_decision": [
+    "B04 counted mutation",
+    "civilization activation",
+    "tournament live claims",
+    "router or lobe prestige claims",
+    "externality widening",
+    "frontier claims",
+    "new comparator rows",
+    "product or market superiority widening"
+  ],
   "validators_and_tests": {
     "validators": [
-      "python -m tools.operator.w3_externality_and_comparative_proof_validate"
+      "python -m tools.operator.universal_adapter_validate",
+      "python -m tools.operator.civilization_loop_validate",
+      "python -m tools.operator.router_ordered_proof_validate",
+      "python -m tools.operator.w2_lawful_evolution_validate"
     ],
     "tests": [
-      "python -m pytest -o addopts='' tests/operator/test_b03_gate_c_exit_criteria_contract.py -q",
-      "python -m pytest -o addopts='' tests/operator/test_b03_final_current_head_adjudication_authority_binding.py -q",
-      "python -m pytest -o addopts='' tests/operator/test_b03_gate_c_exit_adjudication.py -q"
+      "python -m pytest -o addopts='' tests/operator/test_universal_adapter_validate.py tests/operator/test_civilization_loop_validate.py tests/operator/test_router_ordered_proof_validate.py tests/operator/test_w2_lawful_evolution_validate.py -q"
     ]
   },
   "stop_conditions": [
-    "Any mutate path outside expected_mutate_paths fails tranche authorization.",
-    "Any Gate D counting or automatic Gate D opening appears in the adjudication pass.",
-    "Any tracked carrier, cross-head proof, or documentary-only surface is allowed to stand in for authority.",
-    "Any comparator truth is refreshed, any comparator row is added, or any comparator semantics are rewritten.",
-    "Any civilization, externality, product, or market widening enters counted scope."
+    "Any B04 counted mutation begins before a Gate D decision is explicitly made.",
+    "Any externality widening, frontier claim, comparator expansion, or product widening is folded into Gate D by default.",
+    "Any tracked carrier or documentary surface is treated as Gate C or Gate D authority.",
+    "Any Gate D decision frame outruns Omega batch order or v11 closure order."
   ],
   "pass_fail_criteria": {
     "pass": [
-      "A machine-readable receipt proves the same-head comparator evidence chain passes on the sealed head.",
-      "A machine-readable receipt proves the same-head authority-contract chain passes on the sealed head and tracked adjudication-family carriers fail closed.",
-      "A machine-readable receipt proves whether Gate C is earned or not on that same head without opening Gate D automatically or relying on any carrier or documentary substitute."
+      "The next ordered batch remains B04 under Omega.",
+      "The current post-Gate-C state is frozen without ambiguity.",
+      "B04 is held behind an explicit Gate D decision rather than executed by default."
     ],
     "fail": [
-      "Any exit result relies on a tracked carrier, cross-head proof, or documentary-only surface.",
-      "Any special-case bypass is introduced instead of the shared T17/T19 path.",
-      "Any same-head evidence or authority prerequisite required by the exit contract is missing or fails."
+      "B04 is treated as automatically executable after Gate C exit.",
+      "Any Gate D decision frame widens externality, frontier, comparator, or product scope by default.",
+      "Any current-head authority is sourced from tracked carriers instead of authoritative sealed-head proof."
     ]
   },
-  "explicit_non_go_areas": [
-    "Gate D counting",
-    "automatic Gate D opening",
-    "comparator refresh",
-    "comparator row changes",
-    "comparator-semantic rewrite",
-    "civilization widening",
-    "externality widening",
-    "product widening",
-    "market claims"
-  ],
-  "repo_state_executable_now": true,
-  "execution_readiness": "READY_FOR_EXPLICIT_GATE_C_EXIT_ADJUDICATION_ONLY"
+  "repo_state_executable_now": false,
+  "execution_readiness": "GATE_D_DECISION_REQUIRED_BEFORE_ANY_B04_COUNTING"
 }
