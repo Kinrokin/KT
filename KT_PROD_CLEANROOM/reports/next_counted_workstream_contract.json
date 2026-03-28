@@ -1,25 +1,22 @@
 {
   "schema_id": "kt.next_counted_workstream_contract.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T13:43:44.6092869Z",
+  "generated_utc": "2026-03-28T14:22:00Z",
   "source_workstream_id": "WS_RESUME_AND_REANCHOR_CURRENT_STATE",
   "current_counted_gate": "Gate C",
   "parent_batch_id": "B03_GATE_C_CAPABILITY_FORCING",
-  "exact_next_counted_workstream_id": "B03_GATE_C_EXIT_CRITERIA_CONTRACT",
+  "exact_next_counted_workstream_id": "B03_T24_FINAL_CURRENT_HEAD_ADJUDICATION_AUTHORITY_BINDING",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
-  "workstream_objective": "Bind the exact same-head authoritative proof chain required for Gate C exit under frozen comparator law. The contract must state which canonical baseline-vs-live scorecard, replay surface, benchmark constitution receipt, and downstream adjudication receipt family must coexist on the same head to prove the live-vs-baseline claim lawfully. It must forbid carrier receipts, cross-head proof, documentary-only surfaces, alias or competitive scorecards, and any exit or winner claim in the contract pass itself.",
+  "workstream_objective": "Bind final_current_head_adjudication_validate.py into a same-head authoritative receipt family that declares receipt_role and subject_head, remains bound to the shared T17 same-head authority contract and the T19 tracked-carrier overread contract, preserves the bounded NOT_FRONTIER standing and the single C006 blocker, and makes no Gate C exit or live-beats-baseline claim.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "canonical_receipt_binding": {
     "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
-    "frozen_eval_scorecard_bundle_ref": "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
-    "comparator_replay_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
-    "benchmark_constitution_receipt_ref": "KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
-    "canonical_scorecard_binding_receipt_ref": "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
-    "scorecard_alias_retirement_receipt_ref": "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
-    "competitive_scorecard_validator_detachment_receipt_ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
+    "gate_c_exit_criteria_contract_ref": "KT_PROD_CLEANROOM/governance/gate_c_exit_criteria_contract.json",
+    "gate_c_exit_criteria_contract_receipt_ref": "KT_PROD_CLEANROOM/reports/gate_c_exit_criteria_contract_receipt.json",
     "counted_receipt_family_same_head_authority_contract_receipt_ref": "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json",
     "tracked_counted_receipt_carrier_overread_contract_receipt_ref": "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_carrier_overread_contract_receipt.json",
-    "tracked_counted_receipt_class_authority_closure_receipt_ref": "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_class_authority_closure_receipt.json"
+    "tracked_counted_receipt_class_authority_closure_receipt_ref": "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_class_authority_closure_receipt.json",
+    "final_current_head_adjudication_receipt_ref": "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json"
   },
   "gate_domain_product_split": {
     "gate": "Gate C frozen capability forcing under comparator law",
@@ -27,43 +24,41 @@
     "product_surface": "NONE_COUNTING"
   },
   "prerequisite_read": {
+    "b03_gate_c_exit_criteria_contract": "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_emit_20260328_001/gate_c_exit_criteria_contract_receipt.json",
     "b03_t23_class_authority_closure": "C:/Users/rober/AppData/Local/Temp/b03_t23_verify_emit_20260328_002/tracked_counted_receipt_class_authority_closure_receipt.json",
-    "b03_t22_t21_final_head_authority_alignment": "C:/Users/rober/AppData/Local/Temp/b03_t22_verify_20260328/t21_receipt_final_head_authority_alignment_receipt.json",
     "b03_t19_tracked_carrier_overread_contract": "C:/Users/rober/AppData/Local/Temp/b03_t19_verify_20260327_225226/tracked_counted_receipt_carrier_overread_contract_receipt.json",
     "b03_t17_same_head_authority_contract": "C:/Users/rober/AppData/Local/Temp/b03_t17_verify_20260327_221033/counted_receipt_family_same_head_authority_contract_receipt.json",
     "omega_batch_definition": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json",
     "v11_closure_map": "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.json"
   },
   "expected_mutate_paths": [
-    "KT_PROD_CLEANROOM/governance/gate_c_exit_criteria_contract.json",
-    "KT_PROD_CLEANROOM/governance/gate_c_exit_terminal_state.json",
     "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
-    "KT_PROD_CLEANROOM/tests/operator/test_b03_gate_c_exit_criteria_contract.py",
-    "KT_PROD_CLEANROOM/reports/gate_c_exit_criteria_contract_receipt.json"
+    "KT_PROD_CLEANROOM/tests/operator/test_final_current_head_adjudication_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_final_current_head_adjudication_authority_binding.py",
+    "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
+    "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_authority_binding_receipt.json"
   ],
   "expected_create_if_absent_targets": [
-    "KT_PROD_CLEANROOM/governance/gate_c_exit_criteria_contract.json",
-    "KT_PROD_CLEANROOM/governance/gate_c_exit_terminal_state.json",
-    "KT_PROD_CLEANROOM/tests/operator/test_b03_gate_c_exit_criteria_contract.py",
-    "KT_PROD_CLEANROOM/reports/gate_c_exit_criteria_contract_receipt.json"
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_final_current_head_adjudication_authority_binding.py",
+    "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_authority_binding_receipt.json"
   ],
   "expected_receipts": [
-    "KT_PROD_CLEANROOM/reports/gate_c_exit_criteria_contract_receipt.json"
+    "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_authority_binding_receipt.json"
   ],
   "rollback_artifacts": {
-    "pre_mutation_patch_ref": "tmp/worktree_snapshots/b03_gate_c_exit_criteria_contract_pre_mutation.patch",
-    "pre_mutation_status_ref": "tmp/worktree_snapshots/b03_gate_c_exit_criteria_contract_pre_mutation.status.txt",
-    "pre_mutation_contract_snapshot_dir": "tmp/worktree_snapshots/b03_gate_c_exit_criteria_contract_snapshot",
+    "pre_mutation_patch_ref": "tmp/worktree_snapshots/b03_t24_final_adjudication_authority_binding.patch",
+    "pre_mutation_status_ref": "tmp/worktree_snapshots/b03_t24_final_adjudication_authority_binding.status.txt",
+    "pre_mutation_contract_snapshot_dir": "tmp/worktree_snapshots/b03_t24_final_adjudication_authority_binding_snapshot",
     "tracked_restore_refs": [
       "HEAD:KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+      "HEAD:KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
       "HEAD:KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py"
     ],
     "remove_if_created": [
-      "KT_PROD_CLEANROOM/governance/gate_c_exit_criteria_contract.json",
-      "KT_PROD_CLEANROOM/governance/gate_c_exit_terminal_state.json",
-      "KT_PROD_CLEANROOM/tests/operator/test_b03_gate_c_exit_criteria_contract.py",
-      "KT_PROD_CLEANROOM/reports/gate_c_exit_criteria_contract_receipt.json"
+      "KT_PROD_CLEANROOM/tests/operator/test_b03_final_current_head_adjudication_authority_binding.py",
+      "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_authority_binding_receipt.json"
     ]
   },
   "measurement_scope": {
@@ -75,71 +70,59 @@
       "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
       "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
       "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
-      "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json",
-      "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_carrier_overread_contract_receipt.json",
-      "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_class_authority_closure_receipt.json",
-      "KT_PROD_CLEANROOM/reports/gate_c_exit_criteria_contract_receipt.json"
+      "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
+      "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_authority_binding_receipt.json"
     ],
     "forbidden_measured_surfaces": [
       "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
-      "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
       "KT_PROD_CLEANROOM/reports/e1_bounded_campaign_receipt.json",
       "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
       "KT_PROD_CLEANROOM/governance/final_blocker_matrix.json",
       "KT_PROD_CLEANROOM/product/final_product_truth_boundary.json"
     ],
-    "rule": "The exit-criteria contract may only bind the lawful same-head authoritative proof chain for a future Gate C exit claim. It may not emit an outcome, refresh comparator truth, change comparator rows, or let carrier or documentary surfaces stand in for authority."
+    "rule": "T24 may only bind the final current-head adjudication receipt family into same-head authority law for future Gate C exit use. It may not emit a Gate C exit claim, a live-beats-baseline outcome, or let documentary-only or cross-head surfaces count as authority."
   },
   "validators_and_tests": {
     "validators": [
+      "python -m tools.operator.final_current_head_adjudication_validate",
       "python -m tools.operator.w3_externality_and_comparative_proof_validate"
     ],
     "tests": [
-      "python -m pytest -o addopts='' tests/operator/test_b03_tracked_counted_receipt_class_authority_closure.py -q",
-      "python -m pytest -o addopts='' tests/operator/test_b03_gate_c_exit_criteria_contract.py -q"
+      "python -m pytest -o addopts='' tests/operator/test_final_current_head_adjudication_validate.py -q",
+      "python -m pytest -o addopts='' tests/operator/test_b03_final_current_head_adjudication_authority_binding.py -q"
     ]
   },
   "stop_conditions": [
     "Any mutate path outside expected_mutate_paths fails tranche authorization.",
-    "Any Gate C exit or live-beats-baseline outcome claim is emitted in the exit-criteria contract pass.",
-    "Any carrier receipt, cross-head receipt, documentary-only surface, alias scorecard, or competitive scorecard is allowed to stand in for authority.",
-    "Any comparator truth is refreshed, any comparator row is added, or any comparator semantics are rewritten under the exit-criteria contract label.",
-    "Any Gate D promotion packet is counted toward Gate C.",
-    "Any planner, paradox, multiverse, router, memory, civilization, externality, or product widening enters counted scope."
+    "Any Gate C exit or live-beats-baseline outcome claim appears in T24.",
+    "Any documentary-only or cross-head adjudication receipt is allowed to stand in for authority.",
+    "Any comparator truth is refreshed, any comparator row is added, or any comparator semantics are rewritten.",
+    "Any civilization, externality, product, or market widening enters counted scope."
   ],
   "pass_fail_criteria": {
     "pass": [
-      "A machine-readable contract receipt names the exact same-head authoritative proof chain required for a future Gate C exit claim.",
-      "A machine-readable contract receipt proves carrier receipts, cross-head receipts, documentary-only surfaces, alias scorecards, and competitive scorecards cannot stand in for authority.",
-      "A machine-readable contract receipt preserves baseline_vs_live_scorecard.json as the sole canonical Gate C comparator truth.",
-      "A machine-readable contract receipt proves no winner claim, no exit claim, and no comparator widening occurred in the contract pass."
+      "A machine-readable receipt proves final_current_head_adjudication_receipt.json now declares receipt_role and subject_head and can serve as a same-head authoritative family candidate.",
+      "A machine-readable receipt proves the tracked final_current_head_adjudication receipt on main fails closed cross-head through the shared T17/T19 path.",
+      "A machine-readable receipt proves the current-head adjudication family remains bounded: highest truthful tier stays NOT_FRONTIER, C006 remains the single blocker, and no exit or winner claim is made."
     ],
     "fail": [
-      "Any live-vs-baseline winner claim is emitted instead of only the criteria contract.",
-      "Any Gate C exit is claimed in the contract pass.",
-      "Any carrier or documentary surface is allowed to substitute for same-head authority.",
-      "Any comparator refresh, comparator row change, or comparator-semantic rewrite occurs."
+      "Any Gate C exit or winner claim is made.",
+      "Any special-case bypass is introduced instead of the shared T17/T19 path.",
+      "The adjudication family still lacks authority-shape fields or same-head binding."
     ]
   },
   "explicit_non_go_areas": [
     "Gate C exit",
     "live-beats-baseline outcome claim",
     "Gate D counting",
-    "promotion civilization as Gate C work",
-    "new comparator rows",
+    "comparator refresh",
+    "comparator row changes",
     "comparator-semantic rewrite",
-    "refresh of comparator truth",
-    "planner widening",
-    "paradox widening",
-    "multiverse widening",
-    "router widening",
-    "memory widening",
     "civilization widening",
     "externality widening",
     "product widening",
-    "market claims",
-    "new canonical concepts without schema plus validator plus receipt plus rollback plus claim ceiling plus terminal state"
+    "market claims"
   ],
   "repo_state_executable_now": true,
-  "execution_readiness": "READY_FOR_EXPLICIT_GATE_C_EXIT_CRITERIA_CONTRACT_ONLY"
+  "execution_readiness": "READY_FOR_EXPLICIT_T24_FINAL_ADJUDICATION_AUTHORITY_BINDING_ONLY"
 }
