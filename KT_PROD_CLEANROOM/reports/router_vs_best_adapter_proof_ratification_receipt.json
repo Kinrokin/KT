@@ -1,0 +1,57 @@
+{
+  "checks": [
+    {
+      "check_id": "r5_contract_and_terminal_state_bind_only_same_head_router_proof",
+      "pass": true
+    },
+    {
+      "check_id": "r5_consumes_r1_r2_r3_and_r4_authority_chain_without_using_r4_tracked_carrier_as_authority",
+      "pass": true
+    },
+    {
+      "check_id": "ordered_proof_artifacts_pass_and_are_same_head",
+      "pass": true
+    },
+    {
+      "check_id": "router_vs_best_adapter_outcome_is_stated_honestly",
+      "pass": true
+    },
+    {
+      "check_id": "learned_router_and_lobe_progress_remain_fail_closed_without_earned_proof",
+      "pass": true
+    },
+    {
+      "check_id": "control_surfaces_show_r5_was_the_exact_executable_step",
+      "pass": true
+    },
+    {
+      "check_id": "scope_remains_bounded_after_r5",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "This receipt proves only the same-head router-versus-best-adapter ordered proof result on the current head. It does not authorize learned-router cutover, lobe promotion, externality widening, comparative claims, or commercial activation unless and until superiority is actually earned.",
+  "current_git_head": "e57271456c685cc30b6000d54878e5ad8a86185f",
+  "generated_utc": "2026-03-28T23:02:23Z",
+  "next_lawful_move": "HOLD_B04_R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF",
+  "receipt_role": "COUNTED_B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF_ARTIFACT_ONLY",
+  "router_proof_summary": {
+    "best_static_provider_adapter_id": "council.openrouter.live_hashed.v1",
+    "canonical_router_status": "STATIC_CANONICAL_BASELINE_ONLY",
+    "exact_superiority_outcome": "NOT_EARNED_STATIC_BASELINE_RETAINS_CANONICAL_STATUS",
+    "learned_router_cutover_allowed": false,
+    "multi_lobe_promotion_allowed": false,
+    "ordered_proof_outcome": "PASS_HOLD_STATIC_CANONICAL_BASELINE",
+    "router_superiority_earned": false
+  },
+  "same_head_authority_summary": {
+    "health_report_ref": "KT_PROD_CLEANROOM/reports/route_distribution_health.json",
+    "ordered_proof_receipt_ref": "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json",
+    "same_head_required": true,
+    "scorecard_ref": "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
+    "shadow_matrix_ref": "KT_PROD_CLEANROOM/reports/router_shadow_eval_matrix.json"
+  },
+  "schema_id": "kt.b04.r5.router_vs_best_adapter_proof_ratification_receipt.v1",
+  "status": "PASS",
+  "subject_head": "e57271456c685cc30b6000d54878e5ad8a86185f",
+  "workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF"
+}
