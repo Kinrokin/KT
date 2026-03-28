@@ -5,8 +5,16 @@ import hashlib
 import json
 import os
 import re
+import subprocess
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
+
+_CLEANROOM_ROOT = Path(__file__).resolve().parents[2]
+_SRC_ROOT = _CLEANROOM_ROOT / "04_PROD_TEMPLE_V2" / "src"
+for _path in (str(_CLEANROOM_ROOT), str(_SRC_ROOT)):
+    if _path not in sys.path:
+        sys.path.insert(0, _path)
 
 from tools.operator.observability import emit_toolchain_telemetry, telemetry_now_ms
 from tools.operator.titanium_common import repo_root, utc_now_iso_z, write_json_stable
@@ -25,6 +33,10 @@ def _load_json(path: Path) -> Dict[str, Any]:
     if not isinstance(payload, dict):
         raise RuntimeError(f"FAIL_CLOSED: expected JSON object: {path.as_posix()}")
     return payload
+
+
+def _git_head(root: Path) -> str:
+    return subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
 
 
 def _sha256_text(value: str) -> str:
@@ -253,6 +265,7 @@ def _evaluate_shadow_case(
 
 def build_wave2b_shadow_reports(*, root: Path, telemetry_path: Path) -> Dict[str, Dict[str, Any]]:
     started_ms = telemetry_now_ms()
+    current_head = _git_head(root)
     registry = _load_json(root / POLICY_REGISTRY_REL)
     policy_path = root / str(registry.get("active_policy_ref", "")).replace("/", os.sep)
     suite_path = root / str(registry.get("demo_suite_ref", "")).replace("/", os.sep)
@@ -323,6 +336,8 @@ def build_wave2b_shadow_reports(*, root: Path, telemetry_path: Path) -> Dict[str
     selection_report = {
         "schema_id": "kt.wave2b.router_selection_receipt.v1",
         "generated_utc": utc_now_iso_z(),
+        "current_git_head": current_head,
+        "subject_head": current_head,
         "status": "PASS" if not failures else "FAIL",
         "scope_boundary": "Wave 2B shadow and best-static comparison only. The audited static router remains canonical, the post-Wave5 same-host LIVE_HASHED provider underlay is a bounded current-head input, and no learned-router cutover occurs.",
         "router_policy_registry_ref": POLICY_REGISTRY_REL,
@@ -374,6 +389,8 @@ def build_wave2b_shadow_reports(*, root: Path, telemetry_path: Path) -> Dict[str
     matrix_report = {
         "schema_id": "kt.wave2b.router_shadow_eval_matrix.v1",
         "generated_utc": utc_now_iso_z(),
+        "current_git_head": current_head,
+        "subject_head": current_head,
         "status": "PASS" if not failures else "FAIL",
         "comparison_rule": "Shadow routing is compared against the current best static adapter path and the static router remains canonical until later ratification.",
         "coverage": {
@@ -413,6 +430,8 @@ def build_wave2b_shadow_reports(*, root: Path, telemetry_path: Path) -> Dict[str
     health_report = {
         "schema_id": "kt.wave2b.route_distribution_health.v1",
         "generated_utc": utc_now_iso_z(),
+        "current_git_head": current_head,
+        "subject_head": current_head,
         "status": "PASS" if not health_failures else "FAIL",
         "baseline_domain_distribution": baseline_distribution,
         "shadow_domain_distribution": shadow_distribution,

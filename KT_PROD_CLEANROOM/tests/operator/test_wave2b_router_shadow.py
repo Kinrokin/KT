@@ -26,6 +26,10 @@ def test_wave2b_router_shadow_reports_preserve_static_baseline() -> None:
     assert selection["status"] == "PASS"
     assert matrix["status"] == "PASS"
     assert health["status"] == "PASS"
+    assert selection["current_git_head"] == selection["subject_head"]
+    assert matrix["current_git_head"] == matrix["subject_head"]
+    assert health["current_git_head"] == health["subject_head"]
+    assert selection["current_git_head"] == matrix["current_git_head"] == health["current_git_head"]
     assert selection["ratification_scope"] == "STATIC_ROUTER_BASELINE_ONLY"
     assert selection["embedding_model_used"] is False
     assert selection["provider_underlay_context"]["provider_report_ref"] == "KT_PROD_CLEANROOM/reports/post_wave5_c016a_success_matrix.json"
@@ -82,3 +86,9 @@ def test_wave2b_router_shadow_cli_writes_artifacts(tmp_path: Path) -> None:
     assert matrix_path.exists()
     assert health_path.exists()
     assert telemetry_path.exists()
+    selection = json.loads(selection_path.read_text(encoding="utf-8"))
+    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+    health = json.loads(health_path.read_text(encoding="utf-8"))
+    assert selection["current_git_head"] == selection["subject_head"]
+    assert matrix["current_git_head"] == matrix["subject_head"]
+    assert health["current_git_head"] == health["subject_head"]
