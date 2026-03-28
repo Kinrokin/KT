@@ -1,0 +1,70 @@
+{
+  "authoritative_current_head_t17_candidate_contract": {
+    "allowed_roles": [
+      "COUNTED_T17_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_ARTIFACT_ONLY"
+    ],
+    "blocked": false,
+    "failure_reason": null,
+    "pass": true,
+    "receipt_ref": "IN_MEMORY_CURRENT_HEAD_T17_FINAL_HEAD_AUTHORITY_ALIGNMENT_CANDIDATE",
+    "receipt_role": "COUNTED_T17_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_ARTIFACT_ONLY",
+    "requested_head": "5c865c64338bdc9ead5e38cd9565516b66f25ce8",
+    "subject_head": "5c865c64338bdc9ead5e38cd9565516b66f25ce8"
+  },
+  "authoritative_final_head_rule": "Only counted receipts whose subject_head matches the requested_head can be authoritative. When subject_head differs, the tracked receipt is documentary carrier only.",
+  "canonical_receipt_binding": {
+    "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+    "counted_receipt_family_same_head_authority_contract_receipt_ref": "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json"
+  },
+  "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+  "checks": [
+    {
+      "check_id": "tracked_t17_overread_fails_closed",
+      "pass": true
+    },
+    {
+      "check_id": "tracked_t17_classified_documentary_carrier_only",
+      "pass": true
+    },
+    {
+      "check_id": "authoritative_final_head_requires_matching_subject_head",
+      "pass": true
+    },
+    {
+      "check_id": "t17_same_head_authority_contract_preserved",
+      "pass": true
+    },
+    {
+      "check_id": "baseline_scorecard_remains_canonical_truth",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "T18 aligns authority semantics for the retained T17 receipt only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
+  "current_git_head": "5c865c64338bdc9ead5e38cd9565516b66f25ce8",
+  "generated_utc": "2026-03-28T03:23:34Z",
+  "receipt_role": "COUNTED_T18_T17_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY",
+  "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+  "same_head_authority_contract_family_id": "T17_FINAL_HEAD_AUTHORITY_ALIGNMENT",
+  "same_head_authority_contract_owner_ref": "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+  "same_head_authority_contract_ref": "tools.operator.benchmark_constitution_validate.evaluate_counted_receipt_family_same_head_authority",
+  "schema_id": "kt.gate_c_t18.t17_receipt_final_head_authority_alignment_receipt.v1",
+  "status": "PASS",
+  "subject_head": "5c865c64338bdc9ead5e38cd9565516b66f25ce8",
+  "tracked_t17_authority_class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+  "tracked_t17_contract": {
+    "allowed_roles": [
+      "COUNTED_T17_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_ARTIFACT_ONLY"
+    ],
+    "blocked": true,
+    "failure_reason": "SUBJECT_HEAD_MISMATCH",
+    "pass": false,
+    "receipt_ref": "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json",
+    "receipt_role": "COUNTED_T17_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_ARTIFACT_ONLY",
+    "requested_head": "5c865c64338bdc9ead5e38cd9565516b66f25ce8",
+    "subject_head": "4aa5c211b1c98e0424d5d2e078966fa604fafd0f"
+  },
+  "tracked_t17_receipt_current_git_head": "4aa5c211b1c98e0424d5d2e078966fa604fafd0f",
+  "tracked_t17_receipt_ref": "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json",
+  "tracked_t17_receipt_subject_head": "4aa5c211b1c98e0424d5d2e078966fa604fafd0f",
+  "tranche_id": "B03_T18_T17_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT"
+}
