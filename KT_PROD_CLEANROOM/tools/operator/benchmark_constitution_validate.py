@@ -33,6 +33,8 @@ DEFAULT_SUBJECT_BOUNDARY_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/comparator_rec
 DEFAULT_CONTRACT_ENFORCEMENT_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/comparator_receipt_contract_enforcement_receipt.json"
 DEFAULT_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json"
 DEFAULT_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_REL = "KT_PROD_CLEANROOM/governance/counted_consumer_allowlist_contract.json"
+DEFAULT_GATE_C_EXIT_CRITERIA_CONTRACT_REL = "KT_PROD_CLEANROOM/governance/gate_c_exit_criteria_contract.json"
+DEFAULT_GATE_C_EXIT_TERMINAL_STATE_REL = "KT_PROD_CLEANROOM/governance/gate_c_exit_terminal_state.json"
 DEFAULT_BENCHMARK_CONSTITUTION_OUTPUT_REL = BENCHMARK_CONSTITUTION_REL
 DEFAULT_COMPARATOR_REGISTRY_OUTPUT_REL = COMPARATOR_REGISTRY_REL
 
@@ -180,6 +182,14 @@ T23_EXPECTED_MUTATE_PATHS = [
     "KT_PROD_CLEANROOM/tests/operator/test_b03_tracked_counted_receipt_class_authority_closure.py",
     "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_class_authority_closure_receipt.json",
 ]
+GATE_C_EXIT_CRITERIA_CONTRACT_EXPECTED_MUTATE_PATHS = [
+    DEFAULT_GATE_C_EXIT_CRITERIA_CONTRACT_REL,
+    DEFAULT_GATE_C_EXIT_TERMINAL_STATE_REL,
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_gate_c_exit_criteria_contract.py",
+    "KT_PROD_CLEANROOM/reports/gate_c_exit_criteria_contract_receipt.json",
+]
 ALLOWED_PREWRITE_DIRTY = {
     path
     for path in [
@@ -193,6 +203,7 @@ ALLOWED_PREWRITE_DIRTY = {
         *T21_EXPECTED_MUTATE_PATHS,
         *T22_EXPECTED_MUTATE_PATHS,
         *T23_EXPECTED_MUTATE_PATHS,
+        *GATE_C_EXIT_CRITERIA_CONTRACT_EXPECTED_MUTATE_PATHS,
         DEFAULT_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_REL,
         "KT_PROD_CLEANROOM/tests/operator/test_b03_documentary_carrier_guard_centralization.py",
         "KT_PROD_CLEANROOM/tests/operator/test_b03_shared_guard_single_path_enforcement.py",
@@ -377,6 +388,38 @@ def load_counted_consumer_allowlist_contract(*, root: Path) -> Dict[str, Any]:
         "sanctioned_counted_consumer_refs": _string_list(payload.get("sanctioned_counted_consumer_refs")),
         "allowed_noncounting_owner_refs": _string_list(payload.get("allowed_noncounting_owner_refs")),
         "canonical_scorecard_id": str(payload.get("canonical_scorecard_id", "")).strip(),
+    }
+
+
+def load_gate_c_exit_criteria_contract(*, root: Path) -> Dict[str, Any]:
+    payload = load_json(root / DEFAULT_GATE_C_EXIT_CRITERIA_CONTRACT_REL)
+    return {
+        "payload": payload,
+        "contract_ref": DEFAULT_GATE_C_EXIT_CRITERIA_CONTRACT_REL,
+        "contract_id": str(payload.get("contract_id", "")).strip(),
+        "contract_mode": str(payload.get("contract_mode", "")).strip(),
+        "canonical_scorecard_id": str(payload.get("canonical_scorecard_id", "")).strip(),
+        "required_same_head_evidence_surface_refs": _string_list(payload.get("required_same_head_evidence_surface_refs")),
+        "required_same_head_authority_contract_receipt_refs": _string_list(
+            payload.get("required_same_head_authority_contract_receipt_refs")
+        ),
+        "forbidden_authority_surface_refs": _string_list(payload.get("forbidden_authority_surface_refs")),
+        "fail_conditions": _string_list(payload.get("fail_conditions")),
+        "required_future_exit_adjudication_family": payload.get("required_future_exit_adjudication_family", {}),
+    }
+
+
+def load_gate_c_exit_terminal_state(*, root: Path) -> Dict[str, Any]:
+    payload = load_json(root / DEFAULT_GATE_C_EXIT_TERMINAL_STATE_REL)
+    return {
+        "payload": payload,
+        "terminal_state_ref": DEFAULT_GATE_C_EXIT_TERMINAL_STATE_REL,
+        "terminal_state_id": str(payload.get("terminal_state_id", "")).strip(),
+        "current_state": str(payload.get("current_state", "")).strip(),
+        "gate_c_exit_claim_allowed": bool(payload.get("gate_c_exit_claim_allowed", False)),
+        "live_beats_baseline_claim_allowed": bool(payload.get("live_beats_baseline_claim_allowed", False)),
+        "next_lawful_move": str(payload.get("next_lawful_move", "")).strip(),
+        "fail_conditions": _string_list(payload.get("fail_conditions")),
     }
 
 

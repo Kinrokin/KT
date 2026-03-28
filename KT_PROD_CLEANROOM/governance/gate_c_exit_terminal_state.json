@@ -1,0 +1,18 @@
+{
+  "schema_id": "kt.gate_c.exit_terminal_state.v1",
+  "classification_tag": "COUNTING_CLOSURE",
+  "terminal_state_id": "KT_GATE_C_EXIT_TERMINAL_STATE_V1",
+  "current_state": "EXIT_CRITERIA_BOUND_NOT_ADJUDICATED",
+  "gate_c_exit_claim_allowed": false,
+  "live_beats_baseline_claim_allowed": false,
+  "next_lawful_move": "GATE_C_EXIT_ADJUDICATION_ONLY_AFTER_SAME_HEAD_AUTHORITY_CHAIN_EXISTS",
+  "fail_conditions": [
+    "same_head_authoritative_exit_adjudication_receipt_missing",
+    "required_same_head_evidence_surface_missing",
+    "carrier_or_cross_head_surface_used_as_authority",
+    "documentary_only_surface_used_as_authority",
+    "alias_or_competitive_surface_used_as_canonical_truth",
+    "exit_or_winner_claim_attempted_before_adjudication"
+  ],
+  "terminal_rule": "Binding the exit criteria does not earn the exit. Gate C may only exit after a future same-head authoritative adjudication receipt family satisfies the defined proof chain."
+}

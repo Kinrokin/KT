@@ -1,0 +1,50 @@
+{
+  "schema_id": "kt.gate_c.exit_criteria_contract.v1",
+  "classification_tag": "COUNTING_CLOSURE",
+  "contract_id": "KT_GATE_C_EXIT_CRITERIA_CONTRACT_V1",
+  "contract_mode": "DEFINITION_ONLY_NO_OUTCOME_CLAIM",
+  "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+  "required_same_head_evidence_surface_refs": [
+    "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+    "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
+    "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
+    "KT_PROD_CLEANROOM/reports/benchmark_constitution_receipt.json",
+    "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
+    "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
+    "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
+  ],
+  "required_same_head_authority_contract_receipt_refs": [
+    "KT_PROD_CLEANROOM/reports/counted_receipt_family_same_head_authority_contract_receipt.json",
+    "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_carrier_overread_contract_receipt.json",
+    "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_class_authority_closure_receipt.json"
+  ],
+  "required_future_exit_adjudication_family": {
+    "owner_ref": "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+    "current_tracked_receipt_ref": "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
+    "required_receipt_fields": [
+      "receipt_role",
+      "subject_head",
+      "current_git_head",
+      "status"
+    ],
+    "same_head_required": true,
+    "current_tracked_surface_counts_as_authority": false,
+    "authority_role_rule": "A future Gate C exit adjudication may count only a same-head receipt family that declares both receipt_role and subject_head and remains bound to the shared T17 same-head authority contract and the T19 tracked-counted-receipt carrier-overread contract."
+  },
+  "forbidden_authority_surface_refs": [
+    "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
+    "KT_PROD_CLEANROOM/reports/e1_bounded_campaign_receipt.json",
+    "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_kit.json"
+  ],
+  "fail_conditions": [
+    "Any live-beats-baseline outcome claim appears before a same-head authoritative exit adjudication receipt exists.",
+    "Any Gate C exit claim appears in the criteria-contract tranche.",
+    "Any carrier receipt, cross-head receipt, or documentary-only surface is allowed to stand in for same-head authority.",
+    "Any alias scorecard or competitive scorecard is allowed to stand in for canonical comparator truth.",
+    "Any comparator truth is refreshed, any comparator row is added, or any comparator semantics are rewritten under the exit-criteria contract label."
+  ],
+  "next_lawful_move_after_contract": "Gate C exit adjudication only after the same-head authoritative proof chain exists end-to-end.",
+  "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+  "claim_boundary": "This contract defines the future Gate C exit proof law only. It does not claim Gate C exit, does not claim that live beats baseline, and does not widen comparator, civilization, externality, or product scope."
+}

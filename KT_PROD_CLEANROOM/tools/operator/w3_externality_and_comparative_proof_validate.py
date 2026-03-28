@@ -20,12 +20,17 @@ from tools.operator.benchmark_constitution_validate import (
     TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF,
     TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_REF,
     DEFAULT_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL as T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
+    DEFAULT_GATE_C_EXIT_CRITERIA_CONTRACT_REL,
+    DEFAULT_GATE_C_EXIT_TERMINAL_STATE_REL,
+    _extract_subject_head,
     _consume_emitted_receipt_contract,
     _enforce_write_scope_post,
     _enforce_write_scope_pre,
     _maybe_write_json_output,
     _payloads,
     build_documentary_carrier_guard_single_path_barrier,
+    load_gate_c_exit_criteria_contract,
+    load_gate_c_exit_terminal_state,
     build_tracked_counted_receipt_class_authority_closure_bundle,
     build_tracked_counted_receipt_carrier_overread_probe_bundle,
     build_tracked_counted_receipt_single_path_barrier,
@@ -108,6 +113,12 @@ TRACKED_COUNTED_RECEIPT_CLASS_AUTHORITY_CLOSURE_RECEIPT_REL = (
 )
 T23_TRANCHE_ID = "B03_T23_TRACKED_COUNTED_RECEIPT_CLASS_AUTHORITY_CLOSURE"
 T23_RECEIPT_ROLE = "COUNTED_T23_TRACKED_COUNTED_RECEIPT_CLASS_AUTHORITY_CLOSURE_ARTIFACT_ONLY"
+FINAL_CURRENT_HEAD_ADJUDICATION_RECEIPT_REL = f"{REPORT_ROOT_REL}/final_current_head_adjudication_receipt.json"
+E1_BOUNDED_CAMPAIGN_RECEIPT_REL = f"{REPORT_ROOT_REL}/e1_bounded_campaign_receipt.json"
+COMPETITIVE_SCORECARD_REL = f"{REPORT_ROOT_REL}/competitive_scorecard.json"
+GATE_C_EXIT_CRITERIA_CONTRACT_RECEIPT_REL = f"{REPORT_ROOT_REL}/gate_c_exit_criteria_contract_receipt.json"
+GATE_C_EXIT_CRITERIA_CONTRACT_TRANCHE_ID = "B03_GATE_C_EXIT_CRITERIA_CONTRACT"
+GATE_C_EXIT_CRITERIA_CONTRACT_RECEIPT_ROLE = "COUNTED_GATE_C_EXIT_CRITERIA_CONTRACT_ARTIFACT_ONLY"
 ROLE_ALIAS_RETIREMENT = "ALIAS_RETIREMENT_PROOF"
 ROLE_VALIDATOR_ALIAS_DETACHMENT = "VALIDATOR_ALIAS_DETACHMENT_PROOF"
 
@@ -1235,6 +1246,162 @@ def build_tracked_counted_receipt_class_authority_closure_receipt(*, root: Path)
     }
 
 
+def _surface_authority_shape(*, root: Path, surface_ref: str) -> Dict[str, Any]:
+    payload = load_json(root / surface_ref)
+    subject_head, subject_head_source_field = _extract_subject_head(payload)
+    receipt_role = str(payload.get("receipt_role", "")).strip()
+    return {
+        "surface_ref": surface_ref,
+        "schema_id": str(payload.get("schema_id", "")).strip(),
+        "receipt_role": receipt_role,
+        "subject_head": subject_head,
+        "subject_head_source_field": subject_head_source_field,
+        "has_receipt_role": bool(receipt_role),
+        "has_subject_head": bool(subject_head),
+        "authority_shape_complete": bool(receipt_role and subject_head),
+    }
+
+
+def build_gate_c_exit_criteria_contract_receipt(*, root: Path) -> Dict[str, Any]:
+    current_head = _git_head(root)
+    baseline_scorecard = _payloads(root, utc_now_iso_z())["scorecard"]
+    contract = load_gate_c_exit_criteria_contract(root=root)
+    terminal_state = load_gate_c_exit_terminal_state(root=root)
+    t17_receipt = build_counted_receipt_family_same_head_authority_contract_receipt(root=root)
+    t19_receipt = build_tracked_counted_receipt_carrier_overread_contract_receipt(root=root)
+    t23_receipt = build_tracked_counted_receipt_class_authority_closure_receipt(root=root)
+
+    expected_evidence_refs = [
+        BASELINE_SCORECARD_REL,
+        f"{REPORT_ROOT_REL}/frozen_eval_scorecard_bundle.json",
+        f"{REPORT_ROOT_REL}/comparator_replay_receipt.json",
+        BENCHMARK_RECEIPT_REL,
+        f"{REPORT_ROOT_REL}/canonical_scorecard_binding_receipt.json",
+        ALIAS_RETIREMENT_REL,
+        DETACHMENT_RECEIPT_REL,
+    ]
+    expected_authority_contract_refs = [
+        COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_RECEIPT_REL,
+        TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_RECEIPT_REL,
+        TRACKED_COUNTED_RECEIPT_CLASS_AUTHORITY_CLOSURE_RECEIPT_REL,
+    ]
+    expected_forbidden_refs = [
+        FINAL_CURRENT_HEAD_ADJUDICATION_RECEIPT_REL,
+        E1_BOUNDED_CAMPAIGN_RECEIPT_REL,
+        COMPETITIVE_SCORECARD_REL,
+        f"{REPORT_ROOT_REL}/public_verifier_kit.json",
+    ]
+    adjudication_family = contract["required_future_exit_adjudication_family"]
+    documentary_surface_classification = [
+        _surface_authority_shape(root=root, surface_ref=FINAL_CURRENT_HEAD_ADJUDICATION_RECEIPT_REL),
+        _surface_authority_shape(root=root, surface_ref=E1_BOUNDED_CAMPAIGN_RECEIPT_REL),
+        _surface_authority_shape(root=root, surface_ref=COMPETITIVE_SCORECARD_REL),
+    ]
+    checks = [
+        {
+            "check_id": "contract_mode_is_definition_only_no_outcome_claim",
+            "pass": contract["contract_mode"] == "DEFINITION_ONLY_NO_OUTCOME_CLAIM",
+        },
+        {
+            "check_id": "terminal_state_blocks_exit_and_winner_claims",
+            "pass": terminal_state["current_state"] == "EXIT_CRITERIA_BOUND_NOT_ADJUDICATED"
+            and terminal_state["gate_c_exit_claim_allowed"] is False
+            and terminal_state["live_beats_baseline_claim_allowed"] is False
+            and terminal_state["next_lawful_move"] == "GATE_C_EXIT_ADJUDICATION_ONLY_AFTER_SAME_HEAD_AUTHORITY_CHAIN_EXISTS",
+        },
+        {
+            "check_id": "required_same_head_evidence_surface_refs_are_exact",
+            "pass": contract["required_same_head_evidence_surface_refs"] == expected_evidence_refs,
+        },
+        {
+            "check_id": "required_same_head_authority_contract_receipt_refs_are_exact",
+            "pass": contract["required_same_head_authority_contract_receipt_refs"] == expected_authority_contract_refs,
+        },
+        {
+            "check_id": "future_exit_adjudication_family_is_bound_but_not_counted_yet",
+            "pass": str(adjudication_family.get("owner_ref", "")).strip()
+            == "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py"
+            and str(adjudication_family.get("current_tracked_receipt_ref", "")).strip()
+            == FINAL_CURRENT_HEAD_ADJUDICATION_RECEIPT_REL
+            and adjudication_family.get("required_receipt_fields") == ["receipt_role", "subject_head", "current_git_head", "status"]
+            and bool(adjudication_family.get("same_head_required")) is True
+            and bool(adjudication_family.get("current_tracked_surface_counts_as_authority")) is False,
+        },
+        {
+            "check_id": "forbidden_authority_surface_refs_are_exact",
+            "pass": contract["forbidden_authority_surface_refs"] == expected_forbidden_refs,
+        },
+        {
+            "check_id": "documentary_surfaces_are_forbidden_and_lack_authority_shape",
+            "pass": all(
+                item["surface_ref"] in contract["forbidden_authority_surface_refs"]
+                and item["authority_shape_complete"] is False
+                for item in documentary_surface_classification
+            ),
+        },
+        {
+            "check_id": "shared_same_head_authority_contract_regression_still_passes",
+            "pass": t17_receipt["status"] == "PASS",
+        },
+        {
+            "check_id": "tracked_carrier_overread_contract_regression_still_passes",
+            "pass": t19_receipt["status"] == "PASS",
+        },
+        {
+            "check_id": "tracked_counted_receipt_class_authority_closure_regression_still_passes",
+            "pass": t23_receipt["status"] == "PASS",
+        },
+        {
+            "check_id": "baseline_scorecard_remains_sole_canonical_comparator_truth",
+            "pass": str(baseline_scorecard.get("canonical_scorecard_id", "")).strip() == "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL"
+            and str(baseline_scorecard.get("status", "")).strip() == "PASS"
+            and contract["canonical_scorecard_id"] == "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        },
+    ]
+    return {
+        "schema_id": "kt.gate_c.exit_criteria_contract_receipt.v1",
+        "generated_utc": utc_now_iso_z(),
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": GATE_C_EXIT_CRITERIA_CONTRACT_RECEIPT_ROLE,
+        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "tranche_id": GATE_C_EXIT_CRITERIA_CONTRACT_TRANCHE_ID,
+        "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        "canonical_receipt_binding": {
+            "baseline_vs_live_scorecard_ref": BASELINE_SCORECARD_REL,
+            "gate_c_exit_criteria_contract_ref": DEFAULT_GATE_C_EXIT_CRITERIA_CONTRACT_REL,
+            "gate_c_exit_terminal_state_ref": DEFAULT_GATE_C_EXIT_TERMINAL_STATE_REL,
+            "counted_receipt_family_same_head_authority_contract_receipt_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_RECEIPT_REL,
+            "tracked_counted_receipt_carrier_overread_contract_receipt_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_RECEIPT_REL,
+            "tracked_counted_receipt_class_authority_closure_receipt_ref": TRACKED_COUNTED_RECEIPT_CLASS_AUTHORITY_CLOSURE_RECEIPT_REL
+        },
+        "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+        "contract_mode": contract["contract_mode"],
+        "contract_ref": contract["contract_ref"],
+        "terminal_state_ref": terminal_state["terminal_state_ref"],
+        "required_same_head_evidence_surface_refs": contract["required_same_head_evidence_surface_refs"],
+        "required_same_head_authority_contract_receipt_refs": contract["required_same_head_authority_contract_receipt_refs"],
+        "required_future_exit_adjudication_family": adjudication_family,
+        "forbidden_authority_surface_refs": contract["forbidden_authority_surface_refs"],
+        "documentary_surface_classification": documentary_surface_classification,
+        "terminal_state": terminal_state["payload"],
+        "same_head_authority_contract_regression": {
+            "status": t17_receipt["status"],
+            "receipt_role": t17_receipt["receipt_role"]
+        },
+        "tracked_counted_receipt_carrier_overread_regression": {
+            "status": t19_receipt["status"],
+            "receipt_role": t19_receipt["receipt_role"]
+        },
+        "tracked_counted_receipt_class_authority_closure_regression": {
+            "status": t23_receipt["status"],
+            "receipt_role": t23_receipt["receipt_role"]
+        },
+        "checks": checks,
+        "claim_boundary": "This tranche binds Gate C exit proof law only. It does not claim that live beats baseline, does not claim Gate C exit, and does not let carrier, cross-head, or documentary surfaces substitute for same-head authority."
+    }
+
+
 def build_e2_cross_host_replay_receipt(*, root: Path) -> Dict[str, Any]:
     truth_lock = _truth_lock(root)
     externality_matrix = load_json(root / EXTERNALITY_MATRIX_REL)
@@ -1434,6 +1601,11 @@ def _build_argument_parser() -> argparse.ArgumentParser:
         "--tracked-counted-receipt-class-authority-closure-output",
         default=TRACKED_COUNTED_RECEIPT_CLASS_AUTHORITY_CLOSURE_RECEIPT_REL,
     )
+    parser.add_argument("--emit-gate-c-exit-criteria-contract-receipt", action="store_true")
+    parser.add_argument(
+        "--gate-c-exit-criteria-contract-output",
+        default=GATE_C_EXIT_CRITERIA_CONTRACT_RECEIPT_REL,
+    )
     return parser
 
 
@@ -1625,6 +1797,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         )
         if written:
             allowed_repo_writes.append(written)
+    if args.emit_gate_c_exit_criteria_contract_receipt:
+        exit_contract_receipt = build_gate_c_exit_criteria_contract_receipt(root=root)
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.gate_c_exit_criteria_contract_output)),
+            payload=exit_contract_receipt,
+            default_rel=GATE_C_EXIT_CRITERIA_CONTRACT_RECEIPT_REL,
+            allow_default_repo_write=args.allow_tracked_output_refresh,
+        )
+        if written:
+            allowed_repo_writes.append(written)
     _enforce_write_scope_post(root, prewrite_dirty=prewrite_dirty, allowed_repo_writes=allowed_repo_writes)
 
     result = {
@@ -1655,6 +1838,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         result["t21_receipt_final_head_authority_alignment_status"] = t22_receipt["status"]
     if args.emit_tracked_counted_receipt_class_authority_closure_receipt:
         result["tracked_counted_receipt_class_authority_closure_status"] = t23_receipt["status"]
+    if args.emit_gate_c_exit_criteria_contract_receipt:
+        result["gate_c_exit_criteria_contract_status"] = exit_contract_receipt["status"]
     print(json.dumps(result, sort_keys=True))
     return 0 if result["status"] == "PASS" else 1
 
