@@ -174,6 +174,12 @@ T22_EXPECTED_MUTATE_PATHS = [
     "KT_PROD_CLEANROOM/tests/operator/test_b03_t21_receipt_final_head_authority_alignment.py",
     "KT_PROD_CLEANROOM/reports/t21_receipt_final_head_authority_alignment_receipt.json",
 ]
+T23_EXPECTED_MUTATE_PATHS = [
+    "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_b03_tracked_counted_receipt_class_authority_closure.py",
+    "KT_PROD_CLEANROOM/reports/tracked_counted_receipt_class_authority_closure_receipt.json",
+]
 ALLOWED_PREWRITE_DIRTY = {
     path
     for path in [
@@ -186,6 +192,7 @@ ALLOWED_PREWRITE_DIRTY = {
         *T20_EXPECTED_MUTATE_PATHS,
         *T21_EXPECTED_MUTATE_PATHS,
         *T22_EXPECTED_MUTATE_PATHS,
+        *T23_EXPECTED_MUTATE_PATHS,
         DEFAULT_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_REL,
         "KT_PROD_CLEANROOM/tests/operator/test_b03_documentary_carrier_guard_centralization.py",
         "KT_PROD_CLEANROOM/tests/operator/test_b03_shared_guard_single_path_enforcement.py",
@@ -707,6 +714,85 @@ def build_tracked_counted_receipt_carrier_overread_probe_bundle(*, root: Path) -
         "tracked_receipt_family_probes": probes,
         "authoritative_current_head_generic_candidate_contract": generic_same_head_candidate,
         "checks": checks,
+    }
+
+
+def build_tracked_counted_receipt_class_authority_closure_bundle(*, root: Path) -> Dict[str, Any]:
+    current_head = _git_head(root)
+    baseline_scorecard = _payloads(root, utc_now_iso_z())["scorecard"]
+    report_root = root / "KT_PROD_CLEANROOM/reports"
+    live_probes: list[Dict[str, Any]] = []
+
+    for path in sorted(report_root.rglob("*.json")):
+        repo_ref = _repo_relpath(root, path)
+        if repo_ref is None:
+            continue
+        payload = load_json(path)
+        receipt_role = str(payload.get("receipt_role", "")).strip()
+        if not receipt_role.startswith("COUNTED_"):
+            continue
+        probe = evaluate_tracked_counted_receipt_carrier_overread(
+            tracked_receipt_ref=repo_ref,
+            tracked_payload=payload,
+            allowed_roles=[receipt_role],
+            current_head=current_head,
+        )
+        live_probes.append(
+            {
+                "tracked_receipt_ref": repo_ref,
+                "receipt_role": receipt_role,
+                "allowed_roles": list(probe["allowed_roles"]),
+                "tracked_subject_head": probe["tracked_subject_head"],
+                "tracked_current_git_head": probe["tracked_current_git_head"],
+                "tracked_authority_class": probe["tracked_authority_class"],
+                "tracked_contract": probe["tracked_contract"],
+                "same_head_match": probe["tracked_subject_head"] == current_head,
+            }
+        )
+
+    generic_probe_role = "COUNTED_GENERIC_TRACKED_RECEIPT_CLASS_AUTHORITY_CLOSURE_SYNTHETIC_ROLE"
+    generic_probe = evaluate_tracked_counted_receipt_carrier_overread(
+        tracked_receipt_ref="IN_MEMORY_SYNTHETIC_TRACKED_COUNTED_RECEIPT_CLASS_CARRIER",
+        tracked_payload={
+            "receipt_role": generic_probe_role,
+            "subject_head": "0000000000000000000000000000000000000000",
+            "current_git_head": "",
+        },
+        allowed_roles=[generic_probe_role],
+        current_head=current_head,
+    )
+    generic_same_head_candidate = _consume_emitted_receipt_contract(
+        receipt_ref="IN_MEMORY_CURRENT_HEAD_SYNTHETIC_TRACKED_COUNTED_RECEIPT_CLASS_CANDIDATE",
+        payload={
+            "receipt_role": generic_probe_role,
+            "subject_head": current_head,
+        },
+        allowed_roles=[generic_probe_role],
+        requested_head=current_head,
+    )
+    cross_head_refs = [
+        probe["tracked_receipt_ref"]
+        for probe in live_probes
+        if probe["same_head_match"] is False
+    ]
+    same_head_refs = [
+        probe["tracked_receipt_ref"]
+        for probe in live_probes
+        if probe["same_head_match"] is True
+    ]
+    return {
+        "current_head": current_head,
+        "baseline_scorecard": baseline_scorecard,
+        "live_tracked_counted_receipt_probes": live_probes,
+        "detected_live_tracked_counted_receipt_refs": [probe["tracked_receipt_ref"] for probe in live_probes],
+        "cross_head_live_tracked_counted_receipt_refs": cross_head_refs,
+        "same_head_live_tracked_counted_receipt_refs": same_head_refs,
+        "authoritative_current_head_generic_candidate_contract": generic_same_head_candidate,
+        "synthetic_future_family_probe": generic_probe,
+        "same_head_authority_contract_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF,
+        "same_head_authority_contract_owner_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF,
+        "tracked_counted_receipt_carrier_overread_contract_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_REF,
+        "tracked_counted_receipt_carrier_overread_contract_owner_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF,
     }
 
 

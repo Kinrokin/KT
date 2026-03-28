@@ -26,6 +26,7 @@ from tools.operator.benchmark_constitution_validate import (
     _maybe_write_json_output,
     _payloads,
     build_documentary_carrier_guard_single_path_barrier,
+    build_tracked_counted_receipt_class_authority_closure_bundle,
     build_tracked_counted_receipt_carrier_overread_probe_bundle,
     build_tracked_counted_receipt_single_path_barrier,
     evaluate_counted_receipt_family_same_head_authority,
@@ -102,6 +103,11 @@ T21_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL = (
 )
 T22_TRANCHE_ID = "B03_T22_T21_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT"
 T22_RECEIPT_ROLE = "COUNTED_T22_T21_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"
+TRACKED_COUNTED_RECEIPT_CLASS_AUTHORITY_CLOSURE_RECEIPT_REL = (
+    f"{REPORT_ROOT_REL}/tracked_counted_receipt_class_authority_closure_receipt.json"
+)
+T23_TRANCHE_ID = "B03_T23_TRACKED_COUNTED_RECEIPT_CLASS_AUTHORITY_CLOSURE"
+T23_RECEIPT_ROLE = "COUNTED_T23_TRACKED_COUNTED_RECEIPT_CLASS_AUTHORITY_CLOSURE_ARTIFACT_ONLY"
 ROLE_ALIAS_RETIREMENT = "ALIAS_RETIREMENT_PROOF"
 ROLE_VALIDATOR_ALIAS_DETACHMENT = "VALIDATOR_ALIAS_DETACHMENT_PROOF"
 
@@ -1129,6 +1135,106 @@ def build_t21_receipt_final_head_authority_alignment_receipt(*, root: Path) -> D
     }
 
 
+def build_tracked_counted_receipt_class_authority_closure_receipt(*, root: Path) -> Dict[str, Any]:
+    bundle = build_tracked_counted_receipt_class_authority_closure_bundle(root=root)
+    current_head = str(bundle["current_head"]).strip()
+    baseline_scorecard = bundle["baseline_scorecard"]
+    live_probes = bundle["live_tracked_counted_receipt_probes"]
+    synthetic_probe = bundle["synthetic_future_family_probe"]
+    generic_same_head_candidate = bundle["authoritative_current_head_generic_candidate_contract"]
+    cross_head_probes = [probe for probe in live_probes if probe["same_head_match"] is False]
+    same_head_probes = [probe for probe in live_probes if probe["same_head_match"] is True]
+    checks = [
+        {
+            "check_id": "live_tracked_counted_receipts_detected",
+            "pass": len(live_probes) > 0,
+        },
+        {
+            "check_id": "cross_head_live_tracked_counted_receipts_fail_closed_as_carriers",
+            "pass": all(
+                probe["tracked_authority_class"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
+                and probe["tracked_contract"]["blocked"] is True
+                and probe["tracked_contract"]["failure_reason"] == "SUBJECT_HEAD_MISMATCH"
+                for probe in cross_head_probes
+            ),
+        },
+        {
+            "check_id": "same_head_live_tracked_counted_receipts_require_matching_subject_head_for_authority",
+            "pass": all(
+                probe["tracked_contract"]["pass"] is True
+                and probe["tracked_contract"]["blocked"] is False
+                and str(probe["tracked_subject_head"]).strip() == current_head
+                for probe in same_head_probes
+            ),
+        },
+        {
+            "check_id": "live_tracked_receipts_use_declared_roles_through_shared_contract_path",
+            "pass": all(probe["allowed_roles"] == [probe["receipt_role"]] for probe in live_probes),
+        },
+        {
+            "check_id": "synthetic_future_family_cross_head_receipt_is_carrier_only",
+            "pass": synthetic_probe["tracked_authority_class"] == DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH
+            and synthetic_probe["tracked_contract"]["blocked"] is True
+            and synthetic_probe["tracked_contract"]["failure_reason"] == "SUBJECT_HEAD_MISMATCH",
+        },
+        {
+            "check_id": "synthetic_future_family_same_head_candidate_is_authoritative",
+            "pass": generic_same_head_candidate["pass"] is True
+            and generic_same_head_candidate["blocked"] is False
+            and str(generic_same_head_candidate["subject_head"]).strip() == current_head,
+        },
+        {
+            "check_id": "shared_t17_same_head_authority_contract_preserved",
+            "pass": str(bundle["same_head_authority_contract_ref"]).strip()
+            == COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF
+            and str(bundle["same_head_authority_contract_owner_ref"]).strip()
+            == COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF,
+        },
+        {
+            "check_id": "shared_t19_tracked_carrier_overread_contract_preserved",
+            "pass": str(bundle["tracked_counted_receipt_carrier_overread_contract_ref"]).strip()
+            == TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_REF
+            and str(bundle["tracked_counted_receipt_carrier_overread_contract_owner_ref"]).strip()
+            == TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_OWNER_REF,
+        },
+        {
+            "check_id": "baseline_scorecard_remains_sole_canonical_comparator_truth",
+            "pass": str(baseline_scorecard.get("receipt_role", "")).strip() == ROLE_BASELINE_SCORECARD,
+        },
+    ]
+    return {
+        "schema_id": "kt.gate_c_t23.tracked_counted_receipt_class_authority_closure_receipt.v1",
+        "generated_utc": utc_now_iso_z(),
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": T23_RECEIPT_ROLE,
+        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "tranche_id": T23_TRANCHE_ID,
+        "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        "canonical_receipt_binding": {
+            "baseline_vs_live_scorecard_ref": BASELINE_SCORECARD_REL,
+            "counted_receipt_family_same_head_authority_contract_receipt_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_RECEIPT_REL,
+            "tracked_counted_receipt_carrier_overread_contract_receipt_ref": TRACKED_COUNTED_RECEIPT_CARRIER_OVERREAD_CONTRACT_RECEIPT_REL,
+            "t20_receipt_final_head_authority_alignment_receipt_ref": T20_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
+            "t21_receipt_final_head_authority_alignment_receipt_ref": T21_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
+        },
+        "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+        "same_head_authority_contract_ref": bundle["same_head_authority_contract_ref"],
+        "same_head_authority_contract_owner_ref": bundle["same_head_authority_contract_owner_ref"],
+        "tracked_counted_receipt_carrier_overread_contract_ref": bundle["tracked_counted_receipt_carrier_overread_contract_ref"],
+        "tracked_counted_receipt_carrier_overread_contract_owner_ref": bundle["tracked_counted_receipt_carrier_overread_contract_owner_ref"],
+        "detected_live_tracked_counted_receipt_refs": bundle["detected_live_tracked_counted_receipt_refs"],
+        "live_tracked_counted_receipt_probe_count": len(live_probes),
+        "cross_head_live_tracked_counted_receipt_refs": bundle["cross_head_live_tracked_counted_receipt_refs"],
+        "same_head_live_tracked_counted_receipt_refs": bundle["same_head_live_tracked_counted_receipt_refs"],
+        "live_tracked_counted_receipt_probes": live_probes,
+        "synthetic_future_family_probe": synthetic_probe,
+        "authoritative_current_head_generic_candidate_contract": generic_same_head_candidate,
+        "checks": checks,
+        "claim_boundary": "T23 closes the recurring tracked counted receipt carrier-vs-authority ambiguity class generically through the shared T17/T19 rules only. It does not refresh comparator truth, widen comparator semantics, add comparator rows, or claim Gate C exit.",
+    }
+
+
 def build_e2_cross_host_replay_receipt(*, root: Path) -> Dict[str, Any]:
     truth_lock = _truth_lock(root)
     externality_matrix = load_json(root / EXTERNALITY_MATRIX_REL)
@@ -1323,6 +1429,11 @@ def _build_argument_parser() -> argparse.ArgumentParser:
         "--t21-receipt-final-head-authority-alignment-output",
         default=T21_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
     )
+    parser.add_argument("--emit-tracked-counted-receipt-class-authority-closure-receipt", action="store_true")
+    parser.add_argument(
+        "--tracked-counted-receipt-class-authority-closure-output",
+        default=TRACKED_COUNTED_RECEIPT_CLASS_AUTHORITY_CLOSURE_RECEIPT_REL,
+    )
     return parser
 
 
@@ -1503,6 +1614,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         )
         if written:
             allowed_repo_writes.append(written)
+    if args.emit_tracked_counted_receipt_class_authority_closure_receipt:
+        t23_receipt = build_tracked_counted_receipt_class_authority_closure_receipt(root=root)
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.tracked_counted_receipt_class_authority_closure_output)),
+            payload=t23_receipt,
+            default_rel=TRACKED_COUNTED_RECEIPT_CLASS_AUTHORITY_CLOSURE_RECEIPT_REL,
+            allow_default_repo_write=args.allow_tracked_output_refresh,
+        )
+        if written:
+            allowed_repo_writes.append(written)
     _enforce_write_scope_post(root, prewrite_dirty=prewrite_dirty, allowed_repo_writes=allowed_repo_writes)
 
     result = {
@@ -1531,6 +1653,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         result["t20_receipt_final_head_authority_alignment_status"] = t21_receipt["status"]
     if args.emit_t21_receipt_final_head_authority_alignment_receipt:
         result["t21_receipt_final_head_authority_alignment_status"] = t22_receipt["status"]
+    if args.emit_tracked_counted_receipt_class_authority_closure_receipt:
+        result["tracked_counted_receipt_class_authority_closure_status"] = t23_receipt["status"]
     print(json.dumps(result, sort_keys=True))
     return 0 if result["status"] == "PASS" else 1
 
