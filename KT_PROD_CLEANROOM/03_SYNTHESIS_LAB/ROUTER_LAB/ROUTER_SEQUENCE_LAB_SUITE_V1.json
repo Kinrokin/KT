@@ -1,0 +1,52 @@
+{
+  "cases": [
+    {
+      "case_id": "LAB_R01",
+      "input_text": "Research the receipts, plan the fix, then write the explanation for operators.",
+      "notes": "Mixed research, planning, and writing should favor a routed specialist chain.",
+      "required_roles": [
+        "research",
+        "planning",
+        "writing"
+      ]
+    },
+    {
+      "case_id": "LAB_R02",
+      "input_text": "Design the architecture and then critique the rollback path before release.",
+      "notes": "Planning plus critique should beat a single generalist.",
+      "required_roles": [
+        "planning",
+        "critique"
+      ]
+    },
+    {
+      "case_id": "LAB_R03",
+      "input_text": "Audit the law, verify fail-closed behavior, and summarize the governed result.",
+      "notes": "Governance plus writing should prefer auditor/censor plus writer support.",
+      "required_roles": [
+        "governance",
+        "critique",
+        "writing"
+      ]
+    },
+    {
+      "case_id": "LAB_R04",
+      "input_text": "Use a tool to gather sources, then explain the answer clearly.",
+      "notes": "Tool-use plus writing should favor scout then muse.",
+      "required_roles": [
+        "tool_use",
+        "writing"
+      ]
+    },
+    {
+      "case_id": "LAB_R05",
+      "input_text": "Hello KT, what are you?",
+      "notes": "Simple generalist traffic should stay on the strategist fallback lane.",
+      "required_roles": []
+    }
+  ],
+  "claim_boundary": "This lab suite expands task heterogeneity for router-shadow experiments only. It is not a counted comparator suite and cannot stand in for R5 proof.",
+  "mode": "LAB_ONLY_NONCANONICAL",
+  "schema_id": "kt.router_lab_suite.v1",
+  "suite_id": "ROUTER_SEQUENCE_LAB_SUITE_V1_20260328"
+}

@@ -1,0 +1,188 @@
+{
+  "capability_weights": {
+    "lobe.architect.v1": {
+      "planning": 1.0,
+      "writing": 0.35
+    },
+    "lobe.auditor.v1": {
+      "critique": 0.7,
+      "governance": 1.0,
+      "planning": 0.25
+    },
+    "lobe.censor.v1": {
+      "governance": 0.45,
+      "math": 0.2,
+      "safety": 1.0
+    },
+    "lobe.critic.v1": {
+      "critique": 1.0,
+      "writing": 0.2
+    },
+    "lobe.muse.v1": {
+      "creative": 1.0,
+      "writing": 0.9
+    },
+    "lobe.quant.v1": {
+      "math": 1.0,
+      "planning": 0.2
+    },
+    "lobe.scout.v1": {
+      "research": 1.0,
+      "tool_use": 0.95
+    },
+    "lobe.strategist.v1": {
+      "creative": 0.45,
+      "critique": 0.55,
+      "governance": 0.55,
+      "math": 0.45,
+      "planning": 0.7,
+      "research": 0.65,
+      "tool_use": 0.55,
+      "writing": 0.7
+    }
+  },
+  "claim_boundary": "This lab policy supports noncanonical mixed-role router-shadow experiments only. It does not claim counted router superiority, learned-router eligibility, or any authority transfer.",
+  "default_adapter_ids": [
+    "lobe.strategist.v1"
+  ],
+  "mode": "LAB_ONLY_NONCANONICAL",
+  "policy_id": "ROUTER_SEQUENCE_LAB_V1_20260328",
+  "role_routes": [
+    {
+      "adapter_ids": [
+        "lobe.scout.v1"
+      ],
+      "keywords": [
+        "docs",
+        "evidence",
+        "investigate",
+        "lookup",
+        "research",
+        "sources",
+        "tool"
+      ],
+      "role_id": "research"
+    },
+    {
+      "adapter_ids": [
+        "lobe.architect.v1"
+      ],
+      "keywords": [
+        "architecture",
+        "design",
+        "plan",
+        "roadmap",
+        "sequence",
+        "strategy"
+      ],
+      "role_id": "planning"
+    },
+    {
+      "adapter_ids": [
+        "lobe.quant.v1",
+        "lobe.censor.v1"
+      ],
+      "keywords": [
+        "calculate",
+        "equation",
+        "integral",
+        "math",
+        "optimize"
+      ],
+      "required_adapter_ids": [
+        "lobe.censor.v1"
+      ],
+      "role_id": "math"
+    },
+    {
+      "adapter_ids": [
+        "lobe.auditor.v1",
+        "lobe.censor.v1"
+      ],
+      "keywords": [
+        "audit",
+        "fail-closed",
+        "governance",
+        "law",
+        "receipt",
+        "rollback"
+      ],
+      "required_adapter_ids": [
+        "lobe.censor.v1"
+      ],
+      "role_id": "governance"
+    },
+    {
+      "adapter_ids": [
+        "lobe.critic.v1"
+      ],
+      "keywords": [
+        "check",
+        "critique",
+        "review",
+        "verify"
+      ],
+      "role_id": "critique"
+    },
+    {
+      "adapter_ids": [
+        "lobe.muse.v1"
+      ],
+      "keywords": [
+        "explain",
+        "haiku",
+        "poem",
+        "summarize",
+        "write"
+      ],
+      "role_id": "writing"
+    },
+    {
+      "adapter_ids": [
+        "lobe.scout.v1"
+      ],
+      "keywords": [
+        "call",
+        "fetch",
+        "retrieve",
+        "tool",
+        "use"
+      ],
+      "role_id": "tool_use"
+    },
+    {
+      "adapter_ids": [
+        "lobe.censor.v1"
+      ],
+      "keywords": [
+        "bounded",
+        "guard",
+        "safe",
+        "safety"
+      ],
+      "role_id": "safety"
+    },
+    {
+      "adapter_ids": [
+        "lobe.muse.v1"
+      ],
+      "keywords": [
+        "creative",
+        "haiku",
+        "poem",
+        "story"
+      ],
+      "role_id": "creative"
+    }
+  ],
+  "schema_id": "kt.router_lab_policy.v1",
+  "single_adapter_baselines": [
+    "lobe.strategist.v1",
+    "lobe.architect.v1",
+    "lobe.auditor.v1",
+    "lobe.quant.v1",
+    "lobe.muse.v1",
+    "lobe.scout.v1",
+    "lobe.critic.v1"
+  ]
+}
