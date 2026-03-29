@@ -95,6 +95,7 @@ def build_verified_tie_router_shadow_report(
     case_rows: List[Dict[str, Any]] = []
     route_advantage_case_count = 0
     staged_recombination_case_count = 0
+    drop_or_rework_case_count = 0
     for case in cases:
         if not isinstance(case, dict):
             continue
@@ -123,6 +124,9 @@ def build_verified_tie_router_shadow_report(
             route_advantage_case_count += 1
         if same_adapter_recombination_only:
             staged_recombination_case_count += 1
+            drop_or_rework_case_count += 1
+
+        recommended_action = "KEEP_AND_EXPAND" if route_advantage else ("DROP_OR_REWORK" if same_adapter_recombination_only else "HOLD")
 
         case_rows.append(
             {
@@ -136,6 +140,7 @@ def build_verified_tie_router_shadow_report(
                 "multi_adapter_route": multi_adapter_route,
                 "route_advantage": route_advantage,
                 "route_advantage_delta": round(routed_score - best_single_score, 6),
+                "recommended_action": recommended_action,
                 "same_adapter_recombination_only": same_adapter_recombination_only,
             }
         )
@@ -156,6 +161,7 @@ def build_verified_tie_router_shadow_report(
             "route_advantage_case_count": route_advantage_case_count,
             "router_advantage_visible": route_advantage_case_count > 0,
             "staged_recombination_case_count": staged_recombination_case_count,
+            "drop_or_rework_case_count": drop_or_rework_case_count,
         },
         "entrants": [
             {

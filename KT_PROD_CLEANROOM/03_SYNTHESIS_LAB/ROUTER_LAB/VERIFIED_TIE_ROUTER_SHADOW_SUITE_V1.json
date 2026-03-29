@@ -2,8 +2,8 @@
   "claim_boundary": "This suite is lab-only and noncanonical. It targets live tie cases from the verified-entrant scorecard to measure staged router-shadow opportunity before any future counted rerun. It cannot unlock R5, R6, lobe authority, externality, comparative claims, or commercial activation.",
   "cases": [
     {
-      "case_id": "LAB_TIE_R01",
-      "notes": "Break the research-and-writing tie by separating evidence gathering from calibrated recommendation.",
+      "case_id": "LAB_TIE_R01A",
+      "notes": "Repeat the research-and-writing split with evidence gathering followed by calibrated recommendation.",
       "single_case_baseline": {
         "preferred_genotype": {
           "prompt_transform_style": "clarify_first",
@@ -66,8 +66,136 @@
       ]
     },
     {
+      "case_id": "LAB_TIE_R01B",
+      "notes": "Repeat the route win with an evidence memo followed by a calibrated final call.",
+      "single_case_baseline": {
+        "preferred_genotype": {
+          "prompt_transform_style": "clarify_first",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "required_terms": [
+          "evidence",
+          "tradeoffs",
+          "calibrated"
+        ],
+        "task_text": "Gather the evidence, outline the tradeoffs, and produce a calibrated final call.",
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "evidence_first",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "required_terms": [
+            "evidence",
+            "tradeoffs"
+          ],
+          "stage_id": "memo",
+          "task_text": "Gather the evidence and outline the tradeoffs.",
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "uncertainty_policy": 1.5
+          }
+        },
+        {
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "required_terms": [
+            "calibrated",
+            "decision"
+          ],
+          "stage_id": "call",
+          "task_text": "Produce a calibrated final call and defend it.",
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_TIE_R01C",
+      "notes": "Repeat the route win with a research summary followed by a recommendation brief.",
+      "single_case_baseline": {
+        "preferred_genotype": {
+          "prompt_transform_style": "clarify_first",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "required_terms": [
+          "research",
+          "summarize",
+          "recommendation"
+        ],
+        "task_text": "Research the issue, summarize the tradeoffs, and produce a calibrated recommendation brief.",
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "evidence_first",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "required_terms": [
+            "research",
+            "tradeoffs"
+          ],
+          "stage_id": "research",
+          "task_text": "Research the issue and summarize the tradeoffs.",
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "uncertainty_policy": 1.5
+          }
+        },
+        {
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "required_terms": [
+            "recommendation",
+            "choice"
+          ],
+          "stage_id": "brief",
+          "task_text": "Write a calibrated recommendation brief and defend the choice.",
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          }
+        }
+      ]
+    },
+    {
       "case_id": "LAB_TIE_R02",
-      "notes": "Break the tool-use tie by separating tool execution from concise result summarization.",
+      "notes": "Attempt to break the tool-use tie by separating tool execution from concise result summarization; drop or rework if it stays same-adapter only.",
       "single_case_baseline": {
         "preferred_genotype": {
           "guardrail_strength": "permissive",

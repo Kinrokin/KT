@@ -146,7 +146,9 @@ def test_verified_tie_router_shadow_finds_staged_advantage(tmp_path: Path) -> No
     assert report["status"] == "PASS"
     assert report["summary"]["router_advantage_visible"] is True
     assert report["summary"]["staged_recombination_case_count"] == 0
+    assert report["summary"]["drop_or_rework_case_count"] == 0
     assert row["route_advantage"] is True
+    assert row["recommended_action"] == "KEEP_AND_EXPAND"
     assert row["same_adapter_recombination_only"] is False
     assert row["routed_adapter_ids"] == ["lobe.research.specialist.v1", "lobe.writer.specialist.v1"]
 
