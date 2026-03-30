@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
@@ -68,7 +69,24 @@ def _detect_schema_emitters(root: Path) -> List[str]:
     for path in tools_root.rglob("*.py"):
         if path.name == "__init__.py" or "__pycache__" in path.parts:
             continue
-        if RECONSIDERATION_INPUT_SCHEMA_ID in path.read_text(encoding="utf-8"):
+        text = path.read_text(encoding="utf-8")
+        tree = ast.parse(text, filename=path.as_posix())
+        emits_schema = False
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Dict):
+                continue
+            for key, value in zip(node.keys, node.values):
+                if not isinstance(key, ast.Constant) or key.value != "schema_id":
+                    continue
+                if isinstance(value, ast.Name) and value.id == "RECONSIDERATION_INPUT_SCHEMA_ID":
+                    emits_schema = True
+                    break
+                if isinstance(value, ast.Constant) and value.value == RECONSIDERATION_INPUT_SCHEMA_ID:
+                    emits_schema = True
+                    break
+            if emits_schema:
+                break
+        if emits_schema:
             emitters.append(path.relative_to(root).as_posix())
     return sorted(set(emitters))
 
@@ -110,6 +128,54 @@ def load_validated_router_readiness_reconsideration_input(
     if str(receipt.get("status", "")).strip() != "PASS":
         raise RuntimeError("FAIL_CLOSED: router readiness reconsideration input did not pass sanctioned consumer validation")
     return packet
+
+
+def build_router_readiness_reconsideration_single_path_enforcement_receipt(*, root: Path) -> Dict[str, Any]:
+    detected_emitters = _detect_schema_emitters(root)
+    detected_schema_touchers = _detect_schema_touchers(root)
+
+    checks = [
+        {
+            "check_id": "single_sanctioned_emitter_uniqueness_holds_in_repo_tools",
+            "pass": detected_emitters == [SANCTIONED_EMITTER_ENTRYPOINT],
+        },
+        {
+            "check_id": "single_sanctioned_consumer_validator_is_expected_path",
+            "pass": SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT
+            == "KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py",
+        },
+        {
+            "check_id": "schema_touch_allowlist_holds_in_repo_tools",
+            "pass": detected_schema_touchers == SANCTIONED_SCHEMA_TOUCHERS,
+        },
+        {
+            "check_id": "no_extra_tool_side_reader_or_wrapper_exists",
+            "pass": detected_schema_touchers == SANCTIONED_SCHEMA_TOUCHERS,
+        },
+    ]
+    status = "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL"
+    return {
+        "schema_id": "kt.router_readiness_reconsideration_input_single_path_enforcement_receipt.v1",
+        "generated_utc": utc_now_iso_z(),
+        "mode": "LAB_ONLY_NONCANONICAL",
+        "status": status,
+        "sanctioned_paths": {
+            "emitter": SANCTIONED_EMITTER_ENTRYPOINT,
+            "consumer_validator": SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT,
+        },
+        "detected_schema_emitters": detected_emitters,
+        "detected_schema_touchers": detected_schema_touchers,
+        "checks": checks,
+        "claim_boundary": (
+            "This receipt enforces only the single sanctioned emitter/consumer path for "
+            "kt.router_readiness_reconsideration_input.v1 inside tool-side code. It does not reopen the counted lane, "
+            "does not count as R5 evidence, and cannot unlock R6."
+        ),
+        "breach_rule": (
+            "Any future tool-side touch of kt.router_readiness_reconsideration_input.v1 outside the sanctioned emitter/consumer pair "
+            "must be treated as a contract breach."
+        ),
+    }
 
 
 def build_router_readiness_reconsideration_input_validation_receipt(
@@ -248,10 +314,11 @@ def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Validate a lab-only router-readiness reconsideration input against its sanctioned emitter/consumer contract."
     )
-    parser.add_argument("--input", required=True)
+    parser.add_argument("--input")
     parser.add_argument("--gate-packet")
     parser.add_argument("--candidate-refresh-packet")
     parser.add_argument("--output", required=True)
+    parser.add_argument("--emit-single-path-enforcement-receipt", action="store_true")
     return parser
 
 
@@ -260,6 +327,21 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     args = parser.parse_args(argv)
 
     root = repo_root()
+    if args.emit_single_path_enforcement_receipt:
+        receipt = build_router_readiness_reconsideration_single_path_enforcement_receipt(root=root)
+        output_path = _resolve(root, str(args.output))
+        write_json_stable(output_path, receipt)
+        summary = {
+            "status": receipt["status"],
+            "detected_schema_emitter_count": len(receipt["detected_schema_emitters"]),
+            "detected_schema_toucher_count": len(receipt["detected_schema_touchers"]),
+        }
+        print(json.dumps(summary, sort_keys=True))
+        return 0 if receipt["status"] == "PASS" else 1
+
+    if not str(args.input or "").strip():
+        raise RuntimeError("FAIL_CLOSED: --input is required unless --emit-single-path-enforcement-receipt is set")
+
     packet_ref = str(args.input)
     packet = _load_json_dict(_resolve(root, packet_ref), name="router_readiness_reconsideration_input")
     gate_ref = str(args.gate_packet or _source_ref(packet, "gate_packet_ref"))
