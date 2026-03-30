@@ -48,6 +48,7 @@ def test_verified_tie_router_shadow_finds_staged_advantage(tmp_path: Path) -> No
         "cases": [
             {
                 "case_id": "TIE_R01",
+                "pattern_family": "TIE_R01",
                 "notes": "One entrant should win the evidence stage and the other the recommendation stage.",
                 "single_case_baseline": {
                     "task_text": "Research the evidence, summarize the tradeoffs, and write a calibrated recommendation.",
@@ -147,7 +148,11 @@ def test_verified_tie_router_shadow_finds_staged_advantage(tmp_path: Path) -> No
     assert report["summary"]["router_advantage_visible"] is True
     assert report["summary"]["staged_recombination_case_count"] == 0
     assert report["summary"]["drop_or_rework_case_count"] == 0
+    assert report["summary"]["family_case_counts"] == {"TIE_R01": 1}
+    assert report["summary"]["family_route_advantage_counts"] == {"TIE_R01": 1}
+    assert report["summary"]["drop_or_rework_case_ids"] == []
     assert row["route_advantage"] is True
+    assert row["pattern_family"] == "TIE_R01"
     assert row["recommended_action"] == "KEEP_AND_EXPAND"
     assert row["same_adapter_recombination_only"] is False
     assert row["routed_adapter_ids"] == ["lobe.research.specialist.v1", "lobe.writer.specialist.v1"]
@@ -159,6 +164,7 @@ def test_verified_tie_router_shadow_cli_writes_report(tmp_path: Path) -> None:
         "cases": [
             {
                 "case_id": "TIE_R02",
+                "pattern_family": "TIE_R02",
                 "single_case_baseline": {
                     "task_text": "Use the tool and summarize the result.",
                     "required_terms": ["tool", "summarize"],
@@ -220,3 +226,4 @@ def test_verified_tie_router_shadow_cli_writes_report(tmp_path: Path) -> None:
     payload = json.loads(out_path.read_text(encoding="utf-8"))
     assert payload["status"] == "PASS"
     assert payload["summary"]["case_count"] == 1
+    assert payload["summary"]["family_case_counts"] == {"TIE_R02": 1}

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from collections import Counter
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
@@ -96,12 +97,16 @@ def build_verified_tie_router_shadow_report(
     route_advantage_case_count = 0
     staged_recombination_case_count = 0
     drop_or_rework_case_count = 0
+    family_case_counts: Counter[str] = Counter()
+    family_route_advantage_counts: Counter[str] = Counter()
+    drop_or_rework_case_ids: List[str] = []
     for case in cases:
         if not isinstance(case, dict):
             continue
         case_id = str(case.get("case_id", "")).strip()
         if not case_id:
             raise RuntimeError("FAIL_CLOSED: tie router shadow case missing case_id")
+        pattern_family = str(case.get("pattern_family", "")).strip() or case_id
         baseline_case = case.get("single_case_baseline")
         if not isinstance(baseline_case, dict):
             raise RuntimeError(f"FAIL_CLOSED: {case_id} missing single_case_baseline")
@@ -122,15 +127,20 @@ def build_verified_tie_router_shadow_report(
         same_adapter_recombination_only = routed_score > best_single_score and not multi_adapter_route
         if route_advantage:
             route_advantage_case_count += 1
+            family_route_advantage_counts[pattern_family] += 1
         if same_adapter_recombination_only:
             staged_recombination_case_count += 1
             drop_or_rework_case_count += 1
+            drop_or_rework_case_ids.append(case_id)
+
+        family_case_counts[pattern_family] += 1
 
         recommended_action = "KEEP_AND_EXPAND" if route_advantage else ("DROP_OR_REWORK" if same_adapter_recombination_only else "HOLD")
 
         case_rows.append(
             {
                 "case_id": case_id,
+                "pattern_family": pattern_family,
                 "notes": str(case.get("notes", "")).strip(),
                 "best_single_baseline": best_single,
                 "routed_stage_picks": stage_rows,
@@ -162,6 +172,9 @@ def build_verified_tie_router_shadow_report(
             "router_advantage_visible": route_advantage_case_count > 0,
             "staged_recombination_case_count": staged_recombination_case_count,
             "drop_or_rework_case_count": drop_or_rework_case_count,
+            "family_case_counts": dict(sorted(family_case_counts.items())),
+            "family_route_advantage_counts": dict(sorted(family_route_advantage_counts.items())),
+            "drop_or_rework_case_ids": drop_or_rework_case_ids,
         },
         "entrants": [
             {
