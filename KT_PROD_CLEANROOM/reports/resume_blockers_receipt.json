@@ -1,20 +1,21 @@
 {
   "schema_id": "kt.resume_blockers_receipt.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-30T19:37:08Z",
-  "workstream_id": "LAB_READINESS_CEILING_FROZEN",
+  "generated_utc": "2026-03-30T20:49:55Z",
+  "workstream_id": "LAB_READINESS_RECONSIDERATION_GATE_FROZEN",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "43e234aa77f0d406aa56a8d85c97f8cde08b8653",
+  "current_git_head": "bd800e9ab56e3f6a1eba19f7cbf20fe23fbcf5b0",
   "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
   "repo_state_executable_now": false,
-  "blocking_state": "LAB_READINESS_CEILING_FROZEN__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
+  "blocking_state": "LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
   "blocking_reasons": [
     "The second same-head counted rerun of B04.R5 passed honestly on head e232a7762ea03a3eea391c6a4da6486b892eabdd and held the static router baseline because superiority was still not earned.",
     "The current lab readiness ceiling is frozen on head 43e234aa77f0d406aa56a8d85c97f8cde08b8653 as lab-only preservation signal and explicitly keeps the counted lane closed.",
-    "R6 remains blocked because router superiority has still not been re-earned on the counted lane and the current lab ceiling is not a reopening trigger.",
+    "The current lab reconsideration gate on head bd800e9ab56e3f6a1eba19f7cbf20fe23fbcf5b0 held because the candidate refresh reused the same lab head and introduced no new terminal adapter beyond the ceiling.",
+    "R6 remains blocked because router superiority has still not been re-earned on the counted lane, the current lab ceiling is not a reopening trigger, and no later router-readiness reconsideration input may be prepared unless a future gate packet earns material_change_earned = true.",
     "Lobe promotion, externality widening, external comparative claims, and commercial activation remain blocked by order."
   ],
   "nonblocking_conflicts": [
@@ -73,19 +74,19 @@
       "resolution_rule": "Use the authoritative same-head rerun receipt family as current R5 authority and do not overread the tracked carrier across heads."
     },
     {
-      "conflict_id": "LAB_READINESS_CEILING_IS_NONCANONICAL_PRESERVATION_ONLY",
+      "conflict_id": "LAB_READINESS_CEILING_AND_GATE_ARE_NONCANONICAL_PRECHECKS_ONLY",
       "class": "LAB_ONLY_NONCANONICAL_NOT_COUNTED_AUTHORITY",
       "evidence": [
-        "The later refresh packet at d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_refresh4/later_lab_readiness_refresh_packet.json and the ceiling packet at d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_refresh4/lab_readiness_ceiling_packet.json are lab-only and cannot stand in for counted same-head authority.",
-        "Their role is limited to preserving the current lab ceiling and they do not reopen the counted lane."
+        "The later refresh packet, the ceiling packet, and the reconsideration gate packet under d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_refresh4/ are lab-only and cannot stand in for counted same-head authority.",
+        "Their role is limited to preserving the current lab ceiling and enforcing a material-change precheck before any later router-readiness reconsideration input."
       ],
-      "resolution_rule": "Use the later refresh and ceiling packets only as lab-only preservation signal. Use a future counted same-head rerun receipt family as the only authority for any later superiority claim."
+      "resolution_rule": "Use the later refresh, ceiling, and reconsideration gate packets only as lab-only preservation signal and precheck. Use a future counted same-head rerun receipt family as the only authority for any later superiority claim."
     }
   ],
   "current_lawful_gate_standing": {
-    "inter_gate_state": "GATE_D_LAB_READINESS_CEILING_FROZEN__COUNTED_LANE_CLOSED",
+    "inter_gate_state": "GATE_D_LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED",
     "gate_c": "EXITED",
-    "gate_d": "LAB_READINESS_CEILING_FROZEN__COUNTED_LANE_CLOSED__R6_BLOCKED"
+    "gate_d": "LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED__R6_BLOCKED"
   },
   "exact_next_counted_workstream_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
   "explicit_non_go_areas": [
@@ -96,5 +97,5 @@
     "Do not treat tracked carrier receipts as current-head authority.",
     "Do not bypass the ordered Gate D ratification sequence."
   ],
-  "why_not_executable_now": "The second same-head counted rerun of B04.R5 has already completed and did not earn router superiority, and the current lab readiness ceiling is frozen as preservation posture only. R6 remains non-executable, and any future counted reopening requires a later lawful router-readiness reconsideration input plus another same-head R5 rerun."
+  "why_not_executable_now": "The second same-head counted rerun of B04.R5 has already completed and did not earn router superiority, the current lab readiness ceiling is frozen as preservation posture only, and the current lab reconsideration gate held because the candidate refresh reused the same lab head with no new terminal adapter beyond the ceiling. R6 remains non-executable, and any future counted reopening requires a later lawful router-readiness reconsideration input that has already passed this gate plus another same-head R5 rerun."
 }

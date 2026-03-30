@@ -1,8 +1,8 @@
 {
   "schema_id": "kt.current_campaign_state_overlay.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-30T19:37:08Z",
-  "workstream_id": "LAB_READINESS_CEILING_FROZEN",
+  "generated_utc": "2026-03-30T20:49:55Z",
+  "workstream_id": "LAB_READINESS_RECONSIDERATION_GATE_FROZEN",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "authority_stack": {
     "execution_order_authority": {
@@ -33,7 +33,8 @@
       "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_refresh4/topology_breadth_code_packet.json",
       "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_refresh4/topology_breadth_math_packet.json",
       "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_refresh4/later_lab_readiness_refresh_packet.json",
-      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_refresh4/lab_readiness_ceiling_packet.json"
+      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_refresh4/lab_readiness_ceiling_packet.json",
+      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_refresh4/lab_readiness_reconsideration_gate_packet.json"
     ],
     "documentary_surfaces": [
       "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
@@ -58,7 +59,7 @@
   "repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "43e234aa77f0d406aa56a8d85c97f8cde08b8653",
+    "current_git_head": "bd800e9ab56e3f6a1eba19f7cbf20fe23fbcf5b0",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "omega_batch_status": {
@@ -76,7 +77,7 @@
     ]
   },
   "current_lawful_gate_standing": {
-    "inter_gate_state": "GATE_D_LAB_READINESS_CEILING_FROZEN__COUNTED_LANE_CLOSED",
+    "inter_gate_state": "GATE_D_LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED",
     "current_counted_gate": "Gate D",
     "current_counted_batch": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SECOND_SAME_HEAD_RERUN",
     "completed_tranches": [
@@ -121,7 +122,7 @@
       "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SECOND_SAME_HEAD_RERUN"
     ],
     "gate_c_status": "EXITED_ON_SEALED_HEAD_71268f2f7489aadec338d5e71bb5b70f8a7fe9dc",
-    "gate_d_status": "LAB_READINESS_CEILING_FROZEN__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
+    "gate_d_status": "LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
     "authoritative_basis": [
       "Gate C exit remains authoritative only on sealed head 71268f2f7489aadec338d5e71bb5b70f8a7fe9dc.",
       "Gate D postures remain D1 bounded, D2 controlled counted-domain expansion, D3 adapter evolution authorized, D4 no external comparative claims, and D5 lab-only.",
@@ -135,16 +136,17 @@
       "The second same-head counted R5 rerun on head e232a7762ea03a3eea391c6a4da6486b892eabdd also passed honestly and still held the static baseline because router superiority was not earned.",
       "The later lab readiness refresh on head cf1e631f2892d591ed3fb6e71c024c59a383509c confirmed both code-terminal and math-terminal paths survive broader reruns without collapsing back into code-specialist dominance.",
       "The current lab readiness ceiling on head 43e234aa77f0d406aa56a8d85c97f8cde08b8653 is frozen as lab-only signal with counted_lane_recommendation = KEEP_COUNTED_LANE_CLOSED.",
+      "The current lab reconsideration gate packet on head bd800e9ab56e3f6a1eba19f7cbf20fe23fbcf5b0 holds because the candidate refresh reused the same lab head and introduced no new terminal adapter beyond the frozen ceiling.",
       "R6 remains next in order only and blocked in law until router superiority is actually earned on a future counted same-head rerun."
     ]
   },
   "state_reconciliation": {
-    "latest_sealed_receipts_current_state": "Gate C is exited. Gate D remains bounded and ordered. The B04 launch surface is intact, R1 ratified crucible and pressure law, R2 ratified adapter lifecycle law, R3 ratified the bounded selection arena, R4 ratified explainable router shadow evaluation, and the original R5 plus both counted same-head R5 reruns held the static baseline honestly because router superiority was not earned. The later lab readiness refresh and the current lab readiness ceiling are preserved as noncanonical lab signal only. Learned-router cutover, lobe authority, externality, comparative claims, and commercial scope remain blocked.",
+    "latest_sealed_receipts_current_state": "Gate C is exited. Gate D remains bounded and ordered. The B04 launch surface is intact, R1 ratified crucible and pressure law, R2 ratified adapter lifecycle law, R3 ratified the bounded selection arena, R4 ratified explainable router shadow evaluation, and the original R5 plus both counted same-head R5 reruns held the static baseline honestly because router superiority was not earned. The later lab readiness refresh, the current lab readiness ceiling, and the current lab reconsideration gate are preserved as noncanonical lab signal only. Learned-router cutover, lobe authority, externality, comparative claims, and commercial scope remain blocked.",
     "documentary_surface_state_on_main": "Tracked gate_c_exit_adjudication_receipt.json, gate_d_decision_law_receipt.json, gate_d_decision_receipt.json, b04_civilization_activation_launch_receipt.json, R1-R5 tracked Gate D receipts, and later tracked Gate D receipts remain non-authoritative carriers on main whenever subject_head differs from the requested head.",
-    "reanchor_decision": "The second same-head counted rerun of B04.R5 completed honestly and did not earn router superiority. The later lab readiness refresh ceiling is now frozen on head 43e234aa77f0d406aa56a8d85c97f8cde08b8653 as lab-only signal with counted_lane_recommendation = KEEP_COUNTED_LANE_CLOSED. R6 remains next in order only and blocked in law. No higher-scope widening is authorized, and any future counted reopening requires a later lawful router-readiness reconsideration input plus another same-head R5 rerun."
+    "reanchor_decision": "The second same-head counted rerun of B04.R5 completed honestly and did not earn router superiority. The later lab readiness refresh ceiling remains frozen as lab-only signal, and the current lab reconsideration gate now makes explicit that no later router-readiness reconsideration input may be prepared unless a future gate packet earns material_change_earned = true. R6 remains next in order only and blocked in law. No higher-scope widening is authorized, and any future counted reopening still requires a later lawful router-readiness reconsideration input plus another same-head R5 rerun."
   },
   "next_counted_workstream_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
-  "next_counted_workstream_scope": "B04.R6 is next in order only and remains blocked in law because the second same-head rerun of B04.R5 did not earn router superiority. The current lab readiness ceiling is frozen as preservation posture only and does not reopen counting. Any future counted reopening requires a later lawful router-readiness reconsideration input plus another same-head R5 rerun after materially stronger lab evidence.",
+  "next_counted_workstream_scope": "B04.R6 is next in order only and remains blocked in law because the second same-head rerun of B04.R5 did not earn router superiority. The current lab readiness ceiling and reconsideration gate are frozen as preservation posture only and do not reopen counting. No later router-readiness reconsideration input may be prepared unless a future gate packet earns material_change_earned = true, and any future counted reopening still requires that later lawful input plus another same-head R5 rerun after materially stronger lab evidence.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "explicit_non_go_areas": [
     "Do not widen externality beyond E1.",
@@ -152,9 +154,10 @@
     "Do not activate commercial deployment.",
     "Do not treat the second same-head B04.R5 rerun as learned-router authorization or lobe ratification.",
     "Do not treat LAB_READINESS_CEILING_FROZEN as counted readiness or a reopening trigger.",
+    "Do not prepare a later router-readiness reconsideration input unless a future gate packet earns material_change_earned = true.",
     "Do not let tracked carrier receipts stand in for current-head authority.",
     "Do not bypass the ordered Gate D ratification sequence."
   ],
   "repo_state_executable_now": false,
-  "executable_now_why": "No counted work is executable now. The second same-head rerun of B04.R5 completed on head e232a7762ea03a3eea391c6a4da6486b892eabdd and did not earn router superiority, and the current lab readiness ceiling is frozen on head 43e234aa77f0d406aa56a8d85c97f8cde08b8653 as lab-only preservation signal. R6 remains blocked, and any future counted reopening requires a later lawful router-readiness reconsideration input plus another same-head R5 rerun."
+  "executable_now_why": "No counted work is executable now. The second same-head rerun of B04.R5 completed on head e232a7762ea03a3eea391c6a4da6486b892eabdd and did not earn router superiority, the current lab readiness ceiling is frozen as lab-only preservation signal, and the current lab reconsideration gate on head bd800e9ab56e3f6a1eba19f7cbf20fe23fbcf5b0 held because the candidate refresh reused the same lab head and introduced no new terminal adapter beyond the ceiling. R6 remains blocked, and any future counted reopening requires a later lawful router-readiness reconsideration input that has already passed this gate plus another same-head R5 rerun."
 }

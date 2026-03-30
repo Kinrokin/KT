@@ -1,14 +1,14 @@
 {
   "schema_id": "kt.gate_d.decision_reanchor_packet.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-30T19:37:08Z",
-  "workstream_id": "LAB_READINESS_CEILING_FROZEN",
+  "generated_utc": "2026-03-30T20:49:55Z",
+  "workstream_id": "LAB_READINESS_RECONSIDERATION_GATE_FROZEN",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "reanchor_head": "ee752460e34ad2411adc3d228704f20c421f33be",
   "current_repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "43e234aa77f0d406aa56a8d85c97f8cde08b8653",
+    "current_git_head": "bd800e9ab56e3f6a1eba19f7cbf20fe23fbcf5b0",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "authoritative_gate_c_exit": {
@@ -43,7 +43,7 @@
     "router_status": "STATIC_CANONICAL_BASELINE_ONLY",
     "gate_d_decision_selected": true,
     "gate_d_activation_authorized": true,
-    "note": "Gate D remains bounded after the original R5 proof and both same-head counted R5 reruns held the static baseline honestly because router superiority was not earned. The later lab readiness refresh and the current lab readiness ceiling are preserved as lab-only signal only. Learned-router cutover, lobes, externality, comparative, and commercial widening remain separately gated and still blocked."
+    "note": "Gate D remains bounded after the original R5 proof and both same-head counted R5 reruns held the static baseline honestly because router superiority was not earned. The later lab readiness refresh, the current lab readiness ceiling, and the current lab reconsideration gate are preserved as lab-only signal and precheck only. Learned-router cutover, lobes, externality, comparative, and commercial widening remain separately gated and still blocked."
   },
   "explicit_not_authorized": [
     "frontier claim",
@@ -74,7 +74,7 @@
   },
   "gate_d_decision_scope": {
     "omega_next_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
-    "decision_mode": "LAB_READINESS_CEILING_FROZEN__COUNTED_LANE_CLOSED__R6_BLOCKED_PENDING_EARNED_SUPERIORITY",
+    "decision_mode": "LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED__R6_BLOCKED_PENDING_EARNED_SUPERIORITY",
     "activation_launch_contract_ref": "KT_PROD_CLEANROOM/governance/b04_civilization_activation_launch_contract.json",
     "r1_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_law_contract.json",
     "r1_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_terminal_state.json",
@@ -112,17 +112,19 @@
       "The second same-head counted R5 rerun on head e232a7762ea03a3eea391c6a4da6486b892eabdd also passed honestly and still held the static baseline because superiority was not earned.",
       "The later lab readiness refresh on head cf1e631f2892d591ed3fb6e71c024c59a383509c confirmed both code-terminal and math-terminal paths survive broader reruns without collapsing back into code-specialist dominance.",
       "The current lab readiness ceiling on head 43e234aa77f0d406aa56a8d85c97f8cde08b8653 freezes that result as lab-only preservation signal with counted_lane_recommendation = KEEP_COUNTED_LANE_CLOSED.",
+      "The current lab reconsideration gate on head bd800e9ab56e3f6a1eba19f7cbf20fe23fbcf5b0 held because the candidate refresh reused the same lab head and introduced no new terminal adapter beyond the frozen ceiling, so no later reconsideration input may be prepared yet.",
       "R6 remains next in order only and higher scope remains blocked until a counted same-head rerun actually earns superiority."
     ],
     "forbidden_prejudgments": [
       "Treating the second R5 rerun result as learned-router authorization or lobe ratification",
       "Treating broader lab improvement work as counted canonical advancement",
       "Treating LAB_READINESS_CEILING_FROZEN as counted readiness or a reopening trigger",
+      "Preparing a later router-readiness reconsideration input without a future gate packet earning material_change_earned = true",
       "Treating tracked carrier receipts as Gate D authority",
       "Treating any lab readiness packet as counted proof"
     ],
     "no_count_before_decision": false
   },
-  "next_lawful_move": "HOLD_LAB_READINESS_CEILING__COUNTED_LANE_CLOSED__R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF",
-  "claim_boundary": "This packet now freezes the selected Gate D posture set, the B04 launch surface, the R1-R5 ratification results, the honest static holds on both counted same-head R5 reruns, and the current lab readiness ceiling as lab-only preservation signal. It does not ratify counted reopening, learned-router cutover, lobes, externality, comparative claims, or commercial scope."
+  "next_lawful_move": "HOLD_LAB_READINESS_CEILING_AND_RECONSIDERATION_GATE__COUNTED_LANE_CLOSED__R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF",
+  "claim_boundary": "This packet now freezes the selected Gate D posture set, the B04 launch surface, the R1-R5 ratification results, the honest static holds on both counted same-head R5 reruns, the current lab readiness ceiling as lab-only preservation signal, and the current lab reconsideration gate as a required precheck for any later router-readiness reconsideration input. It does not ratify counted reopening, learned-router cutover, lobes, externality, comparative claims, or commercial scope."
 }
