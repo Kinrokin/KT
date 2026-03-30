@@ -1,8 +1,8 @@
 {
   "schema_id": "kt.current_campaign_state_overlay.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T23:29:22Z",
-  "workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
+  "generated_utc": "2026-03-30T03:18:00Z",
+  "workstream_id": "B04_R5_SAME_HEAD_RERUN_LAUNCH_SURFACE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "authority_stack": {
     "execution_order_authority": {
@@ -27,6 +27,9 @@
       "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b04_r4_authoritative_receipt_20260328_173639.json",
       "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b04_r5_authoritative_receipt_20260328_2310.json"
     ],
+    "lab_readiness_basis": [
+      "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_fresh2/r5_rerun_readiness_packet.json"
+    ],
     "documentary_surfaces": [
       "KT_PROD_CLEANROOM/reports/final_current_head_adjudication_receipt.json",
       "KT_PROD_CLEANROOM/reports/gate_c_exit_adjudication_receipt.json",
@@ -50,7 +53,7 @@
   "repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "26a58027b04ffc15e3cd44c6d54c708140fbf4dd",
+    "current_git_head": "211653abf1d9c1703e3ea1716ac1d6411fb2446e",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "omega_batch_status": {
@@ -68,9 +71,9 @@
     ]
   },
   "current_lawful_gate_standing": {
-    "inter_gate_state": "GATE_D_R5_ROUTER_PROOF_RATIFIED_STATIC_HOLD",
+    "inter_gate_state": "GATE_D_R5_SAME_HEAD_RERUN_LAUNCH_BOUND",
     "current_counted_gate": "Gate D",
-    "current_counted_batch": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
+    "current_counted_batch": "B04_R5_SAME_HEAD_RERUN_LAUNCH_SURFACE",
     "completed_tranches": [
       "B03_T1_FROZEN_COMPARATOR_CONSTITUTION",
       "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT",
@@ -106,10 +109,11 @@
       "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION",
       "B04_R3_TOURNAMENT_PROMOTION_MERGE_LAW_RATIFICATION",
       "B04_R4_ROUTER_SHADOW_EVALUATION_RATIFICATION",
-      "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF"
+      "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
+      "B04_R5_SAME_HEAD_RERUN_LAUNCH_SURFACE"
     ],
     "gate_c_status": "EXITED_ON_SEALED_HEAD_71268f2f7489aadec338d5e71bb5b70f8a7fe9dc",
-    "gate_d_status": "ROUTER_PROOF_RATIFIED_STATIC_HOLD__R6_BLOCKED_PENDING_EARNED_SUPERIORITY",
+    "gate_d_status": "COUNTED_R5_RERUN_LAUNCH_BOUND__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
     "authoritative_basis": [
       "Gate C exit remains authoritative only on sealed head 71268f2f7489aadec338d5e71bb5b70f8a7fe9dc.",
       "Gate D postures remain D1 bounded, D2 controlled counted-domain expansion, D3 adapter evolution authorized, D4 no external comparative claims, and D5 lab-only.",
@@ -118,16 +122,18 @@
       "B04.R2 ratified adapter lifecycle states, registry rows, lineage consumption, and promotion-eligibility consumption without widening into later Gate D domains.",
       "B04.R3 ratified the bounded selection arena: finite tournament classes, explicit promotion and demotion rules, rollback-bound merge law, and a future-gated router candidate pool.",
       "B04.R4 ratified explainable, replayable router shadow evaluation against the audited static router baseline while keeping learned-router cutover and lobe promotion blocked.",
-      "B04.R5 ratified the same-head router-versus-best-adapter proof surface and held the static baseline honestly because router superiority was not earned on the sealed head."
+      "B04.R5 ratified the same-head router-versus-best-adapter proof surface and held the static baseline honestly because router superiority was not earned on the sealed head.",
+      "A lab-only readiness packet on head 211653abf1d9c1703e3ea1716ac1d6411fb2446e now justifies reopening a counted same-head R5 proof attempt, but it does not itself count as proof or earn superiority.",
+      "A separate counted launch surface is now bound so the next counted move is a same-head rerun of B04.R5 under the existing proof law only."
     ]
   },
   "state_reconciliation": {
-    "latest_sealed_receipts_current_state": "Gate C is exited. Gate D remains bounded and ordered. The B04 launch surface is intact, R1 ratified crucible and pressure law, R2 ratified adapter lifecycle law, R3 ratified the bounded selection arena, R4 ratified explainable router shadow evaluation, and R5 ratified the same-head router-versus-best-adapter proof surface with an honest static hold. Learned-router cutover, lobe authority, externality, comparative claims, and commercial scope remain blocked.",
+    "latest_sealed_receipts_current_state": "Gate C is exited. Gate D remains bounded and ordered. The B04 launch surface is intact, R1 ratified crucible and pressure law, R2 ratified adapter lifecycle law, R3 ratified the bounded selection arena, R4 ratified explainable router shadow evaluation, and R5 ratified the same-head router-versus-best-adapter proof surface with an honest static hold. A separate counted launch surface is now bound for a same-head R5 rerun only. Learned-router cutover, lobe authority, externality, comparative claims, and commercial scope remain blocked.",
     "documentary_surface_state_on_main": "Tracked gate_c_exit_adjudication_receipt.json, gate_d_decision_law_receipt.json, gate_d_decision_receipt.json, b04_civilization_activation_launch_receipt.json, R1-R5 tracked Gate D receipts, and later tracked Gate D receipts remain non-authoritative carriers on main whenever subject_head differs from the requested head.",
-    "reanchor_decision": "R6 remains blocked until same-head router superiority is earned. Continue only governed noncanonical preparation across crucibles, adapters, tournaments, merge, and router-shadow improvement without widening canonical authority."
+    "reanchor_decision": "The next counted move is now a same-head rerun of B04.R5 under the existing proof law. R6 remains blocked until that counted rerun actually earns router superiority. No higher-scope widening is authorized from the launch surface itself."
   },
-  "next_counted_workstream_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
-  "next_counted_workstream_scope": "R6 is the next counted step in order, but it is not executable now. Learned-router authorization remains blocked until a future same-head router-versus-best-adapter proof actually earns router superiority under the no-regression and fallback-preservation rules.",
+  "next_counted_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SAME_HEAD_RERUN",
+  "next_counted_workstream_scope": "A separate counted launch surface now authorizes only a same-head rerun of B04.R5 under the existing ordered proof law. This rerun may state either an earned superiority result or an honest static hold, but it may not authorize R6, learned-router cutover, lobes, externality widening, comparative claims, or commercial activation by itself.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "explicit_non_go_areas": [
     "Do not widen externality beyond E1.",
@@ -137,6 +143,6 @@
     "Do not let tracked carrier receipts stand in for current-head authority.",
     "Do not bypass the ordered Gate D ratification sequence."
   ],
-  "repo_state_executable_now": false,
-  "executable_now_why": "No counted Gate D step is executable now because B04.R5 did not earn router superiority. Only governed noncanonical preparation inside crucibles, adapters, tournaments, merge, and router-shadow improvement remains open."
+  "repo_state_executable_now": true,
+  "executable_now_why": "A separate counted launch surface is now bound, so a same-head rerun of B04.R5 is executable on the post-launch head under the existing proof law. R6 and all higher-scope widening remain blocked until the rerun result is actually earned."
 }

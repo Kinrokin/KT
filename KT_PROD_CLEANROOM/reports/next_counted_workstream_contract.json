@@ -1,14 +1,14 @@
 {
   "schema_id": "kt.next_counted_workstream_contract.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T23:29:22Z",
-  "source_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
+  "generated_utc": "2026-03-30T03:18:00Z",
+  "source_workstream_id": "B04_R5_SAME_HEAD_RERUN_LAUNCH_SURFACE",
   "current_counted_gate": "Gate D",
   "parent_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
-  "exact_next_counted_workstream_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
+  "exact_next_counted_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SAME_HEAD_RERUN",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
-  "execution_mode": "CIVILIZATION_RATIFICATION_ORDER_LOCKED__SIXTH_STEP_BLOCKED_PENDING_EARNED_R5_SUPERIORITY",
-  "workstream_objective": "No counted R6 work is executable until a future same-head router-versus-best-adapter proof actually earns router superiority. Until then, only governed noncanonical preparation may continue across crucibles, adapters, tournaments, merge, and router-shadow improvement without cutover, lobe promotion, externality, comparative, or commercial widening.",
+  "execution_mode": "SAME_HEAD_R5_RERUN_ONLY_UNDER_EXISTING_PROOF_LAW",
+  "workstream_objective": "Execute only a same-head rerun of B04.R5 under the existing ordered proof law and declare the rerun result honestly. This workstream does not authorize R6, learned-router cutover, lobe promotion, externality widening, comparative claims, or commercial activation.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "canonical_receipt_binding": {
     "gate_c_exit_authoritative_receipt_path": "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_20260328_1029/gate_c_exit_adjudication_authoritative_receipt.json",
@@ -26,11 +26,13 @@
     "b04_r4_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r4_router_shadow_terminal_state.json",
     "b04_r5_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_proof_contract.json",
     "b04_r5_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_terminal_state.json",
+    "b04_r5_same_head_rerun_launch_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r5_same_head_rerun_launch_contract.json",
+    "b04_r5_same_head_rerun_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r5_same_head_rerun_terminal_state.json",
     "omega_b04_definition_ref": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/kt_omega_v10_delivery/KT_OMEGA_V10_E2E_WORK_ORDER.json"
   },
   "gate_domain_product_split": {
-    "gate": "Gate D sixth ordered ratification step remains blocked",
-    "domain_surface": "Gate D may discuss learned-router authorization only after router superiority is actually earned on a future same-head R5 proof chain.",
+    "gate": "Gate D counted lane is reopened only for an R5 rerun attempt",
+    "domain_surface": "Gate D may rerun the same-head router-versus-best-adapter proof only. Learned-router authorization remains blocked until superiority is actually earned on that rerun.",
     "product_surface": "NONE_COUNTING"
   },
   "selected_postures": {
@@ -46,6 +48,7 @@
     "router_vs_best_adapter_receipt": "KT_PROD_CLEANROOM/reports/router_vs_best_adapter_proof_ratification_receipt.json",
     "router_ordered_proof_receipt": "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json",
     "gate_d_reanchor_packet": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
+    "lab_readiness_packet": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_fresh2/r5_rerun_readiness_packet.json",
     "v11_closure_map": "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.json"
   },
   "allowed_noncanonical_parallelism": [
@@ -53,31 +56,43 @@
     "adapter, merge, and tournament improvement that remains inside Gate D lab scope",
     "router shadow refinement that remains replayable, explainable, and cutover-blocked"
   ],
-  "expected_mutate_paths": [],
+  "expected_mutate_paths": [
+    "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json",
+    "KT_PROD_CLEANROOM/reports/router_vs_best_adapter_proof_ratification_receipt.json"
+  ],
   "expected_create_if_absent_targets": [],
-  "expected_receipts": [],
+  "expected_receipts": [
+    "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json",
+    "KT_PROD_CLEANROOM/reports/router_vs_best_adapter_proof_ratification_receipt.json"
+  ],
   "validators_and_tests": {
-    "validators": [],
-    "tests": []
+    "validators": [
+      "KT_PROD_CLEANROOM/tools/operator/router_ordered_proof_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/router_vs_best_adapter_proof_ratification_validate.py"
+    ],
+    "tests": [
+      "KT_PROD_CLEANROOM/tests/operator/test_router_ordered_proof_validate.py",
+      "KT_PROD_CLEANROOM/tests/operator/test_b04_r5_router_vs_best_adapter_proof_ratification_validate.py"
+    ]
   },
   "stop_conditions": [
-    "Any attempt to execute B04_R6_LEARNED_ROUTER_AUTHORIZATION while router superiority remains unearned.",
-    "Any claim that the R5 static hold authorizes learned-router cutover or lobe promotion.",
-    "Any externality widening above E1, external comparative claim, or commercial activation is folded into this blocked state.",
-    "Any broader lab improvement work is narrated as counted canonical advancement."
+    "Any attempt to execute B04_R6_LEARNED_ROUTER_AUTHORIZATION from this rerun surface.",
+    "Any claim that readiness-for-rerun or rerun authorization itself earns router superiority.",
+    "Any externality widening above E1, external comparative claim, or commercial activation is folded into this rerun surface.",
+    "Any broader lab improvement work is narrated as counted rerun success."
   ],
   "pass_fail_criteria": {
     "pass": [
-      "R6 remains blocked until same-head router superiority is actually earned.",
-      "The static canonical router hold remains stated honestly with no learned-router cutover or lobe promotion.",
-      "Only governed noncanonical preparation remains open while externality, comparative, and commercial widening stay blocked."
+      "Only a same-head rerun of B04.R5 is authorized.",
+      "R6 remains blocked until same-head router superiority is actually earned on that rerun.",
+      "The launch surface does not paraphrase lab readiness as earned superiority and keeps all higher-scope widening blocked."
     ],
     "fail": [
-      "R6 is treated as executable without earned router superiority proof.",
-      "The post-R5 hold is narrated as learned-router authority or lobe readiness.",
+      "R6 is treated as executable without the rerun earning router superiority.",
+      "The rerun authorization is narrated as learned-router authority or lobe readiness.",
       "Broader lab work is counted as canonical Gate D advancement."
     ]
   },
-  "repo_state_executable_now": false,
-  "execution_readiness": "SIXTH_ORDERED_RATIFICATION_STEP_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY"
+  "repo_state_executable_now": true,
+  "execution_readiness": "COUNTED_R5_SAME_HEAD_RERUN_AUTHORIZED_BY_SEPARATE_LAUNCH_SURFACE"
 }

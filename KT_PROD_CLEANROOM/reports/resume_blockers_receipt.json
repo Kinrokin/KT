@@ -1,20 +1,20 @@
 {
   "schema_id": "kt.resume_blockers_receipt.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-28T23:29:22Z",
-  "workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
+  "generated_utc": "2026-03-30T03:18:00Z",
+  "workstream_id": "B04_R5_SAME_HEAD_RERUN_LAUNCH_SURFACE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "26a58027b04ffc15e3cd44c6d54c708140fbf4dd",
+  "current_git_head": "211653abf1d9c1703e3ea1716ac1d6411fb2446e",
   "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
-  "repo_state_executable_now": false,
-  "blocking_state": "B04_R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY__ONLY_GOVERNED_NONCANONICAL_PREPARATION_OPEN",
+  "repo_state_executable_now": true,
+  "blocking_state": "COUNTED_R5_SAME_HEAD_RERUN_AUTHORIZED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
   "blocking_reasons": [
-    "B04.R5 proved the router-versus-best-adapter surface on the current head but did not earn router superiority, so learned-router authorization remains blocked.",
-    "Lobe promotion, externality widening, external comparative claims, and commercial activation remain blocked by order.",
-    "Only governed noncanonical preparation across crucibles, adapters, tournaments, merge, and router-shadow refinement remains open."
+    "A separate counted launch surface now authorizes only a same-head rerun of B04.R5 under the existing proof law.",
+    "R6 remains blocked because router superiority has not yet been re-earned on the counted lane.",
+    "Lobe promotion, externality widening, external comparative claims, and commercial activation remain blocked by order."
   ],
   "nonblocking_conflicts": [
     {
@@ -70,21 +70,30 @@
         "The tracked router_vs_best_adapter_proof_ratification_receipt.json on main was emitted on pre-receipt head e57271456c685cc30b6000d54878e5ad8a86185f and must remain carrier-only."
       ],
       "resolution_rule": "Use the clean-clone authoritative receipt as R5 authority and do not overread the tracked carrier across heads."
+    },
+    {
+      "conflict_id": "LAB_READINESS_PACKET_IS_NONCANONICAL_JUSTIFICATION_ONLY",
+      "class": "LAB_ONLY_NONCANONICAL_NOT_COUNTED_AUTHORITY",
+      "evidence": [
+        "The readiness packet at d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_fresh2/r5_rerun_readiness_packet.json is lab-only and cannot stand in for counted same-head authority.",
+        "Its role is limited to justifying a separate counted R5 rerun launch surface."
+      ],
+      "resolution_rule": "Use the readiness packet only to justify reopening the counted R5 attempt. Use the counted same-head rerun receipt family as the only authority for any later superiority claim."
     }
   ],
   "current_lawful_gate_standing": {
-    "inter_gate_state": "GATE_D_R5_ROUTER_PROOF_RATIFIED_STATIC_HOLD",
+    "inter_gate_state": "GATE_D_R5_SAME_HEAD_RERUN_LAUNCH_BOUND",
     "gate_c": "EXITED",
-    "gate_d": "ROUTER_PROOF_RATIFIED_STATIC_HOLD__R6_BLOCKED"
+    "gate_d": "COUNTED_R5_RERUN_AUTHORIZED__R6_BLOCKED"
   },
-  "exact_next_counted_workstream_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
+  "exact_next_counted_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SAME_HEAD_RERUN",
   "explicit_non_go_areas": [
     "Do not widen externality beyond E1.",
     "Do not open external comparative claims.",
     "Do not activate commercial deployment.",
-    "Do not treat B04.R5 as learned-router authorization or lobe ratification.",
+    "Do not treat B04.R5 rerun authorization as learned-router authorization or lobe ratification.",
     "Do not treat tracked carrier receipts as current-head authority.",
     "Do not bypass the ordered Gate D ratification sequence."
   ],
-  "why_not_executable_now": "B04.R6 is not executable because router superiority was not earned on the same-head R5 proof. Continue only governed noncanonical preparation until a future R5 retry actually earns superiority."
+  "why_not_executable_now": "Not applicable to the counted lane reopening: a same-head rerun of B04.R5 is now authorized by a separate launch surface. R6 remains non-executable until that counted rerun actually earns router superiority."
 }
