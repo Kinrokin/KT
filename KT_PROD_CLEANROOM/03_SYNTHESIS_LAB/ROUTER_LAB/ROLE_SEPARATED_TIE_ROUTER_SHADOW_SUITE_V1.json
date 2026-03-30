@@ -1,0 +1,315 @@
+{
+  "schema_id": "kt.role_separated_tie_router_shadow_suite.v1",
+  "mode": "LAB_ONLY_NONCANONICAL",
+  "claim_boundary": "This suite is lab-only and noncanonical. It forces cleaner specialist handoffs over the reduced live cohort to test whether the existing math-to-code route pattern can broaden without changing the counted lane. It cannot unlock R5, R6, lobe authority, externality, comparative claims, or commercial activation.",
+  "cases": [
+    {
+      "case_id": "LAB_ROLESEP_R01A",
+      "pattern_family": "LAB_ROLESEP_R01",
+      "notes": "Force math evidence review first, then hand off to code for the calibrated recommendation memo.",
+      "single_case_baseline": {
+        "task_text": "Review the evidence, summarize the tradeoffs, and produce a calibrated recommendation memo.",
+        "required_terms": ["evidence", "tradeoffs", "recommendation"],
+        "preferred_genotype": {
+          "prompt_transform_style": "clarify_first",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "review",
+          "task_text": "Review the evidence and summarize the tradeoffs.",
+          "required_terms": ["evidence", "tradeoffs"],
+          "preferred_genotype": {
+            "prompt_transform_style": "structured_outline",
+            "reasoning_directive": "evidence_first",
+            "scoring_bias": "precision",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.math.specialist.v1"]
+        },
+        {
+          "stage_id": "memo",
+          "task_text": "Write the calibrated recommendation memo and defend the decision.",
+          "required_terms": ["recommendation", "decision"],
+          "preferred_genotype": {
+            "prompt_transform_style": "compress",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.code.specialist.v1"],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_ROLESEP_R01B",
+      "pattern_family": "LAB_ROLESEP_R01",
+      "notes": "Force a math-first incident matrix before the code specialist makes the rollout call.",
+      "single_case_baseline": {
+        "task_text": "Build the incident matrix, surface the tradeoffs, and write a calibrated rollout call.",
+        "required_terms": ["incident", "tradeoffs", "rollout"],
+        "preferred_genotype": {
+          "prompt_transform_style": "clarify_first",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "matrix",
+          "task_text": "Build the incident matrix and surface the tradeoffs.",
+          "required_terms": ["incident", "tradeoffs"],
+          "preferred_genotype": {
+            "prompt_transform_style": "structured_outline",
+            "reasoning_directive": "evidence_first",
+            "scoring_bias": "precision",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.math.specialist.v1"]
+        },
+        {
+          "stage_id": "rollout_call",
+          "task_text": "Write the calibrated rollout call and defend it.",
+          "required_terms": ["rollout", "decision"],
+          "preferred_genotype": {
+            "prompt_transform_style": "compress",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.code.specialist.v1"],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_ROLESEP_R01C",
+      "pattern_family": "LAB_ROLESEP_R01",
+      "notes": "Force a math-first option review before a compressed code-side recommendation brief.",
+      "single_case_baseline": {
+        "task_text": "Review the option matrix, compare the tradeoffs, and produce a calibrated recommendation brief.",
+        "required_terms": ["option", "tradeoffs", "recommendation"],
+        "preferred_genotype": {
+          "prompt_transform_style": "clarify_first",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "option_review",
+          "task_text": "Review the option matrix and compare the tradeoffs.",
+          "required_terms": ["option", "tradeoffs"],
+          "preferred_genotype": {
+            "prompt_transform_style": "structured_outline",
+            "reasoning_directive": "evidence_first",
+            "scoring_bias": "precision",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.math.specialist.v1"]
+        },
+        {
+          "stage_id": "brief",
+          "task_text": "Produce the calibrated recommendation brief and defend the choice.",
+          "required_terms": ["recommendation", "choice"],
+          "preferred_genotype": {
+            "prompt_transform_style": "compress",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.code.specialist.v1"],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_ROLESEP_R02A",
+      "pattern_family": "LAB_ROLESEP_R02",
+      "notes": "Force the math specialist to capture tool context before the code specialist compresses the handoff summary.",
+      "single_case_baseline": {
+        "task_text": "Use the tool, preserve the context, and produce a concise handoff summary.",
+        "required_terms": ["tool", "context", "summary"],
+        "preferred_genotype": {
+          "guardrail_strength": "permissive",
+          "prompt_transform_style": "expand_context",
+          "reasoning_directive": "minimal_chain",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "weights": {
+          "guardrail_strength": 1.0,
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "tool_capture",
+          "task_text": "Use the tool, capture the result, and preserve the context for handoff.",
+          "required_terms": ["tool", "result", "context"],
+          "preferred_genotype": {
+            "guardrail_strength": "permissive",
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "minimal_chain",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "guardrail_strength": 1.0,
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.math.specialist.v1"]
+        },
+        {
+          "stage_id": "summary_handoff",
+          "task_text": "Write the compressed handoff summary and make the next-step triage explicit.",
+          "required_terms": ["summary", "triage"],
+          "preferred_genotype": {
+            "prompt_transform_style": "compress",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.code.specialist.v1"],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_ROLESEP_R02B",
+      "pattern_family": "LAB_ROLESEP_R02",
+      "notes": "Force the math specialist to preserve tool evidence before a code-side compressed escalation note.",
+      "single_case_baseline": {
+        "task_text": "Preserve the tool evidence and deliver a concise escalation note with a summary.",
+        "required_terms": ["tool", "evidence", "summary"],
+        "preferred_genotype": {
+          "guardrail_strength": "permissive",
+          "prompt_transform_style": "expand_context",
+          "reasoning_directive": "minimal_chain",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "weights": {
+          "guardrail_strength": 1.0,
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "evidence_capture",
+          "task_text": "Preserve the tool evidence and keep the context intact for handoff.",
+          "required_terms": ["tool", "evidence", "context"],
+          "preferred_genotype": {
+            "guardrail_strength": "permissive",
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "minimal_chain",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "guardrail_strength": 1.0,
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.math.specialist.v1"]
+        },
+        {
+          "stage_id": "escalation_note",
+          "task_text": "Write the compressed escalation note and concise summary for the next responder.",
+          "required_terms": ["summary", "escalation"],
+          "preferred_genotype": {
+            "prompt_transform_style": "compress",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.code.specialist.v1"],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    }
+  ]
+}
