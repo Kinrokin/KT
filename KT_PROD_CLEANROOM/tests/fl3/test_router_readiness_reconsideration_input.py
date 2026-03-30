@@ -6,6 +6,8 @@ from pathlib import Path
 import pytest
 
 from tools.router.run_router_readiness_reconsideration_input import (  # noqa: E402
+    SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT,
+    SANCTIONED_EMITTER_ENTRYPOINT,
     build_router_readiness_reconsideration_input,
     main,
 )
@@ -74,6 +76,12 @@ def test_reconsideration_input_builds_when_gate_is_clean() -> None:
     assert packet["counted_lane_recommendation"] == "KEEP_COUNTED_LANE_CLOSED_UNTIL_SEPARATE_LAWFUL_DECISION_SURFACE"
     assert packet["gate_requirements_satisfied"]["material_change_earned"] is True
     assert packet["gate_requirements_satisfied"]["semantic_bypass_risk"] is False
+    assert packet["producer_identity"]["prepared_by_entrypoint"] == SANCTIONED_EMITTER_ENTRYPOINT
+    assert packet["single_sanctioned_path_contract"]["sanctioned_emitter_entrypoint"] == SANCTIONED_EMITTER_ENTRYPOINT
+    assert (
+        packet["single_sanctioned_path_contract"]["sanctioned_consumer_validator_entrypoint"]
+        == SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT
+    )
 
 
 def test_reconsideration_input_cli_writes_packet(tmp_path: Path) -> None:

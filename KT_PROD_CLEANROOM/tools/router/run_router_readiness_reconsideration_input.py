@@ -7,9 +7,18 @@ from typing import Any, Dict, Optional, Sequence
 from tools.operator.titanium_common import repo_root, utc_now_iso_z, write_json_stable
 from tools.router.run_verified_entrant_lab_scorecard import _load_json_dict, _resolve
 
+RECONSIDERATION_INPUT_SCHEMA_ID = "kt.router_readiness_reconsideration_input.v1"
+LAB_RECONSIDERATION_GATE_PACKET_SCHEMA_ID = "kt.lab_readiness_reconsideration_gate_packet.v1"
+LATER_LAB_READINESS_REFRESH_SCHEMA_ID = "kt.later_lab_readiness_refresh_packet.v1"
+SINGLE_SANCTIONED_PATH_CONTRACT_SCHEMA_ID = "kt.router_readiness_reconsideration_input.single_sanctioned_path_contract.v1"
+SANCTIONED_EMITTER_ENTRYPOINT = "KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py"
+SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT = (
+    "KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py"
+)
+
 
 def _validate_gate_packet(packet: Dict[str, Any]) -> None:
-    if str(packet.get("schema_id", "")).strip() != "kt.lab_readiness_reconsideration_gate_packet.v1":
+    if str(packet.get("schema_id", "")).strip() != LAB_RECONSIDERATION_GATE_PACKET_SCHEMA_ID:
         raise RuntimeError("FAIL_CLOSED: lab readiness reconsideration gate packet schema mismatch")
     if str(packet.get("mode", "")).strip() != "LAB_ONLY_NONCANONICAL":
         raise RuntimeError("FAIL_CLOSED: lab readiness reconsideration gate packet mode mismatch")
@@ -18,7 +27,7 @@ def _validate_gate_packet(packet: Dict[str, Any]) -> None:
 
 
 def _validate_refresh_packet(packet: Dict[str, Any]) -> None:
-    if str(packet.get("schema_id", "")).strip() != "kt.later_lab_readiness_refresh_packet.v1":
+    if str(packet.get("schema_id", "")).strip() != LATER_LAB_READINESS_REFRESH_SCHEMA_ID:
         raise RuntimeError("FAIL_CLOSED: later lab readiness refresh packet schema mismatch")
     if str(packet.get("mode", "")).strip() != "LAB_ONLY_NONCANONICAL":
         raise RuntimeError("FAIL_CLOSED: later lab readiness refresh packet mode mismatch")
@@ -61,7 +70,7 @@ def build_router_readiness_reconsideration_input(
         raise RuntimeError("FAIL_CLOSED: semantic bypass risk must be false before reconsideration input may be prepared")
 
     return {
-        "schema_id": "kt.router_readiness_reconsideration_input.v1",
+        "schema_id": RECONSIDERATION_INPUT_SCHEMA_ID,
         "generated_utc": utc_now_iso_z(),
         "mode": "LAB_ONLY_NONCANONICAL",
         "status": "PASS",
@@ -70,6 +79,22 @@ def build_router_readiness_reconsideration_input(
             "does not earn router superiority, and cannot unlock R6. Its only role is to serve as a bounded input to a later "
             "lawful router-readiness reconsideration decision surface after the gate has already earned material_change_earned = true."
         ),
+        "producer_identity": {
+            "prepared_by_entrypoint": SANCTIONED_EMITTER_ENTRYPOINT,
+            "prepared_from_module": "tools.router.run_router_readiness_reconsideration_input",
+            "schema_emitted": RECONSIDERATION_INPUT_SCHEMA_ID,
+        },
+        "single_sanctioned_path_contract": {
+            "schema_id": SINGLE_SANCTIONED_PATH_CONTRACT_SCHEMA_ID,
+            "sanctioned_emitter_entrypoint": SANCTIONED_EMITTER_ENTRYPOINT,
+            "sanctioned_consumer_validator_entrypoint": SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT,
+            "required_gate_packet_schema_id": LAB_RECONSIDERATION_GATE_PACKET_SCHEMA_ID,
+            "required_candidate_refresh_packet_schema_id": LATER_LAB_READINESS_REFRESH_SCHEMA_ID,
+            "consumer_contract_rule": (
+                "Any consumer must reject this packet unless it came through the sanctioned emitter path and is validated "
+                "through the sanctioned operator validator named in this contract."
+            ),
+        },
         "gate_requirements_satisfied": {
             "material_change_earned": True,
             "semantic_bypass_risk": False,
