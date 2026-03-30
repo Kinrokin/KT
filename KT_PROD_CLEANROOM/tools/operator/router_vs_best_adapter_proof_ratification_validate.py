@@ -24,6 +24,8 @@ DEFAULT_RESUME_BLOCKERS_REL = "KT_PROD_CLEANROOM/reports/resume_blockers_receipt
 DEFAULT_REANCHOR_PACKET_REL = "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json"
 DEFAULT_RERUN_LAUNCH_CONTRACT_REL = "KT_PROD_CLEANROOM/governance/b04_r5_same_head_rerun_launch_contract.json"
 DEFAULT_RERUN_LAUNCH_TERMINAL_STATE_REL = "KT_PROD_CLEANROOM/governance/b04_r5_same_head_rerun_terminal_state.json"
+DEFAULT_SECOND_RERUN_LAUNCH_CONTRACT_REL = "KT_PROD_CLEANROOM/governance/b04_r5_second_same_head_rerun_launch_contract.json"
+DEFAULT_SECOND_RERUN_LAUNCH_TERMINAL_STATE_REL = "KT_PROD_CLEANROOM/governance/b04_r5_second_same_head_rerun_terminal_state.json"
 DEFAULT_SHADOW_MATRIX_REL = "KT_PROD_CLEANROOM/reports/router_shadow_eval_matrix.json"
 DEFAULT_HEALTH_REL = "KT_PROD_CLEANROOM/reports/route_distribution_health.json"
 DEFAULT_SCORECARD_REL = "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json"
@@ -32,11 +34,14 @@ DEFAULT_RECEIPT_REL = "KT_PROD_CLEANROOM/reports/router_vs_best_adapter_proof_ra
 
 EXPECTED_CURRENT_STEP_ID = "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF"
 EXPECTED_RERUN_STEP_ID = "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SAME_HEAD_RERUN"
+EXPECTED_SECOND_RERUN_STEP_ID = "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SECOND_SAME_HEAD_RERUN"
 EXPECTED_EARNED_NEXT_STEP_ID = "B04_R6_LEARNED_ROUTER_AUTHORIZATION"
 EXPECTED_HOLD_NEXT_STEP_ID = "HOLD_B04_R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF"
 EXPECTED_ORIGINAL_EXECUTION_MODE = "CIVILIZATION_RATIFICATION_ORDER_LOCKED__FIFTH_STEP_ONLY"
 EXPECTED_RERUN_EXECUTION_MODE = "SAME_HEAD_R5_RERUN_ONLY_UNDER_EXISTING_PROOF_LAW"
 EXPECTED_POST_RERUN_HOLD_EXECUTION_MODE = "R6_NEXT_IN_ORDER_BLOCKED_PENDING_EARNED_SUPERIORITY__FUTURE_R5_RERUN_REQUIRES_NEW_LAB_JUSTIFICATION"
+EXPECTED_SECOND_RERUN_EXECUTION_MODE = "SECOND_R5_RERUN_AUTHORIZED_ONLY__R6_STILL_BLOCKED_UNTIL_EARNED_SUPERIORITY"
+EXPECTED_SECOND_POST_RERUN_HOLD_EXECUTION_MODE = "R6_NEXT_IN_ORDER_BLOCKED_PENDING_EARNED_SUPERIORITY__FUTURE_SECOND_R5_RERUN_REQUIRES_NEW_LAB_JUSTIFICATION"
 
 
 def _resolve(root: Path, raw: str) -> Path:
@@ -96,6 +101,13 @@ def _r5_execution_context(
         and resume_step == EXPECTED_RERUN_STEP_ID
         and reanchor_step == EXPECTED_RERUN_STEP_ID
     )
+    second_rerun_path = (
+        next_step == EXPECTED_SECOND_RERUN_STEP_ID
+        and execution_mode == EXPECTED_SECOND_RERUN_EXECUTION_MODE
+        and overlay_step == EXPECTED_SECOND_RERUN_STEP_ID
+        and resume_step == EXPECTED_SECOND_RERUN_STEP_ID
+        and reanchor_step == EXPECTED_SECOND_RERUN_STEP_ID
+    )
     post_rerun_hold_path = (
         source_step == EXPECTED_RERUN_STEP_ID
         and next_step == EXPECTED_EARNED_NEXT_STEP_ID
@@ -110,12 +122,30 @@ def _r5_execution_context(
         and bool(next_contract.get("repo_state_executable_now")) is False
         and bool(resume.get("repo_state_executable_now")) is False
     )
+    second_post_rerun_hold_path = (
+        source_step == EXPECTED_SECOND_RERUN_STEP_ID
+        and next_step == EXPECTED_EARNED_NEXT_STEP_ID
+        and execution_mode == EXPECTED_SECOND_POST_RERUN_HOLD_EXECUTION_MODE
+        and overlay_step == EXPECTED_EARNED_NEXT_STEP_ID
+        and overlay_batch == EXPECTED_SECOND_RERUN_STEP_ID
+        and overlay_workstream == EXPECTED_SECOND_RERUN_STEP_ID
+        and resume_step == EXPECTED_EARNED_NEXT_STEP_ID
+        and resume_workstream == EXPECTED_SECOND_RERUN_STEP_ID
+        and reanchor_step == EXPECTED_HOLD_NEXT_STEP_ID
+        and reanchor_workstream == EXPECTED_SECOND_RERUN_STEP_ID
+        and bool(next_contract.get("repo_state_executable_now")) is False
+        and bool(resume.get("repo_state_executable_now")) is False
+    )
     if bool(next_contract.get("repo_state_executable_now")) is True and original_path:
         return EXPECTED_CURRENT_STEP_ID
     if bool(next_contract.get("repo_state_executable_now")) is True and rerun_path:
         return EXPECTED_RERUN_STEP_ID
+    if bool(next_contract.get("repo_state_executable_now")) is True and second_rerun_path:
+        return EXPECTED_SECOND_RERUN_STEP_ID
     if post_rerun_hold_path:
         return EXPECTED_RERUN_STEP_ID
+    if second_post_rerun_hold_path:
+        return EXPECTED_SECOND_RERUN_STEP_ID
     return None
 
 
@@ -157,6 +187,8 @@ def build_router_vs_best_adapter_proof_ratification_receipt(
     reanchor = load_json(root / DEFAULT_REANCHOR_PACKET_REL)
     rerun_launch_contract = load_json(root / DEFAULT_RERUN_LAUNCH_CONTRACT_REL)
     rerun_launch_terminal = load_json(root / DEFAULT_RERUN_LAUNCH_TERMINAL_STATE_REL)
+    second_rerun_launch_contract = load_json(root / DEFAULT_SECOND_RERUN_LAUNCH_CONTRACT_REL)
+    second_rerun_launch_terminal = load_json(root / DEFAULT_SECOND_RERUN_LAUNCH_TERMINAL_STATE_REL)
 
     current_state_authority = [
         str(item).strip()
@@ -170,6 +202,7 @@ def build_router_vs_best_adapter_proof_ratification_receipt(
         reanchor=reanchor,
     )
     rerun_context_active = execution_context == EXPECTED_RERUN_STEP_ID
+    second_rerun_context_active = execution_context == EXPECTED_SECOND_RERUN_STEP_ID
     superiority_earned = bool(scorecard.get("superiority_earned"))
     honest_hold = (
         superiority_earned is False
@@ -208,6 +241,35 @@ def build_router_vs_best_adapter_proof_ratification_receipt(
                     or (
                         rerun_launch_terminal.get("router_superiority_earned") is True
                         and str(rerun_launch_terminal.get("next_lawful_move", "")).strip() == EXPECTED_EARNED_NEXT_STEP_ID
+                    )
+                )
+            )
+        )
+    )
+    second_rerun_launch_surface_honest = (
+        str(second_rerun_launch_contract.get("workstream_id", "")).strip() == "B04_R5_SECOND_SAME_HEAD_RERUN_LAUNCH_SURFACE"
+        and str(second_rerun_launch_contract.get("launch_mode", "")).strip()
+        == "COUNTED_SECOND_R5_RERUN_AUTHORIZATION_ONLY_NO_R6_OR_HIGHER_WIDENING"
+        and second_rerun_launch_terminal.get("counted_r5_second_rerun_authorized") is True
+        and second_rerun_launch_terminal.get("learned_router_authorized") is False
+        and second_rerun_launch_terminal.get("lobe_ratified") is False
+        and (
+            (
+                second_rerun_launch_terminal.get("counted_r5_second_rerun_executed") is False
+                and str(second_rerun_launch_terminal.get("current_state", "")).strip() == "B04_R5_SECOND_SAME_HEAD_RERUN_AUTHORIZED_NOT_YET_EXECUTED"
+                and str(second_rerun_launch_terminal.get("next_lawful_move", "")).strip() == EXPECTED_SECOND_RERUN_STEP_ID
+            )
+            or (
+                second_rerun_launch_terminal.get("counted_r5_second_rerun_executed") is True
+                and (
+                    (
+                        second_rerun_launch_terminal.get("router_superiority_earned") is False
+                        and str(second_rerun_launch_terminal.get("current_state", "")).strip() == "B04_R5_SECOND_SAME_HEAD_RERUN_EXECUTED_STATIC_HOLD"
+                        and str(second_rerun_launch_terminal.get("next_lawful_move", "")).strip() == EXPECTED_HOLD_NEXT_STEP_ID
+                    )
+                    or (
+                        second_rerun_launch_terminal.get("router_superiority_earned") is True
+                        and str(second_rerun_launch_terminal.get("next_lawful_move", "")).strip() == EXPECTED_EARNED_NEXT_STEP_ID
                     )
                 )
             )
@@ -279,8 +341,11 @@ def build_router_vs_best_adapter_proof_ratification_receipt(
         },
         {
             "check_id": "rerun_launch_surface_is_bound_authorization_only_when_rerun_context_is_active",
-            "pass": (not rerun_context_active)
-            or rerun_launch_surface_honest,
+            "pass": (
+                (not rerun_context_active and not second_rerun_context_active)
+                or (rerun_context_active and rerun_launch_surface_honest)
+                or (second_rerun_context_active and second_rerun_launch_surface_honest)
+            ),
         },
         {
             "check_id": "scope_remains_bounded_after_r5",
