@@ -1,14 +1,14 @@
 {
   "schema_id": "kt.gate_d.decision_reanchor_packet.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-30T15:07:18Z",
-  "workstream_id": "B04_R5_SECOND_SAME_HEAD_RERUN_LAUNCH_SURFACE",
+  "generated_utc": "2026-03-30T16:07:01Z",
+  "workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SECOND_SAME_HEAD_RERUN",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "reanchor_head": "ee752460e34ad2411adc3d228704f20c421f33be",
   "current_repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "d416d0952d8c3be83fdec5539f5f535683b1847b",
+    "current_git_head": "e232a7762ea03a3eea391c6a4da6486b892eabdd",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "authoritative_gate_c_exit": {
@@ -43,7 +43,7 @@
     "router_status": "STATIC_CANONICAL_BASELINE_ONLY",
     "gate_d_decision_selected": true,
     "gate_d_activation_authorized": true,
-    "note": "Gate D remains bounded after the original R5 proof and the first same-head counted R5 rerun both held the static baseline honestly because router superiority was not earned. A refreshed lab-only readiness basis now justifies authorizing one more same-head counted R5 rerun only. Learned-router cutover, lobes, externality, comparative, and commercial widening remain separately gated and still blocked."
+    "note": "Gate D remains bounded after the original R5 proof and both same-head counted R5 reruns held the static baseline honestly because router superiority was not earned. Learned-router cutover, lobes, externality, comparative, and commercial widening remain separately gated and still blocked."
   },
   "explicit_not_authorized": [
     "frontier claim",
@@ -74,7 +74,7 @@
   },
   "gate_d_decision_scope": {
     "omega_next_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
-    "decision_mode": "SECOND_COUNTED_R5_RERUN_LAUNCH_BOUND__R6_BLOCKED_PENDING_EARNED_SUPERIORITY",
+    "decision_mode": "SECOND_COUNTED_R5_RERUN_COMPLETE_STATIC_HOLD__R6_BLOCKED_PENDING_EARNED_SUPERIORITY",
     "activation_launch_contract_ref": "KT_PROD_CLEANROOM/governance/b04_civilization_activation_launch_contract.json",
     "r1_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_law_contract.json",
     "r1_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_terminal_state.json",
@@ -97,7 +97,7 @@
       "B04_R4_ROUTER_SHADOW_EVALUATION_RATIFICATION",
       "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF"
     ],
-    "next_step_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SECOND_SAME_HEAD_RERUN",
+    "next_step_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
     "selected_scope_summary": [
       "D1 stays EXTERNALITY_BOUNDED until Gate E.",
       "D2 remains one controlled counted-domain expansion inside the single Gate D civilization lane only.",
@@ -109,18 +109,17 @@
       "R4 binds explainable, replayable shadow routing against the audited static router baseline while keeping canonical router authority unchanged and learned-router cutover blocked.",
       "R5 binds same-head router-versus-best-adapter proof and honestly records a static hold because router superiority was not yet earned.",
       "The first same-head counted R5 rerun on head 360b93eca6fc8183c6f3a20087d6a73f023b6b1d passed honestly and still held the static baseline because superiority was not earned.",
-      "The refreshed readiness packet on head d416d0952d8c3be83fdec5539f5f535683b1847b justifies only a second same-head counted R5 rerun launch surface.",
-      "The second same-head counted R5 rerun launch surface authorizes only that rerun under the existing proof law and does not open R6.",
+      "The second same-head counted R5 rerun on head e232a7762ea03a3eea391c6a4da6486b892eabdd also passed honestly and still held the static baseline because superiority was not earned.",
       "R6 remains next in order only and higher scope remains blocked until a counted same-head rerun actually earns superiority."
     ],
     "forbidden_prejudgments": [
-      "Treating the second R5 rerun launch surface as learned-router authorization or lobe ratification",
+      "Treating the second R5 rerun result as learned-router authorization or lobe ratification",
       "Treating broader lab improvement work as counted canonical advancement",
       "Treating tracked carrier receipts as Gate D authority",
-      "Treating the refreshed lab readiness packet as counted proof"
+      "Treating any lab readiness packet as counted proof"
     ],
     "no_count_before_decision": false
   },
-  "next_lawful_move": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SECOND_SAME_HEAD_RERUN",
-  "claim_boundary": "This packet now freezes the selected Gate D posture set, the B04 launch surface, the R1-R5 ratification results, the honest static hold on the first same-head counted R5 rerun, and the narrow authorization for one more same-head counted R5 rerun only. It does not ratify learned-router cutover, lobes, externality, comparative claims, or commercial scope."
+  "next_lawful_move": "HOLD_B04_R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF",
+  "claim_boundary": "This packet now freezes the selected Gate D posture set, the B04 launch surface, the R1-R5 ratification results, and the honest static holds on both counted same-head R5 reruns. It does not ratify learned-router cutover, lobes, externality, comparative claims, or commercial scope."
 }

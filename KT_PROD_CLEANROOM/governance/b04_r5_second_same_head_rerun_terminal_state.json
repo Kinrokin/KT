@@ -2,16 +2,16 @@
   "schema_id": "kt.governance.b04_r5_second_same_head_rerun_terminal_state.v1",
   "classification_tag": "COUNTING_CLOSURE",
   "terminal_state_id": "KT_B04_R5_SECOND_SAME_HEAD_RERUN_TERMINAL_STATE_V1",
-  "generated_utc": "2026-03-30T15:02:00Z",
-  "current_state": "B04_R5_SECOND_SAME_HEAD_RERUN_AUTHORIZED_NOT_YET_EXECUTED",
+  "generated_utc": "2026-03-30T16:07:01Z",
+  "current_state": "B04_R5_SECOND_SAME_HEAD_RERUN_EXECUTED_STATIC_HOLD",
   "counted_r5_second_rerun_authorized": true,
-  "counted_r5_second_rerun_executed": false,
+  "counted_r5_second_rerun_executed": true,
   "router_superiority_earned": false,
   "learned_router_authorized": false,
   "lobe_ratified": false,
   "externality_widening_allowed": false,
   "comparative_widening_allowed": false,
   "commercial_activation_allowed": false,
-  "next_lawful_move": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SECOND_SAME_HEAD_RERUN",
-  "terminal_rule": "This launch surface has now been bound for a second same-head counted rerun of B04.R5 only. No rerun result exists yet, router superiority is not earned by this authorization step, and R6 plus all higher-scope widening remain fail-closed until the rerun actually executes and earns superiority."
+  "next_lawful_move": "HOLD_B04_R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF",
+  "terminal_rule": "The second same-head counted rerun of B04.R5 has now executed honestly and returned a static hold. Router superiority is still not earned, the static baseline remains canonical, and R6 plus all higher-scope widening remain fail-closed until a future same-head rerun actually earns superiority."
 }

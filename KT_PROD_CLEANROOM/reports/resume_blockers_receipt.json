@@ -1,20 +1,20 @@
 {
   "schema_id": "kt.resume_blockers_receipt.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-30T15:07:18Z",
-  "workstream_id": "B04_R5_SECOND_SAME_HEAD_RERUN_LAUNCH_SURFACE",
+  "generated_utc": "2026-03-30T16:07:01Z",
+  "workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SECOND_SAME_HEAD_RERUN",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "d416d0952d8c3be83fdec5539f5f535683b1847b",
+  "current_git_head": "e232a7762ea03a3eea391c6a4da6486b892eabdd",
   "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
-  "repo_state_executable_now": true,
-  "blocking_state": "SECOND_COUNTED_R5_RERUN_LAUNCH_BOUND__ONLY_RERUN_EXECUTABLE__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
+  "repo_state_executable_now": false,
+  "blocking_state": "COUNTED_SECOND_R5_RERUN_COMPLETE_STATIC_HOLD__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
   "blocking_reasons": [
-    "The original B04.R5 proof and the first same-head counted rerun both held the static router baseline honestly because superiority was not earned.",
-    "The refreshed lab readiness packet justifies authorizing one more counted same-head rerun only; it does not itself earn superiority.",
-    "R6 remains blocked because router superiority has still not been re-earned on the counted lane."
+    "The second same-head counted rerun of B04.R5 passed honestly on head e232a7762ea03a3eea391c6a4da6486b892eabdd and held the static router baseline because superiority was still not earned.",
+    "R6 remains blocked because router superiority has still not been re-earned on the counted lane.",
+    "Lobe promotion, externality widening, external comparative claims, and commercial activation remain blocked by order."
   ],
   "nonblocking_conflicts": [
     {
@@ -67,34 +67,33 @@
       "class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
       "evidence": [
         "The authoritative B04.R5 proof is the clean-clone receipt on sealed head 26a58027b04ffc15e3cd44c6d54c708140fbf4dd.",
-        "The tracked router_vs_best_adapter_proof_ratification_receipt.json on main was emitted on pre-receipt head e57271456c685cc30b6000d54878e5ad8a86185f and must remain carrier-only."
+        "The tracked router_vs_best_adapter_proof_ratification_receipt.json on main is now a carrier for the second same-head rerun receipt emitted on pre-seal head e232a7762ea03a3eea391c6a4da6486b892eabdd and must remain carrier-only after sealing."
       ],
-      "resolution_rule": "Use the clean-clone authoritative receipt as R5 authority and do not overread the tracked carrier across heads."
+      "resolution_rule": "Use the authoritative same-head rerun receipt family as current R5 authority and do not overread the tracked carrier across heads."
     },
     {
       "conflict_id": "LAB_REFRESH_PACKET_IS_NONCANONICAL_JUSTIFICATION_ONLY",
       "class": "LAB_ONLY_NONCANONICAL_NOT_COUNTED_AUTHORITY",
       "evidence": [
         "The refreshed readiness packet at d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_refresh2/r5_rerun_readiness_refresh_packet.json is lab-only and cannot stand in for counted same-head authority.",
-        "Its role is limited to justifying this separate counted second R5 rerun launch surface."
+        "Its role was limited to justifying the second counted R5 rerun launch surface."
       ],
       "resolution_rule": "Use the refreshed readiness packet only to justify reopening the counted R5 attempt. Use the counted same-head rerun receipt family as the only authority for any later superiority claim."
     }
   ],
   "current_lawful_gate_standing": {
-    "inter_gate_state": "GATE_D_SECOND_COUNTED_R5_RERUN_LAUNCH_BOUND",
+    "inter_gate_state": "GATE_D_R5_SECOND_SAME_HEAD_RERUN_COMPLETE_STATIC_HOLD",
     "gate_c": "EXITED",
-    "gate_d": "SECOND_COUNTED_R5_RERUN_LAUNCH_BOUND__R6_BLOCKED"
+    "gate_d": "COUNTED_SECOND_R5_RERUN_COMPLETE_STATIC_HOLD__R6_BLOCKED"
   },
-  "exact_next_counted_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SECOND_SAME_HEAD_RERUN",
+  "exact_next_counted_workstream_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
   "explicit_non_go_areas": [
     "Do not widen externality beyond E1.",
     "Do not open external comparative claims.",
     "Do not activate commercial deployment.",
-    "Do not treat the second same-head R5 rerun launch surface as learned-router authorization or lobe ratification.",
+    "Do not treat the second B04.R5 rerun as learned-router authorization or lobe ratification.",
     "Do not treat tracked carrier receipts as current-head authority.",
     "Do not bypass the ordered Gate D ratification sequence."
   ],
-  "executable_now_why": "Only B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SECOND_SAME_HEAD_RERUN is executable now. R6 and all wider scope remain blocked until router superiority is actually earned on that rerun.",
-  "why_not_executable_now": "All counted work other than B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SECOND_SAME_HEAD_RERUN remains non-executable. R6 is still next in order only and blocked in law."
+  "why_not_executable_now": "The second same-head counted rerun of B04.R5 has already completed and did not earn router superiority. R6 remains non-executable, and any future counted reopening must be another same-head R5 rerun justified by new lab evidence."
 }
