@@ -7,7 +7,7 @@
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "518229f40244e0a08cae21eb7569fbd55272cf83",
+  "current_git_head": "6fd27d7a6e65443f157ea554256c7a9604f549a8",
   "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
   "repo_state_executable_now": false,
   "blocking_state": "LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
@@ -18,6 +18,7 @@
     "R6 remains blocked because router superiority has still not been re-earned on the counted lane, the current lab ceiling is not a reopening trigger, and no later router-readiness reconsideration input may be prepared unless a future gate packet earns material_change_earned = true.",
     "KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py is the only sanctioned path for preparing any later router-readiness reconsideration input, and alternate helper or wrapper paths are forbidden.",
     "KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py is the only sanctioned consumer path for kt.router_readiness_reconsideration_input.v1, and direct downstream parsing is forbidden.",
+    "The standing single-path enforcement receipt on head 6fd27d7a6e65443f157ea554256c7a9604f549a8 remains PASS with one sanctioned emitter and two sanctioned tool-side touchers, so any future tool-side touch outside that pair is a contract breach.",
     "Lobe promotion, externality widening, external comparative claims, and commercial activation remain blocked by order."
   ],
   "nonblocking_conflicts": [
@@ -82,7 +83,8 @@
         "The later refresh packet, the ceiling packet, and the reconsideration gate packet under d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_refresh4/ are lab-only and cannot stand in for counted same-head authority.",
         "Their role is limited to preserving the current lab ceiling and enforcing a material-change precheck before any later router-readiness reconsideration input.",
         "Any actual reconsideration-input emitter must still go through KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py as the sole sanctioned entrypoint.",
-        "Any downstream consumer must still go through KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py as the sole sanctioned validator/consumer path."
+        "Any downstream consumer must still go through KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py as the sole sanctioned validator/consumer path.",
+        "The standing single-path enforcement receipt under d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/router_reconsideration_contract_live/single_path_enforcement_receipt.json must remain PASS before any later reconsideration narrative can be treated as well-formed."
       ],
       "resolution_rule": "Use the later refresh, ceiling, and reconsideration gate packets only as lab-only preservation signal and precheck. Use a future counted same-head rerun receipt family as the only authority for any later superiority claim."
     }
@@ -101,5 +103,5 @@
     "Do not treat tracked carrier receipts as current-head authority.",
     "Do not bypass the ordered Gate D ratification sequence."
   ],
-  "why_not_executable_now": "The second same-head counted rerun of B04.R5 has already completed and did not earn router superiority, the current lab readiness ceiling is frozen as preservation posture only, and the current lab reconsideration gate held because the candidate refresh reused the same lab head with no new terminal adapter beyond the ceiling. R6 remains non-executable, and any future counted reopening requires a later lawful router-readiness reconsideration input that has already passed this gate, been prepared only through KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py, and been consumed only through KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py, plus another same-head R5 rerun."
+  "why_not_executable_now": "The second same-head counted rerun of B04.R5 has already completed and did not earn router superiority, the current lab readiness ceiling is frozen as preservation posture only, and the current lab reconsideration gate held because the candidate refresh reused the same lab head with no new terminal adapter beyond the ceiling. R6 remains non-executable, and any future counted reopening requires a later lawful router-readiness reconsideration input that has already passed this gate, been prepared only through KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py, been consumed only through KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py, and preserved the standing single-path enforcement receipt as PASS, plus another same-head R5 rerun."
 }
