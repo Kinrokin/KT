@@ -17,6 +17,14 @@ from tools.router.run_router_readiness_reconsideration_input import (
 from tools.router.run_verified_entrant_lab_scorecard import _load_json_dict, _resolve
 
 
+SANCTIONED_SCHEMA_TOUCHERS = sorted(
+    [
+    SANCTIONED_EMITTER_ENTRYPOINT,
+    SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT,
+    ]
+)
+
+
 def _validate_packet_schema(packet: Dict[str, Any]) -> None:
     if str(packet.get("schema_id", "")).strip() != RECONSIDERATION_INPUT_SCHEMA_ID:
         raise RuntimeError("FAIL_CLOSED: router readiness reconsideration input schema mismatch")
@@ -65,6 +73,45 @@ def _detect_schema_emitters(root: Path) -> List[str]:
     return sorted(set(emitters))
 
 
+def _detect_schema_touchers(root: Path) -> List[str]:
+    tools_root = root / "KT_PROD_CLEANROOM" / "tools"
+    touchers: List[str] = []
+    for path in tools_root.rglob("*.py"):
+        if path.name == "__init__.py" or "__pycache__" in path.parts:
+            continue
+        text = path.read_text(encoding="utf-8")
+        if RECONSIDERATION_INPUT_SCHEMA_ID in text or "router_readiness_reconsideration_input" in text:
+            touchers.append(path.relative_to(root).as_posix())
+    return sorted(set(touchers))
+
+
+def load_validated_router_readiness_reconsideration_input(
+    *,
+    root: Path,
+    packet_ref: str,
+    gate_packet_ref: Optional[str] = None,
+    candidate_refresh_packet_ref: Optional[str] = None,
+) -> Dict[str, Any]:
+    packet = _load_json_dict(_resolve(root, packet_ref), name="router_readiness_reconsideration_input")
+    resolved_gate_ref = str(gate_packet_ref or _source_ref(packet, "gate_packet_ref"))
+    resolved_candidate_ref = str(candidate_refresh_packet_ref or _source_ref(packet, "candidate_refresh_packet_ref"))
+    gate_packet = _load_json_dict(_resolve(root, resolved_gate_ref), name="lab_readiness_reconsideration_gate_packet")
+    candidate_packet = _load_json_dict(_resolve(root, resolved_candidate_ref), name="later_lab_readiness_refresh_packet")
+
+    receipt = build_router_readiness_reconsideration_input_validation_receipt(
+        root=root,
+        packet=packet,
+        gate_packet=gate_packet,
+        candidate_refresh_packet=candidate_packet,
+        packet_ref=packet_ref,
+        gate_packet_ref=resolved_gate_ref,
+        candidate_refresh_packet_ref=resolved_candidate_ref,
+    )
+    if str(receipt.get("status", "")).strip() != "PASS":
+        raise RuntimeError("FAIL_CLOSED: router readiness reconsideration input did not pass sanctioned consumer validation")
+    return packet
+
+
 def build_router_readiness_reconsideration_input_validation_receipt(
     *,
     root: Path,
@@ -102,6 +149,7 @@ def build_router_readiness_reconsideration_input_validation_receipt(
         raise RuntimeError("FAIL_CLOSED: gate packet source refs missing")
 
     detected_emitters = _detect_schema_emitters(root)
+    detected_schema_touchers = _detect_schema_touchers(root)
     packet_gate_ref = _source_ref(packet, "gate_packet_ref")
     packet_candidate_ref = _source_ref(packet, "candidate_refresh_packet_ref")
     candidate_adapters = list(candidate_terminals.get("combined_terminal_adapters", []))
@@ -158,6 +206,10 @@ def build_router_readiness_reconsideration_input_validation_receipt(
             "pass": detected_emitters == [SANCTIONED_EMITTER_ENTRYPOINT],
         },
         {
+            "check_id": "schema_touch_allowlist_holds_in_repo_tools",
+            "pass": detected_schema_touchers == SANCTIONED_SCHEMA_TOUCHERS,
+        },
+        {
             "check_id": "next_rule_remains_non_authorizing",
             "pass": "does not authorize any counted reopening" in str(packet.get("next_rule", "")).lower(),
         },
@@ -179,6 +231,7 @@ def build_router_readiness_reconsideration_input_validation_receipt(
             "sanctioned_consumer_validator_entrypoint": SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT,
         },
         "detected_schema_emitters": detected_emitters,
+        "detected_schema_touchers": detected_schema_touchers,
         "checks": checks,
         "claim_boundary": (
             "This receipt validates only the lab-only router-readiness reconsideration input contract and its single sanctioned "

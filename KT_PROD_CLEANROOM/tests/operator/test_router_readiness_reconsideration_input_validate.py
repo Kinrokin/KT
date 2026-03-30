@@ -80,6 +80,10 @@ def test_reconsideration_input_validation_receipt_passes_for_clean_packet() -> N
     assert receipt["sanctioned_path_contract"]["sanctioned_emitter_entrypoint"] == SANCTIONED_EMITTER_ENTRYPOINT
     assert receipt["sanctioned_path_contract"]["sanctioned_consumer_validator_entrypoint"] == SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT
     assert receipt["detected_schema_emitters"] == [SANCTIONED_EMITTER_ENTRYPOINT]
+    assert receipt["detected_schema_touchers"] == [
+        SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT,
+        SANCTIONED_EMITTER_ENTRYPOINT,
+    ]
 
 
 def test_reconsideration_input_validation_receipt_fails_on_contract_tamper() -> None:
@@ -149,3 +153,29 @@ def test_reconsideration_input_validator_cli_emits_pass_receipt(tmp_path: Path) 
     payload = json.loads(receipt_path.read_text(encoding="utf-8"))
     assert payload["status"] == "PASS"
     assert payload["detected_schema_emitters"] == [SANCTIONED_EMITTER_ENTRYPOINT]
+
+
+def test_load_validated_reconsideration_input_fails_closed_through_validator_contract(tmp_path: Path) -> None:
+    gate_path = tmp_path / "gate.json"
+    candidate_path = tmp_path / "candidate.json"
+    packet_path = tmp_path / "reconsideration.json"
+
+    gate_packet = _gate_packet(material_change=True, semantic_bypass=False, candidate_ref=str(candidate_path))
+    candidate_refresh = _candidate_refresh()
+    packet = build_router_readiness_reconsideration_input(
+        gate_packet=gate_packet,
+        candidate_refresh_packet=candidate_refresh,
+        gate_packet_ref=str(gate_path),
+        candidate_refresh_packet_ref=str(candidate_path),
+    )
+
+    gate_path.write_text(json.dumps(gate_packet, indent=2), encoding="utf-8")
+    candidate_path.write_text(json.dumps(candidate_refresh, indent=2), encoding="utf-8")
+    packet_path.write_text(json.dumps(packet, indent=2), encoding="utf-8")
+
+    loaded = validate.load_validated_router_readiness_reconsideration_input(
+        root=_repo_root(),
+        packet_ref=str(packet_path),
+    )
+
+    assert loaded["schema_id"] == "kt.router_readiness_reconsideration_input.v1"
