@@ -136,6 +136,13 @@ def build_lab_readiness_reconsideration_gate_packet(
     introduced_new_route_pair = len(new_route_pairs) > 0
     expanded_route_pair_count = len(candidate_route_pairs) > len(ceiling_route_pairs)
     route_pair_only_novelty = introduced_new_route_pair and not introduced_new_terminal_adapter
+    same_terminal_adapter_set_as_ceiling = set(candidate_terminals) == set(ceiling_terminals)
+    same_route_pair_set_as_ceiling = set(candidate_route_pairs) == set(ceiling_route_pairs)
+    same_preserved_ceiling_story_under_new_label = (
+        candidate_core_constraints_confirmed
+        and same_terminal_adapter_set_as_ceiling
+        and same_route_pair_set_as_ceiling
+    )
 
     material_change_earned = (
         candidate_core_constraints_confirmed
@@ -143,6 +150,7 @@ def build_lab_readiness_reconsideration_gate_packet(
         and introduced_new_terminal_adapter
         and expanded_terminal_adapter_count
     )
+    semantic_bypass_risk = not material_change_earned and same_preserved_ceiling_story_under_new_label
 
     blockers: List[str] = []
     if same_head_as_ceiling:
@@ -155,6 +163,8 @@ def build_lab_readiness_reconsideration_gate_packet(
         blockers.append("TERMINAL_ADAPTER_COUNT_NOT_EXPANDED")
     if route_pair_only_novelty:
         blockers.append("ROUTE_PAIR_ONLY_NOVELTY_IS_NOT_MATERIAL_CHANGE")
+    if semantic_bypass_risk:
+        blockers.append("SAME_PRESERVED_CEILING_STORY__NOT_MATERIAL_CHANGE")
 
     posture = (
         "READY_FOR_LATER_ROUTER_READINESS_RECONSIDERATION_INPUT_CONSIDERATION"
@@ -180,6 +190,10 @@ def build_lab_readiness_reconsideration_gate_packet(
             "introduced_new_route_pair": introduced_new_route_pair,
             "expanded_route_pair_count": expanded_route_pair_count,
             "route_pair_only_novelty": route_pair_only_novelty,
+            "same_terminal_adapter_set_as_ceiling": same_terminal_adapter_set_as_ceiling,
+            "same_route_pair_set_as_ceiling": same_route_pair_set_as_ceiling,
+            "same_preserved_ceiling_story_under_new_label": same_preserved_ceiling_story_under_new_label,
+            "semantic_bypass_risk": semantic_bypass_risk,
             "material_change_earned": material_change_earned,
         },
         "gate_posture": posture,
@@ -187,6 +201,10 @@ def build_lab_readiness_reconsideration_gate_packet(
         "later_reconsideration_gate": (
             "Only when material_change_earned = true may a later router-readiness reconsideration input be prepared. Even then, "
             "counted reopening remains separate and requires its own lawful decision surface."
+        ),
+        "equivalence_rule": (
+            "If a candidate refresh does not beat this gate and preserves the same terminal adapter set and route-pair set as the "
+            "frozen ceiling, treat it as the same preserved ceiling under a new label, not as new evidence."
         ),
         "blockers": blockers,
         "source_packet_refs": {

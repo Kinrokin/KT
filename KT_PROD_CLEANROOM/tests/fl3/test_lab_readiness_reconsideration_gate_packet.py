@@ -105,6 +105,26 @@ def test_reconsideration_gate_holds_same_head_same_terminals() -> None:
     assert packet["questions"]["material_change_earned"] is False
     assert "CANDIDATE_REFRESH_IS_SAME_LAB_HEAD_AS_CEILING" in packet["blockers"]
     assert "NO_NEW_TERMINAL_ADAPTER_BEYOND_CEILING" in packet["blockers"]
+    assert packet["questions"]["same_preserved_ceiling_story_under_new_label"] is True
+    assert packet["questions"]["semantic_bypass_risk"] is True
+    assert "SAME_PRESERVED_CEILING_STORY__NOT_MATERIAL_CHANGE" in packet["blockers"]
+
+
+def test_reconsideration_gate_still_flags_same_story_on_new_head() -> None:
+    packet = build_lab_readiness_reconsideration_gate_packet(
+        ceiling_packet=_ceiling_packet(),
+        candidate_refresh_packet=_candidate_refresh(head="HEAD_B"),
+        ceiling_packet_ref="ceiling.json",
+        candidate_refresh_packet_ref="candidate.json",
+    )
+
+    assert packet["status"] == "PASS"
+    assert packet["gate_posture"] == "HOLD_LAB_CEILING__NO_MATERIAL_CHANGE_YET"
+    assert packet["questions"]["same_head_as_ceiling"] is False
+    assert packet["questions"]["same_preserved_ceiling_story_under_new_label"] is True
+    assert packet["questions"]["semantic_bypass_risk"] is True
+    assert packet["questions"]["material_change_earned"] is False
+    assert "SAME_PRESERVED_CEILING_STORY__NOT_MATERIAL_CHANGE" in packet["blockers"]
 
 
 def test_reconsideration_gate_allows_material_new_terminal_on_new_head() -> None:
@@ -143,3 +163,4 @@ def test_reconsideration_gate_cli_writes_packet(tmp_path: Path) -> None:
     payload = json.loads(output_path.read_text(encoding="utf-8"))
     assert payload["status"] == "PASS"
     assert payload["gate_posture"] == "HOLD_LAB_CEILING__NO_MATERIAL_CHANGE_YET"
+    assert payload["questions"]["same_preserved_ceiling_story_under_new_label"] is True
