@@ -101,3 +101,15 @@ def test_reconsideration_input_cli_writes_packet(tmp_path: Path) -> None:
     payload = json.loads(output_path.read_text(encoding="utf-8"))
     assert payload["status"] == "PASS"
     assert payload["gate_requirements_satisfied"]["material_change_earned"] is True
+
+
+def test_reconsideration_input_has_single_sanctioned_emitter() -> None:
+    tools_router = Path(__file__).resolve().parents[2] / "tools" / "router"
+    schema_id = "kt.router_readiness_reconsideration_input.v1"
+    emitters = sorted(
+        path.name
+        for path in tools_router.glob("*.py")
+        if path.name != "__init__.py" and schema_id in path.read_text(encoding="utf-8")
+    )
+
+    assert emitters == ["run_router_readiness_reconsideration_input.py"]

@@ -1,14 +1,14 @@
 {
   "schema_id": "kt.next_counted_workstream_contract.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-30T20:49:55Z",
+  "generated_utc": "2026-03-30T21:10:13Z",
   "source_workstream_id": "LAB_READINESS_RECONSIDERATION_GATE_FROZEN",
   "current_counted_gate": "Gate D",
   "parent_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
   "exact_next_counted_workstream_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "execution_mode": "COUNTED_LANE_CLOSED__LAB_READINESS_CEILING_AND_RECONSIDERATION_GATE_FROZEN__R6_NEXT_IN_ORDER_BLOCKED",
-  "workstream_objective": "No counted work is executable now. The second same-head counted rerun of B04.R5 passed honestly on head e232a7762ea03a3eea391c6a4da6486b892eabdd but did not earn router superiority, the current lab readiness ceiling is frozen as preservation posture only, and the current reconsideration gate held because the candidate refresh reused the same lab head and introduced no new terminal adapter beyond the ceiling. R6 remains next in order only and blocked in law. No later router-readiness reconsideration input may be prepared unless a future gate packet earns material_change_earned = true, and any future counted reopening still requires that later lawful input plus another same-head R5 rerun, not a direct move into R6.",
+  "workstream_objective": "No counted work is executable now. The second same-head counted rerun of B04.R5 passed honestly on head e232a7762ea03a3eea391c6a4da6486b892eabdd but did not earn router superiority, the current lab readiness ceiling is frozen as preservation posture only, and the current reconsideration gate held because the candidate refresh reused the same lab head and introduced no new terminal adapter beyond the ceiling. R6 remains next in order only and blocked in law. No later router-readiness reconsideration input may be prepared unless a future gate packet earns material_change_earned = true, and KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py is the only sanctioned path for preparing that lab-only input. Any future counted reopening still requires that later lawful input plus another same-head R5 rerun, not a direct move into R6.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "canonical_receipt_binding": {
     "gate_c_exit_authoritative_receipt_path": "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_20260328_1029/gate_c_exit_adjudication_authoritative_receipt.json",
@@ -57,6 +57,7 @@
     "later_lab_readiness_refresh_packet": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_refresh4/later_lab_readiness_refresh_packet.json",
     "lab_readiness_ceiling_packet": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_refresh4/lab_readiness_ceiling_packet.json",
     "lab_readiness_reconsideration_gate_packet": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_refresh4/lab_readiness_reconsideration_gate_packet.json",
+    "router_readiness_reconsideration_input_entrypoint": "KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py",
     "v11_closure_map": "d:/user/rober/Downloads/kt_real_power_closure_and_execution_v11.json"
   },
   "allowed_noncanonical_parallelism": [
@@ -90,6 +91,7 @@
     "Any attempt to execute B04_R6_LEARNED_ROUTER_AUTHORIZATION without a future rerun actually earning router superiority.",
     "Any attempt to treat LAB_READINESS_CEILING_FROZEN as counted readiness or a reopening trigger by itself.",
     "Any attempt to prepare a later router-readiness reconsideration input without a future gate packet first earning material_change_earned = true.",
+    "Any alternate tool, helper, wrapper, or packet emitter prepares router-readiness reconsideration input outside KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py.",
     "Any claim that the completed second rerun static hold or any lab readiness packet earns router superiority.",
     "Any externality widening above E1, external comparative claim, or commercial activation is folded into the post-rerun hold state.",
     "Any broader lab improvement work is narrated as counted advancement without a later lawful router-readiness reconsideration input and reopening of a future same-head R5 rerun."
@@ -99,6 +101,7 @@
       "The second same-head rerun of B04.R5 completed honestly as a static hold on head e232a7762ea03a3eea391c6a4da6486b892eabdd.",
       "The current lab readiness ceiling is frozen on head 43e234aa77f0d406aa56a8d85c97f8cde08b8653 as lab-only preservation signal and explicitly keeps the counted lane closed.",
       "The current lab reconsideration gate on head bd800e9ab56e3f6a1eba19f7cbf20fe23fbcf5b0 held because the candidate refresh was the same lab head with no new terminal adapter beyond the frozen ceiling.",
+      "KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py is the only sanctioned path for preparing any later lab-only router-readiness reconsideration input, and it fails closed until the gate earns material_change_earned = true.",
       "R6 remains next in order but blocked until router superiority is actually earned on a future same-head rerun.",
       "The current hold state does not paraphrase lab readiness or authorization as earned superiority and keeps all higher-scope widening blocked."
     ],
@@ -106,6 +109,7 @@
       "R6 is treated as executable without the rerun earning router superiority.",
       "The second rerun static hold or the lab readiness ceiling freeze is narrated as learned-router authority or lobe readiness.",
       "A later router-readiness reconsideration input is prepared even though the gate packet has not earned material_change_earned = true.",
+      "A later router-readiness reconsideration input is prepared through any alternate tool, helper, wrapper, or packet emitter outside the sanctioned entrypoint.",
       "Broader lab work is counted as canonical Gate D advancement."
     ]
   },
