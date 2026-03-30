@@ -1,0 +1,187 @@
+{
+  "schema_id": "kt.second_route_topology_shadow_suite.v1",
+  "mode": "LAB_ONLY_NONCANONICAL",
+  "claim_boundary": "This suite is lab-only and noncanonical. It probes whether the current verified entrant cohort can support a second distinct role-separated winning handoff topology beyond the dominant math-to-code chain. It cannot unlock R5, R6, lobe authority, externality, comparative claims, or commercial activation.",
+  "cases": [
+    {
+      "case_id": "LAB_ALTTOPO_GC01",
+      "pattern_family": "LAB_ALTTOPO_GC",
+      "notes": "Force the generalist to frame the research tradeoffs before the code specialist compresses the recommendation memo.",
+      "single_case_baseline": {
+        "task_text": "Research the evidence, capture the tradeoffs, and write a compact recommendation memo.",
+        "required_terms": ["research", "tradeoffs", "recommendation"],
+        "preferred_genotype": {
+          "prompt_transform_style": "reframe",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "research_frame",
+          "task_text": "Research the evidence and capture the tradeoffs for the decision.",
+          "required_terms": ["research", "tradeoffs", "decision"],
+          "preferred_genotype": {
+            "prompt_transform_style": "reframe",
+            "reasoning_directive": "evidence_first",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.generalist.shadow.v1"]
+        },
+        {
+          "stage_id": "compact_memo",
+          "task_text": "Write the compact recommendation memo and defend the decision.",
+          "required_terms": ["recommendation", "memo", "decision"],
+          "preferred_genotype": {
+            "prompt_transform_style": "compress",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.code.specialist.v1"],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_ALTTOPO_GC02",
+      "pattern_family": "LAB_ALTTOPO_GC",
+      "notes": "Force the generalist to frame the rollout tradeoffs before the code specialist compresses the implementation note.",
+      "single_case_baseline": {
+        "task_text": "Frame the rollout tradeoffs, capture the recommendation, and write a compact implementation note.",
+        "required_terms": ["rollout", "tradeoffs", "recommendation"],
+        "preferred_genotype": {
+          "prompt_transform_style": "reframe",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "rollout_frame",
+          "task_text": "Frame the rollout tradeoffs and capture the calibrated recommendation.",
+          "required_terms": ["rollout", "tradeoffs", "recommendation"],
+          "preferred_genotype": {
+            "prompt_transform_style": "reframe",
+            "reasoning_directive": "evidence_first",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.generalist.shadow.v1"]
+        },
+        {
+          "stage_id": "implementation_note",
+          "task_text": "Write the compact implementation note and list the next code actions.",
+          "required_terms": ["implementation", "code", "actions"],
+          "preferred_genotype": {
+            "prompt_transform_style": "compress",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.code.specialist.v1"],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_ALTTOPO_GC03",
+      "pattern_family": "LAB_ALTTOPO_GC",
+      "notes": "Force the generalist to frame the evidence summary before the code specialist compresses the escalation brief.",
+      "single_case_baseline": {
+        "task_text": "Summarize the evidence, capture the tradeoffs, and write a compact escalation brief.",
+        "required_terms": ["evidence", "tradeoffs", "escalation"],
+        "preferred_genotype": {
+          "prompt_transform_style": "reframe",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "evidence_frame",
+          "task_text": "Summarize the evidence and capture the tradeoffs for escalation.",
+          "required_terms": ["evidence", "tradeoffs", "escalation"],
+          "preferred_genotype": {
+            "prompt_transform_style": "reframe",
+            "reasoning_directive": "evidence_first",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.generalist.shadow.v1"]
+        },
+        {
+          "stage_id": "escalation_brief",
+          "task_text": "Write the compact escalation brief and name the next code responder.",
+          "required_terms": ["escalation", "brief", "code"],
+          "preferred_genotype": {
+            "prompt_transform_style": "compress",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.code.specialist.v1"],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    }
+  ]
+}
