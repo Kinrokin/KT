@@ -1,106 +1,107 @@
 {
-  "schema_id": "kt.resume_blockers_receipt.v1",
-  "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-31T13:49:10Z",
-  "workstream_id": "B04_R5_FOURTH_SAME_HEAD_RERUN_LAUNCH_SURFACE",
-  "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
-  "status": "PASS",
-  "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
-  "current_git_branch": "main",
-  "current_git_head": "6feed4d841709ff160eecd0015593559aaa987d4",
-  "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
-  "repo_state_executable_now": true,
-  "blocking_state": "FOURTH_COUNTED_R5_RERUN_LAUNCH_BOUND__ONLY_RERUN_EXECUTABLE__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
-  "blocking_reasons": [
-    "The original B04.R5 proof plus all three earlier same-head counted reruns all held the static router baseline honestly because superiority was not earned.",
-    "The post-third-rerun lab branch on head 893172acfb3481f2b96d9eef4b87085af64cc500 materially beat the preserved three-terminal ceiling, the reconsideration gate on that same head returned material_change_earned = true, and the reconsideration path was adjudicated cleanly through the sanctioned validator.",
-    "A separate counted B04.R5 fourth same-head rerun launch surface is now bound on head 6feed4d841709ff160eecd0015593559aaa987d4, but that authorization step does not itself earn router superiority.",
-    "R6 remains blocked because router superiority has still not been re-earned on the counted lane, and no learned-router, lobe, externality, comparative, or commercial widening is authorized."
-  ],
-  "nonblocking_conflicts": [
-    {
-      "conflict_id": "TRACKED_B04_LAUNCH_RECEIPT_IS_CARRIER_ONLY",
-      "class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
-      "evidence": [
-        "The authoritative B04 launch proof is the clean-clone receipt on sealed head 16e1fbe1d7966f8434d1842e2ea358582195941d.",
-        "The tracked b04_civilization_activation_launch_receipt.json on main was emitted on pre-receipt head 40fa173cef4ed1891c55a7e676578a80433fada3 and must remain carrier-only."
-      ],
-      "resolution_rule": "Use the clean-clone authoritative receipt as B04 launch authority and do not overread the tracked carrier across heads."
-    },
-    {
-      "conflict_id": "TRACKED_R1_RECEIPT_IS_CARRIER_ONLY",
-      "class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
-      "evidence": [
-        "The authoritative B04.R1 proof is the clean-clone receipt on sealed head 7ee9a1298cb03e9a796e922c2f500f8b22e626f2.",
-        "The tracked crucible_pressure_law_ratification_receipt.json on main was emitted on pre-receipt head 48a29d604444e227882ae72c3035235755e52248 and must remain carrier-only."
-      ],
-      "resolution_rule": "Use the clean-clone authoritative receipt as R1 authority and do not overread the tracked carrier across heads."
-    },
-    {
-      "conflict_id": "TRACKED_R2_RECEIPT_IS_CARRIER_ONLY",
-      "class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
-      "evidence": [
-        "The authoritative B04.R2 proof is the clean-clone receipt on sealed head a1dc29c7df24a6b6766b56a81407cef3213ee111.",
-        "The tracked adapter_lifecycle_law_ratification_receipt.json on main was emitted on pre-receipt head a22c571f1945c8182c2106c361d8328295ef6c3f and must remain carrier-only."
-      ],
-      "resolution_rule": "Use the clean-clone authoritative receipt as R2 authority and do not overread the tracked carrier across heads."
-    },
-    {
-      "conflict_id": "TRACKED_R3_RECEIPT_IS_CARRIER_ONLY",
-      "class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
-      "evidence": [
-        "The authoritative B04.R3 proof is the clean-clone receipt on sealed head cd7329607021177bdb687173412d235ac07d807a.",
-        "The tracked tournament_promotion_merge_law_ratification_receipt.json on main was emitted on pre-receipt head 32191f589342619d9e9a23835ac60e14d73dd627 and must remain carrier-only."
-      ],
-      "resolution_rule": "Use the clean-clone authoritative receipt as R3 authority and do not overread the tracked carrier across heads."
-    },
-    {
-      "conflict_id": "TRACKED_R4_RECEIPT_IS_CARRIER_ONLY",
-      "class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
-      "evidence": [
-        "The authoritative B04.R4 proof is the clean-clone receipt on sealed head 341e63d009c250b8257db89baecc10a5665f47a9.",
-        "The tracked router_shadow_evaluation_ratification_receipt.json on main was emitted on pre-receipt head 9c0023ea81d436dbd07a56a50fd1b1771a7cd8ce and must remain carrier-only."
-      ],
-      "resolution_rule": "Use the clean-clone authoritative receipt as R4 authority and do not overread the tracked carrier across heads."
-    },
-    {
-      "conflict_id": "TRACKED_R5_RECEIPT_IS_CARRIER_ONLY",
-      "class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
-      "evidence": [
-        "The authoritative B04.R5 proof is the clean-clone receipt on sealed head 26a58027b04ffc15e3cd44c6d54c708140fbf4dd.",
-        "The tracked router_vs_best_adapter_proof_ratification_receipt.json on main is now a carrier for the third same-head rerun receipt emitted on pre-seal head 79759969c402205f5c99be48524c2f5489f72019 and must remain carrier-only after sealing."
-      ],
-      "resolution_rule": "Use the authoritative same-head rerun receipt family as current R5 authority and do not overread the tracked carrier across heads."
-    },
-    {
-      "conflict_id": "LAB_READINESS_CEILING_AND_GATE_ARE_NONCANONICAL_PRECHECKS_ONLY",
-      "class": "LAB_ONLY_NONCANONICAL_NOT_COUNTED_AUTHORITY",
-      "evidence": [
-        "The later refresh packet, the ceiling packet, and the reconsideration gate packet under d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_refresh4/ are lab-only and cannot stand in for counted same-head authority.",
-        "Their role is limited to preserving the current lab ceiling and enforcing a material-change precheck before any later router-readiness reconsideration input.",
-        "Any actual reconsideration-input emitter must still go through KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py as the sole sanctioned entrypoint.",
-        "Any downstream consumer must still go through KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py as the sole sanctioned validator/consumer path.",
-        "The standing single-path enforcement receipt under d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/router_reconsideration_contract_live/single_path_enforcement_receipt.json must remain PASS before any later reconsideration narrative can be treated as well-formed.",
-        "The hold-state surface basis validation receipt under d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/tmp/router_reconsideration_contract_live/hold_state_surface_basis_validation_receipt.json must remain PASS and must continue to classify the tracked hold surfaces as pre-seal basis only.",
-        "Any later reconsideration attempt must re-emit both fresh receipts on the actual candidate head rather than reuse a stale guard or a stale preserved-basis receipt from another head."
-      ],
-      "resolution_rule": "Use the later refresh, ceiling, and reconsideration gate packets only as lab-only preservation signal and precheck. Use a future counted same-head rerun receipt family as the only authority for any later superiority claim."
-    }
-  ],
-  "current_lawful_gate_standing": {
-    "inter_gate_state": "GATE_D_FOURTH_COUNTED_R5_RERUN_LAUNCH_BOUND",
-    "gate_c": "EXITED",
-    "gate_d": "FOURTH_COUNTED_R5_RERUN_LAUNCH_BOUND__R6_BLOCKED"
-  },
-  "exact_next_counted_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__FOURTH_SAME_HEAD_RERUN",
-  "explicit_non_go_areas": [
-    "Do not widen externality beyond E1.",
-    "Do not open external comparative claims.",
-    "Do not activate commercial deployment.",
-    "Do not treat the fourth same-head R5 rerun launch surface as learned-router authorization or lobe ratification.",
-    "Do not treat tracked carrier receipts as current-head authority.",
-    "Do not bypass the ordered Gate D ratification sequence."
-  ],
-  "why_not_executable_now": "All counted work other than B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__FOURTH_SAME_HEAD_RERUN remains non-executable. The fourth same-head rerun launch surface is only a rerun authorization step, not a rerun result, so R6 remains next in order only and blocked in law until that rerun actually earns superiority.",
-  "executable_now_why": "Only B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__FOURTH_SAME_HEAD_RERUN is executable now. R6 and all wider scope remain blocked until router superiority is actually earned on that rerun."
+    "schema_id":  "kt.resume_blockers_receipt.v1",
+    "classification_tag":  "COUNTING_CLOSURE",
+    "generated_utc":  "2026-03-31T14:26:58Z",
+    "workstream_id":  "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__FOURTH_SAME_HEAD_RERUN",
+    "reopen_rule":  "Satisfied lower gates may only be reopened by current regression receipt.",
+    "status":  "PASS",
+    "repo_root":  "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
+    "current_git_branch":  "main",
+    "current_git_head":  "b4a199e32290c858ce041cbe8aee8ecb76a6dc9c",
+    "worktree_cleanliness":  "CLEAN_CURRENT_HEAD",
+    "repo_state_executable_now":  false,
+    "blocking_state":  "POST_FOURTH_RERUN_STATIC_HOLD__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
+    "blocking_reasons":  [
+                             "The original B04.R5 proof plus all four same-head counted reruns held the static router baseline honestly because superiority was not earned.",
+                             "The fourth same-head counted rerun executed on head b4a199e32290c858ce041cbe8aee8ecb76a6dc9c and returned NOT_EARNED_STATIC_BASELINE_RETAINS_CANONICAL_STATUS.",
+                             "Counted lane is now closed again and no fresh counted reopening is authorized from this hold state.",
+                             "R6 remains blocked because router superiority has still not been re-earned on the counted lane, and no learned-router, lobe, externality, comparative, or commercial widening is authorized."
+                         ],
+    "nonblocking_conflicts":  [
+                                  {
+                                      "conflict_id":  "TRACKED_B04_LAUNCH_RECEIPT_IS_CARRIER_ONLY",
+                                      "class":  "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+                                      "evidence":  [
+                                                       "The authoritative B04 launch proof is the clean-clone receipt on sealed head 16e1fbe1d7966f8434d1842e2ea358582195941d.",
+                                                       "The tracked b04_civilization_activation_launch_receipt.json on main was emitted on pre-receipt head 40fa173cef4ed1891c55a7e676578a80433fada3 and must remain carrier-only."
+                                                   ],
+                                      "resolution_rule":  "Use the clean-clone authoritative receipt as B04 launch authority and do not overread the tracked carrier across heads."
+                                  },
+                                  {
+                                      "conflict_id":  "TRACKED_R1_RECEIPT_IS_CARRIER_ONLY",
+                                      "class":  "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+                                      "evidence":  [
+                                                       "The authoritative B04.R1 proof is the clean-clone receipt on sealed head 7ee9a1298cb03e9a796e922c2f500f8b22e626f2.",
+                                                       "The tracked crucible_pressure_law_ratification_receipt.json on main was emitted on pre-receipt head 48a29d604444e227882ae72c3035235755e52248 and must remain carrier-only."
+                                                   ],
+                                      "resolution_rule":  "Use the clean-clone authoritative receipt as R1 authority and do not overread the tracked carrier across heads."
+                                  },
+                                  {
+                                      "conflict_id":  "TRACKED_R2_RECEIPT_IS_CARRIER_ONLY",
+                                      "class":  "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+                                      "evidence":  [
+                                                       "The authoritative B04.R2 proof is the clean-clone receipt on sealed head a1dc29c7df24a6b6766b56a81407cef3213ee111.",
+                                                       "The tracked adapter_lifecycle_law_ratification_receipt.json on main was emitted on pre-receipt head a22c571f1945c8182c2106c361d8328295ef6c3f and must remain carrier-only."
+                                                   ],
+                                      "resolution_rule":  "Use the clean-clone authoritative receipt as R2 authority and do not overread the tracked carrier across heads."
+                                  },
+                                  {
+                                      "conflict_id":  "TRACKED_R3_RECEIPT_IS_CARRIER_ONLY",
+                                      "class":  "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+                                      "evidence":  [
+                                                       "The authoritative B04.R3 proof is the clean-clone receipt on sealed head cd7329607021177bdb687173412d235ac07d807a.",
+                                                       "The tracked tournament_promotion_merge_law_ratification_receipt.json on main was emitted on pre-receipt head 32191f589342619d9e9a23835ac60e14d73dd627 and must remain carrier-only."
+                                                   ],
+                                      "resolution_rule":  "Use the clean-clone authoritative receipt as R3 authority and do not overread the tracked carrier across heads."
+                                  },
+                                  {
+                                      "conflict_id":  "TRACKED_R4_RECEIPT_IS_CARRIER_ONLY",
+                                      "class":  "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+                                      "evidence":  [
+                                                       "The authoritative B04.R4 proof is the clean-clone receipt on sealed head 341e63d009c250b8257db89baecc10a5665f47a9.",
+                                                       "The tracked router_shadow_evaluation_ratification_receipt.json on main was emitted on pre-receipt head 9c0023ea81d436dbd07a56a50fd1b1771a7cd8ce and must remain carrier-only."
+                                                   ],
+                                      "resolution_rule":  "Use the clean-clone authoritative receipt as R4 authority and do not overread the tracked carrier across heads."
+                                  },
+                                  {
+                                      "conflict_id":  "TRACKED_R5_RECEIPT_IS_CARRIER_ONLY",
+                                      "class":  "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+                                      "evidence":  [
+                                                       "The authoritative B04.R5 proof is the clean-clone receipt on sealed head 26a58027b04ffc15e3cd44c6d54c708140fbf4dd.",
+                                                       "The tracked router_vs_best_adapter_proof_ratification_receipt.json on main is now a carrier for the third same-head rerun receipt emitted on pre-seal head 79759969c402205f5c99be48524c2f5489f72019 and must remain carrier-only after sealing."
+                                                   ],
+                                      "resolution_rule":  "Use the authoritative same-head rerun receipt family as current R5 authority and do not overread the tracked carrier across heads."
+                                  },
+                                  {
+                                      "conflict_id":  "LAB_READINESS_CEILING_AND_GATE_ARE_NONCANONICAL_PRECHECKS_ONLY",
+                                      "class":  "LAB_ONLY_NONCANONICAL_NOT_COUNTED_AUTHORITY",
+                                      "evidence":  [
+                                                       "The later refresh packet, the ceiling packet, and the reconsideration gate packet under d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_refresh4/ are lab-only and cannot stand in for counted same-head authority.",
+                                                       "Their role is limited to preserving the current lab ceiling and enforcing a material-change precheck before any later router-readiness reconsideration input.",
+                                                       "Any actual reconsideration-input emitter must still go through KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py as the sole sanctioned entrypoint.",
+                                                       "Any downstream consumer must still go through KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py as the sole sanctioned validator/consumer path.",
+                                                       "The standing single-path enforcement receipt under d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/router_reconsideration_contract_live/single_path_enforcement_receipt.json must remain PASS before any later reconsideration narrative can be treated as well-formed.",
+                                                       "The hold-state surface basis validation receipt under d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/tmp/router_reconsideration_contract_live/hold_state_surface_basis_validation_receipt.json must remain PASS and must continue to classify the tracked hold surfaces as pre-seal basis only.",
+                                                       "Any later reconsideration attempt must re-emit both fresh receipts on the actual candidate head rather than reuse a stale guard or a stale preserved-basis receipt from another head."
+                                                   ],
+                                      "resolution_rule":  "Use the later refresh, ceiling, and reconsideration gate packets only as lab-only preservation signal and precheck. Use a future counted same-head rerun receipt family as the only authority for any later superiority claim."
+                                  }
+                              ],
+    "current_lawful_gate_standing":  {
+                                         "inter_gate_state":  "GATE_D_POST_FOURTH_RERUN_STATIC_HOLD__COUNTED_LANE_CLOSED",
+                                         "gate_c":  "EXITED",
+                                         "gate_d":  "POST_FOURTH_RERUN_STATIC_HOLD__R6_BLOCKED"
+                                     },
+    "exact_next_counted_workstream_id":  "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
+    "explicit_non_go_areas":  [
+                                  "Do not widen externality beyond E1.",
+                                  "Do not open external comparative claims.",
+                                  "Do not activate commercial deployment.",
+                                  "Do not treat the fourth same-head R5 rerun launch surface as learned-router authorization or lobe ratification.",
+                                  "Do not treat tracked carrier receipts as current-head authority.",
+                                  "Do not bypass the ordered Gate D ratification sequence.",
+                                  "Do not treat a PASS fourth same-head R5 rerun procedure as learned-router authorization, lobe ratification, or earned superiority."
+                              ],
+    "why_not_executable_now":  "The fourth same-head counted rerun of B04.R5 has already completed and did not earn router superiority. Counted lane stays closed. R6 remains next in order only and blocked in law, and any future reconsideration still requires a genuinely new lab material-change cycle with fresh same-head dual receipts on the actual candidate head.",
+    "executable_now_why":  "The fourth same-head counted rerun of B04.R5 has already completed and did not earn router superiority. Counted lane stays closed. R6 remains next in order only and blocked in law, and any future reconsideration still requires a genuinely new lab material-change cycle with fresh same-head dual receipts on the actual candidate head."
 }
