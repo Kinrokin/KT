@@ -43,7 +43,7 @@
     "router_status": "STATIC_CANONICAL_BASELINE_ONLY",
     "gate_d_decision_selected": true,
     "gate_d_activation_authorized": true,
-    "note": "Gate D remains bounded after the original R5 proof and both same-head counted R5 reruns held the static baseline honestly because router superiority was not earned. The later lab readiness refresh, the current lab readiness ceiling, and the current lab reconsideration gate are preserved as lab-only signal and precheck only. KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py is the only sanctioned path for preparing any later reconsideration input, KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py is the only sanctioned consumer path for relying on it, and the standing single-path enforcement receipt confirms the sanctioned pair remains singular. Any future reconsideration attempt must re-emit that guard on the actual candidate head before input may be prepared or consumed. Learned-router cutover, lobes, externality, comparative, and commercial widening remain separately gated and still blocked."
+    "note": "Gate D remains bounded after the original R5 proof and both same-head counted R5 reruns held the static baseline honestly because router superiority was not earned. The later lab readiness refresh, the current lab readiness ceiling, and the current lab reconsideration gate are preserved as lab-only signal and precheck only. KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py is the only sanctioned path for preparing any later reconsideration input, KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py is the only sanctioned consumer path for relying on it, and the standing single-path enforcement receipt confirms the sanctioned pair remains singular. The hold-state surface basis validation receipt confirms the tracked hold surfaces are preserved pre-seal basis only, not same-head authority. Any future reconsideration attempt must re-emit that guard on the actual candidate head before input may be prepared or consumed. Learned-router cutover, lobes, externality, comparative, and commercial widening remain separately gated and still blocked."
   },
   "explicit_not_authorized": [
     "frontier claim",
@@ -116,6 +116,7 @@
       "KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py is the sole sanctioned emitter for any later lab-only router-readiness reconsideration input after the gate is beaten.",
       "KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py is the sole sanctioned validator/consumer path for kt.router_readiness_reconsideration_input.v1 after emission.",
       "The standing single-path enforcement receipt on head 25bde87d492f00b8bbd4d1955e82e6346656c081 remains PASS with one sanctioned emitter and two sanctioned tool-side touchers.",
+      "The hold-state surface basis validation receipt remains PASS and confirms the tracked hold surfaces are preserved pre-seal basis only, not same-head authority.",
       "Any future reconsideration attempt must re-emit that single-path enforcement receipt on the actual candidate head before preparation or consumption.",
       "R6 remains next in order only and higher scope remains blocked until a counted same-head rerun actually earns superiority."
     ],
@@ -128,6 +129,7 @@
       "Parsing or relying on kt.router_readiness_reconsideration_input.v1 through any downstream path outside KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py",
       "Any future tool-side touch of kt.router_readiness_reconsideration_input.v1 outside the sanctioned emitter/consumer pair while the standing single-path enforcement receipt is the active guard",
       "Preparing or consuming a later router-readiness reconsideration input with a stale single-path enforcement receipt from another head",
+      "Treating PRE_SEAL_HOLD_STATE_BASIS_CONFIRMED as same-head authority instead of preserved basis only",
       "Treating tracked carrier receipts as Gate D authority",
       "Treating any lab readiness packet as counted proof"
     ],

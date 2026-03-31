@@ -19,6 +19,7 @@
     "KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py is the only sanctioned path for preparing any later router-readiness reconsideration input, and alternate helper or wrapper paths are forbidden.",
     "KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py is the only sanctioned consumer path for kt.router_readiness_reconsideration_input.v1, and direct downstream parsing is forbidden.",
     "The standing single-path enforcement receipt on head 25bde87d492f00b8bbd4d1955e82e6346656c081 remains PASS with one sanctioned emitter and two sanctioned tool-side touchers, so any future tool-side touch outside that pair is a contract breach.",
+    "The hold-state surface basis validation receipt remains PASS and confirms the tracked hold surfaces are pre-seal basis only, not same-head authority.",
     "Any future router-readiness reconsideration attempt must re-emit a fresh same-head single-path enforcement receipt on the actual candidate head before any input may be prepared or consumed.",
     "Lobe promotion, externality widening, external comparative claims, and commercial activation remain blocked by order."
   ],
@@ -86,6 +87,7 @@
         "Any actual reconsideration-input emitter must still go through KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py as the sole sanctioned entrypoint.",
         "Any downstream consumer must still go through KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py as the sole sanctioned validator/consumer path.",
         "The standing single-path enforcement receipt under d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/router_reconsideration_contract_live/single_path_enforcement_receipt.json must remain PASS before any later reconsideration narrative can be treated as well-formed.",
+        "The hold-state surface basis validation receipt under d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/tmp/router_reconsideration_contract_live/hold_state_surface_basis_validation_receipt.json must remain PASS and must continue to classify the tracked hold surfaces as pre-seal basis only.",
         "Any later reconsideration attempt must re-emit that guard on the actual candidate head rather than reuse a stale receipt from another head."
       ],
       "resolution_rule": "Use the later refresh, ceiling, and reconsideration gate packets only as lab-only preservation signal and precheck. Use a future counted same-head rerun receipt family as the only authority for any later superiority claim."
