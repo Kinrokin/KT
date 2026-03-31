@@ -27,6 +27,13 @@ SANCTIONED_SCHEMA_TOUCHERS = sorted(
     ]
 )
 SINGLE_PATH_ENFORCEMENT_RECEIPT_SCHEMA_ID = "kt.router_readiness_reconsideration_input_single_path_enforcement_receipt.v1"
+RECONSIDERATION_ADJUDICATION_RECEIPT_SCHEMA_ID = "kt.router_readiness_reconsideration_adjudication_receipt.v1"
+FROZEN_INTER_GATE_STATE = "GATE_D_LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED"
+FROZEN_BLOCKING_STATE = "LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY"
+FROZEN_NEXT_LAWFUL_MOVE = "HOLD_LAB_READINESS_CEILING_AND_RECONSIDERATION_GATE__COUNTED_LANE_CLOSED__R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF"
+NEXT_IN_ORDER_ID = "B04_R6_LEARNED_ROUTER_AUTHORIZATION"
+ADJUDICATION_POSTURE = "READY_FOR_SEPARATE_COUNTED_R5_RERUN_LAUNCH_SURFACE_CONSIDERATION"
+ADJUDICATION_NEXT_MOVE = "CONSIDER_B04_R5_THIRD_SAME_HEAD_RERUN_LAUNCH_SURFACE_ONLY"
 
 
 def _git_head(root: Path) -> str:
@@ -82,6 +89,52 @@ def _validate_hold_state_basis_receipt(packet: Dict[str, Any], *, current_head: 
         raise RuntimeError("FAIL_CLOSED: hold-state basis receipt is not fresh on current head")
     if str(packet.get("tracked_surface_basis_head", "")).strip() == str(current_head).strip():
         raise RuntimeError("FAIL_CLOSED: hold-state basis receipt cannot act as same-head authority")
+
+
+def _validate_current_state_overlay_for_reconsideration_adjudication(packet: Dict[str, Any]) -> None:
+    if str(packet.get("schema_id", "")).strip() != "kt.current_campaign_state_overlay.v1":
+        raise RuntimeError("FAIL_CLOSED: current campaign state overlay schema mismatch")
+    if str(packet.get("next_counted_workstream_id", "")).strip() != NEXT_IN_ORDER_ID:
+        raise RuntimeError("FAIL_CLOSED: current campaign state overlay next counted workstream mismatch")
+    if bool(packet.get("repo_state_executable_now", True)):
+        raise RuntimeError("FAIL_CLOSED: current campaign state unexpectedly executable")
+    lawful_standing = packet.get("current_lawful_gate_standing")
+    if not isinstance(lawful_standing, dict):
+        raise RuntimeError("FAIL_CLOSED: current campaign lawful standing missing")
+    if str(lawful_standing.get("inter_gate_state", "")).strip() != FROZEN_INTER_GATE_STATE:
+        raise RuntimeError("FAIL_CLOSED: current campaign state is not the frozen reconsideration posture")
+
+
+def _validate_next_counted_workstream_contract_for_reconsideration_adjudication(packet: Dict[str, Any]) -> None:
+    if str(packet.get("schema_id", "")).strip() != "kt.next_counted_workstream_contract.v1":
+        raise RuntimeError("FAIL_CLOSED: next counted workstream contract schema mismatch")
+    if str(packet.get("exact_next_counted_workstream_id", "")).strip() != NEXT_IN_ORDER_ID:
+        raise RuntimeError("FAIL_CLOSED: next counted workstream contract next step mismatch")
+    if bool(packet.get("repo_state_executable_now", True)):
+        raise RuntimeError("FAIL_CLOSED: next counted workstream contract unexpectedly executable")
+
+
+def _validate_resume_blockers_for_reconsideration_adjudication(packet: Dict[str, Any]) -> None:
+    if str(packet.get("schema_id", "")).strip() != "kt.resume_blockers_receipt.v1":
+        raise RuntimeError("FAIL_CLOSED: resume blockers receipt schema mismatch")
+    if str(packet.get("status", "")).strip() != "PASS":
+        raise RuntimeError("FAIL_CLOSED: resume blockers receipt must be PASS")
+    if str(packet.get("blocking_state", "")).strip() != FROZEN_BLOCKING_STATE:
+        raise RuntimeError("FAIL_CLOSED: resume blockers receipt is not at the frozen reconsideration hold")
+    if bool(packet.get("repo_state_executable_now", True)):
+        raise RuntimeError("FAIL_CLOSED: resume blockers receipt unexpectedly executable")
+
+
+def _validate_reanchor_for_reconsideration_adjudication(packet: Dict[str, Any]) -> None:
+    if str(packet.get("schema_id", "")).strip() != "kt.gate_d.decision_reanchor_packet.v1":
+        raise RuntimeError("FAIL_CLOSED: gate D decision reanchor packet schema mismatch")
+    limitations = packet.get("current_bounded_limitations")
+    if not isinstance(limitations, dict):
+        raise RuntimeError("FAIL_CLOSED: gate D decision reanchor current_bounded_limitations missing")
+    if str(limitations.get("router_status", "")).strip() != "STATIC_CANONICAL_BASELINE_ONLY":
+        raise RuntimeError("FAIL_CLOSED: reanchor router status must remain static canonical baseline only")
+    if str(packet.get("next_lawful_move", "")).strip() != FROZEN_NEXT_LAWFUL_MOVE:
+        raise RuntimeError("FAIL_CLOSED: reanchor next lawful move mismatch for frozen reconsideration hold")
 
 
 def _source_ref(packet: Dict[str, Any], key: str) -> str:
@@ -410,6 +463,161 @@ def build_router_readiness_reconsideration_input_validation_receipt(
     }
 
 
+def build_router_readiness_reconsideration_adjudication_receipt(
+    *,
+    root: Path,
+    packet: Dict[str, Any],
+    current_state_overlay: Dict[str, Any],
+    next_counted_workstream_contract: Dict[str, Any],
+    resume_blockers_receipt: Dict[str, Any],
+    gate_d_decision_reanchor_packet: Dict[str, Any],
+    packet_ref: str,
+    current_state_overlay_ref: str,
+    next_counted_workstream_contract_ref: str,
+    resume_blockers_receipt_ref: str,
+    gate_d_decision_reanchor_packet_ref: str,
+) -> Dict[str, Any]:
+    _validate_packet_schema(packet)
+    _validate_current_state_overlay_for_reconsideration_adjudication(current_state_overlay)
+    _validate_next_counted_workstream_contract_for_reconsideration_adjudication(next_counted_workstream_contract)
+    _validate_resume_blockers_for_reconsideration_adjudication(resume_blockers_receipt)
+    _validate_reanchor_for_reconsideration_adjudication(gate_d_decision_reanchor_packet)
+
+    gate_requirements = packet.get("gate_requirements_satisfied")
+    candidate_summary = packet.get("candidate_summary")
+    single_path_guard_summary = packet.get("single_path_guard_summary")
+    hold_state_basis_summary = packet.get("hold_state_basis_summary")
+    if not isinstance(gate_requirements, dict):
+        raise RuntimeError("FAIL_CLOSED: reconsideration input gate requirements missing")
+    if not isinstance(candidate_summary, dict):
+        raise RuntimeError("FAIL_CLOSED: reconsideration input candidate summary missing")
+    if not isinstance(single_path_guard_summary, dict):
+        raise RuntimeError("FAIL_CLOSED: reconsideration input single_path_guard_summary missing")
+    if not isinstance(hold_state_basis_summary, dict):
+        raise RuntimeError("FAIL_CLOSED: reconsideration input hold_state_basis_summary missing")
+
+    current_head = _git_head(root)
+    material_change_earned = bool(gate_requirements.get("material_change_earned", False))
+    semantic_bypass_risk = bool(gate_requirements.get("semantic_bypass_risk", True))
+    introduced_new_terminal_adapter = bool(gate_requirements.get("introduced_new_terminal_adapter", False))
+    expanded_terminal_adapter_count = bool(gate_requirements.get("expanded_terminal_adapter_count", False))
+    if not material_change_earned:
+        raise RuntimeError("FAIL_CLOSED: reconsideration adjudication requires material_change_earned = true")
+    if semantic_bypass_risk:
+        raise RuntimeError("FAIL_CLOSED: reconsideration adjudication requires semantic_bypass_risk = false")
+    if not introduced_new_terminal_adapter or not expanded_terminal_adapter_count:
+        raise RuntimeError("FAIL_CLOSED: reconsideration adjudication requires expanded terminal diversity")
+
+    combined_terminals = [
+        str(item).strip()
+        for item in candidate_summary.get("combined_terminal_adapters", [])
+        if str(item).strip()
+    ]
+    combined_terminal_adapter_count = int(candidate_summary.get("combined_terminal_adapter_count", 0))
+    candidate_head = str(candidate_summary.get("candidate_lab_head", "")).strip()
+    guard_head = str(single_path_guard_summary.get("guard_head", "")).strip()
+    hold_state_actual_head = str(hold_state_basis_summary.get("actual_repo_head", "")).strip()
+    hold_state_basis_head = str(hold_state_basis_summary.get("tracked_surface_basis_head", "")).strip()
+
+    checks = [
+        {
+            "check_id": "validated_reconsideration_input_is_present_and_passed",
+            "pass": True,
+        },
+        {
+            "check_id": "material_change_earned_without_semantic_bypass",
+            "pass": material_change_earned and not semantic_bypass_risk,
+        },
+        {
+            "check_id": "same_head_candidate_and_dual_receipts_align_on_current_head",
+            "pass": bool(candidate_head)
+            and candidate_head == current_head
+            and guard_head == candidate_head
+            and hold_state_actual_head == candidate_head,
+        },
+        {
+            "check_id": "terminal_breadth_expanded_beyond_frozen_ceiling",
+            "pass": introduced_new_terminal_adapter
+            and expanded_terminal_adapter_count
+            and combined_terminal_adapter_count >= 3,
+        },
+        {
+            "check_id": "counted_lane_still_closed_and_static_baseline_still_canonical",
+            "pass": (
+                not bool(current_state_overlay.get("repo_state_executable_now", True))
+                and not bool(next_counted_workstream_contract.get("repo_state_executable_now", True))
+                and not bool(resume_blockers_receipt.get("repo_state_executable_now", True))
+                and str(
+                    gate_d_decision_reanchor_packet.get("current_bounded_limitations", {}).get("router_status", "")
+                ).strip()
+                == "STATIC_CANONICAL_BASELINE_ONLY"
+            ),
+        },
+        {
+            "check_id": "next_in_order_remains_r6_blocked",
+            "pass": str(current_state_overlay.get("next_counted_workstream_id", "")).strip() == NEXT_IN_ORDER_ID
+            and str(next_counted_workstream_contract.get("exact_next_counted_workstream_id", "")).strip()
+            == NEXT_IN_ORDER_ID,
+        },
+    ]
+
+    status = "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL"
+    return {
+        "schema_id": RECONSIDERATION_ADJUDICATION_RECEIPT_SCHEMA_ID,
+        "generated_utc": utc_now_iso_z(),
+        "current_git_head": current_head,
+        "mode": "LAB_ONLY_NONCANONICAL",
+        "status": status,
+        "claim_boundary": (
+            "This receipt adjudicates only the lab-only router-readiness reconsideration path. It does not reopen the counted lane, "
+            "does not relaunch R5, does not earn router superiority, and cannot unlock R6. Its only positive outcome is whether a "
+            "separate counted R5 rerun launch surface may now be considered."
+        ),
+        "adjudication_posture": ADJUDICATION_POSTURE if status == "PASS" else "RECONSIDERATION_ADJUDICATION_FAIL_CLOSED",
+        "counted_lane_recommendation": "KEEP_COUNTED_LANE_CLOSED_PENDING_SEPARATE_LAUNCH_SURFACE",
+        "next_lawful_move": ADJUDICATION_NEXT_MOVE if status == "PASS" else "HOLD_COUNTED_LANE_CLOSED__ADJUDICATION_NOT_EARNED",
+        "current_standing_preserved": {
+            "counted_lane": "CLOSED",
+            "static_baseline": "CANONICAL",
+            "next_in_order": NEXT_IN_ORDER_ID,
+            "next_in_order_status": "BLOCKED_IN_LAW",
+        },
+        "adjudication_questions": {
+            "validated_reconsideration_input_present": True,
+            "material_change_earned": material_change_earned,
+            "semantic_bypass_risk": semantic_bypass_risk,
+            "introduced_new_terminal_adapter": introduced_new_terminal_adapter,
+            "expanded_terminal_adapter_count": expanded_terminal_adapter_count,
+            "combined_terminal_adapter_count": combined_terminal_adapter_count,
+            "candidate_head_is_current_head": candidate_head == current_head,
+            "dual_receipts_are_same_head_fresh": guard_head == candidate_head and hold_state_actual_head == candidate_head,
+            "counted_lane_still_closed": True,
+            "static_baseline_still_canonical": True,
+            "r6_still_next_in_order_blocked": True,
+        },
+        "candidate_summary": {
+            "candidate_lab_head": candidate_head,
+            "combined_terminal_adapters": combined_terminals,
+            "combined_terminal_adapter_count": combined_terminal_adapter_count,
+        },
+        "checks": checks,
+        "non_authorizations": [
+            "No counted reopening is authorized by this receipt alone.",
+            "No B04_R5 rerun launch surface is created by this receipt alone.",
+            "No B04_R5 proof rerun is executed by this receipt alone.",
+            "No learned-router authorization or R6 movement is authorized.",
+            "No lobe, externality, comparative, or commercial widening is authorized.",
+        ],
+        "source_packet_refs": {
+            "reconsideration_input_ref": packet_ref,
+            "current_state_overlay_ref": current_state_overlay_ref,
+            "next_counted_workstream_contract_ref": next_counted_workstream_contract_ref,
+            "resume_blockers_receipt_ref": resume_blockers_receipt_ref,
+            "gate_d_decision_reanchor_packet_ref": gate_d_decision_reanchor_packet_ref,
+        },
+    }
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Validate a lab-only router-readiness reconsideration input against its sanctioned emitter/consumer contract."
@@ -419,8 +627,13 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--candidate-refresh-packet")
     parser.add_argument("--single-path-guard-receipt")
     parser.add_argument("--hold-state-basis-receipt")
+    parser.add_argument("--current-campaign-state-overlay", default="reports/current_campaign_state_overlay.json")
+    parser.add_argument("--next-counted-workstream-contract", default="reports/next_counted_workstream_contract.json")
+    parser.add_argument("--resume-blockers-receipt", default="reports/resume_blockers_receipt.json")
+    parser.add_argument("--gate-d-decision-reanchor-packet", default="reports/gate_d_decision_reanchor_packet.json")
     parser.add_argument("--output", required=True)
     parser.add_argument("--emit-single-path-enforcement-receipt", action="store_true")
+    parser.add_argument("--emit-adjudication-receipt", action="store_true")
     return parser
 
 
@@ -442,9 +655,56 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         return 0 if receipt["status"] == "PASS" else 1
 
     if not str(args.input or "").strip():
-        raise RuntimeError("FAIL_CLOSED: --input is required unless --emit-single-path-enforcement-receipt is set")
+        raise RuntimeError("FAIL_CLOSED: --input is required unless a receipt-only mode is set")
 
     packet_ref = str(args.input)
+    gate_ref = str(args.gate_packet or "")
+    candidate_ref = str(args.candidate_refresh_packet or "")
+    guard_ref = str(args.single_path_guard_receipt or "")
+    hold_state_basis_ref = str(args.hold_state_basis_receipt or "")
+
+    if args.emit_adjudication_receipt:
+        validated_packet = load_validated_router_readiness_reconsideration_input(
+            root=root,
+            packet_ref=packet_ref,
+            gate_packet_ref=gate_ref or None,
+            candidate_refresh_packet_ref=candidate_ref or None,
+            single_path_guard_receipt_ref=guard_ref or None,
+            hold_state_basis_receipt_ref=hold_state_basis_ref or None,
+        )
+        overlay_ref = str(args.current_campaign_state_overlay)
+        next_ref = str(args.next_counted_workstream_contract)
+        resume_ref = str(args.resume_blockers_receipt)
+        reanchor_ref = str(args.gate_d_decision_reanchor_packet)
+        receipt = build_router_readiness_reconsideration_adjudication_receipt(
+            root=root,
+            packet=validated_packet,
+            current_state_overlay=_load_json_dict(_resolve(root, overlay_ref), name="current_campaign_state_overlay"),
+            next_counted_workstream_contract=_load_json_dict(
+                _resolve(root, next_ref),
+                name="next_counted_workstream_contract",
+            ),
+            resume_blockers_receipt=_load_json_dict(_resolve(root, resume_ref), name="resume_blockers_receipt"),
+            gate_d_decision_reanchor_packet=_load_json_dict(
+                _resolve(root, reanchor_ref),
+                name="gate_d_decision_reanchor_packet",
+            ),
+            packet_ref=packet_ref,
+            current_state_overlay_ref=overlay_ref,
+            next_counted_workstream_contract_ref=next_ref,
+            resume_blockers_receipt_ref=resume_ref,
+            gate_d_decision_reanchor_packet_ref=reanchor_ref,
+        )
+        output_path = _resolve(root, str(args.output))
+        write_json_stable(output_path, receipt)
+        summary = {
+            "status": receipt["status"],
+            "adjudication_posture": receipt["adjudication_posture"],
+            "next_lawful_move": receipt["next_lawful_move"],
+        }
+        print(json.dumps(summary, sort_keys=True))
+        return 0 if receipt["status"] == "PASS" else 1
+
     packet = _load_json_dict(_resolve(root, packet_ref), name="router_readiness_reconsideration_input")
     gate_ref = str(args.gate_packet or _source_ref(packet, "gate_packet_ref"))
     candidate_ref = str(args.candidate_refresh_packet or _source_ref(packet, "candidate_refresh_packet_ref"))
