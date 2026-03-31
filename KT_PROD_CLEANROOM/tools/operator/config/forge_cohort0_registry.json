@@ -1,0 +1,207 @@
+{
+  "schema_id": "kt.operator.forge_cohort0_registry.unbound.v1",
+  "registry_id": "KT_OPERATOR_FORGE_COHORT0_V1",
+  "expected_adapter_count": 13,
+  "authoritative_adapter_registry_ref": "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+  "base_snapshot_id": "COHORT0_STAGED_BASE_SNAPSHOT_V1",
+  "base_snapshot_relpath": "snapshots/cohort0/base_snapshot",
+  "dataset_manifest_relpath": "datasets/cohort0_dataset_manifest.json",
+  "default_eval_suite_workspace_relpath": "KT-Codex/packs/KT_CORE_PRESSURE_PACK_v1/pack_manifest.json",
+  "required_contract_refs": [
+    "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+    "KT_PROD_CLEANROOM/governance/kt_organ_contract_v1.json",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.train_manifest.v1.json",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.eval_report.v2.json",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.factory.organ_contract.v1.json",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.global_budget_state.v1.json",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/fl3/kt.hash_manifest.v1.json"
+  ],
+  "default_training_params": {
+    "engine": "stub",
+    "training_mode": "head_only"
+  },
+  "adapters": [
+    {
+      "adapter_id": "lobe.alpha.v1",
+      "output_name": "lobe.alpha.v1",
+      "dataset_relpath": "datasets/lobe.alpha.v1/failures.jsonl",
+      "artifact_relpath": "adapters/lobe.alpha.v1/adapter_bundle.zip",
+      "receipt_paths": {
+        "training": "adapters/lobe.alpha.v1/adapter_training_receipt.json",
+        "reload": "adapters/lobe.alpha.v1/adapter_reload_receipt.json",
+        "eval": "adapters/lobe.alpha.v1/adapter_eval_receipt.json"
+      },
+      "training_params": {
+        "seed": 101
+      }
+    },
+    {
+      "adapter_id": "lobe.architect.v1",
+      "output_name": "lobe.architect.v1",
+      "dataset_relpath": "datasets/lobe.architect.v1/failures.jsonl",
+      "artifact_relpath": "adapters/lobe.architect.v1/adapter_bundle.zip",
+      "receipt_paths": {
+        "training": "adapters/lobe.architect.v1/adapter_training_receipt.json",
+        "reload": "adapters/lobe.architect.v1/adapter_reload_receipt.json",
+        "eval": "adapters/lobe.architect.v1/adapter_eval_receipt.json"
+      },
+      "training_params": {
+        "seed": 102
+      }
+    },
+    {
+      "adapter_id": "lobe.beta.v1",
+      "output_name": "lobe.beta.v1",
+      "dataset_relpath": "datasets/lobe.beta.v1/failures.jsonl",
+      "artifact_relpath": "adapters/lobe.beta.v1/adapter_bundle.zip",
+      "receipt_paths": {
+        "training": "adapters/lobe.beta.v1/adapter_training_receipt.json",
+        "reload": "adapters/lobe.beta.v1/adapter_reload_receipt.json",
+        "eval": "adapters/lobe.beta.v1/adapter_eval_receipt.json"
+      },
+      "training_params": {
+        "seed": 103
+      }
+    },
+    {
+      "adapter_id": "lobe.child.v1",
+      "output_name": "lobe.child.v1",
+      "dataset_relpath": "datasets/lobe.child.v1/failures.jsonl",
+      "artifact_relpath": "adapters/lobe.child.v1/adapter_bundle.zip",
+      "receipt_paths": {
+        "training": "adapters/lobe.child.v1/adapter_training_receipt.json",
+        "reload": "adapters/lobe.child.v1/adapter_reload_receipt.json",
+        "eval": "adapters/lobe.child.v1/adapter_eval_receipt.json"
+      },
+      "training_params": {
+        "seed": 104
+      }
+    },
+    {
+      "adapter_id": "lobe.critic.v1",
+      "output_name": "lobe.critic.v1",
+      "dataset_relpath": "datasets/lobe.critic.v1/failures.jsonl",
+      "artifact_relpath": "adapters/lobe.critic.v1/adapter_bundle.zip",
+      "receipt_paths": {
+        "training": "adapters/lobe.critic.v1/adapter_training_receipt.json",
+        "reload": "adapters/lobe.critic.v1/adapter_reload_receipt.json",
+        "eval": "adapters/lobe.critic.v1/adapter_eval_receipt.json"
+      },
+      "training_params": {
+        "seed": 105
+      }
+    },
+    {
+      "adapter_id": "lobe.p1.v1",
+      "output_name": "lobe.p1.v1",
+      "dataset_relpath": "datasets/lobe.p1.v1/failures.jsonl",
+      "artifact_relpath": "adapters/lobe.p1.v1/adapter_bundle.zip",
+      "receipt_paths": {
+        "training": "adapters/lobe.p1.v1/adapter_training_receipt.json",
+        "reload": "adapters/lobe.p1.v1/adapter_reload_receipt.json",
+        "eval": "adapters/lobe.p1.v1/adapter_eval_receipt.json"
+      },
+      "training_params": {
+        "seed": 106
+      }
+    },
+    {
+      "adapter_id": "lobe.p2.v1",
+      "output_name": "lobe.p2.v1",
+      "dataset_relpath": "datasets/lobe.p2.v1/failures.jsonl",
+      "artifact_relpath": "adapters/lobe.p2.v1/adapter_bundle.zip",
+      "receipt_paths": {
+        "training": "adapters/lobe.p2.v1/adapter_training_receipt.json",
+        "reload": "adapters/lobe.p2.v1/adapter_reload_receipt.json",
+        "eval": "adapters/lobe.p2.v1/adapter_eval_receipt.json"
+      },
+      "training_params": {
+        "seed": 107
+      }
+    },
+    {
+      "adapter_id": "lobe.scout.v1",
+      "output_name": "lobe.scout.v1",
+      "dataset_relpath": "datasets/lobe.scout.v1/failures.jsonl",
+      "artifact_relpath": "adapters/lobe.scout.v1/adapter_bundle.zip",
+      "receipt_paths": {
+        "training": "adapters/lobe.scout.v1/adapter_training_receipt.json",
+        "reload": "adapters/lobe.scout.v1/adapter_reload_receipt.json",
+        "eval": "adapters/lobe.scout.v1/adapter_eval_receipt.json"
+      },
+      "training_params": {
+        "seed": 108
+      }
+    },
+    {
+      "adapter_id": "lobe.auditor.v1",
+      "output_name": "lobe.auditor.v1",
+      "dataset_relpath": "datasets/lobe.auditor.v1/failures.jsonl",
+      "artifact_relpath": "adapters/lobe.auditor.v1/adapter_bundle.zip",
+      "receipt_paths": {
+        "training": "adapters/lobe.auditor.v1/adapter_training_receipt.json",
+        "reload": "adapters/lobe.auditor.v1/adapter_reload_receipt.json",
+        "eval": "adapters/lobe.auditor.v1/adapter_eval_receipt.json"
+      },
+      "training_params": {
+        "seed": 109
+      }
+    },
+    {
+      "adapter_id": "lobe.censor.v1",
+      "output_name": "lobe.censor.v1",
+      "dataset_relpath": "datasets/lobe.censor.v1/failures.jsonl",
+      "artifact_relpath": "adapters/lobe.censor.v1/adapter_bundle.zip",
+      "receipt_paths": {
+        "training": "adapters/lobe.censor.v1/adapter_training_receipt.json",
+        "reload": "adapters/lobe.censor.v1/adapter_reload_receipt.json",
+        "eval": "adapters/lobe.censor.v1/adapter_eval_receipt.json"
+      },
+      "training_params": {
+        "seed": 110
+      }
+    },
+    {
+      "adapter_id": "lobe.muse.v1",
+      "output_name": "lobe.muse.v1",
+      "dataset_relpath": "datasets/lobe.muse.v1/failures.jsonl",
+      "artifact_relpath": "adapters/lobe.muse.v1/adapter_bundle.zip",
+      "receipt_paths": {
+        "training": "adapters/lobe.muse.v1/adapter_training_receipt.json",
+        "reload": "adapters/lobe.muse.v1/adapter_reload_receipt.json",
+        "eval": "adapters/lobe.muse.v1/adapter_eval_receipt.json"
+      },
+      "training_params": {
+        "seed": 111
+      }
+    },
+    {
+      "adapter_id": "lobe.quant.v1",
+      "output_name": "lobe.quant.v1",
+      "dataset_relpath": "datasets/lobe.quant.v1/failures.jsonl",
+      "artifact_relpath": "adapters/lobe.quant.v1/adapter_bundle.zip",
+      "receipt_paths": {
+        "training": "adapters/lobe.quant.v1/adapter_training_receipt.json",
+        "reload": "adapters/lobe.quant.v1/adapter_reload_receipt.json",
+        "eval": "adapters/lobe.quant.v1/adapter_eval_receipt.json"
+      },
+      "training_params": {
+        "seed": 112
+      }
+    },
+    {
+      "adapter_id": "lobe.strategist.v1",
+      "output_name": "lobe.strategist.v1",
+      "dataset_relpath": "datasets/lobe.strategist.v1/failures.jsonl",
+      "artifact_relpath": "adapters/lobe.strategist.v1/adapter_bundle.zip",
+      "receipt_paths": {
+        "training": "adapters/lobe.strategist.v1/adapter_training_receipt.json",
+        "reload": "adapters/lobe.strategist.v1/adapter_reload_receipt.json",
+        "eval": "adapters/lobe.strategist.v1/adapter_eval_receipt.json"
+      },
+      "training_params": {
+        "seed": 113
+      }
+    }
+  ]
+}

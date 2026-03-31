@@ -26,9 +26,10 @@ def sha256_json(obj: Any) -> str:
 def repo_root_from(path: Path) -> Path:
     p = path.resolve()
     for parent in [p] + list(p.parents):
-        if (parent / "KT_PROD_CLEANROOM").is_dir():
+        cleanroom_root = parent / "KT_PROD_CLEANROOM"
+        if (cleanroom_root / "04_PROD_TEMPLE_V2" / "src" / "schemas" / "fl3_suite_registry_schema.py").is_file():
             return parent
-    raise RuntimeError("Unable to locate repo root (expected KT_PROD_CLEANROOM/)")
+    raise RuntimeError("Unable to locate repo root with cleanroom source tree")
 
 
 def read_json(path: Path) -> Any:
@@ -37,4 +38,3 @@ def read_json(path: Path) -> Any:
 
 def iter_paths_sorted(paths: Iterable[Path]) -> Tuple[Path, ...]:
     return tuple(sorted((p for p in paths), key=lambda x: x.as_posix()))
-

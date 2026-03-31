@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pytest
 
+from tools.operator.kt_cli import _repo_root_from
 from tools.verification.seal_mode_test_roots import group_root, unique_run_dir
 
 
@@ -30,6 +31,12 @@ def _base_env(repo_root: Path) -> dict[str, str]:
 
 def _git_status(repo_root: Path) -> str:
     return subprocess.check_output(["git", "status", "--porcelain=v1"], cwd=str(repo_root), text=True)
+
+
+def test_kt_cli_repo_root_resolution_prefers_parent_with_cleanroom_source_tree() -> None:
+    repo_root = _repo_root()
+    cli_file = repo_root / "KT_PROD_CLEANROOM" / "tools" / "operator" / "kt_cli.py"
+    assert _repo_root_from(cli_file) == repo_root
 
 
 def test_kt_cli_status_smoke_without_external_pythonpath() -> None:
