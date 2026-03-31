@@ -101,6 +101,33 @@ def test_reconsideration_adjudication_receipt_passes_on_clean_input(tmp_path: Pa
     assert receipt["next_lawful_move"] == validate.ADJUDICATION_NEXT_MOVE
 
 
+def test_reconsideration_adjudication_receipt_uses_fourth_rerun_posture_for_four_terminal_candidate(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(validate, "_git_head", lambda _root: "HEAD_X")
+    packet = _reconsideration_input()
+    packet["candidate_summary"]["combined_terminal_adapters"].append("lobe.research.specialist.v1")
+    packet["candidate_summary"]["combined_terminal_adapter_count"] = 4
+
+    receipt = validate.build_router_readiness_reconsideration_adjudication_receipt(
+        root=tmp_path,
+        packet=packet,
+        current_state_overlay=_current_state_overlay(),
+        next_counted_workstream_contract=_next_contract(),
+        resume_blockers_receipt=_resume_blockers(),
+        gate_d_decision_reanchor_packet=_reanchor(),
+        packet_ref="input.json",
+        current_state_overlay_ref="overlay.json",
+        next_counted_workstream_contract_ref="next.json",
+        resume_blockers_receipt_ref="resume.json",
+        gate_d_decision_reanchor_packet_ref="reanchor.json",
+    )
+
+    assert receipt["status"] == "PASS"
+    assert receipt["adjudication_posture"] == validate.POST_THIRD_RERUN_ADJUDICATION_POSTURE
+    assert receipt["next_lawful_move"] == validate.POST_THIRD_RERUN_ADJUDICATION_NEXT_MOVE
+
+
 def test_reconsideration_adjudication_receipt_fails_when_overlay_not_frozen(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(validate, "_git_head", lambda _root: "HEAD_X")
     overlay = _current_state_overlay()

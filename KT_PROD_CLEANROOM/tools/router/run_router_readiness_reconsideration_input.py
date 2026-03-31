@@ -12,6 +12,8 @@ from tools.router.run_verified_entrant_lab_scorecard import _load_json_dict, _re
 RECONSIDERATION_INPUT_SCHEMA_ID = "kt.router_readiness_reconsideration_input.v1"
 LAB_RECONSIDERATION_GATE_PACKET_SCHEMA_ID = "kt.lab_readiness_reconsideration_gate_packet.v1"
 LATER_LAB_READINESS_REFRESH_SCHEMA_ID = "kt.later_lab_readiness_refresh_packet.v1"
+POST_THIRD_RERUN_MATERIAL_CHANGE_GATE_PACKET_SCHEMA_ID = "kt.post_third_rerun_material_change_gate_packet.v1"
+FOURTH_TERMINAL_LAB_READINESS_REFRESH_SCHEMA_ID = "kt.fourth_terminal_lab_readiness_refresh_packet.v1"
 SINGLE_SANCTIONED_PATH_CONTRACT_SCHEMA_ID = "kt.router_readiness_reconsideration_input.single_sanctioned_path_contract.v1"
 SINGLE_PATH_ENFORCEMENT_RECEIPT_SCHEMA_ID = "kt.router_readiness_reconsideration_input_single_path_enforcement_receipt.v1"
 HOLD_STATE_BASIS_VALIDATION_RECEIPT_SCHEMA_ID = "kt.hold_state_surface_basis_validation_receipt.v1"
@@ -25,14 +27,66 @@ SANCTIONED_SCHEMA_TOUCHERS = sorted(
         SANCTIONED_EMITTER_ENTRYPOINT,
     ]
 )
+ALLOWED_GATE_PACKET_SCHEMA_IDS = {
+    LAB_RECONSIDERATION_GATE_PACKET_SCHEMA_ID,
+    POST_THIRD_RERUN_MATERIAL_CHANGE_GATE_PACKET_SCHEMA_ID,
+}
+ALLOWED_CANDIDATE_REFRESH_PACKET_SCHEMA_IDS = {
+    LATER_LAB_READINESS_REFRESH_SCHEMA_ID,
+    FOURTH_TERMINAL_LAB_READINESS_REFRESH_SCHEMA_ID,
+}
 
 
 def _git_head(root: Path) -> str:
     return subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
 
 
+def _gate_packet_schema_id(packet: Dict[str, Any]) -> str:
+    return str(packet.get("schema_id", "")).strip()
+
+
+def _candidate_refresh_packet_schema_id(packet: Dict[str, Any]) -> str:
+    return str(packet.get("schema_id", "")).strip()
+
+
+def _candidate_refresh_heads(packet: Dict[str, Any]) -> set[str]:
+    heads: set[str] = set()
+    source_lab_head = str(packet.get("source_lab_head", "")).strip()
+    if source_lab_head:
+        heads.add(source_lab_head)
+
+    source_lab_heads = packet.get("source_lab_heads")
+    if isinstance(source_lab_heads, dict):
+        for value in source_lab_heads.values():
+            head = str(value).strip()
+            if head:
+                heads.add(head)
+    return heads
+
+
+def _candidate_primary_head(packet: Dict[str, Any]) -> str:
+    source_lab_head = str(packet.get("source_lab_head", "")).strip()
+    if source_lab_head:
+        return source_lab_head
+
+    source_lab_heads = packet.get("source_lab_heads")
+    if isinstance(source_lab_heads, dict):
+        code_head = str(source_lab_heads.get("code_terminal_lab_head", "")).strip()
+        if code_head:
+            return code_head
+
+    heads = sorted(_candidate_refresh_heads(packet))
+    return heads[0] if heads else ""
+
+
+def _same_head_as_ceiling_value(questions: Dict[str, Any]) -> bool:
+    if "same_head_as_ceiling" in questions:
+        return bool(questions.get("same_head_as_ceiling", False))
+    return bool(questions.get("same_head_as_post_rerun_ceiling", False))
+
+
 def _validate_gate_packet(packet: Dict[str, Any]) -> None:
-    if str(packet.get("schema_id", "")).strip() != LAB_RECONSIDERATION_GATE_PACKET_SCHEMA_ID:
+    if _gate_packet_schema_id(packet) not in ALLOWED_GATE_PACKET_SCHEMA_IDS:
         raise RuntimeError("FAIL_CLOSED: lab readiness reconsideration gate packet schema mismatch")
     if str(packet.get("mode", "")).strip() != "LAB_ONLY_NONCANONICAL":
         raise RuntimeError("FAIL_CLOSED: lab readiness reconsideration gate packet mode mismatch")
@@ -41,7 +95,7 @@ def _validate_gate_packet(packet: Dict[str, Any]) -> None:
 
 
 def _validate_refresh_packet(packet: Dict[str, Any]) -> None:
-    if str(packet.get("schema_id", "")).strip() != LATER_LAB_READINESS_REFRESH_SCHEMA_ID:
+    if _candidate_refresh_packet_schema_id(packet) not in ALLOWED_CANDIDATE_REFRESH_PACKET_SCHEMA_IDS:
         raise RuntimeError("FAIL_CLOSED: later lab readiness refresh packet schema mismatch")
     if str(packet.get("mode", "")).strip() != "LAB_ONLY_NONCANONICAL":
         raise RuntimeError("FAIL_CLOSED: later lab readiness refresh packet mode mismatch")
@@ -83,14 +137,7 @@ def _validate_single_path_guard_receipt(
     if guard_head != str(current_git_head).strip():
         raise RuntimeError("FAIL_CLOSED: single-path guard is not fresh on current candidate head")
 
-    source_heads = candidate_refresh_packet.get("source_lab_heads")
-    if not isinstance(source_heads, dict):
-        raise RuntimeError("FAIL_CLOSED: candidate refresh source heads missing")
-    candidate_heads = {
-        str(source_heads.get("code_terminal_lab_head", "")).strip(),
-        str(source_heads.get("math_terminal_lab_head", "")).strip(),
-    }
-    candidate_heads = {item for item in candidate_heads if item}
+    candidate_heads = _candidate_refresh_heads(candidate_refresh_packet)
     if not candidate_heads:
         raise RuntimeError("FAIL_CLOSED: candidate refresh source heads empty")
     if candidate_heads != {guard_head}:
@@ -161,16 +208,17 @@ def build_router_readiness_reconsideration_input(
 
     questions = gate_packet.get("questions")
     source_refs = gate_packet.get("source_packet_refs")
-    candidate_heads = candidate_refresh_packet.get("source_lab_heads")
     candidate_terminals = candidate_refresh_packet.get("terminal_summary")
     if not isinstance(questions, dict):
         raise RuntimeError("FAIL_CLOSED: gate packet questions missing")
     if not isinstance(source_refs, dict):
         raise RuntimeError("FAIL_CLOSED: gate packet source refs missing")
-    if not isinstance(candidate_heads, dict):
-        raise RuntimeError("FAIL_CLOSED: candidate refresh source heads missing")
     if not isinstance(candidate_terminals, dict):
         raise RuntimeError("FAIL_CLOSED: candidate refresh terminal summary missing")
+
+    gate_schema_id = _gate_packet_schema_id(gate_packet)
+    candidate_refresh_schema_id = _candidate_refresh_packet_schema_id(candidate_refresh_packet)
+    candidate_head = _candidate_primary_head(candidate_refresh_packet)
 
     expected_candidate_ref = str(source_refs.get("candidate_refresh_packet_ref", "")).strip().lower()
     provided_candidate_ref = str(candidate_refresh_packet_ref).strip().lower()
@@ -204,8 +252,8 @@ def build_router_readiness_reconsideration_input(
             "sanctioned_consumer_validator_entrypoint": SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT,
             "required_single_path_guard_receipt_schema_id": SINGLE_PATH_ENFORCEMENT_RECEIPT_SCHEMA_ID,
             "required_hold_state_basis_receipt_schema_id": HOLD_STATE_BASIS_VALIDATION_RECEIPT_SCHEMA_ID,
-            "required_gate_packet_schema_id": LAB_RECONSIDERATION_GATE_PACKET_SCHEMA_ID,
-            "required_candidate_refresh_packet_schema_id": LATER_LAB_READINESS_REFRESH_SCHEMA_ID,
+            "required_gate_packet_schema_id": gate_schema_id,
+            "required_candidate_refresh_packet_schema_id": candidate_refresh_schema_id,
             "consumer_contract_rule": (
                 "Any consumer must reject this packet unless it came through the sanctioned emitter path and is validated "
                 "through the sanctioned operator validator named in this contract."
@@ -222,7 +270,7 @@ def build_router_readiness_reconsideration_input(
         "gate_requirements_satisfied": {
             "material_change_earned": True,
             "semantic_bypass_risk": False,
-            "same_head_as_ceiling": bool(questions.get("same_head_as_ceiling", False)),
+            "same_head_as_ceiling": _same_head_as_ceiling_value(questions),
             "introduced_new_terminal_adapter": bool(questions.get("introduced_new_terminal_adapter", False)),
             "expanded_terminal_adapter_count": bool(questions.get("expanded_terminal_adapter_count", False)),
             "introduced_new_route_pair": bool(questions.get("introduced_new_route_pair", False)),
@@ -238,7 +286,7 @@ def build_router_readiness_reconsideration_input(
         "single_path_guard_summary": single_path_guard_summary,
         "hold_state_basis_summary": hold_state_basis_summary,
         "candidate_summary": {
-            "candidate_lab_head": str(candidate_heads.get("code_terminal_lab_head", "")).strip(),
+            "candidate_lab_head": candidate_head,
             "combined_terminal_adapters": list(candidate_terminals.get("combined_terminal_adapters", [])),
             "combined_terminal_adapter_count": int(candidate_terminals.get("combined_terminal_adapter_count", 0)),
         },

@@ -7,7 +7,9 @@ from pathlib import Path
 
 from tools.operator import router_readiness_reconsideration_input_validate as validate
 from tools.router.run_router_readiness_reconsideration_input import (
+    FOURTH_TERMINAL_LAB_READINESS_REFRESH_SCHEMA_ID,
     HOLD_STATE_BASIS_VALIDATION_RECEIPT_SCHEMA_ID,
+    POST_THIRD_RERUN_MATERIAL_CHANGE_GATE_PACKET_SCHEMA_ID,
     SINGLE_PATH_ENFORCEMENT_RECEIPT_SCHEMA_ID,
     SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT,
     SANCTIONED_EMITTER_ENTRYPOINT,
@@ -23,30 +25,61 @@ def _repo_head() -> str:
     return subprocess.check_output(["git", "-C", str(_repo_root()), "rev-parse", "HEAD"], text=True).strip()
 
 
-def _gate_packet(*, material_change: bool = True, semantic_bypass: bool = False, candidate_ref: str = "candidate.json") -> dict:
+def _gate_packet(
+    *,
+    material_change: bool = True,
+    semantic_bypass: bool = False,
+    candidate_ref: str = "candidate.json",
+    schema_id: str = "kt.lab_readiness_reconsideration_gate_packet.v1",
+) -> dict:
+    questions = {
+        "material_change_earned": material_change,
+        "semantic_bypass_risk": semantic_bypass,
+        "introduced_new_terminal_adapter": True,
+        "expanded_terminal_adapter_count": True,
+        "introduced_new_route_pair": True,
+        "expanded_route_pair_count": True,
+    }
+    if schema_id == POST_THIRD_RERUN_MATERIAL_CHANGE_GATE_PACKET_SCHEMA_ID:
+        questions["same_head_as_post_rerun_ceiling"] = False
+    else:
+        questions["same_head_as_ceiling"] = False
     return {
-        "schema_id": "kt.lab_readiness_reconsideration_gate_packet.v1",
+        "schema_id": schema_id,
         "mode": "LAB_ONLY_NONCANONICAL",
         "status": "PASS",
-        "questions": {
-            "material_change_earned": material_change,
-            "semantic_bypass_risk": semantic_bypass,
-            "same_head_as_ceiling": False,
-            "introduced_new_terminal_adapter": True,
-            "expanded_terminal_adapter_count": True,
-            "introduced_new_route_pair": True,
-            "expanded_route_pair_count": True,
-        },
+        "questions": questions,
         "source_packet_refs": {
             "candidate_refresh_packet_ref": candidate_ref,
         },
     }
 
 
-def _candidate_refresh() -> dict:
+def _candidate_refresh(*, schema_id: str = "kt.later_lab_readiness_refresh_packet.v1") -> dict:
     head = _repo_head()
+    if schema_id == FOURTH_TERMINAL_LAB_READINESS_REFRESH_SCHEMA_ID:
+        return {
+            "schema_id": schema_id,
+            "mode": "LAB_ONLY_NONCANONICAL",
+            "status": "PASS",
+            "source_lab_head": head,
+            "source_lab_heads": {
+                "topology_breadth_code_packet": head,
+                "topology_breadth_writer_math_packet": head,
+                "topology_breadth_writer_research_packet": head,
+            },
+            "terminal_summary": {
+                "combined_terminal_adapters": [
+                    "lobe.code.specialist.v1",
+                    "lobe.math.specialist.v1",
+                    "lobe.writer.specialist.v1",
+                    "lobe.research.specialist.v1",
+                ],
+                "combined_terminal_adapter_count": 4,
+            },
+        }
     return {
-        "schema_id": "kt.later_lab_readiness_refresh_packet.v1",
+        "schema_id": schema_id,
         "mode": "LAB_ONLY_NONCANONICAL",
         "status": "PASS",
         "source_lab_heads": {
@@ -138,6 +171,46 @@ def test_reconsideration_input_validation_receipt_passes_for_clean_packet() -> N
         SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT,
         SANCTIONED_EMITTER_ENTRYPOINT,
     ]
+
+
+def test_reconsideration_input_validation_receipt_passes_for_post_third_rerun_pair() -> None:
+    root = _repo_root()
+    packet = build_router_readiness_reconsideration_input(
+        current_git_head=_repo_head(),
+        gate_packet=_gate_packet(
+            material_change=True,
+            semantic_bypass=False,
+            schema_id=POST_THIRD_RERUN_MATERIAL_CHANGE_GATE_PACKET_SCHEMA_ID,
+        ),
+        candidate_refresh_packet=_candidate_refresh(schema_id=FOURTH_TERMINAL_LAB_READINESS_REFRESH_SCHEMA_ID),
+        single_path_guard_receipt=_single_path_guard_receipt(),
+        hold_state_basis_receipt=_hold_state_basis_receipt(),
+        gate_packet_ref="gate.json",
+        candidate_refresh_packet_ref="candidate.json",
+        single_path_guard_receipt_ref="guard.json",
+        hold_state_basis_receipt_ref="hold_state_basis.json",
+    )
+
+    receipt = validate.build_router_readiness_reconsideration_input_validation_receipt(
+        root=root,
+        packet=packet,
+        gate_packet=_gate_packet(
+            material_change=True,
+            semantic_bypass=False,
+            schema_id=POST_THIRD_RERUN_MATERIAL_CHANGE_GATE_PACKET_SCHEMA_ID,
+        ),
+        candidate_refresh_packet=_candidate_refresh(schema_id=FOURTH_TERMINAL_LAB_READINESS_REFRESH_SCHEMA_ID),
+        single_path_guard_receipt=_single_path_guard_receipt(),
+        hold_state_basis_receipt=_hold_state_basis_receipt(),
+        packet_ref="reconsideration.json",
+        gate_packet_ref="gate.json",
+        candidate_refresh_packet_ref="candidate.json",
+        single_path_guard_receipt_ref="guard.json",
+        hold_state_basis_receipt_ref="hold_state_basis.json",
+    )
+
+    assert receipt["status"] == "PASS"
+    assert receipt["detected_schema_emitters"] == [SANCTIONED_EMITTER_ENTRYPOINT]
 
 
 def test_reconsideration_input_validation_receipt_fails_on_contract_tamper() -> None:

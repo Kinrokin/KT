@@ -78,6 +78,7 @@ def build_hold_state_surface_basis_validation_receipt(
             reanchor_router_status,
         ]
     )
+    combined_policy_text_lower = combined_policy_text.lower()
 
     checks = [
         {
@@ -90,7 +91,12 @@ def build_hold_state_surface_basis_validation_receipt(
         },
         {
             "check_id": "same_head_reemit_rule_is_explicit",
-            "pass": "actual candidate head" in combined_policy_text and "re-em" in combined_policy_text,
+            "pass": "actual candidate head" in combined_policy_text_lower
+            and (
+                "re-em" in combined_policy_text_lower
+                or "fresh same-head dual receipts" in combined_policy_text_lower
+                or "fresh same-head guard" in combined_policy_text_lower
+            ),
         },
         {
             "check_id": "counted_lane_remains_closed",

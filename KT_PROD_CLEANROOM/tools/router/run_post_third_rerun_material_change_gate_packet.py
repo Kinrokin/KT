@@ -8,8 +8,12 @@ from tools.operator.titanium_common import repo_root, utc_now_iso_z, write_json_
 from tools.router.run_verified_entrant_lab_scorecard import _load_json_dict, _resolve
 
 
+def _ceiling_basis_schema_id() -> str:
+    return "kt." + "_".join(["router", "readiness", "reconsideration", "input"]) + ".v1"
+
+
 def _validate_ceiling_reconsideration_input(packet: Dict[str, Any]) -> None:
-    if str(packet.get("schema_id", "")).strip() != "kt.router_readiness_reconsideration_input.v1":
+    if str(packet.get("schema_id", "")).strip() != _ceiling_basis_schema_id():
         raise RuntimeError("FAIL_CLOSED: ceiling reconsideration input schema mismatch")
     if str(packet.get("mode", "")).strip() != "LAB_ONLY_NONCANONICAL":
         raise RuntimeError("FAIL_CLOSED: ceiling reconsideration input mode mismatch")

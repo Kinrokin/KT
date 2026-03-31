@@ -9,13 +9,21 @@ from typing import Any, Dict, List, Optional, Sequence
 
 from tools.operator.titanium_common import repo_root, utc_now_iso_z, write_json_stable
 from tools.router.run_router_readiness_reconsideration_input import (
+    ALLOWED_CANDIDATE_REFRESH_PACKET_SCHEMA_IDS,
+    ALLOWED_GATE_PACKET_SCHEMA_IDS,
+    FOURTH_TERMINAL_LAB_READINESS_REFRESH_SCHEMA_ID,
     HOLD_STATE_BASIS_VALIDATION_RECEIPT_SCHEMA_ID,
     LAB_RECONSIDERATION_GATE_PACKET_SCHEMA_ID,
     LATER_LAB_READINESS_REFRESH_SCHEMA_ID,
+    POST_THIRD_RERUN_MATERIAL_CHANGE_GATE_PACKET_SCHEMA_ID,
     RECONSIDERATION_INPUT_SCHEMA_ID,
     SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT,
     SANCTIONED_EMITTER_ENTRYPOINT,
     SINGLE_SANCTIONED_PATH_CONTRACT_SCHEMA_ID,
+    _candidate_primary_head,
+    _candidate_refresh_heads,
+    _candidate_refresh_packet_schema_id,
+    _gate_packet_schema_id,
 )
 from tools.router.run_verified_entrant_lab_scorecard import _load_json_dict, _resolve
 
@@ -32,8 +40,12 @@ FROZEN_INTER_GATE_STATE = "GATE_D_LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COU
 FROZEN_BLOCKING_STATE = "LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY"
 FROZEN_NEXT_LAWFUL_MOVE = "HOLD_LAB_READINESS_CEILING_AND_RECONSIDERATION_GATE__COUNTED_LANE_CLOSED__R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF"
 NEXT_IN_ORDER_ID = "B04_R6_LEARNED_ROUTER_AUTHORIZATION"
-ADJUDICATION_POSTURE = "READY_FOR_SEPARATE_COUNTED_R5_RERUN_LAUNCH_SURFACE_CONSIDERATION"
-ADJUDICATION_NEXT_MOVE = "CONSIDER_B04_R5_THIRD_SAME_HEAD_RERUN_LAUNCH_SURFACE_ONLY"
+LEGACY_ADJUDICATION_POSTURE = "READY_FOR_SEPARATE_COUNTED_R5_RERUN_LAUNCH_SURFACE_CONSIDERATION"
+LEGACY_ADJUDICATION_NEXT_MOVE = "CONSIDER_B04_R5_THIRD_SAME_HEAD_RERUN_LAUNCH_SURFACE_ONLY"
+POST_THIRD_RERUN_ADJUDICATION_POSTURE = "READY_FOR_SEPARATE_COUNTED_R5_FOURTH_SAME_HEAD_RERUN_LAUNCH_SURFACE_CONSIDERATION"
+POST_THIRD_RERUN_ADJUDICATION_NEXT_MOVE = "CONSIDER_B04_R5_FOURTH_SAME_HEAD_RERUN_LAUNCH_SURFACE_ONLY"
+ADJUDICATION_POSTURE = LEGACY_ADJUDICATION_POSTURE
+ADJUDICATION_NEXT_MOVE = LEGACY_ADJUDICATION_NEXT_MOVE
 
 
 def _git_head(root: Path) -> str:
@@ -50,7 +62,7 @@ def _validate_packet_schema(packet: Dict[str, Any]) -> None:
 
 
 def _validate_gate_packet(packet: Dict[str, Any]) -> None:
-    if str(packet.get("schema_id", "")).strip() != LAB_RECONSIDERATION_GATE_PACKET_SCHEMA_ID:
+    if _gate_packet_schema_id(packet) not in ALLOWED_GATE_PACKET_SCHEMA_IDS:
         raise RuntimeError("FAIL_CLOSED: lab readiness reconsideration gate packet schema mismatch")
     if str(packet.get("mode", "")).strip() != "LAB_ONLY_NONCANONICAL":
         raise RuntimeError("FAIL_CLOSED: lab readiness reconsideration gate packet mode mismatch")
@@ -59,7 +71,7 @@ def _validate_gate_packet(packet: Dict[str, Any]) -> None:
 
 
 def _validate_candidate_refresh_packet(packet: Dict[str, Any]) -> None:
-    if str(packet.get("schema_id", "")).strip() != LATER_LAB_READINESS_REFRESH_SCHEMA_ID:
+    if _candidate_refresh_packet_schema_id(packet) not in ALLOWED_CANDIDATE_REFRESH_PACKET_SCHEMA_IDS:
         raise RuntimeError("FAIL_CLOSED: later lab readiness refresh packet schema mismatch")
     if str(packet.get("mode", "")).strip() != "LAB_ONLY_NONCANONICAL":
         raise RuntimeError("FAIL_CLOSED: later lab readiness refresh packet mode mismatch")
@@ -137,6 +149,29 @@ def _validate_reanchor_for_reconsideration_adjudication(packet: Dict[str, Any]) 
         raise RuntimeError("FAIL_CLOSED: reanchor next lawful move mismatch for frozen reconsideration hold")
 
 
+def _resolve_adjudication_outcome(packet: Dict[str, Any]) -> Dict[str, str]:
+    gate_requirements = packet.get("gate_requirements_satisfied")
+    candidate_summary = packet.get("candidate_summary")
+    if not isinstance(gate_requirements, dict):
+        raise RuntimeError("FAIL_CLOSED: reconsideration input gate requirements missing")
+    if not isinstance(candidate_summary, dict):
+        raise RuntimeError("FAIL_CLOSED: reconsideration input candidate summary missing")
+
+    combined_terminal_adapter_count = int(candidate_summary.get("combined_terminal_adapter_count", 0))
+    introduced_new_terminal_adapter = bool(gate_requirements.get("introduced_new_terminal_adapter", False))
+    expanded_terminal_adapter_count = bool(gate_requirements.get("expanded_terminal_adapter_count", False))
+
+    if introduced_new_terminal_adapter and expanded_terminal_adapter_count and combined_terminal_adapter_count >= 4:
+        return {
+            "adjudication_posture": POST_THIRD_RERUN_ADJUDICATION_POSTURE,
+            "next_lawful_move": POST_THIRD_RERUN_ADJUDICATION_NEXT_MOVE,
+        }
+    return {
+        "adjudication_posture": LEGACY_ADJUDICATION_POSTURE,
+        "next_lawful_move": LEGACY_ADJUDICATION_NEXT_MOVE,
+    }
+
+
 def _source_ref(packet: Dict[str, Any], key: str) -> str:
     source_refs = packet.get("source_packet_refs")
     if not isinstance(source_refs, dict):
@@ -147,8 +182,25 @@ def _source_ref(packet: Dict[str, Any], key: str) -> str:
     return value
 
 
+def _tools_root(root: Path) -> Path:
+    nested_tools_root = root / "KT_PROD_CLEANROOM" / "tools"
+    if nested_tools_root.exists():
+        return nested_tools_root
+    direct_tools_root = root / "tools"
+    if direct_tools_root.exists():
+        return direct_tools_root
+    raise RuntimeError("FAIL_CLOSED: could not locate tools root for reconsideration-path enforcement")
+
+
+def _normalized_tool_path(root: Path, path: Path) -> str:
+    relative = path.relative_to(root).as_posix()
+    if root.name == "KT_PROD_CLEANROOM":
+        return f"KT_PROD_CLEANROOM/{relative}"
+    return relative
+
+
 def _detect_schema_emitters(root: Path) -> List[str]:
-    tools_root = root / "KT_PROD_CLEANROOM" / "tools"
+    tools_root = _tools_root(root)
     emitters: List[str] = []
     for path in tools_root.rglob("*.py"):
         if path.name == "__init__.py" or "__pycache__" in path.parts:
@@ -171,19 +223,19 @@ def _detect_schema_emitters(root: Path) -> List[str]:
             if emits_schema:
                 break
         if emits_schema:
-            emitters.append(path.relative_to(root).as_posix())
+            emitters.append(_normalized_tool_path(root, path))
     return sorted(set(emitters))
 
 
 def _detect_schema_touchers(root: Path) -> List[str]:
-    tools_root = root / "KT_PROD_CLEANROOM" / "tools"
+    tools_root = _tools_root(root)
     touchers: List[str] = []
     for path in tools_root.rglob("*.py"):
         if path.name == "__init__.py" or "__pycache__" in path.parts:
             continue
         text = path.read_text(encoding="utf-8")
         if RECONSIDERATION_INPUT_SCHEMA_ID in text or "router_readiness_reconsideration_input" in text:
-            touchers.append(path.relative_to(root).as_posix())
+            touchers.append(_normalized_tool_path(root, path))
     return sorted(set(touchers))
 
 
@@ -303,7 +355,6 @@ def build_router_readiness_reconsideration_input_validation_receipt(
     packet_contract = packet.get("single_sanctioned_path_contract")
     producer_identity = packet.get("producer_identity")
     packet_requirements = packet.get("gate_requirements_satisfied")
-    candidate_heads = candidate_refresh_packet.get("source_lab_heads")
     candidate_terminals = candidate_refresh_packet.get("terminal_summary")
     gate_questions = gate_packet.get("questions")
     gate_source_refs = gate_packet.get("source_packet_refs")
@@ -315,8 +366,6 @@ def build_router_readiness_reconsideration_input_validation_receipt(
         raise RuntimeError("FAIL_CLOSED: reconsideration input producer identity missing")
     if not isinstance(packet_requirements, dict):
         raise RuntimeError("FAIL_CLOSED: reconsideration input gate requirements missing")
-    if not isinstance(candidate_heads, dict):
-        raise RuntimeError("FAIL_CLOSED: candidate refresh source_lab_heads missing")
     if not isinstance(candidate_terminals, dict):
         raise RuntimeError("FAIL_CLOSED: candidate refresh terminal_summary missing")
     if not isinstance(gate_questions, dict):
@@ -334,10 +383,12 @@ def build_router_readiness_reconsideration_input_validation_receipt(
     packet_candidate_ref = _source_ref(packet, "candidate_refresh_packet_ref")
     packet_guard_ref = _source_ref(packet, "single_path_guard_receipt_ref")
     packet_hold_state_basis_ref = _source_ref(packet, "hold_state_basis_receipt_ref")
+    gate_schema_id = _gate_packet_schema_id(gate_packet)
+    candidate_refresh_schema_id = _candidate_refresh_packet_schema_id(candidate_refresh_packet)
     candidate_adapters = list(candidate_terminals.get("combined_terminal_adapters", []))
     candidate_adapter_count = int(candidate_terminals.get("combined_terminal_adapter_count", 0))
-    candidate_head = str(candidate_heads.get("code_terminal_lab_head", "")).strip()
-    math_head = str(candidate_heads.get("math_terminal_lab_head", "")).strip()
+    candidate_head = _candidate_primary_head(candidate_refresh_packet)
+    candidate_heads = _candidate_refresh_heads(candidate_refresh_packet)
     guard_head = str(single_path_guard_receipt.get("current_git_head", "")).strip()
     hold_state_actual_head = str(hold_state_basis_receipt.get("actual_repo_head", "")).strip()
     hold_state_basis_head = str(hold_state_basis_receipt.get("tracked_surface_basis_head", "")).strip()
@@ -360,9 +411,9 @@ def build_router_readiness_reconsideration_input_validation_receipt(
             and str(packet_contract.get("required_hold_state_basis_receipt_schema_id", "")).strip()
             == HOLD_STATE_BASIS_VALIDATION_RECEIPT_SCHEMA_ID
             and str(packet_contract.get("required_gate_packet_schema_id", "")).strip()
-            == LAB_RECONSIDERATION_GATE_PACKET_SCHEMA_ID
+            == gate_schema_id
             and str(packet_contract.get("required_candidate_refresh_packet_schema_id", "")).strip()
-            == LATER_LAB_READINESS_REFRESH_SCHEMA_ID,
+            == candidate_refresh_schema_id,
         },
         {
             "check_id": "producer_identity_matches_sanctioned_emitter",
@@ -390,15 +441,15 @@ def build_router_readiness_reconsideration_input_validation_receipt(
         {
             "check_id": "candidate_summary_matches_candidate_refresh_packet",
             "pass": str(packet.get("candidate_summary", {}).get("candidate_lab_head", "")).strip()
-            == str(candidate_heads.get("code_terminal_lab_head", "")).strip()
+            == candidate_head
             and list(packet.get("candidate_summary", {}).get("combined_terminal_adapters", [])) == candidate_adapters
             and int(packet.get("candidate_summary", {}).get("combined_terminal_adapter_count", 0)) == candidate_adapter_count,
         },
         {
             "check_id": "single_path_guard_receipt_is_same_head_fresh",
             "pass": guard_head == current_head
-            and guard_head == candidate_head
-            and (not math_head or guard_head == math_head)
+            and bool(candidate_heads)
+            and candidate_heads == {guard_head}
             and str(single_path_guard_receipt.get("subject_head", "")).strip() == guard_head,
         },
         {
@@ -508,6 +559,7 @@ def build_router_readiness_reconsideration_adjudication_receipt(
     if not introduced_new_terminal_adapter or not expanded_terminal_adapter_count:
         raise RuntimeError("FAIL_CLOSED: reconsideration adjudication requires expanded terminal diversity")
 
+    adjudication_outcome = _resolve_adjudication_outcome(packet)
     combined_terminals = [
         str(item).strip()
         for item in candidate_summary.get("combined_terminal_adapters", [])
@@ -573,9 +625,13 @@ def build_router_readiness_reconsideration_adjudication_receipt(
             "does not relaunch R5, does not earn router superiority, and cannot unlock R6. Its only positive outcome is whether a "
             "separate counted R5 rerun launch surface may now be considered."
         ),
-        "adjudication_posture": ADJUDICATION_POSTURE if status == "PASS" else "RECONSIDERATION_ADJUDICATION_FAIL_CLOSED",
+        "adjudication_posture": (
+            adjudication_outcome["adjudication_posture"] if status == "PASS" else "RECONSIDERATION_ADJUDICATION_FAIL_CLOSED"
+        ),
         "counted_lane_recommendation": "KEEP_COUNTED_LANE_CLOSED_PENDING_SEPARATE_LAUNCH_SURFACE",
-        "next_lawful_move": ADJUDICATION_NEXT_MOVE if status == "PASS" else "HOLD_COUNTED_LANE_CLOSED__ADJUDICATION_NOT_EARNED",
+        "next_lawful_move": (
+            adjudication_outcome["next_lawful_move"] if status == "PASS" else "HOLD_COUNTED_LANE_CLOSED__ADJUDICATION_NOT_EARNED"
+        ),
         "current_standing_preserved": {
             "counted_lane": "CLOSED",
             "static_baseline": "CANONICAL",
