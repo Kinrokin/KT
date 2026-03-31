@@ -37,8 +37,23 @@ SANCTIONED_SCHEMA_TOUCHERS = sorted(
 SINGLE_PATH_ENFORCEMENT_RECEIPT_SCHEMA_ID = "kt.router_readiness_reconsideration_input_single_path_enforcement_receipt.v1"
 RECONSIDERATION_ADJUDICATION_RECEIPT_SCHEMA_ID = "kt.router_readiness_reconsideration_adjudication_receipt.v1"
 FROZEN_INTER_GATE_STATE = "GATE_D_LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED"
+POST_THIRD_RERUN_INTER_GATE_STATE = "GATE_D_THIRD_COUNTED_R5_RERUN_EXECUTED_STATIC_HOLD__COUNTED_LANE_CLOSED"
+ALLOWED_RECONSIDERATION_SOURCE_INTER_GATE_STATES = {
+    FROZEN_INTER_GATE_STATE,
+    POST_THIRD_RERUN_INTER_GATE_STATE,
+}
 FROZEN_BLOCKING_STATE = "LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY"
+POST_THIRD_RERUN_BLOCKING_STATE = "THIRD_COUNTED_R5_RERUN_EXECUTED_STATIC_HOLD__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY"
+ALLOWED_RECONSIDERATION_SOURCE_BLOCKING_STATES = {
+    FROZEN_BLOCKING_STATE,
+    POST_THIRD_RERUN_BLOCKING_STATE,
+}
 FROZEN_NEXT_LAWFUL_MOVE = "HOLD_LAB_READINESS_CEILING_AND_RECONSIDERATION_GATE__COUNTED_LANE_CLOSED__R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF"
+POST_THIRD_RERUN_NEXT_LAWFUL_MOVE = "HOLD_B04_R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF"
+ALLOWED_RECONSIDERATION_SOURCE_NEXT_LAWFUL_MOVES = {
+    FROZEN_NEXT_LAWFUL_MOVE,
+    POST_THIRD_RERUN_NEXT_LAWFUL_MOVE,
+}
 NEXT_IN_ORDER_ID = "B04_R6_LEARNED_ROUTER_AUTHORIZATION"
 LEGACY_ADJUDICATION_POSTURE = "READY_FOR_SEPARATE_COUNTED_R5_RERUN_LAUNCH_SURFACE_CONSIDERATION"
 LEGACY_ADJUDICATION_NEXT_MOVE = "CONSIDER_B04_R5_THIRD_SAME_HEAD_RERUN_LAUNCH_SURFACE_ONLY"
@@ -113,7 +128,7 @@ def _validate_current_state_overlay_for_reconsideration_adjudication(packet: Dic
     lawful_standing = packet.get("current_lawful_gate_standing")
     if not isinstance(lawful_standing, dict):
         raise RuntimeError("FAIL_CLOSED: current campaign lawful standing missing")
-    if str(lawful_standing.get("inter_gate_state", "")).strip() != FROZEN_INTER_GATE_STATE:
+    if str(lawful_standing.get("inter_gate_state", "")).strip() not in ALLOWED_RECONSIDERATION_SOURCE_INTER_GATE_STATES:
         raise RuntimeError("FAIL_CLOSED: current campaign state is not the frozen reconsideration posture")
 
 
@@ -131,7 +146,7 @@ def _validate_resume_blockers_for_reconsideration_adjudication(packet: Dict[str,
         raise RuntimeError("FAIL_CLOSED: resume blockers receipt schema mismatch")
     if str(packet.get("status", "")).strip() != "PASS":
         raise RuntimeError("FAIL_CLOSED: resume blockers receipt must be PASS")
-    if str(packet.get("blocking_state", "")).strip() != FROZEN_BLOCKING_STATE:
+    if str(packet.get("blocking_state", "")).strip() not in ALLOWED_RECONSIDERATION_SOURCE_BLOCKING_STATES:
         raise RuntimeError("FAIL_CLOSED: resume blockers receipt is not at the frozen reconsideration hold")
     if bool(packet.get("repo_state_executable_now", True)):
         raise RuntimeError("FAIL_CLOSED: resume blockers receipt unexpectedly executable")
@@ -145,7 +160,7 @@ def _validate_reanchor_for_reconsideration_adjudication(packet: Dict[str, Any]) 
         raise RuntimeError("FAIL_CLOSED: gate D decision reanchor current_bounded_limitations missing")
     if str(limitations.get("router_status", "")).strip() != "STATIC_CANONICAL_BASELINE_ONLY":
         raise RuntimeError("FAIL_CLOSED: reanchor router status must remain static canonical baseline only")
-    if str(packet.get("next_lawful_move", "")).strip() != FROZEN_NEXT_LAWFUL_MOVE:
+    if str(packet.get("next_lawful_move", "")).strip() not in ALLOWED_RECONSIDERATION_SOURCE_NEXT_LAWFUL_MOVES:
         raise RuntimeError("FAIL_CLOSED: reanchor next lawful move mismatch for frozen reconsideration hold")
 
 

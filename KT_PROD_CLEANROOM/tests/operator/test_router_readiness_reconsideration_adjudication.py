@@ -41,13 +41,15 @@ def _reconsideration_input() -> dict:
     }
 
 
-def _current_state_overlay() -> dict:
+def _current_state_overlay(
+    inter_gate_state: str = "GATE_D_LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED",
+) -> dict:
     return {
         "schema_id": "kt.current_campaign_state_overlay.v1",
         "repo_state_executable_now": False,
         "next_counted_workstream_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
         "current_lawful_gate_standing": {
-            "inter_gate_state": "GATE_D_LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED",
+            "inter_gate_state": inter_gate_state,
         },
     }
 
@@ -60,19 +62,23 @@ def _next_contract() -> dict:
     }
 
 
-def _resume_blockers() -> dict:
+def _resume_blockers(
+    blocking_state: str = "LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
+) -> dict:
     return {
         "schema_id": "kt.resume_blockers_receipt.v1",
         "status": "PASS",
         "repo_state_executable_now": False,
-        "blocking_state": "LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
+        "blocking_state": blocking_state,
     }
 
 
-def _reanchor() -> dict:
+def _reanchor(
+    next_lawful_move: str = "HOLD_LAB_READINESS_CEILING_AND_RECONSIDERATION_GATE__COUNTED_LANE_CLOSED__R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF",
+) -> dict:
     return {
         "schema_id": "kt.gate_d.decision_reanchor_packet.v1",
-        "next_lawful_move": "HOLD_LAB_READINESS_CEILING_AND_RECONSIDERATION_GATE__COUNTED_LANE_CLOSED__R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF",
+        "next_lawful_move": next_lawful_move,
         "current_bounded_limitations": {
             "router_status": "STATIC_CANONICAL_BASELINE_ONLY",
         },
@@ -126,6 +132,38 @@ def test_reconsideration_adjudication_receipt_uses_fourth_rerun_posture_for_four
     assert receipt["status"] == "PASS"
     assert receipt["adjudication_posture"] == validate.POST_THIRD_RERUN_ADJUDICATION_POSTURE
     assert receipt["next_lawful_move"] == validate.POST_THIRD_RERUN_ADJUDICATION_NEXT_MOVE
+
+
+def test_reconsideration_adjudication_receipt_accepts_post_third_rerun_hold_as_source_state(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(validate, "_git_head", lambda _root: "HEAD_X")
+    packet = _reconsideration_input()
+    packet["candidate_summary"]["combined_terminal_adapters"].append("lobe.research.specialist.v1")
+    packet["candidate_summary"]["combined_terminal_adapter_count"] = 4
+
+    receipt = validate.build_router_readiness_reconsideration_adjudication_receipt(
+        root=tmp_path,
+        packet=packet,
+        current_state_overlay=_current_state_overlay(
+            inter_gate_state="GATE_D_THIRD_COUNTED_R5_RERUN_EXECUTED_STATIC_HOLD__COUNTED_LANE_CLOSED"
+        ),
+        next_counted_workstream_contract=_next_contract(),
+        resume_blockers_receipt=_resume_blockers(
+            blocking_state="THIRD_COUNTED_R5_RERUN_EXECUTED_STATIC_HOLD__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY"
+        ),
+        gate_d_decision_reanchor_packet=_reanchor(
+            next_lawful_move="HOLD_B04_R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF"
+        ),
+        packet_ref="input.json",
+        current_state_overlay_ref="overlay.json",
+        next_counted_workstream_contract_ref="next.json",
+        resume_blockers_receipt_ref="resume.json",
+        gate_d_decision_reanchor_packet_ref="reanchor.json",
+    )
+
+    assert receipt["status"] == "PASS"
+    assert receipt["adjudication_posture"] == validate.POST_THIRD_RERUN_ADJUDICATION_POSTURE
 
 
 def test_reconsideration_adjudication_receipt_fails_when_overlay_not_frozen(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
