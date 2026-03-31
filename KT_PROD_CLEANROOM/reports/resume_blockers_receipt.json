@@ -1,20 +1,20 @@
 {
   "schema_id": "kt.resume_blockers_receipt.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-31T13:14:02Z",
-  "workstream_id": "ROUTER_READINESS_RECONSIDERATION_ADJUDICATION__POST_THIRD_RERUN",
+  "generated_utc": "2026-03-31T13:49:10Z",
+  "workstream_id": "B04_R5_FOURTH_SAME_HEAD_RERUN_LAUNCH_SURFACE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "893172acfb3481f2b96d9eef4b87085af64cc500",
+  "current_git_head": "6feed4d841709ff160eecd0015593559aaa987d4",
   "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
-  "repo_state_executable_now": false,
-  "blocking_state": "POST_THIRD_RERUN_RECONSIDERATION_ADJUDICATED__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
+  "repo_state_executable_now": true,
+  "blocking_state": "FOURTH_COUNTED_R5_RERUN_LAUNCH_BOUND__ONLY_RERUN_EXECUTABLE__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
   "blocking_reasons": [
-    "The original B04.R5 proof plus all three same-head counted reruns held the static router baseline honestly because superiority was not earned.",
-    "The third same-head counted rerun executed on head 79759969c402205f5c99be48524c2f5489f72019 and returned NOT_EARNED_STATIC_BASELINE_RETAINS_CANONICAL_STATUS.",
-    "The post-third-rerun reconsideration adjudication on head 893172acfb3481f2b96d9eef4b87085af64cc500 passed only as a lab-only decision surface and limits the next lawful move to consideration of a separate B04.R5 fourth same-head rerun launch surface.",
+    "The original B04.R5 proof plus all three earlier same-head counted reruns all held the static router baseline honestly because superiority was not earned.",
+    "The post-third-rerun lab branch on head 893172acfb3481f2b96d9eef4b87085af64cc500 materially beat the preserved three-terminal ceiling, the reconsideration gate on that same head returned material_change_earned = true, and the reconsideration path was adjudicated cleanly through the sanctioned validator.",
+    "A separate counted B04.R5 fourth same-head rerun launch surface is now bound on head 6feed4d841709ff160eecd0015593559aaa987d4, but that authorization step does not itself earn router superiority.",
     "R6 remains blocked because router superiority has still not been re-earned on the counted lane, and no learned-router, lobe, externality, comparative, or commercial widening is authorized."
   ],
   "nonblocking_conflicts": [
@@ -68,7 +68,7 @@
       "class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
       "evidence": [
         "The authoritative B04.R5 proof is the clean-clone receipt on sealed head 26a58027b04ffc15e3cd44c6d54c708140fbf4dd.",
-        "The tracked router_vs_best_adapter_proof_ratification_receipt.json on main is now a carrier for the second same-head rerun receipt emitted on pre-seal head e232a7762ea03a3eea391c6a4da6486b892eabdd and must remain carrier-only after sealing."
+        "The tracked router_vs_best_adapter_proof_ratification_receipt.json on main is now a carrier for the third same-head rerun receipt emitted on pre-seal head 79759969c402205f5c99be48524c2f5489f72019 and must remain carrier-only after sealing."
       ],
       "resolution_rule": "Use the authoritative same-head rerun receipt family as current R5 authority and do not overread the tracked carrier across heads."
     },
@@ -88,19 +88,19 @@
     }
   ],
   "current_lawful_gate_standing": {
-    "inter_gate_state": "GATE_D_POST_THIRD_RERUN_RECONSIDERATION_ADJUDICATED__COUNTED_LANE_CLOSED",
+    "inter_gate_state": "GATE_D_FOURTH_COUNTED_R5_RERUN_LAUNCH_BOUND",
     "gate_c": "EXITED",
-    "gate_d": "POST_THIRD_RERUN_RECONSIDERATION_ADJUDICATED__R6_BLOCKED"
+    "gate_d": "FOURTH_COUNTED_R5_RERUN_LAUNCH_BOUND__R6_BLOCKED"
   },
-  "exact_next_counted_workstream_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
+  "exact_next_counted_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__FOURTH_SAME_HEAD_RERUN",
   "explicit_non_go_areas": [
     "Do not widen externality beyond E1.",
     "Do not open external comparative claims.",
     "Do not activate commercial deployment.",
-    "Do not treat a PASS third same-head R5 rerun procedure as learned-router authorization, lobe ratification, or earned superiority.",
+    "Do not treat the fourth same-head R5 rerun launch surface as learned-router authorization or lobe ratification.",
     "Do not treat tracked carrier receipts as current-head authority.",
     "Do not bypass the ordered Gate D ratification sequence."
   ],
-  "why_not_executable_now": "The third same-head counted rerun of B04.R5 has already completed and did not earn router superiority. Counted lane stays closed. R6 remains next in order only and blocked in law, and the post-third-rerun reconsideration adjudication only allows consideration of a separate fourth same-head rerun launch surface, and any future reconsideration still requires fresh same-head dual receipts on the actual candidate head.",
-  "executable_now_why": "The third same-head counted rerun of B04.R5 has already completed and did not earn router superiority. Counted lane stays closed. R6 remains next in order only and blocked in law, and the post-third-rerun reconsideration adjudication only allows consideration of a separate fourth same-head rerun launch surface, and any future reconsideration still requires fresh same-head dual receipts on the actual candidate head."
+  "why_not_executable_now": "All counted work other than B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__FOURTH_SAME_HEAD_RERUN remains non-executable. The fourth same-head rerun launch surface is only a rerun authorization step, not a rerun result, so R6 remains next in order only and blocked in law until that rerun actually earns superiority.",
+  "executable_now_why": "Only B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__FOURTH_SAME_HEAD_RERUN is executable now. R6 and all wider scope remain blocked until router superiority is actually earned on that rerun."
 }
