@@ -125,7 +125,8 @@ def build_hold_state_surface_basis_validation_receipt(
         ),
         "resolution_rule": (
             "Treat the tracked hold surfaces as pre-seal basis only. Any future router-readiness reconsideration attempt "
-            "must re-emit the single-path guard on the actual candidate head before prepare or consume may proceed."
+            "must re-emit both fresh receipts on the actual candidate head before prepare or consume may proceed: the "
+            "same-head single-path guard and the preserved-basis receipt that remains non-authoritative."
         ),
         "checks": checks,
         "source_packet_refs": {
