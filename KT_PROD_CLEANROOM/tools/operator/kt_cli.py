@@ -70,10 +70,10 @@ V1 = V1Profile(
     name="v1",
     sealed_commit="7b7f6e71d43c0aa60d4bc91be47e679491883871",
     sealed_tag="KT_V1_SEALED_20260217",
-    law_bundle_hash="1aebd74043296f085565b30798d05df8b239cbae1dfbd3e66cec92f00eb03d39",
+    law_bundle_hash="b772fe878d55c778d88c4b2a0f719094b8bd985349e1d2242582c3942960fef9",
     suite_registry_id="a1d21d415568931778b718827c278918529af8490a1b456ba97f27a9a18be8fc",
     determinism_expected_root_hash="c574cd28deba7020b1ff41f249c02f403cbe8e045cb961222183880977bdb10e",
-    authoritative_reseal_receipt=("KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260331T165342Z.json"),
+    authoritative_reseal_receipt=("KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260331T175813Z.json"),
     router_policy_ref="KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
     router_demo_suite_ref="KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
 )
@@ -91,7 +91,7 @@ CI_SIM_PYTEST_TARGETS: Tuple[str, ...] = (
 
 
 def _pytest_cmd(*args: str) -> List[str]:
-    return ["python", "-m", "pytest", "-p", "pytest_cov", *args]
+    return ["python", "-m", "pytest", "-o", "addopts=", *args]
 
 
 def _pytest_step_env(*, base_env: Dict[str, str], run_dir: Path, stem: str) -> Dict[str, str]:

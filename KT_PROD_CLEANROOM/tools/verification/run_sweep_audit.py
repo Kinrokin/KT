@@ -90,7 +90,7 @@ def _validate_receipts_cmd(*, out_dir: Path) -> List[str]:
 
 
 def _pytest_cmd(*args: str) -> List[str]:
-    return ["python", "-m", "pytest", "-p", "pytest_cov", *args]
+    return ["python", "-m", "pytest", "-o", "addopts=", *args]
 
 
 def _pytest_env(*, base_env: Dict[str, str], sweep_dir: Path, stem: str) -> Dict[str, str]:
