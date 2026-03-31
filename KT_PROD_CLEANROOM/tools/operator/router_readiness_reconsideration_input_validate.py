@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import ast
 import json
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
@@ -24,6 +25,11 @@ SANCTIONED_SCHEMA_TOUCHERS = sorted(
     SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT,
     ]
 )
+SINGLE_PATH_ENFORCEMENT_RECEIPT_SCHEMA_ID = "kt.router_readiness_reconsideration_input_single_path_enforcement_receipt.v1"
+
+
+def _git_head(root: Path) -> str:
+    return subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
 
 
 def _validate_packet_schema(packet: Dict[str, Any]) -> None:
@@ -51,6 +57,15 @@ def _validate_candidate_refresh_packet(packet: Dict[str, Any]) -> None:
         raise RuntimeError("FAIL_CLOSED: later lab readiness refresh packet mode mismatch")
     if str(packet.get("status", "")).strip() != "PASS":
         raise RuntimeError("FAIL_CLOSED: later lab readiness refresh packet must be PASS")
+
+
+def _validate_single_path_guard_receipt(packet: Dict[str, Any]) -> None:
+    if str(packet.get("schema_id", "")).strip() != SINGLE_PATH_ENFORCEMENT_RECEIPT_SCHEMA_ID:
+        raise RuntimeError("FAIL_CLOSED: single-path guard receipt schema mismatch")
+    if str(packet.get("mode", "")).strip() != "LAB_ONLY_NONCANONICAL":
+        raise RuntimeError("FAIL_CLOSED: single-path guard receipt mode mismatch")
+    if str(packet.get("status", "")).strip() != "PASS":
+        raise RuntimeError("FAIL_CLOSED: single-path guard receipt must be PASS")
 
 
 def _source_ref(packet: Dict[str, Any], key: str) -> str:
@@ -109,21 +124,26 @@ def load_validated_router_readiness_reconsideration_input(
     packet_ref: str,
     gate_packet_ref: Optional[str] = None,
     candidate_refresh_packet_ref: Optional[str] = None,
+    single_path_guard_receipt_ref: Optional[str] = None,
 ) -> Dict[str, Any]:
     packet = _load_json_dict(_resolve(root, packet_ref), name="router_readiness_reconsideration_input")
     resolved_gate_ref = str(gate_packet_ref or _source_ref(packet, "gate_packet_ref"))
     resolved_candidate_ref = str(candidate_refresh_packet_ref or _source_ref(packet, "candidate_refresh_packet_ref"))
+    resolved_guard_ref = str(single_path_guard_receipt_ref or _source_ref(packet, "single_path_guard_receipt_ref"))
     gate_packet = _load_json_dict(_resolve(root, resolved_gate_ref), name="lab_readiness_reconsideration_gate_packet")
     candidate_packet = _load_json_dict(_resolve(root, resolved_candidate_ref), name="later_lab_readiness_refresh_packet")
+    guard_packet = _load_json_dict(_resolve(root, resolved_guard_ref), name="router_readiness_reconsideration_single_path_enforcement_receipt")
 
     receipt = build_router_readiness_reconsideration_input_validation_receipt(
         root=root,
         packet=packet,
         gate_packet=gate_packet,
         candidate_refresh_packet=candidate_packet,
+        single_path_guard_receipt=guard_packet,
         packet_ref=packet_ref,
         gate_packet_ref=resolved_gate_ref,
         candidate_refresh_packet_ref=resolved_candidate_ref,
+        single_path_guard_receipt_ref=resolved_guard_ref,
     )
     if str(receipt.get("status", "")).strip() != "PASS":
         raise RuntimeError("FAIL_CLOSED: router readiness reconsideration input did not pass sanctioned consumer validation")
@@ -131,6 +151,7 @@ def load_validated_router_readiness_reconsideration_input(
 
 
 def build_router_readiness_reconsideration_single_path_enforcement_receipt(*, root: Path) -> Dict[str, Any]:
+    current_head = _git_head(root)
     detected_emitters = _detect_schema_emitters(root)
     detected_schema_touchers = _detect_schema_touchers(root)
 
@@ -157,6 +178,8 @@ def build_router_readiness_reconsideration_single_path_enforcement_receipt(*, ro
     return {
         "schema_id": "kt.router_readiness_reconsideration_input_single_path_enforcement_receipt.v1",
         "generated_utc": utc_now_iso_z(),
+        "current_git_head": current_head,
+        "subject_head": current_head,
         "mode": "LAB_ONLY_NONCANONICAL",
         "status": status,
         "sanctioned_paths": {
@@ -184,13 +207,18 @@ def build_router_readiness_reconsideration_input_validation_receipt(
     packet: Dict[str, Any],
     gate_packet: Dict[str, Any],
     candidate_refresh_packet: Dict[str, Any],
+    single_path_guard_receipt: Dict[str, Any],
     packet_ref: str,
     gate_packet_ref: str,
     candidate_refresh_packet_ref: str,
+    single_path_guard_receipt_ref: str,
 ) -> Dict[str, Any]:
     _validate_packet_schema(packet)
     _validate_gate_packet(gate_packet)
     _validate_candidate_refresh_packet(candidate_refresh_packet)
+    _validate_single_path_guard_receipt(single_path_guard_receipt)
+
+    current_head = _git_head(root)
 
     packet_contract = packet.get("single_sanctioned_path_contract")
     producer_identity = packet.get("producer_identity")
@@ -199,6 +227,7 @@ def build_router_readiness_reconsideration_input_validation_receipt(
     candidate_terminals = candidate_refresh_packet.get("terminal_summary")
     gate_questions = gate_packet.get("questions")
     gate_source_refs = gate_packet.get("source_packet_refs")
+    packet_single_path_summary = packet.get("single_path_guard_summary")
     if not isinstance(packet_contract, dict):
         raise RuntimeError("FAIL_CLOSED: reconsideration input contract block missing")
     if not isinstance(producer_identity, dict):
@@ -213,13 +242,19 @@ def build_router_readiness_reconsideration_input_validation_receipt(
         raise RuntimeError("FAIL_CLOSED: gate packet questions missing")
     if not isinstance(gate_source_refs, dict):
         raise RuntimeError("FAIL_CLOSED: gate packet source refs missing")
+    if not isinstance(packet_single_path_summary, dict):
+        raise RuntimeError("FAIL_CLOSED: reconsideration input single_path_guard_summary missing")
 
     detected_emitters = _detect_schema_emitters(root)
     detected_schema_touchers = _detect_schema_touchers(root)
     packet_gate_ref = _source_ref(packet, "gate_packet_ref")
     packet_candidate_ref = _source_ref(packet, "candidate_refresh_packet_ref")
+    packet_guard_ref = _source_ref(packet, "single_path_guard_receipt_ref")
     candidate_adapters = list(candidate_terminals.get("combined_terminal_adapters", []))
     candidate_adapter_count = int(candidate_terminals.get("combined_terminal_adapter_count", 0))
+    candidate_head = str(candidate_heads.get("code_terminal_lab_head", "")).strip()
+    math_head = str(candidate_heads.get("math_terminal_lab_head", "")).strip()
+    guard_head = str(single_path_guard_receipt.get("current_git_head", "")).strip()
 
     checks = [
         {
@@ -234,6 +269,8 @@ def build_router_readiness_reconsideration_input_validation_receipt(
             and str(packet_contract.get("sanctioned_emitter_entrypoint", "")).strip() == SANCTIONED_EMITTER_ENTRYPOINT
             and str(packet_contract.get("sanctioned_consumer_validator_entrypoint", "")).strip()
             == SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT
+            and str(packet_contract.get("required_single_path_guard_receipt_schema_id", "")).strip()
+            == SINGLE_PATH_ENFORCEMENT_RECEIPT_SCHEMA_ID
             and str(packet_contract.get("required_gate_packet_schema_id", "")).strip()
             == LAB_RECONSIDERATION_GATE_PACKET_SCHEMA_ID
             and str(packet_contract.get("required_candidate_refresh_packet_schema_id", "")).strip()
@@ -248,6 +285,7 @@ def build_router_readiness_reconsideration_input_validation_receipt(
             "check_id": "packet_refs_match_loaded_gate_and_candidate_sources",
             "pass": packet_gate_ref == str(gate_packet_ref).strip()
             and packet_candidate_ref == str(candidate_refresh_packet_ref).strip()
+            and packet_guard_ref == str(single_path_guard_receipt_ref).strip()
             and str(gate_source_refs.get("candidate_refresh_packet_ref", "")).strip() == str(candidate_refresh_packet_ref).strip(),
         },
         {
@@ -266,6 +304,21 @@ def build_router_readiness_reconsideration_input_validation_receipt(
             == str(candidate_heads.get("code_terminal_lab_head", "")).strip()
             and list(packet.get("candidate_summary", {}).get("combined_terminal_adapters", [])) == candidate_adapters
             and int(packet.get("candidate_summary", {}).get("combined_terminal_adapter_count", 0)) == candidate_adapter_count,
+        },
+        {
+            "check_id": "single_path_guard_receipt_is_same_head_fresh",
+            "pass": guard_head == current_head
+            and guard_head == candidate_head
+            and (not math_head or guard_head == math_head)
+            and str(single_path_guard_receipt.get("subject_head", "")).strip() == guard_head,
+        },
+        {
+            "check_id": "packet_single_path_guard_summary_matches_guard_receipt",
+            "pass": str(packet_single_path_summary.get("guard_head", "")).strip() == guard_head
+            and int(packet_single_path_summary.get("detected_schema_emitter_count", 0))
+            == len(single_path_guard_receipt.get("detected_schema_emitters", []))
+            and int(packet_single_path_summary.get("detected_schema_toucher_count", 0))
+            == len(single_path_guard_receipt.get("detected_schema_touchers", [])),
         },
         {
             "check_id": "single_sanctioned_emitter_uniqueness_holds_in_repo_tools",
@@ -291,6 +344,7 @@ def build_router_readiness_reconsideration_input_validation_receipt(
         "source_packet_refs": {
             "gate_packet_ref": gate_packet_ref,
             "candidate_refresh_packet_ref": candidate_refresh_packet_ref,
+            "single_path_guard_receipt_ref": single_path_guard_receipt_ref,
         },
         "sanctioned_path_contract": {
             "sanctioned_emitter_entrypoint": SANCTIONED_EMITTER_ENTRYPOINT,
@@ -317,6 +371,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--input")
     parser.add_argument("--gate-packet")
     parser.add_argument("--candidate-refresh-packet")
+    parser.add_argument("--single-path-guard-receipt")
     parser.add_argument("--output", required=True)
     parser.add_argument("--emit-single-path-enforcement-receipt", action="store_true")
     return parser
@@ -346,17 +401,21 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     packet = _load_json_dict(_resolve(root, packet_ref), name="router_readiness_reconsideration_input")
     gate_ref = str(args.gate_packet or _source_ref(packet, "gate_packet_ref"))
     candidate_ref = str(args.candidate_refresh_packet or _source_ref(packet, "candidate_refresh_packet_ref"))
+    guard_ref = str(args.single_path_guard_receipt or _source_ref(packet, "single_path_guard_receipt_ref"))
     gate_packet = _load_json_dict(_resolve(root, gate_ref), name="lab_readiness_reconsideration_gate_packet")
     candidate_packet = _load_json_dict(_resolve(root, candidate_ref), name="later_lab_readiness_refresh_packet")
+    guard_packet = _load_json_dict(_resolve(root, guard_ref), name="router_readiness_reconsideration_single_path_enforcement_receipt")
 
     receipt = build_router_readiness_reconsideration_input_validation_receipt(
         root=root,
         packet=packet,
         gate_packet=gate_packet,
         candidate_refresh_packet=candidate_packet,
+        single_path_guard_receipt=guard_packet,
         packet_ref=packet_ref,
         gate_packet_ref=gate_ref,
         candidate_refresh_packet_ref=candidate_ref,
+        single_path_guard_receipt_ref=guard_ref,
     )
     output_path = _resolve(root, str(args.output))
     write_json_stable(output_path, receipt)

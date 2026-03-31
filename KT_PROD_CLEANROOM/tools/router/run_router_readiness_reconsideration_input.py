@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
+from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
 from tools.operator.titanium_common import repo_root, utc_now_iso_z, write_json_stable
@@ -11,10 +13,21 @@ RECONSIDERATION_INPUT_SCHEMA_ID = "kt.router_readiness_reconsideration_input.v1"
 LAB_RECONSIDERATION_GATE_PACKET_SCHEMA_ID = "kt.lab_readiness_reconsideration_gate_packet.v1"
 LATER_LAB_READINESS_REFRESH_SCHEMA_ID = "kt.later_lab_readiness_refresh_packet.v1"
 SINGLE_SANCTIONED_PATH_CONTRACT_SCHEMA_ID = "kt.router_readiness_reconsideration_input.single_sanctioned_path_contract.v1"
+SINGLE_PATH_ENFORCEMENT_RECEIPT_SCHEMA_ID = "kt.router_readiness_reconsideration_input_single_path_enforcement_receipt.v1"
 SANCTIONED_EMITTER_ENTRYPOINT = "KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py"
 SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT = (
     "KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py"
 )
+SANCTIONED_SCHEMA_TOUCHERS = sorted(
+    [
+        SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT,
+        SANCTIONED_EMITTER_ENTRYPOINT,
+    ]
+)
+
+
+def _git_head(root: Path) -> str:
+    return subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
 
 
 def _validate_gate_packet(packet: Dict[str, Any]) -> None:
@@ -35,15 +48,76 @@ def _validate_refresh_packet(packet: Dict[str, Any]) -> None:
         raise RuntimeError("FAIL_CLOSED: later lab readiness refresh packet must be PASS")
 
 
+def _validate_single_path_guard_receipt(
+    *,
+    packet: Dict[str, Any],
+    current_git_head: str,
+    candidate_refresh_packet: Dict[str, Any],
+) -> Dict[str, Any]:
+    if str(packet.get("schema_id", "")).strip() != SINGLE_PATH_ENFORCEMENT_RECEIPT_SCHEMA_ID:
+        raise RuntimeError("FAIL_CLOSED: single-path guard receipt schema mismatch")
+    if str(packet.get("mode", "")).strip() != "LAB_ONLY_NONCANONICAL":
+        raise RuntimeError("FAIL_CLOSED: single-path guard receipt mode mismatch")
+    if str(packet.get("status", "")).strip() != "PASS":
+        raise RuntimeError("FAIL_CLOSED: single-path guard receipt must be PASS")
+
+    sanctioned_paths = packet.get("sanctioned_paths")
+    if not isinstance(sanctioned_paths, dict):
+        raise RuntimeError("FAIL_CLOSED: single-path guard sanctioned_paths missing")
+    if str(sanctioned_paths.get("emitter", "")).strip() != SANCTIONED_EMITTER_ENTRYPOINT:
+        raise RuntimeError("FAIL_CLOSED: single-path guard emitter mismatch")
+    if str(sanctioned_paths.get("consumer_validator", "")).strip() != SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT:
+        raise RuntimeError("FAIL_CLOSED: single-path guard consumer validator mismatch")
+
+    detected_emitters = list(packet.get("detected_schema_emitters", []))
+    detected_touchers = list(packet.get("detected_schema_touchers", []))
+    if detected_emitters != [SANCTIONED_EMITTER_ENTRYPOINT]:
+        raise RuntimeError("FAIL_CLOSED: single-path guard emitter set mismatch")
+    if detected_touchers != SANCTIONED_SCHEMA_TOUCHERS:
+        raise RuntimeError("FAIL_CLOSED: single-path guard toucher set mismatch")
+
+    guard_head = str(packet.get("current_git_head", "")).strip()
+    if not guard_head:
+        raise RuntimeError("FAIL_CLOSED: single-path guard current_git_head missing")
+    if guard_head != str(current_git_head).strip():
+        raise RuntimeError("FAIL_CLOSED: single-path guard is not fresh on current candidate head")
+
+    source_heads = candidate_refresh_packet.get("source_lab_heads")
+    if not isinstance(source_heads, dict):
+        raise RuntimeError("FAIL_CLOSED: candidate refresh source heads missing")
+    candidate_heads = {
+        str(source_heads.get("code_terminal_lab_head", "")).strip(),
+        str(source_heads.get("math_terminal_lab_head", "")).strip(),
+    }
+    candidate_heads = {item for item in candidate_heads if item}
+    if not candidate_heads:
+        raise RuntimeError("FAIL_CLOSED: candidate refresh source heads empty")
+    if candidate_heads != {guard_head}:
+        raise RuntimeError("FAIL_CLOSED: single-path guard head does not match candidate refresh head")
+    return {
+        "guard_head": guard_head,
+        "detected_schema_emitter_count": len(detected_emitters),
+        "detected_schema_toucher_count": len(detected_touchers),
+    }
+
+
 def build_router_readiness_reconsideration_input(
     *,
+    current_git_head: str,
     gate_packet: Dict[str, Any],
     candidate_refresh_packet: Dict[str, Any],
+    single_path_guard_receipt: Dict[str, Any],
     gate_packet_ref: str,
     candidate_refresh_packet_ref: str,
+    single_path_guard_receipt_ref: str,
 ) -> Dict[str, Any]:
     _validate_gate_packet(gate_packet)
     _validate_refresh_packet(candidate_refresh_packet)
+    single_path_guard_summary = _validate_single_path_guard_receipt(
+        packet=single_path_guard_receipt,
+        current_git_head=current_git_head,
+        candidate_refresh_packet=candidate_refresh_packet,
+    )
 
     questions = gate_packet.get("questions")
     source_refs = gate_packet.get("source_packet_refs")
@@ -88,11 +162,16 @@ def build_router_readiness_reconsideration_input(
             "schema_id": SINGLE_SANCTIONED_PATH_CONTRACT_SCHEMA_ID,
             "sanctioned_emitter_entrypoint": SANCTIONED_EMITTER_ENTRYPOINT,
             "sanctioned_consumer_validator_entrypoint": SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT,
+            "required_single_path_guard_receipt_schema_id": SINGLE_PATH_ENFORCEMENT_RECEIPT_SCHEMA_ID,
             "required_gate_packet_schema_id": LAB_RECONSIDERATION_GATE_PACKET_SCHEMA_ID,
             "required_candidate_refresh_packet_schema_id": LATER_LAB_READINESS_REFRESH_SCHEMA_ID,
             "consumer_contract_rule": (
                 "Any consumer must reject this packet unless it came through the sanctioned emitter path and is validated "
                 "through the sanctioned operator validator named in this contract."
+            ),
+            "same_head_guard_rule": (
+                "A fresh single-path enforcement receipt must be re-emitted on the actual candidate head before any "
+                "router-readiness reconsideration input may be prepared or consumed."
             ),
         },
         "gate_requirements_satisfied": {
@@ -108,7 +187,9 @@ def build_router_readiness_reconsideration_input(
         "source_packet_refs": {
             "gate_packet_ref": gate_packet_ref,
             "candidate_refresh_packet_ref": candidate_refresh_packet_ref,
+            "single_path_guard_receipt_ref": single_path_guard_receipt_ref,
         },
+        "single_path_guard_summary": single_path_guard_summary,
         "candidate_summary": {
             "candidate_lab_head": str(candidate_heads.get("code_terminal_lab_head", "")).strip(),
             "combined_terminal_adapters": list(candidate_terminals.get("combined_terminal_adapters", [])),
@@ -127,6 +208,7 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--gate-packet", required=True)
     parser.add_argument("--candidate-refresh-packet", required=True)
+    parser.add_argument("--single-path-guard-receipt", required=True)
     parser.add_argument("--output", required=True)
     return parser
 
@@ -136,16 +218,22 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     args = parser.parse_args(argv)
 
     root = repo_root()
+    current_head = _git_head(root)
     gate_ref = str(args.gate_packet)
     candidate_ref = str(args.candidate_refresh_packet)
+    guard_ref = str(args.single_path_guard_receipt)
     gate_packet = _load_json_dict(_resolve(root, gate_ref), name="lab_readiness_reconsideration_gate_packet")
     candidate_packet = _load_json_dict(_resolve(root, candidate_ref), name="later_lab_readiness_refresh_packet")
+    guard_packet = _load_json_dict(_resolve(root, guard_ref), name="router_readiness_reconsideration_single_path_enforcement_receipt")
 
     packet = build_router_readiness_reconsideration_input(
+        current_git_head=current_head,
         gate_packet=gate_packet,
         candidate_refresh_packet=candidate_packet,
+        single_path_guard_receipt=guard_packet,
         gate_packet_ref=gate_ref,
         candidate_refresh_packet_ref=candidate_ref,
+        single_path_guard_receipt_ref=guard_ref,
     )
     output_path = _resolve(root, str(args.output))
     write_json_stable(output_path, packet)
