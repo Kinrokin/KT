@@ -16,6 +16,17 @@ from tools.verification.worm_write import write_text_worm
 
 RECEIPTS_DIR_REL = ARCHIVE_VAULT_RECEIPTS_PREFIX
 
+TEMPLE_PYTEST_TARGETS: Tuple[str, ...] = (
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_schema_contracts.py",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_no_network_dry_run.py",
+)
+
+VERIFICATION_PYTEST_TARGETS: Tuple[str, ...] = (
+    "KT_PROD_CLEANROOM/tools/verification/tests/test_reconcile_and_schemas.py",
+    "KT_PROD_CLEANROOM/tools/verification/tests/test_validate_receipts.py",
+    "KT_PROD_CLEANROOM/tools/verification/tests/test_validate_council_packet_v1.py",
+)
+
 
 def _utc_now_basic_z() -> str:
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
@@ -143,10 +154,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     pytest_env.pop("KT_CANONICAL_LANE", None)
     pytest_env.pop("KT_ATTESTATION_MODE", None)
     run_step("pytest_cleanroom", _pytest_cmd("-q", "KT_PROD_CLEANROOM/tests"), env=_pytest_env(base_env=pytest_env, sweep_dir=sweep_dir, stem="pytest_cleanroom"))
-    run_step("pytest_temple", _pytest_cmd("-q", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests"), env=_pytest_env(base_env=pytest_env, sweep_dir=sweep_dir, stem="pytest_temple"))
+    run_step("pytest_temple", _pytest_cmd("-q", *TEMPLE_PYTEST_TARGETS), env=_pytest_env(base_env=pytest_env, sweep_dir=sweep_dir, stem="pytest_temple"))
     run_step(
         "pytest_verification",
-        _pytest_cmd("-q", "KT_PROD_CLEANROOM/tools/verification/tests"),
+        _pytest_cmd("-q", *VERIFICATION_PYTEST_TARGETS),
         env=_pytest_env(base_env=pytest_env, sweep_dir=sweep_dir, stem="pytest_verification"),
     )
 

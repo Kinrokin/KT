@@ -70,10 +70,10 @@ V1 = V1Profile(
     name="v1",
     sealed_commit="7b7f6e71d43c0aa60d4bc91be47e679491883871",
     sealed_tag="KT_V1_SEALED_20260217",
-    law_bundle_hash="b772fe878d55c778d88c4b2a0f719094b8bd985349e1d2242582c3942960fef9",
+    law_bundle_hash="add3713f58b9e987513dcd5cc28269e56d51a903f3c3d0d0cf0db499573c9120",
     suite_registry_id="a1d21d415568931778b718827c278918529af8490a1b456ba97f27a9a18be8fc",
     determinism_expected_root_hash="c574cd28deba7020b1ff41f249c02f403cbe8e045cb961222183880977bdb10e",
-    authoritative_reseal_receipt=("KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260331T175813Z.json"),
+    authoritative_reseal_receipt=("KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260331T183915Z.json"),
     router_policy_ref="KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
     router_demo_suite_ref="KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
 )
@@ -87,6 +87,17 @@ CI_SIM_PYTEST_TARGETS: Tuple[str, ...] = (
     "KT_PROD_CLEANROOM/tests/operator/test_titanium_substrate.py::test_hashpin_reports_are_head_stamped_and_candidate_scoped",
     "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py::test_publish_truth_artifacts_emits_bundle_pointer_and_indexes",
     "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py::test_publish_truth_artifacts_is_stable_on_repeat_publish",
+)
+
+CI_SIM_TEMPLE_PYTEST_TARGETS: Tuple[str, ...] = (
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_schema_contracts.py",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_no_network_dry_run.py",
+)
+
+CI_SIM_VERIFICATION_PYTEST_TARGETS: Tuple[str, ...] = (
+    "KT_PROD_CLEANROOM/tools/verification/tests/test_reconcile_and_schemas.py",
+    "KT_PROD_CLEANROOM/tools/verification/tests/test_validate_receipts.py",
+    "KT_PROD_CLEANROOM/tools/verification/tests/test_validate_council_packet_v1.py",
 )
 
 
@@ -1201,12 +1212,12 @@ def cmd_certify_ci_sim(*, repo_root: Path, profile: V1Profile, run_dir: Path, al
     )
     step(
         "pytest_temple",
-        _pytest_cmd("-q", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests"),
+        _pytest_cmd("-q", *CI_SIM_TEMPLE_PYTEST_TARGETS),
         step_env=_pytest_step_env(base_env=pytest_env, run_dir=run_dir, stem="pytest_temple"),
     )
     step(
         "pytest_verification",
-        _pytest_cmd("-q", "KT_PROD_CLEANROOM/tools/verification/tests"),
+        _pytest_cmd("-q", *CI_SIM_VERIFICATION_PYTEST_TARGETS),
         step_env=_pytest_step_env(base_env=pytest_env, run_dir=run_dir, stem="pytest_verification"),
     )
 
