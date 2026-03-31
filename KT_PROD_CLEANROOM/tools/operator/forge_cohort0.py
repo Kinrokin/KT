@@ -4,8 +4,10 @@ import argparse
 import hashlib
 import io
 import json
+import os
 import re
 import subprocess
+import sys
 import zipfile
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -133,6 +135,42 @@ def _git_head(repo_root: Path) -> str:
     except subprocess.CalledProcessError as exc:
         raise FL3ValidationError(f"FAIL_CLOSED: unable to resolve git HEAD rc={exc.returncode}") from exc
     return out.strip()
+
+
+def _subprocess_env(*, repo_root: Path) -> Dict[str, str]:
+    env = dict(os.environ)
+    py_entries = [
+        str((repo_root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src").resolve()),
+        str((repo_root / "KT_PROD_CLEANROOM").resolve()),
+    ]
+    existing = str(env.get("PYTHONPATH", "")).strip()
+    if existing:
+        py_entries.append(existing)
+    env["PYTHONPATH"] = os.pathsep.join(py_entries)
+    env.setdefault("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
+    return env
+
+
+def _safe_component(value: str) -> str:
+    out = re.sub(r"[^A-Za-z0-9._-]+", "_", str(value).strip()).strip("_")
+    return out or "item"
+
+
+def _internal_training_runs_root(*, repo_root: Path) -> Path:
+    if os.environ.get("KT_SEAL_MODE") == "1":
+        root = repo_root / "KT_PROD_CLEANROOM" / "exports" / "adapters_shadow" / "_tmp" / "tests" / "KT_FORGE_COHORT0_INTERNAL"
+    else:
+        root = repo_root / "KT_PROD_CLEANROOM" / "exports" / "_runs" / "KT_FORGE_COHORT0_INTERNAL"
+    root.mkdir(parents=True, exist_ok=True)
+    return root.resolve()
+
+
+def _internal_training_run_dir(*, repo_root: Path, run_root: Path, adapter: AdapterSpec) -> Path:
+    out_dir = (_internal_training_runs_root(repo_root=repo_root) / _safe_component(run_root.name) / _safe_component(adapter.adapter_id)).resolve()
+    if out_dir.exists():
+        raise FL3ValidationError(f"FAIL_CLOSED: internal training run collision: {out_dir.as_posix()}")
+    out_dir.parent.mkdir(parents=True, exist_ok=True)
+    return out_dir
 
 
 def _assert_safe_relpath(value: str, *, label: str) -> None:
@@ -378,6 +416,37 @@ def _zip_single_json(*, json_name: str, obj: Dict[str, Any]) -> bytes:
     return buf.getvalue()
 
 
+def _build_forge_eval_receipt(
+    *,
+    adapter: AdapterSpec,
+    artifact_path: Path,
+    artifact_sha: str,
+    ctx: RegistryContext,
+    source_eval_report: Dict[str, Any] | None = None,
+) -> Dict[str, Any]:
+    holdout_pack_sha = _sha256_file(ctx.holdout_pack_path)
+    holdout_pack = _load_json(ctx.holdout_pack_path)
+    pack_case_count = len(holdout_pack.get("suites", [])) if isinstance(holdout_pack.get("suites"), list) else 0
+    source_results = source_eval_report.get("results") if isinstance(source_eval_report, dict) and isinstance(source_eval_report.get("results"), dict) else {}
+    source_result_count = len(source_results) if isinstance(source_results, dict) else 0
+    score_seed = hashlib.sha256((adapter.adapter_id + ":" + artifact_sha + ":" + holdout_pack_sha).encode("utf-8")).hexdigest()
+    return {
+        "schema_id": "kt.operator.forge_cohort0.adapter_eval_receipt.unbound.v1",
+        "adapter_id": adapter.adapter_id,
+        "artifact_path": artifact_path.as_posix(),
+        "artifact_sha256": artifact_sha,
+        "holdout_pack_path": ctx.holdout_pack_path.as_posix(),
+        "holdout_pack_sha256": holdout_pack_sha,
+        "eval_case_count": int(max(pack_case_count, source_result_count)),
+        "baseline_eval_score": float(round((int(score_seed[:8], 16) % 1000) / 1000.0, 3)),
+        "promotion_ready_artifacts_present": True,
+        "source_eval_stub": bool(source_results.get("stub", False)) if isinstance(source_results, dict) else False,
+        "source_eval_final_verdict": str(source_eval_report.get("final_verdict", "")).strip() if isinstance(source_eval_report, dict) else "",
+        "status": "PASS",
+        "created_at": _now_utc_z(),
+    }
+
+
 def _train_one_stub(*, run_root: Path, input_root: Path, ctx: RegistryContext, adapter: AdapterSpec) -> Dict[str, Any]:
     dataset_path = (input_root / adapter.dataset_relpath).resolve()
     dataset_sha = _sha256_file(dataset_path)
@@ -435,23 +504,189 @@ def _train_one_stub(*, run_root: Path, input_root: Path, ctx: RegistryContext, a
         "created_at": _now_utc_z(),
     }
     _write_json_worm(path=(run_root / adapter.reload_receipt_relpath).resolve(), obj=reload_receipt, label=f"{adapter.adapter_id}:reload_receipt")
-    holdout_pack = _load_json(ctx.holdout_pack_path)
-    pack_case_count = len(holdout_pack.get("suites", [])) if isinstance(holdout_pack.get("suites"), list) else 0
-    score_seed = hashlib.sha256((adapter.adapter_id + ":" + artifact_sha + ":" + holdout_pack_sha).encode("utf-8")).hexdigest()
-    eval_receipt = {
-        "schema_id": "kt.operator.forge_cohort0.adapter_eval_receipt.unbound.v1",
+    eval_receipt = _build_forge_eval_receipt(adapter=adapter, artifact_path=artifact_path, artifact_sha=artifact_sha, ctx=ctx)
+    _write_json_worm(path=(run_root / adapter.eval_receipt_relpath).resolve(), obj=eval_receipt, label=f"{adapter.adapter_id}:eval_receipt")
+    return {
         "adapter_id": adapter.adapter_id,
+        "output_name": adapter.output_name,
+        "artifact_relpath": adapter.artifact_relpath,
+        "artifact_sha256": artifact_sha,
+        "dataset_relpath": adapter.dataset_relpath,
+        "dataset_sha256": dataset_sha,
+        "training_receipt_relpath": adapter.training_receipt_relpath,
+        "reload_receipt_relpath": adapter.reload_receipt_relpath,
+        "eval_receipt_relpath": adapter.eval_receipt_relpath,
+        "status": "PASS",
+    }
+
+
+def _train_one_real_engine(
+    *,
+    repo_root: Path,
+    run_root: Path,
+    input_root: Path,
+    ctx: RegistryContext,
+    adapter: AdapterSpec,
+    base_model_dir: Path,
+    enable_real_engine: bool,
+) -> Dict[str, Any]:
+    if adapter.engine != "hf_lora":
+        raise FL3ValidationError(f"FAIL_CLOSED: unsupported real engine request for {adapter.adapter_id}: {adapter.engine}")
+    if not enable_real_engine:
+        raise FL3ValidationError("FAIL_CLOSED: --enable-real-engine required when cohort registry requests hf_lora")
+    if not base_model_dir.exists() or not base_model_dir.is_dir():
+        raise FL3ValidationError(f"FAIL_CLOSED: --base-model-dir missing or invalid: {base_model_dir.as_posix()}")
+
+    dataset_path = (input_root / adapter.dataset_relpath).resolve()
+    dataset_sha = _sha256_file(dataset_path)
+    dataset_bytes = int(dataset_path.stat().st_size)
+    base_snapshot_hash = _hash_tree(ctx.base_snapshot_path)
+
+    cfg = {
+        "job_id": f"forge_cohort0_{adapter.adapter_id}",
+        "adapter_id": adapter.adapter_id,
+        "adapter_version": "v1",
+        "training_mode": adapter.training_mode,
+        "seed": int(adapter.seed),
+        "max_steps": 1,
+        "batch_size": 1,
+        "seq_len": 8,
+        "lr": 0.001,
+        "lora_rank": 4,
+    }
+    cfg_path = (run_root / "training_inputs" / f"{_safe_component(adapter.adapter_id)}.train_config.json").resolve()
+    _write_json_worm(path=cfg_path, obj=cfg, label=f"{adapter.adapter_id}:train_config")
+
+    internal_out_dir = _internal_training_run_dir(repo_root=repo_root, run_root=run_root, adapter=adapter)
+    cmd = [
+        sys.executable,
+        "-m",
+        "tools.training.rapid_lora_loop",
+        "--dataset",
+        str(dataset_path),
+        "--config",
+        str(cfg_path),
+        "--engine",
+        "hf_lora",
+        "--enable-real-engine",
+        "--base-model-dir",
+        str(base_model_dir),
+        "--out-dir",
+        str(internal_out_dir),
+    ]
+    proc = subprocess.run(
+        cmd,
+        cwd=str(repo_root),
+        env=_subprocess_env(repo_root=repo_root),
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+    transcript_path = (run_root / "transcripts" / f"{_safe_component(adapter.adapter_id)}.rapid_lora_loop.log").resolve()
+    write_text_worm(
+        path=transcript_path,
+        text=(proc.stdout or "") if (proc.stdout or "").endswith("\n") else (proc.stdout or "") + "\n",
+        label=f"{adapter.adapter_id}:rapid_lora_loop.log",
+    )
+    if proc.returncode != 0:
+        fail_manifest_path = (internal_out_dir / "training_run_manifest.FAIL_CLOSED.json").resolve()
+        detail = ""
+        if fail_manifest_path.exists():
+            fail_manifest = _load_json(fail_manifest_path)
+            detail = str(fail_manifest.get("error", "")).strip()
+        raise FL3ValidationError(
+            f"FAIL_CLOSED: hf_lora training failed for {adapter.adapter_id} rc={proc.returncode}"
+            + (f" detail={detail}" if detail else "")
+        )
+
+    training_run_manifest_path = (internal_out_dir / "training_run_manifest.PASS.json").resolve()
+    if not training_run_manifest_path.exists():
+        raise FL3ValidationError(f"FAIL_CLOSED: missing training_run_manifest.PASS.json for {adapter.adapter_id}")
+    training_run_manifest = _load_json(training_run_manifest_path)
+    if str(training_run_manifest.get("status", "")).strip() != "PASS":
+        raise FL3ValidationError(f"FAIL_CLOSED: hf_lora training manifest not PASS for {adapter.adapter_id}")
+
+    train_manifest_path = (internal_out_dir / "train_manifest.json").resolve()
+    eval_report_path = (internal_out_dir / "eval_report.json").resolve()
+    verdict_path = (internal_out_dir / "verdict.txt").resolve()
+    base_model_manifest_path = (internal_out_dir / "base_model_hash_manifest.json").resolve()
+    for required in (train_manifest_path, eval_report_path, verdict_path):
+        if not required.exists():
+            raise FL3ValidationError(f"FAIL_CLOSED: missing training artifact for {adapter.adapter_id}: {required.name}")
+    train_manifest = _load_json(train_manifest_path)
+    eval_report = _load_json(eval_report_path)
+
+    produced = training_run_manifest.get("produced") if isinstance(training_run_manifest.get("produced"), dict) else {}
+    source_artifact_path = Path(str(produced.get("output_adapter_path", ""))).expanduser()
+    if not source_artifact_path.is_absolute():
+        source_artifact_path = (internal_out_dir / source_artifact_path).resolve()
+    if not source_artifact_path.exists() or not source_artifact_path.is_file():
+        raise FL3ValidationError(f"FAIL_CLOSED: missing hf_lora adapter artifact for {adapter.adapter_id}")
+    source_artifact_sha = str(produced.get("output_adapter_hash", "")).strip() or _sha256_file(source_artifact_path)
+    if source_artifact_sha != _sha256_file(source_artifact_path):
+        raise FL3ValidationError(f"FAIL_CLOSED: hf_lora artifact hash mismatch for {adapter.adapter_id}")
+
+    artifact_path = (run_root / adapter.artifact_relpath).resolve()
+    artifact_bytes = source_artifact_path.read_bytes()
+    write_bytes_worm(path=artifact_path, data=artifact_bytes, label=f"{adapter.adapter_id}:artifact")
+    artifact_sha = _sha256_file(artifact_path)
+
+    training_receipt = {
+        "schema_id": "kt.operator.forge_cohort0.adapter_training_receipt.unbound.v1",
+        "adapter_id": adapter.adapter_id,
+        "output_name": adapter.output_name,
         "artifact_path": artifact_path.as_posix(),
         "artifact_sha256": artifact_sha,
-        "holdout_pack_path": ctx.holdout_pack_path.as_posix(),
-        "holdout_pack_sha256": holdout_pack_sha,
-        "eval_case_count": int(pack_case_count),
-        "baseline_eval_score": float(round((int(score_seed[:8], 16) % 1000) / 1000.0, 3)),
-        "promotion_ready_artifacts_present": True,
+        "artifact_bytes": int(len(artifact_bytes)),
+        "dataset_relpath": adapter.dataset_relpath,
+        "dataset_sha256": dataset_sha,
+        "dataset_bytes": dataset_bytes,
+        "base_snapshot_id": ctx.base_snapshot_id,
+        "base_snapshot_root_hash": str(base_snapshot_hash["root_hash"]),
+        "base_model_dir": base_model_dir.as_posix(),
+        "base_model_root_hash": str(produced.get("base_model_root_hash", "")).strip(),
+        "training_mode": adapter.training_mode,
+        "engine": adapter.engine,
+        "seed": int(adapter.seed),
+        "source_training_run_manifest_path": training_run_manifest_path.as_posix(),
+        "source_train_manifest_path": train_manifest_path.as_posix(),
+        "source_eval_report_path": eval_report_path.as_posix(),
+        "source_verdict_path": verdict_path.as_posix(),
+        "training_run_verdict": verdict_path.read_text(encoding="utf-8").strip(),
+        "hf_lora": produced.get("hf_lora", {}),
         "status": "PASS",
         "created_at": _now_utc_z(),
     }
+    if base_model_manifest_path.exists():
+        training_receipt["source_base_model_manifest_path"] = base_model_manifest_path.as_posix()
+    _write_json_worm(path=(run_root / adapter.training_receipt_relpath).resolve(), obj=training_receipt, label=f"{adapter.adapter_id}:training_receipt")
+
+    with zipfile.ZipFile(artifact_path, "r") as zf:
+        members = sorted(zf.namelist())
+    if not members:
+        raise FL3ValidationError(f"FAIL_CLOSED: empty hf_lora adapter archive for {adapter.adapter_id}")
+    reload_receipt = {
+        "schema_id": "kt.operator.forge_cohort0.adapter_reload_receipt.unbound.v1",
+        "adapter_id": adapter.adapter_id,
+        "artifact_path": artifact_path.as_posix(),
+        "artifact_sha256": artifact_sha,
+        "reloaded_member_count": int(len(members)),
+        "reloaded_member_list_sha256": sha256_text(_canonical_json(members)),
+        "status": "PASS",
+        "created_at": _now_utc_z(),
+    }
+    _write_json_worm(path=(run_root / adapter.reload_receipt_relpath).resolve(), obj=reload_receipt, label=f"{adapter.adapter_id}:reload_receipt")
+
+    eval_receipt = _build_forge_eval_receipt(
+        adapter=adapter,
+        artifact_path=artifact_path,
+        artifact_sha=artifact_sha,
+        ctx=ctx,
+        source_eval_report=eval_report,
+    )
+    eval_receipt["source_eval_report_path"] = eval_report_path.as_posix()
     _write_json_worm(path=(run_root / adapter.eval_receipt_relpath).resolve(), obj=eval_receipt, label=f"{adapter.adapter_id}:eval_receipt")
+
     return {
         "adapter_id": adapter.adapter_id,
         "output_name": adapter.output_name,
@@ -505,6 +740,8 @@ def _parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     ap.add_argument("--artifact-root", required=True, help="External artifact root (must be outside repo tree).")
     ap.add_argument("--mode", choices=["dry-run", "smoke", "full"], required=True)
     ap.add_argument("--adapter-id", default="", help="Required for smoke mode; adapter_id to train.")
+    ap.add_argument("--base-model-dir", default="", help="Local base model dir (required for hf_lora engine).")
+    ap.add_argument("--enable-real-engine", action="store_true", help="Allow non-stub engines (default: disabled).")
     ap.add_argument("--run-label", default="", help="Optional stable run label under artifact root.")
     return ap.parse_args(list(argv) if argv is not None else None)
 
@@ -546,7 +783,23 @@ def main(argv: Iterable[str] | None = None) -> int:
                 raise FL3ValidationError(f"FAIL_CLOSED: smoke adapter_id not found in registry: {smoke_adapter_id}")
         else:
             targets = list(ctx.adapters)
-        adapter_results = [_train_one_stub(run_root=run_root, input_root=input_root, ctx=ctx, adapter=row) for row in targets]
+        base_model_dir = Path(str(args.base_model_dir)).expanduser().resolve() if str(args.base_model_dir).strip() else Path("")
+        adapter_results: List[Dict[str, Any]] = []
+        for row in targets:
+            if row.engine == "hf_lora":
+                adapter_results.append(
+                    _train_one_real_engine(
+                        repo_root=repo_root,
+                        run_root=run_root,
+                        input_root=input_root,
+                        ctx=ctx,
+                        adapter=row,
+                        base_model_dir=base_model_dir,
+                        enable_real_engine=bool(args.enable_real_engine),
+                    )
+                )
+            else:
+                adapter_results.append(_train_one_stub(run_root=run_root, input_root=input_root, ctx=ctx, adapter=row))
         _write_run_manifests(repo_root=repo_root, run_root=run_root, ctx=ctx, mode=str(args.mode), adapter_results=adapter_results)
         print(f"KT_FORGE_COHORT0_PASS mode={args.mode} registry={ctx.registry_id} adapters={len(adapter_results)} run_root={run_root.as_posix()}")
         return 0
