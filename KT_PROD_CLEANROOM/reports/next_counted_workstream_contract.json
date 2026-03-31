@@ -1,14 +1,14 @@
 {
   "schema_id": "kt.next_counted_workstream_contract.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-30T21:10:13Z",
+  "generated_utc": "2026-03-31T00:05:25Z",
   "source_workstream_id": "LAB_READINESS_RECONSIDERATION_GATE_FROZEN",
   "current_counted_gate": "Gate D",
   "parent_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
   "exact_next_counted_workstream_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "execution_mode": "COUNTED_LANE_CLOSED__LAB_READINESS_CEILING_AND_RECONSIDERATION_GATE_FROZEN__R6_NEXT_IN_ORDER_BLOCKED",
-  "workstream_objective": "No counted work is executable now. The second same-head counted rerun of B04.R5 passed honestly on head e232a7762ea03a3eea391c6a4da6486b892eabdd but did not earn router superiority, the current lab readiness ceiling is frozen as preservation posture only, and the current reconsideration gate held because the candidate refresh reused the same lab head and introduced no new terminal adapter beyond the ceiling. R6 remains next in order only and blocked in law. No later router-readiness reconsideration input may be prepared unless a future gate packet earns material_change_earned = true, KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py is the only sanctioned path for preparing that lab-only input, any future consumer must accept that input only through KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py, and the standing single-path enforcement receipt must remain PASS. Any future counted reopening still requires that later lawful input plus another same-head R5 rerun, not a direct move into R6.",
+  "workstream_objective": "No counted work is executable now. The second same-head counted rerun of B04.R5 passed honestly on head e232a7762ea03a3eea391c6a4da6486b892eabdd but did not earn router superiority, the current lab readiness ceiling is frozen as preservation posture only, and the current reconsideration gate held because the candidate refresh reused the same lab head and introduced no new terminal adapter beyond the ceiling. R6 remains next in order only and blocked in law. No later router-readiness reconsideration input may be prepared unless a future gate packet earns material_change_earned = true, KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py is the only sanctioned path for preparing that lab-only input, any future consumer must accept that input only through KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py, and the single-path enforcement receipt must be freshly re-emitted and remain PASS on the actual candidate head. Any future counted reopening still requires that later lawful input plus another same-head R5 rerun, not a direct move into R6.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "canonical_receipt_binding": {
     "gate_c_exit_authoritative_receipt_path": "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_20260328_1029/gate_c_exit_adjudication_authoritative_receipt.json",
@@ -99,6 +99,7 @@
     "Any alternate tool, helper, wrapper, or packet emitter prepares router-readiness reconsideration input outside KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py.",
     "Any consumer parses or relies on kt.router_readiness_reconsideration_input.v1 without first passing through KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py.",
     "Any future tool-side touch of kt.router_readiness_reconsideration_input.v1 appears outside the sanctioned emitter/consumer pair and causes the single-path enforcement receipt to fail.",
+    "Any future router-readiness reconsideration input is prepared or consumed using a stale single-path enforcement receipt from another head.",
     "Any claim that the completed second rerun static hold or any lab readiness packet earns router superiority.",
     "Any externality widening above E1, external comparative claim, or commercial activation is folded into the post-rerun hold state.",
     "Any broader lab improvement work is narrated as counted advancement without a later lawful router-readiness reconsideration input and reopening of a future same-head R5 rerun."
@@ -111,6 +112,7 @@
       "KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py is the only sanctioned path for preparing any later lab-only router-readiness reconsideration input, and it fails closed until the gate earns material_change_earned = true.",
       "KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py is the only sanctioned consumer path for kt.router_readiness_reconsideration_input.v1, and downstream readers must fail closed unless that validator passes.",
       "The standing single-path enforcement receipt remains PASS with one sanctioned emitter and two sanctioned tool-side touchers, so future tool-side drift is fail-closed before reconsideration input can matter.",
+      "Any future router-readiness reconsideration attempt must re-emit that single-path enforcement receipt on the actual candidate head before input may be prepared or consumed.",
       "R6 remains next in order but blocked until router superiority is actually earned on a future same-head rerun.",
       "The current hold state does not paraphrase lab readiness or authorization as earned superiority and keeps all higher-scope widening blocked."
     ],
