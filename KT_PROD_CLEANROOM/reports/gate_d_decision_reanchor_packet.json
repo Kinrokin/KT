@@ -1,14 +1,14 @@
 {
   "schema_id": "kt.gate_d.decision_reanchor_packet.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-31T04:43:21Z",
-  "workstream_id": "ROUTER_READINESS_RECONSIDERATION_ADJUDICATED",
+  "generated_utc": "2026-03-31T11:31:22Z",
+  "workstream_id": "B04_R5_THIRD_SAME_HEAD_RERUN_LAUNCH_SURFACE",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
-  "reanchor_head": "8ed9102f00caee95ae8f4cd55bc074ada8e3f321",
+  "reanchor_head": "07dde6487ec9c1b444227f90930b686672fe485d",
   "current_repo_state": {
     "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch": "main",
-    "current_git_head": "8ed9102f00caee95ae8f4cd55bc074ada8e3f321",
+    "current_git_head": "07dde6487ec9c1b444227f90930b686672fe485d",
     "worktree_cleanliness": "CLEAN_CURRENT_HEAD"
   },
   "authoritative_gate_c_exit": {
@@ -43,7 +43,7 @@
     "router_status": "STATIC_CANONICAL_BASELINE_ONLY",
     "gate_d_decision_selected": true,
     "gate_d_activation_authorized": true,
-    "note": "Gate D remains bounded after the original R5 proof and both same-head counted R5 reruns held the static baseline honestly because router superiority was not earned. On new lab head 8ed9102f00caee95ae8f4cd55bc074ada8e3f321, the later lab refresh materially beat the frozen ceiling, the reconsideration gate earned material_change_earned = true, a valid lab-only reconsideration input was prepared and validated through the sanctioned emitter/consumer pair, and the reconsideration adjudication receipt passed. That advances the router branch only this far: a separate B04.R5 third same-head rerun launch surface may now be considered while counted lane remains closed. Any later prepare or consume step must still re-emit both fresh receipts on the actual candidate head. Learned-router cutover, lobes, externality, comparative, and commercial widening remain separately gated and still blocked."
+    "note": "Gate D remains bounded after the original R5 proof and both same-head counted R5 reruns held the static baseline honestly because router superiority was not earned. On new lab head 8ed9102f00caee95ae8f4cd55bc074ada8e3f321, the later lab refresh materially beat the frozen ceiling, the reconsideration gate earned material_change_earned = true, a valid lab-only reconsideration input was prepared and validated through the sanctioned emitter/consumer pair, and the reconsideration adjudication receipt passed. That state has now advanced one lawful counted step further: a separate B04.R5 third same-head rerun launch surface is bound on head 07dde6487ec9c1b444227f90930b686672fe485d and authorizes only that rerun under the existing proof law. Learned-router cutover, lobes, externality, comparative, and commercial widening remain separately gated and still blocked."
   },
   "explicit_not_authorized": [
     "frontier claim",
@@ -74,7 +74,7 @@
   },
   "gate_d_decision_scope": {
     "omega_next_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
-    "decision_mode": "ROUTER_READINESS_RECONSIDERATION_ADJUDICATED__COUNTED_LANE_CLOSED__SEPARATE_R5_THIRD_LAUNCH_SURFACE_MAY_BE_CONSIDERED__R6_BLOCKED_PENDING_EARNED_SUPERIORITY",
+    "decision_mode": "THIRD_COUNTED_R5_RERUN_LAUNCH_BOUND__R6_BLOCKED_PENDING_EARNED_SUPERIORITY",
     "activation_launch_contract_ref": "KT_PROD_CLEANROOM/governance/b04_civilization_activation_launch_contract.json",
     "r1_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_law_contract.json",
     "r1_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_terminal_state.json",
@@ -90,6 +90,8 @@
     "r5_same_head_rerun_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r5_same_head_rerun_terminal_state.json",
     "r5_second_same_head_rerun_launch_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r5_second_same_head_rerun_launch_contract.json",
     "r5_second_same_head_rerun_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r5_second_same_head_rerun_terminal_state.json",
+    "r5_third_same_head_rerun_launch_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r5_third_same_head_rerun_launch_contract.json",
+    "r5_third_same_head_rerun_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r5_third_same_head_rerun_terminal_state.json",
     "ratified_step_ids": [
       "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
       "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION",
@@ -97,7 +99,7 @@
       "B04_R4_ROUTER_SHADOW_EVALUATION_RATIFICATION",
       "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF"
     ],
-    "next_step_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
+    "next_step_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN",
     "selected_scope_summary": [
       "D1 stays EXTERNALITY_BOUNDED until Gate E.",
       "D2 remains one controlled counted-domain expansion inside the single Gate D civilization lane only.",
@@ -117,7 +119,8 @@
       "KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py prepared a valid lab-only router-readiness reconsideration input on head 8ed9102f00caee95ae8f4cd55bc074ada8e3f321.",
       "KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py validated that reconsideration input and then emitted a PASS reconsideration adjudication receipt on head 8ed9102f00caee95ae8f4cd55bc074ada8e3f321.",
       "The standing single-path enforcement receipt and hold-state basis validation receipt both remain PASS on head 8ed9102f00caee95ae8f4cd55bc074ada8e3f321.",
-      "The next lawful move is now consideration of a separate B04.R5 third same-head rerun launch surface only, while counted lane remains closed and R6 remains blocked.",
+      "The separate B04.R5 third same-head rerun launch surface is now bound on head 07dde6487ec9c1b444227f90930b686672fe485d and authorizes only that rerun under the existing proof law.",
+      "The next lawful move is now B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN only, while R6 remains next in order only and blocked.",
       "Treating the reconsideration adjudication receipt as counted reopening, an R5 rerun, or learned-router authorization remains forbidden."
     ],
     "forbidden_prejudgments": [
@@ -134,10 +137,11 @@
       "Treating tracked carrier receipts as Gate D authority",
       "Treating any lab readiness packet as counted proof",
       "Treating a validated lab-only reconsideration input as counted reopening or as a B04.R5 relaunch by itself",
-      "Treating a PASS reconsideration adjudication receipt as a counted R5 rerun or as learned-router authorization"
+      "Treating a PASS reconsideration adjudication receipt as a counted R5 rerun or as learned-router authorization",
+      "Treating the third same-head rerun launch surface as a rerun result or as learned-router authorization"
     ],
     "no_count_before_decision": false
   },
-  "next_lawful_move": "CONSIDER_B04_R5_THIRD_SAME_HEAD_RERUN_LAUNCH_SURFACE_ONLY",
-  "claim_boundary": "This packet now freezes the selected Gate D posture set, the B04 launch surface, the R1-R5 ratification results, the honest static holds on both counted same-head R5 reruns, and the current router-readiness reconsideration adjudication as lab-only bounded state change. It still does not ratify counted reopening, an R5 rerun launch surface, learned-router cutover, lobes, externality, comparative claims, or commercial scope."
+  "next_lawful_move": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN",
+  "claim_boundary": "This packet now freezes the selected Gate D posture set, the B04 launch surface, the R1-R5 ratification results, the honest static holds on both counted same-head R5 reruns, the lab-only reconsideration adjudication, and the narrow binding of a third same-head counted R5 rerun launch surface. It still does not ratify a rerun result, learned-router cutover, lobes, externality, comparative claims, or commercial scope."
 }
