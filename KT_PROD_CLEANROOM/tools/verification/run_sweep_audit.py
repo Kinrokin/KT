@@ -93,6 +93,15 @@ def _pytest_cmd(*args: str) -> List[str]:
     return ["python", "-m", "pytest", "-p", "pytest_cov", *args]
 
 
+def _pytest_env(*, base_env: Dict[str, str], sweep_dir: Path, stem: str) -> Dict[str, str]:
+    env = dict(base_env)
+    coverage_file = (sweep_dir / f"{stem}.coverage").resolve()
+    env["COVERAGE_FILE"] = str(coverage_file)
+    for key in ("COV_CORE_SOURCE", "COV_CORE_CONFIG", "COV_CORE_DATAFILE"):
+        env.pop(key, None)
+    return env
+
+
 def main(argv: Optional[Sequence[str]] = None) -> int:
     args = _parse_args(argv)
     repo_root = repo_root_from(Path(__file__))
@@ -133,12 +142,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     pytest_env = dict(base_env)
     pytest_env.pop("KT_CANONICAL_LANE", None)
     pytest_env.pop("KT_ATTESTATION_MODE", None)
-    run_step("pytest_cleanroom", _pytest_cmd("-q", "KT_PROD_CLEANROOM/tests"), env=pytest_env)
-    run_step("pytest_temple", _pytest_cmd("-q", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests"), env=pytest_env)
+    run_step("pytest_cleanroom", _pytest_cmd("-q", "KT_PROD_CLEANROOM/tests"), env=_pytest_env(base_env=pytest_env, sweep_dir=sweep_dir, stem="pytest_cleanroom"))
+    run_step("pytest_temple", _pytest_cmd("-q", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests"), env=_pytest_env(base_env=pytest_env, sweep_dir=sweep_dir, stem="pytest_temple"))
     run_step(
         "pytest_verification",
         _pytest_cmd("-q", "KT_PROD_CLEANROOM/tools/verification/tests"),
-        env=pytest_env,
+        env=_pytest_env(base_env=pytest_env, sweep_dir=sweep_dir, stem="pytest_verification"),
     )
 
     # Meta-evaluator CI simulation: canonical lane flagged but no keys must be available.
