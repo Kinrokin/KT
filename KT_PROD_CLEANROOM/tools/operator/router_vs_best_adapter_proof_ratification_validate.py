@@ -28,6 +28,8 @@ DEFAULT_SECOND_RERUN_LAUNCH_CONTRACT_REL = "KT_PROD_CLEANROOM/governance/b04_r5_
 DEFAULT_SECOND_RERUN_LAUNCH_TERMINAL_STATE_REL = "KT_PROD_CLEANROOM/governance/b04_r5_second_same_head_rerun_terminal_state.json"
 DEFAULT_THIRD_RERUN_LAUNCH_CONTRACT_REL = "KT_PROD_CLEANROOM/governance/b04_r5_third_same_head_rerun_launch_contract.json"
 DEFAULT_THIRD_RERUN_LAUNCH_TERMINAL_STATE_REL = "KT_PROD_CLEANROOM/governance/b04_r5_third_same_head_rerun_terminal_state.json"
+DEFAULT_FOURTH_RERUN_LAUNCH_CONTRACT_REL = "KT_PROD_CLEANROOM/governance/b04_r5_fourth_same_head_rerun_launch_contract.json"
+DEFAULT_FOURTH_RERUN_LAUNCH_TERMINAL_STATE_REL = "KT_PROD_CLEANROOM/governance/b04_r5_fourth_same_head_rerun_terminal_state.json"
 DEFAULT_SHADOW_MATRIX_REL = "KT_PROD_CLEANROOM/reports/router_shadow_eval_matrix.json"
 DEFAULT_HEALTH_REL = "KT_PROD_CLEANROOM/reports/route_distribution_health.json"
 DEFAULT_SCORECARD_REL = "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json"
@@ -38,6 +40,7 @@ EXPECTED_CURRENT_STEP_ID = "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF"
 EXPECTED_RERUN_STEP_ID = "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SAME_HEAD_RERUN"
 EXPECTED_SECOND_RERUN_STEP_ID = "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SECOND_SAME_HEAD_RERUN"
 EXPECTED_THIRD_RERUN_STEP_ID = "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN"
+EXPECTED_FOURTH_RERUN_STEP_ID = "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__FOURTH_SAME_HEAD_RERUN"
 EXPECTED_EARNED_NEXT_STEP_ID = "B04_R6_LEARNED_ROUTER_AUTHORIZATION"
 EXPECTED_HOLD_NEXT_STEP_ID = "HOLD_B04_R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF"
 EXPECTED_ORIGINAL_EXECUTION_MODE = "CIVILIZATION_RATIFICATION_ORDER_LOCKED__FIFTH_STEP_ONLY"
@@ -47,6 +50,8 @@ EXPECTED_SECOND_RERUN_EXECUTION_MODE = "SECOND_R5_RERUN_AUTHORIZED_ONLY__R6_STIL
 EXPECTED_SECOND_POST_RERUN_HOLD_EXECUTION_MODE = "R6_NEXT_IN_ORDER_BLOCKED_PENDING_EARNED_SUPERIORITY__FUTURE_SECOND_R5_RERUN_REQUIRES_NEW_LAB_JUSTIFICATION"
 EXPECTED_THIRD_RERUN_EXECUTION_MODE = "THIRD_R5_RERUN_AUTHORIZED_ONLY__R6_STILL_BLOCKED_UNTIL_EARNED_SUPERIORITY"
 EXPECTED_THIRD_POST_RERUN_HOLD_EXECUTION_MODE = "R6_NEXT_IN_ORDER_BLOCKED_PENDING_EARNED_SUPERIORITY__FUTURE_THIRD_R5_RERUN_REQUIRES_NEW_LAB_JUSTIFICATION"
+EXPECTED_FOURTH_RERUN_EXECUTION_MODE = "FOURTH_R5_RERUN_AUTHORIZED_ONLY__R6_STILL_BLOCKED_UNTIL_EARNED_SUPERIORITY"
+EXPECTED_FOURTH_POST_RERUN_HOLD_EXECUTION_MODE = "R6_NEXT_IN_ORDER_BLOCKED_PENDING_EARNED_SUPERIORITY__FUTURE_FOURTH_R5_RERUN_REQUIRES_NEW_LAB_JUSTIFICATION"
 
 
 def _resolve(root: Path, raw: str) -> Path:
@@ -120,6 +125,13 @@ def _r5_execution_context(
         and resume_step == EXPECTED_THIRD_RERUN_STEP_ID
         and reanchor_step == EXPECTED_THIRD_RERUN_STEP_ID
     )
+    fourth_rerun_path = (
+        next_step == EXPECTED_FOURTH_RERUN_STEP_ID
+        and execution_mode == EXPECTED_FOURTH_RERUN_EXECUTION_MODE
+        and overlay_step == EXPECTED_FOURTH_RERUN_STEP_ID
+        and resume_step == EXPECTED_FOURTH_RERUN_STEP_ID
+        and reanchor_step == EXPECTED_FOURTH_RERUN_STEP_ID
+    )
     post_rerun_hold_path = (
         source_step == EXPECTED_RERUN_STEP_ID
         and next_step == EXPECTED_EARNED_NEXT_STEP_ID
@@ -162,6 +174,20 @@ def _r5_execution_context(
         and bool(next_contract.get("repo_state_executable_now")) is False
         and bool(resume.get("repo_state_executable_now")) is False
     )
+    fourth_post_rerun_hold_path = (
+        source_step == EXPECTED_FOURTH_RERUN_STEP_ID
+        and next_step == EXPECTED_EARNED_NEXT_STEP_ID
+        and execution_mode == EXPECTED_FOURTH_POST_RERUN_HOLD_EXECUTION_MODE
+        and overlay_step == EXPECTED_EARNED_NEXT_STEP_ID
+        and overlay_batch == EXPECTED_FOURTH_RERUN_STEP_ID
+        and overlay_workstream == EXPECTED_FOURTH_RERUN_STEP_ID
+        and resume_step == EXPECTED_EARNED_NEXT_STEP_ID
+        and resume_workstream == EXPECTED_FOURTH_RERUN_STEP_ID
+        and reanchor_step == EXPECTED_HOLD_NEXT_STEP_ID
+        and reanchor_workstream == EXPECTED_FOURTH_RERUN_STEP_ID
+        and bool(next_contract.get("repo_state_executable_now")) is False
+        and bool(resume.get("repo_state_executable_now")) is False
+    )
     if bool(next_contract.get("repo_state_executable_now")) is True and original_path:
         return EXPECTED_CURRENT_STEP_ID
     if bool(next_contract.get("repo_state_executable_now")) is True and rerun_path:
@@ -170,12 +196,16 @@ def _r5_execution_context(
         return EXPECTED_SECOND_RERUN_STEP_ID
     if bool(next_contract.get("repo_state_executable_now")) is True and third_rerun_path:
         return EXPECTED_THIRD_RERUN_STEP_ID
+    if bool(next_contract.get("repo_state_executable_now")) is True and fourth_rerun_path:
+        return EXPECTED_FOURTH_RERUN_STEP_ID
     if post_rerun_hold_path:
         return EXPECTED_RERUN_STEP_ID
     if second_post_rerun_hold_path:
         return EXPECTED_SECOND_RERUN_STEP_ID
     if third_post_rerun_hold_path:
         return EXPECTED_THIRD_RERUN_STEP_ID
+    if fourth_post_rerun_hold_path:
+        return EXPECTED_FOURTH_RERUN_STEP_ID
     return None
 
 
@@ -221,6 +251,8 @@ def build_router_vs_best_adapter_proof_ratification_receipt(
     second_rerun_launch_terminal = load_json(root / DEFAULT_SECOND_RERUN_LAUNCH_TERMINAL_STATE_REL)
     third_rerun_launch_contract = load_json(root / DEFAULT_THIRD_RERUN_LAUNCH_CONTRACT_REL)
     third_rerun_launch_terminal = load_json(root / DEFAULT_THIRD_RERUN_LAUNCH_TERMINAL_STATE_REL)
+    fourth_rerun_launch_contract = load_json(root / DEFAULT_FOURTH_RERUN_LAUNCH_CONTRACT_REL)
+    fourth_rerun_launch_terminal = load_json(root / DEFAULT_FOURTH_RERUN_LAUNCH_TERMINAL_STATE_REL)
 
     current_state_authority = [
         str(item).strip()
@@ -236,6 +268,7 @@ def build_router_vs_best_adapter_proof_ratification_receipt(
     rerun_context_active = execution_context == EXPECTED_RERUN_STEP_ID
     second_rerun_context_active = execution_context == EXPECTED_SECOND_RERUN_STEP_ID
     third_rerun_context_active = execution_context == EXPECTED_THIRD_RERUN_STEP_ID
+    fourth_rerun_context_active = execution_context == EXPECTED_FOURTH_RERUN_STEP_ID
     superiority_earned = bool(scorecard.get("superiority_earned"))
     honest_hold = (
         superiority_earned is False
@@ -337,6 +370,35 @@ def build_router_vs_best_adapter_proof_ratification_receipt(
             )
         )
     )
+    fourth_rerun_launch_surface_honest = (
+        str(fourth_rerun_launch_contract.get("workstream_id", "")).strip() == "B04_R5_FOURTH_SAME_HEAD_RERUN_LAUNCH_SURFACE"
+        and str(fourth_rerun_launch_contract.get("launch_mode", "")).strip()
+        == "COUNTED_FOURTH_R5_RERUN_AUTHORIZATION_ONLY_NO_R6_OR_HIGHER_WIDENING"
+        and fourth_rerun_launch_terminal.get("counted_r5_fourth_rerun_authorized") is True
+        and fourth_rerun_launch_terminal.get("learned_router_authorized") is False
+        and fourth_rerun_launch_terminal.get("lobe_ratified") is False
+        and (
+            (
+                fourth_rerun_launch_terminal.get("counted_r5_fourth_rerun_executed") is False
+                and str(fourth_rerun_launch_terminal.get("current_state", "")).strip() == "B04_R5_FOURTH_SAME_HEAD_RERUN_AUTHORIZED_NOT_YET_EXECUTED"
+                and str(fourth_rerun_launch_terminal.get("next_lawful_move", "")).strip() == EXPECTED_FOURTH_RERUN_STEP_ID
+            )
+            or (
+                fourth_rerun_launch_terminal.get("counted_r5_fourth_rerun_executed") is True
+                and (
+                    (
+                        fourth_rerun_launch_terminal.get("router_superiority_earned") is False
+                        and str(fourth_rerun_launch_terminal.get("current_state", "")).strip() == "B04_R5_FOURTH_SAME_HEAD_RERUN_EXECUTED_STATIC_HOLD"
+                        and str(fourth_rerun_launch_terminal.get("next_lawful_move", "")).strip() == EXPECTED_HOLD_NEXT_STEP_ID
+                    )
+                    or (
+                        fourth_rerun_launch_terminal.get("router_superiority_earned") is True
+                        and str(fourth_rerun_launch_terminal.get("next_lawful_move", "")).strip() == EXPECTED_EARNED_NEXT_STEP_ID
+                    )
+                )
+            )
+        )
+    )
 
     checks = [
         {
@@ -404,10 +466,11 @@ def build_router_vs_best_adapter_proof_ratification_receipt(
         {
             "check_id": "rerun_launch_surface_is_bound_authorization_only_when_rerun_context_is_active",
             "pass": (
-                (not rerun_context_active and not second_rerun_context_active and not third_rerun_context_active)
+                (not rerun_context_active and not second_rerun_context_active and not third_rerun_context_active and not fourth_rerun_context_active)
                 or (rerun_context_active and rerun_launch_surface_honest)
                 or (second_rerun_context_active and second_rerun_launch_surface_honest)
                 or (third_rerun_context_active and third_rerun_launch_surface_honest)
+                or (fourth_rerun_context_active and fourth_rerun_launch_surface_honest)
             ),
         },
         {

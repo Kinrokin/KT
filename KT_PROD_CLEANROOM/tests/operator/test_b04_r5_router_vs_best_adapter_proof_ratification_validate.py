@@ -15,6 +15,7 @@ COPY_REFS = [
     "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
     "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_proof_contract.json",
     "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_terminal_state.json",
+    "KT_PROD_CLEANROOM/governance/b04_r5_fourth_same_head_rerun_terminal_state.json",
     "KT_PROD_CLEANROOM/tools/operator/router_ordered_proof_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/router_vs_best_adapter_proof_ratification_validate.py",
 ]
@@ -189,4 +190,39 @@ def test_r5_execution_context_recognizes_third_same_head_rerun_launch_surface() 
             reanchor=reanchor,
         )
         == "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN"
+    )
+
+
+def test_r5_execution_context_recognizes_fourth_same_head_rerun_launch_surface() -> None:
+    overlay = {
+        "next_counted_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__FOURTH_SAME_HEAD_RERUN",
+        "current_lawful_gate_standing": {
+            "current_counted_batch": "B04_R5_FOURTH_SAME_HEAD_RERUN_LAUNCH_SURFACE",
+        },
+        "workstream_id": "B04_R5_FOURTH_SAME_HEAD_RERUN_LAUNCH_SURFACE",
+    }
+    next_contract = {
+        "source_workstream_id": "B04_R5_FOURTH_SAME_HEAD_RERUN_LAUNCH_SURFACE",
+        "exact_next_counted_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__FOURTH_SAME_HEAD_RERUN",
+        "execution_mode": "FOURTH_R5_RERUN_AUTHORIZED_ONLY__R6_STILL_BLOCKED_UNTIL_EARNED_SUPERIORITY",
+        "repo_state_executable_now": True,
+    }
+    resume = {
+        "exact_next_counted_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__FOURTH_SAME_HEAD_RERUN",
+        "workstream_id": "B04_R5_FOURTH_SAME_HEAD_RERUN_LAUNCH_SURFACE",
+        "repo_state_executable_now": True,
+    }
+    reanchor = {
+        "next_lawful_move": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__FOURTH_SAME_HEAD_RERUN",
+        "workstream_id": "B04_R5_FOURTH_SAME_HEAD_RERUN_LAUNCH_SURFACE",
+    }
+
+    assert (
+        r5._r5_execution_context(
+            overlay=overlay,
+            next_contract=next_contract,
+            resume=resume,
+            reanchor=reanchor,
+        )
+        == "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__FOURTH_SAME_HEAD_RERUN"
     )
