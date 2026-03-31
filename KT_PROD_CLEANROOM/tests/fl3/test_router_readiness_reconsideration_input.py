@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from tools.router.run_router_readiness_reconsideration_input import (  # noqa: E402
+    HOLD_STATE_BASIS_VALIDATION_RECEIPT_SCHEMA_ID,
     SINGLE_PATH_ENFORCEMENT_RECEIPT_SCHEMA_ID,
     SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT,
     SANCTIONED_EMITTER_ENTRYPOINT,
@@ -85,6 +86,23 @@ def _single_path_guard_receipt(*, head: str | None = None) -> dict:
     }
 
 
+def _hold_state_basis_receipt(*, actual_head: str | None = None, tracked_basis_head: str = "PRESEAL_BASIS_HEAD") -> dict:
+    current_head = actual_head or _repo_head()
+    return {
+        "schema_id": HOLD_STATE_BASIS_VALIDATION_RECEIPT_SCHEMA_ID,
+        "generated_utc": "2026-03-30T00:00:00Z",
+        "mode": "LAB_ONLY_NONCANONICAL",
+        "status": "PASS",
+        "head_alignment_posture": "PRE_SEAL_HOLD_STATE_BASIS_CONFIRMED",
+        "actual_repo_head": current_head,
+        "tracked_surface_basis_head": tracked_basis_head,
+        "resolution_rule": (
+            "Treat the tracked hold surfaces as pre-seal basis only. Any future router-readiness reconsideration attempt "
+            "must re-emit the single-path guard on the actual candidate head before prepare or consume may proceed."
+        ),
+    }
+
+
 def test_reconsideration_input_fails_when_gate_not_earned() -> None:
     with pytest.raises(RuntimeError, match="material_change_earned = true"):
         build_router_readiness_reconsideration_input(
@@ -92,9 +110,11 @@ def test_reconsideration_input_fails_when_gate_not_earned() -> None:
             gate_packet=_gate_packet(material_change=False, semantic_bypass=True),
             candidate_refresh_packet=_candidate_refresh(),
             single_path_guard_receipt=_single_path_guard_receipt(),
+            hold_state_basis_receipt=_hold_state_basis_receipt(),
             gate_packet_ref="gate.json",
             candidate_refresh_packet_ref="candidate.json",
             single_path_guard_receipt_ref="guard.json",
+            hold_state_basis_receipt_ref="hold_state_basis.json",
         )
 
 
@@ -104,9 +124,11 @@ def test_reconsideration_input_builds_when_gate_is_clean() -> None:
         gate_packet=_gate_packet(material_change=True, semantic_bypass=False),
         candidate_refresh_packet=_candidate_refresh(),
         single_path_guard_receipt=_single_path_guard_receipt(),
+        hold_state_basis_receipt=_hold_state_basis_receipt(),
         gate_packet_ref="gate.json",
         candidate_refresh_packet_ref="candidate.json",
         single_path_guard_receipt_ref="guard.json",
+        hold_state_basis_receipt_ref="hold_state_basis.json",
     )
 
     assert packet["status"] == "PASS"
@@ -121,12 +143,14 @@ def test_reconsideration_input_builds_when_gate_is_clean() -> None:
         == SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT
     )
     assert packet["single_path_guard_summary"]["guard_head"] == _repo_head()
+    assert packet["hold_state_basis_summary"]["actual_repo_head"] == _repo_head()
 
 
 def test_reconsideration_input_cli_writes_packet(tmp_path: Path) -> None:
     gate_path = tmp_path / "gate.json"
     candidate_path = tmp_path / "candidate.json"
     guard_path = tmp_path / "guard.json"
+    hold_state_basis_path = tmp_path / "hold_state_basis.json"
     output_path = tmp_path / "reconsider.json"
     gate_path.write_text(
         json.dumps(_gate_packet(material_change=True, semantic_bypass=False, candidate_ref=str(candidate_path)), indent=2),
@@ -134,6 +158,7 @@ def test_reconsideration_input_cli_writes_packet(tmp_path: Path) -> None:
     )
     candidate_path.write_text(json.dumps(_candidate_refresh(), indent=2), encoding="utf-8")
     guard_path.write_text(json.dumps(_single_path_guard_receipt(), indent=2), encoding="utf-8")
+    hold_state_basis_path.write_text(json.dumps(_hold_state_basis_receipt(), indent=2), encoding="utf-8")
 
     rc = main(
         [
@@ -143,6 +168,8 @@ def test_reconsideration_input_cli_writes_packet(tmp_path: Path) -> None:
             str(candidate_path),
             "--single-path-guard-receipt",
             str(guard_path),
+            "--hold-state-basis-receipt",
+            str(hold_state_basis_path),
             "--output",
             str(output_path),
         ]
@@ -153,6 +180,7 @@ def test_reconsideration_input_cli_writes_packet(tmp_path: Path) -> None:
     assert payload["status"] == "PASS"
     assert payload["gate_requirements_satisfied"]["material_change_earned"] is True
     assert payload["single_path_guard_summary"]["guard_head"] == _repo_head()
+    assert payload["hold_state_basis_summary"]["actual_repo_head"] == _repo_head()
 
 
 def test_reconsideration_input_has_single_sanctioned_emitter() -> None:
@@ -165,3 +193,21 @@ def test_reconsideration_input_has_single_sanctioned_emitter() -> None:
     )
 
     assert emitters == ["run_router_readiness_reconsideration_input.py"]
+
+
+def test_reconsideration_input_fails_when_hold_state_basis_receipt_collapses_into_same_head_authority() -> None:
+    with pytest.raises(RuntimeError, match="cannot collapse into same-head authority"):
+        build_router_readiness_reconsideration_input(
+            current_git_head=_repo_head(),
+            gate_packet=_gate_packet(material_change=True, semantic_bypass=False),
+            candidate_refresh_packet=_candidate_refresh(),
+            single_path_guard_receipt=_single_path_guard_receipt(),
+            hold_state_basis_receipt=_hold_state_basis_receipt(
+                actual_head=_repo_head(),
+                tracked_basis_head=_repo_head(),
+            ),
+            gate_packet_ref="gate.json",
+            candidate_refresh_packet_ref="candidate.json",
+            single_path_guard_receipt_ref="guard.json",
+            hold_state_basis_receipt_ref="hold_state_basis.json",
+        )

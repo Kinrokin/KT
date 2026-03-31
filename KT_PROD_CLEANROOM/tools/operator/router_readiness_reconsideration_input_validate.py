@@ -9,6 +9,7 @@ from typing import Any, Dict, List, Optional, Sequence
 
 from tools.operator.titanium_common import repo_root, utc_now_iso_z, write_json_stable
 from tools.router.run_router_readiness_reconsideration_input import (
+    HOLD_STATE_BASIS_VALIDATION_RECEIPT_SCHEMA_ID,
     LAB_RECONSIDERATION_GATE_PACKET_SCHEMA_ID,
     LATER_LAB_READINESS_REFRESH_SCHEMA_ID,
     RECONSIDERATION_INPUT_SCHEMA_ID,
@@ -68,6 +69,21 @@ def _validate_single_path_guard_receipt(packet: Dict[str, Any]) -> None:
         raise RuntimeError("FAIL_CLOSED: single-path guard receipt must be PASS")
 
 
+def _validate_hold_state_basis_receipt(packet: Dict[str, Any], *, current_head: str) -> None:
+    if str(packet.get("schema_id", "")).strip() != HOLD_STATE_BASIS_VALIDATION_RECEIPT_SCHEMA_ID:
+        raise RuntimeError("FAIL_CLOSED: hold-state basis receipt schema mismatch")
+    if str(packet.get("mode", "")).strip() != "LAB_ONLY_NONCANONICAL":
+        raise RuntimeError("FAIL_CLOSED: hold-state basis receipt mode mismatch")
+    if str(packet.get("status", "")).strip() != "PASS":
+        raise RuntimeError("FAIL_CLOSED: hold-state basis receipt must be PASS")
+    if str(packet.get("head_alignment_posture", "")).strip() != "PRE_SEAL_HOLD_STATE_BASIS_CONFIRMED":
+        raise RuntimeError("FAIL_CLOSED: hold-state basis posture mismatch")
+    if str(packet.get("actual_repo_head", "")).strip() != str(current_head).strip():
+        raise RuntimeError("FAIL_CLOSED: hold-state basis receipt is not fresh on current head")
+    if str(packet.get("tracked_surface_basis_head", "")).strip() == str(current_head).strip():
+        raise RuntimeError("FAIL_CLOSED: hold-state basis receipt cannot act as same-head authority")
+
+
 def _source_ref(packet: Dict[str, Any], key: str) -> str:
     source_refs = packet.get("source_packet_refs")
     if not isinstance(source_refs, dict):
@@ -125,14 +141,20 @@ def load_validated_router_readiness_reconsideration_input(
     gate_packet_ref: Optional[str] = None,
     candidate_refresh_packet_ref: Optional[str] = None,
     single_path_guard_receipt_ref: Optional[str] = None,
+    hold_state_basis_receipt_ref: Optional[str] = None,
 ) -> Dict[str, Any]:
     packet = _load_json_dict(_resolve(root, packet_ref), name="router_readiness_reconsideration_input")
     resolved_gate_ref = str(gate_packet_ref or _source_ref(packet, "gate_packet_ref"))
     resolved_candidate_ref = str(candidate_refresh_packet_ref or _source_ref(packet, "candidate_refresh_packet_ref"))
     resolved_guard_ref = str(single_path_guard_receipt_ref or _source_ref(packet, "single_path_guard_receipt_ref"))
+    resolved_hold_state_basis_ref = str(hold_state_basis_receipt_ref or _source_ref(packet, "hold_state_basis_receipt_ref"))
     gate_packet = _load_json_dict(_resolve(root, resolved_gate_ref), name="lab_readiness_reconsideration_gate_packet")
     candidate_packet = _load_json_dict(_resolve(root, resolved_candidate_ref), name="later_lab_readiness_refresh_packet")
     guard_packet = _load_json_dict(_resolve(root, resolved_guard_ref), name="router_readiness_reconsideration_single_path_enforcement_receipt")
+    hold_state_basis_packet = _load_json_dict(
+        _resolve(root, resolved_hold_state_basis_ref),
+        name="hold_state_surface_basis_validation_receipt",
+    )
 
     receipt = build_router_readiness_reconsideration_input_validation_receipt(
         root=root,
@@ -140,10 +162,12 @@ def load_validated_router_readiness_reconsideration_input(
         gate_packet=gate_packet,
         candidate_refresh_packet=candidate_packet,
         single_path_guard_receipt=guard_packet,
+        hold_state_basis_receipt=hold_state_basis_packet,
         packet_ref=packet_ref,
         gate_packet_ref=resolved_gate_ref,
         candidate_refresh_packet_ref=resolved_candidate_ref,
         single_path_guard_receipt_ref=resolved_guard_ref,
+        hold_state_basis_receipt_ref=resolved_hold_state_basis_ref,
     )
     if str(receipt.get("status", "")).strip() != "PASS":
         raise RuntimeError("FAIL_CLOSED: router readiness reconsideration input did not pass sanctioned consumer validation")
@@ -208,10 +232,12 @@ def build_router_readiness_reconsideration_input_validation_receipt(
     gate_packet: Dict[str, Any],
     candidate_refresh_packet: Dict[str, Any],
     single_path_guard_receipt: Dict[str, Any],
+    hold_state_basis_receipt: Dict[str, Any],
     packet_ref: str,
     gate_packet_ref: str,
     candidate_refresh_packet_ref: str,
     single_path_guard_receipt_ref: str,
+    hold_state_basis_receipt_ref: str,
 ) -> Dict[str, Any]:
     _validate_packet_schema(packet)
     _validate_gate_packet(gate_packet)
@@ -219,6 +245,7 @@ def build_router_readiness_reconsideration_input_validation_receipt(
     _validate_single_path_guard_receipt(single_path_guard_receipt)
 
     current_head = _git_head(root)
+    _validate_hold_state_basis_receipt(hold_state_basis_receipt, current_head=current_head)
 
     packet_contract = packet.get("single_sanctioned_path_contract")
     producer_identity = packet.get("producer_identity")
@@ -228,6 +255,7 @@ def build_router_readiness_reconsideration_input_validation_receipt(
     gate_questions = gate_packet.get("questions")
     gate_source_refs = gate_packet.get("source_packet_refs")
     packet_single_path_summary = packet.get("single_path_guard_summary")
+    packet_hold_state_basis_summary = packet.get("hold_state_basis_summary")
     if not isinstance(packet_contract, dict):
         raise RuntimeError("FAIL_CLOSED: reconsideration input contract block missing")
     if not isinstance(producer_identity, dict):
@@ -244,17 +272,22 @@ def build_router_readiness_reconsideration_input_validation_receipt(
         raise RuntimeError("FAIL_CLOSED: gate packet source refs missing")
     if not isinstance(packet_single_path_summary, dict):
         raise RuntimeError("FAIL_CLOSED: reconsideration input single_path_guard_summary missing")
+    if not isinstance(packet_hold_state_basis_summary, dict):
+        raise RuntimeError("FAIL_CLOSED: reconsideration input hold_state_basis_summary missing")
 
     detected_emitters = _detect_schema_emitters(root)
     detected_schema_touchers = _detect_schema_touchers(root)
     packet_gate_ref = _source_ref(packet, "gate_packet_ref")
     packet_candidate_ref = _source_ref(packet, "candidate_refresh_packet_ref")
     packet_guard_ref = _source_ref(packet, "single_path_guard_receipt_ref")
+    packet_hold_state_basis_ref = _source_ref(packet, "hold_state_basis_receipt_ref")
     candidate_adapters = list(candidate_terminals.get("combined_terminal_adapters", []))
     candidate_adapter_count = int(candidate_terminals.get("combined_terminal_adapter_count", 0))
     candidate_head = str(candidate_heads.get("code_terminal_lab_head", "")).strip()
     math_head = str(candidate_heads.get("math_terminal_lab_head", "")).strip()
     guard_head = str(single_path_guard_receipt.get("current_git_head", "")).strip()
+    hold_state_actual_head = str(hold_state_basis_receipt.get("actual_repo_head", "")).strip()
+    hold_state_basis_head = str(hold_state_basis_receipt.get("tracked_surface_basis_head", "")).strip()
 
     checks = [
         {
@@ -271,6 +304,8 @@ def build_router_readiness_reconsideration_input_validation_receipt(
             == SANCTIONED_CONSUMER_VALIDATOR_ENTRYPOINT
             and str(packet_contract.get("required_single_path_guard_receipt_schema_id", "")).strip()
             == SINGLE_PATH_ENFORCEMENT_RECEIPT_SCHEMA_ID
+            and str(packet_contract.get("required_hold_state_basis_receipt_schema_id", "")).strip()
+            == HOLD_STATE_BASIS_VALIDATION_RECEIPT_SCHEMA_ID
             and str(packet_contract.get("required_gate_packet_schema_id", "")).strip()
             == LAB_RECONSIDERATION_GATE_PACKET_SCHEMA_ID
             and str(packet_contract.get("required_candidate_refresh_packet_schema_id", "")).strip()
@@ -286,6 +321,7 @@ def build_router_readiness_reconsideration_input_validation_receipt(
             "pass": packet_gate_ref == str(gate_packet_ref).strip()
             and packet_candidate_ref == str(candidate_refresh_packet_ref).strip()
             and packet_guard_ref == str(single_path_guard_receipt_ref).strip()
+            and packet_hold_state_basis_ref == str(hold_state_basis_receipt_ref).strip()
             and str(gate_source_refs.get("candidate_refresh_packet_ref", "")).strip() == str(candidate_refresh_packet_ref).strip(),
         },
         {
@@ -321,6 +357,15 @@ def build_router_readiness_reconsideration_input_validation_receipt(
             == len(single_path_guard_receipt.get("detected_schema_touchers", [])),
         },
         {
+            "check_id": "hold_state_basis_receipt_is_fresh_and_non_authoritative",
+            "pass": hold_state_actual_head == current_head and hold_state_basis_head and hold_state_basis_head != current_head,
+        },
+        {
+            "check_id": "packet_hold_state_basis_summary_matches_receipt",
+            "pass": str(packet_hold_state_basis_summary.get("actual_repo_head", "")).strip() == hold_state_actual_head
+            and str(packet_hold_state_basis_summary.get("tracked_surface_basis_head", "")).strip() == hold_state_basis_head,
+        },
+        {
             "check_id": "single_sanctioned_emitter_uniqueness_holds_in_repo_tools",
             "pass": detected_emitters == [SANCTIONED_EMITTER_ENTRYPOINT],
         },
@@ -345,6 +390,7 @@ def build_router_readiness_reconsideration_input_validation_receipt(
             "gate_packet_ref": gate_packet_ref,
             "candidate_refresh_packet_ref": candidate_refresh_packet_ref,
             "single_path_guard_receipt_ref": single_path_guard_receipt_ref,
+            "hold_state_basis_receipt_ref": hold_state_basis_receipt_ref,
         },
         "sanctioned_path_contract": {
             "sanctioned_emitter_entrypoint": SANCTIONED_EMITTER_ENTRYPOINT,
@@ -372,6 +418,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--gate-packet")
     parser.add_argument("--candidate-refresh-packet")
     parser.add_argument("--single-path-guard-receipt")
+    parser.add_argument("--hold-state-basis-receipt")
     parser.add_argument("--output", required=True)
     parser.add_argument("--emit-single-path-enforcement-receipt", action="store_true")
     return parser
@@ -402,9 +449,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     gate_ref = str(args.gate_packet or _source_ref(packet, "gate_packet_ref"))
     candidate_ref = str(args.candidate_refresh_packet or _source_ref(packet, "candidate_refresh_packet_ref"))
     guard_ref = str(args.single_path_guard_receipt or _source_ref(packet, "single_path_guard_receipt_ref"))
+    hold_state_basis_ref = str(args.hold_state_basis_receipt or _source_ref(packet, "hold_state_basis_receipt_ref"))
     gate_packet = _load_json_dict(_resolve(root, gate_ref), name="lab_readiness_reconsideration_gate_packet")
     candidate_packet = _load_json_dict(_resolve(root, candidate_ref), name="later_lab_readiness_refresh_packet")
     guard_packet = _load_json_dict(_resolve(root, guard_ref), name="router_readiness_reconsideration_single_path_enforcement_receipt")
+    hold_state_basis_packet = _load_json_dict(
+        _resolve(root, hold_state_basis_ref),
+        name="hold_state_surface_basis_validation_receipt",
+    )
 
     receipt = build_router_readiness_reconsideration_input_validation_receipt(
         root=root,
@@ -412,10 +464,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         gate_packet=gate_packet,
         candidate_refresh_packet=candidate_packet,
         single_path_guard_receipt=guard_packet,
+        hold_state_basis_receipt=hold_state_basis_packet,
         packet_ref=packet_ref,
         gate_packet_ref=gate_ref,
         candidate_refresh_packet_ref=candidate_ref,
         single_path_guard_receipt_ref=guard_ref,
+        hold_state_basis_receipt_ref=hold_state_basis_ref,
     )
     output_path = _resolve(root, str(args.output))
     write_json_stable(output_path, receipt)
