@@ -7,6 +7,7 @@ from KT_PROD_CLEANROOM.tests.fl3._bootstrap import bootstrap_syspath
 bootstrap_syspath()
 
 from tools.verification.run_sweep_audit import (
+    CLEANROOM_PYTEST_TARGETS,
     RECEIPTS_DIR_REL,
     TEMPLE_PYTEST_TARGETS,
     VERIFICATION_PYTEST_TARGETS,
@@ -44,6 +45,16 @@ def test_pytest_cmd_clears_repo_addopts() -> None:
 
 
 def test_curated_smoke_targets_are_explicit() -> None:
+    assert CLEANROOM_PYTEST_TARGETS == (
+        "KT_PROD_CLEANROOM/tests/fl3/test_fl3_law_bundle_integrity.py",
+        "KT_PROD_CLEANROOM/tests/fl3/test_fl3_meta_evaluator.py",
+        "KT_PROD_CLEANROOM/tests/fl3/test_fl3_receipts_no_secrets.py",
+        "KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py",
+        "KT_PROD_CLEANROOM/tests/fl3/test_hat_demo_guardrails.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_titanium_substrate.py::test_hashpin_reports_are_head_stamped_and_candidate_scoped",
+        "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py::test_publish_truth_artifacts_emits_bundle_pointer_and_indexes",
+        "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py::test_publish_truth_artifacts_is_stable_on_repeat_publish",
+    )
     assert TEMPLE_PYTEST_TARGETS == (
         "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_schema_contracts.py",
         "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_no_network_dry_run.py",
