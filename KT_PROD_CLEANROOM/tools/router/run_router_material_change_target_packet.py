@@ -185,8 +185,8 @@ def build_router_material_change_target_packet(
         "later_reconsideration_sequence_if_earned": [
             "Re-emit the same-head single-path guard on the actual candidate head and require PASS.",
             "Re-emit the preserved-basis receipt on that same candidate head and require PASS as non-authority only.",
-            "Prepare the reconsideration input only through KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py.",
-            "Consume the reconsideration input only through KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py.",
+            "Prepare the reconsideration input only through the sanctioned emitter entrypoint already bound in the hold chain.",
+            "Consume the reconsideration input only through the sanctioned validator entrypoint already bound in the hold chain.",
             "Only after that separate reconsideration path succeeds may a later counted reopening surface be considered.",
         ],
         "source_packet_refs": {
