@@ -165,7 +165,7 @@
     "reanchor_decision": "The third same-head counted rerun of B04.R5 executed honestly on head 79759969c402205f5c99be48524c2f5489f72019 and did not earn router superiority. The later four-terminal post-third-rerun reconsideration path then passed on head 893172acfb3481f2b96d9eef4b87085af64cc500, which keeps the counted lane closed, keeps static baseline canonical, leaves R6 next in order only and blocked in law, and limits the next lawful move to consideration of a separate B04.R5 fourth same-head rerun launch surface only."
   },
   "next_counted_workstream_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
-  "next_counted_workstream_scope": "B04.R6 is next in order only and remains blocked in law because the third same-head rerun of B04.R5 did not earn router superiority on head 79759969c402205f5c99be48524c2f5489f72019. Counted lane stays closed. The post-third-rerun reconsideration adjudication on head 893172acfb3481f2b96d9eef4b87085af64cc500 only allows consideration of a separate B04.R5 fourth same-head rerun launch surface before any later same-head proof attempt.",
+  "next_counted_workstream_scope": "B04.R6 is next in order only and remains blocked in law because the third same-head rerun of B04.R5 did not earn router superiority on head 79759969c402205f5c99be48524c2f5489f72019. Counted lane stays closed. The post-third-rerun reconsideration adjudication on head 893172acfb3481f2b96d9eef4b87085af64cc500 only allows consideration of a separate B04.R5 fourth same-head rerun launch surface before any later same-head proof attempt, and any future reconsideration still requires fresh same-head dual receipts on the actual candidate head.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "explicit_non_go_areas": [
     "Do not widen externality beyond E1.",
@@ -177,7 +177,7 @@
     "Do not parse or rely on kt.router_readiness_reconsideration_input.v1 through any downstream path outside KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py.",
     "Do not add any future tool-side touch of kt.router_readiness_reconsideration_input.v1 outside the sanctioned emitter/consumer pair while the single-path enforcement receipt is the standing guard.",
     "Do not prepare or consume a future router-readiness reconsideration input using a stale single-path enforcement receipt from another head.",
-    "Do not prepare or consume a future router-readiness reconsideration input without a fresh preserved-basis receipt on the actual candidate head.",
+    "Do not prepare or consume a future router-readiness reconsideration input without a fresh same-head dual receipts on the actual candidate head, including the preserved-basis receipt.",
     "Do not treat PRE_SEAL_HOLD_STATE_BASIS_CONFIRMED as same-head authority or as sufficient for reconsideration prepare or consume.",
     "Do not let tracked carrier receipts stand in for current-head authority.",
     "Do not bypass the ordered Gate D ratification sequence.",

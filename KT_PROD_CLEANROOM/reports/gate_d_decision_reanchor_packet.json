@@ -43,7 +43,7 @@
     "router_status": "STATIC_CANONICAL_BASELINE_ONLY",
     "gate_d_decision_selected": true,
     "gate_d_activation_authorized": true,
-    "note": "Gate D remains bounded after the original R5 proof and all three same-head counted R5 reruns held the static baseline honestly because router superiority was not earned. The later post-third-rerun reconsideration adjudication on head 893172acfb3481f2b96d9eef4b87085af64cc500 passed only as a lab-only decision surface, so counted lane stays closed, static baseline remains canonical, and the only newly lawful move is consideration of a separate B04.R5 fourth same-head rerun launch surface while learned-router cutover, lobes, externality, comparative, and commercial widening remain blocked."
+    "note": "Gate D remains bounded after the original R5 proof and all three same-head counted R5 reruns held the static baseline honestly because router superiority was not earned. The later post-third-rerun reconsideration adjudication on head 893172acfb3481f2b96d9eef4b87085af64cc500 passed only as a lab-only decision surface, so counted lane stays closed, static baseline remains canonical, and the only newly lawful move is consideration of a separate B04.R5 fourth same-head rerun launch surface while learned-router cutover, lobes, externality, comparative, and commercial widening remain blocked, and any future reconsideration still requires fresh same-head dual receipts on the actual candidate head."
   },
   "explicit_not_authorized": [
     "frontier claim",
@@ -137,7 +137,7 @@
       "Parsing or relying on kt.router_readiness_reconsideration_input.v1 through any downstream path outside KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py",
       "Any future tool-side touch of kt.router_readiness_reconsideration_input.v1 outside the sanctioned emitter/consumer pair while the standing single-path enforcement receipt is the active guard",
       "Preparing or consuming a later router-readiness reconsideration input with a stale single-path enforcement receipt from another head",
-      "Preparing or consuming a later router-readiness reconsideration input without a fresh preserved-basis receipt on the actual candidate head",
+      "Preparing or consuming a later router-readiness reconsideration input without a fresh same-head dual receipts on the actual candidate head, including the preserved-basis receipt",
       "Treating PRE_SEAL_HOLD_STATE_BASIS_CONFIRMED as same-head authority instead of preserved basis only",
       "Treating tracked carrier receipts as Gate D authority",
       "Treating any lab readiness packet as counted proof",

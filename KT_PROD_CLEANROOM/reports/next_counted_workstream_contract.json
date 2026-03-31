@@ -8,7 +8,7 @@
   "exact_next_counted_workstream_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "execution_mode": "R6_NEXT_IN_ORDER_BLOCKED__POST_THIRD_RERUN_RECONSIDERATION_ADJUDICATED__FOURTH_R5_LAUNCH_SURFACE_MAY_BE_CONSIDERED",
-  "workstream_objective": "No counted work is executable now. The third same-head counted rerun of B04.R5 passed honestly on head 79759969c402205f5c99be48524c2f5489f72019 but did not earn router superiority. Counted lane stays closed. R6 is next in order only and remains blocked, and the post-third-rerun reconsideration adjudication on head 893172acfb3481f2b96d9eef4b87085af64cc500 now allows consideration of a separate B04.R5 fourth same-head rerun launch surface only.",
+  "workstream_objective": "No counted work is executable now. The third same-head counted rerun of B04.R5 passed honestly on head 79759969c402205f5c99be48524c2f5489f72019 but did not earn router superiority. Counted lane stays closed. R6 is next in order only and remains blocked, and the post-third-rerun reconsideration adjudication on head 893172acfb3481f2b96d9eef4b87085af64cc500 now allows consideration of a separate B04.R5 fourth same-head rerun launch surface only, with fresh same-head dual receipts on the actual candidate head required before any future reconsideration prepare or consume path.",
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "canonical_receipt_binding": {
     "gate_c_exit_authoritative_receipt_path": "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_20260328_1029/gate_c_exit_adjudication_authoritative_receipt.json",
@@ -119,7 +119,7 @@
     "Any consumer parses or relies on kt.router_readiness_reconsideration_input.v1 without first passing through KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py.",
     "Any future tool-side touch of kt.router_readiness_reconsideration_input.v1 appears outside the sanctioned emitter/consumer pair and causes the single-path enforcement receipt to fail.",
     "Any future router-readiness reconsideration input is prepared or consumed using a stale single-path enforcement receipt from another head.",
-    "Any future router-readiness reconsideration input is prepared or consumed without a fresh preserved-basis receipt on the actual candidate head.",
+    "Any future router-readiness reconsideration input is prepared or consumed without a fresh same-head dual receipts on the actual candidate head, including the preserved-basis receipt.",
     "Any future reconsideration narrative treats PRE_SEAL_HOLD_STATE_BASIS_CONFIRMED as same-head authority instead of preserved basis only.",
     "Any claim that the completed second rerun static hold or any lab readiness packet earns router superiority.",
     "Any externality widening above E1, external comparative claim, or commercial activation is folded into the post-rerun hold state.",
