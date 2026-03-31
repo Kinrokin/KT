@@ -1,27 +1,24 @@
 {
   "schema_id": "kt.resume_blockers_receipt.v1",
   "classification_tag": "COUNTING_CLOSURE",
-  "generated_utc": "2026-03-31T03:18:05Z",
-  "workstream_id": "LAB_READINESS_RECONSIDERATION_GATE_FROZEN",
+  "generated_utc": "2026-03-31T04:43:21Z",
+  "workstream_id": "ROUTER_READINESS_RECONSIDERATION_ADJUDICATED",
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
   "status": "PASS",
   "repo_root": "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
   "current_git_branch": "main",
-  "current_git_head": "90afbbfa741eb4d4135a29392b07e44d8da7ef9d",
+  "current_git_head": "8ed9102f00caee95ae8f4cd55bc074ada8e3f321",
   "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
   "repo_state_executable_now": false,
-  "blocking_state": "LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
+  "blocking_state": "ROUTER_READINESS_RECONSIDERATION_ADJUDICATED__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
   "blocking_reasons": [
     "The second same-head counted rerun of B04.R5 passed honestly on head e232a7762ea03a3eea391c6a4da6486b892eabdd and held the static router baseline because superiority was still not earned.",
-    "The current lab readiness ceiling is frozen on head 43e234aa77f0d406aa56a8d85c97f8cde08b8653 as lab-only preservation signal and explicitly keeps the counted lane closed.",
-    "The current lab reconsideration gate on head bd800e9ab56e3f6a1eba19f7cbf20fe23fbcf5b0 held because the candidate refresh reused the same lab head and introduced no new terminal adapter beyond the ceiling.",
-    "R6 remains blocked because router superiority has still not been re-earned on the counted lane, the current lab ceiling is not a reopening trigger, and no later router-readiness reconsideration input may be prepared unless a future gate packet earns material_change_earned = true.",
-    "KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py is the only sanctioned path for preparing any later router-readiness reconsideration input, and alternate helper or wrapper paths are forbidden.",
-    "KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py is the only sanctioned consumer path for kt.router_readiness_reconsideration_input.v1, and direct downstream parsing is forbidden.",
-    "The standing single-path enforcement receipt on head 90afbbfa741eb4d4135a29392b07e44d8da7ef9d remains PASS with one sanctioned emitter and two sanctioned tool-side touchers, so any future tool-side touch outside that pair is a contract breach.",
-    "The hold-state surface basis validation receipt on head 90afbbfa741eb4d4135a29392b07e44d8da7ef9d remains PASS and confirms the tracked hold surfaces are pre-seal basis only, not same-head authority.",
-    "Any future router-readiness reconsideration attempt must re-emit both fresh receipts on the actual candidate head before any input may be prepared or consumed: the same-head single-path enforcement receipt and the preserved-basis receipt that proves non-authority.",
-    "Lobe promotion, externality widening, external comparative claims, and commercial activation remain blocked by order."
+    "The later lab refresh on head 8ed9102f00caee95ae8f4cd55bc074ada8e3f321 materially beat the frozen ceiling and the reconsideration gate on that same head now returns material_change_earned = true.",
+    "KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py prepared a valid lab-only reconsideration input on head 8ed9102f00caee95ae8f4cd55bc074ada8e3f321, and KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py validated it through the sole sanctioned consumer path.",
+    "The reconsideration adjudication receipt on head 8ed9102f00caee95ae8f4cd55bc074ada8e3f321 passes, but it only allows consideration of a separate B04.R5 third same-head rerun launch surface and does not reopen counted work by itself.",
+    "The standing single-path enforcement receipt on head 8ed9102f00caee95ae8f4cd55bc074ada8e3f321 remains PASS with one sanctioned emitter and two sanctioned tool-side touchers, so any future tool-side touch outside that pair is a contract breach.",
+    "The hold-state surface basis validation receipt on head 8ed9102f00caee95ae8f4cd55bc074ada8e3f321 remains PASS and confirms the tracked hold surfaces are pre-seal basis only, not same-head authority.",
+    "R6 remains blocked because router superiority has still not been re-earned on the counted lane, and no learned-router, lobe, externality, comparative, or commercial widening is authorized."
   ],
   "nonblocking_conflicts": [
     {
@@ -94,9 +91,9 @@
     }
   ],
   "current_lawful_gate_standing": {
-    "inter_gate_state": "GATE_D_LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED",
+    "inter_gate_state": "GATE_D_ROUTER_READINESS_RECONSIDERATION_ADJUDICATED__COUNTED_LANE_CLOSED",
     "gate_c": "EXITED",
-    "gate_d": "LAB_READINESS_RECONSIDERATION_GATE_FROZEN__COUNTED_LANE_CLOSED__R6_BLOCKED"
+    "gate_d": "ROUTER_READINESS_RECONSIDERATION_ADJUDICATED__COUNTED_LANE_CLOSED__R6_BLOCKED"
   },
   "exact_next_counted_workstream_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
   "explicit_non_go_areas": [
@@ -107,5 +104,5 @@
     "Do not treat tracked carrier receipts as current-head authority.",
     "Do not bypass the ordered Gate D ratification sequence."
   ],
-  "why_not_executable_now": "The second same-head counted rerun of B04.R5 has already completed and did not earn router superiority, the current lab readiness ceiling is frozen as preservation posture only, and the current lab reconsideration gate held because the candidate refresh reused the same lab head with no new terminal adapter beyond the ceiling. R6 remains non-executable, and any future counted reopening requires a later lawful router-readiness reconsideration input that has already passed this gate, been prepared only through KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py, been consumed only through KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py, and re-emitted both fresh receipts on the actual candidate head: a same-head single-path enforcement receipt that remains PASS and a preserved-basis receipt that remains PASS while proving non-authority, plus another same-head R5 rerun."
+  "why_not_executable_now": "The second same-head counted rerun of B04.R5 has already completed and did not earn router superiority. On new lab head 8ed9102f00caee95ae8f4cd55bc074ada8e3f321, the reconsideration path is now fully adjudicated: the later lab refresh materially beat the frozen ceiling, the reconsideration gate earned material_change_earned = true, the same-head dual receipts passed, the lab-only reconsideration input was prepared and validated, and the reconsideration adjudication receipt passed. Counted lane still remains closed. The only next lawful move is consideration of a separate B04.R5 third same-head rerun launch surface, and R6 remains non-executable until a future counted same-head rerun actually earns superiority."
 }
