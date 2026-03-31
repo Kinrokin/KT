@@ -1,21 +1,21 @@
 {
     "schema_id":  "kt.resume_blockers_receipt.v1",
     "classification_tag":  "COUNTING_CLOSURE",
-    "generated_utc":  "2026-03-31T11:31:22Z",
-    "workstream_id":  "B04_R5_THIRD_SAME_HEAD_RERUN_LAUNCH_SURFACE",
+    "generated_utc":  "2026-03-31T11:53:12Z",
+    "workstream_id":  "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN",
     "reopen_rule":  "Satisfied lower gates may only be reopened by current regression receipt.",
     "status":  "PASS",
     "repo_root":  "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "current_git_branch":  "main",
-    "current_git_head":  "07dde6487ec9c1b444227f90930b686672fe485d",
+    "current_git_head":  "79759969c402205f5c99be48524c2f5489f72019",
     "worktree_cleanliness":  "CLEAN_CURRENT_HEAD",
-    "repo_state_executable_now":  true,
-    "blocking_state":  "THIRD_COUNTED_R5_RERUN_LAUNCH_BOUND__ONLY_RERUN_EXECUTABLE__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
+    "repo_state_executable_now":  false,
+    "blocking_state":  "THIRD_COUNTED_R5_RERUN_EXECUTED_STATIC_HOLD__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
     "blocking_reasons":  [
-                             "The original B04.R5 proof plus both earlier same-head counted reruns all held the static router baseline honestly because superiority was not earned.",
-                             "The later lab refresh on head 8ed9102f00caee95ae8f4cd55bc074ada8e3f321 materially beat the frozen ceiling, the reconsideration gate on that same head returned material_change_earned = true, and the reconsideration path was adjudicated cleanly through the sanctioned validator.",
-                             "A separate counted B04.R5 third same-head rerun launch surface is now bound on head 07dde6487ec9c1b444227f90930b686672fe485d, but that authorization step does not itself earn router superiority.",
-                             "R6 remains blocked because router superiority has still not been re-earned on the counted lane, and no learned-router, lobe, externality, comparative, or commercial widening is authorized."
+                             "The original B04.R5 proof plus all three same-head counted reruns held the static router baseline honestly because superiority was not earned.",
+                             "The third same-head counted rerun executed on head 79759969c402205f5c99be48524c2f5489f72019 and returned NOT_EARNED_STATIC_BASELINE_RETAINS_CANONICAL_STATUS.",
+                             "R6 remains blocked because router superiority has still not been re-earned on the counted lane, and no learned-router, lobe, externality, comparative, or commercial widening is authorized.",
+                             "Any future counted reopening requires materially stronger lab evidence, a fresh reconsideration gate, fresh same-head dual receipts, and a later separate launch surface."
                          ],
     "nonblocking_conflicts":  [
                                   {
@@ -88,19 +88,19 @@
                                   }
                               ],
     "current_lawful_gate_standing":  {
-                                         "inter_gate_state":  "GATE_D_THIRD_COUNTED_R5_RERUN_LAUNCH_BOUND",
+                                         "inter_gate_state":  "GATE_D_THIRD_COUNTED_R5_RERUN_EXECUTED_STATIC_HOLD__COUNTED_LANE_CLOSED",
                                          "gate_c":  "EXITED",
-                                         "gate_d":  "THIRD_COUNTED_R5_RERUN_LAUNCH_BOUND__R6_BLOCKED"
+                                         "gate_d":  "THIRD_COUNTED_R5_RERUN_EXECUTED_STATIC_HOLD__R6_BLOCKED"
                                      },
-    "exact_next_counted_workstream_id":  "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN",
+    "exact_next_counted_workstream_id":  "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
     "explicit_non_go_areas":  [
                                   "Do not widen externality beyond E1.",
                                   "Do not open external comparative claims.",
                                   "Do not activate commercial deployment.",
-                                  "Do not treat the third same-head R5 rerun launch surface as learned-router authorization or lobe ratification.",
+                                  "Do not treat a PASS third same-head R5 rerun procedure as learned-router authorization, lobe ratification, or earned superiority.",
                                   "Do not treat tracked carrier receipts as current-head authority.",
                                   "Do not bypass the ordered Gate D ratification sequence."
                               ],
-    "why_not_executable_now":  "All counted work other than B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN remains non-executable. The third same-head rerun launch surface is only a rerun authorization step, not a rerun result, so R6 remains next in order only and blocked in law until that rerun actually earns superiority.",
-    "executable_now_why":  "Only B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN is executable now. R6 and all wider scope remain blocked until router superiority is actually earned on that rerun."
+    "why_not_executable_now":  "The third same-head counted rerun of B04.R5 has already completed and did not earn router superiority. Counted lane is closed again. R6 is next in order only and blocked in law until a future same-head rerun actually earns superiority.",
+    "executable_now_why":  "No counted work is executable now. The third same-head rerun has already executed honestly as a static hold, and R6 remains blocked until superiority is actually earned on a future rerun."
 }

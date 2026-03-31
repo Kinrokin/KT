@@ -1,8 +1,8 @@
 {
     "schema_id":  "kt.current_campaign_state_overlay.v1",
     "classification_tag":  "COUNTING_CLOSURE",
-    "generated_utc":  "2026-03-31T11:31:22Z",
-    "workstream_id":  "B04_R5_THIRD_SAME_HEAD_RERUN_LAUNCH_SURFACE",
+    "generated_utc":  "2026-03-31T11:53:12Z",
+    "workstream_id":  "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN",
     "reopen_rule":  "Satisfied lower gates may only be reopened by current regression receipt.",
     "authority_stack":  {
                             "execution_order_authority":  {
@@ -27,7 +27,8 @@
                                                             "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b04_r4_authoritative_receipt_20260328_173639.json",
                                                             "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b04_r5_authoritative_receipt_20260328_2310.json",
                                                             "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b04_r5_same_head_rerun_authoritative_20260330_2/router_vs_best_adapter_proof_ratification_receipt.json",
-                                                            "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b04_r5_second_same_head_rerun_authoritative_20260330_1/router_vs_best_adapter_proof_ratification_receipt.json"
+                                                            "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b04_r5_second_same_head_rerun_authoritative_20260330_1/router_vs_best_adapter_proof_ratification_receipt.json",
+                                                            "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/b04_r5_third_same_head_rerun_authoritative_20260331_1/router_vs_best_adapter_proof_ratification_receipt.json"
                                                         ],
                             "lab_readiness_basis":  [
                                                         "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260331_terminal3c/topology_breadth_code_packet.json",
@@ -63,7 +64,7 @@
     "repo_state":  {
                        "repo_root":  "d:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
                        "current_git_branch":  "main",
-                       "current_git_head":  "07dde6487ec9c1b444227f90930b686672fe485d",
+                       "current_git_head":  "79759969c402205f5c99be48524c2f5489f72019",
                        "worktree_cleanliness":  "CLEAN_CURRENT_HEAD"
                    },
     "omega_batch_status":  {
@@ -81,9 +82,9 @@
                                                    ]
                            },
     "current_lawful_gate_standing":  {
-                                         "inter_gate_state":  "GATE_D_THIRD_COUNTED_R5_RERUN_LAUNCH_BOUND",
+                                         "inter_gate_state":  "GATE_D_THIRD_COUNTED_R5_RERUN_EXECUTED_STATIC_HOLD__COUNTED_LANE_CLOSED",
                                          "current_counted_gate":  "Gate D",
-                                         "current_counted_batch":  "B04_R5_THIRD_SAME_HEAD_RERUN_LAUNCH_SURFACE",
+                                         "current_counted_batch":  "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN",
                                          "completed_tranches":  [
                                                                     "B03_T1_FROZEN_COMPARATOR_CONSTITUTION",
                                                                     "B03_T2_CURRENT_HEAD_BINDING_AND_ALIAS_RETIREMENT",
@@ -124,10 +125,11 @@
                                                                     "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SAME_HEAD_RERUN",
                                                                     "B04_R5_SECOND_SAME_HEAD_RERUN_LAUNCH_SURFACE",
                                                                     "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SECOND_SAME_HEAD_RERUN",
-                                                                    "B04_R5_THIRD_SAME_HEAD_RERUN_LAUNCH_SURFACE"
+                                                                    "B04_R5_THIRD_SAME_HEAD_RERUN_LAUNCH_SURFACE",
+                                                                    "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN"
                                                                 ],
                                          "gate_c_status":  "EXITED_ON_SEALED_HEAD_71268f2f7489aadec338d5e71bb5b70f8a7fe9dc",
-                                         "gate_d_status":  "THIRD_COUNTED_R5_RERUN_LAUNCH_BOUND__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
+                                         "gate_d_status":  "THIRD_COUNTED_R5_RERUN_EXECUTED_STATIC_HOLD__COUNTED_LANE_CLOSED__R6_STILL_BLOCKED_PENDING_EARNED_SUPERIORITY",
                                          "authoritative_basis":  [
                                                                      "Gate C exit remains authoritative only on sealed head 71268f2f7489aadec338d5e71bb5b70f8a7fe9dc.",
                                                                      "Gate D postures remain D1 bounded, D2 controlled counted-domain expansion, D3 adapter evolution authorized, D4 no external comparative claims, and D5 lab-only.",
@@ -148,16 +150,17 @@
                                                                      "A validated lab-only router-readiness reconsideration input now exists on head 8ed9102f00caee95ae8f4cd55bc074ada8e3f321, prepared only through KT_PROD_CLEANROOM/tools/router/run_router_readiness_reconsideration_input.py and consumed only through KT_PROD_CLEANROOM/tools/operator/router_readiness_reconsideration_input_validate.py.",
                                                                      "The current lab-only reconsideration adjudication receipt on head 8ed9102f00caee95ae8f4cd55bc074ada8e3f321 passes and limits the next lawful move to consideration of a separate B04.R5 third same-head rerun launch surface only while keeping the counted lane closed.",
                                                                      "A separate counted B04.R5 third same-head rerun launch surface is now bound on head 07dde6487ec9c1b444227f90930b686672fe485d and authorizes only that rerun under the existing proof law.",
+                                                                     "The third same-head counted R5 rerun on head 79759969c402205f5c99be48524c2f5489f72019 passed honestly and still held the static baseline because router superiority was not earned.",
                                                                      "R6 remains next in order only and blocked in law until router superiority is actually earned on a future counted same-head rerun."
                                                                  ]
                                      },
     "state_reconciliation":  {
-                                 "latest_sealed_receipts_current_state":  "Gate C is exited. Gate D remains bounded and ordered. The B04 launch surface is intact, R1 ratified crucible and pressure law, R2 ratified adapter lifecycle law, R3 ratified the bounded selection arena, R4 ratified explainable router shadow evaluation, and the original R5 plus both counted same-head R5 reruns held the static baseline honestly because router superiority was not earned. The later lab refresh materially beat the frozen ceiling on a new lab head, a validated lab-only router-readiness reconsideration input exists, that reconsideration path has been adjudicated, and a separate counted B04.R5 third same-head rerun launch surface is now bound. Static baseline remains canonical, learned-router cutover remains blocked, and no higher-scope widening is authorized.",
+                                 "latest_sealed_receipts_current_state":  "Gate C is exited. Gate D remains bounded and ordered. The B04 launch surface is intact, R1 ratified crucible and pressure law, R2 ratified adapter lifecycle law, R3 ratified the bounded selection arena, R4 ratified explainable router shadow evaluation, and the original R5 plus all three counted same-head R5 reruns held the static baseline honestly because router superiority was not earned. The counted lane is now re-frozen after the third rerun static hold. Learned-router cutover remains blocked, and no higher-scope widening is authorized.",
                                  "documentary_surface_state_on_main":  "Tracked gate_c_exit_adjudication_receipt.json, gate_d_decision_law_receipt.json, gate_d_decision_receipt.json, b04_civilization_activation_launch_receipt.json, R1-R5 tracked Gate D receipts, and later tracked Gate D receipts remain non-authoritative carriers on main whenever subject_head differs from the requested head.",
-                                 "reanchor_decision":  "The second same-head counted rerun of B04.R5 completed honestly and did not earn router superiority. A later new-head lab refresh on head 8ed9102f00caee95ae8f4cd55bc074ada8e3f321 then materially beat the frozen ceiling, a lab-only reconsideration input was prepared and validated on that same head, and the reconsideration adjudication receipt on that head passed. That state has now been carried one lawful step forward: a separate B04.R5 third same-head rerun launch surface is bound on head 07dde6487ec9c1b444227f90930b686672fe485d, authorizing only that rerun under the existing proof law. Static baseline remains canonical, R6 remains next in order only and blocked in law, and no higher-scope widening is authorized."
+                                 "reanchor_decision":  "The third same-head counted rerun of B04.R5 executed honestly on head 79759969c402205f5c99be48524c2f5489f72019 and did not earn router superiority. That re-freezes the router branch: counted lane is closed again, static baseline remains canonical, R6 returns to next in order only and blocked in law, and any future counted reopening requires materially stronger lab evidence plus a later lawful reconsideration and launch path."
                              },
-    "next_counted_workstream_id":  "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN",
-    "next_counted_workstream_scope":  "A separate counted launch surface now authorizes only a third same-head rerun of B04.R5 under the existing ordered proof law. This rerun may state either an earned superiority result or an honest static hold, but it may not authorize R6, learned-router cutover, lobes, externality widening, comparative claims, or commercial activation by itself. R6 remains next in order only and blocked until router superiority is actually earned on that rerun.",
+    "next_counted_workstream_id":  "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
+    "next_counted_workstream_scope":  "B04.R6 is next in order only and remains blocked in law because the third same-head rerun of B04.R5 did not earn router superiority on head 79759969c402205f5c99be48524c2f5489f72019. Counted lane is re-frozen. Any future counted reopening requires materially stronger lab evidence, a fresh reconsideration gate earning material_change_earned = true, fresh same-head dual receipts on the actual candidate head, and a later separate launch surface before any further same-head R5 rerun.",
     "canonical_scorecard_id":  "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
     "explicit_non_go_areas":  [
                                   "Do not widen externality beyond E1.",
@@ -175,8 +178,9 @@
                                   "Do not bypass the ordered Gate D ratification sequence.",
                                   "Do not treat a validated lab-only router-readiness reconsideration input as counted reopening, R5 relaunch, or R6 movement by itself.",
                                   "Do not treat a PASS router-readiness reconsideration adjudication receipt as a counted launch surface, an R5 rerun, or learned-router authorization.",
-                                  "Do not treat the third same-head B04.R5 rerun launch surface as a rerun result, learned-router authorization, or lobe ratification."
+                                  "Do not treat the third same-head B04.R5 rerun launch surface as a rerun result, learned-router authorization, or lobe ratification.",
+                                  "Do not treat a PASS third same-head B04.R5 rerun procedure as earned superiority, learned-router authorization, or lobe ratification."
                               ],
-    "repo_state_executable_now":  true,
-    "executable_now_why":  "Only B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN is executable now. The separate third same-head rerun launch surface is bound on head 07dde6487ec9c1b444227f90930b686672fe485d under the existing proof law, while static baseline remains canonical and R6 remains next in order only, blocked until router superiority is actually earned on that rerun."
+    "repo_state_executable_now":  false,
+    "executable_now_why":  "No counted work is executable now. The third same-head rerun of B04.R5 executed honestly on head 79759969c402205f5c99be48524c2f5489f72019 and did not earn router superiority, so static baseline remains canonical and R6 returns to next in order only, blocked in law."
 }
