@@ -1,0 +1,187 @@
+{
+  "schema_id": "kt.downstream_diversity_audit_terminal_suite.v1",
+  "mode": "LAB_ONLY_NONCANONICAL",
+  "claim_boundary": "This suite is lab-only and noncanonical. It probes whether a new router lab head can earn a fifth downstream terminal path that ends in `lobe.auditor.v1` while preserving the already-ratified `lobe.censor.v1` guard semantics for governance routing. It cannot unlock R5, R6, lobe authority, externality, comparative claims, or commercial activation.",
+  "cases": [
+    {
+      "case_id": "LAB_ALTTERM_CA01",
+      "pattern_family": "LAB_ALTTERM_CA",
+      "notes": "Force the guard-first governance path so the final terminal is the auditor rather than the current code/writer/math/research set.",
+      "single_case_baseline": {
+        "task_text": "Guard the constitutional risk surface, then emit a fail-closed audit receipt with the blocking decision.",
+        "required_terms": ["guard", "audit", "receipt"],
+        "preferred_genotype": {
+          "prompt_transform_style": "clarify_first",
+          "reasoning_directive": "fail_closed",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "conservative"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "guard",
+          "task_text": "Apply the fail-closed guard and mark the blocking conditions before audit.",
+          "required_terms": ["guard", "blocking", "fail-closed"],
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "fail_closed",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "conservative"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.censor.v1"]
+        },
+        {
+          "stage_id": "audit_receipt",
+          "task_text": "Emit the audit receipt, name the law-bound decision, and preserve the blocking rationale.",
+          "required_terms": ["audit", "receipt", "decision"],
+          "preferred_genotype": {
+            "prompt_transform_style": "expand_context",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "precision",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 2.0,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.auditor.v1"],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_ALTTERM_CA02",
+      "pattern_family": "LAB_ALTTERM_CA",
+      "notes": "Keep the required censor guard explicit, then require the auditor to emit the constitutional blocker packet.",
+      "single_case_baseline": {
+        "task_text": "Check the law-bound failure surface, then write the blocker packet and audit rationale.",
+        "required_terms": ["law", "blocker", "audit"],
+        "preferred_genotype": {
+          "prompt_transform_style": "clarify_first",
+          "reasoning_directive": "fail_closed",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "conservative"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "guard",
+          "task_text": "Check the law-bound failure surface and mark the blocker conditions.",
+          "required_terms": ["law", "failure", "blocker"],
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "fail_closed",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "conservative"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.censor.v1"]
+        },
+        {
+          "stage_id": "audit_packet",
+          "task_text": "Write the blocker packet and preserve the audit rationale with receipt language.",
+          "required_terms": ["blocker", "audit", "receipt"],
+          "preferred_genotype": {
+            "prompt_transform_style": "expand_context",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "precision",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 2.0,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.auditor.v1"],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_ALTTERM_CA03",
+      "pattern_family": "LAB_ALTTERM_CA",
+      "notes": "Force a guard-first receipt path where the terminal output is a governance audit, not a rewrite of one of the current four terminals.",
+      "single_case_baseline": {
+        "task_text": "Guard the governance surface, then produce an audit verdict and the bound receipt trail.",
+        "required_terms": ["governance", "audit", "verdict"],
+        "preferred_genotype": {
+          "prompt_transform_style": "clarify_first",
+          "reasoning_directive": "fail_closed",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "conservative"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "guard",
+          "task_text": "Guard the governance surface and capture the blocking constraints.",
+          "required_terms": ["guard", "governance", "constraints"],
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "fail_closed",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "conservative"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.censor.v1"]
+        },
+        {
+          "stage_id": "audit_verdict",
+          "task_text": "Produce the audit verdict and preserve the bound receipt trail.",
+          "required_terms": ["audit", "verdict", "receipt"],
+          "preferred_genotype": {
+            "prompt_transform_style": "expand_context",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "precision",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 2.0,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.auditor.v1"],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    }
+  ]
+}
