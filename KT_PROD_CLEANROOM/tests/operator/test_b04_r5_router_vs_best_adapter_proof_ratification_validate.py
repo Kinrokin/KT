@@ -155,3 +155,38 @@ def test_r5_execution_context_recognizes_second_same_head_rerun_launch_surface()
         )
         == "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SECOND_SAME_HEAD_RERUN"
     )
+
+
+def test_r5_execution_context_recognizes_third_same_head_rerun_launch_surface() -> None:
+    overlay = {
+        "next_counted_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN",
+        "current_lawful_gate_standing": {
+            "current_counted_batch": "B04_R5_THIRD_SAME_HEAD_RERUN_LAUNCH_SURFACE",
+        },
+        "workstream_id": "B04_R5_THIRD_SAME_HEAD_RERUN_LAUNCH_SURFACE",
+    }
+    next_contract = {
+        "source_workstream_id": "B04_R5_THIRD_SAME_HEAD_RERUN_LAUNCH_SURFACE",
+        "exact_next_counted_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN",
+        "execution_mode": "THIRD_R5_RERUN_AUTHORIZED_ONLY__R6_STILL_BLOCKED_UNTIL_EARNED_SUPERIORITY",
+        "repo_state_executable_now": True,
+    }
+    resume = {
+        "exact_next_counted_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN",
+        "workstream_id": "B04_R5_THIRD_SAME_HEAD_RERUN_LAUNCH_SURFACE",
+        "repo_state_executable_now": True,
+    }
+    reanchor = {
+        "next_lawful_move": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN",
+        "workstream_id": "B04_R5_THIRD_SAME_HEAD_RERUN_LAUNCH_SURFACE",
+    }
+
+    assert (
+        r5._r5_execution_context(
+            overlay=overlay,
+            next_contract=next_contract,
+            resume=resume,
+            reanchor=reanchor,
+        )
+        == "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__THIRD_SAME_HEAD_RERUN"
+    )
