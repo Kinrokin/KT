@@ -1,0 +1,178 @@
+{
+  "schema_id": "kt.research_writer_role_separated_suite.v1",
+  "mode": "LAB_ONLY_NONCANONICAL",
+  "claim_boundary": "This suite is lab-only and noncanonical. It forces a distinct research-to-writer handoff on a new lab head. It cannot unlock R5, R6, lobe authority, externality, comparative claims, or commercial activation.",
+  "cases": [
+    {
+      "case_id": "LAB_RWS01",
+      "pattern_family": "LAB_RWS",
+      "single_case_baseline": {
+        "task_text": "Research the evidence, summarize the tradeoffs, and write a calibrated recommendation.",
+        "required_terms": ["research", "tradeoffs", "recommendation"],
+        "preferred_genotype": {
+          "prompt_transform_style": "clarify_first",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "research",
+          "task_text": "Research the evidence and surface the tradeoffs.",
+          "required_terms": ["research", "tradeoffs"],
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "evidence_first",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.research.specialist.v1"]
+        },
+        {
+          "stage_id": "recommend",
+          "task_text": "Write a calibrated recommendation and explain the decision.",
+          "required_terms": ["recommendation", "decision"],
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.writer.specialist.v1"],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_RWS02",
+      "pattern_family": "LAB_RWS",
+      "single_case_baseline": {
+        "task_text": "Research the evidence and write the escalation brief.",
+        "required_terms": ["research", "evidence", "brief"],
+        "preferred_genotype": {
+          "prompt_transform_style": "clarify_first",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "research",
+          "task_text": "Research the evidence and capture the tradeoffs.",
+          "required_terms": ["research", "evidence", "tradeoffs"],
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "evidence_first",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.research.specialist.v1"]
+        },
+        {
+          "stage_id": "brief",
+          "task_text": "Write the escalation brief and defend the decision.",
+          "required_terms": ["brief", "decision"],
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.writer.specialist.v1"],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_RWS03",
+      "pattern_family": "LAB_RWS",
+      "single_case_baseline": {
+        "task_text": "Research the problem, capture the tradeoffs, and write the final recommendation.",
+        "required_terms": ["research", "tradeoffs", "recommendation"],
+        "preferred_genotype": {
+          "prompt_transform_style": "clarify_first",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "research",
+          "task_text": "Research the problem and capture the tradeoffs.",
+          "required_terms": ["research", "tradeoffs"],
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "evidence_first",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.research.specialist.v1"]
+        },
+        {
+          "stage_id": "recommend",
+          "task_text": "Write the final recommendation and defend it.",
+          "required_terms": ["recommendation", "decision"],
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.writer.specialist.v1"],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    }
+  ]
+}
