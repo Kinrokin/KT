@@ -228,9 +228,12 @@ def test_cohort0_kaggle_import_tranche_builds_receipts_and_followthrough(tmp_pat
     assert payload["followthrough_packet"]["followthrough_posture"] == "CARRIER_READY__TOURNAMENT_ENTRY_AUTHORITY_BLOCKED"
     assert "ENTRANT_EVAL_REPORT_IMPORT_MISSING" in payload["followthrough_packet"]["tournament_followthrough"]["blockers"]
     assert "ENTRANT_JOB_DIR_MANIFEST_IMPORT_MISSING" in payload["followthrough_packet"]["tournament_followthrough"]["blockers"]
-    assert (reports_root / "cohort0_real_engine_adapter_import_receipt.json").is_file()
-    assert (reports_root / "cohort0_real_engine_adapter_grade_receipt.json").is_file()
-    assert (reports_root / "cohort0_real_engine_tournament_followthrough_packet.json").is_file()
+    import_report = json.loads((reports_root / "cohort0_real_engine_adapter_import_receipt.json").read_text(encoding="utf-8"))
+    grade_report = json.loads((reports_root / "cohort0_real_engine_adapter_grade_receipt.json").read_text(encoding="utf-8"))
+    follow_report = json.loads((reports_root / "cohort0_real_engine_tournament_followthrough_packet.json").read_text(encoding="utf-8"))
+    assert import_report["receipt_role"] == "TRACKED_CARRIER_ONLY_CURRENT_HEAD_ADAPTER_EVIDENCE_ARTIFACT"
+    assert grade_report["carrier_surface_role"] == "TRACKED_CARRIER_ONLY_GATE_D_ADAPTER_GRADE_ARTIFACT"
+    assert follow_report["carrier_surface_role"] == "TRACKED_CARRIER_ONLY_GATE_D_TOURNAMENT_FOLLOWTHROUGH_ARTIFACT"
 
 
 def test_cohort0_kaggle_import_tranche_rejects_stub_engine_bundle(tmp_path: Path) -> None:

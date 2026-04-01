@@ -484,10 +484,14 @@ def run_import_tranche(
     report_grade = (reports_root / Path(DEFAULT_REPORT_GRADE_REL).name).resolve()
     report_follow = (reports_root / Path(DEFAULT_REPORT_FOLLOW_REL).name).resolve()
     carrier_import = dict(import_receipt)
+    carrier_import["receipt_role"] = "TRACKED_CARRIER_ONLY_CURRENT_HEAD_ADAPTER_EVIDENCE_ARTIFACT"
+    carrier_import["carrier_claim_boundary"] = "This tracked report is a carrier for the authoritative import receipt and must not be overread as same-head authority on later sealed heads."
     carrier_import["authoritative_import_receipt_ref"] = authoritative_files["import_receipt"].as_posix()
     carrier_grade = dict(grade_receipt)
+    carrier_grade["carrier_surface_role"] = "TRACKED_CARRIER_ONLY_GATE_D_ADAPTER_GRADE_ARTIFACT"
     carrier_grade["authoritative_grade_receipt_ref"] = authoritative_files["grade_receipt"].as_posix()
     carrier_follow = dict(follow_packet)
+    carrier_follow["carrier_surface_role"] = "TRACKED_CARRIER_ONLY_GATE_D_TOURNAMENT_FOLLOWTHROUGH_ARTIFACT"
     carrier_follow["authoritative_followthrough_packet_ref"] = authoritative_files["followthrough_packet"].as_posix()
     write_json_stable(report_import, carrier_import)
     write_json_stable(report_grade, carrier_grade)
