@@ -109,7 +109,12 @@ def _build_fake_kaggle_zip(path: Path, *, stub_engine: bool = False) -> None:
             "source_verdict_path": f"/kaggle/working/KT/KT_PROD_CLEANROOM/exports/_runs/KT_FORGE_COHORT0_INTERNAL/cohort0_full_hf/{adapter_id}/verdict.txt",
             "status": "PASS",
             "training_mode": "head_only" if stub_engine else "lora",
-            "training_run_verdict": "KT_RAPID_LORA_PASS",
+            "training_run_verdict": (
+                "KT_RAPID_LORA_PASS "
+                f"cmd=train engine={'stub' if stub_engine else 'hf_lora'} "
+                f"job_id={f'{idx:064x}'[-64:]} "
+                f"out_dir=/kaggle/working/KT/KT_PROD_CLEANROOM/exports/_runs/KT_FORGE_COHORT0_INTERNAL/cohort0_full_hf/{adapter_id}"
+            ),
         }
         reload = {
             "adapter_id": adapter_id,
