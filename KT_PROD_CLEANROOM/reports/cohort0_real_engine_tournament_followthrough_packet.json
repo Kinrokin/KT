@@ -1,6 +1,6 @@
 {
   "adapter_evidence_grade": "PASS_AS_STRONG_GATE_D_ADAPTER_EVIDENCE",
-  "authoritative_followthrough_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/merge_child_eval/cohort0_real_engine_tournament_followthrough_packet.json",
+  "authoritative_followthrough_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/merge_parent_pair_admissibility/cohort0_real_engine_tournament_followthrough_packet.json",
   "carrier_surface_role": "TRACKED_CARRIER_ONLY_GATE_D_TOURNAMENT_FOLLOWTHROUGH_ARTIFACT",
   "carrier_surface_summary": {
     "source_grade_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_hf_20260401T135716Z_FULL_ARTIFACTS_repo_import_20260401T145100834494Z/cohort0_real_engine_adapter_grade_receipt.json",
@@ -9,28 +9,14 @@
     "source_tournament_result_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/tournament_execution_2c9e503/tournament_result.json"
   },
   "claim_boundary": "This packet advances only bounded promotion and merge follow-through after tournament execution. It does not declare merge success, router authority, externality widening, comparative claims, or commercial activation.",
-  "followthrough_posture": "MERGE_CHILD_EVALUATED__RECOMMENDED_PARENT_PAIR_NOT_ADMISSIBLE",
-  "generated_utc": "2026-04-06T20:01:40Z",
-  "merge_child_evaluation_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/merge_child_eval/cohort0_merge_child_evaluation_receipt.json",
+  "followthrough_posture": "MERGE_CHILD_EVALUATED__NO_ADMISSIBLE_PARENT_PAIR_EXISTS_ON_CURRENT_TOURNAMENT_GRAPH",
+  "generated_utc": "2026-04-06T21:56:54Z",
+  "merge_child_evaluation_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/merge_parent_pair_admissibility/cohort0_merge_child_evaluation_receipt.json",
   "merge_followthrough": {
-    "blockers": [
-      "MERGE_PRECONDITION_FAILED"
-    ],
-    "child_candidate_prepared": true,
-    "child_candidate_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/merge_child_eval/cohort0_merge_child_candidate_receipt.json",
-    "execution_ready": false,
-    "merge_eval_reason_codes": [
-      "MERGE_PRECONDITION_FAILED"
-    ],
-    "merge_eval_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/merge_child_eval/merge_evaluation_9030178e13d5/merge_eval_receipt.json",
-    "merge_eval_status": "FAIL_CLOSED",
-    "merge_manifest_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/merge_child_eval/merge_manifest.json",
-    "merge_rollback_plan_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/merge_child_eval/merge_evaluation_9030178e13d5/merge_rollback_plan.json",
-    "merge_tournament_result_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/merge_child_eval/merge_tournament_execution_9030178e13d5/tournament_result.json",
-    "next_lawful_move": "RESELECT_ADMISSIBLE_PARENT_SEEDS_AND_REEVALUATE_MERGE_CHILD",
-    "recommended_parent_seed_count": 2,
-    "recommended_parent_seed_selection_rule": "strongest_two_non_champion_entrants_by_dominance_rank",
-    "recommended_parent_seeds": [
+    "admissible_parent_pair_count": 0,
+    "admissible_parent_pair_search_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/merge_parent_pair_admissibility/cohort0_merge_parent_pair_admissibility_receipt.json",
+    "attempted_parent_seed_count": 2,
+    "attempted_parent_seeds": [
       {
         "adapter_id": "lobe.muse.v1",
         "adapter_root_hash": "198049df9d833491a220547bc937c2ea31994271a422ca8fd62c2fc79612311b",
@@ -43,11 +29,31 @@
         "adapter_version": "1",
         "rank": 3
       }
-    ]
+    ],
+    "blockers": [
+      "NO_ADMISSIBLE_PARENT_PAIR_EXISTS_ON_CURRENT_TOURNAMENT_GRAPH"
+    ],
+    "child_candidate_prepared": true,
+    "child_candidate_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/merge_child_eval/cohort0_merge_child_candidate_receipt.json",
+    "execution_ready": false,
+    "merge_eval_reason_codes": [
+      "MERGE_PRECONDITION_FAILED"
+    ],
+    "merge_eval_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/merge_child_eval/merge_evaluation_9030178e13d5/merge_eval_receipt.json",
+    "merge_eval_status": "FAIL_CLOSED",
+    "merge_manifest_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/merge_child_eval/merge_manifest.json",
+    "merge_rollback_plan_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/merge_child_eval/merge_evaluation_9030178e13d5/merge_rollback_plan.json",
+    "merge_tournament_result_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/merge_child_eval/merge_tournament_execution_9030178e13d5/tournament_result.json",
+    "next_lawful_move": "PREPARE_NEW_TOURNAMENT_GRAPH_OR_NEW_CHILD_CANDIDATE_BEFORE_MERGE_REENTRY",
+    "parent_pair_candidates_examined_count": 66,
+    "recommended_parent_seed_count": 0,
+    "recommended_parent_seed_selection_rule": "admissible_non_champion_parent_pairs_by_dominance_rank",
+    "recommended_parent_seeds": []
   },
-  "next_question": "Which parent pair is merge-admissible once the recommended seeds have been tested under merge law?",
+  "merge_parent_pair_admissibility_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/merge_parent_pair_admissibility/cohort0_merge_parent_pair_admissibility_receipt.json",
+  "next_question": "What new tournament graph or child candidate could reopen merge admissibility once no admissible parent pair exists?",
   "promotion_followthrough": {
-    "blocked_by": "MERGE_PARENT_PRECONDITION_FAILED__PROMOTION_NOT_BINDABLE",
+    "blocked_by": "NO_ADMISSIBLE_PARENT_PAIR_EXISTS_ON_CURRENT_TOURNAMENT_GRAPH__PROMOTION_NOT_BINDABLE",
     "candidate_adapter_id": "lobe.strategist.v1",
     "candidate_adapter_root_hash": "945ca868544703a10f52ba127efd5e51199637a2d685f4394470308e1ed1d2f1",
     "candidate_identified": true,
