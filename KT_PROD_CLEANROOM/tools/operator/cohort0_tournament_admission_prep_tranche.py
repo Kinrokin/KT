@@ -778,10 +778,22 @@ def run_tournament_prep_tranche(
         )
         tournament_plan_path = (authoritative_root / "cohort0_tournament_plan.json").resolve()
         write_json_stable(tournament_plan_path, tournament_plan)
-        evaluation_admission_path = (authoritative_root / "cohort0_evaluation_admission_receipt.json").resolve()
-        if evaluation_admission_path.is_file():
-            _ = _load_json_required(evaluation_admission_path, label="existing evaluation admission receipt")
-        else:
+        tournament_plan_sha256 = sha256_text(canonical_json(tournament_plan))
+        default_evaluation_admission_path = (authoritative_root / "cohort0_evaluation_admission_receipt.json").resolve()
+        candidate_evaluation_admission_paths = [default_evaluation_admission_path]
+        candidate_evaluation_admission_paths.append(
+            (authoritative_root / f"cohort0_evaluation_admission_receipt_{tournament_plan_sha256[:12]}.json").resolve()
+        )
+        evaluation_admission_path = None
+        for candidate_path in candidate_evaluation_admission_paths:
+            if not candidate_path.is_file():
+                continue
+            existing_receipt = _load_json_required(candidate_path, label="existing evaluation admission receipt")
+            if str(existing_receipt.get("evaluation_plan_sha256", "")).strip() == tournament_plan_sha256:
+                evaluation_admission_path = candidate_path
+                break
+        if evaluation_admission_path is None:
+            evaluation_admission_path = default_evaluation_admission_path if not default_evaluation_admission_path.exists() else candidate_evaluation_admission_paths[-1]
             _ = ensure_evaluation_admission_receipt(
                 repo_root=root,
                 plan_path=tournament_plan_path,
