@@ -11,6 +11,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from schemas.fl3_schema_common import sha256_hex_of_obj
 from schemas.schema_files import schema_version_hash
+from tools.governance.counterpressure_gate import check_counterpressure_evidence
 from tools.governance.evaluation_admission_gate import ensure_evaluation_admission_receipt
 from tools.governance.suite_registry_utils import load_suite_registry
 from tools.training.fl3_factory.hashing import sha256_file_normalized
@@ -456,6 +457,8 @@ def _build_reexport_contract(
 
 def _build_prep_packet(
     *,
+    root: Path,
+    suite_registry_path: Path,
     authoritative_import_receipt_path: Path,
     import_receipt: Dict[str, Any],
     grade_receipt: Dict[str, Any],
@@ -470,11 +473,45 @@ def _build_prep_packet(
     tournament_entrants_root: Path,
     tournament_plan_path: Optional[Path],
     evaluation_admission_path: Optional[Path],
+    fragility_probe_result_path: Optional[Path],
 ) -> Dict[str, Any]:
     summary = dict(reexport_contract.get("summary", {}))
     complete = int(summary.get("complete_tournament_entry_adapter_count", 0))
     expected = int(summary.get("expected_adapter_count", 0))
     entrant_eval_count = int(summary.get("entrant_eval_report_count", summary.get("imported_eval_report_count", 0)))
+    entrant_root_hashes = sorted(
+        {
+            str(row.get("entrant_root_hash", "")).strip()
+            for row in reexport_contract.get("entries", [])
+            if isinstance(row, dict) and str(row.get("entrant_root_hash", "")).strip()
+        }
+    )
+    fragility_probe_prepared = False
+    fragility_probe_validation_notes = ""
+    if (
+        fragility_probe_result_path is not None
+        and fragility_probe_result_path.is_file()
+        and evaluation_admission_path is not None
+        and tournament_plan_path is not None
+        and len(entrant_root_hashes) == expected
+    ):
+        fragility_probe_prepared, fragility_reasons, fragility_notes = check_counterpressure_evidence(
+            repo_root=root,
+            expected_base_model_id=base_model_id,
+            expected_suite_id=str(suite_entry.get("suite_id", "")).strip(),
+            expected_suite_root_hash=str(suite_entry.get("suite_root_hash", "")).strip(),
+            expected_decode_policy_id="greedy_v1",
+            expected_decode_cfg_hash=str(_load_json_required(counterpressure_plan_path, label="counterpressure plan").get("decode_cfg_hash", "")).strip(),
+            entrant_adapter_root_hashes=entrant_root_hashes,
+            suite_registry_path=suite_registry_path,
+            break_hypothesis_path=break_hypothesis_path,
+            counterpressure_plan_path=counterpressure_plan_path,
+            fragility_probe_result_path=fragility_probe_result_path,
+        )
+        if fragility_reasons or fragility_notes:
+            fragility_probe_validation_notes = ";".join(
+                [",".join(fragility_reasons)] + ([str(fragility_notes)] if fragility_notes else [])
+            ).strip(";")
     blockers: List[str] = []
     if entrant_eval_count < expected:
         blockers.append("ENTRANT_EVAL_REPORT_IMPORT_OR_REEXPORT_MISSING")
@@ -486,11 +523,16 @@ def _build_prep_packet(
         blockers.append("TOURNAMENT_PLAN_NOT_PREPARED")
     if evaluation_admission_path is None:
         blockers.append("EVALUATION_ADMISSION_PACKET_NOT_PREPARED")
-    blockers.append("FRAGILITY_PROBE_RESULT_NOT_PREPARED")
+    if not fragility_probe_prepared:
+        blockers.append("FRAGILITY_PROBE_RESULT_NOT_PREPARED")
 
     if evaluation_admission_path is not None:
-        posture = "TOURNAMENT_ADMISSION_READY__PENDING_FRAGILITY_AND_EXECUTION"
-        next_move = "PREPARE_FRAGILITY_PROBE_RESULT_AND_EXECUTE_TOURNAMENT"
+        if fragility_probe_prepared:
+            posture = "TOURNAMENT_EXECUTION_READY"
+            next_move = "EXECUTE_TOURNAMENT"
+        else:
+            posture = "TOURNAMENT_ADMISSION_READY__PENDING_FRAGILITY_AND_EXECUTION"
+            next_move = "PREPARE_FRAGILITY_PROBE_RESULT_AND_EXECUTE_TOURNAMENT"
     else:
         posture = "BREAK_AND_COUNTERPRESSURE_READY__ENTRANT_AUTHORITY_BLOCKED"
         next_move = "IMPORT_OR_REEXPORT_EVAL_REPORTS_AND_REEMIT_TOURNAMENT_PREP"
@@ -520,7 +562,12 @@ def _build_prep_packet(
             "counterpressure_plan_emitted": True,
             "tournament_plan_emitted": tournament_plan_path is not None,
             "evaluation_admission_emitted": evaluation_admission_path is not None,
-            "fragility_probe_result_prepared": False,
+            "fragility_probe_result_prepared": fragility_probe_prepared,
+        },
+        "fragility_probe_validation": {
+            "present": fragility_probe_result_path is not None and fragility_probe_result_path.is_file(),
+            "counterpressure_gate_pass": fragility_probe_prepared,
+            "notes": fragility_probe_validation_notes or None,
         },
         "refs": {
             "source_import_receipt_ref": authoritative_import_receipt_path.as_posix(),
@@ -529,6 +576,7 @@ def _build_prep_packet(
             "tournament_entrants_root_ref": tournament_entrants_root.as_posix(),
             "tournament_plan_ref": tournament_plan_path.as_posix() if tournament_plan_path is not None else "",
             "evaluation_admission_ref": evaluation_admission_path.as_posix() if evaluation_admission_path is not None else "",
+            "fragility_probe_result_ref": fragility_probe_result_path.as_posix() if fragility_probe_result_path is not None and fragility_probe_result_path.exists() else "",
             "entrant_reexport_contract_ref": "",
         },
         "blockers": blockers,
@@ -740,12 +788,17 @@ def run_tournament_prep_tranche(
             break_hypothesis_path=break_hypothesis_path,
             out_path=evaluation_admission_path,
         )
+    fragility_probe_result_path = (authoritative_root / "fragility_probe_result.json").resolve()
+    if not fragility_probe_result_path.is_file():
+        fragility_probe_result_path = None
 
     holdout_pack_refs = [{"adapter_id": str(eval_receipt.get("adapter_id", "")).strip(), "holdout_pack_path": str(eval_receipt.get("holdout_pack_path", "")).strip(), "holdout_pack_sha256": str(eval_receipt.get("holdout_pack_sha256", "")).strip()} for eval_receipt in eval_receipts]
     reexport_contract = _build_reexport_contract(import_receipt=import_receipt, authoritative_import_receipt_path=authoritative_import_receipt_path, authoritative_grade_receipt_path=authoritative_grade_receipt_path, reexport_entries=reexport_entries)
     authoritative_contract_path = (authoritative_root / "cohort0_entrant_authority_reexport_contract.json").resolve()
     authoritative_prep_path = (authoritative_root / "cohort0_tournament_admission_prep_packet.json").resolve()
     prep_packet = _build_prep_packet(
+        root=root,
+        suite_registry_path=suite_registry_path,
         authoritative_import_receipt_path=authoritative_import_receipt_path,
         import_receipt=import_receipt,
         grade_receipt=grade_receipt,
@@ -760,6 +813,7 @@ def run_tournament_prep_tranche(
         tournament_entrants_root=tournament_entrants_root,
         tournament_plan_path=tournament_plan_path,
         evaluation_admission_path=evaluation_admission_path,
+        fragility_probe_result_path=fragility_probe_result_path,
     )
     prep_packet["refs"]["entrant_reexport_contract_ref"] = authoritative_contract_path.as_posix()
 
