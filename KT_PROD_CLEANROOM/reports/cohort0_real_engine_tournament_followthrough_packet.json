@@ -1,50 +1,67 @@
 {
   "adapter_evidence_grade": "PASS_AS_STRONG_GATE_D_ADAPTER_EVIDENCE",
-  "authoritative_followthrough_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_hf_20260401T135716Z_FULL_ARTIFACTS_repo_import_20260401T145100834494Z/cohort0_real_engine_tournament_followthrough_packet.json",
+  "authoritative_followthrough_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/cohort0_real_engine_tournament_followthrough_packet.json",
   "carrier_surface_role": "TRACKED_CARRIER_ONLY_GATE_D_TOURNAMENT_FOLLOWTHROUGH_ARTIFACT",
   "carrier_surface_summary": {
-    "adapter_eval_receipt_count": 13,
-    "adapter_reload_receipt_count": 13,
-    "adapter_training_receipt_count": 13,
-    "full_run_root_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_hf_20260401T135716Z_FULL_ARTIFACTS_repo_import_20260401T145100834494Z/extracted/cohort0_hf_20260401T135716Z/cohort0_full_hf",
-    "training_input_count": 13,
-    "transcript_count": 13
+    "source_grade_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_hf_20260401T135716Z_FULL_ARTIFACTS_repo_import_20260401T145100834494Z/cohort0_real_engine_adapter_grade_receipt.json",
+    "source_import_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_hf_20260401T135716Z_FULL_ARTIFACTS_repo_import_20260401T145100834494Z/cohort0_real_engine_adapter_import_receipt.json",
+    "source_tournament_execution_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/cohort0_tournament_execution_receipt.json",
+    "source_tournament_result_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/tournament_execution_2c9e503/tournament_result.json"
   },
-  "claim_boundary": "This packet advances only adapter-law follow-through into tournament/promotion/merge preparation. It does not declare any tournament result, promotion verdict, merge outcome, router-shadow authority, router superiority, externality widening, comparative claim, or commercial activation.",
-  "entrant_authority_surface_summary": {
-    "imported_eval_report_count": 0,
-    "imported_job_dir_manifest_count": 0,
-    "imported_train_manifest_count": 0,
-    "imported_training_run_manifest_count": 0
-  },
-  "extracted_bundle_root_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_hf_20260401T135716Z_FULL_ARTIFACTS_repo_import_20260401T145100834494Z/extracted/cohort0_hf_20260401T135716Z",
-  "followthrough_posture": "CARRIER_READY__TOURNAMENT_ENTRY_AUTHORITY_BLOCKED",
-  "generated_utc": "2026-04-01T14:51:03Z",
+  "claim_boundary": "This packet advances only bounded promotion and merge follow-through after tournament execution. It does not declare merge success, router authority, externality widening, comparative claims, or commercial activation.",
+  "followthrough_posture": "TOURNAMENT_EXECUTED__PROMOTION_CANDIDATE_IDENTIFIED__MERGE_CHILD_PREP_REQUIRED",
+  "generated_utc": "2026-04-06T19:38:37Z",
   "merge_followthrough": {
-    "blocked_by": "PENDING_TOURNAMENT_AND_PROMOTION_RECEIPTS",
-    "execution_ready": false
+    "blockers": [
+      "MERGE_CHILD_CANDIDATE_ARTIFACT_NOT_PREPARED",
+      "MERGE_CHILD_EVAL_REPORT_NOT_PREPARED",
+      "MERGE_MANIFEST_NOT_PREPARED",
+      "MERGE_EVAL_RECEIPT_NOT_PREPARED",
+      "MERGE_ROLLBACK_PLAN_NOT_PREPARED"
+    ],
+    "execution_ready": false,
+    "next_lawful_move": "PREPARE_SCHEMA_BOUND_MERGE_CHILD_CANDIDATE_AND_CHILD_EVAL_AGAINST_RECOMMENDED_PARENT_SEEDS",
+    "recommended_parent_seed_count": 2,
+    "recommended_parent_seed_selection_rule": "strongest_two_non_champion_entrants_by_dominance_rank",
+    "recommended_parent_seeds": [
+      {
+        "adapter_id": "lobe.muse.v1",
+        "adapter_root_hash": "198049df9d833491a220547bc937c2ea31994271a422ca8fd62c2fc79612311b",
+        "adapter_version": "1",
+        "rank": 2
+      },
+      {
+        "adapter_id": "lobe.critic.v1",
+        "adapter_root_hash": "87bead3e5e0ce1faa6cb00390877f537f2ee1dfe422e21172d1dafc4e61e5dfb",
+        "adapter_version": "1",
+        "rank": 3
+      }
+    ]
   },
-  "next_question": "What do these 13 governed adapters earn under tournament, promotion, and only later router-shadow comparison?",
+  "next_question": "Can a real schema-bound merge child candidate beat the recommended parent seed pair under merge law?",
   "promotion_followthrough": {
-    "blocked_by": "PENDING_TOURNAMENT_RESULT",
+    "blocked_by": "PROMOTION_DECISION_REMAINS_BOUNDED_PENDING_MERGE_CHILD_PREP",
+    "candidate_adapter_id": "lobe.strategist.v1",
+    "candidate_adapter_root_hash": "945ca868544703a10f52ba127efd5e51199637a2d685f4394470308e1ed1d2f1",
+    "candidate_identified": true,
+    "candidate_rank": 1,
+    "candidate_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/cohort0_promotion_candidate_receipt.json",
     "execution_ready": false
   },
   "schema_id": "kt.operator.cohort0_real_engine_tournament_followthrough_packet.v1",
-  "source_grade_receipt_ref": "KT_PROD_CLEANROOM/reports/cohort0_real_engine_adapter_grade_receipt.json",
-  "source_import_receipt_ref": "KT_PROD_CLEANROOM/reports/cohort0_real_engine_adapter_import_receipt.json",
+  "source_grade_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_hf_20260401T135716Z_FULL_ARTIFACTS_repo_import_20260401T145100834494Z/cohort0_real_engine_adapter_grade_receipt.json",
+  "source_import_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_hf_20260401T135716Z_FULL_ARTIFACTS_repo_import_20260401T145100834494Z/cohort0_real_engine_adapter_import_receipt.json",
   "status": "PASS",
   "subject_head": "2fad8817604e56fe3c291bd5f51734acb519a789",
   "tournament_followthrough": {
-    "blockers": [
-      "ENTRANT_EVAL_REPORT_IMPORT_MISSING",
-      "ENTRANT_JOB_DIR_MANIFEST_IMPORT_MISSING",
-      "ENTRANT_TRAIN_MANIFEST_IMPORT_MISSING",
-      "ENTRANT_TRAINING_RUN_MANIFEST_IMPORT_MISSING",
-      "EVALUATION_ADMISSION_PACKET_NOT_PREPARED",
-      "COUNTERPRESSURE_PLAN_NOT_PREPARED",
-      "BREAK_HYPOTHESIS_NOT_PREPARED"
+    "champion_count": 1,
+    "champion_set": [
+      "945ca868544703a10f52ba127efd5e51199637a2d685f4394470308e1ed1d2f1"
     ],
-    "execution_ready": false,
-    "next_lawful_move": "IMPORT_OR_REEXPORT_SCHEMA_BOUND_ENTRANT_EVIDENCE_AND_PREPARE_TOURNAMENT_ADMISSION_PACKET"
+    "dominance_pair_count": 78,
+    "execution_ready": true,
+    "execution_status": "PASS",
+    "next_lawful_move": "PREPARE_PROMOTION_CANDIDATE_AND_MERGE_CHILD",
+    "result_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/tournament_execution_2c9e503/tournament_result.json"
   }
 }
