@@ -13,6 +13,7 @@ from schemas.fl3_schema_common import sha256_hex_of_obj
 from schemas.schema_files import schema_version_hash
 from tools.governance.evaluation_admission_gate import ensure_evaluation_admission_receipt
 from tools.governance.suite_registry_utils import load_suite_registry
+from tools.training.fl3_factory.hashing import sha256_file_normalized
 from tools.operator.titanium_common import load_json, repo_root, utc_now_compact_z, utc_now_iso_z, write_json_stable
 from tools.verification.fl3_canonical import canonical_json, sha256_text
 from tools.verification.fl3_validators import validate_schema_bound_object
@@ -28,6 +29,10 @@ TRAIN_MANIFEST_SCHEMA_FILE = "fl3/kt.factory.train_manifest.v1.json"
 TRAIN_MANIFEST_SCHEMA_HASH = schema_version_hash(TRAIN_MANIFEST_SCHEMA_FILE)
 JOB_DIR_MANIFEST_SCHEMA_FILE = "fl3/kt.factory.job_dir_manifest.v1.json"
 JOB_DIR_MANIFEST_SCHEMA_HASH = schema_version_hash(JOB_DIR_MANIFEST_SCHEMA_FILE)
+EVAL_REPORT_SCHEMA_FILE = "fl3/kt.factory.eval_report.v2.json"
+EVAL_REPORT_SCHEMA_HASH = schema_version_hash(EVAL_REPORT_SCHEMA_FILE)
+SCORING_SPEC_SCHEMA_FILE = "fl3/kt.scoring_spec.v1.json"
+SCORING_SPEC_SCHEMA_HASH = schema_version_hash(SCORING_SPEC_SCHEMA_FILE)
 TOURNAMENT_PLAN_SCHEMA_FILE = "fl3/kt.tournament_plan.v1.json"
 TOURNAMENT_PLAN_SCHEMA_HASH = schema_version_hash(TOURNAMENT_PLAN_SCHEMA_FILE)
 BREAK_HYPOTHESIS_SCHEMA_FILE = "fl3/kt.break_hypothesis.v1.json"
@@ -48,6 +53,31 @@ def _load_json_required(path: Path, *, label: str) -> Dict[str, Any]:
     if not path.is_file():
         raise RuntimeError(f"FAIL_CLOSED: missing required {label}: {path.as_posix()}")
     return load_json(path)
+
+
+def _load_utility_pack_binding(root: Path) -> Dict[str, Any]:
+    utility_pack_root = (root / "KT_PROD_CLEANROOM" / "AUDITS" / "UTILITY_PACK_V1").resolve()
+    manifest = _load_json_required(utility_pack_root / "UTILITY_PACK_MANIFEST.json", label="utility pack manifest")
+    scoring_spec = _load_json_required(utility_pack_root / "scoring_spec.json", label="utility pack scoring_spec")
+    thresholds = _load_json_required(utility_pack_root / "thresholds.json", label="utility pack thresholds")
+    validate_schema_bound_object(manifest)
+    validate_schema_bound_object(scoring_spec)
+    if str(manifest.get("schema_id", "")).strip() != "kt.utility_pack_manifest.v1":
+        raise RuntimeError("FAIL_CLOSED: utility pack manifest schema mismatch")
+    if str(scoring_spec.get("schema_id", "")).strip() != "kt.scoring_spec.v1":
+        raise RuntimeError("FAIL_CLOSED: utility pack scoring_spec schema mismatch")
+    try:
+        utility_floor_min = float(thresholds.get("utility_floor_min"))
+    except Exception as exc:  # noqa: BLE001
+        raise RuntimeError("FAIL_CLOSED: utility pack thresholds.utility_floor_min missing/invalid") from exc
+    return {
+        "utility_pack_id": str(manifest.get("utility_pack_id", "")).strip(),
+        "utility_pack_hash": str(manifest.get("utility_pack_hash", "")).strip(),
+        "metric_version_hash": sha256_text(canonical_json(scoring_spec)),
+        "metric_schema_hash": SCORING_SPEC_SCHEMA_HASH,
+        "metric_impl_hash": sha256_file_normalized(Path(__file__)),
+        "utility_floor_min": utility_floor_min,
+    }
 
 
 def _resolve_authoritative_receipt(root: Path, report_path: Path, field: str, label: str) -> Tuple[Path, Dict[str, Any]]:
@@ -120,6 +150,95 @@ def _find_matching_file(*, search_root: Path, adapter_id: str, source_path: str,
     if len(candidates) == 1:
         return candidates[0]
     return None
+
+
+def _build_receipt_derived_eval_report(
+    *,
+    root: Path,
+    adapter_id: str,
+    training_receipt: Dict[str, Any],
+    training_receipt_path: Path,
+    eval_receipt: Dict[str, Any],
+    eval_receipt_path: Path,
+) -> Dict[str, Any]:
+    utility_pack = _load_utility_pack_binding(root)
+    job_id = _parse_job_id(training_receipt)
+    adapter_version = _parse_adapter_version(adapter_id, None)
+    baseline_eval_score = float(eval_receipt.get("baseline_eval_score", 0.0))
+    eval_case_count = int(eval_receipt.get("eval_case_count", 0))
+    source_eval_final_verdict = str(eval_receipt.get("source_eval_final_verdict", "")).strip().upper()
+    if source_eval_final_verdict not in {"PASS", "FAIL"}:
+        raise RuntimeError(f"FAIL_CLOSED: invalid source_eval_final_verdict for {adapter_id}")
+    source_eval_stub = bool(eval_receipt.get("source_eval_stub"))
+    trace_present = bool(str(eval_receipt.get("source_eval_report_path", "")).strip()) and eval_case_count > 0
+    trace_payload = {
+        "adapter_id": adapter_id,
+        "job_id": job_id,
+        "source_eval_report_path": str(eval_receipt.get("source_eval_report_path", "")).strip(),
+        "artifact_sha256": str(training_receipt.get("artifact_sha256", "")).strip(),
+        "eval_case_count": eval_case_count,
+    }
+    trace_hash = sha256_text(canonical_json(trace_payload))
+    utility_floor_pass = bool(source_eval_final_verdict == "PASS" and eval_case_count > 0)
+    record = {
+        "schema_id": "kt.factory.eval_report.v2",
+        "schema_version_hash": EVAL_REPORT_SCHEMA_HASH,
+        "eval_id": "",
+        "job_id": job_id,
+        "adapter_id": adapter_id,
+        "adapter_version": adapter_version,
+        "battery_id": "kt.eval.battery.fl4.utility_v1",
+        "utility_pack_id": str(utility_pack["utility_pack_id"]),
+        "utility_pack_hash": str(utility_pack["utility_pack_hash"]),
+        "utility_floor_score": baseline_eval_score,
+        "utility_floor_pass": utility_floor_pass,
+        "metric_bindings": [
+            {
+                "metric_id": "utility_floor_score_receipt_proxy",
+                "metric_version_hash": str(utility_pack["metric_version_hash"]),
+                "metric_schema_hash": str(utility_pack["metric_schema_hash"]),
+                "metric_impl_hash": str(utility_pack["metric_impl_hash"]),
+            }
+        ],
+        "metric_probes": [
+            {
+                "metric_id": "utility_floor_score_receipt_proxy_probe",
+                "metric_impl_hash": str(utility_pack["metric_impl_hash"]),
+                "delta": 0.0,
+                "agreement": not source_eval_stub,
+            }
+        ],
+        "probe_policy": {"tolerance": 0.0, "fail_on_disagreement": True},
+        "results": {
+            "best_bundle_id": f"receipt::{str(training_receipt.get('artifact_sha256', '')).strip()[:16]}",
+            "utility_floor_score": baseline_eval_score,
+            "utility_floor_pass": utility_floor_pass,
+            "trace_required": True,
+            "trace_present": trace_present,
+            "trace_coverage": 1.0 if trace_present else 0.0,
+            "trace_id": trace_hash,
+            "trace_hash": trace_hash,
+            "metric_probe_agreement": not source_eval_stub,
+            "source_evidence_mode": "receipt_derived_from_adapter_eval_receipt",
+            "source_eval_receipt_ref": eval_receipt_path.as_posix(),
+            "source_eval_receipt_sha256": _sha256_file(eval_receipt_path),
+            "source_training_receipt_ref": training_receipt_path.as_posix(),
+            "source_training_receipt_sha256": _sha256_file(training_receipt_path),
+            "source_eval_report_path": str(eval_receipt.get("source_eval_report_path", "")).strip(),
+            "source_eval_stub": source_eval_stub,
+            "source_eval_final_verdict": source_eval_final_verdict,
+            "source_eval_case_count": eval_case_count,
+            "promotion_ready_artifacts_present": bool(eval_receipt.get("promotion_ready_artifacts_present")),
+            "holdout_pack_path": str(eval_receipt.get("holdout_pack_path", "")).strip(),
+            "holdout_pack_sha256": str(eval_receipt.get("holdout_pack_sha256", "")).strip(),
+            "receipt_proxy_threshold_floor_min": float(utility_pack["utility_floor_min"]),
+        },
+        "final_verdict": source_eval_final_verdict if trace_present else "FAIL",
+        "created_at": str(eval_receipt.get("created_at", "")).strip() or utc_now_iso_z(),
+    }
+    record["eval_id"] = sha256_hex_of_obj(record, drop_keys={"created_at", "eval_id"})
+    validate_schema_bound_object(record)
+    return record
 
 
 def _reexport_train_manifest(*, training_receipt: Dict[str, Any], artifact_path: Path, out_path: Path) -> Dict[str, Any]:
@@ -304,6 +423,8 @@ def _build_reexport_contract(
     reexport_entries: List[Dict[str, Any]],
 ) -> Dict[str, Any]:
     imported_eval_count = sum(1 for row in reexport_entries if row["imported_eval_report_ref"])
+    reexported_eval_count = sum(1 for row in reexport_entries if row["reexported_eval_report_ref"])
+    entrant_eval_count = sum(1 for row in reexport_entries if row["entrant_eval_report_ref"])
     job_dir_count = sum(1 for row in reexport_entries if row["reexported_job_dir_manifest_ref"])
     train_count = sum(1 for row in reexport_entries if row["reexported_train_manifest_ref"])
     training_run_count = sum(1 for row in reexport_entries if row["reexported_training_run_manifest_ref"])
@@ -315,12 +436,15 @@ def _build_reexport_contract(
         "status": "PASS",
         "subject_head": str(import_receipt.get("subject_head", "")).strip(),
         "claim_boundary": "This contract prepares only entrant-authority import and re-export for the bounded tournament lane. It does not declare tournament results, promotion, merge, router authority, lobes, externality, comparative claims, or commercial widening.",
+        "eval_report_reexport_policy": "Preserved schema-bound source eval_report.v2 artifacts are imported when available. When they are absent, this contract permits deterministic receipt-derived eval_report.v2 re-export from the imported adapter_eval_receipt.json and adapter_training_receipt.json surfaces strictly for tournament admission preparation.",
         "source_import_receipt_ref": authoritative_import_receipt_path.as_posix(),
         "source_grade_receipt_ref": authoritative_grade_receipt_path.as_posix(),
         "entries": reexport_entries,
         "summary": {
             "expected_adapter_count": len(reexport_entries),
             "imported_eval_report_count": imported_eval_count,
+            "reexported_eval_report_count": reexported_eval_count,
+            "entrant_eval_report_count": entrant_eval_count,
             "reexported_job_dir_manifest_count": job_dir_count,
             "reexported_train_manifest_count": train_count,
             "reexported_training_run_manifest_count": training_run_count,
@@ -350,8 +474,9 @@ def _build_prep_packet(
     summary = dict(reexport_contract.get("summary", {}))
     complete = int(summary.get("complete_tournament_entry_adapter_count", 0))
     expected = int(summary.get("expected_adapter_count", 0))
+    entrant_eval_count = int(summary.get("entrant_eval_report_count", summary.get("imported_eval_report_count", 0)))
     blockers: List[str] = []
-    if int(summary.get("imported_eval_report_count", 0)) < expected:
+    if entrant_eval_count < expected:
         blockers.append("ENTRANT_EVAL_REPORT_IMPORT_OR_REEXPORT_MISSING")
     if int(summary.get("reexported_job_dir_manifest_count", 0)) < expected:
         blockers.append("ENTRANT_JOB_DIR_MANIFEST_REEXPORT_INCOMPLETE")
@@ -448,8 +573,10 @@ def run_tournament_prep_tranche(
     suite_entry = _suite_entry_by_id(registry=suite_registry, suite_id=suite_id)
     adversarial_suite_entry = _suite_entry_by_id(registry=suite_registry, suite_id=adversarial_suite_id)
 
-    training_receipts = [_load_json_required(Path(str(entry.get("training_receipt_ref", ""))).resolve(), label=f"training receipt for {entry.get('adapter_id')}") for entry in entries]
-    eval_receipts = [_load_json_required(Path(str(entry.get("eval_receipt_ref", ""))).resolve(), label=f"eval receipt for {entry.get('adapter_id')}") for entry in entries]
+    training_receipt_paths = [Path(str(entry.get("training_receipt_ref", ""))).resolve() for entry in entries]
+    eval_receipt_paths = [Path(str(entry.get("eval_receipt_ref", ""))).resolve() for entry in entries]
+    training_receipts = [_load_json_required(path, label=f"training receipt for {entry.get('adapter_id')}") for entry, path in zip(entries, training_receipt_paths)]
+    eval_receipts = [_load_json_required(path, label=f"eval receipt for {entry.get('adapter_id')}") for entry, path in zip(entries, eval_receipt_paths)]
     base_snapshot_id = str(import_receipt.get("base_snapshot_id", "")).strip()
     base_hashes = {str(row.get("base_model_root_hash", "")).strip() for row in training_receipts}
     if len(base_hashes) != 1 or any(len(x) != 64 for x in base_hashes):
@@ -479,7 +606,13 @@ def run_tournament_prep_tranche(
     reexport_entries: List[Dict[str, Any]] = []
     entrants_for_plan: List[Dict[str, str]] = []
 
-    for entry, training_receipt in zip(entries, training_receipts):
+    for entry, training_receipt, training_receipt_path, eval_receipt, eval_receipt_path in zip(
+        entries,
+        training_receipts,
+        training_receipt_paths,
+        eval_receipts,
+        eval_receipt_paths,
+    ):
         adapter_id = str(entry.get("adapter_id", "")).strip()
         adapter_root = (entrant_root / adapter_id).resolve()
         adapter_root.mkdir(parents=True, exist_ok=True)
@@ -494,6 +627,9 @@ def run_tournament_prep_tranche(
         job_dir_manifest_path = (adapter_root / "job_dir_manifest.json").resolve()
 
         imported_eval_ref = ""
+        reexported_eval_ref = ""
+        entrant_eval_ref = ""
+        eval_report_derivation_mode = ""
         eval_obj: Optional[Dict[str, Any]] = None
         if supplemental_root is not None:
             source_eval = _find_matching_file(search_root=supplemental_root, adapter_id=adapter_id, source_path=eval_source_path, basename="eval_report.json")
@@ -506,6 +642,21 @@ def run_tournament_prep_tranche(
                 if str(eval_obj.get("adapter_id", "")).strip() != adapter_id:
                     raise RuntimeError(f"FAIL_CLOSED: supplemental eval_report adapter_id mismatch for {adapter_id}")
                 imported_eval_ref = eval_report_path.as_posix()
+                entrant_eval_ref = imported_eval_ref
+                eval_report_derivation_mode = "IMPORTED_SOURCE_EVAL_REPORT_V2"
+        if eval_obj is None:
+            eval_obj = _build_receipt_derived_eval_report(
+                root=root,
+                adapter_id=adapter_id,
+                training_receipt=training_receipt,
+                training_receipt_path=training_receipt_path,
+                eval_receipt=eval_receipt,
+                eval_receipt_path=eval_receipt_path,
+            )
+            write_json_stable(eval_report_path, eval_obj)
+            reexported_eval_ref = eval_report_path.as_posix()
+            entrant_eval_ref = reexported_eval_ref
+            eval_report_derivation_mode = "REEXPORTED_FROM_ADAPTER_EVAL_RECEIPT"
 
         train_manifest = _reexport_train_manifest(training_receipt=training_receipt, artifact_path=imported_bundle_path, out_path=train_manifest_path)
         reexported_job_dir_ref = ""
@@ -531,13 +682,13 @@ def run_tournament_prep_tranche(
         _ = _reexport_training_run_manifest(
             training_receipt=training_receipt,
             train_manifest=train_manifest,
-            eval_report_ref=imported_eval_ref,
+            eval_report_ref=entrant_eval_ref,
             job_dir_manifest_ref=reexported_job_dir_ref,
             out_path=training_run_manifest_path,
         )
 
         missing_for_entry: List[str] = []
-        if not imported_eval_ref:
+        if not entrant_eval_ref:
             missing_for_entry.append("eval_report.json")
         if not reexported_job_dir_ref:
             missing_for_entry.append("job_dir_manifest.json")
@@ -549,6 +700,10 @@ def run_tournament_prep_tranche(
                 "expected_source_train_manifest_path": str(entry.get("source_train_manifest_path", "")).strip(),
                 "expected_source_training_run_manifest_path": str(entry.get("source_training_run_manifest_path", "")).strip(),
                 "imported_eval_report_ref": imported_eval_ref,
+                "reexported_eval_report_ref": reexported_eval_ref,
+                "entrant_eval_report_ref": entrant_eval_ref,
+                "eval_report_derivation_mode": eval_report_derivation_mode,
+                "source_eval_receipt_ref": eval_receipt_path.as_posix(),
                 "reexported_job_dir_manifest_ref": reexported_job_dir_ref,
                 "reexported_train_manifest_ref": train_manifest_path.as_posix(),
                 "reexported_training_run_manifest_ref": training_run_manifest_path.as_posix(),

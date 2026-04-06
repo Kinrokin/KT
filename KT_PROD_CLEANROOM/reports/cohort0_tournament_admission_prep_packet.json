@@ -1,30 +1,27 @@
 {
   "adapter_evidence_grade": "PASS_AS_STRONG_GATE_D_ADAPTER_EVIDENCE",
-  "authoritative_prep_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260401T154506738779Z/cohort0_tournament_admission_prep_packet.json",
+  "authoritative_prep_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/cohort0_tournament_admission_prep_packet.json",
   "base_model_binding": {
     "base_model_id": "sha256:a8905e7268546cd264724a1d65de20bc414c0a7120401e2fd2d4d34cb8c6aef2",
     "base_snapshot_id": "COHORT0_STAGED_BASE_SNAPSHOT_V1"
   },
   "blockers": [
-    "ENTRANT_EVAL_REPORT_IMPORT_OR_REEXPORT_MISSING",
-    "ENTRANT_JOB_DIR_MANIFEST_REEXPORT_INCOMPLETE",
-    "ENTRANT_ROOT_HASH_BINDING_MISSING",
-    "TOURNAMENT_PLAN_NOT_PREPARED",
-    "EVALUATION_ADMISSION_PACKET_NOT_PREPARED",
     "FRAGILITY_PROBE_RESULT_NOT_PREPARED"
   ],
   "carrier_surface_role": "TRACKED_CARRIER_ONLY_GATE_D_TOURNAMENT_ADMISSION_PREP_PACKET",
   "claim_boundary": "This packet advances only bounded tournament admission preparation from the imported Cohort-0 adapter evidence. It does not declare tournament results, promotion, merge, router-shadow authority, router superiority, externality widening, comparative claims, or commercial activation.",
   "entrant_authority_summary": {
-    "complete_tournament_entry_adapter_count": 0,
+    "complete_tournament_entry_adapter_count": 13,
+    "entrant_eval_report_count": 13,
     "expected_adapter_count": 13,
     "imported_eval_report_count": 0,
-    "reexported_job_dir_manifest_count": 0,
+    "reexported_eval_report_count": 13,
+    "reexported_job_dir_manifest_count": 13,
     "reexported_train_manifest_count": 13,
     "reexported_training_run_manifest_count": 13,
-    "tournament_ready_entrant_dir_count": 0
+    "tournament_ready_entrant_dir_count": 13
   },
-  "generated_utc": "2026-04-01T15:45:06Z",
+  "generated_utc": "2026-04-06T18:26:43Z",
   "holdout_pack_refs": [
     {
       "adapter_id": "lobe.alpha.v1",
@@ -92,23 +89,23 @@
       "holdout_pack_sha256": "ee83413fcd92fec1e4fcdaa4490c8b72ccf066226b1111b2950974089c54a588"
     }
   ],
-  "next_lawful_move": "IMPORT_OR_REEXPORT_EVAL_REPORTS_AND_REEMIT_TOURNAMENT_PREP",
+  "next_lawful_move": "PREPARE_FRAGILITY_PROBE_RESULT_AND_EXECUTE_TOURNAMENT",
   "packet_family_status": {
     "break_hypothesis_emitted": true,
     "counterpressure_plan_emitted": true,
-    "evaluation_admission_emitted": false,
+    "evaluation_admission_emitted": true,
     "fragility_probe_result_prepared": false,
-    "tournament_plan_emitted": false
+    "tournament_plan_emitted": true
   },
-  "prep_posture": "BREAK_AND_COUNTERPRESSURE_READY__ENTRANT_AUTHORITY_BLOCKED",
+  "prep_posture": "TOURNAMENT_ADMISSION_READY__PENDING_FRAGILITY_AND_EXECUTION",
   "refs": {
-    "break_hypothesis_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260401T154506738779Z/cohort0_tournament_break_hypothesis.json",
-    "counterpressure_plan_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260401T154506738779Z/cohort0_tournament_counterpressure_plan.json",
-    "entrant_reexport_contract_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260401T154506738779Z/cohort0_entrant_authority_reexport_contract.json",
-    "evaluation_admission_ref": "",
+    "break_hypothesis_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/cohort0_tournament_break_hypothesis.json",
+    "counterpressure_plan_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/cohort0_tournament_counterpressure_plan.json",
+    "entrant_reexport_contract_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/cohort0_entrant_authority_reexport_contract.json",
+    "evaluation_admission_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/cohort0_evaluation_admission_receipt.json",
     "source_import_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_hf_20260401T135716Z_FULL_ARTIFACTS_repo_import_20260401T145100834494Z/cohort0_real_engine_adapter_import_receipt.json",
-    "tournament_entrants_root_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260401T154506738779Z/tournament_entrants",
-    "tournament_plan_ref": ""
+    "tournament_entrants_root_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/tournament_entrants",
+    "tournament_plan_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/cohort0_tournament_plan.json"
   },
   "schema_id": "kt.operator.cohort0_tournament_admission_prep_packet.v1",
   "status": "PASS",

@@ -93,7 +93,7 @@ def _build_supplemental_eval_root(*, authoritative_inventory_path: Path, out_roo
         _write_json(out_root / source_path, eval_report)
 
 
-def test_cohort0_tournament_admission_prep_tranche_blocks_without_supplemental_eval_reports(tmp_path: Path) -> None:
+def test_cohort0_tournament_admission_prep_tranche_reexports_eval_reports_from_receipts_when_source_eval_reports_are_absent(tmp_path: Path) -> None:
     bundle_zip = tmp_path / "cohort0_hf_20260401T135716Z_FULL_ARTIFACTS.zip"
     _build_fake_kaggle_zip(bundle_zip)
 
@@ -123,21 +123,26 @@ def test_cohort0_tournament_admission_prep_tranche_blocks_without_supplemental_e
     prep_packet = payload["prep_packet"]
     reexport_contract = payload["reexport_contract"]
     assert prep_packet["status"] == "PASS"
-    assert prep_packet["prep_posture"] == "BREAK_AND_COUNTERPRESSURE_READY__ENTRANT_AUTHORITY_BLOCKED"
-    assert prep_packet["next_lawful_move"] == "IMPORT_OR_REEXPORT_EVAL_REPORTS_AND_REEMIT_TOURNAMENT_PREP"
-    assert "ENTRANT_EVAL_REPORT_IMPORT_OR_REEXPORT_MISSING" in prep_packet["blockers"]
-    assert "ENTRANT_JOB_DIR_MANIFEST_REEXPORT_INCOMPLETE" in prep_packet["blockers"]
-    assert "ENTRANT_ROOT_HASH_BINDING_MISSING" in prep_packet["blockers"]
-    assert "TOURNAMENT_PLAN_NOT_PREPARED" in prep_packet["blockers"]
-    assert "EVALUATION_ADMISSION_PACKET_NOT_PREPARED" in prep_packet["blockers"]
+    assert prep_packet["prep_posture"] == "TOURNAMENT_ADMISSION_READY__PENDING_FRAGILITY_AND_EXECUTION"
+    assert prep_packet["next_lawful_move"] == "PREPARE_FRAGILITY_PROBE_RESULT_AND_EXECUTE_TOURNAMENT"
     assert "FRAGILITY_PROBE_RESULT_NOT_PREPARED" in prep_packet["blockers"]
+    assert "ENTRANT_EVAL_REPORT_IMPORT_OR_REEXPORT_MISSING" not in prep_packet["blockers"]
+    assert "ENTRANT_JOB_DIR_MANIFEST_REEXPORT_INCOMPLETE" not in prep_packet["blockers"]
+    assert "ENTRANT_ROOT_HASH_BINDING_MISSING" not in prep_packet["blockers"]
+    assert "TOURNAMENT_PLAN_NOT_PREPARED" not in prep_packet["blockers"]
+    assert "EVALUATION_ADMISSION_PACKET_NOT_PREPARED" not in prep_packet["blockers"]
     assert reexport_contract["summary"]["reexported_train_manifest_count"] == 13
     assert reexport_contract["summary"]["reexported_training_run_manifest_count"] == 13
     assert reexport_contract["summary"]["imported_eval_report_count"] == 0
-    assert reexport_contract["summary"]["reexported_job_dir_manifest_count"] == 0
-    assert reexport_contract["summary"]["tournament_ready_entrant_dir_count"] == 0
-    assert not (prep_root / "cohort0_tournament_plan.json").exists()
-    assert not (prep_root / "cohort0_evaluation_admission_receipt.json").exists()
+    assert reexport_contract["summary"]["reexported_eval_report_count"] == 13
+    assert reexport_contract["summary"]["entrant_eval_report_count"] == 13
+    assert reexport_contract["summary"]["reexported_job_dir_manifest_count"] == 13
+    assert reexport_contract["summary"]["tournament_ready_entrant_dir_count"] == 13
+    assert reexport_contract["summary"]["complete_tournament_entry_adapter_count"] == 13
+    assert (prep_root / "cohort0_tournament_plan.json").is_file()
+    assert (prep_root / "cohort0_evaluation_admission_receipt.json").is_file()
+    assert reexport_contract["entries"][0]["eval_report_derivation_mode"] == "REEXPORTED_FROM_ADAPTER_EVAL_RECEIPT"
+    assert reexport_contract["entries"][0]["reexported_eval_report_ref"].endswith("/eval_report.json")
 
     carrier_contract = json.loads((reports_root / "cohort0_entrant_authority_reexport_contract.json").read_text(encoding="utf-8"))
     carrier_prep = json.loads((reports_root / "cohort0_tournament_admission_prep_packet.json").read_text(encoding="utf-8"))
@@ -189,6 +194,8 @@ def test_cohort0_tournament_admission_prep_tranche_emits_admission_when_eval_rep
     assert "TOURNAMENT_PLAN_NOT_PREPARED" not in prep_packet["blockers"]
     assert "EVALUATION_ADMISSION_PACKET_NOT_PREPARED" not in prep_packet["blockers"]
     assert reexport_contract["summary"]["imported_eval_report_count"] == 13
+    assert reexport_contract["summary"]["reexported_eval_report_count"] == 0
+    assert reexport_contract["summary"]["entrant_eval_report_count"] == 13
     assert reexport_contract["summary"]["reexported_job_dir_manifest_count"] == 13
     assert reexport_contract["summary"]["reexported_train_manifest_count"] == 13
     assert reexport_contract["summary"]["reexported_training_run_manifest_count"] == 13
@@ -204,3 +211,4 @@ def test_cohort0_tournament_admission_prep_tranche_emits_admission_when_eval_rep
         assert runner_dir.is_dir()
         assert (runner_dir / "eval_report.json").is_file()
         assert (runner_dir / "job_dir_manifest.json").is_file()
+    assert reexport_contract["entries"][0]["eval_report_derivation_mode"] == "IMPORTED_SOURCE_EVAL_REPORT_V2"
