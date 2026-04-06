@@ -779,15 +779,18 @@ def run_tournament_prep_tranche(
         tournament_plan_path = (authoritative_root / "cohort0_tournament_plan.json").resolve()
         write_json_stable(tournament_plan_path, tournament_plan)
         evaluation_admission_path = (authoritative_root / "cohort0_evaluation_admission_receipt.json").resolve()
-        _ = ensure_evaluation_admission_receipt(
-            repo_root=root,
-            plan_path=tournament_plan_path,
-            lane_id=lane_id,
-            suite_registry_path=suite_registry_path,
-            counterpressure_plan_path=counterpressure_path,
-            break_hypothesis_path=break_hypothesis_path,
-            out_path=evaluation_admission_path,
-        )
+        if evaluation_admission_path.is_file():
+            _ = _load_json_required(evaluation_admission_path, label="existing evaluation admission receipt")
+        else:
+            _ = ensure_evaluation_admission_receipt(
+                repo_root=root,
+                plan_path=tournament_plan_path,
+                lane_id=lane_id,
+                suite_registry_path=suite_registry_path,
+                counterpressure_plan_path=counterpressure_path,
+                break_hypothesis_path=break_hypothesis_path,
+                out_path=evaluation_admission_path,
+            )
     fragility_probe_result_path = (authoritative_root / "fragility_probe_result.json").resolve()
     if not fragility_probe_result_path.is_file():
         fragility_probe_result_path = None
