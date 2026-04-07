@@ -1,54 +1,46 @@
 {
   "canonical_receipt_binding": {
-    "b04_r4_contract_ref": "KT_PROD_CLEANROOM/governance/b04_r4_router_shadow_evaluation_law_contract.json",
-    "b04_r4_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r4_router_shadow_terminal_state.json",
-    "gate_c_exit_authoritative_receipt_path": "C:/Users/rober/AppData/Local/Temp/b03_gate_c_exit_verify_20260328_1029/gate_c_exit_adjudication_authoritative_receipt.json",
-    "gate_d_reanchor_packet_ref": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json"
+    "gate_d_reanchor_packet_ref": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
+    "r5_receipt_ref": "KT_PROD_CLEANROOM/reports/router_vs_best_adapter_proof_ratification_receipt.json",
+    "r5_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_terminal_state.json"
   },
   "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
   "classification_tag": "COUNTING_CLOSURE",
   "current_counted_gate": "Gate D",
-  "current_git_head_binding": "a76fbc10ce44c90764933226d4bf988cf8177b5a",
-  "exact_next_counted_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
-  "execution_mode": "CIVILIZATION_RATIFICATION_ORDER_LOCKED__FIFTH_STEP_ONLY",
-  "execution_readiness": "FIFTH_ORDERED_RATIFICATION_STEP_ONLY",
-  "expected_mutate_paths": [
-    "KT_PROD_CLEANROOM/reports/kt_wave2b_router_selection_receipt.json",
-    "KT_PROD_CLEANROOM/reports/kt_wave2b_router_shadow_eval_matrix.json",
-    "KT_PROD_CLEANROOM/reports/kt_wave2b_route_distribution_health.json",
-    "KT_PROD_CLEANROOM/reports/router_shadow_evaluation_ratification_receipt.json"
-  ],
+  "current_git_head_binding": "1969bb63e99797e2377840ed053504f755ad0f56",
+  "exact_next_counted_workstream_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
+  "execution_mode": "R6_NEXT_IN_ORDER_BLOCKED_PENDING_EARNED_SUPERIORITY__INITIAL_R5_PROOF_COMPLETE",
+  "execution_readiness": "NEXT_IN_ORDER_ONLY_BLOCKED_PENDING_EARNED_SUPERIORITY",
+  "expected_mutate_paths": [],
   "expected_receipts": [
-    "KT_PROD_CLEANROOM/reports/router_shadow_evaluation_ratification_receipt.json",
     "KT_PROD_CLEANROOM/reports/router_vs_best_adapter_proof_ratification_receipt.json"
   ],
   "gate_domain_product_split": {
-    "domain_surface": "Gate D may ratify router-versus-best-adapter proof only after router shadow evaluation is ratified on the promotion-and-merge-bound Cohort-0 substrate.",
-    "gate": "Gate D fifth ordered ratification step only",
+    "domain_surface": "Gate D may not progress to learned-router authorization until router superiority is actually earned.",
+    "gate": "Gate D sixth ordered step remains blocked",
     "product_surface": "NONE_COUNTING"
   },
-  "generated_utc": "2026-04-07T14:39:02Z",
+  "generated_utc": "2026-04-07T16:52:34Z",
   "parent_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
   "pass_fail_criteria": {
     "fail": [
-      "The fifth step widens Gate D beyond router-versus-best-adapter proof.",
-      "The fifth step bypasses shadow-frozen router evidence or the static router control baseline.",
-      "The fifth step implies learned-router authorization, lobe, externality, product, or comparative widening."
+      "R6 is marked executable despite non-earned router superiority.",
+      "B04.R5 static hold is narrated as learned-router authorization or wider scope opening."
     ],
     "pass": [
-      "Router shadow evaluation is freshly ratified on the current head while static canonical router authority remains unchanged.",
-      "Router ordered proof remains bounded against the audited static router baseline and the shadow-frozen router evidence.",
-      "All learned-router authorization, lobe, externality, comparative, and commercial steps remain blocked by order."
+      "B04.R5 remains recorded as executed honestly with static baseline canonical.",
+      "B04.R6 remains next in order only and blocked pending earned superiority.",
+      "All wider scope remains blocked by order."
     ]
   },
   "prerequisite_read": {
-    "cohort0_followthrough_packet": "KT_PROD_CLEANROOM/reports/cohort0_real_engine_tournament_followthrough_packet.json",
-    "cohort0_merge_outcome_binding_receipt": "KT_PROD_CLEANROOM/reports/cohort0_merge_outcome_binding_receipt.json",
-    "cohort0_promotion_outcome_binding_receipt": "KT_PROD_CLEANROOM/reports/cohort0_promotion_outcome_binding_receipt.json",
-    "router_shadow_receipt": "KT_PROD_CLEANROOM/reports/router_shadow_evaluation_ratification_receipt.json"
+    "router_ordered_proof_receipt": "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json",
+    "router_shadow_receipt": "KT_PROD_CLEANROOM/reports/router_shadow_evaluation_ratification_receipt.json",
+    "router_superiority_scorecard": "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
+    "router_vs_best_adapter_proof_receipt": "KT_PROD_CLEANROOM/reports/router_vs_best_adapter_proof_ratification_receipt.json"
   },
   "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
-  "repo_state_executable_now": true,
+  "repo_state_executable_now": false,
   "schema_id": "kt.next_counted_workstream_contract.v1",
   "selected_postures": {
     "D1_EXTERNALITY_WIDENING": "EXTERNALITY_BOUNDED",
@@ -57,21 +49,15 @@
     "D4_COMPARATIVE_COMPETITIVE_CLAIMS": "NO_EXTERNAL_COMPARATIVE_CLAIMS",
     "D5_COMMERCIAL_ACTIVATION": "LAB_ONLY"
   },
-  "source_workstream_id": "B04_R4_ROUTER_SHADOW_EVALUATION_RATIFICATION",
+  "source_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
   "stop_conditions": [
-    "Any learned-router authorization or lobe ratification is folded into the fifth step.",
-    "Any externality widening above E1, external comparative claim, or commercial activation is folded into the fifth step.",
-    "Any router superiority claim is made without the ordered proof chain holding no-regression and fallback boundaries."
+    "Any learned-router authorization is attempted without earned router superiority.",
+    "Any lobe ratification, externality widening, comparative claim, or commercial activation is inferred from B04.R5 static hold.",
+    "Any tracked carrier surface is treated as fresh same-head authority after the proof head moves."
   ],
   "validators_and_tests": {
-    "tests": [
-      "python -m pytest -o addopts='' KT_PROD_CLEANROOM/tests/operator/test_b04_r4_router_shadow_evaluation_ratification_validate.py -q",
-      "python -m pytest -o addopts='' KT_PROD_CLEANROOM/tests/operator/test_router_ordered_proof_validate.py -q"
-    ],
-    "validators": [
-      "python -m tools.operator.router_shadow_evaluation_ratification_validate --allow-tracked-output-refresh",
-      "python -m tools.operator.router_ordered_proof_validate"
-    ]
+    "tests": [],
+    "validators": []
   },
-  "workstream_objective": "Ratify only router-versus-best-adapter ordered proof against the shadow-frozen router evidence and the audited static router baseline on the promotion-and-merge-bound Cohort-0 substrate. Do not execute learned-router authorization, lobe ratification, externality, comparative, or commercial widening in this step."
+  "workstream_objective": "Hold B04.R6 as next in order only. Do not execute learned-router authorization because B04.R5 did not earn router superiority on the current head. Any future router reopening must first earn a lawful superiority result."
 }

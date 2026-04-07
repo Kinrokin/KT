@@ -16,6 +16,7 @@ COPY_REFS = [
     "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_proof_contract.json",
     "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_terminal_state.json",
     "KT_PROD_CLEANROOM/governance/b04_r5_fourth_same_head_rerun_terminal_state.json",
+    "KT_PROD_CLEANROOM/tools/operator/cohort0_router_shadow_state_binding_tranche.py",
     "KT_PROD_CLEANROOM/tools/operator/router_ordered_proof_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/router_vs_best_adapter_proof_ratification_validate.py",
 ]
@@ -34,11 +35,23 @@ def _clean_clone(tmp_path: Path) -> Path:
         dst = clone_root / ref
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(src, dst)
+    env = dict(os.environ)
+    env["PYTHONPATH"] = str(clone_root / "KT_PROD_CLEANROOM") + os.pathsep + str(clone_root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src")
+    env["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
+    subprocess.run(
+        [sys.executable, "-m", "tools.operator.cohort0_router_shadow_state_binding_tranche"],
+        cwd=str(clone_root / "KT_PROD_CLEANROOM"),
+        env=env,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        check=True,
+    )
     return clone_root
 
 
-def test_router_vs_best_adapter_proof_ratification_receipt_holds_honestly_on_current_repo() -> None:
-    root = _repo_root()
+def test_router_vs_best_adapter_proof_ratification_receipt_holds_honestly_on_bound_clone(tmp_path: Path) -> None:
+    root = _clean_clone(tmp_path)
     base = ordered._build_base_reports(root=root)
     shadow_matrix = ordered.build_router_shadow_eval_matrix(root=root, base=base)
     health_report = ordered.build_route_distribution_health(root=root, base=base, shadow_matrix=shadow_matrix)

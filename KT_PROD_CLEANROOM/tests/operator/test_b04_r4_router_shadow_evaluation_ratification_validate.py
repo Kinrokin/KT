@@ -15,6 +15,7 @@ OVERLAY_REFS = [
     "KT_PROD_CLEANROOM/governance/router_promotion_law.json",
     "KT_PROD_CLEANROOM/governance/b04_r4_router_shadow_evaluation_law_contract.json",
     "KT_PROD_CLEANROOM/governance/b04_r4_router_shadow_terminal_state.json",
+    "KT_PROD_CLEANROOM/tools/operator/cohort0_router_shadow_state_binding_tranche.py",
     "KT_PROD_CLEANROOM/tools/operator/router_shadow_evaluation_ratification_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/wave2b_router_shadow_validate.py",
     "KT_PROD_CLEANROOM/tests/operator/test_b04_r4_router_shadow_evaluation_ratification_validate.py",
@@ -39,11 +40,23 @@ def _clean_clone(tmp_path: Path) -> Path:
         dst = clone_root / ref
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(src, dst)
+    env = dict(os.environ)
+    env["PYTHONPATH"] = str(clone_root / "KT_PROD_CLEANROOM") + os.pathsep + str(clone_root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src")
+    env["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
+    subprocess.run(
+        [sys.executable, "-m", "tools.operator.cohort0_router_shadow_state_binding_tranche"],
+        cwd=str(clone_root / "KT_PROD_CLEANROOM"),
+        env=env,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        check=True,
+    )
     return clone_root
 
 
-def test_router_shadow_evaluation_ratification_receipt_passes_on_current_repo(tmp_path: Path) -> None:
-    root = _repo_root()
+def test_router_shadow_evaluation_ratification_receipt_passes_on_bound_clone(tmp_path: Path) -> None:
+    root = _clean_clone(tmp_path)
     telemetry_path = tmp_path / "telemetry.jsonl"
     reports = build_wave2b_shadow_reports(root=root, telemetry_path=telemetry_path)
     receipt = r4.build_router_shadow_evaluation_ratification_receipt(
