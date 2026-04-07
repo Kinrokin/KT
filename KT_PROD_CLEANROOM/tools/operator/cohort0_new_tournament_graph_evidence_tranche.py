@@ -165,25 +165,66 @@ def _build_evidence_packet(
     axis_summary: Dict[str, Any],
 ) -> Dict[str, Any]:
     current_graph_summary = dict(prep_packet.get("current_graph_summary", {}))
-    blockers = [
-        "ALL_SOURCE_EVALS_STUBBED",
-        "GOVERNANCE_AXIS_FLAT_ACROSS_ALL_13_ENTRANTS",
-        "CURRENT_RERUN_WOULD_REPLAY_UTILITY_ONLY_TOTAL_ORDER",
-    ]
-    required_new_graph_evidence = [
-        "Import or emit 13 non-stub schema-bound eval_report artifacts for the same governed entrants.",
-        "Bind 13 matching job_dir_manifest artifacts to those eval reports.",
-        "Ensure at least one evaluation axis beyond utility differs across non-champion entrants without collapsing hard-pass law.",
-        "Rebuild tournament entrant authority on the new eval evidence root before rerunning tournament.",
-        "Only after the rerun, check whether admissible_parent_pair_count rises above 0.",
-    ]
+    source_eval_stub_count = int(axis_summary.get("source_eval_stub_count", 0))
+    metric_probe_agreement_true_count = int(axis_summary.get("metric_probe_agreement_true_count", 0))
+    utility_only_total_order = bool(axis_summary.get("utility_only_total_order"))
+
+    if utility_only_total_order:
+        evidence_posture = "NEW_TOURNAMENT_GRAPH_EVIDENCE_BLOCKED__NON_STUB_EVAL_REPORTS_REQUIRED"
+        blockers = [
+            "ALL_SOURCE_EVALS_STUBBED",
+            "GOVERNANCE_AXIS_FLAT_ACROSS_ALL_13_ENTRANTS",
+            "CURRENT_RERUN_WOULD_REPLAY_UTILITY_ONLY_TOTAL_ORDER",
+        ]
+        current_graph_deadlock_reason = (
+            "The current tournament graph is still sourced from 13 receipt-derived stub eval reports, so "
+            "format_compliance and safety_refusal_integrity are flat at PASS, governance_fidelity is flat at 0, "
+            "and the graph replays as a utility-only total order."
+        )
+        required_new_graph_evidence = [
+            "Import or emit 13 non-stub schema-bound eval_report artifacts for the same governed entrants.",
+            "Bind 13 matching job_dir_manifest artifacts to those eval reports.",
+            "Ensure at least one evaluation axis beyond utility differs across non-champion entrants without collapsing hard-pass law.",
+            "Rebuild tournament entrant authority on the new eval evidence root before rerunning tournament.",
+            "Only after the rerun, check whether admissible_parent_pair_count rises above 0.",
+        ]
+        next_lawful_move = "IMPORT_OR_EMIT_13_NON_STUB_EVAL_REPORTS_AND_RERUN_TOURNAMENT_ON_NEW_GRAPH"
+    elif source_eval_stub_count == 0 and metric_probe_agreement_true_count > 0:
+        evidence_posture = "NEW_TOURNAMENT_GRAPH_EVIDENCE_READY__NON_STUB_SUBSTRATE_EMITTED"
+        blockers = []
+        current_graph_deadlock_reason = (
+            "The entrant substrate is no longer stub-only: all 13 eval reports are non-stub and the "
+            "governance axis is no longer flat at zero, so a new tournament rerun can now test whether "
+            "the prior total-order ceiling has actually been broken."
+        )
+        required_new_graph_evidence = [
+            "Prepare a fresh fragility probe result on the new entrant authority root.",
+            "Execute the tournament rerun on the new graph substrate.",
+            "Then re-check whether total order breaks, admissible_parent_pair_count rises above 0, and merge reentry reopens.",
+        ]
+        next_lawful_move = "PREPARE_FRAGILITY_PROBE_RESULT_AND_EXECUTE_TOURNAMENT_ON_NEW_GRAPH"
+    else:
+        evidence_posture = "NEW_TOURNAMENT_GRAPH_EVIDENCE_BLOCKED__NON_FLAT_GOVERNANCE_AXIS_REQUIRED"
+        blockers = [
+            "NON_STUB_EVALS_PRESENT_BUT_GOVERNANCE_AXIS_STILL_FLAT",
+            "CURRENT_RERUN_WOULD_NOT_TEST_A_STRUCTURALLY_NEW_GRAPH",
+        ]
+        current_graph_deadlock_reason = (
+            "The entrant substrate is no longer fully stubbed, but the current eval surface still does not "
+            "produce a non-flat governance axis, so rerunning tournament now would not test a materially new graph."
+        )
+        required_new_graph_evidence = [
+            "Emit non-stub eval reports whose governance-fidelity probe is non-flat across entrants.",
+            "Rebuild tournament entrant authority on that non-flat eval surface before rerunning tournament.",
+        ]
+        next_lawful_move = "EMIT_NON_FLAT_NON_STUB_EVAL_REPORTS_AND_RERUN_TOURNAMENT_ON_NEW_GRAPH"
 
     return {
         "schema_id": "kt.operator.cohort0_new_tournament_graph_evidence_packet.v1",
         "generated_utc": utc_now_iso_z(),
         "status": "PASS",
         "subject_head": subject_head,
-        "evidence_posture": "NEW_TOURNAMENT_GRAPH_EVIDENCE_BLOCKED__NON_STUB_EVAL_REPORTS_REQUIRED",
+        "evidence_posture": evidence_posture,
         "claim_boundary": (
             "This packet binds only the current new-graph evidence blocker. It does not rerun tournament, "
             "reopen merge, declare router authority, or widen externality/commercial surfaces."
@@ -192,11 +233,7 @@ def _build_evidence_packet(
         "current_eval_axis_summary": {
             k: v for k, v in axis_summary.items() if k != "entries"
         },
-        "current_graph_deadlock_reason": (
-            "The current tournament graph is still sourced from 13 receipt-derived stub eval reports, so "
-            "format_compliance and safety_refusal_integrity are flat at PASS, governance_fidelity is flat at 0, "
-            "and the graph replays as a utility-only total order."
-        ),
+        "current_graph_deadlock_reason": current_graph_deadlock_reason,
         "blockers": blockers,
         "required_new_graph_evidence": required_new_graph_evidence,
         "source_packet_refs": {
@@ -205,7 +242,7 @@ def _build_evidence_packet(
             "adapter_grade_receipt_ref": grade_path.as_posix(),
             "followthrough_packet_ref": followthrough_path.as_posix(),
         },
-        "next_lawful_move": "IMPORT_OR_EMIT_13_NON_STUB_EVAL_REPORTS_AND_RERUN_TOURNAMENT_ON_NEW_GRAPH",
+        "next_lawful_move": next_lawful_move,
     }
 
 
@@ -235,10 +272,14 @@ def _build_updated_followthrough_packet(
     merge_followthrough["new_tournament_graph_evidence_packet_ref"] = evidence_packet_path.as_posix()
     merge_followthrough["new_tournament_graph_evidence_posture"] = str(evidence_packet.get("evidence_posture", "")).strip()
     merge_followthrough["current_graph_reentry_allowed"] = False
+    merge_followthrough["new_graph_rerun_ready"] = str(evidence_packet.get("evidence_posture", "")).strip() == "NEW_TOURNAMENT_GRAPH_EVIDENCE_READY__NON_STUB_SUBSTRATE_EMITTED"
     merge_followthrough["next_lawful_move"] = str(evidence_packet.get("next_lawful_move", "")).strip()
     updated["merge_followthrough"] = merge_followthrough
     updated["new_tournament_graph_evidence_packet_ref"] = evidence_packet_path.as_posix()
-    updated["next_question"] = "Where will the 13 non-stub eval reports come from to support a real new tournament graph rerun?"
+    if merge_followthrough["new_graph_rerun_ready"]:
+        updated["next_question"] = "What does the tournament rerun on the non-stub entrant graph actually earn?"
+    else:
+        updated["next_question"] = "Where will the 13 non-stub eval reports come from to support a real new tournament graph rerun?"
     return updated
 
 
@@ -285,9 +326,6 @@ def run_new_tournament_graph_evidence_tranche(
         followthrough_packet=followthrough_packet,
     )
     axis_summary = _compute_eval_axis_summary(root=root, reexport_contract=reexport_contract)
-    if not bool(axis_summary.get("utility_only_total_order")):
-        raise RuntimeError("FAIL_CLOSED: current entrant evidence does not bind the utility-only total-order blocker")
-
     target_root = authoritative_root.resolve() if authoritative_root is not None else (authoritative_prep_path.parent / "new_tournament_graph_evidence").resolve()
     target_root.mkdir(parents=True, exist_ok=True)
 

@@ -69,6 +69,7 @@ def _mk_eval_report_v2(*, job_id: str, adapter_id: str, adapter_version: str, ut
             "trace_id": "t" * 64,
             "trace_hash": "t" * 64,
             "metric_probe_agreement": True,
+            "source_eval_stub": False,
         },
         "final_verdict": "PASS",
         "created_at": created_at,
@@ -212,3 +213,4 @@ def test_cohort0_tournament_admission_prep_tranche_emits_admission_when_eval_rep
         assert (runner_dir / "eval_report.json").is_file()
         assert (runner_dir / "job_dir_manifest.json").is_file()
     assert reexport_contract["entries"][0]["eval_report_derivation_mode"] == "IMPORTED_SOURCE_EVAL_REPORT_V2"
+    assert reexport_contract["entries"][0]["source_eval_stub"] is False

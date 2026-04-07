@@ -327,6 +327,13 @@ def _reexport_job_dir_manifest(*, eval_report: Dict[str, Any], eval_report_path:
     return manifest
 
 
+def _eval_report_source_stub(*, eval_report: Dict[str, Any], fallback: bool) -> bool:
+    results = eval_report.get("results") if isinstance(eval_report.get("results"), dict) else {}
+    if isinstance(results, dict) and "source_eval_stub" in results:
+        return bool(results.get("source_eval_stub"))
+    return bool(fallback)
+
+
 def _build_break_hypothesis(*, base_model_id: str, suite_id: str) -> Dict[str, Any]:
     obj = {
         "schema_id": "kt.break_hypothesis.v1",
@@ -705,6 +712,7 @@ def run_tournament_prep_tranche(
             reexported_eval_ref = eval_report_path.as_posix()
             entrant_eval_ref = reexported_eval_ref
             eval_report_derivation_mode = "REEXPORTED_FROM_ADAPTER_EVAL_RECEIPT"
+        eval_source_stub = _eval_report_source_stub(eval_report=eval_obj, fallback=bool(entry.get("source_eval_stub")))
 
         train_manifest = _reexport_train_manifest(training_receipt=training_receipt, artifact_path=imported_bundle_path, out_path=train_manifest_path)
         reexported_job_dir_ref = ""
@@ -760,7 +768,7 @@ def run_tournament_prep_tranche(
                 "tournament_entrant_runner_dir_ref": tournament_entrant_runner_dir_ref,
                 "tournament_entrant_eval_report_ref": tournament_entrant_eval_report_ref,
                 "tournament_entrant_job_dir_manifest_ref": tournament_entrant_job_dir_manifest_ref,
-                "source_eval_stub": bool(entry.get("source_eval_stub")),
+                "source_eval_stub": eval_source_stub,
                 "missing_for_tournament_entry": missing_for_entry,
             }
         )
