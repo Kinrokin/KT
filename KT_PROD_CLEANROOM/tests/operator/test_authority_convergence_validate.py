@@ -361,3 +361,96 @@ def test_authority_convergence_passes_with_local_ledger_proof_when_legacy_public
     assert report["published_head_authority_claimed"] is False
     assert report["current_head_authority_claimed"] is False
     assert "ledger_pointer_matches_truth_subject" not in report["failures"]
+
+
+def test_authority_convergence_passes_with_local_ledger_proof_when_tracked_stabilization_rebinds_current_head(tmp_path: Path) -> None:
+    _init_repo_with_remote(tmp_path)
+    _seed_ws9_surfaces(tmp_path, truth_subject="b" * 40, evidence_commit="a" * 40)
+    _git_call(tmp_path, "add", ".")
+    _git_call(tmp_path, "commit", "-m", "seed ws9")
+    _git_call(tmp_path, "push", "-u", "origin", "main")
+    _git_call(tmp_path, "push", "origin", "HEAD:refs/heads/kt_truth_ledger")
+    _git_call(tmp_path, "fetch", "origin", "kt_truth_ledger")
+
+    current_head = _git(tmp_path, "rev-parse", "HEAD")
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM" / "reports" / "settled_truth_source_receipt.json",
+        {
+            "schema_id": "kt.operator.settled_truth_source_receipt.v1",
+            "status": "SETTLED_AUTHORITATIVE",
+            "pinned_head_sha": current_head,
+            "derived_posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+            "current_head_truth_source": "KT_PROD_CLEANROOM/reports/live_validation_index.json",
+            "head_relation": "HEAD_DIVERGED_FROM_ACTIVE_SUBJECT",
+        },
+    )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM" / "reports" / "cryptographic_publication" / "authority_subject.json",
+        {
+            "schema_id": "kt.authority.subject.v1",
+            "truth_subject_commit": "c" * 40,
+            "truth_produced_at_commit": "c" * 40,
+        },
+    )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM" / "reports" / "kt_truth_publication_stabilization_receipt.json",
+        {
+            "schema_id": "kt.operator.truth_publication_stabilization_receipt.v2",
+            "status": "PASS",
+            "truth_publication_stabilized": True,
+            "truth_subject_commit": "c" * 40,
+        },
+    )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM" / "reports" / "public_verifier_manifest.json",
+        {
+            "schema_id": "kt.public_verifier_manifest.v4",
+            "status": "HOLD",
+            "evidence_commit": "a" * 40,
+            "truth_subject_commit": "c" * 40,
+            "subject_verdict": SUBJECT_VERDICT_PROVEN,
+            "publication_receipt_status": "PASS",
+            "evidence_contains_subject": True,
+            "evidence_equals_subject": False,
+            "claim_boundary": "evidence and subject are distinct",
+            "platform_governance_subject_commit": "c" * 40,
+            "platform_governance_verdict": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED",
+            "platform_governance_claim_admissible": False,
+            "workflow_governance_status": "PASS_WITH_PLATFORM_BLOCK",
+            "branch_protection_status": "BLOCKED",
+            "platform_governance_claim_boundary": "workflow governance only",
+            "enterprise_legitimacy_ceiling": "WORKFLOW_GOVERNANCE_ONLY",
+            "platform_governance_receipt_refs": [
+                "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json",
+                "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
+            ],
+            "publication_evidence_refs": [
+                "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+                "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_subject.json",
+            ],
+        },
+    )
+    _write_json(
+        tmp_path / "KT_PROD_CLEANROOM" / "reports" / "truth_publication_stabilization_receipt.json",
+        {
+            "schema_id": "kt.operator.truth_publication_stabilization_receipt.v1",
+            "status": "HOLD",
+            "authority_mode": "SETTLED_AUTHORITATIVE",
+            "posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+            "board_transition_ready": False,
+            "truth_subject_commit": current_head,
+            "truth_produced_at_commit": current_head,
+        },
+    )
+
+    report = build_authority_convergence_report(root=tmp_path)
+    assert report["status"] == "PASS"
+    assert report["proof_class"] == "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY"
+    assert report["published_head_authority_claimed"] is False
+    assert report["current_head_authority_claimed"] is False
+    checks = {row["check"]: row["status"] for row in report["checks"]}
+    assert checks["tracked_publication_stabilization_subject_matches_active_truth"] == "WARN"
+    assert checks["tracked_publication_stabilization_supports_active_truth"] == "WARN"
+    assert checks["tracked_publication_stabilization_subject_matches_local_ledger_head"] == "PASS"
+    assert checks["tracked_publication_stabilization_supports_local_ledger_head"] == "PASS"
+    assert checks["settled_truth_source_pins_current_head_for_local_ledger_transition"] == "PASS"

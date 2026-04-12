@@ -42,6 +42,7 @@ DOCUMENTARY_VALIDATION_REL = "KT_PROD_CLEANROOM/reports/documentary_truth_valida
 PUBLIC_VERIFIER_MANIFEST_REL = "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
 LEGACY_TRUTH_PUBLICATION_STABILIZATION_REL = "KT_PROD_CLEANROOM/reports/kt_truth_publication_stabilization_receipt.json"
 TRACKED_TRUTH_PUBLICATION_STABILIZATION_REL = "KT_PROD_CLEANROOM/reports/truth_publication_stabilization_receipt.json"
+SETTLED_TRUTH_SOURCE_REL = "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json"
 # Backward-compatible alias for older reporting surfaces that still target the
 # published-head stabilization receipt specifically.
 TRUTH_PUBLICATION_STABILIZATION_REL = LEGACY_TRUTH_PUBLICATION_STABILIZATION_REL
@@ -145,6 +146,42 @@ def _documentary_only(payload: Dict[str, Any]) -> bool:
     )
 
 
+def _local_ledger_transition_support(
+    *,
+    settled_truth_source: Dict[str, Any],
+    tracked_stabilization: Dict[str, Any],
+    current_head_commit: str,
+    active_truth_subject_commit: str,
+) -> Dict[str, Any]:
+    pinned_head = str(settled_truth_source.get("pinned_head_sha", "")).strip()
+    derived_posture = str(settled_truth_source.get("derived_posture_state", "")).strip()
+    current_head_truth_source = str(settled_truth_source.get("current_head_truth_source", "")).strip()
+    head_relation = str(settled_truth_source.get("head_relation", "")).strip()
+    tracked_subject = _subject_from(tracked_stabilization)
+    tracked_supports_local_head = _tracked_stabilization_supports_active_subject(
+        payload=tracked_stabilization,
+        active_subject=pinned_head,
+        active_posture=derived_posture,
+    )
+    transition_active = (
+        str(settled_truth_source.get("status", "")).strip() == "SETTLED_AUTHORITATIVE"
+        and bool(pinned_head)
+        and pinned_head == current_head_commit
+        and pinned_head != active_truth_subject_commit
+        and current_head_truth_source == "KT_PROD_CLEANROOM/reports/live_validation_index.json"
+        and head_relation in {"HEAD_DIVERGED_FROM_ACTIVE_SUBJECT", "PUBLICATION_CARRIER_OF_VALIDATED_SUBJECT"}
+    )
+    return {
+        "transition_active": transition_active,
+        "pinned_head": pinned_head,
+        "derived_posture": derived_posture,
+        "head_relation": head_relation,
+        "tracked_subject": tracked_subject,
+        "tracked_supports_local_head": tracked_supports_local_head,
+        "tracked_subject_matches_local_head": bool(pinned_head) and tracked_subject == pinned_head,
+    }
+
+
 def _supporting_ref(surfaces: Sequence[str], suffix: str, fallback: str) -> str:
     for surface in surfaces:
         if str(surface).strip().endswith(suffix):
@@ -164,6 +201,7 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
     documentary_validation = build_documentary_truth_report(root=root)
     tracked_stabilization = _load_optional_json(root / TRACKED_TRUTH_PUBLICATION_STABILIZATION_REL)
     legacy_stabilization = _load_optional_json(root / LEGACY_TRUTH_PUBLICATION_STABILIZATION_REL)
+    settled_truth_source = _load_optional_json(root / SETTLED_TRUTH_SOURCE_REL)
     crypto_publication = _load_json(root / CRYPTO_PUBLICATION_RECEIPT_REL)
     authority_subject = _load_optional_json(root / AUTHORITY_SUBJECT_REL)
     verifier_manifest = _load_optional_json(root / PUBLIC_VERIFIER_MANIFEST_REL)
@@ -189,6 +227,12 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
         payload=tracked_stabilization,
         active_subject=truth_subject_commit,
         active_posture=ledger_pointer_posture,
+    )
+    local_ledger_support = _local_ledger_transition_support(
+        settled_truth_source=settled_truth_source,
+        tracked_stabilization=tracked_stabilization,
+        current_head_commit=current_head_commit,
+        active_truth_subject_commit=truth_subject_commit,
     )
     legacy_truth_subject_commit = _subject_from(authority_subject)
     verifier_truth_subject_commit = str(verifier_manifest.get("truth_subject_commit", "")).strip()
@@ -231,6 +275,11 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
         "tracked_truth_publication_stabilized": bool(tracked_stabilization.get("board_transition_ready"))
         or bool(tracked_stabilization_ok),
         "tracked_stabilization_truth_subject_commit": _subject_from(tracked_stabilization),
+        "settled_truth_source_status": str(settled_truth_source.get("status", "")).strip(),
+        "settled_truth_source_pinned_head_sha": str(settled_truth_source.get("pinned_head_sha", "")).strip(),
+        "settled_truth_source_current_head_truth_source": str(settled_truth_source.get("current_head_truth_source", "")).strip(),
+        "settled_truth_source_head_relation": str(settled_truth_source.get("head_relation", "")).strip(),
+        "local_ledger_transition_active": bool(local_ledger_support["transition_active"]),
         "legacy_stabilization_status": str(legacy_stabilization.get("status", "")).strip(),
         "legacy_truth_publication_stabilized": bool(legacy_stabilization.get("truth_publication_stabilized")),
         "legacy_stabilization_truth_subject_commit": _subject_from(legacy_stabilization),
@@ -289,12 +338,67 @@ def build_authority_convergence_report(*, root: Path) -> Dict[str, Any]:
     )
     expect_true("ledger_branch_published", observed["ledger_branch_published"], remote_error=str(remote_fact.get("error", "")).strip())
     expect_equal("active_truth_subject_present", truth_subject_commit, truth_subject_commit)
-    expect_equal("tracked_publication_stabilization_subject_matches_active_truth", observed["tracked_stabilization_truth_subject_commit"], truth_subject_commit)
-    expect_true(
-        "tracked_publication_stabilization_supports_active_truth",
-        tracked_stabilization_ok,
-        tracked_status=observed["tracked_stabilization_status"],
-        tracked_posture=str(tracked_stabilization.get("posture_state", "")).strip(),
+    tracked_subject_matches_active_truth = observed["tracked_stabilization_truth_subject_commit"] == truth_subject_commit
+    tracked_subject_check_status = (
+        "PASS"
+        if tracked_subject_matches_active_truth
+        else "WARN" if local_ledger_support["transition_active"] and local_ledger_support["tracked_subject_matches_local_head"] else "FAIL"
+    )
+    checks.append(
+        {
+            "check": "tracked_publication_stabilization_subject_matches_active_truth",
+            "actual": observed["tracked_stabilization_truth_subject_commit"],
+            "expected": truth_subject_commit,
+            "status": tracked_subject_check_status,
+        }
+    )
+    if tracked_subject_check_status == "FAIL":
+        failures.append("tracked_publication_stabilization_subject_matches_active_truth")
+    tracked_support_check_status = (
+        "PASS"
+        if tracked_stabilization_ok
+        else "WARN" if local_ledger_support["transition_active"] and local_ledger_support["tracked_supports_local_head"] else "FAIL"
+    )
+    checks.append(
+        {
+            "check": "tracked_publication_stabilization_supports_active_truth",
+            "actual": bool(tracked_stabilization_ok),
+            "status": tracked_support_check_status,
+            "tracked_status": observed["tracked_stabilization_status"],
+            "tracked_posture": str(tracked_stabilization.get("posture_state", "")).strip(),
+        }
+    )
+    if tracked_support_check_status == "FAIL":
+        failures.append("tracked_publication_stabilization_supports_active_truth")
+    checks.append(
+        {
+            "check": "tracked_publication_stabilization_subject_matches_local_ledger_head",
+            "actual": local_ledger_support["tracked_subject"],
+            "expected": local_ledger_support["pinned_head"],
+            "status": "PASS"
+            if local_ledger_support["transition_active"] and local_ledger_support["tracked_subject_matches_local_head"]
+            else "WARN",
+        }
+    )
+    checks.append(
+        {
+            "check": "tracked_publication_stabilization_supports_local_ledger_head",
+            "actual": bool(local_ledger_support["tracked_supports_local_head"]),
+            "status": "PASS"
+            if local_ledger_support["transition_active"] and local_ledger_support["tracked_supports_local_head"]
+            else "WARN",
+            "tracked_status": observed["tracked_stabilization_status"],
+            "tracked_posture": str(tracked_stabilization.get("posture_state", "")).strip(),
+        }
+    )
+    checks.append(
+        {
+            "check": "settled_truth_source_pins_current_head_for_local_ledger_transition",
+            "actual": local_ledger_support["pinned_head"],
+            "expected": current_head_commit,
+            "status": "PASS" if local_ledger_support["transition_active"] else "WARN",
+            "head_relation": local_ledger_support["head_relation"],
+        }
     )
     expect_equal("ledger_pointer_matches_truth_subject", observed["ledger_pointer_head"], truth_subject_commit)
     expect_equal("ledger_current_state_matches_truth_subject", observed["ledger_current_state_head"], truth_subject_commit)
