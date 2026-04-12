@@ -195,6 +195,8 @@ def run_promotion_merge_followthrough_tranche(
     execution_report_path: Path,
     authoritative_root: Optional[Path],
     reports_root: Path,
+    import_report_path: Optional[Path] = None,
+    grade_report_path: Optional[Path] = None,
     workspace_root: Optional[Path] = None,
 ) -> Dict[str, Dict[str, Any]]:
     root = (workspace_root or repo_root()).resolve()
@@ -204,8 +206,16 @@ def run_promotion_merge_followthrough_tranche(
         "authoritative_tournament_execution_receipt_ref",
         "cohort0 tournament execution receipt",
     )
-    import_report_path = _resolve_path(root, DEFAULT_IMPORT_REPORT_REL)
-    grade_report_path = _resolve_path(root, DEFAULT_GRADE_REPORT_REL)
+    import_report_path = (
+        import_report_path.resolve()
+        if import_report_path is not None
+        else _resolve_path(root, DEFAULT_IMPORT_REPORT_REL)
+    )
+    grade_report_path = (
+        grade_report_path.resolve()
+        if grade_report_path is not None
+        else _resolve_path(root, DEFAULT_GRADE_REPORT_REL)
+    )
     authoritative_import_receipt_path, import_receipt = _resolve_authoritative(
         root, import_report_path, "authoritative_import_receipt_ref", "cohort0 import receipt"
     )
@@ -290,6 +300,16 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
         default="KT_PROD_CLEANROOM/reports",
         help="Tracked carrier report root. Default: KT_PROD_CLEANROOM/reports",
     )
+    ap.add_argument(
+        "--import-report",
+        default="",
+        help="Optional import report override. Default: tracked Cohort-0 import report.",
+    )
+    ap.add_argument(
+        "--grade-report",
+        default="",
+        help="Optional grade report override. Default: tracked Cohort-0 grade report.",
+    )
     return ap.parse_args(argv)
 
 
@@ -303,6 +323,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         execution_report_path=execution_report_path,
         authoritative_root=authoritative_root,
         reports_root=reports_root,
+        import_report_path=_resolve_path(root, str(args.import_report)) if str(args.import_report).strip() else None,
+        grade_report_path=_resolve_path(root, str(args.grade_report)) if str(args.grade_report).strip() else None,
         workspace_root=root,
     )
     promotion = payload["promotion_candidate_receipt"]
