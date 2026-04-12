@@ -1,0 +1,120 @@
+{
+  "authoritative_pairwise_transfer_candidate_report_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_pairwise_transfer_candidate_live/pairwise_transfer_candidate_report.json",
+  "carrier_surface_role": "TRACKED_CARRIER_ONLY_PAIRWISE_TRANSFER_CANDIDATE_REPORT",
+  "claim_boundary": "This report digests pairwise lab results into hard transfer and hold decisions. The counted lane remains closed until a later ordered augmentation tranche runs.",
+  "controls_preserved": true,
+  "current_git_head": "689e41864871685b622bf6b04a869b56f7b7c8a6",
+  "generated_utc": "2026-04-12T21:52:32Z",
+  "lab_hold_family_ids": [
+    "P2_SIGNAL_NOISE_SEPARATION",
+    "SCOUT_SPARSE_SEARCH"
+  ],
+  "ready_family_ids": [
+    "STRATEGIST_CONSEQUENCE_CHAIN",
+    "AUDITOR_ADMISSIBILITY_FAIL_CLOSED",
+    "BETA_SECOND_ORDER_REFRAME"
+  ],
+  "rows": [
+    {
+      "alpha_liability_delta_vs_single_axis": 0,
+      "control_family": false,
+      "counts_as_counted_progress_now": false,
+      "disposition": "KEEP_IN_LAB_MORE_SHARPENING",
+      "family_id": "P2_SIGNAL_NOISE_SEPARATION",
+      "net_route_value_score": 0.258,
+      "pairwise_verdict": "PAIRWISE_SHARPENED_FURTHER__STILL_LAB_ONLY",
+      "phase_transition_detected": true,
+      "route_delta_delta_vs_single_axis": 1,
+      "target_lobe_id": "lobe.p2.v1",
+      "transition_level_id": "L3",
+      "wedge_delta_vs_single_axis": 1
+    },
+    {
+      "alpha_liability_delta_vs_single_axis": 0,
+      "control_family": false,
+      "counts_as_counted_progress_now": false,
+      "disposition": "PROMOTE_TO_COUNTED_LANE_AUGMENTATION",
+      "family_id": "STRATEGIST_CONSEQUENCE_CHAIN",
+      "net_route_value_score": 0.48,
+      "pairwise_verdict": "PAIRWISE_SHARPENED_AND_TRANSFER_ELIGIBLE",
+      "phase_transition_detected": true,
+      "route_delta_delta_vs_single_axis": 1,
+      "target_lobe_id": "lobe.strategist.v1",
+      "transition_level_id": "L2",
+      "wedge_delta_vs_single_axis": 1
+    },
+    {
+      "alpha_liability_delta_vs_single_axis": 0,
+      "control_family": false,
+      "counts_as_counted_progress_now": false,
+      "disposition": "KEEP_IN_LAB_NO_VALUE",
+      "family_id": "SCOUT_SPARSE_SEARCH",
+      "net_route_value_score": 0.23,
+      "pairwise_verdict": "PAIRWISE_ADDED_NO_VALUE_OVER_SINGLE_AXIS",
+      "phase_transition_detected": true,
+      "route_delta_delta_vs_single_axis": 0,
+      "target_lobe_id": "lobe.scout.v1",
+      "transition_level_id": "L3",
+      "wedge_delta_vs_single_axis": 0
+    },
+    {
+      "alpha_liability_delta_vs_single_axis": 1,
+      "control_family": false,
+      "counts_as_counted_progress_now": false,
+      "disposition": "PROMOTE_TO_COUNTED_LANE_AUGMENTATION",
+      "family_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED",
+      "net_route_value_score": 0.394,
+      "pairwise_verdict": "PAIRWISE_SHARPENED_AND_TRANSFER_ELIGIBLE",
+      "phase_transition_detected": true,
+      "route_delta_delta_vs_single_axis": 2,
+      "target_lobe_id": "lobe.auditor.v1",
+      "transition_level_id": "L2",
+      "wedge_delta_vs_single_axis": 4
+    },
+    {
+      "alpha_liability_delta_vs_single_axis": 1,
+      "control_family": false,
+      "counts_as_counted_progress_now": false,
+      "disposition": "PROMOTE_TO_COUNTED_LANE_AUGMENTATION",
+      "family_id": "BETA_SECOND_ORDER_REFRAME",
+      "net_route_value_score": 0.34,
+      "pairwise_verdict": "PAIRWISE_SHARPENED_AND_TRANSFER_ELIGIBLE",
+      "phase_transition_detected": true,
+      "route_delta_delta_vs_single_axis": 2,
+      "target_lobe_id": "lobe.beta.v1",
+      "transition_level_id": "L3",
+      "wedge_delta_vs_single_axis": 2
+    },
+    {
+      "alpha_liability_delta_vs_single_axis": 0,
+      "control_family": true,
+      "counts_as_counted_progress_now": false,
+      "disposition": "PRESERVE_CONTROL",
+      "family_id": "BOUNDARY_ABSTENTION_CONTROL",
+      "net_route_value_score": 0.0,
+      "pairwise_verdict": "CONTROL_PRESERVED",
+      "phase_transition_detected": false,
+      "route_delta_delta_vs_single_axis": 0,
+      "target_lobe_id": "",
+      "transition_level_id": "",
+      "wedge_delta_vs_single_axis": 0
+    },
+    {
+      "alpha_liability_delta_vs_single_axis": 0,
+      "control_family": true,
+      "counts_as_counted_progress_now": false,
+      "disposition": "PRESERVE_CONTROL",
+      "family_id": "STATIC_NO_ROUTE_CONTROL",
+      "net_route_value_score": 0.0,
+      "pairwise_verdict": "CONTROL_PRESERVED",
+      "phase_transition_detected": false,
+      "route_delta_delta_vs_single_axis": 0,
+      "target_lobe_id": "lobe.alpha.v1",
+      "transition_level_id": "",
+      "wedge_delta_vs_single_axis": 0
+    }
+  ],
+  "schema_id": "kt.operator.pairwise_transfer_candidate_report.v1",
+  "status": "PASS",
+  "subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91"
+}
