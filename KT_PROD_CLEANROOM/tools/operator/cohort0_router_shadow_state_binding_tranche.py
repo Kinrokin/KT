@@ -59,6 +59,20 @@ def _append_unique(items: List[str], extra: str) -> None:
         items.append(candidate)
 
 
+def _resolve_subject_head(*, current_head: str, receipts: Dict[str, Dict[str, Any]]) -> str:
+    subject_heads = {
+        str(packet.get("subject_head", "")).strip()
+        for packet in receipts.values()
+        if isinstance(packet, dict) and str(packet.get("subject_head", "")).strip()
+    }
+    if not subject_heads:
+        raise RuntimeError("FAIL_CLOSED: router-shadow state binding could not resolve any subject head")
+    if len(subject_heads) != 1:
+        raise RuntimeError("FAIL_CLOSED: router-shadow state binding requires one consistent subject head")
+    subject_head = next(iter(subject_heads))
+    return subject_head
+
+
 def _authority_refs(*, root: Path, tracked_receipts: Dict[str, Tuple[Path, Dict[str, Any]]]) -> List[str]:
     refs: List[str] = []
     for _, (path, _) in tracked_receipts.items():
@@ -70,6 +84,7 @@ def _build_overlay(
     *,
     current_overlay: Dict[str, Any],
     current_head: str,
+    subject_head: str,
     tracked_receipts: Dict[str, Tuple[Path, Dict[str, Any]]],
 ) -> Dict[str, Any]:
     overlay = dict(current_overlay)
@@ -117,14 +132,20 @@ def _build_overlay(
         "authoritative_basis": [
             "Gate C exit remains authoritative only on sealed head 71268f2f7489aadec338d5e71bb5b70f8a7fe9dc.",
             "Gate D postures remain D1 bounded, D2 controlled counted-domain expansion, D3 adapter evolution authorized, D4 no external comparative claims, and D5 lab-only.",
-            "Imported Cohort-0 real-engine adapter evidence is now strong Gate D adapter evidence on subject head 2fad8817604e56fe3c291bd5f51734acb519a789.",
-            "The imported Cohort-0 entrant set cleared tournament admission, fragility, tournament execution, merge reentry, bounded child evaluation, and promotion/merge outcome binding without opening router authority or any wider scope.",
+            f"Imported Cohort-0 real-engine adapter evidence is now strong Gate D adapter evidence on subject head {subject_head}.",
+            "The imported current-head Cohort-0 entrant set cleared tournament admission, fragility, tournament execution, merge reentry, bounded child evaluation, and promotion/merge outcome binding without opening router authority or any wider scope.",
             "B04.R4 now ratifies explainable, replayable router shadow evaluation against the audited static router baseline on that promotion-and-merge-bound substrate while keeping learned-router cutover and lobe promotion blocked.",
         ],
     }
     overlay["state_reconciliation"] = {
-        "latest_sealed_receipts_current_state": "Gate C is exited. Gate D remains bounded and ordered. On the imported Cohort-0 real-engine substrate, adapter, tournament, and merge outcomes are now bound, and the next lawful counted move is router shadow evaluation ratification only.",
-        "documentary_surface_state_on_main": "Tracked Gate D receipts on main remain carrier surfaces whenever subject_head differs from the sealed head, including the newly imported Cohort-0 adapter/tournament/merge family.",
+        "latest_sealed_receipts_current_state": (
+            "Gate C is exited. Gate D remains bounded and ordered. On the imported current-head Cohort-0 substrate, "
+            "adapter, tournament, and merge outcomes are now bound, and the next lawful counted move is router shadow evaluation ratification only."
+        ),
+        "documentary_surface_state_on_main": (
+            "Tracked Gate D receipts on main remain carrier surfaces whenever subject_head differs from the sealed head, "
+            "including the newly imported current-head Cohort-0 adapter/tournament/merge family."
+        ),
         "reanchor_decision": "Proceed only to B04.R5 after B04.R4 router-shadow evaluation is freshly ratified on the current head. Do not treat the bound promotion/merge outcome as router superiority, learned-router authorization, or Gate E/F widening.",
     }
     overlay["next_counted_workstream_id"] = NEXT_STEP_ID
@@ -256,7 +277,7 @@ def _build_resume(*, current_head: str) -> Dict[str, Any]:
     }
 
 
-def _build_reanchor(*, current_head: str) -> Dict[str, Any]:
+def _build_reanchor(*, current_head: str, subject_head: str) -> Dict[str, Any]:
     return {
         "schema_id": "kt.gate_d.decision_reanchor_packet.v1",
         "classification_tag": "COUNTING_CLOSURE",
@@ -292,7 +313,12 @@ def _build_reanchor(*, current_head: str) -> Dict[str, Any]:
             "router_status": "STATIC_CANONICAL_BASELINE_ONLY",
             "gate_d_decision_selected": True,
             "gate_d_activation_authorized": True,
-            "note": "Gate D launch remains bounded. On the imported Cohort-0 substrate, adapter, tournament, promotion, and merge outcomes are now bound; router shadow evaluation is the only active counted next move while static router authority remains canonical and learned-router cutover, lobes, externality, comparative, and commercial widening remain blocked.",
+            "note": (
+                f"Gate D launch remains bounded. On the imported Cohort-0 substrate for subject head {subject_head}, "
+                "adapter, tournament, promotion, and merge outcomes are now bound; router shadow evaluation is the only active "
+                "counted next move while static router authority remains canonical and learned-router cutover, lobes, externality, "
+                "comparative, and commercial widening remain blocked."
+            ),
         },
         "explicit_not_authorized": [
             "frontier claim",
@@ -320,7 +346,7 @@ def _build_reanchor(*, current_head: str) -> Dict[str, Any]:
                 "D1 stays EXTERNALITY_BOUNDED until Gate E.",
                 "D2 remains one controlled counted-domain expansion inside the single Gate D civilization lane only.",
                 "D3 remains adapter evolution authorized.",
-                "The imported Cohort-0 real-engine substrate now has strong adapter evidence, executed tournament, reopened merge reentry, and bound promotion/merge outcomes.",
+                f"The imported Cohort-0 real-engine substrate for subject head {subject_head} now has strong adapter evidence, executed tournament, reopened merge reentry, and bound promotion/merge outcomes.",
                 "R4 binds explainable, replayable shadow routing against the audited static router baseline while keeping canonical router authority unchanged and learned-router cutover blocked.",
             ],
             "forbidden_prejudgments": [
@@ -338,6 +364,7 @@ def _build_reanchor(*, current_head: str) -> Dict[str, Any]:
 def _build_binding_receipt(
     *,
     current_head: str,
+    subject_head: str,
     authoritative_followthrough_path: Path,
     authoritative_promotion_outcome_path: Path,
     authoritative_merge_outcome_path: Path,
@@ -347,7 +374,7 @@ def _build_binding_receipt(
         "generated_utc": utc_now_iso_z(),
         "status": "PASS",
         "current_git_head": current_head,
-        "subject_head": "2fad8817604e56fe3c291bd5f51734acb519a789",
+        "subject_head": subject_head,
         "binding_posture": "PROMOTION_AND_MERGE_OUTCOME_BOUND__R4_CURRENT_HEAD_STATE_SURFACES_READY",
         "claim_boundary": "This receipt binds only the tracked current-state surfaces needed to lawfully refresh B04.R4 router-shadow ratification after bounded promotion and merge outcomes were earned on the imported Cohort-0 substrate. It does not itself ratify router superiority, learned-router cutover, lobes, externality widening, comparative claims, or commercial activation.",
         "source_followthrough_packet_ref": authoritative_followthrough_path.as_posix(),
@@ -412,18 +439,29 @@ def run_router_shadow_state_binding_tranche(
         tracked_receipts[label] = _resolve_authoritative(root, tracked_path, field, label)
 
     current_head = _git_head(root)
+    subject_head = _resolve_subject_head(
+        current_head=current_head,
+        receipts={
+            "followthrough": followthrough,
+            "promotion_outcome": promotion_outcome,
+            "merge_outcome": merge_outcome,
+            "import": tracked_receipts["import"][1],
+        },
+    )
     current_overlay = _load_json_required(current_overlay_path, label="current campaign state overlay")
 
     overlay = _build_overlay(
         current_overlay=current_overlay,
         current_head=current_head,
+        subject_head=subject_head,
         tracked_receipts=tracked_receipts,
     )
     next_contract = _build_next_contract(current_head=current_head)
     resume = _build_resume(current_head=current_head)
-    reanchor = _build_reanchor(current_head=current_head)
+    reanchor = _build_reanchor(current_head=current_head, subject_head=subject_head)
     binding_receipt = _build_binding_receipt(
         current_head=current_head,
+        subject_head=subject_head,
         authoritative_followthrough_path=authoritative_followthrough_path,
         authoritative_promotion_outcome_path=authoritative_promotion_outcome_path,
         authoritative_merge_outcome_path=authoritative_merge_outcome_path,

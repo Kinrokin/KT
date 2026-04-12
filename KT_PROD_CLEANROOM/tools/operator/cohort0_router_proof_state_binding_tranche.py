@@ -51,10 +51,25 @@ def _append_unique(items: list[str], extra: str) -> None:
         items.append(candidate)
 
 
+def _resolve_subject_head(*, current_head: str, proof_receipt: Dict[str, Any], followthrough: Dict[str, Any]) -> str:
+    subject_heads = {
+        str(packet.get("subject_head", "")).strip()
+        for packet in (proof_receipt, followthrough)
+        if isinstance(packet, dict) and str(packet.get("subject_head", "")).strip()
+    }
+    if not subject_heads:
+        raise RuntimeError("FAIL_CLOSED: router-proof state binding could not resolve any subject head")
+    if len(subject_heads) != 1:
+        raise RuntimeError("FAIL_CLOSED: router-proof state binding requires one consistent subject head")
+    subject_head = next(iter(subject_heads))
+    return subject_head
+
+
 def _build_overlay(
     *,
     current_overlay: Dict[str, Any],
     current_head: str,
+    subject_head: str,
 ) -> Dict[str, Any]:
     overlay = dict(current_overlay)
     authority_stack = dict(overlay.get("authority_stack", {}))
@@ -80,8 +95,8 @@ def _build_overlay(
     standing["authoritative_basis"] = [
         "Gate C exit remains authoritative only on sealed head 71268f2f7489aadec338d5e71bb5b70f8a7fe9dc.",
         "Gate D postures remain D1 bounded, D2 controlled counted-domain expansion, D3 adapter evolution authorized, D4 no external comparative claims, and D5 lab-only.",
-        "Imported Cohort-0 real-engine adapter evidence remains strong Gate D adapter evidence on subject head 2fad8817604e56fe3c291bd5f51734acb519a789.",
-        "The imported Cohort-0 entrant set cleared tournament admission, fragility, tournament execution, merge reentry, bounded child evaluation, and promotion/merge outcome binding without opening router authority or wider scope.",
+        f"Imported Cohort-0 real-engine adapter evidence remains strong Gate D adapter evidence on subject head {subject_head}.",
+        "The imported current-head Cohort-0 entrant set cleared tournament admission, fragility, tournament execution, merge reentry, bounded child evaluation, and promotion/merge outcome binding without opening router authority or wider scope.",
         "B04.R5 now ratifies same-head router-versus-best-adapter ordered proof on the current head and holds static canonical baseline authority because router superiority was not earned.",
     ]
     overlay["current_lawful_gate_standing"] = standing
@@ -95,8 +110,14 @@ def _build_overlay(
         "worktree_cleanliness": "CLEAN_CURRENT_HEAD",
     }
     overlay["state_reconciliation"] = {
-        "latest_sealed_receipts_current_state": "Gate C is exited. Gate D remains bounded and ordered. On the imported Cohort-0 real-engine substrate, router-versus-best-adapter proof was freshly ratified on the current head and held static baseline canonical.",
-        "documentary_surface_state_on_main": "Tracked Gate D router proof receipts on main remain carrier surfaces whenever subject_head differs from the sealed head, including the imported Cohort-0 adapter, tournament, merge, and current router-proof family.",
+        "latest_sealed_receipts_current_state": (
+            "Gate C is exited. Gate D remains bounded and ordered. On the imported current-head Cohort-0 substrate, "
+            "router-versus-best-adapter proof was freshly ratified on the current head and held static baseline canonical."
+        ),
+        "documentary_surface_state_on_main": (
+            "Tracked Gate D router proof receipts on main remain carrier surfaces whenever subject_head differs from the sealed head, "
+            "including the imported current-head Cohort-0 adapter, tournament, merge, and current router-proof family."
+        ),
         "reanchor_decision": "Treat B04.R5 as executed and held. R6 is next in order only and remains blocked in law until router superiority is actually earned on a lawful future same-head proof.",
     }
     overlay["next_counted_workstream_id"] = NEXT_STEP_ID
@@ -220,13 +241,13 @@ def _build_resume(*, current_head: str) -> Dict[str, Any]:
     }
 
 
-def _build_reanchor(*, current_head: str) -> Dict[str, Any]:
+def _build_reanchor(*, current_head: str, subject_head: str) -> Dict[str, Any]:
     return {
         "schema_id": "kt.gate_d.decision_reanchor_packet.v1",
         "generated_utc": utc_now_iso_z(),
         "classification_tag": "COUNTING_CLOSURE",
         "claim_boundary": (
-            "This packet freezes the selected Gate D posture set through B04.R5 on the imported Cohort-0 substrate. "
+            "This packet freezes the selected Gate D posture set through B04.R5 on the imported current-head Cohort-0 substrate. "
             "Static baseline remains canonical, R6 is still blocked, and no learned-router, lobe, externality, comparative, "
             "or commercial widening is ratified here."
         ),
@@ -242,7 +263,7 @@ def _build_reanchor(*, current_head: str) -> Dict[str, Any]:
                 "R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY",
             ],
             "note": (
-                "Gate D remains bounded. On the imported Cohort-0 real-engine substrate, adapter, tournament, promotion, merge, "
+                f"Gate D remains bounded. On the imported Cohort-0 real-engine substrate for subject head {subject_head}, adapter, tournament, promotion, merge, "
                 "router shadow, and router-versus-best-adapter proof are now bound. Static router baseline remains canonical, and "
                 "B04.R6 is next in order only but blocked because superiority was not earned."
             ),
@@ -274,7 +295,7 @@ def _build_reanchor(*, current_head: str) -> Dict[str, Any]:
                 "D1 stays EXTERNALITY_BOUNDED until Gate E.",
                 "D2 remains one controlled counted-domain expansion inside the single Gate D civilization lane only.",
                 "D3 remains adapter evolution authorized.",
-                "The imported Cohort-0 real-engine substrate now has bound adapter, tournament, merge, and router-proof outcomes.",
+                f"The imported Cohort-0 real-engine substrate for subject head {subject_head} now has bound adapter, tournament, merge, and router-proof outcomes.",
                 "B04.R5 held static canonical router baseline and left B04.R6 blocked pending earned superiority.",
             ],
         },
@@ -318,7 +339,7 @@ def build_binding_receipt(*, current_head: str, proof_head: str) -> Dict[str, An
         "source_merge_outcome_binding_receipt_ref": DEFAULT_MERGE_OUTCOME_REPORT_REL,
         "claim_boundary": (
             "This receipt binds only the tracked post-R5 static-hold control surfaces after same-head router-versus-best-adapter "
-            "proof held static baseline canonical on the imported Cohort-0 substrate. It does not authorize learned-router cutover, "
+            "proof held static baseline canonical on the imported current-head Cohort-0 substrate. It does not authorize learned-router cutover, "
             "lobes, externality widening, comparative claims, or commercial activation."
         ),
     }
@@ -382,11 +403,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if str(overlay.get("next_counted_workstream_id", "")).strip() != CURRENT_STEP_ID:
         raise RuntimeError("FAIL_CLOSED: current overlay must still show B04.R5 as the executable step before hold binding")
 
-    overlay_obj = _build_overlay(current_overlay=overlay, current_head=current_head)
+    subject_head = _resolve_subject_head(
+        current_head=current_head,
+        proof_receipt=proof_receipt,
+        followthrough=followthrough,
+    )
+
+    overlay_obj = _build_overlay(current_overlay=overlay, current_head=current_head, subject_head=subject_head)
     next_obj = _build_next_contract(current_head=current_head)
     resume_obj = _build_resume(current_head=current_head)
-    reanchor_obj = _build_reanchor(current_head=current_head)
-    binding_receipt = build_binding_receipt(current_head=current_head, proof_head=str(proof_receipt.get("subject_head", "")).strip() or current_head)
+    reanchor_obj = _build_reanchor(current_head=current_head, subject_head=subject_head)
+    binding_receipt = build_binding_receipt(current_head=current_head, proof_head=subject_head)
 
     write_json_stable(_resolve(root, str(args.current_campaign_state_overlay)), overlay_obj)
     write_json_stable(_resolve(root, str(args.next_counted_workstream_contract)), next_obj)
