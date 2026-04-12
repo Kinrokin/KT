@@ -80,6 +80,20 @@ def _resolve_subject_head(*, packets: Sequence[Dict[str, Any]]) -> str:
     return next(iter(subject_heads))
 
 
+def _validate_selection_receipt_head_alignment(
+    *,
+    selection_receipt: Dict[str, Any],
+    current_head: str,
+    subject_head: str,
+) -> None:
+    selection_subject_head = str(selection_receipt.get("subject_head", "")).strip()
+    if selection_subject_head and selection_subject_head not in {current_head, subject_head}:
+        raise RuntimeError(
+            "FAIL_CLOSED: router selection receipt subject_head must stay on the authoritative subject head "
+            "or the current carrier head"
+        )
+
+
 def _validate_inputs(
     *,
     r5_receipt: Dict[str, Any],
@@ -871,13 +885,17 @@ def run_router_superiority_recovery_prep_tranche(
             scorecard,
             shadow_matrix,
             route_health,
-            selection_receipt,
             import_receipt,
             tournament_execution,
             followthrough_packet,
         ]
     )
     current_head = _git_head(root)
+    _validate_selection_receipt_head_alignment(
+        selection_receipt=selection_receipt,
+        current_head=current_head,
+        subject_head=subject_head,
+    )
 
     tournament_result = _load_tournament_result(root, tournament_execution)
     eval_reports = _load_eval_reports(root, import_receipt)
