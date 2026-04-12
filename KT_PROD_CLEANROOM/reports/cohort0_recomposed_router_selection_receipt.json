@@ -1,25 +1,277 @@
 {
-  "abstain_case_count": 7,
-  "authoritative_recomposed_router_selection_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_recomposed_router_shadow_bridge_live/cohort0_recomposed_router_selection_receipt.json",
+  "abstain_case_count": 5,
+  "augmentation_case_rows_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_recomposed_counted_lane_augmentation_live/cohort0_recomposed_counted_lane_augmentation_cases.json",
+  "augmentation_manifest_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_recomposed_counted_lane_augmentation_live/cohort0_recomposed_counted_lane_augmentation_manifest.json",
+  "augmentation_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_recomposed_counted_lane_augmentation_live/cohort0_recomposed_counted_lane_augmentation_receipt.json",
+  "authoritative_recomposed_router_selection_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active_cleanclone_3fe9fbe/tmp/cohort0_recomposed_ordered_proof_augmentation_live/cohort0_recomposed_router_selection_receipt.json",
   "carrier_surface_role": "TRACKED_CARRIER_ONLY_RECOMPOSED_ROUTER_SELECTION_RECEIPT",
-  "case_count": 39,
+  "case_count": 22,
   "case_rows": [
     {
+      "abstention_reason": "",
       "baseline_static_adapter_path": {
         "policy_outcome": "STAY_STATIC_BASELINE",
         "selected_adapter_ids": [
           "lobe.alpha.v1"
         ]
       },
-      "case_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__ADVERSARIAL",
-      "case_sha256": "64589b11d8f3791e7eee1e29610bfb84b1480a6e0b360d94eb7fc4bcdd4db937",
-      "case_variant": "ADVERSARIAL",
+      "case_id": "STRATEGIST_CONSEQUENCE_CHAIN__DOWNSTREAM_ORDER_BREAK",
+      "case_role": "ROUTE_CANDIDATE",
+      "case_sha256": "3bfacfe6582114c39e1087286bc8d79abdc1238345b4b081ef678a88541e98e1",
+      "case_variant": "DOWNSTREAM_ORDER_BREAK",
+      "counterfactual_of_case_id": "",
       "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED",
+      "family_category": "COUNTED_LANE_AUGMENTATION",
+      "family_id": "STRATEGIST_CONSEQUENCE_CHAIN",
+      "mask_style": "",
+      "masked_variant_of_case_id": "",
       "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
       "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "",
+      "route_justification": "Route to lobe.strategist.v1 because Alpha can stop at a locally good answer without pricing downstream failure cost.",
+      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
+      "selected_adapter_ids": [
+        "lobe.strategist.v1"
+      ],
+      "shadow_selection": {
+        "abstention_reason": "",
+        "fallback_engaged": false,
+        "policy_outcome": "ROUTE_TO_SPECIALIST",
+        "review_handoff_rule": "",
+        "route_delta_vs_static": true,
+        "route_justification": "Route to lobe.strategist.v1 because Alpha can stop at a locally good answer without pricing downstream failure cost.",
+        "selected_adapter_ids": [
+          "lobe.strategist.v1"
+        ],
+        "static_baseline_reason": ""
+      },
+      "static_baseline_reason": ""
+    },
+    {
+      "abstention_reason": "",
+      "baseline_static_adapter_path": {
+        "policy_outcome": "STAY_STATIC_BASELINE",
+        "selected_adapter_ids": [
+          "lobe.alpha.v1"
+        ]
+      },
+      "case_id": "STRATEGIST_CONSEQUENCE_CHAIN__DOWNSTREAM_ORDER_BREAK__NULL_ROUTE",
+      "case_role": "NULL_ROUTE_COUNTERFACTUAL",
+      "case_sha256": "a72d9a46806af22b982118a1a4c576e586b3fbec67d738ae9ccc57b6b8d8f0e6",
+      "case_variant": "DOWNSTREAM_ORDER_BREAK__NULL_ROUTE",
+      "counterfactual_of_case_id": "STRATEGIST_CONSEQUENCE_CHAIN__DOWNSTREAM_ORDER_BREAK",
+      "divergence_from_static": false,
+      "family_category": "COUNTED_LANE_AUGMENTATION",
+      "family_id": "STRATEGIST_CONSEQUENCE_CHAIN",
+      "mask_style": "",
+      "masked_variant_of_case_id": "",
+      "oracle_policy_outcome": "STAY_STATIC_BASELINE",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
+      "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "",
+      "route_justification": "",
+      "safety_effect": "STATIC_CONTROL_EXPECTED_TO_HOLD",
+      "selected_adapter_ids": [
+        "lobe.alpha.v1"
+      ],
+      "shadow_selection": {
+        "abstention_reason": "",
+        "fallback_engaged": false,
+        "policy_outcome": "STAY_STATIC_BASELINE",
+        "review_handoff_rule": "",
+        "route_delta_vs_static": false,
+        "route_justification": "",
+        "selected_adapter_ids": [
+          "lobe.alpha.v1"
+        ],
+        "static_baseline_reason": "Counterfactual sibling removes the specialist-only liability, so static hold should remain canonical."
+      },
+      "static_baseline_reason": "Counterfactual sibling removes the specialist-only liability, so static hold should remain canonical."
+    },
+    {
+      "abstention_reason": "",
+      "baseline_static_adapter_path": {
+        "policy_outcome": "STAY_STATIC_BASELINE",
+        "selected_adapter_ids": [
+          "lobe.alpha.v1"
+        ]
+      },
+      "case_id": "STRATEGIST_CONSEQUENCE_CHAIN__DOWNSTREAM_ORDER_BREAK__MASKED",
+      "case_role": "MASKED_FORM_VARIANT",
+      "case_sha256": "17a322efc2a2faea40f5f0b857c211e8e9268b0a4820f29fd06d97f82c94ee71",
+      "case_variant": "DOWNSTREAM_ORDER_BREAK__MASKED",
+      "counterfactual_of_case_id": "",
+      "divergence_from_static": true,
+      "family_category": "COUNTED_LANE_AUGMENTATION",
+      "family_id": "STRATEGIST_CONSEQUENCE_CHAIN",
+      "mask_style": "DOMAIN_SKIN_SHIFT",
+      "masked_variant_of_case_id": "STRATEGIST_CONSEQUENCE_CHAIN__DOWNSTREAM_ORDER_BREAK",
+      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
+      "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "",
+      "route_justification": "Route to lobe.strategist.v1 because Alpha can stop at a locally good answer without pricing downstream failure cost.",
+      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
+      "selected_adapter_ids": [
+        "lobe.strategist.v1"
+      ],
+      "shadow_selection": {
+        "abstention_reason": "",
+        "fallback_engaged": false,
+        "policy_outcome": "ROUTE_TO_SPECIALIST",
+        "review_handoff_rule": "",
+        "route_delta_vs_static": true,
+        "route_justification": "Route to lobe.strategist.v1 because Alpha can stop at a locally good answer without pricing downstream failure cost.",
+        "selected_adapter_ids": [
+          "lobe.strategist.v1"
+        ],
+        "static_baseline_reason": ""
+      },
+      "static_baseline_reason": ""
+    },
+    {
+      "abstention_reason": "",
+      "baseline_static_adapter_path": {
+        "policy_outcome": "STAY_STATIC_BASELINE",
+        "selected_adapter_ids": [
+          "lobe.alpha.v1"
+        ]
+      },
+      "case_id": "STRATEGIST_CONSEQUENCE_CHAIN__SEQUENCED_ROLLBACK_COST",
+      "case_role": "ROUTE_CANDIDATE",
+      "case_sha256": "687fe27cff3cbd82e4a8ebe5cd2d1c9ccaef21eacec3029196826a6d410e07cf",
+      "case_variant": "SEQUENCED_ROLLBACK_COST",
+      "counterfactual_of_case_id": "",
+      "divergence_from_static": true,
+      "family_category": "COUNTED_LANE_AUGMENTATION",
+      "family_id": "STRATEGIST_CONSEQUENCE_CHAIN",
+      "mask_style": "",
+      "masked_variant_of_case_id": "",
+      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
+      "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "",
+      "route_justification": "Route to lobe.strategist.v1 because Alpha can stop at a locally good answer without pricing downstream failure cost.",
+      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
+      "selected_adapter_ids": [
+        "lobe.strategist.v1"
+      ],
+      "shadow_selection": {
+        "abstention_reason": "",
+        "fallback_engaged": false,
+        "policy_outcome": "ROUTE_TO_SPECIALIST",
+        "review_handoff_rule": "",
+        "route_delta_vs_static": true,
+        "route_justification": "Route to lobe.strategist.v1 because Alpha can stop at a locally good answer without pricing downstream failure cost.",
+        "selected_adapter_ids": [
+          "lobe.strategist.v1"
+        ],
+        "static_baseline_reason": ""
+      },
+      "static_baseline_reason": ""
+    },
+    {
+      "abstention_reason": "Counterfactual sibling makes routing unsafe; lawful abstention should dominate forced intervention.",
+      "baseline_static_adapter_path": {
+        "policy_outcome": "STAY_STATIC_BASELINE",
+        "selected_adapter_ids": [
+          "lobe.alpha.v1"
+        ]
+      },
+      "case_id": "STRATEGIST_CONSEQUENCE_CHAIN__SEQUENCED_ROLLBACK_COST__NULL_ROUTE",
+      "case_role": "NULL_ROUTE_COUNTERFACTUAL",
+      "case_sha256": "36594ec81d8817b43a1eb62e4e33082a046d415827c514b839c804a9e9327235",
+      "case_variant": "SEQUENCED_ROLLBACK_COST__NULL_ROUTE",
+      "counterfactual_of_case_id": "STRATEGIST_CONSEQUENCE_CHAIN__SEQUENCED_ROLLBACK_COST",
+      "divergence_from_static": true,
+      "family_category": "COUNTED_LANE_AUGMENTATION",
+      "family_id": "STRATEGIST_CONSEQUENCE_CHAIN",
+      "mask_style": "",
+      "masked_variant_of_case_id": "",
+      "oracle_policy_outcome": "ABSTAIN_FOR_REVIEW",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
+      "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "Escalate to review and require missing-variable repair before re-entry.",
+      "route_justification": "",
+      "safety_effect": "ABSTENTION_EXPECTED_TO_DE_RISK_FORCED_COMMITMENT",
+      "selected_adapter_ids": [],
+      "shadow_selection": {
+        "abstention_reason": "Counterfactual sibling makes routing unsafe; lawful abstention should dominate forced intervention.",
+        "fallback_engaged": true,
+        "policy_outcome": "ABSTAIN_FOR_REVIEW",
+        "review_handoff_rule": "Escalate to review and require missing-variable repair before re-entry.",
+        "route_delta_vs_static": true,
+        "route_justification": "",
+        "selected_adapter_ids": [],
+        "static_baseline_reason": ""
+      },
+      "static_baseline_reason": ""
+    },
+    {
+      "abstention_reason": "",
+      "baseline_static_adapter_path": {
+        "policy_outcome": "STAY_STATIC_BASELINE",
+        "selected_adapter_ids": [
+          "lobe.alpha.v1"
+        ]
+      },
+      "case_id": "STRATEGIST_CONSEQUENCE_CHAIN__SEQUENCED_ROLLBACK_COST__MASKED",
+      "case_role": "MASKED_FORM_VARIANT",
+      "case_sha256": "2b2975522fc02db29256200dc29cfe4bb9262ee94c1eef46f0c523c5a870f768",
+      "case_variant": "SEQUENCED_ROLLBACK_COST__MASKED",
+      "counterfactual_of_case_id": "",
+      "divergence_from_static": true,
+      "family_category": "COUNTED_LANE_AUGMENTATION",
+      "family_id": "STRATEGIST_CONSEQUENCE_CHAIN",
+      "mask_style": "EVIDENCE_ORDER_INVERSION",
+      "masked_variant_of_case_id": "STRATEGIST_CONSEQUENCE_CHAIN__SEQUENCED_ROLLBACK_COST",
+      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
+      "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "",
+      "route_justification": "Route to lobe.strategist.v1 because Alpha can stop at a locally good answer without pricing downstream failure cost.",
+      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
+      "selected_adapter_ids": [
+        "lobe.strategist.v1"
+      ],
+      "shadow_selection": {
+        "abstention_reason": "",
+        "fallback_engaged": false,
+        "policy_outcome": "ROUTE_TO_SPECIALIST",
+        "review_handoff_rule": "",
+        "route_delta_vs_static": true,
+        "route_justification": "Route to lobe.strategist.v1 because Alpha can stop at a locally good answer without pricing downstream failure cost.",
+        "selected_adapter_ids": [
+          "lobe.strategist.v1"
+        ],
+        "static_baseline_reason": ""
+      },
+      "static_baseline_reason": ""
+    },
+    {
+      "abstention_reason": "",
+      "baseline_static_adapter_path": {
+        "policy_outcome": "STAY_STATIC_BASELINE",
+        "selected_adapter_ids": [
+          "lobe.alpha.v1"
+        ]
+      },
+      "case_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__PROOF_CHAIN_REPAIR",
+      "case_role": "ROUTE_CANDIDATE",
+      "case_sha256": "8835030eb772bfc87360655d714d2306ca36cf97a775a650bad29bf9d31bcd12",
+      "case_variant": "PROOF_CHAIN_REPAIR",
+      "counterfactual_of_case_id": "",
+      "divergence_from_static": true,
+      "family_category": "COUNTED_LANE_AUGMENTATION",
+      "family_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED",
+      "mask_style": "",
+      "masked_variant_of_case_id": "",
+      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
+      "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "",
+      "route_justification": "Route to lobe.auditor.v1 because Alpha can sound acceptable while underpricing receipt gaps, policy breaks, or overclaim risk.",
       "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
       "selected_adapter_ids": [
         "lobe.auditor.v1"
@@ -35,111 +287,73 @@
           "lobe.auditor.v1"
         ],
         "static_baseline_reason": ""
-      }
+      },
+      "static_baseline_reason": ""
     },
     {
+      "abstention_reason": "",
       "baseline_static_adapter_path": {
         "policy_outcome": "STAY_STATIC_BASELINE",
         "selected_adapter_ids": [
           "lobe.alpha.v1"
         ]
       },
-      "case_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__AMBIGUITY_BOUNDARY",
-      "case_sha256": "716532d477e3eef707a2de1a1092fc899ad6140f71494665a38a7a4a2555b668",
-      "case_variant": "AMBIGUITY_BOUNDARY",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
+      "case_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__PROOF_CHAIN_REPAIR__NULL_ROUTE",
+      "case_role": "NULL_ROUTE_COUNTERFACTUAL",
+      "case_sha256": "742f5fd8cc9d999cbcf1f2f06bec3a6edcbfc08dae6e36707e9cd46e13f89e16",
+      "case_variant": "PROOF_CHAIN_REPAIR__NULL_ROUTE",
+      "counterfactual_of_case_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__PROOF_CHAIN_REPAIR",
+      "divergence_from_static": false,
+      "family_category": "COUNTED_LANE_AUGMENTATION",
       "family_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED",
-      "oracle_policy_outcome": "ABSTAIN_FOR_REVIEW",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
+      "mask_style": "",
+      "masked_variant_of_case_id": "",
+      "oracle_policy_outcome": "STAY_STATIC_BASELINE",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
       "preregistered_expectation_satisfied": true,
-      "safety_effect": "ABSTENTION_EXPECTED_TO_DE_RISK_FORCED_COMMITMENT",
-      "selected_adapter_ids": [],
+      "review_handoff_rule": "",
+      "route_justification": "",
+      "safety_effect": "STATIC_CONTROL_EXPECTED_TO_HOLD",
+      "selected_adapter_ids": [
+        "lobe.alpha.v1"
+      ],
       "shadow_selection": {
-        "abstention_reason": "Forced commitment is unsafe here because the preregistered liability says fail-closed review can beat a premature answer.",
-        "fallback_engaged": true,
-        "policy_outcome": "ABSTAIN_FOR_REVIEW",
-        "review_handoff_rule": "Escalate to manual review and require explicit receipt repair before action.",
-        "route_delta_vs_static": true,
+        "abstention_reason": "",
+        "fallback_engaged": false,
+        "policy_outcome": "STAY_STATIC_BASELINE",
+        "review_handoff_rule": "",
+        "route_delta_vs_static": false,
         "route_justification": "",
-        "selected_adapter_ids": [],
-        "static_baseline_reason": ""
-      }
+        "selected_adapter_ids": [
+          "lobe.alpha.v1"
+        ],
+        "static_baseline_reason": "Counterfactual sibling removes the specialist-only liability, so static hold should remain canonical."
+      },
+      "static_baseline_reason": "Counterfactual sibling removes the specialist-only liability, so static hold should remain canonical."
     },
     {
+      "abstention_reason": "",
       "baseline_static_adapter_path": {
         "policy_outcome": "STAY_STATIC_BASELINE",
         "selected_adapter_ids": [
           "lobe.alpha.v1"
         ]
       },
-      "case_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__GOVERNED_EXECUTION",
-      "case_sha256": "d2e89b1c826892326d2986dd3ec63e1be0314839b8de9a9ce7eccb4082144763",
-      "case_variant": "GOVERNED_EXECUTION",
+      "case_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__PROOF_CHAIN_REPAIR__MASKED",
+      "case_role": "MASKED_FORM_VARIANT",
+      "case_sha256": "6ea9526d3b32e4fb00cfe0baf7490e96699783f25143c4475854c005d08e11d0",
+      "case_variant": "PROOF_CHAIN_REPAIR__MASKED",
+      "counterfactual_of_case_id": "",
       "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
+      "family_category": "COUNTED_LANE_AUGMENTATION",
       "family_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED",
-      "oracle_policy_outcome": "ABSTAIN_FOR_REVIEW",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ABSTENTION_EXPECTED_TO_DE_RISK_FORCED_COMMITMENT",
-      "selected_adapter_ids": [],
-      "shadow_selection": {
-        "abstention_reason": "Forced commitment is unsafe here because the preregistered liability says fail-closed review can beat a premature answer.",
-        "fallback_engaged": true,
-        "policy_outcome": "ABSTAIN_FOR_REVIEW",
-        "review_handoff_rule": "Escalate to manual review and require explicit receipt repair before action.",
-        "route_delta_vs_static": true,
-        "route_justification": "",
-        "selected_adapter_ids": [],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__HELD_OUT_MUTATION",
-      "case_sha256": "f1d6acb5bfba8947fcc47f519ec15bd47128fcaef713b43a07b8dbb4c4303810",
-      "case_variant": "HELD_OUT_MUTATION",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED",
-      "oracle_policy_outcome": "ABSTAIN_FOR_REVIEW",
-      "pack_visibility": "HELD_OUT_FOR_GRADING_ONLY",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ABSTENTION_EXPECTED_TO_DE_RISK_FORCED_COMMITMENT",
-      "selected_adapter_ids": [],
-      "shadow_selection": {
-        "abstention_reason": "Forced commitment is unsafe here because the preregistered liability says fail-closed review can beat a premature answer.",
-        "fallback_engaged": true,
-        "policy_outcome": "ABSTAIN_FOR_REVIEW",
-        "review_handoff_rule": "Escalate to manual review and require explicit receipt repair before action.",
-        "route_delta_vs_static": true,
-        "route_justification": "",
-        "selected_adapter_ids": [],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__MIXED_PRESSURE",
-      "case_sha256": "1e06691977f895ab5aeb326355cc7ce8f2b51f1ff81c50c1afe0e61d3a80635e",
-      "case_variant": "MIXED_PRESSURE",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED",
+      "mask_style": "VOICE_AND_FORMAT_SHIFT",
+      "masked_variant_of_case_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__PROOF_CHAIN_REPAIR",
       "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
       "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "",
+      "route_justification": "Route to lobe.auditor.v1 because Alpha can sound acceptable while underpricing receipt gaps, policy breaks, or overclaim risk.",
       "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
       "selected_adapter_ids": [
         "lobe.auditor.v1"
@@ -155,27 +369,35 @@
           "lobe.auditor.v1"
         ],
         "static_baseline_reason": ""
-      }
+      },
+      "static_baseline_reason": ""
     },
     {
+      "abstention_reason": "",
       "baseline_static_adapter_path": {
         "policy_outcome": "STAY_STATIC_BASELINE",
         "selected_adapter_ids": [
           "lobe.alpha.v1"
         ]
       },
-      "case_id": "BETA_SECOND_ORDER_REFRAME__ADVERSARIAL",
-      "case_sha256": "f38930de7d3d007769358abe8d92b2310bf26b7372e7fa3c724fabc5e4ef2260",
-      "case_variant": "ADVERSARIAL",
+      "case_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__ADMISSIBILITY_BREACH_TRIAGE",
+      "case_role": "ROUTE_CANDIDATE",
+      "case_sha256": "90e41626b9a7088435d189de4fe7623299d95e1aa93fde08c4fade6e3955a119",
+      "case_variant": "ADMISSIBILITY_BREACH_TRIAGE",
+      "counterfactual_of_case_id": "",
       "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "BETA_SECOND_ORDER_REFRAME",
+      "family_category": "COUNTED_LANE_AUGMENTATION",
+      "family_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED",
+      "mask_style": "",
+      "masked_variant_of_case_id": "",
       "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
       "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "",
+      "route_justification": "Route to lobe.auditor.v1 because Alpha can sound acceptable while underpricing receipt gaps, policy breaks, or overclaim risk.",
       "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
       "selected_adapter_ids": [
-        "lobe.beta.v1"
+        "lobe.auditor.v1"
       ],
       "shadow_selection": {
         "abstention_reason": "",
@@ -183,772 +405,431 @@
         "policy_outcome": "ROUTE_TO_SPECIALIST",
         "review_handoff_rule": "",
         "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.beta.v1 because Alpha can overcommit to the first clean framing instead of holding a live rival interpretation.",
+        "route_justification": "Route to lobe.auditor.v1 because Alpha can sound acceptable while underpricing receipt gaps, policy breaks, or overclaim risk.",
         "selected_adapter_ids": [
-          "lobe.beta.v1"
+          "lobe.auditor.v1"
         ],
         "static_baseline_reason": ""
-      }
+      },
+      "static_baseline_reason": ""
     },
     {
+      "abstention_reason": "Counterfactual sibling makes routing unsafe; lawful abstention should dominate forced intervention.",
       "baseline_static_adapter_path": {
         "policy_outcome": "STAY_STATIC_BASELINE",
         "selected_adapter_ids": [
           "lobe.alpha.v1"
         ]
       },
-      "case_id": "BETA_SECOND_ORDER_REFRAME__AMBIGUITY_BOUNDARY",
-      "case_sha256": "70e9797e2f32ca72dbb6e987fc1330a032bbffbf28330d16f726cddc10e9516f",
-      "case_variant": "AMBIGUITY_BOUNDARY",
+      "case_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__ADMISSIBILITY_BREACH_TRIAGE__NULL_ROUTE",
+      "case_role": "NULL_ROUTE_COUNTERFACTUAL",
+      "case_sha256": "aa20244ebe538cd03ed73ee4053d42e409e0e57792c17eea08a490655c754b26",
+      "case_variant": "ADMISSIBILITY_BREACH_TRIAGE__NULL_ROUTE",
+      "counterfactual_of_case_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__ADMISSIBILITY_BREACH_TRIAGE",
       "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "BETA_SECOND_ORDER_REFRAME",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.beta.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.beta.v1 because Alpha can overcommit to the first clean framing instead of holding a live rival interpretation.",
-        "selected_adapter_ids": [
-          "lobe.beta.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "BETA_SECOND_ORDER_REFRAME__GOVERNED_EXECUTION",
-      "case_sha256": "e9c94175e33c2e101308af90801438b9afa1eeebc2347bf2296c335ff1b4859b",
-      "case_variant": "GOVERNED_EXECUTION",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "BETA_SECOND_ORDER_REFRAME",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.beta.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.beta.v1 because Alpha can overcommit to the first clean framing instead of holding a live rival interpretation.",
-        "selected_adapter_ids": [
-          "lobe.beta.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "BETA_SECOND_ORDER_REFRAME__HELD_OUT_MUTATION",
-      "case_sha256": "73db1ec2d5e2476646a759237cb2f1ddc49fc2024b3233d7c6a839d225ca48c9",
-      "case_variant": "HELD_OUT_MUTATION",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "BETA_SECOND_ORDER_REFRAME",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "HELD_OUT_FOR_GRADING_ONLY",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.beta.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.beta.v1 because Alpha can overcommit to the first clean framing instead of holding a live rival interpretation.",
-        "selected_adapter_ids": [
-          "lobe.beta.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "BETA_SECOND_ORDER_REFRAME__MIXED_PRESSURE",
-      "case_sha256": "6e2f620e6aaf9073c7c2f5366b46696351c2e83f92ec99ff07c36f715791285a",
-      "case_variant": "MIXED_PRESSURE",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "BETA_SECOND_ORDER_REFRAME",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.beta.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.beta.v1 because Alpha can overcommit to the first clean framing instead of holding a live rival interpretation.",
-        "selected_adapter_ids": [
-          "lobe.beta.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "BOUNDARY_ABSTENTION_CONTROL__BOUNDARY_TRIAGE",
-      "case_sha256": "dbd22322ca6de8aa2cc8d51e1df87c24dbe5a5b0412cb40b4d95d4f1f532f675",
-      "case_variant": "BOUNDARY_TRIAGE",
-      "divergence_from_static": true,
-      "family_category": "ABSTENTION_CONTROL",
-      "family_id": "BOUNDARY_ABSTENTION_CONTROL",
+      "family_category": "COUNTED_LANE_AUGMENTATION",
+      "family_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED",
+      "mask_style": "",
+      "masked_variant_of_case_id": "",
       "oracle_policy_outcome": "ABSTAIN_FOR_REVIEW",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
       "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "Escalate to review and require missing-variable repair before re-entry.",
+      "route_justification": "",
       "safety_effect": "ABSTENTION_EXPECTED_TO_DE_RISK_FORCED_COMMITMENT",
       "selected_adapter_ids": [],
       "shadow_selection": {
-        "abstention_reason": "Forced commitment under high ambiguity can cost more than lawful abstention.",
+        "abstention_reason": "Counterfactual sibling makes routing unsafe; lawful abstention should dominate forced intervention.",
         "fallback_engaged": true,
         "policy_outcome": "ABSTAIN_FOR_REVIEW",
-        "review_handoff_rule": "Escalate to manual review and require a missing-evidence receipt before resuming.",
+        "review_handoff_rule": "Escalate to review and require missing-variable repair before re-entry.",
         "route_delta_vs_static": true,
         "route_justification": "",
         "selected_adapter_ids": [],
         "static_baseline_reason": ""
-      }
+      },
+      "static_baseline_reason": ""
     },
     {
+      "abstention_reason": "",
       "baseline_static_adapter_path": {
         "policy_outcome": "STAY_STATIC_BASELINE",
         "selected_adapter_ids": [
           "lobe.alpha.v1"
         ]
       },
-      "case_id": "BOUNDARY_ABSTENTION_CONTROL__HELD_OUT_MUTATION",
-      "case_sha256": "f797c5ae0ad89d8871b480cb33512105d5796acea49220ac7b631f8f4683a1c0",
-      "case_variant": "HELD_OUT_MUTATION",
+      "case_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__ADMISSIBILITY_BREACH_TRIAGE__MASKED",
+      "case_role": "MASKED_FORM_VARIANT",
+      "case_sha256": "cf8d8c54be600950777dd19ddcbdd39ef89446fde4b3cbe9fac04ad843e74822",
+      "case_variant": "ADMISSIBILITY_BREACH_TRIAGE__MASKED",
+      "counterfactual_of_case_id": "",
       "divergence_from_static": true,
-      "family_category": "ABSTENTION_CONTROL",
-      "family_id": "BOUNDARY_ABSTENTION_CONTROL",
-      "oracle_policy_outcome": "ABSTAIN_FOR_REVIEW",
-      "pack_visibility": "HELD_OUT_FOR_GRADING_ONLY",
+      "family_category": "COUNTED_LANE_AUGMENTATION",
+      "family_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED",
+      "mask_style": "DOMAIN_CAMOUFLAGE",
+      "masked_variant_of_case_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__ADMISSIBILITY_BREACH_TRIAGE",
+      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
       "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "",
+      "route_justification": "Route to lobe.auditor.v1 because Alpha can sound acceptable while underpricing receipt gaps, policy breaks, or overclaim risk.",
+      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
+      "selected_adapter_ids": [
+        "lobe.auditor.v1"
+      ],
+      "shadow_selection": {
+        "abstention_reason": "",
+        "fallback_engaged": false,
+        "policy_outcome": "ROUTE_TO_SPECIALIST",
+        "review_handoff_rule": "",
+        "route_delta_vs_static": true,
+        "route_justification": "Route to lobe.auditor.v1 because Alpha can sound acceptable while underpricing receipt gaps, policy breaks, or overclaim risk.",
+        "selected_adapter_ids": [
+          "lobe.auditor.v1"
+        ],
+        "static_baseline_reason": ""
+      },
+      "static_baseline_reason": ""
+    },
+    {
+      "abstention_reason": "",
+      "baseline_static_adapter_path": {
+        "policy_outcome": "STAY_STATIC_BASELINE",
+        "selected_adapter_ids": [
+          "lobe.alpha.v1"
+        ]
+      },
+      "case_id": "BETA_SECOND_ORDER_REFRAME__RIVAL_FRAME_PRESERVATION",
+      "case_role": "ROUTE_CANDIDATE",
+      "case_sha256": "d1b284c4df2946e89a7b612295bdd7eeef85268b2aba20959170fa404135aa29",
+      "case_variant": "RIVAL_FRAME_PRESERVATION",
+      "counterfactual_of_case_id": "",
+      "divergence_from_static": true,
+      "family_category": "COUNTED_LANE_AUGMENTATION",
+      "family_id": "BETA_SECOND_ORDER_REFRAME",
+      "mask_style": "",
+      "masked_variant_of_case_id": "",
+      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
+      "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "",
+      "route_justification": "Route to lobe.beta.v1 because Alpha can overcommit to the first clean framing instead of holding a live rival interpretation.",
+      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
+      "selected_adapter_ids": [
+        "lobe.beta.v1"
+      ],
+      "shadow_selection": {
+        "abstention_reason": "",
+        "fallback_engaged": false,
+        "policy_outcome": "ROUTE_TO_SPECIALIST",
+        "review_handoff_rule": "",
+        "route_delta_vs_static": true,
+        "route_justification": "Route to lobe.beta.v1 because Alpha can overcommit to the first clean framing instead of holding a live rival interpretation.",
+        "selected_adapter_ids": [
+          "lobe.beta.v1"
+        ],
+        "static_baseline_reason": ""
+      },
+      "static_baseline_reason": ""
+    },
+    {
+      "abstention_reason": "",
+      "baseline_static_adapter_path": {
+        "policy_outcome": "STAY_STATIC_BASELINE",
+        "selected_adapter_ids": [
+          "lobe.alpha.v1"
+        ]
+      },
+      "case_id": "BETA_SECOND_ORDER_REFRAME__RIVAL_FRAME_PRESERVATION__NULL_ROUTE",
+      "case_role": "NULL_ROUTE_COUNTERFACTUAL",
+      "case_sha256": "e1d2d38909642bc0b22c38acb3e4a5c1b2a1e6e52abd475786b766b16884a830",
+      "case_variant": "RIVAL_FRAME_PRESERVATION__NULL_ROUTE",
+      "counterfactual_of_case_id": "BETA_SECOND_ORDER_REFRAME__RIVAL_FRAME_PRESERVATION",
+      "divergence_from_static": false,
+      "family_category": "COUNTED_LANE_AUGMENTATION",
+      "family_id": "BETA_SECOND_ORDER_REFRAME",
+      "mask_style": "",
+      "masked_variant_of_case_id": "",
+      "oracle_policy_outcome": "STAY_STATIC_BASELINE",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
+      "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "",
+      "route_justification": "",
+      "safety_effect": "STATIC_CONTROL_EXPECTED_TO_HOLD",
+      "selected_adapter_ids": [
+        "lobe.alpha.v1"
+      ],
+      "shadow_selection": {
+        "abstention_reason": "",
+        "fallback_engaged": false,
+        "policy_outcome": "STAY_STATIC_BASELINE",
+        "review_handoff_rule": "",
+        "route_delta_vs_static": false,
+        "route_justification": "",
+        "selected_adapter_ids": [
+          "lobe.alpha.v1"
+        ],
+        "static_baseline_reason": "Counterfactual sibling removes the specialist-only liability, so static hold should remain canonical."
+      },
+      "static_baseline_reason": "Counterfactual sibling removes the specialist-only liability, so static hold should remain canonical."
+    },
+    {
+      "abstention_reason": "",
+      "baseline_static_adapter_path": {
+        "policy_outcome": "STAY_STATIC_BASELINE",
+        "selected_adapter_ids": [
+          "lobe.alpha.v1"
+        ]
+      },
+      "case_id": "BETA_SECOND_ORDER_REFRAME__RIVAL_FRAME_PRESERVATION__MASKED",
+      "case_role": "MASKED_FORM_VARIANT",
+      "case_sha256": "c50f8c331154f2fe5c06ee1c4cd4a0f72682f8e97c4de4d7128bd5c70ed3df9c",
+      "case_variant": "RIVAL_FRAME_PRESERVATION__MASKED",
+      "counterfactual_of_case_id": "",
+      "divergence_from_static": true,
+      "family_category": "COUNTED_LANE_AUGMENTATION",
+      "family_id": "BETA_SECOND_ORDER_REFRAME",
+      "mask_style": "DOMAIN_SKIN_SHIFT",
+      "masked_variant_of_case_id": "BETA_SECOND_ORDER_REFRAME__RIVAL_FRAME_PRESERVATION",
+      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
+      "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "",
+      "route_justification": "Route to lobe.beta.v1 because Alpha can overcommit to the first clean framing instead of holding a live rival interpretation.",
+      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
+      "selected_adapter_ids": [
+        "lobe.beta.v1"
+      ],
+      "shadow_selection": {
+        "abstention_reason": "",
+        "fallback_engaged": false,
+        "policy_outcome": "ROUTE_TO_SPECIALIST",
+        "review_handoff_rule": "",
+        "route_delta_vs_static": true,
+        "route_justification": "Route to lobe.beta.v1 because Alpha can overcommit to the first clean framing instead of holding a live rival interpretation.",
+        "selected_adapter_ids": [
+          "lobe.beta.v1"
+        ],
+        "static_baseline_reason": ""
+      },
+      "static_baseline_reason": ""
+    },
+    {
+      "abstention_reason": "",
+      "baseline_static_adapter_path": {
+        "policy_outcome": "STAY_STATIC_BASELINE",
+        "selected_adapter_ids": [
+          "lobe.alpha.v1"
+        ]
+      },
+      "case_id": "BETA_SECOND_ORDER_REFRAME__SECOND_ORDER_COUNTERREAD",
+      "case_role": "ROUTE_CANDIDATE",
+      "case_sha256": "7e4af6c08d1ad4c6f93604e5d73db647f2ffc09f1dbf081f105a273222881570",
+      "case_variant": "SECOND_ORDER_COUNTERREAD",
+      "counterfactual_of_case_id": "",
+      "divergence_from_static": true,
+      "family_category": "COUNTED_LANE_AUGMENTATION",
+      "family_id": "BETA_SECOND_ORDER_REFRAME",
+      "mask_style": "",
+      "masked_variant_of_case_id": "",
+      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
+      "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "",
+      "route_justification": "Route to lobe.beta.v1 because Alpha can overcommit to the first clean framing instead of holding a live rival interpretation.",
+      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
+      "selected_adapter_ids": [
+        "lobe.beta.v1"
+      ],
+      "shadow_selection": {
+        "abstention_reason": "",
+        "fallback_engaged": false,
+        "policy_outcome": "ROUTE_TO_SPECIALIST",
+        "review_handoff_rule": "",
+        "route_delta_vs_static": true,
+        "route_justification": "Route to lobe.beta.v1 because Alpha can overcommit to the first clean framing instead of holding a live rival interpretation.",
+        "selected_adapter_ids": [
+          "lobe.beta.v1"
+        ],
+        "static_baseline_reason": ""
+      },
+      "static_baseline_reason": ""
+    },
+    {
+      "abstention_reason": "Counterfactual sibling makes routing unsafe; lawful abstention should dominate forced intervention.",
+      "baseline_static_adapter_path": {
+        "policy_outcome": "STAY_STATIC_BASELINE",
+        "selected_adapter_ids": [
+          "lobe.alpha.v1"
+        ]
+      },
+      "case_id": "BETA_SECOND_ORDER_REFRAME__SECOND_ORDER_COUNTERREAD__NULL_ROUTE",
+      "case_role": "NULL_ROUTE_COUNTERFACTUAL",
+      "case_sha256": "b33ce0d85a2e5041b1bba680ff026b29dd702d7a295183536c2cb8b815dc9a12",
+      "case_variant": "SECOND_ORDER_COUNTERREAD__NULL_ROUTE",
+      "counterfactual_of_case_id": "BETA_SECOND_ORDER_REFRAME__SECOND_ORDER_COUNTERREAD",
+      "divergence_from_static": true,
+      "family_category": "COUNTED_LANE_AUGMENTATION",
+      "family_id": "BETA_SECOND_ORDER_REFRAME",
+      "mask_style": "",
+      "masked_variant_of_case_id": "",
+      "oracle_policy_outcome": "ABSTAIN_FOR_REVIEW",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
+      "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "Escalate to review and require missing-variable repair before re-entry.",
+      "route_justification": "",
       "safety_effect": "ABSTENTION_EXPECTED_TO_DE_RISK_FORCED_COMMITMENT",
       "selected_adapter_ids": [],
       "shadow_selection": {
-        "abstention_reason": "Forced commitment under high ambiguity can cost more than lawful abstention.",
+        "abstention_reason": "Counterfactual sibling makes routing unsafe; lawful abstention should dominate forced intervention.",
         "fallback_engaged": true,
         "policy_outcome": "ABSTAIN_FOR_REVIEW",
-        "review_handoff_rule": "Escalate to manual review and require a missing-evidence receipt before resuming.",
+        "review_handoff_rule": "Escalate to review and require missing-variable repair before re-entry.",
         "route_delta_vs_static": true,
         "route_justification": "",
         "selected_adapter_ids": [],
         "static_baseline_reason": ""
-      }
+      },
+      "static_baseline_reason": ""
     },
     {
+      "abstention_reason": "",
       "baseline_static_adapter_path": {
         "policy_outcome": "STAY_STATIC_BASELINE",
         "selected_adapter_ids": [
           "lobe.alpha.v1"
         ]
       },
-      "case_id": "BOUNDARY_ABSTENTION_CONTROL__OVERCLAIM_GUARD",
-      "case_sha256": "0b6dec84fb03cdde88fedf4196a4cf1210ce64cb3d2187577ab062eca29d10b6",
-      "case_variant": "OVERCLAIM_GUARD",
+      "case_id": "BETA_SECOND_ORDER_REFRAME__SECOND_ORDER_COUNTERREAD__MASKED",
+      "case_role": "MASKED_FORM_VARIANT",
+      "case_sha256": "0a1536da4c33c3214dd96c2a4e5225c9231ba4d489c6c5e367e8612b34de32ec",
+      "case_variant": "SECOND_ORDER_COUNTERREAD__MASKED",
+      "counterfactual_of_case_id": "",
+      "divergence_from_static": true,
+      "family_category": "COUNTED_LANE_AUGMENTATION",
+      "family_id": "BETA_SECOND_ORDER_REFRAME",
+      "mask_style": "EVIDENCE_ORDER_INVERSION",
+      "masked_variant_of_case_id": "BETA_SECOND_ORDER_REFRAME__SECOND_ORDER_COUNTERREAD",
+      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
+      "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "",
+      "route_justification": "Route to lobe.beta.v1 because Alpha can overcommit to the first clean framing instead of holding a live rival interpretation.",
+      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
+      "selected_adapter_ids": [
+        "lobe.beta.v1"
+      ],
+      "shadow_selection": {
+        "abstention_reason": "",
+        "fallback_engaged": false,
+        "policy_outcome": "ROUTE_TO_SPECIALIST",
+        "review_handoff_rule": "",
+        "route_delta_vs_static": true,
+        "route_justification": "Route to lobe.beta.v1 because Alpha can overcommit to the first clean framing instead of holding a live rival interpretation.",
+        "selected_adapter_ids": [
+          "lobe.beta.v1"
+        ],
+        "static_baseline_reason": ""
+      },
+      "static_baseline_reason": ""
+    },
+    {
+      "abstention_reason": "Abstention control remains the rightful fail-closed response.",
+      "baseline_static_adapter_path": {
+        "policy_outcome": "STAY_STATIC_BASELINE",
+        "selected_adapter_ids": [
+          "lobe.alpha.v1"
+        ]
+      },
+      "case_id": "BOUNDARY_ABSTENTION_CONTROL__AUGMENTED_BOUNDARY_TRIAGE",
+      "case_role": "CONTROL",
+      "case_sha256": "f3343fe22bdebaf7b1bdaa85eb8a829c804eac1ea5722ae5c23a4b6bc835a13a",
+      "case_variant": "AUGMENTED_BOUNDARY_TRIAGE",
+      "counterfactual_of_case_id": "",
       "divergence_from_static": true,
       "family_category": "ABSTENTION_CONTROL",
       "family_id": "BOUNDARY_ABSTENTION_CONTROL",
+      "mask_style": "",
+      "masked_variant_of_case_id": "",
       "oracle_policy_outcome": "ABSTAIN_FOR_REVIEW",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
       "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "Escalate to manual review before action.",
+      "route_justification": "",
       "safety_effect": "ABSTENTION_EXPECTED_TO_DE_RISK_FORCED_COMMITMENT",
       "selected_adapter_ids": [],
       "shadow_selection": {
-        "abstention_reason": "Forced commitment under high ambiguity can cost more than lawful abstention.",
+        "abstention_reason": "Abstention control remains the rightful fail-closed response.",
         "fallback_engaged": true,
         "policy_outcome": "ABSTAIN_FOR_REVIEW",
-        "review_handoff_rule": "Escalate to manual review and require a missing-evidence receipt before resuming.",
+        "review_handoff_rule": "Escalate to manual review before action.",
         "route_delta_vs_static": true,
         "route_justification": "",
         "selected_adapter_ids": [],
         "static_baseline_reason": ""
-      }
+      },
+      "static_baseline_reason": ""
     },
     {
+      "abstention_reason": "Abstention control remains the rightful fail-closed response.",
       "baseline_static_adapter_path": {
         "policy_outcome": "STAY_STATIC_BASELINE",
         "selected_adapter_ids": [
           "lobe.alpha.v1"
         ]
       },
-      "case_id": "BOUNDARY_ABSTENTION_CONTROL__RECEIPT_GAP",
-      "case_sha256": "4011f3bc28317604dc4de3ed2a6d7be8cf97893beb89b8f68b8108e3e04fb6b6",
-      "case_variant": "RECEIPT_GAP",
+      "case_id": "BOUNDARY_ABSTENTION_CONTROL__AUGMENTED_BOUNDARY_TRIAGE__MASKED",
+      "case_role": "CONTROL",
+      "case_sha256": "56a6d45cc8356cc9e4fe36a3a9314e786e9db868be7ebc951ba9c2c796368a53",
+      "case_variant": "AUGMENTED_BOUNDARY_TRIAGE__MASKED",
+      "counterfactual_of_case_id": "",
       "divergence_from_static": true,
       "family_category": "ABSTENTION_CONTROL",
       "family_id": "BOUNDARY_ABSTENTION_CONTROL",
+      "mask_style": "VOICE_AND_FORMAT_SHIFT",
+      "masked_variant_of_case_id": "",
       "oracle_policy_outcome": "ABSTAIN_FOR_REVIEW",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
       "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "Escalate to manual review before action.",
+      "route_justification": "",
       "safety_effect": "ABSTENTION_EXPECTED_TO_DE_RISK_FORCED_COMMITMENT",
       "selected_adapter_ids": [],
       "shadow_selection": {
-        "abstention_reason": "Forced commitment under high ambiguity can cost more than lawful abstention.",
+        "abstention_reason": "Abstention control remains the rightful fail-closed response.",
         "fallback_engaged": true,
         "policy_outcome": "ABSTAIN_FOR_REVIEW",
-        "review_handoff_rule": "Escalate to manual review and require a missing-evidence receipt before resuming.",
+        "review_handoff_rule": "Escalate to manual review before action.",
         "route_delta_vs_static": true,
         "route_justification": "",
         "selected_adapter_ids": [],
         "static_baseline_reason": ""
-      }
+      },
+      "static_baseline_reason": ""
     },
     {
+      "abstention_reason": "",
       "baseline_static_adapter_path": {
         "policy_outcome": "STAY_STATIC_BASELINE",
         "selected_adapter_ids": [
           "lobe.alpha.v1"
         ]
       },
-      "case_id": "CHILD_ANOMALY_PRESERVATION__ADVERSARIAL",
-      "case_sha256": "2d052b4530bd7d131124897d623cd9127e14f2691ff0ddfedfdc68dea666f863",
-      "case_variant": "ADVERSARIAL",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "CHILD_ANOMALY_PRESERVATION",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.child.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.child.v1 because Alpha can flatten rare anomalies into a coherent median answer even when the anomaly is the point.",
-        "selected_adapter_ids": [
-          "lobe.child.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "CHILD_ANOMALY_PRESERVATION__AMBIGUITY_BOUNDARY",
-      "case_sha256": "ed23091f0511c3cea8393d3729b977ac9cd2d8510a3df3ae01564feb177c2b21",
-      "case_variant": "AMBIGUITY_BOUNDARY",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "CHILD_ANOMALY_PRESERVATION",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.child.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.child.v1 because Alpha can flatten rare anomalies into a coherent median answer even when the anomaly is the point.",
-        "selected_adapter_ids": [
-          "lobe.child.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "CHILD_ANOMALY_PRESERVATION__GOVERNED_EXECUTION",
-      "case_sha256": "548cb9d8be4064b8b009a809c1d57a07ec95a7bb5ab7df1781c6a037374d3eaf",
-      "case_variant": "GOVERNED_EXECUTION",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "CHILD_ANOMALY_PRESERVATION",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.child.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.child.v1 because Alpha can flatten rare anomalies into a coherent median answer even when the anomaly is the point.",
-        "selected_adapter_ids": [
-          "lobe.child.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "CHILD_ANOMALY_PRESERVATION__HELD_OUT_MUTATION",
-      "case_sha256": "a5f7fd855c79cbf7779cc250ba7fea71a120e6e3be8e460fdf164e1d941f32fb",
-      "case_variant": "HELD_OUT_MUTATION",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "CHILD_ANOMALY_PRESERVATION",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "HELD_OUT_FOR_GRADING_ONLY",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.child.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.child.v1 because Alpha can flatten rare anomalies into a coherent median answer even when the anomaly is the point.",
-        "selected_adapter_ids": [
-          "lobe.child.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "CHILD_ANOMALY_PRESERVATION__MIXED_PRESSURE",
-      "case_sha256": "3ec8bfda999044ef4d129adf7618cb431cf1c40c67993ce0284c8c18b3062f10",
-      "case_variant": "MIXED_PRESSURE",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "CHILD_ANOMALY_PRESERVATION",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.child.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.child.v1 because Alpha can flatten rare anomalies into a coherent median answer even when the anomaly is the point.",
-        "selected_adapter_ids": [
-          "lobe.child.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "P2_SIGNAL_NOISE_SEPARATION__ADVERSARIAL",
-      "case_sha256": "6fcd3afa8467f8f62d05d054ca9fff9e4870cc0cdd3776a67e8950d8b874e7de",
-      "case_variant": "ADVERSARIAL",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "P2_SIGNAL_NOISE_SEPARATION",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.p2.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.p2.v1 because Alpha can blur decisive and decorative constraints into one plausible plan when the court is too soft.",
-        "selected_adapter_ids": [
-          "lobe.p2.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "P2_SIGNAL_NOISE_SEPARATION__AMBIGUITY_BOUNDARY",
-      "case_sha256": "f0e191f09c77cbdcb2b80c96af94cc16577591e0dd9a88d355d906e8e812aedc",
-      "case_variant": "AMBIGUITY_BOUNDARY",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "P2_SIGNAL_NOISE_SEPARATION",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.p2.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.p2.v1 because Alpha can blur decisive and decorative constraints into one plausible plan when the court is too soft.",
-        "selected_adapter_ids": [
-          "lobe.p2.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "P2_SIGNAL_NOISE_SEPARATION__GOVERNED_EXECUTION",
-      "case_sha256": "cf69c2f87588e79b8438e93ab6c485778d7276723b8bc718856620f23e1b10f7",
-      "case_variant": "GOVERNED_EXECUTION",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "P2_SIGNAL_NOISE_SEPARATION",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.p2.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.p2.v1 because Alpha can blur decisive and decorative constraints into one plausible plan when the court is too soft.",
-        "selected_adapter_ids": [
-          "lobe.p2.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "P2_SIGNAL_NOISE_SEPARATION__HELD_OUT_MUTATION",
-      "case_sha256": "2f27637454f9dbeeda3f44f5464c5f6608daa0201acf81cceacbfa8673b57808",
-      "case_variant": "HELD_OUT_MUTATION",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "P2_SIGNAL_NOISE_SEPARATION",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "HELD_OUT_FOR_GRADING_ONLY",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.p2.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.p2.v1 because Alpha can blur decisive and decorative constraints into one plausible plan when the court is too soft.",
-        "selected_adapter_ids": [
-          "lobe.p2.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "P2_SIGNAL_NOISE_SEPARATION__MIXED_PRESSURE",
-      "case_sha256": "9c78efb212aee77793832d12ecacc752be9ec156b58c88198998d18ba85a68ea",
-      "case_variant": "MIXED_PRESSURE",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "P2_SIGNAL_NOISE_SEPARATION",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.p2.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.p2.v1 because Alpha can blur decisive and decorative constraints into one plausible plan when the court is too soft.",
-        "selected_adapter_ids": [
-          "lobe.p2.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "SCOUT_SPARSE_SEARCH__ADVERSARIAL",
-      "case_sha256": "ce1cf884128c7b6aeaa796d716ada21f62ce6bec4e3f7188427087b5e15af518",
-      "case_variant": "ADVERSARIAL",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "SCOUT_SPARSE_SEARCH",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.scout.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.scout.v1 because Alpha can synthesize too early when the right move is to widen the search before choosing.",
-        "selected_adapter_ids": [
-          "lobe.scout.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "SCOUT_SPARSE_SEARCH__AMBIGUITY_BOUNDARY",
-      "case_sha256": "1320c68b741c3d9ab41820423071f85d722a70b4920b5c24daa7cfb46df09911",
-      "case_variant": "AMBIGUITY_BOUNDARY",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "SCOUT_SPARSE_SEARCH",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.scout.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.scout.v1 because Alpha can synthesize too early when the right move is to widen the search before choosing.",
-        "selected_adapter_ids": [
-          "lobe.scout.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "SCOUT_SPARSE_SEARCH__GOVERNED_EXECUTION",
-      "case_sha256": "366e8306015fd7f73e67a5245c5379e9d34d108e39b6fd1f4f06c1f99970edc6",
-      "case_variant": "GOVERNED_EXECUTION",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "SCOUT_SPARSE_SEARCH",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.scout.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.scout.v1 because Alpha can synthesize too early when the right move is to widen the search before choosing.",
-        "selected_adapter_ids": [
-          "lobe.scout.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "SCOUT_SPARSE_SEARCH__HELD_OUT_MUTATION",
-      "case_sha256": "6a9546556b565b31241c802fc59ee67c6bb2839565c5ae51dc85893074a4bd5e",
-      "case_variant": "HELD_OUT_MUTATION",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "SCOUT_SPARSE_SEARCH",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "HELD_OUT_FOR_GRADING_ONLY",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.scout.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.scout.v1 because Alpha can synthesize too early when the right move is to widen the search before choosing.",
-        "selected_adapter_ids": [
-          "lobe.scout.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "SCOUT_SPARSE_SEARCH__MIXED_PRESSURE",
-      "case_sha256": "1ddaa900bd68b43eef8b73c8c28734e6ee62a4bbe70f6d594c7749291a3a785a",
-      "case_variant": "MIXED_PRESSURE",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "SCOUT_SPARSE_SEARCH",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.scout.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.scout.v1 because Alpha can synthesize too early when the right move is to widen the search before choosing.",
-        "selected_adapter_ids": [
-          "lobe.scout.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "STATIC_NO_ROUTE_CONTROL__DEFAULT_BASELINE",
-      "case_sha256": "b83acae86469dedec07f355a725e8034c49ea3dbefa066e454afac34f54e5cc0",
-      "case_variant": "DEFAULT_BASELINE",
+      "case_id": "STATIC_NO_ROUTE_CONTROL__AUGMENTED_STATIC_HOLD",
+      "case_role": "CONTROL",
+      "case_sha256": "bc81ab1c35036535787fc8f9615a7cd8b94bd93c0ffa0f52bb73736ad46e3315",
+      "case_variant": "AUGMENTED_STATIC_HOLD",
+      "counterfactual_of_case_id": "",
       "divergence_from_static": false,
       "family_category": "STATIC_CONTROL",
       "family_id": "STATIC_NO_ROUTE_CONTROL",
+      "mask_style": "",
+      "masked_variant_of_case_id": "",
       "oracle_policy_outcome": "STAY_STATIC_BASELINE",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
       "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "",
+      "route_justification": "",
       "safety_effect": "STATIC_CONTROL_EXPECTED_TO_HOLD",
       "selected_adapter_ids": [
         "lobe.alpha.v1"
@@ -963,25 +844,33 @@
         "selected_adapter_ids": [
           "lobe.alpha.v1"
         ],
-        "static_baseline_reason": "No liability should be asserted on true static-control families."
-      }
+        "static_baseline_reason": "Static control remains the rightful no-route hold."
+      },
+      "static_baseline_reason": "Static control remains the rightful no-route hold."
     },
     {
+      "abstention_reason": "",
       "baseline_static_adapter_path": {
         "policy_outcome": "STAY_STATIC_BASELINE",
         "selected_adapter_ids": [
           "lobe.alpha.v1"
         ]
       },
-      "case_id": "STATIC_NO_ROUTE_CONTROL__HELD_OUT_MUTATION",
-      "case_sha256": "5c9327725c87423c8962008d937bf7b9423f1b0e6b07eafe9fc2f0a9b1a7ce9f",
-      "case_variant": "HELD_OUT_MUTATION",
+      "case_id": "STATIC_NO_ROUTE_CONTROL__AUGMENTED_STATIC_HOLD__MASKED",
+      "case_role": "CONTROL",
+      "case_sha256": "6e0f8b9a8d6bacf38f582f491ad5e6e7098983a7fd22af4356b4225ac1a0db40",
+      "case_variant": "AUGMENTED_STATIC_HOLD__MASKED",
+      "counterfactual_of_case_id": "",
       "divergence_from_static": false,
       "family_category": "STATIC_CONTROL",
       "family_id": "STATIC_NO_ROUTE_CONTROL",
+      "mask_style": "EVIDENCE_ORDER_INVERSION",
+      "masked_variant_of_case_id": "",
       "oracle_policy_outcome": "STAY_STATIC_BASELINE",
-      "pack_visibility": "HELD_OUT_FOR_GRADING_ONLY",
+      "pack_visibility": "VISIBLE_TO_ORDERED_PROOF",
       "preregistered_expectation_satisfied": true,
+      "review_handoff_rule": "",
+      "route_justification": "",
       "safety_effect": "STATIC_CONTROL_EXPECTED_TO_HOLD",
       "selected_adapter_ids": [
         "lobe.alpha.v1"
@@ -996,292 +885,27 @@
         "selected_adapter_ids": [
           "lobe.alpha.v1"
         ],
-        "static_baseline_reason": "No liability should be asserted on true static-control families."
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
+        "static_baseline_reason": "Static control remains the rightful no-route hold."
       },
-      "case_id": "STATIC_NO_ROUTE_CONTROL__LOW_AMBIGUITY",
-      "case_sha256": "9a416973b666273dc45a46c54a5facb96d554485022dfbcdefdbb61304602638",
-      "case_variant": "LOW_AMBIGUITY",
-      "divergence_from_static": false,
-      "family_category": "STATIC_CONTROL",
-      "family_id": "STATIC_NO_ROUTE_CONTROL",
-      "oracle_policy_outcome": "STAY_STATIC_BASELINE",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "STATIC_CONTROL_EXPECTED_TO_HOLD",
-      "selected_adapter_ids": [
-        "lobe.alpha.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": false,
-        "route_justification": "",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ],
-        "static_baseline_reason": "No liability should be asserted on true static-control families."
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "STATIC_NO_ROUTE_CONTROL__NO_ROUTE_PARITY",
-      "case_sha256": "9711a0113db476edac6a3130799ab35989a7cf16b020cb3747f2c64137c76892",
-      "case_variant": "NO_ROUTE_PARITY",
-      "divergence_from_static": false,
-      "family_category": "STATIC_CONTROL",
-      "family_id": "STATIC_NO_ROUTE_CONTROL",
-      "oracle_policy_outcome": "STAY_STATIC_BASELINE",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "STATIC_CONTROL_EXPECTED_TO_HOLD",
-      "selected_adapter_ids": [
-        "lobe.alpha.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": false,
-        "route_justification": "",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ],
-        "static_baseline_reason": "No liability should be asserted on true static-control families."
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "STATIC_NO_ROUTE_CONTROL__STABLE_GOVERNED",
-      "case_sha256": "5d352ec6e158aa0724db4ac6c3d2bddc5439bd7470336450e800aead5c7e31a3",
-      "case_variant": "STABLE_GOVERNED",
-      "divergence_from_static": false,
-      "family_category": "STATIC_CONTROL",
-      "family_id": "STATIC_NO_ROUTE_CONTROL",
-      "oracle_policy_outcome": "STAY_STATIC_BASELINE",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "STATIC_CONTROL_EXPECTED_TO_HOLD",
-      "selected_adapter_ids": [
-        "lobe.alpha.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": false,
-        "route_justification": "",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ],
-        "static_baseline_reason": "No liability should be asserted on true static-control families."
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "STRATEGIST_CONSEQUENCE_CHAIN__ADVERSARIAL",
-      "case_sha256": "d457cd66f9b9485800c0c9aa0ac348073e520a54ca0235577662c329c2b7ff0f",
-      "case_variant": "ADVERSARIAL",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "STRATEGIST_CONSEQUENCE_CHAIN",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.strategist.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.strategist.v1 because Alpha can stop at a locally good answer without pricing downstream failure cost.",
-        "selected_adapter_ids": [
-          "lobe.strategist.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "STRATEGIST_CONSEQUENCE_CHAIN__AMBIGUITY_BOUNDARY",
-      "case_sha256": "4fd150e0d8372808119dff85cc0c2ba1ddba9db832a6ce0a6f6b182058a0391b",
-      "case_variant": "AMBIGUITY_BOUNDARY",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "STRATEGIST_CONSEQUENCE_CHAIN",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.strategist.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.strategist.v1 because Alpha can stop at a locally good answer without pricing downstream failure cost.",
-        "selected_adapter_ids": [
-          "lobe.strategist.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "STRATEGIST_CONSEQUENCE_CHAIN__GOVERNED_EXECUTION",
-      "case_sha256": "7058840f76f2a56b56ce885a59b7663a5992aeddf60ba15758fcc1d69fb49d2e",
-      "case_variant": "GOVERNED_EXECUTION",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "STRATEGIST_CONSEQUENCE_CHAIN",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.strategist.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.strategist.v1 because Alpha can stop at a locally good answer without pricing downstream failure cost.",
-        "selected_adapter_ids": [
-          "lobe.strategist.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "STRATEGIST_CONSEQUENCE_CHAIN__HELD_OUT_MUTATION",
-      "case_sha256": "7d8876d1d8a988ac30734f5def9cb13b6b90a04190dc9ef931d9a23830732523",
-      "case_variant": "HELD_OUT_MUTATION",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "STRATEGIST_CONSEQUENCE_CHAIN",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "HELD_OUT_FOR_GRADING_ONLY",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.strategist.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.strategist.v1 because Alpha can stop at a locally good answer without pricing downstream failure cost.",
-        "selected_adapter_ids": [
-          "lobe.strategist.v1"
-        ],
-        "static_baseline_reason": ""
-      }
-    },
-    {
-      "baseline_static_adapter_path": {
-        "policy_outcome": "STAY_STATIC_BASELINE",
-        "selected_adapter_ids": [
-          "lobe.alpha.v1"
-        ]
-      },
-      "case_id": "STRATEGIST_CONSEQUENCE_CHAIN__MIXED_PRESSURE",
-      "case_sha256": "081be79631678817a5a07a7bd571cca2782f096cf284ad6a2856e4c5316e3b2a",
-      "case_variant": "MIXED_PRESSURE",
-      "divergence_from_static": true,
-      "family_category": "SPECIALIST_WEDGE",
-      "family_id": "STRATEGIST_CONSEQUENCE_CHAIN",
-      "oracle_policy_outcome": "ROUTE_TO_SPECIALIST",
-      "pack_visibility": "VISIBLE_TO_AUTHORING",
-      "preregistered_expectation_satisfied": true,
-      "safety_effect": "ROUTE_EXPECTED_TO_REDUCE_ALPHA_LIABILITY",
-      "selected_adapter_ids": [
-        "lobe.strategist.v1"
-      ],
-      "shadow_selection": {
-        "abstention_reason": "",
-        "fallback_engaged": false,
-        "policy_outcome": "ROUTE_TO_SPECIALIST",
-        "review_handoff_rule": "",
-        "route_delta_vs_static": true,
-        "route_justification": "Route to lobe.strategist.v1 because Alpha can stop at a locally good answer without pricing downstream failure cost.",
-        "selected_adapter_ids": [
-          "lobe.strategist.v1"
-        ],
-        "static_baseline_reason": ""
-      }
+      "static_baseline_reason": "Static control remains the rightful no-route hold."
     }
   ],
-  "claim_boundary": "This receipt binds only recomposed router-shadow selection on the promotion-and-merge-bound 13-entrant substrate against the current static best adapter. It does not claim router superiority, learned-router cutover, or Gate E/F opening.",
-  "current_git_head": "66eb05ea5b321be86a1e320cde5fd667a06038e9",
+  "claim_boundary": "This receipt binds only recomposed ordered-proof augmentation selection on the promotion-and-merge-bound 13-entrant substrate against the current static alpha control. It does not claim router superiority, learned-router cutover, or Gate E/F opening.",
+  "current_git_head": "3fe9fbef30089847597a2fb103179e28ac58e62b",
   "current_static_best_adapter_id": "lobe.alpha.v1",
   "exact_path_match_count": 5,
   "exact_path_universality_broken": true,
-  "generated_utc": "2026-04-12T20:17:08Z",
-  "merge_outcome_binding_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_recomposed_13_entrant_substrate_live/promotion_merge_outcome_binding/cohort0_merge_outcome_binding_receipt.json",
+  "existing_followthrough_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_recomposed_router_shadow_bridge_live/cohort0_recomposed_router_shadow_followthrough_packet.json",
+  "generated_utc": "2026-04-12T22:28:20Z",
+  "merge_outcome_binding_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_stronger_cycle_chaos_a_tournament_prep_20260411_live/tournament_execution/merge_outcome_binding/cohort0_merge_outcome_binding_receipt.json",
   "next_lawful_move": "EXECUTE_RECOMPOSED_R5_ROUTER_PROOF",
-  "oracle_local_eval_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/route_bearing_stage_pack_oracle_current_head/oracle_router_local_eval_packet.json",
-  "promotion_merge_followthrough_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_recomposed_13_entrant_substrate_live/promotion_merge_outcome_binding/cohort0_real_engine_tournament_followthrough_packet.json",
-  "promotion_outcome_binding_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_recomposed_13_entrant_substrate_live/promotion_merge_outcome_binding/cohort0_promotion_outcome_binding_receipt.json",
+  "promotion_outcome_binding_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_stronger_cycle_chaos_a_tournament_prep_20260411_live/tournament_execution/merge_outcome_binding/cohort0_promotion_outcome_binding_receipt.json",
   "r5_admissible": true,
   "recomposed_substrate_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_recomposed_13_entrant_substrate_live/cohort0_recomposed_13_entrant_substrate_receipt.json",
-  "route_case_count": 27,
-  "route_distribution_delta_count": 34,
-  "route_policy_outcome_registry_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/router_superiority_recovery_prep_current_head/route_policy_outcome_registry.json",
-  "schema_id": "kt.operator.cohort0_recomposed_router_selection_receipt.v1",
-  "selection_posture": "RECOMPOSED_SHADOW_SELECTION_BOUND_TO_PROMOTION_AND_MERGE_SUBSTRATE",
+  "route_case_count": 12,
+  "route_distribution_delta_count": 17,
+  "schema_id": "kt.operator.cohort0_recomposed_router_selection_receipt.v2",
+  "selection_posture": "RECOMPOSED_ORDERED_PROOF_AUGMENTATION_BOUND_TO_PROMOTION_AND_MERGE_SUBSTRATE",
   "status": "PASS",
   "stay_static_case_count": 5,
   "subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91"
