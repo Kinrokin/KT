@@ -1,0 +1,46 @@
+{
+  "bounded_supporting_receipts": {
+    "detached_verifier_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+    "final_product_truth_boundary_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/product/final_product_truth_boundary.json",
+    "product_install_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/product_install_15m_receipt.json",
+    "public_verifier_kit_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/public_verifier_kit.json"
+  },
+  "claim_boundary": "This wave proves only that the Gate F local verifier wedge can be smoked on the current head and that the allowed tenant posture is single-tenant only. It does not prove multi-tenant isolation or broader product scale.",
+  "deployment_smoke": {
+    "command": "python -m tools.operator.public_verifier",
+    "live_verifier_head_claim_verdict": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+    "live_verifier_report_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_f_live_public_verifier_report.json",
+    "live_verifier_status": "PASS",
+    "pass_fail_surface_refs": [
+      "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+      "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json"
+    ]
+  },
+  "execution_status": "PASS__GATE_F_DEPLOYMENT_SMOKE_AND_TENANT_ISOLATION_BOUND",
+  "explicit_non_claims": [
+    "No multi-tenant isolation proof is claimed.",
+    "No cross-host execution proof is claimed.",
+    "No enterprise deployment claim is made.",
+    "No autonomous queueing or broad platform orchestration claim is made."
+  ],
+  "generated_utc": "2026-04-23T22:26:28Z",
+  "next_lawful_move": "EXECUTE_GATE_F_FRESH_OPERATOR_BOOTSTRAP_AND_GREENLINE_WAVE",
+  "schema_id": "kt.operator.cohort0_gate_f_deployment_smoke_and_tenant_isolation_wave_packet.v1",
+  "status": "PASS",
+  "subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91",
+  "supporting_findings": {
+    "detached_verifier_receipt_status": "PASS",
+    "local_profile_install_budget_minutes": 15,
+    "product_install_status": "PASS",
+    "product_truth_boundary_status": "PASS",
+    "public_verifier_kit_status": "PASS"
+  },
+  "tenant_posture": {
+    "active_profile_id": "local_verifier_mode",
+    "bounded_single_tenant_declaration": true,
+    "multi_tenant_isolation_proven": false,
+    "posture": "SINGLE_TENANT_ONLY_DECLARED"
+  },
+  "wave_outcome": "GATE_F_DEPLOYMENT_SMOKE_AND_TENANT_ISOLATION_PASS__SINGLE_TENANT_ONLY"
+}
