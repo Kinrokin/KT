@@ -33,6 +33,7 @@ def test_post_f_track_02_shared_evidence_harvest_and_authority_partition_binds(t
     work_order = tmp_path / "cohort0_post_f_track_02_dual_audit_work_order_v2.json"
 
     _write_text(tmp_path / ".gitignore", "_tmp/\n")
+    _write_text(tmp_path / ".venv" / ".gitignore", "*\n")
     _write_text(docs / "REPO_BOUNDARY.md", "boundary\n")
     _write_text(operator_tools / "sample_operator.py", "def run():\n    return 'ok'\n")
     _write_text(operator_tests / "test_sample_operator.py", "def test_ok():\n    assert True\n")
@@ -235,6 +236,12 @@ def test_post_f_track_02_shared_evidence_harvest_and_authority_partition_binds(t
 
     assert evidence_manifest["one_harvest_two_views"] is True
     assert len(hash_manifest["artifacts"]) > 0
+    repo_boundary_refs = [
+        row["artifact_ref"]
+        for row in evidence_manifest["evidence_entries"]
+        if row.get("source_id") == "repo_boundary" and row.get("kind") == "content_hashed"
+    ]
+    assert str((tmp_path / ".venv" / ".gitignore").resolve()).replace("\\", "/") not in repo_boundary_refs
     assert authority_partition["anchor_resolution"]["frozen_baseline_anchor_ref"] == "kt-post-f-reaudit-pass"
     assert baseline_view["reject_post_anchor_authority"] is True
     assert current_view["live_header_precedence_enforced"] is True

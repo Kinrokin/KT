@@ -93,7 +93,7 @@ def _iter_matches(base: Path, patterns: Iterable[str]) -> List[Path]:
             continue
         rel = path.relative_to(base).as_posix()
         for pattern in patterns:
-            if fnmatch.fnmatch(rel, pattern) or fnmatch.fnmatch(path.name, pattern):
+            if _matches_any(rel, [pattern]):
                 seen[rel] = path
                 break
     return [seen[key] for key in sorted(seen)]
@@ -101,7 +101,7 @@ def _iter_matches(base: Path, patterns: Iterable[str]) -> List[Path]:
 
 def _matches_any(rel_path: str, patterns: Iterable[str]) -> bool:
     for pattern in patterns:
-        if fnmatch.fnmatch(rel_path, pattern) or fnmatch.fnmatch(Path(rel_path).name, pattern):
+        if fnmatch.fnmatch(rel_path, pattern) or rel_path == pattern:
             return True
     return False
 
