@@ -1,0 +1,85 @@
+{
+  "authority_header": {
+    "gate_d_cleared_on_successor_line": true,
+    "gate_e_open_on_successor_line": true,
+    "gate_f_open": false,
+    "scope_setting_only": true
+  },
+  "claim_boundary": "This packet freezes the smallest Gate F surface now truthfully supportable by the live system: one local single-tenant verifier-backed execute/receipt wedge. It does not open broader product planes.",
+  "execution_status": "PASS__GATE_F_NARROW_WEDGE_SCOPE_BOUND",
+  "explicit_non_claims": [
+    "No multi-tenant execution claim.",
+    "No cross-host proof claim.",
+    "No enterprise readiness claim.",
+    "No training, mutation, or runtime cutover claim.",
+    "No autonomous multi-surface platform claim."
+  ],
+  "generated_utc": "2026-04-23T22:26:22Z",
+  "next_lawful_move": "AUTHOR_GATE_F_PRODUCT_TRUTH_AND_GOVERNANCE_CONTRACT",
+  "schema_id": "kt.operator.cohort0_gate_f_narrow_wedge_scope_packet.v1",
+  "scope_outcome": "GATE_F_NARROW_WEDGE_SCOPE_DEFINED__LOCAL_VERIFIER_MODE_ONLY",
+  "source_refs": {
+    "branch_law_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_post_clear_branch_law_packet.json",
+    "deployment_profiles": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/product/deployment_profiles.json",
+    "support_boundary": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/product/support_boundary.json",
+    "wrapper_spec": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/product/client_wrapper_spec.json"
+  },
+  "status": "PASS",
+  "subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91",
+  "support_boundary": {
+    "no_training_default": true,
+    "runtime_cutover_allowed": false,
+    "support_tier": "BOUNDED_E1_OPERATOR_GUIDANCE_ONLY",
+    "supported_surfaces": [
+      "same_host_verifier_packet_generation",
+      "same_host_detached_pass_fail_validation",
+      "bounded_operator_handoff",
+      "bounded_audit_packet_review"
+    ],
+    "unsupported_surfaces": [
+      "cross_host_replay_claims",
+      "E2_or_higher_externality_claims",
+      "hostile_or_outsider_verification_claims",
+      "learned_router_cutover_claims",
+      "multi_lobe_orchestration_claims",
+      "live_training_or_mutation_support",
+      "enterprise_readiness_claims"
+    ]
+  },
+  "wedge_mechanics": {
+    "detached_command": "python -m tools.operator.public_verifier_detached_validate",
+    "detached_entrypoint_id": "detached_pass_fail",
+    "pass_fail_surface_refs": [
+      "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json"
+    ],
+    "support_boundary_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/product/support_boundary.json",
+    "verify_command": "python -m tools.operator.public_verifier",
+    "verify_entrypoint_id": "verify_packet"
+  },
+  "wedge_surface": {
+    "active_profile_id": "local_verifier_mode",
+    "deployment_modes_allowed": [
+      "local_verifier_mode"
+    ],
+    "for_operator_type": "bounded_local_operator",
+    "receipt_must_return": [
+      "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+      "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json"
+    ],
+    "successful_use_definition": [
+      "run the bounded verifier entrypoint",
+      "obtain the detached PASS/FAIL receipt surface",
+      "retrieve the bounded audit packet and verifier kit without repo archaeology"
+    ],
+    "supported_actions": [
+      "submit_bounded_verification_request",
+      "retrieve_pass_fail_receipt",
+      "retrieve_bounded_audit_packet",
+      "retrieve_replay_kit_refs"
+    ],
+    "surface_summary": "Single-tenant same-host verifier-backed execution request, receipt retrieval, and replay-kit handoff.",
+    "wedge_id": "KT_F_NARROW_LOCAL_VERIFIER_EXECUTE_RECEIPT_WEDGE_V1"
+  }
+}
