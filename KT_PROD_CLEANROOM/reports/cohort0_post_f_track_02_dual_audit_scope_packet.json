@@ -1,0 +1,174 @@
+{
+  "anchor_binding": {
+    "current_truth": {
+      "anchor_type": "git_branch_head",
+      "immutability_mode": "current_truth_live",
+      "ref_name": "expansion/post-f-track-01",
+      "resolve_to_commit_at_runtime": true
+    },
+    "frozen_baseline": {
+      "anchor_type": "git_tag",
+      "immutability_mode": "frozen_baseline",
+      "ref_name": "kt-post-f-reaudit-pass",
+      "require_annotated_tag": true,
+      "require_signature": false,
+      "resolve_to_commit_at_runtime": true
+    },
+    "supporting_release_tags": [
+      "kt-v11-minimum-path-complete",
+      "kt-gate-f-local-verifier-wedge-confirmed",
+      "kt-post-f-reaudit-pass",
+      "kt-canonical-clean-closeout"
+    ]
+  },
+  "authority_header": {
+    "canonical_authority_branch": "main",
+    "gate_d_cleared_on_successor_line": true,
+    "gate_e_open_on_successor_line": true,
+    "gate_f_narrow_wedge_confirmed": true,
+    "gate_f_open": false,
+    "post_f_reaudit_passed": true,
+    "track_01_closed_as_bounded_proof_packet": true,
+    "working_branch": "expansion/post-f-track-01",
+    "working_branch_non_authoritative_until_protected_merge": true
+  },
+  "claim_boundary": "This packet binds only the Track 02 dual-audit scope. It freezes one unchanged baseline audit, one hardened current-truth audit, and one delta crosswalk from a shared evidence harvest, while preserving separate verdicts.",
+  "execution_plan": {
+    "audit_runs": [
+      {
+        "anchor_ref": "frozen_baseline",
+        "evidence_view_mode": "frozen_baseline_view",
+        "output_paths": {
+          "blocker_ledger_path": "${KT_ROOT:-.}/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_frozen_baseline_blocker_ledger.json",
+          "receipt_path": "${KT_ROOT:-.}/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_frozen_baseline_audit_receipt.json",
+          "verdict_path": "${KT_ROOT:-.}/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_frozen_baseline_audit_packet.json"
+        },
+        "prompt_ref": "baseline_frozen",
+        "run_id": "frozen_baseline_audit"
+      },
+      {
+        "anchor_ref": "current_truth",
+        "evidence_view_mode": "current_truth_live_view",
+        "output_paths": {
+          "blocker_ledger_path": "${KT_ROOT:-.}/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_current_truth_blocker_ledger.json",
+          "receipt_path": "${KT_ROOT:-.}/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_current_truth_audit_receipt.json",
+          "verdict_path": "${KT_ROOT:-.}/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_current_truth_audit_packet.json"
+        },
+        "prompt_ref": "current_truth_hardened",
+        "run_id": "hardened_current_truth_audit"
+      }
+    ],
+    "authority_partition": {
+      "precedence_order": [
+        "current_truth_anchor_commit_consistent_live_header",
+        "current_truth_anchor_commit_consistent_product_truth",
+        "frozen_baseline_anchor_commit_consistent_authority",
+        "current_repo_boundary_and_ignore_law",
+        "current_operator_tranches_and_tests",
+        "tagged_release_receipts_and_closeout_packets",
+        "drive_exports_with_hash_and_source_metadata",
+        "chat_exports_as_supporting_history",
+        "historical_or_superseded_artifacts"
+      ],
+      "stale_if": [
+        "artifact_conflicts_with_anchor_commit_state",
+        "artifact_is_superseded_by_later_more_authoritative_receipt_for_same_contract",
+        "artifact_is_outside_repo_boundary_and_claims_canonical_authority",
+        "artifact_is_unhashable_or_unverifiable",
+        "artifact_is_secret_bearing_content",
+        "artifact_branch_mismatch_without_explicit_authority_annotation"
+      ],
+      "view_rules": {
+        "baseline_view_rejects_post_anchor_authority": true,
+        "current_truth_view_allows_authorized_current_overrides": true,
+        "historical_receipts_can_inform_lineage_not_override_live_header": true
+      }
+    },
+    "delta_crosswalk_enabled": true,
+    "meta_summary_enabled": true,
+    "shared_evidence_harvest": {
+      "mode": "single_shared_harvest",
+      "one_harvest_two_views": true,
+      "secret_policy": {
+        "emit_secret_presence_note": true,
+        "metadata_only_globs": [
+          "**/.envsecrets"
+        ],
+        "never_read_globs": [
+          "**/.env",
+          "**/.env.*",
+          "**/.envsecrets",
+          "**/*.pem",
+          "**/*.key",
+          "**/*id_rsa*"
+        ]
+      },
+      "source_count": 8
+    }
+  },
+  "execution_status": "PASS__POST_F_TRACK_02_DUAL_AUDIT_SCOPE_BOUND",
+  "generated_utc": "2026-04-24T05:58:55Z",
+  "next_lawful_move": "EXECUTE_POST_F_TRACK_02_SHARED_EVIDENCE_HARVEST_AND_AUTHORITY_PARTITION",
+  "prompt_artifact_binding": {
+    "baseline_frozen": {
+      "expected_sha256": "f7266f77c21ecfc88c8c671124fb158c79a2c254596a234e543aecd0f06f707a",
+      "prompt_id": "KT_SUPER_HARSH_ADVERSARIAL_AUDIT_V3_1_SCOPE_NORMALIZED",
+      "sha256": "f7266f77c21ecfc88c8c671124fb158c79a2c254596a234e543aecd0f06f707a",
+      "source_path": "D:/user/rober/Downloads/baseline_scope_normalized_v3_1.md",
+      "unchanged_required": true
+    },
+    "current_truth_hardened": {
+      "authorized_mutation_allowed": false,
+      "current_truth_overrides_are_inside_prompt_artifact": true,
+      "expected_sha256": "f87f002379c5e41bdaee6c7ff53f947de7c920ee6f2fa7e65362290745956614",
+      "prompt_id": "KT_MAX_POWER_ADVERSARIAL_AUDIT_PLUS_ELEVATION_BRIEF__POST_F_HARDENED",
+      "sha256": "f87f002379c5e41bdaee6c7ff53f947de7c920ee6f2fa7e65362290745956614",
+      "source_path": "D:/user/rober/Downloads/current_truth_hardened_post_f_v1.md"
+    },
+    "storage_model": "external_files_with_hash_verification"
+  },
+  "schema_id": "kt.operator.cohort0_post_f_track_02_dual_audit_scope_packet.v1",
+  "scope_outcome": "POST_F_TRACK_02_DUAL_AUDIT_SCOPE_DEFINED__SEPARATE_BASELINE_AND_CURRENT_TRUTH_VERDICTS",
+  "separation_contract": {
+    "baseline_and_current_truth_verdicts_must_remain_separate": true,
+    "baseline_prompt_must_remain_unchanged": true,
+    "historical_receipts_may_inform_lineage_not_override_live_header": true,
+    "track_01_bounded_proof_may_inform_benchmark_readiness_not_full_system_superiority": true
+  },
+  "source_refs": {
+    "baseline_prompt": "D:/user/rober/Downloads/baseline_scope_normalized_v3_1.md",
+    "current_truth_prompt": "D:/user/rober/Downloads/current_truth_hardened_post_f_v1.md",
+    "dual_audit_work_order": "D:/user/rober/Downloads/cohort0_post_f_track_02_dual_audit_work_order_v2.json",
+    "track01_final_summary_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_final_summary_packet.json"
+  },
+  "status": "PASS",
+  "subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91",
+  "track_identity": {
+    "track_id": "POST_F_TRACK_02_DUAL_AUDIT",
+    "track_name": "Post-F Dual Audit",
+    "working_branch": "expansion/post-f-track-01",
+    "working_branch_non_authoritative_until_protected_merge": true
+  },
+  "work_order_binding": {
+    "constitutional_order_ref": {
+      "governing_law": [
+        "keep claims narrow and lawful",
+        "separate canonical truth from archive/lab/history",
+        "finish minimum path before widening",
+        "controlled post-F expansion instead of drift"
+      ],
+      "source_packet": "kt_real_power_closure_and_execution_v11"
+    },
+    "objective": "Run one frozen baseline audit unchanged, one hardened current-truth audit, and one delta crosswalk from a single shared evidence harvest while preserving separate verdicts.",
+    "repo_requirements": {
+      "canonical_authority_branch": "main",
+      "fail_closed_on_dirty_state": true,
+      "require_clean_worktree": true,
+      "working_branch": "expansion/post-f-track-01"
+    },
+    "schema_version": "1.1.0",
+    "work_order_id": "cohort0_post_f_track_02_dual_audit_work_order",
+    "work_order_path": "D:/user/rober/Downloads/cohort0_post_f_track_02_dual_audit_work_order_v2.json",
+    "work_order_sha256": "614820a67b0b0e07640b526a5a21b2c0aa5abe0785b371106fda823051d07b1b"
+  }
+}
