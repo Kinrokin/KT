@@ -1,0 +1,92 @@
+{
+  "category_fair": true,
+  "generated_utc": "2026-04-24T04:04:11Z",
+  "metric_results": [
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/product_install_15m_receipt.json",
+        "KT_PROD_CLEANROOM/reports/operator_handoff_receipt.json",
+        "KT_PROD_CLEANROOM/product/nist_mapping_matrix.json",
+        "KT_PROD_CLEANROOM/product/iso_42001_mapping_matrix.json",
+        "KT_PROD_CLEANROOM/product/eu_ai_act_alignment_matrix.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_internal_baseline_selection_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_variation_receipt.json"
+      ],
+      "hard_stop": true,
+      "justification": "The regulated workflow row remains bounded, but the operator handoff bundle is canonical-wedge centered and requires extra mapping surfaces to complete this row cleanly.",
+      "metric_id": "receipt_completeness",
+      "state": "PARTIAL",
+      "state_rule": "All core required receipts exist, but one bounded supporting cross-reference is incomplete.",
+      "weight": 3
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+        "KT_PROD_CLEANROOM/product/nist_mapping_matrix.json",
+        "KT_PROD_CLEANROOM/product/iso_42001_mapping_matrix.json",
+        "KT_PROD_CLEANROOM/product/eu_ai_act_alignment_matrix.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_internal_baseline_selection_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_variation_receipt.json"
+      ],
+      "hard_stop": true,
+      "justification": "Replay remains possible, but this row requires pulling the extra regulated overlays alongside the replay path, which is a bounded manual step beyond the canonical wedge.",
+      "metric_id": "replayability",
+      "state": "PARTIAL",
+      "state_rule": "Replay is possible with one bounded documented manual step and no hidden local state.",
+      "weight": 3
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_internal_baseline_selection_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_variation_receipt.json"
+      ],
+      "hard_stop": true,
+      "justification": "The regulated workflow baseline still resolves against the same detached PASS/FAIL boundary.",
+      "metric_id": "fail_closed_behavior",
+      "state": "PASS",
+      "state_rule": "Bounded defects terminate fail-closed and are surfaced explicitly in the returned evidence.",
+      "weight": 3
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/docs/operator/RUN_KT_IN_30_MINUTES.md",
+        "KT_PROD_CLEANROOM/reports/operator_handoff_receipt.json",
+        "KT_PROD_CLEANROOM/product/nist_mapping_matrix.json",
+        "KT_PROD_CLEANROOM/product/iso_42001_mapping_matrix.json",
+        "KT_PROD_CLEANROOM/product/eu_ai_act_alignment_matrix.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_internal_baseline_selection_receipt.json"
+      ],
+      "hard_stop": false,
+      "justification": "The row stays lawful, but the operator path is heavier because the regulated overlays are not the shortest handoff path the wedge was optimized for.",
+      "metric_id": "operator_clarity_and_bounded_execution_integrity",
+      "state": "PARTIAL",
+      "state_rule": "The path stays bounded, but one manual clarification is needed.",
+      "weight": 2
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/product_install_15m_receipt.json",
+        "KT_PROD_CLEANROOM/reports/operator_handoff_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_internal_baseline_selection_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_variation_receipt.json"
+      ],
+      "hard_stop": false,
+      "justification": "Useful bounded output remains available, but it takes one extra documented standards-overlay step, which is a bounded defect for this replay-and-handoff stress lane.",
+      "metric_id": "useful_output_success_under_wedge_contract",
+      "state": "PARTIAL",
+      "state_rule": "The result is materially useful, but one bounded defect remains.",
+      "weight": 2
+    }
+  ],
+  "normalized_score": 0.6154,
+  "row_class": "PARTIAL",
+  "row_id": "STRONGEST_APPROVED_STATIC_INTERNAL_BASELINE",
+  "row_subject": "regulated_workflow_mode",
+  "row_type": "INTERNAL_STATIC_BASELINE",
+  "schema_id": "kt.operator.cohort0_post_f_track_01_second_wave_row_receipt.v1",
+  "selection_receipt_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_internal_baseline_selection_receipt.json",
+  "status": "PASS",
+  "variation_id": "TRACK_01_REPLAY_AND_OPERATOR_HANDOFF_STRESS__SAME_TINY_MATRIX",
+  "weighted_score": 16
+}

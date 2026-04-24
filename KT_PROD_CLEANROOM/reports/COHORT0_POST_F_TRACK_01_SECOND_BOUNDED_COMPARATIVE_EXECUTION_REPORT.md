@@ -1,0 +1,11 @@
+# Cohort0 Post-F Track 01 Second Bounded Comparative Execution Report
+
+- Execution status: `PASS__POST_F_TRACK_01_SECOND_BOUNDED_COMPARATIVE_EXECUTION_COMPLETE`
+- Execution outcome: `POST_F_TRACK_01_SECOND_BOUNDED_COMPARATIVE_EXECUTION_COMPLETE__KT_WEDGE_ADVANTAGE_HOLDS_UNDER_REPLAY_HANDOFF_STRESS`
+- Working branch: `expansion/post-f-track-01`
+- Variation: `TRACK_01_REPLAY_AND_OPERATOR_HANDOFF_STRESS__SAME_TINY_MATRIX`
+- Verdict: `KT_CANONICAL_WEDGE_ADVANTAGE__CATEGORY_FAIR`
+- KT row: `PASS` / `26`
+- Internal row: `PARTIAL` / `16`
+- External row: `PARTIAL` / `19`
+- Next lawful move: `AUTHOR_POST_F_TRACK_01_FINAL_SUMMARY_PACKET`

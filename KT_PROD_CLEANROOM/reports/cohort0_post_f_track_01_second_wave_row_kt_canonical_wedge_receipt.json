@@ -1,0 +1,85 @@
+{
+  "category_fair": true,
+  "generated_utc": "2026-04-24T04:04:11Z",
+  "metric_results": [
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/product_install_15m_receipt.json",
+        "KT_PROD_CLEANROOM/reports/operator_handoff_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_variation_receipt.json"
+      ],
+      "hard_stop": true,
+      "justification": "The canonical wedge still returns a complete bounded receipt bundle when measured through the product install and operator handoff surfaces.",
+      "metric_id": "receipt_completeness",
+      "state": "PASS",
+      "state_rule": "All required wedge receipts are emitted, referenced, and internally consistent.",
+      "weight": 3
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+        "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_variation_receipt.json"
+      ],
+      "hard_stop": true,
+      "justification": "The canonical wedge has an explicit independent replay recipe and kit-level replay refs without repo archaeology.",
+      "metric_id": "replayability",
+      "state": "PASS",
+      "state_rule": "The run can be replayed or audited from returned refs alone without repo archaeology.",
+      "weight": 3
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_variation_receipt.json"
+      ],
+      "hard_stop": true,
+      "justification": "The canonical verifier path continues to expose bounded PASS/FAIL surfaces cleanly under replay-and-handoff stress.",
+      "metric_id": "fail_closed_behavior",
+      "state": "PASS",
+      "state_rule": "Bounded defects terminate fail-closed and are surfaced explicitly in the returned evidence.",
+      "weight": 3
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/docs/operator/RUN_KT_IN_30_MINUTES.md",
+        "KT_PROD_CLEANROOM/reports/operator_handoff_receipt.json",
+        "KT_PROD_CLEANROOM/product/client_wrapper_spec.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_variation_receipt.json"
+      ],
+      "hard_stop": false,
+      "justification": "The canonical wedge remains the shortest operator path even when the court stresses handoff and replay explicitly.",
+      "metric_id": "operator_clarity_and_bounded_execution_integrity",
+      "state": "PASS",
+      "state_rule": "The operator path is clear, bounded, and matches the declared wedge contract with no hidden steps.",
+      "weight": 2
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/product_install_15m_receipt.json",
+        "KT_PROD_CLEANROOM/reports/operator_handoff_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_variation_receipt.json"
+      ],
+      "hard_stop": false,
+      "justification": "The canonical wedge still completes the useful bounded verifier-and-handoff task without leaving the confirmed local_verifier_mode surface.",
+      "metric_id": "useful_output_success_under_wedge_contract",
+      "state": "PASS",
+      "state_rule": "The bounded task completes usefully without leaving the confirmed wedge surface.",
+      "weight": 2
+    }
+  ],
+  "normalized_score": 1.0,
+  "row_class": "PASS",
+  "row_id": "KT_CANONICAL_WEDGE",
+  "row_subject": "KT_F_NARROW_LOCAL_VERIFIER_EXECUTE_RECEIPT_WEDGE_V1",
+  "row_type": "CANONICAL_CONFIRMED_SURFACE",
+  "schema_id": "kt.operator.cohort0_post_f_track_01_second_wave_row_receipt.v1",
+  "status": "PASS",
+  "variation_id": "TRACK_01_REPLAY_AND_OPERATOR_HANDOFF_STRESS__SAME_TINY_MATRIX",
+  "weighted_score": 26
+}

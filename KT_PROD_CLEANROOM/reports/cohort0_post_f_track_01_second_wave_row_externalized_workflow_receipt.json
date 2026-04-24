@@ -1,0 +1,89 @@
+{
+  "category_fair": true,
+  "generated_utc": "2026-04-24T04:04:11Z",
+  "metric_results": [
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/product_install_15m_receipt.json",
+        "KT_PROD_CLEANROOM/reports/operator_handoff_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_external_workflow_selection_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_variation_receipt.json"
+      ],
+      "hard_stop": true,
+      "justification": "The detached workflow stays bounded, but one detached-specific receipt still has to be pulled in alongside the shortest operator handoff bundle.",
+      "metric_id": "receipt_completeness",
+      "state": "PARTIAL",
+      "state_rule": "All core required receipts exist, but one bounded supporting cross-reference is incomplete.",
+      "weight": 3
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+        "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_external_workflow_selection_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_variation_receipt.json"
+      ],
+      "hard_stop": true,
+      "justification": "The detached workflow is the strongest replay-oriented comparator row because it carries an explicit independent replay recipe and detached runtime proof path.",
+      "metric_id": "replayability",
+      "state": "PASS",
+      "state_rule": "The run can be replayed or audited from returned refs alone without repo archaeology.",
+      "weight": 3
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_external_workflow_selection_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_variation_receipt.json"
+      ],
+      "hard_stop": true,
+      "justification": "The detached workflow continues to prove explicit bounded PASS/FAIL behavior under replay stress.",
+      "metric_id": "fail_closed_behavior",
+      "state": "PASS",
+      "state_rule": "Bounded defects terminate fail-closed and are surfaced explicitly in the returned evidence.",
+      "weight": 3
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/docs/operator/RUN_KT_IN_30_MINUTES.md",
+        "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_external_workflow_selection_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_variation_receipt.json"
+      ],
+      "hard_stop": false,
+      "justification": "The detached workflow remains bounded, but it is less direct than the canonical in-repo handoff path and still needs one manual package-handling step.",
+      "metric_id": "operator_clarity_and_bounded_execution_integrity",
+      "state": "PARTIAL",
+      "state_rule": "The path stays bounded, but one manual clarification is needed.",
+      "weight": 2
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+        "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_external_workflow_selection_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_variation_receipt.json"
+      ],
+      "hard_stop": false,
+      "justification": "The detached row still proves the bounded verifier result, but it is optimized for detached replay parity rather than the full canonical handoff path.",
+      "metric_id": "useful_output_success_under_wedge_contract",
+      "state": "PARTIAL",
+      "state_rule": "The result is materially useful, but one bounded defect remains.",
+      "weight": 2
+    }
+  ],
+  "normalized_score": 0.7308,
+  "row_class": "PARTIAL",
+  "row_id": "ONE_CATEGORY_FAIR_EXTERNAL_MONOLITH_WORKFLOW",
+  "row_subject": "KT_PUBLIC_VERIFIER_DETACHED_PACKAGE_WORKFLOW_V1",
+  "row_type": "EXTERNAL_MONOLITH_WORKFLOW",
+  "schema_id": "kt.operator.cohort0_post_f_track_01_second_wave_row_receipt.v1",
+  "selection_receipt_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_external_workflow_selection_receipt.json",
+  "status": "PASS",
+  "variation_id": "TRACK_01_REPLAY_AND_OPERATOR_HANDOFF_STRESS__SAME_TINY_MATRIX",
+  "weighted_score": 19
+}
