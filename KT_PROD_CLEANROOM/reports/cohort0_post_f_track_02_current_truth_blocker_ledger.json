@@ -1,0 +1,55 @@
+{
+  "anchor_commit": "bb49da82d50ede03f04d165ed883cf05df0c156e",
+  "blockers_preventing_audit": [],
+  "execution_status": "PASS__NO_AUDIT_EXECUTION_BLOCKERS",
+  "generated_utc": "2026-04-24T06:35:11Z",
+  "note": "No blockers prevented the hardened current-truth audit from executing. Prompt integrity, scope binding, and shared harvest inputs all held.",
+  "open_system_blockers_documented_in_audit": [
+    {
+      "blocker_id": "H1_ACTIVATION_GATE_CLOSED",
+      "blocks_system_capability": true,
+      "blocks_this_audit": false,
+      "elevation_path": "Resolve authority convergence and reconvene H1.",
+      "severity": "HIGH"
+    },
+    {
+      "blocker_id": "CURRENT_HEAD_EXTERNAL_CAPABILITY_NOT_CONFIRMED",
+      "blocks_system_capability": true,
+      "blocks_this_audit": false,
+      "elevation_path": "Earn E2 cross-host proof and reconvene capability confirmation.",
+      "severity": "HIGH"
+    },
+    {
+      "blocker_id": "EXTERNALITY_CEILING_E1",
+      "blocks_system_capability": true,
+      "blocks_this_audit": false,
+      "elevation_path": "Lift from E1 to E2 through cross-host replay proof.",
+      "severity": "MEDIUM"
+    },
+    {
+      "blocker_id": "PLATFORM_ENFORCEMENT_UNPROVEN",
+      "blocks_system_capability": true,
+      "blocks_this_audit": false,
+      "elevation_path": "Earn platform-enforced governance proof before broader product claims.",
+      "severity": "HIGH"
+    },
+    {
+      "blocker_id": "EXPANSION_BRANCH_NOT_MERGED_TO_MAIN",
+      "blocks_canonical_authority": true,
+      "blocks_this_audit": false,
+      "elevation_path": "Merge through the protected main path.",
+      "severity": "MEDIUM"
+    },
+    {
+      "blocker_id": "NO_EXTERNAL_CUSTOMER_OR_REVENUE",
+      "blocks_commercial_claims": true,
+      "blocks_this_audit": false,
+      "elevation_path": "Earn first customer and revenue receipt before commercial widening.",
+      "severity": "HIGH"
+    }
+  ],
+  "run_id": "hardened_current_truth_audit",
+  "schema_id": "kt.operator.cohort0_post_f_track_02_current_truth_blocker_ledger.v1",
+  "status": "PASS",
+  "work_order_id": "cohort0_post_f_track_02_dual_audit_work_order"
+}
