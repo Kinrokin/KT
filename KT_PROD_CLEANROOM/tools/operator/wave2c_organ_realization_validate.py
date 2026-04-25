@@ -372,6 +372,28 @@ def _multiverse(root: Path, export_root: Path, telemetry_path: Path, registry_ha
     )
 
 
+def _wave2a_boundary_context(root: Path) -> Dict[str, Any]:
+    wave2a_path = root / REPORT_ROOT_REL / "kt_wave2a_provider_activation_receipts.json"
+    if wave2a_path.exists():
+        return _load_json(wave2a_path)
+    return {
+        "schema_id": "kt.wave2a.provider_activation_receipts.absent_boundary.v1",
+        "status": "SKIP",
+        "scope_boundary": (
+            "Wave 2A provider activation evidence is absent in this execution context; "
+            "Wave 2C may preserve the live-provider boundary but must not claim live provider activation."
+        ),
+        "boundary_holds": [
+            "WAVE2A_PROVIDER_ACTIVATION_EVIDENCE_ABSENT",
+            "LIVE_PROVIDER_ACTIVATION_NOT_CLAIMED_BY_WAVE2C",
+        ],
+        "stronger_claim_not_made": [
+            "successful_remote_inference_claimed_without_evidence",
+            "wave2a_live_provider_activation_promoted_by_wave2c",
+        ],
+    }
+
+
 def _council(root: Path, export_root: Path, telemetry_path: Path, registry_hash: str) -> Dict[str, Any]:
     context = _context()
     request = CouncilRequestSchema.from_dict({"schema_id": CouncilRequestSchema.SCHEMA_ID, "schema_version_hash": CouncilRequestSchema.SCHEMA_VERSION_HASH, "request_id": "wave2c.council.request", "runtime_registry_hash": registry_hash, "mode": COUNCIL_MODE_DRY_RUN, "provider_ids": ["dry_run"], "fanout_cap": 1, "per_call_token_cap": 256, "total_token_cap": 1024, "input_hash": sha256_text("wave2c council request")})
@@ -385,7 +407,7 @@ def _council(root: Path, export_root: Path, telemetry_path: Path, registry_hash:
     failure = _failure(export_root / "council", surface_id="council.council_router.plan_execute", error_class="CouncilLiveRefused", bounded_reason=str(live_plan.get("refusal_code", "")), input_hash=live_request.data["input_hash"], context_hash=str(live_result["result_hash"]), policy_profile="wave2c.council.live_refusal", budget_profile="wave2c.council.bounds", replay_pack_ref="E0_INTERNAL_SELF_ISSUED_ONLY")
     probe_plan = _spine_probe(root, export_root / "council", "council_plan", request.to_dict())
     probe_execute = _spine_probe(root, export_root / "council", "council_execute", CouncilPlanSchema.from_dict(plan_one).to_dict())
-    wave2a = _load_json(root / REPORT_ROOT_REL / "kt_wave2a_provider_activation_receipts.json")
+    wave2a = _wave2a_boundary_context(root)
     receipt = f"{REPORT_ROOT_REL}/kt_wave2c_council_kernel_binding_pack.json"
     _telemetry(telemetry_path, "council", receipt, failure["artifact_ref"])
     return _pack(

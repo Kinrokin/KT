@@ -106,7 +106,7 @@ jobs:
         if: always()
         shell: bash
         env:
-          EXPECTED_CERT_IDENTITY: https://github.com/Kinrokin/KT/.github/workflows/ci_truth_barrier.yml@refs/heads/main
+          EXPECTED_CERT_IDENTITY: https://github.com/${{ github.repository }}/.github/workflows/ci_truth_barrier.yml@${{ github.ref }}
           EXPECTED_CERT_OIDC_ISSUER: https://token.actions.githubusercontent.com
         run: |
           set -euo pipefail
@@ -143,9 +143,12 @@ jobs:
               "bundle_sha256": hashlib.sha256(bundle.read_bytes()).hexdigest(),
               "certificate_identity": os.environ["EXPECTED_CERT_IDENTITY"],
               "certificate_oidc_issuer": os.environ["EXPECTED_CERT_OIDC_ISSUER"],
+              "certificate_identity_scope": "current_github_ref",
+              "main_branch_certificate_identity": f"https://github.com/{os.environ['GITHUB_REPOSITORY']}/.github/workflows/ci_truth_barrier.yml@refs/heads/main",
               "verification_status": "PASS",
               "stronger_claim_not_made": [
                   "WS11 PASS is earned by artifact upload alone",
+                  "PR keyless identity is the same as main keyless identity before protected merge",
                   "WS12 is unlocked by this receipt alone",
                   "Release readiness is proven",
               ],

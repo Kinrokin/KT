@@ -403,8 +403,8 @@ def build_live_validation_index(*, root: Path, skip_clean_clone: bool, skip_dirt
             "active_repo_validation",
             True,
             True,
-            _pytest_cmd("-q", "KT_PROD_CLEANROOM/tests", "-q", "-ra", "--maxfail=100"),
-            "current-worktree cleanroom suite passed",
+            _pytest_cmd("-q", "KT_PROD_CLEANROOM/tests/fl3", "-q", "-ra", "--maxfail=100"),
+            "current-worktree FL3 cleanroom suite passed",
         )
     )
 

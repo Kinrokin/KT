@@ -9,7 +9,15 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.operator.titanium_common import repo_root  # noqa: E402
-from tools.operator.wave2c_organ_realization_validate import build_wave2c_reports  # noqa: E402
+from tools.operator.wave2c_organ_realization_validate import build_wave2c_reports, _wave2a_boundary_context  # noqa: E402
+
+
+def test_wave2c_preserves_boundary_when_wave2a_provider_receipt_absent(tmp_path: Path) -> None:
+    payload = _wave2a_boundary_context(tmp_path)
+
+    assert payload["status"] == "SKIP"
+    assert "LIVE_PROVIDER_ACTIVATION_NOT_CLAIMED_BY_WAVE2C" in payload["boundary_holds"]
+    assert "successful_remote_inference_claimed_without_evidence" in payload["stronger_claim_not_made"]
 
 
 def test_wave2c_reports_preserve_bounded_scope() -> None:
