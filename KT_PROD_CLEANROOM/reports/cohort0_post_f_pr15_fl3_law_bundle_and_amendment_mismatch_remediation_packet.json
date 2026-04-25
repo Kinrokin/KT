@@ -1,7 +1,7 @@
 {
   "authority_header": {
     "authoritative_branch": "authoritative/post-f-pr15-fl3-remediation",
-    "authoritative_branch_head_before_remediation": "33fe8c0ce462ea1fae4fdca689b7bfb8f2b7d47c",
+    "authoritative_branch_head_before_remediation": "09395cc98056e7cb858728db3691420352d8de6c",
     "package_promotion_still_deferred": true,
     "replay_on_main_still_deferred_until_pr15_merge": true,
     "truth_engine_law_unchanged": true
@@ -9,19 +9,19 @@
   "claim_boundary": "This remediation packet repairs tranche T01 support-chain drift only. It does not change truth-engine law, does not widen package truth, and does not authorize replay on main.",
   "emitted_support_artifacts": {
     "kt_cli_profile_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
-    "law_amendment_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260425T180625Z.json",
-    "law_bundle_change_receipt_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260425T180620Z.json",
+    "law_amendment_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260425T183522Z.json",
+    "law_bundle_change_receipt_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260425T183522Z.json",
     "law_bundle_sha_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256"
   },
   "execution_status": "PASS__POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_MISMATCH_REMEDIATED",
-  "generated_utc": "2026-04-25T18:06:25Z",
+  "generated_utc": "2026-04-25T18:35:22Z",
   "lane_outcome": "POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_SUPPORT_CHAIN_REPAIRED__READY_FOR_T01_RERUN",
   "mapping": {
     "mapping_summary": "Advance the support chain from the last lawful first-parent ancestor whose computed bundle hash still matched the pinned March-era support chain to the current active-tree bundle hash.",
-    "new_active_tree_hash": "905ab6d4d25715fa518f3155f5880b29c7cf13997d59dbf0924b66826b11302c",
-    "old_pin_hash": "375558537ee5654a8a98748a7a9706554176c2373ef54efe985f92809693ce2e",
-    "old_supported_hash": "375558537ee5654a8a98748a7a9706554176c2373ef54efe985f92809693ce2e",
-    "old_supported_ref": "5b1894f7ac2653322e2ce2ae89b0ec3bb2de8605",
+    "new_active_tree_hash": "bca49a85b0358be4761270f1a2ba6b8be539097354d6becac8b3c69875636d4b",
+    "old_pin_hash": "905ab6d4d25715fa518f3155f5880b29c7cf13997d59dbf0924b66826b11302c",
+    "old_supported_hash": "905ab6d4d25715fa518f3155f5880b29c7cf13997d59dbf0924b66826b11302c",
+    "old_supported_ref": "698043be84506d1aa6ce483eeb6d3298d7e6f9fc",
     "resolution_class": "BIND_SUPERSESSION_AND_AMENDMENT_MAPPING"
   },
   "next_lawful_move": "RERUN_POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_MISMATCH_PACKET",
