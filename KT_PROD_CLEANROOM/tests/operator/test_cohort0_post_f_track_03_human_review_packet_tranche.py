@@ -70,6 +70,7 @@ def test_track_03_human_review_packet_freezes_review_surface(tmp_path: Path, mon
             "status": "PASS",
             "current_git_head": "track03-head",
             "current_branch": tranche.REQUIRED_WORKING_BRANCH,
+            "frozen_manifest_digest": "manifest-123",
         },
     )
     _write_json(
@@ -111,4 +112,3 @@ def test_track_03_human_review_packet_freezes_review_surface(tmp_path: Path, mon
     assert packet["review_state_partition"]["review_complete"] is False
     assert packet["next_lawful_move"] == tranche.NEXT_MOVE
     assert receipt["review_required_file_count"] == 5
-

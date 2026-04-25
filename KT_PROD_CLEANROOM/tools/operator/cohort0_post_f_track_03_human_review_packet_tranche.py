@@ -67,6 +67,18 @@ def _require_status(payload: Dict[str, Any], *, label: str, expected: str) -> No
         raise RuntimeError(f"FAIL_CLOSED: {label} must have status {expected}, got {actual or 'MISSING'}")
 
 
+def _require_current_head_receipt(payload: Dict[str, Any]) -> None:
+    current_branch = str(payload.get("current_branch", "")).strip()
+    current_git_head = str(payload.get("current_git_head", "")).strip()
+    frozen_manifest_digest = str(payload.get("frozen_manifest_digest", "")).strip()
+    if not current_branch:
+        raise RuntimeError("FAIL_CLOSED: Track 03 current-head receipt missing current_branch")
+    if not current_git_head:
+        raise RuntimeError("FAIL_CLOSED: Track 03 current-head receipt missing current_git_head")
+    if not frozen_manifest_digest:
+        raise RuntimeError("FAIL_CLOSED: Track 03 current-head receipt missing frozen_manifest_digest")
+
+
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -324,7 +336,7 @@ def run(
     _require_status(reconciliation_packet, label="Track 03 reconciliation packet", expected="PASS_READY_FOR_VALIDATION")
     _require_status(validation_matrix, label="Track 03 validation matrix", expected="PASS")
     _require_status(counted_path_receipt, label="Track 03 counted path receipt", expected="PASS")
-    _require_status(current_head_receipt, label="Track 03 current-head receipt", expected="PASS")
+    _require_current_head_receipt(current_head_receipt)
 
     if str(final_summary_receipt.get("next_lawful_move", "")).strip() != "AUTHOR_POST_F_TRACK_03_HUMAN_REVIEW_PACKET":
         raise RuntimeError("FAIL_CLOSED: Track 03 final summary does not authorize the human-review packet as the next move")
