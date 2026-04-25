@@ -1,0 +1,60 @@
+{
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "build_provenance_present",
+      "detail": "The bounded build provenance artifact must remain present.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "verification_summary_present",
+      "detail": "The bounded verification summary attestation must remain present.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "bounded_slsa_lineage_complete",
+      "detail": "The detached verifier package must carry the bounded provenance and verification-summary lineage needed for proof-integrity hardening.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+        "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse",
+        "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "slsa_version_normalized_v1_2",
+      "detail": "The child proof-ceiling policy keeps SLSA version language normalized to v1.2.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_claim_proof_ceiling_compiler_policy_v2.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "current_strongest_claim": "F03 preserves bounded SLSA-aligned provenance and verification-summary lineage for the declared verifier/publication chain only.",
+  "evidence_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "generated_utc": "2026-03-20T01:41:57Z",
+  "next_lawful_phase": "F04_ADJUDICATION_VERIFIER_V2_AND_OUTSIDER_PATH",
+  "pass_verdict": "BOUNDED_SLSA_ALIGNED_PROVENANCE_AND_VSA_LINEAGE_PRESENT",
+  "phase_id": "F03_PROOF_REPRO_HARDENING_AND_STABILITY",
+  "schema_id": "kt.child_campaign.slsa_provenance_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "A SLSA level-attainment claim is earned",
+    "Current-head runtime provenance is fully attested end-to-end",
+    "Whole-system provenance is proven"
+  ],
+  "subject_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "what_is_not_proven": [
+    "No SLSA level attainment is claimed",
+    "This receipt does not upgrade historical capability evidence into current-head capability truth",
+    "This receipt does not prove release readiness"
+  ]
+}

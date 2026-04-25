@@ -1,0 +1,163 @@
+{
+  "active_authority_mode": "WORKTREE_TRANSITIONAL_CURRENT_HEAD_LOCKED",
+  "active_blocker_matrix_ref": "KT_PROD_CLEANROOM/reports/kt_final_blocker_matrix.json",
+  "active_claim_ceiling_ref": "KT_PROD_CLEANROOM/reports/kt_final_claim_ceiling_receipt.json",
+  "active_current_head_scope_authority_ref": "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json",
+  "active_deferred_blocker_ids": [
+    "C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"
+  ],
+  "active_family_class": "ACTIVE_SEALED_RELEASE_FAMILY",
+  "active_family_id": "LEGACY_RELEASE_FAMILY",
+  "active_open_blocker_count": 5,
+  "active_open_blocker_ids": [
+    "current_head_external_capability_not_confirmed",
+    "release_readiness_not_proven",
+    "release_ceremony_not_executed",
+    "release_activation_not_executed",
+    "repo_root_import_fragility_visible_and_unfixed"
+  ],
+  "active_organ_disposition_ref": "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_disposition_register.json",
+  "active_readjudication_ref": "KT_PROD_CLEANROOM/reports/kt_final_current_head_readjudication_receipt.json",
+  "active_supporting_refs": [],
+  "authoritative_current_head_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
+  "authoritative_publication_truth_source_ref": "kt_truth_ledger:ledger/current/current_pointer.json",
+  "authoritative_publication_truth_subject_commit": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+  "authority_convergence_claim_boundary": "LOCAL_LEDGER_SELF_CONVERGENCE_ONLY",
+  "authority_convergence_status": "PASS",
+  "authority_resolution_index_ref": "KT_PROD_CLEANROOM/governance/authority_resolution_index.json",
+  "authority_resolution_status": "PASS",
+  "claim_boundary": "This truth lock binds a sealed current-head workspace scope. It preserves one active current-head blocker family, treats the ledger truth source as publication-lineage support only, blocks historical uplift through the historical claim firewall, does not convert current HEAD into a transparency-verified subject commit, does not widen externality above E1, and does not by itself make the broader repo press-ready.",
+  "claim_ceiling_enforcements": {
+    "commercial_widening": "FORBIDDEN",
+    "comparative_widening": "FORBIDDEN",
+    "externality_class_max": "E1_SAME_HOST_DETACHED_REPLAY",
+    "reentry_condition": "SECOND_HOST_RETURN_FILE_PLUS_VALIDATOR_PASS"
+  },
+  "current_repo_head": "9cba8edfb3ed91501186c7193a619303157f927e",
+  "deferred_blocker_alignment_status": "PASS",
+  "deferred_blocker_heartbeat_ref": "KT_PROD_CLEANROOM/reports/c006_deferral_heartbeat.json",
+  "deferred_blocker_register_ref": "KT_PROD_CLEANROOM/reports/deferred_blockers.json",
+  "documentary_compatibility_pointer_ref": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+  "generated_utc": "2026-03-25T23:13:39Z",
+  "historical_claim_firewall_ref": "KT_PROD_CLEANROOM/governance/historical_claim_firewall.json",
+  "historical_claim_firewall_status": "ACTIVE",
+  "legacy_release_family_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_final_blocker_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_final_current_head_readjudication_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_final_claim_ceiling_receipt.json"
+  ],
+  "legacy_release_family_status": "CARRIED_FORWARD_NOT_ACTIVE_CURRENT_HEAD",
+  "lock_id": "CURRENT_HEAD_TRUTH_LOCK_V1_20260322",
+  "press_ready": false,
+  "press_ready_condition": "Current-head canonical claims become press-ready only after a clean commit on current HEAD or a separately declared sealed receipted worktree scope is accepted for the exact release scope.",
+  "schema_id": "kt.governance.current_head_truth_lock.v1",
+  "sealed_scope": {
+    "digest_algorithm": "sha256",
+    "scope_class": "CURRENT_HEAD_WORKTREE_SCOPE_ONLY",
+    "scope_digest": "3eef49e93c527a821843964356d2163638492294ed82f0fa3ca3c63b5857d9e9",
+    "scope_refs": [
+      {
+        "exists": true,
+        "ref": "KT_PROD_CLEANROOM/governance/execution_board.json",
+        "sha256": "1a57f1e01ff6eaec83509684ca8e3c5ddb4522ad60dc50f081b2414af256b0ad",
+        "size_bytes": 17786,
+        "tracking_state": "TRACKED_CLEAN"
+      },
+      {
+        "exists": true,
+        "ref": "KT_PROD_CLEANROOM/governance/kt_unified_convergence_max_power_campaign_v2_1_1_anchor.json",
+        "sha256": "a4f427476c2c30f9421819b7fb175d12b19889031443e649c8e40830bd008860",
+        "size_bytes": 6069,
+        "tracking_state": "TRACKED_CLEAN"
+      },
+      {
+        "exists": true,
+        "ref": "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
+        "sha256": "8e42beace5c22d8412b18cdaf6760f3b6c3308e9aa0cea1e3b6307a9816a19fb",
+        "size_bytes": 583,
+        "tracking_state": "TRACKED_CLEAN"
+      },
+      {
+        "exists": true,
+        "ref": "KT_PROD_CLEANROOM/governance/runtime_boundary_contract.json",
+        "sha256": "923536cc5f9a24d058209914a839475ccc649566cfb6bf32b6bec62f48800fbc",
+        "size_bytes": 1416,
+        "tracking_state": "TRACKED_CLEAN"
+      },
+      {
+        "exists": true,
+        "ref": "KT_PROD_CLEANROOM/governance/tools_runtime_boundary_rule.json",
+        "sha256": "727da88bbad435429e49a980affb0dbcda68b6714a8623853b149023e226b149",
+        "size_bytes": 1065,
+        "tracking_state": "TRACKED_CLEAN"
+      },
+      {
+        "exists": true,
+        "ref": "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+        "sha256": "8952cee54f66961486e7e69599246182500b9526a63654e415bcb06f3035fd62",
+        "size_bytes": 4144,
+        "tracking_state": "TRACKED_CLEAN"
+      },
+      {
+        "exists": true,
+        "ref": "KT_PROD_CLEANROOM/governance/truth_engine_contract.json",
+        "sha256": "e71e65f7bd62c5ca702b7884f38fa2804587af375cb239eefebadd1340087d7d",
+        "size_bytes": 1612,
+        "tracking_state": "TRACKED_CLEAN"
+      },
+      {
+        "exists": true,
+        "ref": "KT_PROD_CLEANROOM/reports/deferred_blockers.json",
+        "sha256": "a35c768c1ea9077d84824a1a394674a646ddc90215ce365fd1e8e7098181b915",
+        "size_bytes": 5092,
+        "tracking_state": "TRACKED_CLEAN"
+      },
+      {
+        "exists": true,
+        "ref": "KT_PROD_CLEANROOM/reports/kt_final_blocker_matrix.json",
+        "sha256": "cd8168f67e26679d4f3d18bd5443997222366218b3edb572737c7417c8645381",
+        "size_bytes": 820,
+        "tracking_state": "TRACKED_CLEAN"
+      },
+      {
+        "exists": true,
+        "ref": "KT_PROD_CLEANROOM/reports/kt_final_claim_ceiling_receipt.json",
+        "sha256": "454449ede520a967536e05552e60e47769383b4361d28cc0789370adfb7cf039",
+        "size_bytes": 1400,
+        "tracking_state": "TRACKED_CLEAN"
+      },
+      {
+        "exists": true,
+        "ref": "KT_PROD_CLEANROOM/reports/kt_final_current_head_readjudication_receipt.json",
+        "sha256": "7d7fcca96228ae0562e2c89cc9feac110cb5ea42f7821e6a67800088a9988e6c",
+        "size_bytes": 4293,
+        "tracking_state": "TRACKED_CLEAN"
+      },
+      {
+        "exists": true,
+        "ref": "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_disposition_register.json",
+        "sha256": "7d97af177d12800a22ad06ee11f0bb96fde52b9e63f55b79f1f4ade848f4cd00",
+        "size_bytes": 6720,
+        "tracking_state": "TRACKED_DIRTY"
+      }
+    ]
+  },
+  "status": "PASS",
+  "stronger_claims_not_made": [
+    "HEAD itself is the transparency-verified subject commit",
+    "The historical or publication truth source silently upgrades current-head runtime or tier truth",
+    "Current-head blocker closure is public-release admissible outside the sealed W0 scope",
+    "Externality above E1 is earned",
+    "Release readiness is proven",
+    "Commercial readiness is proven",
+    "Comparative widening is lawful while C006 remains deferred and open"
+  ],
+  "toolchain_runtime_firewall_status": "PASS",
+  "trust_zone_validation_status": "PASS",
+  "worktree_summary": {
+    "dirty": true,
+    "entry_count": 42,
+    "modified_or_staged_count": 42,
+    "untracked_count": 0
+  }
+}

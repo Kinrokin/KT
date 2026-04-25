@@ -1,0 +1,48 @@
+{
+  "adapter_binding_rows": [
+    {
+      "adapter_id": "council.openai.live_hashed.v1",
+      "c016a_receipt_ref": "KT_PROD_CLEANROOM/exports/post_wave5_c016a_live_provider_success/provider_receipts/7a5e84932eeb976187f133c1dcd4378b01302d01f2113485c70375ef324afb8b.json",
+      "c016a_status": "OK",
+      "execution_mode": "LIVE",
+      "manifest_path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/exports/adapters/council_openai_live_hashed/v1/adapter_manifest.json",
+      "pass": true,
+      "provider_id": "openai",
+      "provider_registered": true
+    },
+    {
+      "adapter_id": "council.openrouter.live_hashed.v1",
+      "c016a_receipt_ref": "KT_PROD_CLEANROOM/exports/post_wave5_c016a_live_provider_success/provider_receipts/464fec5e2387e56c46d84f964b2edbd7b61516a812fbb51c293e155ee78e26b8.json",
+      "c016a_status": "OK",
+      "execution_mode": "LIVE",
+      "manifest_path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/exports/adapters/council_openrouter_live_hashed/v1/adapter_manifest.json",
+      "pass": true,
+      "provider_id": "openrouter",
+      "provider_registered": true
+    }
+  ],
+  "current_git_head": "d6385865b49cd2ed66fc8edb731003b96f8f5eb5",
+  "forbidden_current_claims": [
+    "Do not narrate same-host provider integrity as a C006 or externality upgrade.",
+    "Do not narrate OpenAI/OpenRouter same-host success as cross-host or outsider portability.",
+    "Do not widen router, lobe, product, or comparative claims from provider-path integrity alone."
+  ],
+  "generated_utc": "2026-03-27T02:25:58Z",
+  "required_code_refs": [
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/council/council_router.py",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/council/providers/provider_registry.py",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/council/providers/adapter_abi_runtime.py"
+  ],
+  "resilience_reference": "KT_PROD_CLEANROOM/reports/post_wave5_c016b_resilience_pack.json",
+  "same_host_boundary": "Provider-path integrity proves same-host LIVE_HASHED OpenAI/OpenRouter path integrity only.",
+  "same_host_live_hashed_provider_ids": [
+    "openai",
+    "openrouter"
+  ],
+  "schema_id": "kt.w1.provider_path_integrity_receipt.v1",
+  "source_refs": [
+    "KT_PROD_CLEANROOM/reports/post_wave5_c016a_success_matrix.json",
+    "KT_PROD_CLEANROOM/reports/post_wave5_c016b_resilience_pack.json"
+  ],
+  "status": "PASS"
+}

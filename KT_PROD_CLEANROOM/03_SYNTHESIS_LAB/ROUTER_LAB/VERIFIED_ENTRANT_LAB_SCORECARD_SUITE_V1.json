@@ -1,0 +1,97 @@
+{
+  "claim_boundary": "This suite is lab-only and noncanonical. It is for differentiating verified entrant policy bundles on mixed-role tasks before any future counted rerun. It cannot unlock R5, R6, lobe authority, externality, comparative claims, or commercial activation.",
+  "cases": [
+    {
+      "case_id": "LAB_E01",
+      "notes": "Planning-plus-code tasks should prefer structured reasoning and precision.",
+      "preferred_genotype": {
+        "guardrail_strength": "balanced",
+        "prompt_transform_style": "expand_context",
+        "reasoning_directive": "decision_tree",
+        "scoring_bias": "precision"
+      },
+      "required_terms": [
+        "plan",
+        "code",
+        "explain"
+      ],
+      "task_text": "Plan the repair, write the code change, then explain the failure path.",
+      "weights": {
+        "guardrail_strength": 1.0,
+        "prompt_transform_style": 1.0,
+        "reasoning_directive": 2.0,
+        "scoring_bias": 2.0
+      }
+    },
+    {
+      "case_id": "LAB_E02",
+      "notes": "Research-and-writing tasks should reward evidence-first calibrated bundles.",
+      "preferred_genotype": {
+        "prompt_transform_style": "clarify_first",
+        "reasoning_directive": "evidence_first",
+        "scoring_bias": "calibration",
+        "uncertainty_policy": "explicit_calibration"
+      },
+      "required_terms": [
+        "research",
+        "tradeoffs",
+        "recommendation"
+      ],
+      "task_text": "Research the evidence, summarize the tradeoffs, and write a calibrated recommendation.",
+      "weights": {
+        "prompt_transform_style": 1.0,
+        "reasoning_directive": 2.0,
+        "scoring_bias": 1.5,
+        "uncertainty_policy": 1.5
+      }
+    },
+    {
+      "case_id": "LAB_E03",
+      "notes": "Fast tool-use tasks should reward minimal-chain compressed responses without over-guarding.",
+      "preferred_genotype": {
+        "guardrail_strength": "permissive",
+        "prompt_transform_style": "compress",
+        "reasoning_directive": "minimal_chain",
+        "scoring_bias": "recall"
+      },
+      "required_terms": [
+        "tool",
+        "result",
+        "summarize"
+      ],
+      "task_text": "Use the tool, capture the result, and summarize the outcome fast.",
+      "weights": {
+        "guardrail_strength": 1.0,
+        "prompt_transform_style": 1.0,
+        "reasoning_directive": 2.0,
+        "scoring_bias": 1.5
+      }
+    },
+    {
+      "case_id": "LAB_E04",
+      "notes": "Safety-critical math tasks should prefer conservative, balanced, proof-style bundles.",
+      "preferred_genotype": {
+        "guardrail_strength": "balanced",
+        "prompt_transform_style": "clarify_first",
+        "reasoning_directive": "bullet_proof",
+        "scoring_bias": "precision",
+        "uncertainty_policy": "conservative"
+      },
+      "required_terms": [
+        "solve",
+        "proof",
+        "safety"
+      ],
+      "task_text": "Solve the problem, provide a proof-style explanation, and call out safety risks.",
+      "weights": {
+        "guardrail_strength": 1.5,
+        "prompt_transform_style": 1.0,
+        "reasoning_directive": 2.0,
+        "scoring_bias": 1.5,
+        "uncertainty_policy": 1.0
+      }
+    }
+  ],
+  "mode": "LAB_ONLY_NONCANONICAL",
+  "schema_id": "kt.verified_entrant_lab_suite.v1"
+}

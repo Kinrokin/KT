@@ -1,0 +1,65 @@
+{
+  "actual_category": "GOVERNED_RECEIPT_BACKED_FAIL_CLOSED_AI_EXECUTION_WITH_ADAPTIVE_IMPROVEMENT_UNDER_LAW",
+  "claim_boundary": "This ledger preserves blocked, failed, or not-yet-earned rows that must remain visible while current head is bounded. It is negative evidence, not a superiority scorecard.",
+  "current_git_head": "438d9de1948615d917b0beef4709fcc9e891b6e1",
+  "generated_utc": "2026-03-27T04:24:46Z",
+  "rows": [
+    {
+      "reason": "C006 remains open until a fresh admissible second-host return is imported and passes.",
+      "row_id": "cross_host_replay_current_head",
+      "source_ref": "KT_PROD_CLEANROOM/reports/e2_cross_host_replay_receipt.json",
+      "status": "NOT_EARNED_PENDING_SECOND_HOST_RETURN",
+      "surface_id": "detached_verifier_externality_lane"
+    },
+    {
+      "reason": "Comparative widening remains forbidden while externality is capped at E1 and no category-leading benchmark wins exist.",
+      "row_id": "comparative_widening_current_head",
+      "source_ref": "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json",
+      "status": "BLOCKED_PENDING_C006_AND_CATEGORY_WINS",
+      "surface_id": "claim_compiler"
+    },
+    {
+      "reason": "Static router hold remains canonical until shadow eval, best-static comparison, and superiority proof pass.",
+      "row_id": "router_superiority_current_head",
+      "source_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json",
+      "status": "BLOCKED_PENDING_ORDERED_PROOF_CHAIN",
+      "surface_id": "router"
+    },
+    {
+      "reason": "No live multi-lobe execution receipt exists on current head.",
+      "row_id": "multi_lobe_execution_current_head",
+      "source_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json",
+      "status": "NOT_EARNED",
+      "surface_id": "router"
+    },
+    {
+      "reason": "W3 proved bounded internal civilization only; generated candidates may not silently cut over active runtime.",
+      "row_id": "runtime_cutover_from_generated_candidate",
+      "source_ref": "KT_PROD_CLEANROOM/reports/civilization_loop_receipt.json",
+      "status": "FORBIDDEN_PENDING_SEPARATE_GATE",
+      "surface_id": "tournament_promotion"
+    },
+    {
+      "reason": "No independent hostile replay receipt exists.",
+      "row_id": "hostile_replay_current_head",
+      "source_ref": "KT_PROD_CLEANROOM/reports/e2_cross_host_replay_receipt.json",
+      "status": "NOT_EARNED",
+      "surface_id": "detached_verifier_externality_lane"
+    },
+    {
+      "reason": "Commercial widening remains forbidden above the bounded trust wedge.",
+      "row_id": "enterprise_product_claims",
+      "source_ref": "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json",
+      "status": "FORBIDDEN",
+      "surface_id": "detached_verifier"
+    }
+  ],
+  "schema_id": "kt.benchmark_negative_result_ledger.v1",
+  "source_refs": [
+    "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json",
+    "KT_PROD_CLEANROOM/reports/e2_cross_host_replay_receipt.json",
+    "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json",
+    "KT_PROD_CLEANROOM/reports/civilization_loop_receipt.json"
+  ],
+  "status": "PASS"
+}

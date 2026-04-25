@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pytest
 
+from tools.operator.kt_cli import _repo_root_from
 from tools.verification.seal_mode_test_roots import group_root, unique_run_dir
 
 
@@ -26,6 +27,16 @@ def _base_env(repo_root: Path) -> dict[str, str]:
     )
     env.setdefault("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
     return env
+
+
+def _git_status(repo_root: Path) -> str:
+    return subprocess.check_output(["git", "status", "--porcelain=v1"], cwd=str(repo_root), text=True)
+
+
+def test_kt_cli_repo_root_resolution_prefers_parent_with_cleanroom_source_tree() -> None:
+    repo_root = _repo_root()
+    cli_file = repo_root / "KT_PROD_CLEANROOM" / "tools" / "operator" / "kt_cli.py"
+    assert _repo_root_from(cli_file) == repo_root
 
 
 def test_kt_cli_status_smoke_without_external_pythonpath() -> None:
@@ -61,7 +72,10 @@ def test_kt_cli_status_smoke_and_worm_collision() -> None:
     run_root = unique_run_dir(parent=out_root, label="status_smoke")
 
     env = _base_env(repo_root)
+    baseline_status = _git_status(repo_root)
     cmd = ["python", "-m", "tools.operator.kt_cli", "--run-root", str(run_root), "status"]
+    if baseline_status.strip():
+        cmd.append("--allow-dirty")
     p1 = subprocess.run(cmd, cwd=str(repo_root), env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     assert p1.returncode == 0, p1.stdout
     assert (run_root / "verdict.txt").exists()
@@ -73,9 +87,8 @@ def test_kt_cli_status_smoke_and_worm_collision() -> None:
     assert p2.returncode != 0
     assert "FAIL_CLOSED" in (p2.stdout or "")
 
-    # CLI must not mutate repo-tracked state.
-    st = subprocess.check_output(["git", "status", "--porcelain=v1"], cwd=str(repo_root), text=True)
-    assert st.strip() == ""
+    # CLI must not mutate repo-tracked state relative to the starting baseline.
+    assert _git_status(repo_root) == baseline_status
 
 
 @pytest.mark.skipif(
@@ -94,6 +107,7 @@ def test_kt_cli_allow_dirty_gate() -> None:
     run_root_pass = unique_run_dir(parent=out_root, label="dirty_gate_pass")
 
     env = _base_env(repo_root)
+    baseline_status = _git_status(repo_root)
     try:
         marker.write_text("dirty\n", encoding="utf-8")
 
@@ -114,9 +128,8 @@ def test_kt_cli_allow_dirty_gate() -> None:
         if marker.exists():
             marker.unlink()
 
-    # Repo must be clean after cleanup.
-    st = subprocess.check_output(["git", "status", "--porcelain=v1"], cwd=str(repo_root), text=True)
-    assert st.strip() == ""
+    # Repo must return to the starting baseline after cleanup.
+    assert _git_status(repo_root) == baseline_status
 
 
 def test_operator_wrapper_script_exists() -> None:

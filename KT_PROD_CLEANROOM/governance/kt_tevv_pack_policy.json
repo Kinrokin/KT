@@ -1,0 +1,97 @@
+{
+  "anti_cherry_picking_rules": [
+    "all_declared_environment_rows_required",
+    "no_failed_row_omission",
+    "worst_status_governs_pack_status",
+    "comparator_registry_locked_before_adjudication",
+    "validity_windows_may_not_be_extended_retroactively",
+    "documentary_or_imported_rows_may_not_replace_current_required_rows"
+  ],
+  "completeness_rules": [
+    "All required components must be present and hash-bound before TEVV status may be PASS.",
+    "Both local and CI truth-barrier rows must be included; neither may be omitted because of convenience or outcome.",
+    "Imported CLASS_C evidence may remain CLASS_C, but may not be silently normalized into deterministic CLASS_A or CLASS_B artifacts.",
+    "The comparator registry must be fixed before adjudication, and all declared comparator rows must be executed for the declared surfaces."
+  ],
+  "current_repo_head": "23ccf8c00ca82274de09e7e3f89b163fd210c544",
+  "policy_id": "KT_TEVV_PACK_POLICY_V1_20260318",
+  "replayability_requirements": [
+    "hash-bound packs must provide a manifest-verification path",
+    "public replay surfaces must be secret-free",
+    "receipt replay requires deterministic scripts or an explicit replay recipe",
+    "blocker_or_high_severity findings require replay PASS unless the proof layer itself is the failure class",
+    "repo-root import fragility remains visible and cannot be overread as fixed by WS16"
+  ],
+  "required_components": [
+    {
+      "component_id": "local_truth_barrier_current_head",
+      "required": true,
+      "type": "CURRENT_HEAD_RUNTIME_EVIDENCE"
+    },
+    {
+      "component_id": "ci_truth_barrier_current_head",
+      "required": true,
+      "type": "CURRENT_HEAD_RUNTIME_EVIDENCE"
+    },
+    {
+      "component_id": "local_determinism_subject_set",
+      "required": true,
+      "type": "CANONICAL_SUBJECT_BINDING"
+    },
+    {
+      "component_id": "ci_determinism_subject_set",
+      "required": true,
+      "type": "CANONICAL_SUBJECT_BINDING"
+    },
+    {
+      "component_id": "bounded_keyless_signed_surface",
+      "required": true,
+      "type": "IMPORTED_CLASS_C_EVIDENCE"
+    },
+    {
+      "component_id": "bounded_keyless_sigstore_bundle",
+      "required": true,
+      "type": "IMPORTED_CLASS_C_EVIDENCE"
+    },
+    {
+      "component_id": "bounded_keyless_execution_receipt",
+      "required": true,
+      "type": "IMPORTED_CLASS_C_EVIDENCE"
+    },
+    {
+      "component_id": "bounded_truth_barrier_remote_diagnostic",
+      "required": true,
+      "type": "IMPORTED_CLASS_C_EVIDENCE"
+    },
+    {
+      "component_id": "claim_proof_ceiling_compiler",
+      "required": true,
+      "type": "CURRENT_HEAD_GOVERNANCE_EVIDENCE"
+    },
+    {
+      "component_id": "independent_replay_recipe",
+      "required": true,
+      "type": "REPLAYABILITY_GUIDANCE"
+    }
+  ],
+  "required_pack_fields": [
+    "pack_id",
+    "compiled_against",
+    "tevv_subject_head_commit",
+    "evidence_position",
+    "dataset_pin_registry_ref",
+    "comparator_registry_ref",
+    "trust_assumptions_ref",
+    "benchmark_validity_windows_ref",
+    "components",
+    "anti_cherry_picking_rules",
+    "replayability_requirements",
+    "stronger_claim_not_made"
+  ],
+  "schema_id": "kt.governance.tevv_pack_policy.v1",
+  "status": "ACTIVE",
+  "stronger_claim_not_made": [
+    "WS16 TEVV completeness is external capability confirmation.",
+    "WS16 TEVV policy activates release readiness or threshold-root verifier acceptance."
+  ]
+}

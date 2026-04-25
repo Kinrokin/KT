@@ -1,0 +1,38 @@
+{
+  "canonical_runtime_roots": [
+    "cognition",
+    "core",
+    "council",
+    "curriculum",
+    "governance",
+    "kt",
+    "memory",
+    "multiverse",
+    "paradox",
+    "schemas",
+    "temporal",
+    "thermodynamics",
+    "versioning"
+  ],
+  "claim_boundary": "Maps the Wave 0.5 toolchain/runtime split. It does not promote toolchain surfaces into runtime authority.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "firewall_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_wave0_5_toolchain_runtime_firewall_receipt.json",
+  "generated_utc": "2026-03-20T22:31:29Z",
+  "illegal_crossings_checked": [
+    "tooling_generated_state_treated_as_runtime_truth_without_receipt",
+    "builder_behavior_used_as_runtime_behavior",
+    "verifier_helpers_imported_as_runtime_organs",
+    "tools_directory_allowlisted_as_runtime_root_without_explicit_contract"
+  ],
+  "schema_id": "kt.wave0_5.toolchain_runtime_firewall_map.v1",
+  "status": "PASS",
+  "toolchain_proving_surfaces": [
+    "KT_PROD_CLEANROOM/tools/operator/**",
+    "KT_PROD_CLEANROOM/tools/verification/**",
+    "KT_PROD_CLEANROOM/tools/delivery/**",
+    "KT_PROD_CLEANROOM/tools/security/**",
+    ".github/**",
+    "ci/**",
+    ".devcontainer/**"
+  ]
+}

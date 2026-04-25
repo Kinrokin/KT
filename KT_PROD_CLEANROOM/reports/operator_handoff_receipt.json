@@ -1,0 +1,36 @@
+{
+  "checks": [
+    {
+      "check_id": "product_install_receipt_passes",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/product_install_15m_receipt.json"
+    },
+    {
+      "check_id": "handoff_bundle_refs_exist",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/product/operator_runbook_v2.md"
+    },
+    {
+      "check_id": "bounded_packet_surfaces_remain_pass",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json"
+    }
+  ],
+  "claim_boundary": "This receipt proves that an operator can be handed one bounded product bundle without repo archaeology. It does not prove cross-host or enterprise operation.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "generated_utc": "2026-03-23T20:03:04Z",
+  "handoff_bundle_refs": [
+    "KT_PROD_CLEANROOM/product/one_page_product_truth_surface.md",
+    "KT_PROD_CLEANROOM/product/client_wrapper_spec.json",
+    "KT_PROD_CLEANROOM/product/support_boundary.json",
+    "KT_PROD_CLEANROOM/product/operator_runbook_v2.md",
+    "KT_PROD_CLEANROOM/reports/commercial_truth_packet.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+    "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+    "KT_PROD_CLEANROOM/reports/c006_second_host_kit.json",
+    "KT_PROD_CLEANROOM/docs/operator/RUN_KT_IN_30_MINUTES.md"
+  ],
+  "independent_operator_target_minutes": 15,
+  "schema_id": "kt.product.operator_handoff_receipt.v1",
+  "status": "PASS"
+}

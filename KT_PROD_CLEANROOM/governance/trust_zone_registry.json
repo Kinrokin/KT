@@ -8,15 +8,8 @@
         "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/**",
         "KT_PROD_CLEANROOM/governance/**",
         "KT_PROD_CLEANROOM/AUDITS/**",
-        "KT_PROD_CLEANROOM/tools/operator/**",
-        "KT_PROD_CLEANROOM/tools/verification/**",
-        "KT_PROD_CLEANROOM/tools/delivery/**",
-        "KT_PROD_CLEANROOM/tools/security/**",
         "KT_PROD_CLEANROOM/docs/operator/**",
         "KT_PROD_CLEANROOM/00_README_FIRST/**",
-        ".github/**",
-        "ci/**",
-        ".devcontainer/**",
         "REPO_CANON.md",
         ".gitattributes",
         ".gitignore"
@@ -33,6 +26,10 @@
         "KT_PROD_CLEANROOM/docs/commercial/**",
         "autonomous_*.json",
         "epoch_*.json"
+      ],
+      "claim_bearing_runtime_path": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
       ],
       "meaning": "authoritative runtime, governance, verification, delivery, security, and release controls"
     },
@@ -83,6 +80,21 @@
       "meaning": "documentary and outward-facing narrative surfaces"
     },
     {
+      "zone_id": "TOOLCHAIN_PROVING",
+      "include": [
+        "KT_PROD_CLEANROOM/tools/operator/**",
+        "KT_PROD_CLEANROOM/tools/verification/**",
+        "KT_PROD_CLEANROOM/tools/delivery/**",
+        "KT_PROD_CLEANROOM/tools/security/**",
+        ".github/**",
+        "ci/**",
+        ".devcontainer/**"
+      ],
+      "exclude": [],
+      "live_execution_claim_upgrade_forbidden": true,
+      "meaning": "verifier tooling, CI proof jobs, packaging, builders, and operator utilities that must not inherit runtime authority"
+    },
+    {
       "zone_id": "GENERATED_RUNTIME_TRUTH",
       "include": [
         "KT_PROD_CLEANROOM/reports/**",
@@ -103,5 +115,6 @@
       "meaning": "dangerous or misleading surfaces that must never define current truth"
     }
   ],
+  "single_spine_runtime_rule": "Only the canonical runtime path declared in CANONICAL may own claim-bearing live execution truth. TOOLCHAIN_PROVING may probe and package but may never upgrade runtime claims.",
   "status": "ACTIVE"
 }

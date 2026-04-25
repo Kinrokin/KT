@@ -1,0 +1,90 @@
+{
+  "artifact_id": "kt_external_capability_confirmation_receipt.json",
+  "blocked_by": [],
+  "capability_confirmation_mode": "OUTSIDER_VERIFIABLE_DETACHED_CAPABILITY_REPLAY",
+  "capability_scope": "HISTORICAL_BOUNDED_FRONTIER_TARGET_ONLY",
+  "capability_surfaces": [
+    "KT_PROD_CLEANROOM/reports/kt_frontier_rerun_scorecard.json",
+    "KT_PROD_CLEANROOM/reports/kt_sota_readjudication_receipt.json"
+  ],
+  "checks": [
+    {
+      "check": "ws16_tevv_receipt_pass",
+      "detail": "WS17B depends on the locked WS16 TEVV/comparator/pin registry remaining PASS.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_tevv_dataset_registry_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws17a_assurance_receipt_pass_and_remains_bounded",
+      "detail": "WS17B depends on the frozen WS17A assurance lane remaining PASS and still not overreading assurance into capability.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_assurance_confirmation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ws17b_is_current_lawful_workstream",
+      "detail": "WS17B may proceed only after the frozen WS17A boundary unlocks the capability lane.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_execution_dag.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "detached_outsider_capability_replay_pass",
+      "detail": "At least one outsider-verifiable capability-bearing surface must succeed under detached replay with exact pins and the locked comparator set.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws17b_capability/kt_outsider_capability_replay_report.json",
+        "KT_PROD_CLEANROOM/reports/ws17b_capability/kt_external_capability_import_manifest.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_against": "30445f32e188f1355c99c66ff8faf3079d89498a",
+  "current_repo_head": "30445f32e188f1355c99c66ff8faf3079d89498a",
+  "historical_capability_subject_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+  "historical_evaluated_repo_head_commit": "0cf1ccdde5a5543678daffe9e60284c903b911ab",
+  "imported_evidence": {
+    "import_manifest_ref": "KT_PROD_CLEANROOM/reports/ws17b_capability/kt_external_capability_import_manifest.json",
+    "imported_hashes": {
+      "KT_PROD_CLEANROOM/reports/ws17b_capability/kt_external_capability_import_manifest.json": "05a089deec1e4d64868ea67ede4e440b619ef6f691fdebcdb78a9528b196c73b",
+      "KT_PROD_CLEANROOM/reports/ws17b_capability/kt_outsider_capability_replay_report.json": "08c9fc8ced4fb9a75e9ccfd231086fc05b7a9cc216a3d899d61f3be26d691075"
+    },
+    "outsider_replay_report_ref": "KT_PROD_CLEANROOM/reports/ws17b_capability/kt_outsider_capability_replay_report.json"
+  },
+  "independent_third_party_confirmation": false,
+  "limitations": [
+    "WS17B proves only one outsider-verifiable replay of the historical bounded frontier/readjudication bundle on subject head b4789a5.",
+    "WS17B does not upgrade that historical audited target into current-head capability.",
+    "WS17B does not widen verifier coverage, activate threshold-root acceptance, prove release readiness, prove release ceremony execution, or prove campaign completion.",
+    "The repo-root import fragility remains visible and unfixed."
+  ],
+  "next_lawful_workstream": "WS18_RELEASE_CEREMONY_AND_FINAL_READJUDICATION",
+  "outsider_verifiable": true,
+  "pass_verdict": "OUTSIDER_VERIFIABLE_BOUNDED_CAPABILITY_CONFIRMATION_PROVEN",
+  "protected_touch_violations": [],
+  "schema_id": "kt.operator.ws17b.external_capability_confirmation_receipt.v1",
+  "status": "PASS",
+  "step_id": "WS17B_STEP_1_PROVE_OUTSIDER_CAPABILITY_REPLAY_ON_BOUNDED_HISTORICAL_SURFACE",
+  "stronger_claim_not_made": [
+    "WS17B upgrades the historical audited target into current-head capability.",
+    "WS17B widens verifier coverage beyond the already-bounded imported surfaces.",
+    "WS17B proves release readiness, release ceremony execution, or campaign completion."
+  ],
+  "tests_run": [
+    "python -m pytest -q tests/operator/test_ws17b_external_capability_validate.py"
+  ],
+  "unexpected_touches": [],
+  "used_comparator_ids": [
+    "sha256_exact_file_match_v1",
+    "subject_head_equality_v1",
+    "freshness_window_fail_closed_v1",
+    "worst_case_pack_status_v1"
+  ],
+  "validators_run": [
+    "python -m tools.operator.ws17b_external_capability_validate"
+  ],
+  "workstream_id": "WS17B_EXTERNAL_CONFIRMATION_CAPABILITY"
+}

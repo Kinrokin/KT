@@ -1,0 +1,25 @@
+name: hash-pin-workflow
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/hash-pin-workflow.yml"
+      - "ci/hash_pin_workflow.yml"
+
+jobs:
+  verify_workflow_hash:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compute workflow SHA256
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXPECTED_SHA="${EXPECTED_WORKFLOW_SHA256:-replace_me_with_known_good_hash}"
+          ACTUAL_SHA="$(sha256sum ci/hash_pin_workflow.yml | awk '{print $1}')"
+          echo "expected=${EXPECTED_SHA}"
+          echo "actual=${ACTUAL_SHA}"
+          if [[ "${EXPECTED_SHA}" != "${ACTUAL_SHA}" ]]; then
+            echo "workflow hash mismatch"
+            exit 1
+          fi

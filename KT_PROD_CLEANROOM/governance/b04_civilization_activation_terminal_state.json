@@ -1,0 +1,24 @@
+{
+  "schema_id": "kt.governance.b04_civilization_activation_terminal_state.v1",
+  "classification_tag": "COUNTING_CLOSURE",
+  "terminal_state_id": "KT_B04_CIVILIZATION_ACTIVATION_TERMINAL_STATE_V1",
+  "current_state": "B04_CIVILIZATION_RATIFICATION_LAUNCH_BOUND",
+  "launch_surface_bound": true,
+  "ratification_lane_open": true,
+  "implementation_started": false,
+  "automatic_batch_execution_allowed": false,
+  "externality_widening_allowed": false,
+  "external_comparative_claims_allowed": false,
+  "commercial_activation_allowed": false,
+  "learned_router_production_allowed": false,
+  "autonomous_multi_lobe_runtime_allowed": false,
+  "first_ratification_step_id": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
+  "next_lawful_move": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
+  "fail_conditions": [
+    "B04 launch surface is treated as whole-stack implementation.",
+    "Router or lobe ratification is attempted before the ordered sequence is satisfied.",
+    "A civilization component enters Canonical without schema, validator, receipt, and rollback.",
+    "Any Gate D work widens externality, commercial scope, or external comparative claims."
+  ],
+  "terminal_rule": "Binding the B04 activation launch surface opens only the lawful civilization ratification lane. It does not implement the full stack or authorize anything outside the bounded Gate D postures."
+}

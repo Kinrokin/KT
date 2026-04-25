@@ -71,9 +71,28 @@ def _has_illegal_reference(request_dict: Dict[str, Any]) -> bool:
 
 
 class CognitiveEngine:
+    _STEP_TYPE_BASE_SCORES = {
+        "CHECK_POLICY": 94,
+        "INSPECT_EVIDENCE": 89,
+        "DECOMPOSE": 84,
+        "EVALUATE": 86,
+        "SUMMARIZE": 82,
+        "FINALIZE": 90,
+    }
+
     @staticmethod
     def _freeze_context_for_tests(context: Dict[str, Any]) -> Dict[str, Any]:
         return _freeze(context)
+
+    @staticmethod
+    def _semantic_step_score(*, step_type: str, step_index: int, total_steps: int) -> int:
+        base = int(CognitiveEngine._STEP_TYPE_BASE_SCORES.get(step_type, 76))
+        score = base - min(step_index * 4, 12)
+        if step_type == "CHECK_POLICY" and step_index == 0:
+            score += 2
+        if step_type == "FINALIZE" and step_index == max(0, total_steps - 1):
+            score += 2
+        return max(0, min(100, score))
 
     @staticmethod
     def plan(*, context: Dict[str, Any], request: CognitiveRequestSchema) -> CognitivePlanSchema:
@@ -97,7 +116,10 @@ class CognitiveEngine:
         if status == PLAN_STATUS_OK:
             steps = plan_steps(
                 request_hash=request_hash,
+                input_hash=req_dict["input_hash"],
                 max_steps=int(req_dict["max_steps"]),
+                max_branching=int(req_dict["max_branching"]),
+                max_depth=int(req_dict["max_depth"]),
                 artifact_refs=list(req_dict.get("artifact_refs") or []),
             )
 
@@ -145,18 +167,17 @@ class CognitiveEngine:
             raise SchemaValidationError("plan.steps must be a list (fail-closed)")
 
         step_results: List[Dict[str, Any]] = []
+        total_steps = len(steps_value)
         for step in steps_value:
             if not isinstance(step, dict):
                 raise SchemaValidationError("plan.steps contains non-object step (fail-closed)")
             step_index = int(step["step_index"])
             step_type = str(step["step_type"])
-            step_hash = str(step["step_hash"])
-
-            # Deterministic per-step score derived from step_hash prefix.
-            try:
-                score = int(step_hash[0:2], 16) % 101
-            except Exception:
-                score = 0
+            score = CognitiveEngine._semantic_step_score(
+                step_type=step_type,
+                step_index=step_index,
+                total_steps=total_steps,
+            )
 
             step_payload: Dict[str, Any] = {
                 "schema_id": CognitiveStepResultSchema.SCHEMA_ID,

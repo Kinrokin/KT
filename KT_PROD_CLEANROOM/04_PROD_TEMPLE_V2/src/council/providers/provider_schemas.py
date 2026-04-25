@@ -194,6 +194,27 @@ def make_fail_closed_response(*, request: ProviderRequestSchema, error_code: str
     return ProviderResponseSchema.from_dict(payload)
 
 
+def make_ok_response(
+    *,
+    request: ProviderRequestSchema,
+    output_hash: str,
+    output_bytes_len: int,
+    latency_ms: int,
+) -> ProviderResponseSchema:
+    req = request.to_dict()
+    payload: Dict[str, Any] = {
+        "schema_id": ProviderResponseSchema.SCHEMA_ID,
+        "schema_version_hash": ProviderResponseSchema.SCHEMA_VERSION_HASH,
+        "request_id": req["request_id"],
+        "provider_id": req["provider_id"],
+        "status": STATUS_OK,
+        "output_hash": str(output_hash),
+        "output_bytes_len": int(output_bytes_len),
+        "latency_ms": int(latency_ms),
+    }
+    return ProviderResponseSchema.from_dict(payload)
+
+
 @dataclass(frozen=True)
 class ProviderCallReceipt:
     @classmethod

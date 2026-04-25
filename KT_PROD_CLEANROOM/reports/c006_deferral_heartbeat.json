@@ -1,0 +1,55 @@
+{
+  "blocked_claim_ceilings_still_enforced": true,
+  "blocker_id": "C006_EXTERNALITY_CEILING_REMAINS_BOUNDED",
+  "checks": [
+    {
+      "check_id": "active_truth_lock_still_carries_c006_only",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json"
+    },
+    {
+      "check_id": "blocker_matrix_carries_open_deferred_c006",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/kt_wave5_blocker_matrix.json"
+    },
+    {
+      "check_id": "remaining_gap_register_carries_c006_deferral",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/kt_wave5_remaining_gap_register.json"
+    },
+    {
+      "check_id": "claim_matrix_keeps_e1_and_blocks_widening",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/kt_wave5_final_claim_class_matrix.json"
+    },
+    {
+      "check_id": "truth_map_records_deferral_stop_gate",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/kt_unified_convergence_current_truth_map.json"
+    },
+    {
+      "check_id": "second_host_return_still_missing_or_unconsumed",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/post_wave5_c006_second_host_execution_receipt.json"
+    }
+  ],
+  "claim_boundary": "C006 remains open, deferred, and unforgettable. This heartbeat preserves E1 ceilings and blocks comparative/commercial widening until a real second-host return is imported and validated.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "deferral_status": "DEFERRED_RESOURCE_CONSTRAINT",
+  "generated_utc": "2026-03-22T20:24:05Z",
+  "machine_effective_state": {
+    "blocker_state": "OPEN_DEFERRED_RESOURCE_CONSTRAINT",
+    "commercial_widening": "FORBIDDEN",
+    "comparative_widening": "FORBIDDEN",
+    "externality_class_max": "E1_SAME_HOST_DETACHED_REPLAY",
+    "reentry_condition": "SECOND_HOST_RETURN_FILE_PLUS_VALIDATOR_PASS"
+  },
+  "new_evidence_changes_eligibility": false,
+  "next_lawful_move": "Continue bounded E1 engineering, packaging, and buyer-safe preparation work while preparing the second-host kit for immediate execution when hardware appears.",
+  "no_overclaim_leak_detected": true,
+  "reentry_condition_ref": "KT_PROD_CLEANROOM/reports/imports/post_wave5_c006_second_host_return.json",
+  "reentry_condition_satisfied": false,
+  "schema_id": "kt.c006.deferral_heartbeat.v1",
+  "second_host_return_present": false,
+  "status": "PASS"
+}

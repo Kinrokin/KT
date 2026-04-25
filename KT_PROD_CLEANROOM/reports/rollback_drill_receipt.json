@@ -1,0 +1,26 @@
+{
+  "checks": [
+    {
+      "check_id": "rollback_restores_original_registry_bytes",
+      "pass": true
+    },
+    {
+      "check_id": "rollback_mutation_was_nontrivial",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "W3 proves rollback discipline on the runtime-registry surface only. It does not claim cross-host replay or automatic runtime cutover rollback.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "forbidden_claims_not_made": [
+    "rollback_drill_proves_externality",
+    "rollback_drill_proves_full_runtime_cutover"
+  ],
+  "generated_utc": "2026-03-23T18:44:26Z",
+  "mutated_sha256": "a50b6d658c69ef7d99e5123d593619d696be5828c08ab2e12a7c28dc9d923e55",
+  "original_sha256": "15cffa3fa82c96bb6262f1e58ff8c8a491e2f0cdab63468741706a871ad0ef4f",
+  "restored_sha256": "15cffa3fa82c96bb6262f1e58ff8c8a491e2f0cdab63468741706a871ad0ef4f",
+  "rollback_work_dir_ref": "KT_PROD_CLEANROOM/exports/w3_civilization_loop/rollback/aa18410a2a68ac67e9fde1e692661f6dbdefa11804a79a3a6cf2d04b8250da72",
+  "runtime_registry_path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/docs/RUNTIME_REGISTRY.json",
+  "schema_id": "kt.w3.rollback_drill_receipt.v1",
+  "status": "PASS"
+}

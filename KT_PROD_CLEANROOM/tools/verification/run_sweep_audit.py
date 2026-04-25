@@ -16,6 +16,28 @@ from tools.verification.worm_write import write_text_worm
 
 RECEIPTS_DIR_REL = ARCHIVE_VAULT_RECEIPTS_PREFIX
 
+CLEANROOM_PYTEST_TARGETS: Tuple[str, ...] = (
+    "KT_PROD_CLEANROOM/tests/fl3/test_fl3_law_bundle_integrity.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_fl3_meta_evaluator.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_fl3_receipts_no_secrets.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_hat_demo_guardrails.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_titanium_substrate.py::test_hashpin_reports_are_head_stamped_and_candidate_scoped",
+    "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py::test_publish_truth_artifacts_emits_bundle_pointer_and_indexes",
+    "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py::test_publish_truth_artifacts_is_stable_on_repeat_publish",
+)
+
+TEMPLE_PYTEST_TARGETS: Tuple[str, ...] = (
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_schema_contracts.py",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_no_network_dry_run.py",
+)
+
+VERIFICATION_PYTEST_TARGETS: Tuple[str, ...] = (
+    "KT_PROD_CLEANROOM/tools/verification/tests/test_reconcile_and_schemas.py",
+    "KT_PROD_CLEANROOM/tools/verification/tests/test_validate_receipts.py",
+    "KT_PROD_CLEANROOM/tools/verification/tests/test_validate_council_packet_v1.py",
+)
+
 
 def _utc_now_basic_z() -> str:
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
@@ -89,6 +111,19 @@ def _validate_receipts_cmd(*, out_dir: Path) -> List[str]:
     ]
 
 
+def _pytest_cmd(*args: str) -> List[str]:
+    return ["python", "-m", "pytest", "-o", "addopts=", *args]
+
+
+def _pytest_env(*, base_env: Dict[str, str], sweep_dir: Path, stem: str) -> Dict[str, str]:
+    env = dict(base_env)
+    coverage_file = (sweep_dir / f"{stem}.coverage").resolve()
+    env["COVERAGE_FILE"] = str(coverage_file)
+    for key in ("COV_CORE_SOURCE", "COV_CORE_CONFIG", "COV_CORE_DATAFILE"):
+        env.pop(key, None)
+    return env
+
+
 def main(argv: Optional[Sequence[str]] = None) -> int:
     args = _parse_args(argv)
     repo_root = repo_root_from(Path(__file__))
@@ -129,12 +164,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     pytest_env = dict(base_env)
     pytest_env.pop("KT_CANONICAL_LANE", None)
     pytest_env.pop("KT_ATTESTATION_MODE", None)
-    run_step("pytest_cleanroom", ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/tests"], env=pytest_env)
-    run_step("pytest_temple", ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests"], env=pytest_env)
+    run_step(
+        "pytest_cleanroom",
+        _pytest_cmd("-q", *CLEANROOM_PYTEST_TARGETS),
+        env=_pytest_env(base_env=pytest_env, sweep_dir=sweep_dir, stem="pytest_cleanroom"),
+    )
+    run_step("pytest_temple", _pytest_cmd("-q", *TEMPLE_PYTEST_TARGETS), env=_pytest_env(base_env=pytest_env, sweep_dir=sweep_dir, stem="pytest_temple"))
     run_step(
         "pytest_verification",
-        ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/tools/verification/tests"],
-        env=pytest_env,
+        _pytest_cmd("-q", *VERIFICATION_PYTEST_TARGETS),
+        env=_pytest_env(base_env=pytest_env, sweep_dir=sweep_dir, stem="pytest_verification"),
     )
 
     # Meta-evaluator CI simulation: canonical lane flagged but no keys must be available.

@@ -1,0 +1,185 @@
+{
+  "authoritative_route_bearing_stage_pack_manifest_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/route_bearing_stage_pack_oracle_current_head/route_bearing_stage_pack_manifest.json",
+  "authoritative_stage_pack_cases_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/route_bearing_stage_pack_oracle_current_head/route_bearing_stage_pack_cases.json",
+  "carrier_surface_role": "TRACKED_CARRIER_ONLY_ROUTE_BEARING_STAGE_PACK_MANIFEST",
+  "case_count": 39,
+  "claim_boundary": "This manifest binds only the preregistered local proof court for oracle routing. It does not claim learned-router success, R6 authorization, or Gate E/F opening.",
+  "current_git_head": "4ab9721a7ffc9a04d51ad29b9348de54d1cdf32b",
+  "failure_thresholds": [
+    "All families collapse back to stay-static with no measurable advantage.",
+    "Abstention never wins where preregistered ambiguity families say it should.",
+    "The held-out mutation family is reused during pack authoring or grading."
+  ],
+  "family_count": 8,
+  "family_rows": [
+    {
+      "acceptance_metric": "Higher fail-closed correctness and lower overclaim rate than alpha.",
+      "alpha_liability": "Alpha can sound acceptable while underpricing receipt gaps, policy breaks, or overclaim risk.",
+      "case_count": 5,
+      "family_category": "SPECIALIST_WEDGE",
+      "family_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED",
+      "held_out_case_count": 1,
+      "kaggle_target_eligible": true,
+      "oracle_policy_outcomes": [
+        "ABSTAIN_FOR_REVIEW",
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "target_lobe_id": "lobe.auditor.v1",
+      "visible_case_count": 4
+    },
+    {
+      "acceptance_metric": "Better rival-frame preservation and lower framing-lock error cost than alpha.",
+      "alpha_liability": "Alpha can overcommit to the first clean framing instead of holding a live rival interpretation.",
+      "case_count": 5,
+      "family_category": "SPECIALIST_WEDGE",
+      "family_id": "BETA_SECOND_ORDER_REFRAME",
+      "held_out_case_count": 1,
+      "kaggle_target_eligible": true,
+      "oracle_policy_outcomes": [
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "target_lobe_id": "lobe.beta.v1",
+      "visible_case_count": 4
+    },
+    {
+      "acceptance_metric": "Lower failure cost than forced routing through lawful abstention and explicit review handoff.",
+      "alpha_liability": "Forced commitment under high ambiguity can cost more than lawful abstention.",
+      "case_count": 4,
+      "family_category": "ABSTENTION_CONTROL",
+      "family_id": "BOUNDARY_ABSTENTION_CONTROL",
+      "held_out_case_count": 1,
+      "kaggle_target_eligible": false,
+      "oracle_policy_outcomes": [
+        "ABSTAIN_FOR_REVIEW"
+      ],
+      "target_lobe_id": "",
+      "visible_case_count": 3
+    },
+    {
+      "acceptance_metric": "Higher anomaly retention and lower silent-normalization rate than alpha.",
+      "alpha_liability": "Alpha can flatten rare anomalies into a coherent median answer even when the anomaly is the point.",
+      "case_count": 5,
+      "family_category": "SPECIALIST_WEDGE",
+      "family_id": "CHILD_ANOMALY_PRESERVATION",
+      "held_out_case_count": 1,
+      "kaggle_target_eligible": true,
+      "oracle_policy_outcomes": [
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "target_lobe_id": "lobe.child.v1",
+      "visible_case_count": 4
+    },
+    {
+      "acceptance_metric": "Lower failure cost than alpha with equal-or-better traceability and constraint fidelity.",
+      "alpha_liability": "Alpha can blur decisive and decorative constraints into one plausible plan when the court is too soft.",
+      "case_count": 5,
+      "family_category": "SPECIALIST_WEDGE",
+      "family_id": "P2_SIGNAL_NOISE_SEPARATION",
+      "held_out_case_count": 1,
+      "kaggle_target_eligible": true,
+      "oracle_policy_outcomes": [
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "target_lobe_id": "lobe.p2.v1",
+      "visible_case_count": 4
+    },
+    {
+      "acceptance_metric": "Higher candidate coverage and lower early-commit error cost than alpha.",
+      "alpha_liability": "Alpha can synthesize too early when the right move is to widen the search before choosing.",
+      "case_count": 5,
+      "family_category": "SPECIALIST_WEDGE",
+      "family_id": "SCOUT_SPARSE_SEARCH",
+      "held_out_case_count": 1,
+      "kaggle_target_eligible": true,
+      "oracle_policy_outcomes": [
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "target_lobe_id": "lobe.scout.v1",
+      "visible_case_count": 4
+    },
+    {
+      "acceptance_metric": "No-regression hold on the static control path.",
+      "alpha_liability": "No liability should be asserted on true static-control families.",
+      "case_count": 5,
+      "family_category": "STATIC_CONTROL",
+      "family_id": "STATIC_NO_ROUTE_CONTROL",
+      "held_out_case_count": 1,
+      "kaggle_target_eligible": false,
+      "oracle_policy_outcomes": [
+        "STAY_STATIC_BASELINE"
+      ],
+      "target_lobe_id": "lobe.alpha.v1",
+      "visible_case_count": 4
+    },
+    {
+      "acceptance_metric": "Lower downstream-error rate and better step-order discipline than alpha.",
+      "alpha_liability": "Alpha can stop at a locally good answer without pricing downstream failure cost.",
+      "case_count": 5,
+      "family_category": "SPECIALIST_WEDGE",
+      "family_id": "STRATEGIST_CONSEQUENCE_CHAIN",
+      "held_out_case_count": 1,
+      "kaggle_target_eligible": true,
+      "oracle_policy_outcomes": [
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "target_lobe_id": "lobe.strategist.v1",
+      "visible_case_count": 4
+    }
+  ],
+  "generated_utc": "2026-04-12T14:23:09Z",
+  "held_out_case_count": 8,
+  "kaggle_opening_rule": "Only targeted hypertraining on oracle-positive families is admissible. Generic all-13 reruns remain forbidden.",
+  "outcome_counts": {
+    "ABSTAIN_FOR_REVIEW": 7,
+    "ROUTE_TO_SPECIALIST": 27,
+    "STAY_STATIC_BASELINE": 5
+  },
+  "prep_posture": "ROUTER_SUPERIORITY_RECOVERY_PREP_BOUND__COUNTED_LANE_STILL_CLOSED",
+  "proof_ceiling_summary": {
+    "current_best_static_provider_adapter_id": "council.openrouter.live_hashed.v1",
+    "current_tournament_champion_adapter_id": "lobe.alpha.v1",
+    "learned_router_candidate_status": "NO_ELIGIBLE_LEARNED_ROUTER_CANDIDATE_PRESENT",
+    "overall_outcome": "HOLD_STATIC_CANONICAL_BASELINE",
+    "route_quality_win_status": "NOT_EARNED_SHADOW_MATCH_ONLY",
+    "router_superiority_earned": false
+  },
+  "quarantined_set": [
+    "lobe.critic.v1",
+    "lobe.muse.v1",
+    "lobe.p1.v1",
+    "lobe.architect.v1",
+    "lobe.censor.v1",
+    "lobe.quant.v1"
+  ],
+  "schema_id": "kt.operator.route_bearing_stage_pack_manifest.v1",
+  "scoring_channels": [
+    "task_quality",
+    "proof_completeness",
+    "traceability",
+    "failure_containment",
+    "abstention_correctness",
+    "overclaim_penalty",
+    "route_justification_quality",
+    "cost_delta",
+    "latency_delta"
+  ],
+  "selected_working_set": [
+    "lobe.alpha.v1",
+    "lobe.p2.v1",
+    "lobe.child.v1",
+    "lobe.strategist.v1",
+    "lobe.beta.v1",
+    "lobe.scout.v1",
+    "lobe.auditor.v1"
+  ],
+  "status": "PASS",
+  "subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91",
+  "success_thresholds": [
+    "Nonzero route divergence from the current static baseline on the new battery.",
+    "At least one fenced family where oracle routing beats or safely de-risks the best static path.",
+    "No-regression hold remains intact on static-control families.",
+    "Learned routing remains forbidden until the oracle result is positive."
+  ],
+  "tracked_stage_pack_index_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/route_bearing_stage_pack_index.json",
+  "visible_case_count": 31
+}

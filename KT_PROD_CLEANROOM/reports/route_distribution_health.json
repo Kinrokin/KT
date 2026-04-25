@@ -1,0 +1,69 @@
+{
+  "best_static_provider_adapter_id": "council.openrouter.live_hashed.v1",
+  "canonical_static_router_preserved": true,
+  "claim_boundary": "This report measures route quality, cost, and latency under the bounded static-control regime. It does not claim a learned-router gain.",
+  "current_git_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91",
+  "fallback_case_ids": [
+    "R04"
+  ],
+  "fallback_rate": 0.25,
+  "generated_utc": "2026-04-11T21:22:43Z",
+  "no_regression_rule_status": "PASS",
+  "route_collapse_detected": false,
+  "route_distribution_delta_count": 0,
+  "route_quality_cost_latency_matrix": [
+    {
+      "case_id": "R01",
+      "fallback_engaged": false,
+      "latency_ms": 1063,
+      "no_regression_pass": true,
+      "review_burden_minutes": 10,
+      "route_cost_units": 3,
+      "route_quality_score": 100,
+      "route_quality_status": "MATCH_STATIC_BASELINE",
+      "uncertainty_cost_index": 8
+    },
+    {
+      "case_id": "R02",
+      "fallback_engaged": false,
+      "latency_ms": 1063,
+      "no_regression_pass": true,
+      "review_burden_minutes": 10,
+      "route_cost_units": 3,
+      "route_quality_score": 100,
+      "route_quality_status": "MATCH_STATIC_BASELINE",
+      "uncertainty_cost_index": 8
+    },
+    {
+      "case_id": "R03",
+      "fallback_engaged": false,
+      "latency_ms": 1063,
+      "no_regression_pass": true,
+      "review_burden_minutes": 10,
+      "route_cost_units": 3,
+      "route_quality_score": 100,
+      "route_quality_status": "MATCH_STATIC_BASELINE",
+      "uncertainty_cost_index": 8
+    },
+    {
+      "case_id": "R04",
+      "fallback_engaged": true,
+      "latency_ms": 1063,
+      "no_regression_pass": true,
+      "review_burden_minutes": 10,
+      "route_cost_units": 3,
+      "route_quality_score": 100,
+      "route_quality_status": "MATCH_STATIC_BASELINE",
+      "uncertainty_cost_index": 8
+    }
+  ],
+  "schema_id": "kt.w5.route_distribution_health.v1",
+  "shadow_match_rate": 1.0,
+  "source_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_wave2b_route_distribution_health.json",
+    "KT_PROD_CLEANROOM/reports/router_shadow_eval_matrix.json",
+    "KT_PROD_CLEANROOM/reports/economic_truth_plane.json"
+  ],
+  "status": "PASS",
+  "subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91"
+}

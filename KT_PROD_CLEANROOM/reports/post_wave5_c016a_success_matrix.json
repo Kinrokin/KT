@@ -1,0 +1,89 @@
+{
+  "boundary_holds": [],
+  "c016a_delta": "C016A_CLOSED_FOR_CANONICAL_LIVE_HASHED_LANE",
+  "environment_presence": {
+    "KT_HMAC_KEY_SIGNER_A": true,
+    "KT_HMAC_KEY_SIGNER_B": true,
+    "OPENAI_API_KEY": true,
+    "OPENROUTER_API_KEY": true
+  },
+  "exact_remaining_forbidden_claims": [
+    "C016A is not closed unless at least one LIVE_HASHED provider row returns status=OK with a provider receipt.",
+    "Do not claim OpenAI or OpenRouter authenticated success while all observed rows remain FAIL_CLOSED.",
+    "Do not raise C006 or externality class from same-host evidence.",
+    "Do not widen into router, product, or comparative proof from this receipt."
+  ],
+  "export_root_ref": "KT_PROD_CLEANROOM/exports/post_wave5_c016a_live_provider_success",
+  "fail_closed_provider_ids": [],
+  "generated_utc": "2026-03-22T00:36:46Z",
+  "payload_hash": "a97beb882f14d49032c7751dff705363eb1beb1d685f3bf33ab6f722d5e8951f",
+  "provider_rows": [
+    {
+      "adapter_id": "council.openai.live_hashed.v1",
+      "error": "",
+      "failure_artifact_exists": false,
+      "failure_artifact_ref": "",
+      "http_status": 200,
+      "latency_ms": 1152,
+      "provider_id": "openai",
+      "receipt_exists": true,
+      "receipt_hash": "7a5e84932eeb976187f133c1dcd4378b01302d01f2113485c70375ef324afb8b",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/exports/post_wave5_c016a_live_provider_success/provider_receipts/7a5e84932eeb976187f133c1dcd4378b01302d01f2113485c70375ef324afb8b.json",
+      "receipt_rel": "KT_PROD_CLEANROOM/exports/post_wave5_c016a_live_provider_success/provider_receipts/7a5e84932eeb976187f133c1dcd4378b01302d01f2113485c70375ef324afb8b.json",
+      "request_type": "healthcheck",
+      "status": "OK",
+      "trace_id": "post-wave5-c016a-openai-live",
+      "verdict_fail_reason": "None",
+      "verdict_pass": true
+    },
+    {
+      "adapter_id": "council.openrouter.live_hashed.v1",
+      "error": "",
+      "failure_artifact_exists": false,
+      "failure_artifact_ref": "",
+      "http_status": 200,
+      "latency_ms": 1063,
+      "provider_id": "openrouter",
+      "receipt_exists": true,
+      "receipt_hash": "464fec5e2387e56c46d84f964b2edbd7b61516a812fbb51c293e155ee78e26b8",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/exports/post_wave5_c016a_live_provider_success/provider_receipts/464fec5e2387e56c46d84f964b2edbd7b61516a812fbb51c293e155ee78e26b8.json",
+      "receipt_rel": "KT_PROD_CLEANROOM/exports/post_wave5_c016a_live_provider_success/provider_receipts/464fec5e2387e56c46d84f964b2edbd7b61516a812fbb51c293e155ee78e26b8.json",
+      "request_type": "analysis",
+      "status": "OK",
+      "trace_id": "post-wave5-c016a-openrouter-live",
+      "verdict_fail_reason": "None",
+      "verdict_pass": true
+    }
+  ],
+  "runtime_telemetry_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c016a_runtime_telemetry.jsonl",
+  "schema_id": "kt.operator.c016a_live_provider_success_receipt.v1",
+  "scope_boundary": "C016A proves only authenticated live-provider success on the canonical LIVE_HASHED ABI lane and preserves exact failure rows when authentication is rejected.",
+  "signoffs": [
+    {
+      "attestation_mode": "HMAC",
+      "hmac_key_fingerprint": "8314445172df00a0444b2c2a4f730271eb2b0be98857b85d028b13f2ba59306c",
+      "hmac_signature": "fcc6325b81a7e29d8e48ef68cf9cfd6e975d2f212ff2cd2a9a36bafd235fdd83",
+      "key_id": "SIGNER_A",
+      "payload_hash": "a97beb882f14d49032c7751dff705363eb1beb1d685f3bf33ab6f722d5e8951f"
+    },
+    {
+      "attestation_mode": "HMAC",
+      "hmac_key_fingerprint": "99c997e62fa05d0cb831070175b5bad86d31c94fd52570992f0f960f057990a6",
+      "hmac_signature": "eb76300e6bbd14ea1839c1b7909b1a9b1abcffc27558ab161a1488ed39e557a8",
+      "key_id": "SIGNER_B",
+      "payload_hash": "a97beb882f14d49032c7751dff705363eb1beb1d685f3bf33ab6f722d5e8951f"
+    }
+  ],
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "provider_resilience_repeatability_proven",
+    "externality_upgraded",
+    "router_elevated",
+    "product_truth_widened"
+  ],
+  "successful_provider_count": 2,
+  "successful_provider_ids": [
+    "openai",
+    "openrouter"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "claim_boundary": "This wrapper spec packages the existing bounded verifier path. It does not create a new runtime lane and it does not prove anything above E1.",
+  "current_claim_ceiling": "E1_SAME_HOST_DETACHED_REPLAY",
+  "default_sequence": [
+    "verify_packet",
+    "detached_pass_fail"
+  ],
+  "entrypoints": [
+    {
+      "command": "python -m tools.operator.public_verifier",
+      "entrypoint_id": "verify_packet",
+      "expected_output_ref": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "purpose": "Generate the bounded verifier packet surface."
+    },
+    {
+      "command": "python -m tools.operator.public_verifier_detached_validate",
+      "entrypoint_id": "detached_pass_fail",
+      "expected_output_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+      "purpose": "Emit the detached PASS/FAIL receipt for the bounded verifier path."
+    }
+  ],
+  "forbidden_claims": [
+    "Do not claim cross-host proof from this wrapper.",
+    "Do not claim hostile or outsider verification from this wrapper.",
+    "Do not claim enterprise readiness from this wrapper."
+  ],
+  "pass_fail_surface_refs": [
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json"
+  ],
+  "preflight_refs": [
+    "KT_PROD_CLEANROOM/product/one_page_product_truth_surface.md",
+    "KT_PROD_CLEANROOM/product/support_boundary.json",
+    "KT_PROD_CLEANROOM/reports/commercial_truth_packet.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_kit.json"
+  ],
+  "profile_bindings": [
+    "local_verifier_mode",
+    "team_pilot_mode",
+    "regulated_workflow_mode"
+  ],
+  "schema_id": "kt.product.client_wrapper_spec.v1",
+  "status": "ACTIVE",
+  "support_boundary_ref": "KT_PROD_CLEANROOM/product/support_boundary.json",
+  "wrapper_id": "kt_bounded_verifier_wrapper_v1"
+}

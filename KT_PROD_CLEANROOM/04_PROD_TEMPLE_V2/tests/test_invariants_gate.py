@@ -74,6 +74,9 @@ class TestInvariantsGate(unittest.TestCase):
     def test_happy_path_passes(self) -> None:
         InvariantsGate.assert_runtime_invariants(_valid_context(input_text=""))
 
+    def test_happy_path_passes_with_large_but_bounded_input(self) -> None:
+        InvariantsGate.assert_runtime_invariants(_valid_context(input_text=("x" * 1024)))
+
 
 if __name__ == "__main__":
     raise SystemExit(unittest.main())

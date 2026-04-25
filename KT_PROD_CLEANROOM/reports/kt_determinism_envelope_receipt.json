@@ -1,0 +1,356 @@
+{
+  "artifact_class_assignments": {
+    "class_a": [
+      {
+        "path": "KT_PROD_CLEANROOM/governance/kt_artifact_class_policy.json",
+        "surface_id": "artifact_class_policy"
+      },
+      {
+        "path": "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json",
+        "surface_id": "determinism_envelope_policy"
+      }
+    ],
+    "class_b": [
+      {
+        "path_role": "environment_bundle/live_validation_index",
+        "surface_id": "current_truth_barrier_live_validation_index"
+      }
+    ],
+    "class_c": [
+      {
+        "path": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "reason": "The active verifier manifest is rewritten by truth-surface synchronization and embeds head-bound governance/truth state plus generated_utc; externally verifiable, but not claimed byte-identical across local and CI.",
+        "surface_id": "bounded_public_verifier_manifest_runtime_surface"
+      },
+      {
+        "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+        "reason": "Imported current-head CI signed-surface copy is carried forward as bounded verification evidence, not as a reproducible local/CI byte-identity target.",
+        "surface_id": "current_keyless_signed_public_verifier_manifest_copy"
+      },
+      {
+        "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json",
+        "reason": "GitHub workflow run ids, attempts, URLs, and timing metadata are externally assigned.",
+        "surface_id": "current_truth_barrier_remote_diagnostic"
+      },
+      {
+        "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+        "reason": "Current-head keyless receipt binds a specific workflow run and transparency event.",
+        "surface_id": "current_keyless_execution_receipt"
+      },
+      {
+        "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+        "reason": "Sigstore bundle and Rekor inclusion carry signed timestamps and transparency-log envelopes.",
+        "surface_id": "current_keyless_sigstore_bundle"
+      },
+      {
+        "path": "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json",
+        "reason": "Final WS13 receipt is generated after evidence import and may lawfully record wall-clock issuance time.",
+        "surface_id": "ws13_final_receipt"
+      }
+    ]
+  },
+  "artifact_id": "kt_determinism_envelope_receipt.json",
+  "blocked_by": [],
+  "canonicalization_rules": [
+    {
+      "fields_kept": [
+        "worktree.head_sha",
+        "worktree.git_dirty",
+        "checks[].check_id",
+        "checks[].critical",
+        "checks[].scope",
+        "checks[].status",
+        "checks[].summary"
+      ],
+      "list_ordering": "checks_sorted_by_check_id",
+      "profile_id": "live_validation_index_v1",
+      "type": "JSON_PROJECTION"
+    }
+  ],
+  "checks": [
+    {
+      "check": "ws12_receipt_pass",
+      "detail": "WS12 must already be PASS before WS13 can lock the determinism envelope.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_supply_chain_policy_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "local_truth_barrier_pass_current_head",
+      "detail": "Local truth barrier must pass on the current head for the WS13 local bundle.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/local/live_validation_index.local.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ci_truth_barrier_pass_current_head",
+      "detail": "CI truth barrier must pass on the current head for the WS13 CI bundle.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/live_validation_index.ci.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "local_environment_matches_declared_envelope",
+      "detail": "Local environment must match the declared WS13 envelope and required environment variables.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/local/environment_probe.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "ci_environment_matches_declared_envelope",
+      "detail": "CI environment must match the declared WS13 envelope and required environment variables.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/environment_probe.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "independent_environments_proven",
+      "detail": "WS13 requires two independent environments with different provenance and environment class.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/local/environment_probe.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/environment_probe.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "artifact_class_registry_byte_identity",
+      "detail": "The emitted artifact-class registry must be byte-identical across local and CI.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/local/kt_artifact_class_registry.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_artifact_class_registry.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "determinism_envelope_byte_identity",
+      "detail": "The emitted determinism envelope manifest must be byte-identical across local and CI.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/local/kt_determinism_envelope_manifest.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_determinism_envelope_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "subject_set_byte_identity",
+      "detail": "The emitted determinism subject set must be byte-identical across local and CI.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/local/kt_determinism_subject_set.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_determinism_subject_set.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "class_b_canonical_equivalence",
+      "detail": "The CLASS_B live-validation surface must canonicalize to the same SHA-256 across local and CI.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/local/live_validation_index.local.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/live_validation_index.ci.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "current_head_ci_keyless_carry_forward",
+      "detail": "Current-head CI evidence must still prove a real keyless path and bind the imported signed copy of the declared public verifier manifest surface.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+        "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_against": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+  "current_repo_head": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+  "current_strongest_claim": "WS13 proves that the declared CLASS_A and CLASS_B surfaces are locked on the same current head across a local Windows environment and a GitHub Actions Ubuntu environment, with current-head keyless carry-forward evidence still present for the bounded public verifier surface.",
+  "determinism_envelope_definition": {
+    "dependency_model_ref": "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json",
+    "forbidden_drift": [
+      "unordered directory walks",
+      "platform-native path separators in deterministic outputs",
+      "wall-clock timestamps inside CLASS_A or CLASS_B equality targets",
+      "network-required artifact emission",
+      "unpinned truth-barrier dependency resolution in CI"
+    ],
+    "normalization_rules": {
+      "filesystem_ordering": "SORTED_RELATIVE_POSIX_PATHS",
+      "json": "SORT_KEYS_INDENT_2_ASCII_UTF8",
+      "newline_policy": "LF_ONLY",
+      "path_separator": "POSIX_SLASH",
+      "timestamp_policy": {
+        "class_a_contains_generated_utc": false,
+        "class_b_canonicalization_strips_wall_clock_fields": true,
+        "class_c_may_record_external_time": true
+      }
+    },
+    "required_environment_variables": {
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+      "PYTHONHASHSEED": "0",
+      "PYTHONIOENCODING": "UTF-8",
+      "SOURCE_DATE_EPOCH": "1700000000",
+      "TZ": "UTC"
+    },
+    "truth_barrier_dependency_pins": {
+      "jsonschema": "4.25.1",
+      "pytest": "9.0.2",
+      "pyyaml": "6.0.3"
+    }
+  },
+  "environments_used": {
+    "ci": {
+      "artifact_id": "environment_probe.json",
+      "environment_class": "github_actions_ubuntu",
+      "environment_id": "github_actions_ubuntu_py311",
+      "environment_provenance": "github_actions",
+      "live_validation_index_path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/live_validation_index.ci.json",
+      "platform": "Linux-6.14.0-1017-azure-x86_64-with-glibc2.39",
+      "platform_prefix_expected": "Linux",
+      "policy_env_match": true,
+      "policy_env_mismatches": {},
+      "python_implementation": "CPython",
+      "python_major_minor": "3.11",
+      "python_major_minor_expected": "3.11",
+      "python_version": "3.11.15",
+      "required_environment_variables": {
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+        "PYTHONHASHSEED": "0",
+        "PYTHONIOENCODING": "UTF-8",
+        "SOURCE_DATE_EPOCH": "1700000000",
+        "TZ": "UTC"
+      },
+      "schema_id": "kt.operator.ws13.environment_probe.v1",
+      "subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b"
+    },
+    "local": {
+      "artifact_id": "environment_probe.json",
+      "environment_class": "local_windows",
+      "environment_id": "local_windows_py310",
+      "environment_provenance": "local_user_managed",
+      "live_validation_index_path": "KT_PROD_CLEANROOM/reports/ws13_determinism/local/live_validation_index.local.json",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "platform_prefix_expected": "Windows-10-10.0.26200-SP0",
+      "policy_env_match": true,
+      "policy_env_mismatches": {},
+      "python_implementation": "CPython",
+      "python_major_minor": "3.10",
+      "python_major_minor_expected": "3.10",
+      "python_version": "3.10.11",
+      "required_environment_variables": {
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+        "PYTHONHASHSEED": "0",
+        "PYTHONIOENCODING": "UTF-8",
+        "SOURCE_DATE_EPOCH": "1700000000",
+        "TZ": "UTC"
+      },
+      "schema_id": "kt.operator.ws13.environment_probe.v1",
+      "subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b"
+    }
+  },
+  "generated_utc": "2026-03-18T04:38:49Z",
+  "hash_comparison_results": {
+    "class_b_canonical_hash": {
+      "ci": "0c5ddd0903aa40bb40c286694f81c1b899c6131cfcf1ebc99c76785a3a1c06ec",
+      "local": "0c5ddd0903aa40bb40c286694f81c1b899c6131cfcf1ebc99c76785a3a1c06ec",
+      "status": "PASS"
+    },
+    "deterministic_outputs": [
+      {
+        "artifact": "kt_artifact_class_registry.json",
+        "ci_sha256": "f6dd771302e69df0021b3568810d00150daded0ef68fc653bc7784874cc3a829",
+        "local_sha256": "f6dd771302e69df0021b3568810d00150daded0ef68fc653bc7784874cc3a829",
+        "status": "PASS"
+      },
+      {
+        "artifact": "kt_determinism_envelope_manifest.json",
+        "ci_sha256": "2ca7c8e5e4352c91e727de7dbead1fefcd1aa815e9f7697f049e188127299205",
+        "local_sha256": "2ca7c8e5e4352c91e727de7dbead1fefcd1aa815e9f7697f049e188127299205",
+        "status": "PASS"
+      },
+      {
+        "artifact": "kt_determinism_subject_set.json",
+        "ci_sha256": "e09900379ace1e234dab669f514b10a57b81a8b627a50092c100f27a11e882d3",
+        "local_sha256": "e09900379ace1e234dab669f514b10a57b81a8b627a50092c100f27a11e882d3",
+        "status": "PASS"
+      }
+    ]
+  },
+  "imported_current_head_ci_evidence": {
+    "keyless_execution_receipt_ref": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+    "keyless_sigstore_bundle_ref": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+    "run_id": "23229317266",
+    "signed_surface_import_ref": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+    "signed_surface_path": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "signed_surface_sha256": "4b20265a469d3e1d95d3c3a796cd622d14c0f6edb10b1271d9e448139267b225",
+    "truth_barrier_remote_diagnostic_ref": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json"
+  },
+  "limitations": [
+    "WS13 PASS is bounded to the declared CLASS_A and CLASS_B surfaces only.",
+    "CLASS_C surfaces remain intentionally non-reproducible and must not be overread as drift failures, including the current-head public verifier manifest carry-forward copy.",
+    "The repo-root import fragility for package-root invocation remains visible and is not erased by WS13.",
+    "WS13 PASS does not prove release readiness, verifier widening, or campaign completion."
+  ],
+  "next_lawful_workstream": "WS14_STATIC_VERIFIER_RELEASE_AND_ACCEPTANCE_POLICY",
+  "pass_verdict": "DECLARED_ARTIFACT_CLASSES_LOCKED_AND_CURRENT_HEAD_DRIFT_PROOF_SEALED",
+  "protected_touch_violations": [],
+  "remaining_non_deterministic_surfaces": [
+    {
+      "path": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "reason": "The active verifier manifest is rewritten by truth-surface synchronization and embeds head-bound governance/truth state plus generated_utc; externally verifiable, but not claimed byte-identical across local and CI.",
+      "surface_id": "bounded_public_verifier_manifest_runtime_surface"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+      "reason": "Imported current-head CI signed-surface copy is carried forward as bounded verification evidence, not as a reproducible local/CI byte-identity target.",
+      "surface_id": "current_keyless_signed_public_verifier_manifest_copy"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json",
+      "reason": "GitHub workflow run ids, attempts, URLs, and timing metadata are externally assigned.",
+      "surface_id": "current_truth_barrier_remote_diagnostic"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+      "reason": "Current-head keyless receipt binds a specific workflow run and transparency event.",
+      "surface_id": "current_keyless_execution_receipt"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+      "reason": "Sigstore bundle and Rekor inclusion carry signed timestamps and transparency-log envelopes.",
+      "surface_id": "current_keyless_sigstore_bundle"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json",
+      "reason": "Final WS13 receipt is generated after evidence import and may lawfully record wall-clock issuance time.",
+      "surface_id": "ws13_final_receipt"
+    }
+  ],
+  "schema_id": "kt.operator.ws13.determinism_envelope_receipt.v1",
+  "status": "PASS",
+  "step_id": "WS13_STEP_1_LOCK_ARTIFACT_CLASSES_AND_PROVE_REPRODUCIBILITY",
+  "stronger_claim_not_made": [
+    "All KT artifacts are now byte-identical across all environments",
+    "WS13 fixes the repo-root import fragility",
+    "WS13 proves release readiness or static verifier acceptance"
+  ],
+  "tests_run": [
+    "python -m pytest -q tests/operator/test_ws13_determinism_envelope_validate.py"
+  ],
+  "unexpected_touches": [],
+  "validators_run": [
+    "python -m tools.operator.ws13_determinism_envelope_validate"
+  ],
+  "workstream_id": "WS13_ARTIFACT_CLASS_AND_DETERMINISM_ENVELOPE_LOCK"
+}

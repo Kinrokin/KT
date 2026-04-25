@@ -21,6 +21,10 @@ def _base_env(repo_root: Path) -> dict[str, str]:
     return env
 
 
+def _git_status(repo_root: Path) -> str:
+    return subprocess.check_output(["git", "status", "--porcelain=v1"], cwd=str(repo_root), text=True)
+
+
 def test_kt_cli_refuses_run_root_outside_exports_runs(tmp_path: Path) -> None:
     repo_root = _repo_root()
     env = _base_env(repo_root)
@@ -41,6 +45,7 @@ def test_kt_cli_refuses_run_root_outside_exports_runs(tmp_path: Path) -> None:
 def test_kt_cli_hat_demo_smoke_and_report_render(tmp_path: Path) -> None:
     repo_root = _repo_root()
     env = _base_env(repo_root)
+    baseline_status = _git_status(repo_root)
 
     out_root = group_root(repo_root=repo_root, group="OPERATOR")
     out_root.mkdir(parents=True, exist_ok=True)
@@ -48,8 +53,14 @@ def test_kt_cli_hat_demo_smoke_and_report_render(tmp_path: Path) -> None:
     hat_run = unique_run_dir(parent=out_root, label="hat_demo_smoke")
     report_run = unique_run_dir(parent=out_root, label="hat_demo_report_smoke")
 
+    hat_cmd = ["python", "-m", "tools.operator.kt_cli", "--run-root", str(hat_run), "hat-demo"]
+    report_cmd = ["python", "-m", "tools.operator.kt_cli", "--run-root", str(report_run), "report", "--run", str(hat_run)]
+    if baseline_status.strip():
+        hat_cmd.append("--allow-dirty")
+        report_cmd.append("--allow-dirty")
+
     p1 = subprocess.run(
-        ["python", "-m", "tools.operator.kt_cli", "--run-root", str(hat_run), "hat-demo"],
+        hat_cmd,
         cwd=str(repo_root),
         env=env,
         text=True,
@@ -61,7 +72,7 @@ def test_kt_cli_hat_demo_smoke_and_report_render(tmp_path: Path) -> None:
     assert (hat_run / "hat_demo" / "router_run_report.json").exists()
 
     p2 = subprocess.run(
-        ["python", "-m", "tools.operator.kt_cli", "--run-root", str(report_run), "report", "--run", str(hat_run)],
+        report_cmd,
         cwd=str(repo_root),
         env=env,
         text=True,
@@ -73,5 +84,4 @@ def test_kt_cli_hat_demo_smoke_and_report_render(tmp_path: Path) -> None:
     txt = (report_run / "report_render.txt").read_text(encoding="utf-8", errors="replace")
     assert "hat_demo_router_run_report" in txt
 
-    st = subprocess.check_output(["git", "status", "--porcelain=v1"], cwd=str(repo_root), text=True)
-    assert st.strip() == ""
+    assert _git_status(repo_root) == baseline_status

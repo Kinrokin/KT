@@ -1,0 +1,43 @@
+{
+  "checks": [
+    {
+      "check_id": "eval_report_passes",
+      "pass": true
+    },
+    {
+      "check_id": "fitness_region_a_required_for_improvement",
+      "pass": true
+    },
+    {
+      "check_id": "signal_quality_candidate_or_better",
+      "pass": true
+    },
+    {
+      "check_id": "promotion_decision_promote",
+      "pass": true
+    },
+    {
+      "check_id": "phase_trace_has_no_stub_execution",
+      "pass": true
+    },
+    {
+      "check_id": "rollback_receipt_passes",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "W3 proves one bounded improvement proposal can be evaluated, promotion-decided, and rollback-bound on current head. It does not claim live runtime cutover, autonomous self-improvement, or benchmark superiority.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "eval_verdict": "PASS",
+  "fitness_region": "A",
+  "forbidden_claims_not_made": [
+    "autonomous_live_runtime_self_modification",
+    "benchmark_superiority_earned",
+    "externality_class_widened_above_E1"
+  ],
+  "generated_utc": "2026-03-23T18:44:26Z",
+  "job_dir_ref": "KT_PROD_CLEANROOM/exports/adapters_shadow/_w3_civilization/aa18410a2a68ac67e9fde1e692661f6dbdefa11804a79a3a6cf2d04b8250da72",
+  "learning_response_status": "BOUNDED_SAFE_IMPROVEMENT_PROVED",
+  "promotion_decision": "PROMOTE",
+  "schema_id": "kt.w3.learning_response_receipt.v1",
+  "status": "PASS"
+}

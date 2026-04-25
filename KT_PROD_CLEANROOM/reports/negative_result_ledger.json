@@ -1,0 +1,40 @@
+{
+  "authoritative_negative_result_ledger_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/router_superiority_recovery_prep_current_head/negative_result_ledger.json",
+  "carrier_surface_role": "TRACKED_CARRIER_ONLY_NEGATIVE_RESULT_LEDGER",
+  "entries": [
+    {
+      "entry_id": "NEG_R5_STATIC_HOLD_CURRENT_HEAD",
+      "implication": "R6 remains blocked until superiority is actually earned.",
+      "source_ref": "KT_PROD_CLEANROOM/reports/router_vs_best_adapter_proof_ratification_receipt.json",
+      "verdict": "NOT_EARNED_STATIC_BASELINE_RETAINS_CANONICAL_STATUS"
+    },
+    {
+      "entry_id": "NEG_ROUTE_DELTA_ZERO",
+      "implication": "Current court is not forcing plural route behavior.",
+      "source_ref": "KT_PROD_CLEANROOM/reports/route_distribution_health.json",
+      "verdict": "route_distribution_delta_count=0"
+    },
+    {
+      "entry_id": "NEG_SHADOW_MATCH_ONLY",
+      "implication": "Current shadow routing mirrors the static baseline instead of beating it.",
+      "source_ref": "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
+      "verdict": "NOT_EARNED_SHADOW_MATCH_ONLY"
+    },
+    {
+      "entry_id": "NEG_NO_ELIGIBLE_LEARNED_ROUTER",
+      "implication": "Learned router work is still blocked on better substrate evidence.",
+      "source_ref": "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
+      "verdict": "NO_ELIGIBLE_LEARNED_ROUTER_CANDIDATE_PRESENT"
+    },
+    {
+      "entry_id": "NEG_CURRENT_BATTERY_TOO_SMALL",
+      "implication": "The current proof court is too small to carry a broad routing theorem.",
+      "source_ref": "KT_PROD_CLEANROOM/reports/router_shadow_eval_matrix.json",
+      "verdict": "case_count=4"
+    }
+  ],
+  "generated_utc": "2026-04-11T23:20:17Z",
+  "preservation_rule": "Negative rows must remain visible even when later cycles improve on them.",
+  "schema_id": "kt.operator.negative_result_ledger.v1",
+  "status": "PASS"
+}

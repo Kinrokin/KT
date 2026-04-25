@@ -47,7 +47,14 @@ def _valid_context() -> dict:
     }
 
 
-def _request(*, mode: str, artifact_ids: list[str] | None = None) -> dict:
+def _request(
+    *,
+    mode: str,
+    artifact_ids: list[str] | None = None,
+    max_steps: int = 4,
+    max_branching: int = 1,
+    max_depth: int = 4,
+) -> dict:
     refs = []
     for idx, aid in enumerate(artifact_ids or []):
         refs.append({"artifact_id": aid, "artifact_hash": f"{idx + 1:x}".zfill(64)})
@@ -58,9 +65,9 @@ def _request(*, mode: str, artifact_ids: list[str] | None = None) -> dict:
         "runtime_registry_hash": "1" * 64,
         "mode": mode,
         "input_hash": "2" * 64,
-        "max_steps": 4,
-        "max_branching": 1,
-        "max_depth": 4,
+        "max_steps": max_steps,
+        "max_branching": max_branching,
+        "max_depth": max_depth,
         "artifact_refs": refs,
     }
 
@@ -237,3 +244,64 @@ class TestCognitiveEngineC015(unittest.TestCase):
             _ = CognitiveEngine.execute(context=ctx, plan=plan)
         finally:
             builtins.__import__ = original_import  # type: ignore[assignment]
+
+    def test_plan_steps_change_with_artifact_semantics(self) -> None:
+        ctx = _valid_context()
+        policy_req = CognitiveRequestSchema.from_dict(
+            _request(
+                mode=MODE_DRY_RUN,
+                artifact_ids=["policy.constraint"],
+                max_branching=1,
+                max_depth=1,
+            )
+        )
+        evidence_req = CognitiveRequestSchema.from_dict(
+            _request(
+                mode=MODE_DRY_RUN,
+                artifact_ids=["memory.trace", "router.adapter"],
+                max_branching=2,
+                max_depth=2,
+            )
+        )
+
+        policy_plan = CognitiveEngine.plan(context=ctx, request=policy_req).to_dict()
+        evidence_plan = CognitiveEngine.plan(context=ctx, request=evidence_req).to_dict()
+
+        policy_types = [step["step_type"] for step in policy_plan["steps"]]
+        evidence_types = [step["step_type"] for step in evidence_plan["steps"]]
+        self.assertNotEqual(policy_types, evidence_types)
+        self.assertIn("INSPECT_EVIDENCE", evidence_types)
+        self.assertIn("EVALUATE", evidence_types)
+
+    def test_step_scores_do_not_depend_on_step_hash_prefix(self) -> None:
+        payload = {
+            "schema_id": CognitivePlanSchema.SCHEMA_ID,
+            "schema_version_hash": CognitivePlanSchema.SCHEMA_VERSION_HASH,
+            "plan_id": "cog.plan.hash.independence",
+            "runtime_registry_hash": "1" * 64,
+            "request_hash": "2" * 64,
+            "status": "OK",
+            "mode": MODE_DRY_RUN,
+            "steps": [
+                {"step_index": 0, "step_type": "CHECK_POLICY", "step_hash": "00" * 32},
+                {"step_index": 1, "step_type": "FINALIZE", "step_hash": "11" * 32},
+            ],
+            "plan_hash": "",
+        }
+        payload["plan_hash"] = CognitivePlanSchema.compute_plan_hash(payload)
+        plan_a = CognitivePlanSchema.from_dict(payload)
+
+        payload_variant = copy.deepcopy(payload)
+        payload_variant["steps"][0]["step_hash"] = "ff" * 32
+        payload_variant["steps"][1]["step_hash"] = "ee" * 32
+        payload_variant["plan_hash"] = CognitivePlanSchema.compute_plan_hash(payload_variant)
+        plan_b = CognitivePlanSchema.from_dict(payload_variant)
+
+        result_a = CognitiveEngine.execute(context=_valid_context(), plan=plan_a).to_dict()
+        result_b = CognitiveEngine.execute(context=_valid_context(), plan=plan_b).to_dict()
+
+        legacy_a = [int(step["step_hash"][:2], 16) % 101 for step in payload["steps"]]
+        legacy_b = [int(step["step_hash"][:2], 16) % 101 for step in payload_variant["steps"]]
+
+        self.assertEqual([row["score_0_100"] for row in result_a["steps"]], [row["score_0_100"] for row in result_b["steps"]])
+        self.assertNotEqual(legacy_a, legacy_b)

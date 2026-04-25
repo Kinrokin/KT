@@ -1,0 +1,73 @@
+{
+  "authoritative_scope": {
+    "contradiction_rules": [
+      "If branch-local prep output contradicts Track 01/02/03 frozen receipts, prep output loses automatically.",
+      "If a source claims canonical status from expansion/* before merge, fail closed.",
+      "If stale or untracked surfaces outrank the frozen header stack, fail closed."
+    ],
+    "posture_enum": [
+      "CANONICAL_MAIN_LIVE_TRUTH",
+      "AUTHORITATIVE_BRANCH_NON_CANONICAL",
+      "TRACK03_EXECUTION_COMPLETE__PROMOTION_GATED",
+      "TRACK03_HUMAN_REVIEW_PENDING_OR_COMPLETE",
+      "PARALLEL_PREP_ONLY__NON_AUTHORITATIVE"
+    ],
+    "source_precedence_table": [
+      "main protected-branch canonical surfaces after merge",
+      "frozen authoritative branch Track 03 review / verdict surfaces before merge",
+      "frozen Track 02 and Track 01 summary receipts",
+      "historical and quarantine surfaces for lineage only",
+      "parallel prep scaffolds last and non-authoritative only"
+    ],
+    "stale_surface_exclusion_logic": {
+      "exclude_historical_override": true,
+      "exclude_prep_lane_posture_override": true,
+      "exclude_untracked_authority": true,
+      "reference_contract": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/reporting_integrity_contract.json"
+    },
+    "truth_engine_contract": {
+      "historical_surfaces_may_explain_but_not_override": true,
+      "live_posture_must_be_receipt_derived": true,
+      "prep_surfaces_may_not_publish_live_posture": true,
+      "subject_head": "bf1c7ac8af60beec181bfc60a608bf9768a3633f"
+    }
+  },
+  "authority_header": {
+    "authoritative_lane_branch": "authoritative/post-f-truth-engine",
+    "authoritative_lane_branch_head": "7cf8d55169ed1908f572b4556099f3a9bf83df47",
+    "canonical_authority_branch": "main",
+    "canonical_parent_main_head": "9a09d85b6da12d15bcfe94f95c661b43ee5d3b52",
+    "package_promotion_still_deferred": true,
+    "track03_repo_authority_now_canonical": true
+  },
+  "claim_boundary": "This packet opens only the truth-engine/contradiction-validator lane as the first post-merge authoritative lane. It does not promote package-internal artifacts, and it does not promote the other prep lanes.",
+  "execution_status": "PASS__POST_F_TRUTH_ENGINE_AUTHORITATIVE_LANE_BOUND",
+  "generated_utc": "2026-04-25T15:40:16Z",
+  "lane_outcome": "POST_F_TRUTH_ENGINE_CONTRADICTION_VALIDATOR_LANE_OPEN__AUTHORITATIVE_ONLY",
+  "lane_transition": {
+    "promoted_after_canonical_merge": true,
+    "promoted_from_prep_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_parallel_truth_engine_scope_packet.json",
+    "promoted_lane_id": "truth_engine_contradiction_validator_scaffold",
+    "promotion_basis_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_post_merge_closeout_receipt.json",
+    "retained_non_authoritative_prep_lanes": [
+      "trust_zone_boundary_purification_scaffold",
+      "residual_proof_law_hardening_scaffold",
+      "upper_stack_ratification_scaffold"
+    ]
+  },
+  "next_lawful_move": "AUTHOR_POST_F_TRUTH_ENGINE_CONTRADICTION_VALIDATOR_CONTRACT_PACKET",
+  "preserved_boundaries": {
+    "other_prep_lanes_remain_non_authoritative": true,
+    "package_auto_promotion_candidate_count": 6,
+    "package_promotion_boundary": "Still blocked until protected merge to main and explicit post-review promotion decision.",
+    "review_approved_auto_skip_count": 3,
+    "review_approved_out_of_scope_count": 2
+  },
+  "schema_id": "kt.operator.cohort0_post_f_truth_engine_contradiction_validator_authority_packet.v1",
+  "source_refs": {
+    "post_merge_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_post_merge_closeout_receipt.json",
+    "post_merge_snapshot": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_post_merge_branch_snapshot.json",
+    "prep_truth_engine_scope": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_parallel_truth_engine_scope_packet.json"
+  },
+  "status": "PASS"
+}

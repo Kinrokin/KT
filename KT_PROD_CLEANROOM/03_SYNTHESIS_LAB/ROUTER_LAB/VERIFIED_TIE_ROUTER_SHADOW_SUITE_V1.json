@@ -1,0 +1,406 @@
+{
+  "claim_boundary": "This suite is lab-only and noncanonical. It targets live tie cases from the verified-entrant scorecard to measure staged router-shadow opportunity before any future counted rerun. It cannot unlock R5, R6, lobe authority, externality, comparative claims, or commercial activation.",
+  "cases": [
+    {
+      "case_id": "LAB_TIE_R01A",
+      "pattern_family": "LAB_TIE_R01",
+      "notes": "Repeat the research-and-writing split with evidence gathering followed by calibrated recommendation.",
+      "single_case_baseline": {
+        "preferred_genotype": {
+          "prompt_transform_style": "clarify_first",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "required_terms": [
+          "research",
+          "tradeoffs",
+          "recommendation"
+        ],
+        "task_text": "Research the evidence, summarize the tradeoffs, and write a calibrated recommendation.",
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "evidence_first",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "required_terms": [
+            "research",
+            "tradeoffs"
+          ],
+          "stage_id": "research",
+          "task_text": "Research the evidence and surface the tradeoffs.",
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "uncertainty_policy": 1.5
+          }
+        },
+        {
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "required_terms": [
+            "recommendation",
+            "decision"
+          ],
+          "stage_id": "recommend",
+          "task_text": "Write a calibrated recommendation and explain the decision.",
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_TIE_R01B",
+      "pattern_family": "LAB_TIE_R01",
+      "notes": "Repeat the route win with an evidence memo followed by a calibrated final call.",
+      "single_case_baseline": {
+        "preferred_genotype": {
+          "prompt_transform_style": "clarify_first",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "required_terms": [
+          "evidence",
+          "tradeoffs",
+          "calibrated"
+        ],
+        "task_text": "Gather the evidence, outline the tradeoffs, and produce a calibrated final call.",
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "evidence_first",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "required_terms": [
+            "evidence",
+            "tradeoffs"
+          ],
+          "stage_id": "memo",
+          "task_text": "Gather the evidence and outline the tradeoffs.",
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "uncertainty_policy": 1.5
+          }
+        },
+        {
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "required_terms": [
+            "calibrated",
+            "decision"
+          ],
+          "stage_id": "call",
+          "task_text": "Produce a calibrated final call and defend it.",
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_TIE_R01C",
+      "pattern_family": "LAB_TIE_R01",
+      "notes": "Repeat the route win with a research summary followed by a recommendation brief.",
+      "single_case_baseline": {
+        "preferred_genotype": {
+          "prompt_transform_style": "clarify_first",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "required_terms": [
+          "research",
+          "summarize",
+          "recommendation"
+        ],
+        "task_text": "Research the issue, summarize the tradeoffs, and produce a calibrated recommendation brief.",
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "evidence_first",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "required_terms": [
+            "research",
+            "tradeoffs"
+          ],
+          "stage_id": "research",
+          "task_text": "Research the issue and summarize the tradeoffs.",
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "uncertainty_policy": 1.5
+          }
+        },
+        {
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "required_terms": [
+            "recommendation",
+            "choice"
+          ],
+          "stage_id": "brief",
+          "task_text": "Write a calibrated recommendation brief and defend the choice.",
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_TIE_R01D",
+      "pattern_family": "LAB_TIE_R01",
+      "notes": "Broaden the evidence-to-decision pattern with an incident matrix followed by a calibrated rollout call.",
+      "single_case_baseline": {
+        "preferred_genotype": {
+          "prompt_transform_style": "clarify_first",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "required_terms": [
+          "incident",
+          "tradeoffs",
+          "rollout"
+        ],
+        "task_text": "Build the incident evidence matrix, summarize the tradeoffs, and make a calibrated rollout call.",
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "preferred_genotype": {
+            "prompt_transform_style": "structured_outline",
+            "reasoning_directive": "evidence_first",
+            "scoring_bias": "precision",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "required_terms": [
+            "incident",
+            "tradeoffs"
+          ],
+          "stage_id": "matrix",
+          "task_text": "Build the incident evidence matrix and summarize the tradeoffs.",
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          }
+        },
+        {
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "required_terms": [
+            "rollout",
+            "decision"
+          ],
+          "stage_id": "rollout_call",
+          "task_text": "Write the calibrated rollout call and defend the decision.",
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_TIE_R01E",
+      "pattern_family": "LAB_TIE_R01",
+      "notes": "Broaden the route win with an evidence review followed by a final recommendation memo.",
+      "single_case_baseline": {
+        "preferred_genotype": {
+          "prompt_transform_style": "clarify_first",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "required_terms": [
+          "evidence",
+          "decision",
+          "recommendation"
+        ],
+        "task_text": "Review the evidence, compare the decision options, and write a calibrated recommendation memo.",
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "preferred_genotype": {
+            "prompt_transform_style": "structured_outline",
+            "reasoning_directive": "evidence_first",
+            "scoring_bias": "precision",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "required_terms": [
+            "evidence",
+            "decision"
+          ],
+          "stage_id": "review",
+          "task_text": "Review the evidence and compare the decision options.",
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          }
+        },
+        {
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "required_terms": [
+            "recommendation",
+            "memo"
+          ],
+          "stage_id": "memo",
+          "task_text": "Write the calibrated recommendation memo and defend it.",
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_TIE_R02",
+      "pattern_family": "LAB_TIE_R02",
+      "notes": "Rework the tool-use tie into a real handoff: expansive tool capture first, then compressed summary and triage.",
+      "single_case_baseline": {
+        "preferred_genotype": {
+          "guardrail_strength": "permissive",
+          "prompt_transform_style": "expand_context",
+          "reasoning_directive": "minimal_chain",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "required_terms": [
+          "tool",
+          "result",
+          "summary"
+        ],
+        "task_text": "Use the tool, capture the result with context, then hand off a concise summary.",
+        "weights": {
+          "guardrail_strength": 1.0,
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "preferred_genotype": {
+            "guardrail_strength": "permissive",
+            "prompt_transform_style": "expand_context",
+            "reasoning_directive": "minimal_chain",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "required_terms": [
+            "tool",
+            "result",
+            "context"
+          ],
+          "stage_id": "tool",
+          "task_text": "Use the tool, capture the result, and preserve the context for handoff.",
+          "weights": {
+            "guardrail_strength": 1.0,
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "uncertainty_policy": 1.5
+          }
+        },
+        {
+          "preferred_genotype": {
+            "prompt_transform_style": "compress",
+            "reasoning_directive": "decision_tree",
+            "scoring_bias": "recall",
+            "uncertainty_policy": "conservative"
+          },
+          "required_terms": [
+            "summary",
+            "triage"
+          ],
+          "stage_id": "summary",
+          "task_text": "Write the concise summary and triage handoff fast.",
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          }
+        }
+      ]
+    }
+  ],
+  "mode": "LAB_ONLY_NONCANONICAL",
+  "schema_id": "kt.verified_tie_router_shadow_suite.v1"
+}

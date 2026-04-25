@@ -1,0 +1,43 @@
+{
+  "failures": [],
+  "generated_utc": "2026-03-20T22:50:07Z",
+  "scenarios": [
+    {
+      "attempts": 2,
+      "observed_backoff_ms": [
+        10
+      ],
+      "response_status": "OK",
+      "scenario_id": "retry_and_backoff_for_transient_timeout",
+      "status": "PASS"
+    },
+    {
+      "first_error_code": "TIMEOUT",
+      "provider_calls": 1,
+      "scenario_id": "circuit_breaker_opens_after_threshold",
+      "second_error_code": "CIRCUIT_OPEN",
+      "status": "PASS"
+    },
+    {
+      "first_status": "OK",
+      "scenario_id": "rate_limit_blocks_second_call_inside_window",
+      "second_error_code": "RATE_LIMITED",
+      "status": "PASS"
+    },
+    {
+      "first_status": "OK",
+      "scenario_id": "process_quota_blocks_calls_above_cap",
+      "second_error_code": "QUOTA_EXCEEDED",
+      "status": "PASS"
+    }
+  ],
+  "schema_id": "kt.wave1.provider_resilience_base.v1",
+  "scope_boundary": "Wave 1 provider resilience proves bounded timeout/retry/backoff, circuit-breaker, rate-limit, and quota primitives only.",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "adapter_activation_occurred",
+    "semantic_router_opened",
+    "broad_live_provider_fleet_activated",
+    "externality_widened"
+  ]
+}

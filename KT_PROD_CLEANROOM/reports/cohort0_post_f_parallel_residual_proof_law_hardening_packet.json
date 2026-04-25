@@ -1,0 +1,53 @@
+{
+  "authority_dependency_map": {
+    "execution_artifacts": [
+      "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/staging/reports/cohort0_current_head_receipt.json",
+      "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/artifacts/counted_path_receipt.json",
+      "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/staging/bundle/proof_bundle_run-20260424-152430-bb49da8.tar.gz",
+      "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/staging/signatures/proof_bundle_run-20260424-152430-bb49da8.sig"
+    ],
+    "track03_depends_on": [
+      "Track 02 final summary packet",
+      "Track 03 final summary packet",
+      "Track 03 human review packet"
+    ]
+  },
+  "bundle_canonicalization_rules": [
+    "Never back-edit counted bundle bytes after receipt freeze.",
+    "Treat run-root artifacts as preserved execution truth, not canonical live posture.",
+    "If a manifest row is stale, quarantine it and supersede explicitly instead of overwriting silently."
+  ],
+  "claim_boundary": "Prep-only proof-law hardening scaffold. It does not rerun counted execution or alter Track 03 receipts.",
+  "deterministic_digest_law": {
+    "hash_algorithm": "sha256",
+    "ordering_rule": "lexicographic file ordering",
+    "seed_default": 42,
+    "tarball_rule": "sorted names, fixed mtime, owner=0, group=0, numeric-owner",
+    "timestamps": "RFC3339 UTC Z"
+  },
+  "generated_utc": "2026-04-25T15:12:19Z",
+  "lane_id": "residual_proof_law_hardening_scaffold",
+  "lane_status": "AUTHORIZED__NON_AUTHORITATIVE_PREP_ONLY",
+  "mock_prod_admissibility_split": {
+    "default_runtime": "mock_only",
+    "mock_allowed_for_track03": true,
+    "production_requires_explicit_env": true,
+    "production_requires_operator_decision": true
+  },
+  "next_lawful_move": "AUTHOR_POST_F_TRACK_03_MERGE_AND_PROMOTION_PREP_PACKET",
+  "receipt_signing_timestamp_sequence": [
+    "refresh current-head receipt",
+    "run smoke path",
+    "run exactly one counted path for frozen manifest",
+    "freeze proof bundle",
+    "emit signature surface",
+    "emit promotion block or promotion receipt"
+  ],
+  "schema_id": "kt.operator.cohort0_post_f_parallel_residual_proof_law_hardening_packet.v1",
+  "source_refs": {
+    "track03_final_summary": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_final_summary_packet.json",
+    "track03_human_review": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_human_review_packet.json",
+    "track03_validation_matrix": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/artifacts/validation_matrix.json"
+  },
+  "status": "PASS"
+}

@@ -1,0 +1,40 @@
+{
+  "adapter_id": "council.openai.live_hashed.v1",
+  "adapter_kind": "LIVE_HASHED_PROVIDER",
+  "budget_profile": "wave2a.live_hashed.timeout_20000.max_output_1024",
+  "challenge_hooks": [
+    "analysis",
+    "healthcheck"
+  ],
+  "circuit_breaker_policy": {
+    "cooldown_ms": 30000,
+    "threshold": 2
+  },
+  "execution_mode": "LIVE",
+  "io_schema_ref": "provider.call_receipt",
+  "policy_profile": "wave2a.live_hashed.fail_closed",
+  "provider_id": "openai",
+  "provenance_requirements": [
+    "adapter_invocation",
+    "provider_call_receipt",
+    "runtime_telemetry"
+  ],
+  "rate_limit_profile": {
+    "max_calls_per_window": 10,
+    "quota_cap": 200,
+    "window_ms": 60000
+  },
+  "replayability_class": "E1_SAME_HOST_DETACHED_REPLAY",
+  "request_type_allowlist": [
+    "analysis",
+    "healthcheck"
+  ],
+  "retry_policy": {
+    "backoff_multiplier": 2.0,
+    "base_delay_ms": 250,
+    "max_attempts": 2
+  },
+  "status": "ACTIVE",
+  "timeout_ms": 20000,
+  "version": "1.0.0"
+}

@@ -152,6 +152,15 @@ def _evaluate_candidate(*, candidate: Dict[str, Any], metric_names: Sequence[str
     return scores, avg_micro
 
 
+def _coherence_score(candidate_results: Sequence[Tuple[str, Dict[str, float], int]]) -> float:
+    if len(candidate_results) <= 1:
+        return 1.0
+    micros = [row[2] for row in candidate_results]
+    spread = max(micros) - min(micros)
+    normalized_spread = min(1.0, spread / 1_000_000.0)
+    return round(max(0.0, 1.0 - normalized_spread), 6)
+
+
 class MultiverseEngine:
     @staticmethod
     def _freeze_context_for_tests(context: RuntimeContext) -> Mapping[str, Any]:
@@ -216,7 +225,7 @@ class MultiverseEngine:
             )
         ]
 
-        coherence_score = 1.0
+        coherence_score = _coherence_score(candidate_results)
         result_hash = MultiverseEvaluationResultSchema.compute_result_hash(
             evaluation_id=req["evaluation_id"],
             runtime_registry_hash=req["runtime_registry_hash"],
@@ -243,4 +252,3 @@ class MultiverseEngine:
                 "result_hash": result_hash,
             }
         )
-

@@ -1,0 +1,132 @@
+{
+  "blocked_by": [],
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "sigstore_and_rekor_path_active",
+      "detail": "The bounded WS11 path remains active.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_sigstore_integration_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "outsider_secret_free_assurance_exists",
+      "detail": "A secret-free outsider assurance replay exists.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_assurance_confirmation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "log_monitor_plane_pass",
+      "detail": "The log monitor plane remains active for verifier trust surfaces.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_log_monitor_plane_receipt.json",
+        "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "supply_chain_tuf_attack_drills_pass",
+      "detail": "Existing TUF attack drill coverage remains PASS and available for child-path verifier distribution.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_supply_chain_policy_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "threshold_root_target_present",
+      "detail": "F02B requires a real threshold root target carried forward from the reratified root boundary.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "verifier_acceptance_role_threshold_defined",
+      "detail": "F02B requires a defined verifier-acceptance role threshold on the child-lawful path.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_signer_topology.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "verifier_acceptance_identity_separation_preserved",
+      "detail": "Verifier-acceptance maintainers must remain distinct from root, release, CI, and local operator roles.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_identity_model_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "threshold_root_acceptance_policy_active",
+      "detail": "F02B requires the child threshold-root acceptance policy to become active.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_threshold_root_acceptance_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "tuf_distribution_scope_active",
+      "detail": "F02B requires an explicit child-path TUF distribution policy.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_tuf_distribution_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "verifier_coverage_minimally_widened",
+      "detail": "F02B requires the minimum verifier-coverage widening needed to clear the child trust blocker.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_threshold_root_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_tuf_distribution_policy.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "release_readiness_still_not_proven_visible",
+      "detail": "Release readiness remains visible as an open blocker but does not block F02B once trust activation is complete.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_state_vector_v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_blocker_matrix_v2.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "cleared_blockers": [
+    "threshold_root_verifier_acceptance_inactive",
+    "verifier_coverage_not_widened_beyond_bounded_surfaces"
+  ],
+  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "current_strongest_claim": "F02B activates child-scoped threshold-root verifier acceptance and child-path TUF distribution for the minimum verifier bundle set needed to clear the trust blocker.",
+  "evidence_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "generated_utc": "2026-03-20T01:41:57Z",
+  "next_lawful_phase": "F03_PROOF_REPRO_HARDENING_AND_STABILITY",
+  "pass_verdict": "THRESHOLD_ROOT_ACCEPTANCE_AND_CHILD_TUF_DISTRIBUTION_ACTIVE",
+  "phase_id": "F02B_TRUST_ROOT_TRANSPARENCY_AND_TUF_ACTIVATION",
+  "remaining_open_blockers": [
+    "current_head_external_capability_not_confirmed",
+    "release_readiness_not_proven",
+    "release_ceremony_not_executed",
+    "release_activation_not_executed",
+    "repo_root_import_fragility_visible_and_unfixed"
+  ],
+  "schema_id": "kt.child_campaign.f02b_trust_activation_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "Release readiness is proven",
+    "Release ceremony is executed",
+    "Release activation is executed",
+    "Current-head external capability is confirmed",
+    "Verifier coverage is widened beyond the minimum F02B bundle set"
+  ],
+  "subject_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "what_is_not_proven": [
+    "Current-head external capability remains unconfirmed",
+    "Release readiness remains unproven",
+    "Release ceremony remains non-executed",
+    "Release activation remains non-executed",
+    "Repo-root import fragility remains visible and unfixed"
+  ]
+}

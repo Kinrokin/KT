@@ -1,0 +1,164 @@
+{
+  "abstain_case_count": 7,
+  "abstention_family_present": true,
+  "authoritative_oracle_router_local_scorecard_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/route_bearing_stage_pack_oracle_current_head/oracle_router_local_scorecard.json",
+  "carrier_surface_role": "TRACKED_CARRIER_ONLY_ORACLE_ROUTER_LOCAL_SCORECARD",
+  "case_count": 39,
+  "claim_boundary": "This scorecard proves only that the preregistered local court can differentiate route/stay-static/abstain outcomes. It does not prove learned routing, superiority against alpha, or counted-lane reopening.",
+  "current_git_head": "4ab9721a7ffc9a04d51ad29b9348de54d1cdf32b",
+  "generated_utc": "2026-04-12T14:23:09Z",
+  "generic_all_13_heavier_rerun_forbidden": true,
+  "held_out_case_count": 8,
+  "held_out_mutation_present": true,
+  "kaggle_admissibility": "ADMISSIBLE_FOR_TARGETED_HYPERTRAINING_ONLY",
+  "learned_router_still_forbidden": true,
+  "nonzero_route_divergence": true,
+  "oracle_positive_family_ids": [
+    "AUDITOR_ADMISSIBILITY_FAIL_CLOSED",
+    "BETA_SECOND_ORDER_REFRAME",
+    "BOUNDARY_ABSTENTION_CONTROL",
+    "CHILD_ANOMALY_PRESERVATION",
+    "P2_SIGNAL_NOISE_SEPARATION",
+    "SCOUT_SPARSE_SEARCH",
+    "STRATEGIST_CONSEQUENCE_CHAIN"
+  ],
+  "oracle_positive_lobe_ids": [
+    "lobe.p2.v1",
+    "lobe.child.v1",
+    "lobe.strategist.v1",
+    "lobe.beta.v1",
+    "lobe.scout.v1",
+    "lobe.auditor.v1"
+  ],
+  "per_family_rows": [
+    {
+      "acceptance_metric": "Higher fail-closed correctness and lower overclaim rate than alpha.",
+      "alpha_liability": "Alpha can sound acceptable while underpricing receipt gaps, policy breaks, or overclaim risk.",
+      "case_count": 5,
+      "family_category": "SPECIALIST_WEDGE",
+      "family_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED",
+      "held_out_case_count": 1,
+      "kaggle_target_eligible": true,
+      "oracle_policy_outcomes": [
+        "ABSTAIN_FOR_REVIEW",
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "target_lobe_id": "lobe.auditor.v1",
+      "visible_case_count": 4
+    },
+    {
+      "acceptance_metric": "Better rival-frame preservation and lower framing-lock error cost than alpha.",
+      "alpha_liability": "Alpha can overcommit to the first clean framing instead of holding a live rival interpretation.",
+      "case_count": 5,
+      "family_category": "SPECIALIST_WEDGE",
+      "family_id": "BETA_SECOND_ORDER_REFRAME",
+      "held_out_case_count": 1,
+      "kaggle_target_eligible": true,
+      "oracle_policy_outcomes": [
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "target_lobe_id": "lobe.beta.v1",
+      "visible_case_count": 4
+    },
+    {
+      "acceptance_metric": "Lower failure cost than forced routing through lawful abstention and explicit review handoff.",
+      "alpha_liability": "Forced commitment under high ambiguity can cost more than lawful abstention.",
+      "case_count": 4,
+      "family_category": "ABSTENTION_CONTROL",
+      "family_id": "BOUNDARY_ABSTENTION_CONTROL",
+      "held_out_case_count": 1,
+      "kaggle_target_eligible": false,
+      "oracle_policy_outcomes": [
+        "ABSTAIN_FOR_REVIEW"
+      ],
+      "target_lobe_id": "",
+      "visible_case_count": 3
+    },
+    {
+      "acceptance_metric": "Higher anomaly retention and lower silent-normalization rate than alpha.",
+      "alpha_liability": "Alpha can flatten rare anomalies into a coherent median answer even when the anomaly is the point.",
+      "case_count": 5,
+      "family_category": "SPECIALIST_WEDGE",
+      "family_id": "CHILD_ANOMALY_PRESERVATION",
+      "held_out_case_count": 1,
+      "kaggle_target_eligible": true,
+      "oracle_policy_outcomes": [
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "target_lobe_id": "lobe.child.v1",
+      "visible_case_count": 4
+    },
+    {
+      "acceptance_metric": "Lower failure cost than alpha with equal-or-better traceability and constraint fidelity.",
+      "alpha_liability": "Alpha can blur decisive and decorative constraints into one plausible plan when the court is too soft.",
+      "case_count": 5,
+      "family_category": "SPECIALIST_WEDGE",
+      "family_id": "P2_SIGNAL_NOISE_SEPARATION",
+      "held_out_case_count": 1,
+      "kaggle_target_eligible": true,
+      "oracle_policy_outcomes": [
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "target_lobe_id": "lobe.p2.v1",
+      "visible_case_count": 4
+    },
+    {
+      "acceptance_metric": "Higher candidate coverage and lower early-commit error cost than alpha.",
+      "alpha_liability": "Alpha can synthesize too early when the right move is to widen the search before choosing.",
+      "case_count": 5,
+      "family_category": "SPECIALIST_WEDGE",
+      "family_id": "SCOUT_SPARSE_SEARCH",
+      "held_out_case_count": 1,
+      "kaggle_target_eligible": true,
+      "oracle_policy_outcomes": [
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "target_lobe_id": "lobe.scout.v1",
+      "visible_case_count": 4
+    },
+    {
+      "acceptance_metric": "No-regression hold on the static control path.",
+      "alpha_liability": "No liability should be asserted on true static-control families.",
+      "case_count": 5,
+      "family_category": "STATIC_CONTROL",
+      "family_id": "STATIC_NO_ROUTE_CONTROL",
+      "held_out_case_count": 1,
+      "kaggle_target_eligible": false,
+      "oracle_policy_outcomes": [
+        "STAY_STATIC_BASELINE"
+      ],
+      "target_lobe_id": "lobe.alpha.v1",
+      "visible_case_count": 4
+    },
+    {
+      "acceptance_metric": "Lower downstream-error rate and better step-order discipline than alpha.",
+      "alpha_liability": "Alpha can stop at a locally good answer without pricing downstream failure cost.",
+      "case_count": 5,
+      "family_category": "SPECIALIST_WEDGE",
+      "family_id": "STRATEGIST_CONSEQUENCE_CHAIN",
+      "held_out_case_count": 1,
+      "kaggle_target_eligible": true,
+      "oracle_policy_outcomes": [
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "target_lobe_id": "lobe.strategist.v1",
+      "visible_case_count": 4
+    }
+  ],
+  "quarantined_lobe_ids": [
+    "lobe.critic.v1",
+    "lobe.muse.v1",
+    "lobe.p1.v1",
+    "lobe.architect.v1",
+    "lobe.censor.v1",
+    "lobe.quant.v1"
+  ],
+  "route_case_count": 27,
+  "route_divergence_count": 34,
+  "schema_id": "kt.operator.oracle_router_local_scorecard.v1",
+  "static_control_hold_pass": true,
+  "status": "PASS",
+  "stay_static_case_count": 5,
+  "subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91",
+  "visible_case_count": 31
+}

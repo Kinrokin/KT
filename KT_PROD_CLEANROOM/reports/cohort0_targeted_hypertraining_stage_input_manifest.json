@@ -1,0 +1,364 @@
+{
+  "authoritative_targeted_hypertraining_stage_input_manifest_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_targeted_hypertraining_stage_inputs_current_head/cohort0_targeted_hypertraining_stage_input_manifest.json",
+  "base_model_requirement": "A real local base model dir must still be provided on Kaggle via HF_TOKEN or FORCE_BASE_MODEL_DIR.",
+  "base_snapshot_id": "COHORT0_STAGED_BASE_SNAPSHOT_V1",
+  "carrier_surface_role": "TRACKED_CARRIER_ONLY_TARGETED_HYPERTRAINING_STAGE_INPUT_MANIFEST",
+  "claim_boundary": "This manifest binds only the six-lobe targeted hypertraining stage inputs. It does not reopen the counted lane, authorize learned routing, or claim R6/Gate E/Gate F progress.",
+  "current_git_head": "66eb05ea5b321be86a1e320cde5fd667a06038e9",
+  "dataset_rows": [
+    {
+      "acceptance_metric": "Lower failure cost than alpha with equal-or-better traceability and constraint fidelity.",
+      "adapter_id": "lobe.p2.v1",
+      "alpha_liability": "Alpha can blur decisive and decorative constraints into one plausible plan when the court is too soft.",
+      "bytes": 612496,
+      "config_relpath": "configs/lobe.p2.v1.targeted_hypertraining_config.json",
+      "dataset_relpath": "datasets/lobe.p2.v1/failures.jsonl",
+      "excluded_held_out_case_count": 1,
+      "expected_receipt_signal": "Constraint-fidelity wins rise, downstream-error cost falls, and route-bearing divergence remains nonzero on decoy families.",
+      "family_id": "P2_SIGNAL_NOISE_SEPARATION",
+      "line_count": 192,
+      "observable_failure_cost": "Decorative constraints outrank the decisive one, so the plan looks coherent while violating the real blocker.",
+      "oracle_policy_outcomes": [
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "pressure_profile_count": 6,
+      "prompt_frame_count": 8,
+      "sha256": "7210ba9e0436d47c8ff9e53429095bad37585c4a7636876f89c13facd137e07f",
+      "source_case_ids": [
+        "P2_SIGNAL_NOISE_SEPARATION__ADVERSARIAL",
+        "P2_SIGNAL_NOISE_SEPARATION__AMBIGUITY_BOUNDARY",
+        "P2_SIGNAL_NOISE_SEPARATION__GOVERNED_EXECUTION",
+        "P2_SIGNAL_NOISE_SEPARATION__MIXED_PRESSURE"
+      ],
+      "training_params": {
+        "batch_size": 1,
+        "gradient_checkpointing": false,
+        "learning_rate": 0.0001,
+        "lora_rank": 12,
+        "max_seq_len": 640,
+        "num_epochs": 1,
+        "seed": 5107,
+        "trainer_module": "tools.training.phase2_train",
+        "training_engine": "hf_lora_heavy_historical",
+        "warmup_steps": 20
+      },
+      "visible_source_case_count": 4
+    },
+    {
+      "acceptance_metric": "Higher anomaly retention and lower silent-normalization rate than alpha.",
+      "adapter_id": "lobe.child.v1",
+      "alpha_liability": "Alpha can flatten rare anomalies into a coherent median answer even when the anomaly is the point.",
+      "bytes": 580360,
+      "config_relpath": "configs/lobe.child.v1.targeted_hypertraining_config.json",
+      "dataset_relpath": "datasets/lobe.child.v1/failures.jsonl",
+      "excluded_held_out_case_count": 1,
+      "expected_receipt_signal": "Anomaly-retention wins rise, silent-normalization drops, and mismatch-triggered halts become more faithful.",
+      "family_id": "CHILD_ANOMALY_PRESERVATION",
+      "line_count": 192,
+      "observable_failure_cost": "A rare anomaly is silently normalized away, so the system proceeds on a smooth but false median.",
+      "oracle_policy_outcomes": [
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "pressure_profile_count": 6,
+      "prompt_frame_count": 8,
+      "sha256": "c422a529a163a2952bd7fd1adc52804bef5603bc9f6dd738f9d87eb61a48d608",
+      "source_case_ids": [
+        "CHILD_ANOMALY_PRESERVATION__ADVERSARIAL",
+        "CHILD_ANOMALY_PRESERVATION__AMBIGUITY_BOUNDARY",
+        "CHILD_ANOMALY_PRESERVATION__GOVERNED_EXECUTION",
+        "CHILD_ANOMALY_PRESERVATION__MIXED_PRESSURE"
+      ],
+      "training_params": {
+        "batch_size": 1,
+        "gradient_checkpointing": false,
+        "learning_rate": 0.0001,
+        "lora_rank": 10,
+        "max_seq_len": 640,
+        "num_epochs": 1,
+        "seed": 5104,
+        "trainer_module": "tools.training.phase2_train",
+        "training_engine": "hf_lora_heavy_historical",
+        "warmup_steps": 18
+      },
+      "visible_source_case_count": 4
+    },
+    {
+      "acceptance_metric": "Lower downstream-error rate and better step-order discipline than alpha.",
+      "adapter_id": "lobe.strategist.v1",
+      "alpha_liability": "Alpha can stop at a locally good answer without pricing downstream failure cost.",
+      "bytes": 588112,
+      "config_relpath": "configs/lobe.strategist.v1.targeted_hypertraining_config.json",
+      "dataset_relpath": "datasets/lobe.strategist.v1/failures.jsonl",
+      "excluded_held_out_case_count": 1,
+      "expected_receipt_signal": "Step-order discipline rises, downstream-failure cost falls, and dependency-miss penalties drop on gate-order families.",
+      "family_id": "STRATEGIST_CONSEQUENCE_CHAIN",
+      "line_count": 192,
+      "observable_failure_cost": "A locally strong answer chooses the wrong order, so later steps lose optionality or fail outright.",
+      "oracle_policy_outcomes": [
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "pressure_profile_count": 6,
+      "prompt_frame_count": 8,
+      "sha256": "726d51a16d6a346864dcd5cf9985e17c8115cd5c1e71b7a3e10a3263f65477c7",
+      "source_case_ids": [
+        "STRATEGIST_CONSEQUENCE_CHAIN__ADVERSARIAL",
+        "STRATEGIST_CONSEQUENCE_CHAIN__AMBIGUITY_BOUNDARY",
+        "STRATEGIST_CONSEQUENCE_CHAIN__GOVERNED_EXECUTION",
+        "STRATEGIST_CONSEQUENCE_CHAIN__MIXED_PRESSURE"
+      ],
+      "training_params": {
+        "batch_size": 1,
+        "gradient_checkpointing": false,
+        "learning_rate": 0.0001,
+        "lora_rank": 12,
+        "max_seq_len": 768,
+        "num_epochs": 1,
+        "seed": 5113,
+        "trainer_module": "tools.training.phase2_train",
+        "training_engine": "hf_lora_heavy_historical",
+        "warmup_steps": 22
+      },
+      "visible_source_case_count": 4
+    },
+    {
+      "acceptance_metric": "Better rival-frame preservation and lower framing-lock error cost than alpha.",
+      "adapter_id": "lobe.beta.v1",
+      "alpha_liability": "Alpha can overcommit to the first clean framing instead of holding a live rival interpretation.",
+      "bytes": 591232,
+      "config_relpath": "configs/lobe.beta.v1.targeted_hypertraining_config.json",
+      "dataset_relpath": "datasets/lobe.beta.v1/failures.jsonl",
+      "excluded_held_out_case_count": 1,
+      "expected_receipt_signal": "Rival-frame preservation rises, framing-lock losses fall, and overclaim risk drops on reframing families.",
+      "family_id": "BETA_SECOND_ORDER_REFRAME",
+      "line_count": 192,
+      "observable_failure_cost": "The first clean framing locks the system too early, so the safer rival interpretation never gets a chance to win.",
+      "oracle_policy_outcomes": [
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "pressure_profile_count": 6,
+      "prompt_frame_count": 8,
+      "sha256": "797a81bd17dc5d38e0c1b806450581dacd160f1551975a80953ac16b2fc1f348",
+      "source_case_ids": [
+        "BETA_SECOND_ORDER_REFRAME__ADVERSARIAL",
+        "BETA_SECOND_ORDER_REFRAME__AMBIGUITY_BOUNDARY",
+        "BETA_SECOND_ORDER_REFRAME__GOVERNED_EXECUTION",
+        "BETA_SECOND_ORDER_REFRAME__MIXED_PRESSURE"
+      ],
+      "training_params": {
+        "batch_size": 1,
+        "gradient_checkpointing": false,
+        "learning_rate": 0.0001,
+        "lora_rank": 10,
+        "max_seq_len": 640,
+        "num_epochs": 1,
+        "seed": 5103,
+        "trainer_module": "tools.training.phase2_train",
+        "training_engine": "hf_lora_heavy_historical",
+        "warmup_steps": 18
+      },
+      "visible_source_case_count": 4
+    },
+    {
+      "acceptance_metric": "Higher candidate coverage and lower early-commit error cost than alpha.",
+      "adapter_id": "lobe.scout.v1",
+      "alpha_liability": "Alpha can synthesize too early when the right move is to widen the search before choosing.",
+      "bytes": 571864,
+      "config_relpath": "configs/lobe.scout.v1.targeted_hypertraining_config.json",
+      "dataset_relpath": "datasets/lobe.scout.v1/failures.jsonl",
+      "excluded_held_out_case_count": 1,
+      "expected_receipt_signal": "Candidate coverage rises, early-commit losses fall, and search-frontier breadth improves on sparse families.",
+      "family_id": "SCOUT_SPARSE_SEARCH",
+      "line_count": 192,
+      "observable_failure_cost": "The search collapses onto the first plausible answer and never explores the sparse winning branch.",
+      "oracle_policy_outcomes": [
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "pressure_profile_count": 6,
+      "prompt_frame_count": 8,
+      "sha256": "c59e2b0bdf021be0694cdaa6948cba3991106decb2e3b1d8815dcedbf9356317",
+      "source_case_ids": [
+        "SCOUT_SPARSE_SEARCH__ADVERSARIAL",
+        "SCOUT_SPARSE_SEARCH__AMBIGUITY_BOUNDARY",
+        "SCOUT_SPARSE_SEARCH__GOVERNED_EXECUTION",
+        "SCOUT_SPARSE_SEARCH__MIXED_PRESSURE"
+      ],
+      "training_params": {
+        "batch_size": 1,
+        "gradient_checkpointing": false,
+        "learning_rate": 0.0001,
+        "lora_rank": 10,
+        "max_seq_len": 640,
+        "num_epochs": 1,
+        "seed": 5108,
+        "trainer_module": "tools.training.phase2_train",
+        "training_engine": "hf_lora_heavy_historical",
+        "warmup_steps": 18
+      },
+      "visible_source_case_count": 4
+    },
+    {
+      "acceptance_metric": "Higher fail-closed correctness and lower overclaim rate than alpha.",
+      "adapter_id": "lobe.auditor.v1",
+      "alpha_liability": "Alpha can sound acceptable while underpricing receipt gaps, policy breaks, or overclaim risk.",
+      "bytes": 604132,
+      "config_relpath": "configs/lobe.auditor.v1.targeted_hypertraining_config.json",
+      "dataset_relpath": "datasets/lobe.auditor.v1/failures.jsonl",
+      "excluded_held_out_case_count": 1,
+      "expected_receipt_signal": "Fail-closed correctness rises, overclaim rate falls, and lawful abstention beats premature action on audit families.",
+      "family_id": "AUDITOR_ADMISSIBILITY_FAIL_CLOSED",
+      "line_count": 192,
+      "observable_failure_cost": "The output sounds acceptable, but missing receipts or rollback make execution unlawful or unsafe.",
+      "oracle_policy_outcomes": [
+        "ABSTAIN_FOR_REVIEW",
+        "ROUTE_TO_SPECIALIST"
+      ],
+      "pressure_profile_count": 6,
+      "prompt_frame_count": 8,
+      "sha256": "bbf9cf90f656528cfb16c7f32e92672c18ec7bbd82153100780c5d80f0f96040",
+      "source_case_ids": [
+        "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__ADVERSARIAL",
+        "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__AMBIGUITY_BOUNDARY",
+        "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__GOVERNED_EXECUTION",
+        "AUDITOR_ADMISSIBILITY_FAIL_CLOSED__MIXED_PRESSURE"
+      ],
+      "training_params": {
+        "batch_size": 1,
+        "gradient_checkpointing": false,
+        "learning_rate": 0.0001,
+        "lora_rank": 12,
+        "max_seq_len": 768,
+        "num_epochs": 1,
+        "seed": 5109,
+        "trainer_module": "tools.training.phase2_train",
+        "training_engine": "hf_lora_heavy_historical",
+        "warmup_steps": 22
+      },
+      "visible_source_case_count": 4
+    }
+  ],
+  "generated_utc": "2026-04-12T16:01:57Z",
+  "generic_all_13_heavier_rerun_forbidden": true,
+  "held_out_training_exclusion_rule": "Only visible oracle-positive source rows are allowed into the training pack. Held-out mutation rows remain excluded from training.",
+  "mirror_input_root": "D:/user/rober/OneDrive/KT_FORGE_STAGE/input_root_targeted_hypertraining",
+  "quarantined_lobe_ids": [
+    "lobe.critic.v1",
+    "lobe.muse.v1",
+    "lobe.p1.v1",
+    "lobe.architect.v1",
+    "lobe.censor.v1",
+    "lobe.quant.v1"
+  ],
+  "readme_path": "D:/user/rober/OneDrive/KT_FORGE_STAGE/kaggle_stage_pack/TARGETED_HYPERTRAINING_README.txt",
+  "schema_id": "kt.operator.cohort0_targeted_hypertraining_stage_input_manifest.v1",
+  "source_refs": {
+    "authoritative_oracle_router_local_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/route_bearing_stage_pack_oracle_current_head/oracle_router_local_receipt.json",
+    "authoritative_oracle_router_local_scorecard_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/route_bearing_stage_pack_oracle_current_head/oracle_router_local_scorecard.json"
+  },
+  "stage_file_count": 18,
+  "stage_file_entries": [
+    {
+      "bytes": 769,
+      "path": "configs/lobe.auditor.v1.targeted_hypertraining_config.json",
+      "sha256": "d6390c0a8a5f15cbe42c596a9ac4a7c70e2807999cdedacb80c8fbc5b601490e"
+    },
+    {
+      "bytes": 763,
+      "path": "configs/lobe.beta.v1.targeted_hypertraining_config.json",
+      "sha256": "ca2d8dd60ec98af6bfb2d4ed8578c2f96879112aa9526f15db594ea6a862625d"
+    },
+    {
+      "bytes": 765,
+      "path": "configs/lobe.child.v1.targeted_hypertraining_config.json",
+      "sha256": "82a7048146cf7f7e76ec52f99cff4e215b20c6a16417c1eb51ae6680d009027e"
+    },
+    {
+      "bytes": 759,
+      "path": "configs/lobe.p2.v1.targeted_hypertraining_config.json",
+      "sha256": "2306a972e00ee02df68e1749067c1cd7fb8c0845e6c2651d884ed7eac7a2689c"
+    },
+    {
+      "bytes": 765,
+      "path": "configs/lobe.scout.v1.targeted_hypertraining_config.json",
+      "sha256": "af2d67c589cb196d90313d2cebb088faf5a4b9230fdb146b945af7e5a98e74d9"
+    },
+    {
+      "bytes": 775,
+      "path": "configs/lobe.strategist.v1.targeted_hypertraining_config.json",
+      "sha256": "44258a642db4f6f2a03f3d59361e022fe283ee4f37e881e38e13bc39e6d5ec70"
+    },
+    {
+      "bytes": 4893,
+      "path": "contracts/family_contracts.json",
+      "sha256": "07adeeb5591f8ee90b857078b97c4e5bdafb10f675c55995a8765816ea475726"
+    },
+    {
+      "bytes": 8854,
+      "path": "contracts/kaggle_packet.json",
+      "sha256": "a6dcbde7eab865fdf99e4a85d45d62e5311ddcd9853db9508ca1678b4f14f37c"
+    },
+    {
+      "bytes": 1795,
+      "path": "contracts/pressure_profile_registry.json",
+      "sha256": "ecc86ad59a240eec644db3152ffeab7fac16c89a9f96d2520e0e5a1bcaadb4f5"
+    },
+    {
+      "bytes": 11558,
+      "path": "contracts/stage_freeze_boundary.json",
+      "sha256": "63211053a7373fc848e19f06c033ab76f32443bffce1e1ee2c8608c71cc9ec50"
+    },
+    {
+      "bytes": 10831,
+      "path": "datasets/cohort0_targeted_hypertraining_dataset_manifest.json",
+      "sha256": "6af1b176621dd6b42b0e6a38f779c407d4592cd41c81be1e5bbf1bf31d72c897"
+    },
+    {
+      "bytes": 604132,
+      "path": "datasets/lobe.auditor.v1/failures.jsonl",
+      "sha256": "bbf9cf90f656528cfb16c7f32e92672c18ec7bbd82153100780c5d80f0f96040"
+    },
+    {
+      "bytes": 591232,
+      "path": "datasets/lobe.beta.v1/failures.jsonl",
+      "sha256": "797a81bd17dc5d38e0c1b806450581dacd160f1551975a80953ac16b2fc1f348"
+    },
+    {
+      "bytes": 580360,
+      "path": "datasets/lobe.child.v1/failures.jsonl",
+      "sha256": "c422a529a163a2952bd7fd1adc52804bef5603bc9f6dd738f9d87eb61a48d608"
+    },
+    {
+      "bytes": 612496,
+      "path": "datasets/lobe.p2.v1/failures.jsonl",
+      "sha256": "7210ba9e0436d47c8ff9e53429095bad37585c4a7636876f89c13facd137e07f"
+    },
+    {
+      "bytes": 571864,
+      "path": "datasets/lobe.scout.v1/failures.jsonl",
+      "sha256": "c59e2b0bdf021be0694cdaa6948cba3991106decb2e3b1d8815dcedbf9356317"
+    },
+    {
+      "bytes": 588112,
+      "path": "datasets/lobe.strategist.v1/failures.jsonl",
+      "sha256": "726d51a16d6a346864dcd5cf9985e17c8115cd5c1e71b7a3e10a3263f65477c7"
+    },
+    {
+      "bytes": 225,
+      "path": "snapshots/cohort0/base_snapshot/SNAPSHOT.txt",
+      "sha256": "ce88371bf3c80f82f037092b608b96006d89047008b29f97517246cb8c4eb4e7"
+    }
+  ],
+  "stage_input_posture": "SIX_LOBE_TARGETED_STAGE_INPUTS_BOUND__KAGGLE_HYPERTRAINING_READY__COUNTED_LANE_STILL_CLOSED",
+  "stage_root": "D:/user/rober/OneDrive/KT_FORGE_STAGE/kaggle_stage_pack/kt-targeted-hypertraining-stage",
+  "status": "PASS",
+  "subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91",
+  "target_lobe_ids": [
+    "lobe.p2.v1",
+    "lobe.child.v1",
+    "lobe.strategist.v1",
+    "lobe.beta.v1",
+    "lobe.scout.v1",
+    "lobe.auditor.v1"
+  ],
+  "zip_path": "D:/user/rober/OneDrive/KT_FORGE_STAGE/kaggle_stage_pack/kt-targeted-hypertraining-stage.zip",
+  "zip_sha256": "ae727732ebfcc30c838e2dba07e74813dd5d6521a8d1b7e0273d2d30ee65cec1"
+}

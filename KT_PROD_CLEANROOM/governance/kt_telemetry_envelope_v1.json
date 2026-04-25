@@ -1,0 +1,24 @@
+{
+  "claim_boundary": "Freezes the canonical telemetry envelope across runtime, verifier, and compiled claim surfaces. This contract does not itself prove observability completeness.",
+  "contract_id": "KT_TELEMETRY_ENVELOPE_V1",
+  "required_fields": [
+    "trace_id",
+    "span_id",
+    "request_id",
+    "surface_id",
+    "zone",
+    "event_type",
+    "start_ts",
+    "end_ts",
+    "latency_ms",
+    "provider_id",
+    "budget_consumed",
+    "policy_applied",
+    "result_status",
+    "receipt_ref",
+    "failure_artifact_ref"
+  ],
+  "schema_id": "kt.governance.telemetry_envelope.v1",
+  "status": "FROZEN_WAVE_0_5",
+  "wave_frozen": "WAVE_0_5_PACKAGE_IMPORT_CANON_AND_INTERFACE_FREEZE"
+}

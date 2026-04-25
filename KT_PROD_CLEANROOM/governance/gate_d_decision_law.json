@@ -1,0 +1,110 @@
+{
+  "schema_id": "kt.gate_d.decision_law.v1",
+  "classification_tag": "COUNTING_CLOSURE",
+  "law_id": "KT_GATE_D_DECISION_LAW_V1",
+  "law_type": "GATE_D_DECISION_BALLOT",
+  "mode": "DEFINITION_ONLY_NO_POSTURE_SELECTED",
+  "gate_c_exit_head": "71268f2f7489aadec338d5e71bb5b70f8a7fe9dc",
+  "reanchor_head": "ee752460e34ad2411adc3d228704f20c421f33be",
+  "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+  "b04_activation_allowed": false,
+  "postures_selected": false,
+  "required_domain_ids": [
+    "D1_EXTERNALITY_WIDENING",
+    "D2_NEW_COUNTED_DOMAINS",
+    "D3_ADAPTIVE_EVOLUTION_AUTHORIZATION",
+    "D4_COMPARATIVE_COMPETITIVE_CLAIMS",
+    "D5_COMMERCIAL_ACTIVATION"
+  ],
+  "decision_domains": [
+    {
+      "domain_id": "D1_EXTERNALITY_WIDENING",
+      "question": "Is KT allowed to expand beyond the current bounded externality ceiling?",
+      "allowed_postures": [
+        "EXTERNALITY_BOUNDED",
+        "EXTERNALITY_CONTROLLED_EXPANSION",
+        "EXTERNALITY_OPEN"
+      ],
+      "default_posture": "EXTERNALITY_BOUNDED",
+      "selected_posture": null,
+      "default_effect": "KT remains at E1_SAME_HOST_DETACHED_REPLAY and no Gate D decision widens externality by default."
+    },
+    {
+      "domain_id": "D2_NEW_COUNTED_DOMAINS",
+      "question": "Are new counted receipt families or measurement domains authorized beyond the Gate C regime?",
+      "allowed_postures": [
+        "COUNTED_DOMAINS_FROZEN",
+        "COUNTED_DOMAINS_CONTROLLED_EXPANSION",
+        "COUNTED_DOMAINS_OPEN"
+      ],
+      "default_posture": "COUNTED_DOMAINS_FROZEN",
+      "selected_posture": null,
+      "default_effect": "No new counted domains are authorized by default beyond the existing Gate C comparator and authority regime."
+    },
+    {
+      "domain_id": "D3_ADAPTIVE_EVOLUTION_AUTHORIZATION",
+      "question": "Is KT allowed to evolve itself under law through adapters, tournaments, promotion, demotion, merge, retirement, and rollback?",
+      "allowed_postures": [
+        "STATIC_SYSTEM",
+        "ADAPTER_EVOLUTION_AUTHORIZED",
+        "FULL_TOURNAMENT_EVOLUTION_AUTHORIZED"
+      ],
+      "default_posture": "STATIC_SYSTEM",
+      "selected_posture": null,
+      "default_effect": "KT remains manually curated by default and no adaptive self-evolution loop is authorized by this law alone."
+    },
+    {
+      "domain_id": "D4_COMPARATIVE_COMPETITIVE_CLAIMS",
+      "question": "What comparative or competitive claims is KT allowed to make relative to other systems?",
+      "allowed_postures": [
+        "NO_EXTERNAL_COMPARATIVE_CLAIMS",
+        "BOUNDED_COMPARATIVE_CLAIMS",
+        "OPEN_COMPARATIVE_CLAIMS"
+      ],
+      "default_posture": "NO_EXTERNAL_COMPARATIVE_CLAIMS",
+      "selected_posture": null,
+      "default_effect": "No new external comparative or competitive claims are authorized by default beyond the bounded Gate C live-vs-baseline proof."
+    },
+    {
+      "domain_id": "D5_COMMERCIAL_ACTIVATION",
+      "question": "What commercial posture is KT allowed to take after Gate C exit?",
+      "allowed_postures": [
+        "LAB_ONLY",
+        "OPERATOR_SERVICE",
+        "CONTROLLED_COMMERCIAL_DEPLOYMENT",
+        "PLATFORM_LICENSING"
+      ],
+      "default_posture": "LAB_ONLY",
+      "selected_posture": null,
+      "default_effect": "No commercial activation is authorized by default and KT remains a bounded post-Gate-C lab system until an explicit decision receipt says otherwise."
+    }
+  ],
+  "activation_rules": {
+    "b04_requires_gate_d_decision": true,
+    "b04_requires_all_required_domains_resolved": true,
+    "b04_requires_same_head_decision_receipt": true,
+    "b04_activation_without_gate_d_decision": "FAIL_CLOSED",
+    "gate_d_decision_does_not_activate_b04_by_itself": true,
+    "effective_posture_if_no_selection": "ALL_DEFAULTS_REMAIN_IN_FORCE"
+  },
+  "decision_receipt_requirement": {
+    "required_receipt_ref": "KT_PROD_CLEANROOM/reports/gate_d_decision_receipt.json",
+    "same_head_required": true,
+    "must_reference_gate_d_decision_law_ref": "KT_PROD_CLEANROOM/governance/gate_d_decision_law.json",
+    "must_reference_gate_d_decision_reanchor_packet_ref": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
+    "must_select_all_required_domains": true,
+    "may_not_activate_b04": true,
+    "authority_rule": "A Gate D decision is valid only as a same-head decision receipt that selects explicit posture values for all required domains and authorizes later B04 activation without itself performing that activation."
+  },
+  "rollback_rule": "If no valid same-head Gate D decision receipt exists, all domains remain at default restrictive posture and B04 activation remains locked.",
+  "claim_ceiling_before_selection": "Post-Gate-C bounded governed execution only. No Gate D widening, activation, or new counting is authorized by this law alone.",
+  "fail_conditions": [
+    "Any posture is silently selected inside the definition-only law tranche.",
+    "B04 activation is allowed without a same-head Gate D decision receipt.",
+    "Any Gate D decision law implies externality widening, comparator expansion, product widening, or frontier claims by default.",
+    "Any Gate D decision law is treated as implementation or activation instead of decision space only."
+  ],
+  "next_lawful_move_after_law": "B04_GATE_D_POSTURE_SELECTION_ONLY",
+  "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+  "claim_boundary": "This law defines the Gate D decision ballot only. It does not select any posture, does not authorize B04 activation, and does not widen externality, counted domains, adaptive evolution, comparative claims, or commercial scope."
+}

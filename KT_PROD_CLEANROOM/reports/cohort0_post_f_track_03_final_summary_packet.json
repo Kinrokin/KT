@@ -1,0 +1,196 @@
+{
+  "authority_header": {
+    "canonical_authority_branch": "main",
+    "gate_d_cleared_on_successor_line": true,
+    "gate_e_open_on_successor_line": true,
+    "gate_f_narrow_wedge_confirmed": true,
+    "gate_f_open": false,
+    "post_f_reaudit_passed": true,
+    "working_branch": "expansion/post-f-track-01",
+    "working_branch_non_authoritative_until_protected_merge": true
+  },
+  "claim_boundary": "This packet freezes Track 03 as a branch-local execution closeout. It does not reopen Track 02, does not widen Gate F, does not claim full-system ratification, and does not convert one counted H1 lane into broad capability or commercial proof.",
+  "defect_and_repair_summary": {
+    "hardening_changes": [
+      "run_h1_smoke.sh now writes logs under work/logs and emits smoke_path_receipt.json under artifacts",
+      "run_h1_counted.sh now writes logs under work/logs, enforces smoke-before-counted for the default packet, and emits counted_path_receipt.json",
+      "preflight_common.sh now enforces clean-worktree checks outside manifest-declared mutable Track 03 paths",
+      "refresh_current_head_receipt.py added to bind current head, tree digest, schema digest, and reconciled manifest digest at run time",
+      "H1_EXPERIMENT_MANIFEST.json now treats current-head receipt and artifacts as mutable and excludes current-head receipt from manifest digest basis"
+    ],
+    "materialization_failed_honestly": true,
+    "materialization_failure_surface": [
+      {
+        "expected_sha256": "b4bfba0372d80a6fa7153ee7750bc1fe3ccb9c6fa1fdc64a9490cd72ca33814e",
+        "expected_size_bytes": 715,
+        "observed_sha256": "4dfcc295a59a99f9aa00f849ec02869c4d9e3c65559c598b986344c555606244",
+        "observed_size_bytes": 715,
+        "path": "staging/task_summary.json"
+      }
+    ],
+    "quarantine_note_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/reports/post_f_track_03_quarantine/run-20260424-152430-bb49da8/bundle_manifest_row_task_summary_quarantine.json",
+    "reconciliation_repair_status": "PASS_READY_FOR_VALIDATION",
+    "superseded_surfaces": [
+      {
+        "path": "staging/task_summary.json",
+        "reason": "External manifest row was stale; materialized file matched every signed top-level task summary copy.",
+        "replacement_sha256": "4dfcc295a59a99f9aa00f849ec02869c4d9e3c65559c598b986344c555606244"
+      },
+      {
+        "path": "reports/cohort0_current_head_receipt.json",
+        "reason": "Moved to mutable current-head evidence so Track 03 can bind live branch truth at execution time without silent canonical overwrite."
+      }
+    ]
+  },
+  "english_closeout_brief": {
+    "bottom_line": "Track 03 is execution-valid in branch scope. The handoff bundle survived intake, lawful defect detection, repair, smoke-before-counted discipline, deterministic bundle reproduction, one counted H1 lane, and promotion fail-close.",
+    "counted_path_read": "One counted H1 lane ran successfully under a refreshed current-head receipt, a reconciled manifest digest, and mock signing/transparency defaults.",
+    "defect_read": "The most important event was not first-pass greenness. E02 failed honestly on one stale external manifest row, that defect was quarantined and superseded explicitly, and the execution continued from a reconciled tracked staging tree.",
+    "promotion_read": "Promotion remains intentionally blocked. Multisig threshold was satisfied, but branch non-authority and human-review requirements still prevent canonical uplift."
+  },
+  "execution_closeout": {
+    "counted_decision_summary": {
+      "commit_count": 3,
+      "defer_count": 7,
+      "provider_set": [
+        "mock_local",
+        "openai_hashed",
+        "openrouter_hashed"
+      ],
+      "row_count": 10,
+      "why_not_counts": {
+        "WN001_NO_POLICY_MATCH": 3,
+        "WN002_LOW_MARGIN": 5,
+        "WN007_HOLDOUT_LEAKAGE": 2
+      }
+    },
+    "counted_status": "PASS",
+    "current_head_receipt_branch": "expansion/post-f-track-01",
+    "execution_head_bound_in_current_head_receipt": "bf1c7ac8af60beec181bfc60a608bf9768a3633f",
+    "frozen_manifest_digest": "204e31a0fd53ca999383c53383564608296a5a112509e69c287cc05bffe98280",
+    "mock_transparency_index_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/staging/mock_rekor/index.json",
+    "proof_bundle_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/staging/bundle/proof_bundle_run-20260424-152430-bb49da8.tar.gz",
+    "proof_bundle_sha256": "1a73b4fad26d4462ea07ffc86366348124548065eb5aa8d670208e173ad24847",
+    "proof_bundle_sha_file_matches": true,
+    "proof_bundle_sha_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/staging/bundle/proof_bundle_run-20260424-152430-bb49da8.tar.gz.sha256",
+    "proof_signature_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/staging/signatures/proof_bundle_run-20260424-152430-bb49da8.sig",
+    "smoke_status": "PASS"
+  },
+  "execution_status": "PASS__TRACK_03_FINAL_SUMMARY_PACKET_BOUND",
+  "generated_utc": "2026-04-25T14:21:49Z",
+  "next_lawful_move": "AUTHOR_POST_F_TRACK_03_HUMAN_REVIEW_PACKET",
+  "phase_summary": {
+    "E00_bundle_integrity_intake": "PASS",
+    "E01_repo_safety_snapshot": "PASS",
+    "E02_materialization": "FAIL",
+    "E03_reconciliation": "PASS_READY_FOR_VALIDATION",
+    "E05_validation_and_counted_path": "PASS",
+    "E06_promotion_control": "BLOCKED"
+  },
+  "promotion_boundary": {
+    "allowed_next_move": "human review plus explicit operator promotion decision on canonical branch path",
+    "block_reasons": [
+      "Branch remains non-authoritative until merged to main.",
+      "Playbook carries human_review_required: true and has not been explicitly reviewed in this execution turn.",
+      "Work order requested fail-closed promotion control rather than silent staging-to-canonical uplift."
+    ],
+    "multisig_threshold_satisfied": true,
+    "promotion_attempted": false,
+    "promotion_blocked": true
+  },
+  "schema_id": "kt.operator.cohort0_post_f_track_03_final_summary_packet.v1",
+  "source_refs": {
+    "bundle_intake_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/artifacts/bundle_intake_receipt.json",
+    "counted_path_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/artifacts/counted_path_receipt.json",
+    "current_head_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/staging/reports/cohort0_current_head_receipt.json",
+    "materialization_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/artifacts/materialization_receipt.json",
+    "promotion_block_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/artifacts/promotion_block_receipt.json",
+    "proof_bundle": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/staging/bundle/proof_bundle_run-20260424-152430-bb49da8.tar.gz",
+    "quarantine_note": "D:/user/rober/OneDrive/Kings_Theorem_Active/reports/post_f_track_03_quarantine/run-20260424-152430-bb49da8/bundle_manifest_row_task_summary_quarantine.json",
+    "reconciliation_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/artifacts/reconciliation_packet.json",
+    "repo_safety_snapshot": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/artifacts/repo_safety_snapshot.json",
+    "smoke_path_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/artifacts/smoke_path_receipt.json",
+    "track02_final_summary_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_final_summary_packet.json",
+    "track02_final_summary_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_final_summary_receipt.json",
+    "validation_matrix": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/artifacts/validation_matrix.json"
+  },
+  "status": "PASS",
+  "subject_head": "bf1c7ac8af60beec181bfc60a608bf9768a3633f",
+  "summary_outcome": "TRACK_03_EXECUTION_CLOSEOUT_FROZEN__PROMOTION_BOUNDARY_EXPLICIT",
+  "track02_dependency_header": {
+    "track02_next_move_before_track03": "AUTHOR_POST_F_TRACK_03_SCOPE_PACKET",
+    "track02_subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91",
+    "track02_summary_outcome": "POST_F_TRACK_02_DUAL_AUDIT_FROZEN__ENGLISH_EXECUTIVE_BRIEF_BOUND"
+  },
+  "track_identity": {
+    "run_id": "run-20260424-152430-bb49da8",
+    "track_id": "POST_F_TRACK_03_COMPLETED_E2E_EXECUTION",
+    "track_name": "Track 03 Completed E2E Execution",
+    "track_status": "EXECUTION_COMPLETE__PROMOTION_STILL_GATED",
+    "working_branch": "expansion/post-f-track-01",
+    "working_branch_head_at_summary_time": "469fce5a222f15c2362c5ea9b6e258111398759b",
+    "working_branch_non_authoritative_until_protected_merge": true
+  },
+  "validation_summary": {
+    "checks": [
+      {
+        "command": "python tests/schema_validator.py --schema governance/RMR_SCHEMA_v1.json --examples",
+        "kind": "direct_validator",
+        "name": "schema_examples_validate",
+        "status": "PASS"
+      },
+      {
+        "command": "python tests/schema_validator.py --schema governance/RMR_SCHEMA_v1.json --manifest governance/H1_EXPERIMENT_MANIFEST.json",
+        "kind": "direct_validator",
+        "name": "schema_digest_matches_manifest",
+        "status": "PASS"
+      },
+      {
+        "command": "python -m pytest tests/test_schema_validator.py tests/test_anti_shortcut_detector.py tests/test_council_router_sample.py -q --no-cov",
+        "kind": "pytest",
+        "name": "focused_pytest_stack",
+        "status": "PASS",
+        "summary": "9 passed"
+      },
+      {
+        "command": "bash scripts/run_h1_smoke.sh",
+        "kind": "bash_script",
+        "manifest_digest": "204e31a0fd53ca999383c53383564608296a5a112509e69c287cc05bffe98280",
+        "name": "smoke_path",
+        "runtime_receipt_sha256": "28dd99553c2177f69b199677777841f30fb6ba59e86c4b0d32ae090d16e4680c",
+        "status": "PASS"
+      },
+      {
+        "bundle_sha256": "1a73b4fad26d4462ea07ffc86366348124548065eb5aa8d670208e173ad24847",
+        "command": "python -m pytest tests/acceptance_smoke.py::test_reproducible_bundle_same_seed -q --no-cov",
+        "kind": "pytest",
+        "name": "bundle_reproducibility",
+        "status": "PASS"
+      },
+      {
+        "command": "bash scripts/run_h1_counted.sh",
+        "kind": "bash_script",
+        "manifest_digest": "204e31a0fd53ca999383c53383564608296a5a112509e69c287cc05bffe98280",
+        "name": "counted_path",
+        "runtime_receipt_sha256": "28dd99553c2177f69b199677777841f30fb6ba59e86c4b0d32ae090d16e4680c",
+        "status": "PASS"
+      }
+    ],
+    "counted_path_rule": "PASS: exactly one counted receipt exists for the default frozen packet under this run root",
+    "validation_matrix_status": "PASS"
+  },
+  "what_track03_can_safely_claim_now": [
+    "The Track 03 handoff bundle was materially real at intake and matched its declared hashes.",
+    "Track 03 detected a real materialization defect and repaired it lawfully without silent overwrite.",
+    "Track 03 refreshed current-head execution truth instead of counting against stale branch state.",
+    "Track 03 passed targeted validation, smoke-before-counted discipline, deterministic bundle reproduction, and one counted H1 lane.",
+    "Track 03 froze a proof bundle, signature surface, receipts, and a promotion block receipt in tracked staging."
+  ],
+  "what_track03_still_cannot_safely_claim": [
+    "Canonical promotion has happened.",
+    "Broad KT theorem closure is fully proven by Track 03 alone.",
+    "Router or lobe superiority is fully ratified.",
+    "Commercial truth or broad platform readiness is solved.",
+    "One counted H1 lane equals broad runtime or model superiority."
+  ]
+}

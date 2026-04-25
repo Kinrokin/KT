@@ -1,0 +1,61 @@
+{
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "source_build_statement_present",
+      "detail": "The declared source-build in-toto statement must remain present.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "publication_statement_present",
+      "detail": "The declared publication in-toto statement must remain present.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "detached_manifest_present",
+      "detail": "The detached verifier package manifest must remain present for outsider-oriented proof transport.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "declared_attestation_chain_complete",
+      "detail": "The declared verifier/publication chain must retain its source-build, publication, Rekor, and detached-package attestation surfaces.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/source_build_attestation/in_toto_statement.json",
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.json",
+        "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "current_strongest_claim": "F03 preserves a bounded source-build and publication attestation chain for the declared verifier/publication proof surfaces only.",
+  "evidence_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "generated_utc": "2026-03-20T01:41:57Z",
+  "next_lawful_phase": "F04_ADJUDICATION_VERIFIER_V2_AND_OUTSIDER_PATH",
+  "pass_verdict": "DECLARED_VERIFIER_PUBLICATION_PIPELINE_ATTESTATION_CHAIN_COMPLETE",
+  "phase_id": "F03_PROOF_REPRO_HARDENING_AND_STABILITY",
+  "schema_id": "kt.child_campaign.pipeline_attestations_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "All KT pipeline steps are currently attested end-to-end",
+    "Current-head runtime capability is now externally proven",
+    "Release readiness is proven"
+  ],
+  "subject_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "what_is_not_proven": [
+    "This receipt does not prove current-head runtime capability",
+    "This receipt does not prove release readiness, release ceremony, or release activation",
+    "This receipt does not widen product or commercial claims"
+  ]
+}

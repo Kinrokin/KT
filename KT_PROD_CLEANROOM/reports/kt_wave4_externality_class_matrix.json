@@ -1,0 +1,26 @@
+{
+  "challenge_channel_used": "SIGNED_JSON_BUNDLE_DOCUMENTED_CHANNEL_V1",
+  "earned_classes": [
+    {
+      "claim_boundary": "Internal hostile probes do not upgrade external confirmation.",
+      "earned_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_wave4_chaos_manifest.json",
+      "surface_id": "wave4.internal_chaos"
+    },
+    {
+      "claim_boundary": "Wave 3 detached verifier proves same-host packaged detached replay only. It does not claim independent hostile replay, public challenge survival, or external confirmation above E1.",
+      "earned_class": "E1_SAME_HOST_DETACHED_REPLAY",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_wave3_detached_verifier_receipt.json",
+      "surface_id": "wave3.detached_verifier"
+    }
+  ],
+  "generated_utc": "2026-03-21T04:51:15Z",
+  "hard_rule_reaffirmed": "Same-host detached replay may never be narrated as independent hostile confirmation.",
+  "not_earned_classes": [
+    "E2_CROSS_HOST_FRIENDLY_REPLAY",
+    "E3_INDEPENDENT_HOSTILE_REPLAY",
+    "E4_PUBLIC_CHALLENGE_SURVIVAL"
+  ],
+  "schema_id": "kt.wave4.externality_matrix.v1",
+  "status": "PASS"
+}

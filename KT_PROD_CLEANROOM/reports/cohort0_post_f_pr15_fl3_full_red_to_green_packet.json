@@ -1,0 +1,75 @@
+{
+  "authority_header": {
+    "authoritative_branch": "authoritative/post-f-pr15-fl3-remediation",
+    "authoritative_branch_head": "091d0a7d6860224dea9ecef47d7ccd558287730b",
+    "package_promotion_still_deferred": true,
+    "replay_on_main_still_deferred_until_pr15_merge": true,
+    "truth_engine_law_unchanged": true
+  },
+  "blocker_ledger_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_full_red_to_green_blocker_ledger.json",
+  "boundary_preservation": {
+    "main_replay_still_deferred_until_pr15_lands": true,
+    "package_promotion_still_deferred": true,
+    "pr15_merge_readiness_closeout_only": true,
+    "truth_engine_law_still_unchanged": true,
+    "untracked_wave_residue_explicitly_out_of_scope": true
+  },
+  "claim_boundary": "This packet closes PR15 FL3 remediation scope only. Package promotion remains deferred, truth-engine law remains unchanged, and canonical replay on main still waits for PR #15 to land.",
+  "execution_status": "PASS__POST_F_PR15_FL3_FULL_RED_TO_GREEN_BOUND",
+  "final_law_bundle_state": {
+    "authoritative_amendment_id": "6f87c6c67fa4637ff392d1b4f8d3d6741b8874d869b844644eca41d49d00b8fe",
+    "authoritative_amendment_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260425T214144Z.json",
+    "authoritative_change_receipt_id": "df159bb3654f24d4ea9e163a036f6fe63c3b65a6153e68a008baebf8b5844ff9",
+    "authoritative_change_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260425T214144Z.json",
+    "bundle_manifest_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.json",
+    "bundle_sha_pin_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256",
+    "computed_bundle_hash": "d1b58bde7e4de51f3ed5e1068b4ada1821f634fcc6a0c30c5984e927f73a07cc",
+    "pin_matches_current": true,
+    "pinned_bundle_hash": "d1b58bde7e4de51f3ed5e1068b4ada1821f634fcc6a0c30c5984e927f73a07cc"
+  },
+  "generated_utc": "2026-04-25T21:43:48Z",
+  "lane_outcome": "POST_F_PR15_FL3_REMEDIATION_GREEN__MERGE_READINESS_GRADE",
+  "next_lawful_move": "MERGE_PR15_THEN_EXECUTE_CANONICAL_TRUTH_ENGINE_REPLAY_ON_MAIN",
+  "schema_id": "kt.operator.cohort0_post_f_pr15_fl3_full_red_to_green_packet.v1",
+  "source_refs": {
+    "law_bundle": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.json",
+    "law_bundle_sha": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256",
+    "remediation_authority_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_remediation_authority_packet.json",
+    "tranche1_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_law_bundle_and_amendment_mismatch_receipt.json",
+    "tranche2_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_active_tree_asset_expectation_drift_receipt.json",
+    "tranche3_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_archive_assumption_decontamination_receipt.json",
+    "tranche4_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_phase_path_normalization_receipt.json"
+  },
+  "status": "PASS",
+  "t05_header": {
+    "ordered_blocker_position": 5,
+    "tranche_id": "T05",
+    "tranche_name": "full_red_to_green",
+    "tranche_state": "complete"
+  },
+  "tranche_clearance": {
+    "T01": "cleared",
+    "T02": "cleared",
+    "T03": "cleared",
+    "T04": "cleared",
+    "T05": "complete_via_full_red_to_green_validation"
+  },
+  "validation_result": {
+    "full_fl3_suite": {
+      "counts": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 239,
+        "skipped": 1,
+        "xfailed": 0,
+        "xpassed": 0
+      },
+      "returncode": 0,
+      "summary_line": "239 passed, 1 skipped in 68.30s (0:01:08)"
+    },
+    "meta_evaluator": {
+      "returncode": 0,
+      "tail": ""
+    }
+  }
+}

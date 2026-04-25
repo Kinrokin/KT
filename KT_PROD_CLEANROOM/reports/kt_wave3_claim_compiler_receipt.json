@@ -1,0 +1,67 @@
+{
+  "active_truth_source_ref": "kt_truth_ledger:ledger/current/current_pointer.json",
+  "allowed_current_claims": [
+    "Compiled head 494cd490a6512b9bfa937c82886db625143d38ae contains transparency-verified evidence for subject commit d56de5c40345c0c187f6ebca1b0727ff0f5cefd7.",
+    "Compiled head 494cd490a6512b9bfa937c82886db625143d38ae contains workflow-governance-only evidence for subject commit 7bd610b507328eb72622ce24678620f5469f3848.",
+    "Compiled head 494cd490a6512b9bfa937c82886db625143d38ae contains runtime-boundary evidence for subject commit 16fa01fce86c7df9d9ce7f4730fd9b7725b3d834.",
+    "Active truth source is kt_truth_ledger:ledger/current/current_pointer.json; KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json is a documentary compatibility mirror only."
+  ],
+  "claim_compiler_claim_boundary": "This receipt compiles admissible commercial claims for compiled_head_commit only. A later repository head that contains this receipt must not be described as the compiled head unless the SHAs match.",
+  "commercial_doc_checks": [
+    {
+      "missing_markers": [],
+      "path": "KT_PROD_CLEANROOM/docs/commercial/KT_CERTIFICATION_PACK.md",
+      "required_markers": [
+        "Documentary-only commercial surface.",
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "kt_truth_ledger:ledger/current/current_pointer.json",
+        "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "missing_markers": [],
+      "path": "KT_PROD_CLEANROOM/docs/commercial/KT_OPERATOR_FACTORY_SKU_CATALOG.md",
+      "required_markers": [
+        "Documentary-only commercial surface.",
+        "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+        "kt_truth_ledger:ledger/current/current_pointer.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "current_head_commit": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "documentary_mirror_ref": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+  "forbidden_current_claims": [
+    "Do not claim current HEAD itself is the transparency-verified subject when head_equals_subject is false.",
+    "Do not claim platform-enforced governance on main while branch_protection_status is not PASS.",
+    "Do not claim current HEAD itself has fresh runtime-boundary proof when runtime_boundary_head_equals_subject is false.",
+    "Do not read this receipt as a claim about a later evidence head when compiled_head_commit differs from live HEAD.",
+    "Do not claim KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json is the active truth source.",
+    "Do not claim src/tools is canonical runtime.",
+    "Do not claim H1 is allowed."
+  ],
+  "generated_utc": "2026-03-21T03:59:29Z",
+  "input_refs": [
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/runtime_boundary_integrity_receipt.json",
+    "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json"
+  ],
+  "missing_inputs": [],
+  "platform_governance_head_claim_boundary": "Current HEAD contains workflow-governance-only evidence for platform_governance_subject_commit; it is not itself freshly governance-proven.",
+  "platform_governance_head_claim_verdict": "HEAD_CONTAINS_WORKFLOW_GOVERNANCE_ONLY_EVIDENCE_FOR_SUBJECT",
+  "platform_governance_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
+  "runtime_boundary_evidence_commit": "ff9d852ef902206263701568045fa736c30d91c5",
+  "runtime_boundary_head_claim_boundary": "Current HEAD contains runtime-boundary evidence for runtime_boundary_subject_commit; it is not itself freshly boundary-proven.",
+  "runtime_boundary_head_claim_verdict": "HEAD_CONTAINS_RUNTIME_BOUNDARY_EVIDENCE_FOR_SUBJECT",
+  "runtime_boundary_subject_commit": "16fa01fce86c7df9d9ce7f4730fd9b7725b3d834",
+  "schema_id": "kt.operator.commercial_claim_compiler_receipt.v1",
+  "status": "PASS",
+  "truth_evidence_commit": "13163fc3343bcc05101f07911a8aa0e22b41aca4",
+  "truth_head_claim_boundary": "Current HEAD contains transparency-verified evidence for truth_subject_commit; HEAD is not itself the verified subject.",
+  "truth_head_claim_verdict": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+  "truth_subject_commit": "d56de5c40345c0c187f6ebca1b0727ff0f5cefd7"
+}

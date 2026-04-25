@@ -1,0 +1,29 @@
+{
+  "claim_boundary": "A returned second-host verifier receipt may earn E2 for the bounded verifier surface only if it is fresh, bound to the current-head anchor, and executed on a different friendly host.",
+  "current_head_commit": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "forbidden_claims": [
+    "broad_current_head_runtime_capability_confirmed",
+    "independent_hostile_replay_confirmed",
+    "public_challenge_survival_confirmed",
+    "router_or_product_widening_from_verifier_only_second_host_success"
+  ],
+  "handoff_pack_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c006_friendly_host_handoff_pack.json",
+  "required_environment_class": "E_CROSS_HOST_FRIENDLY",
+  "required_fields": [
+    "schema_id",
+    "status",
+    "current_head_commit",
+    "handoff_pack_ref",
+    "environment_class",
+    "host_label",
+    "machine_fingerprint",
+    "detached_verifier_status",
+    "deterministic_output_contract",
+    "hidden_secret_dependency",
+    "returned_receipt_ref",
+    "returned_result_ref",
+    "returned_utc"
+  ],
+  "schema_id": "kt.operator.post_wave5.c006_second_host_return.v1",
+  "status": "PENDING_RETURN"
+}

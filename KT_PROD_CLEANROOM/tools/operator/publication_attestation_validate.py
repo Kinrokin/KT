@@ -19,7 +19,7 @@ from tools.operator.crypto_attestation import (
     validate_authority_bundle,
 )
 from tools.operator.titanium_common import file_sha256, load_json, repo_root, utc_now_iso_z, write_json_stable
-from tools.operator.truth_authority import active_truth_source_ref, load_json_ref
+from tools.operator.truth_authority import active_truth_source_ref, load_json_ref, resolve_truth_head_context
 from tools.operator.truth_publication import (
     CRYPTO_PUBLICATION_AUTHORITY_BUNDLE_REL,
     CRYPTO_PUBLICATION_BUNDLE_REL,
@@ -85,6 +85,19 @@ def _git_head(root: Path) -> str:
     return value
 
 
+def _resolve_publication_subject_context(*, root: Path, current_head_commit: str) -> Dict[str, str]:
+    head_context = resolve_truth_head_context(root=root, live_head=current_head_commit, dirty_lines=())
+    truth_subject_commit = str(head_context.get("validated_subject_head_sha", "")).strip() or current_head_commit
+    publication_carrier_head_sha = str(head_context.get("publication_carrier_head_sha", "")).strip()
+    head_relation = str(head_context.get("head_relation", "")).strip() or "HEAD_IS_SUBJECT"
+    return {
+        "truth_subject_commit": truth_subject_commit,
+        "truth_produced_at_commit": current_head_commit,
+        "publication_carrier_head_sha": publication_carrier_head_sha,
+        "head_relation": head_relation,
+    }
+
+
 def _git_status_lines(root: Path) -> List[str]:
     result = subprocess.run(
         ["git", "-C", str(root), "status", "--porcelain=v1"],
@@ -130,7 +143,15 @@ def _b64_file(path: Path) -> str:
     return base64.b64encode(path.read_bytes()).decode("ascii")
 
 
-def build_authority_subject_for_git_head(*, root: Path, compiled_head_commit: str) -> Dict[str, Any]:
+def build_authority_subject_for_git_head(
+    *,
+    root: Path,
+    compiled_head_commit: str,
+    truth_subject_commit: str = "",
+    truth_produced_at_commit: str = "",
+) -> Dict[str, Any]:
+    subject_commit = str(truth_subject_commit).strip() or str(compiled_head_commit).strip()
+    produced_commit = str(truth_produced_at_commit).strip() or str(compiled_head_commit).strip()
     law_paths = [
         "KT_PROD_CLEANROOM/governance/authority_subject_contract.json",
         "KT_PROD_CLEANROOM/governance/attestation_fabric_contract.json",
@@ -158,8 +179,8 @@ def build_authority_subject_for_git_head(*, root: Path, compiled_head_commit: st
 
     return {
         "schema_id": "kt.authority.subject.v1",
-        "truth_subject_commit": compiled_head_commit,
-        "truth_produced_at_commit": compiled_head_commit,
+        "truth_subject_commit": subject_commit,
+        "truth_produced_at_commit": produced_commit,
         "law_surface_hashes": law_surface_hashes,
         "supersedes_subject_sha256": "",
         "evidence": [
@@ -175,6 +196,8 @@ def mint_current_head_cryptographic_publication(
     compiled_head_commit: str,
     signer_id: str = DEFAULT_SIGNER_ID,
     cosign_private_key_rel: str = DEFAULT_COSIGN_PRIVATE_KEY_REL,
+    truth_subject_commit: str = "",
+    truth_produced_at_commit: str = "",
 ) -> Dict[str, Any]:
     generated_utc = utc_now_iso_z()
     failures: List[str] = []
@@ -190,7 +213,12 @@ def mint_current_head_cryptographic_publication(
     _load_required_json(root, SUPPLY_CHAIN_LAYOUT_REL)
     checks.append({"check": "supply_chain_layout_present", "status": "PASS", "layout_ref": SUPPLY_CHAIN_LAYOUT_REL})
 
-    subject = build_authority_subject_for_git_head(root=root, compiled_head_commit=compiled_head_commit)
+    subject = build_authority_subject_for_git_head(
+        root=root,
+        compiled_head_commit=compiled_head_commit,
+        truth_subject_commit=truth_subject_commit,
+        truth_produced_at_commit=truth_produced_at_commit,
+    )
     subject_sha = authority_subject_sha256(subject)
     write_json_stable((root / CRYPTO_PUBLICATION_SUBJECT_REL).resolve(), subject)
     checks.append({"check": "authority_subject_minted", "status": "PASS", "subject_ref": CRYPTO_PUBLICATION_SUBJECT_REL, "subject_sha256": subject_sha})
@@ -344,8 +372,14 @@ def build_publication_attestation_outputs(
     root: Path,
     compiled_head_commit: str,
     generated_utc: str = "",
+    truth_subject_commit: str = "",
+    truth_produced_at_commit: str = "",
+    publication_carrier_head_sha: str = "",
+    head_relation: str = "HEAD_IS_SUBJECT",
 ) -> Tuple[Dict[str, Any], Dict[str, Any], Dict[str, Any], Dict[str, Any], Dict[str, Any], Dict[str, Any]]:
     generated = str(generated_utc).strip() or utc_now_iso_z()
+    subject_commit = str(truth_subject_commit).strip() or str(compiled_head_commit).strip()
+    produced_commit = str(truth_produced_at_commit).strip() or str(compiled_head_commit).strip()
     root_policy = _load_required_json(root, ROOT_POLICY_REL)
     signer_policy = _load_required_json(root, SIGNER_IDENTITY_POLICY_REL)
     layout = _load_required_json(root, SUPPLY_CHAIN_LAYOUT_REL)
@@ -395,7 +429,10 @@ def build_publication_attestation_outputs(
         "artifact_id": Path(TUF_ROOT_INITIALIZATION_REL).name,
         "status": "PASS",
         "generated_utc": generated,
-        "compiled_head_commit": compiled_head_commit,
+        "compiled_head_commit": subject_commit,
+        "truth_produced_at_commit": produced_commit,
+        "publication_carrier_head_sha": str(publication_carrier_head_sha).strip(),
+        "head_relation": str(head_relation).strip() or "HEAD_IS_SUBJECT",
         "root_policy_ref": ROOT_POLICY_REL,
         "trust_root_id": str(root_of_trust.get("trust_root_id", "")).strip(),
         "bootstrap_state": str(root_of_trust.get("bootstrap_state", "")).strip(),
@@ -411,7 +448,10 @@ def build_publication_attestation_outputs(
         "artifact_id": Path(IN_TOTO_LAYOUT_REL).name,
         "status": "PASS",
         "generated_utc": generated,
-        "compiled_head_commit": compiled_head_commit,
+        "compiled_head_commit": subject_commit,
+        "truth_produced_at_commit": produced_commit,
+        "publication_carrier_head_sha": str(publication_carrier_head_sha).strip(),
+        "head_relation": str(head_relation).strip() or "HEAD_IS_SUBJECT",
         "trust_root_id": str(root_of_trust.get("trust_root_id", "")).strip(),
         "root_policy_ref": ROOT_POLICY_REL,
         "layout_source_ref": SUPPLY_CHAIN_LAYOUT_REL,
@@ -426,7 +466,10 @@ def build_publication_attestation_outputs(
         "artifact_id": Path(IN_TOTO_PROVENANCE_REL).name,
         "status": "PASS",
         "generated_utc": generated,
-        "compiled_head_commit": compiled_head_commit,
+        "compiled_head_commit": subject_commit,
+        "truth_produced_at_commit": produced_commit,
+        "publication_carrier_head_sha": str(publication_carrier_head_sha).strip(),
+        "head_relation": str(head_relation).strip() or "HEAD_IS_SUBJECT",
         "payloadType": "application/vnd.in-toto+json",
         "payloadBase64": _b64_file((root / CRYPTO_PUBLICATION_STATEMENT_REL).resolve()),
         "payload_sha256": file_sha256((root / CRYPTO_PUBLICATION_STATEMENT_REL).resolve()),
@@ -464,7 +507,10 @@ def build_publication_attestation_outputs(
         "artifact_id": Path(REKOR_INCLUSION_RECEIPT_REL).name,
         "status": "PASS",
         "generated_utc": generated,
-        "compiled_head_commit": compiled_head_commit,
+        "compiled_head_commit": subject_commit,
+        "truth_produced_at_commit": produced_commit,
+        "publication_carrier_head_sha": str(publication_carrier_head_sha).strip(),
+        "head_relation": str(head_relation).strip() or "HEAD_IS_SUBJECT",
         "transparency_log_url": str(signer_policy.get("rules", {}).get("rekor_url_default", "")).strip(),
         "bundle_ref": CRYPTO_PUBLICATION_BUNDLE_REL,
         "bundle_sha256": file_sha256((root / CRYPTO_PUBLICATION_BUNDLE_REL).resolve()),
@@ -481,8 +527,11 @@ def build_publication_attestation_outputs(
         "artifact_id": Path(SIGSTORE_PUBLICATION_BUNDLE_REL).name,
         "status": "PASS",
         "generated_utc": generated,
-        "compiled_head_commit": compiled_head_commit,
+        "compiled_head_commit": subject_commit,
         "truth_subject_commit": str(authority_subject.get("truth_subject_commit", "")).strip(),
+        "truth_produced_at_commit": produced_commit,
+        "publication_carrier_head_sha": str(publication_carrier_head_sha).strip(),
+        "head_relation": str(head_relation).strip() or "HEAD_IS_SUBJECT",
         "root_policy_ref": ROOT_POLICY_REL,
         "trust_root_id": str(root_of_trust.get("trust_root_id", "")).strip(),
         "signer_policy_ref": SIGNER_IDENTITY_POLICY_REL,
@@ -510,15 +559,15 @@ def build_publication_attestation_outputs(
         {"check": "signer_root_key_hashes_match", "status": "PASS", "root_key_count": len(verified_root_keys)},
         {"check": "cryptographic_publication_receipt_passes", "status": "PASS", "receipt_ref": CRYPTO_PUBLICATION_RECEIPT_REL},
         {
-            "check": "authority_subject_matches_compiled_head",
-            "status": "PASS" if str(authority_subject.get("truth_subject_commit", "")).strip() == compiled_head_commit else "FAIL",
+            "check": "authority_subject_matches_validated_subject",
+            "status": "PASS" if str(authority_subject.get("truth_subject_commit", "")).strip() == subject_commit else "FAIL",
             "actual": str(authority_subject.get("truth_subject_commit", "")).strip(),
-            "expected": compiled_head_commit,
+            "expected": subject_commit,
         },
         {"check": "rekor_inclusion_evidence_present", "status": "PASS", "log_id": rekor_receipt["log_id"], "log_index": rekor_receipt["log_index"]},
     ]
     if checks[3]["status"] != "PASS":
-        raise RuntimeError("FAIL_CLOSED: authority subject does not match compiled head")
+        raise RuntimeError("FAIL_CLOSED: authority subject does not match validated subject")
 
     stabilization_receipt = {
         "schema_id": "kt.operator.truth_publication_stabilization_receipt.v2",
@@ -526,10 +575,13 @@ def build_publication_attestation_outputs(
         "status": "PASS",
         "pass_verdict": PASS_VERDICT,
         "generated_utc": generated,
-        "compiled_head_commit": compiled_head_commit,
-        "subject_head_commit": compiled_head_commit,
-        "evidence_head_commit": compiled_head_commit,
+        "compiled_head_commit": subject_commit,
+        "subject_head_commit": subject_commit,
+        "evidence_head_commit": produced_commit,
         "truth_subject_commit": str(authority_subject.get("truth_subject_commit", "")).strip(),
+        "truth_produced_at_commit": produced_commit,
+        "publication_carrier_head_sha": str(publication_carrier_head_sha).strip(),
+        "head_relation": str(head_relation).strip() or "HEAD_IS_SUBJECT",
         "truth_publication_stabilized": True,
         "trust_root_id": str(root_of_trust.get("trust_root_id", "")).strip(),
         "unexpected_touches": [],
@@ -624,17 +676,24 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         raise SystemExit("FAIL_CLOSED: worktree must be clean before WS7 evidence emission")
 
     compiled_head_commit = _git_head(root)
+    subject_context = _resolve_publication_subject_context(root=root, current_head_commit=compiled_head_commit)
     mint_current_head_cryptographic_publication(
         root=root,
         compiled_head_commit=compiled_head_commit,
         signer_id=str(args.signer_id),
         cosign_private_key_rel=str(args.cosign_private_key),
+        truth_subject_commit=subject_context["truth_subject_commit"],
+        truth_produced_at_commit=subject_context["truth_produced_at_commit"],
     )
     generated_utc = utc_now_iso_z()
     artifacts = build_publication_attestation_outputs(
         root=root,
         compiled_head_commit=compiled_head_commit,
         generated_utc=generated_utc,
+        truth_subject_commit=subject_context["truth_subject_commit"],
+        truth_produced_at_commit=subject_context["truth_produced_at_commit"],
+        publication_carrier_head_sha=subject_context["publication_carrier_head_sha"],
+        head_relation=subject_context["head_relation"],
     )
     _write_ws7_artifacts(
         root=root,

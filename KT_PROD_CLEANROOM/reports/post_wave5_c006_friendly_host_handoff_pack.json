@@ -1,0 +1,116 @@
+{
+  "authoritative_track": "C006 only",
+  "blocker_delta": "C006_NARROWED_TO_EXPLICIT_E2_FRIENDLY_HOST_HANDOFF_AWAITING_SECOND_HOST",
+  "c006_status": "OPEN_READY_FOR_E2_FRIENDLY_HOST_HANDOFF_NOT_PROMOTED",
+  "checks": [
+    {
+      "check": "anchor_limits_authoritative_scope_to_c006",
+      "detail": "The current active anchor must keep the authoritative lane narrowed to C006 only.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_unified_convergence_max_power_campaign_v2_1_1_anchor.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "post_wave5_c006_prep_receipt_still_passes",
+      "detail": "The post-Wave5 C006 prep receipt must remain PASS and keep the ceiling at E1.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/post_wave5_c006_trust_prep_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "wave5_verifier_truth_remains_e1_only",
+      "detail": "The current-head verifier truth surface must remain explicitly bounded at E1.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "external_reproduction_receipt_remains_bounded_and_present",
+      "detail": "The carried-forward external reproduction receipt must remain present and explicitly bounded below cross-host proof.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "outsider_path_remains_secret_free_and_bounded",
+      "detail": "The outsider verifier path must remain secret-free while not being overread as current-head external capability proof.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_outsider_path_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "friendly_host_recipe_inputs_exist",
+      "detail": "A second-host handoff pack requires the replay recipe and clean-environment reproduction matrix to exist.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+        "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_externality_ceiling": "E1_SAME_HOST_DETACHED_REPLAY",
+  "current_repo_head": "88b03b22e1516c6544d3fc686406104180fc2799",
+  "exact_remaining_forbidden_claims": [
+    "Do not claim E2 cross-host friendly replay until a fresh current-head second-host verifier run succeeds with returned receipts.",
+    "Do not narrate carried-forward external reproduction or outsider-path surfaces as direct proof about the current head.",
+    "Do not narrate verifier-only second-host success as broad current-head runtime capability without a separately scoped runtime proof.",
+    "Do not widen into router, product, procurement, or comparative claims from this handoff pack."
+  ],
+  "failures": [],
+  "friendly_host_steps": [
+    "Copy the detached verifier package and replay instructions into a different friendly host environment.",
+    "Run the detached verifier entrypoint exactly as declared by the replay recipe without adding hidden secret material.",
+    "Capture the emitted machine-readable result, runtime receipt, and host environment metadata.",
+    "Compare the second-host result to the current-head verifier truth boundary and preserve any mismatch as a bounded failure row.",
+    "Only raise externality if the fresh second-host result is successful and receipted."
+  ],
+  "generated_utc": "2026-03-26T01:43:51Z",
+  "handoff_inputs": {
+    "anchor_ref": "KT_PROD_CLEANROOM/governance/kt_unified_convergence_max_power_campaign_v2_1_1_anchor.json",
+    "c006_prep_receipt_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c006_trust_prep_receipt.json",
+    "external_reproduction_matrix_ref": "KT_PROD_CLEANROOM/reports/kt_external_reproduction_matrix.json",
+    "external_reproduction_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json",
+    "outsider_path_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_outsider_path_receipt.json",
+    "replay_recipe_ref": "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+    "verifier_truth_surface_ref": "KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json"
+  },
+  "handoff_target": "Fresh current-head detached verifier replay on a different friendly host with no hidden secret dependency and explicit returned receipts.",
+  "head_relation": "HEAD_DIVERGED_FROM_ACTIVE_SUBJECT",
+  "publication_carrier_head_sha": "",
+  "required_next_environment": "E_CROSS_HOST_FRIENDLY",
+  "schema_id": "kt.operator.post_wave5.c006_friendly_host_handoff_pack.v1",
+  "status": "PASS",
+  "support_surface_bindings": [
+    {
+      "head_binding_status": "CURRENT_HEAD_ACTIVE_ANCHOR",
+      "ref": "KT_PROD_CLEANROOM/governance/kt_unified_convergence_max_power_campaign_v2_1_1_anchor.json",
+      "subject_head_commit": "88b03b22e1516c6544d3fc686406104180fc2799",
+      "surface_id": "v2_1_1_anchor"
+    },
+    {
+      "head_binding_mode": "PUBLICATION_CARRIER_ONLY_DELTA",
+      "head_binding_status": "CURRENT_HEAD_BOUND",
+      "ref": "KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json",
+      "subject_head_commit": "3f311449ca92d35fc4ed9da571ddd8bc121d7564",
+      "surface_id": "wave5_verifier_truth"
+    },
+    {
+      "head_binding_status": "CARRIED_FORWARD_PREP_ONLY",
+      "ref": "KT_PROD_CLEANROOM/reports/kt_external_reproduction_receipt.json",
+      "subject_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
+      "surface_id": "external_reproduction_receipt"
+    },
+    {
+      "head_binding_status": "CARRIED_FORWARD_PREP_ONLY",
+      "ref": "KT_PROD_CLEANROOM/reports/kt_outsider_path_receipt.json",
+      "subject_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+      "surface_id": "outsider_path_receipt"
+    }
+  ],
+  "validated_subject_head_sha": "88b03b22e1516c6544d3fc686406104180fc2799"
+}

@@ -1,44 +1,68 @@
 {
-  "schema_id": "kt.governance.failure_mode_register.v0",
-  "register_id": "KT_FAILURE_MODE_REGISTER_PREP_V0_20260317",
-  "status": "PREPARED_NOT_EXECUTED",
-  "generated_utc": "2026-03-17T13:12:51Z",
-  "current_repo_head": "bd8984cc3c47af7409e5d960eb5d4c8f54c2eebc",
-  "semantic_boundary": {
-    "preparatory_only": true,
-    "ws15_full_failure_law_ratified": false,
-    "lawful_current_claim": "This register captures WS10 failure modes that must block progression until off-box ceremony evidence exists."
-  },
+  "current_repo_head": "421e457058899ee5a780eabf5ca166623cab43e3",
   "failure_modes": [
     {
-      "failure_mode_id": "CONNECTED_ENV_ROOT_GENERATION_CLAIM",
-      "trigger": "Any root material allegedly generated on a connected development host.",
-      "effect": "Immediate invalidation of WS10 PASS claims.",
-      "required_response": "Discard material, emit failure receipt, restart on approved off-box system."
+      "effect": "WS15 cannot pass and the claim compiler output is not admissible.",
+      "failure_mode_id": "CLAIM_ABI_SCHEMA_DRIFT",
+      "required_response": "Regenerate from canonical ABI policy and fail closed on all stronger claims.",
+      "trigger": "Compiled claim rows omit required ABI fields or violate typed field semantics."
     },
     {
-      "failure_mode_id": "CEREMONY_CLAIM_WITHOUT_EVIDENCE",
-      "trigger": "Receipt or narrative claims ceremony execution without witnessable off-box evidence.",
-      "effect": "Stop progression and mark receipt invalid.",
-      "required_response": "Revert to PREPARED_NOT_EXECUTED and document the claim narrowing."
+      "effect": "All stronger claims are invalid and WS15 remains current.",
+      "failure_mode_id": "PROOF_CEILING_OVERCLAIM",
+      "required_response": "Downgrade the claim row to BLOCKED_CURRENT and rerun the compiler.",
+      "trigger": "Any compiled claim widens bootstrap-root-only verifier acceptance, reratified 3-of-3 root execution, or release readiness."
     },
     {
-      "failure_mode_id": "ROOT_SHARD_CUSTODY_GAP",
-      "trigger": "Shard custody or storage cannot be independently enumerated.",
-      "effect": "Root cannot be accepted for verifier trust.",
-      "required_response": "Freeze downstream workstreams and rerun ceremony."
+      "effect": "Authority recursion invalidates the compiler output.",
+      "failure_mode_id": "SELF_RATIFICATION_ATTEMPT",
+      "required_response": "Recompile from cited WS10-WS14 receipts only.",
+      "trigger": "WS15 outputs cite themselves as authority for a stronger upstream state."
     },
     {
-      "failure_mode_id": "QUORUM_MISREPRESENTATION",
-      "trigger": "Threshold claim made without recorded signer presence and witness confirmation.",
-      "effect": "Signer topology acceptance fails closed.",
-      "required_response": "Invalidate receipt and require fresh off-box execution."
+      "effect": "Signer topology and acceptance posture fail closed.",
+      "failure_mode_id": "IDENTITY_ROLE_OVERLAP_ABUSE",
+      "required_response": "Freeze progression and reratify identities or role separation explicitly.",
+      "trigger": "A concrete identity occupies forbidden overlapping trust roles for the same artifact or authority transition."
     },
     {
-      "failure_mode_id": "PREMATURE_WS11_WIDENING",
-      "trigger": "Any WS11/Sigstore/Rekor claim appears in WS10-prepared artifacts.",
-      "effect": "Scope violation and claim contamination.",
-      "required_response": "Block advancement and narrow claims back to WS10 preparation only."
+      "effect": "Truth authority boundary is violated.",
+      "failure_mode_id": "DOCUMENTARY_MIRROR_OVERREAD",
+      "required_response": "Invalidate the claim and revert to the settled ledger-backed truth source.",
+      "trigger": "Any claim treats a documentary mirror as the active truth source or live authority."
+    },
+    {
+      "effect": "Ledger law is not admissible for current-head claim compilation.",
+      "failure_mode_id": "STALE_SUPERSESSION_CHAIN",
+      "required_response": "Fail closed and refresh the supersession evidence before progressing.",
+      "trigger": "Truth supersession rules or receipts are missing, stale, or contradictory."
+    },
+    {
+      "effect": "Verifier trust widening is invalid.",
+      "failure_mode_id": "THRESHOLD_ROOT_ACCEPTANCE_OVERREAD",
+      "required_response": "Narrow the claim back to bootstrap-root-only acceptance.",
+      "trigger": "Any WS15 or later artifact implies threshold-root verifier acceptance without a later explicit acceptance bundle."
+    },
+    {
+      "effect": "Release authority is invalid.",
+      "failure_mode_id": "RELEASE_CEREMONY_EXECUTION_OVERREAD",
+      "required_response": "Freeze progression and narrow the release law back to prerequisites only.",
+      "trigger": "Any artifact claims release readiness or release ceremony execution before WS18."
+    },
+    {
+      "effect": "Verifier release packaging is not admissible.",
+      "failure_mode_id": "SECRET_BACKED_VERIFIER_RELEASE",
+      "required_response": "Revert to secret-free public evidence only and invalidate the overreaching surface.",
+      "trigger": "Any declared verifier surface requires private key material, HMAC, or unpublished trust roots for outsider verification."
     }
-  ]
+  ],
+  "generated_utc": "2026-03-18T05:29:42Z",
+  "register_id": "KT_FAILURE_MODE_REGISTER_V1_20260318",
+  "schema_id": "kt.governance.failure_mode_register.v1",
+  "semantic_boundary": {
+    "lawful_current_claim": "This register captures fail-closed claim ABI, proof-ceiling, identity, ledger, and release-law failure modes for the current bounded KT state.",
+    "preparatory_only": false,
+    "ws15_full_failure_law_ratified": true
+  },
+  "status": "ACTIVE"
 }

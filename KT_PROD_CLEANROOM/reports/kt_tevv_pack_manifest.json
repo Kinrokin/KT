@@ -1,0 +1,127 @@
+{
+  "anti_cherry_picking_rules": [
+    "all_declared_environment_rows_required",
+    "worst_status_governs_pack_status",
+    "historical_substitution_for_current_required_rows_forbidden"
+  ],
+  "benchmark_validity_windows_ref": "KT_PROD_CLEANROOM/governance/kt_benchmark_validity_windows.json",
+  "comparator_registry_ref": "KT_PROD_CLEANROOM/governance/kt_comparator_registry.json",
+  "compiled_against": "23ccf8c00ca82274de09e7e3f89b163fd210c544",
+  "components": [
+    {
+      "component_class": "GOVERNANCE_POLICY",
+      "component_id": "trust_assumptions_register",
+      "path": "KT_PROD_CLEANROOM/governance/kt_trust_assumptions_register.json",
+      "sha256": "63cff9c6ed6df3ab9ef20acec58ec3480ee163b8af64e68db4fe81a048b229e6"
+    },
+    {
+      "component_class": "GOVERNANCE_POLICY",
+      "component_id": "tevv_pack_policy",
+      "path": "KT_PROD_CLEANROOM/governance/kt_tevv_pack_policy.json",
+      "sha256": "ca0cafafff80e5b60878b4ad3a1a6530fc530b8d2fd9f49e72fa62dd77777cd4"
+    },
+    {
+      "component_class": "GOVERNANCE_POLICY",
+      "component_id": "dataset_pin_registry",
+      "path": "KT_PROD_CLEANROOM/governance/kt_dataset_pin_registry.json",
+      "sha256": "d3d23efc26d02251e9b0732fd07e0a86373d27370dfe9153df98b6b24b63df10"
+    },
+    {
+      "component_class": "GOVERNANCE_POLICY",
+      "component_id": "comparator_registry",
+      "path": "KT_PROD_CLEANROOM/governance/kt_comparator_registry.json",
+      "sha256": "d24925be9960db5542bb46d741e94b0ab1944cbd4dc0b36487d105ad0182346a"
+    },
+    {
+      "component_class": "GOVERNANCE_POLICY",
+      "component_id": "benchmark_validity_windows",
+      "path": "KT_PROD_CLEANROOM/governance/kt_benchmark_validity_windows.json",
+      "sha256": "9fcd20b2decadf13df8729833a46e85b762cec7eae2c38735534f4e3e2435a4b"
+    },
+    {
+      "component_class": "CURRENT_HEAD_GOVERNANCE_EVIDENCE",
+      "component_id": "claim_proof_ceiling_compiler",
+      "path": "KT_PROD_CLEANROOM/reports/kt_claim_proof_ceiling_compiler.json",
+      "sha256": "e902c2707f5aed6831adc50283b5534e0cf7cde63d070413f93f6ac8aacc6668"
+    },
+    {
+      "component_class": "REPLAYABILITY_GUIDANCE",
+      "component_id": "independent_replay_recipe",
+      "path": "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+      "sha256": "e8cb4b7bc49ee8bb5e7fe838c5c3fc700cf2a6cecc7945809ae399740ed38a07"
+    },
+    {
+      "component_class": "CURRENT_HEAD_RUNTIME_EVIDENCE",
+      "component_id": "local_truth_barrier_current_head",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/local/live_validation_index.local.json",
+      "sha256": "9793a080f9d38a38f80772ec3eb87b554b09d9d33e6dbfd73ab6c9a40185abfb"
+    },
+    {
+      "component_class": "CURRENT_HEAD_RUNTIME_EVIDENCE",
+      "component_id": "ci_truth_barrier_current_head",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/live_validation_index.ci.json",
+      "sha256": "e65191a2607dca19023bd97c93836341c33c909777dca258044ecea2da63dea3"
+    },
+    {
+      "component_class": "CANONICAL_SUBJECT_BINDING",
+      "component_id": "local_determinism_subject_set",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/local/kt_determinism_subject_set.json",
+      "sha256": "c3fd55106c1aafad0c8ded8769ec52e65f2531ac4b1dedc72d690f0840ff41fa"
+    },
+    {
+      "component_class": "CANONICAL_SUBJECT_BINDING",
+      "component_id": "ci_determinism_subject_set",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_determinism_subject_set.json",
+      "sha256": "c3fd55106c1aafad0c8ded8769ec52e65f2531ac4b1dedc72d690f0840ff41fa"
+    },
+    {
+      "component_class": "IMPORTED_CLASS_C_EVIDENCE",
+      "component_id": "bounded_keyless_signed_surface",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json",
+      "sha256": "4b20265a469d3e1d95d3c3a796cd622d14c0f6edb10b1271d9e448139267b225"
+    },
+    {
+      "component_class": "IMPORTED_CLASS_C_EVIDENCE",
+      "component_id": "bounded_keyless_sigstore_bundle",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json",
+      "sha256": "1a1f65c3d18850e9738732d2c235942b18973ecd4f6cd6bf09c8063c235f389b"
+    },
+    {
+      "component_class": "IMPORTED_CLASS_C_EVIDENCE",
+      "component_id": "bounded_keyless_execution_receipt",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json",
+      "sha256": "d2c6a5f96d7e043eaaf200c411198ba4bd964f750339ff2b472d9cfc2b3c5b6a"
+    },
+    {
+      "component_class": "IMPORTED_CLASS_C_EVIDENCE",
+      "component_id": "bounded_truth_barrier_remote_diagnostic",
+      "path": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json",
+      "sha256": "db3d96bf286d6c47d62c89568831d3e8dea80b9c937e9d5e340c61cbc4f20075"
+    }
+  ],
+  "dataset_pin_registry_ref": "KT_PROD_CLEANROOM/governance/kt_dataset_pin_registry.json",
+  "evidence_position": "CURRENT_HEAD_CONTAINS_UPSTREAM_PASS_EVIDENCE",
+  "pack_id": "KT_WS16_TEVV_PACK_V1_20260318",
+  "pinned_dataset_ids": [
+    "ws13_local_truth_barrier_index",
+    "ws13_ci_truth_barrier_index",
+    "ws13_local_subject_set",
+    "ws13_ci_subject_set",
+    "ws11_bounded_keyless_signed_surface",
+    "ws11_bounded_keyless_sigstore_bundle"
+  ],
+  "replayability_requirements_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_independent_replay_recipe.md",
+    "KT_PROD_CLEANROOM/tools/verification/replay_manifest_verify.py",
+    "KT_PROD_CLEANROOM/tools/operator/hermetic_replay_linter.py",
+    "KT_PROD_CLEANROOM/tools/verification/fl4_replay_from_receipts.py"
+  ],
+  "schema_id": "kt.operator.tevv_pack_manifest.v1",
+  "status": "ACTIVE_BOUNDED_PACK",
+  "stronger_claim_not_made": [
+    "The WS16 TEVV pack proves external capability confirmation.",
+    "The WS16 TEVV pack widens verifier or release boundaries beyond the current proof ceiling."
+  ],
+  "tevv_subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+  "trust_assumptions_ref": "KT_PROD_CLEANROOM/governance/kt_trust_assumptions_register.json"
+}

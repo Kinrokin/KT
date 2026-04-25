@@ -1,0 +1,76 @@
+{
+  "blocked_by": [],
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "threshold_root_active_for_release",
+      "detail": "Release ceremony execution requires active child threshold-root acceptance.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_threshold_root_acceptance_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "release_signer_issuance_executed",
+      "detail": "Release ceremony execution requires executed child release signer issuance.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_release_signer_issuance_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "producer_attestation_bundle_valid",
+      "detail": "Release ceremony execution requires a valid child producer attestation bundle.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_producer_attestation_bundle.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "release_readiness_proven",
+      "detail": "Release readiness and eligibility must be proven before the child release ceremony can execute.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_current_head_readjudication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_signer_issuance_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_producer_attestation_bundle.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "release_ceremony_executed",
+      "detail": "The child release ceremony must actually execute rather than remain non-executed by prerequisite gap.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_release_signer_issuance_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_producer_attestation_bundle.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "current_strongest_claim": "F07 executes the child-bounded release ceremony without widening runtime or product claims.",
+  "evidence_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "generated_utc": "2026-03-20T01:41:59Z",
+  "next_lawful_phase": "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY",
+  "offbox_execution_pack_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_f07_release_execution_pack_receipt.json",
+  "offbox_execution_pack_root_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F07_release_execution_pack",
+  "pass_verdict": "CHILD_BOUNDED_RELEASE_CEREMONY_EXECUTED",
+  "phase_id": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION",
+  "release_ceremony_status": "EXECUTED_CHILD_BOUNDED_RELEASE_ONLY",
+  "release_eligibility_status": "ELIGIBLE_CHILD_BOUNDED_RELEASE_ONLY",
+  "release_readiness_status": "PROVEN_CHILD_BOUNDED_RELEASE_ONLY",
+  "schema_id": "kt.child_campaign.executed_release_ceremony_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "Whole-system current-head capability is externally confirmed",
+    "Product activation is executed",
+    "Commercial readiness is proven"
+  ],
+  "subject_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "supporting_execution_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_release_signer_custody_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_release_signer_quorum_witness_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_producer_attestation_execution_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_child_release_ceremony_execution_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_child_release_activation_execution_record.json"
+  ]
+}

@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Sequence
+from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 from tools.operator.platform_governance_narrowing import build_platform_governance_claims, build_platform_governance_narrowing_receipt
 from tools.operator.public_verifier import build_public_verifier_claims
@@ -12,7 +12,7 @@ from tools.operator.authority_convergence_validate import build_authority_conver
 from tools.operator.dependency_inventory_validate import build_dependency_inventory_validation_report
 from tools.operator.documentary_truth_validate import build_documentary_truth_report
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
-from tools.operator.truth_authority import build_settled_truth_source_receipt, build_truth_supersession_receipt, path_ref
+from tools.operator.truth_authority import active_truth_source_ref, build_settled_truth_source_receipt, build_truth_supersession_receipt, path_ref
 from tools.operator.truth_publication import (
     CURRENT_POINTER_REL,
     TRUTH_PUBLICATION_REQUIRED_ARTIFACTS,
@@ -32,6 +32,7 @@ DEFAULT_REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
 COMPLETION_PROGRAM_REF = "KT_PROD_CLEANROOM/docs/operator/KT_CONSTITUTIONAL_COMPLETION_PROGRAM.md"
 STATUS_TAXONOMY_REF = "KT_PROD_CLEANROOM/governance/status_taxonomy.json"
 AUTHORITY_CONVERGENCE_RECEIPT_REF = f"{DEFAULT_REPORT_ROOT_REL}/authority_convergence_receipt.json"
+PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF = f"{DEFAULT_REPORT_ROOT_REL}/promotion_civilization_ratification_receipt.json"
 
 PLANNED = "PLANNED"
 SPECIFIED = "SPECIFIED"
@@ -77,6 +78,7 @@ CONSTITUTIONAL_DOMAINS: List[Dict[str, Any]] = [
             "KT_PROD_CLEANROOM/reports/risk_ledger_receipt.json",
             "KT_PROD_CLEANROOM/reports/revalidation_receipt.json",
             "KT_PROD_CLEANROOM/reports/zone_crossing_receipt.json",
+            PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF,
         ],
     },
     {
@@ -232,6 +234,7 @@ def _domain_maturity_state(
     unhealthy_law_surfaces: Sequence[str],
     unhealthy_artifacts: Sequence[str],
     convergence_status: str,
+    promotion_civilization_ratified: bool = False,
 ) -> str:
     all_present = not missing_law_surfaces and not missing_artifacts and not unhealthy_law_surfaces and not unhealthy_artifacts
     any_present = not (len(missing_law_surfaces) > 0 and len(missing_artifacts) > 0)
@@ -244,6 +247,8 @@ def _domain_maturity_state(
             return TESTED
         return MATERIALIZED if any_present else SPECIFIED
     if domain_id == "DOMAIN_2_PROMOTION_CIVILIZATION":
+        if promotion_civilization_ratified and all_present:
+            return PROVEN_ON_CURRENT_HEAD
         if entry_gate_open and all_present:
             return TESTED
         return MATERIALIZED if any_present else SPECIFIED
@@ -262,6 +267,64 @@ def _domain_gate_state(*, entry_gate_open: bool, exit_gate_open: bool) -> str:
 
 def _maturity_claim_open(maturity_state: str) -> bool:
     return maturity_state in {PROVEN_ON_CURRENT_HEAD, ACTIVE_AUTHORITY, EXTERNALLY_ADMISSIBLE}
+
+
+def _validated_head(payload: Mapping[str, Any]) -> str:
+    for key in ("validated_head_sha", "head_sha", "current_git_head"):
+        value = str(payload.get(key, "")).strip()
+        if value:
+            return value
+    return ""
+
+
+def _domain2_promotion_civilization_ratification_state(*, root: Path, live_head: str) -> Dict[str, Any]:
+    failures: List[str] = []
+    ratification_path = root / Path(PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF)
+    if not ratification_path.exists():
+        failures.append(f"missing required artifact: {PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF}")
+        return {"open": False, "failures": failures}
+
+    try:
+        ratification = load_json(ratification_path)
+    except Exception as exc:  # noqa: BLE001
+        failures.append(f"{PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF} unreadable: {exc}")
+        return {"open": False, "failures": failures}
+
+    if str(ratification.get("status", "")).strip().upper() != "PASS":
+        failures.append(f"{PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF} status={ratification.get('status', '')}")
+    if _validated_head(ratification) != live_head:
+        failures.append(
+            f"{PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF} validated_head_sha={_validated_head(ratification) or 'MISSING'} != {live_head}"
+        )
+    if str(ratification.get("ratification_scope_class", "")).strip() != "CURRENT_HEAD_BOUNDED_RUNTIME_ADMISSIBILITY_ONLY":
+        failures.append(f"{PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF} ratification_scope_class invalid")
+    if ratification.get("claim_widening_allowed") is not False:
+        failures.append(f"{PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF} claim_widening_allowed must be false")
+    if str(ratification.get("gate_effect", "")).strip() != "SATISFIES_DOMAIN_2_EXIT_PREREQUISITE_ONLY":
+        failures.append(f"{PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF} gate_effect invalid")
+
+    for rel in (
+        "KT_PROD_CLEANROOM/reports/promotion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/rollback_plan_receipt.json",
+        "KT_PROD_CLEANROOM/reports/risk_ledger_receipt.json",
+        "KT_PROD_CLEANROOM/reports/revalidation_receipt.json",
+        "KT_PROD_CLEANROOM/reports/zone_crossing_receipt.json",
+    ):
+        path = root / Path(rel)
+        if not path.exists():
+            failures.append(f"missing required artifact: {rel}")
+            continue
+        try:
+            payload = load_json(path)
+        except Exception as exc:  # noqa: BLE001
+            failures.append(f"{rel} unreadable: {exc}")
+            continue
+        if str(payload.get("status", "")).strip().upper() != "PASS":
+            failures.append(f"{rel} status={payload.get('status', '')}")
+        if _validated_head(payload) != live_head:
+            failures.append(f"{rel} validated_head_sha={_validated_head(payload) or 'MISSING'} != {live_head}")
+
+    return {"open": not failures, "failures": failures}
 
 
 def _domain_maturity_matrix_payload(*, board: Dict[str, Any]) -> Dict[str, Any]:
@@ -360,6 +423,7 @@ def _external_audit_packet_manifest_payload(*, live_head: str) -> Dict[str, Any]
 def _build_constitutional_board_state(
     *,
     root: Path,
+    live_head: str,
     authority_mode: str,
     posture_state: str,
     open_blockers: Sequence[str],
@@ -380,6 +444,7 @@ def _build_constitutional_board_state(
         "TRUTH_PUBLICATION_STABILIZED": truth_publication_stabilized,
         "H1_ACTIVATION_ALLOWED": truth_publication_stabilized,
     }
+    promotion_civilization_state = _domain2_promotion_civilization_ratification_state(root=root, live_head=live_head)
     gate_status_map: Dict[str, Dict[str, Any]] = {}
     constitutional_domains: List[Dict[str, Any]] = []
 
@@ -434,6 +499,14 @@ def _build_constitutional_board_state(
                 "failures": unhealthy_artifacts,
             },
         ]
+        if domain_id == "DOMAIN_2_PROMOTION_CIVILIZATION":
+            activation_rules.append(
+                {
+                    "rule": "current_head_promotion_civilization_ratified",
+                    "status": "PASS" if promotion_civilization_state["open"] else "FAIL",
+                    "failures": list(promotion_civilization_state["failures"]),
+                }
+            )
 
         domain_blockers: List[str] = []
         if domain_id == "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE":
@@ -450,6 +523,8 @@ def _build_constitutional_board_state(
         else:
             if not entry_gate_open:
                 domain_blockers.append(f"entry gate closed: {entry_gate}")
+        if domain_id == "DOMAIN_2_PROMOTION_CIVILIZATION":
+            domain_blockers.extend(str(item) for item in promotion_civilization_state["failures"])
         domain_blockers.extend(f"missing required law surface: {path}" for path in missing_law_surfaces)
         domain_blockers.extend(f"missing required artifact: {path}" for path in missing_artifacts)
         domain_blockers.extend(f"unhealthy law surface: {item}" for item in unhealthy_law_surfaces)
@@ -474,6 +549,7 @@ def _build_constitutional_board_state(
             unhealthy_law_surfaces=unhealthy_law_surfaces,
             unhealthy_artifacts=unhealthy_artifacts,
             convergence_status=convergence_status,
+            promotion_civilization_ratified=bool(promotion_civilization_state["open"]),
         )
         if domain_id == "DOMAIN_1_TRUTH_PUBLICATION_ARCHITECTURE":
             exit_gate_open = truth_publication_stabilized
@@ -542,11 +618,12 @@ def _build_constitutional_board_state(
     }
 
 
-def _finish_line_predicates(*, posture_state: str, worktree_dirty: bool, one_button_status: bool) -> Dict[str, bool]:
+def _finish_line_predicates(*, posture_state: str, worktree_dirty: bool, publisher_worktree_dirty: bool, one_button_status: bool) -> Dict[str, bool]:
     return {
         "constitutional_truth_live": posture_state != "TRUTH_DEFECTS_PRESENT",
         "canonical_scope_enforced": True,
         "current_worktree_clean": not worktree_dirty,
+        "publication_carrier_worktree_clean": not publisher_worktree_dirty,
         "one_button_current_head_pass": bool(one_button_status),
         "posture_receipts_synchronized": True,
         "truth_engine_authoritative": True,
@@ -592,7 +669,7 @@ def _stop_gates(posture_state: str, live_checks: List[Dict[str, Any]]) -> List[s
     return gates
 
 
-def _truthful_green_supported(*, root: Path, report_root: Path, live_head: str, branch_ref: str) -> bool:
+def _truthful_green_supported(*, root: Path, report_root: Path, validated_subject_head: str, branch_ref: str) -> bool:
     preflight = _load_required(report_root / "one_button_preflight_receipt.json")
     production = _load_required(report_root / "one_button_production_receipt.json")
     branch = _load_required(root / DEFAULT_REPORT_ROOT_REL / "main_branch_protection_receipt.json")
@@ -601,9 +678,9 @@ def _truthful_green_supported(*, root: Path, report_root: Path, live_head: str, 
         return False
     if str(production.get("status", "")).strip() != "PASS":
         return False
-    if str(preflight.get("validated_head_sha", "")).strip() != live_head:
+    if str(preflight.get("validated_head_sha", "")).strip() != validated_subject_head:
         return False
-    if str(production.get("validated_head_sha", "")).strip() != live_head:
+    if str(production.get("validated_head_sha", "")).strip() != validated_subject_head:
         return False
     if str(preflight.get("branch_ref", "")).strip() != branch_ref:
         return False
@@ -616,8 +693,12 @@ def _truthful_green_supported(*, root: Path, report_root: Path, live_head: str, 
 
 def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, live_validation_index_ref: str) -> Dict[str, Dict[str, Any]]:
     live_head = str((index.get("worktree") or {}).get("head_sha", "")).strip()
+    validated_subject_head = str((index.get("worktree") or {}).get("validated_subject_head_sha", "")).strip() or live_head
+    publication_carrier_head = str((index.get("worktree") or {}).get("publication_carrier_head_sha", "")).strip()
+    head_relation = str((index.get("worktree") or {}).get("head_relation", "")).strip() or "HEAD_IS_SUBJECT"
     branch_ref = str(index.get("branch_ref", "")).strip()
-    worktree_dirty = bool((index.get("worktree") or {}).get("git_dirty"))
+    publisher_worktree_dirty = bool((index.get("worktree") or {}).get("git_dirty"))
+    worktree_dirty = bool((index.get("worktree") or {}).get("subject_git_dirty")) if "subject_git_dirty" in (index.get("worktree") or {}) else publisher_worktree_dirty
     checks = index.get("checks") if isinstance(index.get("checks"), list) else []
     live_state = derive_live_validation_state(index)
     posture_state = live_state
@@ -626,7 +707,7 @@ def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, l
     if live_state == CANONICAL_READY_FOR_REEARNED_GREEN and _truthful_green_supported(
         root=root,
         report_root=report_root,
-        live_head=live_head,
+        validated_subject_head=validated_subject_head,
         branch_ref=branch_ref,
     ):
         posture_state = TRUTHFUL_GREEN
@@ -636,6 +717,7 @@ def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, l
     finish_line = _finish_line_predicates(
         posture_state=posture_state,
         worktree_dirty=worktree_dirty,
+        publisher_worktree_dirty=publisher_worktree_dirty,
         one_button_status=posture_state == TRUTHFUL_GREEN,
     )
 
@@ -646,7 +728,9 @@ def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, l
         "posture_state": posture_state,
         "current_p0_state": posture_state,
         "branch_ref": branch_ref,
-        "validated_head_sha": live_head,
+        "validated_head_sha": validated_subject_head,
+        "publication_carrier_head_sha": publication_carrier_head,
+        "head_relation": head_relation,
         "truth_sources": _truth_sources(report_root_rel),
         "validation_index_ref": live_validation_index_ref,
         "active_stop_gates": stop_gates,
@@ -672,10 +756,13 @@ def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, l
         "posture_state": posture_state,
         "current_state": posture_state,
         "branch_ref": branch_ref,
-        "validated_head_sha": live_head,
+        "validated_head_sha": validated_subject_head,
+        "publication_carrier_head_sha": publication_carrier_head,
+        "head_relation": head_relation,
         "blocking_groups": stop_gates,
         "release_decision": release_decision,
         "repo_hygiene_status": "PASS" if not worktree_dirty else "HOLD",
+        "publisher_hygiene_status": "PASS" if not publisher_worktree_dirty else "DIRTY_DOCUMENTARY_CARRIER_ONLY",
         "validator_substance_checked": True,
         "audit_scope": [
             "live truth reconciliation",
@@ -712,8 +799,9 @@ def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, l
             "claim": TRUTHFUL_GREEN,
             "claim_admissible": True,
             "lawful_green_claim_admissible": True,
-            "head_sha": live_head,
-            "validated_head_sha": live_head,
+            "head_sha": validated_subject_head,
+            "validated_head_sha": validated_subject_head,
+            "publication_carrier_head_sha": publication_carrier_head,
             "branch_ref": branch_ref,
             "may_claim_now": [
                 "truthful green active on current head",
@@ -746,7 +834,8 @@ def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, l
             "claim": TRUTHFUL_GREEN,
             "claim_admissible": False,
             "current_truthful_state": posture_state,
-            "validated_head_sha": live_head,
+            "validated_head_sha": validated_subject_head,
+            "publication_carrier_head_sha": publication_carrier_head,
             "blockers": stop_gates,
             "superseded_by": _truth_sources(report_root_rel),
         }
@@ -780,6 +869,10 @@ def _sync_secondary_surfaces(
     convergence_status: str,
     convergence_failures: Sequence[str],
 ) -> None:
+    try:
+        authoritative_truth_source = str(active_truth_source_ref(root=root)).strip() or truth_source_ref
+    except Exception:  # noqa: BLE001
+        authoritative_truth_source = truth_source_ref
     readiness_scope = _load_required(root / "KT_PROD_CLEANROOM" / "governance" / "readiness_scope_manifest.json")
     blockers: List[str] = []
     if posture_state == "TRUTH_DEFECTS_PRESENT":
@@ -797,7 +890,7 @@ def _sync_secondary_surfaces(
         seen.add(blocker)
         deduped_blockers.append(blocker)
     readiness_scope["current_authority_mode"] = authority_mode
-    readiness_scope["authoritative_truth_source"] = truth_source_ref
+    readiness_scope["authoritative_truth_source"] = authoritative_truth_source
     readiness_scope["current_blockers"] = deduped_blockers
     _write_json(root / "KT_PROD_CLEANROOM" / "governance" / "readiness_scope_manifest.json", readiness_scope)
 
@@ -822,7 +915,7 @@ def _sync_secondary_surfaces(
     execution_board["last_synced_head_sha"] = live_head
     execution_board["current_posture_state"] = posture_state
     execution_board["authority_mode"] = authority_mode
-    execution_board["authoritative_current_head_truth_source"] = truth_source_ref
+    execution_board["authoritative_current_head_truth_source"] = authoritative_truth_source
     execution_board["open_blockers"] = deduped_blockers
     freeze_policy = _load_required(root / "KT_PROD_CLEANROOM" / "governance" / "h0_freeze_policy.json")
     freeze_policy["activation_state"] = "ELIGIBLE_FOR_FREEZE" if posture_state == TRUTHFUL_GREEN else "PENDING_TRUTHFUL_GREEN"
@@ -856,7 +949,7 @@ def _sync_secondary_surfaces(
         _public_verifier_manifest_payload(
             root=root,
             live_head=live_head,
-            truth_source_ref=truth_source_ref,
+            truth_source_ref=authoritative_truth_source,
             authority_mode=authority_mode,
             convergence_status=convergence_status,
             report_root_rel=DEFAULT_REPORT_ROOT_REL,
@@ -868,6 +961,7 @@ def _sync_secondary_surfaces(
     )
     board_state = _build_constitutional_board_state(
         root=root,
+        live_head=live_head,
         authority_mode=authority_mode,
         posture_state=posture_state,
         open_blockers=deduped_blockers,
@@ -889,7 +983,7 @@ def _sync_secondary_surfaces(
         _public_verifier_manifest_payload(
             root=root,
             live_head=live_head,
-            truth_source_ref=truth_source_ref,
+            truth_source_ref=authoritative_truth_source,
             authority_mode=authority_mode,
             convergence_status=convergence_status,
             report_root_rel=DEFAULT_REPORT_ROOT_REL,
@@ -909,11 +1003,13 @@ def _reconciliation_report(*, report_root: Path, report_root_rel: str, derived_s
             "current_state_receipt": {
                 "posture_state": str(current_state.get("posture_state", "")).strip(),
                 "validated_head_sha": str(current_state.get("validated_head_sha", "")).strip(),
+                "publication_carrier_head_sha": str(current_state.get("publication_carrier_head_sha", "")).strip(),
                 "status": str(current_state.get("status", "")).strip(),
             },
             "runtime_closure_audit": {
                 "posture_state": str(runtime_audit.get("posture_state", "")).strip(),
                 "validated_head_sha": str(runtime_audit.get("validated_head_sha", "")).strip(),
+                "publication_carrier_head_sha": str(runtime_audit.get("publication_carrier_head_sha", "")).strip(),
                 "status": str(runtime_audit.get("status", "")).strip(),
             },
             "posture_consistency_receipt": {

@@ -1,0 +1,55 @@
+{
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "carried_forward_scope": "UNCHANGED_INHERITED_CLASS_A_SUBSET_ONLY",
+  "checks": [
+    {
+      "check": "ws13_receipt_present",
+      "detail": "The bounded WS13 cross-host receipt must remain present for carried-forward class-A proof.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "class_a_surfaces_unchanged_since_ws13_anchor",
+      "detail": "The declared carried-forward class-A surfaces must remain byte-identical on the child head.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_artifact_class_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "carried_forward_cross_host_repro_valid",
+      "detail": "Cross-host reproducibility is carried forward only for the unchanged inherited class-A subset proved by WS13.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_determinism_envelope_receipt.json",
+        "KT_PROD_CLEANROOM/governance/kt_artifact_class_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "class_a_drift_paths": [],
+  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "current_strongest_claim": "F03 carries forward cross-host reproducibility only for the unchanged inherited class-A subset declared by WS13.",
+  "evidence_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "generated_utc": "2026-03-20T01:41:57Z",
+  "next_lawful_phase": "F04_ADJUDICATION_VERIFIER_V2_AND_OUTSIDER_PATH",
+  "pass_verdict": "DECLARED_CLASS_A_CROSS_HOST_REPRO_CARRIED_FORWARD_FOR_UNCHANGED_INHERITED_SUBSET",
+  "phase_id": "F03_PROOF_REPRO_HARDENING_AND_STABILITY",
+  "schema_id": "kt.child_campaign.cross_host_repro_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "All child-owned F03 outputs are now cross-host reproducible",
+    "Whole-repo cross-host reproducibility is proven",
+    "The repo-root import fragility is fixed"
+  ],
+  "subject_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "what_is_not_proven": [
+    "This receipt does not widen reproducibility beyond the unchanged inherited class-A subset",
+    "This receipt does not prove current-head runtime capability",
+    "This receipt does not erase repo-root import fragility"
+  ]
+}

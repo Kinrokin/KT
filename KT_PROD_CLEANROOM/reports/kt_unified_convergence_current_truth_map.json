@@ -1,0 +1,93 @@
+{
+  "claim_ceiling_overrides": {
+    "commercial_widening": "FORBIDDEN",
+    "comparative_widening": "FORBIDDEN",
+    "externality_class_max": "E1_SAME_HOST_DETACHED_REPLAY",
+    "reentry_condition": "SECOND_HOST_RETURN_FILE_PLUS_VALIDATOR_PASS"
+  },
+  "current_git_head": "3f311449ca92d35fc4ed9da571ddd8bc121d7564",
+  "deferred_blockers": [
+    {
+      "blocker_id": "C006_EXTERNALITY_CEILING_REMAINS_BOUNDED",
+      "externality_class_max": "E1_SAME_HOST_DETACHED_REPLAY",
+      "reason": "No second-host hardware currently available for friendly cross-host replay. Single-operator lab with one machine.",
+      "status": "DEFERRED_RESOURCE_CONSTRAINT"
+    }
+  ],
+  "generated_utc": "2026-03-25T23:42:14Z",
+  "open_stop_gates": [
+    "current_head_external_capability_not_confirmed",
+    "externality_above_E1_not_confirmed"
+  ],
+  "schema_id": "kt.unified_convergence.current_truth_map.v1",
+  "source_surfaces": {
+    "current_head_adapter_activation_surface": "KT_PROD_CLEANROOM/reports/kt_wave2a_adapter_activation_receipt.json",
+    "current_head_async_strategy_surface": "KT_PROD_CLEANROOM/reports/kt_wave2a_async_provider_or_spine_option_receipt.json",
+    "current_head_blocker_matrix": "KT_PROD_CLEANROOM/reports/kt_wave5_blocker_matrix.json",
+    "current_head_c006_deferral_heartbeat_surface": "KT_PROD_CLEANROOM/reports/c006_deferral_heartbeat.json",
+    "current_head_c006_prep_surface": "KT_PROD_CLEANROOM/reports/post_wave5_c006_trust_prep_receipt.json",
+    "current_head_c017_spine_carriage_surface": "KT_PROD_CLEANROOM/reports/kt_c017_spine_carriage_remediation_receipt.json",
+    "current_head_ci_reproducibility_surface": "KT_PROD_CLEANROOM/reports/kt_wave1_ci_reproducibility_strategy_receipt.json",
+    "current_head_deferred_blocker_surface": "KT_PROD_CLEANROOM/reports/deferred_blockers.json",
+    "current_head_final_claim_class_surface": "KT_PROD_CLEANROOM/reports/kt_wave5_final_claim_class_matrix.json",
+    "current_head_final_tier_surface": "KT_PROD_CLEANROOM/reports/kt_wave5_final_tier_ruling.json",
+    "current_head_fl3_law_meta_surface": "KT_PROD_CLEANROOM/reports/kt_fl3_law_meta_evaluator_remediation_receipt.json",
+    "current_head_live_validation_index": "KT_PROD_CLEANROOM/reports/live_validation_index.wave5.json",
+    "current_head_observability_surface": "KT_PROD_CLEANROOM/reports/kt_wave1_observability_schema_and_receipts.json",
+    "current_head_organ_disposition_surface": "KT_PROD_CLEANROOM/reports/kt_wave5_updated_surface_disposition_register.json",
+    "current_head_organ_realization_surface": "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_maturity_matrix.json",
+    "current_head_product_truth_surface": "KT_PROD_CLEANROOM/reports/kt_wave5_product_truth_surface.json",
+    "current_head_provider_activation_surface": "KT_PROD_CLEANROOM/reports/kt_wave2a_provider_activation_receipts.json",
+    "current_head_provider_contract_suite": "KT_PROD_CLEANROOM/reports/kt_wave2a_provider_contract_test_suite.json",
+    "current_head_provider_resilience_surface": "KT_PROD_CLEANROOM/reports/kt_wave1_provider_resilience_base.json",
+    "current_head_release_truth_surface": "KT_PROD_CLEANROOM/reports/kt_wave5_release_truth_surface.json",
+    "current_head_remaining_gap_surface": "KT_PROD_CLEANROOM/reports/kt_wave5_remaining_gap_register.json",
+    "current_head_router_distribution_health_surface": "KT_PROD_CLEANROOM/reports/kt_wave2b_route_distribution_health.json",
+    "current_head_router_ratification_surface": "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json",
+    "current_head_router_selection_surface": "KT_PROD_CLEANROOM/reports/kt_wave2b_router_selection_receipt.json",
+    "current_head_router_shadow_eval_surface": "KT_PROD_CLEANROOM/reports/kt_wave2b_router_shadow_eval_matrix.json",
+    "current_head_runtime_truth_surface": "KT_PROD_CLEANROOM/reports/kt_wave5_runtime_truth_surface.json",
+    "current_head_state_vector": "KT_PROD_CLEANROOM/reports/kt_wave5_state_core.json",
+    "current_head_trust_surface_matrix": "KT_PROD_CLEANROOM/reports/kt_wave1_trust_stack_surface_matrix.json",
+    "current_head_verifier_truth_surface": "KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json",
+    "current_head_wave3_bounded_output_surface": "KT_PROD_CLEANROOM/reports/kt_wave3_bounded_output.json",
+    "current_head_wave3_claim_class_surface": "KT_PROD_CLEANROOM/reports/kt_wave3_claim_class_matrix.json",
+    "current_head_wave3_detached_verifier_surface": "KT_PROD_CLEANROOM/reports/kt_wave3_detached_verifier_receipt.json",
+    "current_head_wave3_minimum_viable_civilization_surface": "KT_PROD_CLEANROOM/reports/kt_wave3_minimum_viable_civilization_run_pack.json",
+    "current_head_wave4_challenge_protocol_surface": "KT_PROD_CLEANROOM/reports/kt_wave4_challenge_protocol.json",
+    "current_head_wave4_chaos_surface": "KT_PROD_CLEANROOM/reports/kt_wave4_chaos_manifest.json",
+    "current_head_wave4_externality_surface": "KT_PROD_CLEANROOM/reports/kt_wave4_externality_class_matrix.json",
+    "current_head_wave4_formal_invariant_surface": "KT_PROD_CLEANROOM/reports/kt_wave4_formal_invariant_artifacts.json",
+    "current_head_wave4_public_challenge_surface": "KT_PROD_CLEANROOM/reports/kt_wave4_public_challenge_receipt.json",
+    "historical_bounded_truth_surface": "KT_PROD_CLEANROOM/reports/kt_external_capability_confirmation_receipt.json"
+  },
+  "truth_partitions": {
+    "current_head_control_plane_truth": {
+      "status": "current_head_proven",
+      "summary": "Current-head control-plane truth is proven through the Wave 0-5 convergence lane: one canonical kernel, one truth core, one package/import canon, one toolchain/runtime firewall, one frozen interface surface, and one scoped final readjudication."
+    },
+    "current_head_runtime_truth": {
+      "advancement_boundary": "Router hold on current head is not abandonment. Learned-router superiority and multi-lobe promotion remain active governed advancement objectives and require fenced-task superiority plus no-regression proof before canonical cutover.",
+      "status": "current_head_partially_proven",
+      "summary": "Current-head runtime truth remains partially proven: KT proves one bounded minimum viable organism run on the canonical path, one canonical runtime import/install lane, one canonical same-host LIVE_HASHED provider success/resilience lane, and one ratified static-router control surface bound to current-head best-static comparison. Learned-router cutover remains unearned and externality above E1 remains unearned."
+    },
+    "current_head_trust_and_provenance_truth": {
+      "status": "current_head_partially_proven",
+      "summary": "Trust and provenance truth are current-head partially proven: machine-bound trust surfaces, bounded detached verifier replay at E1, same-host independent clean-environment replay, secret-free bounded outsider verifier tooling, typed challenge protocol, and final readjudication are all present without widening externality above E1."
+    },
+    "historical_bounded_truth": {
+      "status": "historically_proven",
+      "summary": "Historical bounded frontier truth remains real but may not upgrade current-head capability."
+    },
+    "integrated_overall_truth": {
+      "status": "current_head_partially_proven",
+      "summary": "Integrated current-head truth is now scoped and final-readjudicated: one bounded canonical organism run, one bounded same-host detached verifier path, one bounded internal hostile-probe layer, one canonical runtime import/install lane, one canonical same-host LIVE_HASHED provider success/resilience lane, one ratified static-router control surface, and one scoped tier ruling. Overall truth remains bounded only by contradictions still open on current head."
+    },
+    "product_and_commercial_truth": {
+      "status": "current_head_partially_proven",
+      "summary": "Product and commercial truth remain bounded: a carried-forward noncommercial evaluation wedge is present on current head, but no commercial or enterprise readiness claim is earned."
+    }
+  },
+  "work_order_id": "KT_UNIFIED_CONVERGENCE_MAX_POWER_CAMPAIGN_V2_1_1_FINAL",
+  "work_order_version": "2.1.1"
+}

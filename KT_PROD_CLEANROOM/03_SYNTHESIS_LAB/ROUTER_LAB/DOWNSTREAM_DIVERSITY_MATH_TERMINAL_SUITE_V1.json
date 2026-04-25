@@ -1,0 +1,235 @@
+{
+  "schema_id": "kt.downstream_diversity_math_terminal_suite.v1",
+  "mode": "LAB_ONLY_NONCANONICAL",
+  "claim_boundary": "This suite is lab-only and noncanonical. It probes whether the current verified entrant cohort can support a second winning terminal path that ends in the math specialist instead of the code specialist. It cannot unlock R5, R6, lobe authority, externality, comparative claims, or commercial activation.",
+  "cases": [
+    {
+      "case_id": "LAB_ALTTERM_GM01",
+      "pattern_family": "LAB_ALTTERM_GM",
+      "notes": "Force the generalist to frame the incident evidence before the math specialist produces the repair plan and proof-style justification.",
+      "single_case_baseline": {
+        "task_text": "Frame the incident evidence, then produce a decision-tree repair plan with proof-style justification.",
+        "required_terms": [
+          "evidence",
+          "repair",
+          "proof"
+        ],
+        "preferred_genotype": {
+          "prompt_transform_style": "reframe",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "frame",
+          "task_text": "Frame the incident evidence and tradeoffs for the repair decision.",
+          "required_terms": [
+            "evidence",
+            "tradeoffs",
+            "decision"
+          ],
+          "preferred_genotype": {
+            "prompt_transform_style": "reframe",
+            "reasoning_directive": "evidence_first",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": [
+            "lobe.generalist.shadow.v1"
+          ]
+        },
+        {
+          "stage_id": "plan",
+          "task_text": "Produce the decision-tree repair plan and proof-style justification.",
+          "required_terms": [
+            "repair",
+            "plan",
+            "proof"
+          ],
+          "preferred_genotype": {
+            "prompt_transform_style": "expand_context",
+            "reasoning_directive": "decision_tree",
+            "scoring_bias": "precision",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 2.0,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": [
+            "lobe.math.specialist.v1"
+          ],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_ALTTERM_GM02",
+      "pattern_family": "LAB_ALTTERM_GM",
+      "notes": "Force the generalist to frame rollout risks before the math specialist proves the safest repair path.",
+      "single_case_baseline": {
+        "task_text": "Frame the rollout risks, then produce a step-tagged proof of the safest repair path.",
+        "required_terms": [
+          "risks",
+          "repair",
+          "proof"
+        ],
+        "preferred_genotype": {
+          "prompt_transform_style": "reframe",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "frame",
+          "task_text": "Frame the rollout risks and capture the decision tradeoffs.",
+          "required_terms": [
+            "risks",
+            "tradeoffs",
+            "decision"
+          ],
+          "preferred_genotype": {
+            "prompt_transform_style": "reframe",
+            "reasoning_directive": "evidence_first",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": [
+            "lobe.generalist.shadow.v1"
+          ]
+        },
+        {
+          "stage_id": "proof_plan",
+          "task_text": "Produce the safest repair path as a decision tree with proof-style steps.",
+          "required_terms": [
+            "repair",
+            "proof",
+            "steps"
+          ],
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "bullet_proof",
+            "scoring_bias": "recall",
+            "uncertainty_policy": "conservative"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": [
+            "lobe.math.specialist.v1"
+          ],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_ALTTERM_GM03",
+      "pattern_family": "LAB_ALTTERM_GM",
+      "notes": "Force the generalist to frame the evidence before the math specialist solves and justifies the repair path.",
+      "single_case_baseline": {
+        "task_text": "Summarize the evidence, then solve the problem and justify the repair path.",
+        "required_terms": [
+          "evidence",
+          "solve",
+          "repair"
+        ],
+        "preferred_genotype": {
+          "prompt_transform_style": "reframe",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "evidence_frame",
+          "task_text": "Summarize the evidence and frame the repair tradeoffs.",
+          "required_terms": [
+            "evidence",
+            "repair",
+            "tradeoffs"
+          ],
+          "preferred_genotype": {
+            "prompt_transform_style": "reframe",
+            "reasoning_directive": "evidence_first",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": [
+            "lobe.generalist.shadow.v1"
+          ]
+        },
+        {
+          "stage_id": "solve_proof",
+          "task_text": "Solve the problem, produce the repair plan, and justify it with a proof-style explanation.",
+          "required_terms": [
+            "solve",
+            "repair",
+            "proof"
+          ],
+          "preferred_genotype": {
+            "prompt_transform_style": "expand_context",
+            "reasoning_directive": "decision_tree",
+            "scoring_bias": "precision",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 2.0,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": [
+            "lobe.math.specialist.v1"
+          ],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    }
+  ]
+}

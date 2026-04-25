@@ -1,0 +1,118 @@
+{
+  "attack_drill_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_supply_chain_policy_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_log_monitor_plane_receipt.json",
+    "KT_PROD_CLEANROOM/governance/kt_log_monitor_policy.json"
+  ],
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "delivery_modes": [
+    "repo_snapshot_with_hash_bound_release_manifest",
+    "static_zip_or_directory_bundle_with_packaged_public_evidence",
+    "artifact_download_with_release_manifest_sha_verification"
+  ],
+  "distribution_targets": [
+    {
+      "primary_manifest_ref": "KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json",
+      "primary_manifest_sha256": "27bcab29467f34bcd21774df0601606f3aebe27ee55f37aeafa671c9fbe6851a",
+      "scope": "BOUNDED_IMPORTED_CURRENT_HEAD_STATIC_VERIFIER_RELEASE_ONLY",
+      "source_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json",
+      "supporting_artifacts": [
+        {
+          "artifact_ref": "KT_PROD_CLEANROOM/reports/kt_static_verifier_sbom.json",
+          "sha256": "54ed535585028029d2458385526344cc279de8cadd6818d6aa553ce7f7754d54"
+        },
+        {
+          "artifact_ref": "KT_PROD_CLEANROOM/reports/kt_static_verifier_attestation.json",
+          "sha256": "f582a1eda3ff3e2e43b0c1acc59cc14120e09d2fb209272b8d06e727b402ea7a"
+        }
+      ],
+      "surface_id": "WS14_STATIC_VERIFIER_RELEASE_BUNDLE"
+    },
+    {
+      "primary_manifest_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+      "primary_manifest_sha256": "826fcec39dcb66a2bafce08f3d9184cd0297b2778becd768cfa556aabf73849d",
+      "scope": "HISTORICAL_GOVERNANCE_ONLY_DETACHED_VERIFIER_PACKAGE",
+      "source_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+      "supporting_artifacts": [
+        {
+          "artifact_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json",
+          "sha256": "6b68c2805382c502ae199dab501755551d0a1c02670d909ad59c2443493e3327"
+        },
+        {
+          "artifact_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+          "sha256": "19e55b3c3d5dbb48bf0226247688262d48c632331885fd3a905fdfaf8ac8e845"
+        }
+      ],
+      "surface_id": "WS19_DETACHED_PUBLIC_VERIFIER_PACKAGE"
+    },
+    {
+      "primary_manifest_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_manifest_v2.json",
+      "primary_manifest_sha256": "ea986111a248e2a5bf6a6cc9b7556690aa456e2e8bb623378d214497e016423f",
+      "scope": "CHILD_SECRET_FREE_OUTSIDER_VERIFIER_V2_ASSURANCE_ONLY",
+      "source_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_outsider_path_receipt.json",
+      "supporting_artifacts": [
+        {
+          "artifact_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_vsa.json",
+          "sha256": "5d04be68ba7095908aaedc3e6b076d2e782611901a1b11434de5c2089c79d177"
+        },
+        {
+          "artifact_ref": "KT_PROD_CLEANROOM/reports/kt_child_adjudication_packet.json",
+          "sha256": "c188e239f97e21f9336172e3ee4870dac4508d5f41a18f3794197a37137751e4"
+        }
+      ],
+      "surface_id": "F04_CHILD_OUTSIDER_VERIFIER_V2_PACKAGE"
+    }
+  ],
+  "limitations": [
+    "This policy does not prove a deployed public updater fleet.",
+    "This policy is scoped only to the two declared verifier distribution bundles needed for F02B clearance.",
+    "This policy does not widen runtime or product claims."
+  ],
+  "phase_id": "F02B_TRUST_ROOT_TRANSPARENCY_AND_TUF_ACTIVATION",
+  "policy_id": "KT_CHILD_TUF_DISTRIBUTION_POLICY_V1_6",
+  "required_behaviors": [
+    "versioned_metadata",
+    "expiration_checks",
+    "freeze_attack_drills",
+    "rollback_attack_drills",
+    "inconsistent_view_drills"
+  ],
+  "schema_id": "kt.child_campaign.tuf_distribution_policy.v1",
+  "scope": "CHILD_VERIFIER_DISTRIBUTION_ONLY",
+  "status": "ACTIVE",
+  "stronger_claim_not_made": [
+    "TUF distribution is active for release activation",
+    "Product delivery is now active",
+    "Verifier coverage is globally widened across all KT surfaces"
+  ],
+  "threshold_acceptance_policy_ref": "KT_PROD_CLEANROOM/governance/kt_threshold_root_acceptance_policy.json",
+  "top_level_roles": [
+    {
+      "role_id": "root",
+      "source_ref": "KT_PROD_CLEANROOM/governance/kt_trust_root_policy.json",
+      "threshold": 3,
+      "trust_root_id": "KT_SOVEREIGN_ROOT_TARGET_20260317"
+    },
+    {
+      "role_id": "targets",
+      "signer_role_ref": "KT_PROD_CLEANROOM/governance/kt_signer_topology.json",
+      "threshold": 1
+    },
+    {
+      "role_id": "snapshot",
+      "signer_role_ref": "KT_PROD_CLEANROOM/governance/kt_signer_topology.json",
+      "threshold": 1
+    },
+    {
+      "role_id": "timestamp",
+      "signer_role_ref": "KT_PROD_CLEANROOM/governance/kt_signer_topology.json",
+      "threshold": 1
+    }
+  ],
+  "tuf_scope_boundary": [
+    "trust_root_distribution",
+    "verifier_distribution",
+    "delegated_public_trust_surfaces_for_verifier_bundles_only"
+  ]
+}

@@ -137,3 +137,35 @@ class TestTemporalEngineC012(unittest.TestCase):
         after = canonical_json(ctx)
         self.assertEqual(before, after)
 
+    def test_positive_replay_budget_yields_nonzero_steps(self) -> None:
+        ctx = _valid_context()
+        req = TemporalForkRequestSchema.from_dict(_valid_fork_request())
+        fork = TemporalEngine.create_fork(context=ctx, request=req).to_dict()
+        replay_req_dict = {
+            "schema_id": TemporalReplayRequestSchema.SCHEMA_ID,
+            "schema_version_hash": TemporalReplayRequestSchema.SCHEMA_VERSION_HASH,
+            "fork": fork,
+            "replay_mode": "DRY_RUN",
+            "runtime_registry_hash": "1" * 64,
+            "max_steps": 5,
+        }
+        rr = TemporalReplayRequestSchema.from_dict(replay_req_dict)
+        result = TemporalEngine.replay(context=ctx, request=rr).to_dict()
+        self.assertGreater(result["steps_executed"], 0)
+        self.assertLessEqual(result["steps_executed"], 5)
+
+    def test_zero_replay_budget_stays_zero(self) -> None:
+        ctx = _valid_context()
+        req = TemporalForkRequestSchema.from_dict(_valid_fork_request())
+        fork = TemporalEngine.create_fork(context=ctx, request=req).to_dict()
+        replay_req_dict = {
+            "schema_id": TemporalReplayRequestSchema.SCHEMA_ID,
+            "schema_version_hash": TemporalReplayRequestSchema.SCHEMA_VERSION_HASH,
+            "fork": fork,
+            "replay_mode": "DRY_RUN",
+            "runtime_registry_hash": "1" * 64,
+            "max_steps": 0,
+        }
+        rr = TemporalReplayRequestSchema.from_dict(replay_req_dict)
+        result = TemporalEngine.replay(context=ctx, request=rr).to_dict()
+        self.assertEqual(result["steps_executed"], 0)

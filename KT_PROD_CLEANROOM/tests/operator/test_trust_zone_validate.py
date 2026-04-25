@@ -23,6 +23,7 @@ def _seed_governance(root: Path, *, readiness_excludes: list[str]) -> None:
                 {"zone_id": "LAB", "include": ["KT_PROD_CLEANROOM/03_SYNTHESIS_LAB/**"], "exclude": []},
                 {"zone_id": "ARCHIVE", "include": ["KT_ARCHIVE/**"], "exclude": []},
                 {"zone_id": "COMMERCIAL", "include": ["docs/**"], "exclude": []},
+                {"zone_id": "TOOLCHAIN_PROVING", "include": ["KT_PROD_CLEANROOM/tools/operator/**", "ci/**"], "exclude": []},
                 {"zone_id": "GENERATED_RUNTIME_TRUTH", "include": ["KT_PROD_CLEANROOM/reports/**", "KT_PROD_CLEANROOM/exports/_truth/**"], "exclude": []},
                 {"zone_id": "QUARANTINED", "include": ["KT_PROD_CLEANROOM/05_QUARANTINE/**", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/tools/**"], "exclude": []},
             ],
@@ -33,6 +34,7 @@ def _seed_governance(root: Path, *, readiness_excludes: list[str]) -> None:
         {
             "schema_id": "kt.governance.canonical_scope_manifest.v2",
             "canonical_primary_surfaces": ["KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/**", "KT_PROD_CLEANROOM/governance/**"],
+            "toolchain_proving_surfaces": ["KT_PROD_CLEANROOM/tools/operator/**", "ci/**"],
             "generated_truth_surfaces": ["KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json", "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json"],
             "documentary_only_surfaces": ["docs/**"],
             "quarantined_from_canonical_truth": ["KT_PROD_CLEANROOM/05_QUARANTINE/**", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/tools/**"],
@@ -106,7 +108,7 @@ def _seed_governance(root: Path, *, readiness_excludes: list[str]) -> None:
 def test_validate_trust_zones_passes_for_six_zone_law(tmp_path: Path) -> None:
     _seed_governance(
         tmp_path,
-        readiness_excludes=["LAB", "ARCHIVE", "COMMERCIAL", "GENERATED_RUNTIME_TRUTH", "QUARANTINED"],
+        readiness_excludes=["LAB", "ARCHIVE", "COMMERCIAL", "GENERATED_RUNTIME_TRUTH", "QUARANTINED", "TOOLCHAIN_PROVING"],
     )
     report = validate_trust_zones(root=tmp_path)
     assert report["status"] == "PASS", report
@@ -115,7 +117,7 @@ def test_validate_trust_zones_passes_for_six_zone_law(tmp_path: Path) -> None:
 def test_validate_trust_zones_fails_when_generated_truth_is_not_excluded_from_readiness(tmp_path: Path) -> None:
     _seed_governance(
         tmp_path,
-        readiness_excludes=["LAB", "ARCHIVE", "COMMERCIAL", "QUARANTINED"],
+        readiness_excludes=["LAB", "ARCHIVE", "COMMERCIAL", "QUARANTINED", "TOOLCHAIN_PROVING"],
     )
     report = validate_trust_zones(root=tmp_path)
     assert report["status"] == "FAIL"
@@ -125,7 +127,7 @@ def test_validate_trust_zones_fails_when_generated_truth_is_not_excluded_from_re
 def test_validate_trust_zones_fails_when_runtime_registry_keeps_tools_canonical(tmp_path: Path) -> None:
     _seed_governance(
         tmp_path,
-        readiness_excludes=["LAB", "ARCHIVE", "COMMERCIAL", "GENERATED_RUNTIME_TRUTH", "QUARANTINED"],
+        readiness_excludes=["LAB", "ARCHIVE", "COMMERCIAL", "GENERATED_RUNTIME_TRUTH", "QUARANTINED", "TOOLCHAIN_PROVING"],
     )
     runtime_registry_path = tmp_path / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "docs" / "RUNTIME_REGISTRY.json"
     runtime_registry = json.loads(runtime_registry_path.read_text(encoding="utf-8"))

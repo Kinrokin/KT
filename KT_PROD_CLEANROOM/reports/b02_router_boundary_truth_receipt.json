@@ -1,0 +1,109 @@
+{
+  "checks": [
+    {
+      "check_id": "router_ratification_is_pass_and_static_only",
+      "pass": true
+    },
+    {
+      "check_id": "shadow_eval_keeps_canonical_router_unchanged_and_learned_cutover_blocked",
+      "pass": true
+    },
+    {
+      "check_id": "router_policy_blocks_learned_and_multi_lobe_until_earned",
+      "pass": true
+    },
+    {
+      "check_id": "canonical_council_router_stays_bounded_dry_run_and_refuses_live_requested_mode",
+      "dry_run_plan_status": "OK",
+      "dry_run_result_status": "DRY_RUN",
+      "live_requested_plan_status": "REFUSED",
+      "live_requested_result_status": "REFUSED",
+      "pass": true
+    },
+    {
+      "check_id": "claim_bearing_runtime_modules_have_no_hidden_tools_or_training_imports",
+      "import_scan_rows": [
+        {
+          "import_roots": [
+            "__future__",
+            "core",
+            "dataclasses",
+            "importlib",
+            "typing"
+          ],
+          "path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py"
+        },
+        {
+          "import_roots": [
+            "__future__",
+            "cognition",
+            "core",
+            "council",
+            "curriculum",
+            "dataclasses",
+            "governance",
+            "hashlib",
+            "json",
+            "memory",
+            "multiverse",
+            "paradox",
+            "pathlib",
+            "schemas",
+            "temporal",
+            "thermodynamics",
+            "time",
+            "typing"
+          ],
+          "path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
+        },
+        {
+          "import_roots": [
+            "__future__",
+            "copy",
+            "council",
+            "datetime",
+            "json",
+            "os",
+            "pathlib",
+            "schemas",
+            "typing"
+          ],
+          "path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/council/council_router.py"
+        },
+        {
+          "import_roots": [
+            "__future__",
+            "council",
+            "dataclasses",
+            "os",
+            "schemas",
+            "time",
+            "typing"
+          ],
+          "path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/council/providers/provider_registry.py"
+        },
+        {
+          "import_roots": [
+            "__future__",
+            "dataclasses",
+            "json",
+            "pathlib",
+            "typing"
+          ],
+          "path_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/council/providers/adapter_abi_runtime.py"
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "current_git_head": "d6385865b49cd2ed66fc8edb731003b96f8f5eb5",
+  "forbidden_claims_remaining": [
+    "Do not claim learned-router superiority or cutover.",
+    "Do not claim multi-lobe orchestration is canonical runtime.",
+    "Do not open Gate C from router boundary truth alone."
+  ],
+  "generated_utc": "2026-03-27T02:28:50Z",
+  "schema_id": "kt.b02.router_boundary_truth_receipt.v1",
+  "scope_boundary": "B02 tranche 4 proves the router remains a lawful static baseline boundary on the canonical path, not a hidden learned or multi-lobe runtime.",
+  "status": "PASS"
+}

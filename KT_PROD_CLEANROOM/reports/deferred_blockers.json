@@ -1,0 +1,90 @@
+{
+  "schema_id": "kt.reports.deferred_blockers.v1",
+  "generated_utc": "2026-03-22T18:00:00Z",
+  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "purpose": "Machine-readable register of blockers formally deferred under resource constraint. Deferred blockers are NOT ignored - they carry explicit claim ceilings, reentry conditions, and scope restrictions that remain binding until the deferral is resolved.",
+  "hard_rules": [
+    "A deferred blocker retains all claim ceilings and scope restrictions as if it were OPEN.",
+    "No stream may narrate a deferred blocker as closed, resolved, or irrelevant.",
+    "Deferral expires only when the reentry_condition is satisfied and the named validators re-pass.",
+    "Validators, omega_gate, and truth_engine must treat DEFERRED_RESOURCE_CONSTRAINT as OPEN for claim and release gating."
+  ],
+  "deferred": [
+    {
+      "blocker_id": "C006_EXTERNALITY_CEILING_REMAINS_BOUNDED",
+      "status": "DEFERRED_RESOURCE_CONSTRAINT",
+      "severity": "P0_WHEN_HARDWARE_AVAILABLE",
+      "first_detected": "2026-03-10",
+      "deferral_date": "2026-03-22",
+      "reason": "No second-host hardware currently available for friendly cross-host replay. Single-operator lab with one machine.",
+      "current_externality_ceiling": "E1_SAME_HOST_DETACHED_REPLAY",
+      "machine_effective_state": {
+        "blocker_state": "OPEN_DEFERRED_RESOURCE_CONSTRAINT",
+        "externality_class_max": "E1_SAME_HOST_DETACHED_REPLAY",
+        "comparative_widening": "FORBIDDEN",
+        "commercial_widening": "FORBIDDEN",
+        "reentry_condition": "SECOND_HOST_RETURN_FILE_PLUS_VALIDATOR_PASS"
+      },
+      "deferral_law": {
+        "may_continue": [
+          "W0/W1 internal runtime realization and organ disposition",
+          "W2 lawful evolution, adapters, tournaments (LAB_GOVERNED only)",
+          "W2 router/lobe experiments (LAB_GOVERNED only)",
+          "Capability atlas compilation (bounded to E1 evidence)",
+          "Claim compiler operation (bounded to E1 ceiling)",
+          "Packaging, documentation, operator UX, demos",
+          "Business model, investor materials (with E1 claim ceiling)",
+          "Proof bundles and evidence packs (same-host only)",
+          "Omega gate internals and governance hardening",
+          "MVCR live execution on canonical paths"
+        ],
+        "must_not": [
+          "Claim E2, E3, or E4 externality",
+          "Claim cross-host reproducibility",
+          "Claim independent or hostile verification",
+          "Claim commercial externality or enterprise readiness",
+          "Widen comparative superiority language",
+          "Narrate same-host replay as outsider trust",
+          "Publish press-ready or product-launch materials above E1 ceiling"
+        ]
+      },
+      "reentry_condition": {
+        "description": "Fresh second-host return file imported and all C006 validators re-pass at current HEAD.",
+        "required_steps": [
+          "Obtain access to a second host (cloud VM, second laptop, university lab, VPS, friend's machine)",
+          "Copy detached verifier package to second host using kt_independent_replay_recipe.md",
+          "Run detached verifier entrypoint on second host with no hidden secrets",
+          "Capture result, runtime receipt, and host environment metadata",
+          "Import post_wave5_c006_second_host_return.json to reports/imports/",
+          "Run post_wave5_c006_second_host_execute_validate.py - must PASS",
+          "Run w3_externality_and_comparative_proof_validate - must PASS",
+          "If all pass: raise externality ceiling from E1 to E2 and remove this deferral"
+        ],
+        "return_import_path": "KT_PROD_CLEANROOM/reports/imports/post_wave5_c006_second_host_return.json",
+        "validators": [
+          "tools/operator/post_wave5_c006_second_host_execute_validate.py",
+          "tools/operator/post_wave5_c006_trust_prep_validate.py",
+          "tools/operator/post_wave5_c006_friendly_host_handoff_validate.py",
+          "tools/operator/c006_deferral_law_validate.py"
+        ]
+      },
+      "existing_infrastructure": {
+        "trust_prep_receipt": "reports/post_wave5_c006_trust_prep_receipt.json (PASS, 8/8 checks)",
+        "handoff_pack": "reports/post_wave5_c006_friendly_host_handoff_pack.json (PASS, 6/6 checks)",
+        "execution_receipt": "reports/post_wave5_c006_second_host_execution_receipt.json (4/5 PASS, awaiting return)",
+        "submission_template": "reports/post_wave5_c006_second_host_submission_template.json (PENDING_RETURN)",
+        "replay_recipe": "reports/kt_independent_replay_recipe.md",
+        "operator_validators": "tools/operator/post_wave5_c006_*.py (3 validators, all tested)"
+      },
+      "governance_refs": [
+        "governance/kt_externality_class_matrix_v1.json",
+        "governance/current_head_truth_lock.json",
+        "governance/kt_unified_convergence_max_power_campaign_v2_1_1_anchor.json"
+      ],
+      "heartbeat_ref": "reports/c006_deferral_heartbeat.json"
+    }
+  ],
+  "active_count": 1,
+  "resolved_count": 0,
+  "resolved": []
+}

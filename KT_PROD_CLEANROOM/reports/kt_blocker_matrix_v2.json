@@ -1,0 +1,73 @@
+{
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "open_blockers": [
+    "current_head_external_capability_not_confirmed",
+    "repo_root_import_fragility_visible_and_unfixed"
+  ],
+  "rows": [
+    {
+      "blocker_id": "threshold_root_verifier_acceptance_inactive",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/kt_threshold_root_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_threshold_root_acceptance_receipt.json"
+      ],
+      "rationale": "Child threshold-root acceptance remains active.",
+      "status": "CLEARED_BY_F02B"
+    },
+    {
+      "blocker_id": "current_head_external_capability_not_confirmed",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_current_head_readjudication_receipt.json"
+      ],
+      "rationale": "F07 does not widen selected-surface outsider replay into broad current-head external capability confirmation.",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "release_readiness_not_proven",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_release_signer_issuance_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_producer_attestation_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_executed_release_ceremony_receipt.json"
+      ],
+      "rationale": "Release readiness remains blocked until release signer issuance and producer attestation move beyond planned-only state.",
+      "status": "CLEARED_BY_F07"
+    },
+    {
+      "blocker_id": "release_ceremony_not_executed",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_executed_release_ceremony_receipt.json"
+      ],
+      "rationale": "Release ceremony execution remains explicit and must not be implied from trust or verifier state.",
+      "status": "CLEARED_BY_F07"
+    },
+    {
+      "blocker_id": "release_activation_not_executed",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_release_activation_receipt.json"
+      ],
+      "rationale": "Release activation remains explicit and must not be implied from readiness or ceremony status.",
+      "status": "CLEARED_BY_F07"
+    },
+    {
+      "blocker_id": "verifier_coverage_not_widened_beyond_bounded_surfaces",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/kt_threshold_root_acceptance_policy.json",
+        "KT_PROD_CLEANROOM/governance/kt_tuf_distribution_policy.json"
+      ],
+      "rationale": "Minimal child verifier coverage widening remains active from F02B.",
+      "status": "CLEARED_BY_F02B"
+    },
+    {
+      "blocker_id": "repo_root_import_fragility_visible_and_unfixed",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_outsider_path_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_cross_host_repro_receipt.json"
+      ],
+      "rationale": "Repo-root invocation remains visibly fragile and is not a release-legitimacy fix in F07.",
+      "status": "OPEN"
+    }
+  ],
+  "schema_id": "kt.child_campaign.blocker_matrix.v2",
+  "status": "ACTIVE"
+}

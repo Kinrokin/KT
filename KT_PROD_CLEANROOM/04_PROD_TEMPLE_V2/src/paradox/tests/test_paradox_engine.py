@@ -98,3 +98,18 @@ class TestParadoxEngineC011(unittest.TestCase):
         after = canonical_json(ctx)
         self.assertEqual(before, after)
 
+    def test_task_type_changes_with_context_and_condition(self) -> None:
+        policy_trigger = ParadoxTriggerSchema.from_dict(_valid_trigger())
+        request_trigger = ParadoxTriggerSchema.from_dict({**_valid_trigger(), "subject_hash": "2" * 64, "signal_hash": "3" * 64})
+        self_reference_trigger = ParadoxTriggerSchema.from_dict({**_valid_trigger(), "condition": "self_reference", "subject_hash": "4" * 64, "signal_hash": "5" * 64})
+        loop_trigger = ParadoxTriggerSchema.from_dict({**_valid_trigger(), "condition": "infinite_loop", "subject_hash": "6" * 64, "signal_hash": "7" * 64})
+
+        policy_result = ParadoxEngine.run(context=_valid_context(input_text="policy evidence contradiction"), trigger=policy_trigger).to_dict()
+        request_result = ParadoxEngine.run(context=_valid_context(input_text="request output mismatch"), trigger=request_trigger).to_dict()
+        self_reference_result = ParadoxEngine.run(context=_valid_context(input_text="recursive subject"), trigger=self_reference_trigger).to_dict()
+        loop_result = ParadoxEngine.run(context=_valid_context(input_text="looping request"), trigger=loop_trigger).to_dict()
+
+        self.assertEqual(policy_result["task"]["task_type"], "POLICY_EVIDENCE_CONFLICT_V1")
+        self.assertEqual(request_result["task"]["task_type"], "REQUEST_OUTPUT_CONFLICT_V1")
+        self.assertEqual(self_reference_result["task"]["task_type"], "SELF_REFERENCE_GUARD_V1")
+        self.assertEqual(loop_result["task"]["task_type"], "LOOP_BUDGET_GUARD_V1")

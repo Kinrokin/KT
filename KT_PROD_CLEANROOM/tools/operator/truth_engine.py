@@ -70,7 +70,7 @@ def state_rank(value: str) -> int:
 def derive_live_validation_state(index: Dict[str, Any]) -> str:
     failures = _critical_failures(index)
     worktree = index.get("worktree") if isinstance(index.get("worktree"), dict) else {}
-    worktree_dirty = bool(worktree.get("git_dirty"))
+    worktree_dirty = bool(worktree.get("subject_git_dirty")) if "subject_git_dirty" in worktree else bool(worktree.get("git_dirty"))
     non_dirty_failures = [row for row in failures if not bool(row.get("dirty_sensitive"))]
     if non_dirty_failures:
         return TRUTH_DEFECTS_PRESENT
@@ -115,6 +115,9 @@ def _build_conflicts(
     current_head = str(current_state.get("validated_head_sha", "")).strip()
     audit_head = str(runtime_audit.get("validated_head_sha", "")).strip()
     live_head = str(worktree.get("head_sha", "")).strip()
+    expected_subject_head = str(worktree.get("validated_subject_head_sha", "")).strip() or live_head
+    carrier_head = str(worktree.get("publication_carrier_head_sha", "")).strip()
+    head_relation = str(worktree.get("head_relation", "")).strip() or "HEAD_IS_SUBJECT"
     live_branch = str(index.get("branch_ref", "")).strip()
     current_branch = str(current_state.get("branch_ref") or current_state.get("branch") or "").strip()
     audit_branch = str(runtime_audit.get("branch_ref") or runtime_audit.get("branch") or "").strip()
@@ -131,7 +134,8 @@ def _build_conflicts(
             }
         )
 
-    if bool(worktree.get("git_dirty")):
+    subject_dirty = bool(worktree.get("subject_git_dirty")) if "subject_git_dirty" in worktree else bool(worktree.get("git_dirty"))
+    if subject_dirty:
         stronger_than_dirty = state_rank(current_claim) > state_rank(CANONICAL_VALIDATED_DIRTY_WORKTREE) or state_rank(audit_claim) > state_rank(
             CANONICAL_VALIDATED_DIRTY_WORKTREE
         )
@@ -145,24 +149,45 @@ def _build_conflicts(
                 }
             )
 
-    if current_head and live_head and current_head != live_head:
+    if current_head and expected_subject_head and current_head != expected_subject_head:
         conflicts.append(
             {
                 "conflict_id": "CURRENT_STATE_HEAD_STALE",
                 "severity": 8,
-                "message": f"current_state_receipt validated_head_sha={current_head} differs from live head={live_head}",
+                "message": f"current_state_receipt validated_head_sha={current_head} differs from expected subject head={expected_subject_head}",
                 "dirty_sensitive": False,
             }
         )
-    if audit_head and live_head and audit_head != live_head:
+    if audit_head and expected_subject_head and audit_head != expected_subject_head:
         conflicts.append(
             {
                 "conflict_id": "RUNTIME_AUDIT_HEAD_STALE",
                 "severity": 8,
-                "message": f"runtime_closure_audit validated_head_sha={audit_head} differs from live head={live_head}",
+                "message": f"runtime_closure_audit validated_head_sha={audit_head} differs from expected subject head={expected_subject_head}",
                 "dirty_sensitive": False,
             }
         )
+    if head_relation == "PUBLICATION_CARRIER_OF_VALIDATED_SUBJECT" and carrier_head and live_head:
+        current_carrier = str(current_state.get("publication_carrier_head_sha", "")).strip()
+        audit_carrier = str(runtime_audit.get("publication_carrier_head_sha", "")).strip()
+        if current_carrier != live_head:
+            conflicts.append(
+                {
+                    "conflict_id": "CURRENT_STATE_CARRIER_HEAD_STALE",
+                    "severity": 7,
+                    "message": f"current_state_receipt publication_carrier_head_sha={current_carrier} differs from live head={live_head}",
+                    "dirty_sensitive": False,
+                }
+            )
+        if audit_carrier != live_head:
+            conflicts.append(
+                {
+                    "conflict_id": "RUNTIME_AUDIT_CARRIER_HEAD_STALE",
+                    "severity": 7,
+                    "message": f"runtime_closure_audit publication_carrier_head_sha={audit_carrier} differs from live head={live_head}",
+                    "dirty_sensitive": False,
+                }
+            )
     if current_branch and live_branch and current_branch != live_branch:
         conflicts.append(
             {
@@ -259,8 +284,12 @@ def build_truth_receipts(*, root: Path, live_validation_index_path: Path, report
         "live_validation_state": live_state,
         "claimed_state_current_receipt": current_claim,
         "claimed_state_runtime_audit": audit_claim,
-        "worktree_dirty": bool(worktree.get("git_dirty")),
+        "worktree_dirty": bool(worktree.get("subject_git_dirty")) if "subject_git_dirty" in worktree else bool(worktree.get("git_dirty")),
+        "publisher_worktree_dirty": bool(worktree.get("git_dirty")),
         "live_head_sha": str(worktree.get("head_sha", "")).strip(),
+        "validated_subject_head_sha": str(worktree.get("validated_subject_head_sha", "")).strip() or str(worktree.get("head_sha", "")).strip(),
+        "publication_carrier_head_sha": str(worktree.get("publication_carrier_head_sha", "")).strip(),
+        "head_relation": str(worktree.get("head_relation", "")).strip() or "HEAD_IS_SUBJECT",
         "validation_index_ref": path_ref(root=root, path=live_validation_index_path),
         "posture_contract_id": str(posture_contract.get("contract_id", "")).strip(),
         "truth_engine_contract_id": str(truth_contract.get("contract_id", "")).strip(),

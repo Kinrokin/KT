@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from tools.operator.github_ruleset import _candidate_matches, _required_status_checks, _ruleset_summary, verify_ruleset
+from tools.operator.github_ruleset import _candidate_matches, _required_status_checks, _ruleset_summary, _write_receipt, verify_ruleset
 from tools.operator.titanium_common import load_json
 
 
@@ -80,3 +80,11 @@ def test_verify_ruleset_uses_detail_endpoint(monkeypatch) -> None:
     assert receipt["status"] == "PASS"
     assert receipt["claim_admissible"] is True
     assert "/repos/Kinrokin/KT/rulesets/42" in "\n".join(receipt["attempted_api_calls"])
+
+
+def test_write_receipt_normalizes_lf_newlines(tmp_path: Path) -> None:
+    out = tmp_path / "main_branch_protection_receipt.json"
+    _write_receipt(out, {"schema_id": "kt.main_branch_protection_receipt.v2", "status": "BLOCKED"})
+    raw = out.read_bytes()
+    assert b"\r\n" not in raw
+    assert raw.endswith(b"\n")

@@ -1,0 +1,56 @@
+{
+  "__generated_by_agent__": true,
+  "checks": [
+    {
+      "command": "python tests/schema_validator.py --schema governance/RMR_SCHEMA_v1.json --examples",
+      "kind": "direct_validator",
+      "name": "schema_examples_validate",
+      "status": "PASS"
+    },
+    {
+      "command": "python tests/schema_validator.py --schema governance/RMR_SCHEMA_v1.json --manifest governance/H1_EXPERIMENT_MANIFEST.json",
+      "kind": "direct_validator",
+      "name": "schema_digest_matches_manifest",
+      "status": "PASS"
+    },
+    {
+      "command": "python -m pytest tests/test_schema_validator.py tests/test_anti_shortcut_detector.py tests/test_council_router_sample.py -q --no-cov",
+      "kind": "pytest",
+      "name": "focused_pytest_stack",
+      "status": "PASS",
+      "summary": "9 passed"
+    },
+    {
+      "command": "bash scripts/run_h1_smoke.sh",
+      "kind": "bash_script",
+      "manifest_digest": "204e31a0fd53ca999383c53383564608296a5a112509e69c287cc05bffe98280",
+      "name": "smoke_path",
+      "runtime_receipt_sha256": "28dd99553c2177f69b199677777841f30fb6ba59e86c4b0d32ae090d16e4680c",
+      "status": "PASS"
+    },
+    {
+      "bundle_sha256": "1a73b4fad26d4462ea07ffc86366348124548065eb5aa8d670208e173ad24847",
+      "command": "python -m pytest tests/acceptance_smoke.py::test_reproducible_bundle_same_seed -q --no-cov",
+      "kind": "pytest",
+      "name": "bundle_reproducibility",
+      "status": "PASS"
+    },
+    {
+      "command": "bash scripts/run_h1_counted.sh",
+      "kind": "bash_script",
+      "manifest_digest": "204e31a0fd53ca999383c53383564608296a5a112509e69c287cc05bffe98280",
+      "name": "counted_path",
+      "runtime_receipt_sha256": "28dd99553c2177f69b199677777841f30fb6ba59e86c4b0d32ae090d16e4680c",
+      "status": "PASS"
+    }
+  ],
+  "counted_path_rule": "PASS: exactly one counted receipt exists for the default frozen packet under this run root",
+  "event": "validation_and_counted_path_discipline",
+  "execution_head_bound_in_current_head_receipt": "bf1c7ac8af60beec181bfc60a608bf9768a3633f",
+  "materialization_status": "FAIL",
+  "phase": "E05",
+  "reconciliation_status": "PASS_READY_FOR_VALIDATION",
+  "run_id": "run-20260424-152430-bb49da8",
+  "status": "PASS",
+  "timestamp": "2026-04-25T14:06:57Z"
+}

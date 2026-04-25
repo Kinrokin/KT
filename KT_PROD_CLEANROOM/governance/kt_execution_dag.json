@@ -1,9 +1,10 @@
 {
-  "current_node": "WS13_ARTIFACT_CLASS_AND_DETERMINISM_ENVELOPE_LOCK",
-  "current_repo_head": "8e81f68796ed2f4dda280ecd5ac5157e434d922a",
+  "campaign_completion_status": "STILL_BLOCKED",
+  "current_node": "WS19_PRODUCT_SURFACE_AND_LICENSE_TRACK",
+  "current_repo_head": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
   "dag_id": "KT_SOVEREIGN_EXECUTION_DAG_V1_20260317",
-  "generated_utc": "2026-03-17T23:50:53Z",
-  "next_lawful_workstream": "WS13_ARTIFACT_CLASS_AND_DETERMINISM_ENVELOPE_LOCK",
+  "generated_utc": "2026-03-18T16:48:04.646569Z",
+  "next_lawful_workstream": null,
   "no_progress_without_proof": true,
   "nodes": [
     {
@@ -47,80 +48,105 @@
       "unlock_basis": "WS11 PASS"
     },
     {
+      "claim_boundary": "WS13 PASS proves only the declared CLASS_A and CLASS_B surfaces are locked and reproducible on the same subject head across the declared local and CI environments.",
       "depends_on": [
         "WS12_IN_TOTO_SLSA_AND_TUF_ATTACK_COVERAGE"
       ],
       "id": "WS13_ARTIFACT_CLASS_AND_DETERMINISM_ENVELOPE_LOCK",
       "ratification_checkpoint": "kt_determinism_envelope_receipt.json",
-      "status": "UNLOCKED",
+      "status": "PASS",
       "unlock_basis": "WS12 PASS"
     },
     {
+      "claim_boundary": "WS14 PASS proves only the bounded static verifier release artifact set and acceptance/distribution policy for the imported current-head keyless public verifier manifest surface, with bootstrap-root-only verifier acceptance.",
       "depends_on": [
         "WS13_ARTIFACT_CLASS_AND_DETERMINISM_ENVELOPE_LOCK"
       ],
       "id": "WS14_STATIC_VERIFIER_RELEASE_AND_ACCEPTANCE_POLICY",
       "ratification_checkpoint": "kt_public_verifier_release_receipt.json",
-      "status": "LOCKED_PENDING_WS13_PASS"
+      "status": "PASS",
+      "unlock_basis": "WS13 PASS"
     },
     {
+      "claim_boundary": "WS15 PASS proves only a typed claim ABI, deterministic proof ceiling, identity abuse constraints, ledger law, and non-executed release law under the existing reratified 3-of-3 root boundary and bootstrap-root-only verifier acceptance.",
       "depends_on": [
         "WS14_STATIC_VERIFIER_RELEASE_AND_ACCEPTANCE_POLICY"
       ],
       "id": "WS15_CLAIM_ABI_PROOF_CEILING_IDENTITY_AND_LEDGER_LAW",
-      "ratification_checkpoint": "claim_abi_receipt",
-      "status": "LOCKED_PENDING_WS14_PASS"
+      "ratification_checkpoint": "kt_claim_abi_receipt.json",
+      "status": "PASS",
+      "unlock_basis": "WS14 PASS"
     },
     {
+      "claim_boundary": "WS16 PASS proves only an explicit trust-assumptions register, TEVV pack completeness rules, cryptographically pinned bounded datasets/evidence sets, machine-readable comparator rules, benchmark validity windows, anti-cherry-picking rules, and replayability requirements for the already-bounded truth-barrier and verifier surfaces.",
       "depends_on": [
         "WS15_CLAIM_ABI_PROOF_CEILING_IDENTITY_AND_LEDGER_LAW"
       ],
       "id": "WS16_TRUST_ASSUMPTIONS_TEVV_DATASET_PINNING_AND_COMPARATOR_REGISTRY",
-      "ratification_checkpoint": "tevv_and_benchmark_receipt",
-      "status": "LOCKED_PENDING_WS15_PASS"
+      "ratification_checkpoint": "kt_tevv_dataset_registry_receipt.json",
+      "status": "PASS",
+      "unlock_basis": "WS15 PASS"
     },
     {
+      "claim_boundary": "WS17A PASS proves only a secret-free outsider-verifiable assurance replay of the bounded imported public_verifier_manifest surface; it is assurance-only and does not overread into capability, verifier widening, release readiness, or campaign completion.",
       "depends_on": [
         "WS16_TRUST_ASSUMPTIONS_TEVV_DATASET_PINNING_AND_COMPARATOR_REGISTRY"
       ],
       "id": "WS17A_EXTERNAL_CONFIRMATION_ASSURANCE",
-      "ratification_checkpoint": "external_assurance_receipt",
-      "status": "LOCKED_PENDING_WS16_PASS"
+      "ratification_checkpoint": "kt_external_assurance_confirmation_receipt.json",
+      "status": "PASS",
+      "unlock_basis": "WS16 PASS"
     },
     {
+      "claim_boundary": "WS17B PASS proves only one outsider-verifiable capability replay of the historical bounded frontier/readjudication bundle on subject head b4789a5. It does not upgrade that historical audited target into current-head capability, does not widen verifier coverage, and does not prove release readiness, release ceremony execution, or campaign completion.",
       "depends_on": [
         "WS16_TRUST_ASSUMPTIONS_TEVV_DATASET_PINNING_AND_COMPARATOR_REGISTRY"
       ],
       "id": "WS17B_EXTERNAL_CONFIRMATION_CAPABILITY",
-      "ratification_checkpoint": "external_capability_receipt",
-      "status": "LOCKED_PENDING_WS16_PASS"
+      "ratification_checkpoint": "kt_external_capability_confirmation_receipt.json",
+      "status": "PASS",
+      "unlock_basis": "WS16 PASS"
     },
     {
+      "claim_boundary": "WS18 PASS proves only that the current lawful stack has been finally readjudicated as bounded, non-release-eligible, and not campaign-complete. Historical capability confirmation remains historical-only and does not upgrade into current-head capability.",
       "depends_on": [
         "WS17A_EXTERNAL_CONFIRMATION_ASSURANCE",
         "WS17B_EXTERNAL_CONFIRMATION_CAPABILITY"
       ],
       "id": "WS18_RELEASE_CEREMONY_AND_FINAL_READJUDICATION",
-      "ratification_checkpoint": "final_readjudication_receipt",
-      "status": "LOCKED_PENDING_WS17_PASS"
+      "ratification_checkpoint": "kt_final_readjudication_receipt.json",
+      "status": "PASS"
     },
     {
+      "claim_boundary": "WS19 PASS proves only a documentary, bounded, non-release-eligible product surface and license track aligned to the current final verdict. It does not prove release readiness, threshold-root acceptance, current-head capability, or campaign completion.",
       "depends_on": [
         "WS18_RELEASE_CEREMONY_AND_FINAL_READJUDICATION"
       ],
       "id": "WS19_PRODUCT_SURFACE_AND_LICENSE_TRACK",
-      "ratification_checkpoint": "product_surface_receipt",
-      "status": "LOCKED_PENDING_WS18_PASS"
+      "ratification_checkpoint": "kt_product_surface_receipt.json",
+      "status": "PASS"
     }
   ],
   "schema_id": "kt.governance.execution_dag.v1",
   "semantic_boundary": {
-    "lawful_current_claim": "WS10 passed under a reratified 3-of-3 root boundary only. WS11 passed with one bounded keyless surface. WS12 passed for bounded current-head supply-chain policy, local/remote truth-plane reconciliation, and fail-closed TUF attack coverage on declared pre-release surfaces.",
+    "lawful_current_claim": "WS19 defines only a documentary, bounded, non-release-eligible product surface and license track for the static verifier artifact set and associated acceptance/distribution policy. Campaign completion remains blocked.",
     "stronger_claim_not_made": [
-      "The original planned 3-of-5 root topology was executed",
+      "Threshold-root verifier acceptance is active",
       "Release readiness is proven",
-      "Verifier acceptance widened",
-      "WS11 has already been substantively started"
+      "Campaign completion is proven",
+      "WS17A or WS17B has already been substantively started",
+      "WS17A constitutes capability confirmation.",
+      "Verifier coverage is broader than the bounded imported public_verifier_manifest surface.",
+      "Release readiness is proven.",
+      "Campaign completion is proven.",
+      "WS17B upgrades the historical audited target into current-head capability.",
+      "Verifier coverage is broader than the already-bounded imported surfaces.",
+      "Release ceremony execution is proven.",
+      "Threshold-root verifier acceptance is active.",
+      "Historical-bounded capability confirmation upgrades into current-head capability proof.",
+      "WS19 proves release readiness, production readiness, enterprise readiness, or campaign completion.",
+      "WS19 upgrades historical capability confirmation into current-head capability proof.",
+      "WS19 widens verifier coverage beyond the already-bounded surfaces."
     ],
     "ws10_pass_required_before_ws11": true,
     "ws9_frozen_locally": true

@@ -1,8 +1,12 @@
 {
+  "schema_id": "kt.governance.adapter_registry.v1",
+  "registry_id": "ADAPTER_REGISTRY_RATIFIED_V2_20260328",
+  "status": "ACTIVE",
+  "generated_utc": "2026-03-28T21:30:00Z",
   "authority_refs": [
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json",
     "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
-    "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
-    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/schemas/kt.runtime.registry.v1.json"
+    "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json"
   ],
   "experimental_adapter_ids": [
     "lobe.alpha.v1",
@@ -14,7 +18,6 @@
     "lobe.p2.v1",
     "lobe.scout.v1"
   ],
-  "generated_utc": "2026-03-10T13:29:07Z",
   "ratified_adapter_ids": [
     "lobe.auditor.v1",
     "lobe.censor.v1",
@@ -22,7 +25,138 @@
     "lobe.quant.v1",
     "lobe.strategist.v1"
   ],
-  "registry_id": "ADAPTER_REGISTRY_RATIFIED_V1_20260310",
-  "schema_id": "kt.governance.adapter_registry.v1",
-  "status": "ACTIVE"
+  "lifecycle_model_ref": "KT_PROD_CLEANROOM/governance/adapter_lifecycle_law.json",
+  "promotion_gate_rule_ref": "KT_PROD_CLEANROOM/governance/b04_r1_crucible_pressure_law_contract.json",
+  "lineage_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_lineage_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_receipt_lineage_register.json"
+  ],
+  "state_ceiling": {
+    "max_authorized_state_after_r2": "PROMOTED",
+    "shadow_active_allowed": false,
+    "governed_active_allowed": false
+  },
+  "adapter_rows": [
+    {
+      "adapter_id": "lobe.alpha.v1",
+      "registry_class": "experimental",
+      "lifecycle_state": "REGISTERED",
+      "next_eligible_state": "IN_CRUCIBLE",
+      "promotion_consumption_status": "REQUIRES_R1_CRUCIBLE_EVIDENCE",
+      "runtime_authority_class": "NOT_RUNTIME_ADMISSIBLE",
+      "lineage_status": "REGISTRY_DECLARATION_ONLY"
+    },
+    {
+      "adapter_id": "lobe.architect.v1",
+      "registry_class": "experimental",
+      "lifecycle_state": "REGISTERED",
+      "next_eligible_state": "IN_CRUCIBLE",
+      "promotion_consumption_status": "REQUIRES_R1_CRUCIBLE_EVIDENCE",
+      "runtime_authority_class": "NOT_RUNTIME_ADMISSIBLE",
+      "lineage_status": "GENERATED_CANDIDATE_LINEAGE_PRESENT"
+    },
+    {
+      "adapter_id": "lobe.beta.v1",
+      "registry_class": "experimental",
+      "lifecycle_state": "REGISTERED",
+      "next_eligible_state": "IN_CRUCIBLE",
+      "promotion_consumption_status": "REQUIRES_R1_CRUCIBLE_EVIDENCE",
+      "runtime_authority_class": "NOT_RUNTIME_ADMISSIBLE",
+      "lineage_status": "REGISTRY_DECLARATION_ONLY"
+    },
+    {
+      "adapter_id": "lobe.child.v1",
+      "registry_class": "experimental",
+      "lifecycle_state": "REGISTERED",
+      "next_eligible_state": "IN_CRUCIBLE",
+      "promotion_consumption_status": "REQUIRES_R1_CRUCIBLE_EVIDENCE",
+      "runtime_authority_class": "NOT_RUNTIME_ADMISSIBLE",
+      "lineage_status": "REGISTRY_DECLARATION_ONLY"
+    },
+    {
+      "adapter_id": "lobe.critic.v1",
+      "registry_class": "experimental",
+      "lifecycle_state": "REGISTERED",
+      "next_eligible_state": "IN_CRUCIBLE",
+      "promotion_consumption_status": "REQUIRES_R1_CRUCIBLE_EVIDENCE",
+      "runtime_authority_class": "NOT_RUNTIME_ADMISSIBLE",
+      "lineage_status": "REGISTRY_DECLARATION_ONLY"
+    },
+    {
+      "adapter_id": "lobe.p1.v1",
+      "registry_class": "experimental",
+      "lifecycle_state": "REGISTERED",
+      "next_eligible_state": "IN_CRUCIBLE",
+      "promotion_consumption_status": "REQUIRES_R1_CRUCIBLE_EVIDENCE",
+      "runtime_authority_class": "NOT_RUNTIME_ADMISSIBLE",
+      "lineage_status": "REGISTRY_DECLARATION_ONLY"
+    },
+    {
+      "adapter_id": "lobe.p2.v1",
+      "registry_class": "experimental",
+      "lifecycle_state": "REGISTERED",
+      "next_eligible_state": "IN_CRUCIBLE",
+      "promotion_consumption_status": "REQUIRES_R1_CRUCIBLE_EVIDENCE",
+      "runtime_authority_class": "NOT_RUNTIME_ADMISSIBLE",
+      "lineage_status": "REGISTRY_DECLARATION_ONLY"
+    },
+    {
+      "adapter_id": "lobe.scout.v1",
+      "registry_class": "experimental",
+      "lifecycle_state": "REGISTERED",
+      "next_eligible_state": "IN_CRUCIBLE",
+      "promotion_consumption_status": "REQUIRES_R1_CRUCIBLE_EVIDENCE",
+      "runtime_authority_class": "NOT_RUNTIME_ADMISSIBLE",
+      "lineage_status": "REGISTRY_DECLARATION_ONLY"
+    },
+    {
+      "adapter_id": "lobe.auditor.v1",
+      "registry_class": "ratified",
+      "lifecycle_state": "PROMOTED",
+      "next_eligible_state": "SHADOW_ACTIVE",
+      "promotion_consumption_status": "PROMOTED_BASELINE_ONLY_NO_ROUTER_ADVANCE",
+      "runtime_authority_class": "STATIC_BASELINE_ONLY",
+      "lineage_status": "ROLE_EVIDENCE_PRESENT"
+    },
+    {
+      "adapter_id": "lobe.censor.v1",
+      "registry_class": "ratified",
+      "lifecycle_state": "PROMOTED",
+      "next_eligible_state": "SHADOW_ACTIVE",
+      "promotion_consumption_status": "PROMOTED_BASELINE_ONLY_NO_ROUTER_ADVANCE",
+      "runtime_authority_class": "STATIC_BASELINE_ONLY",
+      "lineage_status": "ROLE_EVIDENCE_PRESENT"
+    },
+    {
+      "adapter_id": "lobe.muse.v1",
+      "registry_class": "ratified",
+      "lifecycle_state": "PROMOTED",
+      "next_eligible_state": "SHADOW_ACTIVE",
+      "promotion_consumption_status": "PROMOTED_BASELINE_ONLY_NO_ROUTER_ADVANCE",
+      "runtime_authority_class": "STATIC_BASELINE_ONLY",
+      "lineage_status": "ROLE_EVIDENCE_PRESENT"
+    },
+    {
+      "adapter_id": "lobe.quant.v1",
+      "registry_class": "ratified",
+      "lifecycle_state": "PROMOTED",
+      "next_eligible_state": "SHADOW_ACTIVE",
+      "promotion_consumption_status": "PROMOTED_BASELINE_ONLY_NO_ROUTER_ADVANCE",
+      "runtime_authority_class": "STATIC_BASELINE_ONLY",
+      "lineage_status": "ROLE_EVIDENCE_PRESENT"
+    },
+    {
+      "adapter_id": "lobe.strategist.v1",
+      "registry_class": "ratified",
+      "lifecycle_state": "PROMOTED",
+      "next_eligible_state": "SHADOW_ACTIVE",
+      "promotion_consumption_status": "PROMOTED_BASELINE_ONLY_NO_ROUTER_ADVANCE",
+      "runtime_authority_class": "STATIC_BASELINE_ONLY",
+      "lineage_status": "ROLE_EVIDENCE_PRESENT"
+    }
+  ],
+  "state_summary": {
+    "REGISTERED": 8,
+    "PROMOTED": 5
+  }
 }

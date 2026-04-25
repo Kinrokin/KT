@@ -1,0 +1,42 @@
+{
+  "active_current_head_refs": [
+    "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave5_blocker_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave5_final_tier_ruling.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave5_final_readjudication_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_disposition_register.json",
+    "KT_PROD_CLEANROOM/reports/deferred_blockers.json"
+  ],
+  "allowed_historical_uses": [
+    "archive_lineage",
+    "bounded_historical_comparison",
+    "negative_result_preservation",
+    "publication_lineage"
+  ],
+  "archive_only_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_frontier_rerun_scorecard.json",
+    "KT_PROD_CLEANROOM/reports/kt_frontier_audit_packet.json",
+    "KT_PROD_CLEANROOM/reports/kt_final_blocker_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_final_current_head_readjudication_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_final_claim_ceiling_receipt.json"
+  ],
+  "blocked_current_head_uplifts": [
+    "current_head_runtime_truth",
+    "current_head_externality_class",
+    "current_head_release_readiness",
+    "current_head_product_truth",
+    "current_head_tier_ruling"
+  ],
+  "current_repo_head": "9cba8edfb3ed91501186c7193a619303157f927e",
+  "enforcement_refs": [
+    "KT_PROD_CLEANROOM/governance/authority_resolution_index.json",
+    "KT_PROD_CLEANROOM/governance/historical_claim_firewall.json",
+    "KT_PROD_CLEANROOM/tools/operator/present_head_authority_seal_validate.py",
+    "KT_PROD_CLEANROOM/tools/operator/omega_gate.py"
+  ],
+  "generated_utc": "2026-03-25T23:13:13Z",
+  "law": "Historical bounded or publication truth may inform lineage and archive comparison only. It may not raise current-head runtime, externality, product, release, or tier claims.",
+  "law_id": "HISTORICAL_CLAIM_FIREWALL_V1_20260323",
+  "schema_id": "kt.governance.historical_claim_firewall.v1",
+  "status": "ACTIVE"
+}

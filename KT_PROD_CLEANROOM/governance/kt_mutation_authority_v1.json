@@ -1,0 +1,28 @@
+{
+  "binding_targets": [
+    "state_vault_writes",
+    "governance_event_writes",
+    "release_truth_writes",
+    "blocker_surface_recomputations",
+    "state_core_recomputations",
+    "claim_surface_recomputations",
+    "product_truth_surface_recomputations"
+  ],
+  "claim_boundary": "Freezes the state-mutation authority interface for current writer surfaces. This contract does not itself authorize new mutators.",
+  "contract_id": "KT_MUTATION_AUTHORITY_V1",
+  "hard_rule": "Only explicitly authorized current writer surfaces may mutate authoritative state.",
+  "required_fields": [
+    "surface_id",
+    "writer_path",
+    "writer_class",
+    "may_mutate_state",
+    "allowed_mutation_classes",
+    "required_receipts",
+    "rollback_law",
+    "operator_authority_class",
+    "forbidden_mutations"
+  ],
+  "schema_id": "kt.governance.mutation_authority.v1",
+  "status": "FROZEN_WAVE_0_5",
+  "wave_frozen": "WAVE_0_5_PACKAGE_IMPORT_CANON_AND_INTERFACE_FREEZE"
+}

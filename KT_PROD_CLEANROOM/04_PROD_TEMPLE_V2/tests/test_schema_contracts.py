@@ -59,7 +59,10 @@ class TestSchemaContracts(unittest.TestCase):
         with self.assertRaises(SchemaValidationError):
             validate_runtime_context(ctx)
 
+    def test_large_but_bounded_input_passes(self) -> None:
+        ctx = _valid_runtime_context(input_text=("x" * 1024))
+        validate_runtime_context(ctx)
+
 
 if __name__ == "__main__":
     raise SystemExit(unittest.main())
-

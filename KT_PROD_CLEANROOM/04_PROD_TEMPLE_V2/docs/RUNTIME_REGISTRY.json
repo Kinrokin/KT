@@ -28,9 +28,7 @@
     "thermodynamics",
     "versioning"
   ],
-  "compatibility_allowlist_roots": [
-    "tools"
-  ],
+  "compatibility_allowlist_roots": [],
   "policy_c": {
     "drift": {
       "l2_warn": 0.05,
@@ -140,7 +138,54 @@
     "allowed_export_roots": [
       "exports/adapters"
     ],
-    "entries": []
+    "entries": [
+      {
+        "schema_id": "kt.runtime.adapter_entry.v1",
+        "schema_version_hash": "b7fa345edb1a31fc9f7977b3a06e87bbaddecaefd90e9f98a2e616a499a214eb",
+        "adapter_id": "council.openai.live_hashed.v1",
+        "version": "1.0.0",
+        "base_model": "gpt-4.1-mini",
+        "artifact_path": "exports/adapters/council_openai_live_hashed/v1/adapter_manifest.json",
+        "artifact_hash": "59ac14708f1ed08e2addf0b030eff3d1ae228bd4bc1b9714732189da76853c61",
+        "capabilities": [
+          "live_hashed",
+          "provider.openai",
+          "request.analysis",
+          "request.healthcheck"
+        ],
+        "constraints": [
+          "fail_closed",
+          "same_host_replay_only",
+          "wave2a_bounded"
+        ],
+        "training_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_wave2a_provider_activation_receipts.json",
+        "evaluation_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_wave2a_adapter_activation_receipt.json",
+        "status": "ACTIVE"
+      },
+      {
+        "schema_id": "kt.runtime.adapter_entry.v1",
+        "schema_version_hash": "b7fa345edb1a31fc9f7977b3a06e87bbaddecaefd90e9f98a2e616a499a214eb",
+        "adapter_id": "council.openrouter.live_hashed.v1",
+        "version": "1.0.0",
+        "base_model": "openai/gpt-4.1-mini",
+        "artifact_path": "exports/adapters/council_openrouter_live_hashed/v1/adapter_manifest.json",
+        "artifact_hash": "408bde995855b7685810a662669226f980d9080e621913a4d71cd0a4a35c9aed",
+        "capabilities": [
+          "live_hashed",
+          "provider.openrouter",
+          "request.analysis",
+          "request.healthcheck"
+        ],
+        "constraints": [
+          "fail_closed",
+          "same_host_replay_only",
+          "wave2a_bounded"
+        ],
+        "training_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_wave2a_provider_activation_receipts.json",
+        "evaluation_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_wave2a_adapter_activation_receipt.json",
+        "status": "ACTIVE"
+      }
+    ]
   },
   "dry_run": {
     "no_network": true,

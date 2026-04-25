@@ -167,3 +167,67 @@ def test_verify_posture_fails_when_required_real_path_row_is_not_pass(tmp_path: 
         assert "missing PASS attachment rows" in str(exc)
     else:
         raise AssertionError("expected real_path_attachment_matrix FAIL_CLOSED required row to fail closed")
+
+
+def test_verify_posture_accepts_publication_carrier_head_split(tmp_path: Path) -> None:
+    root = _seed_repo(tmp_path, posture_state="CANONICAL_READY_FOR_REEARNED_GREEN", equal_alias=True)
+    _write_json(
+        root / "KT_PROD_CLEANROOM" / "reports" / "current_state_receipt.json",
+        {
+            "schema_id": "kt.operator.current_state_receipt.v3",
+            "posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+            "branch_ref": "ops/test",
+            "validated_head_sha": "abc123",
+            "publication_carrier_head_sha": "def456",
+            "active_stop_gates": ["gate.truth"],
+            "current_release_decision": _release_decision("CANONICAL_READY_FOR_REEARNED_GREEN"),
+        },
+    )
+    _write_json(
+        root / "KT_PROD_CLEANROOM" / "reports" / "runtime_closure_audit.json",
+        {
+            "schema_id": "kt.operator.runtime_closure_audit.v3",
+            "posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+            "branch_ref": "ops/test",
+            "validated_head_sha": "abc123",
+            "publication_carrier_head_sha": "def456",
+            "blocking_groups": ["gate.truth"],
+            "release_decision": _release_decision("CANONICAL_READY_FOR_REEARNED_GREEN"),
+        },
+    )
+    _write_json(
+        root / "KT_PROD_CLEANROOM" / "reports" / "live_validation_index.json",
+        {
+            "schema_id": "kt.operator.live_validation_index.v1",
+            "branch_ref": "ops/test",
+            "worktree": {
+                "git_dirty": True,
+                "subject_git_dirty": False,
+                "publication_carrier_dirty": True,
+                "head_sha": "def456",
+                "validated_subject_head_sha": "abc123",
+                "publication_carrier_head_sha": "def456",
+                "head_relation": "PUBLICATION_CARRIER_OF_VALIDATED_SUBJECT",
+                "dirty_files": ["marker.txt"],
+                "subject_dirty_files": [],
+                "publication_carrier_dirty_files": ["marker.txt"],
+            },
+            "checks": [
+                {
+                    "check_id": "constitutional_guard",
+                    "critical": True,
+                    "dirty_sensitive": False,
+                    "status": "PASS",
+                },
+                {
+                    "check_id": "current_worktree_cleanroom_suite",
+                    "critical": True,
+                    "dirty_sensitive": True,
+                    "status": "FAIL",
+                },
+            ],
+        },
+    )
+
+    report = verify_posture(root=root, expected_posture="CANONICAL_READY_FOR_REEARNED_GREEN")
+    assert report["status"] == "PASS"

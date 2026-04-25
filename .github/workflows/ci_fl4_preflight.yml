@@ -25,10 +25,12 @@ jobs:
           set -euo pipefail
           python -m pip install --upgrade pip
           # Keep CI lightweight but sufficient for canonical growth gate (crucible runner uses psutil).
-          python -m pip install pytest pyyaml psutil
+          python -m pip install pytest pytest-cov pyyaml psutil
 
       - name: Run FL4 preflight (canonical, Linux)
         env:
+          # Preflight enforces the FL4 env lock exactly; internal pytest calls
+          # now override repo addopts directly, so autoload stays disabled.
           PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
           TOKENIZERS_PARALLELISM: "false"
           PYTHONHASHSEED: "0"

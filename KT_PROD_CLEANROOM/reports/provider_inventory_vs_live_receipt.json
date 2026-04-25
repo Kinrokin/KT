@@ -1,0 +1,75 @@
+{
+  "checks": [
+    {
+      "check_id": "universal_adapter_abi_v2_active",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/kt_adapter_abi_v2.json"
+    },
+    {
+      "check_id": "runtime_registry_matches_active_manifest_ids",
+      "pass": true
+    },
+    {
+      "check_id": "runtime_registry_live_count_is_exact",
+      "pass": true
+    },
+    {
+      "check_id": "governance_inventory_ids_do_not_launder_into_live_runtime",
+      "inventory_only_adapter_ids": [
+        "lobe.alpha.v1",
+        "lobe.architect.v1",
+        "lobe.auditor.v1",
+        "lobe.beta.v1",
+        "lobe.censor.v1",
+        "lobe.child.v1",
+        "lobe.critic.v1",
+        "lobe.muse.v1",
+        "lobe.p1.v1",
+        "lobe.p2.v1",
+        "lobe.quant.v1",
+        "lobe.scout.v1",
+        "lobe.strategist.v1"
+      ],
+      "pass": true
+    },
+    {
+      "check_id": "generated_candidate_is_bound_but_not_live_runtime",
+      "generated_candidate_status": "GENERATED_PROMOTABLE_CANDIDATE",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "W3 proves two active live runtime adapters plus one bounded generated candidate under one contract. It does not claim that governance inventory breadth is live runtime breadth.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "forbidden_claims_not_made": [
+    "all_registry_adapters_are_live_runtime",
+    "generated_candidate_is_already_cut_over_live_runtime",
+    "provider_breadth_exceeds_two_active_same_host_live_manifests"
+  ],
+  "generated_candidate_ref": "KT_PROD_CLEANROOM/exports/adapters_shadow/_w3_civilization/aa18410a2a68ac67e9fde1e692661f6dbdefa11804a79a3a6cf2d04b8250da72",
+  "generated_utc": "2026-03-23T18:44:26Z",
+  "inventory_only_adapter_ids": [
+    "lobe.alpha.v1",
+    "lobe.architect.v1",
+    "lobe.auditor.v1",
+    "lobe.beta.v1",
+    "lobe.censor.v1",
+    "lobe.child.v1",
+    "lobe.critic.v1",
+    "lobe.muse.v1",
+    "lobe.p1.v1",
+    "lobe.p2.v1",
+    "lobe.quant.v1",
+    "lobe.scout.v1",
+    "lobe.strategist.v1"
+  ],
+  "live_runtime_adapter_ids": [
+    "council.openai.live_hashed.v1",
+    "council.openrouter.live_hashed.v1"
+  ],
+  "runtime_registry_entry_ids": [
+    "council.openai.live_hashed.v1",
+    "council.openrouter.live_hashed.v1"
+  ],
+  "schema_id": "kt.w3.provider_inventory_vs_live_receipt.v1",
+  "status": "PASS"
+}

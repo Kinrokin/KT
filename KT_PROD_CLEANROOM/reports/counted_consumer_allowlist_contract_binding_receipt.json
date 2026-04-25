@@ -1,0 +1,268 @@
+{
+  "allowlist_contract": {
+    "allowed_noncounting_owner_refs": [
+      "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py"
+    ],
+    "bypass_signatures": [
+      "t10_receipt_final_head_authority_alignment_receipt.json",
+      "tracked_t10_authority_class",
+      "evaluate_documentary_carrier_fail_closed_consumer_guard("
+    ],
+    "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+    "claim_boundary": "This contract binds counted-consumer ownership only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
+    "classification_tag": "COUNTING_CLOSURE",
+    "contract_id": "KT_GATE_C_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_V1",
+    "contract_update_rule": "If the sanctioned counted-consumer set changes, this contract must change in the same counted tranche or validation fails closed.",
+    "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+    "sanctioned_counted_consumer_refs": [
+      "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py"
+    ],
+    "schema_id": "kt.gate_c.counted_consumer_allowlist_contract.v1",
+    "shared_guard_helper_owner_ref": "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "shared_guard_helper_ref": "tools.operator.benchmark_constitution_validate.evaluate_documentary_carrier_fail_closed_consumer_guard"
+  },
+  "canonical_receipt_binding": {
+    "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+    "counted_consumer_allowlist_contract_ref": "KT_PROD_CLEANROOM/governance/counted_consumer_allowlist_contract.json",
+    "shared_guard_single_path_enforcement_receipt_ref": "KT_PROD_CLEANROOM/reports/shared_guard_single_path_enforcement_receipt.json"
+  },
+  "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+  "checks": [
+    {
+      "check_id": "final_current_head_consumer_guard_passes",
+      "pass": true
+    },
+    {
+      "check_id": "w3_consumer_guard_passes",
+      "pass": true
+    },
+    {
+      "check_id": "allowlist_contract_ref_is_bound",
+      "pass": true
+    },
+    {
+      "check_id": "allowlist_contract_matches_detected_runtime_owner_set",
+      "pass": true
+    },
+    {
+      "check_id": "counted_consumers_point_to_bound_contract_ref",
+      "pass": true
+    },
+    {
+      "check_id": "documentary_carrier_mismatch_still_fails_closed",
+      "pass": true
+    },
+    {
+      "check_id": "baseline_scorecard_remains_canonical_truth",
+      "pass": true
+    },
+    {
+      "check_id": "consumer_wrappers_use_shared_guard_only",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "T15 binds the sanctioned counted-consumer allowlist into an explicit contract surface only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
+  "counted_consumer_allowlist_contract_ref": "KT_PROD_CLEANROOM/governance/counted_consumer_allowlist_contract.json",
+  "current_git_head": "9c2a1d2355afa5dc4de256f5812ae40e5046eaf8",
+  "final_current_head_consumer_guard": {
+    "checks": [
+      {
+        "check_id": "tracked_t11_receipt_declares_expected_role",
+        "pass": true
+      },
+      {
+        "check_id": "tracked_t11_receipt_declares_subject_head",
+        "pass": true
+      },
+      {
+        "check_id": "documentary_carrier_mismatch_status_present",
+        "pass": true
+      },
+      {
+        "check_id": "documentary_carrier_overread_fails_closed",
+        "pass": true
+      },
+      {
+        "check_id": "warning_only_fallback_not_allowed",
+        "pass": true
+      },
+      {
+        "check_id": "tracked_t11_contract_stays_non_authoritative_on_current_head",
+        "pass": true
+      },
+      {
+        "check_id": "consumer_owner_is_allowlisted_in_contract",
+        "pass": true
+      }
+    ],
+    "consumer_id": "final_current_head_adjudication_validate",
+    "counted_consumer_allowlist_contract_ref": "KT_PROD_CLEANROOM/governance/counted_consumer_allowlist_contract.json",
+    "current_git_head": "9c2a1d2355afa5dc4de256f5812ae40e5046eaf8",
+    "detected_consumer_owner_ref": "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+    "documentary_carrier_attempt": {
+      "blocked": true,
+      "failure_reason": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json",
+      "receipt_role": "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY",
+      "requested_head": "9c2a1d2355afa5dc4de256f5812ae40e5046eaf8",
+      "subject_head": "e42b9f46ceeab90b8b2ed102f8aa9675d0c8f632",
+      "tracked_t10_authority_class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
+    },
+    "shared_guard_helper_owner_ref": "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "shared_guard_helper_ref": "tools.operator.benchmark_constitution_validate.evaluate_documentary_carrier_fail_closed_consumer_guard",
+    "status": "PASS",
+    "tracked_t11_contract": {
+      "allowed_roles": [
+        "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"
+      ],
+      "blocked": true,
+      "failure_reason": "SUBJECT_HEAD_MISMATCH",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json",
+      "receipt_role": "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY",
+      "requested_head": "9c2a1d2355afa5dc4de256f5812ae40e5046eaf8",
+      "subject_head": "e42b9f46ceeab90b8b2ed102f8aa9675d0c8f632"
+    },
+    "tracked_t11_receipt_ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json"
+  },
+  "generated_utc": "2026-03-27T21:55:59Z",
+  "receipt_role": "COUNTED_T15_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_BINDING_ARTIFACT_ONLY",
+  "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+  "schema_id": "kt.gate_c_t15.counted_consumer_allowlist_contract_binding_receipt.v1",
+  "single_path_barrier": {
+    "allowed_consumer_refs": [
+      "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py"
+    ],
+    "allowed_noncounting_owner_refs": [
+      "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py"
+    ],
+    "allowed_owner_refs": [
+      "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py"
+    ],
+    "bypass_signatures": [
+      "t10_receipt_final_head_authority_alignment_receipt.json",
+      "tracked_t10_authority_class",
+      "evaluate_documentary_carrier_fail_closed_consumer_guard("
+    ],
+    "checks": [
+      {
+        "check_id": "allowlist_contract_declares_shared_guard_helper_ref",
+        "pass": true
+      },
+      {
+        "check_id": "allowlist_contract_declares_shared_guard_helper_owner_ref",
+        "pass": true
+      },
+      {
+        "check_id": "allowlist_contract_declares_expected_canonical_scorecard_id",
+        "pass": true
+      },
+      {
+        "check_id": "counted_consumer_allowlist_matches_detected_runtime_owner_set",
+        "pass": true
+      },
+      {
+        "check_id": "no_unsanctioned_operator_owner_references_documentary_carrier_guard_tokens",
+        "pass": true
+      }
+    ],
+    "counted_consumer_allowlist_contract_ref": "KT_PROD_CLEANROOM/governance/counted_consumer_allowlist_contract.json",
+    "detected_counted_consumer_refs": [
+      "KT_PROD_CLEANROOM/tools/operator/final_current_head_adjudication_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py"
+    ],
+    "shared_guard_helper_owner_ref": "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "shared_guard_helper_ref": "tools.operator.benchmark_constitution_validate.evaluate_documentary_carrier_fail_closed_consumer_guard",
+    "status": "PASS",
+    "unexpected_owner_hits": []
+  },
+  "source_checks": [
+    {
+      "check_id": "final_current_wrapper_calls_shared_guard_helper",
+      "pass": true
+    },
+    {
+      "check_id": "w3_wrapper_calls_shared_guard_helper",
+      "pass": true
+    },
+    {
+      "check_id": "final_current_wrapper_has_no_local_guard_reimplementation",
+      "pass": true
+    },
+    {
+      "check_id": "w3_wrapper_has_no_local_guard_reimplementation",
+      "pass": true
+    }
+  ],
+  "status": "PASS",
+  "subject_head": "9c2a1d2355afa5dc4de256f5812ae40e5046eaf8",
+  "tranche_id": "B03_T15_COUNTED_CONSUMER_ALLOWLIST_CONTRACT_BINDING",
+  "w3_consumer_guard": {
+    "checks": [
+      {
+        "check_id": "tracked_t11_receipt_declares_expected_role",
+        "pass": true
+      },
+      {
+        "check_id": "tracked_t11_receipt_declares_subject_head",
+        "pass": true
+      },
+      {
+        "check_id": "documentary_carrier_mismatch_status_present",
+        "pass": true
+      },
+      {
+        "check_id": "documentary_carrier_overread_fails_closed",
+        "pass": true
+      },
+      {
+        "check_id": "warning_only_fallback_not_allowed",
+        "pass": true
+      },
+      {
+        "check_id": "tracked_t11_contract_stays_non_authoritative_on_current_head",
+        "pass": true
+      },
+      {
+        "check_id": "consumer_owner_is_allowlisted_in_contract",
+        "pass": true
+      }
+    ],
+    "consumer_id": "w3_externality_and_comparative_proof_validate",
+    "counted_consumer_allowlist_contract_ref": "KT_PROD_CLEANROOM/governance/counted_consumer_allowlist_contract.json",
+    "current_git_head": "9c2a1d2355afa5dc4de256f5812ae40e5046eaf8",
+    "detected_consumer_owner_ref": "KT_PROD_CLEANROOM/tools/operator/w3_externality_and_comparative_proof_validate.py",
+    "documentary_carrier_attempt": {
+      "blocked": true,
+      "failure_reason": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json",
+      "receipt_role": "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY",
+      "requested_head": "9c2a1d2355afa5dc4de256f5812ae40e5046eaf8",
+      "subject_head": "e42b9f46ceeab90b8b2ed102f8aa9675d0c8f632",
+      "tracked_t10_authority_class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
+    },
+    "shared_guard_helper_owner_ref": "KT_PROD_CLEANROOM/tools/operator/benchmark_constitution_validate.py",
+    "shared_guard_helper_ref": "tools.operator.benchmark_constitution_validate.evaluate_documentary_carrier_fail_closed_consumer_guard",
+    "status": "PASS",
+    "tracked_t11_contract": {
+      "allowed_roles": [
+        "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"
+      ],
+      "blocked": true,
+      "failure_reason": "SUBJECT_HEAD_MISMATCH",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json",
+      "receipt_role": "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY",
+      "requested_head": "9c2a1d2355afa5dc4de256f5812ae40e5046eaf8",
+      "subject_head": "e42b9f46ceeab90b8b2ed102f8aa9675d0c8f632"
+    },
+    "tracked_t11_receipt_ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json"
+  }
+}

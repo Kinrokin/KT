@@ -1,0 +1,1429 @@
+from __future__ import annotations
+
+import argparse
+import ast
+import json
+import re
+import subprocess
+import sys
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Sequence
+
+from tools.operator.benchmark_constitution_validate import (
+    COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF,
+    COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF,
+    ROLE_BASELINE_SCORECARD,
+    ROLE_BENCHMARK_RECEIPT,
+    _consume_emitted_receipt_contract,
+    _enforce_write_scope_post,
+    _enforce_write_scope_pre,
+    _maybe_write_json_output,
+    _payloads,
+    build_receipt as build_benchmark_receipt,
+    evaluate_counted_receipt_family_same_head_authority,
+)
+from tools.operator.public_verifier import manifest_supports_bounded_e1_verifier
+from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z
+
+
+REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
+DOCS_COMMERCIAL_ROOT_REL = "KT_PROD_CLEANROOM/docs/commercial"
+DOCS_OPERATOR_ROOT_REL = "KT_PROD_CLEANROOM/docs/operator"
+PRODUCT_ROOT_REL = "KT_PROD_CLEANROOM/product"
+
+COMMERCIAL_TRUTH_PACKET_REL = f"{REPORT_ROOT_REL}/commercial_truth_packet.json"
+PUBLIC_VERIFIER_KIT_REL = f"{REPORT_ROOT_REL}/public_verifier_kit.json"
+C006_SECOND_HOST_KIT_REL = f"{REPORT_ROOT_REL}/c006_second_host_kit.json"
+EXTERNAL_AUDIT_PACKET_REL = f"{REPORT_ROOT_REL}/external_audit_packet_manifest.json"
+E1_CAMPAIGN_RECEIPT_REL = f"{REPORT_ROOT_REL}/e1_bounded_campaign_receipt.json"
+C006_DEFERRAL_STATUS_RECEIPT_REL = f"{REPORT_ROOT_REL}/c006_deferral_status_receipt.json"
+SECOND_HOST_KIT_HARDENING_RECEIPT_REL = f"{REPORT_ROOT_REL}/second_host_kit_hardening_receipt.json"
+PRODUCT_INSTALL_RECEIPT_REL = f"{REPORT_ROOT_REL}/product_install_15m_receipt.json"
+OPERATOR_HANDOFF_RECEIPT_REL = f"{REPORT_ROOT_REL}/operator_handoff_receipt.json"
+STANDARDS_MAPPING_RECEIPT_REL = f"{REPORT_ROOT_REL}/standards_mapping_receipt.json"
+
+TRUTH_LOCK_REL = "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json"
+DEFERRAL_HEARTBEAT_REL = f"{REPORT_ROOT_REL}/c006_deferral_heartbeat.json"
+PRODUCT_TRUTH_REL = f"{REPORT_ROOT_REL}/kt_wave5_product_truth_surface.json"
+RELEASE_TRUTH_REL = f"{REPORT_ROOT_REL}/kt_wave5_release_truth_surface.json"
+DEPLOYMENT_PROFILES_REL = f"{REPORT_ROOT_REL}/deployment_profiles.json"
+CAPABILITY_ATLAS_REL = f"{REPORT_ROOT_REL}/capability_atlas.json"
+BASELINE_SCORECARD_REL = f"{REPORT_ROOT_REL}/baseline_vs_live_scorecard.json"
+BENCHMARK_CONSTITUTION_RECEIPT_REL = f"{REPORT_ROOT_REL}/benchmark_constitution_receipt.json"
+ALIAS_RETIREMENT_RECEIPT_REL = f"{REPORT_ROOT_REL}/scorecard_alias_retirement_receipt.json"
+DETACHMENT_RECEIPT_REL = f"{REPORT_ROOT_REL}/competitive_scorecard_validator_detachment_receipt.json"
+PUBLIC_VERIFIER_MANIFEST_REL = f"{REPORT_ROOT_REL}/public_verifier_manifest.json"
+DETACHED_VERIFIER_RECEIPT_REL = f"{REPORT_ROOT_REL}/kt_public_verifier_detached_receipt.json"
+DEFERRED_BLOCKERS_REL = f"{REPORT_ROOT_REL}/deferred_blockers.json"
+C006_EXECUTION_REL = f"{REPORT_ROOT_REL}/post_wave5_c006_second_host_execution_receipt.json"
+C006_HANDOFF_REL = f"{REPORT_ROOT_REL}/post_wave5_c006_friendly_host_handoff_pack.json"
+C006_TEMPLATE_REL = f"{REPORT_ROOT_REL}/post_wave5_c006_second_host_submission_template.json"
+REPLAY_RECIPE_REL = f"{REPORT_ROOT_REL}/kt_independent_replay_recipe.md"
+BUYER_WEDGE_DOC_REL = f"{DOCS_COMMERCIAL_ROOT_REL}/E1_BOUNDED_TRUST_WEDGE.md"
+E1_DEMO_SCRIPT_REL = f"{DOCS_COMMERCIAL_ROOT_REL}/E1_DEMO_SCRIPT.md"
+PRESALES_DIAG_REL = f"{DOCS_COMMERCIAL_ROOT_REL}/PRESALES_DIAGNOSTIC.md"
+PROPOSAL_TEMPLATE_REL = f"{DOCS_COMMERCIAL_ROOT_REL}/PROPOSAL_TEMPLATE.md"
+HAT_DEMO_DOC_REL = f"{DOCS_OPERATOR_ROOT_REL}/KT_HAT_DEMO.md"
+OPERATOR_QUICKSTART_REL = f"{DOCS_OPERATOR_ROOT_REL}/RUN_KT_IN_30_MINUTES.md"
+C006_RUNBOOK_REL = f"{DOCS_OPERATOR_ROOT_REL}/C006_SECOND_HOST_RUNBOOK.md"
+C006_IMPORT_CHECKLIST_REL = f"{DOCS_OPERATOR_ROOT_REL}/C006_IMPORT_CHECKLIST.md"
+C006_RERUN_CHECKLIST_REL = f"{DOCS_OPERATOR_ROOT_REL}/C006_VALIDATOR_RERUN_CHECKLIST.md"
+C006_RETURN_PLACEMENT_REL = f"{DOCS_OPERATOR_ROOT_REL}/C006_RETURN_FILE_PLACEMENT_CHECKLIST.md"
+C006_BUNDLE_BUILDER_REL = "KT_PROD_CLEANROOM/tools/operator/build_c006_second_host_bundle.py"
+C006_BUNDLE_OUTPUT_DIR_REL = "KT_PROD_CLEANROOM/exports/c006_second_host_kit/current_head_bundle"
+C006_BUNDLE_MANIFEST_REL = f"{C006_BUNDLE_OUTPUT_DIR_REL}/KT_PROD_CLEANROOM/reports/c006_second_host_bundle_manifest.json"
+PRODUCT_DEPLOYMENT_PROFILES_REL = f"{PRODUCT_ROOT_REL}/deployment_profiles.json"
+CLIENT_WRAPPER_SPEC_REL = f"{PRODUCT_ROOT_REL}/client_wrapper_spec.json"
+PRODUCT_RUNBOOK_REL = f"{PRODUCT_ROOT_REL}/operator_runbook_v2.md"
+SUPPORT_BOUNDARY_REL = f"{PRODUCT_ROOT_REL}/support_boundary.json"
+ONE_PAGE_PRODUCT_TRUTH_REL = f"{PRODUCT_ROOT_REL}/one_page_product_truth_surface.md"
+NIST_MAPPING_MATRIX_REL = f"{PRODUCT_ROOT_REL}/nist_mapping_matrix.json"
+ISO_42001_MAPPING_MATRIX_REL = f"{PRODUCT_ROOT_REL}/iso_42001_mapping_matrix.json"
+EU_AI_ACT_ALIGNMENT_MATRIX_REL = f"{PRODUCT_ROOT_REL}/eu_ai_act_alignment_matrix.json"
+SIDE_READER_CONTRACT_RECEIPT_REL = f"{REPORT_ROOT_REL}/comparator_side_reader_contract_adoption_receipt.json"
+T7_TRANCHE_ID = "B03_T7_COMPARATOR_SIDE_READER_CONTRACT_ADOPTION"
+T7_RECEIPT_ROLE = "COUNTED_T7_SIDE_READER_CONTRACT_ADOPTION_ARTIFACT_ONLY"
+SIDE_READER_REFRESH_SCOPE_RECEIPT_REL = f"{REPORT_ROOT_REL}/side_reader_receipt_refresh_scope_receipt.json"
+T8_TRANCHE_ID = "B03_T8_SIDE_READER_RECEIPT_REFRESH_SCOPE_HARDENING"
+T8_RECEIPT_ROLE = "COUNTED_T8_REFRESH_SCOPE_HARDENING_ARTIFACT_ONLY"
+SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL = f"{REPORT_ROOT_REL}/side_reader_refresh_caller_isolation_receipt.json"
+T9_TRANCHE_ID = "B03_T9_SIDE_READER_REFRESH_CALLER_ISOLATION"
+T9_RECEIPT_ROLE = "COUNTED_T9_REFRESH_CALLER_ISOLATION_ARTIFACT_ONLY"
+SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL = f"{REPORT_ROOT_REL}/side_reader_refresh_indirection_barrier_receipt.json"
+T10_TRANCHE_ID = "B03_T10_SIDE_READER_REFRESH_INDIRECTION_BARRIER"
+T10_RECEIPT_ROLE = "COUNTED_T10_REFRESH_INDIRECTION_BARRIER_ARTIFACT_ONLY"
+T10_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL = f"{REPORT_ROOT_REL}/t10_receipt_final_head_authority_alignment_receipt.json"
+T11_TRANCHE_ID = "B03_T11_T10_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT"
+T11_RECEIPT_ROLE = "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"
+ALLOWED_SIDE_READER_REFRESH_OWNER_REL = "KT_PROD_CLEANROOM/tools/operator/e1_bounded_campaign_validate.py"
+SIDE_READER_REFRESH_OWNERSHIP_TOKENS = {
+    "allow_flag": "--allow-side-reader-contract-receipt-refresh",
+    "verification_only_flag": "--verification-only-side-reader-receipt-refresh",
+    "contract_output_flag": "--side-reader-contract-receipt-output",
+    "scope_output_flag": "--side-reader-refresh-scope-receipt-output",
+    "caller_isolation_output_flag": "--side-reader-refresh-caller-isolation-receipt-output",
+    "contract_receipt_rel": "comparator_side_reader_contract_adoption_receipt.json",
+    "scope_receipt_rel": "side_reader_receipt_refresh_scope_receipt.json",
+    "caller_isolation_receipt_rel": "side_reader_refresh_caller_isolation_receipt.json",
+    "contract_builder": "build_comparator_side_reader_contract_adoption_receipt(",
+    "scope_builder": "build_side_reader_receipt_refresh_scope_receipt(",
+    "caller_isolation_builder": "build_side_reader_refresh_caller_isolation_receipt(",
+}
+SIDE_READER_REFRESH_PROTECTED_PARAMETER_NAMES = {
+    "allow_side_reader_contract_receipt_refresh",
+    "verification_only_side_reader_receipt_refresh",
+    "side_reader_contract_receipt_output",
+    "side_reader_refresh_scope_receipt_output",
+    "side_reader_refresh_caller_isolation_receipt_output",
+    "side_reader_refresh_indirection_barrier_receipt_output",
+}
+SIDE_READER_REFRESH_PROTECTED_SYMBOL_NAMES = {
+    "ALLOWED_SIDE_READER_REFRESH_OWNER_REL",
+    "SIDE_READER_CONTRACT_RECEIPT_REL",
+    "SIDE_READER_REFRESH_SCOPE_RECEIPT_REL",
+    "SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL",
+    "SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL",
+    "SIDE_READER_REFRESH_OWNERSHIP_TOKENS",
+    "build_comparator_side_reader_contract_adoption_receipt",
+    "build_side_reader_receipt_refresh_scope_receipt",
+    "build_side_reader_refresh_caller_isolation_receipt",
+    "build_side_reader_refresh_indirection_barrier_receipt",
+    "evaluate_side_reader_refresh_policy",
+    "evaluate_side_reader_refresh_caller_isolation",
+    "evaluate_side_reader_refresh_indirection_barrier",
+}
+SIDE_READER_REFRESH_SENSITIVE_LITERALS = set(SIDE_READER_REFRESH_OWNERSHIP_TOKENS.values()) | {
+    "--side-reader-refresh-indirection-barrier-receipt-output",
+    "side_reader_refresh_indirection_barrier_receipt.json",
+    SIDE_READER_CONTRACT_RECEIPT_REL,
+    SIDE_READER_REFRESH_SCOPE_RECEIPT_REL,
+    SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL,
+    SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL,
+    "tools.operator.e1_bounded_campaign_validate",
+}
+ROLE_ALIAS_RETIREMENT = "ALIAS_RETIREMENT_PROOF"
+ROLE_VALIDATOR_ALIAS_DETACHMENT = "VALIDATOR_ALIAS_DETACHMENT_PROOF"
+
+
+def _resolve(root: Path, value: str) -> Path:
+    path = Path(str(value)).expanduser()
+    if not path.is_absolute():
+        path = (root / path).resolve()
+    return path
+
+
+def _git_head(root: Path) -> str:
+    return subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
+
+
+def _status_is(value: Any, expected: str) -> bool:
+    return str(value).strip().upper() == expected.strip().upper()
+
+
+def _exists(root: Path, ref: str) -> bool:
+    return (root / ref).exists()
+
+
+def evaluate_comparator_side_reader_contract(*, root: Path) -> Dict[str, Any]:
+    generated_utc = utc_now_iso_z()
+    payloads = _payloads(root, generated_utc)
+    current_head = str(payloads["current_head"]).strip()
+    benchmark_receipt = build_benchmark_receipt(payloads, generated_utc)
+    generated_receipts = [
+        (BASELINE_SCORECARD_REL, payloads["scorecard"], [ROLE_BASELINE_SCORECARD]),
+        (BENCHMARK_CONSTITUTION_RECEIPT_REL, benchmark_receipt, [ROLE_BENCHMARK_RECEIPT]),
+        (ALIAS_RETIREMENT_RECEIPT_REL, payloads["alias_receipt"], [ROLE_ALIAS_RETIREMENT]),
+        (DETACHMENT_RECEIPT_REL, payloads["detachment_receipt"], [ROLE_VALIDATOR_ALIAS_DETACHMENT]),
+    ]
+    generated_checks = []
+    for ref, payload, allowed_roles in generated_receipts:
+        result = _consume_emitted_receipt_contract(
+            receipt_ref=ref,
+            payload=payload,
+            allowed_roles=allowed_roles,
+            requested_head=current_head,
+        )
+        generated_checks.append(
+            {
+                "check_id": f"generated_contract::{Path(ref).name}",
+                "receipt_ref": ref,
+                **result,
+            }
+        )
+    baseline_scorecard = payloads["scorecard"]
+    malformed_attempts = [
+        {
+            "attempt_id": "missing_receipt_role",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=BASELINE_SCORECARD_REL,
+                payload={k: v for k, v in baseline_scorecard.items() if k != "receipt_role"},
+                allowed_roles=[ROLE_BASELINE_SCORECARD],
+                requested_head=current_head,
+            ),
+        },
+        {
+            "attempt_id": "missing_subject_head",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=BASELINE_SCORECARD_REL,
+                payload={k: v for k, v in baseline_scorecard.items() if k != "subject_head"},
+                allowed_roles=[ROLE_BASELINE_SCORECARD],
+                requested_head=current_head,
+            ),
+        },
+        {
+            "attempt_id": "wrong_receipt_role",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=BASELINE_SCORECARD_REL,
+                payload={**baseline_scorecard, "receipt_role": T7_RECEIPT_ROLE},
+                allowed_roles=[ROLE_BASELINE_SCORECARD],
+                requested_head=current_head,
+            ),
+        },
+        {
+            "attempt_id": "wrong_subject_head",
+            **_consume_emitted_receipt_contract(
+                receipt_ref=BASELINE_SCORECARD_REL,
+                payload={**baseline_scorecard, "subject_head": "0000000000000000000000000000000000000000"},
+                allowed_roles=[ROLE_BASELINE_SCORECARD],
+                requested_head=current_head,
+            ),
+        },
+    ]
+    source_text = Path(__file__).read_text(encoding="utf-8")
+    legacy_parse_removed = (
+        re.search(
+            r"load_json\(\s*root\s*/\s*(BASELINE_SCORECARD_REL|BENCHMARK_CONSTITUTION_RECEIPT_REL|ALIAS_RETIREMENT_RECEIPT_REL|DETACHMENT_RECEIPT_REL)\s*\)",
+            source_text,
+        )
+        is None
+    )
+    status = (
+        "PASS"
+        if all(bool(check["pass"]) for check in generated_checks)
+        and malformed_attempts[0]["blocked"]
+        and malformed_attempts[0]["failure_reason"] == "RECEIPT_ROLE_MISSING"
+        and malformed_attempts[1]["blocked"]
+        and malformed_attempts[1]["failure_reason"] == "SUBJECT_HEAD_MISSING"
+        and malformed_attempts[2]["blocked"]
+        and malformed_attempts[2]["failure_reason"] == "RECEIPT_ROLE_MISMATCH"
+        and malformed_attempts[3]["blocked"]
+        and malformed_attempts[3]["failure_reason"] == "SUBJECT_HEAD_MISMATCH"
+        and legacy_parse_removed
+        else "FAIL"
+    )
+    return {
+        "reader_id": "e1_bounded_campaign_validate",
+        "status": status,
+        "requested_head": current_head,
+        "baseline_scorecard": payloads["scorecard"],
+        "benchmark_constitution_receipt": benchmark_receipt,
+        "alias_retirement_receipt": payloads["alias_receipt"],
+        "detachment_receipt": payloads["detachment_receipt"],
+        "generated_contract_checks": generated_checks,
+        "malformed_attempts": malformed_attempts,
+        "legacy_parse_removed": legacy_parse_removed,
+    }
+
+
+def evaluate_side_reader_receipt_refresh_policy(
+    *,
+    root: Path,
+    allow_refresh: bool,
+    verification_only_refresh: bool,
+    output_target: Path,
+    refresh_scope_output_target: Path | None = None,
+) -> Dict[str, Any]:
+    default_target = (root / SIDE_READER_CONTRACT_RECEIPT_REL).resolve()
+    default_scope_target = (root / SIDE_READER_REFRESH_SCOPE_RECEIPT_REL).resolve()
+    output_target = output_target.resolve()
+    refresh_scope_output_target = (
+        refresh_scope_output_target.resolve() if refresh_scope_output_target is not None else default_scope_target
+    )
+    custom_target_requested = output_target != default_target or refresh_scope_output_target != default_scope_target
+    refresh_requested = allow_refresh or verification_only_refresh or custom_target_requested
+    dual_opt_in = allow_refresh and verification_only_refresh
+    failure_reason = None
+    if refresh_requested and not dual_opt_in:
+        failure_reason = "DUAL_OPT_IN_REQUIRED"
+    return {
+        "default_target": default_target.as_posix(),
+        "default_scope_target": default_scope_target.as_posix(),
+        "output_target": output_target.as_posix(),
+        "refresh_scope_output_target": refresh_scope_output_target.as_posix(),
+        "custom_target_requested": custom_target_requested,
+        "refresh_requested": refresh_requested,
+        "allow_refresh": allow_refresh,
+        "verification_only_refresh": verification_only_refresh,
+        "dual_opt_in": dual_opt_in,
+        "refresh_enabled": refresh_requested and dual_opt_in,
+        "failure_reason": failure_reason,
+    }
+
+
+def _non_test_operator_python_refs(root: Path) -> List[str]:
+    operator_root = root / "KT_PROD_CLEANROOM" / "tools" / "operator"
+    refs: List[str] = []
+    for path in operator_root.rglob("*.py"):
+        if path.name == "__init__.py":
+            continue
+        refs.append(path.resolve().relative_to(root.resolve()).as_posix())
+    return sorted(refs)
+
+
+def _is_e1_module_ref(value: str | None) -> bool:
+    text = str(value or "").strip()
+    return text == "tools.operator.e1_bounded_campaign_validate" or text.endswith(".e1_bounded_campaign_validate")
+
+
+def _side_reader_refresh_parameter_names(node: ast.AST) -> List[str]:
+    if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)):
+        return []
+    args = node.args
+    names: List[str] = []
+    for arg in [*args.posonlyargs, *args.args, *args.kwonlyargs]:
+        names.append(str(arg.arg))
+    if args.vararg is not None:
+        names.append(str(args.vararg.arg))
+    if args.kwarg is not None:
+        names.append(str(args.kwarg.arg))
+    return names
+
+
+def _side_reader_sensitive_literal_hits(text: str) -> List[str]:
+    hits: List[str] = []
+    for value in sorted(SIDE_READER_REFRESH_SENSITIVE_LITERALS):
+        if value and value in text:
+            hits.append(value)
+    return hits
+
+
+def evaluate_side_reader_refresh_indirection_barrier(
+    *,
+    root: Path,
+    candidate_operator_refs: Optional[Sequence[str]] = None,
+    text_overrides: Optional[Dict[str, str]] = None,
+) -> Dict[str, Any]:
+    refs = list(candidate_operator_refs) if candidate_operator_refs is not None else _non_test_operator_python_refs(root)
+    overrides = text_overrides or {}
+    violations: List[Dict[str, Any]] = []
+
+    for ref in refs:
+        if ref == ALLOWED_SIDE_READER_REFRESH_OWNER_REL:
+            continue
+        text = overrides.get(ref)
+        if text is None:
+            text = (root / ref).read_text(encoding="utf-8")
+        tree = ast.parse(text, filename=ref)
+
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    if _is_e1_module_ref(alias.name):
+                        violations.append(
+                            {
+                                "operator_ref": ref,
+                                "violation_type": "E1_MODULE_IMPORT",
+                                "line": int(getattr(node, "lineno", 0)),
+                                "col": int(getattr(node, "col_offset", 0)),
+                                "detail": alias.name,
+                            }
+                        )
+            elif isinstance(node, ast.ImportFrom):
+                module = str(node.module or "").strip()
+                if _is_e1_module_ref(module):
+                    for alias in node.names:
+                        if alias.name == "*":
+                            violations.append(
+                                {
+                                    "operator_ref": ref,
+                                    "violation_type": "E1_STAR_IMPORT",
+                                    "line": int(getattr(node, "lineno", 0)),
+                                    "col": int(getattr(node, "col_offset", 0)),
+                                    "detail": module,
+                                }
+                            )
+                            continue
+                        if alias.name in SIDE_READER_REFRESH_PROTECTED_SYMBOL_NAMES or alias.name == "main":
+                            violations.append(
+                                {
+                                    "operator_ref": ref,
+                                    "violation_type": "PROTECTED_SYMBOL_IMPORT",
+                                    "line": int(getattr(node, "lineno", 0)),
+                                    "col": int(getattr(node, "col_offset", 0)),
+                                    "detail": f"{module}:{alias.name}",
+                                }
+                            )
+                elif module == "tools.operator":
+                    for alias in node.names:
+                        if alias.name == "e1_bounded_campaign_validate":
+                            violations.append(
+                                {
+                                    "operator_ref": ref,
+                                    "violation_type": "E1_MODULE_REEXPORT",
+                                    "line": int(getattr(node, "lineno", 0)),
+                                    "col": int(getattr(node, "col_offset", 0)),
+                                    "detail": f"{module}:{alias.name}",
+                                }
+                            )
+            elif isinstance(node, ast.Call):
+                if isinstance(node.func, ast.Attribute) and str(node.func.attr) == "add_argument":
+                    flag_literals: List[str] = []
+                    for arg in node.args:
+                        if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
+                            if arg.value in SIDE_READER_REFRESH_SENSITIVE_LITERALS:
+                                flag_literals.append(arg.value)
+                    if flag_literals:
+                        violations.append(
+                            {
+                                "operator_ref": ref,
+                                "violation_type": "ARGPARSE_FLAG_EXPOSURE",
+                                "line": int(getattr(node, "lineno", 0)),
+                                "col": int(getattr(node, "col_offset", 0)),
+                                "detail": sorted(set(flag_literals)),
+                            }
+                        )
+                keyword_hits = [keyword.arg for keyword in node.keywords if keyword.arg in SIDE_READER_REFRESH_PROTECTED_PARAMETER_NAMES]
+                if keyword_hits:
+                    violations.append(
+                        {
+                            "operator_ref": ref,
+                            "violation_type": "REFRESH_KEYWORD_PLUMBING",
+                            "line": int(getattr(node, "lineno", 0)),
+                            "col": int(getattr(node, "col_offset", 0)),
+                            "detail": sorted(keyword_hits),
+                        }
+                    )
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)):
+                parameter_hits = sorted(
+                    {
+                        name
+                        for name in _side_reader_refresh_parameter_names(node)
+                        if name in SIDE_READER_REFRESH_PROTECTED_PARAMETER_NAMES
+                    }
+                )
+                if parameter_hits:
+                    violations.append(
+                        {
+                            "operator_ref": ref,
+                            "violation_type": "REFRESH_PARAMETER_EXPOSURE",
+                            "line": int(getattr(node, "lineno", 0)),
+                            "col": int(getattr(node, "col_offset", 0)),
+                            "detail": parameter_hits,
+                        }
+                    )
+            elif isinstance(node, ast.Constant) and isinstance(node.value, str):
+                literal_hits = _side_reader_sensitive_literal_hits(node.value)
+                if literal_hits:
+                    violations.append(
+                        {
+                            "operator_ref": ref,
+                            "violation_type": "SENSITIVE_LITERAL_EXPOSURE",
+                            "line": int(getattr(node, "lineno", 0)),
+                            "col": int(getattr(node, "col_offset", 0)),
+                            "detail": literal_hits,
+                        }
+                    )
+
+    caller_isolation = evaluate_side_reader_refresh_caller_isolation(
+        root=root,
+        candidate_operator_refs=refs,
+        text_overrides=text_overrides,
+    )
+    violation_types = sorted({str(item["violation_type"]) for item in violations})
+    checks = [
+        {"check_id": "t9_direct_owner_scan_still_passes", "pass": caller_isolation["status"] == "PASS"},
+        {"check_id": "no_e1_module_import_indirection", "pass": "E1_MODULE_IMPORT" not in violation_types and "E1_MODULE_REEXPORT" not in violation_types and "E1_STAR_IMPORT" not in violation_types},
+        {"check_id": "no_protected_symbol_import_indirection", "pass": "PROTECTED_SYMBOL_IMPORT" not in violation_types},
+        {"check_id": "no_shared_argparse_builder_exposure", "pass": "ARGPARSE_FLAG_EXPOSURE" not in violation_types},
+        {"check_id": "no_refresh_parameter_plumbing", "pass": "REFRESH_PARAMETER_EXPOSURE" not in violation_types and "REFRESH_KEYWORD_PLUMBING" not in violation_types},
+        {"check_id": "no_sensitive_literal_wrapper_exposure", "pass": "SENSITIVE_LITERAL_EXPOSURE" not in violation_types},
+    ]
+    return {
+        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "allowed_owner_ref": ALLOWED_SIDE_READER_REFRESH_OWNER_REL,
+        "operator_refs_scanned": refs,
+        "caller_isolation": caller_isolation,
+        "violations": violations,
+        "violation_types": violation_types,
+        "checks": checks,
+    }
+
+
+def evaluate_side_reader_refresh_caller_isolation(
+    *,
+    root: Path,
+    candidate_operator_refs: Optional[Sequence[str]] = None,
+    text_overrides: Optional[Dict[str, str]] = None,
+) -> Dict[str, Any]:
+    refs = list(candidate_operator_refs) if candidate_operator_refs is not None else _non_test_operator_python_refs(root)
+    overrides = text_overrides or {}
+    allowed_owner_hits: List[str] = []
+    unexpected_owner_refs: List[Dict[str, Any]] = []
+
+    for ref in refs:
+        text = overrides.get(ref)
+        if text is None:
+            text = (root / ref).read_text(encoding="utf-8")
+        token_hits = [token_id for token_id, token in SIDE_READER_REFRESH_OWNERSHIP_TOKENS.items() if token in text]
+        if not token_hits:
+            continue
+        if ref == ALLOWED_SIDE_READER_REFRESH_OWNER_REL:
+            allowed_owner_hits = sorted(set(token_hits))
+            continue
+        unexpected_owner_refs.append(
+            {
+                "operator_ref": ref,
+                "token_hits": token_hits,
+            }
+        )
+
+    required_owner_tokens = sorted(SIDE_READER_REFRESH_OWNERSHIP_TOKENS.keys())
+    checks = [
+        {
+            "check_id": "allowed_owner_declares_all_refresh_tokens",
+            "pass": sorted(allowed_owner_hits) == required_owner_tokens,
+        },
+        {
+            "check_id": "no_non_e1_operator_owner_refs",
+            "pass": not unexpected_owner_refs,
+        },
+        {
+            "check_id": "refresh_path_owned_only_by_e1_operator_cli",
+            "pass": not unexpected_owner_refs and sorted(allowed_owner_hits) == required_owner_tokens,
+        },
+    ]
+    return {
+        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "allowed_owner_ref": ALLOWED_SIDE_READER_REFRESH_OWNER_REL,
+        "allowed_owner_token_hits": allowed_owner_hits,
+        "required_owner_tokens": required_owner_tokens,
+        "unexpected_owner_refs": unexpected_owner_refs,
+        "operator_refs_scanned": refs,
+        "checks": checks,
+    }
+
+
+def build_side_reader_receipt_refresh_scope_receipt(
+    *,
+    root: Path,
+    generated_utc: str,
+    side_reader_contract_receipt: Dict[str, Any],
+) -> Dict[str, Any]:
+    current_head = _git_head(root)
+    default_target = (root / SIDE_READER_CONTRACT_RECEIPT_REL).resolve()
+    tmp_target = (root / "tmp" / "t8_side_reader_contract_refresh_receipt.json").resolve()
+    attempts = [
+        {
+            "attempt_id": "default_path_no_flags",
+            **evaluate_side_reader_receipt_refresh_policy(
+                root=root,
+                allow_refresh=False,
+                verification_only_refresh=False,
+                output_target=default_target,
+                refresh_scope_output_target=default_target.with_name("side_reader_receipt_refresh_scope_receipt.json"),
+            ),
+        },
+        {
+            "attempt_id": "allow_flag_only",
+            **evaluate_side_reader_receipt_refresh_policy(
+                root=root,
+                allow_refresh=True,
+                verification_only_refresh=False,
+                output_target=default_target,
+                refresh_scope_output_target=default_target.with_name("side_reader_receipt_refresh_scope_receipt.json"),
+            ),
+        },
+        {
+            "attempt_id": "verification_only_flag_only",
+            **evaluate_side_reader_receipt_refresh_policy(
+                root=root,
+                allow_refresh=False,
+                verification_only_refresh=True,
+                output_target=default_target,
+                refresh_scope_output_target=default_target.with_name("side_reader_receipt_refresh_scope_receipt.json"),
+            ),
+        },
+        {
+            "attempt_id": "custom_target_without_flags",
+            **evaluate_side_reader_receipt_refresh_policy(
+                root=root,
+                allow_refresh=False,
+                verification_only_refresh=False,
+                output_target=tmp_target,
+                refresh_scope_output_target=tmp_target.with_name("t8_side_reader_refresh_scope_receipt.json"),
+            ),
+        },
+        {
+            "attempt_id": "dual_opt_in_default_target",
+            **evaluate_side_reader_receipt_refresh_policy(
+                root=root,
+                allow_refresh=True,
+                verification_only_refresh=True,
+                output_target=default_target,
+                refresh_scope_output_target=default_target.with_name("side_reader_receipt_refresh_scope_receipt.json"),
+            ),
+        },
+        {
+            "attempt_id": "dual_opt_in_custom_target",
+            **evaluate_side_reader_receipt_refresh_policy(
+                root=root,
+                allow_refresh=True,
+                verification_only_refresh=True,
+                output_target=tmp_target,
+                refresh_scope_output_target=tmp_target.with_name("t8_side_reader_refresh_scope_receipt.json"),
+            ),
+        },
+    ]
+    emitted_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_CONTRACT_RECEIPT_REL,
+        payload=side_reader_contract_receipt,
+        allowed_roles=[T7_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    checks = [
+        {
+            "check_id": "default_path_does_not_enable_refresh",
+            "pass": attempts[0]["refresh_enabled"] is False and attempts[0]["failure_reason"] is None,
+        },
+        {
+            "check_id": "allow_flag_only_fails_closed",
+            "pass": attempts[1]["refresh_enabled"] is False and attempts[1]["failure_reason"] == "DUAL_OPT_IN_REQUIRED",
+        },
+        {
+            "check_id": "verification_only_flag_only_fails_closed",
+            "pass": attempts[2]["refresh_enabled"] is False and attempts[2]["failure_reason"] == "DUAL_OPT_IN_REQUIRED",
+        },
+        {
+            "check_id": "custom_target_without_flags_fails_closed",
+            "pass": attempts[3]["refresh_enabled"] is False and attempts[3]["failure_reason"] == "DUAL_OPT_IN_REQUIRED",
+        },
+        {
+            "check_id": "dual_opt_in_default_target_enables_refresh",
+            "pass": attempts[4]["refresh_enabled"] is True and attempts[4]["failure_reason"] is None,
+        },
+        {
+            "check_id": "dual_opt_in_custom_target_enables_refresh",
+            "pass": attempts[5]["refresh_enabled"] is True and attempts[5]["failure_reason"] is None,
+        },
+        {
+            "check_id": "verification_only_refresh_preserves_t7_contract",
+            "pass": emitted_contract["pass"] is True and emitted_contract["blocked"] is False,
+        },
+    ]
+    status = "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL"
+    return {
+        "schema_id": "kt.gate_c_t8.side_reader_receipt_refresh_scope_receipt.v1",
+        "generated_utc": generated_utc,
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": T8_RECEIPT_ROLE,
+        "status": status,
+        "tranche_id": T8_TRANCHE_ID,
+        "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        "canonical_receipt_binding": {
+            "baseline_vs_live_scorecard_ref": BASELINE_SCORECARD_REL,
+            "side_reader_contract_adoption_receipt_ref": SIDE_READER_CONTRACT_RECEIPT_REL,
+        },
+        "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+        "refresh_attempts": attempts,
+        "emitted_receipt_contract": emitted_contract,
+        "checks": checks,
+        "claim_boundary": "T8 hardens side-reader comparator receipt refresh scope only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
+    }
+
+
+def build_side_reader_refresh_caller_isolation_receipt(
+    *,
+    root: Path,
+    generated_utc: str,
+    side_reader_contract_receipt: Dict[str, Any],
+    side_reader_refresh_scope_receipt: Dict[str, Any],
+) -> Dict[str, Any]:
+    current_head = _git_head(root)
+    caller_isolation = evaluate_side_reader_refresh_caller_isolation(root=root)
+    t7_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_CONTRACT_RECEIPT_REL,
+        payload=side_reader_contract_receipt,
+        allowed_roles=[T7_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    t8_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_REFRESH_SCOPE_RECEIPT_REL,
+        payload=side_reader_refresh_scope_receipt,
+        allowed_roles=[T8_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    t8_checks = {
+        str(check["check_id"]): bool(check["pass"])
+        for check in side_reader_refresh_scope_receipt.get("checks", [])
+        if isinstance(check, dict) and "check_id" in check
+    }
+    checks = [
+        {"check_id": "caller_isolation_passes", "pass": caller_isolation["status"] == "PASS"},
+        {"check_id": "t7_contract_preserved", "pass": t7_contract["pass"] is True},
+        {"check_id": "t8_contract_preserved", "pass": t8_contract["pass"] is True},
+        {"check_id": "default_refresh_stays_disabled_by_default", "pass": t8_checks.get("default_path_does_not_enable_refresh", False)},
+        {"check_id": "dual_opt_in_refresh_stays_functional", "pass": t8_checks.get("dual_opt_in_default_target_enables_refresh", False)},
+    ]
+    status = "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL"
+    return {
+        "schema_id": "kt.gate_c_t9.side_reader_refresh_caller_isolation_receipt.v1",
+        "generated_utc": generated_utc,
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": T9_RECEIPT_ROLE,
+        "status": status,
+        "tranche_id": T9_TRANCHE_ID,
+        "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        "canonical_receipt_binding": {
+            "baseline_vs_live_scorecard_ref": BASELINE_SCORECARD_REL,
+            "side_reader_contract_adoption_receipt_ref": SIDE_READER_CONTRACT_RECEIPT_REL,
+            "side_reader_refresh_scope_receipt_ref": SIDE_READER_REFRESH_SCOPE_RECEIPT_REL,
+        },
+        "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+        "caller_isolation": caller_isolation,
+        "t7_contract": t7_contract,
+        "t8_contract": t8_contract,
+        "checks": checks,
+        "claim_boundary": "T9 hardens caller isolation for the already-earned verification-only side-reader refresh path only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
+    }
+
+
+def build_side_reader_refresh_indirection_barrier_receipt(
+    *,
+    root: Path,
+    generated_utc: str,
+    side_reader_contract_receipt: Dict[str, Any],
+    side_reader_refresh_scope_receipt: Dict[str, Any],
+    side_reader_refresh_caller_isolation_receipt: Dict[str, Any],
+) -> Dict[str, Any]:
+    current_head = _git_head(root)
+    indirection_barrier = evaluate_side_reader_refresh_indirection_barrier(root=root)
+    t7_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_CONTRACT_RECEIPT_REL,
+        payload=side_reader_contract_receipt,
+        allowed_roles=[T7_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    t8_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_REFRESH_SCOPE_RECEIPT_REL,
+        payload=side_reader_refresh_scope_receipt,
+        allowed_roles=[T8_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    t9_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL,
+        payload=side_reader_refresh_caller_isolation_receipt,
+        allowed_roles=[T9_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    t8_checks = {
+        str(check["check_id"]): bool(check["pass"])
+        for check in side_reader_refresh_scope_receipt.get("checks", [])
+        if isinstance(check, dict) and "check_id" in check
+    }
+    t9_checks = {
+        str(check["check_id"]): bool(check["pass"])
+        for check in side_reader_refresh_caller_isolation_receipt.get("checks", [])
+        if isinstance(check, dict) and "check_id" in check
+    }
+    checks = [
+        {"check_id": "indirection_barrier_passes", "pass": indirection_barrier["status"] == "PASS"},
+        {"check_id": "t7_contract_preserved", "pass": t7_contract["pass"] is True},
+        {"check_id": "t8_contract_preserved", "pass": t8_contract["pass"] is True},
+        {"check_id": "t9_contract_preserved", "pass": t9_contract["pass"] is True},
+        {"check_id": "default_refresh_stays_disabled_by_default", "pass": t8_checks.get("default_path_does_not_enable_refresh", False)},
+        {"check_id": "dual_opt_in_refresh_stays_functional", "pass": t8_checks.get("dual_opt_in_default_target_enables_refresh", False)},
+        {"check_id": "t9_direct_owner_scan_stays_enforced", "pass": t9_checks.get("caller_isolation_passes", False)},
+    ]
+    status = "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL"
+    return {
+        "schema_id": "kt.gate_c_t10.side_reader_refresh_indirection_barrier_receipt.v1",
+        "generated_utc": generated_utc,
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": T10_RECEIPT_ROLE,
+        "status": status,
+        "tranche_id": T10_TRANCHE_ID,
+        "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        "canonical_receipt_binding": {
+            "baseline_vs_live_scorecard_ref": BASELINE_SCORECARD_REL,
+            "side_reader_contract_adoption_receipt_ref": SIDE_READER_CONTRACT_RECEIPT_REL,
+            "side_reader_refresh_scope_receipt_ref": SIDE_READER_REFRESH_SCOPE_RECEIPT_REL,
+            "side_reader_refresh_caller_isolation_receipt_ref": SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL,
+        },
+        "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+        "indirection_barrier": indirection_barrier,
+        "t7_contract": t7_contract,
+        "t8_contract": t8_contract,
+        "t9_contract": t9_contract,
+        "checks": checks,
+        "claim_boundary": "T10 hardens indirect exposure barriers around the already-earned verification-only side-reader refresh path only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
+    }
+
+
+def build_t10_receipt_final_head_authority_alignment_receipt(
+    *,
+    root: Path,
+    generated_utc: str,
+    side_reader_contract_receipt: Dict[str, Any],
+    side_reader_refresh_scope_receipt: Dict[str, Any],
+    side_reader_refresh_caller_isolation_receipt: Dict[str, Any],
+    side_reader_refresh_indirection_barrier_receipt: Dict[str, Any],
+) -> Dict[str, Any]:
+    current_head = _git_head(root)
+    tracked_t10_receipt = load_json(root / SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL)
+    same_head_authority = evaluate_counted_receipt_family_same_head_authority(
+        receipt_family_id="T10_FINAL_HEAD_AUTHORITY_ALIGNMENT",
+        tracked_receipt_ref=SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL,
+        tracked_payload=tracked_t10_receipt,
+        allowed_roles=[T10_RECEIPT_ROLE],
+        current_head=current_head,
+        authoritative_current_head_payload=side_reader_refresh_indirection_barrier_receipt,
+    )
+    tracked_t10_contract = same_head_authority["tracked_contract"]
+    current_head_t10_contract = same_head_authority["authoritative_current_head_candidate_contract"]
+    tracked_subject_head = same_head_authority["tracked_subject_head"]
+    tracked_authority_class = same_head_authority["tracked_authority_class"]
+    t10_checks = {
+        str(check["check_id"]): bool(check["pass"])
+        for check in side_reader_refresh_indirection_barrier_receipt.get("checks", [])
+        if isinstance(check, dict) and "check_id" in check
+    }
+    t7_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_CONTRACT_RECEIPT_REL,
+        payload=side_reader_contract_receipt,
+        allowed_roles=[T7_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    t8_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_REFRESH_SCOPE_RECEIPT_REL,
+        payload=side_reader_refresh_scope_receipt,
+        allowed_roles=[T8_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    t9_contract = _consume_emitted_receipt_contract(
+        receipt_ref=SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL,
+        payload=side_reader_refresh_caller_isolation_receipt,
+        allowed_roles=[T9_RECEIPT_ROLE],
+        requested_head=current_head,
+    )
+    checks = [
+        {
+            "check_id": "tracked_t10_overread_fails_closed",
+            "pass": tracked_t10_contract.get("blocked") is True and tracked_t10_contract.get("failure_reason") == "SUBJECT_HEAD_MISMATCH",
+        },
+        {
+            "check_id": "tracked_t10_classified_documentary_carrier_only",
+            "pass": tracked_authority_class == "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH" and tracked_subject_head != current_head,
+        },
+        {
+            "check_id": "authoritative_final_head_requires_matching_subject_head",
+            "pass": current_head_t10_contract.get("pass") is True and str(current_head_t10_contract.get("subject_head", "")).strip() == current_head,
+        },
+        {
+            "check_id": "t10_indirection_barrier_preserved",
+            "pass": side_reader_refresh_indirection_barrier_receipt.get("status") == "PASS" and t10_checks.get("indirection_barrier_passes", False),
+        },
+        {
+            "check_id": "default_refresh_stays_disabled_by_default",
+            "pass": t10_checks.get("default_refresh_stays_disabled_by_default", False),
+        },
+        {
+            "check_id": "dual_opt_in_refresh_stays_functional",
+            "pass": t10_checks.get("dual_opt_in_refresh_stays_functional", False),
+        },
+        {
+            "check_id": "t7_t8_t9_contracts_preserved",
+            "pass": t7_contract.get("pass") is True and t8_contract.get("pass") is True and t9_contract.get("pass") is True,
+        },
+    ]
+    status = "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL"
+    return {
+        "schema_id": "kt.gate_c_t11.t10_receipt_final_head_authority_alignment_receipt.v1",
+        "generated_utc": generated_utc,
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": T11_RECEIPT_ROLE,
+        "status": status,
+        "tranche_id": T11_TRANCHE_ID,
+        "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+        "canonical_receipt_binding": {
+            "baseline_vs_live_scorecard_ref": BASELINE_SCORECARD_REL,
+            "side_reader_contract_adoption_receipt_ref": SIDE_READER_CONTRACT_RECEIPT_REL,
+            "side_reader_refresh_scope_receipt_ref": SIDE_READER_REFRESH_SCOPE_RECEIPT_REL,
+            "side_reader_refresh_caller_isolation_receipt_ref": SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL,
+            "side_reader_refresh_indirection_barrier_receipt_ref": SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL,
+        },
+        "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+        "tracked_t10_receipt_ref": SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL,
+        "tracked_t10_receipt_subject_head": tracked_subject_head,
+        "tracked_t10_receipt_current_git_head": str(tracked_t10_receipt.get("current_git_head", "")).strip(),
+        "tracked_t10_authority_class": tracked_authority_class,
+        "tracked_t10_contract": tracked_t10_contract,
+        "authoritative_current_head_t10_candidate_contract": current_head_t10_contract,
+        "same_head_authority_contract_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_REF,
+        "same_head_authority_contract_owner_ref": COUNTED_RECEIPT_FAMILY_SAME_HEAD_AUTHORITY_CONTRACT_OWNER_REF,
+        "same_head_authority_contract_family_id": same_head_authority["receipt_family_id"],
+        "authoritative_final_head_rule": same_head_authority["authoritative_final_head_rule"],
+        "checks": checks,
+        "claim_boundary": "T11 aligns authority semantics for the retained T10 receipt only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
+    }
+
+
+def build_comparator_side_reader_contract_adoption_receipt(*, root: Path) -> Dict[str, Any]:
+    from tools.operator.final_current_head_adjudication_validate import evaluate_comparator_side_reader_contract as evaluate_final_contract
+    from tools.operator.w3_externality_and_comparative_proof_validate import evaluate_comparator_side_reader_contract as evaluate_w3_contract
+
+    e1_contract = evaluate_comparator_side_reader_contract(root=root)
+    final_contract = evaluate_final_contract(root=root)
+    w3_contract = evaluate_w3_contract(root=root)
+    checks = [
+        {"check_id": "e1_side_reader_contract_passes", "pass": e1_contract["status"] == "PASS"},
+        {"check_id": "final_current_head_side_reader_contract_passes", "pass": final_contract["status"] == "PASS"},
+        {"check_id": "w3_side_reader_contract_passes", "pass": w3_contract["status"] == "PASS"},
+        {
+            "check_id": "all_side_readers_remove_legacy_parse_fallback",
+            "pass": all(bool(result.get("legacy_parse_removed")) for result in (e1_contract, final_contract, w3_contract)),
+        },
+    ]
+    current_head = str(e1_contract["requested_head"]).strip()
+    return {
+        "schema_id": "kt.gate_c_t7.comparator_side_reader_contract_adoption_receipt.v1",
+        "generated_utc": utc_now_iso_z(),
+        "current_git_head": current_head,
+        "subject_head": current_head,
+        "receipt_role": T7_RECEIPT_ROLE,
+        "status": "PASS" if all(bool(check["pass"]) for check in checks) else "FAIL",
+        "tranche_id": T7_TRANCHE_ID,
+        "canonical_scorecard_id": str(e1_contract["baseline_scorecard"].get("canonical_scorecard_id", "")).strip(),
+        "claim_boundary": "B03 tranche 7 adopts the already-earned comparator receipt contract in side-reader validator paths only. It does not widen comparator semantics or exit Gate C.",
+        "checks": checks,
+        "reader_results": [e1_contract, final_contract, w3_contract],
+    }
+
+
+def build_commercial_truth_packet(*, root: Path) -> Dict[str, Any]:
+    truth_lock = load_json(root / TRUTH_LOCK_REL)
+    heartbeat = load_json(root / DEFERRAL_HEARTBEAT_REL)
+    product_truth = load_json(root / PRODUCT_TRUTH_REL)
+    release_truth = load_json(root / RELEASE_TRUTH_REL)
+    deployment_profiles = load_json(root / DEPLOYMENT_PROFILES_REL)
+    capability_atlas = load_json(root / CAPABILITY_ATLAS_REL)
+    comparator_contract = evaluate_comparator_side_reader_contract(root=root)
+    if comparator_contract["status"] != "PASS":
+        raise RuntimeError("FAIL_CLOSED: E1 comparator side-reader contract adoption failed")
+    baseline_scorecard = comparator_contract["baseline_scorecard"]
+    benchmark_constitution_receipt = comparator_contract["benchmark_constitution_receipt"]
+    alias_retirement_receipt = comparator_contract["alias_retirement_receipt"]
+    detachment_receipt = comparator_contract["detachment_receipt"]
+    product_install_receipt = load_json(root / PRODUCT_INSTALL_RECEIPT_REL)
+    operator_handoff_receipt = load_json(root / OPERATOR_HANDOFF_RECEIPT_REL)
+    standards_mapping_receipt = load_json(root / STANDARDS_MAPPING_RECEIPT_REL)
+
+    required_docs = [
+        BUYER_WEDGE_DOC_REL,
+        E1_DEMO_SCRIPT_REL,
+        PRESALES_DIAG_REL,
+        PROPOSAL_TEMPLATE_REL,
+        HAT_DEMO_DOC_REL,
+        OPERATOR_QUICKSTART_REL,
+        ONE_PAGE_PRODUCT_TRUTH_REL,
+        PRODUCT_RUNBOOK_REL,
+    ]
+    status = (
+        "PASS"
+        if _status_is(truth_lock.get("status"), "PASS")
+        and _status_is(heartbeat.get("status"), "PASS")
+        and _status_is(product_truth.get("status"), "PASS")
+        and _status_is(release_truth.get("status"), "PASS")
+        and _status_is(deployment_profiles.get("status"), "ACTIVE")
+        and _status_is(capability_atlas.get("status"), "PASS")
+        and _status_is(baseline_scorecard.get("status"), "PASS")
+        and _status_is(benchmark_constitution_receipt.get("status"), "PASS")
+        and _status_is(alias_retirement_receipt.get("status"), "PASS")
+        and _status_is(detachment_receipt.get("status"), "PASS")
+        and _status_is(product_install_receipt.get("status"), "PASS")
+        and _status_is(operator_handoff_receipt.get("status"), "PASS")
+        and _status_is(standards_mapping_receipt.get("status"), "PASS")
+        and comparator_contract["status"] == "PASS"
+        and baseline_scorecard.get("canonical_scorecard_id") == "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL"
+        and all(_exists(root, ref) for ref in required_docs)
+        else "FAIL"
+    )
+    return {
+        "schema_id": "kt.e1.commercial_truth_packet.v1",
+        "generated_utc": utc_now_iso_z(),
+        "current_git_head": _git_head(root),
+        "status": status,
+        "offer_surface": [
+            "governed_execution",
+            "admissibility",
+            "replay",
+            "bounded_runtime_trust",
+            "verifier_kit",
+            "external_audit_packet",
+            "buyer_simple_product_plane",
+        ],
+        "externality_class_max": truth_lock.get("claim_ceiling_enforcements", {}).get("externality_class_max", "E1_SAME_HOST_DETACHED_REPLAY"),
+        "comparative_widening": truth_lock.get("claim_ceiling_enforcements", {}).get("comparative_widening", "FORBIDDEN"),
+        "commercial_widening": truth_lock.get("claim_ceiling_enforcements", {}).get("commercial_widening", "FORBIDDEN"),
+        "c006_status": heartbeat.get("deferral_status", ""),
+        "buyer_safe_material_refs": required_docs,
+        "demo_flow": [
+            "State the bounded problem and E1 claim ceiling.",
+            "Run KT on the declared bounded path.",
+            "Show the emitted receipt and packet refs.",
+            "Hand over the verifier kit.",
+            "Run the verifier entrypoint.",
+            "Show the same bounded result and PASS/FAIL surface.",
+            "Restate what the packet proves and what it does not prove.",
+        ],
+        "presales_flow": [
+            "Diagnostic",
+            "Demo",
+            "Verifier handoff",
+            "Proposal",
+            "Bounded pilot",
+        ],
+        "source_refs": [
+            TRUTH_LOCK_REL,
+            DEFERRAL_HEARTBEAT_REL,
+            PRODUCT_TRUTH_REL,
+            RELEASE_TRUTH_REL,
+            DEPLOYMENT_PROFILES_REL,
+            CAPABILITY_ATLAS_REL,
+            BASELINE_SCORECARD_REL,
+            BENCHMARK_CONSTITUTION_RECEIPT_REL,
+            ALIAS_RETIREMENT_RECEIPT_REL,
+            DETACHMENT_RECEIPT_REL,
+            PRODUCT_INSTALL_RECEIPT_REL,
+            OPERATOR_HANDOFF_RECEIPT_REL,
+            STANDARDS_MAPPING_RECEIPT_REL,
+        ],
+        "comparator_contract_status": comparator_contract["status"],
+        "claim_boundary": (
+            "This packet is a bounded E1 trust wedge only. It does not unlock E2+, comparative superiority, enterprise readiness, or broad commercial widening."
+        ),
+        "forbidden_claims": [
+            "Do not claim E2, E3, or E4.",
+            "Do not claim cross-host reproducibility.",
+            "Do not claim comparative or category-leading superiority.",
+            "Do not claim enterprise readiness beyond the bounded trust wedge.",
+        ],
+    }
+
+
+def build_public_verifier_kit(*, root: Path) -> Dict[str, Any]:
+    manifest = load_json(root / PUBLIC_VERIFIER_MANIFEST_REL)
+    detached = load_json(root / DETACHED_VERIFIER_RECEIPT_REL)
+    truth_lock = load_json(root / TRUTH_LOCK_REL)
+    heartbeat = load_json(root / DEFERRAL_HEARTBEAT_REL)
+    deployment_profiles = load_json(root / DEPLOYMENT_PROFILES_REL)
+    product_install_receipt = load_json(root / PRODUCT_INSTALL_RECEIPT_REL)
+    status = (
+        "PASS"
+        if manifest_supports_bounded_e1_verifier(manifest)
+        and _status_is(detached.get("status"), "PASS")
+        and _status_is(truth_lock.get("status"), "PASS")
+        and _status_is(heartbeat.get("status"), "PASS")
+        and _status_is(deployment_profiles.get("status"), "ACTIVE")
+        and _status_is(product_install_receipt.get("status"), "PASS")
+        and _exists(root, CLIENT_WRAPPER_SPEC_REL)
+        and _exists(root, SUPPORT_BOUNDARY_REL)
+        and _exists(root, OPERATOR_QUICKSTART_REL)
+        else "FAIL"
+    )
+    return {
+        "schema_id": "kt.e1.public_verifier_kit.v1",
+        "generated_utc": utc_now_iso_z(),
+        "current_git_head": _git_head(root),
+        "status": status,
+        "kit_status": "BOUNDED_E1_READY",
+        "entrypoints": [
+            "python -m tools.operator.public_verifier",
+            "python -m tools.operator.public_verifier_detached_validate",
+        ],
+        "manifest_ref": PUBLIC_VERIFIER_MANIFEST_REL,
+        "detached_receipt_ref": DETACHED_VERIFIER_RECEIPT_REL,
+        "deployment_profiles_ref": DEPLOYMENT_PROFILES_REL,
+        "replay_recipe_ref": REPLAY_RECIPE_REL,
+        "operator_quickstart_ref": OPERATOR_QUICKSTART_REL,
+        "client_wrapper_spec_ref": CLIENT_WRAPPER_SPEC_REL,
+        "support_boundary_ref": SUPPORT_BOUNDARY_REL,
+        "expected_operator_time_budget_minutes": 15,
+        "pass_fail_surface": "CLEAR_PASS_FAIL_BOUNDARY",
+        "externality_class_max": truth_lock.get("claim_ceiling_enforcements", {}).get("externality_class_max", "E1_SAME_HOST_DETACHED_REPLAY"),
+        "claim_boundary": "The verifier kit is real and usable, but bounded at E1 while C006 remains deferred and open.",
+        "forbidden_claims": [
+            "Do not claim the verifier kit proves cross-host runtime capability.",
+            "Do not claim the verifier kit alone closes C006.",
+        ],
+    }
+
+
+def build_c006_second_host_kit(*, root: Path) -> Dict[str, Any]:
+    heartbeat = load_json(root / DEFERRAL_HEARTBEAT_REL)
+    execution = load_json(root / C006_EXECUTION_REL)
+    required_refs = [
+        C006_HANDOFF_REL,
+        C006_TEMPLATE_REL,
+        REPLAY_RECIPE_REL,
+        C006_RUNBOOK_REL,
+        C006_IMPORT_CHECKLIST_REL,
+        C006_RERUN_CHECKLIST_REL,
+        C006_RETURN_PLACEMENT_REL,
+        C006_BUNDLE_BUILDER_REL,
+        DEFERRED_BLOCKERS_REL,
+        DEFERRAL_HEARTBEAT_REL,
+        C006_DEFERRAL_STATUS_RECEIPT_REL,
+        SECOND_HOST_KIT_HARDENING_RECEIPT_REL,
+    ]
+    bundle_manifest_present = _exists(root, C006_BUNDLE_MANIFEST_REL)
+    status = (
+        "PASS"
+        if _status_is(heartbeat.get("status"), "PASS")
+        and _status_is(execution.get("status"), "PASS")
+        and all(_exists(root, ref) for ref in required_refs)
+        else "FAIL"
+    )
+    return {
+        "schema_id": "kt.c006.second_host_kit.v1",
+        "generated_utc": utc_now_iso_z(),
+        "current_git_head": _git_head(root),
+        "status": status,
+        "kit_status": "READY_STAGED_PENDING_HARDWARE" if bundle_manifest_present else "READY_PENDING_HARDWARE",
+        "bundle_builder_command": "python -m tools.operator.build_c006_second_host_bundle",
+        "bundle_output_dir_hint": C006_BUNDLE_OUTPUT_DIR_REL,
+        "bundle_manifest_ref": C006_BUNDLE_MANIFEST_REL if bundle_manifest_present else "",
+        "deferral_status_receipt_ref": C006_DEFERRAL_STATUS_RECEIPT_REL,
+        "second_host_kit_hardening_receipt_ref": SECOND_HOST_KIT_HARDENING_RECEIPT_REL,
+        "return_import_path": "KT_PROD_CLEANROOM/reports/imports/post_wave5_c006_second_host_return.json",
+        "runbook_refs": [
+            C006_RUNBOOK_REL,
+            C006_IMPORT_CHECKLIST_REL,
+            C006_RERUN_CHECKLIST_REL,
+            C006_RETURN_PLACEMENT_REL,
+        ],
+        "input_refs": [
+            C006_HANDOFF_REL,
+            C006_TEMPLATE_REL,
+            REPLAY_RECIPE_REL,
+            DEFERRED_BLOCKERS_REL,
+            DEFERRAL_HEARTBEAT_REL,
+            C006_DEFERRAL_STATUS_RECEIPT_REL,
+            SECOND_HOST_KIT_HARDENING_RECEIPT_REL,
+        ],
+        "validator_commands": [
+            "python -m tools.operator.post_wave5_c006_second_host_execute_validate",
+            "python -m tools.operator.w3_externality_and_comparative_proof_validate",
+            "python -m tools.operator.c006_deferral_law_validate",
+            "python -m tools.operator.omega_gate",
+        ],
+        "claim_boundary": "This kit is preparation only. It keeps C006 reentry instant when hardware appears, but does not earn E2 by itself.",
+    }
+
+
+def build_external_audit_packet_manifest(
+    *,
+    root: Path,
+    commercial_truth_packet: Dict[str, Any],
+    public_verifier_kit: Dict[str, Any],
+    c006_second_host_kit: Dict[str, Any],
+) -> Dict[str, Any]:
+    existing = load_json(root / EXTERNAL_AUDIT_PACKET_REL) if _exists(root, EXTERNAL_AUDIT_PACKET_REL) else {}
+    legacy_packet_refs = list(existing.get("packet_refs", [])) if isinstance(existing.get("packet_refs", []), list) else []
+    return {
+        "schema_id": str(existing.get("schema_id", "kt.external_audit_packet_manifest.v2")).strip() or "kt.external_audit_packet_manifest.v2",
+        "generated_utc": utc_now_iso_z(),
+        "status": "PASS"
+        if all(item.get("status") == "PASS" for item in (commercial_truth_packet, public_verifier_kit, c006_second_host_kit))
+        else "FAIL",
+        "validated_head_sha": _git_head(root),
+        "packet_refs": [
+            COMMERCIAL_TRUTH_PACKET_REL,
+            PUBLIC_VERIFIER_KIT_REL,
+            C006_SECOND_HOST_KIT_REL,
+            C006_DEFERRAL_STATUS_RECEIPT_REL,
+            SECOND_HOST_KIT_HARDENING_RECEIPT_REL,
+            PRODUCT_INSTALL_RECEIPT_REL,
+            OPERATOR_HANDOFF_RECEIPT_REL,
+            STANDARDS_MAPPING_RECEIPT_REL,
+            TRUTH_LOCK_REL,
+            DEFERRAL_HEARTBEAT_REL,
+            PRODUCT_TRUTH_REL,
+            RELEASE_TRUTH_REL,
+            DEPLOYMENT_PROFILES_REL,
+            PRODUCT_DEPLOYMENT_PROFILES_REL,
+            CLIENT_WRAPPER_SPEC_REL,
+            PRODUCT_RUNBOOK_REL,
+            SUPPORT_BOUNDARY_REL,
+            ONE_PAGE_PRODUCT_TRUTH_REL,
+            NIST_MAPPING_MATRIX_REL,
+            ISO_42001_MAPPING_MATRIX_REL,
+            EU_AI_ACT_ALIGNMENT_MATRIX_REL,
+            BUYER_WEDGE_DOC_REL,
+            E1_DEMO_SCRIPT_REL,
+            PRESALES_DIAG_REL,
+            PROPOSAL_TEMPLATE_REL,
+            HAT_DEMO_DOC_REL,
+            OPERATOR_QUICKSTART_REL,
+        ],
+        "legacy_packet_refs": legacy_packet_refs,
+        "claim_boundary": "This audit packet is current-head and E1-bounded. It preserves the deferred C006 ceiling and does not overread the verifier or product surfaces.",
+    }
+
+
+def build_e1_campaign_receipt(
+    *,
+    root: Path,
+    commercial_truth_packet: Dict[str, Any],
+    public_verifier_kit: Dict[str, Any],
+    c006_second_host_kit: Dict[str, Any],
+    external_audit_packet: Dict[str, Any],
+) -> Dict[str, Any]:
+    return {
+        "schema_id": "kt.e1.bounded_campaign_receipt.v1",
+        "generated_utc": utc_now_iso_z(),
+        "current_git_head": _git_head(root),
+        "status": "PASS"
+        if all(item.get("status") == "PASS" for item in (commercial_truth_packet, public_verifier_kit, c006_second_host_kit, external_audit_packet))
+        else "FAIL",
+        "bounded_campaign_outputs": [
+            COMMERCIAL_TRUTH_PACKET_REL,
+            PUBLIC_VERIFIER_KIT_REL,
+            C006_SECOND_HOST_KIT_REL,
+            EXTERNAL_AUDIT_PACKET_REL,
+        ],
+        "claim_boundary": "This receipt certifies bounded E1 campaign completion work only. It does not close C006 or unlock comparative/commercial widening above the current ceiling.",
+        "next_lawful_move": "Continue bounded E1 engineering and keep the second-host kit ready for immediate execution when hardware appears.",
+    }
+
+
+def _build_argument_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Compile the bounded E1 campaign-completion pack without widening claims.")
+    parser.add_argument("--allow-tracked-output-refresh", action="store_true")
+    parser.add_argument("--allow-side-reader-contract-receipt-refresh", action="store_true")
+    parser.add_argument("--verification-only-side-reader-receipt-refresh", action="store_true")
+    parser.add_argument("--commercial-truth-output", default=COMMERCIAL_TRUTH_PACKET_REL)
+    parser.add_argument("--public-verifier-kit-output", default=PUBLIC_VERIFIER_KIT_REL)
+    parser.add_argument("--second-host-kit-output", default=C006_SECOND_HOST_KIT_REL)
+    parser.add_argument("--external-audit-output", default=EXTERNAL_AUDIT_PACKET_REL)
+    parser.add_argument("--receipt-output", default=E1_CAMPAIGN_RECEIPT_REL)
+    parser.add_argument("--side-reader-contract-receipt-output", default=SIDE_READER_CONTRACT_RECEIPT_REL)
+    parser.add_argument("--side-reader-refresh-scope-receipt-output", default=SIDE_READER_REFRESH_SCOPE_RECEIPT_REL)
+    parser.add_argument("--side-reader-refresh-caller-isolation-receipt-output", default=SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL)
+    parser.add_argument("--side-reader-refresh-indirection-barrier-receipt-output", default=SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL)
+    parser.add_argument("--t10-receipt-final-head-authority-alignment-output", default=T10_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL)
+    return parser
+
+
+def main(argv: Optional[Sequence[str]] = None) -> int:
+    raw_argv = list(argv) if argv is not None else sys.argv[1:]
+    parser = _build_argument_parser()
+    args = parser.parse_args(argv)
+
+    root = repo_root()
+    prewrite_dirty = _enforce_write_scope_pre(root)
+    commercial_truth_packet = build_commercial_truth_packet(root=root)
+    public_verifier_kit = build_public_verifier_kit(root=root)
+    c006_second_host_kit = build_c006_second_host_kit(root=root)
+    external_audit_packet = build_external_audit_packet_manifest(
+        root=root,
+        commercial_truth_packet=commercial_truth_packet,
+        public_verifier_kit=public_verifier_kit,
+        c006_second_host_kit=c006_second_host_kit,
+    )
+    receipt = build_e1_campaign_receipt(
+        root=root,
+        commercial_truth_packet=commercial_truth_packet,
+        public_verifier_kit=public_verifier_kit,
+        c006_second_host_kit=c006_second_host_kit,
+        external_audit_packet=external_audit_packet,
+    )
+    side_reader_contract_receipt = build_comparator_side_reader_contract_adoption_receipt(root=root)
+    refresh_policy = evaluate_side_reader_receipt_refresh_policy(
+        root=root,
+        allow_refresh=args.allow_side_reader_contract_receipt_refresh,
+        verification_only_refresh=args.verification_only_side_reader_receipt_refresh,
+        output_target=_resolve(root, str(args.side_reader_contract_receipt_output)),
+        refresh_scope_output_target=_resolve(root, str(args.side_reader_refresh_scope_receipt_output)),
+    )
+    if refresh_policy["failure_reason"] is not None:
+        raise RuntimeError(
+            "FAIL_CLOSED: side-reader contract receipt refresh requires both "
+            "--allow-side-reader-contract-receipt-refresh and "
+            "--verification-only-side-reader-receipt-refresh"
+        )
+    side_reader_refresh_scope_receipt = build_side_reader_receipt_refresh_scope_receipt(
+        root=root,
+        generated_utc=utc_now_iso_z(),
+        side_reader_contract_receipt=side_reader_contract_receipt,
+    )
+    side_reader_refresh_caller_isolation_receipt = build_side_reader_refresh_caller_isolation_receipt(
+        root=root,
+        generated_utc=utc_now_iso_z(),
+        side_reader_contract_receipt=side_reader_contract_receipt,
+        side_reader_refresh_scope_receipt=side_reader_refresh_scope_receipt,
+    )
+    side_reader_refresh_indirection_barrier_receipt = build_side_reader_refresh_indirection_barrier_receipt(
+        root=root,
+        generated_utc=utc_now_iso_z(),
+        side_reader_contract_receipt=side_reader_contract_receipt,
+        side_reader_refresh_scope_receipt=side_reader_refresh_scope_receipt,
+        side_reader_refresh_caller_isolation_receipt=side_reader_refresh_caller_isolation_receipt,
+    )
+    t10_receipt_final_head_authority_alignment_receipt = build_t10_receipt_final_head_authority_alignment_receipt(
+        root=root,
+        generated_utc=utc_now_iso_z(),
+        side_reader_contract_receipt=side_reader_contract_receipt,
+        side_reader_refresh_scope_receipt=side_reader_refresh_scope_receipt,
+        side_reader_refresh_caller_isolation_receipt=side_reader_refresh_caller_isolation_receipt,
+        side_reader_refresh_indirection_barrier_receipt=side_reader_refresh_indirection_barrier_receipt,
+    )
+    caller_isolation_receipt_requested = "--side-reader-refresh-caller-isolation-receipt-output" in raw_argv
+    indirection_barrier_receipt_requested = "--side-reader-refresh-indirection-barrier-receipt-output" in raw_argv
+    t11_authority_alignment_receipt_requested = "--t10-receipt-final-head-authority-alignment-output" in raw_argv
+    if caller_isolation_receipt_requested and not bool(refresh_policy["refresh_enabled"]):
+        raise RuntimeError(
+            "FAIL_CLOSED: side-reader refresh caller isolation receipt requires explicit "
+            "dual-opt-in verification-only refresh"
+        )
+    if indirection_barrier_receipt_requested and not bool(refresh_policy["refresh_enabled"]):
+        raise RuntimeError(
+            "FAIL_CLOSED: side-reader refresh indirection barrier receipt requires explicit "
+            "dual-opt-in verification-only refresh"
+        )
+    if t11_authority_alignment_receipt_requested and not bool(refresh_policy["refresh_enabled"]):
+        raise RuntimeError(
+            "FAIL_CLOSED: T11 final-head authority alignment receipt requires explicit "
+            "dual-opt-in verification-only refresh"
+        )
+
+    allowed_repo_writes: list[str] = []
+    for target, payload, default_rel in [
+        (_resolve(root, str(args.commercial_truth_output)), commercial_truth_packet, COMMERCIAL_TRUTH_PACKET_REL),
+        (_resolve(root, str(args.public_verifier_kit_output)), public_verifier_kit, PUBLIC_VERIFIER_KIT_REL),
+        (_resolve(root, str(args.second_host_kit_output)), c006_second_host_kit, C006_SECOND_HOST_KIT_REL),
+        (_resolve(root, str(args.external_audit_output)), external_audit_packet, EXTERNAL_AUDIT_PACKET_REL),
+        (_resolve(root, str(args.receipt_output)), receipt, E1_CAMPAIGN_RECEIPT_REL),
+    ]:
+        written = _maybe_write_json_output(
+            root=root,
+            target=target,
+            payload=payload,
+            default_rel=default_rel,
+            allow_default_repo_write=args.allow_tracked_output_refresh,
+        )
+        if written:
+            allowed_repo_writes.append(written)
+    if bool(refresh_policy["refresh_enabled"]):
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.side_reader_contract_receipt_output)),
+            payload=side_reader_contract_receipt,
+            default_rel=SIDE_READER_CONTRACT_RECEIPT_REL,
+            allow_default_repo_write=True,
+        )
+        if written:
+            allowed_repo_writes.append(written)
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.side_reader_refresh_scope_receipt_output)),
+            payload=side_reader_refresh_scope_receipt,
+            default_rel=SIDE_READER_REFRESH_SCOPE_RECEIPT_REL,
+            allow_default_repo_write=True,
+        )
+        if written:
+            allowed_repo_writes.append(written)
+    if caller_isolation_receipt_requested:
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.side_reader_refresh_caller_isolation_receipt_output)),
+            payload=side_reader_refresh_caller_isolation_receipt,
+            default_rel=SIDE_READER_REFRESH_CALLER_ISOLATION_RECEIPT_REL,
+            allow_default_repo_write=bool(refresh_policy["refresh_enabled"]),
+        )
+        if written:
+            allowed_repo_writes.append(written)
+    if indirection_barrier_receipt_requested:
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.side_reader_refresh_indirection_barrier_receipt_output)),
+            payload=side_reader_refresh_indirection_barrier_receipt,
+            default_rel=SIDE_READER_REFRESH_INDIRECTION_BARRIER_RECEIPT_REL,
+            allow_default_repo_write=bool(refresh_policy["refresh_enabled"]),
+        )
+        if written:
+            allowed_repo_writes.append(written)
+    if t11_authority_alignment_receipt_requested:
+        written = _maybe_write_json_output(
+            root=root,
+            target=_resolve(root, str(args.t10_receipt_final_head_authority_alignment_output)),
+            payload=t10_receipt_final_head_authority_alignment_receipt,
+            default_rel=T10_RECEIPT_FINAL_HEAD_AUTHORITY_ALIGNMENT_RECEIPT_REL,
+            allow_default_repo_write=bool(refresh_policy["refresh_enabled"]),
+        )
+        if written:
+            allowed_repo_writes.append(written)
+    _enforce_write_scope_post(root, prewrite_dirty=prewrite_dirty, allowed_repo_writes=allowed_repo_writes)
+
+    summary = {
+        "status": receipt["status"],
+        "externality_class_max": commercial_truth_packet["externality_class_max"],
+        "comparative_widening": commercial_truth_packet["comparative_widening"],
+        "commercial_widening": commercial_truth_packet["commercial_widening"],
+        "second_host_kit_status": c006_second_host_kit["kit_status"],
+        "comparator_contract_status": side_reader_contract_receipt["status"],
+        "side_reader_receipt_refresh_scope_status": side_reader_refresh_scope_receipt["status"],
+        "side_reader_receipt_refresh_enabled": bool(refresh_policy["refresh_enabled"]),
+        "side_reader_refresh_caller_isolation_status": side_reader_refresh_caller_isolation_receipt["status"],
+        "side_reader_refresh_indirection_barrier_status": side_reader_refresh_indirection_barrier_receipt["status"],
+        "t10_receipt_final_head_authority_alignment_status": t10_receipt_final_head_authority_alignment_receipt["status"],
+    }
+    print(json.dumps(summary, sort_keys=True))
+    return 0 if summary["status"] == "PASS" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,118 @@
+{
+  "allowed_resolution_classes": [
+    {
+      "class_id": "UPDATE_EVALUATOR_EXPECTATION",
+      "summary": "Use only if the evaluator is asserting the wrong bundle identifier, amendment family, or change-receipt family."
+    },
+    {
+      "class_id": "RESTORE_MISSING_LAW_BUNDLE_ARTIFACT",
+      "summary": "Use when the active bundle hash is correct but one or more required support artifacts are absent from the active tree."
+    },
+    {
+      "class_id": "BIND_SUPERSESSION_AND_AMENDMENT_MAPPING",
+      "summary": "Use when the active tree has advanced to a new bundle hash and needs a new lawful amendment/change-receipt chain that supersedes the prior documented hash."
+    },
+    {
+      "class_id": "QUARANTINE_STALE_ASSUMPTION",
+      "summary": "Use when a stale pin or historical support surface is still being treated like current truth and must be explicitly demoted to lineage-only."
+    }
+  ],
+  "authority_header": {
+    "authoritative_branch": "authoritative/post-f-pr15-fl3-remediation",
+    "authoritative_branch_head": "c6b7205a651d9c3be6a57a1ffb90c9249e0b0b3f",
+    "package_promotion_still_deferred": true,
+    "replay_on_main_still_deferred_until_pr15_merge": true,
+    "truth_engine_law_unchanged": true
+  },
+  "claim_boundary": "This packet freezes tranche T01 only. It does not change package truth, truth-engine law, replay timing on main, or archive/canonical authority boundaries.",
+  "do_not_widen_boundaries": [
+    "Do not widen package truth.",
+    "Do not change truth-engine derivation law.",
+    "Do not rerun the main truth-engine replay early.",
+    "Do not let prep lanes become authoritative.",
+    "Do not widen Track 03 or package promotion to chase green checks."
+  ],
+  "evaluator_assertion": {
+    "active_law_id": "FL3_SOVEREIGN_PROTOCOL",
+    "amendment_schema_id_required": "kt.law_amendment.v2",
+    "bundle_id": "LAW_BUNDLE_FL3",
+    "change_receipt_schema_id_required": "kt.law_bundle_change_receipt.v1",
+    "evaluator_probe_returncode": 0,
+    "evaluator_probe_tail": ""
+  },
+  "execution_status": "PASS__POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_MISMATCH_BOUND",
+  "generated_utc": "2026-04-25T21:42:07Z",
+  "lane_outcome": "POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_CHAIN_REPAIRED__TRANCHE1_CLEARED",
+  "live_bundle_state": {
+    "bundle_file_count": 394,
+    "bundle_manifest_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.json",
+    "bundle_sha_pin_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256",
+    "computed_bundle_hash": "d1b58bde7e4de51f3ed5e1068b4ada1821f634fcc6a0c30c5984e927f73a07cc",
+    "law_count": 1,
+    "pin_matches_current": true,
+    "pinned_bundle_hash": "d1b58bde7e4de51f3ed5e1068b4ada1821f634fcc6a0c30c5984e927f73a07cc"
+  },
+  "live_resolution_read": {
+    "active_tree_bundle_hash_has_complete_support_chain": true,
+    "evaluator_contract_is_stale": false,
+    "recommended_resolution_class": "ADVANCE_TO_T02_ACTIVE_TREE_ASSET_EXPECTATION_DRIFT",
+    "recommended_resolution_summary": "Bundle hash, amendment chain, and change-receipt chain now converge; tranche T01 is cleared and the lane can advance.",
+    "stale_pinned_support_chain_present": true
+  },
+  "next_lawful_move": "AUTHOR_POST_F_PR15_FL3_ACTIVE_TREE_ASSET_EXPECTATION_DRIFT_PACKET",
+  "precedence_rule": {
+    "resolution_decision_rule": "Prefer binding a new lawful amendment/change-receipt chain for the active hash over weakening the evaluator contract.",
+    "staleness_decision_rule": "If the current active-tree hash lacks a matching kt.law_amendment.v2 or kt.law_bundle_change_receipt.v1 while the pinned hash still has them, the support chain is stale relative to the active tree; the evaluator contract is not stale.",
+    "winning_rule": "The active-tree LAW_BUNDLE hash computed from LAW_BUNDLE_FL3.json membership and current member bytes outranks the pinned sha file and prior amendment/change-receipt lineage when they disagree.",
+    "winning_source": "computed_active_tree_law_bundle_hash"
+  },
+  "schema_id": "kt.operator.cohort0_post_f_pr15_fl3_law_bundle_and_amendment_mismatch_packet.v1",
+  "source_refs": {
+    "fl3_meta_evaluator": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/tools/verification/fl3_meta_evaluator.py",
+    "law_bundle": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.json",
+    "law_bundle_sha": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256",
+    "remediation_authority_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_remediation_authority_packet.json",
+    "remediation_authority_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_remediation_authority_receipt.json",
+    "remediation_blocker_ledger": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_remediation_blocker_ledger.json"
+  },
+  "status": "PASS",
+  "success_condition": {
+    "archive_promotion_forbidden": true,
+    "blocker_ledger_advances_to_tranche_2": true,
+    "main_replay_still_deferred": true,
+    "mismatch_class_resolved_and_receipted": true,
+    "package_truth_unchanged": true,
+    "truth_engine_law_unchanged": true
+  },
+  "support_chain_state": {
+    "current_hash": {
+      "bundle_hash": "d1b58bde7e4de51f3ed5e1068b4ada1821f634fcc6a0c30c5984e927f73a07cc",
+      "matching_change_receipt_count": 1,
+      "matching_change_receipt_refs": [
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260425T214144Z.json"
+      ],
+      "matching_law_amendment_v2_count": 1,
+      "matching_law_amendment_v2_refs": [
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260425T214144Z.json"
+      ]
+    },
+    "pinned_hash": {
+      "bundle_hash": "d1b58bde7e4de51f3ed5e1068b4ada1821f634fcc6a0c30c5984e927f73a07cc",
+      "matching_change_receipt_count": 1,
+      "matching_change_receipt_refs": [
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260425T214144Z.json"
+      ],
+      "matching_law_amendment_v2_count": 1,
+      "matching_law_amendment_v2_refs": [
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260425T214144Z.json"
+      ]
+    }
+  },
+  "tranche_header": {
+    "mismatch_class": "MISMATCH_CLASS_NOT_APPLICABLE",
+    "ordered_blocker_position": 1,
+    "tranche_id": "T01",
+    "tranche_name": "law_bundle_and_amendment_mismatch",
+    "tranche_state": "cleared"
+  }
+}

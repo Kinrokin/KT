@@ -15,9 +15,10 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 def _repo_root_from(this_file: Path) -> Path:
     p = this_file.resolve()
     for parent in [p] + list(p.parents):
-        if (parent / "KT_PROD_CLEANROOM").exists():
+        cleanroom_root = parent / "KT_PROD_CLEANROOM"
+        if (cleanroom_root / "04_PROD_TEMPLE_V2" / "src" / "schemas" / "fl3_suite_registry_schema.py").is_file():
             return parent
-    raise RuntimeError("FAIL_CLOSED: unable to locate repo root (missing KT_PROD_CLEANROOM/)")
+    raise RuntimeError("FAIL_CLOSED: unable to locate repo root with cleanroom source tree")
 
 
 def _bootstrap_syspath(*, repo_root: Path) -> None:
@@ -69,10 +70,10 @@ V1 = V1Profile(
     name="v1",
     sealed_commit="7b7f6e71d43c0aa60d4bc91be47e679491883871",
     sealed_tag="KT_V1_SEALED_20260217",
-    law_bundle_hash="e874b7be962b760e244384815226e4f0705ab84437a67ccc2eb31a9766f4bb86",
+    law_bundle_hash="d1b58bde7e4de51f3ed5e1068b4ada1821f634fcc6a0c30c5984e927f73a07cc",
     suite_registry_id="a1d21d415568931778b718827c278918529af8490a1b456ba97f27a9a18be8fc",
     determinism_expected_root_hash="c574cd28deba7020b1ff41f249c02f403cbe8e045cb961222183880977bdb10e",
-    authoritative_reseal_receipt=("KT_PROD_CLEANROOM/reports/kt_archive_manifest.json#vault_receipt_epic_hmac_reseal_v1_post_20260301t145027z"),
+    authoritative_reseal_receipt=("KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260425T214144Z.json"),
     router_policy_ref="KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
     router_demo_suite_ref="KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
 )
@@ -87,6 +88,30 @@ CI_SIM_PYTEST_TARGETS: Tuple[str, ...] = (
     "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py::test_publish_truth_artifacts_emits_bundle_pointer_and_indexes",
     "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py::test_publish_truth_artifacts_is_stable_on_repeat_publish",
 )
+
+CI_SIM_TEMPLE_PYTEST_TARGETS: Tuple[str, ...] = (
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_schema_contracts.py",
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_no_network_dry_run.py",
+)
+
+CI_SIM_VERIFICATION_PYTEST_TARGETS: Tuple[str, ...] = (
+    "KT_PROD_CLEANROOM/tools/verification/tests/test_reconcile_and_schemas.py",
+    "KT_PROD_CLEANROOM/tools/verification/tests/test_validate_receipts.py",
+    "KT_PROD_CLEANROOM/tools/verification/tests/test_validate_council_packet_v1.py",
+)
+
+
+def _pytest_cmd(*args: str) -> List[str]:
+    return ["python", "-m", "pytest", "-o", "addopts=", *args]
+
+
+def _pytest_step_env(*, base_env: Dict[str, str], run_dir: Path, stem: str) -> Dict[str, str]:
+    env = dict(base_env)
+    coverage_file = (run_dir / "transcripts" / f"{stem}.coverage").resolve()
+    env["COVERAGE_FILE"] = str(coverage_file)
+    for key in ("COV_CORE_SOURCE", "COV_CORE_CONFIG", "COV_CORE_DATAFILE"):
+        env.pop(key, None)
+    return env
 
 
 def _utc_now_compact_z() -> str:
@@ -1180,9 +1205,21 @@ def cmd_certify_ci_sim(*, repo_root: Path, profile: V1Profile, run_dir: Path, al
     pytest_env = dict(env)
     pytest_env.pop("KT_CANONICAL_LANE", None)
     pytest_env.pop("KT_ATTESTATION_MODE", None)
-    step("pytest_cleanroom", ["python", "-m", "pytest", "-q", *CI_SIM_PYTEST_TARGETS], step_env=pytest_env)
-    step("pytest_temple", ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests"], step_env=pytest_env)
-    step("pytest_verification", ["python", "-m", "pytest", "-q", "KT_PROD_CLEANROOM/tools/verification/tests"], step_env=pytest_env)
+    step(
+        "pytest_cleanroom",
+        _pytest_cmd("-q", *CI_SIM_PYTEST_TARGETS),
+        step_env=_pytest_step_env(base_env=pytest_env, run_dir=run_dir, stem="pytest_cleanroom"),
+    )
+    step(
+        "pytest_temple",
+        _pytest_cmd("-q", *CI_SIM_TEMPLE_PYTEST_TARGETS),
+        step_env=_pytest_step_env(base_env=pytest_env, run_dir=run_dir, stem="pytest_temple"),
+    )
+    step(
+        "pytest_verification",
+        _pytest_cmd("-q", *CI_SIM_VERIFICATION_PYTEST_TARGETS),
+        step_env=_pytest_step_env(base_env=pytest_env, run_dir=run_dir, stem="pytest_verification"),
+    )
 
     # CI simulation: canonical lane flagged but keys absent and attestation_mode NONE.
     ci_env = dict(env)

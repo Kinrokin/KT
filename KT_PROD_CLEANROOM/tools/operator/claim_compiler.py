@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
+from tools.operator.observability import emit_toolchain_telemetry, telemetry_now_ms
 from tools.operator.public_verifier import build_public_verifier_report
 from tools.operator.runtime_boundary_integrity import build_runtime_boundary_report
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
@@ -142,8 +143,14 @@ def _runtime_boundary_allowed_claim(report: Dict[str, Any]) -> str:
     return "No compiled-subject runtime-boundary claim is admissible."
 
 
-def build_claim_compiler_receipt(*, root: Path, report_root_rel: str = DEFAULT_REPORT_ROOT_REL) -> Dict[str, Any]:
-    verifier_report = build_public_verifier_report(root=root, report_root_rel=report_root_rel)
+def build_claim_compiler_receipt(
+    *,
+    root: Path,
+    report_root_rel: str = DEFAULT_REPORT_ROOT_REL,
+    telemetry_path: Optional[str | Path] = None,
+) -> Dict[str, Any]:
+    started_ms = telemetry_now_ms()
+    verifier_report = build_public_verifier_report(root=root, report_root_rel=report_root_rel, telemetry_path=telemetry_path)
     runtime_boundary_report = build_runtime_boundary_report(root=root, report_root_rel=report_root_rel)
     settled_truth = load_json(root / Path(_report_ref(report_root_rel, "settled_truth_source_receipt.json")))
 
@@ -180,7 +187,7 @@ def build_claim_compiler_receipt(*, root: Path, report_root_rel: str = DEFAULT_R
 
     status = "PASS" if not doc_failures and not missing_inputs else "FAIL"
 
-    return {
+    receipt = {
         "schema_id": "kt.operator.commercial_claim_compiler_receipt.v1",
         "generated_utc": utc_now_iso_z(),
         "status": status,
@@ -213,6 +220,19 @@ def build_claim_compiler_receipt(*, root: Path, report_root_rel: str = DEFAULT_R
         ],
         "missing_inputs": missing_inputs,
     }
+    emit_toolchain_telemetry(
+        surface_id="tools.operator.claim_compiler.build_claim_compiler_receipt",
+        zone="TOOLCHAIN_PROVING",
+        event_type="claim_compiler.receipt",
+        start_ts=started_ms,
+        end_ts=telemetry_now_ms(),
+        result_status=str(receipt["status"]),
+        policy_applied="wave1_claim_compiler_observability",
+        receipt_ref=_report_ref(report_root_rel, "commercial_claim_compiler_receipt.json"),
+        request_id=str(receipt["compiled_head_commit"]),
+        path=telemetry_path,
+    )
+    return receipt
 
 
 def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:

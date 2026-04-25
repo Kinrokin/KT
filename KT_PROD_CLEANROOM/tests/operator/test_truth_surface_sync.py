@@ -4,7 +4,13 @@ import json
 from pathlib import Path
 
 from tools.operator.dependency_inventory_emit import build_dependency_reports
-from tools.operator.truth_surface_sync import _sync_secondary_surfaces
+from tools.operator.truth_surface_sync import (
+    CONSTITUTIONAL_DOMAINS,
+    PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF,
+    _build_constitutional_board_state,
+    _sync_secondary_surfaces,
+    build_receipts,
+)
 
 
 def _write_json(path: Path, payload: dict) -> None:
@@ -240,3 +246,117 @@ def test_sync_secondary_surfaces_is_stable_on_repeat_sync(tmp_path: Path) -> Non
 
     assert first_promotion == second_promotion
     assert first_board == second_board
+
+
+def test_build_receipts_promotes_truthful_green_from_validated_subject_not_carrier_head(tmp_path: Path) -> None:
+    reports = tmp_path / "KT_PROD_CLEANROOM" / "reports"
+    gov = tmp_path / "KT_PROD_CLEANROOM" / "governance"
+    _write_json(
+        reports / "one_button_preflight_receipt.json",
+        {
+            "schema_id": "kt.one_button_preflight_receipt.v2",
+            "status": "PASS",
+            "validated_head_sha": "subject123",
+            "publication_carrier_head_sha": "carrier456",
+            "head_relation": "PUBLICATION_CARRIER_OF_VALIDATED_SUBJECT",
+            "branch_ref": "ops/test",
+        },
+    )
+    _write_json(
+        reports / "one_button_production_receipt.json",
+        {
+            "schema_id": "kt.one_button_production_receipt.v2",
+            "status": "PASS",
+            "validated_head_sha": "subject123",
+            "publication_carrier_head_sha": "carrier456",
+            "head_relation": "PUBLICATION_CARRIER_OF_VALIDATED_SUBJECT",
+            "branch_ref": "ops/test",
+        },
+    )
+    _write_json(reports / "main_branch_protection_receipt.json", {"schema_id": "kt.main_branch_protection_receipt.v2", "status": "BLOCKED"})
+    _write_json(gov / "documentary_truth_policy.json", {"schema_id": "kt.governance.documentary_truth_policy.v1", "active_current_head_truth_source": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"})
+
+    index = {
+        "generated_utc": "2026-03-25T20:00:00Z",
+        "branch_ref": "ops/test",
+        "worktree": {
+            "git_dirty": False,
+            "head_sha": "carrier456",
+            "validated_subject_head_sha": "subject123",
+            "publication_carrier_head_sha": "carrier456",
+            "head_relation": "PUBLICATION_CARRIER_OF_VALIDATED_SUBJECT",
+        },
+        "checks": [
+            {"check_id": "constitutional_guard", "critical": True, "dirty_sensitive": False, "status": "PASS"},
+            {"check_id": "operator_clean_clone_smoke", "critical": True, "dirty_sensitive": False, "status": "PASS"},
+        ],
+    }
+
+    receipts = build_receipts(
+        root=tmp_path,
+        index=index,
+        report_root_rel="KT_PROD_CLEANROOM/reports",
+        live_validation_index_ref="KT_PROD_CLEANROOM/reports/live_validation_index.json",
+    )
+
+    assert receipts["current_state"]["posture_state"] == "TRUTHFUL_GREEN"
+    assert receipts["current_state"]["validated_head_sha"] == "subject123"
+    assert receipts["current_state"]["publication_carrier_head_sha"] == "carrier456"
+    assert receipts["runtime_audit"]["posture_state"] == "TRUTHFUL_GREEN"
+    assert receipts["p0_green"]["status"] == "PASS"
+    assert receipts["final_green"]["status"] == "PASS"
+
+
+def test_build_constitutional_board_state_opens_domain2_exit_from_current_head_ratification(tmp_path: Path) -> None:
+    reports = tmp_path / "KT_PROD_CLEANROOM" / "reports"
+    live_head = "head123"
+
+    _write_json(
+        reports / "truth_publication_stabilization_receipt.json",
+        {
+            "status": "PASS",
+            "board_transition_ready": True,
+            "blockers": [],
+        },
+    )
+
+    for domain in CONSTITUTIONAL_DOMAINS:
+        for rel in domain["required_law_surfaces"]:
+            _write_json(tmp_path / Path(rel), {"status": "ACTIVE"})
+        for rel in domain["required_artifacts"]:
+            payload = {"status": "PASS"}
+            if rel.startswith("KT_PROD_CLEANROOM/reports/"):
+                payload["validated_head_sha"] = live_head
+            if rel.endswith("truth_publication_stabilization_receipt.json"):
+                payload["board_transition_ready"] = True
+                payload["blockers"] = []
+            _write_json(tmp_path / Path(rel), payload)
+
+    _write_json(
+        tmp_path / Path(PROMOTION_CIVILIZATION_RATIFICATION_RECEIPT_REF),
+        {
+            "status": "PASS",
+            "validated_head_sha": live_head,
+            "ratification_scope_class": "CURRENT_HEAD_BOUNDED_RUNTIME_ADMISSIBILITY_ONLY",
+            "claim_widening_allowed": False,
+            "gate_effect": "SATISFIES_DOMAIN_2_EXIT_PREREQUISITE_ONLY",
+        },
+    )
+
+    board_state = _build_constitutional_board_state(
+        root=tmp_path,
+        live_head=live_head,
+        authority_mode="SETTLED_AUTHORITATIVE",
+        posture_state="TRUTHFUL_GREEN",
+        open_blockers=[],
+        convergence_status="PASS",
+        convergence_failures=[],
+    )
+
+    assert board_state["program_gates"]["TRUTH_PUBLICATION_STABILIZED"] is True
+    assert board_state["program_gates"]["H1_ACTIVATION_ALLOWED"] is True
+    assert board_state["program_gates"]["PROMOTION_CIVILIZATION_RATIFIED"] is True
+    domain2 = next(row for row in board_state["constitutional_domains"] if row["domain_id"] == "DOMAIN_2_PROMOTION_CIVILIZATION")
+    assert domain2["maturity_state"] == "PROVEN_ON_CURRENT_HEAD"
+    assert domain2["gate_state"] == "OPEN"
+    assert domain2["active_blockers"] == []

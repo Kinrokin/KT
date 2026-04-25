@@ -1,0 +1,62 @@
+{
+  "baseline_registry_ref": "KT_PROD_CLEANROOM/governance/benchmark_manifest.json",
+  "canonical_receipt_binding": {
+    "alias_retirement_receipt_ref": "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
+    "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+    "comparator_replay_receipt_ref": "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
+    "detachment_receipt_ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json",
+    "frozen_eval_scorecard_bundle_ref": "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json"
+  },
+  "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+  "claim_boundary": "One canonical baseline-vs-live scorecard only.",
+  "comparison_rows": [
+    {
+      "baseline_id": "FAIL_CLOSED_NONOUTPUT_BASELINE_V1",
+      "evidence_row_id": "useful_output_evidence_stronger_than_ceremonial_path_evidence",
+      "live_row_pass": true,
+      "live_row_present": true,
+      "live_surface_ref": "KT_PROD_CLEANROOM/reports/useful_output_benchmark.json",
+      "pass": true,
+      "row_id": "canonical_useful_output_vs_fail_closed_baseline"
+    }
+  ],
+  "current_git_head": "438d9de1948615d917b0beef4709fcc9e891b6e1",
+  "forbidden_claims_not_made": [
+    "planner_superiority_earned",
+    "paradox_superiority_earned",
+    "multiverse_superiority_earned",
+    "router_superiority_earned",
+    "civilization_ratified"
+  ],
+  "generated_utc": "2026-03-27T04:24:46Z",
+  "measurement_scope": {
+    "allowed_measured_surfaces": [
+      "KT_PROD_CLEANROOM/governance/kt_benchmark_constitution_v1.json",
+      "KT_PROD_CLEANROOM/governance/kt_comparator_registry.json",
+      "KT_PROD_CLEANROOM/reports/useful_output_benchmark.json",
+      "KT_PROD_CLEANROOM/reports/benchmark_negative_result_ledger.json",
+      "KT_PROD_CLEANROOM/governance/benchmark_manifest.json",
+      "KT_PROD_CLEANROOM/governance/scorer_registry.json",
+      "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+      "KT_PROD_CLEANROOM/reports/comparator_replay_receipt.json",
+      "KT_PROD_CLEANROOM/reports/frozen_eval_scorecard_bundle.json",
+      "KT_PROD_CLEANROOM/reports/canonical_scorecard_binding_receipt.json",
+      "KT_PROD_CLEANROOM/reports/scorecard_alias_retirement_receipt.json",
+      "KT_PROD_CLEANROOM/reports/competitive_scorecard_validator_detachment_receipt.json"
+    ],
+    "forbidden_measured_surfaces": [
+      "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/cognitive_engine.py",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/temporal_engine.py",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/multiverse/multiverse_engine.py",
+      "KT_PROD_CLEANROOM/reports/router_shadow_eval_matrix.json",
+      "KT_PROD_CLEANROOM/reports/live_cognition_receipt.json"
+    ]
+  },
+  "negative_result_visibility_preserved": true,
+  "schema_id": "kt.gate_c_t1.baseline_vs_live_scorecard.v1",
+  "scorer_registry_ref": "KT_PROD_CLEANROOM/governance/scorer_registry.json",
+  "status": "PASS",
+  "tranche_id": "B03_T3_COMPETITIVE_SCORECARD_VALIDATOR_DETACHMENT"
+}

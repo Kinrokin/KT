@@ -1,0 +1,306 @@
+{
+  "__generated_by_agent__": true,
+  "provider_calls": [
+    {
+      "prompt_sha256": "df00f3c46910d57160e72d800f0e4f7808e8f5e3425de44058e6bc379740da6a",
+      "provider": "openrouter_hashed",
+      "receipt_id": "prov-rmr-0001-42",
+      "response_sha256": "0e9e32f4acdf043979cf411a9fb4e51697948c904fb38ed5c53ad550a2f0f7b2"
+    },
+    {
+      "prompt_sha256": "bbee4d0eff367bc6da8a0959fc25b45d869cd34dce2a3c9b007f7a7a6a6e23b0",
+      "provider": "openai_hashed",
+      "receipt_id": "prov-rmr-0002-42",
+      "response_sha256": "ecd296b6afcad78abdb6d86faa8da41b5f4048c6a181cae621c08e215b474ce9"
+    },
+    {
+      "prompt_sha256": "c8e4656b3f847f4f69823712476e9c300ce43e24a955ec32172f71221809bc88",
+      "provider": "mock_local",
+      "receipt_id": "prov-rmr-0003-42",
+      "response_sha256": "7c7cdf9832252fb15a1f1de0d1cea7fa07bbeb74c864e53a2d4c5059e6d70da8"
+    },
+    {
+      "prompt_sha256": "67ac8352b30962c4484a29776bedd8a1db37e1bdb92461f8e4c19225085b2718",
+      "provider": "openrouter_hashed",
+      "receipt_id": "prov-rmr-0004-42",
+      "response_sha256": "0701c52e9b1dd4f14b44a337405eaf202faad365037d6e02ab6e4b6a862043ec"
+    },
+    {
+      "prompt_sha256": "1af7e6bef327611dfb996218c8ba7c7199202e0e672a45937bcc10db59ae0aa8",
+      "provider": "openai_hashed",
+      "receipt_id": "prov-rmr-0005-42",
+      "response_sha256": "feba5b934c97878def3987905717cb274c727531f3be070a7c638a037d356b54"
+    },
+    {
+      "prompt_sha256": "ce1aaa0b9ea0c128e2085f8a393a6069d4d942f6bf69822a23b4a5c004440f5c",
+      "provider": "openrouter_hashed",
+      "receipt_id": "prov-rmr-0006-42",
+      "response_sha256": "b7a81730b15383bd0143b9cf6ba9f5f2ab3c74b49a5279691649ccc50b3ebc7c"
+    },
+    {
+      "prompt_sha256": "31be044a4f3fc783604bb116a93849c599a24fc093eb5a68bb2f74cc3f5c7195",
+      "provider": "mock_local",
+      "receipt_id": "prov-rmr-0007-42",
+      "response_sha256": "d34f4f514c09cab34aaddc7cd3c32218b9ce7a6b110e5ce6c262b52da2ddc3e8"
+    },
+    {
+      "prompt_sha256": "af83d65d4a594ca4a9de0c84021cab6565a45a9f1e3bd887511fb9ef5679758a",
+      "provider": "mock_local",
+      "receipt_id": "prov-rmr-0008-42",
+      "response_sha256": "db6188c3e97175311ed2a1822a848d4844dabc19038ee6a72eab31fd33045421"
+    },
+    {
+      "prompt_sha256": "cab92e78c3928862402b2932618c5a36ee32bfaae9c1869817d4440165062b9c",
+      "provider": "mock_local",
+      "receipt_id": "prov-rmr-0009-42",
+      "response_sha256": "d6b812cb737269d8419dff7c72a57540a11fb0f1baf67cdaee9e572b8c9f5f57"
+    },
+    {
+      "prompt_sha256": "534fb03e382be471b156909cccbfa3f716c73cd1a39e398c49d371de83b61796",
+      "provider": "openai_hashed",
+      "receipt_id": "prov-rmr-0010-42",
+      "response_sha256": "abd79ee9de22116bdb8765651a3bb9d0866f64aab7523baaf89f3b12e2d098e9"
+    }
+  ],
+  "receipt": {
+    "digest_sha256": "ee4259bd618ff3976ab0c9837118311cddfcdfb93b795ba9a971aa7f7e40b827",
+    "key_id": "mock-key-id",
+    "signature": "ZWU0MjU5YmQ2MThmZjM5NzZhYjBjOTgzNzExODMxMWNkZGZjZGZiOTNiNzk1YmE5YTk3MWFhN2Y3ZTQwYjgyNw==:mock-signer:mock-key-id",
+    "signer": "mock-signer"
+  },
+  "results": [
+    {
+      "case_id": "CASE-0001",
+      "confidence": 0.815,
+      "decision_label": "commit",
+      "margin": 0.388,
+      "provider_calls": [
+        {
+          "prompt_sha256": "df00f3c46910d57160e72d800f0e4f7808e8f5e3425de44058e6bc379740da6a",
+          "provider": "openrouter_hashed",
+          "receipt_id": "prov-rmr-0001-42",
+          "response_sha256": "0e9e32f4acdf043979cf411a9fb4e51697948c904fb38ed5c53ad550a2f0f7b2"
+        }
+      ],
+      "reason_codes": [
+        "RC001_CONTEXT_ALIGNMENT",
+        "RC008_EVIDENCE_COMPLETE"
+      ],
+      "rmr_id": "RMR-0001",
+      "router_choice": "openrouter",
+      "why_not": [
+        "WN001_NO_POLICY_MATCH"
+      ]
+    },
+    {
+      "case_id": "CASE-0002",
+      "confidence": 0.605,
+      "decision_label": "defer",
+      "margin": 0.153,
+      "provider_calls": [
+        {
+          "prompt_sha256": "bbee4d0eff367bc6da8a0959fc25b45d869cd34dce2a3c9b007f7a7a6a6e23b0",
+          "provider": "openai_hashed",
+          "receipt_id": "prov-rmr-0002-42",
+          "response_sha256": "ecd296b6afcad78abdb6d86faa8da41b5f4048c6a181cae621c08e215b474ce9"
+        }
+      ],
+      "reason_codes": [
+        "RC009_DEFER_REQUIRED",
+        "RC010_RUNTIME_BOUNDED"
+      ],
+      "rmr_id": "RMR-0002",
+      "router_choice": "openai",
+      "why_not": [
+        "WN002_LOW_MARGIN"
+      ]
+    },
+    {
+      "case_id": "CASE-0003",
+      "confidence": 0.724,
+      "decision_label": "defer",
+      "margin": 0.314,
+      "provider_calls": [
+        {
+          "prompt_sha256": "c8e4656b3f847f4f69823712476e9c300ce43e24a955ec32172f71221809bc88",
+          "provider": "mock_local",
+          "receipt_id": "prov-rmr-0003-42",
+          "response_sha256": "7c7cdf9832252fb15a1f1de0d1cea7fa07bbeb74c864e53a2d4c5059e6d70da8"
+        }
+      ],
+      "reason_codes": [
+        "RC009_DEFER_REQUIRED",
+        "RC010_RUNTIME_BOUNDED"
+      ],
+      "rmr_id": "RMR-0003",
+      "router_choice": "mock_local",
+      "why_not": [
+        "WN002_LOW_MARGIN"
+      ]
+    },
+    {
+      "case_id": "CASE-0004",
+      "confidence": 0.754,
+      "decision_label": "defer",
+      "margin": 0.225,
+      "provider_calls": [
+        {
+          "prompt_sha256": "67ac8352b30962c4484a29776bedd8a1db37e1bdb92461f8e4c19225085b2718",
+          "provider": "openrouter_hashed",
+          "receipt_id": "prov-rmr-0004-42",
+          "response_sha256": "0701c52e9b1dd4f14b44a337405eaf202faad365037d6e02ab6e4b6a862043ec"
+        }
+      ],
+      "reason_codes": [
+        "RC009_DEFER_REQUIRED",
+        "RC010_RUNTIME_BOUNDED"
+      ],
+      "rmr_id": "RMR-0004",
+      "router_choice": "openrouter",
+      "why_not": [
+        "WN002_LOW_MARGIN"
+      ]
+    },
+    {
+      "case_id": "CASE-0005",
+      "confidence": 0.884,
+      "decision_label": "commit",
+      "margin": 0.461,
+      "provider_calls": [
+        {
+          "prompt_sha256": "1af7e6bef327611dfb996218c8ba7c7199202e0e672a45937bcc10db59ae0aa8",
+          "provider": "openai_hashed",
+          "receipt_id": "prov-rmr-0005-42",
+          "response_sha256": "feba5b934c97878def3987905717cb274c727531f3be070a7c638a037d356b54"
+        }
+      ],
+      "reason_codes": [
+        "RC001_CONTEXT_ALIGNMENT",
+        "RC008_EVIDENCE_COMPLETE"
+      ],
+      "rmr_id": "RMR-0005",
+      "router_choice": "openai",
+      "why_not": [
+        "WN001_NO_POLICY_MATCH"
+      ]
+    },
+    {
+      "case_id": "CASE-0006",
+      "confidence": 0.559,
+      "decision_label": "defer",
+      "margin": 0.345,
+      "provider_calls": [
+        {
+          "prompt_sha256": "ce1aaa0b9ea0c128e2085f8a393a6069d4d942f6bf69822a23b4a5c004440f5c",
+          "provider": "openrouter_hashed",
+          "receipt_id": "prov-rmr-0006-42",
+          "response_sha256": "b7a81730b15383bd0143b9cf6ba9f5f2ab3c74b49a5279691649ccc50b3ebc7c"
+        }
+      ],
+      "reason_codes": [
+        "RC009_DEFER_REQUIRED",
+        "RC010_RUNTIME_BOUNDED"
+      ],
+      "rmr_id": "RMR-0006",
+      "router_choice": "openrouter",
+      "why_not": [
+        "WN002_LOW_MARGIN"
+      ]
+    },
+    {
+      "case_id": "CASE-0007",
+      "confidence": 0.815,
+      "decision_label": "defer",
+      "margin": 0.18,
+      "provider_calls": [
+        {
+          "prompt_sha256": "31be044a4f3fc783604bb116a93849c599a24fc093eb5a68bb2f74cc3f5c7195",
+          "provider": "mock_local",
+          "receipt_id": "prov-rmr-0007-42",
+          "response_sha256": "d34f4f514c09cab34aaddc7cd3c32218b9ce7a6b110e5ce6c262b52da2ddc3e8"
+        }
+      ],
+      "reason_codes": [
+        "RC009_DEFER_REQUIRED",
+        "RC010_RUNTIME_BOUNDED"
+      ],
+      "rmr_id": "RMR-0007",
+      "router_choice": "mock_local",
+      "why_not": [
+        "WN002_LOW_MARGIN"
+      ]
+    },
+    {
+      "case_id": "CASE-0008",
+      "confidence": 0.878,
+      "decision_label": "commit",
+      "margin": 0.42,
+      "provider_calls": [
+        {
+          "prompt_sha256": "af83d65d4a594ca4a9de0c84021cab6565a45a9f1e3bd887511fb9ef5679758a",
+          "provider": "mock_local",
+          "receipt_id": "prov-rmr-0008-42",
+          "response_sha256": "db6188c3e97175311ed2a1822a848d4844dabc19038ee6a72eab31fd33045421"
+        }
+      ],
+      "reason_codes": [
+        "RC001_CONTEXT_ALIGNMENT",
+        "RC008_EVIDENCE_COMPLETE"
+      ],
+      "rmr_id": "RMR-0008",
+      "router_choice": "mock_local",
+      "why_not": [
+        "WN001_NO_POLICY_MATCH"
+      ]
+    },
+    {
+      "case_id": "CASE-0009",
+      "confidence": 0.821,
+      "decision_label": "defer",
+      "margin": 0.394,
+      "provider_calls": [
+        {
+          "prompt_sha256": "cab92e78c3928862402b2932618c5a36ee32bfaae9c1869817d4440165062b9c",
+          "provider": "mock_local",
+          "receipt_id": "prov-rmr-0009-42",
+          "response_sha256": "d6b812cb737269d8419dff7c72a57540a11fb0f1baf67cdaee9e572b8c9f5f57"
+        }
+      ],
+      "reason_codes": [
+        "RC009_DEFER_REQUIRED",
+        "RC010_RUNTIME_BOUNDED"
+      ],
+      "rmr_id": "RMR-0009",
+      "router_choice": "mock_local",
+      "why_not": [
+        "WN007_HOLDOUT_LEAKAGE"
+      ]
+    },
+    {
+      "case_id": "CASE-0010",
+      "confidence": 0.905,
+      "decision_label": "defer",
+      "margin": 0.52,
+      "provider_calls": [
+        {
+          "prompt_sha256": "534fb03e382be471b156909cccbfa3f716c73cd1a39e398c49d371de83b61796",
+          "provider": "openai_hashed",
+          "receipt_id": "prov-rmr-0010-42",
+          "response_sha256": "abd79ee9de22116bdb8765651a3bb9d0866f64aab7523baaf89f3b12e2d098e9"
+        }
+      ],
+      "reason_codes": [
+        "RC009_DEFER_REQUIRED",
+        "RC010_RUNTIME_BOUNDED"
+      ],
+      "rmr_id": "RMR-0010",
+      "router_choice": "openai",
+      "why_not": [
+        "WN007_HOLDOUT_LEAKAGE"
+      ]
+    }
+  ],
+  "runtime": "minimal_lobe_shim",
+  "seed": 42,
+  "timestamp": "2026-04-24T00:00:00Z"
+}

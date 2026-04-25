@@ -1,0 +1,93 @@
+{
+  "claim_record_fields": [
+    {
+      "field_id": "claim_id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "allowed_values": [
+        "ALLOWED_CURRENT",
+        "BLOCKED_CURRENT",
+        "DOCUMENTARY_ONLY"
+      ],
+      "field_id": "claim_status",
+      "required": true,
+      "type": "enum"
+    },
+    {
+      "allowed_values": [
+        "product_surface",
+        "license_track",
+        "readiness",
+        "pilot_language",
+        "campaign_state"
+      ],
+      "field_id": "claim_type",
+      "required": true,
+      "type": "enum"
+    },
+    {
+      "field_id": "compiled_head_commit",
+      "required": true,
+      "type": "git_sha"
+    },
+    {
+      "field_id": "statement",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "field_id": "surface_scope",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "field_id": "license_track",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "field_id": "evidence_refs",
+      "required": true,
+      "type": "list[string]"
+    },
+    {
+      "field_id": "blockers",
+      "required": true,
+      "type": "list[string]"
+    },
+    {
+      "field_id": "stronger_claim_not_made",
+      "required": true,
+      "type": "list[string]"
+    }
+  ],
+  "compiler_output_ref": "KT_PROD_CLEANROOM/reports/kt_product_claim_compiler.json",
+  "current_repo_head": "06e3ed249db91ac3b843d5fd77e324c4ff8f3a9c",
+  "invariants": [
+    "No WS19 product claim row may mark release readiness, production readiness, enterprise readiness, market readiness, or campaign completion as ALLOWED_CURRENT.",
+    "No WS19 product claim row may convert historical bounded capability confirmation into current-head capability proof.",
+    "No WS19 product claim row may convert the repo's noncommercial source license into an in-repo commercial grant.",
+    "Pilot language must remain discovery-only and non-executed while release_eligibility is NOT_ELIGIBLE."
+  ],
+  "policy_id": "KT_PRODUCT_CLAIM_POLICY_V1_20260318",
+  "required_field_order": [
+    "claim_id",
+    "claim_status",
+    "claim_type",
+    "compiled_head_commit",
+    "statement",
+    "surface_scope",
+    "license_track",
+    "evidence_refs",
+    "blockers",
+    "stronger_claim_not_made"
+  ],
+  "schema_id": "kt.governance.product_claim_policy.v1",
+  "status": "ACTIVE",
+  "stronger_claim_not_made": [
+    "WS19 product-claim policy activates threshold-root verifier acceptance.",
+    "WS19 product-claim policy proves release readiness or campaign completion."
+  ]
+}

@@ -19,7 +19,7 @@ from tools.operator.crypto_attestation import (
 )
 from tools.operator.authority_convergence_validate import build_authority_convergence_report
 from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
-from tools.operator.truth_authority import active_truth_source_ref, load_json_ref, path_ref
+from tools.operator.truth_authority import active_truth_source_ref, load_json_ref, path_ref, resolve_truth_head_context
 
 
 DEFAULT_REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
@@ -334,8 +334,12 @@ def _assert_signer_policy_allows_pubkey(*, root: Path, signer: Dict[str, Any]) -
 def build_authority_subject_for_current_head(*, root: Path, report_root_rel: str, live_validation_index_path: Path) -> Dict[str, Any]:
     live_index = _load_required(live_validation_index_path)
     worktree = live_index.get("worktree") if isinstance(live_index.get("worktree"), dict) else {}
-    subject_commit = _require_hex40(str(worktree.get("head_sha", "")).strip(), label="live_validation_index.worktree.head_sha")
-    produced_commit = subject_commit
+    live_head = _require_hex40(str(worktree.get("head_sha", "")).strip(), label="live_validation_index.worktree.head_sha")
+    subject_commit = _require_hex40(
+        str(worktree.get("validated_subject_head_sha", "")).strip() or live_head,
+        label="live_validation_index.worktree.validated_subject_head_sha",
+    )
+    produced_commit = live_head
 
     law_paths = [
         "KT_PROD_CLEANROOM/governance/authority_subject_contract.json",
@@ -750,10 +754,13 @@ def publish_truth_artifacts(
     sources = _bundle_sources(root=root, report_root_rel=report_root_rel)
     live_index = _load_required(live_validation_index_path)
     worktree = live_index.get("worktree") if isinstance(live_index.get("worktree"), dict) else {}
-    subject_commit = str(worktree.get("head_sha", "")).strip()
-    if not subject_commit:
+    live_head = str(worktree.get("head_sha", "")).strip()
+    if not live_head:
         raise RuntimeError("FAIL_CLOSED: live validation index missing worktree.head_sha")
-    producer_commit = subject_commit
+    dirty_lines = _git_status_lines(root) or [str(item).strip() for item in worktree.get("dirty_files", []) if str(item).strip()]
+    head_context = resolve_truth_head_context(root=root, live_head=live_head, dirty_lines=dirty_lines)
+    subject_commit = str(head_context.get("validated_subject_head_sha", "")).strip() or live_head
+    producer_commit = live_head
     generated_utc = str(live_index.get("generated_utc", "")).strip() or utc_now_iso_z()
     previous_pointer = _read_previous_pointer(root)
     live_validation_index_ref = path_ref(root=root, path=live_validation_index_path)
@@ -791,6 +798,8 @@ def publish_truth_artifacts(
         "status": "ACTIVE",
         "truth_subject_commit": subject_commit,
         "truth_produced_at_commit": producer_commit,
+        "publication_carrier_head_sha": str(head_context.get("publication_carrier_head_sha", "")).strip(),
+        "head_relation": str(head_context.get("head_relation", "")).strip() or "HEAD_IS_SUBJECT",
         "current_bundle_hash": bundle_hash,
         "current_bundle_ref": bundle_ref,
         "current_bundle_manifest_ref": path_ref(root=root, path=current_dir / "current_bundle_manifest.json"),
@@ -808,6 +817,8 @@ def publish_truth_artifacts(
         "truth_bundle_hash": bundle_hash,
         "truth_bundle_ref": bundle_ref,
         "truth_subject_commit": subject_commit,
+        "truth_produced_at_commit": producer_commit,
+        "publication_carrier_head_sha": str(head_context.get("publication_carrier_head_sha", "")).strip(),
         "files": descriptor["files"],
     }
     write_json_stable(current_dir / "current_bundle_manifest.json", manifest_payload)
@@ -840,6 +851,8 @@ def publish_truth_artifacts(
         "truth_bundle_hash": bundle_hash,
         "truth_subject_commit": subject_commit,
         "truth_produced_at_commit": producer_commit,
+        "publication_carrier_head_sha": str(head_context.get("publication_carrier_head_sha", "")).strip(),
+        "head_relation": str(head_context.get("head_relation", "")).strip() or "HEAD_IS_SUBJECT",
         "authority_level": authority_mode,
         "posture_enum": posture_state,
         "documentary_tracked_truth_surfaces": TRACKED_DOCUMENTARY_SURFACES,
@@ -848,15 +861,18 @@ def publish_truth_artifacts(
     write_json_stable(root / "KT_PROD_CLEANROOM" / "reports" / "truth_pointer_index.json", pointer_index)
 
     git_dirty_before = _git_status_lines(root)
-    subject_dirty = bool(worktree.get("git_dirty"))
+    subject_dirty = bool(worktree.get("subject_git_dirty")) if "subject_git_dirty" in worktree else bool(worktree.get("git_dirty"))
     allowed_tracked_outputs = [path_ref(root=root, path=root / rel) for rel in TRUTH_PUBLICATION_REQUIRED_ARTIFACTS]
     clean_state_receipt = {
         "schema_id": "kt.operator.truth_clean_state_receipt.v1",
         "generated_utc": generated_utc,
         "status": "PASS",
         "truth_subject_commit": subject_commit,
+        "truth_produced_at_commit": producer_commit,
         "subject_worktree_dirty_at_validation": subject_dirty,
         "publisher_worktree_dirty_before": None if git_dirty_before is None else bool(git_dirty_before),
+        "publication_carrier_head_sha": str(head_context.get("publication_carrier_head_sha", "")).strip(),
+        "head_relation": str(head_context.get("head_relation", "")).strip() or "HEAD_IS_SUBJECT",
         "publication_outputs_restricted_to_generated_truth_and_allowed_indexes": True,
         "generated_truth_root": GENERATED_TRUTH_ROOT_REL,
         "authoritative_current_pointer_ref": current_pointer_ref,
@@ -874,6 +890,8 @@ def publish_truth_artifacts(
         "truth_bundle_ref": bundle_ref,
         "truth_subject_commit": subject_commit,
         "truth_produced_at_commit": producer_commit,
+        "publication_carrier_head_sha": str(head_context.get("publication_carrier_head_sha", "")).strip(),
+        "head_relation": str(head_context.get("head_relation", "")).strip() or "HEAD_IS_SUBJECT",
         "authoritative_current_pointer_ref": current_pointer_ref,
         "truth_pointer_index_ref": "KT_PROD_CLEANROOM/reports/truth_pointer_index.json",
         "truth_bundle_catalog_ref": "KT_PROD_CLEANROOM/reports/truth_bundle_catalog.json",
@@ -890,6 +908,10 @@ def publish_truth_artifacts(
         "status": "PASS",
         "authoritative_current_pointer_ref": current_pointer_ref,
         "authoritative_bundle_ref": bundle_ref,
+        "truth_subject_commit": subject_commit,
+        "truth_produced_at_commit": producer_commit,
+        "publication_carrier_head_sha": str(head_context.get("publication_carrier_head_sha", "")).strip(),
+        "head_relation": str(head_context.get("head_relation", "")).strip() or "HEAD_IS_SUBJECT",
         "documentary_only_tracked_surfaces": TRACKED_DOCUMENTARY_SURFACES,
         "documentary_indexes": [
             "KT_PROD_CLEANROOM/reports/truth_pointer_index.json",
@@ -914,6 +936,9 @@ def publish_truth_artifacts(
         "generated_utc": generated_utc,
         "status": "PASS" if not stabilization_blockers else "HOLD",
         "truth_subject_commit": subject_commit,
+        "truth_produced_at_commit": producer_commit,
+        "publication_carrier_head_sha": str(head_context.get("publication_carrier_head_sha", "")).strip(),
+        "head_relation": str(head_context.get("head_relation", "")).strip() or "HEAD_IS_SUBJECT",
         "authoritative_current_pointer_ref": current_pointer_ref,
         "truth_bundle_ref": bundle_ref,
         "truth_bundle_hash": bundle_hash,
@@ -949,10 +974,16 @@ def publish_truth_ledger_witness(
     sources = _bundle_sources(root=source_root, report_root_rel=report_root_rel)
     live_index = _load_required(live_validation_index_path)
     worktree = live_index.get("worktree") if isinstance(live_index.get("worktree"), dict) else {}
-    subject_commit = str(worktree.get("head_sha", "")).strip()
-    if not subject_commit:
+    live_head = str(worktree.get("head_sha", "")).strip()
+    if not live_head:
         raise RuntimeError("FAIL_CLOSED: live validation index missing worktree.head_sha")
-    producer_commit = subject_commit
+    head_context = resolve_truth_head_context(
+        root=source_root,
+        live_head=live_head,
+        dirty_lines=[str(item).strip() for item in worktree.get("dirty_files", []) if str(item).strip()],
+    )
+    subject_commit = str(head_context.get("validated_subject_head_sha", "")).strip() or live_head
+    producer_commit = live_head
     generated_utc = str(live_index.get("generated_utc", "")).strip() or utc_now_iso_z()
     previous_pointer = _read_previous_ledger_pointer(ledger_root=ledger_root)
     live_validation_index_ref = path_ref(root=source_root, path=live_validation_index_path)
@@ -998,6 +1029,8 @@ def publish_truth_ledger_witness(
         "status": "ACTIVE",
         "truth_subject_commit": subject_commit,
         "truth_produced_at_commit": producer_commit,
+        "publication_carrier_head_sha": str(head_context.get("publication_carrier_head_sha", "")).strip(),
+        "head_relation": str(head_context.get("head_relation", "")).strip() or "HEAD_IS_SUBJECT",
         "current_bundle_hash": bundle_hash,
         "current_bundle_ref": bundle_ref,
         "current_bundle_manifest_ref": ledger_ref(branch=ledger_branch, relpath=current_manifest_rel),
@@ -1018,6 +1051,8 @@ def publish_truth_ledger_witness(
         "truth_bundle_hash": bundle_hash,
         "truth_bundle_ref": bundle_ref,
         "truth_subject_commit": subject_commit,
+        "truth_produced_at_commit": producer_commit,
+        "publication_carrier_head_sha": str(head_context.get("publication_carrier_head_sha", "")).strip(),
         "files": descriptor["files"],
         "witness_plane": True,
         "published_head_authority_claimed": False,
@@ -1041,6 +1076,7 @@ def publish_truth_ledger_witness(
         "ledger_branch": ledger_branch,
         "truth_subject_commit": subject_commit,
         "truth_produced_at_commit": producer_commit,
+        "publication_carrier_head_sha": str(head_context.get("publication_carrier_head_sha", "")).strip(),
         "truth_bundle_hash": bundle_hash,
         "truth_bundle_ref": bundle_ref,
         "current_pointer_ref": ledger_ref(branch=ledger_branch, relpath=LEDGER_CURRENT_POINTER_REL),

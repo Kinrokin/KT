@@ -1,0 +1,64 @@
+{
+  "active_blocker_family": "LEGACY_RELEASE_FAMILY",
+  "active_blocker_matrix_ref": "KT_PROD_CLEANROOM/reports/kt_final_blocker_matrix.json",
+  "active_open_blocker_count": 5,
+  "active_open_blocker_ids": [
+    "current_head_external_capability_not_confirmed",
+    "release_readiness_not_proven",
+    "release_ceremony_not_executed",
+    "release_activation_not_executed",
+    "repo_root_import_fragility_visible_and_unfixed"
+  ],
+  "authority_resolution_index_ref": "KT_PROD_CLEANROOM/governance/authority_resolution_index.json",
+  "authority_supersession_map_ref": "KT_PROD_CLEANROOM/reports/authority_supersession_map.json",
+  "checks": [
+    {
+      "check": "authority_convergence_passes",
+      "status": "PASS"
+    },
+    {
+      "check": "toolchain_runtime_firewall_passes",
+      "status": "PASS"
+    },
+    {
+      "check": "trust_zone_validation_passes",
+      "status": "PASS"
+    },
+    {
+      "check": "authority_resolution_index_passes",
+      "ref": "KT_PROD_CLEANROOM/governance/authority_resolution_index.json",
+      "status": "PASS"
+    },
+    {
+      "check": "historical_claim_firewall_active",
+      "ref": "KT_PROD_CLEANROOM/governance/historical_claim_firewall.json",
+      "status": "PASS"
+    },
+    {
+      "check": "current_head_truth_lock_compiles",
+      "status": "PASS"
+    },
+    {
+      "check": "active_blocker_family_selected",
+      "ref": "KT_PROD_CLEANROOM/reports/kt_final_blocker_matrix.json",
+      "status": "PASS"
+    },
+    {
+      "check": "c006_deferral_ceiling_alignment_passes",
+      "ref": "KT_PROD_CLEANROOM/reports/deferred_blockers.json",
+      "status": "PASS"
+    }
+  ],
+  "claim_boundary": "Omega gate passing means W0 truth and boundary closure are load-bearing for the sealed current-head workspace scope only. It does not certify release readiness, cross-host externality, historical uplift, or broad commercial admissibility.",
+  "current_head_truth_lock_ref": "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json",
+  "current_repo_head": "9cba8edfb3ed91501186c7193a619303157f927e",
+  "failures": [],
+  "gate_command": "python -m kt.omega_gate",
+  "generated_utc": "2026-03-25T23:13:27Z",
+  "historical_claim_firewall_ref": "KT_PROD_CLEANROOM/governance/historical_claim_firewall.json",
+  "next_lawful_move": "W1_BOUNDARY_PURIFICATION_AND_SINGLE_SPINE",
+  "report_authority_index_ref": "KT_PROD_CLEANROOM/reports/report_authority_index.json",
+  "schema_id": "kt.operator.omega_gate_receipt.v1",
+  "status": "PASS",
+  "wave_id": "W0_TRUTH_AND_BOUNDARY_CLOSURE"
+}

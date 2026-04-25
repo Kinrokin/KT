@@ -1,0 +1,64 @@
+{
+  "artifact_id": "kt_external_assurance_import_manifest.json",
+  "assurance_confirmation_mode": "OUTSIDER_VERIFIABLE_SECRET_FREE_DETACHED_REPLAY",
+  "assurance_subject_head_commit": "a2cc7ba323cf143def4133d722a7e79dbf35729b",
+  "compiled_against": "58ab14cd012d59ef7cb3e83313600fde826894ad",
+  "detached_package_ephemeral": true,
+  "detached_package_root": "C:\\Users\\rober\\AppData\\Local\\Temp\\kt_ws17a_assurance_ta4pecf9\\package",
+  "detached_replay_report_sha256": "fff708ed00a9609e7f4a529738698647b059a629c3aaadb245f7a825d3876854",
+  "detached_replay_stderr": "",
+  "detached_replay_stdout": "",
+  "imported_public_refs": {
+    "KT_PROD_CLEANROOM/governance/kt_public_verifier_acceptance_policy.json": {
+      "detached_copy_sha256": "cddee3443f575617dcaf8fd62e00851b96fc955b89b9d2302c7b496878bfb3fc",
+      "source_sha256": "cddee3443f575617dcaf8fd62e00851b96fc955b89b9d2302c7b496878bfb3fc"
+    },
+    "KT_PROD_CLEANROOM/governance/kt_public_verifier_distribution_policy.json": {
+      "detached_copy_sha256": "29e2e799b271f79dbf7b4e3b93942846e1e25067f66ccd5d5c839a34997b4ca5",
+      "source_sha256": "29e2e799b271f79dbf7b4e3b93942846e1e25067f66ccd5d5c839a34997b4ca5"
+    },
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_release_receipt.json": {
+      "detached_copy_sha256": "e54019ceafce2cd2c298f62912f803f49ed072643af6802549429e9361a69efe",
+      "source_sha256": "e54019ceafce2cd2c298f62912f803f49ed072643af6802549429e9361a69efe"
+    },
+    "KT_PROD_CLEANROOM/reports/kt_static_verifier_attestation.json": {
+      "detached_copy_sha256": "f582a1eda3ff3e2e43b0c1acc59cc14120e09d2fb209272b8d06e727b402ea7a",
+      "source_sha256": "f582a1eda3ff3e2e43b0c1acc59cc14120e09d2fb209272b8d06e727b402ea7a"
+    },
+    "KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json": {
+      "detached_copy_sha256": "27bcab29467f34bcd21774df0601606f3aebe27ee55f37aeafa671c9fbe6851a",
+      "source_sha256": "27bcab29467f34bcd21774df0601606f3aebe27ee55f37aeafa671c9fbe6851a"
+    },
+    "KT_PROD_CLEANROOM/reports/kt_tevv_dataset_registry_receipt.json": {
+      "detached_copy_sha256": "cd54a36a1a048b3e5d72a669fccbe4a271d6d4205461919043514857431e26d4",
+      "source_sha256": "cd54a36a1a048b3e5d72a669fccbe4a271d6d4205461919043514857431e26d4"
+    },
+    "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json": {
+      "detached_copy_sha256": "db3d96bf286d6c47d62c89568831d3e8dea80b9c937e9d5e340c61cbc4f20075",
+      "source_sha256": "db3d96bf286d6c47d62c89568831d3e8dea80b9c937e9d5e340c61cbc4f20075"
+    },
+    "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json": {
+      "detached_copy_sha256": "d2c6a5f96d7e043eaaf200c411198ba4bd964f750339ff2b472d9cfc2b3c5b6a",
+      "source_sha256": "d2c6a5f96d7e043eaaf200c411198ba4bd964f750339ff2b472d9cfc2b3c5b6a"
+    },
+    "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json": {
+      "detached_copy_sha256": "4b20265a469d3e1d95d3c3a796cd622d14c0f6edb10b1271d9e448139267b225",
+      "source_sha256": "4b20265a469d3e1d95d3c3a796cd622d14c0f6edb10b1271d9e448139267b225"
+    },
+    "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json": {
+      "detached_copy_sha256": "1a1f65c3d18850e9738732d2c235942b18973ecd4f6cd6bf09c8063c235f389b",
+      "source_sha256": "1a1f65c3d18850e9738732d2c235942b18973ecd4f6cd6bf09c8063c235f389b"
+    }
+  },
+  "removed_secret_env_keys": [
+    "KT_HMAC_KEY_SIGNER_A",
+    "KT_HMAC_KEY_SIGNER_B"
+  ],
+  "repo_checkout_present_in_detached_package": false,
+  "schema_id": "kt.operator.ws17a.external_assurance_import_manifest.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "The detached replay constitutes capability confirmation.",
+    "The detached replay widens verifier coverage beyond the bounded public_verifier_manifest surface."
+  ]
+}

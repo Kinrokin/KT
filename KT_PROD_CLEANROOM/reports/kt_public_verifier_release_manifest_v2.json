@@ -1,0 +1,161 @@
+{
+  "adjudication_packet_ref": "kt_child_adjudication_packet.json",
+  "allowed_claims": [
+    "claims_emitted_only_from_child_adjudication_outputs_for_declared_f04_verifier_surfaces_only",
+    "secret_free_one_command_outsider_verifier_v2_active_for_declared_child_verifier_surfaces_only",
+    "current_head_child_verifier_assurance_surfaces_adjudicated_authentic_complete_and_fresh_only"
+  ],
+  "bounded_scope": "CURRENT_HEAD_ASSURANCE_ONLY_DECLARED_CHILD_VERIFIER_SURFACES",
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "compiled_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "current_strongest_claim": "F04 releases a secret-free, one-command outsider verifier v2 for adjudicated child verifier assurance surfaces only.",
+  "entrypoint_command": "python run_verifier_v2.py",
+  "exit_code_contract": {
+    "0_PASS": "bounded pass",
+    "1_BOUNDED_FAIL": "bounded fail",
+    "2_INPUT_OR_ENV_INVALID": "input or pack invalid",
+    "3_TRUST_OR_FRESHNESS_FAIL": "trust or freshness fail"
+  },
+  "expected_open_blockers": [
+    "current_head_external_capability_not_confirmed",
+    "release_readiness_not_proven",
+    "release_ceremony_not_executed",
+    "release_activation_not_executed",
+    "repo_root_import_fragility_visible_and_unfixed"
+  ],
+  "forbidden_claims": [
+    "f04_proves_current_head_external_capability",
+    "f04_proves_release_readiness",
+    "f04_proves_release_activation",
+    "f04_widens_product_or_commercial_claims"
+  ],
+  "human_output_path": "outputs/outsider_summary.txt",
+  "limitations": [
+    "Verifier v2 is bounded to adjudicated child verifier assurance surfaces only.",
+    "Verifier v2 does not prove current-head runtime capability.",
+    "Verifier v2 does not prove release readiness, release ceremony, or release activation.",
+    "Verifier v2 does not fix repo-root import fragility."
+  ],
+  "machine_output_path": "outputs/outsider_result.json",
+  "package_entries": [
+    {
+      "authoritative_ref": "KT_PROD_CLEANROOM/governance/kt_claim_proof_ceiling_compiler_policy_v2.json",
+      "package_path": "data/KT_PROD_CLEANROOM/governance/kt_claim_proof_ceiling_compiler_policy_v2.json",
+      "role": "proof_ceiling_policy",
+      "sha256": "dc0a9ccedd5b0b8669021edace5c029f8e547464e5ed3e5472b9b6a3a9e74d8c"
+    },
+    {
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_state_vector_v2.json",
+      "package_path": "data/KT_PROD_CLEANROOM/reports/kt_state_vector_v2.json",
+      "role": "state_vector",
+      "sha256": "a78f02a35cc1e990d2ffd3a5c77b6a6ad36d85672613ac6d00ba6d92f2745783"
+    },
+    {
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_blocker_matrix_v2.json",
+      "package_path": "data/KT_PROD_CLEANROOM/reports/kt_blocker_matrix_v2.json",
+      "role": "blocker_matrix",
+      "sha256": "b46e0c4bbe04519eae59e7430e08be165881bbf93394a966224174fc697be3d0"
+    },
+    {
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_pipeline_attestations_receipt.json",
+      "package_path": "data/KT_PROD_CLEANROOM/reports/kt_pipeline_attestations_receipt.json",
+      "role": "pipeline_attestations_receipt",
+      "sha256": "102ec8ec699a3fbd45af302e4bc17a86a8e3ac292145b43006f530e89644a561"
+    },
+    {
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_slsa_provenance_receipt.json",
+      "package_path": "data/KT_PROD_CLEANROOM/reports/kt_slsa_provenance_receipt.json",
+      "role": "slsa_receipt",
+      "sha256": "c4d54e4a8daa28f317bdaca6ddc348d9eeb1cff75c24bf5b07770fb99fd3a0c7"
+    },
+    {
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_cross_host_repro_receipt.json",
+      "package_path": "data/KT_PROD_CLEANROOM/reports/kt_cross_host_repro_receipt.json",
+      "role": "cross_host_repro_receipt",
+      "sha256": "fa18c932b74a3089c2b0d4675111ebc2faca0af71820c89e2d1eee06ac23fa1a"
+    },
+    {
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_dependency_airlock_receipt.json",
+      "package_path": "data/KT_PROD_CLEANROOM/reports/kt_dependency_airlock_receipt.json",
+      "role": "dependency_airlock_receipt",
+      "sha256": "4b915766fa4aa88c24c53ea62bb412934dc44890e3c6cdbb5c06d85535350b04"
+    },
+    {
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_drift_and_semantic_stability_receipt.json",
+      "package_path": "data/KT_PROD_CLEANROOM/reports/kt_drift_and_semantic_stability_receipt.json",
+      "role": "drift_receipt",
+      "sha256": "962847ae5c881ce067d216ec37087dbfc5f878907fbfd101ecd548cd471f65c4"
+    },
+    {
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json",
+      "package_path": "data/KT_PROD_CLEANROOM/reports/kt_static_verifier_release_manifest.json",
+      "role": "static_verifier_manifest",
+      "sha256": "27bcab29467f34bcd21774df0601606f3aebe27ee55f37aeafa671c9fbe6851a"
+    },
+    {
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_static_verifier_sbom.json",
+      "package_path": "data/KT_PROD_CLEANROOM/reports/kt_static_verifier_sbom.json",
+      "role": "static_verifier_sbom",
+      "sha256": "54ed535585028029d2458385526344cc279de8cadd6818d6aa553ce7f7754d54"
+    },
+    {
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_static_verifier_attestation.json",
+      "package_path": "data/KT_PROD_CLEANROOM/reports/kt_static_verifier_attestation.json",
+      "role": "static_verifier_attestation",
+      "sha256": "f582a1eda3ff3e2e43b0c1acc59cc14120e09d2fb209272b8d06e727b402ea7a"
+    },
+    {
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+      "package_path": "data/KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+      "role": "historical_detached_manifest",
+      "sha256": "826fcec39dcb66a2bafce08f3d9184cd0297b2778becd768cfa556aabf73849d"
+    },
+    {
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json",
+      "package_path": "data/KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json",
+      "role": "historical_detached_sbom",
+      "sha256": "6b68c2805382c502ae199dab501755551d0a1c02670d909ad59c2443493e3327"
+    },
+    {
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+      "package_path": "data/KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+      "role": "historical_detached_receipt",
+      "sha256": "19e55b3c3d5dbb48bf0226247688262d48c632331885fd3a905fdfaf8ac8e845"
+    },
+    {
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_child_adjudication_packet.json",
+      "package_path": "kt_child_adjudication_packet.json",
+      "role": "adjudication_packet",
+      "sha256": "c188e239f97e21f9336172e3ee4870dac4508d5f41a18f3794197a37137751e4"
+    },
+    {
+      "authoritative_ref": "KT_PROD_CLEANROOM/reports/kt_public_verifier_vsa.json",
+      "package_path": "kt_public_verifier_vsa.json",
+      "role": "verifier_summary_attestation",
+      "sha256": "5d04be68ba7095908aaedc3e6b076d2e782611901a1b11434de5c2089c79d177"
+    },
+    {
+      "authoritative_ref": "KT_PROD_CLEANROOM/tools/operator/outsider_verifier_v2.py",
+      "package_path": "run_verifier_v2.py",
+      "role": "one_command_entrypoint",
+      "sha256": "7a41bc7b94a5bb17a9cd137a801b312663230c43c970db1d9649f72c06cddd8d"
+    }
+  ],
+  "package_root_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F04_public_verifier_v2_package",
+  "phase_id": "F04_ADJUDICATION_VERIFIER_V2_AND_OUTSIDER_PATH",
+  "required_env_vars": [],
+  "requires_secret_material": false,
+  "schema_id": "kt.child_campaign.public_verifier_release_manifest.v2",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "Current-head external capability is confirmed",
+    "Release readiness is proven",
+    "Release activation is executed",
+    "Product or commercial readiness is proven"
+  ],
+  "subject_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "surface_id": "F04_CHILD_OUTSIDER_VERIFIER_V2_PACKAGE",
+  "threshold_policy_package_path": "data/KT_PROD_CLEANROOM/governance/kt_threshold_root_acceptance_policy.json",
+  "tuf_policy_package_path": "data/KT_PROD_CLEANROOM/governance/kt_tuf_distribution_policy.json",
+  "vsa_ref": "kt_public_verifier_vsa.json"
+}

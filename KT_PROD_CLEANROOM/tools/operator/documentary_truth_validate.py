@@ -6,7 +6,13 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
 from tools.operator.titanium_common import make_run_dir, repo_root, write_failure_artifacts, write_json_worm
-from tools.operator.truth_authority import CURRENT_POINTER_REL, active_truth_source_ref, load_json_ref
+from tools.operator.truth_authority import (
+    CURRENT_POINTER_REL,
+    active_truth_source_ref,
+    compatibility_surface_is_non_authoritative,
+    load_json_ref,
+    truth_source_ref_is_active_or_compatibility_pointer,
+)
 
 
 POLICY_REL = "KT_PROD_CLEANROOM/governance/documentary_truth_policy.json"
@@ -22,16 +28,6 @@ def _load_json(path: Path) -> Dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
-def _documentary_only(payload: Dict[str, Any]) -> bool:
-    if bool(payload.get("documentary_only")):
-        return True
-    if "live_authority" in payload and payload.get("live_authority") is False:
-        return True
-    status = str(payload.get("status", "")).strip().upper()
-    authority_role = str(payload.get("authority_role", "")).strip().upper()
-    return "DOCUMENTARY" in status or "SUPERSEDED" in status or authority_role == "DOCUMENTARY_ONLY"
-
-
 def build_documentary_truth_report(*, root: Path) -> Dict[str, Any]:
     policy = _load_json(root / POLICY_REL)
     board = _load_json(root / BOARD_REL)
@@ -43,6 +39,7 @@ def build_documentary_truth_report(*, root: Path) -> Dict[str, Any]:
     documentary_refs = [str(item).strip() for item in policy.get("documentary_only_refs", []) if str(item).strip()]
     board_source = str(board.get("authoritative_current_head_truth_source", "")).strip()
     readiness_source = str(readiness.get("authoritative_truth_source", "")).strip()
+    main_pointer = _load_json(root / CURRENT_POINTER_REL) if active_source != CURRENT_POINTER_REL else {}
 
     checks: List[Dict[str, Any]] = []
     failures: List[str] = []
@@ -61,13 +58,21 @@ def build_documentary_truth_report(*, root: Path) -> Dict[str, Any]:
     )
     _check(
         "execution_board_uses_policy_active_source",
-        board_source == active_source,
+        truth_source_ref_is_active_or_compatibility_pointer(
+            candidate_ref=board_source,
+            active_source_ref=active_source,
+            compatibility_payload=main_pointer,
+        ),
         actual=board_source,
         expected=active_source,
     )
     _check(
         "readiness_scope_uses_policy_active_source",
-        readiness_source == active_source,
+        truth_source_ref_is_active_or_compatibility_pointer(
+            candidate_ref=readiness_source,
+            active_source_ref=active_source,
+            compatibility_payload=main_pointer,
+        ),
         actual=readiness_source,
         expected=active_source,
     )
@@ -89,22 +94,36 @@ def build_documentary_truth_report(*, root: Path) -> Dict[str, Any]:
     )
 
     if active_source != CURRENT_POINTER_REL:
-        main_pointer = _load_json(root / CURRENT_POINTER_REL)
         main_current_state = _load_json(root / CURRENT_STATE_REL)
         main_runtime_audit = _load_json(root / RUNTIME_AUDIT_REL)
         _check(
             "main_current_pointer_marked_documentary_only",
-            CURRENT_POINTER_REL in documentary_refs and _documentary_only(main_pointer),
+            compatibility_surface_is_non_authoritative(
+                ref=CURRENT_POINTER_REL,
+                active_source_ref=active_source,
+                payload=main_pointer,
+                documentary_refs=documentary_refs,
+            ),
             documentary_only_refs=documentary_refs,
         )
         _check(
             "main_current_state_marked_documentary_only",
-            CURRENT_STATE_REL in documentary_refs and _documentary_only(main_current_state),
+            compatibility_surface_is_non_authoritative(
+                ref=CURRENT_STATE_REL,
+                active_source_ref=active_source,
+                payload=main_current_state,
+                documentary_refs=documentary_refs,
+            ),
             documentary_only_refs=documentary_refs,
         )
         _check(
             "main_runtime_audit_marked_documentary_only",
-            RUNTIME_AUDIT_REL in documentary_refs and _documentary_only(main_runtime_audit),
+            compatibility_surface_is_non_authoritative(
+                ref=RUNTIME_AUDIT_REL,
+                active_source_ref=active_source,
+                payload=main_runtime_audit,
+                documentary_refs=documentary_refs,
+            ),
             documentary_only_refs=documentary_refs,
         )
 

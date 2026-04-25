@@ -1,24 +1,66 @@
 {
   "authority_refs": [
-    "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
-    "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_DEMO_SUITE_V1.json",
-    "KT_PROD_CLEANROOM/tools/router/run_router_hat_demo.py"
+    "KT_PROD_CLEANROOM/governance/b04_r3_tournament_promotion_merge_law_contract.json",
+    "KT_PROD_CLEANROOM/governance/b04_r3_tournament_promotion_merge_terminal_state.json",
+    "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+    "KT_PROD_CLEANROOM/governance/promotion_engine_law.json",
+    "KT_PROD_CLEANROOM/reports/tournament_promotion_merge_law_ratification_receipt.json",
+    "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave2b_router_selection_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave2b_router_shadow_eval_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave2b_route_distribution_health.json",
+    "KT_PROD_CLEANROOM/tools/operator/wave2b_router_shadow_validate.py"
   ],
   "domain_id": "DOMAIN_2_PROMOTION_CIVILIZATION",
   "effective_utc": "2026-03-10T00:00:00Z",
   "expires_utc": "2026-09-10T00:00:00Z",
-  "law_id": "ROUTER_PROMOTION_LAW_V1_20260310",
+  "law_id": "ROUTER_PROMOTION_LAW_V2_20260328",
   "required_validators": [
-    "python -m pytest -q KT_PROD_CLEANROOM/tools/growth/crucibles/tests/test_crucible_registry.py KT_PROD_CLEANROOM/tools/growth/crucibles/tests/test_crucible_runner.py",
-    "python -m pytest -q KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_sweep_runner_integration.py KT_PROD_CLEANROOM/tests/policy_c/test_drift_guard.py",
-    "python -m pytest -q KT_PROD_CLEANROOM/tests/fl3/test_epic15_tournament_runner.py KT_PROD_CLEANROOM/tests/fl3/test_epic15_merge_evaluator.py KT_PROD_CLEANROOM/tests/fl3/test_epic19_router_hat_demo.py KT_PROD_CLEANROOM/tests/fl3/test_fl3_rollback_drill.py KT_PROD_CLEANROOM/tests/fl3/test_fl4_promotion_atomic.py"
+    "python -m tools.operator.wave2b_router_shadow_validate",
+    "python -m tools.operator.router_shadow_evaluation_ratification_validate",
+    "python -m pytest -o addopts='' KT_PROD_CLEANROOM/tests/operator/test_wave2b_router_shadow.py KT_PROD_CLEANROOM/tests/operator/test_b04_r4_router_shadow_evaluation_ratification_validate.py -q"
   ],
-  "rules": [
-    "Static router baseline is ratified from the demo suite and policy contract only.",
-    "Shadow and learned router upgrades remain gated by later ratification order."
+  "shadow_evaluation_rules": [
+    "The audited static router baseline remains canonical during R4.",
+    "Router shadow evaluation may observe and score bounded candidate decisions, but it may not cut over runtime authority.",
+    "Every shadow routing decision must be explainable, replayable, and fallback-preserving.",
+    "No learned-router cutover is admissible unless the later ordered proof chain shows a clean win over the best static baseline with no regression.",
+    "Multi-lobe orchestration remains blocked until learned-router superiority is actually earned."
   ],
+  "candidate_input_ceiling": {
+    "allowed_signal_classes": [
+      "audited_task_features",
+      "ratified_route_policy_keywords",
+      "bounded_adapter_capability_signals",
+      "bounded_tournament_and_promotion_evidence",
+      "same_host_live_hashed_provider_underlay_receipts"
+    ],
+    "forbidden_signal_classes": [
+      "external_benchmarks",
+      "cost_or_profit_signals",
+      "human_preference_votes",
+      "non_replayable_features",
+      "hidden_out_of_band_features"
+    ]
+  },
+  "router_candidate_source_rule": {
+    "rule_id": "ROUTER_SHADOW_CANDIDATES_MUST_BE_R3_BOUNDED_AND_STATIC_COMPARATOR_CONTROLLED",
+    "rule_text": "Router shadow evaluation may consider only the audited static router baseline and adapter evidence already bounded by crucibles, lifecycle, tournaments, promotion, demotion, and merge law. It may not import unratified candidates, externality signals, or product signals.",
+    "promotion_engine_rule_ref": "KT_PROD_CLEANROOM/governance/promotion_engine_law.json"
+  },
+  "shadow_evaluation_status": {
+    "shadow_only_authorized": true,
+    "canonical_static_router_retains_authority": true,
+    "learned_router_cutover_allowed": false,
+    "multi_lobe_orchestration_allowed": false,
+    "next_ordered_step_required": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF"
+  },
+  "claim_ceiling": "This law ratifies only explainable, replayable, fallback-preserving router shadow evaluation under static-baseline control. It does not ratify learned-router superiority, live cutover, lobe promotion, externality widening, comparative claims, or commercial activation.",
   "schema_id": "kt.governance.router_promotion_law.v1",
   "status": "ACTIVE",
-  "summary": "Router promotion is limited to deterministic policy and receipted demo-suite behavior until further ratification.",
-  "supersedes": []
+  "summary": "Router shadow evaluation is lawfully bound as an explainable, replayable shadow-only step under static-baseline control. Learned-router cutover and multi-lobe promotion remain blocked until later ordered proof is earned.",
+  "supersedes": [
+    "ROUTER_PROMOTION_LAW_V1_20260310"
+  ],
+  "terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r4_router_shadow_terminal_state.json"
 }

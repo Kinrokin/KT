@@ -1,0 +1,72 @@
+{
+  "adapter_count": 13,
+  "adapter_ids": [
+    "lobe.alpha.v1",
+    "lobe.architect.v1",
+    "lobe.beta.v1",
+    "lobe.child.v1",
+    "lobe.critic.v1",
+    "lobe.p1.v1",
+    "lobe.p2.v1",
+    "lobe.scout.v1",
+    "lobe.auditor.v1",
+    "lobe.censor.v1",
+    "lobe.muse.v1",
+    "lobe.quant.v1",
+    "lobe.strategist.v1"
+  ],
+  "authoritative_stronger_cycle_evidence_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_stronger_cycle_evidence_20260407_live/cohort0_stronger_cycle_evidence_packet.json",
+  "carrier_surface_role": "TRACKED_CARRIER_ONLY_GATE_D_STRONGER_CYCLE_EVIDENCE_PACKET",
+  "claim_boundary": "This packet binds only the lab-only stronger-cycle execution evidence surfaces after a truthful non-earned B04.R5 result. It does not reopen B04.R6, Gate E, Gate F, router authority, or commercialization.",
+  "current_cycle_ceiling_summary": {
+    "admissible_parent_pair_count": 13,
+    "canonical_router_status": "STATIC_CANONICAL_BASELINE_ONLY",
+    "current_tournament_champion_adapter_id": "lobe.strategist.v1",
+    "current_tournament_dominance_pair_count": 65,
+    "proof_head": "1969bb63e99797e2377840ed053504f755ad0f56",
+    "router_superiority_earned": false
+  },
+  "current_git_head": "e47e26691968d319e8b3be9727d4257a869d05b6",
+  "evidence_posture": "STRONGER_CYCLE_EVIDENCE_READY__CHAOS_A_HYPERTRAINING_CHAOS_B_BOUND",
+  "execution_input_contract": {
+    "base_model_dir_required": true,
+    "external_artifact_root_required": true,
+    "new_authoritative_head_required": true,
+    "out_of_repo_worm_artifact_root_required": true,
+    "stage_input_root_required": true
+  },
+  "generated_utc": "2026-04-07T23:41:07Z",
+  "hypertraining_lane_count": 13,
+  "job_dir_manifest_strategy": {
+    "mode": "REEXPORT_FROM_EVAL_REPORT_V2",
+    "reason": "rapid_lora_loop emits eval_report.json, train_manifest.json, and training_run_manifest.PASS.json but not job_dir_manifest.json",
+    "source_helper_ref": "KT_PROD_CLEANROOM/tools/operator/cohort0_tournament_admission_prep_tranche.py::_reexport_job_dir_manifest"
+  },
+  "next_lawful_move": "EXECUTE_CHAOS_A_ON_NEW_AUTHORITATIVE_HEAD_WITH_REAL_STAGE_INPUTS",
+  "non_forward_motion_classes": [
+    "Running Chaos A or Chaos B with stub engines or stub-eval artifacts.",
+    "Skipping the 13 individual hypertraining lanes.",
+    "Treating a new registry or config file as evidence without executing it on a new head.",
+    "Jumping from training directly to router proof without new graph/tournament/merge surfaces.",
+    "Narrating B04.R6, Gate E, Gate F, or commercialization from another non-earned proof line."
+  ],
+  "schema_id": "kt.operator.cohort0_stronger_cycle_evidence_packet.v1",
+  "source_authoritative_adapter_registry_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/governance/adapter_registry.json",
+  "source_forge_registry_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/tools/operator/config/forge_cohort0_registry.json",
+  "source_stronger_cycle_prep_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_stronger_cycle_prep_20260407_live/cohort0_stronger_cycle_prep_packet.json",
+  "stage_asset_refs": {
+    "chaos_round_a_contract_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_stronger_cycle_evidence_20260407_live/chaos_round_a/chaos_round_a_execution_contract.json",
+    "chaos_round_a_registry_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_stronger_cycle_evidence_20260407_live/chaos_round_a/forge_cohort0_registry_hf_lora.json",
+    "chaos_round_b_contract_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_stronger_cycle_evidence_20260407_live/chaos_round_b/chaos_round_b_execution_contract.json",
+    "chaos_round_b_registry_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_stronger_cycle_evidence_20260407_live/chaos_round_b/forge_cohort0_registry_hf_lora.json",
+    "hypertraining_contract_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_stronger_cycle_evidence_20260407_live/individual_hypertraining/hypertraining_contract.json"
+  },
+  "status": "PASS",
+  "subject_head": "1969bb63e99797e2377840ed053504f755ad0f56",
+  "success_criteria": [
+    "Chaos Round A, all 13 hypertraining lanes, and Chaos Round B must run on a new authoritative head distinct from the current proof head.",
+    "All 13 lanes must produce non-stub outputs with hf_lora engine plus eval_report.json, train_manifest.json, and training_run_manifest.PASS.json.",
+    "The stronger-cycle downstream graph must then be rerun through the existing non-stub eval, tournament, merge, router-shadow, and R5 law surfaces without skipping steps.",
+    "Only an actually earned future router_superiority_earned = true result may reopen B04.R6, Gate E, or Gate F."
+  ]
+}

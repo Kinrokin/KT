@@ -1,0 +1,117 @@
+{
+  "b04_activation_allowed": false,
+  "canonical_receipt_binding": {
+    "gate_d_decision_law_ref": "KT_PROD_CLEANROOM/governance/gate_d_decision_law.json",
+    "gate_d_decision_reanchor_packet_ref": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
+    "gate_d_decision_terminal_state_ref": "KT_PROD_CLEANROOM/governance/gate_d_decision_terminal_state.json"
+  },
+  "checks": [
+    {
+      "check_id": "law_type_is_gate_d_decision_ballot",
+      "pass": true
+    },
+    {
+      "check_id": "mode_is_definition_only_no_posture_selected",
+      "pass": true
+    },
+    {
+      "check_id": "gate_c_exit_head_matches_reanchor_packet",
+      "pass": true
+    },
+    {
+      "check_id": "reanchor_head_matches_reanchor_packet",
+      "pass": true
+    },
+    {
+      "check_id": "b04_activation_disabled_in_law",
+      "pass": true
+    },
+    {
+      "check_id": "postures_unselected_in_law",
+      "pass": true
+    },
+    {
+      "check_id": "all_required_domains_present",
+      "pass": true
+    },
+    {
+      "check_id": "all_domains_have_exact_enums_restrictive_defaults_and_no_selected_posture",
+      "pass": true
+    },
+    {
+      "check_id": "activation_rules_fail_closed_before_decision",
+      "pass": true
+    },
+    {
+      "check_id": "decision_receipt_requirement_is_same_head_and_nonactivating",
+      "pass": true
+    },
+    {
+      "check_id": "terminal_state_is_unselected_and_nonactivating",
+      "pass": true
+    },
+    {
+      "check_id": "terminal_next_move_is_posture_selection_only",
+      "pass": true
+    },
+    {
+      "check_id": "claim_boundary_does_not_activate_b04",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "This receipt proves only that the Gate D ballot is definition-only, posture values remain unselected, and B04 activation stays fail-closed until a future same-head decision receipt exists.",
+  "current_git_head": "dfa1a8dc4d1e2874f79ec9b81289cbbac521dcd3",
+  "domain_rows": [
+    {
+      "allowed_postures_exact": true,
+      "default_is_restrictive": true,
+      "default_posture": "EXTERNALITY_BOUNDED",
+      "domain_id": "D1_EXTERNALITY_WIDENING",
+      "selected_posture": null,
+      "selected_posture_is_unset": true
+    },
+    {
+      "allowed_postures_exact": true,
+      "default_is_restrictive": true,
+      "default_posture": "COUNTED_DOMAINS_FROZEN",
+      "domain_id": "D2_NEW_COUNTED_DOMAINS",
+      "selected_posture": null,
+      "selected_posture_is_unset": true
+    },
+    {
+      "allowed_postures_exact": true,
+      "default_is_restrictive": true,
+      "default_posture": "STATIC_SYSTEM",
+      "domain_id": "D3_ADAPTIVE_EVOLUTION_AUTHORIZATION",
+      "selected_posture": null,
+      "selected_posture_is_unset": true
+    },
+    {
+      "allowed_postures_exact": true,
+      "default_is_restrictive": true,
+      "default_posture": "NO_EXTERNAL_COMPARATIVE_CLAIMS",
+      "domain_id": "D4_COMPARATIVE_COMPETITIVE_CLAIMS",
+      "selected_posture": null,
+      "selected_posture_is_unset": true
+    },
+    {
+      "allowed_postures_exact": true,
+      "default_is_restrictive": true,
+      "default_posture": "LAB_ONLY",
+      "domain_id": "D5_COMMERCIAL_ACTIVATION",
+      "selected_posture": null,
+      "selected_posture_is_unset": true
+    }
+  ],
+  "gate_c_exit_head": "71268f2f7489aadec338d5e71bb5b70f8a7fe9dc",
+  "generated_utc": "2026-03-28T17:35:32Z",
+  "law_type": "GATE_D_DECISION_BALLOT",
+  "mode": "DEFINITION_ONLY_NO_POSTURE_SELECTED",
+  "next_lawful_move": "B04_GATE_D_POSTURE_SELECTION_ONLY",
+  "postures_selected": false,
+  "reanchor_head": "ee752460e34ad2411adc3d228704f20c421f33be",
+  "receipt_role": "COUNTED_GATE_D_DECISION_LAW_ARTIFACT_ONLY",
+  "schema_id": "kt.gate_d.decision_law_receipt.v1",
+  "status": "PASS",
+  "subject_head": "dfa1a8dc4d1e2874f79ec9b81289cbbac521dcd3"
+}

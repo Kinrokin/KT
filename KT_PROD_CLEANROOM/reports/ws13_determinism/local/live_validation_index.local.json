@@ -1,0 +1,91 @@
+{
+  "branch_ref": "main",
+  "checks": [
+    {
+      "check_id": "constitutional_guard",
+      "command": "python KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tools/check_constitution.py --report C:\\Users\\rober\\AppData\\Local\\Temp\\kt_constitution_guard_report.md",
+      "critical": true,
+      "dirty_sensitive": false,
+      "observed": "constitutional guard passes with canonical runtime scope enforced",
+      "scope": "canonical_runtime",
+      "status": "PASS",
+      "summary": "constitutional guard passes with canonical runtime scope enforced"
+    },
+    {
+      "check_id": "runtime_suite",
+      "command": "python -m pytest -q KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests",
+      "critical": true,
+      "dirty_sensitive": false,
+      "observed": "runtime suite passed",
+      "scope": "canonical_runtime",
+      "status": "PASS",
+      "summary": "runtime suite passed"
+    },
+    {
+      "check_id": "critical_governance_regression_suite",
+      "command": "python -m pytest -q KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_invariants_gate.py KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_no_network_dry_run.py KT_PROD_CLEANROOM/tests/fl3/test_fl3_meta_evaluator.py KT_PROD_CLEANROOM/tools/verification/tests/test_reconcile_and_schemas.py",
+      "critical": true,
+      "dirty_sensitive": false,
+      "observed": "critical regression suite passed",
+      "scope": "core_truth_repair",
+      "status": "PASS",
+      "summary": "critical regression suite passed"
+    },
+    {
+      "check_id": "lane_policy_repair_suite",
+      "command": "python -m pytest -q KT_PROD_CLEANROOM/tests/fl3/test_epic16_admission_gates.py KT_PROD_CLEANROOM/tests/fl3/test_epic15_tournament_runner.py KT_PROD_CLEANROOM/tests/fl3/test_epic15_merge_evaluator.py",
+      "critical": true,
+      "dirty_sensitive": false,
+      "observed": "lane-aware governance gate suite passed",
+      "scope": "governance_lanes",
+      "status": "PASS",
+      "summary": "lane-aware governance gate suite passed"
+    },
+    {
+      "check_id": "law_bundle_integrity",
+      "command": "python -m pytest -q KT_PROD_CLEANROOM/tests/fl3/test_fl3_law_bundle_integrity.py KT_PROD_CLEANROOM/tests/fl3/test_fl3_meta_evaluator.py",
+      "critical": true,
+      "dirty_sensitive": false,
+      "observed": "law bundle integrity suite passed",
+      "scope": "law_surface",
+      "status": "PASS",
+      "summary": "law bundle integrity suite passed"
+    },
+    {
+      "check_id": "trust_zone_validator",
+      "command": "python -m tools.operator.trust_zone_validate",
+      "critical": true,
+      "dirty_sensitive": false,
+      "observed": "trust-zone validator passed",
+      "scope": "boundary_purification",
+      "status": "PASS",
+      "summary": "trust-zone validator passed"
+    },
+    {
+      "check_id": "current_worktree_cleanroom_suite",
+      "command": "python -m pytest -q KT_PROD_CLEANROOM/tests -q -ra --maxfail=100",
+      "critical": true,
+      "dirty_sensitive": true,
+      "observed": "current-worktree cleanroom suite passed",
+      "scope": "active_repo_validation",
+      "status": "PASS",
+      "summary": "current-worktree cleanroom suite passed"
+    },
+    {
+      "check_id": "operator_clean_clone_smoke",
+      "command": "git clone <repo> <tmp> && python -m pytest -q KT_PROD_CLEANROOM/tests/fl3/test_hat_demo_guardrails.py KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py",
+      "critical": true,
+      "dirty_sensitive": false,
+      "scope": "clean_clone_validation",
+      "status": "SKIP",
+      "summary": "operator clean-clone smoke skipped by request"
+    }
+  ],
+  "generated_utc": "2026-03-18T04:36:45Z",
+  "schema_id": "kt.operator.live_validation_index.v1",
+  "worktree": {
+    "dirty_files": [],
+    "git_dirty": false,
+    "head_sha": "a2cc7ba323cf143def4133d722a7e79dbf35729b"
+  }
+}

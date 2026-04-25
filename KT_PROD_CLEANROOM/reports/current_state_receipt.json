@@ -1,7 +1,5 @@
 {
-  "active_stop_gates": [
-    "GREEN_NOT_REEARNED"
-  ],
+  "active_stop_gates": [],
   "branch_ref": "main",
   "closure_receipts": [
     "KT_PROD_CLEANROOM/reports/live_validation_index.json",
@@ -12,38 +10,32 @@
     "KT_PROD_CLEANROOM/reports/one_button_production_receipt.json",
     "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json"
   ],
-  "current_p0_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
-  "current_release_decision": "HOLD_CANONICAL_READY_FOR_REEARNED_GREEN",
+  "current_p0_state": "TRUTHFUL_GREEN",
+  "current_release_decision": "GO_PRESS_BUTTON_PRODUCTION_ELIGIBLE",
   "finish_line_predicates": {
     "canonical_scope_enforced": true,
     "constitutional_truth_live": true,
     "current_worktree_clean": true,
-    "one_button_current_head_pass": false,
+    "one_button_current_head_pass": true,
     "posture_receipts_synchronized": true,
+    "publication_carrier_worktree_clean": false,
     "truth_engine_authoritative": true,
-    "truthful_green_active": false
+    "truthful_green_active": true
   },
-  "generated_utc": "2026-03-14T12:14:07Z",
-  "documentary_only": true,
-  "live_authority": false,
-  "mirror_class": "documentary_compatibility_surface",
-  "next_allowed_transition": "REENABLE_GREEN_FROM_CURRENT_HEAD",
-  "posture_state": "CANONICAL_READY_FOR_REEARNED_GREEN",
+  "generated_utc": "2026-03-26T05:35:42Z",
+  "head_relation": "HEAD_DIVERGED_FROM_ACTIVE_SUBJECT",
+  "next_allowed_transition": "NONE_REQUIRED_RUNTIME_LAWFUL_GREEN_ACTIVE",
+  "posture_state": "TRUTHFUL_GREEN",
+  "publication_carrier_head_sha": "",
   "schema_id": "kt.operator.current_state_receipt.v3",
   "status": "PASS",
   "truth_sources": [
-    "kt_truth_ledger:ledger/current/current_pointer.json",
-    "kt_truth_ledger:ledger/current/current_state_receipt.json",
-    "kt_truth_ledger:ledger/current/runtime_closure_audit.json",
+    "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
     "KT_PROD_CLEANROOM/reports/live_validation_index.json",
     "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
     "KT_PROD_CLEANROOM/reports/posture_consistency_enforcement_receipt.json",
     "KT_PROD_CLEANROOM/reports/posture_conflict_receipt.json"
   ],
-  "superseded_by": [
-    "kt_truth_ledger:ledger/current/current_pointer.json",
-    "kt_truth_ledger:ledger/current/current_state_receipt.json"
-  ],
-  "validated_head_sha": "7bd610b507328eb72622ce24678620f5469f3848",
+  "validated_head_sha": "5746fed530c0218abc2ac4d106f6a869aa8798b2",
   "validation_index_ref": "KT_PROD_CLEANROOM/reports/live_validation_index.json"
 }

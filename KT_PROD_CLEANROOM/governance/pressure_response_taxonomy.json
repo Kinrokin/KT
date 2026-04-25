@@ -1,6 +1,10 @@
 {
+  "coverage_matrix_ref": "KT_PROD_CLEANROOM/reports/pressure_behavior_matrix.json",
+  "delta_summary_rule": "Later pressure deltas must be derived only from registered crucible results with canonical runner precedence and baseline-comparable kernel targets.",
+  "epoch_coverage_rule": "Pressure coverage must remain finite and explicit across the ratified levels. Unbound or unregistered pressures remain lab-only and cannot count toward later promotion or routing claims.",
   "expires_utc": "2026-09-10T00:00:00Z",
-  "generated_utc": "2026-03-10T13:29:07Z",
+  "fitness_pressure_register_ref": "KT_PROD_CLEANROOM/reports/kt_fitness_pressure_register.json",
+  "generated_utc": "2026-03-28T20:40:00Z",
   "levels": [
     {
       "authority_ref": "KT_PROD_CLEANROOM/AUDITS/ROUTER/ROUTER_POLICY_HAT_V1.json",
@@ -36,6 +40,7 @@
       ]
     }
   ],
+  "promotion_eligibility_rule": "Pressure classes become admissible for later adapter promotion only through replayable crucible receipts and not through narrative or unbound benchmark claims.",
   "schema_id": "kt.governance.pressure_response_taxonomy.v1",
   "status": "ACTIVE",
   "supersedes": []

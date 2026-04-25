@@ -1,0 +1,33 @@
+{
+  "active_truth_source_ref": "kt_truth_ledger:ledger/current/current_pointer.json",
+  "active_truth_subject_commit": "54e7d1cbf225757a73955048b760c6eaa7cc1d42",
+  "authority_resolution_index_ref": "KT_PROD_CLEANROOM/governance/authority_resolution_index.json",
+  "checks": [
+    {
+      "check": "authority_resolution_index_passes",
+      "status": "PASS"
+    },
+    {
+      "check": "active_truth_source_not_documentary_only",
+      "ref": "kt_truth_ledger:ledger/current/current_pointer.json",
+      "status": "PASS"
+    },
+    {
+      "check": "documentary_compatibility_pointer_is_documentary_only",
+      "ref": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "status": "PASS"
+    },
+    {
+      "check": "active_current_head_scope_ref_declared",
+      "ref": "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json",
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "9cba8edfb3ed91501186c7193a619303157f927e",
+  "documentary_compatibility_pointer_documentary_only": true,
+  "documentary_compatibility_pointer_ref": "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+  "failures": [],
+  "generated_utc": "2026-03-25T23:13:54Z",
+  "schema_id": "kt.operator.authority_resolution_receipt.v1",
+  "status": "PASS"
+}

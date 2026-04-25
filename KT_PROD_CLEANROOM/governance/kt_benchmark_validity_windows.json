@@ -1,0 +1,31 @@
+{
+  "anti_cherry_picking_boundary": {
+    "historical_row_substitution_allowed": false,
+    "retroactive_window_extension_allowed": false,
+    "worst_case_pack_status_required": true
+  },
+  "current_repo_head": "9cba8edfb3ed91501186c7193a619303157f927e",
+  "schema_id": "kt.governance.benchmark_validity_windows.v1",
+  "status": "ACTIVE",
+  "stronger_claim_not_made": [
+    "WS16 benchmark validity windows constitute external confirmation.",
+    "WS16 benchmark validity windows widen current bounded surfaces into general benchmark leadership claims."
+  ],
+  "windows": [
+    {
+      "max_age_hours": 24,
+      "requires_subject_binding": true,
+      "staleness_action": "FAIL_CLOSED",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/ws13_determinism/local/live_validation_index.local.json",
+      "window_id": "local_truth_barrier_current_head"
+    },
+    {
+      "max_age_hours": 24,
+      "requires_subject_binding": true,
+      "staleness_action": "FAIL_CLOSED",
+      "surface_ref": "KT_PROD_CLEANROOM/reports/ws13_determinism/ci/live_validation_index.ci.json",
+      "window_id": "ci_truth_barrier_current_head"
+    }
+  ],
+  "windows_id": "KT_BENCHMARK_VALIDITY_WINDOWS_V1_20260318"
+}

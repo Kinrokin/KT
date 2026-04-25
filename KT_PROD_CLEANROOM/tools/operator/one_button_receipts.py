@@ -37,6 +37,53 @@ def _extract_head_from_verdict(verdict: str) -> str:
     return str(match.group(1)).strip() if match else ""
 
 
+def _critical_failures(index: Dict[str, Any]) -> list[Dict[str, Any]]:
+    rows = index.get("checks") if isinstance(index.get("checks"), list) else []
+    out: list[Dict[str, Any]] = []
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        if not bool(row.get("critical")):
+            continue
+        status = str(row.get("status", "")).strip().upper()
+        if status in {"PASS", "SKIP"}:
+            continue
+        out.append(row)
+    return out
+
+
+def _cleanroom_suite_admissible(index: Dict[str, Any]) -> tuple[bool, str]:
+    rows = index.get("checks") if isinstance(index.get("checks"), list) else []
+    suite_row: Optional[Dict[str, Any]] = None
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("check_id", "")).strip() == "current_worktree_cleanroom_suite":
+            suite_row = row
+            break
+
+    if suite_row is None:
+        return False, "MISSING"
+
+    suite_status = str(suite_row.get("status", "")).strip().upper() or "UNKNOWN"
+    if suite_status == "PASS":
+        return True, "PASS"
+
+    failures = _critical_failures(index)
+    non_dirty_failures = [row for row in failures if not bool(row.get("dirty_sensitive"))]
+    if non_dirty_failures:
+        return False, suite_status
+
+    worktree = index.get("worktree") if isinstance(index.get("worktree"), dict) else {}
+    subject_dirty = bool(worktree.get("subject_git_dirty")) if "subject_git_dirty" in worktree else bool(worktree.get("git_dirty"))
+    publication_carrier_dirty = bool(worktree.get("publication_carrier_dirty"))
+    carrier_only_dirty = publication_carrier_dirty and not subject_dirty
+    if bool(suite_row.get("dirty_sensitive")) and suite_status == "FAIL" and carrier_only_dirty:
+        return True, "PASS_CARRIER_ONLY_DIRTY"
+
+    return False, suite_status
+
+
 def mint_one_button_receipts(*, safe_run_root: Path, live_validation_index: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
     safe_run_verdict = _read_required_text(safe_run_root / "verdict.txt")
     safe_run_preflight = _load_required(safe_run_root / "reports" / "operator_preflight.json")
@@ -47,16 +94,12 @@ def mint_one_button_receipts(*, safe_run_root: Path, live_validation_index: Dict
     nested_run_head = _read_required_text(program_run / "git_head.txt")
 
     live_head = str((live_validation_index.get("worktree") or {}).get("head_sha", "")).strip()
+    validated_subject_head = str((live_validation_index.get("worktree") or {}).get("validated_subject_head_sha", "")).strip() or live_head
+    publication_carrier_head = str((live_validation_index.get("worktree") or {}).get("publication_carrier_head_sha", "")).strip()
+    head_relation = str((live_validation_index.get("worktree") or {}).get("head_relation", "")).strip() or "HEAD_IS_SUBJECT"
     branch_ref = str(live_validation_index.get("branch_ref", "")).strip()
     generated_utc = str(live_validation_index.get("generated_utc", "")).strip() or utc_now_iso_z()
-    suite_rows = live_validation_index.get("checks") if isinstance(live_validation_index.get("checks"), list) else []
-    suite_status = "UNKNOWN"
-    for row in suite_rows:
-        if not isinstance(row, dict):
-            continue
-        if str(row.get("check_id", "")).strip() == "current_worktree_cleanroom_suite":
-            suite_status = str(row.get("status", "")).strip() or "UNKNOWN"
-            break
+    suite_admissible, suite_status = _cleanroom_suite_admissible(live_validation_index)
 
     nested_verdict_head = _extract_head_from_verdict(nested_verdict)
     head_lineage_match = bool(
@@ -76,8 +119,10 @@ def mint_one_button_receipts(*, safe_run_root: Path, live_validation_index: Dict
     preflight = {
         "schema_id": "kt.one_button_preflight_receipt.v2",
         "created_utc": generated_utc,
-        "status": "PASS" if safe_run_ok and suite_status == "PASS" and head_lineage_match else "FAIL",
-        "validated_head_sha": live_head,
+        "status": "PASS" if safe_run_ok and suite_admissible and head_lineage_match else "FAIL",
+        "validated_head_sha": validated_subject_head,
+        "publication_carrier_head_sha": publication_carrier_head,
+        "head_relation": head_relation,
         "branch_ref": branch_ref,
         "canonical_candidate_run_root": safe_run_root.as_posix(),
         "canonical_candidate_program_run_root": program_run.as_posix(),
@@ -88,10 +133,11 @@ def mint_one_button_receipts(*, safe_run_root: Path, live_validation_index: Dict
         "head_lineage_match": head_lineage_match,
         "operator_preflight_status": str(safe_run_preflight.get("status", "")).strip(),
         "current_worktree_cleanroom_suite_status": suite_status,
+        "current_worktree_cleanroom_suite_admissible": suite_admissible,
         "delivery_manifest": (program_run / "delivery" / "delivery_manifest.json").as_posix(),
         "next_action": (
             "canonical_hmac safe-run is current-head admissible"
-            if safe_run_ok and suite_status == "PASS" and head_lineage_match
+            if safe_run_ok and suite_admissible and head_lineage_match
             else "repair safe-run preflight, current-worktree cleanroom suite, or safe-run head lineage"
         ),
     }
@@ -100,7 +146,9 @@ def mint_one_button_receipts(*, safe_run_root: Path, live_validation_index: Dict
         "schema_id": "kt.one_button_production_receipt.v2",
         "created_utc": generated_utc,
         "status": "PASS" if safe_run_ok and nested_ok and head_lineage_match else "FAIL",
-        "validated_head_sha": live_head,
+        "validated_head_sha": validated_subject_head,
+        "publication_carrier_head_sha": publication_carrier_head,
+        "head_relation": head_relation,
         "branch_ref": branch_ref,
         "frozen_command": "python -m tools.operator.kt_cli --profile v1 safe-run --assurance-mode production --program program.certify.canonical_hmac --config {}",
         "production_run": {

@@ -1,0 +1,80 @@
+{
+  "accounted_surfaces_percent": 100.0,
+  "blocked_by": [],
+  "blocked_surface_count": 0,
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "all_critical_organs_have_current_head_receipt_or_explicit_blocker",
+      "detail": "Every critical runtime organ must have a current-head receipt row or an explicit blocker row.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_current_head_capability_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_runtime_truth_matrix.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "no_historical_capability_receipt_used_for_current_runtime_truth",
+      "detail": "Historical-only capability imports may not justify current-head runtime claims or promotions.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_current_head_capability_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_external_capability_confirmation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "retentions_and_promotions_are_evidence_backed",
+      "detail": "Organ retention and promotion decisions must be benchmark-backed, provenance-backed, regression-backed, or explicitly blocked.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_organ_promotion_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_regression_matrix.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "theater_risk_visible_and_punitive",
+      "detail": "Theater-risk and underexercised runtime surfaces must be visible and punitive, not promotional.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_organ_promotion_matrix.json",
+        "KT_PROD_CLEANROOM/reports/kt_theater_risk_matrix.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "no_unrelated_claim_widening",
+      "detail": "F05 may not widen release, product, or commercial verdicts while compiling runtime truth.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_claim_proof_ceiling_compiler_policy_v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_blocker_matrix_v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_state_vector_v2.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "current_strongest_claim": "F05 locks a bounded current-head runtime truth and promotion matrix where every critical organ is accounted for by receipt-backed retention or explicit blocker status only.",
+  "evidence_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "generated_utc": "2026-03-20T01:41:58Z",
+  "next_lawful_phase": "F06_EXTERNAL_CONFIRMATION_AND_FINAL_CURRENT_HEAD_READJUDICATION",
+  "pass_verdict": "CURRENT_HEAD_RUNTIME_ORGANS_ACCOUNTED_AND_BOUNDED_PROMOTION_MATRIX_LOCKED",
+  "phase_id": "F05_ORGAN_ELEVATION_AND_RUNTIME_PROMOTION",
+  "prior_explicit_current_head_receipt_percent": 37.5,
+  "promoted_surface_count": 0,
+  "retained_surface_count": 8,
+  "schema_id": "kt.child_campaign.organ_elevation_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "Current-head runtime capability is externally confirmed",
+    "Any runtime organ is world-class",
+    "Release readiness is proven",
+    "Product or commercial readiness is proven"
+  ],
+  "subject_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "what_is_not_proven": [
+    "Current-head external capability remains unconfirmed",
+    "Release readiness remains unproven",
+    "Release ceremony remains non-executed",
+    "Release activation remains non-executed",
+    "Repo-root import fragility remains visible and unfixed"
+  ]
+}

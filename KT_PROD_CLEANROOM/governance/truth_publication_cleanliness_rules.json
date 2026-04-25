@@ -6,9 +6,19 @@
   "supersedes": [],
   "status": "ACTIVE",
   "subject_cleanliness_rule": "truth_subject_commit must be validated from a worktree whose live validation state is not dirty-sensitive blocked",
+  "subject_carrier_rule": "When current HEAD differs from truth_subject_commit only by allowed publication-carrier surfaces, truth_subject_commit remains the validated subject and HEAD is only the documentary publication carrier.",
+  "carrier_commit_may_differ_from_truth_subject_commit": true,
+  "publication_carrier_dirty_does_not_imply_subject_dirty": true,
   "authoritative_generated_writes": [
     "KT_PROD_CLEANROOM/exports/_truth/current/**",
     "KT_PROD_CLEANROOM/exports/_truth/bundles/**"
+  ],
+  "allowed_publication_carrier_surfaces": [
+    "KT_PROD_CLEANROOM/reports/**",
+    "KT_PROD_CLEANROOM/exports/_truth/current/**",
+    "KT_PROD_CLEANROOM/governance/execution_board.json",
+    "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
+    "KT_PROD_CLEANROOM/governance/h0_freeze_policy.json"
   ],
   "allowed_tracked_documentary_writes": [
     "KT_PROD_CLEANROOM/reports/truth_bundle.schema.json",

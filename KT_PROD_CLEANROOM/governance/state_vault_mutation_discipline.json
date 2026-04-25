@@ -1,0 +1,14 @@
+{
+  "schema_id": "kt.governance.state_vault_mutation_discipline.v1",
+  "status": "ACTIVE",
+  "canonical_state_vault_ref": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/_runtime_artifacts/state_vault.jsonl",
+  "mutation_discipline": "SEQUENTIAL_ONLY_SHARED_APPEND_LOG",
+  "parallel_validation_policy": "FORBIDDEN_ON_SHARED_CANONICAL_VAULT",
+  "required_fail_closed_modes": [
+    "APPEND_LOCK_BUSY",
+    "STALE_WRITER_HEAD_MISMATCH"
+  ],
+  "permitted_parallel_alternative": "ISOLATED_SNAPSHOT_OR_TEMPORARY_VAULT_ONLY",
+  "law": "Shared claim-bearing state-vault mutation and validator execution must serialize. Parallel use on the shared canonical vault is non-admissible and must fail closed.",
+  "claim_boundary": "Observed parallel-failure behavior is an execution-lane constraint, not a runtime capability defect."
+}

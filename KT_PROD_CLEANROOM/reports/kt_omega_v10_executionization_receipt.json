@@ -1,0 +1,44 @@
+{
+  "canonical_paths": [
+    "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json",
+    "KT_PROD_CLEANROOM/governance/authority_resolution_index.json",
+    "KT_PROD_CLEANROOM/governance/historical_claim_firewall.json",
+    "KT_PROD_CLEANROOM/governance/tools_runtime_boundary_rule.json",
+    "KT_PROD_CLEANROOM/reports/report_authority_index.json",
+    "KT_PROD_CLEANROOM/reports/authority_supersession_map.json",
+    "KT_PROD_CLEANROOM/governance/authority_supersession_registry.json",
+    "KT_PROD_CLEANROOM/reports/omega_gate_receipt.json"
+  ],
+  "checks": [
+    {
+      "check": "constitution_self_check_passes",
+      "status": "PASS"
+    },
+    {
+      "check": "reporting_integrity_passes",
+      "status": "PASS"
+    },
+    {
+      "check": "canonical_paths_bound_inside_repo_root",
+      "status": "PASS"
+    },
+    {
+      "check": "governance_authority_supersession_registry_emitted",
+      "status": "PASS"
+    },
+    {
+      "check": "gate_c_alias_drift_absent",
+      "status": "PASS"
+    }
+  ],
+  "failures": [],
+  "gate_c_alias_drift_detail": {
+    "baseline_vs_live_present": false,
+    "comparator_eval_alias_present": false
+  },
+  "generated_utc": "2026-03-24T16:37:55Z",
+  "repo_hygiene_claim_boundary": "Executionization does not convert a dirty starting state into a clean authority pass. It binds the batch to real repo paths and records the live hygiene blocker honestly.",
+  "repo_hygiene_status": "PASS",
+  "schema_id": "kt.operator.kt_omega_v10_executionization_receipt.v1",
+  "status": "PASS"
+}

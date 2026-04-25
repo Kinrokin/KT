@@ -1,0 +1,96 @@
+{
+  "checks": [
+    {
+      "check_id": "r2_contract_and_terminal_state_bind_only_adapter_lifecycle_ratification",
+      "pass": true
+    },
+    {
+      "check_id": "r1_crucible_pressure_rule_is_consumed_by_lifecycle_law",
+      "pass": true
+    },
+    {
+      "check_id": "finite_adapter_state_model_is_bound",
+      "pass": true
+    },
+    {
+      "check_id": "all_transitions_are_receipt_or_future_step_gated",
+      "pass": true
+    },
+    {
+      "check_id": "governance_registry_rows_cover_all_declared_adapters",
+      "pass": true
+    },
+    {
+      "check_id": "experimental_rows_remain_preromotion_and_ratified_rows_do_not_exceed_promoted_ceiling",
+      "pass": true
+    },
+    {
+      "check_id": "lineage_and_promotion_evidence_exist_and_are_governed",
+      "pass": true
+    },
+    {
+      "check_id": "runtime_boundary_and_generated_candidate_stay_bounded",
+      "pass": true
+    },
+    {
+      "check_id": "control_surfaces_advance_only_to_r3",
+      "pass": true
+    },
+    {
+      "check_id": "scope_remains_bounded_after_r2",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "This receipt proves only that adapter lifecycle law, registry, lineage, and promotion-eligibility consumption are ratified under the R1 crucible-pressure spine. It does not ratify tournament, merge, router, lobes, externality, or product widening.",
+  "current_git_head": "a22c571f1945c8182c2106c361d8328295ef6c3f",
+  "generated_utc": "2026-03-28T21:45:24Z",
+  "lifecycle_state_summary": {
+    "experimental_adapter_count": 8,
+    "max_authorized_state_after_r2": "PROMOTED",
+    "ratified_adapter_count": 5,
+    "registry_state_counts": {
+      "PROMOTED": 5,
+      "REGISTERED": 8
+    },
+    "state_ids": [
+      "PROPOSED",
+      "REGISTERED",
+      "IN_CRUCIBLE",
+      "EVIDENCE_ACCUMULATING",
+      "ELIGIBLE",
+      "TOURNAMENT_READY",
+      "PROMOTED",
+      "SHADOW_ACTIVE",
+      "GOVERNED_ACTIVE",
+      "DEMOTED",
+      "RETIRED",
+      "MERGED"
+    ]
+  },
+  "lineage_summary": {
+    "adapter_promotion_count": 19,
+    "admissible_learning_delta_count": 21,
+    "lineage_entry_count": 64
+  },
+  "next_lawful_move": "B04_R3_TOURNAMENT_PROMOTION_MERGE_LAW_RATIFICATION",
+  "promotion_consumption_summary": {
+    "generated_candidate_status": "GENERATED_PROMOTABLE_CANDIDATE",
+    "rule_id": "CRUCIBLE_PRESSURE_RESULTS_BIND_LATER_ADAPTER_PROMOTION_ELIGIBILITY",
+    "rule_text": "No adapter may be promoted, routed, merged, or ratified without crucible evidence receipts produced under the ratified pressure taxonomy.",
+    "runtime_live_adapter_count": 2
+  },
+  "receipt_role": "COUNTED_B04_R2_ADAPTER_LIFECYCLE_LAW_ARTIFACT_ONLY",
+  "schema_id": "kt.b04.r2.adapter_lifecycle_law_ratification_receipt.v1",
+  "status": "PASS",
+  "subject_head": "a22c571f1945c8182c2106c361d8328295ef6c3f",
+  "transition_summary": {
+    "blocked_future_states": [
+      "SHADOW_ACTIVE",
+      "GOVERNED_ACTIVE"
+    ],
+    "future_step_gated_count": 5,
+    "receipt_gated_count": 6,
+    "transition_count": 11
+  },
+  "workstream_id": "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION"
+}

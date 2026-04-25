@@ -1,0 +1,124 @@
+{
+  "allowed_claims": [
+    "control",
+    "proof",
+    "receipt_quality",
+    "replayability",
+    "fail_closed_behavior",
+    "operator_trust"
+  ],
+  "authority_header": {
+    "canonical_authority_branch": "main",
+    "cleanup_closeout_merged_locally": true,
+    "gate_d_cleared_on_successor_line": true,
+    "gate_e_open_on_successor_line": true,
+    "gate_f_narrow_wedge_confirmed": true,
+    "gate_f_open": false,
+    "post_f_reaudit_passed": true,
+    "working_branch": "expansion/post-f-track-01",
+    "working_branch_non_authoritative_until_protected_merge": true
+  },
+  "claim_boundary": "This packet defines only the first post-F comparative-proof scope for the confirmed canonical local_verifier_mode wedge. It does not widen canonical product truth, does not promote broad model superiority claims, and remains non-authoritative until the protected canonical merge path lands.",
+  "comparator_classes": [
+    {
+      "category_fair": true,
+      "class_id": "INTERNAL_STATIC_BASELINE",
+      "label": "strongest static internal baseline",
+      "named_systems_allowed": false
+    },
+    {
+      "category_fair": true,
+      "class_id": "INTERNAL_BEST_STATIC_ADAPTER",
+      "label": "best static adapter baseline",
+      "named_systems_allowed": false
+    },
+    {
+      "category_fair": true,
+      "class_id": "EXTERNAL_MONOLITH_WORKFLOW",
+      "label": "one simple external monolith workflow",
+      "named_systems_allowed": true,
+      "naming_rule": "Only name an external system when the workflow comparison is category-fair for the confirmed wedge."
+    }
+  ],
+  "comparison_category": {
+    "category_id": "GOVERNED_RECEIPT_BACKED_FAIL_CLOSED_EXECUTION_UNDER_LAW",
+    "category_summary": "Compare only within the bounded category already supported by the confirmed wedge: governed execution, receipt retrieval, replayability, and fail-closed operator trust.",
+    "proof_axes": [
+      "receipt_quality",
+      "replayability",
+      "fail_closed_behavior",
+      "operator_trust_boundary",
+      "governed_execution_control"
+    ]
+  },
+  "confirmed_canonical_surface": {
+    "active_profile_id": "local_verifier_mode",
+    "receipt_must_return": [
+      "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+      "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json"
+    ],
+    "support_tier": "BOUNDED_E1_OPERATOR_GUIDANCE_ONLY",
+    "supported_actions": [
+      "submit_bounded_verification_request",
+      "retrieve_pass_fail_receipt",
+      "retrieve_bounded_audit_packet",
+      "retrieve_replay_kit_refs"
+    ],
+    "surface_summary": "Single-tenant same-host verifier-backed execution request, receipt retrieval, and replay-kit handoff.",
+    "tenant_posture": "SINGLE_TENANT_ONLY_DECLARED",
+    "verify_command": "python -m tools.operator.public_verifier",
+    "wedge_id": "KT_F_NARROW_LOCAL_VERIFIER_EXECUTE_RECEIPT_WEDGE_V1"
+  },
+  "execution_status": "PASS__POST_F_TRACK_01_COMPARATIVE_SCOPE_BOUND",
+  "first_wave_harness": {
+    "fairness_guardrails": [
+      "Compare only on the confirmed local_verifier_mode surface.",
+      "Do not benchmark broad autonomy, creativity, or general intelligence.",
+      "Do not import Kaggle or broader lobe-ratification workloads into Track 01.",
+      "Do not let buyer language outrun the confirmed wedge boundary."
+    ],
+    "participants": [
+      "kt_canonical_local_verifier_wedge",
+      "internal_static_baseline",
+      "best_static_adapter_baseline",
+      "one_external_monolith_workflow"
+    ],
+    "required_harness_components": [
+      "route_proof_receipt_comparison_matrix",
+      "bounded_operator_run_script",
+      "receipt_quality_scorecard",
+      "fail_closed_event_register"
+    ]
+  },
+  "forbidden_claims": [
+    "best_ai_overall",
+    "broad_model_superiority",
+    "broad_creativity_superiority",
+    "full_brain_or_civilization_superiority",
+    "broad_platform_open"
+  ],
+  "generated_utc": "2026-04-24T03:34:34Z",
+  "next_lawful_move": "AUTHOR_POST_F_TRACK_01_COMPARATOR_MATRIX_PACKET",
+  "non_claim_boundary": [
+    "This packet does not widen Gate F beyond one narrow wedge.",
+    "This packet does not alter the live Gate D/E/F truth spine.",
+    "This packet does not authorize Kaggle, broader lobe ratification, or broad commercialization claims."
+  ],
+  "schema_id": "kt.operator.cohort0_post_f_track_01_comparative_scope_packet.v1",
+  "scope_outcome": "POST_F_TRACK_01_COMPARATIVE_SCOPE_DEFINED__CANONICAL_WEDGE_ONLY",
+  "source_refs": {
+    "live_product_truth_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_f_post_close_live_product_truth_packet.json",
+    "orchestrator_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_master_orchestrator_receipt.json",
+    "post_f_reaudit_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_broad_canonical_reaudit_receipt.json",
+    "post_merge_closeout_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_merge_closeout_receipt.json"
+  },
+  "status": "PASS",
+  "subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91",
+  "track_identity": {
+    "branch_type": "post_f_expansion_scope_only",
+    "scope_first_track": true,
+    "track_id": "POST_F_TRACK_01_CANONICAL_COMPARATIVE_PROOF",
+    "track_name": "Canonical Comparative Proof"
+  }
+}

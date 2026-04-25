@@ -17,7 +17,9 @@ jobs:
     env:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
-      PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+      # Truth-barrier shells out to pytest under the repo's default addopts;
+      # keep autoload enabled so installed pytest-cov can satisfy --cov flags.
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD: "0"
       PYTHONHASHSEED: "0"
       PYTHONIOENCODING: UTF-8
       PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
@@ -32,10 +34,12 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.10"
 
       - name: Install Python test dependencies
-        run: python -m pip install --upgrade pip pytest==9.0.2 pyyaml==6.0.3 jsonschema==4.25.1
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --require-hashes -r KT_PROD_CLEANROOM/requirements-wave0.lock.txt
 
       - name: Install Cosign
         uses: sigstore/cosign-installer@v4.0.0
@@ -102,7 +106,7 @@ jobs:
         if: always()
         shell: bash
         env:
-          EXPECTED_CERT_IDENTITY: https://github.com/Kinrokin/KT/.github/workflows/ci_truth_barrier.yml@refs/heads/main
+          EXPECTED_CERT_IDENTITY: https://github.com/${{ github.repository }}/.github/workflows/ci_truth_barrier.yml@${{ github.ref }}
           EXPECTED_CERT_OIDC_ISSUER: https://token.actions.githubusercontent.com
         run: |
           set -euo pipefail
@@ -139,9 +143,12 @@ jobs:
               "bundle_sha256": hashlib.sha256(bundle.read_bytes()).hexdigest(),
               "certificate_identity": os.environ["EXPECTED_CERT_IDENTITY"],
               "certificate_oidc_issuer": os.environ["EXPECTED_CERT_OIDC_ISSUER"],
+              "certificate_identity_scope": "current_github_ref",
+              "main_branch_certificate_identity": f"https://github.com/{os.environ['GITHUB_REPOSITORY']}/.github/workflows/ci_truth_barrier.yml@refs/heads/main",
               "verification_status": "PASS",
               "stronger_claim_not_made": [
                   "WS11 PASS is earned by artifact upload alone",
+                  "PR keyless identity is the same as main keyless identity before protected merge",
                   "WS12 is unlocked by this receipt alone",
                   "Release readiness is proven",
               ],
@@ -164,7 +171,7 @@ jobs:
           python -m tools.operator.ws13_determinism_envelope_validate \
             --emit-bundle \
             --out-dir KT_PROD_CLEANROOM/reports/ws13_determinism/ci \
-            --environment-id github_actions_ubuntu_py311 \
+            --environment-id github_actions_ubuntu_py310 \
             --environment-class github_actions_ubuntu \
             --environment-provenance github_actions \
             --live-validation-index KT_PROD_CLEANROOM/reports/ws13_determinism/ci/live_validation_index.ci.json

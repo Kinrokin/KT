@@ -1,0 +1,78 @@
+{
+  "claim_boundary": "W3 unifies the two active same-host live adapter manifests and one bounded generated mutation candidate under one universal contract. It does not claim broader live adapter breadth, runtime cutover, or externality widening.",
+  "contract_id": "KT_ADAPTER_ABI_V2_W3_CURRENT_HEAD",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "generated_utc": "2026-03-23T18:44:26Z",
+  "projection_classes": [
+    {
+      "activation_rule": "must_exist_in_runtime_registry_and_active_manifest_set",
+      "adapter_class": "LIVE_RUNTIME_PROVIDER",
+      "evidence_class": "E1_SAME_HOST_DETACHED_REPLAY_OR_NARROWER"
+    },
+    {
+      "activation_rule": "must_be_factory_generated_eval_pass_fitness_A_and_promotion_receipted",
+      "adapter_class": "GENERATED_MUTATION_CANDIDATE",
+      "evidence_class": "E0_INTERNAL_SELF_ISSUED_ONLY"
+    }
+  ],
+  "required_generated_candidate_fields": [
+    "adapter_id",
+    "adapter_kind",
+    "version",
+    "execution_mode",
+    "policy_profile",
+    "budget_profile",
+    "provenance_requirements",
+    "challenge_hooks",
+    "provider_id",
+    "timeout_ms",
+    "retry_policy",
+    "circuit_breaker_policy",
+    "rate_limit_profile",
+    "replayability_class",
+    "status",
+    "io_schema_ref",
+    "request_type_allowlist",
+    "admission_receipt_ref",
+    "eval_report_ref",
+    "signal_quality_ref",
+    "fitness_region_ref",
+    "promotion_ref",
+    "phase_trace_ref",
+    "hash_manifest_ref",
+    "job_dir_manifest_ref"
+  ],
+  "required_live_manifest_fields": [
+    "adapter_id",
+    "adapter_kind",
+    "version",
+    "execution_mode",
+    "policy_profile",
+    "budget_profile",
+    "provenance_requirements",
+    "challenge_hooks",
+    "provider_id",
+    "timeout_ms",
+    "retry_policy",
+    "circuit_breaker_policy",
+    "rate_limit_profile",
+    "replayability_class",
+    "status",
+    "io_schema_ref",
+    "request_type_allowlist"
+  ],
+  "schema_id": "kt.governance.adapter_abi.v2",
+  "status": "ACTIVE",
+  "stronger_claims_not_made": [
+    "all_inventory_adapters_are_live_runtime",
+    "generated_candidate_is_already_canonical_runtime_cutover",
+    "adapter_breadth_has_widened_above_the_two_live_same_host_providers"
+  ],
+  "supersedes_ref": "KT_PROD_CLEANROOM/governance/kt_adapter_abi_v1.json",
+  "universal_hard_rules": [
+    "one_contract_only",
+    "all_live_adapters_and_generated_candidates_must_be_receipt_bound",
+    "generated_candidates_must_not_be_narrated_as_live_runtime_before_separate_cutover",
+    "no_generated_candidate_may_widen_externality_class"
+  ]
+}

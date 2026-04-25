@@ -1,0 +1,156 @@
+{
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "generated_utc": "2026-03-22T01:14:47Z",
+  "rows": [
+    {
+      "bounded_summary": "Canonical dispatch, import truth, invariant gating, registry enforcement, and routing receipts are runtime-live and protected.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/import_truth_guard.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/invariants_gate.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/runtime_registry.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/routing_receipts.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_invariants_gate.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_runtime_registry_boundary.py"
+      ],
+      "execution_tranche": "FOUNDATIONAL_ALREADY_PROVEN",
+      "organ_id": "core.fail_closed_dispatch_stack",
+      "terminal_state": "CORE_LIVE"
+    },
+    {
+      "bounded_summary": "Append-only persistence and replay validation remain core-live protected runtime surfaces.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/memory/state_vault.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/memory/replay.py",
+        "KT_PROD_CLEANROOM/reports/kt_wave3_minimum_viable_civilization_run_pack.json"
+      ],
+      "execution_tranche": "FOUNDATIONAL_ALREADY_PROVEN",
+      "organ_id": "memory.state_vault_and_replay",
+      "terminal_state": "CORE_LIVE"
+    },
+    {
+      "bounded_summary": "Budget allocation and refusal logic are real, deterministic, and runtime-enforced on the canonical path.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/thermodynamics/budget_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/thermodynamics/tests/test_budget_engine.py"
+      ],
+      "execution_tranche": "LOW_COUPLING_FIRST",
+      "organ_id": "thermodynamics.budget_engine",
+      "terminal_state": "CORE_LIVE"
+    },
+    {
+      "bounded_summary": "Meters are deterministic subtraction/fuse helpers that are runtime-used and bounded, not semantic controllers.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/thermodynamics/meters/token_meter.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/thermodynamics/meters/step_meter.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/thermodynamics/meters/memory_meter.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/thermodynamics/meters/duration_fuse.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/thermodynamics/tests/test_budget_meters.py"
+      ],
+      "execution_tranche": "LOW_COUPLING_FIRST",
+      "organ_id": "thermodynamics.budget_meters",
+      "terminal_state": "LIVE_BOUNDED"
+    },
+    {
+      "bounded_summary": "Temporal is a real deterministic fork-and-replay identity surface with bounded replay semantics, not a broad execution-history simulator.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/temporal_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/tests/test_temporal_engine.py",
+        "KT_PROD_CLEANROOM/reports/kt_wave2c_temporal_engine_pack.json"
+      ],
+      "execution_tranche": "LOW_COUPLING_FIRST",
+      "organ_id": "temporal",
+      "terminal_state": "LIVE_BOUNDED"
+    },
+    {
+      "bounded_summary": "Multiverse is a deterministic candidate-ranking surface with explicit caps and a bounded coherence placeholder.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/multiverse/multiverse_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/multiverse/tests/test_multiverse_engine.py",
+        "KT_PROD_CLEANROOM/reports/kt_wave2c_multiverse_engine_pack.json"
+      ],
+      "execution_tranche": "LOW_COUPLING_FIRST",
+      "organ_id": "multiverse",
+      "terminal_state": "LIVE_BOUNDED"
+    },
+    {
+      "bounded_summary": "Paradox is a real deterministic contradiction-trigger gate with injection/noop behavior, not a broad paradox reasoner.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/tests/test_paradox_engine.py",
+        "KT_PROD_CLEANROOM/reports/kt_wave2c_paradox_engine_pack.json"
+      ],
+      "execution_tranche": "LOW_COUPLING_FIRST",
+      "organ_id": "paradox",
+      "terminal_state": "LIVE_BOUNDED"
+    },
+    {
+      "bounded_summary": "Cognition is a deterministic hash-only planner/executor with explicit refusal paths, not a semantic reasoning organ.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/cognitive_engine.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/planners/step_planner.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/tests/test_cognitive_engine.py",
+        "KT_PROD_CLEANROOM/reports/kt_wave2c_cognitive_provenance_pack.json"
+      ],
+      "execution_tranche": "HIGH_COUPLING_LAST",
+      "organ_id": "cognition",
+      "terminal_state": "LIVE_BOUNDED"
+    },
+    {
+      "bounded_summary": "Council now has a proven same-host LIVE_HASHED OpenAI/OpenRouter execution and resilience lane, while static routing remains the canonical baseline and broader router claims stay forbidden.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/council/council_router.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/council/providers/provider_registry.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/council/tests/test_council_router.py",
+        "KT_PROD_CLEANROOM/reports/post_wave5_c016a_success_matrix.json",
+        "KT_PROD_CLEANROOM/reports/post_wave5_c016b_resilience_pack.json"
+      ],
+      "execution_tranche": "HIGH_COUPLING_LAST",
+      "organ_id": "council",
+      "terminal_state": "LIVE_BOUNDED"
+    },
+    {
+      "bounded_summary": "The router is truthfully terminalized as a static canonical baseline only; learned cutover remains unearned under C005.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "KT_PROD_CLEANROOM/reports/kt_wave2b_router_selection_receipt.json"
+      ],
+      "execution_tranche": "HIGH_COUPLING_LAST",
+      "organ_id": "router_static_baseline",
+      "terminal_state": "LIVE_BOUNDED"
+    },
+    {
+      "bounded_summary": "Curriculum remains a live bounded training-boundary guard, not a production training engine.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/curriculum/curriculum_ingest.py"
+      ],
+      "execution_tranche": "ROLLED_UP",
+      "organ_id": "curriculum_ingest_boundary",
+      "terminal_state": "LIVE_BOUNDED"
+    },
+    {
+      "bounded_summary": "Runtime governance Python surfaces are real and bounded, but they do not on their own upgrade broader governance claims.",
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/governance/event_logger.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/governance/events.py"
+      ],
+      "execution_tranche": "ROLLED_UP",
+      "organ_id": "runtime_governance_enforcement",
+      "terminal_state": "LIVE_BOUNDED"
+    }
+  ],
+  "schema_id": "kt.post_wave5.runtime_organ_terminal_state_register.v1",
+  "status": "PASS",
+  "stronger_claims_not_made": [
+    "semantic_cognition_or_general_reasoning_claimed",
+    "learned_router_cutover_claimed",
+    "cross_host_or_outsider_live_provider_verification_claimed"
+  ],
+  "terminal_state_counts": {
+    "ARCHIVE_QUARANTINED": 0,
+    "CORE_LIVE": 3,
+    "LAB_GOVERNED": 0,
+    "LIVE_BOUNDED": 9,
+    "RETIRED": 0
+  }
+}

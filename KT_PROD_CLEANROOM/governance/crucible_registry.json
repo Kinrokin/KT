@@ -1,4 +1,6 @@
 {
+  "coverage_matrix_ref": "KT_PROD_CLEANROOM/reports/pressure_behavior_matrix.json",
+  "coverage_rule": "Registered crucibles must bind finite domains, scenarios, kernel targets, expected outcomes, and replay expectations through immutable YAML specs.",
   "entries": [
     {
       "crucible_id": "CRU-COVERAGE-HOP-01",
@@ -86,8 +88,17 @@
     }
   ],
   "entry_count": 14,
-  "generated_utc": "2026-03-10T13:29:07Z",
+  "execution_receipt_rule": "Observed crucible runs count for Gate D only when canonical runner_record precedence is available and receipt_refs exist; required replay artifacts must be present when the spec demands replay verification.",
+  "generated_utc": "2026-03-28T20:40:00Z",
+  "promotion_eligibility_rule": "Registered crucible results are admissible for later adapter promotion eligibility only when they are receipt-backed, replay-backed when required, and remain inside LAB trust until a later promotion receipt ratifies movement.",
   "registry_id": "CRUCIBLE_REGISTRY_RATIFIED_V1_20260310",
+  "required_entry_fields": [
+    "crucible_id",
+    "spec_ref",
+    "promotion_scope",
+    "trust_zone"
+  ],
+  "run_log_ref": "KT_PROD_CLEANROOM/reports/kt_crucible_run_log.json",
   "schema_id": "kt.governance.crucible_registry.v1",
   "source_registry_ref": "KT_PROD_CLEANROOM/tools/growth/crucibles/CRUCIBLE_REGISTRY.yaml",
   "status": "ACTIVE"

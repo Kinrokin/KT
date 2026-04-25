@@ -1,0 +1,66 @@
+{
+  "active_truth_source_ref": "kt_truth_ledger:ledger/current/current_pointer.json",
+  "authority_boundaries": {
+    "current_head_truth_source_ref": "KT_PROD_CLEANROOM/reports/live_validation_index.json",
+    "current_state_documentary_only": true,
+    "current_state_live_authority": false,
+    "current_state_receipt_ref": "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+    "settled_truth_source_receipt_ref": "KT_PROD_CLEANROOM/reports/settled_truth_source_receipt.json",
+    "superseded_by": [
+      "kt_truth_ledger:ledger/current/current_pointer.json",
+      "kt_truth_ledger:ledger/current/current_state_receipt.json"
+    ]
+  },
+  "authority_mode": "SETTLED_AUTHORITATIVE",
+  "current_repo_head": "421e457058899ee5a780eabf5ca166623cab43e3",
+  "immutability_rules": [
+    {
+      "rule": "Ledger entries must preserve previous_entry_hash linkage and entry_hash integrity.",
+      "rule_id": "append_only_hash_chain_required",
+      "validator_ref": "KT_PROD_CLEANROOM/tools/operator/ledger_verify_chain.py"
+    },
+    {
+      "rule": "Historical truth surfaces may not be deleted or silently overwritten; supersession must be explicit and receipted.",
+      "rule_id": "no_delete_without_supersession",
+      "validator_ref": "KT_PROD_CLEANROOM/governance/truth_supersession_rules.json"
+    }
+  ],
+  "law_id": "KT_LEDGER_LAW_V1_20260318",
+  "mirroring_rules": {
+    "documentary_mirror_class": "documentary_compatibility_surface",
+    "documentary_mirror_refs": [
+      "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "KT_PROD_CLEANROOM/reports/current_state_receipt.json"
+    ],
+    "documentary_only_refs": [
+      "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json",
+      "KT_PROD_CLEANROOM/reports/current_state_receipt.json"
+    ],
+    "mirror_rule": "Documentary mirrors may exist for compatibility, but they may never be treated as the active truth source or live authority."
+  },
+  "schema_id": "kt.governance.ledger_law.v1",
+  "status": "ACTIVE",
+  "stronger_claim_not_made": [
+    "Documentary mirrors are active truth.",
+    "WS15 changes the authoritative ledger pointer.",
+    "WS15 widens authority beyond the settled ledger-backed truth source."
+  ],
+  "supersession_law": {
+    "receipt_output": "KT_PROD_CLEANROOM/reports/truth_supersession_receipt.json",
+    "receipt_ref": "KT_PROD_CLEANROOM/reports/truth_supersession_receipt.json",
+    "rules_ref": "KT_PROD_CLEANROOM/governance/truth_supersession_rules.json",
+    "supersede_when": [
+      "tracked truth surface validated_head_sha != current head",
+      "tracked truth surface branch_ref != live branch",
+      "posture_consistency_receipt status != PASS",
+      "tracked truth claims stronger posture than settled truth source"
+    ],
+    "superseded_outputs": [
+      "KT_PROD_CLEANROOM/reports/current_state_receipt.json",
+      "KT_PROD_CLEANROOM/reports/runtime_closure_audit.json",
+      "KT_PROD_CLEANROOM/reports/posture_consistency_receipt.json",
+      "KT_PROD_CLEANROOM/reports/p0_green_full_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_green_final_receipt.json"
+    ]
+  }
+}

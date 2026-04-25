@@ -1,0 +1,62 @@
+{
+  "active_current_head_claim_blocker_count": 1,
+  "active_current_head_claim_blocker_ids": [
+    "C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"
+  ],
+  "claim_boundary": "This matrix separates the one active current-head canonical claim blocker from broader elevation blockers. Historical proof is excluded from this compilation.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "elevation_blockers": [
+    {
+      "blocker_id": "LEARNED_ROUTER_SUPERIORITY_NOT_EARNED",
+      "ref": "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "MULTI_LOBE_ORCHESTRATION_NOT_EARNED",
+      "ref": "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "COMPARATIVE_WIDENING_NOT_LAWFUL",
+      "ref": "KT_PROD_CLEANROOM/reports/competitive_scorecard.json",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "BROAD_PRODUCT_READINESS_NOT_EARNED",
+      "ref": "KT_PROD_CLEANROOM/reports/product_install_15m_receipt.json",
+      "status": "OPEN"
+    }
+  ],
+  "generated_utc": "2026-03-23T20:43:40Z",
+  "historical_uplift_blocked": true,
+  "machine_effective_state": {
+    "blocker_state": "OPEN_DEFERRED_RESOURCE_CONSTRAINT",
+    "commercial_widening": "FORBIDDEN",
+    "comparative_widening": "FORBIDDEN",
+    "externality_class_max": "E1_SAME_HOST_DETACHED_REPLAY",
+    "reentry_condition": "SECOND_HOST_RETURN_FILE_PLUS_VALIDATOR_PASS"
+  },
+  "open_current_head_claim_blockers": [
+    {
+      "blocker_id": "C006_EXTERNALITY_CEILING_REMAINS_BOUNDED",
+      "blocker_scope": "CURRENT_HEAD_CANONICAL_CLAIM_BLOCKER",
+      "commercial_widening": "FORBIDDEN",
+      "comparative_widening": "FORBIDDEN",
+      "current_externality_ceiling": "E1_SAME_HOST_DETACHED_REPLAY",
+      "reentry_condition": "Fresh second-host return file imported and all C006 validators re-pass at current HEAD.",
+      "state": "OPEN_DEFERRED_RESOURCE_CONSTRAINT",
+      "status": "DEFERRED_RESOURCE_CONSTRAINT"
+    }
+  ],
+  "schema_id": "kt.final_current_head.blocker_matrix.v1",
+  "source_refs": [
+    "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave5_blocker_matrix.json",
+    "KT_PROD_CLEANROOM/reports/c006_deferral_status_receipt.json",
+    "KT_PROD_CLEANROOM/reports/c006_deferral_heartbeat.json",
+    "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json",
+    "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
+    "KT_PROD_CLEANROOM/reports/competitive_scorecard.json"
+  ],
+  "status": "PASS"
+}

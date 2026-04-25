@@ -53,6 +53,7 @@ def test_mint_one_button_receipts_passes_when_safe_run_lineage_matches_live_head
     assert receipts["preflight"]["status"] == "PASS"
     assert receipts["production"]["status"] == "PASS"
     assert receipts["preflight"]["head_lineage_match"] is True
+    assert receipts["preflight"]["current_worktree_cleanroom_suite_admissible"] is True
     assert receipts["production"]["production_run"]["head_lineage_match"] is True
 
 
@@ -65,3 +66,66 @@ def test_mint_one_button_receipts_fails_when_nested_verdict_head_is_stale(tmp_pa
     assert receipts["production"]["status"] == "FAIL"
     assert receipts["preflight"]["head_lineage_match"] is False
     assert receipts["production"]["production_run"]["nested_verdict_head_sha"] == "def4567"
+
+
+def test_mint_one_button_receipts_bind_validated_subject_under_publication_carrier_split(tmp_path: Path) -> None:
+    safe_run = _seed_safe_run(tmp_path, safe_head="ca11e111", nested_head="ca11e111", verdict_head="ca11e111")
+    index = {
+        "generated_utc": "2026-03-10T15:00:00Z",
+        "branch_ref": "main",
+        "worktree": {
+            "head_sha": "ca11e111",
+            "validated_subject_head_sha": "5ab1ec71",
+            "publication_carrier_head_sha": "ca11e111",
+            "head_relation": "PUBLICATION_CARRIER_OF_VALIDATED_SUBJECT",
+        },
+        "checks": [{"check_id": "current_worktree_cleanroom_suite", "status": "PASS"}],
+    }
+
+    receipts = mint_one_button_receipts(safe_run_root=safe_run, live_validation_index=index)
+
+    assert receipts["preflight"]["status"] == "PASS"
+    assert receipts["production"]["status"] == "PASS"
+    assert receipts["preflight"]["validated_head_sha"] == "5ab1ec71"
+    assert receipts["preflight"]["publication_carrier_head_sha"] == "ca11e111"
+    assert receipts["preflight"]["current_worktree_cleanroom_suite_admissible"] is True
+    assert receipts["production"]["validated_head_sha"] == "5ab1ec71"
+    assert receipts["production"]["publication_carrier_head_sha"] == "ca11e111"
+
+
+def test_mint_one_button_receipts_accepts_carrier_only_dirty_cleanroom_failure(tmp_path: Path) -> None:
+    safe_run = _seed_safe_run(tmp_path, safe_head="ca11e111", nested_head="ca11e111", verdict_head="ca11e111")
+    index = {
+        "generated_utc": "2026-03-10T15:00:00Z",
+        "branch_ref": "main",
+        "worktree": {
+            "head_sha": "ca11e111",
+            "validated_subject_head_sha": "ca11e111",
+            "publication_carrier_head_sha": "",
+            "head_relation": "HEAD_IS_SUBJECT",
+            "git_dirty": True,
+            "subject_git_dirty": False,
+            "publication_carrier_dirty": True,
+        },
+        "checks": [
+            {
+                "check_id": "constitutional_guard",
+                "critical": True,
+                "dirty_sensitive": False,
+                "status": "PASS",
+            },
+            {
+                "check_id": "current_worktree_cleanroom_suite",
+                "critical": True,
+                "dirty_sensitive": True,
+                "status": "FAIL",
+            },
+        ],
+    }
+
+    receipts = mint_one_button_receipts(safe_run_root=safe_run, live_validation_index=index)
+
+    assert receipts["preflight"]["status"] == "PASS"
+    assert receipts["preflight"]["current_worktree_cleanroom_suite_status"] == "PASS_CARRIER_ONLY_DIRTY"
+    assert receipts["preflight"]["current_worktree_cleanroom_suite_admissible"] is True
+    assert receipts["production"]["status"] == "PASS"

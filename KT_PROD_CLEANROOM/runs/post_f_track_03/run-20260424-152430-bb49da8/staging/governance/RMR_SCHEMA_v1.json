@@ -1,0 +1,570 @@
+{
+  "$id": "https://kt.local/schemas/RMR_SCHEMA_v1.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Canonical Route-Margin Record used for Track 03 proof-law hardening and H1 execution.",
+  "examples": [
+    {
+      "baseline_choice": "adapter_beta",
+      "beta": false,
+      "case_id": "CASE-0001",
+      "confidence": 0.61,
+      "counted": true,
+      "decision_label": "commit",
+      "family": "alpha_residual",
+      "holdout": false,
+      "input_hash": "4928b1bb54fc6e7467811f2bf10806c054a2fe457d650558aeda660b0a95e3fc",
+      "margin": 0.18,
+      "notes": "Deterministic example row 1",
+      "provider_calls": [
+        {
+          "prompt_sha256": "79aa0cc9e8c243981dd9dd13d6a17c89cd6505a166ceab22a087f69f437b7a89",
+          "provider": "openai_hashed",
+          "receipt_id": "prov-100-00",
+          "response_sha256": "c1b4b171080dc26da7b50b40c5b9e0a4da52fe94f93a9b31b9f107735f734a2c"
+        },
+        {
+          "prompt_sha256": "5446109183abd6a3ebcfb05e297846569f3640a065b8b7348b25f4b6a70a6d01",
+          "provider": "openrouter_hashed",
+          "receipt_id": "prov-100-01",
+          "response_sha256": "d1034fbc2a5a677f99a99378e97b0b9bdcb33aaa2c209b651ce1aa9f1694d883"
+        }
+      ],
+      "reason_codes": [
+        "RC001_CONTEXT_ALIGNMENT",
+        "RC002_POLICY_COMPATIBLE"
+      ],
+      "rmr_id": "RMR-0001",
+      "router_choice": "adapter_alpha",
+      "timestamp": "2026-04-24T15:17:00Z",
+      "variant": "base",
+      "why_not": [
+        "WN003_MASKED_DRIFT"
+      ]
+    },
+    {
+      "baseline_choice": "adapter_beta",
+      "beta": false,
+      "case_id": "CASE-0002",
+      "confidence": 0.63,
+      "counted": true,
+      "decision_label": "commit",
+      "family": "mirror_control",
+      "holdout": false,
+      "input_hash": "f7218970d1a5858b1d37bd7f2935222ceb12c787fc91ee5e9ebf03584d5b2a02",
+      "margin": 0.21,
+      "notes": "Deterministic example row 2",
+      "provider_calls": [
+        {
+          "prompt_sha256": "9ba190bbd9bd115415142af16771c9b180fef58c6e18587a84716c89ac0824b1",
+          "provider": "openai_hashed",
+          "receipt_id": "prov-101-00",
+          "response_sha256": "abdeb10602aa13cdf7d14230cc3067c272d90f6096c296eaf52887f65f7ced52"
+        },
+        {
+          "prompt_sha256": "4d17202fdb689954dff6fe2f4df8d7cef653f1be7525ba0d51ee4f35c92b85f9",
+          "provider": "openrouter_hashed",
+          "receipt_id": "prov-101-01",
+          "response_sha256": "348cf2a51a450990b1f65c108071f8e0b40f226f74dae97463602ec848ee23ce"
+        }
+      ],
+      "reason_codes": [
+        "RC002_POLICY_COMPATIBLE",
+        "RC003_MARGIN_SUFFICIENT"
+      ],
+      "rmr_id": "RMR-0002",
+      "router_choice": "adapter_beta",
+      "timestamp": "2026-04-24T15:18:00Z",
+      "variant": "mirror",
+      "why_not": [
+        "WN004_MIRROR_BREAK"
+      ]
+    },
+    {
+      "baseline_choice": "adapter_beta",
+      "beta": false,
+      "case_id": "CASE-0003",
+      "confidence": 0.65,
+      "counted": true,
+      "decision_label": "commit",
+      "family": "masked_control",
+      "holdout": false,
+      "input_hash": "c7eecf410e5f1762cd663f0095b8fd5afb11343a08218ab27a83085228d07e54",
+      "margin": 0.24,
+      "notes": "Deterministic example row 3",
+      "provider_calls": [
+        {
+          "prompt_sha256": "adf1835eaf86141a8f6164445ebdeb52de3b3ff2d70d01cf767293e47d3b4105",
+          "provider": "openai_hashed",
+          "receipt_id": "prov-102-00",
+          "response_sha256": "c516e55b410d3cb8f0102ea95945c21ef14fcf62ae10cb0a418d6ec4cdc1c68f"
+        },
+        {
+          "prompt_sha256": "416fbb9ca575a097d50bcfe960df828cbe3fc582525952a8f2070c849a99144c",
+          "provider": "openrouter_hashed",
+          "receipt_id": "prov-102-01",
+          "response_sha256": "37805dd6ddfaa0c6545ee1769a802a6b31712594abf0e523e83cb5072602eabd"
+        }
+      ],
+      "reason_codes": [
+        "RC003_MARGIN_SUFFICIENT",
+        "RC004_COUNTERFACTUAL_STABLE"
+      ],
+      "rmr_id": "RMR-0003",
+      "router_choice": "adapter_gamma",
+      "timestamp": "2026-04-24T15:19:00Z",
+      "variant": "masked",
+      "why_not": [
+        "WN005_PROVIDER_REFUSED"
+      ]
+    },
+    {
+      "baseline_choice": "abstain",
+      "beta": false,
+      "case_id": "CASE-0004",
+      "confidence": 0.67,
+      "counted": true,
+      "decision_label": "defer",
+      "family": "counterfactual",
+      "holdout": false,
+      "input_hash": "0e94dabee9c86bbcbaec775789d3a64c8689c5ae5876fa4d6ccd3143db5dd74f",
+      "margin": 0.27,
+      "notes": "Deterministic example row 4",
+      "provider_calls": [
+        {
+          "prompt_sha256": "409ee491a1cb11af50a3039c1b85cc10605f469e164c4746d299642bacf1cd27",
+          "provider": "openai_hashed",
+          "receipt_id": "prov-103-00",
+          "response_sha256": "3134e457934b2d71912de45b989c69351a18d183b45c1cb01e5b979f1d407fba"
+        },
+        {
+          "prompt_sha256": "819ad60aae7ce3c4450cf4fae25ca12fc350265fe8fa3e40b21503d44b8c7721",
+          "provider": "openrouter_hashed",
+          "receipt_id": "prov-103-01",
+          "response_sha256": "529c5511f77cb30f7ddaf67025b36fdbc358a5dcfb6fe3abebb5b6a70ad878d6"
+        }
+      ],
+      "reason_codes": [
+        "RC004_COUNTERFACTUAL_STABLE",
+        "RC005_MASKED_INVARIANT"
+      ],
+      "rmr_id": "RMR-0004",
+      "router_choice": "abstain",
+      "timestamp": "2026-04-24T15:20:00Z",
+      "variant": "counterfactual",
+      "why_not": [
+        "WN006_BETA_CONTAMINATED"
+      ]
+    },
+    {
+      "baseline_choice": "adapter_beta",
+      "beta": false,
+      "case_id": "CASE-0005",
+      "confidence": 0.69,
+      "counted": true,
+      "decision_label": "commit",
+      "family": "holdout_probe",
+      "holdout": false,
+      "input_hash": "0e921c74469aa68dd2153bf72e901b3989ebebe472bf96febc936646b589148f",
+      "margin": 0.3,
+      "notes": "Deterministic example row 5",
+      "provider_calls": [
+        {
+          "prompt_sha256": "18090f2d5274dafcd9288791284dd0c3f44c731e0417e8fdb1acdfba659985c3",
+          "provider": "openai_hashed",
+          "receipt_id": "prov-104-00",
+          "response_sha256": "ddf0bf5d08444ae17410041aaa41aed798255aa9991b755aa04e6a56b5c70164"
+        },
+        {
+          "prompt_sha256": "23bdabef99667210659d59b7dbbb5cd4476e4424bbbfda058bf5d70ca45ef5c8",
+          "provider": "openrouter_hashed",
+          "receipt_id": "prov-104-01",
+          "response_sha256": "0bf26093e2be79614b9ec44f859ce96ad53910c84ba559b2c9a8cd78f08dd923"
+        }
+      ],
+      "reason_codes": [
+        "RC005_MASKED_INVARIANT",
+        "RC006_ROUTE_SUPERIOR"
+      ],
+      "rmr_id": "RMR-0005",
+      "router_choice": "adapter_alpha",
+      "timestamp": "2026-04-24T15:21:00Z",
+      "variant": "base",
+      "why_not": [
+        "WN007_HOLDOUT_LEAKAGE"
+      ]
+    },
+    {
+      "baseline_choice": "adapter_beta",
+      "beta": false,
+      "case_id": "CASE-0006",
+      "confidence": 0.71,
+      "counted": true,
+      "decision_label": "commit",
+      "family": "alpha_residual",
+      "holdout": false,
+      "input_hash": "f90f4e845c13c1c1aba2627445d8ecfba6b9e3b30c9b147073a97198bd4d4e92",
+      "margin": 0.33,
+      "notes": "Deterministic example row 6",
+      "provider_calls": [
+        {
+          "prompt_sha256": "b590d945319d709d4780b71927f3269246b29854f26d9b5f64bb14bd8adbdc9d",
+          "provider": "openai_hashed",
+          "receipt_id": "prov-105-00",
+          "response_sha256": "65697e7837ec9608f7ed061ee1147e04ae98868650ba502beeeb0afb6d175af2"
+        },
+        {
+          "prompt_sha256": "abe51ec40a8310160a7b0871c5fc3db5c8c0fa404486ee3968610dbb240a0e5a",
+          "provider": "openrouter_hashed",
+          "receipt_id": "prov-105-01",
+          "response_sha256": "ffee9b4d3338f378189dfd1839b98b04f2a55805c7fa4d0c86fcaef7f79e56f5"
+        }
+      ],
+      "reason_codes": [
+        "RC006_ROUTE_SUPERIOR",
+        "RC007_RISK_LOW"
+      ],
+      "rmr_id": "RMR-0006",
+      "router_choice": "adapter_beta",
+      "timestamp": "2026-04-24T15:22:00Z",
+      "variant": "mirror",
+      "why_not": [
+        "WN008_RUNTIME_MISSING"
+      ]
+    },
+    {
+      "baseline_choice": "adapter_beta",
+      "beta": false,
+      "case_id": "CASE-0007",
+      "confidence": 0.73,
+      "counted": true,
+      "decision_label": "commit",
+      "family": "mirror_control",
+      "holdout": false,
+      "input_hash": "74bd7c29c09533683e62d3606a9f2df7ffd44685c39fdd191a46dc99200b5a39",
+      "margin": 0.36,
+      "notes": "Deterministic example row 7",
+      "provider_calls": [
+        {
+          "prompt_sha256": "a7bac811b4086aa1656ab0e161b29084a957e7ee6f0bafb78a569858ffbffe82",
+          "provider": "openai_hashed",
+          "receipt_id": "prov-106-00",
+          "response_sha256": "2fa917b457254772aee5476e17099c30413dd096a34018d36e37fa9e878660e8"
+        },
+        {
+          "prompt_sha256": "98741e33a36832b241cba35bbb84a7acf2eed107d7ab2df278f1d79457035796",
+          "provider": "openrouter_hashed",
+          "receipt_id": "prov-106-01",
+          "response_sha256": "9af0d0ae72eefdffa23e22693fc7d49882102f091b78a10079822eb3af5f87b4"
+        }
+      ],
+      "reason_codes": [
+        "RC007_RISK_LOW",
+        "RC008_EVIDENCE_COMPLETE"
+      ],
+      "rmr_id": "RMR-0007",
+      "router_choice": "adapter_gamma",
+      "timestamp": "2026-04-24T15:23:00Z",
+      "variant": "masked",
+      "why_not": [
+        "WN009_ROUTE_UNSAFE"
+      ]
+    },
+    {
+      "baseline_choice": "abstain",
+      "beta": false,
+      "case_id": "CASE-0008",
+      "confidence": 0.75,
+      "counted": true,
+      "decision_label": "reject",
+      "family": "masked_control",
+      "holdout": false,
+      "input_hash": "ec9c0c51df7cbca888a13f880a941fa562806391fa70d4ddb1a758c4e4efab1a",
+      "margin": 0.39,
+      "notes": "Deterministic example row 8",
+      "provider_calls": [
+        {
+          "prompt_sha256": "01cfb3b84a0e3e2998dfa34698b39f561729407cc85d0bd218a052bb42862d13",
+          "provider": "openai_hashed",
+          "receipt_id": "prov-107-00",
+          "response_sha256": "7031d3d0459d65abd4c70dc0c14dfab93dc23552ddaa888f2904e726bf7e2d92"
+        },
+        {
+          "prompt_sha256": "833e834a082bf56140acfae053637302ebb4a6435f95d423ad3da6f60565bcd8",
+          "provider": "openrouter_hashed",
+          "receipt_id": "prov-107-01",
+          "response_sha256": "5d3af079166b63db99907c0257143b8b3aba72d864235b53f216223b9bf71141"
+        }
+      ],
+      "reason_codes": [
+        "RC008_EVIDENCE_COMPLETE",
+        "RC009_DEFER_REQUIRED"
+      ],
+      "rmr_id": "RMR-0008",
+      "router_choice": "abstain",
+      "timestamp": "2026-04-24T15:24:00Z",
+      "variant": "counterfactual",
+      "why_not": [
+        "WN010_HUMAN_REVIEW_REQUIRED"
+      ]
+    },
+    {
+      "baseline_choice": "adapter_beta",
+      "beta": false,
+      "case_id": "CASE-0009",
+      "confidence": 0.77,
+      "counted": false,
+      "decision_label": "commit",
+      "family": "counterfactual",
+      "holdout": true,
+      "input_hash": "172d9be5ad66645e2ecd82e41cd4bd4c3b32d9a6a82110be843b2321cee87a99",
+      "margin": 0.42,
+      "notes": "Deterministic example row 9",
+      "provider_calls": [
+        {
+          "prompt_sha256": "efb1edababe970b62e1acde13c6cc8510c6ab390e41f5edb0038843224e8f3a7",
+          "provider": "openai_hashed",
+          "receipt_id": "prov-108-00",
+          "response_sha256": "594bb216999f930700cd1ea1b9030e370082eaad0bc070bdf85c0affdee501e6"
+        },
+        {
+          "prompt_sha256": "36dff993a5f99c23c93632ab1bab9ce5e3dfc3864894b5bcbd636cb0e05e9d25",
+          "provider": "openrouter_hashed",
+          "receipt_id": "prov-108-01",
+          "response_sha256": "29989408450f8305f66d7f4be127a64ec3239fa8f7483410751290a934f44dd4"
+        }
+      ],
+      "reason_codes": [
+        "RC009_DEFER_REQUIRED",
+        "RC010_RUNTIME_BOUNDED"
+      ],
+      "rmr_id": "RMR-0009",
+      "router_choice": "adapter_alpha",
+      "timestamp": "2026-04-24T15:25:00Z",
+      "variant": "base",
+      "why_not": [
+        "WN001_NO_POLICY_MATCH"
+      ]
+    },
+    {
+      "baseline_choice": "adapter_beta",
+      "beta": false,
+      "case_id": "CASE-0010",
+      "confidence": 0.79,
+      "counted": false,
+      "decision_label": "defer",
+      "family": "holdout_probe",
+      "holdout": true,
+      "input_hash": "4d9e958d581c92888eed7bb3b3a2026f3d5920a0052375b90d2d77a13f97752a",
+      "margin": 0.45,
+      "notes": "Deterministic example row 10",
+      "provider_calls": [
+        {
+          "prompt_sha256": "b60762b9bcfe6a3c4ea3ea72a1a3134abcf7248979f835a011a78f185f18b2f3",
+          "provider": "openai_hashed",
+          "receipt_id": "prov-109-00",
+          "response_sha256": "64641613ab10937576b2ff5b15dfdf305d02075badfa40c56e17837b2c5740c1"
+        },
+        {
+          "prompt_sha256": "1fbe797f6b3fea4aa3e84f64586c272d33a6fca976398be77bc5c8f738d45874",
+          "provider": "openrouter_hashed",
+          "receipt_id": "prov-109-01",
+          "response_sha256": "92ed07eaa2c6725f238d32de913261989b7fb3e61e697f604b6aa53fbaa22854"
+        }
+      ],
+      "reason_codes": [
+        "RC010_RUNTIME_BOUNDED",
+        "RC001_CONTEXT_ALIGNMENT"
+      ],
+      "rmr_id": "RMR-0010",
+      "router_choice": "adapter_beta",
+      "timestamp": "2026-04-24T15:26:00Z",
+      "variant": "base",
+      "why_not": [
+        "WN002_LOW_MARGIN"
+      ]
+    }
+  ],
+  "properties": {
+    "baseline_choice": {
+      "enum": [
+        "adapter_alpha",
+        "adapter_beta",
+        "adapter_gamma",
+        "abstain"
+      ],
+      "type": "string"
+    },
+    "beta": {
+      "type": "boolean"
+    },
+    "case_id": {
+      "pattern": "^CASE-[0-9]{4}$",
+      "type": "string"
+    },
+    "confidence": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    },
+    "counted": {
+      "type": "boolean"
+    },
+    "decision_label": {
+      "enum": [
+        "commit",
+        "defer",
+        "reject",
+        "abstain"
+      ],
+      "type": "string"
+    },
+    "family": {
+      "enum": [
+        "alpha_residual",
+        "mirror_control",
+        "masked_control",
+        "counterfactual",
+        "holdout_probe"
+      ],
+      "type": "string"
+    },
+    "holdout": {
+      "type": "boolean"
+    },
+    "input_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "margin": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    },
+    "notes": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "provider_calls": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "prompt_sha256": {
+            "pattern": "^[a-f0-9]{64}$",
+            "type": "string"
+          },
+          "provider": {
+            "enum": [
+              "openai_hashed",
+              "openrouter_hashed",
+              "mock_local"
+            ],
+            "type": "string"
+          },
+          "receipt_id": {
+            "minLength": 4,
+            "type": "string"
+          },
+          "response_sha256": {
+            "pattern": "^[a-f0-9]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "provider",
+          "prompt_sha256",
+          "response_sha256",
+          "receipt_id"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "reason_codes": {
+      "items": {
+        "enum": [
+          "RC001_CONTEXT_ALIGNMENT",
+          "RC002_POLICY_COMPATIBLE",
+          "RC003_MARGIN_SUFFICIENT",
+          "RC004_COUNTERFACTUAL_STABLE",
+          "RC005_MASKED_INVARIANT",
+          "RC006_ROUTE_SUPERIOR",
+          "RC007_RISK_LOW",
+          "RC008_EVIDENCE_COMPLETE",
+          "RC009_DEFER_REQUIRED",
+          "RC010_RUNTIME_BOUNDED"
+        ],
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "rmr_id": {
+      "pattern": "^RMR-[0-9]{4}$",
+      "type": "string"
+    },
+    "router_choice": {
+      "enum": [
+        "adapter_alpha",
+        "adapter_beta",
+        "adapter_gamma",
+        "abstain"
+      ],
+      "type": "string"
+    },
+    "timestamp": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "variant": {
+      "enum": [
+        "base",
+        "mirror",
+        "masked",
+        "counterfactual"
+      ],
+      "type": "string"
+    },
+    "why_not": {
+      "items": {
+        "enum": [
+          "WN001_NO_POLICY_MATCH",
+          "WN002_LOW_MARGIN",
+          "WN003_MASKED_DRIFT",
+          "WN004_MIRROR_BREAK",
+          "WN005_PROVIDER_REFUSED",
+          "WN006_BETA_CONTAMINATED",
+          "WN007_HOLDOUT_LEAKAGE",
+          "WN008_RUNTIME_MISSING",
+          "WN009_ROUTE_UNSAFE",
+          "WN010_HUMAN_REVIEW_REQUIRED"
+        ],
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "rmr_id",
+    "case_id",
+    "family",
+    "variant",
+    "input_hash",
+    "router_choice",
+    "baseline_choice",
+    "decision_label",
+    "reason_codes",
+    "why_not",
+    "provider_calls",
+    "margin",
+    "confidence",
+    "beta",
+    "holdout",
+    "counted",
+    "timestamp",
+    "notes"
+  ],
+  "title": "Route Margin Record v1",
+  "type": "object"
+}

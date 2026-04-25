@@ -1,0 +1,62 @@
+{
+  "c006_status": "OPEN_SECOND_HOST_EXECUTION_PENDING",
+  "checks": [
+    {
+      "check_id": "current_head_truth_lock_active",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json"
+    },
+    {
+      "check_id": "externality_matrix_present",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/kt_externality_class_matrix_v1.json"
+    },
+    {
+      "check_id": "detached_verifier_boundary_still_passes",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/kt_wave3_detached_verifier_receipt.json"
+    },
+    {
+      "check_id": "c006_prep_receipt_still_passes",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/post_wave5_c006_trust_prep_receipt.json"
+    },
+    {
+      "check_id": "c006_execution_receipt_still_passes",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/post_wave5_c006_second_host_execution_receipt.json"
+    },
+    {
+      "check_id": "c006_is_still_the_active_current_head_blocker",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json"
+    }
+  ],
+  "claim_boundary": "W3 types E2 on the bounded verifier surface only. Without a fresh admissible second-host return, C006 stays open and no comparative or commercial widening unlocks.",
+  "current_externality_class": "E1_SAME_HOST_DETACHED_REPLAY",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "detached_verifier_outsider_usability_status": "PASS_BOUNDED_E1_ONLY",
+  "e2_outcome": "NOT_EARNED_PENDING_SECOND_HOST_RETURN",
+  "exact_externality_class_earned": "NOT_EARNED",
+  "generated_utc": "2026-03-22T17:04:00Z",
+  "schema_id": "kt.w3.e2_cross_host_replay_receipt.v1",
+  "second_host_return_present": false,
+  "source_refs": [
+    "KT_PROD_CLEANROOM/governance/current_head_truth_lock.json",
+    "KT_PROD_CLEANROOM/governance/kt_externality_class_matrix_v1.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave3_detached_verifier_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+    "KT_PROD_CLEANROOM/reports/post_wave5_c006_trust_prep_receipt.json",
+    "KT_PROD_CLEANROOM/reports/post_wave5_c006_second_host_execution_receipt.json"
+  ],
+  "status": "PASS",
+  "stronger_claims_not_made": [
+    "c006_closed_without_fresh_second_host_return",
+    "broad_current_head_runtime_cross_host_capability_confirmed",
+    "independent_hostile_replay_confirmed",
+    "public_challenge_survival_confirmed",
+    "comparative_widening_unlocked",
+    "commercial_widening_unlocked"
+  ]
+}

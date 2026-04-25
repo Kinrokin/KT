@@ -1,0 +1,63 @@
+{
+  "canonical_receipt_binding": {
+    "gate_d_reanchor_packet_ref": "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
+    "r5_receipt_ref": "KT_PROD_CLEANROOM/reports/router_vs_best_adapter_proof_ratification_receipt.json",
+    "r5_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_terminal_state.json"
+  },
+  "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+  "classification_tag": "COUNTING_CLOSURE",
+  "current_counted_gate": "Gate D",
+  "current_git_head_binding": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91",
+  "exact_next_counted_workstream_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
+  "execution_mode": "R6_NEXT_IN_ORDER_BLOCKED_PENDING_EARNED_SUPERIORITY__INITIAL_R5_PROOF_COMPLETE",
+  "execution_readiness": "NEXT_IN_ORDER_ONLY_BLOCKED_PENDING_EARNED_SUPERIORITY",
+  "expected_mutate_paths": [],
+  "expected_receipts": [
+    "KT_PROD_CLEANROOM/reports/router_vs_best_adapter_proof_ratification_receipt.json"
+  ],
+  "gate_domain_product_split": {
+    "domain_surface": "Gate D may not progress to learned-router authorization until router superiority is actually earned.",
+    "gate": "Gate D sixth ordered step remains blocked",
+    "product_surface": "NONE_COUNTING"
+  },
+  "generated_utc": "2026-04-11T21:22:51Z",
+  "parent_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
+  "pass_fail_criteria": {
+    "fail": [
+      "R6 is marked executable despite non-earned router superiority.",
+      "B04.R5 static hold is narrated as learned-router authorization or wider scope opening."
+    ],
+    "pass": [
+      "B04.R5 remains recorded as executed honestly with static baseline canonical.",
+      "B04.R6 remains next in order only and blocked pending earned superiority.",
+      "All wider scope remains blocked by order."
+    ]
+  },
+  "prerequisite_read": {
+    "router_ordered_proof_receipt": "KT_PROD_CLEANROOM/reports/router_ordered_proof_receipt.json",
+    "router_shadow_receipt": "KT_PROD_CLEANROOM/reports/router_shadow_evaluation_ratification_receipt.json",
+    "router_superiority_scorecard": "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
+    "router_vs_best_adapter_proof_receipt": "KT_PROD_CLEANROOM/reports/router_vs_best_adapter_proof_ratification_receipt.json"
+  },
+  "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+  "repo_state_executable_now": false,
+  "schema_id": "kt.next_counted_workstream_contract.v1",
+  "selected_postures": {
+    "D1_EXTERNALITY_WIDENING": "EXTERNALITY_BOUNDED",
+    "D2_NEW_COUNTED_DOMAINS": "COUNTED_DOMAINS_CONTROLLED_EXPANSION",
+    "D3_ADAPTIVE_EVOLUTION_AUTHORIZATION": "ADAPTER_EVOLUTION_AUTHORIZED",
+    "D4_COMPARATIVE_COMPETITIVE_CLAIMS": "NO_EXTERNAL_COMPARATIVE_CLAIMS",
+    "D5_COMMERCIAL_ACTIVATION": "LAB_ONLY"
+  },
+  "source_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
+  "stop_conditions": [
+    "Any learned-router authorization is attempted without earned router superiority.",
+    "Any lobe ratification, externality widening, comparative claim, or commercial activation is inferred from B04.R5 static hold.",
+    "Any tracked carrier surface is treated as fresh same-head authority after the proof head moves."
+  ],
+  "validators_and_tests": {
+    "tests": [],
+    "validators": []
+  },
+  "workstream_objective": "Hold B04.R6 as next in order only. Do not execute learned-router authorization because B04.R5 did not earn router superiority on the current head. Any future router reopening must first earn a lawful superiority result."
+}

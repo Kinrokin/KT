@@ -1,0 +1,144 @@
+{
+  "activation_mode": "LAUNCH_SURFACE_ONLY_NO_IMPLEMENTATION",
+  "checks": [
+    {
+      "check_id": "launch_contract_is_definition_only_not_implementation",
+      "pass": true
+    },
+    {
+      "check_id": "selected_postures_match_sealed_gate_d_decision",
+      "pass": true
+    },
+    {
+      "check_id": "activation_scope_is_bounded_and_forbidden_scope_is_explicit",
+      "pass": true
+    },
+    {
+      "check_id": "ordered_ratification_sequence_is_locked",
+      "pass": true
+    },
+    {
+      "check_id": "canonical_admission_rule_requires_schema_validator_receipt_rollback_and_lineage",
+      "pass": true
+    },
+    {
+      "check_id": "gate_d_completion_criteria_are_finite_and_bound",
+      "pass": true
+    },
+    {
+      "check_id": "governance_invariant_is_bound",
+      "pass": true
+    },
+    {
+      "check_id": "required_existing_governance_surfaces_exist_and_are_active",
+      "pass": true
+    },
+    {
+      "check_id": "terminal_state_opens_ratification_lane_but_not_stack_implementation",
+      "pass": true
+    },
+    {
+      "check_id": "control_surfaces_now_point_only_to_first_ratification_step",
+      "pass": true
+    },
+    {
+      "check_id": "gate_d_scope_widening_remains_fail_closed",
+      "pass": true
+    },
+    {
+      "check_id": "receipt_is_same_head_launch_artifact_only",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "This receipt proves only that the Gate D civilization ratification lane is lawfully activated and order-locked. It does not implement the civilization stack, does not widen externality, and does not authorize commercial or comparative expansion.",
+  "current_git_head": "40fa173cef4ed1891c55a7e676578a80433fada3",
+  "existing_law_rows": [
+    {
+      "exists": true,
+      "ref": "KT_PROD_CLEANROOM/governance/crucible_lifecycle_law.json",
+      "status": "ACTIVE"
+    },
+    {
+      "exists": true,
+      "ref": "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+      "status": "ACTIVE"
+    },
+    {
+      "exists": true,
+      "ref": "KT_PROD_CLEANROOM/governance/pressure_response_taxonomy.json",
+      "status": "ACTIVE"
+    },
+    {
+      "exists": true,
+      "ref": "KT_PROD_CLEANROOM/governance/adapter_lifecycle_law.json",
+      "status": "ACTIVE"
+    },
+    {
+      "exists": true,
+      "ref": "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+      "status": "ACTIVE"
+    },
+    {
+      "exists": true,
+      "ref": "KT_PROD_CLEANROOM/governance/tournament_law.json",
+      "status": "ACTIVE"
+    },
+    {
+      "exists": true,
+      "ref": "KT_PROD_CLEANROOM/governance/promotion_engine_law.json",
+      "status": "ACTIVE"
+    },
+    {
+      "exists": true,
+      "ref": "KT_PROD_CLEANROOM/governance/merge_law.json",
+      "status": "ACTIVE"
+    },
+    {
+      "exists": true,
+      "ref": "KT_PROD_CLEANROOM/governance/rollback_law.json",
+      "status": "ACTIVE"
+    },
+    {
+      "exists": true,
+      "ref": "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+      "status": "ACTIVE"
+    },
+    {
+      "exists": true,
+      "ref": "KT_PROD_CLEANROOM/governance/router_promotion_law.json",
+      "status": "ACTIVE"
+    },
+    {
+      "exists": true,
+      "ref": "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+      "status": "ACTIVE"
+    },
+    {
+      "exists": true,
+      "ref": "KT_PROD_CLEANROOM/governance/lobe_promotion_law.json",
+      "status": "ACTIVE"
+    },
+    {
+      "exists": true,
+      "ref": "KT_PROD_CLEANROOM/governance/civilization_loop_contract.json",
+      "status": "ACTIVE"
+    }
+  ],
+  "first_ratification_step_id": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
+  "gate_c_exit_head": "71268f2f7489aadec338d5e71bb5b70f8a7fe9dc",
+  "generated_utc": "2026-03-28T20:22:00Z",
+  "next_lawful_move": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
+  "parent_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
+  "reanchor_head": "ee752460e34ad2411adc3d228704f20c421f33be",
+  "receipt_role": "COUNTED_B04_CIVILIZATION_ACTIVATION_LAUNCH_ARTIFACT_ONLY",
+  "schema_id": "kt.b04.civilization_activation_launch_receipt.v1",
+  "selected_postures": {
+    "D1_EXTERNALITY_WIDENING": "EXTERNALITY_BOUNDED",
+    "D2_NEW_COUNTED_DOMAINS": "COUNTED_DOMAINS_CONTROLLED_EXPANSION",
+    "D3_ADAPTIVE_EVOLUTION_AUTHORIZATION": "ADAPTER_EVOLUTION_AUTHORIZED",
+    "D4_COMPARATIVE_COMPETITIVE_CLAIMS": "NO_EXTERNAL_COMPARATIVE_CLAIMS",
+    "D5_COMMERCIAL_ACTIVATION": "LAB_ONLY"
+  },
+  "status": "PASS",
+  "subject_head": "40fa173cef4ed1891c55a7e676578a80433fada3"
+}

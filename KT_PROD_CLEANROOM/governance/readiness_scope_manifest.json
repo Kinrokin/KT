@@ -1,28 +1,15 @@
 {
   "authoritative_truth_source": "kt_truth_ledger:ledger/current/current_pointer.json",
-  "current_authority_mode": "TRANSITIONAL_AUTHORITATIVE",
-  "current_blockers": [
-    "green has not been re-earned from current-head one-button receipts",
-    "current_pointer_matches_git_head",
-    "current_state_receipt_matches_git_head",
-    "runtime_closure_audit_matches_git_head",
-    "execution_board_points_to_active_truth_source",
-    "readiness_scope_points_to_active_truth_source",
-    "board_posture_matches_pointer",
-    "board_posture_matches_current_state",
-    "board_posture_matches_runtime_audit",
-    "local_ledger_requires_transitional_authority",
-    "main_current_pointer_documentary_only",
-    "main_current_state_documentary_only",
-    "main_runtime_audit_documentary_only"
-  ],
+  "current_authority_mode": "SETTLED_AUTHORITATIVE",
+  "current_blockers": [],
   "manifest_id": "READINESS_SCOPE_V2_20260309",
   "readiness_excludes_zones": [
     "LAB",
     "ARCHIVE",
     "COMMERCIAL",
     "GENERATED_RUNTIME_TRUTH",
-    "QUARANTINED"
+    "QUARANTINED",
+    "TOOLCHAIN_PROVING"
   ],
   "readiness_includes_zones": [
     "CANONICAL"

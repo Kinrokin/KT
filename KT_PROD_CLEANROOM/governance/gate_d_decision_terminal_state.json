@@ -1,0 +1,18 @@
+{
+  "schema_id": "kt.gate_d.decision_terminal_state.v1",
+  "classification_tag": "COUNTING_CLOSURE",
+  "terminal_state_id": "KT_GATE_D_DECISION_TERMINAL_STATE_V1",
+  "current_state": "DECISION_LAW_BOUND_POSTURES_UNSELECTED",
+  "postures_selected": false,
+  "b04_activation_allowed": false,
+  "gate_d_decision_receipt_required": true,
+  "next_lawful_move": "B04_GATE_D_POSTURE_SELECTION_ONLY",
+  "fail_conditions": [
+    "gate_d_posture_selected_inside_definition_only_law",
+    "b04_activation_attempted_before_gate_d_decision_receipt",
+    "gate_d_decision_receipt_missing_same_head_binding",
+    "gate_d_decision_receipt_missing_required_domain_selection",
+    "gate_d_decision_receipt_attempts_activation_instead_of_authorization"
+  ],
+  "terminal_rule": "Binding the Gate D decision law does not select any posture and does not activate B04. Gate D may proceed only after a future same-head decision receipt selects explicit postures for all required domains."
+}

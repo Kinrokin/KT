@@ -1,0 +1,69 @@
+{
+  "checks": [
+    {
+      "check_id": "deployment_profiles_active_and_bounded",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/product/deployment_profiles.json"
+    },
+    {
+      "check_id": "buyer_simple_install_and_handoff_pass",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/product_install_15m_receipt.json"
+    },
+    {
+      "check_id": "support_boundary_remains_bounded",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/product/support_boundary.json"
+    },
+    {
+      "check_id": "standards_legibility_is_informative_only",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/reports/standards_mapping_receipt.json"
+    },
+    {
+      "check_id": "one_page_surfaces_restate_e1_boundary",
+      "pass": true,
+      "ref": "KT_PROD_CLEANROOM/product/one_page_product_truth_surface.md"
+    }
+  ],
+  "claim_boundary": "The final product truth boundary is one buyer-simple bounded E1 verifier-backed product plane only. It does not widen externality, runtime, or enterprise truth.",
+  "current_git_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "generated_utc": "2026-03-23T20:43:40Z",
+  "install_to_pass_fail_minutes": 15,
+  "max_externality_class": "E1_SAME_HOST_DETACHED_REPLAY",
+  "product_profile_ids": [
+    "local_verifier_mode",
+    "team_pilot_mode",
+    "regulated_workflow_mode"
+  ],
+  "product_truth_class": "BOUNDED_E1_BUYER_SIMPLE_PRODUCT_PLANE",
+  "schema_id": "kt.product.final_truth_boundary.v1",
+  "source_refs": [
+    "KT_PROD_CLEANROOM/product/deployment_profiles.json",
+    "KT_PROD_CLEANROOM/reports/deployment_profiles.json",
+    "KT_PROD_CLEANROOM/reports/product_install_15m_receipt.json",
+    "KT_PROD_CLEANROOM/reports/operator_handoff_receipt.json",
+    "KT_PROD_CLEANROOM/reports/standards_mapping_receipt.json",
+    "KT_PROD_CLEANROOM/product/support_boundary.json",
+    "KT_PROD_CLEANROOM/product/client_wrapper_spec.json",
+    "KT_PROD_CLEANROOM/product/one_page_product_truth_surface.md",
+    "KT_PROD_CLEANROOM/product/operator_runbook_v2.md",
+    "KT_PROD_CLEANROOM/product/nist_mapping_matrix.json",
+    "KT_PROD_CLEANROOM/product/iso_42001_mapping_matrix.json",
+    "KT_PROD_CLEANROOM/product/eu_ai_act_alignment_matrix.json",
+    "KT_PROD_CLEANROOM/reports/commercial_truth_packet.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+    "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json"
+  ],
+  "status": "PASS",
+  "supported_entrypoints": [
+    "python -m tools.operator.public_verifier",
+    "python -m tools.operator.public_verifier_detached_validate"
+  ],
+  "unsupported_claims": [
+    "cross_host_proven",
+    "independent_or_hostile_verification_proven",
+    "enterprise_ready",
+    "comparative_superiority"
+  ]
+}

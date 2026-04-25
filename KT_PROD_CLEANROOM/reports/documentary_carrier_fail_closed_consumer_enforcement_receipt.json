@@ -1,0 +1,146 @@
+{
+  "canonical_receipt_binding": {
+    "baseline_vs_live_scorecard_ref": "KT_PROD_CLEANROOM/reports/baseline_vs_live_scorecard.json",
+    "t10_final_head_authority_alignment_receipt_ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json"
+  },
+  "canonical_scorecard_id": "KT_B03_T1_BASELINE_VS_LIVE_CANONICAL",
+  "checks": [
+    {
+      "check_id": "final_current_head_consumer_guard_passes",
+      "pass": true
+    },
+    {
+      "check_id": "w3_consumer_guard_passes",
+      "pass": true
+    },
+    {
+      "check_id": "final_current_head_rejects_documentary_carrier_mismatch",
+      "pass": true
+    },
+    {
+      "check_id": "w3_rejects_documentary_carrier_mismatch",
+      "pass": true
+    },
+    {
+      "check_id": "baseline_scorecard_remains_canonical_truth",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "T12 enforces fail-closed downstream consumer handling for documentary carrier mismatch only. It does not refresh comparator truth, widen comparator semantics, or claim Gate C exit.",
+  "current_git_head": "cb25597b70c076841ed6df5f1ed04b72b4adab6b",
+  "final_current_head_consumer_guard": {
+    "checks": [
+      {
+        "check_id": "tracked_t11_receipt_declares_expected_role",
+        "pass": true
+      },
+      {
+        "check_id": "tracked_t11_receipt_declares_subject_head",
+        "pass": true
+      },
+      {
+        "check_id": "documentary_carrier_mismatch_status_present",
+        "pass": true
+      },
+      {
+        "check_id": "documentary_carrier_overread_fails_closed",
+        "pass": true
+      },
+      {
+        "check_id": "warning_only_fallback_not_allowed",
+        "pass": true
+      },
+      {
+        "check_id": "tracked_t11_contract_stays_non_authoritative_on_current_head",
+        "pass": true
+      }
+    ],
+    "consumer_id": "final_current_head_adjudication_validate",
+    "current_git_head": "cb25597b70c076841ed6df5f1ed04b72b4adab6b",
+    "documentary_carrier_attempt": {
+      "blocked": true,
+      "failure_reason": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json",
+      "receipt_role": "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY",
+      "requested_head": "cb25597b70c076841ed6df5f1ed04b72b4adab6b",
+      "subject_head": "e42b9f46ceeab90b8b2ed102f8aa9675d0c8f632",
+      "tracked_t10_authority_class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
+    },
+    "status": "PASS",
+    "tracked_t11_contract": {
+      "allowed_roles": [
+        "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"
+      ],
+      "blocked": true,
+      "failure_reason": "SUBJECT_HEAD_MISMATCH",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json",
+      "receipt_role": "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY",
+      "requested_head": "cb25597b70c076841ed6df5f1ed04b72b4adab6b",
+      "subject_head": "e42b9f46ceeab90b8b2ed102f8aa9675d0c8f632"
+    },
+    "tracked_t11_receipt_ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json"
+  },
+  "generated_utc": "2026-03-27T19:17:02Z",
+  "receipt_role": "COUNTED_T12_DOCUMENTARY_CARRIER_FAIL_CLOSED_CONSUMER_ENFORCEMENT_ARTIFACT_ONLY",
+  "reopen_rule": "Satisfied lower gates may only be reopened by current regression receipt.",
+  "schema_id": "kt.gate_c_t12.documentary_carrier_fail_closed_consumer_enforcement_receipt.v1",
+  "status": "PASS",
+  "subject_head": "cb25597b70c076841ed6df5f1ed04b72b4adab6b",
+  "tranche_id": "B03_T12_DOCUMENTARY_CARRIER_FAIL_CLOSED_CONSUMER_ENFORCEMENT",
+  "w3_consumer_guard": {
+    "checks": [
+      {
+        "check_id": "tracked_t11_receipt_declares_expected_role",
+        "pass": true
+      },
+      {
+        "check_id": "tracked_t11_receipt_declares_subject_head",
+        "pass": true
+      },
+      {
+        "check_id": "documentary_carrier_mismatch_status_present",
+        "pass": true
+      },
+      {
+        "check_id": "documentary_carrier_overread_fails_closed",
+        "pass": true
+      },
+      {
+        "check_id": "warning_only_fallback_not_allowed",
+        "pass": true
+      },
+      {
+        "check_id": "tracked_t11_contract_stays_non_authoritative_on_current_head",
+        "pass": true
+      }
+    ],
+    "consumer_id": "w3_externality_and_comparative_proof_validate",
+    "current_git_head": "cb25597b70c076841ed6df5f1ed04b72b4adab6b",
+    "documentary_carrier_attempt": {
+      "blocked": true,
+      "failure_reason": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json",
+      "receipt_role": "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY",
+      "requested_head": "cb25597b70c076841ed6df5f1ed04b72b4adab6b",
+      "subject_head": "e42b9f46ceeab90b8b2ed102f8aa9675d0c8f632",
+      "tracked_t10_authority_class": "DOCUMENTARY_CARRIER_ONLY_SUBJECT_HEAD_MISMATCH"
+    },
+    "status": "PASS",
+    "tracked_t11_contract": {
+      "allowed_roles": [
+        "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY"
+      ],
+      "blocked": true,
+      "failure_reason": "SUBJECT_HEAD_MISMATCH",
+      "pass": false,
+      "receipt_ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json",
+      "receipt_role": "COUNTED_T11_T10_FINAL_HEAD_AUTHORITY_ALIGNMENT_ARTIFACT_ONLY",
+      "requested_head": "cb25597b70c076841ed6df5f1ed04b72b4adab6b",
+      "subject_head": "e42b9f46ceeab90b8b2ed102f8aa9675d0c8f632"
+    },
+    "tracked_t11_receipt_ref": "KT_PROD_CLEANROOM/reports/t10_receipt_final_head_authority_alignment_receipt.json"
+  }
+}

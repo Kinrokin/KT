@@ -1,0 +1,128 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+from tools.router.run_post_third_rerun_material_change_gate_packet import (  # noqa: E402
+    build_post_third_rerun_material_change_gate_packet,
+    main,
+)
+
+
+def _ceiling_reconsideration_input() -> dict:
+    return {
+        "schema_id": "kt.router_readiness_reconsideration_input.v1",
+        "mode": "LAB_ONLY_NONCANONICAL",
+        "status": "PASS",
+        "candidate_summary": {
+            "candidate_lab_head": "HEAD_OLD",
+            "combined_terminal_adapters": [
+                "lobe.code.specialist.v1",
+                "lobe.writer.specialist.v1",
+                "lobe.math.specialist.v1",
+            ],
+            "route_pairs": [
+                "lobe.math.specialist.v1 -> lobe.code.specialist.v1",
+                "lobe.generalist.shadow.v1 -> lobe.code.specialist.v1",
+                "lobe.research.specialist.v1 -> lobe.writer.specialist.v1",
+                "lobe.generalist.shadow.v1 -> lobe.math.specialist.v1",
+            ],
+        },
+    }
+
+
+def _candidate_refresh(*, head: str = "HEAD_OLD", include_fourth_terminal: bool = False) -> dict:
+    terminals = [
+        "lobe.code.specialist.v1",
+        "lobe.writer.specialist.v1",
+        "lobe.math.specialist.v1",
+    ]
+    route_pairs = [
+        "lobe.math.specialist.v1 -> lobe.code.specialist.v1",
+        "lobe.generalist.shadow.v1 -> lobe.code.specialist.v1",
+        "lobe.research.specialist.v1 -> lobe.writer.specialist.v1",
+        "lobe.generalist.shadow.v1 -> lobe.math.specialist.v1",
+    ]
+    if include_fourth_terminal:
+        terminals.append("lobe.research.specialist.v1")
+        route_pairs.append("lobe.generalist.shadow.v1 -> lobe.research.specialist.v1")
+
+    return {
+        "schema_id": "kt.fourth_terminal_lab_readiness_refresh_packet.v1",
+        "mode": "LAB_ONLY_NONCANONICAL",
+        "status": "PASS",
+        "source_lab_head": head,
+        "questions": {
+            "same_head_across_refresh": True,
+            "broader_reruns_confirmed_across_all_terminal_paths": True,
+            "same_head_consistency_preserved_across_all_terminal_paths": True,
+            "shadow_constraints_preserved_across_all_terminal_paths": True,
+            "fresh_verified_entrants_preserved_across_all_terminal_paths": True,
+            "tournament_like_constraints_passed_across_all_terminal_paths": True,
+            "distinct_route_topology_visible_across_all_terminal_paths": True,
+            "fourth_terminal_diversity_visible": include_fourth_terminal,
+        },
+        "terminal_summary": {
+            "combined_terminal_adapters": terminals,
+        },
+        "route_summary": {
+            "combined_route_pairs": route_pairs,
+        },
+    }
+
+
+def test_post_third_rerun_gate_holds_same_story_on_same_head() -> None:
+    packet = build_post_third_rerun_material_change_gate_packet(
+        ceiling_reconsideration_input=_ceiling_reconsideration_input(),
+        candidate_refresh_packet=_candidate_refresh(),
+        ceiling_reconsideration_input_ref="ceiling.json",
+        candidate_refresh_packet_ref="candidate.json",
+    )
+
+    assert packet["status"] == "PASS"
+    assert packet["gate_posture"] == "HOLD_LAB_ONLY_PENDING_POST_RERUN_MATERIAL_CHANGE"
+    assert packet["questions"]["material_change_earned"] is False
+    assert packet["questions"]["same_preserved_post_rerun_ceiling_story_under_new_label"] is False
+    assert "CANDIDATE_REFRESH_IS_SAME_LAB_HEAD_AS_POST_RERUN_CEILING" in packet["blockers"]
+    assert "NO_NEW_TERMINAL_ADAPTER_BEYOND_POST_RERUN_CEILING" in packet["blockers"]
+
+
+def test_post_third_rerun_gate_allows_new_fourth_terminal_on_new_head() -> None:
+    packet = build_post_third_rerun_material_change_gate_packet(
+        ceiling_reconsideration_input=_ceiling_reconsideration_input(),
+        candidate_refresh_packet=_candidate_refresh(head="HEAD_NEW", include_fourth_terminal=True),
+        ceiling_reconsideration_input_ref="ceiling.json",
+        candidate_refresh_packet_ref="candidate.json",
+    )
+
+    assert packet["status"] == "PASS"
+    assert packet["gate_posture"] == "READY_FOR_POST_RERUN_ROUTER_READINESS_RECONSIDERATION_INPUT_CONSIDERATION"
+    assert packet["questions"]["material_change_earned"] is True
+    assert packet["candidate_summary"]["new_terminal_adapters"] == ["lobe.research.specialist.v1"]
+
+
+def test_post_third_rerun_gate_cli_writes_packet(tmp_path: Path) -> None:
+    ceiling_path = tmp_path / "ceiling.json"
+    candidate_path = tmp_path / "candidate.json"
+    output_path = tmp_path / "gate.json"
+    ceiling_path.write_text(json.dumps(_ceiling_reconsideration_input(), indent=2), encoding="utf-8")
+    candidate_path.write_text(
+        json.dumps(_candidate_refresh(head="HEAD_NEW", include_fourth_terminal=True), indent=2),
+        encoding="utf-8",
+    )
+
+    rc = main(
+        [
+            "--ceiling-reconsideration-input",
+            str(ceiling_path),
+            "--candidate-refresh-packet",
+            str(candidate_path),
+            "--output",
+            str(output_path),
+        ]
+    )
+
+    assert rc == 0
+    payload = json.loads(output_path.read_text(encoding="utf-8"))
+    assert payload["status"] == "PASS"
+    assert payload["questions"]["material_change_earned"] is True

@@ -1,0 +1,232 @@
+{
+  "authoritative_scope_carried_forward": {
+    "contradiction_rules": [
+      "If branch-local prep output contradicts Track 01/02/03 frozen receipts, prep output loses automatically.",
+      "If a source claims canonical status from expansion/* before merge, fail closed.",
+      "If stale or untracked surfaces outrank the frozen header stack, fail closed."
+    ],
+    "posture_enum": [
+      "CANONICAL_MAIN_LIVE_TRUTH",
+      "AUTHORITATIVE_BRANCH_NON_CANONICAL",
+      "TRACK03_EXECUTION_COMPLETE__PROMOTION_GATED",
+      "TRACK03_HUMAN_REVIEW_PENDING_OR_COMPLETE",
+      "PARALLEL_PREP_ONLY__NON_AUTHORITATIVE"
+    ],
+    "source_precedence_table": [
+      "main protected-branch canonical surfaces after merge",
+      "frozen authoritative branch Track 03 review / verdict surfaces before merge",
+      "frozen Track 02 and Track 01 summary receipts",
+      "historical and quarantine surfaces for lineage only",
+      "parallel prep scaffolds last and non-authoritative only"
+    ],
+    "stale_surface_exclusion_logic": {
+      "exclude_historical_override": true,
+      "exclude_prep_lane_posture_override": true,
+      "exclude_untracked_authority": true,
+      "reference_contract": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/reporting_integrity_contract.json"
+    },
+    "truth_engine_contract": {
+      "historical_surfaces_may_explain_but_not_override": true,
+      "live_posture_must_be_receipt_derived": true,
+      "prep_surfaces_may_not_publish_live_posture": true,
+      "subject_head": "bf1c7ac8af60beec181bfc60a608bf9768a3633f"
+    }
+  },
+  "authority_header": {
+    "authoritative_lane_branch": "authoritative/post-f-truth-engine",
+    "authoritative_lane_branch_head": "01a271778c352f96550f24d83786cb7035783e29",
+    "canonical_authority_branch": "main",
+    "canonical_parent_main_head": "9a09d85b6da12d15bcfe94f95c661b43ee5d3b52",
+    "package_promotion_still_deferred": true,
+    "track03_repo_authority_now_canonical": true
+  },
+  "claim_boundary": "This contract binds only mechanical truth derivation and contradiction handling for post-merge KT authority. It is not a general cleanup lane, does not perform package promotion, and does not widen theorem or product claims.",
+  "contract_outcome": "POST_F_TRUTH_ENGINE_CONTRADICTION_VALIDATOR_CONTRACT_DEFINED__AUTHORITATIVE_DERIVATION_ONLY",
+  "contradiction_classes": [
+    {
+      "class_id": "stale_vs_live",
+      "summary": "A stale receipt or packet claims a stronger or different posture than the current canonical live surface."
+    },
+    {
+      "class_id": "historical_vs_superseded",
+      "summary": "A historical checkpoint attempts to outrank an explicit supersession or newer canonical receipt."
+    },
+    {
+      "class_id": "package_vs_repo",
+      "summary": "A deferred package artifact attempts to drive canonical repo truth."
+    },
+    {
+      "class_id": "branch_local_vs_canonical",
+      "summary": "A branch-local receipt or packet outranks canonical main-level authority."
+    },
+    {
+      "class_id": "theorem_vs_product",
+      "summary": "Theorem posture and product posture surfaces imply incompatible live states."
+    },
+    {
+      "class_id": "prep_lane_overreach",
+      "summary": "A non-authoritative prep lane publishes or implies live authority."
+    },
+    {
+      "class_id": "missing_authority_source",
+      "summary": "A derived output cannot name the authoritative source that justified it."
+    }
+  ],
+  "derivation_law": {
+    "fail_closed_rule": "Missing required canonical inputs, missing source provenance, or package/prep overreach halts recomputation.",
+    "inputs": {
+      "required_canonical_inputs": [
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_post_merge_closeout_receipt.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_post_merge_branch_snapshot.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_master_orchestrator_receipt.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_final_summary_receipt.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_contradiction_validator_authority_receipt.json"
+      ],
+      "required_governance_inputs": [
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/governance/truth_engine_contract.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/governance/posture_contract.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/governance/settled_truth_source_contract.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/governance/truth_supersession_rules.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/reporting_integrity_contract.json"
+      ]
+    },
+    "output_rule": "Every emitted posture or contradiction artifact must name the winning source and every rejected conflicting source.",
+    "precedence_rule": "Lowest numeric rank in source_precedence wins; non-driving classes can explain but cannot determine output posture.",
+    "tie_break_rule": "If two driving sources of equal rank disagree, fail closed and emit a contradiction ledger instead of updating live posture."
+  },
+  "emission_surfaces": {
+    "authoritative_recompute_receipt": "KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_recompute_receipt.json",
+    "authority_graph": "KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_authority_graph.json",
+    "contradiction_ledger": "KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_contradiction_ledger.json",
+    "posture_index": "KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_posture_index.json",
+    "stale_source_quarantine_list": "KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_stale_source_quarantine_list.json"
+  },
+  "exclusion_law": {
+    "never_drive_live_truth": [
+      "deferred package files",
+      "superseded historical checkpoints",
+      "non-authoritative prep lanes",
+      "smoke-only artifacts",
+      "branch-local packets that have not crossed the authority rule"
+    ],
+    "package_boundary_preserved": {
+      "package_auto_promotion_candidate_count": 6,
+      "package_promotion_boundary": "Still blocked until protected merge to main and explicit post-review promotion decision.",
+      "review_approved_auto_skip_count": 3,
+      "review_approved_out_of_scope_count": 2
+    },
+    "retained_non_authoritative_prep_lanes": [
+      "trust_zone_boundary_purification_scaffold",
+      "residual_proof_law_hardening_scaffold",
+      "upper_stack_ratification_scaffold"
+    ]
+  },
+  "execution_status": "PASS__POST_F_TRUTH_ENGINE_CONTRADICTION_VALIDATOR_CONTRACT_BOUND",
+  "failure_law": {
+    "halt_recomputation_when": [
+      "required canonical source is missing",
+      "two driving sources of equal rank disagree",
+      "package or prep surface attempts to drive live truth",
+      "source provenance cannot be attached to emitted posture"
+    ],
+    "new_court_required_when": [
+      "theorem and product truths would need simultaneous reinterpretation",
+      "package promotion boundary must change",
+      "source precedence ranking itself must be modified"
+    ],
+    "warn_only_when": [
+      "historical lineage surface is stale but already non-driving",
+      "excluded prep surface changed without attempting posture override"
+    ]
+  },
+  "generated_utc": "2026-04-25T15:49:19Z",
+  "next_lawful_move": "AUTHOR_POST_F_TRUTH_ENGINE_VALIDATOR_SCHEMA_AND_CONTRADICTION_TAXONOMY_PACKET",
+  "posture_enum_contract": {
+    "merge_truth": [
+      "TRACK03_REPO_AUTHORITY_BRANCH_ONLY",
+      "TRACK03_REPO_AUTHORITY_CANONICAL_ON_MAIN",
+      "TRACK03_PROTECTED_PR_PENDING"
+    ],
+    "package_truth": [
+      "PACKAGE_PROMOTION_DEFERRED",
+      "PACKAGE_PROMOTION_PARTIALLY_AUTHORIZED",
+      "PACKAGE_PROMOTION_CANONICALIZED"
+    ],
+    "product_truth": [
+      "GATE_F_ONE_NARROW_WEDGE_CONFIRMED__LOCAL_VERIFIER_MODE_ONLY",
+      "PRODUCT_POSTURE_CANONICAL_ON_MAIN",
+      "PRODUCT_POSTURE_STILL_BOUNDED"
+    ],
+    "theorem_truth": [
+      "GATE_D_CLEARED__SUCCESSOR_LINE",
+      "GATE_E_OPEN__SUCCESSOR_LINE",
+      "THEOREM_POSTURE_CANONICAL_ON_MAIN"
+    ]
+  },
+  "schema_id": "kt.operator.cohort0_post_f_truth_engine_contradiction_validator_contract_packet.v1",
+  "source_precedence": [
+    {
+      "class_id": "canonical_post_merge_repo_authority",
+      "drives_live_truth": true,
+      "rank": 1,
+      "refs": [
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_post_merge_closeout_receipt.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_post_merge_branch_snapshot.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_protected_merge_and_canonical_promotion_decision_receipt.json"
+      ],
+      "rule": "Canonical post-merge repo authority outranks every branch-local, package-local, historical, or prep-only surface."
+    },
+    {
+      "class_id": "canonical_theorem_and_product_truth",
+      "drives_live_truth": true,
+      "rank": 2,
+      "refs": [
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_master_orchestrator_receipt.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_post_clear_branch_law_packet.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_final_summary_receipt.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_final_summary_receipt.json"
+      ],
+      "rule": "Canonical theorem/product receipts define live posture after merge unless a later canonical supersession receipt says otherwise."
+    },
+    {
+      "class_id": "authoritative_successor_lane_packets",
+      "drives_live_truth": true,
+      "rank": 3,
+      "refs": [
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_contradiction_validator_authority_receipt.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_contradiction_validator_authority_packet.json"
+      ],
+      "rule": "Authoritative successor-lane packets may extend derivation law but may not weaken canonical post-merge truth already frozen on main."
+    },
+    {
+      "class_id": "historical_and_superseded_lineage",
+      "drives_live_truth": false,
+      "rank": 4,
+      "refs": [
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/governance/settled_truth_source_contract.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/governance/truth_supersession_rules.json"
+      ],
+      "rule": "Historical and superseded surfaces may explain lineage, but they may never override current canonical truth."
+    },
+    {
+      "class_id": "deferred_package_and_non_authoritative_prep",
+      "drives_live_truth": false,
+      "rank": 5,
+      "refs": [
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_parallel_trust_zone_boundary_scope_packet.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_parallel_residual_proof_law_hardening_packet.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_parallel_upper_stack_ratification_scope_packet.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/staging/scripts/stage_and_promote.sh"
+      ],
+      "rule": "Deferred package artifacts and prep-only lanes cannot drive live truth until separately promoted by an explicit later court."
+    }
+  ],
+  "status": "PASS",
+  "supporting_contracts": {
+    "legacy_truth_engine_contract_id": "TRUTH_ENGINE_CONTRACT_V2_20260309",
+    "posture_contract_id": "POSTURE_CONTRACT_V1_20260309",
+    "reporting_integrity_contract_id": "REPORTING_INTEGRITY_CONTRACT_V1_20260312",
+    "settled_truth_source_contract_id": "SETTLED_TRUTH_SOURCE_CONTRACT_V1_20260309",
+    "truth_supersession_rules_id": "TRUTH_SUPERSESSION_RULES_V1_20260309"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "adjudication_packet_ref": "kt_child_adjudication_packet.json",
+  "allowed_claims": [
+    "claims_emitted_only_from_child_adjudication_outputs_for_declared_f04_verifier_surfaces_only",
+    "secret_free_one_command_outsider_verifier_v2_active_for_declared_child_verifier_surfaces_only",
+    "current_head_child_verifier_assurance_surfaces_adjudicated_authentic_complete_and_fresh_only"
+  ],
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "adjudication_packet_pass",
+      "detail": "Verifier v2 claims may compile only from a passing adjudication packet.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_child_adjudication_packet.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "vsa_bounded_assurance_only",
+      "detail": "Verifier v2 remains bounded to assurance and verifier surfaces only.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_blocker_matrix_v2.json",
+        "KT_PROD_CLEANROOM/governance/kt_claim_proof_ceiling_compiler_policy_v2.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "compiled_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "current_strongest_claim": "F04 emits a bounded verifier v2 summary only for adjudicated current-head child verifier surfaces.",
+  "forbidden_claims": [
+    "f04_proves_current_head_external_capability",
+    "f04_proves_release_readiness",
+    "f04_proves_release_activation",
+    "f04_widens_product_or_commercial_claims"
+  ],
+  "pass_verdict": "ADJUDICATION_SPLIT_AND_SECRET_FREE_OUTSIDER_VERIFIER_V2_ACTIVE",
+  "phase_id": "F04_ADJUDICATION_VERIFIER_V2_AND_OUTSIDER_PATH",
+  "remaining_open_blockers": [
+    "current_head_external_capability_not_confirmed",
+    "release_readiness_not_proven",
+    "release_ceremony_not_executed",
+    "release_activation_not_executed",
+    "repo_root_import_fragility_visible_and_unfixed"
+  ],
+  "schema_id": "kt.child_campaign.public_verifier_vsa.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "Verifier v2 proves current-head external capability",
+    "Verifier v2 proves release readiness",
+    "Verifier v2 widens product claims"
+  ]
+}

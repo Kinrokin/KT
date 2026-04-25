@@ -1,0 +1,75 @@
+{
+  "authoritative_live_product_surfaces": {
+    "branch_law_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_post_clear_branch_law_packet.json",
+    "gate_f_bootstrap_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_f_fresh_operator_bootstrap_and_greenline_wave_receipt.json",
+    "gate_f_deployment_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_f_deployment_smoke_and_tenant_isolation_wave_receipt.json",
+    "gate_f_governance_contract": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_f_product_truth_and_governance_contract.json",
+    "gate_f_language_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_f_buyer_safe_language_and_support_boundary_receipt.json",
+    "gate_f_pilot_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_f_external_workload_pilot_receipt.json",
+    "gate_f_review_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_f_one_narrow_wedge_review_packet.json",
+    "gate_f_review_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_f_one_narrow_wedge_review_receipt.json",
+    "gate_f_scope_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_f_narrow_wedge_scope_packet.json",
+    "gate_f_screen_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_f_product_wedge_admissibility_screen_receipt.json",
+    "orchestrator_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_master_orchestrator_receipt.json",
+    "supersession_note": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_post_clear_supersession_note.json"
+  },
+  "canonical_live_product_status": {
+    "active_profile_id": "local_verifier_mode",
+    "current_product_posture": "GATE_F_ONE_NARROW_WEDGE_CONFIRMED__LOCAL_VERIFIER_MODE_ONLY",
+    "gate_d_cleared_on_successor_line": true,
+    "gate_e_open_on_successor_line": true,
+    "gate_f_narrow_wedge_confirmed": true,
+    "gate_f_open": false,
+    "same_head_counted_reentry_admissible_now": true,
+    "support_tier": "BOUNDED_E1_OPERATOR_GUIDANCE_ONLY",
+    "tenant_posture": "SINGLE_TENANT_ONLY_DECLARED",
+    "wedge_id": "KT_F_NARROW_LOCAL_VERIFIER_EXECUTE_RECEIPT_WEDGE_V1"
+  },
+  "claim_boundary": "This packet freezes the canonical live product truth after Gate F one narrow wedge confirmation. It does not open Gate F into a broader platform, enterprise surface, or multi-tenant claim.",
+  "execution_status": "PASS__GATE_F_POST_CLOSE_LIVE_PRODUCT_TRUTH_BOUND",
+  "generated_utc": "2026-04-23T22:49:35Z",
+  "governing_post_f_rule": "Gate D cleared on the successor line, Gate E open on that line, and Gate F confirmed only as one single-tenant local verifier wedge. All product claims must stay narrower than that live stack.",
+  "next_lawful_move": "CONVENE_POST_F_BROAD_CANONICAL_REAUDIT__MINIMUM_PATH_COMPLETE_CANDIDATE",
+  "schema_id": "kt.operator.cohort0_gate_f_post_close_live_product_truth_packet.v1",
+  "selected_wedge_summary": {
+    "active_profile_id": "local_verifier_mode",
+    "detached_command": "python -m tools.operator.public_verifier_detached_validate",
+    "receipt_must_return": [
+      "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+      "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json"
+    ],
+    "supported_actions": [
+      "submit_bounded_verification_request",
+      "retrieve_pass_fail_receipt",
+      "retrieve_bounded_audit_packet",
+      "retrieve_replay_kit_refs"
+    ],
+    "surface_summary": "Single-tenant same-host verifier-backed execution request, receipt retrieval, and replay-kit handoff.",
+    "verify_command": "python -m tools.operator.public_verifier",
+    "wedge_id": "KT_F_NARROW_LOCAL_VERIFIER_EXECUTE_RECEIPT_WEDGE_V1"
+  },
+  "status": "PASS",
+  "subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91",
+  "validation_summary": {
+    "buyer_safe_language_bound": "",
+    "deployment_smoke_status": "GATE_F_DEPLOYMENT_SMOKE_AND_TENANT_ISOLATION_PASS__SINGLE_TENANT_ONLY",
+    "external_workload_pilot_status": "GATE_F_EXTERNAL_WORKLOAD_PILOT_PASS__LOCAL_VERIFIER_MODE_ONLY",
+    "fresh_operator_bootstrap_status": "GATE_F_FRESH_OPERATOR_BOOTSTRAP_AND_GREENLINE_PASS__RUNBOOK_ONLY_PATH_BOUND",
+    "governance_bound": "GATE_F_PRODUCT_TRUTH_AND_GOVERNANCE_CONTRACT_BOUND__LOCAL_VERIFIER_MODE_ONLY",
+    "scope_defined": "GATE_F_NARROW_WEDGE_SCOPE_DEFINED__LOCAL_VERIFIER_MODE_ONLY",
+    "wedge_review_status": "GATE_F_ONE_NARROW_WEDGE_CONFIRMED__LOCAL_VERIFIER_MODE_ONLY",
+    "wedge_screen_status": "GATE_F_ADMISSIBILITY_SCREEN_AUTHORIZED__ONE_NARROW_WEDGE_ONLY"
+  },
+  "what_changed": [
+    "Gate F one narrow wedge is now frozen as canonical live product truth.",
+    "The canonical product posture is now local verifier mode only.",
+    "Live product posture is now anchored to the bounded current-head verifier-backed execute/receipt surface."
+  ],
+  "what_did_not_change": [
+    "Gate F did not open as a broad platform.",
+    "No multi-tenant, enterprise, or cross-host claim was earned.",
+    "Detached standalone package rerun was not upgraded into fresh current-head proof.",
+    "Historical product surfaces remain preserved as historical lineage only."
+  ]
+}

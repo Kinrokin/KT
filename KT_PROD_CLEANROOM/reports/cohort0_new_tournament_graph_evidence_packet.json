@@ -1,0 +1,49 @@
+{
+  "authoritative_new_tournament_graph_evidence_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_new_tournament_graph_evidence_20260407_live/cohort0_new_tournament_graph_evidence_packet.json",
+  "blockers": [],
+  "carrier_surface_role": "TRACKED_CARRIER_ONLY_GATE_D_NEW_TOURNAMENT_GRAPH_EVIDENCE_PACKET",
+  "claim_boundary": "This packet binds only the current new-graph evidence blocker. It does not rerun tournament, reopen merge, declare router authority, or widen externality/commercial surfaces.",
+  "current_eval_axis_summary": {
+    "all_final_verdict_pass": true,
+    "all_source_evals_stubbed": false,
+    "all_trace_present": true,
+    "distinct_utility_score_count": 13,
+    "entrant_count": 13,
+    "final_verdict_pass_count": 13,
+    "governance_axis_flat_zero": false,
+    "metric_probe_agreement_true_count": 11,
+    "source_eval_stub_count": 0,
+    "trace_present_count": 13,
+    "utility_only_total_order": false,
+    "utility_scores_strictly_ordered": true
+  },
+  "current_graph_deadlock_reason": "The entrant substrate is no longer stub-only: all 13 eval reports are non-stub and the governance axis is no longer flat at zero, so a new tournament rerun can now test whether the prior total-order ceiling has actually been broken.",
+  "current_graph_summary": {
+    "admissible_parent_pair_count": 0,
+    "champion_count": 1,
+    "dominance_pair_count": 78,
+    "entrant_count": 13,
+    "non_champion_count": 12,
+    "non_champion_parent_pair_candidate_count": 66,
+    "non_champion_total_order": true,
+    "total_order_across_all_entrants": true,
+    "total_pair_count": 78
+  },
+  "evidence_posture": "NEW_TOURNAMENT_GRAPH_EVIDENCE_READY__NON_STUB_SUBSTRATE_EMITTED",
+  "generated_utc": "2026-04-07T12:48:48Z",
+  "next_lawful_move": "PREPARE_FRAGILITY_PROBE_RESULT_AND_EXECUTE_TOURNAMENT_ON_NEW_GRAPH",
+  "required_new_graph_evidence": [
+    "Prepare a fresh fragility probe result on the new entrant authority root.",
+    "Execute the tournament rerun on the new graph substrate.",
+    "Then re-check whether total order breaks, admissible_parent_pair_count rises above 0, and merge reentry reopens."
+  ],
+  "schema_id": "kt.operator.cohort0_new_tournament_graph_evidence_packet.v1",
+  "source_packet_refs": {
+    "adapter_grade_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_hf_20260401T135716Z_FULL_ARTIFACTS_repo_import_20260401T145100834494Z/cohort0_real_engine_adapter_grade_receipt.json",
+    "entrant_reexport_contract_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260407_non_stub_live/cohort0_entrant_authority_reexport_contract.json",
+    "followthrough_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/new_tournament_graph_evidence/cohort0_real_engine_tournament_followthrough_packet.json",
+    "new_tournament_graph_prep_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/tmp/cohort0_tournament_admission_prep_20260406_live/new_tournament_graph_evidence/cohort0_new_tournament_graph_prep_packet.json"
+  },
+  "status": "PASS",
+  "subject_head": "2fad8817604e56fe3c291bd5f51734acb519a789"
+}

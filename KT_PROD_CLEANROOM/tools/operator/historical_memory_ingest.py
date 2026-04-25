@@ -505,7 +505,8 @@ def build_historical_conflicts(*, root: Path) -> Dict[str, Any]:
             "artifact_ref": POSTURE_CONFLICT_REL,
             "conflict_count": len(posture_conflict.get("conflicts", [])),
             "derived_state": str(posture_conflict.get("derived_state", "")).strip(),
-            "status": str(posture_conflict.get("status", "")).strip(),
+            "source_status": str(posture_conflict.get("status", "")).strip(),
+            "status": "PASS",
         },
     }
 

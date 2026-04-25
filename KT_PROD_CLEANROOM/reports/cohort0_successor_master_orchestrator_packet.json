@@ -1,0 +1,281 @@
+{
+  "blocker_ledger_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_full_readjudication_authorization_blocker_ledger.json",
+  "claim_boundary": "This master orchestrator runs the successor line as a DAG: evidence nodes may run wide, but claim-bearing courts remain predicate-gated and may only emit bounded lawful receipts. It does not by itself authorize counted reentry, reopen Gate D, or open Gate E, but it may reflect downstream lawful receipts that have already done so.",
+  "claim_nodes": [
+    {
+      "dependencies": [
+        "lane_a_promoted_survivor_execution",
+        "lane_b_family_level_bridge_harness_execution"
+      ],
+      "node_id": "cross_lane_reentry_prep_screening",
+      "node_type": "court",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_cross_lane_reentry_prep_screening_receipt.json",
+      "status": "AUTHORIZED__SATISFIED_AND_ALREADY_EMITTED"
+    },
+    {
+      "dependencies": [
+        "cross_lane_reentry_prep_screening"
+      ],
+      "node_id": "successor_reentry_prep_packet",
+      "node_type": "court",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_reentry_prep_receipt.json",
+      "status": "AUTHORIZED__SATISFIED_AND_ALREADY_EMITTED"
+    },
+    {
+      "dependencies": [
+        "successor_reentry_prep_packet"
+      ],
+      "node_id": "successor_gate_d_reentry_admissibility_screen",
+      "node_type": "court",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_reentry_admissibility_screen_receipt.json",
+      "status": "AUTHORIZED__SATISFIED_AND_ALREADY_EMITTED"
+    },
+    {
+      "dependencies": [
+        "successor_gate_d_reentry_admissibility_screen"
+      ],
+      "node_id": "successor_gate_d_narrow_admissibility_review",
+      "node_type": "court",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_narrow_admissibility_review_receipt.json",
+      "status": "AUTHORIZED__SATISFIED_AND_ALREADY_EMITTED"
+    },
+    {
+      "dependencies": [
+        "successor_route_consequence_severity_escalation_wave",
+        "successor_anti_selection_stress_wave",
+        "successor_third_surface_breadth_witness_wave"
+      ],
+      "next_tranche": "AUTHORIZE_FULL_SUCCESSOR_GATE_D_READJUDICATION__STILL_NOT_GATE_D_REOPENED",
+      "node_id": "successor_full_gate_d_readjudication_authorization_screen",
+      "node_type": "court",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_full_gate_d_readjudication_authorization_screen_receipt.json",
+      "status": "AUTHORIZED__FULL_SUCCESSOR_GATE_D_READJUDICATION_REVIEW_MAY_BE_CONVENED"
+    },
+    {
+      "dependencies": [
+        "successor_full_gate_d_readjudication_authorization_screen"
+      ],
+      "node_id": "successor_full_gate_d_readjudication",
+      "node_type": "constitutional_court",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_full_gate_d_readjudication_receipt.json",
+      "status": "SATISFIED__GATE_D_CLEARED__SUCCESSOR_LINE"
+    },
+    {
+      "dependencies": [
+        "successor_full_gate_d_readjudication"
+      ],
+      "next_tranche": "AUTHOR_GATE_E_ADMISSIBILITY_SCOPE_PACKET__STILL_NOT_GATE_E_OPEN",
+      "node_id": "gate_e_precondition_monitor",
+      "node_type": "constitutional_court",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_e_precondition_monitor_receipt.json",
+      "status": "SATISFIED__POST_SUCCESSOR_GATE_D_CLEAR__STILL_GATE_E_CLOSED"
+    },
+    {
+      "dependencies": [
+        "gate_e_precondition_monitor"
+      ],
+      "next_tranche": "CONVENE_GATE_E_ADMISSIBILITY_SCREEN__STILL_NOT_GATE_E_OPEN",
+      "node_id": "gate_e_admissibility_scope_packet",
+      "node_type": "constitutional_court",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_e_admissibility_scope_receipt.json",
+      "status": "SATISFIED__GATE_E_ADMISSIBILITY_SCREEN_AUTHORIZED__STILL_NOT_OPEN"
+    },
+    {
+      "dependencies": [
+        "gate_e_admissibility_scope_packet",
+        "gate_e_post_clear_contradiction_audit"
+      ],
+      "next_tranche": "RECONVENE_GATE_E_ADMISSIBILITY_SCREEN__POST_BINDING_CONFIRMATION",
+      "node_id": "gate_e_admissibility_screen",
+      "node_type": "constitutional_court",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_e_admissibility_screen_receipt.json",
+      "status": "SATISFIED__GATE_E_OPEN__SUCCESSOR_LINE"
+    },
+    {
+      "dependencies": [
+        "gate_e_admissibility_screen"
+      ],
+      "next_tranche": "CONVENE_GATE_E_COMPARATOR_GOVERNANCE_BINDING_SCREEN__POST_BINDING_PACKET",
+      "node_id": "gate_e_comparator_governance_binding_packet",
+      "node_type": "constitutional_court",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_e_comparator_governance_binding_receipt.json",
+      "status": "SATISFIED__GATE_E_BINDING_PACKET_BOUND__STILL_NOT_OPEN"
+    },
+    {
+      "dependencies": [
+        "gate_e_comparator_governance_binding_packet",
+        "gate_e_post_clear_contradiction_audit"
+      ],
+      "next_tranche": "RECONVENE_GATE_E_ADMISSIBILITY_SCREEN__POST_BINDING_CONFIRMATION",
+      "node_id": "gate_e_comparator_governance_binding_screen",
+      "node_type": "constitutional_court",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_e_comparator_governance_binding_screen_receipt.json",
+      "status": "SATISFIED__GATE_E_BINDING_CONFIRMED__ADMISSIBILITY_REVIEW_MAY_BE_CONVENED"
+    },
+    {
+      "dependencies": [
+        "gate_e_admissibility_screen"
+      ],
+      "next_tranche": "FREEZE_GATE_F_WEDGE_AS_CANONICAL_LIVE_PRODUCT_TRUTH",
+      "node_id": "gate_f_one_narrow_wedge_review",
+      "node_type": "product_court",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_f_one_narrow_wedge_review_receipt.json",
+      "status": "SATISFIED__GATE_F_ONE_NARROW_WEDGE_CONFIRMED"
+    },
+    {
+      "dependencies": [
+        "gate_f_one_narrow_wedge_review"
+      ],
+      "next_tranche": "CONVENE_POST_F_BROAD_CANONICAL_REAUDIT__MINIMUM_PATH_COMPLETE_CANDIDATE",
+      "node_id": "gate_f_post_close_live_product_truth",
+      "node_type": "product_court",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_f_post_close_live_product_truth_receipt.json",
+      "status": "SATISFIED__GATE_F_LIVE_PRODUCT_TRUTH_FROZEN"
+    },
+    {
+      "dependencies": [
+        "gate_f_post_close_live_product_truth"
+      ],
+      "next_tranche": "AUTHOR_CONTROLLED_POST_F_EXPANSION_TRACKS__POST_REAUDIT_PASS",
+      "node_id": "post_f_broad_canonical_reaudit",
+      "node_type": "constitutional_court",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_broad_canonical_reaudit_receipt.json",
+      "status": "SATISFIED__POST_F_BROAD_CANONICAL_REAUDIT_PASS"
+    }
+  ],
+  "current_branch_posture": "GATE_E_OPEN__POST_SUCCESSOR_GATE_D_CLEAR",
+  "current_product_posture": "GATE_F_ONE_NARROW_WEDGE_CONFIRMED__LOCAL_VERIFIER_MODE_ONLY",
+  "dag_mode": "PARALLEL_EVIDENCE__GATED_COURTS__HARD_PREDICATES",
+  "evidence_nodes": [
+    {
+      "dependencies": [],
+      "node_id": "lane_a_promoted_survivor_execution",
+      "node_type": "evidence",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_lane_a_promoted_survivor_execution_receipt.json",
+      "status": "SATISFIED__PASS"
+    },
+    {
+      "dependencies": [],
+      "node_id": "lane_b_stage_pack_hydration",
+      "node_type": "evidence",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_lane_b_stage_pack_hydration_receipt.json",
+      "status": "SATISFIED__PASS"
+    },
+    {
+      "dependencies": [
+        "lane_b_stage_pack_hydration",
+        "lane_a_promoted_survivor_execution"
+      ],
+      "node_id": "lane_b_family_level_bridge_harness_execution",
+      "node_type": "evidence",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_lane_b_family_level_execution_receipt.json",
+      "status": "SATISFIED__PASS"
+    },
+    {
+      "dependencies": [
+        "successor_gate_d_narrow_admissibility_review"
+      ],
+      "next_tranche": "EXECUTE_SUCCESSOR_ROUTE_CONSEQUENCE_SEVERITY_ESCALATION_WAVE__FIXED_HARNESS",
+      "node_id": "successor_route_consequence_severity_escalation_wave",
+      "node_type": "evidence",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_route_consequence_severity_escalation_wave_receipt.json",
+      "status": "SATISFIED__PASS"
+    },
+    {
+      "dependencies": [
+        "successor_gate_d_narrow_admissibility_review"
+      ],
+      "next_tranche": "RECOMPUTE_SUCCESSOR_BLOCKER_LEDGER_AND_FULL_AUTHORIZATION_SCREEN",
+      "node_id": "successor_anti_selection_stress_wave",
+      "node_type": "evidence",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_family_side_anti_selection_closure_wave_receipt.json",
+      "status": "SATISFIED__PASS"
+    },
+    {
+      "dependencies": [
+        "successor_anti_selection_stress_wave"
+      ],
+      "next_tranche": "RECOMPUTE_SUCCESSOR_BLOCKER_LEDGER_AND_FULL_AUTHORIZATION_SCREEN",
+      "node_id": "successor_family_side_anti_selection_closure_wave",
+      "node_type": "evidence",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_family_side_anti_selection_closure_wave_receipt.json",
+      "status": "SATISFIED__PASS"
+    },
+    {
+      "dependencies": [
+        "successor_gate_d_narrow_admissibility_review"
+      ],
+      "next_tranche": "EXECUTE_SUCCESSOR_THIRD_SURFACE_BREADTH_WITNESS_WAVE",
+      "node_id": "successor_third_surface_breadth_witness_wave",
+      "node_type": "evidence",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_third_surface_breadth_witness_wave_receipt.json",
+      "status": "SATISFIED__PASS"
+    },
+    {
+      "dependencies": [
+        "gate_e_admissibility_scope_packet"
+      ],
+      "next_tranche": "MAINTAIN_GATE_E_OPEN_POSTURE__POST_SUCCESSOR_LINE_CLEAR",
+      "node_id": "gate_e_post_clear_contradiction_audit",
+      "node_type": "evidence",
+      "receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_e_post_clear_contradiction_audit_receipt.json",
+      "status": "SATISFIED__NO_LIVE_AUTHORITY_CONTRADICTION"
+    }
+  ],
+  "execution_status": "PASS__SUCCESSOR_MASTER_ORCHESTRATOR_BOUND_AND_EVALUATED",
+  "full_successor_gate_d_readjudication_authorized_now": true,
+  "gate_d_reopened": true,
+  "gate_e_open": true,
+  "gate_f_narrow_wedge_confirmed": true,
+  "gate_f_open": false,
+  "generated_utc": "2026-04-23T22:50:00Z",
+  "minimum_path_complete_through_gate_f": true,
+  "next_lawful_move": "AUTHOR_CONTROLLED_POST_F_EXPANSION_TRACKS__POST_REAUDIT_PASS",
+  "post_f_broad_canonical_reaudit_passed": true,
+  "predicate_board_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_master_predicate_board.json",
+  "ready_parallel_evidence_nodes": [],
+  "same_head_counted_reentry_admissible_now": true,
+  "schema_id": "kt.operator.cohort0_successor_master_orchestrator_packet.v1",
+  "source_refs": {
+    "admissibility_screen_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_reentry_admissibility_screen_packet.json",
+    "admissibility_screen_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_reentry_admissibility_screen_receipt.json",
+    "anti_selection_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_anti_selection_stress_wave_packet.json",
+    "anti_selection_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_anti_selection_stress_wave_receipt.json",
+    "blocker_ledger_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_full_readjudication_authorization_blocker_ledger.json",
+    "cross_lane_comparative_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_cross_lane_bridge_harness_comparative_packet.json",
+    "cross_lane_screen_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_cross_lane_reentry_prep_screening_packet.json",
+    "cross_lane_screen_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_cross_lane_reentry_prep_screening_receipt.json",
+    "family_side_closure_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_family_side_anti_selection_closure_wave_packet.json",
+    "family_side_closure_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_family_side_anti_selection_closure_wave_receipt.json",
+    "full_auth_screen_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_full_gate_d_readjudication_authorization_screen_packet.json",
+    "full_auth_screen_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_full_gate_d_readjudication_authorization_screen_receipt.json",
+    "full_readjudication_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_full_gate_d_readjudication_receipt.json",
+    "gate_e_audit_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_e_post_clear_contradiction_audit_receipt.json",
+    "gate_e_binding_packet_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_e_comparator_governance_binding_receipt.json",
+    "gate_e_binding_screen_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_e_comparator_governance_binding_screen_receipt.json",
+    "gate_e_monitor_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_e_precondition_monitor_receipt.json",
+    "gate_e_scope_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_e_admissibility_scope_receipt.json",
+    "gate_e_screen_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_e_admissibility_screen_receipt.json",
+    "gate_f_live_product_truth_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_f_post_close_live_product_truth_receipt.json",
+    "gate_f_review_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_f_one_narrow_wedge_review_receipt.json",
+    "lane_a_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_lane_a_promoted_survivor_execution_receipt.json",
+    "lane_a_scorecard_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_lane_a_promoted_survivor_bridge_harness_scorecard.json",
+    "lane_b_hydration_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_lane_b_stage_pack_hydration_receipt.json",
+    "lane_b_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_lane_b_family_level_execution_receipt.json",
+    "lane_b_scorecard_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_lane_b_family_level_bridge_harness_scorecard.json",
+    "narrow_review_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_narrow_admissibility_review_packet.json",
+    "narrow_review_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_narrow_admissibility_review_receipt.json",
+    "post_f_reaudit_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_broad_canonical_reaudit_receipt.json",
+    "predicate_board_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_master_predicate_board.json",
+    "prep_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_reentry_prep_packet.json",
+    "prep_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_reentry_prep_receipt.json",
+    "reentry_block_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_d_reentry_block_contract.json",
+    "severity_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_route_consequence_severity_escalation_wave_packet.json",
+    "severity_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_route_consequence_severity_escalation_wave_receipt.json",
+    "third_surface_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_third_surface_breadth_witness_wave_packet.json",
+    "third_surface_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_third_surface_breadth_witness_wave_receipt.json",
+    "verdict_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_d_hardened_ceiling_verdict_packet.json"
+  },
+  "status": "PASS",
+  "subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91"
+}

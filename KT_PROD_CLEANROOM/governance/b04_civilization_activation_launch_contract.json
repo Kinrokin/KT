@@ -1,0 +1,131 @@
+{
+  "schema_id": "kt.governance.b04_civilization_activation_launch_contract.v1",
+  "classification_tag": "COUNTING_CLOSURE",
+  "contract_id": "KT_B04_CIVILIZATION_ACTIVATION_LAUNCH_CONTRACT_V1",
+  "activation_mode": "LAUNCH_SURFACE_ONLY_NO_IMPLEMENTATION",
+  "parent_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
+  "gate_c_exit_head": "71268f2f7489aadec338d5e71bb5b70f8a7fe9dc",
+  "reanchor_head": "ee752460e34ad2411adc3d228704f20c421f33be",
+  "gate_d_decision_law_ref": "KT_PROD_CLEANROOM/governance/gate_d_decision_law.json",
+  "gate_d_decision_receipt_ref": "KT_PROD_CLEANROOM/reports/gate_d_decision_receipt.json",
+  "selected_postures": {
+    "D1_EXTERNALITY_WIDENING": "EXTERNALITY_BOUNDED",
+    "D2_NEW_COUNTED_DOMAINS": "COUNTED_DOMAINS_CONTROLLED_EXPANSION",
+    "D3_ADAPTIVE_EVOLUTION_AUTHORIZATION": "ADAPTER_EVOLUTION_AUTHORIZED",
+    "D4_COMPARATIVE_COMPETITIVE_CLAIMS": "NO_EXTERNAL_COMPARATIVE_CLAIMS",
+    "D5_COMMERCIAL_ACTIVATION": "LAB_ONLY"
+  },
+  "activation_scope": {
+    "allowed_canonical_surfaces": [
+      "Crucible registry and crucible execution receipts.",
+      "Pressure taxonomy and epoch coverage enforcement.",
+      "Adapter registry, lineage, training, evaluation, promotion, demotion, and retirement receipts.",
+      "Tournament protocol, promotion ladder, merge law, and merge receipts.",
+      "Router shadow evaluation and router proof versus the best static adapter only.",
+      "Evolution lineage, rollback plans, rollback drills, and civilization governance receipts.",
+      "Lobe definitions remain law-bound and schema-bound without enabling autonomous multi-lobe runtime."
+    ],
+    "forbidden_surfaces": [
+      "Externality widening above E1 or any Gate E work.",
+      "Product wedge or Gate F work.",
+      "External comparative or competitive claims.",
+      "Commercial activation or deployment.",
+      "Learned router in production.",
+      "Autonomous multi-lobe runtime.",
+      "Any component without schema, validator, receipt, and rollback."
+    ]
+  },
+  "ordered_ratification_sequence": [
+    {
+      "order": 1,
+      "step_id": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
+      "summary": "Bind crucible lifecycle, crucible registry, and pressure taxonomy as the first Gate D ratification surface."
+    },
+    {
+      "order": 2,
+      "step_id": "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION",
+      "summary": "Bind adapter lifecycle, lineage, registry, and promotion-demotion-retirement evidence handling."
+    },
+    {
+      "order": 3,
+      "step_id": "B04_R3_TOURNAMENT_PROMOTION_MERGE_LAW_RATIFICATION",
+      "summary": "Bind tournament, promotion engine, merge law, and rollback-safe evolution laddering."
+    },
+    {
+      "order": 4,
+      "step_id": "B04_R4_ROUTER_SHADOW_EVALUATION_RATIFICATION",
+      "summary": "Allow router shadow evaluation only after the first three ratification steps pass."
+    },
+    {
+      "order": 5,
+      "step_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF",
+      "summary": "Require ordered proof against the best static adapter before any learned-router authorization is discussed."
+    },
+    {
+      "order": 6,
+      "step_id": "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
+      "summary": "Later authorization step only after router proof is earned and rollback safety remains intact."
+    },
+    {
+      "order": 7,
+      "step_id": "B04_R7_LOBE_ARCHITECTURE_RATIFICATION",
+      "summary": "Final Gate D lobe architecture ratification step; never before router proof and authorization."
+    }
+  ],
+  "canonical_admission_requirements": [
+    "schema",
+    "validator",
+    "receipt",
+    "rollback",
+    "claim_ceiling",
+    "terminal_state",
+    "lineage_tracking_if_adaptive",
+    "replay_proof_if_execution_related"
+  ],
+  "gate_d_completion_criteria": [
+    "Crucible law exists and emits receipts.",
+    "Pressure taxonomy and epoch coverage are enforced.",
+    "Adapter registry and lineage tracking are working.",
+    "At least one adapter promotion is completed with receipts.",
+    "At least one adapter demotion or retirement is completed with receipts.",
+    "Tournament protocol is executed at least once.",
+    "Promotion ladder is proven with real delta proof.",
+    "Router shadow evaluation is completed.",
+    "Router versus best static adapter comparison is completed.",
+    "Evolution rollback is tested and proven.",
+    "Lineage replay is proven."
+  ],
+  "governance_invariants": [
+    "No adaptive power without receipts.",
+    "No receipts without rollback.",
+    "No rollback without lineage."
+  ],
+  "launch_constraints": {
+    "externality_widening_allowed": false,
+    "external_comparative_claims_allowed": false,
+    "commercial_activation_allowed": false,
+    "learned_router_production_allowed": false,
+    "autonomous_multi_lobe_runtime_allowed": false,
+    "automatic_b04_stack_activation_allowed": false,
+    "first_ratification_step_only": true
+  },
+  "required_existing_law_refs": [
+    "KT_PROD_CLEANROOM/governance/crucible_lifecycle_law.json",
+    "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+    "KT_PROD_CLEANROOM/governance/pressure_response_taxonomy.json",
+    "KT_PROD_CLEANROOM/governance/adapter_lifecycle_law.json",
+    "KT_PROD_CLEANROOM/governance/adapter_registry.json",
+    "KT_PROD_CLEANROOM/governance/tournament_law.json",
+    "KT_PROD_CLEANROOM/governance/promotion_engine_law.json",
+    "KT_PROD_CLEANROOM/governance/merge_law.json",
+    "KT_PROD_CLEANROOM/governance/rollback_law.json",
+    "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+    "KT_PROD_CLEANROOM/governance/router_promotion_law.json",
+    "KT_PROD_CLEANROOM/governance/lobe_role_registry.json",
+    "KT_PROD_CLEANROOM/governance/lobe_promotion_law.json",
+    "KT_PROD_CLEANROOM/governance/civilization_loop_contract.json"
+  ],
+  "first_ratification_step_id": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
+  "next_lawful_move_after_launch": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
+  "claim_boundary": "This launch contract activates only the lawful Gate D civilization ratification lane. It does not implement the civilization stack, does not widen externality, does not open product or commercial scope, and does not permit router or lobe overclaim before ordered proof."
+}

@@ -1,0 +1,54 @@
+{
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "policy_c_drift_guard_present",
+      "detail": "The drift guard implementation must remain present.",
+      "refs": [
+        "KT_PROD_CLEANROOM/policy_c/drift_guard.py"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "policy_c_drift_schema_present",
+      "detail": "The drift guard schema must remain present.",
+      "refs": [
+        "KT_PROD_CLEANROOM/policy_c/schemas/policy_c_drift_report_schema_v1.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "declared_drift_and_semantic_guards_active",
+      "detail": "Forbidden drift rules, class-B canonicalization, and proof-integrity drift surfaces must remain active.",
+      "refs": [
+        "KT_PROD_CLEANROOM/governance/kt_determinism_envelope_policy.json",
+        "KT_PROD_CLEANROOM/policy_c/drift_guard.py",
+        "KT_PROD_CLEANROOM/policy_c/schemas/policy_c_drift_report_schema_v1.json",
+        "KT_PROD_CLEANROOM/tests/policy_c/test_drift_guard.py",
+        "KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_drift_gate.py",
+        "KT_PROD_CLEANROOM/tests/policy_c/test_policy_c_drift_schema.py"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "current_strongest_claim": "F03 preserves declared drift and semantic-stability guardrails for proof-integrity surfaces only.",
+  "evidence_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "generated_utc": "2026-03-20T01:41:57Z",
+  "next_lawful_phase": "F04_ADJUDICATION_VERIFIER_V2_AND_OUTSIDER_PATH",
+  "pass_verdict": "DECLARED_PROOF_INTEGRITY_DRIFT_AND_SEMANTIC_GUARDS_ACTIVE",
+  "phase_id": "F03_PROOF_REPRO_HARDENING_AND_STABILITY",
+  "schema_id": "kt.child_campaign.drift_and_semantic_stability_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "All runtime behavior drift is now fully governed",
+    "Product behavior stability is proven",
+    "Current-head capability superiority is proven"
+  ],
+  "subject_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "what_is_not_proven": [
+    "This receipt is bounded to proof-integrity drift and semantic guardrails only",
+    "This receipt does not widen runtime capability claims",
+    "This receipt does not prove release readiness or product readiness"
+  ]
+}

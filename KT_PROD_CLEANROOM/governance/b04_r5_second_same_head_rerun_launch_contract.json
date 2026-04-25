@@ -1,0 +1,46 @@
+{
+  "schema_id": "kt.governance.b04_r5_second_same_head_rerun_launch_contract.v1",
+  "classification_tag": "COUNTING_CLOSURE",
+  "contract_id": "KT_B04_R5_SECOND_SAME_HEAD_RERUN_LAUNCH_CONTRACT_V1",
+  "generated_utc": "2026-03-30T15:02:00Z",
+  "workstream_id": "B04_R5_SECOND_SAME_HEAD_RERUN_LAUNCH_SURFACE",
+  "parent_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
+  "launch_mode": "COUNTED_SECOND_R5_RERUN_AUTHORIZATION_ONLY_NO_R6_OR_HIGHER_WIDENING",
+  "source_state_ref": "KT_PROD_CLEANROOM/governance/b04_r5_same_head_rerun_terminal_state.json",
+  "source_workstream_ref": "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_proof_contract.json",
+  "lab_readiness_packet_ref": "d:/user/rober/OneDrive/Kings_Theorem_Active/tmp/lab_cycle_20260330_refresh2/r5_rerun_readiness_refresh_packet.json",
+  "launch_scope": {
+    "authorized_next_counted_workstream_id": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SECOND_SAME_HEAD_RERUN",
+    "authorized_action": "Rerun the existing B04.R5 same-head router-versus-best-adapter proof one more time on the git HEAD that includes this launch surface.",
+    "required_reuse_of_existing_law": [
+      "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_proof_contract.json",
+      "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_terminal_state.json",
+      "KT_PROD_CLEANROOM/tools/operator/router_ordered_proof_validate.py",
+      "KT_PROD_CLEANROOM/tools/operator/router_vs_best_adapter_proof_ratification_validate.py"
+    ],
+    "required_same_head_rule": "The rerun must regenerate ordered proof artifacts and the ratification receipt on the same post-launch git HEAD, and all rerun artifacts must declare subject_head equal to that HEAD.",
+    "readiness_use_rule": "The refreshed lab readiness packet may justify reopening the counted proof attempt only. It does not count as proof, does not earn superiority, and does not substitute for the counted same-head receipt family."
+  },
+  "not_authorized": [
+    "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
+    "learned-router cutover",
+    "lobe promotion or ratification",
+    "externality widening above E1",
+    "external comparative claims",
+    "commercial activation",
+    "any paraphrase from lab readiness into earned router superiority"
+  ],
+  "pass_criteria": [
+    "A separate counted launch surface is bound for a second same-head rerun of B04.R5 only.",
+    "The launch surface does not claim rerun success and does not authorize R6 or any wider scope.",
+    "The refreshed lab readiness packet is treated as noncanonical readiness only, not counted proof."
+  ],
+  "fail_conditions": [
+    "The launch surface is treated as a rerun result instead of a rerun authorization.",
+    "R6, lobes, externality, comparative claims, or commercial activation are widened from this launch surface.",
+    "The refreshed lab readiness packet is allowed to stand in for same-head counted proof."
+  ],
+  "terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_r5_second_same_head_rerun_terminal_state.json",
+  "next_lawful_move_after_launch": "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF__SECOND_SAME_HEAD_RERUN",
+  "claim_boundary": "This launch contract authorizes only a future second same-head counted rerun of B04.R5 under the existing proof law. It does not itself rerun the proof, does not earn router superiority, and does not open R6, lobes, externality, comparative claims, or commercial scope."
+}

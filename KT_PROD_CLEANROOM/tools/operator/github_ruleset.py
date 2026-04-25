@@ -335,7 +335,7 @@ def apply_ruleset(*, repo_slug: str, ruleset_path: str) -> Dict[str, Any]:
 
 def _write_receipt(out_path: Path, receipt: Dict[str, Any]) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(receipt, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8")
+    out_path.write_text(json.dumps(receipt, indent=2, sort_keys=True, ensure_ascii=True) + "\n", encoding="utf-8", newline="\n")
 
 
 def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:

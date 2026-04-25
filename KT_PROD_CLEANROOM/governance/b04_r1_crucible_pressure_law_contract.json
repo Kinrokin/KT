@@ -1,0 +1,60 @@
+{
+  "schema_id": "kt.governance.b04_r1_crucible_pressure_law_contract.v1",
+  "classification_tag": "COUNTING_CLOSURE",
+  "contract_id": "KT_B04_R1_CRUCIBLE_PRESSURE_LAW_CONTRACT_V1",
+  "ratification_mode": "RATIFICATION_ONLY_NO_ADAPTER_ROUTER_OR_LOBE_ADVANCE",
+  "parent_batch_id": "B04_GATE_D_CIVILIZATION_ACTIVATE",
+  "workstream_id": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION",
+  "launch_contract_ref": "KT_PROD_CLEANROOM/governance/b04_civilization_activation_launch_contract.json",
+  "launch_terminal_state_ref": "KT_PROD_CLEANROOM/governance/b04_civilization_activation_terminal_state.json",
+  "ratified_governance_surfaces": [
+    "KT_PROD_CLEANROOM/governance/crucible_lifecycle_law.json",
+    "KT_PROD_CLEANROOM/governance/crucible_registry.json",
+    "KT_PROD_CLEANROOM/governance/pressure_response_taxonomy.json"
+  ],
+  "required_evidence_surfaces": [
+    "KT_PROD_CLEANROOM/reports/kt_crucible_run_log.json",
+    "KT_PROD_CLEANROOM/reports/pressure_behavior_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_fitness_pressure_register.json",
+    "KT_PROD_CLEANROOM/governance/adapter_registry.json"
+  ],
+  "finite_crucible_requirements": [
+    "Every registered crucible must bind a finite crucible_id, immutable spec_ref, promotion_scope, and trust_zone.",
+    "Every crucible spec must bind domain, scenario title, kernel targets, expected outcome, and replay expectations."
+  ],
+  "finite_pressure_requirements": [
+    "Pressure taxonomy must remain finite and explicit.",
+    "Pressure behavior rows must cover all ratified pressure levels.",
+    "Unbound pressures remain lab-only and cannot count toward promotion eligibility."
+  ],
+  "promotion_eligibility_rule": {
+    "rule_id": "CRUCIBLE_PRESSURE_RESULTS_BIND_LATER_ADAPTER_PROMOTION_ELIGIBILITY",
+    "rule_text": "Adapters may only be promoted in later Gate D steps from registered crucible results that are receipt-backed, replay-backed when required, outcome-matching, and governance-clean where the crucible spec requires governance enforcement.",
+    "fail_closed_conditions": [
+      "unregistered_crucible",
+      "missing_receipts",
+      "missing_required_replay",
+      "output_contract_failure",
+      "expected_outcome_mismatch",
+      "governance_failure_on_governance_bound_crucible",
+      "ledger_conflict_without_canonical_runner_record_precedence"
+    ]
+  },
+  "r1_success_criteria": [
+    "Finite crucible registry is bound.",
+    "Finite pressure taxonomy is bound.",
+    "Coverage matrix can be derived from registered crucible specs and observed runs.",
+    "Crucible execution evidence is replayable and receipt-backed where required.",
+    "Pressure delta summary can be derived from registered runs relative to baseline kernels.",
+    "Later adapter promotion eligibility is fail-closed and evidence-bound."
+  ],
+  "forbidden_scope": [
+    "Adapter lifecycle ratification beyond promotion eligibility binding.",
+    "Tournament, merge, or rollback ratification beyond documentary prerequisites.",
+    "Router shadow evaluation or router proof.",
+    "Lobe ratification.",
+    "Externality widening, comparative widening, or commercial activation."
+  ],
+  "next_lawful_move_after_r1": "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION",
+  "claim_boundary": "B04.R1 ratifies only the crucible and pressure forcing-law spine. It does not ratify adapter lifecycle, tournament, router, lobes, externality, product, or comparative scope."
+}

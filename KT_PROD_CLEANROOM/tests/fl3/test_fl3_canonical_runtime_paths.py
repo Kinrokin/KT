@@ -8,16 +8,8 @@ from KT_PROD_CLEANROOM.tests.fl3._bootstrap import bootstrap_syspath
 _REPO_ROOT = bootstrap_syspath()
 
 
-def _repo_root() -> Path:
-    p = Path(__file__).resolve()
-    for parent in p.parents:
-        if (parent / "KT_PROD_CLEANROOM").is_dir():
-            return parent
-    raise RuntimeError("Unable to locate repo root (expected KT_PROD_CLEANROOM/)")
-
-
 def test_fl3_canonical_runtime_paths_file_present_and_valid() -> None:
-    repo_root = _repo_root()
+    repo_root = _REPO_ROOT
     paths_file = repo_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL3_CANONICAL_RUNTIME_PATHS.json"
     assert paths_file.exists()
 

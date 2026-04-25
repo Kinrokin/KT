@@ -54,6 +54,7 @@ def compute_runtime_context_schema_version_hash() -> str:
             "max_list_len": RUNTIME_CONTEXT_MAX_LIST_LEN,
             "max_input_bytes": RUNTIME_CONTEXT_MAX_INPUT_BYTES,
             "max_context_bytes": RUNTIME_CONTEXT_MAX_CONTEXT_BYTES,
+            "envelope_input_exempt_from_general_string_limit": True,
         },
     }
     return sha256_json(spec)
@@ -100,11 +101,18 @@ def validate_runtime_context(context: Dict[str, Any]) -> None:
     if len(envelope["input"].encode("utf-8")) > RUNTIME_CONTEXT_MAX_INPUT_BYTES:
         raise SchemaValidationError("envelope.input exceeds max_input_bytes (fail-closed)")
 
+    # envelope.input is the one sanctioned opaque carrier field for bounded payload JSON.
+    # It is governed by max_input_bytes above and must not be rejected a second time by the
+    # generic short-string ceiling that applies to the rest of the runtime context surface.
+    generic_context = dict(context)
+    generic_envelope = dict(envelope)
+    generic_envelope["input"] = ""
+    generic_context["envelope"] = generic_envelope
+
     validate_bounded_json_value(
-        context,
+        generic_context,
         max_depth=RUNTIME_CONTEXT_MAX_DEPTH,
         max_string_len=RUNTIME_CONTEXT_MAX_STRING_LEN,
         max_list_len=RUNTIME_CONTEXT_MAX_LIST_LEN,
     )
     enforce_max_canonical_json_bytes(context, max_bytes=RUNTIME_CONTEXT_MAX_CONTEXT_BYTES)
-

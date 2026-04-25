@@ -1,0 +1,94 @@
+{
+  "allowed_resolution_classes": [
+    {
+      "class_id": "NORMALIZE_PHASE_EXECUTOR_REPO_ROOT_SELECTION",
+      "summary": "Phase executors must select repo root using the cleanroom source-tree sentinel, not the first parent that happens to contain a KT_PROD_CLEANROOM subtree."
+    },
+    {
+      "class_id": "PRESERVE_PHASE_PATH_REFERENCES_UNDER_TRUE_REPO_ROOT",
+      "summary": "Required refs like phase1c_executor and law_bundle_file must resolve under the true repo root without adding duplicate KT_PROD_CLEANROOM path segments."
+    }
+  ],
+  "authority_header": {
+    "authoritative_branch": "authoritative/post-f-pr15-fl3-remediation",
+    "authoritative_branch_head": "4db4f5b7e98b187efdf2ffc0e969ad35d6b9f033",
+    "package_promotion_still_deferred": true,
+    "replay_on_main_still_deferred_until_pr15_merge": true,
+    "truth_engine_law_unchanged": true
+  },
+  "claim_boundary": "This packet binds tranche T04 only. It does not widen package truth, does not change truth-engine law, and does not authorize archive promotion or main replay.",
+  "do_not_widen_boundaries": [
+    "Do not widen package truth.",
+    "Do not change truth-engine derivation law.",
+    "Do not rerun the main truth-engine replay early.",
+    "Do not let prep lanes become authoritative.",
+    "Do not widen Track 03 or package promotion to chase green checks."
+  ],
+  "exact_scope": {
+    "executor_scope": [
+      "KT_PROD_CLEANROOM/tools/verification/phase1c_execute.py",
+      "KT_PROD_CLEANROOM/tools/verification/phase2_execute.py"
+    ],
+    "reference_scope": [
+      "KT_PROD_CLEANROOM/kt.phase2_work_order.v1.json",
+      "KT_PROD_CLEANROOM/tools/verification/fl3_validators.py"
+    ],
+    "test_scope": [
+      "KT_PROD_CLEANROOM/tests/fl3/test_phase1c_execute_smoke.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_phase2_execute_dry_run_smoke.py"
+    ]
+  },
+  "execution_status": "PASS__POST_F_PR15_FL3_PHASE_PATH_NORMALIZATION_BOUND",
+  "generated_utc": "2026-04-25T18:28:05Z",
+  "lane_outcome": "POST_F_PR15_FL3_PHASE_PATH_NORMALIZATION_RESOLVED__TRANCHE4_CLEARED",
+  "live_resolution_read": {
+    "genuine_missing_phase_executor": false,
+    "phase_root_selection_drift_present": false,
+    "recommended_resolution_class": "ADVANCE_TO_T05_FULL_RED_TO_GREEN",
+    "recommended_resolution_summary": "Phase executor root selection is normalized and tranche T04 is cleared."
+  },
+  "next_lawful_move": "AUTHOR_POST_F_PR15_FL3_FULL_RED_TO_GREEN_PACKET",
+  "normalization_evidence": {
+    "phase1c_source_uses_strong_root_selection": true,
+    "phase1c_source_uses_weak_root_selection": false,
+    "phase2_source_uses_strong_root_selection": true,
+    "phase2_source_uses_weak_root_selection": false
+  },
+  "phase_truth": {
+    "phase1c_executor_exists": true,
+    "phase1c_executor_rel": "KT_PROD_CLEANROOM/tools/verification/phase1c_execute.py",
+    "phase2_executor_exists": true,
+    "phase2_executor_rel": "KT_PROD_CLEANROOM/tools/verification/phase2_execute.py",
+    "phase2_work_order_exists": true,
+    "phase2_work_order_rel": "KT_PROD_CLEANROOM/kt.phase2_work_order.v1.json"
+  },
+  "precedence_rule": {
+    "resolution_decision_rule": "Prefer normalizing phase executor root selection over moving phase executor files or widening path references.",
+    "winning_rule": "Phase executor repo-root selection must use the same cleanroom source-tree sentinel as the already-normalized helper surfaces, so required refs resolve under the true repo root instead of under a nested cleanroom subtree.",
+    "winning_source": "cleanroom_source_tree_sentinel"
+  },
+  "schema_id": "kt.operator.cohort0_post_f_pr15_fl3_phase_path_normalization_packet.v1",
+  "source_refs": {
+    "phase1c_executor": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/tools/verification/phase1c_execute.py",
+    "phase2_executor": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/tools/verification/phase2_execute.py",
+    "phase2_work_order": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/kt.phase2_work_order.v1.json",
+    "remediation_authority_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_remediation_authority_packet.json",
+    "remediation_authority_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_remediation_authority_receipt.json",
+    "remediation_blocker_ledger": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_remediation_blocker_ledger.json",
+    "tranche3_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_archive_assumption_decontamination_receipt.json"
+  },
+  "status": "PASS",
+  "success_condition": {
+    "blocker_ledger_advances_to_tranche_5": true,
+    "package_truth_unchanged": true,
+    "phase_executor_paths_resolve_under_true_repo_root": true,
+    "truth_engine_law_unchanged": true
+  },
+  "tranche_header": {
+    "ordered_blocker_position": 4,
+    "phase_path_class": "PHASE_EXECUTOR_PATHS_NORMALIZED_TO_TRUE_REPO_ROOT",
+    "tranche_id": "T04",
+    "tranche_name": "phase_path_normalization",
+    "tranche_state": "cleared"
+  }
+}

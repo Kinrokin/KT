@@ -245,6 +245,9 @@ def verify_posture(
     audit_head = str(runtime_audit.get("validated_head_sha") or runtime_audit.get("head") or "").strip()
     live_branch = str(live_validation_index.get("branch_ref", "")).strip()
     live_head = str((live_validation_index.get("worktree") or {}).get("head_sha", "")).strip()
+    expected_subject_head = str((live_validation_index.get("worktree") or {}).get("validated_subject_head_sha", "")).strip() or live_head
+    carrier_head = str((live_validation_index.get("worktree") or {}).get("publication_carrier_head_sha", "")).strip()
+    head_relation = str((live_validation_index.get("worktree") or {}).get("head_relation", "")).strip() or "HEAD_IS_SUBJECT"
     live_state = derive_live_validation_state(live_validation_index)
 
     if current_posture != audit_posture:
@@ -257,8 +260,13 @@ def verify_posture(
         raise RuntimeError("FAIL_CLOSED: posture receipts disagree on validated_head_sha")
     if current_branch != live_branch:
         raise RuntimeError("FAIL_CLOSED: posture receipts disagree with live branch_ref")
-    if current_head != live_head:
-        raise RuntimeError("FAIL_CLOSED: posture receipts disagree with live validated_head_sha")
+    if current_head != expected_subject_head:
+        raise RuntimeError("FAIL_CLOSED: posture receipts disagree with expected validated subject head")
+    if head_relation == "PUBLICATION_CARRIER_OF_VALIDATED_SUBJECT" and carrier_head:
+        if str(current_state.get("publication_carrier_head_sha", "")).strip() != live_head:
+            raise RuntimeError("FAIL_CLOSED: current_state_receipt publication_carrier_head_sha does not match live head")
+        if str(runtime_audit.get("publication_carrier_head_sha", "")).strip() != live_head:
+            raise RuntimeError("FAIL_CLOSED: runtime_closure_audit publication_carrier_head_sha does not match live head")
 
     if str(expected_posture).strip() and current_posture != str(expected_posture).strip():
         raise RuntimeError(f"FAIL_CLOSED: current_state_receipt posture_state={current_posture!r} expected={expected_posture!r}")

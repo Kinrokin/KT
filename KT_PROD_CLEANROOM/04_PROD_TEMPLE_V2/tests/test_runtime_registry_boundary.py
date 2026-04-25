@@ -19,4 +19,4 @@ def test_runtime_registry_separates_canonical_and_compatibility_roots() -> None:
     registry = load_runtime_registry()
 
     assert "tools" not in registry.runtime_import_roots
-    assert registry.compatibility_allowlist_roots == ("tools",)
+    assert registry.compatibility_allowlist_roots == ()

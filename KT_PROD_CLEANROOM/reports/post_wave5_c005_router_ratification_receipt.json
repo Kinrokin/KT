@@ -1,0 +1,92 @@
+{
+  "best_static_provider_adapter_underlay": {
+    "adapter_id": "council.openrouter.live_hashed.v1",
+    "boundary_hold_present": false,
+    "http_status": 200,
+    "latency_ms": 1063,
+    "provider_id": "openrouter",
+    "ranking_rule": [
+      "successful_live_count_desc",
+      "live_receipt_count_desc",
+      "latency_ms_asc",
+      "adapter_id_asc"
+    ],
+    "status": "OK"
+  },
+  "c005_delta": "C005_CLOSED_BY_HONEST_STATIC_ROUTER_RATIFICATION_HOLD",
+  "canonical_router_status": "STATIC_CANONICAL_BASELINE_ONLY",
+  "checks": [
+    {
+      "check_id": "static_ratification_scope_frozen",
+      "status": "PASS"
+    },
+    {
+      "check_id": "router_shadow_receipts_present_and_pass",
+      "status": "PASS"
+    },
+    {
+      "check_id": "provider_underlay_bound_to_post_wave5_success",
+      "status": "PASS"
+    },
+    {
+      "check_id": "provider_underlay_resilience_bound",
+      "status": "PASS"
+    },
+    {
+      "check_id": "best_static_comparator_control_explicit",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_matches_fenced_static_baseline",
+      "status": "PASS"
+    },
+    {
+      "check_id": "fallback_evidence_preserved",
+      "status": "PASS"
+    },
+    {
+      "check_id": "best_static_underlay_is_receipted_and_successful",
+      "status": "PASS"
+    }
+  ],
+  "comparison_metrics": {
+    "case_count": 4,
+    "fallback_case_ids": [
+      "R04"
+    ],
+    "route_distribution_delta_count": 0,
+    "shadow_match_rate": 1.0
+  },
+  "continuing_governed_objective": {
+    "abandonment_status": "NOT_ABANDONED",
+    "next_lawful_unlock": "Produce fenced-task superiority over the ratified static baseline with no-regression evidence before any learned-router cutover or multi-lobe promotion.",
+    "objective_id": "ROUTER_SUPERIORITY_AND_MULTI_LOBE_PROMOTION",
+    "scope_boundary": "Current-head canonical closure does not abandon learned-router or multi-lobe ambition. It only means superiority was not yet earned for canonical promotion on this head.",
+    "status": "ACTIVE_GOVERNED_ADVANCEMENT_OBJECTIVE"
+  },
+  "current_head_blocker_status": "CLOSED",
+  "evidence_refs": [
+    "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave2b_router_selection_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave2b_router_shadow_eval_matrix.json",
+    "KT_PROD_CLEANROOM/reports/kt_wave2b_route_distribution_health.json",
+    "KT_PROD_CLEANROOM/reports/post_wave5_c016a_success_matrix.json",
+    "KT_PROD_CLEANROOM/reports/post_wave5_c016b_resilience_pack.json"
+  ],
+  "exact_superiority_outcome": "NOT_EARNED_SHADOW_MATCHES_STATIC_BASELINE",
+  "failures": [],
+  "generated_utc": "2026-03-22T04:19:24Z",
+  "provider_underlay_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c016a_success_matrix.json",
+  "provider_underlay_resilience_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c016b_resilience_pack.json",
+  "ratification_decision": "HOLD_STATIC_CANONICAL_BASELINE",
+  "schema_id": "kt.post_wave5.c005_router_ratification_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "learned_router_cutover_claimed",
+    "semantic_or_learned_router_superiority_claimed",
+    "multi_lobe_routing_unblocked",
+    "externality_class_raised_above_E1",
+    "product_or_comparative_widening_claimed",
+    "router_ambition_abandoned"
+  ]
+}

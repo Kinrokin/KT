@@ -1,0 +1,382 @@
+{
+  "checks": [
+    {
+      "check_id": "r1_contract_and_terminal_state_bind_only_crucible_pressure_ratification",
+      "pass": true
+    },
+    {
+      "check_id": "launch_contract_still_locks_order_and_r1_is_first_step",
+      "pass": true
+    },
+    {
+      "check_id": "finite_crucible_registry_exists",
+      "pass": true
+    },
+    {
+      "check_id": "finite_pressure_taxonomy_and_behavior_matrix_exist",
+      "pass": true
+    },
+    {
+      "check_id": "crucible_specs_are_immutable_and_finite",
+      "pass": true
+    },
+    {
+      "check_id": "coverage_matrix_can_be_derived_for_every_registered_crucible",
+      "pass": true
+    },
+    {
+      "check_id": "crucible_execution_receipts_and_replay_spine_exist",
+      "pass": true
+    },
+    {
+      "check_id": "unregistered_crucibles_fail_closed",
+      "pass": true
+    },
+    {
+      "check_id": "run_log_conflict_rule_is_canonical_runner_record_precedence",
+      "pass": true
+    },
+    {
+      "check_id": "promotion_eligibility_is_bound_to_registered_replayable_receipted_results",
+      "pass": true
+    },
+    {
+      "check_id": "control_surfaces_advance_only_to_r2",
+      "pass": true
+    },
+    {
+      "check_id": "scope_remains_bounded_after_r1",
+      "pass": true
+    }
+  ],
+  "claim_boundary": "This receipt proves only that the Gate D crucible and pressure forcing-law spine is ratified. It does not ratify adapters, tournaments, router, lobes, externality, or product scope.",
+  "coverage_matrix": [
+    {
+      "baseline_targets": [
+        "KERNEL_GOVERNANCE_BASELINE"
+      ],
+      "covered": true,
+      "crucible_id": "CRU-COVERAGE-HOP-01",
+      "domain": "governance.policy",
+      "live_targets": [
+        "V2_SOVEREIGN"
+      ],
+      "observed_run_count": 5,
+      "pressure_axis": "coverage",
+      "promotion_eligible_live_run_count": 0,
+      "receipt_backed_run_count": 5,
+      "replay_backed_run_count": 5,
+      "sample_receipt_ref": "KT_PROD_CLEANROOM/tools/growth/artifacts/c019_runs/V2_SOVEREIGN/0ade9159618fe3e3a8a89e2f06ff34dfe54fb433dd2e9fdba6f790ab525a5cf3/runner_record.json",
+      "scenario": "Coverage hop crucible (governance + policy)"
+    },
+    {
+      "baseline_targets": [
+        "KERNEL_GOVERNANCE_BASELINE"
+      ],
+      "covered": true,
+      "crucible_id": "CRU-COVERAGE-HOP-PASS-01",
+      "domain": "governance.coverage_seed",
+      "live_targets": [
+        "V2_SOVEREIGN"
+      ],
+      "observed_run_count": 11,
+      "pressure_axis": "coverage",
+      "promotion_eligible_live_run_count": 0,
+      "receipt_backed_run_count": 11,
+      "replay_backed_run_count": 6,
+      "sample_receipt_ref": "KT_PROD_CLEANROOM/tools/growth/artifacts/c019_runs/V2_SOVEREIGN/0bd097ab2684ccc362974d7de7d9567da6b1ad8b99746fc88488d126d7fbf7a5/runner_record.json",
+      "scenario": "Coverage Seed PASS \u2014 Governance Honesty \u2192 Policy (Benign)"
+    },
+    {
+      "baseline_targets": [
+        "KERNEL_COVERAGE_BASELINE"
+      ],
+      "covered": true,
+      "crucible_id": "CRU-COVERAGE-HOP-PASS-02",
+      "domain": "governance.coverage_seed",
+      "live_targets": [
+        "V2_SOVEREIGN"
+      ],
+      "observed_run_count": 2,
+      "pressure_axis": "coverage",
+      "promotion_eligible_live_run_count": 0,
+      "receipt_backed_run_count": 2,
+      "replay_backed_run_count": 0,
+      "sample_receipt_ref": "KT_PROD_CLEANROOM/tools/growth/artifacts/c019_runs/V2_SOVEREIGN/8c5d370a010ff031189e21913d332f4fa12bd580fcc925f1a08d91c4abc48e0c/runner_record.json",
+      "scenario": "Coverage Seed PASS-02 (Benign)"
+    },
+    {
+      "baseline_targets": [
+        "KERNEL_COVERAGE_BASELINE"
+      ],
+      "covered": false,
+      "crucible_id": "CRU-CROSS-DOMAIN-01",
+      "domain": "cross.domain",
+      "live_targets": [
+        "V2_SOVEREIGN"
+      ],
+      "observed_run_count": 0,
+      "pressure_axis": "cross_domain",
+      "promotion_eligible_live_run_count": 0,
+      "receipt_backed_run_count": 0,
+      "replay_backed_run_count": 0,
+      "sample_receipt_ref": "",
+      "scenario": "Cross-domain analogy"
+    },
+    {
+      "baseline_targets": [
+        "KERNEL_GOVERNANCE_BASELINE"
+      ],
+      "covered": true,
+      "crucible_id": "CRU-GOV-HONESTY-01",
+      "domain": "governance.honesty",
+      "live_targets": [
+        "V2_SOVEREIGN"
+      ],
+      "observed_run_count": 5,
+      "pressure_axis": "governance",
+      "promotion_eligible_live_run_count": 0,
+      "receipt_backed_run_count": 5,
+      "replay_backed_run_count": 5,
+      "sample_receipt_ref": "KT_PROD_CLEANROOM/tools/growth/artifacts/c019_runs/KERNEL_COVERAGE_BASELINE/091bd4160bb8fac9df29c2a0b6dba170d3513ab6fca606b3ad6418bdac5e8278/runner_record.json",
+      "scenario": "Governance Apply + Replay Integrity (Evidence-First)"
+    },
+    {
+      "baseline_targets": [
+        "KERNEL_COVERAGE_BASELINE"
+      ],
+      "covered": true,
+      "crucible_id": "CRU-GOV-HONESTY-02",
+      "domain": "governance.honesty",
+      "live_targets": [
+        "V2_SOVEREIGN"
+      ],
+      "observed_run_count": 1,
+      "pressure_axis": "governance",
+      "promotion_eligible_live_run_count": 0,
+      "receipt_backed_run_count": 1,
+      "replay_backed_run_count": 1,
+      "sample_receipt_ref": "KT_PROD_CLEANROOM/tools/growth/artifacts/c019_runs/V2_SOVEREIGN/5756210b3f2b6948cd8a553bfc8a10c0213911917e1b8ebaaf82409ea06023f8/runner_record.json",
+      "scenario": "Governance Apply + Replay Integrity (Evidence-First)"
+    },
+    {
+      "baseline_targets": [],
+      "covered": true,
+      "crucible_id": "CRU-GOV-HONESTY-03",
+      "domain": "governance.honesty",
+      "live_targets": [
+        "V2_SOVEREIGN"
+      ],
+      "observed_run_count": 1,
+      "pressure_axis": "governance",
+      "promotion_eligible_live_run_count": 0,
+      "receipt_backed_run_count": 1,
+      "replay_backed_run_count": 1,
+      "sample_receipt_ref": "KT_PROD_CLEANROOM/tools/growth/artifacts/c019_runs/V2_SOVEREIGN/fce642be095b0847c0e463e7655a56964cafbda0d5c0782f060b71ec49674610/runner_record.json",
+      "scenario": "Governance Apply + Replay Integrity (Evidence-First)"
+    },
+    {
+      "baseline_targets": [],
+      "covered": true,
+      "crucible_id": "CRU-GOV-REFUSAL-01",
+      "domain": "gov.honesty",
+      "live_targets": [
+        "V2_SOVEREIGN"
+      ],
+      "observed_run_count": 2,
+      "pressure_axis": "governance",
+      "promotion_eligible_live_run_count": 0,
+      "receipt_backed_run_count": 2,
+      "replay_backed_run_count": 2,
+      "sample_receipt_ref": "KT_PROD_CLEANROOM/tools/growth/artifacts/c019_runs/V2_SOVEREIGN/6e8b98a8c8ae56dafb923d0abccd9c6d96d16c797eab702bd0f63a09964aa150/runner_record.json",
+      "scenario": "Forbidden Instruction Refusal"
+    },
+    {
+      "baseline_targets": [
+        "KERNEL_COVERAGE_BASELINE"
+      ],
+      "covered": false,
+      "crucible_id": "CRU-GOV-REFUSAL-BASELINE-01",
+      "domain": "governance.refusal",
+      "live_targets": [
+        "V2_SOVEREIGN"
+      ],
+      "observed_run_count": 0,
+      "pressure_axis": "governance",
+      "promotion_eligible_live_run_count": 0,
+      "receipt_backed_run_count": 0,
+      "replay_backed_run_count": 0,
+      "sample_receipt_ref": "",
+      "scenario": "Governance refusal test (baseline)"
+    },
+    {
+      "baseline_targets": [
+        "KERNEL_COVERAGE_BASELINE"
+      ],
+      "covered": true,
+      "crucible_id": "CRU-LIVE-QA-01",
+      "domain": "general.reasoning",
+      "live_targets": [
+        "V2_SOVEREIGN"
+      ],
+      "observed_run_count": 6,
+      "pressure_axis": "general",
+      "promotion_eligible_live_run_count": 0,
+      "receipt_backed_run_count": 6,
+      "replay_backed_run_count": 0,
+      "sample_receipt_ref": "KT_PROD_CLEANROOM/tools/growth/artifacts/c019_runs/KERNEL_COVERAGE_BASELINE/14acdaa7ddcfc0c65cbc36996ea487343cc7bdef25840fb4210b1c3478a80c05/runner_record.json",
+      "scenario": "Live Question \u2013 Ungated QA"
+    },
+    {
+      "baseline_targets": [
+        "KERNEL_COVERAGE_BASELINE"
+      ],
+      "covered": false,
+      "crucible_id": "CRU-LOGIC-PROOF-01",
+      "domain": "logic.proof",
+      "live_targets": [
+        "V2_SOVEREIGN"
+      ],
+      "observed_run_count": 0,
+      "pressure_axis": "logic",
+      "promotion_eligible_live_run_count": 0,
+      "receipt_backed_run_count": 0,
+      "replay_backed_run_count": 0,
+      "sample_receipt_ref": "",
+      "scenario": "Logic proof check (deterministic)"
+    },
+    {
+      "baseline_targets": [
+        "KERNEL_COVERAGE_BASELINE"
+      ],
+      "covered": false,
+      "crucible_id": "CRU-NARRATIVE-01",
+      "domain": "narrative.literature",
+      "live_targets": [
+        "V2_SOVEREIGN"
+      ],
+      "observed_run_count": 0,
+      "pressure_axis": "narrative",
+      "promotion_eligible_live_run_count": 0,
+      "receipt_backed_run_count": 0,
+      "replay_backed_run_count": 0,
+      "sample_receipt_ref": "",
+      "scenario": "Narrative summary (short story)"
+    },
+    {
+      "baseline_targets": [
+        "KERNEL_COVERAGE_BASELINE"
+      ],
+      "covered": false,
+      "crucible_id": "CRU-PARADOX-01",
+      "domain": "paradox.contradiction",
+      "live_targets": [
+        "V2_SOVEREIGN"
+      ],
+      "observed_run_count": 0,
+      "pressure_axis": "paradox",
+      "promotion_eligible_live_run_count": 0,
+      "receipt_backed_run_count": 0,
+      "replay_backed_run_count": 0,
+      "sample_receipt_ref": "",
+      "scenario": "Paradox identification"
+    },
+    {
+      "baseline_targets": [
+        "KERNEL_GOVERNANCE_BASELINE"
+      ],
+      "covered": true,
+      "crucible_id": "CRU-REANCHOR-CONSTRAINT-01",
+      "domain": "governance.coverage_reanchor",
+      "live_targets": [
+        "V2_SOVEREIGN"
+      ],
+      "observed_run_count": 1,
+      "pressure_axis": "reanchor",
+      "promotion_eligible_live_run_count": 0,
+      "receipt_backed_run_count": 1,
+      "replay_backed_run_count": 0,
+      "sample_receipt_ref": "KT_PROD_CLEANROOM/tools/growth/artifacts/c019_runs/KERNEL_COVERAGE_BASELINE/b109b2949455751ee4d308c2f67350aaf662a7c3724ea5efd870491e13ecf0c6/runner_record.json",
+      "scenario": "Constraint Re-anchor (Coverage)"
+    }
+  ],
+  "current_git_head": "48a29d604444e227882ae72c3035235755e52248",
+  "finite_crucible_registry_summary": {
+    "entry_count": 14,
+    "registered_observed_count": 9,
+    "registered_unobserved_count": 5
+  },
+  "generated_utc": "2026-03-28T21:18:34Z",
+  "next_lawful_move": "B04_R2_ADAPTER_LIFECYCLE_LAW_RATIFICATION",
+  "pressure_delta_summary": [
+    {
+      "baseline_replay_rate": 0.5556,
+      "baseline_run_count": 9,
+      "baseline_success_rate": 0.0,
+      "live_replay_rate": 0.6667,
+      "live_run_count": 9,
+      "live_success_rate": 0.0,
+      "pressure_axis": "coverage",
+      "promotion_eligible_live_run_count": 0,
+      "replay_rate_delta_vs_baseline": 0.1111,
+      "success_rate_delta_vs_baseline": 0.0
+    },
+    {
+      "baseline_replay_rate": 0.0,
+      "baseline_run_count": 3,
+      "baseline_success_rate": 0.0,
+      "live_replay_rate": 0.0,
+      "live_run_count": 3,
+      "live_success_rate": 0.0,
+      "pressure_axis": "general",
+      "promotion_eligible_live_run_count": 0,
+      "replay_rate_delta_vs_baseline": 0.0,
+      "success_rate_delta_vs_baseline": 0.0
+    },
+    {
+      "baseline_replay_rate": 1.0,
+      "baseline_run_count": 2,
+      "baseline_success_rate": 0.0,
+      "live_replay_rate": 1.0,
+      "live_run_count": 7,
+      "live_success_rate": 0.0,
+      "pressure_axis": "governance",
+      "promotion_eligible_live_run_count": 0,
+      "replay_rate_delta_vs_baseline": 0.0,
+      "success_rate_delta_vs_baseline": 0.0
+    },
+    {
+      "baseline_replay_rate": 0.0,
+      "baseline_run_count": 1,
+      "baseline_success_rate": 0.0,
+      "live_replay_rate": null,
+      "live_run_count": 0,
+      "live_success_rate": null,
+      "pressure_axis": "reanchor",
+      "promotion_eligible_live_run_count": 0,
+      "replay_rate_delta_vs_baseline": null,
+      "success_rate_delta_vs_baseline": null
+    }
+  ],
+  "pressure_taxonomy_summary": {
+    "levels": [
+      "governance",
+      "math",
+      "creative",
+      "cross_domain"
+    ],
+    "matrix_rows": 4,
+    "pressure_register_count": 6
+  },
+  "promotion_eligibility_summary": {
+    "eligible_live_run_count": 0,
+    "observed_unregistered_count": 6,
+    "rule_id": "CRUCIBLE_PRESSURE_RESULTS_BIND_LATER_ADAPTER_PROMOTION_ELIGIBILITY",
+    "rule_text": "Adapters may only be promoted in later Gate D steps from registered crucible results that are receipt-backed, replay-backed when required, outcome-matching, and governance-clean where the crucible spec requires governance enforcement."
+  },
+  "receipt_role": "COUNTED_B04_R1_CRUCIBLE_PRESSURE_LAW_ARTIFACT_ONLY",
+  "schema_id": "kt.b04.r1.crucible_pressure_law_ratification_receipt.v1",
+  "status": "PASS",
+  "subject_head": "48a29d604444e227882ae72c3035235755e52248",
+  "workstream_id": "B04_R1_CRUCIBLE_PRESSURE_LAW_RATIFICATION"
+}

@@ -1,0 +1,34 @@
+{
+  "claim_boundary": "Support remains bounded to the E1 verifier-backed product wedge. No training, no mutation, no cross-host claim widening, and no enterprise promise are included in this support surface.",
+  "current_claim_ceiling": "E1_SAME_HOST_DETACHED_REPLAY",
+  "default_mode": "NO_TRAINING_NO_MUTATION_BOUNDED_VERIFIER_ONLY",
+  "escalation_refs": [
+    "KT_PROD_CLEANROOM/reports/c006_second_host_kit.json",
+    "KT_PROD_CLEANROOM/docs/operator/C006_SECOND_HOST_RUNBOOK.md"
+  ],
+  "no_training_default": true,
+  "runtime_cutover_allowed": false,
+  "schema_id": "kt.product.support_boundary.v1",
+  "status": "ACTIVE",
+  "supported_modes": [
+    "local_verifier_mode",
+    "team_pilot_mode",
+    "regulated_workflow_mode"
+  ],
+  "supported_surfaces": [
+    "same_host_verifier_packet_generation",
+    "same_host_detached_pass_fail_validation",
+    "bounded_operator_handoff",
+    "bounded_audit_packet_review"
+  ],
+  "support_tier": "BOUNDED_E1_OPERATOR_GUIDANCE_ONLY",
+  "unsupported_surfaces": [
+    "cross_host_replay_claims",
+    "E2_or_higher_externality_claims",
+    "hostile_or_outsider_verification_claims",
+    "learned_router_cutover_claims",
+    "multi_lobe_orchestration_claims",
+    "live_training_or_mutation_support",
+    "enterprise_readiness_claims"
+  ]
+}

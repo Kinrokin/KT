@@ -1,0 +1,89 @@
+{
+  "allowed_evidence_classes": [
+    {
+      "class_id": "successor_gate_d_clear_receipt",
+      "ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_full_gate_d_readjudication_receipt.json"
+    },
+    {
+      "class_id": "post_clear_branch_law_packet",
+      "ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_post_clear_branch_law_packet.json"
+    },
+    {
+      "class_id": "post_clear_branch_law_receipt",
+      "ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_post_clear_branch_law_receipt.json"
+    },
+    {
+      "class_id": "post_clear_supersession_note",
+      "ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_post_clear_supersession_note.json"
+    },
+    {
+      "class_id": "post_clear_supersession_receipt",
+      "ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_post_clear_supersession_receipt.json"
+    },
+    {
+      "class_id": "gate_e_precondition_monitor_packet",
+      "ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_e_precondition_monitor_packet.json"
+    },
+    {
+      "class_id": "gate_e_precondition_monitor_receipt",
+      "ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_e_precondition_monitor_receipt.json"
+    },
+    {
+      "class_id": "successor_master_orchestrator_packet",
+      "ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_master_orchestrator_packet.json"
+    },
+    {
+      "class_id": "successor_master_orchestrator_receipt",
+      "ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_master_orchestrator_receipt.json"
+    }
+  ],
+  "allowed_outcomes": [
+    "GATE_E_SCOPE_DEFINED__NOT_YET_ADMISSIBLE",
+    "GATE_E_ADMISSIBILITY_SCREEN_AUTHORIZED__STILL_NOT_OPEN",
+    "DEFERRED__MISSING_GATE_E_SCOPE_PREDICATES"
+  ],
+  "authority_header": {
+    "gate_d_cleared_on_successor_line": true,
+    "gate_e_open": false,
+    "same_head_counted_reentry_admissible_on_successor_line": true,
+    "scope_setting_only": true
+  },
+  "claim_boundary": "This packet defines only the bounded Gate E admissibility scope after successor Gate D clear. It does not open Gate E.",
+  "execution_status": "PASS__GATE_E_ADMISSIBILITY_SCOPE_PACKET_AUTHORED",
+  "explicit_non_claims": [
+    "No automatic Gate E opening from Gate D clear.",
+    "No retroactive widening of the theorem from this scope packet.",
+    "No skipping comparator order or governance predicates.",
+    "No treating post-clear momentum as Gate E entitlement."
+  ],
+  "gate_e_admissibility_screen_authorized_now": true,
+  "gate_e_open": false,
+  "gate_e_question": "What bounded conditions must be satisfied for Gate E to become admissible after the successor line lawfully cleared Gate D, while keeping Gate E itself closed until a later court rules?",
+  "generated_utc": "2026-04-23T19:59:30Z",
+  "next_lawful_move": "CONVENE_GATE_E_ADMISSIBILITY_SCREEN__STILL_NOT_GATE_E_OPEN",
+  "schema_id": "kt.operator.cohort0_gate_e_admissibility_scope_packet.v1",
+  "scope_findings": {
+    "comparator_order_preserved": true,
+    "gate_e_consideration_authorized": true,
+    "gate_e_still_closed": true,
+    "historical_supersession_explicit": true,
+    "no_automatic_gate_e_opening": true,
+    "post_clear_branch_law_bound": true,
+    "same_head_counted_reentry_admissible_on_successor_line": true,
+    "successor_gate_d_clear_canonical": true
+  },
+  "scope_outcome": "GATE_E_ADMISSIBILITY_SCREEN_AUTHORIZED__STILL_NOT_OPEN",
+  "source_refs": {
+    "full_readjudication_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_full_gate_d_readjudication_receipt.json",
+    "gate_e_monitor_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_e_precondition_monitor_packet.json",
+    "gate_e_monitor_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_e_precondition_monitor_receipt.json",
+    "orchestrator_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_master_orchestrator_packet.json",
+    "orchestrator_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_master_orchestrator_receipt.json",
+    "post_clear_packet_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_post_clear_branch_law_packet.json",
+    "post_clear_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_post_clear_branch_law_receipt.json",
+    "supersession_note_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_post_clear_supersession_note.json",
+    "supersession_receipt_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_post_clear_supersession_receipt.json"
+  },
+  "status": "PASS",
+  "subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91"
+}

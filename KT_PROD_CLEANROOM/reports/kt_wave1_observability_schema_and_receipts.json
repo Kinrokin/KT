@@ -1,0 +1,29 @@
+{
+  "claim_compiler_status": "PASS",
+  "failures": [],
+  "fanout_provider_count": 2,
+  "generated_utc": "2026-03-20T22:50:25Z",
+  "public_verifier_status": "PASS",
+  "runtime_event_count": 3,
+  "runtime_observability_ref": "KT_PROD_CLEANROOM/reports/kt_wave1_runtime_observability.jsonl",
+  "runtime_surfaces_observed": [
+    "core.spine.run",
+    "council.providers.provider_registry.invoke"
+  ],
+  "schema_id": "kt.wave1.observability_schema_and_receipts.v1",
+  "scope_boundary": "Wave 1 observability covers spine, provider invoke path, public verifier path, and claim compilation path only.",
+  "spine_result_status": "OK",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "adapter_activation_occurred",
+    "router_elevation_occurred",
+    "broad_externality_widened",
+    "product_language_widened"
+  ],
+  "toolchain_event_count": 3,
+  "toolchain_observability_ref": "KT_PROD_CLEANROOM/reports/kt_wave1_toolchain_observability.jsonl",
+  "toolchain_surfaces_observed": [
+    "tools.operator.claim_compiler.build_claim_compiler_receipt",
+    "tools.operator.public_verifier.build_public_verifier_report"
+  ]
+}

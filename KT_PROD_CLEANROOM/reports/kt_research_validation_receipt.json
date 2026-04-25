@@ -1,0 +1,62 @@
+{
+  "blocked_by": [],
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "verifier_external_confirmation_present",
+      "detail": "F09 requires current-head external verification evidence for the child verifier path.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_verifier_confirmation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "selected_runtime_external_confirmation_present",
+      "detail": "F09 requires current-head external verification evidence for exactly one selected runtime surface.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_external_runtime_confirmation_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "current_head_readjudication_present",
+      "detail": "F09 requires the bounded final current-head readjudication receipt to be present.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_final_current_head_readjudication_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "submission_manifest_generated",
+      "detail": "F09 requires a current-head research and review packet manifest.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_publication_or_submission_manifest.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "capability_ceiling_preserved",
+      "detail": "F09 must preserve the open blocker for broad current-head external capability and may not widen beyond selected-surface confirmation.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_state_vector_v2.json",
+        "KT_PROD_CLEANROOM/reports/kt_final_current_head_readjudication_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "current_strongest_claim": "F09 assembles a bounded current-head research-validation packet backed by verifier replay and one selected runtime-surface replay only.",
+  "evidence_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "generated_utc": "2026-03-20T01:41:59Z",
+  "next_lawful_phase": null,
+  "pass_verdict": "BOUNDED_RESEARCH_VALIDATION_AND_COMPANY_DILIGENCE_COMPLETE_WITHOUT_CAPABILITY_WIDENING",
+  "phase_id": "F09_RESEARCH_VALIDATION_AND_COMPANY_READINESS",
+  "schema_id": "kt.child_campaign.research_validation_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "Whole-system current-head capability is externally confirmed",
+    "Additional runtime surfaces are externally confirmed",
+    "This receipt proves market or commercial readiness"
+  ],
+  "subject_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058"
+}

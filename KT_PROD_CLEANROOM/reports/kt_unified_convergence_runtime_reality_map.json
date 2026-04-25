@@ -1,0 +1,345 @@
+{
+  "c017_spine_carriage_remediation_lane": {
+    "boundary_holds": [
+      "CANONICAL_STATIC_ROUTER_RETAINS_AUTHORITY",
+      "LEARNED_ROUTER_CUTOVER_NOT_EARNED",
+      "REMOTE_PROVIDER_AUTH_DID_NOT_YIELD_SUCCESSFUL_CURRENT_HEAD_INFERENCE",
+      "EXTERNALITY_CEILING_REMAINS_BOUNDED",
+      "REPO_ROOT_IMPORT_FRAGILITY_VISIBLE_AND_UNFIXED",
+      "WAVE_3_REQUIRES_EXPLICIT_USER_APPROVAL"
+    ],
+    "evidence_refs": [
+      "KT_PROD_CLEANROOM/reports/kt_c017_spine_carriage_remediation_receipt.json"
+    ],
+    "exact_ceiling": "The generic 256-char runtime-context short-string ceiling was being re-applied to envelope.input even though that field already had its own bounded byte ceiling.",
+    "minimal_fix": "Keep the generic short-string ceiling for the rest of runtime_context while exempting envelope.input from that one generic check and continuing to enforce max_input_bytes and max_context_bytes.",
+    "oversize_guard_status": "PASS_FAIL_CLOSED",
+    "status": "PASS",
+    "wave3_auto_opened": false,
+    "wave3_unlocked": true
+  },
+  "canonical_kernel": {
+    "repo_relative_path": "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py",
+    "status": "RATIFIED_FOR_WAVE_0",
+    "why_selected": [
+      "named as canonical spine in runtime registry",
+      "installs ImportTruthGuard",
+      "asserts InvariantsGate",
+      "writes to State Vault through canonical path"
+    ]
+  },
+  "critical_organs": [
+    {
+      "bounded_summary": "Static router is now explicitly ratified as canonical current-head control. Shadow evidence matches the fenced static baseline exactly, best-static comparator control remains explicit, and learned-router cutover plus multi-lobe promotion remain blocked until new superiority is earned. This current-head hold does not abandon router ambition.",
+      "continuing_governed_objective_id": "ROUTER_SUPERIORITY_AND_MULTI_LOBE_PROMOTION",
+      "continuing_governed_objective_status": "ACTIVE_GOVERNED_ADVANCEMENT_OBJECTIVE",
+      "continuing_governed_objective_summary": "Learned-router superiority and multi-lobe promotion remain active governed advancement objectives and are not abandoned; they are simply not yet earned for canonical promotion on current head.",
+      "disposition": "RATIFIED_STATIC_CANONICAL_BASELINE",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json",
+      "externality_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+      "maturity_class": "O2_HARDENED",
+      "organ_id": "router",
+      "reality_class": "LIVE_BOUNDED",
+      "status": "UPDATED_POST_WAVE5"
+    },
+    {
+      "bounded_summary": "Council is realized and participates in the bounded canonical organism path. Its same-host LIVE_HASHED provider seam is now proven for the canonical OpenAI/OpenRouter lane without widening externality or router claims.",
+      "disposition": "REALIZED_BOUNDED_KEEP_CANONICAL",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_wave2c_council_kernel_binding_pack.json",
+      "externality_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+      "maturity_class": "O2_HARDENED",
+      "organ_id": "council",
+      "reality_class": "LIVE_BOUNDED",
+      "status": "UPDATED_WAVE_5"
+    },
+    {
+      "bounded_summary": "Cognition is realized as a bounded planner/executor and is exercised on the minimum viable organism path.",
+      "disposition": "REALIZED_BOUNDED_KEEP_CANONICAL",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_wave2c_cognitive_provenance_pack.json",
+      "externality_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+      "maturity_class": "O2_HARDENED",
+      "organ_id": "cognition",
+      "reality_class": "LIVE_BOUNDED",
+      "status": "UPDATED_WAVE_5"
+    },
+    {
+      "bounded_summary": "Paradox is realized as a bounded contradiction surface. It remains current-head real without being promoted into broader superiority claims.",
+      "disposition": "REALIZED_BOUNDED_KEEP_CANONICAL",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_wave2c_paradox_engine_pack.json",
+      "externality_class": "E1_SAME_HOST_DETACHED_REPLAY",
+      "maturity_class": "O2_HARDENED",
+      "organ_id": "paradox",
+      "reality_class": "LIVE_BOUNDED",
+      "status": "UPDATED_WAVE_5"
+    },
+    {
+      "bounded_summary": "Temporal is realized as a bounded fork-and-replay surface with deterministic refusal behavior.",
+      "disposition": "REALIZED_BOUNDED_KEEP_CANONICAL",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_wave2c_temporal_engine_pack.json",
+      "externality_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+      "maturity_class": "O2_HARDENED",
+      "organ_id": "temporal",
+      "reality_class": "LIVE_BOUNDED",
+      "status": "UPDATED_WAVE_5"
+    },
+    {
+      "bounded_summary": "Multiverse is realized as a bounded deterministic candidate-ranking surface and remains current-head bounded only.",
+      "disposition": "REALIZED_BOUNDED_KEEP_CANONICAL",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_wave2c_multiverse_engine_pack.json",
+      "externality_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+      "maturity_class": "O2_HARDENED",
+      "organ_id": "multiverse",
+      "reality_class": "LIVE_BOUNDED",
+      "status": "UPDATED_WAVE_5"
+    },
+    {
+      "bounded_summary": "The canonical same-host LIVE_HASHED OpenAI/OpenRouter adapter lane now has successful authenticated execution and bounded resilience proof. This remains same-host only and does not upgrade C006.",
+      "disposition": "REALIZED_BOUNDED_CANONICAL_SAME_HOST_LIVE_HASHED",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c016b_resilience_pack.json",
+      "externality_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+      "maturity_class": "O2_HARDENED",
+      "organ_id": "adapter_layer",
+      "reality_class": "LIVE_BOUNDED",
+      "status": "UPDATED_POST_WAVE5"
+    },
+    {
+      "bounded_summary": "Tournament/promotion remains lab-only and is not promoted by Wave 5.",
+      "disposition": "LAB_ONLY_UNTIL_RUNTIME_REAL",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_tournament_readiness_receipt.json",
+      "externality_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+      "maturity_class": "O2_HARDENED",
+      "organ_id": "tournament_promotion",
+      "reality_class": "LIVE_BOUNDED",
+      "status": "UNCHANGED"
+    },
+    {
+      "bounded_summary": "Teacher/growth surfaces remain lab-only and outside canonical runtime truth.",
+      "disposition": "LAB_ONLY_UNLESS_PROMOTED",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_wave0_quarantine_receipts.json",
+      "externality_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+      "maturity_class": "UNRATED",
+      "organ_id": "teacher_growth_surfaces",
+      "reality_class": "SCAFFOLDED",
+      "status": "UNCHANGED"
+    },
+    {
+      "bounded_summary": "Toolchain-only orchestrators remain non-runtime and are firewalled from canonical authority.",
+      "disposition": "TOOLCHAIN_PROVING_ONLY",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_wave0_5_toolchain_runtime_firewall_receipt.json",
+      "externality_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+      "maturity_class": "UNRATED",
+      "organ_id": "toolchain_only_orchestrators",
+      "reality_class": "TOOLCHAIN_PROVING",
+      "status": "UNCHANGED"
+    },
+    {
+      "bounded_summary": "Detached verifier is realized and proven only as same-host packaged detached replay. It is not independent hostile confirmation.",
+      "disposition": "REALIZED_BOUNDED_E1_SAME_HOST_PACKAGED",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_wave3_detached_verifier_receipt.json",
+      "externality_class": "E1_SAME_HOST_DETACHED_REPLAY",
+      "maturity_class": "O2_HARDENED",
+      "organ_id": "detached_verifier",
+      "reality_class": "CURRENT_HEAD_PROVEN",
+      "status": "UPDATED_WAVE_5"
+    },
+    {
+      "bounded_summary": "Claim compiler is active as a bounded vocabulary gate and remains physically blocked from widening externality, product, or superiority language.",
+      "disposition": "REALIZED_BOUNDED_VOCABULARY_GATE",
+      "evidence_ref": "KT_PROD_CLEANROOM/reports/kt_wave3_claim_compiler_receipt.json",
+      "externality_class": "E0_INTERNAL_SELF_ISSUED_ONLY",
+      "maturity_class": "O2_HARDENED",
+      "organ_id": "claim_compiler",
+      "reality_class": "CURRENT_HEAD_PROVEN",
+      "status": "UPDATED_WAVE_5"
+    }
+  ],
+  "current_git_head": "3f311449ca92d35fc4ed9da571ddd8bc121d7564",
+  "generated_utc": "2026-03-25T23:42:14Z",
+  "runtime_roots": {
+    "adapters_entries_count": 2,
+    "compatibility_allowlist_roots": [],
+    "detached_verifier_status": "PASS_WAVE_3_SAME_HOST_PACKAGED_BOUNDARY",
+    "dry_run_no_network": true,
+    "live_adapter_ids": [
+      "council.openai.live_hashed.v1",
+      "council.openrouter.live_hashed.v1"
+    ],
+    "live_provider_execution_status": "WAVE_2A_REAL_NETWORKED_CALLS_WITH_FAIL_CLOSED_401_BOUNDARY_HOLDS",
+    "minimum_viable_civilization_status": "PASS_WAVE_3_BOUNDED_CANONICAL_ORGANISM_RUN",
+    "organ_realization_status": "PASS_WAVE_2C_BOUNDED_DIRECT_PACKS",
+    "package_import_canon_status": "PASS_DECLARED_CANONICAL_LANE_ONLY",
+    "providers_enabled": false,
+    "router_shadow_status": "PASS_WAVE_2B_SHADOW_ONLY_NO_CUTOVER",
+    "runtime_import_roots": [
+      "cognition",
+      "core",
+      "council",
+      "curriculum",
+      "governance",
+      "kt",
+      "memory",
+      "multiverse",
+      "paradox",
+      "schemas",
+      "temporal",
+      "thermodynamics",
+      "versioning"
+    ],
+    "spine_payload_carriage_status": "PASS_C017_BOUNDED_FULL_PAYLOAD_CARRIAGE_WITH_OVERSIZE_GUARD",
+    "toolchain_runtime_firewall_status": "PASS_WAVE_0_5",
+    "tools_leak_status": "RESOLVED_WAVE_0",
+    "wave4_chaos_and_challenge_status": "PASS_BOUNDED_TYPED_CHALLENGE_LAYER",
+    "wave5_final_readjudication_status": "PASS_SCOPED_FINAL_TIER_RULING"
+  },
+  "schema_id": "kt.unified_convergence.runtime_reality_map.v1",
+  "wave2a_live_adapter_lane": {
+    "adapter_ids": [
+      "council.openai.live_hashed.v1",
+      "council.openrouter.live_hashed.v1"
+    ],
+    "boundary_holds": [
+      "REMOTE_PROVIDER_AUTH_DID_NOT_YIELD_SUCCESSFUL_CURRENT_HEAD_INFERENCE",
+      "REMOTE_PROVIDER_HTTP_401_VISIBLE_AND_NOT_OVERCLAIMED_AWAY"
+    ],
+    "evidence_refs": [
+      "KT_PROD_CLEANROOM/reports/kt_wave2a_provider_activation_receipts.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave2a_adapter_activation_receipt.json"
+    ],
+    "live_networked_call_observed": true,
+    "provider_ids": [
+      "openai",
+      "openrouter"
+    ],
+    "status": "PASS",
+    "successful_live_provider_count": 0
+  },
+  "wave2b_router_shadow_lane": {
+    "best_static_provider_adapter_id": "council.openrouter.live_hashed.v1",
+    "boundary_holds": [
+      "CANONICAL_STATIC_ROUTER_RETAINS_AUTHORITY",
+      "LEARNED_ROUTER_CUTOVER_NOT_EARNED",
+      "REMOTE_PROVIDER_AUTH_DID_NOT_YIELD_SUCCESSFUL_CURRENT_HEAD_INFERENCE",
+      "EXTERNALITY_CEILING_REMAINS_BOUNDED",
+      "REPO_ROOT_IMPORT_FRAGILITY_VISIBLE_AND_UNFIXED"
+    ],
+    "canonical_router_unchanged": true,
+    "evidence_refs": [
+      "KT_PROD_CLEANROOM/reports/kt_wave2b_router_selection_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave2b_router_shadow_eval_matrix.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave2b_route_distribution_health.json"
+    ],
+    "fallback_case_ids": [
+      "R04"
+    ],
+    "learned_router_cutover_allowed": false,
+    "shadow_match_rate": 1.0,
+    "status": "PASS"
+  },
+  "wave2c_organ_realization_lane": {
+    "boundary_holds": [
+      "CANONICAL_STATIC_ROUTER_RETAINS_AUTHORITY",
+      "LEARNED_ROUTER_CUTOVER_NOT_EARNED",
+      "REMOTE_PROVIDER_AUTH_DID_NOT_YIELD_SUCCESSFUL_CURRENT_HEAD_INFERENCE",
+      "EXTERNALITY_CEILING_REMAINS_BOUNDED",
+      "REPO_ROOT_IMPORT_FRAGILITY_VISIBLE_AND_UNFIXED",
+      "TOURNAMENT_PROMOTION_REMAINS_LAB_ONLY"
+    ],
+    "evidence_refs": [
+      "KT_PROD_CLEANROOM/reports/kt_wave2c_independent_organ_test_suites.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave2c_cognitive_provenance_pack.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave2c_paradox_engine_pack.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave2c_temporal_engine_pack.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave2c_multiverse_engine_pack.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave2c_council_kernel_binding_pack.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_maturity_matrix.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave2c_organ_disposition_register.json"
+    ],
+    "realized_organs": [
+      "council",
+      "cognition",
+      "paradox",
+      "temporal",
+      "multiverse"
+    ],
+    "spine_carriage_for_full_organ_payloads": "PROVEN_VIA_C017_REMEDIATION",
+    "status": "PASS"
+  },
+  "wave3_minimum_viable_civilization_lane": {
+    "boundary_holds": [
+      "CANONICAL_STATIC_ROUTER_RETAINS_AUTHORITY",
+      "LEARNED_ROUTER_CUTOVER_NOT_EARNED",
+      "REMOTE_PROVIDER_AUTH_DID_NOT_YIELD_SUCCESSFUL_CURRENT_HEAD_INFERENCE",
+      "EXTERNALITY_CEILING_REMAINS_BOUNDED_AT_E1",
+      "REPO_ROOT_IMPORT_FRAGILITY_VISIBLE_AND_UNFIXED"
+    ],
+    "canonical_path_summary": "kt.entrypoint.invoke -> core.spine.run council.request -> core.spine.run council.plan -> core.spine.run cognition.request -> core.spine.run cognition.plan -> state_vault replay",
+    "detached_verifier_boundary": "Wave 3 detached verifier proves same-host packaged detached replay only. It does not claim independent hostile replay, public challenge survival, or external confirmation above E1.",
+    "evidence_refs": [
+      "KT_PROD_CLEANROOM/reports/kt_wave3_minimum_viable_civilization_run_pack.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave3_detached_verifier_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave3_claim_compiler_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave3_claim_class_matrix.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave3_bounded_output.json"
+    ],
+    "externality_class": "E1_SAME_HOST_DETACHED_REPLAY",
+    "status": "PASS"
+  },
+  "wave4_chaos_and_external_challenge_lane": {
+    "boundary_holds": [
+      "CANONICAL_STATIC_ROUTER_RETAINS_AUTHORITY",
+      "LEARNED_ROUTER_CUTOVER_NOT_EARNED",
+      "EXTERNALITY_CEILING_REMAINS_BOUNDED_AT_E1",
+      "PUBLIC_CHALLENGE_SURVIVAL_NOT_EARNED",
+      "REPO_ROOT_IMPORT_FRAGILITY_VISIBLE_AND_UNFIXED"
+    ],
+    "challenge_channel_used": "SIGNED_JSON_BUNDLE_DOCUMENTED_CHANNEL_V1",
+    "evidence_refs": [
+      "KT_PROD_CLEANROOM/reports/kt_wave4_chaos_manifest.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave4_challenge_protocol.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave4_public_challenge_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave4_externality_class_matrix.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave4_challenge_dispositions.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave4_formal_invariant_artifacts.json"
+    ],
+    "externality_classes_earned": [
+      "E0_INTERNAL_SELF_ISSUED_ONLY",
+      "E1_SAME_HOST_DETACHED_REPLAY"
+    ],
+    "status": "PASS"
+  },
+  "wave5_final_readjudication_lane": {
+    "boundary_holds": [
+      "CANONICAL_STATIC_ROUTER_RETAINS_AUTHORITY",
+      "BEST_STATIC_COMPARATOR_REMAINS_CONTROL",
+      "LEARNED_ROUTER_CUTOVER_NOT_EARNED",
+      "EXTERNALITY_CEILING_REMAINS_BOUNDED_AT_E1",
+      "LIVE_PROVIDER_PROOF_REMAINS_BOUNDED_TO_CANONICAL_SAME_HOST_LIVE_HASHED_OPENAI_OPENROUTER_LANE"
+    ],
+    "continuing_governed_advancement_objectives": [
+      "ROUTER_SUPERIORITY_AND_MULTI_LOBE_PROMOTION"
+    ],
+    "evidence_refs": [
+      "KT_PROD_CLEANROOM/reports/kt_wave5_state_core.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_blocker_matrix.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_runtime_truth_surface.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_verifier_truth_surface.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_release_truth_surface.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_product_truth_surface.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_final_claim_class_matrix.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_final_tier_ruling.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_remaining_gap_register.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_updated_surface_disposition_register.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave5_final_readjudication_receipt.json",
+      "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_wave2b_router_selection_receipt.json",
+      "KT_PROD_CLEANROOM/reports/post_wave5_c006_trust_prep_receipt.json"
+    ],
+    "externality_ceiling": "E1_SAME_HOST_DETACHED_REPLAY",
+    "remaining_open_contradictions": [
+      "C006_EXTERNALITY_CEILING_REMAINS_BOUNDED"
+    ],
+    "status": "PASS",
+    "tier_id": "SCOPED_TIER_BOUNDED_CURRENT_HEAD_ORGANISM_E1"
+  },
+  "work_order_id": "KT_UNIFIED_CONVERGENCE_MAX_POWER_CAMPAIGN_V2_1_1_FINAL"
+}

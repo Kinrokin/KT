@@ -63,9 +63,13 @@ def _deterministic_run_time_z(events: List[Dict[str, Any]]) -> Tuple[str, dateti
 def repo_root_from(path: Path) -> Path:
     p = path.resolve()
     for parent in [p] + list(p.parents):
-        if (parent / "KT_PROD_CLEANROOM").is_dir():
+        cleanroom_root = parent / "KT_PROD_CLEANROOM"
+        # Prefer the real cleanroom source-tree sentinel so nested implementation
+        # subtrees like KT_PROD_CLEANROOM/KT_PROD_CLEANROOM do not masquerade as
+        # the repository root.
+        if (cleanroom_root / "04_PROD_TEMPLE_V2" / "src" / "schemas" / "fl3_suite_registry_schema.py").is_file():
             return parent
-    raise AuditIntelError("FAIL_CLOSED: unable to locate repo root (expected KT_PROD_CLEANROOM/)")
+    raise AuditIntelError("FAIL_CLOSED: unable to locate repo root with cleanroom source tree")
 
 
 def _read_json_dict(path: Path, *, name: str) -> Dict[str, Any]:

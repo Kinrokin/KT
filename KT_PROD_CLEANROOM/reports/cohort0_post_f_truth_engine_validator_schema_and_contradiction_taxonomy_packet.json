@@ -1,0 +1,273 @@
+{
+  "authority_header": {
+    "authoritative_lane_branch": "authoritative/post-f-truth-engine",
+    "authoritative_lane_branch_head": "96fcf5b6cd7d0b8b16403de2b0a4bc3e657ba01e",
+    "canonical_parent_main_head": "9a09d85b6da12d15bcfe94f95c661b43ee5d3b52",
+    "package_promotion_still_deferred": true
+  },
+  "claim_boundary": "This packet defines validator schemas, contradiction taxonomy, validator behavior, and first-recompute court boundaries only. It does not execute recomputation and does not widen package or prep authority.",
+  "contradiction_taxonomy": {
+    "branch_local_vs_canonical": {
+      "governing_precedence_rule": "canonical_post_merge_repo_authority outranks branch-local outputs",
+      "halt_behavior": "HALT_RECOMPUTE",
+      "resolution_path": "Preserve branch-local source as branch evidence only and defer any change to a new authoritative court.",
+      "severity": "blocking_high",
+      "trigger_condition": "A branch-local source outranks or contradicts canonical main-level authority after merge."
+    },
+    "historical_vs_superseded": {
+      "governing_precedence_rule": "historical_and_superseded_lineage never drives live truth",
+      "halt_behavior": "HALT_RECOMPUTE",
+      "resolution_path": "Emit supersession conflict and retain historical source as lineage-only.",
+      "severity": "blocking_high",
+      "trigger_condition": "A historical checkpoint attempts to outrank an explicit supersession or newer canonical receipt."
+    },
+    "missing_authority_source": {
+      "governing_precedence_rule": "Every emitted output must cite a winning source and rejected conflicting sources",
+      "halt_behavior": "HALT_RECOMPUTE",
+      "resolution_path": "Reject emission and rerun only after source provenance is complete.",
+      "severity": "blocking_critical",
+      "trigger_condition": "An emitted posture or contradiction result cannot name its authoritative winning source."
+    },
+    "package_vs_repo": {
+      "governing_precedence_rule": "deferred_package_and_non_authoritative_prep cannot drive live truth",
+      "halt_behavior": "HALT_RECOMPUTE",
+      "resolution_path": "Reject package surface and require a separate package-promotion court before reuse.",
+      "severity": "blocking_critical",
+      "trigger_condition": "A deferred package artifact is selected as a live truth driver or wins a precedence tie."
+    },
+    "prep_lane_overreach": {
+      "governing_precedence_rule": "deferred_package_and_non_authoritative_prep never drives live truth",
+      "halt_behavior": "HALT_RECOMPUTE",
+      "resolution_path": "Demote prep output to advisory-only and require explicit promotion before reuse.",
+      "severity": "blocking_medium",
+      "trigger_condition": "A non-authoritative prep lane publishes or implies live authority beyond its declared scope."
+    },
+    "stale_vs_live": {
+      "governing_precedence_rule": "canonical_post_merge_repo_authority outranks stale historical or branch-local claims",
+      "halt_behavior": "HALT_RECOMPUTE",
+      "resolution_path": "Quarantine stale source and rerun derivation against the newer winning source.",
+      "severity": "blocking_high",
+      "trigger_condition": "A stale receipt or packet claims a stronger or different posture than the current winning canonical live source."
+    },
+    "theorem_vs_product": {
+      "governing_precedence_rule": "canonical_theorem_and_product_truth must remain internally coherent",
+      "halt_behavior": "HALT_RECOMPUTE_AND_REQUIRE_NEW_COURT",
+      "resolution_path": "Open a dedicated reconciliation court because theorem and product layers cannot be silently reinterpreted.",
+      "severity": "blocking_high",
+      "trigger_condition": "Derived theorem posture and derived product posture imply incompatible live states."
+    }
+  },
+  "emission_surface_schemas": {
+    "authority_graph": {
+      "entry_schema": {
+        "precedence_edges[]": [
+          "from_ref",
+          "to_ref",
+          "edge_type",
+          "justification"
+        ],
+        "rejected_conflicting_sources[]": [
+          "source_class_id",
+          "ref",
+          "rejection_reason",
+          "contradiction_class_id"
+        ],
+        "winning_authority_sources[]": [
+          "source_class_id",
+          "rank",
+          "ref",
+          "drives_live_truth"
+        ]
+      },
+      "ordering_rule": "winning_authority_sources by ascending rank then ref; edges lexicographic by from_ref/to_ref",
+      "required_fields": [
+        "schema_id",
+        "generated_utc",
+        "branch_ref",
+        "winning_authority_sources",
+        "rejected_conflicting_sources",
+        "precedence_edges"
+      ],
+      "schema_id": "kt.operator.cohort0_post_f_truth_engine_authority_graph.v1",
+      "type": "object"
+    },
+    "contradiction_ledger": {
+      "entry_schema": {
+        "contradictions[]": [
+          "contradiction_id",
+          "class_id",
+          "severity",
+          "triggered_by_refs",
+          "governing_precedence_class_id",
+          "halt_behavior",
+          "resolution_path"
+        ]
+      },
+      "ordering_rule": "blocking contradictions first by severity desc then contradiction_id; advisory contradictions after",
+      "required_fields": [
+        "schema_id",
+        "generated_utc",
+        "status",
+        "blocking_contradiction_count",
+        "advisory_contradiction_count",
+        "contradictions"
+      ],
+      "schema_id": "kt.operator.cohort0_post_f_truth_engine_contradiction_ledger.v1",
+      "type": "object"
+    },
+    "posture_index": {
+      "entry_schema": {
+        "winning_source_refs": [
+          "theorem_truth",
+          "product_truth",
+          "merge_truth",
+          "package_truth"
+        ]
+      },
+      "ordering_rule": "fixed key ordering in theorem/product/merge/package sequence",
+      "required_fields": [
+        "schema_id",
+        "generated_utc",
+        "theorem_truth_posture",
+        "product_truth_posture",
+        "merge_truth_posture",
+        "package_truth_posture",
+        "winning_source_refs"
+      ],
+      "schema_id": "kt.operator.cohort0_post_f_truth_engine_posture_index.v1",
+      "type": "object"
+    },
+    "recompute_receipt": {
+      "entry_schema": {},
+      "ordering_rule": "stable key ordering; refs absolute-resolved in emitted receipt",
+      "required_fields": [
+        "schema_id",
+        "generated_utc",
+        "status",
+        "branch_ref",
+        "derived_from_contract_id",
+        "authority_graph_ref",
+        "posture_index_ref",
+        "contradiction_ledger_ref",
+        "stale_source_quarantine_list_ref",
+        "blocking_contradiction_count",
+        "next_lawful_move"
+      ],
+      "schema_id": "kt.operator.cohort0_post_f_truth_engine_recompute_receipt.v1",
+      "type": "object"
+    },
+    "stale_source_quarantine_list": {
+      "entry_schema": {
+        "quarantine_candidates[]": [
+          "ref",
+          "reason",
+          "source_class_id",
+          "replacement_ref"
+        ]
+      },
+      "ordering_rule": "lexicographic by ref",
+      "required_fields": [
+        "schema_id",
+        "generated_utc",
+        "quarantine_candidate_count",
+        "quarantine_candidates"
+      ],
+      "schema_id": "kt.operator.cohort0_post_f_truth_engine_stale_source_quarantine_list.v1",
+      "type": "object"
+    }
+  },
+  "execution_status": "PASS__POST_F_TRUTH_ENGINE_VALIDATOR_SCHEMA_AND_CONTRADICTION_TAXONOMY_BOUND",
+  "first_recompute_court": {
+    "advisory_until_pr15_lands": [
+      "remote canonical branch still pending PR #15 merge",
+      "branch-local recompute may describe canonical intent but cannot publish remote-main settlement yet"
+    ],
+    "blocking_contradictions": [
+      "stale_vs_live",
+      "historical_vs_superseded",
+      "package_vs_repo",
+      "branch_local_vs_canonical",
+      "theorem_vs_product",
+      "prep_lane_overreach",
+      "missing_authority_source"
+    ],
+    "branch_scope": "authoritative/post-f-truth-engine",
+    "emits": [
+      "KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_authority_graph.json",
+      "KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_posture_index.json",
+      "KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_contradiction_ledger.json",
+      "KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_stale_source_quarantine_list.json",
+      "KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_recompute_receipt.json"
+    ],
+    "reads": [
+      "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_post_merge_closeout_receipt.json",
+      "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_post_merge_branch_snapshot.json",
+      "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_contradiction_validator_authority_receipt.json",
+      "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_contradiction_validator_contract_receipt.json",
+      "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_master_orchestrator_receipt.json",
+      "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_final_summary_receipt.json"
+    ]
+  },
+  "generated_utc": "2026-04-25T16:09:20Z",
+  "next_lawful_move": "IMPLEMENT_POST_F_TRUTH_ENGINE_VALIDATOR_AND_RECOMPUTE_TRANCHE",
+  "outcome": "POST_F_TRUTH_ENGINE_VALIDATOR_SCHEMA_AND_CONTRADICTION_TAXONOMY_DEFINED__FIRST_RECOMPUTE_READY",
+  "schema_id": "kt.operator.cohort0_post_f_truth_engine_validator_schema_and_contradiction_taxonomy_packet.v1",
+  "source_refs": {
+    "authority_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_contradiction_validator_authority_packet.json",
+    "contract_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_contradiction_validator_contract_packet.json",
+    "truth_engine_py": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/tools/operator/truth_engine.py"
+  },
+  "status": "PASS",
+  "validator_behavior": {
+    "canonicalization_rules": {
+      "encoding": "utf-8",
+      "json_serialization": "stable key ordering with newline-terminated output",
+      "list_ordering": "lexicographic unless schema defines explicit severity/rank ordering",
+      "path_normalization": "absolute resolved refs in receipts, repo-relative keys in schemas"
+    },
+    "deterministic_output_ordering": {
+      "authority_graph": "rank asc then ref",
+      "contradiction_ledger": "blocking first by severity desc then contradiction_id",
+      "posture_index": "fixed theorem/product/merge/package order",
+      "stale_source_quarantine_list": "ref asc"
+    },
+    "exclusion_handling": {
+      "drop_from_winner_set": [
+        "deferred package artifacts",
+        "non-authoritative prep lanes",
+        "superseded historical checkpoints",
+        "smoke-only artifacts"
+      ],
+      "quarantine_output_required_on_exclusion": true
+    },
+    "failure_codes": [
+      "MISSING_CANONICAL_SOURCE",
+      "PRECEDENCE_TIE_BLOCK",
+      "PACKAGE_SURFACE_OVERREACH",
+      "PREP_LANE_OVERREACH",
+      "MISSING_SOURCE_PROVENANCE",
+      "THEOREM_PRODUCT_CONTRADICTION"
+    ],
+    "input_set": {
+      "canonical_inputs": [
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_post_merge_closeout_receipt.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_post_merge_branch_snapshot.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_contradiction_validator_authority_receipt.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_successor_master_orchestrator_receipt.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_final_summary_receipt.json"
+      ],
+      "governance_inputs": [
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/governance/truth_engine_contract.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/governance/posture_contract.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/governance/settled_truth_source_contract.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/governance/truth_supersession_rules.json",
+        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/reporting_integrity_contract.json"
+      ]
+    },
+    "precedence_resolution": {
+      "lineage_rule": "non-driving classes may explain but may never decide live posture",
+      "tie_rule": "same-rank disagreement is a blocking contradiction",
+      "winning_rule": "lowest source_precedence rank wins"
+    }
+  }
+}

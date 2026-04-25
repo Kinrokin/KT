@@ -1,0 +1,187 @@
+{
+  "schema_id": "kt.downstream_diversity_research_terminal_suite.v1",
+  "mode": "LAB_ONLY_NONCANONICAL",
+  "claim_boundary": "This suite is lab-only and noncanonical. It probes whether the current verified entrant cohort can support a second winning terminal path that ends in the research specialist instead of the current code, writer, or math terminals. It cannot unlock R5, R6, lobe authority, externality, comparative claims, or commercial activation.",
+  "cases": [
+    {
+      "case_id": "LAB_ALTTERM_GR01",
+      "pattern_family": "LAB_ALTTERM_GR",
+      "notes": "Force the generalist to frame the question before the research specialist compiles the sourced evidence docket.",
+      "single_case_baseline": {
+        "task_text": "Frame the investigation, then compile a sourced evidence docket with the tradeoffs.",
+        "required_terms": ["investigation", "evidence", "tradeoffs"],
+        "preferred_genotype": {
+          "prompt_transform_style": "reframe",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "frame",
+          "task_text": "Frame the investigation and capture the decision tradeoffs.",
+          "required_terms": ["investigation", "tradeoffs", "decision"],
+          "preferred_genotype": {
+            "prompt_transform_style": "reframe",
+            "reasoning_directive": "evidence_first",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.generalist.shadow.v1"]
+        },
+        {
+          "stage_id": "docket",
+          "task_text": "Compile the sourced evidence docket and preserve the tradeoffs with citations.",
+          "required_terms": ["evidence", "tradeoffs", "sources"],
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "evidence_first",
+            "scoring_bias": "precision",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.research.specialist.v1"],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_ALTTERM_GR02",
+      "pattern_family": "LAB_ALTTERM_GR",
+      "notes": "Force the generalist to define the search plan before the research specialist compiles the verification packet.",
+      "single_case_baseline": {
+        "task_text": "Define the search plan, then compile a verification packet with sources and evidence.",
+        "required_terms": ["search", "verification", "sources"],
+        "preferred_genotype": {
+          "prompt_transform_style": "reframe",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "search_plan",
+          "task_text": "Define the search plan and frame the verification tradeoffs.",
+          "required_terms": ["search", "verification", "tradeoffs"],
+          "preferred_genotype": {
+            "prompt_transform_style": "reframe",
+            "reasoning_directive": "evidence_first",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.generalist.shadow.v1"]
+        },
+        {
+          "stage_id": "verification_packet",
+          "task_text": "Compile the verification packet and preserve the sourced evidence trail.",
+          "required_terms": ["verification", "sources", "evidence"],
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "evidence_first",
+            "scoring_bias": "precision",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.research.specialist.v1"],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    },
+    {
+      "case_id": "LAB_ALTTERM_GR03",
+      "pattern_family": "LAB_ALTTERM_GR",
+      "notes": "Force the generalist to bound the question before the research specialist emits the evidence brief.",
+      "single_case_baseline": {
+        "task_text": "Bound the question, then produce an evidence brief with sources and key tradeoffs.",
+        "required_terms": ["question", "evidence", "sources"],
+        "preferred_genotype": {
+          "prompt_transform_style": "reframe",
+          "reasoning_directive": "evidence_first",
+          "scoring_bias": "calibration",
+          "uncertainty_policy": "explicit_calibration"
+        },
+        "weights": {
+          "prompt_transform_style": 1.0,
+          "reasoning_directive": 2.0,
+          "scoring_bias": 1.5,
+          "uncertainty_policy": 1.5
+        }
+      },
+      "stages": [
+        {
+          "stage_id": "bound_question",
+          "task_text": "Bound the question and capture the key tradeoffs for the research pass.",
+          "required_terms": ["question", "tradeoffs", "research"],
+          "preferred_genotype": {
+            "prompt_transform_style": "reframe",
+            "reasoning_directive": "evidence_first",
+            "scoring_bias": "calibration",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.generalist.shadow.v1"]
+        },
+        {
+          "stage_id": "evidence_brief",
+          "task_text": "Produce the evidence brief with sources and preserve the key tradeoffs.",
+          "required_terms": ["evidence", "sources", "tradeoffs"],
+          "preferred_genotype": {
+            "prompt_transform_style": "clarify_first",
+            "reasoning_directive": "evidence_first",
+            "scoring_bias": "precision",
+            "uncertainty_policy": "explicit_calibration"
+          },
+          "weights": {
+            "prompt_transform_style": 1.0,
+            "reasoning_directive": 2.0,
+            "scoring_bias": 1.5,
+            "uncertainty_policy": 1.5
+          },
+          "allowed_adapter_ids": ["lobe.research.specialist.v1"],
+          "require_distinct_from_previous_stage": true
+        }
+      ]
+    }
+  ]
+}

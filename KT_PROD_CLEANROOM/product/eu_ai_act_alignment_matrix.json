@@ -1,0 +1,63 @@
+{
+  "claim_boundary": "This matrix is informative only. It describes bounded current-head alignment themes and does not constitute legal advice, legal interpretation, or EU AI Act compliance certification.",
+  "current_claim_ceiling": "E1_SAME_HOST_DETACHED_REPLAY",
+  "framework_label": "EU AI Act bounded thematic alignment",
+  "informative_only": true,
+  "mapped_themes": [
+    {
+      "alignment_status": "BOUNDED_PRESENT",
+      "kt_surface_refs": [
+        "KT_PROD_CLEANROOM/product/one_page_product_truth_surface.md",
+        "KT_PROD_CLEANROOM/reports/commercial_truth_packet.json",
+        "KT_PROD_CLEANROOM/product/support_boundary.json"
+      ],
+      "out_of_scope": [
+        "provider_obligations_for_broad_market_deployment",
+        "classification_of_high_risk_systems_outside_this_bounded_wedge"
+      ],
+      "theme_id": "transparency_and_user_information"
+    },
+    {
+      "alignment_status": "BOUNDED_PRESENT",
+      "kt_surface_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json"
+      ],
+      "out_of_scope": [
+        "cross_host_or_public_logging_proof",
+        "broad_post_market_monitoring"
+      ],
+      "theme_id": "logging_and_traceability"
+    },
+    {
+      "alignment_status": "BOUNDED_PRESENT",
+      "kt_surface_refs": [
+        "KT_PROD_CLEANROOM/product/operator_runbook_v2.md",
+        "KT_PROD_CLEANROOM/product/client_wrapper_spec.json",
+        "KT_PROD_CLEANROOM/reports/c006_second_host_kit.json"
+      ],
+      "out_of_scope": [
+        "outsider_operated_runtime_supervision",
+        "enterprise_human_oversight_programs"
+      ],
+      "theme_id": "human_oversight_and_escalation"
+    },
+    {
+      "alignment_status": "PARTIAL_BOUNDED_PRESENT",
+      "kt_surface_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+        "KT_PROD_CLEANROOM/reports/c006_deferral_heartbeat.json",
+        "KT_PROD_CLEANROOM/reports/c006_second_host_kit.json"
+      ],
+      "out_of_scope": [
+        "cross_host_robustness_proof",
+        "independent_external_validation"
+      ],
+      "theme_id": "accuracy_robustness_and_posture"
+    }
+  ],
+  "not_certification_or_legal_determination": true,
+  "schema_id": "kt.product.eu_ai_act_alignment_matrix.v1",
+  "status": "ACTIVE"
+}

@@ -1,0 +1,57 @@
+{
+  "blocked_by": [],
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "checks": [
+    {
+      "check": "release_ceremony_executed",
+      "detail": "Release activation requires an executed child release ceremony.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_executed_release_ceremony_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "release_activation_executed",
+      "detail": "Release activation may not be implied; it must execute on the bounded child release lane.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_executed_release_ceremony_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_release_signer_issuance_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_producer_attestation_bundle.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "product_surface_unchanged",
+      "detail": "F07 must not widen product state while changing only release legitimacy.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_state_vector_v2.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "current_strongest_claim": "F07 executes bounded release activation without widening runtime, product, or commercial claims.",
+  "evidence_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "generated_utc": "2026-03-20T01:41:59Z",
+  "next_lawful_phase": "F08_PRODUCT_WEDGE_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_READY",
+  "offbox_execution_pack_receipt_ref": "KT_PROD_CLEANROOM/reports/kt_f07_release_execution_pack_receipt.json",
+  "offbox_execution_pack_root_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/F07_release_execution_pack",
+  "pass_verdict": "CHILD_BOUNDED_RELEASE_ACTIVATION_EXECUTED",
+  "phase_id": "F07_RELEASE_READINESS_ELIGIBILITY_CEREMONY_AND_ACTIVATION",
+  "release_activation_status": "EXECUTED_CHILD_BOUNDED_RELEASE_ONLY",
+  "schema_id": "kt.child_campaign.release_activation_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": [
+    "Product wedge activation is executed",
+    "Commercial or enterprise readiness is proven",
+    "Current-head external capability is broadly confirmed"
+  ],
+  "subject_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "supporting_execution_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_release_signer_custody_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_release_signer_quorum_witness_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_producer_attestation_execution_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_child_release_ceremony_execution_record.json",
+    "KT_PROD_CLEANROOM/reports/kt_child_release_activation_execution_record.json"
+  ]
+}

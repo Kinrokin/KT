@@ -1,0 +1,179 @@
+{
+  "accepted_verifier_surface_count": 3,
+  "benchmark_coverage_matrix": "KT_PROD_CLEANROOM/reports/kt_benchmark_coverage_matrix.json",
+  "benchmark_coverage_percent": 50.0,
+  "blocker_matrix": "KT_PROD_CLEANROOM/reports/kt_blocker_matrix_v2.json",
+  "campaign_id": "KT_SINGLE_PROJECT_INSTITUTIONAL_ELEVATION_V1_6",
+  "company_readiness_receipt": "KT_PROD_CLEANROOM/reports/kt_company_readiness_receipt.json",
+  "computed_claim_ceiling": "PARENT_BOUNDED_NON_RELEASE_ELIGIBLE_PLUS_CHILD_F07_RELEASED_F08_BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_AND_F09_BOUNDED_RESEARCH_AND_COMPANY_DILIGENCE_ONLY",
+  "computed_state_id": "kt_state_vector_v2::494cd490a6512b9bfa937c82886db625143d38ae",
+  "critical_organs_current_head_receipts": {
+    "adapter_layer": [
+      "KT_PROD_CLEANROOM/reports/kt_current_head_capability_matrix.json"
+    ],
+    "cognition": [
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/cognitive_engine.py",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/cognition/tests/test_cognitive_engine.py"
+    ],
+    "multiverse": [
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/multiverse/multiverse_engine.py",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/multiverse/tests/test_multiverse_engine.py"
+    ],
+    "openclaw_labor_organ": [
+      "KT_PROD_CLEANROOM/reports/kt_current_head_capability_matrix.json"
+    ],
+    "paradox": [
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/paradox_engine.py",
+      "KT_PROD_CLEANROOM/reports/kt_paradox_invariants.json",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/paradox/tests/test_paradox_engine.py",
+      "KT_PROD_CLEANROOM/tests/operator/test_paradox_verification_compile.py",
+      "KT_PROD_CLEANROOM/reports/kt_paradox_program_bounded_receipt.json"
+    ],
+    "router": [
+      "KT_PROD_CLEANROOM/tools/router/run_router_hat_demo.py",
+      "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+      "KT_PROD_CLEANROOM/tests/fl3/test_epic19_router_hat_demo.py"
+    ],
+    "temporal": [
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/temporal_engine.py",
+      "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/temporal/tests/test_temporal_engine.py"
+    ],
+    "tournament_promotion": [
+      "KT_PROD_CLEANROOM/tools/tournament/run_tournament.py",
+      "KT_PROD_CLEANROOM/governance/tournament_law.json",
+      "KT_PROD_CLEANROOM/tests/fl3/test_epic15_tournament_runner.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_fl4_promotion_atomic.py",
+      "KT_PROD_CLEANROOM/reports/kt_tournament_readiness_receipt.json"
+    ]
+  },
+  "current_head_and_historical_consistent_surfaces": [
+    "adapter_layer",
+    "tournament_promotion"
+  ],
+  "current_head_capability_coverage_percent": 87.5,
+  "current_head_capability_matrix": "KT_PROD_CLEANROOM/reports/kt_current_head_capability_matrix.json",
+  "current_head_only_capability_surfaces": [
+    "router",
+    "cognition",
+    "paradox",
+    "temporal",
+    "multiverse",
+    "openclaw_labor_organ"
+  ],
+  "current_head_receipt_or_blocker_coverage_percent": 100.0,
+  "current_repo_head": "494cd490a6512b9bfa937c82886db625143d38ae",
+  "deployment_manifest": "KT_PROD_CLEANROOM/reports/kt_deployment_manifest.json",
+  "doctrine_only_surfaces": [
+    "openclaw_labor_organ"
+  ],
+  "enterprise_operations_receipt": "KT_PROD_CLEANROOM/reports/kt_enterprise_operations_receipt.json",
+  "evidence_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "executed_release_ceremony_receipt": "KT_PROD_CLEANROOM/reports/kt_executed_release_ceremony_receipt.json",
+  "external_confirmation_status": "CURRENT_HEAD_VERIFIER_AND_SELECTED_RUNTIME_SURFACE_OUTSIDER_REPLAY_CONFIRMED_ONLY",
+  "external_runtime_confirmation_receipt": "KT_PROD_CLEANROOM/reports/kt_external_runtime_confirmation_receipt.json",
+  "external_technical_validation_receipt": "KT_PROD_CLEANROOM/reports/kt_external_audit_or_peer_review_receipt.json",
+  "external_verifier_confirmation_receipt": "KT_PROD_CLEANROOM/reports/kt_external_verifier_confirmation_receipt.json",
+  "final_current_head_readjudication_receipt": "KT_PROD_CLEANROOM/reports/kt_final_current_head_readjudication_receipt.json",
+  "historical_only_capability_imports": [
+    {
+      "artifact_ref": "KT_PROD_CLEANROOM/reports/kt_external_capability_confirmation_receipt.json",
+      "scope": "historical_bounded_frontier_target_only"
+    }
+  ],
+  "last_update_time": "2026-03-20T01:41:57Z",
+  "live_capability_surfaces": [
+    "router",
+    "cognition",
+    "paradox",
+    "temporal",
+    "multiverse",
+    "tournament_promotion"
+  ],
+  "next_lawful_transition": null,
+  "open_blockers": [
+    "current_head_external_capability_not_confirmed",
+    "repo_root_import_fragility_visible_and_unfixed"
+  ],
+  "operator_manual": "KT_PROD_CLEANROOM/reports/kt_operator_manual_v1.json",
+  "organ_maturity_matrix": {
+    "adapter_layer": "O1_IMPLEMENTED",
+    "cognition": "O1_IMPLEMENTED",
+    "multiverse": "O1_IMPLEMENTED",
+    "openclaw_labor_organ": "O0_CONCEPTUAL",
+    "paradox": "O2_HARDENED",
+    "router": "O2_HARDENED",
+    "temporal": "O1_IMPLEMENTED",
+    "tournament_promotion": "O2_HARDENED"
+  },
+  "organ_promotion_blockers": {
+    "adapter_layer": [
+      "NO_ACTIVE_RUNTIME_ADAPTER_ENTRIES"
+    ]
+  },
+  "organ_promotion_matrix": "KT_PROD_CLEANROOM/reports/kt_organ_promotion_matrix.json",
+  "parent_terminal_state_ref": "KT_PROD_CLEANROOM/reports/kt_product_surface_receipt.json",
+  "producer_attestation_bundle": "KT_PROD_CLEANROOM/reports/kt_producer_attestation_bundle.json",
+  "producer_attestation_execution_record": "KT_PROD_CLEANROOM/reports/kt_producer_attestation_execution_record.json",
+  "product_surface_status": "CHILD_BOUNDED_NONCOMMERCIAL_EVALUATION_WEDGE_ACTIVE",
+  "product_wedge_activation_receipt": "KT_PROD_CLEANROOM/reports/kt_product_wedge_activation_receipt.json",
+  "proof_integrity_receipts": [
+    "KT_PROD_CLEANROOM/reports/kt_pipeline_attestations_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_slsa_provenance_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_cross_host_repro_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_dependency_airlock_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_drift_and_semantic_stability_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_adjudication_split_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_outsider_path_receipt.json"
+  ],
+  "publication_or_submission_manifest": "KT_PROD_CLEANROOM/reports/kt_publication_or_submission_manifest.json",
+  "regression_matrix": "KT_PROD_CLEANROOM/reports/kt_regression_matrix.json",
+  "release_activation_execution_record": "KT_PROD_CLEANROOM/reports/kt_child_release_activation_execution_record.json",
+  "release_activation_receipt": "KT_PROD_CLEANROOM/reports/kt_release_activation_receipt.json",
+  "release_activation_status": "EXECUTED_CHILD_BOUNDED_RELEASE_ONLY",
+  "release_ceremony_execution_record": "KT_PROD_CLEANROOM/reports/kt_child_release_ceremony_execution_record.json",
+  "release_ceremony_status": "EXECUTED_CHILD_BOUNDED_RELEASE_ONLY",
+  "release_eligibility_status": "ELIGIBLE_CHILD_BOUNDED_RELEASE_ONLY",
+  "release_execution_pack_receipt": "KT_PROD_CLEANROOM/reports/kt_f07_release_execution_pack_receipt.json",
+  "release_readiness_status": "PROVEN_CHILD_BOUNDED_RELEASE_ONLY",
+  "release_signer_custody_record": "KT_PROD_CLEANROOM/reports/kt_release_signer_custody_record.json",
+  "release_signer_issuance_receipt": "KT_PROD_CLEANROOM/reports/kt_release_signer_issuance_receipt.json",
+  "release_signer_quorum_witness_record": "KT_PROD_CLEANROOM/reports/kt_release_signer_quorum_witness_record.json",
+  "release_threshold_root_acceptance_receipt": "KT_PROD_CLEANROOM/reports/kt_threshold_root_acceptance_receipt.json",
+  "reproducibility_status": "DECLARED_CLASS_A_CARRY_FORWARD_CROSS_HOST_PROVEN_FOR_UNCHANGED_INHERITED_SUBSET_ONLY",
+  "research_validation_receipt": "KT_PROD_CLEANROOM/reports/kt_research_validation_receipt.json",
+  "runtime_operational_reality_classes": {
+    "adapter_layer": "STUBBED",
+    "cognition": "LIVE_UNPROVEN",
+    "multiverse": "LIVE_UNPROVEN",
+    "openclaw_labor_organ": "DOC_ONLY",
+    "paradox": "LIVE_BOUNDED",
+    "router": "LIVE_BOUNDED",
+    "temporal": "LIVE_UNPROVEN",
+    "tournament_promotion": "LIVE_BOUNDED"
+  },
+  "runtime_truth_matrix": "KT_PROD_CLEANROOM/reports/kt_runtime_truth_matrix.json",
+  "schema_id": "kt.child_campaign.state_vector.v2",
+  "selected_externally_confirmed_runtime_surfaces": [
+    "paradox"
+  ],
+  "single_reality_id": "KT_SINGLE_REALITY_LAW_V1_20260318",
+  "stubbed_surfaces": [
+    "adapter_layer"
+  ],
+  "subject_head_commit": "15ca89af0081dfad3a19f275e8138c73e6845058",
+  "supportability_matrix": "KT_PROD_CLEANROOM/reports/kt_supportability_matrix.json",
+  "theater_risk_score_matrix": {
+    "adapter_layer": 0.66,
+    "cognition": 0.44,
+    "multiverse": 0.44,
+    "openclaw_labor_organ": 1.0,
+    "paradox": 0.18,
+    "router": 0.18,
+    "temporal": 0.44,
+    "tournament_promotion": 0.18
+  },
+  "threshold_root_acceptance_policy": "KT_PROD_CLEANROOM/governance/kt_threshold_root_acceptance_policy.json",
+  "trust_root_status": "CHILD_THRESHOLD_ROOT_ACCEPTANCE_ACTIVE",
+  "tuf_distribution_policy": "KT_PROD_CLEANROOM/governance/kt_tuf_distribution_policy.json",
+  "verifier_status": "CHILD_THRESHOLD_ROOT_ACCEPTANCE_MINIMAL_TUF_DISTRIBUTION_AND_SECRET_FREE_OUTSIDER_VERIFIER_V2_ACTIVE"
+}

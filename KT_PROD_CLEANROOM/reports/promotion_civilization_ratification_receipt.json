@@ -1,0 +1,103 @@
+{
+  "checks": [
+    {
+      "check_id": "t4_exit_gap_is_only_execution_board_promotion_gate",
+      "pass": true,
+      "remaining_blockers": [
+        {
+          "blocker_id": "PROMOTION_CIVILIZATION_RATIFIED_FALSE",
+          "class": "EXIT_GATE_BLOCKER",
+          "evidence_ref": "KT_PROD_CLEANROOM/governance/execution_board.json",
+          "why": "Gate B exit remains closed until promotion civilization is formally ratified on the execution board."
+        }
+      ]
+    },
+    {
+      "check_id": "execution_board_is_still_domain2_with_h1_allowed",
+      "current_domain": {
+        "domain_id": "DOMAIN_2_PROMOTION_CIVILIZATION",
+        "title": "Promotion civilization"
+      },
+      "h1_activation_allowed": true,
+      "pass": true
+    },
+    {
+      "check_id": "current_head_domain2_receipts_are_refreshed_and_pass",
+      "pass": true,
+      "refreshed_rows": [
+        {
+          "receipt_ref": "KT_PROD_CLEANROOM/reports/promotion_receipt.json",
+          "status": "PASS",
+          "validated_head_sha": "d6385865b49cd2ed66fc8edb731003b96f8f5eb5"
+        },
+        {
+          "receipt_ref": "KT_PROD_CLEANROOM/reports/rollback_plan_receipt.json",
+          "status": "PASS",
+          "validated_head_sha": "d6385865b49cd2ed66fc8edb731003b96f8f5eb5"
+        },
+        {
+          "receipt_ref": "KT_PROD_CLEANROOM/reports/risk_ledger_receipt.json",
+          "status": "PASS",
+          "validated_head_sha": "d6385865b49cd2ed66fc8edb731003b96f8f5eb5"
+        },
+        {
+          "receipt_ref": "KT_PROD_CLEANROOM/reports/revalidation_receipt.json",
+          "status": "PASS",
+          "validated_head_sha": "d6385865b49cd2ed66fc8edb731003b96f8f5eb5"
+        },
+        {
+          "receipt_ref": "KT_PROD_CLEANROOM/reports/zone_crossing_receipt.json",
+          "status": "PASS",
+          "validated_head_sha": "d6385865b49cd2ed66fc8edb731003b96f8f5eb5"
+        }
+      ]
+    },
+    {
+      "check_id": "zone_crossing_receipt_proves_governance_only_no_runtime_promotion",
+      "crossings": [],
+      "pass": true
+    },
+    {
+      "check_id": "promotion_components_stay_bounded_and_static_router_only",
+      "pass": true,
+      "ratified_components": [
+        "crucible_registry",
+        "policy_c_pressure_training",
+        "tournament_engine",
+        "merge_engine",
+        "static_router_baseline",
+        "rollback_discipline"
+      ]
+    },
+    {
+      "check_id": "runtime_integration_boundary_rules_keep_ratification_non_widening",
+      "pass": true
+    }
+  ],
+  "claim_widening_allowed": false,
+  "component_refs": [
+    "KT_PROD_CLEANROOM/reports/b02_runtime_unify_t4_receipt.json",
+    "KT_PROD_CLEANROOM/reports/b02_exit_gap_reduction_receipt.json",
+    "KT_PROD_CLEANROOM/reports/b02_promotion_boundary_truth_receipt.json",
+    "KT_PROD_CLEANROOM/governance/runtime_integration_boundary_rules.json",
+    "KT_PROD_CLEANROOM/reports/promotion_receipt.json",
+    "KT_PROD_CLEANROOM/reports/rollback_plan_receipt.json",
+    "KT_PROD_CLEANROOM/reports/risk_ledger_receipt.json",
+    "KT_PROD_CLEANROOM/reports/revalidation_receipt.json",
+    "KT_PROD_CLEANROOM/reports/zone_crossing_receipt.json"
+  ],
+  "forbidden_claims_remaining": [
+    "Do not claim learned-router or multi-lobe promotion is earned.",
+    "Do not claim tournament evidence has become canonical runtime cutover.",
+    "Do not claim teacher or growth surfaces are canonical runtime.",
+    "Do not widen externality, product, or prestige language."
+  ],
+  "gate_effect": "SATISFIES_DOMAIN_2_EXIT_PREREQUISITE_ONLY",
+  "gate_id": "PROMOTION_CIVILIZATION_RATIFIED",
+  "generated_utc": "2026-03-27T02:20:20Z",
+  "ratification_scope_class": "CURRENT_HEAD_BOUNDED_RUNTIME_ADMISSIBILITY_ONLY",
+  "schema_id": "kt.b02.promotion_civilization_ratification_receipt.v1",
+  "scope_boundary": "B02 tranche 5 binds promotion civilization to current-head bounded runtime admissibility only. It does not authorize learned-router cutover, multi-lobe promotion, tournament runtime cutover, teacher/growth activation, externality widening, or product widening.",
+  "status": "PASS",
+  "validated_head_sha": "d6385865b49cd2ed66fc8edb731003b96f8f5eb5"
+}

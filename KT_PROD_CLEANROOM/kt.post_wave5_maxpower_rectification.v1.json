@@ -1,0 +1,1363 @@
+{
+  "schema_id": "kt.post_wave5_maxpower_rectification.v1",
+  "schema_version": 1,
+  "campaign_id": "KT_POST_WAVE5_MAXPOWER_RECTIFICATION_AND_COMPARATIVE_PROOF_CAMPAIGN_V1",
+  "title": "Post-Wave5 Max-Power Rectification & Comparative Proof Campaign",
+  "supersession_status": "SUPERSEDED_DOCUMENTARY_ONLY",
+  "superseded_by": "KT_POST_WAVE5_MAX_POWER_RECTIFICATION_CAMPAIGN_FINAL_V3_1",
+  "live_authority": false,
+  "notes": [
+    "Superseded during L0 of the post-Wave5 execution campaign.",
+    "Retained for historical lineage only. Do not use as live scheduling law."
+  ],
+  "status": "DRAFT_EXECUTABLE",
+  "date": "2026-03-21",
+  "law_binding": {
+    "source": "POST_WAVE5_RECTIFICATION",
+    "treat_as_law": true,
+    "fail_closed": true,
+    "retroactive_change_forbidden": true,
+    "requires_prior_completion": "H0_CURRENT_HEAD_RUNTIME_BASELINE",
+    "no_implicit_fallbacks": true,
+    "behavior_cannot_precede_artifact": true,
+    "append_only_policy": [
+      "schemas",
+      "validators",
+      "tests",
+      "ci_rules",
+      "governance_policies",
+      "tools_that_emit_receipts"
+    ],
+    "explicit_non_changes": [
+      "no edits to frozen substrate concepts C001-C010 without constitutional amendment",
+      "no parallel truth cores or authority families",
+      "no claim widening without benchmark evidence",
+      "no historical proof laundering as current-head capability",
+      "no complexity growth unless it closes a contradiction or improves comparative proof",
+      "no semantic-router promotion before ordered proof exists",
+      "no enterprise API platform before narrow verifier wedge is real"
+    ]
+  },
+  "objective": {
+    "primary": "Transform KT from SCOPED_BOUNDED_CURRENT_HEAD_ORGANISM into the strongest truthful approximation of: one current-head runtime harder to attack as architecture theater, one verifier stack stronger than same-host packaged replay, one adaptive runtime with organs benchmarked and promoted honestly, one narrow real buyer-safe product wedge, and one comparative-proof bundle showing where KT wins and where it still loses.",
+    "success_definition": [
+      "C007 repo-root import fragility eliminated with canonical install model",
+      "C016 remote provider auth yields proven live inference success",
+      "C006 externality ceiling upgraded from E1 to E2 minimum",
+      "C005 router ambition closed by ordered proof or honest demotion",
+      "Every runtime organ in earned LIVE_BOUNDED or explicit ARCHIVE_QUARANTINED",
+      "Growth stack fused to runtime truth with receipt-chained lifecycle",
+      "Comparative proof exists in KT's real category",
+      "Narrow product wedge deployable and verifiable"
+    ]
+  },
+  "live_contradictions": {
+    "C005": {
+      "name": "ROUTER_AMBITION_EXCEEDS_IMPLEMENTATION",
+      "description": "Router is keyword-only. No semantic routing. No learned routing. Doctrine implies swarm routing.",
+      "closed_by": "LANE_6"
+    },
+    "C006": {
+      "name": "EXTERNALITY_CEILING_REMAINS_BOUNDED",
+      "description": "Verifier is same-host packaged replay. No outsider trustlessness. No detached verifier.",
+      "closed_by": "LANE_4"
+    },
+    "C007": {
+      "name": "REPO_ROOT_IMPORT_FRAGILITY",
+      "description": "No canonical install model. pyproject.toml has packages=[]. Import truth guard depends on path setup.",
+      "closed_by": "LANE_1"
+    },
+    "C016": {
+      "name": "REMOTE_PROVIDER_AUTH_ONLY_FAIL_CLOSED_OUTCOMES",
+      "description": "Provider resilience is real but no recorded evidence of successful authenticated live inference.",
+      "closed_by": "LANE_2"
+    }
+  },
+  "prime_constraints": {
+    "forbidden": [
+      "parallel_truth_cores",
+      "duplicate_authority_families",
+      "unreceipted_organ_changes",
+      "claim_widening_without_evidence",
+      "historical_proof_laundering",
+      "force_push",
+      "no_verify_commits",
+      "test_skips",
+      "deletion_of_existing_tests",
+      "governance_json_without_additionalProperties_false",
+      "env_var_gates_without_docstring_documentation",
+      "live_provider_calls_in_test_code",
+      "files_without_lane_reference",
+      "imports_not_in_lockfile"
+    ],
+    "required": [
+      "fail_closed_everywhere",
+      "deterministic_artifacts",
+      "schema_bound_artifacts",
+      "receipt_hash_binding",
+      "pytest_after_every_structural_change",
+      "lane_reference_on_every_new_file",
+      "lockfile_update_before_new_dependency_use",
+      "honest_organ_status_labeling",
+      "governance_event_on_every_organ_transition"
+    ]
+  },
+  "organ_status_board_h0": {
+    "description": "Frozen baseline organ status at campaign start. Every organ must transition from this state to a terminal state by campaign end.",
+    "statuses": {
+      "CORE_LIVE": "100% real executable logic, proven by tests, no stubs",
+      "LIVE_BOUNDED": "Real logic with bounded scope (e.g., 2/12 providers active)",
+      "STUB_BOUNDED": "Interface contracts real, execution is stub/fake/hardcoded",
+      "PROTOCOL_ONLY": "Type hints and dataclass definitions only"
+    },
+    "organs": [
+      {"organ": "core/spine.py", "loc": 1065, "status": "CORE_LIVE", "evidence": "100% real dispatch"},
+      {"organ": "core/import_truth_guard.py", "loc": 180, "status": "CORE_LIVE", "evidence": "builtins.__import__ replacement"},
+      {"organ": "core/invariants_gate.py", "loc": 195, "status": "CORE_LIVE", "evidence": "7-check fail-closed"},
+      {"organ": "core/runtime_registry.py", "loc": 600, "status": "CORE_LIVE", "evidence": "full validation"},
+      {"organ": "core/routing_receipts.py", "loc": 175, "status": "CORE_LIVE", "evidence": "deterministic receipts"},
+      {"organ": "core/no_hidden_mutation.py", "loc": 79, "status": "CORE_LIVE", "evidence": "mutation scanner"},
+      {"organ": "memory/state_vault.py", "loc": 280, "status": "CORE_LIVE", "evidence": "O_APPEND+fsync+parent-hash"},
+      {"organ": "memory/replay.py", "loc": 185, "status": "CORE_LIVE", "evidence": "full chain validation"},
+      {"organ": "governance/*.py", "loc": 212, "status": "CORE_LIVE", "evidence": "event logging + verdicts"},
+      {"organ": "thermodynamics/budget_engine.py", "loc": 130, "status": "CORE_LIVE", "evidence": "real ceiling enforcement"},
+      {"organ": "curriculum/curriculum_ingest.py", "loc": 100, "status": "CORE_LIVE", "evidence": "training boundary guard"},
+      {"organ": "council/thermo_ledger.py", "loc": 39, "status": "CORE_LIVE", "evidence": "token cost tracking"},
+      {"organ": "council/providers/provider_registry.py", "loc": 400, "status": "LIVE_BOUNDED", "evidence": "2/12 live, resilience real"},
+      {"organ": "council/council_router.py (live_hashed)", "loc": "subset of 420", "status": "LIVE_BOUNDED", "evidence": "real provider invocation"},
+      {"organ": "council/council_router.py (plan/execute)", "loc": "subset of 420", "status": "STUB_BOUNDED", "evidence": "DRY_RUN hardcoded"},
+      {"organ": "cognition/cognitive_engine.py", "loc": 160, "status": "STUB_BOUNDED", "evidence": "score = hash % 101"},
+      {"organ": "cognition/planners/step_planner.py", "loc": 19, "status": "STUB_BOUNDED", "evidence": "zero reasoning"},
+      {"organ": "paradox/paradox_engine.py", "loc": 93, "status": "STUB_BOUNDED", "evidence": "eligibility gate only"},
+      {"organ": "temporal/temporal_engine.py", "loc": 160, "status": "STUB_BOUNDED", "evidence": "steps_executed=0"},
+      {"organ": "multiverse/multiverse_engine.py", "loc": 210, "status": "STUB_BOUNDED", "evidence": "coherence_score=1.0"},
+      {"organ": "thermodynamics/meters/*.py", "loc": 51, "status": "STUB_BOUNDED", "evidence": "trivial subtraction"},
+      {"organ": "council/providers/base_provider.py", "loc": 34, "status": "PROTOCOL_ONLY", "evidence": "type hints"},
+      {"organ": "council/providers/provider_interface.py", "loc": 14, "status": "PROTOCOL_ONLY", "evidence": "type hints"}
+    ]
+  },
+  "lanes": [
+    {
+      "lane_id": "LANE_0",
+      "title": "Freeze Current Win",
+      "objective": "Seal post-Wave5 bounded organism as H0 baseline before any expansion.",
+      "depends_on": [],
+      "contradictions_closed": [],
+      "work_packages": [
+        {
+          "wp_id": "L0_WP1_BASELINE_CHECKPOINT",
+          "intent": "Emit cryptographic baseline of all runtime, governance, and config files.",
+          "actions": [
+            {
+              "action_id": "L0_WP1_A1",
+              "action": "emit_h0_baseline_checkpoint",
+              "output": "AUDITS/kt_h0_baseline_checkpoint.json",
+              "params": {
+                "hash_targets": [
+                  "04_PROD_TEMPLE_V2/src/**/*.py",
+                  "pyproject.toml",
+                  "requirements-wave0.lock.txt",
+                  "pytest.ini",
+                  "governance/**/*.json"
+                ],
+                "include_git_commit_hash": true,
+                "schema_id": "kt.audit.h0_baseline_checkpoint.v1"
+              },
+              "fail_closed_if": ["missing_file_in_hash_set", "git_dirty_tree"]
+            }
+          ]
+        },
+        {
+          "wp_id": "L0_WP2_BASELINE_TESTS",
+          "intent": "Run full test suite and record non-regression floor.",
+          "actions": [
+            {
+              "action_id": "L0_WP2_A1",
+              "action": "run_test_suites",
+              "params": {
+                "commands": [
+                  "python -m pytest tests/ -v --tb=short"
+                ]
+              },
+              "must_produce": ["AUDITS/h0_baseline_test_results.txt"],
+              "fail_closed_if": ["any_test_failure", "missing_report"]
+            }
+          ]
+        },
+        {
+          "wp_id": "L0_WP3_FREEZE_EXECUTION_BOARD",
+          "intent": "Emit the organ status board as a governance artifact.",
+          "actions": [
+            {
+              "action_id": "L0_WP3_A1",
+              "action": "emit_execution_board",
+              "output": "governance/execution_board_h0_freeze.json",
+              "params": {
+                "organ_statuses": "from organ_status_board_h0 in this work order",
+                "schema_id": "kt.governance.execution_board.v1",
+                "additionalProperties": false
+              },
+              "fail_closed_if": ["drift_between_board_and_actual_files"]
+            }
+          ]
+        }
+      ],
+      "exit_criteria": {
+        "checkpoint_emitted": true,
+        "all_tests_pass": true,
+        "board_frozen": true,
+        "no_drift": true
+      }
+    },
+    {
+      "lane_id": "LANE_1",
+      "title": "Kill C007 — Canonical Install Model",
+      "objective": "Eliminate repo-root/package-root/import-context ambiguity permanently.",
+      "depends_on": ["LANE_0"],
+      "contradictions_closed": ["C007"],
+      "work_packages": [
+        {
+          "wp_id": "L1_WP1_FIX_PYPROJECT",
+          "intent": "Fix pyproject.toml package discovery to expose kt namespace.",
+          "actions": [
+            {
+              "action_id": "L1_WP1_A1",
+              "action": "update_pyproject_toml",
+              "params": {
+                "file": "pyproject.toml",
+                "changes": [
+                  "add [tool.setuptools.packages.find] pointing at 04_PROD_TEMPLE_V2/src/",
+                  "add [project.scripts] kt = kt.entrypoint:main"
+                ]
+              },
+              "fail_closed_if": ["packages_still_empty", "no_console_script"]
+            }
+          ]
+        },
+        {
+          "wp_id": "L1_WP2_INIT_CHAIN",
+          "intent": "Add missing __init__.py files for canonical import chain.",
+          "actions": [
+            {
+              "action_id": "L1_WP2_A1",
+              "action": "create_missing_init_files",
+              "params": {
+                "required": [
+                  "04_PROD_TEMPLE_V2/src/__init__.py",
+                  "04_PROD_TEMPLE_V2/src/core/__init__.py"
+                ]
+              },
+              "fail_closed_if": ["import_chain_broken"]
+            }
+          ]
+        },
+        {
+          "wp_id": "L1_WP3_MAIN_ENTRYPOINT",
+          "intent": "Add main() function to kt/entrypoint.py for CLI invocation.",
+          "actions": [
+            {
+              "action_id": "L1_WP3_A1",
+              "action": "implement_main_function",
+              "params": {
+                "file": "04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
+                "accepts": "CLI args (context JSON path)",
+                "invokes": "existing invoke() function"
+              },
+              "fail_closed_if": ["main_not_callable", "invoke_not_reachable"]
+            }
+          ]
+        },
+        {
+          "wp_id": "L1_WP4_INSTALL_VERIFICATION",
+          "intent": "Verify pip install works and all imports resolve.",
+          "actions": [
+            {
+              "action_id": "L1_WP4_A1",
+              "action": "run_install_verification",
+              "params": {
+                "commands": [
+                  "pip install -e '.[test]'",
+                  "python -c 'from kt.entrypoint import invoke; print(\"IMPORT OK\")'",
+                  "python -m pytest tests/ -v --tb=short"
+                ]
+              },
+              "must_produce": ["AUDITS/h0_install_verification.txt", "AUDITS/h0_post_install_test_results.txt"],
+              "fail_closed_if": ["install_failure", "import_failure", "any_test_failure"]
+            }
+          ]
+        },
+        {
+          "wp_id": "L1_WP5_CI_GATE",
+          "intent": "Add canonical install verification to CI pipeline.",
+          "actions": [
+            {
+              "action_id": "L1_WP5_A1",
+              "action": "add_ci_install_gate",
+              "params": {
+                "workflow": ".github/workflows/ci_p0_fail_closed_main.yml",
+                "job_name": "verify-canonical-install",
+                "steps": ["pip install -e '.[test]'", "python -c 'from kt.entrypoint import invoke'"]
+              },
+              "fail_closed_if": ["gate_not_added", "gate_not_fail_closed"]
+            }
+          ]
+        },
+        {
+          "wp_id": "L1_WP6_PARITY_TEST",
+          "intent": "Prove import truth guard works in both repo-root and installed-package mode.",
+          "actions": [
+            {
+              "action_id": "L1_WP6_A1",
+              "action": "create_parity_test",
+              "output": "tests/test_canonical_install_parity.py",
+              "params": {
+                "tests": ["repo_root_import_guard_works", "installed_package_import_guard_works", "organ_matrix_identical_both_modes"]
+              },
+              "fail_closed_if": ["test_missing", "test_failure"]
+            }
+          ]
+        }
+      ],
+      "exit_criteria": {
+        "pip_install_succeeds": true,
+        "all_imports_resolve": true,
+        "all_existing_tests_pass": true,
+        "import_truth_guard_parity": true,
+        "ci_gate_enforced": true
+      },
+      "methods_applied": [
+        "editable_install_strict_mode",
+        "reproducible_builds_locked_deps",
+        "import_smoke_test_as_ci_gate",
+        "namespace_package_enforcement"
+      ]
+    },
+    {
+      "lane_id": "LANE_2",
+      "title": "Prove Live Provider Execution — Close C016",
+      "objective": "Move from auth-bounded fail-closed to proven current-head live inference.",
+      "depends_on": ["LANE_0"],
+      "contradictions_closed": ["C016"],
+      "work_packages": [
+        {
+          "wp_id": "L2_WP1_LIVE_PROOF_HARNESS",
+          "intent": "Create and run live inference proof against active providers.",
+          "actions": [
+            {
+              "action_id": "L2_WP1_A1",
+              "action": "create_live_inference_proof",
+              "output": "tools/live/live_inference_proof.py",
+              "params": {
+                "providers": ["openai", "openrouter"],
+                "runs_per_provider": 3,
+                "must_record": ["provider_receipt", "tls_cert_hash", "response_hash", "timing_ms"],
+                "must_emit": "AUDITS/kt_live_inference_proof_receipt.json"
+              },
+              "fail_closed_if": ["zero_successful_calls", "receipt_chain_broken", "tls_cert_mismatch"]
+            }
+          ]
+        },
+        {
+          "wp_id": "L2_WP2_RESILIENCE_FAULT_TESTS",
+          "intent": "Prove circuit breaker, rate limiter, and backoff under fault injection.",
+          "actions": [
+            {
+              "action_id": "L2_WP2_A1",
+              "action": "create_fault_tests",
+              "output": "tests/test_provider_resilience_faults.py",
+              "params": {
+                "fault_scenarios": [
+                  "auth_expiry_401",
+                  "quota_exhaustion_429",
+                  "network_timeout",
+                  "provider_drift_unexpected_schema",
+                  "consecutive_failures_circuit_open"
+                ]
+              },
+              "fail_closed_if": ["test_missing", "test_failure", "circuit_breaker_not_triggered"]
+            }
+          ]
+        },
+        {
+          "wp_id": "L2_WP3_EVAL_HARNESS_BINDING",
+          "intent": "Wire live receipts into eval harness for optional live evaluation.",
+          "actions": [
+            {
+              "action_id": "L2_WP3_A1",
+              "action": "bind_live_receipts_to_eval",
+              "params": {
+                "eval_files": ["tools/eval/eval_harness.py", "tools/eval/eval_plus_runner.py"],
+                "binding": "optional live provider mode with receipt binding to eval results"
+              },
+              "fail_closed_if": ["receipt_not_bound", "eval_regression"]
+            }
+          ]
+        },
+        {
+          "wp_id": "L2_WP4_MULTI_RUN_EVIDENCE",
+          "intent": "Execute and store repeated live inference evidence.",
+          "actions": [
+            {
+              "action_id": "L2_WP4_A1",
+              "action": "run_live_inference",
+              "params": {
+                "commands": [
+                  "python -m tools.live.live_inference_proof --provider openai --runs 3",
+                  "python -m tools.live.live_inference_proof --provider openrouter --runs 3"
+                ],
+                "output_dir": "AUDITS/live_inference/"
+              },
+              "fail_closed_if": ["zero_providers_succeed", "missing_evidence"]
+            }
+          ]
+        }
+      ],
+      "exit_criteria": {
+        "minimum_2_providers_succeed_repeatedly": true,
+        "fault_tests_all_pass": true,
+        "receipt_chains_validate": true,
+        "evidence_in_audits": true
+      },
+      "methods_applied": [
+        "circuit_breaker_state_machine_testing",
+        "chaos_engineering_provider_integration",
+        "receipt_chain_validation",
+        "canary_deployment_pattern",
+        "provider_health_scoring"
+      ]
+    },
+    {
+      "lane_id": "LANE_3",
+      "title": "Runtime Organ Ignition",
+      "objective": "Force every stub organ into earned reality or explicit demotion.",
+      "depends_on": ["LANE_0", "LANE_2"],
+      "contradictions_closed": [],
+      "work_packages": [
+        {
+          "wp_id": "L3_WP1_COGNITIVE_REWRITE",
+          "intent": "Replace hash-derived scoring with real provider-backed cognitive execution.",
+          "actions": [
+            {
+              "action_id": "L3_WP1_A1",
+              "action": "rewrite_cognitive_engine_execute",
+              "params": {
+                "file": "cognition/cognitive_engine.py",
+                "live_mode": "invoke execute_council_request() for real scoring",
+                "dry_run_mode": "keep hash-derived but label STEP_STATUS_DRY_RUN",
+                "failure_mode": "STEP_STATUS_DEGRADED with score=0 and failure artifact"
+              },
+              "fail_closed_if": ["fake_OK_status_on_dry_run", "fake_OK_status_on_failure"]
+            },
+            {
+              "action_id": "L3_WP1_A2",
+              "action": "rewrite_step_planner",
+              "params": {
+                "file": "cognition/planners/step_planner.py",
+                "approach": "rule-based planner mapping schema_id patterns to step sequences",
+                "constraints": ["max 16 steps", "max 4 branching depth", "deterministic for same inputs"]
+              },
+              "fail_closed_if": ["non_deterministic_planning", "exceeds_constraints"]
+            },
+            {
+              "action_id": "L3_WP1_A3",
+              "action": "update_cognitive_schemas",
+              "params": {
+                "add_statuses": ["STEP_STATUS_DRY_RUN", "STEP_STATUS_DEGRADED"],
+                "add_fields": ["provider_receipt_hash on CognitiveStepResultSchema"]
+              }
+            },
+            {
+              "action_id": "L3_WP1_A4",
+              "action": "create_tests",
+              "outputs": [
+                "tests/test_cognitive_engine_live.py",
+                "tests/test_cognitive_engine_dry_run.py",
+                "tests/test_step_planner_determinism.py"
+              ]
+            }
+          ]
+        },
+        {
+          "wp_id": "L3_WP2_PARADOX_UPGRADE",
+          "intent": "Implement real contradiction detection and bounded resolution.",
+          "actions": [
+            {
+              "action_id": "L3_WP2_A1",
+              "action": "implement_contradiction_detection",
+              "params": {
+                "file": "paradox/paradox_engine.py",
+                "detection_types": {
+                  "self_reference": "circular dependency detection in artifact refs",
+                  "contradiction": "conflicting claims detection in assertion set",
+                  "infinite_loop": "repeated schema_id pattern detection in trace"
+                }
+              }
+            },
+            {
+              "action_id": "L3_WP2_A2",
+              "action": "implement_bounded_resolution",
+              "params": {
+                "strategies": ["QUARANTINE", "DEMOTE", "ESCALATE"],
+                "never": "auto-resolve with fabricated evidence"
+              }
+            },
+            {
+              "action_id": "L3_WP2_A3",
+              "action": "add_schemas_and_tests",
+              "params": {
+                "new_schema": "ParadoxResolutionSchema",
+                "tests": [
+                  "tests/test_paradox_engine_contradiction.py",
+                  "tests/test_paradox_engine_self_reference.py",
+                  "tests/test_paradox_engine_infinite_loop.py"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L3_WP3_TEMPORAL_UPGRADE",
+          "intent": "Implement real replay of bounded step sequences.",
+          "actions": [
+            {
+              "action_id": "L3_WP3_A1",
+              "action": "implement_replay_logic",
+              "params": {
+                "file": "temporal/temporal_engine.py",
+                "logic": "load state vault chain for fork context, iterate entries by trace_id, validate hashes, increment steps_executed",
+                "failure_mode": "REPLAY_CORRUPTED on hash failure"
+              }
+            },
+            {
+              "action_id": "L3_WP3_A2",
+              "action": "add_replay_modes",
+              "params": {
+                "new_modes": ["VERIFY_ONLY", "BOUNDED_REPLAY"],
+                "keep": "DRY_RUN as default"
+              }
+            },
+            {
+              "action_id": "L3_WP3_A3",
+              "action": "create_tests",
+              "outputs": [
+                "tests/test_temporal_replay_chain.py",
+                "tests/test_temporal_replay_corruption.py"
+              ]
+            }
+          ]
+        },
+        {
+          "wp_id": "L3_WP4_MULTIVERSE_UPGRADE",
+          "intent": "Replace hardcoded coherence with real pairwise variance computation.",
+          "actions": [
+            {
+              "action_id": "L3_WP4_A1",
+              "action": "implement_coherence_algorithm",
+              "params": {
+                "file": "multiverse/multiverse_engine.py",
+                "algorithm": "coherence = 1.0 - normalized_pairwise_metric_variance",
+                "degenerate_case": "single candidate = 1.0 (honest)",
+                "math": "use existing micros-scale precision"
+              }
+            },
+            {
+              "action_id": "L3_WP4_A2",
+              "action": "create_tests",
+              "outputs": ["tests/test_multiverse_coherence_real.py"],
+              "params": {
+                "cases": ["identical_candidates_1.0", "maximally_divergent_near_0.0", "single_candidate_1.0", "edge_cases"]
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L3_WP5_COUNCIL_PLAN_EXECUTE",
+          "intent": "Unlock plan/execute path for LIVE_HASHED mode.",
+          "actions": [
+            {
+              "action_id": "L3_WP5_A1",
+              "action": "implement_plan_for_request_live",
+              "params": {
+                "file": "council/council_router.py",
+                "logic": "query provider_registry for available live providers, select by domain tags from router_policy_registry.json, construct plan with budget allocations and timeouts",
+                "output_status": "PLAN_STATUS_READY"
+              }
+            },
+            {
+              "action_id": "L3_WP5_A2",
+              "action": "implement_execute_plan_live",
+              "params": {
+                "logic": "execute through existing execute_council_request(), bind result to plan hash, return actual output hashes",
+                "failure_mode": "RESULT_STATUS_DEGRADED with failure artifact"
+              }
+            },
+            {
+              "action_id": "L3_WP5_A3",
+              "action": "update_council_schemas",
+              "params": {
+                "add_statuses": ["PLAN_STATUS_READY", "RESULT_STATUS_DEGRADED"],
+                "add_fields": ["provider_receipt_hash"]
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L3_WP6_BUDGET_METERS",
+          "intent": "Wire meters to actual organ consumption and add budget violation governance events.",
+          "actions": [
+            {
+              "action_id": "L3_WP6_A1",
+              "action": "wire_meters_to_organ_outputs",
+              "params": {
+                "token_meter": "consume from provider receipt token count",
+                "step_meter": "consume from cognitive result step count",
+                "duration_fuse": "consume from wall clock elapsed"
+              }
+            },
+            {
+              "action_id": "L3_WP6_A2",
+              "action": "add_budget_violation_governance_event",
+              "params": {
+                "event_type": "GOV_BUDGET_EXCEEDED",
+                "behavior": "halt execution fail-closed"
+              }
+            }
+          ]
+        }
+      ],
+      "exit_criteria": {
+        "no_stub_bounded_organ_in_ambiguous_state": true,
+        "every_organ_either_live_bounded_or_archive_quarantined": true,
+        "cognitive_uses_real_provider_or_honest_dry_run_label": true,
+        "paradox_detects_real_contradictions": true,
+        "temporal_replays_real_steps": true,
+        "multiverse_computes_real_coherence": true,
+        "council_plan_execute_works_for_live_hashed": true,
+        "budget_meters_wired_to_real_consumption": true,
+        "all_new_tests_pass": true,
+        "all_existing_tests_pass": true
+      },
+      "methods_applied": [
+        "provider_backed_cognitive_scoring",
+        "rule_based_schema_driven_planning",
+        "assertion_graph_contradiction_detection",
+        "hash_chain_replay_verification",
+        "pairwise_variance_coherence",
+        "graceful_degradation_honest_labeling",
+        "fail_closed_budget_enforcement"
+      ]
+    },
+    {
+      "lane_id": "LANE_4",
+      "title": "Upgrade Externality — Close C006",
+      "objective": "Move from same-host packaged replay to real outsider-verifiable proof.",
+      "depends_on": ["LANE_1"],
+      "contradictions_closed": ["C006"],
+      "work_packages": [
+        {
+          "wp_id": "L4_WP1_DETACHED_VERIFIER",
+          "intent": "Build single-file verifier with zero KT internal dependencies.",
+          "actions": [
+            {
+              "action_id": "L4_WP1_A1",
+              "action": "create_detached_verifier",
+              "output": "tools/verification/detached_verifier.py",
+              "params": {
+                "dependencies": ["hashlib (stdlib)", "json (stdlib)", "subprocess (for cosign)"],
+                "zero_kt_imports": true,
+                "zero_env_var_dependence": true,
+                "validates": ["sha256_hashes", "parent_hash_chains", "schema_version_hashes", "cosign_signatures"]
+              },
+              "fail_closed_if": ["any_kt_import", "any_env_var_read", "verification_failure_unreported"]
+            }
+          ]
+        },
+        {
+          "wp_id": "L4_WP2_SLSA_PROVENANCE",
+          "intent": "Generate SLSA v1.0 provenance for critical artifacts.",
+          "actions": [
+            {
+              "action_id": "L4_WP2_A1",
+              "action": "create_slsa_generator",
+              "output": "tools/verification/slsa_provenance_generator.py",
+              "params": {
+                "format": "SLSA v1.0",
+                "ci_integration": "ci_p0_fail_closed_main.yml"
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L4_WP3_SBOM",
+          "intent": "Generate CycloneDX SBOM from dependency manifest.",
+          "actions": [
+            {
+              "action_id": "L4_WP3_A1",
+              "action": "create_sbom_generator",
+              "output": "tools/verification/sbom_generator.py",
+              "params": {
+                "inputs": ["pyproject.toml", "requirements-wave0.lock.txt"],
+                "format": "CycloneDX JSON"
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L4_WP4_INTOTO",
+          "intent": "Generate in-toto step attestations for critical CI chain.",
+          "actions": [
+            {
+              "action_id": "L4_WP4_A1",
+              "action": "create_intoto_attestation",
+              "output": "tools/verification/intoto_attestation.py",
+              "params": {
+                "steps": [
+                  {"step": "source_checkout", "materials": "git_commit_hash"},
+                  {"step": "dependency_install", "materials": "lockfile", "products": "installed_packages"},
+                  {"step": "test_execution", "materials": "installed_packages", "products": "test_results"},
+                  {"step": "artifact_generation", "materials": "test_results", "products": "evidence_bundle"}
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L4_WP5_REKOR_VERIFICATION",
+          "intent": "Verify Rekor inclusion proofs for Cosign signatures.",
+          "actions": [
+            {
+              "action_id": "L4_WP5_A1",
+              "action": "create_rekor_verifier",
+              "output": "tools/verification/rekor_verifier.py",
+              "params": {
+                "input": "cosign_signature_from_truth_barrier",
+                "output": "rekor_log_index_and_timestamp"
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L4_WP6_CROSS_HOST_REPLAY",
+          "intent": "Prove deterministic replay on a fresh machine.",
+          "actions": [
+            {
+              "action_id": "L4_WP6_A1",
+              "action": "create_cross_host_replay",
+              "output": "tools/verification/cross_host_replay.py",
+              "params": {
+                "steps": ["pip install from repo", "run deterministic test suite", "compare outputs against H0 baseline", "emit cross-host parity receipt"]
+              },
+              "fail_closed_if": ["output_mismatch", "install_failure"]
+            }
+          ]
+        },
+        {
+          "wp_id": "L4_WP7_TUF_METADATA",
+          "intent": "Generate TUF metadata for verifier and artifact distribution.",
+          "actions": [
+            {
+              "action_id": "L4_WP7_A1",
+              "action": "create_tuf_metadata_generator",
+              "output": "tools/verification/tuf_metadata_generator.py",
+              "params": {
+                "metadata_files": ["root.json", "targets.json", "snapshot.json", "timestamp.json"]
+              }
+            }
+          ]
+        }
+      ],
+      "exit_criteria": {
+        "detached_verifier_works_on_fresh_machine": true,
+        "cross_host_replay_passes": true,
+        "slsa_provenance_generated": true,
+        "sbom_generated": true,
+        "intoto_attestations_generated": true,
+        "rekor_verification_functional": true,
+        "tuf_metadata_generated": true,
+        "externality_class_upgraded_to_E2": true
+      },
+      "methods_applied": [
+        "detached_verification",
+        "slsa_v1_provenance",
+        "cyclonedx_sbom",
+        "intoto_attestation_framework",
+        "rekor_transparency_log_verification",
+        "tuf_metadata",
+        "cross_host_deterministic_replay",
+        "self_contained_evidence_bundles"
+      ]
+    },
+    {
+      "lane_id": "LANE_5",
+      "title": "Growth Stack Convergence",
+      "objective": "Fuse growth tooling into lawful runtime truth with receipt-chained lifecycle.",
+      "depends_on": ["LANE_3"],
+      "contradictions_closed": [],
+      "work_packages": [
+        {
+          "wp_id": "L5_WP1_ADAPTER_LIFECYCLE_LAW",
+          "intent": "Define complete adapter lifecycle with receipt chain.",
+          "actions": [
+            {
+              "action_id": "L5_WP1_A1",
+              "action": "create_lifecycle_law",
+              "output": "governance/adapter_lifecycle_law.json",
+              "params": {
+                "lifecycle": ["REGISTERED", "TRAINING", "TRAINED", "EVAL", "EVALUATED", "TOURNAMENT", "PROMOTED", "RUNTIME_CANDIDATE", "LIVE", "RETIRED"],
+                "each_transition_requires": "receipt with previous state hash"
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L5_WP2_PROMOTION_ENGINE",
+          "intent": "Build automated promotion gate with evidence requirements.",
+          "actions": [
+            {
+              "action_id": "L5_WP2_A1",
+              "action": "create_promotion_engine",
+              "output": "tools/growth/promotion_engine.py",
+              "params": {
+                "criteria": ["eval_pass_rate_exceeds_baseline", "tournament_ranking_top_N", "drift_guard_passes", "no_governance_vetoes"]
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L5_WP3_DEMOTION_ENGINE",
+          "intent": "Build automated demotion with TTL and failure tracking.",
+          "actions": [
+            {
+              "action_id": "L5_WP3_A1",
+              "action": "create_demotion_engine",
+              "output": "tools/growth/demotion_engine.py",
+              "params": {
+                "triggers": ["3_consecutive_eval_failures", "drift_threshold_exceeded", "governance_crisis_event", "ttl_expired"]
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L5_WP4_TRAINING_RECEIPT_BINDING",
+          "intent": "Bind training outputs to promotion pipeline with provenance.",
+          "actions": [
+            {
+              "action_id": "L5_WP4_A1",
+              "action": "add_training_receipt_emission",
+              "params": {
+                "file": "tools/training/phase2_train.py",
+                "receipt_fields": ["model_hash", "training_data_manifest_hash", "hyperparameters", "final_loss", "governance_compliance_attestation"]
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L5_WP5_TOURNAMENT_RESULT_BINDING",
+          "intent": "Bind tournament results to promotion pipeline.",
+          "actions": [
+            {
+              "action_id": "L5_WP5_A1",
+              "action": "add_tournament_promotion_binding",
+              "params": {
+                "file": "tools/tournament/tournament_runner.py",
+                "result_fields": ["participant_hashes", "win_loss_draw_matrix", "dominance_rankings", "confidence_intervals"]
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L5_WP6_ROLLBACK_LAW",
+          "intent": "Define rollback conditions and governance events.",
+          "actions": [
+            {
+              "action_id": "L5_WP6_A1",
+              "action": "create_rollback_law",
+              "output": "governance/rollback_law.json",
+              "params": {
+                "conditions": ["governance_crisis_involving_adapter", "eval_regression_below_baseline", "manual_operator_rollback_with_attestation"]
+              }
+            }
+          ]
+        }
+      ],
+      "exit_criteria": {
+        "complete_adapter_lifecycle_with_receipts": true,
+        "promotion_engine_functional": true,
+        "demotion_engine_functional": true,
+        "training_receipts_bound": true,
+        "tournament_results_bound": true,
+        "rollback_tested_and_proven": true
+      },
+      "methods_applied": [
+        "automated_promotion_gates",
+        "automated_demotion_with_ttl",
+        "receipt_chained_lifecycle_tracking",
+        "rollback_law_with_governance_events",
+        "training_provenance",
+        "statistical_confidence_in_tournaments"
+      ]
+    },
+    {
+      "lane_id": "LANE_6",
+      "title": "Router Ratification — Close C005",
+      "objective": "Close router ambition gap in required doctrinal order.",
+      "depends_on": ["LANE_3", "LANE_5"],
+      "contradictions_closed": ["C005"],
+      "work_packages": [
+        {
+          "wp_id": "L6_WP1_STATIC_BASELINE",
+          "intent": "Formalize keyword router as static baseline with scorecard.",
+          "actions": [
+            {
+              "action_id": "L6_WP1_A1",
+              "action": "emit_static_router_baseline_scorecard",
+              "output": "AUDITS/router_static_baseline_scorecard.json",
+              "params": {
+                "metrics": ["routing_accuracy", "provider_success_rate_per_route", "avg_latency_per_route", "failure_rate_per_route"]
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L6_WP2_SHADOW_EVALUATION",
+          "intent": "Run shadow router alongside static for comparison data.",
+          "actions": [
+            {
+              "action_id": "L6_WP2_A1",
+              "action": "create_shadow_router",
+              "output": "tools/router/shadow_router.py",
+              "params": {
+                "behavior": "make routing decision in parallel, compare to static, record agreement/disagreement, DO NOT use for actual execution"
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L6_WP3_BEST_STATIC_COMPARISON",
+          "intent": "Prove routing adds value over always picking best single adapter.",
+          "actions": [
+            {
+              "action_id": "L6_WP3_A1",
+              "action": "run_best_static_comparison",
+              "params": {
+                "metrics": ["quality_delta", "cost_delta", "latency_delta", "failure_rate_delta"],
+                "decision": "if best-static wins, routing adds no value and should not be promoted"
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L6_WP4_LEARNED_ROUTER",
+          "intent": "Only if 6.1-6.3 prove routing adds value: implement embedding-based routing.",
+          "precondition": "L6_WP3 proves routing_adds_value=true",
+          "actions": [
+            {
+              "action_id": "L6_WP4_A1",
+              "action": "create_learned_router",
+              "output": "tools/router/learned_router.py",
+              "params": {
+                "approach": "embedding-based domain classification",
+                "training_data": "shadow evaluation data",
+                "requires": "governance amendment to router_policy_registry.json before activation",
+                "monitoring": "drift guard for routing distribution shifts"
+              },
+              "fail_closed_if": ["no_governance_amendment", "no_shadow_data"]
+            }
+          ]
+        },
+        {
+          "wp_id": "L6_WP5_MULTI_LOBE",
+          "intent": "Only after learned router proven: enable multi-provider deliberation.",
+          "precondition": "L6_WP4 proves learned_router_beats_static=true",
+          "actions": [
+            {
+              "action_id": "L6_WP5_A1",
+              "action": "enable_multi_provider_deliberation",
+              "params": {
+                "uses": "existing execute_fanout_request()",
+                "response_selection": "voting, scoring, or tournament",
+                "binding": "promotion engine from LANE_5"
+              }
+            }
+          ]
+        }
+      ],
+      "exit_criteria": {
+        "static_baseline_scorecard_exists": true,
+        "shadow_evaluation_data_exists": true,
+        "best_static_comparison_exists": true,
+        "learned_router_promoted_only_with_evidence": true,
+        "no_multi_lobe_without_router_proof": true
+      },
+      "methods_applied": [
+        "shadow_evaluation",
+        "best_static_adapter_mandatory_control",
+        "learned_routing_with_embeddings",
+        "governance_amendment_gate_on_router",
+        "ab_testing_for_routing",
+        "distribution_shift_detection"
+      ]
+    },
+    {
+      "lane_id": "LANE_7",
+      "title": "External Challenge & Benchmark",
+      "objective": "Generate real comparative proof in KT's actual category.",
+      "depends_on": ["LANE_3", "LANE_6"],
+      "contradictions_closed": [],
+      "work_packages": [
+        {
+          "wp_id": "L7_WP1_STANDARD_BENCHMARKS",
+          "intent": "Run industry-standard LM benchmarks through governed execution.",
+          "actions": [
+            {
+              "action_id": "L7_WP1_A1",
+              "action": "create_standard_benchmark_runner",
+              "output": "tools/eval/standard_benchmarks.py",
+              "params": {
+                "benchmarks": ["TruthfulQA", "MMLU", "GSM8K", "HumanEval", "IFEval"],
+                "per_benchmark_metrics": ["raw_score_governed", "raw_score_ungoverned", "governance_overhead_pct", "cost_per_eval_usd", "governance_rejection_rate"]
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L7_WP2_COMPARATOR_BASELINES",
+          "intent": "Run same benchmarks against comparator configurations.",
+          "actions": [
+            {
+              "action_id": "L7_WP2_A1",
+              "action": "run_comparator_baselines",
+              "params": {
+                "configurations": ["monolith_only", "best_static_adapter", "routed_multi_adapter", "governance_only"]
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L7_WP3_KT_SPECIFIC_BENCHMARKS",
+          "intent": "Benchmark what KT uniquely offers.",
+          "actions": [
+            {
+              "action_id": "L7_WP3_A1",
+              "action": "create_kt_specific_benchmarks",
+              "output": "tools/eval/kt_specific_benchmarks.py",
+              "params": {
+                "benchmarks": [
+                  {"name": "fail_closed_discipline", "method": "100 adversarial prompts, measure rejection vs false positive"},
+                  {"name": "receipt_chain_integrity", "method": "100 requests, verify 100% receipt completeness"},
+                  {"name": "governance_enforcement", "method": "50 governance violations, measure 100% catch rate"},
+                  {"name": "provider_failover", "method": "kill primary mid-request, measure recovery + receipt integrity"},
+                  {"name": "replay_consistency", "method": "same request 10x, measure output hash consistency"},
+                  {"name": "budget_enforcement", "method": "exceed all 5 ceilings, verify fail-closed"},
+                  {"name": "import_isolation", "method": "20 illegal imports, verify 100% block rate"}
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L7_WP4_COMPARATIVE_SCORECARDS",
+          "intent": "Generate machine-readable comparative evidence.",
+          "actions": [
+            {
+              "action_id": "L7_WP4_A1",
+              "action": "emit_comparative_scorecards",
+              "output": "AUDITS/comparative_benchmark_scorecard.json",
+              "params": {
+                "failed_rows_preserved": true,
+                "cost_metrics_included": true,
+                "no_laundering": true
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L7_WP5_EXTERNAL_CHALLENGE",
+          "intent": "Accept and process external adversarial inputs.",
+          "actions": [
+            {
+              "action_id": "L7_WP5_A1",
+              "action": "create_external_challenge_runner",
+              "output": "tools/eval/external_challenge.py",
+              "params": {
+                "input": "designated challenge directory",
+                "pipeline": "full governed execution",
+                "output": "all receipts, failures, governance events published"
+              }
+            }
+          ]
+        }
+      ],
+      "exit_criteria": {
+        "standard_benchmark_results_exist": true,
+        "comparative_scorecards_exist": true,
+        "kt_specific_100pct_on_governance_receipt_import": true,
+        "failed_rows_preserved": true,
+        "external_challenge_lane_functional": true
+      },
+      "methods_applied": [
+        "standard_lm_benchmarks_eleuther",
+        "governance_overhead_measurement",
+        "kt_specific_capability_benchmarks",
+        "red_teaming_adversarial_robustness",
+        "comparative_scorecards_with_cost",
+        "external_challenge_acceptance",
+        "replay_consistency_measurement"
+      ]
+    },
+    {
+      "lane_id": "LANE_8",
+      "title": "Narrow Product Wedge",
+      "objective": "Build verifier/assurance product without pretending whole civilization is product-ready.",
+      "depends_on": ["LANE_4", "LANE_7"],
+      "contradictions_closed": [],
+      "work_packages": [
+        {
+          "wp_id": "L8_WP1_API_SURFACE",
+          "intent": "Create FastAPI service with OpenAPI auto-generation.",
+          "actions": [
+            {
+              "action_id": "L8_WP1_A1",
+              "action": "create_api",
+              "output": "tools/service/api.py",
+              "params": {
+                "endpoints": [
+                  {"method": "POST", "path": "/v1/invoke", "purpose": "governed execution"},
+                  {"method": "POST", "path": "/v1/verify", "purpose": "detached verification"},
+                  {"method": "GET", "path": "/v1/health", "purpose": "operational health"},
+                  {"method": "GET", "path": "/v1/status", "purpose": "organ status board"}
+                ],
+                "security": ["api_key_auth", "rate_limiting_per_client"],
+                "docs": "openapi_auto_generated"
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L8_WP2_DOCKERFILE",
+          "intent": "Create production multi-stage Docker image.",
+          "actions": [
+            {
+              "action_id": "L8_WP2_A1",
+              "action": "create_dockerfile",
+              "output": "Dockerfile",
+              "params": {
+                "stages": ["build (install deps, run tests)", "runtime (minimal, non-root, read-only fs)"],
+                "base_image_hash_verified": true,
+                "healthcheck": "/v1/health"
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L8_WP3_DOCKER_COMPOSE",
+          "intent": "Create local development composition.",
+          "actions": [
+            {
+              "action_id": "L8_WP3_A1",
+              "action": "create_docker_compose",
+              "output": "docker-compose.yml",
+              "params": {
+                "services": ["kt-api", "kt-verify"]
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L8_WP4_ERROR_CATALOG",
+          "intent": "Document every error code with resolution guidance.",
+          "actions": [
+            {
+              "action_id": "L8_WP4_A1",
+              "action": "create_error_catalog",
+              "output": "docs/operator/ERROR_CATALOG.md"
+            }
+          ]
+        },
+        {
+          "wp_id": "L8_WP5_DEPLOYMENT_PROFILES",
+          "intent": "Define environment-specific configurations.",
+          "actions": [
+            {
+              "action_id": "L8_WP5_A1",
+              "action": "create_deployment_profiles",
+              "output": "tools/service/deployment_profiles.json",
+              "params": {
+                "profiles": ["local", "staging", "production"]
+              }
+            }
+          ]
+        },
+        {
+          "wp_id": "L8_WP6_VERIFIER_KIT",
+          "intent": "Package standalone verifier for external distribution.",
+          "actions": [
+            {
+              "action_id": "L8_WP6_A1",
+              "action": "create_verifier_kit",
+              "output": "exports/verifier_kit/",
+              "params": {
+                "contents": ["detached_verifier.py", "sbom", "tuf_metadata", "rekor_verifier"]
+              }
+            }
+          ]
+        }
+      ],
+      "exit_criteria": {
+        "api_serves_requests": true,
+        "docker_image_builds_and_runs": true,
+        "health_check_passes": true,
+        "verifier_kit_works_standalone": true,
+        "error_catalog_covers_all_codes": true
+      },
+      "methods_applied": [
+        "fastapi_with_openapi",
+        "multi_stage_docker_builds",
+        "non_root_container_execution",
+        "health_check_endpoints",
+        "read_only_filesystem",
+        "deployment_profiles",
+        "error_catalog"
+      ]
+    },
+    {
+      "lane_id": "LANE_9",
+      "title": "Standards & Law Alignment",
+      "objective": "Become legible to regulators, auditors, and enterprise governance.",
+      "depends_on": ["LANE_4", "LANE_7"],
+      "contradictions_closed": [],
+      "work_packages": [
+        {
+          "wp_id": "L9_WP1_NIST_AI_RMF",
+          "intent": "Map KT controls to NIST AI Risk Management Framework.",
+          "actions": [
+            {
+              "action_id": "L9_WP1_A1",
+              "action": "create_compliance_mapping",
+              "output": "docs/compliance/nist_ai_rmf_mapping.json",
+              "params": {"categories": ["Govern", "Map", "Measure", "Manage"]}
+            }
+          ]
+        },
+        {
+          "wp_id": "L9_WP2_NIST_SSDF",
+          "intent": "Map KT to NIST SP 800-218/218A SSDF.",
+          "actions": [
+            {
+              "action_id": "L9_WP2_A1",
+              "action": "create_compliance_mapping",
+              "output": "docs/compliance/nist_ssdf_mapping.json",
+              "params": {"tasks": ["PO", "PS", "PW", "RV"]}
+            }
+          ]
+        },
+        {
+          "wp_id": "L9_WP3_ISO_42001",
+          "intent": "Map KT governance to ISO/IEC 42001 AIMS.",
+          "actions": [
+            {
+              "action_id": "L9_WP3_A1",
+              "action": "create_compliance_mapping",
+              "output": "docs/compliance/iso42001_mapping.json",
+              "params": {"clauses": ["leadership", "planning", "support", "operation", "performance_evaluation", "improvement"]}
+            }
+          ]
+        },
+        {
+          "wp_id": "L9_WP4_EU_AI_ACT",
+          "intent": "Map KT controls to EU AI Act requirements.",
+          "actions": [
+            {
+              "action_id": "L9_WP4_A1",
+              "action": "create_compliance_mapping",
+              "output": "docs/compliance/eu_ai_act_mapping.json",
+              "params": {"articles": ["Article 9-15 high-risk", "GPAI obligations"]}
+            }
+          ]
+        },
+        {
+          "wp_id": "L9_WP5_EXTERNAL_AUDIT_PACKET",
+          "intent": "Create redacted evidence bundle for external auditors.",
+          "actions": [
+            {
+              "action_id": "L9_WP5_A1",
+              "action": "create_audit_packet",
+              "output": "exports/audit_packet/",
+              "params": {
+                "includes": ["governance_evidence", "test_results", "benchmark_scorecards", "verification_receipts", "sbom", "slsa_provenance", "intoto_attestations"],
+                "excludes": ["api_keys", "secrets", "internal_business_logic"]
+              }
+            }
+          ]
+        }
+      ],
+      "exit_criteria": {
+        "nist_ai_rmf_mapping_complete": true,
+        "nist_ssdf_mapping_complete": true,
+        "iso42001_mapping_complete": true,
+        "eu_ai_act_mapping_complete": true,
+        "external_audit_packet_assembled": true
+      }
+    }
+  ],
+  "execution_dag": {
+    "parallel_group_1": {
+      "after": "LANE_0",
+      "lanes": ["LANE_1", "LANE_2"],
+      "note": "Independent — install model and provider proof run in parallel"
+    },
+    "parallel_group_2": {
+      "after": "LANE_0",
+      "lanes": ["LANE_3.WP2 (paradox)", "LANE_3.WP3 (temporal)", "LANE_3.WP4 (multiverse)", "LANE_3.WP6 (meters)"],
+      "note": "Independent organ upgrades not requiring live providers"
+    },
+    "sequential_after_lane_2": {
+      "after": "LANE_2",
+      "lanes": ["LANE_3.WP1 (cognitive)", "LANE_3.WP5 (council)"],
+      "note": "Require live provider proof before provider-backed execution"
+    },
+    "sequential_chain": ["LANE_5", "LANE_6", "LANE_7"],
+    "final_parallel": {
+      "after": "LANE_7",
+      "lanes": ["LANE_8", "LANE_9"],
+      "note": "Product wedge and standards mapping run in parallel after benchmarks"
+    },
+    "critical_path": "LANE_0 → LANE_2 → LANE_3(cognitive+council) → LANE_5 → LANE_6 → LANE_7 → LANE_8"
+  },
+  "methods_summary": {
+    "total": 50,
+    "by_category": {
+      "packaging": ["editable_install_strict_mode", "namespace_package_enforcement"],
+      "supply_chain": ["reproducible_builds_locked_deps", "slsa_v1_provenance", "cyclonedx_sbom", "intoto_attestation_framework"],
+      "ci": ["import_smoke_test_as_ci_gate"],
+      "resilience": ["circuit_breaker_state_machine_testing", "chaos_engineering_provider_integration"],
+      "trust": ["receipt_chain_validation", "detached_verification", "rekor_transparency_log_verification", "self_contained_evidence_bundles"],
+      "deployment": ["canary_deployment_pattern", "tuf_metadata"],
+      "observability": ["provider_health_scoring"],
+      "runtime": ["provider_backed_cognitive_scoring", "rule_based_schema_driven_planning", "assertion_graph_contradiction_detection", "hash_chain_replay_verification", "pairwise_variance_coherence", "graceful_degradation_honest_labeling", "fail_closed_budget_enforcement"],
+      "reproducibility": ["cross_host_deterministic_replay"],
+      "mlops": ["automated_promotion_gates", "automated_demotion_with_ttl", "receipt_chained_lifecycle_tracking"],
+      "safety": ["rollback_law_with_governance_events"],
+      "ml": ["training_provenance", "statistical_confidence_in_tournaments"],
+      "router": ["shadow_evaluation", "best_static_adapter_mandatory_control", "learned_routing_with_embeddings", "governance_amendment_gate_on_router", "ab_testing_for_routing", "distribution_shift_detection"],
+      "benchmarking": ["standard_lm_benchmarks_eleuther", "governance_overhead_measurement", "kt_specific_capability_benchmarks", "comparative_scorecards_with_cost", "replay_consistency_measurement"],
+      "security": ["red_teaming_adversarial_robustness", "non_root_container_execution", "read_only_filesystem"],
+      "product": ["fastapi_with_openapi", "multi_stage_docker_builds", "health_check_endpoints", "deployment_profiles", "error_catalog", "external_challenge_acceptance"]
+    }
+  },
+  "exit_criteria": {
+    "all_lanes_complete": true,
+    "all_contradictions_closed_or_honestly_demoted": true,
+    "no_organ_in_ambiguous_status": true,
+    "comparative_proof_exists": true,
+    "product_wedge_deployable": true,
+    "standards_mappings_complete": true,
+    "all_existing_tests_still_pass": true,
+    "all_new_tests_pass": true,
+    "no_forbidden_pattern_violations": true
+  },
+  "completion": {
+    "completion_tag": "post-wave5-maxpower-rectification-v1-complete",
+    "freeze_statement": "Post-Wave5 Max-Power Rectification Campaign complete: all four live contradictions closed or honestly demoted, runtime organs ignited or archived, comparative proof bundle exists, narrow product wedge deployable, standards mappings filed, externality class upgraded."
+  }
+}

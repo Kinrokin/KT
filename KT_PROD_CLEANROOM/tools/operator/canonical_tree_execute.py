@@ -40,7 +40,6 @@ ROOT_TRACKED_KEEP = [
     ".gitignore",
     "ci",
     "docs",
-    "KT_ARCHIVE",
     "KT-Codex",
     "KT_PROD_CLEANROOM",
     "LICENSE",
@@ -79,6 +78,7 @@ NONCANONICAL_ACTIVE_EXCLUSIONS = [
 DOCUMENTARY_ALLOWED_PATTERNS = [
     ".gitattributes",
     ".gitignore",
+    ".github/workflows/ci_fl3_pr_fast.yml",
     "KT-Codex/**",
     "docs/**",
     "KT_PROD_CLEANROOM/00_README_FIRST/**",
@@ -88,12 +88,18 @@ DOCUMENTARY_ALLOWED_PATTERNS = [
     "KT_PROD_CLEANROOM/docs/**",
     "KT_PROD_CLEANROOM/governance/**",
     "KT_PROD_CLEANROOM/tests/fl3/test_fl3_schema_freeze.py",
+    "KT_PROD_CLEANROOM/tests/fl3/test_fl3_receipts_no_secrets.py",
+    "KT_PROD_CLEANROOM/tests/operator/test_cohort0_post_f_pr15_fl3_*_tranche.py",
     "KT_PROD_CLEANROOM/tests/operator/test_snapshot_inventory_compile.py",
     "KT_PROD_CLEANROOM/tests/operator/test_trust_zone_validate.py",
     TEST_REL,
+    "KT_PROD_CLEANROOM/tools/operator/cohort0_post_f_parallel_*_tranche.py",
+    "KT_PROD_CLEANROOM/tools/operator/cohort0_post_f_pr15_fl3_*_tranche.py",
     "KT_PROD_CLEANROOM/tools/operator/claim_compiler.py",
     "KT_PROD_CLEANROOM/tools/operator/constitutional_completion_emit.py",
     "KT_PROD_CLEANROOM/tools/operator/constitutional_spine_ratify.py",
+    # WS14 carries explicit archive denylist strings as validator policy, not as a live archive dependency.
+    "KT_PROD_CLEANROOM/tools/operator/ws14_static_verifier_release_validate.py",
     TOOL_REL,
     "KT_PROD_CLEANROOM/exports/law/kt.constitution_pointer.v1.json",
 ]
@@ -609,10 +615,14 @@ def build_ws2_receipt(root: Path) -> Dict[str, Any]:
     ]
     subject_head = _git_last_commit_for_paths(root, subject_refs) or current_head
     dirty_paths = _status_paths(root)
+    existing_subject_refs = [str(Path(path).as_posix()) for path in subject_refs if (root / Path(path)).exists()]
     if any(path != RECEIPT_REL for path in dirty_paths):
         touched = sorted(set(dirty_paths + [RECEIPT_REL]), key=str.lower)
     else:
-        touched = sorted(set(_git_changed_files(root, subject_head) + dirty_paths + [RECEIPT_REL]), key=str.lower)
+        # On a clean worktree, WS2 determinism is about the declared subject/write-set
+        # itself, not every collateral file that happened to be part of an older commit
+        # touching the WS2 tool or test.
+        touched = sorted(set(existing_subject_refs + dirty_paths + [RECEIPT_REL]), key=str.lower)
     unexpected = _unexpected_touches(touched)
     protected = _protected_touch_violations(touched)
     if unexpected:

@@ -1,11 +1,19 @@
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from KT_PROD_CLEANROOM.tests.fl3._bootstrap import bootstrap_syspath
 
-from tools.verification.run_sweep_audit import RECEIPTS_DIR_REL, _validate_receipts_cmd
+bootstrap_syspath()
+
+from tools.verification.run_sweep_audit import (
+    CLEANROOM_PYTEST_TARGETS,
+    RECEIPTS_DIR_REL,
+    TEMPLE_PYTEST_TARGETS,
+    VERIFICATION_PYTEST_TARGETS,
+    _pytest_cmd,
+    _validate_receipts_cmd,
+)
 
 
 def test_validate_receipts_command_includes_receipts_dir(tmp_path: Path) -> None:
@@ -20,3 +28,39 @@ def test_validate_receipts_command_includes_receipts_dir(tmp_path: Path) -> None
         "--out-dir",
         str(tmp_path),
     ]
+
+
+def test_pytest_cmd_clears_repo_addopts() -> None:
+    cmd = _pytest_cmd("-q", "KT_PROD_CLEANROOM/tests")
+
+    assert cmd == [
+        "python",
+        "-m",
+        "pytest",
+        "-o",
+        "addopts=",
+        "-q",
+        "KT_PROD_CLEANROOM/tests",
+    ]
+
+
+def test_curated_smoke_targets_are_explicit() -> None:
+    assert CLEANROOM_PYTEST_TARGETS == (
+        "KT_PROD_CLEANROOM/tests/fl3/test_fl3_law_bundle_integrity.py",
+        "KT_PROD_CLEANROOM/tests/fl3/test_fl3_meta_evaluator.py",
+        "KT_PROD_CLEANROOM/tests/fl3/test_fl3_receipts_no_secrets.py",
+        "KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py",
+        "KT_PROD_CLEANROOM/tests/fl3/test_hat_demo_guardrails.py",
+        "KT_PROD_CLEANROOM/tests/operator/test_titanium_substrate.py::test_hashpin_reports_are_head_stamped_and_candidate_scoped",
+        "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py::test_publish_truth_artifacts_emits_bundle_pointer_and_indexes",
+        "KT_PROD_CLEANROOM/tests/operator/test_truth_publication.py::test_publish_truth_artifacts_is_stable_on_repeat_publish",
+    )
+    assert TEMPLE_PYTEST_TARGETS == (
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_schema_contracts.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_no_network_dry_run.py",
+    )
+    assert VERIFICATION_PYTEST_TARGETS == (
+        "KT_PROD_CLEANROOM/tools/verification/tests/test_reconcile_and_schemas.py",
+        "KT_PROD_CLEANROOM/tools/verification/tests/test_validate_receipts.py",
+        "KT_PROD_CLEANROOM/tools/verification/tests/test_validate_council_packet_v1.py",
+    )
