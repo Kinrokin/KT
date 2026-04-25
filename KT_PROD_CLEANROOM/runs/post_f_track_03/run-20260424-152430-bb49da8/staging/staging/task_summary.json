@@ -1,0 +1,13 @@
+{
+  "task_status": "completed_best_effort",
+  "staging_path": "/mnt/data/KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/staging",
+  "files_count": 52,
+  "manifest_digest": "f822a704b33e7e7223d43a1142880e819aa3051c3833fb0c4852b64bb72269e7",
+  "next_steps": [
+    "Review human_review_required documents before promotion.",
+    "Run pytest on the staged repository in the target Linux environment.",
+    "Run scripts/run_h1_smoke.sh, then scripts/run_h1_counted.sh after validation.",
+    "Use scripts/stage_and_promote.sh only after multisig approval and human review.",
+    "Switch from mock to production cosign/Rekor only after replacing mock keys and setting COSIGN_KEY and REKOR_URL."
+  ]
+}

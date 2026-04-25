@@ -1,0 +1,37 @@
+{
+  "__generated_by_agent__": true,
+  "adopted": [
+    "Tracked staging tree under KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/staging",
+    "Top-level Track 03 task summary content with hash 4dfcc295a59a99f9aa00f849ec02869c4d9e3c65559c598b986344c555606244",
+    "External Track 02 prompt/work-order contracts by hash via env override, not canonical prompt promotion"
+  ],
+  "event": "constitutional_reconciliation",
+  "external_materialization_status": "FAIL_ON_STALE_TASK_SUMMARY_MANIFEST_ROW",
+  "hardening_changes": [
+    "run_h1_smoke.sh now writes logs under work/logs and emits smoke_path_receipt.json under artifacts",
+    "run_h1_counted.sh now writes logs under work/logs, enforces smoke-before-counted for the default packet, and emits counted_path_receipt.json",
+    "preflight_common.sh now enforces clean-worktree checks outside manifest-declared mutable Track 03 paths",
+    "refresh_current_head_receipt.py added to bind current head, tree digest, schema digest, and reconciled manifest digest at run time",
+    "H1_EXPERIMENT_MANIFEST.json now treats current-head receipt and artifacts as mutable and excludes current-head receipt from manifest digest basis"
+  ],
+  "live_boundary_preservation": {
+    "gate_f_boundary": "one narrow wedge confirmed in local_verifier_mode only",
+    "main_remains_canonical_until_merge": true,
+    "track01_claim_boundary": "bounded comparative proof only"
+  },
+  "phase": "E03",
+  "run_id": "run-20260424-152430-bb49da8",
+  "status": "PASS_READY_FOR_VALIDATION",
+  "superseded": [
+    {
+      "path": "staging/task_summary.json",
+      "reason": "External manifest row was stale; materialized file matched every signed top-level task summary copy.",
+      "replacement_sha256": "4dfcc295a59a99f9aa00f849ec02869c4d9e3c65559c598b986344c555606244"
+    },
+    {
+      "path": "reports/cohort0_current_head_receipt.json",
+      "reason": "Moved to mutable current-head evidence so Track 03 can bind live branch truth at execution time without silent canonical overwrite."
+    }
+  ],
+  "timestamp": "2026-04-25T14:01:21Z"
+}

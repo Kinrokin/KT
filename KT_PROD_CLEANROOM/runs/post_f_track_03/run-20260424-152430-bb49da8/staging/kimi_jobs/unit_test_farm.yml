@@ -1,0 +1,11 @@
+name: kimi-unit-test-farm
+parallelism: 6
+tasks:
+  - id: schema-tests
+    command: pytest -q tests/test_schema_validator.py
+  - id: smoke-tests
+    command: pytest -q tests/acceptance_smoke.py
+  - id: anti-shortcut-tests
+    command: pytest -q tests/test_anti_shortcut_detector.py
+expected_outputs:
+  - all selected tests pass
