@@ -47,7 +47,7 @@ def _current_branch_name(root: Path) -> str:
 
 def _git_status_porcelain(root: Path) -> str:
     result = subprocess.run(
-        ["git", "status", "--porcelain"],
+        ["git", "status", "--porcelain", "--untracked-files=no"],
         cwd=root,
         capture_output=True,
         text=True,
