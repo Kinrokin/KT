@@ -17,8 +17,10 @@ OUTPUT_REPORT = "COHORT0_POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_MISMATCH_REPOR
 
 REQUIRED_BRANCH = "authoritative/post-f-pr15-fl3-remediation"
 EXECUTION_STATUS = "PASS__POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_MISMATCH_BOUND"
-OUTCOME = "POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_MISMATCH_DEFINED__CURRENT_HASH_SUPPORT_CHAIN_MISSING"
-NEXT_MOVE = "EXECUTE_POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_MISMATCH_REMEDIATION"
+OUTCOME_MISMATCH = "POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_MISMATCH_DEFINED__CURRENT_HASH_SUPPORT_CHAIN_MISSING"
+OUTCOME_CLEARED = "POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_CHAIN_REPAIRED__TRANCHE1_CLEARED"
+NEXT_MOVE_MISMATCH = "EXECUTE_POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_MISMATCH_REMEDIATION"
+NEXT_MOVE_CLEARED = "AUTHOR_POST_F_PR15_FL3_ACTIVE_TREE_ASSET_EXPECTATION_DRIFT_PACKET"
 
 BUNDLE_PATH = "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.json"
 BUNDLE_SHA_PATH = "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256"
@@ -197,6 +199,22 @@ def _resolution_classes() -> List[Dict[str, str]]:
     ]
 
 
+def _tranche_state(
+    *,
+    computed_hash: str,
+    pinned_hash: str,
+    current_amendments: List[Dict[str, Any]],
+    current_receipts: List[Dict[str, Any]],
+    pinned_amendments: List[Dict[str, Any]],
+    pinned_receipts: List[Dict[str, Any]],
+) -> str:
+    if computed_hash != pinned_hash and not current_amendments and not current_receipts and pinned_amendments and pinned_receipts:
+        return "mismatch"
+    if computed_hash == pinned_hash and current_amendments and current_receipts:
+        return "cleared"
+    return "unsupported"
+
+
 def _mismatch_class(*, computed_hash: str, pinned_hash: str, current_amendments: List[Dict[str, Any]], current_receipts: List[Dict[str, Any]]) -> str:
     if computed_hash != pinned_hash and not current_amendments and not current_receipts:
         return "ACTIVE_TREE_BUNDLE_AHEAD_OF_STALE_SUPPORT_CHAIN"
@@ -222,18 +240,31 @@ def build_outputs(
     pinned_receipts: List[Dict[str, Any]],
     meta_probe: Dict[str, Any],
 ) -> Dict[str, Dict[str, Any] | str]:
+    tranche_state = _tranche_state(
+        computed_hash=computed_hash,
+        pinned_hash=pinned_hash,
+        current_amendments=current_amendments,
+        current_receipts=current_receipts,
+        pinned_amendments=pinned_amendments,
+        pinned_receipts=pinned_receipts,
+    )
+    if tranche_state == "unsupported":
+        raise RuntimeError("FAIL_CLOSED: tranche T01 state is neither the frozen mismatch condition nor the cleared support-chain condition")
+
     mismatch_class = _mismatch_class(
         computed_hash=computed_hash,
         pinned_hash=pinned_hash,
         current_amendments=current_amendments,
         current_receipts=current_receipts,
     )
+    lane_outcome = OUTCOME_CLEARED if tranche_state == "cleared" else OUTCOME_MISMATCH
+    next_move = NEXT_MOVE_CLEARED if tranche_state == "cleared" else NEXT_MOVE_MISMATCH
     packet = {
         "schema_id": "kt.operator.cohort0_post_f_pr15_fl3_law_bundle_and_amendment_mismatch_packet.v1",
         "status": "PASS",
         "generated_utc": utc_now_iso_z(),
         "execution_status": EXECUTION_STATUS,
-        "lane_outcome": OUTCOME,
+        "lane_outcome": lane_outcome,
         "claim_boundary": (
             "This packet freezes tranche T01 only. It does not change package truth, truth-engine law, replay timing on main, "
             "or archive/canonical authority boundaries."
@@ -255,6 +286,7 @@ def build_outputs(
             "tranche_id": "T01",
             "tranche_name": "law_bundle_and_amendment_mismatch",
             "ordered_blocker_position": 1,
+            "tranche_state": tranche_state,
             "mismatch_class": mismatch_class,
         },
         "evaluator_assertion": {
@@ -309,9 +341,15 @@ def build_outputs(
             "evaluator_contract_is_stale": False,
             "active_tree_bundle_hash_has_complete_support_chain": bool(current_amendments and current_receipts),
             "stale_pinned_support_chain_present": bool(pinned_amendments and pinned_receipts),
-            "recommended_resolution_class": "BIND_SUPERSESSION_AND_AMENDMENT_MAPPING",
+            "recommended_resolution_class": (
+                "BIND_SUPERSESSION_AND_AMENDMENT_MAPPING"
+                if tranche_state == "mismatch"
+                else "ADVANCE_TO_T02_ACTIVE_TREE_ASSET_EXPECTATION_DRIFT"
+            ),
             "recommended_resolution_summary": (
                 "The active tree has advanced to a new bundle hash, while the current support chain still terminates at the prior pinned hash."
+                if tranche_state == "mismatch"
+                else "Bundle hash, amendment chain, and change-receipt chain now converge; tranche T01 is cleared and the lane can advance."
             ),
         },
         "do_not_widen_boundaries": authority_packet.get("do_not_widen_boundaries", []),
@@ -331,28 +369,30 @@ def build_outputs(
             law_bundle_sha=common.resolve_path(repo_root(), BUNDLE_SHA_PATH),
             fl3_meta_evaluator=common.resolve_path(repo_root(), "KT_PROD_CLEANROOM/tools/verification/fl3_meta_evaluator.py"),
         ),
-        "next_lawful_move": NEXT_MOVE,
+        "next_lawful_move": next_move,
     }
     receipt = {
         "schema_id": "kt.operator.cohort0_post_f_pr15_fl3_law_bundle_and_amendment_mismatch_receipt.v1",
         "status": "PASS",
         "generated_utc": utc_now_iso_z(),
         "execution_status": EXECUTION_STATUS,
-        "lane_outcome": OUTCOME,
+        "lane_outcome": lane_outcome,
         "tranche_id": "T01",
+        "tranche_state": tranche_state,
         "mismatch_class": mismatch_class,
         "computed_bundle_hash": computed_hash,
         "pinned_bundle_hash": pinned_hash,
         "current_hash_support_complete": bool(current_amendments and current_receipts),
         "pinned_hash_support_present": bool(pinned_amendments and pinned_receipts),
-        "next_lawful_move": NEXT_MOVE,
+        "next_lawful_move": next_move,
     }
     report = common.report_lines(
         "Cohort0 Post-F PR15 FL3 Law Bundle And Amendment Mismatch Report",
         [
             f"- Execution status: `{EXECUTION_STATUS}`",
-            f"- Lane outcome: `{OUTCOME}`",
+            f"- Lane outcome: `{lane_outcome}`",
             "- Tranche: `T01 law_bundle_and_amendment_mismatch`",
+            f"- Tranche state: `{tranche_state}`",
             f"- Computed active-tree bundle hash: `{computed_hash}`",
             f"- Pinned LAW_BUNDLE hash: `{pinned_hash}`",
             f"- Current-hash amendment matches: `{len(current_amendments)}`",
@@ -360,8 +400,8 @@ def build_outputs(
             f"- Pinned-hash amendment matches: `{len(pinned_amendments)}`",
             f"- Pinned-hash change receipt matches: `{len(pinned_receipts)}`",
             "- Evaluator contract remains on `kt.law_amendment.v2` plus `kt.law_bundle_change_receipt.v1`.",
-            "- Recommended resolution class: `BIND_SUPERSESSION_AND_AMENDMENT_MAPPING`.",
-            f"- Next lawful move: `{NEXT_MOVE}`",
+            f"- Recommended resolution class: `{packet['live_resolution_read']['recommended_resolution_class']}`.",
+            f"- Next lawful move: `{next_move}`",
         ],
     )
     return {"packet": packet, "receipt": receipt, "report": report}
@@ -404,10 +444,18 @@ def run(
     pinned_receipts = _scan_change_receipt_support(root, pinned_hash)
     meta_probe = _probe_fl3_meta_evaluator(root)
 
-    if computed_hash == pinned_hash:
-        raise RuntimeError("FAIL_CLOSED: tranche T01 packet is only lawful while the active-tree LAW_BUNDLE hash and pinned hash still diverge")
-    if not pinned_amendments or not pinned_receipts:
+    tranche_state = _tranche_state(
+        computed_hash=computed_hash,
+        pinned_hash=pinned_hash,
+        current_amendments=current_amendments,
+        current_receipts=current_receipts,
+        pinned_amendments=pinned_amendments,
+        pinned_receipts=pinned_receipts,
+    )
+    if tranche_state == "mismatch" and (not pinned_amendments or not pinned_receipts):
         raise RuntimeError("FAIL_CLOSED: expected stale pinned support chain is missing; tranche T01 evidence no longer matches the frozen blocker class")
+    if tranche_state == "unsupported":
+        raise RuntimeError("FAIL_CLOSED: tranche T01 state is no longer supported by the court contract")
 
     outputs = build_outputs(
         branch_name=branch_name,
@@ -432,9 +480,9 @@ def run(
         report_text=str(outputs["report"]),
     )
     return {
-        "lane_outcome": OUTCOME,
+        "lane_outcome": str(outputs["packet"]["lane_outcome"]),
         "receipt_path": (reports_root / OUTPUT_RECEIPT).resolve().as_posix(),
-        "next_lawful_move": NEXT_MOVE,
+        "next_lawful_move": str(outputs["receipt"]["next_lawful_move"]),
     }
 
 
