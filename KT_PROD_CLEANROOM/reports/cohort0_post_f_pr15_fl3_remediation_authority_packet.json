@@ -1,0 +1,107 @@
+{
+  "authority_header": {
+    "authoritative_branch": "authoritative/post-f-pr15-fl3-remediation",
+    "authoritative_branch_head": "01def0db949b8c0cd21eeb432dbaea8c4ff8d9c5",
+    "package_promotion_still_deferred": true,
+    "parent_truth_engine_branch": "authoritative/post-f-truth-engine",
+    "parent_truth_engine_branch_head": "6f540a657548e53311f5f4c704ecc4ed79d81203",
+    "replay_on_main_still_deferred_until_pr15_merge": true,
+    "truth_engine_law_unchanged": true
+  },
+  "blocker_ledger_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_remediation_blocker_ledger.json",
+  "claim_boundary": "This authority packet opens only the narrow PR15 FL3 remediation lane. It does not widen package truth, does not change truth-engine derivation law, and does not authorize the main truth-engine replay early.",
+  "current_read": {
+    "post_pr_canonical_success_condition": "same derivation as branch replay with zero blocking contradictions and zero advisory contradictions",
+    "remote_replay_expected_change": {
+      "current_advisory_contradiction_id": "merge_truth::remote_main_pending_pr15",
+      "expected_after_pr15": "advisory contradiction removed because origin/main and main converge"
+    },
+    "truth_engine_advisory_condition_count": 1,
+    "truth_engine_blocking_contradiction_count": 0,
+    "truth_engine_recompute_scope": "AUTHORITATIVE_BRANCH_ONLY__REMOTE_MAIN_PENDING"
+  },
+  "do_not_widen_boundaries": [
+    "Do not widen package truth.",
+    "Do not change truth-engine derivation law.",
+    "Do not rerun the main truth-engine replay early.",
+    "Do not let prep lanes become authoritative.",
+    "Do not widen Track 03 or package promotion to chase green checks."
+  ],
+  "exact_scope": {
+    "test_scope": [
+      "KT_PROD_CLEANROOM/tests/fl3/test_fl3_meta_evaluator.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_fl3_law_bundle_integrity.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_fl3_canonical_runtime_paths.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_fl3_receipts_no_secrets.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_operator_cli.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_phase1c_execute_smoke.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_phase2_execute_dry_run_smoke.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_audit_intelligence.py"
+    ],
+    "tooling_scope": [
+      "KT_PROD_CLEANROOM/tools/verification/fl3_meta_evaluator.py",
+      "KT_PROD_CLEANROOM/tools/verification/fl3_validators.py",
+      "KT_PROD_CLEANROOM/tools/verification/validate_receipts.py",
+      "KT_PROD_CLEANROOM/tools/verification/phase1c_execute.py",
+      "KT_PROD_CLEANROOM/tools/verification/phase2_execute.py",
+      "KT_PROD_CLEANROOM/tools/audit_intelligence/run_audit_intelligence.py"
+    ],
+    "workflow_scope": [
+      ".github/workflows/ci_no_conflict_markers.yml",
+      ".github/workflows/ci_fl3_pr_fast.yml",
+      ".github/workflows/ci_epic15_governance.yml",
+      ".github/workflows/ci_epic16_governance.yml",
+      ".github/workflows/ci_fl4_preflight.yml",
+      ".github/workflows/ci_truth_barrier.yml"
+    ]
+  },
+  "execution_status": "PASS__POST_F_PR15_FL3_REMEDIATION_AUTHORITY_BOUND",
+  "generated_utc": "2026-04-25T17:36:35Z",
+  "lane_outcome": "POST_F_PR15_FL3_REMEDIATION_LANE_OPEN__NARROW_BLOCKER_PROGRAM_ONLY",
+  "next_lawful_move": "AUTHOR_POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_MISMATCH_PACKET",
+  "schema_id": "kt.operator.cohort0_post_f_pr15_fl3_remediation_authority_packet.v1",
+  "source_refs": {
+    "truth_engine_handoff_note": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_post_pr_canonical_handoff_note.json",
+    "truth_engine_recompute_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_recompute_receipt.json",
+    "truth_engine_replay_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_post_merge_replay_packet.json"
+  },
+  "status": "PASS",
+  "success_condition": {
+    "main_truth_engine_replay_still_waits_for_pr15_merge": true,
+    "package_promotion_deferral_unchanged": true,
+    "required_checks_green_enough_to_merge": true,
+    "truth_engine_law_unchanged": true
+  },
+  "tranche_order": [
+    {
+      "lane_step": "law_bundle_and_amendment_mismatch",
+      "success_condition": "fl3_meta_evaluator no longer fail-closes on missing kt.law_amendment.v2 or law-bundle hash mismatch.",
+      "summary": "Fix current LAW_BUNDLE hash / amendment expectation drift first.",
+      "tranche_id": "T01"
+    },
+    {
+      "lane_step": "missing_active_tree_assets",
+      "success_condition": "required active-tree audit/runtime path assets are present or lawfully superseded.",
+      "summary": "Bind missing active-tree assets and emit explicit asset-gap receipt instead of silent file recreation.",
+      "tranche_id": "T02"
+    },
+    {
+      "lane_step": "archive_assumption_decontamination",
+      "success_condition": "archive-era assumptions are converted into active-tree law or explicit clean skips.",
+      "summary": "Remove active test/workflow dependence on quarantined archive-era surfaces.",
+      "tranche_id": "T03"
+    },
+    {
+      "lane_step": "phase_path_normalization",
+      "success_condition": "phase path references resolve lawfully through current active-tree paths or supersession maps.",
+      "summary": "Normalize superseded phase entrypoint/path expectations with explicit receipts.",
+      "tranche_id": "T04"
+    },
+    {
+      "lane_step": "full_fl3_red_to_green",
+      "success_condition": "PR15 required FL3 checks are green enough to merge without changing truth-engine or package law.",
+      "summary": "Rerun the full FL3 suite only after T01-T04 are frozen.",
+      "tranche_id": "T05"
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "blockers": [
+    {
+      "blocker_id": "PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_MISMATCH",
+      "evidence": "Traceback (most recent call last):\n  File \"C:\\Users\\rober\\AppData\\Local\\Programs\\Python\\Python310\\lib\\runpy.py\", line 196, in _run_module_as_main\n    return _run_code(code, main_globals, None,\n  File \"C:\\Users\\rober\\AppData\\Local\\Programs\\Python\\Python310\\lib\\runpy.py\", line 86, in _run_code\n    exec(code, run_globals)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\tools\\verification\\fl3_meta_evaluator.py\", line 985, in <module>\n    raise SystemExit(main())\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\tools\\verification\\fl3_meta_evaluator.py\", line 961, in main\n    amendment = assert_law_amendment_present(repo_root=repo_root, bundle_hash=bundle_hash)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\tools\\verification\\fl3_meta_evaluator.py\", line 124, in assert_law_amendment_present\n    raise FL3ValidationError(\"Missing kt.law_amendment.v2 for current LAW_BUNDLE hash (fail-closed)\")\ntools.verification.fl3_validators.FL3ValidationError: Missing kt.law_amendment.v2 for current LAW_BUNDLE hash (fail-closed)",
+      "in_scope_files": [
+        ".github/workflows/ci_fl3_pr_fast.yml",
+        ".github/workflows/ci_epic15_governance.yml",
+        ".github/workflows/ci_epic16_governance.yml",
+        "KT_PROD_CLEANROOM/tools/verification/fl3_meta_evaluator.py",
+        "KT_PROD_CLEANROOM/tests/fl3/test_fl3_meta_evaluator.py"
+      ],
+      "severity": "blocking_high",
+      "summary": "fl3_meta_evaluator still fail-closes on current law-bundle/amendment expectations.",
+      "tranche_id": "T01"
+    },
+    {
+      "blocker_id": "PR15_FL3_MISSING_ACTIVE_TREE_ASSETS",
+      "evidence": {
+        "failure_taxonomy_exists": true,
+        "fl3_canonical_runtime_paths_exists": true,
+        "suite_path_resolution_mismatch_observed": true
+      },
+      "in_scope_files": [
+        "KT_PROD_CLEANROOM/AUDITS/FL3_CANONICAL_RUNTIME_PATHS.json",
+        "KT_PROD_CLEANROOM/AUDITS/FAILURE_TAXONOMY_FL3.json",
+        "KT_PROD_CLEANROOM/tools/audit_intelligence/run_audit_intelligence.py",
+        "KT_PROD_CLEANROOM/tests/fl3/test_audit_intelligence.py",
+        "KT_PROD_CLEANROOM/tests/fl3/test_fl3_canonical_runtime_paths.py"
+      ],
+      "severity": "blocking_high",
+      "summary": "The FL3 suite still carries active-tree asset expectation drift: some required assets exist, but parts of the suite resolve them through the wrong path layer and treat them as missing.",
+      "tranche_id": "T02"
+    },
+    {
+      "blocker_id": "PR15_FL3_ARCHIVE_ASSUMPTION_DECONTAMINATION",
+      "evidence": {
+        "archive_receipts_dir_exists": false,
+        "ci_fl3_pr_fast_receipt_validation_now_skips_missing_archive": true
+      },
+      "in_scope_files": [
+        ".github/workflows/ci_fl3_pr_fast.yml",
+        "KT_PROD_CLEANROOM/tests/fl3/test_fl3_receipts_no_secrets.py",
+        "KT_PROD_CLEANROOM/tools/verification/validate_receipts.py"
+      ],
+      "severity": "blocking_medium",
+      "summary": "Some FL3 workflows/tests still assume quarantined archive-era receipt surfaces are active truth.",
+      "tranche_id": "T03"
+    },
+    {
+      "blocker_id": "PR15_FL3_PHASE_PATH_NORMALIZATION",
+      "evidence": {
+        "phase1c_executor_exists": true
+      },
+      "in_scope_files": [
+        "KT_PROD_CLEANROOM/tools/verification/phase1c_execute.py",
+        "KT_PROD_CLEANROOM/tools/verification/phase2_execute.py",
+        "KT_PROD_CLEANROOM/tests/fl3/test_phase1c_execute_smoke.py",
+        "KT_PROD_CLEANROOM/tests/fl3/test_phase2_execute_dry_run_smoke.py"
+      ],
+      "severity": "blocking_medium",
+      "summary": "Phase entrypoint/path expectations drifted relative to the active tree and need explicit normalization receipts.",
+      "tranche_id": "T04"
+    },
+    {
+      "blocker_id": "PR15_FL3_FULL_RED_TO_GREEN_PENDING",
+      "evidence": "Local full FL3 rerun remains red after harness fixes; merge is not ready until the ordered remediation stack completes.",
+      "in_scope_files": [
+        ".github/workflows/ci_fl3_pr_fast.yml",
+        ".github/workflows/ci_epic15_governance.yml",
+        ".github/workflows/ci_epic16_governance.yml",
+        ".github/workflows/ci_fl4_preflight.yml",
+        ".github/workflows/ci_truth_barrier.yml",
+        "KT_PROD_CLEANROOM/tests/fl3/**"
+      ],
+      "severity": "blocking_high",
+      "summary": "The full FL3 suite remains red until T01-T04 are frozen and rerun.",
+      "tranche_id": "T05"
+    }
+  ],
+  "blocking_blocker_count": 5,
+  "execution_status": "PASS__POST_F_PR15_FL3_REMEDIATION_AUTHORITY_BOUND",
+  "generated_utc": "2026-04-25T17:36:35Z",
+  "lane_outcome": "POST_F_PR15_FL3_REMEDIATION_LANE_OPEN__NARROW_BLOCKER_PROGRAM_ONLY",
+  "schema_id": "kt.operator.cohort0_post_f_pr15_fl3_remediation_blocker_ledger.v1",
+  "status": "PASS",
+  "tranche_plan": [
+    {
+      "lane_step": "law_bundle_and_amendment_mismatch",
+      "success_condition": "fl3_meta_evaluator no longer fail-closes on missing kt.law_amendment.v2 or law-bundle hash mismatch.",
+      "summary": "Fix current LAW_BUNDLE hash / amendment expectation drift first.",
+      "tranche_id": "T01"
+    },
+    {
+      "lane_step": "missing_active_tree_assets",
+      "success_condition": "required active-tree audit/runtime path assets are present or lawfully superseded.",
+      "summary": "Bind missing active-tree assets and emit explicit asset-gap receipt instead of silent file recreation.",
+      "tranche_id": "T02"
+    },
+    {
+      "lane_step": "archive_assumption_decontamination",
+      "success_condition": "archive-era assumptions are converted into active-tree law or explicit clean skips.",
+      "summary": "Remove active test/workflow dependence on quarantined archive-era surfaces.",
+      "tranche_id": "T03"
+    },
+    {
+      "lane_step": "phase_path_normalization",
+      "success_condition": "phase path references resolve lawfully through current active-tree paths or supersession maps.",
+      "summary": "Normalize superseded phase entrypoint/path expectations with explicit receipts.",
+      "tranche_id": "T04"
+    },
+    {
+      "lane_step": "full_fl3_red_to_green",
+      "success_condition": "PR15 required FL3 checks are green enough to merge without changing truth-engine or package law.",
+      "summary": "Rerun the full FL3 suite only after T01-T04 are frozen.",
+      "tranche_id": "T05"
+    }
+  ]
+}
