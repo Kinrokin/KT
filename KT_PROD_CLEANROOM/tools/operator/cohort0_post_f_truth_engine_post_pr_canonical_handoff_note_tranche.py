@@ -13,9 +13,13 @@ OUTPUT_RECEIPT = "cohort0_post_f_truth_engine_post_pr_canonical_handoff_receipt.
 OUTPUT_REPORT = "COHORT0_POST_F_TRUTH_ENGINE_POST_PR_CANONICAL_HANDOFF_REPORT.md"
 
 REQUIRED_BRANCH = "authoritative/post-f-truth-engine"
+CANONICAL_REPLAY_BRANCH = "main"
 EXECUTION_STATUS = "PASS__POST_F_TRUTH_ENGINE_POST_PR_CANONICAL_HANDOFF_PREPARED"
 OUTCOME = "POST_F_TRUTH_ENGINE_POST_PR_CANONICAL_HANDOFF_DEFINED__READY_AFTER_PR15"
 NEXT_MOVE = "RERUN_POST_F_TRUTH_ENGINE_RECOMPUTE_ON_MAIN_AFTER_PR15_MERGE"
+CANONICAL_HANDOFF_EXECUTION_STATUS = "PASS__POST_F_TRUTH_ENGINE_POST_PR_CANONICAL_HANDOFF_FROZEN"
+CANONICAL_HANDOFF_OUTCOME = "POST_F_TRUTH_ENGINE_POST_PR_CANONICAL_HANDOFF_FROZEN__MAIN_REPLAY_COMPLETE"
+CANONICAL_HANDOFF_NEXT_MOVE = "PROMOTE_TRUST_ZONE_BOUNDARY_PURIFICATION_AS_NEXT_AUTHORITATIVE_LANE"
 
 
 def _current_branch_name(root: Path) -> str:
@@ -42,15 +46,25 @@ def _git_status_porcelain(root: Path) -> str:
     return result.stdout
 
 
-def build_outputs(*, recompute_receipt: Dict[str, Any], posture_index: Dict[str, Any]) -> Dict[str, Dict[str, Any] | str]:
+def build_outputs(*, recompute_receipt: Dict[str, Any], posture_index: Dict[str, Any], branch_ref: str) -> Dict[str, Dict[str, Any] | str]:
     root = repo_root()
+    canonical_mode = branch_ref == CANONICAL_REPLAY_BRANCH
+    execution_status = CANONICAL_HANDOFF_EXECUTION_STATUS if canonical_mode else EXECUTION_STATUS
+    outcome = CANONICAL_HANDOFF_OUTCOME if canonical_mode else OUTCOME
+    next_lawful_move = CANONICAL_HANDOFF_NEXT_MOVE if canonical_mode else NEXT_MOVE
+    claim_boundary = (
+        "This note freezes the canonical truth-engine handoff after PR #15 landed and the main replay completed. "
+        "It does not widen package or prep authority."
+        if canonical_mode
+        else "This note prepares the exact canonical handoff after PR #15 lands. It does not itself recompute main or settle remote canonical truth early."
+    )
     packet = {
         "schema_id": "kt.operator.cohort0_post_f_truth_engine_post_pr_canonical_handoff_note.v1",
         "status": "PASS",
         "generated_utc": utc_now_iso_z(),
-        "execution_status": EXECUTION_STATUS,
-        "outcome": OUTCOME,
-        "claim_boundary": "This note prepares the exact canonical handoff after PR #15 lands. It does not itself recompute main or settle remote canonical truth early.",
+        "execution_status": execution_status,
+        "outcome": outcome,
+        "claim_boundary": claim_boundary,
         "first_canonical_truth_engine_freeze_on_main": {
             "outputs_to_freeze": [
                 "KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_authority_graph.json",
@@ -73,29 +87,37 @@ def build_outputs(*, recompute_receipt: Dict[str, Any], posture_index: Dict[str,
             "package_boundary_statement": "Deferred package promotion remains unchanged until a separate package-promotion court.",
         },
         "handoff_operator_note": {
-            "run_on_branch": "main",
+            "run_on_branch": CANONICAL_REPLAY_BRANCH,
             "prerequisite": "PR #15 merged to origin/main and local main refreshed from origin/main",
             "replay_command": "python -m tools.operator.cohort0_post_f_truth_engine_validator_and_recompute_tranche",
         },
-        "next_lawful_move": NEXT_MOVE,
+        "actual_recompute_branch_ref": str(recompute_receipt.get("branch_ref", "")).strip(),
+        "blocking_contradiction_count": int(recompute_receipt.get("blocking_contradiction_count", 0)),
+        "advisory_condition_count": int(recompute_receipt.get("advisory_condition_count", 0)),
+        "next_lawful_move": next_lawful_move,
     }
     receipt = {
         "schema_id": "kt.operator.cohort0_post_f_truth_engine_post_pr_canonical_handoff_receipt.v1",
         "status": "PASS",
         "generated_utc": utc_now_iso_z(),
-        "execution_status": EXECUTION_STATUS,
-        "outcome": OUTCOME,
+        "execution_status": execution_status,
+        "outcome": outcome,
         "freeze_output_count": len(packet["first_canonical_truth_engine_freeze_on_main"]["outputs_to_freeze"]),
-        "next_lawful_move": NEXT_MOVE,
+        "blocking_contradiction_count": int(recompute_receipt.get("blocking_contradiction_count", 0)),
+        "advisory_condition_count": int(recompute_receipt.get("advisory_condition_count", 0)),
+        "next_lawful_move": next_lawful_move,
     }
     report = common.report_lines(
         "Cohort0 Post-F Truth Engine Post-PR Canonical Handoff Report",
         [
-            f"- Execution status: `{EXECUTION_STATUS}`",
-            f"- Outcome: `{OUTCOME}`",
+            f"- Execution status: `{execution_status}`",
+            f"- Outcome: `{outcome}`",
             "- Canonical rerun target: `main` after PR `#15` merge",
             "- Advisory contradiction to supersede: `merge_truth::remote_main_pending_pr15`",
-            f"- Next lawful move: `{NEXT_MOVE}`",
+            f"- Actual recompute branch: `{branch_ref}`",
+            f"- Blocking contradictions: `{int(recompute_receipt.get('blocking_contradiction_count', 0))}`",
+            f"- Advisory conditions: `{int(recompute_receipt.get('advisory_condition_count', 0))}`",
+            f"- Next lawful move: `{next_lawful_move}`",
         ],
     )
     return {"packet": packet, "receipt": receipt, "report": report}
@@ -103,14 +125,20 @@ def build_outputs(*, recompute_receipt: Dict[str, Any], posture_index: Dict[str,
 
 def run(*, reports_root: Path, recompute_receipt_path: Path, posture_index_path: Path) -> Dict[str, Any]:
     root = repo_root()
-    if _current_branch_name(root) != REQUIRED_BRANCH:
-        raise RuntimeError(f"FAIL_CLOSED: post-PR canonical handoff note must run on {REQUIRED_BRANCH}")
+    branch_name = _current_branch_name(root)
+    if branch_name not in {REQUIRED_BRANCH, CANONICAL_REPLAY_BRANCH}:
+        raise RuntimeError(f"FAIL_CLOSED: post-PR canonical handoff note must run on {REQUIRED_BRANCH} or {CANONICAL_REPLAY_BRANCH}")
     if _git_status_porcelain(root).strip():
         raise RuntimeError("FAIL_CLOSED: post-PR canonical handoff note requires a clean worktree")
     recompute_receipt = common.load_json_required(root, recompute_receipt_path, label="truth-engine recompute receipt")
     posture_index = common.load_json_required(root, posture_index_path, label="truth-engine posture index")
     common.ensure_pass(recompute_receipt, label="truth-engine recompute receipt")
-    outputs = build_outputs(recompute_receipt=recompute_receipt, posture_index=posture_index)
+    if branch_name == CANONICAL_REPLAY_BRANCH:
+        if str(recompute_receipt.get("branch_ref", "")).strip() != CANONICAL_REPLAY_BRANCH:
+            raise RuntimeError("FAIL_CLOSED: canonical handoff requires a main-bound recompute receipt")
+        if int(recompute_receipt.get("blocking_contradiction_count", 0)) != 0 or int(recompute_receipt.get("advisory_condition_count", 0)) != 0:
+            raise RuntimeError("FAIL_CLOSED: canonical handoff requires zero blocking contradictions and zero advisory conditions")
+    outputs = build_outputs(recompute_receipt=recompute_receipt, posture_index=posture_index, branch_ref=branch_name)
     common.write_outputs(
         packet_path=(reports_root / OUTPUT_PACKET).resolve(),
         receipt_path=(reports_root / OUTPUT_RECEIPT).resolve(),
@@ -119,7 +147,7 @@ def run(*, reports_root: Path, recompute_receipt_path: Path, posture_index_path:
         receipt=outputs["receipt"],
         report_text=str(outputs["report"]),
     )
-    return {"outcome": OUTCOME}
+    return {"outcome": outputs["receipt"]["outcome"]}
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
