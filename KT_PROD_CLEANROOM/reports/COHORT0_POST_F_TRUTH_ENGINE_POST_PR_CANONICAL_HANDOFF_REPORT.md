@@ -2,8 +2,8 @@
 
 - Execution status: `PASS__POST_F_TRUTH_ENGINE_POST_PR_CANONICAL_HANDOFF_FROZEN`
 - Outcome: `POST_F_TRUTH_ENGINE_POST_PR_CANONICAL_HANDOFF_FROZEN__MAIN_REPLAY_COMPLETE`
-- Canonical rerun target: `main` after PR `#15` merge
-- Advisory contradiction to supersede: `merge_truth::remote_main_pending_pr15`
+- Historical canonical rerun target (already executed): `main` after PR `#15` merge
+- Historical advisory contradiction superseded by completed replay: `merge_truth::remote_main_pending_pr15`
 - Actual recompute branch: `main`
 - Blocking contradictions: `0`
 - Advisory conditions: `0`

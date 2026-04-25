@@ -14,6 +14,7 @@ OUTPUT_CONTRADICTION_LEDGER = "cohort0_post_f_truth_engine_contradiction_ledger.
 OUTPUT_STALE_QUARANTINE = "cohort0_post_f_truth_engine_stale_source_quarantine_list.json"
 OUTPUT_RECOMPUTE_RECEIPT = "cohort0_post_f_truth_engine_recompute_receipt.json"
 OUTPUT_REPORT = "COHORT0_POST_F_TRUTH_ENGINE_FIRST_RECOMPUTE_REPORT.md"
+CANONICAL_REPLAY_OUTPUT_REPORT = "COHORT0_POST_F_TRUTH_ENGINE_CANONICAL_MAIN_REPLAY_REPORT.md"
 
 REQUIRED_BRANCH = "authoritative/post-f-truth-engine"
 CANONICAL_REPLAY_BRANCH = "main"
@@ -468,7 +469,8 @@ def run(
     write_json_stable((reports_root / OUTPUT_CONTRADICTION_LEDGER).resolve(), outputs["contradiction_ledger"])
     write_json_stable((reports_root / OUTPUT_STALE_QUARANTINE).resolve(), outputs["stale_quarantine"])
     write_json_stable((reports_root / OUTPUT_RECOMPUTE_RECEIPT).resolve(), outputs["recompute_receipt"])
-    common.write_text((reports_root / OUTPUT_REPORT).resolve(), str(outputs["report"]))
+    report_name = CANONICAL_REPLAY_OUTPUT_REPORT if branch_name == CANONICAL_REPLAY_BRANCH else OUTPUT_REPORT
+    common.write_text((reports_root / report_name).resolve(), str(outputs["report"]))
     return {"outcome": outcome, "receipt_path": (reports_root / OUTPUT_RECOMPUTE_RECEIPT).resolve().as_posix(), "next_lawful_move": next_lawful_move}
 
 
