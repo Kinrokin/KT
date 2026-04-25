@@ -3,17 +3,31 @@ from __future__ import annotations
 import os
 import re
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from tools.operator import cohort0_gate_f_common as common
 from tools.operator.titanium_common import repo_root, utc_now_iso_z
+
+
+def _bootstrap_syspath() -> None:
+    here = Path(__file__).resolve()
+    for parent in [here] + list(here.parents):
+        cleanroom_root = parent / "KT_PROD_CLEANROOM"
+        src_root = cleanroom_root / "04_PROD_TEMPLE_V2" / "src"
+        if src_root.is_dir():
+            for candidate in (str(src_root), str(cleanroom_root)):
+                if candidate not in sys.path:
+                    sys.path.insert(0, candidate)
+            return
+    raise RuntimeError("FAIL_CLOSED: unable to locate KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src for remediation bootstrap")
+
+
+_bootstrap_syspath()
+
 from tools.verification.fl3_meta_evaluator import compute_law_bundle_hash, load_law_bundle
-from tools.verification.law_bundle_change_receipt import (
-    _compute_bundle_hash_from_maps,
-    _file_digest_map_for_bundle_ref,
-    _read_law_bundle_from_ref,
-)
+from tools.verification.law_bundle_change_receipt import _compute_bundle_hash_from_maps, _file_digest_map_for_bundle_ref, _read_law_bundle_from_ref
 
 
 OUTPUT_PACKET = "cohort0_post_f_pr15_fl3_law_bundle_and_amendment_mismatch_remediation_packet.json"
