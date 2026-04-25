@@ -23,7 +23,7 @@
   },
   "authority_header": {
     "authoritative_branch": "authoritative/post-f-pr15-fl3-remediation",
-    "authoritative_branch_head": "59c5ac7d7bb40f2d6a25668c6ae2867f73074ff2",
+    "authoritative_branch_head": "47ca311467dfcb1f2010000d691dd56d07794204",
     "package_promotion_still_deferred": true,
     "replay_on_main_still_deferred_until_pr15_merge": true,
     "truth_engine_law_unchanged": true
@@ -37,14 +37,14 @@
     "Do not widen Track 03 or package promotion to chase green checks."
   ],
   "drift_evidence": {
-    "audit_intelligence_failure_taxonomy_target": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/KT_PROD_CLEANROOM/AUDITS/FAILURE_TAXONOMY_FL3.json",
-    "audit_intelligence_failure_taxonomy_target_exists": false,
-    "audit_intelligence_local_root_probe": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
+    "audit_intelligence_failure_taxonomy_target": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/FAILURE_TAXONOMY_FL3.json",
+    "audit_intelligence_failure_taxonomy_target_exists": true,
+    "audit_intelligence_local_root_probe": "D:/user/rober/OneDrive/Kings_Theorem_Active",
     "shared_helper_failure_taxonomy_target": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/FAILURE_TAXONOMY_FL3.json",
     "shared_helper_failure_taxonomy_target_exists": true,
     "shared_helper_root_probe": "D:/user/rober/OneDrive/Kings_Theorem_Active",
     "test_file": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/tests/fl3/test_fl3_canonical_runtime_paths.py",
-    "test_source_uses_bootstrap_root": false,
+    "test_source_uses_bootstrap_root": true,
     "weak_test_root_probe": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
     "weak_test_runtime_paths_target": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/KT_PROD_CLEANROOM/AUDITS/FL3_CANONICAL_RUNTIME_PATHS.json",
     "weak_test_runtime_paths_target_exists": false
@@ -66,16 +66,16 @@
     ]
   },
   "execution_status": "PASS__POST_F_PR15_FL3_ACTIVE_TREE_ASSET_EXPECTATION_DRIFT_BOUND",
-  "generated_utc": "2026-04-25T18:16:24Z",
-  "lane_outcome": "POST_F_PR15_FL3_ACTIVE_TREE_ASSET_EXPECTATION_DRIFT_DEFINED__WEAK_ROOT_SELECTION_COLLIDES_WITH_NESTED_CLEANROOM",
+  "generated_utc": "2026-04-25T18:17:47Z",
+  "lane_outcome": "POST_F_PR15_FL3_ACTIVE_TREE_ASSET_EXPECTATION_DRIFT_RESOLVED__TRANCHE2_CLEARED",
   "live_resolution_read": {
     "genuine_missing_asset": false,
     "nested_subtree_requires_quarantine_from_root_selection": true,
-    "recommended_resolution_class": "NORMALIZE_REPO_ROOT_SELECTION_PRECEDENCE",
-    "recommended_resolution_summary": "Canonical FL3 assets exist on the active tree, but weak root selection misclassifies a nested cleanroom subtree as repo root.",
-    "root_selection_precedence_drift": true
+    "recommended_resolution_class": "ADVANCE_TO_T03_ARCHIVE_ASSUMPTION_DECONTAMINATION",
+    "recommended_resolution_summary": "Canonical FL3 asset lookup is now normalized to the true repo root and tranche T02 is cleared.",
+    "root_selection_precedence_drift": false
   },
-  "next_lawful_move": "EXECUTE_POST_F_PR15_FL3_ACTIVE_TREE_ASSET_EXPECTATION_DRIFT_REMEDIATION",
+  "next_lawful_move": "AUTHOR_POST_F_PR15_FL3_ARCHIVE_ASSUMPTION_DECONTAMINATION_PACKET",
   "precedence_rule": {
     "active_tree_decision_rule": "If canonical assets exist at repo_root/KT_PROD_CLEANROOM/AUDITS but fail-close under repo_root/KT_PROD_CLEANROOM/KT_PROD_CLEANROOM/AUDITS, the defect class is root-selection drift, not missing assets.",
     "resolution_decision_rule": "Prefer normalizing root-selection precedence and canonical asset lookup over recreating or moving active-tree assets.",
@@ -104,10 +104,10 @@
     "truth_engine_law_unchanged": true
   },
   "tranche_header": {
-    "drift_class": "WEAK_ROOT_SELECTION_COLLIDES_WITH_NESTED_CLEANROOM_SUBTREE",
+    "drift_class": "ACTIVE_TREE_ASSET_EXPECTATION_NORMALIZED",
     "ordered_blocker_position": 2,
     "tranche_id": "T02",
     "tranche_name": "active_tree_asset_expectation_drift",
-    "tranche_state": "defined"
+    "tranche_state": "cleared"
   }
 }
