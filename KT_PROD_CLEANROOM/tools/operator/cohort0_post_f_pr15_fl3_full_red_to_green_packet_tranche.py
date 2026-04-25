@@ -116,7 +116,10 @@ def _parse_pytest_summary(text: str) -> Dict[str, Any]:
 
 def _run_full_fl3_suite(root: Path) -> Dict[str, Any]:
     env = dict(os.environ)
-    env.setdefault("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
+    # Mirror the direct shell run that already proved green: do not inherit the
+    # outer module-launch PYTHONPATH into the full-suite subprocess.
+    env.pop("PYTHONPATH", None)
+    env.pop("PYTEST_DISABLE_PLUGIN_AUTOLOAD", None)
     with tempfile.NamedTemporaryFile(mode="w+", encoding="utf-8", newline="\n", delete=False) as handle:
         log_path = Path(handle.name)
     try:
