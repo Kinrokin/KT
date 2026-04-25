@@ -67,6 +67,25 @@ def _find_gnu_tar() -> str:
             return candidate
     raise FileNotFoundError("GNU tar not found for deterministic bundle validation")
 
+
+def _find_bash() -> str:
+    candidates = [
+        shutil.which("bash"),
+        r"C:\Program Files\Git\bin\bash.exe",
+        r"C:\Program Files\Git\usr\bin\bash.exe",
+    ]
+    for candidate in candidates:
+        if candidate and Path(candidate).exists():
+            return candidate
+    raise FileNotFoundError("bash not found for deterministic bundle validation")
+
+
+def _to_bash_path(path: Path) -> str:
+    resolved = path.resolve()
+    drive = resolved.drive.rstrip(":").lower()
+    tail = resolved.as_posix().split(":", 1)[1]
+    return f"/{drive}{tail}"
+
 def test_smoke_run_and_bundle_publish():
     proc = _run(["bash", "scripts/run_h1_smoke.sh"], timeout=60)
     assert proc.returncode == 0, proc.stderr
@@ -87,11 +106,17 @@ def test_reproducible_bundle_same_seed(tmp_path):
         dest = tmp_inputs / top
         shutil.copytree(src, dest)
     out_bundle = tmp_path / f"proof_bundle_{run_id}.tar.gz"
-    tar_bin = _find_gnu_tar()
-    proc = subprocess.run([
-        tar_bin,"--sort=name","--mtime=UTC 2024-01-01","--owner=0","--group=0","--numeric-owner",
-        "-czf", str(out_bundle), "-C", str(tmp_inputs), "."
-    ], cwd=ROOT)
+    _find_gnu_tar()
+    bash_bin = _find_bash()
+    proc = subprocess.run(
+        [
+            bash_bin,
+            "-lc",
+            "tar --sort=name --mtime='UTC 2024-01-01' --owner=0 --group=0 --numeric-owner "
+            f"-czf '{_to_bash_path(out_bundle)}' -C '{_to_bash_path(tmp_inputs)}' .",
+        ],
+        cwd=ROOT,
+    )
     assert proc.returncode == 0
     actual = hashlib.sha256((ROOT / "bundle" / f"proof_bundle_{run_id}.tar.gz").read_bytes()).hexdigest()
     expected = hashlib.sha256(out_bundle.read_bytes()).hexdigest()
