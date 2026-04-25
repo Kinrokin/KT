@@ -16,9 +16,13 @@ OUTPUT_RECOMPUTE_RECEIPT = "cohort0_post_f_truth_engine_recompute_receipt.json"
 OUTPUT_REPORT = "COHORT0_POST_F_TRUTH_ENGINE_FIRST_RECOMPUTE_REPORT.md"
 
 REQUIRED_BRANCH = "authoritative/post-f-truth-engine"
+CANONICAL_REPLAY_BRANCH = "main"
 EXECUTION_STATUS = "PASS__POST_F_TRUTH_ENGINE_VALIDATOR_AND_FIRST_RECOMPUTE_BOUND"
 OUTCOME = "POST_F_TRUTH_ENGINE_FIRST_RECOMPUTE_COMPLETE__BRANCH_AUTHORITATIVE_REMOTE_MAIN_PENDING"
 NEXT_MOVE = "RERUN_POST_F_TRUTH_ENGINE_RECOMPUTE_ON_MAIN_AFTER_PR15_MERGE"
+CANONICAL_REPLAY_EXECUTION_STATUS = "PASS__POST_F_TRUTH_ENGINE_CANONICAL_MAIN_RECOMPUTE_BOUND"
+CANONICAL_REPLAY_OUTCOME = "POST_F_TRUTH_ENGINE_RECOMPUTE_COMPLETE__CANONICAL_MAIN_CONVERGED"
+CANONICAL_REPLAY_NEXT_MOVE = "PROMOTE_TRUST_ZONE_BOUNDARY_PURIFICATION_AS_NEXT_AUTHORITATIVE_LANE"
 
 
 def _current_branch_name(root: Path) -> str:
@@ -139,7 +143,7 @@ def _derive_posture_index(*, branch_law: Dict[str, Any], product_truth: Dict[str
     }
 
 
-def _build_authority_graph(*, contract_packet: Dict[str, Any], branch_law: Dict[str, Any], product_truth: Dict[str, Any]) -> Dict[str, Any]:
+def _build_authority_graph(*, contract_packet: Dict[str, Any], branch_law: Dict[str, Any], product_truth: Dict[str, Any], branch_ref: str) -> Dict[str, Any]:
     winning = [
         {
             "source_class_id": "canonical_post_merge_repo_authority",
@@ -209,7 +213,7 @@ def _build_authority_graph(*, contract_packet: Dict[str, Any], branch_law: Dict[
     return {
         "schema_id": "kt.operator.cohort0_post_f_truth_engine_authority_graph.v1",
         "generated_utc": utc_now_iso_z(),
-        "branch_ref": REQUIRED_BRANCH,
+        "branch_ref": branch_ref,
         "winning_authority_sources": winning,
         "rejected_conflicting_sources": rejected,
         "precedence_edges": edges,
@@ -285,16 +289,29 @@ def _build_contradiction_ledger(*, remote_divergence: Dict[str, Any]) -> Dict[st
     }
 
 
-def _build_recompute_receipt(*, authority_graph: Dict[str, Any], posture_index: Dict[str, Any], contradiction_ledger: Dict[str, Any], stale_quarantine: Dict[str, Any], remote_divergence: Dict[str, Any]) -> Dict[str, Any]:
+def _build_recompute_receipt(
+    *,
+    authority_graph: Dict[str, Any],
+    posture_index: Dict[str, Any],
+    contradiction_ledger: Dict[str, Any],
+    stale_quarantine: Dict[str, Any],
+    remote_divergence: Dict[str, Any],
+    branch_ref: str,
+    next_lawful_move: str,
+) -> Dict[str, Any]:
     root = repo_root()
     advisory_conditions = []
     if int(remote_divergence.get("local_main_ahead_of_remote", 0)) > 0:
         advisory_conditions.append("remote_main_pending_pr15_merge")
+    canonical_mode = branch_ref == CANONICAL_REPLAY_BRANCH
+    recompute_scope = "CANONICAL_MAIN_REPLAY_CONVERGED" if canonical_mode else "AUTHORITATIVE_BRANCH_AND_CANONICAL_MAIN_IN_SYNC"
+    if advisory_conditions:
+        recompute_scope = "AUTHORITATIVE_BRANCH_ONLY__REMOTE_MAIN_PENDING"
     return {
         "schema_id": "kt.operator.cohort0_post_f_truth_engine_recompute_receipt.v1",
         "generated_utc": utc_now_iso_z(),
         "status": "PASS" if int(contradiction_ledger.get("blocking_contradiction_count", 0)) == 0 else "FAIL",
-        "branch_ref": REQUIRED_BRANCH,
+        "branch_ref": branch_ref,
         "derived_from_contract_id": "kt.operator.cohort0_post_f_truth_engine_contradiction_validator_contract_packet.v1",
         "authority_graph_ref": common.resolve_path(root, f"KT_PROD_CLEANROOM/reports/{OUTPUT_AUTHORITY_GRAPH}").as_posix(),
         "posture_index_ref": common.resolve_path(root, f"KT_PROD_CLEANROOM/reports/{OUTPUT_POSTURE_INDEX}").as_posix(),
@@ -302,8 +319,8 @@ def _build_recompute_receipt(*, authority_graph: Dict[str, Any], posture_index: 
         "stale_source_quarantine_list_ref": common.resolve_path(root, f"KT_PROD_CLEANROOM/reports/{OUTPUT_STALE_QUARANTINE}").as_posix(),
         "blocking_contradiction_count": int(contradiction_ledger.get("blocking_contradiction_count", 0)),
         "advisory_condition_count": len(advisory_conditions),
-        "recompute_scope": "AUTHORITATIVE_BRANCH_ONLY__REMOTE_MAIN_PENDING" if advisory_conditions else "AUTHORITATIVE_BRANCH_AND_CANONICAL_MAIN_IN_SYNC",
-        "next_lawful_move": NEXT_MOVE,
+        "recompute_scope": recompute_scope,
+        "next_lawful_move": next_lawful_move,
     }
 
 
@@ -315,8 +332,12 @@ def build_outputs(
     product_truth: Dict[str, Any],
     post_merge_receipt: Dict[str, Any],
     remote_divergence: Dict[str, Any],
+    branch_ref: str,
+    execution_status: str,
+    outcome: str,
+    next_lawful_move: str,
 ) -> Dict[str, Dict[str, Any] | str]:
-    authority_graph = _build_authority_graph(contract_packet=contract_packet, branch_law=branch_law, product_truth=product_truth)
+    authority_graph = _build_authority_graph(contract_packet=contract_packet, branch_law=branch_law, product_truth=product_truth, branch_ref=branch_ref)
     posture_index = _derive_posture_index(
         branch_law=branch_law,
         product_truth=product_truth,
@@ -331,6 +352,8 @@ def build_outputs(
         contradiction_ledger=contradiction_ledger,
         stale_quarantine=stale_quarantine,
         remote_divergence=remote_divergence,
+        branch_ref=branch_ref,
+        next_lawful_move=next_lawful_move,
     )
 
     schema_defs = dict(schema_packet.get("emission_surface_schemas", {}))
@@ -340,15 +363,21 @@ def build_outputs(
     _validate_against_schema(stale_quarantine, schema_defs["stale_source_quarantine_list"], label="stale source quarantine list")
     _validate_against_schema(recompute_receipt, schema_defs["recompute_receipt"], label="recompute receipt")
 
+    report_title = (
+        "Cohort0 Post-F Truth Engine Canonical Main Replay Report"
+        if branch_ref == CANONICAL_REPLAY_BRANCH
+        else "Cohort0 Post-F Truth Engine First Recompute Report"
+    )
     report = common.report_lines(
-        "Cohort0 Post-F Truth Engine First Recompute Report",
+        report_title,
         [
-            f"- Execution status: `{EXECUTION_STATUS}`",
-            f"- Outcome: `{OUTCOME}`",
+            f"- Execution status: `{execution_status}`",
+            f"- Outcome: `{outcome}`",
+            f"- Branch ref: `{branch_ref}`",
             f"- Blocking contradictions: `{contradiction_ledger['blocking_contradiction_count']}`",
             f"- Advisory contradictions: `{contradiction_ledger['advisory_contradiction_count']}`",
             f"- Remote main pending: `{int(remote_divergence.get('local_main_ahead_of_remote', 0)) > 0}`",
-            f"- Next lawful move: `{NEXT_MOVE}`",
+            f"- Next lawful move: `{next_lawful_move}`",
         ],
     )
     return {
@@ -374,8 +403,11 @@ def run(
 ) -> Dict[str, Any]:
     root = repo_root()
     branch_name = _current_branch_name(root)
-    if branch_name != REQUIRED_BRANCH:
-        raise RuntimeError(f"FAIL_CLOSED: truth-engine recompute tranche must run on {REQUIRED_BRANCH}, got {branch_name}")
+    allowed_branches = {REQUIRED_BRANCH, CANONICAL_REPLAY_BRANCH}
+    if branch_name not in allowed_branches:
+        raise RuntimeError(
+            f"FAIL_CLOSED: truth-engine recompute tranche must run on {REQUIRED_BRANCH} or {CANONICAL_REPLAY_BRANCH}, got {branch_name}"
+        )
     if _git_status_porcelain(root).strip():
         raise RuntimeError("FAIL_CLOSED: truth-engine recompute tranche requires a clean worktree")
 
@@ -405,6 +437,18 @@ def run(
     remote_divergence = _remote_main_divergence(root)
     if int(remote_divergence.get("remote_ahead_of_local_main", 0)) > 0:
         raise RuntimeError("FAIL_CLOSED: origin/main is ahead of local main; refresh canonical base before recompute")
+    if branch_name == CANONICAL_REPLAY_BRANCH and int(remote_divergence.get("local_main_ahead_of_remote", 0)) > 0:
+        raise RuntimeError("FAIL_CLOSED: canonical main replay requires local main and origin/main to be converged")
+    if branch_name == CANONICAL_REPLAY_BRANCH and not bool(remote_divergence.get("remote_ref_present", False)):
+        raise RuntimeError("FAIL_CLOSED: canonical main replay requires origin/main to be present and converged")
+
+    execution_status = EXECUTION_STATUS
+    outcome = OUTCOME
+    next_lawful_move = NEXT_MOVE
+    if branch_name == CANONICAL_REPLAY_BRANCH:
+        execution_status = CANONICAL_REPLAY_EXECUTION_STATUS
+        outcome = CANONICAL_REPLAY_OUTCOME
+        next_lawful_move = CANONICAL_REPLAY_NEXT_MOVE
 
     outputs = build_outputs(
         schema_packet=schema_packet,
@@ -413,6 +457,10 @@ def run(
         product_truth=product_truth,
         post_merge_receipt=post_merge_receipt,
         remote_divergence=remote_divergence,
+        branch_ref=branch_name,
+        execution_status=execution_status,
+        outcome=outcome,
+        next_lawful_move=next_lawful_move,
     )
 
     write_json_stable((reports_root / OUTPUT_AUTHORITY_GRAPH).resolve(), outputs["authority_graph"])
@@ -421,7 +469,7 @@ def run(
     write_json_stable((reports_root / OUTPUT_STALE_QUARANTINE).resolve(), outputs["stale_quarantine"])
     write_json_stable((reports_root / OUTPUT_RECOMPUTE_RECEIPT).resolve(), outputs["recompute_receipt"])
     common.write_text((reports_root / OUTPUT_REPORT).resolve(), str(outputs["report"]))
-    return {"outcome": OUTCOME, "receipt_path": (reports_root / OUTPUT_RECOMPUTE_RECEIPT).resolve().as_posix(), "next_lawful_move": NEXT_MOVE}
+    return {"outcome": outcome, "receipt_path": (reports_root / OUTPUT_RECOMPUTE_RECEIPT).resolve().as_posix(), "next_lawful_move": next_lawful_move}
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:

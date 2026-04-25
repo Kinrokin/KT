@@ -32,3 +32,41 @@ def test_post_pr_canonical_handoff_note_preserves_package_boundary(tmp_path: Pat
     assert result["outcome"] == tranche.OUTCOME
     packet = _load(reports / tranche.OUTPUT_PACKET)
     assert packet["unchanged_boundaries_after_pr15"]["package_truth_posture"] == ["PACKAGE_PROMOTION_DEFERRED"]
+
+
+def test_post_pr_canonical_handoff_freezes_on_main_after_zero_contradiction_replay(tmp_path: Path, monkeypatch) -> None:
+    reports = tmp_path / "KT_PROD_CLEANROOM" / "reports"
+    _write_json(
+        reports / "cohort0_post_f_truth_engine_recompute_receipt.json",
+        {
+            "schema_id": "a",
+            "status": "PASS",
+            "branch_ref": "main",
+            "blocking_contradiction_count": 0,
+            "advisory_condition_count": 0,
+        },
+    )
+    _write_json(
+        reports / "cohort0_post_f_truth_engine_posture_index.json",
+        {
+            "schema_id": "b",
+            "package_truth_posture": ["PACKAGE_PROMOTION_DEFERRED"],
+            "product_truth_posture": ["PRODUCT_POSTURE_STILL_BOUNDED"],
+            "theorem_truth_posture": ["THEOREM_POSTURE_CANONICAL_ON_MAIN"],
+        },
+    )
+
+    monkeypatch.setattr(tranche, "repo_root", lambda: tmp_path)
+    monkeypatch.setattr(tranche, "_current_branch_name", lambda root: tranche.CANONICAL_REPLAY_BRANCH)
+    monkeypatch.setattr(tranche, "_git_status_porcelain", lambda root: "")
+
+    result = tranche.run(
+        reports_root=reports,
+        recompute_receipt_path=reports / "cohort0_post_f_truth_engine_recompute_receipt.json",
+        posture_index_path=reports / "cohort0_post_f_truth_engine_posture_index.json",
+    )
+
+    receipt = _load(reports / tranche.OUTPUT_RECEIPT)
+    assert result["outcome"] == tranche.CANONICAL_HANDOFF_OUTCOME
+    assert receipt["next_lawful_move"] == tranche.CANONICAL_HANDOFF_NEXT_MOVE
+    assert receipt["advisory_condition_count"] == 0
