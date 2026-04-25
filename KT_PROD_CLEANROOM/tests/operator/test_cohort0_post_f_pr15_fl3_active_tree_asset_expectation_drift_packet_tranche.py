@@ -108,6 +108,8 @@ def test_t02_packet_freezes_root_selection_drift_instead_of_missing_assets(tmp_p
     assert packet["drift_evidence"]["audit_intelligence_failure_taxonomy_target_exists"] is False
     assert packet["drift_evidence"]["shared_helper_failure_taxonomy_target_exists"] is True
     assert packet["live_resolution_read"]["genuine_missing_asset"] is False
+    assert receipt["weak_root_selection_still_active_in_test"] is True
+    assert receipt["audit_intelligence_local_root_still_misroutes_failure_taxonomy"] is True
     assert receipt["next_lawful_move"] == tranche.NEXT_MOVE_DRIFT
 
 
@@ -200,5 +202,7 @@ def test_t02_packet_can_clear_after_root_selection_normalization(tmp_path: Path,
     assert packet["drift_evidence"]["test_source_uses_bootstrap_root"] is True
     assert packet["drift_evidence"]["audit_intelligence_failure_taxonomy_target_exists"] is True
     assert packet["drift_evidence"]["shared_helper_failure_taxonomy_target_exists"] is True
+    assert receipt["weak_root_selection_still_active_in_test"] is False
+    assert receipt["audit_intelligence_local_root_still_misroutes_failure_taxonomy"] is False
     assert receipt["shared_helper_root_matches_repo_root"] is True
     assert receipt["next_lawful_move"] == tranche.NEXT_MOVE_CLEARED

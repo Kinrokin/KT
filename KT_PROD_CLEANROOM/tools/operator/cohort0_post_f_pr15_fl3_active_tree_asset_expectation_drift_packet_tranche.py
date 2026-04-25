@@ -288,8 +288,8 @@ def build_outputs(
         "tranche_state": tranche_state,
         "canonical_runtime_paths_exists": canonical_runtime_paths_exists,
         "failure_taxonomy_exists": failure_taxonomy_exists,
-        "weak_root_selection_misroutes_test_asset_lookup": not weak_test_runtime_paths_target.exists(),
-        "audit_intelligence_local_root_misroutes_failure_taxonomy": not audit_intel_failure_taxonomy_target.exists(),
+        "weak_root_selection_still_active_in_test": (not test_source_uses_bootstrap_root),
+        "audit_intelligence_local_root_still_misroutes_failure_taxonomy": not audit_intel_failure_taxonomy_target.exists(),
         "shared_helper_root_matches_repo_root": shared_helper_root == repo_root(),
         "next_lawful_move": next_move,
     }
