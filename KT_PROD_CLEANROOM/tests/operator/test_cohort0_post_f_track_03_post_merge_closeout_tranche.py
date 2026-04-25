@@ -61,7 +61,8 @@ def test_post_merge_closeout_freezes_canonical_state_on_main(tmp_path: Path, mon
     monkeypatch.setattr(tranche, "repo_root", lambda: tmp_path)
     monkeypatch.setattr(tranche, "_current_branch_name", lambda root: "main")
     monkeypatch.setattr(tranche, "_git_status_porcelain", lambda root: "")
-    monkeypatch.setattr(tranche, "_git_head_parents", lambda root: ["merge-sha", "main-parent", "source-parent"])
+    monkeypatch.setattr(tranche, "_latest_first_parent_merge_commit", lambda root: "merge-sha")
+    monkeypatch.setattr(tranche, "_git_commit_parents", lambda root, ref: ["merge-sha", "main-parent", "source-parent"])
     monkeypatch.setattr(tranche, "_git_rev_parse", lambda root, ref: "source-parent")
     monkeypatch.setattr(tranche, "_git_message", lambda root, ref: "merge: canonicalize post-F Track 03 repo authority with package promotion deferred")
 
@@ -76,6 +77,7 @@ def test_post_merge_closeout_freezes_canonical_state_on_main(tmp_path: Path, mon
     receipt = _load(reports / tranche.OUTPUT_RECEIPT)
 
     assert snapshot["track03_repo_authority_now_canonical"] is True
+    assert snapshot["merge_commit"] == "merge-sha"
     assert snapshot["package_promotion_still_deferred"] is True
     assert snapshot["first_post_merge_authoritative_lane"] == "truth_engine_contradiction_validator_scaffold"
     assert receipt["next_lawful_move"] == tranche.NEXT_MOVE

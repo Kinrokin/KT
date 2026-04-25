@@ -56,9 +56,9 @@ def _git_rev_parse(root: Path, ref: str) -> str:
     return result.stdout.strip()
 
 
-def _git_head_parents(root: Path) -> List[str]:
+def _git_commit_parents(root: Path, ref: str) -> List[str]:
     result = subprocess.run(
-        ["git", "rev-list", "--parents", "-n", "1", "HEAD"],
+        ["git", "rev-list", "--parents", "-n", "1", ref],
         cwd=root,
         capture_output=True,
         text=True,
@@ -67,7 +67,7 @@ def _git_head_parents(root: Path) -> List[str]:
     )
     rows = [part.strip() for part in result.stdout.strip().split() if part.strip()]
     if len(rows) < 3:
-        raise RuntimeError("FAIL_CLOSED: current HEAD on main must be a merge commit for Track 03 closeout")
+        raise RuntimeError(f"FAIL_CLOSED: commit {ref} must be a merge commit for Track 03 closeout anchoring")
     return rows
 
 
@@ -83,8 +83,25 @@ def _git_message(root: Path, ref: str) -> str:
     return result.stdout.strip()
 
 
+def _latest_first_parent_merge_commit(root: Path) -> str:
+    result = subprocess.run(
+        ["git", "rev-list", "--first-parent", "--merges", "-n", "1", "HEAD"],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        check=True,
+    )
+    merge_commit = result.stdout.strip()
+    if not merge_commit:
+        raise RuntimeError("FAIL_CLOSED: no first-parent merge commit found on current main history for Track 03 closeout")
+    return merge_commit
+
+
 def build_outputs(
     *,
+    current_head: str,
+    merge_commit: str,
     head_commit: str,
     pre_merge_main_tip: str,
     merged_source_tip: str,
@@ -100,7 +117,8 @@ def build_outputs(
     snapshot = {
         "snapshot_type": "POST_F_TRACK_03_POST_MERGE_CANONICAL_BRANCH_SNAPSHOT",
         "branch": REQUIRED_BRANCH,
-        "head_commit": head_commit,
+        "head_commit": current_head,
+        "merge_commit": merge_commit,
         "merge_message": merge_message,
         "source_branch": SOURCE_BRANCH,
         "source_tip": merged_source_tip,
@@ -143,7 +161,8 @@ def build_outputs(
         "post_merge_status": POST_MERGE_STATUS,
         "target_branch": REQUIRED_BRANCH,
         "merged_branch": SOURCE_BRANCH,
-        "merge_commit": head_commit,
+        "merge_commit": merge_commit,
+        "post_merge_head": current_head,
         "pre_merge_main_tip": pre_merge_main_tip,
         "merged_source_tip": merged_source_tip,
         "track03_repo_authority_now_canonical": True,
@@ -158,7 +177,8 @@ def build_outputs(
         [
             f"- Execution status: `{EXECUTION_STATUS}`",
             f"- Post-merge status: `{POST_MERGE_STATUS}`",
-            f"- Merge commit: `{head_commit}`",
+            f"- Current canonical head: `{current_head}`",
+            f"- Merge commit: `{merge_commit}`",
             f"- Pre-merge main tip: `{pre_merge_main_tip}`",
             f"- Merged source tip: `{merged_source_tip}`",
             "- Track 03 repo authority is now canonical on `main`.",
@@ -193,7 +213,9 @@ def run(
     if str(decision_receipt.get("next_lawful_move", "")).strip() != "EXECUTE_PROTECTED_MERGE_TO_MAIN__PACKAGE_PROMOTION_STILL_DEFERRED":
         raise RuntimeError("FAIL_CLOSED: protected merge decision did not authorize the executed repo-only merge path")
 
-    parents = _git_head_parents(root)
+    current_head = _git_rev_parse(root, "HEAD")
+    merge_commit = _latest_first_parent_merge_commit(root)
+    parents = _git_commit_parents(root, merge_commit)
     head_commit = parents[0]
     pre_merge_main_tip = parents[1]
     merged_source_tip = parents[2]
@@ -202,10 +224,12 @@ def run(
         raise RuntimeError("FAIL_CLOSED: current merge commit second parent does not match the approved source branch tip")
 
     outputs = build_outputs(
+        current_head=current_head,
+        merge_commit=merge_commit,
         head_commit=head_commit,
         pre_merge_main_tip=pre_merge_main_tip,
         merged_source_tip=merged_source_tip,
-        merge_message=_git_message(root, "HEAD"),
+        merge_message=_git_message(root, merge_commit),
         decision_packet=decision_packet,
         decision_receipt=decision_receipt,
     )
