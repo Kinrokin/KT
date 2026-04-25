@@ -443,10 +443,6 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         default="KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_validator_schema_and_contradiction_taxonomy_receipt.json",
     )
     parser.add_argument(
-        "--branch-law-packet",
-        default="KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_post_clear_branch_law_packet.json",
-    )
-    parser.add_argument(
         "--product-truth-packet",
         default="KT_PROD_CLEANROOM/reports/cohort0_gate_f_post_close_live_product_truth_packet.json",
     )
