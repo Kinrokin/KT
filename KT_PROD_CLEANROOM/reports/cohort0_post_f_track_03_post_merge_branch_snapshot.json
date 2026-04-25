@@ -1,0 +1,38 @@
+{
+  "artifact_split_summary": {
+    "repo_merge_authoritative_truth_surface_count": 11,
+    "repo_merge_support_surface_count": 7
+  },
+  "branch": "main",
+  "decision_outcome": "MERGE_APPROVED__PACKAGE_PROMOTION_DEFERRED",
+  "first_post_merge_authoritative_lane": "truth_engine_contradiction_validator_scaffold",
+  "head_commit": "8af16de864cee919ffdaae002e16ff853dc95200",
+  "merge_commit": "b30ce8e1c3e9fb5e7a28741654309222dab5570d",
+  "merge_message": "merge: canonicalize post-F Track 03 repo authority with package promotion deferred",
+  "package_promotion_split": {
+    "auto_promotion_candidate_count": 6,
+    "package_promotion_boundary": "Still blocked until protected merge to main and explicit post-review promotion decision.",
+    "review_approved_auto_skip_count": 3,
+    "review_approved_out_of_scope_count": 2
+  },
+  "package_promotion_still_deferred": true,
+  "pre_merge_main_tip": "558c9a46e87dbe9fed1884a4d24305ed2450929d",
+  "product_posture": {
+    "gate_f_narrow_wedge_confirmed": true,
+    "gate_f_open": false,
+    "post_f_reaudit_passed": true
+  },
+  "retained_non_authoritative_prep_lanes": [
+    "trust_zone_boundary_purification_scaffold",
+    "residual_proof_law_hardening_scaffold",
+    "upper_stack_ratification_scaffold"
+  ],
+  "snapshot_type": "POST_F_TRACK_03_POST_MERGE_CANONICAL_BRANCH_SNAPSHOT",
+  "source_branch": "expansion/post-f-track-01",
+  "source_tip": "34d0355cc245ce219c44df4b50122256ff0e8877",
+  "theorem_posture": {
+    "gate_d_cleared_on_successor_line": true,
+    "gate_e_open_on_successor_line": true
+  },
+  "track03_repo_authority_now_canonical": true
+}
