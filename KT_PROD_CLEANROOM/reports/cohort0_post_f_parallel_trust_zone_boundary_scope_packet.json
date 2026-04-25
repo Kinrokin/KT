@@ -1,0 +1,69 @@
+{
+  "canonical_scope_manifest": {
+    "authoritative_branch": "main",
+    "authoritative_subject_head": "bf1c7ac8af60beec181bfc60a608bf9768a3633f",
+    "live_truth_roots": [
+      "KT_PROD_CLEANROOM/reports/cohort0_successor_*",
+      "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_*",
+      "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_*",
+      "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_*"
+    ],
+    "scope_id": "post_f_canonical_scope_v1"
+  },
+  "claim_boundary": "Prep-only trust-zone and boundary packet. It does not change live authority or canonical promotion status.",
+  "generated_utc": "2026-04-25T15:10:26Z",
+  "lane_id": "trust_zone_boundary_purification_scaffold",
+  "lane_status": "AUTHORIZED__NON_AUTHORITATIVE_PREP_ONLY",
+  "next_lawful_move": "CONVENE_POST_F_TRACK_03_HUMAN_REVIEW_COURT",
+  "noncanonical_quarantine_candidate_list": {
+    "candidates": [
+      "KT_PROD_CLEANROOM/runs/post_f_track_03/**",
+      "KT-Codex/**",
+      "KT_ARCHIVE/**",
+      "root reports/ forensic freeze artifacts"
+    ],
+    "policy_ref": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/legacy_quarantine_receipt.json"
+  },
+  "promotion_safe_boundary_recommendations": [
+    "Keep Track 03 run-root artifacts preserved but out of canonical live truth surfaces.",
+    "Require human-review verdict plus protected merge before any stage_and_promote invocation.",
+    "Treat prep-lane outputs as non-authoritative until a later authoritative court explicitly adopts them."
+  ],
+  "readiness_scope_manifest": {
+    "required_roots": [
+      "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_human_review_*",
+      "KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/artifacts/*",
+      "KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/staging/signatures/*",
+      "KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/staging/bundle/*"
+    ],
+    "scope_id": "track03_review_readiness_scope_v1"
+  },
+  "schema_id": "kt.operator.cohort0_post_f_parallel_trust_zone_boundary_scope_packet.v1",
+  "source_refs": {
+    "legacy_quarantine_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/legacy_quarantine_receipt.json",
+    "matrix_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_parallel_prep_lane_matrix_packet.json"
+  },
+  "status": "PASS",
+  "trust_zone_registry": [
+    {
+      "boundary": "Live Track 01/02/03 summaries, successor/Gate receipts, orchestrator receipts",
+      "mutability": "AUTHORITATIVE_LANE_ONLY",
+      "zone_id": "canonical_live_truth"
+    },
+    {
+      "boundary": "Track 03 run artifacts beneath KT_PROD_CLEANROOM/runs/post_f_track_03/**",
+      "mutability": "FROZEN_EXECUTION_HISTORY__NO_PREP_LANE_MUTATION",
+      "zone_id": "branch_local_execution_truth"
+    },
+    {
+      "boundary": "KT_PROD_CLEANROOM/reports/cohort0_post_f_parallel_*",
+      "mutability": "PREP_ONLY__NON_AUTHORITATIVE",
+      "zone_id": "parallel_prep_scaffolds"
+    },
+    {
+      "boundary": "KT-Codex/**, KT_ARCHIVE/**, previously quarantined non-live surfaces",
+      "mutability": "QUARANTINE_ONLY",
+      "zone_id": "quarantine_and_history"
+    }
+  ]
+}

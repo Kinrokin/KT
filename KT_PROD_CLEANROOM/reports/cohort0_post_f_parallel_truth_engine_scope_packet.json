@@ -1,0 +1,46 @@
+{
+  "claim_boundary": "Prep-only truth-engine contract. It does not rewrite live headers or mutate current posture.",
+  "contradiction_rules": [
+    "If branch-local prep output contradicts Track 01/02/03 frozen receipts, prep output loses automatically.",
+    "If a source claims canonical status from expansion/* before merge, fail closed.",
+    "If stale or untracked surfaces outrank the frozen header stack, fail closed."
+  ],
+  "generated_utc": "2026-04-25T15:10:26Z",
+  "lane_id": "truth_engine_contradiction_validator_scaffold",
+  "lane_status": "AUTHORIZED__NON_AUTHORITATIVE_PREP_ONLY",
+  "next_lawful_move": "CONVENE_POST_F_TRACK_03_HUMAN_REVIEW_COURT",
+  "posture_enum": [
+    "CANONICAL_MAIN_LIVE_TRUTH",
+    "AUTHORITATIVE_BRANCH_NON_CANONICAL",
+    "TRACK03_EXECUTION_COMPLETE__PROMOTION_GATED",
+    "TRACK03_HUMAN_REVIEW_PENDING_OR_COMPLETE",
+    "PARALLEL_PREP_ONLY__NON_AUTHORITATIVE"
+  ],
+  "schema_id": "kt.operator.cohort0_post_f_parallel_truth_engine_scope_packet.v1",
+  "source_precedence_table": [
+    "main protected-branch canonical surfaces after merge",
+    "frozen authoritative branch Track 03 review / verdict surfaces before merge",
+    "frozen Track 02 and Track 01 summary receipts",
+    "historical and quarantine surfaces for lineage only",
+    "parallel prep scaffolds last and non-authoritative only"
+  ],
+  "source_refs": {
+    "reporting_integrity_contract": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/reporting_integrity_contract.json",
+    "track02_final_summary": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_final_summary_packet.json",
+    "track03_final_summary": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_final_summary_packet.json",
+    "track03_human_review": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_human_review_packet.json"
+  },
+  "stale_surface_exclusion_logic": {
+    "exclude_historical_override": true,
+    "exclude_prep_lane_posture_override": true,
+    "exclude_untracked_authority": true,
+    "reference_contract": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/reporting_integrity_contract.json"
+  },
+  "status": "PASS",
+  "truth_engine_contract": {
+    "historical_surfaces_may_explain_but_not_override": true,
+    "live_posture_must_be_receipt_derived": true,
+    "prep_surfaces_may_not_publish_live_posture": true,
+    "subject_head": "bf1c7ac8af60beec181bfc60a608bf9768a3633f"
+  }
+}
