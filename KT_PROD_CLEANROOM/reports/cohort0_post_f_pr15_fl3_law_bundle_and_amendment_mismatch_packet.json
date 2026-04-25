@@ -19,7 +19,7 @@
   ],
   "authority_header": {
     "authoritative_branch": "authoritative/post-f-pr15-fl3-remediation",
-    "authoritative_branch_head": "60facb2b9dc4696b15c3b956804ff5232dc466b9",
+    "authoritative_branch_head": "042255009b7e623221a2339eff738257a20334ee",
     "package_promotion_still_deferred": true,
     "replay_on_main_still_deferred_until_pr15_merge": true,
     "truth_engine_law_unchanged": true
@@ -37,29 +37,29 @@
     "amendment_schema_id_required": "kt.law_amendment.v2",
     "bundle_id": "LAW_BUNDLE_FL3",
     "change_receipt_schema_id_required": "kt.law_bundle_change_receipt.v1",
-    "evaluator_probe_returncode": 0,
-    "evaluator_probe_tail": ""
+    "evaluator_probe_returncode": 1,
+    "evaluator_probe_tail": "Traceback (most recent call last):\n  File \"C:\\Users\\rober\\AppData\\Local\\Programs\\Python\\Python310\\lib\\runpy.py\", line 196, in _run_module_as_main\n    return _run_code(code, main_globals, None,\n  File \"C:\\Users\\rober\\AppData\\Local\\Programs\\Python\\Python310\\lib\\runpy.py\", line 86, in _run_code\n    exec(code, run_globals)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\tools\\verification\\fl3_meta_evaluator.py\", line 985, in <module>\n    raise SystemExit(main())\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\tools\\verification\\fl3_meta_evaluator.py\", line 961, in main\n    amendment = assert_law_amendment_present(repo_root=repo_root, bundle_hash=bundle_hash)\n  File \"D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\tools\\verification\\fl3_meta_evaluator.py\", line 124, in assert_law_amendment_present\n    raise FL3ValidationError(\"Missing kt.law_amendment.v2 for current LAW_BUNDLE hash (fail-closed)\")\ntools.verification.fl3_validators.FL3ValidationError: Missing kt.law_amendment.v2 for current LAW_BUNDLE hash (fail-closed)"
   },
   "execution_status": "PASS__POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_MISMATCH_BOUND",
-  "generated_utc": "2026-04-25T18:07:33Z",
-  "lane_outcome": "POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_CHAIN_REPAIRED__TRANCHE1_CLEARED",
+  "generated_utc": "2026-04-25T18:31:10Z",
+  "lane_outcome": "POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_MISMATCH_DEFINED__CURRENT_HASH_SUPPORT_CHAIN_MISSING",
   "live_bundle_state": {
     "bundle_file_count": 394,
     "bundle_manifest_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.json",
     "bundle_sha_pin_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256",
-    "computed_bundle_hash": "905ab6d4d25715fa518f3155f5880b29c7cf13997d59dbf0924b66826b11302c",
+    "computed_bundle_hash": "bca49a85b0358be4761270f1a2ba6b8be539097354d6becac8b3c69875636d4b",
     "law_count": 1,
-    "pin_matches_current": true,
+    "pin_matches_current": false,
     "pinned_bundle_hash": "905ab6d4d25715fa518f3155f5880b29c7cf13997d59dbf0924b66826b11302c"
   },
   "live_resolution_read": {
-    "active_tree_bundle_hash_has_complete_support_chain": true,
+    "active_tree_bundle_hash_has_complete_support_chain": false,
     "evaluator_contract_is_stale": false,
-    "recommended_resolution_class": "ADVANCE_TO_T02_ACTIVE_TREE_ASSET_EXPECTATION_DRIFT",
-    "recommended_resolution_summary": "Bundle hash, amendment chain, and change-receipt chain now converge; tranche T01 is cleared and the lane can advance.",
+    "recommended_resolution_class": "BIND_SUPERSESSION_AND_AMENDMENT_MAPPING",
+    "recommended_resolution_summary": "The active tree has advanced to a new bundle hash, while the current support chain still terminates at the prior pinned hash.",
     "stale_pinned_support_chain_present": true
   },
-  "next_lawful_move": "AUTHOR_POST_F_PR15_FL3_ACTIVE_TREE_ASSET_EXPECTATION_DRIFT_PACKET",
+  "next_lawful_move": "EXECUTE_POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_MISMATCH_REMEDIATION",
   "precedence_rule": {
     "resolution_decision_rule": "Prefer binding a new lawful amendment/change-receipt chain for the active hash over weakening the evaluator contract.",
     "staleness_decision_rule": "If the current active-tree hash lacks a matching kt.law_amendment.v2 or kt.law_bundle_change_receipt.v1 while the pinned hash still has them, the support chain is stale relative to the active tree; the evaluator contract is not stale.",
@@ -86,15 +86,11 @@
   },
   "support_chain_state": {
     "current_hash": {
-      "bundle_hash": "905ab6d4d25715fa518f3155f5880b29c7cf13997d59dbf0924b66826b11302c",
-      "matching_change_receipt_count": 1,
-      "matching_change_receipt_refs": [
-        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260425T180620Z.json"
-      ],
-      "matching_law_amendment_v2_count": 1,
-      "matching_law_amendment_v2_refs": [
-        "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260425T180625Z.json"
-      ]
+      "bundle_hash": "bca49a85b0358be4761270f1a2ba6b8be539097354d6becac8b3c69875636d4b",
+      "matching_change_receipt_count": 0,
+      "matching_change_receipt_refs": [],
+      "matching_law_amendment_v2_count": 0,
+      "matching_law_amendment_v2_refs": []
     },
     "pinned_hash": {
       "bundle_hash": "905ab6d4d25715fa518f3155f5880b29c7cf13997d59dbf0924b66826b11302c",
@@ -109,10 +105,10 @@
     }
   },
   "tranche_header": {
-    "mismatch_class": "MISMATCH_CLASS_NOT_APPLICABLE",
+    "mismatch_class": "ACTIVE_TREE_BUNDLE_AHEAD_OF_STALE_SUPPORT_CHAIN",
     "ordered_blocker_position": 1,
     "tranche_id": "T01",
     "tranche_name": "law_bundle_and_amendment_mismatch",
-    "tranche_state": "cleared"
+    "tranche_state": "mismatch"
   }
 }
