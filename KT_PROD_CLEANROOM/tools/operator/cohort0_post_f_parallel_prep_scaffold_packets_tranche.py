@@ -19,7 +19,6 @@ OUTPUT_REPORT = "COHORT0_POST_F_PARALLEL_PREP_SCAFFOLD_REPORT.md"
 REQUIRED_WORKING_BRANCH = "expansion/post-f-track-01"
 EXECUTION_STATUS = "PASS__POST_F_PARALLEL_PREP_SCAFFOLDS_BOUND"
 OUTCOME = "POST_F_PARALLEL_PREP_SCAFFOLDS_BOUND__NON_AUTHORITATIVE_OUTPUTS_ONLY"
-AUTHORITATIVE_NEXT_MOVE = "CONVENE_POST_F_TRACK_03_HUMAN_REVIEW_COURT"
 
 
 def _current_branch_name(root: Path) -> str:
@@ -62,7 +61,7 @@ def _git_status_porcelain(root: Path) -> str:
     return result.stdout
 
 
-def _trust_zone_packet(*, root: Path, matrix_packet: Dict[str, Any], human_review_receipt: Dict[str, Any]) -> Dict[str, Any]:
+def _trust_zone_packet(*, root: Path, matrix_packet: Dict[str, Any], verdict_receipt: Dict[str, Any]) -> Dict[str, Any]:
     return {
         "schema_id": "kt.operator.cohort0_post_f_parallel_trust_zone_boundary_scope_packet.v1",
         "status": "PASS",
@@ -95,7 +94,7 @@ def _trust_zone_packet(*, root: Path, matrix_packet: Dict[str, Any], human_revie
         "canonical_scope_manifest": {
             "scope_id": "post_f_canonical_scope_v1",
             "authoritative_branch": "main",
-            "authoritative_subject_head": str(human_review_receipt.get("subject_head", "")).strip(),
+            "authoritative_subject_head": str(verdict_receipt.get("subject_head", "")).strip(),
             "live_truth_roots": [
                 "KT_PROD_CLEANROOM/reports/cohort0_successor_*",
                 "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_*",
@@ -130,11 +129,11 @@ def _trust_zone_packet(*, root: Path, matrix_packet: Dict[str, Any], human_revie
             matrix_packet=common.resolve_path(root, "KT_PROD_CLEANROOM/reports/cohort0_post_f_parallel_prep_lane_matrix_packet.json"),
             legacy_quarantine_receipt=common.resolve_path(root, "KT_PROD_CLEANROOM/reports/legacy_quarantine_receipt.json"),
         ),
-        "next_lawful_move": AUTHORITATIVE_NEXT_MOVE,
+        "next_lawful_move": str(verdict_receipt.get("next_lawful_move", "")).strip(),
     }
 
 
-def _truth_engine_packet(*, root: Path, human_review_receipt: Dict[str, Any]) -> Dict[str, Any]:
+def _truth_engine_packet(*, root: Path, verdict_receipt: Dict[str, Any]) -> Dict[str, Any]:
     return {
         "schema_id": "kt.operator.cohort0_post_f_parallel_truth_engine_scope_packet.v1",
         "status": "PASS",
@@ -150,7 +149,7 @@ def _truth_engine_packet(*, root: Path, human_review_receipt: Dict[str, Any]) ->
             "PARALLEL_PREP_ONLY__NON_AUTHORITATIVE",
         ],
         "truth_engine_contract": {
-            "subject_head": str(human_review_receipt.get("subject_head", "")).strip(),
+            "subject_head": str(verdict_receipt.get("subject_head", "")).strip(),
             "live_posture_must_be_receipt_derived": True,
             "historical_surfaces_may_explain_but_not_override": True,
             "prep_surfaces_may_not_publish_live_posture": True,
@@ -179,11 +178,11 @@ def _truth_engine_packet(*, root: Path, human_review_receipt: Dict[str, Any]) ->
             track03_final_summary=common.resolve_path(root, "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_final_summary_packet.json"),
             track03_human_review=common.resolve_path(root, "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_human_review_packet.json"),
         ),
-        "next_lawful_move": AUTHORITATIVE_NEXT_MOVE,
+        "next_lawful_move": str(verdict_receipt.get("next_lawful_move", "")).strip(),
     }
 
 
-def _proof_law_packet(*, root: Path, human_review_packet: Dict[str, Any]) -> Dict[str, Any]:
+def _proof_law_packet(*, root: Path, human_review_packet: Dict[str, Any], verdict_receipt: Dict[str, Any]) -> Dict[str, Any]:
     review_bundle = dict(human_review_packet.get("review_evidence_bundle", {}))
     return {
         "schema_id": "kt.operator.cohort0_post_f_parallel_residual_proof_law_hardening_packet.v1",
@@ -238,11 +237,11 @@ def _proof_law_packet(*, root: Path, human_review_packet: Dict[str, Any]) -> Dic
                 root, "KT_PROD_CLEANROOM/runs/post_f_track_03/run-20260424-152430-bb49da8/artifacts/validation_matrix.json"
             ),
         ),
-        "next_lawful_move": AUTHORITATIVE_NEXT_MOVE,
+        "next_lawful_move": str(verdict_receipt.get("next_lawful_move", "")).strip(),
     }
 
 
-def _upper_stack_packet(*, root: Path) -> Dict[str, Any]:
+def _upper_stack_packet(*, root: Path, verdict_receipt: Dict[str, Any]) -> Dict[str, Any]:
     return {
         "schema_id": "kt.operator.cohort0_post_f_parallel_upper_stack_ratification_scope_packet.v1",
         "status": "PASS",
@@ -277,11 +276,11 @@ def _upper_stack_packet(*, root: Path) -> Dict[str, Any]:
             contradiction_table=common.resolve_path(root, "KT_PROD_CLEANROOM/reports/kt_unified_convergence_contradiction_table.json"),
             adapter_lifecycle_contract=common.resolve_path(root, adapter_validate.DEFAULT_ADAPTER_LIFECYCLE_REL),
         ),
-        "next_lawful_move": AUTHORITATIVE_NEXT_MOVE,
+        "next_lawful_move": str(verdict_receipt.get("next_lawful_move", "")).strip(),
     }
 
 
-def run(*, reports_root: Path, matrix_packet_path: Path, human_review_packet_path: Path, human_review_receipt_path: Path) -> Dict[str, Any]:
+def run(*, reports_root: Path, matrix_packet_path: Path, human_review_packet_path: Path, verdict_receipt_path: Path) -> Dict[str, Any]:
     root = repo_root()
     branch_name = _current_branch_name(root)
     if branch_name != REQUIRED_WORKING_BRANCH:
@@ -291,17 +290,18 @@ def run(*, reports_root: Path, matrix_packet_path: Path, human_review_packet_pat
 
     matrix_packet = common.load_json_required(root, matrix_packet_path, label="parallel prep lane matrix packet")
     human_review_packet = common.load_json_required(root, human_review_packet_path, label="Track 03 human review packet")
-    human_review_receipt = common.load_json_required(root, human_review_receipt_path, label="Track 03 human review receipt")
+    verdict_receipt = common.load_json_required(root, verdict_receipt_path, label="Track 03 human review verdict receipt")
     common.ensure_pass(matrix_packet, label="parallel prep lane matrix packet")
     common.ensure_pass(human_review_packet, label="Track 03 human review packet")
-    common.ensure_pass(human_review_receipt, label="Track 03 human review receipt")
-    if str(human_review_receipt.get("next_lawful_move", "")).strip() != AUTHORITATIVE_NEXT_MOVE:
-        raise RuntimeError("FAIL_CLOSED: prep scaffolds require the authoritative next move to remain the human review court")
+    common.ensure_pass(verdict_receipt, label="Track 03 human review verdict receipt")
+    authoritative_next_move = str(verdict_receipt.get("next_lawful_move", "")).strip()
+    if not authoritative_next_move:
+        raise RuntimeError("FAIL_CLOSED: prep scaffolds require a concrete authoritative next move from the human review verdict")
 
-    trust_zone_packet = _trust_zone_packet(root=root, matrix_packet=matrix_packet, human_review_receipt=human_review_receipt)
-    truth_engine_packet = _truth_engine_packet(root=root, human_review_receipt=human_review_receipt)
-    proof_law_packet = _proof_law_packet(root=root, human_review_packet=human_review_packet)
-    upper_stack_packet = _upper_stack_packet(root=root)
+    trust_zone_packet = _trust_zone_packet(root=root, matrix_packet=matrix_packet, verdict_receipt=verdict_receipt)
+    truth_engine_packet = _truth_engine_packet(root=root, verdict_receipt=verdict_receipt)
+    proof_law_packet = _proof_law_packet(root=root, human_review_packet=human_review_packet, verdict_receipt=verdict_receipt)
+    upper_stack_packet = _upper_stack_packet(root=root, verdict_receipt=verdict_receipt)
 
     write_json_stable((reports_root / OUTPUT_TRUST_ZONE_PACKET).resolve(), trust_zone_packet)
     write_json_stable((reports_root / OUTPUT_TRUTH_ENGINE_PACKET).resolve(), truth_engine_packet)
@@ -317,8 +317,8 @@ def run(*, reports_root: Path, matrix_packet_path: Path, human_review_packet_pat
         "working_branch_head_at_scaffold_time": _current_head(root),
         "working_branch_non_authoritative_until_protected_merge": True,
         "lane_packet_count": 4,
-        "subject_head": str(human_review_receipt.get("subject_head", "")).strip(),
-        "next_lawful_move": AUTHORITATIVE_NEXT_MOVE,
+        "subject_head": str(verdict_receipt.get("subject_head", "")).strip(),
+        "next_lawful_move": authoritative_next_move,
     }
     write_json_stable((reports_root / OUTPUT_RECEIPT).resolve(), receipt)
     common.write_text(
@@ -329,14 +329,14 @@ def run(*, reports_root: Path, matrix_packet_path: Path, human_review_packet_pat
                 f"- Execution status: `{EXECUTION_STATUS}`",
                 f"- Outcome: `{OUTCOME}`",
                 "- Lane packets emitted: `4`",
-                f"- Authoritative next move preserved: `{AUTHORITATIVE_NEXT_MOVE}`",
+                f"- Authoritative next move preserved: `{authoritative_next_move}`",
             ],
         ),
     )
     return {
         "outcome": OUTCOME,
         "receipt_path": (reports_root / OUTPUT_RECEIPT).resolve().as_posix(),
-        "next_lawful_move": AUTHORITATIVE_NEXT_MOVE,
+        "next_lawful_move": authoritative_next_move,
     }
 
 
@@ -351,8 +351,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         default="KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_human_review_packet.json",
     )
     parser.add_argument(
-        "--human-review-receipt",
-        default="KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_human_review_receipt.json",
+        "--human-review-verdict-receipt",
+        default="KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_human_review_verdict_receipt.json",
     )
     args = parser.parse_args(argv)
     root = repo_root()
@@ -361,7 +361,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         reports_root=reports_root,
         matrix_packet_path=common.resolve_path(root, args.matrix_packet),
         human_review_packet_path=common.resolve_path(root, args.human_review_packet),
-        human_review_receipt_path=common.resolve_path(root, args.human_review_receipt),
+        verdict_receipt_path=common.resolve_path(root, args.human_review_verdict_receipt),
     )
     print(result["outcome"])
     return 0

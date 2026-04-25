@@ -37,12 +37,12 @@ def test_parallel_prep_scaffolds_emit_four_lane_packets(tmp_path: Path, monkeypa
         },
     )
     _write_json(
-        reports / "cohort0_post_f_track_03_human_review_receipt.json",
+        reports / "cohort0_post_f_track_03_human_review_verdict_receipt.json",
         {
-            "schema_id": "review-receipt",
+            "schema_id": "verdict-receipt",
             "status": "PASS",
             "subject_head": "track03-head",
-            "next_lawful_move": tranche.AUTHORITATIVE_NEXT_MOVE,
+            "next_lawful_move": "AUTHOR_POST_F_TRACK_03_MERGE_AND_PROMOTION_PREP_PACKET",
         },
     )
     _write_json(reports / "legacy_quarantine_receipt.json", {"status": "PASS"})
@@ -59,7 +59,7 @@ def test_parallel_prep_scaffolds_emit_four_lane_packets(tmp_path: Path, monkeypa
         reports_root=reports,
         matrix_packet_path=reports / "cohort0_post_f_parallel_prep_lane_matrix_packet.json",
         human_review_packet_path=reports / "cohort0_post_f_track_03_human_review_packet.json",
-        human_review_receipt_path=reports / "cohort0_post_f_track_03_human_review_receipt.json",
+        verdict_receipt_path=reports / "cohort0_post_f_track_03_human_review_verdict_receipt.json",
     )
 
     assert result["outcome"] == tranche.OUTCOME
@@ -74,3 +74,4 @@ def test_parallel_prep_scaffolds_emit_four_lane_packets(tmp_path: Path, monkeypa
     assert truth_engine["lane_id"] == "truth_engine_contradiction_validator_scaffold"
     assert proof_law["lane_id"] == "residual_proof_law_hardening_scaffold"
     assert upper_stack["lane_id"] == "upper_stack_ratification_scaffold"
+    assert receipt["next_lawful_move"] == "AUTHOR_POST_F_TRACK_03_MERGE_AND_PROMOTION_PREP_PACKET"
