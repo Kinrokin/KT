@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from tools.verification.fl3_validators import validate_schema_bound_object
 from tools.verification.validate_receipts import validate_receipts_dir
 
@@ -33,5 +35,7 @@ def test_validate_receipts_dir_fails_closed_on_unknown_schema_id(tmp_path: Path)
 
 def test_validate_receipts_dir_passes_on_repo_receipts() -> None:
     receipts_dir = Path("KT_ARCHIVE/vault/receipts")
+    if not receipts_dir.exists():
+        pytest.skip("KT_ARCHIVE/vault/receipts is not present on the active canonical tree")
     report = validate_receipts_dir(receipts_dir=receipts_dir)
     assert report["status"] == "PASS"
