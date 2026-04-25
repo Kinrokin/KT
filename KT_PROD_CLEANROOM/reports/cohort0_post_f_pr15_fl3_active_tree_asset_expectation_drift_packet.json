@@ -1,0 +1,113 @@
+{
+  "allowed_resolution_classes": [
+    {
+      "class_id": "NORMALIZE_REPO_ROOT_SELECTION_PRECEDENCE",
+      "summary": "Replace weak 'first parent with KT_PROD_CLEANROOM child' root detection with the cleanroom-source sentinel used by active-tree bootstrap helpers."
+    },
+    {
+      "class_id": "BIND_CANONICAL_ASSET_LOOKUP_TO_TRUE_REPO_ROOT",
+      "summary": "Require FL3 asset readers to resolve canonical audit artifacts from the true repository root, not from the first nested cleanroom-like subtree."
+    },
+    {
+      "class_id": "QUARANTINE_NESTED_SUBTREE_FROM_ROOT_SELECTION",
+      "summary": "Treat KT_PROD_CLEANROOM/KT_PROD_CLEANROOM as an implementation subtree that may exist on disk but may not satisfy repo-root selection on its own."
+    }
+  ],
+  "asset_truth": {
+    "canonical_runtime_paths_exists": true,
+    "canonical_runtime_paths_rel": "KT_PROD_CLEANROOM/AUDITS/FL3_CANONICAL_RUNTIME_PATHS.json",
+    "failure_taxonomy_exists": true,
+    "failure_taxonomy_rel": "KT_PROD_CLEANROOM/AUDITS/FAILURE_TAXONOMY_FL3.json",
+    "nested_cleanroom_subtree_exists": true,
+    "nested_cleanroom_subtree_rel": "KT_PROD_CLEANROOM/KT_PROD_CLEANROOM"
+  },
+  "authority_header": {
+    "authoritative_branch": "authoritative/post-f-pr15-fl3-remediation",
+    "authoritative_branch_head": "59c5ac7d7bb40f2d6a25668c6ae2867f73074ff2",
+    "package_promotion_still_deferred": true,
+    "replay_on_main_still_deferred_until_pr15_merge": true,
+    "truth_engine_law_unchanged": true
+  },
+  "claim_boundary": "This packet binds tranche T02 only. It does not widen package truth, does not change truth-engine law, and does not authorize replay on main or archive promotion.",
+  "do_not_widen_boundaries": [
+    "Do not widen package truth.",
+    "Do not change truth-engine derivation law.",
+    "Do not rerun the main truth-engine replay early.",
+    "Do not let prep lanes become authoritative.",
+    "Do not widen Track 03 or package promotion to chase green checks."
+  ],
+  "drift_evidence": {
+    "audit_intelligence_failure_taxonomy_target": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/KT_PROD_CLEANROOM/AUDITS/FAILURE_TAXONOMY_FL3.json",
+    "audit_intelligence_failure_taxonomy_target_exists": false,
+    "audit_intelligence_local_root_probe": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
+    "shared_helper_failure_taxonomy_target": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/FAILURE_TAXONOMY_FL3.json",
+    "shared_helper_failure_taxonomy_target_exists": true,
+    "shared_helper_root_probe": "D:/user/rober/OneDrive/Kings_Theorem_Active",
+    "test_file": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/tests/fl3/test_fl3_canonical_runtime_paths.py",
+    "test_source_uses_bootstrap_root": false,
+    "weak_test_root_probe": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM",
+    "weak_test_runtime_paths_target": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/KT_PROD_CLEANROOM/AUDITS/FL3_CANONICAL_RUNTIME_PATHS.json",
+    "weak_test_runtime_paths_target_exists": false
+  },
+  "exact_scope": {
+    "asset_scope": [
+      "KT_PROD_CLEANROOM/AUDITS/FL3_CANONICAL_RUNTIME_PATHS.json",
+      "KT_PROD_CLEANROOM/AUDITS/FAILURE_TAXONOMY_FL3.json"
+    ],
+    "shared_helper_scope": [
+      "KT_PROD_CLEANROOM/tools/verification/fl3_canonical.py",
+      "KT_PROD_CLEANROOM/tools/verification/fl3_validators.py",
+      "KT_PROD_CLEANROOM/tools/audit_intelligence/run_audit_intelligence.py"
+    ],
+    "test_scope": [
+      "KT_PROD_CLEANROOM/tests/fl3/_bootstrap.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_fl3_canonical_runtime_paths.py",
+      "KT_PROD_CLEANROOM/tests/fl3/test_audit_intelligence.py"
+    ]
+  },
+  "execution_status": "PASS__POST_F_PR15_FL3_ACTIVE_TREE_ASSET_EXPECTATION_DRIFT_BOUND",
+  "generated_utc": "2026-04-25T18:16:24Z",
+  "lane_outcome": "POST_F_PR15_FL3_ACTIVE_TREE_ASSET_EXPECTATION_DRIFT_DEFINED__WEAK_ROOT_SELECTION_COLLIDES_WITH_NESTED_CLEANROOM",
+  "live_resolution_read": {
+    "genuine_missing_asset": false,
+    "nested_subtree_requires_quarantine_from_root_selection": true,
+    "recommended_resolution_class": "NORMALIZE_REPO_ROOT_SELECTION_PRECEDENCE",
+    "recommended_resolution_summary": "Canonical FL3 assets exist on the active tree, but weak root selection misclassifies a nested cleanroom subtree as repo root.",
+    "root_selection_precedence_drift": true
+  },
+  "next_lawful_move": "EXECUTE_POST_F_PR15_FL3_ACTIVE_TREE_ASSET_EXPECTATION_DRIFT_REMEDIATION",
+  "precedence_rule": {
+    "active_tree_decision_rule": "If canonical assets exist at repo_root/KT_PROD_CLEANROOM/AUDITS but fail-close under repo_root/KT_PROD_CLEANROOM/KT_PROD_CLEANROOM/AUDITS, the defect class is root-selection drift, not missing assets.",
+    "resolution_decision_rule": "Prefer normalizing root-selection precedence and canonical asset lookup over recreating or moving active-tree assets.",
+    "winning_rule": "Repo-root selection must prefer the cleanroom source-tree sentinel (KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/schemas/fl3_suite_registry_schema.py) over the weaker 'first parent containing KT_PROD_CLEANROOM' heuristic.",
+    "winning_source": "cleanroom_source_tree_sentinel"
+  },
+  "schema_id": "kt.operator.cohort0_post_f_pr15_fl3_active_tree_asset_expectation_drift_packet.v1",
+  "source_refs": {
+    "audit_intelligence_runner": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/tools/audit_intelligence/run_audit_intelligence.py",
+    "canonical_runtime_paths": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/FL3_CANONICAL_RUNTIME_PATHS.json",
+    "failure_taxonomy": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/FAILURE_TAXONOMY_FL3.json",
+    "fl3_canonical_helper": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/tools/verification/fl3_canonical.py",
+    "remediation_authority_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_remediation_authority_packet.json",
+    "remediation_authority_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_remediation_authority_receipt.json",
+    "remediation_blocker_ledger": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_remediation_blocker_ledger.json",
+    "tranche1_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_law_bundle_and_amendment_mismatch_receipt.json"
+  },
+  "status": "PASS",
+  "success_condition": {
+    "active_tree_assets_remain_where_they_are": true,
+    "blocker_ledger_advances_to_tranche_3": true,
+    "main_replay_still_deferred": true,
+    "package_truth_unchanged": true,
+    "repo_root_selection_normalized": true,
+    "shared_helper_reads_canonical_assets_from_true_repo_root": true,
+    "truth_engine_law_unchanged": true
+  },
+  "tranche_header": {
+    "drift_class": "WEAK_ROOT_SELECTION_COLLIDES_WITH_NESTED_CLEANROOM_SUBTREE",
+    "ordered_blocker_position": 2,
+    "tranche_id": "T02",
+    "tranche_name": "active_tree_asset_expectation_drift",
+    "tranche_state": "defined"
+  }
+}
