@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional, Sequence
 
 from tools.operator import cohort0_gate_f_common as common
 from tools.operator.titanium_common import repo_root, utc_now_iso_z
+from tools.audit_intelligence.run_audit_intelligence import repo_root_from as _audit_intel_repo_root_from
 from tools.verification.fl3_canonical import repo_root_from as _shared_repo_root_from
 
 
@@ -82,6 +83,10 @@ def _canonical_repo_root_from(path: Path) -> Path:
     return _shared_repo_root_from(path)
 
 
+def _audit_intelligence_repo_root_from(path: Path) -> Path:
+    return _audit_intel_repo_root_from(path)
+
+
 def _test_source_uses_bootstrap_root(path: Path) -> bool:
     text = path.read_text(encoding="utf-8")
     return "_REPO_ROOT = bootstrap_syspath()" in text and "def _repo_root()" not in text
@@ -118,6 +123,8 @@ def build_outputs(
     nested_cleanroom_subtree_exists: bool,
     weak_test_root: Path,
     weak_test_runtime_paths_target: Path,
+    audit_intel_local_root: Path,
+    audit_intel_failure_taxonomy_target: Path,
     shared_helper_root: Path,
     shared_helper_failure_taxonomy_target: Path,
     test_source_uses_bootstrap_root: bool,
@@ -127,6 +134,7 @@ def build_outputs(
         and failure_taxonomy_exists
         and nested_cleanroom_subtree_exists
         and not weak_test_runtime_paths_target.exists()
+        and not audit_intel_failure_taxonomy_target.exists()
         and not shared_helper_failure_taxonomy_target.exists()
         and not test_source_uses_bootstrap_root
     )
@@ -134,6 +142,7 @@ def build_outputs(
         canonical_runtime_paths_exists
         and failure_taxonomy_exists
         and test_source_uses_bootstrap_root
+        and audit_intel_failure_taxonomy_target.exists()
         and shared_helper_failure_taxonomy_target.exists()
         and shared_helper_root == repo_root()
     )
@@ -193,6 +202,9 @@ def build_outputs(
             "weak_test_runtime_paths_target": weak_test_runtime_paths_target.as_posix(),
             "weak_test_runtime_paths_target_exists": weak_test_runtime_paths_target.exists(),
             "test_source_uses_bootstrap_root": test_source_uses_bootstrap_root,
+            "audit_intelligence_local_root_probe": audit_intel_local_root.as_posix(),
+            "audit_intelligence_failure_taxonomy_target": audit_intel_failure_taxonomy_target.as_posix(),
+            "audit_intelligence_failure_taxonomy_target_exists": audit_intel_failure_taxonomy_target.exists(),
             "shared_helper_root_probe": shared_helper_root.as_posix(),
             "shared_helper_failure_taxonomy_target": shared_helper_failure_taxonomy_target.as_posix(),
             "shared_helper_failure_taxonomy_target_exists": shared_helper_failure_taxonomy_target.exists(),
@@ -277,6 +289,7 @@ def build_outputs(
         "canonical_runtime_paths_exists": canonical_runtime_paths_exists,
         "failure_taxonomy_exists": failure_taxonomy_exists,
         "weak_root_selection_misroutes_test_asset_lookup": not weak_test_runtime_paths_target.exists(),
+        "audit_intelligence_local_root_misroutes_failure_taxonomy": not audit_intel_failure_taxonomy_target.exists(),
         "shared_helper_root_matches_repo_root": shared_helper_root == repo_root(),
         "next_lawful_move": next_move,
     }
@@ -291,6 +304,7 @@ def build_outputs(
             f"- Failure taxonomy asset exists: `{failure_taxonomy_exists}`",
             f"- Nested cleanroom subtree exists: `{nested_cleanroom_subtree_exists}`",
             f"- Weak test asset target exists: `{weak_test_runtime_paths_target.exists()}`",
+            f"- Audit-intelligence taxonomy target exists: `{audit_intel_failure_taxonomy_target.exists()}`",
             f"- Shared helper root matches repo root: `{shared_helper_root == repo_root()}`",
             f"- Recommended resolution class: `{packet['live_resolution_read']['recommended_resolution_class']}`",
             f"- Next lawful move: `{next_move}`",
@@ -340,6 +354,10 @@ def run(
     weak_test_runtime_paths_target = (
         weak_test_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FL3_CANONICAL_RUNTIME_PATHS.json"
     ).resolve()
+    audit_intel_local_root = _audit_intelligence_repo_root_from(audit_intel_tool)
+    audit_intel_failure_taxonomy_target = (
+        audit_intel_local_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FAILURE_TAXONOMY_FL3.json"
+    ).resolve()
     shared_helper_root = _canonical_repo_root_from(audit_intel_tool)
     shared_helper_failure_taxonomy_target = (
         shared_helper_root / "KT_PROD_CLEANROOM" / "AUDITS" / "FAILURE_TAXONOMY_FL3.json"
@@ -355,6 +373,8 @@ def run(
         nested_cleanroom_subtree_exists=nested_cleanroom_subtree_exists,
         weak_test_root=weak_test_root,
         weak_test_runtime_paths_target=weak_test_runtime_paths_target,
+        audit_intel_local_root=audit_intel_local_root,
+        audit_intel_failure_taxonomy_target=audit_intel_failure_taxonomy_target,
         shared_helper_root=shared_helper_root,
         shared_helper_failure_taxonomy_target=shared_helper_failure_taxonomy_target,
         test_source_uses_bootstrap_root=test_source_uses_bootstrap_root,

@@ -84,6 +84,11 @@ def test_t02_packet_freezes_root_selection_drift_instead_of_missing_assets(tmp_p
         "_canonical_repo_root_from",
         lambda path: tmp_path / "KT_PROD_CLEANROOM",
     )
+    monkeypatch.setattr(
+        tranche,
+        "_audit_intelligence_repo_root_from",
+        lambda path: tmp_path / "KT_PROD_CLEANROOM",
+    )
 
     result = tranche.run(
         reports_root=reports,
@@ -100,6 +105,7 @@ def test_t02_packet_freezes_root_selection_drift_instead_of_missing_assets(tmp_p
     assert packet["asset_truth"]["failure_taxonomy_exists"] is True
     assert packet["asset_truth"]["nested_cleanroom_subtree_exists"] is True
     assert packet["drift_evidence"]["weak_test_runtime_paths_target_exists"] is False
+    assert packet["drift_evidence"]["audit_intelligence_failure_taxonomy_target_exists"] is False
     assert packet["drift_evidence"]["shared_helper_failure_taxonomy_target_exists"] is False
     assert packet["live_resolution_read"]["genuine_missing_asset"] is False
     assert receipt["next_lawful_move"] == tranche.NEXT_MOVE_DRIFT
@@ -173,6 +179,11 @@ def test_t02_packet_can_clear_after_root_selection_normalization(tmp_path: Path,
         "_canonical_repo_root_from",
         lambda path: tmp_path,
     )
+    monkeypatch.setattr(
+        tranche,
+        "_audit_intelligence_repo_root_from",
+        lambda path: tmp_path,
+    )
 
     result = tranche.run(
         reports_root=reports,
@@ -187,6 +198,7 @@ def test_t02_packet_can_clear_after_root_selection_normalization(tmp_path: Path,
     receipt = _load(reports / tranche.OUTPUT_RECEIPT)
     assert packet["tranche_header"]["tranche_state"] == "cleared"
     assert packet["drift_evidence"]["test_source_uses_bootstrap_root"] is True
+    assert packet["drift_evidence"]["audit_intelligence_failure_taxonomy_target_exists"] is True
     assert packet["drift_evidence"]["shared_helper_failure_taxonomy_target_exists"] is True
     assert receipt["shared_helper_root_matches_repo_root"] is True
     assert receipt["next_lawful_move"] == tranche.NEXT_MOVE_CLEARED
