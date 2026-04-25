@@ -1,8 +1,9 @@
-# Cohort0 Post-F Truth Engine First Recompute Report
+# Cohort0 Post-F Truth Engine Canonical Main Replay Report
 
-- Execution status: `PASS__POST_F_TRUTH_ENGINE_VALIDATOR_AND_FIRST_RECOMPUTE_BOUND`
-- Outcome: `POST_F_TRUTH_ENGINE_FIRST_RECOMPUTE_COMPLETE__BRANCH_AUTHORITATIVE_REMOTE_MAIN_PENDING`
+- Execution status: `PASS__POST_F_TRUTH_ENGINE_CANONICAL_MAIN_RECOMPUTE_BOUND`
+- Outcome: `POST_F_TRUTH_ENGINE_RECOMPUTE_COMPLETE__CANONICAL_MAIN_CONVERGED`
+- Branch ref: `main`
 - Blocking contradictions: `0`
-- Advisory contradictions: `1`
-- Remote main pending: `True`
-- Next lawful move: `RERUN_POST_F_TRUTH_ENGINE_RECOMPUTE_ON_MAIN_AFTER_PR15_MERGE`
+- Advisory contradictions: `0`
+- Remote main pending: `False`
+- Next lawful move: `PROMOTE_TRUST_ZONE_BOUNDARY_PURIFICATION_AS_NEXT_AUTHORITATIVE_LANE`
