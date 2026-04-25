@@ -1,0 +1,95 @@
+{
+  "allowed_resolution_classes": [
+    {
+      "class_id": "DEMOTE_ARCHIVE_RECEIPTS_FROM_ACTIVE_TREE_REQUIREMENT",
+      "summary": "Tests may not require KT_ARCHIVE/vault/receipts to exist on the active canonical tree when workflow law already treats that surface as optional lineage-only input."
+    },
+    {
+      "class_id": "ALIGN_TEST_BEHAVIOR_WITH_WORKFLOW_SKIP_LAW",
+      "summary": "If archive receipts are absent from the active tree, tests must skip or use isolated fixtures rather than fail-close on the missing archive directory."
+    },
+    {
+      "class_id": "KEEP_ARCHIVE_PROMOTION_FORBIDDEN",
+      "summary": "Resolve the assumption at the test layer; do not re-promote archive receipts into the active canonical tree just to make the suite green."
+    }
+  ],
+  "archive_truth": {
+    "archive_receipts_exists_on_active_tree": false,
+    "archive_receipts_rel": "KT_ARCHIVE/vault/receipts",
+    "workflow_skip_law_present": true
+  },
+  "authority_header": {
+    "authoritative_branch": "authoritative/post-f-pr15-fl3-remediation",
+    "authoritative_branch_head": "78aa71d0729b18fb55cea55fb52e0ff68081d53a",
+    "package_promotion_still_deferred": true,
+    "replay_on_main_still_deferred_until_pr15_merge": true,
+    "truth_engine_law_unchanged": true
+  },
+  "claim_boundary": "This packet binds tranche T03 only. It does not widen package truth, does not change truth-engine law, and does not authorize archive promotion or main replay.",
+  "decontamination_evidence": {
+    "secrets_test_requires_archive_receipts": false,
+    "secrets_test_skips_missing_archive_receipts": true,
+    "validate_receipts_repo_test_requires_archive_dir": false,
+    "validate_receipts_repo_test_skips_missing_archive_dir": true
+  },
+  "do_not_widen_boundaries": [
+    "Do not widen package truth.",
+    "Do not change truth-engine derivation law.",
+    "Do not rerun the main truth-engine replay early.",
+    "Do not let prep lanes become authoritative.",
+    "Do not widen Track 03 or package promotion to chase green checks."
+  ],
+  "exact_scope": {
+    "test_scope": [
+      "KT_PROD_CLEANROOM/tests/fl3/test_fl3_receipts_no_secrets.py",
+      "KT_PROD_CLEANROOM/tools/verification/tests/test_validate_receipts.py"
+    ],
+    "tool_scope": [
+      "KT_PROD_CLEANROOM/tools/verification/validate_receipts.py"
+    ],
+    "workflow_scope": [
+      ".github/workflows/ci_fl3_pr_fast.yml"
+    ]
+  },
+  "execution_status": "PASS__POST_F_PR15_FL3_ARCHIVE_ASSUMPTION_DECONTAMINATION_BOUND",
+  "generated_utc": "2026-04-25T18:24:44Z",
+  "lane_outcome": "POST_F_PR15_FL3_ARCHIVE_ASSUMPTION_DECONTAMINATION_RESOLVED__TRANCHE3_CLEARED",
+  "live_resolution_read": {
+    "archive_receipts_are_active_tree_requirement": false,
+    "recommended_resolution_class": "ADVANCE_TO_T04_PHASE_PATH_NORMALIZATION",
+    "recommended_resolution_summary": "Archive receipt assumptions are decontaminated from the test layer and tranche T03 is cleared.",
+    "test_layer_archive_assumption_present": false
+  },
+  "next_lawful_move": "AUTHOR_POST_F_PR15_FL3_PHASE_PATH_NORMALIZATION_PACKET",
+  "precedence_rule": {
+    "resolution_decision_rule": "Prefer decontaminating the test layer to match active-tree boundary law over restoring archive receipts into the canonical tree.",
+    "winning_rule": "If KT_ARCHIVE/vault/receipts is absent from the active canonical tree and CI explicitly treats that absence as a lawful skip, test expectations may not re-promote archive receipts into active-tree requirements.",
+    "winning_source": "active_canonical_tree_boundary_plus_ci_skip_law"
+  },
+  "schema_id": "kt.operator.cohort0_post_f_pr15_fl3_archive_assumption_decontamination_packet.v1",
+  "source_refs": {
+    "ci_fl3_pr_fast": "D:/user/rober/OneDrive/Kings_Theorem_Active/.github/workflows/ci_fl3_pr_fast.yml",
+    "fl3_receipts_no_secrets_test": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/tests/fl3/test_fl3_receipts_no_secrets.py",
+    "remediation_authority_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_remediation_authority_packet.json",
+    "remediation_authority_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_remediation_authority_receipt.json",
+    "remediation_blocker_ledger": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_remediation_blocker_ledger.json",
+    "tranche2_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_active_tree_asset_expectation_drift_receipt.json",
+    "validate_receipts_repo_test": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/tools/verification/tests/test_validate_receipts.py"
+  },
+  "status": "PASS",
+  "success_condition": {
+    "archive_promotion_forbidden": true,
+    "archive_receipts_remain_outside_active_tree": true,
+    "blocker_ledger_advances_to_tranche_4": true,
+    "package_truth_unchanged": true,
+    "tests_no_longer_require_archive_receipts_dir_when_absent": true,
+    "truth_engine_law_unchanged": true
+  },
+  "tranche_header": {
+    "archive_assumption_class": "ARCHIVE_RECEIPTS_DEMOTED_TO_LINEAGE_ONLY_IN_TEST_LAYER",
+    "ordered_blocker_position": 3,
+    "tranche_id": "T03",
+    "tranche_name": "archive_assumption_decontamination",
+    "tranche_state": "cleared"
+  }
+}
