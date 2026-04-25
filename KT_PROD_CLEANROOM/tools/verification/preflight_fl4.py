@@ -27,6 +27,8 @@ from tools.verification.watcher_spc_validators import (
     validate_watcher_spc_artifacts_if_present,
 )
 
+CLEANROOM_PYTEST_TARGETS = ["KT_PROD_CLEANROOM/tests/fl3"]
+
 
 def _utc_now_iso_z() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -488,7 +490,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             receipt_path=out_dir / "io_guard_receipt.json",
         )
     ):
-        # 1) Whole-KT test battery
+        # 1) Canonical FL3 merge-readiness battery. Broader upper-stack tests
+        # stay in their own ratification lanes and must not block PR15 replay.
         env_pytest = dict(env)
         env_pytest.pop("KT_CANONICAL_LANE", None)
         # Pytest's tmp_path fixture can write arbitrary test payloads into TEMP/TMPDIR.
@@ -524,12 +527,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             output=out,
         )
         rc, out = _run(
-            pytest_common + ["KT_PROD_CLEANROOM/tests", "-q"],
+            pytest_common + CLEANROOM_PYTEST_TARGETS + ["-q"],
             cwd=repo_root,
             env=env_pytest,
             out_path=out_dir / "pytest_cleanroom.log",
         )
-        _append_transcript(transcript_path, cmd=pytest_common + ["KT_PROD_CLEANROOM/tests", "-q"], rc=rc, output=out)
+        _append_transcript(transcript_path, cmd=pytest_common + CLEANROOM_PYTEST_TARGETS + ["-q"], rc=rc, output=out)
 
         # 2) Governance verifiers
         rc, out = _run(
