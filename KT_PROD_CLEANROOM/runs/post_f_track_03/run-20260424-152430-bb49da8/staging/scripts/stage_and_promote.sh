@@ -69,7 +69,9 @@ PY
 
 if [[ -d "${ROOT_DIR}/.git" ]]; then
   git -C "${ROOT_DIR}" add canonical
-  git -C "${ROOT_DIR}" commit -m "promote: canonical Track 03 package" || true
+  if ! git -C "${ROOT_DIR}" diff --cached --quiet -- canonical; then
+    git -C "${ROOT_DIR}" commit -m "promote: canonical Track 03 package"
+  fi
 fi
 
 echo "promotion complete"

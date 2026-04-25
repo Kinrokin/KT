@@ -19,7 +19,11 @@ STAGING_MANIFEST="${ROOT_DIR}/staging/manifest.json"
 ARTIFACTS_DIR="$(cd "${ROOT_DIR}/.." && pwd)/artifacts"
 SMOKE_RECEIPT_FILE="${ARTIFACTS_DIR}/smoke_path_receipt.json"
 COUNTED_RECEIPT_FILE="${ARTIFACTS_DIR}/counted_path_receipt.json"
-REPO_ROOT="$(git -C "${ROOT_DIR}" rev-parse --show-toplevel 2>/dev/null || true)"
+if REPO_ROOT="$(git -C "${ROOT_DIR}" rev-parse --show-toplevel 2>/dev/null)"; then
+  :
+else
+  REPO_ROOT=""
+fi
 
 json_get() {
   python - "$1" "$2" <<'PY'

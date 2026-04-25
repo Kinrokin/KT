@@ -29,9 +29,9 @@ jobs:
 
       - name: Run FL4 preflight (canonical, Linux)
         env:
-          # Preflight shells out to pytest and the repo addopts include --cov;
-          # keep plugin autoload enabled so pytest-cov can satisfy that contract in CI.
-          PYTEST_DISABLE_PLUGIN_AUTOLOAD: "0"
+          # Preflight enforces the FL4 env lock exactly; internal pytest calls
+          # now override repo addopts directly, so autoload stays disabled.
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
           TOKENIZERS_PARALLELISM: "false"
           PYTHONHASHSEED: "0"
         run: |

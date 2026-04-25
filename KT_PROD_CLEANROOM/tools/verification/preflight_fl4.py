@@ -504,6 +504,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             py_exe,
             "-m",
             "pytest",
+            "-o",
+            "addopts=",
             "-p",
             "no:cacheprovider",
             "--basetemp",
