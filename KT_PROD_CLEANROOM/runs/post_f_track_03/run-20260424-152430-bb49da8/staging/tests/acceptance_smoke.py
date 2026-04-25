@@ -3,6 +3,7 @@ import hashlib
 import io
 import json
 import os
+import shutil
 import signal
 import subprocess
 import tarfile
@@ -46,6 +47,26 @@ def _expected_bundle_digest() -> str:
                 tf.addfile(info, io.BytesIO(path.read_bytes()))
     return hashlib.sha256(bio.getvalue()).hexdigest()
 
+
+def _find_gnu_tar() -> str:
+    candidates = []
+    direct = shutil.which("tar")
+    if direct:
+        candidates.append(direct)
+    candidates.extend(
+        [
+            r"C:\Program Files\Git\usr\bin\tar.exe",
+            r"C:\Program Files\Git\bin\tar.exe",
+        ]
+    )
+    for candidate in candidates:
+        if not candidate or not Path(candidate).exists():
+            continue
+        probe = subprocess.run([candidate, "--version"], capture_output=True, text=True)
+        if probe.returncode == 0 and "GNU tar" in probe.stdout:
+            return candidate
+    raise FileNotFoundError("GNU tar not found for deterministic bundle validation")
+
 def test_smoke_run_and_bundle_publish():
     proc = _run(["bash", "scripts/run_h1_smoke.sh"], timeout=60)
     assert proc.returncode == 0, proc.stderr
@@ -58,8 +79,6 @@ def test_smoke_run_and_bundle_publish():
 
 
 def test_reproducible_bundle_same_seed(tmp_path):
-    import shutil
-    import subprocess
     run_id = json.loads((ROOT / "governance/H1_EXPERIMENT_MANIFEST.json").read_text(encoding="utf-8"))["run_id"]
     tmp_inputs = tmp_path / "inputs"
     tmp_inputs.mkdir()
@@ -68,8 +87,9 @@ def test_reproducible_bundle_same_seed(tmp_path):
         dest = tmp_inputs / top
         shutil.copytree(src, dest)
     out_bundle = tmp_path / f"proof_bundle_{run_id}.tar.gz"
+    tar_bin = _find_gnu_tar()
     proc = subprocess.run([
-        "tar","--sort=name","--mtime=UTC 2024-01-01","--owner=0","--group=0","--numeric-owner",
+        tar_bin,"--sort=name","--mtime=UTC 2024-01-01","--owner=0","--group=0","--numeric-owner",
         "-czf", str(out_bundle), "-C", str(tmp_inputs), "."
     ], cwd=ROOT)
     assert proc.returncode == 0
