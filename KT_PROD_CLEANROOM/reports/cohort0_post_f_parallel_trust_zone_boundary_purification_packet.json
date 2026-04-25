@@ -1,0 +1,65 @@
+{
+  "canonical_scope_manifest_v2": {
+    "authoritative_branch": "main",
+    "authoritative_successor_branch": "authoritative/post-f-truth-engine",
+    "live_truth_exclude": [
+      "KT_PROD_CLEANROOM/runs/**",
+      "KT-Codex/**",
+      "KT_ARCHIVE/**",
+      "reports/track02_partial_run_quarantine_*"
+    ],
+    "live_truth_include": [
+      "KT_PROD_CLEANROOM/reports/cohort0_successor_*",
+      "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_*",
+      "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_*",
+      "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_*",
+      "KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_*"
+    ]
+  },
+  "claim_boundary": "Non-authoritative trust-zone/boundary purification prep only. It does not rewrite live truth or package boundaries.",
+  "execution_status": "PASS__POST_F_TRUST_ZONE_BOUNDARY_PURIFICATION_PREP_BOUND",
+  "generated_utc": "2026-04-25T16:32:25Z",
+  "next_lawful_move": "RERUN_POST_F_TRUTH_ENGINE_RECOMPUTE_ON_MAIN_AFTER_PR15_MERGE",
+  "noncanonical_quarantine_candidate_list_v2": {
+    "candidates": [
+      "KT_PROD_CLEANROOM/runs/post_f_track_03/**",
+      "KT_PROD_CLEANROOM/runs/**/staging/scripts/stage_and_promote.sh",
+      "KT-Codex/**",
+      "KT_ARCHIVE/**",
+      "root forensic freeze artifacts"
+    ],
+    "quarantine_reason": "prevent execution-history or deferred package material from driving canonical truth"
+  },
+  "outcome": "POST_F_TRUST_ZONE_BOUNDARY_PURIFICATION_PREP_DEFINED__NON_AUTHORITATIVE",
+  "promotion_safe_boundary_recommendations_v2": [
+    "Truth-engine recompute outputs may become canonical only after remote main convergence.",
+    "Deferred package artifacts remain excluded from repo truth until a separate package-promotion court.",
+    "Trust-zone purification remains prep-only until separately promoted after canonical truth-engine replay on main."
+  ],
+  "schema_id": "kt.operator.cohort0_post_f_parallel_trust_zone_boundary_purification_packet.v1",
+  "source_refs": {
+    "prior_scope_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_parallel_trust_zone_boundary_scope_packet.json",
+    "recompute_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_recompute_receipt.json"
+  },
+  "status": "PASS",
+  "trust_zone_registry_refined": {
+    "branch_local_execution_truth": {
+      "allowed_roots": [
+        "KT_PROD_CLEANROOM/runs/post_f_track_03/**"
+      ],
+      "promotion_rule": "preserve as execution history only until separately promoted"
+    },
+    "canonical_live_truth": {
+      "allowed_roots": [
+        "KT_PROD_CLEANROOM/reports/cohort0_successor_*",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_0*_final_summary_*",
+        "KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_*"
+      ],
+      "forbidden_overrides": [
+        "prep lane packets",
+        "deferred package artifacts",
+        "historical quarantine surfaces"
+      ]
+    }
+  }
+}
