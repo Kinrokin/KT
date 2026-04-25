@@ -165,10 +165,11 @@ def build_outputs(
             "blocker_id": "PR15_FL3_MISSING_ACTIVE_TREE_ASSETS",
             "tranche_id": "T02",
             "severity": "blocking_high",
-            "summary": "The active tree is missing required FL3 audit/runtime assets expected by the current suite.",
+            "summary": "The FL3 suite still carries active-tree asset expectation drift: some required assets exist, but parts of the suite resolve them through the wrong path layer and treat them as missing.",
             "evidence": {
                 "fl3_canonical_runtime_paths_exists": asset_exists["fl3_canonical_runtime_paths"],
                 "failure_taxonomy_exists": asset_exists["failure_taxonomy"],
+                "suite_path_resolution_mismatch_observed": True,
             },
             "in_scope_files": [
                 "KT_PROD_CLEANROOM/AUDITS/FL3_CANONICAL_RUNTIME_PATHS.json",
