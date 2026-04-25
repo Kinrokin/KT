@@ -114,6 +114,7 @@ import sys
 
 repo = Path(sys.argv[1]).resolve()
 root = Path(sys.argv[2]).resolve()
+run_root = root.parent
 manifest = json.load(open(sys.argv[3], 'r', encoding='utf-8'))
 status_lines = subprocess.run(
     ['git', '-C', str(repo), 'status', '--porcelain'],
@@ -125,11 +126,15 @@ if not status_lines:
     raise SystemExit(0)
 
 root_rel = root.relative_to(repo).as_posix()
+run_root_rel = run_root.relative_to(repo).as_posix()
 allowed_prefixes = []
 for item in manifest.get("mutable_files", []):
     clean_item = item.rstrip("/")
-    prefix = root_rel if not clean_item else f"{root_rel}/{clean_item}"
-    allowed_prefixes.append(prefix)
+    staging_prefix = root_rel if not clean_item else f"{root_rel}/{clean_item}"
+    allowed_prefixes.append(staging_prefix)
+    run_root_prefix = run_root_rel if not clean_item else f"{run_root_rel}/{clean_item}"
+    if run_root_prefix not in allowed_prefixes:
+        allowed_prefixes.append(run_root_prefix)
 
 def allowed(path: str) -> bool:
     return any(path == prefix or path.startswith(prefix + "/") for prefix in allowed_prefixes)
