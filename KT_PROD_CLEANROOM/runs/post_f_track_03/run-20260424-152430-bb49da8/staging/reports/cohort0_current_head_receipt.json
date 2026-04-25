@@ -1,26 +1,17 @@
 {
   "__generated_by_agent__": true,
-  "commit": "bb49da82d50ede03f04d165ed883cf05df0c156e",
-  "mock_signed_payload": "eyJyZXBvIjogIktUX1BST0RfQ0xFQU5ST09NIiwgImNvbW1pdCI6ICJiYjQ5ZGE4MmQ1MGVkZTAzZjA0ZDE2NWVkODgzY2YwNWRmMGMxNTZlIn0=",
-  "rekor_entry": {
-    "index_path": "mock_rekor/index.json",
+  "clean_worktree_status": "dirty_outside_mutable_paths_must_be_checked_by_preflight",
+  "current_branch": "expansion/post-f-track-01",
+  "current_git_head": "bf1c7ac8af60beec181bfc60a608bf9768a3633f",
+  "external_timestamp_or_transparency_reference": {
     "mode": "mock",
-    "timestamp": "2026-04-24T15:27:00Z",
-    "uuid": "12345678-1234-4234-9234-1234567890ab"
+    "reference": "mock_rekor/index.json",
+    "timestamp": "2026-04-25T14:05:59Z"
   },
+  "frozen_manifest_digest": "204e31a0fd53ca999383c53383564608296a5a112509e69c287cc05bffe98280",
+  "mock_signed_payload": "eyJjdXJyZW50X2JyYW5jaCI6ImV4cGFuc2lvbi9wb3N0LWYtdHJhY2stMDEiLCJjdXJyZW50X2dpdF9oZWFkIjoiYmYxYzdhYzhhZjYwYmVlYzE4MWJmYzYwYTYwOGJmOTc2OGEzNjMzZiIsImZyb3plbl9tYW5pZmVzdF9kaWdlc3QiOiIyMDRlMzFhMGZkNTNjYTk5OTM4M2M1MzM4MzU2NDYwODI5NmE1YTExMjUwOWU2OWMyODdjYzA1YmZmZTk4MjgwIiwicmVwbyI6IktUX1BST0RfQ0xFQU5ST09NIiwidGltZXN0YW1wIjoiMjAyNi0wNC0yNVQxNDowNTo1OVoifQ==",
   "repo": "KT_PROD_CLEANROOM",
-  "sample_commands": {
-    "cosign_mock": [
-      "MOCK_COSIGN=true ./scripts/proof_bundle_publish.sh --mock --run-id run-20260424-152430-bb49da8 --seed 42"
-    ],
-    "cosign_prod": [
-      "COSIGN_EXPERIMENTAL=1 COSIGN_KEY=$COSIGN_KEY REKOR_URL=$REKOR_URL ./scripts/proof_bundle_publish.sh --prod --run-id run-20260424-152430-bb49da8 --seed 42"
-    ],
-    "openssl": [
-      "openssl dgst -sha256 -sign keys/mock_cosign_key.pem -out signatures/current_head.sig reports/cohort0_current_head_receipt.json",
-      "openssl dgst -sha256 -verify <(openssl pkey -in keys/mock_cosign_key.pem -pubout) -signature signatures/current_head.sig reports/cohort0_current_head_receipt.json"
-    ]
-  },
+  "rmr_schema_digest": "7e6024cca27146f7eee6d169ee0de41342b2cd34cc798ecfe057cdd2be93c219",
   "signer_keys": [
     {
       "key_id": "mock-key-id",
@@ -33,6 +24,6 @@
       "path": "keys/mock_rekor_key.pem"
     }
   ],
-  "timestamp": "2026-04-24T15:27:00Z",
-  "tree_digest": "b70f16d2fcb8b1a83929a397b826fb67dd29dde6156b9680b8aceb73c8cdf024"
+  "timestamp": "2026-04-25T14:05:59Z",
+  "tree_digest": "a372018585e3b877bcceea061d4a6f7816cd62d4d5e6758e8c133a213267e6d8"
 }
