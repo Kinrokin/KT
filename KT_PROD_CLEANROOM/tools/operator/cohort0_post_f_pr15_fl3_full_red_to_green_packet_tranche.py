@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 import re
 import subprocess
+import tempfile
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
@@ -114,19 +115,32 @@ def _parse_pytest_summary(text: str) -> Dict[str, Any]:
 
 
 def _run_full_fl3_suite(root: Path) -> Dict[str, Any]:
-    result = subprocess.run(
-        ["python", "-m", "pytest", "-q", "-o", "addopts=''", "KT_PROD_CLEANROOM/tests/fl3"],
-        cwd=root,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-    )
-    combined = "\n".join([part for part in [result.stdout.strip(), result.stderr.strip()] if part])
+    env = dict(os.environ)
+    env.setdefault("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
+    with tempfile.NamedTemporaryFile(mode="w+", encoding="utf-8", newline="\n", delete=False) as handle:
+        log_path = Path(handle.name)
+    try:
+        with log_path.open("w", encoding="utf-8", newline="\n") as stream:
+            result = subprocess.run(
+                ["python", "-m", "pytest", "-q", "-o", "addopts=''", "KT_PROD_CLEANROOM/tests/fl3"],
+                cwd=root,
+                stdout=stream,
+                stderr=subprocess.STDOUT,
+                text=True,
+                encoding="utf-8",
+                env=env,
+            )
+        combined = log_path.read_text(encoding="utf-8")
+    finally:
+        try:
+            log_path.unlink(missing_ok=True)
+        except Exception:
+            pass
     parsed = _parse_pytest_summary(combined)
     return {
         "returncode": result.returncode,
-        "stdout": result.stdout.strip(),
-        "stderr": result.stderr.strip(),
+        "stdout": combined.strip(),
+        "stderr": "",
         "combined_tail": combined[-4000:],
         "summary_line": parsed["summary_line"],
         "counts": parsed["counts"],
