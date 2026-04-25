@@ -303,6 +303,10 @@ def _build_recompute_receipt(
     advisory_conditions = []
     if int(remote_divergence.get("local_main_ahead_of_remote", 0)) > 0:
         advisory_conditions.append("remote_main_pending_pr15_merge")
+    canonical_mode = branch_ref == CANONICAL_REPLAY_BRANCH
+    recompute_scope = "CANONICAL_MAIN_REPLAY_CONVERGED" if canonical_mode else "AUTHORITATIVE_BRANCH_AND_CANONICAL_MAIN_IN_SYNC"
+    if advisory_conditions:
+        recompute_scope = "AUTHORITATIVE_BRANCH_ONLY__REMOTE_MAIN_PENDING"
     return {
         "schema_id": "kt.operator.cohort0_post_f_truth_engine_recompute_receipt.v1",
         "generated_utc": utc_now_iso_z(),
@@ -315,7 +319,7 @@ def _build_recompute_receipt(
         "stale_source_quarantine_list_ref": common.resolve_path(root, f"KT_PROD_CLEANROOM/reports/{OUTPUT_STALE_QUARANTINE}").as_posix(),
         "blocking_contradiction_count": int(contradiction_ledger.get("blocking_contradiction_count", 0)),
         "advisory_condition_count": len(advisory_conditions),
-        "recompute_scope": "AUTHORITATIVE_BRANCH_ONLY__REMOTE_MAIN_PENDING" if advisory_conditions else "AUTHORITATIVE_BRANCH_AND_CANONICAL_MAIN_IN_SYNC",
+        "recompute_scope": recompute_scope,
         "next_lawful_move": next_lawful_move,
     }
 
@@ -359,8 +363,13 @@ def build_outputs(
     _validate_against_schema(stale_quarantine, schema_defs["stale_source_quarantine_list"], label="stale source quarantine list")
     _validate_against_schema(recompute_receipt, schema_defs["recompute_receipt"], label="recompute receipt")
 
+    report_title = (
+        "Cohort0 Post-F Truth Engine Canonical Main Replay Report"
+        if branch_ref == CANONICAL_REPLAY_BRANCH
+        else "Cohort0 Post-F Truth Engine First Recompute Report"
+    )
     report = common.report_lines(
-        "Cohort0 Post-F Truth Engine Canonical Recompute Report",
+        report_title,
         [
             f"- Execution status: `{execution_status}`",
             f"- Outcome: `{outcome}`",
@@ -430,6 +439,8 @@ def run(
         raise RuntimeError("FAIL_CLOSED: origin/main is ahead of local main; refresh canonical base before recompute")
     if branch_name == CANONICAL_REPLAY_BRANCH and int(remote_divergence.get("local_main_ahead_of_remote", 0)) > 0:
         raise RuntimeError("FAIL_CLOSED: canonical main replay requires local main and origin/main to be converged")
+    if branch_name == CANONICAL_REPLAY_BRANCH and not bool(remote_divergence.get("remote_ref_present", False)):
+        raise RuntimeError("FAIL_CLOSED: canonical main replay requires origin/main to be present and converged")
 
     execution_status = EXECUTION_STATUS
     outcome = OUTCOME
