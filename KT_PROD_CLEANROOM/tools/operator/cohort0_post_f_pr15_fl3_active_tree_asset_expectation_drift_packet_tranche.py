@@ -135,7 +135,7 @@ def build_outputs(
         and nested_cleanroom_subtree_exists
         and not weak_test_runtime_paths_target.exists()
         and not audit_intel_failure_taxonomy_target.exists()
-        and not shared_helper_failure_taxonomy_target.exists()
+        and shared_helper_failure_taxonomy_target.exists()
         and not test_source_uses_bootstrap_root
     )
     cleared = (

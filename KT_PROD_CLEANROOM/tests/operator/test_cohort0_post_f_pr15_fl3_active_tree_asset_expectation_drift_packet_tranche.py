@@ -82,7 +82,7 @@ def test_t02_packet_freezes_root_selection_drift_instead_of_missing_assets(tmp_p
     monkeypatch.setattr(
         tranche,
         "_canonical_repo_root_from",
-        lambda path: tmp_path / "KT_PROD_CLEANROOM",
+        lambda path: tmp_path,
     )
     monkeypatch.setattr(
         tranche,
@@ -106,7 +106,7 @@ def test_t02_packet_freezes_root_selection_drift_instead_of_missing_assets(tmp_p
     assert packet["asset_truth"]["nested_cleanroom_subtree_exists"] is True
     assert packet["drift_evidence"]["weak_test_runtime_paths_target_exists"] is False
     assert packet["drift_evidence"]["audit_intelligence_failure_taxonomy_target_exists"] is False
-    assert packet["drift_evidence"]["shared_helper_failure_taxonomy_target_exists"] is False
+    assert packet["drift_evidence"]["shared_helper_failure_taxonomy_target_exists"] is True
     assert packet["live_resolution_read"]["genuine_missing_asset"] is False
     assert receipt["next_lawful_move"] == tranche.NEXT_MOVE_DRIFT
 
