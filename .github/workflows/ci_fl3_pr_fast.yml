@@ -22,7 +22,7 @@ jobs:
         env:
           PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
           PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
-        run: python -m pytest -q KT_PROD_CLEANROOM/tests/fl3
+        run: python -m pytest -q -o addopts='' KT_PROD_CLEANROOM/tests/fl3
       - name: FL3 meta-evaluator (law)
         env:
           PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
@@ -30,9 +30,15 @@ jobs:
       - name: Validate archive receipts
         env:
           PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
-        run: python -m tools.verification.validate_receipts --out-dir tmp/receipt_validation
+        run: |
+          set -euo pipefail
+          if [ -d KT_ARCHIVE/vault/receipts ]; then
+            python -m tools.verification.validate_receipts --receipts-dir KT_ARCHIVE/vault/receipts --out-dir tmp/receipt_validation
+          else
+            echo "SKIP: KT_ARCHIVE/vault/receipts is not present on the active canonical tree"
+          fi
       - name: Run Temple V2 tests (smoke)
         env:
           PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
           PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
-        run: python -m pytest -q KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests
+        run: python -m pytest -q -o addopts='' KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests

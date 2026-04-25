@@ -17,7 +17,9 @@ jobs:
     env:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
-      PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+      # Truth-barrier shells out to pytest under the repo's default addopts;
+      # keep autoload enabled so installed pytest-cov can satisfy --cov flags.
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD: "0"
       PYTHONHASHSEED: "0"
       PYTHONIOENCODING: UTF-8
       PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
