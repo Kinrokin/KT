@@ -1,0 +1,43 @@
+{
+  "authority_header": {
+    "authoritative_branch": "authoritative/post-f-pr15-fl3-remediation",
+    "authoritative_branch_head_before_remediation": "33fe8c0ce462ea1fae4fdca689b7bfb8f2b7d47c",
+    "package_promotion_still_deferred": true,
+    "replay_on_main_still_deferred_until_pr15_merge": true,
+    "truth_engine_law_unchanged": true
+  },
+  "claim_boundary": "This remediation packet repairs tranche T01 support-chain drift only. It does not change truth-engine law, does not widen package truth, and does not authorize replay on main.",
+  "emitted_support_artifacts": {
+    "kt_cli_profile_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/tools/operator/kt_cli.py",
+    "law_amendment_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260425T180625Z.json",
+    "law_bundle_change_receipt_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260425T180620Z.json",
+    "law_bundle_sha_path": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256"
+  },
+  "execution_status": "PASS__POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_MISMATCH_REMEDIATED",
+  "generated_utc": "2026-04-25T18:06:25Z",
+  "lane_outcome": "POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_SUPPORT_CHAIN_REPAIRED__READY_FOR_T01_RERUN",
+  "mapping": {
+    "mapping_summary": "Advance the support chain from the last lawful first-parent ancestor whose computed bundle hash still matched the pinned March-era support chain to the current active-tree bundle hash.",
+    "new_active_tree_hash": "905ab6d4d25715fa518f3155f5880b29c7cf13997d59dbf0924b66826b11302c",
+    "old_pin_hash": "375558537ee5654a8a98748a7a9706554176c2373ef54efe985f92809693ce2e",
+    "old_supported_hash": "375558537ee5654a8a98748a7a9706554176c2373ef54efe985f92809693ce2e",
+    "old_supported_ref": "5b1894f7ac2653322e2ce2ae89b0ec3bb2de8605",
+    "resolution_class": "BIND_SUPERSESSION_AND_AMENDMENT_MAPPING"
+  },
+  "next_lawful_move": "RERUN_POST_F_PR15_FL3_LAW_BUNDLE_AND_AMENDMENT_MISMATCH_PACKET",
+  "non_widening_rules": [
+    "Do not change truth-engine derivation law.",
+    "Do not widen package truth.",
+    "Do not run replay on main before PR15 merges.",
+    "Do not promote archive surfaces into active truth."
+  ],
+  "schema_id": "kt.operator.cohort0_post_f_pr15_fl3_law_bundle_and_amendment_mismatch_remediation_packet.v1",
+  "status": "PASS",
+  "success_condition": {
+    "active_pin_matches_current_bundle_hash": true,
+    "current_hash_has_law_amendment_v2": true,
+    "current_hash_has_law_bundle_change_receipt_v1": true,
+    "kt_cli_v1_support_chain_updated": true,
+    "next_step_is_t01_rerun": true
+  }
+}
