@@ -34,9 +34,10 @@ def _repo_root_from(this_file: Path) -> Path:
     """
     p = this_file.resolve()
     for parent in [p] + list(p.parents):
-        if (parent / "KT_PROD_CLEANROOM").exists():
+        cleanroom_root = parent / "KT_PROD_CLEANROOM"
+        if (cleanroom_root / "04_PROD_TEMPLE_V2" / "src" / "schemas" / "fl3_suite_registry_schema.py").is_file():
             return parent
-    raise Phase1CError("Unable to locate repo root (missing KT_PROD_CLEANROOM/)")
+    raise Phase1CError("Unable to locate repo root with cleanroom source tree")
 
 
 def _canonical_json(obj: object) -> str:
