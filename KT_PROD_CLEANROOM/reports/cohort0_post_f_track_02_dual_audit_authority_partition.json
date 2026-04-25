@@ -1,0 +1,106 @@
+{
+  "anchor_resolution": {
+    "canonical_authority_branch": "main",
+    "current_branch": "expansion/post-f-track-01",
+    "current_head_commit": "0e8a779f22f498a5a49b150298ceff9e867b4f5d",
+    "current_truth_anchor_commit": "0e8a779f22f498a5a49b150298ceff9e867b4f5d",
+    "current_truth_anchor_ref": "expansion/post-f-track-01",
+    "frozen_baseline_anchor_commit": "558c9a46e87dbe9fed1884a4d24305ed2450929d",
+    "frozen_baseline_anchor_ref": "kt-post-f-reaudit-pass",
+    "worktree_clean": true
+  },
+  "authoritative_current_truth_classes": {
+    "gate_d_gate_e_gate_f_receipts": [
+      "KT_PROD_CLEANROOM/reports/cohort0_successor_full_gate_d_readjudication_receipt.json",
+      "KT_PROD_CLEANROOM/reports/cohort0_gate_e_admissibility_screen_receipt.json",
+      "KT_PROD_CLEANROOM/reports/cohort0_gate_f_one_narrow_wedge_review_receipt.json"
+    ],
+    "live_header_packets": [
+      "KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_post_clear_branch_law_packet.json",
+      "KT_PROD_CLEANROOM/reports/cohort0_gate_f_post_close_live_product_truth_packet.json"
+    ],
+    "orchestrator_receipt_and_predicate_board": [
+      "KT_PROD_CLEANROOM/reports/cohort0_successor_master_orchestrator_receipt.json",
+      "KT_PROD_CLEANROOM/reports/cohort0_successor_master_predicate_board.json"
+    ],
+    "post_f_broad_canonical_reaudit_receipt": [
+      "KT_PROD_CLEANROOM/reports/cohort0_post_f_broad_canonical_reaudit_receipt.json"
+    ],
+    "post_f_live_product_truth": [
+      "KT_PROD_CLEANROOM/reports/cohort0_gate_f_post_close_live_product_truth_packet.json",
+      "KT_PROD_CLEANROOM/reports/cohort0_gate_f_post_close_live_product_truth_receipt.json"
+    ],
+    "supersession_notes": [
+      "KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_post_clear_supersession_note.json",
+      "KT_PROD_CLEANROOM/reports/cohort0_gate_f_post_close_supersession_note.json"
+    ],
+    "track_01_final_summary_packet": [
+      "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_final_summary_packet.json",
+      "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_final_summary_receipt.json"
+    ]
+  },
+  "authoritative_current_truth_paths": [
+    "KT_PROD_CLEANROOM/reports/cohort0_gate_e_admissibility_screen_receipt.json",
+    "KT_PROD_CLEANROOM/reports/cohort0_gate_f_one_narrow_wedge_review_receipt.json",
+    "KT_PROD_CLEANROOM/reports/cohort0_gate_f_post_close_live_product_truth_packet.json",
+    "KT_PROD_CLEANROOM/reports/cohort0_gate_f_post_close_live_product_truth_receipt.json",
+    "KT_PROD_CLEANROOM/reports/cohort0_gate_f_post_close_supersession_note.json",
+    "KT_PROD_CLEANROOM/reports/cohort0_post_f_broad_canonical_reaudit_receipt.json",
+    "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_final_summary_packet.json",
+    "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_final_summary_receipt.json",
+    "KT_PROD_CLEANROOM/reports/cohort0_successor_full_gate_d_readjudication_receipt.json",
+    "KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_post_clear_branch_law_packet.json",
+    "KT_PROD_CLEANROOM/reports/cohort0_successor_gate_d_post_clear_supersession_note.json",
+    "KT_PROD_CLEANROOM/reports/cohort0_successor_master_orchestrator_receipt.json",
+    "KT_PROD_CLEANROOM/reports/cohort0_successor_master_predicate_board.json"
+  ],
+  "generated_utc": "2026-04-24T13:53:43Z",
+  "optional_supporting_sources": {
+    "chat_log_exports": {
+      "harvested_count": 0,
+      "optional_missing": true
+    },
+    "google_drive_exports": {
+      "harvested_count": 0,
+      "optional_missing": true
+    }
+  },
+  "precedence_order": [
+    "current_truth_anchor_commit_consistent_live_header",
+    "current_truth_anchor_commit_consistent_product_truth",
+    "frozen_baseline_anchor_commit_consistent_authority",
+    "current_repo_boundary_and_ignore_law",
+    "current_operator_tranches_and_tests",
+    "tagged_release_receipts_and_closeout_packets",
+    "drive_exports_with_hash_and_source_metadata",
+    "chat_exports_as_supporting_history",
+    "historical_or_superseded_artifacts"
+  ],
+  "schema_id": "kt.operator.cohort0_post_f_track_02_dual_audit_authority_partition.v1",
+  "secret_presence_note": {
+    "exists": true,
+    "metadata_only": true,
+    "path": "D:/user/rober/OneDrive/Kings_Theorem_Active/.envsecrets"
+  },
+  "stale_if": [
+    "artifact_conflicts_with_anchor_commit_state",
+    "artifact_is_superseded_by_later_more_authoritative_receipt_for_same_contract",
+    "artifact_is_outside_repo_boundary_and_claims_canonical_authority",
+    "artifact_is_unhashable_or_unverifiable",
+    "artifact_is_secret_bearing_content",
+    "artifact_branch_mismatch_without_explicit_authority_annotation"
+  ],
+  "status": "PASS",
+  "subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91",
+  "supporting_current_boundary_paths": [
+    ".gitignore",
+    "docs/REPO_BOUNDARY.md"
+  ],
+  "supporting_current_generation_logic_count": 6,
+  "track_id": "POST_F_TRACK_02_DUAL_AUDIT",
+  "view_rules": {
+    "baseline_view_rejects_post_anchor_authority": true,
+    "current_truth_view_allows_authorized_current_overrides": true,
+    "historical_receipts_can_inform_lineage_not_override_live_header": true
+  }
+}

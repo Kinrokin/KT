@@ -1,0 +1,8 @@
+# Cohort0 Post-F Track 01 Comparative Scope Report
+
+- Execution status: `PASS__POST_F_TRACK_01_COMPARATIVE_SCOPE_BOUND`
+- Scope outcome: `POST_F_TRACK_01_COMPARATIVE_SCOPE_DEFINED__CANONICAL_WEDGE_ONLY`
+- Working branch: `expansion/post-f-track-01`
+- Confirmed wedge id: `KT_F_NARROW_LOCAL_VERIFIER_EXECUTE_RECEIPT_WEDGE_V1`
+- Comparison category: `GOVERNED_RECEIPT_BACKED_FAIL_CLOSED_EXECUTION_UNDER_LAW`
+- Next lawful move: `AUTHOR_POST_F_TRACK_01_COMPARATOR_MATRIX_PACKET`

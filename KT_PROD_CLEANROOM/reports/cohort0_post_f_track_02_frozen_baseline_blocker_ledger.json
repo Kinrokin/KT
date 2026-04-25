@@ -1,0 +1,37 @@
+{
+  "anchor_commit": "558c9a46e87dbe9fed1884a4d24305ed2450929d",
+  "blockers_preventing_audit": [],
+  "execution_status": "PASS__NO_AUDIT_EXECUTION_BLOCKERS",
+  "generated_utc": "2026-04-24T06:35:11Z",
+  "note": "No blockers prevented the frozen baseline audit from executing. All required sources were present and baseline immutability was preserved.",
+  "open_system_blockers_noted_in_audit": [
+    {
+      "blocker_id": "H1_ACTIVATION_GATE_CLOSED",
+      "note": "Limits system expansion but does not prevent the frozen baseline audit.",
+      "severity": "HIGH",
+      "status": "OPEN_SYSTEM_BLOCKER__NOT_AUDIT_BLOCKER"
+    },
+    {
+      "blocker_id": "CURRENT_HEAD_EXTERNAL_CAPABILITY_NOT_CONFIRMED",
+      "note": "A current-head limitation, not a blocker to executing the frozen baseline audit.",
+      "severity": "HIGH",
+      "status": "OPEN_SYSTEM_BLOCKER__NOT_AUDIT_BLOCKER"
+    },
+    {
+      "blocker_id": "EXTERNALITY_CEILING_AT_E1",
+      "note": "Keeps the bounded runtime ceiling in place but does not block this audit.",
+      "severity": "MEDIUM",
+      "status": "OPEN_SYSTEM_BLOCKER__NOT_AUDIT_BLOCKER"
+    },
+    {
+      "blocker_id": "TRACK_01_NOT_EXECUTED_AT_FROZEN_BASELINE",
+      "note": "Track 01 is correctly excluded from the frozen ruler because it is post-anchor.",
+      "severity": "INFORMATIONAL",
+      "status": "EXPECTED__POST_ANCHOR_ACTIVITY"
+    }
+  ],
+  "run_id": "frozen_baseline_audit",
+  "schema_id": "kt.operator.cohort0_post_f_track_02_frozen_baseline_blocker_ledger.v1",
+  "status": "PASS",
+  "work_order_id": "cohort0_post_f_track_02_dual_audit_work_order"
+}

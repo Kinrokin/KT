@@ -1,0 +1,38 @@
+{
+  "baseline_choice": "adapter_beta",
+  "beta": false,
+  "case_id": "CASE-0001",
+  "confidence": 0.61,
+  "counted": true,
+  "decision_label": "commit",
+  "family": "alpha_residual",
+  "holdout": false,
+  "input_hash": "4928b1bb54fc6e7467811f2bf10806c054a2fe457d650558aeda660b0a95e3fc",
+  "margin": 0.18,
+  "notes": "Deterministic example row 1",
+  "provider_calls": [
+    {
+      "prompt_sha256": "79aa0cc9e8c243981dd9dd13d6a17c89cd6505a166ceab22a087f69f437b7a89",
+      "provider": "openai_hashed",
+      "receipt_id": "prov-100-00",
+      "response_sha256": "c1b4b171080dc26da7b50b40c5b9e0a4da52fe94f93a9b31b9f107735f734a2c"
+    },
+    {
+      "prompt_sha256": "5446109183abd6a3ebcfb05e297846569f3640a065b8b7348b25f4b6a70a6d01",
+      "provider": "openrouter_hashed",
+      "receipt_id": "prov-100-01",
+      "response_sha256": "d1034fbc2a5a677f99a99378e97b0b9bdcb33aaa2c209b651ce1aa9f1694d883"
+    }
+  ],
+  "reason_codes": [
+    "RC001_CONTEXT_ALIGNMENT",
+    "RC002_POLICY_COMPATIBLE"
+  ],
+  "rmr_id": "RMR-0001",
+  "router_choice": "adapter_alpha",
+  "timestamp": "2026-04-24T15:17:00Z",
+  "variant": "base",
+  "why_not": [
+    "WN003_MASKED_DRIFT"
+  ]
+}

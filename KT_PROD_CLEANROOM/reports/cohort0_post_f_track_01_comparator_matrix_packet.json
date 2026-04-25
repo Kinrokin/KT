@@ -1,0 +1,116 @@
+{
+  "active_comparator_rows": [
+    {
+      "active_profile_id": "local_verifier_mode",
+      "category_fair": true,
+      "comparator_subject": "KT_F_NARROW_LOCAL_VERIFIER_EXECUTE_RECEIPT_WEDGE_V1",
+      "named_target_required_now": true,
+      "row_id": "KT_CANONICAL_WEDGE",
+      "row_type": "CANONICAL_CONFIRMED_SURFACE",
+      "selection_rule": "Frozen by the confirmed Gate F local_verifier_mode wedge packet."
+    },
+    {
+      "category_fair": true,
+      "named_target_required_now": false,
+      "row_id": "STRONGEST_APPROVED_STATIC_INTERNAL_BASELINE",
+      "row_type": "INTERNAL_STATIC_BASELINE",
+      "selection_receipt_required_before_execution": true,
+      "selection_rule": "Exactly one strongest approved static internal baseline may be selected. It must already be lawfully validated and must run on the same bounded wedge contract."
+    },
+    {
+      "category_fair": true,
+      "named_target_required_now": false,
+      "row_id": "ONE_CATEGORY_FAIR_EXTERNAL_MONOLITH_WORKFLOW",
+      "row_type": "EXTERNAL_MONOLITH_WORKFLOW",
+      "selection_receipt_required_before_execution": true,
+      "selection_rule": "Exactly one named external monolith workflow may be selected for execution. The workflow must be category-fair for the confirmed wedge and may not imply a broad vendor bakeoff.",
+      "single_slot_only": true
+    }
+  ],
+  "authority_header": {
+    "canonical_authority_branch": "main",
+    "cleanup_closeout_merged_locally": true,
+    "gate_d_cleared_on_successor_line": true,
+    "gate_e_open_on_successor_line": true,
+    "gate_f_narrow_wedge_confirmed": true,
+    "gate_f_open": false,
+    "working_branch": "expansion/post-f-track-01",
+    "working_branch_non_authoritative_until_protected_merge": true
+  },
+  "claim_boundary": "This packet freezes the tiny Track 01 comparator matrix for the confirmed canonical wedge only. It does not execute the benchmark, does not award superiority, and does not widen the product or theorem claim surface.",
+  "conditional_internal_comparator_policy": {
+    "additional_internal_comparators_allowed": false,
+    "exception_rule": "An additional internal comparator may appear only if it is already lawfully validated and a separate selection receipt proves category fairness without widening Track 01."
+  },
+  "execution_status": "PASS__POST_F_TRACK_01_COMPARATOR_MATRIX_BOUND",
+  "forbidden_score_interpretations": [
+    "No best AI framing.",
+    "No broad reasoning or model superiority claim.",
+    "No full-system superiority claim.",
+    "No Kaggle or math carryover.",
+    "No broad vendor bakeoff framing from a single external monolith row."
+  ],
+  "generated_utc": "2026-04-24T03:42:20Z",
+  "matrix_outcome": "POST_F_TRACK_01_COMPARATOR_MATRIX_DEFINED__TINY_SET_ONLY",
+  "matrix_purpose": {
+    "comparison_category": "GOVERNED_RECEIPT_BACKED_FAIL_CLOSED_EXECUTION_UNDER_LAW",
+    "confirmed_surface_wedge_id": "KT_F_NARROW_LOCAL_VERIFIER_EXECUTE_RECEIPT_WEDGE_V1",
+    "surface_lock": "local_verifier_mode_only",
+    "target_use": "post_f_track_01_first_bounded_comparative_execution"
+  },
+  "metric_schema": {
+    "counting_metrics": [
+      {
+        "counting_mode": "bounded_scorecard",
+        "metric_id": "receipt_completeness",
+        "summary": "Does the run return the full bounded receipt set required by the wedge contract?"
+      },
+      {
+        "counting_mode": "bounded_scorecard",
+        "metric_id": "replayability",
+        "summary": "Can the result be replayed or audited from the returned proof surfaces without repo archaeology?"
+      },
+      {
+        "counting_mode": "bounded_scorecard",
+        "metric_id": "fail_closed_behavior",
+        "summary": "Does the system fail closed under bounded errors instead of drifting into silent success?"
+      },
+      {
+        "counting_mode": "bounded_scorecard",
+        "metric_id": "operator_clarity_and_bounded_execution_integrity",
+        "summary": "Does the operator path stay clear, bounded, and faithful to the declared wedge contract?"
+      },
+      {
+        "counting_mode": "bounded_scorecard",
+        "metric_id": "useful_output_success_under_wedge_contract",
+        "summary": "Does the system complete the useful bounded task without stepping outside the confirmed wedge surface?"
+      }
+    ],
+    "schema_id": "kt.operator.cohort0_post_f_track_01_comparator_metric_schema.v1"
+  },
+  "next_lawful_move": "AUTHOR_POST_F_TRACK_01_METRIC_SCORECARD_CONTRACT",
+  "schema_id": "kt.operator.cohort0_post_f_track_01_comparator_matrix_packet.v1",
+  "source_refs": {
+    "live_product_truth_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_gate_f_post_close_live_product_truth_packet.json",
+    "post_merge_closeout_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_merge_closeout_receipt.json",
+    "scope_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_comparative_scope_packet.json"
+  },
+  "status": "PASS",
+  "subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91",
+  "track_identity": {
+    "matrix_type": "tiny_comparator_set",
+    "track_id": "POST_F_TRACK_01_CANONICAL_COMPARATIVE_PROOF",
+    "working_branch": "expansion/post-f-track-01",
+    "working_branch_non_authoritative_until_protected_merge": true
+  },
+  "verdict_schema": {
+    "allowed_verdicts": [
+      "KT_CANONICAL_WEDGE_ADVANTAGE__CATEGORY_FAIR",
+      "KT_CANONICAL_WEDGE_PARITY__CATEGORY_FAIR",
+      "KT_CANONICAL_WEDGE_DEFICIT__CATEGORY_FAIR",
+      "DEFERRED__COMPARATOR_SELECTION_OR_METRIC_DEFECT"
+    ],
+    "interpretation_guard": "Verdicts are Track 01 bounded comparative outcomes only, not broad product or model claims.",
+    "schema_id": "kt.operator.cohort0_post_f_track_01_comparator_verdict_schema.v1"
+  }
+}

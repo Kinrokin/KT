@@ -1,0 +1,46 @@
+{
+  "artifact_refs": {
+    "authority_partition_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_dual_audit_authority_partition.json",
+    "content_hash_manifest_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_dual_audit_content_hash_manifest.json",
+    "current_truth_view_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_current_truth_evidence_view.json",
+    "evidence_manifest_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_dual_audit_evidence_manifest.json",
+    "frozen_baseline_view_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_frozen_baseline_evidence_view.json"
+  },
+  "authority_header": {
+    "canonical_authority_branch": "main",
+    "gate_d_cleared_on_successor_line": true,
+    "gate_e_open_on_successor_line": true,
+    "gate_f_narrow_wedge_confirmed": true,
+    "gate_f_open": false,
+    "track_01_closed_as_bounded_proof_packet": true,
+    "working_branch": "expansion/post-f-track-01",
+    "working_branch_non_authoritative_until_protected_merge": true
+  },
+  "claim_boundary": "This packet records only the shared evidence harvest, authority partition, and dual evidence-view materialization for Track 02. It does not execute either audit verdict and does not collapse baseline and current-truth authority.",
+  "execution_outcome": "POST_F_TRACK_02_SHARED_EVIDENCE_HARVEST_AND_AUTHORITY_PARTITION_COMPLETE__DUAL_VIEWS_MATERIALIZED",
+  "execution_status": "PASS__POST_F_TRACK_02_SHARED_EVIDENCE_HARVEST_AND_AUTHORITY_PARTITION_COMPLETE",
+  "generated_utc": "2026-04-24T13:53:43Z",
+  "git_state": {
+    "canonical_authority_branch": "main",
+    "current_branch": "expansion/post-f-track-01",
+    "current_head_commit": "0e8a779f22f498a5a49b150298ceff9e867b4f5d",
+    "current_truth_anchor_commit": "0e8a779f22f498a5a49b150298ceff9e867b4f5d",
+    "current_truth_anchor_ref": "expansion/post-f-track-01",
+    "frozen_baseline_anchor_commit": "558c9a46e87dbe9fed1884a4d24305ed2450929d",
+    "frozen_baseline_anchor_ref": "kt-post-f-reaudit-pass",
+    "worktree_clean": true
+  },
+  "harvest_summary": {
+    "content_hash_count": 43,
+    "dual_views_materialized": true,
+    "metadata_only_secret_sentinel_present": true,
+    "source_count": 8
+  },
+  "next_lawful_move": "EXECUTE_POST_F_TRACK_02_FROZEN_BASELINE_AND_CURRENT_TRUTH_AUDITS",
+  "schema_id": "kt.operator.cohort0_post_f_track_02_shared_evidence_harvest_and_authority_partition_packet.v1",
+  "status": "PASS",
+  "subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91",
+  "track_id": "POST_F_TRACK_02_DUAL_AUDIT",
+  "working_branch": "expansion/post-f-track-01",
+  "working_branch_non_authoritative_until_protected_merge": true
+}

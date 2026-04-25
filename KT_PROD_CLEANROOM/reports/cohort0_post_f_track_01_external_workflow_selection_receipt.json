@@ -1,0 +1,17 @@
+{
+  "category_fair": true,
+  "evidence_refs": [
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+    "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+  ],
+  "generated_utc": "2026-04-24T03:56:51Z",
+  "row_type": "EXTERNAL_MONOLITH_WORKFLOW",
+  "schema_id": "kt.operator.cohort0_post_f_track_01_external_workflow_selection_receipt.v1",
+  "selected_workflow_id": "KT_PUBLIC_VERIFIER_DETACHED_PACKAGE_WORKFLOW_V1",
+  "selection_id": "DETACHED_PUBLIC_VERIFIER_PACKAGE_WORKFLOW__CATEGORY_FAIR_EXTERNALIZED_ROW",
+  "selection_reason": "Selected the already-proven detached public verifier package as the single externalized workflow row. It stays in the same-host detached replay ceiling, is category-fair to the confirmed wedge, and avoids claiming a broad third-party vendor bakeoff.",
+  "status": "PASS",
+  "working_branch": "expansion/post-f-track-01",
+  "working_branch_non_authoritative_until_protected_merge": true
+}

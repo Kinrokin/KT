@@ -1,0 +1,77 @@
+{
+  "category_fair": true,
+  "generated_utc": "2026-04-24T03:56:51Z",
+  "metric_results": [
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json"
+      ],
+      "hard_stop": true,
+      "justification": "The canonical wedge returns the full bounded verifier receipt set required by the confirmed contract.",
+      "metric_id": "receipt_completeness",
+      "state": "PASS",
+      "state_rule": "All required wedge receipts are emitted, referenced, and internally consistent.",
+      "weight": 3
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json"
+      ],
+      "hard_stop": true,
+      "justification": "The canonical wedge exposes the audit packet and receipt cross-refs directly from the returned surface.",
+      "metric_id": "replayability",
+      "state": "PASS",
+      "state_rule": "The run can be replayed or audited from returned refs alone without repo archaeology.",
+      "weight": 3
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json"
+      ],
+      "hard_stop": true,
+      "justification": "PASS/FAIL is explicit and bounded for the canonical wedge path.",
+      "metric_id": "fail_closed_behavior",
+      "state": "PASS",
+      "state_rule": "Bounded defects terminate fail-closed and are surfaced explicitly in the returned evidence.",
+      "weight": 3
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/product/client_wrapper_spec.json",
+        "KT_PROD_CLEANROOM/product/operator_runbook_v2.md",
+        "KT_PROD_CLEANROOM/reports/operator_handoff_receipt.json"
+      ],
+      "hard_stop": false,
+      "justification": "The canonical wedge is the shortest declared operator path with no extra review overlays.",
+      "metric_id": "operator_clarity_and_bounded_execution_integrity",
+      "state": "PASS",
+      "state_rule": "The operator path is clear, bounded, and matches the declared wedge contract with no hidden steps.",
+      "weight": 2
+    },
+    {
+      "evidence_refs": [
+        "KT_PROD_CLEANROOM/reports/product_install_15m_receipt.json",
+        "KT_PROD_CLEANROOM/reports/operator_handoff_receipt.json"
+      ],
+      "hard_stop": false,
+      "justification": "The canonical wedge completes the bounded verifier task and handoff exactly as the product truth surface declares.",
+      "metric_id": "useful_output_success_under_wedge_contract",
+      "state": "PASS",
+      "state_rule": "The bounded task completes usefully without leaving the confirmed wedge surface.",
+      "weight": 2
+    }
+  ],
+  "normalized_score": 1.0,
+  "row_class": "PASS",
+  "row_id": "KT_CANONICAL_WEDGE",
+  "row_subject": "KT_F_NARROW_LOCAL_VERIFIER_EXECUTE_RECEIPT_WEDGE_V1",
+  "row_type": "CANONICAL_CONFIRMED_SURFACE",
+  "schema_id": "kt.operator.cohort0_post_f_track_01_row_receipt.v1",
+  "status": "PASS",
+  "weighted_score": 26
+}

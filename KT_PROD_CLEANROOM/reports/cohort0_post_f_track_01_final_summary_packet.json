@@ -1,0 +1,135 @@
+{
+  "authority_header": {
+    "canonical_authority_branch": "main",
+    "gate_d_cleared_on_successor_line": true,
+    "gate_e_open_on_successor_line": true,
+    "gate_f_narrow_wedge_confirmed": true,
+    "gate_f_open": false,
+    "post_f_reaudit_passed": true,
+    "working_branch": "expansion/post-f-track-01",
+    "working_branch_non_authoritative_until_protected_merge": true
+  },
+  "bound_track_stack": {
+    "comparator_matrix_packet_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_comparator_matrix_packet.json",
+    "first_wave": {
+      "execution_packet_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_first_bounded_comparative_execution_packet.json",
+      "execution_receipt_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_first_bounded_comparative_execution_receipt.json",
+      "row_receipt_refs": {
+        "external": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_row_externalized_workflow_receipt.json",
+        "internal": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_row_internal_static_baseline_receipt.json",
+        "kt": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_row_kt_canonical_wedge_receipt.json"
+      },
+      "row_summaries": [
+        {
+          "normalized_score": 1.0,
+          "row_class": "PASS",
+          "row_id": "KT_CANONICAL_WEDGE",
+          "weighted_score": 26
+        },
+        {
+          "normalized_score": 0.7308,
+          "row_class": "PARTIAL",
+          "row_id": "STRONGEST_APPROVED_STATIC_INTERNAL_BASELINE",
+          "weighted_score": 19
+        },
+        {
+          "normalized_score": 0.7308,
+          "row_class": "PARTIAL",
+          "row_id": "ONE_CATEGORY_FAIR_EXTERNAL_MONOLITH_WORKFLOW",
+          "weighted_score": 19
+        }
+      ],
+      "scorecard_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_first_bounded_comparative_scorecard.json",
+      "verdict": "KT_CANONICAL_WEDGE_ADVANTAGE__CATEGORY_FAIR",
+      "verdict_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_comparative_verdict_receipt.json"
+    },
+    "metric_scorecard_contract_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_metric_scorecard_contract.json",
+    "scope_packet_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_comparative_scope_packet.json",
+    "second_wave": {
+      "execution_packet_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_bounded_comparative_execution_packet.json",
+      "execution_receipt_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_bounded_comparative_execution_receipt.json",
+      "row_receipt_refs": {
+        "external": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_row_externalized_workflow_receipt.json",
+        "internal": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_row_internal_static_baseline_receipt.json",
+        "kt": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_row_kt_canonical_wedge_receipt.json"
+      },
+      "row_summaries": [
+        {
+          "normalized_score": 1.0,
+          "row_class": "PASS",
+          "row_id": "KT_CANONICAL_WEDGE",
+          "weighted_score": 26
+        },
+        {
+          "normalized_score": 0.6154,
+          "row_class": "PARTIAL",
+          "row_id": "STRONGEST_APPROVED_STATIC_INTERNAL_BASELINE",
+          "weighted_score": 16
+        },
+        {
+          "normalized_score": 0.7308,
+          "row_class": "PARTIAL",
+          "row_id": "ONE_CATEGORY_FAIR_EXTERNAL_MONOLITH_WORKFLOW",
+          "weighted_score": 19
+        }
+      ],
+      "scorecard_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_bounded_comparative_scorecard.json",
+      "variation_id": "TRACK_01_REPLAY_AND_OPERATOR_HANDOFF_STRESS__SAME_TINY_MATRIX",
+      "variation_receipt_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_variation_receipt.json",
+      "variation_type": "REPLAY_AND_OPERATOR_HANDOFF_STRESS",
+      "verdict": "KT_CANONICAL_WEDGE_ADVANTAGE__CATEGORY_FAIR",
+      "verdict_ref": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_bounded_comparative_verdict_receipt.json"
+    }
+  },
+  "claim_boundary": "This packet freezes Track 01 as a bounded comparative proof packet for the confirmed local_verifier_mode wedge only. It does not widen into best-AI, broad model, full-system, router, lobe, Kaggle, or broad commercial claims.",
+  "execution_status": "PASS__POST_F_TRACK_01_FINAL_SUMMARY_PACKET_BOUND",
+  "final_track_verdict": {
+    "category_fair": true,
+    "comparator_row_count": 3,
+    "comparison_category": "GOVERNED_RECEIPT_BACKED_FAIL_CLOSED_EXECUTION_UNDER_LAW",
+    "confirmed_surface_profile_id": "local_verifier_mode",
+    "confirmed_surface_wedge_id": "KT_F_NARROW_LOCAL_VERIFIER_EXECUTE_RECEIPT_WEDGE_V1",
+    "first_wave_verdict": "KT_CANONICAL_WEDGE_ADVANTAGE__CATEGORY_FAIR",
+    "holds_under_replay_and_operator_handoff_stress": true,
+    "metric_count": 5,
+    "same_five_metric_contract_across_waves": true,
+    "same_tiny_matrix_across_waves": true,
+    "second_wave_verdict": "KT_CANONICAL_WEDGE_ADVANTAGE__CATEGORY_FAIR",
+    "statement": "KT canonical wedge has repeated bounded category-fair advantage on the confirmed local_verifier_mode surface, including replay-and-operator-handoff stress.",
+    "verdict_id": "KT_CANONICAL_WEDGE_REPEATED_BOUNDED_ADVANTAGE__TRACK_01_CLOSED",
+    "waves_executed": 2
+  },
+  "forbidden_interpretations": [
+    "Not a best AI claim.",
+    "Not broad model superiority.",
+    "Not full-system superiority.",
+    "Not router or lobe superiority.",
+    "Not Kaggle or math carryover.",
+    "Not broad commercial expansion."
+  ],
+  "generated_utc": "2026-04-24T04:08:42Z",
+  "next_lawful_move": "AUTHOR_POST_F_TRACK_02_SCOPE_PACKET",
+  "schema_id": "kt.operator.cohort0_post_f_track_01_final_summary_packet.v1",
+  "source_refs": {
+    "comparator_matrix_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_comparator_matrix_packet.json",
+    "first_execution_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_first_bounded_comparative_execution_receipt.json",
+    "first_scorecard": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_first_bounded_comparative_scorecard.json",
+    "first_verdict": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_comparative_verdict_receipt.json",
+    "metric_scorecard_contract": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_metric_scorecard_contract.json",
+    "scope_packet": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_comparative_scope_packet.json",
+    "second_execution_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_bounded_comparative_execution_receipt.json",
+    "second_scorecard": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_bounded_comparative_scorecard.json",
+    "second_variation_receipt": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_wave_variation_receipt.json",
+    "second_verdict": "D:/user/rober/OneDrive/Kings_Theorem_Active/KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_second_bounded_comparative_verdict_receipt.json"
+  },
+  "status": "PASS",
+  "subject_head": "5f1fb07200fe8fcbce57ef1ed92d1189ab571c91",
+  "summary_outcome": "POST_F_TRACK_01_REPEATED_BOUNDED_ADVANTAGE_FROZEN__CANONICAL_WEDGE_ONLY",
+  "track_identity": {
+    "track_id": "POST_F_TRACK_01_CANONICAL_COMPARATIVE_PROOF",
+    "track_name": "Canonical Comparative Proof",
+    "track_status": "CLOSED__BOUNDED_PROOF_PACKET_ONLY",
+    "working_branch": "expansion/post-f-track-01",
+    "working_branch_non_authoritative_until_protected_merge": true
+  }
+}

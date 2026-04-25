@@ -1,0 +1,10 @@
+name: kimi-hash-verify
+parallelism: 8
+tasks:
+  - id: verify-schema-digest
+    command: python tests/schema_validator.py --schema governance/RMR_SCHEMA_v1.json --manifest governance/H1_EXPERIMENT_MANIFEST.json
+  - id: verify-bundle-sha
+    command: sha256sum bundle/proof_bundle_${RUN_ID}.tar.gz
+expected_outputs:
+  - schema digest matches manifest
+  - bundle sha emitted

@@ -1,0 +1,32 @@
+from __future__ import annotations
+import hashlib
+
+class CouncilRouter:
+    def __init__(self, providers: dict[str, object] | None = None, execute_live: bool = False):
+        self.providers = providers or {}
+        self.execute_live = execute_live
+
+    def plan(self, rmr: dict) -> list[str]:
+        if rmr.get("decision_label") == "commit":
+            return ["openai_hashed"]
+        return ["mock_local"]
+
+    def execute(self, rmr: dict) -> dict:
+        plan = self.plan(rmr)
+        if not plan:
+            raise RuntimeError("empty provider plan is disallowed in execute mode")
+        if not self.execute_live:
+            return {"mode": "dry-run", "provider_calls": [], "decision_label": rmr.get("decision_label", "defer")}
+        provider_name = plan[0]
+        provider = self.providers.get(provider_name)
+        if provider is None:
+            raise RuntimeError(f"provider missing: {provider_name}")
+        result = provider(rmr)
+        result["provider_calls"] = [{
+            "provider": provider_name,
+            "prompt_sha256": hashlib.sha256(str(rmr.get("rmr_id")).encode()).hexdigest(),
+            "response_sha256": hashlib.sha256(str(result.get("decision_label")).encode()).hexdigest(),
+            "receipt_id": f"sample-{rmr.get('rmr_id','unknown').lower()}"
+        }]
+        result["mode"] = "execute"
+        return result
