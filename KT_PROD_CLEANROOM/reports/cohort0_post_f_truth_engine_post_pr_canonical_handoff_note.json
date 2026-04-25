@@ -1,6 +1,9 @@
 {
-  "claim_boundary": "This note prepares the exact canonical handoff after PR #15 lands. It does not itself recompute main or settle remote canonical truth early.",
-  "execution_status": "PASS__POST_F_TRUTH_ENGINE_POST_PR_CANONICAL_HANDOFF_PREPARED",
+  "actual_recompute_branch_ref": "main",
+  "advisory_condition_count": 0,
+  "blocking_contradiction_count": 0,
+  "claim_boundary": "This note freezes the canonical truth-engine handoff after PR #15 landed and the main replay completed. It does not widen package or prep authority.",
+  "execution_status": "PASS__POST_F_TRUTH_ENGINE_POST_PR_CANONICAL_HANDOFF_FROZEN",
   "first_canonical_truth_engine_freeze_on_main": {
     "outputs_to_freeze": [
       "KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_authority_graph.json",
@@ -11,14 +14,14 @@
     ],
     "success_condition": "same derivation as branch replay with zero blocking contradictions and zero advisory contradictions"
   },
-  "generated_utc": "2026-04-25T16:32:25Z",
+  "generated_utc": "2026-04-25T23:10:40Z",
   "handoff_operator_note": {
     "prerequisite": "PR #15 merged to origin/main and local main refreshed from origin/main",
     "replay_command": "python -m tools.operator.cohort0_post_f_truth_engine_validator_and_recompute_tranche",
     "run_on_branch": "main"
   },
-  "next_lawful_move": "RERUN_POST_F_TRUTH_ENGINE_RECOMPUTE_ON_MAIN_AFTER_PR15_MERGE",
-  "outcome": "POST_F_TRUTH_ENGINE_POST_PR_CANONICAL_HANDOFF_DEFINED__READY_AFTER_PR15",
+  "next_lawful_move": "PROMOTE_TRUST_ZONE_BOUNDARY_PURIFICATION_AS_NEXT_AUTHORITATIVE_LANE",
+  "outcome": "POST_F_TRUTH_ENGINE_POST_PR_CANONICAL_HANDOFF_FROZEN__MAIN_REPLAY_COMPLETE",
   "schema_id": "kt.operator.cohort0_post_f_truth_engine_post_pr_canonical_handoff_note.v1",
   "status": "PASS",
   "supersession_after_pr15": {
