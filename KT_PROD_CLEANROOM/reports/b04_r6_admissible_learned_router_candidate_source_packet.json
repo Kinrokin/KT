@@ -1,0 +1,80 @@
+{
+  "admissibility_requirements_ref": "b04_r6_candidate_admissibility_requirements.json",
+  "admissible_candidate_count": 0,
+  "allowed_outcomes": [
+    "R6_CANDIDATE_SOURCE_AUTHORIZED__ADMISSIBILITY_SCREEN_NEXT",
+    "R6_CANDIDATE_SOURCE_DEFERRED__MISSING_PROVENANCE",
+    "R6_CANDIDATE_SOURCE_BLOCKED__NO_ADMISSIBLE_CANDIDATE"
+  ],
+  "authoritative_lane": "B04_R6_ADMISSIBLE_LEARNED_ROUTER_CANDIDATE_SOURCE",
+  "candidate_inventory_count": 3,
+  "candidate_source_authorized": false,
+  "current_git_head": "0170f2f26bbd0f0040b7f91e140a6ee76e9178b7",
+  "disqualifier_contract_ref": "b04_r6_candidate_source_disqualifier_contract.json",
+  "evidence_refs": {
+    "bound_input_manifest": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_shadow_router_input_manifest_bound.json",
+      "sha256": "165a889af337ed67c524e4fbebed5364a8762da75a2ae6f4b9190c0904de4479"
+    },
+    "candidate_input_receipt": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_shadow_router_candidate_input_manifest_receipt.json",
+      "sha256": "e3a0bdf778c6aacf612e44178e4534c0ff4370fc173876974d7642bd066ce378"
+    },
+    "candidate_manifest": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_learned_router_candidate_manifest.json",
+      "sha256": "9bb68b8c232aad469a6f3f01f62dabdfdfedfd726abe10c0fbf29b02ad66a413"
+    },
+    "canonical_scope_manifest": {
+      "path": "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+      "sha256": "37e097c360ace12fe83000f5344c2565d46144cf50c0ad74d73d7a87edd00e7b"
+    },
+    "execution_mode_contract": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_shadow_router_execution_mode_contract.json",
+      "sha256": "d5b6c4a8dd192af9309a1884c78e3837378898bb8ec782e0b3e31701c61edfc4"
+    },
+    "router_policy_registry": {
+      "path": "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+      "sha256": "df0f9caace85bab111a82a02010b1f9e8db6ccc7e853505995ff985a335b455e"
+    },
+    "router_superiority_scorecard": {
+      "path": "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
+      "sha256": "bd1c946a91bc04266f698a3e5e4f134765a23dcaa51b5d5a3524a0e093839365"
+    },
+    "trust_zone_registry": {
+      "path": "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+      "sha256": "c26709a9b664aeb22019ab0032e2d4f464acb70c208990eea5ed755775963305"
+    }
+  },
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening",
+    "external_verification_completed"
+  ],
+  "generated_utc": "2026-04-26T23:43:00Z",
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_FRESH_LEARNED_ROUTER_CANDIDATE_GENERATION_PACKET",
+  "non_claim_boundary": [
+    "does not authorize R6",
+    "does not execute the shadow screen",
+    "does not prove learned-router superiority",
+    "does not activate learned routing",
+    "does not open lobe escalation"
+  ],
+  "outcome": "B04_R6_ADMISSIBLE_LEARNED_ROUTER_CANDIDATE_SOURCE_PACKET_BOUND",
+  "package_promotion_remains_deferred": true,
+  "r6_authorized": false,
+  "r6_open": false,
+  "schema_id": "kt.operator.b04_r6_admissible_learned_router_candidate_source_packet.v1",
+  "screen_execution_authorized": false,
+  "source_rules_ref": "b04_r6_candidate_source_rules_contract.json",
+  "status": "PASS",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true,
+  "verdict": "R6_CANDIDATE_SOURCE_BLOCKED__NO_ADMISSIBLE_CANDIDATE"
+}

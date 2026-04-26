@@ -1,0 +1,76 @@
+{
+  "authoritative_lane": "B04_R6_ADMISSIBLE_LEARNED_ROUTER_CANDIDATE_SOURCE",
+  "current_git_head": "0170f2f26bbd0f0040b7f91e140a6ee76e9178b7",
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening",
+    "external_verification_completed"
+  ],
+  "generated_utc": "2026-04-26T23:43:00Z",
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_FRESH_LEARNED_ROUTER_CANDIDATE_GENERATION_PACKET",
+  "package_promotion_remains_deferred": true,
+  "r6_authorized": false,
+  "r6_open": false,
+  "requirements": [
+    {
+      "id": "CANDIDATE_ID_BOUND",
+      "rule": "candidate_id must be non-empty and stable"
+    },
+    {
+      "id": "SOURCE_PATH_BOUND",
+      "rule": "candidate_source_ref must point to a tracked source artifact"
+    },
+    {
+      "id": "SOURCE_HASH_BOUND",
+      "rule": "candidate source and manifest must carry SHA256 hashes"
+    },
+    {
+      "id": "PROVENANCE_CHAIN_BOUND",
+      "rule": "candidate must have a derivation or training lineage receipt"
+    },
+    {
+      "id": "TRAINING_EVAL_RECEIPT_BOUND",
+      "rule": "candidate must have training/eval receipt before admissibility screen"
+    },
+    {
+      "id": "NO_BETA_CONTAMINATION",
+      "rule": "candidate may not depend on beta or holdout-contaminated material"
+    },
+    {
+      "id": "NO_PACKAGE_PROMOTION_DEPENDENCY",
+      "rule": "candidate may not require deferred package promotion"
+    },
+    {
+      "id": "SHADOW_ONLY_RUNNABLE",
+      "rule": "candidate must run in shadow-only mode with activation disabled"
+    },
+    {
+      "id": "INPUT_UNIVERSE_COMPATIBLE",
+      "rule": "candidate must support frozen cases ['R01', 'R02', 'R03', 'R04'] without case mutation"
+    },
+    {
+      "id": "TRACE_SCHEMA_COMPATIBLE",
+      "rule": "candidate must emit route, abstention, over-routing, and mirror/masked traces"
+    },
+    {
+      "id": "DETERMINISTIC_REPLAYABLE",
+      "rule": "candidate must be deterministic or seed-bound and replayable"
+    },
+    {
+      "id": "TRUST_ZONE_COMPATIBLE",
+      "rule": "candidate source zone must not violate canonical/trust-zone boundaries"
+    }
+  ],
+  "schema_id": "kt.operator.b04_r6_candidate_admissibility_requirements.v1",
+  "screen_execution_authorized": false,
+  "status": "PASS",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true
+}

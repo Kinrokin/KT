@@ -1,0 +1,66 @@
+{
+  "authoritative_lane": "B04_R6_ADMISSIBLE_LEARNED_ROUTER_CANDIDATE_SOURCE",
+  "checks": [
+    {
+      "check": "previous_candidate_input_receipt_pass",
+      "status": "PASS"
+    },
+    {
+      "check": "input_manifest_ready",
+      "status": "PASS"
+    },
+    {
+      "check": "candidate_source_rules_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "admissibility_requirements_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "disqualifiers_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "candidate_inventory_completed",
+      "status": "PASS"
+    },
+    {
+      "check": "admissible_candidate_present",
+      "status": "BLOCKED"
+    },
+    {
+      "check": "screen_execution_not_authorized",
+      "status": "PASS"
+    }
+  ],
+  "current_git_head": "0170f2f26bbd0f0040b7f91e140a6ee76e9178b7",
+  "failures": [
+    {
+      "check": "admissible_candidate_present",
+      "reason": "No admissible learned-router candidate source is bound."
+    }
+  ],
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening",
+    "external_verification_completed"
+  ],
+  "generated_utc": "2026-04-26T23:43:00Z",
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_FRESH_LEARNED_ROUTER_CANDIDATE_GENERATION_PACKET",
+  "package_promotion_remains_deferred": true,
+  "r6_authorized": false,
+  "r6_open": false,
+  "schema_id": "kt.operator.b04_r6_candidate_source_validation_matrix.v1",
+  "screen_execution_authorized": false,
+  "status": "PASS",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true
+}

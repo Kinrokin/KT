@@ -1,0 +1,48 @@
+{
+  "allowed_source_paths": [
+    "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/**/learned_router*.py",
+    "KT_PROD_CLEANROOM/governance/*learned_router*candidate*.json",
+    "KT_PROD_CLEANROOM/reports/*learned_router*candidate*.json",
+    "KT_PROD_CLEANROOM/runs/**/learned_router_candidate_manifest.json"
+  ],
+  "allowed_source_zones": [
+    "CANONICAL",
+    "LAB",
+    "GENERATED_RUNTIME_TRUTH"
+  ],
+  "authoritative_lane": "B04_R6_ADMISSIBLE_LEARNED_ROUTER_CANDIDATE_SOURCE",
+  "current_git_head": "0170f2f26bbd0f0040b7f91e140a6ee76e9178b7",
+  "existing_artifact_promotion_allowed": true,
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening",
+    "external_verification_completed"
+  ],
+  "fresh_generation_allowed": true,
+  "generated_utc": "2026-04-26T23:43:00Z",
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_FRESH_LEARNED_ROUTER_CANDIDATE_GENERATION_PACKET",
+  "package_promotion_remains_deferred": true,
+  "promotion_condition": "Existing artifacts may enter only through a candidate-source receipt with provenance, hash, zone, and trace compatibility.",
+  "r6_authorized": false,
+  "r6_open": false,
+  "schema_id": "kt.operator.b04_r6_candidate_source_rules_contract.v1",
+  "screen_execution_authorized": false,
+  "status": "PASS",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true,
+  "zone_rules": {
+    "ARCHIVE": "Not admissible as source authority; may be cited only as historical lineage.",
+    "CANONICAL": "Allowed only if source, provenance, training/eval, and trace compatibility are hash-bound.",
+    "COMMERCIAL": "Not admissible as proof source.",
+    "GENERATED_RUNTIME_TRUTH": "Allowed only when generated from tracked law and immutable source hashes.",
+    "LAB": "Allowed only as shadow-only input after explicit lab-to-court adoption receipt; never live authority.",
+    "QUARANTINED": "Not admissible."
+  }
+}
