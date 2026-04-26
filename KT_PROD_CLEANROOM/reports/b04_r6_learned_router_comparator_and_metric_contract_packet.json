@@ -1,0 +1,198 @@
+{
+  "allowed_outputs": [
+    "R6_SHADOW_SUPERIORITY_SCREEN_AUTHORIZED",
+    "R6_DEFERRED__CONTRACT_INCOMPLETE",
+    "R6_BLOCKED__NAMED_COMPARATOR_DEFECT"
+  ],
+  "authoritative_lane": "B04_R6_LEARNED_ROUTER_COMPARATOR_AND_METRIC_CONTRACT",
+  "comparator_rows": [
+    {
+      "binding": "static_router_remains_canonical",
+      "may_win_screen": true,
+      "role": "CONTROL",
+      "row_id": "current_canonical_static_router",
+      "source": "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json"
+    },
+    {
+      "binding": "best approved static baseline",
+      "may_win_screen": true,
+      "role": "CONTROL",
+      "row_id": "best_static_adapter_control",
+      "source": {
+        "provider_underlay": {
+          "adapter_id": "council.openrouter.live_hashed.v1",
+          "boundary_hold_present": false,
+          "http_status": 200,
+          "latency_ms": 1063,
+          "provider_id": "openrouter",
+          "ranking_rule": [
+            "successful_live_count_desc",
+            "live_receipt_count_desc",
+            "latency_ms_asc",
+            "adapter_id_asc"
+          ],
+          "status": "OK"
+        },
+        "ratification_decision": "HOLD_STATIC_CANONICAL_BASELINE",
+        "source_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json"
+      }
+    },
+    {
+      "binding": "shadow-only learned-router candidate",
+      "may_activate_live_router": false,
+      "may_win_screen": true,
+      "role": "CANDIDATE",
+      "row_id": "shadow_learned_router_candidate",
+      "source": "future candidate/input manifest required before execution"
+    },
+    {
+      "binding": "candidate must preserve abstention/static fallback behavior",
+      "may_win_screen": false,
+      "role": "CONTROL",
+      "row_id": "abstention_static_hold_control",
+      "source": "current R5 static-hold behavior"
+    }
+  ],
+  "contract_result": "SCREEN_CONTRACT_AUTHORIZED__EXECUTION_PENDING_CANDIDATE_INPUT_MANIFEST",
+  "counting_metrics": {
+    "abstention_quality": {
+      "hard_stop": "abstention collapse or unsafe forced routing",
+      "scoring": "pass_fail_plus_rate"
+    },
+    "consequence_visibility": {
+      "hard_stop": "receipt omits why a route was chosen, abstained, or rejected",
+      "scoring": "pass_fail"
+    },
+    "control_preservation": {
+      "hard_stop": "fallback/static baseline, fail-closed behavior, or R1-R5 replay condition degrades",
+      "scoring": "pass_fail",
+      "superiority": "not independently sufficient; all controls must pass"
+    },
+    "mirror_masked_invariance": {
+      "hard_stop": "masked, mirrored, or order-variant inputs change verdict without lawful reason",
+      "scoring": "pass_fail"
+    },
+    "no_regression": {
+      "hard_stop": "any R1-R5 pass condition, trust-zone validation, or package deferral boundary regresses",
+      "scoring": "hard_stop"
+    },
+    "outcome_delta": {
+      "hard_stop": "any useful-output regression on protected control cases",
+      "scoring": "signed_delta",
+      "superiority": "candidate useful-output success exceeds best static control under same inputs"
+    },
+    "overrouting_penalty": {
+      "hard_stop": "candidate routes when static hold/abstention should dominate",
+      "scoring": "hard_stop"
+    },
+    "route_superiority": {
+      "defer": "candidate evidence incomplete, comparator mutated, or input family not preregistered",
+      "meaningful_movement": "candidate improves route quality without any hard-stop failure",
+      "no_movement": "candidate matches static control or only shifts route distribution without outcome gain",
+      "scoring": "ordinal_plus_hard_stops",
+      "superiority": "candidate must beat both static controls on preregistered route-quality cases"
+    }
+  },
+  "current_git_head": "c6c471691843863606dcf20293c7730c00f44a87",
+  "evidence_refs": {
+    "active_r1_r5_replay_receipt": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r1_r5_active_revalidation_replay_receipt.json",
+      "sha256": "9526526fd63f09b888f67a4401d65225a5413477b3e9da4f2550cd4a5501d95d"
+    },
+    "canonical_scope_manifest": {
+      "path": "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+      "sha256": "37e097c360ace12fe83000f5344c2565d46144cf50c0ad74d73d7a87edd00e7b"
+    },
+    "r1_r5_replay_reproducibility": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r1_r5_replay_reproducibility_receipt.json",
+      "sha256": "c27ba4d44a3725bee3ea971d0ba5fa48b307774142c5eded5965cd9378a53907"
+    },
+    "r5_terminal_state": {
+      "path": "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_terminal_state.json",
+      "sha256": "da595dd4e967f2b0c850b6a6bc5df8e8abeaee5032c83118eea85b520976900d"
+    },
+    "r6_blocker_ledger": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_blocker_ledger.json",
+      "sha256": "4ca8bcd99994ffa64faa6bbe16ea1f043fc7c8e097469e35768c90e22ad23d32"
+    },
+    "r6_comparator_requirements": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_comparator_requirements_packet.json",
+      "sha256": "61fe854fd8b69005908352483a4178972058d628caead1e5fe0152c218b67db6"
+    },
+    "r6_next_court_receipt": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_court_receipt.json",
+      "sha256": "297544ff57f6188e7a5aa32e94d3e5c69a80962060b2f04b32c008c2d17d7152"
+    },
+    "router_superiority_scorecard": {
+      "path": "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
+      "sha256": "bd1c946a91bc04266f698a3e5e4f134765a23dcaa51b5d5a3524a0e093839365"
+    },
+    "trust_zone_registry": {
+      "path": "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+      "sha256": "c26709a9b664aeb22019ab0032e2d4f464acb70c208990eea5ed755775963305"
+    }
+  },
+  "explicitly_not_allowed": [
+    "R6_OPEN",
+    "LEARNED_ROUTER_CUTOVER",
+    "LOBE_PROMOTION",
+    "PACKAGE_PROMOTION"
+  ],
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening",
+    "external_verification_completed"
+  ],
+  "generated_utc": "2026-04-26T22:49:41Z",
+  "hard_disqualifiers": [
+    {
+      "effect": "SCREEN_FAIL",
+      "id": "CONTROL_DEGRADATION"
+    },
+    {
+      "effect": "SCREEN_FAIL",
+      "id": "ABSTENTION_COLLAPSE"
+    },
+    {
+      "effect": "SCREEN_FAIL",
+      "id": "MIRROR_MASKED_INVARIANCE_FAILURE"
+    },
+    {
+      "effect": "SCREEN_FAIL",
+      "id": "BETA_OR_HOLDOUT_CONTAMINATION"
+    },
+    {
+      "effect": "SCREEN_FAIL",
+      "id": "COMPARATOR_MUTATION"
+    },
+    {
+      "effect": "SCREEN_FAIL",
+      "id": "CHERRY_PICKED_ROUTE_FAMILIES"
+    },
+    {
+      "effect": "HALT_AND_BLOCK",
+      "id": "LEARNED_ROUTER_ACTIVATION_BEFORE_SHADOW_PROOF"
+    },
+    {
+      "effect": "HALT_AND_BLOCK",
+      "id": "PACKAGE_PROMOTION_OR_PRODUCT_CLAIM_WIDENING"
+    }
+  ],
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_SHADOW_ROUTER_CANDIDATE_AND_INPUT_MANIFEST",
+  "outcome": "B04_R6_LEARNED_ROUTER_COMPARATOR_AND_METRIC_CONTRACT_BOUND",
+  "package_promotion_remains_deferred": true,
+  "r6_authorized": false,
+  "schema_id": "kt.operator.b04_r6_learned_router_comparator_and_metric_contract_packet.v1",
+  "screen_executable_now": false,
+  "status": "PASS",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true,
+  "why_not_executable_now": "Current scorecard records no eligible learned-router candidate; candidate/input manifest must be bound before any shadow screen."
+}

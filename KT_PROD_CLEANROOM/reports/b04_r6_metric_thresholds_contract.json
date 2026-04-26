@@ -1,0 +1,69 @@
+{
+  "aggregation_rule": "Candidate superiority requires positive route/outcome movement and zero hard-stop failures.",
+  "authoritative_lane": "B04_R6_LEARNED_ROUTER_COMPARATOR_AND_METRIC_CONTRACT",
+  "current_git_head": "c6c471691843863606dcf20293c7730c00f44a87",
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening",
+    "external_verification_completed"
+  ],
+  "generated_utc": "2026-04-26T22:49:41Z",
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "metrics": {
+    "abstention_quality": {
+      "hard_stop": "abstention collapse or unsafe forced routing",
+      "scoring": "pass_fail_plus_rate"
+    },
+    "consequence_visibility": {
+      "hard_stop": "receipt omits why a route was chosen, abstained, or rejected",
+      "scoring": "pass_fail"
+    },
+    "control_preservation": {
+      "hard_stop": "fallback/static baseline, fail-closed behavior, or R1-R5 replay condition degrades",
+      "scoring": "pass_fail",
+      "superiority": "not independently sufficient; all controls must pass"
+    },
+    "mirror_masked_invariance": {
+      "hard_stop": "masked, mirrored, or order-variant inputs change verdict without lawful reason",
+      "scoring": "pass_fail"
+    },
+    "no_regression": {
+      "hard_stop": "any R1-R5 pass condition, trust-zone validation, or package deferral boundary regresses",
+      "scoring": "hard_stop"
+    },
+    "outcome_delta": {
+      "hard_stop": "any useful-output regression on protected control cases",
+      "scoring": "signed_delta",
+      "superiority": "candidate useful-output success exceeds best static control under same inputs"
+    },
+    "overrouting_penalty": {
+      "hard_stop": "candidate routes when static hold/abstention should dominate",
+      "scoring": "hard_stop"
+    },
+    "route_superiority": {
+      "defer": "candidate evidence incomplete, comparator mutated, or input family not preregistered",
+      "meaningful_movement": "candidate improves route quality without any hard-stop failure",
+      "no_movement": "candidate matches static control or only shifts route distribution without outcome gain",
+      "scoring": "ordinal_plus_hard_stops",
+      "superiority": "candidate must beat both static controls on preregistered route-quality cases"
+    }
+  },
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_SHADOW_ROUTER_CANDIDATE_AND_INPUT_MANIFEST",
+  "package_promotion_remains_deferred": true,
+  "r6_authorized": false,
+  "schema_id": "kt.operator.b04_r6_metric_thresholds_contract.v1",
+  "status": "PASS",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true,
+  "verdicts": [
+    "R6_SHADOW_SUPERIORITY_SCREEN_AUTHORIZED",
+    "R6_DEFERRED__CONTRACT_INCOMPLETE",
+    "R6_BLOCKED__NAMED_COMPARATOR_DEFECT"
+  ]
+}
