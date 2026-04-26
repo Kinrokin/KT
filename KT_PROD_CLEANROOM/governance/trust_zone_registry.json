@@ -29,7 +29,6 @@
         "KT_PROD_CLEANROOM/sitecustomize.py",
         "KT_PROD_CLEANROOM/run_policy_c_smoke_train.py",
         "KT_PROD_CLEANROOM/product/**",
-        "KT_PROD_CLEANROOM/docs/**",
         "KT_PROD_CLEANROOM/exports/law/**",
         "KT_PROD_CLEANROOM/runs/**",
         "KT_PROD_CLEANROOM/*PROMPT*.md",
@@ -117,7 +116,12 @@
         "KT_PROD_CLEANROOM/requirements-*.in",
         "KT_PROD_CLEANROOM/requirements-*.lock.txt",
         "KT_PROD_CLEANROOM/sitecustomize.py",
-        "KT_PROD_CLEANROOM/run_policy_c_smoke_train.py"
+        "KT_PROD_CLEANROOM/run_policy_c_smoke_train.py",
+        "KT_PROD_CLEANROOM/tests/conftest.py",
+        "KT_PROD_CLEANROOM/tests/fl3/**",
+        "KT_PROD_CLEANROOM/tests/test_*.py",
+        "KT_PROD_CLEANROOM/tools/__init__.py",
+        "run_kt_e2e.sh"
       ],
       "live_execution_claim_upgrade_forbidden": true,
       "meaning": "verifier tooling, CI proof jobs, packaging, builders, and operator utilities that must not inherit runtime authority",
@@ -145,7 +149,8 @@
         "KT_PROD_CLEANROOM/*WORK_ORDER*.json",
         "KT_PROD_CLEANROOM/kt.*.json",
         "KT_PROD_CLEANROOM/W4_PHASE_GATES.md",
-        "KT_PROD_CLEANROOM/decision_log.md"
+        "KT_PROD_CLEANROOM/decision_log.md",
+        "KT_PROD_CLEANROOM/EXECUTION_DAG_POST_WAVE5_V1.md"
       ],
       "meaning": "dangerous or misleading surfaces that must never define current truth",
       "zone_id": "QUARANTINED"

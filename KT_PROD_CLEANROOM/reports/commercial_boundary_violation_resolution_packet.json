@@ -1,0 +1,90 @@
+{
+  "decisions": [
+    {
+      "decision": "RESOLVED_FALSE_POSITIVE__FORBIDDEN_LANGUAGE_CONTEXT",
+      "ledger_id": "PPB-001",
+      "line": 22,
+      "may_drive_product_truth": false,
+      "path": "KT_PROD_CLEANROOM/docs/commercial/E1_BOUNDED_TRUST_WEDGE.md",
+      "requires_product_claim_promotion_court": false,
+      "resolution_action": "no text edit required; retain as explicit forbidden-claim list",
+      "terms": [
+        "beyond-sota",
+        "sota",
+        "frontier"
+      ]
+    },
+    {
+      "decision": "RESOLVED_FALSE_POSITIVE__INTERNAL_PROCESS_SCOPE",
+      "ledger_id": "PPB-002",
+      "line": 12,
+      "may_drive_product_truth": false,
+      "path": "docs/EXECUTION_PROMPT.md",
+      "requires_product_claim_promotion_court": false,
+      "resolution_action": "no commercial claim; keep outside product truth",
+      "terms": [
+        "full system"
+      ]
+    },
+    {
+      "decision": "DEFERRED_NON_AUTHORITATIVE_GENERATED_DOCTRINE_TERM",
+      "ledger_id": "PPB-003",
+      "line": 2,
+      "may_drive_product_truth": false,
+      "path": "docs/generated/kt_doctrine_compiler_spec.json",
+      "requires_product_claim_promotion_court": true,
+      "resolution_action": "requires wording normalization before any buyer-facing promotion",
+      "terms": [
+        "frontier"
+      ]
+    },
+    {
+      "decision": "DEFERRED_NON_AUTHORITATIVE_GENERATED_DOCTRINE_TERM",
+      "ledger_id": "PPB-004",
+      "line": 9,
+      "may_drive_product_truth": false,
+      "path": "docs/generated/kt_doctrine_ratification_log.json",
+      "requires_product_claim_promotion_court": true,
+      "resolution_action": "requires wording normalization before any buyer-facing promotion",
+      "terms": [
+        "frontier"
+      ]
+    },
+    {
+      "decision": "DEFERRED_NON_AUTHORITATIVE_GENERATED_DOCTRINE_TERM",
+      "ledger_id": "PPB-005",
+      "line": 6,
+      "may_drive_product_truth": false,
+      "path": "docs/generated/kt_master_spec.md",
+      "requires_product_claim_promotion_court": true,
+      "resolution_action": "requires wording normalization before any buyer-facing promotion",
+      "terms": [
+        "frontier"
+      ]
+    },
+    {
+      "decision": "DEFERRED_NON_AUTHORITATIVE_GENERATED_DOCTRINE_TERM",
+      "ledger_id": "PPB-006",
+      "line": 3,
+      "may_drive_product_truth": false,
+      "path": "docs/generated/profiles/kt_outsider_onboarding_profile.json",
+      "requires_product_claim_promotion_court": true,
+      "resolution_action": "requires wording normalization before any buyer-facing promotion",
+      "terms": [
+        "frontier"
+      ]
+    }
+  ],
+  "deferred_count": 4,
+  "execution_status": "PASS__UNKNOWN_ZONE_AND_PRODUCT_PROOF_BOUNDARIES_REDUCED",
+  "generated_utc": "2026-04-26T19:08:01Z",
+  "live_blocker_count": 0,
+  "next_lawful_move": "AUTHOR_TRUST_ZONE_BOUNDARY_PURIFICATION_CLOSEOUT_OR_NEXT_BATCH_PACKET",
+  "outcome": "COMMERCIAL_BOUNDARY_CANDIDATES_RESOLVED_OR_DEFERRED",
+  "package_promotion_remains_deferred": true,
+  "resolved_count": 2,
+  "review_queue_count": 6,
+  "schema_id": "kt.operator.commercial_boundary_violation_resolution_packet.v1",
+  "status": "PASS",
+  "truth_engine_derivation_law_unchanged": true
+}
