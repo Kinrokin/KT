@@ -154,14 +154,41 @@ def test_upper_stack_readiness_emits_authority_surfaces(tmp_path: Path, monkeypa
     packet = _load(reports / tranche.OUTPUT_PACKET)
 
     assert result["outcome"] == tranche.OUTCOME
+    assert result["next_lawful_move"] == tranche.NEXT_MOVE_REVALIDATION_ASSET
+    assert receipt["r1_through_r5_receipt_chain_pass"] is True
+    assert receipt["r1_through_r5_active_revalidation_replay_status"] == "BLOCKED_MISSING_CURRENT_CAMPAIGN_STATE_OVERLAY"
     assert receipt["r6_authorization_status"] == "BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF"
-    assert receipt["ratification_blocker_count"] == 3
+    assert receipt["ratification_blocker_count"] == 4
     assert inventory["domain_count"] >= 12
     assert "INTENDED_NOT_PROMOTED" in matrix["status_classes"]
     assert blockers["live_blocker_count"] == 0
-    assert blockers["entries"][0]["blocker_id"] == "B04_R6_LEARNED_ROUTER_SUPERIORITY_NOT_EARNED"
-    assert recommendation["recommended_next_move"] == tranche.NEXT_MOVE
+    assert blockers["entries"][0]["blocker_id"] == "B04_R1_R5_ACTIVE_REVALIDATION_OVERLAY_MISSING"
+    assert blockers["entries"][0]["resolution_path"] == tranche.NEXT_MOVE_REVALIDATION_ASSET
+    assert recommendation["recommended_next_move"] == tranche.NEXT_MOVE_REVALIDATION_ASSET
     assert packet["non_claim_boundaries"]
+
+
+def test_upper_stack_readiness_recommends_r6_after_overlay_asset_exists(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports, governance = _write_inputs(tmp_path)
+    _write_json(reports / tranche.CURRENT_CAMPAIGN_STATE_OVERLAY, {"schema_id": "overlay", "status": "ACTIVE"})
+    _patch_env(monkeypatch, tmp_path)
+
+    result = tranche.run(reports_root=reports, governance_root=governance)
+
+    receipt = _load(reports / tranche.OUTPUT_RECEIPT)
+    matrix = _load(reports / tranche.OUTPUT_STATUS_MATRIX)
+    blockers = _load(reports / tranche.OUTPUT_BLOCKER_LEDGER)
+    recommendation = _load(reports / tranche.OUTPUT_NEXT_RECOMMENDATION)
+
+    learned_router_row = next(row for row in matrix["rows"] if row["domain_id"] == "learned_router_authorization")
+    assert result["next_lawful_move"] == tranche.NEXT_MOVE_R6
+    assert receipt["r1_through_r5_active_revalidation_replay_status"] == "READY_FOR_ACTIVE_REPLAY"
+    assert receipt["ratification_blocker_count"] == 3
+    assert blockers["entries"][0]["blocker_id"] == "B04_R6_LEARNED_ROUTER_SUPERIORITY_NOT_EARNED"
+    assert learned_router_row["may_become_authoritative_now"] is True
+    assert recommendation["recommended_next_move"] == tranche.NEXT_MOVE_R6
 
 
 def test_upper_stack_readiness_fails_without_post_boundary_authorization(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

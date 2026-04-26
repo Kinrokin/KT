@@ -11,8 +11,12 @@ from tools.operator.trust_zone_validate import validate_trust_zones
 REQUIRED_BRANCH = "authoritative/upper-stack-ratification-readiness"
 EXECUTION_STATUS = "PASS__UPPER_STACK_RATIFICATION_READINESS_AUTHORITY_BOUND"
 OUTCOME = "UPPER_STACK_RATIFICATION_READINESS_AUTHORITY_PACKET_BOUND"
-NEXT_MOVE = "AUTHOR_B04_R6_LEARNED_ROUTER_SUPERIORITY_BLOCKER_RESOLUTION_PACKET"
-NEXT_LANE = "b04_r6_learned_router_superiority_blocker_resolution"
+NEXT_MOVE_REVALIDATION_ASSET = "AUTHOR_B04_R1_R5_REVALIDATION_ASSET_SUPERSESSION_PACKET"
+NEXT_LANE_REVALIDATION_ASSET = "b04_r1_r5_revalidation_asset_supersession"
+NEXT_MOVE_R6 = "AUTHOR_B04_R6_LEARNED_ROUTER_SUPERIORITY_BLOCKER_RESOLUTION_PACKET"
+NEXT_LANE_R6 = "b04_r6_learned_router_superiority_blocker_resolution"
+NEXT_MOVE = NEXT_MOVE_REVALIDATION_ASSET
+NEXT_LANE = NEXT_LANE_REVALIDATION_ASSET
 
 POST_BOUNDARY_REGRADE = "post_boundary_canonical_regrade_audit_receipt.json"
 NEXT_LANE_RECOMMENDATION = "next_authoritative_lane_recommendation.json"
@@ -29,6 +33,7 @@ ROUTER_ORDERED_PROOF = "router_ordered_proof_receipt.json"
 UNIVERSAL_ADAPTER_RECEIPT = "universal_adapter_receipt.json"
 ROUTER_LOBE_GAP_MATRIX = "router_lobe_gap_matrix.json"
 ADAPTER_CIVILIZATION_GAP_MATRIX = "adapter_civilization_gap_matrix.json"
+CURRENT_CAMPAIGN_STATE_OVERLAY = "current_campaign_state_overlay.json"
 
 OUTPUT_PACKET = "upper_stack_ratification_readiness_authority_packet.json"
 OUTPUT_DOMAIN_INVENTORY = "upper_stack_domain_inventory.json"
@@ -86,7 +91,16 @@ def _hash_ref(path: Path, *, root: Path) -> Dict[str, str]:
     return {"path": resolved.relative_to(root.resolve()).as_posix(), "sha256": canonical_file_sha256(resolved)}
 
 
-def _evidence_refs(root: Path, reports_root: Path, governance_root: Path) -> Dict[str, Dict[str, str]]:
+def _optional_hash_ref(path: Path, *, root: Path) -> Dict[str, Any]:
+    resolved = path.resolve()
+    if not resolved.is_file():
+        return {"path": resolved.relative_to(root.resolve()).as_posix(), "exists": False, "sha256": None}
+    payload = _hash_ref(resolved, root=root)
+    payload["exists"] = True
+    return payload
+
+
+def _evidence_refs(root: Path, reports_root: Path, governance_root: Path) -> Dict[str, Dict[str, Any]]:
     refs = {
         "post_boundary_regrade": reports_root / POST_BOUNDARY_REGRADE,
         "next_lane_recommendation": reports_root / NEXT_LANE_RECOMMENDATION,
@@ -102,6 +116,7 @@ def _evidence_refs(root: Path, reports_root: Path, governance_root: Path) -> Dic
         "universal_adapter_receipt": reports_root / UNIVERSAL_ADAPTER_RECEIPT,
         "router_lobe_gap_matrix": reports_root / ROUTER_LOBE_GAP_MATRIX,
         "adapter_civilization_gap_matrix": reports_root / ADAPTER_CIVILIZATION_GAP_MATRIX,
+        "current_campaign_state_overlay": reports_root / CURRENT_CAMPAIGN_STATE_OVERLAY,
         "canonical_scope_manifest": governance_root / "canonical_scope_manifest.json",
         "readiness_scope_manifest": governance_root / "readiness_scope_manifest.json",
         "trust_zone_registry": governance_root / "trust_zone_registry.json",
@@ -123,7 +138,10 @@ def _evidence_refs(root: Path, reports_root: Path, governance_root: Path) -> Dic
         "lobe_role_registry": governance_root / "lobe_role_registry.json",
         "lobe_promotion_law": governance_root / "lobe_promotion_law.json",
     }
-    return {key: _hash_ref(path, root=root) for key, path in refs.items()}
+    return {
+        key: (_optional_hash_ref(path, root=root) if key == "current_campaign_state_overlay" else _hash_ref(path, root=root))
+        for key, path in refs.items()
+    }
 
 
 def _load_payloads(root: Path, reports_root: Path, governance_root: Path) -> Dict[str, Dict[str, Any]]:
@@ -251,6 +269,12 @@ def build_outputs(
     prep_counts = _prep_counts(payloads["upper_stack_prep_inventory"])
     checks = live_validation.get("checks", [])
     failures = live_validation.get("failures", [])
+    overlay_available = (reports_root / CURRENT_CAMPAIGN_STATE_OVERLAY).resolve().is_file()
+    next_move = NEXT_MOVE_R6 if overlay_available else NEXT_MOVE_REVALIDATION_ASSET
+    next_lane = NEXT_LANE_R6 if overlay_available else NEXT_LANE_REVALIDATION_ASSET
+    r1_r5_revalidation_replay_status = "READY_FOR_ACTIVE_REPLAY" if overlay_available else "BLOCKED_MISSING_CURRENT_CAMPAIGN_STATE_OVERLAY"
+    r1_r5_status_class = "CANONICAL_AND_RATIFIED" if overlay_available else "CANONICAL_BUT_BOUNDED"
+    r1_r5_stage_suffix = "REPLAY_READY" if overlay_available else "RECEIPT_PASS_REVALIDATION_BLOCKED"
 
     common_header = {
         "status": "PASS",
@@ -264,10 +288,10 @@ def build_outputs(
         {
             "domain_id": "crucibles_pressure_law",
             "display_name": "Crucibles / pressure law",
-            "status_class": "CANONICAL_AND_RATIFIED",
-            "ratification_stage": "B04_R1",
+            "status_class": r1_r5_status_class,
+            "ratification_stage": f"B04_R1_{r1_r5_stage_suffix}",
             "source_refs": ["r1_crucible_pressure_law_receipt", "crucible_lifecycle_law", "crucible_registry"],
-            "readiness_summary": "R1 pressure-law court is PASS; broader Policy C work must still consume it without widening claims.",
+            "readiness_summary": "R1 pressure-law receipt is PASS; active validator replay is bounded by the current overlay asset status.",
             "tracked_path_count_hint": prep_counts.get("crucibles_policy_c", 0),
             "may_drive_live_posture": True,
         },
@@ -294,8 +318,8 @@ def build_outputs(
         {
             "domain_id": "adapter_lifecycle",
             "display_name": "Adapters / lifecycle law",
-            "status_class": "CANONICAL_AND_RATIFIED",
-            "ratification_stage": "B04_R2",
+            "status_class": r1_r5_status_class,
+            "ratification_stage": f"B04_R2_{r1_r5_stage_suffix}",
             "source_refs": ["r2_adapter_lifecycle_receipt", "adapter_lifecycle_law", "adapter_registry"],
             "readiness_summary": "R2 adapter lifecycle law is PASS; broad adapter civilization remains bounded by promotion law.",
             "tracked_path_count_hint": prep_counts.get("adapters", 0),
@@ -314,8 +338,8 @@ def build_outputs(
         {
             "domain_id": "tournament_promotion_merge_law",
             "display_name": "Tournament / promotion / merge law",
-            "status_class": "CANONICAL_AND_RATIFIED",
-            "ratification_stage": "B04_R3",
+            "status_class": r1_r5_status_class,
+            "ratification_stage": f"B04_R3_{r1_r5_stage_suffix}",
             "source_refs": ["r3_tournament_promotion_merge_receipt"],
             "readiness_summary": "R3 law is PASS and can govern future promotion, but does not itself authorize learned-router or lobe promotion.",
             "tracked_path_count_hint": prep_counts.get("tournaments_promotion_merge", 0),
@@ -325,7 +349,7 @@ def build_outputs(
             "domain_id": "router_shadow_proof",
             "display_name": "Router shadow proof / static router boundary",
             "status_class": "CANONICAL_BUT_BOUNDED",
-            "ratification_stage": "B04_R4_R5_STATIC_HOLD",
+            "ratification_stage": f"B04_R4_R5_STATIC_HOLD_{r1_r5_stage_suffix}",
             "source_refs": ["r4_router_shadow_receipt", "r5_router_vs_best_adapter_receipt", "router_ordered_proof"],
             "readiness_summary": "R4/R5 are PASS, but the router remains bounded; R6 is held until learned-router superiority is earned.",
             "tracked_path_count_hint": prep_counts.get("router_lobes", 0),
@@ -337,7 +361,7 @@ def build_outputs(
             "status_class": "INTENDED_NOT_PROMOTED",
             "ratification_stage": "B04_R6_BLOCKED",
             "source_refs": ["router_superiority_scorecard", "r5_terminal_state", "router_policy_registry"],
-            "readiness_summary": "B04_R6 is the next ordered frontier, but current superiority evidence is not earned.",
+            "readiness_summary": "B04_R6 remains blocked; resolve active R1-R5 revalidation asset status before attempting superiority-blocker resolution.",
             "tracked_path_count_hint": prep_counts.get("router_lobes", 0),
             "may_drive_live_posture": False,
         },
@@ -388,9 +412,13 @@ def build_outputs(
             "domain_id": row["domain_id"],
             "status_class": row["status_class"],
             "ratification_stage": row["ratification_stage"],
-            "may_become_authoritative_now": row["domain_id"] == "learned_router_authorization",
+            "may_become_authoritative_now": row["domain_id"] == "learned_router_authorization" and overlay_available,
             "authority_condition": (
-                "Only a blocker-resolution lane may open now; B04_R6 authorization remains unavailable until superiority_earned=true."
+                (
+                    "Only a blocker-resolution lane may open now; B04_R6 authorization remains unavailable until superiority_earned=true."
+                    if overlay_available
+                    else "Repair or supersede the R1-R5 active revalidation overlay asset before any B04_R6 blocker-resolution lane may open."
+                )
                 if row["domain_id"] == "learned_router_authorization"
                 else "No new authority promotion from this readiness packet."
             ),
@@ -399,29 +427,46 @@ def build_outputs(
         for row in domain_rows
     ]
 
-    blocker_entries = [
-        {
-            "blocker_id": "B04_R6_LEARNED_ROUTER_SUPERIORITY_NOT_EARNED",
-            "severity": "BLOCKS_NEXT_RATIFICATION",
-            "blocked_domain": "learned_router_authorization",
-            "evidence": ["router_superiority_scorecard", "r5_router_vs_best_adapter_receipt", "r5_terminal_state"],
-            "resolution_path": NEXT_MOVE,
-        },
-        {
-            "blocker_id": "B04_R7_MULTI_LOBE_ORCHESTRATION_BLOCKED_PENDING_LEARNED_ROUTER_WIN",
-            "severity": "BLOCKS_DOWNSTREAM_RATIFICATION",
-            "blocked_domain": "multi_lobe_orchestration",
-            "evidence": ["router_policy_registry", "lobe_promotion_law"],
-            "resolution_path": "Do not open lobe ratification until B04_R6 is earned and authorized.",
-        },
-        {
-            "blocker_id": "BROAD_COMPARATIVE_PROOF_REMAINS_OPEN_A_PLUS_GAP",
-            "severity": "BLOCKS_BROAD_CLAIMS",
-            "blocked_domain": "broader_comparative_proof",
-            "evidence": ["remaining_a_plus_gaps"],
-            "resolution_path": "Open only after ordered router/lobe status is settled or explicitly bounded.",
-        },
-    ]
+    blocker_entries: List[Dict[str, Any]] = []
+    if not overlay_available:
+        blocker_entries.append(
+            {
+                "blocker_id": "B04_R1_R5_ACTIVE_REVALIDATION_OVERLAY_MISSING",
+                "severity": "BLOCKS_NEXT_RATIFICATION",
+                "blocked_domain": "learned_router_authorization",
+                "evidence": [
+                    "current_campaign_state_overlay",
+                    "r1_crucible_pressure_law_receipt",
+                    "r5_router_vs_best_adapter_receipt",
+                ],
+                "resolution_path": NEXT_MOVE_REVALIDATION_ASSET,
+            }
+        )
+    blocker_entries.extend(
+        [
+            {
+                "blocker_id": "B04_R6_LEARNED_ROUTER_SUPERIORITY_NOT_EARNED",
+                "severity": "BLOCKS_NEXT_RATIFICATION" if overlay_available else "BLOCKS_AFTER_REVALIDATION_ASSET",
+                "blocked_domain": "learned_router_authorization",
+                "evidence": ["router_superiority_scorecard", "r5_router_vs_best_adapter_receipt", "r5_terminal_state"],
+                "resolution_path": NEXT_MOVE_R6,
+            },
+            {
+                "blocker_id": "B04_R7_MULTI_LOBE_ORCHESTRATION_BLOCKED_PENDING_LEARNED_ROUTER_WIN",
+                "severity": "BLOCKS_DOWNSTREAM_RATIFICATION",
+                "blocked_domain": "multi_lobe_orchestration",
+                "evidence": ["router_policy_registry", "lobe_promotion_law"],
+                "resolution_path": "Do not open lobe ratification until B04_R6 is earned and authorized.",
+            },
+            {
+                "blocker_id": "BROAD_COMPARATIVE_PROOF_REMAINS_OPEN_A_PLUS_GAP",
+                "severity": "BLOCKS_BROAD_CLAIMS",
+                "blocked_domain": "broader_comparative_proof",
+                "evidence": ["remaining_a_plus_gaps"],
+                "resolution_path": "Open only after ordered router/lobe status is settled or explicitly bounded.",
+            },
+        ]
+    )
 
     packet = {
         **common_header,
@@ -448,7 +493,8 @@ def build_outputs(
             OUTPUT_NEXT_RECOMMENDATION,
             OUTPUT_RECEIPT,
         ],
-        "next_lawful_move": NEXT_MOVE,
+        "active_revalidation_asset_status": r1_r5_revalidation_replay_status,
+        "next_lawful_move": next_move,
     }
     domain_inventory = {
         **common_header,
@@ -456,7 +502,8 @@ def build_outputs(
         "outcome": "UPPER_STACK_DOMAIN_INVENTORY_BOUND",
         "domain_count": len(domain_rows),
         "domains": domain_rows,
-        "next_lawful_move": NEXT_MOVE,
+        "active_revalidation_asset_status": r1_r5_revalidation_replay_status,
+        "next_lawful_move": next_move,
     }
     matrix = {
         **common_header,
@@ -465,7 +512,8 @@ def build_outputs(
         "status_classes": STATUS_CLASSES,
         "ratification_order": RATIFICATION_ORDER,
         "rows": status_matrix,
-        "next_lawful_move": NEXT_MOVE,
+        "active_revalidation_asset_status": r1_r5_revalidation_replay_status,
+        "next_lawful_move": next_move,
     }
     blocker_ledger = {
         **common_header,
@@ -474,16 +522,18 @@ def build_outputs(
         "live_blocker_count": 0,
         "ratification_blocker_count": len(blocker_entries),
         "entries": blocker_entries,
-        "next_lawful_move": NEXT_MOVE,
+        "active_revalidation_asset_status": r1_r5_revalidation_replay_status,
+        "next_lawful_move": next_move,
     }
     recommendation = {
         **common_header,
         "schema_id": "kt.operator.upper_stack_next_ratification_lane_recommendation.v1",
-        "outcome": "B04_R6_BLOCKER_RESOLUTION_RECOMMENDED",
-        "recommended_next_authoritative_lane": NEXT_LANE,
-        "recommended_next_move": NEXT_MOVE,
+        "outcome": "B04_REVALIDATION_ASSET_SUPERSESSION_RECOMMENDED" if not overlay_available else "B04_R6_BLOCKER_RESOLUTION_RECOMMENDED",
+        "recommended_next_authoritative_lane": next_lane,
+        "recommended_next_move": next_move,
         "why": [
             "R1 through R5 are already PASS in the active evidence chain.",
+            "Active R1-R5 validator replay currently depends on current_campaign_state_overlay.json.",
             "R5 terminal state explicitly blocks learned-router authorization.",
             "router_superiority_scorecard.superiority_earned is false.",
             "multi-lobe orchestration remains blocked pending learned-router win.",
@@ -494,7 +544,8 @@ def build_outputs(
             "commercial_product_expansion",
             "package_promotion",
         ],
-        "next_lawful_move": NEXT_MOVE,
+        "active_revalidation_asset_status": r1_r5_revalidation_replay_status,
+        "next_lawful_move": next_move,
     }
     receipt = {
         **common_header,
@@ -504,15 +555,16 @@ def build_outputs(
         "domain_count": len(domain_rows),
         "status_class_count": len(STATUS_CLASSES),
         "ratification_order_count": len(RATIFICATION_ORDER),
-        "r1_through_r5_pass": True,
+        "r1_through_r5_receipt_chain_pass": True,
+        "r1_through_r5_active_revalidation_replay_status": r1_r5_revalidation_replay_status,
         "r6_authorization_status": "BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF",
         "live_blocker_count": 0,
         "ratification_blocker_count": len(blocker_entries),
         "trust_zone_validation_status": live_validation["status"],
         "trust_zone_validation_check_count": len(checks),
         "trust_zone_validation_failure_count": len(failures),
-        "recommended_next_authoritative_lane": NEXT_LANE,
-        "next_lawful_move": NEXT_MOVE,
+        "recommended_next_authoritative_lane": next_lane,
+        "next_lawful_move": next_move,
     }
     return {
         "packet": packet,
@@ -555,7 +607,7 @@ def run(*, reports_root: Path, governance_root: Path) -> Dict[str, Any]:
         (OUTPUT_RECEIPT, "receipt"),
     ]:
         write_json_stable((reports_root / filename).resolve(), outputs[key])
-    return {"outcome": OUTCOME, "next_lawful_move": NEXT_MOVE}
+    return {"outcome": OUTCOME, "next_lawful_move": outputs["receipt"]["next_lawful_move"]}
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
