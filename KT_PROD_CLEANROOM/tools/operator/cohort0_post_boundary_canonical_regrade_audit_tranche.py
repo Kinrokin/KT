@@ -431,7 +431,6 @@ def run(
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = common.main_parser("Run the focused post-boundary canonical regrade audit.")
-    parser.add_argument("--reports-root", default="KT_PROD_CLEANROOM/reports")
     parser.add_argument("--governance-root", default="KT_PROD_CLEANROOM/governance")
     args = parser.parse_args(argv)
     root = repo_root()
