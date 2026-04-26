@@ -112,6 +112,23 @@ def test_post_boundary_regrade_emits_audit_ledgers_and_recommendation(tmp_path: 
     assert recommendation["recommended_next_move"] == tranche.NEXT_MOVE
 
 
+def test_post_boundary_regrade_hashes_evidence_independent_of_cwd(tmp_path: Path, monkeypatch) -> None:
+    reports, governance = _write_inputs(tmp_path)
+    monkeypatch.setattr(tranche, "repo_root", lambda: tmp_path)
+    monkeypatch.setattr(tranche.common, "git_current_branch_name", lambda root: tranche.REQUIRED_BRANCH)
+    monkeypatch.setattr(tranche.common, "git_status_porcelain", lambda root: "")
+    monkeypatch.setattr(tranche.common, "git_rev_parse", lambda root, ref: "abc123")
+    monkeypatch.setattr(tranche, "validate_trust_zones", lambda root: {"schema_id": "validation", "status": "PASS", "checks": [{} for _ in range(24)], "failures": []})
+    monkeypatch.chdir(tmp_path / "KT_PROD_CLEANROOM")
+
+    result = tranche.run(reports_root=reports, governance_root=governance)
+
+    packet = _load(reports / tranche.OUTPUT_PACKET)
+    assert result["outcome"] == tranche.OUTCOME
+    assert packet["evidence_refs"]["post_merge_closeout"]["path"] == f"KT_PROD_CLEANROOM/reports/{tranche.POST_MERGE_CLOSEOUT}"
+    assert len(packet["evidence_refs"]["post_merge_closeout"]["sha256"]) == 64
+
+
 def test_post_boundary_regrade_fails_if_package_promotion_not_deferred(tmp_path: Path, monkeypatch) -> None:
     reports, governance = _write_inputs(tmp_path)
     closeout = _load(reports / tranche.POST_MERGE_CLOSEOUT)

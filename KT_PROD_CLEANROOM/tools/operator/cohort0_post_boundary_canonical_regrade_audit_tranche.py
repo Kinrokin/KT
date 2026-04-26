@@ -56,8 +56,9 @@ def _load_receipt(root: Path, reports_root: Path, filename: str, *, label: str) 
     return common.load_json_required(root, reports_root / filename, label=label)
 
 
-def _hash_ref(path: Path) -> Dict[str, str]:
-    return {"path": path.as_posix(), "sha256": canonical_file_sha256(path)}
+def _hash_ref(path: Path, *, root: Path) -> Dict[str, str]:
+    resolved = path.resolve()
+    return {"path": resolved.relative_to(root.resolve()).as_posix(), "sha256": canonical_file_sha256(resolved)}
 
 
 def _evidence_refs(root: Path, reports_root: Path, governance_root: Path) -> Dict[str, Dict[str, str]]:
@@ -77,7 +78,7 @@ def _evidence_refs(root: Path, reports_root: Path, governance_root: Path) -> Dic
         "product_proof_review": reports_root / PRODUCT_PROOF_REVIEW,
         "trust_zone_validation_matrix": reports_root / TRUST_ZONE_VALIDATION_MATRIX,
     }
-    return {key: _hash_ref(path.resolve().relative_to(root)) for key, path in refs.items()}
+    return {key: _hash_ref(path, root=root) for key, path in refs.items()}
 
 
 def validate_inputs(*, payloads: Dict[str, Dict[str, Any]], live_validation: Dict[str, Any]) -> None:
