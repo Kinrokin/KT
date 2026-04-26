@@ -1,0 +1,104 @@
+{
+  "aligned_truth_surfaces": [
+    {
+      "execution_status": "PASS__POST_F_TRACK_01_FINAL_SUMMARY_PACKET_BOUND",
+      "label": "Track 01 final summary receipt",
+      "next_lawful_move": "AUTHOR_POST_F_TRACK_02_SCOPE_PACKET",
+      "outcome": "",
+      "schema_id": "kt.operator.cohort0_post_f_track_01_final_summary_receipt.v1",
+      "status": "PASS"
+    },
+    {
+      "execution_status": "PASS__TRACK_02_FINAL_SUMMARY_PACKET_BOUND",
+      "label": "Track 02 final summary receipt",
+      "next_lawful_move": "AUTHOR_POST_F_TRACK_03_SCOPE_PACKET",
+      "outcome": "",
+      "schema_id": "kt.operator.cohort0_post_f_track_02_final_summary_receipt.v1",
+      "status": "PASS"
+    },
+    {
+      "execution_status": "PASS__TRACK_03_FINAL_SUMMARY_PACKET_BOUND",
+      "label": "Track 03 final summary receipt",
+      "next_lawful_move": "AUTHOR_POST_F_TRACK_03_HUMAN_REVIEW_PACKET",
+      "outcome": "",
+      "schema_id": "kt.operator.cohort0_post_f_track_03_final_summary_receipt.v1",
+      "status": "PASS"
+    },
+    {
+      "execution_status": "PASS__TRACK_03_PROTECTED_MERGE_EXECUTED__PACKAGE_PROMOTION_DEFERRED",
+      "label": "Track 03 post-merge closeout receipt",
+      "next_lawful_move": "AUTHOR_POST_F_TRUTH_ENGINE_CONTRADICTION_VALIDATOR_AUTHORITY_PACKET",
+      "outcome": "",
+      "schema_id": "kt.operator.cohort0_post_f_track_03_post_merge_closeout_receipt.v1",
+      "status": "PASS"
+    },
+    {
+      "execution_status": "PASS__POST_F_PR15_FL3_FULL_RED_TO_GREEN_BOUND",
+      "label": "PR15 FL3 full red-to-green receipt",
+      "next_lawful_move": "MERGE_PR15_THEN_EXECUTE_CANONICAL_TRUTH_ENGINE_REPLAY_ON_MAIN",
+      "outcome": "",
+      "schema_id": "kt.operator.cohort0_post_f_pr15_fl3_full_red_to_green_receipt.v1",
+      "status": "PASS"
+    },
+    {
+      "execution_status": "PASS__POST_F_TRUTH_ENGINE_POST_PR_CANONICAL_HANDOFF_FROZEN",
+      "label": "truth-engine post-PR canonical handoff receipt",
+      "next_lawful_move": "PROMOTE_TRUST_ZONE_BOUNDARY_PURIFICATION_AS_NEXT_AUTHORITATIVE_LANE",
+      "outcome": "POST_F_TRUTH_ENGINE_POST_PR_CANONICAL_HANDOFF_FROZEN__MAIN_REPLAY_COMPLETE",
+      "schema_id": "kt.operator.cohort0_post_f_truth_engine_post_pr_canonical_handoff_receipt.v1",
+      "status": "PASS"
+    }
+  ],
+  "audited_head_ref": "0bbb0452b57102d7e311bb0e46d8c9fc7192de42",
+  "audited_origin_main_ref": "ffef3023e1fade38a715d446a8399a64982e24bb",
+  "boundary_readiness": {
+    "prep_lane_was_non_authoritative_until_this_audit": true,
+    "prep_receipt_outcome": "POST_F_TRUST_ZONE_BOUNDARY_PURIFICATION_PREP_DEFINED__NON_AUTHORITATIVE",
+    "ready_to_promote_authoritative_lane": true,
+    "trust_zone_validation_check_count": 24,
+    "trust_zone_validation_failure_count": 0,
+    "trust_zone_validation_status": "PASS"
+  },
+  "branch_ref": "authoritative/trust-zone-boundary-purification",
+  "claim_boundary": "Post-merge canonical truth and boundary-readiness audit only. This packet does not perform package promotion and does not rewrite truth-engine law.",
+  "execution_status": "PASS__POST_MERGE_CANONICAL_TRUTH_BOUNDARY_READINESS_AUDIT_BOUND",
+  "generated_utc": "2026-04-26T17:52:15Z",
+  "local_untracked_residue": {
+    "authority_status": "LOCAL_ONLY_NON_AUTHORITATIVE_QUARANTINE",
+    "local_quarantine_manifest_refs": [
+      "_tmp/local_untracked_quarantine/20260425T230953Z/manifest.json"
+    ],
+    "manifest_count": 1
+  },
+  "main_convergence": {
+    "canonical_replay_branch_ref": "main",
+    "canonical_replay_scope": "CANONICAL_MAIN_REPLAY_CONVERGED",
+    "origin_main_is_ancestor_of_lane_head": true
+  },
+  "next_lawful_move": "PROMOTE_TRUST_ZONE_BOUNDARY_PURIFICATION_AS_NEXT_AUTHORITATIVE_LANE",
+  "outcome": "POST_MERGE_CANONICAL_TRUTH_AND_BOUNDARY_READINESS_CONFIRMED",
+  "package_boundary": {
+    "no_package_promotion_performed_by_this_audit": true,
+    "package_promotion_remains_deferred": true,
+    "package_truth_posture": [
+      "PACKAGE_PROMOTION_DEFERRED"
+    ]
+  },
+  "pr15_remediation_alignment": {
+    "blocking_blocker_count": 0,
+    "full_fl3_suite_green": true,
+    "full_fl3_summary": "239 passed, 1 skipped in 68.30s (0:01:08)"
+  },
+  "schema_id": "kt.operator.cohort0_post_merge_canonical_truth_boundary_readiness_audit_packet.v1",
+  "status": "PASS",
+  "truth_engine_alignment": {
+    "advisory_condition_count": 0,
+    "blocking_contradiction_count": 0,
+    "handoff_execution_status": "PASS__POST_F_TRUTH_ENGINE_POST_PR_CANONICAL_HANDOFF_FROZEN",
+    "ledger_advisory_contradiction_count": 0,
+    "ledger_blocking_contradiction_count": 0,
+    "recompute_branch_ref": "main",
+    "recompute_scope": "CANONICAL_MAIN_REPLAY_CONVERGED",
+    "recompute_status": "PASS"
+  }
+}
