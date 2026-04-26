@@ -1,0 +1,43 @@
+{
+  "authoritative_lane": "B04_R6_LEARNED_ROUTER_COMPARATOR_AND_METRIC_CONTRACT",
+  "best_static_baseline": {
+    "provider_underlay": {
+      "adapter_id": "council.openrouter.live_hashed.v1",
+      "boundary_hold_present": false,
+      "http_status": 200,
+      "latency_ms": 1063,
+      "provider_id": "openrouter",
+      "ranking_rule": [
+        "successful_live_count_desc",
+        "live_receipt_count_desc",
+        "latency_ms_asc",
+        "adapter_id_asc"
+      ],
+      "status": "OK"
+    },
+    "ratification_decision": "HOLD_STATIC_CANONICAL_BASELINE",
+    "source_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json"
+  },
+  "current_git_head": "c6c471691843863606dcf20293c7730c00f44a87",
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening",
+    "external_verification_completed"
+  ],
+  "generated_utc": "2026-04-26T22:49:41Z",
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_SHADOW_ROUTER_CANDIDATE_AND_INPUT_MANIFEST",
+  "package_promotion_remains_deferred": true,
+  "r6_authorized": false,
+  "schema_id": "kt.operator.b04_r6_static_baseline_inventory_receipt.v1",
+  "static_baseline_remains_canonical": true,
+  "status": "PASS",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true
+}
