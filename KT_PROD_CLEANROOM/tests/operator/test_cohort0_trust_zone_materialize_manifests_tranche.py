@@ -48,6 +48,9 @@ def _write_inputs(root: Path) -> tuple[Path, Path]:
             "zones": [
                 {"zone_id": "CANONICAL", "include": ["KT_PROD_CLEANROOM/governance/**"], "exclude": []},
                 {"zone_id": "COMMERCIAL", "include": ["README.md", "docs/**"], "exclude": []},
+                {"zone_id": "TOOLCHAIN_PROVING", "include": ["KT_PROD_CLEANROOM/tools/operator/**"], "exclude": []},
+                {"zone_id": "GENERATED_RUNTIME_TRUTH", "include": ["KT_PROD_CLEANROOM/reports/**"], "exclude": []},
+                {"zone_id": "QUARANTINED", "include": ["KT_PROD_CLEANROOM/05_QUARANTINE/**"], "exclude": []},
             ],
         },
     )
@@ -105,6 +108,7 @@ def test_materializes_manifests_queue_and_quarantine_receipts(tmp_path: Path, mo
     )
 
     assert result["outcome"] == tranche.OUTCOME
+    registry = _load(governance / "trust_zone_registry.json")
     receipt = _load(reports / tranche.OUTPUT_RECEIPT)
     queue = _load(reports / tranche.UNKNOWN_ZONE_RESOLUTION_QUEUE)
     product_ledger = _load(reports / tranche.PRODUCT_PROOF_BLOCKER_LEDGER)
@@ -114,9 +118,10 @@ def test_materializes_manifests_queue_and_quarantine_receipts(tmp_path: Path, mo
 
     assert receipt["next_lawful_move"] == tranche.NEXT_MOVE
     assert receipt["package_promotion_remains_deferred"] is True
-    assert queue["queue_count"] == 3
-    assert queue["suggested_zone_counts"]["COMMERCIAL"] == 1
-    assert queue["suggested_zone_counts"]["QUARANTINED"] == 1
+    assert "KT_PROD_CLEANROOM/tests/operator/**" in next(row for row in registry["zones"] if row["zone_id"] == "TOOLCHAIN_PROVING")["include"]
+    assert "KT_PROD_CLEANROOM/product/**" in next(row for row in registry["zones"] if row["zone_id"] == "COMMERCIAL")["include"]
+    assert queue["queue_count"] == 1
+    assert queue["suggested_zone_counts"]["UNKNOWN_REQUIRES_HUMAN_REVIEW"] == 1
     assert product_ledger["candidate_violation_count"] == 1
     assert product_ledger["live_blocker_count"] == 0
     assert commercial_review["review_queue_count"] == 1
