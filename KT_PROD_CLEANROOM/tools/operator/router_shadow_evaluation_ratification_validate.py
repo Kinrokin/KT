@@ -35,6 +35,10 @@ EXPECTED_ALLOWED_FOLLOW_ON_STEPS = {
     "B04_R6_LEARNED_ROUTER_AUTHORIZATION",
     "B04_R7_LOBE_ARCHITECTURE_RATIFICATION",
 }
+SETTLED_R5_STEP_ID = "B04_R5_ROUTER_VS_BEST_ADAPTER_PROOF"
+SETTLED_R6_STEP_ID = "B04_R6_LEARNED_ROUTER_AUTHORIZATION"
+SETTLED_R6_HOLD_MOVE = "HOLD_B04_R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIORITY_PROOF"
+SETTLED_R6_HOLD_EXECUTION_MODE = "R6_NEXT_IN_ORDER_BLOCKED_PENDING_EARNED_SUPERIORITY__INITIAL_R5_PROOF_COMPLETE"
 
 
 def _resolve(root: Path, raw: str) -> Path:
@@ -70,7 +74,7 @@ def _order_locked_progress_after_r4(
     reanchor: Dict[str, Any],
 ) -> bool:
     next_step = str(next_contract.get("exact_next_counted_workstream_id", "")).strip()
-    return (
+    in_sequence_progress = (
         next_step in EXPECTED_ALLOWED_FOLLOW_ON_STEPS
         and str(next_contract.get("execution_mode", "")).strip().startswith("CIVILIZATION_RATIFICATION_ORDER_LOCKED__")
         and bool(next_contract.get("repo_state_executable_now")) is True
@@ -78,6 +82,23 @@ def _order_locked_progress_after_r4(
         and str(resume.get("exact_next_counted_workstream_id", "")).strip() == next_step
         and str(reanchor.get("next_lawful_move", "")).strip() == next_step
     )
+    settled_replay_progress = (
+        next_step == SETTLED_R6_STEP_ID
+        and str(next_contract.get("source_workstream_id", "")).strip() == SETTLED_R5_STEP_ID
+        and str(next_contract.get("execution_mode", "")).strip() == SETTLED_R6_HOLD_EXECUTION_MODE
+        and bool(next_contract.get("repo_state_executable_now")) is False
+        and str(overlay.get("schema_id", "")).strip() == "kt.current_campaign_state_overlay.v1"
+        and str(overlay.get("workstream_id", "")).strip() == SETTLED_R5_STEP_ID
+        and str(overlay.get("next_counted_workstream_id", "")).strip() == SETTLED_R6_STEP_ID
+        and str(overlay.get("current_lawful_gate_standing", {}).get("current_counted_batch", "")).strip() == SETTLED_R5_STEP_ID
+        and bool(overlay.get("repo_state_executable_now")) is False
+        and str(resume.get("workstream_id", "")).strip() == SETTLED_R5_STEP_ID
+        and str(resume.get("exact_next_counted_workstream_id", "")).strip() == SETTLED_R6_STEP_ID
+        and bool(resume.get("repo_state_executable_now")) is False
+        and str(reanchor.get("workstream_id", "")).strip() == SETTLED_R5_STEP_ID
+        and str(reanchor.get("next_lawful_move", "")).strip() == SETTLED_R6_HOLD_MOVE
+    )
+    return in_sequence_progress or settled_replay_progress
 
 
 def build_router_shadow_evaluation_ratification_receipt(
