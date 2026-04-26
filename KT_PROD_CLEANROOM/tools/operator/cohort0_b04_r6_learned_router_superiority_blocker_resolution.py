@@ -107,6 +107,8 @@ def _ensure_inputs(
         raise RuntimeError("FAIL_CLOSED: active replay receipt must keep R6 unauthorized")
     if active_replay.get("router_superiority_earned") is not False:
         raise RuntimeError("FAIL_CLOSED: active replay receipt must not claim earned router superiority")
+    if active_replay.get("r5_next_lawful_move") != R6_HOLD_MOVE:
+        raise RuntimeError("FAIL_CLOSED: active replay receipt must preserve R5 static-hold R6 blocker")
     if overlay.get("next_counted_workstream_id") != R6_STEP_ID or overlay.get("repo_state_executable_now") is not False:
         raise RuntimeError("FAIL_CLOSED: current campaign overlay must hold R6 as next-in-order but non-executable")
     if r5_terminal.get("router_superiority_earned") is not False:
@@ -455,7 +457,6 @@ def _prep_packets(*, generated_utc: str, head: str, comparator_requirements: Dic
         OUTPUTS["commercial_boundary_receipt"]: {
             "schema_id": "kt.operator.commercial_boundary_resolution_receipt.v1",
             **common_fields,
-            "status": "PASS",
             "commercial_boundary_preserved": True,
             "product_truth_widened": False,
         },

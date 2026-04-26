@@ -130,6 +130,7 @@ def test_r6_blocker_resolution_emits_authoritative_and_prep_outputs(
     blocker_ledger = _load(reports / tranche.OUTPUTS["blocker_ledger"])
     next_court = _load(reports / tranche.OUTPUTS["next_court_receipt"])
     comparator_draft = _load(reports / tranche.OUTPUTS["comparator_matrix_draft"])
+    commercial_boundary = _load(reports / tranche.OUTPUTS["commercial_boundary_receipt"])
     harness = (reports / tranche.OUTPUTS["shadow_harness_draft"]).read_text(encoding="utf-8")
 
     assert result["outcome"] == tranche.OUTCOME
@@ -139,6 +140,7 @@ def test_r6_blocker_resolution_emits_authoritative_and_prep_outputs(
     assert blocker_ledger["r6_blocker_count"] == 1
     assert next_court["next_lawful_move"] == tranche.NEXT_MOVE
     assert comparator_draft["authoritative"] is False
+    assert commercial_boundary["status"] == "PREP_ONLY"
     assert "R6_AUTHORIZED = False" in harness
 
 
@@ -178,4 +180,17 @@ def test_r6_blocker_resolution_fails_if_active_replay_authorizes_r6(
     _patch_env(monkeypatch, tmp_path)
 
     with pytest.raises(RuntimeError, match="active replay receipt must keep R6 unauthorized"):
+        tranche.run(reports_root=reports, governance_root=governance)
+
+
+def test_r6_blocker_resolution_fails_if_active_replay_drops_r5_hold(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports, governance = _write_inputs(tmp_path)
+    replay = _load(reports / "b04_r1_r5_active_revalidation_replay_receipt.json")
+    replay["r5_next_lawful_move"] = "B04_R6_LEARNED_ROUTER_AUTHORIZATION"
+    _write_json(reports / "b04_r1_r5_active_revalidation_replay_receipt.json", replay)
+    _patch_env(monkeypatch, tmp_path)
+
+    with pytest.raises(RuntimeError, match="active replay receipt must preserve R5 static-hold R6 blocker"):
         tranche.run(reports_root=reports, governance_root=governance)
