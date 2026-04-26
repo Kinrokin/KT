@@ -115,6 +115,17 @@ def _ensure_inputs(
         raise RuntimeError("FAIL_CLOSED: R5 terminal state must not authorize learned router")
     if r5_terminal.get("next_lawful_move") != R6_HOLD_MOVE:
         raise RuntimeError("FAIL_CLOSED: R5 terminal state must preserve R6 hold")
+    common.ensure_pass(scorecard, label="router superiority scorecard")
+    if not str(scorecard.get("current_git_head", "")).strip():
+        raise RuntimeError("FAIL_CLOSED: router superiority scorecard must bind current_git_head")
+    if str(scorecard.get("current_git_head", "")).strip() != str(scorecard.get("subject_head", "")).strip():
+        raise RuntimeError("FAIL_CLOSED: router superiority scorecard current_git_head and subject_head must match")
+    if str(scorecard.get("overall_outcome", "")).strip() != "HOLD_STATIC_CANONICAL_BASELINE":
+        raise RuntimeError("FAIL_CLOSED: router superiority scorecard must preserve static-hold outcome")
+    if not isinstance(scorecard.get("best_static_baseline"), dict):
+        raise RuntimeError("FAIL_CLOSED: router superiority scorecard must include best_static_baseline")
+    if not isinstance(scorecard.get("learned_router_candidate"), dict):
+        raise RuntimeError("FAIL_CLOSED: router superiority scorecard must include learned_router_candidate")
     if scorecard.get("superiority_earned") is not False:
         raise RuntimeError("FAIL_CLOSED: router superiority scorecard must not claim superiority")
     if dict(scorecard.get("learned_router_candidate", {})).get("promotion_allowed") is not False:
@@ -541,7 +552,7 @@ def run(*, reports_root: Path, governance_root: Path) -> Dict[str, Any]:
         "status": "PASS",
         "generated_utc": generated_utc,
         "current_git_head": head,
-        "live_blocker_count": 0,
+        "live_blocker_count": 1,
         "r6_blocker_count": 1,
         "entries": _r6_blockers(),
         "next_lawful_move": NEXT_MOVE,

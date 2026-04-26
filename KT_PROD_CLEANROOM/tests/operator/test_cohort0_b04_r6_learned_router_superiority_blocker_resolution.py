@@ -63,8 +63,10 @@ def _write_inputs(root: Path) -> tuple[Path, Path]:
         {
             **_pass("scorecard"),
             "best_static_baseline": {"adapter_id": "static.best.v1"},
+            "current_git_head": "scorecard-head",
             "learned_router_candidate": {"candidate_status": "NO_ELIGIBLE_LEARNED_ROUTER_CANDIDATE_PRESENT", "promotion_allowed": False},
             "overall_outcome": "HOLD_STATIC_CANONICAL_BASELINE",
+            "subject_head": "scorecard-head",
             "superiority_earned": False,
         },
     )
@@ -133,6 +135,7 @@ def test_r6_blocker_resolution_emits_authoritative_and_prep_outputs(
     assert result["outcome"] == tranche.OUTCOME
     assert authority["resolution_decision"] == tranche.SCREEN_ONLY_OUTCOME
     assert authority["r6_execution_authorized_now"] is False
+    assert blocker_ledger["live_blocker_count"] == 1
     assert blocker_ledger["r6_blocker_count"] == 1
     assert next_court["next_lawful_move"] == tranche.NEXT_MOVE
     assert comparator_draft["authoritative"] is False
@@ -149,6 +152,19 @@ def test_r6_blocker_resolution_fails_if_superiority_is_already_claimed(
     _patch_env(monkeypatch, tmp_path)
 
     with pytest.raises(RuntimeError, match="router superiority scorecard must not claim superiority"):
+        tranche.run(reports_root=reports, governance_root=governance)
+
+
+def test_r6_blocker_resolution_fails_if_scorecard_head_binding_is_malformed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports, governance = _write_inputs(tmp_path)
+    scorecard = _load(reports / "router_superiority_scorecard.json")
+    scorecard["subject_head"] = "different-head"
+    _write_json(reports / "router_superiority_scorecard.json", scorecard)
+    _patch_env(monkeypatch, tmp_path)
+
+    with pytest.raises(RuntimeError, match="current_git_head and subject_head must match"):
         tranche.run(reports_root=reports, governance_root=governance)
 
 
