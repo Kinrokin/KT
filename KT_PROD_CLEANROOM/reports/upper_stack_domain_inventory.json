@@ -1,0 +1,171 @@
+{
+  "active_revalidation_asset_status": "BLOCKED_MISSING_CURRENT_CAMPAIGN_STATE_OVERLAY",
+  "domain_count": 12,
+  "domains": [
+    {
+      "display_name": "Crucibles / pressure law",
+      "domain_id": "crucibles_pressure_law",
+      "may_drive_live_posture": true,
+      "ratification_stage": "B04_R1_RECEIPT_PASS_REVALIDATION_BLOCKED",
+      "readiness_summary": "R1 pressure-law receipt is PASS; active validator replay is bounded by the current overlay asset status.",
+      "source_refs": [
+        "r1_crucible_pressure_law_receipt",
+        "crucible_lifecycle_law",
+        "crucible_registry"
+      ],
+      "status_class": "CANONICAL_BUT_BOUNDED",
+      "tracked_path_count_hint": 109
+    },
+    {
+      "display_name": "Policy C / pressure taxonomy",
+      "domain_id": "policy_c_pressure_taxonomy",
+      "may_drive_live_posture": false,
+      "ratification_stage": "FOUNDATION_READY",
+      "readiness_summary": "Canonical pressure taxonomy exists, but upper-stack readiness may not imply full adaptive-stack capability.",
+      "source_refs": [
+        "pressure_response_taxonomy",
+        "r1_crucible_pressure_law_receipt"
+      ],
+      "status_class": "CANONICAL_BUT_BOUNDED",
+      "tracked_path_count_hint": 109
+    },
+    {
+      "display_name": "Epochs / ordered cycles",
+      "domain_id": "epochs",
+      "may_drive_live_posture": false,
+      "ratification_stage": "NOT_YET_PROMOTED",
+      "readiness_summary": "Epoch/orchestrator surfaces exist as lab/proving machinery, not as live upper-stack authority.",
+      "source_refs": [
+        "upper_stack_prep_inventory"
+      ],
+      "status_class": "LAB_PROVISIONAL",
+      "tracked_path_count_hint": 0
+    },
+    {
+      "display_name": "Adapters / lifecycle law",
+      "domain_id": "adapter_lifecycle",
+      "may_drive_live_posture": true,
+      "ratification_stage": "B04_R2_RECEIPT_PASS_REVALIDATION_BLOCKED",
+      "readiness_summary": "R2 adapter lifecycle law is PASS; broad adapter civilization remains bounded by promotion law.",
+      "source_refs": [
+        "r2_adapter_lifecycle_receipt",
+        "adapter_lifecycle_law",
+        "adapter_registry"
+      ],
+      "status_class": "CANONICAL_BUT_BOUNDED",
+      "tracked_path_count_hint": 42
+    },
+    {
+      "display_name": "Adapter forge / learning loops / hypertraining",
+      "domain_id": "adapter_forge_training",
+      "may_drive_live_posture": false,
+      "ratification_stage": "NOT_YET_PROMOTED",
+      "readiness_summary": "Forge/training surfaces are useful prep but do not authorize product, router, or lobe claims.",
+      "source_refs": [
+        "adapter_civilization_gap_matrix",
+        "upper_stack_prep_inventory"
+      ],
+      "status_class": "LAB_PROVISIONAL",
+      "tracked_path_count_hint": 86
+    },
+    {
+      "display_name": "Tournament / promotion / merge law",
+      "domain_id": "tournament_promotion_merge_law",
+      "may_drive_live_posture": true,
+      "ratification_stage": "B04_R3_RECEIPT_PASS_REVALIDATION_BLOCKED",
+      "readiness_summary": "R3 law is PASS and can govern future promotion, but does not itself authorize learned-router or lobe promotion.",
+      "source_refs": [
+        "r3_tournament_promotion_merge_receipt"
+      ],
+      "status_class": "CANONICAL_BUT_BOUNDED",
+      "tracked_path_count_hint": 132
+    },
+    {
+      "display_name": "Router shadow proof / static router boundary",
+      "domain_id": "router_shadow_proof",
+      "may_drive_live_posture": true,
+      "ratification_stage": "B04_R4_R5_STATIC_HOLD_RECEIPT_PASS_REVALIDATION_BLOCKED",
+      "readiness_summary": "R4/R5 are PASS, but the router remains bounded; R6 is held until learned-router superiority is earned.",
+      "source_refs": [
+        "r4_router_shadow_receipt",
+        "r5_router_vs_best_adapter_receipt",
+        "router_ordered_proof"
+      ],
+      "status_class": "CANONICAL_BUT_BOUNDED",
+      "tracked_path_count_hint": 121
+    },
+    {
+      "display_name": "Learned router authorization",
+      "domain_id": "learned_router_authorization",
+      "may_drive_live_posture": false,
+      "ratification_stage": "B04_R6_BLOCKED",
+      "readiness_summary": "B04_R6 remains blocked; resolve active R1-R5 revalidation asset status before attempting superiority-blocker resolution.",
+      "source_refs": [
+        "router_superiority_scorecard",
+        "r5_terminal_state",
+        "router_policy_registry"
+      ],
+      "status_class": "INTENDED_NOT_PROMOTED",
+      "tracked_path_count_hint": 121
+    },
+    {
+      "display_name": "Lobes / multi-lobe orchestration",
+      "domain_id": "multi_lobe_orchestration",
+      "may_drive_live_posture": false,
+      "ratification_stage": "B04_R7_BLOCKED_AFTER_R6",
+      "readiness_summary": "Lobe law and role registry exist, but multi-lobe promotion is blocked pending learned-router win.",
+      "source_refs": [
+        "lobe_role_registry",
+        "lobe_promotion_law",
+        "router_lobe_gap_matrix"
+      ],
+      "status_class": "INTENDED_NOT_PROMOTED",
+      "tracked_path_count_hint": 121
+    },
+    {
+      "display_name": "Universal adapter",
+      "domain_id": "universal_adapter",
+      "may_drive_live_posture": false,
+      "ratification_stage": "BOUNDED_VALIDATION_PRESENT",
+      "readiness_summary": "Universal-adapter validation exists, but not broad plug-any-model civilization authority.",
+      "source_refs": [
+        "universal_adapter_receipt",
+        "adapter_civilization_gap_matrix"
+      ],
+      "status_class": "CANONICAL_BUT_BOUNDED",
+      "tracked_path_count_hint": 42
+    },
+    {
+      "display_name": "Chaos / adversarial pressure",
+      "domain_id": "chaos_adversarial_pressure",
+      "may_drive_live_posture": false,
+      "ratification_stage": "PREP_ONLY",
+      "readiness_summary": "Adversarial pressure surfaces support future ratification but do not currently promote upper-stack authority.",
+      "source_refs": [
+        "upper_stack_prep_inventory"
+      ],
+      "status_class": "LAB_PROVISIONAL",
+      "tracked_path_count_hint": 109
+    },
+    {
+      "display_name": "Broader comparative proof",
+      "domain_id": "broader_comparative_proof",
+      "may_drive_live_posture": false,
+      "ratification_stage": "TRACK_01_BOUNDED_ONLY",
+      "readiness_summary": "Track 01 bounded proof remains real; broader comparative proof is still an open A+ gap.",
+      "source_refs": [
+        "remaining_a_plus_gaps"
+      ],
+      "status_class": "INTENDED_NOT_PROMOTED",
+      "tracked_path_count_hint": 0
+    }
+  ],
+  "execution_status": "PASS__UPPER_STACK_RATIFICATION_READINESS_AUTHORITY_BOUND",
+  "generated_utc": "2026-04-26T21:21:04Z",
+  "next_lawful_move": "AUTHOR_B04_R1_R5_REVALIDATION_ASSET_SUPERSESSION_PACKET",
+  "outcome": "UPPER_STACK_DOMAIN_INVENTORY_BOUND",
+  "package_promotion_remains_deferred": true,
+  "schema_id": "kt.operator.upper_stack_domain_inventory.v1",
+  "status": "PASS",
+  "truth_engine_derivation_law_unchanged": true
+}
