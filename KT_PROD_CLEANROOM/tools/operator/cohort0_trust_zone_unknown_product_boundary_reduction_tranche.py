@@ -55,6 +55,9 @@ CANONICAL_EXCLUDE_REMOVALS = [
 CANONICAL_SUPPORT_ADDITIONS = [
     "KT_PROD_CLEANROOM/docs/operator/**",
 ]
+DOCUMENTARY_ONLY_REMOVALS = [
+    "KT_PROD_CLEANROOM/docs/**",
+]
 
 
 def _ensure_pass_and_deferred(payload: Dict[str, Any], *, label: str) -> None:
@@ -85,6 +88,16 @@ def _remove_values(row: Dict[str, Any], key: str, values: Sequence[str]) -> list
     removed = [value for value in existing if value in remove]
     row[key] = [value for value in existing if value not in remove]
     return removed
+
+
+def _required_int(payload: Dict[str, Any], key: str, *, label: str) -> int:
+    try:
+        value = int(payload[key])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise RuntimeError(f"FAIL_CLOSED: {label} must declare integer {key}") from exc
+    if value < 0:
+        raise RuntimeError(f"FAIL_CLOSED: {label} {key} must not be negative")
+    return value
 
 
 def _zone_row(registry: Dict[str, Any], zone_id: str) -> Dict[str, Any]:
@@ -133,12 +146,21 @@ def reduce_registry_and_scope(
         "canonical_scope_additions": {
             "canonical_support_surfaces": _append_unique(updated_scope, "canonical_support_surfaces", CANONICAL_SUPPORT_ADDITIONS),
             "toolchain_proving_surfaces": _append_unique(updated_scope, "toolchain_proving_surfaces", TOOLCHAIN_TEST_ADDITIONS),
-            "excluded_from_canonical_truth": _append_unique(updated_scope, "excluded_from_canonical_truth", [*TOOLCHAIN_TEST_ADDITIONS, *QUARANTINE_ADDITIONS]),
+            "excluded_from_canonical_truth": _append_unique(
+                updated_scope,
+                "excluded_from_canonical_truth",
+                [*CANONICAL_SUPPORT_ADDITIONS, *TOOLCHAIN_TEST_ADDITIONS, *QUARANTINE_ADDITIONS],
+            ),
             "quarantined_from_canonical_truth": _append_unique(updated_scope, "quarantined_from_canonical_truth", QUARANTINE_ADDITIONS),
-            "forbidden_live_side_paths": _append_unique(updated_scope, "forbidden_live_side_paths", TOOLCHAIN_TEST_ADDITIONS),
+            "forbidden_live_side_paths": _append_unique(
+                updated_scope,
+                "forbidden_live_side_paths",
+                [*CANONICAL_SUPPORT_ADDITIONS, *TOOLCHAIN_TEST_ADDITIONS],
+            ),
         },
         "canonical_scope_removals": {
             "excluded_from_canonical_truth": _remove_values(updated_scope, "excluded_from_canonical_truth", CANONICAL_EXCLUDE_REMOVALS),
+            "documentary_only_surfaces": _remove_values(updated_scope, "documentary_only_surfaces", DOCUMENTARY_ONLY_REMOVALS),
         },
     }
     return updated_registry, updated_scope, changes
@@ -190,6 +212,11 @@ def build_outputs(
     canonical_candidates = [row for row in before_entries if str(row.get("suggested_zone", "")).strip() == "CANONICAL"]
     human_review_before = [row for row in before_entries if str(row.get("suggested_zone", "")).strip() == "UNKNOWN_REQUIRES_HUMAN_REVIEW"]
     remaining_unknowns = _unknown_paths(tracked_files, registry_after)
+    commercial_review_queue_count = _required_int(
+        commercial_review,
+        "review_queue_count",
+        label="commercial boundary review packet",
+    )
     remaining_entries = [
         {
             "path": path,
@@ -288,7 +315,7 @@ def build_outputs(
         **common_header,
         "schema_id": "kt.operator.commercial_boundary_violation_resolution_packet.v1",
         "outcome": "COMMERCIAL_BOUNDARY_CANDIDATES_RESOLVED_OR_DEFERRED",
-        "review_queue_count": int(commercial_review.get("review_queue_count", 0)),
+        "review_queue_count": commercial_review_queue_count,
         "resolved_count": len(resolved_product),
         "deferred_count": len(deferred_product),
         "live_blocker_count": 0,
@@ -367,7 +394,7 @@ def build_outputs(
         "unknown_zone_queue_count": len(remaining_entries),
         "product_proof_candidate_count": len(product_decisions),
         "product_proof_deferred_count": len(deferred_product),
-        "commercial_review_queue_count": len(product_decisions),
+        "commercial_review_queue_count": commercial_review_queue_count,
         "live_blocker_count": 0,
         "next_lawful_move": NEXT_MOVE,
     }
@@ -472,6 +499,10 @@ def run(
     expected_governance = (root / "KT_PROD_CLEANROOM/governance").resolve()
     if governance_root.resolve() != expected_governance:
         raise RuntimeError("FAIL_CLOSED: unknown-zone reduction must write canonical governance root only")
+    if trust_zone_registry_path.resolve() != (expected_governance / "trust_zone_registry.json").resolve():
+        raise RuntimeError("FAIL_CLOSED: unknown-zone reduction must read canonical trust-zone registry only")
+    if canonical_scope_manifest_path.resolve() != (expected_governance / "canonical_scope_manifest.json").resolve():
+        raise RuntimeError("FAIL_CLOSED: unknown-zone reduction must read canonical scope manifest only")
 
     materialization_receipt = common.load_json_required(root, materialization_receipt_path, label="trust-zone materialization receipt")
     unknown_queue_before = common.load_json_required(root, unknown_queue_path, label="unknown-zone resolution queue")
@@ -481,6 +512,9 @@ def run(
     canonical_scope_before = common.load_json_required(root, canonical_scope_manifest_path, label="canonical scope manifest")
 
     _ensure_pass_and_deferred(materialization_receipt, label="trust-zone materialization receipt")
+    _ensure_pass_and_deferred(unknown_queue_before, label="unknown-zone resolution queue")
+    _ensure_pass_and_deferred(product_ledger, label="product/proof blocker ledger")
+    _ensure_pass_and_deferred(commercial_review, label="commercial boundary review packet")
     if str(materialization_receipt.get("next_lawful_move", "")).strip() != "REDUCE_UNKNOWN_ZONE_INVENTORY_AND_REVIEW_PRODUCT_PROOF_BOUNDARIES":
         raise RuntimeError("FAIL_CLOSED: materialization receipt must authorize unknown-zone reduction")
 

@@ -9,14 +9,16 @@
       "KT_PROD_CLEANROOM/tests/test_*.py",
       "KT_PROD_CLEANROOM/tools/__init__.py",
       "run_kt_e2e.sh",
-      "KT_PROD_CLEANROOM/EXECUTION_DAG_POST_WAVE5_V1.md"
+      "KT_PROD_CLEANROOM/EXECUTION_DAG_POST_WAVE5_V1.md",
+      "KT_PROD_CLEANROOM/docs/operator/**"
     ],
     "forbidden_live_side_paths": [
       "KT_PROD_CLEANROOM/tests/conftest.py",
       "KT_PROD_CLEANROOM/tests/fl3/**",
       "KT_PROD_CLEANROOM/tests/test_*.py",
       "KT_PROD_CLEANROOM/tools/__init__.py",
-      "run_kt_e2e.sh"
+      "run_kt_e2e.sh",
+      "KT_PROD_CLEANROOM/docs/operator/**"
     ],
     "quarantined_from_canonical_truth": [
       "KT_PROD_CLEANROOM/EXECUTION_DAG_POST_WAVE5_V1.md"
@@ -29,8 +31,11 @@
       "run_kt_e2e.sh"
     ]
   },
-  "canonical_scope_manifest_sha256": "7daa91688bc2210e908558bfad13edc54559569b2319de540cc3f11d3ad2adb9",
+  "canonical_scope_manifest_sha256": "a91b928b232d067a2685f6a701a49a2402165c8b58d06ab81bb47e3cf51ef53f",
   "canonical_scope_removals": {
+    "documentary_only_surfaces": [
+      "KT_PROD_CLEANROOM/docs/**"
+    ],
     "excluded_from_canonical_truth": [
       "KT_PROD_CLEANROOM/docs/**"
     ]

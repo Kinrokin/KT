@@ -34,6 +34,7 @@ def _write_inputs(root: Path) -> tuple[Path, Path]:
         {
             "schema_id": "queue",
             "status": "PASS",
+            "package_promotion_remains_deferred": True,
             "queue_count": 4,
             "entries": [
                 {"queue_id": "UZQ-0001", "path": "KT_PROD_CLEANROOM/docs/operator/RUNBOOK.md", "suggested_zone": "CANONICAL"},
@@ -48,13 +49,17 @@ def _write_inputs(root: Path) -> tuple[Path, Path]:
         {
             "schema_id": "product-ledger",
             "status": "PASS",
+            "package_promotion_remains_deferred": True,
             "ledger_entries": [
                 {"ledger_id": "PPB-001", "path": "KT_PROD_CLEANROOM/docs/commercial/E1_BOUNDED_TRUST_WEDGE.md", "line": 22, "terms": ["sota"]},
                 {"ledger_id": "PPB-002", "path": "docs/generated/kt_master_spec.md", "line": 6, "terms": ["frontier"]},
             ],
         },
     )
-    _write_json(reports / tranche.COMMERCIAL_BOUNDARY_REVIEW_PACKET, {"schema_id": "commercial", "status": "PASS", "review_queue_count": 2})
+    _write_json(
+        reports / tranche.COMMERCIAL_BOUNDARY_REVIEW_PACKET,
+        {"schema_id": "commercial", "status": "PASS", "package_promotion_remains_deferred": True, "review_queue_count": 2},
+    )
     _write_json(
         governance / "trust_zone_registry.json",
         {
@@ -76,6 +81,7 @@ def _write_inputs(root: Path) -> tuple[Path, Path]:
         {
             "schema_id": "canonical",
             "manifest_id": "CANON",
+            "documentary_only_surfaces": ["KT_PROD_CLEANROOM/docs/**"],
             "excluded_from_canonical_truth": ["KT_PROD_CLEANROOM/docs/**"],
             "toolchain_proving_surfaces": [],
         },
@@ -126,12 +132,16 @@ def test_reduces_unknown_queue_and_reviews_product_boundaries(tmp_path: Path, mo
     assert "KT_PROD_CLEANROOM/tests/fl3/**" in next(row for row in registry["zones"] if row["zone_id"] == "TOOLCHAIN_PROVING")["include"]
     assert "KT_PROD_CLEANROOM/EXECUTION_DAG_POST_WAVE5_V1.md" in next(row for row in registry["zones"] if row["zone_id"] == "QUARANTINED")["include"]
     assert "KT_PROD_CLEANROOM/docs/operator/**" in scope["canonical_support_surfaces"]
+    assert "KT_PROD_CLEANROOM/docs/operator/**" in scope["excluded_from_canonical_truth"]
+    assert "KT_PROD_CLEANROOM/docs/operator/**" in scope["forbidden_live_side_paths"]
+    assert "KT_PROD_CLEANROOM/docs/**" not in scope["documentary_only_surfaces"]
     assert receipt["unknown_queue_before"] == 4
     assert receipt["unknown_queue_after"] == 0
     assert queue["queue_count"] == 0
     assert product["resolved_count"] == 1
     assert product["deferred_count"] == 1
     assert buyer_patch["patch_required_count"] == 1
+    assert _load(reports / tranche.NONCANONICAL_QUARANTINE_RECEIPT)["commercial_review_queue_count"] == 2
 
 
 def test_reduction_requires_materialization_authorization(tmp_path: Path, monkeypatch) -> None:
@@ -159,5 +169,27 @@ def test_reduction_requires_materialization_authorization(tmp_path: Path, monkey
             product_ledger_path=reports / tranche.PRODUCT_PROOF_BLOCKER_LEDGER,
             commercial_review_path=reports / tranche.COMMERCIAL_BOUNDARY_REVIEW_PACKET,
             trust_zone_registry_path=governance / "trust_zone_registry.json",
+            canonical_scope_manifest_path=governance / "canonical_scope_manifest.json",
+        )
+
+
+def test_reduction_rejects_noncanonical_governance_inputs(tmp_path: Path, monkeypatch) -> None:
+    reports, governance = _write_inputs(tmp_path)
+    foreign_registry = tmp_path / "foreign" / "trust_zone_registry.json"
+    _write_json(foreign_registry, {"schema_id": "foreign", "zones": []})
+
+    monkeypatch.setattr(tranche, "repo_root", lambda: tmp_path)
+    monkeypatch.setattr(tranche.common, "git_current_branch_name", lambda root: tranche.REQUIRED_BRANCH)
+    monkeypatch.setattr(tranche.common, "git_status_porcelain", lambda root: "")
+
+    with pytest.raises(RuntimeError, match="canonical trust-zone registry"):
+        tranche.run(
+            reports_root=reports,
+            governance_root=governance,
+            materialization_receipt_path=reports / tranche.MATERIALIZATION_RECEIPT,
+            unknown_queue_path=reports / tranche.UNKNOWN_ZONE_RESOLUTION_QUEUE,
+            product_ledger_path=reports / tranche.PRODUCT_PROOF_BLOCKER_LEDGER,
+            commercial_review_path=reports / tranche.COMMERCIAL_BOUNDARY_REVIEW_PACKET,
+            trust_zone_registry_path=foreign_registry,
             canonical_scope_manifest_path=governance / "canonical_scope_manifest.json",
         )
