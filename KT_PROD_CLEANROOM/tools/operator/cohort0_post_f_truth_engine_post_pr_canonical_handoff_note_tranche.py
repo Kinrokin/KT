@@ -107,13 +107,23 @@ def build_outputs(*, recompute_receipt: Dict[str, Any], posture_index: Dict[str,
         "advisory_condition_count": int(recompute_receipt.get("advisory_condition_count", 0)),
         "next_lawful_move": next_lawful_move,
     }
+    replay_status_line = (
+        "- Historical canonical rerun target (already executed): `main` after PR `#15` merge"
+        if canonical_mode
+        else "- Canonical rerun target: `main` after PR `#15` merge"
+    )
+    advisory_status_line = (
+        "- Historical advisory contradiction superseded by completed replay: `merge_truth::remote_main_pending_pr15`"
+        if canonical_mode
+        else "- Advisory contradiction to supersede: `merge_truth::remote_main_pending_pr15`"
+    )
     report = common.report_lines(
         "Cohort0 Post-F Truth Engine Post-PR Canonical Handoff Report",
         [
             f"- Execution status: `{execution_status}`",
             f"- Outcome: `{outcome}`",
-            "- Canonical rerun target: `main` after PR `#15` merge",
-            "- Advisory contradiction to supersede: `merge_truth::remote_main_pending_pr15`",
+            replay_status_line,
+            advisory_status_line,
             f"- Actual recompute branch: `{str(recompute_receipt.get('branch_ref', branch_ref)).strip()}`",
             f"- Blocking contradictions: `{int(recompute_receipt.get('blocking_contradiction_count', 0))}`",
             f"- Advisory conditions: `{int(recompute_receipt.get('advisory_condition_count', 0))}`",
