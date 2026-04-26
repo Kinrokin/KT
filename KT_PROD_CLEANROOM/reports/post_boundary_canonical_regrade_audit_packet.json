@@ -1,0 +1,124 @@
+{
+  "audit_questions": [
+    {
+      "evidence": [
+        "truth_engine_contradiction_ledger",
+        "post_merge_closeout",
+        "trust_zone_validation_matrix"
+      ],
+      "finding_id": "PBR-001",
+      "question": "Did truth-engine plus trust-zone work fix stale/mixed-boundary weakness?",
+      "verdict": "PASS__STRONGLY_CONTAINED"
+    },
+    {
+      "evidence": [
+        "track_01_final",
+        "track_02_final",
+        "track_03_post_merge",
+        "pr15_fl3_closeout",
+        "truth_engine_handoff",
+        "post_merge_closeout"
+      ],
+      "finding_id": "PBR-002",
+      "question": "Are Track 01, Track 02, Track 03, PR remediation, truth-engine, and trust-zone surfaces aligned on main?",
+      "verdict": "PASS__ALIGNED_ON_CANONICAL_MAIN"
+    },
+    {
+      "evidence": [
+        "canonical_scope_manifest",
+        "trust_zone_registry",
+        "unknown_queue",
+        "remaining_unknown_ledger"
+      ],
+      "finding_id": "PBR-003",
+      "question": "Does canonical scope prevent archive/lab/commercial residue from driving live truth?",
+      "verdict": "PASS__BOUNDARY_ENFORCED_WITH_ZERO_UNKNOWN_ZONE_QUEUE"
+    },
+    {
+      "evidence": [
+        "product_proof_review"
+      ],
+      "finding_id": "PBR-004",
+      "question": "Are product/proof boundary findings closed or safely deferred?",
+      "verdict": "PASS__TWO_RESOLVED_FOUR_NON_AUTHORITATIVE_DEFERRED"
+    },
+    {
+      "evidence": [
+        "post_merge_closeout",
+        "product_proof_review"
+      ],
+      "finding_id": "PBR-005",
+      "question": "Does package promotion remain correctly deferred?",
+      "verdict": "PASS__PACKAGE_PROMOTION_DEFERRED"
+    }
+  ],
+  "audit_scope": "focused post-boundary canonical regrade",
+  "authoritative_lane": "authoritative/post-boundary-canonical-regrade-audit",
+  "branch_head": "aa095b762afd705deb9f19cb8dd07bffd6eaa94b",
+  "evidence_refs": {
+    "canonical_scope_manifest": {
+      "path": "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+      "sha256": "37e097c360ace12fe83000f5344c2565d46144cf50c0ad74d73d7a87edd00e7b"
+    },
+    "post_merge_closeout": {
+      "path": "KT_PROD_CLEANROOM/reports/post_merge_trust_zone_boundary_closeout_receipt.json",
+      "sha256": "ac411317039ff21a0f93fc8d0180100f11ef5d5f8510c666ca194e56e9e5e782"
+    },
+    "pr15_fl3_closeout": {
+      "path": "KT_PROD_CLEANROOM/reports/cohort0_post_f_pr15_fl3_full_red_to_green_receipt.json",
+      "sha256": "96bb9f226f08c7a8abc4185069104ac8eac5799fd5f546edc929622fe9d48abb"
+    },
+    "product_proof_review": {
+      "path": "KT_PROD_CLEANROOM/reports/product_proof_boundary_review_receipt.json",
+      "sha256": "17e0991cc9bd2639fd272231bf0de50e76db5cfa03c8e0d97bbdddbfc7d0a29c"
+    },
+    "remaining_unknown_ledger": {
+      "path": "KT_PROD_CLEANROOM/reports/remaining_unknown_zone_blocker_ledger.json",
+      "sha256": "b21525206226db11c0b8726f27d003a12b614d8014b4139436d459f4ab084dd9"
+    },
+    "track_01_final": {
+      "path": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_01_final_summary_receipt.json",
+      "sha256": "20859310c2db3cf03099d02f274174f1ea6c420905042e9905d26c9dbd1ef0e1"
+    },
+    "track_02_final": {
+      "path": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_02_final_summary_receipt.json",
+      "sha256": "256d4f6d945c2b6698c9068968849ebd98582870546478b3e0a693c521d319e2"
+    },
+    "track_03_final": {
+      "path": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_final_summary_receipt.json",
+      "sha256": "2c3cf978918f598b2ae1e36a21960551aabdb027cdfd95b2cb842f7839d6ceb1"
+    },
+    "track_03_post_merge": {
+      "path": "KT_PROD_CLEANROOM/reports/cohort0_post_f_track_03_post_merge_closeout_receipt.json",
+      "sha256": "721c7ec0b85c116b7aafa6626faf5e829c411b330cdea4bab21a4f6e1a95d3bd"
+    },
+    "trust_zone_registry": {
+      "path": "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+      "sha256": "c26709a9b664aeb22019ab0032e2d4f464acb70c208990eea5ed755775963305"
+    },
+    "trust_zone_validation_matrix": {
+      "path": "KT_PROD_CLEANROOM/reports/trust_zone_validation_matrix.json",
+      "sha256": "c225b06fd4de56f74f1434f1556cb01c4768949d7b8ecdffffc896a4366de1ef"
+    },
+    "truth_engine_contradiction_ledger": {
+      "path": "KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_contradiction_ledger.json",
+      "sha256": "4313ffd9f6cc0c6ba02c2efd4ab7d55dceca0ad6286a9074729e221f8819d496"
+    },
+    "truth_engine_handoff": {
+      "path": "KT_PROD_CLEANROOM/reports/cohort0_post_f_truth_engine_post_pr_canonical_handoff_receipt.json",
+      "sha256": "66c28354a7810f6c03e5e4dbe1faefec0f48d0fb0eaeafedd7af4c07959afc3b"
+    },
+    "unknown_queue": {
+      "path": "KT_PROD_CLEANROOM/reports/unknown_zone_resolution_queue.json",
+      "sha256": "9e8bebca8c728bf761fc18e6c40df69367418f994226d9739b2aa306c50a1f86"
+    }
+  },
+  "execution_status": "PASS__POST_BOUNDARY_CANONICAL_REGRADE_AUDIT_BOUND",
+  "generated_utc": "2026-04-26T20:25:16Z",
+  "next_lawful_move": "AUTHOR_UPPER_STACK_RATIFICATION_READINESS_AUTHORITY_PACKET",
+  "outcome": "POST_BOUNDARY_CANONICAL_REGRADE_AUDIT_COMPLETE",
+  "package_promotion_remains_deferred": true,
+  "schema_id": "kt.operator.post_boundary_canonical_regrade_audit_packet.v1",
+  "status": "PASS",
+  "truth_engine_derivation_law_unchanged": true
+}
