@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from tools.operator import cohort0_post_merge_canonical_truth_boundary_readiness_audit_tranche as tranche
 
 
@@ -23,9 +25,12 @@ def _seed_required_reports(reports: Path) -> None:
         "cohort0_post_f_track_03_final_summary_receipt.json",
         "cohort0_post_f_track_03_post_merge_closeout_receipt.json",
         "cohort0_post_f_pr15_fl3_full_red_to_green_receipt.json",
-        "cohort0_post_f_parallel_trust_zone_boundary_purification_receipt.json",
     ]:
         _write_json(reports / name, pass_receipt)
+    _write_json(
+        reports / "cohort0_post_f_parallel_trust_zone_boundary_purification_receipt.json",
+        {"schema_id": "prep", "status": "PASS", "execution_status": "PASS", "outcome": tranche.EXPECTED_TRUST_ZONE_PREP_OUTCOME},
+    )
     _write_json(
         reports / "cohort0_post_f_pr15_fl3_full_red_to_green_blocker_ledger.json",
         {"schema_id": "pr15", "status": "PASS", "blocking_blocker_count": 0, "t05_validation": {"full_fl3_suite_green": True, "full_fl3_summary": "239 passed, 1 skipped"}},
@@ -118,7 +123,7 @@ def test_post_merge_boundary_readiness_audit_fails_on_nonzero_contradiction(tmp_
     monkeypatch.setattr(tranche, "_git_is_ancestor", lambda root, ancestor, descendant: True)
     monkeypatch.setattr(tranche, "validate_trust_zones", lambda root: {"schema_id": "trust", "status": "PASS", "checks": [], "failures": []})
 
-    try:
+    with pytest.raises(RuntimeError, match="must match contradiction ledger counts"):
         tranche.run(
             reports_root=reports,
             track01_receipt_path=reports / "cohort0_post_f_track_01_final_summary_receipt.json",
@@ -133,7 +138,34 @@ def test_post_merge_boundary_readiness_audit_fails_on_nonzero_contradiction(tmp_
             handoff_receipt_path=reports / "cohort0_post_f_truth_engine_post_pr_canonical_handoff_receipt.json",
             trust_zone_prep_receipt_path=reports / "cohort0_post_f_parallel_trust_zone_boundary_purification_receipt.json",
         )
-    except RuntimeError as exc:
-        assert "zero blocking and zero advisory contradictions" in str(exc)
-    else:
-        raise AssertionError("expected contradiction ledger to fail closed")
+
+
+def test_post_merge_boundary_readiness_audit_requires_non_authoritative_prep_outcome(tmp_path: Path, monkeypatch) -> None:
+    reports = tmp_path / "KT_PROD_CLEANROOM" / "reports"
+    _seed_required_reports(reports)
+    prep = _load(reports / "cohort0_post_f_parallel_trust_zone_boundary_purification_receipt.json")
+    prep["outcome"] = "SOME_OTHER_PASS_OUTCOME"
+    _write_json(reports / "cohort0_post_f_parallel_trust_zone_boundary_purification_receipt.json", prep)
+
+    monkeypatch.setattr(tranche, "repo_root", lambda: tmp_path)
+    monkeypatch.setattr(tranche, "_current_branch_name", lambda root: tranche.REQUIRED_BRANCH)
+    monkeypatch.setattr(tranche, "_git_status_porcelain", lambda root: "")
+    monkeypatch.setattr(tranche, "_git_rev_parse", lambda root, ref: "head")
+    monkeypatch.setattr(tranche, "_git_is_ancestor", lambda root, ancestor, descendant: True)
+    monkeypatch.setattr(tranche, "validate_trust_zones", lambda root: {"schema_id": "trust", "status": "PASS", "checks": [], "failures": []})
+
+    with pytest.raises(RuntimeError, match="expected non-authoritative prep outcome"):
+        tranche.run(
+            reports_root=reports,
+            track01_receipt_path=reports / "cohort0_post_f_track_01_final_summary_receipt.json",
+            track02_receipt_path=reports / "cohort0_post_f_track_02_final_summary_receipt.json",
+            track03_receipt_path=reports / "cohort0_post_f_track_03_final_summary_receipt.json",
+            track03_post_merge_receipt_path=reports / "cohort0_post_f_track_03_post_merge_closeout_receipt.json",
+            pr15_receipt_path=reports / "cohort0_post_f_pr15_fl3_full_red_to_green_receipt.json",
+            pr15_blocker_ledger_path=reports / "cohort0_post_f_pr15_fl3_full_red_to_green_blocker_ledger.json",
+            recompute_receipt_path=reports / "cohort0_post_f_truth_engine_recompute_receipt.json",
+            contradiction_ledger_path=reports / "cohort0_post_f_truth_engine_contradiction_ledger.json",
+            posture_index_path=reports / "cohort0_post_f_truth_engine_posture_index.json",
+            handoff_receipt_path=reports / "cohort0_post_f_truth_engine_post_pr_canonical_handoff_receipt.json",
+            trust_zone_prep_receipt_path=reports / "cohort0_post_f_parallel_trust_zone_boundary_purification_receipt.json",
+        )

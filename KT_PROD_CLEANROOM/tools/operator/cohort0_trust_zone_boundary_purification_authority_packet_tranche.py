@@ -16,6 +16,7 @@ REQUIRED_BRANCH = "authoritative/trust-zone-boundary-purification"
 EXECUTION_STATUS = "PASS__TRUST_ZONE_BOUNDARY_PURIFICATION_AUTHORITY_PACKET_BOUND"
 OUTCOME = "TRUST_ZONE_BOUNDARY_PURIFICATION_PROMOTED_AS_AUTHORITATIVE_LANE"
 NEXT_MOVE = "AUTHOR_TRUST_ZONE_BOUNDARY_PURIFICATION_REGISTRY_AND_SCOPE_CONTRACT"
+EXPECTED_TRUST_ZONE_PREP_OUTCOME = "POST_F_TRUST_ZONE_BOUNDARY_PURIFICATION_PREP_DEFINED__NON_AUTHORITATIVE"
 
 
 def _current_branch_name(root: Path) -> str:
@@ -148,6 +149,8 @@ def run(*, reports_root: Path, audit_receipt_path: Path, prep_packet_path: Path,
     common.ensure_pass(prep_receipt, label="prior trust-zone prep receipt")
     if str(audit_receipt.get("next_lawful_move", "")).strip() != "PROMOTE_TRUST_ZONE_BOUNDARY_PURIFICATION_AS_NEXT_AUTHORITATIVE_LANE":
         raise RuntimeError("FAIL_CLOSED: post-merge audit must authorize trust-zone boundary purification promotion")
+    if str(prep_receipt.get("outcome", "")).strip() != EXPECTED_TRUST_ZONE_PREP_OUTCOME:
+        raise RuntimeError("FAIL_CLOSED: prior trust-zone prep receipt must preserve the expected non-authoritative prep outcome")
     outputs = build_outputs(audit_receipt=audit_receipt, prep_packet=prep_packet, prep_receipt=prep_receipt)
     common.write_outputs(
         packet_path=(reports_root / OUTPUT_PACKET).resolve(),

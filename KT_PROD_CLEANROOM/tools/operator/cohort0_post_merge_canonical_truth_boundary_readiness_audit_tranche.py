@@ -17,6 +17,7 @@ REQUIRED_BRANCH = "authoritative/trust-zone-boundary-purification"
 EXECUTION_STATUS = "PASS__POST_MERGE_CANONICAL_TRUTH_BOUNDARY_READINESS_AUDIT_BOUND"
 OUTCOME = "POST_MERGE_CANONICAL_TRUTH_AND_BOUNDARY_READINESS_CONFIRMED"
 NEXT_MOVE = "PROMOTE_TRUST_ZONE_BOUNDARY_PURIFICATION_AS_NEXT_AUTHORITATIVE_LANE"
+EXPECTED_TRUST_ZONE_PREP_OUTCOME = "POST_F_TRUST_ZONE_BOUNDARY_PURIFICATION_PREP_DEFINED__NON_AUTHORITATIVE"
 
 
 def _current_branch_name(root: Path) -> str:
@@ -257,8 +258,16 @@ def run(
         raise RuntimeError("FAIL_CLOSED: truth-engine recompute receipt must be main-bound")
     if str(recompute_receipt.get("recompute_scope", "")).strip() != "CANONICAL_MAIN_REPLAY_CONVERGED":
         raise RuntimeError("FAIL_CLOSED: truth-engine recompute receipt must be canonical main replay converged")
+    recompute_blocking_count = int(recompute_receipt.get("blocking_contradiction_count", 0))
+    recompute_advisory_count = int(recompute_receipt.get("advisory_condition_count", 0))
+    if recompute_blocking_count != 0 or recompute_advisory_count != 0:
+        raise RuntimeError("FAIL_CLOSED: truth-engine recompute receipt must report zero blocking contradictions and zero advisory conditions")
     common.ensure_pass(contradiction_ledger, label="truth-engine contradiction ledger")
-    if int(contradiction_ledger.get("blocking_contradiction_count", 0)) != 0 or int(contradiction_ledger.get("advisory_contradiction_count", 0)) != 0:
+    ledger_blocking_count = int(contradiction_ledger.get("blocking_contradiction_count", 0))
+    ledger_advisory_count = int(contradiction_ledger.get("advisory_contradiction_count", 0))
+    if recompute_blocking_count != ledger_blocking_count or recompute_advisory_count != ledger_advisory_count:
+        raise RuntimeError("FAIL_CLOSED: truth-engine recompute receipt contradiction summary must match contradiction ledger counts")
+    if ledger_blocking_count != 0 or ledger_advisory_count != 0:
         raise RuntimeError("FAIL_CLOSED: truth-engine contradiction ledger must have zero blocking and zero advisory contradictions")
     common.ensure_pass(handoff_receipt, label="truth-engine post-PR canonical handoff receipt")
     if str(handoff_receipt.get("next_lawful_move", "")).strip() != NEXT_MOVE:
@@ -268,6 +277,8 @@ def run(
     _require_list_contains(posture_index, "theorem_truth_posture", "THEOREM_POSTURE_CANONICAL_ON_MAIN", label="truth-engine posture index")
     _require_list_contains(posture_index, "product_truth_posture", "PRODUCT_POSTURE_STILL_BOUNDED", label="truth-engine posture index")
     common.ensure_pass(trust_zone_prep_receipt, label="trust-zone prep receipt")
+    if str(trust_zone_prep_receipt.get("outcome", "")).strip() != EXPECTED_TRUST_ZONE_PREP_OUTCOME:
+        raise RuntimeError("FAIL_CLOSED: trust-zone prep receipt must preserve the expected non-authoritative prep outcome")
     if str(trust_zone_validation.get("status", "")).strip() != "PASS":
         raise RuntimeError("FAIL_CLOSED: trust-zone validation must pass before promotion")
 

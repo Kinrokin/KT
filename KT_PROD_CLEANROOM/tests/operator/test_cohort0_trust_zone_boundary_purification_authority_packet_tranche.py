@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from tools.operator import cohort0_trust_zone_boundary_purification_authority_packet_tranche as tranche
 
 
@@ -33,7 +35,7 @@ def test_trust_zone_boundary_authority_packet_promotes_lane_without_package_prom
     )
     _write_json(
         reports / "cohort0_post_f_parallel_trust_zone_boundary_purification_receipt.json",
-        {"schema_id": "prep_receipt", "status": "PASS", "outcome": "POST_F_TRUST_ZONE_BOUNDARY_PURIFICATION_PREP_DEFINED__NON_AUTHORITATIVE"},
+        {"schema_id": "prep_receipt", "status": "PASS", "outcome": tranche.EXPECTED_TRUST_ZONE_PREP_OUTCOME},
     )
 
     monkeypatch.setattr(tranche, "repo_root", lambda: tmp_path)
@@ -68,14 +70,32 @@ def test_trust_zone_boundary_authority_packet_requires_audit_authorization(tmp_p
     monkeypatch.setattr(tranche, "_current_branch_name", lambda root: tranche.REQUIRED_BRANCH)
     monkeypatch.setattr(tranche, "_git_status_porcelain", lambda root: "")
 
-    try:
+    with pytest.raises(RuntimeError, match="authorize trust-zone boundary purification promotion"):
         tranche.run(
             reports_root=reports,
             audit_receipt_path=reports / "cohort0_post_merge_canonical_truth_boundary_readiness_audit_receipt.json",
             prep_packet_path=reports / "cohort0_post_f_parallel_trust_zone_boundary_purification_packet.json",
             prep_receipt_path=reports / "cohort0_post_f_parallel_trust_zone_boundary_purification_receipt.json",
         )
-    except RuntimeError as exc:
-        assert "authorize trust-zone boundary purification promotion" in str(exc)
-    else:
-        raise AssertionError("expected missing audit authorization to fail closed")
+
+
+def test_trust_zone_boundary_authority_packet_requires_non_authoritative_prep_outcome(tmp_path: Path, monkeypatch) -> None:
+    reports = tmp_path / "KT_PROD_CLEANROOM" / "reports"
+    _write_json(
+        reports / "cohort0_post_merge_canonical_truth_boundary_readiness_audit_receipt.json",
+        {"schema_id": "audit", "status": "PASS", "next_lawful_move": "PROMOTE_TRUST_ZONE_BOUNDARY_PURIFICATION_AS_NEXT_AUTHORITATIVE_LANE"},
+    )
+    _write_json(reports / "cohort0_post_f_parallel_trust_zone_boundary_purification_packet.json", {"schema_id": "prep_packet", "status": "PASS"})
+    _write_json(reports / "cohort0_post_f_parallel_trust_zone_boundary_purification_receipt.json", {"schema_id": "prep_receipt", "status": "PASS", "outcome": "SOME_OTHER_PASS_OUTCOME"})
+
+    monkeypatch.setattr(tranche, "repo_root", lambda: tmp_path)
+    monkeypatch.setattr(tranche, "_current_branch_name", lambda root: tranche.REQUIRED_BRANCH)
+    monkeypatch.setattr(tranche, "_git_status_porcelain", lambda root: "")
+
+    with pytest.raises(RuntimeError, match="expected non-authoritative prep outcome"):
+        tranche.run(
+            reports_root=reports,
+            audit_receipt_path=reports / "cohort0_post_merge_canonical_truth_boundary_readiness_audit_receipt.json",
+            prep_packet_path=reports / "cohort0_post_f_parallel_trust_zone_boundary_purification_packet.json",
+            prep_receipt_path=reports / "cohort0_post_f_parallel_trust_zone_boundary_purification_receipt.json",
+        )
