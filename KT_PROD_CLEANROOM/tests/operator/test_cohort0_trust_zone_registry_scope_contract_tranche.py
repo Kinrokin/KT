@@ -57,10 +57,14 @@ def test_trust_zone_scope_contract_binds_required_law(tmp_path: Path, monkeypatc
     assert result["outcome"] == tranche.OUTCOME
     contract = _load(governance / tranche.GOVERNANCE_CONTRACT)
     receipt = _load(reports / tranche.OUTPUT_RECEIPT)
+    quarantine_receipt = _load(reports / tranche.NONCANONICAL_QUARANTINE_RECEIPT)
+    validation_matrix = _load(reports / tranche.TRUST_ZONE_VALIDATION_MATRIX)
     assert receipt["next_lawful_move"] == tranche.NEXT_MOVE
     assert contract["scope_rules"]["can_drive_live_posture"] == ["CANONICAL"]
     assert "deferred_package_artifact_misuse" in [row["class_id"] for row in contract["violation_classes"]]
     assert contract["failure_law"]["blocking"]
+    assert quarantine_receipt["outcome"] == "NONCANONICAL_QUARANTINE_RECEIPT_INITIALIZED__NO_LIVE_MUTATION"
+    assert validation_matrix["validation_status"] == "PASS"
 
 
 def test_trust_zone_scope_contract_requires_deferred_package_boundary(tmp_path: Path, monkeypatch) -> None:

@@ -12,6 +12,8 @@ OUTPUT_PACKET = "cohort0_trust_zone_registry_scope_contract_packet.json"
 OUTPUT_RECEIPT = "cohort0_trust_zone_registry_scope_contract_receipt.json"
 OUTPUT_REPORT = "COHORT0_TRUST_ZONE_REGISTRY_SCOPE_CONTRACT_REPORT.md"
 GOVERNANCE_CONTRACT = "trust_zone_boundary_purification_scope_contract.json"
+NONCANONICAL_QUARANTINE_RECEIPT = "noncanonical_quarantine_receipt.json"
+TRUST_ZONE_VALIDATION_MATRIX = "trust_zone_validation_matrix.json"
 
 REQUIRED_BRANCH = "authoritative/trust-zone-registry-scope-contract"
 EXECUTION_STATUS = "PASS__TRUST_ZONE_REGISTRY_SCOPE_CONTRACT_BOUND"
@@ -251,6 +253,38 @@ def build_outputs(
         "trust_zone_validation_status": str(trust_zone_validation.get("status", "")).strip(),
         "next_lawful_move": NEXT_MOVE,
     }
+    noncanonical_quarantine_receipt = {
+        "schema_id": "kt.operator.noncanonical_quarantine_receipt.v1",
+        "status": "PASS",
+        "generated_utc": contract["generated_utc"],
+        "execution_status": EXECUTION_STATUS,
+        "outcome": "NONCANONICAL_QUARANTINE_RECEIPT_INITIALIZED__NO_LIVE_MUTATION",
+        "live_blocker_count": 0,
+        "package_promotion_remains_deferred": True,
+        "quarantine_scope": [
+            "LAB",
+            "ARCHIVE",
+            "COMMERCIAL",
+            "LOCAL_ONLY_IGNORED",
+            "EXTERNAL_ADVISORY_QUARANTINED",
+            "TOOLCHAIN_PROVING",
+        ],
+        "rule": "This receipt initializes quarantine accounting only; it does not move files or promote any noncanonical surface.",
+        "next_lawful_move": NEXT_MOVE,
+    }
+    trust_zone_validation_matrix = {
+        "schema_id": "kt.operator.trust_zone_validation_matrix.v1",
+        "status": "PASS",
+        "generated_utc": contract["generated_utc"],
+        "execution_status": EXECUTION_STATUS,
+        "outcome": "TRUST_ZONE_VALIDATION_MATRIX_BOUND",
+        "validation_status": str(trust_zone_validation.get("status", "")).strip(),
+        "check_count": len(trust_zone_validation.get("checks", [])) if isinstance(trust_zone_validation.get("checks"), list) else 0,
+        "failure_count": len(trust_zone_validation.get("failures", [])) if isinstance(trust_zone_validation.get("failures"), list) else 0,
+        "checks": list(trust_zone_validation.get("checks", [])) if isinstance(trust_zone_validation.get("checks"), list) else [],
+        "failures": list(trust_zone_validation.get("failures", [])) if isinstance(trust_zone_validation.get("failures"), list) else [],
+        "next_lawful_move": NEXT_MOVE,
+    }
     report = common.report_lines(
         "Cohort0 Trust Zone Registry Scope Contract Report",
         [
@@ -264,7 +298,14 @@ def build_outputs(
             f"- Next lawful move: `{NEXT_MOVE}`",
         ],
     )
-    return {"contract": contract, "packet": packet, "receipt": receipt, "report": report}
+    return {
+        "contract": contract,
+        "packet": packet,
+        "receipt": receipt,
+        "noncanonical_quarantine_receipt": noncanonical_quarantine_receipt,
+        "trust_zone_validation_matrix": trust_zone_validation_matrix,
+        "report": report,
+    }
 
 
 def run(
@@ -314,6 +355,8 @@ def run(
     )
 
     write_json_stable((governance_root / GOVERNANCE_CONTRACT).resolve(), outputs["contract"])
+    write_json_stable((reports_root / NONCANONICAL_QUARANTINE_RECEIPT).resolve(), outputs["noncanonical_quarantine_receipt"])
+    write_json_stable((reports_root / TRUST_ZONE_VALIDATION_MATRIX).resolve(), outputs["trust_zone_validation_matrix"])
     common.write_outputs(
         packet_path=(reports_root / OUTPUT_PACKET).resolve(),
         receipt_path=(reports_root / OUTPUT_RECEIPT).resolve(),

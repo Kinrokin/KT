@@ -126,8 +126,7 @@ def _claim_scan(root: Path, tracked_files: Sequence[str]) -> tuple[list[dict[str
                 continue
             row = {"path": rel, "line": line_no, "terms": terms, "snippet": line.strip()[:240]}
             findings.append(row)
-            if any(term in terms for term in ("best ai", "beyond-sota", "sota", "full-system", "full system", "commercially ready")):
-                violations.append({**row, "candidate_violation_class": "broad_or_commercial_claim_boundary_review"})
+            violations.append({**row, "candidate_violation_class": "risky_claim_boundary_review"})
     return findings[:200], violations[:200]
 
 
