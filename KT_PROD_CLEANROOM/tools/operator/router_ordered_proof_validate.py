@@ -59,7 +59,12 @@ def _economic_profile(plane: Dict[str, Any], profile_id: str) -> Dict[str, Any]:
 
 def _build_base_reports(*, root: Path) -> Dict[str, Dict[str, Any]]:
     shadow_reports = build_wave2b_shadow_reports(root=root, telemetry_path=(root / TMP_WAVE2B_TELEMETRY_REL).resolve())
-    c005_receipt = build_c005_router_ratification_receipt(root=root, telemetry_path=(root / TMP_C005_TELEMETRY_REL).resolve())
+    tracked_c005 = (root / f"{REPORT_ROOT_REL}/post_wave5_c005_router_ratification_receipt.json").resolve()
+    c005_receipt = (
+        load_json(tracked_c005)
+        if tracked_c005.is_file()
+        else build_c005_router_ratification_receipt(root=root, telemetry_path=(root / TMP_C005_TELEMETRY_REL).resolve())
+    )
     return {
         "selection": shadow_reports["selection_report"],
         "matrix": shadow_reports["matrix_report"],
