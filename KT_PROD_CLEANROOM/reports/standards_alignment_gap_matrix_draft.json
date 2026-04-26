@@ -1,0 +1,50 @@
+{
+  "authoritative_lane": "authoritative/trust-zone-registry-scope-contract",
+  "claim_status": "ADVISORY_GAP_MAP_ONLY__NO_COMPLIANCE_CLAIM",
+  "execution_status": "PASS__TRUST_ZONE_PARALLEL_PREP_BUNDLE_BOUND",
+  "generated_utc": "2026-04-26T18:12:11Z",
+  "may_drive_live_posture": false,
+  "outcome": "TRUST_ZONE_PARALLEL_PREP_LANES_EMITTED__NON_AUTHORITATIVE",
+  "package_promotion_remains_deferred": true,
+  "prep_only": true,
+  "schema_id": "kt.operator.standards_alignment_gap_matrix_draft.v1",
+  "standards": [
+    {
+      "current_claim": "not_claimed",
+      "next_gap_to_assess": "build provenance and builder identity",
+      "standard": "SLSA"
+    },
+    {
+      "current_claim": "not_claimed",
+      "next_gap_to_assess": "layout, link metadata, threshold signing",
+      "standard": "in-toto"
+    },
+    {
+      "current_claim": "mock_only_or_bounded",
+      "next_gap_to_assess": "public transparency log and key policy",
+      "standard": "Sigstore/Rekor"
+    },
+    {
+      "current_claim": "not_claimed",
+      "next_gap_to_assess": "role separation and metadata expiry",
+      "standard": "TUF"
+    },
+    {
+      "current_claim": "not_claimed",
+      "next_gap_to_assess": "secure development practice mapping",
+      "standard": "NIST SSDF/SP 800-218"
+    },
+    {
+      "current_claim": "not_claimed",
+      "next_gap_to_assess": "risk governance and measurement mapping",
+      "standard": "NIST AI RMF"
+    },
+    {
+      "current_claim": "not_claimed",
+      "next_gap_to_assess": "AI management-system control mapping",
+      "standard": "ISO/IEC 42001-style governance"
+    }
+  ],
+  "status": "PASS",
+  "truth_engine_derivation_law_unchanged": true
+}
