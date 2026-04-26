@@ -1,11 +1,11 @@
 {
   "authoritative_lane": "authoritative/trust-zone-manifests-quarantine-materialization",
-  "branch_head": "cb151211bbca4f74512f83d59a04c0db8a34080d",
+  "branch_head": "048f0763d9545ef0d1a38a749fdda44b73ebdb0f",
   "branch_name": "authoritative/trust-zone-manifests-quarantine-materialization",
   "claim_boundary": "This packet materializes registry/scope/quarantine operating surfaces only. It does not promote packages, change truth-engine law, widen Gate F, or ratify upper-stack/lab claims.",
   "commercial_review_queue_count": 6,
   "execution_status": "PASS__TRUST_ZONE_MANIFESTS_AND_QUARANTINE_RECEIPT_MATERIALIZED",
-  "generated_utc": "2026-04-26T18:47:18Z",
+  "generated_utc": "2026-04-26T18:53:28Z",
   "live_blocker_count": 0,
   "manifest_binding": {
     "canonical_scope_manifest": {
@@ -30,105 +30,21 @@
   },
   "materialization_changes": {
     "canonical_scope_additions": {
-      "documentary_only_surfaces": [
-        "KT_PROD_CLEANROOM/product/**",
-        "KT_PROD_CLEANROOM/docs/**"
-      ],
-      "excluded_from_canonical_truth": [
-        "KT_PROD_CLEANROOM/tests/operator/**",
-        "KT_PROD_CLEANROOM/pyproject.toml",
-        "KT_PROD_CLEANROOM/pytest.ini",
-        "KT_PROD_CLEANROOM/requirements-*.in",
-        "KT_PROD_CLEANROOM/requirements-*.lock.txt",
-        "KT_PROD_CLEANROOM/sitecustomize.py",
-        "KT_PROD_CLEANROOM/run_policy_c_smoke_train.py",
-        "KT_PROD_CLEANROOM/product/**",
-        "KT_PROD_CLEANROOM/docs/**",
-        "KT_PROD_CLEANROOM/exports/law/**",
-        "KT_PROD_CLEANROOM/runs/**",
-        "KT_PROD_CLEANROOM/*PROMPT*.md",
-        "KT_PROD_CLEANROOM/*WORK_ORDER*.json",
-        "KT_PROD_CLEANROOM/kt.*.json",
-        "KT_PROD_CLEANROOM/W4_PHASE_GATES.md",
-        "KT_PROD_CLEANROOM/decision_log.md"
-      ],
-      "forbidden_live_side_paths": [
-        "KT_PROD_CLEANROOM/tests/operator/**",
-        "KT_PROD_CLEANROOM/pyproject.toml",
-        "KT_PROD_CLEANROOM/pytest.ini",
-        "KT_PROD_CLEANROOM/requirements-*.in",
-        "KT_PROD_CLEANROOM/requirements-*.lock.txt",
-        "KT_PROD_CLEANROOM/sitecustomize.py",
-        "KT_PROD_CLEANROOM/run_policy_c_smoke_train.py"
-      ],
-      "generated_truth_surfaces": [
-        "KT_PROD_CLEANROOM/exports/law/**"
-      ],
-      "quarantined_from_canonical_truth": [
-        "KT_PROD_CLEANROOM/runs/**",
-        "KT_PROD_CLEANROOM/*PROMPT*.md",
-        "KT_PROD_CLEANROOM/*WORK_ORDER*.json",
-        "KT_PROD_CLEANROOM/kt.*.json",
-        "KT_PROD_CLEANROOM/W4_PHASE_GATES.md",
-        "KT_PROD_CLEANROOM/decision_log.md"
-      ],
-      "toolchain_proving_surfaces": [
-        "KT_PROD_CLEANROOM/tests/operator/**",
-        "KT_PROD_CLEANROOM/pyproject.toml",
-        "KT_PROD_CLEANROOM/pytest.ini",
-        "KT_PROD_CLEANROOM/requirements-*.in",
-        "KT_PROD_CLEANROOM/requirements-*.lock.txt",
-        "KT_PROD_CLEANROOM/sitecustomize.py",
-        "KT_PROD_CLEANROOM/run_policy_c_smoke_train.py"
-      ]
+      "documentary_only_surfaces": [],
+      "excluded_from_canonical_truth": [],
+      "forbidden_live_side_paths": [],
+      "generated_truth_surfaces": [],
+      "quarantined_from_canonical_truth": [],
+      "toolchain_proving_surfaces": []
     },
     "readiness_scope_changed": false,
     "registry_additions": {
-      "CANONICAL.exclude": [
-        "KT_PROD_CLEANROOM/tests/operator/**",
-        "KT_PROD_CLEANROOM/pyproject.toml",
-        "KT_PROD_CLEANROOM/pytest.ini",
-        "KT_PROD_CLEANROOM/requirements-*.in",
-        "KT_PROD_CLEANROOM/requirements-*.lock.txt",
-        "KT_PROD_CLEANROOM/sitecustomize.py",
-        "KT_PROD_CLEANROOM/run_policy_c_smoke_train.py",
-        "KT_PROD_CLEANROOM/product/**",
-        "KT_PROD_CLEANROOM/docs/**",
-        "KT_PROD_CLEANROOM/exports/law/**",
-        "KT_PROD_CLEANROOM/runs/**",
-        "KT_PROD_CLEANROOM/*PROMPT*.md",
-        "KT_PROD_CLEANROOM/*WORK_ORDER*.json",
-        "KT_PROD_CLEANROOM/kt.*.json",
-        "KT_PROD_CLEANROOM/W4_PHASE_GATES.md",
-        "KT_PROD_CLEANROOM/decision_log.md"
-      ],
-      "COMMERCIAL.exclude": [
-        "KT_PROD_CLEANROOM/docs/operator/**"
-      ],
-      "COMMERCIAL.include": [
-        "KT_PROD_CLEANROOM/product/**",
-        "KT_PROD_CLEANROOM/docs/**"
-      ],
-      "GENERATED_RUNTIME_TRUTH.include": [
-        "KT_PROD_CLEANROOM/exports/law/**"
-      ],
-      "QUARANTINED.include": [
-        "KT_PROD_CLEANROOM/runs/**",
-        "KT_PROD_CLEANROOM/*PROMPT*.md",
-        "KT_PROD_CLEANROOM/*WORK_ORDER*.json",
-        "KT_PROD_CLEANROOM/kt.*.json",
-        "KT_PROD_CLEANROOM/W4_PHASE_GATES.md",
-        "KT_PROD_CLEANROOM/decision_log.md"
-      ],
-      "TOOLCHAIN_PROVING.include": [
-        "KT_PROD_CLEANROOM/tests/operator/**",
-        "KT_PROD_CLEANROOM/pyproject.toml",
-        "KT_PROD_CLEANROOM/pytest.ini",
-        "KT_PROD_CLEANROOM/requirements-*.in",
-        "KT_PROD_CLEANROOM/requirements-*.lock.txt",
-        "KT_PROD_CLEANROOM/sitecustomize.py",
-        "KT_PROD_CLEANROOM/run_policy_c_smoke_train.py"
-      ]
+      "CANONICAL.exclude": [],
+      "COMMERCIAL.exclude": [],
+      "COMMERCIAL.include": [],
+      "GENERATED_RUNTIME_TRUTH.include": [],
+      "QUARANTINED.include": [],
+      "TOOLCHAIN_PROVING.include": []
     }
   },
   "materialized_outputs": [
