@@ -46,6 +46,7 @@ EXPECTED_HOLD_NEXT_STEP_ID = "HOLD_B04_R6_BLOCKED_PENDING_EARNED_ROUTER_SUPERIOR
 EXPECTED_ORIGINAL_EXECUTION_MODE = "CIVILIZATION_RATIFICATION_ORDER_LOCKED__FIFTH_STEP_ONLY"
 EXPECTED_RERUN_EXECUTION_MODE = "SAME_HEAD_R5_RERUN_ONLY_UNDER_EXISTING_PROOF_LAW"
 EXPECTED_POST_RERUN_HOLD_EXECUTION_MODE = "R6_NEXT_IN_ORDER_BLOCKED_PENDING_EARNED_SUPERIORITY__FUTURE_R5_RERUN_REQUIRES_NEW_LAB_JUSTIFICATION"
+EXPECTED_INITIAL_R5_STATIC_HOLD_EXECUTION_MODE = "R6_NEXT_IN_ORDER_BLOCKED_PENDING_EARNED_SUPERIORITY__INITIAL_R5_PROOF_COMPLETE"
 EXPECTED_SECOND_RERUN_EXECUTION_MODE = "SECOND_R5_RERUN_AUTHORIZED_ONLY__R6_STILL_BLOCKED_UNTIL_EARNED_SUPERIORITY"
 EXPECTED_SECOND_POST_RERUN_HOLD_EXECUTION_MODE = "R6_NEXT_IN_ORDER_BLOCKED_PENDING_EARNED_SUPERIORITY__FUTURE_SECOND_R5_RERUN_REQUIRES_NEW_LAB_JUSTIFICATION"
 EXPECTED_THIRD_RERUN_EXECUTION_MODE = "THIRD_R5_RERUN_AUTHORIZED_ONLY__R6_STILL_BLOCKED_UNTIL_EARNED_SUPERIORITY"
@@ -132,6 +133,20 @@ def _r5_execution_context(
         and resume_step == EXPECTED_FOURTH_RERUN_STEP_ID
         and reanchor_step == EXPECTED_FOURTH_RERUN_STEP_ID
     )
+    initial_static_hold_path = (
+        source_step == EXPECTED_CURRENT_STEP_ID
+        and next_step == EXPECTED_EARNED_NEXT_STEP_ID
+        and execution_mode == EXPECTED_INITIAL_R5_STATIC_HOLD_EXECUTION_MODE
+        and overlay_step == EXPECTED_EARNED_NEXT_STEP_ID
+        and overlay_batch == EXPECTED_CURRENT_STEP_ID
+        and overlay_workstream == EXPECTED_CURRENT_STEP_ID
+        and resume_step == EXPECTED_EARNED_NEXT_STEP_ID
+        and resume_workstream == EXPECTED_CURRENT_STEP_ID
+        and reanchor_step == EXPECTED_HOLD_NEXT_STEP_ID
+        and reanchor_workstream == EXPECTED_CURRENT_STEP_ID
+        and bool(next_contract.get("repo_state_executable_now")) is False
+        and bool(resume.get("repo_state_executable_now")) is False
+    )
     post_rerun_hold_path = (
         source_step == EXPECTED_RERUN_STEP_ID
         and next_step == EXPECTED_EARNED_NEXT_STEP_ID
@@ -198,6 +213,8 @@ def _r5_execution_context(
         return EXPECTED_THIRD_RERUN_STEP_ID
     if bool(next_contract.get("repo_state_executable_now")) is True and fourth_rerun_path:
         return EXPECTED_FOURTH_RERUN_STEP_ID
+    if initial_static_hold_path:
+        return EXPECTED_CURRENT_STEP_ID
     if post_rerun_hold_path:
         return EXPECTED_RERUN_STEP_ID
     if second_post_rerun_hold_path:
