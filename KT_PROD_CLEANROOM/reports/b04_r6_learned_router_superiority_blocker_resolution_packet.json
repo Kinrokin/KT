@@ -1,0 +1,84 @@
+{
+  "allowed_resolution_paths": [
+    "author a comparator and metric contract",
+    "bind a best-static-baseline contract",
+    "run shadow-only learned-router evaluation",
+    "run no-regression and control-preservation checks",
+    "defer if evidence is insufficient"
+  ],
+  "authoritative_lane": "B04_R6_LEARNED_ROUTER_SUPERIORITY_BLOCKER_RESOLUTION",
+  "current_git_head": "3559efe97d073667965ffe5fa45b9493c8cb01d9",
+  "current_r1_r5_foundation": {
+    "r1_r5_active_replay": "PASS",
+    "r6_authorized": false,
+    "router_superiority_earned": false,
+    "static_router_remains_canonical": true
+  },
+  "evidence_refs": {
+    "active_replay_receipt": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r1_r5_active_revalidation_replay_receipt.json",
+      "sha256": "9526526fd63f09b888f67a4401d65225a5413477b3e9da4f2550cd4a5501d95d"
+    },
+    "canonical_scope_manifest": {
+      "path": "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+      "sha256": "37e097c360ace12fe83000f5344c2565d46144cf50c0ad74d73d7a87edd00e7b"
+    },
+    "current_overlay": {
+      "path": "KT_PROD_CLEANROOM/reports/current_campaign_state_overlay.json",
+      "sha256": "2c60ac7cec9c7519bdd048c05763229b1fe0639afb7ca171b6f120c92d67dcd8"
+    },
+    "next_counted_workstream_contract": {
+      "path": "KT_PROD_CLEANROOM/reports/next_counted_workstream_contract.json",
+      "sha256": "5065fe69a18b9f97990fc08d631eb7fe2d3bb1efb2f5bd60b77b4a8e649d3410"
+    },
+    "r5_terminal_state": {
+      "path": "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_terminal_state.json",
+      "sha256": "da595dd4e967f2b0c850b6a6bc5df8e8abeaee5032c83118eea85b520976900d"
+    },
+    "router_superiority_scorecard": {
+      "path": "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
+      "sha256": "bd1c946a91bc04266f698a3e5e4f134765a23dcaa51b5d5a3524a0e093839365"
+    },
+    "supersession_receipt": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r1_r5_revalidation_asset_supersession_receipt.json",
+      "sha256": "1a928c9ad66e84ff1bc26c0dc7134ef8708e840b4702f629cf2aa94b5e294e1b"
+    },
+    "upper_stack_blocker_ledger": {
+      "path": "KT_PROD_CLEANROOM/reports/upper_stack_blocker_ledger.json",
+      "sha256": "7973710fc3b63ca44eb894235192694d6a511f13366c7c9bec9055f92368158a"
+    }
+  },
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening",
+    "external_verification_completed"
+  ],
+  "forbidden_moves": [
+    "learned-router activation",
+    "multi-lobe promotion",
+    "package promotion",
+    "commercial claim widening",
+    "using R1-R5 replay pass as R6 superiority proof",
+    "truth-engine law mutation",
+    "trust-zone law mutation"
+  ],
+  "generated_utc": "2026-04-26T22:08:30Z",
+  "learned_router_cutover_authorized_now": false,
+  "next_lawful_move": "AUTHOR_B04_R6_LEARNED_ROUTER_COMPARATOR_AND_METRIC_CONTRACT",
+  "outcome": "B04_R6_LEARNED_ROUTER_SUPERIORITY_BLOCKER_RESOLUTION_BOUND",
+  "prep_lanes_non_authoritative": true,
+  "r6_execution_authorized_now": false,
+  "r6_question": "What exact evidence is required before B04.R6 may even run a learned-router superiority screen?",
+  "resolution_decision": "R6_BLOCKER_RESOLUTION_AUTHORIZED__SCREEN_ONLY",
+  "schema_id": "kt.operator.b04_r6_learned_router_superiority_blocker_resolution_packet.v1",
+  "status": "PASS",
+  "unchanged_laws": [
+    "truth_engine_derivation_law",
+    "trust_zone_law",
+    "package_promotion_deferral"
+  ]
+}

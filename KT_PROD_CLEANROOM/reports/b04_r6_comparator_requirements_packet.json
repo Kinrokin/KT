@@ -1,0 +1,67 @@
+{
+  "authoritative_lane": "B04_R6_LEARNED_ROUTER_SUPERIORITY_BLOCKER_RESOLUTION",
+  "best_static_baseline": {
+    "provider_underlay": {
+      "adapter_id": "council.openrouter.live_hashed.v1",
+      "boundary_hold_present": false,
+      "http_status": 200,
+      "latency_ms": 1063,
+      "provider_id": "openrouter",
+      "ranking_rule": [
+        "successful_live_count_desc",
+        "live_receipt_count_desc",
+        "latency_ms_asc",
+        "adapter_id_asc"
+      ],
+      "status": "OK"
+    },
+    "ratification_decision": "HOLD_STATIC_CANONICAL_BASELINE",
+    "source_ref": "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json"
+  },
+  "current_git_head": "3559efe97d073667965ffe5fa45b9493c8cb01d9",
+  "disqualifiers": [
+    "over-routing",
+    "abstention discipline failure",
+    "masked or mirror invariance failure",
+    "non-deterministic receipt generation",
+    "unbounded product/commercial interpretation"
+  ],
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening",
+    "external_verification_completed"
+  ],
+  "generated_utc": "2026-04-26T22:08:30Z",
+  "learned_router_candidate_current_status": {
+    "candidate_id": "",
+    "candidate_status": "NO_ELIGIBLE_LEARNED_ROUTER_CANDIDATE_PRESENT",
+    "eligibility_reason": "Current-head evidence contains only a shadow comparator that matched the static baseline and did not earn cutover.",
+    "promotion_allowed": false
+  },
+  "minimum_comparator_set": [
+    "canonical static baseline",
+    "best approved static adapter/control",
+    "shadow-only learned-router candidate"
+  ],
+  "next_lawful_move": "AUTHOR_B04_R6_LEARNED_ROUTER_COMPARATOR_AND_METRIC_CONTRACT",
+  "prep_lanes_non_authoritative": true,
+  "r6_authorized": false,
+  "required_thresholds": {
+    "control_preservation": "must keep fallback/static baseline and fail-closed behavior available",
+    "cost": "must not regress beyond preregistered tolerance",
+    "latency": "must not regress beyond preregistered tolerance",
+    "no_regression": "must preserve all R1-R5 pass conditions",
+    "route_quality": "must exceed best static baseline on preregistered useful-output cases"
+  },
+  "schema_id": "kt.operator.b04_r6_comparator_requirements_packet.v1",
+  "status": "PASS",
+  "unchanged_laws": [
+    "truth_engine_derivation_law",
+    "trust_zone_law",
+    "package_promotion_deferral"
+  ]
+}

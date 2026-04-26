@@ -1,0 +1,59 @@
+{
+  "authoritative_lane": "B04_R6_LEARNED_ROUTER_SUPERIORITY_BLOCKER_RESOLUTION",
+  "current_git_head": "3559efe97d073667965ffe5fa45b9493c8cb01d9",
+  "entries": [
+    {
+      "blocker_id": "B04_R1_R5_ACTIVE_REVALIDATION_OVERLAY_MISSING",
+      "live_authority_effect": "R1-R5 replay floor is restored; R6 is still not authorized.",
+      "resolution_evidence": "KT_PROD_CLEANROOM/reports/b04_r1_r5_active_revalidation_replay_receipt.json",
+      "status": "RESOLVED_BY_PR25"
+    },
+    {
+      "blocker_id": "B04_R6_LEARNED_ROUTER_SUPERIORITY_NOT_EARNED",
+      "required_evidence": [
+        "best static baseline binding",
+        "learned-router candidate eligibility",
+        "shadow-only comparator matrix",
+        "route-superiority metric contract",
+        "no-regression and control-preservation proof",
+        "abstention and over-routing disqualifier checks"
+      ],
+      "resolution_path": "AUTHOR_B04_R6_LEARNED_ROUTER_COMPARATOR_AND_METRIC_CONTRACT",
+      "severity": "BLOCKS_R6_AUTHORIZATION",
+      "status": "ACTIVE_BLOCKER"
+    },
+    {
+      "blocker_id": "B04_R7_MULTI_LOBE_ORCHESTRATION_BLOCKED_PENDING_LEARNED_ROUTER_WIN",
+      "resolution_path": "Do not open until R6 screen earns superiority and a later authorization court approves.",
+      "severity": "BLOCKS_LOBE_ESCALATION",
+      "status": "DOWNSTREAM_BLOCKED"
+    },
+    {
+      "blocker_id": "BROAD_COMPARATIVE_PROOF_REMAINS_OPEN_A_PLUS_GAP",
+      "resolution_path": "Open only after ordered router/lobe status is settled or explicitly bounded.",
+      "severity": "BLOCKS_BROAD_CLAIMS",
+      "status": "DOWNSTREAM_DEFERRED"
+    }
+  ],
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening",
+    "external_verification_completed"
+  ],
+  "generated_utc": "2026-04-26T22:08:30Z",
+  "live_blocker_count": 0,
+  "next_lawful_move": "AUTHOR_B04_R6_LEARNED_ROUTER_COMPARATOR_AND_METRIC_CONTRACT",
+  "prep_lanes_non_authoritative": true,
+  "r6_blocker_count": 1,
+  "schema_id": "kt.operator.b04_r6_blocker_ledger.v1",
+  "status": "PASS",
+  "unchanged_laws": [
+    "truth_engine_derivation_law",
+    "trust_zone_law",
+    "package_promotion_deferral"
+  ]
+}
