@@ -39,9 +39,9 @@ def test_trust_zone_scope_contract_binds_required_law(tmp_path: Path, monkeypatc
     _write_json(governance / "readiness_scope_manifest.json", {"schema_id": "readiness", "manifest_id": "READY"})
 
     monkeypatch.setattr(tranche, "repo_root", lambda: tmp_path)
-    monkeypatch.setattr(tranche, "_current_branch_name", lambda root: tranche.REQUIRED_BRANCH)
-    monkeypatch.setattr(tranche, "_git_status_porcelain", lambda root: "")
-    monkeypatch.setattr(tranche, "_git_rev_parse", lambda root, ref: "abc123")
+    monkeypatch.setattr(tranche.common, "git_current_branch_name", lambda root: tranche.REQUIRED_BRANCH)
+    monkeypatch.setattr(tranche.common, "git_status_porcelain", lambda root: "")
+    monkeypatch.setattr(tranche.common, "git_rev_parse", lambda root, ref: "abc123")
     monkeypatch.setattr(tranche, "validate_trust_zones", lambda root: {"schema_id": "validation", "status": "PASS", "checks": [], "failures": []})
 
     result = tranche.run(
@@ -79,8 +79,8 @@ def test_trust_zone_scope_contract_requires_deferred_package_boundary(tmp_path: 
     _write_json(governance / "readiness_scope_manifest.json", {"schema_id": "readiness"})
 
     monkeypatch.setattr(tranche, "repo_root", lambda: tmp_path)
-    monkeypatch.setattr(tranche, "_current_branch_name", lambda root: tranche.REQUIRED_BRANCH)
-    monkeypatch.setattr(tranche, "_git_status_porcelain", lambda root: "")
+    monkeypatch.setattr(tranche.common, "git_current_branch_name", lambda root: tranche.REQUIRED_BRANCH)
+    monkeypatch.setattr(tranche.common, "git_status_porcelain", lambda root: "")
 
     with pytest.raises(RuntimeError, match="package promotion must remain deferred"):
         tranche.run(

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import subprocess
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
@@ -20,48 +19,12 @@ OUTCOME = "TRUST_ZONE_BOUNDARY_PURIFICATION_REGISTRY_AND_SCOPE_CONTRACT_DEFINED"
 NEXT_MOVE = "EXECUTE_TRUST_ZONE_BOUNDARY_PURIFICATION_PARALLEL_PREP_BUNDLE"
 
 
-def _current_branch_name(root: Path) -> str:
-    result = subprocess.run(
-        ["git", "rev-parse", "--abbrev-ref", "HEAD"],
-        cwd=root,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        check=True,
-    )
-    return result.stdout.strip() or "UNKNOWN_BRANCH"
-
-
-def _git_status_porcelain(root: Path) -> str:
-    result = subprocess.run(
-        ["git", "status", "--porcelain"],
-        cwd=root,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        check=True,
-    )
-    return result.stdout
-
-
-def _git_rev_parse(root: Path, ref: str) -> str:
-    result = subprocess.run(
-        ["git", "rev-parse", ref],
-        cwd=root,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        check=True,
-    )
-    return result.stdout.strip()
-
-
 def _zone_contract() -> list[dict[str, Any]]:
     return [
         {
             "zone_id": "CANONICAL",
             "drives_live_posture": True,
-            "scope_rule": "Only promoted canonical repo authority and approved generated-truth surfaces may drive live theorem/product posture.",
+            "scope_rule": "Only promoted canonical repo authority may drive live theorem/product posture; generated-truth surfaces may inform posture only under verifier binding.",
             "compatible_existing_zones": ["CANONICAL", "GENERATED_RUNTIME_TRUTH"],
         },
         {
@@ -315,10 +278,10 @@ def run(
     readiness_scope_manifest_path: Path,
 ) -> Dict[str, Any]:
     root = repo_root()
-    branch_name = _current_branch_name(root)
+    branch_name = common.git_current_branch_name(root)
     if branch_name != REQUIRED_BRANCH:
         raise RuntimeError(f"FAIL_CLOSED: trust-zone scope contract must run on {REQUIRED_BRANCH}, got {branch_name}")
-    if _git_status_porcelain(root).strip():
+    if common.git_status_porcelain(root).strip():
         raise RuntimeError("FAIL_CLOSED: trust-zone scope contract requires a clean worktree")
 
     authority_receipt = common.load_json_required(root, authority_receipt_path, label="trust-zone authority receipt")
@@ -341,7 +304,7 @@ def run(
         raise RuntimeError("FAIL_CLOSED: trust-zone validation must pass before scope contract binding")
 
     outputs = build_outputs(
-        branch_head=_git_rev_parse(root, "HEAD"),
+        branch_head=common.git_rev_parse(root, "HEAD"),
         authority_receipt=authority_receipt,
         post_merge_audit_receipt=post_merge_audit_receipt,
         current_registry=current_registry,

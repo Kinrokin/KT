@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import fnmatch
-import subprocess
 from collections import Counter
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional, Sequence
@@ -60,54 +59,6 @@ CLAIM_TERMS = (
 )
 
 
-def _current_branch_name(root: Path) -> str:
-    result = subprocess.run(
-        ["git", "rev-parse", "--abbrev-ref", "HEAD"],
-        cwd=root,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        check=True,
-    )
-    return result.stdout.strip() or "UNKNOWN_BRANCH"
-
-
-def _git_status_porcelain(root: Path) -> str:
-    result = subprocess.run(
-        ["git", "status", "--porcelain"],
-        cwd=root,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        check=True,
-    )
-    return result.stdout
-
-
-def _git_rev_parse(root: Path, ref: str) -> str:
-    result = subprocess.run(
-        ["git", "rev-parse", ref],
-        cwd=root,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        check=True,
-    )
-    return result.stdout.strip()
-
-
-def _git_ls_files(root: Path) -> list[str]:
-    result = subprocess.run(
-        ["git", "ls-files"],
-        cwd=root,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        check=True,
-    )
-    return sorted(line.strip().replace("\\", "/") for line in result.stdout.splitlines() if line.strip())
-
-
 def _patterns(row: Dict[str, Any], key: str) -> list[str]:
     return [str(item).strip().replace("\\", "/") for item in row.get(key, []) if str(item).strip()]
 
@@ -115,11 +66,10 @@ def _patterns(row: Dict[str, Any], key: str) -> list[str]:
 def _matches(path: str, pattern: str) -> bool:
     norm_path = path.replace("\\", "/")
     norm_pattern = pattern.replace("\\", "/")
-    if fnmatch.fnmatch(norm_path, norm_pattern):
-        return True
     if norm_pattern.endswith("/**"):
-        return norm_path.startswith(norm_pattern[:-3])
-    return False
+        prefix = norm_pattern[:-3].rstrip("/")
+        return norm_path == prefix or norm_path.startswith(f"{prefix}/")
+    return fnmatch.fnmatch(norm_path, norm_pattern)
 
 
 def _matches_any(path: str, patterns: Iterable[str]) -> bool:
@@ -475,10 +425,10 @@ def build_outputs(
 
 def run(*, reports_root: Path, contract_receipt_path: Path, trust_zone_registry_path: Path) -> Dict[str, Any]:
     root = repo_root()
-    branch_name = _current_branch_name(root)
+    branch_name = common.git_current_branch_name(root)
     if branch_name != REQUIRED_BRANCH:
         raise RuntimeError(f"FAIL_CLOSED: parallel prep bundle must run on {REQUIRED_BRANCH}, got {branch_name}")
-    status_before = _git_status_porcelain(root)
+    status_before = common.git_status_porcelain(root)
     if status_before.strip():
         raise RuntimeError("FAIL_CLOSED: parallel prep bundle requires a clean worktree")
 
@@ -491,9 +441,9 @@ def run(*, reports_root: Path, contract_receipt_path: Path, trust_zone_registry_
     outputs = build_outputs(
         root=root,
         branch_name=branch_name,
-        branch_head=_git_rev_parse(root, "HEAD"),
+        branch_head=common.git_rev_parse(root, "HEAD"),
         status_before=status_before,
-        tracked_files=_git_ls_files(root),
+        tracked_files=common.git_ls_files(root),
         registry=registry,
         contract_receipt=contract_receipt,
     )
