@@ -193,7 +193,16 @@ def _run_active_replay(root: Path) -> Dict[str, Dict[str, Any]]:
         matrix_report=r4_reports["matrix_report"],
         health_report=r4_reports["health_report"],
     )
-    base = ordered._build_base_reports(root=root)
+    base = {
+        "selection": r4_reports["selection_report"],
+        "matrix": r4_reports["matrix_report"],
+        "health": r4_reports["health_report"],
+        "c005": _load(
+            root,
+            "KT_PROD_CLEANROOM/reports/post_wave5_c005_router_ratification_receipt.json",
+            label="post-wave5 c005 router ratification receipt",
+        ),
+    }
     shadow_matrix = ordered.build_router_shadow_eval_matrix(root=root, base=base)
     health_report = ordered.build_route_distribution_health(root=root, base=base, shadow_matrix=shadow_matrix)
     scorecard = ordered.build_router_superiority_scorecard(root=root, base=base, health_report=health_report)
