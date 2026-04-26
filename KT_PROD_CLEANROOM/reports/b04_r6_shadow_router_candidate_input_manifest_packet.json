@@ -1,0 +1,123 @@
+{
+  "allowed_next_outcomes": [
+    "R6_SHADOW_SCREEN_EXECUTION_AUTHORIZED",
+    "R6_DEFERRED__CANDIDATE_OR_INPUT_MANIFEST_DEFECT",
+    "R6_BLOCKED__CANDIDATE_NOT_ADMISSIBLE"
+  ],
+  "authoritative_lane": "B04_R6_SHADOW_ROUTER_CANDIDATE_AND_INPUT_MANIFEST",
+  "candidate_manifest": {
+    "admissibility_decision": "NOT_ADMISSIBLE",
+    "admissibility_reason": "Current-head evidence contains only a shadow comparator that matched the static baseline and did not earn cutover.",
+    "admissible_for_shadow_screen": false,
+    "candidate_id": "",
+    "candidate_source_ref": null,
+    "candidate_source_sha256": null,
+    "candidate_status": "NO_ELIGIBLE_LEARNED_ROUTER_CANDIDATE_PRESENT",
+    "candidate_version": null,
+    "execution_role": "shadow_only_candidate_slot",
+    "promotion_allowed": false,
+    "training_lineage_or_derivation_record": null,
+    "zone": "INTENDED_NOT_PROMOTED"
+  },
+  "comparator_binding_ref": "b04_r6_shadow_router_comparator_binding_receipt.json",
+  "current_git_head": "5a479e5e3a0e093c4b267a8f9d1a1477e67e501d",
+  "evidence_refs": {
+    "canonical_scope_manifest": {
+      "path": "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+      "sha256": "37e097c360ace12fe83000f5344c2565d46144cf50c0ad74d73d7a87edd00e7b"
+    },
+    "comparator_matrix_contract": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_comparator_matrix_contract.json",
+      "sha256": "850848f259decd8e1d66e16b705f11374e0e022f75ffb85c54718a2561f9f4ce"
+    },
+    "comparator_metric_receipt": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_comparator_metric_contract_receipt.json",
+      "sha256": "bc8b07a920812a50497389a3bece2f48c6e2d1e503c6cdde24fdfcf838571eed"
+    },
+    "evidence_requirements_contract": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_evidence_requirements_contract.json",
+      "sha256": "68406289be67323251bae5beb81355e1520e774798dceb14f4077f770bb41888"
+    },
+    "hard_disqualifier_contract": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_hard_disqualifier_contract.json",
+      "sha256": "9ffebfa9c6c306032eef3d587d95624c1b602f053862f42724c8e92416fe7356"
+    },
+    "input_manifest_contract": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_shadow_screen_input_manifest_contract.json",
+      "sha256": "4a92369fa05f8912637d9682b621ce5c41f17f07dff8c60fddbffa27d8547bed"
+    },
+    "metric_thresholds_contract": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_metric_thresholds_contract.json",
+      "sha256": "aa012e5ff267506fdff208c8a91bc2cdba1c74bc9c85ee9b5d5d35ac462d65df"
+    },
+    "route_distribution_health": {
+      "path": "KT_PROD_CLEANROOM/reports/route_distribution_health.json",
+      "sha256": "f66841dfd281d36a6665121621c508e92da9df7a29eeca92dea37809981bad7a"
+    },
+    "router_shadow_eval_matrix": {
+      "path": "KT_PROD_CLEANROOM/reports/router_shadow_eval_matrix.json",
+      "sha256": "565e7f418ddedae44cc79cebc8c32ac230d9f36fb06a5b729589bc815ed5760d"
+    },
+    "router_superiority_scorecard": {
+      "path": "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
+      "sha256": "bd1c946a91bc04266f698a3e5e4f134765a23dcaa51b5d5a3524a0e093839365"
+    },
+    "shadow_screen_authorization_contract": {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_shadow_superiority_screen_authorization_contract.json",
+      "sha256": "a421b5e5c604307adb689c5ff9978ba5191a5573fdbe28f6376a2c0bb7a01c58"
+    },
+    "trust_zone_registry": {
+      "path": "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+      "sha256": "c26709a9b664aeb22019ab0032e2d4f464acb70c208990eea5ed755775963305"
+    }
+  },
+  "execution_mode": "shadow_only",
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening",
+    "external_verification_completed"
+  ],
+  "generated_utc": "2026-04-26T23:17:47Z",
+  "holdout_boundary": {
+    "beta_or_holdout_contamination": "HARD_STOP",
+    "case_addition_during_screen": "FORBIDDEN",
+    "case_removal_during_screen": "FORBIDDEN",
+    "frozen_case_ids": [
+      "R01",
+      "R02",
+      "R03",
+      "R04"
+    ]
+  },
+  "input_case_count": 4,
+  "input_family_coverage": [
+    "default",
+    "governance",
+    "math",
+    "poetry"
+  ],
+  "input_manifest_ready": true,
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "mirror_masked_coverage": {
+    "execution_must_emit_trace": true,
+    "masked_variant_required_per_case": true,
+    "mirror_variant_required_per_case": true
+  },
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_ADMISSIBLE_LEARNED_ROUTER_CANDIDATE_SOURCE_PACKET",
+  "outcome": "B04_R6_SHADOW_ROUTER_CANDIDATE_AND_INPUT_MANIFEST_BOUND",
+  "package_promotion_remains_deferred": true,
+  "r6_authorized": false,
+  "r6_open": false,
+  "schema_id": "kt.operator.b04_r6_shadow_router_candidate_input_manifest_packet.v1",
+  "screen_execution_authorized": false,
+  "status": "PASS",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true,
+  "verdict": "R6_BLOCKED__CANDIDATE_NOT_ADMISSIBLE"
+}
