@@ -49,11 +49,11 @@ OUTPUTS = {
     "third_party_audit_draft": "third_party_audit_packet_draft.json",
     "public_verifier_handoff": "public_verifier_handoff_draft.json",
     "product_proof_cleanup": "product_proof_deferred_cleanup_packet.json",
-    "buyer_safe_language_queue": "buyer_safe_language_patch_queue.json",
+    "buyer_safe_language_queue": "b04_r6_buyer_safe_language_patch_queue.json",
     "commercial_boundary_receipt": "commercial_boundary_resolution_receipt.json",
-    "clean_state_receipt": "parallel_lane_clean_state_receipt.json",
-    "branch_authority_receipt": "branch_authority_status_receipt.json",
-    "untracked_quarantine_receipt": "untracked_residue_quarantine_receipt.json",
+    "clean_state_receipt": "b04_r6_parallel_lane_clean_state_receipt.json",
+    "branch_authority_receipt": "b04_r6_branch_authority_status_receipt.json",
+    "untracked_quarantine_receipt": "b04_r6_untracked_residue_quarantine_receipt.json",
 }
 
 
