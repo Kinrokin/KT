@@ -4,7 +4,7 @@
 - Outcome: `TRUST_ZONE_REGISTRY_SCOPE_MANIFESTS_AND_QUARANTINE_RECEIPT_MATERIALIZED`
 - Authoritative lane: `authoritative/trust-zone-manifests-quarantine-materialization`
 - Registry/scope manifests bound: `3`
-- Unknown-zone queue count: `462`
+- Unknown-zone queue count: `142`
 - Product/proof candidate count: `6`
 - Commercial review queue count: `6`
 - Live blockers: `0`
