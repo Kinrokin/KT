@@ -1,0 +1,40 @@
+{
+  "authoritative_lane": "B04_R6_SHADOW_ROUTER_CANDIDATE_AND_INPUT_MANIFEST",
+  "candidate": {
+    "admissibility_decision": "NOT_ADMISSIBLE",
+    "admissibility_reason": "Current-head evidence contains only a shadow comparator that matched the static baseline and did not earn cutover.",
+    "admissible_for_shadow_screen": false,
+    "candidate_id": "",
+    "candidate_source_ref": null,
+    "candidate_source_sha256": null,
+    "candidate_status": "NO_ELIGIBLE_LEARNED_ROUTER_CANDIDATE_PRESENT",
+    "candidate_version": null,
+    "execution_role": "shadow_only_candidate_slot",
+    "promotion_allowed": false,
+    "training_lineage_or_derivation_record": null,
+    "zone": "INTENDED_NOT_PROMOTED"
+  },
+  "current_git_head": "5a479e5e3a0e093c4b267a8f9d1a1477e67e501d",
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening",
+    "external_verification_completed"
+  ],
+  "generated_utc": "2026-04-26T23:17:47Z",
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_ADMISSIBLE_LEARNED_ROUTER_CANDIDATE_SOURCE_PACKET",
+  "package_promotion_remains_deferred": true,
+  "r6_authorized": false,
+  "r6_open": false,
+  "schema_id": "kt.operator.b04_r6_learned_router_candidate_manifest.v1",
+  "screen_execution_authorized": false,
+  "status": "PASS",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true
+}

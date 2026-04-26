@@ -1,0 +1,69 @@
+{
+  "authoritative_lane": "B04_R6_SHADOW_ROUTER_CANDIDATE_AND_INPUT_MANIFEST",
+  "checks": [
+    {
+      "check": "comparator_metric_contract_pass",
+      "status": "PASS"
+    },
+    {
+      "check": "input_manifest_contract_pass",
+      "status": "PASS"
+    },
+    {
+      "check": "comparator_rows_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "metric_thresholds_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "hard_disqualifiers_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "input_case_ids_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "route_health_static_router_preserved",
+      "status": "PASS"
+    },
+    {
+      "check": "candidate_admissible",
+      "status": "BLOCKED"
+    },
+    {
+      "check": "screen_execution_authorized",
+      "status": "BLOCKED"
+    }
+  ],
+  "current_git_head": "5a479e5e3a0e093c4b267a8f9d1a1477e67e501d",
+  "failures": [
+    {
+      "check": "candidate_admissible",
+      "reason": "Current-head evidence contains only a shadow comparator that matched the static baseline and did not earn cutover."
+    }
+  ],
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening",
+    "external_verification_completed"
+  ],
+  "generated_utc": "2026-04-26T23:17:47Z",
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_ADMISSIBLE_LEARNED_ROUTER_CANDIDATE_SOURCE_PACKET",
+  "package_promotion_remains_deferred": true,
+  "r6_authorized": false,
+  "r6_open": false,
+  "schema_id": "kt.operator.b04_r6_shadow_router_candidate_input_validation_matrix.v1",
+  "status": "PASS",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true
+}
