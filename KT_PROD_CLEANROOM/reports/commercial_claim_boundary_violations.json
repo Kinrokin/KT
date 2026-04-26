@@ -1,0 +1,73 @@
+{
+  "authoritative_lane": "authoritative/trust-zone-registry-scope-contract",
+  "candidate_violation_count": 6,
+  "candidate_violations": [
+    {
+      "candidate_violation_class": "risky_claim_boundary_review",
+      "line": 22,
+      "path": "KT_PROD_CLEANROOM/docs/commercial/E1_BOUNDED_TRUST_WEDGE.md",
+      "snippet": "- Frontier, `SOTA`, or `beyond-SOTA`",
+      "terms": [
+        "beyond-sota",
+        "sota",
+        "frontier"
+      ]
+    },
+    {
+      "candidate_violation_class": "risky_claim_boundary_review",
+      "line": 12,
+      "path": "docs/EXECUTION_PROMPT.md",
+      "snippet": "- Any proposed change must include a full system-wide impact analysis proving that no other KT components are broken.",
+      "terms": [
+        "full system"
+      ]
+    },
+    {
+      "candidate_violation_class": "risky_claim_boundary_review",
+      "line": 2,
+      "path": "docs/generated/kt_doctrine_compiler_spec.json",
+      "snippet": "\"compiled_claim_ceiling\": \"FRONTIER_SETTLEMENT_WITH_H1_BLOCK\",",
+      "terms": [
+        "frontier"
+      ]
+    },
+    {
+      "candidate_violation_class": "risky_claim_boundary_review",
+      "line": 9,
+      "path": "docs/generated/kt_doctrine_ratification_log.json",
+      "snippet": "\"current_ceiling_preserved\": \"FRONTIER_SETTLEMENT_WITH_H1_BLOCK\",",
+      "terms": [
+        "frontier"
+      ]
+    },
+    {
+      "candidate_violation_class": "risky_claim_boundary_review",
+      "line": 6,
+      "path": "docs/generated/kt_master_spec.md",
+      "snippet": "- current claim ceiling: `FRONTIER_SETTLEMENT_WITH_H1_BLOCK`",
+      "terms": [
+        "frontier"
+      ]
+    },
+    {
+      "candidate_violation_class": "risky_claim_boundary_review",
+      "line": 3,
+      "path": "docs/generated/profiles/kt_outsider_onboarding_profile.json",
+      "snippet": "\"current_admissibility_ceiling\": \"FRONTIER_SETTLEMENT_WITH_H1_BLOCK\",",
+      "terms": [
+        "frontier"
+      ]
+    }
+  ],
+  "execution_status": "PASS__TRUST_ZONE_PARALLEL_PREP_BUNDLE_BOUND",
+  "generated_utc": "2026-04-26T18:26:59Z",
+  "live_blocker_count": 0,
+  "may_drive_live_posture": false,
+  "outcome": "TRUST_ZONE_PARALLEL_PREP_LANES_EMITTED__NON_AUTHORITATIVE",
+  "package_promotion_remains_deferred": true,
+  "prep_only": true,
+  "rule": "Candidate violations become blockers only if promoted commercial copy claims live posture beyond canonical truth.",
+  "schema_id": "kt.operator.commercial_claim_boundary_violations.v1",
+  "status": "PASS",
+  "truth_engine_derivation_law_unchanged": true
+}

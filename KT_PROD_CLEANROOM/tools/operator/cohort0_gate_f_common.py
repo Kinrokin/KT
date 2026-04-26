@@ -197,6 +197,54 @@ def write_outputs(
     write_text(report_path, report_text)
 
 
+def git_current_branch_name(root: Path) -> str:
+    result = subprocess.run(
+        ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        check=True,
+    )
+    return result.stdout.strip() or "UNKNOWN_BRANCH"
+
+
+def git_status_porcelain(root: Path) -> str:
+    result = subprocess.run(
+        ["git", "status", "--porcelain"],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        check=True,
+    )
+    return result.stdout
+
+
+def git_rev_parse(root: Path, ref: str) -> str:
+    result = subprocess.run(
+        ["git", "rev-parse", ref],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        check=True,
+    )
+    return result.stdout.strip()
+
+
+def git_ls_files(root: Path) -> list[str]:
+    result = subprocess.run(
+        ["git", "ls-files"],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        check=True,
+    )
+    return sorted(line.strip().replace("\\", "/") for line in result.stdout.splitlines() if line.strip())
+
+
 def main_parser(description: str) -> argparse.ArgumentParser:
     import argparse
 
