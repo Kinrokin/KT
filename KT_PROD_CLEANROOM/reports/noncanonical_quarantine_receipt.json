@@ -1,19 +1,29 @@
 {
-  "execution_status": "PASS__TRUST_ZONE_REGISTRY_SCOPE_CONTRACT_BOUND",
-  "generated_utc": "2026-04-26T18:26:42Z",
+  "commercial_review_queue_count": 6,
+  "deferred_package_scope": [
+    "KT_PROD_CLEANROOM/runs/post_f_track_03/**",
+    "stage_and_promote package-internal promotion remains deferred"
+  ],
+  "execution_status": "PASS__TRUST_ZONE_MANIFESTS_AND_QUARANTINE_RECEIPT_MATERIALIZED",
+  "generated_utc": "2026-04-26T18:47:18Z",
   "live_blocker_count": 0,
-  "next_lawful_move": "EXECUTE_TRUST_ZONE_BOUNDARY_PURIFICATION_PARALLEL_PREP_BUNDLE",
-  "outcome": "NONCANONICAL_QUARANTINE_RECEIPT_INITIALIZED__NO_LIVE_MUTATION",
+  "next_lawful_move": "REDUCE_UNKNOWN_ZONE_INVENTORY_AND_REVIEW_PRODUCT_PROOF_BOUNDARIES",
+  "outcome": "NONCANONICAL_QUARANTINE_RECEIPT_MATERIALIZED__NO_LIVE_MUTATION",
   "package_promotion_remains_deferred": true,
+  "product_proof_candidate_count": 6,
   "quarantine_scope": [
     "LAB",
     "ARCHIVE",
     "COMMERCIAL",
+    "GENERATED_RUNTIME_TRUTH",
+    "QUARANTINED",
+    "TOOLCHAIN_PROVING",
     "LOCAL_ONLY_IGNORED",
-    "EXTERNAL_ADVISORY_QUARANTINED",
-    "TOOLCHAIN_PROVING"
+    "EXTERNAL_ADVISORY_QUARANTINED"
   ],
-  "rule": "This receipt initializes quarantine accounting only; it does not move files or promote any noncanonical surface.",
-  "schema_id": "kt.operator.noncanonical_quarantine_receipt.v1",
-  "status": "PASS"
+  "rule": "This receipt materializes quarantine accounting only; it does not move files or promote any noncanonical surface.",
+  "schema_id": "kt.operator.noncanonical_quarantine_receipt.v2",
+  "status": "PASS",
+  "truth_engine_derivation_law_unchanged": true,
+  "unknown_zone_queue_count": 142
 }

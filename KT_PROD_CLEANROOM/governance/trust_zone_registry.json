@@ -1,18 +1,13 @@
 {
-  "schema_id": "kt.governance.trust_zone_registry.v2",
   "registry_id": "TRUST_ZONE_REGISTRY_V2_20260309",
+  "schema_id": "kt.governance.trust_zone_registry.v2",
+  "single_spine_runtime_rule": "Only the canonical runtime path declared in CANONICAL may own claim-bearing live execution truth. TOOLCHAIN_PROVING may probe and package but may never upgrade runtime claims.",
+  "status": "ACTIVE",
   "zones": [
     {
-      "zone_id": "CANONICAL",
-      "include": [
-        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/**",
-        "KT_PROD_CLEANROOM/governance/**",
-        "KT_PROD_CLEANROOM/AUDITS/**",
-        "KT_PROD_CLEANROOM/docs/operator/**",
-        "KT_PROD_CLEANROOM/00_README_FIRST/**",
-        "REPO_CANON.md",
-        ".gitattributes",
-        ".gitignore"
+      "claim_bearing_runtime_path": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
       ],
       "exclude": [
         "KT_PROD_CLEANROOM/reports/**",
@@ -25,16 +20,39 @@
         "docs/**",
         "KT_PROD_CLEANROOM/docs/commercial/**",
         "autonomous_*.json",
-        "epoch_*.json"
+        "epoch_*.json",
+        "KT_PROD_CLEANROOM/tests/operator/**",
+        "KT_PROD_CLEANROOM/pyproject.toml",
+        "KT_PROD_CLEANROOM/pytest.ini",
+        "KT_PROD_CLEANROOM/requirements-*.in",
+        "KT_PROD_CLEANROOM/requirements-*.lock.txt",
+        "KT_PROD_CLEANROOM/sitecustomize.py",
+        "KT_PROD_CLEANROOM/run_policy_c_smoke_train.py",
+        "KT_PROD_CLEANROOM/product/**",
+        "KT_PROD_CLEANROOM/docs/**",
+        "KT_PROD_CLEANROOM/exports/law/**",
+        "KT_PROD_CLEANROOM/runs/**",
+        "KT_PROD_CLEANROOM/*PROMPT*.md",
+        "KT_PROD_CLEANROOM/*WORK_ORDER*.json",
+        "KT_PROD_CLEANROOM/kt.*.json",
+        "KT_PROD_CLEANROOM/W4_PHASE_GATES.md",
+        "KT_PROD_CLEANROOM/decision_log.md"
       ],
-      "claim_bearing_runtime_path": [
-        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/kt/entrypoint.py",
-        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/core/spine.py"
+      "include": [
+        "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/**",
+        "KT_PROD_CLEANROOM/governance/**",
+        "KT_PROD_CLEANROOM/AUDITS/**",
+        "KT_PROD_CLEANROOM/docs/operator/**",
+        "KT_PROD_CLEANROOM/00_README_FIRST/**",
+        "REPO_CANON.md",
+        ".gitattributes",
+        ".gitignore"
       ],
-      "meaning": "authoritative runtime, governance, verification, delivery, security, and release controls"
+      "meaning": "authoritative runtime, governance, verification, delivery, security, and release controls",
+      "zone_id": "CANONICAL"
     },
     {
-      "zone_id": "LAB",
+      "exclude": [],
       "include": [
         "KT_PROD_CLEANROOM/03_SYNTHESIS_LAB/**",
         "KT_PROD_CLEANROOM/tools/audit_intelligence/**",
@@ -56,31 +74,35 @@
         "KT_PROD_CLEANROOM/tests/policy_c/**",
         "KT_PROD_CLEANROOM/tests/fl4/**"
       ],
-      "exclude": [],
-      "meaning": "experimental and adaptive surfaces that must promote through law"
+      "meaning": "experimental and adaptive surfaces that must promote through law",
+      "zone_id": "LAB"
     },
     {
-      "zone_id": "ARCHIVE",
+      "exclude": [],
       "include": [
         "KT_ARCHIVE/**"
       ],
-      "exclude": [],
-      "meaning": "historical lineage only"
+      "meaning": "historical lineage only",
+      "zone_id": "ARCHIVE"
     },
     {
-      "zone_id": "COMMERCIAL",
+      "exclude": [
+        "KT_PROD_CLEANROOM/docs/operator/**"
+      ],
       "include": [
         "KT-Codex/**",
         "docs/**",
         "KT_PROD_CLEANROOM/docs/commercial/**",
         "README.md",
-        "LICENSE"
+        "LICENSE",
+        "KT_PROD_CLEANROOM/product/**",
+        "KT_PROD_CLEANROOM/docs/**"
       ],
-      "exclude": [],
-      "meaning": "documentary and outward-facing narrative surfaces"
+      "meaning": "documentary and outward-facing narrative surfaces",
+      "zone_id": "COMMERCIAL"
     },
     {
-      "zone_id": "TOOLCHAIN_PROVING",
+      "exclude": [],
       "include": [
         "KT_PROD_CLEANROOM/tools/operator/**",
         "KT_PROD_CLEANROOM/tools/verification/**",
@@ -88,33 +110,45 @@
         "KT_PROD_CLEANROOM/tools/security/**",
         ".github/**",
         "ci/**",
-        ".devcontainer/**"
+        ".devcontainer/**",
+        "KT_PROD_CLEANROOM/tests/operator/**",
+        "KT_PROD_CLEANROOM/pyproject.toml",
+        "KT_PROD_CLEANROOM/pytest.ini",
+        "KT_PROD_CLEANROOM/requirements-*.in",
+        "KT_PROD_CLEANROOM/requirements-*.lock.txt",
+        "KT_PROD_CLEANROOM/sitecustomize.py",
+        "KT_PROD_CLEANROOM/run_policy_c_smoke_train.py"
       ],
-      "exclude": [],
       "live_execution_claim_upgrade_forbidden": true,
-      "meaning": "verifier tooling, CI proof jobs, packaging, builders, and operator utilities that must not inherit runtime authority"
+      "meaning": "verifier tooling, CI proof jobs, packaging, builders, and operator utilities that must not inherit runtime authority",
+      "zone_id": "TOOLCHAIN_PROVING"
     },
     {
-      "zone_id": "GENERATED_RUNTIME_TRUTH",
+      "exclude": [],
       "include": [
         "KT_PROD_CLEANROOM/reports/**",
         "KT_PROD_CLEANROOM/exports/_truth/**",
-        "kt_truth_ledger:*"
+        "kt_truth_ledger:*",
+        "KT_PROD_CLEANROOM/exports/law/**"
       ],
-      "exclude": [],
-      "meaning": "derived runtime truth and evidence tied to a pinned head"
+      "meaning": "derived runtime truth and evidence tied to a pinned head",
+      "zone_id": "GENERATED_RUNTIME_TRUTH"
     },
     {
-      "zone_id": "QUARANTINED",
+      "exclude": [],
       "include": [
         "KT_PROD_CLEANROOM/05_QUARANTINE/**",
         "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/tools/**",
-        "KT_PROD_CLEANROOM/AUDIT_LIVE_HASHED_V1.md"
+        "KT_PROD_CLEANROOM/AUDIT_LIVE_HASHED_V1.md",
+        "KT_PROD_CLEANROOM/runs/**",
+        "KT_PROD_CLEANROOM/*PROMPT*.md",
+        "KT_PROD_CLEANROOM/*WORK_ORDER*.json",
+        "KT_PROD_CLEANROOM/kt.*.json",
+        "KT_PROD_CLEANROOM/W4_PHASE_GATES.md",
+        "KT_PROD_CLEANROOM/decision_log.md"
       ],
-      "exclude": [],
-      "meaning": "dangerous or misleading surfaces that must never define current truth"
+      "meaning": "dangerous or misleading surfaces that must never define current truth",
+      "zone_id": "QUARANTINED"
     }
-  ],
-  "single_spine_runtime_rule": "Only the canonical runtime path declared in CANONICAL may own claim-bearing live execution truth. TOOLCHAIN_PROVING may probe and package but may never upgrade runtime claims.",
-  "status": "ACTIVE"
+  ]
 }

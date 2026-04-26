@@ -1,0 +1,74 @@
+{
+  "authoritative_lane": "authoritative/trust-zone-manifests-quarantine-materialization",
+  "branch_head": "048f0763d9545ef0d1a38a749fdda44b73ebdb0f",
+  "branch_name": "authoritative/trust-zone-manifests-quarantine-materialization",
+  "claim_boundary": "This packet materializes registry/scope/quarantine operating surfaces only. It does not promote packages, change truth-engine law, widen Gate F, or ratify upper-stack/lab claims.",
+  "commercial_review_queue_count": 6,
+  "execution_status": "PASS__TRUST_ZONE_MANIFESTS_AND_QUARANTINE_RECEIPT_MATERIALIZED",
+  "generated_utc": "2026-04-26T18:53:28Z",
+  "live_blocker_count": 0,
+  "manifest_binding": {
+    "canonical_scope_manifest": {
+      "canonical_json_sha256": "e701ce4ef64420870edeedca172909b604094fa0905849c6b544ae08a0fc23a4",
+      "manifest_id": "CANONICAL_SCOPE_V2_20260309",
+      "path": "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+      "schema_id": "kt.governance.canonical_scope_manifest.v2"
+    },
+    "readiness_scope_manifest": {
+      "canonical_json_sha256": "e6953034f6a9276811e59b1be6e8a920372b864a76ce6fac32d9915ba412b725",
+      "manifest_id": "READINESS_SCOPE_V2_20260309",
+      "path": "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
+      "schema_id": "kt.governance.readiness_scope_manifest.v2"
+    },
+    "trust_zone_registry": {
+      "canonical_json_sha256": "8ae329fbcb1dd6c45ac5505e437bf8547a9a2166b6fb7beeea5bbae360670983",
+      "path": "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+      "registry_id": "TRUST_ZONE_REGISTRY_V2_20260309",
+      "schema_id": "kt.governance.trust_zone_registry.v2",
+      "zone_count": 7
+    }
+  },
+  "materialization_changes": {
+    "canonical_scope_additions": {
+      "documentary_only_surfaces": [],
+      "excluded_from_canonical_truth": [],
+      "forbidden_live_side_paths": [],
+      "generated_truth_surfaces": [],
+      "quarantined_from_canonical_truth": [],
+      "toolchain_proving_surfaces": []
+    },
+    "readiness_scope_changed": false,
+    "registry_additions": {
+      "CANONICAL.exclude": [],
+      "COMMERCIAL.exclude": [],
+      "COMMERCIAL.include": [],
+      "GENERATED_RUNTIME_TRUTH.include": [],
+      "QUARANTINED.include": [],
+      "TOOLCHAIN_PROVING.include": []
+    }
+  },
+  "materialized_outputs": [
+    "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+    "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+    "KT_PROD_CLEANROOM/governance/readiness_scope_manifest.json",
+    "KT_PROD_CLEANROOM/reports/noncanonical_quarantine_receipt.json",
+    "KT_PROD_CLEANROOM/reports/unknown_zone_resolution_queue.json",
+    "KT_PROD_CLEANROOM/reports/product_proof_conflation_blocker_ledger.json",
+    "KT_PROD_CLEANROOM/reports/commercial_boundary_violation_review_packet.json"
+  ],
+  "next_lawful_move": "REDUCE_UNKNOWN_ZONE_INVENTORY_AND_REVIEW_PRODUCT_PROOF_BOUNDARIES",
+  "outcome": "TRUST_ZONE_REGISTRY_SCOPE_MANIFESTS_AND_QUARANTINE_RECEIPT_MATERIALIZED",
+  "package_promotion_remains_deferred": true,
+  "product_proof_candidate_count": 6,
+  "schema_id": "kt.operator.cohort0_trust_zone_manifest_materialization_packet.v1",
+  "source_receipts": {
+    "contract_receipt_next_move": "EXECUTE_TRUST_ZONE_BOUNDARY_PURIFICATION_PARALLEL_PREP_BUNDLE",
+    "prep_candidate_commercial_violation_count": 6,
+    "prep_receipt_next_move": "MATERIALIZE_TRUST_ZONE_REGISTRY_SCOPE_MANIFESTS_AND_QUARANTINE_RECEIPT",
+    "prep_unknown_zone_path_count": 461
+  },
+  "status": "PASS",
+  "trust_zone_validation_status": "PASS",
+  "truth_engine_derivation_law_unchanged": true,
+  "unknown_zone_queue_count": 142
+}
