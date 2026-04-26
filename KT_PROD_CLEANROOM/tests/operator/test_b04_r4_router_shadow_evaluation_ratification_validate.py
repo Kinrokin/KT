@@ -40,18 +40,6 @@ def _clean_clone(tmp_path: Path) -> Path:
         dst = clone_root / ref
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(src, dst)
-    env = dict(os.environ)
-    env["PYTHONPATH"] = str(clone_root / "KT_PROD_CLEANROOM") + os.pathsep + str(clone_root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src")
-    env["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
-    subprocess.run(
-        [sys.executable, "-m", "tools.operator.cohort0_router_shadow_state_binding_tranche"],
-        cwd=str(clone_root / "KT_PROD_CLEANROOM"),
-        env=env,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        check=True,
-    )
     return clone_root
 
 

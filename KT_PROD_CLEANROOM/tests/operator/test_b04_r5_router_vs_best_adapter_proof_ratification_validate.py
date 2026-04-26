@@ -16,7 +16,10 @@ COPY_REFS = [
     "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_proof_contract.json",
     "KT_PROD_CLEANROOM/governance/b04_r5_router_vs_best_adapter_terminal_state.json",
     "KT_PROD_CLEANROOM/governance/b04_r5_fourth_same_head_rerun_terminal_state.json",
-    "KT_PROD_CLEANROOM/tools/operator/cohort0_router_shadow_state_binding_tranche.py",
+    "KT_PROD_CLEANROOM/reports/current_campaign_state_overlay.json",
+    "KT_PROD_CLEANROOM/reports/gate_d_decision_reanchor_packet.json",
+    "KT_PROD_CLEANROOM/reports/next_counted_workstream_contract.json",
+    "KT_PROD_CLEANROOM/reports/resume_blockers_receipt.json",
     "KT_PROD_CLEANROOM/tools/operator/router_ordered_proof_validate.py",
     "KT_PROD_CLEANROOM/tools/operator/router_vs_best_adapter_proof_ratification_validate.py",
 ]
@@ -35,18 +38,6 @@ def _clean_clone(tmp_path: Path) -> Path:
         dst = clone_root / ref
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(src, dst)
-    env = dict(os.environ)
-    env["PYTHONPATH"] = str(clone_root / "KT_PROD_CLEANROOM") + os.pathsep + str(clone_root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src")
-    env["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
-    subprocess.run(
-        [sys.executable, "-m", "tools.operator.cohort0_router_shadow_state_binding_tranche"],
-        cwd=str(clone_root / "KT_PROD_CLEANROOM"),
-        env=env,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        check=True,
-    )
     return clone_root
 
 
