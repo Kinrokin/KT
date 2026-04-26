@@ -57,7 +57,7 @@ QUARANTINE_INCLUDE_ADDITIONS = [
 ]
 CANONICAL_EXCLUDE_ADDITIONS = [
     *TOOLCHAIN_PROVING_ADDITIONS,
-    *COMMERCIAL_INCLUDE_ADDITIONS,
+    "KT_PROD_CLEANROOM/product/**",
     *GENERATED_RUNTIME_TRUTH_ADDITIONS,
     *QUARANTINE_INCLUDE_ADDITIONS,
 ]
@@ -71,6 +71,8 @@ def _ensure_pass_and_deferred(payload: Dict[str, Any], *, label: str) -> None:
 
 def _suggest_zone(path: str) -> tuple[str, str]:
     lowered = path.lower()
+    if path.startswith("KT_PROD_CLEANROOM/docs/operator/"):
+        return "CANONICAL", "operator_documentation_surface"
     if path.startswith("KT_PROD_CLEANROOM/product/") or path.startswith("KT_PROD_CLEANROOM/docs/commercial/"):
         return "COMMERCIAL", "product_or_buyer_surface"
     if path.startswith("KT_PROD_CLEANROOM/tests/operator/"):
@@ -171,6 +173,36 @@ def materialize_scope_manifests(
         TOOLCHAIN_PROVING_ADDITIONS,
     )
     return updated_registry, updated_canonical, updated_readiness, changes
+
+
+def _enforce_canonical_governance_paths(
+    *,
+    root: Path,
+    governance_root: Path,
+    trust_zone_registry_path: Path,
+    canonical_scope_manifest_path: Path,
+    readiness_scope_manifest_path: Path,
+) -> None:
+    expected_root = (root / "KT_PROD_CLEANROOM" / "governance").resolve()
+    expected_paths = {
+        "governance_root": expected_root,
+        "trust_zone_registry": expected_root / "trust_zone_registry.json",
+        "canonical_scope_manifest": expected_root / "canonical_scope_manifest.json",
+        "readiness_scope_manifest": expected_root / "readiness_scope_manifest.json",
+    }
+    actual_paths = {
+        "governance_root": governance_root.resolve(),
+        "trust_zone_registry": trust_zone_registry_path.resolve(),
+        "canonical_scope_manifest": canonical_scope_manifest_path.resolve(),
+        "readiness_scope_manifest": readiness_scope_manifest_path.resolve(),
+    }
+    mismatches = {
+        key: {"expected": expected_paths[key].as_posix(), "actual": actual_paths[key].as_posix()}
+        for key in expected_paths
+        if expected_paths[key] != actual_paths[key]
+    }
+    if mismatches:
+        raise RuntimeError(f"FAIL_CLOSED: materialization must bind canonical governance paths only: {mismatches}")
 
 
 def _build_unknown_queue(*, tracked_files: Sequence[str], registry: Dict[str, Any]) -> Dict[str, Any]:
@@ -459,6 +491,13 @@ def run(
         raise RuntimeError(f"FAIL_CLOSED: trust-zone materialization must run on {REQUIRED_BRANCH}, got {branch_name}")
     if common.git_status_porcelain(root).strip():
         raise RuntimeError("FAIL_CLOSED: trust-zone materialization requires a clean worktree")
+    _enforce_canonical_governance_paths(
+        root=root,
+        governance_root=governance_root,
+        trust_zone_registry_path=trust_zone_registry_path,
+        canonical_scope_manifest_path=canonical_scope_manifest_path,
+        readiness_scope_manifest_path=readiness_scope_manifest_path,
+    )
 
     contract_receipt = common.load_json_required(root, contract_receipt_path, label="trust-zone contract receipt")
     prep_receipt = common.load_json_required(root, prep_receipt_path, label="trust-zone parallel prep receipt")

@@ -46,7 +46,7 @@ def _write_inputs(root: Path) -> tuple[Path, Path]:
             "schema_id": "kt.governance.trust_zone_registry.v2",
             "registry_id": "REG",
             "zones": [
-                {"zone_id": "CANONICAL", "include": ["KT_PROD_CLEANROOM/governance/**"], "exclude": []},
+                {"zone_id": "CANONICAL", "include": ["KT_PROD_CLEANROOM/governance/**", "KT_PROD_CLEANROOM/docs/operator/**"], "exclude": []},
                 {"zone_id": "COMMERCIAL", "include": ["README.md", "docs/**"], "exclude": []},
                 {"zone_id": "TOOLCHAIN_PROVING", "include": ["KT_PROD_CLEANROOM/tools/operator/**"], "exclude": []},
                 {"zone_id": "GENERATED_RUNTIME_TRUTH", "include": ["KT_PROD_CLEANROOM/reports/**"], "exclude": []},
@@ -88,6 +88,7 @@ def test_materializes_manifests_queue_and_quarantine_receipts(tmp_path: Path, mo
         lambda root: [
             "README.md",
             "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+            "KT_PROD_CLEANROOM/docs/operator/runbook.md",
             "KT_PROD_CLEANROOM/product/client_wrapper_spec.json",
             "KT_PROD_CLEANROOM/runs/post_f_track_03/run-x/artifacts/receipt.json",
             "misc/unknown.txt",
@@ -120,6 +121,7 @@ def test_materializes_manifests_queue_and_quarantine_receipts(tmp_path: Path, mo
     assert receipt["package_promotion_remains_deferred"] is True
     assert "KT_PROD_CLEANROOM/tests/operator/**" in next(row for row in registry["zones"] if row["zone_id"] == "TOOLCHAIN_PROVING")["include"]
     assert "KT_PROD_CLEANROOM/product/**" in next(row for row in registry["zones"] if row["zone_id"] == "COMMERCIAL")["include"]
+    assert "KT_PROD_CLEANROOM/docs/**" not in next(row for row in registry["zones"] if row["zone_id"] == "CANONICAL")["exclude"]
     assert queue["queue_count"] == 1
     assert queue["suggested_zone_counts"]["UNKNOWN_REQUIRES_HUMAN_REVIEW"] == 1
     assert product_ledger["candidate_violation_count"] == 1
@@ -149,6 +151,29 @@ def test_materialization_requires_prep_authorization(tmp_path: Path, monkeypatch
         tranche.run(
             reports_root=reports,
             governance_root=governance,
+            contract_receipt_path=reports / tranche.CONTRACT_RECEIPT,
+            prep_receipt_path=reports / tranche.PREP_RECEIPT,
+            trust_zone_registry_path=governance / "trust_zone_registry.json",
+            canonical_scope_manifest_path=governance / "canonical_scope_manifest.json",
+            readiness_scope_manifest_path=governance / "readiness_scope_manifest.json",
+            product_scan_path=reports / "product_proof_conflation_scan.json",
+            commercial_violations_path=reports / "commercial_claim_boundary_violations.json",
+        )
+
+
+def test_materialization_requires_canonical_governance_paths(tmp_path: Path, monkeypatch) -> None:
+    reports, governance = _write_inputs(tmp_path)
+    other_governance = tmp_path / "elsewhere" / "governance"
+    other_governance.mkdir(parents=True, exist_ok=True)
+
+    monkeypatch.setattr(tranche, "repo_root", lambda: tmp_path)
+    monkeypatch.setattr(tranche.common, "git_current_branch_name", lambda root: tranche.REQUIRED_BRANCH)
+    monkeypatch.setattr(tranche.common, "git_status_porcelain", lambda root: "")
+
+    with pytest.raises(RuntimeError, match="canonical governance paths only"):
+        tranche.run(
+            reports_root=reports,
+            governance_root=other_governance,
             contract_receipt_path=reports / tranche.CONTRACT_RECEIPT,
             prep_receipt_path=reports / tranche.PREP_RECEIPT,
             trust_zone_registry_path=governance / "trust_zone_registry.json",
