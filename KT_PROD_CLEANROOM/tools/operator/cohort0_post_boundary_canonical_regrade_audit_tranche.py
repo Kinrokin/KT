@@ -12,6 +12,13 @@ REQUIRED_BRANCH = "authoritative/post-boundary-canonical-regrade-audit"
 EXECUTION_STATUS = "PASS__POST_BOUNDARY_CANONICAL_REGRADE_AUDIT_BOUND"
 OUTCOME = "POST_BOUNDARY_CANONICAL_REGRADE_AUDIT_COMPLETE"
 NEXT_MOVE = "AUTHOR_UPPER_STACK_RATIFICATION_READINESS_AUTHORITY_PACKET"
+BOUNDARY_FLAG_SOURCE_KEYS = [
+    "post_merge_closeout",
+    "unknown_queue",
+    "remaining_unknown_ledger",
+    "product_proof_review",
+    "trust_zone_validation_matrix",
+]
 
 POST_MERGE_CLOSEOUT = "post_merge_trust_zone_boundary_closeout_receipt.json"
 TRUTH_ENGINE_HANDOFF = "cohort0_post_f_truth_engine_post_pr_canonical_handoff_receipt.json"
@@ -92,6 +99,9 @@ def validate_inputs(*, payloads: Dict[str, Dict[str, Any]], live_validation: Dic
     _ensure_int(closeout, "live_blocker_count", 0, label="post-merge closeout")
     _ensure_true(closeout, "package_promotion_remains_deferred", label="post-merge closeout")
     _ensure_true(closeout, "truth_engine_derivation_law_unchanged", label="post-merge closeout")
+    for key in BOUNDARY_FLAG_SOURCE_KEYS:
+        _ensure_true(payloads[key], "package_promotion_remains_deferred", label=key)
+        _ensure_true(payloads[key], "truth_engine_derivation_law_unchanged", label=key)
 
     _ensure_int(payloads["truth_engine_contradiction_ledger"], "blocking_contradiction_count", 0, label="truth-engine contradiction ledger")
     _ensure_int(payloads["truth_engine_contradiction_ledger"], "advisory_contradiction_count", 0, label="truth-engine contradiction ledger")
@@ -145,12 +155,27 @@ def build_outputs(
     live_validation: Dict[str, Any],
 ) -> Dict[str, Any]:
     generated_utc = utc_now_iso_z()
+    package_promotion_remains_deferred = all(payloads[key].get("package_promotion_remains_deferred") is True for key in BOUNDARY_FLAG_SOURCE_KEYS)
+    truth_engine_derivation_law_unchanged = all(payloads[key].get("truth_engine_derivation_law_unchanged") is True for key in BOUNDARY_FLAG_SOURCE_KEYS)
+    truth_ledger = payloads["truth_engine_contradiction_ledger"]
+    unknown_queue = payloads["unknown_queue"]
+    remaining_unknown_ledger = payloads["remaining_unknown_ledger"]
+    product_proof_review = payloads["product_proof_review"]
+    trust_zone_validation_check_count = len(live_validation.get("checks", []))
+    trust_zone_validation_failure_count = len(live_validation.get("failures", []))
+    live_blocker_count = max(
+        int(payloads["post_merge_closeout"].get("live_blocker_count", 0)),
+        int(unknown_queue.get("live_blocker_count", 0)),
+        int(remaining_unknown_ledger.get("live_blocker_count", 0)),
+        int(product_proof_review.get("live_blocker_count", 0)),
+        trust_zone_validation_failure_count,
+    )
     common_header = {
         "status": "PASS",
         "generated_utc": generated_utc,
         "execution_status": EXECUTION_STATUS,
-        "package_promotion_remains_deferred": True,
-        "truth_engine_derivation_law_unchanged": True,
+        "package_promotion_remains_deferred": package_promotion_remains_deferred,
+        "truth_engine_derivation_law_unchanged": truth_engine_derivation_law_unchanged,
     }
     evidence = _evidence_refs(root, reports_root, governance_root)
 
@@ -321,16 +346,16 @@ def build_outputs(
         "schema_id": "kt.operator.post_boundary_canonical_regrade_audit_receipt.v1",
         "outcome": OUTCOME,
         "branch_head": branch_head,
-        "truth_engine_blocking_contradictions": 0,
-        "truth_engine_advisory_contradictions": 0,
-        "unknown_zone_queue_count": 0,
-        "live_blocker_count": 0,
-        "trust_zone_validation_status": "PASS",
-        "trust_zone_validation_check_count": 24,
-        "trust_zone_validation_failure_count": 0,
-        "product_proof_findings": 6,
-        "product_proof_resolved": 2,
-        "product_proof_deferred_non_authoritative": 4,
+        "truth_engine_blocking_contradictions": truth_ledger["blocking_contradiction_count"],
+        "truth_engine_advisory_contradictions": truth_ledger["advisory_contradiction_count"],
+        "unknown_zone_queue_count": unknown_queue["queue_count"],
+        "live_blocker_count": live_blocker_count,
+        "trust_zone_validation_status": live_validation["status"],
+        "trust_zone_validation_check_count": trust_zone_validation_check_count,
+        "trust_zone_validation_failure_count": trust_zone_validation_failure_count,
+        "product_proof_findings": product_proof_review["finding_count"],
+        "product_proof_resolved": product_proof_review["resolved_count"],
+        "product_proof_deferred_non_authoritative": product_proof_review["deferred_count"],
         "weakness_closure_count": len(weakness_entries),
         "remaining_a_plus_gap_count": len(gap_entries),
         "recommended_next_authoritative_lane": "upper_stack_ratification_readiness",
@@ -356,12 +381,12 @@ def build_outputs(
         "Post-Boundary Canonical Regrade Audit Report",
         [
             f"- Execution status: `{EXECUTION_STATUS}`",
-            "- Truth-engine contradictions: `0 blocking`, `0 advisory`",
-            "- Unknown-zone queue: `0`",
-            "- Trust-zone validation: `PASS`, `24` checks, `0` failures",
-            "- Product/proof findings: `6`; resolved `2`; deferred non-authoritative `4`",
-            "- Package promotion: `deferred`",
-            "- Truth-engine law: `unchanged`",
+            f"- Truth-engine contradictions: `{truth_ledger['blocking_contradiction_count']} blocking`, `{truth_ledger['advisory_contradiction_count']} advisory`",
+            f"- Unknown-zone queue: `{unknown_queue['queue_count']}`",
+            f"- Trust-zone validation: `{live_validation['status']}`, `{trust_zone_validation_check_count}` checks, `{trust_zone_validation_failure_count}` failures",
+            f"- Product/proof findings: `{product_proof_review['finding_count']}`; resolved `{product_proof_review['resolved_count']}`; deferred non-authoritative `{product_proof_review['deferred_count']}`",
+            f"- Package promotion: `{'deferred' if package_promotion_remains_deferred else 'not_deferred'}`",
+            f"- Truth-engine law: `{'unchanged' if truth_engine_derivation_law_unchanged else 'changed'}`",
             "- Regrade verdict: truth/boundary/governance weakness class is strongly contained on canonical `main`",
             "- Remaining major A+ gap: upper-stack ratification readiness",
             f"- Next lawful move: `{NEXT_MOVE}`",
