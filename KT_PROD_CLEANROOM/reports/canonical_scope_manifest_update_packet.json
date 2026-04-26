@@ -1,0 +1,47 @@
+{
+  "canonical_scope_changes": {
+    "canonical_support_surfaces": [
+      "KT_PROD_CLEANROOM/docs/operator/**"
+    ],
+    "excluded_from_canonical_truth": [
+      "KT_PROD_CLEANROOM/tests/conftest.py",
+      "KT_PROD_CLEANROOM/tests/fl3/**",
+      "KT_PROD_CLEANROOM/tests/test_*.py",
+      "KT_PROD_CLEANROOM/tools/__init__.py",
+      "run_kt_e2e.sh",
+      "KT_PROD_CLEANROOM/EXECUTION_DAG_POST_WAVE5_V1.md"
+    ],
+    "forbidden_live_side_paths": [
+      "KT_PROD_CLEANROOM/tests/conftest.py",
+      "KT_PROD_CLEANROOM/tests/fl3/**",
+      "KT_PROD_CLEANROOM/tests/test_*.py",
+      "KT_PROD_CLEANROOM/tools/__init__.py",
+      "run_kt_e2e.sh"
+    ],
+    "quarantined_from_canonical_truth": [
+      "KT_PROD_CLEANROOM/EXECUTION_DAG_POST_WAVE5_V1.md"
+    ],
+    "toolchain_proving_surfaces": [
+      "KT_PROD_CLEANROOM/tests/conftest.py",
+      "KT_PROD_CLEANROOM/tests/fl3/**",
+      "KT_PROD_CLEANROOM/tests/test_*.py",
+      "KT_PROD_CLEANROOM/tools/__init__.py",
+      "run_kt_e2e.sh"
+    ]
+  },
+  "canonical_scope_manifest_sha256": "7daa91688bc2210e908558bfad13edc54559569b2319de540cc3f11d3ad2adb9",
+  "canonical_scope_removals": {
+    "excluded_from_canonical_truth": [
+      "KT_PROD_CLEANROOM/docs/**"
+    ]
+  },
+  "execution_status": "PASS__UNKNOWN_ZONE_AND_PRODUCT_PROOF_BOUNDARIES_REDUCED",
+  "generated_utc": "2026-04-26T19:08:01Z",
+  "live_posture_driver_count": 0,
+  "next_lawful_move": "AUTHOR_TRUST_ZONE_BOUNDARY_PURIFICATION_CLOSEOUT_OR_NEXT_BATCH_PACKET",
+  "outcome": "CANONICAL_SCOPE_MANIFEST_UPDATED_FOR_UNKNOWN_ZONE_REDUCTION",
+  "package_promotion_remains_deferred": true,
+  "schema_id": "kt.operator.canonical_scope_manifest_update_packet.v1",
+  "status": "PASS",
+  "truth_engine_derivation_law_unchanged": true
+}
