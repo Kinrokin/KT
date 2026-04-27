@@ -376,13 +376,13 @@ def _invariance_rows(candidate_module: Any, blind_rows: list[Dict[str, Any]], *,
 def _disqualifiers(route_rows: list[Dict[str, Any]], abstention_rows: list[Dict[str, Any]], invariance_rows: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
     rows: list[Dict[str, Any]] = []
     if any(row["candidate_quality"] < row["static_quality"] for row in route_rows):
-        rows.append({"disqualifier_id": "CONTROL_DEGRADATION", "triggered": True, "effect": "SCREEN_FAIL"})
+        rows.append({"disqualifier_id": "CONTROL_DEGRADATION", "triggered": True, "effect": "SCREEN_INVALIDATE"})
     if any(not row["static_hold_preserved"] for row in abstention_rows):
-        rows.append({"disqualifier_id": "ABSTENTION_COLLAPSE", "triggered": True, "effect": "SCREEN_FAIL"})
+        rows.append({"disqualifier_id": "ABSTENTION_COLLAPSE", "triggered": True, "effect": "SCREEN_INVALIDATE"})
     if any(row["overrouting_detected"] for row in abstention_rows):
-        rows.append({"disqualifier_id": "OVERRouting_COLLAPSE", "triggered": True, "effect": "SCREEN_FAIL"})
+        rows.append({"disqualifier_id": "OVERROUTING_COLLAPSE", "triggered": True, "effect": "SCREEN_INVALIDATE"})
     if any(not row["invariance_pass"] for row in invariance_rows):
-        rows.append({"disqualifier_id": "MIRROR_MASKED_INVARIANCE_FAILURE", "triggered": True, "effect": "SCREEN_FAIL"})
+        rows.append({"disqualifier_id": "MIRROR_MASKED_INVARIANCE_FAILURE", "triggered": True, "effect": "SCREEN_INVALIDATE"})
     return rows
 
 
