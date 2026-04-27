@@ -1,39 +1,25 @@
 {
-  "admissible_candidate_count": 0,
+  "admissible_candidate_count": 1,
   "authoritative_lane": "B04_R6_ADMISSIBLE_LEARNED_ROUTER_CANDIDATE_SOURCE",
   "candidate_inventory": [
     {
-      "admissible": false,
-      "candidate_id": "",
-      "candidate_source_ref": null,
-      "candidate_status": "NO_ELIGIBLE_LEARNED_ROUTER_CANDIDATE_PRESENT",
-      "inventory_id": "current_candidate_manifest_slot",
-      "reason": "Current-head evidence contains only a shadow comparator that matched the static baseline and did not earn cutover.",
-      "source_ref": "KT_PROD_CLEANROOM/reports/b04_r6_learned_router_candidate_manifest.json",
-      "zone": "INTENDED_NOT_PROMOTED"
-    },
-    {
-      "admissible": false,
-      "candidate_id": "",
-      "candidate_source_ref": null,
-      "candidate_status": "NO_ELIGIBLE_LEARNED_ROUTER_CANDIDATE_PRESENT",
-      "inventory_id": "router_superiority_scorecard_candidate",
-      "reason": "Current-head evidence contains only a shadow comparator that matched the static baseline and did not earn cutover.",
-      "source_ref": "KT_PROD_CLEANROOM/reports/router_superiority_scorecard.json",
-      "zone": "INTENDED_NOT_PROMOTED"
-    },
-    {
-      "admissible": false,
-      "candidate_id": "",
-      "candidate_source_ref": null,
-      "candidate_status": "BLOCKED_PENDING_ELIGIBLE_CANDIDATE_AND_CLEAN_WIN",
-      "inventory_id": "router_policy_candidate_rule",
-      "reason": "Policy rule is not a candidate artifact.",
-      "source_ref": "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
-      "zone": "POLICY_ONLY"
+      "admissible": true,
+      "candidate_id": "b04_r6_minimal_deterministic_shadow_router_v1",
+      "candidate_manifest_ref": "KT_PROD_CLEANROOM/runs/b04_r6/candidate_generation/generated_learned_router_candidate_manifest.json",
+      "candidate_manifest_sha256": "8e3ce714b37a87d48fdca61629348c3de85963b4dd7e5d6d86fc13862f1ee786",
+      "candidate_source_ref": "KT_PROD_CLEANROOM/runs/b04_r6/candidate_generation/generated_learned_router_candidate.py",
+      "candidate_source_sha256": "4daef7a819eb5ee7b42d5682c0069fdf01c1a86fa5426c6408e5d3d05d839b76",
+      "candidate_status": "ADMISSIBLE_FOR_SHADOW_ONLY_SCREEN",
+      "candidate_version": "1.0.0",
+      "deterministic_seed": 42,
+      "inventory_id": "generated_minimal_deterministic_shadow_router",
+      "promotion_allowed": false,
+      "reason": "Generated under current candidate-source law with provenance, replay, trace, holdout, and contamination receipts.",
+      "shadow_only_mode": true,
+      "source_zone": "GENERATED_RUNTIME_TRUTH"
     }
   ],
-  "current_git_head": "0170f2f26bbd0f0040b7f91e140a6ee76e9178b7",
+  "current_git_head": "12d8c96865c0150f20904329a696536add277e10",
   "forbidden_claims": [
     "r6_open",
     "learned_router_superiority_earned",
@@ -43,16 +29,15 @@
     "commercial_broadening",
     "external_verification_completed"
   ],
-  "generated_utc": "2026-04-26T23:43:00Z",
+  "generated_utc": "2026-04-27T15:50:15Z",
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
   "multi_lobe_authorized": false,
-  "next_lawful_move": "AUTHOR_B04_R6_FRESH_LEARNED_ROUTER_CANDIDATE_GENERATION_PACKET",
+  "next_lawful_move": "EXECUTE_B04_R6_SHADOW_ROUTER_SUPERIORITY_SCREEN",
   "package_promotion_remains_deferred": true,
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_candidate_source_inventory.v1",
-  "screen_execution_authorized": false,
+  "schema_id": "kt.operator.b04_r6_candidate_source_inventory.v2",
   "status": "PASS",
   "trust_zone_law_unchanged": true,
   "truth_engine_derivation_law_unchanged": true

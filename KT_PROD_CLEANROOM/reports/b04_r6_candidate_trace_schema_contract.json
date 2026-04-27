@@ -1,7 +1,21 @@
 {
   "authoritative_lane": "B04_R6_ADMISSIBLE_LEARNED_ROUTER_CANDIDATE_SOURCE",
+  "candidate_trace_fields": [
+    "abstention_decision",
+    "activation_allowed",
+    "candidate_id",
+    "candidate_version",
+    "case_id",
+    "confidence",
+    "consequence_visibility",
+    "family",
+    "overrouting_detected",
+    "route_adapter_ids",
+    "route_reason",
+    "seed",
+    "shadow_only"
+  ],
   "current_git_head": "12d8c96865c0150f20904329a696536add277e10",
-  "entries": [],
   "forbidden_claims": [
     "r6_open",
     "learned_router_superiority_earned",
@@ -14,14 +28,17 @@
   "generated_utc": "2026-04-27T15:50:15Z",
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
-  "live_blocker_count": 0,
   "multi_lobe_authorized": false,
   "next_lawful_move": "EXECUTE_B04_R6_SHADOW_ROUTER_SUPERIORITY_SCREEN",
   "package_promotion_remains_deferred": true,
   "r6_authorized": false,
-  "r6_blocker_count": 0,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_candidate_source_blocker_ledger.v2",
+  "required_trace_schemas": {
+    "abstention_overrouting_trace_schema": "b04_r6_candidate_abstention_overrouting_trace_schema.json",
+    "mirror_masked_invariance_trace_schema": "b04_r6_candidate_mirror_masked_invariance_trace_schema.json",
+    "route_decision_trace_schema": "b04_r6_candidate_route_decision_trace_schema.json"
+  },
+  "schema_id": "kt.operator.b04_r6_candidate_trace_schema_contract.v1",
   "status": "PASS",
   "trust_zone_law_unchanged": true,
   "truth_engine_derivation_law_unchanged": true
