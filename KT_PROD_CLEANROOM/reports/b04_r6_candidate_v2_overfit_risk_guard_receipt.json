@@ -1,5 +1,16 @@
 {
   "authoritative_lane": "B04_R6_CANDIDATE_V2_SOURCE_PACKET__BLIND_INPUT_CONTRACT_BOUND",
+  "candidate": {
+    "activation_allowed": false,
+    "candidate_id": "b04_r6_diagnostic_gap_shadow_router_v2",
+    "candidate_source_ref": "KT_PROD_CLEANROOM/runs/b04_r6/candidate_v2_generation/generated_learned_router_candidate_v2.py",
+    "candidate_source_sha256": "ad11b8489b7f2344521f989aae1bd439c1663c80ed2aac87ee58de48174faf32",
+    "candidate_version": "2.0.0",
+    "seed": 42,
+    "shadow_only": true
+  },
+  "candidate_v2_source_contains_blind_case_ids": false,
+  "candidate_v2_source_contains_blind_source_hashes": false,
   "current_git_head": "18de4347c31a972d4a7714065c6c5454ac42940e",
   "forbidden_claims": [
     "r6_open",
@@ -14,15 +25,17 @@
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
   "multi_lobe_authorized": false,
+  "new_blind_labels_used_for_generation": false,
   "next_lawful_move": "AUTHOR_B04_R6_SECOND_SHADOW_SCREEN_EXECUTION_PACKET",
+  "overfit_risk_status": "CONTAINED_FOR_ADMISSIBILITY__SECOND_SCREEN_NOT_RUN",
   "package_promotion_remains_deferred": true,
   "previous_authoritative_lane": "B04_R6_CANDIDATE_REVISION_PACKET__NEW_BLIND_INPUT_UNIVERSE_REQUIRED",
+  "r01_r04_diagnostic_only": true,
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v1",
+  "schema_id": "kt.operator.b04_r6_candidate_v2_overfit_risk_guard_receipt.v1",
   "status": "PASS",
   "subject_main_head": "844459dea2b56a0526e6819f355caea7534571ba",
   "trust_zone_law_unchanged": true,
-  "truth_engine_derivation_law_unchanged": true,
-  "verdict": "R6_CANDIDATE_V2_ADMISSIBLE__SECOND_SHADOW_SCREEN_AUTHORIZATION_NEXT"
+  "truth_engine_derivation_law_unchanged": true
 }

@@ -1,0 +1,238 @@
+{
+  "authoritative_lane": "B04_R6_CANDIDATE_V2_SOURCE_PACKET__BLIND_INPUT_CONTRACT_BOUND",
+  "blind_rows_traced": 6,
+  "candidate": {
+    "activation_allowed": false,
+    "candidate_id": "b04_r6_diagnostic_gap_shadow_router_v2",
+    "candidate_source_ref": "KT_PROD_CLEANROOM/runs/b04_r6/candidate_v2_generation/generated_learned_router_candidate_v2.py",
+    "candidate_source_sha256": "ad11b8489b7f2344521f989aae1bd439c1663c80ed2aac87ee58de48174faf32",
+    "candidate_version": "2.0.0",
+    "seed": 42,
+    "shadow_only": true
+  },
+  "current_git_head": "18de4347c31a972d4a7714065c6c5454ac42940e",
+  "eval_type": "NON_COUNTING_TRACE_AND_COMPATIBILITY_ONLY",
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "learned_router_activated",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening"
+  ],
+  "generated_utc": "2026-04-27T22:43:48Z",
+  "learned_router_activated": false,
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "learned_router_superiority_evaluated": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_SECOND_SHADOW_SCREEN_EXECUTION_PACKET",
+  "package_promotion_remains_deferred": true,
+  "previous_authoritative_lane": "B04_R6_CANDIDATE_REVISION_PACKET__NEW_BLIND_INPUT_UNIVERSE_REQUIRED",
+  "r6_authorized": false,
+  "r6_open": false,
+  "route_trace_rows": [
+    {
+      "abstention_decision": false,
+      "activation_allowed": false,
+      "blind_label_dependency": false,
+      "candidate_id": "b04_r6_diagnostic_gap_shadow_router_v2",
+      "candidate_version": "2.0.0",
+      "case_id": "R6B01",
+      "confidence": 0.66,
+      "consequence_visibility": {
+        "package_promotion_dependency": false,
+        "selected_family": "math",
+        "static_hold_preserved": false,
+        "trust_zone_mutation_dependency": false,
+        "truth_engine_mutation_dependency": false
+      },
+      "diagnostic_training_targets_used": false,
+      "family": "math",
+      "overrouting_detected": false,
+      "route_adapter_ids": [
+        "lobe.censor.v1",
+        "lobe.quant.v1"
+      ],
+      "route_reason": "v2_visible_family_policy_quantitative",
+      "seed": 42,
+      "shadow_only": true,
+      "source_holdout_dependency": false,
+      "trace_schema_version": "b04.r6.route_trace.v2",
+      "visible_features_used": {
+        "family": "math",
+        "pressure_type": "adjacent_quantitative_pressure",
+        "source_kind": "fresh_heldout_design"
+      }
+    },
+    {
+      "abstention_decision": false,
+      "activation_allowed": false,
+      "blind_label_dependency": false,
+      "candidate_id": "b04_r6_diagnostic_gap_shadow_router_v2",
+      "candidate_version": "2.0.0",
+      "case_id": "R6B02",
+      "confidence": 0.63,
+      "consequence_visibility": {
+        "package_promotion_dependency": false,
+        "selected_family": "poetry",
+        "static_hold_preserved": false,
+        "trust_zone_mutation_dependency": false,
+        "truth_engine_mutation_dependency": false
+      },
+      "diagnostic_training_targets_used": false,
+      "family": "poetry",
+      "overrouting_detected": false,
+      "route_adapter_ids": [
+        "lobe.muse.v1"
+      ],
+      "route_reason": "v2_visible_family_policy_poetry",
+      "seed": 42,
+      "shadow_only": true,
+      "source_holdout_dependency": false,
+      "trace_schema_version": "b04.r6.route_trace.v2",
+      "visible_features_used": {
+        "family": "poetry",
+        "pressure_type": "form_shift_pressure",
+        "source_kind": "fresh_heldout_design"
+      }
+    },
+    {
+      "abstention_decision": false,
+      "activation_allowed": false,
+      "blind_label_dependency": false,
+      "candidate_id": "b04_r6_diagnostic_gap_shadow_router_v2",
+      "candidate_version": "2.0.0",
+      "case_id": "R6B03",
+      "confidence": 0.64,
+      "consequence_visibility": {
+        "package_promotion_dependency": false,
+        "selected_family": "governance",
+        "static_hold_preserved": false,
+        "trust_zone_mutation_dependency": false,
+        "truth_engine_mutation_dependency": false
+      },
+      "diagnostic_training_targets_used": false,
+      "family": "governance",
+      "overrouting_detected": false,
+      "route_adapter_ids": [
+        "lobe.auditor.v1",
+        "lobe.censor.v1"
+      ],
+      "route_reason": "v2_visible_family_policy_governance_audit_first",
+      "seed": 42,
+      "shadow_only": true,
+      "source_holdout_dependency": false,
+      "trace_schema_version": "b04.r6.route_trace.v2",
+      "visible_features_used": {
+        "family": "governance",
+        "pressure_type": "counterfactual_review_pressure",
+        "source_kind": "fresh_heldout_design"
+      }
+    },
+    {
+      "abstention_decision": true,
+      "activation_allowed": false,
+      "blind_label_dependency": false,
+      "candidate_id": "b04_r6_diagnostic_gap_shadow_router_v2",
+      "candidate_version": "2.0.0",
+      "case_id": "R6B04",
+      "confidence": 0.0,
+      "consequence_visibility": {
+        "package_promotion_dependency": false,
+        "selected_family": "default",
+        "static_hold_preserved": true,
+        "trust_zone_mutation_dependency": false,
+        "truth_engine_mutation_dependency": false
+      },
+      "diagnostic_training_targets_used": false,
+      "family": "default",
+      "overrouting_detected": false,
+      "route_adapter_ids": [
+        "lobe.strategist.v1"
+      ],
+      "route_reason": "v2_static_hold_for_unknown_family",
+      "seed": 42,
+      "shadow_only": true,
+      "source_holdout_dependency": false,
+      "trace_schema_version": "b04.r6.route_trace.v2",
+      "visible_features_used": {
+        "family": "default",
+        "pressure_type": "unknown_family_static_hold_pressure",
+        "source_kind": "fresh_heldout_design"
+      }
+    },
+    {
+      "abstention_decision": false,
+      "activation_allowed": false,
+      "blind_label_dependency": false,
+      "candidate_id": "b04_r6_diagnostic_gap_shadow_router_v2",
+      "candidate_version": "2.0.0",
+      "case_id": "R6B05",
+      "confidence": 0.58,
+      "consequence_visibility": {
+        "package_promotion_dependency": false,
+        "selected_family": "mixed_math_governance",
+        "static_hold_preserved": false,
+        "trust_zone_mutation_dependency": false,
+        "truth_engine_mutation_dependency": false
+      },
+      "diagnostic_training_targets_used": false,
+      "family": "mixed_math_governance",
+      "overrouting_detected": false,
+      "route_adapter_ids": [
+        "lobe.auditor.v1",
+        "lobe.quant.v1",
+        "lobe.censor.v1"
+      ],
+      "route_reason": "v2_visible_family_policy_mixed_governance_quant",
+      "seed": 42,
+      "shadow_only": true,
+      "source_holdout_dependency": false,
+      "trace_schema_version": "b04.r6.route_trace.v2",
+      "visible_features_used": {
+        "family": "mixed_math_governance",
+        "pressure_type": "multi_family_abstention_pressure",
+        "source_kind": "mutated_sibling_not_label_derived"
+      }
+    },
+    {
+      "abstention_decision": true,
+      "activation_allowed": false,
+      "blind_label_dependency": false,
+      "candidate_id": "b04_r6_diagnostic_gap_shadow_router_v2",
+      "candidate_version": "2.0.0",
+      "case_id": "R6B06",
+      "confidence": 0.0,
+      "consequence_visibility": {
+        "package_promotion_dependency": false,
+        "selected_family": "masked_ambiguous",
+        "static_hold_preserved": true,
+        "trust_zone_mutation_dependency": false,
+        "truth_engine_mutation_dependency": false
+      },
+      "diagnostic_training_targets_used": false,
+      "family": "masked_ambiguous",
+      "overrouting_detected": false,
+      "route_adapter_ids": [
+        "lobe.strategist.v1"
+      ],
+      "route_reason": "v2_masked_ambiguity_static_hold",
+      "seed": 42,
+      "shadow_only": true,
+      "source_holdout_dependency": false,
+      "trace_schema_version": "b04.r6.route_trace.v2",
+      "visible_features_used": {
+        "family": "masked_ambiguous",
+        "pressure_type": "masked_family_route_pressure",
+        "source_kind": "fresh_heldout_design"
+      }
+    }
+  ],
+  "schema_id": "kt.operator.b04_r6_candidate_v2_eval_receipt.v1",
+  "score_against_static_baseline_performed": false,
+  "status": "PASS",
+  "subject_main_head": "844459dea2b56a0526e6819f355caea7534571ba",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true
+}
