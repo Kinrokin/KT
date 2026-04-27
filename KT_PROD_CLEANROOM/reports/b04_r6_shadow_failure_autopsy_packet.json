@@ -1,0 +1,47 @@
+{
+  "authoritative_lane": "B04_R6_CANDIDATE_REVISION_OR_CLOSEOUT",
+  "candidate_static_delta_matrix_ref": "b04_r6_candidate_static_delta_matrix.json",
+  "current_git_head": "a64245b7e75d8db64c659cc4e58fb836830284bc",
+  "diagnostics": {
+    "abstention_failure_count": 0,
+    "candidate_win_count": 0,
+    "case_count": 4,
+    "clean_failure": true,
+    "exact_order_mismatch_count": 1,
+    "failure_classes": {
+      "abstention_failures": false,
+      "candidate_underfitting": true,
+      "feature_insufficiency": true,
+      "metric_contract_mismatch": false,
+      "route_choice_failures": false,
+      "screen_size_limitation": true,
+      "static_comparator_dominance": true
+    },
+    "mirror_masked_failure_count": 0,
+    "overrouting_failure_count": 0,
+    "route_set_match_count": 4
+  },
+  "forbidden_final_verdicts": [
+    "R6_OPEN",
+    "LEARNED_ROUTER_SUPERIORITY_EARNED",
+    "LEARNED_ROUTER_ACTIVATED",
+    "MULTI_LOBE_AUTHORIZED",
+    "PACKAGE_PROMOTION_APPROVED"
+  ],
+  "generated_utc": "2026-04-27T19:04:24Z",
+  "learned_router_activated": false,
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_CANDIDATE_REVISION_PACKET__NEW_BLIND_INPUT_UNIVERSE_REQUIRED",
+  "package_promotion_remains_deferred": true,
+  "per_row_failure_matrix_ref": "b04_r6_per_row_failure_matrix.json",
+  "previous_authoritative_lane": "B04_R6_SHADOW_ROUTER_SUPERIORITY_SCREEN_EXECUTION",
+  "r6_authorized": false,
+  "r6_open": false,
+  "schema_id": "kt.operator.b04_r6_shadow_failure_autopsy_packet.v1",
+  "status": "PASS",
+  "subject_main_head": "8b8a7b637c91a2633d7ff235a3868fba6666932b",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true
+}
