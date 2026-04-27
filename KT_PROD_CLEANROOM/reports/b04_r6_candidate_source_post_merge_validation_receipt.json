@@ -1,0 +1,81 @@
+{
+  "advisories": [
+    {
+      "advisory_id": "legacy_report_utf8_bom_strict_json_warning",
+      "blocking": false,
+      "count": 3,
+      "paths": [
+        "KT_PROD_CLEANROOM/reports/documentary_reclassification_receipt.json",
+        "KT_PROD_CLEANROOM/reports/live_truth_purge_receipt.json",
+        "KT_PROD_CLEANROOM/reports/supersession_receipt.json"
+      ],
+      "reason": "Strict UTF-8 parsing of the full historical reports directory found pre-existing BOM-bearing JSON files outside the B04 R6 candidate-source artifact set. The B04 R6 candidate-source scoped JSON sweep passed."
+    }
+  ],
+  "candidate_source_canonical_on_main": true,
+  "current_git_head": "e61e8fc7d0265b96f77518aa53cc20bec70c5c4c",
+  "generated_candidate_sanity": {
+    "deterministic_same_seed": true,
+    "result": "PASS",
+    "static_hold_preserved_on_default_family": true
+  },
+  "generated_utc": "2026-04-27T17:41:09Z",
+  "json_parse_sweep": {
+    "b04_r6_candidate_source_scope": {
+      "files_checked": 105,
+      "result": "PASS"
+    },
+    "full_reports_utf8_strict": {
+      "files_checked": 989,
+      "result": "PASS_WITH_NONBLOCKING_LEGACY_BOM_ADVISORY"
+    }
+  },
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "main_sync_status": "LOCAL_MAIN_SYNCED_TO_ORIGIN_MAIN",
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_SHADOW_ROUTER_SUPERIORITY_SCREEN_EXECUTION_PACKET",
+  "package_promotion_remains_deferred": true,
+  "post_merge_validation_result": "PASS",
+  "pr": {
+    "head_oid": "70a224a3622755df45601551e45e6ac43fab2209",
+    "merge_commit": "e61e8fc7d0265b96f77518aa53cc20bec70c5c4c",
+    "merged_at": "2026-04-27T17:22:02Z",
+    "number": 29,
+    "url": "https://github.com/Kinrokin/KT/pull/29"
+  },
+  "r6_authorized": false,
+  "r6_open": false,
+  "schema_id": "kt.operator.b04_r6_candidate_source_post_merge_validation_receipt.v1",
+  "status": "PASS",
+  "test_results": [
+    {
+      "command": "python -m pytest --no-cov -q KT_PROD_CLEANROOM/tests/operator/test_cohort0_b04_r6_fresh_learned_router_candidate_generation.py",
+      "result": "PASS",
+      "summary": "4 passed"
+    },
+    {
+      "command": "python -m pytest --no-cov -q KT_PROD_CLEANROOM/tests/operator/test_cohort0_b04_r6_admissible_learned_router_candidate_source.py KT_PROD_CLEANROOM/tests/operator/test_cohort0_b04_r6_shadow_router_candidate_input_manifest.py KT_PROD_CLEANROOM/tests/operator/test_cohort0_b04_r6_comparator_metric_contract.py",
+      "result": "PASS",
+      "summary": "15 passed"
+    },
+    {
+      "command": "python -m pytest --no-cov -q KT_PROD_CLEANROOM/tests/operator/test_cohort0_b04_r6_learned_router_superiority_blocker_resolution.py KT_PROD_CLEANROOM/tests/operator/test_cohort0_b04_r1_r5_revalidation_asset_supersession_tranche.py",
+      "result": "PASS",
+      "summary": "7 passed"
+    },
+    {
+      "command": "python -m pytest --no-cov -q KT_PROD_CLEANROOM/tests/operator/test_b04_r5_router_vs_best_adapter_proof_ratification_validate.py",
+      "result": "PASS",
+      "summary": "5 passed"
+    }
+  ],
+  "truth_engine_derivation_law_unchanged": true,
+  "trust_zone_law_unchanged": true,
+  "trust_zone_validation": {
+    "checks": 24,
+    "failures": 0,
+    "result": "PASS"
+  },
+  "worktree_clean_before_receipt_freeze": true
+}
