@@ -1,0 +1,138 @@
+{
+  "authoritative_lane": "B04_R6_ADMISSIBLE_LEARNED_ROUTER_CANDIDATE_SOURCE",
+  "candidate_id": "b04_r6_minimal_deterministic_shadow_router_v1",
+  "current_git_head": "12d8c96865c0150f20904329a696536add277e10",
+  "eval_status": "PASS",
+  "fixture_count": 4,
+  "fixtures": [
+    {
+      "case_id": "ADMISSIBILITY_001",
+      "family": "default",
+      "text": "non-counting default fixture"
+    },
+    {
+      "case_id": "ADMISSIBILITY_002",
+      "family": "governance",
+      "text": "non-counting governance fixture"
+    },
+    {
+      "case_id": "ADMISSIBILITY_003",
+      "family": "math",
+      "text": "non-counting math fixture"
+    },
+    {
+      "case_id": "ADMISSIBILITY_004",
+      "family": "poetry",
+      "text": "non-counting poetry fixture"
+    }
+  ],
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening",
+    "external_verification_completed"
+  ],
+  "generated_utc": "2026-04-27T15:50:15Z",
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "EXECUTE_B04_R6_SHADOW_ROUTER_SUPERIORITY_SCREEN",
+  "package_promotion_remains_deferred": true,
+  "r6_authorized": false,
+  "r6_open": false,
+  "schema_id": "kt.operator.b04_r6.generated_learned_router_candidate_eval_receipt.v1",
+  "status": "PASS",
+  "traces": [
+    {
+      "abstention_decision": true,
+      "activation_allowed": false,
+      "candidate_id": "b04_r6_minimal_deterministic_shadow_router_v1",
+      "candidate_version": "1.0.0",
+      "case_id": "ADMISSIBILITY_001",
+      "confidence": 0.0,
+      "consequence_visibility": {
+        "package_promotion_dependency": false,
+        "selected_family": "default",
+        "static_hold_preserved": true
+      },
+      "family": "default",
+      "overrouting_detected": false,
+      "route_adapter_ids": [
+        "lobe.strategist.v1"
+      ],
+      "route_reason": "deterministic_static_hold_default",
+      "seed": 42,
+      "shadow_only": true
+    },
+    {
+      "abstention_decision": false,
+      "activation_allowed": false,
+      "candidate_id": "b04_r6_minimal_deterministic_shadow_router_v1",
+      "candidate_version": "1.0.0",
+      "case_id": "ADMISSIBILITY_002",
+      "confidence": 1.0,
+      "consequence_visibility": {
+        "package_promotion_dependency": false,
+        "selected_family": "governance",
+        "static_hold_preserved": false
+      },
+      "family": "governance",
+      "overrouting_detected": false,
+      "route_adapter_ids": [
+        "lobe.censor.v1",
+        "lobe.auditor.v1"
+      ],
+      "route_reason": "deterministic_policy_family_match",
+      "seed": 42,
+      "shadow_only": true
+    },
+    {
+      "abstention_decision": false,
+      "activation_allowed": false,
+      "candidate_id": "b04_r6_minimal_deterministic_shadow_router_v1",
+      "candidate_version": "1.0.0",
+      "case_id": "ADMISSIBILITY_003",
+      "confidence": 1.0,
+      "consequence_visibility": {
+        "package_promotion_dependency": false,
+        "selected_family": "math",
+        "static_hold_preserved": false
+      },
+      "family": "math",
+      "overrouting_detected": false,
+      "route_adapter_ids": [
+        "lobe.censor.v1",
+        "lobe.quant.v1"
+      ],
+      "route_reason": "deterministic_policy_family_match",
+      "seed": 42,
+      "shadow_only": true
+    },
+    {
+      "abstention_decision": false,
+      "activation_allowed": false,
+      "candidate_id": "b04_r6_minimal_deterministic_shadow_router_v1",
+      "candidate_version": "1.0.0",
+      "case_id": "ADMISSIBILITY_004",
+      "confidence": 1.0,
+      "consequence_visibility": {
+        "package_promotion_dependency": false,
+        "selected_family": "poetry",
+        "static_hold_preserved": false
+      },
+      "family": "poetry",
+      "overrouting_detected": false,
+      "route_adapter_ids": [
+        "lobe.muse.v1"
+      ],
+      "route_reason": "deterministic_policy_family_match",
+      "seed": 42,
+      "shadow_only": true
+    }
+  ],
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true
+}

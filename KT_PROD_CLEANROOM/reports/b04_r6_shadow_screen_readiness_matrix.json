@@ -1,0 +1,104 @@
+{
+  "authoritative_lane": "B04_R6_ADMISSIBLE_LEARNED_ROUTER_CANDIDATE_SOURCE",
+  "current_git_head": "12d8c96865c0150f20904329a696536add277e10",
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening",
+    "external_verification_completed"
+  ],
+  "generated_utc": "2026-04-27T15:50:15Z",
+  "guard_checks": [
+    {
+      "check": "candidate_id_non_empty",
+      "status": "PASS"
+    },
+    {
+      "check": "candidate_version_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "candidate_source_ref_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "candidate_source_sha256_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "candidate_manifest_sha256_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "candidate_derivation_or_training_lineage_receipt_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "candidate_eval_receipt_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "trust_zone_compatibility_receipt_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "source_holdout_separation_receipt_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "no_beta_no_holdout_no_quarantine_contamination_receipt_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "deterministic_replay_receipt_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "trace_schema_compatibility_receipt_bound",
+      "status": "PASS"
+    },
+    {
+      "check": "shadow_only_mode",
+      "status": "PASS"
+    },
+    {
+      "check": "abstention_aware",
+      "status": "PASS"
+    },
+    {
+      "check": "static_hold_preserving",
+      "status": "PASS"
+    },
+    {
+      "check": "r01_r04_compatible",
+      "status": "PASS"
+    },
+    {
+      "check": "no_package_promotion_dependency",
+      "status": "PASS"
+    },
+    {
+      "check": "no_truth_engine_mutation_dependency",
+      "status": "PASS"
+    },
+    {
+      "check": "no_trust_zone_mutation_dependency",
+      "status": "PASS"
+    }
+  ],
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "EXECUTE_B04_R6_SHADOW_ROUTER_SUPERIORITY_SCREEN",
+  "package_promotion_remains_deferred": true,
+  "r6_authorized": false,
+  "r6_open": false,
+  "schema_id": "kt.operator.b04_r6_shadow_screen_readiness_matrix.v1",
+  "screen_execution_authorized": true,
+  "status": "PASS",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true
+}

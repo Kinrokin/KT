@@ -1,7 +1,5 @@
 {
   "authoritative_lane": "B04_R6_ADMISSIBLE_LEARNED_ROUTER_CANDIDATE_SOURCE",
-  "authority": "authoritative_candidate_source_branch_pending_protected_merge",
-  "branch": "authoritative/b04-r6-admissible-learned-router-candidate-source",
   "current_git_head": "12d8c96865c0150f20904329a696536add277e10",
   "forbidden_claims": [
     "r6_open",
@@ -13,6 +11,10 @@
     "external_verification_completed"
   ],
   "generated_utc": "2026-04-27T15:50:15Z",
+  "hard_stop_if": [
+    "overrouting_detected is true",
+    "default/static-hold case lacks abstention_decision true"
+  ],
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
   "multi_lobe_authorized": false,
@@ -20,8 +22,15 @@
   "package_promotion_remains_deferred": true,
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_branch_authority_status_receipt.v1",
-  "status": "PREP_ONLY",
+  "required_fields": [
+    "case_id",
+    "abstention_decision",
+    "overrouting_detected",
+    "confidence",
+    "route_adapter_ids"
+  ],
+  "schema_id": "kt.operator.b04_r6_candidate_abstention_overrouting_trace_schema.v1",
+  "status": "PASS",
   "trust_zone_law_unchanged": true,
   "truth_engine_derivation_law_unchanged": true
 }

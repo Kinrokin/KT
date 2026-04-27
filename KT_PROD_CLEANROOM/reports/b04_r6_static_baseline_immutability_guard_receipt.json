@@ -1,7 +1,9 @@
 {
   "authoritative_lane": "B04_R6_ADMISSIBLE_LEARNED_ROUTER_CANDIDATE_SOURCE",
-  "authority": "authoritative_candidate_source_branch_pending_protected_merge",
-  "branch": "authoritative/b04-r6-admissible-learned-router-candidate-source",
+  "comparator_matrix_ref": {
+    "path": "KT_PROD_CLEANROOM/reports/b04_r6_comparator_matrix_contract.json",
+    "sha256": "850848f259decd8e1d66e16b705f11374e0e022f75ffb85c54718a2561f9f4ce"
+  },
   "current_git_head": "12d8c96865c0150f20904329a696536add277e10",
   "forbidden_claims": [
     "r6_open",
@@ -20,7 +22,8 @@
   "package_promotion_remains_deferred": true,
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_branch_authority_status_receipt.v1",
+  "schema_id": "kt.operator.b04_r6_static_baseline_immutability_guard_receipt.v1",
+  "static_baseline_mutated": false,
   "status": "PREP_ONLY",
   "trust_zone_law_unchanged": true,
   "truth_engine_derivation_law_unchanged": true

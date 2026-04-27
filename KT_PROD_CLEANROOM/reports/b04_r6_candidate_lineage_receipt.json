@@ -1,9 +1,6 @@
 {
   "authoritative_lane": "B04_R6_ADMISSIBLE_LEARNED_ROUTER_CANDIDATE_SOURCE",
   "candidate": {
-    "admissibility_decision": "ADMISSIBLE",
-    "admissibility_reason": "Generated candidate has bound source, provenance, trace compatibility, deterministic replay, no-contamination, and holdout separation receipts.",
-    "admissible_for_shadow_screen": true,
     "candidate_id": "b04_r6_minimal_deterministic_shadow_router_v1",
     "candidate_manifest_ref": "KT_PROD_CLEANROOM/runs/b04_r6/candidate_generation/generated_learned_router_candidate_manifest.json",
     "candidate_manifest_sha256": "8e3ce714b37a87d48fdca61629348c3de85963b4dd7e5d6d86fc13862f1ee786",
@@ -12,14 +9,15 @@
     "candidate_status": "ADMISSIBLE_FOR_SHADOW_ONLY_SCREEN",
     "candidate_version": "1.0.0",
     "deterministic_seed": 42,
-    "execution_role": "shadow_only_candidate",
     "promotion_allowed": false,
     "shadow_only_mode": true,
-    "source_zone": "GENERATED_RUNTIME_TRUTH",
-    "training_lineage_or_derivation_record": "KT_PROD_CLEANROOM/runs/b04_r6/candidate_generation/generated_learned_router_candidate_derivation_receipt.json",
-    "zone": "GENERATED_RUNTIME_TRUTH"
+    "source_zone": "GENERATED_RUNTIME_TRUTH"
   },
   "current_git_head": "12d8c96865c0150f20904329a696536add277e10",
+  "derivation_ref": {
+    "path": "KT_PROD_CLEANROOM/runs/b04_r6/candidate_generation/generated_learned_router_candidate_derivation_receipt.json",
+    "sha256": "cb65f35302ae2fbcf1745b7a02d11ad9e61230af6916f3103abf2b8d8706aaa9"
+  },
   "forbidden_claims": [
     "r6_open",
     "learned_router_superiority_earned",
@@ -37,8 +35,39 @@
   "package_promotion_remains_deferred": true,
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_learned_router_candidate_manifest.v2",
-  "screen_execution_authorized": true,
+  "route_table": {
+    "default": {
+      "abstain": true,
+      "adapter_ids": [
+        "lobe.strategist.v1"
+      ],
+      "confidence": 0.0
+    },
+    "governance": {
+      "abstain": false,
+      "adapter_ids": [
+        "lobe.censor.v1",
+        "lobe.auditor.v1"
+      ],
+      "confidence": 1.0
+    },
+    "math": {
+      "abstain": false,
+      "adapter_ids": [
+        "lobe.censor.v1",
+        "lobe.quant.v1"
+      ],
+      "confidence": 1.0
+    },
+    "poetry": {
+      "abstain": false,
+      "adapter_ids": [
+        "lobe.muse.v1"
+      ],
+      "confidence": 1.0
+    }
+  },
+  "schema_id": "kt.operator.b04_r6_candidate_lineage_receipt.v1",
   "status": "PASS",
   "trust_zone_law_unchanged": true,
   "truth_engine_derivation_law_unchanged": true
