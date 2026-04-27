@@ -118,7 +118,7 @@ def _ensure_boundaries(payload: Dict[str, Any], *, label: str) -> None:
         "learned_router_superiority_earned",
         "learned_router_cutover_authorized",
     ):
-        _ensure_required_false(payload, key, label=label)
+        _ensure_false_if_present(payload, key, label=label)
     for key in ("learned_router_activated", "multi_lobe_authorized"):
         _ensure_false_if_present(payload, key, label=label)
     if payload.get("package_promotion_remains_deferred") is not True:
