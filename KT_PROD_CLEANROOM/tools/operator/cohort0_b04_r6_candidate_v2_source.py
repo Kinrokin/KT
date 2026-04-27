@@ -22,6 +22,7 @@ FORBIDDEN_CLAIMS = [
     "r6_open",
     "learned_router_superiority_earned",
     "learned_router_activated",
+    "learned_router_cutover_authorized",
     "multi_lobe_authorized",
     "package_promotion_approved",
     "commercial_broadening",
@@ -32,10 +33,10 @@ INPUTS = {
     "revision_receipt": "KT_PROD_CLEANROOM/reports/b04_r6_candidate_revision_receipt.json",
     "blind_contract": "KT_PROD_CLEANROOM/reports/b04_r6_new_blind_input_universe_contract.json",
     "v2_source_requirements": "KT_PROD_CLEANROOM/reports/b04_r6_candidate_v2_source_requirements.json",
+    "v2_feature_requirements": "KT_PROD_CLEANROOM/reports/b04_r6_candidate_v2_feature_requirements.json",
     "overfit_guard": "KT_PROD_CLEANROOM/reports/b04_r6_overfit_risk_guard_receipt.json",
     "feature_gap_matrix": "KT_PROD_CLEANROOM/reports/b04_r6_candidate_v1_failure_feature_gap_matrix.json",
     "static_dominance": "KT_PROD_CLEANROOM/reports/b04_r6_static_comparator_dominance_analysis.json",
-    "revision_next_lawful_move": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
     "blind_candidate_set": "KT_PROD_CLEANROOM/reports/b04_r6_blind_input_universe_candidate_set.json",
 }
 
@@ -191,11 +192,23 @@ def _ensure_false(payload: Dict[str, Any], key: str, *, label: str) -> None:
         raise RuntimeError(f"FAIL_CLOSED: {label} must keep {key}=false")
 
 
+def _ensure_required_false(payload: Dict[str, Any], key: str, *, label: str) -> None:
+    if payload.get(key) is not False:
+        raise RuntimeError(f"FAIL_CLOSED: {label} must keep {key}=false")
+
+
 def _ensure_boundaries(payload: Dict[str, Any], *, label: str) -> None:
     if str(payload.get("status", "")).strip() != "PASS":
         raise RuntimeError(f"FAIL_CLOSED: {label} must have PASS status")
-    for key in ("r6_authorized", "r6_open", "learned_router_superiority_earned", "learned_router_activated", "multi_lobe_authorized"):
-        _ensure_false(payload, key, label=label)
+    for key in (
+        "r6_authorized",
+        "r6_open",
+        "learned_router_superiority_earned",
+        "learned_router_activated",
+        "learned_router_cutover_authorized",
+        "multi_lobe_authorized",
+    ):
+        _ensure_required_false(payload, key, label=label)
     if payload.get("package_promotion_remains_deferred") is not True:
         raise RuntimeError(f"FAIL_CLOSED: {label} must preserve package promotion deferral")
     if payload.get("truth_engine_derivation_law_unchanged") is not True:
@@ -249,13 +262,10 @@ def _require_prior_state(payloads: Dict[str, Dict[str, Any]]) -> None:
     blind_contract = payloads["blind_contract"]
     requirements = payloads["v2_source_requirements"]
     overfit = payloads["overfit_guard"]
-    next_receipt = payloads["revision_next_lawful_move"]
     if revision_receipt.get("verdict") != EXPECTED_PRIOR_VERDICT:
         raise RuntimeError("FAIL_CLOSED: candidate v2 source requires revision-authorized prior verdict")
     if revision_receipt.get("next_lawful_move") != EXPECTED_PRIOR_NEXT_MOVE:
         raise RuntimeError("FAIL_CLOSED: prior revision receipt did not authorize candidate v2 source packet")
-    if next_receipt.get("next_lawful_move") != EXPECTED_PRIOR_NEXT_MOVE:
-        raise RuntimeError("FAIL_CLOSED: prior next-lawful-move receipt mismatch")
     if revision_receipt.get("candidate_revision_authorized") is not True:
         raise RuntimeError("FAIL_CLOSED: candidate revision must be explicitly authorized")
     if revision_receipt.get("candidate_v2_generation_performed") is not False:

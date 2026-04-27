@@ -26,6 +26,7 @@ def _base() -> dict:
         "r6_open": False,
         "learned_router_superiority_earned": False,
         "learned_router_activated": False,
+        "learned_router_cutover_authorized": False,
         "multi_lobe_authorized": False,
         "package_promotion_remains_deferred": True,
         "truth_engine_derivation_law_unchanged": True,
@@ -99,6 +100,16 @@ def _write_inputs(root: Path) -> Path:
                 "must_not_reuse_r01_r04_as_counted_screen": True,
             },
         },
+        "v2_feature_requirements": {
+            **common,
+            "schema_id": "feature_requirements",
+            "candidate_v2_feature_requirements": [
+                "visible_family_policy",
+                "static_hold_preservation",
+                "abstention_aware_trace",
+            ],
+            "new_blind_universe_labels_available": False,
+        },
         "overfit_guard": {
             **common,
             "schema_id": "overfit",
@@ -119,7 +130,6 @@ def _write_inputs(root: Path) -> Path:
             "candidate_wins_on_screen1": 0,
             "static_baseline_weakening_allowed": False,
         },
-        "revision_next_lawful_move": {**common, "schema_id": "next"},
         "blind_candidate_set": {**common, "schema_id": "candidate_set", "rows": blind_rows},
     }
     for role, payload in payloads.items():
@@ -171,12 +181,23 @@ def test_candidate_v2_source_fails_closed_if_blind_row_labels_visible(tmp_path: 
 
 def test_candidate_v2_source_fails_closed_if_prior_next_move_wrong(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _write_inputs(tmp_path)
-    prior_next = _load(reports / "b04_r6_next_lawful_move_receipt.json")
-    prior_next["next_lawful_move"] = "AUTHOR_SOMETHING_ELSE"
-    _write_json(reports / "b04_r6_next_lawful_move_receipt.json", prior_next)
+    revision_receipt = _load(reports / "b04_r6_candidate_revision_receipt.json")
+    revision_receipt["next_lawful_move"] = "AUTHOR_SOMETHING_ELSE"
+    _write_json(reports / "b04_r6_candidate_revision_receipt.json", revision_receipt)
     _patch_env(monkeypatch, tmp_path)
 
-    with pytest.raises(RuntimeError, match="next-lawful-move"):
+    with pytest.raises(RuntimeError, match="candidate v2 source packet"):
+        tranche.run(reports_root=reports)
+
+
+def test_candidate_v2_source_fails_closed_if_cutover_authorized(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    revision_receipt = _load(reports / "b04_r6_candidate_revision_receipt.json")
+    revision_receipt["learned_router_cutover_authorized"] = True
+    _write_json(reports / "b04_r6_candidate_revision_receipt.json", revision_receipt)
+    _patch_env(monkeypatch, tmp_path)
+
+    with pytest.raises(RuntimeError, match="learned_router_cutover_authorized"):
         tranche.run(reports_root=reports)
 
 
