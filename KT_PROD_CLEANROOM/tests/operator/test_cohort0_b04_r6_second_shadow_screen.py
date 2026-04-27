@@ -149,7 +149,7 @@ def _write_inputs(root: Path) -> Path:
             "second_shadow_screen_authorization_next": True,
             "second_shadow_screen_executed": False,
         },
-        "second_readiness": {**common, "schema_id": "readiness", "second_shadow_screen_authorization_next": True},
+        "second_readiness": {**common, "schema_id": "readiness", "second_shadow_screen_execution_packet_authorized_next": True},
         "second_authorization": {**common, "schema_id": "authorization", "second_shadow_screen_execution_packet_authorized_next": True},
         "blind_contract": {
             **common,

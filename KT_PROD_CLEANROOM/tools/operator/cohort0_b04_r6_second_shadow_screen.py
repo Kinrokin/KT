@@ -186,8 +186,8 @@ def _require_prior_state(payloads: Dict[str, Dict[str, Any]]) -> None:
         raise RuntimeError("FAIL_CLOSED: second shadow screen must not already be executed by prior lane")
     readiness = payloads["second_readiness"]
     authorization = payloads["second_authorization"]
-    if readiness.get("second_shadow_screen_authorization_next") is not True:
-        raise RuntimeError("FAIL_CLOSED: second readiness matrix must authorize execution next")
+    if readiness.get("second_shadow_screen_execution_packet_authorized_next") is not True:
+        raise RuntimeError("FAIL_CLOSED: second readiness matrix must authorize execution-packet authoring")
     if authorization.get("second_shadow_screen_execution_packet_authorized_next") is not True:
         raise RuntimeError("FAIL_CLOSED: second authorization receipt must authorize execution-packet authoring")
     blind_contract = payloads["blind_contract"]
