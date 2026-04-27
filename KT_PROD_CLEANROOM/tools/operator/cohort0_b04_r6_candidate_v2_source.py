@@ -252,7 +252,12 @@ def _rows(payload: Dict[str, Any], *, label: str) -> list[Dict[str, Any]]:
     rows = payload.get("candidate_rows", payload.get("rows"))
     if not isinstance(rows, list):
         raise RuntimeError(f"FAIL_CLOSED: {label} missing rows list")
-    return [dict(row) for row in rows if isinstance(row, dict)]
+    normalized: list[Dict[str, Any]] = []
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict):
+            raise RuntimeError(f"FAIL_CLOSED: {label} row {index} must be an object")
+        normalized.append(dict(row))
+    return normalized
 
 
 def _require_prior_state(payloads: Dict[str, Dict[str, Any]]) -> None:
@@ -276,7 +281,10 @@ def _require_prior_state(payloads: Dict[str, Dict[str, Any]]) -> None:
         raise RuntimeError("FAIL_CLOSED: candidate v2 requires the bound six-row blind universe")
     if blind_contract.get("holdout_policy", {}).get("candidate_v2_may_not_train_on_counted_labels") is not True:
         raise RuntimeError("FAIL_CLOSED: blind contract must forbid training on counted labels")
-    for row in _rows(blind_contract, label="blind input universe contract"):
+    blind_rows = _rows(blind_contract, label="blind input universe contract")
+    if len(blind_rows) != 6:
+        raise RuntimeError("FAIL_CLOSED: blind input universe contract must contain exactly six row objects")
+    for row in blind_rows:
         if row.get("candidate_v2_training_label_visible") is not False:
             raise RuntimeError("FAIL_CLOSED: blind universe rows must hide candidate v2 training labels")
         if row.get("static_baseline_labels_blinded_until_counted_screen") is not True:

@@ -201,6 +201,17 @@ def test_candidate_v2_source_fails_closed_if_cutover_authorized(tmp_path: Path, 
         tranche.run(reports_root=reports)
 
 
+def test_candidate_v2_source_fails_closed_if_blind_rows_malformed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    blind = _load(reports / "b04_r6_new_blind_input_universe_contract.json")
+    blind["candidate_rows"] = [blind["candidate_rows"][0], "not-a-row", None, 4, [], True]
+    _write_json(reports / "b04_r6_new_blind_input_universe_contract.json", blind)
+    _patch_env(monkeypatch, tmp_path)
+
+    with pytest.raises(RuntimeError, match="row 1 must be an object"):
+        tranche.run(reports_root=reports)
+
+
 def test_contamination_scan_blocks_blind_case_id_in_source() -> None:
     with pytest.raises(RuntimeError, match="forbidden blind-label"):
         tranche._contamination_scan("route = 'R6B01'", _blind_rows())
