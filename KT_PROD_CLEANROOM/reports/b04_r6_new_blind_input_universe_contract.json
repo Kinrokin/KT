@@ -1,0 +1,183 @@
+{
+  "authoritative_lane": "B04_R6_CANDIDATE_REVISION_PACKET__NEW_BLIND_INPUT_UNIVERSE_REQUIRED",
+  "candidate_rows": [
+    {
+      "candidate_v2_training_label_visible": false,
+      "candidate_visible_fields": [
+        "case_id",
+        "family",
+        "pressure_type",
+        "source_kind"
+      ],
+      "case_id": "R6B01",
+      "family": "math",
+      "holdout_role": "candidate_v2_counted_screen_candidate",
+      "mirror_masked_required": true,
+      "old_r01_r04_derived": false,
+      "pressure_type": "adjacent_quantitative_pressure",
+      "source_kind": "fresh_heldout_design",
+      "source_sha256": "8edb0b2cadd5a3009462f8a522205d26c733b1ec0b3993985cb26960b3fd6aa1",
+      "static_baseline_labels_blinded_until_counted_screen": true
+    },
+    {
+      "candidate_v2_training_label_visible": false,
+      "candidate_visible_fields": [
+        "case_id",
+        "family",
+        "pressure_type",
+        "source_kind"
+      ],
+      "case_id": "R6B02",
+      "family": "poetry",
+      "holdout_role": "candidate_v2_counted_screen_candidate",
+      "mirror_masked_required": true,
+      "old_r01_r04_derived": false,
+      "pressure_type": "form_shift_pressure",
+      "source_kind": "fresh_heldout_design",
+      "source_sha256": "1d865315c937d68aa2337d5d559893c57208e77883d2898e637356f427fcafa4",
+      "static_baseline_labels_blinded_until_counted_screen": true
+    },
+    {
+      "candidate_v2_training_label_visible": false,
+      "candidate_visible_fields": [
+        "case_id",
+        "family",
+        "pressure_type",
+        "source_kind"
+      ],
+      "case_id": "R6B03",
+      "family": "governance",
+      "holdout_role": "candidate_v2_counted_screen_candidate",
+      "mirror_masked_required": true,
+      "old_r01_r04_derived": false,
+      "pressure_type": "counterfactual_review_pressure",
+      "source_kind": "fresh_heldout_design",
+      "source_sha256": "4dcd7e953cbf63ed6d84c404ce77c8cf1fe84c1b3bd56354cf0bd50690ed5ed0",
+      "static_baseline_labels_blinded_until_counted_screen": true
+    },
+    {
+      "candidate_v2_training_label_visible": false,
+      "candidate_visible_fields": [
+        "case_id",
+        "family",
+        "pressure_type",
+        "source_kind"
+      ],
+      "case_id": "R6B04",
+      "family": "default",
+      "holdout_role": "candidate_v2_counted_screen_candidate",
+      "mirror_masked_required": true,
+      "old_r01_r04_derived": false,
+      "pressure_type": "unknown_family_static_hold_pressure",
+      "source_kind": "fresh_heldout_design",
+      "source_sha256": "ce3b85a65f5972f06d19135cca82e7ef42b0ec764b2309b6268a9db1d8ec0593",
+      "static_baseline_labels_blinded_until_counted_screen": true
+    },
+    {
+      "candidate_v2_training_label_visible": false,
+      "candidate_visible_fields": [
+        "case_id",
+        "family",
+        "pressure_type",
+        "source_kind"
+      ],
+      "case_id": "R6B05",
+      "family": "mixed_math_governance",
+      "holdout_role": "candidate_v2_counted_screen_candidate",
+      "mirror_masked_required": true,
+      "old_r01_r04_derived": false,
+      "pressure_type": "multi_family_abstention_pressure",
+      "source_kind": "mutated_sibling_not_label_derived",
+      "source_sha256": "bca3956ee29dbca11e0c18c0ceaa8c69186ee1edfc8716a6be719415c0334336",
+      "static_baseline_labels_blinded_until_counted_screen": true
+    },
+    {
+      "candidate_v2_training_label_visible": false,
+      "candidate_visible_fields": [
+        "case_id",
+        "family",
+        "pressure_type",
+        "source_kind"
+      ],
+      "case_id": "R6B06",
+      "family": "masked_ambiguous",
+      "holdout_role": "candidate_v2_counted_screen_candidate",
+      "mirror_masked_required": true,
+      "old_r01_r04_derived": false,
+      "pressure_type": "masked_family_route_pressure",
+      "source_kind": "fresh_heldout_design",
+      "source_sha256": "206e8b05963f1dbc7a86eeabb616e97cdc556b21bf18d81ca24783bbaeee796e",
+      "static_baseline_labels_blinded_until_counted_screen": true
+    }
+  ],
+  "contract_status": "BOUND_AS_REQUIRED_BEFORE_CANDIDATE_V2_SCREEN",
+  "current_git_head": "58e507a122e8e23de62ecdb40a0606bc146f8953",
+  "family_coverage": [
+    "default",
+    "governance",
+    "masked_ambiguous",
+    "math",
+    "mixed_math_governance",
+    "poetry"
+  ],
+  "forbidden_claims": [
+    "R6_OPEN",
+    "LEARNED_ROUTER_SUPERIORITY_EARNED",
+    "LEARNED_ROUTER_ACTIVATED",
+    "MULTI_LOBE_AUTHORIZED",
+    "PACKAGE_PROMOTION_APPROVED",
+    "COMMERCIAL_BROADENING"
+  ],
+  "generated_utc": "2026-04-27T19:35:14Z",
+  "holdout_policy": {
+    "candidate_v2_may_not_train_on_counted_labels": true,
+    "r01_r04_failure_outcomes_diagnostic_only": true,
+    "r01_r04_not_counted_for_candidate_v2_superiority": true,
+    "static_comparator_labels_blinded_until_counted_screen": true
+  },
+  "learned_router_activated": false,
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "mirror_masked_requirements": {
+    "all_rows_require_mirror_masked_variants": true,
+    "required": true
+  },
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_CANDIDATE_V2_SOURCE_PACKET__BLIND_INPUT_CONTRACT_BOUND",
+  "package_promotion_remains_deferred": true,
+  "previous_authoritative_lane": "B04_R6_CANDIDATE_REVISION_OR_CLOSEOUT",
+  "r6_authorized": false,
+  "r6_open": false,
+  "row_count": 6,
+  "schema_id": "kt.operator.b04_r6_new_blind_input_universe_contract.v1",
+  "source_hashes": [
+    {
+      "case_id": "R6B01",
+      "source_sha256": "8edb0b2cadd5a3009462f8a522205d26c733b1ec0b3993985cb26960b3fd6aa1"
+    },
+    {
+      "case_id": "R6B02",
+      "source_sha256": "1d865315c937d68aa2337d5d559893c57208e77883d2898e637356f427fcafa4"
+    },
+    {
+      "case_id": "R6B03",
+      "source_sha256": "4dcd7e953cbf63ed6d84c404ce77c8cf1fe84c1b3bd56354cf0bd50690ed5ed0"
+    },
+    {
+      "case_id": "R6B04",
+      "source_sha256": "ce3b85a65f5972f06d19135cca82e7ef42b0ec764b2309b6268a9db1d8ec0593"
+    },
+    {
+      "case_id": "R6B05",
+      "source_sha256": "bca3956ee29dbca11e0c18c0ceaa8c69186ee1edfc8716a6be719415c0334336"
+    },
+    {
+      "case_id": "R6B06",
+      "source_sha256": "206e8b05963f1dbc7a86eeabb616e97cdc556b21bf18d81ca24783bbaeee796e"
+    }
+  ],
+  "status": "PASS",
+  "subject_main_head": "a64245b7e75d8db64c659cc4e58fb836830284bc",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true
+}

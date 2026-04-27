@@ -10,19 +10,27 @@
     "COMMERCIAL_BROADENING"
   ],
   "generated_utc": "2026-04-27T19:35:14Z",
+  "generation_performed": false,
   "learned_router_activated": false,
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
   "multi_lobe_authorized": false,
   "next_lawful_move": "AUTHOR_B04_R6_CANDIDATE_V2_SOURCE_PACKET__BLIND_INPUT_CONTRACT_BOUND",
   "package_promotion_remains_deferred": true,
+  "plan_status": "PREP_ONLY",
   "previous_authoritative_lane": "B04_R6_CANDIDATE_REVISION_OR_CLOSEOUT",
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v1",
+  "required_future_steps": [
+    "author candidate v2 source packet",
+    "bind candidate v2 source/provenance/hash",
+    "prove no contamination against new blind input labels",
+    "prove deterministic replay and trace compatibility",
+    "run candidate v2 admissibility before any shadow screen"
+  ],
+  "schema_id": "kt.operator.b04_r6_candidate_v2_generation_plan.v1",
   "status": "PASS",
   "subject_main_head": "a64245b7e75d8db64c659cc4e58fb836830284bc",
   "trust_zone_law_unchanged": true,
-  "truth_engine_derivation_law_unchanged": true,
-  "verdict": "CANDIDATE_REVISION_AUTHORIZED__NEW_BLIND_INPUT_REQUIRED"
+  "truth_engine_derivation_law_unchanged": true
 }

@@ -1,5 +1,7 @@
 {
   "authoritative_lane": "B04_R6_CANDIDATE_REVISION_PACKET__NEW_BLIND_INPUT_UNIVERSE_REQUIRED",
+  "candidate_wins_on_screen1": 0,
+  "case_count": 4,
   "current_git_head": "58e507a122e8e23de62ecdb40a0606bc146f8953",
   "forbidden_claims": [
     "R6_OPEN",
@@ -10,6 +12,7 @@
     "COMMERCIAL_BROADENING"
   ],
   "generated_utc": "2026-04-27T19:35:14Z",
+  "interpretation": "The static comparator was not beaten on any R01-R04 row; this does not close R6, but requires new blind proof for any revised candidate.",
   "learned_router_activated": false,
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
@@ -19,10 +22,11 @@
   "previous_authoritative_lane": "B04_R6_CANDIDATE_REVISION_OR_CLOSEOUT",
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v1",
+  "schema_id": "kt.operator.b04_r6_static_comparator_dominance_analysis.v1",
+  "static_baseline_weakening_allowed": false,
+  "static_dominance_on_screen1": true,
   "status": "PASS",
   "subject_main_head": "a64245b7e75d8db64c659cc4e58fb836830284bc",
   "trust_zone_law_unchanged": true,
-  "truth_engine_derivation_law_unchanged": true,
-  "verdict": "CANDIDATE_REVISION_AUTHORIZED__NEW_BLIND_INPUT_REQUIRED"
+  "truth_engine_derivation_law_unchanged": true
 }

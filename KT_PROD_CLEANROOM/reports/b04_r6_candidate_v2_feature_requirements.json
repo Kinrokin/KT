@@ -19,10 +19,16 @@
   "previous_authoritative_lane": "B04_R6_CANDIDATE_REVISION_OR_CLOSEOUT",
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v1",
+  "requirements": [
+    "produce non-label-derived route confidence evidence",
+    "distinguish static-match from superiority evidence",
+    "preserve abstention/static-hold behavior",
+    "emit route decision, over-routing, abstention, and mirror/masked traces",
+    "operate under blind candidate-visible fields only"
+  ],
+  "schema_id": "kt.operator.b04_r6_candidate_v2_feature_requirements.v1",
   "status": "PASS",
   "subject_main_head": "a64245b7e75d8db64c659cc4e58fb836830284bc",
   "trust_zone_law_unchanged": true,
-  "truth_engine_derivation_law_unchanged": true,
-  "verdict": "CANDIDATE_REVISION_AUTHORIZED__NEW_BLIND_INPUT_REQUIRED"
+  "truth_engine_derivation_law_unchanged": true
 }

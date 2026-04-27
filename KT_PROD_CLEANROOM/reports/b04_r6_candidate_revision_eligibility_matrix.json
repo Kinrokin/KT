@@ -1,5 +1,36 @@
 {
+  "allowed_outcomes": [
+    "CANDIDATE_REVISION_AUTHORIZED__NEW_BLIND_INPUT_REQUIRED",
+    "R6_CLOSEOUT__NO_LAWFUL_REVISION_PATH",
+    "R6_DEFERRED__REVISION_DEFECT_REMAINS"
+  ],
   "authoritative_lane": "B04_R6_CANDIDATE_REVISION_PACKET__NEW_BLIND_INPUT_UNIVERSE_REQUIRED",
+  "checks": [
+    {
+      "check_id": "prior_failure_clean",
+      "status": "PASS"
+    },
+    {
+      "check_id": "revision_path_plausible",
+      "status": "PASS"
+    },
+    {
+      "check_id": "r01_r04_reuse_for_counted_screen_forbidden",
+      "status": "PASS"
+    },
+    {
+      "check_id": "new_blind_input_universe_required",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_v2_generation_not_performed_here",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_screen_not_authorized_here",
+      "status": "PASS"
+    }
+  ],
   "current_git_head": "58e507a122e8e23de62ecdb40a0606bc146f8953",
   "forbidden_claims": [
     "R6_OPEN",
@@ -19,10 +50,10 @@
   "previous_authoritative_lane": "B04_R6_CANDIDATE_REVISION_OR_CLOSEOUT",
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v1",
+  "schema_id": "kt.operator.b04_r6_candidate_revision_eligibility_matrix.v1",
+  "selected_outcome": "CANDIDATE_REVISION_AUTHORIZED__NEW_BLIND_INPUT_REQUIRED",
   "status": "PASS",
   "subject_main_head": "a64245b7e75d8db64c659cc4e58fb836830284bc",
   "trust_zone_law_unchanged": true,
-  "truth_engine_derivation_law_unchanged": true,
-  "verdict": "CANDIDATE_REVISION_AUTHORIZED__NEW_BLIND_INPUT_REQUIRED"
+  "truth_engine_derivation_law_unchanged": true
 }
