@@ -1,0 +1,181 @@
+{
+  "authoritative_lane": "B04_R6_SHADOW_ROUTER_SUPERIORITY_SCREEN_EXECUTION",
+  "current_git_head": "8b8a7b637c91a2633d7ff235a3868fba6666932b",
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_activated",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening"
+  ],
+  "generated_utc": "2026-04-27T18:25:50Z",
+  "learned_router_activated": false,
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_CANDIDATE_REVISION_OR_CLOSEOUT_PACKET",
+  "package_promotion_remains_deferred": true,
+  "r6_authorized": false,
+  "r6_open": false,
+  "rows": [
+    {
+      "baseline_adapter_ids": [
+        "lobe.censor.v1",
+        "lobe.quant.v1"
+      ],
+      "candidate_adapter_ids": [
+        "lobe.censor.v1",
+        "lobe.quant.v1"
+      ],
+      "candidate_beats_static": false,
+      "case_id": "R01",
+      "exact_order_match": true,
+      "family": "math",
+      "no_regression_pass": true,
+      "order_advisory": false,
+      "route_quality_delta": 0,
+      "route_set_match": true,
+      "trace": {
+        "abstention_decision": false,
+        "activation_allowed": false,
+        "candidate_id": "b04_r6_minimal_deterministic_shadow_router_v1",
+        "candidate_version": "1.0.0",
+        "case_id": "R01",
+        "confidence": 1.0,
+        "consequence_visibility": {
+          "package_promotion_dependency": false,
+          "selected_family": "math",
+          "static_hold_preserved": false
+        },
+        "family": "math",
+        "overrouting_detected": false,
+        "route_adapter_ids": [
+          "lobe.censor.v1",
+          "lobe.quant.v1"
+        ],
+        "route_reason": "deterministic_policy_family_match",
+        "seed": 42,
+        "shadow_only": true
+      }
+    },
+    {
+      "baseline_adapter_ids": [
+        "lobe.muse.v1"
+      ],
+      "candidate_adapter_ids": [
+        "lobe.muse.v1"
+      ],
+      "candidate_beats_static": false,
+      "case_id": "R02",
+      "exact_order_match": true,
+      "family": "poetry",
+      "no_regression_pass": true,
+      "order_advisory": false,
+      "route_quality_delta": 0,
+      "route_set_match": true,
+      "trace": {
+        "abstention_decision": false,
+        "activation_allowed": false,
+        "candidate_id": "b04_r6_minimal_deterministic_shadow_router_v1",
+        "candidate_version": "1.0.0",
+        "case_id": "R02",
+        "confidence": 1.0,
+        "consequence_visibility": {
+          "package_promotion_dependency": false,
+          "selected_family": "poetry",
+          "static_hold_preserved": false
+        },
+        "family": "poetry",
+        "overrouting_detected": false,
+        "route_adapter_ids": [
+          "lobe.muse.v1"
+        ],
+        "route_reason": "deterministic_policy_family_match",
+        "seed": 42,
+        "shadow_only": true
+      }
+    },
+    {
+      "baseline_adapter_ids": [
+        "lobe.auditor.v1",
+        "lobe.censor.v1"
+      ],
+      "candidate_adapter_ids": [
+        "lobe.censor.v1",
+        "lobe.auditor.v1"
+      ],
+      "candidate_beats_static": false,
+      "case_id": "R03",
+      "exact_order_match": false,
+      "family": "governance",
+      "no_regression_pass": true,
+      "order_advisory": true,
+      "route_quality_delta": 0,
+      "route_set_match": true,
+      "trace": {
+        "abstention_decision": false,
+        "activation_allowed": false,
+        "candidate_id": "b04_r6_minimal_deterministic_shadow_router_v1",
+        "candidate_version": "1.0.0",
+        "case_id": "R03",
+        "confidence": 1.0,
+        "consequence_visibility": {
+          "package_promotion_dependency": false,
+          "selected_family": "governance",
+          "static_hold_preserved": false
+        },
+        "family": "governance",
+        "overrouting_detected": false,
+        "route_adapter_ids": [
+          "lobe.censor.v1",
+          "lobe.auditor.v1"
+        ],
+        "route_reason": "deterministic_policy_family_match",
+        "seed": 42,
+        "shadow_only": true
+      }
+    },
+    {
+      "baseline_adapter_ids": [
+        "lobe.strategist.v1"
+      ],
+      "candidate_adapter_ids": [
+        "lobe.strategist.v1"
+      ],
+      "candidate_beats_static": false,
+      "case_id": "R04",
+      "exact_order_match": true,
+      "family": "default",
+      "no_regression_pass": true,
+      "order_advisory": false,
+      "route_quality_delta": 0,
+      "route_set_match": true,
+      "trace": {
+        "abstention_decision": true,
+        "activation_allowed": false,
+        "candidate_id": "b04_r6_minimal_deterministic_shadow_router_v1",
+        "candidate_version": "1.0.0",
+        "case_id": "R04",
+        "confidence": 0.0,
+        "consequence_visibility": {
+          "package_promotion_dependency": false,
+          "selected_family": "default",
+          "static_hold_preserved": true
+        },
+        "family": "default",
+        "overrouting_detected": false,
+        "route_adapter_ids": [
+          "lobe.strategist.v1"
+        ],
+        "route_reason": "deterministic_static_hold_default",
+        "seed": 42,
+        "shadow_only": true
+      }
+    }
+  ],
+  "schema_id": "kt.operator.b04_r6_shadow_router_route_decision_trace.v1",
+  "status": "PASS",
+  "subject_main_head": "e61e8fc7d0265b96f77518aa53cc20bec70c5c4c",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true
+}
