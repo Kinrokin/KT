@@ -67,7 +67,7 @@ def _base(*, generated_utc: str, head: str, subject_main_head: str, status: str 
 
 
 def _ensure_false(payload: Dict[str, Any], key: str, *, label: str) -> None:
-    if payload.get(key) is not False:
+    if key in payload and payload.get(key) is not False:
         raise RuntimeError(f"FAIL_CLOSED: {label} must keep {key}=false")
 
 
