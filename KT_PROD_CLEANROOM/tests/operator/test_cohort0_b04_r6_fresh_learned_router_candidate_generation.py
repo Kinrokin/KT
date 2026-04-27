@@ -134,6 +134,7 @@ def test_fresh_candidate_generation_admits_shadow_only_candidate(
     readiness = _load(reports / tranche.REPORT_OUTPUTS["shadow_readiness_receipt"])
     blocker_ledger = _load(reports / tranche.REPORT_OUTPUTS["blocker_ledger"])
     generated_manifest = _load(run_root / tranche.RUN_OUTPUTS["candidate_manifest"])
+    route_schema = _load(reports / tranche.REPORT_OUTPUTS["route_trace_schema"])
 
     assert result["verdict"] == tranche.FINAL_VERDICT
     assert receipt["candidate_source_authorized"] is True
@@ -144,6 +145,7 @@ def test_fresh_candidate_generation_admits_shadow_only_candidate(
     assert readiness["outcome"] == "R6_SHADOW_SCREEN_EXECUTION_AUTHORIZED"
     assert blocker_ledger["live_blocker_count"] == 0
     assert generated_manifest["candidate"]["promotion_allowed"] is False
+    assert "route_adapter_ids" in route_schema["required_fields"]
     assert (run_root / tranche.RUN_OUTPUTS["candidate_source"]).is_file()
 
 
