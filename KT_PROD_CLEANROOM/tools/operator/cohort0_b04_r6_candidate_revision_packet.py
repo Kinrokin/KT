@@ -20,12 +20,12 @@ FINAL_VERDICT = "CANDIDATE_REVISION_AUTHORIZED__NEW_BLIND_INPUT_REQUIRED"
 NEXT_LAWFUL_MOVE = "AUTHOR_B04_R6_CANDIDATE_V2_SOURCE_PACKET__BLIND_INPUT_CONTRACT_BOUND"
 
 FORBIDDEN_CLAIMS = [
-    "R6_OPEN",
-    "LEARNED_ROUTER_SUPERIORITY_EARNED",
-    "LEARNED_ROUTER_ACTIVATED",
-    "MULTI_LOBE_AUTHORIZED",
-    "PACKAGE_PROMOTION_APPROVED",
-    "COMMERCIAL_BROADENING",
+    "r6_open",
+    "learned_router_superiority_earned",
+    "learned_router_activated",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening",
 ]
 
 INPUTS = {
@@ -127,6 +127,14 @@ def _require_prior_state(payloads: Dict[str, Dict[str, Any]]) -> None:
         raise RuntimeError("FAIL_CLOSED: prior court did not authorize this revision packet")
     if prior_next.get("next_lawful_move") != EXPECTED_PRIOR_NEXT_MOVE:
         raise RuntimeError("FAIL_CLOSED: prior next-lawful-move receipt mismatch")
+    if receipt.get("candidate_revision_allowed_next") is not True:
+        raise RuntimeError("FAIL_CLOSED: prior receipt must explicitly authorize candidate revision next")
+    if receipt.get("input_universe_for_next_counted_screen_must_be_new_or_blinded") is not True:
+        raise RuntimeError("FAIL_CLOSED: prior receipt must require a new or blinded next input universe")
+    if receipt.get("candidate_v2_generation_performed") is not False:
+        raise RuntimeError("FAIL_CLOSED: prior court must not have generated candidate v2")
+    if receipt.get("shadow_screen_execution_performed") is not False:
+        raise RuntimeError("FAIL_CLOSED: prior court must not have executed another shadow screen")
     if blind_receipt.get("new_blind_input_universe_required") is not True:
         raise RuntimeError("FAIL_CLOSED: blind input universe requirement must already be bound")
     if blind_receipt.get("r01_r04_closed_for_candidate_v2_counted_superiority_rerun") is not True:
@@ -195,6 +203,24 @@ def _feature_gap_rows(per_row: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
     return rows
 
 
+def _per_row_stats(per_row: list[Dict[str, Any]]) -> Dict[str, Any]:
+    case_count = len(per_row)
+    candidate_win_count = sum(1 for row in per_row if row.get("candidate_beats_static") is True)
+    if case_count <= 0:
+        raise RuntimeError("FAIL_CLOSED: per-row failure matrix must contain rows")
+    if candidate_win_count != 0:
+        raise RuntimeError("FAIL_CLOSED: candidate revision packet requires zero candidate wins in screen 1")
+    route_quality_delta_sum = sum(int(row.get("route_quality_delta", 0)) for row in per_row)
+    static_match_count = sum(1 for row in per_row if row.get("diagnostic_finding") == "STATIC_MATCH_NO_SUPERIORITY")
+    return {
+        "case_count": case_count,
+        "candidate_win_count": candidate_win_count,
+        "route_quality_delta_sum": route_quality_delta_sum,
+        "static_match_count": static_match_count,
+        "static_comparator_dominance": candidate_win_count == 0 and static_match_count == case_count,
+    }
+
+
 def _report() -> str:
     return (
         "# Cohort-0 B04 R6 Candidate Revision Packet\n\n"
@@ -224,6 +250,7 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
     base = _base(generated_utc=generated_utc, head=head, subject_main_head=subject_main_head)
     input_bindings = _input_hashes(root)
     per_row = _rows(payloads["prior_per_row_failure_matrix"], label="prior per-row failure matrix")
+    row_stats = _per_row_stats(per_row)
     feature_gap_rows = _feature_gap_rows(per_row)
     blind_rows = _blind_universe_candidate_rows()
 
@@ -232,7 +259,7 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
         **base,
         "screen_id": "B04_R6_SHADOW_SCREEN_1",
         "bound_result": {
-            "candidate_wins": "0/4",
+            "candidate_wins": f"{row_stats['candidate_win_count']}/{row_stats['case_count']}",
             "disqualifiers": 0,
             "control_preservation": "PASS",
             "abstention_quality": "PASS",
@@ -240,7 +267,7 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
             "learned_router_superiority_earned": False,
         },
         "loss_classification": {
-            "static_comparator_dominance": True,
+            "static_comparator_dominance": row_stats["static_comparator_dominance"],
             "candidate_underfitting": True,
             "insufficient_feature_basis": True,
             "route_scoring_weakness": True,
@@ -380,9 +407,9 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
     static_dominance = {
         "schema_id": "kt.operator.b04_r6_static_comparator_dominance_analysis.v1",
         **base,
-        "static_dominance_on_screen1": True,
-        "candidate_wins_on_screen1": 0,
-        "case_count": len(per_row),
+        "static_dominance_on_screen1": row_stats["static_comparator_dominance"],
+        "candidate_wins_on_screen1": row_stats["candidate_win_count"],
+        "case_count": row_stats["case_count"],
         "interpretation": "The static comparator was not beaten on any R01-R04 row; this does not close R6, but requires new blind proof for any revised candidate.",
         "static_baseline_weakening_allowed": False,
         "next_lawful_move": NEXT_LAWFUL_MOVE,

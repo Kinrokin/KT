@@ -47,7 +47,9 @@ def _write_inputs(root: Path) -> Path:
             "schema_id": "receipt",
             "verdict": tranche.EXPECTED_PRIOR_VERDICT,
             "candidate_revision_allowed_next": True,
+            "candidate_v2_generation_performed": False,
             "input_universe_for_next_counted_screen_must_be_new_or_blinded": True,
+            "shadow_screen_execution_performed": False,
         },
         "prior_failure_autopsy_receipt": {
             **common,
@@ -133,6 +135,7 @@ def test_candidate_revision_packet_authorizes_revision_with_blind_input_contract
 
     assert result["verdict"] == tranche.FINAL_VERDICT
     assert receipt["candidate_revision_authorized"] is True
+    assert "r6_open" in receipt["forbidden_claims"]
     assert receipt["candidate_v2_screen_execution_authorized"] is False
     assert contract["row_count"] == 6
     assert all(row["static_baseline_labels_blinded_until_counted_screen"] for row in contract["candidate_rows"])
@@ -160,6 +163,28 @@ def test_candidate_revision_packet_fails_closed_if_prior_next_move_wrong(tmp_pat
     _patch_env(monkeypatch, tmp_path)
 
     with pytest.raises(RuntimeError, match="next-lawful-move"):
+        tranche.run(reports_root=reports)
+
+
+def test_candidate_revision_packet_fails_closed_if_prior_revision_flag_false(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    receipt = _load(reports / "b04_r6_candidate_revision_or_closeout_receipt.json")
+    receipt["candidate_revision_allowed_next"] = False
+    _write_json(reports / "b04_r6_candidate_revision_or_closeout_receipt.json", receipt)
+    _patch_env(monkeypatch, tmp_path)
+
+    with pytest.raises(RuntimeError, match="authorize candidate revision"):
+        tranche.run(reports_root=reports)
+
+
+def test_candidate_revision_packet_fails_closed_if_per_row_has_candidate_win(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    per_row = _load(reports / "b04_r6_per_row_failure_matrix.json")
+    per_row["rows"][0]["candidate_beats_static"] = True
+    _write_json(reports / "b04_r6_per_row_failure_matrix.json", per_row)
+    _patch_env(monkeypatch, tmp_path)
+
+    with pytest.raises(RuntimeError, match="zero candidate wins"):
         tranche.run(reports_root=reports)
 
 
