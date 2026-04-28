@@ -19,6 +19,7 @@
     "wrong_static_hold_cost_bucket",
     "calibration_bucket_without_blind_outcomes"
   ],
+  "allowed_features_validated": true,
   "allowed_outcomes": [
     "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATED__CANDIDATE_GENERATION_NEXT",
     "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_DEFERRED__NAMED_VALIDATION_DEFECT_REMAINS",
@@ -242,7 +243,7 @@
   "r6_open": false,
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v9",
+  "schema_id": "kt.b04_r6.afsh_allowed_features_validation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -361,12 +362,11 @@
   ],
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_candidate_generation",
-      "detail": "the next lawful move is candidate generation lane, not candidate execution inside validation",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "allowed_features_contract_bound",
+      "detail": "allowed features are explicit",
+      "group": "allowed_features",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_ALLOWED_FEATURES_MISSING",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATED__CANDIDATE_GENERATION_NEXT"
+  ]
 }

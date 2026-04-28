@@ -222,11 +222,12 @@
   "lobe_escalation_authorized": false,
   "multi_lobe_authorized": false,
   "next_lawful_move": "GENERATE_B04_R6_AFSH_CANDIDATE",
+  "no_downstream_authorization_drift": true,
   "old_r01_r04_diagnostic_only": true,
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 10,
   "previous_authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
   "provenance_bindings": [
     "source_packet_hash",
@@ -242,7 +243,7 @@
   "r6_open": false,
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v9",
+  "schema_id": "kt.b04_r6.afsh_source_no_authorization_drift_validation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -361,12 +362,74 @@
   ],
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_candidate_generation",
-      "detail": "the next lawful move is candidate generation lane, not candidate execution inside validation",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "no_authorization_drift_receipt_passes",
+      "detail": "no-authorization-drift receipt passes",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_GENERATION_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_candidate_generation_execution",
+      "detail": "candidate generation is not executed",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_GENERATION_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_candidate_training_execution",
+      "detail": "candidate training is not executed",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_TRAINING_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_admissibility_execution",
+      "detail": "admissibility is not executed",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_ADMISSIBILITY_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_shadow_screen_packet_authorization",
+      "detail": "shadow-screen packet remains unauthorized",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_SHADOW_PACKET_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_shadow_screen_execution_authorization",
+      "detail": "shadow-screen execution remains unauthorized",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_SHADOW_SCREEN_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_r6_open_drift",
+      "detail": "R6 remains closed",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_R6_OPEN_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_superiority_drift",
+      "detail": "learned-router superiority remains unearned",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_SUPERIORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_activation_or_cutover_drift",
+      "detail": "activation/cutover remains false",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_ACTIVATION_CUTOVER_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_package_promotion_drift",
+      "detail": "package promotion remains deferred",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_PACKAGE_PROMOTION_DRIFT",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATED__CANDIDATE_GENERATION_NEXT"
+  ]
 }
