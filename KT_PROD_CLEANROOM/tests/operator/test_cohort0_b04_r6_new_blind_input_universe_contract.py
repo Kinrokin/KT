@@ -223,6 +223,21 @@ def test_authority_branch_rejects_already_validation_next_move(
         tranche.run(reports_root=reports)
 
 
+def test_authority_branch_accepts_own_validation_next_move_for_regeneration(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _write_inputs(tmp_path)
+    next_receipt = _load(reports / "b04_r6_next_lawful_move_receipt.json")
+    next_receipt["authoritative_lane"] = tranche.AUTHORITATIVE_LANE
+    next_receipt["next_lawful_move"] = tranche.NEXT_LAWFUL_MOVE
+    _write_json(reports / "b04_r6_next_lawful_move_receipt.json", next_receipt)
+    _patch_env(monkeypatch, tmp_path)
+
+    result = tranche.run(reports_root=reports)
+
+    assert result["next_lawful_move"] == tranche.NEXT_LAWFUL_MOVE
+
+
 def test_main_replay_accepts_already_validation_next_move(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _write_inputs(tmp_path)
     next_receipt = _load(reports / "b04_r6_next_lawful_move_receipt.json")

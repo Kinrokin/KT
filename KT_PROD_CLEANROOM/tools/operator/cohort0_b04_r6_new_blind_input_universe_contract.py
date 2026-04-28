@@ -254,10 +254,11 @@ def _require_inputs(
     if risk.get("blind_universe_binding_authorized_by_this_packet") is not False:
         raise RuntimeError("FAIL_CLOSED: architecture prep risk matrix must not pre-bind a blind universe")
 
+    previous_next = handoff_payloads["previous_next_lawful_move"]
     acceptable_next_moves = {EXPECTED_PREVIOUS_NEXT_MOVE}
-    if current_branch == "main":
+    if current_branch == "main" or previous_next.get("authoritative_lane") == AUTHORITATIVE_LANE:
         acceptable_next_moves.add(NEXT_LAWFUL_MOVE)
-    if handoff_payloads["previous_next_lawful_move"].get("next_lawful_move") not in acceptable_next_moves:
+    if previous_next.get("next_lawful_move") not in acceptable_next_moves:
         raise RuntimeError("FAIL_CLOSED: previous next-lawful-move receipt mismatch")
 
     architecture_binding_head = str(receipt.get("subject_main_head") or receipt.get("current_git_head") or "").strip()
