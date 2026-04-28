@@ -1,0 +1,83 @@
+{
+  "activation_review_authorized": false,
+  "authoritative_lane": "B04_R6_MAJOR_ROUTER_REDESIGN_SCOPE",
+  "candidate_generation_authorized": false,
+  "current_git_head": "03a7398eb01870573b4766cae6cf254687c97e47",
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "activation_review_authorized",
+    "learned_router_activated",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening"
+  ],
+  "generated_utc": "2026-04-28T15:18:40Z",
+  "learned_router_activated": false,
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT",
+  "options": [
+    {
+      "addresses": [
+        "ABSTENTION_COLLAPSE",
+        "OVERRouting_COLLAPSE",
+        "CONTROL_DEGRADATION"
+      ],
+      "default_action": "STATIC_HOLD",
+      "eligible_for_next_architecture_contract": true,
+      "option_id": "ABSTENTION_FIRST_STATIC_HOLD_ROUTER",
+      "recommended_first_architecture_contract": true
+    },
+    {
+      "addresses": [
+        "ABSTENTION_COLLAPSE",
+        "CONTROL_DEGRADATION"
+      ],
+      "default_action": "STATIC_HOLD_ON_UNCERTAINTY",
+      "eligible_for_next_architecture_contract": true,
+      "option_id": "UNCERTAINTY_GATED_CONFORMAL_ROUTER",
+      "recommended_first_architecture_contract": false
+    },
+    {
+      "addresses": [
+        "STATIC_COMPARATOR_DOMINANCE",
+        "CONTROL_DEGRADATION"
+      ],
+      "default_action": "PREDICT_THEN_SELECT_OR_STATIC_HOLD",
+      "eligible_for_next_architecture_contract": true,
+      "option_id": "TWO_STAGE_PERFORMANCE_PREDICTOR_SELECTOR",
+      "recommended_first_architecture_contract": false
+    },
+    {
+      "addresses": [
+        "OVERRouting_COLLAPSE",
+        "CONTROL_DEGRADATION"
+      ],
+      "default_action": "STATIC_HOLD_UNLESS_RISK_COST_MARGIN_PASSES",
+      "eligible_for_next_architecture_contract": true,
+      "option_id": "COST_AWARE_SELECTOR_WITH_STATIC_FALLBACK",
+      "recommended_first_architecture_contract": false
+    },
+    {
+      "addresses": [],
+      "eligible_for_next_architecture_contract": false,
+      "option_id": "QUICK_CANDIDATE_V3_PATCH",
+      "recommended_first_architecture_contract": false,
+      "rejection_reason": "Not a major redesign after v2 behavior disqualification."
+    }
+  ],
+  "package_promotion_remains_deferred": true,
+  "previous_authoritative_lane": "B04_R6_CANDIDATE_V2_DISQUALIFICATION_AND_CLOSEOUT_OR_MAJOR_REDESIGN",
+  "r6_authorized": false,
+  "r6_open": false,
+  "recommended_next_architecture_family": "ABSTENTION_FIRST_STATIC_HOLD_ROUTER",
+  "schema_id": "kt.operator.b04_r6_major_router_architecture_options_matrix.v1",
+  "schema_version": "1.0.0",
+  "status": "PREP_ONLY",
+  "subject_main_head": "03a7398eb01870573b4766cae6cf254687c97e47",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true
+}

@@ -1,10 +1,9 @@
 {
   "activation_review_authorized": false,
-  "aggregate_candidate_wins": 0,
-  "aggregate_counted_cases": 10,
   "authoritative_lane": "B04_R6_MAJOR_ROUTER_REDESIGN_SCOPE",
-  "candidate_family_never_beat_static": true,
+  "candidate_family": "minimal_deterministic_shadow_router_family_v1_v2",
   "current_git_head": "03a7398eb01870573b4766cae6cf254687c97e47",
+  "family_level_conclusion": "STRUCTURAL_UNSAFE_OR_INSUFFICIENT_FOR_R6",
   "forbidden_claims": [
     "r6_open",
     "learned_router_superiority_earned",
@@ -19,19 +18,37 @@
   "learned_router_activated": false,
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
-  "metric_widening_allowed": false,
   "multi_lobe_authorized": false,
   "next_lawful_move": "AUTHOR_B04_R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT",
+  "old_blind_universes_diagnostic_only": true,
   "package_promotion_remains_deferred": true,
   "previous_authoritative_lane": "B04_R6_CANDIDATE_V2_DISQUALIFICATION_AND_CLOSEOUT_OR_MAJOR_REDESIGN",
+  "quick_candidate_v3_forbidden": true,
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_static_comparator_dominance_analysis.v3",
+  "retired_for_r6": true,
+  "retirement_reason": "v1 failed superiority and v2 invalidated through candidate behavior disqualifiers.",
+  "schema_id": "kt.operator.b04_r6_v1_v2_candidate_family_autopsy.v1",
   "schema_version": "1.0.0",
-  "static_baseline_remains_control": true,
-  "static_baseline_weakening_allowed": false,
-  "status": "PREP_ONLY",
+  "second_shadow_screen_rerun_bar_active": true,
+  "status": "PASS",
   "subject_main_head": "03a7398eb01870573b4766cae6cf254687c97e47",
   "trust_zone_law_unchanged": true,
-  "truth_engine_derivation_law_unchanged": true
+  "truth_engine_derivation_law_unchanged": true,
+  "v1_result": {
+    "candidate_wins": 0,
+    "case_count": 4,
+    "disqualifiers": 0,
+    "guards_preserved": true
+  },
+  "v2_result": {
+    "candidate_wins": 0,
+    "case_count": 6,
+    "disqualifiers": [
+      "CONTROL_DEGRADATION",
+      "ABSTENTION_COLLAPSE",
+      "OVERRouting_COLLAPSE"
+    ],
+    "forensic_cause": "CANDIDATE_BEHAVIOR_DEFECT"
+  }
 }
