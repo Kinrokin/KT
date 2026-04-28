@@ -1,8 +1,12 @@
 {
   "activation_review_authorized": false,
-  "authoritative_lane": "B04_R6_CANDIDATE_V2_DISQUALIFICATION_AND_CLOSEOUT_OR_MAJOR_REDESIGN",
-  "current_git_head": "e689f74129940d4a24ddf5ea2fb68268e355196f",
-  "family_assessment": "CURRENT_MINIMAL_DETERMINISTIC_ROUTER_FAMILY_RETIRED_FOR_R6",
+  "aggregate_candidate_wins": 0,
+  "aggregate_counted_cases": 10,
+  "architecture_implication": "New router family must be abstention-first with static-hold default and guard-before-route law.",
+  "authoritative_lane": "B04_R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT",
+  "candidate_family_retired_for_r6": true,
+  "current_candidate_family_status": "RETIRED_FOR_R6",
+  "current_git_head": "3aa568762e39fe1c4d0059e36392bc3ee6b6ee39",
   "forbidden_claims": [
     "r6_open",
     "learned_router_superiority_earned",
@@ -13,47 +17,28 @@
     "package_promotion_approved",
     "commercial_broadening"
   ],
-  "generated_utc": "2026-04-28T14:38:54Z",
+  "generated_utc": "2026-04-28T16:30:28Z",
+  "hard_disqualifiers_observed": [
+    "CONTROL_DEGRADATION",
+    "ABSTENTION_COLLAPSE",
+    "OVERRouting_COLLAPSE"
+  ],
   "learned_router_activated": false,
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
-  "major_redesign_required_for_any_future_R6_attempt": true,
   "multi_lobe_authorized": false,
-  "next_lawful_move": "AUTHOR_B04_R6_MAJOR_ROUTER_REDESIGN_SCOPE_PACKET__NEW_ARCHITECTURE_AND_NEW_BLIND_UNIVERSE_REQUIRED",
-  "ordinary_revision_allowed": false,
+  "next_lawful_move": "AUTHOR_B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT",
   "package_promotion_remains_deferred": true,
-  "previous_authoritative_lane": "B04_R6_SECOND_SHADOW_SCREEN_FORENSIC_AND_RERUN_BAR",
-  "quick_candidate_v3_allowed": false,
+  "previous_authoritative_lane": "B04_R6_MAJOR_ROUTER_REDESIGN_SCOPE",
+  "quick_candidate_v3_forbidden": true,
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_candidate_family_autopsy.v1",
+  "schema_id": "kt.operator.b04_r6_candidate_family_autopsy.v2",
   "schema_version": "1.0.0",
   "status": "PASS",
-  "subject_main_head": "e689f74129940d4a24ddf5ea2fb68268e355196f",
+  "subject_main_head": "3aa568762e39fe1c4d0059e36392bc3ee6b6ee39",
   "trust_zone_law_unchanged": true,
   "truth_engine_derivation_law_unchanged": true,
-  "v1": {
-    "candidate_id": "b04_r6_minimal_deterministic_shadow_router_v1",
-    "candidate_wins": 0,
-    "case_count": 4,
-    "disqualifier_count": 0,
-    "guard_law_preserved": true,
-    "result": "CLEAN_CAPABILITY_FAILURE"
-  },
-  "v2": {
-    "candidate_id": "b04_r6_diagnostic_gap_shadow_router_v2",
-    "candidate_wins": 0,
-    "case_count": 6,
-    "disqualifier_count": 3,
-    "guard_law_preserved": false,
-    "implicated_cases": [
-      "R6B05"
-    ],
-    "result": "INVALIDATED_BY_CANDIDATE_BEHAVIOR",
-    "triggered_guard_failures": [
-      "CONTROL_DEGRADATION",
-      "ABSTENTION_COLLAPSE",
-      "OVERRouting_COLLAPSE"
-    ]
-  }
+  "v1_failure_class": "CAPABILITY_FAILURE_WITH_GUARDS_PRESERVED",
+  "v2_failure_class": "INVALIDATED_CANDIDATE_BEHAVIOR_DEFECT"
 }

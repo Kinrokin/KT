@@ -1,15 +1,6 @@
 {
   "activation_review_authorized": false,
-  "allowed_outcomes": [
-    "R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT_BOUND__BLIND_UNIVERSE_CONTRACT_NEXT",
-    "R6_DEFERRED__ARCHITECTURE_CONTRACT_DEFECT_REMAINS",
-    "R6_CLOSEOUT__NO_LAWFUL_REDESIGN_ARCHITECTURE_SELECTED"
-  ],
-  "architecture_contract_bound": true,
   "authoritative_lane": "B04_R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT",
-  "candidate_family_retired_for_r6": true,
-  "candidate_generation_authorized": false,
-  "comparator_metric_preservation_required": true,
   "current_git_head": "3aa568762e39fe1c4d0059e36392bc3ee6b6ee39",
   "forbidden_claims": [
     "r6_open",
@@ -25,24 +16,35 @@
   "learned_router_activated": false,
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
+  "maps_to_v2_failures": [
+    {
+      "architecture_response": "Stage 3 guard ensemble plus static fallback before route admission.",
+      "v2_failure": "CONTROL_DEGRADATION"
+    },
+    {
+      "architecture_response": "Stage 1 abstention/uncertainty gate with static-hold default.",
+      "v2_failure": "ABSTENTION_COLLAPSE"
+    },
+    {
+      "architecture_response": "Over-routing risk trace, route-rate containment, and static-hold fallback.",
+      "v2_failure": "OVERRouting_COLLAPSE"
+    }
+  ],
   "multi_lobe_authorized": false,
-  "new_blind_universe_required": true,
-  "new_shadow_screen_authorized": false,
   "next_lawful_move": "AUTHOR_B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT",
-  "old_blind_universes_diagnostic_only": true,
   "package_promotion_remains_deferred": true,
   "previous_authoritative_lane": "B04_R6_MAJOR_ROUTER_REDESIGN_SCOPE",
-  "quick_candidate_v3_forbidden": true,
+  "primary_reason": "The new architecture makes routing rare, justified, traceable, and reversible.",
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v3",
+  "schema_id": "kt.operator.b04_r6_architecture_selection_rationale.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
-  "selected_outcome": "R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT_BOUND__BLIND_UNIVERSE_CONTRACT_NEXT",
   "status": "PASS",
   "subject_main_head": "3aa568762e39fe1c4d0059e36392bc3ee6b6ee39",
   "trust_zone_law_unchanged": true,
   "truth_engine_derivation_law_unchanged": true,
-  "verdict": "R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT_BOUND__BLIND_UNIVERSE_CONTRACT_NEXT"
+  "why_not_pure_learned_selector": "It increases the same eager-routing risk that invalidated candidate v2.",
+  "why_not_quick_v3": "A quick v3 would patch a retired unsafe family instead of changing routing law."
 }
