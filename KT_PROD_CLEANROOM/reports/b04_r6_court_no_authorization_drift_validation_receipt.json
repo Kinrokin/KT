@@ -207,11 +207,12 @@
   "lobe_escalation_authorized": false,
   "multi_lobe_authorized": false,
   "next_lawful_move": "AUTHOR_B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
+  "no_downstream_authorization_drift": true,
   "old_r01_r04_diagnostic_only": true,
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 13,
   "previous_authoritative_lane": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
   "r6_authorized": false,
   "r6_open": false,
@@ -244,7 +245,7 @@
   ],
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v7",
+  "schema_id": "kt.b04_r6.court_no_authorization_drift_validation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -327,12 +328,95 @@
   ],
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_afsh_implementation_source_packet",
-      "detail": "the next lawful move is source-packet authorship only",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_COURT_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "no_candidate_generation_authorization_drift",
+      "detail": "candidate generation remains unauthorized",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_ELIGIBLE_AUTHORIZES_GENERATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_candidate_training_authorization_drift",
+      "detail": "candidate training remains unauthorized",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_ELIGIBLE_AUTHORIZES_TRAINING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_shadow_screen_packet_authorization_drift",
+      "detail": "shadow-screen packet remains unauthorized",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_ELIGIBLE_AUTHORIZES_SCREEN_PACKET",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_shadow_screen_execution_authorization_drift",
+      "detail": "shadow-screen execution remains unauthorized",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_ELIGIBLE_AUTHORIZES_SCREEN",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_r6_open_drift",
+      "detail": "R6 remains closed",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_ELIGIBLE_AUTHORIZES_R6_OPEN",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_superiority_drift",
+      "detail": "learned-router superiority remains unearned",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_ELIGIBLE_AUTHORIZES_SUPERIORITY",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_activation_or_cutover_drift",
+      "detail": "activation and cutover remain false",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_ELIGIBLE_AUTHORIZES_ACTIVATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_lobe_escalation_drift",
+      "detail": "lobe escalation remains unauthorized",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_ELIGIBLE_AUTHORIZES_LOBE_ESCALATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_package_promotion_drift",
+      "detail": "package promotion remains deferred",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_ELIGIBLE_AUTHORIZES_PACKAGE_PROMOTION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "metric_widening_forbidden",
+      "detail": "metric widening is forbidden",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_COURT_VAL_METRIC_WIDENING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "comparator_weakening_forbidden",
+      "detail": "comparator weakening is forbidden",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_COURT_VAL_COMPARATOR_WEAKENING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "truth_engine_mutation_forbidden",
+      "detail": "truth-engine law remains unchanged",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_COURT_VAL_TRUTH_ENGINE_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trust_zone_mutation_forbidden",
+      "detail": "trust-zone law remains unchanged",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_COURT_VAL_TRUST_ZONE_MUTATION",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_VALIDATED__AFSH_IMPLEMENTATION_SOURCE_PACKET_NEXT"
+  ]
 }

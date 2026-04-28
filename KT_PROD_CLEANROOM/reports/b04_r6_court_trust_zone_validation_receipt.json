@@ -46,6 +46,187 @@
     "lobe_escalation_authorized",
     "package_promotion_authorized"
   ],
+  "fresh_trust_zone_validation": {
+    "checks": [
+      {
+        "check": "required_zones_present",
+        "missing": [],
+        "status": "PASS"
+      },
+      {
+        "check": "readiness_zones_declared_in_registry",
+        "excludes": [
+          "LAB",
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "includes": [
+          "CANONICAL"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "canonical_primary_surfaces_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_declared",
+        "count": 19,
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_in_toolchain_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_not_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "generated_truth_surfaces_in_generated_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "documentary_only_surfaces_in_commercial_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "quarantine_patterns_excluded_from_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "quarantine_patterns_in_quarantined_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "runtime_boundary_excludes_reflected_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "readiness_scoped_to_canonical_only",
+        "status": "PASS"
+      },
+      {
+        "actual": [
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "LAB",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "check": "readiness_excludes_all_noncanonical_zones",
+        "expected": [
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "LAB",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "frozen_surfaces_live_in_canonical_or_toolchain_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "frozen_surfaces_covered_by_amendment_scope",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "settled_truth_root_in_generated_zone",
+        "status": "PASS",
+        "truth_root": "kt_truth_ledger:ledger/current/current_pointer.json"
+      },
+      {
+        "check": "execution_board_truth_source_in_generated_zone",
+        "status": "PASS",
+        "truth_source": "kt_truth_ledger:ledger/current/current_pointer.json"
+      },
+      {
+        "actual": [
+          "cognition",
+          "core",
+          "council",
+          "curriculum",
+          "governance",
+          "kt",
+          "memory",
+          "multiverse",
+          "paradox",
+          "schemas",
+          "temporal",
+          "thermodynamics",
+          "versioning"
+        ],
+        "check": "runtime_registry_canonical_roots_match_contract",
+        "expected": [
+          "cognition",
+          "core",
+          "council",
+          "curriculum",
+          "governance",
+          "kt",
+          "memory",
+          "multiverse",
+          "paradox",
+          "schemas",
+          "temporal",
+          "thermodynamics",
+          "versioning"
+        ],
+        "status": "PASS"
+      },
+      {
+        "actual": [],
+        "check": "runtime_registry_compatibility_roots_match_contract",
+        "expected": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_not_canonical",
+        "overlap": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_quarantined_in_scope_manifest",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_excluded_by_runtime_boundary_contract",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_excluded_from_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_present_in_quarantined_zone",
+        "mismatches": [],
+        "status": "PASS"
+      }
+    ],
+    "failures": [],
+    "schema_id": "kt.operator.trust_zone_validation_receipt.v2",
+    "status": "PASS"
+  },
   "generated_utc": "2026-04-28T22:29:12Z",
   "input_bindings": [
     {
@@ -244,7 +425,7 @@
   ],
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v7",
+  "schema_id": "kt.b04_r6.court_trust_zone_validation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -327,12 +508,11 @@
   ],
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_afsh_implementation_source_packet",
-      "detail": "the next lawful move is source-packet authorship only",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_COURT_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "trust_zone_validation_passes",
+      "detail": "fresh trust-zone validation passed with no failures",
+      "group": "trust_zone",
+      "reason_code": "RC_B04R6_COURT_VAL_TRUST_ZONE_MUTATION",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_VALIDATED__AFSH_IMPLEMENTATION_SOURCE_PACKET_NEXT"
+  ]
 }

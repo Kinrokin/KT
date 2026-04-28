@@ -207,6 +207,7 @@
   "lobe_escalation_authorized": false,
   "multi_lobe_authorized": false,
   "next_lawful_move": "AUTHOR_B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
+  "null_route_anti_overrouting_control": true,
   "old_r01_r04_diagnostic_only": true,
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
@@ -244,7 +245,7 @@
   ],
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v7",
+  "schema_id": "kt.b04_r6.null_route_verdict_validation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -327,12 +328,11 @@
   ],
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_afsh_implementation_source_packet",
-      "detail": "the next lawful move is source-packet authorship only",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_COURT_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "null_route_is_anti_overrouting_control",
+      "detail": "NULL_ROUTE is anti-overrouting control",
+      "group": "null_route",
+      "reason_code": "RC_B04R6_COURT_VAL_NULL_ROUTE_NOT_CONTROL",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_VALIDATED__AFSH_IMPLEMENTATION_SOURCE_PACKET_NEXT"
+  ]
 }
