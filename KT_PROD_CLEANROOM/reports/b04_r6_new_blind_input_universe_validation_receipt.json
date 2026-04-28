@@ -1,0 +1,156 @@
+{
+  "activation_review_authorized": false,
+  "allowed_outcomes": [
+    "B04_R6_NEW_BLIND_UNIVERSE_VALIDATED__STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_NEXT",
+    "B04_R6_NEW_BLIND_UNIVERSE_DEFERRED__NAMED_VALIDATION_DEFECT_REMAINS",
+    "B04_R6_NEW_BLIND_UNIVERSE_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
+  ],
+  "architecture_binding_head": "4279eefb58a34089dc0b1930765a36556454e968",
+  "authoritative_lane": "B04_R6_NEW_BLIND_INPUT_UNIVERSE_VALIDATION",
+  "blind_universe_id": "B04_R6_AFSH_BLIND_UNIVERSE_1",
+  "bound_contract_subject_main_head": "4b1c3161396cd781e5047f9aa81afff1fcc6a9f5",
+  "bound_universe_validated": true,
+  "candidate_generation_authorized": false,
+  "case_count": 18,
+  "current_branch": "authoritative/b04-r6-new-blind-input-universe-validation",
+  "current_git_head": "b1da40369bf15b18cd41b57fe350fd56ee32a2c4",
+  "current_main_head": "a9ea7f86c815f9e0f7d35ff50c5c93bdfb16a937",
+  "failure_count": 0,
+  "forbidden_claims": [
+    "r6_open",
+    "router_generation_authorized",
+    "candidate_generation_authorized",
+    "shadow_screen_authorized",
+    "learned_router_superiority_earned",
+    "activation_review_authorized",
+    "learned_router_activated",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening"
+  ],
+  "generated_utc": "2026-04-28T20:16:29Z",
+  "learned_router_activated": false,
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "multi_lobe_authorized": false,
+  "new_shadow_screen_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
+  "old_r01_r04_diagnostic_only": true,
+  "old_v2_six_row_diagnostic_only": true,
+  "package_promotion_remains_deferred": true,
+  "pass_count": 16,
+  "previous_authoritative_lane": "B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT",
+  "r6_authorized": false,
+  "r6_open": false,
+  "router_generation_authorized": false,
+  "schema_id": "kt.operator.b04_r6_new_blind_input_universe_validation_receipt.v1",
+  "schema_version": "1.0.0",
+  "selected_architecture_id": "AFSH-2S-GUARD",
+  "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
+  "selected_outcome": "B04_R6_NEW_BLIND_UNIVERSE_VALIDATED__STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_NEXT",
+  "shadow_screen_authorized": false,
+  "status": "PASS",
+  "subject_main_head": "a9ea7f86c815f9e0f7d35ff50c5c93bdfb16a937",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true,
+  "validation_rows": [
+    {
+      "check_id": "previous_bound_universe_state",
+      "detail": "bound universe state is validation-ready",
+      "reason_code": "RC_B04R6_BUV_NEXT_MOVE_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "contract_schema_completeness",
+      "detail": "contract has required validation fields",
+      "reason_code": "RC_B04R6_BUV_SCHEMA_REQUIRED_FIELD_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "comparator_metric_preservation",
+      "detail": "no comparator weakening or metric widening is authorized",
+      "reason_code": "RC_B04R6_BUV_PREP_ONLY_ARTIFACT_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "case_manifest_identity",
+      "detail": "18 fresh case IDs are present",
+      "reason_code": "RC_B04R6_BUV_CASE_COUNT_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "case_manifest_hash_stability",
+      "detail": "case manifest hash is stable",
+      "reason_code": "RC_B04R6_BUV_MANIFEST_HASH_UNSTABLE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "case_family_balance_sanity",
+      "detail": "required families, buckets, and control variants are present",
+      "reason_code": "RC_B04R6_BUV_FAMILY_BALANCE_DEFECT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "holdout_lock",
+      "detail": "holdout lock is strong",
+      "reason_code": "RC_B04R6_BUV_HOLDOUT_LOCK_WEAK",
+      "status": "PASS"
+    },
+    {
+      "check_id": "leakage_absence",
+      "detail": "label/outcome/route leakage is barred",
+      "reason_code": "RC_B04R6_BUV_LABEL_LEAKAGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "diagnostic_only_prior_screens",
+      "detail": "prior screens remain diagnostic-only",
+      "reason_code": "RC_B04R6_BUV_PRIOR_R01_R04_NOT_DIAGNOSTIC_ONLY",
+      "status": "PASS"
+    },
+    {
+      "check_id": "control_sibling_completeness",
+      "detail": "mirror/masked/null-route controls match manifest",
+      "reason_code": "RC_B04R6_BUV_MIRROR_SIBLING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "static_abstention_controls",
+      "detail": "static-hold and abstention controls are present",
+      "reason_code": "RC_B04R6_BUV_STATIC_HOLD_CONTROL_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "afsh_trace_compatibility",
+      "detail": "AFSH trace shape covers required groups",
+      "reason_code": "RC_B04R6_BUV_TRACE_COMPATIBILITY_DEFECT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_non_authority",
+      "detail": "prep artifacts remain non-authoritative",
+      "reason_code": "RC_B04R6_BUV_PREP_ONLY_ARTIFACT_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trust_zone_binding",
+      "detail": "embedded and fresh trust-zone validation passed",
+      "reason_code": "RC_B04R6_BUV_TRUST_ZONE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_authorization_drift",
+      "detail": "no downstream authority drift detected",
+      "reason_code": "RC_B04R6_BUV_GENERATION_AUTHORIZATION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "replay_binding",
+      "detail": "bound universe artifacts share a stable replay subject and current main is known",
+      "reason_code": "RC_B04R6_BUV_REPLAY_BINDING_MISMATCH",
+      "status": "PASS"
+    }
+  ],
+  "verdict": "B04_R6_NEW_BLIND_UNIVERSE_VALIDATED__STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_NEXT"
+}

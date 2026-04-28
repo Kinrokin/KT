@@ -792,7 +792,7 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
         OUTPUTS["diagnostic_only_validation"]: _artifact_payload(
             base=base,
             schema_id="kt.operator.b04_r6_blind_universe_diagnostic_only_validation_receipt.v1",
-            rows=leakage_rows[:1],
+            rows=[row for row in leakage_rows if row["check_id"] == "diagnostic_only_prior_screens"],
             extra={
                 **common_extra,
                 "r01_r04_reuse_as_counted_proof_allowed": False,
