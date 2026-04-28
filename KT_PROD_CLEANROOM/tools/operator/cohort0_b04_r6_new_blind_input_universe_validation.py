@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
@@ -159,6 +160,30 @@ REFERENCE_INPUTS = {
     "canonical_scope_manifest": "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
 }
 
+MUTABLE_HANDOFF_ROLES = frozenset({"previous_next_lawful_move"})
+BOUND_REPLAY_ROLES = frozenset(
+    {
+        "bound_contract",
+        "bound_contract_receipt",
+        "case_manifest",
+        "mirror_masked_map",
+        "holdout_separation",
+        "leakage_guard",
+        "trust_zone_report",
+        "parse_sweep",
+        "family_balance",
+        "control_sibling_map",
+        "static_hold_draft",
+        "abstention_registry_draft",
+        "route_economics_draft",
+        "afsh_interface_draft",
+        "afsh_trace_schema_draft",
+        "external_research_receipt",
+        "forbidden_claims_receipt",
+        "clean_state",
+    }
+)
+
 OUTPUTS = {
     "validation_contract": "b04_r6_new_blind_input_universe_validation_contract.json",
     "validation_receipt": "b04_r6_new_blind_input_universe_validation_receipt.json",
@@ -208,6 +233,12 @@ def _input_hashes(root: Path) -> list[Dict[str, str]]:
             raise RuntimeError(f"FAIL_CLOSED: missing required input: {raw}")
         rows.append({"role": role, "path": raw, "sha256": file_sha256(path)})
     return rows
+
+
+def _git_blob_sha256(root: Path, commit: str, raw: str) -> str:
+    blob_ref = f"{commit}:{raw.replace(chr(92), '/')}"
+    result = subprocess.run(["git", "show", blob_ref], cwd=root, capture_output=True, check=True)
+    return hashlib.sha256(result.stdout).hexdigest()
 
 
 def _ensure_false_if_present(payload: Dict[str, Any], key: str, *, label: str) -> None:
@@ -585,7 +616,12 @@ def _validate_no_authorization_drift(payloads: Dict[str, Dict[str, Any]]) -> lis
     return rows
 
 
-def _validate_replay_binding(payloads: Dict[str, Dict[str, Any]], *, current_main_head: str) -> list[Dict[str, Any]]:
+def _validate_replay_binding(
+    root: Path,
+    payloads: Dict[str, Dict[str, Any]],
+    *,
+    current_main_head: str,
+) -> list[Dict[str, Any]]:
     contract = payloads["bound_contract"]
     manifest = payloads["case_manifest"]
     parse_sweep = payloads["parse_sweep"]
@@ -597,7 +633,55 @@ def _validate_replay_binding(payloads: Dict[str, Dict[str, Any]], *, current_mai
         _fail("RC_B04R6_BUV_REPLAY_BINDING_MISMATCH", "contract and manifest subject heads differ")
     if not current_main_head:
         _fail("RC_B04R6_BUV_REPLAY_BINDING_MISMATCH", "current main head is missing")
-    return [_pass_row("replay_binding", "RC_B04R6_BUV_REPLAY_BINDING_MISMATCH", "bound universe artifacts share a stable replay subject and current main is known")]
+
+    bound_roles = {str(row.get("role", "")): dict(row) for row in contract.get("input_bindings", []) if isinstance(row, dict)}
+    for role, binding in sorted(bound_roles.items()):
+        if role in MUTABLE_HANDOFF_ROLES:
+            continue
+        raw_path = str(binding.get("path", ""))
+        expected_sha = str(binding.get("sha256", ""))
+        if not raw_path or not expected_sha:
+            _fail("RC_B04R6_BUV_REPLAY_BINDING_MISMATCH", f"bound input hash row incomplete for {role}")
+        current_path = root / raw_path
+        if not current_path.is_file():
+            _fail("RC_B04R6_BUV_REPLAY_BINDING_MISMATCH", f"bound input missing on disk: {raw_path}")
+        current_sha = file_sha256(current_path)
+        if current_sha != expected_sha:
+            _fail(
+                "RC_B04R6_BUV_REPLAY_BINDING_MISMATCH",
+                f"bound input hash drift for {role}: expected {expected_sha}; got {current_sha}",
+            )
+
+    for role in sorted(BOUND_REPLAY_ROLES):
+        raw_path = INPUTS[role]
+        current_path = root / raw_path
+        if not current_path.is_file():
+            _fail("RC_B04R6_BUV_REPLAY_BINDING_MISMATCH", f"bound replay artifact missing: {raw_path}")
+        current_sha = file_sha256(current_path)
+        main_sha = _git_blob_sha256(root, current_main_head, raw_path)
+        if current_sha != main_sha:
+            _fail(
+                "RC_B04R6_BUV_REPLAY_BINDING_MISMATCH",
+                f"bound replay artifact drift for {role}: expected main {main_sha}; got {current_sha}",
+            )
+
+    return [
+        _pass_row(
+            "replay_binding",
+            "RC_B04R6_BUV_REPLAY_BINDING_MISMATCH",
+            "bound universe artifacts share a stable replay subject and current main is known",
+        ),
+        _pass_row(
+            "bound_input_hash_integrity",
+            "RC_B04R6_BUV_REPLAY_BINDING_MISMATCH",
+            "bound contract input hashes match current files for immutable inputs",
+        ),
+        _pass_row(
+            "bound_universe_artifact_replay_hashes",
+            "RC_B04R6_BUV_REPLAY_BINDING_MISMATCH",
+            "bound universe artifacts match the current main replay base",
+        ),
+    ]
 
 
 def _base(
@@ -719,7 +803,7 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
     validation_rows.extend(trust_rows)
     auth_rows = _validate_no_authorization_drift(payloads)
     validation_rows.extend(auth_rows)
-    replay_rows = _validate_replay_binding(payloads, current_main_head=current_main_head)
+    replay_rows = _validate_replay_binding(root, payloads, current_main_head=current_main_head)
     validation_rows.extend(replay_rows)
 
     generated_utc = utc_now_iso_z()

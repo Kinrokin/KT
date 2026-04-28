@@ -237,6 +237,11 @@ def _patch_env(
     monkeypatch.setattr(validation.common, "git_rev_parse", lambda root, ref: origin_main if ref == "origin/main" else head)
     monkeypatch.setattr(
         validation,
+        "_git_blob_sha256",
+        lambda root, commit, raw: validation.file_sha256(root / raw),
+    )
+    monkeypatch.setattr(
+        validation,
         "validate_trust_zones",
         lambda root: {"schema_id": "validation", "status": "PASS", "checks": [{}], "failures": []},
     )
@@ -323,6 +328,38 @@ def test_fails_closed_on_control_sibling_map_mismatch(tmp_path: Path, monkeypatc
     _patch_env(monkeypatch, tmp_path)
 
     with pytest.raises(RuntimeError, match="RC_B04R6_BUV_MASKED_SIBLING_MISSING"):
+        validation.run(reports_root=reports)
+
+
+def test_fails_closed_on_bound_input_hash_drift(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    contract = _load(reports / "b04_r6_new_blind_input_universe_contract.json")
+    contract["input_bindings"] = [
+        {
+            "role": "canonical_scope_manifest",
+            "path": "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+            "sha256": "0" * 64,
+        }
+    ]
+    _write_json(reports / "b04_r6_new_blind_input_universe_contract.json", contract)
+    _patch_env(monkeypatch, tmp_path)
+
+    with pytest.raises(RuntimeError, match="bound input hash drift"):
+        validation.run(reports_root=reports)
+
+
+def test_fails_closed_on_replay_artifact_hash_drift(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    _patch_env(monkeypatch, tmp_path)
+
+    def _drift(root: Path, commit: str, raw: str) -> str:
+        if raw.endswith("b04_r6_blind_universe_case_manifest.json"):
+            return "0" * 64
+        return validation.file_sha256(root / raw)
+
+    monkeypatch.setattr(validation, "_git_blob_sha256", _drift)
+
+    with pytest.raises(RuntimeError, match="bound replay artifact drift"):
         validation.run(reports_root=reports)
 
 
