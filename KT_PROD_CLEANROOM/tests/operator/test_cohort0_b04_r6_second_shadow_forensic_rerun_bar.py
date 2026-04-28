@@ -126,11 +126,22 @@ def _write_inputs(root: Path) -> Path:
     return reports
 
 
-def _patch_env(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+def _patch_env(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    *,
+    branch: str = tranche.AUTHORITY_BRANCH,
+    head: str = "forensic-head",
+    origin_main: str = "forensic-head",
+) -> None:
     monkeypatch.setattr(tranche, "repo_root", lambda: tmp_path)
-    monkeypatch.setattr(tranche.common, "git_current_branch_name", lambda root: tranche.AUTHORITY_BRANCH)
+    monkeypatch.setattr(tranche.common, "git_current_branch_name", lambda root: branch)
     monkeypatch.setattr(tranche.common, "git_status_porcelain", lambda root: "")
-    monkeypatch.setattr(tranche.common, "git_rev_parse", lambda root, ref: "forensic-head")
+    monkeypatch.setattr(
+        tranche.common,
+        "git_rev_parse",
+        lambda root, ref: origin_main if ref == "origin/main" else head,
+    )
     monkeypatch.setattr(
         tranche,
         "validate_trust_zones",
@@ -156,6 +167,33 @@ def test_forensic_confirms_candidate_behavior_and_bars_rerun(tmp_path: Path, mon
     assert rerun["rerun_bar_active"] is True
     assert any(row["case_id"] == "R6B05" and row["overrouting_collapse"] for row in guard["rows"])
     assert next_receipt["next_lawful_move"] == tranche.NEXT_CANDIDATE_DISQUALIFIED
+
+
+def test_forensic_runs_on_canonical_main_when_converged(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    _patch_env(monkeypatch, tmp_path, branch="main", head="main-head", origin_main="main-head")
+
+    result = tranche.run(reports_root=reports)
+
+    receipt = _load(reports / tranche.OUTPUTS["forensic_receipt"])
+    assert result["verdict"] == tranche.VERDICT_CANDIDATE_DISQUALIFIED
+    assert receipt["current_git_head"] == "main-head"
+
+
+def test_forensic_fails_closed_on_noncanonical_main(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    _patch_env(monkeypatch, tmp_path, branch="main", head="local-main", origin_main="origin-main")
+
+    with pytest.raises(RuntimeError, match="main replay requires local main converged with origin/main"):
+        tranche.run(reports_root=reports)
+
+
+def test_forensic_fails_closed_on_disallowed_branch(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    _patch_env(monkeypatch, tmp_path, branch="feature/not-authorized")
+
+    with pytest.raises(RuntimeError, match="got: feature/not-authorized"):
+        tranche.run(reports_root=reports)
 
 
 def test_forensic_fails_closed_if_prior_verdict_is_not_invalidated(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

@@ -282,12 +282,25 @@ def _write_report(verdict: str, cause_class: str, implicated_cases: list[str], n
     )
 
 
-def run(*, reports_root: Path) -> Dict[str, Any]:
-    root = repo_root()
+def _ensure_branch_context(root: Path) -> str:
     current_branch = common.git_current_branch_name(root)
     if current_branch not in ALLOWED_BRANCHES:
         allowed = ", ".join(sorted(ALLOWED_BRANCHES))
-        raise RuntimeError(f"FAIL_CLOSED: must run on one of: {allowed}")
+        raise RuntimeError(f"FAIL_CLOSED: must run on one of: {allowed}; got: {current_branch}")
+    if current_branch == "main":
+        head = common.git_rev_parse(root, "HEAD")
+        origin_main = common.git_rev_parse(root, "origin/main")
+        if head != origin_main:
+            raise RuntimeError(
+                "FAIL_CLOSED: main replay requires local main converged with origin/main; "
+                f"HEAD={head}; origin/main={origin_main}"
+            )
+    return current_branch
+
+
+def run(*, reports_root: Path) -> Dict[str, Any]:
+    root = repo_root()
+    _ensure_branch_context(root)
     if common.git_status_porcelain(root).strip():
         raise RuntimeError("FAIL_CLOSED: dirty worktree before B04 R6 forensic rerun-bar freeze")
     if reports_root.resolve() != (root / "KT_PROD_CLEANROOM/reports").resolve():
