@@ -323,6 +323,19 @@ def test_previous_next_lawful_move_drift_fails_closed(tmp_path: Path, monkeypatc
         court.run(reports_root=reports)
 
 
+def test_authoritative_predecessor_prep_only_status_fails_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _write_inputs(tmp_path)
+    receipt_path = tmp_path / court.INPUTS["validation_receipt"]
+    receipt = _load(receipt_path)
+    receipt["status"] = "PREP_ONLY"
+    _write_json(receipt_path, receipt)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="validation_receipt must have status"):
+        court.run(reports_root=reports)
+
+
 def test_prep_draft_authority_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _write_inputs(tmp_path)
     draft_path = tmp_path / court.PREP_INPUTS["route_economics_draft"]

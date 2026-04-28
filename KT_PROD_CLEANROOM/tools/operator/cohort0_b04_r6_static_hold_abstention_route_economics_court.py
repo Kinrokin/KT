@@ -29,7 +29,6 @@ UNIVERSE_ID = "B04_R6_AFSH_BLIND_UNIVERSE_1"
 CASE_PREFIX = "B04R6-AFSH-BU1-"
 EXPECTED_CASE_COUNT = 18
 
-VERDICT_MODES = ("STATIC_HOLD", "ABSTAIN", "NULL_ROUTE", "ROUTE_ELIGIBLE")
 ROUTE_VALUE_TERMS = (
     "expected_quality_delta",
     "expected_governance_benefit",
@@ -278,7 +277,7 @@ def _existing_court_contract_supports_self_replay(root: Path) -> bool:
 
 def _require_inputs(payloads: Dict[str, Dict[str, Any]], prep_payloads: Dict[str, Dict[str, Any]], *, root: Path) -> None:
     for label, payload in payloads.items():
-        _ensure_common_boundary(payload, label=label)
+        _ensure_common_boundary(payload, label=label, prep_only_allowed=False)
     for label, payload in prep_payloads.items():
         _ensure_common_boundary(payload, label=label)
         if str(payload.get("status", "")).strip() != "PREP_ONLY":
