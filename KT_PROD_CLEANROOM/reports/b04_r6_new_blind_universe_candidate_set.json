@@ -1,9 +1,23 @@
 {
   "activation_review_authorized": false,
-  "aggregate_candidate_wins": 0,
-  "aggregate_counted_cases": 10,
   "authoritative_lane": "B04_R6_MAJOR_ROUTER_REDESIGN_SCOPE",
-  "candidate_family_never_beat_static": true,
+  "bound_universe_selected": false,
+  "candidate_sets": [
+    {
+      "candidate_set_id": "B04_R6_BLIND_UNIVERSE_CANDIDATE_SET_A_ADJACENT_FAMILY",
+      "may_reuse_v1_or_v2_cases_as_counted_proof": false,
+      "row_count": 8,
+      "source_hashes_required_before_binding": true,
+      "status": "PREP_ONLY_NOT_BOUND"
+    },
+    {
+      "candidate_set_id": "B04_R6_BLIND_UNIVERSE_CANDIDATE_SET_B_MUTATED_SIBLINGS",
+      "may_reuse_v1_or_v2_cases_as_counted_proof": false,
+      "row_count": 8,
+      "source_hashes_required_before_binding": true,
+      "status": "PREP_ONLY_NOT_BOUND"
+    }
+  ],
   "current_git_head": "03a7398eb01870573b4766cae6cf254687c97e47",
   "forbidden_claims": [
     "r6_open",
@@ -19,17 +33,15 @@
   "learned_router_activated": false,
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
-  "metric_widening_allowed": false,
   "multi_lobe_authorized": false,
-  "next_lawful_move": "AUTHOR_B04_R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT",
+  "next_lawful_move": "AUTHOR_B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT",
+  "old_blind_universes_diagnostic_only": true,
   "package_promotion_remains_deferred": true,
   "previous_authoritative_lane": "B04_R6_CANDIDATE_V2_DISQUALIFICATION_AND_CLOSEOUT_OR_MAJOR_REDESIGN",
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_static_comparator_dominance_analysis.v3",
+  "schema_id": "kt.operator.b04_r6_new_blind_universe_candidate_set.v1",
   "schema_version": "1.0.0",
-  "static_baseline_remains_control": true,
-  "static_baseline_weakening_allowed": false,
   "status": "PREP_ONLY",
   "subject_main_head": "03a7398eb01870573b4766cae6cf254687c97e47",
   "trust_zone_law_unchanged": true,

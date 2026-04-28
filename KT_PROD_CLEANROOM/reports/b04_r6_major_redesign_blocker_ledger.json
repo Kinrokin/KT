@@ -1,9 +1,6 @@
 {
   "activation_review_authorized": false,
-  "aggregate_candidate_wins": 0,
-  "aggregate_counted_cases": 10,
   "authoritative_lane": "B04_R6_MAJOR_ROUTER_REDESIGN_SCOPE",
-  "candidate_family_never_beat_static": true,
   "current_git_head": "03a7398eb01870573b4766cae6cf254687c97e47",
   "forbidden_claims": [
     "r6_open",
@@ -19,18 +16,39 @@
   "learned_router_activated": false,
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
-  "metric_widening_allowed": false,
+  "live_blocker_count": 4,
+  "live_blockers_to_r6_open": [
+    {
+      "blocker_id": "ARCHITECTURE_CONTRACT_NOT_YET_BOUND",
+      "resolution_path": "AUTHOR_B04_R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT",
+      "severity": "BLOCKING_FOR_ANY_NEW_ROUTER_SOURCE"
+    },
+    {
+      "blocker_id": "NEW_BLIND_UNIVERSE_NOT_YET_BOUND",
+      "resolution_path": "AUTHOR_B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT",
+      "severity": "BLOCKING_FOR_ANY_NEW_SHADOW_SCREEN"
+    },
+    {
+      "blocker_id": "OLD_BLIND_UNIVERSES_DIAGNOSTIC_ONLY",
+      "resolution_path": "Bind new held-out proof universe.",
+      "severity": "BLOCKING_FOR_REUSE_AS_FRESH_PROOF"
+    },
+    {
+      "blocker_id": "CURRENT_CANDIDATE_FAMILY_RETIRED",
+      "resolution_path": "Use major architecture court, not candidate patching.",
+      "severity": "BLOCKING_FOR_QUICK_V3"
+    }
+  ],
   "multi_lobe_authorized": false,
   "next_lawful_move": "AUTHOR_B04_R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT",
+  "no_blockers_to_architecture_contract": true,
   "package_promotion_remains_deferred": true,
   "previous_authoritative_lane": "B04_R6_CANDIDATE_V2_DISQUALIFICATION_AND_CLOSEOUT_OR_MAJOR_REDESIGN",
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_static_comparator_dominance_analysis.v3",
+  "schema_id": "kt.operator.b04_r6_major_redesign_blocker_ledger.v1",
   "schema_version": "1.0.0",
-  "static_baseline_remains_control": true,
-  "static_baseline_weakening_allowed": false,
-  "status": "PREP_ONLY",
+  "status": "PASS",
   "subject_main_head": "03a7398eb01870573b4766cae6cf254687c97e47",
   "trust_zone_law_unchanged": true,
   "truth_engine_derivation_law_unchanged": true

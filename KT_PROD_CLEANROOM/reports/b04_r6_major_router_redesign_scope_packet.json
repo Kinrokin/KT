@@ -1,0 +1,175 @@
+{
+  "activation_review_authorized": false,
+  "allowed_outcomes": [
+    "R6_MAJOR_REDESIGN_SCOPE_AUTHORIZED__ARCHITECTURE_AND_BLIND_UNIVERSE_NEXT",
+    "R6_DEFERRED__REDESIGN_SCOPE_INSUFFICIENT",
+    "R6_CLOSEOUT__NO_LAWFUL_MAJOR_REDESIGN_PATH_ON_CURRENT_SUBSTRATE"
+  ],
+  "architecture_contract_next": true,
+  "authoritative_lane": "B04_R6_MAJOR_ROUTER_REDESIGN_SCOPE",
+  "blind_universe_contract_after_architecture": true,
+  "candidate_family_retired_for_r6": true,
+  "candidate_family_retirement": {
+    "candidate_family": "minimal_deterministic_shadow_router_family_v1_v2",
+    "old_blind_universes_diagnostic_only": true,
+    "quick_candidate_v3_forbidden": true,
+    "retired_for_r6": true,
+    "retirement_reason": "v1 failed superiority and v2 invalidated through candidate behavior disqualifiers.",
+    "second_shadow_screen_rerun_bar_active": true,
+    "v1_result": {
+      "candidate_wins": 0,
+      "case_count": 4,
+      "disqualifiers": 0,
+      "guards_preserved": true
+    },
+    "v2_result": {
+      "candidate_wins": 0,
+      "case_count": 6,
+      "disqualifiers": [
+        "CONTROL_DEGRADATION",
+        "ABSTENTION_COLLAPSE",
+        "OVERRouting_COLLAPSE"
+      ],
+      "forensic_cause": "CANDIDATE_BEHAVIOR_DEFECT"
+    }
+  },
+  "candidate_generation_authorized": false,
+  "comparator_metric_preservation_law": {
+    "comparator_contract_change_requires_separate_court": true,
+    "disqualifier_softening_allowed": false,
+    "existing_comparator_law_preserved": true,
+    "metric_widening_allowed": false,
+    "static_baseline_weakening_allowed": false
+  },
+  "court_question": "Is major router redesign sufficiently scoped before architecture and blind-universe contracts?",
+  "current_git_head": "03a7398eb01870573b4766cae6cf254687c97e47",
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "activation_review_authorized",
+    "learned_router_activated",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening"
+  ],
+  "generated_utc": "2026-04-28T15:18:40Z",
+  "input_bindings": [
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_second_shadow_screen_forensic_receipt.json",
+      "role": "forensic_receipt",
+      "sha256": "a8004478997727b70fe237d53343f24f7d590a552b69b658c6f12d20b866d733"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_candidate_v2_guard_failure_matrix.json",
+      "role": "guard_failure_matrix",
+      "sha256": "89f108eacd1a1eab5b69cf8106132d3eaf084b7eb8811f8d3363478868958e87"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_candidate_v2_disqualification_receipt.json",
+      "role": "prior_disqualification_receipt",
+      "sha256": "f716d25cff81e1f2982c13a67757c88f9ea11610cbdf41287597e2e5ff6dae70"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_candidate_family_autopsy.json",
+      "role": "prior_family_autopsy",
+      "sha256": "fd706ef50cbe82b2e03e9103314539fd2fed7eadbbbe11208cfe57d02f958d82"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_major_redesign_options_matrix.json",
+      "role": "prior_major_redesign_options",
+      "sha256": "18238eb342363ffec817eb962082f3873e66f0647d055c796f7c6e70efa71d46"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_closeout_or_major_redesign_blocker_ledger.json",
+      "role": "prior_redesign_blocker_ledger",
+      "sha256": "5c888f672dec9ae26a296a2edcf66b3ef36f583c5a1f9d0c665741c36357d54f"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_second_shadow_screen_rerun_bar_receipt.json",
+      "role": "rerun_bar_receipt",
+      "sha256": "808aadd990621144002c6315f5c925df13bcbf6cd6cb7308564ad382a5a995ac"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_shadow_router_superiority_screen_receipt.json",
+      "role": "v1_receipt",
+      "sha256": "a51b0db06ed3007b2c53a5b1cb7f6a7c2c6548af2f17699af80bcefb2a383b8d"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_second_shadow_screen_result_receipt.json",
+      "role": "v2_receipt",
+      "sha256": "29e00f3d8c744ae3cdaa62c62d6ee67e0f4dfb920ca070f58daad8104b99b998"
+    }
+  ],
+  "learned_router_activated": false,
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "major_redesign_scope_authorized": true,
+  "major_redesign_standard": {
+    "acceptable_structural_families": [
+      "ABSTENTION_FIRST_STATIC_HOLD_ROUTER",
+      "UNCERTAINTY_GATED_CONFORMAL_ROUTER",
+      "TWO_STAGE_PERFORMANCE_PREDICTOR_SELECTOR",
+      "COST_AWARE_SELECTOR_WITH_STATIC_FALLBACK",
+      "ENSEMBLE_GUARD_ROUTER_WITH_HARD_STATIC_FALLBACK"
+    ],
+    "forbidden_non_redesigns": [
+      "quick_candidate_v3_patch",
+      "weight_only_tuning",
+      "threshold_only_tuning",
+      "metric_widening",
+      "static_baseline_weakening"
+    ],
+    "minimum_standard": "MATERIAL_ARCHITECTURE_CHANGE_REQUIRED",
+    "required_structural_changes": [
+      "explicit_abstention_path",
+      "static_hold_default",
+      "overrouting_suppression",
+      "hard_no_regression_control_plane"
+    ],
+    "threshold_or_weight_tweak_counts_as_major_redesign": false
+  },
+  "multi_lobe_authorized": false,
+  "new_blind_universe_law": {
+    "family_coverage_required": true,
+    "holdout_separation_required": true,
+    "leakage_scan_required": true,
+    "mirror_masked_sibling_policy_required": true,
+    "new_blind_universe_required": true,
+    "new_blind_universe_selection_authorized_by_this_packet": false,
+    "new_case_ids_required": true,
+    "r01_r04_reuse_as_counted_proof_allowed": false,
+    "six_row_blind_universe_reuse_as_fresh_proof_allowed": false,
+    "source_hashes_required": true,
+    "v1_v2_outcomes_may_inform_architecture_diagnosis_only": true
+  },
+  "new_blind_universe_required": true,
+  "new_router_architecture_required": true,
+  "new_router_family_requirements": {
+    "calibration_evidence_required": true,
+    "candidate_generation_authorized_by_this_packet": false,
+    "deterministic_replay_required": true,
+    "explicit_abstention_required": true,
+    "mirror_masked_invariance_compatibility_required": true,
+    "overrouting_guard_required": true,
+    "package_promotion_dependency_allowed": false,
+    "seed_bound_behavior_required": true,
+    "static_comparator_fallback_required": true,
+    "trace_emission_required": true,
+    "truth_engine_or_trust_zone_mutation_dependency_allowed": false
+  },
+  "new_shadow_screen_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT",
+  "package_promotion_remains_deferred": true,
+  "previous_authoritative_lane": "B04_R6_CANDIDATE_V2_DISQUALIFICATION_AND_CLOSEOUT_OR_MAJOR_REDESIGN",
+  "quick_candidate_v3_forbidden": true,
+  "r6_authorized": false,
+  "r6_open": false,
+  "schema_id": "kt.operator.b04_r6_major_router_redesign_scope_packet.v1",
+  "schema_version": "1.0.0",
+  "selected_outcome": "R6_MAJOR_REDESIGN_SCOPE_AUTHORIZED__ARCHITECTURE_AND_BLIND_UNIVERSE_NEXT",
+  "status": "PASS",
+  "subject_main_head": "03a7398eb01870573b4766cae6cf254687c97e47",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true
+}
