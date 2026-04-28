@@ -85,7 +85,7 @@
   },
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v6",
+  "schema_id": "kt.b04_r6.court_disqualifier_ledger.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -94,6 +94,20 @@
   "shadow_screen_execution_authorized": false,
   "shadow_screen_packet_authorized": false,
   "status": "PASS",
+  "terminal_disqualifiers": [
+    "metric_widening",
+    "comparator_weakening",
+    "truth_engine_mutation",
+    "trust_zone_mutation",
+    "candidate_generation_authorization_drift",
+    "shadow_screen_authorization_drift",
+    "r6_open_drift",
+    "activation_authorization_drift",
+    "package_promotion_drift",
+    "old_universe_reused_as_fresh_proof",
+    "label_or_outcome_leakage",
+    "route_eligibility_authorizes_execution"
+  ],
   "trust_zone_law_unchanged": true,
   "truth_engine_derivation_law_unchanged": true,
   "validated_blind_universe_binding": {
@@ -105,7 +119,6 @@
     "validation_outcome": "B04_R6_NEW_BLIND_UNIVERSE_VALIDATED__STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_NEXT",
     "validation_receipt_head": "3e0baf3b00b35c46874732cc15b58132bff611dc"
   },
-  "verdict": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_BOUND__COURT_VALIDATION_NEXT",
   "verdict_modes": {
     "ABSTAIN": {
       "default": false,

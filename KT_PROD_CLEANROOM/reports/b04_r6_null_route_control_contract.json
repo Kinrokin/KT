@@ -8,6 +8,7 @@
     "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_DEFERRED__NAMED_DEFECT_REMAINS",
     "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
+  "anti_overrouting_control": true,
   "architecture_binding_head": "4279eefb58a34089dc0b1930765a36556454e968",
   "authoritative_lane": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
   "candidate_generation_authorized": false,
@@ -41,6 +42,13 @@
   "previous_validation_head": "3e0baf3b00b35c46874732cc15b58132bff611dc",
   "r6_authorized": false,
   "r6_open": false,
+  "reason_codes": [
+    "RC_B04R6_COURT_NULL_ROUTE_CONTROL",
+    "RC_B04R6_COURT_NULL_ROUTE_SURFACE_TEMPTATION",
+    "RC_B04R6_COURT_NULL_ROUTE_NO_LAWFUL_SPECIALIST",
+    "RC_B04R6_COURT_NULL_ROUTE_COSMETIC_MOVEMENT",
+    "RC_B04R6_COURT_NULL_ROUTE_TRACE_WITHOUT_VALUE"
+  ],
   "route_eligible_cannot_authorize": [
     "AFSH source packet finalization",
     "AFSH candidate generation",
@@ -85,7 +93,7 @@
   },
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v6",
+  "schema_id": "kt.b04_r6.null_route_control_contract.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -105,7 +113,6 @@
     "validation_outcome": "B04_R6_NEW_BLIND_UNIVERSE_VALIDATED__STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_NEXT",
     "validation_receipt_head": "3e0baf3b00b35c46874732cc15b58132bff611dc"
   },
-  "verdict": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_BOUND__COURT_VALIDATION_NEXT",
   "verdict_modes": {
     "ABSTAIN": {
       "default": false,
@@ -129,5 +136,12 @@
       "description": "Use static comparator / no route when static hold is safest, sufficient, lower proof burden, or route value does not clear threshold.",
       "positive_verdict": true
     }
-  }
+  },
+  "wins_when": [
+    "route pressure exists but no lawful route exists",
+    "selector would be tempted by surface features",
+    "case is a null-route sibling",
+    "route would be cosmetic movement",
+    "trace shape could be satisfied without route value"
+  ]
 }

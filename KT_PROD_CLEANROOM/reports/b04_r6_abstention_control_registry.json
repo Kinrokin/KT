@@ -37,10 +37,21 @@
   "next_lawful_move": "VALIDATE_B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
+  "positive_success": true,
   "previous_authoritative_lane": "B04_R6_NEW_BLIND_INPUT_UNIVERSE_VALIDATION",
   "previous_validation_head": "3e0baf3b00b35c46874732cc15b58132bff611dc",
   "r6_authorized": false,
   "r6_open": false,
+  "reason_codes": [
+    "RC_B04R6_COURT_ABSTAIN_BOUNDARY_UNCLEAR",
+    "RC_B04R6_COURT_ABSTAIN_TRUST_ZONE_UNCERTAIN",
+    "RC_B04R6_COURT_ABSTAIN_CALIBRATION_WEAK",
+    "RC_B04R6_COURT_ABSTAIN_CONTRADICTION_UNRESOLVED",
+    "RC_B04R6_COURT_ABSTAIN_CONTEXT_UNAVAILABLE",
+    "RC_B04R6_COURT_ABSTAIN_HIDDEN_LABEL_DEPENDENCY",
+    "RC_B04R6_COURT_ABSTAIN_OUTCOME_DEPENDENCY",
+    "RC_B04R6_COURT_ABSTAIN_UNAUTHORIZED_BEHAVIOR_RISK"
+  ],
   "route_eligible_cannot_authorize": [
     "AFSH source packet finalization",
     "AFSH candidate generation",
@@ -85,7 +96,7 @@
   },
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v6",
+  "schema_id": "kt.b04_r6.abstention_control_registry.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -105,7 +116,6 @@
     "validation_outcome": "B04_R6_NEW_BLIND_UNIVERSE_VALIDATED__STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_NEXT",
     "validation_receipt_head": "3e0baf3b00b35c46874732cc15b58132bff611dc"
   },
-  "verdict": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_BOUND__COURT_VALIDATION_NEXT",
   "verdict_modes": {
     "ABSTAIN": {
       "default": false,
@@ -129,5 +139,15 @@
       "description": "Use static comparator / no route when static hold is safest, sufficient, lower proof burden, or route value does not clear threshold.",
       "positive_verdict": true
     }
-  }
+  },
+  "wins_when": [
+    "input eligibility is uncertain",
+    "trust-zone classification is uncertain",
+    "boundary condition is active",
+    "calibration is weak",
+    "contradiction is unresolved by current law",
+    "routing would depend on hidden labels or outcomes",
+    "routing would require unavailable context",
+    "screen execution would create unauthorized behavior"
+  ]
 }

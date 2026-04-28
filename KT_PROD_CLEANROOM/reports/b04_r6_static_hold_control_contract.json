@@ -15,6 +15,7 @@
   "current_branch": "authoritative/b04-r6-static-hold-abstention-route-economics-court",
   "current_git_head": "8f0b22697290071942b3e83032662cba1b7ffa60",
   "current_main_head": "9d897a9b450eb5a3411afd57172216149e27477e",
+  "default_verdict": true,
   "forbidden_claims": [
     "afsh_source_packet_authorized",
     "afsh_candidate_generation_authorized",
@@ -37,10 +38,21 @@
   "next_lawful_move": "VALIDATE_B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
+  "positive_success": true,
   "previous_authoritative_lane": "B04_R6_NEW_BLIND_INPUT_UNIVERSE_VALIDATION",
   "previous_validation_head": "3e0baf3b00b35c46874732cc15b58132bff611dc",
   "r6_authorized": false,
   "r6_open": false,
+  "reason_codes": [
+    "RC_B04R6_COURT_STATIC_DEFAULT",
+    "RC_B04R6_COURT_STATIC_COMPARATOR_DOMINANT",
+    "RC_B04R6_COURT_STATIC_PROOF_BURDEN_LOWER",
+    "RC_B04R6_COURT_STATIC_ROUTE_VALUE_BELOW_THRESHOLD",
+    "RC_B04R6_COURT_STATIC_MIRROR_MASKED_RISK",
+    "RC_B04R6_COURT_STATIC_WRONG_ROUTE_COST_HIGH",
+    "RC_B04R6_COURT_STATIC_CONFIDENCE_NON_MONOTONIC",
+    "RC_B04R6_COURT_STATIC_TRACE_COMPLEXITY_TOO_HIGH"
+  ],
   "route_eligible_cannot_authorize": [
     "AFSH source packet finalization",
     "AFSH candidate generation",
@@ -85,7 +97,7 @@
   },
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v6",
+  "schema_id": "kt.b04_r6.static_hold_control_contract.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -105,7 +117,6 @@
     "validation_outcome": "B04_R6_NEW_BLIND_UNIVERSE_VALIDATED__STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_NEXT",
     "validation_receipt_head": "3e0baf3b00b35c46874732cc15b58132bff611dc"
   },
-  "verdict": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_BOUND__COURT_VALIDATION_NEXT",
   "verdict_modes": {
     "ABSTAIN": {
       "default": false,
@@ -129,5 +140,15 @@
       "description": "Use static comparator / no route when static hold is safest, sufficient, lower proof burden, or route value does not clear threshold.",
       "positive_verdict": true
     }
-  }
+  },
+  "wins_when": [
+    "static comparator is sufficient",
+    "route value is below threshold",
+    "proof burden increases without offsetting value",
+    "case family is static-dominant",
+    "mirror/masked siblings suggest instability",
+    "input is outside route-eligible family",
+    "route confidence is non-monotonic",
+    "wrong-route cost exceeds expected gain"
+  ]
 }
