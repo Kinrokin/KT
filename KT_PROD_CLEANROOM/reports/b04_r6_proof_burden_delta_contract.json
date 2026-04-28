@@ -39,6 +39,8 @@
   "package_promotion_remains_deferred": true,
   "previous_authoritative_lane": "B04_R6_NEW_BLIND_INPUT_UNIVERSE_VALIDATION",
   "previous_validation_head": "3e0baf3b00b35c46874732cc15b58132bff611dc",
+  "proof_burden_can_block_route": true,
+  "proof_burden_delta_required": true,
   "r6_authorized": false,
   "r6_open": false,
   "route_eligible_cannot_authorize": [
@@ -84,8 +86,9 @@
     ]
   },
   "router_generation_authorized": false,
+  "routing_must_reduce_or_justify_proof_burden": true,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v6",
+  "schema_id": "kt.b04_r6.proof_burden_delta_contract.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -105,7 +108,6 @@
     "validation_outcome": "B04_R6_NEW_BLIND_UNIVERSE_VALIDATED__STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_NEXT",
     "validation_receipt_head": "3e0baf3b00b35c46874732cc15b58132bff611dc"
   },
-  "verdict": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_BOUND__COURT_VALIDATION_NEXT",
   "verdict_modes": {
     "ABSTAIN": {
       "default": false,

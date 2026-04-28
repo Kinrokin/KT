@@ -1,0 +1,294 @@
+{
+  "activation_review_authorized": false,
+  "afsh_candidate_generation_authorized": false,
+  "afsh_candidate_training_authorized": false,
+  "afsh_source_packet_authorized": false,
+  "allowed_outcomes": [
+    "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_BOUND__COURT_VALIDATION_NEXT",
+    "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_DEFERRED__NAMED_DEFECT_REMAINS",
+    "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
+  ],
+  "architecture_binding_head": "4279eefb58a34089dc0b1930765a36556454e968",
+  "authoritative_lane": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
+  "authorization_state": {
+    "activation_cutover_authorized": false,
+    "afsh_source_packet_authorized": false,
+    "candidate_generation_authorized": false,
+    "candidate_training_authorized": false,
+    "learned_router_superiority": "UNEARNED",
+    "lobe_escalation_authorized": false,
+    "package_promotion": "DEFERRED",
+    "r6_open": false,
+    "shadow_screen_execution_authorized": false,
+    "shadow_screen_packet_authorized": false,
+    "trust_zone_law_changed": false,
+    "truth_engine_law_changed": false
+  },
+  "candidate_generation_authorized": false,
+  "candidate_training_authorized": false,
+  "comparator_weakening_allowed": false,
+  "current_branch": "authoritative/b04-r6-static-hold-abstention-route-economics-court",
+  "current_git_head": "2a1cd65374506c02841de224d390f08d3a4efec0",
+  "current_main_head": "9d897a9b450eb5a3411afd57172216149e27477e",
+  "failure_count": 0,
+  "forbidden_claims": [
+    "afsh_source_packet_authorized",
+    "afsh_candidate_generation_authorized",
+    "afsh_candidate_training_authorized",
+    "shadow_screen_packet_authorized",
+    "shadow_screen_execution_authorized",
+    "r6_open",
+    "learned_router_superiority_earned",
+    "activation_review_authorized",
+    "runtime_cutover_authorized",
+    "lobe_escalation_authorized",
+    "package_promotion_authorized"
+  ],
+  "generated_utc": "2026-04-28T21:50:34Z",
+  "input_bindings": [
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_abstention_control_registry_draft.json",
+      "role": "abstention_registry_draft",
+      "sha256": "4ff41b4b9adc33a504a0be53cfb874933145a28ada8e8636e25d7ba343cfd440"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_router_interface_contract_draft.json",
+      "role": "afsh_interface_draft",
+      "sha256": "9954726a7d2dabb02dd9a062a88d2142d579acbb656995e356194fe4ae7b8012"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_trace_schema_draft.json",
+      "role": "afsh_trace_schema_draft",
+      "sha256": "d21e85392bf4bb87bd797b60fb3a482e2c92d1179eec5d7635a7d177662703d5"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+      "role": "canonical_scope_manifest",
+      "sha256": "eb4aaed06eb5bdea5c6f8ccef1f54c9d23960555ada1d80ee253da62ab94b5be"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_blind_universe_case_manifest.json",
+      "role": "case_manifest",
+      "sha256": "115099ee59b2a855c96174ac0ef4f2e227a43d5ff7ce76fe401efeed995a2d85"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_blind_universe_case_manifest_validation_receipt.json",
+      "role": "case_manifest_validation",
+      "sha256": "c43f2aad7e6e43347a6ef992f165850857b144f9971c34ee9d9814a111497e1a"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_blind_universe_control_sibling_validation_receipt.json",
+      "role": "control_sibling_validation",
+      "sha256": "7a9c80b4a9850c7473b300dcfeb648671d3a74579c3518f12f151b03799f2f3e"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_blind_universe_diagnostic_only_validation_receipt.json",
+      "role": "diagnostic_only_validation",
+      "sha256": "0da29f39bbd22be725333750e51ad4d129357031a657f3c2cf55381e06d8f878"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_blind_universe_holdout_validation_receipt.json",
+      "role": "holdout_validation",
+      "sha256": "c3c6d39bf382ee311f2d33737c5b1974a740d7846def400639acba0b3caf3422"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_blind_universe_leakage_validation_receipt.json",
+      "role": "leakage_validation",
+      "sha256": "ceb22387d1c26e73366014bd304c3e98314b819bf270d7fe6229b92970e7f130"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_blind_universe_no_authorization_drift_receipt.json",
+      "role": "no_authorization_drift",
+      "sha256": "daadc9887fa772a6101d026008d42487cfd916cba1b1189836ac9df77596d846"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
+      "role": "previous_next_lawful_move",
+      "sha256": "76cf05bffbb9a9c96d088ab7f562c05f4c94c85cbc8d2187dc4fedf654a8aca7"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_blind_universe_replay_validation_receipt.json",
+      "role": "replay_validation",
+      "sha256": "79235eb133330d4fee4ffb6a5ed90a91d26e74fa761e28429ddbc33be08b55e9"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_route_economics_matrix_draft.json",
+      "role": "route_economics_draft",
+      "sha256": "a1681b4d61de87bafb919e5092ca81b185760fa7c2dea22b91306123edf523a4"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_court_contract_draft.json",
+      "role": "static_hold_draft",
+      "sha256": "ec580a1911c56c874a5bfc443a6cdcb3dbe12004f4d312184b18c0cff7de4d4c"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+      "role": "trust_zone_registry",
+      "sha256": "05a51311291e0cd6a26cb9b83eaf785d54e16c9f1faf7a1fe8b693fe9ff0da3c"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_blind_universe_trust_zone_validation_receipt.json",
+      "role": "trust_zone_validation",
+      "sha256": "1b8c5ff7f3d78954de67bdc403e8c76d656ec7f42f091d65b6e88cae59b24be7"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_new_blind_input_universe_validation_contract.json",
+      "role": "validation_contract",
+      "sha256": "bf87731ebb20e4394fbd4f11a32522bcc8e0b3591790bdc17446cb445937aa7a"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_new_blind_input_universe_validation_receipt.json",
+      "role": "validation_receipt",
+      "sha256": "835af64286844268f247f6bb4acd45365e82af992a99c46b60a156d0d94f8f50"
+    }
+  ],
+  "learned_router_activated": false,
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "lobe_escalation_authorized": false,
+  "metric_widening_allowed": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "VALIDATE_B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
+  "no_downstream_authority_drift": true,
+  "old_r01_r04_diagnostic_only": true,
+  "old_v2_six_row_diagnostic_only": true,
+  "package_promotion_authorized": false,
+  "package_promotion_remains_deferred": true,
+  "pass_count": 7,
+  "previous_authoritative_lane": "B04_R6_NEW_BLIND_INPUT_UNIVERSE_VALIDATION",
+  "previous_validation_head": "3e0baf3b00b35c46874732cc15b58132bff611dc",
+  "r6_authorized": false,
+  "r6_open": false,
+  "route_eligible_cannot_authorize": [
+    "AFSH source packet finalization",
+    "AFSH candidate generation",
+    "candidate training",
+    "shadow-screen packet authorization",
+    "shadow-screen execution",
+    "learned-router superiority",
+    "R6 opening",
+    "activation review",
+    "runtime cutover",
+    "lobe escalation",
+    "package promotion"
+  ],
+  "route_value_formula": {
+    "expression": "expected_quality_delta + expected_governance_benefit + expected_proof_burden_reduction + expected_error_surface_reduction - wrong_route_cost - wrong_static_hold_cost_if_applicable - overrouting_penalty - abstention_violation_penalty - null_route_violation_penalty - mirror_masked_instability_penalty - trace_complexity_penalty - trust_zone_risk_penalty",
+    "route_eligible_requires": [
+      "route_value > frozen_route_threshold",
+      "static_hold_dominance == false",
+      "abstention_required == false",
+      "null_route_required == false",
+      "trust_zone_pass == true",
+      "mirror_masked_stability == pass",
+      "trace_requirements_satisfied == true",
+      "comparator_not_weakened == true",
+      "metric_not_widened == true",
+      "no_authorization_drift == true"
+    ],
+    "terms": [
+      "expected_quality_delta",
+      "expected_governance_benefit",
+      "expected_proof_burden_reduction",
+      "expected_error_surface_reduction",
+      "wrong_route_cost",
+      "wrong_static_hold_cost_if_applicable",
+      "overrouting_penalty",
+      "abstention_violation_penalty",
+      "null_route_violation_penalty",
+      "mirror_masked_instability_penalty",
+      "trace_complexity_penalty",
+      "trust_zone_risk_penalty"
+    ]
+  },
+  "router_generation_authorized": false,
+  "runtime_cutover_authorized": false,
+  "schema_id": "kt.b04_r6.court_no_authorization_drift_receipt.v1",
+  "schema_version": "1.0.0",
+  "selected_architecture_id": "AFSH-2S-GUARD",
+  "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
+  "selected_outcome": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_BOUND__COURT_VALIDATION_NEXT",
+  "shadow_screen_authorized": false,
+  "shadow_screen_execution_authorized": false,
+  "shadow_screen_packet_authorized": false,
+  "status": "PASS",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true,
+  "validated_blind_universe_binding": {
+    "case_count": 18,
+    "case_namespace": "B04R6-AFSH-BU1-*",
+    "prior_r01_r04_treatment": "DIAGNOSTIC_ONLY",
+    "prior_v2_six_row_treatment": "DIAGNOSTIC_ONLY",
+    "status": "BOUND_AND_VALIDATED",
+    "validation_outcome": "B04_R6_NEW_BLIND_UNIVERSE_VALIDATED__STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_NEXT",
+    "validation_receipt_head": "3e0baf3b00b35c46874732cc15b58132bff611dc"
+  },
+  "validation_rows": [
+    {
+      "check_id": "metric_widening_forbidden",
+      "detail": "metric widening is forbidden",
+      "reason_code": "RC_B04R6_COURT_DEFECT_METRIC_WIDENING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "comparator_weakening_forbidden",
+      "detail": "comparator weakening is forbidden",
+      "reason_code": "RC_B04R6_COURT_DEFECT_COMPARATOR_WEAKENING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_generation_authorization",
+      "detail": "candidate generation remains unauthorized",
+      "reason_code": "RC_B04R6_COURT_DEFECT_CANDIDATE_GENERATION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_shadow_screen_authorization",
+      "detail": "shadow screen remains unauthorized",
+      "reason_code": "RC_B04R6_COURT_DEFECT_SHADOW_SCREEN_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_r6_open_drift",
+      "detail": "R6 remains closed",
+      "reason_code": "RC_B04R6_COURT_DEFECT_R6_OPEN_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_activation_drift",
+      "detail": "activation and cutover remain false",
+      "reason_code": "RC_B04R6_COURT_DEFECT_ACTIVATION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_package_promotion_drift",
+      "detail": "package promotion remains deferred",
+      "reason_code": "RC_B04R6_COURT_DEFECT_PACKAGE_PROMOTION_DRIFT",
+      "status": "PASS"
+    }
+  ],
+  "verdict_modes": {
+    "ABSTAIN": {
+      "default": false,
+      "description": "Refuse routing when eligibility, trust zone, calibration, boundary status, context, or legal authority is uncertain.",
+      "positive_verdict": true
+    },
+    "NULL_ROUTE": {
+      "anti_overrouting_control": true,
+      "default": false,
+      "description": "Anti-overrouting verdict when route pressure exists but no lawful route exists.",
+      "positive_verdict": true
+    },
+    "ROUTE_ELIGIBLE": {
+      "default": false,
+      "description": "A case may be considered by a later source-packet/candidate lane; this verdict does not authorize generation, screen execution, activation, or promotion.",
+      "non_executing_precondition_only": true,
+      "positive_verdict": false
+    },
+    "STATIC_HOLD": {
+      "default": true,
+      "description": "Use static comparator / no route when static hold is safest, sufficient, lower proof burden, or route value does not clear threshold.",
+      "positive_verdict": true
+    }
+  }
+}

@@ -9,9 +9,107 @@
     "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
   "architecture_binding_head": "4279eefb58a34089dc0b1930765a36556454e968",
+  "artifact_id": "B04_R6_FUTURE_BLOCKER_REGISTER",
   "authoritative_lane": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
+  "blockers": [
+    {
+      "blocker_id": "B04R6-FB-001",
+      "future_blocker": "Court exists but court validation law does not exist.",
+      "neutralization_now": [
+        "b04_r6_static_hold_abstention_route_economics_court_validation_plan.json",
+        "b04_r6_static_hold_abstention_route_economics_court_validation_reason_codes.json",
+        "b04_r6_static_hold_abstention_route_economics_court_validation_test_plan.md"
+      ]
+    },
+    {
+      "blocker_id": "B04R6-FB-002",
+      "future_blocker": "Court validates but AFSH source-packet law does not exist.",
+      "neutralization_now": [
+        "b04_r6_afsh_implementation_source_packet_prep_only_draft.json",
+        "b04_r6_afsh_allowed_forbidden_features_prep_only_draft.json",
+        "b04_r6_afsh_trace_schema_prep_only_draft.json",
+        "b04_r6_afsh_provenance_matrix_prep_only_draft.json"
+      ]
+    },
+    {
+      "blocker_id": "B04R6-FB-003",
+      "future_blocker": "Source packet exists but source-packet validation law does not exist.",
+      "neutralization_later": [
+        "b04_r6_afsh_source_packet_validation_plan.json",
+        "b04_r6_afsh_source_packet_validation_reason_codes.json",
+        "b04_r6_afsh_forbidden_feature_scanner_spec.json"
+      ]
+    },
+    {
+      "blocker_id": "B04R6-FB-004",
+      "future_blocker": "Candidate exists but admissibility law is not ready.",
+      "neutralization_later": [
+        "b04_r6_afsh_admissibility_court_contract_draft.json",
+        "b04_r6_afsh_admissibility_reason_codes_draft.json",
+        "b04_r6_afsh_trace_compatibility_validation_plan_draft.json"
+      ]
+    },
+    {
+      "blocker_id": "B04R6-FB-005",
+      "future_blocker": "Candidate passes admissibility but shadow-screen packet law is missing.",
+      "neutralization_later": [
+        "b04_r6_afsh_shadow_screen_execution_packet_draft.json",
+        "b04_r6_afsh_shadow_screen_metric_contract_draft.json",
+        "b04_r6_afsh_shadow_screen_disqualifier_ledger_draft.json"
+      ]
+    },
+    {
+      "blocker_id": "B04R6-FB-006",
+      "future_blocker": "Shadow screen passes but activation review / rollback / runtime law is missing.",
+      "neutralization_later": [
+        "b04_r6_learned_router_activation_review_packet_draft.json",
+        "b04_r6_learned_router_rollback_plan_draft.json",
+        "b04_r6_route_distribution_health_contract_draft.json",
+        "b04_r6_operator_override_contract_draft.json",
+        "b04_r6_kill_switch_contract_draft.json"
+      ]
+    },
+    {
+      "blocker_id": "B04R6-FB-007",
+      "future_blocker": "Shadow screen fails but no lawful failure closeout or redesign path exists.",
+      "neutralization_later": [
+        "b04_r6_superiority_not_earned_closeout_contract_draft.json",
+        "b04_r6_redesign_authorization_court_draft.json",
+        "b04_r6_forensic_invalidation_court_draft.json"
+      ]
+    },
+    {
+      "blocker_id": "B04R6-FB-008",
+      "future_blocker": "External audit calls the proof self-referential.",
+      "neutralization_later": [
+        "b04_r6_external_replay_requirements_draft.json",
+        "b04_r6_public_verifier_delta_packet_draft.json",
+        "monolith_vs_static_vs_afsh_matrix_draft.json",
+        "proof_bundle_comparison_draft.json"
+      ]
+    },
+    {
+      "blocker_id": "B04R6-FB-009",
+      "future_blocker": "Commercial language outruns proof.",
+      "neutralization_now": [
+        "r6_nonclaim_boundary_language_packet.json",
+        "learned_router_forbidden_claims_receipt.json",
+        "commercial_claim_ceiling_receipt.json"
+      ]
+    },
+    {
+      "blocker_id": "B04R6-FB-010",
+      "future_blocker": "Lab/archive/generated surfaces contaminate canonical proof.",
+      "neutralization_now": [
+        "r6_archive_diagnostic_only_receipt.json",
+        "r6_lab_to_canonical_promotion_guard.json",
+        "r6_generated_artifact_boundary_receipt.json"
+      ]
+    }
+  ],
   "candidate_generation_authorized": false,
   "candidate_training_authorized": false,
+  "current_authoritative_lane": "AUTHOR_B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
   "current_branch": "authoritative/b04-r6-static-hold-abstention-route-economics-court",
   "current_git_head": "2a1cd65374506c02841de224d390f08d3a4efec0",
   "current_main_head": "9d897a9b450eb5a3411afd57172216149e27477e",
@@ -85,7 +183,7 @@
   },
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v6",
+  "schema_id": "kt.b04_r6.future_blocker_register.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -105,7 +203,6 @@
     "validation_outcome": "B04_R6_NEW_BLIND_UNIVERSE_VALIDATED__STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_NEXT",
     "validation_receipt_head": "3e0baf3b00b35c46874732cc15b58132bff611dc"
   },
-  "verdict": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_BOUND__COURT_VALIDATION_NEXT",
   "verdict_modes": {
     "ABSTAIN": {
       "default": false,

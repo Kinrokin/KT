@@ -12,9 +12,22 @@
   "authoritative_lane": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
   "candidate_generation_authorized": false,
   "candidate_training_authorized": false,
+  "comparator_weakening_allowed": false,
   "current_branch": "authoritative/b04-r6-static-hold-abstention-route-economics-court",
   "current_git_head": "2a1cd65374506c02841de224d390f08d3a4efec0",
   "current_main_head": "9d897a9b450eb5a3411afd57172216149e27477e",
+  "eligibility_gates": [
+    "route_value > frozen_route_threshold",
+    "static_hold_dominance == false",
+    "abstention_required == false",
+    "null_route_required == false",
+    "trust_zone_pass == true",
+    "mirror_masked_stability == pass",
+    "trace_requirements_satisfied == true",
+    "comparator_not_weakened == true",
+    "metric_not_widened == true",
+    "no_authorization_drift == true"
+  ],
   "forbidden_claims": [
     "afsh_source_packet_authorized",
     "afsh_candidate_generation_authorized",
@@ -28,15 +41,61 @@
     "lobe_escalation_authorized",
     "package_promotion_authorized"
   ],
+  "formula": {
+    "expression": "expected_quality_delta + expected_governance_benefit + expected_proof_burden_reduction + expected_error_surface_reduction - wrong_route_cost - wrong_static_hold_cost_if_applicable - overrouting_penalty - abstention_violation_penalty - null_route_violation_penalty - mirror_masked_instability_penalty - trace_complexity_penalty - trust_zone_risk_penalty",
+    "route_eligible_requires": [
+      "route_value > frozen_route_threshold",
+      "static_hold_dominance == false",
+      "abstention_required == false",
+      "null_route_required == false",
+      "trust_zone_pass == true",
+      "mirror_masked_stability == pass",
+      "trace_requirements_satisfied == true",
+      "comparator_not_weakened == true",
+      "metric_not_widened == true",
+      "no_authorization_drift == true"
+    ],
+    "terms": [
+      "expected_quality_delta",
+      "expected_governance_benefit",
+      "expected_proof_burden_reduction",
+      "expected_error_surface_reduction",
+      "wrong_route_cost",
+      "wrong_static_hold_cost_if_applicable",
+      "overrouting_penalty",
+      "abstention_violation_penalty",
+      "null_route_violation_penalty",
+      "mirror_masked_instability_penalty",
+      "trace_complexity_penalty",
+      "trust_zone_risk_penalty"
+    ]
+  },
   "generated_utc": "2026-04-28T21:50:34Z",
   "learned_router_activated": false,
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
   "lobe_escalation_authorized": false,
+  "metric_widening_allowed": false,
   "multi_lobe_authorized": false,
   "next_lawful_move": "VALIDATE_B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
+  "penalty_terms": [
+    "wrong_route_cost",
+    "wrong_static_hold_cost_if_applicable",
+    "overrouting_penalty",
+    "abstention_violation_penalty",
+    "null_route_violation_penalty",
+    "mirror_masked_instability_penalty",
+    "trace_complexity_penalty",
+    "trust_zone_risk_penalty"
+  ],
+  "positive_terms": [
+    "expected_quality_delta",
+    "expected_governance_benefit",
+    "expected_proof_burden_reduction",
+    "expected_error_surface_reduction"
+  ],
   "previous_authoritative_lane": "B04_R6_NEW_BLIND_INPUT_UNIVERSE_VALIDATION",
   "previous_validation_head": "3e0baf3b00b35c46874732cc15b58132bff611dc",
   "r6_authorized": false,
@@ -54,6 +113,7 @@
     "lobe escalation",
     "package promotion"
   ],
+  "route_eligible_is_non_executing": true,
   "route_value_formula": {
     "expression": "expected_quality_delta + expected_governance_benefit + expected_proof_burden_reduction + expected_error_surface_reduction - wrong_route_cost - wrong_static_hold_cost_if_applicable - overrouting_penalty - abstention_violation_penalty - null_route_violation_penalty - mirror_masked_instability_penalty - trace_complexity_penalty - trust_zone_risk_penalty",
     "route_eligible_requires": [
@@ -84,8 +144,9 @@
     ]
   },
   "router_generation_authorized": false,
+  "routing_requires_positive_permission": true,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v6",
+  "schema_id": "kt.b04_r6.route_economics_matrix.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -105,7 +166,6 @@
     "validation_outcome": "B04_R6_NEW_BLIND_UNIVERSE_VALIDATED__STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_NEXT",
     "validation_receipt_head": "3e0baf3b00b35c46874732cc15b58132bff611dc"
   },
-  "verdict": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_BOUND__COURT_VALIDATION_NEXT",
   "verdict_modes": {
     "ABSTAIN": {
       "default": false,
