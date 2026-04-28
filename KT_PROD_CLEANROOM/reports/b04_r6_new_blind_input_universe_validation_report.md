@@ -13,6 +13,7 @@ Next lawful move: `AUTHOR_B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT`
 - `case_manifest_identity`: `PASS` (RC_B04R6_BUV_CASE_COUNT_MISMATCH)
 - `case_manifest_hash_stability`: `PASS` (RC_B04R6_BUV_MANIFEST_HASH_UNSTABLE)
 - `case_family_balance_sanity`: `PASS` (RC_B04R6_BUV_FAMILY_BALANCE_DEFECT)
+- `family_balance_report_matches_manifest`: `PASS` (RC_B04R6_BUV_FAMILY_BALANCE_DEFECT)
 - `holdout_lock`: `PASS` (RC_B04R6_BUV_HOLDOUT_LOCK_WEAK)
 - `leakage_absence`: `PASS` (RC_B04R6_BUV_LABEL_LEAKAGE)
 - `diagnostic_only_prior_screens`: `PASS` (RC_B04R6_BUV_PRIOR_R01_R04_NOT_DIAGNOSTIC_ONLY)

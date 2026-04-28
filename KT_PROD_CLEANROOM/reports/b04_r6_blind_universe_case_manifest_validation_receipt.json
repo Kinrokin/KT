@@ -14,7 +14,7 @@
   "case_count": 18,
   "case_manifest_sha256": "36f3dc91ac1748260380616a3c317febe9f59e6c88e757f905da7f59a7ed8942",
   "current_branch": "authoritative/b04-r6-new-blind-input-universe-validation",
-  "current_git_head": "c4f4b035fcbcbd4d215f011fdca32f9b50f5217d",
+  "current_git_head": "1968a87c3b6eeff242222322c3508e8a0f6ea641",
   "current_main_head": "a9ea7f86c815f9e0f7d35ff50c5c93bdfb16a937",
   "failure_count": 0,
   "forbidden_claims": [
@@ -30,7 +30,7 @@
     "package_promotion_approved",
     "commercial_broadening"
   ],
-  "generated_utc": "2026-04-28T20:25:05Z",
+  "generated_utc": "2026-04-28T20:27:36Z",
   "learned_router_activated": false,
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
@@ -40,7 +40,7 @@
   "old_r01_r04_diagnostic_only": true,
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_remains_deferred": true,
-  "pass_count": 3,
+  "pass_count": 4,
   "previous_authoritative_lane": "B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT",
   "r6_authorized": false,
   "r6_open": false,
@@ -52,7 +52,7 @@
   "selected_outcome": "B04_R6_NEW_BLIND_UNIVERSE_VALIDATED__STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_NEXT",
   "shadow_screen_authorized": false,
   "status": "PASS",
-  "subject_main_head": "a9ea7f86c815f9e0f7d35ff50c5c93bdfb16a937",
+  "subject_main_head": "4b1c3161396cd781e5047f9aa81afff1fcc6a9f5",
   "trust_zone_law_unchanged": true,
   "truth_engine_derivation_law_unchanged": true,
   "validation_rows": [
@@ -71,6 +71,12 @@
     {
       "check_id": "case_family_balance_sanity",
       "detail": "required families, buckets, and control variants are present",
+      "reason_code": "RC_B04R6_BUV_FAMILY_BALANCE_DEFECT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "family_balance_report_matches_manifest",
+      "detail": "family-balance report matches manifest bucket counts and percentages",
       "reason_code": "RC_B04R6_BUV_FAMILY_BALANCE_DEFECT",
       "status": "PASS"
     }
