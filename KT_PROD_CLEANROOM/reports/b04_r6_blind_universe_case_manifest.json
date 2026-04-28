@@ -1,0 +1,614 @@
+{
+  "activation_review_authorized": false,
+  "allowed_outcomes": [
+    "R6_NEW_BLIND_UNIVERSE_CONTRACT_BOUND__CONTRACT_VALIDATION_NEXT",
+    "R6_DEFERRED__BLIND_UNIVERSE_CONTRACT_DEFECT_REMAINS",
+    "R6_CLOSEOUT__NO_LAWFUL_BLIND_UNIVERSE_AVAILABLE"
+  ],
+  "architecture_binding_head": "4279eefb58a34089dc0b1930765a36556454e968",
+  "authoritative_lane": "B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT",
+  "blind_universe_contract_bound": true,
+  "blind_universe_id": "B04_R6_AFSH_BLIND_UNIVERSE_1",
+  "candidate_generation_authorized": false,
+  "case_count": 18,
+  "case_manifest_sha256": "36f3dc91ac1748260380616a3c317febe9f59e6c88e757f905da7f59a7ed8942",
+  "cases": [
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "STATIC_HOLD",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0001",
+      "control_siblings": {
+        "masked_case_id": "B04R6-AFSH-BU1-0014",
+        "mirror_case_id": "B04R6-AFSH-BU1-0013",
+        "null_route_case_id": "B04R6-AFSH-BU1-0015",
+        "static_hold_case_id": ""
+      },
+      "family_id": "STATIC_HOLD_SHOULD_WIN",
+      "proof_burden": "NORMAL",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "STATIC_OR_ABSTENTION_VALUE_DOMINANT",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0001",
+        "sha256": "108ee121275502e378d836448752f5b77006df0a8eaf1f4059897a3db5bbbb0d"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "CANONICAL"
+    },
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "STATIC_HOLD",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0002",
+      "control_siblings": {
+        "masked_case_id": "",
+        "mirror_case_id": "",
+        "null_route_case_id": "",
+        "static_hold_case_id": "B04R6-AFSH-BU1-0001"
+      },
+      "family_id": "COMPARATOR_DOMINANCE_CASE",
+      "proof_burden": "NORMAL",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "STATIC_OR_ABSTENTION_VALUE_DOMINANT",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0002",
+        "sha256": "91ef11120db4b549e84ab473ed6944cc0088457097010ea9eaa85f41aa3a0310"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "CONTROL"
+    },
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "ROUTE_VALUE",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0003",
+      "control_siblings": {
+        "masked_case_id": "B04R6-AFSH-BU1-0017",
+        "mirror_case_id": "B04R6-AFSH-BU1-0016",
+        "null_route_case_id": "B04R6-AFSH-BU1-0018",
+        "static_hold_case_id": ""
+      },
+      "family_id": "ROUTING_PLAUSIBLY_ADDS_VALUE",
+      "proof_burden": "LIGHT",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "POSITIVE_ROUTE_VALUE",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0003",
+        "sha256": "e815abac903141184fbb6a953a53db9a1ddabe6f56ec101acba917438687d5f6"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "CANONICAL"
+    },
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "ROUTE_VALUE",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0004",
+      "control_siblings": {
+        "masked_case_id": "",
+        "mirror_case_id": "",
+        "null_route_case_id": "",
+        "static_hold_case_id": "B04R6-AFSH-BU1-0002"
+      },
+      "family_id": "ROUTE_VALUE_CASE",
+      "proof_burden": "LIGHT",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "POSITIVE_ROUTE_VALUE",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0004",
+        "sha256": "b36e64227d5cff289111a627e23f5d0d061cc6c685c9a84f7d72de78e7aa5977"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "CANONICAL"
+    },
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "ROUTE_VALUE",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0005",
+      "control_siblings": {
+        "masked_case_id": "",
+        "mirror_case_id": "",
+        "null_route_case_id": "",
+        "static_hold_case_id": ""
+      },
+      "family_id": "PROOF_BURDEN_LIGHT",
+      "proof_burden": "LIGHT",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "POSITIVE_ROUTE_VALUE",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0005",
+        "sha256": "ca66516a68a9dbc9e92d37a0c7d910eef225ab3c5fe3c919b4f105b4212cef47"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "CANONICAL"
+    },
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "OVERROUTING_TRAP",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0006",
+      "control_siblings": {
+        "masked_case_id": "",
+        "mirror_case_id": "",
+        "null_route_case_id": "B04R6-AFSH-BU1-0018",
+        "static_hold_case_id": ""
+      },
+      "family_id": "OVER_ROUTING_TRAP",
+      "proof_burden": "NORMAL",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "STATIC_OR_ABSTENTION_VALUE_DOMINANT",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0006",
+        "sha256": "e778760af97f931a135df1e78c553b8239dd252c470d902691a4e78426534682"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "CANONICAL"
+    },
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "OVERROUTING_TRAP",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0007",
+      "control_siblings": {
+        "masked_case_id": "",
+        "mirror_case_id": "",
+        "null_route_case_id": "B04R6-AFSH-BU1-0018",
+        "static_hold_case_id": ""
+      },
+      "family_id": "ADVERSARIAL_SELECTOR_TRAP",
+      "proof_burden": "NORMAL",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "STATIC_OR_ABSTENTION_VALUE_DOMINANT",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0007",
+        "sha256": "1b47ec08683ca17a2539ba251badaf74c8e43fdfc08c070a8b92e631b6718a04"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "CONTROL"
+    },
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "ABSTENTION_BOUNDARY",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0008",
+      "control_siblings": {
+        "masked_case_id": "",
+        "mirror_case_id": "",
+        "null_route_case_id": "",
+        "static_hold_case_id": ""
+      },
+      "family_id": "ABSTENTION_REQUIRED",
+      "proof_burden": "HEAVY",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "STATIC_OR_ABSTENTION_VALUE_DOMINANT",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0008",
+        "sha256": "b23c4c30c317a00ad92741e281f2358f720631aa85d53120a56bc2c201ea6a17"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "CANONICAL"
+    },
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "ABSTENTION_BOUNDARY",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0009",
+      "control_siblings": {
+        "masked_case_id": "",
+        "mirror_case_id": "",
+        "null_route_case_id": "",
+        "static_hold_case_id": ""
+      },
+      "family_id": "BOUNDARY_REJECTION",
+      "proof_burden": "HEAVY",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "STATIC_OR_ABSTENTION_VALUE_DOMINANT",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0009",
+        "sha256": "44d57b50b9e4a412bbb65c266c7c81954f488dd10c8ec7437398e902adab60f5"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "CONTROL"
+    },
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "ABSTENTION_BOUNDARY",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0010",
+      "control_siblings": {
+        "masked_case_id": "",
+        "mirror_case_id": "",
+        "null_route_case_id": "",
+        "static_hold_case_id": ""
+      },
+      "family_id": "TRUST_ZONE_BOUNDARY_CASE",
+      "proof_burden": "HEAVY",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "STATIC_OR_ABSTENTION_VALUE_DOMINANT",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0010",
+        "sha256": "cd09089074462c9e90a717a8a01ea1d4a1e169cfaf83e4f39228808f7316abf1"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "CONTROL"
+    },
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "ABSTENTION_BOUNDARY",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0011",
+      "control_siblings": {
+        "masked_case_id": "",
+        "mirror_case_id": "",
+        "null_route_case_id": "",
+        "static_hold_case_id": ""
+      },
+      "family_id": "PROOF_BURDEN_HEAVY",
+      "proof_burden": "HEAVY",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "STATIC_OR_ABSTENTION_VALUE_DOMINANT",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0011",
+        "sha256": "ade2530b0b3a921339a692694c6d2e380ca3b88dd1df926c754cc274d57821aa"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "CANONICAL"
+    },
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "CALIBRATION_EDGE",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0012",
+      "control_siblings": {
+        "masked_case_id": "",
+        "mirror_case_id": "",
+        "null_route_case_id": "",
+        "static_hold_case_id": ""
+      },
+      "family_id": "CALIBRATION_EDGE_CASE",
+      "proof_burden": "NORMAL",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "CALIBRATION_DEPENDENT",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0012",
+        "sha256": "96dae245b0fe07639e8f1b3408673e18a4f498e4581b7118f92c25e9a4616c83"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "CANONICAL"
+    },
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "CONTROL_SIBLING",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0013",
+      "control_siblings": {
+        "masked_case_id": "",
+        "mirror_case_id": "",
+        "null_route_case_id": "",
+        "static_hold_case_id": "B04R6-AFSH-BU1-0001"
+      },
+      "family_id": "MIRROR_SURFACE_VARIANT",
+      "proof_burden": "NORMAL",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "CONTROL_VALUE",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0013",
+        "sha256": "ace0ffa0cd312aa88d267efe381d4c37ca0389e2e561434717fbd1ee51039245"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "MIRROR"
+    },
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "CONTROL_SIBLING",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0014",
+      "control_siblings": {
+        "masked_case_id": "",
+        "mirror_case_id": "",
+        "null_route_case_id": "",
+        "static_hold_case_id": "B04R6-AFSH-BU1-0001"
+      },
+      "family_id": "MASKED_SURFACE_VARIANT",
+      "proof_burden": "NORMAL",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "CONTROL_VALUE",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0014",
+        "sha256": "ec1b66cffc118cf2d955fd244bfd1a1c5b37565e910ad022df578bc44ec132da"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "MASKED"
+    },
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "CONTROL_SIBLING",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0015",
+      "control_siblings": {
+        "masked_case_id": "",
+        "mirror_case_id": "",
+        "null_route_case_id": "",
+        "static_hold_case_id": "B04R6-AFSH-BU1-0001"
+      },
+      "family_id": "NULL_ROUTE_CONTROL",
+      "proof_burden": "NORMAL",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "CONTROL_VALUE",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0015",
+        "sha256": "a46610cc1e71b525b56ebba526cb12e3f437b99804313e5fe0f2cb0f97cd6a4d"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "NULL_ROUTE"
+    },
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "CONTROL_SIBLING",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0016",
+      "control_siblings": {
+        "masked_case_id": "",
+        "mirror_case_id": "",
+        "null_route_case_id": "",
+        "static_hold_case_id": "B04R6-AFSH-BU1-0003"
+      },
+      "family_id": "MIRROR_SURFACE_VARIANT",
+      "proof_burden": "NORMAL",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "CONTROL_VALUE",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0016",
+        "sha256": "e29e2e31c6d68681a65f9ccb058dc5d76da9104760e5274eea671504705c7999"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "MIRROR"
+    },
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "CONTROL_SIBLING",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0017",
+      "control_siblings": {
+        "masked_case_id": "",
+        "mirror_case_id": "",
+        "null_route_case_id": "",
+        "static_hold_case_id": "B04R6-AFSH-BU1-0003"
+      },
+      "family_id": "MASKED_SURFACE_VARIANT",
+      "proof_burden": "NORMAL",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "CONTROL_VALUE",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0017",
+        "sha256": "7e0d1ea73dae234e167bcddf40f25f1ac129a0858a759b8a26a9943c65121698"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "MASKED"
+    },
+    {
+      "admissibility": {
+        "admitted": true,
+        "exclusion_reason_codes": []
+      },
+      "balance_bucket": "CONTROL_SIBLING",
+      "blindness": {
+        "calibration_from_screen_outcomes_forbidden": true,
+        "labels_hidden_from_candidate_generation": true,
+        "outcomes_hidden_from_candidate_generation": true,
+        "route_labels_hidden_before_screen": true
+      },
+      "case_id": "B04R6-AFSH-BU1-0018",
+      "control_siblings": {
+        "masked_case_id": "",
+        "mirror_case_id": "",
+        "null_route_case_id": "",
+        "static_hold_case_id": "B04R6-AFSH-BU1-0006"
+      },
+      "family_id": "NULL_ROUTE_CONTROL",
+      "proof_burden": "NORMAL",
+      "registry_compatible_zone": "CANONICAL",
+      "route_value": "CONTROL_VALUE",
+      "source_ref": {
+        "kind": "case_source",
+        "path": "hash-only://b04-r6/afsh-bu1/B04R6-AFSH-BU1-0018",
+        "sha256": "b92b3d49cbddfbe00cd40aa0d843d30defa69de70f78db068d615d228af8a772"
+      },
+      "trust_zone": "CANONICAL_EVAL_HOLDOUT",
+      "variant_type": "NULL_ROUTE"
+    }
+  ],
+  "current_branch": "authoritative/b04-r6-new-blind-input-universe-contract",
+  "current_git_head": "ecd561d9d067cdef9e1fc6606b8630ce1f8d4741",
+  "current_main_head": "4ab28e05a6fe9bae2bffa8080b991179279ccb76",
+  "forbidden_claims": [
+    "r6_open",
+    "router_generation_authorized",
+    "shadow_screen_authorized",
+    "learned_router_superiority_earned",
+    "activation_review_authorized",
+    "learned_router_activated",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening"
+  ],
+  "generated_utc": "2026-04-28T19:27:52Z",
+  "learned_router_activated": false,
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "VALIDATE_B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT",
+  "old_blind_universes_diagnostic_only": true,
+  "package_promotion_remains_deferred": true,
+  "previous_authoritative_lane": "B04_R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT",
+  "r01_r04_reuse_as_counted_proof_allowed": false,
+  "r6_authorized": false,
+  "r6_open": false,
+  "router_generation_authorized": false,
+  "schema_id": "kt.operator.b04_r6_blind_universe_case_manifest.v1",
+  "schema_version": "1.0.0",
+  "selected_architecture_id": "AFSH-2S-GUARD",
+  "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
+  "selected_outcome": "R6_NEW_BLIND_UNIVERSE_CONTRACT_BOUND__CONTRACT_VALIDATION_NEXT",
+  "shadow_screen_authorized": false,
+  "six_row_v2_reuse_as_counted_proof_allowed": false,
+  "status": "PASS",
+  "subject_main_head": "4ab28e05a6fe9bae2bffa8080b991179279ccb76",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true
+}

@@ -1,5 +1,25 @@
 {
   "activation_review_authorized": false,
+  "all_case_ids": [
+    "B04R6-AFSH-BU1-0001",
+    "B04R6-AFSH-BU1-0002",
+    "B04R6-AFSH-BU1-0003",
+    "B04R6-AFSH-BU1-0004",
+    "B04R6-AFSH-BU1-0005",
+    "B04R6-AFSH-BU1-0006",
+    "B04R6-AFSH-BU1-0007",
+    "B04R6-AFSH-BU1-0008",
+    "B04R6-AFSH-BU1-0009",
+    "B04R6-AFSH-BU1-0010",
+    "B04R6-AFSH-BU1-0011",
+    "B04R6-AFSH-BU1-0012",
+    "B04R6-AFSH-BU1-0013",
+    "B04R6-AFSH-BU1-0014",
+    "B04R6-AFSH-BU1-0015",
+    "B04R6-AFSH-BU1-0016",
+    "B04R6-AFSH-BU1-0017",
+    "B04R6-AFSH-BU1-0018"
+  ],
   "allowed_outcomes": [
     "R6_NEW_BLIND_UNIVERSE_CONTRACT_BOUND__CONTRACT_VALIDATION_NEXT",
     "R6_DEFERRED__BLIND_UNIVERSE_CONTRACT_DEFECT_REMAINS",
@@ -14,6 +34,20 @@
   "current_branch": "authoritative/b04-r6-new-blind-input-universe-contract",
   "current_git_head": "ecd561d9d067cdef9e1fc6606b8630ce1f8d4741",
   "current_main_head": "4ab28e05a6fe9bae2bffa8080b991179279ccb76",
+  "entries": [
+    {
+      "masked_case_id": "B04R6-AFSH-BU1-0014",
+      "mirror_case_id": "B04R6-AFSH-BU1-0013",
+      "null_route_case_id": "B04R6-AFSH-BU1-0015",
+      "primary_case_id": "B04R6-AFSH-BU1-0001"
+    },
+    {
+      "masked_case_id": "B04R6-AFSH-BU1-0017",
+      "mirror_case_id": "B04R6-AFSH-BU1-0016",
+      "null_route_case_id": "B04R6-AFSH-BU1-0018",
+      "primary_case_id": "B04R6-AFSH-BU1-0003"
+    }
+  ],
   "forbidden_claims": [
     "r6_open",
     "router_generation_authorized",
@@ -30,6 +64,8 @@
   "learned_router_activated": false,
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
+  "map_status": "BOUND",
+  "mirror_masked_map_sha256": "a385ce1d4c4b3132f66730c56ab5099cbfd7e3f81a78dedffc393607a94418e2",
   "multi_lobe_authorized": false,
   "next_lawful_move": "VALIDATE_B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT",
   "old_blind_universes_diagnostic_only": true,
@@ -38,8 +74,9 @@
   "r01_r04_reuse_as_counted_proof_allowed": false,
   "r6_authorized": false,
   "r6_open": false,
+  "required": true,
   "router_generation_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v4",
+  "schema_id": "kt.operator.b04_r6_blind_universe_mirror_masked_map.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -49,6 +86,5 @@
   "status": "PASS",
   "subject_main_head": "4ab28e05a6fe9bae2bffa8080b991179279ccb76",
   "trust_zone_law_unchanged": true,
-  "truth_engine_derivation_law_unchanged": true,
-  "verdict": "R6_NEW_BLIND_UNIVERSE_CONTRACT_BOUND__CONTRACT_VALIDATION_NEXT"
+  "truth_engine_derivation_law_unchanged": true
 }

@@ -1,16 +1,8 @@
 {
   "activation_review_authorized": false,
-  "allowed_outcomes": [
-    "R6_NEW_BLIND_UNIVERSE_CONTRACT_BOUND__CONTRACT_VALIDATION_NEXT",
-    "R6_DEFERRED__BLIND_UNIVERSE_CONTRACT_DEFECT_REMAINS",
-    "R6_CLOSEOUT__NO_LAWFUL_BLIND_UNIVERSE_AVAILABLE"
-  ],
   "architecture_binding_head": "4279eefb58a34089dc0b1930765a36556454e968",
   "authoritative_lane": "B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT",
-  "blind_universe_contract_bound": true,
-  "blind_universe_id": "B04_R6_AFSH_BLIND_UNIVERSE_1",
   "candidate_generation_authorized": false,
-  "case_count": 18,
   "current_branch": "authoritative/b04-r6-new-blind-input-universe-contract",
   "current_git_head": "ecd561d9d067cdef9e1fc6606b8630ce1f8d4741",
   "current_main_head": "4ab28e05a6fe9bae2bffa8080b991179279ccb76",
@@ -32,23 +24,26 @@
   "learned_router_superiority_earned": false,
   "multi_lobe_authorized": false,
   "next_lawful_move": "VALIDATE_B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT",
-  "old_blind_universes_diagnostic_only": true,
   "package_promotion_remains_deferred": true,
   "previous_authoritative_lane": "B04_R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT",
-  "r01_r04_reuse_as_counted_proof_allowed": false,
   "r6_authorized": false,
   "r6_open": false,
+  "required_trace_groups": [
+    "route_decision_trace",
+    "abstention_trace",
+    "overrouting_trace",
+    "static_fallback_rationale",
+    "mirror_masked_trace",
+    "deterministic_replay_receipt"
+  ],
   "router_generation_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v4",
+  "schema_id": "kt.operator.b04_r6_afsh_trace_schema_draft.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
-  "selected_outcome": "R6_NEW_BLIND_UNIVERSE_CONTRACT_BOUND__CONTRACT_VALIDATION_NEXT",
   "shadow_screen_authorized": false,
-  "six_row_v2_reuse_as_counted_proof_allowed": false,
-  "status": "PASS",
+  "status": "PREP_ONLY",
   "subject_main_head": "4ab28e05a6fe9bae2bffa8080b991179279ccb76",
   "trust_zone_law_unchanged": true,
-  "truth_engine_derivation_law_unchanged": true,
-  "verdict": "R6_NEW_BLIND_UNIVERSE_CONTRACT_BOUND__CONTRACT_VALIDATION_NEXT"
+  "truth_engine_derivation_law_unchanged": true
 }

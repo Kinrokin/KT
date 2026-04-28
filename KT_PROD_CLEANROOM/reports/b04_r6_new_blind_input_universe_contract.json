@@ -1,183 +1,290 @@
 {
-  "authoritative_lane": "B04_R6_CANDIDATE_REVISION_PACKET__NEW_BLIND_INPUT_UNIVERSE_REQUIRED",
-  "candidate_rows": [
-    {
-      "candidate_v2_training_label_visible": false,
-      "candidate_visible_fields": [
-        "case_id",
-        "family",
-        "pressure_type",
-        "source_kind"
-      ],
-      "case_id": "R6B01",
-      "family": "math",
-      "holdout_role": "candidate_v2_counted_screen_candidate",
-      "mirror_masked_required": true,
-      "old_r01_r04_derived": false,
-      "pressure_type": "adjacent_quantitative_pressure",
-      "source_kind": "fresh_heldout_design",
-      "source_sha256": "8edb0b2cadd5a3009462f8a522205d26c733b1ec0b3993985cb26960b3fd6aa1",
-      "static_baseline_labels_blinded_until_counted_screen": true
-    },
-    {
-      "candidate_v2_training_label_visible": false,
-      "candidate_visible_fields": [
-        "case_id",
-        "family",
-        "pressure_type",
-        "source_kind"
-      ],
-      "case_id": "R6B02",
-      "family": "poetry",
-      "holdout_role": "candidate_v2_counted_screen_candidate",
-      "mirror_masked_required": true,
-      "old_r01_r04_derived": false,
-      "pressure_type": "form_shift_pressure",
-      "source_kind": "fresh_heldout_design",
-      "source_sha256": "1d865315c937d68aa2337d5d559893c57208e77883d2898e637356f427fcafa4",
-      "static_baseline_labels_blinded_until_counted_screen": true
-    },
-    {
-      "candidate_v2_training_label_visible": false,
-      "candidate_visible_fields": [
-        "case_id",
-        "family",
-        "pressure_type",
-        "source_kind"
-      ],
-      "case_id": "R6B03",
-      "family": "governance",
-      "holdout_role": "candidate_v2_counted_screen_candidate",
-      "mirror_masked_required": true,
-      "old_r01_r04_derived": false,
-      "pressure_type": "counterfactual_review_pressure",
-      "source_kind": "fresh_heldout_design",
-      "source_sha256": "4dcd7e953cbf63ed6d84c404ce77c8cf1fe84c1b3bd56354cf0bd50690ed5ed0",
-      "static_baseline_labels_blinded_until_counted_screen": true
-    },
-    {
-      "candidate_v2_training_label_visible": false,
-      "candidate_visible_fields": [
-        "case_id",
-        "family",
-        "pressure_type",
-        "source_kind"
-      ],
-      "case_id": "R6B04",
-      "family": "default",
-      "holdout_role": "candidate_v2_counted_screen_candidate",
-      "mirror_masked_required": true,
-      "old_r01_r04_derived": false,
-      "pressure_type": "unknown_family_static_hold_pressure",
-      "source_kind": "fresh_heldout_design",
-      "source_sha256": "ce3b85a65f5972f06d19135cca82e7ef42b0ec764b2309b6268a9db1d8ec0593",
-      "static_baseline_labels_blinded_until_counted_screen": true
-    },
-    {
-      "candidate_v2_training_label_visible": false,
-      "candidate_visible_fields": [
-        "case_id",
-        "family",
-        "pressure_type",
-        "source_kind"
-      ],
-      "case_id": "R6B05",
-      "family": "mixed_math_governance",
-      "holdout_role": "candidate_v2_counted_screen_candidate",
-      "mirror_masked_required": true,
-      "old_r01_r04_derived": false,
-      "pressure_type": "multi_family_abstention_pressure",
-      "source_kind": "mutated_sibling_not_label_derived",
-      "source_sha256": "bca3956ee29dbca11e0c18c0ceaa8c69186ee1edfc8716a6be719415c0334336",
-      "static_baseline_labels_blinded_until_counted_screen": true
-    },
-    {
-      "candidate_v2_training_label_visible": false,
-      "candidate_visible_fields": [
-        "case_id",
-        "family",
-        "pressure_type",
-        "source_kind"
-      ],
-      "case_id": "R6B06",
-      "family": "masked_ambiguous",
-      "holdout_role": "candidate_v2_counted_screen_candidate",
-      "mirror_masked_required": true,
-      "old_r01_r04_derived": false,
-      "pressure_type": "masked_family_route_pressure",
-      "source_kind": "fresh_heldout_design",
-      "source_sha256": "206e8b05963f1dbc7a86eeabb616e97cdc556b21bf18d81ca24783bbaeee796e",
-      "static_baseline_labels_blinded_until_counted_screen": true
-    }
+  "activation_review_authorized": false,
+  "admissibility_rules": {
+    "case_id_freshness_required": true,
+    "mirror_masked_or_control_coverage_required": true,
+    "source_hash_required": true,
+    "trust_zone_compatibility_required": true
+  },
+  "allowed_outcomes": [
+    "R6_NEW_BLIND_UNIVERSE_CONTRACT_BOUND__CONTRACT_VALIDATION_NEXT",
+    "R6_DEFERRED__BLIND_UNIVERSE_CONTRACT_DEFECT_REMAINS",
+    "R6_CLOSEOUT__NO_LAWFUL_BLIND_UNIVERSE_AVAILABLE"
   ],
-  "contract_status": "BOUND_AS_REQUIRED_BEFORE_CANDIDATE_V2_SCREEN",
-  "current_git_head": "844459dea2b56a0526e6819f355caea7534571ba",
-  "family_coverage": [
-    "default",
-    "governance",
-    "masked_ambiguous",
-    "math",
-    "mixed_math_governance",
-    "poetry"
+  "architecture_binding_head": "4279eefb58a34089dc0b1930765a36556454e968",
+  "authoritative_lane": "B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT",
+  "blind_universe_contract_bound": true,
+  "blind_universe_id": "B04_R6_AFSH_BLIND_UNIVERSE_1",
+  "blind_universe_identity": {
+    "case_count": 18,
+    "case_id_prefix": "B04R6-AFSH-BU1",
+    "selected_architecture_id": "AFSH-2S-GUARD",
+    "universe_id": "B04_R6_AFSH_BLIND_UNIVERSE_1"
+  },
+  "blindness_rules": {
+    "candidate_generation_can_see_case_ids": true,
+    "candidate_generation_can_see_family_ids": true,
+    "candidate_generation_can_see_outcomes": false,
+    "candidate_generation_can_see_route_labels": false,
+    "candidate_generation_can_see_static_labels": false
+  },
+  "boundary_abstention_controls": [
+    "B04R6-AFSH-BU1-0008",
+    "B04R6-AFSH-BU1-0009",
+    "B04R6-AFSH-BU1-0010"
   ],
+  "branch_law": "AFSH-2S-GUARD is canonical as architecture only; R6 remains closed until a new blind universe is bound, an AFSH candidate is lawfully generated and admitted, and a shadow screen proves superiority under frozen comparator, abstention, static-hold, and disqualifier law.",
+  "calibration_basis": {
+    "confidence_to_error_monotonicity_required": true
+  },
+  "candidate_generation_authorized": false,
+  "case_count": 18,
+  "case_manifest_binding": "b04_r6_blind_universe_case_manifest.json",
+  "current_branch": "authoritative/b04-r6-new-blind-input-universe-contract",
+  "current_git_head": "ecd561d9d067cdef9e1fc6606b8630ce1f8d4741",
+  "current_main_head": "4ab28e05a6fe9bae2bffa8080b991179279ccb76",
+  "exclusion_rules": {
+    "archive_sources_excluded": true,
+    "commercial_sources_excluded": true,
+    "old_case_ids_excluded": [
+      "R01",
+      "R02",
+      "R03",
+      "R04",
+      "R6B"
+    ],
+    "quarantined_sources_excluded": true,
+    "untracked_sources_excluded": true
+  },
+  "fail_closed_conditions": [
+    "RC_B04R6_UNIVERSE_OLD_SCREEN_CONTAMINATION",
+    "RC_B04R6_UNIVERSE_LABEL_LEAKAGE",
+    "RC_B04R6_UNIVERSE_OUTCOME_LEAKAGE",
+    "RC_B04R6_UNIVERSE_HOLDOUT_NOT_FROZEN",
+    "RC_B04R6_UNIVERSE_MIRROR_MASKED_INCOMPLETE",
+    "RC_B04R6_UNIVERSE_STATIC_CONTROL_MISSING",
+    "RC_B04R6_UNIVERSE_ABSTENTION_CONTROL_MISSING",
+    "RC_B04R6_UNIVERSE_NULL_ROUTE_CONTROL_MISSING",
+    "RC_B04R6_AUTH_CANDIDATE_GENERATION_DRIFT",
+    "RC_B04R6_AUTH_SHADOW_SCREEN_DRIFT",
+    "RC_B04R6_AUTH_R6_OPEN_DRIFT",
+    "RC_B04R6_AUTH_PROMOTION_DRIFT",
+    "RC_B04R6_TRUST_ZONE_BINDING_MISSING",
+    "RC_B04R6_COMPARATOR_WEAKENING_ATTEMPT",
+    "RC_B04R6_METRIC_WIDENING_ATTEMPT",
+    "RC_B04R6_TRACE_SCHEMA_INCOMPLETE"
+  ],
+  "family_balance_rules": {
+    "abstention_or_boundary_percent": "20-30",
+    "mirror_masked_null_controls_percent": "10-20",
+    "overrouting_traps_percent": "10-15",
+    "routing_plausibly_adds_value_percent": "15-25",
+    "static_hold_should_win_percent": "20-30"
+  },
   "forbidden_claims": [
     "r6_open",
+    "router_generation_authorized",
+    "shadow_screen_authorized",
     "learned_router_superiority_earned",
+    "activation_review_authorized",
     "learned_router_activated",
+    "learned_router_cutover_authorized",
     "multi_lobe_authorized",
     "package_promotion_approved",
     "commercial_broadening"
   ],
-  "generated_utc": "2026-04-27T19:43:21Z",
-  "holdout_policy": {
-    "candidate_v2_may_not_train_on_counted_labels": true,
-    "r01_r04_failure_outcomes_diagnostic_only": true,
-    "r01_r04_not_counted_for_candidate_v2_superiority": true,
-    "static_comparator_labels_blinded_until_counted_screen": true
+  "generated_utc": "2026-04-28T19:27:52Z",
+  "holdout_lock": {
+    "candidate_generation_may_not_use_blind_outcomes": true,
+    "candidate_generation_may_not_use_blind_route_labels": true,
+    "locked": true
+  },
+  "input_bindings": [
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_architecture_clean_state_watchdog_receipt.json",
+      "role": "architecture_clean_state",
+      "sha256": "5de55935aadd8cd28913f0f630e6a1e624c0727856189a871c84681b980183c1"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_major_router_architecture_contract.json",
+      "role": "architecture_contract",
+      "sha256": "53db039dc3b21221076f56d05a00b6ea49fbfad7ce1b139536b5626e0ef8ca89"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_architecture_options_matrix.json",
+      "role": "architecture_options",
+      "sha256": "566cdec5b3aa94456e8ff8fdedac82791e50ea90ba966cd20e16d603f116c13d"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_major_router_architecture_contract_receipt.json",
+      "role": "architecture_receipt",
+      "sha256": "ea27bbcbd3d84e365534e7e1b254aed830771171d1bf797f990ff04180670b26"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_architecture_selection_rationale.json",
+      "role": "architecture_selection_rationale",
+      "sha256": "f39eb012bcf35026ec8afe13ecc1b293e4a73b0f5232ec2b8353261f1e2d3d3b"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_new_blind_universe_selection_risk_matrix.json",
+      "role": "blind_selection_risk",
+      "sha256": "de8f34e66ec2ec46822d162ed0266ab648c543c171e5c1927bcb310972e777f0"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+      "role": "canonical_scope_manifest",
+      "sha256": "eb4aaed06eb5bdea5c6f8ccef1f54c9d23960555ada1d80ee253da62ab94b5be"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
+      "role": "previous_next_lawful_move",
+      "sha256": "29cf2065b5f47b2b5455d05b3f83af24a660b0c3c0d645441d9edea445e9d726"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_router_family_retirement_receipt.json",
+      "role": "router_family_retirement",
+      "sha256": "be5f98252b86e90b68994a12911af970e44677691a92488b0407da69aa23281e"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+      "role": "trust_zone_registry",
+      "sha256": "05a51311291e0cd6a26cb9b83eaf785d54e16c9f1faf7a1fe8b693fe9ff0da3c"
+    }
+  ],
+  "input_provenance_rules": {
+    "case_manifest_hash_required": true,
+    "holdout_separation_receipt_required": true,
+    "mirror_masked_map_hash_required": true,
+    "source_sha256_required": true
+  },
+  "input_source_rules": {
+    "external_advisory_sources_as_authority_allowed": false,
+    "hash_only_sources_allowed": true,
+    "repo_relative_sources_allowed": true,
+    "source_mode": "hash_bound_holdout_cases",
+    "untracked_sources_allowed": false
+  },
+  "label_access_rules": {
+    "calibration_from_blind_labels_forbidden": true,
+    "route_labels_hidden_until_counted_screen": true,
+    "static_baseline_labels_hidden_until_counted_screen": true
   },
   "learned_router_activated": false,
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
-  "mirror_masked_requirements": {
-    "all_rows_require_mirror_masked_variants": true,
-    "required": true
+  "mirror_masked_sibling_map": "b04_r6_blind_universe_mirror_masked_map.json",
+  "monotonicity_basis": {
+    "confidence_increase_must_not_hide_error_risk": true
   },
   "multi_lobe_authorized": false,
-  "next_lawful_move": "AUTHOR_B04_R6_CANDIDATE_V2_SOURCE_PACKET__BLIND_INPUT_CONTRACT_BOUND",
+  "next_lawful_move": "VALIDATE_B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT",
+  "next_lawful_moves": [
+    "VALIDATE_B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT"
+  ],
+  "no_generation_surface_guards": {
+    "candidate_generation_authorized": false,
+    "router_generation_authorized": false
+  },
+  "no_package_promotion_guards": {
+    "package_promotion_remains_deferred": true
+  },
+  "no_runtime_import_guards": {
+    "runtime_import_from_blind_outcomes_forbidden": true
+  },
+  "no_screen_execution_guards": {
+    "shadow_screen_authorized": false
+  },
+  "no_tuning_rules": {
+    "no_candidate_tuning_on_blind_outcomes": true,
+    "no_metric_widening_after_blind_outcomes": true,
+    "no_threshold_tuning_after_blind_outcomes": true
+  },
+  "null_route_controls": [
+    "B04R6-AFSH-BU1-0015",
+    "B04R6-AFSH-BU1-0018"
+  ],
+  "old_blind_universes_diagnostic_only": true,
+  "outcome_access_rules": {
+    "blind_screen_outcomes_hidden_before_screen": true,
+    "post_screen_outcomes_become_diagnostic_only_for_future_revisions": true
+  },
   "package_promotion_remains_deferred": true,
-  "previous_authoritative_lane": "B04_R6_CANDIDATE_REVISION_OR_CLOSEOUT",
+  "pass_conditions": [
+    "all required families present",
+    "no old case IDs reused",
+    "all sources hash-bound",
+    "label and outcome leakage forbidden",
+    "trust-zone validation pass",
+    "candidate generation remains unauthorized",
+    "shadow screen remains unauthorized"
+  ],
+  "previous_authoritative_lane": "B04_R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT",
+  "prior_screen_contamination_rules": {
+    "old_candidate_outputs_as_labels_forbidden": true,
+    "old_disqualification_as_route_label_forbidden": true,
+    "r01_r04_diagnostic_only": true,
+    "six_row_v2_universe_diagnostic_only": true
+  },
+  "proof_burden_basis": {
+    "route_must_reduce_or_justify_proof_burden": true
+  },
+  "r01_r04_reuse_as_counted_proof_allowed": false,
   "r6_authorized": false,
   "r6_open": false,
-  "row_count": 6,
-  "schema_id": "kt.operator.b04_r6_new_blind_input_universe_contract.v1",
-  "source_hashes": [
-    {
-      "case_id": "R6B01",
-      "source_sha256": "8edb0b2cadd5a3009462f8a522205d26c733b1ec0b3993985cb26960b3fd6aa1"
-    },
-    {
-      "case_id": "R6B02",
-      "source_sha256": "1d865315c937d68aa2337d5d559893c57208e77883d2898e637356f427fcafa4"
-    },
-    {
-      "case_id": "R6B03",
-      "source_sha256": "4dcd7e953cbf63ed6d84c404ce77c8cf1fe84c1b3bd56354cf0bd50690ed5ed0"
-    },
-    {
-      "case_id": "R6B04",
-      "source_sha256": "ce3b85a65f5972f06d19135cca82e7ef42b0ec764b2309b6268a9db1d8ec0593"
-    },
-    {
-      "case_id": "R6B05",
-      "source_sha256": "bca3956ee29dbca11e0c18c0ceaa8c69186ee1edfc8716a6be719415c0334336"
-    },
-    {
-      "case_id": "R6B06",
-      "source_sha256": "206e8b05963f1dbc7a86eeabb616e97cdc556b21bf18d81ca24783bbaeee796e"
-    }
+  "required_receipts": [
+    "b04_r6_new_blind_input_universe_contract_receipt.json",
+    "b04_r6_blind_universe_case_manifest.json",
+    "b04_r6_blind_universe_mirror_masked_map.json",
+    "b04_r6_blind_universe_holdout_separation_receipt.json",
+    "b04_r6_blind_universe_leakage_guard.json",
+    "b04_r6_blind_universe_trust_zone_report.json",
+    "b04_r6_blind_universe_parse_sweep_receipt.json"
+  ],
+  "route_economics_basis": {
+    "formula": "expected_quality_delta + expected_governance_benefit + expected_proof_burden_reduction - wrong_route_cost - overrouting_penalty - mirror_masked_instability_penalty - trace_complexity_penalty - trust_zone_risk_penalty",
+    "routing_allowed_only_above_threshold": true
+  },
+  "router_generation_authorized": false,
+  "schema_id": "kt.operator.b04_r6_new_blind_input_universe_contract.v2",
+  "schema_version": "1.0.0",
+  "selected_architecture_id": "AFSH-2S-GUARD",
+  "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
+  "selected_outcome": "R6_NEW_BLIND_UNIVERSE_CONTRACT_BOUND__CONTRACT_VALIDATION_NEXT",
+  "shadow_screen_authorized": false,
+  "six_row_v2_reuse_as_counted_proof_allowed": false,
+  "static_comparator_binding": {
+    "preserve_existing_contract": true,
+    "static_baseline_weakening_allowed": false
+  },
+  "static_hold_controls": [
+    "B04R6-AFSH-BU1-0001",
+    "B04R6-AFSH-BU1-0002"
   ],
   "status": "PASS",
-  "subject_main_head": "a64245b7e75d8db64c659cc4e58fb836830284bc",
+  "stratification_axes": [
+    "family_id",
+    "variant_type",
+    "balance_bucket",
+    "trust_zone",
+    "proof_burden",
+    "route_value"
+  ],
+  "subject_main_head": "4ab28e05a6fe9bae2bffa8080b991179279ccb76",
+  "trust_zone_bindings": {
+    "logical_zone": "CANONICAL_EVAL_HOLDOUT",
+    "registry_compatible_zone": "CANONICAL"
+  },
   "trust_zone_law_unchanged": true,
-  "truth_engine_derivation_law_unchanged": true
+  "truth_engine_derivation_law_unchanged": true,
+  "validation_commands": [
+    "python -m tools.operator.cohort0_b04_r6_new_blind_input_universe_contract",
+    "python -m pytest --no-cov -q KT_PROD_CLEANROOM/tests/operator/test_cohort0_b04_r6_new_blind_input_universe_contract.py",
+    "python -m tools.operator.trust_zone_validate"
+  ],
+  "wrong_route_cost_basis": {
+    "wrong_route_must_be_expensive": true
+  },
+  "wrong_static_hold_cost_basis": {
+    "static_hold_false_negative_tracked_but_not_disqualifying_by_default": true
+  }
 }
