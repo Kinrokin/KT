@@ -9,7 +9,8 @@ from tools.operator.titanium_common import file_sha256, repo_root, utc_now_iso_z
 from tools.operator.trust_zone_validate import validate_trust_zones
 
 
-REQUIRED_BRANCH = "authoritative/b04-r6-second-shadow-forensic-rerun-bar"
+AUTHORITY_BRANCH = "authoritative/b04-r6-second-shadow-forensic-rerun-bar"
+ALLOWED_BRANCHES = frozenset({AUTHORITY_BRANCH, "main"})
 AUTHORITATIVE_LANE = "B04_R6_SECOND_SHADOW_SCREEN_FORENSIC_AND_RERUN_BAR"
 PREVIOUS_LANE = "B04_R6_SECOND_SHADOW_ROUTER_SUPERIORITY_SCREEN"
 
@@ -283,8 +284,10 @@ def _write_report(verdict: str, cause_class: str, implicated_cases: list[str], n
 
 def run(*, reports_root: Path) -> Dict[str, Any]:
     root = repo_root()
-    if common.git_current_branch_name(root) != REQUIRED_BRANCH:
-        raise RuntimeError(f"FAIL_CLOSED: must run on {REQUIRED_BRANCH}")
+    current_branch = common.git_current_branch_name(root)
+    if current_branch not in ALLOWED_BRANCHES:
+        allowed = ", ".join(sorted(ALLOWED_BRANCHES))
+        raise RuntimeError(f"FAIL_CLOSED: must run on one of: {allowed}")
     if common.git_status_porcelain(root).strip():
         raise RuntimeError("FAIL_CLOSED: dirty worktree before B04 R6 forensic rerun-bar freeze")
     if reports_root.resolve() != (root / "KT_PROD_CLEANROOM/reports").resolve():

@@ -128,7 +128,7 @@ def _write_inputs(root: Path) -> Path:
 
 def _patch_env(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     monkeypatch.setattr(tranche, "repo_root", lambda: tmp_path)
-    monkeypatch.setattr(tranche.common, "git_current_branch_name", lambda root: tranche.REQUIRED_BRANCH)
+    monkeypatch.setattr(tranche.common, "git_current_branch_name", lambda root: tranche.AUTHORITY_BRANCH)
     monkeypatch.setattr(tranche.common, "git_status_porcelain", lambda root: "")
     monkeypatch.setattr(tranche.common, "git_rev_parse", lambda root, ref: "forensic-head")
     monkeypatch.setattr(
