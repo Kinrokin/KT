@@ -181,6 +181,7 @@ INPUTS = {
     "future_blocker_register": "KT_PROD_CLEANROOM/reports/b04_r6_future_blocker_register.json",
     "previous_next_lawful_move": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
 }
+MUTABLE_HANDOFF_ROLES = frozenset({"previous_next_lawful_move"})
 
 TEXT_INPUTS = {
     "court_report": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_abstention_route_economics_court_report.md",
@@ -246,13 +247,24 @@ def _ensure_branch_context(root: Path) -> str:
     return current_branch
 
 
-def _input_hashes(root: Path) -> list[Dict[str, str]]:
-    rows: list[Dict[str, str]] = []
+def _input_hashes(root: Path, *, handoff_git_commit: str) -> list[Dict[str, Any]]:
+    rows: list[Dict[str, Any]] = []
     for role, raw in sorted({**INPUTS, **TEXT_INPUTS, **PREP_INPUTS, **REFERENCE_INPUTS}.items()):
         path = root / raw
         if not path.is_file():
             raise RuntimeError(f"FAIL_CLOSED: missing required input: {raw}")
-        rows.append({"role": role, "path": raw, "sha256": file_sha256(path)})
+        row: Dict[str, Any] = {"role": role, "path": raw, "sha256": file_sha256(path)}
+        if role in MUTABLE_HANDOFF_ROLES:
+            row.update(
+                {
+                    "binding_kind": "git_object_before_overwrite",
+                    "git_commit": handoff_git_commit,
+                    "mutable_canonical_path_overwritten_by_this_lane": True,
+                }
+            )
+        else:
+            row["binding_kind"] = "file_sha256_at_validation"
+        rows.append(row)
     return rows
 
 
@@ -406,6 +418,8 @@ def _validate_replay_binding(
     if len(court_head) != 40:
         _fail("RC_B04R6_COURT_VAL_REPLAY_BINDING_MISMATCH", "court replay head must be a full git SHA")
     for role, payload in payloads.items():
+        if role in MUTABLE_HANDOFF_ROLES:
+            continue
         if payload.get("current_git_head") != court_head:
             _fail("RC_B04R6_COURT_VAL_REPLAY_BINDING_MISMATCH", f"{role} does not bind court replay head")
         if payload.get("current_main_head") != court_head:
@@ -415,6 +429,7 @@ def _validate_replay_binding(
     return [
         _pass_row("validation_contract_binds_current_main_head", "RC_B04R6_COURT_VAL_MAIN_HEAD_MISMATCH", "validation can bind current main head", group="replay"),
         _pass_row("validation_contract_binds_court_replay_head", "RC_B04R6_COURT_VAL_REPLAY_BINDING_MISMATCH", "all court artifacts share one replay head", group="replay"),
+        _pass_row("mutable_handoff_excluded_from_court_replay_head", "RC_B04R6_COURT_VAL_REPLAY_BINDING_MISMATCH", "mutable next-lawful-move handoff is validated separately from immutable court replay artifacts", group="replay"),
     ], court_head
 
 
@@ -768,7 +783,7 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
 
     head = common.git_rev_parse(root, "HEAD")
     current_main_head = common.git_rev_parse(root, "origin/main") if current_branch != "main" else head
-    input_bindings = _input_hashes(root)
+    input_bindings = _input_hashes(root, handoff_git_commit=head)
 
     validation_rows: list[Dict[str, str]] = []
     validation_rows.extend(_validate_previous_state(payloads, text_payloads))

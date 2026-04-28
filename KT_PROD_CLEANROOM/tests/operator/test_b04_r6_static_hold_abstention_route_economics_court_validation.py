@@ -281,6 +281,20 @@ def test_validation_contract_binds_court_replay_head(outputs: Path) -> None:
     assert _contract(outputs)["court_replay_binding_head"] == COURT_HEAD
 
 
+def test_mutable_handoff_excluded_from_court_replay_head(outputs: Path) -> None:
+    assert "mutable_handoff_excluded_from_court_replay_head" in _row_ids(outputs)
+
+
+def test_previous_next_lawful_move_binding_is_git_object(outputs: Path) -> None:
+    bindings = {
+        row["role"]: row for row in _contract(outputs)["input_bindings"] if row["role"] == "previous_next_lawful_move"
+    }
+    binding = bindings["previous_next_lawful_move"]
+    assert binding["binding_kind"] == "git_object_before_overwrite"
+    assert binding["git_commit"] == BRANCH_HEAD
+    assert binding["mutable_canonical_path_overwritten_by_this_lane"] is True
+
+
 def test_validation_contract_binds_selected_afsh_architecture(outputs: Path) -> None:
     assert _contract(outputs)["selected_architecture_id"] == validation.SELECTED_ARCHITECTURE_ID
 
@@ -490,6 +504,16 @@ def test_source_packet_authorship_next_does_not_finalize_source_packet(outputs: 
     assert receipt["source_packet_authorship_next_lawful"] is True
     assert receipt["afsh_source_packet_authorized"] is False
     assert receipt["source_packet_authority_not_finalized"] is True
+
+
+def test_self_replay_handoff_reruns_cleanly(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    _patch_env(monkeypatch, tmp_path, head=BRANCH_HEAD)
+    validation.run(reports_root=reports)
+    _patch_env(monkeypatch, tmp_path, head="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+    result = validation.run(reports_root=reports)
+    assert result["verdict"] == validation.SELECTED_OUTCOME
+    assert _next(reports)["next_lawful_move"] == validation.NEXT_LAWFUL_MOVE
 
 
 def test_dirty_worktree_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
