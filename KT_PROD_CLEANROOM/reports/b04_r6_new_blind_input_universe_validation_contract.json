@@ -14,7 +14,7 @@
   "case_count": 18,
   "contract_id": "B04_R6_NEW_BLIND_INPUT_UNIVERSE_VALIDATION",
   "current_branch": "authoritative/b04-r6-new-blind-input-universe-validation",
-  "current_git_head": "4a974cbccbcf2f47ccaddcce7a2ed29fb48efd9d",
+  "current_git_head": "c4f4b035fcbcbd4d215f011fdca32f9b50f5217d",
   "current_main_head": "a9ea7f86c815f9e0f7d35ff50c5c93bdfb16a937",
   "failure_count": 0,
   "forbidden_claims": [
@@ -30,7 +30,7 @@
     "package_promotion_approved",
     "commercial_broadening"
   ],
-  "generated_utc": "2026-04-28T20:17:27Z",
+  "generated_utc": "2026-04-28T20:25:05Z",
   "hard_prohibitions": [
     "r6_open",
     "router_generation_authorized",
@@ -128,7 +128,7 @@
     {
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "previous_next_lawful_move",
-      "sha256": "be69bf350081d8e3bc5f7ad3e11ffd8a42cf6471dcdc7c06198c369a630e2180"
+      "sha256": "751a3bbb603131c40e72aef891f62cefc675a30f4c31b5ff7062faa50b35c10b"
     },
     {
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_route_economics_matrix_draft.json",
@@ -160,7 +160,7 @@
   "old_r01_r04_diagnostic_only": true,
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_remains_deferred": true,
-  "pass_count": 16,
+  "pass_count": 18,
   "previous_authoritative_lane": "B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT",
   "r6_authorized": false,
   "r6_open": false,
@@ -299,6 +299,18 @@
     {
       "check_id": "replay_binding",
       "detail": "bound universe artifacts share a stable replay subject and current main is known",
+      "reason_code": "RC_B04R6_BUV_REPLAY_BINDING_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "bound_input_hash_integrity",
+      "detail": "bound contract input hashes match current files for immutable inputs",
+      "reason_code": "RC_B04R6_BUV_REPLAY_BINDING_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "bound_universe_artifact_replay_hashes",
+      "detail": "bound universe artifacts match the current main replay base",
       "reason_code": "RC_B04R6_BUV_REPLAY_BINDING_MISMATCH",
       "status": "PASS"
     }

@@ -23,3 +23,5 @@ Next lawful move: `AUTHOR_B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT`
 - `trust_zone_binding`: `PASS` (RC_B04R6_BUV_TRUST_ZONE_BINDING_MISSING)
 - `no_authorization_drift`: `PASS` (RC_B04R6_BUV_GENERATION_AUTHORIZATION_DRIFT)
 - `replay_binding`: `PASS` (RC_B04R6_BUV_REPLAY_BINDING_MISMATCH)
+- `bound_input_hash_integrity`: `PASS` (RC_B04R6_BUV_REPLAY_BINDING_MISMATCH)
+- `bound_universe_artifact_replay_hashes`: `PASS` (RC_B04R6_BUV_REPLAY_BINDING_MISMATCH)
