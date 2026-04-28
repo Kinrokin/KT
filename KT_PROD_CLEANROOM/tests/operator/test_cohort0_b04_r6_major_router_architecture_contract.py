@@ -95,7 +95,12 @@ def _write_inputs(root: Path) -> Path:
             "quick_candidate_v3_forbidden": True,
             "old_blind_universes_diagnostic_only": True,
         },
-        "prior_redesign_blocker_ledger": {**common, "schema_id": "prior_blockers", "live_blockers_to_r6_open": []},
+        "prior_redesign_blocker_ledger": {
+            **common,
+            "schema_id": "prior_blockers",
+            "live_blockers_to_r6_open": [],
+            "no_blockers_to_architecture_contract": True,
+        },
         "prior_architecture_options": {
             **common,
             "schema_id": "prior_options",
@@ -189,6 +194,19 @@ def test_fails_closed_if_abstention_first_option_missing(tmp_path: Path, monkeyp
     _patch_env(monkeypatch, tmp_path)
 
     with pytest.raises(RuntimeError, match="abstention-first static-hold option must be present"):
+        tranche.run(reports_root=reports)
+
+
+def test_fails_closed_if_prior_architecture_blocker_remains(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _write_inputs(tmp_path)
+    blockers = _load(reports / "b04_r6_major_redesign_blocker_ledger.json")
+    blockers["no_blockers_to_architecture_contract"] = False
+    _write_json(reports / "b04_r6_major_redesign_blocker_ledger.json", blockers)
+    _patch_env(monkeypatch, tmp_path)
+
+    with pytest.raises(RuntimeError, match="prior blocker ledger must clear architecture-contract entry"):
         tranche.run(reports_root=reports)
 
 

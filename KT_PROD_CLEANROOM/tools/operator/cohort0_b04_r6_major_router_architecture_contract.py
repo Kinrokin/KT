@@ -215,6 +215,10 @@ def _require_inputs(
     if retirement.get("old_blind_universes_diagnostic_only") is not True:
         raise RuntimeError("FAIL_CLOSED: old blind universes must be diagnostic-only")
 
+    blocker_ledger = payloads["prior_redesign_blocker_ledger"]
+    if blocker_ledger.get("no_blockers_to_architecture_contract") is not True:
+        raise RuntimeError("FAIL_CLOSED: prior blocker ledger must clear architecture-contract entry")
+
     options = _rows(payloads["prior_architecture_options"], label="prior architecture options")
     if not any(row.get("option_id") == "ABSTENTION_FIRST_STATIC_HOLD_ROUTER" for row in options):
         raise RuntimeError("FAIL_CLOSED: abstention-first static-hold option must be present")
