@@ -336,12 +336,13 @@ def _abstention_rows(route_rows: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
         fallback_expected = bool(row["static_fallback_expected"])
         candidate_abstained = bool(row["candidate_abstained"])
         overroute = fallback_expected and not candidate_abstained
+        static_hold_preserved = candidate_abstained if fallback_expected else not candidate_abstained
         rows.append(
             {
                 "case_id": row["case_id"],
                 "fallback_expected": fallback_expected,
                 "candidate_abstained": candidate_abstained,
-                "static_hold_preserved": not overroute,
+                "static_hold_preserved": static_hold_preserved,
                 "overrouting_detected": overroute or bool(row["trace"].get("overrouting_detected", False)),
             }
         )
@@ -380,7 +381,7 @@ def _disqualifiers(route_rows: list[Dict[str, Any]], abstention_rows: list[Dict[
     if any(not row["static_hold_preserved"] for row in abstention_rows):
         rows.append({"disqualifier_id": "ABSTENTION_COLLAPSE", "triggered": True, "effect": "SCREEN_INVALIDATE"})
     if any(row["overrouting_detected"] for row in abstention_rows):
-        rows.append({"disqualifier_id": "OVERROUTING_COLLAPSE", "triggered": True, "effect": "SCREEN_INVALIDATE"})
+        rows.append({"disqualifier_id": "OVERRouting_COLLAPSE", "triggered": True, "effect": "SCREEN_INVALIDATE"})
     if any(not row["invariance_pass"] for row in invariance_rows):
         rows.append({"disqualifier_id": "MIRROR_MASKED_INVARIANCE_FAILURE", "triggered": True, "effect": "SCREEN_INVALIDATE"})
     return rows

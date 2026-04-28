@@ -226,3 +226,18 @@ def test_second_shadow_screen_fails_closed_if_blind_label_visible(tmp_path: Path
 
     with pytest.raises(RuntimeError, match="blind labels"):
         tranche.run(reports_root=reports)
+
+
+def test_abstention_guard_fails_nonfallback_abstention() -> None:
+    rows = tranche._abstention_rows(
+        [
+            {
+                "case_id": "R6B01",
+                "static_fallback_expected": False,
+                "candidate_abstained": True,
+                "trace": {"overrouting_detected": False},
+            }
+        ]
+    )
+
+    assert rows[0]["static_hold_preserved"] is False
