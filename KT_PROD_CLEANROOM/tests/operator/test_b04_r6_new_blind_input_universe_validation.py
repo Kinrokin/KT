@@ -263,7 +263,25 @@ def test_validates_bound_blind_universe_without_authorizing_downstream(
     assert receipt["candidate_generation_authorized"] is False
     assert receipt["shadow_screen_authorized"] is False
     assert receipt["failure_count"] == 0
+    assert receipt["subject_main_head"] == receipt["bound_contract_subject_main_head"]
     assert next_receipt["next_lawful_move"] == validation.NEXT_LAWFUL_MOVE
+
+
+def test_emits_subject_main_head_from_bound_contract_not_branch_head(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _write_inputs(tmp_path)
+    _patch_env(monkeypatch, tmp_path, head="different-branch-head", origin_main="different-main-head")
+
+    result = validation.run(reports_root=reports)
+
+    receipt = _load(reports / validation.OUTPUTS["validation_receipt"])
+
+    assert result["verdict"] == validation.OUTCOME_VALIDATED
+    assert receipt["subject_main_head"] == receipt["bound_contract_subject_main_head"]
+    assert receipt["subject_main_head"] == "bound-head"
+    assert receipt["subject_main_head"] != "different-branch-head"
+    assert receipt["subject_main_head"] != "different-main-head"
 
 
 def test_fails_closed_on_case_count_mismatch(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -310,6 +328,17 @@ def test_fails_closed_on_manifest_hash_instability(tmp_path: Path, monkeypatch: 
     _patch_env(monkeypatch, tmp_path)
 
     with pytest.raises(RuntimeError, match="RC_B04R6_BUV_MANIFEST_HASH_UNSTABLE"):
+        validation.run(reports_root=reports)
+
+
+def test_fails_closed_on_family_balance_report_drift(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    balance = _load(reports / "b04_r6_new_blind_universe_case_family_balance_report.json")
+    balance["bucket_counts"]["STATIC_HOLD"] = 99
+    _write_json(reports / "b04_r6_new_blind_universe_case_family_balance_report.json", balance)
+    _patch_env(monkeypatch, tmp_path)
+
+    with pytest.raises(RuntimeError, match="RC_B04R6_BUV_FAMILY_BALANCE_DEFECT"):
         validation.run(reports_root=reports)
 
 

@@ -451,6 +451,31 @@ def _validate_case_manifest(manifest: Dict[str, Any]) -> tuple[list[Dict[str, An
     return rows, cases
 
 
+def _validate_family_balance_report(cases: list[Dict[str, Any]], family_balance: Dict[str, Any]) -> list[Dict[str, Any]]:
+    if family_balance.get("status") != "PASS":
+        _fail("RC_B04R6_BUV_FAMILY_BALANCE_DEFECT", "family-balance report must have status PASS")
+    if family_balance.get("row_count") != len(cases):
+        _fail("RC_B04R6_BUV_FAMILY_BALANCE_DEFECT", "family-balance row_count must match case manifest")
+    expected_counts: Dict[str, int] = {}
+    for row in cases:
+        bucket = str(row.get("balance_bucket", "UNKNOWN"))
+        expected_counts[bucket] = expected_counts.get(bucket, 0) + 1
+    if family_balance.get("bucket_counts") != expected_counts:
+        _fail("RC_B04R6_BUV_FAMILY_BALANCE_DEFECT", "family-balance bucket counts must match case manifest")
+    expected_percentages = {
+        key: round((value / len(cases)) * 100, 2) for key, value in sorted(expected_counts.items())
+    }
+    if family_balance.get("bucket_percentages") != expected_percentages:
+        _fail("RC_B04R6_BUV_FAMILY_BALANCE_DEFECT", "family-balance percentages must match case manifest")
+    return [
+        _pass_row(
+            "family_balance_report_matches_manifest",
+            "RC_B04R6_BUV_FAMILY_BALANCE_DEFECT",
+            "family-balance report matches manifest bucket counts and percentages",
+        )
+    ]
+
+
 def _validate_holdout_and_leakage(
     *, holdout: Dict[str, Any], leakage: Dict[str, Any], contract: Dict[str, Any]
 ) -> tuple[list[Dict[str, Any]], list[Dict[str, Any]]]:
@@ -700,7 +725,7 @@ def _base(
         "generated_utc": generated_utc,
         "current_git_head": head,
         "current_main_head": current_main_head,
-        "subject_main_head": current_main_head,
+        "subject_main_head": bound_contract_head,
         "bound_contract_subject_main_head": bound_contract_head,
         "architecture_binding_head": architecture_binding_head,
         "selected_architecture_id": SELECTED_ARCHITECTURE_ID,
@@ -785,6 +810,8 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
     validation_rows.extend(_validate_contract_schema(payloads["bound_contract"]))
     case_rows, cases = _validate_case_manifest(payloads["case_manifest"])
     validation_rows.extend(case_rows)
+    family_balance_rows = _validate_family_balance_report(cases, payloads["family_balance"])
+    validation_rows.extend(family_balance_rows)
     holdout_rows, leakage_rows = _validate_holdout_and_leakage(
         holdout=payloads["holdout_separation"],
         leakage=payloads["leakage_guard"],
@@ -809,6 +836,8 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
     generated_utc = utc_now_iso_z()
     bound_contract_head = str(payloads["bound_contract"].get("subject_main_head", "")).strip()
     architecture_binding_head = str(payloads["bound_contract"].get("architecture_binding_head", "")).strip()
+    if not bound_contract_head:
+        _fail("RC_B04R6_BUV_REPLAY_BINDING_MISMATCH", "bound contract subject_main_head is missing")
     base = _base(
         generated_utc=generated_utc,
         head=head,
@@ -852,7 +881,7 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
         OUTPUTS["case_manifest_validation"]: _artifact_payload(
             base=base,
             schema_id="kt.operator.b04_r6_blind_universe_case_manifest_validation_receipt.v1",
-            rows=case_rows,
+            rows=case_rows + family_balance_rows,
             extra={**common_extra, "case_manifest_sha256": payloads["case_manifest"].get("case_manifest_sha256")},
         ),
         OUTPUTS["holdout_validation"]: _artifact_payload(
