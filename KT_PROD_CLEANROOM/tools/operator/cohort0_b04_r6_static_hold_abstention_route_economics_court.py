@@ -259,7 +259,24 @@ def _pass_row(check_id: str, reason_code: str, detail: str) -> Dict[str, str]:
     return {"check_id": check_id, "status": "PASS", "reason_code": reason_code, "detail": detail}
 
 
-def _require_inputs(payloads: Dict[str, Dict[str, Any]], prep_payloads: Dict[str, Dict[str, Any]]) -> None:
+def _existing_court_contract_supports_self_replay(root: Path) -> bool:
+    path = root / "KT_PROD_CLEANROOM" / "reports" / OUTPUTS["court_contract"]
+    if not path.is_file():
+        return False
+    payload = common.load_json_required(root, path, label="existing court contract")
+    if payload.get("authoritative_lane") != AUTHORITATIVE_LANE:
+        return False
+    if payload.get("previous_authoritative_lane") != PREVIOUS_LANE:
+        return False
+    if payload.get("selected_outcome") != SELECTED_OUTCOME:
+        return False
+    input_bindings = payload.get("input_bindings", [])
+    if not isinstance(input_bindings, list):
+        return False
+    return any(isinstance(row, dict) and row.get("role") == "previous_next_lawful_move" for row in input_bindings)
+
+
+def _require_inputs(payloads: Dict[str, Dict[str, Any]], prep_payloads: Dict[str, Dict[str, Any]], *, root: Path) -> None:
     for label, payload in payloads.items():
         _ensure_common_boundary(payload, label=label)
     for label, payload in prep_payloads.items():
@@ -282,11 +299,19 @@ def _require_inputs(payloads: Dict[str, Dict[str, Any]], prep_payloads: Dict[str
         raise RuntimeError("FAIL_CLOSED: blind-universe validation failures remain")
 
     handoff = payloads["previous_next_lawful_move"]
-    if handoff.get("authoritative_lane") != PREVIOUS_LANE:
-        raise RuntimeError("FAIL_CLOSED: previous next lawful move receipt lane drifted")
-    if handoff.get("selected_outcome") != EXPECTED_PREVIOUS_OUTCOME:
-        raise RuntimeError("FAIL_CLOSED: previous next lawful move receipt outcome drifted")
-    if handoff.get("next_lawful_move") != EXPECTED_PREVIOUS_NEXT_MOVE:
+    handoff_is_previous = (
+        handoff.get("authoritative_lane") == PREVIOUS_LANE
+        and handoff.get("selected_outcome") == EXPECTED_PREVIOUS_OUTCOME
+        and handoff.get("next_lawful_move") == EXPECTED_PREVIOUS_NEXT_MOVE
+    )
+    handoff_is_self_replay = (
+        handoff.get("authoritative_lane") == AUTHORITATIVE_LANE
+        and handoff.get("previous_authoritative_lane") == PREVIOUS_LANE
+        and handoff.get("selected_outcome") == SELECTED_OUTCOME
+        and handoff.get("next_lawful_move") == NEXT_LAWFUL_MOVE
+        and _existing_court_contract_supports_self_replay(root)
+    )
+    if not (handoff_is_previous or handoff_is_self_replay):
         raise RuntimeError("FAIL_CLOSED: previous next lawful move receipt does not authorize this court")
 
     manifest = payloads["case_manifest"]
@@ -702,7 +727,7 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
 
     payloads = {role: _load(root, raw, label=role) for role, raw in INPUTS.items()}
     prep_payloads = {role: _load(root, raw, label=role) for role, raw in PREP_INPUTS.items()}
-    _require_inputs(payloads, prep_payloads)
+    _require_inputs(payloads, prep_payloads, root=root)
 
     fresh_trust_validation = validate_trust_zones(root=root)
     if fresh_trust_validation.get("status") != "PASS":
