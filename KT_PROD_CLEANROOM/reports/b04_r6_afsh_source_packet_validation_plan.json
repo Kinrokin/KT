@@ -22,7 +22,7 @@
     "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
   "architecture_binding_head": "4279eefb58a34089dc0b1930765a36556454e968",
-  "artifact_id": "B04_R6_FUTURE_BLOCKER_REGISTER",
+  "artifact_id": "B04_R6_AFSH_SOURCE_PACKET_VALIDATION_PLAN",
   "authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -50,59 +50,9 @@
     "uncertain_case": "ABSTAIN_OR_STATIC_HOLD",
     "unknown_case": "STATIC_HOLD"
   },
-  "blockers": [
-    {
-      "blocker_id": "B04R6-FB-011",
-      "future_blocker": "Source packet exists but source-packet validation law does not exist.",
-      "neutralization_now": [
-        "b04_r6_afsh_source_packet_validation_plan.json",
-        "b04_r6_afsh_source_packet_validation_reason_codes.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-012",
-      "future_blocker": "Source packet validates but candidate generation protocol is not ready.",
-      "neutralization_now": [
-        "b04_r6_afsh_candidate_generation_protocol_prep_only_draft.json",
-        "b04_r6_afsh_candidate_manifest_schema_prep_only_draft.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-013",
-      "future_blocker": "Candidate exists but admissibility law is not ready.",
-      "neutralization_now": [
-        "b04_r6_afsh_admissibility_court_prep_only_draft.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-014",
-      "future_blocker": "Candidate generation accidentally uses blind outcomes.",
-      "neutralization_later": [
-        "b04_r6_afsh_candidate_no_contamination_receipt.json",
-        "b04_r6_afsh_forbidden_feature_scan_receipt.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-015",
-      "future_blocker": "Candidate passes admissibility but shadow-screen packet law is missing.",
-      "neutralization_later": [
-        "b04_r6_afsh_shadow_screen_execution_packet_draft.json",
-        "b04_r6_afsh_shadow_screen_disqualifier_ledger_draft.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-016",
-      "future_blocker": "Commercial language outruns source-packet proof.",
-      "neutralization_later": [
-        "r6_nonclaim_boundary_language_packet.json",
-        "learned_router_forbidden_claims_receipt.json"
-      ]
-    }
-  ],
   "candidate_generation_authorized": false,
   "candidate_training_authorized": false,
   "court_replay_binding_head": "e8a00afa04ce1df380165b85b3620837160244a6",
-  "current_authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
   "current_branch": "authoritative/b04-r6-afsh-implementation-source-packet",
   "current_git_head": "b9ea85ac0a2a1d71509992da5c3bb436a3206553",
   "current_main_head": "3bc4ab79299487f3aaa76496886c22825d84774e",
@@ -121,6 +71,7 @@
     "route_success_labels_inaccessible": true,
     "seed_bound": true
   },
+  "expected_successful_validation_outcome": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATED__CANDIDATE_GENERATION_NEXT",
   "failure_count": 0,
   "forbidden_actions": [
     "AFSH_CANDIDATE_GENERATION_AUTHORIZED",
@@ -161,6 +112,19 @@
     "trust_zone_mutation_hooks",
     "comparator_weakening_knobs",
     "metric_widening_knobs"
+  ],
+  "forbidden_validation_outcomes": [
+    "AFSH_CANDIDATE_GENERATION_AUTHORIZED",
+    "AFSH_CANDIDATE_TRAINING_AUTHORIZED",
+    "AFSH_ADMISSIBILITY_AUTHORIZED",
+    "SHADOW_SCREEN_PACKET_AUTHORIZED",
+    "SHADOW_SCREEN_EXECUTION_AUTHORIZED",
+    "R6_OPEN",
+    "LEARNED_ROUTER_SUPERIORITY_EARNED",
+    "ACTIVATION_REVIEW_AUTHORIZED",
+    "RUNTIME_CUTOVER_AUTHORIZED",
+    "LOBE_ESCALATION_AUTHORIZED",
+    "PACKAGE_PROMOTION_AUTHORIZED"
   ],
   "generated_utc": "2026-04-28T23:24:46Z",
   "input_bindings": [
@@ -332,6 +296,33 @@
   "previous_validation_head": "022a7bfc7f9dbf151506809eaa63682e0cd5a76c",
   "r6_authorized": false,
   "r6_open": false,
+  "required_checks": [
+    "source packet contract exists and parses",
+    "source packet binds current main",
+    "source packet binds AFSH-2S-GUARD",
+    "source packet binds validated blind universe",
+    "source packet binds validated route-economics court",
+    "allowed features are explicit",
+    "forbidden features are explicit",
+    "blind labels are inaccessible",
+    "blind outcomes are inaccessible",
+    "route-success labels are inaccessible",
+    "old R01-R04 remain diagnostic-only",
+    "old v2 six-row remains diagnostic-only",
+    "trace schema complete",
+    "provenance matrix complete",
+    "determinism constraints present",
+    "hash-binding constraints present",
+    "no-network rule present",
+    "no runtime mutation",
+    "no truth-engine mutation",
+    "no trust-zone mutation",
+    "no metric widening",
+    "no comparator weakening",
+    "candidate-generation protocol remains PREP_ONLY",
+    "admissibility draft remains PREP_ONLY",
+    "next lawful move correctness"
+  ],
   "route_value_court_compatibility": {
     "abstention_preservation_required": true,
     "null_route_preservation_required": true,
@@ -341,7 +332,7 @@
   },
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.b04_r6.future_blocker_register.v2",
+  "schema_id": "kt.b04_r6.afsh_source_packet_validation_plan.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -434,6 +425,7 @@
       "ROUTE_ELIGIBLE"
     ]
   },
+  "validation_object": "B04 R6 AFSH implementation source packet",
   "validation_reason_codes": [
     "RC_B04R6_AFSH_SOURCE_SCHEMA_MISSING",
     "RC_B04R6_AFSH_SOURCE_PREVIOUS_COURT_NOT_VALIDATED",
