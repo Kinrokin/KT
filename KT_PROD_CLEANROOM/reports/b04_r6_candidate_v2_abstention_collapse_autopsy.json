@@ -14,6 +14,7 @@
     "commercial_broadening"
   ],
   "generated_utc": "2026-04-28T13:25:40Z",
+  "interpretation": "Candidate failed the static-hold abstention guard on implicated row(s).",
   "learned_router_activated": false,
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
@@ -23,10 +24,29 @@
   "previous_authoritative_lane": "B04_R6_SECOND_SHADOW_ROUTER_SUPERIORITY_SCREEN",
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v1",
+  "rows": [
+    {
+      "abstention_collapse": true,
+      "candidate_abstained": false,
+      "candidate_adapter_ids": [
+        "lobe.auditor.v1",
+        "lobe.quant.v1",
+        "lobe.censor.v1"
+      ],
+      "case_id": "R6B05",
+      "cause_class": "CANDIDATE_BEHAVIOR_DEFECT",
+      "control_degradation": true,
+      "family": "mixed_math_governance",
+      "overrouting_collapse": true,
+      "static_adapter_ids": [
+        "lobe.strategist.v1"
+      ],
+      "static_fallback_expected": true
+    }
+  ],
+  "schema_id": "kt.operator.b04_r6_candidate_v2_abstention_collapse_autopsy.v1",
   "status": "PASS",
   "subject_main_head": "002be7c4d790ec657434a0fa8133d1c8a4c698c3",
   "trust_zone_law_unchanged": true,
-  "truth_engine_derivation_law_unchanged": true,
-  "verdict": "R6_SECOND_SHADOW_INVALIDATION_CONFIRMED__CANDIDATE_V2_DISQUALIFIED"
+  "truth_engine_derivation_law_unchanged": true
 }
