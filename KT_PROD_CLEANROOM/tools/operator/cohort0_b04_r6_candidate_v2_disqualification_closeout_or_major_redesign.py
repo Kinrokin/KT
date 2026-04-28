@@ -136,7 +136,7 @@ def _rows(payload: Dict[str, Any], *, label: str) -> list[Dict[str, Any]]:
     return [dict(row) for row in rows if isinstance(row, dict)]
 
 
-def _ensure_branch_context(root: Path) -> None:
+def _ensure_branch_context(root: Path) -> str:
     current_branch = common.git_current_branch_name(root)
     if current_branch not in ALLOWED_BRANCHES:
         allowed = ", ".join(sorted(ALLOWED_BRANCHES))
@@ -149,9 +149,10 @@ def _ensure_branch_context(root: Path) -> None:
                 "FAIL_CLOSED: main replay requires local main converged with origin/main; "
                 f"HEAD={head}; origin/main={origin_main}"
             )
+    return current_branch
 
 
-def _require_inputs(payloads: Dict[str, Dict[str, Any]]) -> None:
+def _require_inputs(payloads: Dict[str, Dict[str, Any]], *, current_branch: str) -> None:
     for label, payload in payloads.items():
         _ensure_boundaries(payload, label=label)
 
@@ -190,7 +191,9 @@ def _require_inputs(payloads: Dict[str, Dict[str, Any]]) -> None:
     rerun_bar = payloads["rerun_bar_receipt"]
     if rerun_bar.get("rerun_allowed") is not False or rerun_bar.get("rerun_bar_active") is not True:
         raise RuntimeError("FAIL_CLOSED: second shadow rerun must be barred")
-    acceptable_next_moves = {EXPECTED_PREVIOUS_NEXT_MOVE, NEXT_LAWFUL_MOVE}
+    acceptable_next_moves = {EXPECTED_PREVIOUS_NEXT_MOVE}
+    if current_branch == "main":
+        acceptable_next_moves.add(NEXT_LAWFUL_MOVE)
     if payloads["previous_next_lawful_move"].get("next_lawful_move") not in acceptable_next_moves:
         raise RuntimeError("FAIL_CLOSED: previous next-lawful-move receipt mismatch")
 
@@ -338,14 +341,14 @@ def _report(selected_outcome: str, next_move: str) -> str:
 
 def run(*, reports_root: Path) -> Dict[str, Any]:
     root = repo_root()
-    _ensure_branch_context(root)
+    current_branch = _ensure_branch_context(root)
     if common.git_status_porcelain(root).strip():
         raise RuntimeError("FAIL_CLOSED: dirty worktree before B04 R6 closeout-or-major-redesign freeze")
     if reports_root.resolve() != (root / "KT_PROD_CLEANROOM/reports").resolve():
         raise RuntimeError("FAIL_CLOSED: must write canonical reports root only")
 
     payloads = {role: _load(root, raw, label=role) for role, raw in INPUTS.items()}
-    _require_inputs(payloads)
+    _require_inputs(payloads, current_branch=current_branch)
     trust_validation = validate_trust_zones(root=root)
     common.ensure_pass(trust_validation, label="trust-zone validation")
     if trust_validation.get("failures"):

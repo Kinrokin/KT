@@ -204,12 +204,25 @@ def test_replay_accepts_already_frozen_next_move(tmp_path: Path, monkeypatch: py
     reports = _write_inputs(tmp_path)
     next_receipt = _load(reports / "b04_r6_next_lawful_move_receipt.json")
     next_receipt["next_lawful_move"] = tranche.NEXT_LAWFUL_MOVE
+    next_receipt["status"] = "FROZEN_PACKET"
     _write_json(reports / "b04_r6_next_lawful_move_receipt.json", next_receipt)
     _patch_env(monkeypatch, tmp_path, branch="main", head="main-head", origin_main="main-head")
 
     result = tranche.run(reports_root=reports)
 
     assert result["next_lawful_move"] == tranche.NEXT_LAWFUL_MOVE
+
+
+def test_authority_branch_rejects_already_frozen_next_move(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    next_receipt = _load(reports / "b04_r6_next_lawful_move_receipt.json")
+    next_receipt["next_lawful_move"] = tranche.NEXT_LAWFUL_MOVE
+    next_receipt["status"] = "FROZEN_PACKET"
+    _write_json(reports / "b04_r6_next_lawful_move_receipt.json", next_receipt)
+    _patch_env(monkeypatch, tmp_path, branch=tranche.AUTHORITY_BRANCH)
+
+    with pytest.raises(RuntimeError, match="previous next-lawful-move receipt mismatch"):
+        tranche.run(reports_root=reports)
 
 
 def test_fails_closed_on_noncanonical_main(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
