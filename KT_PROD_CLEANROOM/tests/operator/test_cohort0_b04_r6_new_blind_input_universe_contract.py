@@ -140,6 +140,7 @@ def test_binds_fresh_blind_universe_without_authorizing_generation(
     manifest = _load(reports / tranche.OUTPUTS["case_manifest"])
     receipt = _load(reports / tranche.OUTPUTS["contract_receipt"])
     next_receipt = _load(reports / tranche.OUTPUTS["next_lawful_move"])
+    mirror_map = _load(reports / tranche.OUTPUTS["mirror_masked_map"])
 
     assert result["verdict"] == tranche.OUTCOME_BOUND
     assert receipt["blind_universe_contract_bound"] is True
@@ -149,9 +150,17 @@ def test_binds_fresh_blind_universe_without_authorizing_generation(
     assert contract["current_main_head"] == "main-head"
     assert contract["architecture_binding_head"] == "architecture-head"
     assert contract["blind_universe_identity"]["case_count"] == 18
+    assert {row["role"] for row in contract["input_bindings"]}.issuperset({"previous_next_lawful_move"})
     assert manifest["case_manifest_sha256"]
     assert {row["family_id"] for row in manifest["cases"]}.issuperset(tranche.REQUIRED_FAMILIES)
     assert not any(row["case_id"].startswith(tranche.OLD_CASE_PREFIXES) for row in manifest["cases"])
+    assert all("proof_burden" in row and "route_value" in row for row in manifest["cases"])
+    cases_by_id = {row["case_id"]: row for row in manifest["cases"]}
+    for entry in mirror_map["entries"]:
+        siblings = cases_by_id[entry["primary_case_id"]]["control_siblings"]
+        assert siblings["mirror_case_id"] == entry["mirror_case_id"]
+        assert siblings["masked_case_id"] == entry["masked_case_id"]
+        assert siblings["null_route_case_id"] == entry["null_route_case_id"]
     assert next_receipt["next_lawful_move"] == tranche.NEXT_LAWFUL_MOVE
 
 
@@ -244,4 +253,33 @@ def test_fails_closed_if_trust_zone_validation_fails(tmp_path: Path, monkeypatch
     )
 
     with pytest.raises(RuntimeError, match="trust-zone validation must have status PASS"):
+        tranche.run(reports_root=reports)
+
+
+def test_fails_closed_if_blindness_keys_are_missing(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    _patch_env(monkeypatch, tmp_path)
+    bad_cases = json.loads(json.dumps(tranche._blind_cases()))
+    bad_cases[0]["blindness"] = {"labels_hidden_from_candidate_generation": True}
+    monkeypatch.setattr(tranche, "_blind_cases", lambda: bad_cases)
+
+    with pytest.raises(RuntimeError, match="blind case missing leakage guards"):
+        tranche.run(reports_root=reports)
+
+
+def test_fails_closed_if_manifest_and_mirror_map_disagree(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _write_inputs(tmp_path)
+    _patch_env(monkeypatch, tmp_path)
+    original_map = tranche._mirror_masked_map
+
+    def _bad_map(cases: list[dict]) -> dict:
+        payload = original_map(cases)
+        payload["entries"][0]["mirror_case_id"] = "B04R6-AFSH-BU1-0016"
+        return payload
+
+    monkeypatch.setattr(tranche, "_mirror_masked_map", _bad_map)
+
+    with pytest.raises(RuntimeError, match="mirror/masked map mismatch"):
         tranche.run(reports_root=reports)

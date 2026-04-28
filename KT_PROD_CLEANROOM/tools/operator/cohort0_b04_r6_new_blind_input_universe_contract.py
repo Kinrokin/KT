@@ -126,6 +126,14 @@ REQUIRED_FAMILIES = frozenset(
 )
 
 OLD_CASE_PREFIXES = ("R01", "R02", "R03", "R04", "R6B")
+REQUIRED_BLINDNESS_KEYS = frozenset(
+    {
+        "labels_hidden_from_candidate_generation",
+        "outcomes_hidden_from_candidate_generation",
+        "route_labels_hidden_before_screen",
+        "calibration_from_screen_outcomes_forbidden",
+    }
+)
 
 
 def _load(root: Path, raw: str, *, label: str) -> Dict[str, Any]:
@@ -186,7 +194,7 @@ def _ensure_branch_context(root: Path) -> str:
 
 def _input_hashes(root: Path) -> list[Dict[str, str]]:
     rows: list[Dict[str, str]] = []
-    for role, raw in sorted({**INPUTS, **REFERENCE_INPUTS}.items()):
+    for role, raw in sorted({**INPUTS, **HANDOFF_INPUTS, **REFERENCE_INPUTS}.items()):
         path = root / raw
         if not path.is_file():
             raise RuntimeError(f"FAIL_CLOSED: missing required input: {raw}")
@@ -297,13 +305,41 @@ def _base(
     }
 
 
-def _case_source_hash(case_id: str, family_id: str, variant_type: str, balance_bucket: str) -> str:
+def _case_traits(family_id: str, balance_bucket: str) -> tuple[str, str]:
+    if family_id == "PROOF_BURDEN_HEAVY" or balance_bucket == "ABSTENTION_BOUNDARY":
+        proof_burden = "HEAVY"
+    elif family_id == "PROOF_BURDEN_LIGHT" or balance_bucket == "ROUTE_VALUE":
+        proof_burden = "LIGHT"
+    else:
+        proof_burden = "NORMAL"
+
+    if balance_bucket == "ROUTE_VALUE":
+        route_value = "POSITIVE_ROUTE_VALUE"
+    elif balance_bucket in {"STATIC_HOLD", "OVERROUTING_TRAP", "ABSTENTION_BOUNDARY"}:
+        route_value = "STATIC_OR_ABSTENTION_VALUE_DOMINANT"
+    elif balance_bucket == "CALIBRATION_EDGE":
+        route_value = "CALIBRATION_DEPENDENT"
+    else:
+        route_value = "CONTROL_VALUE"
+    return proof_burden, route_value
+
+
+def _case_source_hash(
+    case_id: str,
+    family_id: str,
+    variant_type: str,
+    balance_bucket: str,
+    proof_burden: str,
+    route_value: str,
+) -> str:
     return _stable_hash(
         {
             "case_id": case_id,
             "family_id": family_id,
             "variant_type": variant_type,
             "balance_bucket": balance_bucket,
+            "proof_burden": proof_burden,
+            "route_value": route_value,
             "source_kind": "hash_only_fresh_holdout_design",
             "selected_architecture_id": SELECTED_ARCHITECTURE_ID,
         }
@@ -322,11 +358,14 @@ def _case(
     static_hold: str = "",
 ) -> Dict[str, Any]:
     case_id = f"B04R6-AFSH-BU1-{index:04d}"
-    source_sha = _case_source_hash(case_id, family_id, variant_type, balance_bucket)
+    proof_burden, route_value = _case_traits(family_id, balance_bucket)
+    source_sha = _case_source_hash(case_id, family_id, variant_type, balance_bucket, proof_burden, route_value)
     return {
         "case_id": case_id,
         "family_id": family_id,
         "balance_bucket": balance_bucket,
+        "proof_burden": proof_burden,
+        "route_value": route_value,
         "variant_type": variant_type,
         "source_ref": {
             "path": f"hash-only://b04-r6/afsh-bu1/{case_id}",
@@ -353,9 +392,25 @@ def _case(
 
 def _blind_cases() -> list[Dict[str, Any]]:
     rows = [
-        _case(1, "STATIC_HOLD_SHOULD_WIN", "CANONICAL", "STATIC_HOLD", mirror="B04R6-AFSH-BU1-0016", masked="B04R6-AFSH-BU1-0017"),
+        _case(
+            1,
+            "STATIC_HOLD_SHOULD_WIN",
+            "CANONICAL",
+            "STATIC_HOLD",
+            mirror="B04R6-AFSH-BU1-0013",
+            masked="B04R6-AFSH-BU1-0014",
+            null_route="B04R6-AFSH-BU1-0015",
+        ),
         _case(2, "COMPARATOR_DOMINANCE_CASE", "CONTROL", "STATIC_HOLD", static_hold="B04R6-AFSH-BU1-0001"),
-        _case(3, "ROUTING_PLAUSIBLY_ADDS_VALUE", "CANONICAL", "ROUTE_VALUE", mirror="B04R6-AFSH-BU1-0016", masked="B04R6-AFSH-BU1-0017"),
+        _case(
+            3,
+            "ROUTING_PLAUSIBLY_ADDS_VALUE",
+            "CANONICAL",
+            "ROUTE_VALUE",
+            mirror="B04R6-AFSH-BU1-0016",
+            masked="B04R6-AFSH-BU1-0017",
+            null_route="B04R6-AFSH-BU1-0018",
+        ),
         _case(4, "ROUTE_VALUE_CASE", "CANONICAL", "ROUTE_VALUE", static_hold="B04R6-AFSH-BU1-0002"),
         _case(5, "PROOF_BURDEN_LIGHT", "CANONICAL", "ROUTE_VALUE"),
         _case(6, "OVER_ROUTING_TRAP", "CANONICAL", "OVERROUTING_TRAP", null_route="B04R6-AFSH-BU1-0018"),
@@ -397,12 +452,36 @@ def _validate_cases(cases: list[Dict[str, Any]]) -> None:
             raise RuntimeError("FAIL_CLOSED: blind case source hashes must be unique")
         seen_hashes.add(source_sha)
         blindness = dict(row.get("blindness", {}))
-        if not all(blindness.get(key) is True for key in sorted(blindness)):
+        missing_blindness = sorted(REQUIRED_BLINDNESS_KEYS - set(blindness))
+        if missing_blindness:
+            raise RuntimeError(f"FAIL_CLOSED: blind case missing leakage guards: {missing_blindness}")
+        if not all(blindness.get(key) is True for key in sorted(REQUIRED_BLINDNESS_KEYS)):
             raise RuntimeError("FAIL_CLOSED: all blind case leakage guards must be true")
+        if "proof_burden" not in row or "route_value" not in row:
+            raise RuntimeError("FAIL_CLOSED: blind cases must include stratification axes proof_burden and route_value")
         if row.get("registry_compatible_zone") != "CANONICAL":
             raise RuntimeError("FAIL_CLOSED: blind cases must be registry-compatible with canonical zone")
         if dict(row.get("admissibility", {})).get("admitted") is not True:
             raise RuntimeError("FAIL_CLOSED: every bound blind case must be admitted")
+
+
+def _validate_mirror_masked_map_consistency(cases: list[Dict[str, Any]], mirror_map: Dict[str, Any]) -> None:
+    by_id = {str(row["case_id"]): row for row in cases}
+    for entry in mirror_map.get("entries", []):
+        primary = str(entry.get("primary_case_id", ""))
+        if primary not in by_id:
+            raise RuntimeError(f"FAIL_CLOSED: mirror/masked map references missing primary case: {primary}")
+        siblings = dict(by_id[primary].get("control_siblings", {}))
+        for field in ("mirror_case_id", "masked_case_id", "null_route_case_id"):
+            expected = str(entry.get(field, ""))
+            actual = str(siblings.get(field, ""))
+            if expected and expected not in by_id:
+                raise RuntimeError(f"FAIL_CLOSED: mirror/masked map references missing sibling case: {expected}")
+            if expected != actual:
+                raise RuntimeError(
+                    f"FAIL_CLOSED: mirror/masked map mismatch for {primary} {field}: "
+                    f"manifest={actual}; map={expected}"
+                )
 
 
 def _balance_report(cases: list[Dict[str, Any]]) -> Dict[str, Any]:
@@ -690,6 +769,8 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
 
     cases = _blind_cases()
     _validate_cases(cases)
+    mirror_map = _mirror_masked_map(cases)
+    _validate_mirror_masked_map_consistency(cases, mirror_map)
     generated_utc = utc_now_iso_z()
     head = common.git_rev_parse(root, "HEAD")
     current_main_head = common.git_rev_parse(root, "origin/main") if current_branch != "main" else head
@@ -702,7 +783,6 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
     )
     input_bindings = _input_hashes(root)
     balance = _balance_report(cases)
-    mirror_map = _mirror_masked_map(cases)
     contract_sections = _contract_sections(cases)
     common_decision = {
         "selected_outcome": SELECTED_OUTCOME,
