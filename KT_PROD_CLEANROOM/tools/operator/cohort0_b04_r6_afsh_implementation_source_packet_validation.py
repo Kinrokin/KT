@@ -457,9 +457,17 @@ def _validate_replay_binding(payloads: Dict[str, Dict[str, Any]], *, current_mai
         _fail("RC_B04R6_AFSH_SOURCE_VAL_MAIN_HEAD_MISMATCH", "source-packet replay head must be a full git SHA")
     if not current_main_head:
         _fail("RC_B04R6_AFSH_SOURCE_VAL_MAIN_HEAD_MISMATCH", "current main head is missing")
+    for role, payload in payloads.items():
+        if role in MUTABLE_HANDOFF_ROLES:
+            continue
+        if payload.get("current_git_head") != source_packet_head:
+            _fail("RC_B04R6_AFSH_SOURCE_VAL_MAIN_HEAD_MISMATCH", f"{role} does not bind source-packet replay head")
+        if payload.get("current_main_head") != source_packet_head:
+            _fail("RC_B04R6_AFSH_SOURCE_VAL_MAIN_HEAD_MISMATCH", f"{role} does not bind source-packet replay main head")
     return [
         _pass_row("validation_contract_preserves_current_main_head", "RC_B04R6_AFSH_SOURCE_VAL_MAIN_HEAD_MISMATCH", "validation can bind current main head", group="replay"),
         _pass_row("source_packet_replay_binding_validated", "RC_B04R6_AFSH_SOURCE_VAL_MAIN_HEAD_MISMATCH", "source packet replay head is bound", group="replay"),
+        _pass_row("immutable_source_inputs_share_replay_head", "RC_B04R6_AFSH_SOURCE_VAL_MAIN_HEAD_MISMATCH", "all immutable source-packet inputs share the same replay head", group="replay"),
     ], source_packet_head
 
 

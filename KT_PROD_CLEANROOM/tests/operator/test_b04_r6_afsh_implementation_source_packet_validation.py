@@ -273,6 +273,10 @@ def test_validation_contract_binds_validated_route_economics_court(outputs: Path
     assert _contract(outputs)["validated_court_binding"]["status"] == "BOUND_AND_VALIDATED"
 
 
+def test_immutable_source_inputs_share_replay_head(outputs: Path) -> None:
+    assert "immutable_source_inputs_share_replay_head" in _row_ids(outputs)
+
+
 def test_source_packet_contract_exists_and_parses(outputs: Path) -> None:
     assert "source_packet_contract_exists_and_parses" in _row_ids(outputs)
 
@@ -522,6 +526,17 @@ def test_previous_next_lawful_move_drift_fails_closed(tmp_path: Path, monkeypatc
     _write_json(receipt_path, receipt)
     _patch_env(monkeypatch, tmp_path)
     with pytest.raises(RuntimeError, match="NEXT_MOVE_DRIFT"):
+        validation.run(reports_root=reports)
+
+
+def test_mixed_source_input_replay_head_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    allowed_path = tmp_path / validation.INPUTS["allowed_features"]
+    allowed = _load(allowed_path)
+    allowed["current_git_head"] = "cccccccccccccccccccccccccccccccccccccccc"
+    _write_json(allowed_path, allowed)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="replay head"):
         validation.run(reports_root=reports)
 
 
