@@ -1,0 +1,80 @@
+{
+  "activation_review_authorized": false,
+  "authoritative_lane": "B04_R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT",
+  "candidate_generation_authorized": false,
+  "current_git_head": "3aa568762e39fe1c4d0059e36392bc3ee6b6ee39",
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "activation_review_authorized",
+    "learned_router_activated",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening"
+  ],
+  "generated_utc": "2026-04-28T16:30:28Z",
+  "learned_router_activated": false,
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT",
+  "options": [
+    {
+      "addresses": [
+        "CONTROL_DEGRADATION",
+        "ABSTENTION_COLLAPSE",
+        "OVERRouting_COLLAPSE"
+      ],
+      "default_action": "STATIC_HOLD",
+      "formal_id": "AFSH-2S-GUARD",
+      "option_id": "ABSTENTION_FIRST_STATIC_HOLD_TWO_STAGE_GUARDED_ROUTER",
+      "risk": "LOWEST_AMONG_REDESIGN_OPTIONS_FOR_OBSERVED_FAILURES",
+      "selected": true
+    },
+    {
+      "addresses": [
+        "ABSTENTION_COLLAPSE",
+        "CONTROL_DEGRADATION"
+      ],
+      "option_id": "CONFORMAL_UNCERTAINTY_GATED_ROUTER",
+      "reason_not_selected_first": "Useful as Stage 1 calibration strategy, but less complete than full AFSH two-stage guard.",
+      "selected": false
+    },
+    {
+      "addresses": [
+        "STATIC_COMPARATOR_DOMINANCE",
+        "CONTROL_DEGRADATION"
+      ],
+      "option_id": "TWO_STAGE_PERFORMANCE_PREDICTOR_SELECTOR",
+      "reason_not_selected_first": "Useful as Stage 2 selector substrate, but needs abstention-first default wrapped around it.",
+      "selected": false
+    },
+    {
+      "addresses": [
+        "OVERRouting_COLLAPSE",
+        "CONTROL_DEGRADATION"
+      ],
+      "option_id": "COST_AWARE_SELECTOR_WITH_STATIC_FALLBACK",
+      "reason_not_selected_first": "Cost/risk awareness is useful, but insufficient alone against abstention collapse.",
+      "selected": false
+    },
+    {
+      "option_id": "PURE_LEARNED_SELECTOR",
+      "rejected": true,
+      "rejection_reason": "High risk after v2 over-routing and abstention collapse; no static-hold default.",
+      "selected": false
+    }
+  ],
+  "package_promotion_remains_deferred": true,
+  "previous_authoritative_lane": "B04_R6_MAJOR_ROUTER_REDESIGN_SCOPE",
+  "r6_authorized": false,
+  "r6_open": false,
+  "schema_id": "kt.operator.b04_r6_architecture_options_matrix.v1",
+  "schema_version": "1.0.0",
+  "selected_architecture_id": "AFSH-2S-GUARD",
+  "status": "PASS",
+  "subject_main_head": "3aa568762e39fe1c4d0059e36392bc3ee6b6ee39",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true
+}

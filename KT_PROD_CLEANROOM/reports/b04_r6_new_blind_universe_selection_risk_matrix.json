@@ -1,15 +1,7 @@
 {
   "activation_review_authorized": false,
-  "allowed_outcomes": [
-    "R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT_BOUND__BLIND_UNIVERSE_CONTRACT_NEXT",
-    "R6_DEFERRED__ARCHITECTURE_CONTRACT_DEFECT_REMAINS",
-    "R6_CLOSEOUT__NO_LAWFUL_REDESIGN_ARCHITECTURE_SELECTED"
-  ],
-  "architecture_contract_bound": true,
   "authoritative_lane": "B04_R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT",
-  "candidate_family_retired_for_r6": true,
-  "candidate_generation_authorized": false,
-  "comparator_metric_preservation_required": true,
+  "blind_universe_binding_authorized_by_this_packet": false,
   "current_git_head": "3aa568762e39fe1c4d0059e36392bc3ee6b6ee39",
   "forbidden_claims": [
     "r6_open",
@@ -26,23 +18,42 @@
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
   "multi_lobe_authorized": false,
-  "new_blind_universe_required": true,
-  "new_shadow_screen_authorized": false,
   "next_lawful_move": "AUTHOR_B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT",
-  "old_blind_universes_diagnostic_only": true,
   "package_promotion_remains_deferred": true,
   "previous_authoritative_lane": "B04_R6_MAJOR_ROUTER_REDESIGN_SCOPE",
-  "quick_candidate_v3_forbidden": true,
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v3",
+  "risks": [
+    {
+      "applies_to": [
+        "R01_R04",
+        "SECOND_SIX_ROW_SCREEN"
+      ],
+      "blocking_if_detected": true,
+      "mitigation": "Old screens diagnostic-only; no counted proof reuse.",
+      "risk_id": "OLD_SCREEN_LABEL_LEAKAGE"
+    },
+    {
+      "applies_to": [
+        "new_blind_universe_candidate_set"
+      ],
+      "blocking_if_detected": true,
+      "mitigation": "Bind source hashes and family coverage before candidate source generation.",
+      "risk_id": "MUTATED_SIBLING_OVERFITTING"
+    },
+    {
+      "applies_to": [
+        "new_blind_universe_candidate_set"
+      ],
+      "blocking_if_detected": true,
+      "mitigation": "Require mirror/masked sibling policy and invariance receipt.",
+      "risk_id": "MIRROR_MASKED_SURFACE_ARTIFACT"
+    }
+  ],
+  "schema_id": "kt.operator.b04_r6_new_blind_universe_selection_risk_matrix.v1",
   "schema_version": "1.0.0",
-  "selected_architecture_id": "AFSH-2S-GUARD",
-  "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
-  "selected_outcome": "R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT_BOUND__BLIND_UNIVERSE_CONTRACT_NEXT",
-  "status": "PASS",
+  "status": "PREP_ONLY",
   "subject_main_head": "3aa568762e39fe1c4d0059e36392bc3ee6b6ee39",
   "trust_zone_law_unchanged": true,
-  "truth_engine_derivation_law_unchanged": true,
-  "verdict": "R6_MAJOR_ROUTER_ARCHITECTURE_CONTRACT_BOUND__BLIND_UNIVERSE_CONTRACT_NEXT"
+  "truth_engine_derivation_law_unchanged": true
 }
