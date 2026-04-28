@@ -49,7 +49,9 @@ INPUTS = {
     "v2_overrouting_autopsy": "KT_PROD_CLEANROOM/reports/b04_r6_candidate_v2_overrouting_autopsy.json",
     "v2_abstention_autopsy": "KT_PROD_CLEANROOM/reports/b04_r6_candidate_v2_abstention_collapse_autopsy.json",
     "v2_control_autopsy": "KT_PROD_CLEANROOM/reports/b04_r6_candidate_v2_control_degradation_autopsy.json",
-    "static_dominance_prior": "KT_PROD_CLEANROOM/reports/b04_r6_static_comparator_dominance_analysis.json",
+}
+
+HANDOFF_INPUTS = {
     "previous_next_lawful_move": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
 }
 
@@ -152,8 +154,12 @@ def _ensure_branch_context(root: Path) -> str:
     return current_branch
 
 
-def _require_inputs(payloads: Dict[str, Dict[str, Any]], *, current_branch: str) -> None:
+def _require_inputs(
+    payloads: Dict[str, Dict[str, Any]], *, handoff_payloads: Dict[str, Dict[str, Any]], current_branch: str
+) -> None:
     for label, payload in payloads.items():
+        _ensure_boundaries(payload, label=label)
+    for label, payload in handoff_payloads.items():
         _ensure_boundaries(payload, label=label)
 
     if payloads["v1_receipt"].get("verdict") != V1_VERDICT:
@@ -194,7 +200,7 @@ def _require_inputs(payloads: Dict[str, Dict[str, Any]], *, current_branch: str)
     acceptable_next_moves = {EXPECTED_PREVIOUS_NEXT_MOVE}
     if current_branch == "main":
         acceptable_next_moves.add(NEXT_LAWFUL_MOVE)
-    if payloads["previous_next_lawful_move"].get("next_lawful_move") not in acceptable_next_moves:
+    if handoff_payloads["previous_next_lawful_move"].get("next_lawful_move") not in acceptable_next_moves:
         raise RuntimeError("FAIL_CLOSED: previous next-lawful-move receipt mismatch")
 
     guard_rows = _rows(payloads["guard_failure_matrix"], label="guard failure matrix")
@@ -348,7 +354,8 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
         raise RuntimeError("FAIL_CLOSED: must write canonical reports root only")
 
     payloads = {role: _load(root, raw, label=role) for role, raw in INPUTS.items()}
-    _require_inputs(payloads, current_branch=current_branch)
+    handoff_payloads = {role: _load(root, raw, label=role) for role, raw in HANDOFF_INPUTS.items()}
+    _require_inputs(payloads, handoff_payloads=handoff_payloads, current_branch=current_branch)
     trust_validation = validate_trust_zones(root=root)
     common.ensure_pass(trust_validation, label="trust-zone validation")
     if trust_validation.get("failures"):

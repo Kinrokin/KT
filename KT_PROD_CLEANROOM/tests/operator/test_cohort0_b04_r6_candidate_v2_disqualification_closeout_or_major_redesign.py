@@ -113,7 +113,6 @@ def _write_inputs(root: Path) -> Path:
         "v2_overrouting_autopsy": {**common, "schema_id": "overrouting", "rows": _guard_rows()},
         "v2_abstention_autopsy": {**common, "schema_id": "abstention", "rows": _guard_rows()},
         "v2_control_autopsy": {**common, "schema_id": "control", "rows": _guard_rows()},
-        "static_dominance_prior": {**common, "schema_id": "static", "static_dominance_on_screen1": True},
         "previous_next_lawful_move": {
             **common,
             "schema_id": "next",
@@ -121,7 +120,8 @@ def _write_inputs(root: Path) -> Path:
         },
     }
     for role, payload in payloads.items():
-        _write_json(root / tranche.INPUTS[role], payload)
+        raw = tranche.INPUTS.get(role) or tranche.HANDOFF_INPUTS[role]
+        _write_json(root / raw, payload)
     return reports
 
 
@@ -158,6 +158,7 @@ def test_major_redesign_authorized_and_quick_v3_blocked(tmp_path: Path, monkeypa
     options = _load(reports / tranche.OUTPUTS["major_redesign_options"])
     blockers = _load(reports / tranche.OUTPUTS["blocker_ledger"])
     next_receipt = _load(reports / tranche.OUTPUTS["next_lawful_move"])
+    packet = _load(reports / tranche.OUTPUTS["disqualification_packet"])
 
     assert result["verdict"] == tranche.OUTCOME_MAJOR_REDESIGN
     assert receipt["candidate_v2_disqualified"] is True
@@ -166,6 +167,9 @@ def test_major_redesign_authorized_and_quick_v3_blocked(tmp_path: Path, monkeypa
     assert options["quick_candidate_v3_patch_allowed"] is False
     assert blockers["live_blocker_count"] == 4
     assert next_receipt["next_lawful_move"] == tranche.NEXT_LAWFUL_MOVE
+    input_paths = {row["path"] for row in packet["input_bindings"]}
+    assert tranche.HANDOFF_INPUTS["previous_next_lawful_move"] not in input_paths
+    assert "KT_PROD_CLEANROOM/reports/b04_r6_static_comparator_dominance_analysis.json" not in input_paths
 
 
 def test_fails_closed_if_rerun_bar_not_active(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
