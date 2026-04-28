@@ -190,7 +190,8 @@ def _require_inputs(payloads: Dict[str, Dict[str, Any]]) -> None:
     rerun_bar = payloads["rerun_bar_receipt"]
     if rerun_bar.get("rerun_allowed") is not False or rerun_bar.get("rerun_bar_active") is not True:
         raise RuntimeError("FAIL_CLOSED: second shadow rerun must be barred")
-    if payloads["previous_next_lawful_move"].get("next_lawful_move") != EXPECTED_PREVIOUS_NEXT_MOVE:
+    acceptable_next_moves = {EXPECTED_PREVIOUS_NEXT_MOVE, NEXT_LAWFUL_MOVE}
+    if payloads["previous_next_lawful_move"].get("next_lawful_move") not in acceptable_next_moves:
         raise RuntimeError("FAIL_CLOSED: previous next-lawful-move receipt mismatch")
 
     guard_rows = _rows(payloads["guard_failure_matrix"], label="guard failure matrix")
