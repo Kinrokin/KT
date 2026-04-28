@@ -184,7 +184,8 @@
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 5,
+  "prep_only_drafts_remain_non_authoritative": true,
   "previous_authoritative_lane": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
   "r6_authorized": false,
   "r6_open": false,
@@ -217,7 +218,7 @@
   ],
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v7",
+  "schema_id": "kt.b04_r6.court_prep_only_non_authority_validation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -300,12 +301,39 @@
   ],
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_afsh_implementation_source_packet",
-      "detail": "the next lawful move is source-packet authorship only",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_COURT_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "prep_only_source_packet_draft_cannot_authorize_generation",
+      "detail": "source-packet draft cannot authorize generation",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_COURT_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_feature_draft_cannot_authorize_training",
+      "detail": "feature draft cannot authorize training",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_COURT_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_trace_schema_draft_cannot_authorize_screen",
+      "detail": "trace draft cannot authorize screen execution",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_COURT_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_provenance_matrix_cannot_authorize_candidate",
+      "detail": "provenance draft cannot authorize a candidate",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_COURT_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "future_blocker_register_present",
+      "detail": "future blocker register is present",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_COURT_VAL_SCHEMA_MISSING",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_VALIDATED__AFSH_IMPLEMENTATION_SOURCE_PACKET_NEXT"
+  ]
 }

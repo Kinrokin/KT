@@ -217,7 +217,7 @@
   ],
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v7",
+  "schema_id": "kt.b04_r6.wrong_route_cost_validation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -300,12 +300,12 @@
   ],
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_afsh_implementation_source_packet",
-      "detail": "the next lawful move is source-packet authorship only",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_COURT_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "wrong_route_cost_contract_bound",
+      "detail": "wrong-route cost is bound",
+      "group": "wrong_route_cost",
+      "reason_code": "RC_B04R6_COURT_VAL_WRONG_ROUTE_COST_MISSING",
       "status": "PASS"
     }
   ],
-  "verdict": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_VALIDATED__AFSH_IMPLEMENTATION_SOURCE_PACKET_NEXT"
+  "wrong_route_cost_bound": true
 }

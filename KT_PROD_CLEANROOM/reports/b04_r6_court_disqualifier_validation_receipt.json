@@ -32,6 +32,7 @@
   "current_branch": "authoritative/b04-r6-static-hold-abstention-route-economics-court-validation",
   "current_git_head": "31e4df0dc388d6a0cd88e704af4b508dac32cd8a",
   "current_main_head": "7873ac6990e5f6c4fff8ccaac31eb31fe4547601",
+  "disqualifier_ledger_complete": true,
   "failure_count": 0,
   "forbidden_claims": [
     "afsh_source_packet_authorized",
@@ -184,7 +185,7 @@
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 4,
   "previous_authoritative_lane": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
   "r6_authorized": false,
   "r6_open": false,
@@ -217,7 +218,7 @@
   ],
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v7",
+  "schema_id": "kt.b04_r6.court_disqualifier_validation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -300,12 +301,32 @@
   ],
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_afsh_implementation_source_packet",
-      "detail": "the next lawful move is source-packet authorship only",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_COURT_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "disqualifier_ledger_marks_terminal_authorization_drift",
+      "detail": "terminal authorization drift is disqualified",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_COURT_VAL_DISQUALIFIER_LEDGER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_forbids_metric_widening",
+      "detail": "metric widening is terminal",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_COURT_VAL_METRIC_WIDENING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_forbids_comparator_weakening",
+      "detail": "comparator weakening is terminal",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_COURT_VAL_COMPARATOR_WEAKENING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_forbids_old_universe_proof_drift",
+      "detail": "old universe fresh-proof drift is terminal",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_COURT_VAL_OLD_UNIVERSE_PROOF_DRIFT",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_VALIDATED__AFSH_IMPLEMENTATION_SOURCE_PACKET_NEXT"
+  ]
 }

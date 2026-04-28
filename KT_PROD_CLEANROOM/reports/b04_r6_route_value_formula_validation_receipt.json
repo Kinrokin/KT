@@ -184,7 +184,7 @@
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 13,
   "previous_authoritative_lane": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
   "r6_authorized": false,
   "r6_open": false,
@@ -201,6 +201,7 @@
     "lobe escalation",
     "package promotion"
   ],
+  "route_value_formula_complete": true,
   "route_value_terms": [
     "expected_quality_delta",
     "expected_governance_benefit",
@@ -217,7 +218,7 @@
   ],
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v7",
+  "schema_id": "kt.b04_r6.route_value_formula_validation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -300,12 +301,95 @@
   ],
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_afsh_implementation_source_packet",
-      "detail": "the next lawful move is source-packet authorship only",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_COURT_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "route_value_formula_has_expected_quality_delta",
+      "detail": "formula includes expected_quality_delta",
+      "group": "route_value_formula",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_VALUE_FORMULA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "route_value_formula_has_expected_governance_benefit",
+      "detail": "formula includes expected_governance_benefit",
+      "group": "route_value_formula",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_VALUE_FORMULA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "route_value_formula_has_expected_proof_burden_reduction",
+      "detail": "formula includes expected_proof_burden_reduction",
+      "group": "route_value_formula",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_VALUE_FORMULA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "route_value_formula_has_expected_error_surface_reduction",
+      "detail": "formula includes expected_error_surface_reduction",
+      "group": "route_value_formula",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_VALUE_FORMULA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "route_value_formula_has_wrong_route_cost",
+      "detail": "formula includes wrong_route_cost",
+      "group": "route_value_formula",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_VALUE_FORMULA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "route_value_formula_has_wrong_static_hold_cost_if_applicable",
+      "detail": "formula includes wrong_static_hold_cost_if_applicable",
+      "group": "route_value_formula",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_VALUE_FORMULA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "route_value_formula_has_overrouting_penalty",
+      "detail": "formula includes overrouting_penalty",
+      "group": "route_value_formula",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_VALUE_FORMULA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "route_value_formula_has_abstention_violation_penalty",
+      "detail": "formula includes abstention_violation_penalty",
+      "group": "route_value_formula",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_VALUE_FORMULA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "route_value_formula_has_null_route_violation_penalty",
+      "detail": "formula includes null_route_violation_penalty",
+      "group": "route_value_formula",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_VALUE_FORMULA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "route_value_formula_has_mirror_masked_instability_penalty",
+      "detail": "formula includes mirror_masked_instability_penalty",
+      "group": "route_value_formula",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_VALUE_FORMULA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "route_value_formula_has_trace_complexity_penalty",
+      "detail": "formula includes trace_complexity_penalty",
+      "group": "route_value_formula",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_VALUE_FORMULA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "route_value_formula_has_trust_zone_risk_penalty",
+      "detail": "formula includes trust_zone_risk_penalty",
+      "group": "route_value_formula",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_VALUE_FORMULA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "route_value_formula_has_required_gates",
+      "detail": "formula includes all route-eligibility gates",
+      "group": "route_value_formula",
+      "reason_code": "RC_B04R6_COURT_VAL_ROUTE_VALUE_FORMULA_INCOMPLETE",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_VALIDATED__AFSH_IMPLEMENTATION_SOURCE_PACKET_NEXT"
+  ]
 }

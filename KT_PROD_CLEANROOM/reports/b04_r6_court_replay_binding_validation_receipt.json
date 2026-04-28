@@ -29,6 +29,7 @@
   "candidate_generation_authorized": false,
   "candidate_training_authorized": false,
   "court_replay_binding_head": "e8a00afa04ce1df380165b85b3620837160244a6",
+  "court_replay_binding_validated": true,
   "current_branch": "authoritative/b04-r6-static-hold-abstention-route-economics-court-validation",
   "current_git_head": "31e4df0dc388d6a0cd88e704af4b508dac32cd8a",
   "current_main_head": "7873ac6990e5f6c4fff8ccaac31eb31fe4547601",
@@ -184,7 +185,7 @@
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 9,
   "previous_authoritative_lane": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
   "r6_authorized": false,
   "r6_open": false,
@@ -217,7 +218,7 @@
   ],
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v7",
+  "schema_id": "kt.b04_r6.court_replay_binding_validation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -300,12 +301,67 @@
   ],
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_afsh_implementation_source_packet",
-      "detail": "the next lawful move is source-packet authorship only",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_COURT_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "court_contract_exists_and_parses",
+      "detail": "court contract exists and parses",
+      "group": "replay",
+      "reason_code": "RC_B04R6_COURT_VAL_CONTRACT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "court_receipt_exists_and_parses",
+      "detail": "court receipt exists and parses",
+      "group": "replay",
+      "reason_code": "RC_B04R6_COURT_VAL_RECEIPT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "court_report_exists",
+      "detail": "court report exists and is non-empty",
+      "group": "replay",
+      "reason_code": "RC_B04R6_COURT_VAL_SCHEMA_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "court_binds_selected_afsh_architecture",
+      "detail": "AFSH-2S-GUARD remains bound",
+      "group": "replay",
+      "reason_code": "RC_B04R6_COURT_VAL_ARCHITECTURE_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "court_binds_validated_blind_universe",
+      "detail": "validated universe binding: B04R6-AFSH-BU1-*",
+      "group": "replay",
+      "reason_code": "RC_B04R6_COURT_VAL_UNIVERSE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prior_r01_r04_remain_diagnostic_only",
+      "detail": "R01-R04 remains diagnostic-only",
+      "group": "replay",
+      "reason_code": "RC_B04R6_COURT_VAL_OLD_UNIVERSE_PROOF_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prior_v2_six_row_remains_diagnostic_only",
+      "detail": "v2 six-row screen remains diagnostic-only",
+      "group": "replay",
+      "reason_code": "RC_B04R6_COURT_VAL_OLD_UNIVERSE_PROOF_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_contract_binds_current_main_head",
+      "detail": "validation can bind current main head",
+      "group": "replay",
+      "reason_code": "RC_B04R6_COURT_VAL_MAIN_HEAD_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_contract_binds_court_replay_head",
+      "detail": "all court artifacts share one replay head",
+      "group": "replay",
+      "reason_code": "RC_B04R6_COURT_VAL_REPLAY_BINDING_MISMATCH",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_VALIDATED__AFSH_IMPLEMENTATION_SOURCE_PACKET_NEXT"
+  ]
 }
