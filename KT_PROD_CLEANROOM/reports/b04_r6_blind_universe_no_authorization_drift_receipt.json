@@ -15,6 +15,7 @@
   "current_branch": "authoritative/b04-r6-new-blind-input-universe-validation",
   "current_git_head": "1968a87c3b6eeff242222322c3508e8a0f6ea641",
   "current_main_head": "a9ea7f86c815f9e0f7d35ff50c5c93bdfb16a937",
+  "failure_count": 0,
   "forbidden_claims": [
     "r6_open",
     "router_generation_authorized",
@@ -35,14 +36,16 @@
   "multi_lobe_authorized": false,
   "new_shadow_screen_authorized": false,
   "next_lawful_move": "AUTHOR_B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
+  "no_downstream_authority_drift": true,
   "old_r01_r04_diagnostic_only": true,
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_remains_deferred": true,
+  "pass_count": 1,
   "previous_authoritative_lane": "B04_R6_NEW_BLIND_INPUT_UNIVERSE_CONTRACT",
   "r6_authorized": false,
   "r6_open": false,
   "router_generation_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v5",
+  "schema_id": "kt.operator.b04_r6_blind_universe_no_authorization_drift_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -52,5 +55,12 @@
   "subject_main_head": "4b1c3161396cd781e5047f9aa81afff1fcc6a9f5",
   "trust_zone_law_unchanged": true,
   "truth_engine_derivation_law_unchanged": true,
-  "verdict": "B04_R6_NEW_BLIND_UNIVERSE_VALIDATED__STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_NEXT"
+  "validation_rows": [
+    {
+      "check_id": "no_authorization_drift",
+      "detail": "no downstream authority drift detected",
+      "reason_code": "RC_B04R6_BUV_GENERATION_AUTHORIZATION_DRIFT",
+      "status": "PASS"
+    }
+  ]
 }
