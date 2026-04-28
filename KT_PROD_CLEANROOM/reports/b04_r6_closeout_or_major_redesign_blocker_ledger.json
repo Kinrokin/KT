@@ -1,9 +1,6 @@
 {
   "activation_review_authorized": false,
-  "aggregate_candidate_wins": 0,
-  "aggregate_counted_cases": 10,
   "authoritative_lane": "B04_R6_CANDIDATE_V2_DISQUALIFICATION_AND_CLOSEOUT_OR_MAJOR_REDESIGN",
-  "candidate_family_never_beat_static": true,
   "current_git_head": "849a2aa3d673f050d5796f26d8f82d1dd5447150",
   "forbidden_claims": [
     "r6_open",
@@ -16,24 +13,43 @@
     "commercial_broadening"
   ],
   "generated_utc": "2026-04-28T14:21:36Z",
-  "interpretation": "The current learned-router family produced zero wins across both counted screens. The static comparator remains the lawful control and may not be weakened to create movement.",
   "learned_router_activated": false,
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
-  "metric_widening_allowed": false,
+  "live_blocker_count": 4,
+  "live_blockers_to_R6_open": [
+    {
+      "blocker_id": "CURRENT_CANDIDATE_FAMILY_RETIRED",
+      "resolution_path": "Major redesign scope court only.",
+      "severity": "BLOCKING_FOR_QUICK_REVISION"
+    },
+    {
+      "blocker_id": "NEW_ROUTER_ARCHITECTURE_REQUIRED",
+      "resolution_path": "Author architecture-level scope packet before any candidate generation.",
+      "severity": "BLOCKING_FOR_NEXT_CANDIDATE"
+    },
+    {
+      "blocker_id": "NEW_BLIND_UNIVERSE_REQUIRED",
+      "resolution_path": "Bind a new blind input universe; v1 and v2 screens are diagnostic only.",
+      "severity": "BLOCKING_FOR_NEXT_SCREEN"
+    },
+    {
+      "blocker_id": "SECOND_SCREEN_RERUN_BAR_ACTIVE",
+      "resolution_path": "No rerun unless a later court proves non-candidate forensic defect.",
+      "severity": "BLOCKING_FOR_RERUN"
+    }
+  ],
   "multi_lobe_authorized": false,
   "next_lawful_move": "AUTHOR_B04_R6_MAJOR_ROUTER_REDESIGN_SCOPE_PACKET__NEW_ARCHITECTURE_AND_NEW_BLIND_UNIVERSE_REQUIRED",
+  "no_blockers_to_major_redesign_scope_packet": true,
   "package_promotion_remains_deferred": true,
   "previous_authoritative_lane": "B04_R6_SECOND_SHADOW_SCREEN_FORENSIC_AND_RERUN_BAR",
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_static_comparator_dominance_analysis.v2",
+  "schema_id": "kt.operator.b04_r6_closeout_or_major_redesign_blocker_ledger.v1",
   "schema_version": "1.0.0",
-  "static_baseline_weakening_allowed": false,
   "status": "PASS",
   "subject_main_head": "849a2aa3d673f050d5796f26d8f82d1dd5447150",
   "trust_zone_law_unchanged": true,
-  "truth_engine_derivation_law_unchanged": true,
-  "v1_static_comparator_dominance": true,
-  "v2_static_comparator_dominance": true
+  "truth_engine_derivation_law_unchanged": true
 }

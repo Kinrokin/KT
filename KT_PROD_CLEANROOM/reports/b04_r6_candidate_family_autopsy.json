@@ -1,10 +1,8 @@
 {
   "activation_review_authorized": false,
-  "aggregate_candidate_wins": 0,
-  "aggregate_counted_cases": 10,
   "authoritative_lane": "B04_R6_CANDIDATE_V2_DISQUALIFICATION_AND_CLOSEOUT_OR_MAJOR_REDESIGN",
-  "candidate_family_never_beat_static": true,
   "current_git_head": "849a2aa3d673f050d5796f26d8f82d1dd5447150",
+  "family_assessment": "CURRENT_MINIMAL_DETERMINISTIC_ROUTER_FAMILY_RETIRED_FOR_R6",
   "forbidden_claims": [
     "r6_open",
     "learned_router_superiority_earned",
@@ -16,24 +14,46 @@
     "commercial_broadening"
   ],
   "generated_utc": "2026-04-28T14:21:36Z",
-  "interpretation": "The current learned-router family produced zero wins across both counted screens. The static comparator remains the lawful control and may not be weakened to create movement.",
   "learned_router_activated": false,
   "learned_router_cutover_authorized": false,
   "learned_router_superiority_earned": false,
-  "metric_widening_allowed": false,
+  "major_redesign_required_for_any_future_R6_attempt": true,
   "multi_lobe_authorized": false,
   "next_lawful_move": "AUTHOR_B04_R6_MAJOR_ROUTER_REDESIGN_SCOPE_PACKET__NEW_ARCHITECTURE_AND_NEW_BLIND_UNIVERSE_REQUIRED",
+  "ordinary_revision_allowed": false,
   "package_promotion_remains_deferred": true,
   "previous_authoritative_lane": "B04_R6_SECOND_SHADOW_SCREEN_FORENSIC_AND_RERUN_BAR",
+  "quick_candidate_v3_allowed": false,
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_static_comparator_dominance_analysis.v2",
+  "schema_id": "kt.operator.b04_r6_candidate_family_autopsy.v1",
   "schema_version": "1.0.0",
-  "static_baseline_weakening_allowed": false,
   "status": "PASS",
   "subject_main_head": "849a2aa3d673f050d5796f26d8f82d1dd5447150",
   "trust_zone_law_unchanged": true,
   "truth_engine_derivation_law_unchanged": true,
-  "v1_static_comparator_dominance": true,
-  "v2_static_comparator_dominance": true
+  "v1": {
+    "candidate_id": "b04_r6_minimal_deterministic_shadow_router_v1",
+    "candidate_wins": 0,
+    "case_count": 4,
+    "disqualifier_count": 0,
+    "guard_law_preserved": true,
+    "result": "CLEAN_CAPABILITY_FAILURE"
+  },
+  "v2": {
+    "candidate_id": "b04_r6_diagnostic_gap_shadow_router_v2",
+    "candidate_wins": 0,
+    "case_count": 6,
+    "disqualifier_count": 3,
+    "guard_law_preserved": false,
+    "implicated_cases": [
+      "R6B05"
+    ],
+    "result": "INVALIDATED_BY_CANDIDATE_BEHAVIOR",
+    "triggered_guard_failures": [
+      "CONTROL_DEGRADATION",
+      "ABSTENTION_COLLAPSE",
+      "OVERRouting_COLLAPSE"
+    ]
+  }
 }
