@@ -16,13 +16,31 @@
     "wrong_static_hold_cost_bucket",
     "calibration_bucket_without_blind_outcomes"
   ],
+  "allowed_features": [
+    "case_family_descriptor",
+    "trust_zone_eligibility_bit",
+    "static_comparator_metadata",
+    "route_value_court_terms",
+    "trace_shape_metadata",
+    "mirror_masked_sibling_metadata",
+    "null_route_control_metadata",
+    "proof_burden_estimate_bucket",
+    "wrong_route_cost_bucket",
+    "wrong_static_hold_cost_bucket",
+    "calibration_bucket_without_blind_outcomes"
+  ],
   "allowed_outcomes": [
     "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_BOUND__SOURCE_PACKET_VALIDATION_NEXT",
     "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_DEFERRED__NAMED_DEFECT_REMAINS",
     "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
+  "allowed_static_comparator_references": [
+    "static_comparator_metadata",
+    "static_hold_dominance_indicator",
+    "static_fallback_reason_code"
+  ],
   "architecture_binding_head": "4279eefb58a34089dc0b1930765a36556454e968",
-  "artifact_id": "B04_R6_FUTURE_BLOCKER_REGISTER",
+  "artifact_id": "B04_R6_AFSH_ALLOWED_FEATURES_CONTRACT",
   "authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -50,59 +68,9 @@
     "uncertain_case": "ABSTAIN_OR_STATIC_HOLD",
     "unknown_case": "STATIC_HOLD"
   },
-  "blockers": [
-    {
-      "blocker_id": "B04R6-FB-011",
-      "future_blocker": "Source packet exists but source-packet validation law does not exist.",
-      "neutralization_now": [
-        "b04_r6_afsh_source_packet_validation_plan.json",
-        "b04_r6_afsh_source_packet_validation_reason_codes.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-012",
-      "future_blocker": "Source packet validates but candidate generation protocol is not ready.",
-      "neutralization_now": [
-        "b04_r6_afsh_candidate_generation_protocol_prep_only_draft.json",
-        "b04_r6_afsh_candidate_manifest_schema_prep_only_draft.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-013",
-      "future_blocker": "Candidate exists but admissibility law is not ready.",
-      "neutralization_now": [
-        "b04_r6_afsh_admissibility_court_prep_only_draft.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-014",
-      "future_blocker": "Candidate generation accidentally uses blind outcomes.",
-      "neutralization_later": [
-        "b04_r6_afsh_candidate_no_contamination_receipt.json",
-        "b04_r6_afsh_forbidden_feature_scan_receipt.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-015",
-      "future_blocker": "Candidate passes admissibility but shadow-screen packet law is missing.",
-      "neutralization_later": [
-        "b04_r6_afsh_shadow_screen_execution_packet_draft.json",
-        "b04_r6_afsh_shadow_screen_disqualifier_ledger_draft.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-016",
-      "future_blocker": "Commercial language outruns source-packet proof.",
-      "neutralization_later": [
-        "r6_nonclaim_boundary_language_packet.json",
-        "learned_router_forbidden_claims_receipt.json"
-      ]
-    }
-  ],
   "candidate_generation_authorized": false,
   "candidate_training_authorized": false,
   "court_replay_binding_head": "e8a00afa04ce1df380165b85b3620837160244a6",
-  "current_authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
   "current_branch": "authoritative/b04-r6-afsh-implementation-source-packet",
   "current_git_head": "b796116e66e865f5005c61bb312519bc872e6b32",
   "current_main_head": "3bc4ab79299487f3aaa76496886c22825d84774e",
@@ -327,7 +295,7 @@
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 10,
   "previous_authoritative_lane": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_VALIDATION",
   "previous_validation_head": "022a7bfc7f9dbf151506809eaa63682e0cd5a76c",
   "r6_authorized": false,
@@ -341,7 +309,7 @@
   },
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.b04_r6.future_blocker_register.v2",
+  "schema_id": "kt.b04_r6.afsh_allowed_features_contract.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -468,10 +436,73 @@
   ],
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_source_packet_validation",
-      "detail": "the next lawful move is source-packet validation",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_SOURCE_NEXT_MOVE_DRIFT",
+      "check_id": "allowed_features_are_defined",
+      "detail": "allowed feature families are explicit",
+      "group": "features",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_ALLOWED_FEATURES_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "forbidden_features_are_defined",
+      "detail": "forbidden feature families are explicit",
+      "group": "features",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_FORBIDDEN_FEATURES_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "blind_outcome_labels_forbidden",
+      "detail": "blind outcome labels are forbidden",
+      "group": "features",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_BLIND_OUTCOME_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "blind_route_success_labels_forbidden",
+      "detail": "blind route-success labels are forbidden",
+      "group": "features",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_ROUTE_SUCCESS_LABEL_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "old_r01_r04_counted_labels_forbidden",
+      "detail": "old R01-R04 counted labels are forbidden",
+      "group": "features",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_OLD_UNIVERSE_PROOF_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "old_v2_six_row_counted_labels_forbidden",
+      "detail": "old v2 six-row counted labels are forbidden",
+      "group": "features",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_OLD_UNIVERSE_PROOF_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "metric_widening_forbidden",
+      "detail": "metric widening knobs are forbidden",
+      "group": "features",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_METRIC_WIDENING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "comparator_weakening_forbidden",
+      "detail": "comparator weakening knobs are forbidden",
+      "group": "features",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_COMPARATOR_WEAKENING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "truth_engine_mutation_forbidden",
+      "detail": "truth-engine mutation hooks are forbidden",
+      "group": "features",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_TRUTH_ENGINE_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trust_zone_mutation_forbidden",
+      "detail": "trust-zone mutation hooks are forbidden",
+      "group": "features",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_TRUST_ZONE_MUTATION",
       "status": "PASS"
     }
   ]
