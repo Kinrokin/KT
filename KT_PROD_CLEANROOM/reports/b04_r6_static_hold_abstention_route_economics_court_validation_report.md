@@ -18,6 +18,7 @@ Next lawful move: `AUTHOR_B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET`
 - `prior_v2_six_row_remains_diagnostic_only`: `PASS` (RC_B04R6_COURT_VAL_OLD_UNIVERSE_PROOF_DRIFT)
 - `validation_contract_binds_current_main_head`: `PASS` (RC_B04R6_COURT_VAL_MAIN_HEAD_MISMATCH)
 - `validation_contract_binds_court_replay_head`: `PASS` (RC_B04R6_COURT_VAL_REPLAY_BINDING_MISMATCH)
+- `mutable_handoff_excluded_from_court_replay_head`: `PASS` (RC_B04R6_COURT_VAL_REPLAY_BINDING_MISMATCH)
 - `static_hold_is_default_positive_verdict`: `PASS` (RC_B04R6_COURT_VAL_STATIC_HOLD_NOT_DEFAULT)
 - `abstain_is_positive_success_verdict`: `PASS` (RC_B04R6_COURT_VAL_ABSTAIN_NOT_POSITIVE)
 - `null_route_is_anti_overrouting_control`: `PASS` (RC_B04R6_COURT_VAL_NULL_ROUTE_NOT_CONTROL)

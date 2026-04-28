@@ -31,7 +31,7 @@
   "court_replay_binding_head": "e8a00afa04ce1df380165b85b3620837160244a6",
   "court_replay_binding_validated": true,
   "current_branch": "authoritative/b04-r6-static-hold-abstention-route-economics-court-validation",
-  "current_git_head": "31e4df0dc388d6a0cd88e704af4b508dac32cd8a",
+  "current_git_head": "a5ebfc06d2419f19913a3096137782f1713229ac",
   "current_main_head": "7873ac6990e5f6c4fff8ccaac31eb31fe4547601",
   "failure_count": 0,
   "forbidden_claims": [
@@ -47,129 +47,156 @@
     "lobe_escalation_authorized",
     "package_promotion_authorized"
   ],
-  "generated_utc": "2026-04-28T22:21:41Z",
+  "generated_utc": "2026-04-28T22:29:12Z",
   "input_bindings": [
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_abstention_control_registry.json",
       "role": "abstention_registry",
       "sha256": "b1f875e05d37a849d863b71c6a04ec72c1a07b6961cff1ad6514c715b64639c0"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_allowed_forbidden_features_prep_only_draft.json",
       "role": "afsh_features_prep",
       "sha256": "70de7abd7b91122439472a04a375fbb4a1da815ea6f06284c7c2c2ba6bfc6f4d"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_provenance_matrix_prep_only_draft.json",
       "role": "afsh_provenance_prep",
       "sha256": "db6499739473bf4e17dac1e930565b60eef3ec42c0f49a955e6d5fcd22ae8b65"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_implementation_source_packet_prep_only_draft.json",
       "role": "afsh_source_packet_prep",
       "sha256": "33e4126b9265a623d1c241fbf77ae951d0eb0014419d9cebc303a744b0863585"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_trace_schema_prep_only_draft.json",
       "role": "afsh_trace_prep",
       "sha256": "28c019ce8fbcb215f6de724e1c5527d39a6215a648ddaeb080b9048abbaf04f7"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
       "role": "canonical_scope_manifest",
       "sha256": "eb4aaed06eb5bdea5c6f8ccef1f54c9d23960555ada1d80ee253da62ab94b5be"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_abstention_route_economics_court_contract.json",
       "role": "court_contract",
       "sha256": "451cc2379a66136779b41538612c1066d93578a828c4ccdb8a8ea9e8f1104803"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_abstention_route_economics_court_receipt.json",
       "role": "court_receipt",
       "sha256": "9ed20833d2f84c75bec34c396a32355d299605a1fa195f4d6560a007c58c9e7a"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_abstention_route_economics_court_report.md",
       "role": "court_report",
       "sha256": "95efbaa2f98b6f84f63d49cd678dbd6f8ab9ff15019b5be051e1b2efa1b44cc6"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_court_disqualifier_ledger.json",
       "role": "disqualifier_ledger",
       "sha256": "06e0ac979e5c61bf4d9475b09f5f49b36ee1335aa81e9c74c67696f7cb8ded51"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_future_blocker_register.json",
       "role": "future_blocker_register",
       "sha256": "352eb0488d9c5756dd88768dc2ffafdeff6ee108aaeb172bcc8f1a463f7f12d7"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_court_no_authorization_drift_receipt.json",
       "role": "no_authorization_drift",
       "sha256": "4c52bfc7fd8f4b0176138b05cf28ab5dc0de300fa5eacef499595ae2c9d6f614"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_null_route_control_contract.json",
       "role": "null_route_control",
       "sha256": "5dfbdce718e24accf94b4239865f00f22e674e1d8e1416ad9175522af49c3022"
     },
     {
+      "binding_kind": "git_object_before_overwrite",
+      "git_commit": "a5ebfc06d2419f19913a3096137782f1713229ac",
+      "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "previous_next_lawful_move",
-      "sha256": "3fc1812b0abbfb3e9970db691ae6fe6274a68f868aca4531417964ae26ffc8ef"
+      "sha256": "92f4da18f71a872b5647ab4b29b7f49ca8a4c9d7b243a971475487fb05aaf9e6"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_proof_burden_delta_contract.json",
       "role": "proof_burden_delta",
       "sha256": "7012ed7a474460b8e2ee2589b1900cd0d64c8b2fc649cf066f2e444e0963d5f9"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_court_reason_code_taxonomy.json",
       "role": "reason_codes",
       "sha256": "0b2c043da39a6dbcfbfa6daa2e9ec0f93fdec7127f14898f2e541f3adbefd0d8"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_route_economics_matrix.json",
       "role": "route_economics",
       "sha256": "7522c6d460a8e306a913e09949af63141f266c9191ae124b6a776a828870ca02"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_control_contract.json",
       "role": "static_hold_control",
       "sha256": "0dfedd49dd4ffa09307f2cf079a81fa7db8dc21060297b21ef6a33ddb557f082"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_route_value_threshold_profile.json",
       "role": "threshold_profile",
       "sha256": "f163b1459f43184d44c556ce74fa2e372546189970c6baff5cc8d93d6c02afe7"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
       "role": "trust_zone_registry",
       "sha256": "05a51311291e0cd6a26cb9b83eaf785d54e16c9f1faf7a1fe8b693fe9ff0da3c"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_abstention_route_economics_court_validation_plan.json",
       "role": "validation_plan",
       "sha256": "3b14b30684b6713c6a37cf77b4decd61d061744d5134297a4f9c1146c8950d58"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_abstention_route_economics_court_validation_reason_codes.json",
       "role": "validation_reason_codes",
       "sha256": "fb7fc1451e0aa65b9d13d58386b19a0afbedbbf3f6202f091b82aedb860953f9"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_abstention_route_economics_court_validation_test_plan.md",
       "role": "validation_test_plan",
       "sha256": "21e74a2ca49a4e39fc2fc155e73f1669f8c39067befcd53d4f00880ef716d8ea"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_wrong_route_cost_contract.json",
       "role": "wrong_route_cost",
       "sha256": "c3dfe301c424aeea763c5bbba4b6c3989a5f88fae14a0df55af687c366a48e2e"
     },
     {
+      "binding_kind": "file_sha256_at_validation",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_wrong_static_hold_cost_contract.json",
       "role": "wrong_static_hold_cost",
       "sha256": "eb599c1f7ea0e5be357fa615a4d98c86e9368d5b40a9a6f5e079254cce7130ad"
@@ -185,7 +212,7 @@
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 9,
+  "pass_count": 10,
   "previous_authoritative_lane": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
   "r6_authorized": false,
   "r6_open": false,
@@ -359,6 +386,13 @@
     {
       "check_id": "validation_contract_binds_court_replay_head",
       "detail": "all court artifacts share one replay head",
+      "group": "replay",
+      "reason_code": "RC_B04R6_COURT_VAL_REPLAY_BINDING_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "mutable_handoff_excluded_from_court_replay_head",
+      "detail": "mutable next-lawful-move handoff is validated separately from immutable court replay artifacts",
       "group": "replay",
       "reason_code": "RC_B04R6_COURT_VAL_REPLAY_BINDING_MISMATCH",
       "status": "PASS"
