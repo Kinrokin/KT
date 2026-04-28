@@ -1,0 +1,118 @@
+{
+  "activation_review_authorized": false,
+  "allowed_outcomes": [
+    "R6_SECOND_SHADOW_INVALIDATION_CONFIRMED__CANDIDATE_V2_DISQUALIFIED",
+    "R6_SECOND_SHADOW_INVALIDATION_HARNESS_DEFECT__RERUN_REVIEW_AUTHORIZED",
+    "R6_SECOND_SHADOW_INVALIDATION_CONTRACT_DEFECT__CONTRACT_REPAIR_REQUIRED",
+    "R6_SECOND_SHADOW_INVALIDATION_INPUT_DEFECT__NEW_INPUT_UNIVERSE_REQUIRED",
+    "R6_SECOND_SHADOW_INVALIDATION_MIXED_DEFECT__FORENSIC_REMEDIATION_REQUIRED"
+  ],
+  "authoritative_lane": "B04_R6_SECOND_SHADOW_SCREEN_FORENSIC_AND_RERUN_BAR",
+  "cause_class": "CANDIDATE_BEHAVIOR_DEFECT",
+  "current_git_head": "002be7c4d790ec657434a0fa8133d1c8a4c698c3",
+  "forbidden_claims": [
+    "r6_open",
+    "learned_router_superiority_earned",
+    "activation_review_authorized",
+    "learned_router_activated",
+    "learned_router_cutover_authorized",
+    "multi_lobe_authorized",
+    "package_promotion_approved",
+    "commercial_broadening"
+  ],
+  "forensic_question": "Was invalidation caused by candidate behavior, harness defect, metric/contract defect, input defect, or mixed defect?",
+  "generated_utc": "2026-04-28T13:25:40Z",
+  "input_bindings": [
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_second_shadow_abstention_overrouting_matrix.json",
+      "role": "abstention_overrouting",
+      "sha256": "89b490d46a7f8045c7480a7f94135d3ec2ecbb42241d19960a24cb636ba8ce0d"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_new_blind_input_universe_contract.json",
+      "role": "blind_contract",
+      "sha256": "b0498c9ceb02fc8dda4c0fa86ed77b7a45067943e4a10332a68218223d581e46"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_candidate_v2_admissibility_receipt.json",
+      "role": "candidate_v2_admissibility",
+      "sha256": "ac8382584c78ca132fc2d4714ff93e72bc51b1bb862b27256d42c51eb2163a84"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_candidate_v2_manifest.json",
+      "role": "candidate_v2_manifest",
+      "sha256": "6d98223c867814ba4409eb6a4d8f60c74340407cd9fc36aa97688ca09b00b2c8"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_second_shadow_disqualifier_ledger.json",
+      "role": "disqualifier_ledger",
+      "sha256": "221ff7ee1e8147fab540a7c5a35a727e39a299be3eb3f40864019b868a9978cb"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_metric_thresholds_contract.json",
+      "role": "metric_contract",
+      "sha256": "3a98165ee26c38871fe6b72cf5ce36f6ed540bb7a74ec2f6ad6d26ffcd81c6b4"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_second_shadow_mirror_masked_invariance_matrix.json",
+      "role": "mirror_masked_invariance",
+      "sha256": "2ad6196213c71135ec5cec84125d6319a91486031e6d8e535382bca8c511a8c0"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_second_shadow_screen_result_packet.json",
+      "role": "result_packet",
+      "sha256": "d6442569284467154217725e122948612c1480eb65aeab925fbdedc4ce238845"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_second_shadow_screen_result_receipt.json",
+      "role": "result_receipt",
+      "sha256": "29e00f3d8c744ae3cdaa62c62d6ee67e0f4dfb920ca070f58daad8104b99b998"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_second_shadow_route_trace_matrix.json",
+      "role": "route_trace",
+      "sha256": "e705caf82283f43e3cade8332041a26f2dca72b4e6be65c96f6984339976f83f"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_second_shadow_scorecard.json",
+      "role": "scorecard",
+      "sha256": "8c1a8a287c385f2cf5ce41508150b15f3e3733b869f62b7d10cf64b9bdd362bf"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_second_shadow_screen_disqualifier_contract.json",
+      "role": "screen_disqualifier_contract",
+      "sha256": "97806a7bc0fc4e20c8f03d28e3dced68b20688ad14829004c77b3036f033c7bf"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_second_shadow_screen_execution_packet.json",
+      "role": "screen_execution_packet",
+      "sha256": "1b8aea3f13a0a73a25072d2c8104b557963e9ba4ed9a493cf0fe9905712b7d58"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_second_shadow_screen_execution_receipt.json",
+      "role": "screen_execution_receipt",
+      "sha256": "904613c87213522b2d48de5eb584feaad33c381164d32aae7ad54169ed3779cc"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_static_baseline_immutability_guard_receipt.json",
+      "role": "static_baseline_guard",
+      "sha256": "aac566b56d1b7df8f263ccbba9079caaddb38af7c00ce45a7a62ce2ae03fd9f8"
+    }
+  ],
+  "learned_router_activated": false,
+  "learned_router_cutover_authorized": false,
+  "learned_router_superiority_earned": false,
+  "multi_lobe_authorized": false,
+  "next_lawful_move": "AUTHOR_B04_R6_CANDIDATE_V2_DISQUALIFICATION_AND_CLOSEOUT_OR_MAJOR_REDESIGN_PACKET",
+  "package_promotion_remains_deferred": true,
+  "previous_authoritative_lane": "B04_R6_SECOND_SHADOW_ROUTER_SUPERIORITY_SCREEN",
+  "prior_verdict": "R6_SECOND_SHADOW_SCREEN_INVALIDATED__DISQUALIFIER_TRIGGERED",
+  "r6_authorized": false,
+  "r6_open": false,
+  "schema_id": "kt.operator.b04_r6_second_shadow_screen_forensic_packet.v1",
+  "status": "PASS",
+  "subject_main_head": "002be7c4d790ec657434a0fa8133d1c8a4c698c3",
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true,
+  "verdict": "R6_SECOND_SHADOW_INVALIDATION_CONFIRMED__CANDIDATE_V2_DISQUALIFIED"
+}

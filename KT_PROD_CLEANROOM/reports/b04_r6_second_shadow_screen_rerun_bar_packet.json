@@ -1,8 +1,9 @@
 {
   "activation_review_authorized": false,
   "authoritative_lane": "B04_R6_SECOND_SHADOW_SCREEN_FORENSIC_AND_RERUN_BAR",
-  "cause_class": "CANDIDATE_BEHAVIOR_DEFECT",
+  "candidate_v2_activation_review_allowed": false,
   "current_git_head": "002be7c4d790ec657434a0fa8133d1c8a4c698c3",
+  "default_rerun_bar": true,
   "forbidden_claims": [
     "r6_open",
     "learned_router_superiority_earned",
@@ -23,10 +24,13 @@
   "previous_authoritative_lane": "B04_R6_SECOND_SHADOW_ROUTER_SUPERIORITY_SCREEN",
   "r6_authorized": false,
   "r6_open": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v1",
-  "status": "PASS",
+  "rerun_allowed": false,
+  "rerun_release_rule": "Rerun may be reviewed only if a later forensic court proves harness, contract, or input defect; candidate-behavior invalidation bars casual rerun.",
+  "schema_id": "kt.operator.b04_r6_second_shadow_screen_rerun_bar_packet.v1",
+  "screen_result_may_be_used_as_diagnostic_evidence": true,
+  "six_row_blind_universe_reuse_as_fresh_proof_allowed": false,
+  "status": "FROZEN_PACKET",
   "subject_main_head": "002be7c4d790ec657434a0fa8133d1c8a4c698c3",
   "trust_zone_law_unchanged": true,
-  "truth_engine_derivation_law_unchanged": true,
-  "verdict": "R6_SECOND_SHADOW_INVALIDATION_CONFIRMED__CANDIDATE_V2_DISQUALIFIED"
+  "truth_engine_derivation_law_unchanged": true
 }
