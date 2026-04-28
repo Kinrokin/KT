@@ -312,6 +312,17 @@ def test_predecessor_next_move_drift_fails_closed(tmp_path: Path, monkeypatch: p
         court.run(reports_root=reports)
 
 
+def test_previous_next_lawful_move_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    receipt_path = tmp_path / court.INPUTS["previous_next_lawful_move"]
+    receipt = _load(receipt_path)
+    receipt["next_lawful_move"] = "WRONG_MOVE"
+    _write_json(receipt_path, receipt)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="previous next lawful move receipt"):
+        court.run(reports_root=reports)
+
+
 def test_prep_draft_authority_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _write_inputs(tmp_path)
     draft_path = tmp_path / court.PREP_INPUTS["route_economics_draft"]

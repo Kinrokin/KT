@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
@@ -205,11 +204,6 @@ OUTPUTS = {
 }
 
 
-def _stable_hash(value: Any) -> str:
-    rendered = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
-    return hashlib.sha256(rendered).hexdigest()
-
-
 def _load(root: Path, raw: str, *, label: str) -> Dict[str, Any]:
     return common.load_json_required(root, raw, label=label)
 
@@ -286,6 +280,14 @@ def _require_inputs(payloads: Dict[str, Dict[str, Any]], prep_payloads: Dict[str
         raise RuntimeError("FAIL_CLOSED: selected architecture must remain AFSH-2S-GUARD")
     if int(receipt.get("failure_count", 1)) != 0:
         raise RuntimeError("FAIL_CLOSED: blind-universe validation failures remain")
+
+    handoff = payloads["previous_next_lawful_move"]
+    if handoff.get("authoritative_lane") != PREVIOUS_LANE:
+        raise RuntimeError("FAIL_CLOSED: previous next lawful move receipt lane drifted")
+    if handoff.get("selected_outcome") != EXPECTED_PREVIOUS_OUTCOME:
+        raise RuntimeError("FAIL_CLOSED: previous next lawful move receipt outcome drifted")
+    if handoff.get("next_lawful_move") != EXPECTED_PREVIOUS_NEXT_MOVE:
+        raise RuntimeError("FAIL_CLOSED: previous next lawful move receipt does not authorize this court")
 
     manifest = payloads["case_manifest"]
     cases = manifest.get("cases", [])
