@@ -222,11 +222,12 @@
   "lobe_escalation_authorized": false,
   "multi_lobe_authorized": false,
   "next_lawful_move": "GENERATE_B04_R6_AFSH_CANDIDATE",
+  "no_contamination_validated": true,
   "old_r01_r04_diagnostic_only": true,
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 13,
   "previous_authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
   "provenance_bindings": [
     "source_packet_hash",
@@ -242,7 +243,7 @@
   "r6_open": false,
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v9",
+  "schema_id": "kt.b04_r6.afsh_no_contamination_validation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -361,12 +362,95 @@
   ],
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_candidate_generation",
-      "detail": "the next lawful move is candidate generation lane, not candidate execution inside validation",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "source_packet_contract_exists_and_parses",
+      "detail": "source-packet contract exists and parses",
+      "group": "source_packet",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_CONTRACT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "source_packet_receipt_exists_and_parses",
+      "detail": "source-packet receipt exists and parses",
+      "group": "source_packet",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_RECEIPT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "source_packet_report_exists",
+      "detail": "source-packet report exists and is non-empty",
+      "group": "source_packet",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_CONTRACT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_contract_binds_selected_afsh_architecture",
+      "detail": "AFSH-2S-GUARD remains bound",
+      "group": "source_packet",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_ARCHITECTURE_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_contract_binds_validated_blind_universe",
+      "detail": "validated blind universe remains bound",
+      "group": "source_packet",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_UNIVERSE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_contract_binds_validated_route_economics_court",
+      "detail": "validated route-economics court remains bound",
+      "group": "source_packet",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_COURT_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prior_r01_r04_remain_diagnostic_only",
+      "detail": "R01-R04 remains diagnostic-only",
+      "group": "source_packet",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_OLD_UNIVERSE_PROOF_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prior_v2_six_row_remain_diagnostic_only",
+      "detail": "v2 six-row screen remains diagnostic-only",
+      "group": "source_packet",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_OLD_UNIVERSE_PROOF_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_contamination_contract_bound",
+      "detail": "no-contamination contract is bound",
+      "group": "no_contamination",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_OLD_UNIVERSE_PROOF_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "source_forbids_truth_engine_mutation",
+      "detail": "truth-engine mutation remains forbidden",
+      "group": "no_contamination",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_TRUTH_ENGINE_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "source_forbids_trust_zone_mutation",
+      "detail": "trust-zone mutation remains forbidden",
+      "group": "no_contamination",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_TRUST_ZONE_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "source_forbids_package_promotion_behavior",
+      "detail": "package-promotion behavior remains forbidden",
+      "group": "no_contamination",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_PACKAGE_PROMOTION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "source_forbids_activation_cutover_behavior",
+      "detail": "activation/cutover behavior remains forbidden",
+      "group": "no_contamination",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_ACTIVATION_CUTOVER_DRIFT",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATED__CANDIDATE_GENERATION_NEXT"
+  ]
 }

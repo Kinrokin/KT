@@ -226,7 +226,7 @@
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 3,
   "previous_authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
   "provenance_bindings": [
     "source_packet_hash",
@@ -242,7 +242,7 @@
   "r6_open": false,
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v9",
+  "schema_id": "kt.b04_r6.afsh_source_replay_binding_validation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -251,6 +251,7 @@
   "shadow_screen_execution_authorized": false,
   "shadow_screen_packet_authorized": false,
   "source_packet_replay_binding_head": "beef30cec8e63253dcffab574bccbac09ce82de3",
+  "source_packet_replay_binding_validated": true,
   "status": "PASS",
   "terminal_defects": [
     "BLIND_OUTCOME_ACCESS",
@@ -361,12 +362,25 @@
   ],
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_candidate_generation",
-      "detail": "the next lawful move is candidate generation lane, not candidate execution inside validation",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "validation_contract_preserves_current_main_head",
+      "detail": "validation can bind current main head",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_MAIN_HEAD_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "source_packet_replay_binding_validated",
+      "detail": "source packet replay head is bound",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_MAIN_HEAD_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "immutable_source_inputs_share_replay_head",
+      "detail": "all immutable source-packet inputs share the same replay head",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_MAIN_HEAD_MISMATCH",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATED__CANDIDATE_GENERATION_NEXT"
+  ]
 }

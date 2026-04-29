@@ -226,7 +226,7 @@
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 10,
   "previous_authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
   "provenance_bindings": [
     "source_packet_hash",
@@ -242,7 +242,7 @@
   "r6_open": false,
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v9",
+  "schema_id": "kt.b04_r6.afsh_trace_schema_validation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -281,6 +281,7 @@
     "must_emit_comparator_preservation_status",
     "must_emit_metric_preservation_status"
   ],
+  "trace_schema_validated": true,
   "trust_zone_law_unchanged": true,
   "truth_engine_derivation_law_unchanged": true,
   "validated_blind_universe_binding": {
@@ -361,12 +362,74 @@
   ],
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_candidate_generation",
-      "detail": "the next lawful move is candidate generation lane, not candidate execution inside validation",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "trace_schema_requires_verdict_mode",
+      "detail": "trace schema requires must_emit_verdict_mode",
+      "group": "trace_schema",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_requires_route_value_terms",
+      "detail": "trace schema requires must_emit_route_value_terms",
+      "group": "trace_schema",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_requires_static_hold_reason_code",
+      "detail": "trace schema requires must_emit_static_hold_reason_code",
+      "group": "trace_schema",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_requires_abstention_reason_code",
+      "detail": "trace schema requires must_emit_abstention_reason_code",
+      "group": "trace_schema",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_requires_null_route_reason_code",
+      "detail": "trace schema requires must_emit_null_route_reason_code",
+      "group": "trace_schema",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_requires_route_eligible_reason_code",
+      "detail": "trace schema requires must_emit_route_eligible_reason_code",
+      "group": "trace_schema",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_requires_trust_zone_status",
+      "detail": "trace schema requires must_emit_trust_zone_status",
+      "group": "trace_schema",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_requires_comparator_preservation_status",
+      "detail": "trace schema requires must_emit_comparator_preservation_status",
+      "group": "trace_schema",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_requires_metric_preservation_status",
+      "detail": "trace schema requires must_emit_metric_preservation_status",
+      "group": "trace_schema",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_contract_bound",
+      "detail": "trace schema contract is bound",
+      "group": "trace_schema",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_TRACE_SCHEMA_INCOMPLETE",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATED__CANDIDATE_GENERATION_NEXT"
+  ]
 }

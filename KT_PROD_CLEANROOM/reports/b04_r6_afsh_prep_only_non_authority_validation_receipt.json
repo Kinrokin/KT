@@ -226,7 +226,8 @@
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 12,
+  "prep_only_non_authority_validated": true,
   "previous_authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
   "provenance_bindings": [
     "source_packet_hash",
@@ -242,7 +243,7 @@
   "r6_open": false,
   "router_generation_authorized": false,
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v9",
+  "schema_id": "kt.b04_r6.afsh_prep_only_non_authority_validation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -361,12 +362,88 @@
   ],
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_candidate_generation",
-      "detail": "the next lawful move is candidate generation lane, not candidate execution inside validation",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "candidate_generation_protocol_is_prep_only",
+      "detail": "candidate generation protocol remains prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_manifest_schema_is_prep_only",
+      "detail": "candidate manifest schema remains prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "admissibility_court_draft_is_prep_only",
+      "detail": "admissibility court draft remains prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_generation",
+      "detail": "prep-only drafts cannot authorize generation",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_GENERATION_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_training",
+      "detail": "prep-only drafts cannot authorize training",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_TRAINING_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_admissibility",
+      "detail": "prep-only drafts cannot authorize admissibility",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_ADMISSIBILITY_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_shadow_screen_packet",
+      "detail": "prep-only drafts cannot authorize shadow-screen packet",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_SHADOW_PACKET_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_shadow_screen_execution",
+      "detail": "prep-only drafts cannot authorize shadow-screen execution",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_SHADOW_SCREEN_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_activation",
+      "detail": "prep-only drafts cannot authorize activation",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_ACTIVATION_CUTOVER_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_lobe_escalation",
+      "detail": "prep-only drafts cannot authorize lobe escalation",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_ACTIVATION_CUTOVER_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_package_promotion",
+      "detail": "prep-only drafts cannot authorize package promotion",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_PACKAGE_PROMOTION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "future_blocker_register_present",
+      "detail": "future blockers are registered",
+      "group": "future",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_CONTRACT_MISSING",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATED__CANDIDATE_GENERATION_NEXT"
+  ]
 }
