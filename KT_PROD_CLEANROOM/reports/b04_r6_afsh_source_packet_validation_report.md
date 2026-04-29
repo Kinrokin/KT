@@ -19,6 +19,7 @@ Next lawful move: `GENERATE_B04_R6_AFSH_CANDIDATE`
 - `prior_v2_six_row_remain_diagnostic_only`: `PASS` (RC_B04R6_AFSH_SOURCE_VAL_OLD_UNIVERSE_PROOF_DRIFT)
 - `validation_contract_preserves_current_main_head`: `PASS` (RC_B04R6_AFSH_SOURCE_VAL_MAIN_HEAD_MISMATCH)
 - `source_packet_replay_binding_validated`: `PASS` (RC_B04R6_AFSH_SOURCE_VAL_MAIN_HEAD_MISMATCH)
+- `immutable_source_inputs_share_replay_head`: `PASS` (RC_B04R6_AFSH_SOURCE_VAL_MAIN_HEAD_MISMATCH)
 - `allowed_features_contract_bound`: `PASS` (RC_B04R6_AFSH_SOURCE_VAL_ALLOWED_FEATURES_MISSING)
 - `forbidden_features_contract_bound`: `PASS` (RC_B04R6_AFSH_SOURCE_VAL_FORBIDDEN_FEATURES_MISSING)
 - `blind_outcome_labels_forbidden`: `PASS` (RC_B04R6_AFSH_SOURCE_VAL_BLIND_OUTCOME_ACCESS)

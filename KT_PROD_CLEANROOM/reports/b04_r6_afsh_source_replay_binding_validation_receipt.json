@@ -48,7 +48,7 @@
   "candidate_generation_not_executed_by_validation": true,
   "candidate_training_authorized": false,
   "current_branch": "authoritative/b04-r6-afsh-source-packet-validation",
-  "current_git_head": "fe7b4c666e7c7ce0f8ece13d770c32186f75d370",
+  "current_git_head": "366b797ae3d0ce1bd19627d7afd3741f700e688e",
   "current_main_head": "bdddb3f1a9958808f537302114e86866e3f24f3b",
   "failure_count": 0,
   "forbidden_actions": [
@@ -91,7 +91,7 @@
     "comparator_weakening_knobs",
     "metric_widening_knobs"
   ],
-  "generated_utc": "2026-04-28T23:52:54Z",
+  "generated_utc": "2026-04-28T23:59:26Z",
   "input_bindings": [
     {
       "binding_kind": "file_sha256_at_validation",
@@ -155,11 +155,11 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "fe7b4c666e7c7ce0f8ece13d770c32186f75d370",
+      "git_commit": "366b797ae3d0ce1bd19627d7afd3741f700e688e",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "previous_next_lawful_move",
-      "sha256": "b299ff9e4ffa511cff9225be0b511519b872dbd8ca60a2c5a4a707bd14e23942"
+      "sha256": "aac1d6a6d4d9f7c2d16c8072a25e022ca1d745180f1e188ef0dbffaf9bb83c76"
     },
     {
       "binding_kind": "file_sha256_at_validation",
@@ -226,7 +226,7 @@
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 2,
+  "pass_count": 3,
   "previous_authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
   "provenance_bindings": [
     "source_packet_hash",
@@ -371,6 +371,13 @@
     {
       "check_id": "source_packet_replay_binding_validated",
       "detail": "source packet replay head is bound",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_MAIN_HEAD_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "immutable_source_inputs_share_replay_head",
+      "detail": "all immutable source-packet inputs share the same replay head",
       "group": "replay",
       "reason_code": "RC_B04R6_AFSH_SOURCE_VAL_MAIN_HEAD_MISMATCH",
       "status": "PASS"
