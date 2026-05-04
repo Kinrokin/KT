@@ -457,6 +457,13 @@ def test_next_lawful_move_matches_selected_outcome(outputs: Path) -> None:
     assert _next(outputs)["next_lawful_move"] == screen.NEXT_BY_OUTCOME[_next(outputs)["selected_outcome"]]
 
 
+def test_screen_self_replay_allows_no_authorization_drift_receipt_overwrite(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_screen(tmp_path, monkeypatch)
+    _patch_screen_env(monkeypatch, tmp_path)
+    result = screen.run(reports_root=reports)
+    assert result["verdict"] == screen.OUTCOME_PASSED
+
+
 @pytest.mark.parametrize(
     "output_role",
     [

@@ -165,7 +165,7 @@ TEXT_INPUTS = {
     "packet_validation_report": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_packet_validation_report.md",
     "packet_report": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_execution_packet_report.md",
 }
-MUTABLE_HANDOFF_ROLES = frozenset({"previous_next_lawful_move"})
+MUTABLE_HANDOFF_ROLES = frozenset({"packet_no_authorization_drift", "previous_next_lawful_move"})
 
 OUTPUTS = {
     "execution_contract": "b04_r6_afsh_shadow_screen_execution_contract.json",
@@ -404,6 +404,15 @@ def _validate_packet_bound_inputs(root: Path, payloads: Dict[str, Dict[str, Any]
     for input_role, packet_output_role in packet_output_roles.items():
         expected = _input_binding_sha(packet_validation_bindings, packet_output_role)
         if file_sha256(common.resolve_path(root, INPUTS[input_role])) != expected:
+            if input_role == "packet_no_authorization_drift":
+                self_replay_prior = _optional_input_binding_sha(payloads[input_role].get("input_bindings", []), input_role)
+                self_replay = (
+                    payloads[input_role].get("authoritative_lane") == AUTHORITATIVE_LANE
+                    and payloads[input_role].get("selected_outcome") in ALLOWED_OUTCOMES
+                    and self_replay_prior == expected
+                )
+                if self_replay:
+                    continue
             if input_role == "metric_contract":
                 _fail("RC_B04R6_AFSH_SCREEN_METRIC_CONTRACT_MUTATED", "metric contract file hash drifted after packet validation")
             if input_role == "static_comparator_contract":
