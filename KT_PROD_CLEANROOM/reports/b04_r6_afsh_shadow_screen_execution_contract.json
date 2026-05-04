@@ -1280,7 +1280,7 @@
     }
   ],
   "current_branch": "authoritative/b04-r6-afsh-shadow-screen",
-  "current_git_head": "34b69a294040eaa24347fedd89bcf4d45488dfae",
+  "current_git_head": "e6b4c77a5e2fd44552164d828dd87916186b56bf",
   "current_main_head": "48911020675dd5cc1adf7d9decbb5ca8555e67e5",
   "disqualifier_result": {
     "disqualifier_ledger_clean": true,
@@ -1528,7 +1528,7 @@
     "schema_id": "kt.operator.trust_zone_validation_receipt.v2",
     "status": "PASS"
   },
-  "generated_utc": "2026-05-04T21:49:32Z",
+  "generated_utc": "2026-05-04T22:06:16Z",
   "input_bindings": [
     {
       "binding_kind": "file_sha256_at_shadow_screen_execution",
@@ -1580,6 +1580,12 @@
     },
     {
       "binding_kind": "file_sha256_at_shadow_screen_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_abstention_route_economics_court_validation_receipt.json",
+      "role": "court_validation_receipt",
+      "sha256": "c91ac19728b15f42a32c3678bb2494681171398b4e1d21c7cdd174f8be9ee8a5"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_disqualifier_ledger.json",
       "role": "disqualifier_ledger",
       "sha256": "6bf247f809784e5f578f07440045f5984b2847db7065eaf13e11d4320772809e"
@@ -1621,10 +1627,12 @@
       "sha256": "e3399a6b800ce341a72235c7a1067c45639ea5d5f9c2d98cafe2d9495e8e4d76"
     },
     {
-      "binding_kind": "file_sha256_at_shadow_screen_execution",
+      "binding_kind": "git_object_before_overwrite",
+      "git_commit": "e6b4c77a5e2fd44552164d828dd87916186b56bf",
+      "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_no_authorization_drift_receipt.json",
       "role": "packet_no_authorization_drift",
-      "sha256": "cd047f61ea506ef9ff6767694c3f0f958b2bcc5b06ef4ee581989a11d6d606ed"
+      "sha256": "a4930370c37d7368761e8656351855ff87d0534add78d45d07e7b8948aba9167"
     },
     {
       "binding_kind": "file_sha256_at_shadow_screen_execution",
@@ -1646,11 +1654,11 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "34b69a294040eaa24347fedd89bcf4d45488dfae",
+      "git_commit": "e6b4c77a5e2fd44552164d828dd87916186b56bf",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "previous_next_lawful_move",
-      "sha256": "c83bb4613d9f403117312ad33e6d098bcd478cae24222b29a12542fbc3b1bcee"
+      "sha256": "7c3d2d3c4740b325dfb5ff61ea86da03f1a8592fc5c77963adb62196a744e645"
     },
     {
       "binding_kind": "file_sha256_at_shadow_screen_execution",
@@ -1678,6 +1686,12 @@
     },
     {
       "binding_kind": "file_sha256_at_shadow_screen_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_source_packet_validation_receipt.json",
+      "role": "source_packet_validation_receipt",
+      "sha256": "49b86f6cd99cf4964868e18e7cb64823dd890226b03380e7fe309f615d4b356b"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_static_comparator_contract.json",
       "role": "static_comparator_contract",
       "sha256": "8ed7aaa94ab345d1c97e0450324dc1754055a055ec1d0d5012ef501778b287c1"
@@ -1693,6 +1707,12 @@
       "path": "KT_PROD_CLEANROOM/reports/kt_turboquant_research_translation_matrix_prep_only.json",
       "role": "turboquant_translation",
       "sha256": "c147a223f6eb4e9c50cbe5f413d585a687d5fc3b8b1a6655f93a373879776e90"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_new_blind_input_universe_validation_receipt.json",
+      "role": "universe_validation_receipt",
+      "sha256": "835af64286844268f247f6bb4acd45365e82af992a99c46b60a156d0d94f8f50"
     },
     {
       "binding_kind": "file_sha256_at_shadow_screen_execution",
