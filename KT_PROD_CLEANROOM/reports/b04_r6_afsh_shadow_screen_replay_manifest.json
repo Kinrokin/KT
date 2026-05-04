@@ -62,9 +62,31 @@
     ]
   },
   "current_branch": "authoritative/b04-r6-afsh-shadow-screen-execution-packet",
-  "current_git_head": "1c320c4b8d011c36490816593df26dd9cc62f651",
+  "current_git_head": "848a091767b4d2a1e5d0f1ec318e8fda042e9afe",
   "current_main_head": "100a3ed27b920f73114782eafd2aa4f9b69c5027",
   "expected_artifact_roles": [
+    "admissibility_contract",
+    "admissibility_receipt",
+    "admissibility_report",
+    "candidate_artifact",
+    "candidate_hash_admissibility",
+    "candidate_hash_receipt",
+    "candidate_manifest",
+    "candidate_manifest_admissibility",
+    "candidate_replay_binding_admissibility",
+    "candidate_semantic_hash_admissibility",
+    "compressed_receipt_index",
+    "no_authorization_drift_admissibility",
+    "numeric_triage_emit_core",
+    "previous_next_lawful_move",
+    "trace_schema_admissibility",
+    "triage_core_admissibility",
+    "triage_receipt_schema",
+    "triage_score_schema",
+    "triage_tag_schema",
+    "turboquant_translation"
+  ],
+  "expected_json_artifact_roles": [
     "admissibility_contract",
     "admissibility_receipt",
     "candidate_artifact",
@@ -85,6 +107,9 @@
     "triage_tag_schema",
     "turboquant_translation"
   ],
+  "expected_text_artifact_roles": [
+    "admissibility_report"
+  ],
   "forbidden_actions": [
     "SHADOW_SCREEN_EXECUTION_AUTHORIZED",
     "SHADOW_SCREEN_EXECUTED",
@@ -99,7 +124,7 @@
     "TRUTH_ENGINE_LAW_MUTATED",
     "TRUST_ZONE_LAW_MUTATED"
   ],
-  "generated_utc": "2026-05-04T19:29:11Z",
+  "generated_utc": "2026-05-04T19:36:58Z",
   "learned_router_superiority_earned": false,
   "lobe_escalation_authorized": false,
   "next_lawful_move": "VALIDATE_B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET",
