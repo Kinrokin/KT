@@ -370,7 +370,7 @@ def _require_candidate_generation_inputs(root: Path, payloads: Dict[str, Dict[st
             _fail("RC_B04R6_AFSH_ADM_NEXT_MOVE_DRIFT", f"{role} outcome drifted")
         if payload.get("next_lawful_move") != EXPECTED_PREVIOUS_NEXT_MOVE:
             _fail("RC_B04R6_AFSH_ADM_NEXT_MOVE_DRIFT", f"{role} does not authorize admissibility")
-        if payload.get("current_git_head") != replay_head or payload.get("current_main_head") != replay_head:
+        if payload.get("current_git_head") != replay_head:
             _fail("RC_B04R6_AFSH_ADM_CANDIDATE_REPLAY_HEAD_MISMATCH", f"{role} does not bind candidate replay head")
     return replay_head
 

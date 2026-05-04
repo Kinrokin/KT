@@ -240,6 +240,16 @@ def test_candidate_immutable_inputs_share_replay_head(outputs: Path) -> None:
     assert _load(outputs / generation.OUTPUTS["immutable_input_manifest"])["immutable_source_inputs_share_replay_head"] is True
 
 
+def test_candidate_generation_authoritative_branch_main_head_diff_allowed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_source_validation_inputs(tmp_path)
+    state = {"branch": generation.AUTHORITY_BRANCH, "head": CANDIDATE_REPLAY_HEAD, "origin_main": CURRENT_MAIN_HEAD}
+    _patch_env(monkeypatch, tmp_path, state)
+    generation.run(reports_root=reports)
+    state.update({"branch": admissibility.AUTHORITY_BRANCH, "head": ADMISSIBILITY_BRANCH_HEAD, "origin_main": CURRENT_MAIN_HEAD})
+    result = admissibility.run(reports_root=reports)
+    assert result["verdict"] == admissibility.SELECTED_OUTCOME
+
+
 def test_candidate_mixed_head_inputs_fail_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports, state = _write_candidate_generation_state(tmp_path, monkeypatch)
     path = tmp_path / admissibility.INPUTS["candidate_hash_receipt"]
