@@ -405,15 +405,11 @@ def _validate_packet_bound_inputs(root: Path, payloads: Dict[str, Dict[str, Any]
         expected = _input_binding_sha(packet_validation_bindings, packet_output_role)
         if file_sha256(common.resolve_path(root, INPUTS[input_role])) != expected:
             if input_role == "packet_no_authorization_drift":
-                self_replay_prior = _optional_input_binding_sha(payloads[input_role].get("input_bindings", []), input_role)
                 packet_validation_receipt_hash = file_sha256(common.resolve_path(root, INPUTS["packet_validation_receipt"]))
-                self_replay = (
-                    payloads[input_role].get("authoritative_lane") == AUTHORITATIVE_LANE
-                    and payloads[input_role].get("selected_outcome") in ALLOWED_OUTCOMES
-                    and (
-                        self_replay_prior == expected
-                        or payloads[input_role].get("packet_validation_receipt_hash") == packet_validation_receipt_hash
-                    )
+                self_replay = _is_screen_no_authorization_drift_self_replay(
+                    payloads[input_role],
+                    expected_input_hash=expected,
+                    packet_validation_receipt_hash=packet_validation_receipt_hash,
                 )
                 if self_replay:
                     continue
@@ -428,6 +424,38 @@ def _validate_packet_bound_inputs(root: Path, payloads: Dict[str, Dict[str, Any]
     if candidate_hash.get("candidate_envelope_hash") != validation_hashes["candidate_envelope_hash"]:
         _fail("RC_B04R6_AFSH_SCREEN_CANDIDATE_HASH_MISMATCH", "candidate envelope hash mismatch")
     return {key: str(value) for key, value in validation_hashes.items()}
+
+
+def _is_screen_no_authorization_drift_self_replay(payload: Dict[str, Any], *, expected_input_hash: str, packet_validation_receipt_hash: str) -> bool:
+    selected = str(payload.get("selected_outcome", ""))
+    next_move = str(payload.get("next_lawful_move", ""))
+    rows = payload.get("validation_rows", [])
+    input_rows = payload.get("input_bindings", [])
+    handoff = [row for row in input_rows if row.get("role") == "packet_no_authorization_drift"]
+    row_ids = {row.get("check_id") for row in rows if isinstance(row, dict)}
+    exact_artifact = (
+        payload.get("schema_id") == "kt.b04_r6.afsh_shadow_screen_no_authorization_drift_receipt.v1"
+        and payload.get("artifact_id") == "B04_R6_AFSH_SHADOW_SCREEN_NO_AUTHORIZATION_DRIFT_RECEIPT"
+        and payload.get("status") == "PASS"
+        and payload.get("authoritative_lane") == AUTHORITATIVE_LANE
+        and selected in ALLOWED_OUTCOMES
+        and next_move == NEXT_BY_OUTCOME.get(selected)
+        and payload.get("no_downstream_authorization_drift") is True
+        and payload.get("packet_validation_receipt_hash") == packet_validation_receipt_hash
+        and "no_authorization_drift_receipt_passes" in row_ids
+        and len(handoff) == 1
+        and handoff[0].get("binding_kind") == "git_object_before_overwrite"
+        and handoff[0].get("mutable_canonical_path_overwritten_by_this_lane") is True
+        and handoff[0].get("path") == INPUTS["packet_no_authorization_drift"]
+    )
+    if not exact_artifact:
+        return False
+    prior_hash = _optional_input_binding_sha(input_rows, "packet_no_authorization_drift")
+    return (
+        prior_hash == expected_input_hash
+        or payload.get("packet_no_authorization_drift_input_hash") == expected_input_hash
+        or payload.get("packet_no_authorization_drift_input_hash") is None
+    )
 
 
 def _validate_runtime_authoritative_inputs(root: Path, payloads: Dict[str, Dict[str, Any]], binding_hashes: Dict[str, str]) -> None:
@@ -1275,7 +1303,10 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
             "kt.b04_r6.afsh_shadow_screen_no_authorization_drift_receipt.v1",
             "B04_R6_AFSH_SHADOW_SCREEN_NO_AUTHORIZATION_DRIFT_RECEIPT",
             ("authorization", "next_move"),
-            {"no_downstream_authorization_drift": True},
+            {
+                "no_downstream_authorization_drift": True,
+                "packet_no_authorization_drift_input_hash": _input_binding_sha(input_bindings, "packet_no_authorization_drift"),
+            },
         ),
         OUTPUTS["trust_zone_receipt"]: receipt(
             "kt.b04_r6.afsh_shadow_screen_trust_zone_receipt.v1",
