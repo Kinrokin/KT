@@ -7,7 +7,7 @@
     "B04_R6_AFSH_SHADOW_SCREEN_INVALIDATED__FORENSIC_INVALIDATION_COURT_NEXT",
     "B04_R6_AFSH_SHADOW_DEFERRED__NAMED_DEFECT_REMAINS"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_AFSH_SHADOW_SCREEN_TRUST_ZONE_RECEIPT",
   "authoritative_lane": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -1714,7 +1714,7 @@
   "packet_contract_hash": "e3399a6b800ce341a72235c7a1067c45639ea5d5f9c2d98cafe2d9495e8e4d76",
   "packet_validation_receipt_hash": "2e8bef4f26dd52991f1f4ac4ec397ac01d3f493fbf76b695f1174b21a260bec5",
   "packet_validation_replay_binding_head": "642a18238491b4ba3f26cacca7c69438e7bf1806",
-  "pass_count": 1,
+  "pass_count": 7,
   "predecessor_outcome": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_VALIDATED__SHADOW_SCREEN_EXECUTION_NEXT",
   "previous_authoritative_lane": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_VALIDATION",
   "previous_next_lawful_move": "RUN_B04_R6_AFSH_SHADOW_SCREEN",
@@ -1756,7 +1756,7 @@
     "RC_B04R6_AFSH_SCREEN_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v14",
+  "schema_id": "kt.b04_r6.afsh_shadow_screen_trust_zone_receipt.v1",
   "schema_version": "1.0.0",
   "scorecard": {
     "abstain_case_count": 5,
@@ -1880,12 +1880,53 @@
   "validated_source_packet_hash": "7c211b44807ee5b7d616578138fb8f1ffbd946229dce930319427699a98e87c0",
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_matches_selected_outcome",
-      "detail": "next move derived from selected outcome",
-      "group": "next_move",
+      "check_id": "screen_does_not_open_r6",
+      "detail": "R6 remains closed",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_R6_OPEN_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "screen_does_not_authorize_activation_cutover",
+      "detail": "activation cutover false",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_ACTIVATION_CUTOVER_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "screen_does_not_authorize_lobe_escalation",
+      "detail": "lobe escalation unauthorized",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_LOBE_ESCALATION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "screen_does_not_authorize_package_promotion",
+      "detail": "package promotion deferred",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_PACKAGE_PROMOTION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "truth_engine_law_unchanged",
+      "detail": "truth-engine law unchanged",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_TRUTH_ENGINE_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trust_zone_law_unchanged",
+      "detail": "trust-zone law unchanged",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_TRUST_ZONE_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_authorization_drift_receipt_passes",
+      "detail": "no authorization drift",
+      "group": "authorization",
       "reason_code": "RC_B04R6_AFSH_SCREEN_NEXT_MOVE_DRIFT",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_SHADOW_SUPERIORITY_PASSED__ACTIVATION_REVIEW_PACKET_NEXT"
+  ]
 }

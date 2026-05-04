@@ -7,7 +7,7 @@
     "B04_R6_AFSH_SHADOW_SCREEN_INVALIDATED__FORENSIC_INVALIDATION_COURT_NEXT",
     "B04_R6_AFSH_SHADOW_DEFERRED__NAMED_DEFECT_REMAINS"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_AFSH_SHADOW_SCREEN_CASE_RESULT_MANIFEST",
   "authoritative_lane": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -1714,7 +1714,7 @@
   "packet_contract_hash": "e3399a6b800ce341a72235c7a1067c45639ea5d5f9c2d98cafe2d9495e8e4d76",
   "packet_validation_receipt_hash": "2e8bef4f26dd52991f1f4ac4ec397ac01d3f493fbf76b695f1174b21a260bec5",
   "packet_validation_replay_binding_head": "642a18238491b4ba3f26cacca7c69438e7bf1806",
-  "pass_count": 1,
+  "pass_count": 14,
   "predecessor_outcome": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_VALIDATED__SHADOW_SCREEN_EXECUTION_NEXT",
   "previous_authoritative_lane": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_VALIDATION",
   "previous_next_lawful_move": "RUN_B04_R6_AFSH_SHADOW_SCREEN",
@@ -1756,7 +1756,7 @@
     "RC_B04R6_AFSH_SCREEN_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v14",
+  "schema_id": "kt.b04_r6.afsh_shadow_screen_case_result_manifest.v1",
   "schema_version": "1.0.0",
   "scorecard": {
     "abstain_case_count": 5,
@@ -1880,12 +1880,102 @@
   "validated_source_packet_hash": "7c211b44807ee5b7d616578138fb8f1ffbd946229dce930319427699a98e87c0",
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_matches_selected_outcome",
-      "detail": "next move derived from selected outcome",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_SCREEN_NEXT_MOVE_DRIFT",
+      "check_id": "route_eligible_cases_scored_against_static_comparator",
+      "detail": "route-eligible delta measured",
+      "group": "metric",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_ROUTE_ELIGIBLE_DELTA_FAIL",
+      "status": "PASS"
+    },
+    {
+      "check_id": "static_hold_cases_preserve_static_hold",
+      "detail": "static hold preserved",
+      "group": "metric",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_STATIC_HOLD_PRESERVATION_FAIL",
+      "status": "PASS"
+    },
+    {
+      "check_id": "abstention_cases_preserve_abstention",
+      "detail": "abstention preserved",
+      "group": "metric",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_ABSTENTION_PRESERVATION_FAIL",
+      "status": "PASS"
+    },
+    {
+      "check_id": "null_route_controls_do_not_enter_selector",
+      "detail": "null routes terminal",
+      "group": "metric",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_NULL_ROUTE_PRESERVATION_FAIL",
+      "status": "PASS"
+    },
+    {
+      "check_id": "overrouting_traps_are_measured",
+      "detail": "overrouting traps measured",
+      "group": "metric",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_OVERROUTING_CONTAINMENT_FAIL",
+      "status": "PASS"
+    },
+    {
+      "check_id": "mirror_masked_siblings_are_measured",
+      "detail": "mirror/masked stability measured",
+      "group": "metric",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_MIRROR_MASKED_STABILITY_FAIL",
+      "status": "PASS"
+    },
+    {
+      "check_id": "wrong_route_cost_is_measured",
+      "detail": "wrong route cost measured",
+      "group": "metric",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_WRONG_ROUTE_COST_HIGH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "wrong_static_hold_cost_is_measured",
+      "detail": "wrong static hold cost measured",
+      "group": "metric",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_WRONG_STATIC_HOLD_COST_UNACCOUNTED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "proof_burden_delta_is_measured",
+      "detail": "proof burden delta measured",
+      "group": "metric",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_PROOF_BURDEN_NOT_JUSTIFIED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_completeness_is_measured",
+      "detail": "trace completeness measured",
+      "group": "metric",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_TRACE_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "only_route_eligible_cases_enter_selector",
+      "detail": "only route eligible enters selector",
+      "group": "selector",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_OVERROUTING_CONTAINMENT_FAIL",
+      "status": "PASS"
+    },
+    {
+      "check_id": "static_hold_cases_do_not_enter_selector",
+      "detail": "static hold does not enter selector",
+      "group": "selector",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_STATIC_HOLD_PRESERVATION_FAIL",
+      "status": "PASS"
+    },
+    {
+      "check_id": "abstain_cases_do_not_enter_selector",
+      "detail": "abstain does not enter selector",
+      "group": "selector",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_ABSTENTION_PRESERVATION_FAIL",
+      "status": "PASS"
+    },
+    {
+      "check_id": "null_route_cases_do_not_enter_selector",
+      "detail": "null route does not enter selector",
+      "group": "selector",
+      "reason_code": "RC_B04R6_AFSH_SCREEN_NULL_ROUTE_PRESERVATION_FAIL",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_SHADOW_SUPERIORITY_PASSED__ACTIVATION_REVIEW_PACKET_NEXT"
+  ]
 }
