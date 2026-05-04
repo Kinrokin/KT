@@ -1,0 +1,14 @@
+{
+  "artifact_id": "B04_R6_AFSH_TRIAGE_STATIC_HOLD_POLICY",
+  "authority": "CANDIDATE_INTERNAL_AUTHORITATIVE",
+  "candidate_id": "B04_R6_AFSH_CANDIDATE_V1",
+  "schema_id": "kt.b04_r6.afsh_triage_static_hold_policy.v1",
+  "static_hold_is_default": true,
+  "wins_when": [
+    "static comparator sufficient",
+    "route value below threshold",
+    "proof burden not justified",
+    "overrouting risk high",
+    "mirror/masked instability"
+  ]
+}

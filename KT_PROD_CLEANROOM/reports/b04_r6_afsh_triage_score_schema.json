@@ -1,0 +1,25 @@
+{
+  "artifact_id": "B04_R6_AFSH_TRIAGE_SCORE_SCHEMA",
+  "authority": "CANDIDATE_INTERNAL_AUTHORITATIVE",
+  "candidate_id": "B04_R6_AFSH_CANDIDATE_V1",
+  "deterministic": true,
+  "numeric_score_fields": [
+    "static_hold_score",
+    "abstention_score",
+    "null_route_score",
+    "route_eligible_score",
+    "wrong_route_cost",
+    "wrong_static_hold_cost",
+    "proof_burden_cost",
+    "overrouting_risk",
+    "trust_zone_risk",
+    "mirror_masked_instability",
+    "specialist_value_estimate"
+  ],
+  "schema_id": "kt.b04_r6.afsh_triage_score_schema.v1",
+  "score_bounds": {
+    "max": 1.0,
+    "min": 0.0
+  },
+  "seed_bound": true
+}

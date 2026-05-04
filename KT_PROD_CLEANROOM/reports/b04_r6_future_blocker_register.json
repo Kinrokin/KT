@@ -1,478 +1,63 @@
 {
-  "activation_review_authorized": false,
-  "afsh_admissibility_authorized": false,
-  "afsh_candidate_generation_authorized": false,
-  "afsh_candidate_training_authorized": false,
-  "allowed_feature_families": [
-    "case_family_descriptor",
-    "trust_zone_eligibility_bit",
-    "static_comparator_metadata",
-    "route_value_court_terms",
-    "trace_shape_metadata",
-    "mirror_masked_sibling_metadata",
-    "null_route_control_metadata",
-    "proof_burden_estimate_bucket",
-    "wrong_route_cost_bucket",
-    "wrong_static_hold_cost_bucket",
-    "calibration_bucket_without_blind_outcomes"
-  ],
-  "allowed_outcomes": [
-    "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_BOUND__SOURCE_PACKET_VALIDATION_NEXT",
-    "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_DEFERRED__NAMED_DEFECT_REMAINS",
-    "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
-  ],
-  "architecture_binding_head": "4279eefb58a34089dc0b1930765a36556454e968",
   "artifact_id": "B04_R6_FUTURE_BLOCKER_REGISTER",
-  "authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
-  "authorization_state": {
-    "activation_cutover_authorized": false,
-    "activation_review_authorized": false,
-    "afsh_admissibility_authorized": false,
-    "candidate_generation_authorized": false,
-    "candidate_training_authorized": false,
-    "learned_router_superiority": "UNEARNED",
-    "lobe_escalation_authorized": false,
-    "package_promotion": "DEFERRED",
-    "r6_open": false,
-    "runtime_cutover_authorized": false,
-    "shadow_screen_execution_authorized": false,
-    "shadow_screen_packet_authorized": false,
-    "trust_zone_law_changed": false,
-    "truth_engine_law_changed": false
-  },
-  "behavioral_defaults_required_for_future_candidate": {
-    "boundary_unclear": "ABSTAIN",
-    "mirror_masked_instability": "STATIC_HOLD",
-    "null_route_sibling": "NULL_ROUTE",
-    "proof_burden_not_justified": "STATIC_HOLD",
-    "route_value_below_threshold": "STATIC_HOLD",
-    "trust_zone_unclear": "ABSTAIN",
-    "uncertain_case": "ABSTAIN_OR_STATIC_HOLD",
-    "unknown_case": "STATIC_HOLD"
-  },
   "blockers": [
     {
       "blocker_id": "B04R6-FB-011",
-      "future_blocker": "Source packet exists but source-packet validation law does not exist.",
+      "future_blocker": "Candidate exists but admissibility court law is not ready.",
       "neutralization_now": [
-        "b04_r6_afsh_source_packet_validation_plan.json",
-        "b04_r6_afsh_source_packet_validation_reason_codes.json"
+        "b04_r6_afsh_admissibility_court_prep_only_draft.json",
+        "b04_r6_afsh_admissibility_reason_codes_prep_only_draft.json",
+        "b04_r6_afsh_replay_validation_plan_prep_only_draft.json",
+        "b04_r6_afsh_trace_compatibility_validation_plan_prep_only_draft.json"
       ]
     },
     {
       "blocker_id": "B04R6-FB-012",
-      "future_blocker": "Source packet validates but candidate generation protocol is not ready.",
+      "future_blocker": "Candidate hash is unstable due to timestamp or mutable receipt fields.",
       "neutralization_now": [
-        "b04_r6_afsh_candidate_generation_protocol_prep_only_draft.json",
-        "b04_r6_afsh_candidate_manifest_schema_prep_only_draft.json"
+        "b04_r6_afsh_candidate_stable_semantic_hash_basis.json",
+        "test_candidate_semantic_hash_excludes_generated_utc"
       ]
     },
     {
       "blocker_id": "B04R6-FB-013",
-      "future_blocker": "Candidate exists but admissibility law is not ready.",
+      "future_blocker": "Candidate generation looks like unauthorized training.",
       "neutralization_now": [
-        "b04_r6_afsh_admissibility_court_prep_only_draft.json"
+        "b04_r6_afsh_candidate_no_training_receipt.json",
+        "b04_r6_afsh_candidate_rule_materialization_receipt.json"
       ]
     },
     {
       "blocker_id": "B04R6-FB-014",
-      "future_blocker": "Candidate generation accidentally uses blind outcomes.",
-      "neutralization_later": [
-        "b04_r6_afsh_candidate_no_contamination_receipt.json",
-        "b04_r6_afsh_forbidden_feature_scan_receipt.json"
+      "future_blocker": "Triage gate leaks blind outcomes or route-success labels through tags.",
+      "neutralization_now": [
+        "b04_r6_afsh_triage_tag_schema.json",
+        "b04_r6_afsh_triage_no_authorization_drift_receipt.json"
       ]
     },
     {
       "blocker_id": "B04R6-FB-015",
-      "future_blocker": "Candidate passes admissibility but shadow-screen packet law is missing.",
-      "neutralization_later": [
-        "b04_r6_afsh_shadow_screen_execution_packet_draft.json",
-        "b04_r6_afsh_shadow_screen_disqualifier_ledger_draft.json"
+      "future_blocker": "Candidate over-routes by letting non-eligible cases enter selector.",
+      "neutralization_now": [
+        "b04_r6_afsh_triage_emit_decision_matrix.json"
       ]
     },
     {
       "blocker_id": "B04R6-FB-016",
-      "future_blocker": "Commercial language outruns source-packet proof.",
-      "neutralization_later": [
-        "r6_nonclaim_boundary_language_packet.json",
-        "learned_router_forbidden_claims_receipt.json"
+      "future_blocker": "TurboQuant research packet contaminates current proof lane.",
+      "neutralization_now": [
+        "kt_turboquant_research_translation_matrix_prep_only.json",
+        "kt_memory_cost_delta_route_economics_extension_prep_only.json"
+      ]
+    },
+    {
+      "blocker_id": "B04R6-FB-017",
+      "future_blocker": "Compressed receipt/vector index treated as source of truth.",
+      "neutralization_now": [
+        "kt_compressed_receipt_vector_index_contract_prep_only.json"
       ]
     }
   ],
-  "candidate_generation_authorized": false,
-  "candidate_training_authorized": false,
-  "court_replay_binding_head": "e8a00afa04ce1df380165b85b3620837160244a6",
-  "current_authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
-  "current_branch": "main",
-  "current_git_head": "beef30cec8e63253dcffab574bccbac09ce82de3",
-  "current_main_head": "beef30cec8e63253dcffab574bccbac09ce82de3",
-  "derivation_constraints": {
-    "blind_labels_inaccessible": true,
-    "blind_outcomes_inaccessible": true,
-    "candidate_generation_after_this_packet": false,
-    "candidate_generation_authorized": false,
-    "candidate_generation_requires": "VALIDATE_B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
-    "candidate_training_authorized": false,
-    "deterministic": true,
-    "hash_bound": true,
-    "no_network": true,
-    "no_runtime_mutation": true,
-    "old_universes_diagnostic_only": true,
-    "route_success_labels_inaccessible": true,
-    "seed_bound": true
-  },
-  "failure_count": 0,
-  "forbidden_actions": [
-    "AFSH_CANDIDATE_GENERATION_AUTHORIZED",
-    "AFSH_CANDIDATE_TRAINING_AUTHORIZED",
-    "AFSH_ADMISSIBILITY_AUTHORIZED",
-    "SHADOW_SCREEN_PACKET_AUTHORIZED",
-    "SHADOW_SCREEN_EXECUTION_AUTHORIZED",
-    "R6_OPEN",
-    "LEARNED_ROUTER_SUPERIORITY_EARNED",
-    "ACTIVATION_REVIEW_AUTHORIZED",
-    "RUNTIME_CUTOVER_AUTHORIZED",
-    "LOBE_ESCALATION_AUTHORIZED",
-    "PACKAGE_PROMOTION_AUTHORIZED"
-  ],
-  "forbidden_claims": [
-    "afsh_candidate_generation_authorized",
-    "afsh_candidate_training_authorized",
-    "afsh_admissibility_authorized",
-    "shadow_screen_packet_authorized",
-    "shadow_screen_execution_authorized",
-    "r6_open",
-    "learned_router_superiority_earned",
-    "activation_review_authorized",
-    "runtime_cutover_authorized",
-    "lobe_escalation_authorized",
-    "package_promotion_authorized"
-  ],
-  "forbidden_feature_families": [
-    "blind_outcome_labels",
-    "blind_route_success_labels",
-    "post_screen_labels",
-    "hidden_adjudication_labels",
-    "old_r01_r04_counted_labels",
-    "old_v2_six_row_counted_labels",
-    "package_promotion_flags",
-    "activation_cutover_flags",
-    "truth_engine_mutation_hooks",
-    "trust_zone_mutation_hooks",
-    "comparator_weakening_knobs",
-    "metric_widening_knobs"
-  ],
-  "generated_utc": "2026-04-28T23:30:28Z",
-  "input_bindings": [
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_abstention_verdict_validation_receipt.json",
-      "role": "abstention_verdict_validation",
-      "sha256": "4abb03ad9154435c23f05c1d250da25a278d103bb3289cfaceef70c81c18cb3a"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_allowed_forbidden_features_prep_only_draft.json",
-      "role": "afsh_features_prep",
-      "sha256": "70de7abd7b91122439472a04a375fbb4a1da815ea6f06284c7c2c2ba6bfc6f4d"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_provenance_matrix_prep_only_draft.json",
-      "role": "afsh_provenance_prep",
-      "sha256": "db6499739473bf4e17dac1e930565b60eef3ec42c0f49a955e6d5fcd22ae8b65"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_implementation_source_packet_prep_only_draft.json",
-      "role": "afsh_source_packet_prep",
-      "sha256": "33e4126b9265a623d1c241fbf77ae951d0eb0014419d9cebc303a744b0863585"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_trace_schema_prep_only_draft.json",
-      "role": "afsh_trace_prep",
-      "sha256": "28c019ce8fbcb215f6de724e1c5527d39a6215a648ddaeb080b9048abbaf04f7"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
-      "role": "canonical_scope_manifest",
-      "sha256": "eb4aaed06eb5bdea5c6f8ccef1f54c9d23960555ada1d80ee253da62ab94b5be"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_abstention_route_economics_court_validation_contract.json",
-      "role": "court_validation_contract",
-      "sha256": "cb2a5fac9c640a9d29e61373d788b8177716d14afc1eae25bbee025190503dc3"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_abstention_route_economics_court_validation_receipt.json",
-      "role": "court_validation_receipt",
-      "sha256": "c91ac19728b15f42a32c3678bb2494681171398b4e1d21c7cdd174f8be9ee8a5"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_abstention_route_economics_court_validation_report.md",
-      "role": "court_validation_report",
-      "sha256": "e120e1d907ce8a76a14a1bbacfb07396bcfb06d95675f3a60dbed80a57910e08"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_court_disqualifier_validation_receipt.json",
-      "role": "disqualifier_validation",
-      "sha256": "5cb140fde423338663778cc02b6d2d129ee1913794086537b0306a56f5ad2e4d"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_court_no_authorization_drift_validation_receipt.json",
-      "role": "no_authorization_drift_validation",
-      "sha256": "bb50f52150aed4a993a392f37fa5fbb2caa91dfa4ac235eb38a238942d3e02c3"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_null_route_verdict_validation_receipt.json",
-      "role": "null_route_verdict_validation",
-      "sha256": "6ea25baebfd7a726dfe50326514cb247fb6cc1d82a885a6b95327b71789dd7b8"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_court_prep_only_non_authority_validation_receipt.json",
-      "role": "prep_only_non_authority_validation",
-      "sha256": "f700cc3e5f6e37c00211a3b4894328205176d5fd57867e478a5d5f17d58a0344"
-    },
-    {
-      "binding_kind": "git_object_before_overwrite",
-      "git_commit": "beef30cec8e63253dcffab574bccbac09ce82de3",
-      "mutable_canonical_path_overwritten_by_this_lane": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
-      "role": "previous_next_lawful_move",
-      "sha256": "be0f8741db074488ac8eda0bc16fa82ae34875ec477619f3894f14d768278a2d"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_proof_burden_delta_validation_receipt.json",
-      "role": "proof_burden_delta_validation",
-      "sha256": "5bd5c152d0b7cc06e3e484f333629ea1e3ef21d50891047b42374abf98845833"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_court_reason_code_validation_receipt.json",
-      "role": "reason_code_validation",
-      "sha256": "1ab8844c5aa1737097c2cda2b7be356dad47d06d5d3c112b0cf87622290d553f"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_court_replay_binding_validation_receipt.json",
-      "role": "replay_binding_validation",
-      "sha256": "d11049a3e98d77ffe18d82cc31f54f2430b57a7add577cc837d0ff64bc2f480d"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_route_eligible_non_execution_validation_receipt.json",
-      "role": "route_eligible_non_execution_validation",
-      "sha256": "07e30294eb01d9f6719e510c1adb62266951014b94f76692f3338f8d648d8b2f"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_route_value_formula_validation_receipt.json",
-      "role": "route_value_formula_validation",
-      "sha256": "bba14c9260fba63687906b495677b9a7da1c5c2589586e50681479588ebddf68"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_verdict_validation_receipt.json",
-      "role": "static_hold_verdict_validation",
-      "sha256": "24640308e74c071dd7cd6b43225ac8694551575d46853115ad38903c1fcca66b"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_route_value_threshold_freeze_validation_receipt.json",
-      "role": "threshold_freeze_validation",
-      "sha256": "78d2e21450353efecd598345f04a2b33bb7eb2f6505687f202a8d510423fdb93"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
-      "role": "trust_zone_registry",
-      "sha256": "05a51311291e0cd6a26cb9b83eaf785d54e16c9f1faf7a1fe8b693fe9ff0da3c"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_court_trust_zone_validation_receipt.json",
-      "role": "trust_zone_validation",
-      "sha256": "e69df398082fddcf723925468f361d6ebc7f3b0042ebf1f262e206e49e37fd81"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_wrong_route_cost_validation_receipt.json",
-      "role": "wrong_route_cost_validation",
-      "sha256": "e347369f19f4b9b67cd0a21c435ee4e529fe5c9b399b9450040ff6d55767929a"
-    },
-    {
-      "binding_kind": "file_sha256_at_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_wrong_static_hold_cost_validation_receipt.json",
-      "role": "wrong_static_hold_cost_validation",
-      "sha256": "527d396cac01c4e7524c122518e3d02b728d7274530c36e7aef9854d78e7148b"
-    }
-  ],
-  "learned_router_activated": false,
-  "learned_router_cutover_authorized": false,
-  "learned_router_superiority_earned": false,
-  "lobe_escalation_authorized": false,
-  "multi_lobe_authorized": false,
-  "next_lawful_move": "VALIDATE_B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
-  "old_r01_r04_diagnostic_only": true,
-  "old_v2_six_row_diagnostic_only": true,
-  "package_promotion_authorized": false,
-  "package_promotion_remains_deferred": true,
-  "pass_count": 1,
-  "previous_authoritative_lane": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_VALIDATION",
-  "previous_validation_head": "022a7bfc7f9dbf151506809eaa63682e0cd5a76c",
-  "r6_authorized": false,
-  "r6_open": false,
-  "route_value_court_compatibility": {
-    "abstention_preservation_required": true,
-    "null_route_preservation_required": true,
-    "route_eligible_non_executing_only": true,
-    "route_value_law_validated": true,
-    "static_hold_default_required": true
-  },
-  "router_generation_authorized": false,
-  "runtime_cutover_authorized": false,
-  "schema_id": "kt.b04_r6.future_blocker_register.v2",
-  "schema_version": "1.0.0",
-  "selected_architecture_id": "AFSH-2S-GUARD",
-  "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
-  "selected_outcome": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_BOUND__SOURCE_PACKET_VALIDATION_NEXT",
-  "shadow_screen_authorized": false,
-  "shadow_screen_execution_authorized": false,
-  "shadow_screen_packet_authorized": false,
-  "source_packet_authority_not_finalized_for_generation": true,
-  "source_packet_contract_bound": true,
-  "source_packet_scope": {
-    "non_purpose": [
-      "Does not generate an AFSH candidate.",
-      "Does not authorize candidate training.",
-      "Does not authorize admissibility.",
-      "Does not authorize shadow-screen packet creation.",
-      "Does not authorize shadow-screen execution.",
-      "Does not open R6.",
-      "Does not earn learned-router superiority.",
-      "Does not authorize activation, lobe escalation, or package promotion."
-    ],
-    "purpose": "Define the lawful source family and constraints from which a future AFSH candidate may be generated after source-packet validation."
-  },
-  "source_packet_validation_required_before_generation": true,
-  "status": "PASS",
-  "terminal_defects": [
-    "BLIND_LABEL_ACCESS",
-    "BLIND_OUTCOME_ACCESS",
-    "ROUTE_SUCCESS_LABEL_ACCESS",
-    "OLD_UNIVERSE_PROOF_DRIFT",
-    "CANDIDATE_GENERATION_AUTHORIZATION_DRIFT",
-    "CANDIDATE_TRAINING_AUTHORIZATION_DRIFT",
-    "ADMISSIBILITY_AUTHORIZATION_DRIFT",
-    "SHADOW_SCREEN_AUTHORIZATION_DRIFT",
-    "R6_OPEN_DRIFT",
-    "SUPERIORITY_DRIFT",
-    "METRIC_WIDENING",
-    "COMPARATOR_WEAKENING",
-    "TRUTH_ENGINE_MUTATION",
-    "TRUST_ZONE_MUTATION",
-    "PACKAGE_PROMOTION_DRIFT",
-    "NEXT_MOVE_DRIFT"
-  ],
-  "trace_schema_requirements": {
-    "cannot_authorize_screen_packet": true,
-    "cannot_authorize_shadow_screen_execution": true,
-    "must_emit_abstention_reason_code": true,
-    "must_emit_comparator_preservation_status": true,
-    "must_emit_metric_preservation_status": true,
-    "must_emit_null_route_reason_code": true,
-    "must_emit_route_eligible_reason_code": true,
-    "must_emit_route_value_terms": true,
-    "must_emit_static_hold_reason_code": true,
-    "must_emit_trust_zone_status": true,
-    "must_emit_verdict_mode": true,
-    "required_trace_groups": [
-      "route_decision_trace",
-      "abstention_trace",
-      "null_route_trace",
-      "overrouting_trace",
-      "static_fallback_rationale",
-      "mirror_masked_trace",
-      "route_value_trace",
-      "deterministic_replay_receipt"
-    ]
-  },
-  "trust_zone_law_unchanged": true,
-  "truth_engine_derivation_law_unchanged": true,
-  "validated_blind_universe_binding": {
-    "case_count": 18,
-    "case_namespace": "B04R6-AFSH-BU1-*",
-    "prior_r01_r04_treatment": "DIAGNOSTIC_ONLY",
-    "prior_v2_six_row_treatment": "DIAGNOSTIC_ONLY",
-    "status": "BOUND_AND_VALIDATED",
-    "validation_outcome": "B04_R6_NEW_BLIND_UNIVERSE_VALIDATED__STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_NEXT",
-    "validation_receipt_head": "3e0baf3b00b35c46874732cc15b58132bff611dc"
-  },
-  "validated_court_binding": {
-    "court_replay_binding_head": "e8a00afa04ce1df380165b85b3620837160244a6",
-    "next_lawful_move": "AUTHOR_B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
-    "previous_next_lawful_move": "VALIDATE_B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
-    "previous_outcome": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_BOUND__COURT_VALIDATION_NEXT",
-    "route_eligible_non_executing_only": true,
-    "selected_validation_outcome": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_VALIDATED__AFSH_IMPLEMENTATION_SOURCE_PACKET_NEXT",
-    "source_packet_input_validation_head": "022a7bfc7f9dbf151506809eaa63682e0cd5a76c",
-    "status": "BOUND_AND_VALIDATED",
-    "verdict_modes": [
-      "STATIC_HOLD",
-      "ABSTAIN",
-      "NULL_ROUTE",
-      "ROUTE_ELIGIBLE"
-    ]
-  },
-  "validation_reason_codes": [
-    "RC_B04R6_AFSH_SOURCE_SCHEMA_MISSING",
-    "RC_B04R6_AFSH_SOURCE_PREVIOUS_COURT_NOT_VALIDATED",
-    "RC_B04R6_AFSH_SOURCE_MAIN_HEAD_MISSING",
-    "RC_B04R6_AFSH_SOURCE_ARCHITECTURE_MISMATCH",
-    "RC_B04R6_AFSH_SOURCE_UNIVERSE_BINDING_MISSING",
-    "RC_B04R6_AFSH_SOURCE_COURT_BINDING_MISSING",
-    "RC_B04R6_AFSH_SOURCE_ALLOWED_FEATURES_INCOMPLETE",
-    "RC_B04R6_AFSH_SOURCE_FORBIDDEN_FEATURES_INCOMPLETE",
-    "RC_B04R6_AFSH_SOURCE_BLIND_LABEL_ACCESS",
-    "RC_B04R6_AFSH_SOURCE_BLIND_OUTCOME_ACCESS",
-    "RC_B04R6_AFSH_SOURCE_ROUTE_SUCCESS_LABEL_ACCESS",
-    "RC_B04R6_AFSH_SOURCE_OLD_UNIVERSE_PROOF_DRIFT",
-    "RC_B04R6_AFSH_SOURCE_TRACE_SCHEMA_INCOMPLETE",
-    "RC_B04R6_AFSH_SOURCE_PROVENANCE_INCOMPLETE",
-    "RC_B04R6_AFSH_SOURCE_DETERMINISM_INCOMPLETE",
-    "RC_B04R6_AFSH_SOURCE_NO_NETWORK_MISSING",
-    "RC_B04R6_AFSH_SOURCE_NO_CONTAMINATION_INCOMPLETE",
-    "RC_B04R6_AFSH_SOURCE_PREP_ONLY_AUTHORITY_DRIFT",
-    "RC_B04R6_AFSH_SOURCE_GENERATION_AUTHORIZATION_DRIFT",
-    "RC_B04R6_AFSH_SOURCE_ADMISSIBILITY_AUTHORIZATION_DRIFT",
-    "RC_B04R6_AFSH_SOURCE_SCREEN_AUTHORIZATION_DRIFT",
-    "RC_B04R6_AFSH_SOURCE_R6_OPEN_DRIFT",
-    "RC_B04R6_AFSH_SOURCE_SUPERIORITY_DRIFT",
-    "RC_B04R6_AFSH_SOURCE_ACTIVATION_DRIFT",
-    "RC_B04R6_AFSH_SOURCE_PACKAGE_PROMOTION_DRIFT",
-    "RC_B04R6_AFSH_SOURCE_METRIC_WIDENING",
-    "RC_B04R6_AFSH_SOURCE_COMPARATOR_WEAKENING",
-    "RC_B04R6_AFSH_SOURCE_TRUTH_ENGINE_MUTATION",
-    "RC_B04R6_AFSH_SOURCE_TRUST_ZONE_MUTATION",
-    "RC_B04R6_AFSH_SOURCE_NEXT_MOVE_DRIFT"
-  ],
-  "validation_rows": [
-    {
-      "check_id": "next_lawful_move_is_source_packet_validation",
-      "detail": "the next lawful move is source-packet validation",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_SOURCE_NEXT_MOVE_DRIFT",
-      "status": "PASS"
-    }
-  ]
+  "current_authoritative_lane": "GENERATE_B04_R6_AFSH_CANDIDATE",
+  "schema_id": "kt.b04_r6.future_blocker_register.v2"
 }

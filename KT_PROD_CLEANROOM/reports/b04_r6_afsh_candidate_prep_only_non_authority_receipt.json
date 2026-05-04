@@ -10,7 +10,7 @@
     "B04_R6_AFSH_CANDIDATE_GENERATION_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
   "architecture_binding_head": "4279eefb58a34089dc0b1930765a36556454e968",
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_AFSH_CANDIDATE_PREP_ONLY_NON_AUTHORITY_RECEIPT",
   "authoritative_lane": "B04_R6_AFSH_CANDIDATE_GENERATION",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -168,7 +168,8 @@
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 21,
+  "prep_only_outputs_remain_non_authoritative": true,
   "previous_authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATION",
   "r6_authorized": false,
   "r6_open": false,
@@ -214,7 +215,7 @@
     "RC_KT_MEMORY_ROUTE_VALUE_FORMULA_MUTATION"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v10",
+  "schema_id": "kt.b04_r6.afsh_candidate_prep_only_non_authority_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -279,12 +280,151 @@
   },
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_admissibility_court",
-      "detail": "next lawful move is admissibility court",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_NEXT_MOVE_DRIFT",
+      "check_id": "candidate_prep_only_admissibility_draft_non_authoritative",
+      "detail": "admissibility draft remains prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "admissibility_court_draft_is_prep_only",
+      "detail": "admissibility court draft is prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "admissibility_reason_codes_are_prep_only",
+      "detail": "admissibility reason codes are prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "replay_validation_plan_is_prep_only",
+      "detail": "replay validation plan is prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_compatibility_plan_is_prep_only",
+      "detail": "trace compatibility plan is prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_admissibility_execution",
+      "detail": "prep-only drafts cannot execute admissibility",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_ADMISSIBILITY_EXECUTED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_shadow_screen_packet",
+      "detail": "prep-only drafts cannot authorize shadow packet",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_SHADOW_PACKET_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_shadow_screen_execution",
+      "detail": "prep-only drafts cannot authorize shadow screen",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_SHADOW_SCREEN_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_activation",
+      "detail": "prep-only drafts cannot authorize activation",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_ACTIVATION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_package_promotion",
+      "detail": "prep-only drafts cannot authorize package promotion",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_PACKAGE_PROMOTION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_research_packet_is_prep_only",
+      "detail": "memory compression research is prep-only",
+      "group": "memory",
+      "reason_code": "RC_KT_MEMORY_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_cannot_authorize_candidate_generation",
+      "detail": "memory prep cannot authorize candidate generation",
+      "group": "memory",
+      "reason_code": "RC_KT_MEMORY_CANDIDATE_GENERATION_AUTH_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_cannot_authorize_admissibility",
+      "detail": "memory prep cannot authorize admissibility",
+      "group": "memory",
+      "reason_code": "RC_KT_MEMORY_ADMISSIBILITY_AUTH_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_cannot_authorize_shadow_screen",
+      "detail": "memory prep cannot authorize shadow screen",
+      "group": "memory",
+      "reason_code": "RC_KT_MEMORY_SHADOW_AUTH_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_cannot_authorize_r6_open",
+      "detail": "memory prep cannot open R6",
+      "group": "memory",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_R6_OPEN_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_cannot_claim_superiority",
+      "detail": "memory prep cannot claim superiority",
+      "group": "memory",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_SUPERIORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_cannot_authorize_activation",
+      "detail": "memory prep cannot authorize activation",
+      "group": "memory",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_ACTIVATION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_cannot_authorize_package_promotion",
+      "detail": "memory prep cannot authorize package promotion",
+      "group": "memory",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_PACKAGE_PROMOTION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_cannot_change_route_value_formula_in_current_lane",
+      "detail": "memory prep cannot mutate current route-value formula",
+      "group": "memory",
+      "reason_code": "RC_KT_MEMORY_ROUTE_VALUE_FORMULA_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "compressed_index_cannot_be_source_of_truth",
+      "detail": "compressed index cannot be source of truth",
+      "group": "memory",
+      "reason_code": "RC_KT_MEMORY_COMPRESSED_INDEX_USED_AS_TRUTH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "raw_hash_bound_artifact_required_after_compressed_retrieval",
+      "detail": "raw hash-bound artifact remains required",
+      "group": "memory",
+      "reason_code": "RC_KT_MEMORY_RAW_HASH_ARTIFACT_MISSING",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_CANDIDATE_GENERATED__ADMISSIBILITY_COURT_NEXT"
+  ]
 }

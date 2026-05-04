@@ -10,7 +10,7 @@
     "B04_R6_AFSH_CANDIDATE_GENERATION_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
   "architecture_binding_head": "4279eefb58a34089dc0b1930765a36556454e968",
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_AFSH_CANDIDATE_NULL_ROUTE_PRESERVATION_RECEIPT",
   "authoritative_lane": "B04_R6_AFSH_CANDIDATE_GENERATION",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -164,11 +164,12 @@
   "learned_router_superiority_earned": false,
   "lobe_escalation_authorized": false,
   "next_lawful_move": "RUN_B04_R6_AFSH_ADMISSIBILITY_COURT",
+  "null_route_sibling": "NULL_ROUTE",
   "old_r01_r04_diagnostic_only": true,
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 32,
   "previous_authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATION",
   "r6_authorized": false,
   "r6_open": false,
@@ -214,7 +215,7 @@
     "RC_KT_MEMORY_ROUTE_VALUE_FORMULA_MUTATION"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v10",
+  "schema_id": "kt.b04_r6.afsh_candidate_null_route_preservation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -224,6 +225,7 @@
   "shadow_screen_packet_authorized": false,
   "source_packet_validation_replay_binding_head": "ae7b8562e2cacd86b64a7b196b6332c3032304bb",
   "status": "PASS",
+  "surface_temptation": "NULL_ROUTE",
   "terminal_defects": [
     "TRAINING_EXECUTED",
     "ADMISSIBILITY_EXECUTED",
@@ -279,12 +281,228 @@
   },
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_admissibility_court",
-      "detail": "next lawful move is admissibility court",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_NEXT_MOVE_DRIFT",
+      "check_id": "static_hold_default_receipt_bound",
+      "detail": "static-hold default receipt is bound",
+      "group": "behavior",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_STATIC_HOLD_DEFAULT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "abstention_preservation_receipt_bound",
+      "detail": "abstention preservation receipt is bound",
+      "group": "behavior",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_ABSTENTION_PRESERVATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "null_route_preservation_receipt_bound",
+      "detail": "null-route preservation receipt is bound",
+      "group": "behavior",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_NULL_ROUTE_PRESERVATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "mirror_masked_stability_receipt_bound",
+      "detail": "mirror/masked stability receipt is bound",
+      "group": "behavior",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_MIRROR_MASKED_STABILITY_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_includes_numeric_triage_emit_core",
+      "detail": "candidate includes numeric triage emit core",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_includes_triage_intake_gate",
+      "detail": "candidate includes triage intake gate",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_gate_is_stage_0_or_stage_1_not_stage_2_selector",
+      "detail": "triage gate precedes selector",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_top_level_verdict_modes_match_validated_court_modes",
+      "detail": "triage verdicts match court verdicts",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_COURT_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "human_review_maps_to_abstain_subtype",
+      "detail": "human review maps to ABSTAIN subtype",
+      "group": "triage",
+      "reason_code": "RC_B04R6_TRIAGE_HUMAN_OR_COURT_REVIEW_REQUIRED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "quarantine_maps_to_abstain_subtype",
+      "detail": "quarantine maps to ABSTAIN subtype",
+      "group": "triage",
+      "reason_code": "RC_B04R6_TRIAGE_QUARANTINE_REQUIRED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "null_route_surface_temptation_maps_to_null_route",
+      "detail": "surface temptation maps to NULL_ROUTE",
+      "group": "triage",
+      "reason_code": "RC_B04R6_TRIAGE_NULL_ROUTE_SURFACE_TEMPTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "only_route_eligible_enters_selector",
+      "detail": "only ROUTE_ELIGIBLE enters selector",
+      "group": "triage",
+      "reason_code": "RC_B04R6_TRIAGE_SELECTOR_ENTRY_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "static_hold_cases_do_not_enter_selector",
+      "detail": "STATIC_HOLD terminates before selector",
+      "group": "triage",
+      "reason_code": "RC_B04R6_TRIAGE_SELECTOR_ENTRY_BLOCKED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "abstain_cases_do_not_enter_selector",
+      "detail": "ABSTAIN terminates before selector",
+      "group": "triage",
+      "reason_code": "RC_B04R6_TRIAGE_SELECTOR_ENTRY_BLOCKED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "null_route_cases_do_not_enter_selector",
+      "detail": "NULL_ROUTE terminates before selector",
+      "group": "triage",
+      "reason_code": "RC_B04R6_TRIAGE_SELECTOR_ENTRY_BLOCKED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_scores_are_deterministic",
+      "detail": "triage scores are deterministic bounded scores",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_emit_logic_is_fail_closed",
+      "detail": "triage emit logic fails closed",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_STATIC_HOLD_DEFAULT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_are_receipt_derived",
+      "detail": "triage tags are receipt-derived",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_BLIND_OUTCOME_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_do_not_use_blind_outcomes",
+      "detail": "triage tags do not use blind outcomes",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_BLIND_OUTCOME_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_do_not_use_route_success_labels",
+      "detail": "triage tags do not use route-success labels",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_BLIND_ROUTE_SUCCESS_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_do_not_use_post_screen_labels",
+      "detail": "triage tags do not use post-screen labels",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_POST_SCREEN_LABEL_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_do_not_use_old_r01_r04_counted_labels",
+      "detail": "triage tags do not use R01-R04 counted labels",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_OLD_R01_R04_COUNTED_LABEL_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_do_not_use_old_v2_six_row_counted_labels",
+      "detail": "triage tags do not use v2 six-row counted labels",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_OLD_V2_SIX_ROW_COUNTED_LABEL_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_emits_numeric_scores",
+      "detail": "triage receipt emits numeric scores",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_emits_trust_zone_tags",
+      "detail": "triage receipt emits trust-zone tags",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_emits_evidence_tags",
+      "detail": "triage receipt emits evidence tags",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_emits_risk_tags",
+      "detail": "triage receipt emits risk tags",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_emits_route_economics_tags",
+      "detail": "triage receipt emits route-economics tags",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_emits_why_not_route",
+      "detail": "triage receipt emits why-not-route",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_emits_selector_entry_authorization_status",
+      "detail": "triage receipt emits selector-entry status",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_emits_specialist_candidate_tags_only_for_route_eligible",
+      "detail": "specialist tags only emit for ROUTE_ELIGIBLE",
+      "group": "triage",
+      "reason_code": "RC_B04R6_TRIAGE_SELECTOR_ENTRY_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_no_authorization_drift_receipt_passes",
+      "detail": "triage no-authorization-drift receipt passes",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_ADMISSIBILITY_EXECUTED",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_CANDIDATE_GENERATED__ADMISSIBILITY_COURT_NEXT"
+  ]
 }

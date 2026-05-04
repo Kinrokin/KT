@@ -10,7 +10,7 @@
     "B04_R6_AFSH_CANDIDATE_GENERATION_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
   "architecture_binding_head": "4279eefb58a34089dc0b1930765a36556454e968",
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_AFSH_CANDIDATE_SOURCE_HASH_RECEIPT",
   "authoritative_lane": "B04_R6_AFSH_CANDIDATE_GENERATION",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -164,11 +164,12 @@
   "learned_router_superiority_earned": false,
   "lobe_escalation_authorized": false,
   "next_lawful_move": "RUN_B04_R6_AFSH_ADMISSIBILITY_COURT",
+  "numeric_triage_emit_core_hash": "44bfd7bfe229cbd4db0585bffd1dc73fb0880cad56728711e830b6ab321326a9",
   "old_r01_r04_diagnostic_only": true,
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 2,
   "previous_authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATION",
   "r6_authorized": false,
   "r6_open": false,
@@ -214,7 +215,7 @@
     "RC_KT_MEMORY_ROUTE_VALUE_FORMULA_MUTATION"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v10",
+  "schema_id": "kt.b04_r6.afsh_candidate_source_hash_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -222,6 +223,7 @@
   "shadow_screen_authorized": false,
   "shadow_screen_execution_authorized": false,
   "shadow_screen_packet_authorized": false,
+  "source_packet_hash": "c97c43db5a9a9a287cc0197bcf85f76a1361cf3f146773f9c1d4671643752a6a",
   "source_packet_validation_replay_binding_head": "ae7b8562e2cacd86b64a7b196b6332c3032304bb",
   "status": "PASS",
   "terminal_defects": [
@@ -271,20 +273,28 @@
       "ROUTE_ELIGIBLE"
     ]
   },
+  "validated_court_hash": "a9e5788391e89e66a1996d27eecb03eab63350a6ca8ce9f24e8f0fda6a3dc016",
   "validated_source_packet_binding": {
     "previous_next_lawful_move": "GENERATE_B04_R6_AFSH_CANDIDATE",
     "previous_outcome": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATED__CANDIDATE_GENERATION_NEXT",
     "source_packet_validation_replay_binding_head": "ae7b8562e2cacd86b64a7b196b6332c3032304bb",
     "status": "BOUND_AND_VALIDATED"
   },
+  "validated_universe_hash": "c55dcc5030efa6b984d8655246a312c9299595a868f7e9e56493c7e538d5f6d8",
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_admissibility_court",
-      "detail": "next lawful move is admissibility court",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_NEXT_MOVE_DRIFT",
+      "check_id": "candidate_hash_receipt_bound",
+      "detail": "candidate hash receipt is bound",
+      "group": "hash",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_HASH_RECEIPT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "source_hash_receipt_bound",
+      "detail": "source hash receipt is bound",
+      "group": "hash",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_SOURCE_HASH_MISSING",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_CANDIDATE_GENERATED__ADMISSIBILITY_COURT_NEXT"
+  ]
 }

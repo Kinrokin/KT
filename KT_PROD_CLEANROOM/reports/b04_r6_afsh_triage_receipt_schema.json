@@ -1,0 +1,64 @@
+{
+  "artifact_id": "B04_R6_AFSH_TRIAGE_RECEIPT_SCHEMA",
+  "forbidden_access_status_required": [
+    "blind_outcome_labels_accessed",
+    "blind_route_success_labels_accessed",
+    "post_screen_labels_accessed",
+    "hidden_adjudication_labels_accessed",
+    "old_r01_r04_counted_labels_accessed",
+    "old_v2_six_row_counted_labels_accessed"
+  ],
+  "invariants": [
+    "selector_entry_authorized == true iff top_level_verdict == ROUTE_ELIGIBLE",
+    "specialist_candidate_tags must be empty unless top_level_verdict == ROUTE_ELIGIBLE",
+    "STATIC_HOLD, ABSTAIN, and NULL_ROUTE must emit why_not_route",
+    "forbidden_access_status values must all be false"
+  ],
+  "numeric_scores_required": [
+    "static_hold_score",
+    "abstention_score",
+    "null_route_score",
+    "route_eligible_score",
+    "wrong_route_cost",
+    "wrong_static_hold_cost",
+    "proof_burden_cost",
+    "overrouting_risk",
+    "trust_zone_risk",
+    "mirror_masked_instability",
+    "specialist_value_estimate"
+  ],
+  "required_fields": [
+    "case_id",
+    "triage_receipt_id",
+    "top_level_verdict",
+    "triage_subtype",
+    "route_eligible",
+    "selector_entry_authorized",
+    "numeric_scores",
+    "primary_reason_code",
+    "trust_zone_tags",
+    "evidence_tags",
+    "risk_tags",
+    "route_economics_tags",
+    "specialist_candidate_tags",
+    "why_not_static",
+    "why_not_abstain",
+    "why_not_route",
+    "required_next_action",
+    "forbidden_access_status"
+  ],
+  "schema_id": "kt.b04_r6.afsh_triage_receipt_schema.v1",
+  "top_level_verdict_enum": [
+    "STATIC_HOLD",
+    "ABSTAIN",
+    "NULL_ROUTE",
+    "ROUTE_ELIGIBLE"
+  ],
+  "triage_subtype_enum": [
+    "PRIMARY_CARE_STATIC",
+    "DEFER",
+    "HUMAN_OR_COURT_REVIEW",
+    "QUARANTINE_OR_NONCANONICAL",
+    "SPECIALIST_REFERRAL_CANDIDATE"
+  ]
+}

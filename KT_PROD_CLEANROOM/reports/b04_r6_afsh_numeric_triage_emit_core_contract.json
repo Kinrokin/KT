@@ -1,0 +1,105 @@
+{
+  "artifact_id": "B04_R6_AFSH_NUMERIC_TRIAGE_EMIT_CORE",
+  "authority": "CANDIDATE_INTERNAL_AUTHORITATIVE",
+  "emit_logic_order": [
+    {
+      "emit": "ABSTAIN",
+      "if": "trust_zone_unclear",
+      "triage_subtype": "QUARANTINE_OR_NONCANONICAL"
+    },
+    {
+      "emit": "ABSTAIN",
+      "if": "boundary_unclear",
+      "triage_subtype": "HUMAN_OR_COURT_REVIEW"
+    },
+    {
+      "emit": "NULL_ROUTE",
+      "if": "null_route_control_active",
+      "triage_subtype": "DEFER"
+    },
+    {
+      "emit": "STATIC_HOLD",
+      "if": "route_value_below_threshold",
+      "triage_subtype": "PRIMARY_CARE_STATIC"
+    },
+    {
+      "emit": "STATIC_HOLD",
+      "if": "mirror_masked_instability_above_threshold",
+      "triage_subtype": "PRIMARY_CARE_STATIC"
+    },
+    {
+      "emit": "STATIC_HOLD",
+      "if": "proof_burden_not_justified",
+      "triage_subtype": "PRIMARY_CARE_STATIC"
+    },
+    {
+      "emit": "ROUTE_ELIGIBLE",
+      "if": "route_eligible_score_clears_threshold_and_all_guards_pass",
+      "triage_subtype": "SPECIALIST_REFERRAL_CANDIDATE"
+    },
+    {
+      "else": "fail_closed",
+      "emit": "STATIC_HOLD",
+      "triage_subtype": "PRIMARY_CARE_STATIC"
+    }
+  ],
+  "forbidden_actions": [
+    "AFSH_CANDIDATE_TRAINING_EXECUTED",
+    "AFSH_ADMISSIBILITY_EXECUTED",
+    "SHADOW_SCREEN_PACKET_AUTHORIZED",
+    "SHADOW_SCREEN_EXECUTION_AUTHORIZED",
+    "R6_OPEN",
+    "LEARNED_ROUTER_SUPERIORITY_EARNED",
+    "ACTIVATION_REVIEW_AUTHORIZED",
+    "RUNTIME_CUTOVER_AUTHORIZED",
+    "LOBE_ESCALATION_AUTHORIZED",
+    "PACKAGE_PROMOTION_AUTHORIZED"
+  ],
+  "new_top_level_verdicts_allowed": false,
+  "numeric_score_fields": [
+    "static_hold_score",
+    "abstention_score",
+    "null_route_score",
+    "route_eligible_score",
+    "wrong_route_cost",
+    "wrong_static_hold_cost",
+    "proof_burden_cost",
+    "overrouting_risk",
+    "trust_zone_risk",
+    "mirror_masked_instability",
+    "specialist_value_estimate"
+  ],
+  "purpose": "Deterministically score receipt-derived features and emit exactly one validated court verdict before selector entry.",
+  "schema_id": "kt.b04_r6.afsh_numeric_triage_emit_core.v1",
+  "score_bounds": {
+    "max": 1.0,
+    "min": 0.0
+  },
+  "selector_entry_rule": {
+    "abstain_selector_entry": false,
+    "null_route_selector_entry": false,
+    "selector_entry_authorized_only_if": "top_level_verdict == ROUTE_ELIGIBLE",
+    "static_hold_selector_entry": false
+  },
+  "tag_safety": {
+    "blind_label_dependent_tags_allowed": false,
+    "blind_outcome_dependent_tags_allowed": false,
+    "post_screen_label_dependent_tags_allowed": false,
+    "route_success_label_dependent_tags_allowed": false,
+    "tags_must_be_receipt_derived": true,
+    "tags_must_be_source_packet_allowed": true
+  },
+  "top_level_verdict_modes": [
+    "STATIC_HOLD",
+    "ABSTAIN",
+    "NULL_ROUTE",
+    "ROUTE_ELIGIBLE"
+  ],
+  "triage_subtypes_allowed": [
+    "PRIMARY_CARE_STATIC",
+    "DEFER",
+    "HUMAN_OR_COURT_REVIEW",
+    "QUARANTINE_OR_NONCANONICAL",
+    "SPECIALIST_REFERRAL_CANDIDATE"
+  ]
+}

@@ -1,0 +1,901 @@
+{
+  "activation_review_authorized": false,
+  "admissibility_execution_authorized": false,
+  "afsh_admissibility_executed": false,
+  "afsh_candidate_generation_executed": true,
+  "afsh_candidate_training_authorized": false,
+  "afsh_candidate_training_executed": false,
+  "allowed_outcomes": [
+    "B04_R6_AFSH_CANDIDATE_GENERATED__ADMISSIBILITY_COURT_NEXT",
+    "B04_R6_AFSH_CANDIDATE_GENERATION_DEFERRED__NAMED_DEFECT_REMAINS",
+    "B04_R6_AFSH_CANDIDATE_GENERATION_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
+  ],
+  "architecture_binding_head": "4279eefb58a34089dc0b1930765a36556454e968",
+  "artifact_id": "B04_R6_AFSH_CANDIDATE_GENERATION_CONTRACT",
+  "authoritative_lane": "B04_R6_AFSH_CANDIDATE_GENERATION",
+  "authorization_state": {
+    "activation_cutover_authorized": false,
+    "activation_review_authorized": false,
+    "afsh_admissibility_executed": false,
+    "afsh_admissibility_next_lawful_lane": true,
+    "candidate_generation_executed_in_this_lane": true,
+    "candidate_training_authorized": false,
+    "candidate_training_executed": false,
+    "learned_router_superiority": "UNEARNED",
+    "lobe_escalation_authorized": false,
+    "package_promotion": "DEFERRED",
+    "r6_open": false,
+    "runtime_cutover_authorized": false,
+    "shadow_screen_execution_authorized": false,
+    "shadow_screen_packet_authorized": false,
+    "trust_zone_law_changed": false,
+    "truth_engine_law_changed": false
+  },
+  "candidate_envelope_hash": "8d6c117efb51481b19701cbf4031b46f4c622fb1020e9c010f99f3b1701c3c56",
+  "candidate_generation_executed": true,
+  "candidate_generation_law": "Deterministic source-packet-constrained rule materialization only; no training.",
+  "candidate_id": "B04_R6_AFSH_CANDIDATE_V1",
+  "candidate_may_generate": true,
+  "candidate_semantic_hash": "e976ee592b13082f4ecd2286d1a3619698a53b5a6de135aa5eefa949c9b3b0b7",
+  "candidate_training_authorized": false,
+  "candidate_training_executed": false,
+  "candidate_version": "v1",
+  "current_branch": "authoritative/b04-r6-afsh-candidate-generation",
+  "current_git_head": "7572487e14fc7e01868f9c17a5b7c47d2d5043df",
+  "current_main_head": "f8b21fb763f999626c92867c9365c2976d2cf3fc",
+  "failure_count": 0,
+  "forbidden_actions": [
+    "AFSH_CANDIDATE_TRAINING_EXECUTED",
+    "AFSH_ADMISSIBILITY_EXECUTED",
+    "SHADOW_SCREEN_PACKET_AUTHORIZED",
+    "SHADOW_SCREEN_EXECUTION_AUTHORIZED",
+    "R6_OPEN",
+    "LEARNED_ROUTER_SUPERIORITY_EARNED",
+    "ACTIVATION_REVIEW_AUTHORIZED",
+    "RUNTIME_CUTOVER_AUTHORIZED",
+    "LOBE_ESCALATION_AUTHORIZED",
+    "PACKAGE_PROMOTION_AUTHORIZED",
+    "CURRENT_ROUTE_VALUE_FORMULA_MUTATED_BY_COMPRESSION_PREP"
+  ],
+  "generated_utc": "2026-05-04T13:47:39Z",
+  "input_bindings": [
+    {
+      "binding_kind": "file_sha256_at_candidate_generation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_allowed_features_validation_receipt.json",
+      "role": "allowed_features_validation",
+      "sha256": "528678b2a2e4da87e28aa8e9e6dbd5153235337d833acb38800a48939bec3ecf"
+    },
+    {
+      "binding_kind": "file_sha256_at_candidate_generation",
+      "path": "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
+      "role": "canonical_scope_manifest",
+      "sha256": "eb4aaed06eb5bdea5c6f8ccef1f54c9d23960555ada1d80ee253da62ab94b5be"
+    },
+    {
+      "binding_kind": "file_sha256_at_candidate_generation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_forbidden_features_validation_receipt.json",
+      "role": "forbidden_features_validation",
+      "sha256": "baeee0c14521c3c9db778ec693e331ae4f27409afd9ee9f39efcd3b3699337f5"
+    },
+    {
+      "binding_kind": "file_sha256_at_candidate_generation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_source_no_authorization_drift_validation_receipt.json",
+      "role": "no_authorization_drift_validation",
+      "sha256": "690563b48fc3d064acc12311335bf51c0ae8e811fd65513890f022fb6cf41443"
+    },
+    {
+      "binding_kind": "file_sha256_at_candidate_generation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_no_contamination_validation_receipt.json",
+      "role": "no_contamination_validation",
+      "sha256": "6cbf388470fac70b9cebad48bd10b5325e8d409419f1f63ab35c6c0fc89a87f6"
+    },
+    {
+      "binding_kind": "file_sha256_at_candidate_generation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_prep_only_non_authority_validation_receipt.json",
+      "role": "prep_only_non_authority_validation",
+      "sha256": "bf2a07c403b4a16cc4fe522e4cc1539bd309bc1cdb68adab52d0529248586f77"
+    },
+    {
+      "binding_kind": "git_object_before_overwrite",
+      "git_commit": "7572487e14fc7e01868f9c17a5b7c47d2d5043df",
+      "mutable_canonical_path_overwritten_by_this_lane": true,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
+      "role": "previous_next_lawful_move",
+      "sha256": "aec9412b2b40c8216b07d63032f6d001470d44f4e0025271912fc73920c44878"
+    },
+    {
+      "binding_kind": "file_sha256_at_candidate_generation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_provenance_matrix_validation_receipt.json",
+      "role": "provenance_matrix_validation",
+      "sha256": "346e5a2e493ebb3ac8c63a2fc3baa7349f731541fdc4a98c0764fe1a350f696c"
+    },
+    {
+      "binding_kind": "file_sha256_at_candidate_generation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_source_replay_binding_validation_receipt.json",
+      "role": "replay_binding_validation",
+      "sha256": "77a46ad2046a147135ec9ce3e912d638820b814d0386127d5e1fd127028140ad"
+    },
+    {
+      "binding_kind": "file_sha256_at_candidate_generation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_source_determinism_validation_receipt.json",
+      "role": "source_determinism_validation",
+      "sha256": "f06fcfa5ac2f2ee4f5db7cd0188f1b841b9eb673520b9df55faa0904aef57638"
+    },
+    {
+      "binding_kind": "file_sha256_at_candidate_generation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_implementation_source_packet_contract.json",
+      "role": "source_packet_contract",
+      "sha256": "c97c43db5a9a9a287cc0197bcf85f76a1361cf3f146773f9c1d4671643752a6a"
+    },
+    {
+      "binding_kind": "file_sha256_at_candidate_generation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_source_packet_validation_contract.json",
+      "role": "source_validation_contract",
+      "sha256": "827d1258371899b79e57cf18706e9c58e959b489c8f3fc39c6749770338379cd"
+    },
+    {
+      "binding_kind": "file_sha256_at_candidate_generation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_source_packet_validation_receipt.json",
+      "role": "source_validation_receipt",
+      "sha256": "49b86f6cd99cf4964868e18e7cb64823dd890226b03380e7fe309f615d4b356b"
+    },
+    {
+      "binding_kind": "file_sha256_at_candidate_generation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_source_packet_validation_report.md",
+      "role": "source_validation_report",
+      "sha256": "bfb3b802db8cc542c23d35c4430fbc97732236861e3999df0cc66bc6b8430cb0"
+    },
+    {
+      "binding_kind": "file_sha256_at_candidate_generation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_trace_schema_validation_receipt.json",
+      "role": "trace_schema_validation",
+      "sha256": "adbe1e5e99fc97305f90e4355f8ff81872a05aa8d2f8c446ad3ece2dd6ca1387"
+    },
+    {
+      "binding_kind": "file_sha256_at_candidate_generation",
+      "path": "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
+      "role": "trust_zone_registry",
+      "sha256": "05a51311291e0cd6a26cb9b83eaf785d54e16c9f1faf7a1fe8b693fe9ff0da3c"
+    },
+    {
+      "binding_kind": "file_sha256_at_candidate_generation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_source_trust_zone_validation_receipt.json",
+      "role": "trust_zone_validation",
+      "sha256": "11ce4d2c94dc553feef3b01db0fb08ec5bb35e2be1696f29f0a3cf34ca9970d1"
+    }
+  ],
+  "learned_router_superiority_earned": false,
+  "lobe_escalation_authorized": false,
+  "next_lawful_move": "RUN_B04_R6_AFSH_ADMISSIBILITY_COURT",
+  "old_r01_r04_diagnostic_only": true,
+  "old_v2_six_row_diagnostic_only": true,
+  "package_promotion_authorized": false,
+  "package_promotion_remains_deferred": true,
+  "pass_count": 88,
+  "previous_authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATION",
+  "r6_authorized": false,
+  "r6_open": false,
+  "reason_codes": [
+    "RC_B04R6_AFSH_CANDIDATE_GEN_CONTRACT_MISSING",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_MAIN_HEAD_MISMATCH",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_ARCHITECTURE_MISMATCH",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_UNIVERSE_BINDING_MISSING",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_COURT_BINDING_MISSING",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_SOURCE_PACKET_BINDING_MISSING",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_MANIFEST_MISSING",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_CANDIDATE_ARTIFACT_MISSING",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_HASH_RECEIPT_MISSING",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_DERIVATION_RECEIPT_MISSING",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_TRAINING_EXECUTED",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_BLIND_OUTCOME_ACCESS",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_BLIND_ROUTE_SUCCESS_ACCESS",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_POST_SCREEN_LABEL_ACCESS",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_STATIC_HOLD_DEFAULT_MISSING",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_ABSTENTION_PRESERVATION_MISSING",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_NULL_ROUTE_PRESERVATION_MISSING",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_MIRROR_MASKED_STABILITY_MISSING",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_PREP_ONLY_AUTHORITY_DRIFT",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_ADMISSIBILITY_EXECUTED",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_SHADOW_PACKET_AUTHORIZED",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_R6_OPEN_DRIFT",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_SUPERIORITY_DRIFT",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_ACTIVATION_DRIFT",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_PACKAGE_PROMOTION_DRIFT",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_TRUTH_ENGINE_MUTATION",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_TRUST_ZONE_MUTATION",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_METRIC_WIDENING",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_COMPARATOR_WEAKENING",
+    "RC_B04R6_AFSH_CANDIDATE_GEN_NEXT_MOVE_DRIFT",
+    "RC_B04R6_TRIAGE_STATIC_HOLD_DOMINANT",
+    "RC_B04R6_TRIAGE_TRUST_ZONE_UNCLEAR",
+    "RC_B04R6_TRIAGE_BOUNDARY_UNCLEAR",
+    "RC_B04R6_TRIAGE_NULL_ROUTE_SURFACE_TEMPTATION",
+    "RC_B04R6_TRIAGE_SELECTOR_ENTRY_AUTHORIZED",
+    "RC_KT_MEMORY_PREP_ONLY_AUTHORITY_DRIFT",
+    "RC_KT_MEMORY_COMPRESSED_INDEX_USED_AS_TRUTH",
+    "RC_KT_MEMORY_ROUTE_VALUE_FORMULA_MUTATION"
+  ],
+  "runtime_cutover_authorized": false,
+  "schema_id": "kt.b04_r6.afsh_candidate_generation_contract.v1",
+  "schema_version": "1.0.0",
+  "selected_architecture_id": "AFSH-2S-GUARD",
+  "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
+  "selected_outcome": "B04_R6_AFSH_CANDIDATE_GENERATED__ADMISSIBILITY_COURT_NEXT",
+  "shadow_screen_authorized": false,
+  "shadow_screen_execution_authorized": false,
+  "shadow_screen_packet_authorized": false,
+  "source_packet_validation_replay_binding_head": "ae7b8562e2cacd86b64a7b196b6332c3032304bb",
+  "status": "PASS",
+  "terminal_defects": [
+    "TRAINING_EXECUTED",
+    "ADMISSIBILITY_EXECUTED",
+    "SHADOW_PACKET_AUTHORIZED",
+    "SHADOW_SCREEN_AUTHORIZED",
+    "R6_OPEN_DRIFT",
+    "SUPERIORITY_DRIFT",
+    "ACTIVATION_DRIFT",
+    "PACKAGE_PROMOTION_DRIFT",
+    "BLIND_OUTCOME_ACCESS",
+    "BLIND_ROUTE_SUCCESS_ACCESS",
+    "POST_SCREEN_LABEL_ACCESS",
+    "OLD_UNIVERSE_COUNTED_LABEL_ACCESS",
+    "PREP_ONLY_AUTHORITY_DRIFT",
+    "TRUTH_ENGINE_MUTATION",
+    "TRUST_ZONE_MUTATION",
+    "METRIC_WIDENING",
+    "COMPARATOR_WEAKENING",
+    "NEXT_MOVE_DRIFT"
+  ],
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true,
+  "validated_blind_universe_binding": {
+    "case_count": 18,
+    "case_namespace": "B04R6-AFSH-BU1-*",
+    "prior_r01_r04_treatment": "DIAGNOSTIC_ONLY",
+    "prior_v2_six_row_treatment": "DIAGNOSTIC_ONLY",
+    "status": "BOUND_AND_VALIDATED",
+    "validation_outcome": "B04_R6_NEW_BLIND_UNIVERSE_VALIDATED__STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_NEXT",
+    "validation_receipt_head": "3e0baf3b00b35c46874732cc15b58132bff611dc"
+  },
+  "validated_court_binding": {
+    "court_replay_binding_head": "e8a00afa04ce1df380165b85b3620837160244a6",
+    "next_lawful_move": "AUTHOR_B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET",
+    "previous_next_lawful_move": "VALIDATE_B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT",
+    "previous_outcome": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_BOUND__COURT_VALIDATION_NEXT",
+    "route_eligible_non_executing_only": true,
+    "selected_validation_outcome": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_VALIDATED__AFSH_IMPLEMENTATION_SOURCE_PACKET_NEXT",
+    "source_packet_input_validation_head": "022a7bfc7f9dbf151506809eaa63682e0cd5a76c",
+    "status": "BOUND_AND_VALIDATED",
+    "verdict_modes": [
+      "STATIC_HOLD",
+      "ABSTAIN",
+      "NULL_ROUTE",
+      "ROUTE_ELIGIBLE"
+    ]
+  },
+  "validated_source_packet_binding": {
+    "previous_next_lawful_move": "GENERATE_B04_R6_AFSH_CANDIDATE",
+    "previous_outcome": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATED__CANDIDATE_GENERATION_NEXT",
+    "source_packet_validation_replay_binding_head": "ae7b8562e2cacd86b64a7b196b6332c3032304bb",
+    "status": "BOUND_AND_VALIDATED"
+  },
+  "validation_rows": [
+    {
+      "check_id": "candidate_generation_contract_preserves_current_main_head",
+      "detail": "candidate generation binds current main head",
+      "group": "core",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_MAIN_HEAD_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_generation_binds_selected_afsh_architecture",
+      "detail": "AFSH-2S-GUARD remains selected",
+      "group": "core",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_ARCHITECTURE_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_generation_binds_validated_blind_universe",
+      "detail": "validated 18-case blind universe remains bound",
+      "group": "core",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_UNIVERSE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_generation_binds_validated_route_value_court",
+      "detail": "validated route-value court remains bound",
+      "group": "core",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_COURT_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_generation_binds_validated_source_packet",
+      "detail": "validated source packet remains bound",
+      "group": "core",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_SOURCE_PACKET_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_id_is_b04_r6_afsh_candidate_v1",
+      "detail": "candidate id is B04_R6_AFSH_CANDIDATE_V1",
+      "group": "candidate",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_MANIFEST_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_kind_is_deterministic_rule_materialization",
+      "detail": "candidate kind is deterministic rule materialization",
+      "group": "candidate",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_MANIFEST_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_generation_executed_true",
+      "detail": "candidate generation executed in this lane",
+      "group": "candidate",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_MANIFEST_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_training_executed_false",
+      "detail": "candidate training was not executed",
+      "group": "training",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRAINING_EXECUTED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_training_remains_unauthorized",
+      "detail": "candidate training remains unauthorized",
+      "group": "training",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRAINING_EXECUTED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_hash_receipt_bound",
+      "detail": "candidate hash receipt is bound",
+      "group": "hash",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_HASH_RECEIPT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_derivation_receipt_bound",
+      "detail": "candidate derivation receipt is bound",
+      "group": "derivation",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_DERIVATION_RECEIPT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "rule_materialization_receipt_bound",
+      "detail": "rule materialization receipt is bound",
+      "group": "derivation",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_DERIVATION_RECEIPT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_training_receipt_bound",
+      "detail": "no-training receipt is bound",
+      "group": "training",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_NO_TRAINING_RECEIPT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_contamination_receipt_bound",
+      "detail": "no-contamination receipt is bound",
+      "group": "contamination",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_BLIND_OUTCOME_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "static_hold_default_receipt_bound",
+      "detail": "static-hold default receipt is bound",
+      "group": "behavior",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_STATIC_HOLD_DEFAULT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "abstention_preservation_receipt_bound",
+      "detail": "abstention preservation receipt is bound",
+      "group": "behavior",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_ABSTENTION_PRESERVATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "null_route_preservation_receipt_bound",
+      "detail": "null-route preservation receipt is bound",
+      "group": "behavior",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_NULL_ROUTE_PRESERVATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "mirror_masked_stability_receipt_bound",
+      "detail": "mirror/masked stability receipt is bound",
+      "group": "behavior",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_MIRROR_MASKED_STABILITY_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "source_hash_receipt_bound",
+      "detail": "source hash receipt is bound",
+      "group": "hash",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_SOURCE_HASH_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_authorization_drift_receipt_passes",
+      "detail": "no authorization drift receipt passes",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_ADMISSIBILITY_EXECUTED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_includes_numeric_triage_emit_core",
+      "detail": "candidate includes numeric triage emit core",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_includes_triage_intake_gate",
+      "detail": "candidate includes triage intake gate",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_gate_is_stage_0_or_stage_1_not_stage_2_selector",
+      "detail": "triage gate precedes selector",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_top_level_verdict_modes_match_validated_court_modes",
+      "detail": "triage verdicts match court verdicts",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_COURT_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "human_review_maps_to_abstain_subtype",
+      "detail": "human review maps to ABSTAIN subtype",
+      "group": "triage",
+      "reason_code": "RC_B04R6_TRIAGE_HUMAN_OR_COURT_REVIEW_REQUIRED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "quarantine_maps_to_abstain_subtype",
+      "detail": "quarantine maps to ABSTAIN subtype",
+      "group": "triage",
+      "reason_code": "RC_B04R6_TRIAGE_QUARANTINE_REQUIRED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "null_route_surface_temptation_maps_to_null_route",
+      "detail": "surface temptation maps to NULL_ROUTE",
+      "group": "triage",
+      "reason_code": "RC_B04R6_TRIAGE_NULL_ROUTE_SURFACE_TEMPTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "only_route_eligible_enters_selector",
+      "detail": "only ROUTE_ELIGIBLE enters selector",
+      "group": "triage",
+      "reason_code": "RC_B04R6_TRIAGE_SELECTOR_ENTRY_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "static_hold_cases_do_not_enter_selector",
+      "detail": "STATIC_HOLD terminates before selector",
+      "group": "triage",
+      "reason_code": "RC_B04R6_TRIAGE_SELECTOR_ENTRY_BLOCKED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "abstain_cases_do_not_enter_selector",
+      "detail": "ABSTAIN terminates before selector",
+      "group": "triage",
+      "reason_code": "RC_B04R6_TRIAGE_SELECTOR_ENTRY_BLOCKED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "null_route_cases_do_not_enter_selector",
+      "detail": "NULL_ROUTE terminates before selector",
+      "group": "triage",
+      "reason_code": "RC_B04R6_TRIAGE_SELECTOR_ENTRY_BLOCKED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_scores_are_deterministic",
+      "detail": "triage scores are deterministic bounded scores",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_emit_logic_is_fail_closed",
+      "detail": "triage emit logic fails closed",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_STATIC_HOLD_DEFAULT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_are_receipt_derived",
+      "detail": "triage tags are receipt-derived",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_BLIND_OUTCOME_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_do_not_use_blind_outcomes",
+      "detail": "triage tags do not use blind outcomes",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_BLIND_OUTCOME_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_do_not_use_route_success_labels",
+      "detail": "triage tags do not use route-success labels",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_BLIND_ROUTE_SUCCESS_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_do_not_use_post_screen_labels",
+      "detail": "triage tags do not use post-screen labels",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_POST_SCREEN_LABEL_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_do_not_use_old_r01_r04_counted_labels",
+      "detail": "triage tags do not use R01-R04 counted labels",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_OLD_R01_R04_COUNTED_LABEL_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_do_not_use_old_v2_six_row_counted_labels",
+      "detail": "triage tags do not use v2 six-row counted labels",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_OLD_V2_SIX_ROW_COUNTED_LABEL_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_emits_numeric_scores",
+      "detail": "triage receipt emits numeric scores",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_emits_trust_zone_tags",
+      "detail": "triage receipt emits trust-zone tags",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_emits_evidence_tags",
+      "detail": "triage receipt emits evidence tags",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_emits_risk_tags",
+      "detail": "triage receipt emits risk tags",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_emits_route_economics_tags",
+      "detail": "triage receipt emits route-economics tags",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_emits_why_not_route",
+      "detail": "triage receipt emits why-not-route",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_emits_selector_entry_authorization_status",
+      "detail": "triage receipt emits selector-entry status",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_emits_specialist_candidate_tags_only_for_route_eligible",
+      "detail": "specialist tags only emit for ROUTE_ELIGIBLE",
+      "group": "triage",
+      "reason_code": "RC_B04R6_TRIAGE_SELECTOR_ENTRY_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_no_authorization_drift_receipt_passes",
+      "detail": "triage no-authorization-drift receipt passes",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_ADMISSIBILITY_EXECUTED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_semantic_hash_excludes_generated_utc",
+      "detail": "candidate semantic hash excludes generated_utc",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_HASH_RECEIPT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_receipt_hash_includes_envelope",
+      "detail": "candidate receipt hash includes full envelope",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_HASH_RECEIPT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_mutable_handoff_bound_before_overwrite",
+      "detail": "mutable handoff is bound before overwrite",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_NEXT_MOVE_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_generation_does_not_train",
+      "detail": "generation does not train",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRAINING_EXECUTED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_generation_does_not_execute_admissibility",
+      "detail": "generation does not execute admissibility",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_ADMISSIBILITY_EXECUTED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_generation_does_not_access_blind_labels",
+      "detail": "generation does not access blind labels",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_BLIND_OUTCOME_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_generation_does_not_access_route_success_labels",
+      "detail": "generation does not access route-success labels",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_BLIND_ROUTE_SUCCESS_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_prep_only_admissibility_draft_non_authoritative",
+      "detail": "admissibility draft remains prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_post_merge_replay_required",
+      "detail": "post-merge replay remains required",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_MAIN_HEAD_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "admissibility_court_draft_is_prep_only",
+      "detail": "admissibility court draft is prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "admissibility_reason_codes_are_prep_only",
+      "detail": "admissibility reason codes are prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "replay_validation_plan_is_prep_only",
+      "detail": "replay validation plan is prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_compatibility_plan_is_prep_only",
+      "detail": "trace compatibility plan is prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_admissibility_execution",
+      "detail": "prep-only drafts cannot execute admissibility",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_ADMISSIBILITY_EXECUTED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_shadow_screen_packet",
+      "detail": "prep-only drafts cannot authorize shadow packet",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_SHADOW_PACKET_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_shadow_screen_execution",
+      "detail": "prep-only drafts cannot authorize shadow screen",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_SHADOW_SCREEN_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_activation",
+      "detail": "prep-only drafts cannot authorize activation",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_ACTIVATION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prep_only_drafts_cannot_authorize_package_promotion",
+      "detail": "prep-only drafts cannot authorize package promotion",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_PACKAGE_PROMOTION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_research_packet_is_prep_only",
+      "detail": "memory compression research is prep-only",
+      "group": "memory",
+      "reason_code": "RC_KT_MEMORY_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_cannot_authorize_candidate_generation",
+      "detail": "memory prep cannot authorize candidate generation",
+      "group": "memory",
+      "reason_code": "RC_KT_MEMORY_CANDIDATE_GENERATION_AUTH_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_cannot_authorize_admissibility",
+      "detail": "memory prep cannot authorize admissibility",
+      "group": "memory",
+      "reason_code": "RC_KT_MEMORY_ADMISSIBILITY_AUTH_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_cannot_authorize_shadow_screen",
+      "detail": "memory prep cannot authorize shadow screen",
+      "group": "memory",
+      "reason_code": "RC_KT_MEMORY_SHADOW_AUTH_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_cannot_authorize_r6_open",
+      "detail": "memory prep cannot open R6",
+      "group": "memory",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_R6_OPEN_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_cannot_claim_superiority",
+      "detail": "memory prep cannot claim superiority",
+      "group": "memory",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_SUPERIORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_cannot_authorize_activation",
+      "detail": "memory prep cannot authorize activation",
+      "group": "memory",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_ACTIVATION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_cannot_authorize_package_promotion",
+      "detail": "memory prep cannot authorize package promotion",
+      "group": "memory",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_PACKAGE_PROMOTION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "memory_compression_cannot_change_route_value_formula_in_current_lane",
+      "detail": "memory prep cannot mutate current route-value formula",
+      "group": "memory",
+      "reason_code": "RC_KT_MEMORY_ROUTE_VALUE_FORMULA_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "compressed_index_cannot_be_source_of_truth",
+      "detail": "compressed index cannot be source of truth",
+      "group": "memory",
+      "reason_code": "RC_KT_MEMORY_COMPRESSED_INDEX_USED_AS_TRUTH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "raw_hash_bound_artifact_required_after_compressed_retrieval",
+      "detail": "raw hash-bound artifact remains required",
+      "group": "memory",
+      "reason_code": "RC_KT_MEMORY_RAW_HASH_ARTIFACT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "metric_widening_forbidden",
+      "detail": "metric widening remains forbidden",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_METRIC_WIDENING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "comparator_weakening_forbidden",
+      "detail": "comparator weakening remains forbidden",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_COMPARATOR_WEAKENING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "truth_engine_law_unchanged",
+      "detail": "truth-engine law unchanged",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRUTH_ENGINE_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trust_zone_law_unchanged",
+      "detail": "trust-zone law unchanged",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRUST_ZONE_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "next_lawful_move_is_admissibility_court",
+      "detail": "next lawful move is admissibility court",
+      "group": "next_move",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_NEXT_MOVE_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_immutable_inputs_share_replay_head",
+      "detail": "all immutable source-validation inputs share replay head",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_MAIN_HEAD_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_mixed_head_inputs_fail_closed",
+      "detail": "mixed-head immutable inputs are fail-closed by validator",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_MAIN_HEAD_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_source_packet_reference_matches_validation_binding",
+      "detail": "source packet contract hash matches the source-validation input binding",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_SOURCE_PACKET_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_validated_court_hash_uses_bound_binding",
+      "detail": "validated court hash is derived from the source-validation binding, not mutable current files",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_COURT_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_validated_universe_hash_uses_bound_binding",
+      "detail": "validated universe hash is derived from the source-validation binding, not mutable current files",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_UNIVERSE_BINDING_MISSING",
+      "status": "PASS"
+    }
+  ]
+}
