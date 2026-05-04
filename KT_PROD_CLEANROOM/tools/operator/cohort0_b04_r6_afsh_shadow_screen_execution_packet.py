@@ -413,15 +413,8 @@ def _validate_candidate_bindings(payloads: Dict[str, Dict[str, Any]]) -> Dict[st
         "candidate_version": CANDIDATE_VERSION,
         "candidate_replay_binding_head": contract.get("candidate_replay_binding_head"),
         "admissibility_replay_binding_head": contract.get("current_git_head"),
-        "candidate_manifest_hash": file_sha256(common.resolve_path(repo_root(), INPUTS["candidate_manifest"])),
-        "candidate_artifact_hash": file_sha256(common.resolve_path(repo_root(), INPUTS["candidate_artifact"])),
         "candidate_semantic_hash": expected_semantic,
         "candidate_envelope_hash": expected_envelope,
-        "numeric_triage_emit_core_hash": file_sha256(common.resolve_path(repo_root(), INPUTS["numeric_triage_emit_core"])),
-        "triage_tag_schema_hash": file_sha256(common.resolve_path(repo_root(), INPUTS["triage_tag_schema"])),
-        "triage_score_schema_hash": file_sha256(common.resolve_path(repo_root(), INPUTS["triage_score_schema"])),
-        "triage_receipt_schema_hash": file_sha256(common.resolve_path(repo_root(), INPUTS["triage_receipt_schema"])),
-        "trace_schema_hash": file_sha256(common.resolve_path(repo_root(), INPUTS["trace_schema_admissibility"])),
     }
 
 
