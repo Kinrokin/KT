@@ -30,15 +30,15 @@
     "trust_zone_law_changed": false,
     "truth_engine_law_changed": false
   },
-  "candidate_envelope_hash": "d6aa0ef8191f690734d171c80ff7f0e943fe30c37aa363c486708dc71b6070fb",
+  "candidate_envelope_hash": "8d6c117efb51481b19701cbf4031b46f4c622fb1020e9c010f99f3b1701c3c56",
   "candidate_generation_executed": true,
   "candidate_id": "B04_R6_AFSH_CANDIDATE_V1",
-  "candidate_semantic_hash": "c97d3b3aee322ff9bc8998950d31216fd7c857f345a434860f9a84bec5270332",
+  "candidate_semantic_hash": "e976ee592b13082f4ecd2286d1a3619698a53b5a6de135aa5eefa949c9b3b0b7",
   "candidate_training_authorized": false,
   "candidate_training_executed": false,
   "candidate_version": "v1",
   "current_branch": "authoritative/b04-r6-afsh-candidate-generation",
-  "current_git_head": "28d496ede29350d5cee90e2b32adfa182b573b49",
+  "current_git_head": "7572487e14fc7e01868f9c17a5b7c47d2d5043df",
   "current_main_head": "f8b21fb763f999626c92867c9365c2976d2cf3fc",
   "failure_count": 0,
   "forbidden_actions": [
@@ -54,7 +54,7 @@
     "PACKAGE_PROMOTION_AUTHORIZED",
     "CURRENT_ROUTE_VALUE_FORMULA_MUTATED_BY_COMPRESSION_PREP"
   ],
-  "generated_utc": "2026-05-04T13:28:58Z",
+  "generated_utc": "2026-05-04T13:47:39Z",
   "input_bindings": [
     {
       "binding_kind": "file_sha256_at_candidate_generation",
@@ -64,21 +64,9 @@
     },
     {
       "binding_kind": "file_sha256_at_candidate_generation",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_blind_universe_case_manifest.json",
-      "role": "blind_universe_manifest",
-      "sha256": "115099ee59b2a855c96174ac0ef4f2e227a43d5ff7ce76fe401efeed995a2d85"
-    },
-    {
-      "binding_kind": "file_sha256_at_candidate_generation",
       "path": "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
       "role": "canonical_scope_manifest",
       "sha256": "eb4aaed06eb5bdea5c6f8ccef1f54c9d23960555ada1d80ee253da62ab94b5be"
-    },
-    {
-      "binding_kind": "file_sha256_at_candidate_generation",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_abstention_route_economics_court_validation_receipt.json",
-      "role": "court_validation_receipt",
-      "sha256": "c91ac19728b15f42a32c3678bb2494681171398b4e1d21c7cdd174f8be9ee8a5"
     },
     {
       "binding_kind": "file_sha256_at_candidate_generation",
@@ -106,11 +94,11 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "28d496ede29350d5cee90e2b32adfa182b573b49",
+      "git_commit": "7572487e14fc7e01868f9c17a5b7c47d2d5043df",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "previous_next_lawful_move",
-      "sha256": "7dfef7df54ec54c1c95eb43a41bed6c9f2759c0c2fbac23c98f7ce9791fd504a"
+      "sha256": "aec9412b2b40c8216b07d63032f6d001470d44f4e0025271912fc73920c44878"
     },
     {
       "binding_kind": "file_sha256_at_candidate_generation",
@@ -181,7 +169,7 @@
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 10,
+  "pass_count": 13,
   "previous_authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATION",
   "r6_authorized": false,
   "r6_open": false,
@@ -359,6 +347,27 @@
       "detail": "mixed-head immutable inputs are fail-closed by validator",
       "group": "replay",
       "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_MAIN_HEAD_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_source_packet_reference_matches_validation_binding",
+      "detail": "source packet contract hash matches the source-validation input binding",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_SOURCE_PACKET_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_validated_court_hash_uses_bound_binding",
+      "detail": "validated court hash is derived from the source-validation binding, not mutable current files",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_COURT_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_validated_universe_hash_uses_bound_binding",
+      "detail": "validated universe hash is derived from the source-validation binding, not mutable current files",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_UNIVERSE_BINDING_MISSING",
       "status": "PASS"
     }
   ]

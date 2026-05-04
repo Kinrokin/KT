@@ -92,3 +92,6 @@ Next lawful move: `RUN_B04_R6_AFSH_ADMISSIBILITY_COURT`
 - `next_lawful_move_is_admissibility_court`: `PASS` (RC_B04R6_AFSH_CANDIDATE_GEN_NEXT_MOVE_DRIFT)
 - `candidate_immutable_inputs_share_replay_head`: `PASS` (RC_B04R6_AFSH_CANDIDATE_GEN_MAIN_HEAD_MISMATCH)
 - `candidate_mixed_head_inputs_fail_closed`: `PASS` (RC_B04R6_AFSH_CANDIDATE_GEN_MAIN_HEAD_MISMATCH)
+- `candidate_source_packet_reference_matches_validation_binding`: `PASS` (RC_B04R6_AFSH_CANDIDATE_GEN_SOURCE_PACKET_BINDING_MISSING)
+- `candidate_validated_court_hash_uses_bound_binding`: `PASS` (RC_B04R6_AFSH_CANDIDATE_GEN_COURT_BINDING_MISSING)
+- `candidate_validated_universe_hash_uses_bound_binding`: `PASS` (RC_B04R6_AFSH_CANDIDATE_GEN_UNIVERSE_BINDING_MISSING)
