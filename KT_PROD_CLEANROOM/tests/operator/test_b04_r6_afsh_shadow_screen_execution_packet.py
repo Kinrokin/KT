@@ -252,7 +252,7 @@ def _write_inputs(root: Path) -> Path:
     _write_json(root / packet.INPUTS["turboquant_translation"], _turboquant_payload())
     _write_json(root / packet.INPUTS["compressed_receipt_index"], _compressed_index_payload())
     _write_json(root / packet.INPUTS["previous_next_lawful_move"], _admissibility_payload(artifact_id="B04_R6_NEXT_LAWFUL_MOVE_RECEIPT"))
-    _write_text(root / packet.TEXT_INPUTS["admissibility_report"], "# B04 R6 AFSH ADMISSIBILITY Court\n\nPASS\n")
+    _write_text(root / packet.TEXT_INPUTS["admissibility_report"], "# B04 R6 AFSH Admissibility Court\n\nPASS\n")
     _write_json(governance / "trust_zone_registry.json", {"schema_id": "trust", "status": "PASS"})
     _write_json(governance / "canonical_scope_manifest.json", {"schema_id": "scope", "status": "PASS"})
     return reports

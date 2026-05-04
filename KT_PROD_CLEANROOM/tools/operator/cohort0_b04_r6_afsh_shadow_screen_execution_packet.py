@@ -352,7 +352,7 @@ def _require_admissibility_inputs(payloads: Dict[str, Dict[str, Any]], text_payl
         if label.startswith("admissibility") or label.endswith("admissibility"):
             if payload.get("status") != "PASS":
                 _fail("RC_B04R6_AFSH_SHADOW_PACKET_ADMISSIBILITY_BINDING_MISSING", f"{label} must be PASS")
-    if "ADMISSIBILITY" not in text_payloads["admissibility_report"]:
+    if "admissibility" not in text_payloads["admissibility_report"].lower():
         _fail("RC_B04R6_AFSH_SHADOW_PACKET_ADMISSIBILITY_BINDING_MISSING", "admissibility report missing admissibility marker")
     for label, payload in (("contract", contract), ("receipt", receipt), ("next", next_receipt)):
         if payload.get("selected_outcome") != EXPECTED_PREVIOUS_OUTCOME:
