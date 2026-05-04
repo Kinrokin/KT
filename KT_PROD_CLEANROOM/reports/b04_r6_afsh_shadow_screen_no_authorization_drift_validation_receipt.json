@@ -5,7 +5,7 @@
     "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_DEFERRED__NAMED_PACKET_VALIDATION_DEFECT_REMAINS",
     "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_AFSH_SHADOW_SCREEN_NO_AUTHORIZATION_DRIFT_VALIDATION_RECEIPT",
   "authoritative_lane": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_VALIDATION",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -433,13 +433,14 @@
   "learned_router_superiority_earned": false,
   "lobe_escalation_authorized": false,
   "next_lawful_move": "RUN_B04_R6_AFSH_SHADOW_SCREEN",
+  "no_downstream_authorization_drift": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
   "packet_contract_hash": "e3399a6b800ce341a72235c7a1067c45639ea5d5f9c2d98cafe2d9495e8e4d76",
   "packet_receipt_hash": "cb385cd73cf1cbd506a0eeb260e3171f010b1e208ffc3e7e22a626df1099ff0f",
   "packet_replay_binding_head": "78c6c2d9a880ff52f3d89e9e1ef587d4055182af",
   "packet_report_hash": "b2cf6c40e6c3b1f7bf3464a0ec3a0a36113ff146b04f54a875227d3c183c74e4",
-  "pass_count": 1,
+  "pass_count": 9,
   "predecessor_outcome": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_BOUND__PACKET_VALIDATION_NEXT",
   "previous_authoritative_lane": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET",
   "previous_next_lawful_move": "VALIDATE_B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET",
@@ -493,7 +494,7 @@
     "RC_B04R6_AFSH_SHADOW_PACKET_VAL_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v13",
+  "schema_id": "kt.b04_r6.afsh_shadow_screen_no_authorization_drift_validation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -531,12 +532,67 @@
   "truth_engine_derivation_law_unchanged": true,
   "validation_rows": [
     {
+      "check_id": "validation_does_not_execute_shadow_screen",
+      "detail": "screen not executed",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_EXECUTION_EXECUTED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_does_not_open_r6",
+      "detail": "R6 remains closed",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_R6_OPEN_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_does_not_claim_superiority",
+      "detail": "superiority unearned",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_SUPERIORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_does_not_authorize_activation_review",
+      "detail": "activation unauthorized",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_ACTIVATION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_does_not_authorize_package_promotion",
+      "detail": "package promotion deferred",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_PACKAGE_PROMOTION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "truth_engine_law_unchanged",
+      "detail": "truth-engine law unchanged",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_TRUTH_ENGINE_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trust_zone_law_unchanged",
+      "detail": "trust-zone law unchanged",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_TRUST_ZONE_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_authorization_drift_receipt_passes",
+      "detail": "no authorization drift receipt passes",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
       "check_id": "next_lawful_move_is_run_shadow_screen",
       "detail": "next lawful move is shadow screen execution lane",
       "group": "next_move",
       "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_NEXT_MOVE_DRIFT",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_VALIDATED__SHADOW_SCREEN_EXECUTION_NEXT"
+  ]
 }
