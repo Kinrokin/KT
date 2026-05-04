@@ -584,3 +584,15 @@ def test_next_move_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.Monkey
     _patch_env(monkeypatch, tmp_path, state)
     with pytest.raises(RuntimeError, match="FAIL_CLOSED"):
         packet.run(reports_root=reports)
+
+
+def test_self_replay_allows_existing_packet_next_move(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    next_payload = _admissibility_payload(artifact_id="B04_R6_NEXT_LAWFUL_MOVE_RECEIPT")
+    next_payload["selected_outcome"] = packet.SELECTED_OUTCOME
+    next_payload["next_lawful_move"] = packet.NEXT_LAWFUL_MOVE
+    _write_json(tmp_path / packet.INPUTS["previous_next_lawful_move"], next_payload)
+    state = {"branch": packet.AUTHORITY_BRANCH, "head": PACKET_BRANCH_HEAD, "origin_main": CURRENT_MAIN_HEAD}
+    _patch_env(monkeypatch, tmp_path, state)
+    result = packet.run(reports_root=reports)
+    assert result["verdict"] == packet.SELECTED_OUTCOME

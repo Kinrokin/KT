@@ -354,11 +354,21 @@ def _require_admissibility_inputs(payloads: Dict[str, Dict[str, Any]], text_payl
                 _fail("RC_B04R6_AFSH_SHADOW_PACKET_ADMISSIBILITY_BINDING_MISSING", f"{label} must be PASS")
     if "admissibility" not in text_payloads["admissibility_report"].lower():
         _fail("RC_B04R6_AFSH_SHADOW_PACKET_ADMISSIBILITY_BINDING_MISSING", "admissibility report missing admissibility marker")
-    for label, payload in (("contract", contract), ("receipt", receipt), ("next", next_receipt)):
+    for label, payload in (("contract", contract), ("receipt", receipt)):
         if payload.get("selected_outcome") != EXPECTED_PREVIOUS_OUTCOME:
             _fail("RC_B04R6_AFSH_SHADOW_PACKET_ADMISSIBILITY_BINDING_MISSING", f"{label} outcome drift")
         if payload.get("next_lawful_move") != EXPECTED_PREVIOUS_NEXT_MOVE:
             _fail("RC_B04R6_AFSH_SHADOW_PACKET_NEXT_MOVE_DRIFT", f"{label} next move drift")
+    next_receipt_is_predecessor = (
+        next_receipt.get("selected_outcome") == EXPECTED_PREVIOUS_OUTCOME
+        and next_receipt.get("next_lawful_move") == EXPECTED_PREVIOUS_NEXT_MOVE
+    )
+    next_receipt_is_self_replay = (
+        next_receipt.get("selected_outcome") == SELECTED_OUTCOME
+        and next_receipt.get("next_lawful_move") == NEXT_LAWFUL_MOVE
+    )
+    if not (next_receipt_is_predecessor or next_receipt_is_self_replay):
+        _fail("RC_B04R6_AFSH_SHADOW_PACKET_NEXT_MOVE_DRIFT", "next lawful move receipt is neither predecessor nor self-replay")
     if contract.get("selected_architecture_id") != SELECTED_ARCHITECTURE_ID:
         _fail("RC_B04R6_AFSH_SHADOW_PACKET_ARCHITECTURE_MISMATCH", "selected architecture drift")
     if contract.get("candidate_id") != CANDIDATE_ID:
