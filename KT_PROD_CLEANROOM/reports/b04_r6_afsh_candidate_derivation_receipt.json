@@ -10,7 +10,7 @@
     "B04_R6_AFSH_CANDIDATE_GENERATION_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
   "architecture_binding_head": "4279eefb58a34089dc0b1930765a36556454e968",
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_AFSH_CANDIDATE_DERIVATION_RECEIPT",
   "authoritative_lane": "B04_R6_AFSH_CANDIDATE_GENERATION",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -40,6 +40,7 @@
   "current_branch": "authoritative/b04-r6-afsh-candidate-generation",
   "current_git_head": "ab4761fc6b201618eee1283f980f0ef68ab9383c",
   "current_main_head": "f8b21fb763f999626c92867c9365c2976d2cf3fc",
+  "derivation_kind": "DETERMINISTIC_RULE_MATERIALIZATION",
   "failure_count": 0,
   "forbidden_actions": [
     "AFSH_CANDIDATE_TRAINING_EXECUTED",
@@ -180,7 +181,7 @@
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 7,
   "previous_authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATION",
   "r6_authorized": false,
   "r6_open": false,
@@ -226,7 +227,7 @@
     "RC_KT_MEMORY_ROUTE_VALUE_FORMULA_MUTATION"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v10",
+  "schema_id": "kt.b04_r6.afsh_candidate_derivation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -256,6 +257,7 @@
     "COMPARATOR_WEAKENING",
     "NEXT_MOVE_DRIFT"
   ],
+  "training_executed": false,
   "trust_zone_law_unchanged": true,
   "truth_engine_derivation_law_unchanged": true,
   "validated_blind_universe_binding": {
@@ -291,12 +293,53 @@
   },
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_admissibility_court",
-      "detail": "next lawful move is admissibility court",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_NEXT_MOVE_DRIFT",
+      "check_id": "candidate_generation_contract_preserves_current_main_head",
+      "detail": "candidate generation binds current main head",
+      "group": "core",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_MAIN_HEAD_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_generation_binds_selected_afsh_architecture",
+      "detail": "AFSH-2S-GUARD remains selected",
+      "group": "core",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_ARCHITECTURE_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_generation_binds_validated_blind_universe",
+      "detail": "validated 18-case blind universe remains bound",
+      "group": "core",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_UNIVERSE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_generation_binds_validated_route_value_court",
+      "detail": "validated route-value court remains bound",
+      "group": "core",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_COURT_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_generation_binds_validated_source_packet",
+      "detail": "validated source packet remains bound",
+      "group": "core",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_SOURCE_PACKET_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_derivation_receipt_bound",
+      "detail": "candidate derivation receipt is bound",
+      "group": "derivation",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_DERIVATION_RECEIPT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "rule_materialization_receipt_bound",
+      "detail": "rule materialization receipt is bound",
+      "group": "derivation",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_DERIVATION_RECEIPT_MISSING",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_CANDIDATE_GENERATED__ADMISSIBILITY_COURT_NEXT"
+  ]
 }

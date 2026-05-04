@@ -10,7 +10,7 @@
     "B04_R6_AFSH_CANDIDATE_GENERATION_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
   "architecture_binding_head": "4279eefb58a34089dc0b1930765a36556454e968",
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_AFSH_CANDIDATE_MUTABLE_HANDOFF_BINDING_RECEIPT",
   "authoritative_lane": "B04_R6_AFSH_CANDIDATE_GENERATION",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -175,12 +175,13 @@
   ],
   "learned_router_superiority_earned": false,
   "lobe_escalation_authorized": false,
+  "mutable_handoff_bound_before_overwrite": true,
   "next_lawful_move": "RUN_B04_R6_AFSH_ADMISSIBILITY_COURT",
   "old_r01_r04_diagnostic_only": true,
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 10,
   "previous_authoritative_lane": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATION",
   "r6_authorized": false,
   "r6_open": false,
@@ -226,7 +227,7 @@
     "RC_KT_MEMORY_ROUTE_VALUE_FORMULA_MUTATION"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v10",
+  "schema_id": "kt.b04_r6.afsh_candidate_mutable_handoff_binding_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -291,12 +292,74 @@
   },
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_admissibility_court",
-      "detail": "next lawful move is admissibility court",
-      "group": "next_move",
+      "check_id": "candidate_semantic_hash_excludes_generated_utc",
+      "detail": "candidate semantic hash excludes generated_utc",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_HASH_RECEIPT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_receipt_hash_includes_envelope",
+      "detail": "candidate receipt hash includes full envelope",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_HASH_RECEIPT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_mutable_handoff_bound_before_overwrite",
+      "detail": "mutable handoff is bound before overwrite",
+      "group": "replay",
       "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_NEXT_MOVE_DRIFT",
       "status": "PASS"
+    },
+    {
+      "check_id": "candidate_generation_does_not_train",
+      "detail": "generation does not train",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_TRAINING_EXECUTED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_generation_does_not_execute_admissibility",
+      "detail": "generation does not execute admissibility",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_ADMISSIBILITY_EXECUTED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_generation_does_not_access_blind_labels",
+      "detail": "generation does not access blind labels",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_BLIND_OUTCOME_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_generation_does_not_access_route_success_labels",
+      "detail": "generation does not access route-success labels",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_BLIND_ROUTE_SUCCESS_ACCESS",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_post_merge_replay_required",
+      "detail": "post-merge replay remains required",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_MAIN_HEAD_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_immutable_inputs_share_replay_head",
+      "detail": "all immutable source-validation inputs share replay head",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_MAIN_HEAD_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_mixed_head_inputs_fail_closed",
+      "detail": "mixed-head immutable inputs are fail-closed by validator",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_CANDIDATE_GEN_MAIN_HEAD_MISMATCH",
+      "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_CANDIDATE_GENERATED__ADMISSIBILITY_COURT_NEXT"
+  ]
 }
