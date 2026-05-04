@@ -2,31 +2,32 @@
   "artifact_id": "B04_R6_FUTURE_BLOCKER_REGISTER",
   "blockers": [
     {
-      "blocker_id": "B04R6-FB-021",
-      "future_blocker": "Shadow-screen packet exists but packet validation law is not ready.",
-      "neutralization_now": [
-        "b04_r6_afsh_shadow_screen_packet_validation_plan.json",
-        "b04_r6_afsh_shadow_screen_packet_validation_reason_codes.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-022",
-      "future_blocker": "Packet validation passes but execution/result schemas are not staged.",
-      "neutralization_now": [
-        "b04_r6_afsh_shadow_screen_execution_prep_only_draft.json",
-        "b04_r6_afsh_shadow_screen_result_schema_prep_only_draft.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-023",
-      "future_blocker": "Future screen passes but activation review/failure/invalidation paths are missing.",
+      "blocker_id": "B04R6-FB-024",
+      "future_blocker": "Shadow superiority passes but activation review packet law is not authoritative.",
       "neutralization_now": [
         "b04_r6_learned_router_activation_review_packet_prep_only_draft.json",
+        "b04_r6_learned_router_activation_risk_register_prep_only_draft.json",
+        "b04_r6_learned_router_runtime_guard_requirements_prep_only_draft.json",
+        "b04_r6_learned_router_rollback_plan_prep_only_draft.json"
+      ]
+    },
+    {
+      "blocker_id": "B04R6-FB-025",
+      "future_blocker": "Shadow superiority fails without closeout/redesign law.",
+      "neutralization_now": [
         "b04_r6_superiority_not_earned_closeout_contract_prep_only_draft.json",
+        "b04_r6_redesign_authorization_court_prep_only_draft.json"
+      ]
+    },
+    {
+      "blocker_id": "B04R6-FB-026",
+      "future_blocker": "Screen invalidates without forensic invalidation law.",
+      "neutralization_now": [
         "b04_r6_forensic_invalidation_court_prep_only_draft.json"
       ]
     }
   ],
-  "current_authoritative_lane": "AUTHOR_B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET",
-  "schema_id": "kt.b04_r6.future_blocker_register.v4"
+  "current_authoritative_lane": "RUN_B04_R6_AFSH_SHADOW_SCREEN",
+  "schema_id": "kt.b04_r6.future_blocker_register.v5",
+  "selected_outcome": "B04_R6_AFSH_SHADOW_SUPERIORITY_PASSED__ACTIVATION_REVIEW_PACKET_NEXT"
 }
