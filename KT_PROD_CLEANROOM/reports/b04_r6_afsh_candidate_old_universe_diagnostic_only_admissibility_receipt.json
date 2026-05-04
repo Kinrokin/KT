@@ -9,7 +9,7 @@
     "B04_R6_AFSH_CANDIDATE_BLOCKED__NO_LAWFUL_ADMISSIBLE_CANDIDATE",
     "B04_R6_AFSH_CANDIDATE_INVALID__FORENSIC_INVALIDATION_COURT_NEXT"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_AFSH_CANDIDATE_OLD_UNIVERSE_DIAGNOSTIC_ONLY_ADMISSIBILITY_RECEIPT",
   "authoritative_lane": "B04_R6_AFSH_ADMISSIBILITY_COURT",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -271,8 +271,10 @@
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 4,
   "previous_authoritative_lane": "B04_R6_AFSH_CANDIDATE_GENERATION",
+  "prior_r01_r04_treatment": "DIAGNOSTIC_ONLY",
+  "prior_v2_six_row_treatment": "DIAGNOSTIC_ONLY",
   "r6_authorized": false,
   "r6_open": false,
   "reason_codes": [
@@ -329,7 +331,7 @@
     "RC_B04R6_AFSH_ADM_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v11",
+  "schema_id": "kt.b04_r6.afsh_candidate_old_universe_diagnostic_only_admissibility_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -379,12 +381,32 @@
   },
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_shadow_screen_packet",
-      "detail": "next lawful move is shadow-screen packet authoring",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_ADM_NEXT_MOVE_DRIFT",
+      "check_id": "no_contamination_receipt_passes",
+      "detail": "no-contamination receipt passes",
+      "group": "contamination",
+      "reason_code": "RC_B04R6_AFSH_ADM_NO_CONTAMINATION_RECEIPT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "old_universe_diagnostic_only_receipt_passes",
+      "detail": "old universes diagnostic-only",
+      "group": "contamination",
+      "reason_code": "RC_B04R6_AFSH_ADM_OLD_UNIVERSE_PROOF_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prior_r01_r04_remain_diagnostic_only",
+      "detail": "R01-R04 diagnostic-only",
+      "group": "contamination",
+      "reason_code": "RC_B04R6_AFSH_ADM_OLD_UNIVERSE_PROOF_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "prior_v2_six_row_remains_diagnostic_only",
+      "detail": "v2 six-row diagnostic-only",
+      "group": "contamination",
+      "reason_code": "RC_B04R6_AFSH_ADM_OLD_UNIVERSE_PROOF_DRIFT",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_CANDIDATE_ADMISSIBLE__SHADOW_SCREEN_PACKET_NEXT"
+  ]
 }

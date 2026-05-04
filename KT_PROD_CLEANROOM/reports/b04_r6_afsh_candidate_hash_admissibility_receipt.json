@@ -9,7 +9,7 @@
     "B04_R6_AFSH_CANDIDATE_BLOCKED__NO_LAWFUL_ADMISSIBLE_CANDIDATE",
     "B04_R6_AFSH_CANDIDATE_INVALID__FORENSIC_INVALIDATION_COURT_NEXT"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_AFSH_CANDIDATE_HASH_ADMISSIBILITY_RECEIPT",
   "authoritative_lane": "B04_R6_AFSH_ADMISSIBILITY_COURT",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -271,7 +271,7 @@
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 3,
   "previous_authoritative_lane": "B04_R6_AFSH_CANDIDATE_GENERATION",
   "r6_authorized": false,
   "r6_open": false,
@@ -329,7 +329,7 @@
     "RC_B04R6_AFSH_ADM_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v11",
+  "schema_id": "kt.b04_r6.afsh_candidate_hash_admissibility_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -379,12 +379,25 @@
   },
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_shadow_screen_packet",
-      "detail": "next lawful move is shadow-screen packet authoring",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_ADM_NEXT_MOVE_DRIFT",
+      "check_id": "candidate_hash_receipt_bound",
+      "detail": "candidate hash receipt bound",
+      "group": "hash",
+      "reason_code": "RC_B04R6_AFSH_ADM_CANDIDATE_HASH_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_semantic_hash_excludes_generated_utc",
+      "detail": "semantic hash excludes generated_utc",
+      "group": "hash",
+      "reason_code": "RC_B04R6_AFSH_ADM_CANDIDATE_SEMANTIC_HASH_UNSTABLE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_receipt_hash_includes_envelope",
+      "detail": "envelope hash separately bound",
+      "group": "hash",
+      "reason_code": "RC_B04R6_AFSH_ADM_CANDIDATE_HASH_MISSING",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_CANDIDATE_ADMISSIBLE__SHADOW_SCREEN_PACKET_NEXT"
+  ]
 }
