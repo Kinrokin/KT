@@ -406,10 +406,14 @@ def _validate_packet_bound_inputs(root: Path, payloads: Dict[str, Dict[str, Any]
         if file_sha256(common.resolve_path(root, INPUTS[input_role])) != expected:
             if input_role == "packet_no_authorization_drift":
                 self_replay_prior = _optional_input_binding_sha(payloads[input_role].get("input_bindings", []), input_role)
+                packet_validation_receipt_hash = file_sha256(common.resolve_path(root, INPUTS["packet_validation_receipt"]))
                 self_replay = (
                     payloads[input_role].get("authoritative_lane") == AUTHORITATIVE_LANE
                     and payloads[input_role].get("selected_outcome") in ALLOWED_OUTCOMES
-                    and self_replay_prior == expected
+                    and (
+                        self_replay_prior == expected
+                        or payloads[input_role].get("packet_validation_receipt_hash") == packet_validation_receipt_hash
+                    )
                 )
                 if self_replay:
                     continue
