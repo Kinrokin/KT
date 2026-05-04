@@ -9,7 +9,7 @@
     "B04_R6_AFSH_CANDIDATE_BLOCKED__NO_LAWFUL_ADMISSIBLE_CANDIDATE",
     "B04_R6_AFSH_CANDIDATE_INVALID__FORENSIC_INVALIDATION_COURT_NEXT"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_AFSH_TRIAGE_SELECTOR_ENTRY_ADMISSIBILITY_RECEIPT",
   "authoritative_lane": "B04_R6_AFSH_ADMISSIBILITY_COURT",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -271,7 +271,7 @@
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 19,
   "previous_authoritative_lane": "B04_R6_AFSH_CANDIDATE_GENERATION",
   "r6_authorized": false,
   "r6_open": false,
@@ -329,7 +329,7 @@
     "RC_B04R6_AFSH_ADM_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v11",
+  "schema_id": "kt.b04_r6.afsh_triage_selector_entry_admissibility_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -379,12 +379,137 @@
   },
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_shadow_screen_packet",
-      "detail": "next lawful move is shadow-screen packet authoring",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_ADM_NEXT_MOVE_DRIFT",
+      "check_id": "candidate_includes_numeric_triage_emit_core",
+      "detail": "candidate includes numeric triage core",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRIAGE_CORE_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_top_level_verdict_modes_match_validated_court_modes",
+      "detail": "triage verdicts match court",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRIAGE_VERDICT_MODE_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_subtypes_do_not_create_new_verdict_modes",
+      "detail": "triage subtypes are not verdicts",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRIAGE_SUBTYPE_BECAME_VERDICT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "only_route_eligible_enters_selector",
+      "detail": "only ROUTE_ELIGIBLE enters selector",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRIAGE_SELECTOR_ENTRY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "static_hold_cases_do_not_enter_selector",
+      "detail": "STATIC_HOLD terminates",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRIAGE_STATIC_HOLD_ENTERS_SELECTOR",
+      "status": "PASS"
+    },
+    {
+      "check_id": "abstain_cases_do_not_enter_selector",
+      "detail": "ABSTAIN terminates",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRIAGE_ABSTAIN_ENTERS_SELECTOR",
+      "status": "PASS"
+    },
+    {
+      "check_id": "null_route_cases_do_not_enter_selector",
+      "detail": "NULL_ROUTE terminates",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRIAGE_NULL_ROUTE_ENTERS_SELECTOR",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_scores_are_deterministic",
+      "detail": "triage scores deterministic",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRIAGE_SCORE_NONDETERMINISTIC",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_emit_logic_is_fail_closed",
+      "detail": "triage emit logic fail closed",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRIAGE_EMIT_NOT_FAIL_CLOSED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_are_receipt_derived",
+      "detail": "triage tags receipt-derived",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRIAGE_TAG_NOT_RECEIPT_DERIVED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_are_source_packet_allowed",
+      "detail": "triage tags source-packet allowed",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRIAGE_TAG_NOT_SOURCE_PACKET_ALLOWED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_do_not_use_blind_outcomes",
+      "detail": "triage tags do not use blind outcomes",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRIAGE_TAG_BLIND_OUTCOME_DEPENDENT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_do_not_use_route_success_labels",
+      "detail": "triage tags do not use route-success labels",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRIAGE_TAG_ROUTE_SUCCESS_DEPENDENT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_do_not_use_post_screen_labels",
+      "detail": "triage tags do not use post-screen labels",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRIAGE_TAG_POST_SCREEN_DEPENDENT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_do_not_use_old_r01_r04_counted_labels",
+      "detail": "triage tags do not use R01-R04 labels",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRIAGE_TAG_OLD_UNIVERSE_DEPENDENT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tags_do_not_use_old_v2_six_row_counted_labels",
+      "detail": "triage tags do not use v2 six-row labels",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRIAGE_TAG_OLD_UNIVERSE_DEPENDENT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_schema_emits_numeric_scores",
+      "detail": "triage receipt emits numeric scores",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_schema_emits_why_not_route",
+      "detail": "triage receipt emits why-not-route",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_schema_emits_selector_entry_authorization_status",
+      "detail": "triage receipt emits selector-entry status",
+      "group": "triage",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_CANDIDATE_ADMISSIBLE__SHADOW_SCREEN_PACKET_NEXT"
+  ]
 }

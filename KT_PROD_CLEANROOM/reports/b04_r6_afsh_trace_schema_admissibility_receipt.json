@@ -9,7 +9,7 @@
     "B04_R6_AFSH_CANDIDATE_BLOCKED__NO_LAWFUL_ADMISSIBLE_CANDIDATE",
     "B04_R6_AFSH_CANDIDATE_INVALID__FORENSIC_INVALIDATION_COURT_NEXT"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_AFSH_TRACE_SCHEMA_ADMISSIBILITY_RECEIPT",
   "authoritative_lane": "B04_R6_AFSH_ADMISSIBILITY_COURT",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -271,7 +271,7 @@
   "old_v2_six_row_diagnostic_only": true,
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 22,
   "previous_authoritative_lane": "B04_R6_AFSH_CANDIDATE_GENERATION",
   "r6_authorized": false,
   "r6_open": false,
@@ -328,8 +328,32 @@
     "RC_B04R6_AFSH_ADM_TRUST_ZONE_MUTATION",
     "RC_B04R6_AFSH_ADM_NEXT_MOVE_DRIFT"
   ],
+  "required_trace_fields": [
+    "candidate_id",
+    "candidate_version",
+    "selected_architecture",
+    "source_packet_hash",
+    "validated_court_hash",
+    "validated_universe_hash",
+    "numeric_triage_emit_core_hash",
+    "verdict_mode",
+    "triage_subtype",
+    "numeric_scores",
+    "route_value_terms",
+    "static_hold_reason_code",
+    "abstention_reason_code",
+    "null_route_reason_code",
+    "route_eligible_reason_code",
+    "trust_zone_status",
+    "comparator_preservation_status",
+    "metric_preservation_status",
+    "forbidden_feature_absence_status",
+    "no_contamination_status",
+    "deterministic_replay_status",
+    "selector_entry_authorized"
+  ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v11",
+  "schema_id": "kt.b04_r6.afsh_trace_schema_admissibility_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -366,6 +390,7 @@
     "TRUST_ZONE_MUTATION",
     "NEXT_MOVE_DRIFT"
   ],
+  "trace_schema_complete": true,
   "trust_zone_law_unchanged": true,
   "truth_engine_derivation_law_unchanged": true,
   "universe_binding": {
@@ -379,12 +404,158 @@
   },
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_shadow_screen_packet",
-      "detail": "next lawful move is shadow-screen packet authoring",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_ADM_NEXT_MOVE_DRIFT",
+      "check_id": "trace_schema_emits_candidate_id",
+      "detail": "trace emits candidate_id",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_candidate_version",
+      "detail": "trace emits candidate_version",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_selected_architecture",
+      "detail": "trace emits selected_architecture",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_source_packet_hash",
+      "detail": "trace emits source_packet_hash",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_validated_court_hash",
+      "detail": "trace emits validated_court_hash",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_validated_universe_hash",
+      "detail": "trace emits validated_universe_hash",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_numeric_triage_emit_core_hash",
+      "detail": "trace emits numeric_triage_emit_core_hash",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_verdict_mode",
+      "detail": "trace emits verdict_mode",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_triage_subtype",
+      "detail": "trace emits triage_subtype",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_numeric_scores",
+      "detail": "trace emits numeric_scores",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_route_value_terms",
+      "detail": "trace emits route_value_terms",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_static_hold_reason_code",
+      "detail": "trace emits static_hold_reason_code",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_abstention_reason_code",
+      "detail": "trace emits abstention_reason_code",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_null_route_reason_code",
+      "detail": "trace emits null_route_reason_code",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_route_eligible_reason_code",
+      "detail": "trace emits route_eligible_reason_code",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_trust_zone_status",
+      "detail": "trace emits trust_zone_status",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_comparator_preservation_status",
+      "detail": "trace emits comparator_preservation_status",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_metric_preservation_status",
+      "detail": "trace emits metric_preservation_status",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_forbidden_feature_absence_status",
+      "detail": "trace emits forbidden_feature_absence_status",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_no_contamination_status",
+      "detail": "trace emits no_contamination_status",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_deterministic_replay_status",
+      "detail": "trace emits deterministic_replay_status",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_emits_selector_entry_authorized",
+      "detail": "trace emits selector_entry_authorized",
+      "group": "trace",
+      "reason_code": "RC_B04R6_AFSH_ADM_TRACE_SCHEMA_INCOMPLETE",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_CANDIDATE_ADMISSIBLE__SHADOW_SCREEN_PACKET_NEXT"
+  ]
 }

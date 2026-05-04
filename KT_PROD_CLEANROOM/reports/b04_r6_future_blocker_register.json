@@ -2,62 +2,31 @@
   "artifact_id": "B04_R6_FUTURE_BLOCKER_REGISTER",
   "blockers": [
     {
-      "blocker_id": "B04R6-FB-011",
-      "future_blocker": "Candidate exists but admissibility court law is not ready.",
+      "blocker_id": "B04R6-FB-018",
+      "future_blocker": "Candidate is admissible but shadow-screen packet authority is not authored.",
       "neutralization_now": [
-        "b04_r6_afsh_admissibility_court_prep_only_draft.json",
-        "b04_r6_afsh_admissibility_reason_codes_prep_only_draft.json",
-        "b04_r6_afsh_replay_validation_plan_prep_only_draft.json",
-        "b04_r6_afsh_trace_compatibility_validation_plan_prep_only_draft.json"
+        "b04_r6_afsh_shadow_screen_packet_prep_only_draft.json",
+        "b04_r6_afsh_shadow_screen_metric_contract_prep_only_draft.json",
+        "b04_r6_afsh_shadow_screen_disqualifier_ledger_prep_only_draft.json",
+        "b04_r6_afsh_shadow_screen_replay_manifest_prep_only_draft.json",
+        "b04_r6_afsh_shadow_screen_external_verifier_requirements_prep_only_draft.json"
       ]
     },
     {
-      "blocker_id": "B04R6-FB-012",
-      "future_blocker": "Candidate hash is unstable due to timestamp or mutable receipt fields.",
+      "blocker_id": "B04R6-FB-019",
+      "future_blocker": "Shadow-screen packet accidentally authorizes execution rather than packet authoring.",
       "neutralization_now": [
-        "b04_r6_afsh_candidate_stable_semantic_hash_basis.json",
-        "test_candidate_semantic_hash_excludes_generated_utc"
+        "b04_r6_afsh_admissibility_no_authorization_drift_receipt.json"
       ]
     },
     {
-      "blocker_id": "B04R6-FB-013",
-      "future_blocker": "Candidate generation looks like unauthorized training.",
+      "blocker_id": "B04R6-FB-020",
+      "future_blocker": "External verifier or compression prep is treated as proof.",
       "neutralization_now": [
-        "b04_r6_afsh_candidate_no_training_receipt.json",
-        "b04_r6_afsh_candidate_rule_materialization_receipt.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-014",
-      "future_blocker": "Triage gate leaks blind outcomes or route-success labels through tags.",
-      "neutralization_now": [
-        "b04_r6_afsh_triage_tag_schema.json",
-        "b04_r6_afsh_triage_no_authorization_drift_receipt.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-015",
-      "future_blocker": "Candidate over-routes by letting non-eligible cases enter selector.",
-      "neutralization_now": [
-        "b04_r6_afsh_triage_emit_decision_matrix.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-016",
-      "future_blocker": "TurboQuant research packet contaminates current proof lane.",
-      "neutralization_now": [
-        "kt_turboquant_research_translation_matrix_prep_only.json",
-        "kt_memory_cost_delta_route_economics_extension_prep_only.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-017",
-      "future_blocker": "Compressed receipt/vector index treated as source of truth.",
-      "neutralization_now": [
-        "kt_compressed_receipt_vector_index_contract_prep_only.json"
+        "b04_r6_afsh_shadow_screen_external_verifier_requirements_prep_only_draft.json"
       ]
     }
   ],
-  "current_authoritative_lane": "GENERATE_B04_R6_AFSH_CANDIDATE",
-  "schema_id": "kt.b04_r6.future_blocker_register.v2"
+  "current_authoritative_lane": "RUN_B04_R6_AFSH_ADMISSIBILITY_COURT",
+  "schema_id": "kt.b04_r6.future_blocker_register.v3"
 }
