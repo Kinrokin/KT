@@ -464,6 +464,29 @@ def test_screen_self_replay_allows_no_authorization_drift_receipt_overwrite(tmp_
     assert result["verdict"] == screen.OUTCOME_PASSED
 
 
+def test_screen_postmerge_self_replay_accepts_validation_receipt_anchor(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_screen(tmp_path, monkeypatch)
+    path = reports / screen.OUTPUTS["no_authorization_drift_receipt"]
+    payload = _load(path)
+    for row in payload["input_bindings"]:
+        if row["role"] == "packet_no_authorization_drift":
+            row["sha256"] = "1" * 64
+    _write_json(path, payload)
+    _patch_screen_env(monkeypatch, tmp_path)
+    result = screen.run(reports_root=reports)
+    assert result["verdict"] == screen.OUTCOME_PASSED
+
+
+def test_screen_rejects_copied_non_no_auth_receipt_at_no_auth_path(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_screen(tmp_path, monkeypatch)
+    copied_result = _load(reports / screen.OUTPUTS["result"])
+    copied_result["packet_validation_receipt_hash"] = screen.file_sha256(tmp_path / screen.INPUTS["packet_validation_receipt"])
+    _write_json(reports / screen.OUTPUTS["no_authorization_drift_receipt"], copied_result)
+    _patch_screen_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="FAIL_CLOSED"):
+        screen.run(reports_root=reports)
+
+
 @pytest.mark.parametrize(
     "output_role",
     [
