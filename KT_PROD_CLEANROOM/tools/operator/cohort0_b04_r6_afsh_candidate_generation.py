@@ -220,8 +220,6 @@ TEXT_INPUTS = {
 }
 REFERENCE_INPUTS = {
     "source_packet_contract": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_implementation_source_packet_contract.json",
-    "court_validation_receipt": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_abstention_route_economics_court_validation_receipt.json",
-    "blind_universe_manifest": "KT_PROD_CLEANROOM/reports/b04_r6_blind_universe_case_manifest.json",
     "trust_zone_registry": "KT_PROD_CLEANROOM/governance/trust_zone_registry.json",
     "canonical_scope_manifest": "KT_PROD_CLEANROOM/governance/canonical_scope_manifest.json",
 }
@@ -374,6 +372,50 @@ def _ensure_common_boundary(payload: Dict[str, Any], *, label: str) -> None:
         _fail("RC_B04R6_AFSH_CANDIDATE_GEN_TRUST_ZONE_MUTATION", f"{label} must preserve trust-zone law")
 
 
+def _bound_input_sha(payload: Dict[str, Any], *, role: str) -> str:
+    rows = payload.get("input_bindings", [])
+    if not isinstance(rows, list):
+        _fail("RC_B04R6_AFSH_CANDIDATE_GEN_SOURCE_PACKET_BINDING_MISSING", "input bindings are missing")
+    for row in rows:
+        if isinstance(row, dict) and row.get("role") == role:
+            value = str(row.get("sha256", "")).strip()
+            if len(value) != 64:
+                _fail("RC_B04R6_AFSH_CANDIDATE_GEN_SOURCE_PACKET_BINDING_MISSING", f"{role} binding hash is malformed")
+            return value
+    _fail("RC_B04R6_AFSH_CANDIDATE_GEN_SOURCE_PACKET_BINDING_MISSING", f"missing bound input hash for {role}")
+
+
+def _validate_reference_bindings(root: Path, payloads: Dict[str, Dict[str, Any]]) -> list[Dict[str, str]]:
+    source_packet_contract = root / REFERENCE_INPUTS["source_packet_contract"]
+    expected_hash = _bound_input_sha(payloads["source_validation_contract"], role="source_packet_contract")
+    actual_hash = file_sha256(source_packet_contract)
+    if actual_hash != expected_hash:
+        _fail(
+            "RC_B04R6_AFSH_CANDIDATE_GEN_SOURCE_PACKET_BINDING_MISSING",
+            "source_packet_contract current file hash does not match source-validation binding",
+        )
+    return [
+        _pass_row(
+            "candidate_source_packet_reference_matches_validation_binding",
+            "RC_B04R6_AFSH_CANDIDATE_GEN_SOURCE_PACKET_BINDING_MISSING",
+            "source packet contract hash matches the source-validation input binding",
+            group="replay",
+        ),
+        _pass_row(
+            "candidate_validated_court_hash_uses_bound_binding",
+            "RC_B04R6_AFSH_CANDIDATE_GEN_COURT_BINDING_MISSING",
+            "validated court hash is derived from the source-validation binding, not mutable current files",
+            group="replay",
+        ),
+        _pass_row(
+            "candidate_validated_universe_hash_uses_bound_binding",
+            "RC_B04R6_AFSH_CANDIDATE_GEN_UNIVERSE_BINDING_MISSING",
+            "validated universe hash is derived from the source-validation binding, not mutable current files",
+            group="replay",
+        ),
+    ]
+
+
 def _existing_generation_contract_supports_self_replay(root: Path) -> bool:
     path = root / "KT_PROD_CLEANROOM" / "reports" / OUTPUTS["generation_contract"]
     if not path.is_file():
@@ -436,6 +478,7 @@ def _require_inputs(root: Path, payloads: Dict[str, Dict[str, Any]], text_payloa
     contract = payloads["source_validation_contract"]
     receipt = payloads["source_validation_receipt"]
     handoff = payloads["previous_next_lawful_move"]
+    _ensure_common_boundary(handoff, label="previous_next_lawful_move")
     if contract.get("source_packet_validated") is not None and contract.get("source_packet_validated") is not True:
         _fail("RC_B04R6_AFSH_CANDIDATE_GEN_SOURCE_PACKET_BINDING_MISSING", "source validation contract must be validating source packet")
     if receipt.get("source_packet_validated") is not True:
@@ -1116,6 +1159,7 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
 
     rows = _validation_rows()
     rows.extend(_validate_immutable_source_heads(payloads, source_validation_head=source_validation_head))
+    rows.extend(_validate_reference_bindings(root, payloads))
 
     source_validation_receipt = payloads["source_validation_receipt"]
     architecture_binding_head = str(source_validation_receipt.get("architecture_binding_head", "")).strip()
@@ -1131,9 +1175,9 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
     universe_binding = _validated_blind_universe_binding(source_validation_receipt)
     court_binding = _validated_court_binding(source_validation_receipt)
 
-    source_packet_hash = file_sha256(root / REFERENCE_INPUTS["source_packet_contract"])
-    validated_court_hash = file_sha256(root / REFERENCE_INPUTS["court_validation_receipt"])
-    validated_universe_hash = file_sha256(root / REFERENCE_INPUTS["blind_universe_manifest"])
+    source_packet_hash = _bound_input_sha(payloads["source_validation_contract"], role="source_packet_contract")
+    validated_court_hash = sha256_hex(canonicalize_bytes(court_binding))
+    validated_universe_hash = sha256_hex(canonicalize_bytes(universe_binding))
     numeric_core = _numeric_triage_core()
     numeric_core_hash = sha256_hex(canonicalize_bytes(numeric_core))
     component_hashes = {

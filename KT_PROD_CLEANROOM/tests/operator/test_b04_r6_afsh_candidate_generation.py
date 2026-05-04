@@ -97,15 +97,20 @@ def _previous_payload(*, role: str, status: str = "PASS") -> dict:
 def _write_inputs(root: Path) -> Path:
     reports = root / "KT_PROD_CLEANROOM" / "reports"
     governance = root / "KT_PROD_CLEANROOM" / "governance"
-    for role, raw in generation.INPUTS.items():
-        _write_json(root / raw, _previous_payload(role=role))
-    _write_text(root / generation.TEXT_INPUTS["source_validation_report"], "# AFSH Source Packet Validation\n\nPASS\n")
     _write_json(root / generation.REFERENCE_INPUTS["source_packet_contract"], {"schema_id": "source", "status": "PASS"})
-    _write_json(root / generation.REFERENCE_INPUTS["court_validation_receipt"], {"schema_id": "court", "status": "PASS"})
-    _write_json(
-        root / generation.REFERENCE_INPUTS["blind_universe_manifest"],
-        {"schema_id": "universe", "status": "PASS", "case_count": generation.EXPECTED_CASE_COUNT},
-    )
+    for role, raw in generation.INPUTS.items():
+        payload = _previous_payload(role=role)
+        if role == "source_validation_contract":
+            payload["input_bindings"] = [
+                {
+                    "binding_kind": "file_sha256_at_validation",
+                    "path": generation.REFERENCE_INPUTS["source_packet_contract"],
+                    "role": "source_packet_contract",
+                    "sha256": generation.file_sha256(root / generation.REFERENCE_INPUTS["source_packet_contract"]),
+                }
+            ]
+        _write_json(root / raw, payload)
+    _write_text(root / generation.TEXT_INPUTS["source_validation_report"], "# AFSH Source Packet Validation\n\nPASS\n")
     _write_json(governance / "trust_zone_registry.json", {"schema_id": "trust", "status": "PASS"})
     _write_json(governance / "canonical_scope_manifest.json", {"schema_id": "scope", "status": "PASS"})
     return reports
@@ -245,6 +250,25 @@ def test_candidate_mixed_head_inputs_fail_closed(tmp_path: Path, monkeypatch: py
         generation.run(reports_root=reports)
 
 
+def test_candidate_source_packet_reference_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    _patch_env(monkeypatch, tmp_path)
+    _write_json(tmp_path / generation.REFERENCE_INPUTS["source_packet_contract"], {"schema_id": "source", "status": "PASS", "drift": True})
+    with pytest.raises(RuntimeError, match="source_packet_contract"):
+        generation.run(reports_root=reports)
+
+
+def test_mutable_handoff_forbidden_boundary_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _write_inputs(tmp_path)
+    _patch_env(monkeypatch, tmp_path)
+    path = tmp_path / generation.INPUTS["previous_next_lawful_move"]
+    payload = _load(path)
+    payload["r6_open"] = True
+    _write_json(path, payload)
+    with pytest.raises(RuntimeError, match="r6_open"):
+        generation.run(reports_root=reports)
+
+
 def test_candidate_mutable_handoff_bound_before_overwrite(outputs: Path) -> None:
     receipt = _load(outputs / generation.OUTPUTS["mutable_handoff_binding_receipt"])
     rows = [row for row in receipt["input_bindings"] if row["role"] == "previous_next_lawful_move"]
@@ -286,7 +310,8 @@ def test_candidate_includes_triage_intake_gate(outputs: Path) -> None:
 
 
 def test_triage_gate_is_stage_0_or_stage_1_not_stage_2_selector(outputs: Path) -> None:
-    assert _load(outputs / generation.OUTPUTS["triage_intake_gate"])["stage"].startswith("STAGE_0")
+    stage = _load(outputs / generation.OUTPUTS["triage_intake_gate"])["stage"]
+    assert stage.startswith("STAGE_0") or stage.startswith("STAGE_1")
 
 
 def test_triage_top_level_verdict_modes_match_validated_court_modes(outputs: Path) -> None:
@@ -485,6 +510,9 @@ REQUIRED_ROW_IDS = [
     "candidate_receipt_hash_includes_envelope",
     "candidate_immutable_inputs_share_replay_head",
     "candidate_mixed_head_inputs_fail_closed",
+    "candidate_source_packet_reference_matches_validation_binding",
+    "candidate_validated_court_hash_uses_bound_binding",
+    "candidate_validated_universe_hash_uses_bound_binding",
     "candidate_mutable_handoff_bound_before_overwrite",
     "candidate_generation_does_not_train",
     "candidate_generation_does_not_execute_admissibility",
