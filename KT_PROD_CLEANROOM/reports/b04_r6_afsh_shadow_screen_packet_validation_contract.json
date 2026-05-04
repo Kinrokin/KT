@@ -1,0 +1,1217 @@
+{
+  "activation_review_authorized": false,
+  "allowed_outcomes": [
+    "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_VALIDATED__SHADOW_SCREEN_EXECUTION_NEXT",
+    "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_DEFERRED__NAMED_PACKET_VALIDATION_DEFECT_REMAINS",
+    "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
+  ],
+  "artifact_id": "B04_R6_AFSH_SHADOW_SCREEN_PACKET_VALIDATION_CONTRACT",
+  "authoritative_lane": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_VALIDATION",
+  "authorization_state": {
+    "activation_cutover_authorized": false,
+    "activation_review_authorized": false,
+    "candidate_training_authorized": false,
+    "candidate_training_executed": false,
+    "learned_router_superiority": "UNEARNED",
+    "lobe_escalation_authorized": false,
+    "package_promotion": "DEFERRED",
+    "r6_open": false,
+    "runtime_cutover_authorized": false,
+    "shadow_screen_executed": false,
+    "shadow_screen_execution_authorized_in_this_lane": false,
+    "shadow_screen_execution_next_lawful_lane": true,
+    "shadow_screen_packet_validated": true,
+    "trust_zone_law_changed": false,
+    "truth_engine_law_changed": false
+  },
+  "binding_hashes": {
+    "admissibility_receipt_hash": "069f8d2f4c3ebd92988e751047abd121e9bed3a4b9166e8ac73f0317db6b09e2",
+    "candidate_artifact_hash": "0348402dd69aaf2032e87207ce9011d00ee870ca0a63434c3dc621c2d899ee31",
+    "candidate_envelope_hash": "aba6765e3a95c19f1e4d2b669e86285be99a6d848046cb908dd731228a11e39f",
+    "candidate_manifest_hash": "d58f1d3bfaad9aa0c273ffcfd0a8318aa98b95ba8046e0d684d980ef5c6ad548",
+    "candidate_semantic_hash": "07c6f5f98b25349d3c1ced9de80410fc9800e944430099433cb1fedd2ce87025",
+    "numeric_triage_emit_core_hash": "59806c183f03ccb3ef2dc31d0f209ddad83311b07ed99a81746d644c57685fad",
+    "trace_schema_hash": "6d5282e1a2a6a27e18918af72d9b790aa66e04cfec46821373314f41606616b8",
+    "triage_receipt_schema_hash": "3a39f9a9d0c3ca33170577a73655a1df236600bb24c363a790cc9f00e3a4826f",
+    "triage_score_schema_hash": "1997c6e622c6e5486c22ca304ece6a6e0dcc6aa0376de915c27227749fc5f163",
+    "triage_tag_schema_hash": "b899afb15e9ed6316a2a8808c8f538f5cafeb3745fca4161d88ed09dbe1631c9",
+    "validated_blind_universe_hash": "c55dcc5030efa6b984d8655246a312c9299595a868f7e9e56493c7e538d5f6d8",
+    "validated_court_hash": "a9e5788391e89e66a1996d27eecb03eab63350a6ca8ce9f24e8f0fda6a3dc016",
+    "validated_source_packet_hash": "7c211b44807ee5b7d616578138fb8f1ffbd946229dce930319427699a98e87c0"
+  },
+  "candidate_id": "B04_R6_AFSH_CANDIDATE_V1",
+  "candidate_training_authorized": false,
+  "candidate_training_executed": false,
+  "candidate_version": "v1",
+  "current_branch": "authoritative/b04-r6-afsh-shadow-screen-packet-validation",
+  "current_git_head": "6931a22e66d3376a85ac24dcf049ad1b9ddf2efe",
+  "current_main_head": "2e264a55aac53005f78ed1f20e77fc23f4bd9ae0",
+  "execution_authorized_by_this_validation_lane": false,
+  "failure_count": 0,
+  "forbidden_actions": [
+    "SHADOW_SCREEN_EXECUTED",
+    "R6_OPEN",
+    "LEARNED_ROUTER_SUPERIORITY_EARNED",
+    "ACTIVATION_REVIEW_AUTHORIZED",
+    "RUNTIME_CUTOVER_AUTHORIZED",
+    "LOBE_ESCALATION_AUTHORIZED",
+    "PACKAGE_PROMOTION_AUTHORIZED",
+    "CURRENT_METRIC_CONTRACT_MUTATED",
+    "STATIC_COMPARATOR_WEAKENED",
+    "TRUTH_ENGINE_LAW_MUTATED",
+    "TRUST_ZONE_LAW_MUTATED"
+  ],
+  "fresh_trust_zone_validation": {
+    "checks": [
+      {
+        "check": "required_zones_present",
+        "missing": [],
+        "status": "PASS"
+      },
+      {
+        "check": "readiness_zones_declared_in_registry",
+        "excludes": [
+          "LAB",
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "includes": [
+          "CANONICAL"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "canonical_primary_surfaces_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_declared",
+        "count": 19,
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_in_toolchain_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_not_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "generated_truth_surfaces_in_generated_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "documentary_only_surfaces_in_commercial_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "quarantine_patterns_excluded_from_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "quarantine_patterns_in_quarantined_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "runtime_boundary_excludes_reflected_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "readiness_scoped_to_canonical_only",
+        "status": "PASS"
+      },
+      {
+        "actual": [
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "LAB",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "check": "readiness_excludes_all_noncanonical_zones",
+        "expected": [
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "LAB",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "frozen_surfaces_live_in_canonical_or_toolchain_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "frozen_surfaces_covered_by_amendment_scope",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "settled_truth_root_in_generated_zone",
+        "status": "PASS",
+        "truth_root": "kt_truth_ledger:ledger/current/current_pointer.json"
+      },
+      {
+        "check": "execution_board_truth_source_in_generated_zone",
+        "status": "PASS",
+        "truth_source": "kt_truth_ledger:ledger/current/current_pointer.json"
+      },
+      {
+        "actual": [
+          "cognition",
+          "core",
+          "council",
+          "curriculum",
+          "governance",
+          "kt",
+          "memory",
+          "multiverse",
+          "paradox",
+          "schemas",
+          "temporal",
+          "thermodynamics",
+          "versioning"
+        ],
+        "check": "runtime_registry_canonical_roots_match_contract",
+        "expected": [
+          "cognition",
+          "core",
+          "council",
+          "curriculum",
+          "governance",
+          "kt",
+          "memory",
+          "multiverse",
+          "paradox",
+          "schemas",
+          "temporal",
+          "thermodynamics",
+          "versioning"
+        ],
+        "status": "PASS"
+      },
+      {
+        "actual": [],
+        "check": "runtime_registry_compatibility_roots_match_contract",
+        "expected": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_not_canonical",
+        "overlap": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_quarantined_in_scope_manifest",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_excluded_by_runtime_boundary_contract",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_excluded_from_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_present_in_quarantined_zone",
+        "mismatches": [],
+        "status": "PASS"
+      }
+    ],
+    "failures": [],
+    "schema_id": "kt.operator.trust_zone_validation_receipt.v2",
+    "status": "PASS"
+  },
+  "generated_utc": "2026-05-04T20:55:39Z",
+  "handoff_state": {
+    "predecessor_handoff_accepted": true,
+    "self_replay_handoff_accepted": false
+  },
+  "input_bindings": [
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_learned_router_activation_review_packet_prep_only_draft.json",
+      "role": "activation_review_packet_prep_only_draft",
+      "sha256": "b36c159843182e0a9c0b8e7b3b875b1f94a14f5549f15ecaace1b4668f843b8b"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_admissibility_binding_receipt.json",
+      "role": "admissibility_binding_receipt",
+      "sha256": "7419aaeda336247357c9cf1ae73162ab461c4eb506a3f3ebe7ddfa6e07d5bb2f"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_candidate_binding_receipt.json",
+      "role": "candidate_binding_receipt",
+      "sha256": "e1899a6a101e9dc0b9ed35653eca6c55208ffbecaaa971f8508eadc98e2677ad"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/kt_compressed_receipt_vector_index_contract_prep_only.json",
+      "role": "compressed_receipt_index",
+      "sha256": "23922b940341700adbc1929bc1daf02cacca03dd0b04441609685ba894393f97"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_court_binding_receipt.json",
+      "role": "court_binding_receipt",
+      "sha256": "178a8e67ec7be293d1962002600b5c4fcebf879b646c392262a182dce09e9e8f"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_disqualifier_ledger.json",
+      "role": "disqualifier_ledger",
+      "sha256": "6bf247f809784e5f578f07440045f5984b2847db7065eaf13e11d4320772809e"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_execution_prep_only_draft.json",
+      "role": "execution_prep_only_draft",
+      "sha256": "e9fde2c29a4633067be997a0bcaa8c4fe513f1679147d5fb0129f9f042ac2666"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_expected_artifact_manifest.json",
+      "role": "expected_artifact_manifest",
+      "sha256": "fb54d0098482ceb7f6047f8719fb475d426bfa590a3a5043fee53decfeb5a714"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_external_verifier_requirements.json",
+      "role": "external_verifier_requirements",
+      "sha256": "6c134c60b466a8f0199307a09495e43a8c59d87d6aae0c3e09a4835b233a78b1"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_forensic_invalidation_court_prep_only_draft.json",
+      "role": "forensic_invalidation_court_prep_only_draft",
+      "sha256": "19f84e9853b97183b1538ceb8f4dd820003b71b64b7bcd422895c03d962b4ed6"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_future_blocker_register.json",
+      "role": "future_blocker_register",
+      "sha256": "bf3ad7f0494846d1147a52e4f0505d74180da34dc1ccc4cd17b59b9c08e4c1d3"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_metric_contract.json",
+      "role": "metric_contract",
+      "sha256": "f51b1c75819621ef16a23fbf8743274a13619cc82b6f5781cc81775b47f655d9"
+    },
+    {
+      "binding_kind": "git_object_before_overwrite",
+      "git_commit": "6931a22e66d3376a85ac24dcf049ad1b9ddf2efe",
+      "mutable_canonical_path_overwritten_by_this_lane": true,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
+      "role": "next_lawful_move",
+      "sha256": "df2c761bd8e14bdd6a5eccb66b071c68cb414f93615e74d5d33e9bd6e60b990c"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_no_authorization_drift_receipt.json",
+      "role": "no_authorization_drift_receipt",
+      "sha256": "cd047f61ea506ef9ff6767694c3f0f958b2bcc5b06ef4ee581989a11d6d606ed"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_execution_packet_contract.json",
+      "role": "packet_contract",
+      "sha256": "e3399a6b800ce341a72235c7a1067c45639ea5d5f9c2d98cafe2d9495e8e4d76"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_execution_packet_receipt.json",
+      "role": "packet_receipt",
+      "sha256": "cb385cd73cf1cbd506a0eeb260e3171f010b1e208ffc3e7e22a626df1099ff0f"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_packet_validation_plan.json",
+      "role": "packet_validation_plan",
+      "sha256": "a7145385cc7c00e671f52cba7832a258166f0abef8e0c191aa689fbcf4f214fe"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_packet_validation_reason_codes.json",
+      "role": "packet_validation_reason_codes",
+      "sha256": "db761f1d116620a88abfd4fe115e9586c152530fab82a9831bc5b2fe2b7895b5"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_replay_manifest.json",
+      "role": "replay_manifest",
+      "sha256": "d040d08c0bb67b9d829ea8e4eabca8ce7b5c51baa29de060d46c580819758736"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_result_interpretation_contract.json",
+      "role": "result_interpretation_contract",
+      "sha256": "eeab802ed317e0b36875b9797bdb07092e0d7d31ffb62333429a8327c11dd019"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_result_schema_prep_only_draft.json",
+      "role": "result_schema_prep_only_draft",
+      "sha256": "76b09c5c0a987f267c4b4a7f496307d9364f64dc8df7560add40ed74d8b1011d"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_route_value_contract.json",
+      "role": "route_value_contract",
+      "sha256": "a89ab2aab81d579171edb9dc76198e9873eda3dfc09bc74c2d156f7268a8d5ae"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_source_packet_binding_receipt.json",
+      "role": "source_packet_binding_receipt",
+      "sha256": "6a75c2803532a8daecb4c53df36d2c79d28db2206ded64a14f50d8028ea2ae47"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_static_comparator_contract.json",
+      "role": "static_comparator_contract",
+      "sha256": "8ed7aaa94ab345d1c97e0450324dc1754055a055ec1d0d5012ef501778b287c1"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_superiority_not_earned_closeout_contract_prep_only_draft.json",
+      "role": "superiority_not_earned_closeout_prep_only_draft",
+      "sha256": "a7ba74cda2cacfd27ee65961465f4bd4d1191b6361bc92d184983f5acbaee3fc"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_trace_schema_binding_receipt.json",
+      "role": "trace_schema_binding_receipt",
+      "sha256": "1a1c5c280306e2f6ad43a9d4ab468b79ad34eadb1e3abaa7f8f10c26f36c6a8e"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_triage_core_binding_receipt.json",
+      "role": "triage_core_binding_receipt",
+      "sha256": "b0dbc21d729e93c5ec99249431c52029abe5edcdfc5cff950b4de048a1ce7017"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/kt_turboquant_research_translation_matrix_prep_only.json",
+      "role": "turboquant_translation",
+      "sha256": "c147a223f6eb4e9c50cbe5f413d585a687d5fc3b8b1a6655f93a373879776e90"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_universe_binding_receipt.json",
+      "role": "universe_binding_receipt",
+      "sha256": "655768747ae32ecfd63ff8c9196d9b5e7cc42da0bd60dec3b09f08619f031222"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_execution_packet_report.md",
+      "role": "packet_report",
+      "sha256": "b2cf6c40e6c3b1f7bf3464a0ec3a0a36113ff146b04f54a875227d3c183c74e4"
+    }
+  ],
+  "learned_router_superiority_earned": false,
+  "lobe_escalation_authorized": false,
+  "next_lawful_move": "RUN_B04_R6_AFSH_SHADOW_SCREEN",
+  "package_promotion_authorized": false,
+  "package_promotion_remains_deferred": true,
+  "packet_contract_hash": "e3399a6b800ce341a72235c7a1067c45639ea5d5f9c2d98cafe2d9495e8e4d76",
+  "packet_receipt_hash": "cb385cd73cf1cbd506a0eeb260e3171f010b1e208ffc3e7e22a626df1099ff0f",
+  "packet_replay_binding_head": "78c6c2d9a880ff52f3d89e9e1ef587d4055182af",
+  "packet_report_hash": "b2cf6c40e6c3b1f7bf3464a0ec3a0a36113ff146b04f54a875227d3c183c74e4",
+  "packet_state_after_validation": "BOUND_AND_VALIDATED",
+  "packet_state_before_validation": "BOUND_NOT_VALIDATED",
+  "pass_count": 97,
+  "predecessor_outcome": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_BOUND__PACKET_VALIDATION_NEXT",
+  "previous_authoritative_lane": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET",
+  "previous_next_lawful_move": "VALIDATE_B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET",
+  "r6_open": false,
+  "reason_codes": [
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_CONTRACT_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RECEIPT_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_REPORT_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_MAIN_HEAD_MISMATCH",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_ARCHITECTURE_MISMATCH",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_CANDIDATE_BINDING_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_CANDIDATE_HASH_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_CANDIDATE_MANIFEST_HASH_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_CANDIDATE_SEMANTIC_HASH_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_UNIVERSE_BINDING_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_COURT_BINDING_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_SOURCE_PACKET_BINDING_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_ADMISSIBILITY_BINDING_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_TRIAGE_CORE_BINDING_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_TRACE_SCHEMA_BINDING_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_STATIC_COMPARATOR_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_COMPARATOR_NOT_FROZEN",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_COMPARATOR_WEAKENING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_METRIC_CONTRACT_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_METRIC_NOT_FROZEN",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_METRIC_WIDENING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_ROUTE_VALUE_CONTRACT_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_LEDGER_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_REPLAY_MANIFEST_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_EXPECTED_ARTIFACTS_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_EXTERNAL_VERIFIER_REQUIREMENTS_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_REPLAY_MANIFEST_JSON_ARTIFACT_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_REPLAY_MANIFEST_TEXT_ARTIFACT_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_ADMISSIBILITY_REPORT_MISSING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_MULTIPLE_HASH_BINDING_SOURCES",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_SELF_REPLAY_HANDOFF_FALSE_FAIL",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_MUTABLE_HANDOFF_NOT_BOUND",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_PARTIAL_WIN_ALLOWED",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_EXTERNAL_VERIFIER_EXECUTING",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_COMPRESSED_INDEX_TRUTH_DRIFT",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_EXECUTION_EXECUTED",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_R6_OPEN_DRIFT",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_SUPERIORITY_DRIFT",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_ACTIVATION_DRIFT",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_PACKAGE_PROMOTION_DRIFT",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_TRUTH_ENGINE_MUTATION",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_TRUST_ZONE_MUTATION",
+    "RC_B04R6_AFSH_SHADOW_PACKET_VAL_NEXT_MOVE_DRIFT"
+  ],
+  "runtime_cutover_authorized": false,
+  "schema_id": "kt.b04_r6.afsh_shadow_screen_packet_validation_contract.v1",
+  "schema_version": "1.0.0",
+  "selected_architecture_id": "AFSH-2S-GUARD",
+  "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
+  "selected_outcome": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_VALIDATED__SHADOW_SCREEN_EXECUTION_NEXT",
+  "shadow_screen_executed": false,
+  "shadow_screen_execution_authorized": false,
+  "shadow_screen_execution_authorized_in_this_lane": false,
+  "shadow_screen_execution_next_lawful_lane": true,
+  "shadow_screen_packet_validated": true,
+  "status": "PASS",
+  "terminal_defects": [
+    "CONTRACT_MISSING",
+    "CANDIDATE_HASH_MISSING",
+    "UNIVERSE_BINDING_MISSING",
+    "COURT_BINDING_MISSING",
+    "SOURCE_PACKET_BINDING_MISSING",
+    "ADMISSIBILITY_BINDING_MISSING",
+    "COMPARATOR_WEAKENING",
+    "METRIC_WIDENING",
+    "DISQUALIFIER_LEDGER_MISSING",
+    "RESULT_PARTIAL_WIN_ALLOWED",
+    "MULTIPLE_HASH_BINDING_SOURCES",
+    "MUTABLE_HANDOFF_NOT_BOUND",
+    "PREP_ONLY_AUTHORITY_DRIFT",
+    "EXECUTION_EXECUTED",
+    "R6_OPEN_DRIFT",
+    "SUPERIORITY_DRIFT",
+    "ACTIVATION_DRIFT",
+    "PACKAGE_PROMOTION_DRIFT",
+    "TRUTH_ENGINE_MUTATION",
+    "TRUST_ZONE_MUTATION",
+    "NEXT_MOVE_DRIFT"
+  ],
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true,
+  "validation_rows": [
+    {
+      "check_id": "validation_contract_preserves_current_main_head",
+      "detail": "validation binds current main head",
+      "group": "core",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_MAIN_HEAD_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_binds_selected_afsh_architecture",
+      "detail": "AFSH-2S-GUARD selected",
+      "group": "core",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_ARCHITECTURE_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_binds_shadow_packet_contract",
+      "detail": "packet contract bound",
+      "group": "packet",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_CONTRACT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_binds_shadow_packet_receipt",
+      "detail": "packet receipt bound",
+      "group": "packet",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RECEIPT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_binds_shadow_packet_report",
+      "detail": "packet report bound",
+      "group": "packet",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_REPORT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_binding_receipt_exists",
+      "detail": "candidate binding receipt exists",
+      "group": "candidate",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_CANDIDATE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_hash_bound",
+      "detail": "candidate artifact hash bound",
+      "group": "candidate",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_CANDIDATE_HASH_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_manifest_hash_bound",
+      "detail": "candidate manifest hash bound",
+      "group": "candidate",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_CANDIDATE_MANIFEST_HASH_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_semantic_hash_bound",
+      "detail": "candidate semantic hash bound",
+      "group": "candidate",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_CANDIDATE_SEMANTIC_HASH_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validated_blind_universe_hash_bound",
+      "detail": "validated blind-universe hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_UNIVERSE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validated_route_value_court_hash_bound",
+      "detail": "validated court hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_COURT_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validated_source_packet_hash_bound",
+      "detail": "validated source-packet hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_SOURCE_PACKET_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "admissibility_receipt_hash_bound",
+      "detail": "admissibility receipt hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_ADMISSIBILITY_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "numeric_triage_core_hash_bound",
+      "detail": "numeric triage hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_TRIAGE_CORE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_tag_schema_hash_bound",
+      "detail": "triage tag schema hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_TRIAGE_CORE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_score_schema_hash_bound",
+      "detail": "triage score schema hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_TRIAGE_CORE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "triage_receipt_schema_hash_bound",
+      "detail": "triage receipt schema hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_TRIAGE_CORE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_schema_hash_bound",
+      "detail": "trace schema hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_TRACE_SCHEMA_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "static_comparator_contract_exists",
+      "detail": "comparator contract exists",
+      "group": "comparator",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_STATIC_COMPARATOR_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "static_comparator_is_frozen",
+      "detail": "comparator frozen",
+      "group": "comparator",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_COMPARATOR_NOT_FROZEN",
+      "status": "PASS"
+    },
+    {
+      "check_id": "static_comparator_weakening_forbidden",
+      "detail": "comparator weakening forbidden",
+      "group": "comparator",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_COMPARATOR_WEAKENING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "metric_contract_exists",
+      "detail": "metric contract exists",
+      "group": "metric",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_METRIC_CONTRACT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "metric_contract_is_frozen_before_execution",
+      "detail": "metrics frozen",
+      "group": "metric",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_METRIC_NOT_FROZEN",
+      "status": "PASS"
+    },
+    {
+      "check_id": "metric_widening_forbidden",
+      "detail": "metric widening forbidden",
+      "group": "metric",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_METRIC_WIDENING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "route_value_contract_exists",
+      "detail": "route-value contract exists",
+      "group": "metric",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_ROUTE_VALUE_CONTRACT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_exists",
+      "detail": "disqualifier ledger exists",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_LEDGER_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "result_interpretation_contract_exists",
+      "detail": "result interpretation exists",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "replay_manifest_exists",
+      "detail": "replay manifest exists",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_REPLAY_MANIFEST_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "expected_artifact_manifest_exists",
+      "detail": "expected artifact manifest exists",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_EXPECTED_ARTIFACTS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "external_verifier_requirements_exist",
+      "detail": "external verifier requirements exist",
+      "group": "external",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_EXTERNAL_VERIFIER_REQUIREMENTS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "replay_manifest_includes_required_json_artifacts",
+      "detail": "JSON replay artifacts included",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_REPLAY_MANIFEST_JSON_ARTIFACT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "replay_manifest_includes_required_text_artifacts",
+      "detail": "text replay artifacts included",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_REPLAY_MANIFEST_TEXT_ARTIFACT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "replay_manifest_includes_admissibility_report",
+      "detail": "admissibility report included",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_ADMISSIBILITY_REPORT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "bound_file_hashes_come_from_single_input_bindings_path",
+      "detail": "bound file hashes source from input_bindings",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_MULTIPLE_HASH_BINDING_SOURCES",
+      "status": "PASS"
+    },
+    {
+      "check_id": "mixed_hash_binding_sources_fail_closed",
+      "detail": "mixed binding sources fail closed",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_MULTIPLE_HASH_BINDING_SOURCES",
+      "status": "PASS"
+    },
+    {
+      "check_id": "packet_self_replay_handoff_allowed_without_next_move_drift",
+      "detail": "self replay handoff allowed",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_SELF_REPLAY_HANDOFF_FALSE_FAIL",
+      "status": "PASS"
+    },
+    {
+      "check_id": "mutable_next_lawful_move_handoff_bound_before_overwrite",
+      "detail": "mutable handoff git-object-bound",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_MUTABLE_HANDOFF_NOT_BOUND",
+      "status": "PASS"
+    },
+    {
+      "check_id": "valid_prior_lane_authoritative_branch_artifacts_are_accepted",
+      "detail": "valid prior-lane artifacts accepted",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_MAIN_HEAD_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "invalid_prior_lane_branch_artifacts_fail_closed",
+      "detail": "invalid prior-lane artifacts fail closed",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_MAIN_HEAD_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "result_interpretation_prevents_partial_win_from_superiority",
+      "detail": "partial wins cannot claim superiority",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_PARTIAL_WIN_ALLOWED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "result_interpretation_requires_all_success_conditions",
+      "detail": "all success conditions required",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "result_interpretation_preserves_failed_deferred_invalidated_outcomes",
+      "detail": "failure/deferred/invalidated outcomes preserved",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "external_verifier_requirements_are_non_executing",
+      "detail": "external verifier non-executing",
+      "group": "external",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_EXTERNAL_VERIFIER_EXECUTING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "external_verifier_requirements_do_not_claim_superiority",
+      "detail": "external verifier cannot claim superiority",
+      "group": "external",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_EXTERNAL_VERIFIER_EXECUTING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "compressed_index_cannot_be_source_of_truth",
+      "detail": "compressed index not truth",
+      "group": "memory",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_COMPRESSED_INDEX_TRUTH_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "raw_hash_bound_artifact_required_after_compressed_retrieval",
+      "detail": "raw artifacts required after compressed retrieval",
+      "group": "memory",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_COMPRESSED_INDEX_TRUTH_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_execution_prep_only_draft_remains_prep_only",
+      "detail": "execution draft prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_result_schema_prep_only_draft_remains_prep_only",
+      "detail": "result schema draft prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "activation_review_packet_draft_remains_prep_only",
+      "detail": "activation draft prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "failure_closeout_contract_draft_remains_prep_only",
+      "detail": "failure closeout draft prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "forensic_invalidation_court_draft_remains_prep_only",
+      "detail": "forensic invalidation draft prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_does_not_execute_shadow_screen",
+      "detail": "screen not executed",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_EXECUTION_EXECUTED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_does_not_open_r6",
+      "detail": "R6 remains closed",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_R6_OPEN_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_does_not_claim_superiority",
+      "detail": "superiority unearned",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_SUPERIORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_does_not_authorize_activation_review",
+      "detail": "activation unauthorized",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_ACTIVATION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_does_not_authorize_package_promotion",
+      "detail": "package promotion deferred",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_PACKAGE_PROMOTION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_does_not_mutate_metric_contract",
+      "detail": "metric contract not mutated",
+      "group": "metric",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_METRIC_WIDENING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_does_not_weaken_static_comparator",
+      "detail": "static comparator not weakened",
+      "group": "comparator",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_COMPARATOR_WEAKENING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "truth_engine_law_unchanged",
+      "detail": "truth-engine law unchanged",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_TRUTH_ENGINE_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trust_zone_law_unchanged",
+      "detail": "trust-zone law unchanged",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_TRUST_ZONE_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_authorization_drift_receipt_passes",
+      "detail": "no authorization drift receipt passes",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "next_lawful_move_is_run_shadow_screen",
+      "detail": "next lawful move is shadow screen execution lane",
+      "group": "next_move",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_NEXT_MOVE_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_candidate_hash_mismatch_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class candidate_hash_mismatch",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_universe_hash_mismatch_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class universe_hash_mismatch",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_court_hash_mismatch_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class court_hash_mismatch",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_source_packet_hash_mismatch_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class source_packet_hash_mismatch",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_admissibility_hash_mismatch_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class admissibility_hash_mismatch",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_metric_widening_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class metric_widening",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_comparator_weakening_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class comparator_weakening",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_blind_label_access_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class blind_label_access",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_route_success_label_access_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class route_success_label_access",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_old_universe_counted_proof_drift_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class old_universe_counted_proof_drift",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_static_hold_collapse_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class static_hold_collapse",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_abstention_collapse_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class abstention_collapse",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_null_route_collapse_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class null_route_collapse",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_overrouting_collapse_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class overrouting_collapse",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_mirror_masked_instability_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class mirror_masked_instability",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_trace_incompleteness_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class trace_incompleteness",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_truth_engine_mutation_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class truth_engine_mutation",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_trust_zone_mutation_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class trust_zone_mutation",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_package_promotion_drift_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class package_promotion_drift",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_marks_activation_drift_terminal",
+      "detail": "disqualifier ledger includes hard/terminal class activation_drift",
+      "group": "disqualifier",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_DISQUALIFIER_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_route_eligible_cases_improve_or_lawfully_derisk_static",
+      "detail": "result interpretation requires route_eligible_cases_improve_or_lawfully_derisk_static",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_static_hold_cases_remain_static",
+      "detail": "result interpretation requires static_hold_cases_remain_static",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_abstention_required_cases_abstain",
+      "detail": "result interpretation requires abstention_required_cases_abstain",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_null_route_controls_do_not_enter_selector",
+      "detail": "result interpretation requires null_route_controls_do_not_enter_selector",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_overrouting_traps_are_survived",
+      "detail": "result interpretation requires overrouting_traps_are_survived",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_mirror_masked_siblings_remain_stable",
+      "detail": "result interpretation requires mirror_masked_siblings_remain_stable",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_wrong_route_cost_below_threshold",
+      "detail": "result interpretation requires wrong_route_cost_below_threshold",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_proof_burden_improved_or_justified",
+      "detail": "result interpretation requires proof_burden_improved_or_justified",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_trace_completeness_passes",
+      "detail": "result interpretation requires trace_completeness_passes",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_disqualifier_ledger_clean",
+      "detail": "result interpretation requires disqualifier_ledger_clean",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_no_contamination",
+      "detail": "result interpretation requires no_contamination",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_no_metric_widening",
+      "detail": "result interpretation requires no_metric_widening",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_no_comparator_weakening",
+      "detail": "result interpretation requires no_comparator_weakening",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_truth_engine_law_unchanged",
+      "detail": "result interpretation requires truth_engine_law_unchanged",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_trust_zone_law_unchanged",
+      "detail": "result interpretation requires trust_zone_law_unchanged",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    }
+  ],
+  "validator_role": "READ_HASH_ATTACK_AUTHORED_PACKET_ARTIFACTS"
+}

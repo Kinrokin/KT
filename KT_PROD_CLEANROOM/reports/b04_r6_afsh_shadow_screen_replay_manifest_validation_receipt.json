@@ -5,7 +5,7 @@
     "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_DEFERRED__NAMED_PACKET_VALIDATION_DEFECT_REMAINS",
     "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_AFSH_SHADOW_SCREEN_REPLAY_MANIFEST_VALIDATION_RECEIPT",
   "authoritative_lane": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_VALIDATION",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -439,7 +439,7 @@
   "packet_receipt_hash": "cb385cd73cf1cbd506a0eeb260e3171f010b1e208ffc3e7e22a626df1099ff0f",
   "packet_replay_binding_head": "78c6c2d9a880ff52f3d89e9e1ef587d4055182af",
   "packet_report_hash": "b2cf6c40e6c3b1f7bf3464a0ec3a0a36113ff146b04f54a875227d3c183c74e4",
-  "pass_count": 1,
+  "pass_count": 11,
   "predecessor_outcome": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_BOUND__PACKET_VALIDATION_NEXT",
   "previous_authoritative_lane": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET",
   "previous_next_lawful_move": "VALIDATE_B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET",
@@ -493,7 +493,7 @@
     "RC_B04R6_AFSH_SHADOW_PACKET_VAL_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v13",
+  "schema_id": "kt.b04_r6.afsh_shadow_screen_replay_manifest_validation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -531,12 +531,81 @@
   "truth_engine_derivation_law_unchanged": true,
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_run_shadow_screen",
-      "detail": "next lawful move is shadow screen execution lane",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "replay_manifest_exists",
+      "detail": "replay manifest exists",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_REPLAY_MANIFEST_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "expected_artifact_manifest_exists",
+      "detail": "expected artifact manifest exists",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_EXPECTED_ARTIFACTS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "replay_manifest_includes_required_json_artifacts",
+      "detail": "JSON replay artifacts included",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_REPLAY_MANIFEST_JSON_ARTIFACT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "replay_manifest_includes_required_text_artifacts",
+      "detail": "text replay artifacts included",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_REPLAY_MANIFEST_TEXT_ARTIFACT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "replay_manifest_includes_admissibility_report",
+      "detail": "admissibility report included",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_ADMISSIBILITY_REPORT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "bound_file_hashes_come_from_single_input_bindings_path",
+      "detail": "bound file hashes source from input_bindings",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_MULTIPLE_HASH_BINDING_SOURCES",
+      "status": "PASS"
+    },
+    {
+      "check_id": "mixed_hash_binding_sources_fail_closed",
+      "detail": "mixed binding sources fail closed",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_MULTIPLE_HASH_BINDING_SOURCES",
+      "status": "PASS"
+    },
+    {
+      "check_id": "packet_self_replay_handoff_allowed_without_next_move_drift",
+      "detail": "self replay handoff allowed",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_SELF_REPLAY_HANDOFF_FALSE_FAIL",
+      "status": "PASS"
+    },
+    {
+      "check_id": "mutable_next_lawful_move_handoff_bound_before_overwrite",
+      "detail": "mutable handoff git-object-bound",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_MUTABLE_HANDOFF_NOT_BOUND",
+      "status": "PASS"
+    },
+    {
+      "check_id": "valid_prior_lane_authoritative_branch_artifacts_are_accepted",
+      "detail": "valid prior-lane artifacts accepted",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_MAIN_HEAD_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "check_id": "invalid_prior_lane_branch_artifacts_fail_closed",
+      "detail": "invalid prior-lane artifacts fail closed",
+      "group": "replay",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_MAIN_HEAD_MISMATCH",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_VALIDATED__SHADOW_SCREEN_EXECUTION_NEXT"
+  ]
 }

@@ -5,7 +5,7 @@
     "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_DEFERRED__NAMED_PACKET_VALIDATION_DEFECT_REMAINS",
     "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_AFSH_SHADOW_SCREEN_RESULT_INTERPRETATION_VALIDATION_RECEIPT",
   "authoritative_lane": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_VALIDATION",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -241,6 +241,12 @@
     "schema_id": "kt.operator.trust_zone_validation_receipt.v2",
     "status": "PASS"
   },
+  "future_screen_allowed_outcomes": [
+    "B04_R6_AFSH_SHADOW_SUPERIORITY_PASSED__ACTIVATION_REVIEW_PACKET_NEXT",
+    "B04_R6_AFSH_SHADOW_SUPERIORITY_FAILED__SUPERIORITY_NOT_EARNED_CLOSEOUT_OR_REDESIGN_NEXT",
+    "B04_R6_AFSH_SHADOW_SCREEN_INVALIDATED__FORENSIC_INVALIDATION_COURT_NEXT",
+    "B04_R6_AFSH_SHADOW_DEFERRED__NAMED_DEFECT_REMAINS"
+  ],
   "generated_utc": "2026-05-04T20:55:39Z",
   "handoff_state": {
     "predecessor_handoff_accepted": true,
@@ -439,7 +445,7 @@
   "packet_receipt_hash": "cb385cd73cf1cbd506a0eeb260e3171f010b1e208ffc3e7e22a626df1099ff0f",
   "packet_replay_binding_head": "78c6c2d9a880ff52f3d89e9e1ef587d4055182af",
   "packet_report_hash": "b2cf6c40e6c3b1f7bf3464a0ec3a0a36113ff146b04f54a875227d3c183c74e4",
-  "pass_count": 1,
+  "pass_count": 19,
   "predecessor_outcome": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_BOUND__PACKET_VALIDATION_NEXT",
   "previous_authoritative_lane": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET",
   "previous_next_lawful_move": "VALIDATE_B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET",
@@ -492,8 +498,25 @@
     "RC_B04R6_AFSH_SHADOW_PACKET_VAL_TRUST_ZONE_MUTATION",
     "RC_B04R6_AFSH_SHADOW_PACKET_VAL_NEXT_MOVE_DRIFT"
   ],
+  "required_success_conditions": [
+    "route_eligible_cases_improve_or_lawfully_derisk_static",
+    "static_hold_cases_remain_static",
+    "abstention_required_cases_abstain",
+    "null_route_controls_do_not_enter_selector",
+    "overrouting_traps_are_survived",
+    "mirror_masked_siblings_remain_stable",
+    "wrong_route_cost_below_threshold",
+    "proof_burden_improved_or_justified",
+    "trace_completeness_passes",
+    "disqualifier_ledger_clean",
+    "no_contamination",
+    "no_metric_widening",
+    "no_comparator_weakening",
+    "truth_engine_law_unchanged",
+    "trust_zone_law_unchanged"
+  ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v13",
+  "schema_id": "kt.b04_r6.afsh_shadow_screen_result_interpretation_validation_receipt.v1",
   "schema_version": "1.0.0",
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -531,12 +554,137 @@
   "truth_engine_derivation_law_unchanged": true,
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_run_shadow_screen",
-      "detail": "next lawful move is shadow screen execution lane",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "result_interpretation_contract_exists",
+      "detail": "result interpretation exists",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "result_interpretation_prevents_partial_win_from_superiority",
+      "detail": "partial wins cannot claim superiority",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_PARTIAL_WIN_ALLOWED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "result_interpretation_requires_all_success_conditions",
+      "detail": "all success conditions required",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "result_interpretation_preserves_failed_deferred_invalidated_outcomes",
+      "detail": "failure/deferred/invalidated outcomes preserved",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_route_eligible_cases_improve_or_lawfully_derisk_static",
+      "detail": "result interpretation requires route_eligible_cases_improve_or_lawfully_derisk_static",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_static_hold_cases_remain_static",
+      "detail": "result interpretation requires static_hold_cases_remain_static",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_abstention_required_cases_abstain",
+      "detail": "result interpretation requires abstention_required_cases_abstain",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_null_route_controls_do_not_enter_selector",
+      "detail": "result interpretation requires null_route_controls_do_not_enter_selector",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_overrouting_traps_are_survived",
+      "detail": "result interpretation requires overrouting_traps_are_survived",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_mirror_masked_siblings_remain_stable",
+      "detail": "result interpretation requires mirror_masked_siblings_remain_stable",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_wrong_route_cost_below_threshold",
+      "detail": "result interpretation requires wrong_route_cost_below_threshold",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_proof_burden_improved_or_justified",
+      "detail": "result interpretation requires proof_burden_improved_or_justified",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_trace_completeness_passes",
+      "detail": "result interpretation requires trace_completeness_passes",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_disqualifier_ledger_clean",
+      "detail": "result interpretation requires disqualifier_ledger_clean",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_no_contamination",
+      "detail": "result interpretation requires no_contamination",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_no_metric_widening",
+      "detail": "result interpretation requires no_metric_widening",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_no_comparator_weakening",
+      "detail": "result interpretation requires no_comparator_weakening",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_truth_engine_law_unchanged",
+      "detail": "result interpretation requires truth_engine_law_unchanged",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "success_condition_requires_trust_zone_law_unchanged",
+      "detail": "result interpretation requires trust_zone_law_unchanged",
+      "group": "result",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_VAL_RESULT_INTERPRETATION_MISSING",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_VALIDATED__SHADOW_SCREEN_EXECUTION_NEXT"
+  ]
 }
