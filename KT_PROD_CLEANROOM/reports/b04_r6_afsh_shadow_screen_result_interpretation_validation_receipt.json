@@ -43,9 +43,9 @@
   "candidate_training_authorized": false,
   "candidate_training_executed": false,
   "candidate_version": "v1",
-  "current_branch": "authoritative/b04-r6-afsh-shadow-screen-packet-validation",
-  "current_git_head": "6931a22e66d3376a85ac24dcf049ad1b9ddf2efe",
-  "current_main_head": "2e264a55aac53005f78ed1f20e77fc23f4bd9ae0",
+  "current_branch": "main",
+  "current_git_head": "642a18238491b4ba3f26cacca7c69438e7bf1806",
+  "current_main_head": "642a18238491b4ba3f26cacca7c69438e7bf1806",
   "failure_count": 0,
   "forbidden_actions": [
     "SHADOW_SCREEN_EXECUTED",
@@ -247,10 +247,10 @@
     "B04_R6_AFSH_SHADOW_SCREEN_INVALIDATED__FORENSIC_INVALIDATION_COURT_NEXT",
     "B04_R6_AFSH_SHADOW_DEFERRED__NAMED_DEFECT_REMAINS"
   ],
-  "generated_utc": "2026-05-04T20:55:39Z",
+  "generated_utc": "2026-05-04T21:03:36Z",
   "handoff_state": {
-    "predecessor_handoff_accepted": true,
-    "self_replay_handoff_accepted": false
+    "predecessor_handoff_accepted": false,
+    "self_replay_handoff_accepted": true
   },
   "input_bindings": [
     {
@@ -327,11 +327,11 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "6931a22e66d3376a85ac24dcf049ad1b9ddf2efe",
+      "git_commit": "642a18238491b4ba3f26cacca7c69438e7bf1806",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "next_lawful_move",
-      "sha256": "df2c761bd8e14bdd6a5eccb66b071c68cb414f93615e74d5d33e9bd6e60b990c"
+      "sha256": "7a9eb7b71e02b3c04fe8c997e93b0f6db00c4252dd6f2b2d75a3717e20e3f4e8"
     },
     {
       "binding_kind": "file_sha256_at_shadow_screen_packet_validation",
