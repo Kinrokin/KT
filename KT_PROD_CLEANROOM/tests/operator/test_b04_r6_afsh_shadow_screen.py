@@ -159,11 +159,65 @@ def _reference_payload(artifact_id: str) -> dict:
 
 def _write_screen_inputs(reports: Path) -> None:
     root = reports.parents[1]
-    _write_json(root / screen.INPUTS["case_manifest"], _case_manifest())
+    admissibility = _load(root / screen.INPUTS["admissibility_receipt"])
+    universe_binding = admissibility["universe_binding"]
+    court_binding = admissibility["court_binding"]
+    source_binding = admissibility["source_packet_binding"]
+    case_manifest = _case_manifest()
+    court_contract = {
+        **_reference_payload("B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_CONTRACT"),
+        "validated_blind_universe_binding": universe_binding,
+    }
+    source_contract = {
+        **_reference_payload("B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_CONTRACT"),
+        "validated_blind_universe_binding": universe_binding,
+        "validated_court_binding": court_binding,
+        "source_packet_binding": source_binding,
+    }
+    _write_json(root / screen.INPUTS["case_manifest"], case_manifest)
     _write_json(root / screen.INPUTS["control_sibling_map"], _control_map())
     _write_json(root / screen.INPUTS["mirror_masked_map"], {**_control_map(), "artifact_id": "B04_R6_BLIND_UNIVERSE_MIRROR_MASKED_MAP"})
-    _write_json(root / screen.INPUTS["court_contract"], _reference_payload("B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_CONTRACT"))
-    _write_json(root / screen.INPUTS["source_packet_contract"], _reference_payload("B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_CONTRACT"))
+    _write_json(root / screen.INPUTS["court_contract"], court_contract)
+    _write_json(root / screen.INPUTS["source_packet_contract"], source_contract)
+    _write_json(
+        root / screen.INPUTS["universe_validation_receipt"],
+        {
+            **_reference_payload("B04_R6_NEW_BLIND_INPUT_UNIVERSE_VALIDATION_RECEIPT"),
+            "selected_outcome": "B04_R6_NEW_BLIND_UNIVERSE_VALIDATED__STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_NEXT",
+            "case_count": 18,
+            "input_bindings": [],
+        },
+    )
+    _write_json(
+        root / screen.INPUTS["court_validation_receipt"],
+        {
+            **_reference_payload("B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_VALIDATION_RECEIPT"),
+            "selected_outcome": "B04_R6_STATIC_HOLD_ABSTENTION_ROUTE_ECONOMICS_COURT_VALIDATED__AFSH_IMPLEMENTATION_SOURCE_PACKET_NEXT",
+            "input_bindings": [
+                {
+                    "role": "court_contract",
+                    "path": screen.INPUTS["court_contract"],
+                    "sha256": screen.file_sha256(root / screen.INPUTS["court_contract"]),
+                    "binding_kind": "file_sha256_at_validation",
+                }
+            ],
+        },
+    )
+    _write_json(
+        root / screen.INPUTS["source_packet_validation_receipt"],
+        {
+            **_reference_payload("B04_R6_AFSH_SOURCE_PACKET_VALIDATION_RECEIPT"),
+            "selected_outcome": "B04_R6_AFSH_IMPLEMENTATION_SOURCE_PACKET_VALIDATED__CANDIDATE_GENERATION_NEXT",
+            "input_bindings": [
+                {
+                    "role": "source_packet_contract",
+                    "path": screen.INPUTS["source_packet_contract"],
+                    "sha256": screen.file_sha256(root / screen.INPUTS["source_packet_contract"]),
+                    "binding_kind": "file_sha256_at_validation",
+                }
+            ],
+        },
+    )
 
 
 def _run_screen(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
@@ -428,6 +482,42 @@ def test_screen_rejects_mutated_candidate_hash(tmp_path: Path, monkeypatch: pyte
     path = tmp_path / screen.INPUTS["candidate_artifact"]
     payload = _load(path)
     payload["candidate_id"] = "MUTATED"
+    _write_json(path, payload)
+    _patch_screen_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="FAIL_CLOSED"):
+        screen.run(reports_root=reports)
+
+
+def test_screen_rejects_mutated_case_manifest_runtime_input(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = validation_helpers._run_validation(tmp_path, monkeypatch)
+    _write_screen_inputs(reports)
+    path = tmp_path / screen.INPUTS["case_manifest"]
+    payload = _load(path)
+    payload["cases"][0]["family_id"] = "MUTATED_AFTER_PACKET_VALIDATION"
+    _write_json(path, payload)
+    _patch_screen_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="FAIL_CLOSED"):
+        screen.run(reports_root=reports)
+
+
+def test_screen_rejects_mutated_court_contract_runtime_input(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = validation_helpers._run_validation(tmp_path, monkeypatch)
+    _write_screen_inputs(reports)
+    path = tmp_path / screen.INPUTS["court_contract"]
+    payload = _load(path)
+    payload["validated_blind_universe_binding"]["case_count"] = 19
+    _write_json(path, payload)
+    _patch_screen_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="FAIL_CLOSED"):
+        screen.run(reports_root=reports)
+
+
+def test_screen_rejects_mutated_source_packet_contract_runtime_input(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = validation_helpers._run_validation(tmp_path, monkeypatch)
+    _write_screen_inputs(reports)
+    path = tmp_path / screen.INPUTS["source_packet_contract"]
+    payload = _load(path)
+    payload["validated_court_binding"]["route_eligible_non_executing_only"] = False
     _write_json(path, payload)
     _patch_screen_env(monkeypatch, tmp_path)
     with pytest.raises(RuntimeError, match="FAIL_CLOSED"):

@@ -132,6 +132,9 @@ REQUIRED_TRACE_FIELDS = (
 INPUTS = {
     "packet_validation_contract": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_packet_validation_contract.json",
     "packet_validation_receipt": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_packet_validation_receipt.json",
+    "universe_validation_receipt": "KT_PROD_CLEANROOM/reports/b04_r6_new_blind_input_universe_validation_receipt.json",
+    "court_validation_receipt": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_abstention_route_economics_court_validation_receipt.json",
+    "source_packet_validation_receipt": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_source_packet_validation_receipt.json",
     "packet_contract": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_execution_packet_contract.json",
     "packet_receipt": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_execution_packet_receipt.json",
     "candidate_manifest": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_candidate_manifest.json",
@@ -275,6 +278,13 @@ def _input_binding_sha(bindings: Iterable[Dict[str, Any]], role: str) -> str:
     return matches[0]
 
 
+def _optional_input_binding_sha(bindings: Iterable[Dict[str, Any]], role: str) -> Optional[str]:
+    matches = [str(row.get("sha256", "")).strip() for row in bindings if row.get("role") == role]
+    if len(matches) > 1:
+        _fail("RC_B04R6_AFSH_SCREEN_PACKET_BINDING_MISSING", f"duplicate binding for role {role}")
+    return matches[0] if matches else None
+
+
 def _ensure_false_if_present(payload: Dict[str, Any], key: str, *, label: str, code: str) -> None:
     if key in payload and bool(payload.get(key)):
         _fail(code, f"{label} sets forbidden true flag: {key}")
@@ -405,6 +415,49 @@ def _validate_packet_bound_inputs(root: Path, payloads: Dict[str, Dict[str, Any]
     if candidate_hash.get("candidate_envelope_hash") != validation_hashes["candidate_envelope_hash"]:
         _fail("RC_B04R6_AFSH_SCREEN_CANDIDATE_HASH_MISMATCH", "candidate envelope hash mismatch")
     return {key: str(value) for key, value in validation_hashes.items()}
+
+
+def _validate_runtime_authoritative_inputs(root: Path, payloads: Dict[str, Dict[str, Any]], binding_hashes: Dict[str, str]) -> None:
+    admissibility = payloads["admissibility_receipt"]
+    case_manifest = payloads["case_manifest"]
+    court_contract = payloads["court_contract"]
+    source_contract = payloads["source_packet_contract"]
+
+    universe_binding = admissibility.get("universe_binding")
+    court_binding = admissibility.get("court_binding")
+    source_binding = admissibility.get("source_packet_binding")
+    if _canonical_hash(universe_binding) != binding_hashes["validated_blind_universe_hash"]:
+        _fail("RC_B04R6_AFSH_SCREEN_UNIVERSE_HASH_MISMATCH", "admissibility universe binding does not match packet-bound hash")
+    if _canonical_hash(court_binding) != binding_hashes["validated_court_hash"]:
+        _fail("RC_B04R6_AFSH_SCREEN_COURT_HASH_MISMATCH", "admissibility court binding does not match packet-bound hash")
+    if _canonical_hash(source_binding) != binding_hashes["validated_source_packet_hash"]:
+        _fail("RC_B04R6_AFSH_SCREEN_SOURCE_PACKET_HASH_MISMATCH", "admissibility source-packet binding does not match packet-bound hash")
+
+    cases = case_manifest.get("cases")
+    if not isinstance(cases, list):
+        _fail("RC_B04R6_AFSH_SCREEN_UNIVERSE_HASH_MISMATCH", "case manifest cases missing")
+    if case_manifest.get("case_manifest_sha256") != _canonical_hash(cases):
+        _fail("RC_B04R6_AFSH_SCREEN_UNIVERSE_HASH_MISMATCH", "case manifest hash is not runtime-bound to cases")
+    if universe_binding.get("case_count") != len(cases):
+        _fail("RC_B04R6_AFSH_SCREEN_UNIVERSE_HASH_MISMATCH", "case manifest count diverges from packet-bound universe")
+    if universe_binding.get("case_namespace") != f"{CASE_PREFIX}*":
+        _fail("RC_B04R6_AFSH_SCREEN_UNIVERSE_HASH_MISMATCH", "case namespace diverges from packet-bound universe")
+    if court_contract.get("validated_blind_universe_binding") != universe_binding:
+        _fail("RC_B04R6_AFSH_SCREEN_UNIVERSE_HASH_MISMATCH", "court contract universe binding diverges from packet-bound universe")
+    if source_contract.get("validated_blind_universe_binding") != universe_binding:
+        _fail("RC_B04R6_AFSH_SCREEN_UNIVERSE_HASH_MISMATCH", "source packet universe binding diverges from packet-bound universe")
+    if source_contract.get("validated_court_binding") != court_binding:
+        _fail("RC_B04R6_AFSH_SCREEN_COURT_HASH_MISMATCH", "source packet court binding diverges from packet-bound court")
+
+    court_validation_binding = _optional_input_binding_sha(payloads["court_validation_receipt"].get("input_bindings", []), "court_contract")
+    if court_validation_binding and file_sha256(common.resolve_path(root, INPUTS["court_contract"])) != court_validation_binding:
+        _fail("RC_B04R6_AFSH_SCREEN_COURT_HASH_MISMATCH", "court contract file hash drifted from court validation receipt")
+    source_validation_binding = _optional_input_binding_sha(payloads["source_packet_validation_receipt"].get("input_bindings", []), "source_packet_contract")
+    if source_validation_binding and file_sha256(common.resolve_path(root, INPUTS["source_packet_contract"])) != source_validation_binding:
+        _fail("RC_B04R6_AFSH_SCREEN_SOURCE_PACKET_HASH_MISMATCH", "source packet contract file hash drifted from source validation receipt")
+    universe_validation_binding = _optional_input_binding_sha(payloads["universe_validation_receipt"].get("input_bindings", []), "case_manifest")
+    if universe_validation_binding and file_sha256(common.resolve_path(root, INPUTS["case_manifest"])) != universe_validation_binding:
+        _fail("RC_B04R6_AFSH_SCREEN_UNIVERSE_HASH_MISMATCH", "case manifest file hash drifted from universe validation receipt")
 
 
 def _validate_case_manifest(payloads: Dict[str, Dict[str, Any]]) -> list[Dict[str, Any]]:
@@ -1040,6 +1093,7 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
     packet_validation_replay_head = _require_status_pass(payloads, text_payloads)
     _validate_handoff(payloads["previous_next_lawful_move"])
     binding_hashes = _validate_packet_bound_inputs(root, payloads)
+    _validate_runtime_authoritative_inputs(root, payloads, binding_hashes)
     cases = _validate_case_manifest(payloads)
     _validate_screen_contracts(payloads)
     _validate_memory_prep(payloads)
