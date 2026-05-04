@@ -681,7 +681,9 @@ def _replay_manifest(base: Dict[str, Any], hashes: Dict[str, str]) -> Dict[str, 
         "replay_command_future": "python -m tools.operator.cohort0_b04_r6_afsh_shadow_screen",
         "raw_hash_bound_artifacts_required": True,
         "compressed_indexes_are_retrieval_aids_only": True,
-        "expected_artifact_roles": sorted(INPUTS.keys()),
+        "expected_artifact_roles": sorted([*INPUTS.keys(), *TEXT_INPUTS.keys()]),
+        "expected_json_artifact_roles": sorted(INPUTS.keys()),
+        "expected_text_artifact_roles": sorted(TEXT_INPUTS.keys()),
         "binding_hashes": hashes,
     }
 

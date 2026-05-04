@@ -462,6 +462,12 @@ def test_replay_manifest_binds_expected_artifacts(outputs: Path) -> None:
     assert "candidate_manifest" in _load(outputs / packet.OUTPUTS["replay_manifest"])["expected_artifact_roles"]
 
 
+def test_replay_manifest_includes_required_text_artifacts(outputs: Path) -> None:
+    manifest = _load(outputs / packet.OUTPUTS["replay_manifest"])
+    assert "admissibility_report" in manifest["expected_artifact_roles"]
+    assert "admissibility_report" in manifest["expected_text_artifact_roles"]
+
+
 def test_replay_manifest_requires_raw_hash_bound_artifacts(outputs: Path) -> None:
     assert _load(outputs / packet.OUTPUTS["replay_manifest"])["raw_hash_bound_artifacts_required"] is True
 
