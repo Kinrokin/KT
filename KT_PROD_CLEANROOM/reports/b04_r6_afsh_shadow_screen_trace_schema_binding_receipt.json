@@ -6,7 +6,7 @@
     "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_AFSH_SHADOW_SCREEN_TRACE_SCHEMA_BINDING_RECEIPT",
   "authoritative_lane": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -39,6 +39,7 @@
     "validated_court_hash": "a9e5788391e89e66a1996d27eecb03eab63350a6ca8ce9f24e8f0fda6a3dc016",
     "validated_source_packet_hash": "7c211b44807ee5b7d616578138fb8f1ffbd946229dce930319427699a98e87c0"
   },
+  "bound_hash": "6d5282e1a2a6a27e18918af72d9b790aa66e04cfec46821373314f41606616b8",
   "candidate_envelope_hash": "aba6765e3a95c19f1e4d2b669e86285be99a6d848046cb908dd731228a11e39f",
   "candidate_id": "B04_R6_AFSH_CANDIDATE_V1",
   "candidate_replay_binding_head": "6f8e40c717c87b1e1b82576fe6de25a34a8e9348",
@@ -210,7 +211,7 @@
   "next_lawful_move": "VALIDATE_B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET",
   "package_promotion_authorized": false,
   "package_promotion_remains_deferred": true,
-  "pass_count": 1,
+  "pass_count": 6,
   "predecessor_outcome": "B04_R6_AFSH_CANDIDATE_ADMISSIBLE__SHADOW_SCREEN_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_AFSH_ADMISSIBILITY_COURT",
   "r6_open": false,
@@ -247,7 +248,7 @@
     "RC_B04R6_AFSH_SHADOW_PACKET_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v12",
+  "schema_id": "kt.b04_r6.afsh_shadow_screen_trace_schema_binding_receipt.v1",
   "schema_version": "1.0.0",
   "screen_success_law": {
     "required_conditions": [
@@ -308,12 +309,46 @@
   },
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_packet_validation",
-      "detail": "next lawful move is packet validation",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_NEXT_MOVE_DRIFT",
+      "check_id": "packet_binds_validated_blind_universe_hash",
+      "detail": "validated blind universe hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_UNIVERSE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "packet_binds_validated_route_value_court_hash",
+      "detail": "validated court hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_COURT_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "packet_binds_validated_source_packet_hash",
+      "detail": "validated source packet hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_SOURCE_PACKET_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "packet_binds_admissibility_receipt_hash",
+      "detail": "admissibility receipt hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_ADMISSIBILITY_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "packet_binds_numeric_triage_core_hash",
+      "detail": "numeric triage core hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_TRIAGE_CORE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "packet_binds_trace_schema_hash",
+      "detail": "trace schema hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_AFSH_SHADOW_PACKET_TRACE_SCHEMA_BINDING_MISSING",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION_PACKET_BOUND__PACKET_VALIDATION_NEXT"
+  ]
 }
