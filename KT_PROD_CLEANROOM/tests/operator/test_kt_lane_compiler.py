@@ -32,6 +32,15 @@ def _spec() -> dict:
         "no_authorization_drift_checks": ["PREP_ONLY boundary is retained."],
         "future_blockers": ["AUTHORITATIVE_PACKET_PENDING"],
         "reason_codes": ["PREP_ONLY_NOT_AUTHORIZED"],
+        "lane_kind": "VALIDATION",
+        "current_main_head": "60822fab5dfbaddcbe236f8e3266fbca50af7f14",
+        "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_BOUND__LIMITED_RUNTIME_VALIDATION_NEXT",
+        "selected_outcome": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATED__LIMITED_RUNTIME_EXECUTION_PACKET_NEXT",
+        "next_lawful_move": "AUTHOR_B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET",
+        "may_authorize": ["LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATED"],
+        "must_not_authorize": ["LIMITED_RUNTIME_EXECUTION_AUTHORIZED", "R6_OPEN"],
+        "authoritative_inputs": ["limited_runtime_authorization_packet"],
+        "prep_only_outputs": ["limited_runtime_execution_packet_draft"],
     }
 
 
@@ -68,6 +77,8 @@ def test_generated_artifacts_include_all_required_scaffolds() -> None:
 
     assert contract["schema_id"] == "kt.lane_contract.prep_only.v0"
     assert contract["authority"] == "PREP_ONLY_TOOLING"
+    assert contract["lane_law_metadata"]["lane_kind"] == "VALIDATION"
+    assert "R6_OPEN" in contract["lane_law_metadata"]["must_not_authorize"]
     assert contract["non_authorization_guards"]["runtime_authorized"] is False
     assert "KT_PROD_CLEANROOM/tools/operator/sample_prep_lane.py" in generated
     assert "KT_PROD_CLEANROOM/tests/operator/test_sample_prep_lane.py" in generated
@@ -83,10 +94,19 @@ def test_generated_artifacts_include_all_required_scaffolds() -> None:
 @pytest.mark.parametrize("token", FORBIDDEN_AUTHORITY_TOKENS)
 def test_forbidden_outcomes_are_rejected_from_specs(token: str) -> None:
     spec = _spec()
-    spec["summary"] = f"attempt to claim {token}"
+    spec["may_authorize"] = [f"attempt_to_claim_{token}"]
 
-    with pytest.raises(LaneSpecError, match="forbidden authority tokens present"):
+    with pytest.raises(LaneSpecError, match="may_authorize contains forbidden authority tokens"):
         build_lane_contract(spec)
+
+
+def test_must_not_authorize_can_name_forbidden_boundaries() -> None:
+    spec = _spec()
+    spec["must_not_authorize"] = list(FORBIDDEN_AUTHORITY_TOKENS)
+
+    contract = build_lane_contract(spec)
+
+    assert set(contract["lane_law_metadata"]["must_not_authorize"]) == set(FORBIDDEN_AUTHORITY_TOKENS)
 
 
 def test_output_is_deterministic() -> None:

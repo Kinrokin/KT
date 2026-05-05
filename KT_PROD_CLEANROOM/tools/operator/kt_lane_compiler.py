@@ -14,15 +14,19 @@ AUTHORITY = "PREP_ONLY_TOOLING"
 DEFAULT_REPORT_ROOT_REL = "KT_PROD_CLEANROOM/reports"
 
 FORBIDDEN_AUTHORITY_TOKENS = (
-    "AUTHOR_B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET",
-    "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET",
-    "LIMITED_RUNTIME_AUTHORIZATION",
+    "LIMITED_RUNTIME_EXECUTION_AUTHORIZED",
+    "LIMITED_RUNTIME_AUTHORIZED",
     "R6_OPEN",
     "RUNTIME_AUTHORIZED",
+    "RUNTIME_CUTOVER_AUTHORIZED",
+    "ACTIVATION_CUTOVER_EXECUTED",
+    "LOBE_ESCALATION_AUTHORIZED",
+    "PACKAGE_PROMOTION_AUTHORIZED",
     "PACKAGE_PROMOTION",
     "PROMOTE_PACKAGE",
     "COMMERCIAL_CLAIM_AUTHORIZED",
     "COMMERCIAL_CLAIMS_AUTHORIZED",
+    "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED",
 )
 
 PREP_ONLY_BANNER = (
@@ -135,11 +139,26 @@ def _normalize_spec(spec: Mapping[str, Any]) -> Dict[str, Any]:
         "no_authorization_drift_checks": _optional_string_list(spec, "no_authorization_drift_checks"),
         "future_blockers": _optional_string_list(spec, "future_blockers"),
         "reason_codes": _optional_string_list(spec, "reason_codes"),
+        "lane_kind": _as_text(spec["lane_kind"], "lane_kind") if "lane_kind" in spec else "PREP",
+        "current_main_head": _as_text(spec["current_main_head"], "current_main_head")
+        if "current_main_head" in spec
+        else "",
+        "predecessor_outcome": _as_text(spec["predecessor_outcome"], "predecessor_outcome")
+        if "predecessor_outcome" in spec
+        else "",
+        "selected_outcome": _as_text(spec["selected_outcome"], "selected_outcome") if "selected_outcome" in spec else "",
+        "next_lawful_move": _as_text(spec["next_lawful_move"], "next_lawful_move")
+        if "next_lawful_move" in spec
+        else "",
+        "may_authorize": _optional_string_list(spec, "may_authorize"),
+        "must_not_authorize": _optional_string_list(spec, "must_not_authorize"),
+        "authoritative_inputs": _optional_string_list(spec, "authoritative_inputs"),
+        "prep_only_outputs": _optional_string_list(spec, "prep_only_outputs"),
     }
 
-    forbidden = _forbidden_hits(normalized.values())
+    forbidden = _forbidden_hits(normalized["may_authorize"])
     if forbidden:
-        raise LaneSpecError(f"forbidden authority tokens present: {', '.join(forbidden)}")
+        raise LaneSpecError(f"may_authorize contains forbidden authority tokens: {', '.join(forbidden)}")
 
     return normalized
 
@@ -308,6 +327,17 @@ def build_lane_contract(spec: Mapping[str, Any]) -> Dict[str, Any]:
         "status": "PREP_ONLY_SCAFFOLD",
         "prep_only_banner": PREP_ONLY_BANNER,
         "lane_spec": normalized,
+        "lane_law_metadata": {
+            "lane_kind": normalized["lane_kind"],
+            "current_main_head": normalized["current_main_head"],
+            "predecessor_outcome": normalized["predecessor_outcome"],
+            "selected_outcome": normalized["selected_outcome"],
+            "next_lawful_move": normalized["next_lawful_move"],
+            "may_authorize": list(normalized["may_authorize"]),
+            "must_not_authorize": list(normalized["must_not_authorize"]),
+            "authoritative_inputs": list(normalized["authoritative_inputs"]),
+            "prep_only_outputs": list(normalized["prep_only_outputs"]),
+        },
         "generated_artifacts": sorted(files),
         "files": {path: files[path] for path in sorted(files)},
         "non_authorization_guards": {

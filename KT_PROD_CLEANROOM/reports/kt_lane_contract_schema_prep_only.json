@@ -38,6 +38,62 @@
       ],
       "type": "object"
     },
+    "lane_law_metadata": {
+      "additionalProperties": false,
+      "properties": {
+        "authoritative_inputs": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "current_main_head": {
+          "type": "string"
+        },
+        "lane_kind": {
+          "type": "string"
+        },
+        "may_authorize": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "must_not_authorize": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "next_lawful_move": {
+          "type": "string"
+        },
+        "predecessor_outcome": {
+          "type": "string"
+        },
+        "prep_only_outputs": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "selected_outcome": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "lane_kind",
+        "current_main_head",
+        "predecessor_outcome",
+        "selected_outcome",
+        "next_lawful_move",
+        "may_authorize",
+        "must_not_authorize",
+        "authoritative_inputs",
+        "prep_only_outputs"
+      ],
+      "type": "object"
+    },
     "non_authorization_guards": {
       "additionalProperties": false,
       "properties": {
@@ -89,6 +145,7 @@
     "status",
     "prep_only_banner",
     "lane_spec",
+    "lane_law_metadata",
     "generated_artifacts",
     "files",
     "non_authorization_guards"
