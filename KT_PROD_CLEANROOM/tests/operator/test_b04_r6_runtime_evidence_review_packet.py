@@ -396,6 +396,28 @@ def test_shadow_next_move_drift_fails_closed(tmp_path: Path, monkeypatch: pytest
         review.run(reports_root=reports)
 
 
+def test_current_lane_self_replay_next_move_is_allowed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_review(tmp_path, monkeypatch)
+    _patch_review_env(monkeypatch, tmp_path, head="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+
+    result = review.run(reports_root=reports)
+
+    assert result["selected_outcome"] == review.SELECTED_OUTCOME
+    assert result["next_lawful_move"] == review.NEXT_LAWFUL_MOVE
+
+
+def test_malformed_self_replay_next_move_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_review(tmp_path, monkeypatch)
+    path = reports / review.OUTPUTS["next_lawful_move"]
+    payload = _load(path)
+    payload["authoritative_lane"] = "AUTHOR_B04_R6_CANARY_AUTHORIZATION_PACKET"
+    _write(path, payload)
+    _patch_review_env(monkeypatch, tmp_path)
+
+    with pytest.raises(RuntimeError, match="NEXT_MOVE_DRIFT"):
+        review.run(reports_root=reports)
+
+
 def test_user_facing_decision_change_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_shadow_only(tmp_path, monkeypatch)
     path = reports / shadow.OUTPUTS["case_manifest"]

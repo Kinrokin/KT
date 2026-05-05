@@ -253,7 +253,7 @@ def _validate_handoff(payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str]
         _fail("RC_B04R6_RUNTIME_EVIDENCE_REVIEW_SHADOW_RUNTIME_NOT_PASSED", "shadow runtime contract outcome drift")
     if result.get("selected_outcome") != EXPECTED_PREVIOUS_OUTCOME:
         _fail("RC_B04R6_RUNTIME_EVIDENCE_REVIEW_SHADOW_RESULT_BINDING_MISSING", "shadow result outcome drift")
-    if next_move.get("next_lawful_move") != EXPECTED_PREVIOUS_NEXT_MOVE:
+    if not _valid_next_move_handoff(next_move):
         _fail("RC_B04R6_RUNTIME_EVIDENCE_REVIEW_NEXT_MOVE_DRIFT", "shadow runtime next move drift")
     if contract.get("runtime_mode") != RUNTIME_MODE or result.get("runtime_mode") != RUNTIME_MODE:
         _fail("RC_B04R6_RUNTIME_EVIDENCE_REVIEW_SHADOW_RUNTIME_NOT_PASSED", "runtime mode drift")
@@ -309,6 +309,24 @@ def _validate_handoff(payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str]
     for phrase in ("shadow_runtime_only", "static remained authoritative", "does not authorize canary runtime"):
         if phrase not in report_text:
             _fail("RC_B04R6_RUNTIME_EVIDENCE_REVIEW_SHADOW_RUNTIME_MISSING", f"shadow report missing {phrase}")
+
+
+def _valid_next_move_handoff(next_move: Dict[str, Any]) -> bool:
+    prior_shadow_handoff = (
+        next_move.get("selected_outcome") == EXPECTED_PREVIOUS_OUTCOME
+        and next_move.get("next_lawful_move") == EXPECTED_PREVIOUS_NEXT_MOVE
+    )
+    if prior_shadow_handoff:
+        return True
+
+    self_replay_handoff = (
+        next_move.get("authoritative_lane") == AUTHORITATIVE_LANE
+        and next_move.get("predecessor_outcome") == EXPECTED_PREVIOUS_OUTCOME
+        and next_move.get("previous_next_lawful_move") == EXPECTED_PREVIOUS_NEXT_MOVE
+        and next_move.get("selected_outcome") == SELECTED_OUTCOME
+        and next_move.get("next_lawful_move") == NEXT_LAWFUL_MOVE
+    )
+    return self_replay_handoff
 
 
 def _input_bindings(root: Path, *, handoff_git_commit: str) -> list[Dict[str, Any]]:
