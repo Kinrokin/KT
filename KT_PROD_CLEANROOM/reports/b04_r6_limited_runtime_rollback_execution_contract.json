@@ -8,7 +8,7 @@
     "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_FUTURE_BLOCKER_REGISTER",
+  "artifact_id": "B04_R6_LIMITED_RUNTIME_ROLLBACK_EXECUTION_CONTRACT",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET",
   "authorization_state": {
     "activation_cutover_executed": false,
@@ -106,44 +106,12 @@
     "validation_validation_contract_hash": "6daf65f2213492ff141c4ec96dc70dbd96e6467fcd4821d04fa99f60235f047b",
     "validation_validation_receipt_hash": "5813fd5b6e5c30b3fd44d9863d3f002fd98de270fe94c1d853f6c669b43ea928"
   },
-  "blockers": [
-    {
-      "blocker_id": "B04R6-FB-061",
-      "future_blocker": "Execution packet exists but has not been validated.",
-      "neutralization_now": [
-        "b04_r6_limited_runtime_execution_validation_plan.json",
-        "b04_r6_limited_runtime_execution_validation_reason_codes.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-062",
-      "future_blocker": "Runtime evidence review law missing after future shadow runtime.",
-      "neutralization_now": [
-        "b04_r6_runtime_evidence_review_packet_prep_only_draft.json",
-        "b04_r6_runtime_evidence_scorecard_prep_only_draft.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-063",
-      "future_blocker": "Failure, incident, or rollback path missing for runtime corridor.",
-      "neutralization_now": [
-        "b04_r6_limited_runtime_failure_closeout_prep_only.json",
-        "b04_r6_runtime_incident_forensic_court_prep_only.json",
-        "b04_r6_runtime_rollback_execution_receipt_schema_prep_only.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-064",
-      "future_blocker": "External verifier and commercial boundary not ready for runtime evidence.",
-      "neutralization_now": [
-        "b04_r6_external_verifier_delta_requirements_prep_only.json",
-        "b04_r6_external_audit_delta_manifest_prep_only.json",
-        "b04_r6_commercial_claim_boundary_update_prep_only.json"
-      ]
-    }
-  ],
+  "can_authorize_commercial_claims": false,
+  "can_authorize_runtime_cutover": false,
+  "can_execute_runtime": false,
+  "can_open_r6": false,
+  "can_promote_package": false,
   "commercial_activation_claim_authorized": false,
-  "current_authoritative_lane": "AUTHOR_B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET",
   "current_branch": "authoritative/b04-r6-limited-runtime-execution-packet",
   "current_git_head": "094202117fd45645146cefcd675662ada3fb8bc6",
   "current_main_head": "6f562f19f5028d2f962ea9ccb33245ee49a33fbd",
@@ -745,12 +713,19 @@
     "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_TRUST_ZONE_MUTATION",
     "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_NEXT_MOVE_DRIFT"
   ],
+  "requirements": [
+    "rollback_to_static_required",
+    "rollback_receipt_required",
+    "rollback_replay_required"
+  ],
+  "rollback_to_static_required": true,
   "runtime_cutover_authorized": false,
   "runtime_execution_authorized": false,
   "runtime_mode": "SHADOW_RUNTIME_ONLY",
-  "schema_id": "kt.b04_r6.future_blocker_register.v8",
+  "schema_id": "kt.b04_r6.limited_runtime.execution.rollback_execution_contract.v1",
   "schema_version": 1,
   "selected_outcome": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_BOUND__LIMITED_RUNTIME_EXECUTION_VALIDATION_NEXT",
+  "static_authority_preserved": true,
   "static_comparator_weakened": false,
   "status": "PASS",
   "terminal_defects": [
@@ -771,6 +746,7 @@
   "trust_zone_validation_status": "PASS",
   "truth_engine_derivation_law_unchanged": true,
   "truth_engine_law_changed": false,
+  "validation_required_before_execution": true,
   "validation_rows": [
     {
       "check_id": "execution_packet_contract_exists",
