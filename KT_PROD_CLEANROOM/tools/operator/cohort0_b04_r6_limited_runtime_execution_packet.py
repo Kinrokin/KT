@@ -276,23 +276,28 @@ def _is_sha256(value: Any) -> bool:
 
 def _ensure_runtime_closed(payload: Dict[str, Any], *, label: str) -> None:
     true_forbidden = (
-        "r6_open",
-        "limited_runtime_authorized",
-        "limited_runtime_execution_authorized",
-        "runtime_execution_authorized",
-        "runtime_cutover_authorized",
-        "activation_cutover_executed",
-        "lobe_escalation_authorized",
-        "package_promotion_authorized",
-        "commercial_activation_claim_authorized",
-        "truth_engine_law_changed",
-        "trust_zone_law_changed",
-        "metric_contract_mutated",
-        "static_comparator_weakened",
+        ("r6_open", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_R6_OPEN_DRIFT"),
+        ("limited_runtime_authorized", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LIMITED_RUNTIME_EXECUTION_AUTHORIZED"),
+        ("limited_runtime_execution_authorized", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LIMITED_RUNTIME_EXECUTION_AUTHORIZED"),
+        ("limited_runtime_executed", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LIMITED_RUNTIME_EXECUTION_AUTHORIZED"),
+        ("runtime_execution_authorized", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LIMITED_RUNTIME_EXECUTION_AUTHORIZED"),
+        ("runtime_cutover_authorized", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_CUTOVER_AUTHORIZED"),
+        ("activation_cutover_authorized", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_CUTOVER_AUTHORIZED"),
+        ("activation_cutover_executed", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_CUTOVER_AUTHORIZED"),
+        ("lobe_escalation_authorized", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LIMITED_RUNTIME_EXECUTION_AUTHORIZED"),
+        ("package_promotion_authorized", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PACKAGE_PROMOTION_DRIFT"),
+        ("commercial_activation_claim_authorized", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_COMMERCIAL_CLAIM_DRIFT"),
+        ("truth_engine_law_changed", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_TRUTH_ENGINE_MUTATION"),
+        ("trust_zone_law_changed", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_TRUST_ZONE_MUTATION"),
+        ("metric_contract_mutated", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LIMITED_RUNTIME_EXECUTION_AUTHORIZED"),
+        ("static_comparator_weakened", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LIMITED_RUNTIME_EXECUTION_AUTHORIZED"),
     )
-    for key in true_forbidden:
+    for key, code in true_forbidden:
         if payload.get(key) is True:
-            _fail("RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LIMITED_RUNTIME_EXECUTION_AUTHORIZED", f"{label} sets {key}")
+            _fail(code, f"{label} sets {key}")
+    state = payload.get("authorization_state")
+    if isinstance(state, dict):
+        _ensure_runtime_closed(state, label=f"{label}.authorization_state")
     if payload.get("package_promotion") not in (None, "DEFERRED"):
         _fail("RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PACKAGE_PROMOTION_DRIFT", f"{label} package promotion drift")
     if payload.get("truth_engine_derivation_law_unchanged") is False:

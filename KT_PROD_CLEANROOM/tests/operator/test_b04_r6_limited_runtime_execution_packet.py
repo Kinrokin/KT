@@ -436,6 +436,32 @@ def test_runtime_authorization_flag_fails_closed(tmp_path: Path, monkeypatch: py
         execution.run(reports_root=reports)
 
 
+def test_limited_runtime_executed_flag_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_previous_validation(tmp_path, monkeypatch)
+    path = reports / auth_validation.OUTPUTS["validation_contract"]
+    payload = _load(path)
+    payload["limited_runtime_executed"] = True
+    _write(path, payload)
+    _patch_execution_env(monkeypatch, tmp_path)
+
+    with pytest.raises(RuntimeError, match="LIMITED_RUNTIME_EXECUTION_AUTHORIZED"):
+        execution.run(reports_root=reports)
+
+
+def test_nested_authorization_state_runtime_cutover_fails_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _run_previous_validation(tmp_path, monkeypatch)
+    path = reports / auth_validation.OUTPUTS["validation_contract"]
+    payload = _load(path)
+    payload.setdefault("authorization_state", {})["runtime_cutover_authorized"] = True
+    _write(path, payload)
+    _patch_execution_env(monkeypatch, tmp_path)
+
+    with pytest.raises(RuntimeError, match="RUNTIME_CUTOVER_AUTHORIZED"):
+        execution.run(reports_root=reports)
+
+
 def test_invalid_self_replay_handoff_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_execution(tmp_path, monkeypatch)
     path = reports / execution.OUTPUTS["next_lawful_move"]
