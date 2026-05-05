@@ -377,7 +377,7 @@ def test_pipeline_board_marks_validation_and_run_next(outputs: Path) -> None:
     payload = _load(outputs / validation.OUTPUTS["pipeline_board"])
     board = {row["lane"]: row for row in payload["board"]}
     assert board["VALIDATE_B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET"]["status"] == "CURRENT_VALIDATED"
-    assert board["RUN_B04_R6_LIMITED_RUNTIME_CANARY_OR_SHADOW_RUNTIME"]["status"] == "NEXT"
+    assert board["RUN_B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"]["status"] == "NEXT"
 
 
 def test_runtime_corridor_status_marks_run_next_not_executed(outputs: Path) -> None:
