@@ -8,8 +8,9 @@
     "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_LIMITED_RUNTIME_DRIFT_MONITORING_CONTRACT",
+  "artifact_id": "B04_R6_DEPLOYMENT_PROFILE_DELTA_PREP_ONLY",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET",
+  "authority": "PREP_ONLY",
   "authorization_state": {
     "activation_cutover_executed": false,
     "activation_review_validated": true,
@@ -106,11 +107,21 @@
     "validation_validation_contract_hash": "6daf65f2213492ff141c4ec96dc70dbd96e6467fcd4821d04fa99f60235f047b",
     "validation_validation_receipt_hash": "5813fd5b6e5c30b3fd44d9863d3f002fd98de270fe94c1d853f6c669b43ea928"
   },
-  "can_authorize_commercial_claims": false,
-  "can_authorize_runtime_cutover": false,
-  "can_execute_runtime": false,
-  "can_open_r6": false,
-  "can_promote_package": false,
+  "cannot_authorize": [
+    "LIMITED_RUNTIME_EXECUTED",
+    "LIMITED_RUNTIME_EXECUTION_AUTHORIZED",
+    "LIMITED_RUNTIME_AUTHORIZED",
+    "RUNTIME_CUTOVER_AUTHORIZED",
+    "ACTIVATION_CUTOVER_EXECUTED",
+    "R6_OPEN",
+    "LOBE_ESCALATION_AUTHORIZED",
+    "PACKAGE_PROMOTION_AUTHORIZED",
+    "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED",
+    "TRUTH_ENGINE_LAW_MUTATED",
+    "TRUST_ZONE_LAW_MUTATED",
+    "METRIC_CONTRACT_MUTATED",
+    "STATIC_COMPARATOR_WEAKENED"
+  ],
   "commercial_activation_claim_authorized": false,
   "current_branch": "authoritative/b04-r6-limited-runtime-execution-packet",
   "current_git_head": "26e86a60fda165fa73f43978ed25e076f66926b6",
@@ -130,9 +141,6 @@
     "METRIC_CONTRACT_MUTATED",
     "STATIC_COMPARATOR_WEAKENED"
   ],
-  "freeze_on_metric_drift": true,
-  "freeze_on_trust_zone_drift": true,
-  "freeze_on_truth_engine_drift": true,
   "generated_utc": "2026-05-05T17:45:17Z",
   "handoff_acceptance": {
     "predecessor_handoff_accepted": false,
@@ -689,6 +697,7 @@
   "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATED__LIMITED_RUNTIME_EXECUTION_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATION",
   "previous_next_lawful_move": "AUTHOR_B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET",
+  "purpose": "Prep-only scaffold for future deployment profile delta prep only.",
   "r6_open": false,
   "reason_codes": [
     "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
@@ -719,20 +728,14 @@
     "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_TRUST_ZONE_MUTATION",
     "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_NEXT_MOVE_DRIFT"
   ],
-  "requirements": [
-    "metric_drift_freezes_runtime",
-    "trust_zone_drift_freezes_runtime",
-    "truth_engine_drift_freezes_runtime"
-  ],
   "runtime_cutover_authorized": false,
   "runtime_execution_authorized": false,
   "runtime_mode": "SHADOW_RUNTIME_ONLY",
-  "schema_id": "kt.b04_r6.limited_runtime.execution.drift_monitoring_contract.v1",
+  "schema_id": "kt.b04_r6.deployment_profile_delta_prep_only.v1",
   "schema_version": 1,
   "selected_outcome": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_BOUND__LIMITED_RUNTIME_EXECUTION_VALIDATION_NEXT",
-  "static_authority_preserved": true,
   "static_comparator_weakened": false,
-  "status": "PASS",
+  "status": "PREP_ONLY",
   "terminal_defects": [
     "LIMITED_RUNTIME_EXECUTED",
     "LIMITED_RUNTIME_EXECUTION_AUTHORIZED",
@@ -753,7 +756,6 @@
   "trust_zone_validation_status": "PASS",
   "truth_engine_derivation_law_unchanged": true,
   "truth_engine_law_changed": false,
-  "validation_required_before_execution": true,
   "validation_rows": [
     {
       "check_id": "execution_packet_contract_exists",

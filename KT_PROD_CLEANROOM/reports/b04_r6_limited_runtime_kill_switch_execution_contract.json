@@ -8,7 +8,7 @@
     "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_LIMITED_RUNTIME_DRIFT_MONITORING_CONTRACT",
+  "artifact_id": "B04_R6_LIMITED_RUNTIME_KILL_SWITCH_EXECUTION_CONTRACT",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET",
   "authorization_state": {
     "activation_cutover_executed": false,
@@ -130,9 +130,6 @@
     "METRIC_CONTRACT_MUTATED",
     "STATIC_COMPARATOR_WEAKENED"
   ],
-  "freeze_on_metric_drift": true,
-  "freeze_on_trust_zone_drift": true,
-  "freeze_on_truth_engine_drift": true,
   "generated_utc": "2026-05-05T17:45:17Z",
   "handoff_acceptance": {
     "predecessor_handoff_accepted": false,
@@ -538,6 +535,8 @@
       "sha256": "0032362492b70a177da964e6458fcf7bb9b196e8a4580dd9942acef13153dc9f"
     }
   ],
+  "kill_switch_halts_afsh_observation": true,
+  "kill_switch_required": true,
   "lane_compiler_scaffold": {
     "artifact_id": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_LANE_COMPILER_SCAFFOLD_RECEIPT",
     "authority": "PREP_ONLY_TOOLING",
@@ -720,14 +719,14 @@
     "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_NEXT_MOVE_DRIFT"
   ],
   "requirements": [
-    "metric_drift_freezes_runtime",
-    "trust_zone_drift_freezes_runtime",
-    "truth_engine_drift_freezes_runtime"
+    "kill_switch_required",
+    "kill_switch_halts_afsh_observation",
+    "kill_switch_receipt_required"
   ],
   "runtime_cutover_authorized": false,
   "runtime_execution_authorized": false,
   "runtime_mode": "SHADOW_RUNTIME_ONLY",
-  "schema_id": "kt.b04_r6.limited_runtime.execution.drift_monitoring_contract.v1",
+  "schema_id": "kt.b04_r6.limited_runtime.execution.kill_switch_execution_contract.v1",
   "schema_version": 1,
   "selected_outcome": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_BOUND__LIMITED_RUNTIME_EXECUTION_VALIDATION_NEXT",
   "static_authority_preserved": true,

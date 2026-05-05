@@ -1,5 +1,6 @@
 {
   "activation_cutover_executed": false,
+  "afsh_can_change_user_facing_decision": false,
   "allowed_future_execution_modes": [
     "SHADOW_RUNTIME_ONLY"
   ],
@@ -8,7 +9,7 @@
     "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_LIMITED_RUNTIME_DRIFT_MONITORING_CONTRACT",
+  "artifact_id": "B04_R6_LIMITED_RUNTIME_STATIC_AUTHORITY_CONTRACT",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET",
   "authorization_state": {
     "activation_cutover_executed": false,
@@ -130,9 +131,6 @@
     "METRIC_CONTRACT_MUTATED",
     "STATIC_COMPARATOR_WEAKENED"
   ],
-  "freeze_on_metric_drift": true,
-  "freeze_on_trust_zone_drift": true,
-  "freeze_on_truth_engine_drift": true,
   "generated_utc": "2026-05-05T17:45:17Z",
   "handoff_acceptance": {
     "predecessor_handoff_accepted": false,
@@ -720,18 +718,19 @@
     "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_NEXT_MOVE_DRIFT"
   ],
   "requirements": [
-    "metric_drift_freezes_runtime",
-    "trust_zone_drift_freezes_runtime",
-    "truth_engine_drift_freezes_runtime"
+    "static_decision_authoritative",
+    "afsh_cannot_change_user_facing_decision",
+    "static_fallback_always_available"
   ],
   "runtime_cutover_authorized": false,
   "runtime_execution_authorized": false,
   "runtime_mode": "SHADOW_RUNTIME_ONLY",
-  "schema_id": "kt.b04_r6.limited_runtime.execution.drift_monitoring_contract.v1",
+  "schema_id": "kt.b04_r6.limited_runtime.execution.static_authority_contract.v1",
   "schema_version": 1,
   "selected_outcome": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_BOUND__LIMITED_RUNTIME_EXECUTION_VALIDATION_NEXT",
   "static_authority_preserved": true,
   "static_comparator_weakened": false,
+  "static_decision_authoritative": true,
   "status": "PASS",
   "terminal_defects": [
     "LIMITED_RUNTIME_EXECUTED",
