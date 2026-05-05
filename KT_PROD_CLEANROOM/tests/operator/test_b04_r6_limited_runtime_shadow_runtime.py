@@ -548,3 +548,15 @@ def test_packet_validation_hash_drift_fails_closed(tmp_path: Path, monkeypatch: 
 
     with pytest.raises(RuntimeError, match="hash differs from validation binding"):
         shadow.run(reports_root=reports)
+
+
+def test_missing_packet_validation_hash_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_validation_only(tmp_path, monkeypatch)
+    path = reports / packet_validation.OUTPUTS["validation_contract"]
+    payload = _load(path)
+    payload["binding_hashes"].pop("route_distribution_health_contract_hash")
+    _write(path, payload)
+    _patch_shadow_env(monkeypatch, tmp_path)
+
+    with pytest.raises(RuntimeError, match="missing validation binding hash route_distribution_health_contract_hash"):
+        shadow.run(reports_root=reports)

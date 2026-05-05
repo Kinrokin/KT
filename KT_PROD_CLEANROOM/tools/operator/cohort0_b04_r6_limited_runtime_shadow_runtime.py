@@ -352,7 +352,7 @@ def _validate_packet_hashes(root: Path, payloads: Dict[str, Dict[str, Any]]) -> 
         key = f"{role}_hash"
         expected = validation_hashes.get(key)
         if not _is_sha256(expected):
-            continue
+            _fail("RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING", f"missing validation binding hash {key}")
         actual = file_sha256(common.resolve_path(root, raw))
         if actual != expected:
             _fail("RC_B04R6_SHADOW_RUNTIME_EXECUTION_PACKET_BINDING_MISSING", f"{role} hash differs from validation binding")
