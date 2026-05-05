@@ -7,8 +7,9 @@
     "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_FUTURE_BLOCKER_REGISTER",
+  "artifact_id": "B04_R6_OPERATIONAL_SAFETY_DEFECT_LEDGER_PREP_ONLY",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET",
+  "authority": "PREP_ONLY",
   "authorization_state": {
     "activation_cutover_authorized": false,
     "activation_cutover_executed": false,
@@ -60,38 +61,22 @@
     "validated_shadow_screen_packet_hash": "e3399a6b800ce341a72235c7a1067c45639ea5d5f9c2d98cafe2d9495e8e4d76",
     "validated_source_packet_hash": "7c211b44807ee5b7d616578138fb8f1ffbd946229dce930319427699a98e87c0"
   },
-  "blockers": [
-    {
-      "blocker_id": "B04R6-FB-041",
-      "future_blocker": "Limited-runtime authorization packet mistaken for runtime execution.",
-      "neutralization_now": [
-        "b04_r6_limited_runtime_no_authorization_drift_receipt.json",
-        "b04_r6_limited_runtime_validation_plan.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-042",
-      "future_blocker": "Runtime canary lacks execution packet, incident freeze, or rollback receipts.",
-      "neutralization_now": [
-        "b04_r6_runtime_canary_execution_contract_prep_only.json",
-        "b04_r6_runtime_incident_freeze_contract_prep_only.json",
-        "b04_r6_runtime_rollback_execution_receipt_schema_prep_only.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-043",
-      "future_blocker": "External or commercial claims outrun limited-runtime evidence.",
-      "neutralization_now": [
-        "b04_r6_limited_runtime_commercial_claim_boundary.json",
-        "b04_r6_external_audit_delta_manifest_prep_only.json",
-        "b04_r6_public_verifier_delta_requirements_prep_only.json"
-      ]
-    }
-  ],
   "candidate_id": "B04_R6_AFSH_CANDIDATE_V1",
   "candidate_version": "v1",
+  "cannot_authorize": [
+    "LIMITED_RUNTIME_AUTHORIZED",
+    "RUNTIME_CUTOVER_AUTHORIZED",
+    "ACTIVATION_CUTOVER_EXECUTED",
+    "R6_OPEN",
+    "LOBE_ESCALATION_AUTHORIZED",
+    "PACKAGE_PROMOTION_AUTHORIZED",
+    "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED",
+    "TRUTH_ENGINE_LAW_MUTATED",
+    "TRUST_ZONE_LAW_MUTATED",
+    "METRIC_CONTRACT_MUTATED",
+    "STATIC_COMPARATOR_WEAKENED"
+  ],
   "commercial_activation_claim_authorized": false,
-  "current_authoritative_lane": "AUTHOR_B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET",
   "current_branch": "authoritative/b04-r6-limited-runtime-authorization-packet",
   "current_git_head": "e87f6731fa2eae688da791d90582cfbff022dff7",
   "current_main_head": "6b0c10d7116556e1d5758a9f4e70e418aa106f74",
@@ -226,6 +211,7 @@
   "predecessor_outcome": "B04_R6_ACTIVATION_REVIEW_VALIDATED__LIMITED_RUNTIME_AUTHORIZATION_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_VALIDATION",
   "previous_next_lawful_move": "AUTHOR_B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET",
+  "purpose": "Draft defect ledger for operational safety findings.",
   "r6_open": false,
   "reason_codes": [
     "RC_B04R6_LIMITED_RUNTIME_PACKET_CONTRACT_MISSING",
@@ -262,13 +248,13 @@
   ],
   "runtime_cutover_authorized": false,
   "runtime_execution_authorized": false,
-  "schema_id": "kt.b04_r6.future_blocker_register.v6",
+  "schema_id": "kt.b04_r6.operational_safety_defect_ledger_prep_only.v1",
   "schema_version": 1,
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
   "selected_outcome": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_BOUND__LIMITED_RUNTIME_VALIDATION_NEXT",
   "shadow_superiority_passed": true,
-  "status": "PASS",
+  "status": "PREP_ONLY",
   "terminal_defects": [
     "SCOPE_NOT_LIMITED",
     "LIMITED_RUNTIME_AUTHORIZED",
