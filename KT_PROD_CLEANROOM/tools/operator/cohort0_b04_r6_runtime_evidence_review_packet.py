@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional, Sequence
 
@@ -198,6 +199,34 @@ def _read_text(root: Path, raw: str, *, label: str) -> str:
     return common.read_text_required(root, raw, label=label)
 
 
+def _git_blob_bytes(root: Path, commit: str, raw: str) -> bytes:
+    blob_ref = f"{commit}:{raw.replace(chr(92), '/')}"
+    result = subprocess.run(["git", "show", blob_ref], cwd=root, capture_output=True, check=True)
+    return result.stdout
+
+
+def _git_blob_sha256(root: Path, commit: str, raw: str) -> str:
+    return hashlib.sha256(_git_blob_bytes(root, commit, raw)).hexdigest()
+
+
+def _load_input(root: Path, raw: str, *, label: str, handoff_git_commit: str, output_names: set[str]) -> Dict[str, Any]:
+    if Path(raw).name in output_names:
+        try:
+            return json.loads(_git_blob_bytes(root, handoff_git_commit, raw).decode("utf-8"))
+        except Exception as exc:
+            _fail("RC_B04R6_RUNTIME_EVIDENCE_REVIEW_SHADOW_RUNTIME_MISSING", f"git-bound input {label} missing at {handoff_git_commit}: {exc}")
+    return _load(root, raw, label=label)
+
+
+def _read_text_input(root: Path, raw: str, *, label: str, handoff_git_commit: str, output_names: set[str]) -> str:
+    if Path(raw).name in output_names:
+        try:
+            return _git_blob_bytes(root, handoff_git_commit, raw).decode("utf-8")
+        except Exception as exc:
+            _fail("RC_B04R6_RUNTIME_EVIDENCE_REVIEW_SHADOW_RUNTIME_MISSING", f"git-bound text input {label} missing at {handoff_git_commit}: {exc}")
+    return _read_text(root, raw, label=label)
+
+
 def _is_sha256(value: Any) -> bool:
     text = str(value)
     return len(text) == 64 and all(ch in "0123456789abcdef" for ch in text)
@@ -333,14 +362,16 @@ def _input_bindings(root: Path, *, handoff_git_commit: str) -> list[Dict[str, An
     output_names = set(OUTPUTS.values())
     rows: list[Dict[str, Any]] = []
     for role, raw in sorted(ALL_JSON_INPUTS.items()):
-        path = common.resolve_path(root, raw)
+        is_overwritten = Path(raw).name in output_names
         row: Dict[str, Any] = {
             "role": role,
             "path": raw,
-            "sha256": file_sha256(path),
+            "sha256": _git_blob_sha256(root, handoff_git_commit, raw)
+            if is_overwritten
+            else file_sha256(common.resolve_path(root, raw)),
             "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
         }
-        if Path(raw).name in output_names:
+        if is_overwritten:
             row["binding_kind"] = "git_object_before_overwrite"
             row["git_commit"] = handoff_git_commit
             row["mutable_canonical_path_overwritten_by_this_lane"] = True
@@ -358,8 +389,14 @@ def _input_bindings(root: Path, *, handoff_git_commit: str) -> list[Dict[str, An
     return rows
 
 
-def _binding_hashes(root: Path) -> Dict[str, str]:
-    hashes = {f"{role}_hash": file_sha256(common.resolve_path(root, raw)) for role, raw in sorted(ALL_JSON_INPUTS.items())}
+def _binding_hashes(root: Path, *, handoff_git_commit: str) -> Dict[str, str]:
+    output_names = set(OUTPUTS.values())
+    hashes = {
+        f"{role}_hash": _git_blob_sha256(root, handoff_git_commit, raw)
+        if Path(raw).name in output_names
+        else file_sha256(common.resolve_path(root, raw))
+        for role, raw in sorted(ALL_JSON_INPUTS.items())
+    }
     hashes.update({f"{role}_hash": file_sha256(common.resolve_path(root, raw)) for role, raw in sorted(ALL_TEXT_INPUTS.items())})
     return hashes
 
@@ -399,15 +436,18 @@ def _scorecard(payloads: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
     }
 
 
-def _inventory(root: Path, payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str]) -> Dict[str, Any]:
+def _inventory(root: Path, payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str], *, handoff_git_commit: str) -> Dict[str, Any]:
     artifacts: list[Dict[str, Any]] = []
+    output_names = set(OUTPUTS.values())
     for role, raw in sorted(ALL_JSON_INPUTS.items()):
         payload = payloads[role]
         artifacts.append(
             {
                 "role": role,
                 "path": raw,
-                "sha256": file_sha256(common.resolve_path(root, raw)),
+                "sha256": _git_blob_sha256(root, handoff_git_commit, raw)
+                if Path(raw).name in output_names
+                else file_sha256(common.resolve_path(root, raw)),
                 "schema_id": payload.get("schema_id"),
                 "artifact_id": payload.get("artifact_id"),
                 "source_lane": PREVIOUS_LANE,
@@ -825,17 +865,25 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
     if common.git_status_porcelain(root):
         raise RuntimeError("FAIL_CLOSED: dirty worktree before B04 R6 runtime evidence review packet")
 
-    payloads = {role: _load(root, raw, label=role) for role, raw in ALL_JSON_INPUTS.items()}
-    texts = {role: _read_text(root, raw, label=role) for role, raw in ALL_TEXT_INPUTS.items()}
+    head = common.git_rev_parse(root, "HEAD")
+    current_main_head = common.git_rev_parse(root, "origin/main" if current_branch != "main" else "HEAD")
+    handoff_git_commit = current_main_head if current_branch != "main" else head
+    output_names = set(OUTPUTS.values())
+    payloads = {
+        role: _load_input(root, raw, label=role, handoff_git_commit=handoff_git_commit, output_names=output_names)
+        for role, raw in ALL_JSON_INPUTS.items()
+    }
+    texts = {
+        role: _read_text_input(root, raw, label=role, handoff_git_commit=handoff_git_commit, output_names=output_names)
+        for role, raw in ALL_TEXT_INPUTS.items()
+    }
     _validate_handoff(payloads, texts)
 
     fresh_trust_validation = validate_trust_zones(root=root)
     if fresh_trust_validation.get("status") != "PASS" or fresh_trust_validation.get("failures"):
         _fail("RC_B04R6_RUNTIME_EVIDENCE_REVIEW_TRUST_ZONE_MUTATION", "fresh trust-zone validation must pass")
 
-    head = common.git_rev_parse(root, "HEAD")
-    current_main_head = common.git_rev_parse(root, "origin/main" if current_branch != "main" else "HEAD")
-    inventory = _inventory(root, payloads, texts)
+    inventory = _inventory(root, payloads, texts, handoff_git_commit=handoff_git_commit)
     scorecard = _scorecard(payloads)
     compiler_scaffold = _compiler_scaffold(current_main_head)
     base = _base(
@@ -843,8 +891,8 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
         head=head,
         current_main_head=current_main_head,
         current_branch=current_branch,
-        input_bindings=_input_bindings(root, handoff_git_commit=head),
-        binding_hashes=_binding_hashes(root),
+        input_bindings=_input_bindings(root, handoff_git_commit=handoff_git_commit),
+        binding_hashes=_binding_hashes(root, handoff_git_commit=handoff_git_commit),
         inventory=inventory,
         scorecard=scorecard,
         validation_rows=_validation_rows(scorecard),

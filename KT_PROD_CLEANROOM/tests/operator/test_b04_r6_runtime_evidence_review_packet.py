@@ -48,6 +48,7 @@ def _patch_review_env(
     monkeypatch.setattr(review.common, "git_current_branch_name", lambda root: branch)
     monkeypatch.setattr(review.common, "git_status_porcelain", lambda root: dirty)
     monkeypatch.setattr(review.common, "git_rev_parse", lambda root, ref: origin_main if ref == "origin/main" else head)
+    monkeypatch.setattr(review, "_git_blob_bytes", lambda root, commit, raw: (root / raw).read_bytes())
     monkeypatch.setattr(
         review,
         "validate_trust_zones",
@@ -241,7 +242,7 @@ def test_mutable_prior_handoff_is_git_object_bound_before_overwrite(outputs: Pat
     assert "shadow_next_lawful_move" in overwritten
     assert "shadow_canary_authorization_packet_prep_only_draft" in overwritten
     assert overwritten["shadow_next_lawful_move"]["binding_kind"] == "git_object_before_overwrite"
-    assert overwritten["shadow_next_lawful_move"]["git_commit"] == REVIEW_HEAD
+    assert overwritten["shadow_next_lawful_move"]["git_commit"] == REVIEW_MAIN_HEAD
 
 
 def test_scorecard_freezes_shadow_runtime_evidence(outputs: Path) -> None:
