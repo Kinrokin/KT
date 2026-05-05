@@ -43,11 +43,14 @@
     "trace_completeness_receipt_hash": "dc0ec3f93e3606989787b35dfb064db5e595d7c219f9844807af81b69f7b19d8",
     "trust_zone_validation_receipt_hash": "f6eb218616bed5c0414959a5f704206ba0b10c0f0f7a7ecacb8ea7a74b684c07",
     "validated_blind_universe_hash": "c55dcc5030efa6b984d8655246a312c9299595a868f7e9e56493c7e538d5f6d8",
+    "validated_blind_universe_receipt_hash": "835af64286844268f247f6bb4acd45365e82af992a99c46b60a156d0d94f8f50",
     "validated_route_economics_court_hash": "a9e5788391e89e66a1996d27eecb03eab63350a6ca8ce9f24e8f0fda6a3dc016",
+    "validated_route_economics_court_receipt_hash": "c91ac19728b15f42a32c3678bb2494681171398b4e1d21c7cdd174f8be9ee8a5",
     "validated_shadow_packet_hash": "e3399a6b800ce341a72235c7a1067c45639ea5d5f9c2d98cafe2d9495e8e4d76",
     "validated_shadow_packet_validation_receipt_hash": "2e8bef4f26dd52991f1f4ac4ec397ac01d3f493fbf76b695f1174b21a260bec5",
     "validated_shadow_screen_packet_hash": "e3399a6b800ce341a72235c7a1067c45639ea5d5f9c2d98cafe2d9495e8e4d76",
-    "validated_source_packet_hash": "7c211b44807ee5b7d616578138fb8f1ffbd946229dce930319427699a98e87c0"
+    "validated_source_packet_hash": "7c211b44807ee5b7d616578138fb8f1ffbd946229dce930319427699a98e87c0",
+    "validated_source_packet_receipt_hash": "49b86f6cd99cf4964868e18e7cb64823dd890226b03380e7fe309f615d4b356b"
   },
   "binding_status": "BOUND",
   "binding_subject": "validated blind universe",
@@ -58,7 +61,7 @@
   "candidate_version": "v1",
   "commercial_activation_claim_authorized": false,
   "current_branch": "authoritative/b04-r6-learned-router-activation-review-packet",
-  "current_git_head": "0c21964c0cdfb3891b1efade118d24c651581f97",
+  "current_git_head": "6882a9a103a4a56cd4f87da07cac98b67418bc33",
   "current_main_head": "f4f42dd968859bb30c6be24904dc33c6d75e11fd",
   "forbidden_actions": [
     "R6_OPEN",
@@ -71,10 +74,10 @@
     "TRUST_ZONE_LAW_MUTATED",
     "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED"
   ],
-  "generated_utc": "2026-05-05T00:28:54Z",
+  "generated_utc": "2026-05-05T00:46:21Z",
   "handoff_validation": {
-    "predecessor_handoff_accepted": true,
-    "self_replay_handoff_accepted": false
+    "predecessor_handoff_accepted": false,
+    "self_replay_handoff_accepted": true
   },
   "input_bindings": [
     {
@@ -121,11 +124,11 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "0c21964c0cdfb3891b1efade118d24c651581f97",
+      "git_commit": "6882a9a103a4a56cd4f87da07cac98b67418bc33",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "previous_next_lawful_move",
-      "sha256": "2f92595a1945d6f39a942ef1d41123a386c5d0e4047805c37eae54dcdc999204"
+      "sha256": "6862abc6ad9956ec3ec460de216d99e4f622a580c6806d21a87db96e8e153940"
     },
     {
       "binding_kind": "file_sha256_at_activation_review_packet_authoring",
