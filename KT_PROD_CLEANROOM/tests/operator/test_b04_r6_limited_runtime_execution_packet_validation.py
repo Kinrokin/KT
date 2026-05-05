@@ -418,6 +418,21 @@ def test_validation_self_replay_handoff_is_allowed(tmp_path: Path, monkeypatch: 
     assert nxt["next_lawful_move"] == validation.NEXT_LAWFUL_MOVE
 
 
+def test_legacy_broader_self_replay_handoff_can_be_repaired(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _run_validation(tmp_path, monkeypatch)
+    path = reports / validation.OUTPUTS["next_lawful_move"]
+    payload = _load(path)
+    payload["next_lawful_move"] = validation.LEGACY_BROADER_SELF_REPLAY_NEXT_MOVE
+    _write(path, payload)
+
+    validation.run(reports_root=reports)
+
+    nxt = _load(path)
+    assert nxt["next_lawful_move"] == validation.NEXT_LAWFUL_MOVE
+
+
 def test_mutated_execution_mode_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_execution_only(tmp_path, monkeypatch)
     path = reports / execution.OUTPUTS["mode_contract"]

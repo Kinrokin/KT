@@ -25,6 +25,7 @@ OUTCOME_DEFERRED = "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_DEFERRED__NAMED_VALI
 OUTCOME_INVALID = "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
 SELECTED_OUTCOME = OUTCOME_VALIDATED
 NEXT_LAWFUL_MOVE = "RUN_B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+LEGACY_BROADER_SELF_REPLAY_NEXT_MOVE = "RUN_B04_R6_LIMITED_RUNTIME_CANARY_OR_SHADOW_RUNTIME"
 
 MAY_AUTHORIZE = ("LIMITED_RUNTIME_EXECUTION_PACKET_VALIDATED",)
 FORBIDDEN_ACTIONS = (
@@ -273,9 +274,18 @@ def _validate_handoff(payload: Dict[str, Any]) -> Dict[str, bool]:
         and payload.get("selected_outcome") == SELECTED_OUTCOME
         and payload.get("next_lawful_move") == NEXT_LAWFUL_MOVE
     )
-    if not (predecessor or self_replay):
+    legacy_self_replay_repair = (
+        payload.get("authoritative_lane") == AUTHORITATIVE_LANE
+        and payload.get("selected_outcome") == SELECTED_OUTCOME
+        and payload.get("next_lawful_move") == LEGACY_BROADER_SELF_REPLAY_NEXT_MOVE
+    )
+    if not (predecessor or self_replay or legacy_self_replay_repair):
         _fail("RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_VAL_NEXT_MOVE_DRIFT", "handoff lacks valid predecessor or self-replay lane identity")
-    return {"predecessor_handoff_accepted": predecessor, "self_replay_handoff_accepted": self_replay}
+    return {
+        "predecessor_handoff_accepted": predecessor,
+        "self_replay_handoff_accepted": self_replay,
+        "legacy_self_replay_repair_accepted": legacy_self_replay_repair,
+    }
 
 
 def _validate_execution_payloads(payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str]) -> Dict[str, bool]:
