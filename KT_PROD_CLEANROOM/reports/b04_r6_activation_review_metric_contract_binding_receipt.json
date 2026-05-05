@@ -8,7 +8,7 @@
     "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_ACTIVATION_REVIEW_METRIC_CONTRACT_BINDING_RECEIPT",
   "authoritative_lane": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET",
   "authorization_state": {
     "activation_cutover_executed": false,
@@ -48,6 +48,11 @@
     "validated_shadow_packet_validation_receipt_hash": "2e8bef4f26dd52991f1f4ac4ec397ac01d3f493fbf76b695f1174b21a260bec5",
     "validated_shadow_screen_packet_hash": "e3399a6b800ce341a72235c7a1067c45639ea5d5f9c2d98cafe2d9495e8e4d76",
     "validated_source_packet_hash": "7c211b44807ee5b7d616578138fb8f1ffbd946229dce930319427699a98e87c0"
+  },
+  "binding_status": "BOUND",
+  "binding_subject": "frozen metric contract",
+  "bound_hashes": {
+    "metric_contract_hash": "f51b1c75819621ef16a23fbf8743274a13619cc82b6f5781cc81775b47f655d9"
   },
   "candidate_id": "B04_R6_AFSH_CANDIDATE_V1",
   "candidate_version": "v1",
@@ -251,7 +256,7 @@
     "RC_B04R6_ACT_REVIEW_PACKET_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v15",
+  "schema_id": "kt.b04_r6.activation_review.metric_contract_binding_receipt.v1",
   "schema_version": 1,
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -382,6 +387,5 @@
       "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_NEXT_MOVE_DRIFT",
       "status": "PASS"
     }
-  ],
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  ]
 }

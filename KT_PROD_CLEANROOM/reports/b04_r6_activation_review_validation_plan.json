@@ -8,7 +8,7 @@
     "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_ACTIVATION_REVIEW_VALIDATION_PLAN",
   "authoritative_lane": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET",
   "authorization_state": {
     "activation_cutover_executed": false,
@@ -55,6 +55,8 @@
   "current_branch": "authoritative/b04-r6-learned-router-activation-review-packet",
   "current_git_head": "0c21964c0cdfb3891b1efade118d24c651581f97",
   "current_main_head": "f4f42dd968859bb30c6be24904dc33c6d75e11fd",
+  "expected_next_lawful_move_after_validation": "AUTHOR_B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET",
+  "expected_successful_validation_outcome": "B04_R6_ACTIVATION_REVIEW_VALIDATED__LIMITED_RUNTIME_AUTHORIZATION_PACKET_NEXT",
   "forbidden_actions": [
     "R6_OPEN",
     "LIMITED_RUNTIME_AUTHORIZED",
@@ -251,7 +253,7 @@
     "RC_B04R6_ACT_REVIEW_PACKET_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v15",
+  "schema_id": "kt.b04_r6.activation_review.validation_plan.v1",
   "schema_version": 1,
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -276,6 +278,23 @@
   "trust_zone_law_unchanged": true,
   "truth_engine_derivation_law_unchanged": true,
   "truth_engine_law_changed": false,
+  "validation_checks": [
+    "shadow proof binding stable",
+    "zero disqualifiers bound",
+    "candidate binding stable",
+    "fallbacks present",
+    "operator override present",
+    "kill switch present",
+    "rollback plan present",
+    "route-distribution health present",
+    "drift monitoring present",
+    "runtime receipt schema present",
+    "truth/trust law unchanged",
+    "commercial claim boundary present",
+    "package promotion not automatic",
+    "limited runtime not authorized prematurely",
+    "next lawful move correctness"
+  ],
   "validation_rows": [
     {
       "check_id": "shadow_superiority_result_bound",
@@ -383,5 +402,5 @@
       "status": "PASS"
     }
   ],
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  "validator_role": "hostile verifier of authored activation-review packet"
 }
