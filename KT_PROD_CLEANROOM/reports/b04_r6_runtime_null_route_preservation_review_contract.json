@@ -11,23 +11,23 @@
   "binding_hashes": {
     "shadow_abstention_preservation_receipt_hash": "1e43ab5924bd7fcb1bb3f21322185a513974b1645294421e897f303774bfb064",
     "shadow_afsh_observation_receipt_hash": "d1bb37a4801baa8faba206d667a5ff42cbe3c93e61a69a56b6119833003885c9",
-    "shadow_canary_authorization_packet_prep_only_draft_hash": "bd853202305eafc2cebd6bfa2fff64c914ba754dc4df891bc9fa0144e577749d",
+    "shadow_canary_authorization_packet_prep_only_draft_hash": "87c48faf6d234c966679df8986b9d267b6d26ace9554d487dfd02cb5748e88f1",
     "shadow_case_manifest_hash": "8ed06bf15f07cb275ac7206040b82933f2a9b6bc11a14930166daf27c90977c1",
     "shadow_commercial_claim_boundary_receipt_hash": "229d2cd73547273d20c3d00c74d1a09ab19a52d97e2cd5543bf8e7c5a585041b",
     "shadow_drift_monitoring_receipt_hash": "e1d73f72a3dd5f18caceae96225ed6c3cf3231c9bf5f027dadfb3867fe02d9fb",
     "shadow_execution_contract_hash": "18c305bb0c36be702f526766b7ba518b6db6b4bf2ca4988030d4aa3694c5f92f",
     "shadow_execution_receipt_hash": "65cf0d9c1e6db98916032324b7e2dd27ccb2c95c6d9ca9fe45075c40e9de1c48",
-    "shadow_external_audit_delta_manifest_prep_only_draft_hash": "241075ebbbbfa376779cbebb106dbc0ecd1aae60cb07966fef156e5e309d7e93",
+    "shadow_external_audit_delta_manifest_prep_only_draft_hash": "22c04fb13ae29f29938197edaca23bf884ea3d75133965eea81fa7c2682976d7",
     "shadow_external_verifier_readiness_receipt_hash": "7002e0e4b773a4ab7b07017ce7498f26c73f408548d463bc76e698f338001dc7",
     "shadow_fallback_behavior_receipt_hash": "7b2f433d3c0017ff3105fd812d6257a4c5b9c0d329ded7c3aecb242c3f1378b6",
-    "shadow_future_blocker_register_hash": "bf8fdb43254d80ca423e5e3f6401a23c8e0be94b45acb17d5c96892ed0c321d1",
+    "shadow_future_blocker_register_hash": "d90a2053e777453169d1ff971f4437ad871d1f4fe9b4abf1928901af7c10f782",
     "shadow_incident_freeze_receipt_hash": "e4f3dda3b1534dda3183b53bb240f1316872a0472f7f2f5097ee6896f389450f",
     "shadow_kill_switch_readiness_receipt_hash": "387be5d6bb3c97b7db3b68a42077006ab2b7e34774be29066184ad983460c5d0",
-    "shadow_next_lawful_move_hash": "dbcc0b9eceef7182e09790a9cddfabcf0ba7ac82d554816b142a83a9227e7da9",
+    "shadow_next_lawful_move_hash": "5008eaa49878b155ecf7ade0387bd7f6d23520d1ba6b0f53f5facc7e71244b3c",
     "shadow_no_authorization_drift_receipt_hash": "f2ce919290a09fb99e79e749c651be44eca7b134253e26e6e249685272d65f98",
     "shadow_null_route_preservation_receipt_hash": "7429da46ae766cbd7fc77a0757019b0381dca5e8e7ac3bd814c052b40a2de890",
     "shadow_operator_override_readiness_receipt_hash": "d4fc21a009d336811d87aef7ab5db61ffadf3b9d4b2ac00ead1d15802889c73d",
-    "shadow_package_promotion_review_preconditions_prep_only_draft_hash": "e84b86669f799b4a419ad38f319d7e51c50f9249fd5371b97ffa45177d2e1d5f",
+    "shadow_package_promotion_review_preconditions_prep_only_draft_hash": "283409971f24dcd1ee9bcafa3cc05325dade77fc766cd60eb7449c07bdcc8d1e",
     "shadow_result_hash": "15142c399d32ab35b0b93216867deef170fec83614a2cc0501a2d7d4a5928e1d",
     "shadow_rollback_readiness_receipt_hash": "84187bde3819a4c62909179b2850be3e176246a25f575ae1b4a90dff1d0205e8",
     "shadow_route_distribution_health_receipt_hash": "09f1b888a8bbbb6ca4f2735efa8fa837fcc01957d61e14430c5e7aeaab100d77",
@@ -40,9 +40,9 @@
   "canary_runtime_authorized": false,
   "canary_runtime_executed": false,
   "commercial_activation_claim_authorized": false,
-  "current_branch": "authoritative/b04-r6-runtime-evidence-review-packet",
-  "current_git_head": "6143a461c2de4ee2950f1d38ee8d82efac9c291c",
-  "current_main_head": "a377786ca79931085a1bd0be221f97cbc6dfda3c",
+  "current_branch": "main",
+  "current_git_head": "47cc6ba530c11541f131b864ace147a653d847a9",
+  "current_main_head": "47cc6ba530c11541f131b864ace147a653d847a9",
   "evidence_roles": [
     "shadow_null_route_preservation_receipt"
   ],
@@ -65,7 +65,7 @@
     "METRIC_CONTRACT_MUTATED",
     "STATIC_COMPARATOR_WEAKENED"
   ],
-  "generated_utc": "2026-05-05T22:48:46Z",
+  "generated_utc": "2026-05-05T22:56:17Z",
   "input_bindings": [
     {
       "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
@@ -81,11 +81,11 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "a377786ca79931085a1bd0be221f97cbc6dfda3c",
+      "git_commit": "47cc6ba530c11541f131b864ace147a653d847a9",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_canary_authorization_packet_prep_only_draft.json",
       "role": "shadow_canary_authorization_packet_prep_only_draft",
-      "sha256": "bd853202305eafc2cebd6bfa2fff64c914ba754dc4df891bc9fa0144e577749d"
+      "sha256": "87c48faf6d234c966679df8986b9d267b6d26ace9554d487dfd02cb5748e88f1"
     },
     {
       "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
@@ -119,11 +119,11 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "a377786ca79931085a1bd0be221f97cbc6dfda3c",
+      "git_commit": "47cc6ba530c11541f131b864ace147a653d847a9",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_external_audit_delta_manifest_prep_only_draft.json",
       "role": "shadow_external_audit_delta_manifest_prep_only_draft",
-      "sha256": "241075ebbbbfa376779cbebb106dbc0ecd1aae60cb07966fef156e5e309d7e93"
+      "sha256": "22c04fb13ae29f29938197edaca23bf884ea3d75133965eea81fa7c2682976d7"
     },
     {
       "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
@@ -139,11 +139,11 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "a377786ca79931085a1bd0be221f97cbc6dfda3c",
+      "git_commit": "47cc6ba530c11541f131b864ace147a653d847a9",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_future_blocker_register.json",
       "role": "shadow_future_blocker_register",
-      "sha256": "bf8fdb43254d80ca423e5e3f6401a23c8e0be94b45acb17d5c96892ed0c321d1"
+      "sha256": "d90a2053e777453169d1ff971f4437ad871d1f4fe9b4abf1928901af7c10f782"
     },
     {
       "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
@@ -159,11 +159,11 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "a377786ca79931085a1bd0be221f97cbc6dfda3c",
+      "git_commit": "47cc6ba530c11541f131b864ace147a653d847a9",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "shadow_next_lawful_move",
-      "sha256": "dbcc0b9eceef7182e09790a9cddfabcf0ba7ac82d554816b142a83a9227e7da9"
+      "sha256": "5008eaa49878b155ecf7ade0387bd7f6d23520d1ba6b0f53f5facc7e71244b3c"
     },
     {
       "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
@@ -185,11 +185,11 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "a377786ca79931085a1bd0be221f97cbc6dfda3c",
+      "git_commit": "47cc6ba530c11541f131b864ace147a653d847a9",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_preconditions_prep_only_draft.json",
       "role": "shadow_package_promotion_review_preconditions_prep_only_draft",
-      "sha256": "e84b86669f799b4a419ad38f319d7e51c50f9249fd5371b97ffa45177d2e1d5f"
+      "sha256": "283409971f24dcd1ee9bcafa3cc05325dade77fc766cd60eb7449c07bdcc8d1e"
     },
     {
       "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
@@ -243,7 +243,7 @@
   "lane_compiler_scaffold": {
     "authority": "PREP_ONLY_TOOLING",
     "compiler_id": "KT_LANE_COMPILER_V0",
-    "contract_sha256": "84ea2a5275fd20bfede0e081dc2ba29eae4eb32ff2a483885ad6554fd3c4379e",
+    "contract_sha256": "a6f9e0e39e98361464222f510f880e1936f039d39a43e15dc38efea408596ed4",
     "generated_artifacts": [
       "KT_PROD_CLEANROOM/reports/kt_lane_artifact_list__author_b04_r6_runtime_evidence_review_packet.json",
       "KT_PROD_CLEANROOM/reports/kt_lane_future_blockers__author_b04_r6_runtime_evidence_review_packet.json",
@@ -371,8 +371,8 @@
         "evidence_kind": "json_receipt",
         "path": "KT_PROD_CLEANROOM/reports/b04_r6_canary_authorization_packet_prep_only_draft.json",
         "role": "shadow_canary_authorization_packet_prep_only_draft",
-        "schema_id": "kt.b04_r6.canary_authorization_packet_prep_only_draft.v1",
-        "sha256": "bd853202305eafc2cebd6bfa2fff64c914ba754dc4df891bc9fa0144e577749d",
+        "schema_id": "kt.b04_r6.runtime_evidence_review.canary_authorization_packet_prep_only_draft.prep_only.v1",
+        "sha256": "87c48faf6d234c966679df8986b9d267b6d26ace9554d487dfd02cb5748e88f1",
         "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
       },
       {
@@ -425,8 +425,8 @@
         "evidence_kind": "json_receipt",
         "path": "KT_PROD_CLEANROOM/reports/b04_r6_external_audit_delta_manifest_prep_only_draft.json",
         "role": "shadow_external_audit_delta_manifest_prep_only_draft",
-        "schema_id": "kt.b04_r6.external_audit_delta_manifest_prep_only_draft.v1",
-        "sha256": "241075ebbbbfa376779cbebb106dbc0ecd1aae60cb07966fef156e5e309d7e93",
+        "schema_id": "kt.b04_r6.runtime_evidence_review.external_audit_delta_manifest_prep_only_draft.prep_only.v1",
+        "sha256": "22c04fb13ae29f29938197edaca23bf884ea3d75133965eea81fa7c2682976d7",
         "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
       },
       {
@@ -452,8 +452,8 @@
         "evidence_kind": "json_receipt",
         "path": "KT_PROD_CLEANROOM/reports/b04_r6_future_blocker_register.json",
         "role": "shadow_future_blocker_register",
-        "schema_id": "kt.b04_r6.future_blocker_register.v10",
-        "sha256": "bf8fdb43254d80ca423e5e3f6401a23c8e0be94b45acb17d5c96892ed0c321d1",
+        "schema_id": "kt.b04_r6.future_blocker_register.v23",
+        "sha256": "d90a2053e777453169d1ff971f4437ad871d1f4fe9b4abf1928901af7c10f782",
         "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
       },
       {
@@ -479,8 +479,8 @@
         "evidence_kind": "json_receipt",
         "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
         "role": "shadow_next_lawful_move",
-        "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v21",
-        "sha256": "dbcc0b9eceef7182e09790a9cddfabcf0ba7ac82d554816b142a83a9227e7da9",
+        "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v22",
+        "sha256": "5008eaa49878b155ecf7ade0387bd7f6d23520d1ba6b0f53f5facc7e71244b3c",
         "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
       },
       {
@@ -515,8 +515,8 @@
         "evidence_kind": "json_receipt",
         "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_preconditions_prep_only_draft.json",
         "role": "shadow_package_promotion_review_preconditions_prep_only_draft",
-        "schema_id": "kt.b04_r6.package_promotion_review_preconditions_prep_only_draft.v1",
-        "sha256": "e84b86669f799b4a419ad38f319d7e51c50f9249fd5371b97ffa45177d2e1d5f",
+        "schema_id": "kt.b04_r6.runtime_evidence_review.package_promotion_review_preconditions_prep_only_draft.prep_only.v1",
+        "sha256": "283409971f24dcd1ee9bcafa3cc05325dade77fc766cd60eb7449c07bdcc8d1e",
         "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
       },
       {
