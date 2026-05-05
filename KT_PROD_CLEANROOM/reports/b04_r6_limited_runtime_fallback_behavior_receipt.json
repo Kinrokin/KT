@@ -8,7 +8,7 @@
     "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_INVALIDATED__FORENSIC_RUNTIME_INVALIDATION_COURT_NEXT",
     "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_LIMITED_RUNTIME_FALLBACK_BEHAVIOR_RECEIPT",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME",
   "authorization_state": {
     "activation_cutover_executed": false,
@@ -354,6 +354,7 @@
   "current_branch": "authoritative/b04-r6-limited-runtime-shadow-runtime",
   "current_git_head": "33695bdc00271a9802cdfabe4a08c947dc4cf5aa",
   "current_main_head": "3e621fd4296380f5c643a59d0d986cbf00569e94",
+  "fallback_failures": 0,
   "fired_disqualifiers": [],
   "forbidden_actions": [
     "CANARY_RUNTIME_EXECUTED",
@@ -745,9 +746,11 @@
     "RC_B04R6_SHADOW_RUNTIME_COMPARATOR_WEAKENING",
     "RC_B04R6_SHADOW_RUNTIME_NEXT_MOVE_DRIFT"
   ],
+  "receipt_role": "fallback_behavior",
+  "receipt_status": "PASS",
   "runtime_cutover_authorized": false,
   "runtime_mode": "SHADOW_RUNTIME_ONLY",
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v21",
+  "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.fallback_behavior.v1",
   "schema_version": 1,
   "scorecard": {
     "abstention_observations": 4,
@@ -772,6 +775,7 @@
   "shadow_runtime_executed": true,
   "static_authoritative": true,
   "static_comparator_weakened": false,
+  "static_fallback_available": true,
   "status": "PASS",
   "terminal_defects": [
     "CANARY_RUNTIME_EXECUTED",
@@ -1992,6 +1996,5 @@
       "reason_code": "RC_B04R6_SHADOW_RUNTIME_PREP_ONLY_AUTHORITY_DRIFT",
       "status": "PASS"
     }
-  ],
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  ]
 }

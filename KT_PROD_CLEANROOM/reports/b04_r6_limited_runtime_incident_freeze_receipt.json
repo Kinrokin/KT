@@ -8,7 +8,7 @@
     "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_INVALIDATED__FORENSIC_RUNTIME_INVALIDATION_COURT_NEXT",
     "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_LIMITED_RUNTIME_INCIDENT_FREEZE_RECEIPT",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME",
   "authorization_state": {
     "activation_cutover_executed": false,
@@ -369,11 +369,24 @@
     "METRIC_CONTRACT_MUTATED",
     "STATIC_COMPARATOR_WEAKENED"
   ],
+  "freeze_conditions": [
+    "static_authority_drift",
+    "afsh_user_facing_decision_change",
+    "selector_entry_rate_out_of_bounds",
+    "abstention_collapse",
+    "null_route_collapse",
+    "kill_switch_failure",
+    "rollback_failure",
+    "trace_receipt_missing",
+    "trust_zone_drift",
+    "truth_engine_drift"
+  ],
   "generated_utc": "2026-05-05T21:09:34Z",
   "handoff_acceptance": {
     "predecessor_handoff_accepted": true,
     "self_replay_handoff_accepted": false
   },
+  "incident_freeze_triggers": [],
   "input_bindings": [
     {
       "binding_kind": "file_sha256_at_shadow_runtime_execution",
@@ -745,9 +758,11 @@
     "RC_B04R6_SHADOW_RUNTIME_COMPARATOR_WEAKENING",
     "RC_B04R6_SHADOW_RUNTIME_NEXT_MOVE_DRIFT"
   ],
+  "receipt_role": "incident_freeze",
+  "receipt_status": "PASS",
   "runtime_cutover_authorized": false,
   "runtime_mode": "SHADOW_RUNTIME_ONLY",
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v21",
+  "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.incident_freeze.v1",
   "schema_version": 1,
   "scorecard": {
     "abstention_observations": 4,
@@ -1992,6 +2007,5 @@
       "reason_code": "RC_B04R6_SHADOW_RUNTIME_PREP_ONLY_AUTHORITY_DRIFT",
       "status": "PASS"
     }
-  ],
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  ]
 }

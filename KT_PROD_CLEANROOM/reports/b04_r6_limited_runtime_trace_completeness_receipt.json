@@ -8,7 +8,7 @@
     "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_INVALIDATED__FORENSIC_RUNTIME_INVALIDATION_COURT_NEXT",
     "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_LIMITED_RUNTIME_TRACE_COMPLETENESS_RECEIPT",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME",
   "authorization_state": {
     "activation_cutover_executed": false,
@@ -745,9 +745,11 @@
     "RC_B04R6_SHADOW_RUNTIME_COMPARATOR_WEAKENING",
     "RC_B04R6_SHADOW_RUNTIME_NEXT_MOVE_DRIFT"
   ],
+  "receipt_role": "trace_completeness",
+  "receipt_status": "PASS",
   "runtime_cutover_authorized": false,
   "runtime_mode": "SHADOW_RUNTIME_ONLY",
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v21",
+  "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.trace_completeness.v1",
   "schema_version": 1,
   "scorecard": {
     "abstention_observations": 4,
@@ -787,6 +789,8 @@
     "COMPARATOR_WEAKENING",
     "NEXT_MOVE_DRIFT"
   ],
+  "total_cases": 18,
+  "trace_complete_cases": 18,
   "trust_zone_failures": [],
   "trust_zone_law_changed": false,
   "trust_zone_law_unchanged": true,
@@ -1992,6 +1996,5 @@
       "reason_code": "RC_B04R6_SHADOW_RUNTIME_PREP_ONLY_AUTHORITY_DRIFT",
       "status": "PASS"
     }
-  ],
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  ]
 }
