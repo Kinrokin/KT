@@ -8,7 +8,7 @@
     "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_ACTIVATION_REVIEW_CANDIDATE_BINDING_RECEIPT",
   "authoritative_lane": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET",
   "authorization_state": {
     "activation_cutover_executed": false,
@@ -51,6 +51,14 @@
     "validated_shadow_screen_packet_hash": "e3399a6b800ce341a72235c7a1067c45639ea5d5f9c2d98cafe2d9495e8e4d76",
     "validated_source_packet_hash": "7c211b44807ee5b7d616578138fb8f1ffbd946229dce930319427699a98e87c0",
     "validated_source_packet_receipt_hash": "49b86f6cd99cf4964868e18e7cb64823dd890226b03380e7fe309f615d4b356b"
+  },
+  "binding_status": "BOUND",
+  "binding_subject": "admissible AFSH candidate",
+  "bound_hashes": {
+    "candidate_hash": "0348402dd69aaf2032e87207ce9011d00ee870ca0a63434c3dc621c2d899ee31",
+    "candidate_hash_receipt_hash": "f506dd980118748641af4b33148f734028b2bb396ce6b68ba408f3508584c99b",
+    "candidate_manifest_hash": "d58f1d3bfaad9aa0c273ffcfd0a8318aa98b95ba8046e0d684d980ef5c6ad548",
+    "candidate_semantic_hash": "07c6f5f98b25349d3c1ced9de80410fc9800e944430099433cb1fedd2ce87025"
   },
   "candidate_id": "B04_R6_AFSH_CANDIDATE_V1",
   "candidate_version": "v1",
@@ -254,7 +262,7 @@
     "RC_B04R6_ACT_REVIEW_PACKET_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v15",
+  "schema_id": "kt.b04_r6.activation_review.candidate_binding_receipt.v1",
   "schema_version": 1,
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -385,6 +393,5 @@
       "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_NEXT_MOVE_DRIFT",
       "status": "PASS"
     }
-  ],
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  ]
 }

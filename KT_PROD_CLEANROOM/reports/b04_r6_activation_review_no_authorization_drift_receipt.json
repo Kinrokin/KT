@@ -8,7 +8,7 @@
     "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_ACTIVATION_REVIEW_NO_AUTHORIZATION_DRIFT_RECEIPT",
   "authoritative_lane": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET",
   "authorization_state": {
     "activation_cutover_executed": false,
@@ -207,6 +207,7 @@
   "limited_runtime_authorized": false,
   "lobe_escalation_authorized": false,
   "next_lawful_move": "VALIDATE_B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET",
+  "no_downstream_authorization_drift": true,
   "package_promotion": "DEFERRED",
   "package_promotion_authorized": false,
   "predecessor_outcome": "B04_R6_AFSH_SHADOW_SUPERIORITY_PASSED__ACTIVATION_REVIEW_PACKET_NEXT",
@@ -254,7 +255,7 @@
     "RC_B04R6_ACT_REVIEW_PACKET_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v15",
+  "schema_id": "kt.b04_r6.activation_review.no_authorization_drift_receipt.v1",
   "schema_version": 1,
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -385,6 +386,5 @@
       "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_NEXT_MOVE_DRIFT",
       "status": "PASS"
     }
-  ],
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  ]
 }

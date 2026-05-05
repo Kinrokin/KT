@@ -1,33 +1,418 @@
 {
+  "activation_cutover_authorized": false,
+  "activation_cutover_executed": false,
+  "activation_review_packet_authored": true,
+  "activation_review_validated": false,
+  "allowed_outcomes": [
+    "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_BOUND__ACTIVATION_REVIEW_VALIDATION_NEXT",
+    "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
+    "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
+  ],
   "artifact_id": "B04_R6_FUTURE_BLOCKER_REGISTER",
+  "authoritative_lane": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET",
+  "authorization_state": {
+    "activation_cutover_executed": false,
+    "activation_review_packet_authored": true,
+    "activation_review_validated": false,
+    "commercial_activation_claim_authorized": false,
+    "limited_runtime_authorized": false,
+    "lobe_escalation_authorized": false,
+    "package_promotion": "DEFERRED",
+    "r6_open": false,
+    "runtime_cutover_authorized": false,
+    "shadow_superiority_passed": true,
+    "trust_zone_law_changed": false,
+    "truth_engine_law_changed": false
+  },
+  "binding_hashes": {
+    "admissibility_receipt_hash": "069f8d2f4c3ebd92988e751047abd121e9bed3a4b9166e8ac73f0317db6b09e2",
+    "candidate_artifact_hash": "0348402dd69aaf2032e87207ce9011d00ee870ca0a63434c3dc621c2d899ee31",
+    "candidate_hash": "0348402dd69aaf2032e87207ce9011d00ee870ca0a63434c3dc621c2d899ee31",
+    "candidate_hash_receipt_hash": "f506dd980118748641af4b33148f734028b2bb396ce6b68ba408f3508584c99b",
+    "candidate_manifest_hash": "d58f1d3bfaad9aa0c273ffcfd0a8318aa98b95ba8046e0d684d980ef5c6ad548",
+    "candidate_semantic_hash": "07c6f5f98b25349d3c1ced9de80410fc9800e944430099433cb1fedd2ce87025",
+    "disqualifier_ledger_hash": "6bf247f809784e5f578f07440045f5984b2847db7065eaf13e11d4320772809e",
+    "fired_disqualifier_receipt_hash": "eb1d5fdf37e7cc3551eb3b30b3c071096dab8299a07c30425f02b049a16eef18",
+    "metric_contract_hash": "f51b1c75819621ef16a23fbf8743274a13619cc82b6f5781cc81775b47f655d9",
+    "no_authorization_drift_receipt_hash": "92f682d99b1343788f6688c7aa101c65ae57bfe63edc51acd05e8506d0b32baf",
+    "numeric_triage_emit_core_hash": "59806c183f03ccb3ef2dc31d0f209ddad83311b07ed99a81746d644c57685fad",
+    "shadow_screen_execution_receipt_hash": "becc1abce1e237602476a0c465b5bbe392bd406fe702e9a0d6fb1ceb7ee12fdf",
+    "shadow_screen_result_hash": "33401fe6dc7e0fc50c242ada80260fd833f55782c740bff0a94e39056822be9a",
+    "shadow_screen_result_report_hash": "164538217314d51bb03fd72c6c8e064d1e25c8cd52308d2a9b70754b88d4bfa7",
+    "static_comparator_contract_hash": "8ed7aaa94ab345d1c97e0450324dc1754055a055ec1d0d5012ef501778b287c1",
+    "trace_completeness_receipt_hash": "dc0ec3f93e3606989787b35dfb064db5e595d7c219f9844807af81b69f7b19d8",
+    "trust_zone_validation_receipt_hash": "f6eb218616bed5c0414959a5f704206ba0b10c0f0f7a7ecacb8ea7a74b684c07",
+    "validated_blind_universe_hash": "c55dcc5030efa6b984d8655246a312c9299595a868f7e9e56493c7e538d5f6d8",
+    "validated_blind_universe_receipt_hash": "835af64286844268f247f6bb4acd45365e82af992a99c46b60a156d0d94f8f50",
+    "validated_route_economics_court_hash": "a9e5788391e89e66a1996d27eecb03eab63350a6ca8ce9f24e8f0fda6a3dc016",
+    "validated_route_economics_court_receipt_hash": "c91ac19728b15f42a32c3678bb2494681171398b4e1d21c7cdd174f8be9ee8a5",
+    "validated_shadow_packet_hash": "e3399a6b800ce341a72235c7a1067c45639ea5d5f9c2d98cafe2d9495e8e4d76",
+    "validated_shadow_packet_validation_receipt_hash": "2e8bef4f26dd52991f1f4ac4ec397ac01d3f493fbf76b695f1174b21a260bec5",
+    "validated_shadow_screen_packet_hash": "e3399a6b800ce341a72235c7a1067c45639ea5d5f9c2d98cafe2d9495e8e4d76",
+    "validated_source_packet_hash": "7c211b44807ee5b7d616578138fb8f1ffbd946229dce930319427699a98e87c0",
+    "validated_source_packet_receipt_hash": "49b86f6cd99cf4964868e18e7cb64823dd890226b03380e7fe309f615d4b356b"
+  },
   "blockers": [
     {
-      "blocker_id": "B04R6-FB-024",
-      "future_blocker": "Shadow superiority passes but activation review packet law is not authoritative.",
+      "blocker_id": "B04R6-FB-031",
+      "future_blocker": "Shadow-superiority is mistaken for runtime activation.",
       "neutralization_now": [
-        "b04_r6_learned_router_activation_review_packet_prep_only_draft.json",
-        "b04_r6_learned_router_activation_risk_register_prep_only_draft.json",
-        "b04_r6_learned_router_runtime_guard_requirements_prep_only_draft.json",
-        "b04_r6_learned_router_rollback_plan_prep_only_draft.json"
+        "activation review non-purpose boundary",
+        "no authorization drift receipt"
       ]
     },
     {
-      "blocker_id": "B04R6-FB-025",
-      "future_blocker": "Shadow superiority fails without closeout/redesign law.",
+      "blocker_id": "B04R6-FB-032",
+      "future_blocker": "Limited runtime lacks fallback, override, kill-switch, or rollback law.",
       "neutralization_now": [
-        "b04_r6_superiority_not_earned_closeout_contract_prep_only_draft.json",
-        "b04_r6_redesign_authorization_court_prep_only_draft.json"
+        "b04_r6_activation_review_static_fallback_contract.json",
+        "b04_r6_activation_review_operator_override_contract.json",
+        "b04_r6_activation_review_kill_switch_contract.json",
+        "b04_r6_activation_review_rollback_plan_contract.json"
       ]
     },
     {
-      "blocker_id": "B04R6-FB-026",
-      "future_blocker": "Screen invalidates without forensic invalidation law.",
+      "blocker_id": "B04R6-FB-033",
+      "future_blocker": "Commercial or package-promotion claims outrun activation evidence.",
       "neutralization_now": [
-        "b04_r6_forensic_invalidation_court_prep_only_draft.json"
+        "b04_r6_activation_review_commercial_claim_boundary.json",
+        "b04_r6_package_promotion_review_preconditions_prep_only_draft.json"
       ]
     }
   ],
-  "current_authoritative_lane": "RUN_B04_R6_AFSH_SHADOW_SCREEN",
+  "candidate_id": "B04_R6_AFSH_CANDIDATE_V1",
+  "candidate_version": "v1",
+  "commercial_activation_claim_authorized": false,
+  "current_authoritative_lane": "AUTHOR_B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET",
+  "current_branch": "authoritative/b04-r6-learned-router-activation-review-packet",
+  "current_git_head": "726199e476b6f207676b279c7a0949f08fea3f21",
+  "current_main_head": "f4f42dd968859bb30c6be24904dc33c6d75e11fd",
+  "forbidden_actions": [
+    "R6_OPEN",
+    "LIMITED_RUNTIME_AUTHORIZED",
+    "RUNTIME_CUTOVER_AUTHORIZED",
+    "ACTIVATION_CUTOVER_EXECUTED",
+    "LOBE_ESCALATION_AUTHORIZED",
+    "PACKAGE_PROMOTION_AUTHORIZED",
+    "TRUTH_ENGINE_LAW_MUTATED",
+    "TRUST_ZONE_LAW_MUTATED",
+    "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED"
+  ],
+  "generated_utc": "2026-05-05T00:54:29Z",
+  "handoff_validation": {
+    "predecessor_handoff_accepted": false,
+    "self_replay_handoff_accepted": true
+  },
+  "input_bindings": [
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_admissibility_court_receipt.json",
+      "role": "admissibility_receipt",
+      "sha256": "069f8d2f4c3ebd92988e751047abd121e9bed3a4b9166e8ac73f0317db6b09e2"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_candidate_v1.json",
+      "role": "candidate_artifact",
+      "sha256": "0348402dd69aaf2032e87207ce9011d00ee870ca0a63434c3dc621c2d899ee31"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_candidate_hash_receipt.json",
+      "role": "candidate_hash_receipt",
+      "sha256": "f506dd980118748641af4b33148f734028b2bb396ce6b68ba408f3508584c99b"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_candidate_manifest.json",
+      "role": "candidate_manifest",
+      "sha256": "d58f1d3bfaad9aa0c273ffcfd0a8318aa98b95ba8046e0d684d980ef5c6ad548"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_disqualifier_ledger.json",
+      "role": "disqualifier_ledger",
+      "sha256": "6bf247f809784e5f578f07440045f5984b2847db7065eaf13e11d4320772809e"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_metric_contract.json",
+      "role": "metric_contract",
+      "sha256": "f51b1c75819621ef16a23fbf8743274a13619cc82b6f5781cc81775b47f655d9"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_numeric_triage_emit_core_contract.json",
+      "role": "numeric_triage_emit_core",
+      "sha256": "59806c183f03ccb3ef2dc31d0f209ddad83311b07ed99a81746d644c57685fad"
+    },
+    {
+      "binding_kind": "git_object_before_overwrite",
+      "git_commit": "726199e476b6f207676b279c7a0949f08fea3f21",
+      "mutable_canonical_path_overwritten_by_this_lane": true,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
+      "role": "previous_next_lawful_move",
+      "sha256": "22d77aef58980b67fea2790ae61b950785f25d91975ef9427e6b354694814d88"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_disqualifier_result_receipt.json",
+      "role": "shadow_disqualifier_result_receipt",
+      "sha256": "eb1d5fdf37e7cc3551eb3b30b3c071096dab8299a07c30425f02b049a16eef18"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_execution_receipt.json",
+      "role": "shadow_execution_receipt",
+      "sha256": "becc1abce1e237602476a0c465b5bbe392bd406fe702e9a0d6fb1ceb7ee12fdf"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_no_authorization_drift_receipt.json",
+      "role": "shadow_no_authorization_drift_receipt",
+      "sha256": "92f682d99b1343788f6688c7aa101c65ae57bfe63edc51acd05e8506d0b32baf"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_result.json",
+      "role": "shadow_screen_result",
+      "sha256": "33401fe6dc7e0fc50c242ada80260fd833f55782c740bff0a94e39056822be9a"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_trace_completeness_receipt.json",
+      "role": "shadow_trace_completeness_receipt",
+      "sha256": "dc0ec3f93e3606989787b35dfb064db5e595d7c219f9844807af81b69f7b19d8"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_trust_zone_receipt.json",
+      "role": "shadow_trust_zone_receipt",
+      "sha256": "f6eb218616bed5c0414959a5f704206ba0b10c0f0f7a7ecacb8ea7a74b684c07"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_static_comparator_contract.json",
+      "role": "static_comparator_contract",
+      "sha256": "8ed7aaa94ab345d1c97e0450324dc1754055a055ec1d0d5012ef501778b287c1"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_new_blind_input_universe_validation_receipt.json",
+      "role": "validated_blind_universe_receipt",
+      "sha256": "835af64286844268f247f6bb4acd45365e82af992a99c46b60a156d0d94f8f50"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_static_hold_abstention_route_economics_court_validation_receipt.json",
+      "role": "validated_route_economics_court_receipt",
+      "sha256": "c91ac19728b15f42a32c3678bb2494681171398b4e1d21c7cdd174f8be9ee8a5"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_execution_packet_contract.json",
+      "role": "validated_shadow_packet_contract",
+      "sha256": "e3399a6b800ce341a72235c7a1067c45639ea5d5f9c2d98cafe2d9495e8e4d76"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_packet_validation_receipt.json",
+      "role": "validated_shadow_packet_validation_receipt",
+      "sha256": "2e8bef4f26dd52991f1f4ac4ec397ac01d3f493fbf76b695f1174b21a260bec5"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_source_packet_validation_receipt.json",
+      "role": "validated_source_packet_receipt",
+      "sha256": "49b86f6cd99cf4964868e18e7cb64823dd890226b03380e7fe309f615d4b356b"
+    },
+    {
+      "binding_kind": "file_sha256_at_activation_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_afsh_shadow_screen_result_report.md",
+      "role": "shadow_result_report",
+      "sha256": "164538217314d51bb03fd72c6c8e064d1e25c8cd52308d2a9b70754b88d4bfa7"
+    }
+  ],
+  "limited_runtime_authorized": false,
+  "lobe_escalation_authorized": false,
+  "next_lawful_move": "VALIDATE_B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET",
+  "package_promotion": "DEFERRED",
+  "package_promotion_authorized": false,
+  "predecessor_outcome": "B04_R6_AFSH_SHADOW_SUPERIORITY_PASSED__ACTIVATION_REVIEW_PACKET_NEXT",
+  "previous_authoritative_lane": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION",
+  "previous_next_lawful_move": "AUTHOR_B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET",
+  "r6_open": false,
+  "reason_codes": [
+    "RC_B04R6_ACT_REVIEW_PACKET_CONTRACT_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_MAIN_HEAD_MISMATCH",
+    "RC_B04R6_ACT_REVIEW_PACKET_SHADOW_RESULT_BINDING_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_SHADOW_RECEIPT_BINDING_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_CANDIDATE_BINDING_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_SHADOW_PACKET_BINDING_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_UNIVERSE_BINDING_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_COURT_BINDING_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_SOURCE_PACKET_BINDING_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_ADMISSIBILITY_BINDING_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_TRIAGE_BINDING_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_COMPARATOR_BINDING_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_METRIC_BINDING_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_DISQUALIFIER_BINDING_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_FIRED_DISQUALIFIERS_NOT_ZERO",
+    "RC_B04R6_ACT_REVIEW_PACKET_SCOPE_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_RUNTIME_PRECONDITIONS_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_STATIC_FALLBACK_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_OPERATOR_OVERRIDE_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_KILL_SWITCH_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_ROLLBACK_PLAN_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_ROUTE_DISTRIBUTION_HEALTH_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_DRIFT_MONITORING_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_EXTERNAL_VERIFIER_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_COMMERCIAL_BOUNDARY_MISSING",
+    "RC_B04R6_ACT_REVIEW_PACKET_SELF_VALIDATION_DRIFT",
+    "RC_B04R6_ACT_REVIEW_PACKET_LIMITED_RUNTIME_AUTHORIZED",
+    "RC_B04R6_ACT_REVIEW_PACKET_RUNTIME_CUTOVER_AUTHORIZED",
+    "RC_B04R6_ACT_REVIEW_PACKET_R6_OPEN_DRIFT",
+    "RC_B04R6_ACT_REVIEW_PACKET_LOBE_ESCALATION_DRIFT",
+    "RC_B04R6_ACT_REVIEW_PACKET_PACKAGE_PROMOTION_DRIFT",
+    "RC_B04R6_ACT_REVIEW_PACKET_COMMERCIAL_CLAIM_DRIFT",
+    "RC_B04R6_ACT_REVIEW_PACKET_TRUTH_ENGINE_MUTATION",
+    "RC_B04R6_ACT_REVIEW_PACKET_TRUST_ZONE_MUTATION",
+    "RC_B04R6_ACT_REVIEW_PACKET_METRIC_MUTATION",
+    "RC_B04R6_ACT_REVIEW_PACKET_COMPARATOR_WEAKENING",
+    "RC_B04R6_ACT_REVIEW_PACKET_NEXT_MOVE_DRIFT"
+  ],
+  "runtime_cutover_authorized": false,
   "schema_id": "kt.b04_r6.future_blocker_register.v5",
-  "selected_outcome": "B04_R6_AFSH_SHADOW_SUPERIORITY_PASSED__ACTIVATION_REVIEW_PACKET_NEXT"
+  "schema_version": 1,
+  "selected_architecture_id": "AFSH-2S-GUARD",
+  "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
+  "selected_outcome": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_BOUND__ACTIVATION_REVIEW_VALIDATION_NEXT",
+  "shadow_superiority_passed": true,
+  "status": "PASS",
+  "terminal_defects": [
+    "FIRED_DISQUALIFIERS_NOT_ZERO",
+    "LIMITED_RUNTIME_AUTHORIZED",
+    "RUNTIME_CUTOVER_AUTHORIZED",
+    "R6_OPEN_DRIFT",
+    "LOBE_ESCALATION_DRIFT",
+    "PACKAGE_PROMOTION_DRIFT",
+    "COMMERCIAL_CLAIM_DRIFT",
+    "TRUTH_ENGINE_MUTATION",
+    "TRUST_ZONE_MUTATION",
+    "METRIC_MUTATION",
+    "COMPARATOR_WEAKENING",
+    "NEXT_MOVE_DRIFT"
+  ],
+  "trust_zone_law_changed": false,
+  "trust_zone_law_unchanged": true,
+  "truth_engine_derivation_law_unchanged": true,
+  "truth_engine_law_changed": false,
+  "validation_rows": [
+    {
+      "check_id": "shadow_superiority_result_bound",
+      "detail": "shadow-superiority result hash is bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_SHADOW_RESULT_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "zero_fired_disqualifiers_bound",
+      "detail": "zero fired disqualifiers are bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_FIRED_DISQUALIFIERS_NOT_ZERO",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_binding_bound",
+      "detail": "candidate hashes are bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_CANDIDATE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "screen_packet_binding_bound",
+      "detail": "validated shadow packet is bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_SHADOW_PACKET_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_preconditions_defined",
+      "detail": "runtime preconditions are defined but non-authorizing",
+      "group": "runtime_controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "static_fallback_defined",
+      "detail": "static fallback remains mandatory",
+      "group": "runtime_controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_STATIC_FALLBACK_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "operator_override_defined",
+      "detail": "operator override is mandatory",
+      "group": "runtime_controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_OPERATOR_OVERRIDE_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "kill_switch_defined",
+      "detail": "kill switch is mandatory",
+      "group": "runtime_controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_KILL_SWITCH_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "rollback_plan_defined",
+      "detail": "rollback plan is mandatory",
+      "group": "runtime_controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_ROLLBACK_PLAN_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "commercial_claim_boundary_defined",
+      "detail": "commercial activation claims remain unauthorized",
+      "group": "claim_boundary",
+      "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_COMMERCIAL_BOUNDARY_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "limited_runtime_not_authorized",
+      "detail": "limited runtime remains unauthorized",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_LIMITED_RUNTIME_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "r6_not_open",
+      "detail": "R6 remains closed",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_R6_OPEN_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "truth_engine_unchanged",
+      "detail": "truth-engine law unchanged",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_TRUTH_ENGINE_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trust_zone_unchanged",
+      "detail": "trust-zone law unchanged",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_TRUST_ZONE_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "next_move_exact",
+      "detail": "next lawful move is activation-review validation",
+      "group": "handoff",
+      "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_NEXT_MOVE_DRIFT",
+      "status": "PASS"
+    }
+  ]
 }

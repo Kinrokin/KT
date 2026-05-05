@@ -8,8 +8,9 @@
     "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_PACKAGE_PROMOTION_REVIEW_PRECONDITIONS_PREP_ONLY_DRAFT",
   "authoritative_lane": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET",
+  "authority": "PREP_ONLY",
   "authorization_state": {
     "activation_cutover_executed": false,
     "activation_review_packet_authored": true,
@@ -54,6 +55,17 @@
   },
   "candidate_id": "B04_R6_AFSH_CANDIDATE_V1",
   "candidate_version": "v1",
+  "cannot_authorize": [
+    "R6_OPEN",
+    "LIMITED_RUNTIME_AUTHORIZED",
+    "RUNTIME_CUTOVER_AUTHORIZED",
+    "ACTIVATION_CUTOVER_EXECUTED",
+    "LOBE_ESCALATION_AUTHORIZED",
+    "PACKAGE_PROMOTION_AUTHORIZED",
+    "TRUTH_ENGINE_LAW_MUTATED",
+    "TRUST_ZONE_LAW_MUTATED",
+    "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED"
+  ],
   "commercial_activation_claim_authorized": false,
   "current_branch": "authoritative/b04-r6-learned-router-activation-review-packet",
   "current_git_head": "726199e476b6f207676b279c7a0949f08fea3f21",
@@ -212,6 +224,7 @@
   "predecessor_outcome": "B04_R6_AFSH_SHADOW_SUPERIORITY_PASSED__ACTIVATION_REVIEW_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_AFSH_SHADOW_SCREEN_EXECUTION",
   "previous_next_lawful_move": "AUTHOR_B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET",
+  "purpose": "Draft future package-promotion review preconditions without authorizing promotion.",
   "r6_open": false,
   "reason_codes": [
     "RC_B04R6_ACT_REVIEW_PACKET_CONTRACT_MISSING",
@@ -254,13 +267,13 @@
     "RC_B04R6_ACT_REVIEW_PACKET_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v15",
+  "schema_id": "kt.b04_r6.package_promotion_review_preconditions_prep_only_draft.v1",
   "schema_version": 1,
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
   "selected_outcome": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_BOUND__ACTIVATION_REVIEW_VALIDATION_NEXT",
   "shadow_superiority_passed": true,
-  "status": "PASS",
+  "status": "PREP_ONLY",
   "terminal_defects": [
     "FIRED_DISQUALIFIERS_NOT_ZERO",
     "LIMITED_RUNTIME_AUTHORIZED",
@@ -385,6 +398,5 @@
       "reason_code": "RC_B04R6_ACT_REVIEW_PACKET_NEXT_MOVE_DRIFT",
       "status": "PASS"
     }
-  ],
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  ]
 }
