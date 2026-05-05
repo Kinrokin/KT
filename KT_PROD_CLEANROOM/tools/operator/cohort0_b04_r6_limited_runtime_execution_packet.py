@@ -51,6 +51,8 @@ TERMINAL_DEFECTS = (
     "LOBE_ESCALATION_DRIFT",
     "PACKAGE_PROMOTION_DRIFT",
     "COMMERCIAL_CLAIM_DRIFT",
+    "METRIC_MUTATION",
+    "COMPARATOR_WEAKENING",
     "TRUTH_ENGINE_MUTATION",
     "TRUST_ZONE_MUTATION",
     "NEXT_MOVE_DRIFT",
@@ -77,6 +79,9 @@ REASON_CODES = (
     "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LIMITED_RUNTIME_EXECUTION_AUTHORIZED",
     "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_CUTOVER_AUTHORIZED",
     "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_R6_OPEN_DRIFT",
+    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LOBE_ESCALATION_DRIFT",
+    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_METRIC_MUTATION",
+    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_COMPARATOR_WEAKENING",
     "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_TRUTH_ENGINE_MUTATION",
     "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_TRUST_ZONE_MUTATION",
     "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_NEXT_MOVE_DRIFT",
@@ -186,6 +191,26 @@ PREP_ONLY_OUTPUT_ROLES = (
     "forbidden_runtime_claims_receipt_prep_only",
     "deployment_profile_delta_prep_only",
 )
+VALIDATION_SIGNED_AUTHORIZATION_INPUT_ROLES = (
+    "packet_contract",
+    "packet_receipt",
+    "scope_manifest",
+    "static_fallback_contract",
+    "abstention_fallback_contract",
+    "null_route_preservation_contract",
+    "operator_override_contract",
+    "kill_switch_contract",
+    "rollback_plan",
+    "route_distribution_health_contract",
+    "drift_monitoring_contract",
+    "runtime_receipt_schema",
+    "incident_freeze_contract",
+    "external_verifier_requirements",
+    "commercial_claim_boundary",
+    "activation_review_validation_binding_receipt",
+    "candidate_binding_receipt",
+    "shadow_result_binding_receipt",
+)
 
 OUTPUTS = {
     "execution_packet_contract": "b04_r6_limited_runtime_execution_packet_contract.json",
@@ -284,13 +309,13 @@ def _ensure_runtime_closed(payload: Dict[str, Any], *, label: str) -> None:
         ("runtime_cutover_authorized", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_CUTOVER_AUTHORIZED"),
         ("activation_cutover_authorized", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_CUTOVER_AUTHORIZED"),
         ("activation_cutover_executed", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_CUTOVER_AUTHORIZED"),
-        ("lobe_escalation_authorized", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LIMITED_RUNTIME_EXECUTION_AUTHORIZED"),
+        ("lobe_escalation_authorized", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LOBE_ESCALATION_DRIFT"),
         ("package_promotion_authorized", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PACKAGE_PROMOTION_DRIFT"),
         ("commercial_activation_claim_authorized", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_COMMERCIAL_CLAIM_DRIFT"),
         ("truth_engine_law_changed", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_TRUTH_ENGINE_MUTATION"),
         ("trust_zone_law_changed", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_TRUST_ZONE_MUTATION"),
-        ("metric_contract_mutated", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LIMITED_RUNTIME_EXECUTION_AUTHORIZED"),
-        ("static_comparator_weakened", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LIMITED_RUNTIME_EXECUTION_AUTHORIZED"),
+        ("metric_contract_mutated", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_METRIC_MUTATION"),
+        ("static_comparator_weakened", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_COMPARATOR_WEAKENING"),
     )
     for key, code in true_forbidden:
         if payload.get(key) is True:
@@ -347,6 +372,35 @@ def _validate_inputs(payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str])
     return accepted
 
 
+def _validate_current_authorization_inputs_match_validation(
+    root: Path, payloads: Dict[str, Dict[str, Any]], handoff_acceptance: Dict[str, bool]
+) -> None:
+    validation_hashes = payloads["validation_validation_contract"].get("binding_hashes")
+    if not isinstance(validation_hashes, dict):
+        _fail("RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING", "validation binding hashes missing")
+    output_names = set(OUTPUTS.values())
+    self_replay = handoff_acceptance.get("self_replay_handoff_accepted") is True
+    for signed_role in VALIDATION_SIGNED_AUTHORIZATION_INPUT_ROLES:
+        input_role = f"authorized_{signed_role}"
+        raw = AUTHORIZATION_PACKET_JSON_INPUTS[input_role]
+        expected = validation_hashes.get(f"{signed_role}_hash")
+        if not _is_sha256(expected):
+            _fail(
+                "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+                f"validation did not bind {input_role}",
+            )
+        actual = file_sha256(common.resolve_path(root, raw))
+        if actual == expected:
+            continue
+        payload = payloads[input_role]
+        if self_replay and Path(raw).name in output_names and _is_execution_self_replay_payload(payload):
+            continue
+        _fail(
+            "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+            f"{input_role} current hash differs from validation binding",
+        )
+
+
 def _requirements(payload: Dict[str, Any]) -> set[str]:
     values = payload.get("requirements")
     if not isinstance(values, list):
@@ -376,6 +430,15 @@ def _validate_authorized_controls(payloads: Dict[str, Dict[str, Any]]) -> None:
             _fail("RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LIMITED_RUNTIME_EXECUTION_AUTHORIZED", "self-replay execution scope allowed live traffic")
         if scope.get("selected_runtime_mode") != RUNTIME_MODE:
             _fail("RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_MODE_MISSING", "self-replay execution scope lacks shadow-runtime mode")
+        if scope.get("global_r6_scope") is not False:
+            _fail("RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_R6_OPEN_DRIFT", "self-replay execution scope drifted to global R6")
+        if scope.get("user_facing_decision_changes_allowed") is not False:
+            _fail(
+                "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LIMITED_RUNTIME_EXECUTION_AUTHORIZED",
+                "self-replay execution scope allowed user-facing decision changes",
+            )
+        if not {"not_global_r6", "no_live_traffic_authorized"}.issubset(_requirements(scope)):
+            _fail("RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_SCOPE_MISSING", "self-replay execution scope lost bounded requirements")
     else:
         if scope.get("limited_scope_required") is not True:
             _fail("RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_SCOPE_MISSING", "validated authorization scope is not limited")
@@ -471,6 +534,12 @@ def _validation_rows() -> list[Dict[str, str]]:
     rows = [
         _pass_row("execution_packet_contract_exists", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING", "execution packet contract exists", group="packet"),
         _pass_row("execution_packet_binds_authorization_validation", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING", "authorization validation is bound", group="binding"),
+        _pass_row(
+            "execution_packet_current_inputs_match_authorization_validation",
+            "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+            "current authorization inputs match validation bindings",
+            group="binding",
+        ),
         _pass_row("execution_packet_mode_is_shadow_runtime_only", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_MODE_MISSING", "mode is shadow runtime only", group="mode"),
         _pass_row("execution_packet_scope_is_limited", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_SCOPE_MISSING", "scope is limited", group="scope"),
         _pass_row("execution_packet_scope_is_not_global_r6", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_R6_OPEN_DRIFT", "scope is not global R6", group="scope"),
@@ -491,7 +560,7 @@ def _validation_rows() -> list[Dict[str, str]]:
         _pass_row("execution_packet_does_not_execute_limited_runtime", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LIMITED_RUNTIME_EXECUTION_AUTHORIZED", "limited runtime not executed", group="authorization"),
         _pass_row("execution_packet_does_not_authorize_runtime_cutover", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_CUTOVER_AUTHORIZED", "runtime cutover unauthorized", group="authorization"),
         _pass_row("execution_packet_does_not_open_r6", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_R6_OPEN_DRIFT", "R6 closed", group="authorization"),
-        _pass_row("execution_packet_does_not_authorize_lobe_escalation", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_R6_OPEN_DRIFT", "lobe escalation unauthorized", group="authorization"),
+        _pass_row("execution_packet_does_not_authorize_lobe_escalation", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LOBE_ESCALATION_DRIFT", "lobe escalation unauthorized", group="authorization"),
         _pass_row("execution_packet_truth_engine_law_unchanged", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_TRUTH_ENGINE_MUTATION", "truth law unchanged", group="authorization"),
         _pass_row("execution_packet_trust_zone_law_unchanged", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_TRUST_ZONE_MUTATION", "trust law unchanged", group="authorization"),
         _pass_row("execution_packet_next_lawful_move_is_validation", "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_NEXT_MOVE_DRIFT", "next move is validation", group="next_move"),
@@ -1099,6 +1168,7 @@ def run(*, reports_root: Path) -> Dict[str, Any]:
     texts = {role: _read_text(root, raw, label=role) for role, raw in TEXT_INPUTS.items()}
     handoff_acceptance = _validate_inputs(payloads, texts)
     _validate_authorized_controls(payloads)
+    _validate_current_authorization_inputs_match_validation(root, payloads, handoff_acceptance)
 
     fresh_trust_validation = validate_trust_zones(root=root)
     if fresh_trust_validation.get("status") != "PASS" or fresh_trust_validation.get("failures"):

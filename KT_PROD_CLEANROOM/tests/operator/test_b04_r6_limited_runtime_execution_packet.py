@@ -412,6 +412,34 @@ def test_missing_authorized_kill_switch_requirement_fails_closed(tmp_path: Path,
         execution.run(reports_root=reports)
 
 
+def test_post_validation_authorization_scope_mutation_fails_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _run_previous_validation(tmp_path, monkeypatch)
+    path = reports / limited_auth.OUTPUTS["scope_manifest"]
+    payload = _load(path)
+    payload["post_validation_mutation"] = "semantically invisible but hash-changing"
+    _write(path, payload)
+    _patch_execution_env(monkeypatch, tmp_path)
+
+    with pytest.raises(RuntimeError, match="current hash differs from validation binding"):
+        execution.run(reports_root=reports)
+
+
+def test_post_validation_runtime_receipt_schema_mutation_fails_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _run_previous_validation(tmp_path, monkeypatch)
+    path = reports / limited_auth.OUTPUTS["runtime_receipt_schema"]
+    payload = _load(path)
+    payload["post_validation_mutation"] = "receipt drift"
+    _write(path, payload)
+    _patch_execution_env(monkeypatch, tmp_path)
+
+    with pytest.raises(RuntimeError, match="current hash differs from validation binding"):
+        execution.run(reports_root=reports)
+
+
 def test_mutated_validation_outcome_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_previous_validation(tmp_path, monkeypatch)
     path = reports / auth_validation.OUTPUTS["validation_contract"]
@@ -459,6 +487,58 @@ def test_nested_authorization_state_runtime_cutover_fails_closed(
     _patch_execution_env(monkeypatch, tmp_path)
 
     with pytest.raises(RuntimeError, match="RUNTIME_CUTOVER_AUTHORIZED"):
+        execution.run(reports_root=reports)
+
+
+def test_metric_mutation_flag_uses_specific_reason_code(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_previous_validation(tmp_path, monkeypatch)
+    path = reports / auth_validation.OUTPUTS["validation_contract"]
+    payload = _load(path)
+    payload["metric_contract_mutated"] = True
+    _write(path, payload)
+    _patch_execution_env(monkeypatch, tmp_path)
+
+    with pytest.raises(RuntimeError, match="METRIC_MUTATION"):
+        execution.run(reports_root=reports)
+
+
+def test_static_comparator_weakening_uses_specific_reason_code(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _run_previous_validation(tmp_path, monkeypatch)
+    path = reports / auth_validation.OUTPUTS["validation_contract"]
+    payload = _load(path)
+    payload["static_comparator_weakened"] = True
+    _write(path, payload)
+    _patch_execution_env(monkeypatch, tmp_path)
+
+    with pytest.raises(RuntimeError, match="COMPARATOR_WEAKENING"):
+        execution.run(reports_root=reports)
+
+
+def test_self_replay_global_r6_scope_drift_fails_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _run_execution(tmp_path, monkeypatch)
+    path = reports / execution.OUTPUTS["scope_manifest"]
+    payload = _load(path)
+    payload["global_r6_scope"] = True
+    _write(path, payload)
+
+    with pytest.raises(RuntimeError, match="R6_OPEN_DRIFT"):
+        execution.run(reports_root=reports)
+
+
+def test_self_replay_user_facing_scope_drift_fails_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _run_execution(tmp_path, monkeypatch)
+    path = reports / execution.OUTPUTS["scope_manifest"]
+    payload = _load(path)
+    payload["user_facing_decision_changes_allowed"] = True
+    _write(path, payload)
+
+    with pytest.raises(RuntimeError, match="LIMITED_RUNTIME_EXECUTION_AUTHORIZED"):
         execution.run(reports_root=reports)
 
 
