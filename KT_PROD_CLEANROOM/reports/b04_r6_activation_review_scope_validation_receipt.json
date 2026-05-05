@@ -8,7 +8,7 @@
     "B04_R6_ACTIVATION_REVIEW_DEFERRED__NAMED_VALIDATION_DEFECT_REMAINS",
     "B04_R6_ACTIVATION_REVIEW_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_ACTIVATION_REVIEW_SCOPE_VALIDATION_RECEIPT",
   "authoritative_lane": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_VALIDATION",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -494,7 +494,7 @@
   "packet_receipt_hash": "98335ba3066cab827e303dc1eddf84e94a9c2c9f1399b96761f5cc4f5510b965",
   "packet_replay_binding_head": "6201911450b34219353613b64d69e391becef0a4",
   "packet_report_hash": "f2c053f1f8de0ff043bef14c4c64a35a67cd0882e7b5dacd5f33fa1e77b5b178",
-  "pass_count": 1,
+  "pass_count": 41,
   "predecessor_outcome": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_BOUND__ACTIVATION_REVIEW_VALIDATION_NEXT",
   "previous_authoritative_lane": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET",
   "previous_next_lawful_move": "VALIDATE_B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET",
@@ -551,7 +551,7 @@
     "RC_B04R6_ACT_REVIEW_VAL_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v16",
+  "schema_id": "kt.b04_r6.activation_review.scope_validation_receipt.v1",
   "schema_version": 1,
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -580,12 +580,291 @@
   "truth_engine_law_changed": false,
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_limited_runtime_authorization_packet",
-      "detail": "next move is limited runtime authorization packet authorship",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "activation_review_scope_contract_exists",
+      "detail": "scope contract exists",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_SCOPE_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_preconditions_contract_exists",
+      "detail": "runtime preconditions exist",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "static_fallback_exists",
+      "detail": "static fallback exists",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_STATIC_FALLBACK_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "abstention_fallback_exists",
+      "detail": "abstention fallback exists",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_ABSTENTION_FALLBACK_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "null_route_preservation_exists",
+      "detail": "null-route preservation exists",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_NULL_ROUTE_PRESERVATION_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "operator_override_exists",
+      "detail": "operator override exists",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_OPERATOR_OVERRIDE_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "kill_switch_exists",
+      "detail": "kill switch exists",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_KILL_SWITCH_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "rollback_plan_exists",
+      "detail": "rollback plan exists",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_ROLLBACK_PLAN_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "route_distribution_health_exists",
+      "detail": "route distribution health exists",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_ROUTE_DISTRIBUTION_HEALTH_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "drift_monitoring_exists",
+      "detail": "drift monitoring exists",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_DRIFT_MONITORING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_receipt_schema_exists",
+      "detail": "runtime receipt schema exists",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "external_verifier_requirements_exist",
+      "detail": "external verifier requirements exist",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_EXTERNAL_VERIFIER_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "commercial_claim_boundary_exists",
+      "detail": "commercial claim boundary exists",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_COMMERCIAL_BOUNDARY_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "package_promotion_not_automatic",
+      "detail": "package promotion is not automatic",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_PACKAGE_PROMOTION_AUTOMATIC",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_precondition_requires_limited_scope_required",
+      "detail": "runtime precondition requires limited_scope_required",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_precondition_requires_canary_or_shadow_runtime_required",
+      "detail": "runtime precondition requires canary_or_shadow_runtime_required",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_precondition_requires_static_fallback_required",
+      "detail": "runtime precondition requires static_fallback_required",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_precondition_requires_abstention_fallback_required",
+      "detail": "runtime precondition requires abstention_fallback_required",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_precondition_requires_null_route_preservation_required",
+      "detail": "runtime precondition requires null_route_preservation_required",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_precondition_requires_operator_override_required",
+      "detail": "runtime precondition requires operator_override_required",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_precondition_requires_kill_switch_required",
+      "detail": "runtime precondition requires kill_switch_required",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_precondition_requires_rollback_plan_required",
+      "detail": "runtime precondition requires rollback_plan_required",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_precondition_requires_route_distribution_health_required",
+      "detail": "runtime precondition requires route_distribution_health_required",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_precondition_requires_drift_monitoring_required",
+      "detail": "runtime precondition requires drift_monitoring_required",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_precondition_requires_runtime_receipt_schema_required",
+      "detail": "runtime precondition requires runtime_receipt_schema_required",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_precondition_requires_external_verifier_requirements_required",
+      "detail": "runtime precondition requires external_verifier_requirements_required",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "activation_review_success_requires_shadow_result_binding_valid",
+      "detail": "activation review success requires shadow_result_binding_valid",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "activation_review_success_requires_zero_fired_disqualifiers_confirmed",
+      "detail": "activation review success requires zero_fired_disqualifiers_confirmed",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "activation_review_success_requires_candidate_binding_stable",
+      "detail": "activation review success requires candidate_binding_stable",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "activation_review_success_requires_runtime_scope_limited",
+      "detail": "activation review success requires runtime_scope_limited",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "activation_review_success_requires_static_fallback_defined",
+      "detail": "activation review success requires static_fallback_defined",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "activation_review_success_requires_kill_switch_defined",
+      "detail": "activation review success requires kill_switch_defined",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "activation_review_success_requires_rollback_plan_defined",
+      "detail": "activation review success requires rollback_plan_defined",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "activation_review_success_requires_operator_override_defined",
+      "detail": "activation review success requires operator_override_defined",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "activation_review_success_requires_route_distribution_health_defined",
+      "detail": "activation review success requires route_distribution_health_defined",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "activation_review_success_requires_drift_monitoring_defined",
+      "detail": "activation review success requires drift_monitoring_defined",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "activation_review_success_requires_runtime_receipt_schema_defined",
+      "detail": "activation review success requires runtime_receipt_schema_defined",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "activation_review_success_requires_truth_engine_law_unchanged",
+      "detail": "activation review success requires truth_engine_law_unchanged",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "activation_review_success_requires_trust_zone_law_unchanged",
+      "detail": "activation review success requires trust_zone_law_unchanged",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "activation_review_success_requires_commercial_claim_boundary_defined",
+      "detail": "activation review success requires commercial_claim_boundary_defined",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "activation_review_success_requires_package_promotion_not_automatic",
+      "detail": "activation review success requires package_promotion_not_automatic",
+      "group": "controls",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_PRECONDITIONS_MISSING",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_ACTIVATION_REVIEW_VALIDATED__LIMITED_RUNTIME_AUTHORIZATION_PACKET_NEXT"
+  ]
 }

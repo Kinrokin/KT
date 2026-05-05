@@ -8,7 +8,7 @@
     "B04_R6_ACTIVATION_REVIEW_DEFERRED__NAMED_VALIDATION_DEFECT_REMAINS",
     "B04_R6_ACTIVATION_REVIEW_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_ACTIVATION_REVIEW_METRIC_CONTRACT_BINDING_VALIDATION_RECEIPT",
   "authoritative_lane": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_VALIDATION",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -487,6 +487,7 @@
   "limited_runtime_authorization_packet_next": true,
   "limited_runtime_authorized": false,
   "lobe_escalation_authorized": false,
+  "metric_contract_hash": "f51b1c75819621ef16a23fbf8743274a13619cc82b6f5781cc81775b47f655d9",
   "next_lawful_move": "AUTHOR_B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET",
   "package_promotion": "DEFERRED",
   "package_promotion_authorized": false,
@@ -494,7 +495,7 @@
   "packet_receipt_hash": "98335ba3066cab827e303dc1eddf84e94a9c2c9f1399b96761f5cc4f5510b965",
   "packet_replay_binding_head": "6201911450b34219353613b64d69e391becef0a4",
   "packet_report_hash": "f2c053f1f8de0ff043bef14c4c64a35a67cd0882e7b5dacd5f33fa1e77b5b178",
-  "pass_count": 1,
+  "pass_count": 26,
   "predecessor_outcome": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_BOUND__ACTIVATION_REVIEW_VALIDATION_NEXT",
   "previous_authoritative_lane": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET",
   "previous_next_lawful_move": "VALIDATE_B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET",
@@ -551,7 +552,7 @@
     "RC_B04R6_ACT_REVIEW_VAL_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v16",
+  "schema_id": "kt.b04_r6.activation_review.metric_contract_binding_validation_receipt.v1",
   "schema_version": 1,
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -580,12 +581,186 @@
   "truth_engine_law_changed": false,
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_limited_runtime_authorization_packet",
-      "detail": "next move is limited runtime authorization packet authorship",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "candidate_hash_bound",
+      "detail": "candidate hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_CANDIDATE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_manifest_hash_bound",
+      "detail": "candidate manifest hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_CANDIDATE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "candidate_semantic_hash_bound",
+      "detail": "candidate semantic hash bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_CANDIDATE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validated_shadow_packet_bound",
+      "detail": "validated shadow packet bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_SCREEN_PACKET_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validated_blind_universe_bound",
+      "detail": "validated universe bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_UNIVERSE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validated_route_value_court_bound",
+      "detail": "validated court bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_COURT_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validated_source_packet_bound",
+      "detail": "validated source packet bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_SOURCE_PACKET_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "admissibility_receipt_bound",
+      "detail": "admissibility receipt bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_ADMISSIBILITY_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "numeric_triage_core_bound",
+      "detail": "numeric triage core bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_TRIAGE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "static_comparator_bound",
+      "detail": "static comparator bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_COMPARATOR_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "metric_contract_bound",
+      "detail": "metric contract bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_METRIC_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "disqualifier_ledger_bound",
+      "detail": "disqualifier ledger bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_DISQUALIFIER_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_completeness_bound",
+      "detail": "trace completeness receipt bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_TRACE_COMPLETENESS_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trust_zone_receipt_bound",
+      "detail": "trust-zone receipt bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_TRUST_ZONE_RECEIPT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_authorization_drift_receipt_bound",
+      "detail": "no authorization drift receipt bound",
+      "group": "binding",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_NO_AUTHORIZATION_DRIFT_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_does_not_authorize_limited_runtime",
+      "detail": "limited runtime unauthorized",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_LIMITED_RUNTIME_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_does_not_authorize_runtime_cutover",
+      "detail": "runtime cutover unauthorized",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_RUNTIME_CUTOVER_AUTHORIZED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_does_not_open_r6",
+      "detail": "R6 remains closed",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_R6_OPEN_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_does_not_authorize_lobe_escalation",
+      "detail": "lobe escalation unauthorized",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_LOBE_ESCALATION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_does_not_authorize_package_promotion",
+      "detail": "package promotion deferred",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_PACKAGE_PROMOTION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "validation_does_not_authorize_commercial_claims",
+      "detail": "commercial activation claims unauthorized",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_COMMERCIAL_CLAIM_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "truth_engine_law_unchanged",
+      "detail": "truth-engine law unchanged",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_TRUTH_ENGINE_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trust_zone_law_unchanged",
+      "detail": "trust-zone law unchanged",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_TRUST_ZONE_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "metric_contract_not_mutated",
+      "detail": "metric contract not mutated",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_METRIC_MUTATION",
+      "status": "PASS"
+    },
+    {
+      "check_id": "static_comparator_not_weakened",
+      "detail": "static comparator not weakened",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_COMPARATOR_WEAKENING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "no_authorization_drift_receipt_passes",
+      "detail": "no authorization drift passes",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_NO_AUTHORIZATION_DRIFT_MISSING",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_ACTIVATION_REVIEW_VALIDATED__LIMITED_RUNTIME_AUTHORIZATION_PACKET_NEXT"
+  ]
 }
