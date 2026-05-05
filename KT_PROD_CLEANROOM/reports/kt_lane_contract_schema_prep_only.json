@@ -1,0 +1,98 @@
+{
+  "$id": "kt.lane_contract.prep_only.v0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Compiled prep-only lane contract schema for KT_LANE_COMPILER_V0. This schema describes compiler output, remains tooling/prep only, and does not authorize runtime, R6 open, package promotion, or commercial claims.",
+  "properties": {
+    "authority": {
+      "const": "PREP_ONLY_TOOLING"
+    },
+    "compiler_id": {
+      "const": "KT_LANE_COMPILER_V0"
+    },
+    "files": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "generated_artifacts": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "lane_spec": {
+      "additionalProperties": true,
+      "required": [
+        "lane_id",
+        "lane_name",
+        "authority",
+        "owner",
+        "summary",
+        "operator_path",
+        "test_path",
+        "artifacts"
+      ],
+      "type": "object"
+    },
+    "non_authorization_guards": {
+      "additionalProperties": false,
+      "properties": {
+        "commercial_claims_authorized": {
+          "const": false
+        },
+        "forbidden_authority_tokens": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "package_promotion_authorized": {
+          "const": false
+        },
+        "r6_open_authorized": {
+          "const": false
+        },
+        "runtime_authorized": {
+          "const": false
+        }
+      },
+      "required": [
+        "runtime_authorized",
+        "r6_open_authorized",
+        "package_promotion_authorized",
+        "commercial_claims_authorized",
+        "forbidden_authority_tokens"
+      ],
+      "type": "object"
+    },
+    "prep_only_banner": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.lane_contract.prep_only.v0"
+    },
+    "status": {
+      "const": "PREP_ONLY_SCAFFOLD"
+    }
+  },
+  "required": [
+    "schema_id",
+    "compiler_id",
+    "authority",
+    "status",
+    "prep_only_banner",
+    "lane_spec",
+    "generated_artifacts",
+    "files",
+    "non_authorization_guards"
+  ],
+  "title": "KT Lane Compiled Contract Prep-Only Schema",
+  "type": "object"
+}
