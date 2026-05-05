@@ -69,9 +69,9 @@
   "candidate_version": "v1",
   "commercial_activation_claim_authorized": false,
   "control_id": "DRIFT_MONITORING",
-  "current_branch": "authoritative/b04-r6-limited-runtime-authorization-packet",
-  "current_git_head": "e87f6731fa2eae688da791d90582cfbff022dff7",
-  "current_main_head": "6b0c10d7116556e1d5758a9f4e70e418aa106f74",
+  "current_branch": "main",
+  "current_git_head": "524baa7669268f3a1743c5f1bec2806832e9c244",
+  "current_main_head": "524baa7669268f3a1743c5f1bec2806832e9c244",
   "forbidden_actions": [
     "LIMITED_RUNTIME_AUTHORIZED",
     "RUNTIME_CUTOVER_AUTHORIZED",
@@ -85,10 +85,10 @@
     "METRIC_CONTRACT_MUTATED",
     "STATIC_COMPARATOR_WEAKENED"
   ],
-  "generated_utc": "2026-05-05T13:08:39Z",
+  "generated_utc": "2026-05-05T13:20:03Z",
   "handoff_validation": {
-    "predecessor_handoff_accepted": true,
-    "self_replay_handoff_accepted": false
+    "predecessor_handoff_accepted": false,
+    "self_replay_handoff_accepted": true
   },
   "input_bindings": [
     {
@@ -177,11 +177,11 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "e87f6731fa2eae688da791d90582cfbff022dff7",
+      "git_commit": "524baa7669268f3a1743c5f1bec2806832e9c244",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "previous_next_lawful_move",
-      "sha256": "828f97891af795f9e677e72cb24c397365cc51756d6546f52542752abd911ef9"
+      "sha256": "73dfce573e706968b33687dd538cce4e2ffd818aa413ed6779fa7ba2b22349b7"
     },
     {
       "binding_kind": "file_sha256_at_limited_runtime_packet_authoring",
