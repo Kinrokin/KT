@@ -8,8 +8,9 @@
     "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_DEFERRED__NAMED_VALIDATION_DEFECT_REMAINS",
     "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_LIMITED_RUNTIME_KILL_SWITCH_VALIDATION_RECEIPT",
+  "artifact_id": "B04_R6_LIMITED_RUNTIME_RUN_PLAN_PREP_ONLY_DRAFT",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_VALIDATION",
+  "authority": "PREP_ONLY",
   "authorization_state": {
     "activation_cutover_executed": false,
     "activation_review_validated": true,
@@ -94,6 +95,21 @@
     "validated_trace_completeness_receipt_hash": "dc0ec3f93e3606989787b35dfb064db5e595d7c219f9844807af81b69f7b19d8",
     "validated_trust_zone_validation_receipt_hash": "f6eb218616bed5c0414959a5f704206ba0b10c0f0f7a7ecacb8ea7a74b684c07"
   },
+  "cannot_authorize": [
+    "LIMITED_RUNTIME_EXECUTED",
+    "LIMITED_RUNTIME_EXECUTION_AUTHORIZED",
+    "LIMITED_RUNTIME_AUTHORIZED",
+    "RUNTIME_CUTOVER_AUTHORIZED",
+    "ACTIVATION_CUTOVER_EXECUTED",
+    "R6_OPEN",
+    "LOBE_ESCALATION_AUTHORIZED",
+    "PACKAGE_PROMOTION_AUTHORIZED",
+    "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED",
+    "TRUTH_ENGINE_LAW_MUTATED",
+    "TRUST_ZONE_LAW_MUTATED",
+    "METRIC_CONTRACT_MUTATED",
+    "STATIC_COMPARATOR_WEAKENED"
+  ],
   "commercial_activation_claim_authorized": false,
   "current_branch": "authoritative/b04-r6-limited-runtime-execution-packet-validation",
   "current_git_head": "8c17b32b7aaf84a3cdad00442a051dc8696c3c07",
@@ -576,6 +592,7 @@
   "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_BOUND__LIMITED_RUNTIME_EXECUTION_VALIDATION_NEXT",
   "previous_authoritative_lane": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET",
   "previous_next_lawful_move": "VALIDATE_B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET",
+  "purpose": "Prep-only scaffold for future limited runtime run plan prep only draft.",
   "r6_open": false,
   "reason_codes": [
     "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_VAL_CONTRACT_MISSING",
@@ -616,11 +633,11 @@
   "runtime_cutover_authorized": false,
   "runtime_execution_authorized": false,
   "runtime_mode": "SHADOW_RUNTIME_ONLY",
-  "schema_id": "kt.b04_r6.limited_runtime.execution_packet_validation.kill_switch.v1",
+  "schema_id": "kt.b04_r6.limited_runtime_run_plan_prep_only_draft.v1",
   "schema_version": 1,
   "selected_outcome": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_VALIDATED__LIMITED_RUNTIME_RUN_NEXT",
   "static_comparator_weakened": false,
-  "status": "PASS",
+  "status": "PREP_ONLY",
   "terminal_defects": [
     "LIMITED_RUNTIME_EXECUTED",
     "LIMITED_RUNTIME_EXECUTION_AUTHORIZED",
@@ -641,10 +658,6 @@
   "trust_zone_validation_status": "PASS",
   "truth_engine_derivation_law_unchanged": true,
   "truth_engine_law_changed": false,
-  "validated_hashes": {
-    "kill_switch_execution_contract_hash": "9052df2b0fd340fbd310b1a2d93892eebb2b5a3d00c659f419d7b357a2cff33e"
-  },
-  "validation_role": "kill_switch_validation",
   "validation_rows": [
     {
       "check_id": "validation_contract_preserves_current_main_head",
@@ -1584,7 +1597,5 @@
       "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_VAL_PREP_ONLY_AUTHORITY_DRIFT",
       "status": "PASS"
     }
-  ],
-  "validation_status": "PASS",
-  "validation_subject": "kill switch execution contract"
+  ]
 }
