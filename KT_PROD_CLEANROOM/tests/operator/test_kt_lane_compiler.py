@@ -96,7 +96,16 @@ def test_forbidden_outcomes_are_rejected_from_specs(token: str) -> None:
     spec = _spec()
     spec["may_authorize"] = [f"attempt_to_claim_{token}"]
 
-    with pytest.raises(LaneSpecError, match="may_authorize contains forbidden authority tokens"):
+    with pytest.raises(LaneSpecError, match="may_authorize"):
+        build_lane_contract(spec)
+
+
+@pytest.mark.parametrize("field", ["summary", "selected_outcome", "next_lawful_move"])
+def test_forbidden_authority_tokens_are_rejected_from_claim_fields(field: str) -> None:
+    spec = _spec()
+    spec[field] = "RUNTIME_CUTOVER_AUTHORIZED"
+
+    with pytest.raises(LaneSpecError, match=field):
         build_lane_contract(spec)
 
 
@@ -107,6 +116,19 @@ def test_must_not_authorize_can_name_forbidden_boundaries() -> None:
     contract = build_lane_contract(spec)
 
     assert set(contract["lane_law_metadata"]["must_not_authorize"]) == set(FORBIDDEN_AUTHORITY_TOKENS)
+
+
+def test_negative_and_prep_fields_can_name_future_boundaries_without_authorizing() -> None:
+    spec = _spec()
+    spec["future_blockers"] = ["PACKAGE_PROMOTION_REVIEW_NOT_YET_AUTHORED"]
+    spec["reason_codes"] = ["RC_B04R6_RUNTIME_CUTOVER_AUTHORIZED_DRIFT"]
+    spec["prep_only_outputs"] = ["package_promotion_review_preconditions_draft"]
+    spec["no_authorization_drift_checks"] = ["R6_OPEN remains forbidden."]
+
+    contract = build_lane_contract(spec)
+
+    assert contract["non_authorization_guards"]["package_promotion_authorized"] is False
+    assert contract["lane_law_metadata"]["prep_only_outputs"] == ["package_promotion_review_preconditions_draft"]
 
 
 def test_output_is_deterministic() -> None:
