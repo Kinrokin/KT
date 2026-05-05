@@ -121,8 +121,11 @@ def test_activation_review_packet_binds_zero_fired_disqualifiers(outputs: Path) 
         "validated_shadow_screen_packet_hash",
         "validated_shadow_packet_validation_receipt_hash",
         "validated_blind_universe_hash",
+        "validated_blind_universe_receipt_hash",
         "validated_route_economics_court_hash",
+        "validated_route_economics_court_receipt_hash",
         "validated_source_packet_hash",
+        "validated_source_packet_receipt_hash",
         "admissibility_receipt_hash",
         "numeric_triage_emit_core_hash",
         "static_comparator_contract_hash",
@@ -337,6 +340,41 @@ def test_activation_review_rejects_mutated_candidate_binding(tmp_path: Path, mon
     _write(candidate_path, payload)
     _patch_activation_env(monkeypatch, tmp_path)
     with pytest.raises(RuntimeError, match="CANDIDATE_BINDING_MISSING"):
+        activation.run(reports_root=reports)
+
+
+@pytest.mark.parametrize(
+    "role",
+    [
+        "validated_blind_universe_receipt",
+        "validated_route_economics_court_receipt",
+        "validated_source_packet_receipt",
+    ],
+)
+def test_activation_review_rejects_mutated_upstream_validation_receipts(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    role: str,
+) -> None:
+    reports = screen_helpers._run_screen(tmp_path, monkeypatch)
+    path = tmp_path / activation.INPUTS[role]
+    payload = _load(path)
+    payload["status"] = "PASS"
+    payload["post_screen_mutation"] = True
+    _write(path, payload)
+    _patch_activation_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="CANDIDATE_BINDING_MISSING"):
+        activation.run(reports_root=reports)
+
+
+def test_activation_review_rejects_divergent_shadow_execution_binding_hashes(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = screen_helpers._run_screen(tmp_path, monkeypatch)
+    receipt_path = reports / "b04_r6_afsh_shadow_screen_execution_receipt.json"
+    payload = _load(receipt_path)
+    payload["binding_hashes"]["validated_blind_universe_hash"] = "a" * 64
+    _write(receipt_path, payload)
+    _patch_activation_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="binding hashes diverged"):
         activation.run(reports_root=reports)
 
 

@@ -340,7 +340,10 @@ def _require_shadow_pass(payloads: Dict[str, Dict[str, Any]], texts: Dict[str, s
 
 def _validate_bindings(root: Path, payloads: Dict[str, Dict[str, Any]]) -> Dict[str, str]:
     result = payloads["shadow_screen_result"]
+    execution_receipt = payloads["shadow_execution_receipt"]
     binding_hashes = dict(result.get("binding_hashes", {}))
+    if binding_hashes != dict(execution_receipt.get("binding_hashes", {})):
+        _fail("RC_B04R6_ACT_REVIEW_PACKET_SHADOW_RESULT_BINDING_MISSING", "shadow result and execution receipt binding hashes diverged")
     input_rows = result.get("input_bindings", [])
     if not isinstance(input_rows, list):
         _fail("RC_B04R6_ACT_REVIEW_PACKET_SHADOW_RESULT_BINDING_MISSING", "shadow result missing input bindings")
@@ -378,11 +381,24 @@ def _validate_bindings(root: Path, payloads: Dict[str, Dict[str, Any]]) -> Dict[
         if len(value) != 64 or any(ch not in "0123456789abcdef" for ch in value):
             _fail("RC_B04R6_ACT_REVIEW_PACKET_SHADOW_RESULT_BINDING_MISSING", f"missing hash for {target}")
         hashes[target] = value
+    upstream_validation_receipts = {
+        "validated_blind_universe_receipt_hash": "universe_validation_receipt",
+        "validated_route_economics_court_receipt_hash": "court_validation_receipt",
+        "validated_source_packet_receipt_hash": "source_packet_validation_receipt",
+    }
+    for target, source_role in upstream_validation_receipts.items():
+        value = _input_binding_sha(input_rows, source_role)
+        if len(value) != 64 or any(ch not in "0123456789abcdef" for ch in value):
+            _fail("RC_B04R6_ACT_REVIEW_PACKET_SHADOW_RESULT_BINDING_MISSING", f"missing upstream receipt hash for {target}")
+        hashes[target] = value
     direct_checks = {
         "candidate_artifact_hash": "candidate_artifact",
         "candidate_manifest_hash": "candidate_manifest",
         "validated_shadow_packet_hash": "validated_shadow_packet_contract",
         "validated_shadow_packet_validation_receipt_hash": "validated_shadow_packet_validation_receipt",
+        "validated_blind_universe_receipt_hash": "validated_blind_universe_receipt",
+        "validated_route_economics_court_receipt_hash": "validated_route_economics_court_receipt",
+        "validated_source_packet_receipt_hash": "validated_source_packet_receipt",
         "admissibility_receipt_hash": "admissibility_receipt",
         "numeric_triage_emit_core_hash": "numeric_triage_emit_core",
         "static_comparator_contract_hash": "static_comparator_contract",
