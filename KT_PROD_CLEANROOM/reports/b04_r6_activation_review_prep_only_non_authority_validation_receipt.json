@@ -8,7 +8,7 @@
     "B04_R6_ACTIVATION_REVIEW_DEFERRED__NAMED_VALIDATION_DEFECT_REMAINS",
     "B04_R6_ACTIVATION_REVIEW_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_ACTIVATION_REVIEW_PREP_ONLY_NON_AUTHORITY_VALIDATION_RECEIPT",
   "authoritative_lane": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_VALIDATION",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -494,7 +494,7 @@
   "packet_receipt_hash": "98335ba3066cab827e303dc1eddf84e94a9c2c9f1399b96761f5cc4f5510b965",
   "packet_replay_binding_head": "6201911450b34219353613b64d69e391becef0a4",
   "packet_report_hash": "f2c053f1f8de0ff043bef14c4c64a35a67cd0882e7b5dacd5f33fa1e77b5b178",
-  "pass_count": 1,
+  "pass_count": 6,
   "predecessor_outcome": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET_BOUND__ACTIVATION_REVIEW_VALIDATION_NEXT",
   "previous_authoritative_lane": "B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET",
   "previous_next_lawful_move": "VALIDATE_B04_R6_LEARNED_ROUTER_ACTIVATION_REVIEW_PACKET",
@@ -551,7 +551,7 @@
     "RC_B04R6_ACT_REVIEW_VAL_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v16",
+  "schema_id": "kt.b04_r6.activation_review.prep_only_non_authority_validation_receipt.v1",
   "schema_version": 1,
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
@@ -580,12 +580,46 @@
   "truth_engine_law_changed": false,
   "validation_rows": [
     {
-      "check_id": "next_lawful_move_is_limited_runtime_authorization_packet",
-      "detail": "next move is limited runtime authorization packet authorship",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_NEXT_MOVE_DRIFT",
+      "check_id": "limited_runtime_authorization_draft_remains_prep_only",
+      "detail": "limited runtime draft prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "limited_runtime_scope_manifest_draft_remains_prep_only",
+      "detail": "limited runtime scope draft prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "limited_runtime_monitoring_draft_remains_prep_only",
+      "detail": "limited runtime monitoring draft prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "limited_runtime_rollback_schema_draft_remains_prep_only",
+      "detail": "limited runtime rollback draft prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "package_promotion_review_preconditions_draft_remains_prep_only",
+      "detail": "package promotion draft prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_PREP_ONLY_AUTHORITY_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "external_audit_delta_manifest_draft_remains_prep_only",
+      "detail": "external audit draft prep-only",
+      "group": "prep_only",
+      "reason_code": "RC_B04R6_ACT_REVIEW_VAL_PREP_ONLY_AUTHORITY_DRIFT",
       "status": "PASS"
     }
-  ],
-  "verdict": "B04_R6_ACTIVATION_REVIEW_VALIDATED__LIMITED_RUNTIME_AUTHORIZATION_PACKET_NEXT"
+  ]
 }
