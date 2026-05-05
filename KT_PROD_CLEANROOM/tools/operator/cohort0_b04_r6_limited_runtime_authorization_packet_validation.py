@@ -299,13 +299,25 @@ def _validate_packet_payloads(packet_payloads: Dict[str, Dict[str, Any]], packet
             continue
         if payload.get("status") not in (None, "PASS", "PREP_ONLY"):
             _fail("RC_B04R6_LIMITED_RUNTIME_VAL_PACKET_BINDING_MISSING", f"{label} has non-pass status")
-    for label, payload in (("packet_contract", contract), ("packet_receipt", receipt), ("next_lawful_move", next_move)):
+    for label, payload in (("packet_contract", contract), ("packet_receipt", receipt)):
         if payload.get("authoritative_lane") != PREVIOUS_LANE:
             _fail("RC_B04R6_LIMITED_RUNTIME_VAL_PACKET_BINDING_MISSING", f"{label} lane identity drift")
         if payload.get("selected_outcome") != EXPECTED_PREVIOUS_OUTCOME:
             _fail("RC_B04R6_LIMITED_RUNTIME_VAL_PACKET_BINDING_MISSING", f"{label} outcome drift")
         if payload.get("next_lawful_move") != EXPECTED_PREVIOUS_NEXT_MOVE:
             _fail("RC_B04R6_LIMITED_RUNTIME_VAL_NEXT_MOVE_DRIFT", f"{label} next move drift")
+    next_move_is_previous_handoff = (
+        next_move.get("authoritative_lane") == PREVIOUS_LANE
+        and next_move.get("selected_outcome") == EXPECTED_PREVIOUS_OUTCOME
+        and next_move.get("next_lawful_move") == EXPECTED_PREVIOUS_NEXT_MOVE
+    )
+    next_move_is_self_replay_handoff = (
+        next_move.get("authoritative_lane") == AUTHORITATIVE_LANE
+        and next_move.get("selected_outcome") == SELECTED_OUTCOME
+        and next_move.get("next_lawful_move") == NEXT_LAWFUL_MOVE
+    )
+    if not (next_move_is_previous_handoff or next_move_is_self_replay_handoff):
+        _fail("RC_B04R6_LIMITED_RUNTIME_VAL_NEXT_MOVE_DRIFT", "next_lawful_move handoff drift")
     if contract.get("limited_runtime_authorization_packet_authored") is not True:
         _fail("RC_B04R6_LIMITED_RUNTIME_VAL_PACKET_BINDING_MISSING", "packet not authored")
     if contract.get("limited_runtime_authorization_packet_validated") is not False:

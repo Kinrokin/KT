@@ -35,6 +35,9 @@ FORBIDDEN_AUTHORITY_CONTEXT_EXEMPT_FIELDS = frozenset(
         "no_authorization_drift_checks",
         "future_blockers",
         "reason_codes",
+        "artifacts",
+        "json_parse_inputs",
+        "authoritative_inputs",
         "prep_only_outputs",
     }
 )

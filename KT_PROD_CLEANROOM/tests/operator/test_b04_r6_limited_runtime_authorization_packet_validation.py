@@ -133,6 +133,16 @@ def test_next_lawful_move_is_limited_runtime_execution_packet(outputs: Path) -> 
     assert nxt["next_lawful_move"] == validation.NEXT_LAWFUL_MOVE
 
 
+def test_validation_self_replay_handoff_is_allowed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_validation(tmp_path, monkeypatch)
+
+    validation.run(reports_root=reports)
+
+    nxt = _load(reports / validation.OUTPUTS["next_lawful_move"])
+    assert nxt["authoritative_lane"] == validation.AUTHORITATIVE_LANE
+    assert nxt["next_lawful_move"] == validation.NEXT_LAWFUL_MOVE
+
+
 def test_validation_report_states_non_execution(outputs: Path) -> None:
     text = (outputs / validation.OUTPUTS["validation_report"]).read_text(encoding="utf-8").lower()
     assert "does not authorize limited-runtime execution" in text
@@ -405,4 +415,15 @@ def test_prep_only_authority_drift_fails_closed(tmp_path: Path, monkeypatch: pyt
     _patch_validation_env(monkeypatch, tmp_path)
 
     with pytest.raises(RuntimeError, match="LIMITED_RUNTIME_VAL_PREP_ONLY_AUTHORITY_DRIFT"):
+        validation.run(reports_root=reports)
+
+
+def test_invalid_self_replay_handoff_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_validation(tmp_path, monkeypatch)
+    path = reports / validation.OUTPUTS["next_lawful_move"]
+    payload = _load(path)
+    payload["selected_outcome"] = "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATED__R6_OPEN"
+    _write(path, payload)
+
+    with pytest.raises(RuntimeError, match="NEXT_MOVE_DRIFT"):
         validation.run(reports_root=reports)

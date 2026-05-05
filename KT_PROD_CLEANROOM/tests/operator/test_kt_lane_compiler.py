@@ -120,6 +120,9 @@ def test_must_not_authorize_can_name_forbidden_boundaries() -> None:
 
 def test_negative_and_prep_fields_can_name_future_boundaries_without_authorizing() -> None:
     spec = _spec()
+    spec["artifacts"] = ["KT_PROD_CLEANROOM/reports/package_promotion_review_preconditions_prep_only.json"]
+    spec["json_parse_inputs"] = ["KT_PROD_CLEANROOM/reports/package_promotion_review_preconditions_prep_only.json"]
+    spec["authoritative_inputs"] = ["package_promotion_review_preconditions_prep_only"]
     spec["future_blockers"] = ["PACKAGE_PROMOTION_REVIEW_NOT_YET_AUTHORED"]
     spec["reason_codes"] = ["RC_B04R6_RUNTIME_CUTOVER_AUTHORIZED_DRIFT"]
     spec["prep_only_outputs"] = ["package_promotion_review_preconditions_draft"]
