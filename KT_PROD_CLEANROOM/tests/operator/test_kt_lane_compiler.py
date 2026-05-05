@@ -128,5 +128,29 @@ def test_compile_lane_spec_file_rejects_output_root_escape(tmp_path: Path) -> No
     spec_path = tmp_path / "lane_spec.json"
     spec_path.write_text(json.dumps(spec, sort_keys=True), encoding="utf-8")
 
-    with pytest.raises(LaneSpecError, match="generated path must stay under output root"):
+    with pytest.raises(LaneSpecError, match="operator_path must be a safe relative path"):
         compile_lane_spec_file(spec_path, output_root=tmp_path / "out")
+
+
+def test_compile_lane_spec_file_rejects_duplicate_json_keys(tmp_path: Path) -> None:
+    spec_path = tmp_path / "lane_spec.json"
+    spec_path.write_text('{"lane_id":"ONE","lane_id":"TWO"}', encoding="utf-8")
+
+    with pytest.raises(LaneSpecError, match="lane spec JSON must parse strictly"):
+        compile_lane_spec_file(spec_path, output_root=tmp_path / "out")
+
+
+def test_lane_id_must_be_filename_safe() -> None:
+    spec = _spec()
+    spec["lane_id"] = "../escape"
+
+    with pytest.raises(LaneSpecError, match="lane_id must use only"):
+        validate_lane_spec(spec)
+
+
+def test_operator_and_test_paths_must_use_expected_prefixes() -> None:
+    spec = _spec()
+    spec["operator_path"] = "KT_PROD_CLEANROOM/reports/not_an_operator.py"
+
+    with pytest.raises(LaneSpecError, match="operator_path must start with"):
+        validate_lane_spec(spec)

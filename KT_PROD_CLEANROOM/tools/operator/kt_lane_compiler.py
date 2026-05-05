@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence
 
+from tools.verification.strict_json import load_no_dupes
+
 
 SCHEMA_ID = "kt.lane_contract.prep_only.v0"
 COMPILER_ID = "KT_LANE_COMPILER_V0"
@@ -73,6 +75,25 @@ def _optional_string_list(spec: Mapping[str, Any], field: str) -> List[str]:
     return _as_string_list(spec[field], field, allow_empty=True)
 
 
+def _as_safe_lane_id(value: Any, field: str) -> str:
+    lane_id = _as_text(value, field)
+    if any(char not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-" for char in lane_id):
+        raise LaneSpecError(f"{field} must use only letters, digits, underscores, or hyphens")
+    if ".." in lane_id:
+        raise LaneSpecError(f"{field} must not contain traversal tokens")
+    return lane_id
+
+
+def _as_safe_relpath(value: Any, field: str, *, required_prefix: str) -> str:
+    raw = _as_text(value, field).replace("\\", "/")
+    path = Path(raw)
+    if path.is_absolute() or ".." in path.parts:
+        raise LaneSpecError(f"{field} must be a safe relative path")
+    if not raw.startswith(required_prefix):
+        raise LaneSpecError(f"{field} must start with {required_prefix}")
+    return raw
+
+
 def _forbidden_hits(values: Iterable[Any]) -> List[str]:
     text = json.dumps(list(values), sort_keys=True, ensure_ascii=True).upper()
     return sorted(token for token in FORBIDDEN_AUTHORITY_TOKENS if token in text)
@@ -94,13 +115,21 @@ def _normalize_spec(spec: Mapping[str, Any]) -> Dict[str, Any]:
         raise LaneSpecError(f"authority must be {AUTHORITY}")
 
     normalized = {
-        "lane_id": _as_text(spec["lane_id"], "lane_id"),
+        "lane_id": _as_safe_lane_id(spec["lane_id"], "lane_id"),
         "lane_name": _as_text(spec["lane_name"], "lane_name"),
         "authority": authority,
         "owner": _as_text(spec["owner"], "owner"),
         "summary": _as_text(spec["summary"], "summary"),
-        "operator_path": _as_text(spec["operator_path"], "operator_path"),
-        "test_path": _as_text(spec["test_path"], "test_path"),
+        "operator_path": _as_safe_relpath(
+            spec["operator_path"],
+            "operator_path",
+            required_prefix="KT_PROD_CLEANROOM/tools/operator/",
+        ),
+        "test_path": _as_safe_relpath(
+            spec["test_path"],
+            "test_path",
+            required_prefix="KT_PROD_CLEANROOM/tests/operator/",
+        ),
         "artifacts": _as_string_list(spec["artifacts"], "artifacts"),
         "json_parse_inputs": _optional_string_list(spec, "json_parse_inputs"),
         "no_authorization_drift_checks": _optional_string_list(spec, "no_authorization_drift_checks"),
@@ -247,26 +276,27 @@ def build_lane_contract(spec: Mapping[str, Any]) -> Dict[str, Any]:
     """Build a deterministic prep-only lane contract dictionary."""
 
     normalized = validate_lane_spec(spec)
+    lane_slug = _safe_function_name(str(normalized["lane_id"]))
     files = {
         normalized["operator_path"]: _operator_skeleton(normalized),
         normalized["test_path"]: _test_skeleton(normalized),
-        f"{DEFAULT_REPORT_ROOT_REL}/kt_lane_artifact_list__{normalized['lane_id']}.json": _stable_json(
+        f"{DEFAULT_REPORT_ROOT_REL}/kt_lane_artifact_list__{lane_slug}.json": _stable_json(
             _artifact_list(normalized)
         ),
-        f"{DEFAULT_REPORT_ROOT_REL}/kt_lane_reason_codes__{normalized['lane_id']}.json": _stable_json(
+        f"{DEFAULT_REPORT_ROOT_REL}/kt_lane_reason_codes__{lane_slug}.json": _stable_json(
             _reason_code_scaffold(normalized)
         ),
-        f"{DEFAULT_REPORT_ROOT_REL}/kt_lane_json_parse_list__{normalized['lane_id']}.json": _stable_json(
+        f"{DEFAULT_REPORT_ROOT_REL}/kt_lane_json_parse_list__{lane_slug}.json": _stable_json(
             _json_parse_list(normalized)
         ),
-        f"{DEFAULT_REPORT_ROOT_REL}/kt_lane_no_authorization_drift__{normalized['lane_id']}.json": _stable_json(
+        f"{DEFAULT_REPORT_ROOT_REL}/kt_lane_no_authorization_drift__{lane_slug}.json": _stable_json(
             _no_authorization_drift_checks(normalized)
         ),
-        f"{DEFAULT_REPORT_ROOT_REL}/kt_lane_future_blockers__{normalized['lane_id']}.json": _stable_json(
+        f"{DEFAULT_REPORT_ROOT_REL}/kt_lane_future_blockers__{lane_slug}.json": _stable_json(
             _future_blocker_register(normalized)
         ),
-        f"{DEFAULT_REPORT_ROOT_REL}/kt_lane_pr_body__{normalized['lane_id']}.md": _pr_body(normalized, replay=False),
-        f"{DEFAULT_REPORT_ROOT_REL}/kt_lane_replay_pr_body__{normalized['lane_id']}.md": _pr_body(
+        f"{DEFAULT_REPORT_ROOT_REL}/kt_lane_pr_body__{lane_slug}.md": _pr_body(normalized, replay=False),
+        f"{DEFAULT_REPORT_ROOT_REL}/kt_lane_replay_pr_body__{lane_slug}.md": _pr_body(
             normalized, replay=True
         ),
     }
@@ -293,7 +323,10 @@ def build_lane_contract(spec: Mapping[str, Any]) -> Dict[str, Any]:
 
 
 def compile_lane_spec_file(spec_path: str | Path, output_root: Optional[str | Path] = None) -> Dict[str, Any]:
-    spec = json.loads(Path(spec_path).read_text(encoding="utf-8"))
+    try:
+        spec = load_no_dupes(Path(spec_path))
+    except Exception as exc:  # strict loader raises ValueError for duplicate keys and JSON defects.
+        raise LaneSpecError(f"lane spec JSON must parse strictly: {exc}") from exc
     if not isinstance(spec, dict):
         raise LaneSpecError("lane spec JSON must be an object")
     contract = build_lane_contract(spec)
@@ -309,7 +342,7 @@ def compile_lane_spec_file(spec_path: str | Path, output_root: Optional[str | Pa
             except ValueError as exc:
                 raise LaneSpecError(f"generated path must stay under output root: {relpath}") from exc
             target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_text(content, encoding="utf-8")
+            target.write_text(content, encoding="utf-8", newline="\n")
     return contract
 
 
@@ -325,7 +358,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if args.contract_out:
         target = Path(args.contract_out)
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(rendered, encoding="utf-8")
+        target.write_text(rendered, encoding="utf-8", newline="\n")
     else:
         print(rendered, end="")
     return 0

@@ -1,10 +1,22 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "kt.lane_contract.prep_only.v0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
-  "description": "Prep-only lane contract schema for KT_LANE_COMPILER_V0. This schema is tooling/prep only and does not authorize runtime, R6 open, package promotion, or commercial claims.",
+  "description": "Compiled prep-only lane contract schema for KT_LANE_COMPILER_V0. This schema describes compiler output, remains tooling/prep only, and does not authorize runtime, R6 open, package promotion, or commercial claims.",
   "properties": {
-    "artifacts": {
+    "authority": {
+      "const": "PREP_ONLY_TOOLING"
+    },
+    "compiler_id": {
+      "const": "KT_LANE_COMPILER_V0"
+    },
+    "files": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "generated_artifacts": {
       "items": {
         "minLength": 1,
         "type": "string"
@@ -12,72 +24,75 @@
       "minItems": 1,
       "type": "array"
     },
-    "authority": {
-      "const": "PREP_ONLY_TOOLING"
+    "lane_spec": {
+      "additionalProperties": true,
+      "required": [
+        "lane_id",
+        "lane_name",
+        "authority",
+        "owner",
+        "summary",
+        "operator_path",
+        "test_path",
+        "artifacts"
+      ],
+      "type": "object"
     },
-    "future_blockers": {
-      "items": {
-        "minLength": 1,
-        "type": "string"
+    "non_authorization_guards": {
+      "additionalProperties": false,
+      "properties": {
+        "commercial_claims_authorized": {
+          "const": false
+        },
+        "forbidden_authority_tokens": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "package_promotion_authorized": {
+          "const": false
+        },
+        "r6_open_authorized": {
+          "const": false
+        },
+        "runtime_authorized": {
+          "const": false
+        }
       },
-      "type": "array"
+      "required": [
+        "runtime_authorized",
+        "r6_open_authorized",
+        "package_promotion_authorized",
+        "commercial_claims_authorized",
+        "forbidden_authority_tokens"
+      ],
+      "type": "object"
     },
-    "json_parse_inputs": {
-      "items": {
-        "minLength": 1,
-        "type": "string"
-      },
-      "type": "array"
-    },
-    "lane_id": {
+    "prep_only_banner": {
       "minLength": 1,
       "type": "string"
     },
-    "lane_name": {
-      "minLength": 1,
-      "type": "string"
+    "schema_id": {
+      "const": "kt.lane_contract.prep_only.v0"
     },
-    "no_authorization_drift_checks": {
-      "items": {
-        "minLength": 1,
-        "type": "string"
-      },
-      "type": "array"
-    },
-    "operator_path": {
-      "minLength": 1,
-      "type": "string"
-    },
-    "owner": {
-      "minLength": 1,
-      "type": "string"
-    },
-    "reason_codes": {
-      "items": {
-        "minLength": 1,
-        "type": "string"
-      },
-      "type": "array"
-    },
-    "summary": {
-      "minLength": 1,
-      "type": "string"
-    },
-    "test_path": {
-      "minLength": 1,
-      "type": "string"
+    "status": {
+      "const": "PREP_ONLY_SCAFFOLD"
     }
   },
   "required": [
-    "lane_id",
-    "lane_name",
+    "schema_id",
+    "compiler_id",
     "authority",
-    "owner",
-    "summary",
-    "operator_path",
-    "test_path",
-    "artifacts"
+    "status",
+    "prep_only_banner",
+    "lane_spec",
+    "generated_artifacts",
+    "files",
+    "non_authorization_guards"
   ],
-  "title": "KT Lane Contract Prep-Only Schema",
+  "title": "KT Lane Compiled Contract Prep-Only Schema",
   "type": "object"
 }
