@@ -409,6 +409,22 @@ def _validate_bindings(root: Path, payloads: Dict[str, Dict[str, Any]]) -> Dict[
         actual = file_sha256(common.resolve_path(root, INPUTS[role]))
         if actual != hashes[hash_key]:
             _fail("RC_B04R6_ACT_REVIEW_PACKET_CANDIDATE_BINDING_MISSING", f"{role} hash mismatch for {hash_key}")
+    packet_validation_hashes = payloads["validated_shadow_packet_validation_receipt"].get("binding_hashes", {})
+    packet_contract = payloads["validated_shadow_packet_contract"]
+    semantic_anchors = {
+        "validated_blind_universe_hash": "validated_blind_universe_hash",
+        "validated_route_economics_court_hash": "validated_court_hash",
+        "validated_source_packet_hash": "validated_source_packet_hash",
+    }
+    packet_contract_hashes = packet_contract.get("binding_hashes", {})
+    for activation_key, packet_key in semantic_anchors.items():
+        expected = str(packet_validation_hashes.get(packet_key, "")).strip()
+        packet_contract_value = str(packet_contract_hashes.get(packet_key) or packet_contract.get(packet_key, "")).strip()
+        if hashes[activation_key] != expected or packet_contract_value != expected:
+            _fail(
+                "RC_B04R6_ACT_REVIEW_PACKET_SHADOW_PACKET_BINDING_MISSING",
+                f"{activation_key} does not match validated shadow-packet binding {packet_key}",
+            )
     for alias, source_key in (
         ("candidate_hash", "candidate_artifact_hash"),
         ("candidate_manifest_hash", "candidate_manifest_hash"),

@@ -378,6 +378,29 @@ def test_activation_review_rejects_divergent_shadow_execution_binding_hashes(tmp
         activation.run(reports_root=reports)
 
 
+@pytest.mark.parametrize(
+    "field",
+    [
+        "validated_blind_universe_hash",
+        "validated_court_hash",
+        "validated_source_packet_hash",
+    ],
+)
+def test_activation_review_rejects_tampered_shadow_result_semantic_hashes(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    field: str,
+) -> None:
+    reports = screen_helpers._run_screen(tmp_path, monkeypatch)
+    result_path = reports / "b04_r6_afsh_shadow_screen_result.json"
+    payload = _load(result_path)
+    payload[field] = "b" * 64
+    _write(result_path, payload)
+    _patch_activation_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="SHADOW_PACKET_BINDING_MISSING|binding hashes diverged"):
+        activation.run(reports_root=reports)
+
+
 def test_activation_review_accepts_self_replay_handoff(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_activation(tmp_path, monkeypatch)
     _patch_activation_env(monkeypatch, tmp_path)
