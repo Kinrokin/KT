@@ -57,9 +57,9 @@
   "candidate_id": "B04_R6_AFSH_CANDIDATE_V1",
   "candidate_version": "v1",
   "commercial_activation_claim_authorized": false,
-  "current_branch": "authoritative/b04-r6-learned-router-activation-review-validation",
-  "current_git_head": "4dcff63aef072d34ca07e34afc89759e1b523d3d",
-  "current_main_head": "b0d16f35e04fd9dbe1be4731bcd34822480f65e8",
+  "current_branch": "main",
+  "current_git_head": "0d0749284a9f2e66acd6d66717f9618aead3bb24",
+  "current_main_head": "0d0749284a9f2e66acd6d66717f9618aead3bb24",
   "failure_count": 0,
   "fired_disqualifiers": [],
   "forbidden_actions": [
@@ -254,10 +254,10 @@
     "schema_id": "kt.operator.trust_zone_validation_receipt.v2",
     "status": "PASS"
   },
-  "generated_utc": "2026-05-05T11:36:37Z",
+  "generated_utc": "2026-05-05T11:46:18Z",
   "handoff_state": {
-    "predecessor_handoff_accepted": true,
-    "self_replay_handoff_accepted": false
+    "predecessor_handoff_accepted": false,
+    "self_replay_handoff_accepted": true
   },
   "input_bindings": [
     {
@@ -352,11 +352,11 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "4dcff63aef072d34ca07e34afc89759e1b523d3d",
+      "git_commit": "0d0749284a9f2e66acd6d66717f9618aead3bb24",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "next_lawful_move",
-      "sha256": "fbe5da7d05f8b0f3c73e13a5a23f14e91c24cb0070f059cda247b36cf9dafb9a"
+      "sha256": "b47d7c58aa380c57cab09659f201e840677e6549a78e74b21265f28663553268"
     },
     {
       "binding_kind": "file_sha256_at_activation_review_validation",
