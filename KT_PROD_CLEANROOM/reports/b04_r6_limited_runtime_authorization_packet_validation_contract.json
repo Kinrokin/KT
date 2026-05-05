@@ -6,7 +6,7 @@
     "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_DEFERRED__NAMED_VALIDATION_DEFECT_REMAINS",
     "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATION_CONTRACT",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATION",
   "authorization_state": {
     "activation_cutover_executed": false,
@@ -471,7 +471,7 @@
   ],
   "runtime_cutover_authorized": false,
   "runtime_execution_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v18",
+  "schema_id": "kt.b04_r6.limited_runtime_authorization_packet_validation.v1",
   "schema_version": 1,
   "selected_outcome": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATED__LIMITED_RUNTIME_EXECUTION_PACKET_NEXT",
   "shadow_superiority_passed": true,
@@ -498,6 +498,13 @@
   "trust_zone_validation_status": "PASS",
   "truth_engine_derivation_law_unchanged": true,
   "truth_engine_law_changed": false,
+  "validation_result": {
+    "limited_runtime_execution_packet_next": true,
+    "packet_bounded": true,
+    "packet_complete": true,
+    "packet_non_executing": true,
+    "packet_replayable": true
+  },
   "validation_rows": [
     {
       "check_id": "validation_contract_preserves_current_main_head",
@@ -1207,5 +1214,15 @@
       "status": "PASS"
     }
   ],
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  "validation_scope": {
+    "non_purpose": [
+      "Does not authorize limited runtime execution.",
+      "Does not execute runtime cutover.",
+      "Does not open R6.",
+      "Does not authorize lobe escalation.",
+      "Does not authorize package promotion.",
+      "Does not authorize commercial activation claims."
+    ],
+    "purpose": "Validate the authored limited-runtime authorization packet as complete, bounded, replayable, and non-executing."
+  }
 }

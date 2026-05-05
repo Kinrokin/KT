@@ -6,7 +6,7 @@
     "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_DEFERRED__NAMED_VALIDATION_DEFECT_REMAINS",
     "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_LIMITED_RUNTIME_OPERATOR_OVERRIDE_VALIDATION_RECEIPT",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATION",
   "authorization_state": {
     "activation_cutover_executed": false,
@@ -471,7 +471,7 @@
   ],
   "runtime_cutover_authorized": false,
   "runtime_execution_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v18",
+  "schema_id": "kt.b04_r6.limited_runtime.validation.operator_override.v1",
   "schema_version": 1,
   "selected_outcome": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATED__LIMITED_RUNTIME_EXECUTION_PACKET_NEXT",
   "shadow_superiority_passed": true,
@@ -498,6 +498,10 @@
   "trust_zone_validation_status": "PASS",
   "truth_engine_derivation_law_unchanged": true,
   "truth_engine_law_changed": false,
+  "validated_hashes": {
+    "operator_override_contract_hash": "cd45e35f92984b5583efc04930c33880e055cbf14c6ba6573bd69f62cc5ef5d7"
+  },
+  "validation_role": "operator_override_validation",
   "validation_rows": [
     {
       "check_id": "validation_contract_preserves_current_main_head",
@@ -1207,5 +1211,6 @@
       "status": "PASS"
     }
   ],
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  "validation_status": "PASS",
+  "validation_subject": "operator override contract"
 }
