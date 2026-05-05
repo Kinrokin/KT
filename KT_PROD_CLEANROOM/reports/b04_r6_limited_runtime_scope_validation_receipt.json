@@ -6,7 +6,7 @@
     "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_DEFERRED__NAMED_VALIDATION_DEFECT_REMAINS",
     "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_LIMITED_RUNTIME_SCOPE_VALIDATION_RECEIPT",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATION",
   "authorization_state": {
     "activation_cutover_executed": false,
@@ -77,6 +77,7 @@
     "validation_plan_hash": "7aeec77ae2a42a71a546d087faa5d2d182d435b11ad3f62cae3a8830ff5bd1ad",
     "validation_reason_codes_hash": "678390d688b34dba16a7d962a02896251cfc39426684f9fbbf8da37a59e19bf1"
   },
+  "canary_or_shadow_runtime_only": true,
   "commercial_activation_claim_authorized": false,
   "current_branch": "authoritative/b04-r6-limited-runtime-authorization-packet-validation",
   "current_git_head": "5c206566003d606e2579860138dfb2705a0550b7",
@@ -96,6 +97,7 @@
     "STATIC_COMPARATOR_WEAKENED"
   ],
   "generated_utc": "2026-05-05T15:44:35Z",
+  "global_r6_scope": false,
   "input_bindings": [
     {
       "binding_kind": "file_sha256_at_limited_runtime_packet_validation",
@@ -420,6 +422,7 @@
   "limited_runtime_authorization_packet_validated": true,
   "limited_runtime_authorized": false,
   "limited_runtime_execution_authorized": false,
+  "limited_scope_required": true,
   "lobe_escalation_authorized": false,
   "may_authorize": [
     "LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATED"
@@ -471,7 +474,7 @@
   ],
   "runtime_cutover_authorized": false,
   "runtime_execution_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v18",
+  "schema_id": "kt.b04_r6.limited_runtime.validation.scope.v1",
   "schema_version": 1,
   "selected_outcome": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATED__LIMITED_RUNTIME_EXECUTION_PACKET_NEXT",
   "shadow_superiority_passed": true,
@@ -498,6 +501,10 @@
   "trust_zone_validation_status": "PASS",
   "truth_engine_derivation_law_unchanged": true,
   "truth_engine_law_changed": false,
+  "validated_hashes": {
+    "scope_manifest_hash": "824646f986c58070f000289c4dcb8a226425d91460948e3e1d0c399ceb64528b"
+  },
+  "validation_role": "scope_validation",
   "validation_rows": [
     {
       "check_id": "validation_contract_preserves_current_main_head",
@@ -1207,5 +1214,6 @@
       "status": "PASS"
     }
   ],
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  "validation_status": "PASS",
+  "validation_subject": "limited runtime scope manifest"
 }

@@ -6,7 +6,7 @@
     "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_DEFERRED__NAMED_VALIDATION_DEFECT_REMAINS",
     "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_LIMITED_RUNTIME_NO_AUTHORIZATION_DRIFT_VALIDATION_RECEIPT",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATION",
   "authorization_state": {
     "activation_cutover_executed": false,
@@ -426,6 +426,7 @@
   ],
   "metric_contract_mutated": false,
   "next_lawful_move": "AUTHOR_B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET",
+  "no_downstream_authorization_drift": true,
   "package_promotion": "DEFERRED",
   "package_promotion_authorized": false,
   "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_BOUND__LIMITED_RUNTIME_VALIDATION_NEXT",
@@ -471,7 +472,7 @@
   ],
   "runtime_cutover_authorized": false,
   "runtime_execution_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v18",
+  "schema_id": "kt.b04_r6.limited_runtime.no_authorization_drift_validation_receipt.v1",
   "schema_version": 1,
   "selected_outcome": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATED__LIMITED_RUNTIME_EXECUTION_PACKET_NEXT",
   "shadow_superiority_passed": true,
@@ -1206,6 +1207,5 @@
       "reason_code": "RC_B04R6_LIMITED_RUNTIME_VAL_PREP_ONLY_AUTHORITY_DRIFT",
       "status": "PASS"
     }
-  ],
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  ]
 }

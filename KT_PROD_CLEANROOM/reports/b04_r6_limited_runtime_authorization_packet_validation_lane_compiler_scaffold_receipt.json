@@ -6,7 +6,7 @@
     "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_DEFERRED__NAMED_VALIDATION_DEFECT_REMAINS",
     "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_LIMITED_RUNTIME_VALIDATION_LANE_COMPILER_SCAFFOLD_BINDING_RECEIPT",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATION",
   "authorization_state": {
     "activation_cutover_executed": false,
@@ -471,7 +471,103 @@
   ],
   "runtime_cutover_authorized": false,
   "runtime_execution_authorized": false,
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v18",
+  "scaffold": {
+    "artifact_id": "B04_R6_LIMITED_RUNTIME_VALIDATION_LANE_COMPILER_SCAFFOLD_RECEIPT",
+    "authority": "PREP_ONLY_TOOLING",
+    "can_authorize_commercial_claims": false,
+    "can_authorize_limited_runtime": false,
+    "can_execute_runtime": false,
+    "can_open_r6": false,
+    "can_promote_package": false,
+    "compiled_contract_sha256": "937a4d8cce04a3ef1b2ff2b09b1e666a2b4a67a71fd0d7f6dfccd714abdf2d3e",
+    "compiler_id": "KT_LANE_COMPILER_V0",
+    "files_omitted_from_receipt": true,
+    "generated_artifacts": [
+      "KT_PROD_CLEANROOM/reports/kt_lane_artifact_list__validate_b04_r6_limited_runtime_authorization_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_future_blockers__validate_b04_r6_limited_runtime_authorization_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_json_parse_list__validate_b04_r6_limited_runtime_authorization_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_no_authorization_drift__validate_b04_r6_limited_runtime_authorization_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_pr_body__validate_b04_r6_limited_runtime_authorization_packet.md",
+      "KT_PROD_CLEANROOM/reports/kt_lane_reason_codes__validate_b04_r6_limited_runtime_authorization_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_replay_pr_body__validate_b04_r6_limited_runtime_authorization_packet.md",
+      "KT_PROD_CLEANROOM/tests/operator/test_b04_r6_limited_runtime_authorization_packet_validation.py",
+      "KT_PROD_CLEANROOM/tools/operator/cohort0_b04_r6_limited_runtime_authorization_packet_validation.py"
+    ],
+    "generated_file_count": 9,
+    "lane_id": "VALIDATE_B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET",
+    "lane_law_metadata": {
+      "authoritative_inputs": [
+        "abstention_fallback_contract",
+        "activation_review_repair_packet_prep_only",
+        "activation_review_validation_binding_receipt",
+        "candidate_binding_receipt",
+        "commercial_claim_boundary",
+        "drift_monitoring_contract",
+        "external_audit_delta_manifest_prep_only",
+        "external_verifier_requirements",
+        "future_blocker_register",
+        "incident_freeze_contract",
+        "kill_switch_contract",
+        "limited_runtime_validation_plan_prep_only",
+        "next_lawful_move",
+        "no_authorization_drift_receipt",
+        "null_route_preservation_contract",
+        "operational_safety_defect_ledger_prep_only",
+        "operator_override_contract",
+        "package_promotion_review_preconditions_prep_only",
+        "packet_contract",
+        "packet_receipt",
+        "public_verifier_delta_requirements_prep_only",
+        "rollback_plan",
+        "route_distribution_health_contract",
+        "runtime_authorization_redesign_court_prep_only",
+        "runtime_authorization_rejection_closeout_prep_only",
+        "runtime_canary_execution_contract_prep_only",
+        "runtime_evidence_packet_prep_only",
+        "runtime_incident_freeze_contract_prep_only",
+        "runtime_receipt_schema",
+        "runtime_rollback_execution_receipt_schema_prep_only",
+        "scope_manifest",
+        "shadow_result_binding_receipt",
+        "static_fallback_contract",
+        "validation_plan",
+        "validation_reason_codes"
+      ],
+      "current_main_head": "60822fab5dfbaddcbe236f8e3266fbca50af7f14",
+      "lane_kind": "VALIDATION",
+      "may_authorize": [
+        "LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATED"
+      ],
+      "must_not_authorize": [
+        "ACTIVATION_CUTOVER_EXECUTED",
+        "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED",
+        "LIMITED_RUNTIME_AUTHORIZED",
+        "LIMITED_RUNTIME_EXECUTION_AUTHORIZED",
+        "LOBE_ESCALATION_AUTHORIZED",
+        "METRIC_CONTRACT_MUTATED",
+        "PACKAGE_PROMOTION_AUTHORIZED",
+        "R6_OPEN",
+        "RUNTIME_CUTOVER_AUTHORIZED",
+        "STATIC_COMPARATOR_WEAKENED",
+        "TRUST_ZONE_LAW_MUTATED",
+        "TRUTH_ENGINE_LAW_MUTATED"
+      ],
+      "next_lawful_move": "AUTHOR_B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET",
+      "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_BOUND__LIMITED_RUNTIME_VALIDATION_NEXT",
+      "prep_only_outputs": [
+        "external_audit_delta_manifest_prep_only_draft",
+        "limited_runtime_execution_packet_prep_only_draft",
+        "package_promotion_review_preconditions_prep_only_draft",
+        "runtime_evidence_review_packet_prep_only_draft"
+      ],
+      "selected_outcome": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATED__LIMITED_RUNTIME_EXECUTION_PACKET_NEXT"
+    },
+    "schema_id": "kt.b04_r6.limited_runtime.validation_lane_compiler_scaffold_receipt.v1",
+    "status": "PREP_ONLY_SCAFFOLD"
+  },
+  "scaffold_authority": "PREP_ONLY_TOOLING",
+  "scaffold_can_authorize": false,
+  "schema_id": "kt.b04_r6.limited_runtime.validation_lane_compiler_scaffold_binding_receipt.v1",
   "schema_version": 1,
   "selected_outcome": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATED__LIMITED_RUNTIME_EXECUTION_PACKET_NEXT",
   "shadow_superiority_passed": true,
@@ -1206,6 +1302,5 @@
       "reason_code": "RC_B04R6_LIMITED_RUNTIME_VAL_PREP_ONLY_AUTHORITY_DRIFT",
       "status": "PASS"
     }
-  ],
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  ]
 }
