@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kt.lane_contract.prep_only.v0",
+  "additionalProperties": false,
+  "description": "Prep-only lane contract schema for KT_LANE_COMPILER_V0. This schema is tooling/prep only and does not authorize runtime, R6 open, package promotion, or commercial claims.",
+  "properties": {
+    "artifacts": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "authority": {
+      "const": "PREP_ONLY_TOOLING"
+    },
+    "future_blockers": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "json_parse_inputs": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "lane_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "lane_name": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "no_authorization_drift_checks": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "operator_path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "owner": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "reason_codes": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "summary": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "test_path": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "lane_id",
+    "lane_name",
+    "authority",
+    "owner",
+    "summary",
+    "operator_path",
+    "test_path",
+    "artifacts"
+  ],
+  "title": "KT Lane Contract Prep-Only Schema",
+  "type": "object"
+}

@@ -1,0 +1,18 @@
+{
+  "authority": "PREP_ONLY_TOOLING",
+  "compiler_id": "KT_LANE_COMPILER_V0",
+  "lane_id": "{{ lane_id }}",
+  "reason_codes": [
+    {
+      "classification": "PREP_ONLY",
+      "code": "PREP_ONLY_NOT_AUTHORIZED",
+      "meaning": "The scaffold is preparatory only and cannot authorize runtime, R6 open, package promotion, or commercial claims."
+    },
+    {
+      "classification": "PREP_ONLY",
+      "code": "NO_AUTHORIZATION_DRIFT",
+      "meaning": "Generated artifacts must remain inside the tooling/prep authority boundary."
+    }
+  ],
+  "schema_id": "kt.lane_reason_code_template.prep_only.v0"
+}
