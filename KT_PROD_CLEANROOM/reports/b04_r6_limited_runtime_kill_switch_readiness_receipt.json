@@ -8,9 +8,8 @@
     "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_INVALIDATED__FORENSIC_RUNTIME_INVALIDATION_COURT_NEXT",
     "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS"
   ],
-  "artifact_id": "B04_R6_PACKAGE_PROMOTION_REVIEW_PRECONDITIONS_PREP_ONLY_DRAFT",
+  "artifact_id": "B04_R6_LIMITED_RUNTIME_KILL_SWITCH_READINESS_RECEIPT",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME",
-  "authority": "PREP_ONLY",
   "authorization_state": {
     "activation_cutover_executed": false,
     "activation_review_validated": true,
@@ -79,20 +78,6 @@
     "validation_validation_receipt_hash": "d375d90c2d1cee7b8e8368e2f9f21066417b7a968bdfa5406faebf5923f640e3"
   },
   "canary_runtime_executed": false,
-  "cannot_authorize": [
-    "CANARY_RUNTIME_EXECUTED",
-    "AFSH_RUNTIME_AUTHORITY_GRANTED",
-    "RUNTIME_CUTOVER_AUTHORIZED",
-    "ACTIVATION_CUTOVER_EXECUTED",
-    "R6_OPEN",
-    "LOBE_ESCALATION_AUTHORIZED",
-    "PACKAGE_PROMOTION_AUTHORIZED",
-    "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED",
-    "TRUTH_ENGINE_LAW_MUTATED",
-    "TRUST_ZONE_LAW_MUTATED",
-    "METRIC_CONTRACT_MUTATED",
-    "STATIC_COMPARATOR_WEAKENED"
-  ],
   "case_rows": [
     {
       "afsh_observation": "STATIC_HOLD",
@@ -609,6 +594,8 @@
       "sha256": "0480c0e5777ed22105a743da0b5abb8cf5b4210b4cb245b25f646ce4d0446acd"
     }
   ],
+  "kill_switch_halts_afsh_observation": true,
+  "kill_switch_ready": true,
   "lane_compiler_scaffold": {
     "artifact_id": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_LANE_COMPILER_SCAFFOLD_RECEIPT",
     "authority": "PREP_ONLY_TOOLING",
@@ -722,7 +709,6 @@
   "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_VALIDATED__LIMITED_RUNTIME_RUN_NEXT",
   "previous_authoritative_lane": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_VALIDATION",
   "previous_next_lawful_move": "RUN_B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME",
-  "purpose": "Prep-only scaffold for future package promotion review preconditions prep only draft.",
   "r6_open": false,
   "reason_codes": [
     "RC_B04R6_SHADOW_RUNTIME_CONTRACT_MISSING",
@@ -761,9 +747,11 @@
     "RC_B04R6_SHADOW_RUNTIME_COMPARATOR_WEAKENING",
     "RC_B04R6_SHADOW_RUNTIME_NEXT_MOVE_DRIFT"
   ],
+  "receipt_role": "kill_switch",
+  "receipt_status": "PASS",
   "runtime_cutover_authorized": false,
   "runtime_mode": "SHADOW_RUNTIME_ONLY",
-  "schema_id": "kt.b04_r6.package_promotion_review_preconditions_prep_only_draft.v1",
+  "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.kill_switch.v1",
   "schema_version": 1,
   "scorecard": {
     "abstention_observations": 4,
@@ -788,7 +776,7 @@
   "shadow_runtime_executed": true,
   "static_authoritative": true,
   "static_comparator_weakened": false,
-  "status": "PREP_ONLY",
+  "status": "PASS",
   "terminal_defects": [
     "CANARY_RUNTIME_EXECUTED",
     "AFSH_RUNTIME_AUTHORITY_GRANTED",

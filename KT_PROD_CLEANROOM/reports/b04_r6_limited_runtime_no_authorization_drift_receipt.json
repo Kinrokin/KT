@@ -1,76 +1,51 @@
 {
   "activation_cutover_executed": false,
-  "allowed_future_execution_modes": [
-    "SHADOW_RUNTIME_ONLY"
-  ],
+  "afsh_observation_only": true,
+  "afsh_runtime_authority_granted": false,
   "allowed_outcomes": [
-    "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_BOUND__LIMITED_RUNTIME_EXECUTION_VALIDATION_NEXT",
-    "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
-    "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
+    "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_PASSED__RUNTIME_EVIDENCE_REVIEW_PACKET_NEXT",
+    "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_FAILED__RUNTIME_REPAIR_OR_CLOSEOUT_NEXT",
+    "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_INVALIDATED__FORENSIC_RUNTIME_INVALIDATION_COURT_NEXT",
+    "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS"
   ],
-  "artifact_id": "B04_R6_LIMITED_RUNTIME_EXECUTION_NO_AUTHORIZATION_DRIFT_RECEIPT",
-  "authoritative_lane": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET",
+  "artifact_id": "B04_R6_LIMITED_RUNTIME_NO_AUTHORIZATION_DRIFT_RECEIPT",
+  "authoritative_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME",
   "authorization_state": {
     "activation_cutover_executed": false,
     "activation_review_validated": true,
+    "afsh_runtime_authority_granted": false,
+    "canary_runtime_executed": false,
     "commercial_activation_claim_authorized": false,
-    "limited_runtime_authorization_packet_authored": true,
     "limited_runtime_authorization_packet_validated": true,
-    "limited_runtime_authorized": false,
-    "limited_runtime_executed": false,
-    "limited_runtime_execution_authorized": false,
-    "limited_runtime_execution_packet_authored": true,
-    "limited_runtime_execution_packet_validated": false,
+    "limited_runtime_execution_packet_validated": true,
+    "limited_runtime_shadow_runtime_executed": true,
     "lobe_escalation_authorized": false,
     "package_promotion": "DEFERRED",
     "package_promotion_authorized": false,
     "r6_open": false,
     "runtime_cutover_authorized": false,
-    "runtime_execution_authorized": false,
+    "shadow_runtime_executed": true,
     "shadow_superiority_passed": true,
     "trust_zone_law_changed": false,
     "truth_engine_law_changed": false
   },
   "binding_hashes": {
-    "authorization_packet_report_hash": "417dae7044023e490d6499223ed88e74e3fe2f351c9c3cc2b2b63fdf40fe18b5",
-    "authorization_validation_report_hash": "0032362492b70a177da964e6458fcf7bb9b196e8a4580dd9942acef13153dc9f",
-    "authorized_abstention_fallback_contract_hash": "2d8b2cd5d024bfdd28e037dbb13c3c30142c63a1c59c49bca6dfdd4c15653be2",
-    "authorized_activation_review_repair_packet_prep_only_hash": "4dcd7c0d1c246722af61fceec3162a2ab2b01101bb0590e2c6613d201df6e4f2",
-    "authorized_activation_review_validation_binding_receipt_hash": "6c065d4a509d44433bc87b8c2bfd74fd48736e38e7c3be9dc41f0546027fd98b",
-    "authorized_candidate_binding_receipt_hash": "982570a4276f8efca60e26c9df60c94ab0dfb5fd0987dcf0c119827ddd873cd3",
-    "authorized_commercial_claim_boundary_hash": "673008e6b1edb963877bb4f2ecf4266bc2cbfda4a95f69612e1f66ea25d2b3a7",
-    "authorized_drift_monitoring_contract_hash": "795f27139d19268e70ef3fcfb1459c3c9b5fcb8067ac0800d485487107eb4e1c",
-    "authorized_external_audit_delta_manifest_prep_only_hash": "ed5d8cead0943829f290d506353e598175000104f0b810cdf3e2ea569147295f",
-    "authorized_external_verifier_requirements_hash": "a97b3738ce1e7e374f37d69f99eb0d60b1579b3ed596c300c21a3cd9a68ab57c",
-    "authorized_future_blocker_register_hash": "4f526dca20a4ecac0a10c6622070bfe22144977c477e2224fe0a08b5b6ef049a",
-    "authorized_incident_freeze_contract_hash": "af7dddcd3cfa695094345f9c7c4fa2c727430a929e02fb659be4563251e3b1e6",
-    "authorized_kill_switch_contract_hash": "0d6a00845945d31a18b002249d623106f2ca7e93e342e33478ff7915b6ab869b",
-    "authorized_limited_runtime_validation_plan_prep_only_hash": "4a2a27d008b98f2b95b33ce420cdd1ac98127012cd5fa5e56530c21182582cbc",
-    "authorized_next_lawful_move_hash": "e6acefd46737cc2a3b9abe45343d458ab86c7a3b52ec205ce6adbf6aea753b61",
-    "authorized_no_authorization_drift_receipt_hash": "f8240a14c38e282dcf87500cbf099266f69cff71c3f206fa462e4d8bc8c7ec16",
-    "authorized_null_route_preservation_contract_hash": "3e91d87c832a8b74ea6cf0f97a878b22dc181d0fcf3fe802e52edc65a59d71c4",
-    "authorized_operational_safety_defect_ledger_prep_only_hash": "bf3be33a4ac6d3fada8dd8f704180216df7acb1be6371e7929a64a654ff0db5d",
-    "authorized_operator_override_contract_hash": "f55fe16a5165b71a5134d8b18441fa2c54cc85f303715ac09761041073463be1",
-    "authorized_package_promotion_review_preconditions_prep_only_hash": "df7c1f37342db7ddc23fa51a1d5a48eea1322d8ab6da150707ea22b978488855",
-    "authorized_packet_contract_hash": "30ff802fe39c0f7efada6e6901ef5eaed74a03d52491012add7d1b7c013dd761",
-    "authorized_packet_receipt_hash": "bc45c85492e43946497a2a3c04a5987ae5270fc97ab9dcd020ad9073f856c71c",
-    "authorized_public_verifier_delta_requirements_prep_only_hash": "a1e71b86151adccdcccda7c8eab662a8ad26ee26bd5cb45831484ae97bb1dacb",
-    "authorized_rollback_plan_hash": "8573931dc86d76905a865001024bfb29ea40bcd3363865c80b2b44c3d53a273c",
-    "authorized_route_distribution_health_contract_hash": "abfdbd0654ae6e00673957a5b2e6c100f3a855afc5845d542bb5f338d61a03ea",
-    "authorized_runtime_authorization_redesign_court_prep_only_hash": "eb1fe9ad1136283034a432fdaa8a2b5a8a0338025373530623d89e5c7a4c216e",
-    "authorized_runtime_authorization_rejection_closeout_prep_only_hash": "9953054a0586566195ca030084098b294caa27afda19e395294d2d0be42fa7e2",
-    "authorized_runtime_canary_execution_contract_prep_only_hash": "97d8e13501ae9fa3ed71b455ccd13269db33d10fed1054335e68dfdebef03e39",
-    "authorized_runtime_evidence_packet_prep_only_hash": "e252ed1f2bd0608a6141116ff42ae2367e3794bbd8283bb56f44b6a0e83b3560",
-    "authorized_runtime_incident_freeze_contract_prep_only_hash": "a3f675eb5beddc1f6e37746804d35df10b475df4e604caa1cc2f25b8058d83b9",
-    "authorized_runtime_receipt_schema_hash": "4733252cc41771ddc927ff91effe2dbe26c425cf43423ac78d58b570e398aa1d",
-    "authorized_runtime_rollback_execution_receipt_schema_prep_only_hash": "4448a79b9fe68886144f6e71bddb260bb69481f5e85fae1a07c1824317463096",
-    "authorized_scope_manifest_hash": "13ee8c062c9d80a66bcd16ac0a25f4917f6e4abd66708ab1e9389ff649a95dec",
-    "authorized_shadow_result_binding_receipt_hash": "0afabd2bca36e03ad310e8f2a75fdb9a09bf665822b38074ff6d2826db08d471",
-    "authorized_static_fallback_contract_hash": "2835abdabe3133f13c9314457b40011273d8d7105b82408390971cd48590fc74",
-    "authorized_validation_plan_hash": "7aeec77ae2a42a71a546d087faa5d2d182d435b11ad3f62cae3a8830ff5bd1ad",
-    "authorized_validation_reason_codes_hash": "678390d688b34dba16a7d962a02896251cfc39426684f9fbbf8da37a59e19bf1",
-    "validated_activation_review_validation_contract_hash": "bdaa631ff6b4b9c3dad689248d3fc61764ffa0457afc6f2407623d598c012621",
-    "validated_activation_review_validation_receipt_hash": "9fdb4c63534d32997782537b0bc5e5951033f3756af84d99badfffd59d5ac058",
+    "execution_afsh_shadow_observation_contract_hash": "a19fa64550404b3059c9dc95de1f3d87c92b311d8a0f6e3c9e7ce4ee0a49c929",
+    "execution_commercial_claim_boundary_hash": "97e0398140aa653b3345af479df5212a6e6e05a06bab68c56a7749c36219c9ff",
+    "execution_drift_monitoring_contract_hash": "241ef3e900385452f7e7011760901309bf163d3ba57d7a67ac9c18f37da56c7f",
+    "execution_execution_packet_contract_hash": "f19ab27366926810c7658d1b27dcca0809e95ecef20b7d2e8cf9e7d1a73866a7",
+    "execution_execution_packet_receipt_hash": "0538b2f7c23e4043c0364bb88077d1de11efe2a5fb27499ffa8a62fd35e65798",
+    "execution_external_verifier_requirements_hash": "8b7a730553801ed0c527e3f16305253333b319978d269a55f15931a574785872",
+    "execution_incident_freeze_contract_hash": "a5ee328fbc80075700ab8c64b1c7d8c3c4fcf523b293c48e521114f16c6e4563",
+    "execution_kill_switch_execution_contract_hash": "9052df2b0fd340fbd310b1a2d93892eebb2b5a3d00c659f419d7b357a2cff33e",
+    "execution_mode_contract_hash": "a67c8519af4505955acdd7d1f43941bcb3d65c99fd0bc9378cfacd8610e57eea",
+    "execution_operator_override_contract_hash": "8d0ebaa13dec1920fee607705ab8d23ffda384c5014a54ed40617a5323193f95",
+    "execution_packet_report_hash": "e4586a1c7e9b70f294beb6a2ab8ea5d33c5ea13a4c0ab14f7d4b596c677c737d",
+    "execution_rollback_execution_contract_hash": "60c97b9e66688b9dc82a224d1af2cf4a741f851747f91e404a1927bc3bd0c55c",
+    "execution_route_distribution_health_contract_hash": "49e0d4274fec2345101b55b66d9add4d983136abd12b04b5e89a93ac3ef53bb4",
+    "execution_runtime_receipt_schema_hash": "289923c6944b92e0a12c09e2c99118586a7d4f136f1430d4a881af7a4fb3e33b",
+    "execution_scope_manifest_hash": "9cfa9035984d329e13a405ec38f3139cf5ca66c203861bab2f4e143a3e77dfaa",
+    "execution_static_authority_contract_hash": "5c45b6fcf02497f27ec57c6e03563d47ee282b6b123c42eea8ca394dd21864c5",
     "validated_candidate_hash": "0348402dd69aaf2032e87207ce9011d00ee870ca0a63434c3dc621c2d899ee31",
     "validated_candidate_manifest_hash": "d58f1d3bfaad9aa0c273ffcfd0a8318aa98b95ba8046e0d684d980ef5c6ad548",
     "validated_candidate_semantic_hash": "07c6f5f98b25349d3c1ced9de80410fc9800e944430099433cb1fedd2ce87025",
@@ -81,39 +56,308 @@
     "validated_static_comparator_contract_hash": "8ed7aaa94ab345d1c97e0450324dc1754055a055ec1d0d5012ef501778b287c1",
     "validated_trace_completeness_receipt_hash": "dc0ec3f93e3606989787b35dfb064db5e595d7c219f9844807af81b69f7b19d8",
     "validated_trust_zone_validation_receipt_hash": "f6eb218616bed5c0414959a5f704206ba0b10c0f0f7a7ecacb8ea7a74b684c07",
-    "validation_abstention_fallback_validation_hash": "8e9815a1026ddf577118799cf932cf088da7042afff33c01b1ab3da757a5e4f4",
-    "validation_commercial_claim_boundary_validation_hash": "74fafb55107363bda2b30ba418af67e067550e4d3f7a5e9f336e464917e1d49f",
-    "validation_drift_monitoring_validation_hash": "22f45ce7c0fc366e12f34c9174a576245380061a4da939a9200e684697b77bc4",
-    "validation_external_audit_delta_manifest_prep_only_draft_hash": "7b88c61818da47ed6563d5352e8668ec63c45dcb402bb7f3251bd388fad51f12",
-    "validation_external_verifier_validation_hash": "1c8895a1ab2d45b16a6ebb5ceb7f31aea223f45a345bbccf36f174fa599ab394",
-    "validation_future_blocker_register_hash": "4f526dca20a4ecac0a10c6622070bfe22144977c477e2224fe0a08b5b6ef049a",
-    "validation_incident_freeze_validation_hash": "29ffb31bdbedcc2ea61dafca3669af9fb2f03fe2aa2ed0c95575727bdffd899e",
-    "validation_kill_switch_validation_hash": "b1cb32cabe737faefb20eaaead45da84ef4cfec6b518d5955651cdf17a8aa3cd",
-    "validation_lane_compiler_scaffold_receipt_hash": "32ab2734a54bfbe6721c31f7586dffe2ff2e9181db2b25374fecbd8a8709f8c3",
-    "validation_limited_runtime_execution_packet_prep_only_draft_hash": "1365211dc6bad228fa7a2059486d44fee7fa116e37362bedf44b4bfdde8e6e76",
-    "validation_next_lawful_move_hash": "e6acefd46737cc2a3b9abe45343d458ab86c7a3b52ec205ce6adbf6aea753b61",
-    "validation_no_authorization_drift_validation_hash": "4db84f93c393fed95de0862b8402f7267cbe356c6525817f5bf74b9c5d5827f2",
-    "validation_null_route_preservation_validation_hash": "826c4c96b9a3835525befbf3342d19134bd1a243cfff6cb985e3883ac0634682",
-    "validation_operator_override_validation_hash": "d420aa7674679d7f7720fdea1de92a361e6cbb88d93d644d4bddbc546c30a0bf",
-    "validation_package_promotion_boundary_validation_hash": "cccb85cb3b9bd6da63a363924fbf307082987715ea0a908136c34747af2c3e50",
-    "validation_package_promotion_review_preconditions_prep_only_draft_hash": "f750ad24ad9ab318618199b770d2cd1085fd7937b33be7fe98e22b36bf994849",
-    "validation_rollback_plan_validation_hash": "fd51ce78bf4ca8e0a04f872694dc167424bd37832095194536fd24ed055b096c",
-    "validation_route_distribution_health_validation_hash": "ae836b7aece5493e112b86010e793e90ae067d05e6795c64c59b90c86ba09f4b",
-    "validation_runtime_evidence_review_packet_prep_only_draft_hash": "8a7178a078af01f76069d24496f27b7b3bec67b20597bbba8705d567b0c781bd",
-    "validation_runtime_receipt_schema_validation_hash": "2f53a1d3cf8c74135c7e20bf1c0751e187aee152546e76ea9ae59d450922411c",
-    "validation_scope_validation_hash": "7754214cc66550bdb8a741c414dc7778a591ddfd859c20392206587d4d4fb6aa",
-    "validation_static_fallback_validation_hash": "955bc5269fceb3682e0399c6c79f5b9d8a106dcbe0c38caf4f7b672dc941b077",
-    "validation_validation_contract_hash": "6daf65f2213492ff141c4ec96dc70dbd96e6467fcd4821d04fa99f60235f047b",
-    "validation_validation_receipt_hash": "5813fd5b6e5c30b3fd44d9863d3f002fd98de270fe94c1d853f6c669b43ea928"
+    "validation_afsh_shadow_observation_validation_hash": "ebfc80a7d8617d8ece8f961bb0f5e5ce7e7114d218fe8198fe8e60f9482b122b",
+    "validation_commercial_claim_boundary_validation_hash": "177d7ebb22038754c71303f028d1d6a49ed5f4a4b24f1570ce466f9289d5aecb",
+    "validation_drift_monitoring_validation_hash": "c2e15c9c8a00f7efdde201cc432a702ca37cc2aa836ae9e5a30676ad0965d0d4",
+    "validation_execution_packet_binding_validation_hash": "777fe3cadb1a6d06e5cb62c6b782e833a04489c281c7154795504790faa93e19",
+    "validation_external_verifier_validation_hash": "c9528706df74740b194a750c0c525a5d309726bc96fbef27ef21805bdbc33f46",
+    "validation_incident_freeze_validation_hash": "99101fdea6f9be48898032ee11e65a924985fc8045e1cd60913cadcd76f74f7c",
+    "validation_kill_switch_validation_hash": "9da42a1cdd2e77943d989b7abba4fc0d82c809ab32c66f6f5606b914fbf1e8db",
+    "validation_mode_validation_hash": "e997740af9db487be7f75bb718330495a8763dd4fc22d2ddddaf70c48df70afe",
+    "validation_next_lawful_move_hash": "dc8019f501c3dbf5b2a10194186d16dce8abd14860a30a0a251d252ef761f30f",
+    "validation_no_authorization_drift_validation_hash": "4d5bc8e48bf132ce4e72ad18364b2dd84d862feeb151a926c4dd1e9d9098f9c0",
+    "validation_operator_override_validation_hash": "53749f7d58fe956ca3c5d159d2db2ec9226d08327a767bd28fbdeb8806ad22e4",
+    "validation_package_promotion_boundary_validation_hash": "c298d3489023a8b8fb05db2958b1294610d33ccf46573bb3fc3a412990dc93d2",
+    "validation_report_hash": "0480c0e5777ed22105a743da0b5abb8cf5b4210b4cb245b25f646ce4d0446acd",
+    "validation_rollback_execution_validation_hash": "33ca1e6d0d8c6103a3c0fa853e7795f9126ef0582399736d5faa4332e965961f",
+    "validation_route_distribution_health_validation_hash": "08f7f81fda030915a53fe0cd273b5729f794ee8ea9d2781ef406a8a069f07ce4",
+    "validation_runtime_receipt_schema_validation_hash": "bc9d9e846d7d8c9d4041f2cae01b4af75cd8638c0669df835d00cda820ac2bc5",
+    "validation_scope_validation_hash": "3b6c2d37e492e48ef92fa5d92dcf8d7e53c6b208b93be1b4cb0e21a9e788c4d0",
+    "validation_static_authority_validation_hash": "f53af5f79445a6007e829207e8138b3da924dc64bb7f6c53b19c21340e1ced20",
+    "validation_validation_contract_hash": "bd9e59f671055c4c9ab45db5abdc39a8b5830d42de992e9c046c0798c0490630",
+    "validation_validation_receipt_hash": "d375d90c2d1cee7b8e8368e2f9f21066417b7a968bdfa5406faebf5923f640e3"
   },
+  "canary_runtime_executed": false,
+  "case_rows": [
+    {
+      "afsh_observation": "STATIC_HOLD",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-001",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-001",
+      "selector_entered": false,
+      "static_authoritative": true,
+      "static_decision": "STATIC_HOLD",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    },
+    {
+      "afsh_observation": "STATIC_HOLD",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-002",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-002",
+      "selector_entered": false,
+      "static_authoritative": true,
+      "static_decision": "STATIC_HOLD",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    },
+    {
+      "afsh_observation": "ABSTAIN",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-003",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-003",
+      "selector_entered": false,
+      "static_authoritative": true,
+      "static_decision": "ABSTAIN",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    },
+    {
+      "afsh_observation": "NULL_ROUTE",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-004",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-004",
+      "selector_entered": false,
+      "static_authoritative": true,
+      "static_decision": "NULL_ROUTE",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    },
+    {
+      "afsh_observation": "STATIC_HOLD",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-005",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-005",
+      "selector_entered": false,
+      "static_authoritative": true,
+      "static_decision": "STATIC_HOLD",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    },
+    {
+      "afsh_observation": "ROUTE_ELIGIBLE",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-006",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-006",
+      "selector_entered": true,
+      "static_authoritative": true,
+      "static_decision": "STATIC_HOLD",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    },
+    {
+      "afsh_observation": "ABSTAIN",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-007",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-007",
+      "selector_entered": false,
+      "static_authoritative": true,
+      "static_decision": "ABSTAIN",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    },
+    {
+      "afsh_observation": "STATIC_HOLD",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-008",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-008",
+      "selector_entered": false,
+      "static_authoritative": true,
+      "static_decision": "STATIC_HOLD",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    },
+    {
+      "afsh_observation": "ROUTE_ELIGIBLE",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-009",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-009",
+      "selector_entered": true,
+      "static_authoritative": true,
+      "static_decision": "STATIC_HOLD",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    },
+    {
+      "afsh_observation": "NULL_ROUTE",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-010",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-010",
+      "selector_entered": false,
+      "static_authoritative": true,
+      "static_decision": "NULL_ROUTE",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    },
+    {
+      "afsh_observation": "STATIC_HOLD",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-011",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-011",
+      "selector_entered": false,
+      "static_authoritative": true,
+      "static_decision": "STATIC_HOLD",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    },
+    {
+      "afsh_observation": "ABSTAIN",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-012",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-012",
+      "selector_entered": false,
+      "static_authoritative": true,
+      "static_decision": "ABSTAIN",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    },
+    {
+      "afsh_observation": "STATIC_HOLD",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-013",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-013",
+      "selector_entered": false,
+      "static_authoritative": true,
+      "static_decision": "STATIC_HOLD",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    },
+    {
+      "afsh_observation": "ROUTE_ELIGIBLE",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-014",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-014",
+      "selector_entered": true,
+      "static_authoritative": true,
+      "static_decision": "STATIC_HOLD",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    },
+    {
+      "afsh_observation": "NULL_ROUTE",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-015",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-015",
+      "selector_entered": false,
+      "static_authoritative": true,
+      "static_decision": "NULL_ROUTE",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    },
+    {
+      "afsh_observation": "STATIC_HOLD",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-016",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-016",
+      "selector_entered": false,
+      "static_authoritative": true,
+      "static_decision": "STATIC_HOLD",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    },
+    {
+      "afsh_observation": "ABSTAIN",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-017",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-017",
+      "selector_entered": false,
+      "static_authoritative": true,
+      "static_decision": "ABSTAIN",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    },
+    {
+      "afsh_observation": "ROUTE_ELIGIBLE",
+      "afsh_observation_only": true,
+      "canary_runtime_executed": false,
+      "case_id": "B04R6-SHADOW-018",
+      "raw_hash_bound_artifact_refs_required": true,
+      "runtime_cutover_authorized": false,
+      "runtime_mode": "SHADOW_RUNTIME_ONLY",
+      "runtime_receipt_id": "B04R6-SHADOW-RR-018",
+      "selector_entered": true,
+      "static_authoritative": true,
+      "static_decision": "STATIC_HOLD",
+      "trace_complete": true,
+      "user_facing_decision_changed": false
+    }
+  ],
   "commercial_activation_claim_authorized": false,
-  "current_branch": "main",
-  "current_git_head": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
-  "current_main_head": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
+  "current_branch": "authoritative/b04-r6-limited-runtime-shadow-runtime",
+  "current_git_head": "daea55f95e0db91c3791b1a547132747a6b89c0c",
+  "current_main_head": "3e621fd4296380f5c643a59d0d986cbf00569e94",
+  "fired_disqualifiers": [],
   "forbidden_actions": [
-    "LIMITED_RUNTIME_EXECUTED",
-    "LIMITED_RUNTIME_EXECUTION_AUTHORIZED",
-    "LIMITED_RUNTIME_AUTHORIZED",
+    "CANARY_RUNTIME_EXECUTED",
+    "AFSH_RUNTIME_AUTHORITY_GRANTED",
     "RUNTIME_CUTOVER_AUTHORIZED",
     "ACTIVATION_CUTOVER_EXECUTED",
     "R6_OPEN",
@@ -125,506 +369,302 @@
     "METRIC_CONTRACT_MUTATED",
     "STATIC_COMPARATOR_WEAKENED"
   ],
-  "generated_utc": "2026-05-05T17:52:19Z",
+  "generated_utc": "2026-05-05T21:20:19Z",
   "handoff_acceptance": {
     "predecessor_handoff_accepted": false,
     "self_replay_handoff_accepted": true
   },
   "input_bindings": [
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_abstention_fallback_contract.json",
-      "role": "authorized_abstention_fallback_contract",
-      "sha256": "2d8b2cd5d024bfdd28e037dbb13c3c30142c63a1c59c49bca6dfdd4c15653be2"
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_afsh_shadow_observation_contract.json",
+      "role": "execution_afsh_shadow_observation_contract",
+      "sha256": "a19fa64550404b3059c9dc95de1f3d87c92b311d8a0f6e3c9e7ce4ee0a49c929"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_activation_review_repair_packet_prep_only.json",
-      "role": "authorized_activation_review_repair_packet_prep_only",
-      "sha256": "4dcd7c0d1c246722af61fceec3162a2ab2b01101bb0590e2c6613d201df6e4f2"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_activation_review_validation_binding_receipt.json",
-      "role": "authorized_activation_review_validation_binding_receipt",
-      "sha256": "6c065d4a509d44433bc87b8c2bfd74fd48736e38e7c3be9dc41f0546027fd98b"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_candidate_binding_receipt.json",
-      "role": "authorized_candidate_binding_receipt",
-      "sha256": "982570a4276f8efca60e26c9df60c94ab0dfb5fd0987dcf0c119827ddd873cd3"
-    },
-    {
-      "binding_kind": "git_object_before_overwrite",
-      "git_commit": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
-      "mutable_canonical_path_overwritten_by_this_lane": true,
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_commercial_claim_boundary.json",
-      "role": "authorized_commercial_claim_boundary",
-      "sha256": "673008e6b1edb963877bb4f2ecf4266bc2cbfda4a95f69612e1f66ea25d2b3a7"
+      "role": "execution_commercial_claim_boundary",
+      "sha256": "97e0398140aa653b3345af479df5212a6e6e05a06bab68c56a7749c36219c9ff"
     },
     {
-      "binding_kind": "git_object_before_overwrite",
-      "git_commit": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
-      "mutable_canonical_path_overwritten_by_this_lane": true,
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_drift_monitoring_contract.json",
-      "role": "authorized_drift_monitoring_contract",
-      "sha256": "795f27139d19268e70ef3fcfb1459c3c9b5fcb8067ac0800d485487107eb4e1c"
+      "role": "execution_drift_monitoring_contract",
+      "sha256": "241ef3e900385452f7e7011760901309bf163d3ba57d7a67ac9c18f37da56c7f"
     },
     {
-      "binding_kind": "git_object_before_overwrite",
-      "git_commit": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
-      "mutable_canonical_path_overwritten_by_this_lane": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_external_audit_delta_manifest_prep_only.json",
-      "role": "authorized_external_audit_delta_manifest_prep_only",
-      "sha256": "ed5d8cead0943829f290d506353e598175000104f0b810cdf3e2ea569147295f"
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_execution_packet_contract.json",
+      "role": "execution_execution_packet_contract",
+      "sha256": "f19ab27366926810c7658d1b27dcca0809e95ecef20b7d2e8cf9e7d1a73866a7"
     },
     {
-      "binding_kind": "git_object_before_overwrite",
-      "git_commit": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
-      "mutable_canonical_path_overwritten_by_this_lane": true,
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_execution_packet_receipt.json",
+      "role": "execution_execution_packet_receipt",
+      "sha256": "0538b2f7c23e4043c0364bb88077d1de11efe2a5fb27499ffa8a62fd35e65798"
+    },
+    {
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_external_verifier_requirements.json",
-      "role": "authorized_external_verifier_requirements",
-      "sha256": "a97b3738ce1e7e374f37d69f99eb0d60b1579b3ed596c300c21a3cd9a68ab57c"
+      "role": "execution_external_verifier_requirements",
+      "sha256": "8b7a730553801ed0c527e3f16305253333b319978d269a55f15931a574785872"
     },
     {
-      "binding_kind": "git_object_before_overwrite",
-      "git_commit": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
-      "mutable_canonical_path_overwritten_by_this_lane": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_future_blocker_register.json",
-      "role": "authorized_future_blocker_register",
-      "sha256": "4f526dca20a4ecac0a10c6622070bfe22144977c477e2224fe0a08b5b6ef049a"
-    },
-    {
-      "binding_kind": "git_object_before_overwrite",
-      "git_commit": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
-      "mutable_canonical_path_overwritten_by_this_lane": true,
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_incident_freeze_contract.json",
-      "role": "authorized_incident_freeze_contract",
-      "sha256": "af7dddcd3cfa695094345f9c7c4fa2c727430a929e02fb659be4563251e3b1e6"
+      "role": "execution_incident_freeze_contract",
+      "sha256": "a5ee328fbc80075700ab8c64b1c7d8c3c4fcf523b293c48e521114f16c6e4563"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_kill_switch_contract.json",
-      "role": "authorized_kill_switch_contract",
-      "sha256": "0d6a00845945d31a18b002249d623106f2ca7e93e342e33478ff7915b6ab869b"
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_kill_switch_execution_contract.json",
+      "role": "execution_kill_switch_execution_contract",
+      "sha256": "9052df2b0fd340fbd310b1a2d93892eebb2b5a3d00c659f419d7b357a2cff33e"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_validation_plan_prep_only.json",
-      "role": "authorized_limited_runtime_validation_plan_prep_only",
-      "sha256": "4a2a27d008b98f2b95b33ce420cdd1ac98127012cd5fa5e56530c21182582cbc"
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_mode_contract.json",
+      "role": "execution_mode_contract",
+      "sha256": "a67c8519af4505955acdd7d1f43941bcb3d65c99fd0bc9378cfacd8610e57eea"
     },
     {
-      "binding_kind": "git_object_before_overwrite",
-      "git_commit": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
-      "mutable_canonical_path_overwritten_by_this_lane": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
-      "role": "authorized_next_lawful_move",
-      "sha256": "e6acefd46737cc2a3b9abe45343d458ab86c7a3b52ec205ce6adbf6aea753b61"
-    },
-    {
-      "binding_kind": "git_object_before_overwrite",
-      "git_commit": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
-      "mutable_canonical_path_overwritten_by_this_lane": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_no_authorization_drift_receipt.json",
-      "role": "authorized_no_authorization_drift_receipt",
-      "sha256": "f8240a14c38e282dcf87500cbf099266f69cff71c3f206fa462e4d8bc8c7ec16"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_null_route_preservation_contract.json",
-      "role": "authorized_null_route_preservation_contract",
-      "sha256": "3e91d87c832a8b74ea6cf0f97a878b22dc181d0fcf3fe802e52edc65a59d71c4"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_operational_safety_defect_ledger_prep_only.json",
-      "role": "authorized_operational_safety_defect_ledger_prep_only",
-      "sha256": "bf3be33a4ac6d3fada8dd8f704180216df7acb1be6371e7929a64a654ff0db5d"
-    },
-    {
-      "binding_kind": "git_object_before_overwrite",
-      "git_commit": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
-      "mutable_canonical_path_overwritten_by_this_lane": true,
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_operator_override_contract.json",
-      "role": "authorized_operator_override_contract",
-      "sha256": "f55fe16a5165b71a5134d8b18441fa2c54cc85f303715ac09761041073463be1"
+      "role": "execution_operator_override_contract",
+      "sha256": "8d0ebaa13dec1920fee607705ab8d23ffda384c5014a54ed40617a5323193f95"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_preconditions_prep_only.json",
-      "role": "authorized_package_promotion_review_preconditions_prep_only",
-      "sha256": "df7c1f37342db7ddc23fa51a1d5a48eea1322d8ab6da150707ea22b978488855"
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_rollback_execution_contract.json",
+      "role": "execution_rollback_execution_contract",
+      "sha256": "60c97b9e66688b9dc82a224d1af2cf4a741f851747f91e404a1927bc3bd0c55c"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_authorization_packet_contract.json",
-      "role": "authorized_packet_contract",
-      "sha256": "30ff802fe39c0f7efada6e6901ef5eaed74a03d52491012add7d1b7c013dd761"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_authorization_packet_receipt.json",
-      "role": "authorized_packet_receipt",
-      "sha256": "bc45c85492e43946497a2a3c04a5987ae5270fc97ab9dcd020ad9073f856c71c"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_public_verifier_delta_requirements_prep_only.json",
-      "role": "authorized_public_verifier_delta_requirements_prep_only",
-      "sha256": "a1e71b86151adccdcccda7c8eab662a8ad26ee26bd5cb45831484ae97bb1dacb"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_rollback_plan.json",
-      "role": "authorized_rollback_plan",
-      "sha256": "8573931dc86d76905a865001024bfb29ea40bcd3363865c80b2b44c3d53a273c"
-    },
-    {
-      "binding_kind": "git_object_before_overwrite",
-      "git_commit": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
-      "mutable_canonical_path_overwritten_by_this_lane": true,
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_route_distribution_health_contract.json",
-      "role": "authorized_route_distribution_health_contract",
-      "sha256": "abfdbd0654ae6e00673957a5b2e6c100f3a855afc5845d542bb5f338d61a03ea"
+      "role": "execution_route_distribution_health_contract",
+      "sha256": "49e0d4274fec2345101b55b66d9add4d983136abd12b04b5e89a93ac3ef53bb4"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_authorization_redesign_court_prep_only.json",
-      "role": "authorized_runtime_authorization_redesign_court_prep_only",
-      "sha256": "eb1fe9ad1136283034a432fdaa8a2b5a8a0338025373530623d89e5c7a4c216e"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_rejection_closeout_prep_only.json",
-      "role": "authorized_runtime_authorization_rejection_closeout_prep_only",
-      "sha256": "9953054a0586566195ca030084098b294caa27afda19e395294d2d0be42fa7e2"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_canary_execution_contract_prep_only.json",
-      "role": "authorized_runtime_canary_execution_contract_prep_only",
-      "sha256": "97d8e13501ae9fa3ed71b455ccd13269db33d10fed1054335e68dfdebef03e39"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_evidence_packet_prep_only.json",
-      "role": "authorized_runtime_evidence_packet_prep_only",
-      "sha256": "e252ed1f2bd0608a6141116ff42ae2367e3794bbd8283bb56f44b6a0e83b3560"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_incident_freeze_contract_prep_only.json",
-      "role": "authorized_runtime_incident_freeze_contract_prep_only",
-      "sha256": "a3f675eb5beddc1f6e37746804d35df10b475df4e604caa1cc2f25b8058d83b9"
-    },
-    {
-      "binding_kind": "git_object_before_overwrite",
-      "git_commit": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
-      "mutable_canonical_path_overwritten_by_this_lane": true,
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_receipt_schema.json",
-      "role": "authorized_runtime_receipt_schema",
-      "sha256": "4733252cc41771ddc927ff91effe2dbe26c425cf43423ac78d58b570e398aa1d"
+      "role": "execution_runtime_receipt_schema",
+      "sha256": "289923c6944b92e0a12c09e2c99118586a7d4f136f1430d4a881af7a4fb3e33b"
     },
     {
-      "binding_kind": "git_object_before_overwrite",
-      "git_commit": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
-      "mutable_canonical_path_overwritten_by_this_lane": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_rollback_execution_receipt_schema_prep_only.json",
-      "role": "authorized_runtime_rollback_execution_receipt_schema_prep_only",
-      "sha256": "4448a79b9fe68886144f6e71bddb260bb69481f5e85fae1a07c1824317463096"
-    },
-    {
-      "binding_kind": "git_object_before_overwrite",
-      "git_commit": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
-      "mutable_canonical_path_overwritten_by_this_lane": true,
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_scope_manifest.json",
-      "role": "authorized_scope_manifest",
-      "sha256": "13ee8c062c9d80a66bcd16ac0a25f4917f6e4abd66708ab1e9389ff649a95dec"
+      "role": "execution_scope_manifest",
+      "sha256": "9cfa9035984d329e13a405ec38f3139cf5ca66c203861bab2f4e143a3e77dfaa"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_shadow_result_binding_receipt.json",
-      "role": "authorized_shadow_result_binding_receipt",
-      "sha256": "0afabd2bca36e03ad310e8f2a75fdb9a09bf665822b38074ff6d2826db08d471"
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_static_authority_contract.json",
+      "role": "execution_static_authority_contract",
+      "sha256": "5c45b6fcf02497f27ec57c6e03563d47ee282b6b123c42eea8ca394dd21864c5"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_static_fallback_contract.json",
-      "role": "authorized_static_fallback_contract",
-      "sha256": "2835abdabe3133f13c9314457b40011273d8d7105b82408390971cd48590fc74"
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_afsh_shadow_observation_validation_receipt.json",
+      "role": "validation_afsh_shadow_observation_validation",
+      "sha256": "ebfc80a7d8617d8ece8f961bb0f5e5ce7e7114d218fe8198fe8e60f9482b122b"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_validation_plan.json",
-      "role": "authorized_validation_plan",
-      "sha256": "7aeec77ae2a42a71a546d087faa5d2d182d435b11ad3f62cae3a8830ff5bd1ad"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_validation_reason_codes.json",
-      "role": "authorized_validation_reason_codes",
-      "sha256": "678390d688b34dba16a7d962a02896251cfc39426684f9fbbf8da37a59e19bf1"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_abstention_fallback_validation_receipt.json",
-      "role": "validation_abstention_fallback_validation",
-      "sha256": "8e9815a1026ddf577118799cf932cf088da7042afff33c01b1ab3da757a5e4f4"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_commercial_claim_boundary_validation_receipt.json",
       "role": "validation_commercial_claim_boundary_validation",
-      "sha256": "74fafb55107363bda2b30ba418af67e067550e4d3f7a5e9f336e464917e1d49f"
+      "sha256": "177d7ebb22038754c71303f028d1d6a49ed5f4a4b24f1570ce466f9289d5aecb"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_drift_monitoring_validation_receipt.json",
       "role": "validation_drift_monitoring_validation",
-      "sha256": "22f45ce7c0fc366e12f34c9174a576245380061a4da939a9200e684697b77bc4"
+      "sha256": "c2e15c9c8a00f7efdde201cc432a702ca37cc2aa836ae9e5a30676ad0965d0d4"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_external_audit_delta_manifest_prep_only_draft.json",
-      "role": "validation_external_audit_delta_manifest_prep_only_draft",
-      "sha256": "7b88c61818da47ed6563d5352e8668ec63c45dcb402bb7f3251bd388fad51f12"
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_execution_packet_binding_validation_receipt.json",
+      "role": "validation_execution_packet_binding_validation",
+      "sha256": "777fe3cadb1a6d06e5cb62c6b782e833a04489c281c7154795504790faa93e19"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_external_verifier_validation_receipt.json",
       "role": "validation_external_verifier_validation",
-      "sha256": "1c8895a1ab2d45b16a6ebb5ceb7f31aea223f45a345bbccf36f174fa599ab394"
+      "sha256": "c9528706df74740b194a750c0c525a5d309726bc96fbef27ef21805bdbc33f46"
     },
     {
-      "binding_kind": "git_object_before_overwrite",
-      "git_commit": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
-      "mutable_canonical_path_overwritten_by_this_lane": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_future_blocker_register.json",
-      "role": "validation_future_blocker_register",
-      "sha256": "4f526dca20a4ecac0a10c6622070bfe22144977c477e2224fe0a08b5b6ef049a"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_incident_freeze_validation_receipt.json",
       "role": "validation_incident_freeze_validation",
-      "sha256": "29ffb31bdbedcc2ea61dafca3669af9fb2f03fe2aa2ed0c95575727bdffd899e"
+      "sha256": "99101fdea6f9be48898032ee11e65a924985fc8045e1cd60913cadcd76f74f7c"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_kill_switch_validation_receipt.json",
       "role": "validation_kill_switch_validation",
-      "sha256": "b1cb32cabe737faefb20eaaead45da84ef4cfec6b518d5955651cdf17a8aa3cd"
+      "sha256": "9da42a1cdd2e77943d989b7abba4fc0d82c809ab32c66f6f5606b914fbf1e8db"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_authorization_packet_validation_lane_compiler_scaffold_receipt.json",
-      "role": "validation_lane_compiler_scaffold_receipt",
-      "sha256": "32ab2734a54bfbe6721c31f7586dffe2ff2e9181db2b25374fecbd8a8709f8c3"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_execution_packet_prep_only_draft.json",
-      "role": "validation_limited_runtime_execution_packet_prep_only_draft",
-      "sha256": "1365211dc6bad228fa7a2059486d44fee7fa116e37362bedf44b4bfdde8e6e76"
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_mode_validation_receipt.json",
+      "role": "validation_mode_validation",
+      "sha256": "e997740af9db487be7f75bb718330495a8763dd4fc22d2ddddaf70c48df70afe"
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
+      "git_commit": "daea55f95e0db91c3791b1a547132747a6b89c0c",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "validation_next_lawful_move",
-      "sha256": "e6acefd46737cc2a3b9abe45343d458ab86c7a3b52ec205ce6adbf6aea753b61"
+      "sha256": "dc8019f501c3dbf5b2a10194186d16dce8abd14860a30a0a251d252ef761f30f"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_no_authorization_drift_validation_receipt.json",
       "role": "validation_no_authorization_drift_validation",
-      "sha256": "4db84f93c393fed95de0862b8402f7267cbe356c6525817f5bf74b9c5d5827f2"
+      "sha256": "4d5bc8e48bf132ce4e72ad18364b2dd84d862feeb151a926c4dd1e9d9098f9c0"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_null_route_preservation_validation_receipt.json",
-      "role": "validation_null_route_preservation_validation",
-      "sha256": "826c4c96b9a3835525befbf3342d19134bd1a243cfff6cb985e3883ac0634682"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_operator_override_validation_receipt.json",
       "role": "validation_operator_override_validation",
-      "sha256": "d420aa7674679d7f7720fdea1de92a361e6cbb88d93d644d4bddbc546c30a0bf"
+      "sha256": "53749f7d58fe956ca3c5d159d2db2ec9226d08327a767bd28fbdeb8806ad22e4"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_package_promotion_boundary_validation_receipt.json",
       "role": "validation_package_promotion_boundary_validation",
-      "sha256": "cccb85cb3b9bd6da63a363924fbf307082987715ea0a908136c34747af2c3e50"
+      "sha256": "c298d3489023a8b8fb05db2958b1294610d33ccf46573bb3fc3a412990dc93d2"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_preconditions_prep_only_draft.json",
-      "role": "validation_package_promotion_review_preconditions_prep_only_draft",
-      "sha256": "f750ad24ad9ab318618199b770d2cd1085fd7937b33be7fe98e22b36bf994849"
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_rollback_execution_validation_receipt.json",
+      "role": "validation_rollback_execution_validation",
+      "sha256": "33ca1e6d0d8c6103a3c0fa853e7795f9126ef0582399736d5faa4332e965961f"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_rollback_plan_validation_receipt.json",
-      "role": "validation_rollback_plan_validation",
-      "sha256": "fd51ce78bf4ca8e0a04f872694dc167424bd37832095194536fd24ed055b096c"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_route_distribution_health_validation_receipt.json",
       "role": "validation_route_distribution_health_validation",
-      "sha256": "ae836b7aece5493e112b86010e793e90ae067d05e6795c64c59b90c86ba09f4b"
+      "sha256": "08f7f81fda030915a53fe0cd273b5729f794ee8ea9d2781ef406a8a069f07ce4"
     },
     {
-      "binding_kind": "git_object_before_overwrite",
-      "git_commit": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
-      "mutable_canonical_path_overwritten_by_this_lane": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_evidence_review_packet_prep_only_draft.json",
-      "role": "validation_runtime_evidence_review_packet_prep_only_draft",
-      "sha256": "8a7178a078af01f76069d24496f27b7b3bec67b20597bbba8705d567b0c781bd"
-    },
-    {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_receipt_schema_validation_receipt.json",
       "role": "validation_runtime_receipt_schema_validation",
-      "sha256": "2f53a1d3cf8c74135c7e20bf1c0751e187aee152546e76ea9ae59d450922411c"
+      "sha256": "bc9d9e846d7d8c9d4041f2cae01b4af75cd8638c0669df835d00cda820ac2bc5"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_scope_validation_receipt.json",
       "role": "validation_scope_validation",
-      "sha256": "7754214cc66550bdb8a741c414dc7778a591ddfd859c20392206587d4d4fb6aa"
+      "sha256": "3b6c2d37e492e48ef92fa5d92dcf8d7e53c6b208b93be1b4cb0e21a9e788c4d0"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_static_fallback_validation_receipt.json",
-      "role": "validation_static_fallback_validation",
-      "sha256": "955bc5269fceb3682e0399c6c79f5b9d8a106dcbe0c38caf4f7b672dc941b077"
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_static_authority_validation_receipt.json",
+      "role": "validation_static_authority_validation",
+      "sha256": "f53af5f79445a6007e829207e8138b3da924dc64bb7f6c53b19c21340e1ced20"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_authorization_packet_validation_contract.json",
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_execution_packet_validation_contract.json",
       "role": "validation_validation_contract",
-      "sha256": "6daf65f2213492ff141c4ec96dc70dbd96e6467fcd4821d04fa99f60235f047b"
+      "sha256": "bd9e59f671055c4c9ab45db5abdc39a8b5830d42de992e9c046c0798c0490630"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_authorization_packet_validation_receipt.json",
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_execution_packet_validation_receipt.json",
       "role": "validation_validation_receipt",
-      "sha256": "5813fd5b6e5c30b3fd44d9863d3f002fd98de270fe94c1d853f6c669b43ea928"
+      "sha256": "d375d90c2d1cee7b8e8368e2f9f21066417b7a968bdfa5406faebf5923f640e3"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_authorization_packet_report.md",
-      "role": "authorization_packet_report",
-      "sha256": "417dae7044023e490d6499223ed88e74e3fe2f351c9c3cc2b2b63fdf40fe18b5"
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_execution_packet_report.md",
+      "role": "execution_packet_report",
+      "sha256": "e4586a1c7e9b70f294beb6a2ab8ea5d33c5ea13a4c0ab14f7d4b596c677c737d"
     },
     {
-      "binding_kind": "file_sha256_at_limited_runtime_execution_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_authorization_packet_validation_report.md",
-      "role": "authorization_validation_report",
-      "sha256": "0032362492b70a177da964e6458fcf7bb9b196e8a4580dd9942acef13153dc9f"
+      "binding_kind": "file_sha256_at_shadow_runtime_execution",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_execution_packet_validation_report.md",
+      "role": "validation_report",
+      "sha256": "0480c0e5777ed22105a743da0b5abb8cf5b4210b4cb245b25f646ce4d0446acd"
     }
   ],
   "lane_compiler_scaffold": {
-    "artifact_id": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_LANE_COMPILER_SCAFFOLD_RECEIPT",
+    "artifact_id": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_LANE_COMPILER_SCAFFOLD_RECEIPT",
     "authority": "PREP_ONLY_TOOLING",
-    "can_execute_runtime": false,
+    "can_cutover_runtime": false,
+    "can_execute_canary": false,
     "can_open_r6": false,
     "can_promote_package": false,
-    "compiled_contract_sha256": "2258b5cee65d2b995580385ea0ce9e969c0521f0f0b3b41dd60a3942c00b2c53",
+    "compiled_contract_sha256": "5d388d920e8913eff746c8ddb0cc3dde6409b2ba79c4ecb37d14e7b674bbf99a",
     "compiler_id": "KT_LANE_COMPILER_V0",
     "files_omitted_from_receipt": true,
     "generated_artifacts": [
-      "KT_PROD_CLEANROOM/reports/kt_lane_artifact_list__author_b04_r6_limited_runtime_execution_packet.json",
-      "KT_PROD_CLEANROOM/reports/kt_lane_future_blockers__author_b04_r6_limited_runtime_execution_packet.json",
-      "KT_PROD_CLEANROOM/reports/kt_lane_json_parse_list__author_b04_r6_limited_runtime_execution_packet.json",
-      "KT_PROD_CLEANROOM/reports/kt_lane_no_authorization_drift__author_b04_r6_limited_runtime_execution_packet.json",
-      "KT_PROD_CLEANROOM/reports/kt_lane_pr_body__author_b04_r6_limited_runtime_execution_packet.md",
-      "KT_PROD_CLEANROOM/reports/kt_lane_reason_codes__author_b04_r6_limited_runtime_execution_packet.json",
-      "KT_PROD_CLEANROOM/reports/kt_lane_replay_pr_body__author_b04_r6_limited_runtime_execution_packet.md",
-      "KT_PROD_CLEANROOM/tests/operator/test_b04_r6_limited_runtime_execution_packet.py",
-      "KT_PROD_CLEANROOM/tools/operator/cohort0_b04_r6_limited_runtime_execution_packet.py"
+      "KT_PROD_CLEANROOM/reports/kt_lane_artifact_list__run_b04_r6_limited_runtime_shadow_runtime.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_future_blockers__run_b04_r6_limited_runtime_shadow_runtime.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_json_parse_list__run_b04_r6_limited_runtime_shadow_runtime.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_no_authorization_drift__run_b04_r6_limited_runtime_shadow_runtime.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_pr_body__run_b04_r6_limited_runtime_shadow_runtime.md",
+      "KT_PROD_CLEANROOM/reports/kt_lane_reason_codes__run_b04_r6_limited_runtime_shadow_runtime.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_replay_pr_body__run_b04_r6_limited_runtime_shadow_runtime.md",
+      "KT_PROD_CLEANROOM/tests/operator/test_b04_r6_limited_runtime_shadow_runtime.py",
+      "KT_PROD_CLEANROOM/tools/operator/cohort0_b04_r6_limited_runtime_shadow_runtime.py"
     ],
     "generated_file_count": 9,
-    "lane_id": "AUTHOR_B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET",
+    "lane_id": "RUN_B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME",
     "lane_law_metadata": {
       "authoritative_inputs": [
-        "authorized_abstention_fallback_contract",
-        "authorized_activation_review_repair_packet_prep_only",
-        "authorized_activation_review_validation_binding_receipt",
-        "authorized_candidate_binding_receipt",
-        "authorized_commercial_claim_boundary",
-        "authorized_drift_monitoring_contract",
-        "authorized_external_audit_delta_manifest_prep_only",
-        "authorized_external_verifier_requirements",
-        "authorized_future_blocker_register",
-        "authorized_incident_freeze_contract",
-        "authorized_kill_switch_contract",
-        "authorized_limited_runtime_validation_plan_prep_only",
-        "authorized_next_lawful_move",
-        "authorized_no_authorization_drift_receipt",
-        "authorized_null_route_preservation_contract",
-        "authorized_operational_safety_defect_ledger_prep_only",
-        "authorized_operator_override_contract",
-        "authorized_package_promotion_review_preconditions_prep_only",
-        "authorized_packet_contract",
-        "authorized_packet_receipt",
-        "authorized_public_verifier_delta_requirements_prep_only",
-        "authorized_rollback_plan",
-        "authorized_route_distribution_health_contract",
-        "authorized_runtime_authorization_redesign_court_prep_only",
-        "authorized_runtime_authorization_rejection_closeout_prep_only",
-        "authorized_runtime_canary_execution_contract_prep_only",
-        "authorized_runtime_evidence_packet_prep_only",
-        "authorized_runtime_incident_freeze_contract_prep_only",
-        "authorized_runtime_receipt_schema",
-        "authorized_runtime_rollback_execution_receipt_schema_prep_only",
-        "authorized_scope_manifest",
-        "authorized_shadow_result_binding_receipt",
-        "authorized_static_fallback_contract",
-        "authorized_validation_plan",
-        "authorized_validation_reason_codes",
-        "validation_abstention_fallback_validation",
+        "execution_afsh_shadow_observation_contract",
+        "execution_commercial_claim_boundary",
+        "execution_drift_monitoring_contract",
+        "execution_execution_packet_contract",
+        "execution_execution_packet_receipt",
+        "execution_external_verifier_requirements",
+        "execution_incident_freeze_contract",
+        "execution_kill_switch_execution_contract",
+        "execution_mode_contract",
+        "execution_operator_override_contract",
+        "execution_rollback_execution_contract",
+        "execution_route_distribution_health_contract",
+        "execution_runtime_receipt_schema",
+        "execution_scope_manifest",
+        "execution_static_authority_contract",
+        "validation_afsh_shadow_observation_validation",
         "validation_commercial_claim_boundary_validation",
         "validation_drift_monitoring_validation",
-        "validation_external_audit_delta_manifest_prep_only_draft",
+        "validation_execution_packet_binding_validation",
         "validation_external_verifier_validation",
-        "validation_future_blocker_register",
         "validation_incident_freeze_validation",
         "validation_kill_switch_validation",
-        "validation_lane_compiler_scaffold_receipt",
-        "validation_limited_runtime_execution_packet_prep_only_draft",
+        "validation_mode_validation",
         "validation_next_lawful_move",
         "validation_no_authorization_drift_validation",
-        "validation_null_route_preservation_validation",
         "validation_operator_override_validation",
         "validation_package_promotion_boundary_validation",
-        "validation_package_promotion_review_preconditions_prep_only_draft",
-        "validation_rollback_plan_validation",
+        "validation_rollback_execution_validation",
         "validation_route_distribution_health_validation",
-        "validation_runtime_evidence_review_packet_prep_only_draft",
         "validation_runtime_receipt_schema_validation",
         "validation_scope_validation",
-        "validation_static_fallback_validation",
+        "validation_static_authority_validation",
         "validation_validation_contract",
         "validation_validation_receipt"
       ],
-      "current_main_head": "62ece5ed400be3a3bdb3cc2dc3a5c80714c81fb2",
-      "lane_kind": "AUTHORING",
+      "current_main_head": "3e621fd4296380f5c643a59d0d986cbf00569e94",
+      "lane_kind": "EXECUTION",
       "may_authorize": [
-        "LIMITED_RUNTIME_EXECUTION_PACKET_AUTHORED"
+        "LIMITED_RUNTIME_SHADOW_RUNTIME_EXECUTED",
+        "RUNTIME_EVIDENCE_EMITTED"
       ],
       "must_not_authorize": [
         "ACTIVATION_CUTOVER_EXECUTED",
+        "AFSH_RUNTIME_AUTHORITY_GRANTED",
+        "CANARY_RUNTIME_EXECUTED",
         "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED",
-        "LIMITED_RUNTIME_AUTHORIZED",
-        "LIMITED_RUNTIME_EXECUTED",
-        "LIMITED_RUNTIME_EXECUTION_AUTHORIZED",
         "LOBE_ESCALATION_AUTHORIZED",
         "METRIC_CONTRACT_MUTATED",
         "PACKAGE_PROMOTION_AUTHORIZED",
@@ -634,104 +674,120 @@
         "TRUST_ZONE_LAW_MUTATED",
         "TRUTH_ENGINE_LAW_MUTATED"
       ],
-      "next_lawful_move": "VALIDATE_B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET",
-      "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATED__LIMITED_RUNTIME_EXECUTION_PACKET_NEXT",
+      "next_lawful_move": "AUTHOR_B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET",
+      "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_VALIDATED__LIMITED_RUNTIME_RUN_NEXT",
       "prep_only_outputs": [
-        "commercial_claim_boundary_update_prep_only",
-        "deployment_profile_delta_prep_only",
-        "external_audit_delta_manifest_prep_only",
-        "external_hash_manifest_prep_only",
-        "external_verifier_delta_requirements_prep_only",
-        "forbidden_runtime_claims_receipt_prep_only",
-        "limited_runtime_failure_closeout_prep_only",
-        "public_verifier_receipt_schema_prep_only",
-        "replay_bundle_manifest_prep_only",
-        "runtime_evidence_review_packet_prep_only_draft",
-        "runtime_evidence_scorecard_prep_only_draft",
-        "runtime_freeze_condition_contract_prep_only",
-        "runtime_incident_and_freeze_review_prep_only",
-        "runtime_incident_forensic_court_prep_only",
-        "runtime_operator_intervention_review_prep_only",
-        "runtime_redesign_authorization_court_prep_only",
-        "runtime_rollback_execution_receipt_schema_prep_only",
-        "runtime_rollback_readiness_review_prep_only",
-        "runtime_route_distribution_health_review_prep_only",
-        "runtime_trace_completeness_review_prep_only"
+        "canary_authorization_packet_prep_only_draft",
+        "external_audit_delta_manifest_prep_only_draft",
+        "package_promotion_review_preconditions_prep_only_draft",
+        "runtime_evidence_review_packet_prep_only_draft"
       ],
-      "selected_outcome": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_BOUND__LIMITED_RUNTIME_EXECUTION_VALIDATION_NEXT"
+      "selected_outcome": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_PASSED__RUNTIME_EVIDENCE_REVIEW_PACKET_NEXT"
     },
     "scaffold_can_authorize": false,
-    "schema_id": "kt.b04_r6.limited_runtime.execution_packet_lane_compiler_scaffold_receipt.v1",
+    "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime_lane_compiler_scaffold_receipt.v1",
     "status": "PREP_ONLY_SCAFFOLD"
   },
-  "limited_runtime_authorization_packet_validated": true,
-  "limited_runtime_authorized": false,
-  "limited_runtime_executed": false,
-  "limited_runtime_execution_authorized": false,
-  "limited_runtime_execution_packet_authored": true,
-  "limited_runtime_execution_packet_validated": false,
+  "limited_runtime_shadow_runtime_executed": true,
   "lobe_escalation_authorized": false,
   "may_authorize": [
-    "LIMITED_RUNTIME_EXECUTION_PACKET_AUTHORED"
+    "LIMITED_RUNTIME_SHADOW_RUNTIME_EXECUTED",
+    "RUNTIME_EVIDENCE_EMITTED"
   ],
   "metric_contract_mutated": false,
-  "next_lawful_move": "VALIDATE_B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET",
+  "next_lawful_move": "AUTHOR_B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET",
   "no_downstream_authorization_drift": true,
+  "outcome_routing": {
+    "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS": "REPAIR_B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_DEFECTS",
+    "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_FAILED__RUNTIME_REPAIR_OR_CLOSEOUT_NEXT": "AUTHOR_B04_R6_RUNTIME_REPAIR_OR_CLOSEOUT",
+    "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_INVALIDATED__FORENSIC_RUNTIME_INVALIDATION_COURT_NEXT": "AUTHOR_B04_R6_FORENSIC_RUNTIME_INVALIDATION_COURT",
+    "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_PASSED__RUNTIME_EVIDENCE_REVIEW_PACKET_NEXT": "AUTHOR_B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET"
+  },
   "package_promotion": "DEFERRED",
   "package_promotion_authorized": false,
-  "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATED__LIMITED_RUNTIME_EXECUTION_PACKET_NEXT",
-  "previous_authoritative_lane": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_VALIDATION",
-  "previous_next_lawful_move": "AUTHOR_B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET",
+  "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_VALIDATED__LIMITED_RUNTIME_RUN_NEXT",
+  "previous_authoritative_lane": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_VALIDATION",
+  "previous_next_lawful_move": "RUN_B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME",
   "r6_open": false,
   "reason_codes": [
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_MAIN_HEAD_MISMATCH",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_SCOPE_MISSING",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_MODE_MISSING",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_STATIC_AUTHORITY_MISSING",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AFSH_OBSERVATION_MISSING",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_OPERATOR_OVERRIDE_MISSING",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_KILL_SWITCH_MISSING",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_ROLLBACK_MISSING",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_ROUTE_HEALTH_MISSING",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_DRIFT_MONITORING_MISSING",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_INCIDENT_FREEZE_MISSING",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_EXTERNAL_VERIFIER_MISSING",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_COMMERCIAL_CLAIM_DRIFT",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PACKAGE_PROMOTION_DRIFT",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LIMITED_RUNTIME_EXECUTION_AUTHORIZED",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_CUTOVER_AUTHORIZED",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_R6_OPEN_DRIFT",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LOBE_ESCALATION_DRIFT",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_METRIC_MUTATION",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_COMPARATOR_WEAKENING",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_TRUTH_ENGINE_MUTATION",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_TRUST_ZONE_MUTATION",
-    "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_NEXT_MOVE_DRIFT"
+    "RC_B04R6_SHADOW_RUNTIME_CONTRACT_MISSING",
+    "RC_B04R6_SHADOW_RUNTIME_MAIN_HEAD_MISMATCH",
+    "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
+    "RC_B04R6_SHADOW_RUNTIME_EXECUTION_PACKET_BINDING_MISSING",
+    "RC_B04R6_SHADOW_RUNTIME_AUTHORIZATION_PACKET_BINDING_MISSING",
+    "RC_B04R6_SHADOW_RUNTIME_ACTIVATION_REVIEW_BINDING_MISSING",
+    "RC_B04R6_SHADOW_RUNTIME_SHADOW_SUPERIORITY_BINDING_MISSING",
+    "RC_B04R6_SHADOW_RUNTIME_CANDIDATE_BINDING_MISSING",
+    "RC_B04R6_SHADOW_RUNTIME_MODE_DRIFT",
+    "RC_B04R6_SHADOW_RUNTIME_CANARY_EXECUTED",
+    "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
+    "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
+    "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+    "RC_B04R6_SHADOW_RUNTIME_CUTOVER_DRIFT",
+    "RC_B04R6_SHADOW_RUNTIME_R6_OPEN_DRIFT",
+    "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
+    "RC_B04R6_SHADOW_RUNTIME_FALLBACK_FAIL",
+    "RC_B04R6_SHADOW_RUNTIME_ABSTENTION_FAIL",
+    "RC_B04R6_SHADOW_RUNTIME_NULL_ROUTE_FAIL",
+    "RC_B04R6_SHADOW_RUNTIME_OPERATOR_OVERRIDE_NOT_READY",
+    "RC_B04R6_SHADOW_RUNTIME_KILL_SWITCH_NOT_READY",
+    "RC_B04R6_SHADOW_RUNTIME_ROLLBACK_NOT_READY",
+    "RC_B04R6_SHADOW_RUNTIME_DRIFT_DETECTED",
+    "RC_B04R6_SHADOW_RUNTIME_INCIDENT_FREEZE_TRIGGERED",
+    "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
+    "RC_B04R6_SHADOW_RUNTIME_REPLAY_INCOMPLETE",
+    "RC_B04R6_SHADOW_RUNTIME_EXTERNAL_VERIFIER_NOT_READY",
+    "RC_B04R6_SHADOW_RUNTIME_COMMERCIAL_CLAIM_DRIFT",
+    "RC_B04R6_SHADOW_RUNTIME_PACKAGE_PROMOTION_DRIFT",
+    "RC_B04R6_SHADOW_RUNTIME_PREP_ONLY_AUTHORITY_DRIFT",
+    "RC_B04R6_SHADOW_RUNTIME_TRUTH_ENGINE_MUTATION",
+    "RC_B04R6_SHADOW_RUNTIME_TRUST_ZONE_MUTATION",
+    "RC_B04R6_SHADOW_RUNTIME_METRIC_MUTATION",
+    "RC_B04R6_SHADOW_RUNTIME_COMPARATOR_WEAKENING",
+    "RC_B04R6_SHADOW_RUNTIME_NEXT_MOVE_DRIFT"
   ],
+  "receipt_role": "no_authorization_drift",
+  "receipt_status": "PASS",
   "runtime_cutover_authorized": false,
-  "runtime_execution_authorized": false,
   "runtime_mode": "SHADOW_RUNTIME_ONLY",
-  "schema_id": "kt.b04_r6.limited_runtime_execution.no_authorization_drift_receipt.v1",
+  "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.no_authorization_drift.v1",
   "schema_version": 1,
-  "selected_outcome": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_BOUND__LIMITED_RUNTIME_EXECUTION_VALIDATION_NEXT",
+  "scorecard": {
+    "abstention_observations": 4,
+    "afsh_observation_only_cases": 18,
+    "canary_runtime_cases": 0,
+    "drift_signals": [],
+    "fallback_failures": 0,
+    "fired_disqualifiers": [],
+    "incident_freeze_triggers": [],
+    "null_route_observations": 3,
+    "route_eligible_observations": 4,
+    "runtime_cutover_authorized_cases": 0,
+    "selector_entry_rate": 0.2222222222222222,
+    "shadow_runtime_mode": "SHADOW_RUNTIME_ONLY",
+    "static_authoritative_cases": 18,
+    "static_hold_observations": 7,
+    "total_cases": 18,
+    "trace_complete_cases": 18,
+    "user_facing_decision_changes": 0
+  },
+  "selected_outcome": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_PASSED__RUNTIME_EVIDENCE_REVIEW_PACKET_NEXT",
+  "shadow_runtime_executed": true,
+  "static_authoritative": true,
   "static_comparator_weakened": false,
   "status": "PASS",
   "terminal_defects": [
-    "LIMITED_RUNTIME_EXECUTED",
-    "LIMITED_RUNTIME_EXECUTION_AUTHORIZED",
+    "CANARY_RUNTIME_EXECUTED",
+    "AFSH_RUNTIME_AUTHORITY_GRANTED",
     "RUNTIME_CUTOVER_AUTHORIZED",
     "R6_OPEN_DRIFT",
     "LOBE_ESCALATION_DRIFT",
     "PACKAGE_PROMOTION_DRIFT",
     "COMMERCIAL_CLAIM_DRIFT",
-    "METRIC_MUTATION",
-    "COMPARATOR_WEAKENING",
     "TRUTH_ENGINE_MUTATION",
     "TRUST_ZONE_MUTATION",
+    "METRIC_MUTATION",
+    "COMPARATOR_WEAKENING",
     "NEXT_MOVE_DRIFT"
   ],
   "trust_zone_failures": [],
@@ -740,1370 +796,1203 @@
   "trust_zone_validation_status": "PASS",
   "truth_engine_derivation_law_unchanged": true,
   "truth_engine_law_changed": false,
+  "user_facing_decision_changed": false,
   "validation_rows": [
     {
-      "check_id": "execution_packet_contract_exists",
-      "detail": "execution packet contract exists",
-      "group": "packet",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_runtime_contract_preserves_current_main_head",
+      "detail": "current main head bound",
+      "group": "core",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_MAIN_HEAD_MISMATCH",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorization_validation",
-      "detail": "authorization validation is bound",
+      "check_id": "shadow_runtime_binds_validated_execution_packet",
+      "detail": "validated execution packet bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_EXECUTION_PACKET_BINDING_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_current_inputs_match_authorization_validation",
-      "detail": "current authorization inputs match validation bindings",
+      "check_id": "shadow_runtime_binds_validated_authorization_packet",
+      "detail": "validated authorization packet carried",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AUTHORIZATION_PACKET_BINDING_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_mode_is_shadow_runtime_only",
-      "detail": "mode is shadow runtime only",
+      "check_id": "shadow_runtime_binds_activation_review_validation",
+      "detail": "activation review validation carried",
+      "group": "binding",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ACTIVATION_REVIEW_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_runtime_binds_shadow_superiority_result",
+      "detail": "shadow superiority carried",
+      "group": "binding",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_SHADOW_SUPERIORITY_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_runtime_binds_afsh_candidate",
+      "detail": "AFSH candidate hashes carried",
+      "group": "binding",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_CANDIDATE_BINDING_MISSING",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_mode_is_shadow_runtime_only",
+      "detail": "runtime mode shadow-only",
       "group": "mode",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_MODE_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_MODE_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_scope_is_limited",
-      "detail": "scope is limited",
-      "group": "scope",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_SCOPE_MISSING",
+      "check_id": "canary_runtime_is_not_authorized",
+      "detail": "canary not executed",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_CANARY_EXECUTED",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_scope_is_not_global_r6",
-      "detail": "scope is not global R6",
-      "group": "scope",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_R6_OPEN_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_static_remains_authoritative",
+      "check_id": "static_remains_authoritative",
       "detail": "static remains authoritative",
-      "group": "static",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_STATIC_AUTHORITY_MISSING",
+      "group": "authority",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_afsh_observation_only",
-      "detail": "AFSH is observation only",
-      "group": "mode",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AFSH_OBSERVATION_MISSING",
+      "check_id": "afsh_is_observational_only",
+      "detail": "AFSH observation-only",
+      "group": "authority",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_operator_override_exists",
-      "detail": "operator override exists",
-      "group": "controls",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_OPERATOR_OVERRIDE_MISSING",
+      "check_id": "afsh_cannot_change_user_facing_decision",
+      "detail": "no user-facing change",
+      "group": "authority",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_kill_switch_exists",
-      "detail": "kill switch exists",
-      "group": "controls",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_KILL_SWITCH_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_rollback_exists",
-      "detail": "rollback exists",
-      "group": "controls",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_ROLLBACK_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_route_health_exists",
-      "detail": "route health exists",
-      "group": "monitoring",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_ROUTE_HEALTH_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_drift_monitoring_exists",
-      "detail": "drift monitoring exists",
-      "group": "monitoring",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_DRIFT_MONITORING_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_incident_freeze_exists",
-      "detail": "incident freeze exists",
-      "group": "monitoring",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_INCIDENT_FREEZE_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_external_verifier_exists",
-      "detail": "external verifier exists",
-      "group": "external",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_EXTERNAL_VERIFIER_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_commercial_claims_blocked",
-      "detail": "commercial claims blocked",
-      "group": "claims",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_COMMERCIAL_CLAIM_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_package_promotion_blocked",
-      "detail": "package promotion blocked",
-      "group": "claims",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PACKAGE_PROMOTION_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_validation_plan_exists",
-      "detail": "validation plan exists",
-      "group": "scaffold",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_reason_codes_exist",
-      "detail": "reason codes exist",
-      "group": "scaffold",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_lane_compiler_scaffold_is_prep_only",
-      "detail": "compiler scaffold is prep-only",
-      "group": "scaffold",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_does_not_execute_limited_runtime",
-      "detail": "limited runtime not executed",
+      "check_id": "runtime_cutover_is_not_authorized",
+      "detail": "cutover unauthorized",
       "group": "authorization",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LIMITED_RUNTIME_EXECUTION_AUTHORIZED",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_CUTOVER_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_does_not_authorize_runtime_cutover",
-      "detail": "runtime cutover unauthorized",
-      "group": "authorization",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_CUTOVER_AUTHORIZED",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_does_not_open_r6",
+      "check_id": "r6_remains_closed",
       "detail": "R6 closed",
       "group": "authorization",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_R6_OPEN_DRIFT",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_R6_OPEN_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_does_not_authorize_lobe_escalation",
-      "detail": "lobe escalation unauthorized",
-      "group": "authorization",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_LOBE_ESCALATION_DRIFT",
+      "check_id": "route_distribution_health_passes",
+      "detail": "route distribution healthy",
+      "group": "evidence",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_truth_engine_law_unchanged",
+      "check_id": "fallback_behavior_passes",
+      "detail": "fallback behavior healthy",
+      "group": "evidence",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_FALLBACK_FAIL",
+      "status": "PASS"
+    },
+    {
+      "check_id": "abstention_preservation_passes",
+      "detail": "abstention preserved",
+      "group": "evidence",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ABSTENTION_FAIL",
+      "status": "PASS"
+    },
+    {
+      "check_id": "null_route_preservation_passes",
+      "detail": "null route preserved",
+      "group": "evidence",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_NULL_ROUTE_FAIL",
+      "status": "PASS"
+    },
+    {
+      "check_id": "operator_override_readiness_passes",
+      "detail": "operator override ready",
+      "group": "controls",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_OPERATOR_OVERRIDE_NOT_READY",
+      "status": "PASS"
+    },
+    {
+      "check_id": "kill_switch_readiness_passes",
+      "detail": "kill switch ready",
+      "group": "controls",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_KILL_SWITCH_NOT_READY",
+      "status": "PASS"
+    },
+    {
+      "check_id": "rollback_readiness_passes",
+      "detail": "rollback ready",
+      "group": "controls",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROLLBACK_NOT_READY",
+      "status": "PASS"
+    },
+    {
+      "check_id": "drift_monitoring_passes",
+      "detail": "no drift",
+      "group": "monitoring",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_DRIFT_DETECTED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "incident_freeze_passes",
+      "detail": "no freeze trigger",
+      "group": "monitoring",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_INCIDENT_FREEZE_TRIGGERED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "trace_completeness_passes",
+      "detail": "trace complete",
+      "group": "replay",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_replay_passes",
+      "detail": "runtime replay complete",
+      "group": "replay",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_REPLAY_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "external_verifier_readiness_passes",
+      "detail": "external verifier ready",
+      "group": "external",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_EXTERNAL_VERIFIER_NOT_READY",
+      "status": "PASS"
+    },
+    {
+      "check_id": "commercial_claim_boundary_passes",
+      "detail": "commercial claims blocked",
+      "group": "claims",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_COMMERCIAL_CLAIM_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "package_promotion_not_authorized",
+      "detail": "package promotion blocked",
+      "group": "claims",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKAGE_PROMOTION_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "truth_engine_law_unchanged",
       "detail": "truth law unchanged",
       "group": "authorization",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_TRUTH_ENGINE_MUTATION",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRUTH_ENGINE_MUTATION",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_trust_zone_law_unchanged",
+      "check_id": "trust_zone_law_unchanged",
       "detail": "trust law unchanged",
       "group": "authorization",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_TRUST_ZONE_MUTATION",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRUST_ZONE_MUTATION",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_next_lawful_move_is_validation",
-      "detail": "next move is validation",
-      "group": "next_move",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_NEXT_MOVE_DRIFT",
+      "check_id": "no_authorization_drift_receipt_passes",
+      "detail": "no authorization drift",
+      "group": "authorization",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "pipeline_board_updated",
-      "detail": "pipeline board updated",
-      "group": "board",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "success_outcome_routes_to_runtime_evidence_review_packet",
+      "detail": "success routes to evidence review",
+      "group": "outcome",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_NEXT_MOVE_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_corridor_status_updated",
-      "detail": "runtime corridor status updated",
-      "group": "board",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "failure_outcome_routes_to_runtime_repair_or_closeout",
+      "detail": "failure route recorded",
+      "group": "outcome",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_NEXT_MOVE_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorized_abstention_fallback_contract",
-      "detail": "authorized_abstention_fallback_contract input is hash-bound",
+      "check_id": "invalidated_outcome_routes_to_forensic_runtime_invalidation",
+      "detail": "invalidation route recorded",
+      "group": "outcome",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_NEXT_MOVE_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "deferred_outcome_routes_to_named_runtime_defect",
+      "detail": "deferred route recorded",
+      "group": "outcome",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_NEXT_MOVE_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_runtime_binds_execution_afsh_shadow_observation_contract",
+      "detail": "execution_afsh_shadow_observation_contract input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorized_activation_review_repair_packet_prep_only",
-      "detail": "authorized_activation_review_repair_packet_prep_only input is hash-bound",
+      "check_id": "shadow_runtime_binds_execution_commercial_claim_boundary",
+      "detail": "execution_commercial_claim_boundary input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorized_activation_review_validation_binding_receipt",
-      "detail": "authorized_activation_review_validation_binding_receipt input is hash-bound",
+      "check_id": "shadow_runtime_binds_execution_drift_monitoring_contract",
+      "detail": "execution_drift_monitoring_contract input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorized_candidate_binding_receipt",
-      "detail": "authorized_candidate_binding_receipt input is hash-bound",
+      "check_id": "shadow_runtime_binds_execution_execution_packet_contract",
+      "detail": "execution_execution_packet_contract input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorized_commercial_claim_boundary",
-      "detail": "authorized_commercial_claim_boundary input is hash-bound",
+      "check_id": "shadow_runtime_binds_execution_execution_packet_receipt",
+      "detail": "execution_execution_packet_receipt input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorized_drift_monitoring_contract",
-      "detail": "authorized_drift_monitoring_contract input is hash-bound",
+      "check_id": "shadow_runtime_binds_execution_external_verifier_requirements",
+      "detail": "execution_external_verifier_requirements input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorized_external_audit_delta_manifest_prep_only",
-      "detail": "authorized_external_audit_delta_manifest_prep_only input is hash-bound",
+      "check_id": "shadow_runtime_binds_execution_incident_freeze_contract",
+      "detail": "execution_incident_freeze_contract input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorized_external_verifier_requirements",
-      "detail": "authorized_external_verifier_requirements input is hash-bound",
+      "check_id": "shadow_runtime_binds_execution_kill_switch_execution_contract",
+      "detail": "execution_kill_switch_execution_contract input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorized_future_blocker_register",
-      "detail": "authorized_future_blocker_register input is hash-bound",
+      "check_id": "shadow_runtime_binds_execution_mode_contract",
+      "detail": "execution_mode_contract input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorized_incident_freeze_contract",
-      "detail": "authorized_incident_freeze_contract input is hash-bound",
+      "check_id": "shadow_runtime_binds_execution_operator_override_contract",
+      "detail": "execution_operator_override_contract input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorized_kill_switch_contract",
-      "detail": "authorized_kill_switch_contract input is hash-bound",
+      "check_id": "shadow_runtime_binds_execution_rollback_execution_contract",
+      "detail": "execution_rollback_execution_contract input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorized_limited_runtime_validation_plan_prep_only",
-      "detail": "authorized_limited_runtime_validation_plan_prep_only input is hash-bound",
+      "check_id": "shadow_runtime_binds_execution_route_distribution_health_contract",
+      "detail": "execution_route_distribution_health_contract input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorized_next_lawful_move",
-      "detail": "authorized_next_lawful_move input is hash-bound",
+      "check_id": "shadow_runtime_binds_execution_runtime_receipt_schema",
+      "detail": "execution_runtime_receipt_schema input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorized_no_authorization_drift_receipt",
-      "detail": "authorized_no_authorization_drift_receipt input is hash-bound",
+      "check_id": "shadow_runtime_binds_execution_scope_manifest",
+      "detail": "execution_scope_manifest input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorized_null_route_preservation_contract",
-      "detail": "authorized_null_route_preservation_contract input is hash-bound",
+      "check_id": "shadow_runtime_binds_execution_static_authority_contract",
+      "detail": "execution_static_authority_contract input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorized_operational_safety_defect_ledger_prep_only",
-      "detail": "authorized_operational_safety_defect_ledger_prep_only input is hash-bound",
+      "check_id": "shadow_runtime_binds_validation_afsh_shadow_observation_validation",
+      "detail": "validation_afsh_shadow_observation_validation input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_authorized_operator_override_contract",
-      "detail": "authorized_operator_override_contract input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_package_promotion_review_preconditions_prep_only",
-      "detail": "authorized_package_promotion_review_preconditions_prep_only input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_packet_contract",
-      "detail": "authorized_packet_contract input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_packet_receipt",
-      "detail": "authorized_packet_receipt input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_public_verifier_delta_requirements_prep_only",
-      "detail": "authorized_public_verifier_delta_requirements_prep_only input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_rollback_plan",
-      "detail": "authorized_rollback_plan input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_route_distribution_health_contract",
-      "detail": "authorized_route_distribution_health_contract input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_runtime_authorization_redesign_court_prep_only",
-      "detail": "authorized_runtime_authorization_redesign_court_prep_only input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_runtime_authorization_rejection_closeout_prep_only",
-      "detail": "authorized_runtime_authorization_rejection_closeout_prep_only input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_runtime_canary_execution_contract_prep_only",
-      "detail": "authorized_runtime_canary_execution_contract_prep_only input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_runtime_evidence_packet_prep_only",
-      "detail": "authorized_runtime_evidence_packet_prep_only input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_runtime_incident_freeze_contract_prep_only",
-      "detail": "authorized_runtime_incident_freeze_contract_prep_only input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_runtime_receipt_schema",
-      "detail": "authorized_runtime_receipt_schema input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_runtime_rollback_execution_receipt_schema_prep_only",
-      "detail": "authorized_runtime_rollback_execution_receipt_schema_prep_only input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_scope_manifest",
-      "detail": "authorized_scope_manifest input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_shadow_result_binding_receipt",
-      "detail": "authorized_shadow_result_binding_receipt input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_static_fallback_contract",
-      "detail": "authorized_static_fallback_contract input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_validation_plan",
-      "detail": "authorized_validation_plan input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_authorized_validation_reason_codes",
-      "detail": "authorized_validation_reason_codes input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_validation_abstention_fallback_validation",
-      "detail": "validation_abstention_fallback_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_validation_commercial_claim_boundary_validation",
+      "check_id": "shadow_runtime_binds_validation_commercial_claim_boundary_validation",
       "detail": "validation_commercial_claim_boundary_validation input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_validation_drift_monitoring_validation",
+      "check_id": "shadow_runtime_binds_validation_drift_monitoring_validation",
       "detail": "validation_drift_monitoring_validation input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_validation_external_audit_delta_manifest_prep_only_draft",
-      "detail": "validation_external_audit_delta_manifest_prep_only_draft input is hash-bound",
+      "check_id": "shadow_runtime_binds_validation_execution_packet_binding_validation",
+      "detail": "validation_execution_packet_binding_validation input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_validation_external_verifier_validation",
+      "check_id": "shadow_runtime_binds_validation_external_verifier_validation",
       "detail": "validation_external_verifier_validation input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_validation_future_blocker_register",
-      "detail": "validation_future_blocker_register input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_validation_incident_freeze_validation",
+      "check_id": "shadow_runtime_binds_validation_incident_freeze_validation",
       "detail": "validation_incident_freeze_validation input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_validation_kill_switch_validation",
+      "check_id": "shadow_runtime_binds_validation_kill_switch_validation",
       "detail": "validation_kill_switch_validation input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_validation_lane_compiler_scaffold_receipt",
-      "detail": "validation_lane_compiler_scaffold_receipt input is hash-bound",
+      "check_id": "shadow_runtime_binds_validation_mode_validation",
+      "detail": "validation_mode_validation input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_validation_limited_runtime_execution_packet_prep_only_draft",
-      "detail": "validation_limited_runtime_execution_packet_prep_only_draft input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_validation_next_lawful_move",
+      "check_id": "shadow_runtime_binds_validation_next_lawful_move",
       "detail": "validation_next_lawful_move input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_validation_no_authorization_drift_validation",
+      "check_id": "shadow_runtime_binds_validation_no_authorization_drift_validation",
       "detail": "validation_no_authorization_drift_validation input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_validation_null_route_preservation_validation",
-      "detail": "validation_null_route_preservation_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_validation_operator_override_validation",
+      "check_id": "shadow_runtime_binds_validation_operator_override_validation",
       "detail": "validation_operator_override_validation input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_validation_package_promotion_boundary_validation",
+      "check_id": "shadow_runtime_binds_validation_package_promotion_boundary_validation",
       "detail": "validation_package_promotion_boundary_validation input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_validation_package_promotion_review_preconditions_prep_only_draft",
-      "detail": "validation_package_promotion_review_preconditions_prep_only_draft input is hash-bound",
+      "check_id": "shadow_runtime_binds_validation_rollback_execution_validation",
+      "detail": "validation_rollback_execution_validation input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_validation_rollback_plan_validation",
-      "detail": "validation_rollback_plan_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_validation_route_distribution_health_validation",
+      "check_id": "shadow_runtime_binds_validation_route_distribution_health_validation",
       "detail": "validation_route_distribution_health_validation input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_validation_runtime_evidence_review_packet_prep_only_draft",
-      "detail": "validation_runtime_evidence_review_packet_prep_only_draft input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "execution_packet_binds_validation_runtime_receipt_schema_validation",
+      "check_id": "shadow_runtime_binds_validation_runtime_receipt_schema_validation",
       "detail": "validation_runtime_receipt_schema_validation input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_validation_scope_validation",
+      "check_id": "shadow_runtime_binds_validation_scope_validation",
       "detail": "validation_scope_validation input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_validation_static_fallback_validation",
-      "detail": "validation_static_fallback_validation input is hash-bound",
+      "check_id": "shadow_runtime_binds_validation_static_authority_validation",
+      "detail": "validation_static_authority_validation input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_validation_validation_contract",
+      "check_id": "shadow_runtime_binds_validation_validation_contract",
       "detail": "validation_validation_contract input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_binds_validation_validation_receipt",
+      "check_id": "shadow_runtime_binds_validation_validation_receipt",
       "detail": "validation_validation_receipt input is hash-bound",
       "group": "binding",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_AUTHORIZATION_VALIDATION_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_afsh_shadow_observation_contract",
-      "detail": "afsh_shadow_observation_contract output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-001_static_authoritative",
+      "detail": "B04R6-SHADOW-001 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_authorization_validation_binding_receipt",
-      "detail": "authorization_validation_binding_receipt output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-002_static_authoritative",
+      "detail": "B04R6-SHADOW-002 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_candidate_binding_receipt",
-      "detail": "candidate_binding_receipt output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-003_static_authoritative",
+      "detail": "B04R6-SHADOW-003 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_case_class_contract",
-      "detail": "case_class_contract output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-004_static_authoritative",
+      "detail": "B04R6-SHADOW-004 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_commercial_claim_boundary",
-      "detail": "commercial_claim_boundary output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-005_static_authoritative",
+      "detail": "B04R6-SHADOW-005 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_commercial_claim_boundary_update_prep_only",
-      "detail": "commercial_claim_boundary_update_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-006_static_authoritative",
+      "detail": "B04R6-SHADOW-006 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_customer_safe_status_language_prep_only",
-      "detail": "customer_safe_status_language_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-007_static_authoritative",
+      "detail": "B04R6-SHADOW-007 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_deployment_profile_delta_prep_only",
-      "detail": "deployment_profile_delta_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-008_static_authoritative",
+      "detail": "B04R6-SHADOW-008 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_drift_monitoring_contract",
-      "detail": "drift_monitoring_contract output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-009_static_authoritative",
+      "detail": "B04R6-SHADOW-009 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_execution_packet_contract",
-      "detail": "execution_packet_contract output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-010_static_authoritative",
+      "detail": "B04R6-SHADOW-010 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_execution_packet_receipt",
-      "detail": "execution_packet_receipt output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-011_static_authoritative",
+      "detail": "B04R6-SHADOW-011 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_execution_packet_report",
-      "detail": "execution_packet_report output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-012_static_authoritative",
+      "detail": "B04R6-SHADOW-012 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_execution_validation_plan",
-      "detail": "execution_validation_plan output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-013_static_authoritative",
+      "detail": "B04R6-SHADOW-013 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_execution_validation_reason_codes",
-      "detail": "execution_validation_reason_codes output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-014_static_authoritative",
+      "detail": "B04R6-SHADOW-014 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_external_audit_delta_manifest_prep_only",
-      "detail": "external_audit_delta_manifest_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-015_static_authoritative",
+      "detail": "B04R6-SHADOW-015 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_external_hash_manifest_prep_only",
-      "detail": "external_hash_manifest_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-016_static_authoritative",
+      "detail": "B04R6-SHADOW-016 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_external_verifier_delta_requirements_prep_only",
-      "detail": "external_verifier_delta_requirements_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-017_static_authoritative",
+      "detail": "B04R6-SHADOW-017 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_external_verifier_requirements",
-      "detail": "external_verifier_requirements output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-018_static_authoritative",
+      "detail": "B04R6-SHADOW-018 static authoritative",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_forbidden_runtime_claims_receipt_prep_only",
-      "detail": "forbidden_runtime_claims_receipt_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-001_afsh_observation_only",
+      "detail": "B04R6-SHADOW-001 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_future_blocker_register",
-      "detail": "future_blocker_register output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-002_afsh_observation_only",
+      "detail": "B04R6-SHADOW-002 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_incident_freeze_contract",
-      "detail": "incident_freeze_contract output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-003_afsh_observation_only",
+      "detail": "B04R6-SHADOW-003 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_kill_switch_execution_contract",
-      "detail": "kill_switch_execution_contract output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-004_afsh_observation_only",
+      "detail": "B04R6-SHADOW-004 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_lane_compiler_scaffold_receipt",
-      "detail": "lane_compiler_scaffold_receipt output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-005_afsh_observation_only",
+      "detail": "B04R6-SHADOW-005 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_limited_runtime_failure_closeout_prep_only",
-      "detail": "limited_runtime_failure_closeout_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-006_afsh_observation_only",
+      "detail": "B04R6-SHADOW-006 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_mode_contract",
-      "detail": "mode_contract output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-007_afsh_observation_only",
+      "detail": "B04R6-SHADOW-007 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_next_lawful_move",
-      "detail": "next_lawful_move output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-008_afsh_observation_only",
+      "detail": "B04R6-SHADOW-008 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_no_authorization_drift_receipt",
-      "detail": "no_authorization_drift_receipt output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-009_afsh_observation_only",
+      "detail": "B04R6-SHADOW-009 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_operator_override_contract",
-      "detail": "operator_override_contract output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-010_afsh_observation_only",
+      "detail": "B04R6-SHADOW-010 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_operator_runbook_delta_prep_only",
-      "detail": "operator_runbook_delta_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-011_afsh_observation_only",
+      "detail": "B04R6-SHADOW-011 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_pipeline_board",
-      "detail": "pipeline_board output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-012_afsh_observation_only",
+      "detail": "B04R6-SHADOW-012 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_public_verifier_receipt_schema_prep_only",
-      "detail": "public_verifier_receipt_schema_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-013_afsh_observation_only",
+      "detail": "B04R6-SHADOW-013 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_replay_bundle_manifest_prep_only",
-      "detail": "replay_bundle_manifest_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-014_afsh_observation_only",
+      "detail": "B04R6-SHADOW-014 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_rollback_execution_contract",
-      "detail": "rollback_execution_contract output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-015_afsh_observation_only",
+      "detail": "B04R6-SHADOW-015 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_route_distribution_health_contract",
-      "detail": "route_distribution_health_contract output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-016_afsh_observation_only",
+      "detail": "B04R6-SHADOW-016 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_runtime_corridor_status",
-      "detail": "runtime_corridor_status output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-017_afsh_observation_only",
+      "detail": "B04R6-SHADOW-017 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_runtime_evidence_review_packet_prep_only_draft",
-      "detail": "runtime_evidence_review_packet_prep_only_draft output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-018_afsh_observation_only",
+      "detail": "B04R6-SHADOW-018 AFSH observation-only",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_runtime_evidence_scorecard_prep_only_draft",
-      "detail": "runtime_evidence_scorecard_prep_only_draft output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-001_trace_complete",
+      "detail": "B04R6-SHADOW-001 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_runtime_freeze_condition_contract_prep_only",
-      "detail": "runtime_freeze_condition_contract_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-002_trace_complete",
+      "detail": "B04R6-SHADOW-002 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_runtime_incident_and_freeze_review_prep_only",
-      "detail": "runtime_incident_and_freeze_review_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-003_trace_complete",
+      "detail": "B04R6-SHADOW-003 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_runtime_incident_forensic_court_prep_only",
-      "detail": "runtime_incident_forensic_court_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-004_trace_complete",
+      "detail": "B04R6-SHADOW-004 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_runtime_operator_intervention_review_prep_only",
-      "detail": "runtime_operator_intervention_review_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-005_trace_complete",
+      "detail": "B04R6-SHADOW-005 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_runtime_receipt_schema",
-      "detail": "runtime_receipt_schema output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-006_trace_complete",
+      "detail": "B04R6-SHADOW-006 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_runtime_redesign_authorization_court_prep_only",
-      "detail": "runtime_redesign_authorization_court_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-007_trace_complete",
+      "detail": "B04R6-SHADOW-007 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_runtime_rollback_execution_receipt_schema_prep_only",
-      "detail": "runtime_rollback_execution_receipt_schema_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-008_trace_complete",
+      "detail": "B04R6-SHADOW-008 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_runtime_rollback_readiness_review_prep_only",
-      "detail": "runtime_rollback_readiness_review_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-009_trace_complete",
+      "detail": "B04R6-SHADOW-009 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_runtime_route_distribution_health_review_prep_only",
-      "detail": "runtime_route_distribution_health_review_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-010_trace_complete",
+      "detail": "B04R6-SHADOW-010 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_runtime_trace_completeness_review_prep_only",
-      "detail": "runtime_trace_completeness_review_prep_only output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-011_trace_complete",
+      "detail": "B04R6-SHADOW-011 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_scope_manifest",
-      "detail": "scope_manifest output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-012_trace_complete",
+      "detail": "B04R6-SHADOW-012 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_shadow_result_binding_receipt",
-      "detail": "shadow_result_binding_receipt output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-013_trace_complete",
+      "detail": "B04R6-SHADOW-013 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "execution_packet_writes_static_authority_contract",
-      "detail": "static_authority_contract output is emitted",
-      "group": "outputs",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_CONTRACT_MISSING",
+      "check_id": "shadow_case_B04R6-SHADOW-014_trace_complete",
+      "detail": "B04R6-SHADOW-014 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_runtime_receipt_id",
-      "detail": "runtime receipt requires runtime_receipt_id",
+      "check_id": "shadow_case_B04R6-SHADOW-015_trace_complete",
+      "detail": "B04R6-SHADOW-015 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-016_trace_complete",
+      "detail": "B04R6-SHADOW-016 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-017_trace_complete",
+      "detail": "B04R6-SHADOW-017 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-018_trace_complete",
+      "detail": "B04R6-SHADOW-018 trace complete",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-001_no_user_facing_change",
+      "detail": "B04R6-SHADOW-001 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-002_no_user_facing_change",
+      "detail": "B04R6-SHADOW-002 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-003_no_user_facing_change",
+      "detail": "B04R6-SHADOW-003 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-004_no_user_facing_change",
+      "detail": "B04R6-SHADOW-004 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-005_no_user_facing_change",
+      "detail": "B04R6-SHADOW-005 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-006_no_user_facing_change",
+      "detail": "B04R6-SHADOW-006 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-007_no_user_facing_change",
+      "detail": "B04R6-SHADOW-007 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-008_no_user_facing_change",
+      "detail": "B04R6-SHADOW-008 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-009_no_user_facing_change",
+      "detail": "B04R6-SHADOW-009 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-010_no_user_facing_change",
+      "detail": "B04R6-SHADOW-010 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-011_no_user_facing_change",
+      "detail": "B04R6-SHADOW-011 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-012_no_user_facing_change",
+      "detail": "B04R6-SHADOW-012 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-013_no_user_facing_change",
+      "detail": "B04R6-SHADOW-013 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-014_no_user_facing_change",
+      "detail": "B04R6-SHADOW-014 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-015_no_user_facing_change",
+      "detail": "B04R6-SHADOW-015 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-016_no_user_facing_change",
+      "detail": "B04R6-SHADOW-016 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-017_no_user_facing_change",
+      "detail": "B04R6-SHADOW-017 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "shadow_case_B04R6-SHADOW-018_no_user_facing_change",
+      "detail": "B04R6-SHADOW-018 no user-facing change",
+      "group": "case",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime_receipt_field_runtime_receipt_id_emitted",
+      "detail": "runtime_receipt_id emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_case_id",
-      "detail": "runtime receipt requires case_id",
+      "check_id": "runtime_receipt_field_case_id_emitted",
+      "detail": "case_id emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_execution_mode",
-      "detail": "runtime receipt requires execution_mode",
+      "check_id": "runtime_receipt_field_execution_mode_emitted",
+      "detail": "execution_mode emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_static_authoritative_decision",
-      "detail": "runtime receipt requires static_authoritative_decision",
+      "check_id": "runtime_receipt_field_static_authoritative_decision_emitted",
+      "detail": "static_authoritative_decision emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_afsh_shadow_decision",
-      "detail": "runtime receipt requires afsh_shadow_decision",
+      "check_id": "runtime_receipt_field_afsh_shadow_decision_emitted",
+      "detail": "afsh_shadow_decision emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_afsh_observation_only",
-      "detail": "runtime receipt requires afsh_observation_only",
+      "check_id": "runtime_receipt_field_afsh_observation_only_emitted",
+      "detail": "afsh_observation_only emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_selector_entry_authorized",
-      "detail": "runtime receipt requires selector_entry_authorized",
+      "check_id": "runtime_receipt_field_selector_entry_authorized_emitted",
+      "detail": "selector_entry_authorized emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_static_fallback_status",
-      "detail": "runtime receipt requires static_fallback_status",
+      "check_id": "runtime_receipt_field_static_fallback_status_emitted",
+      "detail": "static_fallback_status emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_abstention_fallback_status",
-      "detail": "runtime receipt requires abstention_fallback_status",
+      "check_id": "runtime_receipt_field_abstention_fallback_status_emitted",
+      "detail": "abstention_fallback_status emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_null_route_preservation_status",
-      "detail": "runtime receipt requires null_route_preservation_status",
+      "check_id": "runtime_receipt_field_null_route_preservation_status_emitted",
+      "detail": "null_route_preservation_status emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_operator_override_status",
-      "detail": "runtime receipt requires operator_override_status",
+      "check_id": "runtime_receipt_field_operator_override_status_emitted",
+      "detail": "operator_override_status emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_kill_switch_status",
-      "detail": "runtime receipt requires kill_switch_status",
+      "check_id": "runtime_receipt_field_kill_switch_status_emitted",
+      "detail": "kill_switch_status emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_rollback_status",
-      "detail": "runtime receipt requires rollback_status",
+      "check_id": "runtime_receipt_field_rollback_status_emitted",
+      "detail": "rollback_status emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_route_distribution_health_status",
-      "detail": "runtime receipt requires route_distribution_health_status",
+      "check_id": "runtime_receipt_field_route_distribution_health_status_emitted",
+      "detail": "route_distribution_health_status emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_drift_status",
-      "detail": "runtime receipt requires drift_status",
+      "check_id": "runtime_receipt_field_drift_status_emitted",
+      "detail": "drift_status emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_incident_freeze_status",
-      "detail": "runtime receipt requires incident_freeze_status",
+      "check_id": "runtime_receipt_field_incident_freeze_status_emitted",
+      "detail": "incident_freeze_status emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_trace_receipt_hash",
-      "detail": "runtime receipt requires trace_receipt_hash",
+      "check_id": "runtime_receipt_field_trace_receipt_hash_emitted",
+      "detail": "trace_receipt_hash emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_raw_hash_bound_artifact_refs",
-      "detail": "runtime receipt requires raw_hash_bound_artifact_refs",
+      "check_id": "runtime_receipt_field_raw_hash_bound_artifact_refs_emitted",
+      "detail": "raw_hash_bound_artifact_refs emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_external_verifier_refs",
-      "detail": "runtime receipt requires external_verifier_refs",
+      "check_id": "runtime_receipt_field_external_verifier_refs_emitted",
+      "detail": "external_verifier_refs emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "runtime_receipt_requires_commercial_claim_boundary_status",
-      "detail": "runtime receipt requires commercial_claim_boundary_status",
+      "check_id": "runtime_receipt_field_commercial_claim_boundary_status_emitted",
+      "detail": "commercial_claim_boundary_status emitted",
       "group": "receipts",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_RUNTIME_RECEIPT_SCHEMA_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
       "status": "PASS"
     },
     {
-      "check_id": "incident_freeze_on_static_authority_drift",
-      "detail": "incident freezes on static_authority_drift",
-      "group": "incident",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_INCIDENT_FREEZE_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "incident_freeze_on_afsh_user_facing_decision_change",
-      "detail": "incident freezes on afsh_user_facing_decision_change",
-      "group": "incident",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_INCIDENT_FREEZE_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "incident_freeze_on_selector_entry_rate_out_of_bounds",
-      "detail": "incident freezes on selector_entry_rate_out_of_bounds",
-      "group": "incident",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_INCIDENT_FREEZE_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "incident_freeze_on_abstention_collapse",
-      "detail": "incident freezes on abstention_collapse",
-      "group": "incident",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_INCIDENT_FREEZE_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "incident_freeze_on_null_route_collapse",
-      "detail": "incident freezes on null_route_collapse",
-      "group": "incident",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_INCIDENT_FREEZE_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "incident_freeze_on_kill_switch_failure",
-      "detail": "incident freezes on kill_switch_failure",
-      "group": "incident",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_INCIDENT_FREEZE_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "incident_freeze_on_rollback_failure",
-      "detail": "incident freezes on rollback_failure",
-      "group": "incident",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_INCIDENT_FREEZE_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "incident_freeze_on_trace_receipt_missing",
-      "detail": "incident freezes on trace_receipt_missing",
-      "group": "incident",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_INCIDENT_FREEZE_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "incident_freeze_on_trust_zone_drift",
-      "detail": "incident freezes on trust_zone_drift",
-      "group": "incident",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_INCIDENT_FREEZE_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "incident_freeze_on_truth_engine_drift",
-      "detail": "incident freezes on truth_engine_drift",
-      "group": "incident",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_INCIDENT_FREEZE_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "route_health_monitors_selector_entry_rate",
-      "detail": "route health monitors selector_entry_rate",
+      "check_id": "route_health_signal_selector_entry_rate_measured",
+      "detail": "selector_entry_rate measured",
       "group": "monitoring",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_ROUTE_HEALTH_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
       "status": "PASS"
     },
     {
-      "check_id": "route_health_monitors_static_hold_rate",
-      "detail": "route health monitors static_hold_rate",
+      "check_id": "route_health_signal_static_hold_rate_measured",
+      "detail": "static_hold_rate measured",
       "group": "monitoring",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_ROUTE_HEALTH_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
       "status": "PASS"
     },
     {
-      "check_id": "route_health_monitors_abstention_rate",
-      "detail": "route health monitors abstention_rate",
+      "check_id": "route_health_signal_abstention_rate_measured",
+      "detail": "abstention_rate measured",
       "group": "monitoring",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_ROUTE_HEALTH_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
       "status": "PASS"
     },
     {
-      "check_id": "route_health_monitors_null_route_rate",
-      "detail": "route health monitors null_route_rate",
+      "check_id": "route_health_signal_null_route_rate_measured",
+      "detail": "null_route_rate measured",
       "group": "monitoring",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_ROUTE_HEALTH_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
       "status": "PASS"
     },
     {
-      "check_id": "route_health_monitors_operator_override_rate",
-      "detail": "route health monitors operator_override_rate",
+      "check_id": "route_health_signal_operator_override_rate_measured",
+      "detail": "operator_override_rate measured",
       "group": "monitoring",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_ROUTE_HEALTH_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
       "status": "PASS"
     },
     {
-      "check_id": "route_health_monitors_kill_switch_readiness",
-      "detail": "route health monitors kill_switch_readiness",
+      "check_id": "route_health_signal_kill_switch_readiness_measured",
+      "detail": "kill_switch_readiness measured",
       "group": "monitoring",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_ROUTE_HEALTH_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
       "status": "PASS"
     },
     {
-      "check_id": "route_health_monitors_rollback_readiness",
-      "detail": "route health monitors rollback_readiness",
+      "check_id": "route_health_signal_rollback_readiness_measured",
+      "detail": "rollback_readiness measured",
       "group": "monitoring",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_ROUTE_HEALTH_MISSING",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
       "status": "PASS"
     },
     {
       "check_id": "prep_only_output_runtime_evidence_review_packet_prep_only_draft_cannot_authorize",
-      "detail": "runtime_evidence_review_packet_prep_only_draft remains prep-only",
+      "detail": "runtime_evidence_review_packet_prep_only_draft prep-only",
       "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PREP_ONLY_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "prep_only_output_runtime_evidence_scorecard_prep_only_draft_cannot_authorize",
-      "detail": "runtime_evidence_scorecard_prep_only_draft remains prep-only",
+      "check_id": "prep_only_output_canary_authorization_packet_prep_only_draft_cannot_authorize",
+      "detail": "canary_authorization_packet_prep_only_draft prep-only",
       "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PREP_ONLY_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "prep_only_output_runtime_route_distribution_health_review_prep_only_cannot_authorize",
-      "detail": "runtime_route_distribution_health_review_prep_only remains prep-only",
+      "check_id": "prep_only_output_package_promotion_review_preconditions_prep_only_draft_cannot_authorize",
+      "detail": "package_promotion_review_preconditions_prep_only_draft prep-only",
       "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PREP_ONLY_AUTHORITY_DRIFT",
       "status": "PASS"
     },
     {
-      "check_id": "prep_only_output_runtime_operator_intervention_review_prep_only_cannot_authorize",
-      "detail": "runtime_operator_intervention_review_prep_only remains prep-only",
+      "check_id": "prep_only_output_external_audit_delta_manifest_prep_only_draft_cannot_authorize",
+      "detail": "external_audit_delta_manifest_prep_only_draft prep-only",
       "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_runtime_trace_completeness_review_prep_only_cannot_authorize",
-      "detail": "runtime_trace_completeness_review_prep_only remains prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_runtime_incident_and_freeze_review_prep_only_cannot_authorize",
-      "detail": "runtime_incident_and_freeze_review_prep_only remains prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_runtime_rollback_readiness_review_prep_only_cannot_authorize",
-      "detail": "runtime_rollback_readiness_review_prep_only remains prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_limited_runtime_failure_closeout_prep_only_cannot_authorize",
-      "detail": "limited_runtime_failure_closeout_prep_only remains prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_runtime_rollback_execution_receipt_schema_prep_only_cannot_authorize",
-      "detail": "runtime_rollback_execution_receipt_schema_prep_only remains prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_runtime_incident_forensic_court_prep_only_cannot_authorize",
-      "detail": "runtime_incident_forensic_court_prep_only remains prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_runtime_freeze_condition_contract_prep_only_cannot_authorize",
-      "detail": "runtime_freeze_condition_contract_prep_only remains prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_runtime_redesign_authorization_court_prep_only_cannot_authorize",
-      "detail": "runtime_redesign_authorization_court_prep_only remains prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_external_verifier_delta_requirements_prep_only_cannot_authorize",
-      "detail": "external_verifier_delta_requirements_prep_only remains prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_external_audit_delta_manifest_prep_only_cannot_authorize",
-      "detail": "external_audit_delta_manifest_prep_only remains prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_replay_bundle_manifest_prep_only_cannot_authorize",
-      "detail": "replay_bundle_manifest_prep_only remains prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_public_verifier_receipt_schema_prep_only_cannot_authorize",
-      "detail": "public_verifier_receipt_schema_prep_only remains prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_external_hash_manifest_prep_only_cannot_authorize",
-      "detail": "external_hash_manifest_prep_only remains prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_commercial_claim_boundary_update_prep_only_cannot_authorize",
-      "detail": "commercial_claim_boundary_update_prep_only remains prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_forbidden_runtime_claims_receipt_prep_only_cannot_authorize",
-      "detail": "forbidden_runtime_claims_receipt_prep_only remains prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_deployment_profile_delta_prep_only_cannot_authorize",
-      "detail": "deployment_profile_delta_prep_only remains prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_LIMITED_RUNTIME_EXEC_PACKET_PREP_ONLY_AUTHORITY_DRIFT",
+      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PREP_ONLY_AUTHORITY_DRIFT",
       "status": "PASS"
     }
   ]

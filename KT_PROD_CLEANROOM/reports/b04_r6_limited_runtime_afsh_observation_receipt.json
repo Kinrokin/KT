@@ -8,9 +8,8 @@
     "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_INVALIDATED__FORENSIC_RUNTIME_INVALIDATION_COURT_NEXT",
     "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS"
   ],
-  "artifact_id": "B04_R6_PACKAGE_PROMOTION_REVIEW_PRECONDITIONS_PREP_ONLY_DRAFT",
+  "artifact_id": "B04_R6_LIMITED_RUNTIME_AFSH_OBSERVATION_RECEIPT",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME",
-  "authority": "PREP_ONLY",
   "authorization_state": {
     "activation_cutover_executed": false,
     "activation_review_validated": true,
@@ -79,20 +78,6 @@
     "validation_validation_receipt_hash": "d375d90c2d1cee7b8e8368e2f9f21066417b7a968bdfa5406faebf5923f640e3"
   },
   "canary_runtime_executed": false,
-  "cannot_authorize": [
-    "CANARY_RUNTIME_EXECUTED",
-    "AFSH_RUNTIME_AUTHORITY_GRANTED",
-    "RUNTIME_CUTOVER_AUTHORIZED",
-    "ACTIVATION_CUTOVER_EXECUTED",
-    "R6_OPEN",
-    "LOBE_ESCALATION_AUTHORIZED",
-    "PACKAGE_PROMOTION_AUTHORIZED",
-    "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED",
-    "TRUTH_ENGINE_LAW_MUTATED",
-    "TRUST_ZONE_LAW_MUTATED",
-    "METRIC_CONTRACT_MUTATED",
-    "STATIC_COMPARATOR_WEAKENED"
-  ],
   "case_rows": [
     {
       "afsh_observation": "STATIC_HOLD",
@@ -711,6 +696,7 @@
   ],
   "metric_contract_mutated": false,
   "next_lawful_move": "AUTHOR_B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET",
+  "observation_only_cases": 18,
   "outcome_routing": {
     "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS": "REPAIR_B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_DEFECTS",
     "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_FAILED__RUNTIME_REPAIR_OR_CLOSEOUT_NEXT": "AUTHOR_B04_R6_RUNTIME_REPAIR_OR_CLOSEOUT",
@@ -722,7 +708,6 @@
   "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_VALIDATED__LIMITED_RUNTIME_RUN_NEXT",
   "previous_authoritative_lane": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_VALIDATION",
   "previous_next_lawful_move": "RUN_B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME",
-  "purpose": "Prep-only scaffold for future package promotion review preconditions prep only draft.",
   "r6_open": false,
   "reason_codes": [
     "RC_B04R6_SHADOW_RUNTIME_CONTRACT_MISSING",
@@ -761,9 +746,11 @@
     "RC_B04R6_SHADOW_RUNTIME_COMPARATOR_WEAKENING",
     "RC_B04R6_SHADOW_RUNTIME_NEXT_MOVE_DRIFT"
   ],
+  "receipt_role": "afsh_observation",
+  "receipt_status": "PASS",
   "runtime_cutover_authorized": false,
   "runtime_mode": "SHADOW_RUNTIME_ONLY",
-  "schema_id": "kt.b04_r6.package_promotion_review_preconditions_prep_only_draft.v1",
+  "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.afsh_observation.v1",
   "schema_version": 1,
   "scorecard": {
     "abstention_observations": 4,
@@ -785,10 +772,11 @@
     "user_facing_decision_changes": 0
   },
   "selected_outcome": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_PASSED__RUNTIME_EVIDENCE_REVIEW_PACKET_NEXT",
+  "selector_entry_rate": 0.2222222222222222,
   "shadow_runtime_executed": true,
   "static_authoritative": true,
   "static_comparator_weakened": false,
-  "status": "PREP_ONLY",
+  "status": "PASS",
   "terminal_defects": [
     "CANARY_RUNTIME_EXECUTED",
     "AFSH_RUNTIME_AUTHORITY_GRANTED",
