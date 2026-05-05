@@ -6,9 +6,8 @@
     "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_DEFERRED__NAMED_EVIDENCE_REVIEW_DEFECT_REMAINS",
     "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_PUBLIC_VERIFIER_DELTA_REQUIREMENTS_PREP_ONLY",
+  "artifact_id": "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_CONTRACT",
   "authoritative_lane": "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET",
-  "authority": "PREP_ONLY_NON_AUTHORITY",
   "binding_hashes": {
     "shadow_abstention_preservation_receipt_hash": "1e43ab5924bd7fcb1bb3f21322185a513974b1645294421e897f303774bfb064",
     "shadow_afsh_observation_receipt_hash": "d1bb37a4801baa8faba206d667a5ff42cbe3c93e61a69a56b6119833003885c9",
@@ -297,10 +296,20 @@
   },
   "package_promotion": "DEFERRED",
   "package_promotion_authorized": false,
+  "packet_scope": {
+    "non_purpose": [
+      "Does not authorize canary runtime.",
+      "Does not execute canary.",
+      "Does not authorize runtime cutover.",
+      "Does not open R6.",
+      "Does not authorize package promotion.",
+      "Does not authorize commercial activation claims."
+    ],
+    "purpose": "Freeze, inventory, score, and review passed shadow-runtime evidence before validation."
+  },
   "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_PASSED__RUNTIME_EVIDENCE_REVIEW_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME",
   "previous_next_lawful_move": "AUTHOR_B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET",
-  "purpose": "Prep-only downstream scaffold for public verifier delta requirements prep only.",
   "r6_open": false,
   "reason_codes": [
     "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_CONTRACT_MISSING",
@@ -335,6 +344,15 @@
     "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_TRUTH_ENGINE_MUTATION",
     "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_TRUST_ZONE_MUTATION",
     "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_NEXT_MOVE_DRIFT"
+  ],
+  "review_questions": [
+    "Did static remain authoritative?",
+    "Did AFSH influence any user-facing decision?",
+    "Was route distribution healthy?",
+    "Were fallbacks and abstention/null-route behavior preserved?",
+    "Were operator controls, kill switch, and rollback ready?",
+    "Were drift/freeze/trace/replay/external-verifier boundaries clean?",
+    "Is the system prep-ready, but not authorized, for canary authorization review?"
   ],
   "runtime_cutover_authorized": false,
   "runtime_evidence_inventory": {
@@ -613,12 +631,11 @@
     "user_facing_decision_changes": 0
   },
   "runtime_mode": "SHADOW_RUNTIME_ONLY",
-  "schema_id": "kt.b04_r6.runtime_evidence_review.public_verifier_delta_requirements_prep_only.prep_only.v1",
+  "schema_id": "kt.b04_r6.runtime_evidence_review_packet_contract.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_BOUND__RUNTIME_EVIDENCE_REVIEW_VALIDATION_NEXT",
   "shadow_runtime_passed": true,
   "static_comparator_weakened": false,
-  "status": "PREP_ONLY",
   "terminal_defects": [
     "SHADOW_RUNTIME_EVIDENCE_MISSING",
     "SHADOW_RUNTIME_NOT_PASSED",

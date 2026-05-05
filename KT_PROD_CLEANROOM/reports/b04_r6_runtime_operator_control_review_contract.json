@@ -6,9 +6,8 @@
     "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_DEFERRED__NAMED_EVIDENCE_REVIEW_DEFECT_REMAINS",
     "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_PUBLIC_VERIFIER_DELTA_REQUIREMENTS_PREP_ONLY",
+  "artifact_id": "B04_R6_RUNTIME_OPERATOR_CONTROL_REVIEW_CONTRACT",
   "authoritative_lane": "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET",
-  "authority": "PREP_ONLY_NON_AUTHORITY",
   "binding_hashes": {
     "shadow_abstention_preservation_receipt_hash": "1e43ab5924bd7fcb1bb3f21322185a513974b1645294421e897f303774bfb064",
     "shadow_afsh_observation_receipt_hash": "d1bb37a4801baa8faba206d667a5ff42cbe3c93e61a69a56b6119833003885c9",
@@ -44,6 +43,13 @@
   "current_branch": "authoritative/b04-r6-runtime-evidence-review-packet",
   "current_git_head": "8b26a23488312fdffbdcb41c7178d633464b32fc",
   "current_main_head": "a377786ca79931085a1bd0be221f97cbc6dfda3c",
+  "evidence_roles": [
+    "shadow_operator_override_readiness_receipt"
+  ],
+  "findings": {
+    "operator_override_ready": true,
+    "status": "PASS"
+  },
   "forbidden_actions": [
     "CANARY_RUNTIME_AUTHORIZED",
     "CANARY_RUNTIME_EXECUTED",
@@ -300,7 +306,6 @@
   "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_PASSED__RUNTIME_EVIDENCE_REVIEW_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME",
   "previous_next_lawful_move": "AUTHOR_B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET",
-  "purpose": "Prep-only downstream scaffold for public verifier delta requirements prep only.",
   "r6_open": false,
   "reason_codes": [
     "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_CONTRACT_MISSING",
@@ -336,6 +341,9 @@
     "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_TRUST_ZONE_MUTATION",
     "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_NEXT_MOVE_DRIFT"
   ],
+  "review_question": "Were operator controls ready?",
+  "review_role": "operator_control_review",
+  "review_status": "PASS",
   "runtime_cutover_authorized": false,
   "runtime_evidence_inventory": {
     "artifact_count": 27,
@@ -613,12 +621,11 @@
     "user_facing_decision_changes": 0
   },
   "runtime_mode": "SHADOW_RUNTIME_ONLY",
-  "schema_id": "kt.b04_r6.runtime_evidence_review.public_verifier_delta_requirements_prep_only.prep_only.v1",
+  "schema_id": "kt.b04_r6.runtime_evidence_review.operator_control_review.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_BOUND__RUNTIME_EVIDENCE_REVIEW_VALIDATION_NEXT",
   "shadow_runtime_passed": true,
   "static_comparator_weakened": false,
-  "status": "PREP_ONLY",
   "terminal_defects": [
     "SHADOW_RUNTIME_EVIDENCE_MISSING",
     "SHADOW_RUNTIME_NOT_PASSED",

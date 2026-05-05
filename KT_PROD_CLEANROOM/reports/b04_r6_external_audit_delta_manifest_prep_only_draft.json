@@ -1,376 +1,51 @@
 {
   "activation_cutover_executed": false,
-  "afsh_observation_only": true,
   "afsh_runtime_authority_granted": false,
   "allowed_outcomes": [
-    "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_PASSED__RUNTIME_EVIDENCE_REVIEW_PACKET_NEXT",
-    "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_FAILED__RUNTIME_REPAIR_OR_CLOSEOUT_NEXT",
-    "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_INVALIDATED__FORENSIC_RUNTIME_INVALIDATION_COURT_NEXT",
-    "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS"
+    "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_BOUND__RUNTIME_EVIDENCE_REVIEW_VALIDATION_NEXT",
+    "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_DEFERRED__NAMED_EVIDENCE_REVIEW_DEFECT_REMAINS",
+    "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
   "artifact_id": "B04_R6_EXTERNAL_AUDIT_DELTA_MANIFEST_PREP_ONLY_DRAFT",
-  "authoritative_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME",
-  "authority": "PREP_ONLY",
-  "authorization_state": {
-    "activation_cutover_executed": false,
-    "activation_review_validated": true,
-    "afsh_runtime_authority_granted": false,
-    "canary_runtime_executed": false,
-    "commercial_activation_claim_authorized": false,
-    "limited_runtime_authorization_packet_validated": true,
-    "limited_runtime_execution_packet_validated": true,
-    "limited_runtime_shadow_runtime_executed": true,
-    "lobe_escalation_authorized": false,
-    "package_promotion": "DEFERRED",
-    "package_promotion_authorized": false,
-    "r6_open": false,
-    "runtime_cutover_authorized": false,
-    "shadow_runtime_executed": true,
-    "shadow_superiority_passed": true,
-    "trust_zone_law_changed": false,
-    "truth_engine_law_changed": false
-  },
+  "authoritative_lane": "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET",
+  "authority": "PREP_ONLY_NON_AUTHORITY",
   "binding_hashes": {
-    "execution_afsh_shadow_observation_contract_hash": "a19fa64550404b3059c9dc95de1f3d87c92b311d8a0f6e3c9e7ce4ee0a49c929",
-    "execution_commercial_claim_boundary_hash": "97e0398140aa653b3345af479df5212a6e6e05a06bab68c56a7749c36219c9ff",
-    "execution_drift_monitoring_contract_hash": "241ef3e900385452f7e7011760901309bf163d3ba57d7a67ac9c18f37da56c7f",
-    "execution_execution_packet_contract_hash": "f19ab27366926810c7658d1b27dcca0809e95ecef20b7d2e8cf9e7d1a73866a7",
-    "execution_execution_packet_receipt_hash": "0538b2f7c23e4043c0364bb88077d1de11efe2a5fb27499ffa8a62fd35e65798",
-    "execution_external_verifier_requirements_hash": "8b7a730553801ed0c527e3f16305253333b319978d269a55f15931a574785872",
-    "execution_incident_freeze_contract_hash": "a5ee328fbc80075700ab8c64b1c7d8c3c4fcf523b293c48e521114f16c6e4563",
-    "execution_kill_switch_execution_contract_hash": "9052df2b0fd340fbd310b1a2d93892eebb2b5a3d00c659f419d7b357a2cff33e",
-    "execution_mode_contract_hash": "a67c8519af4505955acdd7d1f43941bcb3d65c99fd0bc9378cfacd8610e57eea",
-    "execution_operator_override_contract_hash": "8d0ebaa13dec1920fee607705ab8d23ffda384c5014a54ed40617a5323193f95",
-    "execution_packet_report_hash": "e4586a1c7e9b70f294beb6a2ab8ea5d33c5ea13a4c0ab14f7d4b596c677c737d",
-    "execution_rollback_execution_contract_hash": "60c97b9e66688b9dc82a224d1af2cf4a741f851747f91e404a1927bc3bd0c55c",
-    "execution_route_distribution_health_contract_hash": "49e0d4274fec2345101b55b66d9add4d983136abd12b04b5e89a93ac3ef53bb4",
-    "execution_runtime_receipt_schema_hash": "289923c6944b92e0a12c09e2c99118586a7d4f136f1430d4a881af7a4fb3e33b",
-    "execution_scope_manifest_hash": "9cfa9035984d329e13a405ec38f3139cf5ca66c203861bab2f4e143a3e77dfaa",
-    "execution_static_authority_contract_hash": "5c45b6fcf02497f27ec57c6e03563d47ee282b6b123c42eea8ca394dd21864c5",
-    "validated_candidate_hash": "0348402dd69aaf2032e87207ce9011d00ee870ca0a63434c3dc621c2d899ee31",
-    "validated_candidate_manifest_hash": "d58f1d3bfaad9aa0c273ffcfd0a8318aa98b95ba8046e0d684d980ef5c6ad548",
-    "validated_candidate_semantic_hash": "07c6f5f98b25349d3c1ced9de80410fc9800e944430099433cb1fedd2ce87025",
-    "validated_metric_contract_hash": "f51b1c75819621ef16a23fbf8743274a13619cc82b6f5781cc81775b47f655d9",
-    "validated_packet_contract_hash": "30ff802fe39c0f7efada6e6901ef5eaed74a03d52491012add7d1b7c013dd761",
-    "validated_packet_receipt_hash": "bc45c85492e43946497a2a3c04a5987ae5270fc97ab9dcd020ad9073f856c71c",
-    "validated_shadow_screen_result_hash": "33401fe6dc7e0fc50c242ada80260fd833f55782c740bff0a94e39056822be9a",
-    "validated_static_comparator_contract_hash": "8ed7aaa94ab345d1c97e0450324dc1754055a055ec1d0d5012ef501778b287c1",
-    "validated_trace_completeness_receipt_hash": "dc0ec3f93e3606989787b35dfb064db5e595d7c219f9844807af81b69f7b19d8",
-    "validated_trust_zone_validation_receipt_hash": "f6eb218616bed5c0414959a5f704206ba0b10c0f0f7a7ecacb8ea7a74b684c07",
-    "validation_afsh_shadow_observation_validation_hash": "ebfc80a7d8617d8ece8f961bb0f5e5ce7e7114d218fe8198fe8e60f9482b122b",
-    "validation_commercial_claim_boundary_validation_hash": "177d7ebb22038754c71303f028d1d6a49ed5f4a4b24f1570ce466f9289d5aecb",
-    "validation_drift_monitoring_validation_hash": "c2e15c9c8a00f7efdde201cc432a702ca37cc2aa836ae9e5a30676ad0965d0d4",
-    "validation_execution_packet_binding_validation_hash": "777fe3cadb1a6d06e5cb62c6b782e833a04489c281c7154795504790faa93e19",
-    "validation_external_verifier_validation_hash": "c9528706df74740b194a750c0c525a5d309726bc96fbef27ef21805bdbc33f46",
-    "validation_incident_freeze_validation_hash": "99101fdea6f9be48898032ee11e65a924985fc8045e1cd60913cadcd76f74f7c",
-    "validation_kill_switch_validation_hash": "9da42a1cdd2e77943d989b7abba4fc0d82c809ab32c66f6f5606b914fbf1e8db",
-    "validation_mode_validation_hash": "e997740af9db487be7f75bb718330495a8763dd4fc22d2ddddaf70c48df70afe",
-    "validation_next_lawful_move_hash": "e3f6813ce58dc39c3a1bd4691948e6c50f1c5b63cd73a7c7605f11f0cd09e62d",
-    "validation_no_authorization_drift_validation_hash": "4d5bc8e48bf132ce4e72ad18364b2dd84d862feeb151a926c4dd1e9d9098f9c0",
-    "validation_operator_override_validation_hash": "53749f7d58fe956ca3c5d159d2db2ec9226d08327a767bd28fbdeb8806ad22e4",
-    "validation_package_promotion_boundary_validation_hash": "c298d3489023a8b8fb05db2958b1294610d33ccf46573bb3fc3a412990dc93d2",
-    "validation_report_hash": "0480c0e5777ed22105a743da0b5abb8cf5b4210b4cb245b25f646ce4d0446acd",
-    "validation_rollback_execution_validation_hash": "33ca1e6d0d8c6103a3c0fa853e7795f9126ef0582399736d5faa4332e965961f",
-    "validation_route_distribution_health_validation_hash": "08f7f81fda030915a53fe0cd273b5729f794ee8ea9d2781ef406a8a069f07ce4",
-    "validation_runtime_receipt_schema_validation_hash": "bc9d9e846d7d8c9d4041f2cae01b4af75cd8638c0669df835d00cda820ac2bc5",
-    "validation_scope_validation_hash": "3b6c2d37e492e48ef92fa5d92dcf8d7e53c6b208b93be1b4cb0e21a9e788c4d0",
-    "validation_static_authority_validation_hash": "f53af5f79445a6007e829207e8138b3da924dc64bb7f6c53b19c21340e1ced20",
-    "validation_validation_contract_hash": "bd9e59f671055c4c9ab45db5abdc39a8b5830d42de992e9c046c0798c0490630",
-    "validation_validation_receipt_hash": "d375d90c2d1cee7b8e8368e2f9f21066417b7a968bdfa5406faebf5923f640e3"
+    "shadow_abstention_preservation_receipt_hash": "1e43ab5924bd7fcb1bb3f21322185a513974b1645294421e897f303774bfb064",
+    "shadow_afsh_observation_receipt_hash": "d1bb37a4801baa8faba206d667a5ff42cbe3c93e61a69a56b6119833003885c9",
+    "shadow_canary_authorization_packet_prep_only_draft_hash": "bd853202305eafc2cebd6bfa2fff64c914ba754dc4df891bc9fa0144e577749d",
+    "shadow_case_manifest_hash": "8ed06bf15f07cb275ac7206040b82933f2a9b6bc11a14930166daf27c90977c1",
+    "shadow_commercial_claim_boundary_receipt_hash": "229d2cd73547273d20c3d00c74d1a09ab19a52d97e2cd5543bf8e7c5a585041b",
+    "shadow_drift_monitoring_receipt_hash": "e1d73f72a3dd5f18caceae96225ed6c3cf3231c9bf5f027dadfb3867fe02d9fb",
+    "shadow_execution_contract_hash": "18c305bb0c36be702f526766b7ba518b6db6b4bf2ca4988030d4aa3694c5f92f",
+    "shadow_execution_receipt_hash": "65cf0d9c1e6db98916032324b7e2dd27ccb2c95c6d9ca9fe45075c40e9de1c48",
+    "shadow_external_audit_delta_manifest_prep_only_draft_hash": "241075ebbbbfa376779cbebb106dbc0ecd1aae60cb07966fef156e5e309d7e93",
+    "shadow_external_verifier_readiness_receipt_hash": "7002e0e4b773a4ab7b07017ce7498f26c73f408548d463bc76e698f338001dc7",
+    "shadow_fallback_behavior_receipt_hash": "7b2f433d3c0017ff3105fd812d6257a4c5b9c0d329ded7c3aecb242c3f1378b6",
+    "shadow_future_blocker_register_hash": "bf8fdb43254d80ca423e5e3f6401a23c8e0be94b45acb17d5c96892ed0c321d1",
+    "shadow_incident_freeze_receipt_hash": "e4f3dda3b1534dda3183b53bb240f1316872a0472f7f2f5097ee6896f389450f",
+    "shadow_kill_switch_readiness_receipt_hash": "387be5d6bb3c97b7db3b68a42077006ab2b7e34774be29066184ad983460c5d0",
+    "shadow_next_lawful_move_hash": "dbcc0b9eceef7182e09790a9cddfabcf0ba7ac82d554816b142a83a9227e7da9",
+    "shadow_no_authorization_drift_receipt_hash": "f2ce919290a09fb99e79e749c651be44eca7b134253e26e6e249685272d65f98",
+    "shadow_null_route_preservation_receipt_hash": "7429da46ae766cbd7fc77a0757019b0381dca5e8e7ac3bd814c052b40a2de890",
+    "shadow_operator_override_readiness_receipt_hash": "d4fc21a009d336811d87aef7ab5db61ffadf3b9d4b2ac00ead1d15802889c73d",
+    "shadow_package_promotion_review_preconditions_prep_only_draft_hash": "e84b86669f799b4a419ad38f319d7e51c50f9249fd5371b97ffa45177d2e1d5f",
+    "shadow_result_hash": "15142c399d32ab35b0b93216867deef170fec83614a2cc0501a2d7d4a5928e1d",
+    "shadow_rollback_readiness_receipt_hash": "84187bde3819a4c62909179b2850be3e176246a25f575ae1b4a90dff1d0205e8",
+    "shadow_route_distribution_health_receipt_hash": "09f1b888a8bbbb6ca4f2735efa8fa837fcc01957d61e14430c5e7aeaab100d77",
+    "shadow_runtime_evidence_review_packet_prep_only_draft_hash": "c301b7f5758c1d0381896daae780b8780ed6b9c1dd245259a8440fdda37ed8ed",
+    "shadow_runtime_replay_receipt_hash": "360257a11a4490b3ded455f11d64263326f2bf412059ced9a76dd7fe9724c8f7",
+    "shadow_runtime_report_hash": "d7ec9f0b4aeafa34f26ac6f275df23bdf97fd1e56c916cf105a23f5f486dff49",
+    "shadow_static_authority_preservation_receipt_hash": "334e7beef1c6c22fa83cddd6108271bbd15bbb99f38f09ae928880147cba73c4",
+    "shadow_trace_completeness_receipt_hash": "97353298501bb46378f6b128eb46dbf0d3bb618d81a36e2d2205044f6a18035e"
   },
+  "canary_runtime_authorized": false,
   "canary_runtime_executed": false,
-  "cannot_authorize": [
-    "CANARY_RUNTIME_EXECUTED",
-    "AFSH_RUNTIME_AUTHORITY_GRANTED",
-    "RUNTIME_CUTOVER_AUTHORIZED",
-    "ACTIVATION_CUTOVER_EXECUTED",
-    "R6_OPEN",
-    "LOBE_ESCALATION_AUTHORIZED",
-    "PACKAGE_PROMOTION_AUTHORIZED",
-    "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED",
-    "TRUTH_ENGINE_LAW_MUTATED",
-    "TRUST_ZONE_LAW_MUTATED",
-    "METRIC_CONTRACT_MUTATED",
-    "STATIC_COMPARATOR_WEAKENED"
-  ],
-  "case_rows": [
-    {
-      "afsh_observation": "STATIC_HOLD",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-001",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-001",
-      "selector_entered": false,
-      "static_authoritative": true,
-      "static_decision": "STATIC_HOLD",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    },
-    {
-      "afsh_observation": "STATIC_HOLD",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-002",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-002",
-      "selector_entered": false,
-      "static_authoritative": true,
-      "static_decision": "STATIC_HOLD",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    },
-    {
-      "afsh_observation": "ABSTAIN",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-003",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-003",
-      "selector_entered": false,
-      "static_authoritative": true,
-      "static_decision": "ABSTAIN",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    },
-    {
-      "afsh_observation": "NULL_ROUTE",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-004",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-004",
-      "selector_entered": false,
-      "static_authoritative": true,
-      "static_decision": "NULL_ROUTE",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    },
-    {
-      "afsh_observation": "STATIC_HOLD",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-005",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-005",
-      "selector_entered": false,
-      "static_authoritative": true,
-      "static_decision": "STATIC_HOLD",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    },
-    {
-      "afsh_observation": "ROUTE_ELIGIBLE",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-006",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-006",
-      "selector_entered": true,
-      "static_authoritative": true,
-      "static_decision": "STATIC_HOLD",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    },
-    {
-      "afsh_observation": "ABSTAIN",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-007",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-007",
-      "selector_entered": false,
-      "static_authoritative": true,
-      "static_decision": "ABSTAIN",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    },
-    {
-      "afsh_observation": "STATIC_HOLD",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-008",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-008",
-      "selector_entered": false,
-      "static_authoritative": true,
-      "static_decision": "STATIC_HOLD",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    },
-    {
-      "afsh_observation": "ROUTE_ELIGIBLE",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-009",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-009",
-      "selector_entered": true,
-      "static_authoritative": true,
-      "static_decision": "STATIC_HOLD",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    },
-    {
-      "afsh_observation": "NULL_ROUTE",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-010",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-010",
-      "selector_entered": false,
-      "static_authoritative": true,
-      "static_decision": "NULL_ROUTE",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    },
-    {
-      "afsh_observation": "STATIC_HOLD",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-011",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-011",
-      "selector_entered": false,
-      "static_authoritative": true,
-      "static_decision": "STATIC_HOLD",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    },
-    {
-      "afsh_observation": "ABSTAIN",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-012",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-012",
-      "selector_entered": false,
-      "static_authoritative": true,
-      "static_decision": "ABSTAIN",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    },
-    {
-      "afsh_observation": "STATIC_HOLD",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-013",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-013",
-      "selector_entered": false,
-      "static_authoritative": true,
-      "static_decision": "STATIC_HOLD",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    },
-    {
-      "afsh_observation": "ROUTE_ELIGIBLE",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-014",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-014",
-      "selector_entered": true,
-      "static_authoritative": true,
-      "static_decision": "STATIC_HOLD",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    },
-    {
-      "afsh_observation": "NULL_ROUTE",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-015",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-015",
-      "selector_entered": false,
-      "static_authoritative": true,
-      "static_decision": "NULL_ROUTE",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    },
-    {
-      "afsh_observation": "STATIC_HOLD",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-016",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-016",
-      "selector_entered": false,
-      "static_authoritative": true,
-      "static_decision": "STATIC_HOLD",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    },
-    {
-      "afsh_observation": "ABSTAIN",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-017",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-017",
-      "selector_entered": false,
-      "static_authoritative": true,
-      "static_decision": "ABSTAIN",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    },
-    {
-      "afsh_observation": "ROUTE_ELIGIBLE",
-      "afsh_observation_only": true,
-      "canary_runtime_executed": false,
-      "case_id": "B04R6-SHADOW-018",
-      "raw_hash_bound_artifact_refs_required": true,
-      "runtime_cutover_authorized": false,
-      "runtime_mode": "SHADOW_RUNTIME_ONLY",
-      "runtime_receipt_id": "B04R6-SHADOW-RR-018",
-      "selector_entered": true,
-      "static_authoritative": true,
-      "static_decision": "STATIC_HOLD",
-      "trace_complete": true,
-      "user_facing_decision_changed": false
-    }
-  ],
   "commercial_activation_claim_authorized": false,
-  "current_branch": "main",
-  "current_git_head": "20b3bbf23c987bf85df6c2ae8ce9d1cbb6b91d5f",
-  "current_main_head": "20b3bbf23c987bf85df6c2ae8ce9d1cbb6b91d5f",
-  "fired_disqualifiers": [],
+  "current_branch": "authoritative/b04-r6-runtime-evidence-review-packet",
+  "current_git_head": "8b26a23488312fdffbdcb41c7178d633464b32fc",
+  "current_main_head": "a377786ca79931085a1bd0be221f97cbc6dfda3c",
   "forbidden_actions": [
+    "CANARY_RUNTIME_AUTHORIZED",
     "CANARY_RUNTIME_EXECUTED",
     "AFSH_RUNTIME_AUTHORITY_GRANTED",
     "RUNTIME_CUTOVER_AUTHORIZED",
@@ -384,1629 +59,678 @@
     "METRIC_CONTRACT_MUTATED",
     "STATIC_COMPARATOR_WEAKENED"
   ],
-  "generated_utc": "2026-05-05T21:27:13Z",
-  "handoff_acceptance": {
-    "predecessor_handoff_accepted": false,
-    "self_replay_handoff_accepted": true
-  },
+  "generated_utc": "2026-05-05T22:37:01Z",
   "input_bindings": [
     {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_afsh_shadow_observation_contract.json",
-      "role": "execution_afsh_shadow_observation_contract",
-      "sha256": "a19fa64550404b3059c9dc95de1f3d87c92b311d8a0f6e3c9e7ce4ee0a49c929"
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_abstention_preservation_receipt.json",
+      "role": "shadow_abstention_preservation_receipt",
+      "sha256": "1e43ab5924bd7fcb1bb3f21322185a513974b1645294421e897f303774bfb064"
     },
     {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_commercial_claim_boundary.json",
-      "role": "execution_commercial_claim_boundary",
-      "sha256": "97e0398140aa653b3345af479df5212a6e6e05a06bab68c56a7749c36219c9ff"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_drift_monitoring_contract.json",
-      "role": "execution_drift_monitoring_contract",
-      "sha256": "241ef3e900385452f7e7011760901309bf163d3ba57d7a67ac9c18f37da56c7f"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_execution_packet_contract.json",
-      "role": "execution_execution_packet_contract",
-      "sha256": "f19ab27366926810c7658d1b27dcca0809e95ecef20b7d2e8cf9e7d1a73866a7"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_execution_packet_receipt.json",
-      "role": "execution_execution_packet_receipt",
-      "sha256": "0538b2f7c23e4043c0364bb88077d1de11efe2a5fb27499ffa8a62fd35e65798"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_external_verifier_requirements.json",
-      "role": "execution_external_verifier_requirements",
-      "sha256": "8b7a730553801ed0c527e3f16305253333b319978d269a55f15931a574785872"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_incident_freeze_contract.json",
-      "role": "execution_incident_freeze_contract",
-      "sha256": "a5ee328fbc80075700ab8c64b1c7d8c3c4fcf523b293c48e521114f16c6e4563"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_kill_switch_execution_contract.json",
-      "role": "execution_kill_switch_execution_contract",
-      "sha256": "9052df2b0fd340fbd310b1a2d93892eebb2b5a3d00c659f419d7b357a2cff33e"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_mode_contract.json",
-      "role": "execution_mode_contract",
-      "sha256": "a67c8519af4505955acdd7d1f43941bcb3d65c99fd0bc9378cfacd8610e57eea"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_operator_override_contract.json",
-      "role": "execution_operator_override_contract",
-      "sha256": "8d0ebaa13dec1920fee607705ab8d23ffda384c5014a54ed40617a5323193f95"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_rollback_execution_contract.json",
-      "role": "execution_rollback_execution_contract",
-      "sha256": "60c97b9e66688b9dc82a224d1af2cf4a741f851747f91e404a1927bc3bd0c55c"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_route_distribution_health_contract.json",
-      "role": "execution_route_distribution_health_contract",
-      "sha256": "49e0d4274fec2345101b55b66d9add4d983136abd12b04b5e89a93ac3ef53bb4"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_receipt_schema.json",
-      "role": "execution_runtime_receipt_schema",
-      "sha256": "289923c6944b92e0a12c09e2c99118586a7d4f136f1430d4a881af7a4fb3e33b"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_scope_manifest.json",
-      "role": "execution_scope_manifest",
-      "sha256": "9cfa9035984d329e13a405ec38f3139cf5ca66c203861bab2f4e143a3e77dfaa"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_static_authority_contract.json",
-      "role": "execution_static_authority_contract",
-      "sha256": "5c45b6fcf02497f27ec57c6e03563d47ee282b6b123c42eea8ca394dd21864c5"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_afsh_shadow_observation_validation_receipt.json",
-      "role": "validation_afsh_shadow_observation_validation",
-      "sha256": "ebfc80a7d8617d8ece8f961bb0f5e5ce7e7114d218fe8198fe8e60f9482b122b"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_commercial_claim_boundary_validation_receipt.json",
-      "role": "validation_commercial_claim_boundary_validation",
-      "sha256": "177d7ebb22038754c71303f028d1d6a49ed5f4a4b24f1570ce466f9289d5aecb"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_drift_monitoring_validation_receipt.json",
-      "role": "validation_drift_monitoring_validation",
-      "sha256": "c2e15c9c8a00f7efdde201cc432a702ca37cc2aa836ae9e5a30676ad0965d0d4"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_execution_packet_binding_validation_receipt.json",
-      "role": "validation_execution_packet_binding_validation",
-      "sha256": "777fe3cadb1a6d06e5cb62c6b782e833a04489c281c7154795504790faa93e19"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_external_verifier_validation_receipt.json",
-      "role": "validation_external_verifier_validation",
-      "sha256": "c9528706df74740b194a750c0c525a5d309726bc96fbef27ef21805bdbc33f46"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_incident_freeze_validation_receipt.json",
-      "role": "validation_incident_freeze_validation",
-      "sha256": "99101fdea6f9be48898032ee11e65a924985fc8045e1cd60913cadcd76f74f7c"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_kill_switch_validation_receipt.json",
-      "role": "validation_kill_switch_validation",
-      "sha256": "9da42a1cdd2e77943d989b7abba4fc0d82c809ab32c66f6f5606b914fbf1e8db"
-    },
-    {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_mode_validation_receipt.json",
-      "role": "validation_mode_validation",
-      "sha256": "e997740af9db487be7f75bb718330495a8763dd4fc22d2ddddaf70c48df70afe"
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_afsh_observation_receipt.json",
+      "role": "shadow_afsh_observation_receipt",
+      "sha256": "d1bb37a4801baa8faba206d667a5ff42cbe3c93e61a69a56b6119833003885c9"
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "20b3bbf23c987bf85df6c2ae8ce9d1cbb6b91d5f",
+      "git_commit": "8b26a23488312fdffbdcb41c7178d633464b32fc",
+      "mutable_canonical_path_overwritten_by_this_lane": true,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_canary_authorization_packet_prep_only_draft.json",
+      "role": "shadow_canary_authorization_packet_prep_only_draft",
+      "sha256": "bd853202305eafc2cebd6bfa2fff64c914ba754dc4df891bc9fa0144e577749d"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_shadow_case_manifest.json",
+      "role": "shadow_case_manifest",
+      "sha256": "8ed06bf15f07cb275ac7206040b82933f2a9b6bc11a14930166daf27c90977c1"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_commercial_claim_boundary_receipt.json",
+      "role": "shadow_commercial_claim_boundary_receipt",
+      "sha256": "229d2cd73547273d20c3d00c74d1a09ab19a52d97e2cd5543bf8e7c5a585041b"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_drift_monitoring_receipt.json",
+      "role": "shadow_drift_monitoring_receipt",
+      "sha256": "e1d73f72a3dd5f18caceae96225ed6c3cf3231c9bf5f027dadfb3867fe02d9fb"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_shadow_runtime_execution_contract.json",
+      "role": "shadow_execution_contract",
+      "sha256": "18c305bb0c36be702f526766b7ba518b6db6b4bf2ca4988030d4aa3694c5f92f"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_shadow_runtime_execution_receipt.json",
+      "role": "shadow_execution_receipt",
+      "sha256": "65cf0d9c1e6db98916032324b7e2dd27ccb2c95c6d9ca9fe45075c40e9de1c48"
+    },
+    {
+      "binding_kind": "git_object_before_overwrite",
+      "git_commit": "8b26a23488312fdffbdcb41c7178d633464b32fc",
+      "mutable_canonical_path_overwritten_by_this_lane": true,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_external_audit_delta_manifest_prep_only_draft.json",
+      "role": "shadow_external_audit_delta_manifest_prep_only_draft",
+      "sha256": "241075ebbbbfa376779cbebb106dbc0ecd1aae60cb07966fef156e5e309d7e93"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_external_verifier_readiness_receipt.json",
+      "role": "shadow_external_verifier_readiness_receipt",
+      "sha256": "7002e0e4b773a4ab7b07017ce7498f26c73f408548d463bc76e698f338001dc7"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_fallback_behavior_receipt.json",
+      "role": "shadow_fallback_behavior_receipt",
+      "sha256": "7b2f433d3c0017ff3105fd812d6257a4c5b9c0d329ded7c3aecb242c3f1378b6"
+    },
+    {
+      "binding_kind": "git_object_before_overwrite",
+      "git_commit": "8b26a23488312fdffbdcb41c7178d633464b32fc",
+      "mutable_canonical_path_overwritten_by_this_lane": true,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_future_blocker_register.json",
+      "role": "shadow_future_blocker_register",
+      "sha256": "bf8fdb43254d80ca423e5e3f6401a23c8e0be94b45acb17d5c96892ed0c321d1"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_incident_freeze_receipt.json",
+      "role": "shadow_incident_freeze_receipt",
+      "sha256": "e4f3dda3b1534dda3183b53bb240f1316872a0472f7f2f5097ee6896f389450f"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_kill_switch_readiness_receipt.json",
+      "role": "shadow_kill_switch_readiness_receipt",
+      "sha256": "387be5d6bb3c97b7db3b68a42077006ab2b7e34774be29066184ad983460c5d0"
+    },
+    {
+      "binding_kind": "git_object_before_overwrite",
+      "git_commit": "8b26a23488312fdffbdcb41c7178d633464b32fc",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
-      "role": "validation_next_lawful_move",
-      "sha256": "e3f6813ce58dc39c3a1bd4691948e6c50f1c5b63cd73a7c7605f11f0cd09e62d"
+      "role": "shadow_next_lawful_move",
+      "sha256": "dbcc0b9eceef7182e09790a9cddfabcf0ba7ac82d554816b142a83a9227e7da9"
     },
     {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_no_authorization_drift_validation_receipt.json",
-      "role": "validation_no_authorization_drift_validation",
-      "sha256": "4d5bc8e48bf132ce4e72ad18364b2dd84d862feeb151a926c4dd1e9d9098f9c0"
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_no_authorization_drift_receipt.json",
+      "role": "shadow_no_authorization_drift_receipt",
+      "sha256": "f2ce919290a09fb99e79e749c651be44eca7b134253e26e6e249685272d65f98"
     },
     {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_operator_override_validation_receipt.json",
-      "role": "validation_operator_override_validation",
-      "sha256": "53749f7d58fe956ca3c5d159d2db2ec9226d08327a767bd28fbdeb8806ad22e4"
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_null_route_preservation_receipt.json",
+      "role": "shadow_null_route_preservation_receipt",
+      "sha256": "7429da46ae766cbd7fc77a0757019b0381dca5e8e7ac3bd814c052b40a2de890"
     },
     {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_package_promotion_boundary_validation_receipt.json",
-      "role": "validation_package_promotion_boundary_validation",
-      "sha256": "c298d3489023a8b8fb05db2958b1294610d33ccf46573bb3fc3a412990dc93d2"
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_operator_override_readiness_receipt.json",
+      "role": "shadow_operator_override_readiness_receipt",
+      "sha256": "d4fc21a009d336811d87aef7ab5db61ffadf3b9d4b2ac00ead1d15802889c73d"
     },
     {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_rollback_execution_validation_receipt.json",
-      "role": "validation_rollback_execution_validation",
-      "sha256": "33ca1e6d0d8c6103a3c0fa853e7795f9126ef0582399736d5faa4332e965961f"
+      "binding_kind": "git_object_before_overwrite",
+      "git_commit": "8b26a23488312fdffbdcb41c7178d633464b32fc",
+      "mutable_canonical_path_overwritten_by_this_lane": true,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_preconditions_prep_only_draft.json",
+      "role": "shadow_package_promotion_review_preconditions_prep_only_draft",
+      "sha256": "e84b86669f799b4a419ad38f319d7e51c50f9249fd5371b97ffa45177d2e1d5f"
     },
     {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_route_distribution_health_validation_receipt.json",
-      "role": "validation_route_distribution_health_validation",
-      "sha256": "08f7f81fda030915a53fe0cd273b5729f794ee8ea9d2781ef406a8a069f07ce4"
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_shadow_runtime_result.json",
+      "role": "shadow_result",
+      "sha256": "15142c399d32ab35b0b93216867deef170fec83614a2cc0501a2d7d4a5928e1d"
     },
     {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_receipt_schema_validation_receipt.json",
-      "role": "validation_runtime_receipt_schema_validation",
-      "sha256": "bc9d9e846d7d8c9d4041f2cae01b4af75cd8638c0669df835d00cda820ac2bc5"
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_rollback_readiness_receipt.json",
+      "role": "shadow_rollback_readiness_receipt",
+      "sha256": "84187bde3819a4c62909179b2850be3e176246a25f575ae1b4a90dff1d0205e8"
     },
     {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_scope_validation_receipt.json",
-      "role": "validation_scope_validation",
-      "sha256": "3b6c2d37e492e48ef92fa5d92dcf8d7e53c6b208b93be1b4cb0e21a9e788c4d0"
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_route_distribution_health_receipt.json",
+      "role": "shadow_route_distribution_health_receipt",
+      "sha256": "09f1b888a8bbbb6ca4f2735efa8fa837fcc01957d61e14430c5e7aeaab100d77"
     },
     {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_static_authority_validation_receipt.json",
-      "role": "validation_static_authority_validation",
-      "sha256": "f53af5f79445a6007e829207e8138b3da924dc64bb7f6c53b19c21340e1ced20"
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_evidence_review_packet_prep_only_draft.json",
+      "role": "shadow_runtime_evidence_review_packet_prep_only_draft",
+      "sha256": "c301b7f5758c1d0381896daae780b8780ed6b9c1dd245259a8440fdda37ed8ed"
     },
     {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_execution_packet_validation_contract.json",
-      "role": "validation_validation_contract",
-      "sha256": "bd9e59f671055c4c9ab45db5abdc39a8b5830d42de992e9c046c0798c0490630"
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_replay_receipt.json",
+      "role": "shadow_runtime_replay_receipt",
+      "sha256": "360257a11a4490b3ded455f11d64263326f2bf412059ced9a76dd7fe9724c8f7"
     },
     {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_execution_packet_validation_receipt.json",
-      "role": "validation_validation_receipt",
-      "sha256": "d375d90c2d1cee7b8e8368e2f9f21066417b7a968bdfa5406faebf5923f640e3"
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_static_authority_preservation_receipt.json",
+      "role": "shadow_static_authority_preservation_receipt",
+      "sha256": "334e7beef1c6c22fa83cddd6108271bbd15bbb99f38f09ae928880147cba73c4"
     },
     {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_execution_packet_report.md",
-      "role": "execution_packet_report",
-      "sha256": "e4586a1c7e9b70f294beb6a2ab8ea5d33c5ea13a4c0ab14f7d4b596c677c737d"
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_trace_completeness_receipt.json",
+      "role": "shadow_trace_completeness_receipt",
+      "sha256": "97353298501bb46378f6b128eb46dbf0d3bb618d81a36e2d2205044f6a18035e"
     },
     {
-      "binding_kind": "file_sha256_at_shadow_runtime_execution",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_execution_packet_validation_report.md",
-      "role": "validation_report",
-      "sha256": "0480c0e5777ed22105a743da0b5abb8cf5b4210b4cb245b25f646ce4d0446acd"
+      "binding_kind": "file_sha256_at_runtime_evidence_review_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_shadow_runtime_report.md",
+      "role": "shadow_runtime_report",
+      "sha256": "d7ec9f0b4aeafa34f26ac6f275df23bdf97fd1e56c916cf105a23f5f486dff49"
     }
   ],
   "lane_compiler_scaffold": {
-    "artifact_id": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_LANE_COMPILER_SCAFFOLD_RECEIPT",
     "authority": "PREP_ONLY_TOOLING",
-    "can_cutover_runtime": false,
-    "can_execute_canary": false,
-    "can_open_r6": false,
-    "can_promote_package": false,
-    "compiled_contract_sha256": "55999139738e13cb97f636edb0976413ab73a74f268ee70393919821cd7acadf",
     "compiler_id": "KT_LANE_COMPILER_V0",
-    "files_omitted_from_receipt": true,
+    "contract_sha256": "84ea2a5275fd20bfede0e081dc2ba29eae4eb32ff2a483885ad6554fd3c4379e",
     "generated_artifacts": [
-      "KT_PROD_CLEANROOM/reports/kt_lane_artifact_list__run_b04_r6_limited_runtime_shadow_runtime.json",
-      "KT_PROD_CLEANROOM/reports/kt_lane_future_blockers__run_b04_r6_limited_runtime_shadow_runtime.json",
-      "KT_PROD_CLEANROOM/reports/kt_lane_json_parse_list__run_b04_r6_limited_runtime_shadow_runtime.json",
-      "KT_PROD_CLEANROOM/reports/kt_lane_no_authorization_drift__run_b04_r6_limited_runtime_shadow_runtime.json",
-      "KT_PROD_CLEANROOM/reports/kt_lane_pr_body__run_b04_r6_limited_runtime_shadow_runtime.md",
-      "KT_PROD_CLEANROOM/reports/kt_lane_reason_codes__run_b04_r6_limited_runtime_shadow_runtime.json",
-      "KT_PROD_CLEANROOM/reports/kt_lane_replay_pr_body__run_b04_r6_limited_runtime_shadow_runtime.md",
-      "KT_PROD_CLEANROOM/tests/operator/test_b04_r6_limited_runtime_shadow_runtime.py",
-      "KT_PROD_CLEANROOM/tools/operator/cohort0_b04_r6_limited_runtime_shadow_runtime.py"
+      "KT_PROD_CLEANROOM/reports/kt_lane_artifact_list__author_b04_r6_runtime_evidence_review_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_future_blockers__author_b04_r6_runtime_evidence_review_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_json_parse_list__author_b04_r6_runtime_evidence_review_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_no_authorization_drift__author_b04_r6_runtime_evidence_review_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_pr_body__author_b04_r6_runtime_evidence_review_packet.md",
+      "KT_PROD_CLEANROOM/reports/kt_lane_reason_codes__author_b04_r6_runtime_evidence_review_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_replay_pr_body__author_b04_r6_runtime_evidence_review_packet.md",
+      "KT_PROD_CLEANROOM/tests/operator/test_b04_r6_runtime_evidence_review_packet.py",
+      "KT_PROD_CLEANROOM/tools/operator/cohort0_b04_r6_runtime_evidence_review_packet.py"
     ],
-    "generated_file_count": 9,
-    "lane_id": "RUN_B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME",
-    "lane_law_metadata": {
-      "authoritative_inputs": [
-        "execution_afsh_shadow_observation_contract",
-        "execution_commercial_claim_boundary",
-        "execution_drift_monitoring_contract",
-        "execution_execution_packet_contract",
-        "execution_execution_packet_receipt",
-        "execution_external_verifier_requirements",
-        "execution_incident_freeze_contract",
-        "execution_kill_switch_execution_contract",
-        "execution_mode_contract",
-        "execution_operator_override_contract",
-        "execution_rollback_execution_contract",
-        "execution_route_distribution_health_contract",
-        "execution_runtime_receipt_schema",
-        "execution_scope_manifest",
-        "execution_static_authority_contract",
-        "validation_afsh_shadow_observation_validation",
-        "validation_commercial_claim_boundary_validation",
-        "validation_drift_monitoring_validation",
-        "validation_execution_packet_binding_validation",
-        "validation_external_verifier_validation",
-        "validation_incident_freeze_validation",
-        "validation_kill_switch_validation",
-        "validation_mode_validation",
-        "validation_next_lawful_move",
-        "validation_no_authorization_drift_validation",
-        "validation_operator_override_validation",
-        "validation_package_promotion_boundary_validation",
-        "validation_rollback_execution_validation",
-        "validation_route_distribution_health_validation",
-        "validation_runtime_receipt_schema_validation",
-        "validation_scope_validation",
-        "validation_static_authority_validation",
-        "validation_validation_contract",
-        "validation_validation_receipt"
+    "non_authorization_guards": {
+      "commercial_claims_authorized": false,
+      "forbidden_authority_context_exempt_fields": [
+        "artifacts",
+        "authoritative_inputs",
+        "future_blockers",
+        "json_parse_inputs",
+        "must_not_authorize",
+        "no_authorization_drift_checks",
+        "prep_only_outputs",
+        "reason_codes"
       ],
-      "current_main_head": "20b3bbf23c987bf85df6c2ae8ce9d1cbb6b91d5f",
-      "lane_kind": "EXECUTION",
-      "may_authorize": [
-        "LIMITED_RUNTIME_SHADOW_RUNTIME_EXECUTED",
-        "RUNTIME_EVIDENCE_EMITTED"
-      ],
-      "must_not_authorize": [
-        "ACTIVATION_CUTOVER_EXECUTED",
-        "AFSH_RUNTIME_AUTHORITY_GRANTED",
-        "CANARY_RUNTIME_EXECUTED",
-        "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED",
-        "LOBE_ESCALATION_AUTHORIZED",
-        "METRIC_CONTRACT_MUTATED",
-        "PACKAGE_PROMOTION_AUTHORIZED",
+      "forbidden_authority_tokens": [
+        "LIMITED_RUNTIME_EXECUTION_AUTHORIZED",
+        "LIMITED_RUNTIME_AUTHORIZED",
         "R6_OPEN",
+        "RUNTIME_AUTHORIZED",
         "RUNTIME_CUTOVER_AUTHORIZED",
-        "STATIC_COMPARATOR_WEAKENED",
-        "TRUST_ZONE_LAW_MUTATED",
-        "TRUTH_ENGINE_LAW_MUTATED"
+        "ACTIVATION_CUTOVER_EXECUTED",
+        "LOBE_ESCALATION_AUTHORIZED",
+        "PACKAGE_PROMOTION_AUTHORIZED",
+        "PACKAGE_PROMOTION",
+        "PROMOTE_PACKAGE",
+        "COMMERCIAL_CLAIM_AUTHORIZED",
+        "COMMERCIAL_CLAIMS_AUTHORIZED",
+        "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED"
       ],
-      "next_lawful_move": "AUTHOR_B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET",
-      "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_VALIDATED__LIMITED_RUNTIME_RUN_NEXT",
-      "prep_only_outputs": [
-        "canary_authorization_packet_prep_only_draft",
-        "external_audit_delta_manifest_prep_only_draft",
-        "package_promotion_review_preconditions_prep_only_draft",
-        "runtime_evidence_review_packet_prep_only_draft"
-      ],
-      "selected_outcome": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_PASSED__RUNTIME_EVIDENCE_REVIEW_PACKET_NEXT"
+      "package_promotion_authorized": false,
+      "r6_open_authorized": false,
+      "runtime_authorized": false
     },
-    "scaffold_can_authorize": false,
-    "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime_lane_compiler_scaffold_receipt.v1",
-    "status": "PREP_ONLY_SCAFFOLD"
+    "status": "PREP_ONLY_TOOLING_USED_AS_SCAFFOLD"
   },
-  "limited_runtime_shadow_runtime_executed": true,
   "lobe_escalation_authorized": false,
   "may_authorize": [
-    "LIMITED_RUNTIME_SHADOW_RUNTIME_EXECUTED",
-    "RUNTIME_EVIDENCE_EMITTED"
+    "RUNTIME_EVIDENCE_REVIEW_PACKET_AUTHORED",
+    "RUNTIME_EVIDENCE_FROZEN",
+    "PASSED_RUNTIME_LANE_EVIDENCE_SWEEP_EMITTED"
   ],
   "metric_contract_mutated": false,
-  "next_lawful_move": "AUTHOR_B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET",
+  "next_lawful_move": "VALIDATE_B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET",
   "outcome_routing": {
-    "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS": "REPAIR_B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_DEFECTS",
-    "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_FAILED__RUNTIME_REPAIR_OR_CLOSEOUT_NEXT": "AUTHOR_B04_R6_RUNTIME_REPAIR_OR_CLOSEOUT",
-    "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_INVALIDATED__FORENSIC_RUNTIME_INVALIDATION_COURT_NEXT": "AUTHOR_B04_R6_FORENSIC_RUNTIME_INVALIDATION_COURT",
-    "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_PASSED__RUNTIME_EVIDENCE_REVIEW_PACKET_NEXT": "AUTHOR_B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET"
+    "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_BOUND__RUNTIME_EVIDENCE_REVIEW_VALIDATION_NEXT": "VALIDATE_B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET",
+    "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_DEFERRED__NAMED_EVIDENCE_REVIEW_DEFECT_REMAINS": "REPAIR_B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_DEFECTS",
+    "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED": "AUTHOR_B04_R6_RUNTIME_REPAIR_OR_CLOSEOUT"
   },
   "package_promotion": "DEFERRED",
   "package_promotion_authorized": false,
-  "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_VALIDATED__LIMITED_RUNTIME_RUN_NEXT",
-  "previous_authoritative_lane": "B04_R6_LIMITED_RUNTIME_EXECUTION_PACKET_VALIDATION",
-  "previous_next_lawful_move": "RUN_B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME",
-  "purpose": "Prep-only scaffold for future external audit delta manifest prep only draft.",
+  "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_PASSED__RUNTIME_EVIDENCE_REVIEW_PACKET_NEXT",
+  "previous_authoritative_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME",
+  "previous_next_lawful_move": "AUTHOR_B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET",
+  "purpose": "Prep-only downstream scaffold for external audit delta manifest prep only draft.",
   "r6_open": false,
   "reason_codes": [
-    "RC_B04R6_SHADOW_RUNTIME_CONTRACT_MISSING",
-    "RC_B04R6_SHADOW_RUNTIME_MAIN_HEAD_MISMATCH",
-    "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-    "RC_B04R6_SHADOW_RUNTIME_EXECUTION_PACKET_BINDING_MISSING",
-    "RC_B04R6_SHADOW_RUNTIME_AUTHORIZATION_PACKET_BINDING_MISSING",
-    "RC_B04R6_SHADOW_RUNTIME_ACTIVATION_REVIEW_BINDING_MISSING",
-    "RC_B04R6_SHADOW_RUNTIME_SHADOW_SUPERIORITY_BINDING_MISSING",
-    "RC_B04R6_SHADOW_RUNTIME_CANDIDATE_BINDING_MISSING",
-    "RC_B04R6_SHADOW_RUNTIME_MODE_DRIFT",
-    "RC_B04R6_SHADOW_RUNTIME_CANARY_EXECUTED",
-    "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-    "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-    "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-    "RC_B04R6_SHADOW_RUNTIME_CUTOVER_DRIFT",
-    "RC_B04R6_SHADOW_RUNTIME_R6_OPEN_DRIFT",
-    "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
-    "RC_B04R6_SHADOW_RUNTIME_FALLBACK_FAIL",
-    "RC_B04R6_SHADOW_RUNTIME_ABSTENTION_FAIL",
-    "RC_B04R6_SHADOW_RUNTIME_NULL_ROUTE_FAIL",
-    "RC_B04R6_SHADOW_RUNTIME_OPERATOR_OVERRIDE_NOT_READY",
-    "RC_B04R6_SHADOW_RUNTIME_KILL_SWITCH_NOT_READY",
-    "RC_B04R6_SHADOW_RUNTIME_ROLLBACK_NOT_READY",
-    "RC_B04R6_SHADOW_RUNTIME_DRIFT_DETECTED",
-    "RC_B04R6_SHADOW_RUNTIME_INCIDENT_FREEZE_TRIGGERED",
-    "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-    "RC_B04R6_SHADOW_RUNTIME_REPLAY_INCOMPLETE",
-    "RC_B04R6_SHADOW_RUNTIME_EXTERNAL_VERIFIER_NOT_READY",
-    "RC_B04R6_SHADOW_RUNTIME_COMMERCIAL_CLAIM_DRIFT",
-    "RC_B04R6_SHADOW_RUNTIME_PACKAGE_PROMOTION_DRIFT",
-    "RC_B04R6_SHADOW_RUNTIME_PREP_ONLY_AUTHORITY_DRIFT",
-    "RC_B04R6_SHADOW_RUNTIME_TRUTH_ENGINE_MUTATION",
-    "RC_B04R6_SHADOW_RUNTIME_TRUST_ZONE_MUTATION",
-    "RC_B04R6_SHADOW_RUNTIME_METRIC_MUTATION",
-    "RC_B04R6_SHADOW_RUNTIME_COMPARATOR_WEAKENING",
-    "RC_B04R6_SHADOW_RUNTIME_NEXT_MOVE_DRIFT"
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_CONTRACT_MISSING",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_MAIN_HEAD_MISMATCH",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_SHADOW_RUNTIME_MISSING",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_SHADOW_RUNTIME_NOT_PASSED",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_SHADOW_RESULT_BINDING_MISSING",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_CASE_MANIFEST_MISSING",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_SCORECARD_MISSING",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_STATIC_AUTHORITY_DRIFT",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_AFSH_AUTHORITY_DRIFT",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_USER_FACING_CHANGE",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_CANARY_AUTHORIZED",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_CANARY_EXECUTED",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_CUTOVER_DRIFT",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_R6_OPEN_DRIFT",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_ROUTE_HEALTH_FAIL",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_FALLBACK_FAIL",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_ABSTENTION_FAIL",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_NULL_ROUTE_FAIL",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_OPERATOR_CONTROL_NOT_READY",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_KILL_SWITCH_NOT_READY",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_ROLLBACK_NOT_READY",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_DRIFT_DETECTED",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_INCIDENT_FREEZE_TRIGGERED",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_TRACE_INCOMPLETE",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_REPLAY_INCOMPLETE",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_EXTERNAL_VERIFIER_NOT_READY",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_COMMERCIAL_CLAIM_DRIFT",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_PACKAGE_PROMOTION_DRIFT",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_PREP_ONLY_AUTHORITY_DRIFT",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_TRUTH_ENGINE_MUTATION",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_TRUST_ZONE_MUTATION",
+    "RC_B04R6_RUNTIME_EVIDENCE_REVIEW_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "runtime_mode": "SHADOW_RUNTIME_ONLY",
-  "schema_id": "kt.b04_r6.external_audit_delta_manifest_prep_only_draft.v1",
-  "schema_version": 1,
-  "scorecard": {
+  "runtime_evidence_inventory": {
+    "artifact_count": 27,
+    "artifacts": [
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_ABSTENTION_PRESERVATION_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_abstention_preservation_receipt.json",
+        "role": "shadow_abstention_preservation_receipt",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.abstention_preservation.v1",
+        "sha256": "1e43ab5924bd7fcb1bb3f21322185a513974b1645294421e897f303774bfb064",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_AFSH_OBSERVATION_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_afsh_observation_receipt.json",
+        "role": "shadow_afsh_observation_receipt",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.afsh_observation.v1",
+        "sha256": "d1bb37a4801baa8faba206d667a5ff42cbe3c93e61a69a56b6119833003885c9",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_CANARY_AUTHORIZATION_PACKET_PREP_ONLY_DRAFT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_canary_authorization_packet_prep_only_draft.json",
+        "role": "shadow_canary_authorization_packet_prep_only_draft",
+        "schema_id": "kt.b04_r6.canary_authorization_packet_prep_only_draft.v1",
+        "sha256": "bd853202305eafc2cebd6bfa2fff64c914ba754dc4df891bc9fa0144e577749d",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_SHADOW_CASE_MANIFEST",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_shadow_case_manifest.json",
+        "role": "shadow_case_manifest",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.case_manifest.v1",
+        "sha256": "8ed06bf15f07cb275ac7206040b82933f2a9b6bc11a14930166daf27c90977c1",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_COMMERCIAL_CLAIM_BOUNDARY_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_commercial_claim_boundary_receipt.json",
+        "role": "shadow_commercial_claim_boundary_receipt",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.commercial_claim_boundary.v1",
+        "sha256": "229d2cd73547273d20c3d00c74d1a09ab19a52d97e2cd5543bf8e7c5a585041b",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_DRIFT_MONITORING_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_drift_monitoring_receipt.json",
+        "role": "shadow_drift_monitoring_receipt",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.drift_monitoring.v1",
+        "sha256": "e1d73f72a3dd5f18caceae96225ed6c3cf3231c9bf5f027dadfb3867fe02d9fb",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_EXECUTION_CONTRACT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_shadow_runtime_execution_contract.json",
+        "role": "shadow_execution_contract",
+        "schema_id": "kt.b04_r6.limited_runtime_shadow_runtime_execution_contract.v1",
+        "sha256": "18c305bb0c36be702f526766b7ba518b6db6b4bf2ca4988030d4aa3694c5f92f",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_EXECUTION_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_shadow_runtime_execution_receipt.json",
+        "role": "shadow_execution_receipt",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.execution_receipt.v1",
+        "sha256": "65cf0d9c1e6db98916032324b7e2dd27ccb2c95c6d9ca9fe45075c40e9de1c48",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_EXTERNAL_AUDIT_DELTA_MANIFEST_PREP_ONLY_DRAFT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_external_audit_delta_manifest_prep_only_draft.json",
+        "role": "shadow_external_audit_delta_manifest_prep_only_draft",
+        "schema_id": "kt.b04_r6.external_audit_delta_manifest_prep_only_draft.v1",
+        "sha256": "241075ebbbbfa376779cbebb106dbc0ecd1aae60cb07966fef156e5e309d7e93",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_EXTERNAL_VERIFIER_READINESS_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_external_verifier_readiness_receipt.json",
+        "role": "shadow_external_verifier_readiness_receipt",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.external_verifier.v1",
+        "sha256": "7002e0e4b773a4ab7b07017ce7498f26c73f408548d463bc76e698f338001dc7",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_FALLBACK_BEHAVIOR_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_fallback_behavior_receipt.json",
+        "role": "shadow_fallback_behavior_receipt",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.fallback_behavior.v1",
+        "sha256": "7b2f433d3c0017ff3105fd812d6257a4c5b9c0d329ded7c3aecb242c3f1378b6",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_FUTURE_BLOCKER_REGISTER",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_future_blocker_register.json",
+        "role": "shadow_future_blocker_register",
+        "schema_id": "kt.b04_r6.future_blocker_register.v10",
+        "sha256": "bf8fdb43254d80ca423e5e3f6401a23c8e0be94b45acb17d5c96892ed0c321d1",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_INCIDENT_FREEZE_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_incident_freeze_receipt.json",
+        "role": "shadow_incident_freeze_receipt",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.incident_freeze.v1",
+        "sha256": "e4f3dda3b1534dda3183b53bb240f1316872a0472f7f2f5097ee6896f389450f",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_KILL_SWITCH_READINESS_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_kill_switch_readiness_receipt.json",
+        "role": "shadow_kill_switch_readiness_receipt",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.kill_switch.v1",
+        "sha256": "387be5d6bb3c97b7db3b68a42077006ab2b7e34774be29066184ad983460c5d0",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
+        "role": "shadow_next_lawful_move",
+        "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v21",
+        "sha256": "dbcc0b9eceef7182e09790a9cddfabcf0ba7ac82d554816b142a83a9227e7da9",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_NO_AUTHORIZATION_DRIFT_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_no_authorization_drift_receipt.json",
+        "role": "shadow_no_authorization_drift_receipt",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.no_authorization_drift.v1",
+        "sha256": "f2ce919290a09fb99e79e749c651be44eca7b134253e26e6e249685272d65f98",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_NULL_ROUTE_PRESERVATION_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_null_route_preservation_receipt.json",
+        "role": "shadow_null_route_preservation_receipt",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.null_route_preservation.v1",
+        "sha256": "7429da46ae766cbd7fc77a0757019b0381dca5e8e7ac3bd814c052b40a2de890",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_OPERATOR_OVERRIDE_READINESS_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_operator_override_readiness_receipt.json",
+        "role": "shadow_operator_override_readiness_receipt",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.operator_override.v1",
+        "sha256": "d4fc21a009d336811d87aef7ab5db61ffadf3b9d4b2ac00ead1d15802889c73d",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_PACKAGE_PROMOTION_REVIEW_PRECONDITIONS_PREP_ONLY_DRAFT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_preconditions_prep_only_draft.json",
+        "role": "shadow_package_promotion_review_preconditions_prep_only_draft",
+        "schema_id": "kt.b04_r6.package_promotion_review_preconditions_prep_only_draft.v1",
+        "sha256": "e84b86669f799b4a419ad38f319d7e51c50f9249fd5371b97ffa45177d2e1d5f",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_RESULT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_shadow_runtime_result.json",
+        "role": "shadow_result",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.result.v1",
+        "sha256": "15142c399d32ab35b0b93216867deef170fec83614a2cc0501a2d7d4a5928e1d",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_ROLLBACK_READINESS_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_rollback_readiness_receipt.json",
+        "role": "shadow_rollback_readiness_receipt",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.rollback.v1",
+        "sha256": "84187bde3819a4c62909179b2850be3e176246a25f575ae1b4a90dff1d0205e8",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_ROUTE_DISTRIBUTION_HEALTH_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_route_distribution_health_receipt.json",
+        "role": "shadow_route_distribution_health_receipt",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.route_distribution_health.v1",
+        "sha256": "09f1b888a8bbbb6ca4f2735efa8fa837fcc01957d61e14430c5e7aeaab100d77",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_PREP_ONLY_DRAFT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_evidence_review_packet_prep_only_draft.json",
+        "role": "shadow_runtime_evidence_review_packet_prep_only_draft",
+        "schema_id": "kt.b04_r6.runtime_evidence_review_packet_prep_only_draft.v1",
+        "sha256": "c301b7f5758c1d0381896daae780b8780ed6b9c1dd245259a8440fdda37ed8ed",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_REPLAY_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_replay_receipt.json",
+        "role": "shadow_runtime_replay_receipt",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.runtime_replay.v1",
+        "sha256": "360257a11a4490b3ded455f11d64263326f2bf412059ced9a76dd7fe9724c8f7",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_STATIC_AUTHORITY_PRESERVATION_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_static_authority_preservation_receipt.json",
+        "role": "shadow_static_authority_preservation_receipt",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.static_authority.v1",
+        "sha256": "334e7beef1c6c22fa83cddd6108271bbd15bbb99f38f09ae928880147cba73c4",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "artifact_id": "B04_R6_LIMITED_RUNTIME_TRACE_COMPLETENESS_RECEIPT",
+        "evidence_kind": "json_receipt",
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_trace_completeness_receipt.json",
+        "role": "shadow_trace_completeness_receipt",
+        "schema_id": "kt.b04_r6.limited_runtime.shadow_runtime.trace_completeness.v1",
+        "sha256": "97353298501bb46378f6b128eb46dbf0d3bb618d81a36e2d2205044f6a18035e",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      },
+      {
+        "evidence_kind": "text_report",
+        "non_empty": true,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_runtime_shadow_runtime_report.md",
+        "role": "shadow_runtime_report",
+        "sha256": "d7ec9f0b4aeafa34f26ac6f275df23bdf97fd1e56c916cf105a23f5f486dff49",
+        "source_lane": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME"
+      }
+    ],
+    "compressed_index_source_of_truth": false,
+    "raw_hash_bound_artifacts_required": true
+  },
+  "runtime_evidence_review_packet_authored": true,
+  "runtime_evidence_review_validated": false,
+  "runtime_evidence_scorecard": {
     "abstention_observations": 4,
     "afsh_observation_only_cases": 18,
+    "canary_readiness_status": "PREP_READY_NOT_AUTHORIZED",
     "canary_runtime_cases": 0,
     "drift_signals": [],
+    "evidence_review_status": "PASS",
     "fallback_failures": 0,
     "fired_disqualifiers": [],
     "incident_freeze_triggers": [],
     "null_route_observations": 3,
+    "package_promotion_status": "BLOCKED_PENDING_RUNTIME_EVIDENCE_REVIEW_AND_FUTURE_AUTHORITY",
     "route_eligible_observations": 4,
     "runtime_cutover_authorized_cases": 0,
+    "runtime_mode": "SHADOW_RUNTIME_ONLY",
+    "selector_entries": 4,
     "selector_entry_rate": 0.2222222222222222,
-    "shadow_runtime_mode": "SHADOW_RUNTIME_ONLY",
+    "shadow_runtime_passed": true,
     "static_authoritative_cases": 18,
     "static_hold_observations": 7,
     "total_cases": 18,
     "trace_complete_cases": 18,
     "user_facing_decision_changes": 0
   },
-  "selected_outcome": "B04_R6_LIMITED_RUNTIME_SHADOW_RUNTIME_PASSED__RUNTIME_EVIDENCE_REVIEW_PACKET_NEXT",
-  "shadow_runtime_executed": true,
-  "static_authoritative": true,
+  "runtime_mode": "SHADOW_RUNTIME_ONLY",
+  "schema_id": "kt.b04_r6.runtime_evidence_review.external_audit_delta_manifest_prep_only_draft.prep_only.v1",
+  "schema_version": "v1",
+  "selected_outcome": "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_BOUND__RUNTIME_EVIDENCE_REVIEW_VALIDATION_NEXT",
+  "shadow_runtime_passed": true,
   "static_comparator_weakened": false,
   "status": "PREP_ONLY",
   "terminal_defects": [
+    "SHADOW_RUNTIME_EVIDENCE_MISSING",
+    "SHADOW_RUNTIME_NOT_PASSED",
+    "CANARY_RUNTIME_AUTHORIZED",
     "CANARY_RUNTIME_EXECUTED",
     "AFSH_RUNTIME_AUTHORITY_GRANTED",
+    "USER_FACING_DECISION_CHANGED",
     "RUNTIME_CUTOVER_AUTHORIZED",
     "R6_OPEN_DRIFT",
-    "LOBE_ESCALATION_DRIFT",
     "PACKAGE_PROMOTION_DRIFT",
     "COMMERCIAL_CLAIM_DRIFT",
     "TRUTH_ENGINE_MUTATION",
     "TRUST_ZONE_MUTATION",
-    "METRIC_MUTATION",
-    "COMPARATOR_WEAKENING",
     "NEXT_MOVE_DRIFT"
   ],
   "trust_zone_failures": [],
   "trust_zone_law_changed": false,
   "trust_zone_law_unchanged": true,
   "trust_zone_validation_status": "PASS",
-  "truth_engine_derivation_law_unchanged": true,
   "truth_engine_law_changed": false,
+  "truth_engine_law_unchanged": true,
   "user_facing_decision_changed": false,
   "validation_rows": [
     {
-      "check_id": "shadow_runtime_contract_preserves_current_main_head",
-      "detail": "current main head bound",
-      "group": "core",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_MAIN_HEAD_MISMATCH",
-      "status": "PASS"
+      "check_id": "B04R6-RUNTIME-EVIDENCE-001",
+      "name": "shadow_runtime_passed",
+      "status": "PASS",
+      "terminal_if_fail": true
     },
     {
-      "check_id": "shadow_runtime_binds_validated_execution_packet",
-      "detail": "validated execution packet bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_EXECUTION_PACKET_BINDING_MISSING",
-      "status": "PASS"
+      "check_id": "B04R6-RUNTIME-EVIDENCE-002",
+      "name": "static_authority_preserved",
+      "status": "PASS",
+      "terminal_if_fail": true
     },
     {
-      "check_id": "shadow_runtime_binds_validated_authorization_packet",
-      "detail": "validated authorization packet carried",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AUTHORIZATION_PACKET_BINDING_MISSING",
-      "status": "PASS"
+      "check_id": "B04R6-RUNTIME-EVIDENCE-003",
+      "name": "afsh_observation_only_preserved",
+      "status": "PASS",
+      "terminal_if_fail": false
     },
     {
-      "check_id": "shadow_runtime_binds_activation_review_validation",
-      "detail": "activation review validation carried",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ACTIVATION_REVIEW_BINDING_MISSING",
-      "status": "PASS"
+      "check_id": "B04R6-RUNTIME-EVIDENCE-004",
+      "name": "user_facing_decision_unchanged",
+      "status": "PASS",
+      "terminal_if_fail": true
     },
     {
-      "check_id": "shadow_runtime_binds_shadow_superiority_result",
-      "detail": "shadow superiority carried",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_SHADOW_SUPERIORITY_BINDING_MISSING",
-      "status": "PASS"
+      "check_id": "B04R6-RUNTIME-EVIDENCE-005",
+      "name": "canary_runtime_not_executed",
+      "status": "PASS",
+      "terminal_if_fail": true
     },
     {
-      "check_id": "shadow_runtime_binds_afsh_candidate",
-      "detail": "AFSH candidate hashes carried",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_CANDIDATE_BINDING_MISSING",
-      "status": "PASS"
+      "check_id": "B04R6-RUNTIME-EVIDENCE-006",
+      "name": "runtime_cutover_not_authorized",
+      "status": "PASS",
+      "terminal_if_fail": true
     },
     {
-      "check_id": "runtime_mode_is_shadow_runtime_only",
-      "detail": "runtime mode shadow-only",
-      "group": "mode",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_MODE_DRIFT",
-      "status": "PASS"
+      "check_id": "B04R6-RUNTIME-EVIDENCE-007",
+      "name": "fallback_behavior_passed",
+      "status": "PASS",
+      "terminal_if_fail": false
     },
     {
-      "check_id": "canary_runtime_is_not_authorized",
-      "detail": "canary not executed",
-      "group": "authorization",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_CANARY_EXECUTED",
-      "status": "PASS"
+      "check_id": "B04R6-RUNTIME-EVIDENCE-008",
+      "name": "drift_monitoring_passed",
+      "status": "PASS",
+      "terminal_if_fail": false
     },
     {
-      "check_id": "static_remains_authoritative",
-      "detail": "static remains authoritative",
-      "group": "authority",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
+      "check_id": "B04R6-RUNTIME-EVIDENCE-009",
+      "name": "incident_freeze_passed",
+      "status": "PASS",
+      "terminal_if_fail": false
     },
     {
-      "check_id": "afsh_is_observational_only",
-      "detail": "AFSH observation-only",
-      "group": "authority",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
+      "check_id": "B04R6-RUNTIME-EVIDENCE-010",
+      "name": "trace_completeness_passed",
+      "status": "PASS",
+      "terminal_if_fail": true
     },
     {
-      "check_id": "afsh_cannot_change_user_facing_decision",
-      "detail": "no user-facing change",
-      "group": "authority",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
+      "check_id": "B04R6-RUNTIME-EVIDENCE-011",
+      "name": "disqualifier_ledger_clean",
+      "status": "PASS",
+      "terminal_if_fail": false
     },
     {
-      "check_id": "runtime_cutover_is_not_authorized",
-      "detail": "cutover unauthorized",
-      "group": "authorization",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_CUTOVER_DRIFT",
-      "status": "PASS"
+      "check_id": "B04R6-RUNTIME-EVIDENCE-012",
+      "name": "external_verifier_review_ready",
+      "status": "PASS",
+      "terminal_if_fail": false
     },
     {
-      "check_id": "r6_remains_closed",
-      "detail": "R6 closed",
-      "group": "authorization",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_R6_OPEN_DRIFT",
-      "status": "PASS"
+      "check_id": "B04R6-RUNTIME-EVIDENCE-013",
+      "name": "commercial_claim_boundary_preserved",
+      "status": "PASS",
+      "terminal_if_fail": true
     },
     {
-      "check_id": "route_distribution_health_passes",
-      "detail": "route distribution healthy",
-      "group": "evidence",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
-      "status": "PASS"
+      "check_id": "B04R6-RUNTIME-EVIDENCE-014",
+      "name": "package_promotion_blocked",
+      "status": "PASS",
+      "terminal_if_fail": false
     },
     {
-      "check_id": "fallback_behavior_passes",
-      "detail": "fallback behavior healthy",
-      "group": "evidence",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_FALLBACK_FAIL",
-      "status": "PASS"
-    },
-    {
-      "check_id": "abstention_preservation_passes",
-      "detail": "abstention preserved",
-      "group": "evidence",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ABSTENTION_FAIL",
-      "status": "PASS"
-    },
-    {
-      "check_id": "null_route_preservation_passes",
-      "detail": "null route preserved",
-      "group": "evidence",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_NULL_ROUTE_FAIL",
-      "status": "PASS"
-    },
-    {
-      "check_id": "operator_override_readiness_passes",
-      "detail": "operator override ready",
-      "group": "controls",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_OPERATOR_OVERRIDE_NOT_READY",
-      "status": "PASS"
-    },
-    {
-      "check_id": "kill_switch_readiness_passes",
-      "detail": "kill switch ready",
-      "group": "controls",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_KILL_SWITCH_NOT_READY",
-      "status": "PASS"
-    },
-    {
-      "check_id": "rollback_readiness_passes",
-      "detail": "rollback ready",
-      "group": "controls",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROLLBACK_NOT_READY",
-      "status": "PASS"
-    },
-    {
-      "check_id": "drift_monitoring_passes",
-      "detail": "no drift",
-      "group": "monitoring",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_DRIFT_DETECTED",
-      "status": "PASS"
-    },
-    {
-      "check_id": "incident_freeze_passes",
-      "detail": "no freeze trigger",
-      "group": "monitoring",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_INCIDENT_FREEZE_TRIGGERED",
-      "status": "PASS"
-    },
-    {
-      "check_id": "trace_completeness_passes",
-      "detail": "trace complete",
-      "group": "replay",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_replay_passes",
-      "detail": "runtime replay complete",
-      "group": "replay",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_REPLAY_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "external_verifier_readiness_passes",
-      "detail": "external verifier ready",
-      "group": "external",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_EXTERNAL_VERIFIER_NOT_READY",
-      "status": "PASS"
-    },
-    {
-      "check_id": "commercial_claim_boundary_passes",
-      "detail": "commercial claims blocked",
-      "group": "claims",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_COMMERCIAL_CLAIM_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "package_promotion_not_authorized",
-      "detail": "package promotion blocked",
-      "group": "claims",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKAGE_PROMOTION_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "truth_engine_law_unchanged",
-      "detail": "truth law unchanged",
-      "group": "authorization",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRUTH_ENGINE_MUTATION",
-      "status": "PASS"
-    },
-    {
-      "check_id": "trust_zone_law_unchanged",
-      "detail": "trust law unchanged",
-      "group": "authorization",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRUST_ZONE_MUTATION",
-      "status": "PASS"
-    },
-    {
-      "check_id": "no_authorization_drift_receipt_passes",
-      "detail": "no authorization drift",
-      "group": "authorization",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "success_outcome_routes_to_runtime_evidence_review_packet",
-      "detail": "success routes to evidence review",
-      "group": "outcome",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_NEXT_MOVE_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "failure_outcome_routes_to_runtime_repair_or_closeout",
-      "detail": "failure route recorded",
-      "group": "outcome",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_NEXT_MOVE_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "invalidated_outcome_routes_to_forensic_runtime_invalidation",
-      "detail": "invalidation route recorded",
-      "group": "outcome",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_NEXT_MOVE_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "deferred_outcome_routes_to_named_runtime_defect",
-      "detail": "deferred route recorded",
-      "group": "outcome",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_NEXT_MOVE_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_execution_afsh_shadow_observation_contract",
-      "detail": "execution_afsh_shadow_observation_contract input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_execution_commercial_claim_boundary",
-      "detail": "execution_commercial_claim_boundary input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_execution_drift_monitoring_contract",
-      "detail": "execution_drift_monitoring_contract input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_execution_execution_packet_contract",
-      "detail": "execution_execution_packet_contract input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_execution_execution_packet_receipt",
-      "detail": "execution_execution_packet_receipt input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_execution_external_verifier_requirements",
-      "detail": "execution_external_verifier_requirements input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_execution_incident_freeze_contract",
-      "detail": "execution_incident_freeze_contract input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_execution_kill_switch_execution_contract",
-      "detail": "execution_kill_switch_execution_contract input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_execution_mode_contract",
-      "detail": "execution_mode_contract input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_execution_operator_override_contract",
-      "detail": "execution_operator_override_contract input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_execution_rollback_execution_contract",
-      "detail": "execution_rollback_execution_contract input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_execution_route_distribution_health_contract",
-      "detail": "execution_route_distribution_health_contract input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_execution_runtime_receipt_schema",
-      "detail": "execution_runtime_receipt_schema input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_execution_scope_manifest",
-      "detail": "execution_scope_manifest input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_execution_static_authority_contract",
-      "detail": "execution_static_authority_contract input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_afsh_shadow_observation_validation",
-      "detail": "validation_afsh_shadow_observation_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_commercial_claim_boundary_validation",
-      "detail": "validation_commercial_claim_boundary_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_drift_monitoring_validation",
-      "detail": "validation_drift_monitoring_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_execution_packet_binding_validation",
-      "detail": "validation_execution_packet_binding_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_external_verifier_validation",
-      "detail": "validation_external_verifier_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_incident_freeze_validation",
-      "detail": "validation_incident_freeze_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_kill_switch_validation",
-      "detail": "validation_kill_switch_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_mode_validation",
-      "detail": "validation_mode_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_next_lawful_move",
-      "detail": "validation_next_lawful_move input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_no_authorization_drift_validation",
-      "detail": "validation_no_authorization_drift_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_operator_override_validation",
-      "detail": "validation_operator_override_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_package_promotion_boundary_validation",
-      "detail": "validation_package_promotion_boundary_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_rollback_execution_validation",
-      "detail": "validation_rollback_execution_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_route_distribution_health_validation",
-      "detail": "validation_route_distribution_health_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_runtime_receipt_schema_validation",
-      "detail": "validation_runtime_receipt_schema_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_scope_validation",
-      "detail": "validation_scope_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_static_authority_validation",
-      "detail": "validation_static_authority_validation input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_validation_contract",
-      "detail": "validation_validation_contract input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_runtime_binds_validation_validation_receipt",
-      "detail": "validation_validation_receipt input is hash-bound",
-      "group": "binding",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PACKET_VALIDATION_MISSING",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-001_static_authoritative",
-      "detail": "B04R6-SHADOW-001 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-002_static_authoritative",
-      "detail": "B04R6-SHADOW-002 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-003_static_authoritative",
-      "detail": "B04R6-SHADOW-003 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-004_static_authoritative",
-      "detail": "B04R6-SHADOW-004 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-005_static_authoritative",
-      "detail": "B04R6-SHADOW-005 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-006_static_authoritative",
-      "detail": "B04R6-SHADOW-006 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-007_static_authoritative",
-      "detail": "B04R6-SHADOW-007 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-008_static_authoritative",
-      "detail": "B04R6-SHADOW-008 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-009_static_authoritative",
-      "detail": "B04R6-SHADOW-009 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-010_static_authoritative",
-      "detail": "B04R6-SHADOW-010 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-011_static_authoritative",
-      "detail": "B04R6-SHADOW-011 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-012_static_authoritative",
-      "detail": "B04R6-SHADOW-012 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-013_static_authoritative",
-      "detail": "B04R6-SHADOW-013 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-014_static_authoritative",
-      "detail": "B04R6-SHADOW-014 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-015_static_authoritative",
-      "detail": "B04R6-SHADOW-015 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-016_static_authoritative",
-      "detail": "B04R6-SHADOW-016 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-017_static_authoritative",
-      "detail": "B04R6-SHADOW-017 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-018_static_authoritative",
-      "detail": "B04R6-SHADOW-018 static authoritative",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_STATIC_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-001_afsh_observation_only",
-      "detail": "B04R6-SHADOW-001 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-002_afsh_observation_only",
-      "detail": "B04R6-SHADOW-002 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-003_afsh_observation_only",
-      "detail": "B04R6-SHADOW-003 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-004_afsh_observation_only",
-      "detail": "B04R6-SHADOW-004 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-005_afsh_observation_only",
-      "detail": "B04R6-SHADOW-005 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-006_afsh_observation_only",
-      "detail": "B04R6-SHADOW-006 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-007_afsh_observation_only",
-      "detail": "B04R6-SHADOW-007 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-008_afsh_observation_only",
-      "detail": "B04R6-SHADOW-008 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-009_afsh_observation_only",
-      "detail": "B04R6-SHADOW-009 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-010_afsh_observation_only",
-      "detail": "B04R6-SHADOW-010 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-011_afsh_observation_only",
-      "detail": "B04R6-SHADOW-011 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-012_afsh_observation_only",
-      "detail": "B04R6-SHADOW-012 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-013_afsh_observation_only",
-      "detail": "B04R6-SHADOW-013 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-014_afsh_observation_only",
-      "detail": "B04R6-SHADOW-014 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-015_afsh_observation_only",
-      "detail": "B04R6-SHADOW-015 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-016_afsh_observation_only",
-      "detail": "B04R6-SHADOW-016 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-017_afsh_observation_only",
-      "detail": "B04R6-SHADOW-017 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-018_afsh_observation_only",
-      "detail": "B04R6-SHADOW-018 AFSH observation-only",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_AFSH_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-001_trace_complete",
-      "detail": "B04R6-SHADOW-001 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-002_trace_complete",
-      "detail": "B04R6-SHADOW-002 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-003_trace_complete",
-      "detail": "B04R6-SHADOW-003 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-004_trace_complete",
-      "detail": "B04R6-SHADOW-004 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-005_trace_complete",
-      "detail": "B04R6-SHADOW-005 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-006_trace_complete",
-      "detail": "B04R6-SHADOW-006 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-007_trace_complete",
-      "detail": "B04R6-SHADOW-007 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-008_trace_complete",
-      "detail": "B04R6-SHADOW-008 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-009_trace_complete",
-      "detail": "B04R6-SHADOW-009 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-010_trace_complete",
-      "detail": "B04R6-SHADOW-010 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-011_trace_complete",
-      "detail": "B04R6-SHADOW-011 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-012_trace_complete",
-      "detail": "B04R6-SHADOW-012 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-013_trace_complete",
-      "detail": "B04R6-SHADOW-013 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-014_trace_complete",
-      "detail": "B04R6-SHADOW-014 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-015_trace_complete",
-      "detail": "B04R6-SHADOW-015 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-016_trace_complete",
-      "detail": "B04R6-SHADOW-016 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-017_trace_complete",
-      "detail": "B04R6-SHADOW-017 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-018_trace_complete",
-      "detail": "B04R6-SHADOW-018 trace complete",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-001_no_user_facing_change",
-      "detail": "B04R6-SHADOW-001 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-002_no_user_facing_change",
-      "detail": "B04R6-SHADOW-002 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-003_no_user_facing_change",
-      "detail": "B04R6-SHADOW-003 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-004_no_user_facing_change",
-      "detail": "B04R6-SHADOW-004 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-005_no_user_facing_change",
-      "detail": "B04R6-SHADOW-005 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-006_no_user_facing_change",
-      "detail": "B04R6-SHADOW-006 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-007_no_user_facing_change",
-      "detail": "B04R6-SHADOW-007 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-008_no_user_facing_change",
-      "detail": "B04R6-SHADOW-008 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-009_no_user_facing_change",
-      "detail": "B04R6-SHADOW-009 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-010_no_user_facing_change",
-      "detail": "B04R6-SHADOW-010 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-011_no_user_facing_change",
-      "detail": "B04R6-SHADOW-011 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-012_no_user_facing_change",
-      "detail": "B04R6-SHADOW-012 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-013_no_user_facing_change",
-      "detail": "B04R6-SHADOW-013 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-014_no_user_facing_change",
-      "detail": "B04R6-SHADOW-014 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-015_no_user_facing_change",
-      "detail": "B04R6-SHADOW-015 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-016_no_user_facing_change",
-      "detail": "B04R6-SHADOW-016 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-017_no_user_facing_change",
-      "detail": "B04R6-SHADOW-017 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "shadow_case_B04R6-SHADOW-018_no_user_facing_change",
-      "detail": "B04R6-SHADOW-018 no user-facing change",
-      "group": "case",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_USER_FACING_CHANGE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_runtime_receipt_id_emitted",
-      "detail": "runtime_receipt_id emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_case_id_emitted",
-      "detail": "case_id emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_execution_mode_emitted",
-      "detail": "execution_mode emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_static_authoritative_decision_emitted",
-      "detail": "static_authoritative_decision emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_afsh_shadow_decision_emitted",
-      "detail": "afsh_shadow_decision emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_afsh_observation_only_emitted",
-      "detail": "afsh_observation_only emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_selector_entry_authorized_emitted",
-      "detail": "selector_entry_authorized emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_static_fallback_status_emitted",
-      "detail": "static_fallback_status emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_abstention_fallback_status_emitted",
-      "detail": "abstention_fallback_status emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_null_route_preservation_status_emitted",
-      "detail": "null_route_preservation_status emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_operator_override_status_emitted",
-      "detail": "operator_override_status emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_kill_switch_status_emitted",
-      "detail": "kill_switch_status emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_rollback_status_emitted",
-      "detail": "rollback_status emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_route_distribution_health_status_emitted",
-      "detail": "route_distribution_health_status emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_drift_status_emitted",
-      "detail": "drift_status emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_incident_freeze_status_emitted",
-      "detail": "incident_freeze_status emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_trace_receipt_hash_emitted",
-      "detail": "trace_receipt_hash emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_raw_hash_bound_artifact_refs_emitted",
-      "detail": "raw_hash_bound_artifact_refs emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_external_verifier_refs_emitted",
-      "detail": "external_verifier_refs emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "runtime_receipt_field_commercial_claim_boundary_status_emitted",
-      "detail": "commercial_claim_boundary_status emitted",
-      "group": "receipts",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_TRACE_INCOMPLETE",
-      "status": "PASS"
-    },
-    {
-      "check_id": "route_health_signal_selector_entry_rate_measured",
-      "detail": "selector_entry_rate measured",
-      "group": "monitoring",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
-      "status": "PASS"
-    },
-    {
-      "check_id": "route_health_signal_static_hold_rate_measured",
-      "detail": "static_hold_rate measured",
-      "group": "monitoring",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
-      "status": "PASS"
-    },
-    {
-      "check_id": "route_health_signal_abstention_rate_measured",
-      "detail": "abstention_rate measured",
-      "group": "monitoring",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
-      "status": "PASS"
-    },
-    {
-      "check_id": "route_health_signal_null_route_rate_measured",
-      "detail": "null_route_rate measured",
-      "group": "monitoring",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
-      "status": "PASS"
-    },
-    {
-      "check_id": "route_health_signal_operator_override_rate_measured",
-      "detail": "operator_override_rate measured",
-      "group": "monitoring",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
-      "status": "PASS"
-    },
-    {
-      "check_id": "route_health_signal_kill_switch_readiness_measured",
-      "detail": "kill_switch_readiness measured",
-      "group": "monitoring",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
-      "status": "PASS"
-    },
-    {
-      "check_id": "route_health_signal_rollback_readiness_measured",
-      "detail": "rollback_readiness measured",
-      "group": "monitoring",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_ROUTE_HEALTH_FAIL",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_runtime_evidence_review_packet_prep_only_draft_cannot_authorize",
-      "detail": "runtime_evidence_review_packet_prep_only_draft prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_canary_authorization_packet_prep_only_draft_cannot_authorize",
-      "detail": "canary_authorization_packet_prep_only_draft prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_package_promotion_review_preconditions_prep_only_draft_cannot_authorize",
-      "detail": "package_promotion_review_preconditions_prep_only_draft prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
-    },
-    {
-      "check_id": "prep_only_output_external_audit_delta_manifest_prep_only_draft_cannot_authorize",
-      "detail": "external_audit_delta_manifest_prep_only_draft prep-only",
-      "group": "prep_only",
-      "reason_code": "RC_B04R6_SHADOW_RUNTIME_PREP_ONLY_AUTHORITY_DRIFT",
-      "status": "PASS"
+      "check_id": "B04R6-RUNTIME-EVIDENCE-015",
+      "name": "canary_readiness_prep_only",
+      "status": "PASS",
+      "terminal_if_fail": false
     }
   ]
 }
