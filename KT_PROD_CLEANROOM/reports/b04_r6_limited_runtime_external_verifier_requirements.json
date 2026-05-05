@@ -7,7 +7,7 @@
     "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET_INVALID__REPAIR_OR_CLOSEOUT_REQUIRED"
   ],
-  "artifact_id": "B04_R6_FUTURE_BLOCKER_REGISTER",
+  "artifact_id": "B04_R6_LIMITED_RUNTIME_EXTERNAL_VERIFIER_REQUIREMENTS",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET",
   "authorization_state": {
     "activation_cutover_authorized": false,
@@ -60,38 +60,15 @@
     "validated_shadow_screen_packet_hash": "e3399a6b800ce341a72235c7a1067c45639ea5d5f9c2d98cafe2d9495e8e4d76",
     "validated_source_packet_hash": "7c211b44807ee5b7d616578138fb8f1ffbd946229dce930319427699a98e87c0"
   },
-  "blockers": [
-    {
-      "blocker_id": "B04R6-FB-041",
-      "future_blocker": "Limited-runtime authorization packet mistaken for runtime execution.",
-      "neutralization_now": [
-        "b04_r6_limited_runtime_no_authorization_drift_receipt.json",
-        "b04_r6_limited_runtime_validation_plan.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-042",
-      "future_blocker": "Runtime canary lacks execution packet, incident freeze, or rollback receipts.",
-      "neutralization_now": [
-        "b04_r6_runtime_canary_execution_contract_prep_only.json",
-        "b04_r6_runtime_incident_freeze_contract_prep_only.json",
-        "b04_r6_runtime_rollback_execution_receipt_schema_prep_only.json"
-      ]
-    },
-    {
-      "blocker_id": "B04R6-FB-043",
-      "future_blocker": "External or commercial claims outrun limited-runtime evidence.",
-      "neutralization_now": [
-        "b04_r6_limited_runtime_commercial_claim_boundary.json",
-        "b04_r6_external_audit_delta_manifest_prep_only.json",
-        "b04_r6_public_verifier_delta_requirements_prep_only.json"
-      ]
-    }
-  ],
+  "can_authorize_commercial_claims": false,
+  "can_authorize_limited_runtime": false,
+  "can_execute_runtime": false,
+  "can_open_r6": false,
+  "can_promote_package": false,
   "candidate_id": "B04_R6_AFSH_CANDIDATE_V1",
   "candidate_version": "v1",
   "commercial_activation_claim_authorized": false,
-  "current_authoritative_lane": "AUTHOR_B04_R6_LIMITED_RUNTIME_AUTHORIZATION_PACKET",
+  "control_id": "EXTERNAL_VERIFIER",
   "current_branch": "authoritative/b04-r6-limited-runtime-authorization-packet",
   "current_git_head": "e87f6731fa2eae688da791d90582cfbff022dff7",
   "current_main_head": "6b0c10d7116556e1d5758a9f4e70e418aa106f74",
@@ -260,9 +237,15 @@
     "RC_B04R6_LIMITED_RUNTIME_PACKET_COMPARATOR_WEAKENING",
     "RC_B04R6_LIMITED_RUNTIME_PACKET_NEXT_MOVE_DRIFT"
   ],
+  "required_before_limited_runtime_validation": true,
+  "requirements": [
+    "external_verifier_non_executing",
+    "raw_hash_bound_artifacts_required",
+    "runtime_claims_require_later_evidence_review"
+  ],
   "runtime_cutover_authorized": false,
   "runtime_execution_authorized": false,
-  "schema_id": "kt.b04_r6.future_blocker_register.v6",
+  "schema_id": "kt.b04_r6.limited_runtime.external_verifier_requirements.v1",
   "schema_version": 1,
   "selected_architecture_id": "AFSH-2S-GUARD",
   "selected_architecture_name": "Abstention-First Static-Hold Two-Stage Guarded Router",
