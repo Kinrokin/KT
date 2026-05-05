@@ -47,6 +47,21 @@ def test_schema_validation_basics_require_prep_only_authority() -> None:
         validate_lane_spec(invalid)
 
 
+def test_optional_lists_accept_empty_arrays_to_match_schema() -> None:
+    spec = _spec()
+    spec["json_parse_inputs"] = []
+    spec["no_authorization_drift_checks"] = []
+    spec["future_blockers"] = []
+    spec["reason_codes"] = []
+
+    normalized = validate_lane_spec(spec)
+
+    assert normalized["json_parse_inputs"] == []
+    assert normalized["no_authorization_drift_checks"] == []
+    assert normalized["future_blockers"] == []
+    assert normalized["reason_codes"] == []
+
+
 def test_generated_artifacts_include_all_required_scaffolds() -> None:
     contract = build_lane_contract(_spec())
     generated = contract["generated_artifacts"]
@@ -105,3 +120,13 @@ def test_compile_lane_spec_file_can_write_files_without_execution(tmp_path: Path
         assert (tmp_path / relpath).exists()
     operator_text = (tmp_path / "KT_PROD_CLEANROOM/tools/operator/sample_prep_lane.py").read_text(encoding="utf-8")
     assert "PREP_ONLY_TOOLING" in operator_text
+
+
+def test_compile_lane_spec_file_rejects_output_root_escape(tmp_path: Path) -> None:
+    spec = _spec()
+    spec["operator_path"] = "../escape.py"
+    spec_path = tmp_path / "lane_spec.json"
+    spec_path.write_text(json.dumps(spec, sort_keys=True), encoding="utf-8")
+
+    with pytest.raises(LaneSpecError, match="generated path must stay under output root"):
+        compile_lane_spec_file(spec_path, output_root=tmp_path / "out")

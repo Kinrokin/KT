@@ -54,7 +54,7 @@ def _as_text(value: Any, field: str) -> str:
     return value.strip()
 
 
-def _as_string_list(value: Any, field: str) -> List[str]:
+def _as_string_list(value: Any, field: str, *, allow_empty: bool = False) -> List[str]:
     if not isinstance(value, list):
         raise LaneSpecError(f"{field} must be a list of strings")
     result = []
@@ -62,7 +62,7 @@ def _as_string_list(value: Any, field: str) -> List[str]:
         if not isinstance(item, str) or not item.strip():
             raise LaneSpecError(f"{field}[{index}] must be a non-empty string")
         result.append(item.strip())
-    if not result:
+    if not result and not allow_empty:
         raise LaneSpecError(f"{field} must not be empty")
     return sorted(result)
 
@@ -70,7 +70,7 @@ def _as_string_list(value: Any, field: str) -> List[str]:
 def _optional_string_list(spec: Mapping[str, Any], field: str) -> List[str]:
     if field not in spec:
         return []
-    return _as_string_list(spec[field], field)
+    return _as_string_list(spec[field], field, allow_empty=True)
 
 
 def _forbidden_hits(values: Iterable[Any]) -> List[str]:
@@ -298,9 +298,16 @@ def compile_lane_spec_file(spec_path: str | Path, output_root: Optional[str | Pa
         raise LaneSpecError("lane spec JSON must be an object")
     contract = build_lane_contract(spec)
     if output_root is not None:
-        root = Path(output_root)
+        root = Path(output_root).resolve()
         for relpath, content in contract["files"].items():
-            target = root / relpath
+            rel = Path(relpath)
+            if rel.is_absolute():
+                raise LaneSpecError(f"generated path must be relative: {relpath}")
+            target = (root / rel).resolve()
+            try:
+                target.relative_to(root)
+            except ValueError as exc:
+                raise LaneSpecError(f"generated path must stay under output root: {relpath}") from exc
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(content, encoding="utf-8")
     return contract
