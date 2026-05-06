@@ -476,8 +476,11 @@ def _validate_authoring_payloads(root: Path, payloads: Dict[str, Dict[str, Any]]
 
     board = payloads["pipeline_board"]
     lanes = {row.get("lane"): row for row in board.get("lanes", [])}
-    if lanes.get("VALIDATE_B04_R6_CANARY_AUTHORIZATION_PACKET", {}).get("status") != "NEXT":
+    validation_status = lanes.get("VALIDATE_B04_R6_CANARY_AUTHORIZATION_PACKET", {}).get("status")
+    if validation_status not in {"NEXT", "CURRENT_VALIDATED"}:
         _fail("RC_B04R6_CANARY_AUTH_VAL_NEXT_MOVE_DRIFT", "pipeline board does not show validation next")
+    if validation_status == "CURRENT_VALIDATED" and lanes.get("AUTHOR_B04_R6_CANARY_EXECUTION_PACKET", {}).get("status") != "NEXT":
+        _fail("RC_B04R6_CANARY_AUTH_VAL_NEXT_MOVE_DRIFT", "self-replay board does not show canary execution packet next")
     canary_runtime_statuses = {
         lanes.get("RUN_B04_R6_CANARY_RUNTIME", {}).get("status"),
         lanes.get("RUN_B04_R6_LIMITED_RUNTIME_CANARY", {}).get("status"),
