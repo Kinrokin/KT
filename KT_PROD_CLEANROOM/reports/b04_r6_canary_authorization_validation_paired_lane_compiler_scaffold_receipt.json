@@ -6,7 +6,7 @@
     "B04_R6_CANARY_AUTHORIZATION_PACKET_REJECTED__CANARY_NOT_JUSTIFIED",
     "B04_R6_CANARY_AUTHORIZATION_PACKET_INVALID__FORENSIC_CANARY_AUTHORIZATION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_FUTURE_BLOCKER_REGISTER",
+  "artifact_id": "B04_R6_CANARY_AUTHORIZATION_VALIDATION_PAIRED_LANE_COMPILER_SCAFFOLD_RECEIPT",
   "authoritative_lane": "B04_R6_CANARY_AUTHORIZATION_PACKET_VALIDATION",
   "binding_hashes": {
     "abstention_fallback_contract_hash": "8f4f80bb3af1b61c9f3a7dd05d4955c2fb0a283e4e508adf47106a0dd5446abe",
@@ -44,32 +44,6 @@
     "validation_plan_hash": "b207d825dc26fa1455f1e61f76d9a714e3072c47610396494086137f2fa5a087",
     "validation_reason_codes_hash": "6c62d70b1c6b4c3d8c8ffc1ff2f8cfd576ceac66f427ec09a45accafd70577c2"
   },
-  "blockers": [
-    {
-      "blocker_id": "CANARY_EXECUTION_PACKET_NOT_AUTHORED",
-      "status": "OPEN"
-    },
-    {
-      "blocker_id": "CANARY_EXECUTION_PACKET_NOT_VALIDATED",
-      "status": "OPEN"
-    },
-    {
-      "blocker_id": "CANARY_RUNTIME_NOT_EXECUTED",
-      "status": "OPEN"
-    },
-    {
-      "blocker_id": "CANARY_EVIDENCE_REVIEW_NOT_AUTHORED",
-      "status": "OPEN"
-    },
-    {
-      "blocker_id": "PACKAGE_PROMOTION_REQUIRES_CANARY_EVIDENCE_EXTERNAL_AUDIT_AND_PROMOTION_REVIEW",
-      "status": "OPEN"
-    },
-    {
-      "blocker_id": "COMMERCIAL_ACTIVATION_CLAIMS_UNAUTHORIZED",
-      "status": "OPEN"
-    }
-  ],
   "canary_authorization_packet_authored": true,
   "canary_authorization_packet_validated": true,
   "canary_execution_packet_authored": false,
@@ -435,7 +409,64 @@
     "RC_B04R6_CANARY_AUTH_VAL_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.b04_r6.future_blocker_register.v18",
+  "scaffold": {
+    "author_lane_id": "AUTHOR_B04_R6_CANARY_AUTHORIZATION_PACKET",
+    "authority": "PREP_ONLY_TOOLING",
+    "compiler_id": "KT_LANE_COMPILER_V0",
+    "generated_artifacts": [
+      "KT_PROD_CLEANROOM/reports/kt_lane_artifact_list__author_b04_r6_canary_authorization_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_artifact_list__validate_b04_r6_canary_authorization_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_future_blockers__author_b04_r6_canary_authorization_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_future_blockers__validate_b04_r6_canary_authorization_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_json_parse_list__author_b04_r6_canary_authorization_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_json_parse_list__validate_b04_r6_canary_authorization_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_no_authorization_drift__author_b04_r6_canary_authorization_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_no_authorization_drift__validate_b04_r6_canary_authorization_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_pr_body__author_b04_r6_canary_authorization_packet.md",
+      "KT_PROD_CLEANROOM/reports/kt_lane_pr_body__validate_b04_r6_canary_authorization_packet.md",
+      "KT_PROD_CLEANROOM/reports/kt_lane_reason_codes__author_b04_r6_canary_authorization_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_reason_codes__validate_b04_r6_canary_authorization_packet.json",
+      "KT_PROD_CLEANROOM/reports/kt_lane_replay_pr_body__author_b04_r6_canary_authorization_packet.md",
+      "KT_PROD_CLEANROOM/reports/kt_lane_replay_pr_body__validate_b04_r6_canary_authorization_packet.md",
+      "KT_PROD_CLEANROOM/tests/operator/test_b04_r6_canary_authorization_packet.py",
+      "KT_PROD_CLEANROOM/tests/operator/test_b04_r6_canary_authorization_packet_validation.py",
+      "KT_PROD_CLEANROOM/tools/operator/cohort0_b04_r6_canary_authorization_packet.py",
+      "KT_PROD_CLEANROOM/tools/operator/cohort0_b04_r6_canary_authorization_packet_validation.py"
+    ],
+    "non_authorization_guards": {
+      "commercial_claims_authorized": false,
+      "forbidden_authority_tokens": [
+        "LIMITED_RUNTIME_EXECUTION_AUTHORIZED",
+        "LIMITED_RUNTIME_AUTHORIZED",
+        "R6_OPEN",
+        "RUNTIME_AUTHORIZED",
+        "RUNTIME_CUTOVER_AUTHORIZED",
+        "ACTIVATION_CUTOVER_EXECUTED",
+        "LOBE_ESCALATION_AUTHORIZED",
+        "PACKAGE_PROMOTION_AUTHORIZED",
+        "PACKAGE_PROMOTION",
+        "PROMOTE_PACKAGE",
+        "COMMERCIAL_CLAIM_AUTHORIZED",
+        "COMMERCIAL_CLAIMS_AUTHORIZED",
+        "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED"
+      ],
+      "package_promotion_authorized": false,
+      "r6_open_authorized": false,
+      "runtime_authorized": false
+    },
+    "paired_contract_sha256": "341c6b23c61de5b909d8191fbcf06208f86eab796fe9887ab798fe1a307ba742",
+    "paired_lane_law": {
+      "authoring_is_not_validation": true,
+      "canonical_validation_requires_separate_lane": true,
+      "compiler_can_authorize": false,
+      "provisional_validation_scaffold_allowed": true
+    },
+    "status": "PREP_ONLY_PAIRED_SCAFFOLD_USED",
+    "validation_lane_id": "VALIDATE_B04_R6_CANARY_AUTHORIZATION_PACKET"
+  },
+  "scaffold_authority": "PREP_ONLY_TOOLING",
+  "scaffold_can_authorize": false,
+  "schema_id": "kt.b04_r6.canary_authorization_validation.paired_lane_compiler_scaffold_receipt.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_CANARY_AUTHORIZATION_PACKET_VALIDATED__CANARY_EXECUTION_PACKET_NEXT",
   "static_comparator_weakened": false,

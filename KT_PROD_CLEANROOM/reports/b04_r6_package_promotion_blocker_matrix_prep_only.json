@@ -6,8 +6,9 @@
     "B04_R6_CANARY_AUTHORIZATION_PACKET_REJECTED__CANARY_NOT_JUSTIFIED",
     "B04_R6_CANARY_AUTHORIZATION_PACKET_INVALID__FORENSIC_CANARY_AUTHORIZATION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_FUTURE_BLOCKER_REGISTER",
+  "artifact_id": "B04_R6_PACKAGE_PROMOTION_BLOCKER_MATRIX_PREP_ONLY",
   "authoritative_lane": "B04_R6_CANARY_AUTHORIZATION_PACKET_VALIDATION",
+  "authority": "PREP_ONLY_NON_AUTHORITY",
   "binding_hashes": {
     "abstention_fallback_contract_hash": "8f4f80bb3af1b61c9f3a7dd05d4955c2fb0a283e4e508adf47106a0dd5446abe",
     "allowed_case_class_contract_hash": "ecd53a13db5bb9077efe6234e5da47972b7904258ec35a458ef22295d5c80a22",
@@ -44,32 +45,7 @@
     "validation_plan_hash": "b207d825dc26fa1455f1e61f76d9a714e3072c47610396494086137f2fa5a087",
     "validation_reason_codes_hash": "6c62d70b1c6b4c3d8c8ffc1ff2f8cfd576ceac66f427ec09a45accafd70577c2"
   },
-  "blockers": [
-    {
-      "blocker_id": "CANARY_EXECUTION_PACKET_NOT_AUTHORED",
-      "status": "OPEN"
-    },
-    {
-      "blocker_id": "CANARY_EXECUTION_PACKET_NOT_VALIDATED",
-      "status": "OPEN"
-    },
-    {
-      "blocker_id": "CANARY_RUNTIME_NOT_EXECUTED",
-      "status": "OPEN"
-    },
-    {
-      "blocker_id": "CANARY_EVIDENCE_REVIEW_NOT_AUTHORED",
-      "status": "OPEN"
-    },
-    {
-      "blocker_id": "PACKAGE_PROMOTION_REQUIRES_CANARY_EVIDENCE_EXTERNAL_AUDIT_AND_PROMOTION_REVIEW",
-      "status": "OPEN"
-    },
-    {
-      "blocker_id": "COMMERCIAL_ACTIVATION_CLAIMS_UNAUTHORIZED",
-      "status": "OPEN"
-    }
-  ],
+  "can_authorize": false,
   "canary_authorization_packet_authored": true,
   "canary_authorization_packet_validated": true,
   "canary_execution_packet_authored": false,
@@ -389,6 +365,7 @@
   "predecessor_outcome": "B04_R6_CANARY_AUTHORIZATION_PACKET_BOUND__CANARY_AUTHORIZATION_VALIDATION_NEXT",
   "previous_authoritative_lane": "B04_R6_CANARY_AUTHORIZATION_PACKET",
   "previous_next_lawful_move": "VALIDATE_B04_R6_CANARY_AUTHORIZATION_PACKET",
+  "purpose": "Prep-only continuation scaffold for package promotion blocker matrix prep only.",
   "r6_open": false,
   "reason_codes": [
     "RC_B04R6_CANARY_AUTH_VAL_CONTRACT_MISSING",
@@ -435,10 +412,11 @@
     "RC_B04R6_CANARY_AUTH_VAL_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.b04_r6.future_blocker_register.v18",
+  "schema_id": "kt.b04_r6.canary_authorization_validation.package_promotion_blocker_matrix_prep_only.prep_only.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_CANARY_AUTHORIZATION_PACKET_VALIDATED__CANARY_EXECUTION_PACKET_NEXT",
   "static_comparator_weakened": false,
+  "status": "PREP_ONLY",
   "terminal_defects": [
     "CANARY_AUTHORIZATION_PACKET_MISSING",
     "CANARY_AUTHORIZATION_PACKET_HASH_MISMATCH",
