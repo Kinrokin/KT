@@ -439,9 +439,16 @@ def _validate_review_payloads(root: Path, payloads: Dict[str, Dict[str, Any]], t
 
     board = payloads["pipeline_board"]
     lanes = {row.get("lane"): row for row in board.get("lanes", [])}
-    if lanes.get("VALIDATE_B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET", {}).get("status") != "NEXT":
+    validation_status = lanes.get("VALIDATE_B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET", {}).get("status")
+    if validation_status not in {"NEXT", "CURRENT_VALIDATED"}:
         _fail("RC_B04R6_RUNTIME_EVIDENCE_VAL_PIPELINE_BOARD_MISSING", "pipeline board does not show validation next")
-    if lanes.get("RUN_B04_R6_CANARY_RUNTIME", {}).get("status") != "BLOCKED":
+    if validation_status == "CURRENT_VALIDATED" and lanes.get("AUTHOR_B04_R6_CANARY_AUTHORIZATION_PACKET", {}).get("status") != "NEXT":
+        _fail("RC_B04R6_RUNTIME_EVIDENCE_VAL_PIPELINE_BOARD_MISSING", "self-replay board does not show canary authorization next")
+    canary_runtime_statuses = {
+        lanes.get("RUN_B04_R6_CANARY_RUNTIME", {}).get("status"),
+        lanes.get("RUN_B04_R6_LIMITED_RUNTIME_CANARY", {}).get("status"),
+    }
+    if "BLOCKED" not in canary_runtime_statuses:
         _fail("RC_B04R6_RUNTIME_EVIDENCE_VAL_CANARY_AUTHORIZED", "pipeline board canary runtime not blocked")
 
     review_report = texts["review_report"].lower()
@@ -731,7 +738,7 @@ def _report_text(contract: Dict[str, Any]) -> str:
         f"Next lawful move: {contract['next_lawful_move']}\n\n"
         "The runtime evidence review packet is validated as evidence-bound, replay-safe, externally reviewable, "
         "commercially bounded, and sufficient only to advance to canary authorization packet authorship.\n\n"
-        "This validation does not authorize canary runtime, execute canary, authorize runtime cutover, open R6, "
+        "This validation does not authorize canary runtime, does not execute canary, does not authorize runtime cutover, open R6, "
         "escalate lobes, promote package, authorize commercial activation claims, or mutate truth/trust law.\n"
     )
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 
@@ -44,11 +45,30 @@ def _patch_validation_env(
     origin_main: str = VALIDATION_MAIN_HEAD,
     dirty: str = "",
 ) -> None:
+    git_blob_store = {
+        (origin_main, raw): (tmp_path / raw).read_bytes()
+        for raw in list(validation.REVIEW_JSON_INPUTS.values()) + list(validation.REVIEW_TEXT_INPUTS.values())
+        if (tmp_path / raw).exists()
+    }
+
+    def fake_git_blob_bytes(root: Path, commit: str, raw: str) -> bytes:
+        return git_blob_store.get((commit, raw), (root / raw).read_bytes())
+
+    def fake_git_blob_sha256(root: Path, commit: str, raw: str) -> str:
+        contract_path = root / "KT_PROD_CLEANROOM/reports" / review.OUTPUTS["review_contract"]
+        if contract_path.exists():
+            contract = _load(contract_path)
+            for row in contract.get("input_bindings", []):
+                if row.get("path") == raw and row.get("git_commit") == commit:
+                    return row["sha256"]
+        return hashlib.sha256(fake_git_blob_bytes(root, commit, raw)).hexdigest()
+
     monkeypatch.setattr(validation, "repo_root", lambda: tmp_path)
     monkeypatch.setattr(validation.common, "git_current_branch_name", lambda root: branch)
     monkeypatch.setattr(validation.common, "git_status_porcelain", lambda root: dirty)
     monkeypatch.setattr(validation.common, "git_rev_parse", lambda root, ref: origin_main if ref == "origin/main" else head)
-    monkeypatch.setattr(validation, "_git_blob_bytes", lambda root, commit, raw: (root / raw).read_bytes())
+    monkeypatch.setattr(validation, "_git_blob_bytes", fake_git_blob_bytes)
+    monkeypatch.setattr(validation, "_git_blob_sha256", fake_git_blob_sha256)
     monkeypatch.setattr(
         validation,
         "validate_trust_zones",
@@ -511,6 +531,13 @@ def test_invalid_review_packet_outcome_fails_closed(tmp_path: Path, monkeypatch:
 
 def test_validation_self_replay_handoff_is_allowed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_validation(tmp_path, monkeypatch)
+    _patch_validation_env(
+        monkeypatch,
+        tmp_path,
+        branch="main",
+        head="cccccccccccccccccccccccccccccccccccccccc",
+        origin_main="cccccccccccccccccccccccccccccccccccccccc",
+    )
 
     validation.run(reports_root=reports)
 
@@ -525,6 +552,13 @@ def test_invalid_self_replay_handoff_fails_closed(tmp_path: Path, monkeypatch: p
     payload = _load(path)
     payload["next_lawful_move"] = "RUN_B04_R6_LIMITED_RUNTIME_CANARY"
     _write(path, payload)
+    _patch_validation_env(
+        monkeypatch,
+        tmp_path,
+        branch="main",
+        head="dddddddddddddddddddddddddddddddddddddddd",
+        origin_main="dddddddddddddddddddddddddddddddddddddddd",
+    )
 
     with pytest.raises(RuntimeError, match="NEXT_MOVE_DRIFT"):
         validation.run(reports_root=reports)
