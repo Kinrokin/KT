@@ -10,6 +10,7 @@ from tools.operator.kt_lane_compiler import (
     FORBIDDEN_AUTHORITY_TOKENS,
     LaneSpecError,
     build_lane_contract,
+    build_paired_lane_contract,
     compile_lane_spec_file,
     validate_lane_spec,
 )
@@ -152,6 +153,36 @@ def test_generated_content_stays_prep_only_and_non_authoritative() -> None:
     assert contract["non_authorization_guards"]["commercial_claims_authorized"] is False
     for token in FORBIDDEN_AUTHORITY_TOKENS:
         assert token in contract["non_authorization_guards"]["forbidden_authority_tokens"]
+
+
+def test_paired_lane_contract_keeps_author_and_validation_separate() -> None:
+    author = _spec()
+    author["lane_id"] = "AUTHOR_SAMPLE_PACKET"
+    author["lane_name"] = "Author Sample Packet"
+    author["lane_kind"] = "AUTHORING"
+    author["selected_outcome"] = "SAMPLE_PACKET_BOUND__VALIDATION_NEXT"
+    author["next_lawful_move"] = "VALIDATE_SAMPLE_PACKET"
+    author["may_authorize"] = ["SAMPLE_PACKET_AUTHORED"]
+
+    validation = _spec()
+    validation["lane_id"] = "VALIDATE_SAMPLE_PACKET"
+    validation["lane_name"] = "Validate Sample Packet"
+    validation["lane_kind"] = "VALIDATION"
+    validation["predecessor_outcome"] = author["selected_outcome"]
+    validation["selected_outcome"] = "SAMPLE_PACKET_VALIDATED__NEXT_PACKET_NEXT"
+    validation["next_lawful_move"] = "AUTHOR_NEXT_SAMPLE_PACKET"
+    validation["may_authorize"] = ["SAMPLE_PACKET_VALIDATED"]
+
+    paired = build_paired_lane_contract(author, validation)
+
+    assert paired["authority"] == AUTHORITY
+    assert paired["status"] == "PREP_ONLY_PAIRED_SCAFFOLD"
+    assert paired["paired_lane_law"]["authoring_is_not_validation"] is True
+    assert paired["paired_lane_law"]["canonical_validation_requires_separate_lane"] is True
+    assert paired["paired_lane_law"]["compiler_can_authorize"] is False
+    assert paired["author_lane_id"] == "AUTHOR_SAMPLE_PACKET"
+    assert paired["validation_lane_id"] == "VALIDATE_SAMPLE_PACKET"
+    assert paired["non_authorization_guards"]["r6_open_authorized"] is False
 
 
 def test_compile_lane_spec_file_can_write_files_without_execution(tmp_path: Path) -> None:
