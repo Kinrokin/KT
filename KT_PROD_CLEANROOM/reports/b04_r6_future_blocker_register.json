@@ -46,13 +46,13 @@
     "packet_incident_freeze_contract_hash": "a5399e6b7e9bf49f723b48a6ab073a241bd4c06e0aab1558a15244f359e62197",
     "packet_kill_switch_contract_hash": "5dccbef650de611aa0744bf87217102afc8097691e85ad157e4e0cfc416f61c2",
     "packet_mode_contract_hash": "c49691e23a64471a6b4ab1a48b28b1e9251e5c3d312ec2dc8f8cc8ef4155b38f",
-    "packet_next_lawful_move_hash": "3591ea261bf6590f9497ed69e3135a25bb8e895f4eda3793ad5d59714415c8bd",
+    "packet_next_lawful_move_hash": "dd1e2075f8b34fe64e773fb9412f852d4df835f948bcb106cff5548a0269830e",
     "packet_no_authorization_drift_receipt_hash": "e68b10dcf5b569252ded28d3c76dafa95044c1021d92d116dbcbd28fc5267f60",
     "packet_null_route_preservation_contract_hash": "d5f7fb48103b885026e6b606ef7d62678df0501307cfd28e6fc26135ece6b0fe",
     "packet_operator_override_contract_hash": "4b1448897f319504a417cf90456cb2f719b83b5fd4b24957dbac108d9b6eec2c",
     "packet_packet_contract_hash": "0d0d0880c2c5c0d9eafb9ea1aa599449d7c3c7cd715ccd4c0c97b103043b067a",
     "packet_packet_receipt_hash": "cf5ac795100b3058dd05a6155fcf1261741629982b0d7d0170bdac4158b7184e",
-    "packet_pipeline_board_hash": "2a494f5b2ce7060438c39db46cf299cde52eab092adc3de74d7a2b8fbcee519a",
+    "packet_pipeline_board_hash": "fd7cbef030506bfd3f8e2850831358e8fa418e5535fa06d75c071dca4124f2cb",
     "packet_replay_manifest_hash": "5b5f2db8e66175bdfdfc2ebf119301879f83ec986f215959e2da018f2130b6b5",
     "packet_report_hash": "6192bab9a588e6b2693e93d8ef5c4fc0272e8f535598b393ea2f53e9c2f15b63",
     "packet_result_interpretation_contract_hash": "7ff0e430836a3d47069688e2471377d25295c9e853b53ff83f9782dcda6d0dd5",
@@ -80,7 +80,7 @@
     "validation_incident_freeze_validation_hash": "80d171f99f074bedae5f93197c95110d54edb2e60aa3ba3f0337fcc959c104d2",
     "validation_kill_switch_validation_hash": "07e7459644eb228db93d6e084a4cf8d7a454069f01adcf223e0a780981b98e05",
     "validation_mode_validation_hash": "97d7f126ef9a1be987763eb2d4c45501d5971b2468dae07756b217745fe3aeff",
-    "validation_next_lawful_move_hash": "3591ea261bf6590f9497ed69e3135a25bb8e895f4eda3793ad5d59714415c8bd",
+    "validation_next_lawful_move_hash": "dd1e2075f8b34fe64e773fb9412f852d4df835f948bcb106cff5548a0269830e",
     "validation_no_authorization_drift_validation_hash": "1bdf249ac2a044ade27c524fee96ceff3214ec5dafc08608a9f1ead8762f7e84",
     "validation_null_route_preservation_validation_hash": "45e9d814e9213cd475cba69b293301a77dee1faab04a6f0430e97626e7ea54c2",
     "validation_operator_override_validation_hash": "63baff91d825c6ebbcb34b9185db1e6b23ca0ae1d1b38f9740cf1d9ad0aba9ea",
@@ -418,9 +418,9 @@
   ],
   "commercial_activation_claim_authorized": false,
   "current_authoritative_lane": "B04_R6_LIMITED_RUNTIME_CANARY",
-  "current_branch": "authoritative/b04-r6-limited-runtime-canary",
-  "current_git_head": "82ee1b676fa59e5312f3bf32ca1c5e40b9de9eb9",
-  "current_main_head": "1de7d82548802b8b4bf81be2a48478796642d485",
+  "current_branch": "main",
+  "current_git_head": "f29156cc5c6f98e485161fc0a15e5c647c5b2409",
+  "current_main_head": "f29156cc5c6f98e485161fc0a15e5c647c5b2409",
   "fired_disqualifiers": [],
   "forbidden_actions": [
     "RUNTIME_CUTOVER_AUTHORIZED",
@@ -435,7 +435,7 @@
     "STATIC_COMPARATOR_WEAKENED",
     "CANARY_RESULT_TREATED_AS_PACKAGE_PROMOTION"
   ],
-  "generated_utc": "2026-05-06T22:32:36Z",
+  "generated_utc": "2026-05-06T22:42:57Z",
   "handoff_acceptance": {
     "execution_packet_accepted": true,
     "previous_validation_accepted": true,
@@ -504,11 +504,11 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "1de7d82548802b8b4bf81be2a48478796642d485",
+      "git_commit": "f29156cc5c6f98e485161fc0a15e5c647c5b2409",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "packet_next_lawful_move",
-      "sha256": "3591ea261bf6590f9497ed69e3135a25bb8e895f4eda3793ad5d59714415c8bd"
+      "sha256": "dd1e2075f8b34fe64e773fb9412f852d4df835f948bcb106cff5548a0269830e"
     },
     {
       "binding_kind": "file_sha256_at_limited_runtime_canary_execution",
@@ -542,11 +542,11 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "1de7d82548802b8b4bf81be2a48478796642d485",
+      "git_commit": "f29156cc5c6f98e485161fc0a15e5c647c5b2409",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_pipeline_board.json",
       "role": "packet_pipeline_board",
-      "sha256": "2a494f5b2ce7060438c39db46cf299cde52eab092adc3de74d7a2b8fbcee519a"
+      "sha256": "fd7cbef030506bfd3f8e2850831358e8fa418e5535fa06d75c071dca4124f2cb"
     },
     {
       "binding_kind": "file_sha256_at_limited_runtime_canary_execution",
@@ -676,11 +676,11 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "1de7d82548802b8b4bf81be2a48478796642d485",
+      "git_commit": "f29156cc5c6f98e485161fc0a15e5c647c5b2409",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "validation_next_lawful_move",
-      "sha256": "3591ea261bf6590f9497ed69e3135a25bb8e895f4eda3793ad5d59714415c8bd"
+      "sha256": "dd1e2075f8b34fe64e773fb9412f852d4df835f948bcb106cff5548a0269830e"
     },
     {
       "binding_kind": "file_sha256_at_limited_runtime_canary_execution",
@@ -798,7 +798,7 @@
     "can_execute_canary": false,
     "can_open_r6": false,
     "can_promote_package": false,
-    "compiled_contract_sha256": "23f3f0ffe9764f2e645bd41357a05a371ca80bae7e297630d281e009c55613b2",
+    "compiled_contract_sha256": "6f83a5373f835eb8e017420662ddb3b509788dd6fa07c13752a7ad095e2e31d7",
     "compiler_id": "KT_LANE_COMPILER_V0",
     "files_omitted_from_receipt": true,
     "generated_file_count": 9,
