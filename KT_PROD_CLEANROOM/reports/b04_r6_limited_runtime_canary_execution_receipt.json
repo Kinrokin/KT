@@ -6,9 +6,8 @@
     "B04_R6_LIMITED_RUNTIME_CANARY_INVALIDATED__FORENSIC_CANARY_RUNTIME_REVIEW_NEXT",
     "B04_R6_LIMITED_RUNTIME_CANARY_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS"
   ],
-  "artifact_id": "B04_R6_EXTERNAL_AUDIT_DELTA_MANIFEST_PREP_ONLY_DRAFT",
+  "artifact_id": "B04_R6_LIMITED_RUNTIME_CANARY_EXECUTION_RECEIPT",
   "authoritative_lane": "B04_R6_LIMITED_RUNTIME_CANARY",
-  "authority": "PREP_ONLY",
   "authorization_state": {
     "activation_cutover_executed": false,
     "activation_review_validated": true,
@@ -100,6 +99,7 @@
     "validation_validation_contract_hash": "f30df7ed28c374c35f9525895a25a1f114522ed5fb399baa155080843c610771",
     "validation_validation_receipt_hash": "d389d07316ea54695be6d9d6228e66f7797f2585fb0c49b4254fb0bdce7b286c"
   },
+  "canary_executed": true,
   "canary_result_treated_as_package_promotion": false,
   "canary_runtime_executed": true,
   "case_rows": [
@@ -800,10 +800,8 @@
   "package_promotion": "DEFERRED",
   "package_promotion_authorized": false,
   "predecessor_outcome": "B04_R6_CANARY_EXECUTION_PACKET_VALIDATED__CANARY_RUNTIME_NEXT",
-  "prep_only": true,
   "previous_authoritative_lane": "B04_R6_CANARY_EXECUTION_PACKET_VALIDATION",
   "previous_next_lawful_move": "RUN_B04_R6_LIMITED_RUNTIME_CANARY",
-  "purpose": "Prep-only scaffold for future external audit delta manifest prep only draft.",
   "r6_open": false,
   "reason_codes": [
     "RC_B04R6_CANARY_RUN_CONTRACT_MISSING",
@@ -846,9 +844,10 @@
     "RC_B04R6_CANARY_RUN_COMPILER_SCAFFOLD_MISSING",
     "RC_B04R6_CANARY_RUN_NEXT_MOVE_DRIFT"
   ],
+  "receipt_role": "execution",
   "runtime_cutover_authorized": false,
   "runtime_mode": "LIMITED_OPERATOR_OBSERVED_CANARY",
-  "schema_id": "kt.b04_r6.limited_runtime_canary.external_audit_delta_manifest_prep_only_draft.prep_only.v1",
+  "schema_id": "kt.b04_r6.limited_runtime_canary.execution_receipt.v1",
   "schema_version": 1,
   "scorecard": {
     "abstention_fallback_preserved": true,
@@ -886,7 +885,7 @@
   },
   "selected_outcome": "B04_R6_LIMITED_RUNTIME_CANARY_PASSED__CANARY_EVIDENCE_REVIEW_PACKET_NEXT",
   "static_comparator_weakened": false,
-  "status": "PREP_ONLY",
+  "status": "PASS",
   "terminal_defects": [
     "CANARY_EXECUTION_PACKET_VALIDATION_MISSING",
     "CANARY_SCOPE_VIOLATION",
