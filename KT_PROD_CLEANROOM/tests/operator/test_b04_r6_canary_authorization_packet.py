@@ -312,6 +312,10 @@ def test_no_authorization_drift_receipt_passes(outputs: Path) -> None:
 def test_pipeline_board_advances_to_canary_validation_only(outputs: Path) -> None:
     board = _payload(outputs, "pipeline_board")
     lanes = {row["lane"]: row for row in board["lanes"]}
+    assert (
+        lanes["VALIDATE_B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET"]["next_lane"]
+        == "AUTHOR_B04_R6_CANARY_AUTHORIZATION_PACKET"
+    )
     assert lanes["AUTHOR_B04_R6_CANARY_AUTHORIZATION_PACKET"]["status"] == "CURRENT_BOUND"
     assert lanes["VALIDATE_B04_R6_CANARY_AUTHORIZATION_PACKET"]["status"] == "NEXT"
     assert lanes["RUN_B04_R6_LIMITED_RUNTIME_CANARY"]["status"] == "BLOCKED"
