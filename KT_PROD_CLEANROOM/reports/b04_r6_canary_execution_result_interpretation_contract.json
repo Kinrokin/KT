@@ -6,9 +6,8 @@
     "B04_R6_CANARY_EXECUTION_PACKET_REJECTED__CANARY_EXECUTION_NOT_JUSTIFIED",
     "B04_R6_CANARY_EXECUTION_PACKET_INVALID__FORENSIC_CANARY_EXECUTION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_PUBLIC_VERIFIER_DELTA_REQUIREMENTS_PREP_ONLY",
+  "artifact_id": "B04_R6_CANARY_EXECUTION_RESULT_INTERPRETATION_CONTRACT",
   "authoritative_lane": "B04_R6_CANARY_EXECUTION_PACKET",
-  "authority": "PREP_ONLY_NON_AUTHORITY",
   "binding_hashes": {
     "canary_abstention_fallback_contract_hash": "8f4f80bb3af1b61c9f3a7dd05d4955c2fb0a283e4e508adf47106a0dd5446abe",
     "canary_allowed_case_class_contract_hash": "ecd53a13db5bb9077efe6234e5da47972b7904258ec35a458ef22295d5c80a22",
@@ -90,7 +89,6 @@
     "validation_validation_contract_hash": "241bcb1a6cc395e728402e96384425e5e99a3040c2d4ccd88f78897991fc1c36",
     "validation_validation_receipt_hash": "576900130427318a501c293d54a5815be0c2864cbe171a4987955ab7319389c6"
   },
-  "can_authorize": false,
   "canary_authorization_packet_authored": true,
   "canary_authorization_packet_validated": true,
   "canary_execution_packet_authored": true,
@@ -98,9 +96,17 @@
   "canary_runtime_authorized": false,
   "canary_runtime_executed": false,
   "commercial_activation_claim_authorized": false,
+  "contract_role": "result_interpretation",
+  "contract_status": "BOUND_NON_EXECUTING",
   "current_branch": "authoritative/b04-r6-canary-execution-packet",
   "current_git_head": "a2dba834b0165204e2c3dde2f49b3004f562d98d",
   "current_main_head": "cf2251ee0bb4cd060c9d9e1d91e2d1f68f16a411",
+  "details": {
+    "failure_outcome": "B04_R6_LIMITED_RUNTIME_CANARY_FAILED__CANARY_REPAIR_OR_CLOSEOUT_NEXT",
+    "invalidation_outcome": "B04_R6_LIMITED_RUNTIME_CANARY_INVALIDATED__FORENSIC_CANARY_INVALIDATION_COURT_NEXT",
+    "pass_does_not_authorize_cutover": true,
+    "success_outcome": "B04_R6_LIMITED_RUNTIME_CANARY_PASSED__CANARY_EVIDENCE_REVIEW_PACKET_NEXT"
+  },
   "forbidden_actions": [
     "CANARY_RUNTIME_EXECUTED",
     "CANARY_RUNTIME_AUTHORIZED",
@@ -686,7 +692,6 @@
   "predecessor_outcome": "B04_R6_CANARY_AUTHORIZATION_PACKET_VALIDATED__CANARY_EXECUTION_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_CANARY_AUTHORIZATION_PACKET_VALIDATION",
   "previous_next_lawful_move": "AUTHOR_B04_R6_CANARY_EXECUTION_PACKET",
-  "purpose": "Prep-only continuation scaffold for public verifier delta requirements prep only.",
   "r6_open": false,
   "reason_codes": [
     "RC_B04R6_CANARY_EXEC_PACKET_CONTRACT_MISSING",
@@ -733,7 +738,7 @@
     "RC_B04R6_CANARY_EXEC_PACKET_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.b04_r6.canary_execution.public_verifier_delta_requirements_prep_only.prep_only.v1",
+  "schema_id": "kt.b04_r6.canary_execution.result_interpretation.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_CANARY_EXECUTION_PACKET_BOUND__CANARY_EXECUTION_VALIDATION_NEXT",
   "source_hashes": {
@@ -759,7 +764,6 @@
     "validated_canary_authorization_receipt_hash": "576900130427318a501c293d54a5815be0c2864cbe171a4987955ab7319389c6"
   },
   "static_comparator_weakened": false,
-  "status": "PREP_ONLY",
   "terminal_defects": [
     "CANARY_AUTHORIZATION_VALIDATION_MISSING",
     "CANARY_AUTHORIZATION_PACKET_HASH_MISSING",
