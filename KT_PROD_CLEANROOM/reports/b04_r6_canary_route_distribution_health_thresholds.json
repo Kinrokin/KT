@@ -18,7 +18,7 @@
     "runtime_evidence_review_report_hash": "f1b4343a8418fd603fbdd9d794efa45919060e3392f62d4ee2b5cc4c5bed064a",
     "runtime_evidence_scorecard_hash": "f406a261a364a74c75fb24ca1152d3ea21f7904ca8ca40cdca1ab954fd83aa55",
     "runtime_evidence_validation_contract_hash": "fccf6ddcf37c54ca158130bae3daef905368698b0aa068fa488c73a710e8f952",
-    "runtime_evidence_validation_next_lawful_move_hash": "32ce2fe025bb16169bf5944a692e0c4dbf34aa4fdc613f80146497f1ab04bb88",
+    "runtime_evidence_validation_next_lawful_move_hash": "b59d4f4ef244b25bb3cc234288f06248d8bf6d5bcaa2a98a38108ec74a81f543",
     "runtime_evidence_validation_no_authorization_drift_hash": "d76b490adc2476cacd2ab2790aca8a4268918cd6c8f3a7b1574bafdba7a5f789",
     "runtime_evidence_validation_receipt_hash": "2e9471b797819c53f38c97455ab6ff68f4bc00735a00c1bb353a34b43a3fe04e",
     "runtime_evidence_validation_report_hash": "d1fabf1c6f60e5af0b628bc5a68f70020b1752e1b712c75de5541bcd3076ffe6",
@@ -29,7 +29,7 @@
     "runtime_null_route_preservation_review_hash": "6046f43572ae50b1036784c7c45d5e0ed58e5fecf323fd3eac577a35632f3df6",
     "runtime_operator_control_review_hash": "9a577711c4ade8500507913d215b16550ece6ea0e98cd8ee1d3c4f8762def9cb",
     "runtime_package_promotion_blocker_review_hash": "091023d34b45b862d61fb19cf9c91ebc0bd665d3b2fdf436ab5957bf77c019a2",
-    "runtime_pipeline_board_hash": "a7249dd3e401eadbce914152d74f604f5806624b825d0bbcbe7550079d9c7a0f",
+    "runtime_pipeline_board_hash": "72c6049a3853319cfb2971c2a644b5ead7017b70c00f97837bc59abb81a2590a",
     "runtime_replay_readiness_review_hash": "f43629a379ff9f564ad1942f72e2e4479bc1c9a7baf473e6485b9fe9f926424c",
     "runtime_rollback_readiness_review_hash": "252b8dd7b7183b45754b3e068c79f1d60cba879f00061f8ab3e33b2710fc4bdf",
     "runtime_route_distribution_health_review_hash": "bf97183cb3a52db81155aa20e6888891716d769ccb0aaa358f360b1e6347dfaa",
@@ -45,9 +45,9 @@
   "commercial_activation_claim_authorized": false,
   "contract_role": "route_distribution_health_thresholds",
   "contract_status": "BOUND_NON_EXECUTING",
-  "current_branch": "authoritative/b04-r6-canary-authorization-packet",
-  "current_git_head": "e1f0fd70001b60c1c485491fe0709e409748a4f7",
-  "current_main_head": "211eea5e3eac82dee79b14ab7aac252541bfcfeb",
+  "current_branch": "main",
+  "current_git_head": "9b0ec8aea64bd93fc39396153694979baa59e54e",
+  "current_main_head": "9b0ec8aea64bd93fc39396153694979baa59e54e",
   "details": {
     "freeze_on_unexplained_distribution_shift": true,
     "max_selector_entry_rate_delta_vs_shadow": 0.05,
@@ -68,7 +68,7 @@
     "METRIC_CONTRACT_MUTATED",
     "STATIC_COMPARATOR_WEAKENED"
   ],
-  "generated_utc": "2026-05-06T13:57:42Z",
+  "generated_utc": "2026-05-06T14:03:06Z",
   "input_bindings": [
     {
       "binding_kind": "file_sha256_at_canary_authorization_packet_authoring",
@@ -120,11 +120,11 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "211eea5e3eac82dee79b14ab7aac252541bfcfeb",
+      "git_commit": "9b0ec8aea64bd93fc39396153694979baa59e54e",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "runtime_evidence_validation_next_lawful_move",
-      "sha256": "32ce2fe025bb16169bf5944a692e0c4dbf34aa4fdc613f80146497f1ab04bb88"
+      "sha256": "b59d4f4ef244b25bb3cc234288f06248d8bf6d5bcaa2a98a38108ec74a81f543"
     },
     {
       "binding_kind": "file_sha256_at_canary_authorization_packet_authoring",
@@ -182,11 +182,11 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "211eea5e3eac82dee79b14ab7aac252541bfcfeb",
+      "git_commit": "9b0ec8aea64bd93fc39396153694979baa59e54e",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_pipeline_board.json",
       "role": "runtime_pipeline_board",
-      "sha256": "a7249dd3e401eadbce914152d74f604f5806624b825d0bbcbe7550079d9c7a0f"
+      "sha256": "72c6049a3853319cfb2971c2a644b5ead7017b70c00f97837bc59abb81a2590a"
     },
     {
       "binding_kind": "file_sha256_at_canary_authorization_packet_authoring",
@@ -234,7 +234,7 @@
   "lane_compiler_scaffold": {
     "authority": "PREP_ONLY_TOOLING",
     "compiler_id": "KT_LANE_COMPILER_V0",
-    "contract_sha256": "3e32c48afddb2e01592e128f862f9481e15fb017771c73ab2d5dd0a86924e268",
+    "contract_sha256": "6e555f99c91f1eae375a87e5a87f0cc0a268b25400f26f67dfaa65be9d8edc3f",
     "generated_artifacts": [
       "KT_PROD_CLEANROOM/reports/kt_lane_artifact_list__author_b04_r6_canary_authorization_packet.json",
       "KT_PROD_CLEANROOM/reports/kt_lane_future_blockers__author_b04_r6_canary_authorization_packet.json",
