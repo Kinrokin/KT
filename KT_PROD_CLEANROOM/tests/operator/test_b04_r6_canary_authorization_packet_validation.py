@@ -454,3 +454,21 @@ def test_missing_sample_limit_fails_closed(tmp_path: Path, monkeypatch: pytest.M
     _patch_validation_env(monkeypatch, tmp_path)
     with pytest.raises(RuntimeError, match="SAMPLE_LIMIT"):
         validation.run(reports_root=reports)
+
+
+def test_self_replay_pipeline_board_handoff_is_allowed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_canary_only(tmp_path, monkeypatch)
+    path = reports / canary.OUTPUTS["pipeline_board"]
+    payload = _load(path)
+    for row in payload["lanes"]:
+        if row["lane"] == "VALIDATE_B04_R6_CANARY_AUTHORIZATION_PACKET":
+            row["status"] = "CURRENT_VALIDATED"
+        if row["lane"] == "AUTHOR_B04_R6_CANARY_EXECUTION_PACKET":
+            row["status"] = "NEXT"
+    _write(path, payload)
+    _patch_validation_env(monkeypatch, tmp_path)
+
+    result = validation.run(reports_root=reports)
+
+    assert result["selected_outcome"] == validation.SELECTED_OUTCOME
+    assert result["next_lawful_move"] == validation.NEXT_LAWFUL_MOVE
