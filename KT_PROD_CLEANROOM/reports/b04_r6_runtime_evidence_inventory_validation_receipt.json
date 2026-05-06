@@ -6,9 +6,8 @@
     "B04_R6_RUNTIME_EVIDENCE_REVIEW_REJECTED__CANARY_NOT_JUSTIFIED",
     "B04_R6_RUNTIME_EVIDENCE_REVIEW_INVALID__FORENSIC_RUNTIME_EVIDENCE_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_PACKAGE_PROMOTION_REVIEW_PRECONDITIONS_PREP_ONLY_DRAFT",
+  "artifact_id": "B04_R6_RUNTIME_EVIDENCE_INVENTORY_VALIDATION_RECEIPT",
   "authoritative_lane": "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_VALIDATION",
-  "authority": "PREP_ONLY_NON_AUTHORITY",
   "binding_hashes": {
     "abstention_preservation_review_hash": "0a81877d63b1ccfe25f536ca42eb0478485751a32b26822c9f4a988b3369e3fb",
     "afsh_observation_review_hash": "6e750ee55751d6d39eb12d0f18f797af19f004cd24e55131f2a1bd2e062a8373",
@@ -406,7 +405,6 @@
   "predecessor_outcome": "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_BOUND__RUNTIME_EVIDENCE_REVIEW_VALIDATION_NEXT",
   "previous_authoritative_lane": "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET",
   "previous_next_lawful_move": "VALIDATE_B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET",
-  "purpose": "Prep-only continuation scaffold for package promotion review preconditions prep only draft.",
   "r6_open": false,
   "reason_codes": [
     "RC_B04R6_RUNTIME_EVIDENCE_VAL_CONTRACT_MISSING",
@@ -453,12 +451,11 @@
   "runtime_evidence_review_packet_authored": true,
   "runtime_evidence_review_validated": true,
   "runtime_mode": "SHADOW_RUNTIME_ONLY",
-  "schema_id": "kt.b04_r6.runtime_evidence.review_validation.package_promotion_review_preconditions_prep_only_draft.prep_only.v1",
+  "schema_id": "kt.b04_r6.runtime_evidence.review_validation.inventory.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_RUNTIME_EVIDENCE_REVIEW_VALIDATED__CANARY_AUTHORIZATION_PACKET_NEXT",
   "shadow_runtime_passed": true,
   "static_comparator_weakened": false,
-  "status": "PREP_ONLY",
   "terminal_defects": [
     "RUNTIME_EVIDENCE_REVIEW_PACKET_MISSING",
     "RUNTIME_EVIDENCE_INVENTORY_MISSING",
@@ -483,6 +480,10 @@
   "trust_zone_validation_status": "PASS",
   "truth_engine_law_changed": false,
   "truth_engine_law_unchanged": true,
+  "validated_hashes": {
+    "evidence_inventory_hash": "a60f8615bab2314deb4cd24bfa5fa12ac98f44c261ada67e1940e6ddd3580b7b"
+  },
+  "validation_role": "evidence_inventory_validation",
   "validation_rows": [
     {
       "check_id": "B04R6-RUNTIME-EVIDENCE-VALIDATION-001",
@@ -694,5 +695,7 @@
       "status": "PASS",
       "terminal_if_fail": true
     }
-  ]
+  ],
+  "validation_status": "PASS",
+  "validation_subject": "runtime evidence inventory"
 }
