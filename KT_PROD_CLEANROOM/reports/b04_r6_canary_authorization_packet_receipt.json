@@ -6,9 +6,8 @@
     "B04_R6_CANARY_AUTHORIZATION_PACKET_REJECTED__CANARY_NOT_JUSTIFIED",
     "B04_R6_CANARY_AUTHORIZATION_PACKET_INVALID__FORENSIC_CANARY_AUTHORIZATION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_PACKAGE_PROMOTION_REVIEW_PRECONDITIONS_PREP_ONLY_DRAFT",
+  "artifact_id": "B04_R6_CANARY_AUTHORIZATION_PACKET_RECEIPT",
   "authoritative_lane": "B04_R6_CANARY_AUTHORIZATION_PACKET",
-  "authority": "PREP_ONLY_NON_AUTHORITY",
   "binding_hashes": {
     "runtime_abstention_preservation_review_hash": "0a81877d63b1ccfe25f536ca42eb0478485751a32b26822c9f4a988b3369e3fb",
     "runtime_afsh_observation_review_hash": "6e750ee55751d6d39eb12d0f18f797af19f004cd24e55131f2a1bd2e062a8373",
@@ -41,6 +40,7 @@
   "canary_authorization_packet_validated": false,
   "canary_execution_packet_authored": false,
   "canary_execution_packet_validated": false,
+  "canary_packet_bound": true,
   "canary_runtime_authorized": false,
   "canary_runtime_executed": false,
   "commercial_activation_claim_authorized": false,
@@ -289,7 +289,6 @@
   "predecessor_outcome": "B04_R6_RUNTIME_EVIDENCE_REVIEW_VALIDATED__CANARY_AUTHORIZATION_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_RUNTIME_EVIDENCE_REVIEW_PACKET_VALIDATION",
   "previous_next_lawful_move": "AUTHOR_B04_R6_CANARY_AUTHORIZATION_PACKET",
-  "purpose": "Prep-only continuation scaffold for package promotion review preconditions prep only draft.",
   "r6_open": false,
   "reason_codes": [
     "RC_B04R6_CANARY_AUTH_PACKET_CONTRACT_MISSING",
@@ -334,7 +333,7 @@
   "runtime_cutover_authorized": false,
   "runtime_evidence_review_validated": true,
   "runtime_mode_precondition": "SHADOW_RUNTIME_ONLY",
-  "schema_id": "kt.b04_r6.canary_authorization.package_promotion_review_preconditions_prep_only_draft.prep_only.v1",
+  "schema_id": "kt.b04_r6.canary_authorization_packet_receipt.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_CANARY_AUTHORIZATION_PACKET_BOUND__CANARY_AUTHORIZATION_VALIDATION_NEXT",
   "shadow_runtime_passed": true,
@@ -361,7 +360,6 @@
     "validated_runtime_evidence_review_receipt_hash": "2e9471b797819c53f38c97455ab6ff68f4bc00735a00c1bb353a34b43a3fe04e"
   },
   "static_comparator_weakened": false,
-  "status": "PREP_ONLY",
   "terminal_defects": [
     "RUNTIME_EVIDENCE_REVIEW_VALIDATION_MISSING",
     "RUNTIME_EVIDENCE_INVENTORY_MISSING",
@@ -672,5 +670,6 @@
       "status": "PASS",
       "terminal_if_fail": true
     }
-  ]
+  ],
+  "verdict": "CANARY_AUTHORIZATION_PACKET_BOUND_NON_EXECUTING"
 }
