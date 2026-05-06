@@ -6,9 +6,8 @@
     "B04_R6_CANARY_EXECUTION_PACKET_REJECTED__CANARY_RUNTIME_NOT_JUSTIFIED",
     "B04_R6_CANARY_EXECUTION_PACKET_INVALID__FORENSIC_CANARY_EXECUTION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_EXTERNAL_AUDIT_DELTA_MANIFEST_PREP_ONLY_DRAFT",
+  "artifact_id": "B04_R6_CANARY_EXECUTION_RESULT_INTERPRETATION_VALIDATION_RECEIPT",
   "authoritative_lane": "B04_R6_CANARY_EXECUTION_PACKET_VALIDATION",
-  "authority": "PREP_ONLY_NON_AUTHORITY",
   "binding_hashes": {
     "abstention_fallback_contract_hash": "7e6074993a43bb4ab696a2ebb0e24e8fb38b10edb7e69f0fc4929c8e750f9425",
     "allowed_case_class_contract_hash": "3f9b0a92dadb5f7e552902c09f74553da6e201afd98f5be75e3aef6dae573e7d",
@@ -47,7 +46,6 @@
     "validation_plan_hash": "985dce2ea03d58f951a3de41b08387b599639807d2e777c34ea9bfcf5cc69f7b",
     "validation_reason_codes_hash": "b70309e0e4adc2dc0dbda4fff5819081311277bf6be2afa5db3e217b15a454a0"
   },
-  "can_authorize": false,
   "canary_authorization_packet_authored": true,
   "canary_authorization_packet_validated": true,
   "canary_execution_packet_authored": true,
@@ -383,7 +381,6 @@
   "predecessor_outcome": "B04_R6_CANARY_EXECUTION_PACKET_BOUND__CANARY_EXECUTION_VALIDATION_NEXT",
   "previous_authoritative_lane": "B04_R6_CANARY_EXECUTION_PACKET",
   "previous_next_lawful_move": "VALIDATE_B04_R6_CANARY_EXECUTION_PACKET",
-  "purpose": "Prep-only continuation scaffold for external audit delta manifest prep only draft.",
   "r6_open": false,
   "reason_codes": [
     "RC_B04R6_CANARY_EXEC_VAL_CONTRACT_MISSING",
@@ -429,11 +426,14 @@
     "RC_B04R6_CANARY_EXEC_VAL_NEXT_MOVE_DRIFT"
   ],
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.b04_r6.canary_execution_validation.external_audit_delta_manifest_prep_only_draft.prep_only.v1",
+  "schema_id": "kt.b04_r6.canary_execution.validation.result_interpretation_validation.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_CANARY_EXECUTION_PACKET_VALIDATED__CANARY_RUNTIME_NEXT",
+  "source_roles": [
+    "result_interpretation_contract"
+  ],
   "static_comparator_weakened": false,
-  "status": "PREP_ONLY",
+  "subject": "Result interpretation",
   "terminal_defects": [
     "CANARY_EXECUTION_PACKET_MISSING",
     "CANARY_EXECUTION_PACKET_HASH_MISMATCH",
@@ -456,6 +456,10 @@
   "trust_zone_validation_status": "PASS",
   "truth_engine_law_changed": false,
   "truth_engine_law_unchanged": true,
+  "validated_hashes": {
+    "result_interpretation_contract_hash": "7ff0e430836a3d47069688e2471377d25295c9e853b53ff83f9782dcda6d0dd5"
+  },
+  "validation_role": "result_interpretation_validation",
   "validation_rows": [
     {
       "check_id": "B04R6-CANARY-EXEC-VALIDATION-001",
@@ -661,5 +665,6 @@
       "status": "PASS",
       "terminal_if_fail": true
     }
-  ]
+  ],
+  "validation_status": "PASS"
 }
