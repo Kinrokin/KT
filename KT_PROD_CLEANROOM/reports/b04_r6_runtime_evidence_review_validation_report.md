@@ -6,4 +6,4 @@ Next lawful move: AUTHOR_B04_R6_CANARY_AUTHORIZATION_PACKET
 
 The runtime evidence review packet is validated as evidence-bound, replay-safe, externally reviewable, commercially bounded, and sufficient only to advance to canary authorization packet authorship.
 
-This validation does not authorize canary runtime, execute canary, authorize runtime cutover, open R6, escalate lobes, promote package, authorize commercial activation claims, or mutate truth/trust law.
+This validation does not authorize canary runtime, does not execute canary, does not authorize runtime cutover, open R6, escalate lobes, promote package, authorize commercial activation claims, or mutate truth/trust law.
