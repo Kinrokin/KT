@@ -380,6 +380,42 @@ def build_lane_contract(spec: Mapping[str, Any]) -> Dict[str, Any]:
     return contract
 
 
+def build_paired_lane_contract(author_spec: Mapping[str, Any], validation_spec: Mapping[str, Any]) -> Dict[str, Any]:
+    """Build a prep-only author+validator bundle without collapsing lane authority."""
+
+    author_contract = build_lane_contract(author_spec)
+    validation_contract = build_lane_contract(validation_spec)
+    author_lane = author_contract["lane_spec"]["lane_id"]
+    validation_lane = validation_contract["lane_spec"]["lane_id"]
+    return {
+        "schema_id": "kt.paired_lane_contract.prep_only.v0",
+        "compiler_id": COMPILER_ID,
+        "authority": AUTHORITY,
+        "status": "PREP_ONLY_PAIRED_SCAFFOLD",
+        "prep_only_banner": PREP_ONLY_BANNER,
+        "author_lane_id": author_lane,
+        "validation_lane_id": validation_lane,
+        "author_contract": author_contract,
+        "validation_contract": validation_contract,
+        "paired_lane_law": {
+            "authoring_is_not_validation": True,
+            "canonical_validation_requires_separate_lane": True,
+            "provisional_validation_scaffold_allowed": True,
+            "compiler_can_authorize": False,
+        },
+        "paired_generated_artifacts": sorted(
+            set(author_contract["generated_artifacts"]) | set(validation_contract["generated_artifacts"])
+        ),
+        "non_authorization_guards": {
+            "runtime_authorized": False,
+            "r6_open_authorized": False,
+            "package_promotion_authorized": False,
+            "commercial_claims_authorized": False,
+            "forbidden_authority_tokens": list(FORBIDDEN_AUTHORITY_TOKENS),
+        },
+    }
+
+
 def compile_lane_spec_file(spec_path: str | Path, output_root: Optional[str | Path] = None) -> Dict[str, Any]:
     try:
         spec = load_no_dupes(Path(spec_path))
