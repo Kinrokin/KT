@@ -383,7 +383,7 @@ def _validate_review_payloads(root: Path, payloads: Dict[str, Dict[str, Any]], t
     for label, payload in payloads.items():
         _ensure_authority_closed(payload, label=label)
     for role, payload in payloads.items():
-        if role.startswith("canary_") or role.endswith("prep_only_draft") or role.endswith("prep_only"):
+        if role in review.PREP_ONLY_OUTPUT_ROLES:
             if payload.get("status") != "PREP_ONLY":
                 _fail("RC_B04R6_RUNTIME_EVIDENCE_VAL_PREP_ONLY_AUTHORITY_DRIFT", f"{role} is not prep-only")
 
