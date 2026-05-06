@@ -6,7 +6,7 @@
     "B04_R6_CANARY_AUTHORIZATION_PACKET_REJECTED__CANARY_NOT_JUSTIFIED",
     "B04_R6_CANARY_AUTHORIZATION_PACKET_INVALID__FORENSIC_CANARY_AUTHORIZATION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_CANARY_RUNTIME_RECEIPT_SCHEMA",
   "authoritative_lane": "B04_R6_CANARY_AUTHORIZATION_PACKET",
   "binding_hashes": {
     "runtime_abstention_preservation_review_hash": "0a81877d63b1ccfe25f536ca42eb0478485751a32b26822c9f4a988b3369e3fb",
@@ -43,9 +43,28 @@
   "canary_runtime_authorized": false,
   "canary_runtime_executed": false,
   "commercial_activation_claim_authorized": false,
+  "contract_role": "runtime_receipt_schema",
+  "contract_status": "BOUND_NON_EXECUTING",
   "current_branch": "authoritative/b04-r6-canary-authorization-packet",
   "current_git_head": "e1f0fd70001b60c1c485491fe0709e409748a4f7",
   "current_main_head": "211eea5e3eac82dee79b14ab7aac252541bfcfeb",
+  "details": {
+    "compressed_index_source_of_truth": false,
+    "raw_hash_bound_artifacts_required": true,
+    "required_fields": [
+      "case_id",
+      "canary_mode",
+      "static_fallback_available",
+      "operator_observed",
+      "afsh_verdict",
+      "static_verdict",
+      "fallback_invoked",
+      "kill_switch_ready",
+      "rollback_receipt_id",
+      "trace_hash",
+      "external_verifier_hash"
+    ]
+  },
   "forbidden_actions": [
     "CANARY_RUNTIME_EXECUTED",
     "CANARY_RUNTIME_AUTHORIZED",
@@ -332,7 +351,7 @@
   "runtime_cutover_authorized": false,
   "runtime_evidence_review_validated": true,
   "runtime_mode_precondition": "SHADOW_RUNTIME_ONLY",
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v25",
+  "schema_id": "kt.b04_r6.canary_authorization.runtime_receipt_schema.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_CANARY_AUTHORIZATION_PACKET_BOUND__CANARY_AUTHORIZATION_VALIDATION_NEXT",
   "shadow_runtime_passed": true,
@@ -669,6 +688,5 @@
       "status": "PASS",
       "terminal_if_fail": true
     }
-  ],
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  ]
 }
