@@ -220,6 +220,26 @@ def test_authoring_packet_source_hashes_remain_bound(outputs: Path, key: str) ->
     assert all(ch in "0123456789abcdef" for ch in value)
 
 
+@pytest.mark.parametrize("source_key,binding_key", sorted(validation.DIRECT_SOURCE_HASH_BINDING_KEYS.items()))
+def test_authoring_packet_source_hashes_anchor_to_execution_binding_hashes(outputs: Path, source_key: str, binding_key: str) -> None:
+    author_contract = _load(outputs / execution.OUTPUTS["packet_contract"])
+    assert author_contract["source_hashes"][source_key] == author_contract["binding_hashes"][binding_key]
+
+
+@pytest.mark.parametrize("source_key,binding_key", sorted(validation.CANARY_VALIDATION_SOURCE_HASH_BINDING_KEYS.items()))
+def test_authoring_packet_source_hashes_anchor_to_validated_canary_bindings(outputs: Path, source_key: str, binding_key: str) -> None:
+    author_contract = _load(outputs / execution.OUTPUTS["packet_contract"])
+    canary_validation_contract = _load(outputs / "b04_r6_canary_authorization_packet_validation_contract.json")
+    assert author_contract["source_hashes"][source_key] == canary_validation_contract["binding_hashes"][binding_key]
+
+
+@pytest.mark.parametrize("source_key,evidence_key", sorted(validation.CANARY_PACKET_SOURCE_EVIDENCE_KEYS.items()))
+def test_authoring_packet_source_hashes_anchor_to_canary_packet_source_evidence(outputs: Path, source_key: str, evidence_key: str) -> None:
+    author_contract = _load(outputs / execution.OUTPUTS["packet_contract"])
+    canary_contract = _load(outputs / "b04_r6_canary_authorization_packet_contract.json")
+    assert author_contract["source_hashes"][source_key] == canary_contract["source_evidence_hashes"][evidence_key]
+
+
 def test_validation_marks_packet_validated_runtime_next_not_executed(outputs: Path) -> None:
     contract = _contract(outputs)
     assert contract["canary_execution_packet_authored"] is True
@@ -411,6 +431,17 @@ def test_execution_packet_outcome_drift_fails_closed(tmp_path: Path, monkeypatch
     _write(path, payload)
     _patch_validation_env(monkeypatch, tmp_path)
     with pytest.raises(RuntimeError, match="PACKET_BINDING_MISSING"):
+        validation.run(reports_root=reports)
+
+
+def test_execution_packet_source_hash_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_execution_only(tmp_path, monkeypatch)
+    path = reports / execution.OUTPUTS["packet_contract"]
+    payload = _load(path)
+    payload["source_hashes"]["validated_canary_authorization_receipt_hash"] = "0" * 64
+    _write(path, payload)
+    _patch_validation_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="SOURCE_HASH_MISMATCH"):
         validation.run(reports_root=reports)
 
 

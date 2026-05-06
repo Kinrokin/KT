@@ -66,6 +66,7 @@ REASON_CODES = (
     "RC_B04R6_CANARY_EXEC_VAL_AUTHORIZATION_VALIDATION_MISSING",
     "RC_B04R6_CANARY_EXEC_VAL_AUTHORIZATION_PACKET_MISSING",
     "RC_B04R6_CANARY_EXEC_VAL_SOURCE_HASH_MISSING",
+    "RC_B04R6_CANARY_EXEC_VAL_SOURCE_HASH_MISMATCH",
     "RC_B04R6_CANARY_EXEC_VAL_MODE_MISSING",
     "RC_B04R6_CANARY_EXEC_VAL_SCOPE_MISSING",
     "RC_B04R6_CANARY_EXEC_VAL_ALLOWED_CASE_CLASSES_MISSING",
@@ -108,6 +109,34 @@ EXECUTION_JSON_INPUTS = {
 }
 EXECUTION_TEXT_INPUTS = {
     "packet_report": f"KT_PROD_CLEANROOM/reports/{execution.OUTPUTS['packet_report']}",
+}
+DIRECT_SOURCE_HASH_BINDING_KEYS = {
+    "validated_canary_authorization_receipt_hash": "validation_validation_receipt_hash",
+    "canary_scope_manifest_hash": "canary_scope_manifest_hash",
+    "canary_authorization_packet_hash": "canary_packet_contract_hash",
+}
+CANARY_VALIDATION_SOURCE_HASH_BINDING_KEYS = {
+    "canary_scope_manifest_hash": "scope_manifest_hash",
+    "canary_authorization_packet_hash": "packet_contract_hash",
+}
+CANARY_PACKET_SOURCE_EVIDENCE_KEYS = {
+    "runtime_evidence_review_validation_receipt_hash": "validated_runtime_evidence_review_receipt_hash",
+    "runtime_evidence_inventory_hash": "runtime_evidence_inventory_hash",
+    "runtime_evidence_scorecard_hash": "runtime_evidence_scorecard_hash",
+    "shadow_runtime_result_hash": "shadow_runtime_result_hash",
+    "static_authority_preservation_evidence_hash": "static_authority_preservation_evidence_hash",
+    "route_distribution_health_evidence_hash": "route_distribution_health_evidence_hash",
+    "fallback_behavior_evidence_hash": "fallback_behavior_evidence_hash",
+    "operator_override_readiness_evidence_hash": "operator_override_readiness_evidence_hash",
+    "kill_switch_readiness_evidence_hash": "kill_switch_readiness_evidence_hash",
+    "rollback_readiness_evidence_hash": "rollback_readiness_evidence_hash",
+    "drift_monitoring_evidence_hash": "drift_monitoring_evidence_hash",
+    "incident_freeze_evidence_hash": "incident_freeze_evidence_hash",
+    "trace_completeness_evidence_hash": "trace_completeness_evidence_hash",
+    "runtime_replay_evidence_hash": "runtime_replay_evidence_hash",
+    "external_verifier_readiness_evidence_hash": "external_verifier_readiness_evidence_hash",
+    "commercial_claim_boundary_hash": "commercial_claim_boundary_hash",
+    "package_promotion_blocker_review_hash": "package_promotion_blocker_review_hash",
 }
 VALIDATION_RECEIPT_ROLES = (
     "packet_binding_validation",
@@ -374,10 +403,39 @@ def _validate_prior_git_bindings(root: Path, contract: Dict[str, Any]) -> None:
             _fail("RC_B04R6_CANARY_EXEC_VAL_INPUT_HASH_MISSING", f"{binding_key} missing or mismatched")
 
 
-def _validate_source_hashes(contract: Dict[str, Any]) -> None:
+def _bound_input_path(contract: Dict[str, Any], role: str) -> str:
+    for row in contract.get("input_bindings", []):
+        if row.get("role") == role and row.get("path"):
+            return str(row["path"])
+    _fail("RC_B04R6_CANARY_EXEC_VAL_INPUT_HASH_MISSING", f"{role} input binding missing")
+
+
+def _validate_source_hashes(root: Path, contract: Dict[str, Any]) -> None:
+    source_hashes = contract.get("source_hashes", {})
     for key in execution.REQUIRED_SOURCE_HASHES:
-        if not _is_sha256(contract.get("source_hashes", {}).get(key)):
+        if not _is_sha256(source_hashes.get(key)):
             _fail("RC_B04R6_CANARY_EXEC_VAL_SOURCE_HASH_MISSING", f"{key} missing")
+
+    binding_hashes = contract.get("binding_hashes", {})
+    for source_key, binding_key in DIRECT_SOURCE_HASH_BINDING_KEYS.items():
+        if source_hashes[source_key] != binding_hashes.get(binding_key):
+            _fail("RC_B04R6_CANARY_EXEC_VAL_SOURCE_HASH_MISMATCH", f"{source_key} does not match {binding_key}")
+
+    canary_validation_contract = _load(
+        root,
+        _bound_input_path(contract, "validation_validation_contract"),
+        label="bound canary authorization validation contract",
+    )
+    canary_validation_hashes = canary_validation_contract.get("binding_hashes", {})
+    for source_key, binding_key in CANARY_VALIDATION_SOURCE_HASH_BINDING_KEYS.items():
+        if source_hashes[source_key] != canary_validation_hashes.get(binding_key):
+            _fail("RC_B04R6_CANARY_EXEC_VAL_SOURCE_HASH_MISMATCH", f"{source_key} does not match validated {binding_key}")
+
+    canary_packet_contract = _load(root, _bound_input_path(contract, "canary_packet_contract"), label="bound canary authorization packet")
+    source_evidence_hashes = canary_packet_contract.get("source_evidence_hashes", {})
+    for source_key, evidence_key in CANARY_PACKET_SOURCE_EVIDENCE_KEYS.items():
+        if source_hashes[source_key] != source_evidence_hashes.get(evidence_key):
+            _fail("RC_B04R6_CANARY_EXEC_VAL_SOURCE_HASH_MISMATCH", f"{source_key} does not match canary packet {evidence_key}")
 
 
 def _validate_operational_contracts(payloads: Dict[str, Dict[str, Any]]) -> None:
@@ -461,7 +519,7 @@ def _validate_authoring_payloads(root: Path, payloads: Dict[str, Dict[str, Any]]
         _fail("RC_B04R6_CANARY_EXEC_VAL_NEXT_MOVE_DRIFT", "next move handoff lacks valid lane identity")
 
     _validate_prior_git_bindings(root, contract)
-    _validate_source_hashes(contract)
+    _validate_source_hashes(root, contract)
     _validate_operational_contracts(payloads)
 
     validation_plan = payloads["validation_plan"]
