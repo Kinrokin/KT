@@ -492,7 +492,7 @@ def _compiler_scaffold(current_main_head: str) -> Dict[str, Any]:
         "contract_sha256": hashlib.sha256(rendered.encode("utf-8")).hexdigest(),
         "generated_artifacts": contract["generated_artifacts"],
         "lane_law_metadata": contract["lane_law_metadata"],
-        "non_authorization_guards": contract["no_authorization_drift_checks"],
+        "non_authorization_guards": contract["non_authorization_guards"],
     }
 
 
