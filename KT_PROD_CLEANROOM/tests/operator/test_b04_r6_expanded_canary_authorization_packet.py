@@ -274,3 +274,17 @@ def test_rejects_runtime_cutover_authority_drift(tmp_path: Path, monkeypatch: py
     _patch_env(monkeypatch, tmp_path)
     with pytest.raises(RuntimeError, match="RUNTIME_CUTOVER_AUTHORIZED"):
         expanded.run(reports_root=reports)
+
+
+@pytest.mark.parametrize("field", ["expanded_canary_runtime_authorized", "expanded_canary_runtime_executed"])
+def test_rejects_expanded_canary_runtime_drift(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, field: str
+) -> None:
+    reports = tmp_path / "KT_PROD_CLEANROOM" / "reports"
+    _seed_inputs(reports)
+    scorecard = _load(reports / expanded.INPUTS["canary_evidence_scorecard"])
+    scorecard[field] = True
+    _write(reports / expanded.INPUTS["canary_evidence_scorecard"], scorecard)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="RUNTIME_AUTHORIZED"):
+        expanded.run(reports_root=reports)

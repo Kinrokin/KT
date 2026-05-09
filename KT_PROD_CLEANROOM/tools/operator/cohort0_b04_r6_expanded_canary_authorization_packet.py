@@ -200,6 +200,10 @@ def _validate_inputs(payloads: Dict[str, Dict[str, Any]]) -> None:
 
     for role, payload in payloads.items():
         for nested in _walk_dicts(payload):
+            if nested.get("expanded_canary_runtime_authorized") is True or nested.get("expanded_canary_authorized") is True:
+                _fail("RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RUNTIME_AUTHORIZED", f"{role} authorizes expanded canary")
+            if nested.get("expanded_canary_runtime_executed") is True or nested.get("expanded_canary_executed") is True:
+                _fail("RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RUNTIME_AUTHORIZED", f"{role} executed expanded canary")
             if nested.get("runtime_cutover_authorized") is True:
                 _fail("RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RUNTIME_CUTOVER_AUTHORIZED", f"{role} authorizes cutover")
             if nested.get("r6_open") is True:
