@@ -260,12 +260,26 @@ def _validate_operational_contracts(payloads: Dict[str, Dict[str, Any]]) -> None
                 _fail("RC_B04R6_EXPANDED_CANARY_AUTH_VAL_SCOPE_MISSING", "scope widened to global R6 or cutover")
             if details.get("max_case_count_per_window") != 36:
                 _fail("RC_B04R6_EXPANDED_CANARY_AUTH_VAL_SAMPLE_LIMIT_MISSING", "sample limit drifted")
-        if role == "allowed_case_class_contract" and not details.get("allowed_case_classes"):
-            _fail("RC_B04R6_EXPANDED_CANARY_AUTH_VAL_ALLOWED_CASE_CLASSES_MISSING", "allowed case classes missing")
+        if role == "allowed_case_class_contract":
+            expected_allowed = {
+                "ROUTE_ELIGIBLE_LOW_RISK_CANARY_CONFIRMED",
+                "STATIC_FALLBACK_AVAILABLE_EXPANDED_ROUTE_CHECK",
+                "NON_COMMERCIAL_OPERATOR_OBSERVED_EXPANDED_SAMPLE",
+                "PRIOR_CANARY_COVERED_CASE_CLASS_EXTENSION",
+            }
+            allowed = set(details.get("allowed_case_classes", []))
+            forbidden_allowed = {"GLOBAL_R6_TRAFFIC", "RUNTIME_CUTOVER_SURFACE", "COMMERCIAL_ACTIVATION_SURFACE", "PACKAGE_PROMOTION_SURFACE"}
+            if allowed != expected_allowed or allowed.intersection(forbidden_allowed):
+                _fail("RC_B04R6_EXPANDED_CANARY_AUTH_VAL_ALLOWED_CASE_CLASSES_MISSING", "allowed case classes drifted")
         if role == "excluded_case_class_contract":
             excluded = set(details.get("excluded_case_classes", []))
             if not {"GLOBAL_R6_TRAFFIC", "RUNTIME_CUTOVER_SURFACE", "COMMERCIAL_ACTIVATION_SURFACE"}.issubset(excluded):
                 _fail("RC_B04R6_EXPANDED_CANARY_AUTH_VAL_EXCLUDED_CASE_CLASSES_MISSING", "required excluded classes missing")
+        if role == "sample_limit_contract":
+            if details.get("max_cases") != 36 or details.get("max_route_observations") != 24:
+                _fail("RC_B04R6_EXPANDED_CANARY_AUTH_VAL_SAMPLE_LIMIT_MISSING", "sample limit contract drifted")
+            if details.get("requires_operator_observation") is not True or details.get("may_not_expand_without_validation") is not True:
+                _fail("RC_B04R6_EXPANDED_CANARY_AUTH_VAL_SAMPLE_LIMIT_MISSING", "sample limit guards missing")
         required_true = {
             "static_fallback_contract": "static_fallback_required",
             "abstention_fallback_contract": "abstention_fallback_required",

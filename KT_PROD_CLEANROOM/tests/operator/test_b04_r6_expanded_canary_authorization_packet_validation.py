@@ -350,6 +350,44 @@ def test_sample_limit_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.Mon
         validation.run(reports_root=reports)
 
 
+def test_sample_limit_contract_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_authoring_only(tmp_path, monkeypatch)
+    path = reports / expanded.OUTPUTS["sample_limit_contract"]
+    payload = _load(path)
+    payload["details"]["max_cases"] = 3600
+    _write(path, payload)
+    _patch_validation_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="SAMPLE_LIMIT_MISSING"):
+        validation.run(reports_root=reports)
+
+
+@pytest.mark.parametrize(
+    "allowed_case_classes",
+    [
+        ["GLOBAL_R6_TRAFFIC"],
+        ["ROUTE_ELIGIBLE_LOW_RISK_CANARY_CONFIRMED"],
+        [
+            "ROUTE_ELIGIBLE_LOW_RISK_CANARY_CONFIRMED",
+            "STATIC_FALLBACK_AVAILABLE_EXPANDED_ROUTE_CHECK",
+            "NON_COMMERCIAL_OPERATOR_OBSERVED_EXPANDED_SAMPLE",
+            "PRIOR_CANARY_COVERED_CASE_CLASS_EXTENSION",
+            "RUNTIME_CUTOVER_SURFACE",
+        ],
+    ],
+)
+def test_allowed_case_class_drift_fails_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, allowed_case_classes: list[str]
+) -> None:
+    reports = _run_authoring_only(tmp_path, monkeypatch)
+    path = reports / expanded.OUTPUTS["allowed_case_class_contract"]
+    payload = _load(path)
+    payload["details"]["allowed_case_classes"] = allowed_case_classes
+    _write(path, payload)
+    _patch_validation_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="ALLOWED_CASE_CLASSES_MISSING"):
+        validation.run(reports_root=reports)
+
+
 @pytest.mark.parametrize("field", sorted(validation.AUTHORITY_DRIFT_KEYS))
 @pytest.mark.parametrize("drift_value", [True, "AUTHORIZED", 1])
 def test_any_non_false_authority_drift_fails_closed(
