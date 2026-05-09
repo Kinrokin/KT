@@ -14,9 +14,8 @@
     "REPAIR_OR_CLOSEOUT_NEXT",
     "FORENSIC_CANARY_EVIDENCE_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_PIPELINE_BOARD",
+  "artifact_id": "B04_R6_SECOND_CANARY_READINESS_MATRIX",
   "authoritative_lane": "B04_R6_CANARY_EVIDENCE_REVIEW_PACKET",
-  "authority": "PREP_ONLY",
   "authorization_state": {
     "activation_cutover_executed": false,
     "activation_review_validated": true,
@@ -233,13 +232,6 @@
   "canary_evidence_treated_as_package_promotion": false,
   "canary_execution_packet_validated": true,
   "canary_runtime_executed": true,
-  "cannot_authorize_commercial_activation_claims": true,
-  "cannot_authorize_lobe_escalation": true,
-  "cannot_authorize_package_promotion": true,
-  "cannot_authorize_runtime_cutover": true,
-  "cannot_mutate_trust_zone_law": true,
-  "cannot_mutate_truth_engine_law": true,
-  "cannot_open_r6": true,
   "commercial_activation_claim_authorized": false,
   "current_branch": "authoritative/b04-r6-canary-evidence-e2e-superlane",
   "current_git_head": "c8527e7881dae1728c844db7628f94d08b0e81e1",
@@ -323,33 +315,6 @@
     "canary_static_fallback_receipt_hash": "e963e13073f1ffc541ada381c30a235f6761d94e83420fba2640b9e9e6f6a3c9",
     "canary_trace_completeness_receipt_hash": "eed015dd2bb5d1ae13ba8c590869a6385ba5a138865576be044d3837142bf350"
   },
-  "lanes": [
-    {
-      "authoritative": false,
-      "lane": "RUN_B04_R6_LIMITED_RUNTIME_CANARY",
-      "status": "PASSED"
-    },
-    {
-      "authoritative": true,
-      "lane": "AUTHOR_B04_R6_CANARY_EVIDENCE_REVIEW_PACKET",
-      "status": "CURRENT_BOUND"
-    },
-    {
-      "authoritative": true,
-      "lane": "VALIDATE_B04_R6_CANARY_EVIDENCE_REVIEW_PACKET",
-      "status": "NEXT"
-    },
-    {
-      "authoritative": false,
-      "lane": "RUNTIME_CUTOVER",
-      "status": "BLOCKED"
-    },
-    {
-      "authoritative": false,
-      "lane": "PACKAGE_PROMOTION",
-      "status": "BLOCKED"
-    }
-  ],
   "limited_runtime_authorization_packet_validated": true,
   "limited_runtime_execution_packet_validated": true,
   "limited_runtime_shadow_runtime_executed": true,
@@ -359,11 +324,21 @@
   "package_promotion": "DEFERRED",
   "package_promotion_authorized": false,
   "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_CANARY_PASSED__CANARY_EVIDENCE_REVIEW_PACKET_NEXT",
-  "prep_only": true,
   "previous_authoritative_lane": "B04_R6_LIMITED_RUNTIME_CANARY",
   "previous_next_lawful_move": "AUTHOR_B04_R6_CANARY_EVIDENCE_REVIEW_PACKET",
-  "purpose": "B04 R6 pipeline board update.",
   "r6_open": false,
+  "readiness": {
+    "blockers": [
+      "canary_evidence_review_validation_pending"
+    ],
+    "commercial_activation_claim_authorized": false,
+    "package_promotion_authorized": false,
+    "r6_open": false,
+    "readiness_matrix_id": "B04_R6_SECOND_CANARY_READINESS_MATRIX_V1",
+    "ready": true,
+    "recommendation": "READY_FOR_AUTHORIZATION_PACKET_IF_VALIDATED",
+    "runtime_cutover_authorized": false
+  },
   "reason_codes": [
     "RC_B04R6_CANARY_EVIDENCE_PACKET_CONTRACT_MISSING",
     "RC_B04R6_CANARY_EVIDENCE_PACKET_MAIN_HEAD_MISMATCH",
@@ -388,7 +363,7 @@
   "recommended_next_path": "EXPANDED_CANARY_AUTHORIZATION_PACKET_NEXT",
   "runtime_cutover_authorized": false,
   "runtime_evidence_review_validated": true,
-  "schema_id": "kt.e2e_closure.b04_r6_pipeline_board.prep_only.v1",
+  "schema_id": "kt.b04_r6.second_canary.readiness_matrix.v1",
   "scorecard": {
     "canary_result": "B04_R6_LIMITED_RUNTIME_CANARY_PASSED__CANARY_EVIDENCE_REVIEW_PACKET_NEXT",
     "categories": [
@@ -510,7 +485,6 @@
   "selected_outcome": "B04_R6_CANARY_EVIDENCE_REVIEW_PACKET_BOUND__CANARY_EVIDENCE_REVIEW_VALIDATION_NEXT",
   "shadow_superiority_passed": true,
   "static_comparator_weakened": false,
-  "status": "PREP_ONLY",
   "superlane_id": "KT_E2E_CLOSURE_AND_POST_CANARY_DECISION_SUPERLANE_V1",
   "trust_zone_law_changed": false,
   "trust_zone_validation": {

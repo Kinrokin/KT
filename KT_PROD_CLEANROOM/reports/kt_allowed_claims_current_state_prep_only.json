@@ -1,6 +1,14 @@
 {
   "activation_cutover_executed": false,
   "activation_review_validated": true,
+  "allowed_claims": [
+    "AFSH passed limited-runtime canary under bounded packet law.",
+    "Canary evidence review is the next lawful move.",
+    "Runtime cutover remains unauthorized.",
+    "R6 remains closed.",
+    "Package promotion remains unauthorized.",
+    "Commercial activation claims remain unauthorized."
+  ],
   "allowed_outcomes": [
     "B04_R6_CANARY_EVIDENCE_REVIEW_PACKET_BOUND__CANARY_EVIDENCE_REVIEW_VALIDATION_NEXT",
     "B04_R6_CANARY_EVIDENCE_REVIEW_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
@@ -14,7 +22,7 @@
     "REPAIR_OR_CLOSEOUT_NEXT",
     "FORENSIC_CANARY_EVIDENCE_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_PIPELINE_BOARD",
+  "artifact_id": "KT_ALLOWED_CLAIMS_CURRENT_STATE",
   "authoritative_lane": "B04_R6_CANARY_EVIDENCE_REVIEW_PACKET",
   "authority": "PREP_ONLY",
   "authorization_state": {
@@ -323,33 +331,6 @@
     "canary_static_fallback_receipt_hash": "e963e13073f1ffc541ada381c30a235f6761d94e83420fba2640b9e9e6f6a3c9",
     "canary_trace_completeness_receipt_hash": "eed015dd2bb5d1ae13ba8c590869a6385ba5a138865576be044d3837142bf350"
   },
-  "lanes": [
-    {
-      "authoritative": false,
-      "lane": "RUN_B04_R6_LIMITED_RUNTIME_CANARY",
-      "status": "PASSED"
-    },
-    {
-      "authoritative": true,
-      "lane": "AUTHOR_B04_R6_CANARY_EVIDENCE_REVIEW_PACKET",
-      "status": "CURRENT_BOUND"
-    },
-    {
-      "authoritative": true,
-      "lane": "VALIDATE_B04_R6_CANARY_EVIDENCE_REVIEW_PACKET",
-      "status": "NEXT"
-    },
-    {
-      "authoritative": false,
-      "lane": "RUNTIME_CUTOVER",
-      "status": "BLOCKED"
-    },
-    {
-      "authoritative": false,
-      "lane": "PACKAGE_PROMOTION",
-      "status": "BLOCKED"
-    }
-  ],
   "limited_runtime_authorization_packet_validated": true,
   "limited_runtime_execution_packet_validated": true,
   "limited_runtime_shadow_runtime_executed": true,
@@ -362,7 +343,7 @@
   "prep_only": true,
   "previous_authoritative_lane": "B04_R6_LIMITED_RUNTIME_CANARY",
   "previous_next_lawful_move": "AUTHOR_B04_R6_CANARY_EVIDENCE_REVIEW_PACKET",
-  "purpose": "B04 R6 pipeline board update.",
+  "purpose": "Allowed current-state claims.",
   "r6_open": false,
   "reason_codes": [
     "RC_B04R6_CANARY_EVIDENCE_PACKET_CONTRACT_MISSING",
@@ -388,7 +369,7 @@
   "recommended_next_path": "EXPANDED_CANARY_AUTHORIZATION_PACKET_NEXT",
   "runtime_cutover_authorized": false,
   "runtime_evidence_review_validated": true,
-  "schema_id": "kt.e2e_closure.b04_r6_pipeline_board.prep_only.v1",
+  "schema_id": "kt.e2e_closure.kt_allowed_claims_current_state.prep_only.v1",
   "scorecard": {
     "canary_result": "B04_R6_LIMITED_RUNTIME_CANARY_PASSED__CANARY_EVIDENCE_REVIEW_PACKET_NEXT",
     "categories": [

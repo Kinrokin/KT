@@ -864,13 +864,24 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
             path.write_text(_report_text(contract), encoding="utf-8", newline="\n")
         elif filename.endswith(".md"):
             path.write_text(
-                f"# {role.replace('_', ' ').title()}\n\nPREP_ONLY. This artifact cannot authorize runtime cutover, R6 opening, package promotion, or commercial activation claims.\n",
+                (
+                    f"# {role.replace('_', ' ').title()}\n\n"
+                    "PREP_ONLY. This artifact cannot authorize runtime cutover, R6 opening, package promotion, "
+                    "or commercial activation claims.\n\n"
+                    "```json\n"
+                    f"{json.dumps(PREP_ONLY_INVARIANTS, indent=2, sort_keys=True)}\n"
+                    "```\n"
+                ),
                 encoding="utf-8",
                 newline="\n",
             )
         elif filename.endswith(".py"):
             path.write_text(
-                '"""PREP_ONLY template artifact. Cannot authorize runtime cutover, R6 opening, package promotion, or commercial activation claims."""\n\nPREP_ONLY = True\n',
+                (
+                    '"""PREP_ONLY template artifact. Cannot authorize runtime cutover, R6 opening, package '
+                    'promotion, or commercial activation claims."""\n\n'
+                    f"PREP_ONLY_INVARIANTS = {json.dumps(PREP_ONLY_INVARIANTS, indent=2, sort_keys=True)}\n"
+                ),
                 encoding="utf-8",
                 newline="\n",
             )
