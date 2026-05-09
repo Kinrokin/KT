@@ -14,9 +14,9 @@
     "REPAIR_OR_CLOSEOUT_NEXT",
     "FORENSIC_CANARY_EVIDENCE_REVIEW_NEXT"
   ],
-  "artifact_id": "EXTERNAL_AUDIT_DELTA_MANIFEST_PREP_ONLY",
+  "artifact_id": "B04_R6_CANARY_ROLLBACK_READINESS_REVIEW_CONTRACT",
+  "authoritative": true,
   "authoritative_lane": "B04_R6_CANARY_EVIDENCE_REVIEW_PACKET",
-  "authority": "PREP_ONLY",
   "authorization_state": {
     "activation_cutover_executed": false,
     "activation_review_validated": true,
@@ -233,13 +233,6 @@
   "canary_evidence_treated_as_package_promotion": false,
   "canary_execution_packet_validated": true,
   "canary_runtime_executed": true,
-  "cannot_authorize_commercial_activation_claims": true,
-  "cannot_authorize_lobe_escalation": true,
-  "cannot_authorize_package_promotion": true,
-  "cannot_authorize_runtime_cutover": true,
-  "cannot_mutate_trust_zone_law": true,
-  "cannot_mutate_truth_engine_law": true,
-  "cannot_open_r6": true,
   "commercial_activation_claim_authorized": false,
   "current_branch": "authoritative/b04-r6-canary-evidence-e2e-superlane",
   "current_git_head": "0ed9ccbeb3e19b1730c37e3b90d99d4fa1e54586",
@@ -332,10 +325,8 @@
   "package_promotion": "DEFERRED",
   "package_promotion_authorized": false,
   "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_CANARY_PASSED__CANARY_EVIDENCE_REVIEW_PACKET_NEXT",
-  "prep_only": true,
   "previous_authoritative_lane": "B04_R6_LIMITED_RUNTIME_CANARY",
   "previous_next_lawful_move": "AUTHOR_B04_R6_CANARY_EVIDENCE_REVIEW_PACKET",
-  "purpose": "Prep-only scaffold for external audit delta manifest prep only.",
   "r6_open": false,
   "reason_codes": [
     "RC_B04R6_CANARY_EVIDENCE_PACKET_CONTRACT_MISSING",
@@ -359,9 +350,12 @@
     "RC_B04R6_CANARY_EVIDENCE_NEXT_MOVE_DRIFT"
   ],
   "recommended_next_path": "EXPANDED_CANARY_AUTHORIZATION_PACKET_NEXT",
+  "review_category": "rollback_readiness",
+  "review_rationale": "Rollback remained ready and was not required.",
+  "review_status": "PASS",
   "runtime_cutover_authorized": false,
   "runtime_evidence_review_validated": true,
-  "schema_id": "kt.e2e_closure.external_audit_delta_manifest_prep_only.prep_only.v1",
+  "schema_id": "kt.b04_r6.canary_evidence_review.rollback_readiness.v1",
   "scorecard": {
     "canary_result": "B04_R6_LIMITED_RUNTIME_CANARY_PASSED__CANARY_EVIDENCE_REVIEW_PACKET_NEXT",
     "categories": [
@@ -483,7 +477,6 @@
   "selected_outcome": "B04_R6_CANARY_EVIDENCE_REVIEW_PACKET_BOUND__CANARY_EVIDENCE_REVIEW_VALIDATION_NEXT",
   "shadow_superiority_passed": true,
   "static_comparator_weakened": false,
-  "status": "PREP_ONLY",
   "superlane_id": "KT_E2E_CLOSURE_AND_POST_CANARY_DECISION_SUPERLANE_V1",
   "trust_zone_law_changed": false,
   "trust_zone_validation": {

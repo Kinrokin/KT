@@ -14,7 +14,7 @@
     "REPAIR_OR_CLOSEOUT_NEXT",
     "FORENSIC_CANARY_EVIDENCE_REVIEW_NEXT"
   ],
-  "artifact_id": "EXTERNAL_AUDIT_DELTA_MANIFEST_PREP_ONLY",
+  "artifact_id": "B04_R6_CANARY_EVIDENCE_REVIEW_VALIDATION_PLAN",
   "authoritative_lane": "B04_R6_CANARY_EVIDENCE_REVIEW_PACKET",
   "authority": "PREP_ONLY",
   "authorization_state": {
@@ -331,11 +331,19 @@
   "next_lawful_move": "VALIDATE_B04_R6_CANARY_EVIDENCE_REVIEW_PACKET",
   "package_promotion": "DEFERRED",
   "package_promotion_authorized": false,
+  "possible_validated_outcomes": [
+    "B04_R6_CANARY_EVIDENCE_REVIEW_VALIDATED__RUNTIME_CUTOVER_REVIEW_PACKET_NEXT",
+    "B04_R6_CANARY_EVIDENCE_REVIEW_VALIDATED__EXPANDED_CANARY_AUTHORIZATION_PACKET_NEXT",
+    "B04_R6_CANARY_EVIDENCE_REVIEW_VALIDATED__SECOND_CANARY_AUTHORIZATION_PACKET_NEXT",
+    "B04_R6_CANARY_EVIDENCE_REVIEW_VALIDATED__EXTERNAL_AUDIT_DELTA_PACKET_NEXT",
+    "B04_R6_CANARY_EVIDENCE_REVIEW_DEFERRED__NAMED_REVIEW_DEFECT_REMAINS",
+    "B04_R6_CANARY_EVIDENCE_REVIEW_INVALID__FORENSIC_CANARY_EVIDENCE_REVIEW_NEXT"
+  ],
   "predecessor_outcome": "B04_R6_LIMITED_RUNTIME_CANARY_PASSED__CANARY_EVIDENCE_REVIEW_PACKET_NEXT",
   "prep_only": true,
   "previous_authoritative_lane": "B04_R6_LIMITED_RUNTIME_CANARY",
   "previous_next_lawful_move": "AUTHOR_B04_R6_CANARY_EVIDENCE_REVIEW_PACKET",
-  "purpose": "Prep-only scaffold for external audit delta manifest prep only.",
+  "purpose": "Prepare canonical validation of the canary evidence review packet.",
   "r6_open": false,
   "reason_codes": [
     "RC_B04R6_CANARY_EVIDENCE_PACKET_CONTRACT_MISSING",
@@ -361,7 +369,7 @@
   "recommended_next_path": "EXPANDED_CANARY_AUTHORIZATION_PACKET_NEXT",
   "runtime_cutover_authorized": false,
   "runtime_evidence_review_validated": true,
-  "schema_id": "kt.e2e_closure.external_audit_delta_manifest_prep_only.prep_only.v1",
+  "schema_id": "kt.e2e_closure.b04_r6_canary_evidence_review_validation_plan.prep_only.v1",
   "scorecard": {
     "canary_result": "B04_R6_LIMITED_RUNTIME_CANARY_PASSED__CANARY_EVIDENCE_REVIEW_PACKET_NEXT",
     "categories": [
@@ -675,5 +683,27 @@
     "B04_R6_CANARY_EVIDENCE_REVIEW_VALIDATED__EXTERNAL_AUDIT_DELTA_PACKET_NEXT",
     "B04_R6_CANARY_EVIDENCE_REVIEW_DEFERRED__NAMED_REVIEW_DEFECT_REMAINS",
     "B04_R6_CANARY_EVIDENCE_REVIEW_INVALID__FORENSIC_CANARY_EVIDENCE_REVIEW_NEXT"
+  ],
+  "validation_requirements": [
+    "canary_scope_quality",
+    "sample_adequacy",
+    "route_distribution_health",
+    "fallback_behavior",
+    "static_fallback_preservation",
+    "abstention_fallback_preservation",
+    "null_route_preservation",
+    "operator_override_readiness",
+    "kill_switch_readiness",
+    "rollback_readiness",
+    "drift_stability",
+    "incident_freeze_cleanliness",
+    "trace_completeness",
+    "runtime_replayability",
+    "external_verifier_readiness",
+    "commercial_boundary_safety",
+    "runtime_cutover_readiness",
+    "expanded_canary_readiness",
+    "second_canary_readiness",
+    "package_promotion_readiness"
   ]
 }
