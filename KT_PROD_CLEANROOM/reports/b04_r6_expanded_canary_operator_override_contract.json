@@ -1,6 +1,6 @@
 {
   "activation_cutover_executed": false,
-  "artifact_id": "B04_R6_FUTURE_BLOCKER_REGISTER",
+  "artifact_id": "OPERATOR_OVERRIDE_CONTRACT",
   "authoritative_lane": "B04_R6_EXPANDED_CANARY_AUTHORIZATION_PACKET",
   "binding_hashes": {
     "campaign_order_validation_receipt_hash": "c0fc2835b16897f649ae63cd3555a3152d44e2788a75699ae86f1abce03e23c7",
@@ -16,30 +16,15 @@
     "post_canary_blocker_ledger_hash": "a897411627a46a049f3ff44ad6327c0e2730f67dfc73b967719ce0a2fec81e57",
     "post_canary_decision_matrix_hash": "056e6b1f941a85de1a603a2f7ae49e345194a63dc822349efb35273d15a5a571"
   },
-  "blockers": [
-    {
-      "blocker_id": "B04R6-EXP-CANARY-AUTH-001",
-      "blocks": [
-        "EXPANDED_CANARY_EXECUTION_PACKET"
-      ],
-      "category": "expanded_canary_execution",
-      "required_next_artifact": "VALIDATE_B04_R6_EXPANDED_CANARY_AUTHORIZATION_PACKET",
-      "status": "OPEN"
-    },
-    {
-      "blocker_id": "B04R6-EXP-CANARY-AUTH-002",
-      "blocks": [
-        "RUNTIME_CUTOVER_REVIEW_PACKET"
-      ],
-      "category": "runtime_cutover",
-      "required_next_artifact": "expanded canary execution and evidence review remain incomplete",
-      "status": "OPEN"
-    }
-  ],
   "commercial_activation_claim_authorized": false,
+  "contract_status": "BOUND_NON_EXECUTING",
   "current_branch": "authoritative/b04-r6-expanded-canary-authorization-packet",
   "current_git_head": "a72502df57ed4d816ada7a1bebd8c34c8970288c",
   "current_main_head": "a72502df57ed4d816ada7a1bebd8c34c8970288c",
+  "details": {
+    "operator_override_may_freeze_run": true,
+    "operator_override_required": true
+  },
   "expanded_canary_authorization_packet_authored": true,
   "expanded_canary_authorization_packet_validated": false,
   "expanded_canary_execution_packet_authored": false,

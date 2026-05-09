@@ -1,6 +1,6 @@
 {
   "activation_cutover_executed": false,
-  "artifact_id": "B04_R6_FUTURE_BLOCKER_REGISTER",
+  "artifact_id": "B04_R6_EXPANDED_CANARY_AUTHORIZATION_VALIDATION_PLAN",
   "authoritative_lane": "B04_R6_EXPANDED_CANARY_AUTHORIZATION_PACKET",
   "binding_hashes": {
     "campaign_order_validation_receipt_hash": "c0fc2835b16897f649ae63cd3555a3152d44e2788a75699ae86f1abce03e23c7",
@@ -16,25 +16,28 @@
     "post_canary_blocker_ledger_hash": "a897411627a46a049f3ff44ad6327c0e2730f67dfc73b967719ce0a2fec81e57",
     "post_canary_decision_matrix_hash": "056e6b1f941a85de1a603a2f7ae49e345194a63dc822349efb35273d15a5a571"
   },
-  "blockers": [
-    {
-      "blocker_id": "B04R6-EXP-CANARY-AUTH-001",
-      "blocks": [
-        "EXPANDED_CANARY_EXECUTION_PACKET"
-      ],
-      "category": "expanded_canary_execution",
-      "required_next_artifact": "VALIDATE_B04_R6_EXPANDED_CANARY_AUTHORIZATION_PACKET",
-      "status": "OPEN"
-    },
-    {
-      "blocker_id": "B04R6-EXP-CANARY-AUTH-002",
-      "blocks": [
-        "RUNTIME_CUTOVER_REVIEW_PACKET"
-      ],
-      "category": "runtime_cutover",
-      "required_next_artifact": "expanded canary execution and evidence review remain incomplete",
-      "status": "OPEN"
-    }
+  "checks": [
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_VALIDATED_EVIDENCE_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_DECISION_MATRIX_DRIFT",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_READINESS_MATRIX_DRIFT",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_SCOPE_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_SAMPLE_LIMIT_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_ALLOWED_CASE_CLASSES_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_EXCLUDED_CASE_CLASSES_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_FALLBACK_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_OPERATOR_CONTROL_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_KILL_SWITCH_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_ROLLBACK_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_DRIFT_THRESHOLD_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_INCIDENT_FREEZE_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RECEIPT_SCHEMA_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_PREP_ONLY_DRIFT",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RUNTIME_AUTHORIZED",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RUNTIME_CUTOVER_AUTHORIZED",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_R6_OPEN_DRIFT",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_PACKAGE_PROMOTION_DRIFT",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_COMMERCIAL_CLAIM_DRIFT",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_NEXT_MOVE_DRIFT"
   ],
   "commercial_activation_claim_authorized": false,
   "current_branch": "authoritative/b04-r6-expanded-canary-authorization-packet",
@@ -46,6 +49,8 @@
   "expanded_canary_execution_packet_validated": false,
   "expanded_canary_runtime_authorized": false,
   "expanded_canary_runtime_executed": false,
+  "expected_success_next_lawful_move": "AUTHOR_B04_R6_EXPANDED_CANARY_EXECUTION_PACKET",
+  "expected_success_outcome": "B04_R6_EXPANDED_CANARY_AUTHORIZATION_PACKET_VALIDATED__EXPANDED_CANARY_EXECUTION_PACKET_NEXT",
   "forbidden_actions": [
     "EXPANDED_CANARY_RUNTIME_EXECUTED",
     "EXPANDED_CANARY_RUNTIME_AUTHORIZED",
@@ -74,5 +79,6 @@
   "selected_outcome": "B04_R6_EXPANDED_CANARY_AUTHORIZATION_PACKET_BOUND__EXPANDED_CANARY_AUTHORIZATION_VALIDATION_NEXT",
   "static_comparator_weakened": false,
   "trust_zone_law_changed": false,
-  "truth_engine_law_changed": false
+  "truth_engine_law_changed": false,
+  "validation_lane": "VALIDATE_B04_R6_EXPANDED_CANARY_AUTHORIZATION_PACKET"
 }
