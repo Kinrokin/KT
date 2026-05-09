@@ -378,31 +378,38 @@ def _ensure_branch_context(root: Path) -> str:
 
 
 def _commit_has_previous_handoff(root: Path, commit: str) -> bool:
+    raw = f"KT_PROD_CLEANROOM/reports/{canary.OUTPUTS['next_lawful_move']}"
     try:
-        raw = f"KT_PROD_CLEANROOM/reports/{canary.OUTPUTS['next_lawful_move']}"
-        payload = json.loads(_git_blob_bytes(root, commit, raw).decode("utf-8"))
-    except Exception:
+        blob = _git_blob_bytes(root, commit, raw)
+    except subprocess.CalledProcessError:
         return False
+    try:
+        payload = json.loads(blob.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        _fail(
+            "RC_B04R6_CANARY_EVIDENCE_NEXT_MOVE_DRIFT",
+            f"malformed prior handoff candidate at {commit}: {exc}",
+        )
     return payload.get("next_lawful_move") == EXPECTED_PREVIOUS_NEXT_MOVE
 
 
-def _select_handoff_git_commit(root: Path, *, current_branch: str, current_main_head: str) -> str:
-    if _commit_has_previous_handoff(root, current_main_head):
-        return current_main_head
-
-    parent_refs = []
-    if current_branch == "main":
-        parent_refs.append("HEAD^1")
-    elif current_branch.startswith(REPLAY_BRANCH_PREFIX):
-        parent_refs.append("origin/main^1")
-
-    for ref in parent_refs:
+def _first_parent_chain(root: Path, start_ref: str, *, max_depth: int = 8) -> Iterable[str]:
+    try:
+        current = common.git_rev_parse(root, start_ref)
+    except Exception:
+        return
+    for _ in range(max_depth):
+        yield current
         try:
-            parent = common.git_rev_parse(root, ref)
+            current = common.git_rev_parse(root, f"{current}^1")
         except Exception:
-            continue
-        if _commit_has_previous_handoff(root, parent):
-            return parent
+            break
+
+
+def _select_handoff_git_commit(root: Path, *, current_branch: str, current_main_head: str) -> str:
+    for commit in _first_parent_chain(root, current_main_head):
+        if _commit_has_previous_handoff(root, commit):
+            return commit
     return current_main_head
 
 

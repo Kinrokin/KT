@@ -50,7 +50,7 @@ def _patch_review_env(
 ) -> None:
     raw_inputs = list(review.ALL_JSON_INPUTS.values()) + list(review.ALL_TEXT_INPUTS.values())
     blob_store = {(origin_main, raw): (tmp_path / raw).read_bytes() for raw in raw_inputs if (tmp_path / raw).exists()}
-    if git_blob_store:
+    if git_blob_store is not None:
         blob_store.update(git_blob_store)
     refs = {"HEAD": head, "origin/main": origin_main, **(git_refs or {})}
 
@@ -325,7 +325,8 @@ def test_main_replay_binds_overwritten_prior_handoff_to_first_parent(
     reports = canary_helpers._run_canary(tmp_path, monkeypatch)
     raw_inputs = list(review.ALL_JSON_INPUTS.values()) + list(review.ALL_TEXT_INPUTS.values())
     pre_merge_main = SUPERLANE_MAIN_HEAD
-    post_merge_main = "ffffffffffffffffffffffffffffffffffffffff"
+    post_superlane_main = "ffffffffffffffffffffffffffffffffffffffff"
+    post_replay_main = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     pre_merge_blobs = {
         (pre_merge_main, raw): (tmp_path / raw).read_bytes()
         for raw in raw_inputs
@@ -340,15 +341,18 @@ def test_main_replay_binds_overwritten_prior_handoff_to_first_parent(
         monkeypatch,
         tmp_path,
         branch="main",
-        head=post_merge_main,
-        origin_main=post_merge_main,
-        git_refs={"HEAD^1": pre_merge_main},
+        head=post_replay_main,
+        origin_main=post_replay_main,
+        git_refs={
+            f"{post_replay_main}^1": post_superlane_main,
+            f"{post_superlane_main}^1": pre_merge_main,
+        },
         git_blob_store=pre_merge_blobs,
     )
     review.run(reports_root=reports)
 
     contract = _contract(reports)
-    assert contract["current_main_head"] == post_merge_main
+    assert contract["current_main_head"] == post_replay_main
     assert contract["input_bindings"]["canary_next_lawful_move_hash"] == hashlib.sha256(
         pre_merge_blobs[
             (
@@ -357,6 +361,39 @@ def test_main_replay_binds_overwritten_prior_handoff_to_first_parent(
             )
         ]
     ).hexdigest()
+
+
+def test_malformed_parent_handoff_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = canary_helpers._run_canary(tmp_path, monkeypatch)
+    raw_inputs = list(review.ALL_JSON_INPUTS.values()) + list(review.ALL_TEXT_INPUTS.values())
+    pre_merge_main = SUPERLANE_MAIN_HEAD
+    post_superlane_main = "ffffffffffffffffffffffffffffffffffffffff"
+    pre_merge_blobs = {
+        (pre_merge_main, raw): (tmp_path / raw).read_bytes()
+        for raw in raw_inputs
+        if (tmp_path / raw).exists()
+    }
+    pre_merge_blobs[
+        (
+            pre_merge_main,
+            f"KT_PROD_CLEANROOM/reports/{canary.OUTPUTS['next_lawful_move']}",
+        )
+    ] = b"{not-json"
+
+    _patch_review_env(monkeypatch, tmp_path)
+    review.run(reports_root=reports)
+    _patch_review_env(
+        monkeypatch,
+        tmp_path,
+        branch="main",
+        head=post_superlane_main,
+        origin_main=post_superlane_main,
+        git_refs={f"{post_superlane_main}^1": pre_merge_main},
+        git_blob_store=pre_merge_blobs,
+    )
+
+    with pytest.raises(RuntimeError, match="malformed prior handoff candidate"):
+        review.run(reports_root=reports)
 
 
 def test_unpassed_canary_result_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
