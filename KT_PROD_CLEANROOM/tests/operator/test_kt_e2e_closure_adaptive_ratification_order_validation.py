@@ -108,7 +108,7 @@ def test_validation_binds_all_campaign_order_outputs(outputs: Path) -> None:
     contract = _load(outputs / validation.OUTPUTS["validation_contract"])
     for role, filename in order.OUTPUTS.items():
         assert contract["binding_hashes"][f"{role}_path"] == f"KT_PROD_CLEANROOM/reports/{filename}"
-        assert contract["binding_hashes"][f"{role}_hash"]
+        assert contract["binding_hashes"][f"{role}_hash"] == file_sha256(outputs / filename)
 
 
 def test_validation_next_move_hash_matches_final_file(outputs: Path) -> None:
@@ -130,6 +130,19 @@ def test_validation_rejects_authority_drift(tmp_path: Path, monkeypatch: pytest.
     reports = _run_order_then_validation(tmp_path, monkeypatch)
     campaign = _load(reports / order.OUTPUTS["campaign_order"])
     campaign["runtime_cutover_authorized"] = True
+    _write(reports / order.OUTPUTS["campaign_order"], campaign)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="BOUNDARY_AUTHORITY_DRIFT"):
+        validation.run(reports_root=reports)
+
+
+@pytest.mark.parametrize("drift_value", [1, "true", "AUTHORIZED"])
+def test_validation_rejects_non_false_authority_drift(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, drift_value: object
+) -> None:
+    reports = _run_order_then_validation(tmp_path, monkeypatch)
+    campaign = _load(reports / order.OUTPUTS["campaign_order"])
+    campaign["runtime_cutover_authorized"] = drift_value
     _write(reports / order.OUTPUTS["campaign_order"], campaign)
     _patch_env(monkeypatch, tmp_path)
     with pytest.raises(RuntimeError, match="BOUNDARY_AUTHORITY_DRIFT"):

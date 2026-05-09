@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional, Sequence
 
@@ -120,7 +119,7 @@ def _validate_prep_only(payloads: Dict[str, Dict[str, Any]]) -> None:
                 _fail("RC_KT_CAMPAIGN_ORDER_PREP_ONLY_DRIFT", f"{role} missing guard {guard}")
         for nested in _walk_dicts(payload):
             for key in AUTHORITY_KEYS:
-                if nested.get(key) is True:
+                if key in nested and nested.get(key) is not False:
                     _fail("RC_KT_CAMPAIGN_ORDER_BOUNDARY_AUTHORITY_DRIFT", f"{role} grants {key}")
 
 
