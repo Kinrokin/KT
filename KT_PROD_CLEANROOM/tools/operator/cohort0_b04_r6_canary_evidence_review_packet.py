@@ -880,7 +880,7 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
                 (
                     '"""PREP_ONLY template artifact. Cannot authorize runtime cutover, R6 opening, package '
                     'promotion, or commercial activation claims."""\n\n'
-                    f"PREP_ONLY_INVARIANTS = {json.dumps(PREP_ONLY_INVARIANTS, indent=2, sort_keys=True)}\n"
+                    f"PREP_ONLY_INVARIANTS = {repr(PREP_ONLY_INVARIANTS)}\n"
                 ),
                 encoding="utf-8",
                 newline="\n",
