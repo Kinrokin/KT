@@ -42,6 +42,23 @@ FORBIDDEN_ACTIONS = (
     "STATIC_COMPARATOR_WEAKENED",
 )
 
+AUTHORITY_DRIFT_KEYS = {
+    "expanded_canary_runtime_authorized": "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RUNTIME_AUTHORIZED",
+    "expanded_canary_authorized": "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RUNTIME_AUTHORIZED",
+    "expanded_canary_runtime_executed": "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RUNTIME_AUTHORIZED",
+    "expanded_canary_executed": "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RUNTIME_AUTHORIZED",
+    "runtime_cutover_authorized": "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RUNTIME_CUTOVER_AUTHORIZED",
+    "activation_cutover_executed": "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RUNTIME_CUTOVER_AUTHORIZED",
+    "r6_open": "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_R6_OPEN_DRIFT",
+    "lobe_escalation_authorized": "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RUNTIME_AUTHORIZED",
+    "package_promotion_authorized": "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_PACKAGE_PROMOTION_DRIFT",
+    "commercial_activation_claim_authorized": "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_COMMERCIAL_CLAIM_DRIFT",
+    "truth_engine_law_changed": "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_COMMERCIAL_CLAIM_DRIFT",
+    "trust_zone_law_changed": "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_COMMERCIAL_CLAIM_DRIFT",
+    "metric_contract_mutated": "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RUNTIME_AUTHORIZED",
+    "static_comparator_weakened": "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RUNTIME_AUTHORIZED",
+}
+
 REASON_CODES = (
     "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_VALIDATED_EVIDENCE_MISSING",
     "RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_DECISION_MATRIX_DRIFT",
@@ -200,18 +217,9 @@ def _validate_inputs(payloads: Dict[str, Dict[str, Any]]) -> None:
 
     for role, payload in payloads.items():
         for nested in _walk_dicts(payload):
-            if nested.get("expanded_canary_runtime_authorized") is True or nested.get("expanded_canary_authorized") is True:
-                _fail("RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RUNTIME_AUTHORIZED", f"{role} authorizes expanded canary")
-            if nested.get("expanded_canary_runtime_executed") is True or nested.get("expanded_canary_executed") is True:
-                _fail("RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RUNTIME_AUTHORIZED", f"{role} executed expanded canary")
-            if nested.get("runtime_cutover_authorized") is True:
-                _fail("RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_RUNTIME_CUTOVER_AUTHORIZED", f"{role} authorizes cutover")
-            if nested.get("r6_open") is True:
-                _fail("RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_R6_OPEN_DRIFT", f"{role} opens R6")
-            if nested.get("package_promotion_authorized") is True:
-                _fail("RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_PACKAGE_PROMOTION_DRIFT", f"{role} promotes package")
-            if nested.get("commercial_activation_claim_authorized") is True:
-                _fail("RC_B04R6_EXPANDED_CANARY_AUTH_PACKET_COMMERCIAL_CLAIM_DRIFT", f"{role} authorizes commercial claim")
+            for key, code in AUTHORITY_DRIFT_KEYS.items():
+                if key in nested and nested.get(key) is not False:
+                    _fail(code, f"{role} drifts {key}")
 
 
 def _binding_hashes(reports_root: Path) -> Dict[str, str]:

@@ -276,15 +276,31 @@ def test_rejects_runtime_cutover_authority_drift(tmp_path: Path, monkeypatch: py
         expanded.run(reports_root=reports)
 
 
-@pytest.mark.parametrize("field", ["expanded_canary_runtime_authorized", "expanded_canary_runtime_executed"])
-def test_rejects_expanded_canary_runtime_drift(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, field: str
+@pytest.mark.parametrize(
+    "field",
+    [
+        "expanded_canary_runtime_authorized",
+        "expanded_canary_runtime_executed",
+        "activation_cutover_executed",
+        "r6_open",
+        "lobe_escalation_authorized",
+        "package_promotion_authorized",
+        "commercial_activation_claim_authorized",
+        "truth_engine_law_changed",
+        "trust_zone_law_changed",
+        "metric_contract_mutated",
+        "static_comparator_weakened",
+    ],
+)
+@pytest.mark.parametrize("drift_value", [True, "AUTHORIZED", 1])
+def test_rejects_any_non_false_authority_drift(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, field: str, drift_value: object
 ) -> None:
     reports = tmp_path / "KT_PROD_CLEANROOM" / "reports"
     _seed_inputs(reports)
     scorecard = _load(reports / expanded.INPUTS["canary_evidence_scorecard"])
-    scorecard[field] = True
+    scorecard[field] = drift_value
     _write(reports / expanded.INPUTS["canary_evidence_scorecard"], scorecard)
     _patch_env(monkeypatch, tmp_path)
-    with pytest.raises(RuntimeError, match="RUNTIME_AUTHORIZED"):
+    with pytest.raises(RuntimeError, match="FAIL_CLOSED"):
         expanded.run(reports_root=reports)
