@@ -97,6 +97,19 @@ def test_campaign_order_selects_validation_next(outputs: Path) -> None:
     assert payload["previous_next_lawful_move"] == order.PREVIOUS_NEXT_LAWFUL_MOVE
 
 
+def test_prior_bindings_are_repo_relative(outputs: Path) -> None:
+    payload = _load(outputs / order.OUTPUTS["campaign_order"])
+    bindings = payload["prior_bindings"]
+    assert bindings["canary_evidence_validation_receipt"] == (
+        f"KT_PROD_CLEANROOM/reports/{order.VALIDATION_RECEIPT}"
+    )
+    assert bindings["canary_post_run_decision_matrix_validation_receipt"] == (
+        f"KT_PROD_CLEANROOM/reports/{order.CANARY_DECISION_RECEIPT}"
+    )
+    assert not bindings["canary_evidence_validation_receipt"].startswith("/")
+    assert ":" not in bindings["canary_evidence_validation_receipt"]
+
+
 def test_campaign_order_carries_required_statement(outputs: Path) -> None:
     payload = _load(outputs / order.OUTPUTS["campaign_order"])
     assert "does not claim small models are secretly giant models" in payload["required_statement"]

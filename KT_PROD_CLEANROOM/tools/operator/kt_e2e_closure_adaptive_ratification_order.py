@@ -227,9 +227,9 @@ def _payloads(*, reports_root: Path, branch: str, head: str, current_main_head: 
     validation_receipt_path = reports_root / VALIDATION_RECEIPT
     decision_receipt_path = reports_root / CANARY_DECISION_RECEIPT
     prior_bindings = {
-        "canary_evidence_validation_receipt": validation_receipt_path.as_posix(),
+        "canary_evidence_validation_receipt": f"KT_PROD_CLEANROOM/reports/{VALIDATION_RECEIPT}",
         "canary_evidence_validation_receipt_hash": file_sha256(validation_receipt_path),
-        "canary_post_run_decision_matrix_validation_receipt": decision_receipt_path.as_posix(),
+        "canary_post_run_decision_matrix_validation_receipt": f"KT_PROD_CLEANROOM/reports/{CANARY_DECISION_RECEIPT}",
         "canary_post_run_decision_matrix_validation_receipt_hash": file_sha256(decision_receipt_path),
     }
 
