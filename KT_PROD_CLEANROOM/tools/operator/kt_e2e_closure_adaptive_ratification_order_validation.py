@@ -237,6 +237,21 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
     _validate_campaign_shape(payloads)
 
     generated_utc = utc_now_iso_z()
+    next_move = {
+        **_validation_base(
+            role="kt_next_lawful_move_receipt",
+            branch=branch,
+            head=head,
+            current_main_head=current_main_head,
+            generated_utc=generated_utc,
+        ),
+        "receipt_type": "NEXT_LAWFUL_MOVE",
+        "next_lawful_move": NEXT_LAWFUL_MOVE,
+        "expanded_canary_execution_authorized": False,
+        "campaign_validation_complete": True,
+    }
+    write_json_stable(reports_root / OUTPUTS["next_lawful_move"], next_move)
+
     bindings = _hash_bindings(reports_root)
     contract = {
         **_validation_base(
@@ -282,24 +297,10 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
         ),
         "reason_codes": list(REASON_CODES),
     }
-    next_move = {
-        **_validation_base(
-            role="kt_next_lawful_move_receipt",
-            branch=branch,
-            head=head,
-            current_main_head=current_main_head,
-            generated_utc=generated_utc,
-        ),
-        "receipt_type": "NEXT_LAWFUL_MOVE",
-        "next_lawful_move": NEXT_LAWFUL_MOVE,
-        "expanded_canary_execution_authorized": False,
-        "campaign_validation_complete": True,
-    }
 
     write_json_stable(reports_root / OUTPUTS["validation_contract"], contract)
     write_json_stable(reports_root / OUTPUTS["validation_receipt"], receipt)
     write_json_stable(reports_root / OUTPUTS["validation_reason_codes"], reason_codes)
-    write_json_stable(reports_root / OUTPUTS["next_lawful_move"], next_move)
     _write_report(reports_root / OUTPUTS["validation_report"], current_main_head=current_main_head)
     return receipt
 

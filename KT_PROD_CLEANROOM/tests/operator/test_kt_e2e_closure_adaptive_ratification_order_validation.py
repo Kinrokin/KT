@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 
+from tools.operator.titanium_common import file_sha256
 from tools.operator import kt_e2e_closure_adaptive_ratification_order as order
 from tools.operator import kt_e2e_closure_adaptive_ratification_order_validation as validation
 
@@ -108,6 +109,12 @@ def test_validation_binds_all_campaign_order_outputs(outputs: Path) -> None:
     for role, filename in order.OUTPUTS.items():
         assert contract["binding_hashes"][f"{role}_path"] == f"KT_PROD_CLEANROOM/reports/{filename}"
         assert contract["binding_hashes"][f"{role}_hash"]
+
+
+def test_validation_next_move_hash_matches_final_file(outputs: Path) -> None:
+    receipt = _load(outputs / validation.OUTPUTS["validation_receipt"])
+    next_move_path = outputs / order.OUTPUTS["next_lawful_move"]
+    assert receipt["binding_hashes"]["next_lawful_move_hash"] == file_sha256(next_move_path)
 
 
 def test_validation_preserves_campaign_prep_only_boundaries(outputs: Path) -> None:
