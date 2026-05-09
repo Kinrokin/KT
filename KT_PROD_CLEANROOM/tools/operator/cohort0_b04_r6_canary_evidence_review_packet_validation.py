@@ -305,7 +305,7 @@ def _commit_has_previous_handoff(root: Path, commit: str) -> bool:
     )
 
 
-def _first_parent_chain(root: Path, start_ref: str, *, max_depth: int = 12) -> Iterable[str]:
+def _first_parent_chain(root: Path, start_ref: str, *, max_depth: int = 512) -> Iterable[str]:
     try:
         current = common.git_rev_parse(root, start_ref)
     except Exception:
@@ -322,7 +322,40 @@ def _select_handoff_git_commit(root: Path, *, current_main_head: str) -> str:
     for commit in _first_parent_chain(root, current_main_head):
         if _commit_has_previous_handoff(root, commit):
             return commit
-    return current_main_head
+    _fail(
+        "RC_B04R6_CANARY_EVIDENCE_VAL_NEXT_MOVE_DRIFT",
+        f"could not find predecessor handoff in first-parent chain from {current_main_head}",
+    )
+
+
+def _commit_has_review_source_handoff(root: Path, commit: str) -> bool:
+    raw = f"KT_PROD_CLEANROOM/reports/{review.canary.OUTPUTS['next_lawful_move']}"
+    try:
+        blob = _git_blob_bytes(root, commit, raw)
+    except subprocess.CalledProcessError:
+        return False
+    try:
+        payload = json.loads(blob.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        _fail(
+            "RC_B04R6_CANARY_EVIDENCE_VAL_NEXT_MOVE_DRIFT",
+            f"malformed review-source handoff candidate at {commit}: {exc}",
+        )
+    return (
+        payload.get("authoritative_lane") == review.PREVIOUS_LANE
+        and payload.get("selected_outcome") == review.EXPECTED_PREVIOUS_OUTCOME
+        and payload.get("next_lawful_move") == review.EXPECTED_PREVIOUS_NEXT_MOVE
+    )
+
+
+def _select_review_source_handoff_git_commit(root: Path, *, review_main_head: str) -> str:
+    for commit in _first_parent_chain(root, review_main_head):
+        if _commit_has_review_source_handoff(root, commit):
+            return commit
+    _fail(
+        "RC_B04R6_CANARY_EVIDENCE_VAL_PACKET_BINDING_MISSING",
+        f"could not find canary handoff for review packet source chain from {review_main_head}",
+    )
 
 
 def _is_sha256(value: Any) -> bool:
@@ -364,10 +397,15 @@ def _is_claim_bearing_field(key: str) -> bool:
 
 
 def _contains_positive_authority_token(value: str) -> bool:
-    upper = value.upper()
-    if any(qualifier in upper for qualifier in NEGATIVE_AUTHORITY_QUALIFIERS):
-        return False
-    return any(token in upper for token in POSITIVE_AUTHORITY_TOKENS)
+    for segment in [part.strip().upper() for part in value.replace("\n", ";").replace("|", ";").replace(",", ";").split(";")]:
+        if not segment:
+            continue
+        if not any(token in segment for token in POSITIVE_AUTHORITY_TOKENS):
+            continue
+        if any(qualifier in segment for qualifier in NEGATIVE_AUTHORITY_QUALIFIERS):
+            continue
+        return True
+    return False
 
 
 def _ensure_authority_closed(payload: Dict[str, Any], *, label: str) -> None:
@@ -458,15 +496,44 @@ def _valid_handoff(next_move: Dict[str, Any]) -> bool:
     return predecessor or self_replay
 
 
-def _validate_hash_map(contract: Dict[str, Any]) -> None:
+def _review_packet_expected_hashes(root: Path, contract: Dict[str, Any], *, validation_handoff_git_commit: str) -> Dict[str, str]:
+    review_output_names = set(review.OUTPUTS.values())
+    validation_output_names = set(OUTPUTS.values())
+    review_main_head = str(contract.get("current_main_head", ""))
+    source_handoff = _select_review_source_handoff_git_commit(root, review_main_head=review_main_head)
+    expected: Dict[str, str] = {}
+    for role, raw in sorted(review.ALL_JSON_INPUTS.items()):
+        filename = Path(raw).name
+        if filename in review_output_names:
+            expected[f"{role}_hash"] = _git_blob_sha256(root, source_handoff, raw)
+        elif filename in validation_output_names:
+            expected[f"{role}_hash"] = _git_blob_sha256(root, validation_handoff_git_commit, raw)
+        else:
+            expected[f"{role}_hash"] = file_sha256(common.resolve_path(root, raw))
+    for role, raw in sorted(review.ALL_TEXT_INPUTS.items()):
+        filename = Path(raw).name
+        if filename in review_output_names:
+            expected[f"{role}_hash"] = _git_blob_sha256(root, source_handoff, raw)
+        elif filename in validation_output_names:
+            expected[f"{role}_hash"] = _git_blob_sha256(root, validation_handoff_git_commit, raw)
+        else:
+            expected[f"{role}_hash"] = file_sha256(common.resolve_path(root, raw))
+    return expected
+
+
+def _validate_hash_map(root: Path, contract: Dict[str, Any], *, validation_handoff_git_commit: str) -> None:
     input_bindings = contract.get("input_bindings", {})
     binding_hashes = contract.get("binding_hashes", {})
     if not isinstance(input_bindings, dict) or not input_bindings:
         _fail("RC_B04R6_CANARY_EVIDENCE_VAL_INPUT_HASH_MISSING", "packet input bindings missing")
-    for role in sorted([*review.ALL_JSON_INPUTS, *review.ALL_TEXT_INPUTS]):
-        key = f"{role}_hash"
+    expected_hashes = _review_packet_expected_hashes(root, contract, validation_handoff_git_commit=validation_handoff_git_commit)
+    for key, expected_hash in expected_hashes.items():
         if key not in input_bindings or key not in binding_hashes:
             _fail("RC_B04R6_CANARY_EVIDENCE_VAL_INPUT_HASH_MISSING", f"{key} missing from packet hash map")
+        if not _is_sha256(input_bindings.get(key)) or not _is_sha256(binding_hashes.get(key)):
+            _fail("RC_B04R6_CANARY_EVIDENCE_VAL_INPUT_HASH_MALFORMED", f"{key} malformed")
+        if input_bindings.get(key) != expected_hash or binding_hashes.get(key) != expected_hash:
+            _fail("RC_B04R6_CANARY_EVIDENCE_VAL_INPUT_HASH_MISSING", f"{key} missing or mismatched against source evidence")
     for key, value in input_bindings.items():
         if not _is_sha256(value):
             _fail("RC_B04R6_CANARY_EVIDENCE_VAL_INPUT_HASH_MALFORMED", f"{key} malformed")
@@ -618,7 +685,13 @@ def _validate_boards(payloads: Dict[str, Dict[str, Any]]) -> None:
             _fail("RC_B04R6_CANARY_EVIDENCE_VAL_CAMPAIGN_BOARD_MISSING", "campaign board authority ceiling incomplete")
 
 
-def _validate_review_payloads(root: Path, payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str]) -> None:
+def _validate_review_payloads(
+    root: Path,
+    payloads: Dict[str, Dict[str, Any]],
+    texts: Dict[str, str],
+    *,
+    validation_handoff_git_commit: str,
+) -> None:
     for label, payload in payloads.items():
         _ensure_authority_closed(payload, label=label)
     for role in review.PREP_ONLY_OUTPUT_ROLES:
@@ -656,7 +729,7 @@ def _validate_review_payloads(root: Path, payloads: Dict[str, Dict[str, Any]], t
     if not _valid_handoff(next_move):
         _fail("RC_B04R6_CANARY_EVIDENCE_VAL_NEXT_MOVE_DRIFT", "next move handoff lacks valid lane identity")
 
-    _validate_hash_map(contract)
+    _validate_hash_map(root, contract, validation_handoff_git_commit=validation_handoff_git_commit)
     if set(inventory.get("evidence_inputs", [])) != set(review.ALL_JSON_INPUTS):
         _fail("RC_B04R6_CANARY_EVIDENCE_VAL_INVENTORY_MISSING", "inventory does not enumerate canary JSON evidence inputs")
     if set(inventory.get("text_inputs", [])) != set(review.ALL_TEXT_INPUTS):
@@ -1221,7 +1294,7 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
         role: _read_text_input(root, raw, label=role, handoff_git_commit=handoff_git_commit, output_names=output_names)
         for role, raw in REVIEW_TEXT_INPUTS.items()
     }
-    _validate_review_payloads(root, payloads, texts)
+    _validate_review_payloads(root, payloads, texts, validation_handoff_git_commit=handoff_git_commit)
 
     fresh_trust_validation = validate_trust_zones(root=root)
     if fresh_trust_validation.get("status") != "PASS" or fresh_trust_validation.get("failures"):

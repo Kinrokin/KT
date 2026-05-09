@@ -26,6 +26,7 @@ def _load_review_helpers():
 
 
 review_helpers = _load_review_helpers()
+SOURCE_BLOB_STORES: dict[str, dict[tuple[str, str], bytes]] = {}
 
 
 def _load(path: Path) -> dict:
@@ -47,12 +48,18 @@ def _patch_validation_env(
     git_refs: dict[str, str] | None = None,
     git_blob_store: dict[tuple[str, str], bytes] | None = None,
 ) -> None:
-    raw_inputs = list(validation.REVIEW_JSON_INPUTS.values()) + list(validation.REVIEW_TEXT_INPUTS.values())
+    raw_inputs = (
+        list(validation.REVIEW_JSON_INPUTS.values())
+        + list(validation.REVIEW_TEXT_INPUTS.values())
+        + list(review.ALL_JSON_INPUTS.values())
+        + list(review.ALL_TEXT_INPUTS.values())
+    )
     blob_store = {
         (origin_main, raw): (tmp_path / raw).read_bytes()
         for raw in raw_inputs
         if (tmp_path / raw).exists()
     }
+    blob_store.update(SOURCE_BLOB_STORES.get(str(tmp_path), {}))
     if git_blob_store is not None:
         blob_store.update(git_blob_store)
     refs = {
@@ -60,6 +67,7 @@ def _patch_validation_env(
         "origin/main": origin_main,
         head: head,
         origin_main: origin_main,
+        review_helpers.SUPERLANE_MAIN_HEAD: review_helpers.SUPERLANE_MAIN_HEAD,
         **(git_refs or {}),
     }
 
@@ -83,7 +91,17 @@ def _patch_validation_env(
 
 
 def _run_review_only(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
-    return review_helpers._run_review(tmp_path, monkeypatch)
+    reports = review_helpers.canary_helpers._run_canary(tmp_path, monkeypatch)
+    raw_inputs = list(review.ALL_JSON_INPUTS.values()) + list(review.ALL_TEXT_INPUTS.values())
+    source_blobs = {
+        (review_helpers.SUPERLANE_MAIN_HEAD, raw): (tmp_path / raw).read_bytes()
+        for raw in raw_inputs
+        if (tmp_path / raw).exists()
+    }
+    SOURCE_BLOB_STORES[str(tmp_path)] = source_blobs
+    review_helpers._patch_review_env(monkeypatch, tmp_path, git_blob_store=source_blobs)
+    review.run(reports_root=reports)
+    return reports
 
 
 def _run_validation(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
@@ -459,6 +477,17 @@ def test_malformed_validation_signed_input_hash_fails_closed(tmp_path: Path, mon
         validation.run(reports_root=reports)
 
 
+def test_source_evidence_hash_mismatch_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_review_only(tmp_path, monkeypatch)
+    result_path = tmp_path / review.ALL_JSON_INPUTS["canary_result"]
+    result = _load(result_path)
+    result["tampered_after_review_packet"] = True
+    _write(result_path, result)
+    _patch_validation_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="INPUT_HASH_MISSING"):
+        validation.run(reports_root=reports)
+
+
 def test_decision_matrix_cutover_recommendation_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_review_only(tmp_path, monkeypatch)
     matrix_path = reports / review.OUTPUTS["post_run_decision_matrix"]
@@ -504,6 +533,18 @@ def test_claim_bearing_authority_token_fails_closed(tmp_path: Path, monkeypatch:
         validation.run(reports_root=reports)
 
 
+def test_negative_qualifier_cannot_mask_later_authority_token(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_review_only(tmp_path, monkeypatch)
+    contract_path = reports / review.OUTPUTS["packet_contract"]
+    contract = _load(contract_path)
+    contract["commercial_claim_status"] = "UNAUTHORIZED; PACKAGE_PROMOTION AUTHORIZED"
+    contract["package_promotion_authorized"] = False
+    _write(contract_path, contract)
+    _patch_validation_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="COMMERCIAL_CLAIM_DRIFT"):
+        validation.run(reports_root=reports)
+
+
 def test_non_deferred_package_promotion_state_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_review_only(tmp_path, monkeypatch)
     contract_path = reports / review.OUTPUTS["packet_contract"]
@@ -530,12 +571,39 @@ def test_wrong_branch_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPat
         validation.run(reports_root=reports)
 
 
+def test_missing_predecessor_handoff_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_review_only(tmp_path, monkeypatch)
+    orphan_main = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    invalid_handoff = b'{"authoritative_lane":"NOT_THE_PREVIOUS_HANDOFF"}'
+    _patch_validation_env(
+        monkeypatch,
+        tmp_path,
+        branch="main",
+        head=orphan_main,
+        origin_main=orphan_main,
+        git_refs={orphan_main: orphan_main},
+        git_blob_store={
+            (
+                orphan_main,
+                f"KT_PROD_CLEANROOM/reports/{review.OUTPUTS['next_lawful_move']}",
+            ): invalid_handoff
+        },
+    )
+    with pytest.raises(RuntimeError, match="could not find predecessor handoff"):
+        validation.run(reports_root=reports)
+
+
 def test_main_replay_binds_overwritten_review_inputs_to_first_parent(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     reports = _run_review_only(tmp_path, monkeypatch)
-    raw_inputs = list(validation.REVIEW_JSON_INPUTS.values()) + list(validation.REVIEW_TEXT_INPUTS.values())
+    raw_inputs = (
+        list(validation.REVIEW_JSON_INPUTS.values())
+        + list(validation.REVIEW_TEXT_INPUTS.values())
+        + list(review.ALL_JSON_INPUTS.values())
+        + list(review.ALL_TEXT_INPUTS.values())
+    )
     pre_validation_main = VALIDATION_MAIN_HEAD
     validation_merge_main = "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
     validation_replay_main = "ffffffffffffffffffffffffffffffffffffffff"
