@@ -344,3 +344,15 @@ def test_package_promotion_in_input_fails_closed(tmp_path: Path, monkeypatch: py
     _patch_review_env(monkeypatch, tmp_path)
     with pytest.raises(RuntimeError, match="PACKAGE_PROMOTION_DRIFT"):
         review.run(reports_root=reports)
+
+
+def test_non_deferred_package_promotion_state_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = canary_helpers._run_canary(tmp_path, monkeypatch)
+    result_path = reports / canary.OUTPUTS["result"]
+    result = _load(result_path)
+    result["authorization_state"]["package_promotion"] = "AUTHORIZED"
+    result["package_promotion_authorized"] = False
+    _write(result_path, result)
+    _patch_review_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="PACKAGE_PROMOTION_DRIFT"):
+        review.run(reports_root=reports)

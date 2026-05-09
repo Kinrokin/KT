@@ -425,6 +425,16 @@ def _ensure_no_forbidden_authority(payload: Dict[str, Any], *, label: str) -> No
     for key, code in forbidden_truths.items():
         if payload.get(key) is True or payload.get("authorization_state", {}).get(key) is True:
             _fail(code, f"{label} attempted forbidden authority via {key}")
+    package_promotion_values = [
+        payload.get("package_promotion"),
+        payload.get("authorization_state", {}).get("package_promotion"),
+    ]
+    for value in package_promotion_values:
+        if value not in (None, "DEFERRED"):
+            _fail(
+                "RC_B04R6_CANARY_EVIDENCE_PACKAGE_PROMOTION_DRIFT",
+                f"{label} attempted forbidden package promotion state {value!r}",
+            )
 
 
 def _validate_inputs(payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str]) -> None:
