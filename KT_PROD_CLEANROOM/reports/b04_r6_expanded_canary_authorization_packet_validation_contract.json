@@ -1,0 +1,492 @@
+{
+  "activation_cutover_executed": false,
+  "allowed_outcomes": [
+    "B04_R6_EXPANDED_CANARY_AUTHORIZATION_PACKET_VALIDATED__EXPANDED_CANARY_EXECUTION_PACKET_NEXT",
+    "B04_R6_EXPANDED_CANARY_AUTHORIZATION_VALIDATION_DEFERRED__NAMED_DEFECT_REMAINS",
+    "B04_R6_EXPANDED_CANARY_AUTHORIZATION_REJECTED__EXPANDED_CANARY_NOT_JUSTIFIED",
+    "B04_R6_EXPANDED_CANARY_AUTHORIZATION_INVALID__FORENSIC_EXPANDED_CANARY_AUTHORIZATION_REVIEW_NEXT"
+  ],
+  "artifact_id": "B04_R6_EXPANDED_CANARY_AUTHORIZATION_PACKET_VALIDATION_CONTRACT",
+  "authoritative_lane": "B04_R6_EXPANDED_CANARY_AUTHORIZATION_PACKET_VALIDATION",
+  "binding_hashes": {
+    "abstention_fallback_contract_hash": "84171dcfec5e3de1f991e1f916ce566d13c11b55465f5d110be22f01fa69dff9",
+    "allowed_case_class_contract_hash": "d843aac92d21df9028146f7c2c51d6137136c3dfc1453bfcb07af2208c167cb1",
+    "commercial_claim_boundary_hash": "a635dd52fd3e212d6bf6e00adc4d9aa13efa84719527634d69124c8f8013bb39",
+    "drift_thresholds_hash": "e395b432043eb50b6b0aa4001085e6259fed879b4c9f7c89033f49f87a9dad64",
+    "excluded_case_class_contract_hash": "d123a14d142e7e486d4e3825ef4fc58d4da07a2128a0e215a8835d678db63169",
+    "execution_validation_plan_prep_only_hash": "58683f632aeac6c3003a577174e4aa56407908d0a4cd85e51eb08c24aa4da5ec",
+    "external_verifier_requirements_hash": "8218f7c230d80de6957412f3fbe4cd1b248dc7702569390e092892de7cf11400",
+    "incident_freeze_contract_hash": "0a964504c2bd502c9095b1863642e7ecdccf4a9a75d31a57583f878611538692",
+    "kill_switch_contract_hash": "21b9b67a4a076cddee2ffc93535e08be9680d0bce1d48d2c254341ea6fd32f37",
+    "next_lawful_move_hash": "abb4b2802d64282dd265ab8c4051e597d7cc12e895c63ea11933f925b984e549",
+    "no_authorization_drift_receipt_hash": "1382fb74e97bd3587face0c34f0cd1a30365f903d81fa92cf6f56e89ec8ac4bf",
+    "null_route_preservation_contract_hash": "ba272f36ac3075ed1a4317ff5ad90f0f675ca4bc653c06135c29c36f1b776fa0",
+    "operator_override_contract_hash": "3a2e176d3776b4aa811e239beaaca4b10a64cd762e4abf5bf0677a41c661460d",
+    "package_promotion_prohibition_receipt_hash": "ca27bcc0911a37114a3f36d8727dce000aa97e6a7979d7f70e792608262b232b",
+    "packet_contract_hash": "cf5785760057bd7d3e9eeab624326f65e321fbe81e29935b79dd7154f817bdfb",
+    "packet_receipt_hash": "6dc5549b0239d6cb2f1ba89f633071f7663fb915f5922a3fa08afce610604607",
+    "packet_report_hash": "56bff67cd5773c390088e01c584611bc089cc914775bbe82b738d99a55ff7ca8",
+    "rollback_contract_hash": "f2cefefa148c05df2622c2830f6f46bcda3d313d027daf89d3b13c9072a66ce1",
+    "route_distribution_health_thresholds_hash": "acbf6724e11432f74c6d6d0a0a951f4a0dc7afb0d23e78b10edb74d7f1ca07f0",
+    "runtime_receipt_schema_hash": "36bd7e5827e60fd223d22b8b2b16acf17ceaf35b7c0de35e75623a125568647e",
+    "sample_limit_contract_hash": "e7278ca098bdff52b593ac65c238b092d93c39a8a079c531b7373bddbb319e8f",
+    "scope_manifest_hash": "d41ad9cd16c143ba9bd2b2351e5a31128baa08a0a714d76e7dfeee45013802ae",
+    "static_fallback_contract_hash": "073467ef839bf153e9a358e87e0a80b84772468043bf7673e4ea06bd4508e181",
+    "validation_plan_hash": "f5ba6d324d699e4f08882b776edab961cdc81b00723ae2841338a268bc3d3dfd",
+    "validation_reason_codes_hash": "44fdab042e378828470e51c2f90c57ed9d3e72a67bfb34fb976b2b6d3b2eb292"
+  },
+  "commercial_activation_claim_authorized": false,
+  "current_branch": "validate/b04-r6-expanded-canary-authorization-packet",
+  "current_git_head": "b23a9a4e1ec32d88b2e8941f97f9ccd369396909",
+  "current_main_head": "663db20fd0bd5fd803e1d36356911f9e50778dcb",
+  "expanded_canary_authorization_packet_authored": true,
+  "expanded_canary_authorization_packet_validated": true,
+  "expanded_canary_execution_packet_authored": false,
+  "expanded_canary_execution_packet_validated": false,
+  "expanded_canary_runtime_authorized": false,
+  "expanded_canary_runtime_executed": false,
+  "forbidden_actions": [
+    "EXPANDED_CANARY_RUNTIME_AUTHORIZED",
+    "EXPANDED_CANARY_RUNTIME_EXECUTED",
+    "RUNTIME_CUTOVER_AUTHORIZED",
+    "ACTIVATION_CUTOVER_EXECUTED",
+    "R6_OPEN",
+    "LOBE_ESCALATION_AUTHORIZED",
+    "PACKAGE_PROMOTION_AUTHORIZED",
+    "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED",
+    "TRUTH_ENGINE_LAW_MUTATED",
+    "TRUST_ZONE_LAW_MUTATED",
+    "METRIC_CONTRACT_MUTATED",
+    "STATIC_COMPARATOR_WEAKENED"
+  ],
+  "generated_utc": "2026-05-09T21:29:55Z",
+  "input_bindings": [
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_abstention_fallback_contract.json",
+      "role": "abstention_fallback_contract",
+      "sha256": "84171dcfec5e3de1f991e1f916ce566d13c11b55465f5d110be22f01fa69dff9"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_allowed_case_class_contract.json",
+      "role": "allowed_case_class_contract",
+      "sha256": "d843aac92d21df9028146f7c2c51d6137136c3dfc1453bfcb07af2208c167cb1"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_commercial_claim_boundary.json",
+      "role": "commercial_claim_boundary",
+      "sha256": "a635dd52fd3e212d6bf6e00adc4d9aa13efa84719527634d69124c8f8013bb39"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_drift_thresholds.json",
+      "role": "drift_thresholds",
+      "sha256": "e395b432043eb50b6b0aa4001085e6259fed879b4c9f7c89033f49f87a9dad64"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_excluded_case_class_contract.json",
+      "role": "excluded_case_class_contract",
+      "sha256": "d123a14d142e7e486d4e3825ef4fc58d4da07a2128a0e215a8835d678db63169"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_execution_validation_plan_prep_only.json",
+      "role": "execution_validation_plan_prep_only",
+      "sha256": "58683f632aeac6c3003a577174e4aa56407908d0a4cd85e51eb08c24aa4da5ec"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_external_verifier_requirements.json",
+      "role": "external_verifier_requirements",
+      "sha256": "8218f7c230d80de6957412f3fbe4cd1b248dc7702569390e092892de7cf11400"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_incident_freeze_contract.json",
+      "role": "incident_freeze_contract",
+      "sha256": "0a964504c2bd502c9095b1863642e7ecdccf4a9a75d31a57583f878611538692"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_kill_switch_contract.json",
+      "role": "kill_switch_contract",
+      "sha256": "21b9b67a4a076cddee2ffc93535e08be9680d0bce1d48d2c254341ea6fd32f37"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_next_lawful_move_receipt.json",
+      "role": "next_lawful_move",
+      "sha256": "abb4b2802d64282dd265ab8c4051e597d7cc12e895c63ea11933f925b984e549"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_no_authorization_drift_receipt.json",
+      "role": "no_authorization_drift_receipt",
+      "sha256": "1382fb74e97bd3587face0c34f0cd1a30365f903d81fa92cf6f56e89ec8ac4bf"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_null_route_preservation_contract.json",
+      "role": "null_route_preservation_contract",
+      "sha256": "ba272f36ac3075ed1a4317ff5ad90f0f675ca4bc653c06135c29c36f1b776fa0"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_operator_override_contract.json",
+      "role": "operator_override_contract",
+      "sha256": "3a2e176d3776b4aa811e239beaaca4b10a64cd762e4abf5bf0677a41c661460d"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_package_promotion_prohibition_receipt.json",
+      "role": "package_promotion_prohibition_receipt",
+      "sha256": "ca27bcc0911a37114a3f36d8727dce000aa97e6a7979d7f70e792608262b232b"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_authorization_packet_contract.json",
+      "role": "packet_contract",
+      "sha256": "cf5785760057bd7d3e9eeab624326f65e321fbe81e29935b79dd7154f817bdfb"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_authorization_packet_receipt.json",
+      "role": "packet_receipt",
+      "sha256": "6dc5549b0239d6cb2f1ba89f633071f7663fb915f5922a3fa08afce610604607"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_rollback_contract.json",
+      "role": "rollback_contract",
+      "sha256": "f2cefefa148c05df2622c2830f6f46bcda3d313d027daf89d3b13c9072a66ce1"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_route_distribution_health_thresholds.json",
+      "role": "route_distribution_health_thresholds",
+      "sha256": "acbf6724e11432f74c6d6d0a0a951f4a0dc7afb0d23e78b10edb74d7f1ca07f0"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_runtime_receipt_schema.json",
+      "role": "runtime_receipt_schema",
+      "sha256": "36bd7e5827e60fd223d22b8b2b16acf17ceaf35b7c0de35e75623a125568647e"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_sample_limit_contract.json",
+      "role": "sample_limit_contract",
+      "sha256": "e7278ca098bdff52b593ac65c238b092d93c39a8a079c531b7373bddbb319e8f"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_scope_manifest.json",
+      "role": "scope_manifest",
+      "sha256": "d41ad9cd16c143ba9bd2b2351e5a31128baa08a0a714d76e7dfeee45013802ae"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_static_fallback_contract.json",
+      "role": "static_fallback_contract",
+      "sha256": "073467ef839bf153e9a358e87e0a80b84772468043bf7673e4ea06bd4508e181"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_authorization_validation_plan.json",
+      "role": "validation_plan",
+      "sha256": "f5ba6d324d699e4f08882b776edab961cdc81b00723ae2841338a268bc3d3dfd"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_authorization_validation_reason_codes.json",
+      "role": "validation_reason_codes",
+      "sha256": "44fdab042e378828470e51c2f90c57ed9d3e72a67bfb34fb976b2b6d3b2eb292"
+    },
+    {
+      "binding_kind": "file_sha256_at_expanded_canary_authorization_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_authorization_packet_report.md",
+      "role": "packet_report",
+      "sha256": "56bff67cd5773c390088e01c584611bc089cc914775bbe82b738d99a55ff7ca8"
+    }
+  ],
+  "lobe_escalation_authorized": false,
+  "may_authorize": [
+    "EXPANDED_CANARY_AUTHORIZATION_PACKET_VALIDATED"
+  ],
+  "metric_contract_mutated": false,
+  "next_lawful_move": "AUTHOR_B04_R6_EXPANDED_CANARY_EXECUTION_PACKET",
+  "outcome_routing": {
+    "B04_R6_EXPANDED_CANARY_AUTHORIZATION_INVALID__FORENSIC_EXPANDED_CANARY_AUTHORIZATION_REVIEW_NEXT": "AUTHOR_B04_R6_FORENSIC_EXPANDED_CANARY_AUTHORIZATION_REVIEW_PACKET",
+    "B04_R6_EXPANDED_CANARY_AUTHORIZATION_PACKET_VALIDATED__EXPANDED_CANARY_EXECUTION_PACKET_NEXT": "AUTHOR_B04_R6_EXPANDED_CANARY_EXECUTION_PACKET",
+    "B04_R6_EXPANDED_CANARY_AUTHORIZATION_REJECTED__EXPANDED_CANARY_NOT_JUSTIFIED": "AUTHOR_B04_R6_EXPANDED_CANARY_REJECTION_CLOSEOUT_PACKET",
+    "B04_R6_EXPANDED_CANARY_AUTHORIZATION_VALIDATION_DEFERRED__NAMED_DEFECT_REMAINS": "REPAIR_B04_R6_EXPANDED_CANARY_AUTHORIZATION_VALIDATION_DEFECTS"
+  },
+  "package_promotion": "DEFERRED",
+  "package_promotion_authorized": false,
+  "predecessor_outcome": "B04_R6_EXPANDED_CANARY_AUTHORIZATION_PACKET_BOUND__EXPANDED_CANARY_AUTHORIZATION_VALIDATION_NEXT",
+  "previous_authoritative_lane": "B04_R6_EXPANDED_CANARY_AUTHORIZATION_PACKET",
+  "previous_next_lawful_move": "VALIDATE_B04_R6_EXPANDED_CANARY_AUTHORIZATION_PACKET",
+  "r6_open": false,
+  "reason_codes": [
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_PACKET_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_PACKET_OUTCOME_DRIFT",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_NEXT_MOVE_DRIFT",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_INPUT_HASH_DRIFT",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_SCOPE_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_SAMPLE_LIMIT_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_ALLOWED_CASE_CLASSES_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_EXCLUDED_CASE_CLASSES_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_STATIC_FALLBACK_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_ABSTENTION_FALLBACK_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_NULL_ROUTE_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_OPERATOR_OVERRIDE_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_KILL_SWITCH_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_ROLLBACK_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_ROUTE_THRESHOLDS_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_DRIFT_THRESHOLDS_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_INCIDENT_FREEZE_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_RECEIPT_SCHEMA_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_EXTERNAL_VERIFIER_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_COMMERCIAL_BOUNDARY_MISSING",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_PACKAGE_PROMOTION_DRIFT",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_PREP_ONLY_DRIFT",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_RUNTIME_AUTHORIZED",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_RUNTIME_EXECUTED",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_RUNTIME_CUTOVER_AUTHORIZED",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_R6_OPEN_DRIFT",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_LOBE_ESCALATION_DRIFT",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_COMMERCIAL_CLAIM_DRIFT",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_TRUTH_ENGINE_MUTATION",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_TRUST_ZONE_MUTATION",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_METRIC_MUTATION",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_COMPARATOR_WEAKENED",
+    "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_TRUST_ZONE_FAILED"
+  ],
+  "runtime_cutover_authorized": false,
+  "schema_id": "kt.b04_r6.expanded_canary_authorization_packet_validation_contract.v1",
+  "schema_version": "v1",
+  "selected_outcome": "B04_R6_EXPANDED_CANARY_AUTHORIZATION_PACKET_VALIDATED__EXPANDED_CANARY_EXECUTION_PACKET_NEXT",
+  "static_comparator_weakened": false,
+  "terminal_defects": [
+    "EXPANDED_CANARY_AUTHORIZATION_PACKET_MISSING",
+    "EXPANDED_CANARY_AUTHORIZATION_PACKET_HASH_DRIFT",
+    "EXPANDED_CANARY_SCOPE_NOT_LIMITED",
+    "EXPANDED_CANARY_SAMPLE_LIMIT_MISSING",
+    "EXPANDED_CANARY_RUNTIME_AUTHORITY_DRIFT",
+    "RUNTIME_CUTOVER_AUTHORITY_DRIFT",
+    "R6_OPEN_DRIFT",
+    "PACKAGE_PROMOTION_DRIFT",
+    "COMMERCIAL_CLAIM_DRIFT",
+    "TRUTH_OR_TRUST_LAW_DRIFT"
+  ],
+  "trust_zone_failures": [],
+  "trust_zone_law_changed": false,
+  "trust_zone_law_unchanged": true,
+  "trust_zone_validation_status": "PASS",
+  "truth_engine_law_changed": false,
+  "truth_engine_law_unchanged": true,
+  "validation_rows": [
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-001",
+      "name": "expanded_canary_authorization_packet_bound",
+      "status": "PASS",
+      "terminal_if_fail": true
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-002",
+      "name": "authoring_receipt_bound",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-003",
+      "name": "source_input_hashes_match",
+      "status": "PASS",
+      "terminal_if_fail": true
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-004",
+      "name": "scope_is_expanded_but_limited",
+      "status": "PASS",
+      "terminal_if_fail": true
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-005",
+      "name": "allowed_case_classes_defined",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-006",
+      "name": "excluded_case_classes_block_global_r6_cutover_and_commercial",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-007",
+      "name": "sample_limit_defined",
+      "status": "PASS",
+      "terminal_if_fail": true
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-008",
+      "name": "static_fallback_required",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-009",
+      "name": "abstention_fallback_required",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-010",
+      "name": "null_route_preservation_required",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-011",
+      "name": "operator_override_required",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-012",
+      "name": "kill_switch_required",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-013",
+      "name": "rollback_required",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-014",
+      "name": "route_distribution_thresholds_defined",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-015",
+      "name": "drift_thresholds_defined",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-016",
+      "name": "incident_freeze_conditions_defined",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-017",
+      "name": "runtime_receipt_schema_defined",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-018",
+      "name": "external_verifier_required",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-019",
+      "name": "commercial_claim_boundary_preserved",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-020",
+      "name": "package_promotion_prohibited",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-021",
+      "name": "prep_only_execution_scaffold_non_authoritative",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-022",
+      "name": "expanded_canary_runtime_not_authorized",
+      "status": "PASS",
+      "terminal_if_fail": true
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-023",
+      "name": "expanded_canary_runtime_not_executed",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-024",
+      "name": "runtime_cutover_not_authorized",
+      "status": "PASS",
+      "terminal_if_fail": true
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-025",
+      "name": "r6_remains_closed",
+      "status": "PASS",
+      "terminal_if_fail": true
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-026",
+      "name": "lobe_escalation_unauthorized",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-027",
+      "name": "package_promotion_unauthorized",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-028",
+      "name": "commercial_activation_claims_unauthorized",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-029",
+      "name": "truth_engine_law_unchanged",
+      "status": "PASS",
+      "terminal_if_fail": true
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-030",
+      "name": "trust_zone_law_unchanged",
+      "status": "PASS",
+      "terminal_if_fail": true
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-031",
+      "name": "metric_contract_not_mutated",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-032",
+      "name": "static_comparator_not_weakened",
+      "status": "PASS",
+      "terminal_if_fail": false
+    },
+    {
+      "check_id": "B04R6-EXPANDED-CANARY-AUTH-VALIDATION-033",
+      "name": "next_lawful_move_is_expanded_canary_execution_packet_authoring",
+      "status": "PASS",
+      "terminal_if_fail": true
+    }
+  ],
+  "validation_summary": "Expanded canary authorization packet is complete, evidence-bound, bounded, and non-executing."
+}
