@@ -105,22 +105,12 @@ OUTPUTS = {
     "no_authorization_drift_receipt": "b04_r6_expanded_canary_no_authorization_drift_receipt.json",
     "validation_plan": "b04_r6_expanded_canary_authorization_validation_plan.json",
     "validation_reason_codes": "b04_r6_expanded_canary_authorization_validation_reason_codes.json",
-    "execution_packet_prep_only_draft": "b04_r6_expanded_canary_execution_packet_prep_only_draft.json",
     "execution_validation_plan_prep_only": "b04_r6_expanded_canary_execution_validation_plan_prep_only.json",
-    "evidence_review_packet_prep_only_draft": "b04_r6_expanded_canary_evidence_review_packet_prep_only_draft.json",
-    "external_audit_delta_manifest_prep_only": "b04_r6_external_audit_delta_manifest_prep_only_draft.json",
-    "package_promotion_review_preconditions_prep_only": "b04_r6_package_promotion_review_preconditions_prep_only_draft.json",
-    "future_blocker_register": "b04_r6_future_blocker_register.json",
-    "pipeline_board": "b04_r6_pipeline_board.json",
-    "next_lawful_move": "b04_r6_next_lawful_move_receipt.json",
+    "next_lawful_move": "b04_r6_expanded_canary_next_lawful_move_receipt.json",
 }
 
 PREP_ONLY_ROLES = (
-    "execution_packet_prep_only_draft",
     "execution_validation_plan_prep_only",
-    "evidence_review_packet_prep_only_draft",
-    "external_audit_delta_manifest_prep_only",
-    "package_promotion_review_preconditions_prep_only",
 )
 
 CONTRACT_ROLES = (
@@ -489,46 +479,6 @@ def _write_outputs(
                 **_guard(),
             },
         )
-    write_json_stable(
-        reports_root / OUTPUTS["future_blocker_register"],
-        {
-            **common_base,
-            "artifact_id": "B04_R6_FUTURE_BLOCKER_REGISTER",
-            "blockers": [
-                {
-                    "blocker_id": "B04R6-EXP-CANARY-AUTH-001",
-                    "category": "expanded_canary_execution",
-                    "status": "OPEN",
-                    "blocks": ["EXPANDED_CANARY_EXECUTION_PACKET"],
-                    "required_next_artifact": "VALIDATE_B04_R6_EXPANDED_CANARY_AUTHORIZATION_PACKET",
-                },
-                {
-                    "blocker_id": "B04R6-EXP-CANARY-AUTH-002",
-                    "category": "runtime_cutover",
-                    "status": "OPEN",
-                    "blocks": ["RUNTIME_CUTOVER_REVIEW_PACKET"],
-                    "required_next_artifact": "expanded canary execution and evidence review remain incomplete",
-                },
-            ],
-        },
-    )
-    write_json_stable(
-        reports_root / OUTPUTS["pipeline_board"],
-        {
-            **common_base,
-            "artifact_id": "B04_R6_PIPELINE_BOARD",
-            "pipeline_state": {
-                "canary_evidence_review": "VALIDATED",
-                "expanded_canary_authorization_packet": "BOUND",
-                "expanded_canary_authorization_validation": "NEXT",
-                "expanded_canary_execution": "BLOCKED",
-                "runtime_cutover": "BLOCKED",
-                "r6_open": "BLOCKED",
-                "package_promotion": "BLOCKED",
-                "commercial_activation_claims": "BLOCKED",
-            },
-        },
-    )
     write_json_stable(
         reports_root / OUTPUTS["next_lawful_move"],
         {
