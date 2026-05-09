@@ -388,6 +388,28 @@ def test_allowed_case_class_drift_fails_closed(
         validation.run(reports_root=reports)
 
 
+@pytest.mark.parametrize(
+    "role, detail_key, expected_reason",
+    [
+        ("static_fallback_contract", "static_fallback_required", "STATIC_FALLBACK_MISSING"),
+        ("operator_override_contract", "operator_override_required", "OPERATOR_OVERRIDE_MISSING"),
+        ("kill_switch_contract", "kill_switch_required", "KILL_SWITCH_MISSING"),
+        ("rollback_contract", "rollback_required", "ROLLBACK_MISSING"),
+    ],
+)
+def test_required_true_safety_control_drift_fails_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, role: str, detail_key: str, expected_reason: str
+) -> None:
+    reports = _run_authoring_only(tmp_path, monkeypatch)
+    path = reports / expanded.OUTPUTS[role]
+    payload = _load(path)
+    payload["details"][detail_key] = False
+    _write(path, payload)
+    _patch_validation_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match=expected_reason):
+        validation.run(reports_root=reports)
+
+
 @pytest.mark.parametrize("field", sorted(validation.AUTHORITY_DRIFT_KEYS))
 @pytest.mark.parametrize("drift_value", [True, "AUTHORIZED", 1])
 def test_any_non_false_authority_drift_fails_closed(

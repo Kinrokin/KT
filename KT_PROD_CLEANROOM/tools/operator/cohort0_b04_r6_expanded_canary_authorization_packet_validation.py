@@ -281,16 +281,18 @@ def _validate_operational_contracts(payloads: Dict[str, Dict[str, Any]]) -> None
             if details.get("requires_operator_observation") is not True or details.get("may_not_expand_without_validation") is not True:
                 _fail("RC_B04R6_EXPANDED_CANARY_AUTH_VAL_SAMPLE_LIMIT_MISSING", "sample limit guards missing")
         required_true = {
-            "static_fallback_contract": "static_fallback_required",
-            "abstention_fallback_contract": "abstention_fallback_required",
-            "null_route_preservation_contract": "null_route_preservation_required",
-            "operator_override_contract": "operator_override_required",
-            "kill_switch_contract": "kill_switch_required",
-            "rollback_contract": "rollback_required",
-            "external_verifier_requirements": "external_verifier_required",
+            "static_fallback_contract": ("static_fallback_required", "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_STATIC_FALLBACK_MISSING"),
+            "abstention_fallback_contract": ("abstention_fallback_required", "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_ABSTENTION_FALLBACK_MISSING"),
+            "null_route_preservation_contract": ("null_route_preservation_required", "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_NULL_ROUTE_MISSING"),
+            "operator_override_contract": ("operator_override_required", "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_OPERATOR_OVERRIDE_MISSING"),
+            "kill_switch_contract": ("kill_switch_required", "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_KILL_SWITCH_MISSING"),
+            "rollback_contract": ("rollback_required", "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_ROLLBACK_MISSING"),
+            "external_verifier_requirements": ("external_verifier_required", "RC_B04R6_EXPANDED_CANARY_AUTH_VAL_EXTERNAL_VERIFIER_MISSING"),
         }
-        if role in required_true and details.get(required_true[role]) is not True:
-            _fail(f"RC_B04R6_EXPANDED_CANARY_AUTH_VAL_{role.upper()}_MISSING", f"{role}.{required_true[role]} missing")
+        if role in required_true:
+            detail_key, reason_code = required_true[role]
+            if details.get(detail_key) is not True:
+                _fail(reason_code, f"{role}.{detail_key} missing")
         if role == "route_distribution_health_thresholds" and details.get("route_distribution_thresholds_defined") is not True:
             _fail("RC_B04R6_EXPANDED_CANARY_AUTH_VAL_ROUTE_THRESHOLDS_MISSING", "route thresholds missing")
         if role == "drift_thresholds" and details.get("drift_thresholds_defined") is not True:
