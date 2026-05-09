@@ -158,6 +158,8 @@ def _ensure_context(root: Path) -> str:
     if branch not in ALLOWED_BRANCHES and not branch.startswith(REPLAY_BRANCH_PREFIX):
         allowed = ", ".join(sorted([*ALLOWED_BRANCHES, f"{REPLAY_BRANCH_PREFIX}*"]))
         raise RuntimeError(f"FAIL_CLOSED: must run on one of: {allowed}; got: {branch}")
+    if branch == "main" and common.git_rev_parse(root, "HEAD") != common.git_rev_parse(root, "origin/main"):
+        raise RuntimeError("FAIL_CLOSED: main runs require HEAD to equal origin/main")
     if common.git_status_porcelain(root).strip():
         raise RuntimeError("FAIL_CLOSED: dirty worktree before campaign order generation")
     return branch

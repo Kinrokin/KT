@@ -49,11 +49,13 @@ def _patch_env(
     *,
     branch: str = order.AUTHORITY_BRANCH,
     dirty: str = "",
+    head: str = HEAD,
+    origin_main: str = MAIN,
 ) -> None:
     monkeypatch.setattr(order, "repo_root", lambda: tmp_path)
     monkeypatch.setattr(order.common, "git_current_branch_name", lambda root: branch)
     monkeypatch.setattr(order.common, "git_status_porcelain", lambda root: dirty)
-    monkeypatch.setattr(order.common, "git_rev_parse", lambda root, ref: MAIN if ref == "origin/main" else HEAD)
+    monkeypatch.setattr(order.common, "git_rev_parse", lambda root, ref: origin_main if ref == "origin/main" else head)
 
 
 @pytest.fixture()
@@ -183,4 +185,18 @@ def test_wrong_branch_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPat
     _seed_prior_receipts(reports)
     _patch_env(monkeypatch, tmp_path, branch="feature/random")
     with pytest.raises(RuntimeError, match="must run on one of"):
+        order.run(reports_root=reports)
+
+
+def test_main_run_requires_head_to_equal_origin_main(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = tmp_path / "KT_PROD_CLEANROOM" / "reports"
+    _seed_prior_receipts(reports)
+    _patch_env(
+        monkeypatch,
+        tmp_path,
+        branch="main",
+        head="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        origin_main=MAIN,
+    )
+    with pytest.raises(RuntimeError, match="HEAD to equal origin/main"):
         order.run(reports_root=reports)
