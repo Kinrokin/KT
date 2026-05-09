@@ -14,6 +14,7 @@ from tools.operator.trust_zone_validate import validate_trust_zones
 
 
 AUTHORITY_BRANCH = "authoritative/b04-r6-canary-evidence-e2e-superlane"
+REPLAY_BRANCH_PREFIX = "replay/b04-r6-canary-evidence-e2e-superlane"
 ALLOWED_BRANCHES = frozenset({AUTHORITY_BRANCH, "main"})
 SUPERLANE_ID = "KT_E2E_CLOSURE_AND_POST_CANARY_DECISION_SUPERLANE_V1"
 AUTHORITATIVE_LANE = "B04_R6_CANARY_EVIDENCE_REVIEW_PACKET"
@@ -365,8 +366,8 @@ def _fail(code: str, detail: str) -> None:
 
 def _ensure_branch_context(root: Path) -> str:
     current_branch = common.git_current_branch_name(root)
-    if current_branch not in ALLOWED_BRANCHES:
-        allowed = ", ".join(sorted(ALLOWED_BRANCHES))
+    if current_branch not in ALLOWED_BRANCHES and not current_branch.startswith(REPLAY_BRANCH_PREFIX):
+        allowed = ", ".join(sorted([*ALLOWED_BRANCHES, f"{REPLAY_BRANCH_PREFIX}*"]))
         raise RuntimeError(f"FAIL_CLOSED: must run on one of: {allowed}; got: {current_branch}")
     if current_branch == "main":
         head = common.git_rev_parse(root, "HEAD")
@@ -374,6 +375,35 @@ def _ensure_branch_context(root: Path) -> str:
         if head != origin_main:
             raise RuntimeError("FAIL_CLOSED: main replay requires local main converged with origin/main")
     return current_branch
+
+
+def _commit_has_previous_handoff(root: Path, commit: str) -> bool:
+    try:
+        raw = f"KT_PROD_CLEANROOM/reports/{canary.OUTPUTS['next_lawful_move']}"
+        payload = json.loads(_git_blob_bytes(root, commit, raw).decode("utf-8"))
+    except Exception:
+        return False
+    return payload.get("next_lawful_move") == EXPECTED_PREVIOUS_NEXT_MOVE
+
+
+def _select_handoff_git_commit(root: Path, *, current_branch: str, current_main_head: str) -> str:
+    if _commit_has_previous_handoff(root, current_main_head):
+        return current_main_head
+
+    parent_refs = []
+    if current_branch == "main":
+        parent_refs.append("HEAD^1")
+    elif current_branch.startswith(REPLAY_BRANCH_PREFIX):
+        parent_refs.append("origin/main^1")
+
+    for ref in parent_refs:
+        try:
+            parent = common.git_rev_parse(root, ref)
+        except Exception:
+            continue
+        if _commit_has_previous_handoff(root, parent):
+            return parent
+    return current_main_head
 
 
 def _git_blob_bytes(root: Path, commit: str, raw: str) -> bytes:
@@ -835,7 +865,11 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
 
     head = common.git_rev_parse(root, "HEAD")
     current_main_head = common.git_rev_parse(root, "origin/main" if current_branch != "main" else "HEAD")
-    handoff_git_commit = current_main_head if current_branch != "main" else head
+    handoff_git_commit = _select_handoff_git_commit(
+        root,
+        current_branch=current_branch,
+        current_main_head=current_main_head,
+    )
     output_names = set(OUTPUTS.values())
     payloads = {
         role: _load_input(root, raw, label=role, handoff_git_commit=handoff_git_commit, output_names=output_names)
