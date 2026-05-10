@@ -248,6 +248,13 @@ def test_wrong_branch_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPat
         review.run(reports_root=reports)
 
 
+def test_main_replay_head_mismatch_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = runtime_helpers._run_runtime(tmp_path, monkeypatch)
+    _patch_review_env(monkeypatch, tmp_path, branch="main", head="1" * 40, origin_main="2" * 40)
+    with pytest.raises(review.LaneFailure, match="HEAD to equal origin/main"):
+        review.run(reports_root=reports)
+
+
 def test_runtime_outcome_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = runtime_helpers._run_runtime(tmp_path, monkeypatch)
     result_path = reports / runtime.OUTPUTS["result"]
@@ -298,6 +305,17 @@ def test_authority_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.Monkey
     result_path = reports / runtime.OUTPUTS["result"]
     result = _load(result_path)
     result[field] = True
+    _write(result_path, result)
+    _patch_review_env(monkeypatch, tmp_path)
+    with pytest.raises(review.LaneFailure):
+        review.run(reports_root=reports)
+
+
+def test_nested_authority_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = runtime_helpers._run_runtime(tmp_path, monkeypatch)
+    result_path = reports / runtime.OUTPUTS["result"]
+    result = _load(result_path)
+    result["case_rows"] = [{"case_id": "nested-drift", "runtime_cutover_authorized": "UNAUTHORIZED"}]
     _write(result_path, result)
     _patch_review_env(monkeypatch, tmp_path)
     with pytest.raises(review.LaneFailure):

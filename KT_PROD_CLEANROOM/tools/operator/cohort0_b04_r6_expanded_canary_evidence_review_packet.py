@@ -208,15 +208,18 @@ def _fail(code: str, detail: str) -> None:
 def _ensure_branch_context(root: Path) -> str:
     branch = common.git_current_branch_name(root)
     if branch in ALLOWED_BRANCHES or branch.startswith(REPLAY_BRANCH_PREFIX):
+        if branch == "main" and common.git_rev_parse(root, "HEAD") != common.git_rev_parse(root, "origin/main"):
+            _fail("RC_B04R6_EXPANDED_CANARY_EVIDENCE_NEXT_MOVE_DRIFT", "main replay requires HEAD to equal origin/main")
         return branch
     _fail("RC_B04R6_EXPANDED_CANARY_EVIDENCE_NEXT_MOVE_DRIFT", f"branch {branch!r} is not allowed")
 
 
 def _load_json(root: Path, raw: str, *, label: str) -> Dict[str, Any]:
-    path = common.resolve_path(root, raw)
-    if not path.exists():
+    try:
+        return common.load_json_required(root, raw, label=label)
+    except Exception as exc:  # noqa: BLE001 - convert shared loader defects into lane reason codes.
         _fail("RC_B04R6_EXPANDED_CANARY_EVIDENCE_RUNTIME_RESULT_MISSING", f"{label} missing at {raw}")
-    return json.loads(path.read_text(encoding="utf-8"))
+        raise AssertionError(str(exc)) from exc
 
 
 def _read_text(root: Path, raw: str, *, label: str) -> str:
@@ -231,9 +234,18 @@ def _sha_text(text: str) -> str:
 
 
 def _ensure_no_authority_drift(payload: Dict[str, Any], *, label: str) -> None:
-    for key, code in AUTHORITY_DRIFT_KEYS.items():
-        if payload.get(key) is True:
-            _fail(code, f"{label} drifted via {key}")
+    def walk(value: Any, path: str) -> None:
+        if isinstance(value, dict):
+            for key, item in value.items():
+                next_path = f"{path}.{key}" if path else str(key)
+                if key in AUTHORITY_DRIFT_KEYS and item is not False:
+                    _fail(AUTHORITY_DRIFT_KEYS[key], f"{label} drifted via {next_path}")
+                walk(item, next_path)
+        elif isinstance(value, list):
+            for index, item in enumerate(value):
+                walk(item, f"{path}[{index}]")
+
+    walk(payload, "")
     state = payload.get("authorization_state")
     if isinstance(state, dict):
         for key, code in AUTHORITY_DRIFT_KEYS.items():
@@ -722,7 +734,7 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
     outputs = _outputs(base, payloads)
     for role, filename in OUTPUTS.items():
         if filename.endswith(".md"):
-            (reports / filename).write_text(_report_text(outputs["packet_contract"]), encoding="utf-8")
+            (reports / filename).write_text(_report_text(outputs["packet_contract"]), encoding="utf-8", newline="\n")
         else:
             write_json_stable(reports / filename, outputs[role])
     return outputs["packet_contract"]
