@@ -6,7 +6,7 @@
     "B04_R6_RUNTIME_CUTOVER_INVALIDATED__FORENSIC_CUTOVER_REVIEW_NEXT",
     "B04_R6_RUNTIME_CUTOVER_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_RUNTIME_CUTOVER_KILL_SWITCH_RECEIPT",
   "authoritative_lane": "B04_R6_RUNTIME_CUTOVER",
   "binding_hashes": {
     "packet_abstention_fallback_contract_hash": "2cfdd1d3828139e6a2abf268d674c942fc72e790eecc4d3f6489df93bcfb2a52",
@@ -1033,6 +1033,8 @@
       "sha256": "e371eb9c088e3c94683b4ba94eea8a378a605476a5a26d35fd604458e72b818d"
     }
   ],
+  "kill_switch_invocations": 0,
+  "kill_switch_ready": true,
   "lobe_escalation_authorized": false,
   "metric_contract_mutated": false,
   "next_lawful_move": "AUTHOR_B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_PACKET",
@@ -1099,12 +1101,13 @@
     "RC_B04R6_RUNTIME_CUTOVER_RESULT_R6_OPENING_DRIFT",
     "RC_B04R6_RUNTIME_CUTOVER_RESULT_PROMOTION_DRIFT"
   ],
+  "receipt_role": "kill_switch",
   "runtime_cutover_authorized": false,
   "runtime_cutover_executed": true,
   "runtime_cutover_execution_packet_validated": true,
   "runtime_cutover_performed_under_validated_execution_packet": true,
   "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v52",
+  "schema_id": "kt.b04_r6.runtime_cutover.kill_switch.v1",
   "schema_version": "v1",
   "scorecard": {
     "abstention_fallback_preserved": true,
@@ -1782,6 +1785,5 @@
       "name": "B04R6-RUNTIME-CUTOVER-018",
       "status": "PASS"
     }
-  ],
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  ]
 }
