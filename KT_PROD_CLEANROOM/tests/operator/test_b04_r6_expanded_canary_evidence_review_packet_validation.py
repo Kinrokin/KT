@@ -101,6 +101,10 @@ def _json_output_roles() -> list[str]:
     return sorted(role for role, filename in validation.OUTPUTS.items() if filename.endswith(".json"))
 
 
+def test_reason_codes_are_unique() -> None:
+    assert len(validation.REASON_CODES) == len(set(validation.REASON_CODES))
+
+
 @pytest.mark.parametrize("filename", sorted(validation.OUTPUTS.values()))
 def test_required_validation_outputs_exist_and_parse(outputs: Path, filename: str) -> None:
     path = outputs / filename
@@ -315,6 +319,14 @@ def test_all_json_validation_outputs_preserve_authority_boundaries(
     outputs: Path, role: str, field: str, expected: object
 ) -> None:
     assert _payload(outputs, role)[field] == expected
+
+
+@pytest.mark.parametrize("role", _json_output_roles())
+def test_json_output_reason_codes_are_unique(outputs: Path, role: str) -> None:
+    payload = _payload(outputs, role)
+    if "reason_codes" not in payload:
+        pytest.skip("artifact does not carry reason code registry")
+    assert len(payload["reason_codes"]) == len(set(payload["reason_codes"]))
 
 
 def test_pipeline_board_routes_to_runtime_cutover_review_without_cutover(outputs: Path) -> None:
