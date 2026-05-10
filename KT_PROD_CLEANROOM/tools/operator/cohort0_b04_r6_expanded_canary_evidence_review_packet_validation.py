@@ -223,7 +223,7 @@ OUTPUTS = {
         "b04_r6_expanded_canary_external_verifier_readiness_validation_receipt.json"
     ),
     "commercial_claim_boundary_validation": (
-        "b04_r6_expanded_canary_commercial_claim_boundary_validation_receipt.json"
+        "b04_r6_expanded_canary_evidence_commercial_claim_boundary_validation_receipt.json"
     ),
     "package_promotion_blocker_validation": (
         "b04_r6_expanded_canary_package_promotion_blocker_validation_receipt.json"
@@ -237,7 +237,7 @@ OUTPUTS = {
         "b04_r6_runtime_cutover_review_validation_plan_prep_only.json"
     ),
     "runtime_cutover_review_packet_prep_only_draft": (
-        "b04_r6_runtime_cutover_review_packet_prep_only_draft.json"
+        "b04_r6_expanded_canary_evidence_validation_runtime_cutover_review_packet_prep_only_draft.json"
     ),
     "additional_expanded_canary_authorization_validation_plan_prep_only": (
         "b04_r6_additional_expanded_canary_authorization_validation_plan_prep_only.json"
