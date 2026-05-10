@@ -56,7 +56,7 @@
   "cannot_open_r6": true,
   "commercial_activation_claim_authorized": false,
   "current_branch": "authoritative/b04-r6-runtime-cutover-review-packet",
-  "current_git_head": "b37124c95d958248b2bd3335d18abe02997e2bc1",
+  "current_git_head": "c40370c321357c217bf8e077c5d791f8dda3a93e",
   "current_main_head": "271635976229d469b0456c8254cdce1ceabf4dea",
   "decision_matrix_id": "B04_R6_RUNTIME_CUTOVER_REVIEW_DECISION_MATRIX_V1",
   "expanded_canary_evidence_review_validated": true,
@@ -73,25 +73,43 @@
     "STATIC_COMPARATOR_WEAKENED",
     "RUNTIME_CUTOVER_REVIEW_TREATED_AS_CUTOVER_AUTHORIZATION"
   ],
-  "generated_utc": "2026-05-10T18:28:58Z",
+  "generated_utc": "2026-05-10T18:37:14Z",
   "input_bindings": [
     {
       "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_review_validation_contract.json",
-      "role": "validation_contract",
-      "sha256": "5680c9dbb2eea584685d8e7beb86133a2483633d0a568cccd28dae89ae152c2f"
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_abstention_fallback_review_validation_receipt.json",
+      "role": "abstention_fallback_review_validation",
+      "sha256": "e3fdd08e2f70af995c749926704cc947e779db7ee3df5aa7b5cf5fc863da2e23"
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_review_validation_receipt.json",
-      "role": "validation_receipt",
-      "sha256": "39182fe47a5709a6ae5e786afd5af88ce0fe3135b66e191e2c8c12e8b3580743"
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_additional_expanded_canary_authorization_validation_plan_prep_only.json",
+      "role": "additional_expanded_canary_authorization_validation_plan_prep_only",
+      "sha256": "e3e5142998fa0d30c1433ee6d979bdf67b69545f8d0d6aad1d359621170d28c5"
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_review_packet_binding_validation_receipt.json",
-      "role": "packet_binding_validation",
-      "sha256": "778acce071cbcf4125c6712622f29460192f3bc2f87ab727b774c239fca9aa68"
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_additional_expanded_canary_readiness_validation_receipt.json",
+      "role": "additional_expanded_canary_readiness_validation",
+      "sha256": "d6bd2b12adca2e6e4e96b9124b0cb7b2a1b26978e5987a4e41b55d9374971300"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_claim_token_boundary_validation_receipt.json",
+      "role": "claim_token_boundary_validation",
+      "sha256": "f20c0dd11b9e5d9ed2397708fae12dc415bb56243a1b23c6015de7d4ce2391ef"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_commercial_claim_boundary_validation_receipt.json",
+      "role": "commercial_claim_boundary_validation",
+      "sha256": "46367867ffcbf99526d2da6ac165408ad5135251c4d99c5292a78515f3b1dfac"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_drift_monitoring_review_validation_receipt.json",
+      "role": "drift_monitoring_review_validation",
+      "sha256": "4813fa39c77262629a738672ff1c2f2ac47d481b789834d8efa19b59f1eb2fc6"
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
@@ -107,27 +125,9 @@
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_post_run_decision_matrix_validation_receipt.json",
-      "role": "post_run_decision_matrix_validation",
-      "sha256": "b560a878eb97d7af0f6afc36f1b8081f04b9a6f333d4d7beea4d869f4938f915"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_post_expanded_canary_blocker_ledger_validation_receipt.json",
-      "role": "post_expanded_canary_blocker_ledger_validation",
-      "sha256": "466fddf0cb5e448011736cb4d8b80f1bde02563aac600b5ee30ae4295cbb7079"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_post_expanded_canary_runtime_cutover_readiness_validation_receipt.json",
-      "role": "runtime_cutover_readiness_validation",
-      "sha256": "49b359fcecfae7275e743a83cad23d4b2670183984d10c65502af037001ba5ff"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_additional_expanded_canary_readiness_validation_receipt.json",
-      "role": "additional_expanded_canary_readiness_validation",
-      "sha256": "d6bd2b12adca2e6e4e96b9124b0cb7b2a1b26978e5987a4e41b55d9374971300"
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_external_audit_delta_validation_plan_prep_only.json",
+      "role": "external_audit_delta_validation_plan_prep_only",
+      "sha256": "cc7f23322a28e13a7fb1e30cf2dafefc864d3058776136033f0f4504d4c88ab7"
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
@@ -137,9 +137,9 @@
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_route_distribution_review_validation_receipt.json",
-      "role": "route_distribution_review_validation",
-      "sha256": "82e6502b7f46fd2fc052785463e5c53711173a11700d991fa95b4cf325050ef9"
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_external_verifier_readiness_validation_receipt.json",
+      "role": "external_verifier_readiness_validation",
+      "sha256": "88aa8e8aabb1965ce2309ffb382a7a2fcead86e1699378ba55d61d03fd2602a1"
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
@@ -149,15 +149,33 @@
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_static_fallback_review_validation_receipt.json",
-      "role": "static_fallback_review_validation",
-      "sha256": "c69d72d46c5be180097d1e7d752a235d6e441141e29678a47eff87799d110d24"
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_review_validation_future_blocker_register.json",
+      "role": "future_blocker_register",
+      "sha256": "83a9bfb98aa606880e43667a8085f5d8882800d743c790ad0f643a2a710fa695"
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_abstention_fallback_review_validation_receipt.json",
-      "role": "abstention_fallback_review_validation",
-      "sha256": "e3fdd08e2f70af995c749926704cc947e779db7ee3df5aa7b5cf5fc863da2e23"
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_incident_freeze_review_validation_receipt.json",
+      "role": "incident_freeze_review_validation",
+      "sha256": "a3db63da1bab0b9c23bc7d416bcc143cfc8eb614345ad75158ee553f4287e87b"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_kill_switch_review_validation_receipt.json",
+      "role": "kill_switch_review_validation",
+      "sha256": "1629c2ec00ab9aa28d76a8f64627508d53c2e08e9c47cc3e8d77c6506a04c1a0"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_review_validation_next_lawful_move_receipt.json",
+      "role": "next_lawful_move",
+      "sha256": "e1187af6e8d3402a46b59334d7e7f63f7569b6e9f648ac3ce233ac695e578a70"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_no_authorization_drift_validation_receipt.json",
+      "role": "no_authorization_drift_validation",
+      "sha256": "39e1fad1fcda248f506e87a67293b22633160547be545343adc4ca75f4017f62"
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
@@ -173,99 +191,9 @@
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_kill_switch_review_validation_receipt.json",
-      "role": "kill_switch_review_validation",
-      "sha256": "1629c2ec00ab9aa28d76a8f64627508d53c2e08e9c47cc3e8d77c6506a04c1a0"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_rollback_review_validation_receipt.json",
-      "role": "rollback_review_validation",
-      "sha256": "b126319816a2314c914a250edc39280133b42d314fb27a2e5dd0a083881a6dc0"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_drift_monitoring_review_validation_receipt.json",
-      "role": "drift_monitoring_review_validation",
-      "sha256": "4813fa39c77262629a738672ff1c2f2ac47d481b789834d8efa19b59f1eb2fc6"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_incident_freeze_review_validation_receipt.json",
-      "role": "incident_freeze_review_validation",
-      "sha256": "a3db63da1bab0b9c23bc7d416bcc143cfc8eb614345ad75158ee553f4287e87b"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_trace_completeness_review_validation_receipt.json",
-      "role": "trace_completeness_review_validation",
-      "sha256": "ad462983912c811d1acc595d5cbccaeb86f8cac5610330ed5316e2ed533a5b59"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_replay_readiness_review_validation_receipt.json",
-      "role": "replay_readiness_review_validation",
-      "sha256": "03321a497e30c58b37e0e7be7ed9e812b93b5712fe0673d744d1e7797f18e0c5"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_external_verifier_readiness_validation_receipt.json",
-      "role": "external_verifier_readiness_validation",
-      "sha256": "88aa8e8aabb1965ce2309ffb382a7a2fcead86e1699378ba55d61d03fd2602a1"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_commercial_claim_boundary_validation_receipt.json",
-      "role": "commercial_claim_boundary_validation",
-      "sha256": "46367867ffcbf99526d2da6ac165408ad5135251c4d99c5292a78515f3b1dfac"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_package_promotion_blocker_validation_receipt.json",
       "role": "package_promotion_blocker_validation",
       "sha256": "59575801a8df1e2c4f7ac0b205b80f2cb89805a0a9c1458416235e1fc16106f3"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_prep_only_boundary_validation_receipt.json",
-      "role": "prep_only_boundary_validation",
-      "sha256": "eff32c4548ec3ff9a74ef84e354654b8c42942552c2be4fa7eef2566c4df6e57"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_no_authorization_drift_validation_receipt.json",
-      "role": "no_authorization_drift_validation",
-      "sha256": "39e1fad1fcda248f506e87a67293b22633160547be545343adc4ca75f4017f62"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_claim_token_boundary_validation_receipt.json",
-      "role": "claim_token_boundary_validation",
-      "sha256": "f20c0dd11b9e5d9ed2397708fae12dc415bb56243a1b23c6015de7d4ce2391ef"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_review_validation_plan_prep_only.json",
-      "role": "runtime_cutover_review_validation_plan_prep_only",
-      "sha256": "5c0e69bf2e5401a4b0a9ccfc9296a9ef6c8bdf765584e8883ca110a75ba7cf32"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_validation_runtime_cutover_review_packet_prep_only_draft.json",
-      "role": "runtime_cutover_review_packet_prep_only_draft",
-      "sha256": "6b38ffeefe7a7f5ea1fdc4b04c7ebcc88ea133b8bce0ca7553d51cb2f15cb8fc"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_additional_expanded_canary_authorization_validation_plan_prep_only.json",
-      "role": "additional_expanded_canary_authorization_validation_plan_prep_only",
-      "sha256": "e3e5142998fa0d30c1433ee6d979bdf67b69545f8d0d6aad1d359621170d28c5"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_external_audit_delta_validation_plan_prep_only.json",
-      "role": "external_audit_delta_validation_plan_prep_only",
-      "sha256": "cc7f23322a28e13a7fb1e30cf2dafefc864d3058776136033f0f4504d4c88ab7"
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
@@ -275,21 +203,93 @@
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_review_packet_binding_validation_receipt.json",
+      "role": "packet_binding_validation",
+      "sha256": "778acce071cbcf4125c6712622f29460192f3bc2f87ab727b774c239fca9aa68"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_review_validation_pipeline_board.json",
       "role": "pipeline_board",
       "sha256": "dc492a139773e6ad0d885e4ed44872c4b0dbab87c154c8b224b2955a647f544a"
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_review_validation_future_blocker_register.json",
-      "role": "future_blocker_register",
-      "sha256": "83a9bfb98aa606880e43667a8085f5d8882800d743c790ad0f643a2a710fa695"
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_post_expanded_canary_blocker_ledger_validation_receipt.json",
+      "role": "post_expanded_canary_blocker_ledger_validation",
+      "sha256": "466fddf0cb5e448011736cb4d8b80f1bde02563aac600b5ee30ae4295cbb7079"
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_review_validation_next_lawful_move_receipt.json",
-      "role": "next_lawful_move",
-      "sha256": "e1187af6e8d3402a46b59334d7e7f63f7569b6e9f648ac3ce233ac695e578a70"
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_post_run_decision_matrix_validation_receipt.json",
+      "role": "post_run_decision_matrix_validation",
+      "sha256": "b560a878eb97d7af0f6afc36f1b8081f04b9a6f333d4d7beea4d869f4938f915"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_prep_only_boundary_validation_receipt.json",
+      "role": "prep_only_boundary_validation",
+      "sha256": "eff32c4548ec3ff9a74ef84e354654b8c42942552c2be4fa7eef2566c4df6e57"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_replay_readiness_review_validation_receipt.json",
+      "role": "replay_readiness_review_validation",
+      "sha256": "03321a497e30c58b37e0e7be7ed9e812b93b5712fe0673d744d1e7797f18e0c5"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_rollback_review_validation_receipt.json",
+      "role": "rollback_review_validation",
+      "sha256": "b126319816a2314c914a250edc39280133b42d314fb27a2e5dd0a083881a6dc0"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_route_distribution_review_validation_receipt.json",
+      "role": "route_distribution_review_validation",
+      "sha256": "82e6502b7f46fd2fc052785463e5c53711173a11700d991fa95b4cf325050ef9"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_post_expanded_canary_runtime_cutover_readiness_validation_receipt.json",
+      "role": "runtime_cutover_readiness_validation",
+      "sha256": "49b359fcecfae7275e743a83cad23d4b2670183984d10c65502af037001ba5ff"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_validation_runtime_cutover_review_packet_prep_only_draft.json",
+      "role": "runtime_cutover_review_packet_prep_only_draft",
+      "sha256": "6b38ffeefe7a7f5ea1fdc4b04c7ebcc88ea133b8bce0ca7553d51cb2f15cb8fc"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_review_validation_plan_prep_only.json",
+      "role": "runtime_cutover_review_validation_plan_prep_only",
+      "sha256": "5c0e69bf2e5401a4b0a9ccfc9296a9ef6c8bdf765584e8883ca110a75ba7cf32"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_static_fallback_review_validation_receipt.json",
+      "role": "static_fallback_review_validation",
+      "sha256": "c69d72d46c5be180097d1e7d752a235d6e441141e29678a47eff87799d110d24"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_trace_completeness_review_validation_receipt.json",
+      "role": "trace_completeness_review_validation",
+      "sha256": "ad462983912c811d1acc595d5cbccaeb86f8cac5610330ed5316e2ed533a5b59"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_review_validation_contract.json",
+      "role": "validation_contract",
+      "sha256": "5680c9dbb2eea584685d8e7beb86133a2483633d0a568cccd28dae89ae152c2f"
+    },
+    {
+      "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_review_validation_receipt.json",
+      "role": "validation_receipt",
+      "sha256": "39182fe47a5709a6ae5e786afd5af88ce0fe3135b66e191e2c8c12e8b3580743"
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover_review_packet_authoring",
@@ -327,6 +327,7 @@
     "RC_B04R6_RUNTIME_CUTOVER_REVIEW_CLAIM_TOKEN_DRIFT",
     "RC_B04R6_RUNTIME_CUTOVER_REVIEW_TRUST_ZONE_FAILED",
     "RC_B04R6_RUNTIME_CUTOVER_REVIEW_RUNTIME_CUTOVER_AUTHORIZED",
+    "RC_B04R6_RUNTIME_CUTOVER_REVIEW_ACTIVATION_CUTOVER_EXECUTED",
     "RC_B04R6_RUNTIME_CUTOVER_REVIEW_R6_OPEN_DRIFT",
     "RC_B04R6_RUNTIME_CUTOVER_REVIEW_LOBE_ESCALATION_DRIFT",
     "RC_B04R6_RUNTIME_CUTOVER_REVIEW_PACKAGE_PROMOTION_DRIFT",
