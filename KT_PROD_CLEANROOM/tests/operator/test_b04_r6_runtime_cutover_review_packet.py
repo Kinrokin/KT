@@ -127,6 +127,18 @@ def test_reason_codes_are_unique() -> None:
     assert len(cutover.REASON_CODES) == len(set(cutover.REASON_CODES))
 
 
+def test_activation_cutover_has_dedicated_reason_code() -> None:
+    assert (
+        cutover.AUTHORITY_DRIFT_KEYS["activation_cutover_executed"]
+        == "RC_B04R6_RUNTIME_CUTOVER_REVIEW_ACTIVATION_CUTOVER_EXECUTED"
+    )
+    assert (
+        cutover.AUTHORITY_DRIFT_KEYS["activation_cutover_executed"]
+        != cutover.AUTHORITY_DRIFT_KEYS["runtime_cutover_authorized"]
+    )
+    assert cutover.AUTHORITY_DRIFT_KEYS["activation_cutover_executed"] in cutover.REASON_CODES
+
+
 @pytest.mark.parametrize("filename", sorted(cutover.OUTPUTS.values()))
 def test_required_outputs_exist_and_parse(outputs: Path, filename: str) -> None:
     path = outputs / filename
@@ -213,6 +225,11 @@ def test_input_binding_rows_anchor_to_binding_hashes(outputs: Path) -> None:
     contract = _contract(outputs)
     for row in contract["input_bindings"]:
         assert contract["binding_hashes"][f"{row['role']}_hash"] == row["sha256"]
+
+
+def test_input_binding_rows_are_sorted_by_role(outputs: Path) -> None:
+    roles = [row["role"] for row in _contract(outputs)["input_bindings"]]
+    assert roles == sorted(roles)
 
 
 @pytest.mark.parametrize("row_index", range(0, 160))
@@ -416,6 +433,28 @@ def test_authority_boolean_drift_fails_closed(tmp_path: Path, monkeypatch: pytes
     _write(path, payload)
     _patch_cutover_env(monkeypatch, tmp_path)
     with pytest.raises(cutover.LaneFailure, match="RUNTIME_CUTOVER_AUTHORIZED"):
+        cutover.run(reports_root=reports)
+
+
+def test_authority_non_false_value_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_predecessor(tmp_path, monkeypatch)
+    path = reports / cutover.evidence_validation.OUTPUTS["validation_contract"]
+    payload = _load(path)
+    payload["runtime_cutover_authorized"] = ""
+    _write(path, payload)
+    _patch_cutover_env(monkeypatch, tmp_path)
+    with pytest.raises(cutover.LaneFailure, match="RUNTIME_CUTOVER_AUTHORIZED"):
+        cutover.run(reports_root=reports)
+
+
+def test_activation_cutover_drift_uses_dedicated_reason_code(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_predecessor(tmp_path, monkeypatch)
+    path = reports / cutover.evidence_validation.OUTPUTS["validation_contract"]
+    payload = _load(path)
+    payload["activation_cutover_executed"] = True
+    _write(path, payload)
+    _patch_cutover_env(monkeypatch, tmp_path)
+    with pytest.raises(cutover.LaneFailure, match="ACTIVATION_CUTOVER_EXECUTED"):
         cutover.run(reports_root=reports)
 
 

@@ -56,7 +56,7 @@ FORBIDDEN_ACTIONS = (
 )
 AUTHORITY_DRIFT_KEYS = {
     "runtime_cutover_authorized": "RC_B04R6_RUNTIME_CUTOVER_REVIEW_RUNTIME_CUTOVER_AUTHORIZED",
-    "activation_cutover_executed": "RC_B04R6_RUNTIME_CUTOVER_REVIEW_RUNTIME_CUTOVER_AUTHORIZED",
+    "activation_cutover_executed": "RC_B04R6_RUNTIME_CUTOVER_REVIEW_ACTIVATION_CUTOVER_EXECUTED",
     "r6_open": "RC_B04R6_RUNTIME_CUTOVER_REVIEW_R6_OPEN_DRIFT",
     "lobe_escalation_authorized": "RC_B04R6_RUNTIME_CUTOVER_REVIEW_LOBE_ESCALATION_DRIFT",
     "package_promotion_authorized": "RC_B04R6_RUNTIME_CUTOVER_REVIEW_PACKAGE_PROMOTION_DRIFT",
@@ -312,7 +312,7 @@ def _contains_positive_authority_token(value: str) -> bool:
 def _ensure_authority_closed(payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str]) -> None:
     for label, payload in payloads.items():
         for key, value in _walk_items(payload):
-            if key in AUTHORITY_DRIFT_KEYS and bool(value):
+            if key in AUTHORITY_DRIFT_KEYS and value is not False:
                 _fail(AUTHORITY_DRIFT_KEYS[key], f"{label}.{key} drifted truthy")
             if _is_claim_bearing_field(key) and isinstance(value, str) and _contains_positive_authority_token(value):
                 _fail("RC_B04R6_RUNTIME_CUTOVER_REVIEW_CLAIM_TOKEN_DRIFT", f"{label}.{key}={value!r}")
@@ -337,7 +337,7 @@ def _is_sha256(value: Any) -> bool:
 
 def _input_bindings(root: Path) -> list[Dict[str, str]]:
     rows: list[Dict[str, str]] = []
-    for role, raw in {**VALIDATION_JSON_INPUTS, **VALIDATION_TEXT_INPUTS}.items():
+    for role, raw in sorted({**VALIDATION_JSON_INPUTS, **VALIDATION_TEXT_INPUTS}.items()):
         path = common.resolve_path(root, raw)
         rows.append(
             {
