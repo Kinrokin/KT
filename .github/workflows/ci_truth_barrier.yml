@@ -51,6 +51,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m tools.operator.run_truth_matrix --skip-clean-clone --out KT_PROD_CLEANROOM/reports/live_validation_index.ci.json
+          cp KT_PROD_CLEANROOM/reports/live_validation_index.ci.json KT_PROD_CLEANROOM/reports/live_validation_index.json
           python -m tools.operator.truth_surface_sync --live-validation-index KT_PROD_CLEANROOM/reports/live_validation_index.ci.json
           python -m tools.operator.truth_engine --live-validation-index KT_PROD_CLEANROOM/reports/live_validation_index.ci.json
 
@@ -93,7 +94,7 @@ jobs:
           PY
 
       - name: Keyless sign declared WS11 surface
-        if: always()
+        if: steps.truth_barrier.outcome == 'success'
         shell: bash
         run: |
           set -euo pipefail
@@ -103,7 +104,7 @@ jobs:
             KT_PROD_CLEANROOM/reports/public_verifier_manifest.json
 
       - name: Verify declared WS11 keyless surface and emit evidence receipt
-        if: always()
+        if: steps.truth_barrier.outcome == 'success'
         shell: bash
         env:
           EXPECTED_CERT_IDENTITY: https://github.com/${{ github.repository }}/.github/workflows/ci_truth_barrier.yml@${{ github.ref }}
@@ -166,8 +167,12 @@ jobs:
           cp KT_PROD_CLEANROOM/reports/live_validation_index.ci.json KT_PROD_CLEANROOM/reports/ws13_determinism/ci/live_validation_index.ci.json
           cp KT_PROD_CLEANROOM/reports/public_verifier_manifest.json KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.json
           cp KT_PROD_CLEANROOM/reports/ws11_keyless/kt_truth_barrier_remote_diagnostic.json KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_truth_barrier_remote_diagnostic.json
-          cp KT_PROD_CLEANROOM/reports/ws11_keyless/kt_ws11_keyless_execution_receipt.json KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json
-          cp KT_PROD_CLEANROOM/reports/ws11_keyless/public_verifier_manifest.sigstore.json KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json
+          if [ -f KT_PROD_CLEANROOM/reports/ws11_keyless/kt_ws11_keyless_execution_receipt.json ]; then
+            cp KT_PROD_CLEANROOM/reports/ws11_keyless/kt_ws11_keyless_execution_receipt.json KT_PROD_CLEANROOM/reports/ws13_determinism/ci/kt_ws11_keyless_execution_receipt.json
+          fi
+          if [ -f KT_PROD_CLEANROOM/reports/ws11_keyless/public_verifier_manifest.sigstore.json ]; then
+            cp KT_PROD_CLEANROOM/reports/ws11_keyless/public_verifier_manifest.sigstore.json KT_PROD_CLEANROOM/reports/ws13_determinism/ci/public_verifier_manifest.sigstore.json
+          fi
           python -m tools.operator.ws13_determinism_envelope_validate \
             --emit-bundle \
             --out-dir KT_PROD_CLEANROOM/reports/ws13_determinism/ci \
@@ -189,3 +194,10 @@ jobs:
             KT_PROD_CLEANROOM/reports/ws11_keyless/public_verifier_manifest.sigstore.json
             KT_PROD_CLEANROOM/reports/ws11_keyless/kt_ws11_keyless_execution_receipt.json
             KT_PROD_CLEANROOM/reports/ws13_determinism/ci/**
+
+      - name: Enforce truth barrier outcome
+        if: steps.truth_barrier.outcome != 'success'
+        shell: bash
+        run: |
+          echo "Truth barrier failed; diagnostic artifact uploaded."
+          exit 1
