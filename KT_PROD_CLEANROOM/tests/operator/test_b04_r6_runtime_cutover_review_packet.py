@@ -431,6 +431,18 @@ def test_claim_bearing_authority_token_drift_fails_closed(tmp_path: Path, monkey
         cutover.run(reports_root=reports)
 
 
+def test_plain_r6_state_open_claim_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_predecessor(tmp_path, monkeypatch)
+    path = reports / cutover.evidence_validation.OUTPUTS["pipeline_board"]
+    payload = _load(path)
+    payload["board"]["r6"] = "OPEN"
+    payload["r6_open"] = False
+    _write(path, payload)
+    _patch_cutover_env(monkeypatch, tmp_path)
+    with pytest.raises(cutover.LaneFailure, match="CLAIM_TOKEN_DRIFT"):
+        cutover.run(reports_root=reports)
+
+
 def test_validation_report_cutover_authorized_claim_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_predecessor(tmp_path, monkeypatch)
     path = reports / cutover.evidence_validation.OUTPUTS["validation_report"]

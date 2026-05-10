@@ -297,6 +297,8 @@ def _walk_items(value: Any) -> Iterable[tuple[str, Any]]:
 
 def _is_claim_bearing_field(key: str) -> bool:
     lowered = key.lower()
+    if lowered == "r6":
+        return True
     return any(marker in lowered for marker in CLAIM_BEARING_FIELD_MARKERS)
 
 
