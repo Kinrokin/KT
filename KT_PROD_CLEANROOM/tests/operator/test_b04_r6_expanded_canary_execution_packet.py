@@ -275,6 +275,11 @@ def test_validation_reason_codes_are_scaffolded(outputs: Path, code: str) -> Non
     assert code in _payload(outputs, "validation_plan")["checks"]
 
 
+def test_all_authority_drift_reason_codes_are_published(outputs: Path) -> None:
+    published = set(_payload(outputs, "validation_reason_codes")["reason_codes"])
+    assert set(execution.AUTHORITY_DRIFT_KEYS.values()).issubset(published)
+
+
 def test_no_authorization_drift_receipt_passes(outputs: Path) -> None:
     receipt = _payload(outputs, "no_authorization_drift_receipt")
     assert receipt["no_authorization_drift"] is True
