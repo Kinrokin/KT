@@ -123,16 +123,11 @@ PACKET_JSON_INPUTS = {
     role: f"KT_PROD_CLEANROOM/reports/{filename}"
     for role, filename in packet.OUTPUTS.items()
     if filename.endswith(".json")
-    and role not in PACKET_REPLAY_OVERWRITTEN_INPUT_ROLES
 }
 PACKET_TEXT_INPUTS = {
     role: f"KT_PROD_CLEANROOM/reports/{filename}"
     for role, filename in packet.OUTPUTS.items()
     if not filename.endswith(".json")
-}
-ALL_JSON_INPUTS = {
-    **{f"validation_{role}": raw for role, raw in VALIDATION_JSON_INPUTS.items()},
-    **{f"packet_{role}": raw for role, raw in PACKET_JSON_INPUTS.items()},
 }
 ALL_TEXT_INPUTS = {
     **{f"validation_{role}": raw for role, raw in VALIDATION_TEXT_INPUTS.items()},
@@ -231,8 +226,24 @@ def _read_text(root: Path, raw: str, *, label: str) -> str:
     return common.read_text_required(root, raw, label=label)
 
 
-def _payloads(root: Path) -> tuple[Dict[str, Dict[str, Any]], Dict[str, str]]:
-    payloads = {role: _load(root, raw, label=role) for role, raw in ALL_JSON_INPUTS.items()}
+def _packet_json_inputs_for_branch(branch: str) -> Dict[str, str]:
+    if branch == AUTHORITY_BRANCH:
+        return dict(PACKET_JSON_INPUTS)
+    return {role: raw for role, raw in PACKET_JSON_INPUTS.items() if role not in PACKET_REPLAY_OVERWRITTEN_INPUT_ROLES}
+
+
+def _all_json_inputs(branch: str) -> Dict[str, str]:
+    return {
+        **{f"validation_{role}": raw for role, raw in VALIDATION_JSON_INPUTS.items()},
+        **{f"packet_{role}": raw for role, raw in _packet_json_inputs_for_branch(branch).items()},
+    }
+
+
+ALL_JSON_INPUTS = _all_json_inputs(AUTHORITY_BRANCH)
+
+
+def _payloads(root: Path, branch: str) -> tuple[Dict[str, Dict[str, Any]], Dict[str, str]]:
+    payloads = {role: _load(root, raw, label=role) for role, raw in _all_json_inputs(branch).items()}
     texts = {role: _read_text(root, raw, label=role) for role, raw in ALL_TEXT_INPUTS.items()}
     return payloads, texts
 
@@ -327,12 +338,13 @@ def _validate_controls(payloads: Dict[str, Dict[str, Any]]) -> None:
         _fail("RC_B04R6_RUNTIME_CUTOVER_RESULT_R6_OPENING_DRIFT", "cutover pass could open R6")
 
 
-def _validate_inputs(root: Path, payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str]) -> None:
+def _validate_inputs(root: Path, branch: str, payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str]) -> None:
     _ensure_pre_run_authority_closed(payloads)
     _validate_handoff(payloads, texts)
     _validate_controls(payloads)
     validation_hashes = payloads["validation_validation_contract"]["binding_hashes"]
-    for role, raw in {**PACKET_JSON_INPUTS, **PACKET_TEXT_INPUTS}.items():
+    packet_json_inputs = _packet_json_inputs_for_branch(branch)
+    for role, raw in {**packet_json_inputs, **PACKET_TEXT_INPUTS}.items():
         key = f"{role}_hash"
         expected = validation_hashes.get(key)
         actual = file_sha256(common.resolve_path(root, raw))
@@ -412,10 +424,10 @@ def _scorecard(case_rows: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
     }
 
 
-def _input_bindings(root: Path) -> list[Dict[str, str]]:
+def _input_bindings(root: Path, branch: str) -> list[Dict[str, str]]:
     output_paths = {f"KT_PROD_CLEANROOM/reports/{filename}" for filename in OUTPUTS.values()}
     bindings = []
-    for role, raw in sorted({**ALL_JSON_INPUTS, **ALL_TEXT_INPUTS}.items()):
+    for role, raw in sorted({**_all_json_inputs(branch), **ALL_TEXT_INPUTS}.items()):
         overwritten = raw in output_paths
         bindings.append(
             {
@@ -433,8 +445,8 @@ def _input_bindings(root: Path) -> list[Dict[str, str]]:
     return bindings
 
 
-def _binding_hashes(root: Path, payloads: Dict[str, Dict[str, Any]]) -> Dict[str, str]:
-    hashes = {f"{binding['role']}_hash": binding["sha256"] for binding in _input_bindings(root)}
+def _binding_hashes(root: Path, branch: str, payloads: Dict[str, Dict[str, Any]]) -> Dict[str, str]:
+    hashes = {f"{binding['role']}_hash": binding["sha256"] for binding in _input_bindings(root, branch)}
     validation_hashes = payloads["validation_validation_contract"].get("binding_hashes", {})
     carried = {
         "validated_runtime_cutover_execution_packet_hash": validation_hashes.get("packet_contract_hash"),
@@ -454,7 +466,7 @@ def _binding_hashes(root: Path, payloads: Dict[str, Dict[str, Any]]) -> Dict[str
     return hashes
 
 
-def _validation_rows(case_rows: Sequence[Dict[str, Any]]) -> list[Dict[str, str]]:
+def _validation_rows(branch: str, case_rows: Sequence[Dict[str, Any]]) -> list[Dict[str, str]]:
     checks = [
         ("validated_cutover_execution_packet_bound", "binding"),
         ("runtime_cutover_scope_respected", "scope"),
@@ -478,7 +490,7 @@ def _validation_rows(case_rows: Sequence[Dict[str, Any]]) -> list[Dict[str, str]
         ("next_lawful_move_is_post_cutover_evidence_review", "outcome"),
     ]
     rows = [{"check_id": f"B04R6-RUNTIME-CUTOVER-{idx:03d}", "name": name, "group": group, "status": "PASS"} for idx, (name, group) in enumerate(checks, 1)]
-    rows.extend({"check_id": f"binds_{role}", "name": f"binds_{role}", "group": "binding", "status": "PASS"} for role in sorted(ALL_JSON_INPUTS))
+    rows.extend({"check_id": f"binds_{role}", "name": f"binds_{role}", "group": "binding", "status": "PASS"} for role in sorted(_all_json_inputs(branch)))
     rows.extend({"check_id": f"{row['case_id']}_trace_complete", "name": row["case_id"], "group": "case", "status": "PASS"} for row in case_rows)
     return rows
 
@@ -690,22 +702,22 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
         raise RuntimeError("FAIL_CLOSED: dirty worktree before B04 R6 runtime cutover")
     head = common.git_rev_parse(root, "HEAD")
     current_main_head = common.git_rev_parse(root, "origin/main" if branch != "main" else "HEAD")
-    payloads, texts = _payloads(root)
-    _validate_inputs(root, payloads, texts)
+    payloads, texts = _payloads(root, branch)
+    _validate_inputs(root, branch, payloads, texts)
     trust_zone_validation = validate_trust_zones(root=root)
     if trust_zone_validation.get("status") != "PASS" or trust_zone_validation.get("failures"):
         _fail("RC_B04R6_RUNTIME_CUTOVER_TRUST_ZONE_FAILED", "fresh trust-zone validation must pass")
     case_rows = _case_rows()
     scorecard = _scorecard(case_rows)
-    input_bindings = _input_bindings(root)
+    input_bindings = _input_bindings(root, branch)
     base = _base(
         generated_utc=utc_now_iso_z(),
         head=head,
         current_main_head=current_main_head,
         branch=branch,
         input_bindings=input_bindings,
-        binding_hashes=_binding_hashes(root, payloads),
-        validation_rows=_validation_rows(case_rows),
+        binding_hashes=_binding_hashes(root, branch, payloads),
+        validation_rows=_validation_rows(branch, case_rows),
         trust_zone_validation=trust_zone_validation,
         case_rows=case_rows,
         scorecard=scorecard,
