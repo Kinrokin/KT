@@ -37,6 +37,18 @@ FORBIDDEN_ACTIONS = (
     "METRIC_CONTRACT_MUTATED",
     "STATIC_COMPARATOR_WEAKENED",
 )
+TEXT_FORBIDDEN_CLAIMS = {
+    "RUNTIME CUTOVER EXECUTED": "RC_B04R6_CUTOVER_AUTH_VAL_RUNTIME_CUTOVER_EXECUTED",
+    "RUNTIME_CUTOVER_EXECUTED": "RC_B04R6_CUTOVER_AUTH_VAL_RUNTIME_CUTOVER_EXECUTED",
+    "ACTIVATION CUTOVER EXECUTED": "RC_B04R6_CUTOVER_AUTH_VAL_ACTIVATION_CUTOVER_EXECUTED",
+    "ACTIVATION_CUTOVER_EXECUTED": "RC_B04R6_CUTOVER_AUTH_VAL_ACTIVATION_CUTOVER_EXECUTED",
+    "R6 OPEN": "RC_B04R6_CUTOVER_AUTH_VAL_R6_OPEN_DRIFT",
+    "R6_OPEN": "RC_B04R6_CUTOVER_AUTH_VAL_R6_OPEN_DRIFT",
+    "PACKAGE PROMOTION AUTHORIZED": "RC_B04R6_CUTOVER_AUTH_VAL_PACKAGE_PROMOTION_DRIFT",
+    "PACKAGE_PROMOTION_AUTHORIZED": "RC_B04R6_CUTOVER_AUTH_VAL_PACKAGE_PROMOTION_DRIFT",
+    "COMMERCIAL ACTIVATION CLAIM AUTHORIZED": "RC_B04R6_CUTOVER_AUTH_VAL_COMMERCIAL_CLAIM_DRIFT",
+    "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED": "RC_B04R6_CUTOVER_AUTH_VAL_COMMERCIAL_CLAIM_DRIFT",
+}
 
 AUTHORITY_DRIFT_KEYS = {
     "runtime_cutover_authorized": "RC_B04R6_CUTOVER_AUTH_VAL_RUNTIME_CUTOVER_AUTHORIZED",
@@ -225,6 +237,13 @@ def _ensure_claim_boundary(payload: Dict[str, Any], *, label: str) -> None:
         _fail("RC_B04R6_CUTOVER_AUTH_VAL_CLAIM_TOKEN_DRIFT", f"{label}.{key} contains {value!r}")
 
 
+def _ensure_text_authority_closed(text: str, *, label: str) -> None:
+    upper = text.upper()
+    for token, reason in TEXT_FORBIDDEN_CLAIMS.items():
+        if token in upper:
+            _fail(reason, f"{label} contains forbidden claim token {token!r}")
+
+
 def _load_authorization_payloads(root: Path) -> tuple[Dict[str, Dict[str, Any]], Dict[str, str]]:
     payloads = {role: _load(root, raw, label=role) for role, raw in AUTH_JSON_INPUTS.items()}
     texts = {role: _read_text(root, raw, label=role) for role, raw in AUTH_TEXT_INPUTS.items()}
@@ -266,6 +285,8 @@ def _validate_authorization_payloads(payloads: Dict[str, Dict[str, Any]], texts:
     for role, payload in payloads.items():
         _ensure_authority_closed(payload, label=role)
         _ensure_claim_boundary(payload, label=role)
+    for role, text in texts.items():
+        _ensure_text_authority_closed(text, label=role)
 
 
 def _input_bindings(root: Path) -> list[Dict[str, str]]:

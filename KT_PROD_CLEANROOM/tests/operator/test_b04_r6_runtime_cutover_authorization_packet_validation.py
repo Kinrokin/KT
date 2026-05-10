@@ -343,6 +343,16 @@ def test_claim_bearing_positive_token_fails_closed(tmp_path: Path, monkeypatch: 
         validation.run(reports_root=reports)
 
 
+def test_text_artifact_forbidden_claim_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_authoring_only(tmp_path, monkeypatch)
+    path = reports / auth.OUTPUTS["packet_report"]
+    text = path.read_text(encoding="utf-8")
+    path.write_text(text + "\nRUNTIME CUTOVER EXECUTED\n", encoding="utf-8")
+    _patch_validation_env(monkeypatch, tmp_path)
+    with pytest.raises(validation.LaneFailure, match="RC_B04R6_CUTOVER_AUTH_VAL_RUNTIME_CUTOVER_EXECUTED"):
+        validation.run(reports_root=reports)
+
+
 def test_prep_only_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_authoring_only(tmp_path, monkeypatch)
     path = reports / auth.OUTPUTS["runtime_cutover_execution_packet_prep_only_draft"]
