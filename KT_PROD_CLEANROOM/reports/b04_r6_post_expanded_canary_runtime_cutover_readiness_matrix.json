@@ -1,13 +1,7 @@
 {
   "activation_cutover_executed": false,
-  "allowed_claims": [
-    "AFSH passed expanded limited-runtime canary under bounded packet law.",
-    "Expanded canary evidence review validation is next.",
-    "Runtime cutover remains unauthorized."
-  ],
-  "artifact_id": "B04_R6_EXPANDED_CANARY_EVIDENCE_REVIEW_COMMERCIAL_CLAIM_BOUNDARY_UPDATE_PREP_ONLY",
+  "artifact_id": "B04_R6_POST_EXPANDED_CANARY_RUNTIME_CUTOVER_READINESS_MATRIX",
   "authoritative_lane": "B04_R6_EXPANDED_CANARY_EVIDENCE_REVIEW_PACKET",
-  "authority": "PREP_ONLY",
   "authorization_state": {
     "commercial_activation_claims": "UNAUTHORIZED",
     "expanded_canary_evidence_review": "AUTHORED_NOT_VALIDATED",
@@ -55,13 +49,6 @@
     "runtime_static_fallback_receipt_hash": "658fe7fd9eb46792aa11cb1d07333c679a1df069608dadc7d93404de350c9a40",
     "runtime_trace_completeness_receipt_hash": "fb9249cd0f646db4165cbbd43c46b6a2b08d4c953b20047bbe55bf80ba51b170"
   },
-  "cannot_authorize_commercial_activation_claims": true,
-  "cannot_authorize_lobe_escalation": true,
-  "cannot_authorize_package_promotion": true,
-  "cannot_authorize_runtime_cutover": true,
-  "cannot_mutate_trust_zone_law": true,
-  "cannot_mutate_truth_engine_law": true,
-  "cannot_open_r6": true,
   "commercial_activation_claim_authorized": false,
   "current_branch": "authoritative/b04-r6-expanded-canary-evidence-review",
   "current_git_head": "bddc58ae0f08307d41295ab5ff24663e6a96761d",
@@ -82,13 +69,6 @@
     "METRIC_CONTRACT_MUTATED",
     "STATIC_COMPARATOR_WEAKENED",
     "EXPANDED_CANARY_EVIDENCE_TREATED_AS_PACKAGE_PROMOTION"
-  ],
-  "forbidden_claims": [
-    "AFSH is live.",
-    "R6 is open.",
-    "Runtime cutover is authorized.",
-    "Package is promotion-ready.",
-    "Commercial activation is authorized."
   ],
   "generated_utc": "2026-05-10T17:08:11Z",
   "input_bindings": {
@@ -130,12 +110,127 @@
   "predecessor_next_lawful_move": "AUTHOR_B04_R6_EXPANDED_CANARY_EVIDENCE_REVIEW_PACKET",
   "predecessor_outcome": "B04_R6_EXPANDED_CANARY_RUNTIME_PASSED__EXPANDED_CANARY_EVIDENCE_REVIEW_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_EXPANDED_CANARY_RUNTIME",
-  "purpose": "Update claim ceiling in prep-only mode.",
   "r6_open": false,
+  "readiness": {
+    "blockers": [
+      {
+        "blocker_id": "B04R6-PECB-0001",
+        "blocks": [
+          "RUNTIME_CUTOVER"
+        ],
+        "category": "runtime_cutover",
+        "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+        "required_repair_or_next_artifact": "runtime_cutover_review_packet_not_authored_or_validated",
+        "severity": "BLOCKING",
+        "status": "OPEN"
+      },
+      {
+        "blocker_id": "B04R6-PECB-0002",
+        "blocks": [
+          "PACKAGE_PROMOTION"
+        ],
+        "category": "package_promotion",
+        "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+        "required_repair_or_next_artifact": "runtime_cutover_external_audit_and_promotion_review_missing",
+        "severity": "BLOCKING",
+        "status": "OPEN"
+      },
+      {
+        "blocker_id": "B04R6-PECB-0003",
+        "blocks": [
+          "COMMERCIAL_CLAIMS"
+        ],
+        "category": "commercial_claims",
+        "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+        "required_repair_or_next_artifact": "commercial_activation_claims_forbidden_until_package_promotion",
+        "severity": "BLOCKING",
+        "status": "OPEN"
+      },
+      {
+        "blocker_id": "B04R6-PECB-0004",
+        "blocks": [
+          "EXTERNAL_AUDIT"
+        ],
+        "category": "external_audit",
+        "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+        "required_repair_or_next_artifact": "external_audit_delta_packet_not_validated",
+        "severity": "BLOCKING",
+        "status": "OPEN"
+      },
+      {
+        "blocker_id": "B04R6-PECB-0005",
+        "blocks": [
+          "PUBLIC_VERIFIER"
+        ],
+        "category": "public_verifier",
+        "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+        "required_repair_or_next_artifact": "public_verifier_bundle_not_canonicalized",
+        "severity": "BLOCKING",
+        "status": "OPEN"
+      },
+      {
+        "blocker_id": "B04R6-PECB-0006",
+        "blocks": [
+          "OPERATOR_READINESS"
+        ],
+        "category": "operator_readiness",
+        "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+        "required_repair_or_next_artifact": "cutover_operator_runbook_not_authorized",
+        "severity": "BLOCKING",
+        "status": "OPEN"
+      },
+      {
+        "blocker_id": "B04R6-PECB-0007",
+        "blocks": [
+          "DEPLOYMENT_PROFILE"
+        ],
+        "category": "deployment_profile",
+        "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+        "required_repair_or_next_artifact": "deployment_profile_delta_not_authorized",
+        "severity": "BLOCKING",
+        "status": "OPEN"
+      },
+      {
+        "blocker_id": "B04R6-PECB-0008",
+        "blocks": [
+          "ROLLBACK_PROOF"
+        ],
+        "category": "rollback_proof",
+        "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+        "required_repair_or_next_artifact": "cutover_rollback_evidence_not_collected",
+        "severity": "BLOCKING",
+        "status": "OPEN"
+      },
+      {
+        "blocker_id": "B04R6-PECB-0009",
+        "blocks": [
+          "DATA_GOVERNANCE"
+        ],
+        "category": "data_governance",
+        "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+        "required_repair_or_next_artifact": "commercial_data_governance_pack_not_validated",
+        "severity": "BLOCKING",
+        "status": "OPEN"
+      },
+      {
+        "blocker_id": "B04R6-PECB-0010",
+        "blocks": [
+          "BENCHMARK_REAUDIT"
+        ],
+        "category": "benchmark_reaudit",
+        "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+        "required_repair_or_next_artifact": "post_expanded_canary_reaudit_not_complete",
+        "severity": "BLOCKING",
+        "status": "OPEN"
+      }
+    ],
+    "ready_for_review_packet": true,
+    "runtime_cutover_authorized": false
+  },
   "recommended_next_path": "RUNTIME_CUTOVER_REVIEW_PACKET_NEXT",
   "reports_root": "D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\reports",
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.b04_r6.expanded_canary_evidence_review.commercial_claim_boundary_update_prep_only.prep_only.v1",
+  "schema_id": "kt.b04_r6.expanded_canary_evidence_review.runtime_cutover_readiness.v1",
   "selected_outcome": "B04_R6_EXPANDED_CANARY_EVIDENCE_REVIEW_PACKET_BOUND__EXPANDED_CANARY_EVIDENCE_REVIEW_VALIDATION_NEXT",
   "static_comparator_weakened": false,
   "trust_zone_law_changed": false,

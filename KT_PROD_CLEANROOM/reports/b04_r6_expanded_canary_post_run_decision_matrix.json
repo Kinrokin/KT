@@ -1,13 +1,7 @@
 {
   "activation_cutover_executed": false,
-  "allowed_claims": [
-    "AFSH passed expanded limited-runtime canary under bounded packet law.",
-    "Expanded canary evidence review validation is next.",
-    "Runtime cutover remains unauthorized."
-  ],
-  "artifact_id": "B04_R6_EXPANDED_CANARY_EVIDENCE_REVIEW_COMMERCIAL_CLAIM_BOUNDARY_UPDATE_PREP_ONLY",
+  "artifact_id": "B04_R6_POST_EXPANDED_CANARY_DECISION_MATRIX",
   "authoritative_lane": "B04_R6_EXPANDED_CANARY_EVIDENCE_REVIEW_PACKET",
-  "authority": "PREP_ONLY",
   "authorization_state": {
     "commercial_activation_claims": "UNAUTHORIZED",
     "expanded_canary_evidence_review": "AUTHORED_NOT_VALIDATED",
@@ -55,17 +49,44 @@
     "runtime_static_fallback_receipt_hash": "658fe7fd9eb46792aa11cb1d07333c679a1df069608dadc7d93404de350c9a40",
     "runtime_trace_completeness_receipt_hash": "fb9249cd0f646db4165cbbd43c46b6a2b08d4c953b20047bbe55bf80ba51b170"
   },
-  "cannot_authorize_commercial_activation_claims": true,
-  "cannot_authorize_lobe_escalation": true,
-  "cannot_authorize_package_promotion": true,
-  "cannot_authorize_runtime_cutover": true,
-  "cannot_mutate_trust_zone_law": true,
-  "cannot_mutate_truth_engine_law": true,
-  "cannot_open_r6": true,
   "commercial_activation_claim_authorized": false,
   "current_branch": "authoritative/b04-r6-expanded-canary-evidence-review",
   "current_git_head": "bddc58ae0f08307d41295ab5ff24663e6a96761d",
   "current_main_head": "5dd206ef9d4d25764693e664a0fcc8538f96e37e",
+  "decision_matrix": {
+    "additional_expanded_canary_ready": true,
+    "allowed_recommended_next_paths": [
+      "RUNTIME_CUTOVER_REVIEW_PACKET_NEXT",
+      "ADDITIONAL_EXPANDED_CANARY_AUTHORIZATION_PACKET_NEXT",
+      "EXTERNAL_AUDIT_DELTA_PACKET_NEXT",
+      "REPAIR_OR_CLOSEOUT_NEXT",
+      "FORENSIC_EXPANDED_CANARY_EVIDENCE_REVIEW_NEXT"
+    ],
+    "blocking_reasons": [
+      "expanded_canary_evidence_review_requires_validation_before_next_authority",
+      "runtime_cutover_requires_dedicated_review_packet_and_validation",
+      "package_promotion_requires_cutover_review_external_audit_and_promotion_review",
+      "commercial_activation_claims_remain_forbidden"
+    ],
+    "commercial_claim_status": "BOUNDARY_ONLY",
+    "decision_matrix_id": "B04_R6_POST_EXPANDED_CANARY_DECISION_MATRIX_V1",
+    "expanded_canary_result": "PASSED",
+    "external_audit_delta_ready": "READY_FOR_PACKET",
+    "overall_grade": "A_READY_FOR_RUNTIME_CUTOVER_REVIEW_PACKET",
+    "package_promotion_ready": false,
+    "recommended_next_path": "RUNTIME_CUTOVER_REVIEW_PACKET_NEXT",
+    "required_next_artifacts": [
+      "b04_r6_expanded_canary_evidence_review_validation_receipt",
+      "b04_r6_runtime_cutover_review_packet"
+    ],
+    "runtime_cutover_authorized": false,
+    "runtime_cutover_review_ready": true,
+    "supporting_evidence": [
+      "expanded canary runtime passed under validated execution packet",
+      "sample and case limits remained bounded",
+      "fallbacks, operator override, kill switch, rollback, trace, replay, and commercial boundary receipts passed"
+    ]
+  },
   "expanded_canary_evidence_review_packet_authored": true,
   "expanded_canary_evidence_review_validated": false,
   "expanded_canary_evidence_treated_as_package_promotion": false,
@@ -82,13 +103,6 @@
     "METRIC_CONTRACT_MUTATED",
     "STATIC_COMPARATOR_WEAKENED",
     "EXPANDED_CANARY_EVIDENCE_TREATED_AS_PACKAGE_PROMOTION"
-  ],
-  "forbidden_claims": [
-    "AFSH is live.",
-    "R6 is open.",
-    "Runtime cutover is authorized.",
-    "Package is promotion-ready.",
-    "Commercial activation is authorized."
   ],
   "generated_utc": "2026-05-10T17:08:11Z",
   "input_bindings": {
@@ -130,12 +144,11 @@
   "predecessor_next_lawful_move": "AUTHOR_B04_R6_EXPANDED_CANARY_EVIDENCE_REVIEW_PACKET",
   "predecessor_outcome": "B04_R6_EXPANDED_CANARY_RUNTIME_PASSED__EXPANDED_CANARY_EVIDENCE_REVIEW_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_EXPANDED_CANARY_RUNTIME",
-  "purpose": "Update claim ceiling in prep-only mode.",
   "r6_open": false,
   "recommended_next_path": "RUNTIME_CUTOVER_REVIEW_PACKET_NEXT",
   "reports_root": "D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\reports",
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.b04_r6.expanded_canary_evidence_review.commercial_claim_boundary_update_prep_only.prep_only.v1",
+  "schema_id": "kt.b04_r6.expanded_canary_evidence_review.post_run_decision_matrix.v1",
   "selected_outcome": "B04_R6_EXPANDED_CANARY_EVIDENCE_REVIEW_PACKET_BOUND__EXPANDED_CANARY_EVIDENCE_REVIEW_VALIDATION_NEXT",
   "static_comparator_weakened": false,
   "trust_zone_law_changed": false,
