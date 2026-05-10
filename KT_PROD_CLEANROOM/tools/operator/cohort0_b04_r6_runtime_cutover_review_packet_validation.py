@@ -258,7 +258,10 @@ def _validate_hashes(payloads: Dict[str, Dict[str, Any]]) -> None:
     binding_hashes = contract.get("binding_hashes", {})
     if not isinstance(binding_hashes, dict):
         _fail("RC_B04R6_RUNTIME_CUTOVER_REVIEW_VAL_INPUT_HASH_MISSING", "packet missing binding_hashes")
-    for row in contract.get("input_bindings", []):
+    input_bindings = contract.get("input_bindings")
+    if not isinstance(input_bindings, list) or not input_bindings:
+        _fail("RC_B04R6_RUNTIME_CUTOVER_REVIEW_VAL_INPUT_HASH_MISSING", "packet missing input_bindings")
+    for row in input_bindings:
         if not isinstance(row, dict) or not _is_sha256(row.get("sha256")):
             _fail("RC_B04R6_RUNTIME_CUTOVER_REVIEW_VAL_INPUT_HASH_MALFORMED", "malformed packet binding row")
         role = str(row.get("role", "")).strip()

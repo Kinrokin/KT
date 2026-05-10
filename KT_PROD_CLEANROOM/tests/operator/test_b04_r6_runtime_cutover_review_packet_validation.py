@@ -460,6 +460,17 @@ def test_malformed_input_hash_fails_closed(tmp_path: Path, monkeypatch: pytest.M
         validation.run(reports_root=reports)
 
 
+def test_empty_input_bindings_fail_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_review_only(tmp_path, monkeypatch)
+    path = reports / review.OUTPUTS["packet_contract"]
+    payload = _load(path)
+    payload["input_bindings"] = []
+    _write(path, payload)
+    _patch_validation_env(monkeypatch, tmp_path)
+    with pytest.raises(validation.LaneFailure, match="INPUT_HASH_MISSING"):
+        validation.run(reports_root=reports)
+
+
 def test_binding_map_mismatch_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_review_only(tmp_path, monkeypatch)
     path = reports / review.OUTPUTS["packet_contract"]
