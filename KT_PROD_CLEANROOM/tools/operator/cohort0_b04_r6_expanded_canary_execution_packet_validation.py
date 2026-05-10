@@ -43,6 +43,7 @@ FORBIDDEN_ACTIONS = (
 )
 
 AUTHORITY_DRIFT_KEYS = {
+    "expanded_canary_authorized": "RC_B04R6_EXPANDED_CANARY_EXEC_VAL_RUNTIME_AUTHORIZED",
     "expanded_canary_runtime_authorized": "RC_B04R6_EXPANDED_CANARY_EXEC_VAL_RUNTIME_AUTHORIZED",
     "expanded_canary_runtime_executed": "RC_B04R6_EXPANDED_CANARY_EXEC_VAL_RUNTIME_EXECUTED",
     "expanded_canary_executed": "RC_B04R6_EXPANDED_CANARY_EXEC_VAL_RUNTIME_EXECUTED",
@@ -229,6 +230,11 @@ def _validate_handoff(payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str]
     contract = payloads["packet_contract"]
     receipt = payloads["packet_receipt"]
     next_move = payloads["next_lawful_move"]
+    for role, payload in (("packet contract", contract), ("packet receipt", receipt)):
+        if payload.get("authoritative_lane") != PREVIOUS_LANE:
+            _fail("RC_B04R6_EXPANDED_CANARY_EXEC_VAL_PACKET_OUTCOME_DRIFT", f"{role} lane identity drifted")
+        if payload.get("next_lawful_move") != EXPECTED_PREVIOUS_NEXT_MOVE:
+            _fail("RC_B04R6_EXPANDED_CANARY_EXEC_VAL_NEXT_MOVE_DRIFT", f"{role} next move drifted")
     if contract.get("selected_outcome") != EXPECTED_PREVIOUS_OUTCOME:
         _fail("RC_B04R6_EXPANDED_CANARY_EXEC_VAL_PACKET_OUTCOME_DRIFT", "packet contract outcome drifted")
     if receipt.get("selected_outcome") != EXPECTED_PREVIOUS_OUTCOME:

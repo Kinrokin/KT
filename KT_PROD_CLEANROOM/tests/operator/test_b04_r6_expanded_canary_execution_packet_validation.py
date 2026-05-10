@@ -343,6 +343,28 @@ def test_packet_next_move_drift_fails_closed(tmp_path: Path, monkeypatch: pytest
         validation.run(reports_root=reports)
 
 
+def test_packet_lane_identity_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_execution_only(tmp_path, monkeypatch)
+    path = reports / execution.OUTPUTS["packet_contract"]
+    payload = _load(path)
+    payload["authoritative_lane"] = "DRIFT"
+    _write(path, payload)
+    _patch_validation_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="PACKET_OUTCOME_DRIFT"):
+        validation.run(reports_root=reports)
+
+
+def test_packet_receipt_next_move_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_execution_only(tmp_path, monkeypatch)
+    path = reports / execution.OUTPUTS["packet_receipt"]
+    payload = _load(path)
+    payload["next_lawful_move"] = "DRIFT"
+    _write(path, payload)
+    _patch_validation_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="NEXT_MOVE_DRIFT"):
+        validation.run(reports_root=reports)
+
+
 def test_input_hash_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_execution_only(tmp_path, monkeypatch)
     path = reports / execution.INPUTS["expanded_canary_readiness_matrix"]
@@ -359,6 +381,17 @@ def test_runtime_authorized_drift_fails_closed(tmp_path: Path, monkeypatch: pyte
     path = reports / execution.OUTPUTS["packet_contract"]
     payload = _load(path)
     payload["expanded_canary_runtime_authorized"] = True
+    _write(path, payload)
+    _patch_validation_env(monkeypatch, tmp_path)
+    with pytest.raises(RuntimeError, match="RUNTIME_AUTHORIZED"):
+        validation.run(reports_root=reports)
+
+
+def test_expanded_canary_authorized_alias_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_execution_only(tmp_path, monkeypatch)
+    path = reports / execution.OUTPUTS["packet_contract"]
+    payload = _load(path)
+    payload["expanded_canary_authorized"] = True
     _write(path, payload)
     _patch_validation_env(monkeypatch, tmp_path)
     with pytest.raises(RuntimeError, match="RUNTIME_AUTHORIZED"):
