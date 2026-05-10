@@ -144,6 +144,10 @@ def test_packet_preserves_current_main_head(outputs: Path) -> None:
     assert _contract(outputs)["current_main_head"] == AUTH_MAIN_HEAD
 
 
+def test_branch_packet_binds_canonical_source_head(outputs: Path) -> None:
+    assert _contract(outputs)["current_git_head"] == AUTH_MAIN_HEAD
+
+
 def test_packet_binds_cutover_review_validation(outputs: Path) -> None:
     contract = _contract(outputs)
     assert contract["authoritative_lane"] == auth.AUTHORITATIVE_LANE

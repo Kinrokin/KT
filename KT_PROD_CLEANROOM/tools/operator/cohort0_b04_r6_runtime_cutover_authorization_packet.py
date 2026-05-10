@@ -772,6 +772,9 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
         raise RuntimeError("FAIL_CLOSED: dirty worktree before B04 R6 runtime cutover authorization packet authoring")
     head = common.git_rev_parse(root, "HEAD")
     current_main_head = common.git_rev_parse(root, "origin/main" if branch != "main" else "HEAD")
+    # Branch commits may be squash-merged away; branch-authored packets bind the
+    # canonical source base, while main replays bind the post-merge main head.
+    packet_head = current_main_head if branch != "main" else head
     payloads, texts = _payloads(root)
     _validate_validation_payloads(root, payloads, texts)
     trust_zone_validation = validate_trust_zones(root=root)
@@ -779,7 +782,7 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
         _fail("RC_B04R6_CUTOVER_AUTH_TRUST_ZONE_FAILED", "trust-zone validation failed")
     base = _base(
         generated_utc=utc_now_iso_z(),
-        head=head,
+        head=packet_head,
         current_main_head=current_main_head,
         branch=branch,
         input_bindings=_input_bindings(root),
