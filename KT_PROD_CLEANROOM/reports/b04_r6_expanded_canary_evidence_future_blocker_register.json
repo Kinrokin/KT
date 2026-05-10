@@ -1,7 +1,8 @@
 {
   "activation_cutover_executed": false,
-  "artifact_id": "B04_R6_EXPANDED_CANARY_EVIDENCE_INVENTORY",
+  "artifact_id": "B04_R6_EXPANDED_CANARY_EVIDENCE_REVIEW_FUTURE_BLOCKER_REGISTER",
   "authoritative_lane": "B04_R6_EXPANDED_CANARY_EVIDENCE_REVIEW_PACKET",
+  "authority": "PREP_ONLY",
   "authorization_state": {
     "commercial_activation_claims": "UNAUTHORIZED",
     "expanded_canary_evidence_review": "AUTHORED_NOT_VALIDATED",
@@ -49,162 +50,129 @@
     "runtime_static_fallback_receipt_hash": "658fe7fd9eb46792aa11cb1d07333c679a1df069608dadc7d93404de350c9a40",
     "runtime_trace_completeness_receipt_hash": "fb9249cd0f646db4165cbbd43c46b6a2b08d4c953b20047bbe55bf80ba51b170"
   },
+  "blockers": [
+    {
+      "blocker_id": "B04R6-PECB-0001",
+      "blocks": [
+        "RUNTIME_CUTOVER"
+      ],
+      "category": "runtime_cutover",
+      "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+      "required_repair_or_next_artifact": "runtime_cutover_review_packet_not_authored_or_validated",
+      "severity": "BLOCKING",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "B04R6-PECB-0002",
+      "blocks": [
+        "PACKAGE_PROMOTION"
+      ],
+      "category": "package_promotion",
+      "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+      "required_repair_or_next_artifact": "runtime_cutover_external_audit_and_promotion_review_missing",
+      "severity": "BLOCKING",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "B04R6-PECB-0003",
+      "blocks": [
+        "COMMERCIAL_CLAIMS"
+      ],
+      "category": "commercial_claims",
+      "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+      "required_repair_or_next_artifact": "commercial_activation_claims_forbidden_until_package_promotion",
+      "severity": "BLOCKING",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "B04R6-PECB-0004",
+      "blocks": [
+        "EXTERNAL_AUDIT"
+      ],
+      "category": "external_audit",
+      "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+      "required_repair_or_next_artifact": "external_audit_delta_packet_not_validated",
+      "severity": "BLOCKING",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "B04R6-PECB-0005",
+      "blocks": [
+        "PUBLIC_VERIFIER"
+      ],
+      "category": "public_verifier",
+      "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+      "required_repair_or_next_artifact": "public_verifier_bundle_not_canonicalized",
+      "severity": "BLOCKING",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "B04R6-PECB-0006",
+      "blocks": [
+        "OPERATOR_READINESS"
+      ],
+      "category": "operator_readiness",
+      "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+      "required_repair_or_next_artifact": "cutover_operator_runbook_not_authorized",
+      "severity": "BLOCKING",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "B04R6-PECB-0007",
+      "blocks": [
+        "DEPLOYMENT_PROFILE"
+      ],
+      "category": "deployment_profile",
+      "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+      "required_repair_or_next_artifact": "deployment_profile_delta_not_authorized",
+      "severity": "BLOCKING",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "B04R6-PECB-0008",
+      "blocks": [
+        "ROLLBACK_PROOF"
+      ],
+      "category": "rollback_proof",
+      "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+      "required_repair_or_next_artifact": "cutover_rollback_evidence_not_collected",
+      "severity": "BLOCKING",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "B04R6-PECB-0009",
+      "blocks": [
+        "DATA_GOVERNANCE"
+      ],
+      "category": "data_governance",
+      "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+      "required_repair_or_next_artifact": "commercial_data_governance_pack_not_validated",
+      "severity": "BLOCKING",
+      "status": "OPEN"
+    },
+    {
+      "blocker_id": "B04R6-PECB-0010",
+      "blocks": [
+        "BENCHMARK_REAUDIT"
+      ],
+      "category": "benchmark_reaudit",
+      "evidence_source": "b04_r6_expanded_canary_runtime_result.json",
+      "required_repair_or_next_artifact": "post_expanded_canary_reaudit_not_complete",
+      "severity": "BLOCKING",
+      "status": "OPEN"
+    }
+  ],
+  "cannot_authorize_commercial_activation_claims": true,
+  "cannot_authorize_lobe_escalation": true,
+  "cannot_authorize_package_promotion": true,
+  "cannot_authorize_runtime_cutover": true,
+  "cannot_mutate_trust_zone_law": true,
+  "cannot_mutate_truth_engine_law": true,
+  "cannot_open_r6": true,
   "commercial_activation_claim_authorized": false,
   "current_branch": "authoritative/b04-r6-expanded-canary-evidence-review",
   "current_git_head": "a53a9b710b9fa9f887ffe16174c99b7b14bcd291",
   "current_main_head": "5dd206ef9d4d25764693e664a0fcc8538f96e37e",
-  "evidence_inventory": [
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_abstention_fallback_receipt.json",
-      "role": "runtime_abstention_fallback_receipt",
-      "sha256": "3c0359a661471c5527685cad7c243b76632aab1bdbd2294e8ac340c8d06444de"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_case_manifest.json",
-      "role": "runtime_case_manifest",
-      "sha256": "7597b66f6acca61e6e39082474991f716db5920473eac6203e53d557ebf7702c"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_commercial_claim_boundary_receipt.json",
-      "role": "runtime_commercial_claim_boundary_receipt",
-      "sha256": "75d62bd3a0134e159f92dc7810963a6dc8872cd40ccd83cd7dbbbf1dff9668e4"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_drift_monitoring_receipt.json",
-      "role": "runtime_drift_monitoring_receipt",
-      "sha256": "b22415624b004b931ddf00b013838738daa13cd90e38ec52e499ccc88c13b13c"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_evidence_review_packet_prep_only_draft.json",
-      "role": "runtime_evidence_review_packet_prep_only_draft",
-      "sha256": "116628b00b35a9788c86966497e8816a0b4f18dee17f9f675d515e1c9bd6c6c3"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_runtime_execution_contract.json",
-      "role": "runtime_execution_contract",
-      "sha256": "a666309a2e324db3b2d6cd57478d89f07431b601b171f7054ca6d098786610a6"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_runtime_execution_receipt.json",
-      "role": "runtime_execution_receipt",
-      "sha256": "84ac40ceda532e7a0ca99e81884264091872c30934075fe4cae40e6522dd3972"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_external_audit_delta_manifest_prep_only_draft.json",
-      "role": "runtime_external_audit_delta_manifest_prep_only_draft",
-      "sha256": "5d1f045cc526e3b59ea70e384ba57bc972dd39520c33d6f044e7a13af0a41284"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_external_verifier_readiness_receipt.json",
-      "role": "runtime_external_verifier_readiness_receipt",
-      "sha256": "5cbc2dc7bf3dceca53370c8e0e218545506628773cd4e1ff8f82ba0bbde97252"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_fallback_behavior_receipt.json",
-      "role": "runtime_fallback_behavior_receipt",
-      "sha256": "1177c8129bb37f6c355273fe3fc13576feda7806284c4e8da9addf9c76ddc785"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_forensic_expanded_canary_runtime_review_packet_prep_only_draft.json",
-      "role": "runtime_forensic_runtime_review_packet_prep_only_draft",
-      "sha256": "101e8f8af4304431cbf16484ef26b1832bdc01b8e4fd45440099c1454b254ff4"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_future_blocker_register.json",
-      "role": "runtime_future_blocker_register",
-      "sha256": "38c6e108815d2a18bc631d392d3f9990c496e61412efbc04209ab14706943d36"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_incident_freeze_receipt.json",
-      "role": "runtime_incident_freeze_receipt",
-      "sha256": "e54b6892f724cbe614c5b2b26f109048b574015479671343a187bc32afbe6ea8"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_kill_switch_receipt.json",
-      "role": "runtime_kill_switch_receipt",
-      "sha256": "786c34de396ef7e7d000539420546912b48d0e72f6aae75e4d1f7f6179ca3a4f"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
-      "role": "runtime_next_lawful_move",
-      "sha256": "953fe88e6e43cd8c4211a0eb6d526e6f1a2bc25916df2abba2188a7588ad4718"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_no_authorization_drift_receipt.json",
-      "role": "runtime_no_authorization_drift_receipt",
-      "sha256": "04580fc5d78c32738bcb0972197b47f9386675104184e90296ea276b54e946b8"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_null_route_preservation_receipt.json",
-      "role": "runtime_null_route_preservation_receipt",
-      "sha256": "97226c0cbb6125cc379c02626d34b3d867b50b414e04ac2cc6b3a5c6f975cdcd"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_operator_override_receipt.json",
-      "role": "runtime_operator_override_receipt",
-      "sha256": "fcf2684b94daa095fbcff5754eca13f4457da15b7434ad626fdd9ea4453615cc"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_preconditions_prep_only_draft.json",
-      "role": "runtime_package_promotion_review_preconditions_prep_only_draft",
-      "sha256": "8a30613a1be81cce21ad59edc89e77b676250e75a278970c8bf85b6d0894c023"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_pipeline_board.json",
-      "role": "runtime_pipeline_board",
-      "sha256": "71218082d1b5ad1bea187a9342c27ebc6dcf28c9f0c3e59e217d65d005e063a5"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_public_verifier_delta_requirements_prep_only.json",
-      "role": "runtime_public_verifier_delta_requirements_prep_only",
-      "sha256": "cdb8041b72df1bf88d90e5cb5abf9195a730e15673ec76a4b30088d70576b4af"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_repair_or_closeout_packet_prep_only_draft.json",
-      "role": "runtime_repair_or_closeout_packet_prep_only_draft",
-      "sha256": "d449e86d05f04659d015862a43ca6db015de1b47241763e9aec6b7243c5fb28e"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_replay_receipt.json",
-      "role": "runtime_replay_receipt",
-      "sha256": "ef4bb00d38f06d3d67c2659fa17fd9d1527331faac54e3f039b7567be07a091f"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_runtime_report.md",
-      "role": "runtime_report",
-      "sha256": "77545a3b08a0bb35208aa32d88a86a6a78a0f7ff75c0ed4853cee7ce171111db"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_runtime_result.json",
-      "role": "runtime_result",
-      "sha256": "b6c0f40decb8350dd5af038959b78abf10fc1b17c7455c2f5b460323b110ccc3"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_rollback_receipt.json",
-      "role": "runtime_rollback_receipt",
-      "sha256": "212a87e2f6d6f23443ff9dc846a54ba203a0e22bb5e7a7f3e891f8b4ea68c2e6"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_route_distribution_receipt.json",
-      "role": "runtime_route_distribution_receipt",
-      "sha256": "2dc01972172f03d97d912bfc51ff033335626743037ebcf99a20320d8c6a03f3"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_review_packet_prep_only_draft.json",
-      "role": "runtime_runtime_cutover_review_packet_prep_only_draft",
-      "sha256": "5a750a452dd517c5554d7a9548d9c9527283ddb9597ee40c3d93290f44550324"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_static_fallback_receipt.json",
-      "role": "runtime_static_fallback_receipt",
-      "sha256": "658fe7fd9eb46792aa11cb1d07333c679a1df069608dadc7d93404de350c9a40"
-    },
-    {
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_expanded_canary_trace_completeness_receipt.json",
-      "role": "runtime_trace_completeness_receipt",
-      "sha256": "fb9249cd0f646db4165cbbd43c46b6a2b08d4c953b20047bbe55bf80ba51b170"
-    }
-  ],
   "expanded_canary_evidence_review_packet_authored": true,
   "expanded_canary_evidence_review_validated": false,
   "expanded_canary_evidence_treated_as_package_promotion": false,
@@ -262,11 +230,12 @@
   "predecessor_next_lawful_move": "AUTHOR_B04_R6_EXPANDED_CANARY_EVIDENCE_REVIEW_PACKET",
   "predecessor_outcome": "B04_R6_EXPANDED_CANARY_RUNTIME_PASSED__EXPANDED_CANARY_EVIDENCE_REVIEW_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_EXPANDED_CANARY_RUNTIME",
+  "purpose": "Track blockers after expanded canary evidence review authorship.",
   "r6_open": false,
   "recommended_next_path": "RUNTIME_CUTOVER_REVIEW_PACKET_NEXT",
   "reports_root": "D:\\user\\rober\\OneDrive\\Kings_Theorem_Active\\KT_PROD_CLEANROOM\\reports",
   "runtime_cutover_authorized": false,
-  "schema_id": "kt.b04_r6.expanded_canary_evidence_review.inventory.v1",
+  "schema_id": "kt.b04_r6.expanded_canary_evidence_review.future_blocker_register.prep_only.v1",
   "selected_outcome": "B04_R6_EXPANDED_CANARY_EVIDENCE_REVIEW_PACKET_BOUND__EXPANDED_CANARY_EVIDENCE_REVIEW_VALIDATION_NEXT",
   "static_comparator_weakened": false,
   "trust_zone_law_changed": false,
