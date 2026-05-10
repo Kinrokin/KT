@@ -12,31 +12,21 @@
     "packet_abstention_fallback_contract_hash": "2cfdd1d3828139e6a2abf268d674c942fc72e790eecc4d3f6489df93bcfb2a52",
     "packet_allowed_case_class_contract_hash": "9c56330f54983170d065e834ec1cd9db0482f5ee4731f005f03200061164d19e",
     "packet_commercial_claim_boundary_hash": "3ec5b6f4eef536c82c5e0be15e108f9bcf24b1b6dfbb6a2c521d11253a391e75",
-    "packet_commercial_claim_boundary_update_prep_only_hash": "4674fae8068ee98410042f24f6412766209dfc4eb62d87b426520da928305b35",
-    "packet_cutover_failure_closeout_prep_only_draft_hash": "afde1a8abaa3577bd8cd13910d45e9b8c7d27a834d788dfad3aade731be376d1",
     "packet_drift_thresholds_hash": "f2738cc293d2f8c226c6c06081381d2e569f39b07014dd1e551436feebf7aa3a",
     "packet_excluded_case_class_contract_hash": "ab42fd0756325e35c6e088952cdc6d9ddbab5ee62f12ad9fc002d0b4ae499beb",
     "packet_expected_artifact_manifest_hash": "2e0ab183a866c933745c1e421f2b5b97f110dc8829666b068cf42ff86c6e6299",
-    "packet_external_audit_delta_manifest_prep_only_hash": "4ab464dd44d42e66bb21154d87bf494492a4b25fde756726641739ff7b7fd427",
     "packet_external_verifier_requirements_hash": "45218b8cc3b536c7f1e33b6866189896187a58897a81aecb4bb37296730f3ffd",
-    "packet_forensic_cutover_review_prep_only_draft_hash": "77b9f77364d787df83b74390b49ec69ad3b72104dc4cfcc565d6b1f90645578e",
     "packet_future_blocker_register_hash": "122907f6d327e32501fc95d28b432187c1de55062d3aca6562dafa615032f786",
     "packet_incident_freeze_contract_hash": "c5654feec6b74134226baa3698d6e9595967748f1ed53c0fe19a8e44e8978321",
     "packet_kill_switch_contract_hash": "bd1a541160b5974ffc2fe2e16430aad200b173045d6fecfbe23f4b688134106a",
     "packet_mode_contract_hash": "35368b74302df8be92dcf010ddb01755efbfdd39f938f7154092db940df67d8f",
-    "packet_next_lawful_move_hash": "94c531d601a9cc34c3c81e46c47ba2d82334a191b1b4cf5b45750c3e29b67ad4",
     "packet_no_authorization_drift_receipt_hash": "dedb1c46d7cff3df596bb8959d41f57b067ad94be5b7bd063cd066abc388cfc2",
     "packet_null_route_preservation_contract_hash": "1253e99e9a7b61da58705e4785c24a4cc673687ce1ae92a55ef562e661b26cdd",
     "packet_operator_override_contract_hash": "7bbe0c129719be7647dbc67c5a4b2a6a0f379eff144c31c5542d2762b917d29e",
     "packet_package_promotion_prohibition_receipt_hash": "10ee1b674ec735c80500fdd26b393835919fa6fb865e00896636d026b8402ddc",
-    "packet_package_promotion_review_packet_prep_only_draft_hash": "e9a7186c59d87ee719a64789ea147ae2206e3b58a438be71565f5313f80217bc",
     "packet_packet_contract_hash": "92183d641406450be5f781a4c1a14adfd9e51c00e5906abefb085f0296b596fd",
     "packet_packet_receipt_hash": "b3020728b99f19225e85f6d0a04d17d6782681bff969faf5f2039982255357eb",
     "packet_packet_report_hash": "c314445ff93e5fd33708230158da2fe333dab4cc716255eccbbf29be6091c31f",
-    "packet_pipeline_board_hash": "88b23df546b1f0950d0cbdd8dce51f1cdef850618ec33a23db2663055ed4a673",
-    "packet_post_cutover_evidence_review_packet_prep_only_draft_hash": "422be63d82701c8b79a3839e1fdd042232c88b1bbc19597df2e8c83a7a84a469",
-    "packet_public_verifier_delta_requirements_prep_only_hash": "bd9c956926e717804419466bd3d4c679173798bea668fb4336f73987973935f4",
-    "packet_r6_opening_review_packet_prep_only_draft_hash": "c8f705fc32827ea4522de255a56f95f63dfb4986930028a3f63508a8bf71d618",
     "packet_replay_manifest_hash": "e7aabc4aa388f469816b21c75d57be94694e9f7263064eb70c882b74dd4e64a2",
     "packet_result_interpretation_contract_hash": "525c3718ff1a1cd4daf1a01ef86a0a0559eaec1c396acb8f568b1e6c76a7065d",
     "packet_rollback_contract_hash": "2e5805be7ee166a05b092e7f5915388678dcc25b14007970775eeffff2c335d4",
@@ -519,9 +509,9 @@
     }
   ],
   "commercial_activation_claim_authorized": false,
-  "current_branch": "run/b04-r6-runtime-cutover",
-  "current_git_head": "575c55155a2f28cb3dbd1170cbec34e36acde8a8",
-  "current_main_head": "aceb7c6bbe966a48a48207c4fb7b9fe34cc41013",
+  "current_branch": "replay/b04-r6-runtime-cutover-main-replay",
+  "current_git_head": "7e9915fb045cfe3df9b8785285cbfaeab7f9160a",
+  "current_main_head": "19f0537e01e16ac9fe4b754a13c2d391eaf7af8f",
   "cutover_result_treated_as_package_promotion": false,
   "cutover_result_treated_as_r6_opening": false,
   "drift_signals": [],
@@ -541,7 +531,7 @@
     "CUTOVER_RESULT_TREATED_AS_R6_OPENING",
     "CUTOVER_RESULT_TREATED_AS_PACKAGE_PROMOTION"
   ],
-  "generated_utc": "2026-05-10T23:30:29Z",
+  "generated_utc": "2026-05-10T23:46:05Z",
   "global_runtime_surface_authorized": false,
   "input_bindings": [
     {
@@ -566,20 +556,6 @@
       "sha256": "3ec5b6f4eef536c82c5e0be15e108f9bcf24b1b6dfbb6a2c521d11253a391e75"
     },
     {
-      "binding_kind": "pre_overwrite_file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_commercial_claim_boundary_update_prep_only.json",
-      "role": "packet_commercial_claim_boundary_update_prep_only",
-      "sha256": "4674fae8068ee98410042f24f6412766209dfc4eb62d87b426520da928305b35"
-    },
-    {
-      "binding_kind": "pre_overwrite_file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_cutover_failure_closeout_prep_only_draft.json",
-      "role": "packet_cutover_failure_closeout_prep_only_draft",
-      "sha256": "afde1a8abaa3577bd8cd13910d45e9b8c7d27a834d788dfad3aade731be376d1"
-    },
-    {
       "binding_kind": "file_sha256_at_runtime_cutover",
       "overwritten_by_runtime_cutover_output": false,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_drift_thresholds.json",
@@ -601,25 +577,11 @@
       "sha256": "2e0ab183a866c933745c1e421f2b5b97f110dc8829666b068cf42ff86c6e6299"
     },
     {
-      "binding_kind": "pre_overwrite_file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_external_audit_delta_manifest_prep_only.json",
-      "role": "packet_external_audit_delta_manifest_prep_only",
-      "sha256": "4ab464dd44d42e66bb21154d87bf494492a4b25fde756726641739ff7b7fd427"
-    },
-    {
       "binding_kind": "file_sha256_at_runtime_cutover",
       "overwritten_by_runtime_cutover_output": false,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_external_verifier_requirements.json",
       "role": "packet_external_verifier_requirements",
       "sha256": "45218b8cc3b536c7f1e33b6866189896187a58897a81aecb4bb37296730f3ffd"
-    },
-    {
-      "binding_kind": "pre_overwrite_file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_forensic_cutover_review_prep_only_draft.json",
-      "role": "packet_forensic_cutover_review_prep_only_draft",
-      "sha256": "77b9f77364d787df83b74390b49ec69ad3b72104dc4cfcc565d6b1f90645578e"
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover",
@@ -650,13 +612,6 @@
       "sha256": "35368b74302df8be92dcf010ddb01755efbfdd39f938f7154092db940df67d8f"
     },
     {
-      "binding_kind": "pre_overwrite_file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
-      "role": "packet_next_lawful_move",
-      "sha256": "94c531d601a9cc34c3c81e46c47ba2d82334a191b1b4cf5b45750c3e29b67ad4"
-    },
-    {
       "binding_kind": "file_sha256_at_runtime_cutover",
       "overwritten_by_runtime_cutover_output": false,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_no_authorization_drift_receipt.json",
@@ -685,13 +640,6 @@
       "sha256": "10ee1b674ec735c80500fdd26b393835919fa6fb865e00896636d026b8402ddc"
     },
     {
-      "binding_kind": "pre_overwrite_file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_packet_prep_only_draft.json",
-      "role": "packet_package_promotion_review_packet_prep_only_draft",
-      "sha256": "e9a7186c59d87ee719a64789ea147ae2206e3b58a438be71565f5313f80217bc"
-    },
-    {
       "binding_kind": "file_sha256_at_runtime_cutover",
       "overwritten_by_runtime_cutover_output": false,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_packet_contract.json",
@@ -711,34 +659,6 @@
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_packet_report.md",
       "role": "packet_packet_report",
       "sha256": "c314445ff93e5fd33708230158da2fe333dab4cc716255eccbbf29be6091c31f"
-    },
-    {
-      "binding_kind": "pre_overwrite_file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_pipeline_board.json",
-      "role": "packet_pipeline_board",
-      "sha256": "88b23df546b1f0950d0cbdd8dce51f1cdef850618ec33a23db2663055ed4a673"
-    },
-    {
-      "binding_kind": "pre_overwrite_file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_post_cutover_evidence_review_packet_prep_only_draft.json",
-      "role": "packet_post_cutover_evidence_review_packet_prep_only_draft",
-      "sha256": "422be63d82701c8b79a3839e1fdd042232c88b1bbc19597df2e8c83a7a84a469"
-    },
-    {
-      "binding_kind": "pre_overwrite_file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_public_verifier_delta_requirements_prep_only.json",
-      "role": "packet_public_verifier_delta_requirements_prep_only",
-      "sha256": "bd9c956926e717804419466bd3d4c679173798bea668fb4336f73987973935f4"
-    },
-    {
-      "binding_kind": "pre_overwrite_file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_review_packet_prep_only_draft.json",
-      "role": "packet_r6_opening_review_packet_prep_only_draft",
-      "sha256": "c8f705fc32827ea4522de255a56f95f63dfb4986930028a3f63508a8bf71d618"
     },
     {
       "binding_kind": "file_sha256_at_runtime_cutover",
@@ -1045,18 +965,7 @@
     "B04_R6_RUNTIME_CUTOVER_INVALIDATED__FORENSIC_CUTOVER_REVIEW_NEXT": "AUTHOR_B04_R6_FORENSIC_CUTOVER_REVIEW_PACKET",
     "B04_R6_RUNTIME_CUTOVER_PASSED__POST_CUTOVER_EVIDENCE_REVIEW_PACKET_NEXT": "AUTHOR_B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_PACKET"
   },
-  "overwritten_input_roles": [
-    "packet_commercial_claim_boundary_update_prep_only",
-    "packet_cutover_failure_closeout_prep_only_draft",
-    "packet_external_audit_delta_manifest_prep_only",
-    "packet_forensic_cutover_review_prep_only_draft",
-    "packet_next_lawful_move",
-    "packet_package_promotion_review_packet_prep_only_draft",
-    "packet_pipeline_board",
-    "packet_post_cutover_evidence_review_packet_prep_only_draft",
-    "packet_public_verifier_delta_requirements_prep_only",
-    "packet_r6_opening_review_packet_prep_only_draft"
-  ],
+  "overwritten_input_roles": [],
   "package_promotion": "DEFERRED",
   "package_promotion_authorized": false,
   "predecessor_outcome": "B04_R6_RUNTIME_CUTOVER_EXECUTION_PACKET_VALIDATED__RUNTIME_CUTOVER_NEXT",
@@ -1102,6 +1011,18 @@
     "RC_B04R6_RUNTIME_CUTOVER_RESULT_PROMOTION_DRIFT"
   ],
   "receipt_role": "drift_monitoring",
+  "replay_overwritten_packet_input_roles": [
+    "commercial_claim_boundary_update_prep_only",
+    "cutover_failure_closeout_prep_only_draft",
+    "external_audit_delta_manifest_prep_only",
+    "forensic_cutover_review_prep_only_draft",
+    "next_lawful_move",
+    "package_promotion_review_packet_prep_only_draft",
+    "pipeline_board",
+    "post_cutover_evidence_review_packet_prep_only_draft",
+    "public_verifier_delta_requirements_prep_only",
+    "r6_opening_review_packet_prep_only_draft"
+  ],
   "runtime_cutover_authorized": false,
   "runtime_cutover_executed": true,
   "runtime_cutover_execution_packet_validated": true,
@@ -1288,18 +1209,6 @@
       "status": "PASS"
     },
     {
-      "check_id": "binds_packet_commercial_claim_boundary_update_prep_only",
-      "group": "binding",
-      "name": "binds_packet_commercial_claim_boundary_update_prep_only",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_cutover_failure_closeout_prep_only_draft",
-      "group": "binding",
-      "name": "binds_packet_cutover_failure_closeout_prep_only_draft",
-      "status": "PASS"
-    },
-    {
       "check_id": "binds_packet_drift_thresholds",
       "group": "binding",
       "name": "binds_packet_drift_thresholds",
@@ -1318,21 +1227,9 @@
       "status": "PASS"
     },
     {
-      "check_id": "binds_packet_external_audit_delta_manifest_prep_only",
-      "group": "binding",
-      "name": "binds_packet_external_audit_delta_manifest_prep_only",
-      "status": "PASS"
-    },
-    {
       "check_id": "binds_packet_external_verifier_requirements",
       "group": "binding",
       "name": "binds_packet_external_verifier_requirements",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_forensic_cutover_review_prep_only_draft",
-      "group": "binding",
-      "name": "binds_packet_forensic_cutover_review_prep_only_draft",
       "status": "PASS"
     },
     {
@@ -1360,12 +1257,6 @@
       "status": "PASS"
     },
     {
-      "check_id": "binds_packet_next_lawful_move",
-      "group": "binding",
-      "name": "binds_packet_next_lawful_move",
-      "status": "PASS"
-    },
-    {
       "check_id": "binds_packet_no_authorization_drift_receipt",
       "group": "binding",
       "name": "binds_packet_no_authorization_drift_receipt",
@@ -1390,12 +1281,6 @@
       "status": "PASS"
     },
     {
-      "check_id": "binds_packet_package_promotion_review_packet_prep_only_draft",
-      "group": "binding",
-      "name": "binds_packet_package_promotion_review_packet_prep_only_draft",
-      "status": "PASS"
-    },
-    {
       "check_id": "binds_packet_packet_contract",
       "group": "binding",
       "name": "binds_packet_packet_contract",
@@ -1405,30 +1290,6 @@
       "check_id": "binds_packet_packet_receipt",
       "group": "binding",
       "name": "binds_packet_packet_receipt",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_pipeline_board",
-      "group": "binding",
-      "name": "binds_packet_pipeline_board",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_post_cutover_evidence_review_packet_prep_only_draft",
-      "group": "binding",
-      "name": "binds_packet_post_cutover_evidence_review_packet_prep_only_draft",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_public_verifier_delta_requirements_prep_only",
-      "group": "binding",
-      "name": "binds_packet_public_verifier_delta_requirements_prep_only",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_r6_opening_review_packet_prep_only_draft",
-      "group": "binding",
-      "name": "binds_packet_r6_opening_review_packet_prep_only_draft",
       "status": "PASS"
     },
     {
