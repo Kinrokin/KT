@@ -54,6 +54,7 @@ AUTHORITY_DRIFT_KEYS = {
     "trust_zone_law_changed": "RC_B04R6_CUTOVER_EXEC_PACKET_TRUST_ZONE_MUTATION",
     "metric_contract_mutated": "RC_B04R6_CUTOVER_EXEC_PACKET_METRIC_MUTATION",
     "static_comparator_weakened": "RC_B04R6_CUTOVER_EXEC_PACKET_COMPARATOR_WEAKENED",
+    "global_runtime_surface_authorized": "RC_B04R6_CUTOVER_EXEC_PACKET_GLOBAL_SURFACE_DRIFT",
 }
 
 CLAIM_BEARING_FIELD_MARKERS = (
@@ -399,6 +400,7 @@ def _base(
         "trust_zone_law_unchanged": True,
         "metric_contract_mutated": False,
         "static_comparator_weakened": False,
+        "global_runtime_surface_authorized": False,
     }
 
 
@@ -439,6 +441,7 @@ def _prep_only(base: Dict[str, Any], *, role: str, purpose: str, **extra: Any) -
         cannot_authorize_commercial_activation_claims=True,
         cannot_mutate_truth_engine_law=True,
         cannot_mutate_trust_zone_law=True,
+        cannot_authorize_global_runtime_surface=True,
         **extra,
     )
 

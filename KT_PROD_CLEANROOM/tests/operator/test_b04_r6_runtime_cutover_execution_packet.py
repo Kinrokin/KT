@@ -111,6 +111,7 @@ GUARD_FALSE_FIELDS = [
     "trust_zone_law_changed",
     "metric_contract_mutated",
     "static_comparator_weakened",
+    "global_runtime_surface_authorized",
 ]
 
 PREP_ONLY_GUARDS = [
@@ -122,6 +123,7 @@ PREP_ONLY_GUARDS = [
     "cannot_authorize_commercial_activation_claims",
     "cannot_mutate_truth_engine_law",
     "cannot_mutate_trust_zone_law",
+    "cannot_authorize_global_runtime_surface",
 ]
 
 
@@ -440,6 +442,7 @@ def test_already_authored_execution_packet_claim_fails_closed(tmp_path: Path, mo
         ("commercial_activation_claim_authorized", True, "COMMERCIAL_CLAIM_DRIFT"),
         ("truth_engine_law_changed", True, "TRUTH_ENGINE_MUTATION"),
         ("trust_zone_law_changed", True, "TRUST_ZONE_MUTATION"),
+        ("global_runtime_surface_authorized", True, "GLOBAL_SURFACE_DRIFT"),
     ],
 )
 def test_authority_drift_fails_closed(
