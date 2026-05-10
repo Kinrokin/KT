@@ -104,8 +104,26 @@ VALIDATION_TEXT_INPUTS = {
     for role, filename in validation.OUTPUTS.items()
     if not filename.endswith(".json")
 }
+PACKET_REPLAY_OVERWRITTEN_INPUT_ROLES = frozenset(
+    {
+        "commercial_claim_boundary_update_prep_only",
+        "cutover_failure_closeout_prep_only_draft",
+        "external_audit_delta_manifest_prep_only",
+        "forensic_cutover_review_prep_only_draft",
+        "next_lawful_move",
+        "package_promotion_review_packet_prep_only_draft",
+        "pipeline_board",
+        "post_cutover_evidence_review_packet_prep_only_draft",
+        "public_verifier_delta_requirements_prep_only",
+        "r6_opening_review_packet_prep_only_draft",
+    }
+)
+
 PACKET_JSON_INPUTS = {
-    role: f"KT_PROD_CLEANROOM/reports/{filename}" for role, filename in packet.OUTPUTS.items() if filename.endswith(".json")
+    role: f"KT_PROD_CLEANROOM/reports/{filename}"
+    for role, filename in packet.OUTPUTS.items()
+    if filename.endswith(".json")
+    and role not in PACKET_REPLAY_OVERWRITTEN_INPUT_ROLES
 }
 PACKET_TEXT_INPUTS = {
     role: f"KT_PROD_CLEANROOM/reports/{filename}"
@@ -254,14 +272,13 @@ def _validate_handoff(payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str]
 
     packet_contract = payloads["packet_packet_contract"]
     packet_receipt = payloads["packet_packet_receipt"]
-    packet_next = payloads["packet_next_lawful_move"]
     for label, payload in (("packet contract", packet_contract), ("packet receipt", packet_receipt)):
         if payload.get("authoritative_lane") != packet.AUTHORITATIVE_LANE:
             _fail("RC_B04R6_RUNTIME_CUTOVER_CONTROL_CONTRACT_MISSING", f"{label} lane drift")
         if payload.get("selected_outcome") != packet.SELECTED_OUTCOME:
             _fail("RC_B04R6_RUNTIME_CUTOVER_CONTROL_CONTRACT_MISSING", f"{label} outcome drift")
-    if packet_next.get("next_lawful_move") != packet.NEXT_LAWFUL_MOVE:
-        _fail("RC_B04R6_RUNTIME_CUTOVER_NEXT_MOVE_DRIFT", "packet next move drift")
+    if packet_contract.get("next_lawful_move") != packet.NEXT_LAWFUL_MOVE:
+        _fail("RC_B04R6_RUNTIME_CUTOVER_NEXT_MOVE_DRIFT", "packet contract next move drift")
 
     report = (texts.get("validation_validation_report", "") + "\n" + texts.get("packet_packet_report", "")).lower()
     for phrase in ("does not execute runtime cutover", "does not open r6", "does not promote package"):
@@ -315,7 +332,7 @@ def _validate_inputs(root: Path, payloads: Dict[str, Dict[str, Any]], texts: Dic
     _validate_handoff(payloads, texts)
     _validate_controls(payloads)
     validation_hashes = payloads["validation_validation_contract"]["binding_hashes"]
-    for role, raw in {**validation.PACKET_JSON_INPUTS, **validation.PACKET_TEXT_INPUTS}.items():
+    for role, raw in {**PACKET_JSON_INPUTS, **PACKET_TEXT_INPUTS}.items():
         key = f"{role}_hash"
         expected = validation_hashes.get(key)
         actual = file_sha256(common.resolve_path(root, raw))
@@ -528,6 +545,7 @@ def _base(
         "overwritten_input_roles": [
             binding["role"] for binding in input_bindings if binding.get("overwritten_by_runtime_cutover_output")
         ],
+        "replay_overwritten_packet_input_roles": sorted(PACKET_REPLAY_OVERWRITTEN_INPUT_ROLES),
         "binding_hashes": binding_hashes,
         "validation_rows": validation_rows,
         "trust_zone_validation_status": trust_zone_validation.get("status"),
