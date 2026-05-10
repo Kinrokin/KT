@@ -6,9 +6,8 @@
     "B04_R6_RUNTIME_CUTOVER_AUTHORIZATION_REJECTED__CUTOVER_NOT_JUSTIFIED",
     "B04_R6_RUNTIME_CUTOVER_AUTHORIZATION_INVALID__FORENSIC_CUTOVER_AUTHORIZATION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_RUNTIME_CUTOVER_AUTHORIZATION_VALIDATION_RUNTIME_CUTOVER_EXECUTION_PACKET_PREP_ONLY_DRAFT",
+  "artifact_id": "B04_R6_RUNTIME_CUTOVER_AUTHORIZATION_RUNTIME_RECEIPT_SCHEMA_VALIDATION",
   "authoritative_lane": "B04_R6_RUNTIME_CUTOVER_AUTHORIZATION_PACKET_VALIDATION",
-  "authority": "PREP_ONLY",
   "binding_hashes": {
     "abstention_fallback_contract_hash": "ac104f7c8ff95ad05f9edfbd1c875dda15f1ad42a0f7e6fa5d17b4765c056fc8",
     "allowed_surface_contract_hash": "808cbee0f03f077e9d7ed91d82284a96f08cfce22779bdf6712f1d7d8f6e095a",
@@ -45,13 +44,6 @@
     "validation_plan_hash": "0c404ec7483d3ed6e0c644a9eddae1659d7ebbd46f8bd150cd560e3e3050889b",
     "validation_reason_codes_hash": "0a4072c4e0cfae33041c0a9ca4455e6020f444fdfd36a16759e13b6b3ef6d889"
   },
-  "cannot_authorize_commercial_activation_claims": true,
-  "cannot_authorize_lobe_escalation": true,
-  "cannot_authorize_package_promotion": true,
-  "cannot_execute_runtime_cutover": true,
-  "cannot_mutate_trust_zone_law": true,
-  "cannot_mutate_truth_engine_law": true,
-  "cannot_open_r6": true,
   "commercial_activation_claim_authorized": false,
   "current_branch": "validate/b04-r6-runtime-cutover-authorization-packet",
   "current_git_head": "82cf0ac8d8d5870ba237eaede452ab10bb85c14e",
@@ -283,8 +275,8 @@
   "predecessor_outcome": "B04_R6_RUNTIME_CUTOVER_AUTHORIZATION_PACKET_BOUND__RUNTIME_CUTOVER_AUTHORIZATION_VALIDATION_NEXT",
   "previous_authoritative_lane": "B04_R6_RUNTIME_CUTOVER_AUTHORIZATION_PACKET",
   "previous_next_lawful_move": "VALIDATE_B04_R6_RUNTIME_CUTOVER_AUTHORIZATION_PACKET",
-  "purpose": "Prepare future runtime cutover execution packet authoring; does not execute cutover.",
   "r6_open": false,
+  "reason_code": null,
   "runtime_cutover_authorization_packet_authored": true,
   "runtime_cutover_authorization_validated": true,
   "runtime_cutover_authorized": false,
@@ -292,13 +284,15 @@
   "runtime_cutover_execution_packet_authored": false,
   "runtime_cutover_execution_packet_validated": false,
   "runtime_cutover_review_validated": true,
-  "schema_id": "kt.b04_r6.runtime_cutover_authorization_validation.runtime_cutover_execution_packet_prep_only_draft.prep_only.v1",
+  "schema_id": "kt.b04_r6.runtime_cutover_authorization_validation.runtime_receipt_schema_validation.receipt.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_RUNTIME_CUTOVER_AUTHORIZATION_VALIDATED__RUNTIME_CUTOVER_EXECUTION_PACKET_NEXT",
   "static_comparator_weakened": false,
-  "status": "PREP_ONLY",
   "trust_zone_law_changed": false,
   "trust_zone_law_unchanged": true,
   "truth_engine_law_changed": false,
-  "truth_engine_law_unchanged": true
+  "truth_engine_law_unchanged": true,
+  "validated_hash": "dc8a1ada3eef63ca25b5258604cfd463baa4ed44ddd4c58c8bafb1cd9db3531d",
+  "validated_role": "runtime_receipt_schema",
+  "validation_status": "PASS"
 }
