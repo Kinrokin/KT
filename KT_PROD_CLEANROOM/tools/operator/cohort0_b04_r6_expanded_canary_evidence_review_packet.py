@@ -182,15 +182,15 @@ OUTPUTS = {
     "no_authorization_drift_receipt": "b04_r6_expanded_canary_evidence_no_authorization_drift_receipt.json",
     "validation_plan": "b04_r6_expanded_canary_evidence_review_validation_plan.json",
     "validation_reason_codes": "b04_r6_expanded_canary_evidence_review_validation_reason_codes.json",
-    "runtime_cutover_review_packet_prep_only_draft": "b04_r6_runtime_cutover_review_packet_prep_only_draft.json",
+    "runtime_cutover_review_packet_prep_only_draft": "b04_r6_expanded_canary_evidence_runtime_cutover_review_packet_prep_only_draft.json",
     "additional_expanded_canary_authorization_packet_prep_only_draft": "b04_r6_additional_expanded_canary_authorization_packet_prep_only_draft.json",
     "package_promotion_review_packet_prep_only_draft": "b04_r6_package_promotion_review_packet_prep_only_draft.json",
-    "external_audit_delta_manifest_prep_only_draft": "b04_r6_external_audit_delta_manifest_prep_only_draft.json",
-    "public_verifier_delta_requirements_prep_only": "b04_r6_public_verifier_delta_requirements_prep_only.json",
+    "external_audit_delta_manifest_prep_only_draft": "b04_r6_expanded_canary_evidence_external_audit_delta_manifest_prep_only_draft.json",
+    "public_verifier_delta_requirements_prep_only": "b04_r6_expanded_canary_evidence_public_verifier_delta_requirements_prep_only.json",
     "commercial_claim_boundary_update_prep_only": "b04_r6_commercial_claim_boundary_update_prep_only.json",
-    "future_blocker_register": "b04_r6_future_blocker_register.json",
-    "pipeline_board": "b04_r6_pipeline_board.json",
-    "next_lawful_move": "b04_r6_next_lawful_move_receipt.json",
+    "future_blocker_register": "b04_r6_expanded_canary_evidence_future_blocker_register.json",
+    "pipeline_board": "b04_r6_expanded_canary_evidence_pipeline_board.json",
+    "next_lawful_move": "b04_r6_expanded_canary_evidence_next_lawful_move_receipt.json",
 }
 
 
@@ -247,6 +247,11 @@ def _ensure_no_authority_drift(payload: Dict[str, Any], *, label: str) -> None:
             _fail("RC_B04R6_EXPANDED_CANARY_EVIDENCE_PACKAGE_PROMOTION_DRIFT", f"{label} authorizes package promotion")
 
 
+def _require_receipt_pass(payload: Dict[str, Any], *, label: str, field: str) -> None:
+    if payload.get(field) != "PASS":
+        _fail("RC_B04R6_EXPANDED_CANARY_EVIDENCE_SCORECARD_MISSING", f"{label}.{field} did not pass")
+
+
 def _load_inputs(root: Path) -> tuple[Dict[str, Dict[str, Any]], Dict[str, str]]:
     payloads = {role: _load_json(root, raw, label=role) for role, raw in ALL_JSON_INPUTS.items()}
     texts = {role: _read_text(root, raw, label=role) for role, raw in ALL_TEXT_INPUTS.items()}
@@ -270,6 +275,15 @@ def _validate_inputs(payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str])
         _fail("RC_B04R6_EXPANDED_CANARY_EVIDENCE_CASE_MANIFEST_MISSING", "case manifest count mismatch")
     if "does not authorize runtime cutover" not in texts["runtime_report"] and "Runtime cutover remains unauthorized" not in texts["runtime_report"]:
         _fail("RC_B04R6_EXPANDED_CANARY_EVIDENCE_RUNTIME_CUTOVER_AUTHORIZED", "runtime report boundary missing")
+    _require_receipt_pass(
+        payloads["runtime_route_distribution_receipt"],
+        label="runtime_route_distribution_receipt",
+        field="route_distribution_health",
+    )
+    _require_receipt_pass(payloads["runtime_drift_monitoring_receipt"], label="runtime_drift_monitoring_receipt", field="drift_status")
+    _require_receipt_pass(payloads["runtime_replay_receipt"], label="runtime_replay_receipt", field="replay_status")
+    if payloads["runtime_trace_completeness_receipt"].get("trace_complete_cases") != runtime.MAX_CASES:
+        _fail("RC_B04R6_EXPANDED_CANARY_EVIDENCE_SCORECARD_MISSING", "trace completeness did not cover all cases")
     for role, payload in payloads.items():
         _ensure_no_authority_drift(payload, label=role)
 
@@ -285,12 +299,23 @@ def _scorecard(payloads: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
     drift = payloads["runtime_drift_monitoring_receipt"]
     trace = payloads["runtime_trace_completeness_receipt"]
     replay = payloads["runtime_replay_receipt"]
+    route_status = route["route_distribution_health"]
+    drift_status = drift["drift_status"]
+    trace_status = "PASS" if trace["trace_complete_cases"] == runtime.MAX_CASES else "FAIL"
+    replay_status = replay["replay_status"]
+    status_by_category = {
+        "route_distribution_health": route_status,
+        "drift_stability": drift_status,
+        "trace_completeness": trace_status,
+        "runtime_replayability": replay_status,
+    }
     rows = []
     for category in REVIEW_CATEGORIES:
+        status = status_by_category.get(category, "PASS")
         rows.append(
             {
                 "category": category,
-                "status": "PASS",
+                "status": status,
                 "grade": "A_READY_FOR_NEXT_AUTHORITY_REVIEW" if category != "package_promotion_readiness" else "BLOCKED_BY_LAW",
                 "evidence": [
                     "expanded canary runtime passed",
@@ -302,10 +327,11 @@ def _scorecard(payloads: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
     return {
         "scorecard_id": "B04_R6_EXPANDED_CANARY_EVIDENCE_SCORECARD_V1",
         "overall_grade": "A_READY_FOR_RUNTIME_CUTOVER_REVIEW_PACKET",
-        "route_distribution_health": route.get("status", "PASS"),
-        "drift_status": drift.get("status", "PASS"),
-        "trace_completeness": trace.get("status", "PASS"),
-        "replay_status": replay.get("status", "PASS"),
+        "route_distribution_health": route_status,
+        "drift_status": drift_status,
+        "trace_completeness": trace_status,
+        "trace_complete_cases": trace["trace_complete_cases"],
+        "replay_status": replay_status,
         "categories": rows,
     }
 

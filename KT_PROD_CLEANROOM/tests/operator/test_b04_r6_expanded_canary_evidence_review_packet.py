@@ -116,6 +116,12 @@ def test_packet_binds_runtime_receipt_case_manifest_and_drift_receipt(outputs: P
     assert hashes["expanded_canary_no_authorization_drift_receipt_hash"]
 
 
+def test_outputs_do_not_overwrite_hash_bound_runtime_inputs() -> None:
+    runtime_inputs = set(runtime.OUTPUTS.values())
+    review_outputs = set(review.OUTPUTS.values())
+    assert runtime_inputs.isdisjoint(review_outputs)
+
+
 def test_success_outcome_routes_to_validation(outputs: Path) -> None:
     contract = _contract(outputs)
     assert contract["selected_outcome"] == review.SELECTED_OUTCOME
@@ -261,6 +267,28 @@ def test_runtime_next_move_drift_fails_closed(tmp_path: Path, monkeypatch: pytes
     _write(result_path, result)
     _patch_review_env(monkeypatch, tmp_path)
     with pytest.raises(review.LaneFailure, match="next move drifted"):
+        review.run(reports_root=reports)
+
+
+def test_route_health_failure_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = runtime_helpers._run_runtime(tmp_path, monkeypatch)
+    receipt_path = reports / runtime.OUTPUTS["route_distribution_receipt"]
+    receipt = _load(receipt_path)
+    receipt["route_distribution_health"] = "FAIL"
+    _write(receipt_path, receipt)
+    _patch_review_env(monkeypatch, tmp_path)
+    with pytest.raises(review.LaneFailure, match="route_distribution_health did not pass"):
+        review.run(reports_root=reports)
+
+
+def test_replay_status_failure_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = runtime_helpers._run_runtime(tmp_path, monkeypatch)
+    receipt_path = reports / runtime.OUTPUTS["replay_receipt"]
+    receipt = _load(receipt_path)
+    receipt["replay_status"] = "FAIL"
+    _write(receipt_path, receipt)
+    _patch_review_env(monkeypatch, tmp_path)
+    with pytest.raises(review.LaneFailure, match="replay_status did not pass"):
         review.run(reports_root=reports)
 
 
