@@ -1,4 +1,6 @@
 {
+  "abstention_fallback_preserved": true,
+  "abstention_observations": 9,
   "activation_cutover_executed": false,
   "allowed_outcomes": [
     "B04_R6_EXPANDED_CANARY_RUNTIME_PASSED__EXPANDED_CANARY_EVIDENCE_REVIEW_PACKET_NEXT",
@@ -6,7 +8,7 @@
     "B04_R6_EXPANDED_CANARY_RUNTIME_INVALIDATED__FORENSIC_EXPANDED_CANARY_RUNTIME_REVIEW_NEXT",
     "B04_R6_EXPANDED_CANARY_RUNTIME_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS"
   ],
-  "artifact_id": "B04_R6_EXPANDED_CANARY_NO_AUTHORIZATION_DRIFT_RECEIPT",
+  "artifact_id": "B04_R6_EXPANDED_CANARY_ABSTENTION_FALLBACK_RECEIPT",
   "authoritative_lane": "B04_R6_EXPANDED_CANARY_RUNTIME",
   "binding_hashes": {
     "afsh_candidate_hash": "0348402dd69aaf2032e87207ce9011d00ee870ca0a63434c3dc621c2d899ee31",
@@ -1296,7 +1298,6 @@
   "metric_contract_mutated": false,
   "next_lawful_move": "AUTHOR_B04_R6_EXPANDED_CANARY_EVIDENCE_REVIEW_PACKET",
   "no_authorization_drift": true,
-  "no_downstream_authorization_drift": true,
   "outcome_routing": {
     "B04_R6_EXPANDED_CANARY_RUNTIME_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS": "REPAIR_B04_R6_EXPANDED_CANARY_RUNTIME_DEFECTS",
     "B04_R6_EXPANDED_CANARY_RUNTIME_FAILED__EXPANDED_CANARY_REPAIR_OR_CLOSEOUT_NEXT": "AUTHOR_B04_R6_EXPANDED_CANARY_REPAIR_OR_CLOSEOUT_PACKET",
@@ -1343,10 +1344,10 @@
     "RC_B04R6_EXPANDED_CANARY_RUNTIME_COMPARATOR_WEAKENED",
     "RC_B04R6_EXPANDED_CANARY_RUNTIME_RESULT_PROMOTION_DRIFT"
   ],
-  "receipt_role": "no_authorization_drift",
+  "receipt_role": "abstention_fallback",
   "runtime_cutover_authorized": false,
   "runtime_mode": "EXPANDED_OPERATOR_OBSERVED_CANARY",
-  "schema_id": "kt.b04_r6.expanded_canary_runtime.no_authorization_drift.v1",
+  "schema_id": "kt.b04_r6.expanded_canary_runtime.abstention_fallback.v1",
   "schema_version": "v1",
   "scorecard": {
     "abstention_fallback_preserved": true,
