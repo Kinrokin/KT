@@ -52,7 +52,7 @@ def _patch_review_env(
     monkeypatch.setattr(
         review,
         "validate_trust_zones",
-        lambda: {"schema_id": "trust", "status": "PASS", "failures": [], "checks": [{"status": "PASS"}]},
+        lambda *, root: {"schema_id": "trust", "status": "PASS", "failures": [], "checks": [{"status": "PASS"}]},
     )
 
 

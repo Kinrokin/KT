@@ -689,7 +689,7 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
         _fail("RC_B04R6_EXPANDED_CANARY_EVIDENCE_NEXT_MOVE_DRIFT", f"worktree dirty: {dirty[:200]}")
     payloads, texts = _load_inputs(root)
     _validate_inputs(payloads, texts)
-    trust = validate_trust_zones()
+    trust = validate_trust_zones(root=root)
     if trust.get("status") != "PASS":
         _fail("RC_B04R6_EXPANDED_CANARY_EVIDENCE_NEXT_MOVE_DRIFT", "trust-zone validation failed")
     base = _base(root=root, reports_root=reports, branch=branch, payloads=payloads, texts=texts, trust_receipt=trust)
