@@ -6,7 +6,7 @@
     "B04_R6_RUNTIME_CUTOVER_EXECUTION_PACKET_REJECTED__CUTOVER_EXECUTION_NOT_JUSTIFIED",
     "B04_R6_RUNTIME_CUTOVER_EXECUTION_PACKET_INVALID__FORENSIC_CUTOVER_EXECUTION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_RUNTIME_CUTOVER_EXECUTION_PACKET_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_RUNTIME_CUTOVER_EXECUTION_NO_AUTHORIZATION_DRIFT_RECEIPT",
   "authoritative_lane": "B04_R6_RUNTIME_CUTOVER_EXECUTION_PACKET",
   "binding_hashes": {
     "abstention_fallback_validation_hash": "e0004fc1c661bd51f32af15da492ba3a492f9dbc4d29da747f679e7ca08a8ff2",
@@ -42,6 +42,7 @@
   "current_branch": "authoritative/b04-r6-runtime-cutover-execution-packet",
   "current_git_head": "1e74e888f8f47f783b00e879f05cac4fd5b6d1f5",
   "current_main_head": "1e74e888f8f47f783b00e879f05cac4fd5b6d1f5",
+  "drift_detected": false,
   "forbidden_actions": [
     "RUNTIME_CUTOVER_EXECUTED",
     "ACTIVATION_CUTOVER_EXECUTED",
@@ -243,7 +244,7 @@
   "runtime_cutover_execution_packet_authored": true,
   "runtime_cutover_execution_packet_validated": false,
   "runtime_cutover_review_validated": true,
-  "schema_id": "kt.b04_r6.runtime_cutover_execution_packet.next_lawful_move.receipt.v1",
+  "schema_id": "kt.b04_r6.runtime_cutover_execution_packet.no_authorization_drift.receipt.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_RUNTIME_CUTOVER_EXECUTION_PACKET_BOUND__RUNTIME_CUTOVER_EXECUTION_VALIDATION_NEXT",
   "static_comparator_weakened": false,
@@ -251,6 +252,7 @@
   "trust_zone_law_unchanged": true,
   "truth_engine_law_changed": false,
   "truth_engine_law_unchanged": true,
+  "validation_status": "PASS",
   "validation_success_next_move": "RUN_B04_R6_RUNTIME_CUTOVER",
   "validation_success_outcome": "B04_R6_RUNTIME_CUTOVER_EXECUTION_PACKET_VALIDATED__RUNTIME_CUTOVER_NEXT"
 }
