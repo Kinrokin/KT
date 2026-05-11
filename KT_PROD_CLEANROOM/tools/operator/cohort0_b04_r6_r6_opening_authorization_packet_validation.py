@@ -243,6 +243,14 @@ def _contains_negative_authority_qualifier(value: str) -> bool:
     return any(_contains_sequence(words, qualifier.replace(" ", "_")) for qualifier in auth.NEGATIVE_AUTHORITY_QUALIFIERS)
 
 
+def _forbidden_claim_phrase_reason(value: str) -> Optional[str]:
+    words = _token_words(value)
+    for phrase, reason in TEXT_FORBIDDEN_CLAIMS.items():
+        if _contains_sequence(words, phrase.replace(" ", "_")):
+            return reason
+    return None
+
+
 def _ensure_authority_closed(payload: Dict[str, Any], *, label: str) -> None:
     for key, value in _walk(payload):
         if key in AUTHORITY_DRIFT_KEYS and value is not False:
@@ -260,6 +268,9 @@ def _ensure_claim_boundary(payload: Dict[str, Any], *, label: str) -> None:
         key_text = str(key)
         if not auth._is_claim_bearing_field(key_text):
             continue
+        forbidden_reason = _forbidden_claim_phrase_reason(value)
+        if forbidden_reason and not _claim_field_allows_positive_tokens(key_text):
+            _fail(forbidden_reason, f"{label}.{key_text} contains {value!r}")
         if not _contains_positive_authority_token(value):
             continue
         if _contains_negative_authority_qualifier(value):

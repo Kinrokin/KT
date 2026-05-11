@@ -379,7 +379,18 @@ def test_claim_bearing_positive_token_fails_closed(tmp_path: Path, monkeypatch: 
     payload["allowed_claims"] = ["R6 is open"]
     _write(path, payload)
     _patch_validation_env(monkeypatch, tmp_path)
-    with pytest.raises(validation.LaneFailure, match="RC_B04R6_R6_OPENING_AUTH_VAL_CLAIM_TOKEN_DRIFT"):
+    with pytest.raises(validation.LaneFailure, match="RC_B04R6_R6_OPENING_AUTH_VAL_R6_OPEN_DRIFT"):
+        validation.run(reports_root=reports)
+
+
+def test_json_execution_claim_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_authoring_only(tmp_path, monkeypatch)
+    path = reports / auth.OUTPUTS["commercial_claim_ceiling"]
+    payload = _load(path)
+    payload["allowed_claims"] = ["R6 opening executed"]
+    _write(path, payload)
+    _patch_validation_env(monkeypatch, tmp_path)
+    with pytest.raises(validation.LaneFailure, match="RC_B04R6_R6_OPENING_AUTH_VAL_EXECUTION_DRIFT"):
         validation.run(reports_root=reports)
 
 
@@ -387,7 +398,7 @@ def test_forbidden_claim_list_may_describe_blocked_positive_tokens(tmp_path: Pat
     reports = _run_authoring_only(tmp_path, monkeypatch)
     path = reports / auth.OUTPUTS["commercial_claim_ceiling"]
     payload = _load(path)
-    payload["forbidden_claims"] = ["R6 is open", "Commercial activation authorized"]
+    payload["forbidden_claims"] = ["R6 is open", "R6 opening executed", "Commercial activation authorized"]
     _write(path, payload)
     _patch_validation_env(monkeypatch, tmp_path)
     validation.run(reports_root=reports)
