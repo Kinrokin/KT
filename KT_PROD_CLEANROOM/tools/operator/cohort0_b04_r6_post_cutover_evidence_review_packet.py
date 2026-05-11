@@ -250,6 +250,14 @@ def _validate_runtime_handoff(payloads: Dict[str, Dict[str, Any]], texts: Dict[s
     for key in ("route_distribution_health", "drift_status", "replay_status"):
         if scorecard.get(key) != "PASS":
             _fail("RC_B04R6_POST_CUTOVER_REVIEW_SCORECARD_INCOMPLETE", f"scorecard.{key} not PASS")
+    if scorecard.get("fallback_failures") != 0:
+        _fail("RC_B04R6_POST_CUTOVER_REVIEW_SCORECARD_INCOMPLETE", "scorecard.fallback_failures not zero")
+    if scorecard.get("incident_freeze_triggers") != []:
+        _fail("RC_B04R6_POST_CUTOVER_REVIEW_SCORECARD_INCOMPLETE", "scorecard.incident_freeze_triggers not empty")
+    total_cases = scorecard.get("total_cases")
+    trace_complete_cases = scorecard.get("trace_complete_cases")
+    if not isinstance(total_cases, int) or total_cases <= 0 or trace_complete_cases != total_cases:
+        _fail("RC_B04R6_POST_CUTOVER_REVIEW_SCORECARD_INCOMPLETE", "scorecard.trace completeness not total")
     report = texts.get("runtime_report", "").lower()
     for phrase in ("does not open r6", "does not promote package", "post-cutover evidence review is next"):
         if phrase not in report:
@@ -298,12 +306,32 @@ def _inventory(payloads: Dict[str, Dict[str, Any]], input_bindings: list[Dict[st
     }
 
 
+def _scorecard_passes(scorecard: Dict[str, Any]) -> bool:
+    return (
+        scorecard.get("sample_limit_respected") is True
+        and scorecard.get("route_distribution_health") == "PASS"
+        and scorecard.get("fallback_behavior") == "PASS"
+        and scorecard.get("static_fallback_preserved") is True
+        and scorecard.get("abstention_fallback_preserved") is True
+        and scorecard.get("null_route_preserved") is True
+        and scorecard.get("operator_override_ready") is True
+        and scorecard.get("kill_switch_ready") is True
+        and scorecard.get("rollback_ready") is True
+        and scorecard.get("drift_status") == "PASS"
+        and scorecard.get("incident_freeze_clean") is True
+        and scorecard.get("trace_completeness") == "PASS"
+        and scorecard.get("replay_status") == "PASS"
+        and scorecard.get("external_verifier_ready") is True
+        and scorecard.get("commercial_claim_boundary_preserved") is True
+    )
+
+
 def _scorecard(payloads: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
     result = payloads["runtime_result"].get("result", {})
-    return {
+    scorecard = {
         "scorecard_id": "B04_R6_POST_CUTOVER_EVIDENCE_SCORECARD_V1",
         "runtime_cutover_result": "PASSED",
-        "overall_grade": "A_READY_FOR_R6_OPENING_REVIEW",
+        "overall_grade": "PENDING_EVIDENCE_DERIVATION",
         "sample_limit_respected": result.get("sample_limit_respected") is True,
         "route_distribution_health": result.get("route_distribution_health"),
         "fallback_behavior": "PASS" if result.get("fallback_failures") == 0 else "FAIL",
@@ -320,35 +348,53 @@ def _scorecard(payloads: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
         "external_verifier_ready": result.get("external_verifier_ready") is True,
         "commercial_claim_boundary_preserved": result.get("commercial_claim_boundary_preserved") is True,
         "package_promotion_ready": False,
-        "r6_opening_review_ready": True,
+        "r6_opening_review_ready": False,
     }
+    ready = _scorecard_passes(scorecard)
+    scorecard["overall_grade"] = (
+        "A_READY_FOR_R6_OPENING_REVIEW" if ready else "C_EVIDENCE_INCOMPLETE_REPAIR_REQUIRED"
+    )
+    scorecard["r6_opening_review_ready"] = ready
+    return scorecard
 
 
 def _decision_matrix(scorecard: Dict[str, Any]) -> Dict[str, Any]:
+    ready = _scorecard_passes(scorecard)
+    blocking_reasons = [
+        "r6_opening_requires_post_cutover_evidence_review_validation",
+        "package_promotion_requires_r6_opening_review_and_external_audit_delta",
+        "commercial_activation_claims_remain_forbidden",
+    ]
+    if not ready:
+        blocking_reasons = [
+            "r6_opening_blocked_by_incomplete_post_cutover_scorecard",
+            "limited_continuation_or_rollback_closeout_requires_repair_packet",
+            *blocking_reasons,
+        ]
     return {
         "decision_matrix_id": "B04_R6_POST_CUTOVER_DECISION_MATRIX_V1",
         "runtime_cutover_result": "PASSED",
-        "overall_grade": scorecard["overall_grade"],
-        "r6_opening_review_ready": True,
-        "limited_continuation_ready": True,
-        "rollback_closeout_ready": False,
-        "external_audit_delta_ready": "READY_FOR_PACKET",
+        "overall_grade": "A_READY_FOR_R6_OPENING_REVIEW" if ready else "C_EVIDENCE_INCOMPLETE_REPAIR_REQUIRED",
+        "r6_opening_review_ready": ready,
+        "limited_continuation_ready": ready,
+        "rollback_closeout_ready": not ready,
+        "external_audit_delta_ready": "READY_FOR_PACKET" if ready else "BLOCKED_BY_EVIDENCE_DEFECT",
         "package_promotion_ready": False,
         "commercial_claim_status": "BOUNDARY_ONLY",
-        "recommended_next_path": RECOMMENDED_VALIDATED_PATH,
+        "recommended_next_path": RECOMMENDED_VALIDATED_PATH if ready else "ROLLBACK_CLOSEOUT_PACKET_NEXT",
         "recommendation_is_authority": False,
-        "blocking_reasons": [
-            "r6_opening_requires_post_cutover_evidence_review_validation",
-            "package_promotion_requires_r6_opening_review_and_external_audit_delta",
-            "commercial_activation_claims_remain_forbidden",
-        ],
-        "supporting_evidence": [
-            "runtime_cutover_passed",
-            "fallbacks_preserved",
-            "operator_controls_preserved",
-            "drift_and_incident_receipts_passed",
-            "replay_and_external_verifier_receipts_passed",
-        ],
+        "blocking_reasons": blocking_reasons,
+        "supporting_evidence": (
+            [
+                "runtime_cutover_passed",
+                "fallbacks_preserved",
+                "operator_controls_preserved",
+                "drift_and_incident_receipts_passed",
+                "replay_and_external_verifier_receipts_passed",
+            ]
+            if ready
+            else ["runtime_cutover_passed", "post_cutover_scorecard_defect_requires_repair_or_closeout"]
+        ),
     }
 
 
@@ -444,7 +490,11 @@ def _prep_only(base: Dict[str, Any], *, role: str) -> Dict[str, Any]:
     )
 
 
-def _review(base: Dict[str, Any], *, role: str, status: str = "PASS", **extra: Any) -> Dict[str, Any]:
+def _pass_fail(condition: bool) -> str:
+    return "PASS" if condition else "FAIL"
+
+
+def _review(base: Dict[str, Any], *, role: str, status: str, **extra: Any) -> Dict[str, Any]:
     return _artifact(
         base,
         schema_id=f"kt.b04_r6.post_cutover_evidence_review.{role}.v1",
@@ -464,23 +514,23 @@ def _outputs(base: Dict[str, Any]) -> Dict[str, Any]:
         "evidence_inventory": _artifact(base, schema_id="kt.b04_r6.post_cutover_evidence_review.inventory.v1", artifact_id="B04_R6_POST_CUTOVER_EVIDENCE_INVENTORY", inventory=base["evidence_inventory"]),
         "evidence_scorecard": _artifact(base, schema_id="kt.b04_r6.post_cutover_evidence_review.scorecard.v1", artifact_id="B04_R6_POST_CUTOVER_EVIDENCE_SCORECARD", scorecard=scorecard),
         "decision_matrix": _artifact(base, schema_id="kt.b04_r6.post_cutover_evidence_review.decision_matrix.v1", artifact_id="B04_R6_POST_CUTOVER_DECISION_MATRIX", decision_matrix=decision),
-        "r6_opening_readiness_matrix": _artifact(base, schema_id="kt.b04_r6.post_cutover_evidence_review.r6_opening_readiness.v1", artifact_id="B04_R6_R6_OPENING_READINESS_MATRIX", readiness="READY_FOR_REVIEW_PACKET", r6_opening_review_ready=True, r6_opening_authorized=False),
-        "rollback_continuation_matrix": _artifact(base, schema_id="kt.b04_r6.post_cutover_evidence_review.rollback_continuation.v1", artifact_id="B04_R6_POST_CUTOVER_ROLLBACK_CONTINUATION_MATRIX", limited_continuation_ready=True, rollback_closeout_required=False),
+        "r6_opening_readiness_matrix": _artifact(base, schema_id="kt.b04_r6.post_cutover_evidence_review.r6_opening_readiness.v1", artifact_id="B04_R6_R6_OPENING_READINESS_MATRIX", readiness="READY_FOR_REVIEW_PACKET" if decision["r6_opening_review_ready"] else "BLOCKED_BY_EVIDENCE_DEFECT", r6_opening_review_ready=decision["r6_opening_review_ready"], r6_opening_authorized=False),
+        "rollback_continuation_matrix": _artifact(base, schema_id="kt.b04_r6.post_cutover_evidence_review.rollback_continuation.v1", artifact_id="B04_R6_POST_CUTOVER_ROLLBACK_CONTINUATION_MATRIX", limited_continuation_ready=decision["limited_continuation_ready"], rollback_closeout_required=decision["rollback_closeout_ready"]),
         "package_promotion_blocker_matrix": _artifact(base, schema_id="kt.b04_r6.post_cutover_evidence_review.package_promotion_blockers.v1", artifact_id="B04_R6_POST_CUTOVER_PACKAGE_PROMOTION_BLOCKER_MATRIX", package_promotion_ready=False, blockers=decision["blocking_reasons"]),
-        "external_audit_delta_readiness": _artifact(base, schema_id="kt.b04_r6.post_cutover_evidence_review.external_audit_delta_readiness.v1", artifact_id="B04_R6_POST_CUTOVER_EXTERNAL_AUDIT_DELTA_READINESS", external_audit_delta_ready="READY_FOR_PACKET"),
-        "public_verifier_readiness": _artifact(base, schema_id="kt.b04_r6.post_cutover_evidence_review.public_verifier_readiness.v1", artifact_id="B04_R6_POST_CUTOVER_PUBLIC_VERIFIER_READINESS", public_verifier_ready=True),
+        "external_audit_delta_readiness": _artifact(base, schema_id="kt.b04_r6.post_cutover_evidence_review.external_audit_delta_readiness.v1", artifact_id="B04_R6_POST_CUTOVER_EXTERNAL_AUDIT_DELTA_READINESS", external_audit_delta_ready=decision["external_audit_delta_ready"]),
+        "public_verifier_readiness": _artifact(base, schema_id="kt.b04_r6.post_cutover_evidence_review.public_verifier_readiness.v1", artifact_id="B04_R6_POST_CUTOVER_PUBLIC_VERIFIER_READINESS", public_verifier_ready=scorecard["external_verifier_ready"]),
         "commercial_claim_ceiling_update": _artifact(base, schema_id="kt.b04_r6.post_cutover_evidence_review.commercial_claim_ceiling.v1", artifact_id="B04_R6_POST_CUTOVER_COMMERCIAL_CLAIM_CEILING_UPDATE", allowed_claims=["B04 R6 runtime cutover passed under bounded packet law"], forbidden_claims=["R6 is open", "package promotion is authorized", "commercial activation is authorized"]),
-        "route_distribution_review": _review(base, role="route_distribution_review", route_distribution_health=scorecard["route_distribution_health"]),
-        "fallback_behavior_review": _review(base, role="fallback_behavior_review", fallback_behavior=scorecard["fallback_behavior"]),
-        "operator_override_review": _review(base, role="operator_override_review", operator_override_ready=scorecard["operator_override_ready"]),
-        "kill_switch_review": _review(base, role="kill_switch_review", kill_switch_ready=scorecard["kill_switch_ready"]),
-        "rollback_review": _review(base, role="rollback_review", rollback_ready=scorecard["rollback_ready"]),
-        "drift_monitoring_review": _review(base, role="drift_monitoring_review", drift_status=scorecard["drift_status"]),
-        "incident_freeze_review": _review(base, role="incident_freeze_review", incident_freeze_clean=scorecard["incident_freeze_clean"]),
-        "trace_completeness_review": _review(base, role="trace_completeness_review", trace_completeness=scorecard["trace_completeness"]),
-        "replay_readiness_review": _review(base, role="replay_readiness_review", replay_status=scorecard["replay_status"]),
-        "external_verifier_review": _review(base, role="external_verifier_review", external_verifier_ready=scorecard["external_verifier_ready"]),
-        "commercial_claim_boundary_review": _review(base, role="commercial_claim_boundary_review", commercial_claim_status="BOUNDARY_ONLY"),
+        "route_distribution_review": _review(base, role="route_distribution_review", status=_pass_fail(scorecard["route_distribution_health"] == "PASS"), route_distribution_health=scorecard["route_distribution_health"]),
+        "fallback_behavior_review": _review(base, role="fallback_behavior_review", status=_pass_fail(scorecard["fallback_behavior"] == "PASS"), fallback_behavior=scorecard["fallback_behavior"]),
+        "operator_override_review": _review(base, role="operator_override_review", status=_pass_fail(scorecard["operator_override_ready"] is True), operator_override_ready=scorecard["operator_override_ready"]),
+        "kill_switch_review": _review(base, role="kill_switch_review", status=_pass_fail(scorecard["kill_switch_ready"] is True), kill_switch_ready=scorecard["kill_switch_ready"]),
+        "rollback_review": _review(base, role="rollback_review", status=_pass_fail(scorecard["rollback_ready"] is True), rollback_ready=scorecard["rollback_ready"]),
+        "drift_monitoring_review": _review(base, role="drift_monitoring_review", status=_pass_fail(scorecard["drift_status"] == "PASS"), drift_status=scorecard["drift_status"]),
+        "incident_freeze_review": _review(base, role="incident_freeze_review", status=_pass_fail(scorecard["incident_freeze_clean"] is True), incident_freeze_clean=scorecard["incident_freeze_clean"]),
+        "trace_completeness_review": _review(base, role="trace_completeness_review", status=_pass_fail(scorecard["trace_completeness"] == "PASS"), trace_completeness=scorecard["trace_completeness"]),
+        "replay_readiness_review": _review(base, role="replay_readiness_review", status=_pass_fail(scorecard["replay_status"] == "PASS"), replay_status=scorecard["replay_status"]),
+        "external_verifier_review": _review(base, role="external_verifier_review", status=_pass_fail(scorecard["external_verifier_ready"] is True), external_verifier_ready=scorecard["external_verifier_ready"]),
+        "commercial_claim_boundary_review": _review(base, role="commercial_claim_boundary_review", status=_pass_fail(scorecard["commercial_claim_boundary_preserved"] is True), commercial_claim_status="BOUNDARY_ONLY"),
         "no_authorization_drift_receipt": _artifact(base, schema_id="kt.b04_r6.post_cutover_evidence_review.no_authorization_drift.v1", artifact_id="B04_R6_POST_CUTOVER_NO_AUTHORIZATION_DRIFT_RECEIPT", validation_status="PASS", no_downstream_authorization_drift=True),
         "validation_plan": _artifact(base, schema_id="kt.b04_r6.post_cutover_evidence_review.validation_plan.v1", artifact_id="B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_VALIDATION_PLAN", validation_success_outcome=VALIDATION_SUCCESS_OUTCOME),
         "validation_reason_codes": _artifact(base, schema_id="kt.b04_r6.post_cutover_evidence_review.validation_reason_codes.v1", artifact_id="B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_VALIDATION_REASON_CODES", reason_codes=list(REASON_CODES)),

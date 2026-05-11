@@ -139,6 +139,16 @@ def test_decision_matrix_recommends_r6_opening_review_without_authority(outputs:
     assert decision["package_promotion_ready"] is False
 
 
+def test_decision_matrix_derives_readiness_from_scorecard(outputs: Path) -> None:
+    scorecard = dict(_scorecard(outputs))
+    scorecard["fallback_behavior"] = "FAIL"
+    decision = review._decision_matrix(scorecard)
+    assert decision["r6_opening_review_ready"] is False
+    assert decision["limited_continuation_ready"] is False
+    assert decision["rollback_closeout_ready"] is True
+    assert decision["recommended_next_path"] == "ROLLBACK_CLOSEOUT_PACKET_NEXT"
+
+
 @pytest.mark.parametrize(
     "field,expected",
     [
@@ -163,6 +173,26 @@ def test_decision_matrix_recommends_r6_opening_review_without_authority(outputs:
 )
 def test_scorecard_grades_required_categories(outputs: Path, field: str, expected: object) -> None:
     assert _scorecard(outputs)[field] == expected
+
+
+@pytest.mark.parametrize(
+    "role",
+    [
+        "route_distribution_review",
+        "fallback_behavior_review",
+        "operator_override_review",
+        "kill_switch_review",
+        "rollback_review",
+        "drift_monitoring_review",
+        "incident_freeze_review",
+        "trace_completeness_review",
+        "replay_readiness_review",
+        "external_verifier_review",
+        "commercial_claim_boundary_review",
+    ],
+)
+def test_review_statuses_are_derived_passes(outputs: Path, role: str) -> None:
+    assert _payload(outputs, role)["review_status"] == "PASS"
 
 
 @pytest.mark.parametrize("role", _json_roles())
@@ -274,11 +304,22 @@ def test_r6_open_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPa
         review.run(reports_root=reports)
 
 
-def test_incomplete_scorecard_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("rollback_ready", False),
+        ("fallback_failures", 1),
+        ("incident_freeze_triggers", ["operator_freeze"]),
+        ("trace_complete_cases", 0),
+    ],
+)
+def test_incomplete_scorecard_fails_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, field: str, value: object
+) -> None:
     reports = _run_runtime_only(tmp_path, monkeypatch)
     path = reports / runtime.OUTPUTS["result"]
     payload = _load(path)
-    payload["result"]["rollback_ready"] = False
+    payload["result"][field] = value
     _write(path, payload)
     _patch_review_env(monkeypatch, tmp_path)
     with pytest.raises(review.LaneFailure, match="SCORECARD_INCOMPLETE"):
