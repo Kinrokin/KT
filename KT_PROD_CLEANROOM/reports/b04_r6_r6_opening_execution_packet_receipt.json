@@ -5,7 +5,7 @@
     "B04_R6_R6_OPENING_EXECUTION_PACKET_REJECTED__R6_OPENING_EXECUTION_NOT_JUSTIFIED",
     "B04_R6_R6_OPENING_EXECUTION_PACKET_INVALID__FORENSIC_R6_OPENING_EXECUTION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_R6_OPENING_EXECUTION_PACKET_RECEIPT",
   "authoritative_lane": "B04_R6_R6_OPENING_EXECUTION_PACKET",
   "binding_hashes": {
     "allowed_surface_validation_hash": "df0047beb448d526e4de76806a2b9a47f73a73181d3df1f5e9ba2f9d524c364e",
@@ -250,7 +250,7 @@
   "r6_opening_execution_packet_validated": false,
   "r6_opening_review_validated": true,
   "runtime_cutover_executed": true,
-  "schema_id": "kt.b04_r6.r6_opening_execution_packet.next_lawful_move.receipt.v1",
+  "schema_id": "kt.b04_r6.r6_opening_execution_packet.receipt.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_R6_OPENING_EXECUTION_PACKET_BOUND__R6_OPENING_EXECUTION_VALIDATION_NEXT",
   "static_comparator_weakened": false,
@@ -259,5 +259,6 @@
   "truth_engine_law_changed": false,
   "truth_engine_law_unchanged": true,
   "validation_success_next_move": "RUN_B04_R6_R6_OPENING",
-  "validation_success_outcome": "B04_R6_R6_OPENING_EXECUTION_PACKET_VALIDATED__R6_OPENING_NEXT"
+  "validation_success_outcome": "B04_R6_R6_OPENING_EXECUTION_PACKET_VALIDATED__R6_OPENING_NEXT",
+  "verdict": "BOUND_FOR_R6_OPENING_EXECUTION_VALIDATION_ONLY"
 }

@@ -5,7 +5,13 @@
     "B04_R6_R6_OPENING_EXECUTION_PACKET_REJECTED__R6_OPENING_EXECUTION_NOT_JUSTIFIED",
     "B04_R6_R6_OPENING_EXECUTION_PACKET_INVALID__FORENSIC_R6_OPENING_EXECUTION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "allowed_run_outcomes": [
+    "B04_R6_R6_OPENING_PASSED__R6_OPENING_EVIDENCE_REVIEW_PACKET_NEXT",
+    "B04_R6_R6_OPENING_FAILED__ROLLBACK_OR_REPAIR_NEXT",
+    "B04_R6_R6_OPENING_INVALIDATED__FORENSIC_R6_OPENING_REVIEW_NEXT",
+    "B04_R6_R6_OPENING_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS"
+  ],
+  "artifact_id": "B04_R6_R6_OPENING_EXECUTION_RESULT_INTERPRETATION_CONTRACT",
   "authoritative_lane": "B04_R6_R6_OPENING_EXECUTION_PACKET",
   "binding_hashes": {
     "allowed_surface_validation_hash": "df0047beb448d526e4de76806a2b9a47f73a73181d3df1f5e9ba2f9d524c364e",
@@ -39,9 +45,12 @@
     "validation_report_hash": "653262bac5f86659e927bf6e78ba0e2a67ef4c28f8b2c085f0a576d067559f85"
   },
   "commercial_activation_claim_authorized": false,
+  "control_status": "DEFINED_FOR_VALIDATION",
   "current_branch": "author/b04-r6-r6-opening-execution-packet",
   "current_git_head": "40785593737bfd9f47973fc02a767faa9da72ca9",
   "current_main_head": "40785593737bfd9f47973fc02a767faa9da72ca9",
+  "does_not_execute_r6_opening": true,
+  "does_not_open_r6": true,
   "forbidden_actions": [
     "R6_OPENING_EXECUTED",
     "R6_OPEN",
@@ -235,6 +244,7 @@
   "lobe_escalation_authorized": false,
   "metric_contract_mutated": false,
   "next_lawful_move": "VALIDATE_B04_R6_R6_OPENING_EXECUTION_PACKET",
+  "opening_result_does_not_promote_package": true,
   "package_promotion": "DEFERRED",
   "package_promotion_authorized": false,
   "post_cutover_evidence_review_validated": true,
@@ -249,8 +259,15 @@
   "r6_opening_execution_packet_authored": true,
   "r6_opening_execution_packet_validated": false,
   "r6_opening_review_validated": true,
+  "requires_future_validation": "VALIDATE_B04_R6_R6_OPENING_EXECUTION_PACKET",
   "runtime_cutover_executed": true,
-  "schema_id": "kt.b04_r6.r6_opening_execution_packet.next_lawful_move.receipt.v1",
+  "safety_control_reason_codes": {
+    "kill_switch_required": "RC_B04R6_R6_OPENING_EXEC_PACKET_KILL_SWITCH_REQUIRED",
+    "operator_override_required": "RC_B04R6_R6_OPENING_EXEC_PACKET_OPERATOR_OVERRIDE_REQUIRED",
+    "rollback_required": "RC_B04R6_R6_OPENING_EXEC_PACKET_ROLLBACK_REQUIRED",
+    "static_fallback_required": "RC_B04R6_R6_OPENING_EXEC_PACKET_STATIC_FALLBACK_REQUIRED"
+  },
+  "schema_id": "kt.b04_r6.r6_opening_execution_packet.result_interpretation_contract.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_R6_OPENING_EXECUTION_PACKET_BOUND__R6_OPENING_EXECUTION_VALIDATION_NEXT",
   "static_comparator_weakened": false,
