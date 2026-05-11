@@ -315,7 +315,7 @@ def _load_packet_payloads(root: Path) -> tuple[Dict[str, Dict[str, Any]], Dict[s
     return payloads, texts
 
 
-def _validate_packet_input_bindings(root: Path, contract: Dict[str, Any]) -> None:
+def _validate_packet_input_bindings(root: Path, contract: Dict[str, Any], *, packet_main_head: str) -> None:
     rows = contract.get("input_bindings")
     if not rows:
         _fail("RC_B04R6_R6_OPENING_EXEC_VAL_INPUT_BINDINGS_EMPTY", "execution packet input_bindings empty")
@@ -333,6 +333,11 @@ def _validate_packet_input_bindings(root: Path, contract: Dict[str, Any]) -> Non
         binding_kind = row.get("binding_kind")
         if binding_kind == "git_object_before_overwrite":
             commit = row.get("git_commit")
+            if commit != packet_main_head:
+                _fail(
+                    "RC_B04R6_R6_OPENING_EXEC_VAL_INPUT_HASH_DRIFT",
+                    f"{role} git object commit {commit!r} does not match packet main head {packet_main_head!r}",
+                )
             if not commit or _git_blob_sha256(root, commit, raw) != sha:
                 _fail("RC_B04R6_R6_OPENING_EXEC_VAL_INPUT_HASH_DRIFT", f"{role} git object hash drift")
             if row.get("mutable_canonical_path_overwritten_by_this_lane") is not True:
@@ -350,6 +355,8 @@ def _validate_packet_payloads(payloads: Dict[str, Dict[str, Any]], texts: Dict[s
     next_move = payloads.get("next_lawful_move")
     if not contract or not receipt or not next_move:
         _fail("RC_B04R6_R6_OPENING_EXEC_VAL_PACKET_MISSING", "execution packet core artifacts missing")
+    if contract.get("authoritative_lane") != PREVIOUS_LANE or receipt.get("authoritative_lane") != PREVIOUS_LANE:
+        _fail("RC_B04R6_R6_OPENING_EXEC_VAL_PACKET_MISSING", "execution packet lane identity drifted")
     if contract.get("selected_outcome") != EXPECTED_PREVIOUS_OUTCOME:
         _fail("RC_B04R6_R6_OPENING_EXEC_VAL_PACKET_OUTCOME_DRIFT", "execution packet outcome drifted")
     if receipt.get("selected_outcome") != EXPECTED_PREVIOUS_OUTCOME:
@@ -360,7 +367,10 @@ def _validate_packet_payloads(payloads: Dict[str, Dict[str, Any]], texts: Dict[s
         _fail("RC_B04R6_R6_OPENING_EXEC_VAL_PACKET_MISSING", "execution packet was not authored")
     if contract.get("r6_opening_execution_packet_validated") is not False:
         _fail("RC_B04R6_R6_OPENING_EXEC_VAL_PACKET_OUTCOME_DRIFT", "input already claims validation")
-    _validate_packet_input_bindings(root, contract)
+    packet_main_head = contract.get("current_main_head")
+    if not isinstance(packet_main_head, str) or len(packet_main_head) != 40:
+        _fail("RC_B04R6_R6_OPENING_EXEC_VAL_INPUT_HASH_DRIFT", "packet current_main_head missing")
+    _validate_packet_input_bindings(root, contract, packet_main_head=packet_main_head)
 
     for role in packet.CONTROL_CONTRACT_ROLES:
         payload = payloads.get(role)

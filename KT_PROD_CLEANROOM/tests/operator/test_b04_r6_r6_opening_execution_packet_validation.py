@@ -273,6 +273,17 @@ def test_packet_outcome_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.M
         validation.run(reports_root=reports)
 
 
+def test_packet_lane_identity_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_packet_only(tmp_path, monkeypatch)
+    path = reports / packet.OUTPUTS["packet_contract"]
+    payload = _load(path)
+    payload["authoritative_lane"] = "B04_R6_UNRELATED_PACKET"
+    _write(path, payload)
+    _patch_validation_env(monkeypatch, tmp_path)
+    with pytest.raises(validation.LaneFailure, match="PACKET_MISSING"):
+        validation.run(reports_root=reports)
+
+
 def test_packet_next_move_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_packet_only(tmp_path, monkeypatch)
     path = reports / packet.OUTPUTS["next_lawful_move"]
@@ -301,6 +312,18 @@ def test_packet_input_hash_drift_fails_closed(tmp_path: Path, monkeypatch: pytes
     payload = _load(path)
     row = next(item for item in payload["input_bindings"] if item["binding_kind"].startswith("file_sha256"))
     row["sha256"] = "0" * 64
+    _write(path, payload)
+    _patch_validation_env(monkeypatch, tmp_path)
+    with pytest.raises(validation.LaneFailure, match="INPUT_HASH_DRIFT"):
+        validation.run(reports_root=reports)
+
+
+def test_git_object_binding_commit_must_match_packet_main_head(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_packet_only(tmp_path, monkeypatch)
+    path = reports / packet.OUTPUTS["packet_contract"]
+    payload = _load(path)
+    row = next(item for item in payload["input_bindings"] if item["binding_kind"] == "git_object_before_overwrite")
+    row["git_commit"] = "1" * 40
     _write(path, payload)
     _patch_validation_env(monkeypatch, tmp_path)
     with pytest.raises(validation.LaneFailure, match="INPUT_HASH_DRIFT"):
