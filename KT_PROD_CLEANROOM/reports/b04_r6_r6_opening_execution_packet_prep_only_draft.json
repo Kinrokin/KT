@@ -4,8 +4,9 @@
     "B04_R6_R6_OPENING_REVIEW_PACKET_DEFERRED__NAMED_REVIEW_DEFECT_REMAINS",
     "B04_R6_R6_OPENING_REVIEW_PACKET_INVALID__FORENSIC_R6_OPENING_REVIEW_NEXT"
   ],
-  "artifact_id": "KT_FUTURE_BLOCKER_REGISTER",
+  "artifact_id": "B04_R6_R6_OPENING_R6_OPENING_EXECUTION_PACKET_PREP_ONLY_DRAFT",
   "authoritative_lane": "B04_R6_R6_OPENING_REVIEW_PACKET",
+  "authority": "PREP_ONLY",
   "binding_hashes": {
     "claim_token_boundary_validation_hash": "407fe6ad291a68591415cbe7987569b030dbfe4e5ad2cfb52d467597c7448ac2",
     "commercial_claim_boundary_validation_hash": "4da251bc6da9670be4f8c26891332b7251ff5b505e927956a927bf7f17708428",
@@ -78,26 +79,13 @@
     "validation_receipt_hash": "c8205a3ff70fc516cb333f8edd791b65cf9d102d5632e8f9e106964e00a46d4b",
     "validation_report_hash": "8cd9b17017d01f0e09b4527370add6d6fb8d8b1aa0108a240f21feb7a2b437fb"
   },
-  "blockers": [
-    {
-      "blocker_id": "B04R6-R6-OPENING-001",
-      "category": "r6_opening",
-      "required_next_artifact": "b04_r6_r6_opening_review_validation_plan.json",
-      "status": "OPEN"
-    },
-    {
-      "blocker_id": "B04R6-R6-OPENING-002",
-      "category": "package_promotion",
-      "required_next_artifact": "b04_r6_r6_opening_package_promotion_review_preconditions_prep_only_draft.json",
-      "status": "BLOCKING"
-    },
-    {
-      "blocker_id": "B04R6-R6-OPENING-003",
-      "category": "commercial_claims",
-      "required_next_artifact": "b04_r6_r6_opening_commercial_claim_ceiling_update.json",
-      "status": "BLOCKING"
-    }
-  ],
+  "can_authorize": false,
+  "cannot_authorize_commercial_activation_claims": true,
+  "cannot_authorize_lobe_escalation": true,
+  "cannot_authorize_package_promotion": true,
+  "cannot_mutate_trust_zone_law": true,
+  "cannot_mutate_truth_engine_law": true,
+  "cannot_open_r6": true,
   "commercial_activation_claim_authorized": false,
   "current_branch": "author/b04-r6-r6-opening-review-packet",
   "current_git_head": "a0fc635c149bc1c410e022a235dfde5268310e01",
@@ -1194,6 +1182,7 @@
   "package_promotion_authorized": false,
   "post_cutover_evidence_review_validated": true,
   "predecessor_outcome": "B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_VALIDATED__R6_OPENING_REVIEW_PACKET_NEXT",
+  "prep_only": true,
   "previous_authoritative_lane": "B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_PACKET_VALIDATION",
   "previous_next_lawful_move": "AUTHOR_B04_R6_R6_OPENING_REVIEW_PACKET",
   "r6_open": false,
@@ -1226,10 +1215,11 @@
   "recommendation_is_authority": false,
   "recommended_validated_path": "R6_OPENING_AUTHORIZATION_PACKET_NEXT",
   "runtime_cutover_executed": true,
-  "schema_id": "kt.future_blocker_register.v8",
+  "schema_id": "kt.b04_r6.r6_opening_review.r6_opening_execution_packet_prep_only_draft.prep_only.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_R6_OPENING_REVIEW_PACKET_BOUND__R6_OPENING_REVIEW_VALIDATION_NEXT",
   "static_comparator_weakened": false,
+  "status": "PREP_ONLY",
   "trust_zone_failures": [],
   "trust_zone_law_changed": false,
   "trust_zone_law_unchanged": true,

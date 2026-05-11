@@ -4,7 +4,7 @@
     "B04_R6_R6_OPENING_REVIEW_PACKET_DEFERRED__NAMED_REVIEW_DEFECT_REMAINS",
     "B04_R6_R6_OPENING_REVIEW_PACKET_INVALID__FORENSIC_R6_OPENING_REVIEW_NEXT"
   ],
-  "artifact_id": "KT_FUTURE_BLOCKER_REGISTER",
+  "artifact_id": "B04_R6_R6_OPENING_R6_OPENING_READINESS_REVIEW",
   "authoritative_lane": "B04_R6_R6_OPENING_REVIEW_PACKET",
   "binding_hashes": {
     "claim_token_boundary_validation_hash": "407fe6ad291a68591415cbe7987569b030dbfe4e5ad2cfb52d467597c7448ac2",
@@ -78,26 +78,6 @@
     "validation_receipt_hash": "c8205a3ff70fc516cb333f8edd791b65cf9d102d5632e8f9e106964e00a46d4b",
     "validation_report_hash": "8cd9b17017d01f0e09b4527370add6d6fb8d8b1aa0108a240f21feb7a2b437fb"
   },
-  "blockers": [
-    {
-      "blocker_id": "B04R6-R6-OPENING-001",
-      "category": "r6_opening",
-      "required_next_artifact": "b04_r6_r6_opening_review_validation_plan.json",
-      "status": "OPEN"
-    },
-    {
-      "blocker_id": "B04R6-R6-OPENING-002",
-      "category": "package_promotion",
-      "required_next_artifact": "b04_r6_r6_opening_package_promotion_review_preconditions_prep_only_draft.json",
-      "status": "BLOCKING"
-    },
-    {
-      "blocker_id": "B04R6-R6-OPENING-003",
-      "category": "commercial_claims",
-      "required_next_artifact": "b04_r6_r6_opening_commercial_claim_ceiling_update.json",
-      "status": "BLOCKING"
-    }
-  ],
   "commercial_activation_claim_authorized": false,
   "current_branch": "author/b04-r6-r6-opening-review-packet",
   "current_git_head": "a0fc635c149bc1c410e022a235dfde5268310e01",
@@ -1225,8 +1205,10 @@
   ],
   "recommendation_is_authority": false,
   "recommended_validated_path": "R6_OPENING_AUTHORIZATION_PACKET_NEXT",
+  "review_role": "r6_opening_readiness_review",
+  "review_status": "PASS",
   "runtime_cutover_executed": true,
-  "schema_id": "kt.future_blocker_register.v8",
+  "schema_id": "kt.b04_r6.r6_opening_review.r6_opening_readiness_review.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_R6_OPENING_REVIEW_PACKET_BOUND__R6_OPENING_REVIEW_VALIDATION_NEXT",
   "static_comparator_weakened": false,
