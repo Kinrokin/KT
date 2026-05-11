@@ -36,9 +36,9 @@
     "route_distribution_threshold_validation_hash": "314b72f17ae5154730fc84713f8a5b78e250f4a54ff834ab2c2a346d4bd36ae4",
     "runtime_receipt_schema_validation_hash": "8498e7b1d4409fd4f06dd2036e35d34e412ec4397864d065c63b9626716dcbd2",
     "scope_validation_hash": "ebefeaa3d61f021dca2d709be8e917aaaf1ef8cd1a89da7f64ac713033764ddd",
-    "source_future_blocker_register_hash": "122907f6d327e32501fc95d28b432187c1de55062d3aca6562dafa615032f786",
-    "source_next_lawful_move_hash": "f1a419c5203aa3f213a7b75080ecf9036d8a4b6a2a3676cb3d52fa612179002f",
-    "source_pipeline_board_hash": "aa46610be842f582021236dfceb76e6ec77b28580d35fb65d032bf90d9b88734",
+    "source_future_blocker_register_hash": "cfc3a1a3422af2040686fdf04743cbe5e6830000f82e07da14de901e7fbd6955",
+    "source_next_lawful_move_hash": "7f88db1b063b36bdccc2d779ad9f546b495eab77b43ca98fb8ad276df20f921f",
+    "source_pipeline_board_hash": "1b88ac54f381ca1686dbec3f4317b6c05c8d1db87328abf575f876dca687e113",
     "static_fallback_validation_hash": "6338499e24a29633d3f05f65c81c3fd14c6de033ca820d8d78dca274c15b6d1a",
     "validation_contract_hash": "c5734a92f616cda590eb74c40837f53804cdbfe81a421390a6b582812384c1fc",
     "validation_receipt_hash": "6c4508e28a1148dfcf9cd0327efd7b72bcc01b668b7c31b99b65bcf50893051c",
@@ -46,9 +46,9 @@
   },
   "commercial_activation_claim_authorized": false,
   "control_status": "DEFINED_FOR_VALIDATION",
-  "current_branch": "author/b04-r6-r6-opening-execution-packet",
-  "current_git_head": "40785593737bfd9f47973fc02a767faa9da72ca9",
-  "current_main_head": "40785593737bfd9f47973fc02a767faa9da72ca9",
+  "current_branch": "replay/b04-r6-r6-opening-execution-packet-main-replay",
+  "current_git_head": "d648d506f19aa42f94e3e06ba18603f8cdafabd4",
+  "current_main_head": "d648d506f19aa42f94e3e06ba18603f8cdafabd4",
   "does_not_execute_r6_opening": true,
   "does_not_open_r6": true,
   "forbidden_actions": [
@@ -68,7 +68,7 @@
     "R6 opening executed.",
     "Commercial activation authorized."
   ],
-  "generated_utc": "2026-05-11T15:18:28Z",
+  "generated_utc": "2026-05-11T15:33:08Z",
   "global_runtime_surface_authorized": false,
   "input_bindings": [
     {
@@ -223,27 +223,27 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "40785593737bfd9f47973fc02a767faa9da72ca9",
+      "git_commit": "d648d506f19aa42f94e3e06ba18603f8cdafabd4",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_future_blocker_register.json",
       "role": "source_future_blocker_register",
-      "sha256": "122907f6d327e32501fc95d28b432187c1de55062d3aca6562dafa615032f786"
+      "sha256": "cfc3a1a3422af2040686fdf04743cbe5e6830000f82e07da14de901e7fbd6955"
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "40785593737bfd9f47973fc02a767faa9da72ca9",
+      "git_commit": "d648d506f19aa42f94e3e06ba18603f8cdafabd4",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "source_next_lawful_move",
-      "sha256": "f1a419c5203aa3f213a7b75080ecf9036d8a4b6a2a3676cb3d52fa612179002f"
+      "sha256": "7f88db1b063b36bdccc2d779ad9f546b495eab77b43ca98fb8ad276df20f921f"
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "40785593737bfd9f47973fc02a767faa9da72ca9",
+      "git_commit": "d648d506f19aa42f94e3e06ba18603f8cdafabd4",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_pipeline_board.json",
       "role": "source_pipeline_board",
-      "sha256": "aa46610be842f582021236dfceb76e6ec77b28580d35fb65d032bf90d9b88734"
+      "sha256": "1b88ac54f381ca1686dbec3f4317b6c05c8d1db87328abf575f876dca687e113"
     },
     {
       "binding_kind": "file_sha256_at_r6_opening_execution_packet_authoring",
