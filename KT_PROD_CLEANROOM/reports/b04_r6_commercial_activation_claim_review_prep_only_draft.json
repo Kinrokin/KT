@@ -39,7 +39,7 @@
     "rollback_continuation_validation_hash": "95fa188043679f38e17af1e0e33450b405d72c992dc641cf77c7aec6423437eb",
     "rollback_review_validation_hash": "b91b4043afe5d55af86ea0abfc57282247a12938b18f1bc4a6a2b80684d1007c",
     "route_distribution_review_validation_hash": "447d27fb9a7d88998aa005c9495000417526cc4496e9be78881c3f13ca92b3c9",
-    "source_campaign_board_hash": "bac1730ffa1a27862084eba0a9249e797b1084597af644f287faad78eeed895d",
+    "source_campaign_board_hash": "a59a569080f898c5846c82b45b966ed68e2aa9a83745d1dad774f218239ee622",
     "source_commercial_claim_boundary_review_hash": "eb39a3aa754b2d3a298c754d49c1739e0c8bbfcf06795f3bbe37c67fe020f48e",
     "source_commercial_claim_ceiling_update_hash": "62e37c730b4a2a7a88572144c371c05e0d11c09fd19dd0a0c9dc203cb4f0681c",
     "source_decision_matrix_hash": "08752cec19b288cea863d0a985b38b41c2ecbc5b8456ee7f6be02c1ffb17059a",
@@ -50,11 +50,11 @@
     "source_external_audit_delta_readiness_hash": "b3c36e9e4c785f513c15ba2f3ffe994a8acc9064158a9dec996019fdf7bf42a3",
     "source_external_verifier_review_hash": "79301910e64464bf1ebb0073da97b71643357b47571664d381a0a78c5709bd73",
     "source_fallback_behavior_review_hash": "6ffee0970d02c3270f4eabf7cf060c7b9a3446ad8c3dc25bd5bd65dfac858538",
-    "source_future_blocker_register_hash": "779f10b26e8fd9726119931d8664bd80cd0e3f08df344addeb3ce60f3fee5c9d",
+    "source_future_blocker_register_hash": "2f72cf3e6546e6059c135f59b49793fa9d0a5c58478bb152f307ed977c7a6aac",
     "source_incident_freeze_review_hash": "2cf53e34e27cfa101c9a686d6da40cf7a339def2867b894dcee7b8b02488192a",
     "source_kill_switch_review_hash": "78ce27ae2389beecaa8c636b60910adf558c2e3e7bdbf7064a9ed6c1f5ef020a",
     "source_limited_continuation_packet_prep_only_draft_hash": "7ece97790f2daa7558922faee102599b70bf5da93508e7942ec8e888b6ef269e",
-    "source_next_lawful_move_hash": "d76616c3f7923098657df6568c6d741d89831134600bb11e5a039377f1bf4763",
+    "source_next_lawful_move_hash": "634b0121b72599d97b546dc05bd283ca7af0cc3c571f5e53820e9c8f83764c79",
     "source_no_authorization_drift_receipt_hash": "ecf1690cd7a707811bf9a7716de646d62d45b750d9b6b184e19d63eed9190919",
     "source_operator_override_review_hash": "95c3fc92af3754888f3623bbc74963aac6a3121f2bbe34f022b8ebf3e18ceecb",
     "source_package_promotion_blocker_matrix_hash": "7655c7bbc501286a5abc8304abb30d7c2e6d0e197ba4594317e1097f95b00221",
@@ -62,7 +62,7 @@
     "source_packet_contract_hash": "c80e953d776377452fcddff8b831599b9552270b883ad643135bb357b923ec4e",
     "source_packet_receipt_hash": "152ae9ac44cdaf5b760b325ddeebc15e5bc3f7861438224a32878a7648466382",
     "source_packet_report_hash": "4e65fbbb5d798056d31d2b2842d4361a13571328d455708c4d207e101c807f32",
-    "source_pipeline_board_hash": "f42dfd40be88a46f338c354787ac78040545042c8100166e45b263c8d7bc28c9",
+    "source_pipeline_board_hash": "3176cbac634cc3aa90d17ae022df144fd5a77ffea95b3b9f4e78a62804212e8a",
     "source_public_verifier_readiness_hash": "7e0c8cbcc4967f1097ee68c361423d71114e53186a90db92138b785c7274cd16",
     "source_r6_opening_readiness_matrix_hash": "cd959c37df99cb5807fbfc8fccef7e07f5d65a7ea7b2f24f7b99f54fb0fcf552",
     "source_r6_opening_review_packet_prep_only_draft_hash": "548b824b0afdde6594944c87c125785dc6c536555d16fa3de152216ab990ec29",
@@ -87,9 +87,9 @@
   "cannot_mutate_truth_engine_law": true,
   "cannot_open_r6": true,
   "commercial_activation_claim_authorized": false,
-  "current_branch": "author/b04-r6-r6-opening-review-packet",
-  "current_git_head": "a0fc635c149bc1c410e022a235dfde5268310e01",
-  "current_main_head": "ea3018d74cff36c5df9291ce4c9519685a706ac1",
+  "current_branch": "replay/b04-r6-r6-opening-review-packet-main-replay",
+  "current_git_head": "30e116a884b9da8cb57e3078bffbb3761fccd022",
+  "current_main_head": "30e116a884b9da8cb57e3078bffbb3761fccd022",
   "evidence_inventory": {
     "bound_artifact_count": 70,
     "input_bindings": [
@@ -312,11 +312,11 @@
       },
       {
         "binding_kind": "pre_overwrite_file_sha256_at_r6_opening_review_authoring",
-        "git_object_before_overwrite": "b3a3675bd6ced2f313aff63320b0a483af78bcce",
+        "git_object_before_overwrite": "d8c262b8fbdfce36daaf822375c124568d851334",
         "overwritten_by_r6_opening_review_output": true,
         "path": "KT_PROD_CLEANROOM/reports/kt_e2e_closure_campaign_board.json",
         "role": "source_campaign_board",
-        "sha256": "bac1730ffa1a27862084eba0a9249e797b1084597af644f287faad78eeed895d"
+        "sha256": "a59a569080f898c5846c82b45b966ed68e2aa9a83745d1dad774f218239ee622"
       },
       {
         "binding_kind": "file_sha256_at_r6_opening_review_authoring",
@@ -390,11 +390,11 @@
       },
       {
         "binding_kind": "pre_overwrite_file_sha256_at_r6_opening_review_authoring",
-        "git_object_before_overwrite": "0265c7a139050db510d0e31e145de8b817f28211",
+        "git_object_before_overwrite": "2f9c28b5d0d55203ff62556a5350f46a1cf531f4",
         "overwritten_by_r6_opening_review_output": true,
         "path": "KT_PROD_CLEANROOM/reports/kt_future_blocker_register.json",
         "role": "source_future_blocker_register",
-        "sha256": "779f10b26e8fd9726119931d8664bd80cd0e3f08df344addeb3ce60f3fee5c9d"
+        "sha256": "2f72cf3e6546e6059c135f59b49793fa9d0a5c58478bb152f307ed977c7a6aac"
       },
       {
         "binding_kind": "file_sha256_at_r6_opening_review_authoring",
@@ -419,11 +419,11 @@
       },
       {
         "binding_kind": "pre_overwrite_file_sha256_at_r6_opening_review_authoring",
-        "git_object_before_overwrite": "4a2410ef864091376fb9d572a005999e7c019bc9",
+        "git_object_before_overwrite": "bc0f6acd695422626704c050b0c4afc474ea13d2",
         "overwritten_by_r6_opening_review_output": true,
         "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
         "role": "source_next_lawful_move",
-        "sha256": "d76616c3f7923098657df6568c6d741d89831134600bb11e5a039377f1bf4763"
+        "sha256": "634b0121b72599d97b546dc05bd283ca7af0cc3c571f5e53820e9c8f83764c79"
       },
       {
         "binding_kind": "file_sha256_at_r6_opening_review_authoring",
@@ -476,11 +476,11 @@
       },
       {
         "binding_kind": "pre_overwrite_file_sha256_at_r6_opening_review_authoring",
-        "git_object_before_overwrite": "e5bfdf9082aeb1f540e8df6590ce6e9ab07b6fa3",
+        "git_object_before_overwrite": "de69de5bad150fd5082935f837ec61bccdac1939",
         "overwritten_by_r6_opening_review_output": true,
         "path": "KT_PROD_CLEANROOM/reports/b04_r6_pipeline_board.json",
         "role": "source_pipeline_board",
-        "sha256": "f42dfd40be88a46f338c354787ac78040545042c8100166e45b263c8d7bc28c9"
+        "sha256": "3176cbac634cc3aa90d17ae022df144fd5a77ffea95b3b9f4e78a62804212e8a"
       },
       {
         "binding_kind": "file_sha256_at_r6_opening_review_authoring",
@@ -630,7 +630,7 @@
     "OPENING_REVIEW_TREATED_AS_R6_OPENING",
     "OPENING_REVIEW_TREATED_AS_PACKAGE_PROMOTION"
   ],
-  "generated_utc": "2026-05-11T06:43:21Z",
+  "generated_utc": "2026-05-11T06:51:09Z",
   "global_runtime_surface_authorized": false,
   "input_bindings": [
     {
@@ -852,11 +852,11 @@
     },
     {
       "binding_kind": "pre_overwrite_file_sha256_at_r6_opening_review_authoring",
-      "git_object_before_overwrite": "b3a3675bd6ced2f313aff63320b0a483af78bcce",
+      "git_object_before_overwrite": "d8c262b8fbdfce36daaf822375c124568d851334",
       "overwritten_by_r6_opening_review_output": true,
       "path": "KT_PROD_CLEANROOM/reports/kt_e2e_closure_campaign_board.json",
       "role": "source_campaign_board",
-      "sha256": "bac1730ffa1a27862084eba0a9249e797b1084597af644f287faad78eeed895d"
+      "sha256": "a59a569080f898c5846c82b45b966ed68e2aa9a83745d1dad774f218239ee622"
     },
     {
       "binding_kind": "file_sha256_at_r6_opening_review_authoring",
@@ -930,11 +930,11 @@
     },
     {
       "binding_kind": "pre_overwrite_file_sha256_at_r6_opening_review_authoring",
-      "git_object_before_overwrite": "0265c7a139050db510d0e31e145de8b817f28211",
+      "git_object_before_overwrite": "2f9c28b5d0d55203ff62556a5350f46a1cf531f4",
       "overwritten_by_r6_opening_review_output": true,
       "path": "KT_PROD_CLEANROOM/reports/kt_future_blocker_register.json",
       "role": "source_future_blocker_register",
-      "sha256": "779f10b26e8fd9726119931d8664bd80cd0e3f08df344addeb3ce60f3fee5c9d"
+      "sha256": "2f72cf3e6546e6059c135f59b49793fa9d0a5c58478bb152f307ed977c7a6aac"
     },
     {
       "binding_kind": "file_sha256_at_r6_opening_review_authoring",
@@ -959,11 +959,11 @@
     },
     {
       "binding_kind": "pre_overwrite_file_sha256_at_r6_opening_review_authoring",
-      "git_object_before_overwrite": "4a2410ef864091376fb9d572a005999e7c019bc9",
+      "git_object_before_overwrite": "bc0f6acd695422626704c050b0c4afc474ea13d2",
       "overwritten_by_r6_opening_review_output": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "source_next_lawful_move",
-      "sha256": "d76616c3f7923098657df6568c6d741d89831134600bb11e5a039377f1bf4763"
+      "sha256": "634b0121b72599d97b546dc05bd283ca7af0cc3c571f5e53820e9c8f83764c79"
     },
     {
       "binding_kind": "file_sha256_at_r6_opening_review_authoring",
@@ -1016,11 +1016,11 @@
     },
     {
       "binding_kind": "pre_overwrite_file_sha256_at_r6_opening_review_authoring",
-      "git_object_before_overwrite": "e5bfdf9082aeb1f540e8df6590ce6e9ab07b6fa3",
+      "git_object_before_overwrite": "de69de5bad150fd5082935f837ec61bccdac1939",
       "overwritten_by_r6_opening_review_output": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_pipeline_board.json",
       "role": "source_pipeline_board",
-      "sha256": "f42dfd40be88a46f338c354787ac78040545042c8100166e45b263c8d7bc28c9"
+      "sha256": "3176cbac634cc3aa90d17ae022df144fd5a77ffea95b3b9f4e78a62804212e8a"
     },
     {
       "binding_kind": "file_sha256_at_r6_opening_review_authoring",
