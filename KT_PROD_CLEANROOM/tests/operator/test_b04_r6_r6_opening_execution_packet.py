@@ -52,6 +52,11 @@ def _patch_exec_env(
     monkeypatch.setattr(exec_packet.common, "git_rev_parse", lambda root, ref: refs.get(ref, head))
     monkeypatch.setattr(
         exec_packet,
+        "_git_blob_sha256",
+        lambda root, commit, raw: file_sha256(exec_packet.common.resolve_path(root, raw)),
+    )
+    monkeypatch.setattr(
+        exec_packet,
         "validate_trust_zones",
         lambda *, root: {"schema_id": "trust", "status": "PASS", "failures": [], "checks": [{"status": "PASS"}]},
     )
@@ -215,6 +220,14 @@ def test_input_binding_rows_anchor_to_binding_hashes(outputs: Path) -> None:
         assert contract["binding_hashes"][f"{row['role']}_hash"] == row["sha256"]
 
 
+def test_shared_canonical_outputs_bind_pre_overwrite_git_objects(outputs: Path) -> None:
+    rows = {row["role"]: row for row in _contract(outputs)["input_bindings"]}
+    for role in exec_packet.SHARED_CANONICAL_INPUTS:
+        assert rows[role]["binding_kind"] == "git_object_before_overwrite"
+        assert rows[role]["git_commit"] == EXEC_MAIN_HEAD
+        assert rows[role]["mutable_canonical_path_overwritten_by_this_lane"] is True
+
+
 @pytest.mark.parametrize("role", exec_packet.CONTROL_CONTRACT_ROLES)
 def test_control_contracts_are_defined_for_validation_only(outputs: Path, role: str) -> None:
     payload = _payload(outputs, role)
@@ -261,6 +274,14 @@ def test_receipts_replay_and_interpretation_are_defined(outputs: Path) -> None:
     assert _payload(outputs, "replay_manifest")["replay_manifest_required"] is True
     assert _payload(outputs, "external_verifier_requirements")["external_verifier_required"] is True
     assert _payload(outputs, "result_interpretation_contract")["opening_result_does_not_promote_package"] is True
+
+
+def test_expected_artifact_manifest_includes_future_execution_contract(outputs: Path) -> None:
+    artifacts = _payload(outputs, "expected_artifact_manifest")["expected_artifacts"]
+    assert "b04_r6_r6_opening_execution_contract.json" in artifacts
+    assert "b04_r6_r6_opening_execution_receipt.json" in artifacts
+    assert "b04_r6_r6_opening_result.json" in artifacts
+    assert "b04_r6_r6_opening_report.md" in artifacts
 
 
 def test_commercial_claim_boundary_blocks_activation_claims(outputs: Path) -> None:

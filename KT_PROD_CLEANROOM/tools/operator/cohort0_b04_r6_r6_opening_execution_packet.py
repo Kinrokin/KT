@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import re
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional, Sequence
 
@@ -188,6 +190,11 @@ PREP_ONLY_OUTPUT_ROLES = (
     "pipeline_board",
     "future_blocker_register",
 )
+SHARED_CANONICAL_INPUTS = {
+    "source_pipeline_board": "KT_PROD_CLEANROOM/reports/b04_r6_pipeline_board.json",
+    "source_future_blocker_register": "KT_PROD_CLEANROOM/reports/b04_r6_future_blocker_register.json",
+    "source_next_lawful_move": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
+}
 
 OUTPUTS = {
     "packet_contract": "b04_r6_r6_opening_execution_packet_contract.json",
@@ -320,6 +327,15 @@ def _read_text(root: Path, raw: str, *, label: str) -> str:
     return common.read_text_required(root, raw, label=label)
 
 
+def _git_blob_sha256(root: Path, commit: str, raw: str) -> str:
+    blob_ref = f"{commit}:{raw.replace(chr(92), '/')}"
+    try:
+        result = subprocess.run(["git", "show", blob_ref], cwd=root, capture_output=True, check=True)
+    except subprocess.CalledProcessError as exc:
+        _fail("RC_B04R6_R6_OPENING_EXEC_PACKET_INPUT_BINDINGS_EMPTY", f"missing git blob {blob_ref}: {exc}")
+    return hashlib.sha256(result.stdout).hexdigest()
+
+
 def _ensure_authority_closed(payload: Dict[str, Any], *, label: str) -> None:
     for key, value in _walk(payload):
         if key in AUTHORITY_DRIFT_KEYS and value is not False:
@@ -396,17 +412,29 @@ def _validate_previous(payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str
         _ensure_text_authority_closed(text, label=role)
 
 
-def _input_bindings(root: Path) -> list[Dict[str, str]]:
-    rows = [
-        {
-            "role": role,
-            "path": raw,
-            "sha256": file_sha256(root / raw),
-            "binding_kind": "file_sha256_at_r6_opening_execution_packet_authoring",
-        }
-        for role, raw in {**VALIDATION_JSON_INPUTS, **VALIDATION_TEXT_INPUTS}.items()
-    ]
-    return sorted(rows, key=lambda row: row["role"])
+def _input_bindings(root: Path, *, current_main_head: str) -> list[Dict[str, Any]]:
+    rows: list[Dict[str, Any]] = []
+    for role, raw in sorted({**VALIDATION_JSON_INPUTS, **VALIDATION_TEXT_INPUTS}.items()):
+        rows.append(
+            {
+                "role": role,
+                "path": raw,
+                "sha256": file_sha256(root / raw),
+                "binding_kind": "file_sha256_at_r6_opening_execution_packet_authoring",
+            }
+        )
+    for role, raw in sorted(SHARED_CANONICAL_INPUTS.items()):
+        rows.append(
+            {
+                "role": role,
+                "path": raw,
+                "sha256": _git_blob_sha256(root, current_main_head, raw),
+                "binding_kind": "git_object_before_overwrite",
+                "git_commit": current_main_head,
+                "mutable_canonical_path_overwritten_by_this_lane": True,
+            }
+        )
+    return sorted(rows, key=lambda row: str(row["role"]))
 
 
 def _base(
@@ -415,7 +443,7 @@ def _base(
     head: str,
     current_main_head: str,
     branch: str,
-    input_bindings: list[Dict[str, str]],
+    input_bindings: list[Dict[str, Any]],
 ) -> Dict[str, Any]:
     binding_hashes = {f"{row['role']}_hash": row["sha256"] for row in input_bindings}
     return {
@@ -567,6 +595,7 @@ def _outputs(base: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
             base,
             "expected_artifact_manifest",
             expected_artifacts=[
+                "b04_r6_r6_opening_execution_contract.json",
                 "b04_r6_r6_opening_execution_receipt.json",
                 "b04_r6_r6_opening_result.json",
                 "b04_r6_r6_opening_report.md",
@@ -700,7 +729,7 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
         head=packet_head,
         current_main_head=current_main_head,
         branch=branch,
-        input_bindings=_input_bindings(root),
+        input_bindings=_input_bindings(root, current_main_head=current_main_head),
     )
     output_payloads = _outputs(base)
     contract = output_payloads["packet_contract"]
