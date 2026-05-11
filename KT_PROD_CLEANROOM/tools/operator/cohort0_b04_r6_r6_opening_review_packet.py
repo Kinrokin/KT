@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional
 
@@ -383,21 +384,43 @@ def _validate_inputs(root: Path, payloads: Dict[str, Dict[str, Any]], texts: Dic
         file_sha256(common.resolve_path(root, raw))
 
 
-def _input_bindings(root: Path) -> list[Dict[str, str]]:
-    return [
-        {
+def _input_bindings(root: Path) -> list[Dict[str, Any]]:
+    output_paths = {f"KT_PROD_CLEANROOM/reports/{filename}" for filename in OUTPUTS.values()}
+    rows: list[Dict[str, Any]] = []
+    for role, raw in sorted(
+        {**PRIOR_JSON_INPUTS, **PRIOR_TEXT_INPUTS, **SOURCE_REVIEW_JSON_INPUTS, **SOURCE_REVIEW_TEXT_INPUTS}.items()
+    ):
+        overwritten = raw in output_paths
+        row = {
             "role": role,
             "path": raw,
             "sha256": file_sha256(common.resolve_path(root, raw)),
-            "binding_kind": "file_sha256_at_r6_opening_review_authoring",
+            "binding_kind": (
+                "pre_overwrite_file_sha256_at_r6_opening_review_authoring"
+                if overwritten
+                else "file_sha256_at_r6_opening_review_authoring"
+            ),
+            "overwritten_by_r6_opening_review_output": overwritten,
         }
-        for role, raw in sorted(
-            {**PRIOR_JSON_INPUTS, **PRIOR_TEXT_INPUTS, **SOURCE_REVIEW_JSON_INPUTS, **SOURCE_REVIEW_TEXT_INPUTS}.items()
-        )
-    ]
+        if overwritten:
+            row["git_object_before_overwrite"] = _git_object_hash(root, raw)
+        rows.append(row)
+    return rows
 
 
-def _binding_hashes(input_bindings: list[Dict[str, str]]) -> Dict[str, str]:
+def _git_object_hash(root: Path, raw: str) -> str:
+    result = subprocess.run(
+        ["git", "hash-object", "--", raw],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        check=True,
+    )
+    return result.stdout.strip()
+
+
+def _binding_hashes(input_bindings: list[Dict[str, Any]]) -> Dict[str, str]:
     return {f"{row['role']}_hash": row["sha256"] for row in input_bindings}
 
 
@@ -471,7 +494,7 @@ def _decision_matrix(scorecard: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def _inventory(input_bindings: list[Dict[str, str]], payloads: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
+def _inventory(input_bindings: list[Dict[str, Any]], payloads: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
     return {
         "inventory_id": "B04_R6_R6_OPENING_EVIDENCE_INVENTORY_V1",
         "previous_validated_outcome": EXPECTED_PREVIOUS_OUTCOME,
@@ -511,7 +534,7 @@ def _base(
     branch: str,
     head: str,
     current_main_head: str,
-    input_bindings: list[Dict[str, str]],
+    input_bindings: list[Dict[str, Any]],
     trust_zone_validation: Dict[str, Any],
     inventory: Dict[str, Any],
     scorecard: Dict[str, Any],

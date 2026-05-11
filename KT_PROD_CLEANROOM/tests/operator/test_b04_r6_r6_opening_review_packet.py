@@ -124,6 +124,14 @@ def test_r6_opening_review_binds_post_cutover_validation(outputs: Path) -> None:
     assert contract["binding_hashes"]["source_evidence_scorecard_hash"]
 
 
+def test_overwritten_inputs_are_marked_as_pre_overwrite_bindings(outputs: Path) -> None:
+    rows = {row["role"]: row for row in _contract(outputs)["input_bindings"]}
+    for role in ("source_pipeline_board", "source_campaign_board", "source_future_blocker_register", "source_next_lawful_move"):
+        assert rows[role]["overwritten_by_r6_opening_review_output"] is True
+        assert rows[role]["binding_kind"] == "pre_overwrite_file_sha256_at_r6_opening_review_authoring"
+        assert rows[role]["git_object_before_overwrite"]
+
+
 def test_r6_opening_review_selects_validation_next(outputs: Path) -> None:
     assert _contract(outputs)["selected_outcome"] == review.SELECTED_OUTCOME
     assert _contract(outputs)["next_lawful_move"] == review.NEXT_LAWFUL_MOVE
