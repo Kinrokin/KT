@@ -1,522 +1,364 @@
 {
-  "activation_cutover_executed": false,
   "allowed_outcomes": [
-    "B04_R6_RUNTIME_CUTOVER_PASSED__POST_CUTOVER_EVIDENCE_REVIEW_PACKET_NEXT",
-    "B04_R6_RUNTIME_CUTOVER_FAILED__ROLLBACK_OR_REPAIR_NEXT",
-    "B04_R6_RUNTIME_CUTOVER_INVALIDATED__FORENSIC_CUTOVER_REVIEW_NEXT",
-    "B04_R6_RUNTIME_CUTOVER_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS"
+    "B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_PACKET_BOUND__POST_CUTOVER_EVIDENCE_REVIEW_VALIDATION_NEXT",
+    "B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
+    "B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_PACKET_INVALID__FORENSIC_CUTOVER_REVIEW_NEXT"
   ],
   "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
-  "authoritative_lane": "B04_R6_RUNTIME_CUTOVER",
+  "authoritative_lane": "B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_PACKET",
   "binding_hashes": {
-    "packet_abstention_fallback_contract_hash": "2cfdd1d3828139e6a2abf268d674c942fc72e790eecc4d3f6489df93bcfb2a52",
-    "packet_allowed_case_class_contract_hash": "9c56330f54983170d065e834ec1cd9db0482f5ee4731f005f03200061164d19e",
-    "packet_commercial_claim_boundary_hash": "3ec5b6f4eef536c82c5e0be15e108f9bcf24b1b6dfbb6a2c521d11253a391e75",
-    "packet_drift_thresholds_hash": "f2738cc293d2f8c226c6c06081381d2e569f39b07014dd1e551436feebf7aa3a",
-    "packet_excluded_case_class_contract_hash": "ab42fd0756325e35c6e088952cdc6d9ddbab5ee62f12ad9fc002d0b4ae499beb",
-    "packet_expected_artifact_manifest_hash": "2e0ab183a866c933745c1e421f2b5b97f110dc8829666b068cf42ff86c6e6299",
-    "packet_external_verifier_requirements_hash": "45218b8cc3b536c7f1e33b6866189896187a58897a81aecb4bb37296730f3ffd",
-    "packet_future_blocker_register_hash": "122907f6d327e32501fc95d28b432187c1de55062d3aca6562dafa615032f786",
-    "packet_incident_freeze_contract_hash": "c5654feec6b74134226baa3698d6e9595967748f1ed53c0fe19a8e44e8978321",
-    "packet_kill_switch_contract_hash": "bd1a541160b5974ffc2fe2e16430aad200b173045d6fecfbe23f4b688134106a",
-    "packet_mode_contract_hash": "35368b74302df8be92dcf010ddb01755efbfdd39f938f7154092db940df67d8f",
-    "packet_no_authorization_drift_receipt_hash": "dedb1c46d7cff3df596bb8959d41f57b067ad94be5b7bd063cd066abc388cfc2",
-    "packet_null_route_preservation_contract_hash": "1253e99e9a7b61da58705e4785c24a4cc673687ce1ae92a55ef562e661b26cdd",
-    "packet_operator_override_contract_hash": "7bbe0c129719be7647dbc67c5a4b2a6a0f379eff144c31c5542d2762b917d29e",
-    "packet_package_promotion_prohibition_receipt_hash": "10ee1b674ec735c80500fdd26b393835919fa6fb865e00896636d026b8402ddc",
-    "packet_packet_contract_hash": "92183d641406450be5f781a4c1a14adfd9e51c00e5906abefb085f0296b596fd",
-    "packet_packet_receipt_hash": "b3020728b99f19225e85f6d0a04d17d6782681bff969faf5f2039982255357eb",
-    "packet_packet_report_hash": "c314445ff93e5fd33708230158da2fe333dab4cc716255eccbbf29be6091c31f",
-    "packet_replay_manifest_hash": "e7aabc4aa388f469816b21c75d57be94694e9f7263064eb70c882b74dd4e64a2",
-    "packet_result_interpretation_contract_hash": "525c3718ff1a1cd4daf1a01ef86a0a0559eaec1c396acb8f568b1e6c76a7065d",
-    "packet_rollback_contract_hash": "2e5805be7ee166a05b092e7f5915388678dcc25b14007970775eeffff2c335d4",
-    "packet_route_distribution_thresholds_hash": "f5433cfbe079c444b48c5d3214660f3828dfa66bdfd78406060d4734e8e80fbe",
-    "packet_runtime_cutover_run_result_schema_prep_only_hash": "c1107ac9c4fc8d1b90e15e8421dd127bad34aa225cc7b9bbdf763eb216821854",
-    "packet_runtime_receipt_schema_hash": "8045cfc7cdb7594760268f7b7d7608b8807ed4ba269217a1e767e3b9fe798dae",
-    "packet_scope_manifest_hash": "0fffbaf78fc98d74cf06fd3b9323114a53681b402efba7cb8cdc98eaf02aefbe",
-    "packet_static_fallback_contract_hash": "6e5ab6b44a2a66ba6d814df69385548af8819a136f43ad36c1b9b3a7f20b78d1",
-    "packet_traffic_limit_contract_hash": "11214f555fa11383a251eecb8768562e0966131663073d3eb26d5f27e66caeba",
-    "packet_validation_plan_hash": "debeb49e4c0a59a528705e53f98a29309c524ce54dad7762fed816e855aa6f9a",
-    "packet_validation_reason_codes_hash": "efb932961e7a475932ee41e81d201d4adc84ff725e9fe01af7977fd07608360b",
-    "runtime_cutover_authorization_validation_hash": "07ef030ca1fd1bd54c2f3ea1e07f005cb1fbf5e5734eeedf17d255abf55c45e0",
-    "runtime_cutover_execution_packet_validation_hash": "da44430a01b7b3c1bc4a1aa4d8234c355c6ad5b68db45709cdf10e9cc00d9726",
-    "validated_runtime_cutover_execution_packet_hash": "92183d641406450be5f781a4c1a14adfd9e51c00e5906abefb085f0296b596fd",
-    "validated_runtime_cutover_execution_packet_receipt_hash": "b3020728b99f19225e85f6d0a04d17d6782681bff969faf5f2039982255357eb",
-    "validation_abstention_fallback_validation_hash": "38b1ba006f2db3442cb86c96ff8be7dd1856180b0bccfd2d26a0d1d07a9e6ee6",
-    "validation_allowed_case_class_validation_hash": "09bdc99227d384c8004b1ffbcf635712fdb87b58e4f9dec7848a3e15daa9e2b5",
-    "validation_commercial_claim_boundary_validation_hash": "f1725bf3bad42aed52cf57c419a3df23cb458caa2543da86ea69df8cd1040d8f",
-    "validation_drift_threshold_validation_hash": "eaabe81a89fb2df09cd99700bf230ecf207fd355fb9744c376cd916b977c2786",
-    "validation_excluded_case_class_validation_hash": "6d1605981d2fc9582ef6e7b68e7ecb1c34f78cb1b9978f51faebac1aaf0d4e48",
-    "validation_expected_artifact_manifest_validation_hash": "53377d9ec358a7aa6d8b7048eb2cd9560e03af30a6680c5c94ef16517049e79e",
-    "validation_external_verifier_validation_hash": "eedd5c56a756a0336a69daaff24ae7ee70ae122652737b93d66967b2b25a64e3",
-    "validation_incident_freeze_validation_hash": "8def2fd5339760b2980670e43e852bd764c5d43548e82de2b210f36b4be88713",
-    "validation_kill_switch_validation_hash": "cdc48dc2b0368971a5a8407be1322401f1b0e1c82fd2e9701cbcbfb288c3b6e7",
-    "validation_mode_validation_hash": "d90a16dbb40c09e8b047b6465e56d5eed7cb0a1e873180b23cd70ca33e59bdcb",
-    "validation_next_lawful_move_hash": "ae5ac36cdbfa486b234540ca7f155a1333956c5440fdd6a3d52b71c8578f526e",
-    "validation_no_authorization_drift_validation_hash": "dd9a2dd48fc7316225def1247822a0d229785bd0b4c6e51b0bf04451e887b54f",
-    "validation_null_route_preservation_validation_hash": "66cd0812d672146669bc1b0c2631900cabdbe1823dfd356eac9c549d6059ce2a",
-    "validation_operator_override_validation_hash": "0fb38828d2ff1fff1f41e59112bfb82f8098abd74ede357d5417211054fefdf1",
-    "validation_package_promotion_prohibition_validation_hash": "bbf72c90d21e4a2f9994ea589d6cf9f07e82ffcf053b12c94d96fa194d7e22b5",
-    "validation_packet_binding_validation_hash": "1d5d116605590ee882c1b44f8eb1c475139b4c0a05289448ac2efb5f79ba2b40",
-    "validation_post_cutover_evidence_review_packet_prep_only_draft_hash": "fbe2673002c84011e62fc4b304c6d317ae46d3802bc5525fa7d93e811725fe24",
-    "validation_prep_only_boundary_validation_hash": "75aa1ec458321228c52d620f3a38b7c0ffb4ddd4244b503df99c0ab9e54a63a6",
-    "validation_replay_manifest_validation_hash": "bf8747ae91cd9ba3b89bbb73177a97896de8dc9a11841519992909ea3433866a",
-    "validation_result_interpretation_validation_hash": "873c02b62f8b05e986358b476805c3364f0eab570a39e0a5303d34b9626d85a3",
-    "validation_rollback_freeze_incident_path_prep_only_hash": "95d834ccd6ac063e1fde08051f3ce5f709a68b459393324e5bf75c3bed1212fe",
-    "validation_rollback_validation_hash": "dd64be4475d2c712a09c7f79c655c8ce34d694b083c7cc6dc9f8b7c41334a8be",
-    "validation_route_distribution_threshold_validation_hash": "439307aff8129ad65bd779571e063bfa664dc18f3981bb17d0c2781f62b3e337",
-    "validation_runtime_cutover_run_prep_only_draft_hash": "3b5e7dbb0238d9cf7338673f2d7bf52a2b1df56d2b0704251e7c23dbc1311f12",
-    "validation_runtime_receipt_schema_validation_hash": "3c223387d17d1a2f80c9469626135d12961a499062f39aedde082832e629072c",
-    "validation_scope_validation_hash": "89c2ffe72a3ce32e5baaa7f93f65933f8f73730c64f07cde2d03b19498273064",
-    "validation_static_fallback_validation_hash": "b489e2c0e2cecae3fab2bf8e718944b03fc913d06386150525a2e6d7249bca3a",
-    "validation_traffic_limit_validation_hash": "d443d0ad51e850ab74537f4e0bf73b4c7a71757193ceebe90bf40e40ddd6eb3a",
-    "validation_validation_contract_hash": "da44430a01b7b3c1bc4a1aa4d8234c355c6ad5b68db45709cdf10e9cc00d9726",
-    "validation_validation_receipt_hash": "a3542594287a9f41a3296ed3ea2f58cad1a2b575c86a76d7017191aeaf2977b8",
-    "validation_validation_report_hash": "e371eb9c088e3c94683b4ba94eea8a378a605476a5a26d35fd604458e72b818d"
+    "runtime_abstention_fallback_receipt_hash": "45133fcdd4c1c1e895197c3cf60dfab2d3b00050fe6ce08bc6303b7f74575abe",
+    "runtime_campaign_board_hash": "8eb22715516d9a4402ca347dcf6bc442cb004648a08ad3db4ba79d590426c187",
+    "runtime_case_manifest_hash": "7b61032c4f0f1269c528f21d24f6a56c162fe5dc5986cfbdef5172c8ba5d2b77",
+    "runtime_commercial_claim_boundary_receipt_hash": "992d81c1b47aaf4f500b5dc663f58c020a129592937ed9f2262cffa70afb301f",
+    "runtime_commercial_claim_boundary_update_prep_only_hash": "603b330806a49fa0e3a32d8d01e2ac3b1f962ed6436eadfc9b010aaea7e4a6d1",
+    "runtime_cutover_failure_closeout_prep_only_draft_hash": "741133673715fd88fa7e2729b71b3f9d8bc45547d6aeaf264dbe4e0ac568f2b8",
+    "runtime_drift_monitoring_receipt_hash": "d63f8bec10d8e65cfa4cd3319bb782c58d3d0b8e526e67de824298f05784f116",
+    "runtime_execution_contract_hash": "297f9286871d5f7b6646fa1a664ebc68de88b30a90543aedae1c45ce42b6c582",
+    "runtime_execution_receipt_hash": "f7ba005eb555e1410d51d66970488c6bb925d33c87a235448675d7bf2790d948",
+    "runtime_external_audit_delta_manifest_prep_only_hash": "e553f8d412a8a74f972b813e210708e7dde36bf5933b2be03e94c10ae5b969c9",
+    "runtime_external_verifier_readiness_receipt_hash": "64802d695453ae1bb5da00bf8ddee5de2a8c16175e7246e59d8d8549b7f6fbd4",
+    "runtime_fallback_behavior_receipt_hash": "d223d7ae125fb21ed4dda775cb739237eb6a1dcc51e94f2eadb6e6a196b0a57b",
+    "runtime_forensic_cutover_review_prep_only_draft_hash": "51655758441f7fb1854638a6efc861fcae6831ec1fe1c5d742adb0e10d618601",
+    "runtime_future_blocker_register_hash": "4ad80baf160173360ae8d65cda96c07dd0061ce7ecdecb19d9b2e708a235ddcd",
+    "runtime_incident_freeze_receipt_hash": "3da4c828caa2c49a3fb3be5f46c42b75eed605b731d6f8b5ff9703202bed174f",
+    "runtime_kill_switch_receipt_hash": "e858f9480ab9a88d44b295f555eb3970c7295adf765afdb263ec88dd977de68f",
+    "runtime_next_lawful_move_hash": "46f4ebf80e7c224cbe6c4d6ede1d7c66e95b2da8cd7fde7c95a1da033352699c",
+    "runtime_no_authorization_drift_receipt_hash": "3b6bb4401eb4b9d8ee72e439ce479780a468686bf35494b568ea2561537efe5f",
+    "runtime_null_route_preservation_receipt_hash": "db8e69219a97aceeaf38f47c4b91295110721c2bfccc10cdba821efa7a18692e",
+    "runtime_operator_override_receipt_hash": "82c6b449f8f10852d7e455cb7bb6268ff1289a478d2b299c85dd6f12be89c7a6",
+    "runtime_package_promotion_review_packet_prep_only_draft_hash": "317793e48b9cfe06b973243b55e4d447b98cd9cfd16262a20f2ea10bce618a8e",
+    "runtime_pipeline_board_hash": "86e5497429de06f634eb6cb8267d9bd36d673226cff2ed8fc0e4575545cd3a24",
+    "runtime_post_cutover_evidence_review_packet_prep_only_draft_hash": "0ffef0f1835b045f43b9009df1716a4bb0ad3f55ad3ceb32bc6fb4613fd74e0b",
+    "runtime_public_verifier_delta_requirements_prep_only_hash": "518d9629df036c7cf5ccd980125c3da242c985b5b7724afc48c841e2c3bf414b",
+    "runtime_r6_opening_review_packet_prep_only_draft_hash": "fada5141907f27e93b7ab676c4b5407e0653777789df58dc16738e6134a62c02",
+    "runtime_replay_receipt_hash": "9f5e9d63c43e3a536e7c7f52cfe1ef3a9b914da3fd30405c0e76abe159e483b3",
+    "runtime_report_hash": "2ba1e5c204ea6e141e0650bcdf120a7830c4082d788c7d5457b694903cac1ae9",
+    "runtime_result_hash": "85f34cc57b5e054994d6b5b052aeeeee739cbd6d01d48ae087f24df402182af8",
+    "runtime_rollback_receipt_hash": "8643fc38f6422b87e01510d9b138537e24ef85e25afbaec95b368e3f969c1626",
+    "runtime_route_distribution_receipt_hash": "8c388b8ac485bb059e9d3530851375746bb72c8d674b9689ca4475986d0479af",
+    "runtime_runtime_freeze_packet_prep_only_draft_hash": "4d11604572d74fd777cb2d087d368be51e6446b203ed8325a1a040fcb685885b",
+    "runtime_runtime_rollback_packet_prep_only_draft_hash": "a043712528c101959fd1fb217e8926c05d968655c9bac7b80e0b6a43317c3a75",
+    "runtime_static_fallback_receipt_hash": "7c3de38ee1482a891ddf574803184753c35b7c21de9f7aedaef37d7a45293baf",
+    "runtime_trace_completeness_receipt_hash": "57202f4a55356aebb7e474e0eed1c717032aa0659280ac72a254c67f4694dea4"
   },
-  "case_rows": [
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "ROUTE",
-      "case_class": "validated_r6_routing_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-001",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": false,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-001",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "16b921ce87770e95d04be24889e23f824aadfe9173c532430507ba235870fcc4"
-    },
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "STATIC_HOLD",
-      "case_class": "fallback_preserved_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-002",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": true,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-002",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "1cb4a147cd85a7849f5cee345adeb4d008c82e34afe3e35fd8081748487b0a1f"
-    },
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "ROUTE",
-      "case_class": "operator_observed_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-003",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": false,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-003",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "0307a9825b5f0f5f06be36c6d8a87f7514ac2927dcad08628d4d03ff13830f05"
-    },
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "ABSTAIN",
-      "case_class": "validated_r6_routing_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-004",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": true,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-004",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "fc68dab88ef473e9f20a9c90dceee11fdde25a974cc9b842577851fd03620149"
-    },
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "ROUTE",
-      "case_class": "fallback_preserved_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-005",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": false,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-005",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "78823e75c1f2364e7524dfc7fbf1c72c472faf69d99cdf749d7a071a008c311c"
-    },
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "STATIC_HOLD",
-      "case_class": "operator_observed_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-006",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": true,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-006",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "f7e5d817ad6e5b96f39de7cb6a5baa8f7528204fe94c87f69f9645e6d3f2ed83"
-    },
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "ROUTE",
-      "case_class": "validated_r6_routing_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-007",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": false,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-007",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "57504908906a34c341a963147e55bc7ba42c5b83de1f11257294c0b17ae112f7"
-    },
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "ABSTAIN",
-      "case_class": "fallback_preserved_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-008",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": true,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-008",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "3b98c87981bb2cd441be22c51767c141ec6040f4770876c99649ea60125267e1"
-    },
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "ROUTE",
-      "case_class": "operator_observed_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-009",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": false,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-009",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "4774f4ffd53b5456d1880aa2b5b39e516978888ec704105b1600833dd521ee3c"
-    },
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "STATIC_HOLD",
-      "case_class": "validated_r6_routing_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-010",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": true,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-010",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "a00ef36643318eb577a9bc307e52730d1e3576292c9179b4aff08fe6dacd6a4d"
-    },
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "ROUTE",
-      "case_class": "fallback_preserved_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-011",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": false,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-011",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "21878d75bd471d3d643ca24656f5cfecded1a128a93fc2f3af337711f333c6b1"
-    },
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "ABSTAIN",
-      "case_class": "operator_observed_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-012",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": true,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-012",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "c617a8144814ba6e54f16723f5d88c80e6a45d001cb5a3d7589f520a55eb7f89"
-    },
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "ROUTE",
-      "case_class": "validated_r6_routing_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-013",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": false,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-013",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "7a8304d5ff19d602ebeb3006c596d098a6e2ad7e03988e24cb2b2840abd10a20"
-    },
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "STATIC_HOLD",
-      "case_class": "fallback_preserved_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-014",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": true,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-014",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "52dcf612933e9257cd41d12b5cf55a0bdfcba5ce4790bdd60de8f9ca105d5012"
-    },
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "ROUTE",
-      "case_class": "operator_observed_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-015",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": false,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-015",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "1369a929e33c34671ced099fad19a9424a35ace01f546dd1a6589358ce1a79af"
-    },
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "ABSTAIN",
-      "case_class": "validated_r6_routing_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-016",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": true,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-016",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "0f1b07c2d5adcc0c3af56648281d3bd96e38706dc30f877b09bb69ae165cd829"
-    },
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "ROUTE",
-      "case_class": "fallback_preserved_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-017",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": false,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-017",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "6b259101a472d25781131d311dd2b382ce008fa751411a83d2c482f9c7faf7f1"
-    },
-    {
-      "abstention_fallback_available": true,
-      "activation_cutover_executed": false,
-      "afsh_verdict": "STATIC_HOLD",
-      "case_class": "operator_observed_cases",
-      "case_id": "B04R6-RUNTIME-CUTOVER-018",
-      "commercial_activation_claim_authorized": false,
-      "drift_status": "PASS",
-      "fallback_invoked": true,
-      "incident_freeze_triggered": false,
-      "kill_switch_status": "READY_NOT_INVOKED",
-      "null_route_preserved": true,
-      "operator_observed": true,
-      "operator_override_ready": true,
-      "package_promotion_authorized": false,
-      "r6_open": false,
-      "rollback_status": "READY_NOT_INVOKED",
-      "route_distribution_status": "HEALTHY",
-      "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-      "runtime_receipt_id": "B04R6-RUNTIME-CUTOVER-RR-018",
-      "static_fallback_available": true,
-      "trace_complete": true,
-      "trace_hash": "2f9cb3ea05131ae8c4c00f63ecd0434dcfd9dba4aafc9c3535fd73409e870b0f"
-    }
-  ],
   "commercial_activation_claim_authorized": false,
-  "current_branch": "replay/b04-r6-runtime-cutover-main-replay",
-  "current_git_head": "b501e4e9806be3c71e02f867c9c9649dff83a797",
-  "current_main_head": "19f0537e01e16ac9fe4b754a13c2d391eaf7af8f",
+  "current_branch": "author/b04-r6-post-cutover-evidence-review-packet",
+  "current_git_head": "32102e6b4c95a0958e197d28b19db282a0966ac9",
+  "current_main_head": "c85b9668f46bbb398a52b847b1e0416f4c7bccc1",
   "cutover_result_treated_as_package_promotion": false,
   "cutover_result_treated_as_r6_opening": false,
-  "fired_disqualifiers": [],
+  "decision_matrix": {
+    "blocking_reasons": [
+      "r6_opening_requires_post_cutover_evidence_review_validation",
+      "package_promotion_requires_r6_opening_review_and_external_audit_delta",
+      "commercial_activation_claims_remain_forbidden"
+    ],
+    "commercial_claim_status": "BOUNDARY_ONLY",
+    "decision_matrix_id": "B04_R6_POST_CUTOVER_DECISION_MATRIX_V1",
+    "external_audit_delta_ready": "READY_FOR_PACKET",
+    "limited_continuation_ready": true,
+    "overall_grade": "A_READY_FOR_R6_OPENING_REVIEW",
+    "package_promotion_ready": false,
+    "r6_opening_review_ready": true,
+    "recommendation_is_authority": false,
+    "recommended_next_path": "R6_OPENING_REVIEW_PACKET_NEXT",
+    "rollback_closeout_ready": false,
+    "runtime_cutover_result": "PASSED",
+    "supporting_evidence": [
+      "runtime_cutover_passed",
+      "fallbacks_preserved",
+      "operator_controls_preserved",
+      "drift_and_incident_receipts_passed",
+      "replay_and_external_verifier_receipts_passed"
+    ]
+  },
+  "evidence_inventory": {
+    "bound_artifact_count": 34,
+    "input_bindings": [
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_abstention_fallback_receipt.json",
+        "role": "runtime_abstention_fallback_receipt",
+        "sha256": "45133fcdd4c1c1e895197c3cf60dfab2d3b00050fe6ce08bc6303b7f74575abe"
+      },
+      {
+        "binding_kind": "pre_overwrite_file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": true,
+        "path": "KT_PROD_CLEANROOM/reports/kt_e2e_closure_campaign_board.json",
+        "role": "runtime_campaign_board",
+        "sha256": "8eb22715516d9a4402ca347dcf6bc442cb004648a08ad3db4ba79d590426c187"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_case_manifest.json",
+        "role": "runtime_case_manifest",
+        "sha256": "7b61032c4f0f1269c528f21d24f6a56c162fe5dc5986cfbdef5172c8ba5d2b77"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_commercial_claim_boundary_receipt.json",
+        "role": "runtime_commercial_claim_boundary_receipt",
+        "sha256": "992d81c1b47aaf4f500b5dc663f58c020a129592937ed9f2262cffa70afb301f"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_commercial_claim_boundary_update_prep_only.json",
+        "role": "runtime_commercial_claim_boundary_update_prep_only",
+        "sha256": "603b330806a49fa0e3a32d8d01e2ac3b1f962ed6436eadfc9b010aaea7e4a6d1"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_cutover_failure_closeout_prep_only_draft.json",
+        "role": "runtime_cutover_failure_closeout_prep_only_draft",
+        "sha256": "741133673715fd88fa7e2729b71b3f9d8bc45547d6aeaf264dbe4e0ac568f2b8"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_drift_monitoring_receipt.json",
+        "role": "runtime_drift_monitoring_receipt",
+        "sha256": "d63f8bec10d8e65cfa4cd3319bb782c58d3d0b8e526e67de824298f05784f116"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_contract.json",
+        "role": "runtime_execution_contract",
+        "sha256": "297f9286871d5f7b6646fa1a664ebc68de88b30a90543aedae1c45ce42b6c582"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_receipt.json",
+        "role": "runtime_execution_receipt",
+        "sha256": "f7ba005eb555e1410d51d66970488c6bb925d33c87a235448675d7bf2790d948"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_external_audit_delta_manifest_prep_only.json",
+        "role": "runtime_external_audit_delta_manifest_prep_only",
+        "sha256": "e553f8d412a8a74f972b813e210708e7dde36bf5933b2be03e94c10ae5b969c9"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_external_verifier_readiness_receipt.json",
+        "role": "runtime_external_verifier_readiness_receipt",
+        "sha256": "64802d695453ae1bb5da00bf8ddee5de2a8c16175e7246e59d8d8549b7f6fbd4"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_fallback_behavior_receipt.json",
+        "role": "runtime_fallback_behavior_receipt",
+        "sha256": "d223d7ae125fb21ed4dda775cb739237eb6a1dcc51e94f2eadb6e6a196b0a57b"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_forensic_cutover_review_prep_only_draft.json",
+        "role": "runtime_forensic_cutover_review_prep_only_draft",
+        "sha256": "51655758441f7fb1854638a6efc861fcae6831ec1fe1c5d742adb0e10d618601"
+      },
+      {
+        "binding_kind": "pre_overwrite_file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": true,
+        "path": "KT_PROD_CLEANROOM/reports/kt_future_blocker_register.json",
+        "role": "runtime_future_blocker_register",
+        "sha256": "4ad80baf160173360ae8d65cda96c07dd0061ce7ecdecb19d9b2e708a235ddcd"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_incident_freeze_receipt.json",
+        "role": "runtime_incident_freeze_receipt",
+        "sha256": "3da4c828caa2c49a3fb3be5f46c42b75eed605b731d6f8b5ff9703202bed174f"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_kill_switch_receipt.json",
+        "role": "runtime_kill_switch_receipt",
+        "sha256": "e858f9480ab9a88d44b295f555eb3970c7295adf765afdb263ec88dd977de68f"
+      },
+      {
+        "binding_kind": "pre_overwrite_file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": true,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
+        "role": "runtime_next_lawful_move",
+        "sha256": "46f4ebf80e7c224cbe6c4d6ede1d7c66e95b2da8cd7fde7c95a1da033352699c"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_no_authorization_drift_receipt.json",
+        "role": "runtime_no_authorization_drift_receipt",
+        "sha256": "3b6bb4401eb4b9d8ee72e439ce479780a468686bf35494b568ea2561537efe5f"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_null_route_preservation_receipt.json",
+        "role": "runtime_null_route_preservation_receipt",
+        "sha256": "db8e69219a97aceeaf38f47c4b91295110721c2bfccc10cdba821efa7a18692e"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_operator_override_receipt.json",
+        "role": "runtime_operator_override_receipt",
+        "sha256": "82c6b449f8f10852d7e455cb7bb6268ff1289a478d2b299c85dd6f12be89c7a6"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_packet_prep_only_draft.json",
+        "role": "runtime_package_promotion_review_packet_prep_only_draft",
+        "sha256": "317793e48b9cfe06b973243b55e4d447b98cd9cfd16262a20f2ea10bce618a8e"
+      },
+      {
+        "binding_kind": "pre_overwrite_file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": true,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_pipeline_board.json",
+        "role": "runtime_pipeline_board",
+        "sha256": "86e5497429de06f634eb6cb8267d9bd36d673226cff2ed8fc0e4575545cd3a24"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_post_cutover_evidence_review_packet_prep_only_draft.json",
+        "role": "runtime_post_cutover_evidence_review_packet_prep_only_draft",
+        "sha256": "0ffef0f1835b045f43b9009df1716a4bb0ad3f55ad3ceb32bc6fb4613fd74e0b"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_public_verifier_delta_requirements_prep_only.json",
+        "role": "runtime_public_verifier_delta_requirements_prep_only",
+        "sha256": "518d9629df036c7cf5ccd980125c3da242c985b5b7724afc48c841e2c3bf414b"
+      },
+      {
+        "binding_kind": "pre_overwrite_file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": true,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_review_packet_prep_only_draft.json",
+        "role": "runtime_r6_opening_review_packet_prep_only_draft",
+        "sha256": "fada5141907f27e93b7ab676c4b5407e0653777789df58dc16738e6134a62c02"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_replay_receipt.json",
+        "role": "runtime_replay_receipt",
+        "sha256": "9f5e9d63c43e3a536e7c7f52cfe1ef3a9b914da3fd30405c0e76abe159e483b3"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_report.md",
+        "role": "runtime_report",
+        "sha256": "2ba1e5c204ea6e141e0650bcdf120a7830c4082d788c7d5457b694903cac1ae9"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_result.json",
+        "role": "runtime_result",
+        "sha256": "85f34cc57b5e054994d6b5b052aeeeee739cbd6d01d48ae087f24df402182af8"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_rollback_receipt.json",
+        "role": "runtime_rollback_receipt",
+        "sha256": "8643fc38f6422b87e01510d9b138537e24ef85e25afbaec95b368e3f969c1626"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_route_distribution_receipt.json",
+        "role": "runtime_route_distribution_receipt",
+        "sha256": "8c388b8ac485bb059e9d3530851375746bb72c8d674b9689ca4475986d0479af"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_freeze_packet_prep_only_draft.json",
+        "role": "runtime_runtime_freeze_packet_prep_only_draft",
+        "sha256": "4d11604572d74fd777cb2d087d368be51e6446b203ed8325a1a040fcb685885b"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_rollback_packet_prep_only_draft.json",
+        "role": "runtime_runtime_rollback_packet_prep_only_draft",
+        "sha256": "a043712528c101959fd1fb217e8926c05d968655c9bac7b80e0b6a43317c3a75"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_static_fallback_receipt.json",
+        "role": "runtime_static_fallback_receipt",
+        "sha256": "7c3de38ee1482a891ddf574803184753c35b7c21de9f7aedaef37d7a45293baf"
+      },
+      {
+        "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+        "overwritten_by_post_cutover_review_output": false,
+        "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_trace_completeness_receipt.json",
+        "role": "runtime_trace_completeness_receipt",
+        "sha256": "57202f4a55356aebb7e474e0eed1c717032aa0659280ac72a254c67f4694dea4"
+      }
+    ],
+    "inventory_id": "B04_R6_POST_CUTOVER_EVIDENCE_INVENTORY_V1",
+    "runtime_cutover_result": "B04_R6_RUNTIME_CUTOVER_PASSED__POST_CUTOVER_EVIDENCE_REVIEW_PACKET_NEXT",
+    "runtime_receipts": [
+      "runtime_abstention_fallback_receipt",
+      "runtime_commercial_claim_boundary_receipt",
+      "runtime_drift_monitoring_receipt",
+      "runtime_execution_receipt",
+      "runtime_external_verifier_readiness_receipt",
+      "runtime_fallback_behavior_receipt",
+      "runtime_incident_freeze_receipt",
+      "runtime_kill_switch_receipt",
+      "runtime_no_authorization_drift_receipt",
+      "runtime_null_route_preservation_receipt",
+      "runtime_operator_override_receipt",
+      "runtime_replay_receipt",
+      "runtime_rollback_receipt",
+      "runtime_route_distribution_receipt",
+      "runtime_static_fallback_receipt",
+      "runtime_trace_completeness_receipt"
+    ]
+  },
+  "evidence_scorecard": {
+    "abstention_fallback_preserved": true,
+    "commercial_claim_boundary_preserved": true,
+    "drift_status": "PASS",
+    "external_verifier_ready": true,
+    "fallback_behavior": "PASS",
+    "incident_freeze_clean": true,
+    "kill_switch_ready": true,
+    "null_route_preserved": true,
+    "operator_override_ready": true,
+    "overall_grade": "A_READY_FOR_R6_OPENING_REVIEW",
+    "package_promotion_ready": false,
+    "r6_opening_review_ready": true,
+    "replay_status": "PASS",
+    "rollback_ready": true,
+    "route_distribution_health": "PASS",
+    "runtime_cutover_result": "PASSED",
+    "sample_limit_respected": true,
+    "scorecard_id": "B04_R6_POST_CUTOVER_EVIDENCE_SCORECARD_V1",
+    "static_fallback_preserved": true,
+    "trace_completeness": "PASS"
+  },
   "forbidden_actions": [
-    "ACTIVATION_CUTOVER_EXECUTED",
     "R6_OPEN",
     "LOBE_ESCALATION_AUTHORIZED",
     "PACKAGE_PROMOTION_AUTHORIZED",
@@ -525,494 +367,299 @@
     "TRUST_ZONE_LAW_MUTATED",
     "METRIC_CONTRACT_MUTATED",
     "STATIC_COMPARATOR_WEAKENED",
-    "GLOBAL_RUNTIME_SURFACE_AUTHORIZED",
     "CUTOVER_RESULT_TREATED_AS_R6_OPENING",
     "CUTOVER_RESULT_TREATED_AS_PACKAGE_PROMOTION"
   ],
-  "generated_utc": "2026-05-10T23:55:49Z",
+  "generated_utc": "2026-05-11T00:09:39Z",
   "global_runtime_surface_authorized": false,
   "input_bindings": [
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_abstention_fallback_contract.json",
-      "role": "packet_abstention_fallback_contract",
-      "sha256": "2cfdd1d3828139e6a2abf268d674c942fc72e790eecc4d3f6489df93bcfb2a52"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_abstention_fallback_receipt.json",
+      "role": "runtime_abstention_fallback_receipt",
+      "sha256": "45133fcdd4c1c1e895197c3cf60dfab2d3b00050fe6ce08bc6303b7f74575abe"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_allowed_case_class_contract.json",
-      "role": "packet_allowed_case_class_contract",
-      "sha256": "9c56330f54983170d065e834ec1cd9db0482f5ee4731f005f03200061164d19e"
+      "binding_kind": "pre_overwrite_file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": true,
+      "path": "KT_PROD_CLEANROOM/reports/kt_e2e_closure_campaign_board.json",
+      "role": "runtime_campaign_board",
+      "sha256": "8eb22715516d9a4402ca347dcf6bc442cb004648a08ad3db4ba79d590426c187"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_commercial_claim_boundary.json",
-      "role": "packet_commercial_claim_boundary",
-      "sha256": "3ec5b6f4eef536c82c5e0be15e108f9bcf24b1b6dfbb6a2c521d11253a391e75"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_case_manifest.json",
+      "role": "runtime_case_manifest",
+      "sha256": "7b61032c4f0f1269c528f21d24f6a56c162fe5dc5986cfbdef5172c8ba5d2b77"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_drift_thresholds.json",
-      "role": "packet_drift_thresholds",
-      "sha256": "f2738cc293d2f8c226c6c06081381d2e569f39b07014dd1e551436feebf7aa3a"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_commercial_claim_boundary_receipt.json",
+      "role": "runtime_commercial_claim_boundary_receipt",
+      "sha256": "992d81c1b47aaf4f500b5dc663f58c020a129592937ed9f2262cffa70afb301f"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_excluded_case_class_contract.json",
-      "role": "packet_excluded_case_class_contract",
-      "sha256": "ab42fd0756325e35c6e088952cdc6d9ddbab5ee62f12ad9fc002d0b4ae499beb"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_commercial_claim_boundary_update_prep_only.json",
+      "role": "runtime_commercial_claim_boundary_update_prep_only",
+      "sha256": "603b330806a49fa0e3a32d8d01e2ac3b1f962ed6436eadfc9b010aaea7e4a6d1"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_expected_artifact_manifest.json",
-      "role": "packet_expected_artifact_manifest",
-      "sha256": "2e0ab183a866c933745c1e421f2b5b97f110dc8829666b068cf42ff86c6e6299"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_cutover_failure_closeout_prep_only_draft.json",
+      "role": "runtime_cutover_failure_closeout_prep_only_draft",
+      "sha256": "741133673715fd88fa7e2729b71b3f9d8bc45547d6aeaf264dbe4e0ac568f2b8"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_external_verifier_requirements.json",
-      "role": "packet_external_verifier_requirements",
-      "sha256": "45218b8cc3b536c7f1e33b6866189896187a58897a81aecb4bb37296730f3ffd"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_drift_monitoring_receipt.json",
+      "role": "runtime_drift_monitoring_receipt",
+      "sha256": "d63f8bec10d8e65cfa4cd3319bb782c58d3d0b8e526e67de824298f05784f116"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_future_blocker_register.json",
-      "role": "packet_future_blocker_register",
-      "sha256": "122907f6d327e32501fc95d28b432187c1de55062d3aca6562dafa615032f786"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_contract.json",
+      "role": "runtime_execution_contract",
+      "sha256": "297f9286871d5f7b6646fa1a664ebc68de88b30a90543aedae1c45ce42b6c582"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_incident_freeze_contract.json",
-      "role": "packet_incident_freeze_contract",
-      "sha256": "c5654feec6b74134226baa3698d6e9595967748f1ed53c0fe19a8e44e8978321"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_receipt.json",
+      "role": "runtime_execution_receipt",
+      "sha256": "f7ba005eb555e1410d51d66970488c6bb925d33c87a235448675d7bf2790d948"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_kill_switch_contract.json",
-      "role": "packet_kill_switch_contract",
-      "sha256": "bd1a541160b5974ffc2fe2e16430aad200b173045d6fecfbe23f4b688134106a"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_external_audit_delta_manifest_prep_only.json",
+      "role": "runtime_external_audit_delta_manifest_prep_only",
+      "sha256": "e553f8d412a8a74f972b813e210708e7dde36bf5933b2be03e94c10ae5b969c9"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_mode_contract.json",
-      "role": "packet_mode_contract",
-      "sha256": "35368b74302df8be92dcf010ddb01755efbfdd39f938f7154092db940df67d8f"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_external_verifier_readiness_receipt.json",
+      "role": "runtime_external_verifier_readiness_receipt",
+      "sha256": "64802d695453ae1bb5da00bf8ddee5de2a8c16175e7246e59d8d8549b7f6fbd4"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_no_authorization_drift_receipt.json",
-      "role": "packet_no_authorization_drift_receipt",
-      "sha256": "dedb1c46d7cff3df596bb8959d41f57b067ad94be5b7bd063cd066abc388cfc2"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_fallback_behavior_receipt.json",
+      "role": "runtime_fallback_behavior_receipt",
+      "sha256": "d223d7ae125fb21ed4dda775cb739237eb6a1dcc51e94f2eadb6e6a196b0a57b"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_null_route_preservation_contract.json",
-      "role": "packet_null_route_preservation_contract",
-      "sha256": "1253e99e9a7b61da58705e4785c24a4cc673687ce1ae92a55ef562e661b26cdd"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_forensic_cutover_review_prep_only_draft.json",
+      "role": "runtime_forensic_cutover_review_prep_only_draft",
+      "sha256": "51655758441f7fb1854638a6efc861fcae6831ec1fe1c5d742adb0e10d618601"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_operator_override_contract.json",
-      "role": "packet_operator_override_contract",
-      "sha256": "7bbe0c129719be7647dbc67c5a4b2a6a0f379eff144c31c5542d2762b917d29e"
+      "binding_kind": "pre_overwrite_file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": true,
+      "path": "KT_PROD_CLEANROOM/reports/kt_future_blocker_register.json",
+      "role": "runtime_future_blocker_register",
+      "sha256": "4ad80baf160173360ae8d65cda96c07dd0061ce7ecdecb19d9b2e708a235ddcd"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_package_promotion_prohibition_receipt.json",
-      "role": "packet_package_promotion_prohibition_receipt",
-      "sha256": "10ee1b674ec735c80500fdd26b393835919fa6fb865e00896636d026b8402ddc"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_incident_freeze_receipt.json",
+      "role": "runtime_incident_freeze_receipt",
+      "sha256": "3da4c828caa2c49a3fb3be5f46c42b75eed605b731d6f8b5ff9703202bed174f"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_packet_contract.json",
-      "role": "packet_packet_contract",
-      "sha256": "92183d641406450be5f781a4c1a14adfd9e51c00e5906abefb085f0296b596fd"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_kill_switch_receipt.json",
+      "role": "runtime_kill_switch_receipt",
+      "sha256": "e858f9480ab9a88d44b295f555eb3970c7295adf765afdb263ec88dd977de68f"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_packet_receipt.json",
-      "role": "packet_packet_receipt",
-      "sha256": "b3020728b99f19225e85f6d0a04d17d6782681bff969faf5f2039982255357eb"
+      "binding_kind": "pre_overwrite_file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": true,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
+      "role": "runtime_next_lawful_move",
+      "sha256": "46f4ebf80e7c224cbe6c4d6ede1d7c66e95b2da8cd7fde7c95a1da033352699c"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_packet_report.md",
-      "role": "packet_packet_report",
-      "sha256": "c314445ff93e5fd33708230158da2fe333dab4cc716255eccbbf29be6091c31f"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_no_authorization_drift_receipt.json",
+      "role": "runtime_no_authorization_drift_receipt",
+      "sha256": "3b6bb4401eb4b9d8ee72e439ce479780a468686bf35494b568ea2561537efe5f"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_replay_manifest.json",
-      "role": "packet_replay_manifest",
-      "sha256": "e7aabc4aa388f469816b21c75d57be94694e9f7263064eb70c882b74dd4e64a2"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_null_route_preservation_receipt.json",
+      "role": "runtime_null_route_preservation_receipt",
+      "sha256": "db8e69219a97aceeaf38f47c4b91295110721c2bfccc10cdba821efa7a18692e"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_result_interpretation_contract.json",
-      "role": "packet_result_interpretation_contract",
-      "sha256": "525c3718ff1a1cd4daf1a01ef86a0a0559eaec1c396acb8f568b1e6c76a7065d"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_operator_override_receipt.json",
+      "role": "runtime_operator_override_receipt",
+      "sha256": "82c6b449f8f10852d7e455cb7bb6268ff1289a478d2b299c85dd6f12be89c7a6"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_rollback_contract.json",
-      "role": "packet_rollback_contract",
-      "sha256": "2e5805be7ee166a05b092e7f5915388678dcc25b14007970775eeffff2c335d4"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_packet_prep_only_draft.json",
+      "role": "runtime_package_promotion_review_packet_prep_only_draft",
+      "sha256": "317793e48b9cfe06b973243b55e4d447b98cd9cfd16262a20f2ea10bce618a8e"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_route_distribution_thresholds.json",
-      "role": "packet_route_distribution_thresholds",
-      "sha256": "f5433cfbe079c444b48c5d3214660f3828dfa66bdfd78406060d4734e8e80fbe"
+      "binding_kind": "pre_overwrite_file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": true,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_pipeline_board.json",
+      "role": "runtime_pipeline_board",
+      "sha256": "86e5497429de06f634eb6cb8267d9bd36d673226cff2ed8fc0e4575545cd3a24"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_run_result_schema_prep_only.json",
-      "role": "packet_runtime_cutover_run_result_schema_prep_only",
-      "sha256": "c1107ac9c4fc8d1b90e15e8421dd127bad34aa225cc7b9bbdf763eb216821854"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_post_cutover_evidence_review_packet_prep_only_draft.json",
+      "role": "runtime_post_cutover_evidence_review_packet_prep_only_draft",
+      "sha256": "0ffef0f1835b045f43b9009df1716a4bb0ad3f55ad3ceb32bc6fb4613fd74e0b"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_runtime_receipt_schema.json",
-      "role": "packet_runtime_receipt_schema",
-      "sha256": "8045cfc7cdb7594760268f7b7d7608b8807ed4ba269217a1e767e3b9fe798dae"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_public_verifier_delta_requirements_prep_only.json",
+      "role": "runtime_public_verifier_delta_requirements_prep_only",
+      "sha256": "518d9629df036c7cf5ccd980125c3da242c985b5b7724afc48c841e2c3bf414b"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_scope_manifest.json",
-      "role": "packet_scope_manifest",
-      "sha256": "0fffbaf78fc98d74cf06fd3b9323114a53681b402efba7cb8cdc98eaf02aefbe"
+      "binding_kind": "pre_overwrite_file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": true,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_review_packet_prep_only_draft.json",
+      "role": "runtime_r6_opening_review_packet_prep_only_draft",
+      "sha256": "fada5141907f27e93b7ab676c4b5407e0653777789df58dc16738e6134a62c02"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_static_fallback_contract.json",
-      "role": "packet_static_fallback_contract",
-      "sha256": "6e5ab6b44a2a66ba6d814df69385548af8819a136f43ad36c1b9b3a7f20b78d1"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_replay_receipt.json",
+      "role": "runtime_replay_receipt",
+      "sha256": "9f5e9d63c43e3a536e7c7f52cfe1ef3a9b914da3fd30405c0e76abe159e483b3"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_traffic_limit_contract.json",
-      "role": "packet_traffic_limit_contract",
-      "sha256": "11214f555fa11383a251eecb8768562e0966131663073d3eb26d5f27e66caeba"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_report.md",
+      "role": "runtime_report",
+      "sha256": "2ba1e5c204ea6e141e0650bcdf120a7830c4082d788c7d5457b694903cac1ae9"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_validation_plan.json",
-      "role": "packet_validation_plan",
-      "sha256": "debeb49e4c0a59a528705e53f98a29309c524ce54dad7762fed816e855aa6f9a"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_result.json",
+      "role": "runtime_result",
+      "sha256": "85f34cc57b5e054994d6b5b052aeeeee739cbd6d01d48ae087f24df402182af8"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_validation_reason_codes.json",
-      "role": "packet_validation_reason_codes",
-      "sha256": "efb932961e7a475932ee41e81d201d4adc84ff725e9fe01af7977fd07608360b"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_rollback_receipt.json",
+      "role": "runtime_rollback_receipt",
+      "sha256": "8643fc38f6422b87e01510d9b138537e24ef85e25afbaec95b368e3f969c1626"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_abstention_fallback_validation_receipt.json",
-      "role": "validation_abstention_fallback_validation",
-      "sha256": "38b1ba006f2db3442cb86c96ff8be7dd1856180b0bccfd2d26a0d1d07a9e6ee6"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_route_distribution_receipt.json",
+      "role": "runtime_route_distribution_receipt",
+      "sha256": "8c388b8ac485bb059e9d3530851375746bb72c8d674b9689ca4475986d0479af"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_allowed_case_class_validation_receipt.json",
-      "role": "validation_allowed_case_class_validation",
-      "sha256": "09bdc99227d384c8004b1ffbcf635712fdb87b58e4f9dec7848a3e15daa9e2b5"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_freeze_packet_prep_only_draft.json",
+      "role": "runtime_runtime_freeze_packet_prep_only_draft",
+      "sha256": "4d11604572d74fd777cb2d087d368be51e6446b203ed8325a1a040fcb685885b"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_commercial_claim_boundary_validation_receipt.json",
-      "role": "validation_commercial_claim_boundary_validation",
-      "sha256": "f1725bf3bad42aed52cf57c419a3df23cb458caa2543da86ea69df8cd1040d8f"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_rollback_packet_prep_only_draft.json",
+      "role": "runtime_runtime_rollback_packet_prep_only_draft",
+      "sha256": "a043712528c101959fd1fb217e8926c05d968655c9bac7b80e0b6a43317c3a75"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_drift_threshold_validation_receipt.json",
-      "role": "validation_drift_threshold_validation",
-      "sha256": "eaabe81a89fb2df09cd99700bf230ecf207fd355fb9744c376cd916b977c2786"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_static_fallback_receipt.json",
+      "role": "runtime_static_fallback_receipt",
+      "sha256": "7c3de38ee1482a891ddf574803184753c35b7c21de9f7aedaef37d7a45293baf"
     },
     {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_excluded_case_class_validation_receipt.json",
-      "role": "validation_excluded_case_class_validation",
-      "sha256": "6d1605981d2fc9582ef6e7b68e7ecb1c34f78cb1b9978f51faebac1aaf0d4e48"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_expected_artifact_manifest_validation_receipt.json",
-      "role": "validation_expected_artifact_manifest_validation",
-      "sha256": "53377d9ec358a7aa6d8b7048eb2cd9560e03af30a6680c5c94ef16517049e79e"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_external_verifier_validation_receipt.json",
-      "role": "validation_external_verifier_validation",
-      "sha256": "eedd5c56a756a0336a69daaff24ae7ee70ae122652737b93d66967b2b25a64e3"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_incident_freeze_validation_receipt.json",
-      "role": "validation_incident_freeze_validation",
-      "sha256": "8def2fd5339760b2980670e43e852bd764c5d43548e82de2b210f36b4be88713"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_kill_switch_validation_receipt.json",
-      "role": "validation_kill_switch_validation",
-      "sha256": "cdc48dc2b0368971a5a8407be1322401f1b0e1c82fd2e9701cbcbfb288c3b6e7"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_mode_validation_receipt.json",
-      "role": "validation_mode_validation",
-      "sha256": "d90a16dbb40c09e8b047b6465e56d5eed7cb0a1e873180b23cd70ca33e59bdcb"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_packet_validation_next_lawful_move_receipt.json",
-      "role": "validation_next_lawful_move",
-      "sha256": "ae5ac36cdbfa486b234540ca7f155a1333956c5440fdd6a3d52b71c8578f526e"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_no_authorization_drift_validation_receipt.json",
-      "role": "validation_no_authorization_drift_validation",
-      "sha256": "dd9a2dd48fc7316225def1247822a0d229785bd0b4c6e51b0bf04451e887b54f"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_null_route_validation_receipt.json",
-      "role": "validation_null_route_preservation_validation",
-      "sha256": "66cd0812d672146669bc1b0c2631900cabdbe1823dfd356eac9c549d6059ce2a"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_operator_override_validation_receipt.json",
-      "role": "validation_operator_override_validation",
-      "sha256": "0fb38828d2ff1fff1f41e59112bfb82f8098abd74ede357d5417211054fefdf1"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_package_promotion_prohibition_validation_receipt.json",
-      "role": "validation_package_promotion_prohibition_validation",
-      "sha256": "bbf72c90d21e4a2f9994ea589d6cf9f07e82ffcf053b12c94d96fa194d7e22b5"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_packet_binding_validation_receipt.json",
-      "role": "validation_packet_binding_validation",
-      "sha256": "1d5d116605590ee882c1b44f8eb1c475139b4c0a05289448ac2efb5f79ba2b40"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_post_cutover_evidence_review_after_execution_validation_prep_only_draft.json",
-      "role": "validation_post_cutover_evidence_review_packet_prep_only_draft",
-      "sha256": "fbe2673002c84011e62fc4b304c6d317ae46d3802bc5525fa7d93e811725fe24"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_prep_only_boundary_validation_receipt.json",
-      "role": "validation_prep_only_boundary_validation",
-      "sha256": "75aa1ec458321228c52d620f3a38b7c0ffb4ddd4244b503df99c0ab9e54a63a6"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_replay_manifest_validation_receipt.json",
-      "role": "validation_replay_manifest_validation",
-      "sha256": "bf8747ae91cd9ba3b89bbb73177a97896de8dc9a11841519992909ea3433866a"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_result_interpretation_validation_receipt.json",
-      "role": "validation_result_interpretation_validation",
-      "sha256": "873c02b62f8b05e986358b476805c3364f0eab570a39e0a5303d34b9626d85a3"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_validation_rollback_freeze_incident_path_prep_only.json",
-      "role": "validation_rollback_freeze_incident_path_prep_only",
-      "sha256": "95d834ccd6ac063e1fde08051f3ce5f709a68b459393324e5bf75c3bed1212fe"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_rollback_validation_receipt.json",
-      "role": "validation_rollback_validation",
-      "sha256": "dd64be4475d2c712a09c7f79c655c8ce34d694b083c7cc6dc9f8b7c41334a8be"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_route_distribution_threshold_validation_receipt.json",
-      "role": "validation_route_distribution_threshold_validation",
-      "sha256": "439307aff8129ad65bd779571e063bfa664dc18f3981bb17d0c2781f62b3e337"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_run_prep_only_draft.json",
-      "role": "validation_runtime_cutover_run_prep_only_draft",
-      "sha256": "3b5e7dbb0238d9cf7338673f2d7bf52a2b1df56d2b0704251e7c23dbc1311f12"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_runtime_receipt_schema_validation_receipt.json",
-      "role": "validation_runtime_receipt_schema_validation",
-      "sha256": "3c223387d17d1a2f80c9469626135d12961a499062f39aedde082832e629072c"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_scope_validation_receipt.json",
-      "role": "validation_scope_validation",
-      "sha256": "89c2ffe72a3ce32e5baaa7f93f65933f8f73730c64f07cde2d03b19498273064"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_static_fallback_validation_receipt.json",
-      "role": "validation_static_fallback_validation",
-      "sha256": "b489e2c0e2cecae3fab2bf8e718944b03fc913d06386150525a2e6d7249bca3a"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_traffic_limit_validation_receipt.json",
-      "role": "validation_traffic_limit_validation",
-      "sha256": "d443d0ad51e850ab74537f4e0bf73b4c7a71757193ceebe90bf40e40ddd6eb3a"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_packet_validation_contract.json",
-      "role": "validation_validation_contract",
-      "sha256": "da44430a01b7b3c1bc4a1aa4d8234c355c6ad5b68db45709cdf10e9cc00d9726"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_packet_validation_receipt.json",
-      "role": "validation_validation_receipt",
-      "sha256": "a3542594287a9f41a3296ed3ea2f58cad1a2b575c86a76d7017191aeaf2977b8"
-    },
-    {
-      "binding_kind": "file_sha256_at_runtime_cutover",
-      "overwritten_by_runtime_cutover_output": false,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_execution_packet_validation_report.md",
-      "role": "validation_validation_report",
-      "sha256": "e371eb9c088e3c94683b4ba94eea8a378a605476a5a26d35fd604458e72b818d"
+      "binding_kind": "file_sha256_at_post_cutover_review_authoring",
+      "overwritten_by_post_cutover_review_output": false,
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_runtime_cutover_trace_completeness_receipt.json",
+      "role": "runtime_trace_completeness_receipt",
+      "sha256": "57202f4a55356aebb7e474e0eed1c717032aa0659280ac72a254c67f4694dea4"
     }
   ],
   "lobe_escalation_authorized": false,
   "metric_contract_mutated": false,
-  "next_lawful_move": "AUTHOR_B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_PACKET",
+  "next_lawful_move": "VALIDATE_B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_PACKET",
   "no_authorization_drift": true,
-  "outcome_routing": {
-    "B04_R6_RUNTIME_CUTOVER_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS": "REPAIR_B04_R6_RUNTIME_CUTOVER_DEFECTS",
-    "B04_R6_RUNTIME_CUTOVER_FAILED__ROLLBACK_OR_REPAIR_NEXT": "AUTHOR_B04_R6_RUNTIME_ROLLBACK_OR_REPAIR_PACKET",
-    "B04_R6_RUNTIME_CUTOVER_INVALIDATED__FORENSIC_CUTOVER_REVIEW_NEXT": "AUTHOR_B04_R6_FORENSIC_CUTOVER_REVIEW_PACKET",
-    "B04_R6_RUNTIME_CUTOVER_PASSED__POST_CUTOVER_EVIDENCE_REVIEW_PACKET_NEXT": "AUTHOR_B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_PACKET"
-  },
-  "overwritten_input_roles": [],
+  "overwritten_input_roles": [
+    "runtime_campaign_board",
+    "runtime_future_blocker_register",
+    "runtime_next_lawful_move",
+    "runtime_pipeline_board",
+    "runtime_r6_opening_review_packet_prep_only_draft"
+  ],
   "package_promotion": "DEFERRED",
   "package_promotion_authorized": false,
-  "predecessor_outcome": "B04_R6_RUNTIME_CUTOVER_EXECUTION_PACKET_VALIDATED__RUNTIME_CUTOVER_NEXT",
-  "previous_authoritative_lane": "B04_R6_RUNTIME_CUTOVER_EXECUTION_PACKET_VALIDATION",
-  "previous_next_lawful_move": "RUN_B04_R6_RUNTIME_CUTOVER",
+  "post_cutover_evidence_review_packet_authored": true,
+  "post_cutover_evidence_review_validated": false,
+  "predecessor_outcome": "B04_R6_RUNTIME_CUTOVER_PASSED__POST_CUTOVER_EVIDENCE_REVIEW_PACKET_NEXT",
+  "previous_authoritative_lane": "B04_R6_RUNTIME_CUTOVER",
+  "previous_next_lawful_move": "AUTHOR_B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_PACKET",
   "r6_open": false,
+  "r6_opening_review_authorized": false,
   "reason_codes": [
-    "RC_B04R6_RUNTIME_CUTOVER_VALIDATION_MISSING",
-    "RC_B04R6_RUNTIME_CUTOVER_VALIDATION_OUTCOME_DRIFT",
-    "RC_B04R6_RUNTIME_CUTOVER_NEXT_MOVE_DRIFT",
-    "RC_B04R6_RUNTIME_CUTOVER_INPUT_BINDINGS_EMPTY",
-    "RC_B04R6_RUNTIME_CUTOVER_PACKET_HASH_DRIFT",
-    "RC_B04R6_RUNTIME_CUTOVER_CONTROL_CONTRACT_MISSING",
-    "RC_B04R6_RUNTIME_CUTOVER_SCOPE_VIOLATION",
-    "RC_B04R6_RUNTIME_CUTOVER_SAMPLE_LIMIT_EXCEEDED",
-    "RC_B04R6_RUNTIME_CUTOVER_ALLOWED_CASE_CLASS_DRIFT",
-    "RC_B04R6_RUNTIME_CUTOVER_EXCLUDED_CASE_CLASS_DRIFT",
-    "RC_B04R6_RUNTIME_CUTOVER_STATIC_FALLBACK_FAIL",
-    "RC_B04R6_RUNTIME_CUTOVER_ABSTENTION_FALLBACK_FAIL",
-    "RC_B04R6_RUNTIME_CUTOVER_NULL_ROUTE_FAIL",
-    "RC_B04R6_RUNTIME_CUTOVER_OPERATOR_OVERRIDE_NOT_READY",
-    "RC_B04R6_RUNTIME_CUTOVER_KILL_SWITCH_NOT_READY",
-    "RC_B04R6_RUNTIME_CUTOVER_ROLLBACK_NOT_READY",
-    "RC_B04R6_RUNTIME_CUTOVER_ROUTE_DISTRIBUTION_UNHEALTHY",
-    "RC_B04R6_RUNTIME_CUTOVER_DRIFT_DETECTED",
-    "RC_B04R6_RUNTIME_CUTOVER_INCIDENT_FREEZE_TRIGGERED",
-    "RC_B04R6_RUNTIME_CUTOVER_TRACE_INCOMPLETE",
-    "RC_B04R6_RUNTIME_CUTOVER_REPLAY_INCOMPLETE",
-    "RC_B04R6_RUNTIME_CUTOVER_EXTERNAL_VERIFIER_NOT_READY",
-    "RC_B04R6_RUNTIME_CUTOVER_PREP_ONLY_DRIFT",
-    "RC_B04R6_RUNTIME_CUTOVER_TRUST_ZONE_FAILED",
-    "RC_B04R6_RUNTIME_CUTOVER_ACTIVATION_CUTOVER_EXECUTED",
-    "RC_B04R6_RUNTIME_CUTOVER_R6_OPEN_DRIFT",
-    "RC_B04R6_RUNTIME_CUTOVER_GLOBAL_SURFACE_DRIFT",
-    "RC_B04R6_RUNTIME_CUTOVER_LOBE_ESCALATION_DRIFT",
-    "RC_B04R6_RUNTIME_CUTOVER_PACKAGE_PROMOTION_DRIFT",
-    "RC_B04R6_RUNTIME_CUTOVER_COMMERCIAL_CLAIM_DRIFT",
-    "RC_B04R6_RUNTIME_CUTOVER_TRUTH_ENGINE_MUTATION",
-    "RC_B04R6_RUNTIME_CUTOVER_TRUST_ZONE_MUTATION",
-    "RC_B04R6_RUNTIME_CUTOVER_METRIC_MUTATION",
-    "RC_B04R6_RUNTIME_CUTOVER_COMPARATOR_WEAKENED",
-    "RC_B04R6_RUNTIME_CUTOVER_RESULT_R6_OPENING_DRIFT",
-    "RC_B04R6_RUNTIME_CUTOVER_RESULT_PROMOTION_DRIFT"
+    "RC_B04R6_POST_CUTOVER_REVIEW_RUNTIME_EVIDENCE_MISSING",
+    "RC_B04R6_POST_CUTOVER_REVIEW_RUNTIME_OUTCOME_DRIFT",
+    "RC_B04R6_POST_CUTOVER_REVIEW_NEXT_MOVE_DRIFT",
+    "RC_B04R6_POST_CUTOVER_REVIEW_INPUT_BINDINGS_EMPTY",
+    "RC_B04R6_POST_CUTOVER_REVIEW_SCORECARD_INCOMPLETE",
+    "RC_B04R6_POST_CUTOVER_REVIEW_R6_OPENING_RECOMMENDATION_UNSUPPORTED",
+    "RC_B04R6_POST_CUTOVER_REVIEW_PREP_ONLY_DRIFT",
+    "RC_B04R6_POST_CUTOVER_REVIEW_TRUST_ZONE_FAILED",
+    "RC_B04R6_POST_CUTOVER_REVIEW_ACTIVATION_CUTOVER_EXECUTED",
+    "RC_B04R6_POST_CUTOVER_REVIEW_R6_OPEN_DRIFT",
+    "RC_B04R6_POST_CUTOVER_REVIEW_GLOBAL_SURFACE_DRIFT",
+    "RC_B04R6_POST_CUTOVER_REVIEW_LOBE_ESCALATION_DRIFT",
+    "RC_B04R6_POST_CUTOVER_REVIEW_PACKAGE_PROMOTION_DRIFT",
+    "RC_B04R6_POST_CUTOVER_REVIEW_COMMERCIAL_CLAIM_DRIFT",
+    "RC_B04R6_POST_CUTOVER_REVIEW_TRUTH_ENGINE_MUTATION",
+    "RC_B04R6_POST_CUTOVER_REVIEW_TRUST_ZONE_MUTATION",
+    "RC_B04R6_POST_CUTOVER_REVIEW_METRIC_MUTATION",
+    "RC_B04R6_POST_CUTOVER_REVIEW_COMPARATOR_WEAKENED",
+    "RC_B04R6_POST_CUTOVER_REVIEW_RESULT_R6_OPENING_DRIFT",
+    "RC_B04R6_POST_CUTOVER_REVIEW_RESULT_PROMOTION_DRIFT"
   ],
-  "replay_overwritten_packet_input_roles": [
+  "recommendation_is_authority": false,
+  "recommended_validated_path": "R6_OPENING_REVIEW_PACKET_NEXT",
+  "replay_overwritten_runtime_input_roles": [
     "commercial_claim_boundary_update_prep_only",
-    "cutover_failure_closeout_prep_only_draft",
     "external_audit_delta_manifest_prep_only",
-    "forensic_cutover_review_prep_only_draft",
+    "future_blocker_register",
     "next_lawful_move",
     "package_promotion_review_packet_prep_only_draft",
     "pipeline_board",
@@ -1020,45 +667,10 @@
     "public_verifier_delta_requirements_prep_only",
     "r6_opening_review_packet_prep_only_draft"
   ],
-  "runtime_cutover_authorized": false,
   "runtime_cutover_executed": true,
-  "runtime_cutover_execution_packet_validated": true,
-  "runtime_cutover_performed_under_validated_execution_packet": true,
-  "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-  "schema_id": "kt.operator.b04_r6_next_lawful_move_receipt.v52",
+  "schema_id": "kt.b04_r6.post_cutover_evidence_review.next_lawful_move.v1",
   "schema_version": "v1",
-  "scorecard": {
-    "abstention_fallback_preserved": true,
-    "abstention_observations": 4,
-    "activation_cutover_executed": false,
-    "commercial_activation_claim_authorized": false,
-    "commercial_claim_boundary_preserved": true,
-    "drift_status": "PASS",
-    "external_verifier_ready": true,
-    "fallback_failures": 0,
-    "fallback_invocations": 9,
-    "fired_disqualifiers": [],
-    "incident_freeze_triggers": [],
-    "kill_switch_invocations": 0,
-    "kill_switch_ready": true,
-    "max_cases": 18,
-    "max_route_observations": 12,
-    "null_route_preserved": true,
-    "operator_override_ready": true,
-    "package_promotion_authorized": false,
-    "r6_open": false,
-    "replay_status": "PASS",
-    "rollback_invocations": 0,
-    "rollback_ready": true,
-    "route_distribution_health": "PASS",
-    "route_observations": 9,
-    "runtime_mode": "BOUNDED_RUNTIME_CUTOVER_UNDER_VALIDATED_PACKET",
-    "sample_limit_respected": true,
-    "static_fallback_preserved": true,
-    "total_cases": 18,
-    "trace_complete_cases": 18
-  },
-  "selected_outcome": "B04_R6_RUNTIME_CUTOVER_PASSED__POST_CUTOVER_EVIDENCE_REVIEW_PACKET_NEXT",
+  "selected_outcome": "B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_PACKET_BOUND__POST_CUTOVER_EVIDENCE_REVIEW_VALIDATION_NEXT",
   "static_comparator_weakened": false,
   "trust_zone_failures": [],
   "trust_zone_law_changed": false,
@@ -1066,583 +678,7 @@
   "trust_zone_validation_status": "PASS",
   "truth_engine_law_changed": false,
   "truth_engine_law_unchanged": true,
-  "validation_rows": [
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-001",
-      "group": "binding",
-      "name": "validated_cutover_execution_packet_bound",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-002",
-      "group": "scope",
-      "name": "runtime_cutover_scope_respected",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-003",
-      "group": "scope",
-      "name": "sample_limit_respected",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-004",
-      "group": "scope",
-      "name": "allowed_case_classes_respected",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-005",
-      "group": "scope",
-      "name": "excluded_case_classes_blocked",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-006",
-      "group": "fallback",
-      "name": "static_fallback_preserved",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-007",
-      "group": "fallback",
-      "name": "abstention_fallback_preserved",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-008",
-      "group": "fallback",
-      "name": "null_route_preserved",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-009",
-      "group": "controls",
-      "name": "operator_override_ready",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-010",
-      "group": "controls",
-      "name": "kill_switch_ready",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-011",
-      "group": "controls",
-      "name": "rollback_ready",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-012",
-      "group": "monitoring",
-      "name": "route_distribution_measured",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-013",
-      "group": "monitoring",
-      "name": "drift_measured",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-014",
-      "group": "monitoring",
-      "name": "incident_freeze_checked",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-015",
-      "group": "replay",
-      "name": "trace_completeness_measured",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-016",
-      "group": "replay",
-      "name": "runtime_replay_emitted",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-017",
-      "group": "external",
-      "name": "external_verifier_ready",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-018",
-      "group": "claims",
-      "name": "commercial_boundary_preserved",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-019",
-      "group": "authorization",
-      "name": "no_authorization_drift",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-020",
-      "group": "outcome",
-      "name": "next_lawful_move_is_post_cutover_evidence_review",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_abstention_fallback_contract",
-      "group": "binding",
-      "name": "binds_packet_abstention_fallback_contract",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_allowed_case_class_contract",
-      "group": "binding",
-      "name": "binds_packet_allowed_case_class_contract",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_commercial_claim_boundary",
-      "group": "binding",
-      "name": "binds_packet_commercial_claim_boundary",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_drift_thresholds",
-      "group": "binding",
-      "name": "binds_packet_drift_thresholds",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_excluded_case_class_contract",
-      "group": "binding",
-      "name": "binds_packet_excluded_case_class_contract",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_expected_artifact_manifest",
-      "group": "binding",
-      "name": "binds_packet_expected_artifact_manifest",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_external_verifier_requirements",
-      "group": "binding",
-      "name": "binds_packet_external_verifier_requirements",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_future_blocker_register",
-      "group": "binding",
-      "name": "binds_packet_future_blocker_register",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_incident_freeze_contract",
-      "group": "binding",
-      "name": "binds_packet_incident_freeze_contract",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_kill_switch_contract",
-      "group": "binding",
-      "name": "binds_packet_kill_switch_contract",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_mode_contract",
-      "group": "binding",
-      "name": "binds_packet_mode_contract",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_no_authorization_drift_receipt",
-      "group": "binding",
-      "name": "binds_packet_no_authorization_drift_receipt",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_null_route_preservation_contract",
-      "group": "binding",
-      "name": "binds_packet_null_route_preservation_contract",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_operator_override_contract",
-      "group": "binding",
-      "name": "binds_packet_operator_override_contract",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_package_promotion_prohibition_receipt",
-      "group": "binding",
-      "name": "binds_packet_package_promotion_prohibition_receipt",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_packet_contract",
-      "group": "binding",
-      "name": "binds_packet_packet_contract",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_packet_receipt",
-      "group": "binding",
-      "name": "binds_packet_packet_receipt",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_replay_manifest",
-      "group": "binding",
-      "name": "binds_packet_replay_manifest",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_result_interpretation_contract",
-      "group": "binding",
-      "name": "binds_packet_result_interpretation_contract",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_rollback_contract",
-      "group": "binding",
-      "name": "binds_packet_rollback_contract",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_route_distribution_thresholds",
-      "group": "binding",
-      "name": "binds_packet_route_distribution_thresholds",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_runtime_cutover_run_result_schema_prep_only",
-      "group": "binding",
-      "name": "binds_packet_runtime_cutover_run_result_schema_prep_only",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_runtime_receipt_schema",
-      "group": "binding",
-      "name": "binds_packet_runtime_receipt_schema",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_scope_manifest",
-      "group": "binding",
-      "name": "binds_packet_scope_manifest",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_static_fallback_contract",
-      "group": "binding",
-      "name": "binds_packet_static_fallback_contract",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_traffic_limit_contract",
-      "group": "binding",
-      "name": "binds_packet_traffic_limit_contract",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_validation_plan",
-      "group": "binding",
-      "name": "binds_packet_validation_plan",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_packet_validation_reason_codes",
-      "group": "binding",
-      "name": "binds_packet_validation_reason_codes",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_abstention_fallback_validation",
-      "group": "binding",
-      "name": "binds_validation_abstention_fallback_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_allowed_case_class_validation",
-      "group": "binding",
-      "name": "binds_validation_allowed_case_class_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_commercial_claim_boundary_validation",
-      "group": "binding",
-      "name": "binds_validation_commercial_claim_boundary_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_drift_threshold_validation",
-      "group": "binding",
-      "name": "binds_validation_drift_threshold_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_excluded_case_class_validation",
-      "group": "binding",
-      "name": "binds_validation_excluded_case_class_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_expected_artifact_manifest_validation",
-      "group": "binding",
-      "name": "binds_validation_expected_artifact_manifest_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_external_verifier_validation",
-      "group": "binding",
-      "name": "binds_validation_external_verifier_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_incident_freeze_validation",
-      "group": "binding",
-      "name": "binds_validation_incident_freeze_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_kill_switch_validation",
-      "group": "binding",
-      "name": "binds_validation_kill_switch_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_mode_validation",
-      "group": "binding",
-      "name": "binds_validation_mode_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_next_lawful_move",
-      "group": "binding",
-      "name": "binds_validation_next_lawful_move",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_no_authorization_drift_validation",
-      "group": "binding",
-      "name": "binds_validation_no_authorization_drift_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_null_route_preservation_validation",
-      "group": "binding",
-      "name": "binds_validation_null_route_preservation_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_operator_override_validation",
-      "group": "binding",
-      "name": "binds_validation_operator_override_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_package_promotion_prohibition_validation",
-      "group": "binding",
-      "name": "binds_validation_package_promotion_prohibition_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_packet_binding_validation",
-      "group": "binding",
-      "name": "binds_validation_packet_binding_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_post_cutover_evidence_review_packet_prep_only_draft",
-      "group": "binding",
-      "name": "binds_validation_post_cutover_evidence_review_packet_prep_only_draft",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_prep_only_boundary_validation",
-      "group": "binding",
-      "name": "binds_validation_prep_only_boundary_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_replay_manifest_validation",
-      "group": "binding",
-      "name": "binds_validation_replay_manifest_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_result_interpretation_validation",
-      "group": "binding",
-      "name": "binds_validation_result_interpretation_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_rollback_freeze_incident_path_prep_only",
-      "group": "binding",
-      "name": "binds_validation_rollback_freeze_incident_path_prep_only",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_rollback_validation",
-      "group": "binding",
-      "name": "binds_validation_rollback_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_route_distribution_threshold_validation",
-      "group": "binding",
-      "name": "binds_validation_route_distribution_threshold_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_runtime_cutover_run_prep_only_draft",
-      "group": "binding",
-      "name": "binds_validation_runtime_cutover_run_prep_only_draft",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_runtime_receipt_schema_validation",
-      "group": "binding",
-      "name": "binds_validation_runtime_receipt_schema_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_scope_validation",
-      "group": "binding",
-      "name": "binds_validation_scope_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_static_fallback_validation",
-      "group": "binding",
-      "name": "binds_validation_static_fallback_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_traffic_limit_validation",
-      "group": "binding",
-      "name": "binds_validation_traffic_limit_validation",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_validation_contract",
-      "group": "binding",
-      "name": "binds_validation_validation_contract",
-      "status": "PASS"
-    },
-    {
-      "check_id": "binds_validation_validation_receipt",
-      "group": "binding",
-      "name": "binds_validation_validation_receipt",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-001_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-001",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-002_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-002",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-003_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-003",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-004_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-004",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-005_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-005",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-006_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-006",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-007_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-007",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-008_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-008",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-009_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-009",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-010_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-010",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-011_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-011",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-012_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-012",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-013_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-013",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-014_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-014",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-015_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-015",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-016_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-016",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-017_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-017",
-      "status": "PASS"
-    },
-    {
-      "check_id": "B04R6-RUNTIME-CUTOVER-018_trace_complete",
-      "group": "case",
-      "name": "B04R6-RUNTIME-CUTOVER-018",
-      "status": "PASS"
-    }
-  ],
+  "validation_success_next_move": "AUTHOR_B04_R6_R6_OPENING_REVIEW_PACKET",
+  "validation_success_outcome": "B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_VALIDATED__R6_OPENING_REVIEW_PACKET_NEXT",
   "verdict": "NEXT_LAWFUL_MOVE_SET"
 }
