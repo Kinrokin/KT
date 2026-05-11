@@ -54,6 +54,20 @@ def _patch_validation_env(
         "validate_trust_zones",
         lambda *, root: {"schema_id": "trust", "status": "PASS", "failures": [], "checks": [{"status": "PASS"}]},
     )
+    contract_path = tmp_path / "KT_PROD_CLEANROOM" / "reports" / review.OUTPUTS["packet_contract"]
+    blob_hashes: dict[str, str] = {}
+    if contract_path.exists():
+        contract = _load(contract_path)
+        for row in contract.get("input_bindings", []):
+            if row.get("overwritten_by_r6_opening_review_output") is True:
+                blob_hashes[str(row["git_object_before_overwrite"])] = str(row["sha256"])
+
+    def fake_git_blob_sha256(root: Path, object_id: str) -> str:
+        if object_id not in blob_hashes:
+            validation._fail("RC_B04R6_R6_OPENING_REVIEW_VAL_INPUT_HASH_MISSING", f"missing git blob {object_id}")
+        return blob_hashes[object_id]
+
+    monkeypatch.setattr(validation, "_git_blob_sha256", fake_git_blob_sha256)
 
 
 def _run_review_only(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
@@ -312,6 +326,37 @@ def test_next_move_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.Monkey
     _write(path, payload)
     _patch_validation_env(monkeypatch, tmp_path)
     with pytest.raises(validation.LaneFailure, match="NEXT_MOVE_DRIFT"):
+        validation.run(reports_root=reports)
+
+
+def test_stale_bound_input_file_hash_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_review_only(tmp_path, monkeypatch)
+    contract = _load(reports / review.OUTPUTS["packet_contract"])
+    row = next(
+        item
+        for item in contract["input_bindings"]
+        if item.get("overwritten_by_r6_opening_review_output") is False
+        and item["path"].endswith(".json")
+        and item["role"] not in {"validation_contract", "validation_receipt", "next_lawful_move"}
+    )
+    path = tmp_path / row["path"]
+    payload = _load(path)
+    payload["tamper_after_review_authoring"] = True
+    _write(path, payload)
+    _patch_validation_env(monkeypatch, tmp_path)
+    with pytest.raises(validation.LaneFailure, match="INPUT_HASH_MISSING"):
+        validation.run(reports_root=reports)
+
+
+def test_overwritten_input_git_object_hash_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_review_only(tmp_path, monkeypatch)
+    _patch_validation_env(monkeypatch, tmp_path)
+    path = reports / review.OUTPUTS["packet_contract"]
+    payload = _load(path)
+    row = next(item for item in payload["input_bindings"] if item.get("overwritten_by_r6_opening_review_output"))
+    row["git_object_before_overwrite"] = "0" * 40
+    _write(path, payload)
+    with pytest.raises(validation.LaneFailure, match="INPUT_HASH_MISSING"):
         validation.run(reports_root=reports)
 
 

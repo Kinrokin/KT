@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional, Sequence
 
@@ -376,7 +378,20 @@ def _validate_handoff(payloads: Dict[str, Dict[str, Any]]) -> None:
         _fail("RC_B04R6_R6_OPENING_REVIEW_VAL_NEXT_MOVE_DRIFT", "next-lawful-move receipt drift")
 
 
-def _validate_hashes(payloads: Dict[str, Dict[str, Any]]) -> None:
+def _git_blob_sha256(root: Path, object_id: str) -> str:
+    try:
+        result = subprocess.run(
+            ["git", "cat-file", "blob", object_id],
+            cwd=root,
+            capture_output=True,
+            check=True,
+        )
+    except subprocess.CalledProcessError as exc:
+        _fail("RC_B04R6_R6_OPENING_REVIEW_VAL_INPUT_HASH_MISSING", f"missing git blob {object_id!r}: {exc}")
+    return hashlib.sha256(result.stdout).hexdigest()
+
+
+def _validate_hashes(root: Path, payloads: Dict[str, Dict[str, Any]]) -> None:
     contract = payloads["packet_contract"]
     binding_hashes = contract.get("binding_hashes", {})
     input_bindings = contract.get("input_bindings")
@@ -390,6 +405,21 @@ def _validate_hashes(payloads: Dict[str, Dict[str, Any]]) -> None:
         role = str(row.get("role", "")).strip()
         if binding_hashes.get(f"{role}_hash") != row["sha256"]:
             _fail("RC_B04R6_R6_OPENING_REVIEW_VAL_INPUT_HASH_MISSING", f"binding hash mismatch for {role}")
+        path = str(row.get("path", "")).strip()
+        if row.get("overwritten_by_r6_opening_review_output") is True:
+            object_id = str(row.get("git_object_before_overwrite", "")).strip()
+            if not object_id:
+                _fail(
+                    "RC_B04R6_R6_OPENING_REVIEW_VAL_INPUT_HASH_MISSING",
+                    f"missing pre-overwrite git object for {role}",
+                )
+            if _git_blob_sha256(root, object_id) != row["sha256"]:
+                _fail(
+                    "RC_B04R6_R6_OPENING_REVIEW_VAL_INPUT_HASH_MISSING",
+                    f"pre-overwrite git object hash mismatch for {role}",
+                )
+        elif file_sha256(common.resolve_path(root, path)) != row["sha256"]:
+            _fail("RC_B04R6_R6_OPENING_REVIEW_VAL_INPUT_HASH_MISSING", f"file hash mismatch for {role}")
 
 
 def _validate_inventory(payloads: Dict[str, Dict[str, Any]]) -> None:
@@ -485,7 +515,7 @@ def _validate_report(text: str) -> None:
 
 def _validate_review_payloads(root: Path, payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str]) -> None:
     _validate_handoff(payloads)
-    _validate_hashes(payloads)
+    _validate_hashes(root, payloads)
     _validate_inventory(payloads)
     _validate_scorecard(payloads)
     _validate_decision_matrix(payloads)
