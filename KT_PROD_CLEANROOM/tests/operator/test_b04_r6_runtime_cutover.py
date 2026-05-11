@@ -319,6 +319,34 @@ def test_validation_next_move_drift_fails_closed(tmp_path: Path, monkeypatch: py
         runtime.run(reports_root=reports)
 
 
+def test_authority_branch_packet_next_move_hash_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_validation_only(tmp_path, monkeypatch)
+    path = reports / packet.OUTPUTS["next_lawful_move"]
+    payload = _load(path)
+    payload["next_lawful_move"] = runtime.NEXT_LAWFUL_MOVE
+    _write(path, payload)
+    _patch_runtime_env(monkeypatch, tmp_path, branch=runtime.AUTHORITY_BRANCH)
+    with pytest.raises(runtime.LaneFailure, match="PACKET_HASH_DRIFT|NEXT_MOVE_DRIFT"):
+        runtime.run(reports_root=reports)
+
+
+def test_replay_allows_packet_paths_overwritten_by_prior_runtime_output(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_validation_only(tmp_path, monkeypatch)
+    _patch_runtime_env(monkeypatch, tmp_path, branch=runtime.AUTHORITY_BRANCH)
+    runtime.run(reports_root=reports)
+    _patch_runtime_env(
+        monkeypatch,
+        tmp_path,
+        branch=f"{runtime.REPLAY_BRANCH_PREFIX}-main-replay",
+        head=RUNTIME_HEAD,
+        origin_main=RUNTIME_MAIN_HEAD,
+    )
+    contract = runtime.run(reports_root=reports)
+    assert contract["selected_outcome"] == runtime.SELECTED_OUTCOME
+    assert "packet_next_lawful_move" not in contract["binding_hashes"]
+    assert "next_lawful_move" in contract["replay_overwritten_packet_input_roles"]
+
+
 def test_packet_hash_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_validation_only(tmp_path, monkeypatch)
     path = reports / packet.OUTPUTS["scope_manifest"]
