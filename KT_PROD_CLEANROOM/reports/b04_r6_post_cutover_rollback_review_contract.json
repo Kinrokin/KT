@@ -4,7 +4,7 @@
     "B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_PACKET_INVALID__FORENSIC_CUTOVER_REVIEW_NEXT"
   ],
-  "artifact_id": "KT_E2E_CLOSURE_CAMPAIGN_BOARD",
+  "artifact_id": "B04_R6_POST_CUTOVER_ROLLBACK_REVIEW",
   "authoritative_lane": "B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_PACKET",
   "binding_hashes": {
     "runtime_abstention_fallback_receipt_hash": "45133fcdd4c1c1e895197c3cf60dfab2d3b00050fe6ce08bc6303b7f74575abe",
@@ -43,24 +43,6 @@
     "runtime_trace_completeness_receipt_hash": "57202f4a55356aebb7e474e0eed1c717032aa0659280ac72a254c67f4694dea4"
   },
   "commercial_activation_claim_authorized": false,
-  "corridors": [
-    {
-      "corridor": "R6_RUNTIME_CUTOVER",
-      "status": "PASSED_REVIEW_PACKET_BOUND"
-    },
-    {
-      "corridor": "R6_OPENING",
-      "status": "RECOMMENDED_PENDING_VALIDATION"
-    },
-    {
-      "corridor": "PACKAGE_PROMOTION",
-      "status": "BLOCKED"
-    },
-    {
-      "corridor": "COMMERCIAL_TRUTH_PLANE",
-      "status": "BOUNDARY_ONLY"
-    }
-  ],
   "current_branch": "author/b04-r6-post-cutover-evidence-review-packet",
   "current_git_head": "32102e6b4c95a0958e197d28b19db282a0966ac9",
   "current_main_head": "c85b9668f46bbb398a52b847b1e0416f4c7bccc1",
@@ -685,8 +667,11 @@
     "public_verifier_delta_requirements_prep_only",
     "r6_opening_review_packet_prep_only_draft"
   ],
+  "review_role": "rollback_review",
+  "review_status": "PASS",
+  "rollback_ready": true,
   "runtime_cutover_executed": true,
-  "schema_id": "kt.e2e_closure.campaign_board.v4",
+  "schema_id": "kt.b04_r6.post_cutover_evidence_review.rollback_review.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_PACKET_BOUND__POST_CUTOVER_EVIDENCE_REVIEW_VALIDATION_NEXT",
   "static_comparator_weakened": false,
