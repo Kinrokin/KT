@@ -337,6 +337,7 @@ def test_all_json_outputs_keep_truth_and_trust_law_unchanged(outputs: Path, role
 def test_all_json_outputs_include_forbidden_actions(outputs: Path, role: str) -> None:
     payload = _payload(outputs, role)
     assert "R6_OPEN" in payload["forbidden_actions"]
+    assert "R6_OPENING_AUTHORIZED" in payload["forbidden_actions"]
     assert "R6_OPENING_EXECUTED" in payload["forbidden_actions"]
     assert "PACKAGE_PROMOTION_AUTHORIZED" in payload["forbidden_actions"]
     assert "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED" in payload["forbidden_actions"]
@@ -464,12 +465,45 @@ def test_r6_open_non_false_fails_closed(tmp_path: Path, monkeypatch: pytest.Monk
         auth.run(reports_root=reports)
 
 
+def test_r6_opening_authorized_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_predecessor(tmp_path, monkeypatch)
+    path = reports / auth.review_validation.OUTPUTS["validation_contract"]
+    payload = _load(path)
+    payload["r6_opening_authorized"] = True
+    _write(path, payload)
+    _patch_auth_env(monkeypatch, tmp_path)
+    with pytest.raises(auth.LaneFailure, match="AUTHORIZATION_DRIFT"):
+        auth.run(reports_root=reports)
+
+
 def test_plain_r6_open_claim_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_predecessor(tmp_path, monkeypatch)
     path = reports / auth.review_validation.OUTPUTS["pipeline_board"]
     payload = _load(path)
     payload["board"]["r6"] = "OPEN"
     payload["r6_open"] = False
+    _write(path, payload)
+    _patch_auth_env(monkeypatch, tmp_path)
+    with pytest.raises(auth.LaneFailure, match="CLAIM_TOKEN_DRIFT"):
+        auth.run(reports_root=reports)
+
+
+def test_array_claim_token_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_predecessor(tmp_path, monkeypatch)
+    path = reports / auth.review_validation.OUTPUTS["validation_contract"]
+    payload = _load(path)
+    payload["allowed_claims"] = ["R6 is open"]
+    _write(path, payload)
+    _patch_auth_env(monkeypatch, tmp_path)
+    with pytest.raises(auth.LaneFailure, match="CLAIM_TOKEN_DRIFT"):
+        auth.run(reports_root=reports)
+
+
+def test_forbidden_claim_array_token_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_predecessor(tmp_path, monkeypatch)
+    path = reports / auth.review_validation.OUTPUTS["validation_contract"]
+    payload = _load(path)
+    payload["forbidden_claims"] = ["R6 is open"]
     _write(path, payload)
     _patch_auth_env(monkeypatch, tmp_path)
     with pytest.raises(auth.LaneFailure, match="CLAIM_TOKEN_DRIFT"):

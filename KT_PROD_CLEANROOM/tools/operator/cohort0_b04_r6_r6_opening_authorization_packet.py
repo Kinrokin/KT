@@ -37,6 +37,7 @@ VALIDATION_OUTCOMES_PREPARED = (
 
 FORBIDDEN_ACTIONS = (
     "R6_OPEN",
+    "R6_OPENING_AUTHORIZED",
     "R6_OPENING_EXECUTED",
     "GLOBAL_RUNTIME_SURFACE_AUTHORIZED",
     "LOBE_ESCALATION_AUTHORIZED",
@@ -50,6 +51,7 @@ FORBIDDEN_ACTIONS = (
     "R6_OPENING_AUTHORIZATION_TREATED_AS_PACKAGE_PROMOTION",
 )
 AUTHORITY_DRIFT_KEYS = {
+    "r6_opening_authorized": "RC_B04R6_R6_OPENING_AUTH_AUTHORIZATION_DRIFT",
     "r6_open": "RC_B04R6_R6_OPENING_AUTH_R6_OPEN_DRIFT",
     "r6_opening_executed": "RC_B04R6_R6_OPENING_AUTH_EXECUTION_DRIFT",
     "global_runtime_surface_authorized": "RC_B04R6_R6_OPENING_AUTH_GLOBAL_SURFACE_DRIFT",
@@ -264,14 +266,18 @@ def _payloads(root: Path) -> tuple[Dict[str, Dict[str, Any]], Dict[str, str]]:
     return payloads, texts
 
 
-def _walk_items(value: Any) -> Iterable[tuple[str, Any]]:
+def _walk_items(value: Any, *, context_key: str = "") -> Iterable[tuple[str, Any]]:
     if isinstance(value, dict):
         for key, item in value.items():
-            yield str(key), item
-            yield from _walk_items(item)
+            key_text = str(key)
+            yield key_text, item
+            yield from _walk_items(item, context_key=key_text)
     elif isinstance(value, list):
         for item in value:
-            yield from _walk_items(item)
+            if isinstance(item, (dict, list)):
+                yield from _walk_items(item, context_key=context_key)
+            else:
+                yield context_key, item
 
 
 def _is_claim_bearing_field(key: str) -> bool:
