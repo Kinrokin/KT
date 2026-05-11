@@ -81,6 +81,7 @@ RUNTIME_REPLAY_OVERWRITTEN_INPUT_ROLES = frozenset(
         "external_audit_delta_manifest_prep_only",
         "public_verifier_delta_requirements_prep_only",
         "commercial_claim_boundary_update_prep_only",
+        "campaign_board",
         "pipeline_board",
         "future_blocker_register",
         "next_lawful_move",

@@ -299,4 +299,6 @@ def test_replay_allows_runtime_paths_overwritten_by_prior_review_output(tmp_path
     contract = review.run(reports_root=reports)
     assert contract["selected_outcome"] == review.SELECTED_OUTCOME
     assert "runtime_next_lawful_move_hash" not in contract["binding_hashes"]
+    assert "runtime_campaign_board_hash" not in contract["binding_hashes"]
     assert "next_lawful_move" in contract["replay_overwritten_runtime_input_roles"]
+    assert "campaign_board" in contract["replay_overwritten_runtime_input_roles"]
