@@ -181,9 +181,6 @@ PREP_ONLY_OUTPUT_ROLES = (
     "external_audit_delta_packet_prep_only_draft",
     "package_promotion_review_preconditions_prep_only_draft",
     "commercial_activation_claim_review_prep_only_draft",
-    "pipeline_board",
-    "campaign_board",
-    "future_blocker_register",
 )
 
 OUTPUTS = {
