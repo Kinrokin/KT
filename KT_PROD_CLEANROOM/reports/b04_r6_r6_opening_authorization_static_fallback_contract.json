@@ -5,7 +5,7 @@
     "B04_R6_R6_OPENING_AUTHORIZATION_PACKET_REJECTED__R6_OPENING_NOT_JUSTIFIED",
     "B04_R6_R6_OPENING_AUTHORIZATION_PACKET_INVALID__FORENSIC_R6_OPENING_AUTHORIZATION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_PIPELINE_BOARD",
+  "artifact_id": "B04_R6_R6_OPENING_AUTHORIZATION_STATIC_FALLBACK_CONTRACT",
   "authoritative_lane": "B04_R6_R6_OPENING_AUTHORIZATION_PACKET",
   "binding_hashes": {
     "campaign_board_hash": "6048c63c170c236103db7a7bdfd054d9814cdbb3fdcf1d247280016df12a63fc",
@@ -53,7 +53,6 @@
     "validation_receipt_hash": "94dc07c4a15609347bed05b7c7c44ac2874d0635c964c5374014bfa235ada486",
     "validation_report_hash": "45eb0c76b2ed40b1c7969e12f7931a6bcfa46c93cf43367d98ea089d42b5c025"
   },
-  "board_summary": "R6 opening authorization packet is bound for validation; R6 remains closed.",
   "cannot_authorize_commercial_activation_claims": true,
   "cannot_authorize_lobe_escalation": true,
   "cannot_authorize_package_promotion": true,
@@ -61,11 +60,14 @@
   "cannot_mutate_trust_zone_law": true,
   "cannot_mutate_truth_engine_law": true,
   "cannot_open_r6": true,
-  "claim_ceiling": "R6_OPENING_AUTHORIZATION_PACKET_AUTHORED_ONLY",
   "commercial_activation_claim_authorized": false,
+  "control_role": "static_fallback_contract",
+  "control_status": "DEFINED_FOR_VALIDATION",
   "current_branch": "author/b04-r6-r6-opening-authorization-packet",
   "current_git_head": "b553fe0a865c3476333f35df7112667d38175330",
   "current_main_head": "b553fe0a865c3476333f35df7112667d38175330",
+  "does_not_execute_r6_opening": true,
+  "does_not_open_r6": true,
   "forbidden_actions": [
     "R6_OPEN",
     "R6_OPENING_AUTHORIZED",
@@ -357,28 +359,6 @@
       "sha256": "45eb0c76b2ed40b1c7969e12f7931a6bcfa46c93cf43367d98ea089d42b5c025"
     }
   ],
-  "lanes": [
-    {
-      "authoritative": false,
-      "lane": "VALIDATE_B04_R6_R6_OPENING_REVIEW_PACKET",
-      "status": "VALIDATED"
-    },
-    {
-      "authoritative": true,
-      "lane": "B04_R6_R6_OPENING_AUTHORIZATION_PACKET",
-      "status": "CURRENT_BOUND"
-    },
-    {
-      "authoritative": false,
-      "lane": "VALIDATE_B04_R6_R6_OPENING_AUTHORIZATION_PACKET",
-      "status": "NEXT"
-    },
-    {
-      "authoritative": false,
-      "lane": "AUTHOR_B04_R6_R6_OPENING_EXECUTION_PACKET",
-      "status": "BLOCKED_PENDING_AUTHORIZATION_VALIDATION"
-    }
-  ],
   "lobe_escalation_authorized": false,
   "metric_contract_mutated": false,
   "next_lawful_move": "VALIDATE_B04_R6_R6_OPENING_AUTHORIZATION_PACKET",
@@ -394,6 +374,7 @@
   "predecessor_outcome": "B04_R6_R6_OPENING_REVIEW_VALIDATED__R6_OPENING_AUTHORIZATION_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_R6_OPENING_REVIEW_PACKET_VALIDATION",
   "previous_next_lawful_move": "AUTHOR_B04_R6_R6_OPENING_AUTHORIZATION_PACKET",
+  "purpose": "Require static fallback preservation during any future R6 opening.",
   "r6_open": false,
   "r6_opening_authorization_packet_authored": true,
   "r6_opening_authorization_treated_as_package_promotion": false,
@@ -424,11 +405,13 @@
     "RC_B04R6_R6_OPENING_AUTH_METRIC_MUTATION",
     "RC_B04R6_R6_OPENING_AUTH_COMPARATOR_WEAKENED"
   ],
+  "requires_future_validation": "VALIDATE_B04_R6_R6_OPENING_AUTHORIZATION_PACKET",
   "runtime_cutover_executed": true,
-  "schema_id": "kt.b04_r6.pipeline_board.v27",
+  "schema_id": "kt.b04_r6.r6_opening_authorization.static_fallback_contract.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_R6_OPENING_AUTHORIZATION_PACKET_BOUND__R6_OPENING_AUTHORIZATION_VALIDATION_NEXT",
   "static_comparator_weakened": false,
+  "static_fallback_required": true,
   "trust_zone_failures": [],
   "trust_zone_law_changed": false,
   "trust_zone_law_unchanged": true,
