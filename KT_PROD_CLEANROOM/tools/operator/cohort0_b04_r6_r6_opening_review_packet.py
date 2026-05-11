@@ -172,8 +172,6 @@ AUTHORITATIVE_OUTPUT_ROLES = (
     "next_lawful_move",
 )
 PREP_ONLY_OUTPUT_ROLES = (
-    "validation_plan",
-    "validation_reason_codes",
     "r6_opening_authorization_packet_prep_only_draft",
     "r6_opening_execution_packet_prep_only_draft",
     "post_opening_evidence_review_packet_prep_only_draft",

@@ -182,6 +182,15 @@ def test_prep_only_outputs_remain_prep_only(outputs: Path, role: str) -> None:
     assert payload["cannot_authorize_commercial_activation_claims"] is True
 
 
+def test_validation_scaffold_keeps_explicit_payload_shape(outputs: Path) -> None:
+    plan = _payload(outputs, "validation_plan")
+    reason_codes = _payload(outputs, "validation_reason_codes")
+    assert plan["validation_success_outcome"] == review.VALIDATION_SUCCESS_OUTCOME
+    assert "reason_codes" in reason_codes
+    assert plan.get("authority") != "PREP_ONLY"
+    assert reason_codes.get("authority") != "PREP_ONLY"
+
+
 @pytest.mark.parametrize("role", _json_roles())
 @pytest.mark.parametrize(
     "field,expected",
