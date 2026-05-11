@@ -5,7 +5,7 @@
     "B04_R6_R6_OPENING_INVALIDATED__FORENSIC_R6_OPENING_REVIEW_NEXT",
     "B04_R6_R6_OPENING_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS"
   ],
-  "artifact_id": "KT_FUTURE_BLOCKER_REGISTER",
+  "artifact_id": "B04_R6_R6_OPENING_NO_AUTHORIZATION_DRIFT_RECEIPT",
   "authoritative_lane": "B04_R6_R6_OPENING",
   "binding_hashes": {
     "packet_allowed_surface_contract_hash": "2d3f698408927e8d5f87a4ca1bf545aa735ffbceee8cc21dce5d80b662687887",
@@ -80,32 +80,6 @@
     "validation_validation_receipt_hash": "bceeeceb84c99d2bc419311fc4186f0489dc1775bfbb9087fc35d94057b2b7b5",
     "validation_validation_report_hash": "1f7c3f37e8a7826dacb5e175fad30dfb0ed610df7340c5ed7a5af1be517564a7"
   },
-  "blockers": [
-    {
-      "blocker_id": "B04R6-R6OPEN-001",
-      "category": "post_opening_evidence",
-      "required_next_artifact": "b04_r6_post_opening_evidence_review_packet_prep_only_draft.json",
-      "status": "OPEN"
-    },
-    {
-      "blocker_id": "B04R6-R6OPEN-002",
-      "category": "package_promotion",
-      "required_next_artifact": "b04_r6_package_promotion_review_packet_prep_only_draft.json",
-      "status": "BLOCKING"
-    },
-    {
-      "blocker_id": "B04R6-R6OPEN-003",
-      "category": "commercial_claims",
-      "required_next_artifact": "b04_r6_commercial_claim_boundary_update_prep_only.json",
-      "status": "BLOCKING"
-    },
-    {
-      "blocker_id": "B04R6-R6OPEN-004",
-      "category": "external_audit",
-      "required_next_artifact": "b04_r6_external_audit_delta_manifest_prep_only.json",
-      "status": "OPEN"
-    }
-  ],
   "case_rows": [
     {
       "abstention_fallback_available": true,
@@ -1003,6 +977,7 @@
   "metric_contract_mutated": false,
   "next_lawful_move": "AUTHOR_B04_R6_R6_OPENING_EVIDENCE_REVIEW_PACKET",
   "no_authorization_drift": true,
+  "no_downstream_authorization_drift": true,
   "outcome_routing": {
     "B04_R6_R6_OPENING_DEFERRED__NAMED_RUNTIME_DEFECT_REMAINS": "REPAIR_B04_R6_R6_OPENING_DEFECTS",
     "B04_R6_R6_OPENING_FAILED__ROLLBACK_OR_REPAIR_NEXT": "AUTHOR_B04_R6_R6_OPENING_ROLLBACK_OR_REPAIR_PACKET",
@@ -1073,9 +1048,10 @@
     "RC_B04R6_R6_OPENING_METRIC_MUTATION",
     "RC_B04R6_R6_OPENING_COMPARATOR_WEAKENED"
   ],
+  "receipt_role": "no_authorization_drift",
   "runtime_cutover_executed": true,
   "runtime_mode": "BOUNDED_R6_OPENING_UNDER_VALIDATED_PACKET",
-  "schema_id": "kt.future_blocker_register.v10",
+  "schema_id": "kt.b04_r6.r6_opening.no_authorization_drift.v1",
   "schema_version": "v1",
   "scorecard": {
     "abstention_fallback_preserved": true,
