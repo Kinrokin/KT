@@ -382,6 +382,26 @@ def test_claim_bearing_execution_token_fails_closed(tmp_path: Path, monkeypatch:
         exec_packet.run(reports_root=reports)
 
 
+def test_text_input_r6_open_token_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_predecessor(tmp_path, monkeypatch)
+    path = reports / auth_validation.OUTPUTS["validation_report"]
+    text = path.read_text(encoding="utf-8")
+    path.write_text(text + "\nR6_OPEN\n", encoding="utf-8")
+    _patch_exec_env(monkeypatch, tmp_path)
+    with pytest.raises(exec_packet.LaneFailure, match="R6_OPEN_DRIFT"):
+        exec_packet.run(reports_root=reports)
+
+
+def test_text_input_package_promotion_token_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_predecessor(tmp_path, monkeypatch)
+    path = reports / auth_validation.OUTPUTS["validation_report"]
+    text = path.read_text(encoding="utf-8")
+    path.write_text(text + "\nPACKAGE_PROMOTION_AUTHORIZED\n", encoding="utf-8")
+    _patch_exec_env(monkeypatch, tmp_path)
+    with pytest.raises(exec_packet.LaneFailure, match="PACKAGE_PROMOTION_DRIFT"):
+        exec_packet.run(reports_root=reports)
+
+
 def test_forbidden_claim_list_may_describe_blocked_claims(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_predecessor(tmp_path, monkeypatch)
     path = reports / auth_validation.OUTPUTS["validation_contract"]

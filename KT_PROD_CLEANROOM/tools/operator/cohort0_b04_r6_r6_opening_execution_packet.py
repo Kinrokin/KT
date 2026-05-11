@@ -104,6 +104,18 @@ TEXT_FORBIDDEN_CLAIMS = {
     "COMMERCIAL ACTIVATION CLAIM AUTHORIZED": "RC_B04R6_R6_OPENING_EXEC_PACKET_COMMERCIAL_CLAIM_DRIFT",
     "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED": "RC_B04R6_R6_OPENING_EXEC_PACKET_COMMERCIAL_CLAIM_DRIFT",
 }
+FORBIDDEN_ACTION_REASON_CODES = {
+    "R6_OPENING_EXECUTED": "RC_B04R6_R6_OPENING_EXEC_PACKET_EXECUTION_DRIFT",
+    "R6_OPEN": "RC_B04R6_R6_OPENING_EXEC_PACKET_R6_OPEN_DRIFT",
+    "GLOBAL_RUNTIME_SURFACE_AUTHORIZED": "RC_B04R6_R6_OPENING_EXEC_PACKET_GLOBAL_SURFACE_DRIFT",
+    "LOBE_ESCALATION_AUTHORIZED": "RC_B04R6_R6_OPENING_EXEC_PACKET_LOBE_ESCALATION_DRIFT",
+    "PACKAGE_PROMOTION_AUTHORIZED": "RC_B04R6_R6_OPENING_EXEC_PACKET_PACKAGE_PROMOTION_DRIFT",
+    "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED": "RC_B04R6_R6_OPENING_EXEC_PACKET_COMMERCIAL_CLAIM_DRIFT",
+    "TRUTH_ENGINE_LAW_MUTATED": "RC_B04R6_R6_OPENING_EXEC_PACKET_TRUTH_ENGINE_MUTATION",
+    "TRUST_ZONE_LAW_MUTATED": "RC_B04R6_R6_OPENING_EXEC_PACKET_TRUST_ZONE_MUTATION",
+    "METRIC_CONTRACT_MUTATED": "RC_B04R6_R6_OPENING_EXEC_PACKET_METRIC_MUTATION",
+    "STATIC_COMPARATOR_WEAKENED": "RC_B04R6_R6_OPENING_EXEC_PACKET_COMPARATOR_WEAKENED",
+}
 
 REASON_CODES = tuple(
     dict.fromkeys(
@@ -338,9 +350,13 @@ def _ensure_claim_boundary(payload: Dict[str, Any], *, label: str) -> None:
 
 
 def _ensure_text_authority_closed(text: str, *, label: str) -> None:
+    words = _token_words(text)
     for phrase, reason in TEXT_FORBIDDEN_CLAIMS.items():
-        if _contains_sequence(_token_words(text), phrase.replace(" ", "_")):
+        if _contains_sequence(words, phrase.replace(" ", "_")):
             _fail(reason, f"{label} contains forbidden claim phrase {phrase!r}")
+    for token, reason in FORBIDDEN_ACTION_REASON_CODES.items():
+        if _contains_sequence(words, token):
+            _fail(reason, f"{label} contains forbidden action token {token!r}")
 
 
 def _payloads_from_inputs(root: Path) -> tuple[Dict[str, Dict[str, Any]], Dict[str, str]]:
