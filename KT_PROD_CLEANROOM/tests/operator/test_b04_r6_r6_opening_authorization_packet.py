@@ -50,6 +50,11 @@ def _patch_auth_env(
     monkeypatch.setattr(auth.common, "git_rev_parse", lambda root, ref: refs.get(ref, head))
     monkeypatch.setattr(
         auth,
+        "_git_blob_sha256",
+        lambda root, commit, raw: auth.file_sha256(auth.common.resolve_path(root, raw)),
+    )
+    monkeypatch.setattr(
+        auth,
         "validate_trust_zones",
         lambda *, root: {"schema_id": "trust", "status": "PASS", "failures": [], "checks": [{"status": "PASS"}]},
     )
@@ -231,6 +236,14 @@ def test_input_binding_rows_are_sorted_by_role(outputs: Path) -> None:
     assert roles == sorted(roles)
 
 
+def test_shared_canonical_outputs_bind_pre_overwrite_git_objects(outputs: Path) -> None:
+    rows = {row["role"]: row for row in _contract(outputs)["input_bindings"]}
+    for role in auth.SHARED_CANONICAL_INPUTS:
+        assert rows[role]["binding_kind"] == "git_object_before_overwrite"
+        assert rows[role]["git_commit"] == AUTH_MAIN_HEAD
+        assert rows[role]["mutable_canonical_path_overwritten_by_this_lane"] is True
+
+
 @pytest.mark.parametrize("row_index", range(0, 220))
 def test_input_binding_rows_have_hash_shape(outputs: Path, row_index: int) -> None:
     rows = _contract(outputs)["input_bindings"]
@@ -344,12 +357,36 @@ def test_all_json_outputs_include_forbidden_actions(outputs: Path, role: str) ->
 
 
 def test_pipeline_board_marks_authorization_validation_next(outputs: Path) -> None:
-    board = _payload(outputs, "pipeline_board")["board"]
-    assert board["r6_opening_review"] == "VALIDATED"
-    assert board["r6_opening_authorization_packet"] == "BOUND"
-    assert board["r6_opening_authorization_validation"] == "NEXT"
-    assert board["r6_opening_execution_packet"] == "PREP_ONLY"
-    assert board["r6"] == "CLOSED"
+    board = _payload(outputs, "pipeline_board")
+    assert board["schema_id"].startswith("kt.b04_r6.pipeline_board.")
+    assert board["artifact_id"] == "B04_R6_PIPELINE_BOARD"
+    lanes = {row["lane"]: row["status"] for row in board["lanes"]}
+    assert lanes["VALIDATE_B04_R6_R6_OPENING_REVIEW_PACKET"] == "VALIDATED"
+    assert lanes[auth.AUTHORITATIVE_LANE] == "CURRENT_BOUND"
+    assert lanes[auth.NEXT_LAWFUL_MOVE] == "NEXT"
+    assert lanes["AUTHOR_B04_R6_R6_OPENING_EXECUTION_PACKET"] == "BLOCKED_PENDING_AUTHORIZATION_VALIDATION"
+
+
+def test_campaign_board_keeps_canonical_shape(outputs: Path) -> None:
+    board = _payload(outputs, "campaign_board")
+    assert board["schema_id"].startswith("kt.e2e_closure.campaign_board.")
+    assert board["artifact_id"] == "KT_E2E_CLOSURE_CAMPAIGN_BOARD"
+    corridors = {row["corridor"]: row["status"] for row in board["corridors"]}
+    assert corridors["R6_OPENING"] == "AUTHORIZATION_PACKET_BOUND_VALIDATION_NEXT"
+    assert corridors["PACKAGE_PROMOTION"] == "BLOCKED"
+
+
+def test_future_blocker_register_keeps_canonical_shape(outputs: Path) -> None:
+    register = _payload(outputs, "future_blocker_register")
+    assert register["schema_id"].startswith("kt.future_blocker_register.")
+    assert register["artifact_id"] == "KT_FUTURE_BLOCKER_REGISTER"
+    assert all(isinstance(row, dict) for row in register["blockers"])
+    assert {row["category"] for row in register["blockers"]} >= {
+        "r6_opening_authorization",
+        "r6_opening_execution",
+        "package_promotion",
+        "commercial_claims",
+    }
 
 
 def test_next_lawful_move_is_authorization_validation(outputs: Path) -> None:
@@ -407,6 +444,28 @@ def test_previous_next_move_drift_fails_closed(tmp_path: Path, monkeypatch: pyte
     _write(path, payload)
     _patch_auth_env(monkeypatch, tmp_path)
     with pytest.raises(auth.LaneFailure, match="NEXT_MOVE_DRIFT"):
+        auth.run(reports_root=reports)
+
+
+def test_validation_receipt_lane_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_predecessor(tmp_path, monkeypatch)
+    path = reports / auth.review_validation.OUTPUTS["validation_receipt"]
+    payload = _load(path)
+    payload["authoritative_lane"] = "B04_R6_WRONG_LANE"
+    _write(path, payload)
+    _patch_auth_env(monkeypatch, tmp_path)
+    with pytest.raises(auth.LaneFailure, match="PREVIOUS_VALIDATION_MISSING"):
+        auth.run(reports_root=reports)
+
+
+def test_next_lawful_move_outcome_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_predecessor(tmp_path, monkeypatch)
+    path = reports / auth.review_validation.OUTPUTS["next_lawful_move"]
+    payload = _load(path)
+    payload["selected_outcome"] = "B04_R6_R6_OPENING_REVIEW_DEFERRED__NAMED_REVIEW_DEFECT_REMAINS"
+    _write(path, payload)
+    _patch_auth_env(monkeypatch, tmp_path)
+    with pytest.raises(auth.LaneFailure, match="PREVIOUS_OUTCOME_DRIFT"):
         auth.run(reports_root=reports)
 
 

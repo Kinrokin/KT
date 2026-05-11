@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional, Sequence
 
@@ -172,10 +174,18 @@ PREP_ONLY_OUTPUT_ROLES = (
     "public_verifier_delta_prep_only_draft",
     "commercial_claim_ceiling_update_prep_only",
     "package_promotion_blocker_update_prep_only",
+)
+SHARED_CANONICAL_OUTPUT_ROLES = (
     "pipeline_board",
     "campaign_board",
     "future_blocker_register",
 )
+SHARED_CANONICAL_INPUTS = {
+    "source_pipeline_board": "KT_PROD_CLEANROOM/reports/b04_r6_pipeline_board.json",
+    "source_campaign_board": "KT_PROD_CLEANROOM/reports/kt_e2e_closure_campaign_board.json",
+    "source_future_blocker_register": "KT_PROD_CLEANROOM/reports/kt_future_blocker_register.json",
+    "source_next_lawful_move": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
+}
 
 OUTPUTS = {
     "packet_contract": "b04_r6_r6_opening_authorization_packet_contract.json",
@@ -319,8 +329,17 @@ def _is_sha256(value: Any) -> bool:
     return isinstance(value, str) and len(value) == 64 and all(ch in "0123456789abcdef" for ch in value)
 
 
-def _input_bindings(root: Path) -> list[Dict[str, str]]:
-    rows: list[Dict[str, str]] = []
+def _git_blob_sha256(root: Path, commit: str, raw: str) -> str:
+    blob_ref = f"{commit}:{raw.replace(chr(92), '/')}"
+    try:
+        result = subprocess.run(["git", "show", blob_ref], cwd=root, capture_output=True, check=True)
+    except subprocess.CalledProcessError as exc:
+        _fail("RC_B04R6_R6_OPENING_AUTH_INPUT_HASH_MISSING", f"missing git blob {blob_ref}: {exc}")
+    return hashlib.sha256(result.stdout).hexdigest()
+
+
+def _input_bindings(root: Path, *, current_main_head: str) -> list[Dict[str, Any]]:
+    rows: list[Dict[str, Any]] = []
     for role, raw in sorted({**VALIDATION_JSON_INPUTS, **VALIDATION_TEXT_INPUTS}.items()):
         rows.append(
             {
@@ -330,11 +349,22 @@ def _input_bindings(root: Path) -> list[Dict[str, str]]:
                 "binding_kind": "file_sha256_at_r6_opening_authorization_packet_authoring",
             }
         )
-    return rows
+    for role, raw in sorted(SHARED_CANONICAL_INPUTS.items()):
+        rows.append(
+            {
+                "role": role,
+                "path": raw,
+                "sha256": _git_blob_sha256(root, current_main_head, raw),
+                "binding_kind": "git_object_before_overwrite",
+                "git_commit": current_main_head,
+                "mutable_canonical_path_overwritten_by_this_lane": True,
+            }
+        )
+    return sorted(rows, key=lambda row: str(row["role"]))
 
 
-def _binding_hashes(root: Path) -> Dict[str, str]:
-    return {f"{row['role']}_hash": row["sha256"] for row in _input_bindings(root)}
+def _binding_hashes(input_bindings: list[Dict[str, Any]]) -> Dict[str, str]:
+    return {f"{row['role']}_hash": row["sha256"] for row in input_bindings}
 
 
 def _validate_handoff(payloads: Dict[str, Dict[str, Any]]) -> None:
@@ -347,8 +377,16 @@ def _validate_handoff(payloads: Dict[str, Dict[str, Any]]) -> None:
         _fail("RC_B04R6_R6_OPENING_AUTH_PREVIOUS_OUTCOME_DRIFT", "validation contract outcome drift")
     if receipt.get("selected_outcome") != EXPECTED_PREVIOUS_OUTCOME:
         _fail("RC_B04R6_R6_OPENING_AUTH_PREVIOUS_OUTCOME_DRIFT", "validation receipt outcome drift")
+    if receipt.get("authoritative_lane") != PREVIOUS_LANE:
+        _fail("RC_B04R6_R6_OPENING_AUTH_PREVIOUS_VALIDATION_MISSING", "validation receipt lane drift")
     if contract.get("next_lawful_move") != EXPECTED_PREVIOUS_NEXT_MOVE:
         _fail("RC_B04R6_R6_OPENING_AUTH_NEXT_MOVE_DRIFT", "validation contract next move drift")
+    if receipt.get("next_lawful_move") != EXPECTED_PREVIOUS_NEXT_MOVE:
+        _fail("RC_B04R6_R6_OPENING_AUTH_NEXT_MOVE_DRIFT", "validation receipt next move drift")
+    if next_move.get("authoritative_lane") != PREVIOUS_LANE:
+        _fail("RC_B04R6_R6_OPENING_AUTH_NEXT_MOVE_DRIFT", "next-lawful-move lane drift")
+    if next_move.get("selected_outcome") != EXPECTED_PREVIOUS_OUTCOME:
+        _fail("RC_B04R6_R6_OPENING_AUTH_PREVIOUS_OUTCOME_DRIFT", "next-lawful-move outcome drift")
     if next_move.get("next_lawful_move") != EXPECTED_PREVIOUS_NEXT_MOVE:
         _fail("RC_B04R6_R6_OPENING_AUTH_NEXT_MOVE_DRIFT", "next-lawful-move receipt drift")
     if contract.get("r6_opening_authorization_packet_next") is not True:
@@ -725,42 +763,60 @@ def _outputs(base: Dict[str, Any]) -> Dict[str, Any]:
                     "external_audit_delta_not_validated",
                 ],
             ),
-            "pipeline_board": _prep_only(
+            "pipeline_board": _artifact(
                 base,
-                role="pipeline_board",
-                purpose="Update B04 R6 board for R6 opening authorization packet authoring.",
-                board={
-                    "r6_opening_review": "VALIDATED",
-                    "r6_opening_authorization_packet": "BOUND",
-                    "r6_opening_authorization_validation": "NEXT",
-                    "r6_opening_execution_packet": "PREP_ONLY",
-                    "r6": "CLOSED",
-                    "package_promotion": "BLOCKED",
-                    "commercial_activation_claims": "UNAUTHORIZED",
-                },
+                schema_id="kt.b04_r6.pipeline_board.v27",
+                artifact_id="B04_R6_PIPELINE_BOARD",
+                lanes=[
+                    {"lane": "VALIDATE_B04_R6_R6_OPENING_REVIEW_PACKET", "status": "VALIDATED", "authoritative": False},
+                    {"lane": AUTHORITATIVE_LANE, "status": "CURRENT_BOUND", "authoritative": True},
+                    {"lane": NEXT_LAWFUL_MOVE, "status": "NEXT", "authoritative": False},
+                    {"lane": "AUTHOR_B04_R6_R6_OPENING_EXECUTION_PACKET", "status": "BLOCKED_PENDING_AUTHORIZATION_VALIDATION", "authoritative": False},
+                ],
+                board_summary="R6 opening authorization packet is bound for validation; R6 remains closed.",
+                claim_ceiling="R6_OPENING_AUTHORIZATION_PACKET_AUTHORED_ONLY",
             ),
-            "campaign_board": _prep_only(
+            "campaign_board": _artifact(
                 base,
-                role="campaign_board",
-                purpose="Update E2E campaign board.",
+                schema_id="kt.e2e_closure.campaign_board.v6",
+                artifact_id="KT_E2E_CLOSURE_CAMPAIGN_BOARD",
                 corridors=[
                     {"corridor": "R6_OPENING", "status": "AUTHORIZATION_PACKET_BOUND_VALIDATION_NEXT"},
                     {"corridor": "PACKAGE_PROMOTION", "status": "BLOCKED"},
                     {"corridor": "COMMERCIAL_TRUTH_PLANE", "status": "BOUNDARY_ONLY"},
                     {"corridor": "EXTERNAL_AUDIT", "status": "PREP_ONLY"},
                 ],
+                claim_ceiling="R6_OPENING_AUTHORIZATION_PACKET_AUTHORED_ONLY",
             ),
-            "future_blocker_register": _prep_only(
+            "future_blocker_register": _artifact(
                 base,
-                role="future_blocker_register",
-                purpose="Track blockers after R6 opening authorization packet authoring.",
+                schema_id="kt.future_blocker_register.v9",
+                artifact_id="KT_FUTURE_BLOCKER_REGISTER",
                 blockers=[
-                    "r6_opening_authorization_validation_not_complete",
-                    "r6_opening_execution_packet_not_authored_or_validated",
-                    "r6_opening_not_executed",
-                    "post_opening_evidence_review_not_authored",
-                    "package_promotion_remains_blocked",
-                    "commercial_activation_claims_remain_forbidden",
+                    {
+                        "blocker_id": "B04R6-R6-OPENING-AUTH-001",
+                        "category": "r6_opening_authorization",
+                        "required_next_artifact": "b04_r6_r6_opening_authorization_validation_plan.json",
+                        "status": "OPEN",
+                    },
+                    {
+                        "blocker_id": "B04R6-R6-OPENING-AUTH-002",
+                        "category": "r6_opening_execution",
+                        "required_next_artifact": "b04_r6_r6_opening_execution_packet_contract.json",
+                        "status": "BLOCKED_PENDING_AUTHORIZATION_VALIDATION",
+                    },
+                    {
+                        "blocker_id": "B04R6-R6-OPENING-AUTH-003",
+                        "category": "package_promotion",
+                        "required_next_artifact": "b04_r6_package_promotion_review_packet_prep_only_draft.json",
+                        "status": "BLOCKING",
+                    },
+                    {
+                        "blocker_id": "B04R6-R6-OPENING-AUTH-004",
+                        "category": "commercial_claims",
+                        "required_next_artifact": "b04_r6_commercial_activation_claim_review_prep_only_draft.json",
+                        "status": "BLOCKING",
+                    },
                 ],
             ),
         }
@@ -806,13 +862,14 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
     trust_zone_validation = validate_trust_zones(root=root)
     if trust_zone_validation.get("status") != "PASS" or trust_zone_validation.get("failures"):
         _fail("RC_B04R6_R6_OPENING_AUTH_TRUST_ZONE_FAILED", "trust-zone validation failed")
+    input_bindings = _input_bindings(root, current_main_head=current_main_head)
     base = _base(
         generated_utc=utc_now_iso_z(),
         head=packet_head,
         current_main_head=current_main_head,
         branch=branch,
-        input_bindings=_input_bindings(root),
-        binding_hashes=_binding_hashes(root),
+        input_bindings=input_bindings,
+        binding_hashes=_binding_hashes(input_bindings),
         trust_zone_validation=trust_zone_validation,
     )
     output_payloads = _outputs(base)
