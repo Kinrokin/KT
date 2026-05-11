@@ -4,7 +4,7 @@
     "B04_R6_R6_OPENING_REVIEW_PACKET_DEFERRED__NAMED_REVIEW_DEFECT_REMAINS",
     "B04_R6_R6_OPENING_REVIEW_PACKET_INVALID__FORENSIC_R6_OPENING_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_R6_OPENING_DECISION_MATRIX",
   "authoritative_lane": "B04_R6_R6_OPENING_REVIEW_PACKET",
   "binding_hashes": {
     "claim_token_boundary_validation_hash": "407fe6ad291a68591415cbe7987569b030dbfe4e5ad2cfb52d467597c7448ac2",
@@ -82,6 +82,31 @@
   "current_branch": "author/b04-r6-r6-opening-review-packet",
   "current_git_head": "23097d14659727305155e06283b19e0238fd4493",
   "current_main_head": "ea3018d74cff36c5df9291ce4c9519685a706ac1",
+  "decision_matrix": {
+    "blocking_reasons": [
+      "r6_opening_requires_r6_opening_review_validation",
+      "r6_opening_authorization_requires_separate_authorization_packet",
+      "r6_opening_execution_requires_authorization_and_execution_packet_validation",
+      "package_promotion_requires_r6_opening_evidence_review_and_external_audit_delta",
+      "commercial_activation_claims_remain_forbidden"
+    ],
+    "commercial_claim_status": "BOUNDARY_ONLY",
+    "decision_matrix_id": "B04_R6_R6_OPENING_DECISION_MATRIX_V1",
+    "external_audit_delta_ready": "READY_FOR_PACKET",
+    "limited_continuation_ready": false,
+    "package_promotion_ready": false,
+    "r6_opening_authorization_review_ready": true,
+    "recommendation_is_authority": false,
+    "recommended_next_path": "R6_OPENING_AUTHORIZATION_PACKET_NEXT",
+    "rollback_freeze_ready": false,
+    "runtime_cutover_review_validated": true,
+    "supporting_evidence": [
+      "post_cutover_evidence_review_validation_passed",
+      "runtime_cutover_passed_under_bounded_packet_law",
+      "fallback_operator_rollback_controls_preserved",
+      "trace_replay_external_verifier_readiness_passed"
+    ]
+  },
   "evidence_inventory": {
     "bound_artifact_count": 70,
     "input_bindings": [
@@ -1058,7 +1083,7 @@
   "recommendation_is_authority": false,
   "recommended_validated_path": "R6_OPENING_AUTHORIZATION_PACKET_NEXT",
   "runtime_cutover_executed": true,
-  "schema_id": "kt.b04_r6.r6_opening_review.next_lawful_move.v1",
+  "schema_id": "kt.b04_r6.r6_opening_review.decision_matrix.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_R6_OPENING_REVIEW_PACKET_BOUND__R6_OPENING_REVIEW_VALIDATION_NEXT",
   "static_comparator_weakened": false,
@@ -1069,6 +1094,5 @@
   "truth_engine_law_changed": false,
   "truth_engine_law_unchanged": true,
   "validation_success_next_move": "AUTHOR_B04_R6_R6_OPENING_AUTHORIZATION_PACKET",
-  "validation_success_outcome": "B04_R6_R6_OPENING_REVIEW_VALIDATED__R6_OPENING_AUTHORIZATION_PACKET_NEXT",
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  "validation_success_outcome": "B04_R6_R6_OPENING_REVIEW_VALIDATED__R6_OPENING_AUTHORIZATION_PACKET_NEXT"
 }

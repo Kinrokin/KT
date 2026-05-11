@@ -4,7 +4,7 @@
     "B04_R6_R6_OPENING_REVIEW_PACKET_DEFERRED__NAMED_REVIEW_DEFECT_REMAINS",
     "B04_R6_R6_OPENING_REVIEW_PACKET_INVALID__FORENSIC_R6_OPENING_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_R6_OPENING_REVIEW_SCORECARD",
   "authoritative_lane": "B04_R6_R6_OPENING_REVIEW_PACKET",
   "binding_hashes": {
     "claim_token_boundary_validation_hash": "407fe6ad291a68591415cbe7987569b030dbfe4e5ad2cfb52d467597c7448ac2",
@@ -1058,8 +1058,27 @@
   "recommendation_is_authority": false,
   "recommended_validated_path": "R6_OPENING_AUTHORIZATION_PACKET_NEXT",
   "runtime_cutover_executed": true,
-  "schema_id": "kt.b04_r6.r6_opening_review.next_lawful_move.v1",
+  "schema_id": "kt.b04_r6.r6_opening_review.scorecard.v1",
   "schema_version": "v1",
+  "scorecard": {
+    "commercial_claim_boundary_preserved": true,
+    "drift_bounded": true,
+    "external_verifier_ready": true,
+    "fallbacks_preserved": true,
+    "incident_freeze_clean": true,
+    "kill_switch_ready": true,
+    "operator_controls_preserved": true,
+    "overall_grade": "A_READY_FOR_R6_OPENING_AUTHORIZATION_REVIEW",
+    "package_promotion_ready": false,
+    "post_cutover_evidence_review_validated": true,
+    "r6_open_ready": false,
+    "r6_opening_authorization_review_ready": true,
+    "recommendation_is_authority": false,
+    "rollback_ready": true,
+    "runtime_cutover_passed": true,
+    "scorecard_id": "B04_R6_R6_OPENING_REVIEW_SCORECARD_V1",
+    "trace_replay_complete": true
+  },
   "selected_outcome": "B04_R6_R6_OPENING_REVIEW_PACKET_BOUND__R6_OPENING_REVIEW_VALIDATION_NEXT",
   "static_comparator_weakened": false,
   "trust_zone_failures": [],
@@ -1069,6 +1088,5 @@
   "truth_engine_law_changed": false,
   "truth_engine_law_unchanged": true,
   "validation_success_next_move": "AUTHOR_B04_R6_R6_OPENING_AUTHORIZATION_PACKET",
-  "validation_success_outcome": "B04_R6_R6_OPENING_REVIEW_VALIDATED__R6_OPENING_AUTHORIZATION_PACKET_NEXT",
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  "validation_success_outcome": "B04_R6_R6_OPENING_REVIEW_VALIDATED__R6_OPENING_AUTHORIZATION_PACKET_NEXT"
 }

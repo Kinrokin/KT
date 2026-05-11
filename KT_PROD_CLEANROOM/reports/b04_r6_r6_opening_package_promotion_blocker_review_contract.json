@@ -4,7 +4,7 @@
     "B04_R6_R6_OPENING_REVIEW_PACKET_DEFERRED__NAMED_REVIEW_DEFECT_REMAINS",
     "B04_R6_R6_OPENING_REVIEW_PACKET_INVALID__FORENSIC_R6_OPENING_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_R6_OPENING_PACKAGE_PROMOTION_BLOCKER_REVIEW",
   "authoritative_lane": "B04_R6_R6_OPENING_REVIEW_PACKET",
   "binding_hashes": {
     "claim_token_boundary_validation_hash": "407fe6ad291a68591415cbe7987569b030dbfe4e5ad2cfb52d467597c7448ac2",
@@ -1024,6 +1024,7 @@
   "opening_review_treated_as_r6_opening": false,
   "package_promotion": "DEFERRED",
   "package_promotion_authorized": false,
+  "package_promotion_ready": false,
   "post_cutover_evidence_review_validated": true,
   "predecessor_outcome": "B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_VALIDATED__R6_OPENING_REVIEW_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_POST_CUTOVER_EVIDENCE_REVIEW_PACKET_VALIDATION",
@@ -1057,8 +1058,10 @@
   ],
   "recommendation_is_authority": false,
   "recommended_validated_path": "R6_OPENING_AUTHORIZATION_PACKET_NEXT",
+  "review_role": "package_promotion_blocker_review",
+  "review_status": "PASS",
   "runtime_cutover_executed": true,
-  "schema_id": "kt.b04_r6.r6_opening_review.next_lawful_move.v1",
+  "schema_id": "kt.b04_r6.r6_opening_review.package_promotion_blocker_review.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_R6_OPENING_REVIEW_PACKET_BOUND__R6_OPENING_REVIEW_VALIDATION_NEXT",
   "static_comparator_weakened": false,
@@ -1069,6 +1072,5 @@
   "truth_engine_law_changed": false,
   "truth_engine_law_unchanged": true,
   "validation_success_next_move": "AUTHOR_B04_R6_R6_OPENING_AUTHORIZATION_PACKET",
-  "validation_success_outcome": "B04_R6_R6_OPENING_REVIEW_VALIDATED__R6_OPENING_AUTHORIZATION_PACKET_NEXT",
-  "verdict": "NEXT_LAWFUL_MOVE_SET"
+  "validation_success_outcome": "B04_R6_R6_OPENING_REVIEW_VALIDATED__R6_OPENING_AUTHORIZATION_PACKET_NEXT"
 }
