@@ -5,9 +5,11 @@
     "B04_R6_R6_OPENING_EXECUTION_PACKET_REJECTED__R6_OPENING_EXECUTION_NOT_JUSTIFIED",
     "B04_R6_R6_OPENING_EXECUTION_PACKET_INVALID__FORENSIC_R6_OPENING_EXECUTION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_R6_OPENING_EXECUTION_PACKAGE_PROMOTION_REVIEW_PACKET_PREP_ONLY_DRAFT",
+  "allowed_scope": [
+    "B04_R6_BOUNDED_RUNTIME_SURFACE"
+  ],
+  "artifact_id": "B04_R6_R6_OPENING_EXECUTION_SCOPE_MANIFEST",
   "authoritative_lane": "B04_R6_R6_OPENING_EXECUTION_PACKET",
-  "authority": "PREP_ONLY",
   "binding_hashes": {
     "allowed_surface_validation_hash": "df0047beb448d526e4de76806a2b9a47f73a73181d3df1f5e9ba2f9d524c364e",
     "campaign_board_validation_hash": "3378f2231a257628d97124865682b0bc7405974b1948e04627e6d6142cb64b4d",
@@ -42,18 +44,13 @@
     "validation_receipt_hash": "6c4508e28a1148dfcf9cd0327efd7b72bcc01b668b7c31b99b65bcf50893051c",
     "validation_report_hash": "653262bac5f86659e927bf6e78ba0e2a67ef4c28f8b2c085f0a576d067559f85"
   },
-  "cannot_authorize_commercial_activation_claims": true,
-  "cannot_authorize_global_runtime_surface": true,
-  "cannot_authorize_lobe_escalation": true,
-  "cannot_authorize_package_promotion": true,
-  "cannot_execute_r6_opening": true,
-  "cannot_mutate_trust_zone_law": true,
-  "cannot_mutate_truth_engine_law": true,
-  "cannot_open_r6": true,
   "commercial_activation_claim_authorized": false,
+  "control_status": "DEFINED_FOR_VALIDATION",
   "current_branch": "author/b04-r6-r6-opening-execution-packet",
   "current_git_head": "40785593737bfd9f47973fc02a767faa9da72ca9",
   "current_main_head": "40785593737bfd9f47973fc02a767faa9da72ca9",
+  "does_not_execute_r6_opening": true,
+  "does_not_open_r6": true,
   "forbidden_actions": [
     "R6_OPENING_EXECUTED",
     "R6_OPEN",
@@ -67,6 +64,7 @@
     "STATIC_COMPARATOR_WEAKENED"
   ],
   "generated_utc": "2026-05-11T15:18:28Z",
+  "global_runtime_surface": false,
   "global_runtime_surface_authorized": false,
   "input_bindings": [
     {
@@ -277,21 +275,28 @@
   "predecessor_outcome": "B04_R6_R6_OPENING_AUTHORIZATION_VALIDATED__R6_OPENING_EXECUTION_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_R6_OPENING_AUTHORIZATION_PACKET_VALIDATION",
   "previous_next_lawful_move": "AUTHOR_B04_R6_R6_OPENING_EXECUTION_PACKET",
-  "purpose": "Prepare package promotion review blockers only.",
   "r6_open": false,
   "r6_opening_authorization_packet_authored": true,
   "r6_opening_authorization_validated": true,
   "r6_opening_authorized": false,
   "r6_opening_executed": false,
+  "r6_opening_execution_authorized": false,
   "r6_opening_execution_packet_authored": true,
   "r6_opening_execution_packet_validated": false,
   "r6_opening_review_validated": true,
+  "requires_future_validation": "VALIDATE_B04_R6_R6_OPENING_EXECUTION_PACKET",
   "runtime_cutover_executed": true,
-  "schema_id": "kt.b04_r6.r6_opening_execution_packet.package_promotion_review_packet_prep_only_draft.prep_only.v1",
+  "safety_control_reason_codes": {
+    "kill_switch_required": "RC_B04R6_R6_OPENING_EXEC_PACKET_KILL_SWITCH_REQUIRED",
+    "operator_override_required": "RC_B04R6_R6_OPENING_EXEC_PACKET_OPERATOR_OVERRIDE_REQUIRED",
+    "rollback_required": "RC_B04R6_R6_OPENING_EXEC_PACKET_ROLLBACK_REQUIRED",
+    "static_fallback_required": "RC_B04R6_R6_OPENING_EXEC_PACKET_STATIC_FALLBACK_REQUIRED"
+  },
+  "schema_id": "kt.b04_r6.r6_opening_execution_packet.scope_manifest.v1",
   "schema_version": "v1",
+  "scope_status": "LIMITED_SCOPE_DEFINED",
   "selected_outcome": "B04_R6_R6_OPENING_EXECUTION_PACKET_BOUND__R6_OPENING_EXECUTION_VALIDATION_NEXT",
   "static_comparator_weakened": false,
-  "status": "PREP_ONLY",
   "trust_zone_law_changed": false,
   "trust_zone_law_unchanged": true,
   "truth_engine_law_changed": false,
