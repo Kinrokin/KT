@@ -211,6 +211,25 @@ def test_main_replay_requires_head_equal_origin_main(tmp_path: Path, monkeypatch
     assert excinfo.value.code == "RC_B04R6_PACKAGE_PROMOTION_EVID_REVIEW_NEXT_MOVE_DRIFT"
 
 
+def test_lawful_self_replay_next_move_receipt_is_accepted(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_review(tmp_path, monkeypatch)
+    _patch_review_env(monkeypatch, tmp_path, branch=f"{review.REPLAY_BRANCH_PREFIX}-test")
+    review.run(reports_root=reports)
+    assert _load(reports / review.OUTPUTS["review_contract"])["selected_outcome"] == review.SELECTED_OUTCOME
+
+
+def test_malformed_self_replay_next_move_receipt_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_review(tmp_path, monkeypatch)
+    path = reports / review.OUTPUTS["next_lawful_move"]
+    payload = _load(path)
+    payload["commercial_activation_claim_authorized"] = True
+    _write(path, payload)
+    _patch_review_env(monkeypatch, tmp_path, branch=f"{review.REPLAY_BRANCH_PREFIX}-test")
+    with pytest.raises(review.LaneFailure) as excinfo:
+        review.run(reports_root=reports)
+    assert excinfo.value.code == "RC_B04R6_PACKAGE_PROMOTION_EVID_REVIEW_COMMERCIAL_CLAIM_DRIFT"
+
+
 @pytest.mark.parametrize("role", _json_roles())
 def test_all_json_outputs_have_current_main_head(outputs: Path, role: str) -> None:
     assert _payload(outputs, role)["current_main_head"] == REVIEW_MAIN_HEAD
