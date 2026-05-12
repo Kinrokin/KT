@@ -211,7 +211,18 @@ def _validate_handoff(payloads: Dict[str, Dict[str, Any]]) -> None:
     if contract.get("next_lawful_move") != EXPECTED_PREVIOUS_NEXT_MOVE:
         _fail("RC_B04R6_PACKAGE_PROMOTION_EVID_REVIEW_NEXT_MOVE_DRIFT", "promotion next move drift")
     if next_move.get("next_lawful_move") != EXPECTED_PREVIOUS_NEXT_MOVE:
-        _fail("RC_B04R6_PACKAGE_PROMOTION_EVID_REVIEW_NEXT_MOVE_DRIFT", "next-lawful-move receipt drift")
+        lawful_self_replay = (
+            next_move.get("authoritative_lane") == AUTHORITATIVE_LANE
+            and next_move.get("previous_authoritative_lane") == PREVIOUS_LANE
+            and next_move.get("predecessor_outcome") == EXPECTED_PREVIOUS_OUTCOME
+            and next_move.get("previous_next_lawful_move") == EXPECTED_PREVIOUS_NEXT_MOVE
+            and next_move.get("selected_outcome") == SELECTED_OUTCOME
+            and next_move.get("next_lawful_move") == NEXT_LAWFUL_MOVE
+            and next_move.get("package_promotion_evidence_review_packet_authored") is True
+            and next_move.get("commercial_activation_claim_authorized") is False
+        )
+        if not lawful_self_replay:
+            _fail("RC_B04R6_PACKAGE_PROMOTION_EVID_REVIEW_NEXT_MOVE_DRIFT", "next-lawful-move receipt drift")
     for key in (
         "r6_open",
         "package_promotion_execution_packet_validated",
