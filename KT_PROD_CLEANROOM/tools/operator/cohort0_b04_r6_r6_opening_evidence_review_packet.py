@@ -215,7 +215,11 @@ def _validate_opening_handoff(payloads: Dict[str, Dict[str, Any]], texts: Dict[s
     contract = payloads["opening_execution_contract"]
     receipt = payloads["opening_execution_receipt"]
     result = payloads["opening_result"]
-    next_move = payloads["opening_next_lawful_move"]
+    # Replay excludes shared canonical outputs that this lane overwrites, including
+    # b04_r6_next_lawful_move_receipt.json. The opening contract still binds the
+    # prior next move, so use it as the fail-closed replay source when the shared
+    # next-move receipt is intentionally absent.
+    next_move = payloads.get("opening_next_lawful_move", contract)
     for label, payload in (("opening contract", contract), ("opening receipt", receipt), ("opening result", result)):
         if payload.get("authoritative_lane") != PREVIOUS_LANE:
             _fail("RC_B04R6_R6_OPENING_REVIEW_RUNTIME_EVIDENCE_MISSING", f"{label} lane drift")

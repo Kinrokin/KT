@@ -262,6 +262,20 @@ def test_no_authorization_drift_receipt_passes(outputs: Path) -> None:
     assert receipt["commercial_activation_claim_authorized"] is False
 
 
+def test_main_replay_uses_opening_contract_when_shared_next_move_is_overwritten(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _run_opening_only(tmp_path, monkeypatch)
+    _patch_review_env(monkeypatch, tmp_path, branch="main", head=REVIEW_MAIN_HEAD, origin_main=REVIEW_MAIN_HEAD)
+
+    contract = review.run(reports_root=reports)
+
+    assert contract["selected_outcome"] == review.SELECTED_OUTCOME
+    assert contract["next_lawful_move"] == review.NEXT_LAWFUL_MOVE
+    assert "opening_next_lawful_move_hash" not in contract["binding_hashes"]
+    assert contract["previous_next_lawful_move"] == opening.NEXT_LAWFUL_MOVE
+
+
 def test_dirty_worktree_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_opening_only(tmp_path, monkeypatch)
     _patch_review_env(monkeypatch, tmp_path, dirty=" M reports/x.json")
