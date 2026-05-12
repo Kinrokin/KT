@@ -6,7 +6,7 @@
     "B04_R6_PACKAGE_PROMOTION_REVIEW_DEFERRED__NAMED_REVIEW_DEFECT_REMAINS",
     "B04_R6_PACKAGE_PROMOTION_REVIEW_INVALID__FORENSIC_PACKAGE_PROMOTION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_PACKAGE_PROMOTION_REVIEW_CLAIM_TOKEN_BOUNDARY_VALIDATION_RECEIPT",
+  "artifact_id": "B04_R6_PACKAGE_PROMOTION_REVIEW_VALIDATION_NEXT_LAWFUL_MOVE_RECEIPT",
   "authoritative_lane": "B04_R6_PACKAGE_PROMOTION_REVIEW_PACKET_VALIDATION",
   "binding_hashes": {
     "blocker_ledger_hash": "848e3e7f0cbc34043d9db4b3409bd5e064d1b92e51603e96c00b578f9d81c641",
@@ -228,26 +228,15 @@
     "RC_B04R6_PACKAGE_PROMOTION_REVIEW_VAL_TRUST_ZONE_MUTATION",
     "RC_B04R6_PACKAGE_PROMOTION_REVIEW_VAL_RESULT_PROMOTION_DRIFT"
   ],
+  "receipt_type": "NEXT_LAWFUL_MOVE",
   "recommended_validated_path": "PACKAGE_PROMOTION_AUTHORIZATION_PACKET_NEXT",
-  "schema_id": "kt.b04_r6.package_promotion_review.validation.claim_token_boundary_validation.v1",
+  "schema_id": "kt.b04_r6.package_promotion_review_validation.next_lawful_move_receipt.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_PACKAGE_PROMOTION_REVIEW_VALIDATED__PACKAGE_PROMOTION_AUTHORIZATION_PACKET_NEXT",
-  "source_roles": [
-    "packet_contract",
-    "decision_matrix",
-    "commercial_claim_boundary_review"
-  ],
   "trust_zone_failures": [],
   "trust_zone_law_changed": false,
   "trust_zone_law_unchanged": true,
   "trust_zone_validation_status": "PASS",
   "truth_engine_law_changed": false,
-  "truth_engine_law_unchanged": true,
-  "validated_hashes": {
-    "commercial_claim_boundary_review_hash": "0f95c12fbd1492206ff3224ddce6dca23b9f2b4ab7eb186d7b34b95f72b32f0a",
-    "decision_matrix_hash": "b97a876ac3636a07f90731042840ce236dd29929ffd838242eaa0e7dbbb577ca",
-    "packet_contract_hash": "ed7a980d13411768e663b397d1d747f82330c2a243d2fd71b8e80c1a29cc72d8"
-  },
-  "validation_role": "claim_token_boundary_validation",
-  "validation_status": "PASS"
+  "truth_engine_law_unchanged": true
 }
