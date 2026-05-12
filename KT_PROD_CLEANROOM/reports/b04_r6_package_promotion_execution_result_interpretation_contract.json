@@ -4,7 +4,7 @@
     "B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET_INVALID__FORENSIC_PACKAGE_PROMOTION_EXECUTION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET_RESULT_INTERPRETATION_CONTRACT",
   "authoritative_lane": "B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET",
   "benchmark_prep_authorizes_package_promotion": false,
   "binding_hashes": {
@@ -36,6 +36,8 @@
     "validation_report_hash": "b55de8aa1eec6e156777a511dde81fba2cac47e7e0b43e1d5c0338156730afdb"
   },
   "commercial_activation_claim_authorized": false,
+  "contract_role": "result_interpretation_contract",
+  "contract_status": "BOUND",
   "current_branch": "author/b04-r6-package-promotion-execution-packet",
   "current_git_head": "fdb6262d788dc874ee3e22f9b18d8856d4c48be4",
   "current_main_head": "19b5e4c2e37a32910025afcde9725ee912d19521",
@@ -206,7 +208,10 @@
     "RC_B04R6_PACKAGE_PROMOTION_EXEC_PACKET_BENCHMARK_AUTHORITY_DRIFT",
     "RC_B04R6_PACKAGE_PROMOTION_EXEC_PACKET_7B_CLAIM_DRIFT"
   ],
-  "schema_id": "kt.b04_r6.next_lawful_move_receipt.v1",
+  "requirements": [
+    "pass does not authorize commercial activation"
+  ],
+  "schema_id": "kt.b04_r6.package_promotion_execution_packet.result_interpretation_contract.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET_BOUND__PACKAGE_PROMOTION_EXECUTION_VALIDATION_NEXT",
   "seven_b_amplification_claimed_proven": false,

@@ -4,8 +4,9 @@
     "B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET_INVALID__FORENSIC_PACKAGE_PROMOTION_EXECUTION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET_EXTERNAL_AUDIT_DELTA_PACKET_PREP_ONLY_DRAFT",
   "authoritative_lane": "B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET",
+  "authority": "PREP_ONLY",
   "benchmark_prep_authorizes_package_promotion": false,
   "binding_hashes": {
     "benchmark_prep_boundary_validation_hash": "06366c4f934bc8a56d19b6747b29c5d4fea53fb325826239860b39af35106579",
@@ -35,6 +36,11 @@
     "validation_receipt_hash": "1b8bc8af012cfa85d322db00c48b8f5d3f297fdb615169893edd78bf56353037",
     "validation_report_hash": "b55de8aa1eec6e156777a511dde81fba2cac47e7e0b43e1d5c0338156730afdb"
   },
+  "cannot_authorize_commercial_activation_claims": true,
+  "cannot_claim_7b_amplification_proven": true,
+  "cannot_execute_package_promotion": true,
+  "cannot_mutate_trust_zone_law": true,
+  "cannot_mutate_truth_engine_law": true,
   "commercial_activation_claim_authorized": false,
   "current_branch": "author/b04-r6-package-promotion-execution-packet",
   "current_git_head": "fdb6262d788dc874ee3e22f9b18d8856d4c48be4",
@@ -189,6 +195,7 @@
   "predecessor_outcome": "B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET_VALIDATED__PACKAGE_PROMOTION_EXECUTION_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET_VALIDATION",
   "previous_next_lawful_move": "AUTHOR_B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET",
+  "purpose": "Prepare external audit delta packet.",
   "r6_open": true,
   "reason_codes": [
     "RC_B04R6_PACKAGE_PROMOTION_EXEC_PACKET_AUTH_VALIDATION_MISSING",
@@ -206,10 +213,11 @@
     "RC_B04R6_PACKAGE_PROMOTION_EXEC_PACKET_BENCHMARK_AUTHORITY_DRIFT",
     "RC_B04R6_PACKAGE_PROMOTION_EXEC_PACKET_7B_CLAIM_DRIFT"
   ],
-  "schema_id": "kt.b04_r6.next_lawful_move_receipt.v1",
+  "schema_id": "kt.b04_r6.package_promotion_execution_packet.external_audit_delta_packet_prep_only_draft.prep_only.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET_BOUND__PACKAGE_PROMOTION_EXECUTION_VALIDATION_NEXT",
   "seven_b_amplification_claimed_proven": false,
+  "status": "PREP_ONLY",
   "trust_zone_failures": [],
   "trust_zone_law_changed": false,
   "trust_zone_law_unchanged": true,
