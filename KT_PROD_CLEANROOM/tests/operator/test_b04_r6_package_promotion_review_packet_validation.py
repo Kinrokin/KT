@@ -42,13 +42,45 @@ def _patch_validation_env(
     branch: str = validation.AUTHORITY_BRANCH,
     head: str = VALIDATION_HEAD,
     origin_main: str = VALIDATION_MAIN_HEAD,
+    origin_main_parent: str | None = None,
     dirty: str = "",
+    git_blob_store: dict[tuple[str, str], bytes] | None = None,
 ) -> None:
     refs = {"HEAD": head, "origin/main": origin_main}
+    if origin_main_parent is not None:
+        refs[f"{origin_main}^1"] = origin_main_parent
+    blob_store = dict(git_blob_store or {})
+    if not blob_store:
+        commits = {origin_main}
+        if origin_main_parent is not None:
+            commits.add(origin_main_parent)
+        for commit in commits:
+            for raw in list(validation.PACKAGE_REVIEW_JSON_INPUTS.values()) + list(
+                validation.PACKAGE_REVIEW_TEXT_INPUTS.values()
+            ):
+                path = tmp_path / raw
+                if path.exists():
+                    blob_store[(commit, raw)] = path.read_bytes()
+
+    def fake_git_blob_bytes(root: Path, commit: str, raw: str) -> bytes:
+        if (commit, raw) not in blob_store:
+            validation._fail(
+                "RC_B04R6_PACKAGE_PROMOTION_REVIEW_VAL_INPUT_HASH_MISSING",
+                f"missing git blob {commit}:{raw}",
+            )
+        return blob_store[(commit, raw)]
+
+    def fake_git_blob_sha256(root: Path, commit: str, raw: str) -> str:
+        import hashlib
+
+        return hashlib.sha256(fake_git_blob_bytes(root, commit, raw)).hexdigest()
+
     monkeypatch.setattr(validation, "repo_root", lambda: tmp_path)
     monkeypatch.setattr(validation.common, "git_current_branch_name", lambda root: branch)
     monkeypatch.setattr(validation.common, "git_status_porcelain", lambda root: dirty)
     monkeypatch.setattr(validation.common, "git_rev_parse", lambda root, ref: refs.get(ref, head))
+    monkeypatch.setattr(validation, "_git_blob_bytes", fake_git_blob_bytes)
+    monkeypatch.setattr(validation, "_git_blob_sha256", fake_git_blob_sha256)
     monkeypatch.setattr(
         validation,
         "validate_trust_zones",
@@ -127,6 +159,56 @@ def test_validation_binds_package_promotion_review_packet(outputs: Path) -> None
     assert contract["previous_next_lawful_move"] == package_review.NEXT_LAWFUL_MOVE
     assert contract["binding_hashes"]["packet_contract_hash"]
     assert contract["binding_hashes"]["packet_receipt_hash"]
+
+
+def test_overwritten_package_review_inputs_bind_to_handoff_git_objects(outputs: Path) -> None:
+    rows = {
+        row["role"]: row
+        for row in _contract(outputs)["input_bindings"]
+        if row.get("mutable_canonical_path_overwritten_by_this_lane") is True
+    }
+    assert set(rows) == {
+        "future_blocker_register",
+        "next_lawful_move",
+        "package_promotion_authorization_packet_prep_only_draft",
+        "package_promotion_execution_packet_prep_only_draft",
+        "pipeline_board",
+    }
+    for row in rows.values():
+        assert row["binding_kind"] == "git_object_before_overwrite"
+        assert row["git_commit"] == VALIDATION_MAIN_HEAD
+        assert _contract(outputs)["binding_hashes"][f"{row['role']}_hash"] == row["sha256"]
+
+
+def test_main_replay_binds_overwritten_inputs_to_first_parent(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _run_package_review_only(tmp_path, monkeypatch)
+    pre_overwrite_store = {
+        (VALIDATION_MAIN_HEAD, raw): (tmp_path / raw).read_bytes()
+        for raw in list(validation.PACKAGE_REVIEW_JSON_INPUTS.values()) + list(
+            validation.PACKAGE_REVIEW_TEXT_INPUTS.values()
+        )
+        if (tmp_path / raw).exists()
+    }
+    _patch_validation_env(monkeypatch, tmp_path, git_blob_store=pre_overwrite_store)
+    validation.run(reports_root=reports)
+    replay_head = "cccccccccccccccccccccccccccccccccccccccc"
+    _patch_validation_env(
+        monkeypatch,
+        tmp_path,
+        branch=f"{validation.REPLAY_BRANCH_PREFIX}-main-replay",
+        head=replay_head,
+        origin_main=replay_head,
+        origin_main_parent=VALIDATION_MAIN_HEAD,
+        git_blob_store=pre_overwrite_store,
+    )
+    validation.run(reports_root=reports)
+
+    rows = {row["role"]: row for row in _contract(reports)["input_bindings"]}
+    assert rows["next_lawful_move"]["binding_kind"] == "git_object_before_overwrite"
+    assert rows["next_lawful_move"]["git_commit"] == VALIDATION_MAIN_HEAD
+    assert rows["pipeline_board"]["git_commit"] == VALIDATION_MAIN_HEAD
 
 
 def test_validation_selects_package_authorization_packet_next(outputs: Path) -> None:

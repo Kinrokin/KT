@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional, Sequence
 
@@ -198,6 +201,8 @@ OUTPUTS = {
     "next_lawful_move": "b04_r6_next_lawful_move_receipt.json",
 }
 
+OUTPUT_PATHS = {f"KT_PROD_CLEANROOM/reports/{filename}" for filename in OUTPUTS.values()}
+
 
 class LaneFailure(RuntimeError):
     def __init__(self, code: str, detail: str) -> None:
@@ -241,11 +246,51 @@ def _ensure_branch_context(root: Path) -> str:
     _fail("RC_B04R6_PACKAGE_PROMOTION_REVIEW_VAL_NEXT_MOVE_DRIFT", f"branch {branch!r} is not allowed")
 
 
+def _handoff_git_commit(root: Path, *, branch: str, current_main_head: str) -> str:
+    if branch == AUTHORITY_BRANCH:
+        return current_main_head
+    try:
+        return common.git_rev_parse(root, f"{current_main_head}^1")
+    except Exception:  # noqa: BLE001
+        return current_main_head
+
+
+def _git_blob_bytes(root: Path, commit: str, raw: str) -> bytes:
+    blob_ref = f"{commit}:{raw.replace(chr(92), '/')}"
+    try:
+        result = subprocess.run(["git", "show", blob_ref], cwd=root, capture_output=True, check=True)
+    except subprocess.CalledProcessError as exc:
+        _fail(
+            "RC_B04R6_PACKAGE_PROMOTION_REVIEW_VAL_INPUT_HASH_MISSING",
+            f"missing pre-overwrite git blob for {raw} at {commit}: {exc}",
+        )
+    return result.stdout
+
+
+def _git_blob_sha256(root: Path, commit: str, raw: str) -> str:
+    return hashlib.sha256(_git_blob_bytes(root, commit, raw)).hexdigest()
+
+
 def _load(root: Path, raw: str, *, label: str) -> Dict[str, Any]:
     payload = common.load_json_required(root, raw, label=label)
     if not isinstance(payload, dict):
         _fail("RC_B04R6_PACKAGE_PROMOTION_REVIEW_VAL_PACKET_MISSING", f"{label} must be a JSON object")
     return payload
+
+
+def _load_input(root: Path, raw: str, *, label: str, handoff_git_commit: str) -> Dict[str, Any]:
+    if raw in OUTPUT_PATHS:
+        try:
+            payload = json.loads(_git_blob_bytes(root, handoff_git_commit, raw).decode("utf-8-sig"))
+        except Exception as exc:  # noqa: BLE001
+            _fail(
+                "RC_B04R6_PACKAGE_PROMOTION_REVIEW_VAL_INPUT_HASH_MISSING",
+                f"git-bound overwritten input {label} missing at {handoff_git_commit}: {exc}",
+            )
+        if not isinstance(payload, dict):
+            _fail("RC_B04R6_PACKAGE_PROMOTION_REVIEW_VAL_PACKET_MISSING", f"{label} must be a JSON object")
+        return payload
+    return _load(root, raw, label=label)
 
 
 def _read_text(root: Path, raw: str, *, label: str) -> str:
@@ -255,9 +300,27 @@ def _read_text(root: Path, raw: str, *, label: str) -> str:
         _fail("RC_B04R6_PACKAGE_PROMOTION_REVIEW_VAL_PACKET_MISSING", str(exc))
 
 
-def _payloads(root: Path) -> tuple[Dict[str, Dict[str, Any]], Dict[str, str]]:
-    payloads = {role: _load(root, raw, label=role) for role, raw in PACKAGE_REVIEW_JSON_INPUTS.items()}
-    texts = {role: _read_text(root, raw, label=role) for role, raw in PACKAGE_REVIEW_TEXT_INPUTS.items()}
+def _read_text_input(root: Path, raw: str, *, label: str, handoff_git_commit: str) -> str:
+    if raw in OUTPUT_PATHS:
+        try:
+            return _git_blob_bytes(root, handoff_git_commit, raw).decode("utf-8-sig")
+        except Exception as exc:  # noqa: BLE001
+            _fail(
+                "RC_B04R6_PACKAGE_PROMOTION_REVIEW_VAL_INPUT_HASH_MISSING",
+                f"git-bound overwritten text input {label} missing at {handoff_git_commit}: {exc}",
+            )
+    return _read_text(root, raw, label=label)
+
+
+def _payloads(root: Path, *, handoff_git_commit: str) -> tuple[Dict[str, Dict[str, Any]], Dict[str, str]]:
+    payloads = {
+        role: _load_input(root, raw, label=role, handoff_git_commit=handoff_git_commit)
+        for role, raw in PACKAGE_REVIEW_JSON_INPUTS.items()
+    }
+    texts = {
+        role: _read_text_input(root, raw, label=role, handoff_git_commit=handoff_git_commit)
+        for role, raw in PACKAGE_REVIEW_TEXT_INPUTS.items()
+    }
     return payloads, texts
 
 
@@ -284,22 +347,35 @@ def _is_sha256(value: Any) -> bool:
     return isinstance(value, str) and len(value) == 64 and all(ch in "0123456789abcdef" for ch in value)
 
 
-def _input_bindings(root: Path) -> list[Dict[str, str]]:
-    rows: list[Dict[str, str]] = []
+def _input_hash(root: Path, raw: str, *, handoff_git_commit: str) -> str:
+    if raw in OUTPUT_PATHS:
+        return _git_blob_sha256(root, handoff_git_commit, raw)
+    return file_sha256(common.resolve_path(root, raw))
+
+
+def _input_bindings(root: Path, *, handoff_git_commit: str) -> list[Dict[str, Any]]:
+    rows: list[Dict[str, Any]] = []
     for role, raw in sorted({**PACKAGE_REVIEW_JSON_INPUTS, **PACKAGE_REVIEW_TEXT_INPUTS}.items()):
-        rows.append(
-            {
-                "role": role,
-                "path": raw,
-                "sha256": file_sha256(common.resolve_path(root, raw)),
-                "binding_kind": "file_sha256_at_package_promotion_review_validation",
-            }
-        )
+        is_overwritten = raw in OUTPUT_PATHS
+        row: Dict[str, Any] = {
+            "role": role,
+            "path": raw,
+            "sha256": _input_hash(root, raw, handoff_git_commit=handoff_git_commit),
+            "binding_kind": (
+                "git_object_before_overwrite"
+                if is_overwritten
+                else "file_sha256_at_package_promotion_review_validation"
+            ),
+        }
+        if is_overwritten:
+            row["git_commit"] = handoff_git_commit
+            row["mutable_canonical_path_overwritten_by_this_lane"] = True
+        rows.append(row)
     return rows
 
 
-def _binding_hashes(root: Path) -> Dict[str, str]:
-    return {f"{row['role']}_hash": row["sha256"] for row in _input_bindings(root)}
+def _binding_hashes(root: Path, *, handoff_git_commit: str) -> Dict[str, str]:
+    return {f"{row['role']}_hash": row["sha256"] for row in _input_bindings(root, handoff_git_commit=handoff_git_commit)}
 
 
 def _validate_handoff(payloads: Dict[str, Dict[str, Any]]) -> None:
@@ -449,7 +525,7 @@ def _base(
     head: str,
     current_main_head: str,
     branch: str,
-    input_bindings: list[Dict[str, str]],
+    input_bindings: list[Dict[str, Any]],
     binding_hashes: Dict[str, str],
     trust_zone_validation: Dict[str, Any],
 ) -> Dict[str, Any]:
@@ -483,6 +559,9 @@ def _base(
         "forbidden_actions": list(FORBIDDEN_ACTIONS),
         "reason_codes": list(REASON_CODES),
         "input_bindings": input_bindings,
+        "overwritten_input_roles": [
+            row["role"] for row in input_bindings if row.get("mutable_canonical_path_overwritten_by_this_lane")
+        ],
         "binding_hashes": binding_hashes,
         "trust_zone_validation_status": trust_zone_validation.get("status"),
         "trust_zone_failures": list(trust_zone_validation.get("failures", [])),
@@ -626,7 +705,8 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
         raise RuntimeError("FAIL_CLOSED: dirty worktree before B04 R6 package-promotion review validation")
     head = common.git_rev_parse(root, "HEAD")
     current_main_head = common.git_rev_parse(root, "origin/main" if branch != "main" else "HEAD")
-    payloads, texts = _payloads(root)
+    handoff_git_commit = _handoff_git_commit(root, branch=branch, current_main_head=current_main_head)
+    payloads, texts = _payloads(root, handoff_git_commit=handoff_git_commit)
     _validate_payloads(root, payloads, texts)
     trust_zone_validation = validate_trust_zones(root=root)
     if trust_zone_validation.get("status") != "PASS" or trust_zone_validation.get("failures"):
@@ -636,8 +716,8 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
         head=head,
         current_main_head=current_main_head,
         branch=branch,
-        input_bindings=_input_bindings(root),
-        binding_hashes=_binding_hashes(root),
+        input_bindings=_input_bindings(root, handoff_git_commit=handoff_git_commit),
+        binding_hashes=_binding_hashes(root, handoff_git_commit=handoff_git_commit),
         trust_zone_validation=trust_zone_validation,
     )
     output_payloads = _outputs(base)
