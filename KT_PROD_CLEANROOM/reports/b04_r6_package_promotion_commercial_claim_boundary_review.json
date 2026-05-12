@@ -1,12 +1,15 @@
 {
+  "allowed_claims": [
+    "R6 is open under bounded packet law.",
+    "Package-promotion review packet is bound for validation."
+  ],
   "allowed_outcomes": [
     "B04_R6_PACKAGE_PROMOTION_REVIEW_PACKET_BOUND__PACKAGE_PROMOTION_REVIEW_VALIDATION_NEXT",
     "B04_R6_PACKAGE_PROMOTION_REVIEW_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_PACKAGE_PROMOTION_REVIEW_PACKET_INVALID__FORENSIC_PACKAGE_PROMOTION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_PACKAGE_PROMOTION_REVIEW_COMMERCIAL_ACTIVATION_CLAIM_REVIEW_PREP_ONLY_DRAFT",
+  "artifact_id": "B04_R6_PACKAGE_PROMOTION_REVIEW_COMMERCIAL_CLAIM_BOUNDARY",
   "authoritative_lane": "B04_R6_PACKAGE_PROMOTION_REVIEW_PACKET",
-  "authority": "PREP_ONLY",
   "binding_hashes": {
     "abstention_fallback_review_validation_hash": "a352202cd6941008e0d07424196d8143e2a3cd9c61d46e614e9ec43adf1c33ea",
     "claim_token_boundary_validation_hash": "c7c05ad4e996215d248ac1d8cd391e369b246ee0696b456436a44298dd4b9fde",
@@ -47,13 +50,8 @@
     "validation_receipt_hash": "40b771ad07c393e0573fee1e8544dbf72d91f121c81c111695289cfa285ba129",
     "validation_report_hash": "f62ca61a255ed0ebdac6485d8d625b9824cfada197593385678c405671c08923"
   },
-  "cannot_authorize_commercial_activation_claims": true,
-  "cannot_authorize_lobe_escalation": true,
-  "cannot_authorize_package_promotion": true,
-  "cannot_execute_package_promotion": true,
-  "cannot_mutate_trust_zone_law": true,
-  "cannot_mutate_truth_engine_law": true,
   "commercial_activation_claim_authorized": false,
+  "commercial_claim_boundary_preserved": true,
   "commercial_claim_status": "BOUNDARY_ONLY",
   "current_branch": "author/b04-r6-package-promotion-review-packet",
   "current_git_head": "f3f2b68f5626249cf95f270425d82f993a69e826",
@@ -90,6 +88,10 @@
     "TRUST_ZONE_LAW_MUTATED",
     "R6_OPEN_TREATED_AS_PACKAGE_PROMOTION",
     "PACKAGE_PROMOTION_TREATED_AS_COMMERCIAL_ACTIVATION"
+  ],
+  "forbidden_claims": [
+    "Package promotion is authorized.",
+    "Commercial activation claims are authorized."
   ],
   "generated_utc": "2026-05-12T14:05:44Z",
   "input_bindings": [
@@ -335,7 +337,6 @@
   "predecessor_outcome": "B04_R6_R6_OPENING_EVIDENCE_REVIEW_VALIDATED__PACKAGE_PROMOTION_REVIEW_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_R6_OPENING_EVIDENCE_REVIEW_PACKET_VALIDATION",
   "previous_next_lawful_move": "AUTHOR_B04_R6_PACKAGE_PROMOTION_REVIEW_PACKET",
-  "purpose": "Prepare commercial claim review preconditions; activation claims remain forbidden.",
   "r6_open": true,
   "r6_open_treated_as_package_promotion": false,
   "r6_opening_evidence_review_validated": true,
@@ -358,8 +359,9 @@
     "RC_B04R6_PACKAGE_PROMOTION_REVIEW_RESULT_PROMOTION_DRIFT"
   ],
   "recommended_validated_path": "PACKAGE_PROMOTION_AUTHORIZATION_PACKET_NEXT",
+  "review_status": "PASS",
   "runtime_cutover_executed": true,
-  "schema_id": "kt.b04_r6.package_promotion_review.commercial_activation_claim_review_prep_only_draft.prep_only.v1",
+  "schema_id": "kt.b04_r6.package_promotion_review.commercial_claim_boundary.contract.v1",
   "schema_version": "v1",
   "scorecard": {
     "blocking_reasons": [
@@ -384,7 +386,6 @@
     "truth_engine_law_unchanged": true
   },
   "selected_outcome": "B04_R6_PACKAGE_PROMOTION_REVIEW_PACKET_BOUND__PACKAGE_PROMOTION_REVIEW_VALIDATION_NEXT",
-  "status": "PREP_ONLY",
   "trust_zone_failures": [],
   "trust_zone_law_changed": false,
   "trust_zone_law_unchanged": true,
