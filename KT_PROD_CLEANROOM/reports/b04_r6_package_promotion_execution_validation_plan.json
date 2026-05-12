@@ -4,7 +4,7 @@
     "B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET_INVALID__FORENSIC_PACKAGE_PROMOTION_EXECUTION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET_VALIDATION_PLAN",
   "authoritative_lane": "B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET",
   "benchmark_prep_authorizes_package_promotion": false,
   "binding_hashes": {
@@ -206,7 +206,14 @@
     "RC_B04R6_PACKAGE_PROMOTION_EXEC_PACKET_BENCHMARK_AUTHORITY_DRIFT",
     "RC_B04R6_PACKAGE_PROMOTION_EXEC_PACKET_7B_CLAIM_DRIFT"
   ],
-  "schema_id": "kt.b04_r6.next_lawful_move_receipt.v1",
+  "required_validations": [
+    "validated package promotion authorization is bound",
+    "execution mode and package scope are bounded",
+    "release truth and claim ceiling are preserved",
+    "rollback/quarantine/freeze paths are present",
+    "commercial activation remains unauthorized"
+  ],
+  "schema_id": "kt.b04_r6.package_promotion_execution_packet.validation_plan.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET_BOUND__PACKAGE_PROMOTION_EXECUTION_VALIDATION_NEXT",
   "seven_b_amplification_claimed_proven": false,
