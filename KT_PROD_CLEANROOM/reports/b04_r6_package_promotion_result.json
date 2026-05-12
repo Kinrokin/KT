@@ -5,7 +5,7 @@
     "B04_R6_PACKAGE_PROMOTION_INVALIDATED__FORENSIC_PACKAGE_PROMOTION_REVIEW_NEXT",
     "B04_R6_PACKAGE_PROMOTION_DEFERRED__NAMED_PROMOTION_DEFECT_REMAINS"
   ],
-  "artifact_id": "KT_FUTURE_BLOCKER_REGISTER",
+  "artifact_id": "B04_R6_PACKAGE_PROMOTION_RESULT",
   "authoritative_lane": "B04_R6_PACKAGE_PROMOTION",
   "benchmark_prep_authorizes_package_promotion": false,
   "binding_hashes": {
@@ -40,12 +40,7 @@
     "validation_receipt_hash": "4976c52ba28d59861855ba7b88bd6a6e20c27e2e334821b6bc371513e3050734",
     "validation_report_hash": "991b2e213fec17fa5bb445bf62935f2200f023dc0320864b444659bd8837e98f"
   },
-  "blockers": [
-    "package_promotion_evidence_review_not_authored",
-    "package_promotion_evidence_review_not_validated",
-    "commercial_activation_requires_later_review",
-    "7b_amplification_not_proven"
-  ],
+  "commercial_activation_authorized": false,
   "commercial_activation_claim_authorized": false,
   "current_branch": "run/b04-r6-package-promotion",
   "current_git_head": "85e793167ecfb02fc7bd547f9c5c8fcd8bcc1a1b",
@@ -243,7 +238,8 @@
     "RC_B04R6_PACKAGE_PROMOTION_BENCHMARK_AUTHORITY_DRIFT",
     "RC_B04R6_PACKAGE_PROMOTION_7B_CLAIM_DRIFT"
   ],
-  "schema_id": "kt.future_blocker_register.v1",
+  "result": "PASSED",
+  "schema_id": "kt.b04_r6.package_promotion.result.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_PACKAGE_PROMOTION_PASSED__PACKAGE_PROMOTION_EVIDENCE_REVIEW_PACKET_NEXT",
   "seven_b_amplification_claimed_proven": false,
