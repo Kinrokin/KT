@@ -4,7 +4,7 @@
     "B04_R6_PACKAGE_PROMOTION_EVIDENCE_REVIEW_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_PACKAGE_PROMOTION_EVIDENCE_REVIEW_PACKET_INVALID__FORENSIC_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_PACKAGE_PROMOTION_EVIDENCE_SCORECARD",
+  "artifact_id": "B04_R6_PACKAGE_PROMOTION_EVIDENCE_REVIEW_COMMERCIAL_CLAIM_CEILING_REVIEW",
   "authoritative_lane": "B04_R6_PACKAGE_PROMOTION_EVIDENCE_REVIEW_PACKET",
   "benchmark_prep_authorizes_package_promotion": false,
   "binding_hashes": {
@@ -34,25 +34,12 @@
     "release_truth_receipt_hash": "27fa17f7c455ca9d408643104a2d6ec94590ff69cfc6e979dc25e930fb264b0c",
     "rollback_receipt_hash": "50073ff896aaf0c4bef0e04ba3a25db46ee0586527589430cf17ed494042d321"
   },
-  "category_grades": {
-    "clean_distributable_receipt": "PASS",
-    "commercial_claim_boundary_receipt": "PASS",
-    "data_governance_receipt": "PASS",
-    "deployment_profile_receipt": "PASS",
-    "external_verifier_readiness_receipt": "PASS",
-    "incident_freeze_receipt": "PASS",
-    "no_authority_drift_receipt": "PASS",
-    "operator_runbook_receipt": "PASS",
-    "package_manifest": "PASS",
-    "public_verifier_bundle_receipt": "PASS",
-    "release_truth_receipt": "PASS",
-    "rollback_receipt": "PASS"
-  },
   "commercial_activation_claim_authorized": false,
   "commercial_activation_review_packet_next_recommended": true,
   "current_branch": "author/b04-r6-package-promotion-evidence-review-packet",
   "current_git_head": "dfc6283afe32c4255d335fbacd36e68ee4227a54",
   "current_main_head": "5fc927536c7d883dc9d80d05687affc903188c71",
+  "evidence_role": "commercial_claim_boundary_receipt",
   "forbidden_actions": [
     "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED",
     "TRUTH_ENGINE_LAW_MUTATED",
@@ -61,6 +48,7 @@
     "SEVEN_B_AMPLIFICATION_CLAIMED_PROVEN"
   ],
   "generated_utc": "2026-05-12T19:18:27Z",
+  "grade": "PASS",
   "input_bindings": [
     {
       "path": "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_current_state.json",
@@ -189,7 +177,6 @@
     }
   ],
   "next_lawful_move": "VALIDATE_B04_R6_PACKAGE_PROMOTION_EVIDENCE_REVIEW_PACKET",
-  "overall_grade": "A_REVIEWABLE",
   "package_promotion_evidence_review_packet_authored": true,
   "package_promotion_evidence_review_validated": false,
   "package_promotion_executed": true,
@@ -214,7 +201,9 @@
     "RC_B04R6_PACKAGE_PROMOTION_EVID_REVIEW_7B_CLAIM_DRIFT"
   ],
   "recommended_next_path": "COMMERCIAL_ACTIVATION_REVIEW_PACKET_NEXT",
-  "schema_id": "kt.b04_r6.package_promotion_evidence_review.scorecard.v1",
+  "review_role": "commercial_claim_ceiling_review",
+  "review_status": "BOUND",
+  "schema_id": "kt.b04_r6.package_promotion_evidence_review.commercial_claim_ceiling_review.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_PACKAGE_PROMOTION_EVIDENCE_REVIEW_PACKET_BOUND__PACKAGE_PROMOTION_EVIDENCE_REVIEW_VALIDATION_NEXT",
   "seven_b_amplification_claimed_proven": false,
