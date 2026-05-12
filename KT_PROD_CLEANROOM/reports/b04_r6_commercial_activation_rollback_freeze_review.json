@@ -4,7 +4,7 @@
     "B04_R6_COMMERCIAL_ACTIVATION_REVIEW_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_COMMERCIAL_ACTIVATION_REVIEW_PACKET_INVALID__FORENSIC_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_NEXT_LAWFUL_MOVE_RECEIPT",
+  "artifact_id": "B04_R6_COMMERCIAL_ACTIVATION_REVIEW_ROLLBACK_AND_FREEZE_REVIEW",
   "authoritative_lane": "B04_R6_COMMERCIAL_ACTIVATION_REVIEW_PACKET",
   "benchmark_prep_authorizes_commercial_activation": false,
   "binding_hashes": {
@@ -58,6 +58,7 @@
     "SEVEN_B_AMPLIFICATION_CLAIMED_PROVEN"
   ],
   "generated_utc": "2026-05-12T21:12:45Z",
+  "grade": "PASS",
   "input_bindings": [
     {
       "binding_kind": "file_sha256_at_commercial_activation_review_packet_authoring",
@@ -257,10 +258,11 @@
     "RC_B04R6_COMMERCIAL_ACTIVATION_REVIEW_BENCHMARK_AUTHORITY_DRIFT",
     "RC_B04R6_COMMERCIAL_ACTIVATION_REVIEW_7B_CLAIM_DRIFT"
   ],
-  "receipt_type": "NEXT_LAWFUL_MOVE",
   "recommendation_is_authority": false,
   "recommended_next_path": "COMMERCIAL_ACTIVATION_AUTHORIZATION_PACKET_NEXT",
-  "schema_id": "kt.b04_r6.next_lawful_move_receipt.v1",
+  "review_role": "rollback_and_freeze_review",
+  "review_status": "BOUND",
+  "schema_id": "kt.b04_r6.commercial_activation_review.rollback_and_freeze_review.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_COMMERCIAL_ACTIVATION_REVIEW_PACKET_BOUND__COMMERCIAL_ACTIVATION_REVIEW_VALIDATION_NEXT",
   "seven_b_amplification_claimed_proven": false,
