@@ -184,14 +184,17 @@ def _fail(code: str, detail: str) -> None:
     raise LaneFailure(code, detail)
 
 
-def _walk_items(value: Any) -> Iterable[tuple[str, Any]]:
+def _walk_items(value: Any, parent_key: str = "") -> Iterable[tuple[str, Any]]:
     if isinstance(value, dict):
         for key, item in value.items():
             yield str(key), item
-            yield from _walk_items(item)
+            yield from _walk_items(item, str(key))
     elif isinstance(value, list):
         for item in value:
-            yield from _walk_items(item)
+            if isinstance(item, (dict, list)):
+                yield from _walk_items(item, parent_key)
+            else:
+                yield parent_key, item
 
 
 def _is_claim_bearing_field(key: str) -> bool:

@@ -290,6 +290,17 @@ def test_commercial_claim_token_drift_fails_closed(tmp_path: Path, monkeypatch: 
         review.run(reports_root=reports)
 
 
+def test_commercial_claim_token_inside_list_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_prior_validation(tmp_path, monkeypatch)
+    path = reports / prior_validation.OUTPUTS["validation_contract"]
+    payload = _load(path)
+    payload["allowed_claims"] = ["Commercial activation authorized"]
+    _write(path, payload)
+    _patch_review_env(monkeypatch, tmp_path)
+    with pytest.raises(review.LaneFailure, match="CLAIM_TOKEN_DRIFT"):
+        review.run(reports_root=reports)
+
+
 def test_prior_prep_only_authority_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_prior_validation(tmp_path, monkeypatch)
     path = reports / prior_validation.OUTPUTS["commercial_activation_review_validation_plan_prep_only"]
