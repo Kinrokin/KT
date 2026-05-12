@@ -323,6 +323,20 @@ def test_benchmark_authority_drift_fails_closed(tmp_path: Path, monkeypatch: pyt
         review.run(reports_root=reports)
 
 
+def test_predecessor_package_benchmark_authority_drift_uses_specific_code(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _run_prior_validation(tmp_path, monkeypatch)
+    path = reports / prior_validation.OUTPUTS["validation_contract"]
+    payload = _load(path)
+    payload["benchmark_prep_authorizes_package_promotion"] = True
+    _write(path, payload)
+    _patch_review_env(monkeypatch, tmp_path)
+    with pytest.raises(review.LaneFailure) as excinfo:
+        review.run(reports_root=reports)
+    assert excinfo.value.code == "RC_B04R6_COMMERCIAL_ACTIVATION_REVIEW_BENCHMARK_AUTHORITY_DRIFT"
+
+
 def test_seven_b_amplification_claim_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_prior_validation(tmp_path, monkeypatch)
     path = reports / prior_validation.OUTPUTS["validation_contract"]

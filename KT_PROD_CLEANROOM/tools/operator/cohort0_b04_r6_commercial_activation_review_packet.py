@@ -43,6 +43,9 @@ AUTHORITY_DRIFT_KEYS = {
     "benchmark_prep_authorizes_commercial_activation": (
         "RC_B04R6_COMMERCIAL_ACTIVATION_REVIEW_BENCHMARK_AUTHORITY_DRIFT"
     ),
+    "benchmark_prep_authorizes_package_promotion": (
+        "RC_B04R6_COMMERCIAL_ACTIVATION_REVIEW_BENCHMARK_AUTHORITY_DRIFT"
+    ),
     "seven_b_amplification_claimed_proven": "RC_B04R6_COMMERCIAL_ACTIVATION_REVIEW_7B_CLAIM_DRIFT",
 }
 
