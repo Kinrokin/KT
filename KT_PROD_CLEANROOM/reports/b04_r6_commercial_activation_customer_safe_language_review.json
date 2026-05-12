@@ -4,7 +4,7 @@
     "B04_R6_COMMERCIAL_ACTIVATION_REVIEW_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_COMMERCIAL_ACTIVATION_REVIEW_PACKET_INVALID__FORENSIC_REVIEW_NEXT"
   ],
-  "artifact_id": "KT_FUTURE_BLOCKER_REGISTER",
+  "artifact_id": "B04_R6_COMMERCIAL_ACTIVATION_REVIEW_CUSTOMER_SAFE_LANGUAGE_REVIEW",
   "authoritative_lane": "B04_R6_COMMERCIAL_ACTIVATION_REVIEW_PACKET",
   "benchmark_prep_authorizes_commercial_activation": false,
   "binding_hashes": {
@@ -37,13 +37,6 @@
     "validation_receipt_hash": "fb68d1479852a413a3fd743fb33af27d05d23433f8910d1d62036d5428f97dc2",
     "validation_report_hash": "4a381d55a18d3d24302f9e09ab7d44ac80435b63b270b9be8987913ad1926001"
   },
-  "blockers": [
-    "commercial_activation_review_validation_not_complete",
-    "commercial_activation_authorization_packet_not_authored_or_validated",
-    "commercial_activation_execution_not_authorized",
-    "external_audit_delta_required_before_public_claims",
-    "seven_b_amplification_not_proven"
-  ],
   "cannot_authorize_commercial_activation_claims": true,
   "cannot_execute_commercial_activation": true,
   "cannot_mutate_trust_zone_law": true,
@@ -65,6 +58,7 @@
     "SEVEN_B_AMPLIFICATION_CLAIMED_PROVEN"
   ],
   "generated_utc": "2026-05-12T21:44:08Z",
+  "grade": "PASS",
   "input_bindings": [
     {
       "binding_kind": "file_sha256_at_commercial_activation_review_packet_authoring",
@@ -266,7 +260,9 @@
   ],
   "recommendation_is_authority": false,
   "recommended_next_path": "COMMERCIAL_ACTIVATION_AUTHORIZATION_PACKET_NEXT",
-  "schema_id": "kt.future_blocker_register.v1",
+  "review_role": "customer_safe_language_review",
+  "review_status": "BOUND",
+  "schema_id": "kt.b04_r6.commercial_activation_review.customer_safe_language_review.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_COMMERCIAL_ACTIVATION_REVIEW_PACKET_BOUND__COMMERCIAL_ACTIVATION_REVIEW_VALIDATION_NEXT",
   "seven_b_amplification_claimed_proven": false,
