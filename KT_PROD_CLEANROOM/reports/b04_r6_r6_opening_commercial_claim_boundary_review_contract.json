@@ -21,12 +21,9 @@
     "opening_future_blocker_register_hash": "f23b1a05b9bcb69306ce40960c3635358a0a17c68b23a7e98ed641aaa5a961df",
     "opening_incident_freeze_receipt_hash": "5d56c09ad25442d0bb304fd0dd5e6e1a0a0fcbfd873d58a2c9010481d840a276",
     "opening_kill_switch_receipt_hash": "edf9a42204dbec04b5b479783ccbeb3f95f7ec704c01402a6a0d1b91797ab27d",
-    "opening_next_lawful_move_hash": "ff4674ab730581862def79cb7ba4f11ad2f4418a2e2fdb24d17fb1a4bc8adbcf",
     "opening_no_authorization_drift_receipt_hash": "0804915480f54d6ccbf4f88dc7a2873b5e482aa3ca5b7ced8994d4534ad9cdff",
     "opening_null_route_preservation_receipt_hash": "4c7878345bc8546ceab42dd415e40b139c916822d250f5e9d8d22268cdd4f569",
     "opening_operator_override_receipt_hash": "1aaeb556f8622394d12edc0d9b95b1d05c45bb57eb98df914f376bb12506c24c",
-    "opening_package_promotion_review_packet_prep_only_draft_hash": "53aedcaabfb79778d15d1133be292629f29a8433f6986e4001d3bdc2813a82cb",
-    "opening_pipeline_board_hash": "7f9a05295c151ae7519dcaab74d8de80e7528cef72fc60351fcbb1c89049821d",
     "opening_post_opening_evidence_review_packet_prep_only_draft_hash": "8ffc3652b1333dfbb201a38f144eee94e4571f0093d6c3d53d6a1451f4522f2b",
     "opening_public_verifier_delta_requirements_prep_only_hash": "04f4cebe4dad6b161d23eb39d122eff3e582e109bf37e75b138183a02e0d6938",
     "opening_r6_opening_failure_closeout_prep_only_draft_hash": "6c5dbef7a1478bdb5e0c2b946e32aa6e70749a864ea2bac0b14f97a5d9cdc662",
@@ -43,9 +40,9 @@
   "commercial_activation_claim_authorized": false,
   "commercial_claim_boundary_preserved": true,
   "commercial_claim_status": "BOUNDARY_ONLY",
-  "current_branch": "author/b04-r6-r6-opening-evidence-review-packet",
-  "current_git_head": "c007c6b32ae5357ed29633aa25017da417d0958b",
-  "current_main_head": "7f81474828c09f57251dd9f58df4d33e0e25e4aa",
+  "current_branch": "main",
+  "current_git_head": "540163bf60c790acf364bda4f964775c30e4ef81",
+  "current_main_head": "540163bf60c790acf364bda4f964775c30e4ef81",
   "decision_matrix": {
     "blocking_reasons": [
       "package_promotion_requires_r6_opening_evidence_review_validation",
@@ -78,7 +75,7 @@
     "R6_OPEN_TREATED_AS_PACKAGE_PROMOTION",
     "R6_OPEN_TREATED_AS_COMMERCIAL_ACTIVATION"
   ],
-  "generated_utc": "2026-05-12T11:42:14Z",
+  "generated_utc": "2026-05-12T12:03:51Z",
   "global_runtime_surface_authorized": false,
   "input_bindings": [
     {
@@ -180,13 +177,6 @@
       "sha256": "edf9a42204dbec04b5b479783ccbeb3f95f7ec704c01402a6a0d1b91797ab27d"
     },
     {
-      "binding_kind": "pre_overwrite_file_sha256_at_r6_opening_evidence_review",
-      "overwritten_by_r6_opening_evidence_review_output": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
-      "role": "opening_next_lawful_move",
-      "sha256": "ff4674ab730581862def79cb7ba4f11ad2f4418a2e2fdb24d17fb1a4bc8adbcf"
-    },
-    {
       "binding_kind": "file_sha256_at_r6_opening_evidence_review",
       "overwritten_by_r6_opening_evidence_review_output": false,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_no_authorization_drift_receipt.json",
@@ -206,20 +196,6 @@
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_operator_override_receipt.json",
       "role": "opening_operator_override_receipt",
       "sha256": "1aaeb556f8622394d12edc0d9b95b1d05c45bb57eb98df914f376bb12506c24c"
-    },
-    {
-      "binding_kind": "pre_overwrite_file_sha256_at_r6_opening_evidence_review",
-      "overwritten_by_r6_opening_evidence_review_output": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_packet_prep_only_draft.json",
-      "role": "opening_package_promotion_review_packet_prep_only_draft",
-      "sha256": "53aedcaabfb79778d15d1133be292629f29a8433f6986e4001d3bdc2813a82cb"
-    },
-    {
-      "binding_kind": "pre_overwrite_file_sha256_at_r6_opening_evidence_review",
-      "overwritten_by_r6_opening_evidence_review_output": true,
-      "path": "KT_PROD_CLEANROOM/reports/b04_r6_pipeline_board.json",
-      "role": "opening_pipeline_board",
-      "sha256": "7f9a05295c151ae7519dcaab74d8de80e7528cef72fc60351fcbb1c89049821d"
     },
     {
       "binding_kind": "file_sha256_at_r6_opening_evidence_review",
@@ -310,11 +286,7 @@
   "metric_contract_mutated": false,
   "next_lawful_move": "VALIDATE_B04_R6_R6_OPENING_EVIDENCE_REVIEW_PACKET",
   "no_authorization_drift": true,
-  "overwritten_input_roles": [
-    "opening_next_lawful_move",
-    "opening_package_promotion_review_packet_prep_only_draft",
-    "opening_pipeline_board"
-  ],
+  "overwritten_input_roles": [],
   "package_promotion": "DEFERRED",
   "package_promotion_authorized": false,
   "post_cutover_evidence_review_validated": true,
