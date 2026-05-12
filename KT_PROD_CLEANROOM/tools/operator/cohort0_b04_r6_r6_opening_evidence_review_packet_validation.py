@@ -179,45 +179,87 @@ OUTPUTS = {
     "validation_contract": "b04_r6_r6_opening_evidence_review_validation_contract.json",
     "validation_receipt": "b04_r6_r6_opening_evidence_review_validation_receipt.json",
     "validation_report": "b04_r6_r6_opening_evidence_review_validation_report.md",
-    "packet_binding_validation": "b04_r6_r6_opening_evidence_review_packet_binding_validation_receipt.json",
-    "evidence_inventory_validation": "b04_r6_r6_opening_evidence_inventory_validation_receipt.json",
-    "evidence_scorecard_validation": "b04_r6_r6_opening_evidence_scorecard_validation_receipt.json",
-    "decision_matrix_validation": "b04_r6_r6_opening_evidence_decision_matrix_validation_receipt.json",
-    "package_promotion_readiness_validation": "b04_r6_package_promotion_readiness_validation_receipt.json",
-    "external_audit_delta_readiness_validation": "b04_r6_r6_opening_external_audit_delta_readiness_validation_receipt.json",
-    "public_verifier_readiness_validation": "b04_r6_r6_opening_public_verifier_readiness_validation_receipt.json",
-    "rollback_continuation_validation": "b04_r6_r6_opening_rollback_continuation_validation_receipt.json",
-    "route_distribution_review_validation": "b04_r6_r6_opening_route_distribution_review_validation_receipt.json",
-    "fallback_behavior_review_validation": "b04_r6_r6_opening_fallback_behavior_review_validation_receipt.json",
-    "static_fallback_review_validation": "b04_r6_r6_opening_static_fallback_review_validation_receipt.json",
-    "abstention_fallback_review_validation": "b04_r6_r6_opening_abstention_fallback_review_validation_receipt.json",
-    "null_route_review_validation": "b04_r6_r6_opening_null_route_review_validation_receipt.json",
-    "operator_override_review_validation": "b04_r6_r6_opening_operator_override_review_validation_receipt.json",
-    "kill_switch_review_validation": "b04_r6_r6_opening_kill_switch_review_validation_receipt.json",
-    "rollback_review_validation": "b04_r6_r6_opening_rollback_review_validation_receipt.json",
-    "drift_monitoring_review_validation": "b04_r6_r6_opening_drift_monitoring_review_validation_receipt.json",
-    "incident_freeze_review_validation": "b04_r6_r6_opening_incident_freeze_review_validation_receipt.json",
-    "trace_completeness_review_validation": "b04_r6_r6_opening_trace_completeness_review_validation_receipt.json",
-    "replay_readiness_review_validation": "b04_r6_r6_opening_replay_readiness_review_validation_receipt.json",
-    "external_verifier_readiness_validation": "b04_r6_r6_opening_external_verifier_readiness_validation_receipt.json",
-    "commercial_claim_boundary_validation": "b04_r6_r6_opening_commercial_claim_boundary_validation_receipt.json",
-    "package_promotion_blocker_validation": "b04_r6_r6_opening_package_promotion_blocker_validation_receipt.json",
-    "prep_only_boundary_validation": "b04_r6_r6_opening_evidence_review_prep_only_boundary_validation_receipt.json",
-    "no_authorization_drift_validation": "b04_r6_r6_opening_evidence_no_authorization_drift_validation_receipt.json",
-    "claim_token_boundary_validation": "b04_r6_r6_opening_evidence_claim_token_boundary_validation_receipt.json",
-    "package_promotion_review_validation_plan_prep_only": "b04_r6_package_promotion_review_validation_plan_prep_only.json",
+    "packet_binding_validation": "b04_r6_r6_opening_evidence_review_validation_packet_binding_receipt.json",
+    "evidence_inventory_validation": "b04_r6_r6_opening_evidence_review_validation_inventory_receipt.json",
+    "evidence_scorecard_validation": "b04_r6_r6_opening_evidence_review_validation_scorecard_receipt.json",
+    "decision_matrix_validation": "b04_r6_r6_opening_evidence_review_validation_decision_matrix_receipt.json",
+    "package_promotion_readiness_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_package_promotion_readiness_receipt.json"
+    ),
+    "external_audit_delta_readiness_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_external_audit_delta_readiness_receipt.json"
+    ),
+    "public_verifier_readiness_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_public_verifier_readiness_receipt.json"
+    ),
+    "rollback_continuation_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_rollback_continuation_receipt.json"
+    ),
+    "route_distribution_review_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_route_distribution_receipt.json"
+    ),
+    "fallback_behavior_review_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_fallback_behavior_receipt.json"
+    ),
+    "static_fallback_review_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_static_fallback_receipt.json"
+    ),
+    "abstention_fallback_review_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_abstention_fallback_receipt.json"
+    ),
+    "null_route_review_validation": "b04_r6_r6_opening_evidence_review_validation_null_route_receipt.json",
+    "operator_override_review_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_operator_override_receipt.json"
+    ),
+    "kill_switch_review_validation": "b04_r6_r6_opening_evidence_review_validation_kill_switch_receipt.json",
+    "rollback_review_validation": "b04_r6_r6_opening_evidence_review_validation_rollback_receipt.json",
+    "drift_monitoring_review_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_drift_monitoring_receipt.json"
+    ),
+    "incident_freeze_review_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_incident_freeze_receipt.json"
+    ),
+    "trace_completeness_review_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_trace_completeness_receipt.json"
+    ),
+    "replay_readiness_review_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_replay_readiness_receipt.json"
+    ),
+    "external_verifier_readiness_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_external_verifier_readiness_receipt.json"
+    ),
+    "commercial_claim_boundary_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_commercial_claim_boundary_receipt.json"
+    ),
+    "package_promotion_blocker_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_package_promotion_blocker_receipt.json"
+    ),
+    "prep_only_boundary_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_prep_only_boundary_receipt.json"
+    ),
+    "no_authorization_drift_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_no_authorization_drift_receipt.json"
+    ),
+    "claim_token_boundary_validation": (
+        "b04_r6_r6_opening_evidence_review_validation_claim_token_boundary_receipt.json"
+    ),
+    "package_promotion_review_validation_plan_prep_only": (
+        "b04_r6_r6_opening_evidence_review_validation_package_promotion_plan_prep_only.json"
+    ),
     "package_promotion_review_packet_prep_only_draft": (
-        "b04_r6_r6_opening_validation_package_promotion_review_packet_prep_only_draft.json"
+        "b04_r6_r6_opening_evidence_review_validation_package_promotion_review_packet_prep_only_draft.json"
     ),
     "external_audit_delta_validation_plan_prep_only": (
-        "b04_r6_r6_opening_external_audit_delta_validation_plan_prep_only.json"
+        "b04_r6_r6_opening_evidence_review_validation_external_audit_delta_plan_prep_only.json"
     ),
     "limited_r6_continuation_validation_plan_prep_only": (
-        "b04_r6_limited_r6_continuation_validation_plan_prep_only.json"
+        "b04_r6_r6_opening_evidence_review_validation_limited_r6_continuation_plan_prep_only.json"
     ),
-    "r6_rollback_freeze_validation_plan_prep_only": "b04_r6_r6_rollback_freeze_validation_plan_prep_only.json",
+    "r6_rollback_freeze_validation_plan_prep_only": (
+        "b04_r6_r6_opening_evidence_review_validation_rollback_freeze_plan_prep_only.json"
+    ),
     "commercial_activation_claim_review_preconditions_prep_only": (
-        "b04_r6_commercial_activation_claim_review_preconditions_prep_only.json"
+        "b04_r6_r6_opening_evidence_review_validation_commercial_claim_preconditions_prep_only.json"
     ),
     "pipeline_board": "b04_r6_r6_opening_evidence_review_validation_pipeline_board.json",
     "future_blocker_register": "b04_r6_r6_opening_evidence_review_validation_future_blocker_register.json",
