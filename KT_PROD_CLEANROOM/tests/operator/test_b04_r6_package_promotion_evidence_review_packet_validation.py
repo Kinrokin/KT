@@ -113,6 +113,8 @@ def test_required_validation_outputs_exist_and_parse(outputs: Path, filename: st
 
 def test_validation_contract_preserves_main_head(outputs: Path) -> None:
     assert _contract(outputs)["current_main_head"] == VALIDATION_MAIN_HEAD
+    assert _contract(outputs)["current_git_head"] == VALIDATION_MAIN_HEAD
+    assert _contract(outputs)["current_branch_head"] == VALIDATION_HEAD
 
 
 def test_validation_binds_package_promotion_evidence_review(outputs: Path) -> None:

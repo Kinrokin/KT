@@ -446,6 +446,7 @@ def _base(
     *,
     generated_utc: str,
     head: str,
+    branch_head: str,
     current_main_head: str,
     branch: str,
     input_bindings: list[Dict[str, str]],
@@ -456,6 +457,7 @@ def _base(
         "schema_version": "v1",
         "generated_utc": generated_utc,
         "current_git_head": head,
+        "current_branch_head": branch_head,
         "current_main_head": current_main_head,
         "current_branch": branch,
         "authoritative_lane": AUTHORITATIVE_LANE,
@@ -625,8 +627,9 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
     branch = _ensure_branch_context(root)
     if common.git_status_porcelain(root):
         raise RuntimeError("FAIL_CLOSED: dirty worktree before B04 R6 package-promotion evidence review validation")
-    head = common.git_rev_parse(root, "HEAD")
+    branch_head = common.git_rev_parse(root, "HEAD")
     current_main_head = common.git_rev_parse(root, "origin/main" if branch != "main" else "HEAD")
+    head = current_main_head if branch != "main" else branch_head
     payloads, texts = _payloads(root)
     _validate_review_payloads(root, payloads, texts)
     trust_zone_validation = validate_trust_zones(root=root)
@@ -635,6 +638,7 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
     base = _base(
         generated_utc=utc_now_iso_z(),
         head=head,
+        branch_head=branch_head,
         current_main_head=current_main_head,
         branch=branch,
         input_bindings=_input_bindings(root),
