@@ -260,6 +260,11 @@ def _validate_handoff(payloads: Dict[str, Dict[str, Any]]) -> None:
         _fail("RC_B04R6_PACKAGE_PROMOTION_REVIEW_NEXT_MOVE_DRIFT", "next-lawful-move receipt drift")
     if contract.get("r6_open") is not True or contract.get("package_promotion_review_packet_next") is not True:
         _fail("RC_B04R6_PACKAGE_PROMOTION_REVIEW_VALIDATION_OUTCOME_DRIFT", "package review handoff truth missing")
+    if contract.get("r6_opening_evidence_review_validated") is not True:
+        _fail(
+            "RC_B04R6_PACKAGE_PROMOTION_REVIEW_VALIDATION_OUTCOME_DRIFT",
+            "R6 opening evidence review validation truth missing",
+        )
 
 
 def _validate_readiness(payloads: Dict[str, Dict[str, Any]]) -> None:
@@ -432,10 +437,13 @@ def _artifact(base: Dict[str, Any], *, schema_id: str, artifact_id: str, **extra
 
 
 def _prep_only(base: Dict[str, Any], *, role: str, purpose: str) -> Dict[str, Any]:
+    role_upper = role.upper()
+    prefix = "PACKAGE_PROMOTION_REVIEW_"
+    artifact_suffix = role_upper[len(prefix) :] if role_upper.startswith(prefix) else role_upper
     return _artifact(
         base,
         schema_id=f"kt.b04_r6.package_promotion_review.{role}.prep_only.v1",
-        artifact_id=f"B04_R6_PACKAGE_PROMOTION_REVIEW_{role.upper()}",
+        artifact_id=f"B04_R6_PACKAGE_PROMOTION_REVIEW_{artifact_suffix}",
         authority="PREP_ONLY",
         status="PREP_ONLY",
         purpose=purpose,

@@ -207,6 +207,17 @@ def test_downstream_outputs_remain_prep_only(outputs: Path, role: str) -> None:
     assert payload["cannot_authorize_commercial_activation_claims"] is True
 
 
+def test_package_promotion_review_validation_artifact_ids_are_not_duplicated(outputs: Path) -> None:
+    assert (
+        _payload(outputs, "package_promotion_review_validation_plan")["artifact_id"]
+        == "B04_R6_PACKAGE_PROMOTION_REVIEW_VALIDATION_PLAN"
+    )
+    assert (
+        _payload(outputs, "package_promotion_review_validation_reason_codes")["artifact_id"]
+        == "B04_R6_PACKAGE_PROMOTION_REVIEW_VALIDATION_REASON_CODES"
+    )
+
+
 @pytest.mark.parametrize("role", _json_roles())
 @pytest.mark.parametrize(
     "field,expected",
@@ -277,6 +288,19 @@ def test_next_move_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.Monkey
     _write(path, payload)
     _patch_package_review_env(monkeypatch, tmp_path)
     with pytest.raises(package_review.LaneFailure, match="NEXT_MOVE_DRIFT"):
+        package_review.run(reports_root=reports)
+
+
+def test_r6_opening_evidence_review_validation_truth_drift_fails_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _run_opening_evidence_validation(tmp_path, monkeypatch)
+    path = reports / opening_validation.OUTPUTS["validation_contract"]
+    payload = _load(path)
+    payload["r6_opening_evidence_review_validated"] = False
+    _write(path, payload)
+    _patch_package_review_env(monkeypatch, tmp_path)
+    with pytest.raises(package_review.LaneFailure, match="VALIDATION_OUTCOME_DRIFT"):
         package_review.run(reports_root=reports)
 
 
