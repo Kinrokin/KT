@@ -136,6 +136,14 @@ def test_validation_selects_package_promotion_review_packet_authorship(outputs: 
     assert _payload(outputs, "next_lawful_move")["next_lawful_move"] == validation.NEXT_LAWFUL_MOVE
 
 
+def test_future_blocker_register_uses_machine_safe_tokens(outputs: Path) -> None:
+    blockers = _payload(outputs, "future_blocker_register")["blockers"]
+    assert blockers
+    for blocker in blockers:
+        assert blocker == blocker.lower()
+        assert " " not in blocker
+
+
 def test_validation_report_states_non_authorization_boundaries(outputs: Path) -> None:
     text = (outputs / validation.OUTPUTS["validation_report"]).read_text(encoding="utf-8").lower()
     assert "permits only package-promotion review packet authorship" in text

@@ -664,7 +664,7 @@ def _outputs(base: Dict[str, Any]) -> Dict[str, Any]:
                 "package_promotion_review_packet_not_authored_or_validated",
                 "package_promotion_execution_not_authorized",
                 "commercial_activation_claims_require_separate_review",
-                "external_audit_delta_still_required_before commercial activation claims",
+                "external_audit_delta_still_required_before_commercial_activation_claims",
             ],
         ),
         "next_lawful_move": _artifact(
