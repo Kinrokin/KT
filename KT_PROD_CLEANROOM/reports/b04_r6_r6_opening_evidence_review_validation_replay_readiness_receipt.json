@@ -1,0 +1,368 @@
+{
+  "allowed_outcomes": [
+    "B04_R6_R6_OPENING_EVIDENCE_REVIEW_VALIDATED__PACKAGE_PROMOTION_REVIEW_PACKET_NEXT",
+    "B04_R6_R6_OPENING_EVIDENCE_REVIEW_VALIDATED__EXTERNAL_AUDIT_DELTA_PACKET_NEXT",
+    "B04_R6_R6_OPENING_EVIDENCE_REVIEW_VALIDATED__LIMITED_R6_CONTINUATION_REVIEW_NEXT",
+    "B04_R6_R6_OPENING_EVIDENCE_REVIEW_VALIDATED__R6_ROLLBACK_OR_FREEZE_REVIEW_NEXT",
+    "B04_R6_R6_OPENING_EVIDENCE_REVIEW_DEFERRED__NAMED_REVIEW_DEFECT_REMAINS",
+    "B04_R6_R6_OPENING_EVIDENCE_REVIEW_INVALID__FORENSIC_R6_OPENING_REVIEW_NEXT"
+  ],
+  "artifact_id": "B04_R6_R6_OPENING_EVIDENCE_REVIEW_REPLAY_READINESS_REVIEW_VALIDATION_RECEIPT",
+  "authoritative_lane": "B04_R6_R6_OPENING_EVIDENCE_REVIEW_PACKET_VALIDATION",
+  "binding_hashes": {
+    "abstention_fallback_review_hash": "b5b0f43b9226b34d2a85c0609bd4ddab71b4af77ec53af9516df06af8787019d",
+    "commercial_activation_claim_review_prep_only_draft_hash": "09aac583efb83fb442900a064c059b063895f117b9836def6ff222ee5ae3cb80",
+    "commercial_activation_claim_validation_plan_prep_only_hash": "2d204e17350dc9907e189f63871a32cd2667871b6dcfa831b9a7a0bbe628667f",
+    "commercial_claim_boundary_review_hash": "c7b4d8728a351fcb89f1d750f8096791beec122e67e012cce6e0faba0157b61d",
+    "commercial_claim_ceiling_update_hash": "8c67c2ff878ef3b05c78a4875b05fe68985d99819477ff983cc0ac79a58729e9",
+    "decision_matrix_hash": "b60184ab32ea884ecc7f7594236e1f628205a2cdd2454de7e28b00f1e7648154",
+    "drift_monitoring_review_hash": "ce6838daf92ba0147d5b85f0b2581b6bd1509f167cf0124a450970c6a2afb605",
+    "evidence_inventory_hash": "0e03d713ed95fd8addcecde16a1d9c99f15d7cf8a8617d44366c3e4cd165e064",
+    "evidence_scorecard_hash": "9497227e85b92879a26d0abca21cd12692a91bf1217b4bc2dcd816360b44c9b3",
+    "external_audit_delta_packet_prep_only_draft_hash": "c9615bf7b7178abfea1d41dc3b426ac509656ed907a4fdafd1e5cb40af189359",
+    "external_audit_delta_readiness_hash": "d54e68265025aef166aae9437e881e68b88248c77acc0a96b86856dd7b1a7268",
+    "external_verifier_review_hash": "bc0d0fd279fcac626edd9f8dae46c50b5ba14ba82eed4c965aa4279c2bdd7390",
+    "fallback_behavior_review_hash": "8aa40ae47506552d9f993d2d695288e02003994e5d010596d67729abe604e41f",
+    "future_blocker_register_hash": "27364666fa73978d1281e976b9e6ab651958e41c762a43b8932ac015f16139a0",
+    "incident_freeze_review_hash": "6eb5d14f8742abb8086bb80040acbcfda2e0bdf273a8495c4eee01bb5171032d",
+    "kill_switch_review_hash": "58e96c7f9e8107c2fd9ddc344452c317522ca2d081e91a5629cc396d3b02986f",
+    "limited_continuation_packet_prep_only_draft_hash": "1ac31b2f1f2ffb1e55dd9f19ccb81dd1917e3d00f69130715bffd1335678b55d",
+    "next_lawful_move_hash": "cdbb5e2c89a34fc665404efc327161f50f15d9ab79ac5a36b20bfcad0d48d5b9",
+    "no_authorization_drift_receipt_hash": "df49c14d10bc4e16fb5b3d3dbbd7ce63f41b266e9df3ee95955f901260c562de",
+    "null_route_review_hash": "647259504e0879859541d4ae7885a429c19d04e5f762428616bb978fa20d46dc",
+    "operator_override_review_hash": "4b0106b0f4655350e5a2b5c807ede198902fcb2d9010fc2cdc88ec152fcbee78",
+    "package_promotion_blocker_review_hash": "0171729f34f15561fc1e76c4513d5f93e416e74b24b1dceeeb78a8b125284a0a",
+    "package_promotion_readiness_matrix_hash": "3767d5be1aa5d7a4eaa4900f087b603dd205bb35725e0cf476c5f25783571ce1",
+    "package_promotion_review_packet_prep_only_draft_hash": "32ece6c6d4700d567932bdefe16c150a297efd129945e8c8e23a8772f2450808",
+    "packet_contract_hash": "b95c03fe60850238c9ede4f16d5e52491c537c472e1d9749dd90e2c7a72c7ea4",
+    "packet_receipt_hash": "a3e1a0b0a6757979a7e3f9e5d72517a831447b980829ce12eb3d5fff205c2049",
+    "packet_report_hash": "f05620e5081bb21f46e6f605c6a4a93df39a12e325f2d92dd058be96725fe1c4",
+    "pipeline_board_hash": "e2452cea6d4c5b50f26a7fe444116b57fa10f2d99d4c954f5c6267772a40e1b8",
+    "public_verifier_readiness_hash": "1b3be6d6bab5efc0caea0cb209ef41a06848bd7c2a115b9b29a96dc8b455ef0a",
+    "replay_readiness_review_hash": "9b02bc43b9d456bd621c1fdd551e6deb4363e846f244cef51910ab13dd6a4760",
+    "rollback_closeout_packet_prep_only_draft_hash": "a79502a17d62b1080428e8f46e1c32b46c659a7fbeb98ee2180440a9fda7efd1",
+    "rollback_continuation_matrix_hash": "8b614c778006302a710affdc51a50afa3b84f97a3b777b4f605b72e1bdbbc2ec",
+    "rollback_review_hash": "f6bc2800c956100442ddfecb0bfbebe2a9c63640e7f1a55fc215ea488bbbeeee",
+    "route_distribution_review_hash": "836f267bba1d05585e5bcbc5f15934f1d0bac166fb0b58180f0cceb668ec14cf",
+    "static_fallback_review_hash": "3767be8e46675240e020250deaa6981b78dc02704812a056d32becf21d46f98a",
+    "trace_completeness_review_hash": "fe1f0b1dae7f97f24ed18c2618a067dccb5ee276c8fe91f9318a42faea6d8e2e",
+    "validation_plan_hash": "cb5f49e263581ab20942bb1f0b9c048e841f4c9ff2af31079d0b8d1f6477460b",
+    "validation_reason_codes_hash": "12c1156c5faf0f791d1bf16469961f21f122eb708fbc97b634c170a805d13b84"
+  },
+  "cannot_authorize_commercial_activation_claims": true,
+  "cannot_authorize_lobe_escalation": true,
+  "cannot_authorize_package_promotion": true,
+  "cannot_mutate_trust_zone_law": true,
+  "cannot_mutate_truth_engine_law": true,
+  "commercial_activation_claim_authorized": false,
+  "current_branch": "validate/b04-r6-r6-opening-evidence-review-packet",
+  "current_git_head": "f27298a45b2724c6cbad00c821deb4e26d532280",
+  "current_main_head": "9f982105cfd32f784828caf9a6b679aa502f742d",
+  "forbidden_actions": [
+    "PACKAGE_PROMOTION_AUTHORIZED",
+    "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED",
+    "LOBE_ESCALATION_AUTHORIZED",
+    "TRUTH_ENGINE_LAW_MUTATED",
+    "TRUST_ZONE_LAW_MUTATED",
+    "METRIC_CONTRACT_MUTATED",
+    "STATIC_COMPARATOR_WEAKENED",
+    "R6_OPEN_TREATED_AS_PACKAGE_PROMOTION",
+    "R6_OPEN_TREATED_AS_COMMERCIAL_ACTIVATION"
+  ],
+  "generated_utc": "2026-05-12T12:42:13Z",
+  "global_runtime_surface_authorized": false,
+  "input_bindings": [
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_abstention_fallback_review_contract.json",
+      "role": "abstention_fallback_review",
+      "sha256": "b5b0f43b9226b34d2a85c0609bd4ddab71b4af77ec53af9516df06af8787019d"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_commercial_activation_claim_review_prep_only_draft.json",
+      "role": "commercial_activation_claim_review_prep_only_draft",
+      "sha256": "09aac583efb83fb442900a064c059b063895f117b9836def6ff222ee5ae3cb80"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_commercial_activation_claim_validation_plan_prep_only.json",
+      "role": "commercial_activation_claim_validation_plan_prep_only",
+      "sha256": "2d204e17350dc9907e189f63871a32cd2667871b6dcfa831b9a7a0bbe628667f"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_commercial_claim_boundary_review_contract.json",
+      "role": "commercial_claim_boundary_review",
+      "sha256": "c7b4d8728a351fcb89f1d750f8096791beec122e67e012cce6e0faba0157b61d"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_commercial_claim_ceiling_update.json",
+      "role": "commercial_claim_ceiling_update",
+      "sha256": "8c67c2ff878ef3b05c78a4875b05fe68985d99819477ff983cc0ac79a58729e9"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_post_run_decision_matrix.json",
+      "role": "decision_matrix",
+      "sha256": "b60184ab32ea884ecc7f7594236e1f628205a2cdd2454de7e28b00f1e7648154"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_drift_monitoring_review_contract.json",
+      "role": "drift_monitoring_review",
+      "sha256": "ce6838daf92ba0147d5b85f0b2581b6bd1509f167cf0124a450970c6a2afb605"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_evidence_inventory.json",
+      "role": "evidence_inventory",
+      "sha256": "0e03d713ed95fd8addcecde16a1d9c99f15d7cf8a8617d44366c3e4cd165e064"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_evidence_scorecard.json",
+      "role": "evidence_scorecard",
+      "sha256": "9497227e85b92879a26d0abca21cd12692a91bf1217b4bc2dcd816360b44c9b3"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_external_audit_delta_packet_prep_only_draft.json",
+      "role": "external_audit_delta_packet_prep_only_draft",
+      "sha256": "c9615bf7b7178abfea1d41dc3b426ac509656ed907a4fdafd1e5cb40af189359"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_external_audit_delta_readiness.json",
+      "role": "external_audit_delta_readiness",
+      "sha256": "d54e68265025aef166aae9437e881e68b88248c77acc0a96b86856dd7b1a7268"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_external_verifier_readiness_review_contract.json",
+      "role": "external_verifier_review",
+      "sha256": "bc0d0fd279fcac626edd9f8dae46c50b5ba14ba82eed4c965aa4279c2bdd7390"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_fallback_behavior_review_contract.json",
+      "role": "fallback_behavior_review",
+      "sha256": "8aa40ae47506552d9f993d2d695288e02003994e5d010596d67729abe604e41f"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/kt_future_blocker_register.json",
+      "role": "future_blocker_register",
+      "sha256": "27364666fa73978d1281e976b9e6ab651958e41c762a43b8932ac015f16139a0"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_incident_freeze_review_contract.json",
+      "role": "incident_freeze_review",
+      "sha256": "6eb5d14f8742abb8086bb80040acbcfda2e0bdf273a8495c4eee01bb5171032d"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_kill_switch_review_contract.json",
+      "role": "kill_switch_review",
+      "sha256": "58e96c7f9e8107c2fd9ddc344452c317522ca2d081e91a5629cc396d3b02986f"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_limited_continuation_packet_prep_only_draft.json",
+      "role": "limited_continuation_packet_prep_only_draft",
+      "sha256": "1ac31b2f1f2ffb1e55dd9f19ccb81dd1917e3d00f69130715bffd1335678b55d"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
+      "role": "next_lawful_move",
+      "sha256": "cdbb5e2c89a34fc665404efc327161f50f15d9ab79ac5a36b20bfcad0d48d5b9"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_evidence_no_authorization_drift_receipt.json",
+      "role": "no_authorization_drift_receipt",
+      "sha256": "df49c14d10bc4e16fb5b3d3dbbd7ce63f41b266e9df3ee95955f901260c562de"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_null_route_review_contract.json",
+      "role": "null_route_review",
+      "sha256": "647259504e0879859541d4ae7885a429c19d04e5f762428616bb978fa20d46dc"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_operator_override_review_contract.json",
+      "role": "operator_override_review",
+      "sha256": "4b0106b0f4655350e5a2b5c807ede198902fcb2d9010fc2cdc88ec152fcbee78"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_package_promotion_blocker_review_contract.json",
+      "role": "package_promotion_blocker_review",
+      "sha256": "0171729f34f15561fc1e76c4513d5f93e416e74b24b1dceeeb78a8b125284a0a"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_readiness_matrix.json",
+      "role": "package_promotion_readiness_matrix",
+      "sha256": "3767d5be1aa5d7a4eaa4900f087b603dd205bb35725e0cf476c5f25783571ce1"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_packet_prep_only_draft.json",
+      "role": "package_promotion_review_packet_prep_only_draft",
+      "sha256": "32ece6c6d4700d567932bdefe16c150a297efd129945e8c8e23a8772f2450808"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_evidence_review_packet_contract.json",
+      "role": "packet_contract",
+      "sha256": "b95c03fe60850238c9ede4f16d5e52491c537c472e1d9749dd90e2c7a72c7ea4"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_evidence_review_packet_receipt.json",
+      "role": "packet_receipt",
+      "sha256": "a3e1a0b0a6757979a7e3f9e5d72517a831447b980829ce12eb3d5fff205c2049"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_evidence_review_packet_report.md",
+      "role": "packet_report",
+      "sha256": "f05620e5081bb21f46e6f605c6a4a93df39a12e325f2d92dd058be96725fe1c4"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_pipeline_board.json",
+      "role": "pipeline_board",
+      "sha256": "e2452cea6d4c5b50f26a7fe444116b57fa10f2d99d4c954f5c6267772a40e1b8"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_public_verifier_readiness.json",
+      "role": "public_verifier_readiness",
+      "sha256": "1b3be6d6bab5efc0caea0cb209ef41a06848bd7c2a115b9b29a96dc8b455ef0a"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_replay_readiness_review_contract.json",
+      "role": "replay_readiness_review",
+      "sha256": "9b02bc43b9d456bd621c1fdd551e6deb4363e846f244cef51910ab13dd6a4760"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_rollback_closeout_packet_prep_only_draft.json",
+      "role": "rollback_closeout_packet_prep_only_draft",
+      "sha256": "a79502a17d62b1080428e8f46e1c32b46c659a7fbeb98ee2180440a9fda7efd1"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_rollback_continuation_matrix.json",
+      "role": "rollback_continuation_matrix",
+      "sha256": "8b614c778006302a710affdc51a50afa3b84f97a3b777b4f605b72e1bdbbc2ec"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_rollback_review_contract.json",
+      "role": "rollback_review",
+      "sha256": "f6bc2800c956100442ddfecb0bfbebe2a9c63640e7f1a55fc215ea488bbbeeee"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_route_distribution_review_contract.json",
+      "role": "route_distribution_review",
+      "sha256": "836f267bba1d05585e5bcbc5f15934f1d0bac166fb0b58180f0cceb668ec14cf"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_static_fallback_review_contract.json",
+      "role": "static_fallback_review",
+      "sha256": "3767be8e46675240e020250deaa6981b78dc02704812a056d32becf21d46f98a"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_trace_completeness_review_contract.json",
+      "role": "trace_completeness_review",
+      "sha256": "fe1f0b1dae7f97f24ed18c2618a067dccb5ee276c8fe91f9318a42faea6d8e2e"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_evidence_review_validation_plan.json",
+      "role": "validation_plan",
+      "sha256": "cb5f49e263581ab20942bb1f0b9c048e841f4c9ff2af31079d0b8d1f6477460b"
+    },
+    {
+      "binding_kind": "file_sha256_at_r6_opening_evidence_review_validation",
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_r6_opening_evidence_review_validation_reason_codes.json",
+      "role": "validation_reason_codes",
+      "sha256": "12c1156c5faf0f791d1bf16469961f21f122eb708fbc97b634c170a805d13b84"
+    }
+  ],
+  "lobe_escalation_authorized": false,
+  "metric_contract_mutated": false,
+  "next_lawful_move": "AUTHOR_B04_R6_PACKAGE_PROMOTION_REVIEW_PACKET",
+  "outcome_routing": {
+    "B04_R6_R6_OPENING_EVIDENCE_REVIEW_DEFERRED__NAMED_REVIEW_DEFECT_REMAINS": "REPAIR_B04_R6_R6_OPENING_EVIDENCE_REVIEW_VALIDATION_DEFECTS",
+    "B04_R6_R6_OPENING_EVIDENCE_REVIEW_INVALID__FORENSIC_R6_OPENING_REVIEW_NEXT": "AUTHOR_B04_R6_FORENSIC_R6_OPENING_REVIEW_PACKET",
+    "B04_R6_R6_OPENING_EVIDENCE_REVIEW_VALIDATED__EXTERNAL_AUDIT_DELTA_PACKET_NEXT": "AUTHOR_B04_R6_EXTERNAL_AUDIT_DELTA_PACKET",
+    "B04_R6_R6_OPENING_EVIDENCE_REVIEW_VALIDATED__LIMITED_R6_CONTINUATION_REVIEW_NEXT": "AUTHOR_B04_R6_LIMITED_R6_CONTINUATION_REVIEW_PACKET",
+    "B04_R6_R6_OPENING_EVIDENCE_REVIEW_VALIDATED__PACKAGE_PROMOTION_REVIEW_PACKET_NEXT": "AUTHOR_B04_R6_PACKAGE_PROMOTION_REVIEW_PACKET",
+    "B04_R6_R6_OPENING_EVIDENCE_REVIEW_VALIDATED__R6_ROLLBACK_OR_FREEZE_REVIEW_NEXT": "AUTHOR_B04_R6_R6_ROLLBACK_OR_FREEZE_REVIEW_PACKET"
+  },
+  "package_promotion_authorized": false,
+  "package_promotion_review_packet_next": true,
+  "predecessor_outcome": "B04_R6_R6_OPENING_EVIDENCE_REVIEW_PACKET_BOUND__R6_OPENING_EVIDENCE_REVIEW_VALIDATION_NEXT",
+  "previous_authoritative_lane": "B04_R6_R6_OPENING_EVIDENCE_REVIEW_PACKET",
+  "previous_next_lawful_move": "VALIDATE_B04_R6_R6_OPENING_EVIDENCE_REVIEW_PACKET",
+  "r6_open": true,
+  "r6_open_treated_as_commercial_activation": false,
+  "r6_open_treated_as_package_promotion": false,
+  "r6_opening_evidence_review_packet_authored": true,
+  "r6_opening_evidence_review_validated": true,
+  "r6_opening_executed": true,
+  "reason_codes": [
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_PACKET_MISSING",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_PACKET_OUTCOME_DRIFT",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_NEXT_MOVE_DRIFT",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_INPUT_HASH_MISSING",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_INPUT_HASH_MALFORMED",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_SCORECARD_INCOMPLETE",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_DECISION_MATRIX_UNJUSTIFIED",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_READINESS_MATRIX_MISSING",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_REVIEW_CONTRACT_MISSING",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_PREP_ONLY_DRIFT",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_CLAIM_TOKEN_DRIFT",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_TRUST_ZONE_FAILED",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_GLOBAL_SURFACE_DRIFT",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_LOBE_ESCALATION_DRIFT",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_PACKAGE_PROMOTION_DRIFT",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_COMMERCIAL_CLAIM_DRIFT",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_TRUTH_ENGINE_MUTATION",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_TRUST_ZONE_MUTATION",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_METRIC_MUTATION",
+    "RC_B04R6_R6_OPENING_EVIDENCE_VAL_COMPARATOR_WEAKENED"
+  ],
+  "recommended_validated_path": "PACKAGE_PROMOTION_REVIEW_PACKET_NEXT",
+  "runtime_cutover_executed": true,
+  "schema_id": "kt.b04_r6.r6_opening_evidence_review.validation.replay_readiness_review_validation.v1",
+  "schema_version": "v1",
+  "selected_outcome": "B04_R6_R6_OPENING_EVIDENCE_REVIEW_VALIDATED__PACKAGE_PROMOTION_REVIEW_PACKET_NEXT",
+  "source_roles": [
+    "replay_readiness_review"
+  ],
+  "static_comparator_weakened": false,
+  "trust_zone_failures": [],
+  "trust_zone_law_changed": false,
+  "trust_zone_law_unchanged": true,
+  "trust_zone_validation_status": "PASS",
+  "truth_engine_law_changed": false,
+  "truth_engine_law_unchanged": true,
+  "validated_hashes": {
+    "replay_readiness_review_hash": "9b02bc43b9d456bd621c1fdd551e6deb4363e846f244cef51910ab13dd6a4760"
+  },
+  "validation_role": "replay_readiness_review_validation",
+  "validation_status": "PASS"
+}
