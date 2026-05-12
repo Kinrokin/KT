@@ -96,6 +96,7 @@ REASON_CODES = tuple(
             "RC_B04R6_COMMERCIAL_ACTIVATION_REVIEW_VAL_NEXT_MOVE_DRIFT",
             "RC_B04R6_COMMERCIAL_ACTIVATION_REVIEW_VAL_INPUT_HASH_MISSING",
             "RC_B04R6_COMMERCIAL_ACTIVATION_REVIEW_VAL_INPUT_HASH_MALFORMED",
+            "RC_B04R6_COMMERCIAL_ACTIVATION_REVIEW_VAL_INPUT_HASH_MISMATCH",
             "RC_B04R6_COMMERCIAL_ACTIVATION_REVIEW_VAL_SCORECARD_INCOMPLETE",
             "RC_B04R6_COMMERCIAL_ACTIVATION_REVIEW_VAL_DECISION_MATRIX_UNJUSTIFIED",
             "RC_B04R6_COMMERCIAL_ACTIVATION_REVIEW_VAL_REVIEW_CONTRACT_MISSING",
@@ -347,6 +348,12 @@ def _validate_hashes(payloads: Dict[str, Dict[str, Any]]) -> None:
         role = str(row.get("role", "")).strip()
         if binding_hashes.get(f"{role}_hash") != row["sha256"]:
             _fail("RC_B04R6_COMMERCIAL_ACTIVATION_REVIEW_VAL_INPUT_HASH_MISSING", f"binding hash mismatch for {role}")
+        raw_path = row.get("path")
+        if not isinstance(raw_path, str):
+            _fail("RC_B04R6_COMMERCIAL_ACTIVATION_REVIEW_VAL_INPUT_HASH_MISSING", f"missing binding path for {role}")
+        current_hash = file_sha256(common.resolve_path(repo_root(), raw_path))
+        if current_hash != row["sha256"]:
+            _fail("RC_B04R6_COMMERCIAL_ACTIVATION_REVIEW_VAL_INPUT_HASH_MISMATCH", f"stale packet binding for {role}")
 
 
 def _validate_scorecard(payloads: Dict[str, Dict[str, Any]]) -> None:

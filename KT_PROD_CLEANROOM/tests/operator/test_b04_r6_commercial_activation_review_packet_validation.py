@@ -274,6 +274,18 @@ def test_next_move_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.Monkey
         validation.run(reports_root=reports)
 
 
+def test_packet_input_binding_hash_mismatch_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_review(tmp_path, monkeypatch)
+    contract = _load(reports / review.OUTPUTS["review_contract"])
+    bound_path = tmp_path / contract["input_bindings"][0]["path"]
+    payload = _load(bound_path)
+    payload["hash_drift_probe"] = "changed after packet authoring"
+    _write(bound_path, payload)
+    _patch_validation_env(monkeypatch, tmp_path)
+    with pytest.raises(validation.LaneFailure, match="INPUT_HASH_MISMATCH"):
+        validation.run(reports_root=reports)
+
+
 def test_scorecard_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_review(tmp_path, monkeypatch)
     path = reports / review.OUTPUTS["evidence_scorecard"]
