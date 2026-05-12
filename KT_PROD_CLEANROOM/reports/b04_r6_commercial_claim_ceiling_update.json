@@ -1,10 +1,13 @@
 {
+  "allowed_claims": [
+    "R6 opening passed under bounded packet law; evidence review validation is next."
+  ],
   "allowed_outcomes": [
     "B04_R6_R6_OPENING_EVIDENCE_REVIEW_PACKET_BOUND__R6_OPENING_EVIDENCE_REVIEW_VALIDATION_NEXT",
     "B04_R6_R6_OPENING_EVIDENCE_REVIEW_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_R6_OPENING_EVIDENCE_REVIEW_PACKET_INVALID__FORENSIC_R6_OPENING_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_R6_OPENING_EVIDENCE_REVIEW_DRIFT_MONITORING",
+  "artifact_id": "B04_R6_COMMERCIAL_CLAIM_CEILING_UPDATE",
   "authoritative_lane": "B04_R6_R6_OPENING_EVIDENCE_REVIEW_PACKET",
   "binding_hashes": {
     "opening_abstention_fallback_receipt_hash": "2494536d49ad3f88a33abecd061723dfca85eec0648a9b5f9d5828b43150e66c",
@@ -66,7 +69,6 @@
       "r6_opening_no_authorization_drift_receipt"
     ]
   },
-  "drift_status": "PASS",
   "forbidden_actions": [
     "LOBE_ESCALATION_AUTHORIZED",
     "PACKAGE_PROMOTION_AUTHORIZED",
@@ -77,6 +79,10 @@
     "STATIC_COMPARATOR_WEAKENED",
     "R6_OPEN_TREATED_AS_PACKAGE_PROMOTION",
     "R6_OPEN_TREATED_AS_COMMERCIAL_ACTIVATION"
+  ],
+  "forbidden_claims": [
+    "Package promotion is authorized.",
+    "Commercial activation is authorized."
   ],
   "generated_utc": "2026-05-12T11:42:14Z",
   "global_runtime_surface_authorized": false,
@@ -351,9 +357,8 @@
     "RC_B04R6_R6_OPENING_REVIEW_RESULT_COMMERCIAL_DRIFT"
   ],
   "recommended_validated_path": "PACKAGE_PROMOTION_REVIEW_PACKET_NEXT",
-  "review_status": "PASS",
   "runtime_cutover_executed": true,
-  "schema_id": "kt.b04_r6.r6_opening_evidence_review.drift_monitoring.contract.v1",
+  "schema_id": "kt.b04_r6.commercial_claim_ceiling.update.v1",
   "schema_version": "v1",
   "scorecard": {
     "abstention_fallback_preserved": true,
