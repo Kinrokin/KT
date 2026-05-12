@@ -4,10 +4,8 @@
     "B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET_INVALID__FORENSIC_PACKAGE_PROMOTION_AUTHORIZATION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_SEVEN_B_AMPLIFICATION_ABLATION_PLAN",
+  "artifact_id": "B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_OPERATOR_OBLIGATION_CONTRACT",
   "authoritative_lane": "B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET",
-  "authority": "PREP_ONLY",
-  "benchmark_authority": "PREP_ONLY",
   "benchmark_governing_statement": "KT does not claim small models are secretly giant models. KT tests where governed substrate makes smaller models act above class, and proves where it does not.",
   "benchmark_prep_authorizes_package_promotion": false,
   "binding_hashes": {
@@ -35,16 +33,10 @@
     "validation_receipt_hash": "33afe0c49ff91be7ce35eb203c0d9304da71eca8938cbdbcda654430dbed98dc",
     "validation_report_hash": "8966866731cb9b096486b3193a2995fd59c8a77fafa56fe369ef295007a3f676"
   },
-  "cannot_authorize_commercial_activation_claims": true,
-  "cannot_authorize_lobe_escalation": true,
-  "cannot_authorize_package_promotion": true,
-  "cannot_claim_7b_amplification_proven": true,
-  "cannot_execute_package_promotion": true,
-  "cannot_mutate_trust_zone_law": true,
-  "cannot_mutate_truth_engine_law": true,
-  "cannot_open_r6": true,
   "commercial_activation_claim_authorized": false,
   "commercial_claim_ceiling_summary": "R6 is open; package promotion authorization packet is authored; promotion execution and commercial activation remain unauthorized.",
+  "contract_role": "operator_obligation_contract",
+  "contract_status": "BOUND",
   "current_branch": "author/b04-r6-package-promotion-authorization-packet",
   "current_git_head": "c2d39237f3c81ad40dae98d2a5a8ffe54a756690",
   "current_main_head": "3e45ea7047c0b353d70f0ff8fef2b63c7770bde7",
@@ -57,7 +49,6 @@
     "SEVEN_B_AMPLIFICATION_CLAIMED_PROVEN"
   ],
   "generated_utc": "2026-05-12T17:09:45Z",
-  "governing_statement": "KT does not claim small models are secretly giant models. KT tests where governed substrate makes smaller models act above class, and proves where it does not.",
   "input_bindings": [
     {
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_blocker_ledger_receipt.json",
@@ -175,7 +166,6 @@
       "sha256": "8966866731cb9b096486b3193a2995fd59c8a77fafa56fe369ef295007a3f676"
     }
   ],
-  "metric": "lawful_replayable_progress_per_dollar",
   "next_lawful_move": "VALIDATE_B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET",
   "package_promotion_authorization_packet_authored": true,
   "package_promotion_authorization_validated": false,
@@ -186,17 +176,7 @@
   "predecessor_outcome": "B04_R6_PACKAGE_PROMOTION_REVIEW_VALIDATED__PACKAGE_PROMOTION_AUTHORIZATION_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_PACKAGE_PROMOTION_REVIEW_PACKET_VALIDATION",
   "previous_next_lawful_move": "AUTHOR_B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET",
-  "providers": [
-    "CoreWeave / Kimi K2.6",
-    "OpenAI model",
-    "Anthropic model",
-    "Gemini model",
-    "local 7B",
-    "local 14B",
-    "local 32B",
-    "best available open model"
-  ],
-  "purpose": "Prepare provider/runtime benchmark campaign.",
+  "purpose": "Define operator obligations.",
   "r6_open": true,
   "readiness_matrix": {
     "authorization_packet_ready": true,
@@ -240,39 +220,15 @@
     "RC_B04R6_PACKAGE_PROMOTION_AUTH_TRUTH_ENGINE_MUTATION",
     "RC_B04R6_PACKAGE_PROMOTION_AUTH_TRUST_ZONE_MUTATION"
   ],
-  "schema_id": "kt.b04_r6.package_promotion_authorization.seven_b_amplification_ablation_plan.prep_only.v1",
+  "requirements": [
+    "support runbook",
+    "incident response",
+    "rollback acknowledgement"
+  ],
+  "schema_id": "kt.b04_r6.package_promotion_authorization.operator_obligation_contract.v1",
   "schema_version": "v1",
-  "score_dimensions": [
-    "accuracy",
-    "latency",
-    "cost",
-    "tokens_per_successful_lane",
-    "cost_per_validated_lane",
-    "cost_per_merged_pr",
-    "cost_per_review_repair",
-    "cost_per_replay_success",
-    "json_validity_rate",
-    "receipt_completeness",
-    "trace_completeness",
-    "failure_recovery_rate",
-    "operator_intervention_rate",
-    "claim_drift_failure_rate",
-    "audit_readiness"
-  ],
   "selected_outcome": "B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET_BOUND__PACKAGE_PROMOTION_AUTHORIZATION_VALIDATION_NEXT",
-  "seven_b_ablation_ladder": [
-    "A0 raw 7B",
-    "A1 7B + prompt discipline",
-    "A2 7B + retrieval",
-    "A3 7B + tools",
-    "A4 7B + verifier loop",
-    "A5 7B + adapters",
-    "A6 7B + router / triage",
-    "A7 7B + lobes",
-    "A8 7B + full KT governance / receipts / replay / proof factory"
-  ],
   "seven_b_amplification_claimed_proven": false,
-  "status": "PREP_ONLY",
   "trust_zone_failures": [],
   "trust_zone_law_changed": false,
   "trust_zone_law_unchanged": true,
@@ -280,17 +236,5 @@
   "truth_engine_law_changed": false,
   "truth_engine_law_unchanged": true,
   "validation_success_next_move": "AUTHOR_B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET",
-  "validation_success_outcome": "B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET_VALIDATED__PACKAGE_PROMOTION_EXECUTION_PACKET_NEXT",
-  "workloads": [
-    "author lane packet",
-    "validate packet",
-    "repair review finding",
-    "generate tests",
-    "parse JSON",
-    "run proof replay",
-    "create audit summary",
-    "handle long-horizon repo task",
-    "recover from failed review",
-    "maintain claim ceiling"
-  ]
+  "validation_success_outcome": "B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET_VALIDATED__PACKAGE_PROMOTION_EXECUTION_PACKET_NEXT"
 }

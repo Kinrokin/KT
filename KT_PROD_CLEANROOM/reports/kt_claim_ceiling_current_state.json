@@ -1,85 +1,248 @@
 {
-  "adapter_promotion_authorized": false,
   "allowed_claims": [
-    "AFSH passed limited-runtime canary under bounded packet law.",
-    "The canary evidence review is validated on canonical main.",
-    "Expanded canary authorization packet authorship is the next R6 lawful move.",
-    "Runtime cutover remains blocked.",
-    "R6 remains closed.",
-    "Package promotion remains blocked.",
-    "Commercial activation claims remain blocked."
+    "R6 is open.",
+    "Package promotion review is validated.",
+    "Package promotion authorization packet is bound and awaits validation.",
+    "Package promotion is not executed.",
+    "Commercial activation is not authorized.",
+    "Truth/trust law is unchanged."
+  ],
+  "allowed_outcomes": [
+    "B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET_BOUND__PACKAGE_PROMOTION_AUTHORIZATION_VALIDATION_NEXT",
+    "B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
+    "B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET_INVALID__FORENSIC_PACKAGE_PROMOTION_AUTHORIZATION_REVIEW_NEXT"
   ],
   "artifact_id": "KT_CLAIM_CEILING_CURRENT_STATE",
-  "authority": "PREP_ONLY",
-  "campaign_id": "KT_E2E_CLOSURE_ADAPTIVE_RATIFICATION_AND_7B_AMPLIFICATION_BENCHMARK_ORDER_v1",
-  "campaign_purpose": "Govern the next KT E2E closure campaign before launching broad adaptive work.",
-  "cannot_authorize_commercial_activation_claims": true,
-  "cannot_authorize_lobe_escalation": true,
-  "cannot_authorize_package_promotion": true,
-  "cannot_authorize_runtime_cutover": true,
-  "cannot_mutate_trust_zone_law": true,
-  "cannot_mutate_truth_engine_law": true,
-  "cannot_open_r6": true,
-  "claim_ceiling": "CANARY_EVIDENCE_VALIDATED__CAMPAIGN_CONSTITUTION_PREP_ONLY",
-  "commercial_activation_claim_authorized": false,
-  "created_utc": "2026-05-09T15:56:38Z",
-  "current_branch": "replay/kt-e2e-closure-adaptive-ratification-order-on-main",
-  "current_main_head": "db1764ddfe75da995163a2cb46affc809367c8d0",
-  "forbidden_claims": [
-    "KT is production activated.",
-    "R6 is open.",
-    "AFSH is commercially live.",
-    "Package promotion is complete.",
-    "7B amplification is proven.",
-    "Lobes are ratified.",
-    "KT beats larger models generally."
-  ],
-  "gpu_training_authorized": false,
-  "hard_prohibitions": [
-    "runtime_cutover",
-    "r6_opening",
-    "package_promotion",
-    "commercial_activation_claims",
-    "lobe_activation",
-    "adapter_promotion",
-    "gpu_training_as_authority",
-    "seven_b_amplification_claims",
-    "truth_engine_law_mutation",
-    "trust_zone_law_mutation"
-  ],
-  "head": "db1764ddfe75da995163a2cb46affc809367c8d0",
-  "lobe_activation_authorized": false,
-  "next_lawful_move": "VALIDATE_KT_E2E_CLOSURE_ADAPTIVE_RATIFICATION_AND_7B_AMPLIFICATION_BENCHMARK_ORDER",
-  "output_role": "claim_ceiling",
-  "package_promotion_authorized": false,
-  "predecessor_outcome": "B04_R6_CANARY_EVIDENCE_REVIEW_VALIDATED__EXPANDED_CANARY_AUTHORIZATION_PACKET_NEXT",
-  "previous_next_lawful_move": "AUTHOR_B04_R6_EXPANDED_CANARY_AUTHORIZATION_PACKET",
-  "prior_bindings": {
-    "canary_evidence_validation_receipt": "KT_PROD_CLEANROOM/reports/b04_r6_canary_evidence_review_validation_receipt.json",
-    "canary_evidence_validation_receipt_hash": "4c33c3b1583dea93d3067e705a0ee92a9a83a8a722fd351c8828bff111efec6f",
-    "canary_post_run_decision_matrix_validation_receipt": "KT_PROD_CLEANROOM/reports/b04_r6_canary_post_run_decision_matrix_validation_receipt.json",
-    "canary_post_run_decision_matrix_validation_receipt_hash": "af21f4d06fff99075adb470720876be5f774b779349dd49258cb9d969adf761e"
+  "authoritative_lane": "B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET",
+  "benchmark_governing_statement": "KT does not claim small models are secretly giant models. KT tests where governed substrate makes smaller models act above class, and proves where it does not.",
+  "benchmark_prep_authorizes_package_promotion": false,
+  "binding_hashes": {
+    "blocker_ledger_validation_hash": "534a65274d6e68ab432a05557efaae93eac7ea9fc668c708c021d61c0a575c4a",
+    "claim_token_boundary_validation_hash": "6de06dcab3251c1e648b3fd07e088e5c766f47eb62b88804529a6713ea9463a3",
+    "commercial_activation_claim_review_preconditions_prep_only_hash": "f7ebbd78b09d1f440c80e13a244caf2b2d071ff750059ae1b34dc0de0f89cf6a",
+    "commercial_claim_boundary_validation_hash": "44ebf3d3c4da1086cf8710eb21cfa7910dfd0421ac013c46396bb773008f3e6f",
+    "decision_matrix_validation_hash": "f070c7d9fd44d7e18866472b07173663e83bf60b42b9dca1340183c662652480",
+    "evidence_inventory_validation_hash": "b3db7defa4ce77c8257a85ead2e1b9e1313f5d32bb3a145522749319fb98f7aa",
+    "evidence_scorecard_validation_hash": "4cdab488ebf3670ec59e33b7fd4b87fcabc53d0497d6c58325a435486aad529e",
+    "external_audit_delta_readiness_validation_hash": "1943c7c3bb1f0dc1c3d585fb772366ff151022877231992b0e29f36c595a63e1",
+    "external_audit_delta_validation_plan_prep_only_hash": "f37b56484cbd9fb5848f441510d85024fc654b9ef95388290c19f66f1132a2e4",
+    "future_blocker_register_hash": "d91efabf45f35797721b9f19e98ea3c1fa0145ac0936e5950c2767ebf8a8f292",
+    "next_lawful_move_hash": "7fa6e0914ce93c61803049ebe3718a5d1198b33e595f140e62a86ee3769b2f6b",
+    "no_authorization_drift_validation_hash": "8cf75b41ce13d205ec7a453bb15a6453553a55a6cee865b943028e9478576840",
+    "package_promotion_authorization_packet_prep_only_draft_hash": "dc08b16d53a8aec92ba2c2f4aeb6c59428174c91550ed53fe1d97d6a7237a5bc",
+    "package_promotion_authorization_validation_plan_prep_only_hash": "6286f6aecaec0260a3ac17c1d5b431db82c9698cc1999fb5e83393884a6df4e3",
+    "package_promotion_execution_packet_prep_only_draft_hash": "a3e770d63a639f59f263458c03fc2b0b2cd72d0fc18d49eacc812593af679e04",
+    "packet_binding_validation_hash": "a200e158cb6ca67a7835510172006a3c66f22d6bcb31c6497e243370ad676a94",
+    "pipeline_board_hash": "e1fca3666620174cdd712880712ba283272aee64888b48ed05fa12fc5027b904",
+    "prep_only_boundary_validation_hash": "3cf284a9a042204a848458206c2c72befe7f9e44b42fdaddc269b22066176b82",
+    "public_verifier_readiness_validation_hash": "b0a2fa2c808472fc2a51dbd2da5d90eef366345a30a4f6ac3d558bfd8be5afe6",
+    "release_truth_derivation_validation_hash": "e60ef16405fbcdb831225dd45e2e9a4acda5c940b0f5e78ea8a0f06d8937b693",
+    "validation_contract_hash": "0f6d3c7f3bd8f9bda1585186d096b1b5b0a8922303bdba8e505d5a388256e211",
+    "validation_receipt_hash": "33afe0c49ff91be7ce35eb203c0d9304da71eca8938cbdbcda654430dbed98dc",
+    "validation_report_hash": "8966866731cb9b096486b3193a2995fd59c8a77fafa56fe369ef295007a3f676"
   },
-  "r6_open": false,
-  "ratification_order": [
-    "canonical_lab_archive_commercial_boundary",
-    "truth_engine_and_execution_board_authority",
-    "crucible_registry",
-    "policy_c_pressure_taxonomy",
-    "epoch_coverage_matrix",
-    "adapter_lifecycle_and_lineage",
-    "tournament_protocol",
-    "promotion_merge_rollback_law",
-    "router_and_lobe_ratification",
-    "benchmark_constitution",
-    "external_verifier_and_reaudit",
-    "commercial_truth_plane"
+  "commercial_activation_claim_authorized": false,
+  "commercial_claim_ceiling_summary": "R6 is open; package promotion authorization packet is authored; promotion execution and commercial activation remain unauthorized.",
+  "current_branch": "author/b04-r6-package-promotion-authorization-packet",
+  "current_git_head": "c2d39237f3c81ad40dae98d2a5a8ffe54a756690",
+  "current_main_head": "3e45ea7047c0b353d70f0ff8fef2b63c7770bde7",
+  "forbidden_actions": [
+    "PACKAGE_PROMOTION_EXECUTED",
+    "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED",
+    "TRUTH_ENGINE_LAW_MUTATED",
+    "TRUST_ZONE_LAW_MUTATED",
+    "BENCHMARK_PREP_TREATED_AS_PACKAGE_AUTHORITY",
+    "SEVEN_B_AMPLIFICATION_CLAIMED_PROVEN"
   ],
-  "required_statement": "KT does not claim small models are secretly giant models. KT tests where governed substrate makes smaller models act above class, and proves where it does not.",
-  "runtime_cutover_authorized": false,
-  "schema_id": "kt.e2e_closure.adaptive_ratification_order.v1",
-  "selected_outcome": "KT_E2E_CLOSURE_ADAPTIVE_RATIFICATION_AND_7B_AMPLIFICATION_BENCHMARK_ORDER_BOUND__CAMPAIGN_VALIDATION_NEXT",
-  "seven_b_amplification_proven": false,
-  "trust_zone_law_mutated": false,
-  "truth_engine_law_mutated": false
+  "forbidden_claims": [
+    "KT package is promoted.",
+    "KT is commercially activated.",
+    "KT is production-commercial live.",
+    "7B amplification is proven.",
+    "KT beats all larger models generally.",
+    "Commercial activation is authorized."
+  ],
+  "generated_utc": "2026-05-12T17:09:45Z",
+  "input_bindings": [
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_blocker_ledger_receipt.json",
+      "role": "blocker_ledger_validation",
+      "sha256": "534a65274d6e68ab432a05557efaae93eac7ea9fc668c708c021d61c0a575c4a"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_claim_token_boundary_receipt.json",
+      "role": "claim_token_boundary_validation",
+      "sha256": "6de06dcab3251c1e648b3fd07e088e5c766f47eb62b88804529a6713ea9463a3"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_commercial_activation_claim_review_preconditions_prep_only.json",
+      "role": "commercial_activation_claim_review_preconditions_prep_only",
+      "sha256": "f7ebbd78b09d1f440c80e13a244caf2b2d071ff750059ae1b34dc0de0f89cf6a"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_commercial_claim_boundary_receipt.json",
+      "role": "commercial_claim_boundary_validation",
+      "sha256": "44ebf3d3c4da1086cf8710eb21cfa7910dfd0421ac013c46396bb773008f3e6f"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_decision_matrix_receipt.json",
+      "role": "decision_matrix_validation",
+      "sha256": "f070c7d9fd44d7e18866472b07173663e83bf60b42b9dca1340183c662652480"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_inventory_receipt.json",
+      "role": "evidence_inventory_validation",
+      "sha256": "b3db7defa4ce77c8257a85ead2e1b9e1313f5d32bb3a145522749319fb98f7aa"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_scorecard_receipt.json",
+      "role": "evidence_scorecard_validation",
+      "sha256": "4cdab488ebf3670ec59e33b7fd4b87fcabc53d0497d6c58325a435486aad529e"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_external_audit_delta_readiness_receipt.json",
+      "role": "external_audit_delta_readiness_validation",
+      "sha256": "1943c7c3bb1f0dc1c3d585fb772366ff151022877231992b0e29f36c595a63e1"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_external_audit_delta_validation_plan_prep_only.json",
+      "role": "external_audit_delta_validation_plan_prep_only",
+      "sha256": "f37b56484cbd9fb5848f441510d85024fc654b9ef95388290c19f66f1132a2e4"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_future_blocker_register.json",
+      "role": "future_blocker_register",
+      "sha256": "d91efabf45f35797721b9f19e98ea3c1fa0145ac0936e5950c2767ebf8a8f292"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_next_lawful_move_receipt.json",
+      "role": "next_lawful_move",
+      "sha256": "7fa6e0914ce93c61803049ebe3718a5d1198b33e595f140e62a86ee3769b2f6b"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_no_authorization_drift_receipt.json",
+      "role": "no_authorization_drift_validation",
+      "sha256": "8cf75b41ce13d205ec7a453bb15a6453553a55a6cee865b943028e9478576840"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_authorization_packet_prep_only_draft.json",
+      "role": "package_promotion_authorization_packet_prep_only_draft",
+      "sha256": "dc08b16d53a8aec92ba2c2f4aeb6c59428174c91550ed53fe1d97d6a7237a5bc"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_authorization_validation_plan_prep_only.json",
+      "role": "package_promotion_authorization_validation_plan_prep_only",
+      "sha256": "6286f6aecaec0260a3ac17c1d5b431db82c9698cc1999fb5e83393884a6df4e3"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_execution_packet_prep_only_draft.json",
+      "role": "package_promotion_execution_packet_prep_only_draft",
+      "sha256": "a3e770d63a639f59f263458c03fc2b0b2cd72d0fc18d49eacc812593af679e04"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_packet_binding_receipt.json",
+      "role": "packet_binding_validation",
+      "sha256": "a200e158cb6ca67a7835510172006a3c66f22d6bcb31c6497e243370ad676a94"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_pipeline_board.json",
+      "role": "pipeline_board",
+      "sha256": "e1fca3666620174cdd712880712ba283272aee64888b48ed05fa12fc5027b904"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_prep_only_boundary_receipt.json",
+      "role": "prep_only_boundary_validation",
+      "sha256": "3cf284a9a042204a848458206c2c72befe7f9e44b42fdaddc269b22066176b82"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_public_verifier_readiness_receipt.json",
+      "role": "public_verifier_readiness_validation",
+      "sha256": "b0a2fa2c808472fc2a51dbd2da5d90eef366345a30a4f6ac3d558bfd8be5afe6"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_release_truth_derivation_receipt.json",
+      "role": "release_truth_derivation_validation",
+      "sha256": "e60ef16405fbcdb831225dd45e2e9a4acda5c940b0f5e78ea8a0f06d8937b693"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_contract.json",
+      "role": "validation_contract",
+      "sha256": "0f6d3c7f3bd8f9bda1585186d096b1b5b0a8922303bdba8e505d5a388256e211"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_receipt.json",
+      "role": "validation_receipt",
+      "sha256": "33afe0c49ff91be7ce35eb203c0d9304da71eca8938cbdbcda654430dbed98dc"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_review_validation_report.md",
+      "role": "validation_report",
+      "sha256": "8966866731cb9b096486b3193a2995fd59c8a77fafa56fe369ef295007a3f676"
+    }
+  ],
+  "next_lawful_move": "VALIDATE_B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET",
+  "package_promotion_authorization_packet_authored": true,
+  "package_promotion_authorization_validated": false,
+  "package_promotion_authorized": false,
+  "package_promotion_executed": false,
+  "package_promotion_execution_packet_authored": false,
+  "package_promotion_review_validated": true,
+  "predecessor_outcome": "B04_R6_PACKAGE_PROMOTION_REVIEW_VALIDATED__PACKAGE_PROMOTION_AUTHORIZATION_PACKET_NEXT",
+  "previous_authoritative_lane": "B04_R6_PACKAGE_PROMOTION_REVIEW_PACKET_VALIDATION",
+  "previous_next_lawful_move": "AUTHOR_B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET",
+  "r6_open": true,
+  "readiness_matrix": {
+    "authorization_packet_ready": true,
+    "blocking_reasons": [
+      "package_promotion_authorization_requires_independent_validation",
+      "package_promotion_execution_requires_execution_packet_authoring_and_validation",
+      "commercial_activation_requires_later_commercial_activation_review"
+    ],
+    "commercial_activation_ready": false,
+    "execution_packet_ready": false,
+    "package_promotion_ready": false,
+    "readiness_categories": {
+      "claim_compiler_claim_ceiling": "PASS",
+      "clean_distributable_no_secret_surface": "PASS",
+      "commercial_claim_boundary": "PASS",
+      "deployment_profile_readiness": "PASS",
+      "expanded_canary_evidence": "PASS",
+      "external_verifier_readiness": "PASS",
+      "incident_freeze_evidence": "PASS",
+      "operator_runbook_readiness": "PASS",
+      "package_promotion_blocker_closure": "PASS_FOR_AUTHORIZATION_PACKET_ONLY",
+      "r6_opening_evidence_review": "PASS",
+      "rollback_evidence": "PASS",
+      "runtime_cutover_evidence": "PASS",
+      "truth_trust_unchanged_receipts": "PASS",
+      "validated_package_promotion_review": "PASS"
+    }
+  },
+  "reason_codes": [
+    "RC_B04R6_PACKAGE_PROMOTION_AUTH_REVIEW_VALIDATION_MISSING",
+    "RC_B04R6_PACKAGE_PROMOTION_AUTH_REVIEW_OUTCOME_DRIFT",
+    "RC_B04R6_PACKAGE_PROMOTION_AUTH_NEXT_MOVE_DRIFT",
+    "RC_B04R6_PACKAGE_PROMOTION_AUTH_INPUT_BINDINGS_EMPTY",
+    "RC_B04R6_PACKAGE_PROMOTION_AUTH_READINESS_INCOMPLETE",
+    "RC_B04R6_PACKAGE_PROMOTION_AUTH_CLAIM_TOKEN_DRIFT",
+    "RC_B04R6_PACKAGE_PROMOTION_AUTH_TRUST_ZONE_FAILED",
+    "RC_B04R6_PACKAGE_PROMOTION_AUTH_BENCHMARK_PREP_DRIFT",
+    "RC_B04R6_PACKAGE_PROMOTION_AUTH_PACKAGE_EXECUTION_DRIFT",
+    "RC_B04R6_PACKAGE_PROMOTION_AUTH_COMMERCIAL_CLAIM_DRIFT",
+    "RC_B04R6_PACKAGE_PROMOTION_AUTH_LOBE_ESCALATION_DRIFT",
+    "RC_B04R6_PACKAGE_PROMOTION_AUTH_TRUTH_ENGINE_MUTATION",
+    "RC_B04R6_PACKAGE_PROMOTION_AUTH_TRUST_ZONE_MUTATION"
+  ],
+  "schema_id": "kt.claim_ceiling.current_state.v1",
+  "schema_version": "v1",
+  "selected_outcome": "B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET_BOUND__PACKAGE_PROMOTION_AUTHORIZATION_VALIDATION_NEXT",
+  "seven_b_amplification_claimed_proven": false,
+  "trust_zone_failures": [],
+  "trust_zone_law_changed": false,
+  "trust_zone_law_unchanged": true,
+  "trust_zone_validation_status": "PASS",
+  "truth_engine_law_changed": false,
+  "truth_engine_law_unchanged": true,
+  "validation_success_next_move": "AUTHOR_B04_R6_PACKAGE_PROMOTION_EXECUTION_PACKET",
+  "validation_success_outcome": "B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET_VALIDATED__PACKAGE_PROMOTION_EXECUTION_PACKET_NEXT"
 }
