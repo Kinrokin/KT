@@ -222,12 +222,12 @@ def test_malformed_self_replay_next_move_receipt_fails_closed(tmp_path: Path, mo
     reports = _run_review(tmp_path, monkeypatch)
     path = reports / review.OUTPUTS["next_lawful_move"]
     payload = _load(path)
-    payload["commercial_activation_claim_authorized"] = True
+    payload["previous_next_lawful_move"] = "AUTHOR_B04_R6_COMMERCIAL_ACTIVATION_REVIEW_PACKET"
     _write(path, payload)
     _patch_review_env(monkeypatch, tmp_path, branch=f"{review.REPLAY_BRANCH_PREFIX}-test")
     with pytest.raises(review.LaneFailure) as excinfo:
         review.run(reports_root=reports)
-    assert excinfo.value.code == "RC_B04R6_PACKAGE_PROMOTION_EVID_REVIEW_COMMERCIAL_CLAIM_DRIFT"
+    assert excinfo.value.code == "RC_B04R6_PACKAGE_PROMOTION_EVID_REVIEW_NEXT_MOVE_DRIFT"
 
 
 @pytest.mark.parametrize("role", _json_roles())
