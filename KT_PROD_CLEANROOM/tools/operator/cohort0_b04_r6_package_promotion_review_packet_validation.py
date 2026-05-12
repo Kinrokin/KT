@@ -185,10 +185,10 @@ OUTPUTS = {
         "b04_r6_package_promotion_authorization_validation_plan_prep_only.json"
     ),
     "package_promotion_authorization_packet_prep_only_draft": (
-        "b04_r6_package_promotion_authorization_packet_prep_only_draft.json"
+        "b04_r6_package_promotion_review_validation_authorization_packet_prep_only_draft.json"
     ),
     "package_promotion_execution_packet_prep_only_draft": (
-        "b04_r6_package_promotion_execution_packet_prep_only_draft.json"
+        "b04_r6_package_promotion_review_validation_execution_packet_prep_only_draft.json"
     ),
     "commercial_activation_claim_review_preconditions_prep_only": (
         "b04_r6_commercial_activation_claim_review_preconditions_prep_only.json"
@@ -196,9 +196,9 @@ OUTPUTS = {
     "external_audit_delta_validation_plan_prep_only": (
         "b04_r6_external_audit_delta_validation_plan_prep_only.json"
     ),
-    "pipeline_board": "b04_r6_pipeline_board.json",
-    "future_blocker_register": "kt_future_blocker_register.json",
-    "next_lawful_move": "b04_r6_next_lawful_move_receipt.json",
+    "pipeline_board": "b04_r6_package_promotion_review_validation_pipeline_board.json",
+    "future_blocker_register": "b04_r6_package_promotion_review_validation_future_blocker_register.json",
+    "next_lawful_move": "b04_r6_package_promotion_review_validation_next_lawful_move_receipt.json",
 }
 
 OUTPUT_PATHS = {f"KT_PROD_CLEANROOM/reports/{filename}" for filename in OUTPUTS.values()}

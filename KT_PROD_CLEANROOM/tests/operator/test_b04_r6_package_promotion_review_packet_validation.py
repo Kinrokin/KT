@@ -161,37 +161,33 @@ def test_validation_binds_package_promotion_review_packet(outputs: Path) -> None
     assert contract["binding_hashes"]["packet_receipt_hash"]
 
 
-def test_overwritten_package_review_inputs_bind_to_handoff_git_objects(outputs: Path) -> None:
-    rows = {
-        row["role"]: row
-        for row in _contract(outputs)["input_bindings"]
-        if row.get("mutable_canonical_path_overwritten_by_this_lane") is True
+def test_validation_outputs_do_not_overlap_package_review_inputs() -> None:
+    reviewed_paths = {
+        f"KT_PROD_CLEANROOM/reports/{filename}"
+        for filename in package_review.OUTPUTS.values()
+        if filename.endswith((".json", ".md"))
     }
-    assert set(rows) == {
-        "future_blocker_register",
-        "next_lawful_move",
-        "package_promotion_authorization_packet_prep_only_draft",
-        "package_promotion_execution_packet_prep_only_draft",
-        "pipeline_board",
-    }
-    for row in rows.values():
-        assert row["binding_kind"] == "git_object_before_overwrite"
-        assert row["git_commit"] == VALIDATION_MAIN_HEAD
-        assert _contract(outputs)["binding_hashes"][f"{row['role']}_hash"] == row["sha256"]
+    assert validation.OUTPUT_PATHS.isdisjoint(reviewed_paths)
 
 
-def test_main_replay_binds_overwritten_inputs_to_first_parent(
+def test_validation_records_no_overwritten_input_roles(outputs: Path) -> None:
+    contract = _contract(outputs)
+    assert contract["overwritten_input_roles"] == []
+    assert all(
+        row.get("mutable_canonical_path_overwritten_by_this_lane") is not True
+        for row in contract["input_bindings"]
+    )
+
+
+def test_main_replay_keeps_validation_outputs_separate_from_review_inputs(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     reports = _run_package_review_only(tmp_path, monkeypatch)
-    pre_overwrite_store = {
-        (VALIDATION_MAIN_HEAD, raw): (tmp_path / raw).read_bytes()
-        for raw in list(validation.PACKAGE_REVIEW_JSON_INPUTS.values()) + list(
-            validation.PACKAGE_REVIEW_TEXT_INPUTS.values()
-        )
-        if (tmp_path / raw).exists()
+    original_review_hashes = {
+        role: validation.file_sha256(tmp_path / raw)
+        for role, raw in validation.PACKAGE_REVIEW_JSON_INPUTS.items()
     }
-    _patch_validation_env(monkeypatch, tmp_path, git_blob_store=pre_overwrite_store)
+    _patch_validation_env(monkeypatch, tmp_path)
     validation.run(reports_root=reports)
     replay_head = "cccccccccccccccccccccccccccccccccccccccc"
     _patch_validation_env(
@@ -201,14 +197,14 @@ def test_main_replay_binds_overwritten_inputs_to_first_parent(
         head=replay_head,
         origin_main=replay_head,
         origin_main_parent=VALIDATION_MAIN_HEAD,
-        git_blob_store=pre_overwrite_store,
     )
     validation.run(reports_root=reports)
 
-    rows = {row["role"]: row for row in _contract(reports)["input_bindings"]}
-    assert rows["next_lawful_move"]["binding_kind"] == "git_object_before_overwrite"
-    assert rows["next_lawful_move"]["git_commit"] == VALIDATION_MAIN_HEAD
-    assert rows["pipeline_board"]["git_commit"] == VALIDATION_MAIN_HEAD
+    assert _contract(reports)["overwritten_input_roles"] == []
+    assert {
+        role: validation.file_sha256(tmp_path / raw)
+        for role, raw in validation.PACKAGE_REVIEW_JSON_INPUTS.items()
+    } == original_review_hashes
 
 
 def test_validation_selects_package_authorization_packet_next(outputs: Path) -> None:
