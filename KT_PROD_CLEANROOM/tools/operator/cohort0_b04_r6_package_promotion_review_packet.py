@@ -265,10 +265,13 @@ def _validate_handoff(payloads: Dict[str, Dict[str, Any]]) -> None:
 def _validate_readiness(payloads: Dict[str, Dict[str, Any]]) -> None:
     readiness = payloads["package_promotion_readiness_validation"]
     decision = payloads["decision_matrix_validation"]
+    no_authorization_drift = payloads["no_authorization_drift_validation"]
     if readiness.get("validation_status") != "PASS":
         _fail("RC_B04R6_PACKAGE_PROMOTION_REVIEW_READINESS_INCOMPLETE", "package readiness validation did not pass")
     if decision.get("validation_status") != "PASS":
         _fail("RC_B04R6_PACKAGE_PROMOTION_REVIEW_DECISION_UNSUPPORTED", "decision validation did not pass")
+    if no_authorization_drift.get("no_authorization_drift") is not True:
+        _fail("RC_B04R6_PACKAGE_PROMOTION_REVIEW_READINESS_INCOMPLETE", "no-authorization-drift validation failed")
     if payloads["validation_contract"].get("recommended_validated_path") != "PACKAGE_PROMOTION_REVIEW_PACKET_NEXT":
         _fail("RC_B04R6_PACKAGE_PROMOTION_REVIEW_DECISION_UNSUPPORTED", "prior recommendation drift")
 
@@ -419,7 +422,7 @@ def _base(
         "decision_matrix": decision_matrix,
         "trust_zone_validation_status": trust_zone_validation.get("status"),
         "trust_zone_failures": list(trust_zone_validation.get("failures", [])),
-        "no_authorization_drift": True,
+        "no_authorization_drift": scorecard["no_authorization_drift"],
         **_authority_state(),
     }
 

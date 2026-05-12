@@ -302,6 +302,17 @@ def test_package_promotion_authority_drift_fails_closed(tmp_path: Path, monkeypa
         package_review.run(reports_root=reports)
 
 
+def test_no_authorization_drift_failure_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_opening_evidence_validation(tmp_path, monkeypatch)
+    path = reports / opening_validation.OUTPUTS["no_authorization_drift_validation"]
+    payload = _load(path)
+    payload["no_authorization_drift"] = False
+    _write(path, payload)
+    _patch_package_review_env(monkeypatch, tmp_path)
+    with pytest.raises(package_review.LaneFailure, match="READINESS_INCOMPLETE"):
+        package_review.run(reports_root=reports)
+
+
 def test_trust_zone_failure_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_opening_evidence_validation(tmp_path, monkeypatch)
     _patch_package_review_env(monkeypatch, tmp_path)
