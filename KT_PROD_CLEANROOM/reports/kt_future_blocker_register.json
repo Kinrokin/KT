@@ -45,7 +45,7 @@
   "cannot_mutate_truth_engine_law": true,
   "commercial_activation_claim_authorized": false,
   "current_branch": "validate/b04-r6-package-promotion-review-packet",
-  "current_git_head": "a14edacc24bca382c8376e979d07cd9f24fc1efc",
+  "current_git_head": "755e2a387e58f42327bb3c2be54e77ef1a0835bb",
   "current_main_head": "d0c422ed99feeea938c580357b2742a8c7265ca7",
   "forbidden_actions": [
     "PACKAGE_PROMOTION_AUTHORIZED",
@@ -57,7 +57,7 @@
     "R6_OPEN_TREATED_AS_PACKAGE_PROMOTION",
     "PACKAGE_PROMOTION_TREATED_AS_COMMERCIAL_ACTIVATION"
   ],
-  "generated_utc": "2026-05-12T15:07:42Z",
+  "generated_utc": "2026-05-12T15:26:16Z",
   "input_bindings": [
     {
       "binding_kind": "file_sha256_at_package_promotion_review_validation",
@@ -108,13 +108,17 @@
       "sha256": "94a5a1b4f1c5cb8d465d96014baade0f7f759f51fed746f99a2311fe689aa744"
     },
     {
-      "binding_kind": "file_sha256_at_package_promotion_review_validation",
+      "binding_kind": "git_object_before_overwrite",
+      "git_commit": "d0c422ed99feeea938c580357b2742a8c7265ca7",
+      "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/kt_future_blocker_register.json",
       "role": "future_blocker_register",
       "sha256": "0b0bb7c47e3a04a13ad3619aebd34390d50a6cba8e9e4d57503380a82e303748"
     },
     {
-      "binding_kind": "file_sha256_at_package_promotion_review_validation",
+      "binding_kind": "git_object_before_overwrite",
+      "git_commit": "d0c422ed99feeea938c580357b2742a8c7265ca7",
+      "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "next_lawful_move",
       "sha256": "57e4e5608a69479828ec3ada4c7f01d6214e2fde8559ee120a2f1b857ecf853a"
@@ -126,7 +130,9 @@
       "sha256": "99a421855f418472d838893afbd333b1d74ae8e86365c6da7ece92ef8e0aead7"
     },
     {
-      "binding_kind": "file_sha256_at_package_promotion_review_validation",
+      "binding_kind": "git_object_before_overwrite",
+      "git_commit": "d0c422ed99feeea938c580357b2742a8c7265ca7",
+      "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_authorization_packet_prep_only_draft.json",
       "role": "package_promotion_authorization_packet_prep_only_draft",
       "sha256": "60aa0f60cdc6ebc4522b70d50b88d6c5017ad61fa8ce3c2dfbb187f0048efe25"
@@ -138,7 +144,9 @@
       "sha256": "34117585a4e29e3051e088d13a91c7c3b1d26fc813a7a4cd666aa6150fbb160a"
     },
     {
-      "binding_kind": "file_sha256_at_package_promotion_review_validation",
+      "binding_kind": "git_object_before_overwrite",
+      "git_commit": "d0c422ed99feeea938c580357b2742a8c7265ca7",
+      "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_package_promotion_execution_packet_prep_only_draft.json",
       "role": "package_promotion_execution_packet_prep_only_draft",
       "sha256": "6067acb1981b37ce5b173a9cfa1c833ee8da85c33ec50cb19a5dcd739c2f5605"
@@ -174,7 +182,9 @@
       "sha256": "5f40b976bff6b36ffb5b344d142670e4e7dc42978c69cf9468cee0b3fb9f7bf1"
     },
     {
-      "binding_kind": "file_sha256_at_package_promotion_review_validation",
+      "binding_kind": "git_object_before_overwrite",
+      "git_commit": "d0c422ed99feeea938c580357b2742a8c7265ca7",
+      "mutable_canonical_path_overwritten_by_this_lane": true,
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_pipeline_board.json",
       "role": "pipeline_board",
       "sha256": "a9857702a4688988691207104367a8ed24487f33e0b48379c0dfa4b72a450c81"
@@ -201,6 +211,13 @@
     "B04_R6_PACKAGE_PROMOTION_REVIEW_VALIDATED__LIMITED_R6_CONTINUATION_PACKET_NEXT": "AUTHOR_B04_R6_LIMITED_R6_CONTINUATION_PACKET",
     "B04_R6_PACKAGE_PROMOTION_REVIEW_VALIDATED__PACKAGE_PROMOTION_AUTHORIZATION_PACKET_NEXT": "AUTHOR_B04_R6_PACKAGE_PROMOTION_AUTHORIZATION_PACKET"
   },
+  "overwritten_input_roles": [
+    "future_blocker_register",
+    "next_lawful_move",
+    "package_promotion_authorization_packet_prep_only_draft",
+    "package_promotion_execution_packet_prep_only_draft",
+    "pipeline_board"
+  ],
   "package_promotion_authorization_packet_next": true,
   "package_promotion_authorized": false,
   "package_promotion_executed": false,
