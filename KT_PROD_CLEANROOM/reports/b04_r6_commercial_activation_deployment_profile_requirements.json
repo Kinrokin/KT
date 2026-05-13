@@ -4,10 +4,8 @@
     "B04_R6_COMMERCIAL_ACTIVATION_AUTHORIZATION_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_COMMERCIAL_ACTIVATION_AUTHORIZATION_PACKET_INVALID__FORENSIC_COMMERCIAL_AUTHORIZATION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_COMMERCIAL_ACTIVATION_AUTHORIZATION_PROVIDER_LATENCY_THROUGHPUT_COST_MATRIX_PREP_ONLY",
+  "artifact_id": "B04_R6_COMMERCIAL_ACTIVATION_AUTHORIZATION_DEPLOYMENT_PROFILE_REQUIREMENTS",
   "authoritative_lane": "B04_R6_COMMERCIAL_ACTIVATION_AUTHORIZATION_PACKET",
-  "authority": "PREP_ONLY",
-  "benchmark_authority": "PREP_ONLY",
   "benchmark_governing_statement": "KT does not claim small models are secretly giant models. KT tests where governed substrate makes smaller models act above class, and proves where it does not.",
   "benchmark_prep_authorizes_commercial_activation": false,
   "binding_hashes": {
@@ -53,14 +51,6 @@
     "validation_receipt_hash": "8a6f9f532ced948fe11f4bd80ba0a1f95affe1935a5452e4055e50b7c1ddd8b0",
     "validation_report_hash": "7cb13ef1473ac6fff4659aad383579356b1d061edc4c349f41671d5295f40ab3"
   },
-  "cannot_authorize_commercial_activation_claims": true,
-  "cannot_authorize_lobe_escalation": true,
-  "cannot_authorize_package_promotion": true,
-  "cannot_claim_7b_amplification_proven": true,
-  "cannot_execute_commercial_activation": true,
-  "cannot_mutate_trust_zone_law": true,
-  "cannot_mutate_truth_engine_law": true,
-  "cannot_open_r6": true,
   "commercial_activation_authorization_packet_authored": true,
   "commercial_activation_authorization_validated": false,
   "commercial_activation_claim_authorized": false,
@@ -68,6 +58,8 @@
   "commercial_activation_execution_packet_authored": false,
   "commercial_activation_review_packet_validated": true,
   "commercial_claim_ceiling_summary": "Commercial activation authorization packet is authored for validation; commercial activation claims and execution remain unauthorized.",
+  "contract_role": "deployment_profile_requirements",
+  "contract_status": "BOUND",
   "current_branch": "author/b04-r6-commercial-activation-authorization-packet",
   "current_git_head": "016619bd03fba8b107dcbdffde31b791f1f519df",
   "current_main_head": "a0c90bd196152a51ff3dd5e36265314b8602453a",
@@ -80,7 +72,6 @@
     "SEVEN_B_AMPLIFICATION_CLAIMED_PROVEN"
   ],
   "generated_utc": "2026-05-13T21:25:21Z",
-  "governing_statement": "KT does not claim small models are secretly giant models. KT tests where governed substrate makes smaller models act above class, and proves where it does not.",
   "input_bindings": [
     {
       "binding_kind": "file_sha256_at_commercial_activation_authorization_packet_authoring",
@@ -368,7 +359,6 @@
       "sha256": "ff095bd8bf688ec9d4de830e0bcaeb9d5a03cd594ff4c161c48e12fbef34ec98"
     }
   ],
-  "metric": "lawful_replayable_progress_per_dollar",
   "next_lawful_move": "VALIDATE_B04_R6_COMMERCIAL_ACTIVATION_AUTHORIZATION_PACKET",
   "package_promotion_evidence_review_validated": true,
   "package_promotion_executed": true,
@@ -376,17 +366,7 @@
   "predecessor_outcome": "B04_R6_COMMERCIAL_ACTIVATION_REVIEW_VALIDATED__COMMERCIAL_ACTIVATION_AUTHORIZATION_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_COMMERCIAL_ACTIVATION_REVIEW_PACKET_VALIDATION",
   "previous_next_lawful_move": "AUTHOR_B04_R6_COMMERCIAL_ACTIVATION_AUTHORIZATION_PACKET",
-  "providers": [
-    "CoreWeave / Kimi K2.6",
-    "OpenAI model",
-    "Anthropic model",
-    "Gemini model",
-    "local 7B",
-    "local 14B",
-    "local 32B",
-    "best available open model"
-  ],
-  "purpose": "Prepare provider/runtime benchmark campaign.",
+  "purpose": "Define deployment profile requirements.",
   "r6_open": true,
   "readiness_matrix": {
     "authorization_packet_ready": true,
@@ -428,22 +408,15 @@
     "RC_B04R6_COMMERCIAL_ACTIVATION_AUTH_BENCHMARK_AUTHORITY_DRIFT",
     "RC_B04R6_COMMERCIAL_ACTIVATION_AUTH_7B_CLAIM_DRIFT"
   ],
-  "schema_id": "kt.b04_r6.commercial_activation_authorization.provider_latency_throughput_cost_matrix_prep_only.prep_only.v1",
+  "requirements": [
+    "release truth derivation",
+    "operator ownership",
+    "fallback and rollback controls"
+  ],
+  "schema_id": "kt.b04_r6.commercial_activation_authorization.deployment_profile_requirements.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_COMMERCIAL_ACTIVATION_AUTHORIZATION_PACKET_BOUND__COMMERCIAL_ACTIVATION_AUTHORIZATION_VALIDATION_NEXT",
-  "seven_b_ablation_ladder": [
-    "A0 raw 7B",
-    "A1 7B + prompt discipline",
-    "A2 7B + retrieval",
-    "A3 7B + tools",
-    "A4 7B + verifier loop",
-    "A5 7B + adapters",
-    "A6 7B + router / triage",
-    "A7 7B + lobes",
-    "A8 7B + full KT governance / receipts / replay / proof factory"
-  ],
   "seven_b_amplification_claimed_proven": false,
-  "status": "PREP_ONLY",
   "trust_zone_failures": [],
   "trust_zone_law_changed": false,
   "trust_zone_law_unchanged": true,
@@ -451,17 +424,5 @@
   "truth_engine_law_changed": false,
   "truth_engine_law_unchanged": true,
   "validation_success_next_move": "AUTHOR_B04_R6_COMMERCIAL_ACTIVATION_EXECUTION_PACKET",
-  "validation_success_outcome": "B04_R6_COMMERCIAL_ACTIVATION_AUTHORIZATION_PACKET_VALIDATED__COMMERCIAL_ACTIVATION_EXECUTION_PACKET_NEXT",
-  "workloads": [
-    "author lane packet",
-    "validate packet",
-    "repair review finding",
-    "generate tests",
-    "parse JSON",
-    "run proof replay",
-    "create audit summary",
-    "handle long-horizon repo task",
-    "recover from failed review",
-    "maintain claim ceiling"
-  ]
+  "validation_success_outcome": "B04_R6_COMMERCIAL_ACTIVATION_AUTHORIZATION_PACKET_VALIDATED__COMMERCIAL_ACTIVATION_EXECUTION_PACKET_NEXT"
 }
