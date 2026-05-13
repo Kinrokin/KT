@@ -260,3 +260,10 @@ def test_main_replay_requires_head_equal_origin_main(tmp_path: Path, monkeypatch
 @pytest.mark.parametrize("role", _json_roles())
 def test_all_json_outputs_have_current_main_head(outputs: Path, role: str) -> None:
     assert _payload(outputs, role)["current_main_head"] == VALIDATION_MAIN_HEAD
+
+
+@pytest.mark.parametrize("role", _json_roles())
+def test_all_json_outputs_record_branch_head_as_current_git_head(outputs: Path, role: str) -> None:
+    payload = _payload(outputs, role)
+    assert payload["current_git_head"] == VALIDATION_HEAD
+    assert payload["current_branch_head"] == VALIDATION_HEAD

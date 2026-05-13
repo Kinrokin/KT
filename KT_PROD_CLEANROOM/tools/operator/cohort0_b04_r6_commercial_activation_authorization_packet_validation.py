@@ -433,7 +433,7 @@ def _base(
     return {
         "schema_version": "v1",
         "generated_utc": generated_utc,
-        "current_git_head": current_main_head if branch != "main" else head,
+        "current_git_head": head,
         "current_main_head": current_main_head,
         "current_branch_head": head,
         "current_branch": branch,
