@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional, Sequence
 
@@ -165,6 +167,15 @@ BENCHMARK_PREP_ROLES = (
     "provider_latency_throughput_cost_matrix_prep_only",
     "model_provider_selection_policy_prep_only",
     "gpu_inference_readiness_gate_prep_only",
+)
+
+PRE_OVERWRITE_BINDING_ROLES = (
+    "campaign_board",
+    "pipeline_board",
+    "claim_ceiling_current_state",
+    "future_blocker_register",
+    "next_lawful_move",
+    *BENCHMARK_PREP_ROLES,
 )
 
 OUTPUTS = {
@@ -364,11 +375,49 @@ def _validate_inputs(payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str])
     _validate_handoff(payloads)
 
 
-def _input_bindings(root: Path) -> list[Dict[str, str]]:
-    rows: list[Dict[str, str]] = []
+def _git_blob_bytes(root: Path, commit: str, raw: str) -> bytes:
+    blob_ref = f"{commit}:{raw.replace(chr(92), '/')}"
+    result = subprocess.run(["git", "show", blob_ref], cwd=root, capture_output=True, check=True)
+    return result.stdout
+
+
+def _git_blob_sha256(root: Path, commit: str, raw: str) -> str:
+    return hashlib.sha256(_git_blob_bytes(root, commit, raw)).hexdigest()
+
+
+def _git_blob_exists(root: Path, commit: str, raw: str) -> bool:
+    blob_ref = f"{commit}:{raw.replace(chr(92), '/')}"
+    result = subprocess.run(["git", "cat-file", "-e", blob_ref], cwd=root, capture_output=True)
+    return result.returncode == 0
+
+
+def _input_bindings(root: Path, *, handoff_git_commit: str) -> list[Dict[str, Any]]:
+    rows: list[Dict[str, Any]] = []
     for role, raw in sorted({**REVIEW_VALIDATION_JSON_INPUTS, **REVIEW_VALIDATION_TEXT_INPUTS}.items()):
         path = root / raw
-        rows.append({"role": role, "path": raw, "sha256": file_sha256(path)})
+        rows.append(
+            {
+                "role": role,
+                "path": raw,
+                "sha256": file_sha256(path),
+                "binding_kind": "file_sha256_at_commercial_activation_authorization_packet_authoring",
+            }
+        )
+    for role in sorted(PRE_OVERWRITE_BINDING_ROLES):
+        raw = f"KT_PROD_CLEANROOM/reports/{OUTPUTS[role]}"
+        if not _git_blob_exists(root, handoff_git_commit, raw):
+            continue
+        rows.append(
+            {
+                "role": f"pre_overwrite_{role}",
+                "path": raw,
+                "sha256": _git_blob_sha256(root, handoff_git_commit, raw),
+                "binding_kind": "git_object_before_overwrite",
+                "git_commit": handoff_git_commit,
+                "mutable_canonical_path_overwritten_by_this_lane": True,
+                "overwritten_output_role": role,
+            }
+        )
     return rows
 
 
@@ -773,7 +822,7 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
         head=head,
         current_main_head=current_main_head,
         branch=branch,
-        input_bindings=_input_bindings(root),
+        input_bindings=_input_bindings(root, handoff_git_commit=head),
         trust_zone_validation=trust_zone_validation,
     )
     output_payloads = _outputs(base)

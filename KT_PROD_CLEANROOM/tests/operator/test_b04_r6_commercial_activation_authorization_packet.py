@@ -118,6 +118,31 @@ def test_authorization_packet_binds_validated_commercial_activation_review(outpu
     assert contract["binding_hashes"]["validation_receipt_hash"]
 
 
+def test_input_binding_rows_include_binding_kind(outputs: Path) -> None:
+    contract = _contract(outputs)
+    for row in contract["input_bindings"]:
+        assert row["binding_kind"]
+
+
+def test_pre_overwrite_bindings_include_git_commit_when_available(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _run_review_validation(tmp_path, monkeypatch)
+    fake_commit = "c" * 40
+    fake_sha = "d" * 64
+    monkeypatch.setattr(authorization, "_git_blob_exists", lambda root, commit, raw: True)
+    monkeypatch.setattr(authorization, "_git_blob_sha256", lambda root, commit, raw: fake_sha)
+    rows = authorization._input_bindings(tmp_path, handoff_git_commit=fake_commit)
+    pre_rows = [row for row in rows if row["binding_kind"] == "git_object_before_overwrite"]
+    assert pre_rows
+    for row in pre_rows:
+        assert row["git_commit"] == fake_commit
+        assert row["sha256"] == fake_sha
+        assert row["mutable_canonical_path_overwritten_by_this_lane"] is True
+        assert row["role"].startswith("pre_overwrite_")
+    assert reports.exists()
+
+
 def test_authorization_packet_selects_validation_next(outputs: Path) -> None:
     contract = _contract(outputs)
     assert contract["selected_outcome"] == authorization.SELECTED_OUTCOME
