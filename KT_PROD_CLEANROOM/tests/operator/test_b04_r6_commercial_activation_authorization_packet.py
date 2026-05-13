@@ -231,6 +231,18 @@ def test_claim_token_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.Monk
     assert excinfo.value.code == "RC_B04R6_COMMERCIAL_ACTIVATION_AUTH_CLAIM_TOKEN_DRIFT"
 
 
+def test_direct_activation_authorization_report_text_fails_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _run_review_validation(tmp_path, monkeypatch)
+    report_path = reports / review_validation.OUTPUTS["validation_report"]
+    report_path.write_text("Commercial activation authorized.\n", encoding="utf-8")
+    _patch_auth_env(monkeypatch, tmp_path)
+    with pytest.raises(authorization.LaneFailure) as excinfo:
+        authorization.run(reports_root=reports)
+    assert excinfo.value.code == "RC_B04R6_COMMERCIAL_ACTIVATION_AUTH_CLAIM_TOKEN_DRIFT"
+
+
 def test_main_replay_requires_head_equal_origin_main(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_review_validation(tmp_path, monkeypatch)
     _patch_auth_env(monkeypatch, tmp_path, branch="main", head="1" * 40, origin_main="2" * 40)

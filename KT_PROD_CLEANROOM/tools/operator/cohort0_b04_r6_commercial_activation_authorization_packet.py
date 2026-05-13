@@ -309,6 +309,7 @@ def _ensure_authority_closed(payloads: Dict[str, Dict[str, Any]], texts: Dict[st
     for label, text in texts.items():
         normalized = text.upper()
         for phrase in (
+            "COMMERCIAL ACTIVATION AUTHORIZED",
             "COMMERCIAL ACTIVATION CLAIM AUTHORIZED",
             "COMMERCIAL ACTIVATION EXECUTED",
             "KT IS COMMERCIALLY ACTIVATED",
