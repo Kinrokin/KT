@@ -5,9 +5,8 @@
     "B04_R6_COMMERCIAL_ACTIVATION_INVALIDATED__FORENSIC_COMMERCIAL_ACTIVATION_REVIEW_NEXT",
     "B04_R6_COMMERCIAL_ACTIVATION_DEFERRED__NAMED_ACTIVATION_DEFECT_REMAINS"
   ],
-  "artifact_id": "B04_R6_COMMERCIAL_ACTIVATION_POST_ACTIVATION_EXTERNAL_AUDIT_DELTA_PACKET_PREP_ONLY_DRAFT",
+  "artifact_id": "B04_R6_COMMERCIAL_ACTIVATION_NO_AUTHORITY_DRIFT_RECEIPT",
   "authoritative_lane": "B04_R6_COMMERCIAL_ACTIVATION",
-  "authority": "PREP_ONLY",
   "benchmark_governing_statement": "KT does not claim small models are secretly giant models. KT tests where governed substrate makes smaller models act above class, and proves where it does not.",
   "benchmark_prep_authorizes_commercial_activation": false,
   "binding_hashes": {
@@ -44,11 +43,10 @@
     "validation_receipt_hash": "39aef480c2834f5cf3accd557e7e7bc15ae0fddd3dd0cff363f9c63b0ca9d5b4",
     "validation_report_hash": "56fd4ee497a806a93c58aaef692ea5296cfdb5cf65b1f2db9c5ea0b7637a304b"
   },
-  "cannot_authorize_commercial_activation_claims": true,
-  "cannot_claim_7b_amplification_proven": true,
-  "cannot_mutate_trust_zone_law": true,
-  "cannot_mutate_truth_engine_law": true,
-  "cannot_validate_follow_up_audit_readiness": true,
+  "checks": [
+    "no claim authorization",
+    "truth/trust unchanged"
+  ],
   "commercial_activation_authorization_validated": true,
   "commercial_activation_authorized": true,
   "commercial_activation_claim_authorized": false,
@@ -275,7 +273,6 @@
   "predecessor_outcome": "B04_R6_COMMERCIAL_ACTIVATION_EXECUTION_PACKET_VALIDATED__COMMERCIAL_ACTIVATION_NEXT",
   "previous_authoritative_lane": "B04_R6_COMMERCIAL_ACTIVATION_EXECUTION_PACKET_VALIDATION",
   "previous_next_lawful_move": "RUN_B04_R6_COMMERCIAL_ACTIVATION",
-  "purpose": "Prepare post-activation external audit delta.",
   "r6_open": true,
   "reason_codes": [
     "RC_B04R6_COMMERCIAL_ACTIVATION_VALIDATION_MISSING",
@@ -296,11 +293,12 @@
     "RC_B04R6_COMMERCIAL_ACTIVATION_7B_CLAIM_DRIFT",
     "RC_B04R6_COMMERCIAL_ACTIVATION_AUDIT_READINESS_DRIFT"
   ],
-  "schema_id": "kt.b04_r6.commercial_activation.post_activation_external_audit_delta_packet_prep_only_draft.prep_only.v1",
+  "receipt_role": "no_authority_drift_receipt",
+  "receipt_status": "PASS",
+  "schema_id": "kt.b04_r6.commercial_activation.no_authority_drift_receipt.receipt.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_COMMERCIAL_ACTIVATION_PASSED__COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET_NEXT",
   "seven_b_amplification_claimed_proven": false,
-  "status": "PREP_ONLY",
   "trust_zone_failures": [],
   "trust_zone_law_changed": false,
   "trust_zone_law_unchanged": true,
