@@ -228,6 +228,30 @@ def test_validation_source_hash_mismatch_fails_closed(tmp_path: Path, monkeypatc
     assert excinfo.value.code == "RC_B04R6_COMMERCIAL_ACTIVATION_INPUT_HASH_MISMATCH"
 
 
+def test_main_replay_uses_validation_main_for_overwritten_activation_outputs(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _run_execution_validation(tmp_path, monkeypatch)
+    contract_path = reports / validation.OUTPUTS["validation_contract"]
+    contract = _load(contract_path)
+    claim_binding = next(row for row in contract["input_bindings"] if row["role"] == "claim_ceiling_current_state")
+    target = tmp_path / claim_binding["path"]
+    target.write_text('{"post_activation": "overwrite"}\n', encoding="utf-8")
+    replay_head = "9" * 40
+    _patch_activation_env(monkeypatch, tmp_path, branch="main", head=replay_head, origin_main=replay_head)
+    calls: list[tuple[str, str]] = []
+
+    def fake_git_blob_sha256(root: Path, commit: str, raw: str) -> str:
+        calls.append((commit, raw))
+        if commit == contract["current_main_head"] and raw == claim_binding["path"]:
+            return claim_binding["sha256"]
+        return "0" * 64
+
+    monkeypatch.setattr(activation, "_git_blob_sha256", fake_git_blob_sha256)
+    activation.run(reports_root=reports)
+    assert (contract["current_main_head"], claim_binding["path"]) in calls
+
+
 def test_predecessor_not_in_current_main_lineage_fails_closed(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

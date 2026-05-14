@@ -306,6 +306,7 @@ def _ensure_validation_source_bindings_current(root: Path, contract: Dict[str, A
         _fail("RC_B04R6_COMMERCIAL_ACTIVATION_INPUT_BINDINGS_EMPTY", "execution validation source bindings empty")
     if not isinstance(binding_hashes, dict) or not binding_hashes:
         _fail("RC_B04R6_COMMERCIAL_ACTIVATION_INPUT_BINDINGS_EMPTY", "execution validation binding hashes empty")
+    fallback_commit = str(contract.get("current_main_head") or common.git_rev_parse(root, "origin/main"))
     for row in bindings:
         if not isinstance(row, dict) or not row.get("role") or not row.get("path") or not row.get("sha256"):
             _fail("RC_B04R6_COMMERCIAL_ACTIVATION_INPUT_BINDING_INCOMPLETE", "malformed validation binding row")
@@ -313,7 +314,7 @@ def _ensure_validation_source_bindings_current(root: Path, contract: Dict[str, A
         bound_hash = str(row["sha256"])
         if binding_hashes.get(f"{role}_hash") != bound_hash:
             _fail("RC_B04R6_COMMERCIAL_ACTIVATION_INPUT_HASH_MISMATCH", f"{role} binding hash mismatch")
-        if _expected_source_hash(root, row, fallback_commit=common.git_rev_parse(root, "origin/main")) != bound_hash:
+        if _expected_source_hash(root, row, fallback_commit=fallback_commit) != bound_hash:
             _fail("RC_B04R6_COMMERCIAL_ACTIVATION_INPUT_HASH_MISMATCH", f"{role} current source hash mismatch")
 
 
