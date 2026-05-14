@@ -64,7 +64,6 @@ POSITIVE_AUTHORITY_TOKENS = (
 )
 NEGATIVE_AUTHORITY_QUALIFIERS = (
     "AUTHORIZATION_PACKET",
-    "AUTHORIZATION",
     "AUTHORIZATION_VALIDATION",
     "BLOCKED",
     "BOUNDARY_ONLY",
@@ -85,6 +84,39 @@ NEGATIVE_AUTHORITY_QUALIFIERS = (
     "UNAUTHORIZED",
     "VALIDATED",
     "VALIDATION_NEXT",
+)
+DIRECT_NEGATING_AUTHORITY_QUALIFIERS = (
+    "BLOCKED",
+    "CANNOT_AUTHORIZE",
+    "DOES_NOT_AUTHORIZE",
+    "DOES_NOT_EXECUTE",
+    "FORBIDDEN",
+    "NO_COMMERCIAL_ACTIVATION",
+    "NOT_AUTHORIZED",
+    "NOT_EXECUTED",
+    "PROHIBITED",
+    "REMAINS_UNAUTHORIZED",
+    "STILL_BLOCKED",
+    "UNAUTHORIZED",
+)
+CONTEXTUAL_NON_AUTHORITY_QUALIFIERS = (
+    "AUTHORIZATION_PACKET",
+    "AUTHORIZATION_VALIDATION",
+    "BOUNDARY_ONLY",
+    "DEFERRED",
+    "EXECUTION_PACKET",
+    "NEXT",
+    "PREP_ONLY",
+    "REVIEW_PACKET",
+    "VALIDATED",
+    "VALIDATION_NEXT",
+)
+STRONG_AUTHORITY_TOKENS = (
+    "ACTIVE",
+    "AUTHORIZED",
+    "ENABLED",
+    "EXECUTED",
+    "PRODUCTION",
 )
 
 REASON_CODES = tuple(
@@ -234,8 +266,12 @@ def _is_claim_bearing_field(key: str) -> bool:
 
 def _contains_positive_authority_token(value: str) -> bool:
     normalized = value.upper().replace("-", "_").replace(" ", "_")
-    if any(qualifier in normalized for qualifier in NEGATIVE_AUTHORITY_QUALIFIERS):
+    if any(qualifier in normalized for qualifier in DIRECT_NEGATING_AUTHORITY_QUALIFIERS):
         return False
+    if any(token in normalized for token in STRONG_AUTHORITY_TOKENS):
+        return True
+    if "COMMERCIAL_ACTIVATION" in normalized:
+        return not any(qualifier in normalized for qualifier in CONTEXTUAL_NON_AUTHORITY_QUALIFIERS)
     return any(token in normalized for token in POSITIVE_AUTHORITY_TOKENS)
 
 

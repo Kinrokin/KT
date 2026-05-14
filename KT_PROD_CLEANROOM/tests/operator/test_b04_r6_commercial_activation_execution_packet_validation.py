@@ -203,6 +203,27 @@ def test_claim_token_drift_inside_list_fails_closed(tmp_path: Path, monkeypatch:
     assert excinfo.value.code == "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_VAL_CLAIM_TOKEN_DRIFT"
 
 
+@pytest.mark.parametrize(
+    "claim_text",
+    [
+        "commercial activation claim authorization authorized",
+        "claim authorization active",
+    ],
+)
+def test_authorization_wording_cannot_mask_positive_claim_drift(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, claim_text: str
+) -> None:
+    reports = _run_execution(tmp_path, monkeypatch)
+    path = reports / execution.OUTPUTS["claim_ceiling_current_state"]
+    payload = _load(path)
+    payload["commercial_claim"] = claim_text
+    _write(path, payload)
+    _patch_validation_env(monkeypatch, tmp_path)
+    with pytest.raises(validation.LaneFailure) as excinfo:
+        validation.run(reports_root=reports)
+    assert excinfo.value.code == "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_VAL_CLAIM_TOKEN_DRIFT"
+
+
 def test_execution_prep_only_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_execution(tmp_path, monkeypatch)
     path = reports / execution.OUTPUTS["commercial_activation_run_result_schema_prep_only"]
