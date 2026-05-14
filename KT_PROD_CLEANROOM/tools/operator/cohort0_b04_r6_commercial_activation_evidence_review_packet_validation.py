@@ -199,7 +199,7 @@ OUTPUTS = {
         "b04_r6_post_activation_external_audit_delta_validation_plan_prep_only.json"
     ),
     "limited_commercial_continuation_validation_plan_prep_only": (
-        "b04_r6_limited_commercial_continuation_validation_plan_prep_only.json"
+        "b04_r6_commercial_activation_evidence_review_limited_commercial_continuation_validation_plan_prep_only.json"
     ),
     "commercial_claim_authorization_validation_plan_prep_only": (
         "b04_r6_commercial_claim_authorization_validation_plan_prep_only.json"
