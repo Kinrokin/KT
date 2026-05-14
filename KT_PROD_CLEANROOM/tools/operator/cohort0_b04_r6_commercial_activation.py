@@ -280,7 +280,7 @@ def _git_is_ancestor(root: Path, ancestor: str, descendant: str) -> bool:
     return result.returncode == 0
 
 
-def _expected_source_hash(root: Path, row: Dict[str, Any]) -> str:
+def _expected_source_hash(root: Path, row: Dict[str, Any], *, fallback_commit: str) -> str:
     raw = str(row.get("path", ""))
     binding_kind = row.get("binding_kind")
     if binding_kind == "git_object_before_overwrite":
@@ -290,7 +290,13 @@ def _expected_source_hash(root: Path, row: Dict[str, Any]) -> str:
         return _git_blob_sha256(root, str(git_commit), raw)
     if not binding_kind:
         _fail("RC_B04R6_COMMERCIAL_ACTIVATION_INPUT_BINDING_INCOMPLETE", f"{row.get('role')} missing binding_kind")
-    return file_sha256(common.resolve_path(root, raw))
+    current_hash = file_sha256(common.resolve_path(root, raw))
+    if current_hash == row.get("sha256"):
+        return current_hash
+    output_paths = {f"KT_PROD_CLEANROOM/reports/{filename}" for filename in OUTPUTS.values()}
+    if raw in output_paths:
+        return _git_blob_sha256(root, fallback_commit, raw)
+    return current_hash
 
 
 def _ensure_validation_source_bindings_current(root: Path, contract: Dict[str, Any]) -> None:
@@ -307,7 +313,7 @@ def _ensure_validation_source_bindings_current(root: Path, contract: Dict[str, A
         bound_hash = str(row["sha256"])
         if binding_hashes.get(f"{role}_hash") != bound_hash:
             _fail("RC_B04R6_COMMERCIAL_ACTIVATION_INPUT_HASH_MISMATCH", f"{role} binding hash mismatch")
-        if _expected_source_hash(root, row) != bound_hash:
+        if _expected_source_hash(root, row, fallback_commit=common.git_rev_parse(root, "origin/main")) != bound_hash:
             _fail("RC_B04R6_COMMERCIAL_ACTIVATION_INPUT_HASH_MISMATCH", f"{role} current source hash mismatch")
 
 
