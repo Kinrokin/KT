@@ -38,6 +38,7 @@ FORBIDDEN_ACTIONS = (
 AUTHORITY_DRIFT_KEYS = {
     "commercial_activation_claim_authorized": "RC_KT_E2E_AUDIT_READY_PACKET_CLAIM_DRIFT",
     "follow_up_audit_readiness_validated": "RC_KT_E2E_AUDIT_READY_PACKET_PREMATURE_VALIDATION",
+    "benchmark_prep_authorizes_commercial_activation": "RC_KT_E2E_AUDIT_READY_PACKET_CLAIM_DRIFT",
     "truth_engine_law_changed": "RC_KT_E2E_AUDIT_READY_PACKET_TRUTH_ENGINE_MUTATION",
     "trust_zone_law_changed": "RC_KT_E2E_AUDIT_READY_PACKET_TRUST_ZONE_MUTATION",
     "seven_b_amplification_claimed_proven": "RC_KT_E2E_AUDIT_READY_PACKET_7B_CLAIM_DRIFT",
@@ -223,6 +224,7 @@ def _validate_handoff(payloads: Dict[str, Dict[str, Any]]) -> None:
     for key in (
         "commercial_activation_claim_authorized",
         "follow_up_audit_readiness_validated",
+        "benchmark_prep_authorizes_commercial_activation",
         "seven_b_amplification_claimed_proven",
         "truth_engine_law_changed",
         "trust_zone_law_changed",
@@ -279,6 +281,7 @@ def _base(
         "follow_up_audit_readiness_packet_authored": True,
         "follow_up_audit_readiness_validated": False,
         "commercial_activation_claim_authorized": False,
+        "benchmark_prep_authorizes_commercial_activation": False,
         "seven_b_amplification_claimed_proven": False,
         "truth_engine_law_changed": False,
         "truth_engine_law_unchanged": True,

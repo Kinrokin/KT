@@ -124,6 +124,7 @@ def test_packet_routes_to_audit_readiness_validation(outputs: Path) -> None:
         ("follow_up_audit_readiness_packet_authored", True),
         ("follow_up_audit_readiness_validated", False),
         ("commercial_activation_claim_authorized", False),
+        ("benchmark_prep_authorizes_commercial_activation", False),
         ("seven_b_amplification_claimed_proven", False),
         ("truth_engine_law_unchanged", True),
         ("trust_zone_law_unchanged", True),
@@ -187,6 +188,20 @@ def test_follow_up_audit_premature_validation_fails_closed(tmp_path: Path, monke
     with pytest.raises(packet.LaneFailure) as excinfo:
         packet.run(reports_root=reports)
     assert excinfo.value.code == "RC_KT_E2E_AUDIT_READY_PACKET_PREMATURE_VALIDATION"
+
+
+def test_benchmark_prep_commercial_activation_authority_fails_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _copy_inputs(tmp_path)
+    path = tmp_path / packet.INPUTS["commercial_activation_evidence_review_validation_contract"]
+    payload = _load(path)
+    payload["benchmark_prep_authorizes_commercial_activation"] = True
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(packet.LaneFailure) as excinfo:
+        packet.run(reports_root=reports)
+    assert excinfo.value.code == "RC_KT_E2E_AUDIT_READY_PACKET_CLAIM_DRIFT"
 
 
 def test_validation_contract_next_move_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
