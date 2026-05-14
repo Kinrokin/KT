@@ -45,9 +45,29 @@ def _bool_status(condition: bool) -> str:
 
 
 def _check_branch(root: Path, *, expected_branch: str) -> dict[str, Any]:
-    branch = common.git_current_branch_name(root)
-    head = common.git_rev_parse(root, "HEAD")
-    origin_main = common.git_rev_parse(root, "origin/main")
+    try:
+        branch = common.git_current_branch_name(root)
+        head = common.git_rev_parse(root, "HEAD")
+    except subprocess.CalledProcessError as exc:
+        return {
+            "check": "branch_context",
+            "status": "FAIL",
+            "branch": "UNKNOWN_BRANCH",
+            "head": "",
+            "origin_main": "",
+            "reason": f"unable to read local branch context: {exc}",
+        }
+    try:
+        origin_main = common.git_rev_parse(root, "origin/main")
+    except subprocess.CalledProcessError as exc:
+        return {
+            "check": "branch_context",
+            "status": "FAIL",
+            "branch": branch,
+            "head": head,
+            "origin_main": "",
+            "reason": f"missing or unreadable origin/main: {exc}",
+        }
     branch_ok = True
     reason = "branch accepted"
     if expected_branch and branch != expected_branch:
