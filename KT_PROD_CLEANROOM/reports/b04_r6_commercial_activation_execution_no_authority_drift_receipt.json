@@ -4,9 +4,8 @@
     "B04_R6_COMMERCIAL_ACTIVATION_EXECUTION_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_COMMERCIAL_ACTIVATION_EXECUTION_PACKET_INVALID__FORENSIC_COMMERCIAL_ACTIVATION_EXECUTION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_COMMERCIAL_ACTIVATION_EXECUTION_PACKET_COMMERCIAL_ACTIVATION_REPAIR_OR_ROLLBACK_PREP_ONLY_DRAFT",
+  "artifact_id": "B04_R6_COMMERCIAL_ACTIVATION_EXECUTION_PACKET_NO_AUTHORITY_DRIFT_RECEIPT",
   "authoritative_lane": "B04_R6_COMMERCIAL_ACTIVATION_EXECUTION_PACKET",
-  "authority": "PREP_ONLY",
   "benchmark_governing_statement": "KT does not claim small models are secretly giant models. KT tests where governed substrate makes smaller models act above class, and proves where it does not.",
   "benchmark_prep_authorizes_commercial_activation": false,
   "binding_hashes": {
@@ -45,16 +44,13 @@
     "validation_receipt_hash": "551569d1f81ff51c1bcd64ccf1f99b9f5f9435e2282abce85df0a4dbfa5c5892",
     "validation_report_hash": "aee7ffc76cc7d2e2664af010b6c8c783c9d5e10b52b57e3e7bf9b4412a7af7c5"
   },
-  "cannot_authorize_commercial_activation_claims": true,
-  "cannot_claim_7b_amplification_proven": true,
-  "cannot_execute_commercial_activation": true,
-  "cannot_mutate_trust_zone_law": true,
-  "cannot_mutate_truth_engine_law": true,
   "commercial_activation_authorization_validated": true,
   "commercial_activation_claim_authorized": false,
   "commercial_activation_executed": false,
   "commercial_activation_execution_packet_authored": true,
   "commercial_activation_execution_packet_validated": false,
+  "contract_role": "no_authority_drift_receipt",
+  "contract_status": "BOUND",
   "current_branch": "author/b04-r6-commercial-activation-execution-packet",
   "current_branch_head": "dbca6f9c1eac42de700abe3b4e9b50876c6c0774",
   "current_git_head": "dbca6f9c1eac42de700abe3b4e9b50876c6c0774",
@@ -294,7 +290,6 @@
   "predecessor_outcome": "B04_R6_COMMERCIAL_ACTIVATION_AUTHORIZATION_PACKET_VALIDATED__COMMERCIAL_ACTIVATION_EXECUTION_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_COMMERCIAL_ACTIVATION_AUTHORIZATION_PACKET_VALIDATION",
   "previous_next_lawful_move": "AUTHOR_B04_R6_COMMERCIAL_ACTIVATION_EXECUTION_PACKET",
-  "purpose": "Prepare repair or rollback path.",
   "r6_open": true,
   "reason_codes": [
     "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_AUTH_VALIDATION_MISSING",
@@ -315,11 +310,15 @@
     "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_BENCHMARK_AUTHORITY_DRIFT",
     "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_7B_CLAIM_DRIFT"
   ],
-  "schema_id": "kt.b04_r6.commercial_activation_execution_packet.commercial_activation_repair_or_rollback_prep_only_draft.prep_only.v1",
+  "requirements": [
+    "no execution",
+    "no claim authorization",
+    "truth/trust unchanged"
+  ],
+  "schema_id": "kt.b04_r6.commercial_activation_execution_packet.no_authority_drift_receipt.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_COMMERCIAL_ACTIVATION_EXECUTION_PACKET_BOUND__COMMERCIAL_ACTIVATION_EXECUTION_VALIDATION_NEXT",
   "seven_b_amplification_claimed_proven": false,
-  "status": "PREP_ONLY",
   "trust_zone_failures": [],
   "trust_zone_law_changed": false,
   "trust_zone_law_unchanged": true,
