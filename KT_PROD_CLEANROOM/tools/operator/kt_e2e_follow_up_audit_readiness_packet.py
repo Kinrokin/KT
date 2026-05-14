@@ -203,6 +203,8 @@ def _validate_handoff(payloads: Dict[str, Dict[str, Any]]) -> None:
     next_move = payloads["commercial_activation_evidence_review_validation_next_lawful_move"]
     if contract.get("selected_outcome") != EXPECTED_PREVIOUS_OUTCOME:
         _fail("RC_KT_E2E_AUDIT_READY_PACKET_OUTCOME_DRIFT", "validation contract outcome drift")
+    if contract.get("next_lawful_move") != EXPECTED_PREVIOUS_NEXT_MOVE:
+        _fail("RC_KT_E2E_AUDIT_READY_PACKET_NEXT_MOVE_DRIFT", "validation contract next lawful move drift")
     if receipt.get("selected_outcome") != EXPECTED_PREVIOUS_OUTCOME:
         _fail("RC_KT_E2E_AUDIT_READY_PACKET_OUTCOME_DRIFT", "validation receipt outcome drift")
     if next_move.get("next_lawful_move") != EXPECTED_PREVIOUS_NEXT_MOVE:

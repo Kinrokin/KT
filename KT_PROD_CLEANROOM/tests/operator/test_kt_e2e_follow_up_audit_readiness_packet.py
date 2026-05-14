@@ -189,6 +189,18 @@ def test_follow_up_audit_premature_validation_fails_closed(tmp_path: Path, monke
     assert excinfo.value.code == "RC_KT_E2E_AUDIT_READY_PACKET_PREMATURE_VALIDATION"
 
 
+def test_validation_contract_next_move_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _copy_inputs(tmp_path)
+    path = tmp_path / packet.INPUTS["commercial_activation_evidence_review_validation_contract"]
+    payload = _load(path)
+    payload["next_lawful_move"] = "AUTHOR_B04_R6_COMMERCIAL_CLAIM_AUTHORIZATION_PACKET"
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(packet.LaneFailure) as excinfo:
+        packet.run(reports_root=reports)
+    assert excinfo.value.code == "RC_KT_E2E_AUDIT_READY_PACKET_NEXT_MOVE_DRIFT"
+
+
 def test_main_replay_requires_head_equal_origin_main(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _copy_inputs(tmp_path)
     _patch_env(monkeypatch, tmp_path, branch="main", head="1" * 40, origin_main="2" * 40)
