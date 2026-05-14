@@ -7,9 +7,8 @@
     "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_DEFERRED__NAMED_REVIEW_DEFECT_REMAINS",
     "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_INVALID__FORENSIC_COMMERCIAL_ACTIVATION_REVIEW_NEXT"
   ],
-  "artifact_id": "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_VALIDATION_LIMITED_COMMERCIAL_CONTINUATION_VALIDATION_PLAN_PREP_ONLY",
+  "artifact_id": "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_CLAIM_TOKEN_BOUNDARY_VALIDATION_RECEIPT",
   "authoritative_lane": "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET_VALIDATION",
-  "authority": "PREP_ONLY",
   "benchmark_prep_authorizes_commercial_activation": false,
   "binding_hashes": {
     "allowed_forbidden_claims_review_hash": "6d8a25636ff197af7f6c3910ed5963e900e5d653aad3634907022c4ecf3f0d6c",
@@ -53,7 +52,7 @@
   "cannot_claim_follow_up_audit_readiness_validated": true,
   "cannot_mutate_trust_zone_law": true,
   "cannot_mutate_truth_engine_law": true,
-  "cannot_validate_follow_up_audit_readiness": true,
+  "commercial_activation_claim_authority_tokens_absent": true,
   "commercial_activation_claim_authorized": false,
   "commercial_activation_evidence_review_packet_authored": true,
   "commercial_activation_evidence_review_validated": true,
@@ -299,7 +298,6 @@
   "predecessor_outcome": "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET_BOUND__COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_VALIDATION_NEXT",
   "previous_authoritative_lane": "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET",
   "previous_next_lawful_move": "VALIDATE_B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET",
-  "purpose": "Prepare limited commercial continuation validation.",
   "r6_open": true,
   "reason_codes": [
     "RC_B04R6_COMMERCIAL_ACTIVATION_EVID_VAL_PACKET_MISSING",
@@ -322,11 +320,10 @@
     "RC_B04R6_COMMERCIAL_ACTIVATION_EVID_VAL_7B_CLAIM_DRIFT"
   ],
   "recommended_validated_path": "FOLLOW_UP_AUDIT_READINESS_PACKET_NEXT",
-  "schema_id": "kt.b04_r6.commercial_activation_evidence_review.validation.limited_commercial_continuation_validation_plan_prep_only.prep_only.v1",
+  "schema_id": "kt.b04_r6.commercial_activation_evidence_review.claim_token_boundary_validation_receipt.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_VALIDATED__FOLLOW_UP_AUDIT_READINESS_PACKET_NEXT",
   "seven_b_amplification_claimed_proven": false,
-  "status": "PREP_ONLY",
   "trust_zone_failures": [],
   "trust_zone_law_changed": false,
   "trust_zone_law_unchanged": true,
