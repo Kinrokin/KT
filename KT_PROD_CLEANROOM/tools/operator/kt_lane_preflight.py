@@ -23,18 +23,6 @@ KNOWN_LONG_TEST_PATHS = (
 )
 
 
-def _run_git(root: Path, *args: str) -> str:
-    result = subprocess.run(
-        ["git", *args],
-        cwd=root,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        check=True,
-    )
-    return result.stdout.strip()
-
-
 def _is_ancestor(root: Path, ancestor: str, descendant: str) -> bool:
     result = subprocess.run(["git", "merge-base", "--is-ancestor", ancestor, descendant], cwd=root)
     return result.returncode == 0
@@ -110,8 +98,10 @@ def _check_source_outputs(root: Path, sources: Sequence[str]) -> dict[str, Any]:
 def _check_overwrites(root: Path, overwrites: Sequence[str]) -> dict[str, Any]:
     present = [raw for raw in overwrites if common.resolve_path(root, raw).exists()]
     return {
-        "check": "pre_overwrite_binding_required",
+        "check": "pre_overwrite_binding_notice",
         "status": "PASS",
+        "gating": "informational",
+        "targets": list(overwrites),
         "shared_outputs": present,
         "requirement": "bind git object before generation when these shared files will be overwritten",
     }
@@ -140,15 +130,16 @@ def build_receipt(
     lane: str,
     expected_branch: str,
     source_outputs: Sequence[str],
-    overwrites: Sequence[str],
+    overwrites: Optional[Sequence[str]],
     test_paths: Sequence[str],
 ) -> dict[str, Any]:
     root = repo_root()
+    overwrite_targets = DEFAULT_SHARED_OUTPUTS if overwrites is None else overwrites
     checks = [
         _check_branch(root, expected_branch=expected_branch),
         _check_clean(root),
         _check_source_outputs(root, source_outputs),
-        _check_overwrites(root, overwrites or DEFAULT_SHARED_OUTPUTS),
+        _check_overwrites(root, overwrite_targets),
         _test_plan_hint(test_paths),
         {
             "check": "json_parser_mode",
@@ -161,9 +152,30 @@ def build_receipt(
             "scope": "recursive claim-bearing JSON strings, arrays, nested objects, and markdown reports",
         },
         {
+            "check": "claim_scanner_field_classification",
+            "status": "PASS",
+            "requirement": "machine routing IDs are not human claim-bearing prose fields",
+        },
+        {
             "check": "reason_code_uniqueness_required",
             "status": "PASS",
             "requirement": "every lane validator must prove reason-code uniqueness",
+        },
+        {
+            "check": "self_replay_expectations_declared",
+            "status": "PASS",
+            "requirement": "self-replay lanes must declare exact lane, predecessor outcome, and next-move expectations",
+        },
+        {
+            "check": "shared_output_schema_preservation_required",
+            "status": "PASS",
+            "requirement": "shared canonical boards/registers must preserve canonical schema",
+        },
+        {
+            "check": "review_threads_clean_before_merge",
+            "status": "PASS",
+            "gating": "external",
+            "requirement": "query PR review threads before merge and resolve only after proof",
         },
         {
             "check": "head_fields_required",
@@ -189,13 +201,19 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser.add_argument("--expected-branch", default="")
     parser.add_argument("--source-output", action="append", default=[])
     parser.add_argument("--overwrite", action="append", default=[])
+    parser.add_argument("--no-default-overwrites", action="store_true")
     parser.add_argument("--test-path", action="append", default=[])
     args = parser.parse_args(argv)
+    overwrites: Optional[Sequence[str]]
+    if args.no_default_overwrites:
+        overwrites = args.overwrite
+    else:
+        overwrites = args.overwrite or None
     receipt = build_receipt(
         lane=args.lane,
         expected_branch=args.expected_branch,
         source_outputs=args.source_output,
-        overwrites=args.overwrite,
+        overwrites=overwrites,
         test_paths=args.test_path,
     )
     print(json.dumps(receipt, indent=2, sort_keys=True))

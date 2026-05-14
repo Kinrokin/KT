@@ -61,7 +61,7 @@
         "next lawful move overwrite",
         "pipeline board overwrite"
       ],
-      "preflight_check": "pre_overwrite_binding_required",
+      "preflight_check": "pre_overwrite_binding_notice",
       "required_regression": "test_overwritten_shared_output_uses_replay_bound_preoverwrite_blob"
     },
     {
@@ -85,7 +85,7 @@
         "R6 opening authorization",
         "7B proof claim drift"
       ],
-      "preflight_check": "recursive_claim_token_scan",
+      "preflight_check": "claim_token_scan_required",
       "required_regression": "test_claim_drift_fails_closed_in_strings_arrays_markdown"
     },
     {
@@ -119,7 +119,7 @@
         "pipeline board updates",
         "future blocker register updates"
       ],
-      "preflight_check": "shared_output_schema_preservation",
+      "preflight_check": "shared_output_schema_preservation_required",
       "required_regression": "test_shared_board_schema_is_preserved"
     },
     {

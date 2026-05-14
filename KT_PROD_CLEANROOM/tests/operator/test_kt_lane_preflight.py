@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import subprocess
+import json
 from pathlib import Path
 
 from tools.operator import kt_lane_preflight as preflight
@@ -64,3 +65,42 @@ def test_preflight_missing_origin_main_returns_fail_receipt(monkeypatch, tmp_pat
     assert branch_context["status"] == "FAIL"
     assert branch_context["origin_main"] == ""
     assert "origin/main" in branch_context["reason"]
+
+
+def test_preflight_explicit_empty_overwrites_are_respected(monkeypatch, tmp_path: Path) -> None:
+    monkeypatch.setattr(preflight, "repo_root", lambda: tmp_path)
+    monkeypatch.setattr(preflight.common, "git_current_branch_name", lambda root: "feature")
+    monkeypatch.setattr(preflight.common, "git_rev_parse", lambda root, ref: "a" * 40 if ref == "HEAD" else "b" * 40)
+    monkeypatch.setattr(preflight.common, "git_status_porcelain", lambda root: "")
+    monkeypatch.setattr(preflight, "_is_ancestor", lambda root, ancestor, descendant: True)
+    receipt = preflight.build_receipt(
+        lane="TEST_LANE",
+        expected_branch="feature",
+        source_outputs=[],
+        overwrites=[],
+        test_paths=[],
+    )
+    overwrite_notice = next(check for check in receipt["checks"] if check["check"] == "pre_overwrite_binding_notice")
+    assert receipt["status"] == "PASS"
+    assert overwrite_notice["targets"] == []
+    assert overwrite_notice["shared_outputs"] == []
+
+
+def test_defect_prevention_matrix_references_emitted_preflight_checks(monkeypatch, tmp_path: Path) -> None:
+    monkeypatch.setattr(preflight, "repo_root", lambda: tmp_path)
+    monkeypatch.setattr(preflight.common, "git_current_branch_name", lambda root: "feature")
+    monkeypatch.setattr(preflight.common, "git_rev_parse", lambda root, ref: "a" * 40 if ref == "HEAD" else "b" * 40)
+    monkeypatch.setattr(preflight.common, "git_status_porcelain", lambda root: "")
+    monkeypatch.setattr(preflight, "_is_ancestor", lambda root, ancestor, descendant: True)
+    receipt = preflight.build_receipt(
+        lane="TEST_LANE",
+        expected_branch="feature",
+        source_outputs=[],
+        overwrites=None,
+        test_paths=[],
+    )
+    emitted_checks = {check["check"] for check in receipt["checks"]}
+    matrix_path = Path("KT_PROD_CLEANROOM/reports/kt_defect_prevention_matrix.json")
+    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+    matrix_checks = {entry["preflight_check"] for entry in matrix["defect_classes"]}
+    assert matrix_checks <= emitted_checks
