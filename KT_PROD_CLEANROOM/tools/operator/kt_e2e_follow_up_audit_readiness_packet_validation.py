@@ -544,8 +544,8 @@ def _outputs(base: Dict[str, Any]) -> Dict[str, Any]:
     return payloads
 
 
-def _write_report(root: Path, base: Dict[str, Any]) -> None:
-    path = common.resolve_path(root, f"KT_PROD_CLEANROOM/reports/{OUTPUTS['validation_report']}")
+def _write_report(reports_root: Path, base: Dict[str, Any]) -> None:
+    path = reports_root / OUTPUTS["validation_report"]
     path.parent.mkdir(parents=True, exist_ok=True)
     text = "\n".join(
         [
@@ -594,7 +594,7 @@ def run(*, reports_root: Path) -> Dict[str, str]:
         filename = OUTPUTS[role]
         write_json_stable(reports_root / filename, payload)
         written[role] = filename
-    _write_report(root, base)
+    _write_report(reports_root, base)
     written["validation_report"] = OUTPUTS["validation_report"]
     return written
 
@@ -603,10 +603,11 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--reports-root", default="KT_PROD_CLEANROOM/reports")
     args = parser.parse_args(argv)
-    result = run(reports_root=(repo_root() / args.reports_root).resolve())
+    resolved_reports_root = (repo_root() / args.reports_root).resolve()
+    result = run(reports_root=resolved_reports_root)
     contract = common.load_json_required(
-        repo_root(),
-        f"KT_PROD_CLEANROOM/reports/{result['validation_contract']}",
+        resolved_reports_root,
+        result["validation_contract"],
         label="follow_up_audit_readiness_validation_contract",
     )
     print(contract["selected_outcome"])

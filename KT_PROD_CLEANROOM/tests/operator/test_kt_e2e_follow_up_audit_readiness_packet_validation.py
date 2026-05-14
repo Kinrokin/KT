@@ -267,6 +267,20 @@ def test_main_replay_requires_head_equal_origin_main(tmp_path: Path, monkeypatch
     assert excinfo.value.code == "RC_KT_E2E_AUDIT_READY_VAL_NEXT_MOVE_DRIFT"
 
 
+def test_custom_reports_root_writes_report_and_cli_reads_selected_contract(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    _copy_inputs(tmp_path)
+    _patch_env(monkeypatch, tmp_path)
+    assert validation.main(["--reports-root", "custom_validation_reports"]) == 0
+    captured = capsys.readouterr()
+    custom_root = tmp_path / "custom_validation_reports"
+    assert validation.SELECTED_OUTCOME in captured.out
+    assert (custom_root / validation.OUTPUTS["validation_contract"]).exists()
+    assert (custom_root / validation.OUTPUTS["validation_report"]).exists()
+    assert not (tmp_path / "KT_PROD_CLEANROOM/reports" / validation.OUTPUTS["validation_report"]).exists()
+
+
 @pytest.mark.parametrize("role", _json_output_roles())
 def test_all_json_outputs_record_expected_heads(outputs: Path, role: str) -> None:
     payload = _payload(outputs, role)
