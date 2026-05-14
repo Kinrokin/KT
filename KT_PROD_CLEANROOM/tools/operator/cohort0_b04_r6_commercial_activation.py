@@ -280,7 +280,19 @@ def _git_is_ancestor(root: Path, ancestor: str, descendant: str) -> bool:
     return result.returncode == 0
 
 
-def _expected_source_hash(root: Path, row: Dict[str, Any], *, fallback_commit: str) -> str:
+def _validated_validation_packet_head(contract: Dict[str, Any]) -> str:
+    current_main_head = str(contract.get("current_main_head") or "")
+    current_git_head = str(contract.get("current_git_head") or "")
+    current_branch_head = str(contract.get("current_branch_head") or "")
+    if not current_main_head or current_main_head != current_git_head or current_main_head != current_branch_head:
+        _fail(
+            "RC_B04R6_COMMERCIAL_ACTIVATION_PREDECESSOR_MAIN_DRIFT",
+            "execution validation packet head metadata is not replay-bound",
+        )
+    return current_main_head
+
+
+def _expected_source_hash(root: Path, row: Dict[str, Any], *, fallback_contract: Dict[str, Any]) -> str:
     raw = str(row.get("path", ""))
     binding_kind = row.get("binding_kind")
     if binding_kind == "git_object_before_overwrite":
@@ -295,7 +307,7 @@ def _expected_source_hash(root: Path, row: Dict[str, Any], *, fallback_commit: s
         return current_hash
     output_paths = {f"KT_PROD_CLEANROOM/reports/{filename}" for filename in OUTPUTS.values()}
     if raw in output_paths:
-        return _git_blob_sha256(root, fallback_commit, raw)
+        return _git_blob_sha256(root, _validated_validation_packet_head(fallback_contract), raw)
     return current_hash
 
 
@@ -306,7 +318,6 @@ def _ensure_validation_source_bindings_current(root: Path, contract: Dict[str, A
         _fail("RC_B04R6_COMMERCIAL_ACTIVATION_INPUT_BINDINGS_EMPTY", "execution validation source bindings empty")
     if not isinstance(binding_hashes, dict) or not binding_hashes:
         _fail("RC_B04R6_COMMERCIAL_ACTIVATION_INPUT_BINDINGS_EMPTY", "execution validation binding hashes empty")
-    fallback_commit = str(contract.get("current_main_head") or common.git_rev_parse(root, "origin/main"))
     for row in bindings:
         if not isinstance(row, dict) or not row.get("role") or not row.get("path") or not row.get("sha256"):
             _fail("RC_B04R6_COMMERCIAL_ACTIVATION_INPUT_BINDING_INCOMPLETE", "malformed validation binding row")
@@ -314,7 +325,7 @@ def _ensure_validation_source_bindings_current(root: Path, contract: Dict[str, A
         bound_hash = str(row["sha256"])
         if binding_hashes.get(f"{role}_hash") != bound_hash:
             _fail("RC_B04R6_COMMERCIAL_ACTIVATION_INPUT_HASH_MISMATCH", f"{role} binding hash mismatch")
-        if _expected_source_hash(root, row, fallback_commit=fallback_commit) != bound_hash:
+        if _expected_source_hash(root, row, fallback_contract=contract) != bound_hash:
             _fail("RC_B04R6_COMMERCIAL_ACTIVATION_INPUT_HASH_MISMATCH", f"{role} current source hash mismatch")
 
 
