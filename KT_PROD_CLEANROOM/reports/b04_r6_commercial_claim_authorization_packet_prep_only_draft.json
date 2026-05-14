@@ -1,17 +1,12 @@
 {
-  "allowed_claims": [
-    "R6 is open.",
-    "Package promotion passed.",
-    "Commercial activation executed under the validated execution packet.",
-    "Commercial activation evidence review packet awaits validation."
-  ],
   "allowed_outcomes": [
     "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET_BOUND__COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_VALIDATION_NEXT",
     "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET_INVALID__FORENSIC_REVIEW_NEXT"
   ],
-  "artifact_id": "KT_CLAIM_CEILING_CURRENT_STATE",
+  "artifact_id": "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_COMMERCIAL_CLAIM_AUTHORIZATION_PACKET_PREP_ONLY_DRAFT",
   "authoritative_lane": "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET",
+  "authority": "PREP_ONLY",
   "benchmark_prep_authorizes_commercial_activation": false,
   "binding_hashes": {
     "activation_contract_hash": "8a76afef112a724e3c89b975dde064085bed89078495f3e352b6cbf17f827f39",
@@ -43,6 +38,11 @@
     "support_incident_receipt_hash": "2bd3d91aa2fdfb349943d9d61f846e07739a4682e0d72275955a31ec801164fb",
     "trace_completeness_receipt_hash": "73788e4b29f63f00dfc8f94a514c070c3d84bef476a0e93c1e54d6315667006d"
   },
+  "cannot_authorize_commercial_activation_claims": true,
+  "cannot_claim_7b_amplification_proven": true,
+  "cannot_mutate_trust_zone_law": true,
+  "cannot_mutate_truth_engine_law": true,
+  "cannot_validate_follow_up_audit_readiness": true,
   "commercial_activation_claim_authorized": false,
   "commercial_activation_evidence_review_packet_authored": true,
   "commercial_activation_evidence_review_validated": false,
@@ -61,12 +61,6 @@
     "BENCHMARK_PREP_TREATED_AS_COMMERCIAL_AUTHORITY",
     "SEVEN_B_AMPLIFICATION_CLAIMED_PROVEN",
     "FOLLOW_UP_AUDIT_READINESS_CLAIMED_VALIDATED"
-  ],
-  "forbidden_claims": [
-    "Commercial activation claims are authorized.",
-    "KT is production-commercial live.",
-    "Follow-up audit readiness is validated.",
-    "7B amplification is proven."
   ],
   "generated_utc": "2026-05-14T06:17:19Z",
   "input_bindings": [
@@ -216,6 +210,7 @@
   "predecessor_outcome": "B04_R6_COMMERCIAL_ACTIVATION_PASSED__COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET_NEXT",
   "previous_authoritative_lane": "B04_R6_COMMERCIAL_ACTIVATION",
   "previous_next_lawful_move": "AUTHOR_B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET",
+  "purpose": "Prepare bounded commercial claim authorization path.",
   "r6_open": true,
   "reason_codes": [
     "RC_B04R6_COMMERCIAL_ACTIVATION_EVID_REVIEW_ACTIVATION_MISSING",
@@ -234,10 +229,11 @@
     "RC_B04R6_COMMERCIAL_ACTIVATION_EVID_REVIEW_AUDIT_READINESS_DRIFT"
   ],
   "recommended_next_path": "FOLLOW_UP_AUDIT_READINESS_PACKET_NEXT",
-  "schema_id": "kt.claim_ceiling.current_state.v1",
+  "schema_id": "kt.b04_r6.commercial_activation_evidence_review.commercial_claim_authorization_packet_prep_only_draft.prep_only.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET_BOUND__COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_VALIDATION_NEXT",
   "seven_b_amplification_claimed_proven": false,
+  "status": "PREP_ONLY",
   "trust_zone_failures": [],
   "trust_zone_law_changed": false,
   "trust_zone_law_unchanged": true,

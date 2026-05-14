@@ -1,16 +1,10 @@
 {
-  "allowed_claims": [
-    "R6 is open.",
-    "Package promotion passed.",
-    "Commercial activation executed under the validated execution packet.",
-    "Commercial activation evidence review packet awaits validation."
-  ],
   "allowed_outcomes": [
     "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET_BOUND__COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_VALIDATION_NEXT",
     "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET_INVALID__FORENSIC_REVIEW_NEXT"
   ],
-  "artifact_id": "KT_CLAIM_CEILING_CURRENT_STATE",
+  "artifact_id": "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_INVENTORY",
   "authoritative_lane": "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET",
   "benchmark_prep_authorizes_commercial_activation": false,
   "binding_hashes": {
@@ -52,6 +46,40 @@
   "current_branch_head": "bd8872580b487828c9c455d75b57e2b5529b1916",
   "current_git_head": "bd8872580b487828c9c455d75b57e2b5529b1916",
   "current_main_head": "e6e93d0a08662fb1638f27caf20ea46b69c808a0",
+  "evidence_hashes": {
+    "activation_surface_receipt": "339970a30861118c57167c01d0affdf3900a07da99d5690c9ea19bcce6d15db9",
+    "audit_bundle_receipt": "406b8d52ab0ab00839f6da5c29b5d0c65acce667815a9cfc2a883d2c09ca977d",
+    "claim_ceiling_receipt": "380a9a558fedab88a277ff50a475d58ce2581fa77af61247793a0736e8369092",
+    "customer_safe_language_receipt": "26db356f9b439c7e940a7e65cb83621981bfb9f07e03b7bb5eed493ea4d70841",
+    "data_governance_receipt": "756257375e0bf4381e0af766521d1d1a40a72a06f1d76da2b50fe59ee8a6d1bb",
+    "deployment_profile_receipt": "440a62b7bd526db7d24b0284e5d9006c5cd8550b4e18cdbd3a97a38828d5c871",
+    "external_verifier_receipt": "2816310e5760c55e71e750b14ecfde4a60f2cf37c245c271705cb547eed23383",
+    "no_authority_drift_receipt": "ecc1480d6e9b295a81331d2cac88a8ed2ca803db29176e27443673ce285d63f7",
+    "operator_obligation_receipt": "90fa2ee9af0d3b51bdb92fbc39175d08423ea35c9ef9cc99d2522f644bae27bb",
+    "public_verifier_receipt": "a1a3c1fc1e06aed2210460dddfeba0ab61f21cd78a4323155a725e2173a4c55d",
+    "quarantine_freeze_receipt": "f8318e59c5cfc2216b37901bbd0c61aae3982f7646878e1231b1390e0d206125",
+    "release_truth_receipt": "7cf6d8c69e68f1447b460570d2a8b3eb23ef440aa2daa09c121951c5e6706424",
+    "rollback_receipt": "842dfea439faac65b105da1693dc4f94f82c6b6f797912820a39d557b9ac0a2d",
+    "support_incident_receipt": "2bd3d91aa2fdfb349943d9d61f846e07739a4682e0d72275955a31ec801164fb",
+    "trace_completeness_receipt": "73788e4b29f63f00dfc8f94a514c070c3d84bef476a0e93c1e54d6315667006d"
+  },
+  "evidence_roles": [
+    "activation_surface_receipt",
+    "claim_ceiling_receipt",
+    "customer_safe_language_receipt",
+    "operator_obligation_receipt",
+    "deployment_profile_receipt",
+    "support_incident_receipt",
+    "data_governance_receipt",
+    "release_truth_receipt",
+    "external_verifier_receipt",
+    "public_verifier_receipt",
+    "audit_bundle_receipt",
+    "rollback_receipt",
+    "quarantine_freeze_receipt",
+    "trace_completeness_receipt",
+    "no_authority_drift_receipt"
+  ],
   "follow_up_audit_readiness_packet_next_recommended": true,
   "follow_up_audit_readiness_validated": false,
   "forbidden_actions": [
@@ -61,12 +89,6 @@
     "BENCHMARK_PREP_TREATED_AS_COMMERCIAL_AUTHORITY",
     "SEVEN_B_AMPLIFICATION_CLAIMED_PROVEN",
     "FOLLOW_UP_AUDIT_READINESS_CLAIMED_VALIDATED"
-  ],
-  "forbidden_claims": [
-    "Commercial activation claims are authorized.",
-    "KT is production-commercial live.",
-    "Follow-up audit readiness is validated.",
-    "7B amplification is proven."
   ],
   "generated_utc": "2026-05-14T06:17:19Z",
   "input_bindings": [
@@ -234,7 +256,7 @@
     "RC_B04R6_COMMERCIAL_ACTIVATION_EVID_REVIEW_AUDIT_READINESS_DRIFT"
   ],
   "recommended_next_path": "FOLLOW_UP_AUDIT_READINESS_PACKET_NEXT",
-  "schema_id": "kt.claim_ceiling.current_state.v1",
+  "schema_id": "kt.b04_r6.commercial_activation_evidence_review.inventory.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET_BOUND__COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_VALIDATION_NEXT",
   "seven_b_amplification_claimed_proven": false,
