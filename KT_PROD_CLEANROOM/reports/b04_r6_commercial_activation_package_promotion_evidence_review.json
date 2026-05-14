@@ -1,16 +1,10 @@
 {
-  "allowed_claims": [
-    "R6 is open.",
-    "Package promotion passed.",
-    "Commercial activation executed under the validated execution packet.",
-    "Commercial activation evidence review packet awaits validation."
-  ],
   "allowed_outcomes": [
     "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET_BOUND__COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_VALIDATION_NEXT",
     "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET_DEFERRED__NAMED_PACKET_DEFECT_REMAINS",
     "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET_INVALID__FORENSIC_REVIEW_NEXT"
   ],
-  "artifact_id": "KT_CLAIM_CEILING_CURRENT_STATE",
+  "artifact_id": "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKAGE_PROMOTION_EVIDENCE_REVIEW",
   "authoritative_lane": "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET",
   "benchmark_prep_authorizes_commercial_activation": false,
   "binding_hashes": {
@@ -52,6 +46,7 @@
   "current_branch_head": "bd8872580b487828c9c455d75b57e2b5529b1916",
   "current_git_head": "bd8872580b487828c9c455d75b57e2b5529b1916",
   "current_main_head": "e6e93d0a08662fb1638f27caf20ea46b69c808a0",
+  "evidence_role": "activation_contract",
   "follow_up_audit_readiness_packet_next_recommended": true,
   "follow_up_audit_readiness_validated": false,
   "forbidden_actions": [
@@ -62,13 +57,8 @@
     "SEVEN_B_AMPLIFICATION_CLAIMED_PROVEN",
     "FOLLOW_UP_AUDIT_READINESS_CLAIMED_VALIDATED"
   ],
-  "forbidden_claims": [
-    "Commercial activation claims are authorized.",
-    "KT is production-commercial live.",
-    "Follow-up audit readiness is validated.",
-    "7B amplification is proven."
-  ],
   "generated_utc": "2026-05-14T06:17:19Z",
+  "grade": "PASS",
   "input_bindings": [
     {
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_commercial_activation_execution_contract.json",
@@ -234,7 +224,9 @@
     "RC_B04R6_COMMERCIAL_ACTIVATION_EVID_REVIEW_AUDIT_READINESS_DRIFT"
   ],
   "recommended_next_path": "FOLLOW_UP_AUDIT_READINESS_PACKET_NEXT",
-  "schema_id": "kt.claim_ceiling.current_state.v1",
+  "review_role": "package_promotion_evidence_review",
+  "review_status": "BOUND",
+  "schema_id": "kt.b04_r6.commercial_activation_evidence_review.package_promotion_evidence_review.v1",
   "schema_version": "v1",
   "selected_outcome": "B04_R6_COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_PACKET_BOUND__COMMERCIAL_ACTIVATION_EVIDENCE_REVIEW_VALIDATION_NEXT",
   "seven_b_amplification_claimed_proven": false,
