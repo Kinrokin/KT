@@ -268,8 +268,8 @@ def test_git_object_preoverwrite_binding_hash_mismatch_fails_closed(
     )
     execution_contract["binding_hashes"]["pre_overwrite_probe_hash"] = "0" * 64
     _write(execution_contract_path, execution_contract)
-    monkeypatch.setattr(validation, "_git_blob_sha256", lambda root, commit, raw: "1" * 64)
     _patch_validation_env(monkeypatch, tmp_path)
+    monkeypatch.setattr(validation, "_git_blob_sha256", lambda root, commit, raw: "1" * 64)
     with pytest.raises(validation.LaneFailure) as excinfo:
         validation.run(reports_root=reports)
     assert excinfo.value.code == "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_VAL_INPUT_HASH_MISMATCH"
