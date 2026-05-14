@@ -1,0 +1,140 @@
+{
+  "artifact_id": "KT_DEFECT_PREVENTION_MATRIX",
+  "authority": "PREP_ONLY",
+  "cannot_authorize_commercial_activation_claims": true,
+  "cannot_authorize_package_promotion": true,
+  "cannot_claim_7b_amplification_proven": true,
+  "cannot_mutate_trust_zone_law": true,
+  "cannot_mutate_truth_engine_law": true,
+  "defect_classes": [
+    {
+      "defect_class": "TIMEOUT_TRAP",
+      "failure_action": "shard broad suites before artifact generation",
+      "gate_stage": "before operator run and before PR push",
+      "known_from": [
+        "broad operator test sweeps",
+        "JSON report sweeps"
+      ],
+      "preflight_check": "timeout_safe_test_plan",
+      "required_regression": "test_known_long_suite_is_sharded"
+    },
+    {
+      "defect_class": "BOM_JSON_PARSE_MISMATCH",
+      "failure_action": "use utf-8-sig for broad report sweeps",
+      "gate_stage": "JSON parse gate",
+      "known_from": [
+        "legacy report JSON",
+        "strict parser reruns"
+      ],
+      "preflight_check": "json_parser_mode",
+      "required_regression": "test_json_gate_accepts_legacy_bom_but_rejects_malformed_json"
+    },
+    {
+      "defect_class": "STALE_SOURCE_HASH",
+      "failure_action": "recompute hashes from current files or signed predecessor git blobs",
+      "gate_stage": "validator input binding",
+      "known_from": [
+        "commercial activation review",
+        "commercial activation replay",
+        "package promotion evidence replay"
+      ],
+      "preflight_check": "required_source_outputs_present",
+      "required_regression": "test_bound_input_hashes_recompute_against_current_or_pre_overwrite_source"
+    },
+    {
+      "defect_class": "BRANCH_HEAD_GENERATION_DRIFT",
+      "failure_action": "regenerate artifacts from actual artifact-producing HEAD",
+      "gate_stage": "before PR push",
+      "known_from": [
+        "commercial activation run",
+        "commercial activation replay"
+      ],
+      "preflight_check": "head_fields_required",
+      "required_regression": "test_current_git_head_is_actual_artifact_producing_head"
+    },
+    {
+      "defect_class": "PRE_OVERWRITE_MUTABLE_FILE_BINDING",
+      "failure_action": "bind shared output git object before generation",
+      "gate_stage": "operator generation",
+      "known_from": [
+        "claim ceiling overwrite",
+        "next lawful move overwrite",
+        "pipeline board overwrite"
+      ],
+      "preflight_check": "pre_overwrite_binding_required",
+      "required_regression": "test_overwritten_shared_output_uses_replay_bound_preoverwrite_blob"
+    },
+    {
+      "defect_class": "SELF_REPLAY_HANDOFF_DRIFT",
+      "failure_action": "accept self-replay only for exact lane/predecessor/outcome/next-move match",
+      "gate_stage": "replay validation",
+      "known_from": [
+        "package promotion evidence replay",
+        "R6 opening evidence replay"
+      ],
+      "preflight_check": "self_replay_expectations_declared",
+      "required_regression": "test_malformed_self_replay_fails_closed"
+    },
+    {
+      "defect_class": "CLAIM_TOKEN_DRIFT",
+      "failure_action": "repair claim-bearing text before artifact generation",
+      "gate_stage": "before operator run and before PR push",
+      "known_from": [
+        "commercial activation review",
+        "package promotion run",
+        "R6 opening authorization",
+        "7B proof claim drift"
+      ],
+      "preflight_check": "recursive_claim_token_scan",
+      "required_regression": "test_claim_drift_fails_closed_in_strings_arrays_markdown"
+    },
+    {
+      "defect_class": "OUTCOME_ID_FALSE_POSITIVE",
+      "failure_action": "exclude machine-routing fields from prose claim scanning",
+      "gate_stage": "claim-token scan",
+      "known_from": [
+        "allowed_outcomes",
+        "next_lawful_move",
+        "routing maps"
+      ],
+      "preflight_check": "claim_scanner_field_classification",
+      "required_regression": "test_machine_routing_ids_are_not_claims"
+    },
+    {
+      "defect_class": "DUPLICATE_REASON_CODE",
+      "failure_action": "dedupe and prove reason-code uniqueness",
+      "gate_stage": "validator unit tests",
+      "known_from": [
+        "lane validator reason-code registries"
+      ],
+      "preflight_check": "reason_code_uniqueness_required",
+      "required_regression": "test_reason_codes_are_unique"
+    },
+    {
+      "defect_class": "SHARED_BOARD_SCHEMA_DRIFT",
+      "failure_action": "preserve canonical board schema or use lane-specific filenames",
+      "gate_stage": "operator output review",
+      "known_from": [
+        "R6 opening authorization",
+        "pipeline board updates",
+        "future blocker register updates"
+      ],
+      "preflight_check": "shared_output_schema_preservation",
+      "required_regression": "test_shared_board_schema_is_preserved"
+    },
+    {
+      "defect_class": "UNRESOLVED_REVIEW_CONFUSION",
+      "failure_action": "query and resolve review threads only after proof",
+      "gate_stage": "before merge",
+      "known_from": [
+        "protected branch merge blocks",
+        "Codex review findings"
+      ],
+      "preflight_check": "review_threads_clean_before_merge",
+      "required_regression": "test_unresolved_substantive_review_blocks_merge"
+    }
+  ],
+  "generated_utc": "2026-05-14T00:00:00Z",
+  "schema_id": "kt.defect_prevention.matrix.v1",
+  "status": "PREP_ONLY"
+}
