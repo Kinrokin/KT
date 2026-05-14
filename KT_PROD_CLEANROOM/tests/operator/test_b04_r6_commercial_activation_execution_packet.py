@@ -49,6 +49,9 @@ def _patch_execution_env(
     monkeypatch.setattr(execution.common, "git_current_branch_name", lambda root: branch)
     monkeypatch.setattr(execution.common, "git_status_porcelain", lambda root: dirty)
     monkeypatch.setattr(execution.common, "git_rev_parse", lambda root, ref: refs.get(ref, head))
+    monkeypatch.setattr(execution, "_git_is_ancestor", lambda root, ancestor, descendant: True)
+    monkeypatch.setattr(execution, "_git_blob_exists", lambda root, commit, raw: True)
+    monkeypatch.setattr(execution, "_git_blob_sha256", lambda root, commit, raw: "b" * 64)
     monkeypatch.setattr(
         execution,
         "validate_trust_zones",
@@ -115,6 +118,15 @@ def test_execution_packet_binds_authorization_validation(outputs: Path) -> None:
     assert contract["previous_next_lawful_move"] == auth_validation.NEXT_LAWFUL_MOVE
     assert contract["binding_hashes"]["validation_contract_hash"]
     assert contract["binding_hashes"]["validation_receipt_hash"]
+    assert all("binding_kind" in row for row in contract["input_bindings"])
+
+
+def test_execution_packet_binds_pre_overwrite_outputs(outputs: Path) -> None:
+    roles = {row["role"] for row in _contract(outputs)["input_bindings"]}
+    assert "pre_overwrite_pipeline_board" in roles
+    assert "pre_overwrite_claim_ceiling_current_state" in roles
+    assert "pre_overwrite_future_blocker_register" in roles
+    assert "pre_overwrite_next_lawful_move" in roles
 
 
 def test_execution_packet_selects_execution_validation_next(outputs: Path) -> None:
@@ -196,6 +208,18 @@ def test_claim_token_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.Monk
     assert excinfo.value.code == "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_CLAIM_TOKEN_DRIFT"
 
 
+def test_claim_token_drift_inside_list_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    reports = _run_authorization_validation(tmp_path, monkeypatch)
+    path = reports / auth_validation.OUTPUTS["next_lawful_move"]
+    payload = _load(path)
+    payload["commercial_claims"] = ["commercial activation authorized"]
+    _write(path, payload)
+    _patch_execution_env(monkeypatch, tmp_path)
+    with pytest.raises(execution.LaneFailure) as excinfo:
+        execution.run(reports_root=reports)
+    assert excinfo.value.code == "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_CLAIM_TOKEN_DRIFT"
+
+
 def test_benchmark_authority_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     reports = _run_authorization_validation(tmp_path, monkeypatch)
     contract_path = reports / auth_validation.OUTPUTS["validation_contract"]
@@ -206,6 +230,32 @@ def test_benchmark_authority_drift_fails_closed(tmp_path: Path, monkeypatch: pyt
     with pytest.raises(execution.LaneFailure) as excinfo:
         execution.run(reports_root=reports)
     assert excinfo.value.code == "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_BENCHMARK_AUTHORITY_DRIFT"
+
+
+def test_authorization_validation_source_hash_mismatch_fails_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _run_authorization_validation(tmp_path, monkeypatch)
+    validation_contract_path = reports / auth_validation.OUTPUTS["validation_contract"]
+    validation_contract = _load(validation_contract_path)
+    first_binding = validation_contract["input_bindings"][0]
+    target = tmp_path / first_binding["path"]
+    target.write_text(target.read_text(encoding="utf-8") + "\n", encoding="utf-8")
+    _patch_execution_env(monkeypatch, tmp_path)
+    with pytest.raises(execution.LaneFailure) as excinfo:
+        execution.run(reports_root=reports)
+    assert excinfo.value.code == "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_HASH_MISMATCH"
+
+
+def test_predecessor_not_in_current_main_lineage_fails_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    reports = _run_authorization_validation(tmp_path, monkeypatch)
+    _patch_execution_env(monkeypatch, tmp_path)
+    monkeypatch.setattr(execution, "_git_is_ancestor", lambda root, ancestor, descendant: False)
+    with pytest.raises(execution.LaneFailure) as excinfo:
+        execution.run(reports_root=reports)
+    assert excinfo.value.code == "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_PREDECESSOR_MAIN_DRIFT"
 
 
 def test_main_replay_requires_head_equal_origin_main(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

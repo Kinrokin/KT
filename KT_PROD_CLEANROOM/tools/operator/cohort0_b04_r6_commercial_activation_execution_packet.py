@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional, Sequence
 
@@ -111,6 +113,9 @@ REASON_CODES = tuple(
             "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_OUTCOME_DRIFT",
             "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_NEXT_MOVE_DRIFT",
             "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_BINDINGS_EMPTY",
+            "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_BINDING_INCOMPLETE",
+            "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_HASH_MISMATCH",
+            "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_PREDECESSOR_MAIN_DRIFT",
             "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_CONTRACT_INCOMPLETE",
             "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_PREP_ONLY_DRIFT",
             "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_CLAIM_TOKEN_DRIFT",
@@ -160,6 +165,14 @@ PREP_ONLY_ROLES = (
     "commercial_activation_forensic_review_prep_only_draft",
     "follow_up_audit_readiness_packet_prep_only_draft",
     "post_activation_external_audit_delta_packet_prep_only_draft",
+)
+
+PRE_OVERWRITE_BINDING_ROLES = (
+    "pipeline_board",
+    "campaign_board",
+    "claim_ceiling_current_state",
+    "future_blocker_register",
+    "next_lawful_move",
 )
 
 OUTPUTS = {
@@ -230,14 +243,18 @@ def _fail(code: str, detail: str) -> None:
     raise LaneFailure(code, detail)
 
 
-def _walk_items(value: Any) -> Iterable[tuple[str, Any]]:
+def _walk_items(value: Any, parent_key: str = "") -> Iterable[tuple[str, Any]]:
     if isinstance(value, dict):
         for key, item in value.items():
-            yield str(key), item
-            yield from _walk_items(item)
+            current_key = str(key)
+            yield current_key, item
+            yield from _walk_items(item, current_key)
     elif isinstance(value, list):
         for item in value:
-            yield from _walk_items(item)
+            if isinstance(item, (dict, list)):
+                yield from _walk_items(item, parent_key)
+            else:
+                yield parent_key, item
 
 
 def _is_claim_bearing_field(key: str) -> bool:
@@ -306,10 +323,78 @@ def _ensure_authority_closed(payloads: Dict[str, Dict[str, Any]], texts: Dict[st
                 _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_CLAIM_TOKEN_DRIFT", f"{label} contains {phrase!r}")
 
 
-def _validate_handoff(payloads: Dict[str, Dict[str, Any]]) -> None:
+def _git_blob_bytes(root: Path, commit: str, raw: str) -> bytes:
+    blob_ref = f"{commit}:{raw.replace(chr(92), '/')}"
+    result = subprocess.run(["git", "show", blob_ref], cwd=root, capture_output=True, check=True)
+    return result.stdout
+
+
+def _git_blob_sha256(root: Path, commit: str, raw: str) -> str:
+    return hashlib.sha256(_git_blob_bytes(root, commit, raw)).hexdigest()
+
+
+def _git_blob_exists(root: Path, commit: str, raw: str) -> bool:
+    blob_ref = f"{commit}:{raw.replace(chr(92), '/')}"
+    result = subprocess.run(["git", "cat-file", "-e", blob_ref], cwd=root, capture_output=True)
+    return result.returncode == 0
+
+
+def _git_is_ancestor(root: Path, ancestor: str, descendant: str) -> bool:
+    result = subprocess.run(["git", "merge-base", "--is-ancestor", ancestor, descendant], cwd=root, capture_output=True)
+    return result.returncode == 0
+
+
+def _expected_predecessor_binding_hash(root: Path, row: Dict[str, Any]) -> str:
+    raw = str(row.get("path", ""))
+    binding_kind = row.get("binding_kind")
+    if binding_kind == "git_object_before_overwrite":
+        git_commit = row.get("git_commit")
+        if not git_commit:
+            _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_BINDING_INCOMPLETE", f"{row.get('role')} missing git_commit")
+        return _git_blob_sha256(root, str(git_commit), raw)
+    if not binding_kind:
+        _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_BINDING_INCOMPLETE", f"{row.get('role')} missing binding_kind")
+    return file_sha256(common.resolve_path(root, raw))
+
+
+def _ensure_predecessor_bindings_current(root: Path, contract: Dict[str, Any]) -> None:
+    bindings = contract.get("input_bindings")
+    binding_hashes = contract.get("binding_hashes")
+    if not isinstance(bindings, list) or not bindings:
+        _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_BINDINGS_EMPTY", "authorization validation bindings empty")
+    if not isinstance(binding_hashes, dict) or not binding_hashes:
+        _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_BINDINGS_EMPTY", "authorization validation binding hashes empty")
+    for row in bindings:
+        if not isinstance(row, dict) or not row.get("role") or not row.get("path") or not row.get("sha256"):
+            _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_BINDING_INCOMPLETE", "malformed predecessor binding row")
+        role = str(row["role"])
+        bound_hash = str(row["sha256"])
+        if binding_hashes.get(f"{role}_hash") != bound_hash:
+            _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_HASH_MISMATCH", f"{role} binding hash mismatch")
+        if _expected_predecessor_binding_hash(root, row) != bound_hash:
+            _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_HASH_MISMATCH", f"{role} current source hash mismatch")
+
+
+def _validate_predecessor_canonical_lineage(root: Path, contract: Dict[str, Any], *, current_main_head: str) -> None:
+    predecessor_main = contract.get("current_main_head")
+    predecessor_head = contract.get("current_git_head") or contract.get("current_branch_head")
+    if not predecessor_main or not predecessor_head:
+        _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_PREDECESSOR_MAIN_DRIFT", "predecessor canonical head metadata missing")
+    if predecessor_main == current_main_head:
+        return
+    if not _git_is_ancestor(root, str(predecessor_head), current_main_head):
+        _fail(
+            "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_PREDECESSOR_MAIN_DRIFT",
+            "predecessor validation artifact is not an ancestor of current main",
+        )
+
+
+def _validate_handoff(root: Path, payloads: Dict[str, Dict[str, Any]], *, current_main_head: str) -> None:
     contract = payloads["validation_contract"]
     receipt = payloads["validation_receipt"]
     next_move = payloads["next_lawful_move"]
+    _ensure_predecessor_bindings_current(root, contract)
+    _validate_predecessor_canonical_lineage(root, contract, current_main_head=current_main_head)
     if contract.get("selected_outcome") != EXPECTED_PREVIOUS_OUTCOME:
         _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_OUTCOME_DRIFT", "authorization validation outcome drift")
     if receipt.get("selected_outcome") != EXPECTED_PREVIOUS_OUTCOME:
@@ -341,19 +426,39 @@ def _validate_handoff(payloads: Dict[str, Dict[str, Any]]) -> None:
     ):
         if contract.get(key) is not False:
             _fail(AUTHORITY_DRIFT_KEYS.get(key, "RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_CONTRACT_INCOMPLETE"), key)
-    if not contract.get("binding_hashes"):
-        _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_BINDINGS_EMPTY", "authorization validation bindings empty")
 
 
-def _validate_inputs(payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str]) -> None:
+def _validate_inputs(root: Path, payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str], *, current_main_head: str) -> None:
     _ensure_authority_closed(payloads, texts)
-    _validate_handoff(payloads)
+    _validate_handoff(root, payloads, current_main_head=current_main_head)
 
 
-def _input_bindings(root: Path) -> list[Dict[str, str]]:
-    rows: list[Dict[str, str]] = []
+def _input_bindings(root: Path, *, handoff_git_commit: str) -> list[Dict[str, Any]]:
+    rows: list[Dict[str, Any]] = []
     for role, raw in sorted({**AUTH_VALIDATION_JSON_INPUTS, **AUTH_VALIDATION_TEXT_INPUTS}.items()):
-        rows.append({"role": role, "path": raw, "sha256": file_sha256(root / raw)})
+        rows.append(
+            {
+                "role": role,
+                "path": raw,
+                "sha256": file_sha256(common.resolve_path(root, raw)),
+                "binding_kind": "file_sha256_at_commercial_activation_execution_packet_authoring",
+            }
+        )
+    for role in sorted(PRE_OVERWRITE_BINDING_ROLES):
+        raw = f"KT_PROD_CLEANROOM/reports/{OUTPUTS[role]}"
+        if not _git_blob_exists(root, handoff_git_commit, raw):
+            continue
+        rows.append(
+            {
+                "role": f"pre_overwrite_{role}",
+                "path": raw,
+                "sha256": _git_blob_sha256(root, handoff_git_commit, raw),
+                "binding_kind": "git_object_before_overwrite",
+                "git_commit": handoff_git_commit,
+                "mutable_canonical_path_overwritten_by_this_lane": True,
+                "overwritten_output_role": role,
+            }
+        )
     return rows
 
 
@@ -594,7 +699,7 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
     head = common.git_rev_parse(root, "HEAD")
     current_main_head = common.git_rev_parse(root, "origin/main" if branch != "main" else "HEAD")
     payloads, texts = _payloads(root)
-    _validate_inputs(payloads, texts)
+    _validate_inputs(root, payloads, texts, current_main_head=current_main_head)
     trust_zone_validation = validate_trust_zones(root=root)
     if trust_zone_validation.get("status") != "PASS" or trust_zone_validation.get("failures"):
         _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_TRUST_ZONE_FAILED", "fresh trust-zone validation must pass")
@@ -603,7 +708,7 @@ def run(*, reports_root: Optional[Path] = None) -> Dict[str, Any]:
         head=head,
         current_main_head=current_main_head,
         branch=branch,
-        input_bindings=_input_bindings(root),
+        input_bindings=_input_bindings(root, handoff_git_commit=current_main_head),
         trust_zone_validation=trust_zone_validation,
     )
     output_payloads = _outputs(base)
