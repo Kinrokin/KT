@@ -34,11 +34,11 @@
     "operator_obligation_validation_hash": "8b94a5cc97b1ce86c22e13392e47cf7740f736599a41ab989142a070dc0a2a5a",
     "packet_binding_validation_hash": "1bff0b660c50264dd7e93f250eb24f5fe6d41226626efee94b858119d21bc351",
     "pipeline_board_hash": "de00b935cdd2b9d37c56d9113cf4537b9a3e3ec77cc106d82e8cc558669707cc",
-    "pre_overwrite_campaign_board_hash": "68f18a3a4e88ffd69898d4d1518fdb5907998604b9ad67c53b052e6677bed21f",
-    "pre_overwrite_claim_ceiling_current_state_hash": "53876329f1b31312bc73f8053a1a3f36521bd6681fd639e55b2e9b7eaa8bbb13",
-    "pre_overwrite_future_blocker_register_hash": "4afae933f034412c4971f88f239dfb21c150d6d90c033a6bc72345fccbb45e8f",
-    "pre_overwrite_next_lawful_move_hash": "a8ff6fbcfa0c043a7fbc10a7f47524706743b408a0db6ce74e4cc16fa1d3f634",
-    "pre_overwrite_pipeline_board_hash": "2f959f5db13df15e11764dfae3efda09bb2d1f58732df269b194f853ecb93c27",
+    "pre_overwrite_campaign_board_hash": "62e46d3a11eee6bd128dc0e42205278e3585752063bd4972e62fba23906f60ea",
+    "pre_overwrite_claim_ceiling_current_state_hash": "735b0265bb5db6fd9c41b1aa21454759486e323deb09702e9d22b5e6b9204504",
+    "pre_overwrite_future_blocker_register_hash": "45dacf7e01e55fe895d44e7adf51b261abcb60c109212e1c7eef68f526c6e010",
+    "pre_overwrite_next_lawful_move_hash": "cdf4438979df186ad7ba9df9248c83555de435d684a5a33c3146646bf51e6520",
+    "pre_overwrite_pipeline_board_hash": "a45ad80ff737b6939334707d9949c3cf87d54c58f34c0078be55db818be9dab2",
     "prep_only_boundary_validation_hash": "3da4274df856ce2ff6fed9533253667521d934882b0bb3b32ded9183040ab821",
     "public_verifier_validation_hash": "6a4b750b450a07304ecee53388ede453bfbe8558679081f48448165ee2d4b96b",
     "release_truth_validation_hash": "c0d3461ae3fd0b964f6997dbd2bb6cf1931898341a8d50a155735650b8d3c5da",
@@ -55,10 +55,10 @@
   "commercial_activation_executed": false,
   "commercial_activation_execution_packet_authored": true,
   "commercial_activation_execution_packet_validated": false,
-  "current_branch": "author/b04-r6-commercial-activation-execution-packet",
-  "current_branch_head": "dbca6f9c1eac42de700abe3b4e9b50876c6c0774",
-  "current_git_head": "dbca6f9c1eac42de700abe3b4e9b50876c6c0774",
-  "current_main_head": "9839cbbf8182cd241797f57c946d05294bd67795",
+  "current_branch": "replay/b04-r6-commercial-activation-execution-packet-on-main",
+  "current_branch_head": "4c3c90f7b71ee85acfce1240a50e13583d69eea3",
+  "current_git_head": "4c3c90f7b71ee85acfce1240a50e13583d69eea3",
+  "current_main_head": "4c3c90f7b71ee85acfce1240a50e13583d69eea3",
   "forbidden_actions": [
     "COMMERCIAL_ACTIVATION_EXECUTED",
     "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED",
@@ -72,7 +72,7 @@
     "Commercial activation claims are authorized.",
     "7B amplification is proven."
   ],
-  "generated_utc": "2026-05-14T00:08:22Z",
+  "generated_utc": "2026-05-14T00:31:49Z",
   "input_bindings": [
     {
       "binding_kind": "file_sha256_at_commercial_activation_execution_packet_authoring",
@@ -250,48 +250,48 @@
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "9839cbbf8182cd241797f57c946d05294bd67795",
+      "git_commit": "4c3c90f7b71ee85acfce1240a50e13583d69eea3",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "overwritten_output_role": "campaign_board",
       "path": "KT_PROD_CLEANROOM/reports/kt_e2e_closure_campaign_board.json",
       "role": "pre_overwrite_campaign_board",
-      "sha256": "68f18a3a4e88ffd69898d4d1518fdb5907998604b9ad67c53b052e6677bed21f"
+      "sha256": "62e46d3a11eee6bd128dc0e42205278e3585752063bd4972e62fba23906f60ea"
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "9839cbbf8182cd241797f57c946d05294bd67795",
+      "git_commit": "4c3c90f7b71ee85acfce1240a50e13583d69eea3",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "overwritten_output_role": "claim_ceiling_current_state",
       "path": "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_current_state.json",
       "role": "pre_overwrite_claim_ceiling_current_state",
-      "sha256": "53876329f1b31312bc73f8053a1a3f36521bd6681fd639e55b2e9b7eaa8bbb13"
+      "sha256": "735b0265bb5db6fd9c41b1aa21454759486e323deb09702e9d22b5e6b9204504"
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "9839cbbf8182cd241797f57c946d05294bd67795",
+      "git_commit": "4c3c90f7b71ee85acfce1240a50e13583d69eea3",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "overwritten_output_role": "future_blocker_register",
       "path": "KT_PROD_CLEANROOM/reports/kt_future_blocker_register.json",
       "role": "pre_overwrite_future_blocker_register",
-      "sha256": "4afae933f034412c4971f88f239dfb21c150d6d90c033a6bc72345fccbb45e8f"
+      "sha256": "45dacf7e01e55fe895d44e7adf51b261abcb60c109212e1c7eef68f526c6e010"
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "9839cbbf8182cd241797f57c946d05294bd67795",
+      "git_commit": "4c3c90f7b71ee85acfce1240a50e13583d69eea3",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "overwritten_output_role": "next_lawful_move",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_next_lawful_move_receipt.json",
       "role": "pre_overwrite_next_lawful_move",
-      "sha256": "a8ff6fbcfa0c043a7fbc10a7f47524706743b408a0db6ce74e4cc16fa1d3f634"
+      "sha256": "cdf4438979df186ad7ba9df9248c83555de435d684a5a33c3146646bf51e6520"
     },
     {
       "binding_kind": "git_object_before_overwrite",
-      "git_commit": "9839cbbf8182cd241797f57c946d05294bd67795",
+      "git_commit": "4c3c90f7b71ee85acfce1240a50e13583d69eea3",
       "mutable_canonical_path_overwritten_by_this_lane": true,
       "overwritten_output_role": "pipeline_board",
       "path": "KT_PROD_CLEANROOM/reports/b04_r6_pipeline_board.json",
       "role": "pre_overwrite_pipeline_board",
-      "sha256": "2f959f5db13df15e11764dfae3efda09bb2d1f58732df269b194f853ecb93c27"
+      "sha256": "a45ad80ff737b6939334707d9949c3cf87d54c58f34c0078be55db818be9dab2"
     }
   ],
   "next_lawful_move": "VALIDATE_B04_R6_COMMERCIAL_ACTIVATION_EXECUTION_PACKET",
