@@ -604,7 +604,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--reports-root", default="KT_PROD_CLEANROOM/reports")
     args = parser.parse_args(argv)
     result = run(reports_root=(repo_root() / args.reports_root).resolve())
-    contract = common.load_json_required(repo_root(), f"KT_PROD_CLEANROOM/reports/{result['validation_contract']}")
+    contract = common.load_json_required(
+        repo_root(),
+        f"KT_PROD_CLEANROOM/reports/{result['validation_contract']}",
+        label="follow_up_audit_readiness_validation_contract",
+    )
     print(contract["selected_outcome"])
     return 0
 
