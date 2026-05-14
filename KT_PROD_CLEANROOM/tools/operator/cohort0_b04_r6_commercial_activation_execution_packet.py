@@ -344,7 +344,7 @@ def _git_is_ancestor(root: Path, ancestor: str, descendant: str) -> bool:
     return result.returncode == 0
 
 
-def _expected_predecessor_binding_hash(root: Path, row: Dict[str, Any]) -> str:
+def _expected_predecessor_binding_hash(root: Path, row: Dict[str, Any], *, predecessor_main_head: str) -> str:
     raw = str(row.get("path", ""))
     binding_kind = row.get("binding_kind")
     if binding_kind == "git_object_before_overwrite":
@@ -354,7 +354,13 @@ def _expected_predecessor_binding_hash(root: Path, row: Dict[str, Any]) -> str:
         return _git_blob_sha256(root, str(git_commit), raw)
     if not binding_kind:
         _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_BINDING_INCOMPLETE", f"{row.get('role')} missing binding_kind")
-    return file_sha256(common.resolve_path(root, raw))
+    current_hash = file_sha256(common.resolve_path(root, raw))
+    if current_hash == row.get("sha256"):
+        return current_hash
+    output_paths = {f"KT_PROD_CLEANROOM/reports/{filename}" for filename in OUTPUTS.values()}
+    if raw in output_paths:
+        return _git_blob_sha256(root, predecessor_main_head, raw)
+    return current_hash
 
 
 def _ensure_predecessor_bindings_current(root: Path, contract: Dict[str, Any]) -> None:
@@ -364,6 +370,9 @@ def _ensure_predecessor_bindings_current(root: Path, contract: Dict[str, Any]) -
         _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_BINDINGS_EMPTY", "authorization validation bindings empty")
     if not isinstance(binding_hashes, dict) or not binding_hashes:
         _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_BINDINGS_EMPTY", "authorization validation binding hashes empty")
+    predecessor_main_head = str(contract.get("current_main_head", ""))
+    if not predecessor_main_head:
+        _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_PREDECESSOR_MAIN_DRIFT", "predecessor current_main_head missing")
     for row in bindings:
         if not isinstance(row, dict) or not row.get("role") or not row.get("path") or not row.get("sha256"):
             _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_BINDING_INCOMPLETE", "malformed predecessor binding row")
@@ -371,7 +380,7 @@ def _ensure_predecessor_bindings_current(root: Path, contract: Dict[str, Any]) -
         bound_hash = str(row["sha256"])
         if binding_hashes.get(f"{role}_hash") != bound_hash:
             _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_HASH_MISMATCH", f"{role} binding hash mismatch")
-        if _expected_predecessor_binding_hash(root, row) != bound_hash:
+        if _expected_predecessor_binding_hash(root, row, predecessor_main_head=predecessor_main_head) != bound_hash:
             _fail("RC_B04R6_COMMERCIAL_ACTIVATION_EXEC_PACKET_INPUT_HASH_MISMATCH", f"{role} current source hash mismatch")
 
 
