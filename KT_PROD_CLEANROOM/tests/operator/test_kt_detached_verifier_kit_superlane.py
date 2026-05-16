@@ -193,11 +193,21 @@ def test_claim_authority_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.
     assert excinfo.value.code == "RC_KT_DETACHED_VERIFIER_BOUNDARY_DRIFT"
 
 
-def test_forbidden_claim_text_drift_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+@pytest.mark.parametrize(
+    "unsafe_claim",
+    [
+        "External audit is complete.",
+        "Detached verifier clean-room replay has run.",
+        "Highway or FP0 has canonical authority.",
+    ],
+)
+def test_forbidden_claim_text_drift_fails_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, unsafe_claim: str
+) -> None:
     _copy_inputs(tmp_path)
     path = tmp_path / kit.INPUTS["detached_verifier_kit_next_prep_only"]
     payload = _load(path)
-    payload["unsafe_claim"] = "External audit is complete."
+    payload["unsafe_claim"] = unsafe_claim
     _write(path, payload)
     _patch_env(monkeypatch, tmp_path)
     with pytest.raises(kit.LaneFailure) as excinfo:
