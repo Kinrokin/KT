@@ -1,0 +1,13 @@
+schema_id: kt.external_launch_readiness.truth_lock.claim_authority_matrix.v1
+artifact_id: KT_EXTERNAL_LAUNCH_READINESS_CLAIM_AUTHORITY_MATRIX
+authority: AUTHORING_PACKET_VALIDATION_REQUIRED
+claim_classes:
+  ready_for_reaudit_or_external_review: ALLOWED_AFTER_TRUTH_LOCK_VALIDATION
+  commercial_activation_ran: ALLOWED_WITH_PACKET_LAW_BOUNDARY
+  commercial_activation_claims_authorized: FORBIDDEN_REQUIRES_SEPARATE_CLAIM_AUTHORITY
+  external_audit_complete: FORBIDDEN_NOT_YET_RUN
+  seven_b_amplification_proven: FORBIDDEN_NOT_PROVEN
+  beyond_sota: FORBIDDEN_NOT_EARNED
+  full_civilization_stack_ready: FORBIDDEN_NOT_RATIFIED
+  truth_engine_law_mutation: FORBIDDEN
+  trust_zone_law_mutation: FORBIDDEN

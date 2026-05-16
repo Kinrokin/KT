@@ -1,0 +1,128 @@
+{
+  "allowed_outcomes": [
+    "KT_EXTERNAL_LAUNCH_READINESS_TRUTH_LOCK_BOUND__TRUTH_LOCK_VALIDATION_NEXT",
+    "KT_EXTERNAL_LAUNCH_READINESS_TRUTH_LOCK_DEFERRED__NAMED_TRUTH_LOCK_DEFECT_REMAINS",
+    "KT_EXTERNAL_LAUNCH_READINESS_TRUTH_LOCK_INVALID__FORENSIC_TRUTH_LOCK_REVIEW_NEXT"
+  ],
+  "artifact_id": "KT_EXTERNAL_LAUNCH_READINESS_ARTIFACT_AUTHORITY_CLASSIFICATION",
+  "authoritative_lane": "KT_EXTERNAL_LAUNCH_READINESS_TRUTH_LOCK_SUPERLANE_V1",
+  "binding_hashes": {
+    "allowed_claims_current_state_hash": "5f1ee750e5b0f714d89ddf6c2ab7b6353c451031842d7b6a4a0557600ee61987",
+    "canonical_state_board_hash": "9a6cb1d92b187fc6c02e6f78419dff104d896cb928c86227e2638c9a395503b4",
+    "external_verifier_manifest_hash": "708aa7377fe7d62d6897a13a15eb4e77e28e0097aea967d87ef3d828d800cf59",
+    "follow_up_audit_validation_contract_hash": "72e706e1b56f6cf751ef800aedd19723540987504c2a2916d78f468a90dc2672",
+    "follow_up_audit_validation_next_lawful_move_hash": "fee2154fdbb02ce1844c08b79eaf84873b05601d783db136983c320d5599488e",
+    "follow_up_audit_validation_receipt_hash": "5072411e0746d9d8fccea5c8737b8811d2c0a42b77b6b4337a15afa805031410",
+    "forbidden_claims_current_state_hash": "d870ac68cd03550a016f0c58790d6d8ddef8daf442dd11438b3ab82a1c342843",
+    "known_limitations_ledger_hash": "ce529de5383bc28fd165b8295737bb36cf68b811fd9814d3837910e60f0d1d20",
+    "open_blocker_ledger_hash": "52e1ed09fcea567cecb47af46f0bdf58d4bdce8d637fbc88cab9299b8ed2efdb",
+    "proof_replay_bundle_manifest_hash": "1db381e5ee47fcd1e13b3276a0ceb236fc4f4c6cff4dfce59ee4841c875e0235",
+    "truth_trust_receipt_hash": "c7c7e9d38ec3f09cf39e2d29ee430dc501275524dac5d505b7cdaa7bc6b2d5f0"
+  },
+  "cannot_authorize_commercial_activation_claims": true,
+  "cannot_claim_7b_amplification_proven": true,
+  "cannot_claim_beyond_sota": true,
+  "cannot_claim_external_audit_complete": true,
+  "cannot_claim_full_civilization_stack_ready": true,
+  "cannot_mutate_trust_zone_law": true,
+  "cannot_mutate_truth_engine_law": true,
+  "classifications": {
+    "KT_PROD_CLEANROOM/reports": "SOURCE_EVIDENCE_AND_HISTORICAL_PROOF",
+    "benchmark/provider/7B prep": "PREP_ONLY",
+    "external/current docs": "EXTERNAL_REVIEWER_SURFACE_AFTER_VALIDATION",
+    "governance/current_truth_head.json": "CURRENT_AUTHORITY_AFTER_VALIDATION",
+    "repo cleanup archive manifests": "NON_DESTRUCTIVE_INDEX"
+  },
+  "commercial_activation_claim_authorized": false,
+  "commercial_activation_executed": true,
+  "commercial_activation_passed": true,
+  "current_branch": "author/kt-external-launch-readiness-truth-lock",
+  "current_branch_head": "bdb9c61859b7d8ac2607ed100294fe2214d7e16d",
+  "current_git_head": "bdb9c61859b7d8ac2607ed100294fe2214d7e16d",
+  "current_main_head": "2591d6f1d3401778b6d0f2fdcdc52b0c6dea1af6",
+  "external_audit_completed": false,
+  "follow_up_audit_readiness_validated": true,
+  "forbidden_actions": [
+    "COMMERCIAL_ACTIVATION_CLAIM_AUTHORIZED",
+    "EXTERNAL_AUDIT_COMPLETED",
+    "SEVEN_B_AMPLIFICATION_CLAIMED_PROVEN",
+    "BEYOND_SOTA_CLAIM_AUTHORIZED",
+    "FULL_CIVILIZATION_STACK_PRODUCTION_READY",
+    "TRUTH_ENGINE_LAW_MUTATED",
+    "TRUST_ZONE_LAW_MUTATED"
+  ],
+  "generated_utc": "2026-05-16T01:08:40Z",
+  "input_bindings": [
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_e2e_follow_up_audit_readiness_validation_contract.json",
+      "role": "follow_up_audit_validation_contract",
+      "sha256": "72e706e1b56f6cf751ef800aedd19723540987504c2a2916d78f468a90dc2672"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_e2e_follow_up_audit_readiness_validation_receipt.json",
+      "role": "follow_up_audit_validation_receipt",
+      "sha256": "5072411e0746d9d8fccea5c8737b8811d2c0a42b77b6b4337a15afa805031410"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_e2e_follow_up_audit_readiness_validation_next_lawful_move_receipt.json",
+      "role": "follow_up_audit_validation_next_lawful_move",
+      "sha256": "fee2154fdbb02ce1844c08b79eaf84873b05601d783db136983c320d5599488e"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_e2e_follow_up_audit_allowed_claims_current_state.json",
+      "role": "allowed_claims_current_state",
+      "sha256": "5f1ee750e5b0f714d89ddf6c2ab7b6353c451031842d7b6a4a0557600ee61987"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_e2e_follow_up_audit_forbidden_claims_current_state.json",
+      "role": "forbidden_claims_current_state",
+      "sha256": "d870ac68cd03550a016f0c58790d6d8ddef8daf442dd11438b3ab82a1c342843"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_e2e_follow_up_audit_canonical_state_board.json",
+      "role": "canonical_state_board",
+      "sha256": "9a6cb1d92b187fc6c02e6f78419dff104d896cb928c86227e2638c9a395503b4"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_e2e_follow_up_audit_proof_replay_bundle_manifest.json",
+      "role": "proof_replay_bundle_manifest",
+      "sha256": "1db381e5ee47fcd1e13b3276a0ceb236fc4f4c6cff4dfce59ee4841c875e0235"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_e2e_follow_up_audit_external_verifier_manifest.json",
+      "role": "external_verifier_manifest",
+      "sha256": "708aa7377fe7d62d6897a13a15eb4e77e28e0097aea967d87ef3d828d800cf59"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_e2e_follow_up_audit_known_limitations_ledger.json",
+      "role": "known_limitations_ledger",
+      "sha256": "ce529de5383bc28fd165b8295737bb36cf68b811fd9814d3837910e60f0d1d20"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_e2e_follow_up_audit_open_blocker_ledger.json",
+      "role": "open_blocker_ledger",
+      "sha256": "52e1ed09fcea567cecb47af46f0bdf58d4bdce8d637fbc88cab9299b8ed2efdb"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_e2e_follow_up_audit_truth_trust_unchanged_receipt.json",
+      "role": "truth_trust_receipt",
+      "sha256": "c7c7e9d38ec3f09cf39e2d29ee430dc501275524dac5d505b7cdaa7bc6b2d5f0"
+    }
+  ],
+  "next_lawful_move": "VALIDATE_KT_EXTERNAL_LAUNCH_READINESS_TRUTH_LOCK_SUPERLANE_V1",
+  "package_promotion_passed": true,
+  "predecessor_outcome": "KT_E2E_FOLLOW_UP_AUDIT_READINESS_VALIDATED__READY_FOR_REAUDIT_OR_EXTERNAL_REVIEW",
+  "previous_authoritative_lane": "KT_E2E_FOLLOW_UP_AUDIT_READINESS_PACKET_VALIDATION",
+  "previous_next_lawful_move": "READY_FOR_REAUDIT_OR_EXTERNAL_REVIEW",
+  "r6_open": true,
+  "ready_for_reaudit_or_external_review": true,
+  "schema_id": "kt.external_launch_readiness.truth_lock.artifact_authority_classification.v1",
+  "selected_outcome": "KT_EXTERNAL_LAUNCH_READINESS_TRUTH_LOCK_BOUND__TRUTH_LOCK_VALIDATION_NEXT",
+  "seven_b_amplification_claimed_proven": false,
+  "trust_zone_failures": [],
+  "trust_zone_law_changed": false,
+  "trust_zone_law_unchanged": true,
+  "trust_zone_validation_status": "PASS",
+  "truth_engine_law_changed": false,
+  "truth_engine_law_unchanged": true
+}
