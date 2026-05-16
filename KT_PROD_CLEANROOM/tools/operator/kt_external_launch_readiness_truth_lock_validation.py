@@ -139,8 +139,14 @@ def _ensure_claim_boundary(payloads: Dict[str, Dict[str, Any]], texts: Dict[str,
             if isinstance(value, str) and not _is_negative_field(key) and _contains_forbidden_claim(value):
                 _fail("RC_KT_TRUTH_LOCK_VAL_CLAIM_TOKEN_DRIFT", f"{label}.{key}={value!r}")
     for label, text in texts.items():
-        if _contains_forbidden_claim(text) and not _is_negative_text_context(text):
-            _fail("RC_KT_TRUTH_LOCK_VAL_CLAIM_TOKEN_DRIFT", f"{label} contains forbidden claim")
+        if label == "hard_refusal_tokens":
+            continue
+        for line_number, line in enumerate(text.splitlines(), start=1):
+            if _contains_forbidden_claim(line) and not _is_negative_text_context(line):
+                _fail(
+                    "RC_KT_TRUTH_LOCK_VAL_CLAIM_TOKEN_DRIFT",
+                    f"{label} line {line_number} contains forbidden claim",
+                )
 
 
 def _ensure_handoff(payloads: Dict[str, Dict[str, Any]]) -> None:
@@ -171,7 +177,19 @@ def _ensure_handoff(payloads: Dict[str, Dict[str, Any]]) -> None:
 
 def _ensure_source_hashes(root: Path, payloads: Dict[str, Dict[str, Any]]) -> None:
     head = payloads["current_truth_head"]
-    for row in head.get("input_bindings", []):
+    rows = head.get("input_bindings")
+    if not isinstance(rows, list) or not rows:
+        _fail("RC_KT_TRUTH_LOCK_VAL_SOURCE_HASH_MISMATCH", "Truth Lock input_bindings missing or empty")
+    seen_roles = {str(row.get("role", "")) for row in rows if isinstance(row, dict)}
+    expected_roles = set(packet.INPUTS)
+    if seen_roles != expected_roles:
+        _fail(
+            "RC_KT_TRUTH_LOCK_VAL_SOURCE_HASH_MISMATCH",
+            f"Truth Lock input binding roles drifted: expected {sorted(expected_roles)}, got {sorted(seen_roles)}",
+        )
+    for row in rows:
+        if not isinstance(row, dict):
+            _fail("RC_KT_TRUTH_LOCK_VAL_SOURCE_HASH_MISMATCH", "Truth Lock input binding row malformed")
         raw = str(row.get("path", ""))
         expected = row.get("sha256")
         path = common.resolve_path(root, raw)
@@ -229,7 +247,6 @@ def _base(
         "seven_b_amplification_claimed_proven": False,
         "truth_engine_law_changed": False,
         "truth_engine_law_unchanged": True,
-        "trust_engine_law_unchanged": True,
         "trust_zone_law_changed": False,
         "trust_zone_law_unchanged": True,
         "trust_zone_validation_status": trust_zone_validation.get("status"),

@@ -231,6 +231,7 @@ def test_validation_reaches_detached_verifier_next(validation_outputs: Path) -> 
     assert contract["truth_lock_validated"] is True
     assert contract["commercial_activation_claim_authorized"] is False
     assert contract["seven_b_amplification_claimed_proven"] is False
+    assert "trust_engine_law_unchanged" not in contract
 
 
 def test_validation_binds_all_truth_lock_outputs(validation_outputs: Path) -> None:
@@ -262,12 +263,34 @@ def test_validation_claim_text_drift_fails_closed(tmp_path: Path, monkeypatch: p
     _run_packet(tmp_path, monkeypatch)
     monkeypatch.undo()
     text_path = tmp_path / packet.TEXT_OUTPUTS["reviewer_readme"]
-    text_path.write_text("Commercial activation claims are authorized.\n", encoding="utf-8")
+    text_path.write_text(
+        "Commercial activation claims are not authorized.\n"
+        "External audit is not complete.\n"
+        "External audit is complete.\n",
+        encoding="utf-8",
+    )
     monkeypatch = pytest.MonkeyPatch()
     _patch_validation_env(monkeypatch, tmp_path)
     try:
         with pytest.raises(validation.LaneFailure) as excinfo:
             validation.run(output_root=tmp_path)
         assert excinfo.value.code == "RC_KT_TRUTH_LOCK_VAL_CLAIM_TOKEN_DRIFT"
+    finally:
+        monkeypatch.undo()
+
+
+def test_validation_missing_source_bindings_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _run_packet(tmp_path, monkeypatch)
+    monkeypatch.undo()
+    truth_head = tmp_path / packet.JSON_OUTPUTS["current_truth_head"]
+    payload = _load(truth_head)
+    payload["input_bindings"] = []
+    _write(truth_head, payload)
+    monkeypatch = pytest.MonkeyPatch()
+    _patch_validation_env(monkeypatch, tmp_path)
+    try:
+        with pytest.raises(validation.LaneFailure) as excinfo:
+            validation.run(output_root=tmp_path)
+        assert excinfo.value.code == "RC_KT_TRUTH_LOCK_VAL_SOURCE_HASH_MISMATCH"
     finally:
         monkeypatch.undo()
