@@ -1,0 +1,30 @@
+{
+  "$id": "kt.highway.schemas.highway_pathway_system.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "artifact_id": {
+      "type": "string"
+    },
+    "authority": {
+      "type": "string"
+    },
+    "mode": {
+      "type": "string"
+    },
+    "schema_id": {
+      "type": "string"
+    },
+    "work_order_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "artifact_id",
+    "authority",
+    "mode"
+  ],
+  "title": "highway_pathway_system",
+  "type": "object"
+}

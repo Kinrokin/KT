@@ -1,0 +1,126 @@
+{
+  "artifact_id": "HIGHWAY_MATRIX_RECEIPT",
+  "authority_verdict": "BLOCKED",
+  "canonical_effect": "None",
+  "checks": [
+    {
+      "name": "highway_authority_gate",
+      "result": "BLOCKED"
+    },
+    {
+      "name": "highway_lane_admission",
+      "result": "ALLOW_PREP_ONLY"
+    },
+    {
+      "name": "highway_route_resolver",
+      "result": "ALLOW_PREP_ONLY"
+    },
+    {
+      "name": "highway_canonical_runtime_guard",
+      "result": "PASS_PREP_ONLY"
+    },
+    {
+      "name": "highway_posture_sync",
+      "result": "HIGHWAY_PREP_ONLY"
+    },
+    {
+      "name": "highway_posture_conflict_scan",
+      "result": "PASS"
+    },
+    {
+      "name": "highway_trust_zone_validate",
+      "result": "PASS"
+    },
+    {
+      "name": "highway_zone_transition_receipt",
+      "result": false
+    },
+    {
+      "name": "highway_regulated_lane_guard",
+      "result": "PASS_PREP_ONLY"
+    },
+    {
+      "name": "highway_emergency_freeze",
+      "result": "FREEZE_ONLY_NO_BYPASS"
+    },
+    {
+      "name": "highway_incident_receipt",
+      "result": "RECEIPT_ONLY"
+    },
+    {
+      "name": "highway_adaptive_gate",
+      "result": "BLOCKED"
+    },
+    {
+      "name": "highway_promotion_gate",
+      "result": "BLOCKED"
+    },
+    {
+      "name": "highway_rollback_plan",
+      "result": "PREP_ONLY_AVAILABLE"
+    },
+    {
+      "name": "highway_commercial_claim_guard",
+      "result": "PASS"
+    },
+    {
+      "name": "highway_comparative_proof_guard",
+      "result": "PASS_PREP_ONLY"
+    },
+    {
+      "name": "json_schema_validation",
+      "result": "PASS"
+    }
+  ],
+  "current_blockers": [
+    "PR200_TRUTH_LOCK_REPLAY_NOT_CANONICAL",
+    "TRUTH_LOCK_VALIDATION_NOT_AUTHORIZED",
+    "DETACHED_VERIFIER_NOT_AUTHORIZED",
+    "FP0_PREP_ONLY_QUEUED_NONAUTHORITATIVE"
+  ],
+  "files_generated_or_verified": [
+    "governance/highway_authority_gate_v1.json",
+    "governance/highway_activation_ladder_v1.json",
+    "governance/highway_pathway_system_v1.json",
+    "governance/highway_superlane_registry_v1.json",
+    "governance/highway_lane_contract_v1.json",
+    "governance/highway_receipt_contract_v1.json",
+    "governance/highway_route_contract_v1.json",
+    "governance/highway_canonical_runtime_lane_v1.json",
+    "governance/highway_truth_posture_lane_v1.json",
+    "governance/highway_trust_zone_lane_v1.json",
+    "governance/highway_zone_transition_rules_v1.json",
+    "governance/highway_regulated_lane_v1.json",
+    "governance/highway_emergency_lane_v1.json",
+    "governance/highway_freeze_authority_v1.json",
+    "governance/highway_incident_contract_v1.json",
+    "governance/highway_lab_adaptive_lane_v1.json",
+    "governance/highway_adaptive_ratification_ladder_v1.json",
+    "governance/highway_promotion_lane_v1.json",
+    "governance/highway_rollback_lane_v1.json",
+    "governance/highway_bridge_contract_v1.json",
+    "governance/highway_commercial_lane_v1.json",
+    "governance/highway_comparative_proof_lane_v1.json",
+    "schemas/highway_pathway_system.schema.json",
+    "schemas/highway_superlane_registry.schema.json",
+    "schemas/highway_lane_contract.schema.json",
+    "schemas/highway_route_receipt.schema.json",
+    "schemas/highway_matrix_receipt.schema.json",
+    "commercial/highway_client_wrapper_spec_v1.json",
+    "commercial/highway_deployment_profiles_v1.json",
+    "commercial/highway_public_verifier_kit_v1.json",
+    "evals/highway_comparative_scorecard_v1.json",
+    "evals/highway_monolith_vs_adapter_vs_router_matrix_v1.json",
+    "evals/highway_proof_bundle_comparison_v1.json",
+    "commercial/highway_operator_runbook_v1.md",
+    "ci/jobs/verify_highway_pathway.yml"
+  ],
+  "final_label": "HIGHWAY_PATHWAY_SYSTEM_v1_PREP_ONLY_IMPLEMENTED__AUTHORITY_BLOCKED_BY_PR200_TRUTH_LOCK_REPLAY_NOT_CANONICAL",
+  "generated_utc": "2026-05-16T20:23:03Z",
+  "mode": "PREP_ONLY",
+  "next_lawful_action": "Protected merge PR #200, sync main, then validate Truth Lock.",
+  "posture_conflict_count": 0,
+  "promotion_status": "Not promoted",
+  "schema_id": "kt.highway.matrix_receipt.v1",
+  "work_order_id": "KT_HIGHWAY_PATHWAY_SYSTEM_SUPERLANE_INITIATION_v1_0"
+}

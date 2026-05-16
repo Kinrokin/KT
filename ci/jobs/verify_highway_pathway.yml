@@ -1,0 +1,5 @@
+name: verify-highway-pathway-prep-only
+mode: PREP_ONLY_LOCAL
+commands:
+  - python KT_PROD_CLEANROOM/tools/operator/run_highway_matrix.py
+  - python -m pytest KT_PROD_CLEANROOM/tests/operator/test_run_highway_matrix.py -q

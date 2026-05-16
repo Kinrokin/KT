@@ -1,0 +1,36 @@
+{
+  "activation_allowed": false,
+  "artifact_id": "HIGHWAY_TRUTH_POSTURE_LANE_V1",
+  "authority": "PREP_ONLY",
+  "blocked_by": [
+    "PR200_TRUTH_LOCK_REPLAY_NOT_CANONICAL",
+    "TRUTH_LOCK_VALIDATION_NOT_AUTHORIZED",
+    "DETACHED_VERIFIER_NOT_AUTHORIZED",
+    "FP0_PREP_ONLY_QUEUED_NONAUTHORITATIVE"
+  ],
+  "cannot_activate_detached_verifier": true,
+  "cannot_activate_fp0": true,
+  "cannot_claim_canonical_highway_status": true,
+  "cannot_mutate_trust_zone_law": true,
+  "cannot_mutate_truth_engine_law": true,
+  "detached_verifier_authorized": false,
+  "final_label": "HIGHWAY_PATHWAY_SYSTEM_v1_PREP_ONLY_IMPLEMENTED__AUTHORITY_BLOCKED_BY_PR200_TRUTH_LOCK_REPLAY_NOT_CANONICAL",
+  "fp0_authority": "PREP_ONLY_QUEUED_NONAUTHORITATIVE",
+  "generated_utc": "2026-05-16T20:23:03Z",
+  "mode": "PREP_ONLY",
+  "posture_enums": [
+    "HIGHWAY_PREP_ONLY",
+    "HIGHWAY_SHADOW_READY",
+    "HIGHWAY_WARN_ONLY_READY",
+    "HIGHWAY_FAIL_CLOSED_READY",
+    "HIGHWAY_CANONICAL_ACTIVE",
+    "HIGHWAY_BLOCKED",
+    "HIGHWAY_CONFLICT"
+  ],
+  "schema_id": "kt.highway.highway_truth_posture_lane_v1.v1",
+  "strongest_current_posture": "HIGHWAY_PREP_ONLY",
+  "superlane": "TRUTH_AND_POSTURE",
+  "truth_lock_replay_canonical": false,
+  "truth_lock_validation_authorized": false,
+  "work_order_id": "KT_HIGHWAY_PATHWAY_SYSTEM_SUPERLANE_INITIATION_v1_0"
+}

@@ -1,0 +1,29 @@
+{
+  "$id": "kt.highway.schemas.highway_lane_contract.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "artifact_id": {
+      "type": "string"
+    },
+    "authority": {
+      "type": "string"
+    },
+    "mode": {
+      "type": "string"
+    },
+    "schema_id": {
+      "type": "string"
+    },
+    "work_order_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "artifact_id",
+    "lane_contract_fields"
+  ],
+  "title": "highway_lane_contract",
+  "type": "object"
+}
