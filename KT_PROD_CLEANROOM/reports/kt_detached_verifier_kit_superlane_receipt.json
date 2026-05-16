@@ -1,0 +1,121 @@
+{
+  "allowed_outcomes": [
+    "KT_DETACHED_VERIFIER_KIT_SUPERLANE_V1_AUTHORED__HIGHWAY_SHADOW_AND_FP0_OVERLAY_ELIGIBLE_NON_CLAIM_EXPANSION",
+    "KT_DETACHED_VERIFIER_KIT_SUPERLANE_V1_DEFERRED__NAMED_AUTHORING_DEFECT_REMAINS",
+    "KT_DETACHED_VERIFIER_KIT_SUPERLANE_V1_INVALID__FORENSIC_TRUTH_LOCK_REVIEW_NEXT"
+  ],
+  "artifact_id": "KT_DETACHED_VERIFIER_KIT_SUPERLANE_RECEIPT",
+  "authoritative_lane": "KT_DETACHED_VERIFIER_KIT_SUPERLANE_V1",
+  "authority": "AUTHORING_ONLY",
+  "binding_hashes": {
+    "artifact_authority_classification_hash": "9f89a0e007655be37534d198fe42bb1d2ed5ba278db8e14300dc40d4a5866830",
+    "current_truth_head_hash": "fffb17b91c76aa95b68e48add9a129685397a8519365a3490f54043222de7053",
+    "detached_verifier_kit_next_prep_only_hash": "74709f9dca51110c44f7ac432ed673fb64f2208fe0a95e343826d1d2422708df",
+    "external_audit_packet_manifest_hash": "aa913388e6fc17010ee6fa15a79c2a5c0de90aed047ed113c392465a57c53e65",
+    "public_verifier_detached_receipt_hash": "19e55b3c3d5dbb48bf0226247688262d48c632331885fd3a905fdfaf8ac8e845",
+    "public_verifier_kit_hash": "9caa8f6d6c873e661d849eb03bc70842c7e07bee949b7c5b11b5ea47dab46a0f",
+    "public_verifier_manifest_hash": "8997e0718e3fcea6c889a358713c853a7dccd6ba120745d592b64ed2eecfd245",
+    "truth_lock_validation_contract_hash": "8e14ddd78401120aa77746ef88150655a246966d4537686ac17501b7aea3f07e",
+    "truth_lock_validation_next_lawful_move_receipt_hash": "e2cecee988cb39435c40f3038bb6480c7afd576d0352eaf48dbb14c0814679ff",
+    "truth_lock_validation_receipt_hash": "5ff038c7ef7b5aff31318fbb6c11d66ea2bcf3ec137a414b6ff43846f6656bc7"
+  },
+  "cannot_authorize_commercial_activation_claims": true,
+  "cannot_claim_7b_amplification_proven": true,
+  "cannot_claim_beyond_sota": true,
+  "cannot_claim_external_audit_complete": true,
+  "cannot_mutate_trust_zone_law": true,
+  "cannot_mutate_truth_engine_law": true,
+  "commercial_activation_claim_authorized": false,
+  "current_branch": "author/kt-detached-verifier-kit-superlane-v1",
+  "current_branch_head": "d87c9fb80f03c872f03de696ed0654fe613ce042",
+  "current_git_head": "d87c9fb80f03c872f03de696ed0654fe613ce042",
+  "current_main_head": "d87c9fb80f03c872f03de696ed0654fe613ce042",
+  "detached_verifier_clean_room_replay_run": false,
+  "detached_verifier_external_audit_completed": false,
+  "external_audit_completed": false,
+  "fp0_overlay_eligible_non_claim_expansion": true,
+  "fp0_overlay_promoted_to_authority": false,
+  "generated_utc": "2026-05-16T23:03:59Z",
+  "highway_shadow_eligible_non_claim_expansion": true,
+  "highway_shadow_promoted_to_authority": false,
+  "input_bindings": [
+    {
+      "path": "governance/truth_lock_validation_contract.json",
+      "role": "truth_lock_validation_contract",
+      "sha256": "8e14ddd78401120aa77746ef88150655a246966d4537686ac17501b7aea3f07e"
+    },
+    {
+      "path": "governance/truth_lock_validation_receipt.json",
+      "role": "truth_lock_validation_receipt",
+      "sha256": "5ff038c7ef7b5aff31318fbb6c11d66ea2bcf3ec137a414b6ff43846f6656bc7"
+    },
+    {
+      "path": "governance/truth_lock_validation_next_lawful_move_receipt.json",
+      "role": "truth_lock_validation_next_lawful_move_receipt",
+      "sha256": "e2cecee988cb39435c40f3038bb6480c7afd576d0352eaf48dbb14c0814679ff"
+    },
+    {
+      "path": "governance/detached_verifier_kit_next_prep_only.json",
+      "role": "detached_verifier_kit_next_prep_only",
+      "sha256": "74709f9dca51110c44f7ac432ed673fb64f2208fe0a95e343826d1d2422708df"
+    },
+    {
+      "path": "governance/current_truth_head.json",
+      "role": "current_truth_head",
+      "sha256": "fffb17b91c76aa95b68e48add9a129685397a8519365a3490f54043222de7053"
+    },
+    {
+      "path": "governance/artifact_authority_classification.json",
+      "role": "artifact_authority_classification",
+      "sha256": "9f89a0e007655be37534d198fe42bb1d2ed5ba278db8e14300dc40d4a5866830"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "role": "public_verifier_manifest",
+      "sha256": "8997e0718e3fcea6c889a358713c853a7dccd6ba120745d592b64ed2eecfd245"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+      "role": "public_verifier_kit",
+      "sha256": "9caa8f6d6c873e661d849eb03bc70842c7e07bee949b7c5b11b5ea47dab46a0f"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+      "role": "public_verifier_detached_receipt",
+      "sha256": "19e55b3c3d5dbb48bf0226247688262d48c632331885fd3a905fdfaf8ac8e845"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+      "role": "external_audit_packet_manifest",
+      "sha256": "aa913388e6fc17010ee6fa15a79c2a5c0de90aed047ed113c392465a57c53e65"
+    }
+  ],
+  "next_lawful_move": "VALIDATE_KT_DETACHED_VERIFIER_KIT_SUPERLANE_V1",
+  "outputs": [
+    "governance/detached_verifier_kit_constitution_v1.json",
+    "governance/detached_verifier_kit_manifest_v1.json",
+    "governance/detached_verifier_evidence_bundle_v1.json",
+    "governance/detached_verifier_replay_protocol_v1.json",
+    "governance/detached_verifier_audit_safe_proof_contract_v1.json",
+    "governance/detached_verifier_claim_limiter_v1.json",
+    "governance/detached_verifier_negative_test_matrix_v1.json",
+    "governance/detached_verifier_ci_matrix_v1.json",
+    "governance/detached_verifier_parallel_lane_eligibility_receipt.json",
+    "governance/detached_verifier_next_lawful_move_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_detached_verifier_kit_superlane_receipt.json",
+    "KT_PROD_CLEANROOM/reports/kt_detached_verifier_kit_superlane_report.md"
+  ],
+  "predecessor_next_lawful_move": "AUTHOR_KT_DETACHED_VERIFIER_KIT_SUPERLANE_V1",
+  "predecessor_outcome": "KT_EXTERNAL_LAUNCH_READINESS_TRUTH_LOCK_VALIDATED__DETACHED_VERIFIER_KIT_NEXT",
+  "schema_id": "kt.detached_verifier.kit.superlane_receipt.v1",
+  "selected_outcome": "KT_DETACHED_VERIFIER_KIT_SUPERLANE_V1_AUTHORED__HIGHWAY_SHADOW_AND_FP0_OVERLAY_ELIGIBLE_NON_CLAIM_EXPANSION",
+  "seven_b_amplification_claimed_proven": false,
+  "trust_zone_failures": [],
+  "trust_zone_law_changed": false,
+  "trust_zone_law_unchanged": true,
+  "trust_zone_validation_status": "PASS",
+  "truth_engine_law_changed": false,
+  "truth_engine_law_unchanged": true,
+  "truth_lock_validated": true,
+  "verdict": "DETACHED_VERIFIER_KIT_AUTHORED_VALIDATION_NEXT"
+}
