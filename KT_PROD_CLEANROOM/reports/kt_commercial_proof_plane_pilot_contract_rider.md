@@ -1,7 +1,7 @@
 # KT Commercial Proof Plane Pilot Contract Rider
 
 Documentary-only commercial proof surface.
-Current main: 3f367e99c969fb039a4041060da8c53e189353a5
+Current main: 97f3ac28afce605bb28284dc7495dba1c41e172f
 Lane: AUTHOR_KT_COMMERCIAL_PROOF_PLANE_SUPERLANE_V1
 Commercial activation claims authorized: false
 External audit completed: false
