@@ -1,0 +1,299 @@
+{
+  "allowed_outcomes": [
+    "KT_DETACHED_VERIFIER_KIT_VALIDATED__CLEAN_ROOM_REPLAY_GATE_NEXT",
+    "KT_DETACHED_VERIFIER_KIT_VALIDATION_BLOCKED__PATCH_REQUIRED",
+    "KT_DETACHED_VERIFIER_KIT_VALIDATION_INVALID__CLAIM_BOUNDARY_BREACH",
+    "KT_DETACHED_VERIFIER_KIT_VALIDATION_DEFERRED__MISSING_CANONICAL_INPUT",
+    "KT_DETACHED_VERIFIER_KIT_VALIDATION_FAILED__DO_NOT_RUN_CLEAN_ROOM_REPLAY"
+  ],
+  "artifact_id": "KT_DETACHED_VERIFIER_KIT_VALIDATION_RECEIPT",
+  "authoritative_lane": "VALIDATE_KT_DETACHED_VERIFIER_KIT_SUPERLANE_V1",
+  "authority": "VALIDATION_ONLY",
+  "beyond_sota_claimed": false,
+  "binding_hashes": {
+    "audit_safe_proof_contract_hash": "6b329d6fab73f71b25e154fc8b422ef1933f465d9751616092ab425e5ac79034",
+    "author_receipt_hash": "4dd85995c82a69682cafe4c70260fca587ef8624de9386955ad064afbc5c1358",
+    "author_report_hash": "ab5d9e20f84cea75344ab765e351210b212f96de0d4b3a92fe005fb7cafa20f7",
+    "ci_matrix_hash": "dd35356876a3eb363d75c68fab1866c15bd6e7c8e1571a12716a1ae486075a81",
+    "claim_limiter_hash": "ffafd76ce285a86acbd7a27f501f7f735877142488e0e6b2ee4d6ac95f103cd0",
+    "constitution_hash": "61394e43943a749650210cb06e4d1908755122d89f49507793208b1f9e0454b0",
+    "evidence_bundle_hash": "f49f7a27ec76cddac1d91bd2e6ef58bf4fde5c2c3f0143ba324d8ed329694a1b",
+    "external_audit_packet_manifest_hash": "aa913388e6fc17010ee6fa15a79c2a5c0de90aed047ed113c392465a57c53e65",
+    "manifest_hash": "5938ab4b8b3347d75eac0780231049e0d3db6e9c3e9a01f222570c88606fdbdd",
+    "negative_test_matrix_hash": "c0b7ae243605de8161ca037a29a4ca0a7d81f4dff81b49fe0f420be210e7e1a8",
+    "next_lawful_move_hash": "15b91995323942262b957576f280d2e521c375312efd6ab928c2683768ef4d71",
+    "parallel_lane_eligibility_hash": "ff822a94568440370535c1c486f2cd584ab0b1224cc76f42e9c98b2bfa0c4398",
+    "public_verifier_detached_receipt_hash": "19e55b3c3d5dbb48bf0226247688262d48c632331885fd3a905fdfaf8ac8e845",
+    "public_verifier_detached_runtime_hash": "3d4e7d595f1d003cb7ba143b530c31e2868689e2209820ac64540ac0e9a4e5c7",
+    "public_verifier_detached_validate_hash": "77f0c7b04090cf8d1c71ce9319140f6613872cb32ed5cda9923f399ca845ab6c",
+    "public_verifier_hash": "6942d8d71ebaf5cbe56ae79d91ceab5e424ba52ab516df8dfab085215f9d375e",
+    "public_verifier_kit_hash": "9caa8f6d6c873e661d849eb03bc70842c7e07bee949b7c5b11b5ea47dab46a0f",
+    "public_verifier_manifest_hash": "8997e0718e3fcea6c889a358713c853a7dccd6ba120745d592b64ed2eecfd245",
+    "replay_manifest_verify_hash": "7d6ce09cd67cfc481e504e647a4e56bd6bfb9486b9092e2cc667d4d375ded26b",
+    "replay_protocol_hash": "68df9b2ca27ef9afd5595336b28bb349784e6c517f515ccb4b86e58c3f3c9dde",
+    "truth_lock_validation_contract_hash": "8e14ddd78401120aa77746ef88150655a246966d4537686ac17501b7aea3f07e",
+    "truth_lock_validation_next_lawful_move_receipt_hash": "e2cecee988cb39435c40f3038bb6480c7afd576d0352eaf48dbb14c0814679ff",
+    "truth_lock_validation_receipt_hash": "5ff038c7ef7b5aff31318fbb6c11d66ea2bcf3ec137a414b6ff43846f6656bc7"
+  },
+  "cannot_authorize_commercial_activation_claims": true,
+  "cannot_claim_7b_amplification_proven": true,
+  "cannot_claim_beyond_sota": true,
+  "cannot_claim_external_audit_complete": true,
+  "cannot_execute_clean_room_replay": true,
+  "cannot_mutate_trust_zone_law": true,
+  "cannot_mutate_truth_engine_law": true,
+  "claim_boundary_passed": true,
+  "clean_room_replay_executed": false,
+  "commercial_activation_claimed": false,
+  "current_branch": "validate/kt-detached-verifier-kit-superlane-v1",
+  "current_branch_head": "f6524893b1bb712962d4ac425f97444e2a53e330",
+  "current_git_head": "f6524893b1bb712962d4ac425f97444e2a53e330",
+  "current_main": "cad7a59e27e92fef840714113cb83e35567dd911",
+  "current_main_head": "cad7a59e27e92fef840714113cb83e35567dd911",
+  "decision": "CLEAN_ROOM_REPLAY_GATE_NEXT",
+  "detached_verifier_kit_author_replay_present": true,
+  "external_audit_claimed_complete": false,
+  "fp0_or_highway_promoted_to_authority": false,
+  "generated_utc": "2026-05-18T12:07:06Z",
+  "h01_expected_to_actual_path_map": [
+    {
+      "actual_exists": true,
+      "actual_path": "KT_PROD_CLEANROOM/tools/operator/public_verifier.py",
+      "blocks_clean_room_replay": false,
+      "claim_impact": "NO_CLAIM_EXPANSION",
+      "expected_path": "verifier/kt-verify",
+      "reason_if_missing": "Repo convention exposes verifier entrypoints as Python operator modules, not a root verifier binary.",
+      "status": "LAWFUL_SUBSTITUTION",
+      "substitute_artifact": "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_validate.py",
+      "substitute_exists": true,
+      "validation_status": "PASS"
+    },
+    {
+      "actual_exists": true,
+      "actual_path": "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_runtime.py",
+      "blocks_clean_room_replay": false,
+      "claim_impact": "NO_CLAIM_EXPANSION",
+      "expected_path": "verifier/Dockerfile",
+      "reason_if_missing": "Repo currently uses a detached runtime wrapper plus replay protocol instead of a root Dockerfile; containerization remains a future replay-gate implementation detail.",
+      "status": "LAWFUL_SUBSTITUTION",
+      "substitute_artifact": "governance/detached_verifier_replay_protocol_v1.json",
+      "substitute_exists": true,
+      "validation_status": "PASS"
+    },
+    {
+      "actual_exists": true,
+      "actual_path": "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+      "blocks_clean_room_replay": false,
+      "claim_impact": "NO_CLAIM_EXPANSION",
+      "expected_path": "verifier/README.md",
+      "reason_if_missing": "Bounded-use verifier documentation lives in machine-readable kit and lane reports.",
+      "status": "LAWFUL_SUBSTITUTION",
+      "substitute_artifact": "KT_PROD_CLEANROOM/reports/kt_detached_verifier_kit_superlane_report.md",
+      "substitute_exists": true,
+      "validation_status": "PASS"
+    },
+    {
+      "actual_exists": true,
+      "actual_path": "governance/detached_verifier_replay_protocol_v1.json",
+      "blocks_clean_room_replay": false,
+      "claim_impact": "NO_CLAIM_EXPANSION",
+      "expected_path": "proof/replay_manifest.schema.json",
+      "reason_if_missing": "Replay law is currently represented by the detached verifier replay protocol plus repo-native replay verifier tooling.",
+      "status": "LAWFUL_SUBSTITUTION",
+      "substitute_artifact": "KT_PROD_CLEANROOM/tools/verification/replay_manifest_verify.py",
+      "substitute_exists": true,
+      "validation_status": "PASS"
+    },
+    {
+      "actual_exists": true,
+      "actual_path": "governance/detached_verifier_evidence_bundle_v1.json",
+      "blocks_clean_room_replay": false,
+      "claim_impact": "NO_CLAIM_EXPANSION",
+      "expected_path": "proof/evidence_bundle.schema.json",
+      "reason_if_missing": "Evidence bundle contract is the repo-native governance artifact for this lane.",
+      "status": "LAWFUL_SUBSTITUTION",
+      "substitute_artifact": "KT_PROD_CLEANROOM/reports/kt_detached_verifier_kit_superlane_receipt.json",
+      "substitute_exists": true,
+      "validation_status": "PASS"
+    },
+    {
+      "actual_exists": true,
+      "actual_path": "governance/detached_verifier_claim_limiter_v1.json",
+      "blocks_clean_room_replay": false,
+      "claim_impact": "NO_CLAIM_EXPANSION",
+      "expected_path": "proof/claim_board.schema.json",
+      "reason_if_missing": "Claim board function is implemented by the detached verifier claim limiter and parallel-lane eligibility receipt.",
+      "status": "LAWFUL_SUBSTITUTION",
+      "substitute_artifact": "governance/detached_verifier_parallel_lane_eligibility_receipt.json",
+      "substitute_exists": true,
+      "validation_status": "PASS"
+    },
+    {
+      "actual_exists": true,
+      "actual_path": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+      "blocks_clean_room_replay": false,
+      "claim_impact": "NO_CLAIM_EXPANSION",
+      "expected_path": "reports/external_verifier_receipt.json",
+      "reason_if_missing": "Existing detached verifier receipt is the repo-native external-verifier receipt surface; it is bounded and does not claim external audit completion.",
+      "status": "LAWFUL_SUBSTITUTION",
+      "substitute_artifact": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "substitute_exists": true,
+      "validation_status": "PASS"
+    },
+    {
+      "actual_exists": false,
+      "actual_path": "",
+      "blocks_clean_room_replay": false,
+      "claim_impact": "PREVENTS_PREMATURE_REPLAY_COMPLETION_CLAIM",
+      "expected_path": "external/clean_room_replay_report.md",
+      "reason_if_missing": "H01 clean-room replay has not lawfully run yet; this validation emits the gate decision instead of an execution report.",
+      "status": "NOT_EXECUTED_BY_DESIGN",
+      "substitute_artifact": "KT_PROD_CLEANROOM/reports/kt_detached_verifier_clean_room_replay_gate_decision.json",
+      "substitute_existence_basis": "EMITTED_BY_THIS_VALIDATION_RUN",
+      "substitute_exists": true,
+      "validation_status": "PASS"
+    }
+  ],
+  "input_bindings": [
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_detached_verifier_kit_superlane_receipt.json",
+      "role": "author_receipt",
+      "sha256": "4dd85995c82a69682cafe4c70260fca587ef8624de9386955ad064afbc5c1358"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_detached_verifier_kit_superlane_report.md",
+      "role": "author_report",
+      "sha256": "ab5d9e20f84cea75344ab765e351210b212f96de0d4b3a92fe005fb7cafa20f7"
+    },
+    {
+      "path": "governance/detached_verifier_kit_constitution_v1.json",
+      "role": "constitution",
+      "sha256": "61394e43943a749650210cb06e4d1908755122d89f49507793208b1f9e0454b0"
+    },
+    {
+      "path": "governance/detached_verifier_kit_manifest_v1.json",
+      "role": "manifest",
+      "sha256": "5938ab4b8b3347d75eac0780231049e0d3db6e9c3e9a01f222570c88606fdbdd"
+    },
+    {
+      "path": "governance/detached_verifier_evidence_bundle_v1.json",
+      "role": "evidence_bundle",
+      "sha256": "f49f7a27ec76cddac1d91bd2e6ef58bf4fde5c2c3f0143ba324d8ed329694a1b"
+    },
+    {
+      "path": "governance/detached_verifier_replay_protocol_v1.json",
+      "role": "replay_protocol",
+      "sha256": "68df9b2ca27ef9afd5595336b28bb349784e6c517f515ccb4b86e58c3f3c9dde"
+    },
+    {
+      "path": "governance/detached_verifier_audit_safe_proof_contract_v1.json",
+      "role": "audit_safe_proof_contract",
+      "sha256": "6b329d6fab73f71b25e154fc8b422ef1933f465d9751616092ab425e5ac79034"
+    },
+    {
+      "path": "governance/detached_verifier_claim_limiter_v1.json",
+      "role": "claim_limiter",
+      "sha256": "ffafd76ce285a86acbd7a27f501f7f735877142488e0e6b2ee4d6ac95f103cd0"
+    },
+    {
+      "path": "governance/detached_verifier_negative_test_matrix_v1.json",
+      "role": "negative_test_matrix",
+      "sha256": "c0b7ae243605de8161ca037a29a4ca0a7d81f4dff81b49fe0f420be210e7e1a8"
+    },
+    {
+      "path": "governance/detached_verifier_ci_matrix_v1.json",
+      "role": "ci_matrix",
+      "sha256": "dd35356876a3eb363d75c68fab1866c15bd6e7c8e1571a12716a1ae486075a81"
+    },
+    {
+      "path": "governance/detached_verifier_parallel_lane_eligibility_receipt.json",
+      "role": "parallel_lane_eligibility",
+      "sha256": "ff822a94568440370535c1c486f2cd584ab0b1224cc76f42e9c98b2bfa0c4398"
+    },
+    {
+      "path": "governance/detached_verifier_next_lawful_move_receipt.json",
+      "role": "next_lawful_move",
+      "sha256": "15b91995323942262b957576f280d2e521c375312efd6ab928c2683768ef4d71"
+    },
+    {
+      "path": "governance/truth_lock_validation_contract.json",
+      "role": "truth_lock_validation_contract",
+      "sha256": "8e14ddd78401120aa77746ef88150655a246966d4537686ac17501b7aea3f07e"
+    },
+    {
+      "path": "governance/truth_lock_validation_receipt.json",
+      "role": "truth_lock_validation_receipt",
+      "sha256": "5ff038c7ef7b5aff31318fbb6c11d66ea2bcf3ec137a414b6ff43846f6656bc7"
+    },
+    {
+      "path": "governance/truth_lock_validation_next_lawful_move_receipt.json",
+      "role": "truth_lock_validation_next_lawful_move_receipt",
+      "sha256": "e2cecee988cb39435c40f3038bb6480c7afd576d0352eaf48dbb14c0814679ff"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tools/operator/public_verifier.py",
+      "role": "public_verifier",
+      "sha256": "6942d8d71ebaf5cbe56ae79d91ceab5e424ba52ab516df8dfab085215f9d375e"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_validate.py",
+      "role": "public_verifier_detached_validate",
+      "sha256": "77f0c7b04090cf8d1c71ce9319140f6613872cb32ed5cda9923f399ca845ab6c"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_runtime.py",
+      "role": "public_verifier_detached_runtime",
+      "sha256": "3d4e7d595f1d003cb7ba143b530c31e2868689e2209820ac64540ac0e9a4e5c7"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tools/verification/replay_manifest_verify.py",
+      "role": "replay_manifest_verify",
+      "sha256": "7d6ce09cd67cfc481e504e647a4e56bd6bfb9486b9092e2cc667d4d375ded26b"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "role": "public_verifier_manifest",
+      "sha256": "8997e0718e3fcea6c889a358713c853a7dccd6ba120745d592b64ed2eecfd245"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/public_verifier_kit.json",
+      "role": "public_verifier_kit",
+      "sha256": "9caa8f6d6c873e661d849eb03bc70842c7e07bee949b7c5b11b5ea47dab46a0f"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+      "role": "public_verifier_detached_receipt",
+      "sha256": "19e55b3c3d5dbb48bf0226247688262d48c632331885fd3a905fdfaf8ac8e845"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+      "role": "external_audit_packet_manifest",
+      "sha256": "aa913388e6fc17010ee6fa15a79c2a5c0de90aed047ed113c392465a57c53e65"
+    }
+  ],
+  "negative_tests_passed": true,
+  "next_lawful_move": "AUTHOR_KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_GATE_V1",
+  "predecessor_next_lawful_move": "VALIDATE_KT_DETACHED_VERIFIER_KIT_SUPERLANE_V1",
+  "predecessor_outcome": "KT_DETACHED_VERIFIER_KIT_SUPERLANE_V1_AUTHORED__HIGHWAY_SHADOW_AND_FP0_OVERLAY_ELIGIBLE_NON_CLAIM_EXPANSION",
+  "receipt_validation_passed": true,
+  "schema_id": "kt.detached_verifier.kit.validation_receipt.v1",
+  "schema_validation_passed": true,
+  "selected_outcome": "KT_DETACHED_VERIFIER_KIT_VALIDATED__CLEAN_ROOM_REPLAY_GATE_NEXT",
+  "seven_b_amplification_claimed": false,
+  "trust_zone_failures": [],
+  "trust_zone_law_changed": false,
+  "trust_zone_law_unchanged": true,
+  "trust_zone_validation_status": "PASS",
+  "truth_engine_law_changed": false,
+  "truth_engine_law_unchanged": true,
+  "validation_commands": [
+    "python -m tools.operator.validate_kt_detached_verifier_kit_superlane_v1",
+    "python -m pytest --no-cov -q KT_PROD_CLEANROOM/tests/operator/test_validate_kt_detached_verifier_kit_superlane_v1.py",
+    "python -m pytest --no-cov -q KT_PROD_CLEANROOM/tests/operator/test_kt_detached_verifier_kit_superlane.py",
+    "python -m pytest --no-cov -q KT_PROD_CLEANROOM/tests/operator/test_kt_external_launch_readiness_truth_lock.py",
+    "python -m tools.operator.trust_zone_validate",
+    "git diff --check"
+  ],
+  "validation_executed": true,
+  "verdict": "DETACHED_VERIFIER_KIT_VALIDATED_CLEAN_ROOM_REPLAY_GATE_NEXT"
+}
