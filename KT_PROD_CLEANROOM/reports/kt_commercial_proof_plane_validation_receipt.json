@@ -1,0 +1,305 @@
+{
+  "adversarial_proof_corridor_active": false,
+  "adversarial_proof_corridor_authorized": false,
+  "adversarial_proof_corridor_next": true,
+  "adversarial_proof_corridor_validated": false,
+  "artifact_id": "KT_COMMERCIAL_PROOF_PLANE_VALIDATION_RECEIPT",
+  "artifact_role": "validation_receipt",
+  "authoritative_lane": "VALIDATE_KT_COMMERCIAL_PROOF_PLANE_SUPERLANE_V1",
+  "authority": "VALIDATION_ONLY",
+  "beyond_sota_claimed": false,
+  "binding_hashes": {
+    "claim_ceiling_current_state_hash": "43bdeda4fb30087519b5e79d62eb6863d9249e27d3e51e3af2145a8b2a2da0be",
+    "commercial_claim_compiler_receipt_hash": "3eb14b3fb6575431edf29517a35c235290524342f413231620b51a31fa962f75",
+    "data_governance_pack_prep_only_hash": "3f0efe81236d723dd4a9f80d392c0f89fdfd7003d1e1f1ed84b6039a5f7b445a",
+    "h03_allowed_claims_hash": "6b91c6b33edf1fb5d2e44f1febaef876d1b47eb6d38c7162dca14dbafda0d620",
+    "h03_commercial_proof_plane_gate_decision_hash": "b728387cdc0ac23750dd815a9f27bda77404a87e30370ba886238d53d2e95665",
+    "h03_forbidden_claims_hash": "c6a9d82c20ce3cbce714e8481a0d77d94eb40951d8c6d48a47905cf36aa2db3c",
+    "h03_next_lawful_move_hash": "e7f0473246eecd7f7f5ee5b2cc22e9e575b5d41a98b80ce649dccab0d669e6dd",
+    "h03_validation_contract_hash": "8a1172b49732a1549745ecb50db6d43f50bad037d45fe771d61af262b55d02a7",
+    "h03_validation_receipt_hash": "7b5225c6a52abbe221ab4f5ecf8b4151d3f157d0b2fd98c87ce175a54ce0aca0",
+    "h03_validation_scorecard_hash": "64fc654577cffe95157728b9fb3d1f9f52d7e92213f794b4dfd9e54c21527dd3",
+    "product_deployment_profiles_hash": "644988662061184c6e94153711e0e9dd3b96c9944d0859af0e43420ee97cad03",
+    "product_operator_runbook_hash": "22de8afa9fdde73e479fe6ddb3605eee65692d368e40a3a96594eb85cb28d997",
+    "public_verifier_manifest_hash": "8997e0718e3fcea6c889a358713c853a7dccd6ba120745d592b64ed2eecfd245"
+  },
+  "claim_boundary_passed": true,
+  "commercial_activation_claim_authorized": false,
+  "commercial_activation_claimed": false,
+  "commercial_claims_authorized": false,
+  "commercial_proof_plane_active": false,
+  "commercial_proof_plane_authorized": false,
+  "commercial_proof_plane_packet_validated": true,
+  "commercial_proof_plane_validated": true,
+  "current_branch": "validate/kt-commercial-proof-plane-superlane-v1",
+  "current_branch_head": "e707efe9296dfd813e7f270305699bbb7b4819fd",
+  "current_git_head": "e707efe9296dfd813e7f270305699bbb7b4819fd",
+  "current_main": "e707efe9296dfd813e7f270305699bbb7b4819fd",
+  "current_main_head": "e707efe9296dfd813e7f270305699bbb7b4819fd",
+  "external_audit_claimed_complete": false,
+  "external_audit_completed": false,
+  "fp0_or_highway_promoted_to_authority": false,
+  "generated_utc": "2026-05-18T17:43:36Z",
+  "input_bindings": [
+    {
+      "path": "governance/kt_claim_compiler_commercial_language_gate_validation_v1.json",
+      "role": "h03_validation_contract",
+      "sha256": "8a1172b49732a1549745ecb50db6d43f50bad037d45fe771d61af262b55d02a7"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_claim_compiler_commercial_language_gate_validation_receipt.json",
+      "role": "h03_validation_receipt",
+      "sha256": "7b5225c6a52abbe221ab4f5ecf8b4151d3f157d0b2fd98c87ce175a54ce0aca0"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_claim_compiler_commercial_language_gate_validation_scorecard.json",
+      "role": "h03_validation_scorecard",
+      "sha256": "64fc654577cffe95157728b9fb3d1f9f52d7e92213f794b4dfd9e54c21527dd3"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_commercial_proof_plane_gate_decision.json",
+      "role": "h03_commercial_proof_plane_gate_decision",
+      "sha256": "b728387cdc0ac23750dd815a9f27bda77404a87e30370ba886238d53d2e95665"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_claim_compiler_commercial_language_gate_validation_next_lawful_move_receipt.json",
+      "role": "h03_next_lawful_move",
+      "sha256": "e7f0473246eecd7f7f5ee5b2cc22e9e575b5d41a98b80ce649dccab0d669e6dd"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_claim_compiler_commercial_language_gate_allowed_claims_current_state.json",
+      "role": "h03_allowed_claims",
+      "sha256": "6b91c6b33edf1fb5d2e44f1febaef876d1b47eb6d38c7162dca14dbafda0d620"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_claim_compiler_commercial_language_gate_forbidden_claims_current_state.json",
+      "role": "h03_forbidden_claims",
+      "sha256": "c6a9d82c20ce3cbce714e8481a0d77d94eb40951d8c6d48a47905cf36aa2db3c"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_current_state.json",
+      "role": "claim_ceiling_current_state",
+      "sha256": "43bdeda4fb30087519b5e79d62eb6863d9249e27d3e51e3af2145a8b2a2da0be"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/commercial_claim_compiler_receipt.json",
+      "role": "commercial_claim_compiler_receipt",
+      "sha256": "3eb14b3fb6575431edf29517a35c235290524342f413231620b51a31fa962f75"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/product/operator_runbook_v2.md",
+      "role": "product_operator_runbook",
+      "sha256": "22de8afa9fdde73e479fe6ddb3605eee65692d368e40a3a96594eb85cb28d997"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/product/deployment_profiles.json",
+      "role": "product_deployment_profiles",
+      "sha256": "644988662061184c6e94153711e0e9dd3b96c9944d0859af0e43420ee97cad03"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_data_governance_pack_prep_only.md",
+      "role": "data_governance_pack_prep_only",
+      "sha256": "3f0efe81236d723dd4a9f80d392c0f89fdfd7003d1e1f1ed84b6039a5f7b445a"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "role": "public_verifier_manifest",
+      "sha256": "8997e0718e3fcea6c889a358713c853a7dccd6ba120745d592b64ed2eecfd245"
+    }
+  ],
+  "next_lawful_move": "AUTHOR_KT_ADVERSARIAL_PROOF_CORRIDOR_SUPERLANE_V1",
+  "predecessor_next_lawful_move": "VALIDATE_KT_COMMERCIAL_PROOF_PLANE_SUPERLANE_V1",
+  "predecessor_outcome": "KT_COMMERCIAL_PROOF_PLANE_PACKET_BOUND__COMMERCIAL_PROOF_PLANE_VALIDATION_NEXT",
+  "s_tier_claimed": false,
+  "schema_id": "kt.commercial_proof_plane.validation_receipt.v1",
+  "selected_outcome": "KT_COMMERCIAL_PROOF_PLANE_VALIDATED__ADVERSARIAL_PROOF_CORRIDOR_NEXT",
+  "seven_b_amplification_claimed": false,
+  "seven_b_amplification_claimed_proven": false,
+  "source_hashes_recomputed": true,
+  "trust_zone_law_changed": false,
+  "trust_zone_law_unchanged": true,
+  "trust_zone_validation": {
+    "checks": [
+      {
+        "check": "required_zones_present",
+        "missing": [],
+        "status": "PASS"
+      },
+      {
+        "check": "readiness_zones_declared_in_registry",
+        "excludes": [
+          "LAB",
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "includes": [
+          "CANONICAL"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "canonical_primary_surfaces_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_declared",
+        "count": 19,
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_in_toolchain_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_not_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "generated_truth_surfaces_in_generated_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "documentary_only_surfaces_in_commercial_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "quarantine_patterns_excluded_from_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "quarantine_patterns_in_quarantined_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "runtime_boundary_excludes_reflected_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "readiness_scoped_to_canonical_only",
+        "status": "PASS"
+      },
+      {
+        "actual": [
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "LAB",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "check": "readiness_excludes_all_noncanonical_zones",
+        "expected": [
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "LAB",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "frozen_surfaces_live_in_canonical_or_toolchain_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "frozen_surfaces_covered_by_amendment_scope",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "settled_truth_root_in_generated_zone",
+        "status": "PASS",
+        "truth_root": "kt_truth_ledger:ledger/current/current_pointer.json"
+      },
+      {
+        "check": "execution_board_truth_source_in_generated_zone",
+        "status": "PASS",
+        "truth_source": "kt_truth_ledger:ledger/current/current_pointer.json"
+      },
+      {
+        "actual": [
+          "cognition",
+          "core",
+          "council",
+          "curriculum",
+          "governance",
+          "kt",
+          "memory",
+          "multiverse",
+          "paradox",
+          "schemas",
+          "temporal",
+          "thermodynamics",
+          "versioning"
+        ],
+        "check": "runtime_registry_canonical_roots_match_contract",
+        "expected": [
+          "cognition",
+          "core",
+          "council",
+          "curriculum",
+          "governance",
+          "kt",
+          "memory",
+          "multiverse",
+          "paradox",
+          "schemas",
+          "temporal",
+          "thermodynamics",
+          "versioning"
+        ],
+        "status": "PASS"
+      },
+      {
+        "actual": [],
+        "check": "runtime_registry_compatibility_roots_match_contract",
+        "expected": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_not_canonical",
+        "overlap": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_quarantined_in_scope_manifest",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_excluded_by_runtime_boundary_contract",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_excluded_from_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_present_in_quarantined_zone",
+        "mismatches": [],
+        "status": "PASS"
+      }
+    ],
+    "failures": [],
+    "schema_id": "kt.operator.trust_zone_validation_receipt.v2",
+    "status": "PASS"
+  },
+  "truth_engine_law_changed": false,
+  "truth_engine_law_unchanged": true,
+  "verdict": "COMMERCIAL_PROOF_PLANE_VALIDATED_ADVERSARIAL_PROOF_CORRIDOR_NEXT"
+}
