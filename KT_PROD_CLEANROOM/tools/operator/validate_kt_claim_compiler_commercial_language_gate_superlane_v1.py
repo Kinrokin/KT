@@ -231,16 +231,35 @@ def _validate_claim_lists(payloads: Dict[str, Dict[str, Any]]) -> None:
 
 def _validate_scanner_contracts(payloads: Dict[str, Dict[str, Any]]) -> None:
     scanner = payloads["recursive_claim_scanner_contract"]
-    scanned_shapes = set(scanner.get("scanned_shapes", []))
+    raw_scanned_shapes = scanner.get("scanned_shapes", [])
+    if (
+        not isinstance(raw_scanned_shapes, list)
+        or not raw_scanned_shapes
+        or any(not isinstance(item, str) or not item.strip() for item in raw_scanned_shapes)
+    ):
+        _fail("RC_KT_CLAIM_GATE_VAL_SCANNER_CONTRACT_INCOMPLETE", "scanned_shapes must be a non-empty list of strings")
+    scanned_shapes = set(raw_scanned_shapes)
     if {"json_objects", "json_arrays", "json_strings", "markdown_text"} - scanned_shapes:
         _fail("RC_KT_CLAIM_GATE_VAL_SCANNER_CONTRACT_INCOMPLETE", "recursive scanner must include JSON and Markdown shapes")
     if scanner.get("negative_contexts_allowed") is not True:
         _fail("RC_KT_CLAIM_GATE_VAL_SCANNER_CONTRACT_INCOMPLETE", "negative context policy missing")
-    if not isinstance(scanner.get("forbidden_patterns"), list) or not scanner.get("forbidden_patterns"):
+    forbidden_patterns = scanner.get("forbidden_patterns")
+    if (
+        not isinstance(forbidden_patterns, list)
+        or not forbidden_patterns
+        or any(not isinstance(item, str) or not item.strip() for item in forbidden_patterns)
+    ):
         _fail("RC_KT_CLAIM_GATE_VAL_SCANNER_CONTRACT_INCOMPLETE", "forbidden patterns missing")
 
     machine = payloads["machine_routing_exemption_contract"]
-    exempt_fields = set(machine.get("exempt_fields", []))
+    raw_exempt_fields = machine.get("exempt_fields", [])
+    if (
+        not isinstance(raw_exempt_fields, list)
+        or not raw_exempt_fields
+        or any(not isinstance(item, str) or not item.strip() for item in raw_exempt_fields)
+    ):
+        _fail("RC_KT_CLAIM_GATE_VAL_SCANNER_CONTRACT_INCOMPLETE", "machine routing exempt_fields must be a non-empty list of strings")
+    exempt_fields = set(raw_exempt_fields)
     if {"selected_outcome", "next_lawful_move", "allowed_outcomes"} - exempt_fields:
         _fail("RC_KT_CLAIM_GATE_VAL_SCANNER_CONTRACT_INCOMPLETE", "machine routing exemptions incomplete")
     if "prose fields remain scanned" not in str(machine.get("exemption_scope", "")):
@@ -258,8 +277,15 @@ def _validate_commercial_surface_scope(root: Path, payloads: Dict[str, Dict[str,
     rows = scope.get("commercial_doc_checks", [])
     if not isinstance(rows, list) or not rows:
         _fail("RC_KT_CLAIM_GATE_VAL_COMMERCIAL_SURFACE_UNBOUNDED", "commercial doc checks missing")
-    if any(row.get("status") != "PASS" for row in rows if isinstance(row, dict)):
-        _fail("RC_KT_CLAIM_GATE_VAL_COMMERCIAL_SURFACE_UNBOUNDED", "commercial doc check failed")
+    for row in rows:
+        if not isinstance(row, dict):
+            _fail("RC_KT_CLAIM_GATE_VAL_COMMERCIAL_SURFACE_UNBOUNDED", "commercial doc check row must be object")
+        if not isinstance(row.get("role"), str) or not row.get("role"):
+            _fail("RC_KT_CLAIM_GATE_VAL_COMMERCIAL_SURFACE_UNBOUNDED", "commercial doc check role missing")
+        if not isinstance(row.get("path"), str) or not row.get("path"):
+            _fail("RC_KT_CLAIM_GATE_VAL_COMMERCIAL_SURFACE_UNBOUNDED", "commercial doc check path missing")
+        if row.get("status") != "PASS":
+            _fail("RC_KT_CLAIM_GATE_VAL_COMMERCIAL_SURFACE_UNBOUNDED", "commercial doc check failed")
     try:
         gate._validate_commercial_docs(root)  # noqa: SLF001 - validation must re-run authoring markdown scanner.
     except gate.LaneFailure as exc:

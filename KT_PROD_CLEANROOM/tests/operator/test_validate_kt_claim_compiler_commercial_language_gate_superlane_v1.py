@@ -175,6 +175,42 @@ def test_rejects_missing_markdown_scan_shape(tmp_path: Path, monkeypatch: pytest
     assert excinfo.value.code == "RC_KT_CLAIM_GATE_VAL_SCANNER_CONTRACT_INCOMPLETE"
 
 
+def test_rejects_malformed_scanned_shapes_type(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / gate.OUTPUTS["recursive_claim_scanner_contract"]
+    payload = _load(path)
+    payload["scanned_shapes"] = {"json_objects": True, "json_arrays": True, "json_strings": True, "markdown_text": True}
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(validator.LaneFailure) as excinfo:
+        validator.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_CLAIM_GATE_VAL_SCANNER_CONTRACT_INCOMPLETE"
+
+
+def test_rejects_malformed_machine_exempt_fields_type(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / gate.OUTPUTS["machine_routing_exemption_contract"]
+    payload = _load(path)
+    payload["exempt_fields"] = {"selected_outcome": True, "next_lawful_move": True, "allowed_outcomes": True}
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(validator.LaneFailure) as excinfo:
+        validator.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_CLAIM_GATE_VAL_SCANNER_CONTRACT_INCOMPLETE"
+
+
+def test_rejects_malformed_commercial_doc_check_row(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / gate.OUTPUTS["commercial_surface_scan_scope"]
+    payload = _load(path)
+    payload["commercial_doc_checks"].append("PASS")
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(validator.LaneFailure) as excinfo:
+        validator.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_CLAIM_GATE_VAL_COMMERCIAL_SURFACE_UNBOUNDED"
+
+
 def test_rejects_allowed_commercial_activation_claim(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     _copy_inputs(tmp_path)
     path = tmp_path / gate.OUTPUTS["allowed_claims_current_state"]
