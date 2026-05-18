@@ -1,0 +1,355 @@
+{
+  "adversarial_proof_corridor_validated": true,
+  "allowed_external_reaudit_outcomes": [
+    "KT_EXTERNAL_REAUDIT_PACKET_VALIDATED__EXTERNAL_REAUDIT_ATTEMPT_NEXT",
+    "KT_EXTERNAL_REAUDIT_ACCEPTED__COMMERCIAL_CLAIM_AUTHORIZATION_NEXT",
+    "KT_EXTERNAL_REAUDIT_DEFERRED__NAMED_EXTERNAL_GAP_REMAINS",
+    "KT_EXTERNAL_REAUDIT_FAILED__FORENSIC_REVIEW_NEXT"
+  ],
+  "artifact_id": "KT_EXTERNAL_AUDIT_AND_RATIFICATION_VALIDATION_PLAN",
+  "artifact_role": "validation_plan",
+  "authoritative_lane": "AUTHOR_KT_EXTERNAL_AUDIT_AND_RATIFICATION_PACKET_SUPERLANE_V1",
+  "authority": "AUTHORING_ONLY",
+  "beyond_sota_claimed": false,
+  "binding_hashes": {
+    "claim_ceiling_current_state_hash": "43bdeda4fb30087519b5e79d62eb6863d9249e27d3e51e3af2145a8b2a2da0be",
+    "commercial_proof_plane_claim_boundary_receipt_hash": "fabf8bba0e3683e534646d46b04ec5b9d8bd3d49e12511d0f359ed86bc79d450",
+    "commercial_proof_plane_evidence_pack_manifest_hash": "754d25a563dbfe16bddd6c6ceb3d4e79ae1fd65b7f62cfe0704dd9960250c712",
+    "commercial_proof_plane_security_review_packet_hash": "4286b6927326b586ac2b52b010daf58d71f888751aaa7b9ab419614f29164fd9",
+    "detached_verifier_clean_room_evidence_validation_hash": "071d69cd0d0c6d4047917a3c63feae7b8519e2b9b34860d42a0b5e9cda5290d4",
+    "detached_verifier_clean_room_replay_result_hash": "2bb565b308606465a24b6b5a17a9823837747c14c582ef947cac29318bc2ceb0",
+    "external_audit_packet_manifest_hash": "aa913388e6fc17010ee6fa15a79c2a5c0de90aed047ed113c392465a57c53e65",
+    "h05_attack_matrix_hash": "4b06a5b7fe4164d075fa3515bb84210343dfc5a966092e33c2b1df2d97211244",
+    "h05_claim_boundary_receipt_hash": "52f853014b92f40c92ebffa5cff3e642466f4b47d18195ebe30e0e874b175bf9",
+    "h05_external_audit_ratification_gate_decision_hash": "a42264672fd3996ff237f6d36c9161b16270d4764d24710f712c82f3a5f38d7e",
+    "h05_next_lawful_move_hash": "09ef0956b9b92c7678a6c19120ebf7ce9bda1b4bd1817da6a1aee8f812d820e4",
+    "h05_packet_contract_hash": "9d0ac2410534fea8bddf8c28e55b37ce59027d6aa61a7b0ca365ce25019812ac",
+    "h05_validation_contract_hash": "1c815f1add668e046d72f4a03bc8c3df21fd84b99ed6d01d1110764e6a70f734",
+    "h05_validation_receipt_hash": "fb30abf74ed370f36d76efe856259818a885244cbebbe7f165f3aa0025771b41",
+    "h05_validation_scorecard_hash": "c30af44b1046bcb0e3d4a6d4a1e567036e9261f35b12e5e0cd32f7adcc737ce1",
+    "public_verifier_manifest_hash": "8997e0718e3fcea6c889a358713c853a7dccd6ba120745d592b64ed2eecfd245",
+    "supply_chain_release_integrity_receipt_hash": "a5205bb53e2673ff88d4bb74d3f7b641cec343047b7c7567a405362a31f3ffbf",
+    "supply_chain_validation_receipt_hash": "f96fc98387ad3ea8000a05b27935a8b05117d75c1c255d024f54c1bcf75a6826"
+  },
+  "claim_boundary_passed": true,
+  "commercial_activation_claim_authorized": false,
+  "commercial_activation_claimed": false,
+  "commercial_claims_authorized": false,
+  "current_branch": "author/kt-external-audit-and-ratification-packet-superlane-v1",
+  "current_branch_head": "c98f4456ab490355ef7c49ba2af27b3b60532054",
+  "current_git_head": "c98f4456ab490355ef7c49ba2af27b3b60532054",
+  "current_main": "49cf6038b4dd5b28f9432e6715fc77b7c380ab2a",
+  "current_main_head": "49cf6038b4dd5b28f9432e6715fc77b7c380ab2a",
+  "expected_validation_outcome": "KT_EXTERNAL_REAUDIT_PACKET_VALIDATED__EXTERNAL_REAUDIT_ATTEMPT_NEXT",
+  "external_audit_and_ratification_authoring_complete": true,
+  "external_audit_and_ratification_packet_authored": true,
+  "external_audit_and_ratification_validated": false,
+  "external_audit_and_ratification_validation_next": true,
+  "external_audit_claimed_complete": false,
+  "external_audit_completed": false,
+  "external_audit_ratification_packet_authorized": false,
+  "external_reaudit_accepted": false,
+  "external_reaudit_attempt_authorized": false,
+  "fp0_or_highway_promoted_to_authority": false,
+  "generated_utc": "2026-05-18T19:10:03Z",
+  "input_bindings": [
+    {
+      "path": "governance/kt_adversarial_proof_corridor_validation_v1.json",
+      "role": "h05_validation_contract",
+      "sha256": "1c815f1add668e046d72f4a03bc8c3df21fd84b99ed6d01d1110764e6a70f734"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_adversarial_proof_corridor_validation_receipt.json",
+      "role": "h05_validation_receipt",
+      "sha256": "fb30abf74ed370f36d76efe856259818a885244cbebbe7f165f3aa0025771b41"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_adversarial_proof_corridor_validation_scorecard.json",
+      "role": "h05_validation_scorecard",
+      "sha256": "c30af44b1046bcb0e3d4a6d4a1e567036e9261f35b12e5e0cd32f7adcc737ce1"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_external_audit_ratification_gate_decision.json",
+      "role": "h05_external_audit_ratification_gate_decision",
+      "sha256": "a42264672fd3996ff237f6d36c9161b16270d4764d24710f712c82f3a5f38d7e"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_adversarial_proof_corridor_validation_next_lawful_move_receipt.json",
+      "role": "h05_next_lawful_move",
+      "sha256": "09ef0956b9b92c7678a6c19120ebf7ce9bda1b4bd1817da6a1aee8f812d820e4"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_adversarial_proof_corridor_packet_contract.json",
+      "role": "h05_packet_contract",
+      "sha256": "9d0ac2410534fea8bddf8c28e55b37ce59027d6aa61a7b0ca365ce25019812ac"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_adversarial_proof_corridor_attack_matrix.json",
+      "role": "h05_attack_matrix",
+      "sha256": "4b06a5b7fe4164d075fa3515bb84210343dfc5a966092e33c2b1df2d97211244"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_adversarial_proof_corridor_claim_boundary_receipt.json",
+      "role": "h05_claim_boundary_receipt",
+      "sha256": "52f853014b92f40c92ebffa5cff3e642466f4b47d18195ebe30e0e874b175bf9"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_detached_verifier_clean_room_replay_evidence_review_validation_receipt.json",
+      "role": "detached_verifier_clean_room_evidence_validation",
+      "sha256": "071d69cd0d0c6d4047917a3c63feae7b8519e2b9b34860d42a0b5e9cda5290d4"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_detached_verifier_clean_room_replay_result.json",
+      "role": "detached_verifier_clean_room_replay_result",
+      "sha256": "2bb565b308606465a24b6b5a17a9823837747c14c582ef947cac29318bc2ceb0"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_supply_chain_release_corridor_validation_receipt.json",
+      "role": "supply_chain_validation_receipt",
+      "sha256": "f96fc98387ad3ea8000a05b27935a8b05117d75c1c255d024f54c1bcf75a6826"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_supply_chain_release_corridor_release_integrity_receipt.json",
+      "role": "supply_chain_release_integrity_receipt",
+      "sha256": "a5205bb53e2673ff88d4bb74d3f7b641cec343047b7c7567a405362a31f3ffbf"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_commercial_proof_plane_evidence_pack_manifest.json",
+      "role": "commercial_proof_plane_evidence_pack_manifest",
+      "sha256": "754d25a563dbfe16bddd6c6ceb3d4e79ae1fd65b7f62cfe0704dd9960250c712"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_commercial_proof_plane_security_review_packet.json",
+      "role": "commercial_proof_plane_security_review_packet",
+      "sha256": "4286b6927326b586ac2b52b010daf58d71f888751aaa7b9ab419614f29164fd9"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_commercial_proof_plane_claim_boundary_receipt.json",
+      "role": "commercial_proof_plane_claim_boundary_receipt",
+      "sha256": "fabf8bba0e3683e534646d46b04ec5b9d8bd3d49e12511d0f359ed86bc79d450"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_claim_ceiling_current_state.json",
+      "role": "claim_ceiling_current_state",
+      "sha256": "43bdeda4fb30087519b5e79d62eb6863d9249e27d3e51e3af2145a8b2a2da0be"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+      "role": "public_verifier_manifest",
+      "sha256": "8997e0718e3fcea6c889a358713c853a7dccd6ba120745d592b64ed2eecfd245"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+      "role": "external_audit_packet_manifest",
+      "sha256": "aa913388e6fc17010ee6fa15a79c2a5c0de90aed047ed113c392465a57c53e65"
+    }
+  ],
+  "next_lawful_move": "VALIDATE_KT_EXTERNAL_AUDIT_AND_RATIFICATION_PACKET_SUPERLANE_V1",
+  "predecessor_next_lawful_move": "AUTHOR_KT_EXTERNAL_AUDIT_AND_RATIFICATION_PACKET_SUPERLANE_V1",
+  "predecessor_outcome": "KT_ADVERSARIAL_PROOF_CORRIDOR_VALIDATED__EXTERNAL_AUDIT_RATIFICATION_PACKET_NEXT",
+  "preferred_validation_outcome": "KT_EXTERNAL_REAUDIT_PACKET_VALIDATED__EXTERNAL_REAUDIT_ATTEMPT_NEXT",
+  "s_tier_claimed": false,
+  "schema_id": "kt.external_audit_and_ratification.validation_plan.v1",
+  "selected_outcome": "KT_EXTERNAL_AUDIT_AND_RATIFICATION_PACKET_BOUND__EXTERNAL_AUDIT_AND_RATIFICATION_VALIDATION_NEXT",
+  "seven_b_amplification_claimed": false,
+  "seven_b_amplification_claimed_proven": false,
+  "source_hashes_recomputed": true,
+  "trust_zone_law_changed": false,
+  "trust_zone_law_unchanged": true,
+  "trust_zone_validation": {
+    "checks": [
+      {
+        "check": "required_zones_present",
+        "missing": [],
+        "status": "PASS"
+      },
+      {
+        "check": "readiness_zones_declared_in_registry",
+        "excludes": [
+          "LAB",
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "includes": [
+          "CANONICAL"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "canonical_primary_surfaces_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_declared",
+        "count": 19,
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_in_toolchain_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_not_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "generated_truth_surfaces_in_generated_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "documentary_only_surfaces_in_commercial_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "quarantine_patterns_excluded_from_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "quarantine_patterns_in_quarantined_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "runtime_boundary_excludes_reflected_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "readiness_scoped_to_canonical_only",
+        "status": "PASS"
+      },
+      {
+        "actual": [
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "LAB",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "check": "readiness_excludes_all_noncanonical_zones",
+        "expected": [
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "LAB",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "frozen_surfaces_live_in_canonical_or_toolchain_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "frozen_surfaces_covered_by_amendment_scope",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "settled_truth_root_in_generated_zone",
+        "status": "PASS",
+        "truth_root": "kt_truth_ledger:ledger/current/current_pointer.json"
+      },
+      {
+        "check": "execution_board_truth_source_in_generated_zone",
+        "status": "PASS",
+        "truth_source": "kt_truth_ledger:ledger/current/current_pointer.json"
+      },
+      {
+        "actual": [
+          "cognition",
+          "core",
+          "council",
+          "curriculum",
+          "governance",
+          "kt",
+          "memory",
+          "multiverse",
+          "paradox",
+          "schemas",
+          "temporal",
+          "thermodynamics",
+          "versioning"
+        ],
+        "check": "runtime_registry_canonical_roots_match_contract",
+        "expected": [
+          "cognition",
+          "core",
+          "council",
+          "curriculum",
+          "governance",
+          "kt",
+          "memory",
+          "multiverse",
+          "paradox",
+          "schemas",
+          "temporal",
+          "thermodynamics",
+          "versioning"
+        ],
+        "status": "PASS"
+      },
+      {
+        "actual": [],
+        "check": "runtime_registry_compatibility_roots_match_contract",
+        "expected": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_not_canonical",
+        "overlap": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_quarantined_in_scope_manifest",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_excluded_by_runtime_boundary_contract",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_excluded_from_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_present_in_quarantined_zone",
+        "mismatches": [],
+        "status": "PASS"
+      }
+    ],
+    "failures": [],
+    "schema_id": "kt.operator.trust_zone_validation_receipt.v2",
+    "status": "PASS"
+  },
+  "truth_engine_law_changed": false,
+  "truth_engine_law_unchanged": true,
+  "validation_checks": [
+    "recompute_h05_adversarial_validation_bindings",
+    "verify_detached_verifier_evidence_review_validated",
+    "verify_supply_chain_release_corridor_validated",
+    "verify_external_audit_packet_manifest_pass",
+    "verify_claim_boundary_no_expansion",
+    "reject_external_audit_completion_claim",
+    "reject_external_reaudit_acceptance_claim",
+    "reject_commercial_claim_authorization",
+    "reject_7b_beyond_sota_s_tier_claims",
+    "preserve_truth_and_trust_law",
+    "preserve_fp0_highway_nonpromotion"
+  ]
+}
