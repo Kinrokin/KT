@@ -9,7 +9,9 @@
         "KT_PROD_CLEANROOM/tests/operator/test_public_verifier_detached_validate.py",
         "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
         "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json",
-        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json"
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_runtime_receipt.json",
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_public_verifier_report.json"
       ],
       "status": "PASS"
     },
@@ -21,7 +23,9 @@
         "KT_PROD_CLEANROOM/tests/operator/test_public_verifier_detached_validate.py",
         "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
         "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json",
-        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json"
+        "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_runtime_receipt.json",
+        "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_public_verifier_report.json"
       ],
       "status": "PASS"
     },
@@ -77,14 +81,16 @@
       "status": "PASS"
     }
   ],
-  "compiled_head_commit": "05629064b94bf70dfeafdd3a302c2b5ec83d039b",
+  "compiled_head_commit": "c871c25455f927d47d81af7849a31989961b4471",
   "created_files": [
     "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_runtime.py",
     "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_validate.py",
     "KT_PROD_CLEANROOM/tests/operator/test_public_verifier_detached_validate.py",
     "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
     "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json",
-    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json"
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_runtime_receipt.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_public_verifier_report.json"
   ],
   "deleted_files": [],
   "detached_vs_repo_local_conclusion_parity": {
@@ -145,7 +151,7 @@
     }
   },
   "evidence_head_commit": "b4789a544954066ee6c225bc9cfa3fddb51c12ee",
-  "generated_utc": "2026-05-18T13:36:31Z",
+  "generated_utc": "2026-05-18T13:54:14Z",
   "input_refs": [
     "KT_PROD_CLEANROOM/reports/kt_signed_revision_policy.json",
     "KT_PROD_CLEANROOM/reports/kt_revision_trust_receipt.json",
@@ -178,7 +184,9 @@
     "KT_PROD_CLEANROOM/tests/operator/test_public_verifier_detached_validate.py",
     "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
     "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json",
-    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json"
+    "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_runtime_receipt.json",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_public_verifier_report.json"
   ],
   "schema_id": "kt.operator.public_verifier_detached_receipt.v1",
   "status": "PASS",
@@ -189,6 +197,8 @@
       "ran the verifier outside a repo checkout and compared its conclusion fields to the repo-local verifier output"
     ],
     "files_touched": [
+      "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_public_verifier_report.json",
+      "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_runtime_receipt.json",
       "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
       "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
       "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json"
@@ -201,7 +211,7 @@
     "tests_run": [
       "python -m pytest KT_PROD_CLEANROOM/tests/operator/test_public_verifier_detached_validate.py -q"
     ],
-    "timestamp": "2026-05-18T13:36:31Z",
+    "timestamp": "2026-05-18T13:54:14Z",
     "unexpected_touches": [],
     "validators_run": [
       "python -m tools.operator.public_verifier_detached_validate"
@@ -215,7 +225,7 @@
     "detached_runtime_receipt_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_runtime_receipt.json",
     "detached_runtime_report_ref": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_public_verifier_report.json",
     "publication_surface_boundary": "For WS18, publication surface means the sealed WS15 canonical delivery publication bundle carried forward by the WS16 critical artifact set; it does not collapse that artifact set into the earlier WS7 authority-subject publication surface.",
-    "repo_local_current_head_commit": "05629064b94bf70dfeafdd3a302c2b5ec83d039b",
+    "repo_local_current_head_commit": "c871c25455f927d47d81af7849a31989961b4471",
     "repo_local_parity_fields": [
       "status",
       "subject_verdict",
@@ -237,6 +247,8 @@
     "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_public_verifier_report.json"
   ],
   "surface_classifications": {
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_public_verifier_report.json": "generated detached runtime report",
+    "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_runtime_receipt.json": "generated detached runtime receipt",
     "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json": "generated receipt",
     "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json": "generated detached release manifest",
     "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json": "generated detached verifier sbom",
