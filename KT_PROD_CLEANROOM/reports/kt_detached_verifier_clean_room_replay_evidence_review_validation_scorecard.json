@@ -1,0 +1,289 @@
+{
+  "artifact_id": "KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VALIDATION_SCORECARD",
+  "artifact_role": "validation_scorecard",
+  "authoritative_lane": "VALIDATE_KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_PACKET",
+  "authority": "VALIDATION_ONLY",
+  "beyond_sota_claimed": false,
+  "binding_hashes": {
+    "evidence_manifest_hash": "52f18c2658e4fbb8b379818572631f09d6c7e18a81c6eaace5c937c7b365d03e",
+    "execution_receipt_hash": "1994c843d5a53d4ac0130bcd410574bfcf89ab6566d6783ee114c14a1e41de2d",
+    "execution_report_hash": "26509c5054815da66cec6309866e138515b31f2dfb15ace6e30f001a93d45faf",
+    "public_verifier_detached_receipt_hash": "7f9d6a06b608ce3597ab4b923275e2ffa5776555af047ffe37c86eef8b53409d",
+    "public_verifier_detached_release_manifest_hash": "2445d0b9e52414f6b09259afa107d7f6dff9123786ef2f88c4971889ee247a4d",
+    "public_verifier_detached_runtime_receipt_hash": "b985df3e7ca8c54d217500a0e7fd1c047a69abcb29c9835ce8eea80a9279a9b6",
+    "public_verifier_detached_runtime_report_hash": "dc057878358f3cc96604dd76fd463676e466122cbe2f27c013e4bb081da4d0a2",
+    "public_verifier_detached_sbom_hash": "4dfb11e67ffb200dd04d01d7302ea750f57ead1de4653523f09b1da7aa657011",
+    "result_hash": "2bb565b308606465a24b6b5a17a9823837747c14c582ef947cac29318bc2ceb0",
+    "run_next_lawful_move_hash": "da4b0dc5c3d289c2a77ab2f96b6dace093ef5878e1ac1c2a4f4181fe55ff965c"
+  },
+  "claim_boundary_passed": true,
+  "clean_room_replay_evidence_review_packet_validated": true,
+  "clean_room_replay_executed": true,
+  "commercial_activation_claim_authorized": false,
+  "commercial_activation_claimed": false,
+  "current_branch": "validate/kt-detached-verifier-clean-room-replay-evidence-review-packet",
+  "current_branch_head": "e2a2b6b95ce8a9ad5eb153c1171d311bac3724a6",
+  "current_git_head": "e2a2b6b95ce8a9ad5eb153c1171d311bac3724a6",
+  "current_main": "972c1c00e96b28b5185b714ad0ff0ff20129c633",
+  "current_main_head": "972c1c00e96b28b5185b714ad0ff0ff20129c633",
+  "external_audit_claimed_complete": false,
+  "external_audit_completed": false,
+  "fp0_or_highway_promoted_to_authority": false,
+  "generated_utc": "2026-05-18T14:44:20Z",
+  "input_bindings": [
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_detached_verifier_clean_room_replay_execution_receipt.json",
+      "role": "execution_receipt",
+      "sha256": "1994c843d5a53d4ac0130bcd410574bfcf89ab6566d6783ee114c14a1e41de2d"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_detached_verifier_clean_room_replay_result.json",
+      "role": "result",
+      "sha256": "2bb565b308606465a24b6b5a17a9823837747c14c582ef947cac29318bc2ceb0"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_detached_verifier_clean_room_replay_evidence_manifest.json",
+      "role": "evidence_manifest",
+      "sha256": "52f18c2658e4fbb8b379818572631f09d6c7e18a81c6eaace5c937c7b365d03e"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_detached_verifier_clean_room_replay_report.md",
+      "role": "execution_report",
+      "sha256": "26509c5054815da66cec6309866e138515b31f2dfb15ace6e30f001a93d45faf"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_detached_verifier_clean_room_replay_next_lawful_move_receipt.json",
+      "role": "run_next_lawful_move",
+      "sha256": "da4b0dc5c3d289c2a77ab2f96b6dace093ef5878e1ac1c2a4f4181fe55ff965c"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_release_manifest.json",
+      "role": "public_verifier_detached_release_manifest",
+      "sha256": "2445d0b9e52414f6b09259afa107d7f6dff9123786ef2f88c4971889ee247a4d"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json",
+      "role": "public_verifier_detached_sbom",
+      "sha256": "4dfb11e67ffb200dd04d01d7302ea750f57ead1de4653523f09b1da7aa657011"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_receipt.json",
+      "role": "public_verifier_detached_receipt",
+      "sha256": "7f9d6a06b608ce3597ab4b923275e2ffa5776555af047ffe37c86eef8b53409d"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_runtime_receipt.json",
+      "role": "public_verifier_detached_runtime_receipt",
+      "sha256": "b985df3e7ca8c54d217500a0e7fd1c047a69abcb29c9835ce8eea80a9279a9b6"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof/reports/detached_public_verifier_report.json",
+      "role": "public_verifier_detached_runtime_report",
+      "sha256": "dc057878358f3cc96604dd76fd463676e466122cbe2f27c013e4bb081da4d0a2"
+    }
+  ],
+  "next_lawful_move": "AUTHOR_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_SUPERLANE_V1",
+  "predecessor_next_lawful_move": "VALIDATE_KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_PACKET",
+  "predecessor_outcome": "KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_PACKET_BOUND__EVIDENCE_REVIEW_VALIDATION_NEXT",
+  "s_tier_claimed": false,
+  "schema_id": "kt.detached_verifier.clean_room_replay.evidence_review.validation_scorecard.v1",
+  "scorecard": {
+    "claim_boundary_preserved": true,
+    "external_audit_completed": false,
+    "overall_grade": "PASS",
+    "packet_shape_validated": true,
+    "source_hashes_recomputed": true,
+    "supply_chain_release_corridor_next_supported": true
+  },
+  "selected_outcome": "KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VALIDATED__SUPPLY_CHAIN_RELEASE_CORRIDOR_NEXT",
+  "seven_b_amplification_claimed": false,
+  "seven_b_amplification_claimed_proven": false,
+  "source_hashes_recomputed": true,
+  "supply_chain_release_corridor_authorized": false,
+  "supply_chain_release_corridor_next": true,
+  "trust_zone_law_changed": false,
+  "trust_zone_law_unchanged": true,
+  "trust_zone_validation": {
+    "checks": [
+      {
+        "check": "required_zones_present",
+        "missing": [],
+        "status": "PASS"
+      },
+      {
+        "check": "readiness_zones_declared_in_registry",
+        "excludes": [
+          "LAB",
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "includes": [
+          "CANONICAL"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "canonical_primary_surfaces_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_declared",
+        "count": 19,
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_in_toolchain_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_not_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "generated_truth_surfaces_in_generated_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "documentary_only_surfaces_in_commercial_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "quarantine_patterns_excluded_from_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "quarantine_patterns_in_quarantined_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "runtime_boundary_excludes_reflected_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "readiness_scoped_to_canonical_only",
+        "status": "PASS"
+      },
+      {
+        "actual": [
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "LAB",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "check": "readiness_excludes_all_noncanonical_zones",
+        "expected": [
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "LAB",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "frozen_surfaces_live_in_canonical_or_toolchain_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "frozen_surfaces_covered_by_amendment_scope",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "settled_truth_root_in_generated_zone",
+        "status": "PASS",
+        "truth_root": "kt_truth_ledger:ledger/current/current_pointer.json"
+      },
+      {
+        "check": "execution_board_truth_source_in_generated_zone",
+        "status": "PASS",
+        "truth_source": "kt_truth_ledger:ledger/current/current_pointer.json"
+      },
+      {
+        "actual": [
+          "cognition",
+          "core",
+          "council",
+          "curriculum",
+          "governance",
+          "kt",
+          "memory",
+          "multiverse",
+          "paradox",
+          "schemas",
+          "temporal",
+          "thermodynamics",
+          "versioning"
+        ],
+        "check": "runtime_registry_canonical_roots_match_contract",
+        "expected": [
+          "cognition",
+          "core",
+          "council",
+          "curriculum",
+          "governance",
+          "kt",
+          "memory",
+          "multiverse",
+          "paradox",
+          "schemas",
+          "temporal",
+          "thermodynamics",
+          "versioning"
+        ],
+        "status": "PASS"
+      },
+      {
+        "actual": [],
+        "check": "runtime_registry_compatibility_roots_match_contract",
+        "expected": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_not_canonical",
+        "overlap": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_quarantined_in_scope_manifest",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_excluded_by_runtime_boundary_contract",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_excluded_from_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_present_in_quarantined_zone",
+        "mismatches": [],
+        "status": "PASS"
+      }
+    ],
+    "failures": [],
+    "schema_id": "kt.operator.trust_zone_validation_receipt.v2",
+    "status": "PASS"
+  },
+  "truth_engine_law_changed": false,
+  "truth_engine_law_unchanged": true
+}
