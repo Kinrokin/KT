@@ -117,6 +117,12 @@ def test_review_preserves_claim_boundary(review_outputs: Path) -> None:
     assert receipt["fp0_or_highway_promoted_to_authority"] is False
 
 
+def test_external_audit_matrix_uses_consistent_completion_key(review_outputs: Path) -> None:
+    matrix = _payload(review_outputs, "external_audit_readiness_matrix")
+    assert matrix["external_audit_completed"] is False
+    assert "external_audit_complete" not in matrix
+
+
 def test_evidence_inventory_binds_detached_runtime_artifacts(review_outputs: Path) -> None:
     inventory = _payload(review_outputs, "evidence_inventory")
     paths = {row["path"] for row in inventory["evidence_artifacts"]}
@@ -153,6 +159,30 @@ def test_rejects_forbidden_claim_text(tmp_path: Path, monkeypatch: pytest.Monkey
     path = tmp_path / review.INPUTS["result"]
     payload = _load(path)
     payload["unsafe_claim"] = "External audit is not complete, but commercial activation claims are authorized."
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(review.LaneFailure) as excinfo:
+        review.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_CLAIM_BOUNDARY_BREACH"
+
+
+def test_rejects_positive_claim_with_nearby_unrelated_negative_text(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / review.INPUTS["result"]
+    payload = _load(path)
+    payload["unsafe_claim"] = "External audit is complete and commercial activation is not authorized."
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(review.LaneFailure) as excinfo:
+        review.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_CLAIM_BOUNDARY_BREACH"
+
+
+def test_rejects_nested_authority_drift_object(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / review.INPUTS["result"]
+    payload = _load(path)
+    payload["external_audit_completed"] = {"value": False}
     _write(path, payload)
     _patch_env(monkeypatch, tmp_path)
     with pytest.raises(review.LaneFailure) as excinfo:

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import json
 import re
 from pathlib import Path
 from typing import Any, Dict, Iterable, NoReturn
@@ -123,15 +122,23 @@ def _fail(code: str, detail: str) -> NoReturn:
 def _walk(value: Any, parent_key: str = "") -> Iterable[tuple[str, Any]]:
     if isinstance(value, dict):
         for key, item in value.items():
-            yield from _walk(item, str(key))
-    elif isinstance(value, list):
-        for item in value:
+            child_key = f"{parent_key}.{key}" if parent_key else str(key)
+            yield child_key, item
             if isinstance(item, (dict, list)):
-                yield from _walk(item, parent_key)
-            else:
-                yield parent_key, item
+                yield from _walk(item, child_key)
+    elif isinstance(value, list):
+        for index, item in enumerate(value):
+            child_key = f"{parent_key}[{index}]" if parent_key else f"[{index}]"
+            yield child_key, item
+            if isinstance(item, (dict, list)):
+                yield from _walk(item, child_key)
     else:
         yield parent_key, value
+
+
+def _leaf_key(key: str) -> str:
+    leaf = key.rsplit(".", 1)[-1]
+    return re.sub(r"\[\d+\]$", "", leaf)
 
 
 def _is_negative_field(key: str) -> bool:
@@ -169,7 +176,7 @@ def _is_negative_text(value: str) -> bool:
 
 
 def _has_forbidden_claim(value: str) -> bool:
-    clauses = re.split(r"\b(?:but|however|although|though)\b|[.;\n]", value, flags=re.IGNORECASE)
+    clauses = re.split(r"\b(?:and|but|however|although|though|while|whereas)\b|[.;\n]", value, flags=re.IGNORECASE)
     return any(any(pattern.search(clause) for pattern in FORBIDDEN_CLAIM_PATTERNS) and not _is_negative_text(clause) for clause in clauses)
 
 
@@ -254,7 +261,8 @@ def _ensure_predecessor(payloads: Dict[str, Dict[str, Any]]) -> None:
 def _ensure_claim_boundary(payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str]) -> None:
     for label, payload in payloads.items():
         for key, value in _walk(payload):
-            if key in AUTHORITY_DRIFT_KEYS and value is not False:
+            leaf_key = _leaf_key(key)
+            if leaf_key in AUTHORITY_DRIFT_KEYS and value is not False:
                 _fail("RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_CLAIM_BOUNDARY_BREACH", f"{label}.{key} drifted non-false")
             if isinstance(value, str) and not _is_negative_field(key) and not _is_machine_routing_field(key):
                 if _has_forbidden_claim(value):
@@ -347,7 +355,7 @@ def _outputs(base: Dict[str, Any], payloads: Dict[str, Dict[str, Any]]) -> Dict[
         "evidence_inventory": _artifact(base, role="evidence_inventory", schema_id="kt.detached_verifier.clean_room_replay.evidence_review.inventory.v1", artifact_id="KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_EVIDENCE_INVENTORY", evidence_artifacts=inventory_rows),
         "evidence_scorecard": _artifact(base, role="evidence_scorecard", schema_id="kt.detached_verifier.clean_room_replay.evidence_review.scorecard.v1", artifact_id="KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_EVIDENCE_SCORECARD", scorecard=scorecard),
         "supply_chain_readiness_matrix": _artifact(base, role="supply_chain_readiness_matrix", schema_id="kt.detached_verifier.clean_room_replay.supply_chain_readiness.v1", artifact_id="KT_DETACHED_VERIFIER_SUPPLY_CHAIN_READINESS_MATRIX", ready_for_validation_next=True, authorized_now=False, blockers=["evidence_review_packet_not_validated"]),
-        "external_audit_readiness_matrix": _artifact(base, role="external_audit_readiness_matrix", schema_id="kt.detached_verifier.clean_room_replay.external_audit_readiness.v1", artifact_id="KT_DETACHED_VERIFIER_EXTERNAL_AUDIT_READINESS_MATRIX", external_audit_complete=False, ready_for_external_audit=False, blockers=["supply_chain_release_corridor_not_validated"]),
+        "external_audit_readiness_matrix": _artifact(base, role="external_audit_readiness_matrix", schema_id="kt.detached_verifier.clean_room_replay.external_audit_readiness.v1", artifact_id="KT_DETACHED_VERIFIER_EXTERNAL_AUDIT_READINESS_MATRIX", external_audit_completed=False, ready_for_external_audit=False, blockers=["supply_chain_release_corridor_not_validated"]),
         "claim_boundary_review": _artifact(base, role="claim_boundary_review", schema_id="kt.detached_verifier.clean_room_replay.claim_boundary_review.v1", artifact_id="KT_DETACHED_VERIFIER_CLAIM_BOUNDARY_REVIEW", allowed_claims=["Detached verifier clean-room replay evidence exists for validation."], forbidden_claims=["External audit is complete.", "Commercial activation claims are authorized.", "7B amplification is proven.", "Beyond-SOTA is proven.", "S-tier is allowed."]),
         "no_authority_drift_receipt": _artifact(base, role="no_authority_drift_receipt", schema_id="kt.detached_verifier.clean_room_replay.no_authority_drift.v1", artifact_id="KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_NO_AUTHORITY_DRIFT_RECEIPT", no_authority_drift=True),
         "validation_plan": _artifact(base, role="validation_plan", schema_id="kt.detached_verifier.clean_room_replay.evidence_review.validation_plan.v1", artifact_id="KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VALIDATION_PLAN", validation_success_outcome=PREFERRED_VALIDATION_OUTCOME, validation_must_not_claim_external_audit=True),
