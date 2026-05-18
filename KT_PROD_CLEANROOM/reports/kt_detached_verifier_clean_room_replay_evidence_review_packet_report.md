@@ -1,6 +1,6 @@
 # KT Detached Verifier Clean-Room Replay Evidence Review Packet
 
-Current main: 57be8267a52775ac2158d604a5dbc6f1dbb3acf9
+Current main: baeb97d577279ba34cd23e90637f0cadff1c2242
 Lane: AUTHOR_KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_PACKET
 Authoring verdict: KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_PACKET_BOUND__EVIDENCE_REVIEW_VALIDATION_NEXT
 Clean-room replay executed: true
