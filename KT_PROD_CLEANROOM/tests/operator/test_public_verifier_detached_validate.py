@@ -7,6 +7,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.operator.public_verifier_detached_validate import (  # noqa: E402
     CREATED_FILES,
+    DETACHED_RUNTIME_RECEIPT_REF,
+    DETACHED_RUNTIME_REPORT_REF,
     PACKAGED_INPUT_REFS,
     PARITY_FIELDS,
     ROOT_SENTINEL_REL,
@@ -137,3 +139,8 @@ def test_detached_git_ceiling_blocks_parent_repo_discovery(tmp_path) -> None:
 
 def test_detached_package_includes_repo_root_sentinel() -> None:
     assert ROOT_SENTINEL_REL in PACKAGED_INPUT_REFS
+
+
+def test_detached_runtime_evidence_artifacts_are_in_scope() -> None:
+    assert DETACHED_RUNTIME_RECEIPT_REF in CREATED_FILES
+    assert DETACHED_RUNTIME_REPORT_REF in CREATED_FILES
