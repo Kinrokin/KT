@@ -103,6 +103,7 @@ DECISION_OUTCOMES = (
     "KT_EXTERNAL_REAUDIT_DEFERRED__NAMED_EXTERNAL_GAP_REMAINS",
     "KT_EXTERNAL_REAUDIT_FAILED__FORENSIC_REVIEW_NEXT",
 )
+ALLOWED_VALIDATION_AND_REAUDIT_OUTCOMES = (PREFERRED_VALIDATION_OUTCOME, *DECISION_OUTCOMES)
 
 AUTHORITY_DRIFT_KEYS = predecessor.AUTHORITY_DRIFT_KEYS | frozenset(
     {
@@ -279,11 +280,36 @@ def _validate_sources(payloads: Dict[str, Dict[str, Any]]) -> None:
     if clean_room_validation.get("external_audit_completed") is not False:
         _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_PREMATURE_AUTHORITY", "detached verifier evidence claims external audit completion")
 
+    clean_room_result = payloads["detached_verifier_clean_room_replay_result"]
+    if clean_room_result.get("clean_room_replay_passed") is not True:
+        _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED", "detached verifier clean-room replay result did not pass")
+    if clean_room_result.get("clean_room_replay_completed") is not True or clean_room_result.get("clean_room_replay_executed") is not True:
+        _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED", "detached verifier clean-room replay result is incomplete")
+    if clean_room_result.get("detached_public_verifier_status") != "PASS" or clean_room_result.get("detached_runtime_status") != "PASS":
+        _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED", "detached verifier runtime/public verifier status did not pass")
+
     supply_validation = payloads["supply_chain_validation_receipt"]
     if supply_validation.get("supply_chain_release_corridor_packet_validated") is not True:
         _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED", "supply chain release corridor is not validated")
     if supply_validation.get("external_audit_completed") is not False:
         _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_PREMATURE_AUTHORITY", "supply chain validation claims external audit completion")
+
+    supply_integrity = payloads["supply_chain_release_integrity_receipt"]
+    if supply_integrity.get("release_integrity_bound") is not True:
+        _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED", "supply chain release integrity is not bound")
+    if supply_integrity.get("artifact_swap_must_fail_closed") is not True:
+        _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED", "supply chain artifact swap is not fail-closed")
+    if supply_integrity.get("external_audit_completed") is not False:
+        _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_PREMATURE_AUTHORITY", "supply chain release integrity claims external audit completion")
+
+    evidence_manifest = payloads["commercial_proof_plane_evidence_pack_manifest"]
+    if evidence_manifest.get("evidence_pack_authorizes_commercial_activation_claims") is not False:
+        _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_PREMATURE_AUTHORITY", "commercial evidence pack authorizes commercial activation claims")
+    evidence_items = evidence_manifest.get("evidence_pack_items", [])
+    if not isinstance(evidence_items, list) or len(evidence_items) < 5:
+        _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED", "commercial evidence pack manifest has incomplete evidence items")
+    if "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json" not in evidence_items:
+        _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED", "commercial evidence pack must include public verifier manifest")
 
     commercial_boundary = payloads["commercial_proof_plane_claim_boundary_receipt"]
     if commercial_boundary.get("no_claim_expansion") is not True:
@@ -300,6 +326,16 @@ def _validate_sources(payloads: Dict[str, Dict[str, Any]]) -> None:
     external_manifest = payloads["external_audit_packet_manifest"]
     if str(external_manifest.get("status", "")).upper() != "PASS":
         _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED", "external audit packet manifest must be PASS")
+
+    public_verifier = payloads["public_verifier_manifest"]
+    if public_verifier.get("status") != "PASS":
+        _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED", "public verifier manifest status must be PASS")
+    if public_verifier.get("publication_receipt_status") != "PASS":
+        _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED", "public verifier publication receipt must be PASS")
+    if public_verifier.get("subject_verdict") != "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED":
+        _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED", "public verifier subject verdict is not transparency verified")
+    if public_verifier.get("evidence_contains_subject") is not True:
+        _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED", "public verifier evidence does not contain subject")
 
     claim_ceiling = payloads["claim_ceiling_current_state"]
     if claim_ceiling.get("commercial_activation_claim_authorized") is not False:
@@ -529,7 +565,7 @@ def _outputs(base: Dict[str, Any]) -> Dict[str, Any]:
             artifact_id="KT_EXTERNAL_AUDIT_AND_RATIFICATION_VALIDATION_PLAN",
             validation_checks=validation_checks,
             expected_validation_outcome=PREFERRED_VALIDATION_OUTCOME,
-            allowed_external_reaudit_outcomes=list(DECISION_OUTCOMES),
+            allowed_external_reaudit_outcomes=list(ALLOWED_VALIDATION_AND_REAUDIT_OUTCOMES),
         ),
         "validation_reason_codes": _artifact(
             base,

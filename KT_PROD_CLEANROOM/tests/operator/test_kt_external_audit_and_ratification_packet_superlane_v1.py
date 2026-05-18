@@ -152,7 +152,8 @@ def test_validation_plan_names_expected_checks(authored_outputs: Path) -> None:
     plan = _payload(authored_outputs, "validation_plan")
     assert "reject_external_audit_completion_claim" in plan["validation_checks"]
     assert "reject_commercial_claim_authorization" in plan["validation_checks"]
-    assert plan["allowed_external_reaudit_outcomes"] == list(audit_packet.DECISION_OUTCOMES)
+    assert plan["expected_validation_outcome"] in plan["allowed_external_reaudit_outcomes"]
+    assert plan["allowed_external_reaudit_outcomes"] == list(audit_packet.ALLOWED_VALIDATION_AND_REAUDIT_OUTCOMES)
 
 
 def test_rejects_predecessor_outcome_drift(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -215,6 +216,18 @@ def test_rejects_unvalidated_detached_verifier_evidence(tmp_path: Path, monkeypa
     assert excinfo.value.code == "RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED"
 
 
+def test_rejects_failed_clean_room_replay_result(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / audit_packet.SOURCE_INPUTS["detached_verifier_clean_room_replay_result"]
+    payload = _load(path)
+    payload["clean_room_replay_passed"] = False
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(audit_packet.LaneFailure) as excinfo:
+        audit_packet.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED"
+
+
 def test_rejects_unvalidated_supply_chain(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     _copy_inputs(tmp_path)
     path = tmp_path / audit_packet.SOURCE_INPUTS["supply_chain_validation_receipt"]
@@ -227,9 +240,57 @@ def test_rejects_unvalidated_supply_chain(tmp_path: Path, monkeypatch: pytest.Mo
     assert excinfo.value.code == "RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED"
 
 
+def test_rejects_unbound_supply_chain_release_integrity(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / audit_packet.SOURCE_INPUTS["supply_chain_release_integrity_receipt"]
+    payload = _load(path)
+    payload["release_integrity_bound"] = False
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(audit_packet.LaneFailure) as excinfo:
+        audit_packet.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED"
+
+
+def test_rejects_commercial_evidence_pack_claim_authorization(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / audit_packet.SOURCE_INPUTS["commercial_proof_plane_evidence_pack_manifest"]
+    payload = _load(path)
+    payload["evidence_pack_authorizes_commercial_activation_claims"] = True
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(audit_packet.LaneFailure) as excinfo:
+        audit_packet.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_EXTERNAL_AUDIT_RATIFICATION_PREMATURE_AUTHORITY"
+
+
+def test_rejects_incomplete_commercial_evidence_pack(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / audit_packet.SOURCE_INPUTS["commercial_proof_plane_evidence_pack_manifest"]
+    payload = _load(path)
+    payload["evidence_pack_items"] = []
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(audit_packet.LaneFailure) as excinfo:
+        audit_packet.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED"
+
+
 def test_rejects_external_audit_manifest_not_pass(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     _copy_inputs(tmp_path)
     path = tmp_path / audit_packet.SOURCE_INPUTS["external_audit_packet_manifest"]
+    payload = _load(path)
+    payload["status"] = "FAIL"
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(audit_packet.LaneFailure) as excinfo:
+        audit_packet.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_EXTERNAL_AUDIT_RATIFICATION_SOURCE_STATUS_FAILED"
+
+
+def test_rejects_public_verifier_manifest_not_pass(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / audit_packet.SOURCE_INPUTS["public_verifier_manifest"]
     payload = _load(path)
     payload["status"] = "FAIL"
     _write(path, payload)
