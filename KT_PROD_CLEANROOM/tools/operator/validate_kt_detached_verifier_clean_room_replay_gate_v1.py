@@ -156,7 +156,11 @@ def _contains_forbidden_claim(value: str) -> bool:
 
 
 def _claim_clauses(value: str) -> list[str]:
-    return [clause.strip() for clause in re.split(r"[;\r\n]+|(?<=[.!?])\s+", value) if clause.strip()]
+    return [
+        clause.strip()
+        for clause in re.split(r",?\s+\bbut\b\s+|,?\s+\bhowever\b\s+|[;\r\n]+|(?<=[.!?])\s+", value)
+        if clause.strip()
+    ]
 
 
 def _contains_unsafe_forbidden_claim(value: str) -> bool:
@@ -258,6 +262,8 @@ def _ensure_author_bindings_recompute(root: Path, payloads: Dict[str, Dict[str, 
     rows = payloads["author_receipt"].get("input_bindings")
     if not isinstance(rows, list) or not rows:
         _fail("RC_KT_DV_REPLAY_GATE_VALIDATION_SOURCE_HASH_MISMATCH", "author receipt input_bindings missing")
+    expected_paths = {raw.replace("\\", "/") for raw in gate.INPUTS.values()}
+    seen_paths: set[str] = set()
     for row in rows:
         if not isinstance(row, dict):
             _fail("RC_KT_DV_REPLAY_GATE_VALIDATION_SOURCE_HASH_MISMATCH", "author binding row malformed")
@@ -265,9 +271,19 @@ def _ensure_author_bindings_recompute(root: Path, payloads: Dict[str, Dict[str, 
         expected = str(row.get("sha256", "")).strip()
         if not raw or len(expected) != 64:
             _fail("RC_KT_DV_REPLAY_GATE_VALIDATION_SOURCE_HASH_MISMATCH", "author binding incomplete")
+        normalized = raw.replace("\\", "/")
+        if normalized in seen_paths:
+            _fail("RC_KT_DV_REPLAY_GATE_VALIDATION_SOURCE_HASH_MISMATCH", f"duplicate author binding for {raw}")
+        seen_paths.add(normalized)
         path = common.resolve_path(root, raw)
         if not path.is_file() or file_sha256(path) != expected:
             _fail("RC_KT_DV_REPLAY_GATE_VALIDATION_SOURCE_HASH_MISMATCH", f"source hash mismatch for {raw}")
+    missing_paths = sorted(expected_paths - seen_paths)
+    if missing_paths:
+        _fail(
+            "RC_KT_DV_REPLAY_GATE_VALIDATION_SOURCE_HASH_MISMATCH",
+            "author receipt missing expected input bindings: " + ", ".join(missing_paths),
+        )
 
 
 def _ensure_claim_boundary(payloads: Dict[str, Dict[str, Any]], texts: Dict[str, str]) -> None:

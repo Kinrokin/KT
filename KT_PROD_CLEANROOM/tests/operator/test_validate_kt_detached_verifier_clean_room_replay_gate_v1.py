@@ -248,6 +248,18 @@ def test_rejects_mixed_negative_and_affirmative_forbidden_claim(tmp_path: Path, 
     assert excinfo.value.code == "RC_KT_DV_REPLAY_GATE_VALIDATION_CLAIM_BOUNDARY_BREACH"
 
 
+def test_rejects_mixed_negative_and_affirmative_forbidden_claim_with_but(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    contract_path = tmp_path / validation.INPUTS["authoring_contract"]
+    payload = _load(contract_path)
+    payload["claim_boundary"] = "External audit is not complete, but commercial activation claims are authorized."
+    _write(contract_path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(validation.LaneFailure) as excinfo:
+        validation.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_DV_REPLAY_GATE_VALIDATION_CLAIM_BOUNDARY_BREACH"
+
+
 def test_allows_separately_negated_forbidden_claims(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     _copy_inputs(tmp_path)
     contract_path = tmp_path / validation.INPUTS["authoring_contract"]
@@ -268,6 +280,20 @@ def test_recomputes_author_bindings(tmp_path: Path, monkeypatch: pytest.MonkeyPa
     with pytest.raises(validation.LaneFailure) as excinfo:
         validation.run(output_root=tmp_path)
     assert excinfo.value.code == "RC_KT_DV_REPLAY_GATE_VALIDATION_SOURCE_HASH_MISMATCH"
+
+
+def test_requires_complete_author_binding_coverage(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    receipt_path = tmp_path / validation.INPUTS["author_receipt"]
+    payload = _load(receipt_path)
+    omitted_path = validation.gate.INPUTS["validation_receipt"]
+    payload["input_bindings"] = [row for row in payload["input_bindings"] if row["path"] != omitted_path]
+    _write(receipt_path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(validation.LaneFailure) as excinfo:
+        validation.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_DV_REPLAY_GATE_VALIDATION_SOURCE_HASH_MISMATCH"
+    assert "missing expected input bindings" in excinfo.value.detail
 
 
 def test_rejects_dirty_out_of_scope_workspace(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
