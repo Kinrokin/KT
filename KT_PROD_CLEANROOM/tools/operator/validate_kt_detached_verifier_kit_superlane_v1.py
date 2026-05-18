@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
-from typing import Any, Dict, Iterable, Optional, Sequence
+from typing import Any, Dict, Iterable, NoReturn, Optional, Sequence
 
 from tools.operator import cohort0_gate_f_common as common
 from tools.operator import kt_detached_verifier_kit_superlane as kit
@@ -208,7 +208,7 @@ class LaneFailure(RuntimeError):
         self.detail = detail
 
 
-def _fail(code: str, detail: str) -> None:
+def _fail(code: str, detail: str) -> NoReturn:
     raise LaneFailure(code, detail)
 
 
@@ -396,12 +396,16 @@ def _ensure_claim_boundary(payloads: Dict[str, Dict[str, Any]], texts: Dict[str,
 def _ensure_expected_path_map(root: Path) -> list[Dict[str, Any]]:
     rows: list[Dict[str, Any]] = []
     blockers: list[str] = []
+    same_run_outputs = set(OUTPUTS.values())
     for row in EXPECTED_TO_ACTUAL_MAP:
         out = dict(row)
         actual = str(out.get("actual_path", "")).strip()
         substitute = str(out.get("substitute_artifact", "")).strip()
         actual_exists = bool(actual) and common.resolve_path(root, actual).is_file()
         substitute_exists = bool(substitute) and common.resolve_path(root, substitute).is_file()
+        if substitute in same_run_outputs:
+            substitute_exists = True
+            out["substitute_existence_basis"] = "EMITTED_BY_THIS_VALIDATION_RUN"
         out["actual_exists"] = actual_exists
         out["substitute_exists"] = substitute_exists
         if str(out.get("status")) == "NOT_EXECUTED_BY_DESIGN":

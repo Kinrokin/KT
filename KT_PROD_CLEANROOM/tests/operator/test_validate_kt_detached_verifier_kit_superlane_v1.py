@@ -110,6 +110,8 @@ def test_validation_emits_expected_to_actual_path_map(validation_outputs: Path) 
     assert "verifier/kt-verify" in expected
     assert expected["verifier/kt-verify"]["actual_path"] == "KT_PROD_CLEANROOM/tools/operator/public_verifier.py"
     assert expected["external/clean_room_replay_report.md"]["status"] == "NOT_EXECUTED_BY_DESIGN"
+    assert expected["external/clean_room_replay_report.md"]["substitute_exists"] is True
+    assert expected["external/clean_room_replay_report.md"]["substitute_existence_basis"] == "EMITTED_BY_THIS_VALIDATION_RUN"
 
 
 def test_missing_expected_artifact_requires_blocker_or_lawful_substitution(validation_outputs: Path) -> None:
