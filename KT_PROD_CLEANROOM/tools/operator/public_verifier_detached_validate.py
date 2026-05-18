@@ -119,6 +119,8 @@ CREATED_FILES = [
     MANIFEST_REL,
     SBOM_REL,
     RECEIPT_REL,
+    DETACHED_RUNTIME_RECEIPT_REF,
+    DETACHED_RUNTIME_REPORT_REF,
 ]
 WORKSTREAM_FILES_TOUCHED = list(CREATED_FILES)
 SURFACE_CLASSIFICATIONS = {
@@ -128,6 +130,8 @@ SURFACE_CLASSIFICATIONS = {
     MANIFEST_REL: "generated detached release manifest",
     SBOM_REL: "generated detached verifier sbom",
     RECEIPT_REL: "generated receipt",
+    DETACHED_RUNTIME_RECEIPT_REF: "generated detached runtime receipt",
+    DETACHED_RUNTIME_REPORT_REF: "generated detached runtime report",
 }
 
 
