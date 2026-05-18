@@ -30,15 +30,15 @@
   "commercial_proof_plane_authorized": false,
   "commercial_proof_plane_next": true,
   "current_branch": "validate/kt-claim-compiler-commercial-language-gate-superlane-v1",
-  "current_branch_head": "b2e862e470759d7349e3cce36a4c5ad1f09562b6",
-  "current_git_head": "b2e862e470759d7349e3cce36a4c5ad1f09562b6",
+  "current_branch_head": "3c0d852e35ab5270dff760f5197688508b10398b",
+  "current_git_head": "3c0d852e35ab5270dff760f5197688508b10398b",
   "current_main": "b2e862e470759d7349e3cce36a4c5ad1f09562b6",
   "current_main_head": "b2e862e470759d7349e3cce36a4c5ad1f09562b6",
   "external_audit_claimed_complete": false,
   "external_audit_completed": false,
   "fail_count": 0,
   "fp0_or_highway_promoted_to_authority": false,
-  "generated_utc": "2026-05-18T16:41:57Z",
+  "generated_utc": "2026-05-18T16:48:12Z",
   "input_bindings": [
     {
       "path": "governance/kt_supply_chain_release_corridor_validation_v1.json",
@@ -112,7 +112,7 @@
     }
   ],
   "next_lawful_move": "AUTHOR_KT_COMMERCIAL_PROOF_PLANE_SUPERLANE_V1",
-  "pass_count": 7,
+  "pass_count": 8,
   "predecessor_next_lawful_move": "VALIDATE_KT_CLAIM_COMPILER_AND_COMMERCIAL_LANGUAGE_GATE_SUPERLANE_V1",
   "predecessor_outcome": "KT_CLAIM_COMPILER_AND_COMMERCIAL_LANGUAGE_GATE_PACKET_BOUND__CLAIM_COMPILER_COMMERCIAL_LANGUAGE_GATE_VALIDATION_NEXT",
   "s_tier_claimed": false,
@@ -132,6 +132,10 @@
     },
     {
       "check_id": "recursive_json_markdown_scanner",
+      "status": "PASS"
+    },
+    {
+      "check_id": "generated_packet_markdown_claim_scan",
       "status": "PASS"
     },
     {

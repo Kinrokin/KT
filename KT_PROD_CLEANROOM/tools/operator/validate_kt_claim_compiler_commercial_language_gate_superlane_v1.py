@@ -28,6 +28,9 @@ NEXT_LAWFUL_MOVE = "AUTHOR_KT_COMMERCIAL_PROOF_PLANE_SUPERLANE_V1"
 PACKET_JSON_OUTPUTS = {
     role: raw for role, raw in gate.OUTPUTS.items() if raw.endswith(".json")
 }
+PACKET_MARKDOWN_OUTPUTS = {
+    role: raw for role, raw in gate.OUTPUTS.items() if raw.endswith(".md")
+}
 
 OUTPUTS = {
     "validation_contract": "governance/kt_claim_compiler_commercial_language_gate_validation_v1.json",
@@ -293,6 +296,23 @@ def _validate_claim_boundary(payloads: Dict[str, Dict[str, Any]]) -> None:
                         _fail("RC_KT_CLAIM_GATE_VAL_CLAIM_BOUNDARY_BREACH", f"{label}.{key}={value!r}")
 
 
+def _scan_claim_text(label: str, text: str) -> None:
+    clauses = re.split(r"\b(?:and|but|however|although|though|while|whereas)\b|[.;\n]", text, flags=re.IGNORECASE)
+    for clause in clauses:
+        stripped = clause.strip()
+        explicit_false_report_clause = bool(re.search(r":\s*false\s*$", stripped, flags=re.IGNORECASE))
+        if any(pattern.search(clause) for pattern in gate.FORBIDDEN_CLAIM_PATTERNS) and not (_is_negative_text(clause) or explicit_false_report_clause):
+            _fail("RC_KT_CLAIM_GATE_VAL_CLAIM_BOUNDARY_BREACH", f"{label} contains forbidden affirmative claim: {clause.strip()!r}")
+
+
+def _validate_generated_markdown_reports(root: Path) -> None:
+    for role, raw in PACKET_MARKDOWN_OUTPUTS.items():
+        path = common.resolve_path(root, raw)
+        if not path.is_file():
+            _fail("RC_KT_CLAIM_GATE_VAL_ARTIFACT_MISSING", f"missing packet Markdown report {role}: {raw}")
+        _scan_claim_text(f"{role}:{raw}", path.read_text(encoding="utf-8"))
+
+
 def _base(
     *,
     branch: str,
@@ -356,6 +376,7 @@ def _outputs(base: Dict[str, Any], packet_payloads: Dict[str, Dict[str, Any]]) -
         {"check_id": "source_hash_recompute", "status": "PASS"},
         {"check_id": "allowed_forbidden_claims", "status": "PASS"},
         {"check_id": "recursive_json_markdown_scanner", "status": "PASS"},
+        {"check_id": "generated_packet_markdown_claim_scan", "status": "PASS"},
         {"check_id": "machine_routing_exemptions", "status": "PASS"},
         {"check_id": "commercial_surface_scope", "status": "PASS"},
         {"check_id": "claim_boundary", "status": "PASS"},
@@ -445,6 +466,7 @@ def run(*, output_root: Path | None = None) -> Dict[str, Any]:
     _validate_scanner_contracts(packet_payloads)
     _validate_commercial_surface_scope(root, packet_payloads)
     _validate_claim_boundary(packet_payloads)
+    _validate_generated_markdown_reports(root)
 
     trust_zone_validation = validate_trust_zones(root=root)
     if trust_zone_validation.get("status") != "PASS" or trust_zone_validation.get("failures"):

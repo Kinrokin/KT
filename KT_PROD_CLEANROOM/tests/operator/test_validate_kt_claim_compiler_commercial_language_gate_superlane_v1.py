@@ -197,6 +197,16 @@ def test_rejects_affirmative_markdown_claim_in_bound_doc(tmp_path: Path, monkeyp
     assert excinfo.value.code == "RC_KT_CLAIM_GATE_VAL_SOURCE_HASH_MISMATCH"
 
 
+def test_rejects_affirmative_markdown_claim_in_generated_packet_report(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / gate.OUTPUTS["packet_report"]
+    path.write_text(path.read_text(encoding="utf-8") + "\nExternal audit is complete.\n", encoding="utf-8")
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(validator.LaneFailure) as excinfo:
+        validator.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_CLAIM_GATE_VAL_CLAIM_BOUNDARY_BREACH"
+
+
 def test_rejects_premature_commercial_proof_authority(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     _copy_inputs(tmp_path)
     path = tmp_path / gate.OUTPUTS["packet_receipt"]
