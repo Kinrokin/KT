@@ -261,11 +261,48 @@ def test_rejects_tuf_target_hash_drift(tmp_path: Path, monkeypatch: pytest.Monke
     assert excinfo.value.code == "RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_VAL_TUF_METADATA_INVALID"
 
 
+def test_rejects_tuf_missing_required_target(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / packet.OUTPUTS["tuf_metadata_set"]
+    payload = _load(path)
+    payload["targets"]["targets"] = payload["targets"]["targets"][:1]
+    payload["snapshot"]["targets_bound"] = 1
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(validation.LaneFailure) as excinfo:
+        validation.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_VAL_TUF_METADATA_INVALID"
+
+
+def test_rejects_spdx_checksum_without_sha256_algorithm(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / packet.OUTPUTS["spdx_sbom"]
+    payload = _load(path)
+    payload["packages"][0]["checksums"][0]["algorithm"] = "SHA1"
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(validation.LaneFailure) as excinfo:
+        validation.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_VAL_SBOM_INVALID"
+
+
 def test_rejects_missing_attack_matrix_scenario(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     _copy_inputs(tmp_path)
     path = tmp_path / packet.OUTPUTS["attack_test_matrix"]
     payload = _load(path)
     payload["attack_scenarios"] = payload["attack_scenarios"][:1]
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(validation.LaneFailure) as excinfo:
+        validation.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_VAL_ATTACK_MATRIX_INCOMPLETE"
+
+
+def test_rejects_attack_scenario_permissive_behavior(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / packet.OUTPUTS["attack_test_matrix"]
+    payload = _load(path)
+    payload["attack_scenarios"][0]["expected_validation_behavior"] = "ALLOW_RELEASE"
     _write(path, payload)
     _patch_env(monkeypatch, tmp_path)
     with pytest.raises(validation.LaneFailure) as excinfo:

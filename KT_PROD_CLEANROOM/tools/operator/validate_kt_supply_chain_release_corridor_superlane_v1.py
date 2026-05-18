@@ -231,7 +231,13 @@ def _validate_sboms(payloads: Dict[str, Dict[str, Any]], input_bindings: list[Di
         checksums = package_row.get("checksums", [])
         if not isinstance(checksums, list) or not checksums:
             _fail("RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_VAL_SBOM_INVALID", "SPDX package checksum missing")
-        digest = checksums[0].get("checksumValue")
+        sha256_rows = [
+            checksum for checksum in checksums
+            if isinstance(checksum, dict) and str(checksum.get("algorithm", "")).upper() == "SHA256"
+        ]
+        if len(sha256_rows) != 1:
+            _fail("RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_VAL_SBOM_INVALID", f"SPDX package {name} must have exactly one SHA256 checksum")
+        digest = sha256_rows[0].get("checksumValue")
         if name not in by_path or digest != by_path[name]:
             _fail("RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_VAL_SBOM_INVALID", f"SPDX package {name} does not bind input digest")
         package_paths.add(name)
@@ -255,6 +261,15 @@ def _validate_tuf_metadata(payloads: Dict[str, Dict[str, Any]], input_bindings: 
     targets = tuf.get("targets", {}).get("targets", [])
     if not isinstance(targets, list) or not targets:
         _fail("RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_VAL_TUF_METADATA_INVALID", "TUF targets missing")
+    required_target_paths = {
+        packet.SUPPLY_CHAIN_INPUTS["public_verifier_sbom"],
+        packet.SUPPLY_CHAIN_INPUTS["detached_verifier_sbom"],
+        packet.SUPPLY_CHAIN_INPUTS["sigstore_publication_bundle"],
+        packet.SUPPLY_CHAIN_INPUTS["rekor_inclusion_receipt"],
+    }
+    target_paths = {str(target.get("path", "")) for target in targets}
+    if target_paths != required_target_paths:
+        _fail("RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_VAL_TUF_METADATA_INVALID", "TUF targets must match the full required target set")
     by_path = {row["path"]: row["sha256"] for row in input_bindings}
     for target in targets:
         raw = str(target.get("path", ""))
@@ -270,8 +285,8 @@ def _validate_tuf_metadata(payloads: Dict[str, Dict[str, Any]], input_bindings: 
 
 def _validate_attack_matrix(payloads: Dict[str, Dict[str, Any]]) -> None:
     matrix = payloads["attack_test_matrix"]
-    scenarios = {
-        row.get("scenario_id")
+    rows_by_id = {
+        row.get("scenario_id"): row
         for row in matrix.get("attack_scenarios", [])
         if isinstance(row, dict)
     }
@@ -284,8 +299,11 @@ def _validate_attack_matrix(payloads: Dict[str, Dict[str, Any]]) -> None:
         "forged_rekor_bundle_test",
         "in_toto_layout_drift_test",
     }
-    if not required <= scenarios:
+    if not required <= set(rows_by_id):
         _fail("RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_VAL_ATTACK_MATRIX_INCOMPLETE", "attack matrix missing required scenarios")
+    for scenario_id in required:
+        if rows_by_id[scenario_id].get("expected_validation_behavior") != "FAIL_CLOSED":
+            _fail("RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_VAL_ATTACK_MATRIX_INCOMPLETE", f"{scenario_id} is not fail-closed")
     if matrix.get("release_execution_authorized") is not False:
         _fail("RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_VAL_PREMATURE_AUTHORITY", "attack matrix authorizes release")
 
