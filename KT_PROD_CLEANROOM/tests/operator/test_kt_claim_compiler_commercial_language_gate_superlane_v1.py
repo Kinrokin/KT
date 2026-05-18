@@ -254,6 +254,18 @@ def test_machine_routing_outcome_ids_do_not_fail_claim_scanner(tmp_path: Path, m
     assert outputs["packet_receipt"]["claim_boundary_passed"] is True
 
 
+def test_rejects_authority_drift_inside_list_value(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / gate.PREDECESSOR_INPUTS["h02_validation_receipt"]
+    payload = _load(path)
+    payload["commercial_claims_authorized"] = [True]
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(gate.LaneFailure) as excinfo:
+        gate.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_CLAIM_GATE_BOUNDARY_BREACH"
+
+
 def test_rejects_missing_commercial_doc_marker(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     _copy_inputs(tmp_path)
     path = tmp_path / gate.CLAIM_INPUTS["certification_pack"]

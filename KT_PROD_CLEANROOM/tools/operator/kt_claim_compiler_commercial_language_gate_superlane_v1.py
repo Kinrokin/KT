@@ -102,18 +102,16 @@ AUTHORITY_DRIFT_KEYS = evidence_packet.AUTHORITY_DRIFT_KEYS | frozenset(
         "claim_compiler_commercial_language_gate_validated",
         "commercial_language_gate_active",
         "commercial_claims_authorized",
-        "commercial_activation_claim_authorized",
-        "commercial_activation_claimed_authorized",
         "commercial_activation_claims_authorized",
         "commercial_proof_plane_authorized",
-        "external_audit_completed",
-        "external_audit_claimed_complete",
         "release_execution_authorized",
         "release_executed",
-        "fp0_or_highway_promoted_to_authority",
     }
 )
 
+# Kept as a forward-compatibility guard: if a future shared scanner widens
+# AUTHORITY_DRIFT_KEYS to include positive evidence booleans, these known-safe
+# authoring facts must remain legal while execution/claim authority still fails.
 ALLOWED_AUTHORITY_TRUE_KEYS = frozenset(
     {
         "claim_compiler_commercial_language_gate_packet_authored",
@@ -308,7 +306,8 @@ def _validate_commercial_docs(root: Path) -> list[Dict[str, Any]]:
 
 
 def _leaf_key(key: str) -> str:
-    return key.rsplit(".", 1)[-1].replace("[]", "")
+    leaf = key.rsplit(".", 1)[-1].replace("[]", "")
+    return re.sub(r"\[\d+\]$", "", leaf)
 
 
 def _is_machine_routing_field(key: str) -> bool:
