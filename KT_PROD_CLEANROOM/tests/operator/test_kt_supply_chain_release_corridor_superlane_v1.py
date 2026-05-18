@@ -141,6 +141,21 @@ def test_spdx_and_tuf_artifacts_are_authored_without_execution(corridor_outputs:
     assert tuf["release_execution_authorized"] is False
 
 
+def test_committed_packet_artifacts_share_generation_timestamp() -> None:
+    source_root = Path.cwd()
+    contract = _load(source_root / corridor.OUTPUTS["packet_contract"])
+    expected_generated_utc = contract["generated_utc"]
+    mismatches = []
+    for role, raw in corridor.OUTPUTS.items():
+        if raw.endswith(".json"):
+            payload = _load(source_root / raw)
+            if role == "tuf_metadata_set":
+                assert payload.get("generated_utc") == expected_generated_utc
+            if "generated_utc" in payload and payload.get("generated_utc") != expected_generated_utc:
+                mismatches.append((role, raw, payload.get("generated_utc")))
+    assert mismatches == []
+
+
 def test_attack_matrix_contains_required_negative_scenarios(corridor_outputs: Path) -> None:
     matrix = _payload(corridor_outputs, "attack_test_matrix")
     scenarios = {row["scenario_id"] for row in matrix["attack_scenarios"]}
