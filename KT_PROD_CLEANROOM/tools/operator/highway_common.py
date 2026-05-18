@@ -247,8 +247,11 @@ def _write_text(root: Path, raw_path: str, text: str) -> Path:
 
 
 def _base_artifact(artifact_id: str, *, superlane: str | None = None) -> Dict[str, Any]:
+    schema_token = artifact_id.lower()
+    if schema_token.endswith("_v1"):
+        schema_token = schema_token[:-3]
     return {
-        "schema_id": f"kt.highway.{artifact_id.lower()}.v1",
+        "schema_id": f"kt.highway.{schema_token}.v1",
         "artifact_id": artifact_id,
         "work_order_id": WORK_ORDER_ID,
         "authority": "PREP_ONLY",
@@ -479,8 +482,8 @@ def zone_transition_receipt(output_root: Path | None = None) -> Dict[str, Any]:
 def regulated_lane_guard(request: Mapping[str, Any] | None = None, output_root: Path | None = None) -> Dict[str, Any]:
     root = _root(output_root)
     request = dict(request or {})
-    has_claim_limiter = bool(request.get("commercial_claim_limiter", True))
-    has_manifest = bool(request.get("evidence_manifest", True))
+    has_claim_limiter = request.get("commercial_claim_limiter") is True
+    has_manifest = request.get("evidence_manifest") is True
     allowed = has_claim_limiter and has_manifest
     receipt = {
         "schema_id": "kt.highway.regulated_lane_receipt.v1",
@@ -935,7 +938,10 @@ def run_highway_matrix(output_root: Path | None = None) -> Dict[str, Any]:
         {"name": "highway_posture_conflict_scan", "result": posture_conflict_scan(output_root=root)["status"]},
         {"name": "highway_trust_zone_validate", "result": trust_zone_validate(output_root=root)["status"]},
         {"name": "highway_zone_transition_receipt", "result": zone_transition_receipt(root)["canonical_transition_allowed"]},
-        {"name": "highway_regulated_lane_guard", "result": regulated_lane_guard(output_root=root)["status"]},
+        {
+            "name": "highway_regulated_lane_guard",
+            "result": regulated_lane_guard({"commercial_claim_limiter": True, "evidence_manifest": True}, root)["status"],
+        },
         {"name": "highway_emergency_freeze", "result": emergency_freeze(output_root=root)["status"]},
         {"name": "highway_incident_receipt", "result": incident_receipt(output_root=root)["status"]},
         {"name": "highway_adaptive_gate", "result": adaptive_gate(output_root=root)["status"]},

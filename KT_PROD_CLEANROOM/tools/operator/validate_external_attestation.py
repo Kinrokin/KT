@@ -9,7 +9,7 @@ from typing import Any, Dict, NoReturn, Sequence
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from tools.operator.titanium_common import repo_root, utc_now_iso_z, write_json_stable
+from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
 
 
 TARGET_ATTESTATION = "KT_PROD_CLEANROOM/reports/kt_external_reaudit_independent_attestation.json"
@@ -38,6 +38,15 @@ REQUIRED_ACCEPTED_SCOPES = (
     "commands_executed",
     "evidence_bundle_reviewed",
 )
+CLAIM_FLAG_KEYS = (
+    "commercial_claims_authorized",
+    "commercial_activation_claim_authorized",
+    "seven_b_amplification_proven",
+    "beyond_sota_claimed",
+    "s_tier_claimed",
+    "truth_engine_law_changed",
+    "trust_zone_law_changed",
+)
 
 
 class AttestationFailure(RuntimeError):
@@ -53,11 +62,9 @@ def _fail(code: str, detail: str) -> NoReturn:
 
 def _load_json(path: Path) -> Dict[str, Any]:
     try:
-        payload = json.loads(path.read_text(encoding="utf-8-sig"))
-    except json.JSONDecodeError as exc:
+        payload = load_json(path)
+    except Exception as exc:  # noqa: BLE001 - convert parser failures into lane failures.
         _fail("RC_EXTERNAL_ATTESTATION_JSON_INVALID", f"{path.as_posix()}: {exc}")
-    if not isinstance(payload, dict):
-        _fail("RC_EXTERNAL_ATTESTATION_JSON_INVALID", f"{path.as_posix()} must contain a JSON object")
     return payload
 
 
@@ -68,16 +75,10 @@ def _reviewer_text(payload: Dict[str, Any]) -> str:
     return str(reviewer or "")
 
 
-def _claim_flags(payload: Dict[str, Any]) -> Dict[str, bool]:
-    return {
-        "commercial_claims_authorized": bool(payload.get("commercial_claims_authorized")),
-        "commercial_activation_claim_authorized": bool(payload.get("commercial_activation_claim_authorized")),
-        "seven_b_amplification_proven": bool(payload.get("seven_b_amplification_proven")),
-        "beyond_sota_claimed": bool(payload.get("beyond_sota_claimed")),
-        "s_tier_claimed": bool(payload.get("s_tier_claimed")),
-        "truth_engine_law_changed": bool(payload.get("truth_engine_law_changed")),
-        "trust_zone_law_changed": bool(payload.get("trust_zone_law_changed")),
-    }
+def _claim_flags(payload: Dict[str, Any], *, require_literal_false: bool) -> Dict[str, bool]:
+    if not require_literal_false:
+        return {key: bool(payload.get(key)) for key in CLAIM_FLAG_KEYS}
+    return {key: payload.get(key) is not False for key in CLAIM_FLAG_KEYS}
 
 
 def _base(root: Path, *, attestation_path: Path, payload: Dict[str, Any] | None, blockers: list[Dict[str, Any]]) -> Dict[str, Any]:
@@ -87,7 +88,7 @@ def _base(root: Path, *, attestation_path: Path, payload: Dict[str, Any] | None,
     deferred = verdict == "DEFERRED" or not payload or (not accepted and not rejected)
     next_lawful_move = ACCEPTED_NEXT if accepted else REJECTED_NEXT if rejected else BLOCKED_NEXT
     decision = "ATTESTATION_ACCEPTED_NEXT_REAUDIT_ATTEMPT" if accepted else "ATTESTATION_REJECTED_FORENSIC_NEXT" if rejected else "BLOCKED_MISSING_OR_INCOMPLETE_INDEPENDENT_ATTESTATION"
-    claim_flags = _claim_flags(payload or {})
+    claim_flags = _claim_flags(payload or {}, require_literal_false=payload is not None)
     return {
         "schema_id": "kt.external_reaudit.independent_attestation_validation_receipt.v1",
         "artifact_id": "KT_EXTERNAL_REAUDIT_INDEPENDENT_ATTESTATION_VALIDATION_RECEIPT",
@@ -147,8 +148,12 @@ def evaluate_attestation(*, root: Path | None = None, attestation_path: Path | N
     reviewer = payload.get("reviewer") if isinstance(payload.get("reviewer"), dict) else {}
     relationship = str(reviewer.get("relationship_to_kt", "") if isinstance(reviewer, dict) else "").strip().lower()
     reviewer_text = _reviewer_text(payload).lower()
-    if payload.get("prepared_by_kt") is True or payload.get("authoring_entity_is_kt") is True:
-        blockers.append({"blocker_id": "kt_authored_attestation_rejected", "status": "BLOCKING"})
+    if payload.get("schema_id") != "kt.external_reaudit.independent_attestation.v1":
+        blockers.append({"blocker_id": "attestation_schema_id_invalid", "status": "BLOCKING"})
+    if payload.get("prepared_by_kt") is not False:
+        blockers.append({"blocker_id": "prepared_by_kt_must_be_literal_false", "status": "BLOCKING"})
+    if payload.get("authoring_entity_is_kt") is not False:
+        blockers.append({"blocker_id": "authoring_entity_is_kt_must_be_literal_false", "status": "BLOCKING"})
     if relationship not in ALLOWED_RELATIONSHIPS:
         blockers.append({"blocker_id": "reviewer_relationship_not_independent", "status": "BLOCKING", "actual": relationship})
     if any(token in reviewer_text for token in FORBIDDEN_REVIEWER_TOKENS):
@@ -168,11 +173,16 @@ def evaluate_attestation(*, root: Path | None = None, attestation_path: Path | N
         if payload.get("paid_reviewer") is True and not payload.get("paid_reviewer_disclosure"):
             blockers.append({"blocker_id": "paid_reviewer_disclosure_missing", "status": "BLOCKING"})
 
-    claim_flags = _claim_flags(payload)
+    claim_flags = _claim_flags(payload, require_literal_false=True)
     if any(claim_flags.values()):
         blockers.append({"blocker_id": "attestation_claim_boundary_breach", "status": "BLOCKING", "claim_flags_found": claim_flags})
 
     return _base(base_root, attestation_path=path, payload=payload, blockers=blockers)
+
+
+def _failure_receipt(root: Path, path: Path, exc: AttestationFailure) -> Dict[str, Any]:
+    blocker = {"blocker_id": "attestation_parse_or_validation_error", "status": "BLOCKING", "code": exc.code, "detail": exc.detail}
+    return _base(root, attestation_path=path, payload=None, blockers=[blocker])
 
 
 def validate_for_acceptance(*, root: Path | None = None, attestation_path: Path | None = None) -> Dict[str, Any]:
@@ -217,7 +227,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 0
     except AttestationFailure as exc:
         if args.write_receipt:
-            receipt = evaluate_attestation(root=root, attestation_path=path)
+            receipt = _failure_receipt(root, (path if path.is_absolute() else root / path), exc)
             write_outputs(root, receipt)
         print(str(exc), file=sys.stderr)
         return 2

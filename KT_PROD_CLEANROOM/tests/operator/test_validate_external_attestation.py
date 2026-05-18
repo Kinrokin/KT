@@ -78,7 +78,19 @@ def test_kt_authored_attestation_is_rejected(tmp_path: Path) -> None:
     _write(tmp_path / validator.TARGET_ATTESTATION, payload)
     receipt = validator.evaluate_attestation(root=tmp_path)
     assert receipt["attestation_accepted"] is False
-    assert any(blocker["blocker_id"] == "kt_authored_attestation_rejected" for blocker in receipt["blockers"])
+    assert any(blocker["blocker_id"] == "prepared_by_kt_must_be_literal_false" for blocker in receipt["blockers"])
+
+
+def test_missing_independence_flags_are_rejected(tmp_path: Path) -> None:
+    payload = _accepted_attestation()
+    payload.pop("prepared_by_kt")
+    payload.pop("authoring_entity_is_kt")
+    _write(tmp_path / validator.TARGET_ATTESTATION, payload)
+    receipt = validator.evaluate_attestation(root=tmp_path)
+    assert receipt["attestation_accepted"] is False
+    blocker_ids = {blocker["blocker_id"] for blocker in receipt["blockers"]}
+    assert "prepared_by_kt_must_be_literal_false" in blocker_ids
+    assert "authoring_entity_is_kt_must_be_literal_false" in blocker_ids
 
 
 def test_paid_reviewer_requires_disclosure(tmp_path: Path) -> None:
@@ -125,6 +137,27 @@ def test_rejected_attestation_routes_to_forensic_review(tmp_path: Path) -> None:
     receipt = validator.evaluate_attestation(root=tmp_path)
     assert receipt["attestation_rejected"] is True
     assert receipt["next_lawful_move"] == validator.REJECTED_NEXT
+
+
+def test_missing_claim_boundary_flag_fails_closed(tmp_path: Path) -> None:
+    payload = _accepted_attestation()
+    payload.pop("commercial_claims_authorized")
+    _write(tmp_path / validator.TARGET_ATTESTATION, payload)
+    receipt = validator.evaluate_attestation(root=tmp_path)
+    assert receipt["claim_boundary_passed"] is False
+    assert any(blocker["blocker_id"] == "attestation_claim_boundary_breach" for blocker in receipt["blockers"])
+
+
+def test_malformed_json_write_receipt_uses_structured_failure(tmp_path: Path) -> None:
+    path = tmp_path / validator.TARGET_ATTESTATION
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("{not json", encoding="utf-8")
+    with pytest.raises(validator.AttestationFailure) as excinfo:
+        validator.evaluate_attestation(root=tmp_path)
+    receipt = validator._failure_receipt(tmp_path, path, excinfo.value)
+    validator.write_outputs(tmp_path, receipt)
+    dashboard = json.loads((tmp_path / validator.OUTPUT_BLOCKER_DASHBOARD).read_text(encoding="utf-8"))
+    assert dashboard["blockers"][0]["blocker_id"] == "attestation_parse_or_validation_error"
 
 
 def test_write_outputs_emits_receipt_and_dashboard(tmp_path: Path) -> None:
