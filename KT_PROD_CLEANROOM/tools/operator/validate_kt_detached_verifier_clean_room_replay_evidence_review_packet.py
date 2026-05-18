@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
-from typing import Any, Dict, Iterable, NoReturn
+from typing import Any, Dict, NoReturn
 
 from tools.operator import cohort0_gate_f_common as common
 from tools.operator import kt_detached_verifier_clean_room_replay_evidence_review_packet as packet
@@ -32,6 +32,7 @@ REASON_CODES = tuple(
             "RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_SOURCE_HASH_MISMATCH",
             "RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_ARTIFACT_MISSING",
             "RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_CLAIM_BOUNDARY_BREACH",
+            "RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_SCORECARD_FAILED",
             "RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_REASON_CODE_DUPLICATE",
             "RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_SUPPLY_CHAIN_PREMATURE_AUTHORITY",
             "RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_BRANCH_DRIFT",
@@ -87,8 +88,8 @@ def _status_relpaths(status: str) -> list[str]:
 def _ensure_branch_context(root: Path) -> str:
     branch = common.git_current_branch_name(root)
     if branch in ALLOWED_BRANCHES or branch.startswith(REPLAY_BRANCH_PREFIX):
-        if branch == "main" and common.git_rev_parse(root, "HEAD") != common.git_rev_parse(root, "origin/main"):
-            _fail("RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_BRANCH_DRIFT", "main replay requires HEAD to equal origin/main")
+        if (branch == "main" or branch.startswith(REPLAY_BRANCH_PREFIX)) and common.git_rev_parse(root, "HEAD") != common.git_rev_parse(root, "origin/main"):
+            _fail("RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_BRANCH_DRIFT", "main/replay validation requires HEAD to equal origin/main before artifact generation")
         return branch
     _fail("RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_BRANCH_DRIFT", f"branch {branch!r} is not allowed")
 
@@ -135,7 +136,7 @@ def _validate_packet_shape(payloads: Dict[str, Dict[str, Any]]) -> None:
 
     scorecard = payloads["evidence_scorecard"].get("scorecard", {})
     if scorecard.get("overall_grade") != "PASS" or scorecard.get("claim_boundary_preserved") is not True:
-        _fail("RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_PREDECESSOR_MISSING", "evidence scorecard does not pass")
+        _fail("RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_SCORECARD_FAILED", "evidence scorecard does not pass")
     if payloads["supply_chain_readiness_matrix"].get("authorized_now") is not False:
         _fail("RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_SUPPLY_CHAIN_PREMATURE_AUTHORITY", "supply-chain readiness matrix authorizes now")
     if payloads["external_audit_readiness_matrix"].get("external_audit_completed") is not False:
@@ -172,6 +173,8 @@ def _validate_bound_source_hashes(root: Path, payloads: Dict[str, Dict[str, Any]
         validated_rows.append({"role": role, "path": raw, "sha256": actual})
 
     for role, payload in payloads.items():
+        if payload.get("input_bindings") != rows:
+            _fail("RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_SOURCE_HASH_MISMATCH", f"{role} input_bindings drifted from packet contract")
         if payload.get("binding_hashes") != expected_by_role:
             _fail("RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_SOURCE_HASH_MISMATCH", f"{role} binding_hashes drifted from packet contract")
     return validated_rows

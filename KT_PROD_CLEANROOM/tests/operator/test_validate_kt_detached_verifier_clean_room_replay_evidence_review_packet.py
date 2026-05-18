@@ -142,6 +142,18 @@ def test_rejects_source_hash_mismatch(tmp_path: Path, monkeypatch: pytest.Monkey
     assert excinfo.value.code == "RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_SOURCE_HASH_MISMATCH"
 
 
+def test_rejects_non_contract_artifact_input_binding_mismatch(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / packet.OUTPUTS["packet_receipt"]
+    payload = _load(path)
+    payload["input_bindings"][0]["sha256"] = "1" * 64
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(validation.LaneFailure) as excinfo:
+        validation.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_SOURCE_HASH_MISMATCH"
+
+
 def test_rejects_changed_bound_source_file(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     _copy_inputs(tmp_path)
     source = tmp_path / packet.INPUTS["execution_report"]
@@ -150,6 +162,18 @@ def test_rejects_changed_bound_source_file(tmp_path: Path, monkeypatch: pytest.M
     with pytest.raises(validation.LaneFailure) as excinfo:
         validation.run(output_root=tmp_path)
     assert excinfo.value.code == "RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_SOURCE_HASH_MISMATCH"
+
+
+def test_rejects_failed_evidence_scorecard(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / packet.OUTPUTS["evidence_scorecard"]
+    payload = _load(path)
+    payload["scorecard"]["overall_grade"] = "FAIL"
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(validation.LaneFailure) as excinfo:
+        validation.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_SCORECARD_FAILED"
 
 
 def test_rejects_positive_claim_with_nearby_negative_text(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -198,3 +222,19 @@ def test_rejects_duplicate_packet_reason_code(tmp_path: Path, monkeypatch: pytes
     with pytest.raises(validation.LaneFailure) as excinfo:
         validation.run(output_root=tmp_path)
     assert excinfo.value.code == "RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_REASON_CODE_DUPLICATE"
+
+
+def test_rejects_unexpected_branch(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    _patch_env(monkeypatch, tmp_path, branch="feature/not-this-lane")
+    with pytest.raises(validation.LaneFailure) as excinfo:
+        validation.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_BRANCH_DRIFT"
+
+
+def test_rejects_dirty_workspace_outside_validation_scope(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    _patch_env(monkeypatch, tmp_path, dirty="?? unrelated.txt\n")
+    with pytest.raises(validation.LaneFailure) as excinfo:
+        validation.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_DV_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VAL_BRANCH_DRIFT"
