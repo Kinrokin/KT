@@ -1,0 +1,49 @@
+{
+  "artifact_id": "KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_TUF_METADATA_SET",
+  "artifact_role": "tuf_metadata_set",
+  "external_audit_completed": false,
+  "generated_utc": "2026-05-18T15:03:45Z",
+  "metadata_mode": "PRE_RELEASE_CORRIDOR_AUTHORING_ONLY",
+  "release_execution_authorized": false,
+  "root": {
+    "role": "root",
+    "status": "BOUND_FROM_EXISTING_TUF_ROOT_INITIALIZATION",
+    "trust_root_id": "KT_TUF_ROOT_BOOTSTRAP_20260314"
+  },
+  "schema_id": "kt.supply_chain_release_corridor.tuf_metadata_set.v1",
+  "snapshot": {
+    "freeze_attack_must_fail_closed": true,
+    "role": "snapshot",
+    "targets_bound": 4
+  },
+  "targets": {
+    "role": "targets",
+    "targets": [
+      {
+        "length": null,
+        "path": "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
+        "sha256": "d750a18224fd8909a52eec4195f5fc4fd5e28ab308ac28ea604c623b19d490d1"
+      },
+      {
+        "length": null,
+        "path": "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
+        "sha256": "cbfd629f80dc3cb585fa0fe83232c902a3b24bf3dddeb9e20b4b9db8f14ce7db"
+      },
+      {
+        "length": null,
+        "path": "KT_PROD_CLEANROOM/reports/kt_public_verifier_sbom.json",
+        "sha256": "eb6d50d9fad5c643f9f2ad482f16efe307a2f0be0479cf7ce53435b82cf9baf8"
+      },
+      {
+        "length": null,
+        "path": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json",
+        "sha256": "4dfb11e67ffb200dd04d01d7302ea750f57ead1de4653523f09b1da7aa657011"
+      }
+    ]
+  },
+  "timestamp": {
+    "expired_metadata_must_fail_closed": true,
+    "expires_required": true,
+    "role": "timestamp"
+  }
+}

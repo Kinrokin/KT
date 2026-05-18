@@ -1,0 +1,43 @@
+{
+  "artifact_id": "KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_ATTACK_TEST_MATRIX",
+  "artifact_role": "attack_test_matrix",
+  "attack_scenarios": [
+    {
+      "detail": "Artifact digest swap must fail closed against bound SHA-256 inputs.",
+      "expected_validation_behavior": "FAIL_CLOSED",
+      "scenario_id": "artifact_swap_test"
+    },
+    {
+      "detail": "Older TUF metadata must fail closed before any release execution lane.",
+      "expected_validation_behavior": "FAIL_CLOSED",
+      "scenario_id": "tuf_rollback_test"
+    },
+    {
+      "detail": "Expired or frozen timestamp/snapshot metadata must fail closed.",
+      "expected_validation_behavior": "FAIL_CLOSED",
+      "scenario_id": "tuf_freeze_test"
+    },
+    {
+      "detail": "Expired metadata is a blocker, not a warning-only release condition.",
+      "expected_validation_behavior": "FAIL_CLOSED",
+      "scenario_id": "expired_metadata_test"
+    },
+    {
+      "detail": "Missing CycloneDX or SPDX SBOM evidence blocks validation.",
+      "expected_validation_behavior": "FAIL_CLOSED",
+      "scenario_id": "missing_sbom_test"
+    },
+    {
+      "detail": "Forged Rekor/Sigstore bundle evidence blocks validation.",
+      "expected_validation_behavior": "FAIL_CLOSED",
+      "scenario_id": "forged_rekor_bundle_test"
+    },
+    {
+      "detail": "in-toto layout or link drift blocks validation.",
+      "expected_validation_behavior": "FAIL_CLOSED",
+      "scenario_id": "in_toto_layout_drift_test"
+    }
+  ],
+  "release_execution_authorized": false,
+  "schema_id": "kt.supply_chain_release_corridor.attack_test_matrix.v1"
+}
