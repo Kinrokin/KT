@@ -1,6 +1,6 @@
 # KT External Re-Audit Attempt
 
-Current main: 5b6a82360d3c3e33a57126778801aee7f0de6ada
+Current main: 1502e06b85d980f9f5f21f7dca1384488cbffeb2
 Lane: RUN_KT_EXTERNAL_REAUDIT_ATTEMPT
 Outcome: KT_EXTERNAL_REAUDIT_DEFERRED__NAMED_EXTERNAL_GAP_REMAINS
 External re-audit attempt executed: true
