@@ -1,0 +1,15 @@
+schema_id: kt.bounded_pilot.deployment_profiles.v1
+authority: BOUNDED_PILOT_PREP
+profiles:
+  - id: internal_operator
+    scope: internal operational use
+    external_attestation_required: false
+    commercial_claims_authorized: false
+  - id: design_partner_review
+    scope: bounded pilot review
+    external_attestation_required: false
+    commercial_claims_authorized: false
+  - id: external_reaudit_reviewer
+    scope: independent attestation review
+    external_attestation_required: true
+    commercial_claims_authorized: false

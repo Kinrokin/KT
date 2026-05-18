@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kt.fp0.skill_quarantine_receipt.v2",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "skill_id",
+    "quarantine_reason",
+    "canonical_write_blocked",
+    "claim_expansion_blocked"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.fp0.skill_quarantine_receipt.v2"
+    },
+    "skill_id": {
+      "type": "string"
+    },
+    "quarantine_reason": {
+      "type": "string"
+    },
+    "canonical_write_blocked": {
+      "type": "boolean"
+    },
+    "claim_expansion_blocked": {
+      "type": "boolean"
+    }
+  }
+}

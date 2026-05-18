@@ -1,0 +1,32 @@
+{
+  "schema_id": "kt.launch.current_claim_ceiling.v1",
+  "authority": "CLAIM_BOUNDARY",
+  "current_state_label": "H06_EXTERNAL_REAUDIT_DEFERRED__INDEPENDENT_ATTESTATION_REQUIRED__CONTINUE_PREP_SHADOW_AND_INTERNAL_CAPABILITY_COMPLETION_UNDER_CLAIM_CEILING",
+  "allowed_claim_classes": [
+    "internal operational use",
+    "bounded pilot review",
+    "governed evidence and replay workflows",
+    "claim-control workflows",
+    "external independent attestation pending",
+    "prep-only highway work",
+    "FP0 no-claim-expansion overlay prep",
+    "adaptive law and capability work in prep/shadow mode"
+  ],
+  "forbidden_claim_classes": [
+    "external audit accepted or complete",
+    "independent certification",
+    "unrestricted commercial activation",
+    "commercial claims authorized",
+    "7B amplification proven",
+    "beyond-SOTA",
+    "S-tier",
+    "fully ratified autonomous civilization stack",
+    "medical or biological authority"
+  ],
+  "external_audit_completed": false,
+  "commercial_claims_authorized": false,
+  "seven_b_amplification_proven": false,
+  "s_tier_claimed": false,
+  "truth_engine_law_changed": false,
+  "trust_zone_law_changed": false
+}

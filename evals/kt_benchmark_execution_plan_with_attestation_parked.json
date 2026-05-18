@@ -1,0 +1,38 @@
+{
+  "schema_id": "kt.benchmark_execution_plan.attestation_parked.v1",
+  "authority": "PREP_SHADOW_NO_CLAIM_EXPANSION",
+  "purpose": "Prepare benchmark constitution and comparative proof while external attestation remains parked.",
+  "comparison_classes": [
+    "monolith-only baseline",
+    "best static adapter",
+    "routed adapter stack",
+    "governance-only platform",
+    "observability/eval stack",
+    "gateway/control-plane stack",
+    "guardrail-only stack"
+  ],
+  "metrics": [
+    "governed execution quality",
+    "proof delivery completeness",
+    "replayability",
+    "fail-closed discipline",
+    "operator accountability",
+    "adaptive performance under pressure",
+    "verified work per dollar",
+    "unauthorized claim leak rate",
+    "mean time to quarantine",
+    "mean time to reproduce"
+  ],
+  "required_outputs": [
+    "evals/benchmark_constitution.yaml",
+    "evals/baseline_registry.json",
+    "evals/comparative_scorecard.json",
+    "evals/monolith_vs_adapter_vs_router_matrix.json",
+    "evals/proof_bundle_comparison.json",
+    "evals/statistical_analysis_plan.md",
+    "evals/provider_runtime_bakeoff_scorecard.json",
+    "evals/7b_ablation_results.json"
+  ],
+  "superiority_claim_allowed_now": false,
+  "seven_b_amplification_claim_allowed_now": false
+}

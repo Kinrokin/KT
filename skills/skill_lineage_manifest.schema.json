@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kt.fp0.skill_lineage_manifest.v2",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "skill_id",
+    "draft_author",
+    "source_prompt_hash",
+    "stress_tests_passed",
+    "canonical_authority"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.fp0.skill_lineage_manifest.v2"
+    },
+    "skill_id": {
+      "type": "string"
+    },
+    "draft_author": {
+      "type": "string"
+    },
+    "source_prompt_hash": {
+      "type": "string"
+    },
+    "stress_tests_passed": {
+      "type": "boolean"
+    },
+    "canonical_authority": {
+      "const": false
+    }
+  }
+}

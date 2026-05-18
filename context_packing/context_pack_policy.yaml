@@ -1,0 +1,9 @@
+schema_id: kt.fp0.context_pack_policy.v2
+authority: PREP_ONLY_NO_CLAIM_EXPANSION
+canonical_format: JSON
+alternative_formats:
+  - TOON
+  - columnar
+rule: packed context may optimize prompt payloads but JSON remains canonical truth
+roundtrip_required: true
+claim_expansion_allowed: false

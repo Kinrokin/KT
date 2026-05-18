@@ -1,0 +1,10 @@
+schema_id: kt.fp0.claim_ceiling_gain_policy.v2
+authority: PREP_ONLY_NO_CLAIM_EXPANSION
+rule: internal state may tighten claim ceiling but cannot expand it
+maximum_claim_ceiling_gain: 0
+forbidden_expansions:
+  - external audit completion
+  - commercial claim authorization
+  - 7B amplification proof
+  - S-tier
+  - beyond-SOTA

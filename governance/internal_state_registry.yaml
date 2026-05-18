@@ -1,0 +1,11 @@
+schema_id: kt.fp0.internal_state_registry.v2
+authority: PREP_ONLY_NO_CLAIM_EXPANSION
+states:
+  - id: nominal
+    effect: default routing and verifier strictness
+  - id: uncertainty_high
+    effect: tighten claim ceiling and verifier strictness
+  - id: cost_pressure_high
+    effect: prefer compression and cheaper candidates without widening claims
+  - id: incident_risk_high
+    effect: increase quarantine gain and reduce budget for risky routes

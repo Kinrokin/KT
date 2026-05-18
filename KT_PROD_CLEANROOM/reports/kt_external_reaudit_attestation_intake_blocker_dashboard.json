@@ -1,0 +1,17 @@
+{
+  "artifact_id": "KT_EXTERNAL_REAUDIT_ATTESTATION_INTAKE_BLOCKER_DASHBOARD",
+  "blocker_count": 1,
+  "blockers": [
+    {
+      "blocker_id": "independent_external_reaudit_attestation_missing",
+      "repair": "Collect an attestation from an independent external reviewer; do not self-author it.",
+      "required_artifact": "KT_PROD_CLEANROOM/reports/kt_external_reaudit_independent_attestation.json",
+      "status": "BLOCKING"
+    }
+  ],
+  "claim_ceiling_preserved": true,
+  "continuation_label": "H06_EXTERNAL_REAUDIT_DEFERRED__INDEPENDENT_ATTESTATION_REQUIRED__CONTINUE_PREP_SHADOW_AND_INTERNAL_CAPABILITY_COMPLETION_UNDER_CLAIM_CEILING",
+  "lane": "VALIDATE_EXTERNAL_REAUDIT_INDEPENDENT_ATTESTATION",
+  "next_lawful_move": "COLLECT_INDEPENDENT_EXTERNAL_REAUDIT_ATTESTATION",
+  "schema_id": "kt.external_reaudit.attestation_intake_blocker_dashboard.v1"
+}

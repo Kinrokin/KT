@@ -1,0 +1,31 @@
+{
+  "schema_id": "kt.fp0.local_vs_cloud_bakeoff_matrix.v2",
+  "authority": "PREP_ONLY_NO_CLAIM_EXPANSION",
+  "overlay": "KT_FRONTIER_RUNTIME_STATE_AND_CONTEXT_EFFICIENCY_PATCH_V2",
+  "matrix_rows": [
+    {
+      "candidate": "local_sandbox",
+      "measures": [
+        "latency",
+        "cost",
+        "context_pack_efficiency",
+        "receipt_completeness",
+        "claim_drift_rate"
+      ],
+      "claim_authority": "NONE"
+    },
+    {
+      "candidate": "cloud_baseline",
+      "measures": [
+        "latency",
+        "cost",
+        "quality",
+        "tool_success",
+        "replay_success"
+      ],
+      "claim_authority": "NONE"
+    }
+  ],
+  "cannot_claim_provider_superiority": true,
+  "cannot_claim_7b_amplification_proven": true
+}

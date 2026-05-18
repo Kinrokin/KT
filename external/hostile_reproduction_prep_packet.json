@@ -1,0 +1,28 @@
+{
+  "schema_id": "kt.external_hostile_reproduction_prep_packet.attestation_parked.v1",
+  "authority": "PREP_ONLY_NO_CLAIM_EXPANSION",
+  "purpose": "Prepare hostile reproduction before external reviewers are available.",
+  "attack_surfaces": [
+    "forged receipts",
+    "forged SBOMs",
+    "forged Rekor bundles",
+    "TUF rollback or freeze",
+    "prompt injection",
+    "tool injection",
+    "claim ceiling mutation",
+    "mutable overwritten artifact replay",
+    "benchmark contamination",
+    "evaluator capture",
+    "credential leakage",
+    "CI privilege escalation",
+    "adapter schema drift",
+    "router authority drift",
+    "self-written skill abuse",
+    "contained subagent escape",
+    "TOON or context corruption",
+    "local model overclaiming",
+    "high-risk state failing to tighten claim ceiling"
+  ],
+  "external_reviewer_required_for_hostile_reproduction_validation": true,
+  "validated_now": false
+}

@@ -1,0 +1,18 @@
+{
+  "schema_id": "kt.bounded_pilot.evidence_pack_manifest.v1",
+  "authority": "BOUNDED_PILOT_PREP",
+  "launch_wedge": [
+    "KT Verifier",
+    "KT Evidence Pack",
+    "KT Claim Compiler"
+  ],
+  "required_inputs": [
+    "governance/current_claim_ceiling.json",
+    "governance/allowed_launch_claims.json",
+    "governance/forbidden_launch_claims.json",
+    "external/evidence_bundle_manifest.json"
+  ],
+  "external_attestation_pending": true,
+  "commercial_claims_authorized": false,
+  "external_audit_completed": false
+}

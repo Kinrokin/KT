@@ -1,0 +1,11 @@
+{
+  "schema_id": "kt.repo_cleanup.historical_receipt_index.v1",
+  "authority": "PREP_ONLY_INDEX",
+  "index_policy": "hash and index historical proof before moving it out of default context",
+  "default_agent_context": [
+    "repo_cleanup/current_authority_manifest.json",
+    "governance/current_claim_ceiling.json",
+    "KT_PROD_CLEANROOM/reports/kt_e2e_completion_with_external_attestation_parked_v1.json"
+  ],
+  "archive_search_required_for_historical_questions": true
+}

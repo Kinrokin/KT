@@ -1,0 +1,630 @@
+{
+  "activation_allowed": false,
+  "artifact_id": "HIGHWAY_SUPERLANE_REGISTRY_V1",
+  "authority": "PREP_ONLY",
+  "blocked_by": [
+    "H06_INDEPENDENT_EXTERNAL_REAUDIT_ATTESTATION_REQUIRED",
+    "HIGHWAY_CANONICAL_PROMOTION_NOT_AUTHORIZED",
+    "COMMERCIAL_CLAIM_AUTHORIZATION_NOT_GRANTED",
+    "FP0_NO_CLAIM_EXPANSION_PREP_ONLY"
+  ],
+  "cannot_activate_fp0_as_authority": true,
+  "cannot_claim_canonical_highway_status": true,
+  "cannot_claim_external_audit_complete": true,
+  "cannot_mutate_trust_zone_law": true,
+  "cannot_mutate_truth_engine_law": true,
+  "detached_verifier_authorized": true,
+  "final_label": "HIGHWAY_PATHWAY_SYSTEM_v1_PREP_ONLY_RELANDED__AUTHORITY_BLOCKED_BY_H06_EXTERNAL_ATTESTATION_REQUIRED",
+  "fp0_authority": "PREP_ONLY_NO_CLAIM_EXPANSION",
+  "generated_utc": "2026-05-18T21:41:14Z",
+  "mode": "PREP_ONLY",
+  "schema_id": "kt.highway.highway_superlane_registry.v1",
+  "superlane": null,
+  "superlanes": [
+    {
+      "allowed_inputs": [
+        "explicit_operator_intent",
+        "declared_scope",
+        "current_truth_state"
+      ],
+      "allowed_modes": [
+        "PREP_ONLY",
+        "SHADOW_ONLY",
+        "WARN_ONLY",
+        "FAIL_CLOSED",
+        "CANONICAL_ACTIVE",
+        "BLOCKED"
+      ],
+      "authority_required": "H06_EXTERNAL_ATTESTATION_OR_SEPARATE_PROMOTION_AUTHORITY",
+      "blocked_modes": [
+        "CANONICAL_ACTIVE",
+        "FAIL_CLOSED"
+      ],
+      "canonical_scope_effect": "NONE_PREP_ONLY",
+      "ci_enforcement_level": "PREP_ONLY_LOCAL",
+      "entry_conditions": [
+        "Truth Lock validated",
+        "Detached Verifier advanced",
+        "H06 external attestation remains parked"
+      ],
+      "exit_conditions": [
+        "activation remains blocked until separate promotion authority exists"
+      ],
+      "forbidden_inputs": [
+        "implicit_authority",
+        "branch_bound_truth_as_canonical",
+        "unsupported_claims"
+      ],
+      "id": "AUTHORITY_GATE",
+      "name": "Authority Gate / Truth Lock Wall",
+      "promotion_rules": "must follow PREP_ONLY -> SHADOW_ONLY -> WARN_ONLY -> FAIL_CLOSED_CANDIDATE -> CANONICAL_ACTIVE",
+      "purpose": "Prevent highway work from outrunning current KT authority.",
+      "required_receipts": [
+        "highway_authority_gate_receipt.json"
+      ],
+      "rollback_rules": "required before any canonical-impacting promotion",
+      "truth_sources": [
+        "highway_authority_gate_receipt",
+        "Truth Lock state",
+        "FP0 queue state"
+      ]
+    },
+    {
+      "allowed_inputs": [
+        "explicit_operator_intent",
+        "declared_scope",
+        "current_truth_state"
+      ],
+      "allowed_modes": [
+        "PREP_ONLY",
+        "SHADOW_ONLY",
+        "WARN_ONLY",
+        "FAIL_CLOSED",
+        "CANONICAL_ACTIVE",
+        "BLOCKED"
+      ],
+      "authority_required": "PREP_ONLY_DESIGN_AND_LOCAL_VALIDATION",
+      "blocked_modes": [
+        "CANONICAL_ACTIVE",
+        "FAIL_CLOSED"
+      ],
+      "canonical_scope_effect": "NONE_PREP_ONLY",
+      "ci_enforcement_level": "PREP_ONLY_LOCAL",
+      "entry_conditions": [
+        "highway pathway system packet accepted as prep-only work"
+      ],
+      "exit_conditions": [
+        "registry and contracts are parseable and explicit"
+      ],
+      "forbidden_inputs": [
+        "implicit_authority",
+        "branch_bound_truth_as_canonical",
+        "unsupported_claims"
+      ],
+      "id": "HIGHWAY_CONSTITUTION",
+      "name": "Highway Constitution / Registry",
+      "promotion_rules": "must follow PREP_ONLY -> SHADOW_ONLY -> WARN_ONLY -> FAIL_CLOSED_CANDIDATE -> CANONICAL_ACTIVE",
+      "purpose": "Define the lane system as law, not vibes.",
+      "required_receipts": [
+        "highway_matrix_receipt.json"
+      ],
+      "rollback_rules": "required before any canonical-impacting promotion",
+      "truth_sources": [
+        "highway_authority_gate_receipt",
+        "Truth Lock state",
+        "FP0 queue state"
+      ]
+    },
+    {
+      "allowed_inputs": [
+        "explicit_operator_intent",
+        "declared_scope",
+        "current_truth_state"
+      ],
+      "allowed_modes": [
+        "PREP_ONLY",
+        "SHADOW_ONLY",
+        "WARN_ONLY",
+        "FAIL_CLOSED",
+        "CANONICAL_ACTIVE",
+        "BLOCKED"
+      ],
+      "authority_required": "EXPLICIT_OPERATOR_INTENT_AND_SCOPE",
+      "blocked_modes": [
+        "CANONICAL_ACTIVE",
+        "FAIL_CLOSED"
+      ],
+      "canonical_scope_effect": "NONE_PREP_ONLY",
+      "ci_enforcement_level": "PREP_ONLY_LOCAL",
+      "entry_conditions": [
+        "work item includes intent and declared scope"
+      ],
+      "exit_conditions": [
+        "route receipt emitted or blocked with reason"
+      ],
+      "forbidden_inputs": [
+        "implicit_authority",
+        "branch_bound_truth_as_canonical",
+        "unsupported_claims"
+      ],
+      "id": "LANE_ADMISSION_AND_ROUTING",
+      "name": "Lane Admission And Routing",
+      "promotion_rules": "must follow PREP_ONLY -> SHADOW_ONLY -> WARN_ONLY -> FAIL_CLOSED_CANDIDATE -> CANONICAL_ACTIVE",
+      "purpose": "Classify work into one primary highway lane with optional secondary advisory lanes.",
+      "required_receipts": [
+        "highway_route_receipt.json"
+      ],
+      "rollback_rules": "required before any canonical-impacting promotion",
+      "truth_sources": [
+        "highway_authority_gate_receipt",
+        "Truth Lock state",
+        "FP0 queue state"
+      ]
+    },
+    {
+      "allowed_inputs": [
+        "explicit_operator_intent",
+        "declared_scope",
+        "current_truth_state"
+      ],
+      "allowed_modes": [
+        "PREP_ONLY",
+        "SHADOW_ONLY",
+        "WARN_ONLY",
+        "FAIL_CLOSED",
+        "CANONICAL_ACTIVE",
+        "BLOCKED"
+      ],
+      "authority_required": "TRUTH_LOCK_VALIDATED_CANONICAL_RUNTIME_SCOPE",
+      "blocked_modes": [
+        "CANONICAL_ACTIVE",
+        "FAIL_CLOSED"
+      ],
+      "canonical_scope_effect": "BLOCKED_UNTIL_AUTHORIZED",
+      "ci_enforcement_level": "PREP_ONLY_LOCAL",
+      "entry_conditions": [
+        "operator intent touches runtime or truth writers"
+      ],
+      "exit_conditions": [
+        "no mutation or scoped non-regression proof"
+      ],
+      "forbidden_inputs": [
+        "implicit_authority",
+        "branch_bound_truth_as_canonical",
+        "unsupported_claims"
+      ],
+      "id": "CANONICAL_RUNTIME",
+      "name": "Canonical Runtime",
+      "promotion_rules": "must follow PREP_ONLY -> SHADOW_ONLY -> WARN_ONLY -> FAIL_CLOSED_CANDIDATE -> CANONICAL_ACTIVE",
+      "purpose": "Protect safe-run and canonical runtime routes.",
+      "required_receipts": [
+        "highway_canonical_runtime_guard_receipt.json"
+      ],
+      "rollback_rules": "required before any canonical-impacting promotion",
+      "truth_sources": [
+        "highway_authority_gate_receipt",
+        "Truth Lock state",
+        "FP0 queue state"
+      ]
+    },
+    {
+      "allowed_inputs": [
+        "explicit_operator_intent",
+        "declared_scope",
+        "current_truth_state"
+      ],
+      "allowed_modes": [
+        "PREP_ONLY",
+        "SHADOW_ONLY",
+        "WARN_ONLY",
+        "FAIL_CLOSED",
+        "CANONICAL_ACTIVE",
+        "BLOCKED"
+      ],
+      "authority_required": "TRUTH_ENGINE_SUPPORT",
+      "blocked_modes": [
+        "CANONICAL_ACTIVE",
+        "FAIL_CLOSED"
+      ],
+      "canonical_scope_effect": "NONE_PREP_ONLY",
+      "ci_enforcement_level": "PREP_ONLY_LOCAL",
+      "entry_conditions": [
+        "status or posture claim requested"
+      ],
+      "exit_conditions": [
+        "posture conflict count zero"
+      ],
+      "forbidden_inputs": [
+        "implicit_authority",
+        "branch_bound_truth_as_canonical",
+        "unsupported_claims"
+      ],
+      "id": "TRUTH_AND_POSTURE",
+      "name": "Truth And Posture",
+      "promotion_rules": "must follow PREP_ONLY -> SHADOW_ONLY -> WARN_ONLY -> FAIL_CLOSED_CANDIDATE -> CANONICAL_ACTIVE",
+      "purpose": "Make highway posture mechanically derived.",
+      "required_receipts": [
+        "highway_posture_receipt.json",
+        "highway_posture_conflict_receipt.json"
+      ],
+      "rollback_rules": "required before any canonical-impacting promotion",
+      "truth_sources": [
+        "highway_authority_gate_receipt",
+        "Truth Lock state",
+        "FP0 queue state"
+      ]
+    },
+    {
+      "allowed_inputs": [
+        "explicit_operator_intent",
+        "declared_scope",
+        "current_truth_state"
+      ],
+      "allowed_modes": [
+        "PREP_ONLY",
+        "SHADOW_ONLY",
+        "WARN_ONLY",
+        "FAIL_CLOSED",
+        "CANONICAL_ACTIVE",
+        "BLOCKED"
+      ],
+      "authority_required": "TRUST_ZONE_PASS",
+      "blocked_modes": [
+        "CANONICAL_ACTIVE",
+        "FAIL_CLOSED"
+      ],
+      "canonical_scope_effect": "NONE_PREP_ONLY",
+      "ci_enforcement_level": "PREP_ONLY_LOCAL",
+      "entry_conditions": [
+        "zone transition or exclusion declared"
+      ],
+      "exit_conditions": [
+        "explicit reviewed exclusions only"
+      ],
+      "forbidden_inputs": [
+        "implicit_authority",
+        "branch_bound_truth_as_canonical",
+        "unsupported_claims"
+      ],
+      "id": "BOUNDARY_AND_TRUST_ZONE",
+      "name": "Boundary And Trust Zone",
+      "promotion_rules": "must follow PREP_ONLY -> SHADOW_ONLY -> WARN_ONLY -> FAIL_CLOSED_CANDIDATE -> CANONICAL_ACTIVE",
+      "purpose": "Ensure highway lanes do not hide failures behind renames.",
+      "required_receipts": [
+        "highway_trust_zone_receipt.json"
+      ],
+      "rollback_rules": "required before any canonical-impacting promotion",
+      "truth_sources": [
+        "highway_authority_gate_receipt",
+        "Truth Lock state",
+        "FP0 queue state"
+      ]
+    },
+    {
+      "allowed_inputs": [
+        "explicit_operator_intent",
+        "declared_scope",
+        "current_truth_state"
+      ],
+      "allowed_modes": [
+        "PREP_ONLY",
+        "SHADOW_ONLY",
+        "WARN_ONLY",
+        "FAIL_CLOSED",
+        "CANONICAL_ACTIVE",
+        "BLOCKED"
+      ],
+      "authority_required": "REGULATED_SCOPE_RECEIPTS",
+      "blocked_modes": [
+        "CANONICAL_ACTIVE",
+        "FAIL_CLOSED"
+      ],
+      "canonical_scope_effect": "NONE_PREP_ONLY",
+      "ci_enforcement_level": "PREP_ONLY_LOCAL",
+      "entry_conditions": [
+        "regulated or client-facing risk surface"
+      ],
+      "exit_conditions": [
+        "claim limiter and evidence manifest present"
+      ],
+      "forbidden_inputs": [
+        "implicit_authority",
+        "branch_bound_truth_as_canonical",
+        "unsupported_claims"
+      ],
+      "id": "REGULATED_WORK",
+      "name": "Regulated Work",
+      "promotion_rules": "must follow PREP_ONLY -> SHADOW_ONLY -> WARN_ONLY -> FAIL_CLOSED_CANDIDATE -> CANONICAL_ACTIVE",
+      "purpose": "Route higher-risk work into stricter invariants.",
+      "required_receipts": [
+        "highway_regulated_lane_receipt.json"
+      ],
+      "rollback_rules": "required before any canonical-impacting promotion",
+      "truth_sources": [
+        "highway_authority_gate_receipt",
+        "Truth Lock state",
+        "FP0 queue state"
+      ]
+    },
+    {
+      "allowed_inputs": [
+        "explicit_operator_intent",
+        "declared_scope",
+        "current_truth_state"
+      ],
+      "allowed_modes": [
+        "PREP_ONLY",
+        "SHADOW_ONLY",
+        "WARN_ONLY",
+        "FAIL_CLOSED",
+        "CANONICAL_ACTIVE",
+        "BLOCKED"
+      ],
+      "authority_required": "INCIDENT_OR_FREEZE_CAUSE",
+      "blocked_modes": [
+        "AUTHORITY_BYPASS"
+      ],
+      "canonical_scope_effect": "FREEZE_ONLY_NO_AUTHORITY_BYPASS",
+      "ci_enforcement_level": "PREP_ONLY_LOCAL",
+      "entry_conditions": [
+        "contradiction, drift, breach, missing receipt, or overclaim"
+      ],
+      "exit_conditions": [
+        "freeze or incident receipt emitted"
+      ],
+      "forbidden_inputs": [
+        "implicit_authority",
+        "branch_bound_truth_as_canonical",
+        "unsupported_claims"
+      ],
+      "id": "EMERGENCY_AND_FREEZE",
+      "name": "Emergency And Freeze",
+      "promotion_rules": "must follow PREP_ONLY -> SHADOW_ONLY -> WARN_ONLY -> FAIL_CLOSED_CANDIDATE -> CANONICAL_ACTIVE",
+      "purpose": "Freeze unsafe changes and preserve evidence without bypassing law.",
+      "required_receipts": [
+        "highway_emergency_freeze_receipt.json",
+        "highway_incident_receipt.json"
+      ],
+      "rollback_rules": "required before any canonical-impacting promotion",
+      "truth_sources": [
+        "highway_authority_gate_receipt",
+        "Truth Lock state",
+        "FP0 queue state"
+      ]
+    },
+    {
+      "allowed_inputs": [
+        "explicit_operator_intent",
+        "declared_scope",
+        "current_truth_state"
+      ],
+      "allowed_modes": [
+        "PREP_ONLY",
+        "SHADOW_ONLY",
+        "WARN_ONLY",
+        "FAIL_CLOSED",
+        "CANONICAL_ACTIVE",
+        "BLOCKED"
+      ],
+      "authority_required": "ADAPTIVE_RATIFICATION_ORDER",
+      "blocked_modes": [
+        "CANONICAL_ACTIVE",
+        "FAIL_CLOSED"
+      ],
+      "canonical_scope_effect": "NONE_PREP_ONLY",
+      "ci_enforcement_level": "PREP_ONLY_LOCAL",
+      "entry_conditions": [
+        "adapter, router, lobe, crucible, or FP0 work"
+      ],
+      "exit_conditions": [
+        "prep-only or ratified ladder state"
+      ],
+      "forbidden_inputs": [
+        "implicit_authority",
+        "branch_bound_truth_as_canonical",
+        "unsupported_claims"
+      ],
+      "id": "LAB_AND_ADAPTIVE_RATIFICATION",
+      "name": "Lab And Adaptive Ratification",
+      "promotion_rules": "must follow PREP_ONLY -> SHADOW_ONLY -> WARN_ONLY -> FAIL_CLOSED_CANDIDATE -> CANONICAL_ACTIVE",
+      "purpose": "Prepare adaptive work without letting it outrun authority.",
+      "required_receipts": [
+        "highway_adaptive_ratification_receipt.json"
+      ],
+      "rollback_rules": "required before any canonical-impacting promotion",
+      "truth_sources": [
+        "highway_authority_gate_receipt",
+        "Truth Lock state",
+        "FP0 queue state"
+      ]
+    },
+    {
+      "allowed_inputs": [
+        "explicit_operator_intent",
+        "declared_scope",
+        "current_truth_state"
+      ],
+      "allowed_modes": [
+        "PREP_ONLY",
+        "SHADOW_ONLY",
+        "WARN_ONLY",
+        "FAIL_CLOSED",
+        "CANONICAL_ACTIVE",
+        "BLOCKED"
+      ],
+      "authority_required": "PROMOTION_LADDER_AND_ROLLBACK_PLAN",
+      "blocked_modes": [
+        "CANONICAL_ACTIVE",
+        "FAIL_CLOSED"
+      ],
+      "canonical_scope_effect": "BLOCKED_UNTIL_AUTHORIZED",
+      "ci_enforcement_level": "PREP_ONLY_LOCAL",
+      "entry_conditions": [
+        "promotion or rollback requested"
+      ],
+      "exit_conditions": [
+        "allowed ladder move or blocked jump"
+      ],
+      "forbidden_inputs": [
+        "implicit_authority",
+        "branch_bound_truth_as_canonical",
+        "unsupported_claims"
+      ],
+      "id": "PROMOTION_AND_ROLLBACK",
+      "name": "Promotion And Rollback",
+      "promotion_rules": "must follow PREP_ONLY -> SHADOW_ONLY -> WARN_ONLY -> FAIL_CLOSED_CANDIDATE -> CANONICAL_ACTIVE",
+      "purpose": "Make all movement toward canonical status governed and reversible.",
+      "required_receipts": [
+        "highway_promotion_receipt.json",
+        "highway_rollback_receipt.json"
+      ],
+      "rollback_rules": "required before any canonical-impacting promotion",
+      "truth_sources": [
+        "highway_authority_gate_receipt",
+        "Truth Lock state",
+        "FP0 queue state"
+      ]
+    },
+    {
+      "allowed_inputs": [
+        "explicit_operator_intent",
+        "declared_scope",
+        "current_truth_state"
+      ],
+      "allowed_modes": [
+        "PREP_ONLY",
+        "SHADOW_ONLY",
+        "WARN_ONLY",
+        "FAIL_CLOSED",
+        "CANONICAL_ACTIVE",
+        "BLOCKED"
+      ],
+      "authority_required": "CLAIM_CEILING_AND_SAFE_RUN_BOUNDARY",
+      "blocked_modes": [
+        "CANONICAL_ACTIVE",
+        "FAIL_CLOSED"
+      ],
+      "canonical_scope_effect": "NONE_PREP_ONLY",
+      "ci_enforcement_level": "PREP_ONLY_LOCAL",
+      "entry_conditions": [
+        "commercial wrapper, runbook, public verifier, or claim surface"
+      ],
+      "exit_conditions": [
+        "claims remain bounded by proof"
+      ],
+      "forbidden_inputs": [
+        "implicit_authority",
+        "branch_bound_truth_as_canonical",
+        "unsupported_claims"
+      ],
+      "id": "COMMERCIAL_DELIVERY",
+      "name": "Commercial Delivery",
+      "promotion_rules": "must follow PREP_ONLY -> SHADOW_ONLY -> WARN_ONLY -> FAIL_CLOSED_CANDIDATE -> CANONICAL_ACTIVE",
+      "purpose": "Prepare commercial delivery without unsupported claims.",
+      "required_receipts": [
+        "highway_commercial_delivery_receipt.json"
+      ],
+      "rollback_rules": "required before any canonical-impacting promotion",
+      "truth_sources": [
+        "highway_authority_gate_receipt",
+        "Truth Lock state",
+        "FP0 queue state"
+      ]
+    },
+    {
+      "allowed_inputs": [
+        "explicit_operator_intent",
+        "declared_scope",
+        "current_truth_state"
+      ],
+      "allowed_modes": [
+        "PREP_ONLY",
+        "SHADOW_ONLY",
+        "WARN_ONLY",
+        "FAIL_CLOSED",
+        "CANONICAL_ACTIVE",
+        "BLOCKED"
+      ],
+      "authority_required": "COMPARATIVE_RECEIPTS",
+      "blocked_modes": [
+        "CANONICAL_ACTIVE",
+        "FAIL_CLOSED"
+      ],
+      "canonical_scope_effect": "NONE_PREP_ONLY",
+      "ci_enforcement_level": "PREP_ONLY_LOCAL",
+      "entry_conditions": [
+        "benchmark, baseline, provider, or superiority work"
+      ],
+      "exit_conditions": [
+        "prepared-not-claimed or evidence-backed result"
+      ],
+      "forbidden_inputs": [
+        "implicit_authority",
+        "branch_bound_truth_as_canonical",
+        "unsupported_claims"
+      ],
+      "id": "COMPARATIVE_PROOF",
+      "name": "Comparative Proof",
+      "promotion_rules": "must follow PREP_ONLY -> SHADOW_ONLY -> WARN_ONLY -> FAIL_CLOSED_CANDIDATE -> CANONICAL_ACTIVE",
+      "purpose": "Prepare external comparison without self-referential superiority claims.",
+      "required_receipts": [
+        "highway_comparative_proof_receipt.json"
+      ],
+      "rollback_rules": "required before any canonical-impacting promotion",
+      "truth_sources": [
+        "highway_authority_gate_receipt",
+        "Truth Lock state",
+        "FP0 queue state"
+      ]
+    },
+    {
+      "allowed_inputs": [
+        "explicit_operator_intent",
+        "declared_scope",
+        "current_truth_state"
+      ],
+      "allowed_modes": [
+        "PREP_ONLY",
+        "SHADOW_ONLY",
+        "WARN_ONLY",
+        "FAIL_CLOSED",
+        "CANONICAL_ACTIVE",
+        "BLOCKED"
+      ],
+      "authority_required": "MATRIX_PASS_AND_AUTHORITY_GATE",
+      "blocked_modes": [
+        "CANONICAL_ACTIVE",
+        "FAIL_CLOSED"
+      ],
+      "canonical_scope_effect": "NONE_PREP_ONLY",
+      "ci_enforcement_level": "PREP_ONLY_LOCAL",
+      "entry_conditions": [
+        "highway matrix run"
+      ],
+      "exit_conditions": [
+        "consolidated receipt emitted"
+      ],
+      "forbidden_inputs": [
+        "implicit_authority",
+        "branch_bound_truth_as_canonical",
+        "unsupported_claims"
+      ],
+      "id": "CI_VERIFICATION_RELEASE_BARRIER",
+      "name": "CI Verification Release Barrier",
+      "promotion_rules": "must follow PREP_ONLY -> SHADOW_ONLY -> WARN_ONLY -> FAIL_CLOSED_CANDIDATE -> CANONICAL_ACTIVE",
+      "purpose": "Consolidate highway verification into a matrix barrier.",
+      "required_receipts": [
+        "highway_matrix_receipt.json"
+      ],
+      "rollback_rules": "required before any canonical-impacting promotion",
+      "truth_sources": [
+        "highway_authority_gate_receipt",
+        "Truth Lock state",
+        "FP0 queue state"
+      ]
+    }
+  ],
+  "truth_lock_replay_canonical": true,
+  "truth_lock_validation_authorized": true,
+  "work_order_id": "KT_HIGHWAY_PATHWAY_SYSTEM_SUPERLANE_INITIATION_v1_0"
+}

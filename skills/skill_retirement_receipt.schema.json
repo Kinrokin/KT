@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kt.fp0.skill_retirement_receipt.v2",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "skill_id",
+    "retirement_reason",
+    "replacement_skill_id",
+    "canonical_claims_removed"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.fp0.skill_retirement_receipt.v2"
+    },
+    "skill_id": {
+      "type": "string"
+    },
+    "retirement_reason": {
+      "type": "string"
+    },
+    "replacement_skill_id": {
+      "type": "string"
+    },
+    "canonical_claims_removed": {
+      "type": "boolean"
+    }
+  }
+}

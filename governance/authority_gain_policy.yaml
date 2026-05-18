@@ -1,0 +1,5 @@
+schema_id: kt.fp0.authority_gain_policy.v2
+authority: PREP_ONLY_NO_CLAIM_EXPANSION
+rule: internal state may never increase authority beyond validated lane law
+maximum_authority_gain: 0
+failure_action: block_authority_widening

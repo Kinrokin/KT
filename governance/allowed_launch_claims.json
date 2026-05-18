@@ -1,0 +1,16 @@
+{
+  "schema_id": "kt.launch.allowed_claims.v1",
+  "authority": "CLAIM_BOUNDARY",
+  "allowed_claims": [
+    "KT is in internal operational use as a governed evidence, replay, and claim-control system.",
+    "KT is available for bounded pilot review of verifier, evidence-pack, and claim-compiler workflows.",
+    "Independent external re-audit attestation remains pending.",
+    "Commercial claims are bounded by the current claim ceiling.",
+    "Adaptive law, capability modules, benchmark work, highway shadow work, and FP0 overlay work may continue in prep or shadow mode without expanding claims."
+  ],
+  "requires_current_claim_ceiling": true,
+  "cannot_authorize_external_audit_completion": true,
+  "cannot_authorize_commercial_activation_claims": true,
+  "cannot_authorize_7b_amplification_claims": true,
+  "cannot_authorize_s_tier_claims": true
+}
