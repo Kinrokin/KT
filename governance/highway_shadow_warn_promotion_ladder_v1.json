@@ -1,0 +1,27 @@
+{
+  "allowed_now": [
+    "SHADOW_READY_CANDIDATE",
+    "WARN_ONLY_PREP"
+  ],
+  "artifact_id": "HIGHWAY_SHADOW_WARN_PROMOTION_LADDER_V1",
+  "authority": "PREP_ONLY_PROMOTION_PLAN",
+  "canonical_authority_allowed_now": false,
+  "current_state": "PREP_ONLY_RELANDED",
+  "promotion_order": [
+    "PREP_ONLY",
+    "SHADOW_READY",
+    "WARN_ONLY_ACTIVE",
+    "FAIL_CLOSED_CANDIDATE",
+    "CANONICAL_ACTIVE"
+  ],
+  "required_shadow_proof": [
+    "authority gate observes H06 blocker",
+    "route resolver emits no canonical effect",
+    "posture conflict count is zero",
+    "commercial claim guard rejects overclaim",
+    "promotion gate rejects direct prep-to-canonical jump"
+  ],
+  "schema_id": "kt.highway.shadow_warn_promotion_ladder.v1",
+  "target_shadow_label": "HIGHWAY_SYSTEM_SHADOW_READY__NO_CANONICAL_AUTHORITY",
+  "target_warn_label": "HIGHWAY_WARN_ONLY_ACTIVE__NO_CLAIM_EXPANSION"
+}
