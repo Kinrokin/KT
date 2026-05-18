@@ -43,6 +43,7 @@ SOURCE_INPUTS = {
     "product_operator_runbook": "KT_PROD_CLEANROOM/product/operator_runbook_v2.md",
     "product_deployment_profiles": "KT_PROD_CLEANROOM/product/deployment_profiles.json",
     "data_governance_pack_prep_only": "KT_PROD_CLEANROOM/reports/kt_data_governance_pack_prep_only.md",
+    "public_verifier_manifest": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
 }
 
 INPUTS = {**PREDECESSOR_INPUTS, **SOURCE_INPUTS}
@@ -100,6 +101,8 @@ AUTHORITY_DRIFT_KEYS = predecessor.AUTHORITY_DRIFT_KEYS | frozenset(
         "commercial_proof_plane_active",
         "commercial_activation_claim_authorized",
         "commercial_activation_claims_authorized",
+        "allowed_claims_authorize_commercial_activation_claims",
+        "benchmark_prep_authorizes_commercial_activation",
         "external_audit_completed",
         "external_audit_claimed_complete",
         "adversarial_proof_corridor_validated",
@@ -265,13 +268,26 @@ def _validate_sources(root: Path, payloads: Dict[str, Dict[str, Any]]) -> None:
         _fail("RC_KT_COMMERCIAL_PROOF_PLANE_SOURCE_STATUS_FAILED", "H03 claim states must expose allowed and forbidden claims")
     if "Commercial activation claims are authorized." in allowed:
         _fail("RC_KT_COMMERCIAL_PROOF_PLANE_CLAIM_BOUNDARY_BREACH", "allowed claims include commercial activation authorization")
-    for required in ("Commercial activation claims are authorized.", "External audit is complete.", "7B amplification is proven."):
+    required_forbidden_claims = (
+        "External audit is complete.",
+        "Commercial activation claims are authorized.",
+        "KT is production-commercial live.",
+        "7B amplification is proven.",
+        "Beyond-SOTA capability is proven.",
+        "S-tier claim is allowed.",
+        "FP0 or highway shadow is canonical authority.",
+    )
+    for required in required_forbidden_claims:
         if required not in forbidden:
             _fail("RC_KT_COMMERCIAL_PROOF_PLANE_SOURCE_STATUS_FAILED", f"forbidden claims missing {required!r}")
+    if payloads["h03_allowed_claims"].get("allowed_claims_authorize_commercial_activation_claims") is not False:
+        _fail("RC_KT_COMMERCIAL_PROOF_PLANE_PREMATURE_AUTHORITY", "H03 allowed claims authorize commercial activation claims")
 
     claim_ceiling = payloads["claim_ceiling_current_state"]
     if claim_ceiling.get("commercial_activation_claim_authorized") is not False:
         _fail("RC_KT_COMMERCIAL_PROOF_PLANE_PREMATURE_AUTHORITY", "claim ceiling authorizes commercial activation claims")
+    if claim_ceiling.get("benchmark_prep_authorizes_commercial_activation") is not False:
+        _fail("RC_KT_COMMERCIAL_PROOF_PLANE_PREMATURE_AUTHORITY", "benchmark prep authorizes commercial activation")
 
     commercial_receipt = payloads["commercial_claim_compiler_receipt"]
     if commercial_receipt.get("status") != "PASS":
@@ -460,7 +476,7 @@ def _outputs(base: Dict[str, Any], payloads: Dict[str, Dict[str, Any]]) -> Dict[
                 predecessor.OUTPUTS["commercial_proof_plane_gate_decision"],
                 claim_gate.OUTPUTS["allowed_claims_current_state"],
                 claim_gate.OUTPUTS["forbidden_claims_current_state"],
-                "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+                SOURCE_INPUTS["public_verifier_manifest"],
             ],
             evidence_pack_authorizes_commercial_activation_claims=False,
         ),

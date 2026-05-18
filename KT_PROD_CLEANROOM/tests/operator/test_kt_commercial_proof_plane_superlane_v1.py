@@ -164,6 +164,50 @@ def test_rejects_commercial_activation_allowed_claim(tmp_path: Path, monkeypatch
     assert excinfo.value.code == "RC_KT_COMMERCIAL_PROOF_PLANE_CLAIM_BOUNDARY_BREACH"
 
 
+def test_rejects_h03_allowed_claim_authority_flag_drift(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / plane.SOURCE_INPUTS["h03_allowed_claims"]
+    payload = _load(path)
+    payload["allowed_claims_authorize_commercial_activation_claims"] = True
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(plane.LaneFailure) as excinfo:
+        plane.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_COMMERCIAL_PROOF_PLANE_PREMATURE_AUTHORITY"
+
+
+def test_rejects_claim_ceiling_benchmark_prep_authority_drift(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / plane.SOURCE_INPUTS["claim_ceiling_current_state"]
+    payload = _load(path)
+    payload["benchmark_prep_authorizes_commercial_activation"] = True
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(plane.LaneFailure) as excinfo:
+        plane.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_COMMERCIAL_PROOF_PLANE_PREMATURE_AUTHORITY"
+
+
+def test_rejects_missing_fixed_forbidden_claim(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / plane.SOURCE_INPUTS["h03_forbidden_claims"]
+    payload = _load(path)
+    payload["forbidden_claims"] = [
+        claim for claim in payload["forbidden_claims"] if claim != "KT is production-commercial live."
+    ]
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(plane.LaneFailure) as excinfo:
+        plane.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_COMMERCIAL_PROOF_PLANE_SOURCE_STATUS_FAILED"
+
+
+def test_public_verifier_manifest_is_bound(authored_outputs: Path) -> None:
+    manifest = _payload(authored_outputs, "source_manifest")
+    bound_paths = {row["path"] for row in manifest["sources"]}
+    assert plane.SOURCE_INPUTS["public_verifier_manifest"] in bound_paths
+
+
 def test_rejects_external_audit_claim_in_source_text(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     _copy_inputs(tmp_path)
     path = tmp_path / plane.SOURCE_INPUTS["product_operator_runbook"]
