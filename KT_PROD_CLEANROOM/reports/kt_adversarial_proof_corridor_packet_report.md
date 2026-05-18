@@ -1,6 +1,6 @@
 # KT Adversarial Proof Corridor Packet
 
-Current main: 339d0d5bc670553dafad062dac0dd636ecb0cfeb
+Current main: 341bc3d1251174ec6019b9947cacbf5b383b3a70
 Lane: AUTHOR_KT_ADVERSARIAL_PROOF_CORRIDOR_SUPERLANE_V1
 Outcome: KT_ADVERSARIAL_PROOF_CORRIDOR_PACKET_BOUND__ADVERSARIAL_PROOF_CORRIDOR_VALIDATION_NEXT
 Adversarial proof corridor packet authored: true
