@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 from pathlib import Path
 from typing import Any, Dict, Iterable, NoReturn, Sequence
 
@@ -87,6 +88,8 @@ AUTHORITY_DRIFT_KEYS = frozenset(
         "fp0_overlay_promoted_to_authority",
         "truth_engine_law_mutated",
         "trust_zone_law_mutated",
+        "truth_engine_law_changed",
+        "trust_zone_law_changed",
     }
 )
 
@@ -137,6 +140,7 @@ def _is_negative_text_context(value: str) -> bool:
             "not executed",
             "not run",
             "not claim",
+            "unproven",
             "forbidden",
             "blocked",
             "prohibited",
@@ -154,6 +158,14 @@ def _is_negative_text_context(value: str) -> bool:
 def _contains_forbidden_claim(value: str) -> bool:
     normalized = value.upper()
     return any(phrase in normalized for phrase in validation.CLAIM_DRIFT_PHRASES)
+
+
+def _claim_clauses(value: str) -> list[str]:
+    return [clause.strip() for clause in re.split(r"[;\r\n]+|(?<=[.!?])\s+", value) if clause.strip()]
+
+
+def _contains_unsafe_forbidden_claim(value: str) -> bool:
+    return any(_contains_forbidden_claim(clause) and not _is_negative_text_context(clause) for clause in _claim_clauses(value))
 
 
 def _status_relpaths(status: str) -> list[str]:
@@ -260,11 +272,11 @@ def _ensure_claim_boundary(payloads: Dict[str, Dict[str, Any]], texts: Dict[str,
             if key in AUTHORITY_DRIFT_KEYS and value is not False:
                 _fail("RC_KT_DV_REPLAY_GATE_CLAIM_BOUNDARY_BREACH", f"{label}.{key} drifted non-false")
             if isinstance(value, str) and not _is_negative_field(key) and not _is_machine_routing_field(key):
-                if _contains_forbidden_claim(value) and not _is_negative_text_context(value):
+                if _contains_unsafe_forbidden_claim(value):
                     _fail("RC_KT_DV_REPLAY_GATE_CLAIM_BOUNDARY_BREACH", f"{label}.{key}={value!r}")
     for label, text in texts.items():
         for line_number, line in enumerate(text.splitlines(), start=1):
-            if _contains_forbidden_claim(line) and not _is_negative_text_context(line):
+            if _contains_unsafe_forbidden_claim(line):
                 _fail("RC_KT_DV_REPLAY_GATE_CLAIM_BOUNDARY_BREACH", f"{label} line {line_number} contains forbidden claim")
 
 

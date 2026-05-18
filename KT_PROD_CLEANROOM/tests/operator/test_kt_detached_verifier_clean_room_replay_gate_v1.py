@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import shutil
 from pathlib import Path
+from typing import Iterator
 
 import pytest
 
@@ -67,7 +68,7 @@ def _run(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
 
 
 @pytest.fixture(scope="module")
-def gate_outputs(tmp_path_factory: pytest.TempPathFactory) -> Path:
+def gate_outputs(tmp_path_factory: pytest.TempPathFactory) -> Iterator[Path]:
     tmp_path = tmp_path_factory.mktemp("detached_verifier_clean_room_replay_gate")
     monkeypatch = pytest.MonkeyPatch()
     try:
@@ -177,6 +178,8 @@ def test_rejects_ambiguous_or_wrong_validation_next_move(tmp_path: Path, monkeyp
         ("seven_b_amplification_claimed", True),
         ("beyond_sota_claimed", True),
         ("fp0_or_highway_promoted_to_authority", True),
+        ("truth_engine_law_changed", True),
+        ("trust_zone_law_changed", True),
     ],
 )
 def test_rejects_authority_boolean_drift(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, key: str, value: bool) -> None:
@@ -212,6 +215,28 @@ def test_rejects_forbidden_claim_text(tmp_path: Path, monkeypatch: pytest.Monkey
     with pytest.raises(gate.LaneFailure) as excinfo:
         gate.run(output_root=tmp_path)
     assert excinfo.value.code == "RC_KT_DV_REPLAY_GATE_CLAIM_BOUNDARY_BREACH"
+
+
+def test_rejects_mixed_negative_and_affirmative_forbidden_claim(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    gate_path = tmp_path / gate.INPUTS["validation_gate"]
+    payload = _load(gate_path)
+    payload["claim_boundary"] = "External audit is not complete; commercial activation claims are authorized."
+    _write(gate_path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(gate.LaneFailure) as excinfo:
+        gate.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_DV_REPLAY_GATE_CLAIM_BOUNDARY_BREACH"
+
+
+def test_allows_separately_negated_forbidden_claims(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    gate_path = tmp_path / gate.INPUTS["validation_gate"]
+    payload = _load(gate_path)
+    payload["claim_boundary"] = "External audit is not complete. Commercial activation claims remain unauthorized."
+    _write(gate_path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    gate.run(output_root=tmp_path)
 
 
 def test_recomputes_validation_bindings(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
