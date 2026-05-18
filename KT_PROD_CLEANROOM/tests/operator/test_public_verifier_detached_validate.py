@@ -7,7 +7,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.operator.public_verifier_detached_validate import (  # noqa: E402
     CREATED_FILES,
+    PACKAGED_INPUT_REFS,
     PARITY_FIELDS,
+    ROOT_SENTINEL_REL,
     STRONGER_CLAIM_NOT_MADE,
     build_detached_public_verifier_outputs_from_artifacts,
     _detached_git_ceiling,
@@ -131,3 +133,7 @@ def test_detached_git_ceiling_blocks_parent_repo_discovery(tmp_path) -> None:
 
     assert _detached_git_ceiling(package_root) == str(package_root.resolve().parent)
     assert _detached_git_ceiling(package_root) != str(package_root.resolve())
+
+
+def test_detached_package_includes_repo_root_sentinel() -> None:
+    assert ROOT_SENTINEL_REL in PACKAGED_INPUT_REFS

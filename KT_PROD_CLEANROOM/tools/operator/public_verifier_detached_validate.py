@@ -53,6 +53,7 @@ DEFAULT_REKOR_INCLUSION_RECEIPT_REL = f"{REPORT_ROOT_REL}/kt_rekor_inclusion_rec
 DETACHED_RUNTIME_TOOL_REL = "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_runtime.py"
 TOOL_REL = "KT_PROD_CLEANROOM/tools/operator/public_verifier_detached_validate.py"
 TEST_REL = "KT_PROD_CLEANROOM/tests/operator/test_public_verifier_detached_validate.py"
+ROOT_SENTINEL_REL = "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/schemas/fl3_suite_registry_schema.py"
 
 DETACHED_PROOF_ROOT_REL = "KT_PROD_CLEANROOM/exports/_runs/KT_OPERATOR/WS19_detached_public_verifier_proof"
 DETACHED_PACKAGE_ROOT_REL = f"{DETACHED_PROOF_ROOT_REL}/package"
@@ -109,6 +110,7 @@ PACKAGED_INPUT_REFS = [
     "KT_PROD_CLEANROOM/governance/attestation_fabric_contract.json",
     "KT_PROD_CLEANROOM/governance/authority_bundle.schema.json",
     "KT_PROD_CLEANROOM/governance/supply_chain_layout.json",
+    ROOT_SENTINEL_REL,
 ]
 CREATED_FILES = [
     DETACHED_RUNTIME_TOOL_REL,
