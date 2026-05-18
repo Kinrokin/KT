@@ -9,6 +9,7 @@ import pytest
 
 from tools.operator import kt_commercial_proof_plane_superlane_v1 as plane
 from tools.operator import validate_kt_commercial_proof_plane_superlane_v1 as validator
+from tools.operator.titanium_common import repo_root
 
 
 VALIDATION_HEAD = "d" * 40
@@ -33,7 +34,7 @@ def _copy_file(source_root: Path, tmp_path: Path, raw: str) -> None:
 
 
 def _copy_inputs(tmp_path: Path) -> None:
-    source_root = Path.cwd()
+    source_root = repo_root()
     for raw in plane.OUTPUTS.values():
         _copy_file(source_root, tmp_path, raw)
     for raw in plane.INPUTS.values():
