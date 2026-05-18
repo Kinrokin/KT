@@ -1,0 +1,46 @@
+{
+  "artifact_id": "KT_EXTERNAL_REAUDIT_INDEPENDENT_ATTESTATION_VALIDATION_RECEIPT",
+  "attestation_accepted": false,
+  "attestation_deferred": true,
+  "attestation_path": "KT_PROD_CLEANROOM/reports/kt_external_reaudit_independent_attestation.json",
+  "attestation_present": false,
+  "attestation_rejected": false,
+  "attestation_verdict": "MISSING",
+  "authority": "VALIDATION_ONLY",
+  "beyond_sota_claimed": false,
+  "blocker_count": 1,
+  "blockers": [
+    {
+      "blocker_id": "independent_external_reaudit_attestation_missing",
+      "repair": "Collect an attestation from an independent external reviewer; do not self-author it.",
+      "required_artifact": "KT_PROD_CLEANROOM/reports/kt_external_reaudit_independent_attestation.json",
+      "status": "BLOCKING"
+    }
+  ],
+  "claim_boundary_passed": true,
+  "claim_flags_found": {
+    "beyond_sota_claimed": false,
+    "commercial_activation_claim_authorized": false,
+    "commercial_claims_authorized": false,
+    "s_tier_claimed": false,
+    "seven_b_amplification_proven": false,
+    "trust_zone_law_changed": false,
+    "truth_engine_law_changed": false
+  },
+  "commercial_activation_claim_authorized": false,
+  "commercial_claims_authorized": false,
+  "continuation_label": "H06_EXTERNAL_REAUDIT_DEFERRED__INDEPENDENT_ATTESTATION_REQUIRED__CONTINUE_PREP_SHADOW_AND_INTERNAL_CAPABILITY_COMPLETION_UNDER_CLAIM_CEILING",
+  "current_blocked_outcome": "H06_EXTERNAL_REAUDIT_DEFERRED__INDEPENDENT_ATTESTATION_REQUIRED",
+  "decision": "BLOCKED_MISSING_OR_INCOMPLETE_INDEPENDENT_ATTESTATION",
+  "external_audit_accepted": false,
+  "external_audit_completed": false,
+  "generated_utc": "2026-05-18T21:25:51Z",
+  "independent_attestation_accepted": false,
+  "lane": "VALIDATE_EXTERNAL_REAUDIT_INDEPENDENT_ATTESTATION",
+  "next_lawful_move": "COLLECT_INDEPENDENT_EXTERNAL_REAUDIT_ATTESTATION",
+  "s_tier_claimed": false,
+  "schema_id": "kt.external_reaudit.independent_attestation_validation_receipt.v1",
+  "seven_b_amplification_proven": false,
+  "trust_zone_law_changed": false,
+  "truth_engine_law_changed": false
+}

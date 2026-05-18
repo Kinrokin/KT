@@ -1,0 +1,13 @@
+schema_id: kt.fp0.local_agent_runtime_profile.v2
+authority: PREP_ONLY_NO_CLAIM_EXPANSION
+overlay: KT_FRONTIER_RUNTIME_STATE_AND_CONTEXT_EFFICIENCY_PATCH_V2
+purpose: Prepare local/runtime execution options for later highways.
+canonical_write_allowed: false
+claim_expansion_allowed: false
+profiles:
+  - id: local_sandbox
+    mode: no_canonical_write
+    allowed_effect: performance_exploration
+  - id: cloud_baseline
+    mode: comparison_only
+    allowed_effect: cost_latency_quality_baseline

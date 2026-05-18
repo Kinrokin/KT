@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kt.fp0.prompt_payload_manifest.v2",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "canonical_json_source",
+    "packed_format",
+    "json_remains_canonical",
+    "claim_expansion_allowed"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.fp0.prompt_payload_manifest.v2"
+    },
+    "canonical_json_source": {
+      "type": "string"
+    },
+    "packed_format": {
+      "enum": [
+        "TOON",
+        "columnar",
+        "none"
+      ]
+    },
+    "json_remains_canonical": {
+      "const": true
+    },
+    "claim_expansion_allowed": {
+      "const": false
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kt.bounded_pilot.feedback_receipt.v1",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "pilot_scope_reviewed",
+    "feedback",
+    "claim_boundary_preserved"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.bounded_pilot.feedback_receipt.v1"
+    },
+    "pilot_scope_reviewed": {
+      "type": "boolean"
+    },
+    "feedback": {
+      "type": "string"
+    },
+    "claim_boundary_preserved": {
+      "const": true
+    },
+    "independent_attestation": {
+      "const": false
+    }
+  }
+}

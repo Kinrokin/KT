@@ -1,0 +1,8 @@
+{
+  "schema_id": "kt.repo_cleanup.generated_artifact_retirement_plan.v1",
+  "authority": "PREP_ONLY_PLAN",
+  "retirement_action": "demote_hash_archive_index_not_delete",
+  "nightly_or_release_gate_can_scan_archive": true,
+  "normal_lane_gate_targets_current_reports_first": true,
+  "json_gate_mode": "current first; archive on release/nightly or explicit request"
+}

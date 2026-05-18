@@ -1,0 +1,27 @@
+{
+  "schema_id": "kt.fp0.provider_hardware_capability_matrix.v2",
+  "authority": "PREP_ONLY_NO_CLAIM_EXPANSION",
+  "hardware_rows": [
+    {
+      "provider_class": "local",
+      "capabilities_to_measure": [
+        "available_memory",
+        "context_window",
+        "tool_runtime_isolation",
+        "cost_per_validated_lane"
+      ],
+      "claim_authority": "NONE"
+    },
+    {
+      "provider_class": "cloud",
+      "capabilities_to_measure": [
+        "latency",
+        "throughput",
+        "availability",
+        "cost_per_validated_lane"
+      ],
+      "claim_authority": "NONE"
+    }
+  ],
+  "vendor_benchmarks_are_not_kt_claims": true
+}

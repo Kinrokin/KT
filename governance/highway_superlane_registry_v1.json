@@ -3,20 +3,20 @@
   "artifact_id": "HIGHWAY_SUPERLANE_REGISTRY_V1",
   "authority": "PREP_ONLY",
   "blocked_by": [
-    "PR200_TRUTH_LOCK_REPLAY_NOT_CANONICAL",
-    "TRUTH_LOCK_VALIDATION_NOT_AUTHORIZED",
-    "DETACHED_VERIFIER_NOT_AUTHORIZED",
-    "FP0_PREP_ONLY_QUEUED_NONAUTHORITATIVE"
+    "H06_INDEPENDENT_EXTERNAL_REAUDIT_ATTESTATION_REQUIRED",
+    "HIGHWAY_CANONICAL_PROMOTION_NOT_AUTHORIZED",
+    "COMMERCIAL_CLAIM_AUTHORIZATION_NOT_GRANTED",
+    "FP0_NO_CLAIM_EXPANSION_PREP_ONLY"
   ],
-  "cannot_activate_detached_verifier": true,
-  "cannot_activate_fp0": true,
+  "cannot_activate_fp0_as_authority": true,
   "cannot_claim_canonical_highway_status": true,
+  "cannot_claim_external_audit_complete": true,
   "cannot_mutate_trust_zone_law": true,
   "cannot_mutate_truth_engine_law": true,
-  "detached_verifier_authorized": false,
-  "final_label": "HIGHWAY_PATHWAY_SYSTEM_v1_PREP_ONLY_IMPLEMENTED__AUTHORITY_BLOCKED_BY_PR200_TRUTH_LOCK_REPLAY_NOT_CANONICAL",
-  "fp0_authority": "PREP_ONLY_QUEUED_NONAUTHORITATIVE",
-  "generated_utc": "2026-05-16T20:24:40Z",
+  "detached_verifier_authorized": true,
+  "final_label": "HIGHWAY_PATHWAY_SYSTEM_v1_PREP_ONLY_RELANDED__AUTHORITY_BLOCKED_BY_H06_EXTERNAL_ATTESTATION_REQUIRED",
+  "fp0_authority": "PREP_ONLY_NO_CLAIM_EXPANSION",
+  "generated_utc": "2026-05-18T21:29:15Z",
   "mode": "PREP_ONLY",
   "schema_id": "kt.highway.highway_superlane_registry_v1.v1",
   "superlane": null,
@@ -35,7 +35,7 @@
         "CANONICAL_ACTIVE",
         "BLOCKED"
       ],
-      "authority_required": "CANONICAL_TRUTH_LOCK_REPLAY_AND_VALIDATION",
+      "authority_required": "H06_EXTERNAL_ATTESTATION_OR_SEPARATE_PROMOTION_AUTHORITY",
       "blocked_modes": [
         "CANONICAL_ACTIVE",
         "FAIL_CLOSED"
@@ -43,11 +43,12 @@
       "canonical_scope_effect": "NONE_PREP_ONLY",
       "ci_enforcement_level": "PREP_ONLY_LOCAL",
       "entry_conditions": [
-        "PR200 merged",
-        "Truth Lock replay canonical"
+        "Truth Lock validated",
+        "Detached Verifier advanced",
+        "H06 external attestation remains parked"
       ],
       "exit_conditions": [
-        "activation remains blocked until validation authority exists"
+        "activation remains blocked until separate promotion authority exists"
       ],
       "forbidden_inputs": [
         "implicit_authority",
@@ -623,7 +624,7 @@
       ]
     }
   ],
-  "truth_lock_replay_canonical": false,
-  "truth_lock_validation_authorized": false,
+  "truth_lock_replay_canonical": true,
+  "truth_lock_validation_authorized": true,
   "work_order_id": "KT_HIGHWAY_PATHWAY_SYSTEM_SUPERLANE_INITIATION_v1_0"
 }

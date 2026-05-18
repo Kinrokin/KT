@@ -73,10 +73,10 @@
     }
   ],
   "current_blockers": [
-    "PR200_TRUTH_LOCK_REPLAY_NOT_CANONICAL",
-    "TRUTH_LOCK_VALIDATION_NOT_AUTHORIZED",
-    "DETACHED_VERIFIER_NOT_AUTHORIZED",
-    "FP0_PREP_ONLY_QUEUED_NONAUTHORITATIVE"
+    "H06_INDEPENDENT_EXTERNAL_REAUDIT_ATTESTATION_REQUIRED",
+    "HIGHWAY_CANONICAL_PROMOTION_NOT_AUTHORIZED",
+    "COMMERCIAL_CLAIM_AUTHORIZATION_NOT_GRANTED",
+    "FP0_NO_CLAIM_EXPANSION_PREP_ONLY"
   ],
   "files_generated_or_verified": [
     "governance/highway_authority_gate_v1.json",
@@ -115,10 +115,10 @@
     "commercial/highway_operator_runbook_v1.md",
     "ci/jobs/verify_highway_pathway.yml"
   ],
-  "final_label": "HIGHWAY_PATHWAY_SYSTEM_v1_PREP_ONLY_IMPLEMENTED__AUTHORITY_BLOCKED_BY_PR200_TRUTH_LOCK_REPLAY_NOT_CANONICAL",
-  "generated_utc": "2026-05-16T20:23:03Z",
+  "final_label": "HIGHWAY_PATHWAY_SYSTEM_v1_PREP_ONLY_RELANDED__AUTHORITY_BLOCKED_BY_H06_EXTERNAL_ATTESTATION_REQUIRED",
+  "generated_utc": "2026-05-18T21:29:15Z",
   "mode": "PREP_ONLY",
-  "next_lawful_action": "Protected merge PR #200, sync main, then validate Truth Lock.",
+  "next_lawful_action": "Collect independent external re-audit attestation or separately authorize highway shadow promotion.",
   "posture_conflict_count": 0,
   "promotion_status": "Not promoted",
   "schema_id": "kt.highway.matrix_receipt.v1",

@@ -1,0 +1,18 @@
+{
+  "schema_id": "kt.external_attestation.parking_receipt.v1",
+  "artifact_id": "KT_EXTERNAL_ATTESTATION_PARKING_RECEIPT",
+  "authority": "PARKING_RECEIPT",
+  "parked_blocker": "independent_external_reaudit_attestation_missing",
+  "blocker_preserved": true,
+  "self_satisfaction_allowed": false,
+  "continuation_allowed_under_claim_ceiling": true,
+  "allowed_continuation_modes": [
+    "PREP_ONLY",
+    "SHADOW",
+    "WARN_ONLY",
+    "INTERNAL_NON_CLAIM_EXPANSION",
+    "BOUNDED_PILOT_PACKAGING"
+  ],
+  "forbidden_claims_remain_blocked": true,
+  "next_lawful_move_for_blocker": "COLLECT_INDEPENDENT_EXTERNAL_REAUDIT_ATTESTATION"
+}

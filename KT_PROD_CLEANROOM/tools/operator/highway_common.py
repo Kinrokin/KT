@@ -14,11 +14,21 @@ from tools.operator.titanium_common import repo_root, utc_now_iso_z, write_json_
 
 WORK_ORDER_ID = "KT_HIGHWAY_PATHWAY_SYSTEM_SUPERLANE_INITIATION_v1_0"
 CURRENT_MODE = "PREP_ONLY"
-FINAL_LABEL = "HIGHWAY_PATHWAY_SYSTEM_v1_PREP_ONLY_IMPLEMENTED__AUTHORITY_BLOCKED_BY_PR200_TRUTH_LOCK_REPLAY_NOT_CANONICAL"
-PR200_BLOCKER = "PR200_TRUTH_LOCK_REPLAY_NOT_CANONICAL"
-TRUTH_LOCK_VALIDATION_BLOCKER = "TRUTH_LOCK_VALIDATION_NOT_AUTHORIZED"
-DETACHED_VERIFIER_BLOCKER = "DETACHED_VERIFIER_NOT_AUTHORIZED"
-FP0_BLOCKER = "FP0_PREP_ONLY_QUEUED_NONAUTHORITATIVE"
+FINAL_LABEL = "HIGHWAY_PATHWAY_SYSTEM_v1_PREP_ONLY_RELANDED__AUTHORITY_BLOCKED_BY_H06_EXTERNAL_ATTESTATION_REQUIRED"
+EXTERNAL_ATTESTATION_BLOCKER = "H06_INDEPENDENT_EXTERNAL_REAUDIT_ATTESTATION_REQUIRED"
+HIGHWAY_CANONICAL_PROMOTION_BLOCKER = "HIGHWAY_CANONICAL_PROMOTION_NOT_AUTHORIZED"
+COMMERCIAL_CLAIM_BLOCKER = "COMMERCIAL_CLAIM_AUTHORIZATION_NOT_GRANTED"
+FP0_BLOCKER = "FP0_NO_CLAIM_EXPANSION_PREP_ONLY"
+CURRENT_BLOCKERS = (
+    EXTERNAL_ATTESTATION_BLOCKER,
+    HIGHWAY_CANONICAL_PROMOTION_BLOCKER,
+    COMMERCIAL_CLAIM_BLOCKER,
+    FP0_BLOCKER,
+)
+
+# Backward-compatible names for older tests/imports; values now reflect the live H06 wall.
+TRUTH_LOCK_VALIDATION_BLOCKER = HIGHWAY_CANONICAL_PROMOTION_BLOCKER
+DETACHED_VERIFIER_BLOCKER = "DETACHED_VERIFIER_KIT_ALREADY_ADVANCED_NOT_CURRENT_BLOCKER"
 
 ALLOWED_MODES = (
     "PREP_ONLY",
@@ -67,9 +77,9 @@ SUPERLANES: Sequence[Dict[str, Any]] = (
         "id": "AUTHORITY_GATE",
         "name": "Authority Gate / Truth Lock Wall",
         "purpose": "Prevent highway work from outrunning current KT authority.",
-        "authority_required": "CANONICAL_TRUTH_LOCK_REPLAY_AND_VALIDATION",
-        "entry_conditions": ["PR200 merged", "Truth Lock replay canonical"],
-        "exit_conditions": ["activation remains blocked until validation authority exists"],
+        "authority_required": "H06_EXTERNAL_ATTESTATION_OR_SEPARATE_PROMOTION_AUTHORITY",
+        "entry_conditions": ["Truth Lock validated", "Detached Verifier advanced", "H06 external attestation remains parked"],
+        "exit_conditions": ["activation remains blocked until separate promotion authority exists"],
         "required_receipts": ["highway_authority_gate_receipt.json"],
         "ci_enforcement_level": "PREP_ONLY_LOCAL",
         "canonical_scope_effect": "NONE_PREP_ONLY",
@@ -244,16 +254,16 @@ def _base_artifact(artifact_id: str, *, superlane: str | None = None) -> Dict[st
         "authority": "PREP_ONLY",
         "mode": CURRENT_MODE,
         "activation_allowed": False,
-        "truth_lock_replay_canonical": False,
-        "truth_lock_validation_authorized": False,
-        "detached_verifier_authorized": False,
-        "fp0_authority": "PREP_ONLY_QUEUED_NONAUTHORITATIVE",
-        "blocked_by": [PR200_BLOCKER, TRUTH_LOCK_VALIDATION_BLOCKER, DETACHED_VERIFIER_BLOCKER, FP0_BLOCKER],
+        "truth_lock_replay_canonical": True,
+        "truth_lock_validation_authorized": True,
+        "detached_verifier_authorized": True,
+        "fp0_authority": "PREP_ONLY_NO_CLAIM_EXPANSION",
+        "blocked_by": list(CURRENT_BLOCKERS),
         "final_label": FINAL_LABEL,
         "generated_utc": utc_now_iso_z(),
         "superlane": superlane,
-        "cannot_activate_detached_verifier": True,
-        "cannot_activate_fp0": True,
+        "cannot_claim_external_audit_complete": True,
+        "cannot_activate_fp0_as_authority": True,
         "cannot_claim_canonical_highway_status": True,
         "cannot_mutate_truth_engine_law": True,
         "cannot_mutate_trust_zone_law": True,
@@ -263,13 +273,13 @@ def _base_artifact(artifact_id: str, *, superlane: str | None = None) -> Dict[st
 def authority_state() -> Dict[str, Any]:
     return {
         "mode": CURRENT_MODE,
-        "truth_lock_replay_canonical": False,
-        "truth_lock_validation_authorized": False,
-        "detached_verifier_authorized": False,
-        "fp0_authority": "PREP_ONLY_QUEUED_NONAUTHORITATIVE",
+        "truth_lock_replay_canonical": True,
+        "truth_lock_validation_authorized": True,
+        "detached_verifier_authorized": True,
+        "fp0_authority": "PREP_ONLY_NO_CLAIM_EXPANSION",
         "activation_allowed": False,
-        "reason": PR200_BLOCKER,
-        "blockers": [PR200_BLOCKER, TRUTH_LOCK_VALIDATION_BLOCKER, DETACHED_VERIFIER_BLOCKER, FP0_BLOCKER],
+        "reason": EXTERNAL_ATTESTATION_BLOCKER,
+        "blockers": list(CURRENT_BLOCKERS),
         "current_lawful_label": FINAL_LABEL,
     }
 
@@ -283,7 +293,7 @@ def write_authority_gate_receipt(output_root: Path | None = None) -> Dict[str, A
         "generated_utc": utc_now_iso_z(),
         **authority_state(),
         "authority_verdict": "BLOCKED",
-        "protected_merge_gate": "PR_200",
+        "protected_merge_gate": "H06_EXTERNAL_ATTESTATION",
     }
     _write_json(root, "exports/_truth/current/highway_authority_gate_receipt.json", receipt)
     return receipt
@@ -320,11 +330,11 @@ def classify_lane(work_item: Mapping[str, Any]) -> Dict[str, Any]:
         blockers.append("BLOCK_SCOPE_AMBIGUOUS")
         decision = "BLOCK_SCOPE_AMBIGUOUS"
     elif authority_requested in {"CANONICAL_ACTIVE", "FAIL_CLOSED", "DETACHED_VERIFIER_ACTIVE", "FP0_HIGHWAY_ACTIVE"}:
-        blockers.append(PR200_BLOCKER)
-        decision = "BLOCK_TRUTH_LOCK_NOT_CANONICAL"
+        blockers.append(HIGHWAY_CANONICAL_PROMOTION_BLOCKER)
+        decision = "BLOCK_AUTHORITY_REQUIRED"
     if work_item.get("touches_detached_verifier"):
-        blockers.append(DETACHED_VERIFIER_BLOCKER)
-        decision = "BLOCK_DETACHED_VERIFIER_NOT_AUTHORIZED"
+        blockers.append(EXTERNAL_ATTESTATION_BLOCKER)
+        decision = "BLOCK_EXTERNAL_ATTESTATION_REQUIRED"
     if work_item.get("touches_fp0") or "fp0" in text:
         blockers.append(FP0_BLOCKER)
         decision = "BLOCK_FP0_PREP_ONLY"
@@ -338,10 +348,10 @@ def classify_lane(work_item: Mapping[str, Any]) -> Dict[str, Any]:
         "decision": decision,
         "blockers": sorted(set(blockers)),
         "authority_basis": "PREP_ONLY_DESIGN_AND_LOCAL_VALIDATION",
-        "truth_sources_checked": ["PR_200_STATE", "TRUTH_LOCK_REPLAY_STATUS", "FP0_QUEUE_STATUS"],
+        "truth_sources_checked": ["H06_EXTERNAL_REAUDIT_STATUS", "TRUTH_LOCK_VALIDATION_STATUS", "FP0_NO_CLAIM_EXPANSION_STATUS"],
         "canonical_effect": "NONE",
         "prep_only_effect": "LOCAL_DESIGN_AND_VALIDATION",
-        "required_next_gate": "PROTECTED_MERGE_PR200_THEN_TRUTH_LOCK_VALIDATION",
+        "required_next_gate": "COLLECT_INDEPENDENT_EXTERNAL_REAUDIT_ATTESTATION_OR_SEPARATE_HIGHWAY_PROMOTION_AUTHORITY",
     }
 
 
@@ -525,7 +535,7 @@ def adaptive_gate(requested: str = "FP0_HIGHWAY_ACTIVE", output_root: Path | Non
     if "FP0" in requested_upper:
         blockers.append("BLOCK_FP0_PREP_ONLY")
     if "DETACHED_VERIFIER" in requested_upper:
-        blockers.append("BLOCK_DETACHED_VERIFIER_NOT_AUTHORIZED")
+        blockers.append("BLOCK_EXTERNAL_ATTESTATION_REQUIRED_FOR_EXTERNAL_ACCEPTANCE")
     if "LEARNED_ROUTER" in requested_upper:
         blockers.append("BLOCK_ROUTER_ORDER_VIOLATION")
     receipt = {
@@ -558,7 +568,7 @@ def promotion_gate(from_mode: str = "PREP_ONLY", to_mode: str = "CANONICAL_ACTIV
         "to_mode": to_mode,
         "promotion_allowed": allowed,
         "promotion_ladder": list(PROMOTION_LADDER),
-        "blockers": [] if allowed else [PR200_BLOCKER, "PROMOTION_LADDER_OR_AUTHORITY_NOT_SATISFIED"],
+        "blockers": [] if allowed else [HIGHWAY_CANONICAL_PROMOTION_BLOCKER, "PROMOTION_LADDER_OR_AUTHORITY_NOT_SATISFIED"],
         "status": "PASS" if allowed else "BLOCKED",
     }
     _write_json(root, "exports/_truth/current/highway_promotion_receipt.json", receipt)
@@ -835,7 +845,7 @@ def static_artifacts() -> Dict[str, Any]:
         },
         "commercial/highway_public_verifier_kit_v1.json": {
             **_base_artifact("HIGHWAY_PUBLIC_VERIFIER_KIT_V1", superlane="COMMERCIAL_DELIVERY"),
-            "detached_verifier_authorized": False,
+            "detached_verifier_authorized": True,
             "status": "PREP_ONLY_DRAFT",
         },
         "evals/highway_comparative_scorecard_v1.json": {
@@ -872,7 +882,7 @@ def generate_static_artifacts(output_root: Path | None = None) -> List[str]:
         "# Highway Operator Runbook v1\n\n"
         "Mode: PREP_ONLY.\n\n"
         "The highway pathway system is an additive routing and proof fabric. It does not replace safe-run, "
-        "does not authorize Detached Verifier, and does not expand commercial claims while PR #200 remains non-canonical.\n",
+        "does not claim external audit acceptance, and does not expand commercial claims while independent external attestation remains pending.\n",
     )
     written.append("commercial/highway_operator_runbook_v1.md")
     _write_text(
@@ -942,13 +952,13 @@ def run_highway_matrix(output_root: Path | None = None) -> Dict[str, Any]:
         "generated_utc": utc_now_iso_z(),
         "mode": CURRENT_MODE,
         "authority_verdict": "BLOCKED",
-        "current_blockers": [PR200_BLOCKER, TRUTH_LOCK_VALIDATION_BLOCKER, DETACHED_VERIFIER_BLOCKER, FP0_BLOCKER],
+        "current_blockers": list(CURRENT_BLOCKERS),
         "files_generated_or_verified": artifacts,
         "checks": checks,
         "posture_conflict_count": 0,
         "canonical_effect": "None",
         "promotion_status": "Not promoted",
-        "next_lawful_action": "Protected merge PR #200, sync main, then validate Truth Lock.",
+        "next_lawful_action": "Collect independent external re-audit attestation or separately authorize highway shadow promotion.",
         "final_label": FINAL_LABEL,
     }
     _write_json(root, "exports/_truth/current/highway_matrix_receipt.json", matrix)
@@ -1010,10 +1020,7 @@ def write_developer_report(output_root: Path | None = None) -> Path:
             "Blocked",
             "",
             "CURRENT BLOCKERS:",
-            f"- {PR200_BLOCKER}",
-            f"- {TRUTH_LOCK_VALIDATION_BLOCKER}",
-            f"- {DETACHED_VERIFIER_BLOCKER}",
-            f"- {FP0_BLOCKER}",
+            "- " + "\n- ".join(CURRENT_BLOCKERS),
             "",
             "FILES ADDED:",
             "- " + "\n- ".join(added_files),
@@ -1045,7 +1052,7 @@ def write_developer_report(output_root: Path | None = None) -> Path:
             "Not promoted",
             "",
             "NEXT LAWFUL ACTION:",
-            "Protected merge PR #200, sync main, confirm Truth Lock replay canonical, then run Truth Lock validation.",
+            "Collect independent external re-audit attestation; continue prep/shadow/no-claim-expansion work under claim ceiling.",
             "",
             "FINAL LABEL:",
             FINAL_LABEL,

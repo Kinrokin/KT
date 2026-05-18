@@ -1,0 +1,22 @@
+{
+  "schema_id": "kt.fp0.context_pack_decision_matrix.v2",
+  "authority": "PREP_ONLY_NO_CLAIM_EXPANSION",
+  "decisions": [
+    {
+      "condition": "canonical receipt or proof artifact",
+      "format": "JSON",
+      "reason": "canonical truth remains JSON"
+    },
+    {
+      "condition": "prompt payload with repeated keys",
+      "format": "TOON",
+      "reason": "candidate compression only"
+    },
+    {
+      "condition": "tabular rows",
+      "format": "columnar",
+      "reason": "candidate compression only"
+    }
+  ],
+  "claim_expansion_allowed": false
+}

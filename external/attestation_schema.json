@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kt.external_reaudit.independent_attestation.v1",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "verdict",
+    "prepared_by_kt",
+    "authoring_entity_is_kt",
+    "reviewer",
+    "scope",
+    "evidence_review"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.external_reaudit.independent_attestation.v1"
+    },
+    "verdict": {
+      "enum": [
+        "ACCEPTED",
+        "DEFERRED",
+        "REJECTED"
+      ]
+    },
+    "prepared_by_kt": {
+      "const": false
+    },
+    "authoring_entity_is_kt": {
+      "const": false
+    },
+    "paid_reviewer": {
+      "type": "boolean"
+    },
+    "paid_reviewer_disclosure": {
+      "type": "string"
+    },
+    "reviewer": {
+      "type": "object",
+      "required": [
+        "name",
+        "organization",
+        "relationship_to_kt"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "organization": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relationship_to_kt": {
+          "enum": [
+            "independent",
+            "paid_independent_reviewer",
+            "external_auditor",
+            "design_partner_reviewer"
+          ]
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "required": [
+        "external_audit_packet_reviewed",
+        "public_verifier_reviewed",
+        "supply_chain_reviewed",
+        "claim_boundary_reviewed",
+        "commands_executed",
+        "evidence_bundle_reviewed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "external_audit_packet_reviewed": {
+          "type": "boolean"
+        },
+        "public_verifier_reviewed": {
+          "type": "boolean"
+        },
+        "supply_chain_reviewed": {
+          "type": "boolean"
+        },
+        "claim_boundary_reviewed": {
+          "type": "boolean"
+        },
+        "commands_executed": {
+          "type": "boolean"
+        },
+        "evidence_bundle_reviewed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "evidence_review": {
+      "type": "object",
+      "required": [
+        "evidence_bundle_hash",
+        "commands_run"
+      ],
+      "properties": {
+        "evidence_bundle_hash": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "commands_run": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "commercial_claims_authorized": {
+      "const": false
+    },
+    "commercial_activation_claim_authorized": {
+      "const": false
+    },
+    "seven_b_amplification_proven": {
+      "const": false
+    },
+    "beyond_sota_claimed": {
+      "const": false
+    },
+    "s_tier_claimed": {
+      "const": false
+    },
+    "truth_engine_law_changed": {
+      "const": false
+    },
+    "trust_zone_law_changed": {
+      "const": false
+    }
+  },
+  "additionalProperties": true
+}

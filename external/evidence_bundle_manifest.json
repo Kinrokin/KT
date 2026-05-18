@@ -1,0 +1,28 @@
+{
+  "schema_id": "kt.external_reaudit.attestation_evidence_bundle_manifest.v1",
+  "authority": "ATTESTATION_INTAKE_PREP",
+  "current_blocked_outcome": "H06_EXTERNAL_REAUDIT_DEFERRED__INDEPENDENT_ATTESTATION_REQUIRED",
+  "bundle_scope": [
+    "external_audit_packet",
+    "public_verifier_manifest",
+    "supply_chain_release_evidence",
+    "claim_boundary",
+    "allowed_forbidden_claims",
+    "commercial_proof_plane",
+    "adversarial_proof_corridor",
+    "truth_trust_unchanged_receipts"
+  ],
+  "required_live_inputs": [
+    "KT_PROD_CLEANROOM/reports/kt_external_reaudit_attempt_blocker_ledger.json",
+    "KT_PROD_CLEANROOM/reports/kt_external_reaudit_attempt_next_lawful_move_receipt.json",
+    "KT_PROD_CLEANROOM/reports/external_audit_packet_manifest.json",
+    "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "KT_PROD_CLEANROOM/reports/kt_external_audit_and_ratification_claim_boundary_receipt.json"
+  ],
+  "attestation_target": "KT_PROD_CLEANROOM/reports/kt_external_reaudit_independent_attestation.json",
+  "cannot_self_satisfy": true,
+  "commercial_claims_authorized": false,
+  "external_audit_completed": false,
+  "seven_b_amplification_proven": false,
+  "s_tier_claimed": false
+}

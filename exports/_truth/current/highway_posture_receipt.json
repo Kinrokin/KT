@@ -1,24 +1,24 @@
 {
   "artifact_id": "HIGHWAY_POSTURE_RECEIPT",
-  "generated_utc": "2026-05-16T20:23:03Z",
+  "generated_utc": "2026-05-18T21:29:15Z",
   "posture": "HIGHWAY_PREP_ONLY",
   "schema_id": "kt.highway.posture_receipt.v1",
   "strongest_supported_posture": "HIGHWAY_PREP_ONLY",
   "truth_basis": {
     "activation_allowed": false,
     "blockers": [
-      "PR200_TRUTH_LOCK_REPLAY_NOT_CANONICAL",
-      "TRUTH_LOCK_VALIDATION_NOT_AUTHORIZED",
-      "DETACHED_VERIFIER_NOT_AUTHORIZED",
-      "FP0_PREP_ONLY_QUEUED_NONAUTHORITATIVE"
+      "H06_INDEPENDENT_EXTERNAL_REAUDIT_ATTESTATION_REQUIRED",
+      "HIGHWAY_CANONICAL_PROMOTION_NOT_AUTHORIZED",
+      "COMMERCIAL_CLAIM_AUTHORIZATION_NOT_GRANTED",
+      "FP0_NO_CLAIM_EXPANSION_PREP_ONLY"
     ],
-    "current_lawful_label": "HIGHWAY_PATHWAY_SYSTEM_v1_PREP_ONLY_IMPLEMENTED__AUTHORITY_BLOCKED_BY_PR200_TRUTH_LOCK_REPLAY_NOT_CANONICAL",
-    "detached_verifier_authorized": false,
-    "fp0_authority": "PREP_ONLY_QUEUED_NONAUTHORITATIVE",
+    "current_lawful_label": "HIGHWAY_PATHWAY_SYSTEM_v1_PREP_ONLY_RELANDED__AUTHORITY_BLOCKED_BY_H06_EXTERNAL_ATTESTATION_REQUIRED",
+    "detached_verifier_authorized": true,
+    "fp0_authority": "PREP_ONLY_NO_CLAIM_EXPANSION",
     "mode": "PREP_ONLY",
-    "reason": "PR200_TRUTH_LOCK_REPLAY_NOT_CANONICAL",
-    "truth_lock_replay_canonical": false,
-    "truth_lock_validation_authorized": false
+    "reason": "H06_INDEPENDENT_EXTERNAL_REAUDIT_ATTESTATION_REQUIRED",
+    "truth_lock_replay_canonical": true,
+    "truth_lock_validation_authorized": true
   },
   "work_order_id": "KT_HIGHWAY_PATHWAY_SYSTEM_SUPERLANE_INITIATION_v1_0"
 }

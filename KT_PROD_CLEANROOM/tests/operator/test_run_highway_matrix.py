@@ -27,4 +27,4 @@ def test_json_schema_validation_passes_for_highway_governance_artifacts(tmp_path
 def test_matrix_receipt_json_parses(tmp_path):
     highway.run_highway_matrix(tmp_path)
     payload = json.loads((tmp_path / "exports/_truth/current/highway_matrix_receipt.json").read_text(encoding="utf-8"))
-    assert payload["next_lawful_action"].startswith("Protected merge PR #200")
+    assert payload["next_lawful_action"].startswith("Collect independent external re-audit attestation")

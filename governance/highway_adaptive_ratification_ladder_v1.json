@@ -3,20 +3,20 @@
   "artifact_id": "HIGHWAY_ADAPTIVE_RATIFICATION_LADDER_V1",
   "authority": "PREP_ONLY",
   "blocked_by": [
-    "PR200_TRUTH_LOCK_REPLAY_NOT_CANONICAL",
-    "TRUTH_LOCK_VALIDATION_NOT_AUTHORIZED",
-    "DETACHED_VERIFIER_NOT_AUTHORIZED",
-    "FP0_PREP_ONLY_QUEUED_NONAUTHORITATIVE"
+    "H06_INDEPENDENT_EXTERNAL_REAUDIT_ATTESTATION_REQUIRED",
+    "HIGHWAY_CANONICAL_PROMOTION_NOT_AUTHORIZED",
+    "COMMERCIAL_CLAIM_AUTHORIZATION_NOT_GRANTED",
+    "FP0_NO_CLAIM_EXPANSION_PREP_ONLY"
   ],
-  "cannot_activate_detached_verifier": true,
-  "cannot_activate_fp0": true,
+  "cannot_activate_fp0_as_authority": true,
   "cannot_claim_canonical_highway_status": true,
+  "cannot_claim_external_audit_complete": true,
   "cannot_mutate_trust_zone_law": true,
   "cannot_mutate_truth_engine_law": true,
-  "detached_verifier_authorized": false,
-  "final_label": "HIGHWAY_PATHWAY_SYSTEM_v1_PREP_ONLY_IMPLEMENTED__AUTHORITY_BLOCKED_BY_PR200_TRUTH_LOCK_REPLAY_NOT_CANONICAL",
-  "fp0_authority": "PREP_ONLY_QUEUED_NONAUTHORITATIVE",
-  "generated_utc": "2026-05-16T20:23:03Z",
+  "detached_verifier_authorized": true,
+  "final_label": "HIGHWAY_PATHWAY_SYSTEM_v1_PREP_ONLY_RELANDED__AUTHORITY_BLOCKED_BY_H06_EXTERNAL_ATTESTATION_REQUIRED",
+  "fp0_authority": "PREP_ONLY_NO_CLAIM_EXPANSION",
+  "generated_utc": "2026-05-18T21:29:15Z",
   "mode": "PREP_ONLY",
   "ratification_order": [
     "crucible_registry",
@@ -31,7 +31,7 @@
   ],
   "schema_id": "kt.highway.highway_adaptive_ratification_ladder_v1.v1",
   "superlane": "LAB_AND_ADAPTIVE_RATIFICATION",
-  "truth_lock_replay_canonical": false,
-  "truth_lock_validation_authorized": false,
+  "truth_lock_replay_canonical": true,
+  "truth_lock_validation_authorized": true,
   "work_order_id": "KT_HIGHWAY_PATHWAY_SYSTEM_SUPERLANE_INITIATION_v1_0"
 }

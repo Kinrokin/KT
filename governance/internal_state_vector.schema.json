@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kt.fp0.internal_state_vector.v2",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "state_id",
+    "authority_gain",
+    "routing_gain",
+    "verifier_strictness_gain",
+    "claim_ceiling_gain",
+    "quarantine_gain",
+    "budget_gain"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.fp0.internal_state_vector.v2"
+    },
+    "state_id": {
+      "type": "string"
+    },
+    "authority_gain": {
+      "type": "number"
+    },
+    "routing_gain": {
+      "type": "number"
+    },
+    "verifier_strictness_gain": {
+      "type": "number"
+    },
+    "claim_ceiling_gain": {
+      "type": "number"
+    },
+    "quarantine_gain": {
+      "type": "number"
+    },
+    "budget_gain": {
+      "type": "number"
+    }
+  }
+}
