@@ -10,6 +10,7 @@ from tools.operator.public_verifier_detached_validate import (  # noqa: E402
     PARITY_FIELDS,
     STRONGER_CLAIM_NOT_MADE,
     build_detached_public_verifier_outputs_from_artifacts,
+    _detached_git_ceiling,
 )
 from tools.verification.attestation_hmac import sign_hmac  # noqa: E402
 
@@ -123,3 +124,10 @@ def test_detached_public_verifier_receipt_blocks_on_parity_mismatch(monkeypatch)
     receipt = outputs["receipt"]
     assert receipt["status"] == "BLOCKED"
     assert receipt["checks"][7]["status"] == "FAIL"
+
+
+def test_detached_git_ceiling_blocks_parent_repo_discovery(tmp_path) -> None:
+    package_root = tmp_path / "repo" / "KT_PROD_CLEANROOM" / "exports" / "_runs" / "WS19" / "package"
+
+    assert _detached_git_ceiling(package_root) == str(package_root.resolve().parent)
+    assert _detached_git_ceiling(package_root) != str(package_root.resolve())

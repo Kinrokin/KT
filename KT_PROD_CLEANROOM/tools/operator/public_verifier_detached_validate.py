@@ -309,6 +309,13 @@ def _package_root_sha256(components: Sequence[Dict[str, Any]]) -> str:
     return _canonical_hash(payload)
 
 
+def _detached_git_ceiling(package_root: Path) -> str:
+    # The ceiling must be above the package root. If it is the package root
+    # itself, git may still discover the live repository that contains the
+    # exported package and falsely make the replay look repo-attached.
+    return str(package_root.resolve().parent)
+
+
 def _check_status(receipt: Dict[str, Any], check_id: str) -> bool:
     checks = receipt.get("checks")
     if not isinstance(checks, list):
@@ -543,7 +550,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     detached_env.pop("PYTHONPATH", None)
     detached_env.pop("GIT_DIR", None)
     detached_env.pop("GIT_WORK_TREE", None)
-    detached_env["GIT_CEILING_DIRECTORIES"] = str(package_root)
+    detached_env["GIT_CEILING_DIRECTORIES"] = _detached_git_ceiling(package_root)
     result = subprocess.run(
         [sys.executable, "-m", "tools.operator.public_verifier_detached_runtime", "--report-output", str(detached_report_path), "--receipt-output", str(detached_runtime_receipt_path)],
         cwd=str(detached_cwd),
