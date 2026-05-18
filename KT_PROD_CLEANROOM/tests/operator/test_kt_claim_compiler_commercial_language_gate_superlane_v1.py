@@ -264,6 +264,17 @@ def test_rejects_missing_commercial_doc_marker(tmp_path: Path, monkeypatch: pyte
     assert excinfo.value.code == "RC_KT_CLAIM_GATE_COMMERCIAL_SURFACE_UNBOUNDED"
 
 
+def test_rejects_forbidden_affirmative_markdown_claim(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / gate.CLAIM_INPUTS["certification_pack"]
+    original = path.read_text(encoding="utf-8")
+    path.write_text(original + "\nCommercial activation claims are authorized.\n", encoding="utf-8")
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(gate.LaneFailure) as excinfo:
+        gate.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_CLAIM_GATE_BOUNDARY_BREACH"
+
+
 def test_rejects_claim_compiler_policy_without_invariant(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     _copy_inputs(tmp_path)
     path = tmp_path / gate.CLAIM_INPUTS["claim_compiler_policy"]

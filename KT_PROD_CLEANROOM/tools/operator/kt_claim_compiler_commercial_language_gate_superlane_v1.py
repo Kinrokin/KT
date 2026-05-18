@@ -302,6 +302,7 @@ def _validate_commercial_docs(root: Path) -> list[Dict[str, Any]]:
         missing = [marker for marker in required_markers.get(role, []) if marker not in text]
         if missing:
             _fail("RC_KT_CLAIM_GATE_COMMERCIAL_SURFACE_UNBOUNDED", f"{role} missing markers: {', '.join(missing)}")
+        _scan_claim_text(f"{role}.markdown_text", text)
         rows.append({"role": role, "path": raw, "status": "PASS", "required_markers_missing": missing})
     return rows
 
@@ -332,6 +333,13 @@ def _scan_claim_boundary(label: str, payload: Any) -> None:
             for clause in clauses:
                 if any(pattern.search(clause) for pattern in FORBIDDEN_CLAIM_PATTERNS) and not _is_negative_text(clause):
                     _fail("RC_KT_CLAIM_GATE_BOUNDARY_BREACH", f"{label}.{key}={value!r}")
+
+
+def _scan_claim_text(label: str, text: str) -> None:
+    clauses = re.split(r"\b(?:and|but|however|although|though|while|whereas)\b|[.;\n]", text, flags=re.IGNORECASE)
+    for clause in clauses:
+        if any(pattern.search(clause) for pattern in FORBIDDEN_CLAIM_PATTERNS) and not _is_negative_text(clause):
+            _fail("RC_KT_CLAIM_GATE_BOUNDARY_BREACH", f"{label}={clause.strip()!r}")
 
 
 def _validate_claim_boundary(payloads: Dict[str, Dict[str, Any]]) -> None:
