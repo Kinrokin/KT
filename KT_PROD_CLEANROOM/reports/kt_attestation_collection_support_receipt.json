@@ -1,0 +1,19 @@
+{
+  "artifact_id": "KT_ATTESTATION_COLLECTION_SUPPORT_RECEIPT",
+  "attestation_accepted": false,
+  "attestation_present": false,
+  "attestation_target": "KT_PROD_CLEANROOM/reports/kt_external_reaudit_independent_attestation.json",
+  "authority": "COLLECTION_SUPPORT_ONLY",
+  "blockers": [
+    {
+      "blocker_id": "independent_external_reaudit_attestation_missing",
+      "repair": "Collect an attestation from an independent external reviewer; do not self-author it.",
+      "required_artifact": "KT_PROD_CLEANROOM/reports/kt_external_reaudit_independent_attestation.json",
+      "status": "BLOCKING"
+    }
+  ],
+  "generated_utc": "2026-05-18T22:51:41Z",
+  "next_lawful_move": "COLLECT_INDEPENDENT_EXTERNAL_REAUDIT_ATTESTATION",
+  "schema_id": "kt.external_attestation.collection_support_receipt.v1",
+  "self_authored_attestation_allowed": false
+}
