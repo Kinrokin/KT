@@ -1,6 +1,6 @@
 # KT Adversarial Proof Corridor Validation
 
-Current main: 1506ebbff9557f89999a7db149af192ecbfacd28
+Current main: 01de2f9ec4c230f66a1e4b75957e78af3b3d28e3
 Lane: VALIDATE_KT_ADVERSARIAL_PROOF_CORRIDOR_SUPERLANE_V1
 Outcome: KT_ADVERSARIAL_PROOF_CORRIDOR_VALIDATED__EXTERNAL_AUDIT_RATIFICATION_PACKET_NEXT
 Adversarial proof corridor validated: true
