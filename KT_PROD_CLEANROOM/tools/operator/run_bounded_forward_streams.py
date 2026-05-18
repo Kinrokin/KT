@@ -74,6 +74,14 @@ FORBIDDEN_POSITIVE_PATTERNS = (
 )
 
 
+NEGATIVE_SECTION_MARKERS = (
+    "forbidden language",
+    "forbidden_claim",
+    "forbidden claims",
+    "excluded:",
+)
+
+
 def _rel(path: Path, root: Path) -> str:
     try:
         return path.relative_to(root).as_posix()
@@ -88,26 +96,43 @@ def _text_for_scan(root: Path, raw_path: str) -> str:
     return path.read_text(encoding="utf-8-sig")
 
 
+def _is_negative_section(line_lower: str) -> bool:
+    return any(marker in line_lower for marker in NEGATIVE_SECTION_MARKERS)
+
+
+def _is_new_section_header(line_lower: str) -> bool:
+    stripped = line_lower.strip()
+    return bool(stripped) and stripped.endswith(":")
+
+
+def _claim_clause(line: str, match_start: int, match_end: int) -> str:
+    left = max(line.rfind(separator, 0, match_start) for separator in ".;!?")
+    right_candidates = [line.find(separator, match_end) for separator in ".;!?" if line.find(separator, match_end) != -1]
+    right = min(right_candidates) if right_candidates else len(line)
+    return line[left + 1 : right].lower()
+
+
+def _claim_negated_in_own_clause(line: str, match_start: int, match_end: int) -> bool:
+    clause = _claim_clause(line, match_start, match_end)
+    return any(marker in clause for marker in NEGATIVE_CONTEXT_MARKERS)
+
+
 def scan_claim_text(text: str, *, source: str) -> list[Dict[str, Any]]:
     violations: list[Dict[str, Any]] = []
-    recent_context: list[str] = []
     negative_block = False
     for line_no, line in enumerate(text.splitlines(), start=1):
         lowered = line.lower()
-        if any(marker in lowered for marker in ("forbidden language", "forbidden_claim", "forbidden claims", "excluded:")):
-            negative_block = True
-        if negative_block and lowered.strip().endswith(":") and not any(
-            marker in lowered for marker in ("forbidden", "excluded", "blocked")
-        ):
+        if negative_block and _is_new_section_header(lowered) and not _is_negative_section(lowered):
             negative_block = False
-        context = " ".join([*recent_context[-4:], lowered])
+        if _is_negative_section(lowered):
+            negative_block = True
         for pattern in FORBIDDEN_POSITIVE_PATTERNS:
-            if not pattern.search(line):
+            match = pattern.search(line)
+            if not match:
                 continue
-            if negative_block or any(marker in context for marker in NEGATIVE_CONTEXT_MARKERS):
+            if negative_block or _claim_negated_in_own_clause(line, match.start(), match.end()):
                 continue
             violations.append({"source": source, "line": line_no, "pattern": pattern.pattern, "text": line.strip()})
-        recent_context.append(lowered)
     return violations
 
 

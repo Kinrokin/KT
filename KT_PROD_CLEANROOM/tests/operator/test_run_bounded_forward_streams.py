@@ -67,6 +67,25 @@ def test_claim_scan_rejects_positive_forbidden_claim() -> None:
     assert violations[0]["line"] == 1
 
 
+def test_claim_scan_rejects_positive_claim_after_prior_negative_line() -> None:
+    text = "Claim expansion is blocked.\nKT is externally audited."
+    violations = streams.scan_claim_text(text, source="unit")
+    assert violations
+    assert violations[0]["line"] == 2
+
+
+def test_claim_scan_rejects_positive_claim_after_prior_negative_sentence() -> None:
+    text = "Claim expansion is blocked. KT is externally audited."
+    violations = streams.scan_claim_text(text, source="unit")
+    assert violations
+    assert violations[0]["line"] == 1
+
+
+def test_claim_scan_allows_explicit_forbidden_section() -> None:
+    text = "Forbidden language:\n\n```text\nexternally audited\nS-tier\n```"
+    assert streams.scan_claim_text(text, source="unit") == []
+
+
 def test_launch_wedge_claim_scan_passes_current_docs(tmp_path: Path) -> None:
     _copy_required_inputs(tmp_path)
     receipt = streams.scan_launch_claims(tmp_path)
