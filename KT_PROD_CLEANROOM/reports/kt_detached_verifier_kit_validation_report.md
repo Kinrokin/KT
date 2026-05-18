@@ -1,6 +1,6 @@
 # KT Detached Verifier Kit Validation Report
 
-Current main: cad7a59e27e92fef840714113cb83e35567dd911
+Current main: bed4fb8ecb6596b7fb900cba13f0549a8deee45d
 Lane: VALIDATE_KT_DETACHED_VERIFIER_KIT_SUPERLANE_V1
 Validation verdict: KT_DETACHED_VERIFIER_KIT_VALIDATED__CLEAN_ROOM_REPLAY_GATE_NEXT
 Clean-room replay executed: false
