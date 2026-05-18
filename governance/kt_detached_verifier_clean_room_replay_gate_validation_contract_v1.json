@@ -1,0 +1,278 @@
+{
+  "allowed_outcomes": [
+    "KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_GATE_VALIDATED__CLEAN_ROOM_REPLAY_NEXT",
+    "KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_GATE_VALIDATION_BLOCKED__PATCH_REQUIRED",
+    "KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_GATE_VALIDATION_INVALID__CLAIM_BOUNDARY_BREACH",
+    "KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_GATE_VALIDATION_FAILED__DO_NOT_RUN_CLEAN_ROOM_REPLAY"
+  ],
+  "artifact_id": "KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_GATE_VALIDATION_CONTRACT_V1",
+  "authoritative_lane": "VALIDATE_KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_GATE_V1",
+  "authority": "VALIDATION_ONLY",
+  "beyond_sota_claimed": false,
+  "binding_hashes": {
+    "author_next_lawful_move_hash": "871fc4dd9dde209383c0a51a78b6f1a35d8b65c9fcd5b147b780eb77db8106b1",
+    "author_receipt_hash": "d3acf959478ee9149849964aa28252fa428b0d7e31964ff95b957a4adb150ac4",
+    "author_report_hash": "46d33f22c13984e3ab05adfa15fd75b707712cd080fbca416d998aac577b4b4a",
+    "authoring_contract_hash": "e11722a5fd4799750e3b542a8cc8713ac966de748d3afff0bab21a530f1e90c4",
+    "execution_scope_hash": "c1fa9d8a0498ec192bad3216cab3d8355bfa50e033cdcc5c10ed060562cc61f5",
+    "validation_plan_hash": "3ec529fdee77ae2423cb60e33209808f476da24e5d4bd66765f8348c682bf925"
+  },
+  "can_run_clean_room_replay_next": true,
+  "cannot_execute_clean_room_replay_in_validation": true,
+  "claim_boundary_passed": true,
+  "clean_room_replay_completed": false,
+  "clean_room_replay_executed": false,
+  "clean_room_replay_gate_validated": true,
+  "clean_room_replay_ready_next": true,
+  "commercial_activation_claim_authorized": false,
+  "commercial_activation_claimed": false,
+  "current_branch": "validate/kt-detached-verifier-clean-room-replay-gate-v1",
+  "current_branch_head": "bba56b82e3be2ac08c59f59e38451a82efe15834",
+  "current_git_head": "bba56b82e3be2ac08c59f59e38451a82efe15834",
+  "current_main": "bba56b82e3be2ac08c59f59e38451a82efe15834",
+  "current_main_head": "bba56b82e3be2ac08c59f59e38451a82efe15834",
+  "decision": "CLEAN_ROOM_REPLAY_READY_TO_RUN",
+  "external_audit_claimed_complete": false,
+  "fp0_or_highway_promoted_to_authority": false,
+  "fp0_overlay_promoted_to_authority": false,
+  "generated_utc": "2026-05-18T13:01:36Z",
+  "highway_shadow_promoted_to_authority": false,
+  "input_bindings": [
+    {
+      "path": "governance/kt_detached_verifier_clean_room_replay_gate_authoring_contract_v1.json",
+      "role": "authoring_contract",
+      "sha256": "e11722a5fd4799750e3b542a8cc8713ac966de748d3afff0bab21a530f1e90c4"
+    },
+    {
+      "path": "governance/kt_detached_verifier_clean_room_replay_scope_v1.json",
+      "role": "execution_scope",
+      "sha256": "c1fa9d8a0498ec192bad3216cab3d8355bfa50e033cdcc5c10ed060562cc61f5"
+    },
+    {
+      "path": "governance/kt_detached_verifier_clean_room_replay_gate_validation_plan_v1.json",
+      "role": "validation_plan",
+      "sha256": "3ec529fdee77ae2423cb60e33209808f476da24e5d4bd66765f8348c682bf925"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_detached_verifier_clean_room_replay_gate_author_receipt.json",
+      "role": "author_receipt",
+      "sha256": "d3acf959478ee9149849964aa28252fa428b0d7e31964ff95b957a4adb150ac4"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_detached_verifier_clean_room_replay_gate_author_report.md",
+      "role": "author_report",
+      "sha256": "46d33f22c13984e3ab05adfa15fd75b707712cd080fbca416d998aac577b4b4a"
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_detached_verifier_clean_room_replay_gate_next_lawful_move_receipt.json",
+      "role": "author_next_lawful_move",
+      "sha256": "871fc4dd9dde209383c0a51a78b6f1a35d8b65c9fcd5b147b780eb77db8106b1"
+    }
+  ],
+  "negative_tests_passed": true,
+  "next_lawful_move": "RUN_KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_GATE_V1",
+  "predecessor_next_lawful_move": "VALIDATE_KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_GATE_V1",
+  "predecessor_outcome": "KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_GATE_AUTHORED__CLEAN_ROOM_REPLAY_GATE_VALIDATION_NEXT",
+  "receipt_validation_passed": true,
+  "s_tier_claimed": false,
+  "schema_id": "kt.detached_verifier.clean_room_replay_gate.validation.v1",
+  "schema_validation_passed": true,
+  "selected_outcome": "KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_GATE_VALIDATED__CLEAN_ROOM_REPLAY_NEXT",
+  "seven_b_amplification_claimed": false,
+  "seven_b_amplification_claimed_proven": false,
+  "trust_zone_law_changed": false,
+  "trust_zone_law_unchanged": true,
+  "trust_zone_validation": {
+    "checks": [
+      {
+        "check": "required_zones_present",
+        "missing": [],
+        "status": "PASS"
+      },
+      {
+        "check": "readiness_zones_declared_in_registry",
+        "excludes": [
+          "LAB",
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "includes": [
+          "CANONICAL"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "canonical_primary_surfaces_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_declared",
+        "count": 19,
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_in_toolchain_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "toolchain_proving_surfaces_not_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "generated_truth_surfaces_in_generated_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "documentary_only_surfaces_in_commercial_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "quarantine_patterns_excluded_from_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "quarantine_patterns_in_quarantined_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "runtime_boundary_excludes_reflected_in_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "readiness_scoped_to_canonical_only",
+        "status": "PASS"
+      },
+      {
+        "actual": [
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "LAB",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "check": "readiness_excludes_all_noncanonical_zones",
+        "expected": [
+          "ARCHIVE",
+          "COMMERCIAL",
+          "GENERATED_RUNTIME_TRUTH",
+          "LAB",
+          "QUARANTINED",
+          "TOOLCHAIN_PROVING"
+        ],
+        "status": "PASS"
+      },
+      {
+        "check": "frozen_surfaces_live_in_canonical_or_toolchain_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "frozen_surfaces_covered_by_amendment_scope",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "settled_truth_root_in_generated_zone",
+        "status": "PASS",
+        "truth_root": "kt_truth_ledger:ledger/current/current_pointer.json"
+      },
+      {
+        "check": "execution_board_truth_source_in_generated_zone",
+        "status": "PASS",
+        "truth_source": "kt_truth_ledger:ledger/current/current_pointer.json"
+      },
+      {
+        "actual": [
+          "cognition",
+          "core",
+          "council",
+          "curriculum",
+          "governance",
+          "kt",
+          "memory",
+          "multiverse",
+          "paradox",
+          "schemas",
+          "temporal",
+          "thermodynamics",
+          "versioning"
+        ],
+        "check": "runtime_registry_canonical_roots_match_contract",
+        "expected": [
+          "cognition",
+          "core",
+          "council",
+          "curriculum",
+          "governance",
+          "kt",
+          "memory",
+          "multiverse",
+          "paradox",
+          "schemas",
+          "temporal",
+          "thermodynamics",
+          "versioning"
+        ],
+        "status": "PASS"
+      },
+      {
+        "actual": [],
+        "check": "runtime_registry_compatibility_roots_match_contract",
+        "expected": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_not_canonical",
+        "overlap": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_quarantined_in_scope_manifest",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_excluded_by_runtime_boundary_contract",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_excluded_from_canonical_zone",
+        "mismatches": [],
+        "status": "PASS"
+      },
+      {
+        "check": "compatibility_roots_present_in_quarantined_zone",
+        "mismatches": [],
+        "status": "PASS"
+      }
+    ],
+    "failures": [],
+    "schema_id": "kt.operator.trust_zone_validation_receipt.v2",
+    "status": "PASS"
+  },
+  "truth_engine_law_changed": false,
+  "truth_engine_law_unchanged": true,
+  "validation_checks": [
+    "gate authoring outcome is replay-bound",
+    "authoring source hashes recompute against current files",
+    "gate scope still excludes external audit and commercial activation claims",
+    "clean-room replay remains unexecuted inside validation",
+    "next lawful move is exact RUN_KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_GATE_V1"
+  ],
+  "validation_executed": true,
+  "validation_must_not_execute_replay": true,
+  "validation_scope": "VALIDATE_GATE_ONLY_NO_REPLAY_EXECUTION"
+}
