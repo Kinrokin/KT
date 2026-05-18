@@ -1,0 +1,55 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "commercial_activation_claim_authorized": false,
+  "creationInfo": {
+    "created": "2026-05-18T15:11:29Z",
+    "creators": [
+      "Tool: kt_supply_chain_release_corridor_superlane_v1"
+    ]
+  },
+  "dataLicense": "CC0-1.0",
+  "documentNamespace": "https://kt.local/spdx/supply-chain-release-corridor/380791804dc832f9c5edc962ede1fe1ad6fc9fe3",
+  "external_audit_completed": false,
+  "name": "KT supply-chain release corridor bounded SBOM bridge",
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-cyclonedx-sbom",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "2a891c92b94f43f85830c610612a9cd4bf709ed8253dba0782840338d62553b6"
+        }
+      ],
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "KT_PROD_CLEANROOM/reports/sbom_cyclonedx.json"
+    },
+    {
+      "SPDXID": "SPDXRef-public-verifier-sbom",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "eb6d50d9fad5c643f9f2ad482f16efe307a2f0be0479cf7ce53435b82cf9baf8"
+        }
+      ],
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "KT_PROD_CLEANROOM/reports/kt_public_verifier_sbom.json"
+    },
+    {
+      "SPDXID": "SPDXRef-detached-verifier-sbom",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4dfb11e67ffb200dd04d01d7302ea750f57ead1de4653523f09b1da7aa657011"
+        }
+      ],
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "KT_PROD_CLEANROOM/reports/kt_public_verifier_detached_sbom.json"
+    }
+  ],
+  "schema_id": "kt.supply_chain_release_corridor.spdx_sbom.v1",
+  "seven_b_amplification_claimed_proven": false,
+  "spdxVersion": "SPDX-2.3"
+}
