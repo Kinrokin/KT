@@ -1,0 +1,104 @@
+{
+  "artifact_id": "detached_runtime_receipt.json",
+  "checks": [
+    {
+      "check": "detached_root_without_git_checkout",
+      "detail": "Detached verifier must run from a copied package root without a repo checkout or .git metadata.",
+      "refs": [],
+      "status": "PASS"
+    },
+    {
+      "check": "trust_root_resolved_from_packaged_policy",
+      "detail": "Detached verifier must resolve trust roots from packaged WS17 policy and TUF root inputs.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_signed_revision_policy.json",
+        "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json",
+        "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "source_and_build_provenance_resolved",
+      "detail": "Detached verifier must resolve source/build attestation and WS18 provenance surfaces from packaged inputs only.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_revision_trust_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_source_provenance.dsse",
+        "KT_PROD_CLEANROOM/reports/source_build_attestation/authority_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_build_provenance.dsse",
+        "KT_PROD_CLEANROOM/reports/kt_verification_summary_attestation.dsse",
+        "KT_PROD_CLEANROOM/reports/kt_build_verification_receipt.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "rekor_and_sigstore_bundle_resolved",
+      "detail": "Detached verifier must resolve Rekor and Sigstore/TUF evidence from packaged refs only.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/kt_tuf_root_initialization.json",
+        "KT_PROD_CLEANROOM/reports/kt_sigstore_publication_bundle.json",
+        "KT_PROD_CLEANROOM/reports/kt_rekor_inclusion_receipt.json",
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication/in_toto_statement.bundle.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "authority_state_resolved",
+      "detail": "Detached verifier must resolve authority state from packaged verifier/governance/publication receipts.",
+      "refs": [
+        "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+        "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+        "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "detached_environment": {
+    "detached_root_detected": true,
+    "git_head_available": false,
+    "repo_checkout_present": false
+  },
+  "public_verifier_report": {
+    "branch_protection_status": "BLOCKED",
+    "claim_boundary": "evidence_commit identifies the commit that last changed the cryptographic publication evidence; truth_subject_commit identifies the transparency-verified subject commit. Consumers must not equate them unless evidence_equals_subject is true.",
+    "current_head_commit": "",
+    "enterprise_legitimacy_ceiling": "WORKFLOW_GOVERNANCE_ONLY",
+    "evidence_commit": "947642fbdea7cffa19bd65da70d03d482d55826b",
+    "evidence_contains_subject": true,
+    "generated_utc": "2026-05-18T13:36:31Z",
+    "head_claim_boundary": "Current HEAD contains transparency-verified evidence for truth_subject_commit; HEAD is not itself the verified subject.",
+    "head_claim_verdict": "HEAD_CONTAINS_TRANSPARENCY_VERIFIED_SUBJECT_EVIDENCE",
+    "head_equals_subject": false,
+    "manifest_ref": "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json",
+    "platform_block": {
+      "http_status": 403,
+      "message": "Upgrade to GitHub Pro or make this repository public to enable this feature."
+    },
+    "platform_governance_claim_admissible": false,
+    "platform_governance_claim_boundary": "Current-head workflow governance is fresh, but GitHub branch-protection / ruleset enforcement is not proven on main. Do not claim platform-enforced governance while main_branch_protection_receipt is not PASS.",
+    "platform_governance_head_claim_boundary": "Current HEAD contains workflow-governance-only evidence for platform_governance_subject_commit; it is not itself freshly governance-proven.",
+    "platform_governance_head_claim_verdict": "HEAD_CONTAINS_WORKFLOW_GOVERNANCE_ONLY_EVIDENCE_FOR_SUBJECT",
+    "platform_governance_head_equals_subject": false,
+    "platform_governance_receipt_refs": [
+      "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json",
+      "KT_PROD_CLEANROOM/reports/main_branch_protection_receipt.json",
+      "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_platform_governance_lawful_narrowing_receipt.json",
+      "KT_PROD_CLEANROOM/reports/kt_platform_governance_final_decision_receipt.json"
+    ],
+    "platform_governance_subject_commit": "7bd610b507328eb72622ce24678620f5469f3848",
+    "platform_governance_verdict": "WORKFLOW_GOVERNANCE_ONLY_PLATFORM_BLOCKED",
+    "publication_evidence_refs": [
+      "KT_PROD_CLEANROOM/reports/cryptographic_publication_receipt.json",
+      "KT_PROD_CLEANROOM/reports/cryptographic_publication/authority_subject.json"
+    ],
+    "publication_receipt_status": "PASS",
+    "schema_id": "kt.operator.public_verifier_receipt.v1",
+    "status": "PASS",
+    "subject_verdict": "PUBLISHED_HEAD_TRANSPARENCY_VERIFIED",
+    "truth_subject_commit": "0f8e1aa89f8b7094360c94e64a25cef728c6b2bd",
+    "workflow_governance_status": "PASS_WITH_PLATFORM_BLOCK"
+  },
+  "schema_id": "kt.operator.public_verifier_detached_runtime_receipt.v1",
+  "status": "PASS",
+  "stronger_claim_not_made": "WS19 does not claim independent external reproduction, third-party detached replay, or public horizon opening."
+}
