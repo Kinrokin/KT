@@ -1,6 +1,6 @@
 # KT Detached Verifier Clean-Room Replay Evidence Review Validation
 
-Current main: 972c1c00e96b28b5185b714ad0ff0ff20129c633
+Current main: 2f028d644f7f531b8181f9f251de2835e2433e2b
 Lane: VALIDATE_KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_PACKET
 Validation verdict: KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_EVIDENCE_REVIEW_VALIDATED__SUPPLY_CHAIN_RELEASE_CORRIDOR_NEXT
 Clean-room replay evidence review packet validated: true
