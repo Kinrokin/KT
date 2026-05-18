@@ -1,6 +1,6 @@
 # KT Detached Verifier Clean-Room Replay Gate Validation Report
 
-Current main: bba56b82e3be2ac08c59f59e38451a82efe15834
+Current main: 22d56b774089858290fe06f3e501a951c363fdba
 Lane: VALIDATE_KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_GATE_V1
 Validation verdict: KT_DETACHED_VERIFIER_CLEAN_ROOM_REPLAY_GATE_VALIDATED__CLEAN_ROOM_REPLAY_NEXT
 Clean-room replay executed: false
