@@ -49,10 +49,12 @@ REASON_CODES = tuple(
             "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_OUTCOME_DRIFT",
             "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_NEXT_MOVE_DRIFT",
             "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_SOURCE_HASH_MISMATCH",
+            "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_INPUT_BINDING_ROLE_SET_DRIFT",
             "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_ARTIFACT_MISSING",
             "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_SCOPE_INCOMPLETE",
             "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_DECISION_MATRIX_INVALID",
             "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_REASON_CODE_DUPLICATE",
+            "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_REASON_CODE_CATALOG_DRIFT",
             "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_CLAIM_BOUNDARY_BREACH",
             "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_PREMATURE_AUTHORITY",
             "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_BRANCH_DRIFT",
@@ -168,6 +170,11 @@ def _validate_reason_codes(payloads: Dict[str, Dict[str, Any]]) -> None:
         _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_ARTIFACT_MISSING", "validation reason codes missing")
     if len(reason_codes) != len(set(reason_codes)):
         _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_REASON_CODE_DUPLICATE", "validation reason codes must be unique")
+    if tuple(reason_codes) != packet.REASON_CODES:
+        _fail(
+            "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_REASON_CODE_CATALOG_DRIFT",
+            "validation reason codes must match the required external audit ratification packet catalog",
+        )
 
 
 def _validate_bound_source_hashes(root: Path, payloads: Dict[str, Dict[str, Any]]) -> list[Dict[str, str]]:
@@ -179,10 +186,32 @@ def _validate_bound_source_hashes(root: Path, payloads: Dict[str, Dict[str, Any]
     if not isinstance(expected_by_role, dict):
         _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_SOURCE_HASH_MISMATCH", "packet binding_hashes missing")
 
-    validated_rows: list[Dict[str, str]] = []
+    expected_role_paths = dict(packet.INPUTS)
+    actual_role_paths: dict[str, str] = {}
     for row in rows:
         if not isinstance(row, dict):
-            _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_SOURCE_HASH_MISMATCH", "input binding row must be object")
+            _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_INPUT_BINDING_ROLE_SET_DRIFT", "input binding row must be object")
+        role = str(row.get("role", "")).strip()
+        raw = str(row.get("path", "")).strip()
+        if not role or not raw:
+            _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_INPUT_BINDING_ROLE_SET_DRIFT", "input binding row missing role/path")
+        if role in actual_role_paths:
+            _fail("RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_INPUT_BINDING_ROLE_SET_DRIFT", f"duplicate input binding role: {role}")
+        actual_role_paths[role] = raw
+    if actual_role_paths != expected_role_paths:
+        _fail(
+            "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_INPUT_BINDING_ROLE_SET_DRIFT",
+            "packet input bindings must exactly match the canonical external audit ratification input role set",
+        )
+    expected_binding_keys = {f"{role}_hash" for role in expected_role_paths}
+    if set(expected_by_role) != expected_binding_keys:
+        _fail(
+            "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_INPUT_BINDING_ROLE_SET_DRIFT",
+            "packet binding_hashes keys must exactly match the canonical external audit ratification input role set",
+        )
+
+    validated_rows: list[Dict[str, str]] = []
+    for row in rows:
         role = str(row.get("role", "")).strip()
         raw = str(row.get("path", "")).strip()
         expected = str(row.get("sha256", "")).strip()

@@ -88,6 +88,15 @@ def _payload(root: Path, role: str) -> dict:
     return _load(root / validator.OUTPUTS[role])
 
 
+def _drop_packet_binding_role(root: Path, role_to_drop: str) -> None:
+    for raw in validator.PACKET_JSON_OUTPUTS.values():
+        path = root / raw
+        payload = _load(path)
+        payload["input_bindings"] = [row for row in payload["input_bindings"] if row["role"] != role_to_drop]
+        payload["binding_hashes"].pop(f"{role_to_drop}_hash", None)
+        _write(path, payload)
+
+
 def test_reason_codes_are_unique() -> None:
     assert len(validator.REASON_CODES) == len(set(validator.REASON_CODES))
 
@@ -165,6 +174,15 @@ def test_rejects_bound_source_hash_drift(tmp_path: Path, monkeypatch: pytest.Mon
     with pytest.raises(validator.LaneFailure) as excinfo:
         validator.run(output_root=tmp_path)
     assert excinfo.value.code == "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_SOURCE_HASH_MISMATCH"
+
+
+def test_rejects_packet_input_binding_role_set_drift(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    _drop_packet_binding_role(tmp_path, "external_audit_packet_manifest")
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(validator.LaneFailure) as excinfo:
+        validator.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_INPUT_BINDING_ROLE_SET_DRIFT"
 
 
 def test_rejects_external_audit_completion_in_packet(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -247,6 +265,18 @@ def test_rejects_duplicate_reason_codes(tmp_path: Path, monkeypatch: pytest.Monk
     with pytest.raises(validator.LaneFailure) as excinfo:
         validator.run(output_root=tmp_path)
     assert excinfo.value.code == "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_REASON_CODE_DUPLICATE"
+
+
+def test_rejects_reason_code_catalog_drift(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / packet.OUTPUTS["validation_reason_codes"]
+    payload = _load(path)
+    payload["reason_codes"] = list(packet.REASON_CODES[:-1]) + ["RC_KT_EXTERNAL_AUDIT_RATIFICATION_FAKE"]
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(validator.LaneFailure) as excinfo:
+        validator.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_EXTERNAL_AUDIT_RATIFICATION_VAL_REASON_CODE_CATALOG_DRIFT"
 
 
 def test_rejects_unexpected_branch(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
