@@ -199,6 +199,9 @@ def _validate_supply_chain_inputs(payloads: Dict[str, Dict[str, Any]]) -> None:
     for role in (
         "ws12_supply_chain_policy_receipt",
         "slsa_provenance_receipt",
+        "build_provenance_dsse",
+        "in_toto_layout",
+        "in_toto_provenance_dsse",
         "sigstore_publication_bundle",
         "rekor_inclusion_receipt",
         "tuf_root_initialization",
@@ -209,7 +212,7 @@ def _validate_supply_chain_inputs(payloads: Dict[str, Dict[str, Any]]) -> None:
     cyclonedx = payloads["cyclonedx_sbom"]
     if cyclonedx.get("bomFormat") != "CycloneDX":
         _fail("RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_SBOM_INVALID", "CycloneDX SBOM must declare bomFormat CycloneDX")
-    if not isinstance(cyclonedx.get("components", []), list):
+    if "components" not in cyclonedx or not isinstance(cyclonedx.get("components"), list):
         _fail("RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_SBOM_INVALID", "CycloneDX SBOM must include components list")
 
     layout = payloads["supply_chain_layout_policy"]

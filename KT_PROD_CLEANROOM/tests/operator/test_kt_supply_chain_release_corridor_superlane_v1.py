@@ -192,6 +192,42 @@ def test_rejects_missing_cyclonedx_sbom_format(tmp_path: Path, monkeypatch: pyte
     assert excinfo.value.code == "RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_SBOM_INVALID"
 
 
+def test_rejects_missing_cyclonedx_components_list(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / corridor.SUPPLY_CHAIN_INPUTS["cyclonedx_sbom"]
+    payload = _load(path)
+    payload.pop("components", None)
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(corridor.LaneFailure) as excinfo:
+        corridor.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_SBOM_INVALID"
+
+
+def test_rejects_failed_in_toto_layout_status(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / corridor.SUPPLY_CHAIN_INPUTS["in_toto_layout"]
+    payload = _load(path)
+    payload["status"] = "FAIL"
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(corridor.LaneFailure) as excinfo:
+        corridor.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_ARTIFACT_STATUS_FAILED"
+
+
+def test_rejects_failed_build_provenance_status(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _copy_inputs(tmp_path)
+    path = tmp_path / corridor.SUPPLY_CHAIN_INPUTS["build_provenance_dsse"]
+    payload = _load(path)
+    payload["status"] = "FAIL"
+    _write(path, payload)
+    _patch_env(monkeypatch, tmp_path)
+    with pytest.raises(corridor.LaneFailure) as excinfo:
+        corridor.run(output_root=tmp_path)
+    assert excinfo.value.code == "RC_KT_SUPPLY_CHAIN_RELEASE_CORRIDOR_ARTIFACT_STATUS_FAILED"
+
+
 def test_rejects_external_audit_claim_in_predecessor(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     _copy_inputs(tmp_path)
     path = tmp_path / corridor.PREDECESSOR_INPUTS["h01_validation_receipt"]
