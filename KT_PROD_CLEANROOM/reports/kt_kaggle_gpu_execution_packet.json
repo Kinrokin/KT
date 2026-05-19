@@ -1,0 +1,52 @@
+{
+  "artifact_id": "KT_KAGGLE_GPU_EXECUTION_PACKET",
+  "authority": "KAGGLE_EXECUTION_STAGING_ONLY",
+  "beyond_sota_claim_authorized": false,
+  "cache_policy": {
+    "hf_home": "/kaggle/working/hf_cache",
+    "local_artifact_cache": "/kaggle/working/kt_gpu_conversion/cache",
+    "network_flaky_mode_supported": true,
+    "resume_manifest": "/kaggle/working/kt_gpu_conversion/latest_run.json",
+    "reuse_cached_hf_downloads": true
+  },
+  "category_leadership_claim_authorized": false,
+  "commercial_claim_authorized": false,
+  "default_working_dir": "/kaggle/working/kt_gpu_conversion",
+  "deterministic_seed": 1337,
+  "execution_mode": "SMOKE_FIRST_THEN_INCREMENTAL_TRAINING",
+  "execution_phases": [
+    "environment_smoke",
+    "dataset_provenance_smoke",
+    "lora_smoke",
+    "qlora_optional_smoke_if_bitsandbytes_available",
+    "router_trace_smoke",
+    "artifact_import_hash_smoke"
+  ],
+  "external_audit_accepted": false,
+  "external_audit_complete": false,
+  "full_adaptive_orchestration_production_ready": false,
+  "full_gpu_training_executed": false,
+  "generated_utc": "2026-05-19T15:17:20Z",
+  "required_outputs": [
+    "dataset_manifest.json",
+    "training_config.json",
+    "checkpoint_manifest.json",
+    "training_run_receipt.json",
+    "eval_receipt.json",
+    "router_trace.csv",
+    "candidate_provenance.json",
+    "negative_result_ledger.json"
+  ],
+  "run_id_format": "kt_gpu_conversion_{utc_timestamp}_{short_uuid}",
+  "schema_id": "kt.gpu_conversion.kaggle_execution_packet.v1",
+  "seven_b_amplification_proven": false,
+  "time_limit_policy": {
+    "early_stop_margin_seconds": 600,
+    "partial_results_are_valid_evidence": true,
+    "safe_resume_required": true,
+    "save_checkpoint_every_steps": 25
+  },
+  "trust_zone_law_changed": false,
+  "truth_engine_law_changed": false,
+  "windows_to_linux_path_note": "Local Windows paths must be copied or mounted into Kaggle input datasets; notebook cells must use /kaggle/input or /kaggle/working paths."
+}

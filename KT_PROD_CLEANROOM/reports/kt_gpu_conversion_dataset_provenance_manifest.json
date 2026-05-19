@@ -1,0 +1,49 @@
+{
+  "artifact_id": "KT_GPU_CONVERSION_DATASET_PROVENANCE_MANIFEST",
+  "authority": "DATASET_PROVENANCE_STAGING_ONLY",
+  "beyond_sota_claim_authorized": false,
+  "category_leadership_claim_authorized": false,
+  "commercial_claim_authorized": false,
+  "dataset_without_provenance_allowed": false,
+  "datasets": [
+    {
+      "blocks_training_if_missing": true,
+      "dataset_id": "router_admissibility_smoke_public",
+      "purpose": "minimal router candidate smoke",
+      "requires_input_hashes": true,
+      "requires_license_record": true,
+      "requires_split_hash": true,
+      "source": "Hugging Face public dataset or cached mirror",
+      "train_allowed_after_authorization": true
+    },
+    {
+      "blocks_training_if_missing": true,
+      "dataset_id": "kt_trace_claim_boundary_internal",
+      "purpose": "claim-boundary and trace-completeness adapter evaluation",
+      "requires_input_hashes": true,
+      "requires_license_record": false,
+      "requires_split_hash": true,
+      "source": "KT generated trace/claim fixtures",
+      "train_allowed_after_authorization": false
+    },
+    {
+      "blocks_training_if_missing": true,
+      "dataset_id": "benchmark_dry_run_holdout",
+      "purpose": "evaluation only",
+      "requires_input_hashes": true,
+      "requires_license_record": true,
+      "requires_split_hash": true,
+      "source": "frozen benchmark holdout manifest",
+      "train_allowed_after_authorization": false
+    }
+  ],
+  "external_audit_accepted": false,
+  "external_audit_complete": false,
+  "full_adaptive_orchestration_production_ready": false,
+  "generated_utc": "2026-05-19T15:12:43Z",
+  "schema_id": "kt.gpu_conversion.dataset_provenance_manifest.v1",
+  "seven_b_amplification_proven": false,
+  "training_without_dataset_manifest_allowed": false,
+  "trust_zone_law_changed": false,
+  "truth_engine_law_changed": false
+}

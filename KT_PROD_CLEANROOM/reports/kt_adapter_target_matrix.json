@@ -1,0 +1,101 @@
+{
+  "adapters": [
+    {
+      "adapter_id": "route_selector_adapter",
+      "default_recipe": "LORA_SMOKE_V1",
+      "objective": "rank route options without activation",
+      "optional_recipe": "QLORA_MEMORY_GATED_V1",
+      "parent_lobe": "routing_control_lobe",
+      "promotion_authorized_by_this_packet": false,
+      "requires_eval_receipt": true,
+      "requires_lineage_manifest": true,
+      "requires_rollback_plan": true,
+      "requires_tournament_entry_receipt": true
+    },
+    {
+      "adapter_id": "abstention_static_hold_adapter",
+      "default_recipe": "LORA_SMOKE_V1",
+      "objective": "prefer static hold when confidence is weak",
+      "optional_recipe": "QLORA_MEMORY_GATED_V1",
+      "parent_lobe": "routing_control_lobe",
+      "promotion_authorized_by_this_packet": false,
+      "requires_eval_receipt": true,
+      "requires_lineage_manifest": true,
+      "requires_rollback_plan": true,
+      "requires_tournament_entry_receipt": true
+    },
+    {
+      "adapter_id": "evidence_trace_adapter",
+      "default_recipe": "LORA_SMOKE_V1",
+      "objective": "emit complete route/provenance traces",
+      "optional_recipe": "QLORA_MEMORY_GATED_V1",
+      "parent_lobe": "evidence_auditor_lobe",
+      "promotion_authorized_by_this_packet": false,
+      "requires_eval_receipt": true,
+      "requires_lineage_manifest": true,
+      "requires_rollback_plan": true,
+      "requires_tournament_entry_receipt": true
+    },
+    {
+      "adapter_id": "claim_ceiling_adapter",
+      "default_recipe": "LORA_SMOKE_V1",
+      "objective": "detect claim drift in generated outputs",
+      "optional_recipe": "QLORA_MEMORY_GATED_V1",
+      "parent_lobe": "claim_boundary_lobe",
+      "promotion_authorized_by_this_packet": false,
+      "requires_eval_receipt": true,
+      "requires_lineage_manifest": true,
+      "requires_rollback_plan": true,
+      "requires_tournament_entry_receipt": true
+    },
+    {
+      "adapter_id": "benchmark_judge_adapter",
+      "default_recipe": "LORA_SMOKE_V1",
+      "objective": "score benchmark outcomes under frozen rubric",
+      "optional_recipe": "QLORA_MEMORY_GATED_V1",
+      "parent_lobe": "benchmark_eval_lobe",
+      "promotion_authorized_by_this_packet": false,
+      "requires_eval_receipt": true,
+      "requires_lineage_manifest": true,
+      "requires_rollback_plan": true,
+      "requires_tournament_entry_receipt": true
+    },
+    {
+      "adapter_id": "context_packing_adapter",
+      "default_recipe": "LORA_SMOKE_V1",
+      "objective": "select compact context representation while JSON remains canonical",
+      "optional_recipe": "QLORA_MEMORY_GATED_V1",
+      "parent_lobe": "context_efficiency_lobe",
+      "promotion_authorized_by_this_packet": false,
+      "requires_eval_receipt": true,
+      "requires_lineage_manifest": true,
+      "requires_rollback_plan": true,
+      "requires_tournament_entry_receipt": true
+    },
+    {
+      "adapter_id": "rollback_quarantine_adapter",
+      "default_recipe": "LORA_SMOKE_V1",
+      "objective": "classify rollback or quarantine paths",
+      "optional_recipe": "QLORA_MEMORY_GATED_V1",
+      "parent_lobe": "rollback_quarantine_lobe",
+      "promotion_authorized_by_this_packet": false,
+      "requires_eval_receipt": true,
+      "requires_lineage_manifest": true,
+      "requires_rollback_plan": true,
+      "requires_tournament_entry_receipt": true
+    }
+  ],
+  "artifact_id": "KT_ADAPTER_TARGET_MATRIX",
+  "authority": "TRAINING_STAGING_ONLY",
+  "beyond_sota_claim_authorized": false,
+  "category_leadership_claim_authorized": false,
+  "commercial_claim_authorized": false,
+  "external_audit_accepted": false,
+  "external_audit_complete": false,
+  "full_adaptive_orchestration_production_ready": false,
+  "generated_utc": "2026-05-19T15:12:43Z",
+  "schema_id": "kt.gpu_conversion.adapter_target_matrix.v1",
+  "seven_b_amplification_proven": false,
+  "trust_zone_law_changed": false,
+  "truth_engine_law_changed": false
+}

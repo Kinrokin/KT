@@ -1,0 +1,46 @@
+{
+  "artifact_id": "KT_LORA_QLORA_RECIPE_MATRIX",
+  "authority": "TRAINING_RECIPE_STAGING_ONLY",
+  "beyond_sota_claim_authorized": false,
+  "category_leadership_claim_authorized": false,
+  "commercial_claim_authorized": false,
+  "external_audit_accepted": false,
+  "external_audit_complete": false,
+  "full_adaptive_orchestration_production_ready": false,
+  "generated_utc": "2026-05-19T15:12:43Z",
+  "qlora_either_staged_with_tests_or_excluded": true,
+  "recipes": [
+    {
+      "alpha": 16,
+      "base_model_policy": "small_open_model_or_cached_hf_model_only",
+      "dropout": 0.05,
+      "first_campaign_status": "INCLUDED",
+      "max_steps_default": 120,
+      "method": "LoRA",
+      "rank": 8,
+      "recipe_id": "LORA_SMOKE_V1",
+      "requires_checkpoint_manifest": true,
+      "requires_dataset_provenance": true,
+      "requires_eval_receipt": true,
+      "requires_gpu": false
+    },
+    {
+      "alpha": 16,
+      "base_model_policy": "only if bitsandbytes and GPU memory smoke pass",
+      "dropout": 0.05,
+      "exclusion_if_smoke_fails": "EXCLUDE_QLORA_FROM_FIRST_CAMPAIGN_WITH_RECEIPT",
+      "fallback_recipe": "LORA_SMOKE_V1",
+      "first_campaign_status": "STAGED_WITH_SMOKE_TEST_NOT_REQUIRED_FOR_FIRST_PASS",
+      "method": "QLoRA",
+      "quantization": "4bit_nf4",
+      "rank": 8,
+      "recipe_id": "QLORA_MEMORY_GATED_V1",
+      "requires_bitsandbytes_smoke_test": true,
+      "requires_gpu_memory_receipt": true
+    }
+  ],
+  "schema_id": "kt.gpu_conversion.lora_qlora_recipe_matrix.v1",
+  "seven_b_amplification_proven": false,
+  "trust_zone_law_changed": false,
+  "truth_engine_law_changed": false
+}

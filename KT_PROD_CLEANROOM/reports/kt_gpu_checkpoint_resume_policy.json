@@ -1,0 +1,16 @@
+{
+  "artifact_id": "KT_GPU_CHECKPOINT_RESUME_POLICY",
+  "authority": "RESUME_POLICY",
+  "checkpoint_required_before_timeout": true,
+  "generated_utc": "2026-05-19T15:12:43Z",
+  "idempotent_rerun_required": true,
+  "latest_run_pointer_required": true,
+  "partial_result_receipts_required": true,
+  "required_checkpoint_files": [
+    "latest_run.json",
+    "checkpoint_manifest.json",
+    "training_run_receipt.json"
+  ],
+  "restart_from_scratch_allowed_by_default": false,
+  "schema_id": "kt.gpu_conversion.checkpoint_resume_policy.v1"
+}
