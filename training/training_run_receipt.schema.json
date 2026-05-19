@@ -1,0 +1,19 @@
+{
+  "$id": "kt.training.training_run_receipt.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "run_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "run_id"
+  ],
+  "title": "training.training_run_receipt",
+  "type": "object"
+}

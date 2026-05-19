@@ -1,0 +1,19 @@
+{
+  "$id": "kt.training.model_provenance.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "model_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "model_id"
+  ],
+  "title": "training.model_provenance",
+  "type": "object"
+}

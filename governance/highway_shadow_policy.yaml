@@ -1,0 +1,19 @@
+schema_id: kt.highway.shadow_policy.v1
+authority: SHADOW_ONLY_NO_CANONICAL_AUTHORITY
+canonical_active: false
+fail_closed_active: false
+claim_expansion_allowed: false
+detects:
+  - authority drift
+  - branch-bound artifact promotion
+  - commercial overclaim
+  - runtime/context overlay promotion drift
+  - detached verifier overreach
+actions:
+  - emit receipt
+  - observe only
+  - preserve blocker
+prohibited:
+  - block canonical runtime without separate authority
+  - promote prep or shadow work to authority
+  - expand claims

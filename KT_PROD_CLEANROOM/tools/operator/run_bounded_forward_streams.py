@@ -78,6 +78,7 @@ NEGATIVE_SECTION_MARKERS = (
     "forbidden language",
     "forbidden_claim",
     "forbidden claims",
+    "blocked claims",
     "excluded:",
 )
 

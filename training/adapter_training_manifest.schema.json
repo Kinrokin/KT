@@ -1,0 +1,19 @@
+{
+  "$id": "kt.training.adapter_training_manifest.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "adapter_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "adapter_id"
+  ],
+  "title": "training.adapter_training_manifest",
+  "type": "object"
+}

@@ -1,0 +1,9 @@
+schema_id: kt.adaptive.merge_law.v1
+authority: SHADOW_LAW_ONLY
+requires:
+  - source lineage
+  - eval receipt
+  - replay receipt
+  - rollback plan
+  - claim scan
+claim_expansion_allowed: false
