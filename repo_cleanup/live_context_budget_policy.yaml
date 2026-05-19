@@ -1,0 +1,23 @@
+schema_id: kt.repo_cleanup.live_context_budget_policy.v1
+authority: PREP_ONLY_CONTEXT_POLICY
+current_context_first: true
+delete_authorized: false
+archive_before_move_required: true
+default_load:
+  - governance/current_claim_ceiling.json
+  - governance/allowed_launch_claims.json
+  - governance/forbidden_launch_claims.json
+  - KT_PROD_CLEANROOM/reports/bounded_launch_readiness_delta_receipt.json
+  - KT_PROD_CLEANROOM/reports/language_normalization_receipt.json
+  - external/attestation_collection_packet.json
+  - commercial/bounded_launch_language_pack.md
+  - docs/current/kt_plain_language_glossary.md
+archive_index_first:
+  - repo_cleanup/archive_manifest.json
+  - repo_cleanup/historical_receipt_index.json
+  - repo_cleanup/generated_artifact_retirement_plan.json
+claim_boundary:
+  external_audit_accepted: false
+  commercial_claims_authorized: false
+  seven_b_amplification_proven: false
+  category_leadership_claim_authorized: false
