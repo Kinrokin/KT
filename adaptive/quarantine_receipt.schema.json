@@ -1,0 +1,19 @@
+{
+  "$id": "kt.adaptive.quarantine_receipt.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "quarantine_reason": {
+      "type": "string"
+    },
+    "schema_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "quarantine_reason"
+  ],
+  "title": "adaptive.quarantine_receipt",
+  "type": "object"
+}

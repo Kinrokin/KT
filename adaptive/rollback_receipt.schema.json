@@ -1,0 +1,19 @@
+{
+  "$id": "kt.adaptive.rollback_receipt.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "rollback_reason": {
+      "type": "string"
+    },
+    "schema_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "rollback_reason"
+  ],
+  "title": "adaptive.rollback_receipt",
+  "type": "object"
+}

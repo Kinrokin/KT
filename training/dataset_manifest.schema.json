@@ -1,0 +1,19 @@
+{
+  "$id": "kt.training.dataset_manifest.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "dataset_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "dataset_id"
+  ],
+  "title": "training.dataset_manifest",
+  "type": "object"
+}

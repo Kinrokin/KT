@@ -1,0 +1,19 @@
+{
+  "$id": "kt.eval.eval_receipt.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "eval_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "eval_id"
+  ],
+  "title": "eval.eval_receipt",
+  "type": "object"
+}

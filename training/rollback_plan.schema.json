@@ -1,0 +1,19 @@
+{
+  "$id": "kt.training.rollback_plan.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "rollback_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "rollback_id"
+  ],
+  "title": "training.rollback_plan",
+  "type": "object"
+}

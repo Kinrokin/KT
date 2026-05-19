@@ -1,0 +1,46 @@
+{
+  "archive_default_ignored": true,
+  "archive_default_loaded": false,
+  "archive_index_inputs_missing": [],
+  "archive_index_inputs_present": [
+    "repo_cleanup/archive_manifest.json",
+    "repo_cleanup/historical_receipt_index.json",
+    "repo_cleanup/generated_artifact_retirement_plan.json"
+  ],
+  "artifact_id": "KT_CONTEXT_BUDGET_GATE_RECEIPT",
+  "authority": "CONTEXT_HYGIENE_ONLY_NO_DELETE",
+  "blockers": [],
+  "current_context_first": true,
+  "current_inputs_missing": [],
+  "current_inputs_present": [
+    "governance/current_claim_ceiling.json",
+    "governance/allowed_launch_claims.json",
+    "governance/forbidden_launch_claims.json",
+    "KT_PROD_CLEANROOM/reports/bounded_launch_readiness_delta_receipt.json",
+    "KT_PROD_CLEANROOM/reports/language_normalization_receipt.json",
+    "external/attestation_collection_packet.json",
+    "commercial/bounded_launch_language_pack.md",
+    "docs/current/kt_plain_language_glossary.md"
+  ],
+  "delete_authorized": false,
+  "estimated_archive_index_bytes": 1536,
+  "estimated_current_context_bytes": 11030,
+  "generated_utc": "2026-05-19T13:02:19Z",
+  "long_gate_shards": {
+    "FAST": [
+      "focused lane tests",
+      "claim scanner",
+      "JSON parse"
+    ],
+    "LONG": [
+      "truth-barrier",
+      "repo-wide operator sweeps"
+    ],
+    "MEDIUM": [
+      "bounded workstream tests",
+      "trust-zone"
+    ]
+  },
+  "schema_id": "kt.repo_cleanup.context_budget_gate_receipt.v1",
+  "status": "PASS"
+}

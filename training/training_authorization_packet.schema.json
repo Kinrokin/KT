@@ -1,0 +1,19 @@
+{
+  "$id": "kt.training.training_authorization_packet.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "authorization_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "authorization_id"
+  ],
+  "title": "training.training_authorization_packet",
+  "type": "object"
+}
