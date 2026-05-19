@@ -1,0 +1,107 @@
+{
+  "artifact_id": "KT_LOBE_TARGET_MATRIX",
+  "authority": "TRAINING_STAGING_ONLY",
+  "beyond_sota_claim_authorized": false,
+  "category_leadership_claim_authorized": false,
+  "commercial_claim_authorized": false,
+  "external_audit_accepted": false,
+  "external_audit_complete": false,
+  "full_adaptive_orchestration_production_ready": false,
+  "generated_utc": "2026-05-19T15:12:43Z",
+  "lobes": [
+    {
+      "lobe_id": "routing_control_lobe",
+      "objective": "router_candidate_generation",
+      "production_authority_after_training": false,
+      "requires_dataset_provenance": true,
+      "requires_eval_gate": true,
+      "requires_receipt": true,
+      "requires_recipe": true,
+      "requires_rollback": true,
+      "sub_lobes": [
+        "route_selection",
+        "abstention_static_hold"
+      ],
+      "trainable_surface": "adapter_or_router_head_only"
+    },
+    {
+      "lobe_id": "evidence_auditor_lobe",
+      "objective": "eval_receipt_review",
+      "production_authority_after_training": false,
+      "requires_dataset_provenance": true,
+      "requires_eval_gate": true,
+      "requires_receipt": true,
+      "requires_recipe": true,
+      "requires_rollback": true,
+      "sub_lobes": [
+        "trace_completeness",
+        "provenance_integrity"
+      ],
+      "trainable_surface": "adapter_or_router_head_only"
+    },
+    {
+      "lobe_id": "claim_boundary_lobe",
+      "objective": "claim_ceiling_preservation",
+      "production_authority_after_training": false,
+      "requires_dataset_provenance": true,
+      "requires_eval_gate": true,
+      "requires_receipt": true,
+      "requires_recipe": true,
+      "requires_rollback": true,
+      "sub_lobes": [
+        "claim_scan",
+        "forbidden_claim_detection"
+      ],
+      "trainable_surface": "adapter_or_router_head_only"
+    },
+    {
+      "lobe_id": "benchmark_eval_lobe",
+      "objective": "benchmark_gate",
+      "production_authority_after_training": false,
+      "requires_dataset_provenance": true,
+      "requires_eval_gate": true,
+      "requires_receipt": true,
+      "requires_recipe": true,
+      "requires_rollback": true,
+      "sub_lobes": [
+        "baseline_comparison",
+        "negative_result_retention"
+      ],
+      "trainable_surface": "adapter_or_router_head_only"
+    },
+    {
+      "lobe_id": "context_efficiency_lobe",
+      "objective": "fp0_no_claim_expansion",
+      "production_authority_after_training": false,
+      "requires_dataset_provenance": true,
+      "requires_eval_gate": true,
+      "requires_receipt": true,
+      "requires_recipe": true,
+      "requires_rollback": true,
+      "sub_lobes": [
+        "context_pack_selection",
+        "cache_budgeting"
+      ],
+      "trainable_surface": "adapter_or_router_head_only"
+    },
+    {
+      "lobe_id": "rollback_quarantine_lobe",
+      "objective": "failure_handling",
+      "production_authority_after_training": false,
+      "requires_dataset_provenance": true,
+      "requires_eval_gate": true,
+      "requires_receipt": true,
+      "requires_recipe": true,
+      "requires_rollback": true,
+      "sub_lobes": [
+        "rollback_plan",
+        "quarantine_decision"
+      ],
+      "trainable_surface": "adapter_or_router_head_only"
+    }
+  ],
+  "schema_id": "kt.gpu_conversion.lobe_target_matrix.v1",
+  "seven_b_amplification_proven": false,
+  "trust_zone_law_changed": false,
+  "truth_engine_law_changed": false
+}

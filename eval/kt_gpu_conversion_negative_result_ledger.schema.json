@@ -1,0 +1,29 @@
+{
+  "$id": "kt.gpu_conversion.negative_result_ledger.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_expansion_allowed": {
+      "const": false
+    },
+    "entries": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "run_id",
+    "entries"
+  ],
+  "title": "KT GPU conversion negative result ledger",
+  "type": "object"
+}

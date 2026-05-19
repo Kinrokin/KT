@@ -1,0 +1,17 @@
+{
+  "artifact_id": "KT_GPU_CONVERSION_ROLLBACK_QUARANTINE_POLICY",
+  "authority": "FAILURE_HANDLING_STAGING_ONLY",
+  "failed_training_can_promote": false,
+  "generated_utc": "2026-05-19T15:12:43Z",
+  "negative_results_retained": true,
+  "quarantine_required_for": [
+    "missing provenance",
+    "checkpoint hash mismatch",
+    "eval regression",
+    "claim drift",
+    "trace incompleteness",
+    "benchmark contamination"
+  ],
+  "rollback_required_for_every_training_target": true,
+  "schema_id": "kt.gpu_conversion.rollback_quarantine_policy.v1"
+}
