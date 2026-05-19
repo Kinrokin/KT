@@ -221,8 +221,16 @@ The pilot is for bounded review of verifier, evidence-pack, and claim-control wo
 
 
 def _highway_policy(mode: str) -> str:
+    if mode not in {"SHADOW", "WARN"}:
+        raise ValueError(f"Unsupported highway policy mode: {mode}")
     canonical = "false"
     fail_closed = "false"
+    actions = ["emit receipt", "preserve blocker"]
+    if mode == "WARN":
+        actions.insert(1, "warn operator")
+    else:
+        actions.insert(1, "observe only")
+    action_lines = "\n".join(f"  - {action}" for action in actions)
     return f"""schema_id: kt.highway.{mode.lower()}_policy.v1
 authority: {mode}_ONLY_NO_CANONICAL_AUTHORITY
 canonical_active: {canonical}
@@ -235,9 +243,7 @@ detects:
   - runtime/context overlay promotion drift
   - detached verifier overreach
 actions:
-  - emit receipt
-  - warn operator
-  - preserve blocker
+{action_lines}
 prohibited:
   - block canonical runtime without separate authority
   - promote prep or shadow work to authority
@@ -708,7 +714,8 @@ def run(*, output_root: Path | None = None) -> Dict[str, Any]:
             changed.append(raw)
 
     context_receipt = context_budget_gate.evaluate(root=root)
-    context_budget_gate.write_receipt(root, context_receipt)
+    if write_json_stable(root / context_budget_gate.OUTPUT_RECEIPT, context_receipt):
+        changed.append(context_budget_gate.OUTPUT_RECEIPT)
     claim_scan = _claim_scan(root, [OUTPUTS[key] for key in HUMAN_CLAIM_SCAN_KEYS] + [BENCHMARK_OUTPUTS["stat_plan"]])
     if not claim_scan["passed"]:
         raise RuntimeError(f"FAIL_CLOSED: near-final shadow claim scan failed: {claim_scan['violations']}")
@@ -719,7 +726,6 @@ def run(*, output_root: Path | None = None) -> Dict[str, Any]:
         if write_json_stable(root / raw, obj):
             changed.append(raw)
 
-    print(TARGET_OUTCOME)
     return {
         "target_outcome": TARGET_OUTCOME,
         "changed_outputs": changed,
@@ -729,13 +735,15 @@ def run(*, output_root: Path | None = None) -> Dict[str, Any]:
     }
 
 
-def main(argv: Sequence[str] | None = None) -> int:
+def main(argv: Sequence[str] | None = None, *, output_root: Path | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run KT near-final shadow completion superlane.")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
-    summary = run()
+    summary = run(output_root=output_root)
     if args.json:
         print(json.dumps(summary, indent=2, sort_keys=True))
+    else:
+        print(TARGET_OUTCOME)
     return 0
 
 

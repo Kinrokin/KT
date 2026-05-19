@@ -63,6 +63,17 @@ def test_near_final_run_emits_target_and_preserves_blockers(tmp_path: Path) -> N
     assert receipt["trust_zone_law_changed"] is False
 
 
+def test_near_final_main_json_output_is_parseable_without_banner(tmp_path: Path, capsys) -> None:
+    _copy_required_inputs(tmp_path)
+
+    assert near_final.main(["--json"], output_root=tmp_path) == 0
+
+    output = capsys.readouterr().out
+    parsed = json.loads(output)
+    assert output.lstrip().startswith("{")
+    assert parsed["target_outcome"] == near_final.TARGET_OUTCOME
+
+
 def test_near_final_outputs_required_workstream_files(tmp_path: Path) -> None:
     _copy_required_inputs(tmp_path)
     near_final.run(output_root=tmp_path)
@@ -75,6 +86,28 @@ def test_near_final_outputs_required_workstream_files(tmp_path: Path) -> None:
         context_budget_gate.OUTPUT_RECEIPT,
     ]:
         assert (tmp_path / raw).is_file(), raw
+
+
+def test_context_budget_receipt_is_reported_as_changed_output(tmp_path: Path) -> None:
+    _copy_required_inputs(tmp_path)
+    summary = near_final.run(output_root=tmp_path)
+
+    assert context_budget_gate.OUTPUT_RECEIPT in summary["changed_outputs"]
+
+
+def test_highway_shadow_policy_observes_without_warning_action(tmp_path: Path) -> None:
+    _copy_required_inputs(tmp_path)
+    near_final.run(output_root=tmp_path)
+
+    shadow_policy = (tmp_path / near_final.OUTPUTS["highway_shadow_policy"]).read_text(encoding="utf-8-sig")
+    warn_policy = (tmp_path / near_final.OUTPUTS["highway_warn_only_policy"]).read_text(encoding="utf-8-sig")
+    shadow_receipt = _load(tmp_path / near_final.OUTPUTS["highway_shadow_receipt"])
+    warn_receipt = _load(tmp_path / near_final.OUTPUTS["highway_warn_receipt"])
+    assert "  - observe only" in shadow_policy
+    assert "  - warn operator" not in shadow_policy
+    assert shadow_receipt["can_warn"] is False
+    assert "  - warn operator" in warn_policy
+    assert warn_receipt["can_warn"] is True
 
 
 def test_near_final_human_language_claim_scan_passes(tmp_path: Path) -> None:
