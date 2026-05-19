@@ -11,7 +11,7 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.operator import run_bounded_forward_streams
-from tools.operator.titanium_common import file_sha256, repo_root, utc_now_iso_z, write_json_stable
+from tools.operator.titanium_common import file_sha256, load_json, repo_root, utc_now_iso_z, write_json_stable
 
 
 PROGRAM_ID = "KT_LOBE_ADAPTER_ROUTER_GPU_CONVERSION_STAGING_SUPERLANE_V1"
@@ -101,12 +101,31 @@ OUTPUTS = {
 
 HUMAN_CLAIM_SCAN_OUTPUTS = ("runbook",)
 
+KAGGLE_REQUIRED_OUTPUTS = (
+    "dataset_manifest.json",
+    "training_config.json",
+    "checkpoint_manifest.json",
+    "training_run_receipt.json",
+    "eval_receipt.json",
+    "router_trace.csv",
+    "candidate_provenance.json",
+    "negative_result_ledger.json",
+)
+
+KAGGLE_OUTPUT_HASH_FIELDS = {
+    "dataset_manifest.json": "dataset_manifest_hash",
+    "training_config.json": "training_config_hash",
+    "checkpoint_manifest.json": "checkpoint_manifest_hash",
+    "training_run_receipt.json": "training_run_receipt_hash",
+    "eval_receipt.json": "eval_receipt_hash",
+    "router_trace.csv": "router_trace_csv_hash",
+    "candidate_provenance.json": "candidate_provenance_hash",
+    "negative_result_ledger.json": "negative_result_ledger_hash",
+}
+
 
 def _load_json(path: Path) -> Dict[str, Any]:
-    obj = json.loads(path.read_text(encoding="utf-8-sig"))
-    if not isinstance(obj, dict):
-        raise RuntimeError(f"Expected JSON object: {path.as_posix()}")
-    return obj
+    return load_json(path)
 
 
 def _write_text_stable(path: Path, text: str) -> bool:
@@ -449,14 +468,7 @@ def _kaggle_packet() -> Dict[str, Any]:
             "artifact_import_hash_smoke",
         ],
         "required_outputs": [
-            "dataset_manifest.json",
-            "training_config.json",
-            "checkpoint_manifest.json",
-            "training_run_receipt.json",
-            "eval_receipt.json",
-            "router_trace.csv",
-            "candidate_provenance.json",
-            "negative_result_ledger.json",
+            *KAGGLE_REQUIRED_OUTPUTS,
         ],
         "full_gpu_training_executed": False,
         **BLOCKED_CLAIMS,
@@ -479,6 +491,10 @@ def _checkpoint_policy() -> Dict[str, Any]:
 
 
 def _import_contract() -> Dict[str, Any]:
+    hash_bindings = [
+        {"required_output": output, "hash_field": KAGGLE_OUTPUT_HASH_FIELDS[output]}
+        for output in KAGGLE_REQUIRED_OUTPUTS
+    ]
     return {
         "schema_id": "kt.gpu_conversion.artifact_import_hash_receipt_contract.v1",
         "artifact_id": "KT_GPU_ARTIFACT_IMPORT_HASH_RECEIPT_CONTRACT",
@@ -489,13 +505,9 @@ def _import_contract() -> Dict[str, Any]:
         "required_import_fields": [
             "run_id",
             "source_environment",
-            "dataset_manifest_hash",
-            "training_config_hash",
-            "checkpoint_manifest_hash",
-            "eval_receipt_hash",
-            "trace_hash",
-            "negative_result_ledger_hash",
+            *KAGGLE_OUTPUT_HASH_FIELDS.values(),
         ],
+        "required_output_hash_bindings": hash_bindings,
         "import_does_not_authorize_claims": True,
         "training_execution_next_not_done": True,
         **BLOCKED_CLAIMS,

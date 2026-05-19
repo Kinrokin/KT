@@ -135,6 +135,16 @@ def test_dataset_provenance_and_import_contract_are_required_before_execution(tm
     assert import_contract["import_allowed_only_after_hashing"] is True
     assert import_contract["import_does_not_authorize_claims"] is True
     assert import_contract["training_execution_next_not_done"] is True
+    required_outputs = set(kaggle_packet["required_outputs"])
+    hash_bindings = {
+        item["required_output"]: item["hash_field"]
+        for item in import_contract["required_output_hash_bindings"]
+    }
+    assert set(hash_bindings) == required_outputs
+    assert set(hash_bindings.values()).issubset(set(import_contract["required_import_fields"]))
+    assert "training_run_receipt_hash" in import_contract["required_import_fields"]
+    assert "candidate_provenance_hash" in import_contract["required_import_fields"]
+    assert "router_trace_csv_hash" in import_contract["required_import_fields"]
     assert kaggle_packet["deterministic_seed"] == 1337
     assert kaggle_packet["cache_policy"]["reuse_cached_hf_downloads"] is True
     assert kaggle_packet["cache_policy"]["network_flaky_mode_supported"] is True
@@ -181,6 +191,18 @@ def test_gpu_conversion_rejects_claim_boundary_drift(tmp_path: Path) -> None:
     claim_path.write_text(json.dumps(claim_boundary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
     with pytest.raises(RuntimeError, match="Claim boundary drift"):
+        staging.run(output_root=tmp_path)
+
+
+def test_gpu_conversion_rejects_duplicate_keys_in_authority_inputs(tmp_path: Path) -> None:
+    _copy_inputs(tmp_path)
+    claim_path = tmp_path / staging.LIVE_INPUTS["claim_boundary"]
+    claim_path.write_text(
+        '{"schema_id":"x","commercial_claim_authorized":false,"commercial_claim_authorized":true}\n',
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="Duplicate JSON key"):
         staging.run(output_root=tmp_path)
 
 

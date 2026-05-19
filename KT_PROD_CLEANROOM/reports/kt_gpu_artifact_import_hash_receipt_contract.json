@@ -7,7 +7,7 @@
   "external_audit_accepted": false,
   "external_audit_complete": false,
   "full_adaptive_orchestration_production_ready": false,
-  "generated_utc": "2026-05-19T15:12:43Z",
+  "generated_utc": "2026-05-19T15:29:05Z",
   "import_allowed_only_after_hashing": true,
   "import_does_not_authorize_claims": true,
   "required_hashes": [
@@ -19,9 +19,45 @@
     "dataset_manifest_hash",
     "training_config_hash",
     "checkpoint_manifest_hash",
+    "training_run_receipt_hash",
     "eval_receipt_hash",
-    "trace_hash",
+    "router_trace_csv_hash",
+    "candidate_provenance_hash",
     "negative_result_ledger_hash"
+  ],
+  "required_output_hash_bindings": [
+    {
+      "hash_field": "dataset_manifest_hash",
+      "required_output": "dataset_manifest.json"
+    },
+    {
+      "hash_field": "training_config_hash",
+      "required_output": "training_config.json"
+    },
+    {
+      "hash_field": "checkpoint_manifest_hash",
+      "required_output": "checkpoint_manifest.json"
+    },
+    {
+      "hash_field": "training_run_receipt_hash",
+      "required_output": "training_run_receipt.json"
+    },
+    {
+      "hash_field": "eval_receipt_hash",
+      "required_output": "eval_receipt.json"
+    },
+    {
+      "hash_field": "router_trace_csv_hash",
+      "required_output": "router_trace.csv"
+    },
+    {
+      "hash_field": "candidate_provenance_hash",
+      "required_output": "candidate_provenance.json"
+    },
+    {
+      "hash_field": "negative_result_ledger_hash",
+      "required_output": "negative_result_ledger.json"
+    }
   ],
   "schema_id": "kt.gpu_conversion.artifact_import_hash_receipt_contract.v1",
   "seven_b_amplification_proven": false,
