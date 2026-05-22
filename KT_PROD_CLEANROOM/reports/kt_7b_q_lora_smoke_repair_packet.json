@@ -1,0 +1,70 @@
+{
+  "artifact_id": "KT_7B_Q_LORA_SMOKE_REPAIR_PACKET",
+  "beyond_sota_claim_authorized": false,
+  "bitsandbytes_policy": {
+    "do_not_silently_fallback_to_full_precision_for_clean_qlora_smoke": true,
+    "fail_closed_if_4bit_modules_not_detected": true,
+    "fail_closed_if_unavailable": true,
+    "import_before_model_load": true,
+    "install_before_model_load": true
+  },
+  "category_leadership_claim_authorized": false,
+  "clean_pass_required_conditions": {
+    "class_balance_pass": true,
+    "import_ready": true,
+    "negative_result_count": 0,
+    "qlora_effective": true,
+    "router_eval_class_balance_pass": true,
+    "router_no_regression_pass": true,
+    "training_errors_count": 0
+  },
+  "clean_target_outcome_after_success": "KT_7B_Q_LORA_SMOKE_CLEAN_VALIDATED__TRANCHE_NEXT",
+  "commercial_claim_authorized": false,
+  "current_head": "30c4db244011d53a4faa06e77167b06da45a9955",
+  "external_audit_accepted": false,
+  "external_audit_complete": false,
+  "full_adaptive_orchestration_production_ready": false,
+  "generated_utc": "2026-05-22T22:47:23Z",
+  "head_binding_policy": {
+    "fail_clean_current_head_proof_if_requested_head_unreachable": true,
+    "fallback": "if binding to public main, label result as public-main smoke and not requested-head proof",
+    "preferred": "push_or_merge_requested_head_to_reachable_GitHub_ref_before_Kaggle_run"
+  },
+  "heavy_run_authorized": false,
+  "memory_hygiene_policy": {
+    "clear_gpu_between_adapter_trainings": true,
+    "delete_model_optimizer_and_dataloader_refs_between_adapters": true,
+    "log_allocated_reserved_and_peak_memory": true,
+    "run_gc_collect": true,
+    "run_torch_cuda_empty_cache": true,
+    "run_torch_cuda_ipc_collect_if_available": true
+  },
+  "next_lawful_move": "RUN_7B_Q_LORA_SMOKE_REPAIR",
+  "prior_partial_outcome": "KT_7B_Q_LORA_SMOKE_PARTIAL__7B_LOAD_AND_ADAPTER_TRAINING_PROVEN__OOM_AND_ROUTER_CLASS_SUPPORT_BLOCK_CLEAN_SMOKE",
+  "program_id": "KT_7B_Q_LORA_SMOKE_REPAIR_SUPERLANE_V1",
+  "repair_required_before_tranche": true,
+  "repair_run_settings": {
+    "KT_BATCH_SIZE": 1,
+    "KT_GRAD_ACCUM": 32,
+    "KT_MAX_SEQ_LEN": 96,
+    "KT_MAX_STEPS_COHORT": 1,
+    "KT_MAX_STEPS_COHORT2": 1,
+    "KT_MAX_STEPS_PER_LOBE": 1,
+    "KT_MIN_ROWS_PER_LOBE": 24,
+    "KT_MIN_VAL_PER_LOBE": 4,
+    "KT_ROUTER_EVAL_MIN_PER_CLASS": 4,
+    "KT_RUN_MODE": "RUN_7B_Q_LORA_SMOKE_REPAIR",
+    "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True,max_split_size_mb:64"
+  },
+  "schema_id": "kt.7b_q_lora.smoke_repair_packet.v1",
+  "seven_b_amplification_proven": false,
+  "source_bindings": {
+    "gpu_import_contract": "KT_PROD_CLEANROOM/reports/kt_gpu_artifact_import_hash_receipt_contract.json",
+    "gpu_import_contract_sha256": "9995642efcc766a46ca7530be36c0ac248ddae17db4e7f8822c35731ee3696d8",
+    "partial_receipt": "KT_PROD_CLEANROOM/reports/kt_7b_q_lora_smoke_partial_receipt.json",
+    "partial_receipt_sha256": "e40ea7548964974c33d08b347551a450bee3cbdce065feb3c66fb58a72027f68"
+  },
+  "tranche_authorized": false,
+  "trust_zone_law_changed": false,
+  "truth_engine_law_changed": false
+}
