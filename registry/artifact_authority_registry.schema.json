@@ -1,0 +1,106 @@
+{
+  "$id": "kt.artifact_authority_registry.schema.v3",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "artifacts": {
+      "items": {
+        "properties": {
+          "artifact_id": {
+            "type": "string"
+          },
+          "authority_state": {
+            "enum": [
+              "LIVE_CURRENT_HEAD_VALIDATED",
+              "LIVE_CURRENT_HEAD_PREP_ONLY",
+              "LAB",
+              "ARCHIVE",
+              "STALE",
+              "DUPLICATE",
+              "SUPERSEDED",
+              "MISSING",
+              "BLOCKED",
+              "GENERATED_PENDING_VALIDATION",
+              "RETIRED"
+            ]
+          },
+          "claim_authority": {
+            "enum": [
+              "NONE",
+              "INTERNAL_SHADOW",
+              "CURRENT_HEAD",
+              "EXTERNAL",
+              "COMMERCIAL"
+            ]
+          },
+          "controls_execution": {
+            "type": "boolean"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "superseded_by": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "supersedes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "validation_status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "PENDING",
+              "NOT_APPLICABLE",
+              "BLOCKED"
+            ]
+          }
+        },
+        "required": [
+          "artifact_id",
+          "path",
+          "role",
+          "authority_state",
+          "validation_status",
+          "controls_execution",
+          "claim_authority",
+          "sha256"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "current_head": {
+      "type": "string"
+    },
+    "generated_utc": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.artifact_authority_registry.v3"
+    }
+  },
+  "required": [
+    "schema_id",
+    "current_head",
+    "generated_utc",
+    "artifacts"
+  ],
+  "type": "object"
+}
