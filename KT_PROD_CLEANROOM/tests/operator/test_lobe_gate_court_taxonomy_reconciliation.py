@@ -76,9 +76,13 @@ def test_old_training_labels_map_to_new_taxonomy(tmp_path: Path) -> None:
     by_label = {item["source_label"]: item for item in mapping["mappings"]}
 
     assert by_label["claim_boundary"]["corrected_target"] == "claim_compiler_advisor"
+    assert by_label["primitive_invariance"]["corrected_target"] == "primitive_invariance_gate_advisor"
+    assert by_label["metacognitive_admission"]["corrected_target"] == "route_admission_advisor"
     assert by_label["router_controller"]["taxonomy_class"] == "ROUTER_LAYER"
     assert by_label["adapter_forge"]["taxonomy_class"] == "TRAINING_FACTORY"
     assert by_label["context_efficiency_lobe"]["corrected_target"] == "context_memory_compression_lobe"
+    assert by_label["lobe.auditor.v1"]["taxonomy_class"] == "HISTORICAL_COMPAT_ALIAS"
+    assert by_label["lobe.strategist.v1"]["canonical_lobe"] is False
 
 
 def test_prior_gate_scaffold_adapters_are_advisors_not_lobes(tmp_path: Path) -> None:
