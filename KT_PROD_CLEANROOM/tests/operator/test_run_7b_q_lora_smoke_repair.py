@@ -109,6 +109,26 @@ def test_repair_next_move_supersedes_prior_clean_smoke_next_in_registry(tmp_path
     assert repair_next[-1]["role"] == "seven_b_smoke_next_move"
 
 
+def test_repair_registry_update_is_idempotent(tmp_path: Path) -> None:
+    _copy_inputs(tmp_path)
+
+    lane.run(output_root=tmp_path)
+    lane.run(output_root=tmp_path)
+    registry = _load(tmp_path / lane.INPUTS["registry"])
+
+    active_roles: dict[str, int] = {}
+    repair_artifact_count = 0
+    for artifact in registry["artifacts"]:
+        if artifact["artifact_id"].startswith("KT_7B_Q_LORA_SMOKE_"):
+            repair_artifact_count += 1
+        if artifact.get("controls_execution") is True and artifact.get("superseded_by") is None:
+            role = artifact["role"]
+            active_roles[role] = active_roles.get(role, 0) + 1
+
+    assert repair_artifact_count == 3
+    assert all(count == 1 for count in active_roles.values())
+
+
 def test_repair_runbook_is_markdown_not_json(tmp_path: Path) -> None:
     _copy_inputs(tmp_path)
 
@@ -125,6 +145,17 @@ def test_claim_ceiling_drift_blocks_repair_lane(tmp_path: Path) -> None:
     claim_path = tmp_path / lane.INPUTS["claim_ceiling"]
     claim = _load(claim_path)
     claim["commercial_claim_authorized"] = True
+    claim_path.write_text(json.dumps(claim, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    with pytest.raises(RuntimeError, match="Claim ceiling drift"):
+        lane.run(output_root=tmp_path)
+
+
+def test_missing_claim_ceiling_flag_blocks_repair_lane(tmp_path: Path) -> None:
+    _copy_inputs(tmp_path)
+    claim_path = tmp_path / lane.INPUTS["claim_ceiling"]
+    claim = _load(claim_path)
+    claim.pop("external_audit_complete")
     claim_path.write_text(json.dumps(claim, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
     with pytest.raises(RuntimeError, match="Claim ceiling drift"):

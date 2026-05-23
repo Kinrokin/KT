@@ -1,0 +1,138 @@
+{
+  "$id": "kt.adaptive.cognitive_lobe_registry.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "not": {
+    "properties": {
+      "lobes": {
+        "contains": {
+          "properties": {
+            "lobe_id": {
+              "enum": [
+                "claim_boundary",
+                "proof_validator",
+                "truth_engine",
+                "bio_med_firewall",
+                "evaluator_integrity",
+                "primitive_invariance",
+                "metacognitive_admission",
+                "runtime_execution_chain",
+                "delta_to_primitive",
+                "router_control",
+                "router_controller",
+                "adapter_forge",
+                "lobe_trainer",
+                "benchmark_evaluator",
+                "external_attestation",
+                "commercial_boundary",
+                "truth_grounding",
+                "claim_compiler",
+                "detached_verifier",
+                "supply_chain_gate"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "properties": {
+    "forbidden_as_canonical_lobe": {
+      "enum": [
+        "claim_boundary",
+        "proof_validator",
+        "truth_engine",
+        "bio_med_firewall",
+        "evaluator_integrity",
+        "primitive_invariance",
+        "metacognitive_admission",
+        "runtime_execution_chain",
+        "delta_to_primitive",
+        "router_control",
+        "router_controller",
+        "adapter_forge",
+        "lobe_trainer",
+        "benchmark_evaluator",
+        "external_attestation",
+        "commercial_boundary",
+        "truth_grounding",
+        "claim_compiler",
+        "detached_verifier",
+        "supply_chain_gate"
+      ]
+    },
+    "lobes": {
+      "items": {
+        "properties": {
+          "allowed_training_surfaces": {
+            "type": "array"
+          },
+          "canonical_lobe": {
+            "const": true
+          },
+          "claim_ceiling_preserved": {
+            "const": true
+          },
+          "gate_or_court": {
+            "const": false
+          },
+          "historical_aliases": {
+            "type": "array"
+          },
+          "lobe_id": {
+            "enum": [
+              "strategic_synthesis_lobe",
+              "audit_reasoning_lobe",
+              "formal_proof_reasoning_lobe",
+              "contradiction_paradox_lobe",
+              "temporal_chronology_lobe",
+              "cross_domain_patterncraft_lobe",
+              "grounded_evidence_lobe",
+              "regulated_domain_lobe",
+              "commercial_operator_lobe",
+              "execution_tool_lobe",
+              "context_memory_compression_lobe",
+              "learning_delta_lobe",
+              "adversarial_red_assault_lobe"
+            ]
+          },
+          "required_receipts": {
+            "type": "array"
+          },
+          "role": {
+            "type": "string"
+          },
+          "rollback_required": {
+            "const": true
+          },
+          "training_target": {
+            "const": true
+          }
+        },
+        "required": [
+          "lobe_id",
+          "role",
+          "training_target",
+          "canonical_lobe",
+          "gate_or_court",
+          "historical_aliases",
+          "allowed_training_surfaces",
+          "required_receipts",
+          "rollback_required",
+          "claim_ceiling_preserved"
+        ],
+        "type": "object"
+      },
+      "maxItems": 13,
+      "minItems": 13,
+      "type": "array"
+    },
+    "schema_id": {
+      "const": "kt.adaptive.cognitive_lobe_registry.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "lobes"
+  ],
+  "type": "object"
+}

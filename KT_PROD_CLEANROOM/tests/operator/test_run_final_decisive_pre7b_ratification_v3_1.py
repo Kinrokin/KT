@@ -88,7 +88,7 @@ def test_existing_valid_v3_2_evidence_is_validated_not_regenerated(tmp_path: Pat
                 "class_balance_pass": True,
                 "router_no_regression_pass": True,
                 "bio_med_firewall_trained": True,
-                "seven_b_amplification_proven": False,
+                **lane.BLOCKED_CLAIMS,
             },
             indent=2,
             sort_keys=True,
@@ -126,6 +126,28 @@ def test_invalid_existing_v3_2_evidence_blocks(tmp_path: Path) -> None:
         + "\n",
         encoding="utf-8",
     )
+
+    with pytest.raises(RuntimeError, match="V3.2 class-balanced evidence invalid"):
+        lane.run(output_root=tmp_path)
+
+
+def test_v3_2_evidence_missing_blocked_claim_flags_fails_closed(tmp_path: Path) -> None:
+    _copy_inputs(tmp_path)
+    existing_path = tmp_path / lane.OUTPUTS["v3_2_evidence"]
+    existing_path.parent.mkdir(parents=True, exist_ok=True)
+    evidence = {
+        "schema_id": "kt.final_pre7b.v3_2_class_balanced_evidence.v1",
+        "artifact_id": "KT_V3_2_CLASS_BALANCED_EVIDENCE",
+        "import_ready": True,
+        "negative_result_count": 0,
+        "training_errors_count": 0,
+        "class_balance_pass": True,
+        "router_no_regression_pass": True,
+        "bio_med_firewall_trained": True,
+        **lane.BLOCKED_CLAIMS,
+    }
+    evidence.pop("external_audit_complete")
+    existing_path.write_text(json.dumps(evidence, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
     with pytest.raises(RuntimeError, match="V3.2 class-balanced evidence invalid"):
         lane.run(output_root=tmp_path)

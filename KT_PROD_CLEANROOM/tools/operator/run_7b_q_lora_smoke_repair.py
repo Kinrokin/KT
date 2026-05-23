@@ -5,7 +5,7 @@ import json
 import subprocess
 import sys
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any, Mapping, Sequence
 
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
@@ -33,6 +33,12 @@ BLOCKED_CLAIMS = {
     "trust_zone_law_changed": False,
     "tranche_authorized": False,
     "heavy_run_authorized": False,
+}
+
+INPUT_BLOCKED_CLAIMS = {
+    key: value
+    for key, value in BLOCKED_CLAIMS.items()
+    if key not in {"tranche_authorized", "heavy_run_authorized"}
 }
 
 INPUTS = {
@@ -88,8 +94,8 @@ def _assert_preconditions(root: Path) -> None:
         raise RuntimeError("Pre-7B gate did not authorize RUN_7B_Q_LORA_SMOKE before repair assessment")
     for raw in (INPUTS["claim_ceiling"], INPUTS["final_pre7b_scorecard"], INPUTS["pre7b_next_move"]):
         obj = load_json(root / raw)
-        for key, expected in BLOCKED_CLAIMS.items():
-            if key in obj and obj[key] is not expected:
+        for key, expected in INPUT_BLOCKED_CLAIMS.items():
+            if obj.get(key) is not expected:
                 raise RuntimeError(f"Claim ceiling drift in {raw}: expected {key}={expected!r}")
 
 
@@ -313,7 +319,16 @@ If the requested git head is not reachable from Kaggle, label the result as publ
 def _update_registry(root: Path, current_head: str) -> tuple[dict[str, Any], dict[str, Any]]:
     registry_path = root / INPUTS["registry"]
     registry = load_json(registry_path)
-    artifacts = list(registry.get("artifacts", []))
+    repair_artifact_ids = {
+        "KT_7B_Q_LORA_SMOKE_PARTIAL_RECEIPT",
+        "KT_7B_Q_LORA_SMOKE_REPAIR_PACKET",
+        "KT_7B_Q_LORA_SMOKE_REPAIR_NEXT_LAWFUL_MOVE",
+    }
+    artifacts = [
+        artifact
+        for artifact in registry.get("artifacts", [])
+        if artifact.get("artifact_id") not in repair_artifact_ids
+    ]
     for artifact in artifacts:
         if artifact.get("artifact_id") == "NEXT_LAWFUL_MOVE":
             artifact["controls_execution"] = False
@@ -366,6 +381,9 @@ def _update_registry(root: Path, current_head: str) -> tuple[dict[str, Any], dic
     registry["current_head"] = current_head
     registry["generated_utc"] = utc_now_iso_z()
     registry["artifacts"] = artifacts
+    duplicates = _duplicate_controllers(artifacts)
+    if duplicates:
+        raise RuntimeError(f"Duplicate controlling artifacts after 7B repair registry update: {duplicates}")
 
     delta = {
         "schema_id": "kt.artifact_authority_registry_7b_repair_delta_receipt.v1",
@@ -380,10 +398,19 @@ def _update_registry(root: Path, current_head: str) -> tuple[dict[str, Any], dic
             OUTPUTS["repair_runbook"],
             INPUTS["registry"],
         ],
-        "duplicate_controlling_artifacts": [],
+        "duplicate_controlling_artifacts": duplicates,
         "claim_ceiling_unchanged": True,
     }
     return registry, delta
+
+
+def _duplicate_controllers(artifacts: Sequence[Mapping[str, Any]]) -> list[str]:
+    roles: dict[str, int] = {}
+    for artifact in artifacts:
+        if artifact.get("controls_execution") is True and artifact.get("superseded_by") is None:
+            role = str(artifact.get("role", ""))
+            roles[role] = roles.get(role, 0) + 1
+    return sorted(role for role, count in roles.items() if count > 1)
 
 
 def run(*, output_root: Path | None = None) -> dict[str, Any]:

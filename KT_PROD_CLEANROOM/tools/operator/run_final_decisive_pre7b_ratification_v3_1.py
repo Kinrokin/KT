@@ -133,7 +133,7 @@ def _assert_claim_ceiling(root: Path) -> None:
     for raw in (LIVE_INPUTS["near_final_shadow"], LIVE_INPUTS["claim_ceiling"], LIVE_INPUTS["gpu_staging_receipt"]):
         receipt = load_json(root / raw)
         for key, expected in BLOCKED_CLAIMS.items():
-            if receipt.get(key) is not None and receipt.get(key) is not expected:
+            if receipt.get(key) is not expected:
                 raise RuntimeError(f"Claim ceiling drift in {raw}: expected {key}={expected}")
     staging = load_json(root / LIVE_INPUTS["gpu_staging_receipt"])
     if staging.get("next_lawful_move") != "RUN_KT_GPU_CONVERSION_KAGGLE_SMOKE":
@@ -246,8 +246,8 @@ def _validate_v3_2(obj: Mapping[str, Any]) -> list[str]:
         if obj.get(key) != expected:
             failures.append(f"{key} != {expected!r}")
     for key, expected in BLOCKED_CLAIMS.items():
-        if obj.get(key) is not None and obj.get(key) is not expected:
-            failures.append(f"{key} drift")
+        if obj.get(key) is not expected:
+            failures.append(f"{key} != {expected!r}")
     return failures
 
 

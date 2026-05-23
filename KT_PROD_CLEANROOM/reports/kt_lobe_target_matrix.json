@@ -1,107 +1,203 @@
 {
   "artifact_id": "KT_LOBE_TARGET_MATRIX",
-  "authority": "TRAINING_STAGING_ONLY",
+  "authority": "TRAINING_STAGING_ONLY_13_CANONICAL_LOBES",
   "beyond_sota_claim_authorized": false,
+  "canonical_lobe_count": 13,
   "category_leadership_claim_authorized": false,
   "commercial_claim_authorized": false,
   "external_audit_accepted": false,
   "external_audit_complete": false,
+  "forbidden_training_targets": [
+    "claim_boundary",
+    "proof_validator",
+    "truth_engine",
+    "bio_med_firewall",
+    "evaluator_integrity",
+    "primitive_invariance",
+    "metacognitive_admission",
+    "runtime_execution_chain",
+    "delta_to_primitive",
+    "router_control",
+    "router_controller",
+    "adapter_forge",
+    "lobe_trainer",
+    "benchmark_evaluator",
+    "external_attestation",
+    "commercial_boundary",
+    "truth_grounding",
+    "claim_compiler",
+    "detached_verifier",
+    "supply_chain_gate"
+  ],
+  "frontier_parity_claim_authorized": false,
   "full_adaptive_orchestration_production_ready": false,
-  "generated_utc": "2026-05-19T15:12:43Z",
+  "generated_utc": "2026-05-23T20:12:43Z",
+  "kimi_parity_claim_authorized": false,
   "lobes": [
     {
-      "lobe_id": "routing_control_lobe",
-      "objective": "router_candidate_generation",
+      "advisor_gate_outputs_allowed": true,
+      "lobe_id": "strategic_synthesis_lobe",
+      "objective": "strategy",
       "production_authority_after_training": false,
       "requires_dataset_provenance": true,
       "requires_eval_gate": true,
       "requires_receipt": true,
       "requires_recipe": true,
       "requires_rollback": true,
-      "sub_lobes": [
-        "route_selection",
-        "abstention_static_hold"
-      ],
-      "trainable_surface": "adapter_or_router_head_only"
+      "trainable_surface": "adapter_or_lora_qlora_shadow_only"
     },
     {
-      "lobe_id": "evidence_auditor_lobe",
-      "objective": "eval_receipt_review",
+      "advisor_gate_outputs_allowed": true,
+      "lobe_id": "audit_reasoning_lobe",
+      "objective": "audit",
       "production_authority_after_training": false,
       "requires_dataset_provenance": true,
       "requires_eval_gate": true,
       "requires_receipt": true,
       "requires_recipe": true,
       "requires_rollback": true,
-      "sub_lobes": [
-        "trace_completeness",
-        "provenance_integrity"
-      ],
-      "trainable_surface": "adapter_or_router_head_only"
+      "trainable_surface": "adapter_or_lora_qlora_shadow_only"
     },
     {
-      "lobe_id": "claim_boundary_lobe",
-      "objective": "claim_ceiling_preservation",
+      "advisor_gate_outputs_allowed": true,
+      "lobe_id": "formal_proof_reasoning_lobe",
+      "objective": "formal_proof",
       "production_authority_after_training": false,
       "requires_dataset_provenance": true,
       "requires_eval_gate": true,
       "requires_receipt": true,
       "requires_recipe": true,
       "requires_rollback": true,
-      "sub_lobes": [
-        "claim_scan",
-        "forbidden_claim_detection"
-      ],
-      "trainable_surface": "adapter_or_router_head_only"
+      "trainable_surface": "adapter_or_lora_qlora_shadow_only"
     },
     {
-      "lobe_id": "benchmark_eval_lobe",
-      "objective": "benchmark_gate",
+      "advisor_gate_outputs_allowed": true,
+      "lobe_id": "contradiction_paradox_lobe",
+      "objective": "contradiction",
       "production_authority_after_training": false,
       "requires_dataset_provenance": true,
       "requires_eval_gate": true,
       "requires_receipt": true,
       "requires_recipe": true,
       "requires_rollback": true,
-      "sub_lobes": [
-        "baseline_comparison",
-        "negative_result_retention"
-      ],
-      "trainable_surface": "adapter_or_router_head_only"
+      "trainable_surface": "adapter_or_lora_qlora_shadow_only"
     },
     {
-      "lobe_id": "context_efficiency_lobe",
-      "objective": "fp0_no_claim_expansion",
+      "advisor_gate_outputs_allowed": true,
+      "lobe_id": "temporal_chronology_lobe",
+      "objective": "temporal",
       "production_authority_after_training": false,
       "requires_dataset_provenance": true,
       "requires_eval_gate": true,
       "requires_receipt": true,
       "requires_recipe": true,
       "requires_rollback": true,
-      "sub_lobes": [
-        "context_pack_selection",
-        "cache_budgeting"
-      ],
-      "trainable_surface": "adapter_or_router_head_only"
+      "trainable_surface": "adapter_or_lora_qlora_shadow_only"
     },
     {
-      "lobe_id": "rollback_quarantine_lobe",
-      "objective": "failure_handling",
+      "advisor_gate_outputs_allowed": true,
+      "lobe_id": "cross_domain_patterncraft_lobe",
+      "objective": "cross_domain",
       "production_authority_after_training": false,
       "requires_dataset_provenance": true,
       "requires_eval_gate": true,
       "requires_receipt": true,
       "requires_recipe": true,
       "requires_rollback": true,
-      "sub_lobes": [
-        "rollback_plan",
-        "quarantine_decision"
-      ],
-      "trainable_surface": "adapter_or_router_head_only"
+      "trainable_surface": "adapter_or_lora_qlora_shadow_only"
+    },
+    {
+      "advisor_gate_outputs_allowed": true,
+      "lobe_id": "grounded_evidence_lobe",
+      "objective": "grounding",
+      "production_authority_after_training": false,
+      "requires_dataset_provenance": true,
+      "requires_eval_gate": true,
+      "requires_receipt": true,
+      "requires_recipe": true,
+      "requires_rollback": true,
+      "trainable_surface": "adapter_or_lora_qlora_shadow_only"
+    },
+    {
+      "advisor_gate_outputs_allowed": true,
+      "lobe_id": "regulated_domain_lobe",
+      "objective": "regulated_domain",
+      "production_authority_after_training": false,
+      "requires_dataset_provenance": true,
+      "requires_eval_gate": true,
+      "requires_receipt": true,
+      "requires_recipe": true,
+      "requires_rollback": true,
+      "trainable_surface": "adapter_or_lora_qlora_shadow_only"
+    },
+    {
+      "advisor_gate_outputs_allowed": true,
+      "lobe_id": "commercial_operator_lobe",
+      "objective": "commercial_operator",
+      "production_authority_after_training": false,
+      "requires_dataset_provenance": true,
+      "requires_eval_gate": true,
+      "requires_receipt": true,
+      "requires_recipe": true,
+      "requires_rollback": true,
+      "trainable_surface": "adapter_or_lora_qlora_shadow_only"
+    },
+    {
+      "advisor_gate_outputs_allowed": true,
+      "lobe_id": "execution_tool_lobe",
+      "objective": "execution",
+      "production_authority_after_training": false,
+      "requires_dataset_provenance": true,
+      "requires_eval_gate": true,
+      "requires_receipt": true,
+      "requires_recipe": true,
+      "requires_rollback": true,
+      "trainable_surface": "adapter_or_lora_qlora_shadow_only"
+    },
+    {
+      "advisor_gate_outputs_allowed": true,
+      "lobe_id": "context_memory_compression_lobe",
+      "objective": "context_packing",
+      "production_authority_after_training": false,
+      "requires_dataset_provenance": true,
+      "requires_eval_gate": true,
+      "requires_receipt": true,
+      "requires_recipe": true,
+      "requires_rollback": true,
+      "trainable_surface": "adapter_or_lora_qlora_shadow_only"
+    },
+    {
+      "advisor_gate_outputs_allowed": true,
+      "lobe_id": "learning_delta_lobe",
+      "objective": "learning_delta",
+      "production_authority_after_training": false,
+      "requires_dataset_provenance": true,
+      "requires_eval_gate": true,
+      "requires_receipt": true,
+      "requires_recipe": true,
+      "requires_rollback": true,
+      "trainable_surface": "adapter_or_lora_qlora_shadow_only"
+    },
+    {
+      "advisor_gate_outputs_allowed": true,
+      "lobe_id": "adversarial_red_assault_lobe",
+      "objective": "adversarial",
+      "production_authority_after_training": false,
+      "requires_dataset_provenance": true,
+      "requires_eval_gate": true,
+      "requires_receipt": true,
+      "requires_recipe": true,
+      "requires_rollback": true,
+      "trainable_surface": "adapter_or_lora_qlora_shadow_only"
     }
   ],
-  "schema_id": "kt.gpu_conversion.lobe_target_matrix.v1",
+  "multi_lobe_superiority_claim_authorized": false,
+  "prior_gate_scaffold_training_preserved_as_advisors": true,
+  "router_superiority_claim_authorized": false,
+  "s_tier_claim_authorized": false,
+  "schema_id": "kt.gpu_conversion.lobe_target_matrix.v2",
   "seven_b_amplification_proven": false,
+  "taxonomy_reconciled": true,
   "trust_zone_law_changed": false,
   "truth_engine_law_changed": false
 }
