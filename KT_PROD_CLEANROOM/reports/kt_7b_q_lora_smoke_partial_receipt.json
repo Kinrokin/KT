@@ -1,0 +1,65 @@
+{
+  "actual_subject_head": "c0cc160ad0f07e738ea5c7e2db57806d6b6641c6",
+  "artifact_id": "KT_7B_Q_LORA_SMOKE_PARTIAL_RECEIPT",
+  "base_model": "Qwen/Qwen2.5-7B-Instruct",
+  "beyond_sota_claim_authorized": false,
+  "blockers": [
+    {
+      "blocker_id": "cuda_oom_lobe_router_controller",
+      "blocks_clean_smoke": true,
+      "class": "CUDA_OOM",
+      "scope": "lobe_router_controller"
+    },
+    {
+      "blocker_id": "cuda_oom_cohort_pass2_delta",
+      "blocks_clean_smoke": true,
+      "class": "CUDA_OOM",
+      "scope": "cohort_pass2_delta"
+    },
+    {
+      "blocker_id": "router_eval_class_support_below_floor",
+      "blocks_clean_smoke": true,
+      "class": "ROUTER_CLASS_SUPPORT",
+      "min_class_support": 3,
+      "required_min_class_support": 4,
+      "router_eval_class_balance_pass": false
+    }
+  ],
+  "category_leadership_claim_authorized": false,
+  "clean_smoke_pass": false,
+  "commercial_claim_authorized": false,
+  "current_head_mismatch_detected": true,
+  "dataset": "repo-derived current-head allowed surfaces, class-balanced",
+  "dataset_class_balance_pass": true,
+  "external_audit_accepted": false,
+  "external_audit_complete": false,
+  "full_adaptive_orchestration_production_ready": false,
+  "generated_utc": "2026-05-23T20:14:10Z",
+  "gpu": "Tesla T4",
+  "heavy_run_authorized": false,
+  "import_ready": true,
+  "macro_f1": 0.7252,
+  "negative_result_count": 2,
+  "next_lawful_move": "RUN_7B_Q_LORA_SMOKE_REPAIR",
+  "origin_main_head": "c0cc160ad0f07e738ea5c7e2db57806d6b6641c6",
+  "program_id": "KT_7B_Q_LORA_SMOKE_REPAIR_SUPERLANE_V1",
+  "requested_head": "242a6b8519e2e6039abeadb2067c336c7197d0a6",
+  "requested_head_remote_reachable": true,
+  "router_accuracy": 0.7626,
+  "router_no_regression_pass": true,
+  "run_mode": "RUN_7B_Q_LORA_SMOKE",
+  "schema_id": "kt.7b_q_lora.smoke_partial_receipt.v1",
+  "selected_outcome": "KT_7B_Q_LORA_SMOKE_PARTIAL__7B_LOAD_AND_ADAPTER_TRAINING_PROVEN__OOM_AND_ROUTER_CLASS_SUPPORT_BLOCK_CLEAN_SMOKE",
+  "seven_b_amplification_proven": false,
+  "static_baseline_accuracy": 0.0959,
+  "trained_adapters": [
+    "cohort_pass1_all_selected_lobes",
+    "lobe_claim_boundary"
+  ],
+  "training_errors_count": 2,
+  "tranche_authorized": false,
+  "trust_zone_law_changed": false,
+  "truth_engine_law_changed": false,
+  "valid_as_clean_current_head_proof": false,
+  "valid_as_runtime_smoke_attempt": true
+}

@@ -1,0 +1,56 @@
+{
+  "$id": "kt.governance.gate_court_validator_registry.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "components": {
+      "items": {
+        "properties": {
+          "advisory_adapter_allowed": {
+            "type": "boolean"
+          },
+          "claim_ceiling_required": {
+            "const": true
+          },
+          "code_authority": {
+            "const": true
+          },
+          "component_id": {
+            "type": "string"
+          },
+          "component_type": {
+            "type": "string"
+          },
+          "fail_closed": {
+            "const": true
+          },
+          "production_claim_allowed": {
+            "const": false
+          },
+          "receipt_required": {
+            "const": true
+          }
+        },
+        "required": [
+          "component_id",
+          "component_type",
+          "code_authority",
+          "fail_closed",
+          "advisory_adapter_allowed",
+          "receipt_required",
+          "claim_ceiling_required",
+          "production_claim_allowed"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema_id": {
+      "const": "kt.governance.gate_court_validator_registry.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "components"
+  ],
+  "type": "object"
+}

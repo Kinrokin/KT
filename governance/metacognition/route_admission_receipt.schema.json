@@ -1,0 +1,35 @@
+{
+  "$id": "kt.metacognition.route_admission_receipt.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "decision": {
+      "enum": [
+        "attempt",
+        "abstain",
+        "retrieve",
+        "escalate",
+        "quarantine"
+      ]
+    },
+    "risk_scores": {
+      "type": "object"
+    },
+    "route_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.metacognition.route_admission_receipt.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "route_id",
+    "decision",
+    "risk_scores",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}

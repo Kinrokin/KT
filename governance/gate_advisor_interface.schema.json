@@ -1,0 +1,57 @@
+{
+  "$id": "kt.governance.gate_advisor_interface.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "advisor_id": {
+      "type": "string"
+    },
+    "allowed_outputs": {
+      "items": {
+        "enum": [
+          "risk_flag",
+          "uncertainty_score",
+          "repair_suggestion",
+          "escalation_recommendation"
+        ]
+      },
+      "type": "array"
+    },
+    "may_authorize_claims": {
+      "const": false
+    },
+    "may_certify_benchmark_results": {
+      "const": false
+    },
+    "may_override_code_owned_gates": {
+      "const": false
+    },
+    "may_promote_adapters_or_lobes": {
+      "const": false
+    },
+    "pass_fail_authority": {
+      "const": "CODE_OWNED_SCHEMA_BOUND_RECEIPT_BOUND_FAIL_CLOSED_ONLY"
+    },
+    "receipt_required": {
+      "const": true
+    },
+    "schema_id": {
+      "const": "kt.governance.gate_advisor_interface.v1"
+    },
+    "signal_only": {
+      "const": true
+    }
+  },
+  "required": [
+    "schema_id",
+    "advisor_id",
+    "signal_only",
+    "may_authorize_claims",
+    "may_promote_adapters_or_lobes",
+    "may_certify_benchmark_results",
+    "may_override_code_owned_gates",
+    "pass_fail_authority",
+    "receipt_required"
+  ],
+  "type": "object"
+}
