@@ -205,7 +205,7 @@
       "notes": "Taxonomy reconciliation artifact; no claim expansion or production authority.",
       "path": "adaptive/lobe_gate_mapping.json",
       "role": "lobe_gate_taxonomy_mapping",
-      "sha256": "4c5417246c078203a4fb13cd6fb83b9dd32dfb1cfec302a1d1fc3d426a2a5ec4",
+      "sha256": "7f79522f8967d799c85c9b860298160be7e6fe8fae866d3c3de1c9d2298070d5",
       "superseded_by": null,
       "supersedes": [],
       "validation_status": "PASS"
@@ -231,7 +231,7 @@
       "notes": "Taxonomy reconciliation artifact; no claim expansion or production authority.",
       "path": "KT_PROD_CLEANROOM/reports/kt_lobe_gate_court_taxonomy_reconciliation_receipt.json",
       "role": "taxonomy_reconciliation_receipt",
-      "sha256": "6bb477a8b4ae2af3f622b7b676733ecece2de1550e341a3b414c0c1f95f45322",
+      "sha256": "b914eee275a0e8e7419f14d860e94604efed94123035c60554342ea3f4ec1ef5",
       "superseded_by": null,
       "supersedes": [],
       "validation_status": "PASS"
@@ -244,13 +244,52 @@
       "notes": "Taxonomy reconciliation artifact; no claim expansion or production authority.",
       "path": "KT_PROD_CLEANROOM/reports/kt_13_lobe_superlane_next_lawful_move.json",
       "role": "seven_b_training_next_move",
-      "sha256": "829107e3600aa6f48bd872178c8e7697251025956a40c9e4a792c15c65b89f1f",
+      "sha256": "30a37393f24eb73568a93900940fbb4edde36f907b8c3159d7058b187969677f",
+      "superseded_by": null,
+      "supersedes": [],
+      "validation_status": "PASS"
+    },
+    {
+      "artifact_id": "KT_13_LOBE_7B_TRANCHE_CONFIG",
+      "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
+      "claim_authority": "INTERNAL_SHADOW",
+      "controls_execution": true,
+      "notes": "13-lobe tranche readiness artifact; no claim expansion or production authority.",
+      "path": "training/kt_13_lobe_7b_tranche_config.json",
+      "role": "thirteen_lobe_tranche_config",
+      "sha256": "e189b368eee7ce72b5f039ea3464fce6d2b6e227bec9fe2bc36eefb068b0bb43",
+      "superseded_by": null,
+      "supersedes": [],
+      "validation_status": "PASS"
+    },
+    {
+      "artifact_id": "KT_13_LOBE_7B_TRANCHE_RUNBOOK",
+      "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
+      "claim_authority": "INTERNAL_SHADOW",
+      "controls_execution": false,
+      "notes": "13-lobe tranche readiness artifact; no claim expansion or production authority.",
+      "path": "training/kaggle_13_lobe_7b_tranche_runbook.md",
+      "role": "thirteen_lobe_tranche_runbook",
+      "sha256": "24906e72df4b1e9aab43e841af6643423b6df83041df34b289a1c63419a0b703",
+      "superseded_by": null,
+      "supersedes": [],
+      "validation_status": "PASS"
+    },
+    {
+      "artifact_id": "KT_13_LOBE_TRANCHE_READINESS_INSPECTION_RECEIPT",
+      "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
+      "claim_authority": "INTERNAL_SHADOW",
+      "controls_execution": true,
+      "notes": "13-lobe tranche readiness artifact; no claim expansion or production authority.",
+      "path": "KT_PROD_CLEANROOM/reports/kt_13_lobe_tranche_readiness_inspection_receipt.json",
+      "role": "thirteen_lobe_tranche_readiness_receipt",
+      "sha256": "18453f62871f320294d2b25743e033a8245c05591073fc36a0be041b34b0cb92",
       "superseded_by": null,
       "supersedes": [],
       "validation_status": "PASS"
     }
   ],
-  "current_head": "85151a7caa75d3d95ef65424db43e6069f957e5f",
-  "generated_utc": "2026-05-23T20:22:22Z",
+  "current_head": "0f7e531f6dfd6889b9dbf57cb6e73d1c8c6031ba",
+  "generated_utc": "2026-05-23T21:29:45Z",
   "schema_id": "kt.artifact_authority_registry.v3"
 }

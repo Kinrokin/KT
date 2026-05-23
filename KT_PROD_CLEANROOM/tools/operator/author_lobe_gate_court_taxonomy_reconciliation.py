@@ -116,8 +116,8 @@ MAPPING: tuple[tuple[str, str, str, str], ...] = (
     ("rollback_quarantine_lobe", "GATE_COURT_VALIDATOR", "rollback_quarantine_gate_advisor", "validator advisor only"),
     ("claim_boundary", "TRAINED_GATE_COURT_EVALUATOR_ADVISOR", "claim_compiler_advisor", "gate scorer only"),
     ("truth_grounding", "TRAINED_GATE_COURT_EVALUATOR_ADVISOR", "truth_grounding_advisor", "signal only"),
-    ("primitive_invariance", "TRAINED_GATE_COURT_EVALUATOR_ADVISOR", "primitive_invariance_advisor", "signal only"),
-    ("metacognitive_admission", "TRAINED_GATE_COURT_EVALUATOR_ADVISOR", "admission_gate_advisor", "signal only"),
+    ("primitive_invariance", "TRAINED_GATE_COURT_EVALUATOR_ADVISOR", "primitive_invariance_gate_advisor", "signal only"),
+    ("metacognitive_admission", "TRAINED_GATE_COURT_EVALUATOR_ADVISOR", "route_admission_advisor", "signal only"),
     ("runtime_execution_chain", "TRAINED_GATE_COURT_EVALUATOR_ADVISOR", "runtime_chain_validator_advisor", "signal only"),
     ("evaluator_integrity", "TRAINED_GATE_COURT_EVALUATOR_ADVISOR", "evaluator_integrity_court_advisor", "signal only"),
     ("delta_to_primitive", "TRAINED_GATE_COURT_EVALUATOR_ADVISOR", "delta_scar_compiler_advisor", "signal only"),
@@ -134,6 +134,14 @@ MAPPING: tuple[tuple[str, str, str, str], ...] = (
     ("claim_compiler", "GATE_COURT_VALIDATOR", "claim_compiler", "code-owned claim compiler"),
     ("detached_verifier", "GATE_COURT_VALIDATOR", "detached_verifier", "code-owned verifier"),
     ("supply_chain_gate", "GATE_COURT_VALIDATOR", "supply_chain_gate", "code-owned gate"),
+    ("lobe.alpha.v1", "HISTORICAL_COMPAT_ALIAS", "historical_lobe_compatibility_record", "historical lobe label; not a current training target"),
+    ("lobe.architect.v1", "HISTORICAL_COMPAT_ALIAS", "strategic_synthesis_lobe", "historical lobe label; not a current training target"),
+    ("lobe.critic.v1", "HISTORICAL_COMPAT_ALIAS", "adversarial_red_assault_lobe", "historical lobe label; not a current training target"),
+    ("lobe.muse.v1", "HISTORICAL_COMPAT_ALIAS", "cross_domain_patterncraft_lobe", "historical lobe label; not a current training target"),
+    ("lobe.quant.v1", "HISTORICAL_COMPAT_ALIAS", "formal_proof_reasoning_lobe", "historical lobe label; not a current training target"),
+    ("lobe.auditor.v1", "HISTORICAL_COMPAT_ALIAS", "audit_reasoning_lobe", "historical lobe label; not a current training target"),
+    ("lobe.scout.v1", "HISTORICAL_COMPAT_ALIAS", "grounded_evidence_lobe", "historical lobe label; not a current training target"),
+    ("lobe.strategist.v1", "HISTORICAL_COMPAT_ALIAS", "strategic_synthesis_lobe", "historical lobe label; not a current training target"),
 )
 
 OUTPUTS = {
