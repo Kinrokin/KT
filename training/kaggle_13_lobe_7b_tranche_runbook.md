@@ -70,7 +70,7 @@ If `requested_head != actual_head`, stop or label the run as non-current-head as
 - `hf_cache_network_retry_receipt.json`
 - `partial_run_resume_receipt.json`
 
-`router_trace.csv` or `router_trace.json` is sufficient for trace presence, but emitting both is preferred.
+Both `router_trace.csv` and `router_trace.json` are required for this tranche so tabular inspection and structured replay can be checked independently.
 
 ## Minimum Execution Rules
 
@@ -78,8 +78,8 @@ If `requested_head != actual_head`, stop or label the run as non-current-head as
 2. Fail closed if target lobe IDs differ from the config or contain forbidden labels.
 3. Set deterministic seeds before dataset construction.
 4. Emit CUDA, HF cache/retry, and QLoRA effectiveness receipts before training.
-5. Save checkpoints and partial-run receipts after each lobe/adaptor segment.
-6. Clear GPU memory between lobe/adaptor segments.
+5. Save checkpoints and partial-run receipts after each lobe/adapter segment.
+6. Clear GPU memory between lobe/adapter segments.
 7. Emit negative results and blocker ledger instead of deleting failed segments.
 8. Import artifacts only through the hash/import contract after the run.
 
