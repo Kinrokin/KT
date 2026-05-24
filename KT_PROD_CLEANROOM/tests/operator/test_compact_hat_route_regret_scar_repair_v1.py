@@ -128,6 +128,22 @@ def test_scar_delta_distinctness_requires_hash_distinctness_and_failure_mapping(
     assert bad["unmapped_delta_failure_ids"] == ["unknown"]
 
 
+def test_scar_delta_distinctness_fails_closed_on_missing_ids() -> None:
+    receipt = repair.verify_delta_distinctness(
+        failure_rows=[{"failure_id": None}, {"failure_id": "f2"}],
+        delta_rows=[{"source_failure_id": ""}, {"source_failure_id": "f2"}],
+        parent_adapter_hash="aaa",
+        delta_adapter_hash="bbb",
+    )
+
+    assert receipt["identifiers_complete"] is False
+    assert receipt["missing_failure_id_rows"] == [0]
+    assert receipt["missing_delta_source_id_rows"] == [0]
+    assert receipt["scar_learning_claim_allowed"] is False
+    assert "None" not in receipt["observed_failures_without_delta_examples"]
+    assert "None" not in receipt["unmapped_delta_failure_ids"]
+
+
 def test_no_scar_learning_claim_without_distinct_delta(tmp_path: Path) -> None:
     _stage(tmp_path)
     schema = _load(tmp_path / repair.ARTIFACTS["delta_distinct_hash_schema"])

@@ -205,22 +205,31 @@ def verify_delta_distinctness(
     parent_adapter_hash: str,
     delta_adapter_hash: str,
 ) -> dict[str, Any]:
-    failure_ids = {str(row.get("failure_id")) for row in failure_rows}
-    mapped_ids = {str(row.get("source_failure_id")) for row in delta_rows}
+    def clean_id(value: object) -> str:
+        return "" if value is None else str(value).strip()
+
+    missing_failure_id_rows = [index for index, row in enumerate(failure_rows) if not clean_id(row.get("failure_id"))]
+    missing_delta_source_id_rows = [index for index, row in enumerate(delta_rows) if not clean_id(row.get("source_failure_id"))]
+    failure_ids = {clean_id(row.get("failure_id")) for row in failure_rows if clean_id(row.get("failure_id"))}
+    mapped_ids = {clean_id(row.get("source_failure_id")) for row in delta_rows if clean_id(row.get("source_failure_id"))}
     unmapped = sorted(mapped_ids - failure_ids)
     missing = sorted(failure_ids - mapped_ids)
     distinct = bool(parent_adapter_hash) and bool(delta_adapter_hash) and parent_adapter_hash != delta_adapter_hash
+    identifiers_complete = not missing_failure_id_rows and not missing_delta_source_id_rows
     return {
         "schema_id": "kt.adaptive.delta_adapter_distinct_hash_receipt.v1",
         "failure_count": len(failure_ids),
         "delta_example_count": len(delta_rows),
+        "missing_failure_id_rows": missing_failure_id_rows,
+        "missing_delta_source_id_rows": missing_delta_source_id_rows,
+        "identifiers_complete": identifiers_complete,
         "parent_adapter_hash": parent_adapter_hash,
         "delta_adapter_hash": delta_adapter_hash,
         "delta_adapter_hash_distinct": distinct,
         "all_delta_examples_map_to_observed_failures": not unmapped,
         "observed_failures_without_delta_examples": missing,
         "unmapped_delta_failure_ids": unmapped,
-        "scar_learning_claim_allowed": distinct and not unmapped and not missing,
+        "scar_learning_claim_allowed": distinct and identifiers_complete and not unmapped and not missing,
     }
 
 
