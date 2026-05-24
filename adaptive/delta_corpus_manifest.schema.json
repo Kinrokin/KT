@@ -1,0 +1,19 @@
+{
+  "$id": "kt.adaptive.delta_corpus_manifest.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "all_examples_map_to_failures": {
+      "const": true
+    },
+    "schema_id": {
+      "const": "kt.adaptive.delta_corpus_manifest.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "delta_examples",
+    "all_examples_map_to_failures"
+  ],
+  "type": "object"
+}

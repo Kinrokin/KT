@@ -1,0 +1,14 @@
+schema_id: kt.benchmark.external_50.config.v1
+authority: INTERNAL_DETACHED_BENCHMARK_PACKET_ONLY
+sample_count_per_dataset: 50
+datasets:
+  - GSM8K
+  - ARC-Challenge
+  - HellaSwag
+  - TruthfulQA-MC
+kt_native_audit_slice: resource_safe_only
+route_regret_required: true
+verified_work_per_token_required: true
+benchmark_leakage_scan_required: true
+evaluator_integrity_receipt_required: true
+claim_ceiling_preserved: true

@@ -1,0 +1,20 @@
+{
+  "$id": "kt.benchmark.verified_work_per_token_scorecard.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "schema_id": {
+      "const": "kt.benchmark.verified_work_per_token_scorecard.v1"
+    },
+    "verified_work_per_token": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "schema_id",
+    "verified_work",
+    "token_count",
+    "verified_work_per_token"
+  ],
+  "type": "object"
+}

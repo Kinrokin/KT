@@ -1,0 +1,14 @@
+schema_id: kt.training.formal_math_repair.base.v1
+authority: INTERNAL_SHADOW_REPAIR_CONFIG_ONLY
+mode: formal_math_repair
+target_lobes:
+  - formal_proof_reasoning_lobe
+  - learning_delta_lobe
+  - audit_reasoning_lobe
+forbidden_claims:
+  external_audit_complete: false
+  seven_b_amplification_proven: false
+  router_superiority_claim_authorized: false
+numeric_answer_extraction_required: true
+no_regression_required: true
+claim_ceiling_preserved: true

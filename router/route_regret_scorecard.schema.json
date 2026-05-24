@@ -1,0 +1,22 @@
+{
+  "$id": "kt.router.route_regret_scorecard.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "route_regret_pass": {
+      "type": "boolean"
+    },
+    "router_optimizes_verified_work_not_label_fit": {
+      "const": true
+    },
+    "schema_id": {
+      "const": "kt.router.route_regret_scorecard.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "route_regret_pass",
+    "router_optimizes_verified_work_not_label_fit"
+  ],
+  "type": "object"
+}

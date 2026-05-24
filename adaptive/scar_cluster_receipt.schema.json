@@ -1,0 +1,19 @@
+{
+  "$id": "kt.adaptive.scar_cluster_receipt.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "scar_clusters": {
+      "type": "array"
+    },
+    "schema_id": {
+      "const": "kt.adaptive.scar_cluster_receipt.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "scar_clusters",
+    "source_failure_ledger"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,20 @@
+{
+  "$id": "kt.adaptive.delta_adapter_distinct_hash_receipt.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "delta_adapter_hash_distinct": {
+      "const": true
+    },
+    "schema_id": {
+      "const": "kt.adaptive.delta_adapter_distinct_hash_receipt.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "parent_adapter_hash",
+    "delta_adapter_hash",
+    "delta_adapter_hash_distinct"
+  ],
+  "type": "object"
+}

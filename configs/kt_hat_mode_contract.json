@@ -1,0 +1,71 @@
+{
+  "artifact_id": "KT_HAT_MODE_CONTRACT",
+  "authority": "INTERNAL_SHADOW_RUNTIME_POLICY_ONLY",
+  "beyond_sota_claim_authorized": false,
+  "category_leadership_claim_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim_authorized": false,
+  "external_audit_accepted": false,
+  "external_audit_complete": false,
+  "frontier_parity_claim_authorized": false,
+  "full_adaptive_orchestration_production_ready": false,
+  "kimi_parity_claim_authorized": false,
+  "mode_order": [
+    "compact",
+    "bench",
+    "operator",
+    "high_risk",
+    "math",
+    "audit"
+  ],
+  "modes": {
+    "audit": {
+      "allows_internal_trace": false,
+      "answer_style": "evidence_table",
+      "max_overhead_tokens": 512,
+      "purpose": "receipt and claim-boundary audit",
+      "requires_receipt_references": true
+    },
+    "bench": {
+      "allows_internal_trace": false,
+      "answer_style": "answer_only",
+      "max_overhead_tokens": 96,
+      "purpose": "benchmark execution with answer extraction and no narrative expansion",
+      "requires_numeric_answer_extraction": true
+    },
+    "compact": {
+      "allows_internal_trace": false,
+      "answer_style": "direct",
+      "max_overhead_tokens": 160,
+      "purpose": "minimal routing and claim-boundary wrapper for low-token execution",
+      "requires_claim_footer": false
+    },
+    "high_risk": {
+      "allows_internal_trace": false,
+      "answer_style": "bounded_with_refusal_if_needed",
+      "max_overhead_tokens": 420,
+      "purpose": "tighten refusal, evidence, and escalation behavior on sensitive surfaces",
+      "requires_escalation_check": true
+    },
+    "math": {
+      "allows_internal_trace": false,
+      "answer_style": "short_derivation_plus_final_answer",
+      "max_overhead_tokens": 240,
+      "purpose": "formal math repair and final answer extraction",
+      "requires_numeric_answer_extraction": true
+    },
+    "operator": {
+      "allows_internal_trace": false,
+      "answer_style": "concise_steps",
+      "max_overhead_tokens": 320,
+      "purpose": "bounded operator workflow guidance with receipts"
+    }
+  },
+  "multi_lobe_superiority_claim_authorized": false,
+  "router_superiority_claim_authorized": false,
+  "s_tier_claim_authorized": false,
+  "schema_id": "kt.runtime.kt_hat_mode_contract.v1",
+  "seven_b_amplification_proven": false,
+  "trust_zone_law_changed": false,
+  "truth_engine_law_changed": false
+}
