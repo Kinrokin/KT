@@ -12,6 +12,11 @@ def main():
     matrix=read_json(args.matrix); out=pathlib.Path(args.out); out.parent.mkdir(parents=True, exist_ok=True)
     with out.open("w", encoding="utf-8") as f:
         for item in matrix["pressure_items"]:
-            f.write(json.dumps({"schema_id":"kt.crucible_pressure_curriculum.row.v1","generated_utc":utc_now(), **item}, sort_keys=True)+"\n")
+            row = {
+                **item,
+                "schema_id": "kt.crucible_pressure_curriculum.row.v1",
+                "generated_utc": utc_now(),
+            }
+            f.write(json.dumps(row, sort_keys=True)+"\n")
     print(json.dumps({"status":"PASS","rows":len(matrix["pressure_items"]),"out":str(out)}, sort_keys=True))
 if __name__=="__main__": main()

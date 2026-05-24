@@ -7,42 +7,104 @@
   "epochs": [
     {
       "epoch_id": "epoch_0_recover",
+      "entry_requirements": [
+        "source_evidence_index_present",
+        "historical_inputs_classified_as_non_authoritative"
+      ],
+      "exit_receipts": [
+        "historical_intent_map",
+        "live_repo_authority_map"
+      ],
       "inputs": [
         "source_evidence_index"
       ],
+      "max_steps": 1,
       "outputs": [
         "historical_intent_map"
       ],
+      "pressure_item_ids": [],
+      "claim_authority": "NONE_PREP_ONLY_NO_CLAIM_EXPANSION",
       "purpose": "recover historical intent and classify authority"
     },
     {
       "epoch_id": "epoch_1_bind",
+      "entry_requirements": [
+        "crucible_intensity_matrix_present",
+        "cognitive_lobe_registry_present",
+        "gate_court_validator_registry_present"
+      ],
+      "exit_receipts": [
+        "crucible_pressure_curriculum"
+      ],
       "inputs": [
         "crucible_intensity_matrix"
       ],
+      "max_steps": 1,
       "outputs": [
         "crucible_pressure_curriculum"
       ],
+      "pressure_item_ids": [
+        "cea.formal_math.numeric_extraction.v1",
+        "cea.route_regret.ambiguous_selector.v1",
+        "cea.cross_domain.paradox_temporal.v1",
+        "cea.poetic_musical.cryptic_pattern.v1",
+        "cea.red_assault.suite_boundary.v1"
+      ],
+      "claim_authority": "NONE_PREP_ONLY_NO_CLAIM_EXPANSION",
       "purpose": "bind pressure items to lobes/gates/failure classes"
     },
     {
       "epoch_id": "epoch_2_pressure",
+      "entry_requirements": [
+        "crucible_pressure_curriculum_built",
+        "claim_ceiling_snapshot_present"
+      ],
+      "exit_receipts": [
+        "crucible_epoch_academy_pressure_receipt",
+        "crucible_transfer_scorecard"
+      ],
       "inputs": [
         "crucible_pressure_curriculum"
       ],
+      "max_steps": 1,
       "outputs": [
         "crucible_pressure_scorecard"
       ],
+      "pressure_item_ids": [
+        "cea.formal_math.numeric_extraction.v1",
+        "cea.route_regret.ambiguous_selector.v1",
+        "cea.cross_domain.paradox_temporal.v1",
+        "cea.poetic_musical.cryptic_pattern.v1",
+        "cea.red_assault.suite_boundary.v1"
+      ],
+      "claim_authority": "NONE_PREP_ONLY_NO_CLAIM_EXPANSION",
       "purpose": "run bounded pressure evaluation"
     },
     {
       "epoch_id": "epoch_3_repair_signal",
+      "entry_requirements": [
+        "benchmark_failure_to_crucible_map_present",
+        "academy_curriculum_registry_present"
+      ],
+      "exit_receipts": [
+        "academy_curriculum_receipt",
+        "epoch_pressure_receipt"
+      ],
       "inputs": [
         "benchmark_failure_to_crucible_map"
       ],
+      "max_steps": 1,
       "outputs": [
         "academy_curriculum_receipt"
       ],
+      "pressure_item_ids": [
+        "cea.formal_math.numeric_extraction.v1",
+        "cea.route_regret.ambiguous_selector.v1",
+        "cea.cross_domain.paradox_temporal.v1",
+        "cea.poetic_musical.cryptic_pattern.v1",
+        "cea.red_assault.suite_boundary.v1"
+      ],
+      "claim_authority": "NONE_PREP_ONLY_NO_CLAIM_EXPANSION",
       "purpose": "map failures to route-regret/scar-delta repair corpora"
     }
   ],
