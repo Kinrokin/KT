@@ -1,0 +1,19 @@
+{
+  "$id": "kt.benchmark.evaluator_integrity_receipt.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "detached_verifier_mode": {
+      "const": true
+    },
+    "schema_id": {
+      "const": "kt.benchmark.evaluator_integrity_receipt.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "evaluator_integrity_pass",
+    "detached_verifier_mode"
+  ],
+  "type": "object"
+}

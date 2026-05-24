@@ -1,0 +1,14 @@
+schema_id: kt.training.formal_math_repair.datasets.v1
+authority: INTERNAL_SHADOW_DATASET_PLAN_ONLY
+datasets:
+  - dataset_id: gsm8k
+    split: test_or_validation
+    sample_count: 50
+    use: detached_benchmark_and_repair_diagnostics
+  - dataset_id: math_final_answer_synthetic_smoke
+    split: generated_from_observed_failures_only
+    sample_count: bounded_by_failure_ledger
+    use: answer_extraction_regression
+leakage_scan_required: true
+dataset_provenance_required: true
+claim_ceiling_preserved: true

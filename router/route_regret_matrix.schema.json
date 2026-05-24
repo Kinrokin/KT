@@ -1,0 +1,24 @@
+{
+  "$id": "kt.router.route_regret_matrix.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "mean_route_regret": {
+      "type": "number"
+    },
+    "overroute_rate": {
+      "type": "number"
+    },
+    "rows": {
+      "type": "array"
+    },
+    "schema_id": {
+      "const": "kt.router.route_regret_matrix.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "rows"
+  ],
+  "type": "object"
+}

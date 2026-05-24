@@ -1,0 +1,33 @@
+{
+  "$id": "kt.training.numeric_answer_extraction.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "extraction_method": {
+      "enum": [
+        "boxed",
+        "hash_answer",
+        "final_answer_phrase",
+        "last_number"
+      ]
+    },
+    "normalized_answer": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "raw_answer": {
+      "type": "string"
+    },
+    "sample_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "sample_id",
+    "raw_answer",
+    "normalized_answer"
+  ],
+  "type": "object"
+}
