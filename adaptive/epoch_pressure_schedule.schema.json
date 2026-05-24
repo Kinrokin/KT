@@ -1,0 +1,20 @@
+{
+  "required": [
+    "schema_id",
+    "authority",
+    "claim_ceiling_preserved",
+    "not_claim_authorizing",
+    "epochs"
+  ],
+  "required_epoch_fields": [
+    "epoch_id",
+    "purpose",
+    "pressure_item_ids",
+    "entry_requirements",
+    "exit_receipts",
+    "max_steps",
+    "claim_authority"
+  ],
+  "schema_id": "kt.epoch_pressure_schedule.schema.v1",
+  "type": "object"
+}
