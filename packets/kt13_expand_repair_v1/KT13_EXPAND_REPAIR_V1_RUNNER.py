@@ -7,7 +7,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-REQUESTED_HEAD = os.environ.get("KT_REQUESTED_HEAD", "4de572be825acb0e7551174575e225b74d6cf523")
+PACKET_BUILD_HEAD = "cbc477899417fcfb0d3d56aa78c616664a6d8e63"
+KNOWN_EVIDENCE_HEAD = "4de572be825acb0e7551174575e225b74d6cf523"
+REQUESTED_HEAD_ENV = os.environ.get("KT_REQUESTED_HEAD")
 HF_FINAL_ADAPTER_STORE = os.environ.get("KT_HF_ADAPTER_STORE", "Kinrokin/kt13-full-e2e-final-only-20260524-174447")
 OUT_DIR = Path(os.environ.get("KT_OUT_DIR", "/kaggle/working/kt13_expand_repair_v1_outputs"))
 
@@ -28,31 +30,63 @@ def git_head() -> str:
         return os.environ.get("KT_ACTUAL_HEAD", "UNKNOWN")
 
 
+def requested_head(actual_head: str, actual_head_known: bool) -> tuple[str, str]:
+    if REQUESTED_HEAD_ENV is not None:
+        requested = REQUESTED_HEAD_ENV.strip()
+        if requested:
+            return requested, "KT_REQUESTED_HEAD_ENV"
+        return "", "KT_REQUESTED_HEAD_ENV_EMPTY"
+    if actual_head_known:
+        return actual_head, "ACTUAL_GIT_HEAD_DEFAULT"
+    return PACKET_BUILD_HEAD, "PACKET_BUILD_HEAD_FALLBACK"
+
+
+def is_ancestor(ancestor: str, descendant: str) -> bool | None:
+    if not ancestor or not descendant or descendant == "UNKNOWN":
+        return None
+    try:
+        proc = subprocess.run(
+            ["git", "merge-base", "--is-ancestor", ancestor, descendant],
+            check=False,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    except Exception:
+        return None
+    return proc.returncode == 0
+
+
 def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     actual_head = git_head()
     actual_head_known = actual_head not in {"", "UNKNOWN"}
-    head_match = actual_head_known and actual_head == REQUESTED_HEAD
+    requested, requested_source = requested_head(actual_head, actual_head_known)
+    head_match = actual_head_known and actual_head == requested
+    packet_build_head_is_ancestor = is_ancestor(PACKET_BUILD_HEAD, actual_head)
     write_json(
         "head_binding_receipt.json",
         {
             "schema_id": "kt.kaggle.head_binding_receipt.v1",
             "generated_utc": utc_now(),
-            "requested_head": REQUESTED_HEAD,
+            "requested_head": requested,
+            "requested_head_source": requested_source,
             "actual_head": actual_head,
             "actual_head_known": actual_head_known,
+            "packet_build_head": PACKET_BUILD_HEAD,
+            "known_evidence_head": KNOWN_EVIDENCE_HEAD,
+            "packet_build_head_is_ancestor_of_actual": packet_build_head_is_ancestor,
             "head_match": head_match,
             "fail_closed_if_mismatch": True,
             "assessment_only_if_unknown": False,
         },
     )
     if not head_match:
-        blocker_id = "HEAD_UNKNOWN" if not actual_head_known else "HEAD_MISMATCH"
+        blocker_id = "REQUESTED_HEAD_EMPTY" if requested_source == "KT_REQUESTED_HEAD_ENV_EMPTY" else ("HEAD_UNKNOWN" if not actual_head_known else "HEAD_MISMATCH")
         write_json(
             "blocker_ledger.json",
             {
                 "schema_id": "kt.kaggle.blocker_ledger.v1",
-                "blockers": [{"blocker_id": blocker_id, "requested_head": REQUESTED_HEAD, "actual_head": actual_head}],
+                "blockers": [{"blocker_id": blocker_id, "requested_head": requested, "actual_head": actual_head}],
                 "next_lawful_move": "REPLAY_PACKET_ON_CURRENT_HEAD_BEFORE_BENCHMARK",
             },
         )

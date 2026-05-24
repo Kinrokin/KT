@@ -170,6 +170,8 @@ def test_kaggle_packet_is_one_cell_compatible_and_head_bound(tmp_path: Path) -> 
     assert packet_zip.is_file()
     assert manifest["one_cell_kaggle_compatible"] is True
     assert manifest["head_binding_required"] is True
+    assert manifest["runtime_requested_head_default"] == "ACTUAL_GIT_HEAD"
+    assert manifest["packet_build_head_recorded"] is True
     assert inspection["compute_packet_sha256"] == sha256(packet_zip.read_bytes()).hexdigest()
     with zipfile.ZipFile(packet_zip, "r") as zf:
         names = set(zf.namelist())
@@ -186,7 +188,14 @@ def test_kaggle_runner_fails_closed_on_unknown_head_and_pending_receipts(tmp_pat
     _stage(tmp_path)
     runner = (tmp_path / repair.ARTIFACTS["packet_runner"]).read_text(encoding="utf-8")
 
-    assert "head_match = actual_head_known and actual_head == REQUESTED_HEAD" in runner
+    assert 'PACKET_BUILD_HEAD = "' in runner
+    assert "REQUESTED_HEAD_ENV = os.environ.get(\"KT_REQUESTED_HEAD\")" in runner
+    assert "if REQUESTED_HEAD_ENV is not None" in runner
+    assert "return \"\", \"KT_REQUESTED_HEAD_ENV_EMPTY\"" in runner
+    assert "REQUESTED_HEAD_EMPTY" in runner
+    assert "return actual_head, \"ACTUAL_GIT_HEAD_DEFAULT\"" in runner
+    assert "packet_build_head_is_ancestor_of_actual" in runner
+    assert "head_match = actual_head_known and actual_head == requested" in runner
     assert '"HEAD_UNKNOWN" if not actual_head_known else "HEAD_MISMATCH"' in runner
     assert '"evaluator_integrity_status": "PENDING_EXECUTION"' in runner
     assert '"leakage_scan_status": "PENDING_EXECUTION"' in runner
@@ -202,6 +211,7 @@ def test_kaggle_bootstrap_uses_safe_extract_and_packet_disambiguation(tmp_path: 
     assert "Unsafe zip member path" in bootstrap
     assert "KT_PACKET_ZIP_PATH" in bootstrap
     assert "KT_PACKET_SHA256" in bootstrap
+    assert "KT_REQUESTED_HEAD" not in bootstrap
     assert "Multiple candidate packets found" in bootstrap
     assert 'namespace = {"__name__": "__kt_runner__"}' in bootstrap
     assert "raise SystemExit" not in bootstrap
