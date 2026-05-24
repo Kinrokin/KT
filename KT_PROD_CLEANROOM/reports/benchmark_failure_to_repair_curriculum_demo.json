@@ -1,0 +1,36 @@
+{
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-05-24T22:26:43Z",
+  "examples": [
+    {
+      "benchmark": "GSM8K",
+      "failure_class": "numeric_final_answer_extraction",
+      "pressure_item": "cea.formal_math.numeric_extraction.v1",
+      "repair_output": "formal_math_repair_corpus",
+      "target_lobes": [
+        "formal_proof_reasoning_lobe",
+        "context_memory_compression_lobe"
+      ]
+    },
+    {
+      "benchmark": "ARC-Challenge",
+      "failure_class": "route_regret",
+      "pressure_item": "cea.cross_domain.paradox_route_ambiguity.v1",
+      "repair_output": "route_regret_matrix",
+      "target_lobes": [
+        "cross_domain_patterncraft_lobe",
+        "contradiction_paradox_lobe"
+      ]
+    },
+    {
+      "benchmark": "expanded_detached_benchmark",
+      "failure_class": "kt_hat_overhead",
+      "pressure_item": "cea.poetic_musical.cryptic_compression.v1",
+      "repair_output": "compact_hat_bench_mode_examples",
+      "target_lobes": [
+        "context_memory_compression_lobe"
+      ]
+    }
+  ],
+  "schema_id": "kt.benchmark_failure_to_repair_curriculum_demo.v1"
+}
