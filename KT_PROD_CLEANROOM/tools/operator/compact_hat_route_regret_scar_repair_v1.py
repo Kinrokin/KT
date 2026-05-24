@@ -530,7 +530,7 @@ def _inspection_receipt(current_head: str, compute_packet_sha256: str | None) ->
     }
 
 
-def _packet_runner_text() -> str:
+def _packet_runner_text(current_head: str) -> str:
     return r'''from __future__ import annotations
 
 import json
@@ -540,8 +540,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-REQUESTED_HEAD = os.environ.get("KT_REQUESTED_HEAD", "4de572be825acb0e7551174575e225b74d6cf523")
-HF_FINAL_ADAPTER_STORE = os.environ.get("KT_HF_ADAPTER_STORE", "Kinrokin/kt13-full-e2e-final-only-20260524-174447")
+PACKET_BUILD_HEAD = "__PACKET_BUILD_HEAD__"
+KNOWN_EVIDENCE_HEAD = "__KNOWN_EVIDENCE_HEAD__"
+REQUESTED_HEAD_ENV = os.environ.get("KT_REQUESTED_HEAD")
+HF_FINAL_ADAPTER_STORE = os.environ.get("KT_HF_ADAPTER_STORE", "__HF_FINAL_ADAPTER_STORE__")
 OUT_DIR = Path(os.environ.get("KT_OUT_DIR", "/kaggle/working/kt13_expand_repair_v1_outputs"))
 
 
@@ -561,19 +563,48 @@ def git_head() -> str:
         return os.environ.get("KT_ACTUAL_HEAD", "UNKNOWN")
 
 
+def requested_head(actual_head: str, actual_head_known: bool) -> tuple[str, str]:
+    if REQUESTED_HEAD_ENV:
+        return REQUESTED_HEAD_ENV, "KT_REQUESTED_HEAD_ENV"
+    if actual_head_known:
+        return actual_head, "ACTUAL_GIT_HEAD_DEFAULT"
+    return PACKET_BUILD_HEAD, "PACKET_BUILD_HEAD_FALLBACK"
+
+
+def is_ancestor(ancestor: str, descendant: str) -> bool | None:
+    if not ancestor or not descendant or descendant == "UNKNOWN":
+        return None
+    try:
+        proc = subprocess.run(
+            ["git", "merge-base", "--is-ancestor", ancestor, descendant],
+            check=False,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    except Exception:
+        return None
+    return proc.returncode == 0
+
+
 def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     actual_head = git_head()
     actual_head_known = actual_head not in {"", "UNKNOWN"}
-    head_match = actual_head_known and actual_head == REQUESTED_HEAD
+    requested, requested_source = requested_head(actual_head, actual_head_known)
+    head_match = actual_head_known and actual_head == requested
+    packet_build_head_is_ancestor = is_ancestor(PACKET_BUILD_HEAD, actual_head)
     write_json(
         "head_binding_receipt.json",
         {
             "schema_id": "kt.kaggle.head_binding_receipt.v1",
             "generated_utc": utc_now(),
-            "requested_head": REQUESTED_HEAD,
+            "requested_head": requested,
+            "requested_head_source": requested_source,
             "actual_head": actual_head,
             "actual_head_known": actual_head_known,
+            "packet_build_head": PACKET_BUILD_HEAD,
+            "known_evidence_head": KNOWN_EVIDENCE_HEAD,
+            "packet_build_head_is_ancestor_of_actual": packet_build_head_is_ancestor,
             "head_match": head_match,
             "fail_closed_if_mismatch": True,
             "assessment_only_if_unknown": False,
@@ -585,7 +616,7 @@ def main() -> int:
             "blocker_ledger.json",
             {
                 "schema_id": "kt.kaggle.blocker_ledger.v1",
-                "blockers": [{"blocker_id": blocker_id, "requested_head": REQUESTED_HEAD, "actual_head": actual_head}],
+                "blockers": [{"blocker_id": blocker_id, "requested_head": requested, "actual_head": actual_head}],
                 "next_lawful_move": "REPLAY_PACKET_ON_CURRENT_HEAD_BEFORE_BENCHMARK",
             },
         )
@@ -641,7 +672,7 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-'''
+'''.replace("__PACKET_BUILD_HEAD__", current_head).replace("__KNOWN_EVIDENCE_HEAD__", KNOWN_EVIDENCE_HEAD).replace("__HF_FINAL_ADAPTER_STORE__", HF_FINAL_ADAPTER_STORE)
 
 
 def _packet_bootstrap_text() -> str:
@@ -652,7 +683,6 @@ import os
 import zipfile
 from pathlib import Path
 
-os.environ.setdefault("KT_REQUESTED_HEAD", "{KNOWN_EVIDENCE_HEAD}")
 os.environ.setdefault("KT_HF_ADAPTER_STORE", "{HF_FINAL_ADAPTER_STORE}")
 os.environ.setdefault("KT_OUT_DIR", "/kaggle/working/kt13_expand_repair_v1_outputs")
 
@@ -720,6 +750,8 @@ def _packet_manifest(current_head: str) -> dict[str, Any]:
         "current_head": current_head,
         "known_evidence_head": KNOWN_EVIDENCE_HEAD,
         "head_binding_required": True,
+        "runtime_requested_head_default": "ACTUAL_GIT_HEAD",
+        "packet_build_head_recorded": True,
         "hf_final_adapter_store": HF_FINAL_ADAPTER_STORE,
         "run_mode": NEXT_LAWFUL_MOVE,
         "one_cell_kaggle_compatible": True,
@@ -744,6 +776,8 @@ Current head bound by packet build: `{current_head}`.
 
 Known evidence head from final adapter verification packet: `{KNOWN_EVIDENCE_HEAD}`.
 
+Runtime requested-head default: actual checked-out git head. Set `KT_REQUESTED_HEAD` only when intentionally pinning a specific commit. The runner also records this packet build head and whether it is an ancestor of the actual run head.
+
 HF adapter store: `{HF_FINAL_ADAPTER_STORE}`.
 
 This packet is one-cell Kaggle compatible. It is for expanded detached benchmark and repair-signal collection only. It does not claim commercial launch, external audit completion, S-tier, beyond-SOTA, category leadership, frontier parity, 7B amplification, router superiority, multi-lobe superiority, or production readiness.
@@ -759,7 +793,7 @@ If `requested_head != actual_head`, the runner fails closed and emits `blocker_l
 def _write_packet(root: Path, current_head: str) -> list[str]:
     changed: list[str] = []
     packet_files: dict[str, str] = {
-        ARTIFACTS["packet_runner"]: _packet_runner_text(),
+        ARTIFACTS["packet_runner"]: _packet_runner_text(current_head),
         ARTIFACTS["packet_bootstrap"]: _packet_bootstrap_text(),
         ARTIFACTS["packet_readme"]: _packet_readme(current_head),
     }

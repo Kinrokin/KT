@@ -5,7 +5,6 @@ import os
 import zipfile
 from pathlib import Path
 
-os.environ.setdefault("KT_REQUESTED_HEAD", "4de572be825acb0e7551174575e225b74d6cf523")
 os.environ.setdefault("KT_HF_ADAPTER_STORE", "Kinrokin/kt13-full-e2e-final-only-20260524-174447")
 os.environ.setdefault("KT_OUT_DIR", "/kaggle/working/kt13_expand_repair_v1_outputs")
 
