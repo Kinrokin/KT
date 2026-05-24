@@ -564,8 +564,11 @@ def git_head() -> str:
 
 
 def requested_head(actual_head: str, actual_head_known: bool) -> tuple[str, str]:
-    if REQUESTED_HEAD_ENV:
-        return REQUESTED_HEAD_ENV, "KT_REQUESTED_HEAD_ENV"
+    if REQUESTED_HEAD_ENV is not None:
+        requested = REQUESTED_HEAD_ENV.strip()
+        if requested:
+            return requested, "KT_REQUESTED_HEAD_ENV"
+        return "", "KT_REQUESTED_HEAD_ENV_EMPTY"
     if actual_head_known:
         return actual_head, "ACTUAL_GIT_HEAD_DEFAULT"
     return PACKET_BUILD_HEAD, "PACKET_BUILD_HEAD_FALLBACK"
@@ -611,7 +614,7 @@ def main() -> int:
         },
     )
     if not head_match:
-        blocker_id = "HEAD_UNKNOWN" if not actual_head_known else "HEAD_MISMATCH"
+        blocker_id = "REQUESTED_HEAD_EMPTY" if requested_source == "KT_REQUESTED_HEAD_ENV_EMPTY" else ("HEAD_UNKNOWN" if not actual_head_known else "HEAD_MISMATCH")
         write_json(
             "blocker_ledger.json",
             {

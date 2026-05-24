@@ -190,6 +190,9 @@ def test_kaggle_runner_fails_closed_on_unknown_head_and_pending_receipts(tmp_pat
 
     assert 'PACKET_BUILD_HEAD = "' in runner
     assert "REQUESTED_HEAD_ENV = os.environ.get(\"KT_REQUESTED_HEAD\")" in runner
+    assert "if REQUESTED_HEAD_ENV is not None" in runner
+    assert "return \"\", \"KT_REQUESTED_HEAD_ENV_EMPTY\"" in runner
+    assert "REQUESTED_HEAD_EMPTY" in runner
     assert "return actual_head, \"ACTUAL_GIT_HEAD_DEFAULT\"" in runner
     assert "packet_build_head_is_ancestor_of_actual" in runner
     assert "head_match = actual_head_known and actual_head == requested" in runner

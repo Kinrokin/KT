@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-PACKET_BUILD_HEAD = "79611913ec95c84fb987170720b21873aac64018"
+PACKET_BUILD_HEAD = "cbc477899417fcfb0d3d56aa78c616664a6d8e63"
 KNOWN_EVIDENCE_HEAD = "4de572be825acb0e7551174575e225b74d6cf523"
 REQUESTED_HEAD_ENV = os.environ.get("KT_REQUESTED_HEAD")
 HF_FINAL_ADAPTER_STORE = os.environ.get("KT_HF_ADAPTER_STORE", "Kinrokin/kt13-full-e2e-final-only-20260524-174447")
@@ -31,8 +31,11 @@ def git_head() -> str:
 
 
 def requested_head(actual_head: str, actual_head_known: bool) -> tuple[str, str]:
-    if REQUESTED_HEAD_ENV:
-        return REQUESTED_HEAD_ENV, "KT_REQUESTED_HEAD_ENV"
+    if REQUESTED_HEAD_ENV is not None:
+        requested = REQUESTED_HEAD_ENV.strip()
+        if requested:
+            return requested, "KT_REQUESTED_HEAD_ENV"
+        return "", "KT_REQUESTED_HEAD_ENV_EMPTY"
     if actual_head_known:
         return actual_head, "ACTUAL_GIT_HEAD_DEFAULT"
     return PACKET_BUILD_HEAD, "PACKET_BUILD_HEAD_FALLBACK"
@@ -78,7 +81,7 @@ def main() -> int:
         },
     )
     if not head_match:
-        blocker_id = "HEAD_UNKNOWN" if not actual_head_known else "HEAD_MISMATCH"
+        blocker_id = "REQUESTED_HEAD_EMPTY" if requested_source == "KT_REQUESTED_HEAD_ENV_EMPTY" else ("HEAD_UNKNOWN" if not actual_head_known else "HEAD_MISMATCH")
         write_json(
             "blocker_ledger.json",
             {
