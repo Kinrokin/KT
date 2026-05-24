@@ -2,7 +2,7 @@
 
 Repo-side authority: `KT_COMPACT_HAT_ROUTE_REGRET_SCAR_REPAIR_V1`.
 
-Current head bound by packet build: `06c285ac376038eb2a12b6746e051a161cd03c2a`.
+Current head bound by packet build: `a76e55977863945917157a880c756023192a487a`.
 
 Known evidence head from final adapter verification packet: `4de572be825acb0e7551174575e225b74d6cf523`.
 
