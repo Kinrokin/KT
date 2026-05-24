@@ -1,14 +1,12 @@
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 import math
 import re
 import subprocess
 import sys
 import zipfile
-from hashlib import sha256
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -24,7 +22,7 @@ TARGET_OUTCOME = "KT_COMPACT_HAT_ROUTE_REGRET_SCAR_REPAIR_READY__EXPANDED_DETACH
 NEXT_LAWFUL_MOVE = "RUN_EXPANDED_EXTERNAL_MARKET_BENCHMARK_AND_DETACHED_VERIFIER_PACKET"
 COMPUTE_PACKET_NAME = "kt13_expand_repair_v1.zip"
 KNOWN_EVIDENCE_HEAD = "4de572be825acb0e7551174575e225b74d6cf523"
-PACKET_SHA256 = "ed0dae10e8c3f6be08dd30afa0e2003eaffd4f4b91ff42e29693410a53a22e4d"
+SOURCE_PACKET_SHA256 = "ed0dae10e8c3f6be08dd30afa0e2003eaffd4f4b91ff42e29693410a53a22e4d"
 HF_FINAL_ADAPTER_STORE = "Kinrokin/kt13-full-e2e-final-only-20260524-174447"
 
 BLOCKED_CLAIMS = dict(taxonomy.BLOCKED_CLAIMS)
@@ -309,22 +307,6 @@ def _mode_policy(mode: str, max_tokens: int, answer_style: str, extra: Mapping[s
 def _payloads(current_head: str) -> dict[str, Any | str]:
     lobe_targets = ["formal_proof_reasoning_lobe", "learning_delta_lobe", "audit_reasoning_lobe"]
     return {
-        ARTIFACTS["inspection_receipt"]: {
-            "schema_id": "kt.compact_hat_route_regret_scar_repair.inspection_receipt.v1",
-            "artifact_id": "KT_COMPACT_HAT_ROUTE_REGRET_SCAR_REPAIR_INSPECTION_RECEIPT",
-            "program_id": PROGRAM_ID,
-            "generated_utc": utc_now_iso_z(),
-            "current_head": current_head,
-            "packet_known_evidence_head": KNOWN_EVIDENCE_HEAD,
-            "packet_sha256": PACKET_SHA256,
-            "head_matches_packet_evidence_head": current_head == KNOWN_EVIDENCE_HEAD,
-            "hf_final_adapter_store": HF_FINAL_ADAPTER_STORE,
-            "repo_first": True,
-            "kaggle_first": False,
-            "claim_ceiling_preserved": True,
-            "blockers": [],
-            **BLOCKED_CLAIMS,
-        },
         ARTIFACTS["kt_hat_mode_contract"]: _kt_hat_mode_contract(),
         ARTIFACTS["kt_hat_mode_schema"]: _json_schema(
             "kt.runtime.kt_hat_mode_contract.schema.v1",
@@ -518,13 +500,33 @@ def _repair_receipt(current_head: str) -> dict[str, Any]:
     }
 
 
+def _inspection_receipt(current_head: str, compute_packet_sha256: str | None) -> dict[str, Any]:
+    return {
+        "schema_id": "kt.compact_hat_route_regret_scar_repair.inspection_receipt.v1",
+        "artifact_id": "KT_COMPACT_HAT_ROUTE_REGRET_SCAR_REPAIR_INSPECTION_RECEIPT",
+        "program_id": PROGRAM_ID,
+        "generated_utc": utc_now_iso_z(),
+        "current_head": current_head,
+        "packet_known_evidence_head": KNOWN_EVIDENCE_HEAD,
+        "source_packet_sha256": SOURCE_PACKET_SHA256,
+        "compute_packet_path": ARTIFACTS["packet_zip"],
+        "compute_packet_sha256": compute_packet_sha256,
+        "head_matches_packet_evidence_head": current_head == KNOWN_EVIDENCE_HEAD,
+        "hf_final_adapter_store": HF_FINAL_ADAPTER_STORE,
+        "repo_first": True,
+        "kaggle_first": False,
+        "claim_ceiling_preserved": True,
+        "blockers": [],
+        **BLOCKED_CLAIMS,
+    }
+
+
 def _packet_runner_text() -> str:
     return r'''from __future__ import annotations
 
 import json
 import os
 import subprocess
-import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -553,7 +555,8 @@ def git_head() -> str:
 def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     actual_head = git_head()
-    head_match = actual_head == REQUESTED_HEAD or actual_head == "UNKNOWN"
+    actual_head_known = actual_head not in {"", "UNKNOWN"}
+    head_match = actual_head_known and actual_head == REQUESTED_HEAD
     write_json(
         "head_binding_receipt.json",
         {
@@ -561,17 +564,19 @@ def main() -> int:
             "generated_utc": utc_now(),
             "requested_head": REQUESTED_HEAD,
             "actual_head": actual_head,
+            "actual_head_known": actual_head_known,
             "head_match": head_match,
             "fail_closed_if_mismatch": True,
-            "assessment_only_if_unknown": actual_head == "UNKNOWN",
+            "assessment_only_if_unknown": False,
         },
     )
     if not head_match:
+        blocker_id = "HEAD_UNKNOWN" if not actual_head_known else "HEAD_MISMATCH"
         write_json(
             "blocker_ledger.json",
             {
                 "schema_id": "kt.kaggle.blocker_ledger.v1",
-                "blockers": [{"blocker_id": "HEAD_MISMATCH", "requested_head": REQUESTED_HEAD, "actual_head": actual_head}],
+                "blockers": [{"blocker_id": blocker_id, "requested_head": REQUESTED_HEAD, "actual_head": actual_head}],
                 "next_lawful_move": "REPLAY_PACKET_ON_CURRENT_HEAD_BEFORE_BENCHMARK",
             },
         )
@@ -591,8 +596,26 @@ def main() -> int:
             "seven_b_amplification_proven": False,
         },
     )
-    write_json("evaluator_integrity_receipt.json", {"schema_id": "kt.benchmark.evaluator_integrity_receipt.v1", "evaluator_integrity_pass": True, "detached_verifier_mode": True})
-    write_json("benchmark_leakage_scan.json", {"schema_id": "kt.benchmark.leakage_scan.v1", "leakage_scan_pass": True, "leakage_findings": []})
+    write_json(
+        "evaluator_integrity_receipt.json",
+        {
+            "schema_id": "kt.benchmark.evaluator_integrity_receipt.v1",
+            "evaluator_integrity_status": "PENDING_EXECUTION",
+            "evaluator_integrity_pass": False,
+            "detached_verifier_mode": True,
+            "claim_authority": "NONE_PENDING_ACTUAL_EVALUATION",
+        },
+    )
+    write_json(
+        "benchmark_leakage_scan.json",
+        {
+            "schema_id": "kt.benchmark.leakage_scan.v1",
+            "leakage_scan_status": "PENDING_EXECUTION",
+            "leakage_scan_pass": False,
+            "leakage_findings": [],
+            "claim_authority": "NONE_PENDING_ACTUAL_SCAN",
+        },
+    )
     write_json("route_regret_matrix.json", {"schema_id": "kt.router.route_regret_matrix.v1", "sample_count": 0, "rows": [], "note": "populate during benchmark execution"})
     write_json("verified_work_per_token_scorecard.json", {"schema_id": "kt.benchmark.verified_work_per_token_scorecard.v1", "verified_work": 0, "token_count": 0, "verified_work_per_token": 0})
     write_json(
@@ -615,6 +638,7 @@ if __name__ == "__main__":
 def _packet_bootstrap_text() -> str:
     return f'''# KT13 expand/repair one-cell Kaggle bootstrap.
 # Upload this zip as a Kaggle dataset or place it in /kaggle/input, then run this single cell.
+import hashlib
 import os
 import zipfile
 from pathlib import Path
@@ -623,27 +647,59 @@ os.environ.setdefault("KT_REQUESTED_HEAD", "{KNOWN_EVIDENCE_HEAD}")
 os.environ.setdefault("KT_HF_ADAPTER_STORE", "{HF_FINAL_ADAPTER_STORE}")
 os.environ.setdefault("KT_OUT_DIR", "/kaggle/working/kt13_expand_repair_v1_outputs")
 
-packet_zip = None
-for candidate in Path("/kaggle/input").rglob("{COMPUTE_PACKET_NAME}"):
-    packet_zip = candidate
-    break
-if packet_zip is None:
-    for candidate in Path("/kaggle/working").rglob("{COMPUTE_PACKET_NAME}"):
-        packet_zip = candidate
-        break
+def _sha256(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+def _safe_extract(zf, target):
+    root = target.resolve()
+    for member in zf.infolist():
+        dest = (root / member.filename).resolve()
+        if root != dest and root not in dest.parents:
+            raise RuntimeError(f"Unsafe zip member path: {{member.filename}}")
+    zf.extractall(root)
+
+explicit = os.environ.get("KT_PACKET_ZIP_PATH")
+if explicit:
+    candidates = [Path(explicit)]
+else:
+    preferred = Path("/kaggle/input/kt13-expand-repair-v1/{COMPUTE_PACKET_NAME}")
+    if preferred.exists():
+        candidates = [preferred]
+    else:
+        candidates = list(Path("/kaggle/input").glob("*/{COMPUTE_PACKET_NAME}")) + list(Path("/kaggle/working").glob("{COMPUTE_PACKET_NAME}"))
+
+existing = [candidate for candidate in candidates if candidate.exists()]
+if len(existing) > 1:
+    raise RuntimeError(f"Multiple candidate packets found; set KT_PACKET_ZIP_PATH explicitly: {{[str(p) for p in existing]}}")
+packet_zip = existing[0] if existing else None
 if packet_zip is None:
     raise FileNotFoundError("Could not find {COMPUTE_PACKET_NAME} in /kaggle/input or /kaggle/working")
+
+expected_sha = os.environ.get("KT_PACKET_SHA256")
+if expected_sha and _sha256(packet_zip).lower() != expected_sha.lower():
+    raise RuntimeError("KT packet sha256 mismatch; refusing to extract or execute")
 
 work = Path("/kaggle/working/kt13_expand_repair_v1_packet")
 work.mkdir(parents=True, exist_ok=True)
 with zipfile.ZipFile(packet_zip, "r") as zf:
-    zf.extractall(work)
+    _safe_extract(zf, work)
 
 runner = work / "KT13_EXPAND_REPAIR_V1_RUNNER.py"
 if not runner.exists():
-    runner = next(work.rglob("KT13_EXPAND_REPAIR_V1_RUNNER.py"))
+    matches = list(work.rglob("KT13_EXPAND_REPAIR_V1_RUNNER.py"))
+    if len(matches) != 1:
+        raise RuntimeError(f"Expected exactly one runner, found {{len(matches)}}")
+    runner = matches[0]
 
-exec(compile(runner.read_text(encoding="utf-8"), str(runner), "exec"))
+namespace = {{"__name__": "__kt_runner__"}}
+exec(compile(runner.read_text(encoding="utf-8"), str(runner), "exec"), namespace)
+exit_code = int(namespace["main"]())
+if exit_code != 0:
+    raise RuntimeError(f"KT runner failed with exit code {{exit_code}}")
 '''
 
 
@@ -846,6 +902,9 @@ def run(*, output_root: Path | None = None) -> dict[str, Any]:
         changed.append(ARTIFACTS["repair_readiness_receipt"])
 
     changed.extend(_write_packet(root, current_head))
+    packet_sha = file_sha256(root / ARTIFACTS["packet_zip"]) if (root / ARTIFACTS["packet_zip"]).is_file() else None
+    if write_json_stable(root / ARTIFACTS["inspection_receipt"], _inspection_receipt(current_head, packet_sha)):
+        changed.append(ARTIFACTS["inspection_receipt"])
 
     registry = _update_registry(root, current_head)
     if write_json_stable(root / ARTIFACTS["artifact_registry"], registry):

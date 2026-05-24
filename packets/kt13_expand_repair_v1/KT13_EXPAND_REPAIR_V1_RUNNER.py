@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 import os
 import subprocess
-import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -32,7 +31,8 @@ def git_head() -> str:
 def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     actual_head = git_head()
-    head_match = actual_head == REQUESTED_HEAD or actual_head == "UNKNOWN"
+    actual_head_known = actual_head not in {"", "UNKNOWN"}
+    head_match = actual_head_known and actual_head == REQUESTED_HEAD
     write_json(
         "head_binding_receipt.json",
         {
@@ -40,17 +40,19 @@ def main() -> int:
             "generated_utc": utc_now(),
             "requested_head": REQUESTED_HEAD,
             "actual_head": actual_head,
+            "actual_head_known": actual_head_known,
             "head_match": head_match,
             "fail_closed_if_mismatch": True,
-            "assessment_only_if_unknown": actual_head == "UNKNOWN",
+            "assessment_only_if_unknown": False,
         },
     )
     if not head_match:
+        blocker_id = "HEAD_UNKNOWN" if not actual_head_known else "HEAD_MISMATCH"
         write_json(
             "blocker_ledger.json",
             {
                 "schema_id": "kt.kaggle.blocker_ledger.v1",
-                "blockers": [{"blocker_id": "HEAD_MISMATCH", "requested_head": REQUESTED_HEAD, "actual_head": actual_head}],
+                "blockers": [{"blocker_id": blocker_id, "requested_head": REQUESTED_HEAD, "actual_head": actual_head}],
                 "next_lawful_move": "REPLAY_PACKET_ON_CURRENT_HEAD_BEFORE_BENCHMARK",
             },
         )
@@ -70,8 +72,26 @@ def main() -> int:
             "seven_b_amplification_proven": False,
         },
     )
-    write_json("evaluator_integrity_receipt.json", {"schema_id": "kt.benchmark.evaluator_integrity_receipt.v1", "evaluator_integrity_pass": True, "detached_verifier_mode": True})
-    write_json("benchmark_leakage_scan.json", {"schema_id": "kt.benchmark.leakage_scan.v1", "leakage_scan_pass": True, "leakage_findings": []})
+    write_json(
+        "evaluator_integrity_receipt.json",
+        {
+            "schema_id": "kt.benchmark.evaluator_integrity_receipt.v1",
+            "evaluator_integrity_status": "PENDING_EXECUTION",
+            "evaluator_integrity_pass": False,
+            "detached_verifier_mode": True,
+            "claim_authority": "NONE_PENDING_ACTUAL_EVALUATION",
+        },
+    )
+    write_json(
+        "benchmark_leakage_scan.json",
+        {
+            "schema_id": "kt.benchmark.leakage_scan.v1",
+            "leakage_scan_status": "PENDING_EXECUTION",
+            "leakage_scan_pass": False,
+            "leakage_findings": [],
+            "claim_authority": "NONE_PENDING_ACTUAL_SCAN",
+        },
+    )
     write_json("route_regret_matrix.json", {"schema_id": "kt.router.route_regret_matrix.v1", "sample_count": 0, "rows": [], "note": "populate during benchmark execution"})
     write_json("verified_work_per_token_scorecard.json", {"schema_id": "kt.benchmark.verified_work_per_token_scorecard.v1", "verified_work": 0, "token_count": 0, "verified_work_per_token": 0})
     write_json(

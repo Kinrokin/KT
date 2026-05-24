@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import shutil
 import zipfile
+from hashlib import sha256
 from pathlib import Path
 
 from tools.operator import compact_hat_route_regret_scar_repair_v1 as repair
@@ -148,10 +149,12 @@ def test_kaggle_packet_is_one_cell_compatible_and_head_bound(tmp_path: Path) -> 
     _stage(tmp_path)
     packet_zip = tmp_path / repair.ARTIFACTS["packet_zip"]
     manifest = _load(tmp_path / repair.ARTIFACTS["packet_manifest"])
+    inspection = _load(tmp_path / repair.ARTIFACTS["inspection_receipt"])
 
     assert packet_zip.is_file()
     assert manifest["one_cell_kaggle_compatible"] is True
     assert manifest["head_binding_required"] is True
+    assert inspection["compute_packet_sha256"] == sha256(packet_zip.read_bytes()).hexdigest()
     with zipfile.ZipFile(packet_zip, "r") as zf:
         names = set(zf.namelist())
     assert {
@@ -161,6 +164,31 @@ def test_kaggle_packet_is_one_cell_compatible_and_head_bound(tmp_path: Path) -> 
         "PACKET_MANIFEST.json",
         "SHA256_MANIFEST.json",
     }.issubset(names)
+
+
+def test_kaggle_runner_fails_closed_on_unknown_head_and_pending_receipts(tmp_path: Path) -> None:
+    _stage(tmp_path)
+    runner = (tmp_path / repair.ARTIFACTS["packet_runner"]).read_text(encoding="utf-8")
+
+    assert "head_match = actual_head_known and actual_head == REQUESTED_HEAD" in runner
+    assert '"HEAD_UNKNOWN" if not actual_head_known else "HEAD_MISMATCH"' in runner
+    assert '"evaluator_integrity_status": "PENDING_EXECUTION"' in runner
+    assert '"leakage_scan_status": "PENDING_EXECUTION"' in runner
+    assert '"evaluator_integrity_pass": True' not in runner
+    assert '"leakage_scan_pass": True' not in runner
+
+
+def test_kaggle_bootstrap_uses_safe_extract_and_packet_disambiguation(tmp_path: Path) -> None:
+    _stage(tmp_path)
+    bootstrap = (tmp_path / repair.ARTIFACTS["packet_bootstrap"]).read_text(encoding="utf-8")
+
+    assert "def _safe_extract" in bootstrap
+    assert "Unsafe zip member path" in bootstrap
+    assert "KT_PACKET_ZIP_PATH" in bootstrap
+    assert "KT_PACKET_SHA256" in bootstrap
+    assert "Multiple candidate packets found" in bootstrap
+    assert 'namespace = {"__name__": "__kt_runner__"}' in bootstrap
+    assert "raise SystemExit" not in bootstrap
 
 
 def test_artifact_registry_delta_preserves_claim_ceiling(tmp_path: Path) -> None:
