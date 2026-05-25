@@ -16,7 +16,7 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.operator import author_lobe_gate_court_taxonomy_reconciliation as taxonomy
-from tools.operator.titanium_common import file_sha256, repo_root, utc_now_iso_z, write_json_stable
+from tools.operator.titanium_common import file_sha256, load_json, repo_root, utc_now_iso_z, write_json_stable
 
 
 PROGRAM_ID = "KT_G3_ACADEMY_PRESSURE_REPAIR_SUPERLANE_V1"
@@ -139,7 +139,6 @@ def _default_evidence_candidates(root: Path) -> list[Path]:
         [
             Path.home() / "Downloads" / "ktg2_v2_20260525_041618_ASSESSMENT_ONLY.zip",
             root / "outputs" / "reports" / "assessment_summary.json",
-            root / "reports" / "g2_evidence_manifest.json",
         ]
     )
     return candidates
@@ -148,10 +147,34 @@ def _default_evidence_candidates(root: Path) -> list[Path]:
 def discover_g2_evidence(root: Path, explicit: str | None = None) -> Path:
     candidates = [Path(explicit).expanduser()] if explicit else _default_evidence_candidates(root)
     for candidate in candidates:
-        if candidate.exists():
+        if candidate.exists() and _is_supported_evidence_candidate(candidate):
             return candidate
     rendered = ", ".join(path.as_posix() for path in candidates)
     raise FileNotFoundError(f"No importable G2 evidence found. Checked: {rendered}")
+
+
+def _is_supported_evidence_candidate(candidate: Path) -> bool:
+    if candidate.is_file() and candidate.suffix.lower() == ".zip":
+        return True
+    if candidate.is_file() and candidate.name == "assessment_summary.json":
+        parent = candidate.parent
+        required = [
+            parent / "benchmark_scorecard.json",
+            parent / "verified_work_per_token_scorecard.json",
+            parent / "route_regret_matrix.json",
+            parent / "benchmark_predictions.jsonl",
+        ]
+        return all(path.exists() for path in required)
+    if candidate.is_dir():
+        required = [
+            candidate / "assessment_summary.json",
+            candidate / "benchmark_scorecard.json",
+            candidate / "verified_work_per_token_scorecard.json",
+            candidate / "route_regret_matrix.json",
+            candidate / "benchmark_predictions.jsonl",
+        ]
+        return all(path.exists() for path in required)
+    return False
 
 
 def load_g2_evidence(source_path: Path) -> dict[str, Any]:
@@ -671,22 +694,58 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 '''
-    bootstrap = '''from pathlib import Path
+    bootstrap = '''from __future__ import annotations
+
+import hashlib
+import os
+from pathlib import Path
 import zipfile
 
-packet_zip = next(Path("/kaggle/input").rglob("ktg3_run_v1.zip"))
+
+def _packet_zip() -> Path:
+    override = os.environ.get("KT_PACKET_ZIP_PATH", "").strip()
+    if override:
+        packet = Path(override)
+        if not packet.exists():
+            raise FileNotFoundError(f"KT_PACKET_ZIP_PATH not found: {packet}")
+        return packet
+    candidates = sorted(Path("/kaggle/input").rglob("ktg3_run_v1.zip"))
+    if not candidates:
+        raise FileNotFoundError("ktg3_run_v1.zip not found under /kaggle/input")
+    if len(candidates) > 1:
+        rendered = ", ".join(str(path) for path in candidates)
+        raise RuntimeError(f"Multiple candidate packets found; set KT_PACKET_ZIP_PATH: {rendered}")
+    return candidates[0]
+
+
+def _verify_sha256(path: Path) -> None:
+    expected = os.environ.get("KT_PACKET_SHA256", "").strip().lower()
+    if not expected:
+        return
+    actual = hashlib.sha256(path.read_bytes()).hexdigest()
+    if actual != expected:
+        raise RuntimeError(f"KT_PACKET_SHA256 mismatch: expected {expected}, got {actual}")
+
+
+def _safe_extract(packet: Path, work: Path) -> None:
+    root = work.resolve()
+    with zipfile.ZipFile(packet) as zf:
+        for member in zf.namelist():
+            target = (root / member).resolve()
+            if not (target == root or root in target.parents):
+                raise RuntimeError(f"Unsafe zip member path: {member}")
+            if member.endswith("/"):
+                target.mkdir(parents=True, exist_ok=True)
+            else:
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(zf.read(member))
+
+
+packet_zip = _packet_zip()
+_verify_sha256(packet_zip)
 work = Path("/kaggle/working/ktg3_run_v1")
 work.mkdir(parents=True, exist_ok=True)
-with zipfile.ZipFile(packet_zip) as zf:
-    for member in zf.namelist():
-        target = (work / member).resolve()
-        if not str(target).startswith(str(work.resolve())):
-            raise RuntimeError(f"Unsafe zip member path: {member}")
-        if member.endswith("/"):
-            target.mkdir(parents=True, exist_ok=True)
-        else:
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(zf.read(member))
+_safe_extract(packet_zip, work)
 exec((work / "KTG3_TARGETED_REPAIR_RUNNER.py").read_text(encoding="utf-8"), {"__name__": "__main__"})
 '''
     readme = f"""# KTG3 Targeted Repair Packet
@@ -771,7 +830,7 @@ def _registry_entry(root: Path, artifact_id: str, path: str, role: str, *, contr
 
 def update_artifact_registry(root: Path) -> dict[str, Any]:
     registry_path = root / ARTIFACTS["artifact_registry"]
-    registry = json.loads(registry_path.read_text(encoding="utf-8-sig")) if registry_path.exists() else {"artifacts": []}
+    registry = load_json(registry_path) if registry_path.exists() else {"schema_id": "kt.artifact_authority_registry.v3", "artifacts": []}
     additions = [
         _registry_entry(root, "KT_G3_G2_EVIDENCE_MANIFEST", ARTIFACTS["g2_evidence_manifest"], "g2_evidence_import_manifest", controls_execution=False),
         _registry_entry(root, "KT_G3_FAILURE_MAP", ARTIFACTS["g2_failure_map"], "g2_failure_to_repair_map", controls_execution=True),
@@ -784,6 +843,9 @@ def update_artifact_registry(root: Path) -> dict[str, Any]:
     for entry in additions:
         existing[entry["artifact_id"]] = entry
     registry["artifacts"] = list(existing.values())
+    registry["current_head"] = _git_head(root)
+    registry["generated_utc"] = utc_now_iso_z()
+    registry.setdefault("schema_id", "kt.artifact_authority_registry.v3")
     write_json_stable(registry_path, registry)
     delta = {
         "schema_id": "kt.g3.artifact_authority_registry_delta_receipt.v1",

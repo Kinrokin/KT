@@ -4,6 +4,7 @@ import json
 import shutil
 import zipfile
 from pathlib import Path
+import pytest
 
 from tools.operator import g3_academy_pressure_repair_v1 as g3
 
@@ -189,6 +190,20 @@ def test_g3_build_vs_run_boundary_and_no_placeholder_pass(tmp_path: Path) -> Non
     assert no_placeholder["no_placeholder_pass"] is True
     assert manifest["one_cell_kaggle_compatible"] is True
     assert manifest["claims_authorized"] == []
+    bootstrap = (tmp_path / g3.ARTIFACTS["packet_bootstrap"]).read_text(encoding="utf-8")
+    assert "KT_PACKET_ZIP_PATH" in bootstrap
+    assert "KT_PACKET_SHA256" in bootstrap
+    assert "Multiple candidate packets found" in bootstrap
+    assert "root in target.parents" in bootstrap
+    assert "str(target).startswith" not in bootstrap
+
+
+def test_g3_discovery_rejects_unsupported_manifest_candidate(tmp_path: Path) -> None:
+    manifest = tmp_path / "reports" / "g2_evidence_manifest.json"
+    _write_json(manifest, {"schema_id": "kt.g3.g2_evidence_manifest.v1"})
+
+    with pytest.raises(FileNotFoundError):
+        g3.discover_g2_evidence(tmp_path, str(manifest))
 
 
 def test_g3_registry_delta_preserves_claim_ceiling(tmp_path: Path) -> None:
