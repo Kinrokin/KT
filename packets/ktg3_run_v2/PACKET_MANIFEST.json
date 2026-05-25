@@ -1,0 +1,41 @@
+{
+  "claim_ceiling_preserved": true,
+  "claims_authorized": [],
+  "created_utc": "2026-05-25T16:36:17Z",
+  "next_lawful_move": "RUN_KTG3_TARGETED_RUNTIME_PACKET_V2",
+  "one_cell_kaggle_compatible": true,
+  "packet_build_head": "a838c7867be299b070bb798f4e21575dc261efcc",
+  "packet_name": "ktg3_run_v2.zip",
+  "packet_sha256_recorded_in_repo_receipt": true,
+  "program_id": "KT_G3_TARGETED_RUNTIME_PACKET_V2",
+  "requires_hf_final_only_upload_for_clean_pass": true,
+  "requires_runtime_training": true,
+  "runner_kind": "EXECUTABLE_TARGETED_PEFT_RUNTIME",
+  "runtime_intent_only": false,
+  "runtime_required_outputs": [
+    "g3_training_receipt.json",
+    "g3_eval_receipt.json",
+    "g3_no_regression_receipt.json",
+    "g3_scar_delta_distinctness_receipt.json",
+    "g3_negative_result_ledger.json",
+    "route_regret_closure_scorecard.json",
+    "verified_repair_velocity_scorecard.json",
+    "anti_goodhart_scorecard.json",
+    "human_anchor_anti_collapse_receipt.json",
+    "lobe_specialization_scorecard.json",
+    "assurance_case_claim_compiler_receipt.json",
+    "hf_upload_receipt.json",
+    "safetensors_hash_manifest.json"
+  ],
+  "schema_id": "kt.g3.targeted_runtime_packet_manifest.v2",
+  "source_artifact_hashes": {
+    "G2_EVIDENCE_MANIFEST.json": "75d0679a0bc4affc11352ff55223ba8ed64f2c3e20c8eff8384f564f9bcd0706",
+    "G2_FAILURE_MAP.json": "40d1a5458dfc2c4b94d87ce027f0278add6e49da7cac07346c63a3387cf2ae7f",
+    "G2_ROUTE_REGRET_TARGETS.json": "ab972219b1652071d7245d6d03fe828c6b2440ca0da3853dc7acecce106a94e9",
+    "G3_FORMAL_MATH_REPAIR_PLAN.json": "47c83f0231e90e09baa27f3d663603d860e6c4dc9e545ca3ad7db80b17be4a82",
+    "G3_KT_HAT_CALIBRATION_CORPUS.jsonl": "d781cb701b4d7b031de502f7deb1bf580f251f0ad72c61fe7660d105a1e06932",
+    "G3_MATH_REPAIR_CORPUS.jsonl": "96f370e247ada6acc45d7c9b32dd3a6d728d1e7dff86f8d0889c6f03bf0ab767",
+    "G3_METRIC_CONSTITUTION.json": "49c838f66a227ef289ab309cf3108b62f53f5fdaf8ac93417069ca9ad75a75af",
+    "HUMAN_ANCHOR_MANIFEST.json": "2802db98cb35b972f321649708246297eb793b7845e1b2d6e98233f81dfb5583"
+  }
+}
