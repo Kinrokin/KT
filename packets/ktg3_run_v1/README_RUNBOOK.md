@@ -7,6 +7,6 @@ external audit completion, S-tier, beyond-SOTA, category leadership, frontier
 parity, 7B amplification, router superiority, multi-lobe superiority, or
 production readiness.
 
-Build head: `4958459a8103932d89d9c2076ecfc5c631dd0695`
+Build head: `718a169561fdb48944abe0ea183953142d43a52b`
 G2 evidence source SHA256: `b31cc3de418b8d115619ad088a159dcdf3a331cca7b5a0e7b34d8d756806a828`
 Repair target count: `198`
