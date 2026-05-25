@@ -1,0 +1,45 @@
+{
+  "ablation_arms": [
+    "base_raw",
+    "base_kt_hat_compact",
+    "routed_13_lobe_kt_hat_compact",
+    "g3_math_repair",
+    "g3_hat_math_scar",
+    "g31_math_act_adapter",
+    "g31_hat_policy_adapter",
+    "g31_route_regret_policy",
+    "g31_combined_policy",
+    "oracle_route_replay"
+  ],
+  "claim_ceiling_preserved": true,
+  "claims_authorized": [],
+  "created_utc": "2026-05-25T19:16:27Z",
+  "full_13_lobe_retrain_allowed": false,
+  "packet_build_head": "a838c7867be299b070bb798f4e21575dc261efcc",
+  "packet_name": "ktg31_v1.zip",
+  "packet_sha256": null,
+  "packet_sha256_recorded_in_repo_receipt": true,
+  "program_id": "KT_G3_1_CAUSAL_REPAIR_SUPERLANE_V1",
+  "runner": "KTG31_V1_CAUSAL_REPAIR_RUNNER.py",
+  "schema_id": "kt.g31.packet_manifest.v1",
+  "source_hashes": {
+    "g31_adapter_identity_scorecard.json": "cbd3486ba06fe4ec4c3478475e7fa8edd0fa759e309d4ad7cd915c1db393a669",
+    "g31_hat_calibration_corpus.jsonl": "c2a738b50b2297d4e1d386ccaea5f41d6b33e00ac2940f8248e63cd8426cebcd",
+    "g31_hat_salvage_suppression_matrix.json": "9fe557c0849061dd6d1fe040dccc9707c8f9b3e75e808ebbaac0808afce76db9",
+    "g31_human_anchor_quality_receipt.json": "19fef915e8b2318d75058bde81d38b8d6f2370aab482c05d55b7cfaeede6cfa7",
+    "g31_math_act_decomposition.json": "875aebfe78a7772f537214ba638d57352a2f06f44fa0276b801537f18e3dad00",
+    "g31_math_act_verifier_receipt.json": "d71496c014fb8b047960ad4c631a6f4ff7674c1d8a3606ec754357ae6fc20ff0",
+    "g31_math_repair_corpus.jsonl": "7b9f141129c9c1bf5bf99f28cbe79b6c832812866bc1d285ce1f25822a1843b4",
+    "g31_negative_transfer_scorecard.json": "ff65a6add20287907543d55d0c795daa64650c7ca92a15ed1bbdc9d7a87993c2",
+    "g31_per_sample_causal_trace.jsonl": "f9e6658b182b381ac58334b2ae411816b0ec5e5850133ea7b7f7ae26e44aa154",
+    "g31_reducible_uncertainty_matrix.json": "82490b3745cf9877395bf8269e31bfb04af76ee55129a1b1256d4802d2cb5eca",
+    "g31_repair_corpus_provenance_scan.json": "cb4f65a80cfbca71caa5ca9dc2053fd536c0550cb354b296c84bf83e9ff2efbf",
+    "g31_route_policy_training_pairs.jsonl": "ece0703423acaf10bdc62cec4e69c5f925cfec9cf91c69a5e0765659c06e4ed8",
+    "g31_route_regret_closure_targets.json": "4261f3d2a994b228361e7b0d02c172d44db5a43d0019c0f8f7bd34ee84a93255"
+  },
+  "trainable_targets": [
+    "g3_1_math_act_adapter",
+    "g3_1_hat_policy_adapter",
+    "g3_1_route_regret_policy"
+  ]
+}

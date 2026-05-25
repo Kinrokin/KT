@@ -512,6 +512,32 @@
       "validation_status": "PASS"
     },
     {
+      "artifact_id": "KT_G31_CAUSAL_REPAIR_RECEIPT",
+      "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
+      "claim_authority": "INTERNAL_SHADOW",
+      "controls_execution": false,
+      "notes": "G3.1 repo-side causal repair autopsy; no claim expansion.",
+      "path": "reports/g31_causal_repair_superlane_receipt.json",
+      "role": "g31_causal_repair_repo_receipt",
+      "sha256": "2d2db7033467b87c3b6bf5e782e6cba91fe71d806e8b14141cd4de9743d265f8",
+      "superseded_by": null,
+      "supersedes": [],
+      "validation_status": "PASS"
+    },
+    {
+      "artifact_id": "KTG31_CAUSAL_REPAIR_PACKET_V1",
+      "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
+      "claim_authority": "INTERNAL_SHADOW",
+      "controls_execution": false,
+      "notes": "Targeted G3.1 compute packet; runtime receipts required before any promotion review.",
+      "path": "packets/ktg31_v1.zip",
+      "role": "g31_targeted_causal_repair_compute_packet",
+      "sha256": "cb10ca85b02de3c7a53e726fb1ad73d0a73cd1600cf4a9cc6e480e81a60de399",
+      "superseded_by": null,
+      "supersedes": [],
+      "validation_status": "PASS"
+    },
+    {
       "artifact_id": "KT_13_LOBE_7B_TRANCHE_CONFIG",
       "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
       "claim_authority": "INTERNAL_SHADOW",
@@ -519,7 +545,7 @@
       "notes": "13-lobe tranche readiness artifact; no claim expansion or production authority.",
       "path": "training/kt_13_lobe_7b_tranche_config.json",
       "role": "thirteen_lobe_tranche_config",
-      "sha256": "3e11fcb6a10f89091b770bd4c74ebd719b2d9cf886269ae209b969f41aedf837",
+      "sha256": "d874ecd8a3edc400f7652012f3aed0f3ec3e208fc72ba939a4fa443d7b5a6c59",
       "superseded_by": null,
       "supersedes": [],
       "validation_status": "PASS"
@@ -545,13 +571,13 @@
       "notes": "13-lobe tranche readiness artifact; no claim expansion or production authority.",
       "path": "KT_PROD_CLEANROOM/reports/kt_13_lobe_tranche_readiness_inspection_receipt.json",
       "role": "thirteen_lobe_tranche_readiness_receipt",
-      "sha256": "f9516fbc7457767aaf195d8ff774f78dfd7bb7b3c4b9501ccfdb42cfccf990d8",
+      "sha256": "6f9e61c57918806572b9ad28debfa553d022102713df2b39951fd86be70f76ab",
       "superseded_by": null,
       "supersedes": [],
       "validation_status": "PASS"
     }
   ],
-  "current_head": "718a169561fdb48944abe0ea183953142d43a52b",
-  "generated_utc": "2026-05-25T16:08:04Z",
+  "current_head": "a838c7867be299b070bb798f4e21575dc261efcc",
+  "generated_utc": "2026-05-25T19:18:31Z",
   "schema_id": "kt.artifact_authority_registry.v3"
 }
