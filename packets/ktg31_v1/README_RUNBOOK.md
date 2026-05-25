@@ -1,6 +1,6 @@
 # KTG31 V1 Causal Repair Packet
 
-Build head: `a838c7867be299b070bb798f4e21575dc261efcc`
+Build head: `355fcb6aa4dee9a8e719110a4d3769b696b8823c`
 
 This packet is the compute handoff for `KT_G3_1_CAUSAL_REPAIR_SUPERLANE_V1`.
 It trains only:

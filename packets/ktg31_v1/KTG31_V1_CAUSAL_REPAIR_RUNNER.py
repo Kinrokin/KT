@@ -16,12 +16,12 @@ from pathlib import Path
 from typing import Any
 
 PROGRAM_ID = "KT_G3_1_CAUSAL_REPAIR_SUPERLANE_V1"
-PACKET_BUILD_HEAD = "a838c7867be299b070bb798f4e21575dc261efcc"
+PACKET_BUILD_HEAD = "355fcb6aa4dee9a8e719110a4d3769b696b8823c"
 SUCCESS_OUTCOME = "KT_G3_1_CAUSAL_REPAIR_RUNTIME_COMPLETE__ASSESSMENT_READY__CLAIM_CEILING_PRESERVED"
 BLOCKED_OUTCOME = "KT_G3_1_CAUSAL_REPAIR_RUNTIME_BLOCKED__NAMED_DEFECT_REMAINS"
 G31_TARGETS = ["g3_1_math_act_adapter", "g3_1_hat_policy_adapter", "g3_1_route_regret_policy"]
 ABLATION_ARMS = ["base_raw", "base_kt_hat_compact", "routed_13_lobe_kt_hat_compact", "g3_math_repair", "g3_hat_math_scar", "g31_math_act_adapter", "g31_hat_policy_adapter", "g31_route_regret_policy", "g31_combined_policy", "oracle_route_replay"]
-BLOCKED_CLAIMS = {"beyond_sota_claim_authorized": false, "category_leadership_claim_authorized": false, "commercial_claim_authorized": false, "external_audit_accepted": false, "external_audit_complete": false, "frontier_parity_claim_authorized": false, "full_adaptive_orchestration_production_ready": false, "kimi_parity_claim_authorized": false, "multi_lobe_superiority_claim_authorized": false, "router_superiority_claim_authorized": false, "s_tier_claim_authorized": false, "seven_b_amplification_proven": false, "trust_zone_law_changed": false, "truth_engine_law_changed": false}
+BLOCKED_CLAIMS = {'beyond_sota_claim_authorized': False, 'category_leadership_claim_authorized': False, 'commercial_claim_authorized': False, 'external_audit_accepted': False, 'external_audit_complete': False, 'frontier_parity_claim_authorized': False, 'full_adaptive_orchestration_production_ready': False, 'kimi_parity_claim_authorized': False, 'multi_lobe_superiority_claim_authorized': False, 'router_superiority_claim_authorized': False, 's_tier_claim_authorized': False, 'seven_b_amplification_proven': False, 'trust_zone_law_changed': False, 'truth_engine_law_changed': False}
 
 
 def utc_now() -> str:

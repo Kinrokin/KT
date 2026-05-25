@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import runpy
 import shutil
 import zipfile
 from pathlib import Path
@@ -46,6 +47,7 @@ def _stage(tmp_path: Path) -> dict:
 def test_g31_builds_causal_autopsy_and_packet(tmp_path: Path) -> None:
     summary = _stage(tmp_path)
     receipt = _load(tmp_path / g31.ARTIFACTS["final_receipt"])
+    evidence_index = _load(tmp_path / g31.ARTIFACTS["source_evidence_index"])
     trace_rows = _read_jsonl(tmp_path / g31.ARTIFACTS["per_sample_causal_trace"])
     packet_zip = tmp_path / g31.ARTIFACTS["packet_zip"]
 
@@ -56,6 +58,7 @@ def test_g31_builds_causal_autopsy_and_packet(tmp_path: Path) -> None:
     assert receipt["causal_trace_rows"] == len(trace_rows)
     assert len(trace_rows) > 0
     assert all(row["failure_class"] != "unknown" for row in trace_rows)
+    assert all(not Path(row["path"]).is_absolute() for row in evidence_index["sources"])
 
     with zipfile.ZipFile(packet_zip) as zf:
         names = set(zf.namelist())
@@ -90,12 +93,15 @@ def test_g31_math_route_hat_and_anchor_gates_pass_without_promotion(tmp_path: Pa
 def test_g31_packet_is_targeted_only_and_requires_runtime_evidence(tmp_path: Path) -> None:
     _stage(tmp_path)
     manifest = _load(tmp_path / g31.ARTIFACTS["packet_manifest"])
-    runner = (tmp_path / g31.ARTIFACTS["packet_runner"]).read_text(encoding="utf-8")
+    runner_path = tmp_path / g31.ARTIFACTS["packet_runner"]
+    runner = runner_path.read_text(encoding="utf-8")
     bootstrap = (tmp_path / g31.ARTIFACTS["packet_bootstrap"]).read_text(encoding="utf-8")
+    runner_namespace = runpy.run_path(str(runner_path))
 
     assert manifest["trainable_targets"] == list(g31.G31_TARGETS)
     assert manifest["full_13_lobe_retrain_allowed"] is False
     assert manifest["claims_authorized"] == []
+    assert all(value is False for value in runner_namespace["BLOCKED_CLAIMS"].values())
     assert "g3_1_math_act_adapter" in runner
     assert "g3_1_hat_policy_adapter" in runner
     assert "g3_1_route_regret_policy" in runner

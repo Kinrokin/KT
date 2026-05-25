@@ -172,6 +172,13 @@ def _required_path(root: Path, rel_path: str) -> Path:
     return path
 
 
+def _repo_relative_path(root: Path, path: Path) -> str:
+    try:
+        return path.resolve().relative_to(root.resolve()).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 def load_source_evidence(root: Path) -> dict[str, Any]:
     paths = {
         "g2_evidence_manifest": _required_path(root, g3.ARTIFACTS["g2_evidence_manifest"]),
@@ -216,7 +223,7 @@ def evidence_receipts(root: Path, evidence: Mapping[str, Any]) -> tuple[dict[str
     index_rows = [
         {
             "artifact_id": key,
-            "path": path.as_posix(),
+            "path": _repo_relative_path(root, path),
             "sha256": file_sha256(path),
             "authority": "LIVE_REPO_SOURCE" if key.startswith("g2_") or key.startswith("g3_") else "HANDOFF_CONTEXT",
         }
@@ -860,7 +867,7 @@ if __name__ == "__main__":
         .replace("__PACKET_BUILD_HEAD__", head)
         .replace("__G31_TARGETS__", json.dumps(list(G31_TARGETS), sort_keys=True))
         .replace("__ABLATION_ARMS__", json.dumps(list(ABLATION_ARMS), sort_keys=True))
-        .replace("__BLOCKED_CLAIMS__", json.dumps(BLOCKED_CLAIMS, sort_keys=True))
+        .replace("__BLOCKED_CLAIMS__", repr(dict(sorted(BLOCKED_CLAIMS.items()))))
         + "\n"
     )
 
