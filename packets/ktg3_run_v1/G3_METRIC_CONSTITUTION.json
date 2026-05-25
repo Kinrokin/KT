@@ -1,0 +1,34 @@
+{
+  "anti_goodhart_pairing_complete": true,
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-05-25T15:07:04Z",
+  "human_anchor_required": true,
+  "metrics": [
+    {
+      "anti_goodhart_pair": "human_anchor_accuracy_and_no_regression_gate",
+      "goodhart_failure_mode": "short answers that guess correctly on easy cases while failing repair causality",
+      "metric_id": "verified_work_per_token",
+      "primary_use": "measure compression-adjusted correctness"
+    },
+    {
+      "anti_goodhart_pair": "counterfactual_best_subject_and_token_budget_audit",
+      "goodhart_failure_mode": "learning labels that fit the historical router rather than better outcomes",
+      "metric_id": "route_regret",
+      "primary_use": "identify avoidable routing losses against best hindsight subject"
+    },
+    {
+      "anti_goodhart_pair": "targeted_replay_and_negative_result_ledger",
+      "goodhart_failure_mode": "syntactic delta without behavioral improvement",
+      "metric_id": "scar_delta_distinctness",
+      "primary_use": "prove targeted repairs are not hash-identical restatements"
+    },
+    {
+      "anti_goodhart_pair": "cross_lobe_ablation_and_holdout_family_check",
+      "goodhart_failure_mode": "all lobes learning the same benchmark shortcut",
+      "metric_id": "lobe_specialization",
+      "primary_use": "show task-family improvements map to intended cognitive lobe"
+    }
+  ],
+  "schema_id": "kt.g3.metric_constitution.v1",
+  "utility_under_constraint_required": true
+}

@@ -1,0 +1,323 @@
+{
+  "adapter_store": "Kinrokin/kt13-full-e2e-final-only-20260524-174447",
+  "assessment_actual_head": "303a0a0842cb9dad8d60607c6ac5c131b1a97cf3",
+  "assessment_outcome": "KT_G2_EXPANDED_DETACHED_BENCHMARK_COMPLETE__G3_DECISION_READY__CLAIM_CEILING_PRESERVED",
+  "base_model": "unsloth/Qwen2.5-7B-Instruct-bnb-4bit",
+  "claim_ceiling": {
+    "beyond_sota_claim_authorized": false,
+    "canonical_promotion_authorized": false,
+    "category_leadership_claim_authorized": false,
+    "commercial_claim_authorized": false,
+    "external_audit_complete": false,
+    "external_validation_accepted": false,
+    "frontier_parity_claim_authorized": false,
+    "kimi_parity_claim_authorized": false,
+    "multi_lobe_superiority_claim_authorized": false,
+    "production_readiness_claim_authorized": false,
+    "router_superiority_claim_authorized": false,
+    "s_tier_claim_authorized": false,
+    "seven_b_amplification_proven": false
+  },
+  "created_utc": "2026-05-25T15:07:04Z",
+  "dataset_subject_metrics": {
+    "base_kt_hat_compact::arc_challenge": {
+      "accuracy": 0.86,
+      "accuracy_ci95_half_width": 0.09618,
+      "correct": 43,
+      "count": 50,
+      "extraction_ok": 50,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 1.190588,
+      "latency_seconds": 51.195299999999996,
+      "tokens": 100,
+      "tokens_per_correct": 2.325581,
+      "verified_work_per_token": 0.43
+    },
+    "base_kt_hat_compact::gsm8k": {
+      "accuracy": 0.26,
+      "accuracy_ci95_half_width": 0.121583,
+      "correct": 13,
+      "count": 50,
+      "extraction_ok": 50,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 4.297408,
+      "latency_seconds": 55.866299999999995,
+      "tokens": 170,
+      "tokens_per_correct": 13.076923,
+      "verified_work_per_token": 0.076470588
+    },
+    "base_kt_hat_compact::hellaswag": {
+      "accuracy": 0.72,
+      "accuracy_ci95_half_width": 0.124456,
+      "correct": 36,
+      "count": 50,
+      "extraction_ok": 50,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 1.620206,
+      "latency_seconds": 58.3274,
+      "tokens": 100,
+      "tokens_per_correct": 2.777778,
+      "verified_work_per_token": 0.36
+    },
+    "base_kt_hat_compact::truthfulqa_mc": {
+      "accuracy": 0.64,
+      "accuracy_ci95_half_width": 0.133049,
+      "correct": 32,
+      "count": 50,
+      "extraction_ok": 50,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 1.757691,
+      "latency_seconds": 56.2461,
+      "tokens": 100,
+      "tokens_per_correct": 3.125,
+      "verified_work_per_token": 0.32
+    },
+    "base_raw::arc_challenge": {
+      "accuracy": 0.88,
+      "accuracy_ci95_half_width": 0.090075,
+      "correct": 44,
+      "count": 50,
+      "extraction_ok": 50,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 1.103398,
+      "latency_seconds": 48.54949999999998,
+      "tokens": 100,
+      "tokens_per_correct": 2.272727,
+      "verified_work_per_token": 0.44
+    },
+    "base_raw::gsm8k": {
+      "accuracy": 0.04,
+      "accuracy_ci95_half_width": 0.054317,
+      "correct": 2,
+      "count": 50,
+      "extraction_ok": 50,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 239.57255,
+      "latency_seconds": 479.14510000000007,
+      "tokens": 4800,
+      "tokens_per_correct": 2400.0,
+      "verified_work_per_token": 0.000416667
+    },
+    "base_raw::hellaswag": {
+      "accuracy": 0.74,
+      "accuracy_ci95_half_width": 0.121583,
+      "correct": 37,
+      "count": 50,
+      "extraction_ok": 50,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 1.447438,
+      "latency_seconds": 53.55520000000002,
+      "tokens": 100,
+      "tokens_per_correct": 2.702703,
+      "verified_work_per_token": 0.37
+    },
+    "base_raw::truthfulqa_mc": {
+      "accuracy": 0.72,
+      "accuracy_ci95_half_width": 0.124456,
+      "correct": 36,
+      "count": 50,
+      "extraction_ok": 50,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 1.451308,
+      "latency_seconds": 52.24709999999999,
+      "tokens": 100,
+      "tokens_per_correct": 2.777778,
+      "verified_work_per_token": 0.36
+    },
+    "routed_13_lobe_kt_hat_compact::arc_challenge": {
+      "accuracy": 0.86,
+      "accuracy_ci95_half_width": 0.09618,
+      "correct": 43,
+      "count": 50,
+      "extraction_ok": 50,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 1.290086,
+      "latency_seconds": 55.473700000000015,
+      "tokens": 100,
+      "tokens_per_correct": 2.325581,
+      "verified_work_per_token": 0.43
+    },
+    "routed_13_lobe_kt_hat_compact::gsm8k": {
+      "accuracy": 0.28,
+      "accuracy_ci95_half_width": 0.124456,
+      "correct": 14,
+      "count": 50,
+      "extraction_ok": 50,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 4.48425,
+      "latency_seconds": 62.779500000000006,
+      "tokens": 171,
+      "tokens_per_correct": 12.214286,
+      "verified_work_per_token": 0.081871345
+    },
+    "routed_13_lobe_kt_hat_compact::hellaswag": {
+      "accuracy": 0.72,
+      "accuracy_ci95_half_width": 0.124456,
+      "correct": 36,
+      "count": 50,
+      "extraction_ok": 50,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 1.742628,
+      "latency_seconds": 62.7346,
+      "tokens": 100,
+      "tokens_per_correct": 2.777778,
+      "verified_work_per_token": 0.36
+    },
+    "routed_13_lobe_kt_hat_compact::truthfulqa_mc": {
+      "accuracy": 0.66,
+      "accuracy_ci95_half_width": 0.131305,
+      "correct": 33,
+      "count": 50,
+      "extraction_ok": 50,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 1.834621,
+      "latency_seconds": 60.542500000000004,
+      "tokens": 100,
+      "tokens_per_correct": 3.030303,
+      "verified_work_per_token": 0.33
+    },
+    "routed_13_lobe_raw::arc_challenge": {
+      "accuracy": 0.86,
+      "accuracy_ci95_half_width": 0.09618,
+      "correct": 43,
+      "count": 50,
+      "extraction_ok": 50,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 1.227088,
+      "latency_seconds": 52.764800000000015,
+      "tokens": 100,
+      "tokens_per_correct": 2.325581,
+      "verified_work_per_token": 0.43
+    },
+    "routed_13_lobe_raw::gsm8k": {
+      "accuracy": 0.02,
+      "accuracy_ci95_half_width": 0.038806,
+      "correct": 1,
+      "count": 50,
+      "extraction_ok": 50,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 704.8652,
+      "latency_seconds": 704.8652000000001,
+      "tokens": 4800,
+      "tokens_per_correct": 4800.0,
+      "verified_work_per_token": 0.000208333
+    },
+    "routed_13_lobe_raw::hellaswag": {
+      "accuracy": 0.74,
+      "accuracy_ci95_half_width": 0.121583,
+      "correct": 37,
+      "count": 50,
+      "extraction_ok": 50,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 1.563124,
+      "latency_seconds": 57.835600000000014,
+      "tokens": 100,
+      "tokens_per_correct": 2.702703,
+      "verified_work_per_token": 0.37
+    },
+    "routed_13_lobe_raw::truthfulqa_mc": {
+      "accuracy": 0.72,
+      "accuracy_ci95_half_width": 0.124456,
+      "correct": 36,
+      "count": 50,
+      "extraction_ok": 50,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 1.570856,
+      "latency_seconds": 56.55080000000001,
+      "tokens": 100,
+      "tokens_per_correct": 2.777778,
+      "verified_work_per_token": 0.36
+    }
+  },
+  "evidence_authority": "G2_ASSESSMENT_IMPORT_FOR_G3_BUILD_MODE_ONLY",
+  "imported_members": {
+    "assessment_summary": {
+      "member": "outputs/reports/assessment_summary.json",
+      "sha256": "93f2ddc282226555ba5f0f2b02bae3e059e03c20abb6c8562897423c525c2b52",
+      "size_bytes": 9583
+    },
+    "benchmark_predictions": {
+      "member": "outputs/reports/benchmark_predictions.jsonl",
+      "sha256": "71b09c191934a85338f54f277b7ded0a31520502e82a598a4efc661a4c2d2ba0",
+      "size_bytes": 282174
+    },
+    "benchmark_scorecard": {
+      "member": "outputs/reports/benchmark_scorecard.json",
+      "sha256": "6752b8c31397c5b7ec90477d060130563c0a88e190599de0d6c77424cf319715",
+      "size_bytes": 7989
+    },
+    "dataset_load_receipt": {
+      "member": "outputs/reports/dataset_load_receipt.json",
+      "sha256": "d0d4a90c1b8b9d91df6be3c4e08df2d99ef1cf9135cb1d0e0c43bd71067385d6",
+      "size_bytes": 161
+    },
+    "route_regret_matrix": {
+      "member": "outputs/reports/route_regret_matrix.json",
+      "sha256": "f6f8b26776e10b1e525a7e3ac5d2436686f918e7491885c3910898fe30a0b88b",
+      "size_bytes": 84305
+    },
+    "verified_work_per_token_scorecard": {
+      "member": "outputs/reports/verified_work_per_token_scorecard.json",
+      "sha256": "3ea2dfc87fe6f7a164ac5ee9f140c733a0bab279d046f28da06f829f4f4dafef",
+      "size_bytes": 8010
+    }
+  },
+  "schema_id": "kt.g3.g2_evidence_manifest.v1",
+  "source_kind": "assessment_zip",
+  "source_path": "D:/user/rober/Downloads/ktg2_v2_20260525_041618_ASSESSMENT_ONLY.zip",
+  "source_sha256": "b31cc3de418b8d115619ad088a159dcdf3a331cca7b5a0e7b34d8d756806a828",
+  "subject_metrics": {
+    "base_kt_hat_compact": {
+      "accuracy": 0.62,
+      "accuracy_ci95_half_width": 0.067271,
+      "correct": 124,
+      "count": 200,
+      "extraction_ok": 200,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 1.78738,
+      "latency_seconds": 221.6350999999999,
+      "tokens": 470,
+      "tokens_per_correct": 3.790323,
+      "verified_work_per_token": 0.263829787
+    },
+    "base_raw": {
+      "accuracy": 0.595,
+      "accuracy_ci95_half_width": 0.068034,
+      "correct": 119,
+      "count": 200,
+      "extraction_ok": 200,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 5.323503,
+      "latency_seconds": 633.4968999999998,
+      "tokens": 5100,
+      "tokens_per_correct": 42.857143,
+      "verified_work_per_token": 0.023333333
+    },
+    "routed_13_lobe_kt_hat_compact": {
+      "accuracy": 0.63,
+      "accuracy_ci95_half_width": 0.066913,
+      "correct": 126,
+      "count": 200,
+      "extraction_ok": 200,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 1.916907,
+      "latency_seconds": 241.53029999999995,
+      "tokens": 471,
+      "tokens_per_correct": 3.738095,
+      "verified_work_per_token": 0.267515924
+    },
+    "routed_13_lobe_raw": {
+      "accuracy": 0.585,
+      "accuracy_ci95_half_width": 0.068288,
+      "correct": 117,
+      "count": 200,
+      "extraction_ok": 200,
+      "extraction_rate": 1.0,
+      "latency_per_correct": 7.453132,
+      "latency_seconds": 872.0163999999999,
+      "tokens": 5100,
+      "tokens_per_correct": 43.589744,
+      "verified_work_per_token": 0.022941176
+    }
+  }
+}
