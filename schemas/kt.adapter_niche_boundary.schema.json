@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "adapter_id": {
+      "type": "string"
+    },
+    "allowed_task_families": {
+      "type": "array"
+    },
+    "blocked_task_families": {
+      "type": "array"
+    },
+    "negative_transfer_score": {
+      "type": "number"
+    },
+    "promotion_eligible": {
+      "type": "boolean"
+    },
+    "quarantine_status": {
+      "type": "string"
+    },
+    "routing_preconditions": {
+      "type": "array"
+    },
+    "schema_id": {
+      "const": "kt.adapter_niche_boundary.v1"
+    },
+    "verifier_required": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema_id",
+    "adapter_id",
+    "allowed_task_families",
+    "blocked_task_families",
+    "routing_preconditions",
+    "verifier_required",
+    "negative_transfer_score",
+    "quarantine_status",
+    "promotion_eligible"
+  ],
+  "title": "kt.adapter_niche_boundary.v1",
+  "type": "object"
+}

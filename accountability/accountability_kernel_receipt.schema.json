@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "accountability_trace_ledger_present": {
+      "type": "boolean"
+    },
+    "claim_admissibility_present": {
+      "type": "boolean"
+    },
+    "claim_ceiling_preserved": {
+      "type": "boolean"
+    },
+    "failure_confession_receipt_present": {
+      "type": "boolean"
+    },
+    "next_lawful_move": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.accountability_kernel_receipt.v1"
+    },
+    "self_deception_gate_pass": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema_id",
+    "accountability_trace_ledger_present",
+    "failure_confession_receipt_present",
+    "self_deception_gate_pass",
+    "claim_admissibility_present",
+    "claim_ceiling_preserved",
+    "next_lawful_move"
+  ],
+  "title": "kt.accountability_kernel_receipt.v1",
+  "type": "object"
+}

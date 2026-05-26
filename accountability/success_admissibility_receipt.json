@@ -1,0 +1,45 @@
+{
+  "claim_ceiling_preserved": true,
+  "claim_tier": 1,
+  "external_replay_status": "PENDING",
+  "forbidden_claims": [
+    "commercial launch",
+    "external audit complete",
+    "external validation accepted",
+    "S-tier",
+    "beyond-SOTA",
+    "frontier parity",
+    "router superiority",
+    "multi-lobe superiority",
+    "7B amplification proven",
+    "production readiness",
+    "adapter promotion",
+    "global improvement from formal math specialist"
+  ],
+  "known_limits": [
+    "adapter_g3_formal_math_repair_adapter underperformed base_raw globally",
+    "formal math evidence is bounded to a specialist niche and is not a global promotion basis",
+    "route-regret closure was 0.0",
+    "external validation pending",
+    "commercial claims unauthorized"
+  ],
+  "regression_checks": {
+    "global_no_regression_pass": false,
+    "promotion_blocked": true,
+    "specialist_only": true
+  },
+  "schema_id": "kt.success_admissibility_receipt.v1",
+  "success_evidence": [
+    {
+      "arm": "adapter_g3_formal_math_repair_adapter",
+      "gsm8k_correct": 13,
+      "gsm8k_total": 50
+    },
+    {
+      "arm": "base_raw",
+      "gsm8k_correct": 2,
+      "gsm8k_total": 50
+    }
+  ],
+  "success_scope": "Internal specialist-niche signal only: formal math adapter outperformed base_raw on GSM8K-like slice in imported G3FULL evidence."
+}

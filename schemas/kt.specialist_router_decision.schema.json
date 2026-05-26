@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "fallback_route": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "sample_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.specialist_router_decision.v1"
+    },
+    "selected_adapter": {
+      "type": "string"
+    },
+    "selected_route": {
+      "type": "string"
+    },
+    "task_family": {
+      "type": "string"
+    },
+    "verifier_gate_pass": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema_id",
+    "sample_id",
+    "task_family",
+    "selected_route",
+    "selected_adapter",
+    "verifier_gate_pass",
+    "reason",
+    "fallback_route"
+  ],
+  "title": "kt.specialist_router_decision.v1",
+  "type": "object"
+}

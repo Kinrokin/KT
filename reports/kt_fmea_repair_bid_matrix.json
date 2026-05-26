@@ -1,0 +1,52 @@
+{
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-05-26T19:55:29Z",
+  "formula": "failure_repair_value=(severity*recurrence*importance*regret_potential*scar_clarity*regression_safety)/repair_cost",
+  "repair_bid_formula": "repair_bid=(severity*recurrence*oracle_gap*verifier_confidence*human_anchor_quality*no_regression_safety)/estimated_repair_cost",
+  "rows": [
+    {
+      "cluster_id": "route_regret_zero",
+      "failure_repair_value": 1666.6666666666667,
+      "importance": 5,
+      "owner": "ROUTE_OWNED",
+      "recurrence": 5,
+      "regression_safety": 4,
+      "regret_potential": 5,
+      "repair_bid": 83.33333333333333,
+      "repair_cost": 6,
+      "scar_clarity": 4,
+      "schema_id": "kt.failure_mode_effects_row.v1",
+      "severity": 5
+    },
+    {
+      "cluster_id": "compact_hat_global_harm",
+      "failure_repair_value": 1280.0,
+      "importance": 5,
+      "owner": "HAT_OWNED",
+      "recurrence": 4,
+      "regression_safety": 4,
+      "regret_potential": 4,
+      "repair_bid": 64.0,
+      "repair_cost": 5,
+      "scar_clarity": 4,
+      "schema_id": "kt.failure_mode_effects_row.v1",
+      "severity": 5
+    },
+    {
+      "cluster_id": "formal_math_negative_transfer",
+      "failure_repair_value": 2500.0,
+      "importance": 5,
+      "owner": "ADAPTER_ECOLOGY_OWNED",
+      "recurrence": 4,
+      "regression_safety": 5,
+      "regret_potential": 5,
+      "repair_bid": 100.0,
+      "repair_cost": 4,
+      "scar_clarity": 5,
+      "schema_id": "kt.failure_mode_effects_row.v1",
+      "severity": 4
+    }
+  ],
+  "schema_id": "kt.fmea_repair_bid_matrix.v1",
+  "training_authorized": false
+}

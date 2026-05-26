@@ -1,0 +1,40 @@
+name: KT Accountability Kernel Gates
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  accountability-kernel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: python -m pip install -U pytest jsonschema
+
+      - name: Regenerate accountability receipts
+        run: python scripts/run_accountability_kernel_superlane.py --audit-clean
+
+      - name: Focused accountability tests
+        run: |
+          python -m pytest -q tests/test_accountability_kernel_gates.py
+          python -m pytest -q tests/test_formal_math_specialist_routing.py
+          python -m pytest -q tests/test_adapter_isolation.py
+          python -m pytest -q tests/test_cross_domain_translation_engine.py
+          python -m pytest -q tests/test_fmea_repair_bid_matrix.py
+          python -m pytest -q tests/test_repo_state_diff_contract.py
+
+      - name: Validate JSON artifacts
+        run: python scripts/validate_json_artifacts.py schemas reports registry packets accountability research
+
+      - name: Enforce accountability gates
+        run: python scripts/enforce_accountability_gates.py
+
+      - name: Diff check
+        run: git diff --check

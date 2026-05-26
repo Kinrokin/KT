@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "concept": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "gate": {
+      "type": "string"
+    },
+    "kt_failure_class": {
+      "type": "string"
+    },
+    "metric": {
+      "type": "string"
+    },
+    "proposed_artifact": {
+      "type": "string"
+    },
+    "quarantine_rule": {
+      "type": "string"
+    },
+    "risk_if_wrong": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.domain_to_artifact_map.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "domain",
+    "concept",
+    "kt_failure_class",
+    "proposed_artifact",
+    "gate",
+    "metric",
+    "quarantine_rule",
+    "risk_if_wrong"
+  ],
+  "title": "kt.domain_to_artifact_map.v1",
+  "type": "object"
+}

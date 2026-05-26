@@ -1,0 +1,44 @@
+{
+  "all_metrics_paired": true,
+  "anti_goodhart_pairs": {
+    "DD": [
+      "target_metric_gain",
+      "failure_map_present",
+      "semantic_delta_present",
+      "no_regression_pass"
+    ],
+    "GAD": [
+      "external_verifier_delta",
+      "claim_ceiling_preservation"
+    ],
+    "HOR": [
+      "answer_adequacy_score",
+      "safety_pass_rate",
+      "utility_collapse_flag"
+    ],
+    "RR": [
+      "irreducible_uncertainty_score",
+      "OOD_route_stability"
+    ],
+    "SY": [
+      "human_anchor_agreement"
+    ],
+    "TPC": [
+      "safety_pass_rate"
+    ],
+    "UCR": [
+      "claim_density"
+    ],
+    "VWPT": [
+      "answer_adequacy_score",
+      "external_verifier_agreement"
+    ],
+    "self_deception_risk": [
+      "failure_confession_receipt",
+      "claim_admissibility_casefile"
+    ]
+  },
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-05-26T19:55:29Z",
+  "schema_id": "kt.accountability.metric_constitution_receipt.v1"
+}

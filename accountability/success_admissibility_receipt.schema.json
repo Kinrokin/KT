@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": {
+      "type": "boolean"
+    },
+    "claim_tier": {
+      "maximum": 5,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "external_replay_status": {
+      "type": "string"
+    },
+    "forbidden_claims": {
+      "type": "array"
+    },
+    "known_limits": {
+      "type": "array"
+    },
+    "regression_checks": {
+      "type": "object"
+    },
+    "schema_id": {
+      "const": "kt.success_admissibility_receipt.v1"
+    },
+    "success_evidence": {
+      "type": "array"
+    },
+    "success_scope": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "success_scope",
+    "success_evidence",
+    "known_limits",
+    "regression_checks",
+    "external_replay_status",
+    "claim_tier",
+    "forbidden_claims",
+    "claim_ceiling_preserved"
+  ],
+  "title": "kt.success_admissibility_receipt.v1",
+  "type": "object"
+}

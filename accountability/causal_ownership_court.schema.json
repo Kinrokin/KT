@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "allowed_intervention": {
+      "type": "string"
+    },
+    "cluster_id": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number"
+    },
+    "evidence": {
+      "type": "array"
+    },
+    "forbidden_interventions": {
+      "type": "array"
+    },
+    "owner": {
+      "enum": [
+        "ADAPTER_OWNED",
+        "ROUTE_OWNED",
+        "HAT_OWNED",
+        "VERIFIER_OWNED",
+        "CORPUS_OWNED",
+        "BENCHMARK_OWNED",
+        "SUBSTRATE_OWNED",
+        "IRREDUCIBLE",
+        "UNKNOWN_BLOCKED"
+      ]
+    },
+    "schema_id": {
+      "const": "kt.causal_ownership_court.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "cluster_id",
+    "owner",
+    "evidence",
+    "confidence",
+    "allowed_intervention",
+    "forbidden_interventions"
+  ],
+  "title": "kt.causal_ownership_court.v1",
+  "type": "object"
+}

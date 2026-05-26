@@ -1,0 +1,29 @@
+# Developer Return Format
+
+Return only:
+
+current_head
+branch
+files_changed
+schemas_added
+scripts_added
+tests_added
+ci_workflow_added
+reports_added
+packets_added
+tests_run
+accountability_kernel_status
+self_deception_gate_status
+failure_confession_status
+claim_admissibility_status
+specialist_routing_status
+adapter_isolation_status
+adapter_niche_boundary_status
+cross_domain_engine_status
+fmea_repair_bid_status
+state_diff_contract_status
+metric_constitution_status
+kaggle_packet_status
+claim_ceiling_status
+blockers
+next_lawful_move

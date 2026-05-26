@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "adapter_config_hash": {
+      "type": "string"
+    },
+    "adapter_name": {
+      "type": "string"
+    },
+    "arm_name": {
+      "type": "string"
+    },
+    "base_model_reloaded": {
+      "type": "boolean"
+    },
+    "cuda_cleanup_after_arm": {
+      "type": "boolean"
+    },
+    "cuda_cleanup_before_arm": {
+      "type": "boolean"
+    },
+    "gpu_memory_after": {
+      "type": "object"
+    },
+    "gpu_memory_before": {
+      "type": "object"
+    },
+    "peft_wrappers_removed": {
+      "type": "boolean"
+    },
+    "schema_id": {
+      "const": "kt.adapter_isolation_receipt.v1"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "arm_name",
+    "adapter_name",
+    "base_model_reloaded",
+    "peft_wrappers_removed",
+    "cuda_cleanup_before_arm",
+    "cuda_cleanup_after_arm",
+    "gpu_memory_before",
+    "gpu_memory_after",
+    "adapter_config_hash",
+    "status"
+  ],
+  "title": "kt.adapter_isolation_receipt.v1",
+  "type": "object"
+}
