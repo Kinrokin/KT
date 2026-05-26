@@ -16,13 +16,13 @@ jobs:
         include:
           - gate_name: ws0-delivery-parity
             artifact_name: ci-ws0-delivery-parity
-            command: python -m pytest -q KT_PROD_CLEANROOM/tests/operator/test_titanium_substrate.py -k "hat_demo_emits_titanium_contract_and_attachment_artifacts or safe_run_hat_demo_marks_safe_run_enforced"
+            command: python -m pytest -q -o addopts='' KT_PROD_CLEANROOM/tests/operator/test_titanium_substrate.py -k "hat_demo_emits_titanium_contract_and_attachment_artifacts or safe_run_hat_demo_marks_safe_run_enforced"
           - gate_name: ws1-mai-conformance
             artifact_name: ci-ws1-mai-conformance
             command: python -m tools.operator.program_catalog_verify --check-job ci.ws1.mai_conformance_and_provenance
           - gate_name: ws2-replay-bindingloop
             artifact_name: ci-ws2-replay-bindingloop
-            command: python -m pytest -q KT_PROD_CLEANROOM/tests/operator/test_titanium_substrate.py -k "bindingloop_verify or hermetic_replay"
+            command: python -m pytest -q -o addopts='' KT_PROD_CLEANROOM/tests/operator/test_titanium_substrate.py -k "bindingloop_verify or hermetic_replay"
           - gate_name: ws3-constitution
             artifact_name: ci-ws3-constitution
             command: python -m tools.operator.constitution_self_check --mode preflight
